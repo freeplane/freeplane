@@ -59,9 +59,8 @@ public class SelectedViewCondition implements ICondition {
 	@Override
 	public String toString() {
 		if (SelectedViewCondition.description == null) {
-			SelectedViewCondition.description = Freeplane.getController()
-			    .getResourceController().getResourceString(
-			        "filter_selected_node_view");
+			SelectedViewCondition.description = Freeplane
+			    .getText("filter_selected_node_view");
 		}
 		return SelectedViewCondition.description;
 	}

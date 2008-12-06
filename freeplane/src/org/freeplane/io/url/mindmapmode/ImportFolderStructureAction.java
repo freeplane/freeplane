@@ -54,8 +54,8 @@ class ImportFolderStructureAction extends ModeControllerAction {
 			try {
 				importFolderStructure(folder, getModeController()
 				    .getSelectedNode(),/*
-														 * redisplay=
-														 */
+																						 * redisplay=
+																						 */
 				true);
 			}
 			catch (final Exception ex) {

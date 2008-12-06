@@ -88,8 +88,7 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener,
 	private int yDimension;
 
 	public IconSelectionPopupDialog(final JFrame caller, final Vector icons) {
-		super(caller, Freeplane.getController().getResourceController()
-		    .getResourceString("select_icon"));
+		super(caller, Freeplane.getText("select_icon"));
 		getContentPane().setLayout(new BorderLayout());
 		this.icons = icons;
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);

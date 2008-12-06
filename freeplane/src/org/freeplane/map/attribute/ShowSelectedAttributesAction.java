@@ -32,9 +32,8 @@ class ShowSelectedAttributesAction extends AbstractAction {
 	 *
 	 */
 	public ShowSelectedAttributesAction() {
-		FreemindMenuBar.setLabelAndMnemonic(this, Freeplane.getController()
-		    .getResourceController().getResourceString(
-		        "attributes_show_selected"));
+		FreemindMenuBar.setLabelAndMnemonic(this, Freeplane
+		    .getText("attributes_show_selected"));
 	};
 
 	public void actionPerformed(final ActionEvent e) {

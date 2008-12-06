@@ -114,8 +114,7 @@ public class Controller {
 			myMessage = message.toString();
 		}
 		else {
-			myMessage = Freeplane.getController().getResourceController()
-			    .getResourceString("undefined_error");
+			myMessage = Freeplane.getText("undefined_error");
 			if (myMessage == null) {
 				myMessage = "Undefined error";
 			}

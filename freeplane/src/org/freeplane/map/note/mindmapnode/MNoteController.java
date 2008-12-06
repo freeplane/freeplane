@@ -135,7 +135,7 @@ public class MNoteController extends NoteController {
 				public String getString(String pKey) {
 					pKey = "simplyhtml." + pKey;
 					String resourceString = Freeplane.getController()
-					    .getResourceController().getResourceString(pKey, null);
+					    .getResourceController().getText(pKey, null);
 					if (resourceString == null) {
 						resourceString = Freeplane.getController()
 						    .getResourceController().getProperty(pKey);

@@ -38,7 +38,7 @@ class QuitAction extends AbstractAction {
 	 */
 	QuitAction(final ResourceController resourceController) {
 		FreemindMenuBar.setLabelAndMnemonic(this, resourceController
-		    .getResourceString("quit"));
+		    .getText("quit"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {

@@ -63,9 +63,8 @@ public class AttributeNotExistsCondition extends NodeCondition {
 
 	@Override
 	protected String createDesctiption() {
-		final String simpleCondition = Freeplane.getController()
-		    .getResourceController().getResourceString(
-		        ConditionFactory.FILTER_DOES_NOT_EXIST);
+		final String simpleCondition = Freeplane
+		    .getText(ConditionFactory.FILTER_DOES_NOT_EXIST);
 		return ConditionFactory.createDescription(attribute, simpleCondition,
 		    null, false);
 	}

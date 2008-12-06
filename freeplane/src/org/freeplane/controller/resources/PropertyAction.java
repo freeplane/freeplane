@@ -76,9 +76,7 @@ class PropertyAction extends FreeMindAction {
 				    }
 				    if (propertiesChanged) {
 					    JOptionPane.showMessageDialog(null, Freeplane
-					        .getController().getResourceController()
-					        .getResourceString(
-					            "option_changes_may_require_restart"));
+					        .getText("option_changes_may_require_restart"));
 					    Freeplane.getController().getResourceController()
 					        .saveProperties();
 				    }

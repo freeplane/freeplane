@@ -33,9 +33,7 @@ class PrintAction extends AbstractPrintAction {
 		super(controller, null, new ImageIcon(Freeplane.getController()
 		    .getResourceController().getResource("images/fileprint.png")));
 		FreemindMenuBar.setLabelAndMnemonic(this, isDlg ? Freeplane
-		    .getController().getResourceController().getResourceString(
-		        "print_dialog") : Freeplane.getController()
-		    .getResourceController().getResourceString("print"));
+		    .getText("print_dialog") : Freeplane.getText("print"));
 		this.isDlg = isDlg;
 	}
 

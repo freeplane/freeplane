@@ -47,8 +47,7 @@ class OptionSelectionMechanismAction extends AbstractAction implements
 		Freeplane.getController().getModeController()
 		    .getUserInputListenerFactory().getNodeMouseMotionListener()
 		    .updateSelectionMethod();
-		final String statusBarString = Freeplane.getController()
-		    .getResourceController().getResourceString(command);
+		final String statusBarString = Freeplane.getText(command);
 		if (statusBarString != null) {
 			Freeplane.getController().getViewController().out(statusBarString);
 		}

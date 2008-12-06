@@ -319,8 +319,8 @@ class MindMapHTMLWriter {
 			    .getMapController().childrenUnfolded(model); e.hasNext();) {
 				final NodeModel child = (NodeModel) e.next();
 				lastChildNumber = writeHTML(child, parentID, lastChildNumber,/*
-																							 * isRoot=
-																							 */
+																															 * isRoot=
+																															 */
 				false, treatChildrenAsParagraph, depth + 1);
 			}
 			return lastChildNumber;
@@ -333,8 +333,9 @@ class MindMapHTMLWriter {
 					final NodeModel child = (NodeModel) e.next();
 					lastChildNumber = writeHTML(child, parentID,
 					    lastChildNumber,/*
-					    										 * isRoot=
-					    										 */false, treatChildrenAsParagraph, depth + 1);
+					    										    										 * isRoot=
+					    										    										 */false,
+					    treatChildrenAsParagraph, depth + 1);
 				}
 			}
 			else if (createFolding) {
@@ -351,9 +352,9 @@ class MindMapHTMLWriter {
 					final NodeModel child = (NodeModel) e.next();
 					localLastChildNumber = writeHTML(child, localParentID,
 					    localLastChildNumber,/*
-					    											 * isRoot=
-					    											 */false, treatChildrenAsParagraph,
-					    depth + 1);
+					    										    											 * isRoot=
+					    										    											 */false,
+					    treatChildrenAsParagraph, depth + 1);
 				}
 			}
 			else {
@@ -366,8 +367,9 @@ class MindMapHTMLWriter {
 					final NodeModel child = (NodeModel) e.next();
 					lastChildNumber = writeHTML(child, parentID,
 					    lastChildNumber,/*
-					    										 * isRoot=
-					    										 */false, treatChildrenAsParagraph, depth + 1);
+					    										    										 * isRoot=
+					    										    										 */false,
+					    treatChildrenAsParagraph, depth + 1);
 				}
 			}
 			if (treatChildrenAsParagraph) {

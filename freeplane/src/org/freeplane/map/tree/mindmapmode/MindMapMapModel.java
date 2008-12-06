@@ -91,9 +91,7 @@ public class MindMapMapModel extends MapModel {
 		if (titleNumber == 0) {
 			titleNumber = MindMapMapModel.unnamedMapsNumber++;
 		}
-		return Freeplane.getController().getResourceController()
-		    .getResourceString("mindmap")
-		        + titleNumber;
+		return Freeplane.getText("mindmap") + titleNumber;
 	}
 
 	public IUndoHandler getUndoHandler() {

@@ -61,8 +61,8 @@ public class FormatPaste extends MindMapNodeHookAdapter {
 			JOptionPane.showMessageDialog(Freeplane.getController()
 			    .getViewController().getContentPane(),
 			    getResourceString("no_format_copy_before_format_paste"), "" /*
-			    				 * =Title
-			    				 */, JOptionPane.ERROR_MESSAGE);
+			    				    				 * =Title
+			    				    				 */, JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		getMindMapController().getPatternController().applyPattern(node,

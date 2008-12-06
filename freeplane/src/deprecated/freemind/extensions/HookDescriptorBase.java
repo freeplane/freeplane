@@ -117,8 +117,7 @@ public class HookDescriptorBase {
 			return string;
 		}
 		if (string.startsWith("%")) {
-			return Freeplane.getController().getResourceController()
-			    .getResourceString(string.substring(1));
+			return Freeplane.getText(string.substring(1));
 		}
 		return string;
 	}

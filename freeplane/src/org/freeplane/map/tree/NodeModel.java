@@ -654,7 +654,7 @@ public class NodeModel implements MutableTreeNode, IExtensionCollection {
 		}
 		else if (cloud == null && oldCloud != null) {
 			changeChildCloudIterativeLevels(-1);
-			setExtension(cloud);
+			removeExtension(CloudModel.class);
 		}
 	}
 

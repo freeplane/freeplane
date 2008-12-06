@@ -45,12 +45,10 @@ class IgnoreCaseNodeContainsCondition extends NodeCondition {
 
 	@Override
 	protected String createDesctiption() {
-		final String nodeCondition = Freeplane.getController()
-		    .getResourceController().getResourceString(
-		        ConditionFactory.FILTER_NODE);
-		final String simpleCondition = Freeplane.getController()
-		    .getResourceController().getResourceString(
-		        ConditionFactory.FILTER_CONTAINS);
+		final String nodeCondition = Freeplane
+		    .getText(ConditionFactory.FILTER_NODE);
+		final String simpleCondition = Freeplane
+		    .getText(ConditionFactory.FILTER_CONTAINS);
 		return ConditionFactory.createDescription(nodeCondition,
 		    simpleCondition, value, true);
 	}

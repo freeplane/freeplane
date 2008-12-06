@@ -555,8 +555,7 @@ class TimeList {
 	}
 
 	private String getResourceString(final String string) {
-		return Freeplane.getController().getResourceController()
-		    .getResourceString(string);
+		return Freeplane.getText(string);
 	}
 
 	/**

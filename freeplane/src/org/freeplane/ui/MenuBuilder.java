@@ -126,8 +126,7 @@ public class MenuBuilder extends UIBuilder {
 	                      final ActionDescriptor actionAnnotation) {
 		String docu = actionAnnotation.tooltip();
 		if (!docu.equals("")) {
-			docu = Freeplane.getController().getResourceController()
-			    .getResourceString(docu);
+			docu = Freeplane.getText(docu);
 			action.putValue(Action.SHORT_DESCRIPTION, docu);
 			action.putValue(Action.LONG_DESCRIPTION, docu);
 		}
@@ -402,8 +401,7 @@ public class MenuBuilder extends UIBuilder {
 						final MenuSubmenu submenu = (MenuSubmenu) cat;
 						final JMenu menuItem = new JMenu();
 						FreemindMenuBar.setLabelAndMnemonic(menuItem, Freeplane
-						    .getController().getResourceController()
-						    .getResourceString(submenu.getNameRef()));
+						    .getText(submenu.getNameRef()));
 						this.addMenuItem(categoryCopy, menuItem, newCategory,
 						    MenuBuilder.AS_CHILD);
 					}

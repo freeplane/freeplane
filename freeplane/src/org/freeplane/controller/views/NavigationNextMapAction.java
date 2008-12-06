@@ -31,8 +31,8 @@ class NavigationNextMapAction extends AbstractAction {
 	NavigationNextMapAction() {
 		super(null, new ImageIcon(Freeplane.getController()
 		    .getResourceController().getResource("images/1rightarrow.png")));
-		FreemindMenuBar.setLabelAndMnemonic(this, Freeplane.getController()
-		    .getResourceController().getResourceString("next_map"));
+		FreemindMenuBar
+		    .setLabelAndMnemonic(this, Freeplane.getText("next_map"));
 		setEnabled(false);
 	}
 

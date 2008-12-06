@@ -34,8 +34,7 @@ class ZoomInAction extends AbstractAction {
 
 	public ZoomInAction(final ViewController controller) {
 		this.controller = controller;
-		FreemindMenuBar.setLabelAndMnemonic(this, Freeplane.getController()
-		    .getResourceController().getResourceString("zoom_in"));
+		FreemindMenuBar.setLabelAndMnemonic(this, Freeplane.getText("zoom_in"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {

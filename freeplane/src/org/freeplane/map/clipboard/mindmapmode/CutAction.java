@@ -44,8 +44,7 @@ class CutAction extends ModeControllerAction {
 		final MModeController mMindMapController = getMModeController();
 		if (mMindMapController.getMapView().getRoot().isSelected()) {
 			Freeplane.getController().errorMessage(
-			    Freeplane.getController().getResourceController()
-			        .getResourceString("cannot_delete_root"));
+			    Freeplane.getText("cannot_delete_root"));
 			return;
 		}
 		final int showResult = new OptionalDontShowMeAgainDialog(Freeplane

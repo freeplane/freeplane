@@ -48,8 +48,7 @@ public class ConditionRenderer implements ListCellRenderer {
 	                                              final boolean isSelected,
 	                                              final boolean cellHasFocus) {
 		if (value == null) {
-			return new JLabel(Freeplane.getController().getResourceController()
-			    .getResourceString("filter_no_filtering"));
+			return new JLabel(Freeplane.getText("filter_no_filtering"));
 		}
 		JComponent component;
 		if (value instanceof MindIcon) {

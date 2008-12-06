@@ -186,25 +186,22 @@ public class ListDialog extends JDialog {
 		super(frame, title, true);
 		this.data = data;
 		final JButton closeButton = new JButton();
-		FreemindMenuBar
-		    .setLabelAndMnemonic(closeButton, Freeplane.getController()
-		        .getResourceController().getResourceString("close"));
+		FreemindMenuBar.setLabelAndMnemonic(closeButton, Freeplane
+		    .getText("close"));
 		closeButton.addActionListener(new CloseAction());
 		getRootPane().setDefaultButton(closeButton);
 		addButton = new JButton();
-		FreemindMenuBar.setLabelAndMnemonic(addButton, Freeplane
-		    .getController().getResourceController().getResourceString("add"));
+		FreemindMenuBar
+		    .setLabelAndMnemonic(addButton, Freeplane.getText("add"));
 		final AddAction addAction = new AddAction();
 		addButton.addActionListener(addAction);
 		renameButton = new JButton();
 		FreemindMenuBar.setLabelAndMnemonic(renameButton, Freeplane
-		    .getController().getResourceController()
-		    .getResourceString("rename"));
+		    .getText("rename"));
 		renameButton.addActionListener(new RenameAction());
 		deleteButton = new JButton();
 		FreemindMenuBar.setLabelAndMnemonic(deleteButton, Freeplane
-		    .getController().getResourceController()
-		    .getResourceString("delete"));
+		    .getText("delete"));
 		deleteButton.addActionListener(new DeleteAction());
 		textField = new JTextField(20);
 		textField.getDocument().addDocumentListener(new TextChangeListener());

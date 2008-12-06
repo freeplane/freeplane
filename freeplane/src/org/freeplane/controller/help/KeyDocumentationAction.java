@@ -32,13 +32,11 @@ import org.freeplane.ui.FreemindMenuBar;
 @AlwaysEnabledAction
 class KeyDocumentationAction extends AbstractAction {
 	KeyDocumentationAction() {
-		FreemindMenuBar.setLabelAndMnemonic(this, Freeplane.getController()
-		    .getResourceController().getResourceString("KeyDoc"));
+		FreemindMenuBar.setLabelAndMnemonic(this, Freeplane.getText("KeyDoc"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		String urlText = Freeplane.getController().getResourceController()
-		    .getResourceString("pdfKeyDocLocation");
+		String urlText = Freeplane.getText("pdfKeyDocLocation");
 		urlText = ResourceController.removeTranslateComment(urlText);
 		try {
 			if (urlText != null && urlText.startsWith(".")) {

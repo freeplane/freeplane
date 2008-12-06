@@ -144,12 +144,10 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 
 	public ImportAttributesDialog(final Component parentComponent) {
 		super(Freeplane.getController().getViewController().getJFrame(),
-		    Freeplane.getController().getResourceController()
-		        .getResourceString("attributes_import"), true);
+		    Freeplane.getText("attributes_import"), true);
 		this.parentComponent = parentComponent;
 		final TreeNodeInfo nodeInfo = new TreeNodeInfo(Freeplane
-		    .getController().getResourceController().getResourceString(
-		        "attribute_top"));
+		    .getText("attribute_top"));
 		topNode = new DefaultMutableTreeNode(nodeInfo);
 		treeModel = new DefaultTreeModel(topNode);
 		tree = new JTree(treeModel);
@@ -163,8 +161,7 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 		final Box buttons = Box.createHorizontalBox();
 		buttons.setBorder(new EmptyBorder(5, 5, 5, 5));
 		final JButton okBtn = new JButton();
-		FreemindMenuBar.setLabelAndMnemonic(okBtn, Freeplane.getController()
-		    .getResourceController().getResourceString("ok"));
+		FreemindMenuBar.setLabelAndMnemonic(okBtn, Freeplane.getText("ok"));
 		okBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent e) {
 				performImport(topNode);
@@ -173,8 +170,7 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 		});
 		final JButton cancelBtn = new JButton();
 		FreemindMenuBar.setLabelAndMnemonic(cancelBtn, Freeplane
-		    .getController().getResourceController()
-		    .getResourceString("cancel"));
+		    .getText("cancel"));
 		cancelBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent e) {
 				dispose();
@@ -344,8 +340,7 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 		createMapSubTrees(topNode);
 		if (topNode.getChildCount() == 0) {
 			JOptionPane.showMessageDialog(parentComponent, Freeplane
-			    .getController().getResourceController().getResourceString(
-			        "attributes_no_import_candidates_found"), getTitle(),
+			    .getText("attributes_no_import_candidates_found"), getTitle(),
 			    JOptionPane.INFORMATION_MESSAGE);
 			return;
 		}

@@ -124,8 +124,8 @@ public class MindIcon implements Comparable, IIconInformation {
 
 	public String getDescription() {
 		final String resource = new String("icon_" + getName());
-		return Freeplane.getController().getResourceController()
-		    .getResourceString(resource, resource);
+		return Freeplane.getController().getResourceController().getText(
+		    resource, resource);
 	}
 
 	public ImageIcon getIcon() {

@@ -32,8 +32,8 @@ class HideAllAttributesAction extends AbstractAction {
 	 *
 	 */
 	public HideAllAttributesAction() {
-		FreemindMenuBar.setLabelAndMnemonic(this, Freeplane.getController()
-		    .getResourceController().getResourceString("attributes_hide_all"));
+		FreemindMenuBar.setLabelAndMnemonic(this, Freeplane
+		    .getText("attributes_hide_all"));
 	};
 
 	public void actionPerformed(final ActionEvent e) {

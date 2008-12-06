@@ -50,8 +50,7 @@ public abstract class FreeMindAction extends AbstractAction {
 	public FreeMindAction(final String title, final String iconPath) {
 		super();
 		if (title != null && !title.equals("")) {
-			FreemindMenuBar.setLabelAndMnemonic(this, Freeplane.getController()
-			    .getResourceController().getResourceString(title));
+			FreemindMenuBar.setLabelAndMnemonic(this, Freeplane.getText(title));
 		}
 		if (iconPath != null && !iconPath.equals("")) {
 			final ImageIcon icon = new ImageIcon(Freeplane.getController()

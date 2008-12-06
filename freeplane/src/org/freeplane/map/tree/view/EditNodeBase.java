@@ -111,8 +111,8 @@ public class EditNodeBase {
 		EditDialog(final EditNodeBase base) {
 			super(Freeplane.getController().getViewController().getJFrame(),
 			    base.getText("edit_long_node"), /*
-			    											 * modal=
-			    											 */
+			    				    											 * modal=
+			    				    											 */
 			    true);
 			getContentPane().setLayout(new BorderLayout());
 			setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -259,8 +259,7 @@ public class EditNodeBase {
 	/**
 		 */
 	protected String getText(final String string) {
-		return Freeplane.getController().getResourceController()
-		    .getResourceString(string);
+		return Freeplane.getText(string);
 	}
 
 	/**

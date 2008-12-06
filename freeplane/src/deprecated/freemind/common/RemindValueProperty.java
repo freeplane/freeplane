@@ -36,15 +36,12 @@ public class RemindValueProperty extends ThreeCheckBoxProperty {
 		state = newState;
 		String[] strings;
 		strings = new String[3];
-		strings[ThreeCheckBoxProperty.TRUE_VALUE_INT] = Freeplane
-		    .getController().getResourceController().getResourceString(
-		        "OptionalDontShowMeAgainDialog.ok").replaceFirst("&", "");
-		strings[ThreeCheckBoxProperty.FALSE_VALUE_INT] = Freeplane
-		    .getController().getResourceController().getResourceString(
-		        "OptionalDontShowMeAgainDialog.cancel").replaceFirst("&", "");
+		strings[ThreeCheckBoxProperty.TRUE_VALUE_INT] = Freeplane.getText(
+		    "OptionalDontShowMeAgainDialog.ok").replaceFirst("&", "");
+		strings[ThreeCheckBoxProperty.FALSE_VALUE_INT] = Freeplane.getText(
+		    "OptionalDontShowMeAgainDialog.cancel").replaceFirst("&", "");
 		strings[ThreeCheckBoxProperty.DON_T_TOUCH_VALUE_INT] = Freeplane
-		    .getController().getResourceController().getResourceString(
-		        "OptionPanel.ask").replaceFirst("&", "");
+		    .getText("OptionPanel.ask").replaceFirst("&", "");
 		mButton.setText(strings[state]);
 	}
 }

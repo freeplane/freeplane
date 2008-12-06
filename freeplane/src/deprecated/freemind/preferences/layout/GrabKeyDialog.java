@@ -375,8 +375,7 @@ public class GrabKeyDialog extends JDialog {
 	/**
 	 */
 	private String getText(final String resourceString) {
-		return Freeplane.getController().getResourceController()
-		    .getResourceString("GrabKeyDialog." + resourceString);
+		return Freeplane.getText("GrabKeyDialog." + resourceString);
 	}
 
 	private void init(final KeyBinding binding, final Vector allBindings,

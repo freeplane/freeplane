@@ -37,15 +37,15 @@ public class HelpController {
 		final Controller controller = Freeplane.getController();
 		controller.addAction("about", new AboutAction());
 		controller.addAction("freemindUrl", new OpenURLAction(controller
-		    .getResourceController().getResourceString("Freeplane"), controller
+		    .getResourceController().getText("Freeplane"), controller
 		    .getResourceController().getProperty("webFreeMindLocation")));
 		controller.addAction("faq", new OpenURLAction(controller
-		    .getResourceController().getResourceString("FAQ"), controller
+		    .getResourceController().getText("FAQ"), controller
 		    .getResourceController().getProperty("webFAQLocation")));
 		controller.addAction("keyDocumentation", new KeyDocumentationAction());
-		webDocu = new OpenURLAction(controller.getResourceController()
-		    .getResourceString("webDocu"), controller.getResourceController()
-		    .getProperty("webDocuLocation"));
+		webDocu = new OpenURLAction(controller.getResourceController().getText(
+		    "webDocu"), controller.getResourceController().getProperty(
+		    "webDocuLocation"));
 		controller.addAction("webDocu", webDocu);
 		controller.addAction("documentation", new DocumentationAction());
 		controller.addAction("license", new LicenseAction());

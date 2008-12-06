@@ -36,13 +36,12 @@ import org.freeplane.ui.FreemindMenuBar;
 @AlwaysEnabledAction
 class DocumentationAction extends AbstractAction {
 	DocumentationAction() {
-		FreemindMenuBar.setLabelAndMnemonic(this, Freeplane.getController()
-		    .getResourceController().getResourceString("documentation"));
+		FreemindMenuBar.setLabelAndMnemonic(this, Freeplane
+		    .getText("documentation"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		String map = Freeplane.getController().getResourceController()
-		    .getResourceString("browsemode_initial_map");
+		String map = Freeplane.getText("browsemode_initial_map");
 		map = ResourceController.removeTranslateComment(map);
 		if (map != null && map.startsWith(".")) {
 			try {

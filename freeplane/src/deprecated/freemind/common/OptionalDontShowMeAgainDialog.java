@@ -145,8 +145,7 @@ public class OptionalDontShowMeAgainDialog {
 			return this;
 		}
 		mDialog = null;
-		mDialog = new JDialog(mParent, Freeplane.getController()
-		    .getResourceController().getResourceString(mTitleId));
+		mDialog = new JDialog(mParent, Freeplane.getText(mTitleId));
 		mDialog.setModal(true);
 		mDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		final AbstractAction cancelAction = new AbstractAction() {
@@ -168,8 +167,7 @@ public class OptionalDontShowMeAgainDialog {
 		});
 		mDialog.getContentPane().setLayout(new GridBagLayout());
 		mDialog.getContentPane().add(
-		    new JLabel(Freeplane.getController().getResourceController()
-		        .getResourceString(mMessageId)),
+		    new JLabel(Freeplane.getText(mMessageId)),
 		    new GridBagConstraints(1, 0, 1, 1, 1.0, 1.0,
 		        GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(5,
 		            5, 0, 0), 0, 0));
@@ -187,17 +185,15 @@ public class OptionalDontShowMeAgainDialog {
 		else {
 			boxString = "OptionalDontShowMeAgainDialog.rememberMyDescision";
 		}
-		mDontShowAgainBox = new JCheckBox(Freeplane.getController()
-		    .getResourceController().getResourceString(boxString));
+		mDontShowAgainBox = new JCheckBox(Freeplane.getText(boxString));
 		FreemindMenuBar.setLabelAndMnemonic(mDontShowAgainBox, null);
 		mDialog.getContentPane().add(
 		    mDontShowAgainBox,
 		    new GridBagConstraints(0, 2, 3, 1, 1.0, 1.0,
 		        GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(5,
 		            5, 0, 0), 0, 0));
-		final JButton okButton = new JButton(Freeplane.getController()
-		    .getResourceController().getResourceString(
-		        "OptionalDontShowMeAgainDialog.ok"));
+		final JButton okButton = new JButton(Freeplane
+		    .getText("OptionalDontShowMeAgainDialog.ok"));
 		FreemindMenuBar.setLabelAndMnemonic(okButton, null);
 		okButton.addActionListener(okAction);
 		mDialog.getContentPane().add(
@@ -205,9 +201,8 @@ public class OptionalDontShowMeAgainDialog {
 		    new GridBagConstraints(2, 3, 1, 1, 1.0, 1.0,
 		        GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(5,
 		            5, 0, 0), 0, 0));
-		final JButton cancelButton = new JButton(Freeplane.getController()
-		    .getResourceController().getResourceString(
-		        "OptionalDontShowMeAgainDialog.cancel"));
+		final JButton cancelButton = new JButton(Freeplane
+		    .getText("OptionalDontShowMeAgainDialog.cancel"));
 		FreemindMenuBar.setLabelAndMnemonic(cancelButton, null);
 		cancelButton.addActionListener(cancelAction);
 		mDialog.getContentPane().add(

@@ -87,8 +87,8 @@ public class DisjunctConditions implements ICondition {
 		component.add(rendererComponent);
 		int i;
 		for (i = 1; i < conditions.length; i++) {
-			final String or = Tools.removeMnemonic(Freeplane.getController()
-			    .getResourceController().getResourceString("filter_or"));
+			final String or = Tools.removeMnemonic(Freeplane
+			    .getText("filter_or"));
 			final String text = ' ' + or + ' ';
 			component.add(new JLabel(text));
 			cond = (ICondition) conditions[i];

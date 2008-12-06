@@ -43,8 +43,7 @@ import org.freeplane.ui.FreemindMenuBar;
 class PageAction extends AbstractPrintAction {
 	PageAction(final PrintController controller) {
 		super(controller);
-		FreemindMenuBar.setLabelAndMnemonic(this, Freeplane.getController()
-		    .getResourceController().getResourceString("page"));
+		FreemindMenuBar.setLabelAndMnemonic(this, Freeplane.getText("page"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -53,23 +52,20 @@ class PageAction extends AbstractPrintAction {
 		}
 		final Controller controller = Freeplane.getController();
 		final JDialog dialog = new JDialog(Freeplane.getController()
-		    .getViewController().getJFrame(), Freeplane.getController()
-		    .getResourceController().getResourceString("printing_settings"), /*
-																				 * modal=
-																				 */
+		    .getViewController().getJFrame(), Freeplane
+		    .getText("printing_settings"), /*
+																						 * modal=
+																						 */
 		true);
-		final JCheckBox fitToPage = new JCheckBox(Freeplane.getController()
-		    .getResourceController().getResourceString("fit_to_page"),
-		    Freeplane.getController().getResourceController().getBoolProperty(
-		        "fit_to_page"));
-		final JLabel userZoomL = new JLabel(Freeplane.getController()
-		    .getResourceController().getResourceString("user_zoom"));
+		final JCheckBox fitToPage = new JCheckBox(Freeplane
+		    .getText("fit_to_page"), Freeplane.getController()
+		    .getResourceController().getBoolProperty("fit_to_page"));
+		final JLabel userZoomL = new JLabel(Freeplane.getText("user_zoom"));
 		final JTextField userZoom = new JTextField(controller
 		    .getResourceController().getProperty("user_zoom"), 3);
 		userZoom.setEditable(!fitToPage.isSelected());
 		final JButton okButton = new JButton();
-		FreemindMenuBar.setLabelAndMnemonic(okButton, Freeplane.getController()
-		    .getResourceController().getResourceString("ok"));
+		FreemindMenuBar.setLabelAndMnemonic(okButton, Freeplane.getText("ok"));
 		final Tools.IntHolder eventSource = new Tools.IntHolder();
 		final JPanel panel = new JPanel();
 		final GridBagLayout gridbag = new GridBagLayout();

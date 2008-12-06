@@ -37,8 +37,8 @@ class ShowAttributeDialogAction extends AbstractAction {
 	ShowAttributeDialogAction() {
 		super(null, new ImageIcon(Freeplane.getController()
 		    .getResourceController().getResource("images/showAttributes.gif")));
-		FreemindMenuBar.setLabelAndMnemonic(this, Freeplane.getController()
-		    .getResourceController().getResourceString("attributes_dialog"));
+		FreemindMenuBar.setLabelAndMnemonic(this, Freeplane
+		    .getText("attributes_dialog"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {

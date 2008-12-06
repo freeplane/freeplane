@@ -48,9 +48,7 @@ class OpenURLAction extends AbstractAction {
 		}
 		catch (final MalformedURLException ex) {
 			Freeplane.getController().errorMessage(
-			    Freeplane.getController().getResourceController()
-			        .getResourceString("url_error")
-			            + "\n" + ex);
+			    Freeplane.getText("url_error") + "\n" + ex);
 		}
 		catch (final Exception ex) {
 			Freeplane.getController().errorMessage(ex);

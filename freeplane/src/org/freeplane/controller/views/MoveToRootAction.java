@@ -28,8 +28,8 @@ import org.freeplane.ui.FreemindMenuBar;
 
 class MoveToRootAction extends AbstractAction {
 	MoveToRootAction() {
-		FreemindMenuBar.setLabelAndMnemonic(this, Freeplane.getController()
-		    .getResourceController().getResourceString("move_to_root"));
+		FreemindMenuBar.setLabelAndMnemonic(this, Freeplane
+		    .getText("move_to_root"));
 	}
 
 	public void actionPerformed(final ActionEvent event) {

@@ -29,8 +29,7 @@ import org.freeplane.ui.FreemindMenuBar;
 /** This closes only the current map */
 class CloseAction extends AbstractAction {
 	CloseAction() {
-		FreemindMenuBar.setLabelAndMnemonic(this, Freeplane.getController()
-		    .getResourceController().getResourceString("close"));
+		FreemindMenuBar.setLabelAndMnemonic(this, Freeplane.getText("close"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {

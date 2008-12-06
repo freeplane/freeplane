@@ -87,8 +87,8 @@ public class ConjunctConditions implements ICondition {
 		component.add(rendererComponent);
 		int i;
 		for (i = 1; i < conditions.length; i++) {
-			final String and = Tools.removeMnemonic(Freeplane.getController()
-			    .getResourceController().getResourceString("filter_and"));
+			final String and = Tools.removeMnemonic(Freeplane
+			    .getText("filter_and"));
 			final String text = ' ' + and + ' ';
 			component.add(new JLabel(text));
 			cond = (ICondition) conditions[i];

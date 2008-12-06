@@ -165,16 +165,14 @@ public class FreemindMenuBar extends JMenuBar {
 
 	static public JMenu createMenu(final String name) {
 		final JMenu menu = new JMenu();
-		final String text = Freeplane.getController().getResourceController()
-		    .getResourceString(name);
+		final String text = Freeplane.getText(name);
 		FreemindMenuBar.setLabelAndMnemonic(menu, text);
 		return menu;
 	}
 
 	static public JMenuItem createMenuItem(final String name) {
 		final JMenuItem menu = new JMenuItem();
-		final String text = Freeplane.getController().getResourceController()
-		    .getResourceString(name);
+		final String text = Freeplane.getText(name);
 		FreemindMenuBar.setLabelAndMnemonic(menu, text);
 		return menu;
 	}

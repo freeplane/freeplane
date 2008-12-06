@@ -66,8 +66,7 @@ public class MapModel extends DefaultTreeModel implements IExtensionCollection {
 		filter = new DefaultFilter(NoFilteringCondition.createCondition(),
 		    true, false);
 		if (root == null) {
-			root = new NodeModel(Freeplane.getController()
-			    .getResourceController().getResourceString("new_mindmap"), this);
+			root = new NodeModel(Freeplane.getText("new_mindmap"), this);
 			setRoot(root);
 		}
 		else {

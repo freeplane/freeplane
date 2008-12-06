@@ -57,9 +57,8 @@ public class NoFilteringCondition implements ICondition {
 	@Override
 	public String toString() {
 		if (NoFilteringCondition.description == null) {
-			NoFilteringCondition.description = Freeplane.getController()
-			    .getResourceController().getResourceString(
-			        "filter_no_filtering");
+			NoFilteringCondition.description = Freeplane
+			    .getText("filter_no_filtering");
 		}
 		return NoFilteringCondition.description;
 	}

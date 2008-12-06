@@ -26,7 +26,7 @@ import org.freeplane.controller.Freeplane;
  */
 public class OptionString {
 	public static String getText(final String string) {
-		return string == null ? null : Freeplane.getController()
-		    .getResourceController().getResourceString("OptionPanel." + string);
+		return string == null ? null : Freeplane.getText("OptionPanel."
+		        + string);
 	}
 }

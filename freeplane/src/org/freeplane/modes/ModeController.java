@@ -291,8 +291,7 @@ public class ModeController {
 	}
 
 	public String getText(final String textId) {
-		return Freeplane.getController().getResourceController()
-		    .getResourceString(textId);
+		return Freeplane.getText(textId);
 	}
 
 	public TextController getTextController() {
@@ -302,8 +301,7 @@ public class ModeController {
 	public ITextTranslator getTextTranslator() {
 		return new ITextTranslator() {
 			public String getText(final String key) {
-				return Freeplane.getController().getResourceController()
-				    .getResourceString(key);
+				return Freeplane.getText(key);
 			}
 		};
 	}

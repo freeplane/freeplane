@@ -75,14 +75,10 @@ public class StylePatternFactory {
 		if (patternType != null) {
 			result = StylePatternFactory.addSeparatorIfNecessary(result);
 			if (patternType.getValue() == null) {
-				result += "-"
-				        + Freeplane.getController().getResourceController()
-				            .getResourceString(patternString);
+				result += "-" + Freeplane.getText(patternString);
 			}
 			else {
-				result += "+"
-				        + Freeplane.getController().getResourceController()
-				            .getResourceString(patternString) + " "
+				result += "+" + Freeplane.getText(patternString) + " "
 				        + patternType.getValue();
 			}
 		}
@@ -288,29 +284,21 @@ public class StylePatternFactory {
 		if (pPattern.getPatternNodeColor() != null) {
 			result = StylePatternFactory.addSeparatorIfNecessary(result);
 			if (pPattern.getPatternNodeColor().getValue() == null) {
-				result += "-"
-				        + Freeplane.getController().getResourceController()
-				            .getResourceString("PatternToString.color");
+				result += "-" + Freeplane.getText("PatternToString.color");
 			}
 			else {
-				result += "+"
-				        + Freeplane.getController().getResourceController()
-				            .getResourceString("PatternToString.color");
+				result += "+" + Freeplane.getText("PatternToString.color");
 			}
 		}
 		if (pPattern.getPatternNodeBackgroundColor() != null) {
 			result = StylePatternFactory.addSeparatorIfNecessary(result);
 			if (pPattern.getPatternNodeBackgroundColor().getValue() == null) {
 				result += "-"
-				        + Freeplane.getController().getResourceController()
-				            .getResourceString(
-				                "PatternToString.backgroundColor");
+				        + Freeplane.getText("PatternToString.backgroundColor");
 			}
 			else {
 				result += "+"
-				        + Freeplane.getController().getResourceController()
-				            .getResourceString(
-				                "PatternToString.backgroundColor");
+				        + Freeplane.getText("PatternToString.backgroundColor");
 			}
 		}
 		result = StylePatternFactory.addSubPatternToString(result, pPattern

@@ -99,7 +99,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 		controller.addAction("zoomOut", zoomOut);
 		optionAntialiasAction = new OptionAntialiasAction();
 		controller.addAction("optionAntialiasAction", optionAntialiasAction);
-		userDefinedZoom = controller.getResourceController().getResourceString(
+		userDefinedZoom = controller.getResourceController().getText(
 		    "user_defined_zoom");
 		zoom = new JComboBox(getZooms());
 		zoom.setSelectedItem("100%");
@@ -458,12 +458,10 @@ abstract public class ViewController implements IMapViewChangeListener {
 			setTitle("");
 			return;
 		}
-		final Object[] messageArguments = { Freeplane.getController()
-		    .getResourceController().getResourceString(
-		        ("mode_" + modeController.getModeName())) };
+		final Object[] messageArguments = { Freeplane
+		    .getText(("mode_" + modeController.getModeName())) };
 		final MessageFormat formatter = new MessageFormat(Freeplane
-		    .getController().getResourceController().getResourceString(
-		        "mode_title"));
+		    .getText("mode_title"));
 		String title = formatter.format(messageArguments);
 		String rawTitle = "";
 		MapModel model = null;
@@ -476,8 +474,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 			        + " - "
 			        + title
 			        + (model.isReadOnly() ? " ("
-			                + Freeplane.getController().getResourceController()
-			                    .getResourceString("read_only") + ")" : "");
+			                + Freeplane.getText("read_only") + ")" : "");
 			final String modelTitle = model.getTitle();
 			if (modelTitle != null) {
 				title += ' ' + modelTitle;

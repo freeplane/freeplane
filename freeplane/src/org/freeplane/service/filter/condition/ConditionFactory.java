@@ -59,9 +59,8 @@ public class ConditionFactory {
 		        + simpleCondition
 		        + (value != null ? " \"" + value + "\"" : "")
 		        + (ignoreCase && value != null ? ", "
-		                + Freeplane.getController().getResourceController()
-		                    .getResourceString(
-		                        ConditionFactory.FILTER_IGNORE_CASE) : "");
+		                + Freeplane
+		                    .getText(ConditionFactory.FILTER_IGNORE_CASE) : "");
 		return description;
 	}
 

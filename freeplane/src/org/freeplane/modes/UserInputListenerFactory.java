@@ -840,8 +840,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		menuBuilder.addPopupMenu(getNodePopupMenu(),
 		    UserInputListenerFactory.NODE_POPUP);
 		menuBuilder.addToolbar(getMainToolBar(), "/main_toolbar");
-		mapsPopupMenu.setName(Freeplane.getController().getResourceController()
-		    .getResourceString("mindmaps"));
+		mapsPopupMenu.setName(Freeplane.getText("mindmaps"));
 		if (menuStructure != null) {
 			menuBuilder.processMenuCategory(menuStructure);
 		}

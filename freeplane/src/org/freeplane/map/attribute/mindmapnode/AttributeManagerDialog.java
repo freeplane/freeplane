@@ -179,8 +179,7 @@ public class AttributeManagerDialog extends JDialog implements
 
 	public AttributeManagerDialog() {
 		super(Freeplane.getController().getViewController().getJFrame(),
-		    Freeplane.getController().getResourceController()
-		        .getResourceString("attributes_dialog_title"), true);
+		    Freeplane.getText("attributes_dialog_title"), true);
 		view = new AttributeRegistryTable(new EditListAction());
 		registry = Freeplane.getController().getMap().getRegistry();
 		model = registry.getAttributes();
@@ -209,14 +208,12 @@ public class AttributeManagerDialog extends JDialog implements
 				model.setAttributeLayoutChanged();
 			}
 		});
-		size.setToolTipText(Freeplane.getController().getResourceController()
-		    .getResourceString("attribute_font_size_tooltip"));
+		size.setToolTipText(Freeplane.getText("attribute_font_size_tooltip"));
 		southButtons.add(size);
 		southButtons.add(Box.createHorizontalGlue());
 		final JButton importBtn = new JButton(new ImportAction());
-		importBtn.setToolTipText(Freeplane.getController()
-		    .getResourceController().getResourceString(
-		        "attributes_import_tooltip"));
+		importBtn
+		    .setToolTipText(Freeplane.getText("attributes_import_tooltip"));
 		southButtons.add(importBtn);
 		southButtons.add(Box.createHorizontalGlue());
 		Tools.addEscapeActionToDialog(this);

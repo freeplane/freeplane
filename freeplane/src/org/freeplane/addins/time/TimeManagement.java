@@ -179,8 +179,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener,
 	}
 
 	private String getResourceString(final String string) {
-		return Freeplane.getController().getResourceController()
-		    .getResourceString(string);
+		return Freeplane.getText(string);
 	}
 
 	/**
@@ -256,8 +255,8 @@ class TimeManagement implements PropertyChangeListener, ActionListener,
 		    this);
 		dialog = new JDialog(Freeplane.getController().getViewController()
 		    .getJFrame(), false /*
-									 * not modal
-									 */);
+											 * not modal
+											 */);
 		dialog
 		    .setTitle(getResourceString("plugins/TimeManagement.xml_WindowTitle"));
 		dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);

@@ -31,15 +31,12 @@ import org.freeplane.ui.FreemindMenuBar;
 @AlwaysEnabledAction
 class LicenseAction extends AbstractAction {
 	LicenseAction() {
-		FreemindMenuBar.setLabelAndMnemonic(this, Freeplane.getController()
-		    .getResourceController().getResourceString("license"));
+		FreemindMenuBar.setLabelAndMnemonic(this, Freeplane.getText("license"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		JOptionPane.showMessageDialog(Freeplane.getController().getMapView(),
-		    Freeplane.getController().getResourceController()
-		        .getResourceString("license_text"), Freeplane.getController()
-		        .getResourceController().getResourceString("license"),
+		    Freeplane.getText("license_text"), Freeplane.getText("license"),
 		    JOptionPane.INFORMATION_MESSAGE);
 	}
 }

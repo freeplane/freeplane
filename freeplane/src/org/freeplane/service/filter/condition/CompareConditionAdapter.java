@@ -74,10 +74,9 @@ abstract class CompareConditionAdapter extends NodeCondition {
 				        : ConditionFactory.FILTER_GE;
 				break;
 			case 0:
-				simpleCondition = Freeplane.getController()
-				    .getResourceController().getResourceString(
-				        succeed ? ConditionFactory.FILTER_IS_EQUAL_TO
-				                : ConditionFactory.FILTER_IS_NOT_EQUAL_TO);
+				simpleCondition = Freeplane
+				    .getText(succeed ? ConditionFactory.FILTER_IS_EQUAL_TO
+				            : ConditionFactory.FILTER_IS_NOT_EQUAL_TO);
 				break;
 			case 1:
 				simpleCondition = succeed ? ConditionFactory.FILTER_GT

@@ -99,5 +99,6 @@ public class CloudBuilder implements INodeCreator, IAttributeHandler,
 		if (width != CloudController.DEFAULT_WIDTH) {
 			cloud.setAttribute("WIDTH", Integer.toString(width));
 		}
+		writer.addNode(model, cloud);
 	}
 }

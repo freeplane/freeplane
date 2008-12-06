@@ -32,8 +32,8 @@ class ShowAllAttributesAction extends AbstractAction {
 	 *
 	 */
 	public ShowAllAttributesAction() {
-		FreemindMenuBar.setLabelAndMnemonic(this, Freeplane.getController()
-		    .getResourceController().getResourceString("attributes_show_all"));
+		FreemindMenuBar.setLabelAndMnemonic(this, Freeplane
+		    .getText("attributes_show_all"));
 	};
 
 	public void actionPerformed(final ActionEvent e) {

@@ -34,8 +34,8 @@ class ZoomOutAction extends AbstractAction {
 
 	public ZoomOutAction(final ViewController viewController) {
 		this.viewController = viewController;
-		FreemindMenuBar.setLabelAndMnemonic(this, Freeplane.getController()
-		    .getResourceController().getResourceString("zoom_out"));
+		FreemindMenuBar
+		    .setLabelAndMnemonic(this, Freeplane.getText("zoom_out"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {

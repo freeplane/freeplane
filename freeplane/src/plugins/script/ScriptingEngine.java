@@ -242,8 +242,8 @@ public class ScriptingEngine extends MindMapHookAdapter {
 			                        : "") + message);
 			return false;
 		}
-		pOutStream.print(Freeplane.getController().getResourceController()
-		    .getResourceString("plugins/ScriptEditor/window.Result")
+		pOutStream.print(Freeplane
+		    .getText("plugins/ScriptEditor/window.Result")
 		        + value);
 		if (assignResult && value != null) {
 			if (assignTo == null) {

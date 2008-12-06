@@ -36,8 +36,8 @@ class ToggleMenubarAction extends AbstractAction implements
 
 	ToggleMenubarAction(final ViewController viewController) {
 		controller = viewController;
-		FreemindMenuBar.setLabelAndMnemonic(this, Freeplane.getController()
-		    .getResourceController().getResourceString("toggle_menubar"));
+		FreemindMenuBar.setLabelAndMnemonic(this, Freeplane
+		    .getText("toggle_menubar"));
 	}
 
 	public void actionPerformed(final ActionEvent event) {

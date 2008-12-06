@@ -53,8 +53,8 @@ class ImportExplorerFavoritesAction extends ModeControllerAction {
 			    "Importing Favorites ...");
 			importExplorerFavorites(folder, getModeController()
 			    .getSelectedNode(),/*
-												 * redisplay=
-												 */
+																		 * redisplay=
+																		 */
 			true);
 			Freeplane.getController().getViewController().out(
 			    "Favorites imported.");

@@ -183,9 +183,7 @@ class FilterToolbar extends FreeMindToolBar {
 		setVisible(false);
 		setFocusable(false);
 		filterChangeListener = new FilterChangeListener();
-		add(new JLabel(Freeplane.getController().getResourceController()
-		    .getResourceString("filter_toolbar")
-		        + " "));
+		add(new JLabel(Freeplane.getText("filter_toolbar") + " "));
 		activeFilter = null;
 		activeFilterConditionComboBox = new JComboBox() {
 			@Override
@@ -202,18 +200,15 @@ class FilterToolbar extends FreeMindToolBar {
 		btnEdit = add(new EditFilterAction());
 		add(btnEdit);
 		btnUnfoldAncestors = add(new UnfoldAncestorsAction());
-		btnUnfoldAncestors.setToolTipText(Freeplane.getController()
-		    .getResourceController().getResourceString(
-		        "filter_unfold_ancestors"));
+		btnUnfoldAncestors.setToolTipText(Freeplane
+		    .getText("filter_unfold_ancestors"));
 		add(btnUnfoldAncestors);
-		showAncestors = new JCheckBox(
-		    Freeplane.getController().getResourceController()
-		        .getResourceString("filter_show_ancestors"), true);
+		showAncestors = new JCheckBox(Freeplane
+		    .getText("filter_show_ancestors"), true);
 		add(showAncestors);
 		showAncestors.getModel().addActionListener(filterChangeListener);
-		showDescendants = new JCheckBox(Freeplane.getController()
-		    .getResourceController().getResourceString(
-		        "filter_show_descendants"), false);
+		showDescendants = new JCheckBox(Freeplane
+		    .getText("filter_show_descendants"), false);
 		add(showDescendants);
 		showDescendants.getModel().addActionListener(filterChangeListener);
 	}

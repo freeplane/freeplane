@@ -161,8 +161,7 @@ class ReminderExtension implements IExtension {
 		timer.schedule(task, date);
 		final Object[] messageArguments = { date };
 		final MessageFormat formatter = new MessageFormat(Freeplane
-		    .getController().getResourceController().getResourceString(
-		        "plugins/TimeManagement.xml_reminderNode_tooltip"));
+		    .getText("plugins/TimeManagement.xml_reminderNode_tooltip"));
 		final String message = formatter.format(messageArguments);
 		setToolTip(node, message);
 		displayState(CLOCK_VISIBLE, node, false);

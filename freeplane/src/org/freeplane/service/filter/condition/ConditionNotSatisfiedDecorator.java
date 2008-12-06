@@ -71,8 +71,8 @@ public class ConditionNotSatisfiedDecorator implements ICondition {
 	 */
 	public JComponent getListCellRendererComponent() {
 		final JCondition component = new JCondition();
-		final String not = Tools.removeMnemonic(Freeplane.getController()
-		    .getResourceController().getResourceString("filter_not"));
+		final String not = Tools
+		    .removeMnemonic(Freeplane.getText("filter_not"));
 		final String text = not + ' ';
 		component.add(new JLabel(text));
 		final JComponent renderer = originalCondition

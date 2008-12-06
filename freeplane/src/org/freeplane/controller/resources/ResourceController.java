@@ -124,7 +124,7 @@ public abstract class ResourceController {
 	}
 
 	public NamedObject createTranslatedString(final String key) {
-		final String fs = getResourceString(key);
+		final String fs = getText(key);
 		return new NamedObject(key, fs);
 	}
 
@@ -143,8 +143,7 @@ public abstract class ResourceController {
 
 	public String format(final String resourceKey,
 	                     final Object[] messageArguments) {
-		final MessageFormat formatter = new MessageFormat(
-		    getResourceString(resourceKey));
+		final MessageFormat formatter = new MessageFormat(getText(resourceKey));
 		final String stringResult = formatter.format(messageArguments);
 		return stringResult;
 	}
@@ -357,11 +356,11 @@ public abstract class ResourceController {
 		return resources;
 	}
 
-	public String getResourceString(final String key) {
+	public String getText(final String key) {
 		return ((FreemindResourceBundle) getResources()).getResourceString(key);
 	}
 
-	public String getResourceString(final String key, final String resource) {
+	public String getText(final String key, final String resource) {
 		return ((FreemindResourceBundle) getResources()).getResourceString(key,
 		    resource);
 	}
@@ -369,7 +368,7 @@ public abstract class ResourceController {
 	public ITextTranslator getTextTranslator() {
 		return new ITextTranslator() {
 			public String getText(final String key) {
-				return getResourceString(key);
+				return ResourceController.this.getText(key);
 			}
 		};
 	}

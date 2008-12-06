@@ -36,8 +36,8 @@ class ToggleLeftToolbarAction extends AbstractAction implements
 
 	ToggleLeftToolbarAction(final ViewController controller) {
 		this.controller = controller;
-		FreemindMenuBar.setLabelAndMnemonic(this, Freeplane.getController()
-		    .getResourceController().getResourceString("toggle_left_toolbar"));
+		FreemindMenuBar.setLabelAndMnemonic(this, Freeplane
+		    .getText("toggle_left_toolbar"));
 	}
 
 	public void actionPerformed(final ActionEvent event) {

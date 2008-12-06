@@ -33,9 +33,8 @@ class ShowSelectionAsRectangleAction extends AbstractAction implements
 	 *
 	 */
 	public ShowSelectionAsRectangleAction() {
-		FreemindMenuBar.setLabelAndMnemonic(this, Freeplane.getController()
-		    .getResourceController()
-		    .getResourceString("selection_as_rectangle"));
+		FreemindMenuBar.setLabelAndMnemonic(this, Freeplane
+		    .getText("selection_as_rectangle"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {

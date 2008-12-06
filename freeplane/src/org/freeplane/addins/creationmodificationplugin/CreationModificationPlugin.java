@@ -91,8 +91,8 @@ public class CreationModificationPlugin extends PersistentNodeHook implements
 		        node.getHistoryInformation().getLastModifiedAt() };
 		if (tooltipFormat == null) {
 			// TODO
-			tooltipFormat = Freeplane.getController().getResourceController()
-			    .getResourceString("CreationModificationPlugin.tooltip_format");
+			tooltipFormat = Freeplane
+			    .getText("CreationModificationPlugin.tooltip_format");
 		}
 		final MessageFormat formatter = new MessageFormat(tooltipFormat);
 		final String message = formatter.format(messageArguments);

@@ -19,14 +19,21 @@
  */
 package org.freeplane.controller;
 
+import org.freeplane.controller.resources.ResourceController;
+
 /**
  * @author Dimitry Polivaev
  */
 public class Freeplane {
 	private static Controller controller;
+	private static ResourceController resourceController;
 
 	public static Controller getController() {
 		return controller;
+	}
+
+	public static String getText(final String string) {
+		return resourceController.getText(string);
 	}
 
 	static void setController(final Controller controller) {
@@ -34,5 +41,6 @@ public class Freeplane {
 			throw new RuntimeException("Controller already set");
 		}
 		Freeplane.controller = controller;
+		Freeplane.resourceController = controller.getResourceController();
 	}
 }
