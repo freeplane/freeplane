@@ -1,0 +1,59 @@
+<project name="automatic_plugins" basedir="." default="dist">
+	<property name="plugin.xml" value="accessories/plugins/*.xml" />
+	<property name="plugin.dir" value="accessories/plugins"/>
+	<property name="plugin.jar" value="${FM.jar}" />
+	<property name="plugin.zip" value="builtin_plugins-${ver}.zip" />
+	<property name="additional.lib" value=""/>
+	
+	<property name="additional.lib.pattern" value="${plugin.dir}/*.jar"/>
+
+	<target name="build">
+		<echo message="Built in Plugins build on path ${basedir}"/>
+		<mkdir dir="${build}" />
+		<javac	srcdir="${src}"
+			destdir="${build}"
+			debug="${debug}"
+		   source="${java_source_version}"
+	       target="${java_target_version}"
+						> 
+			<include name="${plugin.dir}/**" />
+			<classpath>
+				<path path="${classpath}"/>
+				<!-- <path path="${additional.lib}"/> -->
+			</classpath>
+			
+		</javac>
+	</target>
+
+	<target name="dist">
+		<copy todir="${build}"> 
+			<fileset dir="${src}">
+				<include name="${plugin.dir}/**"/>
+				<exclude name="**/*.java"/>
+			</fileset>
+		</copy>
+		<jar jarfile="${plugin.jar}" update="true">
+			<fileset dir="${build}">
+				<include name="${plugin.dir}/**"/>
+				<exclude name="**/*.jar"/>
+				<exclude name="**/build.xml"/>
+			</fileset>
+		</jar>
+		<!-- additional libs  -->
+		<mkdir dir="${dist}" />
+		<copy todir="${dist}" flatten="false"> 
+			<fileset dir="${src}">
+				<include name="${additional.lib.pattern}"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="post">
+<!--		<zip destfile="${post}/${plugin.zip}"
+			basedir="${dist}"
+			includes="${plugin.dir}/**,${plugin.xml}"
+			>
+				
+		</zip>		-->
+	</target>
+</project>

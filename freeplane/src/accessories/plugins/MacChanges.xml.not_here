@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<plugin label="accessories.plugins.MacChanges">
+<!--	 Invoked directly by FreeMind. 
+    <plugin_registration class_name="accessories.plugins.MacChanges">
+		<plugin_mode class_name="freemind.modes.mindmapmode"/>
+	</plugin_registration> -->
+</plugin>

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+ <xs:element name='Parameters'>
+  <xs:complexType>
+	  <!--Is the time management plugin.-->
+   <xs:attribute name='REMINDUSERAT' type='xs:integer' use='optional'/>
+  </xs:complexType>
+ </xs:element>
+ <!--Used for node notes.-->
+ <xs:element name='text'>
+  <xs:complexType/>
+ </xs:element>
+
+ <xs:element name='arrowlink'>
+  <xs:complexType>
+   <xs:attribute name='COLOR' type='xs:string' use='optional'/>
+   <xs:attribute name='DESTINATION' type='xs:string' use='required'/>
+   <xs:attribute name='ENDARROW' type='xs:string' use='optional'/>
+   <xs:attribute name='ENDINCLINATION' type='xs:string' use='optional'/>
+   <xs:attribute name='ID' type='xs:string' use='optional'/>
+   <xs:attribute name='STARTARROW' type='xs:string' use='optional'/>
+   <xs:attribute name='STARTINCLINATION' type='xs:string' use='optional'/>
+  </xs:complexType>
+ </xs:element>
+
+ <xs:element name='cloud'>
+  <xs:complexType>
+   <xs:attribute name='COLOR' type='xs:string' use='optional'/>
+  </xs:complexType>
+ </xs:element>
+
+ <xs:element name='edge'>
+  <xs:complexType>
+   <xs:attribute name='COLOR' type='xs:string' use='optional'/>
+   <xs:attribute name='STYLE' type='xs:string' use='optional'/>
+   <xs:attribute name='WIDTH' type='xs:string' use='optional'/>
+  </xs:complexType>
+ </xs:element>
+
+ <xs:element name='font'>
+  <xs:complexType>
+   <xs:attribute name='BOLD' use='optional'>
+    <xs:simpleType>
+     <xs:restriction base='xs:string'>
+      <xs:enumeration value='true'/>
+     </xs:restriction>
+    </xs:simpleType>
+   </xs:attribute>
+   <xs:attribute name='ITALIC' use='optional'>
+    <xs:simpleType>
+     <xs:restriction base='xs:string'>
+      <xs:enumeration value='true'/>
+      <xs:enumeration value='false'/>
+     </xs:restriction>
+    </xs:simpleType>
+   </xs:attribute>
+   <xs:attribute name='NAME' type='xs:string' use='required'/>
+   <xs:attribute name='SIZE' use='required' type='xs:integer'/>
+  </xs:complexType>
+ </xs:element>
+
+ <xs:element name='hook'>
+  <xs:complexType>
+   <xs:sequence>
+    <xs:element ref='Parameters' minOccurs='0' maxOccurs='1'/>
+    <xs:element ref='text' minOccurs='0' maxOccurs='1'/>
+   </xs:sequence>
+   <xs:attribute name='NAME' type='xs:string' use='required'/>
+  </xs:complexType>
+ </xs:element>
+
+ <xs:element name='icon'>
+  <xs:complexType>
+   <xs:attribute name='BUILTIN' type='xs:string' use='required'/>
+  </xs:complexType>
+ </xs:element>
+
+ <xs:element name='html'>
+  <xs:complexType>
+   <xs:sequence>
+	   <!--Anything that is valid XML, but should be http://www.w3.org/1999/xhtml -->
+	<xs:any namespace="##any" minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
+   </xs:sequence>
+  </xs:complexType>
+ </xs:element>
+
+ <xs:element name='richcontent'>
+  <xs:complexType>
+   <!-- And contains XHTML as unique child:-->
+   <xs:sequence>
+    <xs:element ref='html' minOccurs='1' maxOccurs='1'/>
+   </xs:sequence>
+   <!--Currently, only NODE or NOTE is allowed.-->
+   <xs:attribute name='TYPE' use='required'>
+    <xs:simpleType>
+     <xs:restriction base='xs:string'>
+      <xs:enumeration value='NODE'/>
+      <xs:enumeration value='NOTE'/>
+     </xs:restriction>
+    </xs:simpleType>
+   </xs:attribute>
+  </xs:complexType>
+ </xs:element>
+
+ <xs:element name='map'>
+  <xs:complexType>
+   <xs:sequence>
+    <xs:element ref='node'/>
+   </xs:sequence>
+   <xs:attribute name='version' type='xs:string' use='required'/>
+  </xs:complexType>
+ </xs:element>
+
+ <xs:element name='node'>
+  <xs:complexType>
+   <xs:choice minOccurs='0' maxOccurs='unbounded'>
+    <xs:element ref='arrowlink'/>
+    <xs:element ref='cloud'/>
+    <xs:element ref='edge'/>
+    <xs:element ref='font'/>
+    <xs:element ref='hook'/>
+    <xs:element ref='icon'/>
+    <xs:element ref='node'/>
+	   <!-- For nodes with extended formatting content or for notes to nodes. -->
+    <xs:element ref='richcontent'/>
+   </xs:choice>
+   <xs:attribute name='BACKGROUND_COLOR' type='xs:string' use='optional'/>
+   <xs:attribute name='COLOR' type='xs:string' use='optional'/>
+   <xs:attribute name='FOLDED' use='optional'>
+    <xs:simpleType>
+     <xs:restriction base='xs:string'>
+      <xs:enumeration value='true'/>
+      <xs:enumeration value='false'/>
+     </xs:restriction>
+    </xs:simpleType>
+   </xs:attribute>
+   <xs:attribute name='ID' type='xs:ID' use='optional'/>
+   <xs:attribute name='LINK' type='xs:string' use='optional'/>
+   <xs:attribute name='POSITION' use='optional'>
+    <xs:simpleType>
+     <xs:restriction base='xs:string'>
+      <xs:enumeration value='left'/>
+      <xs:enumeration value='right'/>
+     </xs:restriction>
+    </xs:simpleType>
+   </xs:attribute>
+   <xs:attribute name='STYLE' type='xs:string' use='optional'/>
+   <xs:attribute name='TEXT' type='xs:string' use='optional'/>
+   <xs:attribute name='CREATED' type='xs:integer' use='optional'/>
+   <xs:attribute name='MODIFIED' type='xs:integer' use='optional'/>
+   <xs:attribute name='HGAP' type='xs:integer' use='optional'/>
+   <xs:attribute name='VGAP' type='xs:integer' use='optional'/>
+   <xs:attribute name='VSHIFT' type='xs:integer' use='optional'/>
+   <xs:attribute name='ENCRYPTED_CONTENT' type='xs:string' use='optional'/>
+  </xs:complexType>
+ </xs:element>
+</xs:schema>

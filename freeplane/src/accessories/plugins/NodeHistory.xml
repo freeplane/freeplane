@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<plugin label="accessories/plugins/NodeHistory">
+	<plugin_registration 
+		class_name="accessories.plugins.NodeHistory$Registration" 
+		isPluginBase="true">
+		<plugin_mode class_name="org.freeplane.modes.mindmapmode"/>
+	</plugin_registration>
+    <plugin_action 
+    	documentation="%accessories/plugins/NodeHistoryBack.properties_documentation" 
+    	name="%accessories/plugins/NodeHistoryBack.properties_name" 
+    	key_stroke="%keystroke_accessories/plugins/NodeHistoryBack.keystroke.alt_BACK" 
+    	base="deprecated.freemind.extensions.NodeHookAdapter" 
+    	icon_path="accessories/plugins/icons/back.png" 
+    	label="accessories/plugins/NodeHistoryBack.properties" 
+    	class_name="accessories.plugins.NodeHistory" 
+    	instanciation="Other">
+        <plugin_mode class_name="org.freeplane.modes.mindmapmode"/>
+        <plugin_menu location="/menu_bar/navigate/folding/NodeHistoryBack"/>
+        <plugin_menu location="/main_toolbar/folding/NodeHistoryBack"/>
+        <plugin_property value="back" name="direction"/>
+    </plugin_action>
+    <plugin_action 
+    	documentation="%accessories/plugins/NodeHistoryForward.properties_documentation" 
+    	name="%accessories/plugins/NodeHistoryForward.properties_name" 
+    	key_stroke="%keystroke_accessories/plugins/NodeHistoryForward.keystroke.alt_FORWARD" 
+    	base="deprecated.freemind.extensions.NodeHookAdapter" 
+    	icon_path="accessories/plugins/icons/forward.png" 
+    	label="accessories/plugins/NodeHistoryForward.properties" 
+    	class_name="accessories.plugins.NodeHistory" 
+    	instanciation="Other">
+        <plugin_mode class_name="org.freeplane.modes.mindmapmode"/>
+        <plugin_menu location="/menu_bar/navigate/folding/NodeHistoryForward"/>
+        <plugin_menu location="/main_toolbar/folding/NodeHistoryForward"/>
+        <plugin_property value="forward" name="direction"/>
+    </plugin_action>
+</plugin>

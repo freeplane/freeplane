@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+	  <xs:complexType name="xml_action">
+	  </xs:complexType>
+
+
+	<!-- =======================================================================================
+						Window positions to be stored in the auto.properties
+		   ======================================================================================= -->
+	<!-- Windowpositionstorage stores the window configuration of some windows. -->
+	  <xs:complexType name="window_configuration_storage">
+		<xs:complexContent>
+			<xs:extension base="xml_action">
+		      <xs:attribute name="x" use="required" type="xs:int"/>
+		      <xs:attribute name="y" use="required" type="xs:int"/>
+		      <xs:attribute name="width" use="required" type="xs:int"/>
+		      <xs:attribute name="height" use="required" type="xs:int"/>
+			</xs:extension>
+		</xs:complexContent>
+	  </xs:complexType>
+
+	<xs:element name="normal_window_configuration_storage">
+	  <xs:complexType>
+		<xs:complexContent>
+			<xs:extension base="window_configuration_storage">
+			</xs:extension>
+		</xs:complexContent>
+	  </xs:complexType>
+	</xs:element>
+
+	<!-- Windowpositionstorage stores the window configuration of the
+		 option panel window. -->
+	<xs:element name="option_panel_window_configuration_storage">
+	  <xs:complexType>
+		<xs:complexContent>
+			<xs:extension base="window_configuration_storage">
+			<xs:attribute use="optional" name="panel" type="xs:string"/>
+			</xs:extension>
+		</xs:complexContent>
+	  </xs:complexType>
+	</xs:element>
+
+	<!-- Windowpositionstorage stores the window configuration of the
+		 time list window. -->
+	<xs:element name="time_window_configuration_storage">
+	  <xs:complexType>
+		<xs:complexContent>
+			<xs:extension base="window_configuration_storage">
+	          <xs:sequence>
+	    	      <xs:element ref="time_window_column_setting" maxOccurs="unbounded" minOccurs="0"/>
+	          </xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	  </xs:complexType>
+	</xs:element>
+
+	<!-- This element holds the sorting and size information to a column -->
+	<xs:element name="time_window_column_setting">
+		<xs:complexType>
+		      <xs:attribute name="column_width" use="required" type="xs:int"/>
+		      <xs:attribute name="column_sorting" use="optional" type="xs:int"/>
+		</xs:complexType>
+	</xs:element>
+
+	<!-- Script Editor settings: -->
+	<xs:element name="script_editor_window_configuration_storage">
+	  <xs:complexType>
+		<xs:complexContent>
+			<xs:extension base="window_configuration_storage">
+				<xs:attribute use="optional" name="left_ratio" type="xs:int"/>
+				<xs:attribute use="optional" name="top_ratio"  type="xs:int"/>
+			</xs:extension>
+		</xs:complexContent>
+	  </xs:complexType>
+	</xs:element>
+
+	<!-- Manage Style Editor settings: -->
+	<xs:element name="manage_style_editor_window_configuration_storage">
+	  <xs:complexType>
+		<xs:complexContent>
+			<xs:extension base="window_configuration_storage">
+				<xs:attribute use="optional" name="divider_position"  type="xs:int"/>
+			</xs:extension>
+		</xs:complexContent>
+	  </xs:complexType>
+	</xs:element>
+
+
+	<!-- ======================================================================================= 
+		 										Patterns
+		   ======================================================================================= -->
+	<xs:complexType name="pattern_property_base">
+		<xs:attribute name="value" use="optional" type="xs:string" />
+	</xs:complexType>
+	<xs:element name="pattern_node_background_color"> <xs:complexType><xs:complexContent><xs:extension base="pattern_property_base"></xs:extension></xs:complexContent></xs:complexType>  </xs:element>
+    <xs:element name="pattern_node_color">            <xs:complexType><xs:complexContent><xs:extension base="pattern_property_base"></xs:extension></xs:complexContent></xs:complexType>  </xs:element>
+    <xs:element name="pattern_node_style">            <xs:complexType><xs:complexContent><xs:extension base="pattern_property_base"></xs:extension></xs:complexContent></xs:complexType>  </xs:element>
+    <xs:element name="pattern_node_text">             <xs:complexType><xs:complexContent><xs:extension base="pattern_property_base"></xs:extension></xs:complexContent></xs:complexType>  </xs:element>
+    <xs:element name="pattern_node_font_name">        <xs:complexType><xs:complexContent><xs:extension base="pattern_property_base"></xs:extension></xs:complexContent></xs:complexType>  </xs:element>
+    <xs:element name="pattern_node_font_bold">        <xs:complexType><xs:complexContent><xs:extension base="pattern_property_base"></xs:extension></xs:complexContent></xs:complexType>  </xs:element>
+    <xs:element name="pattern_node_font_italic">      <xs:complexType><xs:complexContent><xs:extension base="pattern_property_base"></xs:extension></xs:complexContent></xs:complexType>  </xs:element>
+    <xs:element name="pattern_node_font_size">        <xs:complexType><xs:complexContent><xs:extension base="pattern_property_base"></xs:extension></xs:complexContent></xs:complexType>  </xs:element>
+    <xs:element name="pattern_icon">                  <xs:complexType><xs:complexContent><xs:extension base="pattern_property_base"></xs:extension></xs:complexContent></xs:complexType>  </xs:element>
+    <xs:element name="pattern_edge_color">            <xs:complexType><xs:complexContent><xs:extension base="pattern_property_base"></xs:extension></xs:complexContent></xs:complexType>  </xs:element>
+    <xs:element name="pattern_edge_style">            <xs:complexType><xs:complexContent><xs:extension base="pattern_property_base"></xs:extension></xs:complexContent></xs:complexType>  </xs:element>
+    <xs:element name="pattern_edge_width">            <xs:complexType><xs:complexContent><xs:extension base="pattern_property_base"></xs:extension></xs:complexContent></xs:complexType>  </xs:element>
+    <xs:element name="pattern_child">                 <xs:complexType><xs:complexContent><xs:extension base="pattern_property_base"></xs:extension></xs:complexContent></xs:complexType>  </xs:element>
+    <xs:element name="pattern_script">                <xs:complexType><xs:complexContent><xs:extension base="pattern_property_base"></xs:extension></xs:complexContent></xs:complexType>  </xs:element>
+
+	<xs:element name="pattern">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="xml_action">
+					<xs:choice>
+						<xs:element minOccurs="0" maxOccurs="1" ref="pattern_node_background_color"/>
+						<xs:element minOccurs="0" maxOccurs="1" ref="pattern_node_color"/>
+						<xs:element minOccurs="0" maxOccurs="1" ref="pattern_node_style"/>
+						<xs:element minOccurs="0" maxOccurs="1" ref="pattern_node_text"/>
+						<xs:element minOccurs="0" maxOccurs="1" ref="pattern_node_font_name"/>
+						<xs:element minOccurs="0" maxOccurs="1" ref="pattern_node_font_bold"/>
+						<xs:element minOccurs="0" maxOccurs="1" ref="pattern_node_font_italic"/>
+						<xs:element minOccurs="0" maxOccurs="1" ref="pattern_node_font_size"/>
+						<xs:element minOccurs="0" maxOccurs="1" ref="pattern_icon"/>
+						<xs:element minOccurs="0" maxOccurs="1" ref="pattern_edge_color"/>
+						<xs:element minOccurs="0" maxOccurs="1" ref="pattern_edge_style"/>
+						<xs:element minOccurs="0" maxOccurs="1" ref="pattern_edge_width"/>
+						<xs:element minOccurs="0" maxOccurs="1" ref="pattern_child"/>
+						<xs:element minOccurs="0" maxOccurs="1" ref="pattern_script"/>
+					</xs:choice>
+				    <xs:attribute name="name" use="required" type="xs:string"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>		
+	</xs:element>
+
+	<xs:element name="patterns">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="xml_action">
+					<xs:sequence>
+						<xs:choice minOccurs="0"  maxOccurs="unbounded">
+							<xs:element ref="pattern"/>
+						</xs:choice>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>		
+	</xs:element>
+
+	
+	<!-- ======================================================================================= 
+		 										Plugin XML
+		   ======================================================================================= -->
+	<xs:element name="plugin">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:choice minOccurs="0"  maxOccurs="unbounded">
+					<xs:element ref="plugin_classpath"/>
+					<xs:element ref="plugin_registration"/>
+					<xs:element ref="plugin_action"/>
+					<xs:element ref="plugin_strings"/>
+				</xs:choice>
+			</xs:sequence>
+			<!-- The label must be unique among all plugins,
+				 it is used to provide the basePlugin-feature. -->
+	      <xs:attribute name="label" use="required" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+
+  <xs:element name="plugin_classpath">
+    <xs:complexType>
+				<!-- The path values are added to the classpath dynamically.  -->
+	      <xs:attribute name="jar" use="required" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="plugin_registration">
+    <xs:complexType>
+			<xs:sequence>
+					<xs:element ref="plugin_mode" maxOccurs="unbounded" minOccurs="1"/>
+			</xs:sequence>
+				<!-- A class that implements HookRegistration.
+					   It is called at map startup and shutdown.
+						 The public constructor must be calleable with arguments:
+						 (ModeController controller, MindMap map) -->
+	      <xs:attribute name="class_name" use="required" type="xs:string"/>
+		  <!-- One registration can be the plugin base for the current
+			   plugin. This base can be retrieved via the getPluginBaseClass method. -->
+	      <xs:attribute name="isPluginBase" use="optional" type="xs:boolean" default="false"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="plugin_mode">
+    <xs:complexType>
+				<!-- The mode class (e.g. freemind.modes.mindmapmode) -->
+	      <xs:attribute name="class_name" use="required" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+
+	<!-- This is used to pass additional information to the plugin. -->
+  <xs:element name="plugin_property">
+    <xs:complexType>
+	      <xs:attribute name="name" use="required" type="xs:string"/>
+	      <xs:attribute name="value" use="optional" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="plugin_action">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:choice minOccurs="0" maxOccurs="unbounded">
+					<xs:element ref="plugin_mode"/>
+					<xs:element ref="plugin_menu" />
+					<xs:element ref="plugin_property"/>
+				</xs:choice>
+			</xs:sequence>
+			<!-- The unique label of this action (e.g. the class_name if this is unique.). -->
+			<xs:attribute name="label" use="required" type="xs:string"/>
+			<!-- A name string starting with '%' is searched in the resource bundle.  -->
+			<xs:attribute name="name" use="optional" type="xs:string"/>
+			<!-- The hook base class (e.g. freemind.extensions.ModeControllerHookAdapter). -->
+			<xs:attribute name="base" use="required" type="xs:string"/>
+			<!-- The hook fully qualified class (e.g. accessories.plugins.AutomaticLayout). -->
+			<xs:attribute name="class_name" use="required" type="xs:string"/>
+			<!-- A doc string starting with '%' is searched in the resource bundle. -->
+			<xs:attribute name="documentation" use="optional" type="xs:string"/>
+			<!-- Icon path (e.g. "accessories/plugins/icons/2leftarrow.png"). -->
+			<xs:attribute name="icon_path" use="optional" type="xs:string"/>
+			<!-- Optional key stroke (e.g. alt HOME) -->
+			<xs:attribute name="key_stroke" use="optional" type="xs:string"/>
+			<!-- Describe the multiplicity of the plugin (only for PermanentNodeHooks):
+			   once:  can only be associated once to a node.
+			   other or not mentioned: can be associated more than once.  -->
+			<xs:attribute name="instanciation" use="optional" default="Once">
+				<xs:simpleType>
+					<xs:restriction base="xs:token">
+						<xs:enumeration value="Once"/>
+						<xs:enumeration value="OnceForRoot"/>
+						<xs:enumeration value="OnceForAllNodes"/>
+						<xs:enumeration value="Other"/>
+						<xs:enumeration value="ApplyToRoot"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+			<xs:attribute name="isSelectable" use="optional" type="xs:boolean" default="false"/>		
+		</xs:complexType>
+  </xs:element>
+
+  <xs:element name="plugin_menu">
+    <xs:complexType>
+	      <xs:attribute name="location" use="required" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="plugin_strings">
+		<xs:complexType>
+			<xs:sequence>
+					<xs:element ref="plugin_string" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+      <xs:attribute name="language" use="required" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+
+  <xs:element name="plugin_string">
+		<xs:complexType>
+      <xs:attribute name="key" use="required" type="xs:string"/>
+      <xs:attribute name="value" use="required" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+
+
+	<!-- =======================================================================================
+		 										Menu XML
+		   ======================================================================================= -->
+
+	<xs:group name="base">
+       <xs:choice>
+	          <xs:element ref="menu_category"/>
+	          <xs:element ref="menu_submenu"/>
+	          <xs:element ref="menu_action"/>
+	          <xs:element ref="menu_radio_action"/>
+	          <xs:element ref="menu_separator"/>
+       </xs:choice>
+	</xs:group>
+
+
+	<xs:element name="menu_structure">
+		<xs:complexType>
+	      <xs:sequence>
+	        <xs:choice minOccurs="0" maxOccurs="unbounded">
+	          <xs:element ref="menu_category"/>
+	        </xs:choice>
+	      </xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+    <xs:complexType name="menu_category_base">
+ 	      <xs:sequence>
+	        <xs:choice minOccurs="0" maxOccurs="unbounded">
+	          <xs:group ref="base"/>
+	        </xs:choice>
+	      </xs:sequence>
+	      <xs:attribute name="name" use="required" type="xs:string"/>
+    </xs:complexType>
+
+
+  <xs:element name="menu_category">
+	  <xs:complexType>
+		<xs:complexContent>
+			<xs:extension base="menu_category_base">
+			</xs:extension>
+		</xs:complexContent>
+	  </xs:complexType>
+  </xs:element>
+
+  <xs:element name="menu_submenu">
+	  <xs:complexType>
+		<xs:complexContent>
+			<xs:extension base="menu_category_base">
+		      <xs:attribute name="name_ref" use="required" type="xs:string"/>
+			</xs:extension>
+		</xs:complexContent>
+	  </xs:complexType>
+  </xs:element>
+
+
+    <xs:complexType name="menu_action_base">
+	      <xs:attribute name="field" use="required" type="xs:string"/>
+		  <!-- Denots a reference to the freemind.properties and a keystroke within. -->
+	      <xs:attribute name="key_ref" use="optional" type="xs:string"/>
+	      <!-- if name is not given, field is used instead. -->
+	      <xs:attribute name="name" use="optional" type="xs:string"/>
+	      <xs:attribute name="tooltip" use="optional" type="xs:string"/>
+    </xs:complexType>
+
+  <xs:element name="menu_action">
+	  <xs:complexType>
+		<xs:complexContent>
+			<xs:extension base="menu_action_base">
+			</xs:extension>
+		</xs:complexContent>
+	  </xs:complexType>
+  </xs:element>
+
+   <xs:element name="menu_radio_action">
+	  <xs:complexType>
+		<xs:complexContent>
+			<xs:extension base="menu_action_base">
+			      <xs:attribute name="selected" use="optional" default ="false" type="xs:boolean"/>
+			</xs:extension>
+		</xs:complexContent>
+	  </xs:complexType>
+  </xs:element>
+
+
+  <xs:element name="menu_separator">
+    <xs:complexType>
+    </xs:complexType>
+  </xs:element>
+
+
+
+
+</xs:schema>

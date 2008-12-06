@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<plugin label="accessories/plugins/FitToPage">
+	<plugin_action documentation="%accessories/plugins/FitToPage.properties_documentation" name="%accessories/plugins/FitToPage.properties_name" base="deprecated.freemind.extensions.ModeControllerHookAdapter" label="accessories/plugins/FitToPage.properties" class_name="accessories.plugins.FitToPage">
+		<plugin_mode class_name="org.freeplane.modes.mindmapmode"/>
+		<plugin_menu location="/menu_bar/view/zoom/FitToPage"/>
+	</plugin_action>
+</plugin>

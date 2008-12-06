@@ -1,0 +1,29 @@
+<project name="freemind_plugins" default="dist" basedir=".">
+
+	<macrodef name="callant">
+		<attribute name="task"/>
+		<sequential>
+			<subant target="@{task}" inheritall="true">
+				<fileset dir="plugins">
+				    <include name="build_*.xml"/>
+					<!-- The import script can't be executed. -->
+				    <exclude name="build_import.xml"/>
+				    <exclude name="build_jabber.xml"/>
+				</fileset>
+			</subant>
+		</sequential>
+	</macrodef>
+
+	<target name="build">
+		<callant task="build"/>
+	</target>
+
+	<target name="dist">
+		<callant task="dist"/>
+	</target>
+
+	<target name="post">
+		<callant task="post"/>
+	</target>
+
+</project>

@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<plugin label="accessories/plugins/ImportMindmanagerFiles">
+	<plugin_action documentation="" name="%accessories/plugins/ImportMindmanagerFiles.properties_name" base="deprecated.freemind.extensions.ModeControllerHookAdapter" label="accessories/plugins/ImportMindmanagerFiles.properties" class_name="accessories.plugins.ImportMindmanagerFiles">
+		<plugin_mode class_name="org.freeplane.modes.mindmapmode"/>
+		<plugin_menu location="/menu_bar/file/import/import/ImportMindmanagerFiles"/>
+	</plugin_action>
+</plugin>

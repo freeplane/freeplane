@@ -1,0 +1,57 @@
+<project name="imported" basedir="." default="dist">
+	<target name="build">
+		<echo
+			message="Plugin ${plugin.dir} build on path ${src}"/>
+		<mkdir dir="${build}"/>
+		<javac srcdir="${src}" destdir="${build}"
+			debug="${debug}" source="${java_source_version}"
+			target="${java_target_version}">
+			<include name="${plugin.dir}/**" />
+			<classpath>
+				<path path="${classpath}"/>
+				<path path="${additional.lib}"/>
+			</classpath>
+
+		</javac>
+	</target>
+
+	<target name="dist">
+		<mkdir dir="${dist}/${plugin.dir}" />
+		<copy todir="${build}">
+			<fileset dir="${src}"
+				includes = "${plugin.dir}/**"
+				excludes = "**/*.java,${additional.lib.pattern}">
+			</fileset>
+			<fileset file="${plugin.xml}"/>
+		</copy>
+		<jar jarfile="${dist}/${plugin.dir}/${plugin.jar}">
+			<fileset dir="${build}">
+				<include name="${plugin.dir}/**"/>
+				<exclude name="**/*.jar"/>
+			</fileset>
+		</jar>
+		<!-- xml -->
+		<mkdir dir="${dist}/plugins" />
+		<copy todir="${dist}">
+			<fileset dir="${src}">
+				<include name="${plugin.xml}"/>
+			</fileset>
+		</copy>
+		<!-- additional libs  -->
+		<mkdir dir="${dist}" />
+		<copy todir="${dist}" flatten="false">
+			<fileset dir="${src}"
+				includes ="${additional.lib.pattern}">
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="post">
+		<zip destfile="${post}/${plugin.zip}"
+			basedir="${dist}"
+			includes="${plugin.dir}/**,${plugin.xml}"
+			>
+
+		</zip>
+	</target>
+</project>

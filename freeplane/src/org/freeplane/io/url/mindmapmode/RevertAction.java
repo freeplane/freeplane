@@ -1,0 +1,196 @@
+/*
+ *  Freeplane - mind map editor
+ *  Copyright (C) 2008 Joerg Mueller, Daniel Polansky, Christian Foltin, Dimitry Polivaev
+ *
+ *  This file is modified by Dimitry Polivaev in 2008.
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package org.freeplane.io.url.mindmapmode;
+
+import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.StringWriter;
+
+import javax.swing.JOptionPane;
+
+import org.freeplane.controller.Freeplane;
+import org.freeplane.main.Tools;
+import org.freeplane.map.tree.MapModel;
+import org.freeplane.modes.ModeControllerAction;
+import org.freeplane.modes.mindmapmode.MModeController;
+
+import deprecated.freemind.modes.mindmapmode.actions.instance.ActionInstance;
+import deprecated.freemind.modes.mindmapmode.actions.instance.RevertActionInstance;
+import deprecated.freemind.modes.mindmapmode.actions.undo.ActionPair;
+import deprecated.freemind.modes.mindmapmode.actions.undo.IActor;
+
+/**
+ * Reverts the map to the saved version. In Xml, the old map is stored as xml
+ * and as an undo action, the new map is stored, too. Moreover, the filename of
+ * the doAction is set to the appropriate map file's name. The undo action has
+ * no file name associated. The action goes like this: close the actual map and
+ * open the given Xml/File. If only a Xml string is given, a temporary file name
+ * is created, the xml stored into and this map is opened instead of the actual.
+ *
+ * @author foltin
+ */
+class RevertAction extends ModeControllerAction implements IActor {
+	final private MModeController controller;
+
+	/**
+	 */
+	public RevertAction(final MModeController modeController) {
+		super(modeController, "RevertAction", (String) null);
+		controller = modeController;
+		addActor(this);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see
+	 * freemind.controller.actions.ActorXml#act(freemind.controller.actions.
+	 * generated.instance.XmlAction)
+	 */
+	public void act(final ActionInstance action) {
+		if (action instanceof RevertActionInstance) {
+			try {
+				final RevertActionInstance revertAction = (RevertActionInstance) action;
+				Freeplane.getController().close(true);
+				if (revertAction.getLocalFileName() != null) {
+					controller.getMapController().newMap(
+					    Tools.fileToUrl(new File(revertAction
+					        .getLocalFileName())));
+				}
+				else {
+					String filePrefix = controller.getText("freemind_reverted");
+					if (revertAction.getFilePrefix() != null) {
+						filePrefix = revertAction.getFilePrefix();
+					}
+					final File tempFile = File
+					    .createTempFile(
+					        filePrefix,
+					        org.freeplane.io.url.mindmapmode.FileManager.FREEMIND_FILE_EXTENSION,
+					        new File(Freeplane.getController()
+					            .getResourceController()
+					            .getFreemindUserDirectory()));
+					final FileWriter fw = new FileWriter(tempFile);
+					fw.write(revertAction.getMap());
+					fw.close();
+					controller.getMapController().newMap(
+					    Tools.fileToUrl(tempFile));
+				}
+			}
+			catch (final Exception e) {
+				org.freeplane.main.Tools.logException(e);
+			}
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see
+	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
+	public void actionPerformed(final ActionEvent arg0) {
+		try {
+			final File file = Freeplane.getController().getMap().getFile();
+			if (file == null) {
+				JOptionPane.showMessageDialog(controller.getMapView(),
+				    controller.getText("map_not_saved"), "FreeMind",
+				    JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			final RevertActionInstance doAction = createRevertXmlAction(file);
+			final RevertActionInstance undoAction = createRevertXmlAction(
+			    Freeplane.getController().getMap(), null, file.getName());
+			controller.getActionFactory().startTransaction(
+			    this.getClass().getName());
+			controller.getActionFactory().executeAction(
+			    new ActionPair(doAction, undoAction));
+			controller.getActionFactory().endTransaction(
+			    this.getClass().getName());
+		}
+		catch (final IOException e) {
+			org.freeplane.main.Tools.logException(e);
+		}
+	}
+
+	public RevertActionInstance createRevertXmlAction(final File file)
+	        throws IOException {
+		final String fileName = file.getAbsolutePath();
+		final FileReader f = new FileReader(file);
+		final StringBuffer buffer = new StringBuffer();
+		for (int c; (c = f.read()) != -1;) {
+			buffer.append((char) c);
+		}
+		f.close();
+		return createRevertXmlAction(buffer.toString(), fileName, null);
+	}
+
+	public RevertActionInstance createRevertXmlAction(final MapModel map,
+	                                                  final String fileName,
+	                                                  final String filePrefix)
+	        throws IOException {
+		final StringWriter writer = new StringWriter();
+		controller.getMapController().writeMapAsXml(map, writer, true);
+		return createRevertXmlAction(writer.getBuffer().toString(), fileName,
+		    filePrefix);
+	}
+
+	/**
+	 * @param filePrefix
+	 *            is used to generate the name of the reverted map in case that
+	 *            fileName is null.
+	 */
+	public RevertActionInstance createRevertXmlAction(
+	                                                  final String xmlPackedFile,
+	                                                  final String fileName,
+	                                                  final String filePrefix) {
+		final RevertActionInstance revertXmlAction = new RevertActionInstance();
+		revertXmlAction.setLocalFileName(fileName);
+		revertXmlAction.setMap(xmlPackedFile);
+		revertXmlAction.setFilePrefix(filePrefix);
+		return revertXmlAction;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see freemind.controller.actions.ActorXml#getDoActionClass()
+	 */
+	public Class getDoActionClass() {
+		return RevertActionInstance.class;
+	}
+
+	public void openXmlInsteadOfMap(final String xmlFileContent) {
+		try {
+			final RevertActionInstance doAction = createRevertXmlAction(
+			    xmlFileContent, null, null);
+			final RevertActionInstance undoAction = createRevertXmlAction(
+			    Freeplane.getController().getMap(), null, null);
+			controller.getActionFactory().startTransaction(
+			    this.getClass().getName());
+			controller.getActionFactory().executeAction(
+			    new ActionPair(doAction, undoAction));
+			controller.getActionFactory().endTransaction(
+			    this.getClass().getName());
+		}
+		catch (final IOException e) {
+			org.freeplane.main.Tools.logException(e);
+		}
+	}
+}

@@ -1,0 +1,13 @@
+<project name="freemind_plugins" default="dist" basedir=".">
+	
+	<property name="plugin.xml" value="plugins/FreemindHelp.xml" />
+	<property name="plugin.dir" value="plugins/help"/>
+	<property name="plugin.jar" value="help_plugin.jar" />
+	<property name="plugin.zip" value="help_plugin-${ver}.zip" />
+	<property name="additional.lib" value="${plugin.dir}/jhall.jar"/>
+	<property name="additional.lib.pattern" value="${plugin.dir}/jhall.jar"/>
+
+	<import file="build_import.xml" />
+
+
+</project>

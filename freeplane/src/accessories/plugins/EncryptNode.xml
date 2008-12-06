@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<plugin label="accessories/plugins/EncryptNode">
+	<plugin_registration isPluginBase="true" class_name="accessories.plugins.EncryptNode$Registration"><plugin_mode class_name="org.freeplane.modes.mindmapmode"/></plugin_registration>
+	<plugin_action documentation="%accessories/plugins/EncryptNode.properties_documentation" name="%accessories/plugins/EncryptNode.properties_name" base="deprecated.freemind.extensions.NodeHookAdapter" icon_path="accessories/plugins/icons/lock.png" label="accessories/plugins/EncryptNode.properties" class_name="accessories.plugins.EncryptNode" instanciation="Other">
+		<plugin_mode class_name="org.freeplane.modes.mindmapmode"/>
+		<plugin_menu location="/menu_bar/extras/first/nodes/crypto/EncryptNode"/>
+		<plugin_property value="encrypt" name="action"/>
+	</plugin_action>
+	<plugin_action documentation="%accessories/plugins/EnterPassword.properties_documentation" name="%accessories/plugins/EnterPassword.properties_name" base="deprecated.freemind.extensions.NodeHookAdapter" icon_path="accessories/plugins/icons/unlock.png" label="accessories/plugins/EnterPassword.properties" class_name="accessories.plugins.EncryptNode" instanciation="Other">
+		<plugin_mode class_name="org.freeplane.modes.mindmapmode"/>
+		<plugin_menu location="/menu_bar/extras/first/nodes/crypto/EnterPassword"/>
+		<plugin_property value="toggleCryptState" name="action"/>
+	</plugin_action>
+	<plugin_action documentation="%accessories/plugins/NewEncryptedMap.properties_documentation" name="%accessories/plugins/NewEncryptedMap.properties_name" base="deprecated.freemind.extensions.NodeHookAdapter" icon_path="accessories/plugins/icons/lock.png" label="accessories/plugins/NewEncryptedMap.properties" class_name="accessories.plugins.EncryptNode" instanciation="Other">
+		<plugin_mode class_name="org.freeplane.modes.mindmapmode"/>
+		<plugin_menu location="/menu_bar/file/open/NewEncryptedMap"/>
+		<plugin_property value="encrypted_map" name="action"/>
+	</plugin_action>
+</plugin>

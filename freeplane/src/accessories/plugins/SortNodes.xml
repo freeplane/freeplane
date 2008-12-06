@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<plugin label="accessories/plugins/SortNodes">
+	<plugin_action
+		documentation="%accessories/plugins/SortNodes.properties_documentation"
+		name="%accessories/plugins/SortNodes.properties_name"
+		key_stroke="%keystroke_accessories/plugins/SortNodes.properties_key"
+		base="deprecated.freemind.extensions.NodeHookAdapter"
+		label="accessories/plugins/SortNodes.properties"
+		class_name="accessories.plugins.SortNodes">
+		<plugin_mode class_name="org.freeplane.modes.mindmapmode"/>
+		<plugin_menu location="/menu_bar/extras/first/nodes/sorting/SortNodes"/>
+	</plugin_action>
+</plugin>

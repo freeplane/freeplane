@@ -1,0 +1,488 @@
+/*
+ *  Freeplane - mind map editor
+ *  Copyright (C) 2008 Dimitry Polivaev
+ *
+ *  This file author is Dimitry Polivaev
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package org.freeplane.ui;
+
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Insets;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.lang.ref.WeakReference;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.swing.AbstractButton;
+import javax.swing.Action;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JToolBar;
+import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+
+import org.freeplane.controller.ActionDescriptor;
+import org.freeplane.controller.Freeplane;
+
+import freemind.controller.actions.generated.instance.MenuActionBase;
+import freemind.controller.actions.generated.instance.MenuCategoryBase;
+import freemind.controller.actions.generated.instance.MenuRadioAction;
+import freemind.controller.actions.generated.instance.MenuSeparator;
+import freemind.controller.actions.generated.instance.MenuStructure;
+import freemind.controller.actions.generated.instance.MenuSubmenu;
+
+public class MenuBuilder extends UIBuilder {
+	static private class DelegatingPopupMenuListener implements
+	        PopupMenuListener {
+		final private PopupMenuListener listener;
+		final private Object source;
+
+		public DelegatingPopupMenuListener(final PopupMenuListener listener,
+		                                   final Object source) {
+			super();
+			this.listener = listener;
+			this.source = source;
+		}
+
+		public Object getSource() {
+			return source;
+		}
+
+		private PopupMenuEvent newEvent() {
+			return new PopupMenuEvent(source);
+		}
+
+		public void popupMenuCanceled(final PopupMenuEvent e) {
+			listener.popupMenuCanceled(newEvent());
+		}
+
+		public void popupMenuWillBecomeInvisible(final PopupMenuEvent e) {
+			listener.popupMenuWillBecomeInvisible(newEvent());
+		}
+
+		public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
+			listener.popupMenuWillBecomeVisible(newEvent());
+		}
+	}
+
+	static private class Enabler implements PropertyChangeListener {
+		final private WeakReference<Component> comp;
+
+		public Enabler(final Component comp) {
+			this.comp = new WeakReference<Component>(comp);
+		}
+
+		public void propertyChange(final PropertyChangeEvent evt) {
+			final Component component = comp.get();
+			if (component == null) {
+				final Action action = (Action) evt.getSource();
+				action.removePropertyChangeListener(this);
+			}
+			else if (evt.getPropertyName().equals("enabled")) {
+				final Action action = (Action) evt.getSource();
+				component.setEnabled(action.isEnabled());
+			}
+		}
+	}
+
+	private static Insets nullInsets = new Insets(0, 0, 0, 0);
+
+	public MenuBuilder() {
+		super(null);
+	}
+
+	/**
+	 *
+	 */
+	public MenuBuilder(final JMenuBar menubar) {
+		super(menubar);
+	}
+
+	public void addAction(final Action action,
+	                      final ActionDescriptor actionAnnotation) {
+		String docu = actionAnnotation.tooltip();
+		if (!docu.equals("")) {
+			docu = Freeplane.getController().getResourceController()
+			    .getResourceString(docu);
+			action.putValue(Action.SHORT_DESCRIPTION, docu);
+			action.putValue(Action.LONG_DESCRIPTION, docu);
+		}
+		final String actionName = actionAnnotation.name();
+		final String[] actionLocations = actionAnnotation.locations();
+		String keystroke = actionAnnotation.keyStroke();
+		if (keystroke.equals("")) {
+			keystroke = null;
+		}
+		for (int i = 0; i < actionLocations.length; i++) {
+			addAction(actionLocations[i], actionName, action, keystroke,
+			    MenuBuilder.AS_CHILD);
+		}
+	}
+
+	/**
+	 * @return returns the new JMenuItem.
+	 * @param keystroke
+	 *            can be null, if no keystroke should be assigned.
+	 */
+	public void addAction(final String category, final Action action,
+	                      final String keystroke, final int position) {
+		addAction(category, null, action, keystroke, position);
+	}
+
+	public void addAction(final String category, final String key,
+	                      final Action action, final String keystroke,
+	                      final int position) {
+		assert action != null;
+		if (getContainer(get(category), Container.class) instanceof JToolBar) {
+			addButton(category, action, position);
+			return;
+		}
+		if (action.getClass().getAnnotation(SelectableAction.class) != null) {
+			final JCheckBoxMenuItem item = new JAutoCheckBoxMenuItem((action));
+			addMenuItem(category, item, position);
+			if (keystroke != null) {
+				item.setAccelerator(KeyStroke.getKeyStroke(Freeplane
+				    .getController().getResourceController()
+				    .getAdjustableProperty(keystroke)));
+			}
+			return;
+		}
+		final JMenuItem item;
+		if (action instanceof ISelectablePopupAction) {
+			item = new JCheckBoxMenuItem(action);
+		}
+		else {
+			item = new JMenuItem(action);
+		}
+		if (key != null) {
+			addMenuItem(category, item, key, position);
+		}
+		else {
+			addMenuItem(category, item, position);
+		}
+		if (action instanceof PopupMenuListener) {
+			addPopupMenuListener(key, (PopupMenuListener) action);
+		}
+		if (action instanceof ISelectablePopupAction) {
+			addPopupMenuListener(key, new PopupMenuListener() {
+				public void popupMenuCanceled(final PopupMenuEvent e) {
+				}
+
+				public void popupMenuWillBecomeInvisible(final PopupMenuEvent e) {
+				}
+
+				public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
+					item.setSelected(((ISelectablePopupAction) action)
+					    .isSelected());
+				}
+			});
+		}
+		if (action instanceof IHideablePopupAction) {
+			addPopupMenuListener(key, new PopupMenuListener() {
+				public void popupMenuCanceled(final PopupMenuEvent e) {
+				}
+
+				public void popupMenuWillBecomeInvisible(final PopupMenuEvent e) {
+				}
+
+				public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
+					item
+					    .setVisible(((IHideablePopupAction) action).isVisible());
+				}
+			});
+		}
+		if (keystroke != null) {
+			final String keyProperty = Freeplane.getController()
+			    .getResourceController().getAdjustableProperty(keystroke);
+			item.setAccelerator(KeyStroke.getKeyStroke(keyProperty));
+		}
+		return;
+	}
+
+	private void addButton(final String category, final Action action,
+	                       final int position) {
+		final AbstractButton button;
+		if (action.getClass().getAnnotation(SelectableAction.class) != null) {
+			button = new JAutoToggleButton(action);
+		}
+		else {
+			button = new JButton(action);
+		}
+		button.setText(null);
+		addComponent(category, button, position);
+	}
+
+	@Override
+	protected void addComponent(final Container container,
+	                            final Component component, final int index) {
+		if (container instanceof JMenu) {
+			final JMenu menu = (JMenu) container;
+			menu.getPopupMenu().insert(component, index);
+			return;
+		}
+		if (container instanceof JToolBar
+		        && component instanceof AbstractButton) {
+			{
+				((AbstractButton) component).setMargin(MenuBuilder.nullInsets);
+			}
+		}
+		super.addComponent(container, component, index);
+	}
+
+	public void addComponent(final String parent, final Container item,
+	                         final Action action, final int position) {
+		action.addPropertyChangeListener(new Enabler(item));
+		addElement(parent, item, position);
+	}
+
+	public void addComponent(final String parent, final Container item,
+	                         final int position) {
+		addElement(parent, item, position);
+	}
+
+	/**
+	 * Add new first level menu bar.
+	 */
+	public void addMenuBar(final JMenuBar menubar, final String key) {
+		addElement(this, menubar, key, UIBuilder.AS_CHILD);
+	}
+
+	public void addMenuItem(final JMenuItem item) {
+		addElement(this, item, UIBuilder.AS_CHILD);
+	}
+
+	public void addMenuItem(final String relativeKey, final JMenuItem item,
+	                        final int position) {
+		addElement(relativeKey, item, position);
+	}
+
+	public void addMenuItem(final String relativeKey, final JMenuItem item,
+	                        final String key, final int position) {
+		addElement(relativeKey, item, key, position);
+	}
+
+	public void addMenuItemGroup(final String key, final int position) {
+		addElement(this, key, key, position);
+	}
+
+	public void addMenuItemGroup(final String relativeKey, final String key,
+	                             final int position) {
+		addElement(relativeKey, key, key, position);
+	}
+
+	public void addPopupMenu(final JPopupMenu menu, final String key) {
+		addElement(this, menu, key, UIBuilder.AS_CHILD);
+	}
+
+	public void addPopupMenuListener(final Object key,
+	                                 final PopupMenuListener listener) {
+		final DefaultMutableTreeNode node = get(key);
+		assert (node != null);
+		final JPopupMenu popup;
+		if (node.getUserObject() instanceof JPopupMenu) {
+			popup = (JPopupMenu) node.getUserObject();
+		}
+		else {
+			final Container container = getContainer(
+			    ((DefaultMutableTreeNode) node.getParent()), Container.class);
+			if (container instanceof JPopupMenu) {
+				popup = (JPopupMenu) container;
+			}
+			else if (container instanceof JMenu) {
+				popup = ((JMenu) container).getPopupMenu();
+			}
+			else {
+				throw new RuntimeException("no popup menu found!");
+			}
+		}
+		final Object userObject = node.getUserObject();
+		popup.addPopupMenuListener(new DelegatingPopupMenuListener(listener,
+		    userObject));
+	}
+
+	public JMenuItem addRadioItem(final String category, final Action action,
+	                              final String keystroke,
+	                              final boolean isSelected) {
+		final JRadioButtonMenuItem item = new JRadioButtonMenuItem(action);
+		addMenuItem(category, item, MenuBuilder.AS_CHILD);
+		if (keystroke != null) {
+			item.setAccelerator(KeyStroke.getKeyStroke(Freeplane
+			    .getController().getResourceController().getAdjustableProperty(
+			        keystroke)));
+		}
+		item.setSelected(isSelected);
+		return item;
+	}
+
+	public void addSeparator() {
+		addElement(this, new JPopupMenu.Separator(), UIBuilder.AS_CHILD);
+	}
+
+	public void addSeparator(final String parentKey, final int position) {
+		final Container parent = getContainer(get(parentKey), Container.class);
+		if (parent instanceof JMenu || parent instanceof JPopupMenu) {
+			addElement(parentKey, new JPopupMenu.Separator(), position);
+			return;
+		}
+		if (parent instanceof JToolBar) {
+			final JToolBar t = (JToolBar) parent;
+			final JToolBar.Separator s = new JToolBar.Separator();
+			addElement(parentKey, s, position);
+			if (t.getOrientation() == SwingConstants.VERTICAL) {
+				s.setOrientation(SwingConstants.HORIZONTAL);
+			}
+			else {
+				s.setOrientation(SwingConstants.VERTICAL);
+			}
+			return;
+		}
+	}
+
+	public void addToolbar(final JToolBar toolbar, final String key) {
+		addElement(this, toolbar, key, UIBuilder.AS_CHILD);
+	}
+
+	@Override
+	protected Component getChildComponent(final Container parentComponent,
+	                                      final int index) {
+		if (parentComponent instanceof JMenu) {
+			return ((JMenu) parentComponent).getMenuComponent(index);
+		}
+		return super.getChildComponent(parentComponent, index);
+	}
+
+	@Override
+	protected DefaultMutableTreeNode getNode(final Object parentKey) {
+		final DefaultMutableTreeNode parentNode = super.getNode(parentKey);
+		return parentNode;
+	}
+
+	@Override
+	protected int getParentComponentCount(final Container parentComponent) {
+		if (parentComponent instanceof JMenu) {
+			return ((JMenu) parentComponent).getMenuComponentCount();
+		}
+		return super.getParentComponentCount(parentComponent);
+	}
+
+	private void processMenuCategory(final List list, final String category) {
+		final String categoryCopy = category;
+		ButtonGroup buttonGroup = null;
+		for (final Iterator i = list.iterator(); i.hasNext();) {
+			final Object obj = i.next();
+			if (obj instanceof MenuCategoryBase) {
+				final MenuCategoryBase cat = (MenuCategoryBase) obj;
+				final String newCategory = categoryCopy + "/" + cat.getName();
+				if (!this.contains(newCategory)) {
+					if (cat instanceof MenuSubmenu) {
+						final MenuSubmenu submenu = (MenuSubmenu) cat;
+						final JMenu menuItem = new JMenu();
+						FreemindMenuBar.setLabelAndMnemonic(menuItem, Freeplane
+						    .getController().getResourceController()
+						    .getResourceString(submenu.getNameRef()));
+						this.addMenuItem(categoryCopy, menuItem, newCategory,
+						    MenuBuilder.AS_CHILD);
+					}
+					else {
+						if (!(categoryCopy.equals(""))) {
+							this.addMenuItemGroup(categoryCopy, newCategory,
+							    MenuBuilder.AS_CHILD);
+						}
+					}
+				}
+				processMenuCategory(cat.getListChoiceList(), newCategory);
+			}
+			else if (obj instanceof MenuActionBase) {
+				final MenuActionBase action = (MenuActionBase) obj;
+				final String field = action.getField();
+				String name = action.getName();
+				if (name == null) {
+					name = field;
+				}
+				final String keystroke = action.getKeyRef();
+				try {
+					final Action theAction = Freeplane.getController()
+					    .getAction(field);
+					final String theCategory = categoryCopy + "/" + name;
+					if (obj instanceof MenuRadioAction) {
+						final JRadioButtonMenuItem item = (JRadioButtonMenuItem) this
+						    .addRadioItem(categoryCopy, theAction, keystroke,
+						        ((MenuRadioAction) obj).getSelected());
+						if (buttonGroup == null) {
+							buttonGroup = new ButtonGroup();
+						}
+						buttonGroup.add(item);
+					}
+					else {
+						this.addAction(categoryCopy, theCategory, theAction,
+						    keystroke, MenuBuilder.AS_CHILD);
+					}
+				}
+				catch (final Exception e1) {
+					org.freeplane.main.Tools.logException(e1);
+				}
+			}
+			else if (obj instanceof MenuSeparator) {
+				this.addSeparator(categoryCopy, MenuBuilder.AS_CHILD);
+			} /* else exception */
+		}
+	}
+
+	public void processMenuCategory(final MenuStructure menu) {
+		final List list = menu.getListChoiceList();
+		processMenuCategory(list, "");
+	}
+
+	public void removePopupMenuListener(final Object key,
+	                                    final PopupMenuListener listener) {
+		final DefaultMutableTreeNode node = get(key);
+		final Container container = getContainer(node, Container.class);
+		final JPopupMenu popup;
+		if (container instanceof JPopupMenu) {
+			popup = (JPopupMenu) container;
+		}
+		else if (container instanceof JMenu) {
+			popup = ((JMenu) container).getPopupMenu();
+		}
+		else {
+			throw new RuntimeException("no popup menu found!");
+		}
+		final Object userObject = node.getUserObject();
+		final PopupMenuListener[] popupMenuListeners = popup
+		    .getPopupMenuListeners();
+		for (int i = 0; i < popupMenuListeners.length; i++) {
+			final PopupMenuListener popupMenuListener = popupMenuListeners[i];
+			if (!(popupMenuListener instanceof DelegatingPopupMenuListener)
+			        || !(((DelegatingPopupMenuListener) popupMenuListener)
+			            .getSource() == userObject)) {
+				continue;
+			}
+			popup.removePopupMenuListener(popupMenuListener);
+			break;
+		}
+	}
+}

@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<plugin label="accessories/plugins/IconSelectionPlugin">
+    <plugin_action documentation="%accessories/plugins/IconSelectionPlugin.properties_documentation" name="%accessories/plugins/IconSelectionPlugin.properties_name" key_stroke="%keystroke_accessories/plugins/IconSelectionPlugin.properties.properties_key" base="deprecated.freemind.extensions.NodeHookAdapter" icon_path="accessories/plugins/icons/kalzium.png" label="accessories/plugins/IconSelectionPlugin.properties" class_name="accessories.plugins.IconSelectionPlugin" instanciation="ApplyToRoot">
+        <plugin_mode class_name="org.freeplane.modes.mindmapmode"/>
+        <plugin_menu location="/menu_bar/insert/icons/IconSelection"/>
+        <!-- fc, 24.3.06: having the icons in the toolbar seems to be too much,
+			as they appear in the left side of the screen either.
+			<plugin_menu location="/main_toolbar/icons/IconSelection"/> -->
+    </plugin_action>
+</plugin>

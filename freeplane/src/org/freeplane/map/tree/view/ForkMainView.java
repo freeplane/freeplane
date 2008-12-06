@@ -1,0 +1,148 @@
+/*
+ *  Freeplane - mind map editor
+ *  Copyright (C) 2008 Joerg Mueller, Daniel Polansky, Christian Foltin, Dimitry Polivaev
+ *
+ *  This file is modified by Dimitry Polivaev in 2008.
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package org.freeplane.map.tree.view;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+
+import org.freeplane.map.nodestyle.NodeStyleModel;
+import org.freeplane.map.tree.NodeModel;
+
+class ForkMainView extends MainView {
+	/**
+	 * Returns the relative position of the Edge
+	 */
+	@Override
+	int getAlignment() {
+		return NodeView.ALIGN_BOTTOM;
+	}
+
+	@Override
+	Point getCenterPoint() {
+		final Point in = new Point(getWidth() / 2, getHeight() / 2);
+		return in;
+	}
+
+	@Override
+	public int getDeltaX() {
+		final NodeModel model = getNodeView().getModel();
+		if (model.getModeController().getMapController().isFolded(model)
+		        && getNodeView().isLeft()) {
+			return super.getDeltaX() + getZoomedFoldingSymbolHalfWidth() * 3;
+		}
+		return super.getDeltaX();
+	}
+
+	@Override
+	Point getLeftPoint() {
+		final NodeModel model = getNodeView().getModel();
+		int edgeWidth = model.getModeController().getEdgeController().getWidth(
+		    model);
+		if (edgeWidth == 0) {
+			edgeWidth = 1;
+		}
+		final Point in = new Point(0, getHeight() - edgeWidth / 2 - 1);
+		return in;
+	}
+
+	@Override
+	protected int getMainViewHeightWithFoldingMark() {
+		int height = getHeight();
+		final NodeModel model = getNodeView().getModel();
+		if (model.getModeController().getMapController().isFolded(model)) {
+			height += getZoomedFoldingSymbolHalfWidth();
+		}
+		return height;
+	}
+
+	@Override
+	protected int getMainViewWidthWithFoldingMark() {
+		int width = getWidth();
+		final NodeModel model = getNodeView().getModel();
+		if (model.getModeController().getMapController().isFolded(model)) {
+			width += getZoomedFoldingSymbolHalfWidth() * 2
+			        + getZoomedFoldingSymbolHalfWidth();
+		}
+		return width;
+	}
+
+	@Override
+	Point getRightPoint() {
+		final NodeModel model = getNodeView().getModel();
+		int edgeWidth = model.getModeController().getEdgeController().getWidth(
+		    model);
+		if (edgeWidth == 0) {
+			edgeWidth = 1;
+		}
+		final Point in = new Point(getWidth() - 1, getHeight() - edgeWidth / 2
+		        - 1);
+		return in;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see freemind.view.mindmapview.NodeView#getStyle()
+	 */
+	@Override
+	String getStyle() {
+		return NodeStyleModel.STYLE_FORK;
+	}
+
+	@Override
+	public void paint(final Graphics graphics) {
+		final Graphics2D g = (Graphics2D) graphics;
+		final NodeView nodeView = getNodeView();
+		final NodeModel model = nodeView.getModel();
+		if (model == null) {
+			return;
+		}
+		paintSelected(g);
+		paintDragOver(g);
+		int edgeWidth = model.getModeController().getEdgeController().getWidth(
+		    model);
+		if (edgeWidth == 0) {
+			edgeWidth = 1;
+		}
+		final Color oldColor = g.getColor();
+		g.setColor(model.getModeController().getEdgeController()
+		    .getColor(model));
+		g.drawLine(0, getHeight() - edgeWidth / 2 - 1, getWidth(), getHeight()
+		        - edgeWidth / 2 - 1);
+		g.setColor(oldColor);
+		super.paint(g);
+	}
+
+	@Override
+	void paintFoldingMark(final Graphics2D g, final Point p) {
+		final int zoomedFoldingSymbolHalfWidth = getZoomedFoldingSymbolHalfWidth();
+		if (p.x == getX()) {
+			p.x -= zoomedFoldingSymbolHalfWidth;
+		}
+		else if (p.x == getX() + getWidth() - 1) {
+			p.x += zoomedFoldingSymbolHalfWidth;
+		}
+		else {
+			System.err.println("unexpected folding mark location " + p);
+		}
+		super.paintFoldingMark(g, p);
+	}
+}

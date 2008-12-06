@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Default patterns supplied with FreeMind 
+	 Don't change this file per hand as a pattern manager 
+	 is now included in FreeMind.
+-->
+<patterns>
+	<pattern name="Default">
+		<pattern_node_background_color/>
+		<pattern_node_color/>
+		<pattern_node_style/>
+		<pattern_node_font_name/>
+		<pattern_node_font_bold/>
+		<pattern_node_font_italic/>
+		<pattern_node_font_size/>
+		<pattern_icon/>
+		<pattern_edge_color/>
+		<pattern_edge_style/>
+		<pattern_edge_width/>
+	</pattern>
+	<pattern name="Normal">
+		<pattern_node_background_color/>
+		<pattern_node_color value="#000000"/>
+		<pattern_node_style/>
+	</pattern>
+	<!-- task -->
+	<pattern name="OK">
+		<pattern_node_background_color/>
+		<pattern_node_color value="#338800"/>
+		<pattern_node_style/>
+	</pattern>
+	<pattern name="Needs action">
+		<pattern_node_background_color/>
+		<pattern_node_color value="#990000"/>
+		<pattern_node_style/>
+	</pattern>
+	<pattern name="Hot">
+		<pattern_node_background_color/>
+		<pattern_node_color value="#ff0000"/>
+		<pattern_node_style/>
+	</pattern>
+	<!-- document -->
+	<pattern name="Detail">
+		<pattern_node_background_color/>
+		<pattern_node_color value="#999999"/>
+		<pattern_node_style/>
+		<pattern_node_font_name/>
+		<pattern_node_font_bold/>
+		<pattern_node_font_italic/>
+		<pattern_node_font_size value="10"/>
+		
+	</pattern>
+	<pattern name="Folder">
+		<pattern_node_background_color/>
+		<pattern_node_color value="#006699"/>
+		<pattern_node_style/>
+	</pattern>
+	<pattern name="Topic">
+		<pattern_node_background_color/>
+		<pattern_node_color value="#669900"/>
+		<pattern_node_style/>
+	</pattern>
+	<pattern name="Larger Topic">
+		<pattern_node_background_color/>
+		<pattern_node_color value="#006633"/>
+		<pattern_node_style/>
+	</pattern>
+	<pattern name="Waiting Topic">
+		<pattern_node_background_color/>
+		<pattern_node_color value="#B3B95C"/>
+		<pattern_node_style/>
+	</pattern>
+	<pattern name="Object / Keyword">
+		<pattern_node_background_color/>
+		<pattern_node_color value="#996600"/>
+		<pattern_node_style/>
+	</pattern>
+	<pattern name="Object of Code">
+		<!-- that is function name, database table name, class name etc.-->
+		<pattern_node_background_color/>
+		<pattern_node_color value="#CC6600"/>
+		<pattern_node_style/>
+	</pattern>
+	<pattern name="Question">
+		<pattern_node_background_color/>
+		<pattern_node_color value="#999900"/>
+		<pattern_node_style/>
+	</pattern>
+	<pattern name="Open Question">
+		<pattern_node_background_color/>
+		<pattern_node_color value="#CC3300"/>
+		<pattern_node_style/>
+	</pattern>
+	<pattern name="Bad">
+		<pattern_node_background_color/>
+		<pattern_node_color value="#990099"/>
+		<pattern_node_style/>
+	</pattern>
+	<pattern name="Blue">
+		<pattern_node_background_color/>
+		<pattern_node_color value="#0033FF"/>
+		<pattern_node_style/>
+	</pattern>
+	<pattern name="Pink">
+		<pattern_node_background_color/>
+		<pattern_node_color value="#FF6666"/>
+		<pattern_node_style/>
+	</pattern>
+	<pattern name="Cyan">
+		<pattern_node_background_color/>
+		<pattern_node_color value="#009999"/>
+		<pattern_node_style/>
+	</pattern>
+	
+	<!-- Recursive Mind map styles 
+		 If you want to try them, apply AutomaticMindMapRoot 
+		 to the root of a mindmap. Take care, the whole map changes it colors -->
+
+	<pattern name="AutomaticMindMapRoot">
+		<pattern_node_background_color/>
+		<pattern_node_color value="#000000"/>
+		<pattern_node_style/>
+		<pattern_edge_color value="#000000"/>
+		<pattern_edge_style/>
+		<pattern_edge_width value="8"/>
+		<pattern_child value="MindMap1"/>
+	</pattern>
+	
+	<pattern name="MindMap1">
+		<pattern_node_background_color/>
+		<pattern_node_color value="#0033FF"/>
+		<pattern_node_style/>
+		<pattern_edge_color value="#0033FF"/>
+		<pattern_edge_style/>
+		<pattern_edge_width value="4"/>
+		<pattern_child value="MindMap2"/>
+	</pattern>
+	
+	<pattern name="MindMap2">
+		<pattern_node_background_color/>
+		<pattern_node_color value="#00b439"/>
+		<pattern_node_style/>
+		<pattern_edge_color value="#00b439"/>
+		<pattern_edge_style/>
+		<pattern_edge_width value="2"/>
+		<pattern_child value="MindMap3"/>
+	</pattern>
+	
+	<pattern name="MindMap3">
+		<pattern_node_background_color/>
+		<pattern_node_color value="#990000"/>
+		<pattern_node_style/>
+		<pattern_edge_color value="#990000"/>
+		<pattern_edge_style/>
+		<pattern_edge_width value="1"/>
+		<pattern_child value="MindMapDefault"/>
+	</pattern>
+	
+	<pattern name="MindMapDefault">
+		<pattern_node_background_color/>
+		<pattern_node_color value="#111111"/>
+		<pattern_node_style/>
+		<pattern_edge_color value="#111111"/>
+		<pattern_edge_style/>
+		<pattern_edge_width value="thin"/>
+		<pattern_child value="MindMapDefault"/>
+	</pattern>
+	
+</patterns>

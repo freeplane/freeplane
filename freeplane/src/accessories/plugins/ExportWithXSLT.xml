@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<plugin label="accessories/plugins/ExportWithXSLT">
+	<plugin_action documentation="%accessories/plugins/ExportWithXSLT.properties_documentation" name="%accessories/plugins/ExportWithXSLT.properties_name" base="deprecated.freemind.extensions.ModeControllerHookAdapter" label="accessories/plugins/ExportWithXSLT.properties" class_name="accessories.plugins.ExportWithXSLT">
+		<plugin_mode class_name="org.freeplane.modes.mindmapmode"/>
+		<plugin_menu location="/menu_bar/file/export/export/exportXslt"/>
+		<plugin_property name="file_type" value="user"/>
+	</plugin_action>
+	<plugin_action documentation="%accessories/plugins/ExportWithXSLT_HTML.properties_documentation" name="%accessories/plugins/ExportWithXSLT_HTML.properties_name" base="deprecated.freemind.extensions.ModeControllerHookAdapter" label="accessories/plugins/ExportWithXSLT_HTML.properties" class_name="accessories.plugins.ExportWithXSLT">
+		<plugin_mode class_name="org.freeplane.modes.mindmapmode"/>
+		<plugin_menu location="/menu_bar/file/export/export/html/exportHTML_II"/>
+		<plugin_property name="file_type" value="html"/>
+		<plugin_property name="file_description" value="%accessories/plugins/ExportWithXSLT_Applet.properties_webpage"/>
+		<plugin_property name="xslt_file" value="accessories/toxhtml.xsl"/>
+		<plugin_property name="create_dir" value="true"/>
+		<plugin_property name="files_to_copy" value="marktree.js,minus.png,plus.png,ilink.png,treestyles.css"/>
+		<plugin_property name="file_prefix" value="accessories/"/>
+		<plugin_property name="copy_icons" value="true"/>
+		<plugin_property name="load_file" value="true"/>
+		<plugin_property name="create_html_linked_image" value="false"/>
+	</plugin_action>
+	<plugin_action documentation="%accessories/plugins/ExportWithXSLT_HTML3.properties_documentation" name="%accessories/plugins/ExportWithXSLT_HTML3.properties_name" base="deprecated.freemind.extensions.ModeControllerHookAdapter" label="accessories/plugins/ExportWithXSLT_HTML3.properties" class_name="accessories.plugins.ExportWithXSLT">
+		<plugin_mode class_name="org.freeplane.modes.mindmapmode"/>
+		<plugin_menu location="/menu_bar/file/export/export/html/exportHTML_III"/>
+		<plugin_property name="file_type" value="html"/>
+		<plugin_property name="file_description" value="%accessories/plugins/ExportWithXSLT_Applet.properties_webpage"/>
+		<plugin_property name="xslt_file" value="accessories/freemind2html.xsl"/>
+		<plugin_property name="create_dir" value="true"/>
+		<plugin_property name="files_to_copy" value="freemind2html.css,hide.png,leaf.png,show.png,ilink.png"/>
+		<plugin_property name="file_prefix" value="accessories/"/>
+		<plugin_property name="copy_icons" value="true"/>
+		<plugin_property name="load_file" value="true"/>
+		<plugin_property name="create_html_linked_image" value="true"/>
+		<plugin_property name="link_replacement_regexp" value="FM$1FM"/>
+	</plugin_action>
+	<plugin_action documentation="%accessories/plugins/ExportWithXSLT_Applet.properties_documentation" name="%accessories/plugins/ExportWithXSLT_Applet.properties_name" base="deprecated.freemind.extensions.ModeControllerHookAdapter" label="accessories/plugins/ExportWithXSLT_Applet.properties" class_name="accessories.plugins.ExportWithXSLT">
+		<plugin_mode class_name="org.freeplane.modes.mindmapmode"/>
+		<plugin_menu location="/menu_bar/file/export/export/html/exportHTML_Applet"/>
+		<plugin_property name="file_type" value="html"/>
+		<plugin_property name="file_description" value="%accessories/plugins/ExportWithXSLT_Applet.properties_webpage"/>
+		<plugin_property name="xslt_file" value="accessories/freemind2applet.xsl"/>
+		<plugin_property name="create_dir" value="true"/>
+		<plugin_property name="files_to_copy" value="freemindbrowser.jar"/>
+		<plugin_property name="file_prefix" value="browser/"/>
+		<plugin_property name="copy_map" value="true"/>
+		<plugin_property name="load_file" value="true"/>
+	</plugin_action>
+	<plugin_action documentation="%accessories/plugins/ExportWithXSLT_Flash.properties_documentation" name="%accessories/plugins/ExportWithXSLT_Flash.properties_name" base="deprecated.freemind.extensions.ModeControllerHookAdapter" label="accessories/plugins/ExportWithXSLT_Flash.properties" class_name="accessories.plugins.ExportWithXSLT">
+		<plugin_mode class_name="org.freeplane.modes.mindmapmode"/>
+		<plugin_menu location="/menu_bar/file/export/export/html/exportHTML_Flash"/>
+		<plugin_property name="file_type" value="html"/>
+		<plugin_property name="file_description" value="%accessories/plugins/ExportWithXSLT_Applet.properties_webpage"/>
+		<plugin_property name="xslt_file" value="accessories/freemind2flash.xsl"/>
+		<plugin_property name="create_dir" value="true"/>
+		<plugin_property name="files_to_copy" value="visorFreemind.swf,flashobject.js"/>
+		<plugin_property name="file_prefix" value="accessories/plugins/flash/"/>
+		<plugin_property name="copy_map" value="true"/>
+		<plugin_property name="load_file" value="true"/>
+	</plugin_action>
+	<plugin_action documentation="%accessories/plugins/ExportWithXSLT_TASKSTJI.properties_documentation" name="%accessories/plugins/ExportWithXSLT_TASKSTJI.properties_name" base="deprecated.freemind.extensions.ModeControllerHookAdapter" label="accessories/plugins/ExportWithXSLT_TASKSTJI.properties" class_name="accessories.plugins.ExportWithXSLT">
+		<plugin_mode class_name="org.freeplane.modes.mindmapmode"/>
+		<plugin_menu location="/menu_bar/file/export/export/html/exportTASKSTJI"/>
+		<plugin_property name="file_type" value="tji"/>
+        <plugin_property name="name_extension" value=".tasks"/>
+		<plugin_property name="file_description" value="%accessories/plugins/ExportWithXSLT_Applet.properties_tji"/>
+		<plugin_property name="xslt_file" value="accessories/mm2tjitasks.xsl"/>
+		<plugin_property name="copy_map" value="false"/>
+		<plugin_property name="load_file" value="false"/>
+		<plugin_property name="create_dir" value="false"/>
+		<plugin_property name="create_html_linked_image" value="false"/>
+	</plugin_action>
+        <plugin_action documentation="%accessories/plugins/ExportWithXSLT_RESOURCESTJI.properties_documentation" name="%accessories/plugins/ExportWithXSLT_RESOURCESTJI.properties_name" base="deprecated.freemind.extensions.ModeControllerHookAdapter" label="accessories/plugins/ExportWithXSLT_RESOURCESTJI.properties" class_name="accessories.plugins.ExportWithXSLT">
+		<plugin_mode class_name="org.freeplane.modes.mindmapmode"/>
+		<plugin_menu location="/menu_bar/file/export/export/html/exportRESOURCESTJI"/>
+		<plugin_property name="file_type" value="tji"/>
+        <plugin_property name="name_extension" value=".resources"/>
+		<plugin_property name="file_description" value="%accessories/plugins/ExportWithXSLT_Applet.properties_tji"/>
+		<plugin_property name="xslt_file" value="accessories/mm2tjiresources.xsl"/>
+		<plugin_property name="copy_map" value="false"/>
+		<plugin_property name="load_file" value="false"/>
+		<plugin_property name="create_dir" value="false"/>
+		<plugin_property name="create_html_linked_image" value="false"/>
+	</plugin_action>
+    <plugin_action documentation="%accessories/plugins/ExportWithTWiki.properties_documentation" name="%accessories/plugins/ExportWithTWiki.properties_name" base="deprecated.freemind.extensions.ModeControllerHookAdapter" label="accessories/plugins/ExportWithTWiki.properties" class_name="accessories.plugins.ExportWithXSLT">
+		<plugin_mode class_name="org.freeplane.modes.mindmapmode"/>
+		<plugin_menu location="/menu_bar/file/export/export/html/exportTWiki"/>
+		<plugin_property name="file_type" value="twi"/>
+        <plugin_property name="name_extension" value=""/>
+		<plugin_property name="file_description" value="%accessories/plugins/ExportWithTWiki.properties"/>
+		<plugin_property name="xslt_file" value="accessories/mm2twiki.xsl"/>
+		<plugin_property name="copy_map" value="false"/>
+		<plugin_property name="load_file" value="false"/>
+		<plugin_property name="create_dir" value="false"/>
+		<plugin_property name="create_html_linked_image" value="false"/>
+	</plugin_action>
+
+</plugin>

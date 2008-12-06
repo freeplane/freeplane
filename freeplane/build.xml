@@ -1,0 +1,78 @@
+<project name="freeplane" basedir=".">
+	<property name="src" value="src" />
+    <property name="java_source_version" value="1.4" />
+	<property name="java_target_version" value="1.5" />
+	<!-- begin generator part -->
+	<property name="jibxhome" value="lib/jibx"/>
+	<property name="jibxjar" value="lib/bindings.jar"/>
+	<property name="jibxruntimelibs" value="${jibxhome}/jibx-run.jar:${jibxhome}/xpp3.jar"/>
+	<property name="jibxlibs" value="${jibxhome}/bcel.jar:${jibxhome}/jibx-bind.jar:${jibxhome}/jibx-extras.jar:${jibxruntimelibs}"/>
+	<taskdef name="bind" classname="org.jibx.binding.ant.CompileTask">
+		<classpath path="${jibxlibs}"/>
+	</taskdef>
+
+	<property name="classpath" value="${jibxruntimelibs}:${jibxjar}:lib/commons-lang-2.0.jar:lib/forms-1.0.5.jar:lib/SimplyHTML/SimplyHTML.jar"/>
+
+	  <target name="xmlbind.checkStatusOfGeneration">
+	    <uptodate property="xmlbind.isUpToDate"
+	              srcfile="${src}/freemind_jibx.xsd"
+	              targetfile="${jibxjar}"/>
+	  </target>
+
+	<!-- =================================
+          target: gen
+         ================================= -->
+	<target name="gen" depends="xmlbind.checkStatusOfGeneration" description="--> Generates the JixB binding jar." unless="xmlbind.isUpToDate">
+		<mkdir dir="binding" />
+		<mkdir dir="binding/src" />
+		<mkdir dir="binding/classes" />
+		<java fork="true" classname="org.jibx.xsd2jibx.Generate" classpath="${jibxlibs}:${jibxhome}/xsd2jibx.jar:${jibxhome}/commons-logging-1.0.4.jar:${jibxhome}/jaxme-js-0.3.jar:${jibxhome}/log4j-1.2.8.jar:lib/commons-lang-2.0.jar" failonerror="true">
+			<arg line="-n freemind.controller.actions.generated.instance" />
+			<arg line="-d binding/src" />
+			<arg file="${src}/freemind_jibx.xsd" />
+		</java>
+		<javac srcdir="binding/src" destdir="binding/classes" source="${java_source_version}" target="${java_target_version}" debug="on" />
+		<xslt style="${src}/binding.xslt" in="binding/src/freemind/controller/actions/generated/instance/binding.xml" out="binding_new.xml" />
+		<move file="binding_new.xml" tofile="binding/src/freemind/controller/actions/generated/instance/binding.xml" overwrite="true" />
+		<echo message="Running binding compiler..." />
+		<bind verbose="false" load="true">
+			<bindingfileset dir="binding/src">
+				<include name="**/*.xml" />
+			</bindingfileset>
+			<classpathset dir="binding/classes" />
+		</bind>
+		<!-- jar the bindings -->
+		<jar destfile="${jibxjar}">
+			<fileset dir="binding/classes">
+				<include name="**/*.class" />
+			</fileset>
+			<fileset dir="binding/src">
+				<include name="**/*.java" />
+				<include name="**/*.xml" />
+			</fileset>
+		</jar>
+		<delete dir="binding">
+		</delete>
+	</target>
+
+	<target name="patterns">
+		<xslt style="patterns_updater.xslt" in="patterns.xml" out="patterns_new.xml" force="true" />
+	</target>
+
+	<!-- end generator part -->
+	<target name="clean">
+		<!-- Eclipse target: -->
+		<delete dir="bin/classes"  quiet="true"/>
+		<delete dir="${build}"  quiet="true"/>
+		<delete dir="${dist}"  quiet="true"/>
+		<delete dir="${dist_macos_base}"  quiet="true"/>
+		<delete dir="${gen.dir}"  quiet="true"/>
+		<delete dir="${post}"  quiet="true"/>
+		<delete file="${jibxjar}"  quiet="true"/>
+		<delete>
+			<fileset defaultexcludes="no" dir="${src}" includes="**/*~"/>
+		</delete>
+	</target>
+
+</project>
+

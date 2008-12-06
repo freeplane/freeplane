@@ -1,0 +1,1067 @@
+===============================
+Changes made in FreeMind 0.9.0 Beta20
+===============================
+* Fixed some documentation bugs reported by Edmund Laugasson. Thanks.
+* Bug fix: Untranslatable strings and places * https://sourceforge.net/tracker/?func=detail&atid=107118&aid=2020259&group_id=7118
+* Documentation fixes.
+* Mac: Spaces in files names corrected.
+* Bug fix: B19 startup fails with "Mode not available: Mindmap" * https://sourceforge.net/tracker/?func=detail&atid=107118&aid=2025279&group_id=7118
+* "Open hyperlink" works for multiple selected nodes.
+* FreeMindStarter uses reflection. Thus, it can detect java < 1.4.
+* Icons revised. Thanks to Predrag.
+* Fixed: copying to clipboard for Linux.
+* Fixed: saving of xhtml - tag <option>.
+* Application type of freemind.exe changed to Win32 GUI to prevent DOS box.
+* Fixed: images in notes. 
+* Added translations (thanks to all authors): 
+- 2034191 	French - 0.9.0 Beta 19 - FM_Key_Mappings_Quick_Guide_fr.pdf by 	dberthereau
+- 2034187 	French - 0.9.0 Beta 19 - FM_Key_Mappings_Quick_Guide by 	dberthereau
+- 2031743 	Russian 0.9.0 - beta 19 - full
+* Integrated [ 2025876 ] MS Project export with dependencies + example
+* Integrated [ 2027826 ] Word export with notes - Thanks to Eric.
+
+===============================
+Changes made in FreeMind 0.9.0 Beta19
+===============================
+* Fixed: in key based navigation in filtered maps.
+* Fixed: displaying of fork node in filtered maps.
+* Fixed: branch selection in filtered maps.
+* Fixed: calculation of dialog position relative to nodes.
+* Fixed: text in filter descriptions.
+* Fixed: [ 1984842 ] Cursor in long node editor set to the last position.
+* Fixed: export of filtered maps to PDF
+* Fixed: Patterns can't be customized in FM beta18 * https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1985406&group_id=7118
+* Fixed: onCreateNodeHook fixed.
+* FreeMind includes document icons now. Thanks to Predrag.
+* Bug fix: storing of scripts in patterns corrected.
+* Key documentation added. Thanks to Ryan.
+* New icons (thanks to Predrag), Icons and their order is customizable in preferences, now.
+* Fixed: Error opening files from network PCs in Windows * https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1984395&group_id=7118
+* New translation from Krymmel. Thanks to the author.
+* New slovak translation. Thanks to the author Viliam Bur - viliambur.
+* Updates czech translation. Thanks to the author.
+* Updated translation norsk from Larsa - larslem. Thanks to the author.
+* Updated dutch translation. Thanks to the author Walter Huwels - kiwaki.
+* New translation from jmasesch - jmases1. Thank you.
+* New translation to greek from sarikoudis - sarikoudis. Thank you.
+* New ukranian translation. Thanks to Serhij Dubyk - dubyk.
+* Updated portugese translation. Thanks to Luis Valente - alvalente.
+* New freemind documentation in french. Thanks to rickenbroc - rickenbroc.
+* Updated french translation. Thanks to Sébastien Rombauts - srombauts.
+* Updated korean translation. Thanks to Yang gyu, Lee - lyg73.
+* Updated japonese translation. Thanks to Tomohiro Sembongi - tomophy.
+* New indonesian translation. Thanks to Perry Harahap - permataharahap.
+* Updated slovenian translation. Thanks to Martin Srebotnjak - filmsi.
+* New indonesian documentation. Thanks to Perry Harahap - permataharahap.
+* New vietnamese translation and documentation. Thanks to Nguyen Dinh Trung - dinhtrung.
+* Updated chinese translation. Thanks to willyann - willyann.
+* New estonian translation and documentation. Thanks to Edmund Laugasson - elaugasson.
+* Updated russian translation. Thanks to ksd - sergeykotkin.
+* New key mappings in russian. Thanks to ksd - sergeykotkin.
+* Updated groovy to version 1.5.6.
+
+===============================
+Changes made in FreeMind 0.9.0 Beta18
+===============================
+* Fixed: bubble / fork style not correctly cascading * http://sf.net/tracker/index.php?func=detail&aid=1822099&group_id=7118&atid=107118
+* Fixed: java.lang.OutOfMemoryError: Java heap space * https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1965270&group_id=7118
+* new translations. Thanks to the authors.
+* bug fixes in the "new script" action.
+* Bug fix: Script editor divider locations start with some reasonable values.
+* Fixed URL handling for older mm files
+* Fixed URL handling for file: type under Windows 2000.
+* Fixed: button "Add" "assign attributes" dialog.
+* Fixed: displaying of accelerator keys in selected language.
+* Fixed: Mnenonics for yes/no/cancel buttons in "Save" Dialog.
+* Fixed: displaying of changes made using "Assign attributes" dialog if only selected attributes are visible.
+* Refactoring of FreeMindStarter such that preferences are only read once.
+* Fixed: confirmation dialogs were placed outside of the screen
+* Fixed: position of files dragged to a node
+* Splash updated by Predrag via mail from 28.05.2008 (GPLv2+). Many thanks.
+* Icon taken form Predrag. FreeMind started recompiled. Thank you.
+
+===============================
+Changes made in FreeMind 0.9.0 Beta17
+===============================
+* Scripts can be installed as menu functions (look into ScriptingEngine.xml).
+* Security Enhancements for Scripting Engine.
+* Fixed "Cannot follow links if new/unsaved map is open" https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1900401&group_id=7118
+* Fixed "typo: estabilishOwnFont()" https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1889819&group_id=7118
+* Fixed "Focus changed after window switching" https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1872277&group_id=7118
+* Fixed "Calendar can only be opened once" https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1911717&group_id=7118
+* Fixed "Clouds on root node are not displayed" https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1911883&group_id=7118
+  and https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1911883&group_id=7118
+* Inverted the mouse wheel zoom direction to make it compatible with e.g. OpenOffice.
+* Fixed: Large mind maps produce invalid PDF https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1921334&group_id=7118
+* Fixed: Following of connectors - dedicated text required https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1846702&group_id=7118
+* new base 64 coding compatible with gplv2+
+* Fixed: Misleading option in 'Time Management' https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1917188&group_id=7118
+* Fixed: Script exceptions are now displayed in any case.
+* Fixed: Scripts with multiples lines supported in patterns.
+* Fixed: Layout of pattern manager.
+* Fixed: .toURL() is deprecated in Java 1.6 https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1812246&group_id=7118
+* This fixes as well: Hyperlinks dont work with interntional chars in filename * https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1801949&group_id=7118
+* Fixed: On first start FreeMind should show new map to newbies * https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1752516&group_id=7118
+* Fixed: Print Preview can be closed with ESC.
+* Fixed: English used by Freemind... (thanks to the author) * https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1933938&group_id=7118
+* Fixed: Missing tooltips in Manager Patterns dialog * https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1848057&group_id=7118
+* Fixed: Format dialog remembers its position on screen.
+* Fixed: Like in 0.8 nodes are still unfolded, when others are dragged into. This can changed in the preferences.
+* Fixed: Notes icon appears now in Applet: Summary: Note Icon not showing * https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1766025&group_id=7118
+* Notes icon can be hidden via preferences.
+* Fixed: When multiple maps are opened, their Z-order seems to be fixed. For example, if I open map A, B and C one by one, and then close map C, I may get map A on the front, depending how the program assigns order to maps.
+* Fixed: keys "home", "end" and <character> work in the same way for all node editors
+* Fixed: Key Events are not lost during node editor dialog is being created
+* Mnemonics for (some) Dialog Buttons configurable by "&" character in language properties
+* Fixed: placement of text field editor if attribute table is wider than the node text
+* Fixed: height of attribute table rows for zoom factor != 100 %  
+* Fixed: Valid html output * https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1063430&group_id=7118
+* Fixed: faulty undo for edge types after auto layouting * https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1937927&group_id=7118
+* Fixed: Issues with action "Clear note" * https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1842855&group_id=7118
+* A link to the FreeMind's webpage is available in Help Menu
+* Fixed: Folding not saved * https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1938342&group_id=7118
+* Scripts can be signed by a FreeMind key or with a user key (specified in the options)
+  and have then full rights.  
+* FreeMind version is now a structure that can be used by scripts or plugins to guarantee compatibility.
+* New design of logo (thanks to mmeitzner) and splash (thanks to bernardlang) integrated
+* Fixed: Wrong language name for Norwegian * https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1935818&group_id=7118
+* New croatian language. Thanks to Predrag.
+* Fixed: When pressing Option+F in Mac OS X, the Format->Node color dialog should show up, but instead the File menu does (in a weird position) * https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1947269&group_id=7118
+* Icon order moved to properties.
+* Fixed: encrypted node just looks to be locked * https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1945302&group_id=7118
+* New icons from Predrag (put under GPLV2+ via private mail from 2.5.2008). Thanks to the author.
+* Fixed: "null incompatible with text-specific antialiasing enable key" error under Mac OS X.
+
+
+
+===============================
+Changes made in FreeMind 0.9.0 Beta16
+===============================
+* Bug fix: do not add new <p> for HTML nodes copied as HTML
+* Bug fix: remove HTML tags by generating RTF
+* Bug fix: Overlapping edges of the root node
+* Bug fix: Map movements after folding
+* Bug fix: Avoid storing style element in rich text nodes
+* Bug fix: not possible to pick / fold / unfold nodes after exception in SVG/PDF Plugin
+* Bug fix: Edit box for new child node can appear in the wrong location
+* Disable small buggy hide/open - arrows for split pane
+* Bug fix: Remove '&' character from tooltips and ui elements
+* Link connectors - new arrows in popup menu changed as proposed by Dan
+* Bug fix for "Java exception entering text"
+* Bug fix Look and feel - no propagation into scroll bar
+* Bug fix: copy text field selection to clipboard
+* Bug fix: repaint after text field is removed
+* Bug fix: Map hidden after switching from docs (JRE 6)
+* New version of SimplyHTML with some bug fixes
+* Bug fix: In browse mode and file mode, scroll wheel AKA mouse wheel 
+* Filter toolbar looks similar to the other toolbars.
+* Bug fix: italic and bold handling in patterns (eg. automatic layout)
+* Check marks for a lot of menu items added
+* Changed mouse wheel behaviour.
+* Cut gets a confirmation window, too. See https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1846766&group_id=7118
+* Bug fix: Hyperlink action renamed and it is only enabled, when there is actually a hyperlink. See https://sourceforge.net/tracker/?func=detail&atid=107118&aid=1846702&group_id=7118
+* Updated to Batik 1.6 (for Eric, as this version is already integrated in Debian)
+* Script Editor now has "Add new Script" and is able to assign the script results 
+  to an (new) attribute using "attr_name=<script>".
+* Updated groovy to version 1.5.1
+* RemoveNote is automatically disabled when no notes found
+* fold/unfoldall at toolbar is applied to current node as before.
+* Format node window has now scroll bars if needed.
+* Option to store ids only, when needed added.
+* Patch: [ 1897283 ] Multiple reminders added up in parent nodes
+* New installer variant "Java embedded" started, but this 
+  variant will not be released soon due to open license questions
+
+===============================
+Changes made in FreeMind 0.9.0 Beta15
+===============================
+* Option added that map conversions are confirmed
+* Bug fix: Browser applet can be started twice
+* Bug fix: alt+i in English
+* Bug fix: save and use setting "left toolbar invisible" in auto.properties.
+* Bug fix in writing content of HTML nodes into clipboard.
+* Bug fixes in rich text editor component (Version shtml_0_12_2_beta3).
+* Enable main menu mnemonics for note editor.
+* Bug fix: attribute table column width not retrieved.
+* Item "Remove Notes" in the "Tools" menu.
+* OPTION "OLD_ROUTING_OF_ROOT_EDGES" configurable from Preferences->Appearance.
+* Time Management is no longer modal.
+* Fold/Unfold all on toolbar applies to root.
+* Styles can hold scripts. Script editor improvements.
+* Pattern dialog has now a short cut.
+* Bug fix: background color of edited nodes.
+* Bug fix: node selected after cut&paste if attributes are shown.
+
+
+===============================
+Changes made in FreeMind 0.9.0 Beta 14
+===============================
+* Open Office Export now for the ODT format.
+* Nicer automatic format with sharp bezier curves.
+* Security question for script execution.
+* Notes window is completely hidden if requested.
+* Tabs show dirty state of map
+* Bug fix: Automatic layout with icons.
+* Bug fix: Drag&Drop in Pattern Dialog
+* Bug fix: Map conversion of version 0.8.0 fixed.
+* bug fix for export to PDF (SVG).
+* Bug fix : update all nodes if standard text color has been changed.
+* Use node text and background colors in editors.
+* Bug fix: use edge color for folding mark.
+* Bug fix: new maps should not have "saved" attribute set.
+* Bug fix: FreeMind non-responsive after application focus change.
+* Bug fixes in filter management.
+* Bug fix: export to PNG.
+* Bug fix: mnemonics for starting Attribute Manager Dialog.
+* Bug fix: layout after zoom change.
+* Bug fix: printing of filtered maps with hidden links.
+* System.out and System.err redirected to special logger.
+* Bug fix: join for rich text nodes.
+* Display help message for node movement as tool tip.
+* Bug fix: nodes cut when zoom not 100%.
+* Menu item "Split" moved to menu item "Join nodes"
+ 
+===============================
+Changes made in FreeMind 0.9.0 Beta 13
+===============================
+* Menu Item to show SimplyHTML about box 
+* Use cloud or map backgroung color in WYSIWYG Editor if the node has no own background color.
+* Selection text color no more used for unselected text in Textfield / Textarea
+* Latex plugin added
+* Persistent map filters added
+* Click on icon with control key hold removes the first matched icon, with alt key removes the last one
+* Icon hot keys available in "Select Icon" popup can be set in Preferences 
+* Bug fixes.
+* Displaying Selection as Rectangle as default.
+* Optional "unfold on paste"
+* Confirmation on delete added.
+* Decision whether or not to take rich text edit added. 
+* Icon selection popup, long node editor and WYSIWYG editor do not hide the edited node is possible
+* Bug fix: mind manager import: sides fixed.
+* bug fix: strings containing \n must be saved as XML elements, not as attributes
+* bug fixes and necessary refactorings for paste and cut - actions
+	 only UndoActionHandler uses the undo - action from the action pair, 
+	 the undo action is prepared during paste action is executed
+* Bug fix: patterns repaired
+* Bug fix: edge properties in patterns
+* Mnemonics for english and german completed
+* Enter on root gives a new child
+* Bug fix: edges scale now with zoom.
+* Enter on root gives new child, shift-enter on root causes root to get a child of a new root node.
+	 
+===============================
+Changes made in FreeMind 0.9.0 Beta 12
+===============================
+* Map background color may be set via Format menu and saved with the map.
+* Bug fixes: problems if auto.properties does not exist 
+* FreeMind Accelerators work from Note Editor
+
+===============================
+Changes made in FreeMind 0.9.0 Beta 11
+===============================
+* New menu option: Display Selection as Rectangle.
+* Standard colors are taken from Look&Feel settings.
+* Node is unfolded on paste or drop.
+* In-place node editor scrolls with the map.
+* Bug fix in note editor: space does not fold/unfold the node
+* Bug fix: tab closing fixed for java4+5
+
+===============================
+Changes made in FreeMind 0.9.0 Beta 10
+===============================
+* New option: velocity of mouse wheel movements.
+* Bug fix: F6 and F8 can be used for formats again.
+* Bug fix: sorting keeps graphical links now.
+* user_icons is no more required, 
+* all *.png files in .../.freemind/icons are handled as user icons
+* Bug fix: moving of encrypted nodes is working again.
+* Bug fix: moving or removing a node with active reminder flags clears all parent flags.
+* Bug fix: OOo export of empty nodes
+
+* Class hierarchy of descendands of NodeView removed
+* NodeView is made responsible for painting of its cloud, children edges and folding marks
+* Class hierarchy for MainView introduced
+* All own components of NodeView (MainView and AttributeTable) are put inside of JComponent,
+which can be obtained using NodeView.getContent().
+* New classes for NodeView Layout, MindMapLayout and Viewport Layout introduced
+* NodeViewLayout sets locations of NodeView Content and all its direct children
+  and NodeView size
+* NodeViewFactory for putting NodeView components and LayoutManager together
+* EdgeView is no more part of NodeView, it is managed by NodeViewFactory
+* setLeft is no more initiated by view
+* multiple map views for map are allowed by the new design, but only one NodeView for Node on each MapView
+* NodeView implements TreeModelListener
+* standard TreeModelEvents are used for communicating the map changes
+* If only MainView exists, getContent() returns the MainView. 
+* If some special node has its own content component, it can be added to Component given by 
+  NodeView.getContentPane(). Futher efforts are needed to make such contents like e.g. 
+  math formulas possible
+
+* focus in the long node editor goes to the text area after the dialog is opened
+* Back and forward added: Even between different maps.
+* Tabbed mind maps added (it is possible to switch it off in the preferences -> appereance)
+* New translations. Thanks to the authors.
+* Integrated the TWiki export. Thanks to the author scf_code.
+* Integrated html to plain patch from Dan. Thanks.
+
+* Plugin API improved, StatefulNodeHook with Undo-Support introduced
+* Window position, size and state are saved and restored correctly
+
+* Adjusting not only the background color of selected node but also its text color. 
+* System colors used instead of FreeMind default colors 
+ for default window background color, default node text color, 
+ default selected node background and text colors.
+* Alternative displaying of selected nodes showing rounded rectangle around the node (may be set in preferences)
+
+===============================
+Changes made in FreeMind 0.9.0 Beta 9
+===============================
+* Bug fix: nodes selection does not change if FreeMind is not focused
+* Select All is aplied to the filtered nodes only if filter is active
+* Bug fix: new nodes are directly closed.
+* Performance of note editor improved. Thanks to Dimitri.
+* Bug fix: long node handling corrected.
+* New shortcut for note editing: control LESS.
+* Open Office Writer Export: Notes added, styles started
+* [ 1581112 ] starting freemind with soft link to freemind.sh does not work
+* HTML Note window automatically opens and closes on control LESS.
+* Correct encoding of htmls: Thanks to gulpman.
+* Log of node styles removed.
+* HTML Note window show/hide state is controlled via shift+control LESS (present in view menu and map context popup window).
+* Taskjuggler integration from aki integrated. Thanks to the author.
+* Bug fix: proper zoom of HTML nodes
+* Bug fix: better "zoom to fit"
+* Bug fix: scroll to selected node after zoom change
+* Improvements in Map Layout
+* Bug Fixes concerning the Left Toolbar
+* Blinking Node Hook does not change the model color, only the view color
+* Bug fix on start if the last map has been deleted
+* Short cuts are traced to the actions even if menu bar is not visible
+* FreeMind Base Dir used for searching the plugins is taken from the classpath, not from the properties
+* FreeMind Base Dir is also used for localizing the docu
+* The Internet Docu Version is used if FreeMind Base Dir can not be defined (applet in browser)
+* Search & Replace Dialog with menu and nicer. Bug fixes...
+* Changes for Java 6.0
+* changes in getFreemindBaseDir (TODO)
+* Local Short Cuts and Properties => Bug Fix for control PLUS etc.
+* Using Shift+Click on icon bar substitutes the current icons by the new one. (Same with Shift+Enter in the icon selection dialog)
+* user friendly closing of the node edit dialogs
+* moved time management to internal plugins.
+* revised build process for external plugins. 
+* New feature: Sort children nodes added.
+* Calendar scrolls with arrow keys through months and years now (JCalendar improvement).
+* Search&Replace: Title corrected
+* NodeModel: attribute selectors in HashMap style added.
+* Bug fix: double click on root node makes it editable
+* Bug fix: starting edit and continue with long node editor keeps changes
+* Bug fix: null pointer in AttributeTable
+* New feature: Script Editor
+* New feature: split of multi paragraph HTML nodes (Edit->Split, plugin)
+* New feature: split of HTML nodes im WYSIWYG Editor
+* SimplyHTML Properties integrated
+* Bug Fix in copy to clipboard
+* MAC Java options include more memory (for graphics export)
+* Writing of HTML refactored out to class MindMapHTMLWriter in package freemind.modes.mindmapmode
+* Copy creates HTML for multiple selection.
+* Light Bulb as icon integrated.
+* new spanish translation of documentation map. Thanks to Natxo.
+* Copy limited to filtered nodes 
+
+===============================
+Changes made in FreeMind 0.9.0 Beta 8
+===============================
+* bug fix: feedback.increase must not be called before auto properties with language setting has been loaded        
+* SimpleHTML: icons for bold and italic actions replaced
+* SimpleHTML: shift + enter inserts <br>
+* SimpleHTML: <END > -  Markierung removed
+* bug fix: NodeNote.Registration.NotesManager.mLastContentEmpty declared static
+* Filter has no border in the toolbar, in order to look like every other toolbar item
+* Bug fix: automatic save when note window is changed.
+* Bug fix: Close closes maps when modes without maps are displayed.
+* Bug fix: [ 1559543 ] Space into attribute folds the node (0.9.0 beta7)
+* Bug fix: Note is not cleaned if newly selected node has no note
+* Bug fix: HTML Tab opened first with plain text content
+* Bug fix: I have a multiline node that there is allways an empty line displayed between the text
+* Bug fix: [ 1563410 ] "use plain text" adds blank lines
+* Bug fix: Background of the inline editor must not be gray
+* Bug fix: Startup user directory creation
+* Bug fix: slider position at first start corrected.
+* New polish translation. Thanks to the author.
+* New slovenian translation. Thanks to the author.
+* Fixed html exports. New JUnit tests available.
+* Fixed browser applet.
+* Keyboard support for enter/leave note at alt-n.
+* Bug fix: Delayed selection time and others are number properties now.
+* Notes are displayed in tooltips (currently, the entire note is displayed).
+* ToolTips are back and its width is an option, now.
+* Moved new search to search menu.
+* Title gets a '*', when map gets dirty. Path is added to title.
+* Bug fix: patterns are saved now.
+* Important Bug Fix: Notes are saved in XML now.
+* Mac Changes: integration in system improved.
+
+===============================
+Changes made in FreeMind 0.9.0 Beta 7
+===============================
+* Kafenio replaced by SimplyHTML
+* Bug fixes: two HTML exports adapted to new file format
+* Patch from Eric for XSLT export introduced. Thanks.
+
+===============================
+Changes made in FreeMind 0.9.0 Beta 6
+===============================
+* Restrictions on node positions removed, 
+* the node motion view oval is filled red if node overlap is possible.
+* Selected nodes are not indicated on printed / exported maps
+* Bug fixes
+* Mac changes: whole application is in one package
+* Slider for Notes introduced.
+* FreeMindStarter introduced to detect wrong java versions.
+* user.properties are obsolete and were removed. auto.properties are replacing them
+* Logging to file enabled.
+* Notes are always present and directly stored (without the plugin notation)
+* Added option to preferences to not load last opened map on startup.
+* Startup shows progress messages.
+* Limited the plugin search to two directory levels.
+* Added the turkish translation. Thanks to the author.
+* Note symbols are back.
+* Bug fix: [ 1536205 ] Fail to revert
+* Load of plugins generalized for Mac, more flexible ClassLoaders now.
+* Started to generalize URL and hyperlink handlings. Done.
+* Patch revised and introduced: 1532279 link between nodes on different freemind maps, thanks to the authors.
+* New feature: history of node is exportable now.
+* Fixed map dragging outside of the window.
+* New feature: Scripting via Groovy introduced. 
+* Bug fix: layout of root with attributes
+* Enhancements of the scripting feature.
+
+Changes made in FreeMind 0.9.0 Beta 5
+===============================
+* Search and Replace in History Dialog.
+* Load and Save Format of HTML nodes realized as discussed by the directors board.
+* Save All implemented.
+* Adapted for intel macs. Thanks to tizzyd
+* Safety extension for Html nodes: if they don't give well formed Xml, we replace the tags.
+* \0 characters are removed from HTML.
+
+Changes made in FreeMind 0.9.0 Beta 2
+===============================
+* Kafenio for notes
+* Paste and Encrypted Node register new attributes in the attribtue registry correctly
+* Bug fix for Attribute Registry
+* Button on/off removed from Filter Toolbar
+* Standard filter conditions "No Filtering" and "Selected Nodes" added to Filter Toolbar
+* Pattern: Duplicate, create from nodes, intersection of patterns from nodes.
+* Bug fix im Browser Toolbar: the browsed file was loaded twice, if its name was typed in the combobox
+* Attribute View Type is saved in a Mind Map document
+* Changes from Henning Dierks (thanks!): node selection and text field background colors adjusted.
+* NodeView has got a new multi component capable layout manager
+* Export of local hyperlinks to XHTML/HTML with image corrected.
+
+Changes made in FreeMind 0.9.0 Beta 1
+===============================
+* VariableSizeCardLayout implemented for Preference Dialog
+* Automatic layout preference design bugs fixed
+
+Changes made in FreeMind 0.9.0 Alpha 1.02
+===============================
+Merged with WYSIWYG Version
+
+Changes made in FreeMind 0.9.0 Alpha 1.01
+===============================
+Merged with Attribute Version
+
+Changes made in FreeMind 0.8.1 FA Alpha 10.02
+===============================
+Attributes can be leaved with alt+F9
+
+Changes made in FreeMind 0.8.1 FA Alpha 10.01
+===============================
+Print Preview
+
+Changes made in FreeMind 0.8.1 FA Alpha 9.04
+===============================
+* Key strokes for attributes can be set using the preferences Dialog
+* Save as HTML, RTF and Text consider filter settings
+* Size of buttons with empty key strokes in the Option Panel are set correctly
+
+Changes made in FreeMind 0.8.1 FA Alpha 9.03
+===============================
+*The export plugins using XSLT changed:
+	Only nodes passed the filter condition inclusive settings
+	in the "Show Ancestors" and "Show Descendants" - checkboxes in the Filter Toolbar
+	are exported in OOWriter and generally by the XSLT exporter.
+*Bugfixes
+
+Changes made in FreeMind 0.8.1 FA Alpha 9.01
+===============================
+Merge with FreeMind 0.8.1 beta 3
+
+Changes made in FreeMind 0.8.FA Alpha 8
+===============================
+* Undo for all attribute operations
+
+* There are only four possible situations:
+   (a) all the attributes are shown everywhere,
+   (b) no attributes are shown anywhere, and
+   (c) only some attributes are shown, accross the whole map
+   (d) all attributes are temporarily shown for the currently selected node, a shortcut alt+f9
+* the "show all", "hide all" ans "show selected" attribute actions are a submenu of the view menu
+* the rest attribute actions (dialogs) have been put to tools
+
+* the button On/Off only switch the filtering, rather than editing
+* When the label "No Filtering" is shown in the combo box, the On/Off button is be inactive
+
+Filter Composer Dialog:
+* Apply applies the filter selected in the list of filters, regardless of the filter selected in the combobox in the toolbar
+* OK closes the dialog and sets the currently selected filter in the list of filters as the current filter in the combobox
+
+Other improvements:
+* Radio Button Items in Menus
+* other changes and refactorings
+
+Changes made in Freemind 0.8.1:
+===============================
+* Word wrap enabled for notes.
+* Refactoring: MindMap specific actions moved to mindmapmode.
+* Refactoring: Each Model comes with its specific ModeController.
+* Refactoring: Each mode has a default ModeController for the case that all maps are closed.
+* Refactoring: Each model has its own HookFactory.
+* Startup: ProgressBar added.
+* Browse Mode: Note viewer written.
+* Browse Mode: Encrypted node viewer written
+* Browse Mode: Reminder viewer written
+* Encryption: Bug fix for empty encrypted nodes.
+* New and revised translations nn and se (thanks to the authors)
+* New translation of the main documentation into german (thanks to the authors)
+* Clean up: Removed clipboard image export that has never worked.
+* Bug fix: Removing reminders call nodeChanged.
+* Documentation is opened in german, if german is the current language.
+* Bug fix: screen title when all maps are closed.
+* Integrated: [ 1274572 ] open / save : remember last directory
+* Implemented undo for notes.
+* '"' are not used to generate File Name Proposals in Save dialogs.
+* Bug fix: Menu bars are displayed correctly when all (browse) maps are closed.
+* Local links get local arrows and are supported in the browser.
+* Bug fix: folded empty nodes have the bubble symbol. Thanks to Dimitri.
+* flash export when title is html corrected [ 1893891 ] flash export not visible in IE7
+* script cookies added
+* sort nodes: bug fix for nodes with same text
+
+Beta 2:
+-------
+* Introduced: [ 1390137 ] patch for bug [ 1368727 ] oowriter 2.0 freemind.0.8.0-oowriter.2.0.patch
+* Switched from JaxB to JibX, which is free. Thanks to Dennis Sosnoski for the help.
+* New icon: bad smily
+
+Beta3:
+------
+* New features: Export to Applet and Flash added.
+* New feature: move nodes left/right.
+* Bug fix: fit to page (thanks to Dimitri).
+
+Beta4:
+------
+* Style editor added.
+* Pattern editor added.
+* Modes menu integrated into map menu to save menu place.
+* Root node curves improved.
+* Automatic layout patterns can be specified in the preferences dialog
+
+Changes made in Freemind 0.8.0-ALPHA-DAN-5:
+===============================
+    * HTML selections are pasted directly as rich text, whether they
+      were made in a web browser, Microsoft Word document, or any
+      other application that puts HTML to the clipboard. Whether the
+      picture elements should be pasted or filtered away is driven by
+      the user property cut_out_pictures_when_pasting_html (=true or
+      =false),
+
+    * HTML nodes are edited using WYSIWYG editor,
+
+    * HTML nodes with <body> tag get limited width, like plain text
+      nodes. To have HTML nodes with unlimited width, use the tag
+      <body width=""> or the like of <body width="900">,
+
+    * after a single HTML node is copied to the clipboard, it is
+      pasted by applications understanding HTML directly, as rich
+      text. An example of such an application is Microsoft Word,
+
+    * copying of HTML nodes and pasting them as plain text does not
+      paste HTML tags
+
+    * when exporting to HTML, title of the web page does not show HTML
+      tags
+
+    * there is a new function Use Rich Formatting that turns plain
+      text node into HTML node
+
+    * action Use Plain Text added
+
+    * after Use Rich Formatting action, new long nodes are rich
+      formatted. After Use Plain Text action, new long nodes are plain
+      text
+
+    * scrollbars can be switched off using the property no_scrollbar =
+      true; can be only set manually in user.properties,
+
+    * user icons can be added. PNG files of the icons have to be added
+      to the folder .../.freemind/icons; the comma separated list of
+      icon names without the .png extension has to be set in the user
+      property user_icons,
+
+    * style to be used in HTML nodes can be determined by setting the
+      user property html_long_node_head, like html_long_node_head =
+      <style><!-- td { border-style: solid } th { border-style: solid
+      } table { border-style: solid } --></style>,
+
+    * in the long node editor, SHIFT+ENTER enters a new line,
+      regardless of the "Enter Confirms" setting. Also, ALT+ENTER
+      confirms regardless of the "Enter Confirms" setting,
+
+    * when exporting to HTML using the exporting function as of
+      FreeMind 0.7.1, the list bullets in exported HTML nodes are
+      shown. HTML link contained in HTML nodes are styled normally and
+      underlined.
+
+    * find function now works as a keyword search. An example of
+      search is - word "two other"; node matches if it (a) contains
+      substring "word", and (b) it contains substring "two other".
+
+Changes made in Freemind 0.8.0:
+===============================
+* From Koh (thanks): Standard Macintosh application use Command(meta) key based Keyboard shortcut. (ex. copy is Command(meta) + C). I think that mac version's freemind should allow to assign meta key based shortcut.
+* Bug fix: AutomaticLayout.java
+* Undo action added.
+* Added edit node to the undo-actions.
+* Added addNode/deleteNode to the undo-actions.
+* Added cut/paste/del to undo-actions.
+* no root folding.
+* Rearranged the menus.
+* Bug fix: icon selection can be canceled.
+* Plugins are now well distributed over the menus.
+* Blind icons to align the menus (in development)
+
+* NodeView selection mechanism refactored
+* Background color is changeable
+* Plugin for "change management" introduced
+* Now, TAB is usable for insertion of nodes. This is useful for Macs.
+
+* Unified JaxB usage
+* Transfer from plugin properties to XML started
+
+* Plugins are configured via XML now.
+* Checked menu items added.
+
+* Bold menu is now checked/unchecked if bold/normal
+
+* Plugins can have registration parts that are called at each map startup.
+* UnfoldAll is mouse wheel sensitive.
+* Folding can be undone (for children too).
+* Multiple move nodes is now possible + undoable
+
+* More undoables: Edge color, italic, underline
+* Format of new nodes is now automatically taken from the last format changes
+* Find has an icon, such that it is more visible.
+* There is a filter possibility for XmlActions
+* Selection corrected after execution of NodeHookActions.
+
+* Font family and font size are undoable now.
+
+* Changed several occurences of setFolded to the undoable method.
+* Added the help plugin
+* Changed the plugin class loader behaviour completely.
+
+* Splash screen added
+* Automatic layout layouted
+* NodeNote improved
+* Bug with zoomIn corrected
+
+* Application is more or less fit for Mac OS X
+
+* NewParentNode is working again and is undoable
+* ImportLinked... are messaging if the node is not correct (i.e. admits no link to another mindmap).
+
+* Node color action is undoable now.
+
+* Undo respects bundle of changes as a single change now.
+* Undo refactored.
+
+* Hooks are undoable now, tested with AutomaticLayout.
+
+//commented out: * Icons appear on the right side on the right side of the node.
+* More Undo: icon adding and removing and node blend action.
+
+* icon selection and other MindMapHooks (like unfold all) are undoable now
+  (here, no undo- or redoaction are performed, the undo information is given by the actions
+   the hook performs).
+* Apply patterns, edge width, edge style and node styles are undoable
+* Format copy introduced.
+* Cloud actions undoable. (Color treatment for new clouds is missing).
+* Arrows are undoable now (including color, remove, heads).
+* Icons improved, node background is editable now, strings extracted
+* NEW Add arrow link action added to insert menu.
+
+* Local hyperlinks enabled.
+* Link targets are shown in the status bar on mouse over.
+* Text of the status bar content improved.
+* Bug fix for reading arrow link inclinations.
+
+* Export to image reactivated. Export to clipboard added but not tested.
+* Export via XSLT revised. New HTML export added (java script version from Miika Nurminen, 12.7.2004. Thanks.
+* New HTML export added from Markus Brueckner. Thanks
+
+* Help and SVG Export added as Plugins.
+* PDF export added.
+* Startuptime reduced.
+* Little improvement for the Icon selector: the last position is restored next time it is opened.
+* Bugfix: New parent node. Export to HTML III.
+
+* Repaired: Icons appear on the right side on the right side of the node.
+* Bug fix: NewParentNode and root
+* icon for "insert child node"
+* Packaging of default plugins
+
+* Plugins internationalized.
+* Bug fix: Plugins under Windows.
+* Bug fix: Export to XHTML
+* Bug fix: Export branch.
+* Bug fix: Classpath and Mac OS X
+* Icon selector has remove actions
+* Japanese translation merged (thanks to Koh for the fast reaction).
+* Fixed the proposed file names of all export hooks
+
+
+RC 1
+----
+* Bug fix: Cut/Paste
+* New translations chinese and russian.
+
+* Bug fix: Drag'n'Drop to children nodes with total loss is no longer possible.
+
+* New Feature: encrypted nodes introduced (DON'T RELY ON THIS ENCRYPTION. IT IS WEAK BECAUSE IT IS PASSWORD BASED!)
+* New Feature: HTML export III enhanced by a clickable image map.
+* Bug fix: export unsaved maps.
+* Import actions are new undoable.
+* Join node is undoable
+* Split node is undoable
+* Two new portugese translations (thanks to the authors).
+* New Feature: Encrypted Maps (and not only encrpyted nodes).
+* Icons for encryption improved
+* Bug fix: docu map for mac os x.
+
+* Bug fix for the moving node bug provided by Dimitri. Thanks!
+* Icons revised. Now, mostly come along in 16x16 format and are taken from /usr/share/icons/crystalsvg/16x16/...
+
+* Encrypted nodes store their randomly generated salt. This salt is changed each time the map is saved.
+* Wrong passwords produce a dialog.
+* Menu structure revised.
+* Bug fix: Toggle children corrected
+* Debugging removed from encrypted nodes.
+* Popup menu: format actions added.
+
+* GTK and free form as look and feel added
+* Export menus revised.
+* Merged new version from Miika Nurminen. Thanks!
+* Merged the new splash screen from Marc Carson. Thanks.
+* Bug fix for: For editing long nodes I could set el__enter_confirms_by_default = false.
+* Bug fix: Show revisions in yellow. Thanks to michaelschwarz.
+* Bug fix: packaging under linux.
+* Bug fix: Quit and Cancel under Macintosh.
+* Bug fix: Toggle encrypted nodes for unencrypted nodes give an error message.
+
+RC2
+---
+* New freemind.sh from Eric.
+* Arrow moves with the mouse are undoable now.
+* mm files can be associated with FM under Mac OSX now.
+* Patch for icons in patterns integrated. Thanks to the community.
+* Bug fix: FoldAll bug removed.
+* Delayed selection is back (due to Dimitris wish).
+* Introduced Dimitris patch on not synchronized Edit-Boxes. Thanks to Dimitri.
+* Introduced Dans Resource changes.
+* Adjusted popup menus
+* http://www.apple.com/support/downloads/javaupdate142.html
+* Bug fix: Class Loader generation is now cached.
+* New external plugin: time management. It is now possible to add dates to nodes and
+  to schedule resubmissions, which remind at a certain date to a given node.
+
+* japanese traduction introduced.
+* new state icons (look for reminders)
+* tooltips may occur more than one
+* bug fix: move of nodes with created/modified information
+* bug fix: created/modified info appears directly.
+* bug fix: upper case and xml (for the turkish version)
+* bug fix: Find and Find Next work again.
+
+* plugin data survive even when the plugin is not present.
+* bug fix: reminders can be deleted and changed.
+* Reminder have hours and minutes now.
+* bug fix: reminders are undoable now.
+* bug fix: Time Management Window has a title now.
+
+* enhanced german translation.
+* timed out nodes are selected.
+* some insert menu points are put into the popup menu.
+* bin-max.zip created.
+
+RC 3:
+-----
+* Bug fix: dot removed.
+* New feature: hierarchical icons.
+* Bug fix: icon from encrypted node corrected.
+
+* Bug fix from Dimitri: Random Node id generation.
+* Bug fix: english translation typos from Dan.
+* Bug fix: "new parent" order of childs.
+
+* New icons: priority 1-7
+* Bug fix: pdf/svg fonts are now embedded.
+
+* Bug fix: mapOpened removed from ControllerAdapter
+* With permission of Dan, the NodeNotes are back.
+* Bug fix: Node background colour in bubble nodes.
+* Bug fix: No appropiate actions are enabled when all maps are closed.
+* Bug fix: font name is copied by Format Copy.
+
+* New feature: Collaboration mode (alpha version)
+* Bug fix: java 1.5 compiler changes (thanks to Dimitri and to brcha)
+* Bug fix: Typing into the node gulps the first letter. Due to Dimitri.
+
+* New feature: Revert map.
+* Started to write down a scheme of the mm format.
+
+* Collaboration: The map is sent to the invited user.
+* New translation into korean. Thanks to the author.
+* Translation into chinese enhanced. Thanks to william chen - (willyann).
+
+* Today button added for time management.
+* Encryption menu items disabled if not applicable.
+* Bug fix: Automatic layout applies to folded childs.
+* New feature: Time Scheduler list added.
+
+* Bug fix: revision plugin shutdown implemented.
+* Storage of creation/modification times moved to <node> tag. This times are always updated, even if its display is turned off.
+* Bug fix: removal of node background colors introduced.
+
+* Moved personal freemind folder to '.freemind' to hide it under Linux and MacOSX. The old folder is moved the first time.
+
+* Window properties of TimeList window is stored in preferences
+* Nodebackground color is used in patterns and copy-format
+
+* New map: filename is better chosen (special characters are removed).
+* Collaboration: messages are sent zipped now.
+
+* patch from ewl (thanks): new version of classpath resolution suggested by ewl under patch [ 1154510 ] Be able to give absolute classpath entries in plugin.xml
+* corrected behaviour of centerNode and displayNode.
+
+* Bug fix: encrypted nodes are stored correctly, even if they are closed before saving.
+* Patch introduced: Drag&Drop of files into FM under Windows. Thanks to cerney.
+
+* Window properties of TimeList window enhanced by sorting info. Close action fixed.
+* Added selection methods to MindmapActions.
+* Select all and select branch added.
+* Version updater installed. All mindmaps loaded are automatically converted in the eventually changed
+  actual mindmap xml format by the freemind_version_updater.xml
+* Automatic language chooser added. (Now, FM tries to load the user's language. If this does not exist, english is chosen).
+* New slowenian translation.
+
+* Merged the node moving algorithm and implementation of Dimitri. Many thanks.
+* Bug fix: isPrinting and title of screen.
+* Bug fix: copying of links generates new unique ids.
+
+* Bug fix: cutting nodes preserves order.
+* Time Management Reminders don't display boxes anymore. Instead they use
+  blinking nodes.
+* MindMapIcons are singletons now.
+* Bug fix: folded root can be unfolded now.
+* Docu bug fix: no popup in reminders any more.
+
+* First version of preference window added.
+* Some property change listener implemented.
+* Bug fix: new nodes have a proper text box.
+
+RC 4:
+------------
+* Some new languages
+* Size+Position is stored for the option panel. Moreover, the first size is adjusted to 800x600.
+* Bug fix: [ 1207937 ] [0.8 rc3] Null pointer exception on map load blocks whole FM
+* Notes have an icon now.
+* Hack removed: encrypted nodes: the xml attribute AA_NODE_CLASS needs not to occur as the first attribute.
+* Antialias and selection option changes are now directly applied.
+* Option panel stores its panel
+* Removing clouds stores its color for undo.
+* Added icons to popup menu.
+* Version updater adapted to process renames from RC3->RC4.
+* Added readme.txt for the src package
+* XML must not contain any zero characters.
+* Fixed: Filename construction
+* Integrated patch: NodeFoldingPatch 1166708. Thanks to John Cerney.
+* Node styles, color, selected node, edge, cloud, link color change with option change.
+* Little bugs in XSLT exports removed.
+* All colors in the option panel now have a "Reset color" popup menu.
+* Moved "Goto" to navigate menu.
+* Renamed XML representation of encrypted nodes.
+* Fixed: File mode (added linkRegistry to FileMapModel).
+* New french translation.
+* Separators in ToolBar
+* Bug fix: folding with the mouse wheel folds selected nodes.
+* Changed cursor when over the ellipsis that enables node moving.
+* Added keyboard shortcut for property menu.
+* Cleaned up format menu.
+* Changed option panels keystroke page to have two columns
+* Merge with Dimitris Layout adjustments:
+	- node positions do not change, when nodes are folded or unfolded.
+	- node spacing and graphical link positions returned to the version of 0.7.1
+	- padding for bubble style node is bigger now.
+* Fix: HYPERLINK_POSITION: the hyperlink is activated when clicked to the region of the node closer to root.
+
+RC 5:
+-----
+* Enabled standard preferences menu under Mac OS X.
+* Bug fix: NodeNote icon is present at file load.
+* New layout of edges emerging from root.
+* Started to write import XSLT from MindManager X5.
+* Reduced memory consumption due to lazy initialization of Node attributes like icons, tooltips, etc.
+* Validation task added to build-file
+* Translations introduced (thanks to the authors).
+* freemind.xsd improved. Works on the command line (but not with ant...) using
+  find . -name "*.mm" -exec xmllint --noout --schema freemind.xsd {} \;
+* mindmanager2mm.xsl done.
+* New feature: Import from Mind M*nager X5.
+* Commented new layout for root nodes out. To reactivate, go to method
+  Point getOutPoint(Point destinationPoint, boolean isLeft) and say if(true)
+* Problem solution: Faster shutdown of maps, as redisplay of the map is only performed if the changed node is visible.
+* Import folder structure now folds the nodes. This method is to slow to be useful.
+* New feature: Export to Open Office Writer
+* Memory consumption reduced.
+
+RC 6:
+-----
+* Added option for amount of undo steps.
+* set image by file chooser corrected (undoable).
+* html export (variant with map picture) corrected and enhanced by notes and embedded images.
+* Unused method removed from MapModel.
+* Bug fix: Hierarchical Icons with "cut", "delete" and "undo add icon".
+* Actions are disabled if no map is open.
+* Bug fix: [ 1251054 ] Unicode input and display in HTML.
+* New lithuanian translation. Thanks to oxiris.
+* Update version XSLT is only applied if neccessary (for 0.7.1 it is not applied).
+
+Changes made in Freemind 0.7.2:
+===============================
+* Pluginmechanism added
+* Messagebox if recent file not present
+* Special key for mac insert
+* ModeControllerHookAction added.
+* Permanent Hooks can save their things as XML
+* Toolbar size reduced by Stefan Zechmeister
+* FitToPage corrected by Dimitri
+* Lazy initialization of Jython to increase startup speed.
+* Icon size reduced
+* Unfold all added
+* Bug fix: XMLWriter addes additional \n for contents.
+* setNode is now called automatically.
+* Jython is substituted by an attrappe
+* Fold and Unfold one stage is available now.
+
+Changes made in Freemind 0.7.1:
+===============================
+* Bug fix: automatic save occurs not so often (in fact, only if something has changed since the last automatic save), and uses a better filename.
+* Daniel changed the documentation.
+* Bug fix: Documentation opened twice.
+* Security fix: path for auto save is changeable and points to the freemind user properties directory by default
+* At normal shutdown, the auto saves are deleted, but this is configurable.
+* Bug fix: When a map is closed, the saving stops (Thanks to Karim).
+* Bug fix: Blocking is enabled for graphical link popup menu.
+* Ant task (development only): ant run is working.
+
+RC3:
+----
+* Bug fix: select sons of root with shift now gives only sons on the correct side.
+* Removed the delayed selection from the menu, it is deprecated now, and will be removed completely at the next release.
+* Corrected shading of the rood node for drag&drop
+* Bug fix: Selection mechanism: if drag&drop is started, the node under the cursor is selected. Branches are now selected using AltGr or Alt (depends on OS).
+* Mac change: the browser call is changed according to Nick. Thanks.
+* Bug fix: If more than one selection, folding and editing with mouse disabled. The old behaviour was not useful as the last selected was opened in the editor or was folded even if one pressed on another node.
+* Little feature: folding of many selected nodes is working.
+* Bug fix: Continuous selection with Shift key corrected. Now, more than one of these selection ranges can be used.
+* Logger is now available at the FreeMind interface.
+* Automatic save introduced (necessary feature until undo is available)
+
+RC2:
+----
+* Bug fix: the context menu for graphical links appears not only in the neighbourhood of the link line, but appears in the *FILLED* arc, that is surrounded by the arc. Fixed.
+* Selection method added: selection via mouse click as in office programs.
+* Click method:
+  - inner node
+    + single click: fold
+    + double click: fold
+  - leaf (node without childs)
+    + single click: edit
+    + double click: edit
+* POSITION is only saved if the node is son of root. This prevents having lots of POSITION tags in the saved XML.
+* POSITION is chosen right if dropped onto root. (left half, pasted to left, right half, pasted to - you guess it? - right!)
+* Left and Right is respected with ENTER.
+* Bug fix: cutting nodes including any of their children or grant-children works now. This removes the bug with a moved tree that is completely marked.
+
+RC1:
+----
+* Bug fix: nodes with arc and bubble nodes have antialiased text when the antialiasing  of edges is on
+* Removed the arc, that distinguished bubble nodes from folded nodes. More discussion is needed.
+* Selection method changed: double click is now only for editing if the node is *not* an inner node.
+* Documentation enhanced: Creation of graphical links is better described
+* Bug fix: Zoom in/out uses step one again.
+* Bug fix: System default look and feel is set if so stated in the freemind.properties or user.properties.
+
+Changes made in Freemind 0.7.0:
+===============================
+
+* Bug fix: Open and Quit are working if no map is present
+* The last closed map can be reopend using a key stroke.
+* Bug fix: Context menu is back.
+* Selection method changed and simplified: double click is now for editing and single for mark and fold.
+* Browser is working again.
+* Folded nodes have now an arc on their outer side, where the edge comes into.
+* Solved the left/right problem of Freemind.
+* Patches for PrintSetup, RTF and FoldedIcons added. Thanks to the contributors.
+* Japanese traduction added
+* Corrected the browser call statement. Hopefully, it is right now.
+* Changed behaviour of user.porperties. It is now created if not present.
+* Moreover, added a FAQ menu item.
+* Two maps with same name bug solved.
+*
+* Add new files for the browse mode.
+* Browse mode is working again. Some structural improvements. Deleted doc/pics and doc/compile.
+* Bug in printing routine removed
+* Copy&Paste works now even with links (they are properly removed)
+* Delay in node selection introduced.
+* Changed version number to 0.7.0.
+* Introduced Dimitris patch for nodes starting with /.
+* German translation revised.
+* Documentation enhanced.
+* First not integrated version of the link registry
+* First version with clouds and arrow links.
+* Images corrected. Now they display correctly (at least under Linux).
+* Internal link handling entierly improved. Now there is a goto on right click onto a link.
+* Moreover, it is possible to zoom the map using shift + mouse wheel.
+* Link feature matured.
+* Mouse wheel zoom support using control key.
+* Lots of bugs removed.
+* The selection method is now changeable.
+* freemind.sh is now better (thanks to Peter Torngaard).
+* Now arrow links can be cut and pasted right.
+* Moreover, we have to new translations (dk and it).
+* Now the directory structure is as of version 0.6.7
+* Now, right clicking an arrow link, a list of all link targets is presented.
+* Build corrected.
+* Pasting link sources works now good. Link targets are removed from paste.
+* Pattern can also affect it sons, selection method improved.
+* Clouds are now better drawn.
+* Registry is starting to work.
+* Now, hidden links can be reached via right click.
+* Removed historic text files
+* Some structural changes
+* Two nice features: choose the default browser
+* Long node dialog remembers the enter-confirm-state
+* adapted the standard color of a cloud to a brighter value (f0f0f0)

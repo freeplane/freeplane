@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<plugin	label="plugins/ExportPdf">
+	<plugin_classpath jar="svg/svg_plugin.jar"/>
+	<plugin_classpath jar="svg/batik-awt-util.jar"/>
+	<plugin_classpath jar="svg/batik-bridge.jar"/>
+	<plugin_classpath jar="svg/batik-css.jar"/>
+	<plugin_classpath jar="svg/batik-dom.jar"/>
+	<plugin_classpath jar="svg/batik-extension.jar"/>
+	<plugin_classpath jar="svg/batik-ext.jar"/>
+	<plugin_classpath jar="svg/batik-gui-util.jar"/>
+	<plugin_classpath jar="svg/batik-gvt.jar"/>
+	<plugin_classpath jar="svg/batik-parser.jar"/>
+	<plugin_classpath jar="svg/batik-script.jar"/>
+	<plugin_classpath jar="svg/batik-squiggle.jar"/>
+	<plugin_classpath jar="svg/batik-svg-dom.jar"/>
+	<plugin_classpath jar="svg/batik-svggen.jar"/>
+	<plugin_classpath jar="svg/batik-swing.jar"/>
+	<plugin_classpath jar="svg/batik-transcoder.jar"/>
+	<plugin_classpath jar="svg/batik-util.jar"/>
+	<plugin_classpath jar="svg/batik-xml.jar"/>
+	<plugin_classpath jar="svg/js.jar"/>
+	<plugin_classpath jar="svg/pdf-transcoder.jar"/>
+	<plugin_classpath jar="svg/xerces_2_5_0.jar"/>
+	<plugin_classpath jar="svg/xml-apis.jar"/>
+	<plugin_action 
+		documentation="%plugins/ExportPdf.xml_documentation" 
+		name="%plugins/ExportPdf.xml_name" base="deprecated.freemind.extensions.ModeControllerHookAdapter" 
+		label="plugins/ExportPdf.xml" 
+		class_name="plugins.svg.ExportPdf">
+		<plugin_mode class_name="org.freeplane.modes.mindmapmode"/>
+		<plugin_menu location="/menu_bar/file/export/export/pdf_export"/>
+	</plugin_action>
+	<plugin_action 
+		documentation="%plugins/ExportSvg.xml_documentation" 
+		name="%plugins/ExportSvg.xml_name" base="deprecated.freemind.extensions.ModeControllerHookAdapter" 
+		label="plugins/ExportSvg.xml" 
+		class_name="plugins.svg.ExportSvg">
+		<plugin_mode class_name="org.freeplane.modes.mindmapmode"/>
+		<plugin_menu location="/menu_bar/file/export/export/svg_export"/>
+	</plugin_action>
+</plugin>

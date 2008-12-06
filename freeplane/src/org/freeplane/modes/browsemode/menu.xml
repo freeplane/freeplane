@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menu_structure>
+	<menu_category name="menu_bar">
+		<menu_submenu name="file" name_ref="file">
+			<menu_category name="close">
+				<menu_action field="close" key_ref="keystroke_close" />
+			</menu_category>
+			<menu_separator />
+			<menu_submenu name="last" name_ref="most_recent_files"></menu_submenu>
+			<menu_category name="print">
+				<menu_action field="page" />
+				<menu_action field="print" key_ref="keystroke_print" />
+				<menu_action field="printPreview" key_ref="keystroke_print_preview" />
+			</menu_category>
+			<menu_separator />
+			<menu_category name="quit">
+				<menu_action field="quit" key_ref="keystroke_quit" />
+			</menu_category>
+			<menu_separator />
+		</menu_submenu>
+		<menu_submenu name="edit" name_ref="edit">
+			<menu_category name="paste">
+				<menu_action name="copy" field="copy" key_ref="keystroke_copy" />
+				<menu_action name="copySingle" field="copySingle"
+					key_ref="keystroke_copy_single" />
+			</menu_category>
+			<menu_category name="find">
+				<menu_action field="find" key_ref="keystroke_find" />
+				<menu_action field="findNext" key_ref="keystroke_find_next" />
+			</menu_category>
+			<menu_category name="followLink">
+				<menu_action field="followLink" key_ref="keystroke_follow_link" />
+			</menu_category>
+		</menu_submenu>
+		<menu_submenu name="view" name_ref="menu_view">
+			<menu_category name="toolbars"></menu_category>
+			<menu_action field="toggleToolbar" />
+			<menu_separator />
+			<menu_category name="general">
+				<menu_action field="showSelectionAsRectangle" />
+			</menu_category>
+			<menu_category name="zoom">
+				<menu_action field="zoomIn" key_ref="keystroke_zoom_in" />
+				<menu_action field="zoomOut" key_ref="keystroke_zoom_out" />
+			</menu_category>
+			<menu_separator />
+			<menu_submenu name="attributes" name_ref="menu_attributes">
+				<menu_radio_action name="showAllAttributes" field="showAllAttributes"
+					key_ref="keystroke_show_all_attributes" selected="true" />
+				<menu_radio_action name="showSelectedAttributes"
+					field="showSelectedAttributes" key_ref="keystroke_show_selected_attributes" />
+				<menu_radio_action name="hideAllAttributes" field="hideAllAttributes"
+					key_ref="keystroke_hide_all_attributes" />
+			</menu_submenu>
+		</menu_submenu>
+		<menu_submenu name="navigate" name_ref="menu_navigate">
+			<menu_category name="navigate">
+				<menu_action field="navigationPreviousMap" key_ref="keystroke_previousMap" />
+				<menu_action field="navigationNextMap" key_ref="keystroke_nextMap" />
+			</menu_category>
+			<menu_separator />
+			<menu_category name="nodes">
+				<menu_action field="moveToRoot" key_ref="keystroke_moveToRoot" />
+			</menu_category>
+			<menu_separator />
+			<menu_category name="folding">
+				<menu_action field="toggleFolded" key_ref="keystroke_toggle_folded" />
+				<menu_action field="toggleChildrenFolded" key_ref="keystroke_toggle_children_folded" />
+			</menu_category>
+			<menu_separator />
+			<menu_category name="links">
+				<menu_action field="followLink" key_ref="keystroke_follow_link" /> <!-- goto -->
+			</menu_category>
+			<menu_separator />
+		</menu_submenu>
+		<menu_submenu name="mindmaps" name_ref="mindmaps">
+			<menu_category name="navigate"></menu_category>
+			<menu_category name="mindmaps"></menu_category>
+			<menu_separator />
+		</menu_submenu>
+		<menu_submenu name="help" name_ref="help">
+			<menu_category name="doc">
+				<menu_action field="documentation" />
+				<menu_action field="freemindUrl" />
+				<menu_action field="faq" />
+				<menu_action field="license" />
+				<menu_action field="about" />
+			</menu_category>
+		</menu_submenu>
+	</menu_category>
+	<menu_category name="map_popup">
+		<menu_category name="maps">
+		</menu_category>
+		<menu_separator />
+		<menu_category name="toolbars">
+			<menu_action field="toggleMenubar" />
+			<menu_action field="toggleToolbar" />
+		</menu_category>
+	</menu_category>
+	<menu_category name="node_popup">
+		<menu_category name="paste">
+			<menu_action name="copy" field="copy" key_ref="keystroke_copy" />
+			<menu_action name="copySingle" field="copySingle"
+				key_ref="keystroke_copy_single" />
+		</menu_category>
+		<menu_category name="folding">
+			<menu_action field="toggleFolded" key_ref="keystroke_toggle_folded" />
+		</menu_category>
+		<menu_category name="context">
+		</menu_category>
+		<menu_separator />
+	</menu_category>
+	<menu_category name="main_toolbar">
+		<menu_category name="main">
+			<menu_action field="navigationPreviousMap" />
+			<menu_action field="navigationNextMap" />
+			<menu_action field="printDirect" />
+			<menu_action field="showFilterToolbarAction" tooltip="filter_toolbar" />
+		</menu_category>
+		<menu_category name="zoom">
+		</menu_category>
+		<menu_category name="paste">
+			<menu_action name="copy" field="copy" key_ref="keystroke_copy" />
+		</menu_category>
+		<menu_separator />
+		<menu_category name="folding">
+		</menu_category>
+	</menu_category>
+</menu_structure>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="plugins/CollaborationJabber.xml|plugins/collaboration/jabber/**|plugins/collaboration/" kind="src" path="src"/>
+	<classpathentry kind="lib" path="src/plugins/svg/xml-apis.jar"/>
+	<classpathentry kind="lib" path="src/plugins/svg/batik-bridge.jar"/>
+	<classpathentry kind="lib" path="src/plugins/svg/batik-css.jar"/>
+	<classpathentry kind="lib" path="src/plugins/svg/batik-dom.jar"/>
+	<classpathentry kind="lib" path="src/plugins/svg/batik-ext.jar"/>
+	<classpathentry kind="lib" path="src/plugins/svg/batik-extension.jar"/>
+	<classpathentry kind="lib" path="src/plugins/svg/batik-gui-util.jar"/>
+	<classpathentry kind="lib" path="src/plugins/svg/batik-gvt.jar"/>
+	<classpathentry kind="lib" path="src/plugins/svg/batik-parser.jar"/>
+	<classpathentry kind="lib" path="src/plugins/svg/batik-script.jar"/>
+	<classpathentry kind="lib" path="src/plugins/svg/batik-squiggle.jar"/>
+	<classpathentry kind="lib" path="src/plugins/svg/batik-svg-dom.jar"/>
+	<classpathentry kind="lib" path="src/plugins/svg/batik-svggen.jar"/>
+	<classpathentry kind="lib" path="src/plugins/svg/batik-swing.jar"/>
+	<classpathentry kind="lib" path="src/plugins/svg/batik-transcoder.jar"/>
+	<classpathentry kind="lib" path="src/plugins/svg/batik-util.jar"/>
+	<classpathentry kind="lib" path="src/plugins/svg/batik-xml.jar"/>
+	<classpathentry kind="lib" path="src/plugins/svg/js.jar"/>
+	<classpathentry kind="lib" path="src/plugins/svg/pdf-transcoder.jar"/>
+	<classpathentry kind="lib" path="src/plugins/svg/xerces_2_5_0.jar"/>
+	<classpathentry kind="lib" path="src/plugins/svg/batik-awt-util.jar"/>
+	<classpathentry kind="lib" path="src/plugins/help/jhall.jar"/>
+	<classpathentry kind="lib" path="lib/jibx/jibx-bind.jar"/>
+	<classpathentry kind="lib" path="lib/bindings.jar"/>
+	<classpathentry kind="lib" path="lib/jibx/jibx-run.jar"/>
+	<classpathentry kind="lib" path="lib/forms-1.0.5.jar" sourcepath="lib/forms-1.0.5-src.zip"/>
+	<classpathentry kind="lib" path="lib/commons-lang-2.0.jar"/>
+	<classpathentry kind="lib" path="lib/junit.jar"/>
+	<classpathentry kind="lib" path="lib/SimplyHTML/gnu-regexp-1.1.4.jar"/>
+	<classpathentry kind="lib" path="lib/SimplyHTML/SimplyHTML.jar" sourcepath="/simplyHtml/src"/>
+	<classpathentry kind="lib" path="lib/jarbundler-1.8.1.jar"/>
+	<classpathentry kind="lib" path="src/plugins/script/groovy-all-1.5.6.jar"/>
+	<classpathentry kind="lib" path="src/org/freeplane/addins/latex/HotEqn.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="bin/classes"/>
+</classpath>

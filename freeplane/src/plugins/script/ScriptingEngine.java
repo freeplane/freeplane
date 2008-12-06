@@ -1,0 +1,332 @@
+/*
+ * FreeMind - A Program for creating and viewing MindmapsCopyright (C) 2000-2006
+ * Joerg Mueller, Daniel Polansky, Christian Foltin and others.See COPYING for
+ * DetailsThis program is free software; you can redistribute it and/ormodify it
+ * under the terms of the GNU General Public Licenseas published by the Free
+ * Software Foundation; either version 2of the License, or (at your option) any
+ * later version.This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty ofMERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See theGNU General Public License for
+ * more details.You should have received a copy of the GNU General Public
+ * Licensealong with this program; if not, write to the Free SoftwareFoundation,
+ * Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. Created on
+ * 02.09.2006
+ */
+/*
+ * $Id: ScriptingEngine.java,v 1.1.2.20 2008/04/18 21:18:26 christianfoltin Exp
+ * $
+ */
+package plugins.script;
+
+import groovy.lang.Binding;
+import groovy.lang.GroovyRuntimeException;
+import groovy.lang.GroovyShell;
+
+import java.io.File;
+import java.io.PrintStream;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.regex.Matcher;
+
+import javax.swing.JOptionPane;
+
+import org.codehaus.groovy.ast.ASTNode;
+import org.codehaus.groovy.ast.ModuleNode;
+import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.resources.ResourceController;
+import org.freeplane.main.FreeMindSecurityManager;
+import org.freeplane.main.Tools;
+import org.freeplane.main.Tools.BooleanHolder;
+import org.freeplane.map.attribute.NodeAttributeTableModel;
+import org.freeplane.map.attribute.mindmapnode.MAttributeController;
+import org.freeplane.map.text.mindmapmode.MTextController;
+import org.freeplane.map.tree.NodeModel;
+import org.freeplane.modes.mindmapmode.MModeController;
+
+import deprecated.freemind.common.OptionalDontShowMeAgainDialog;
+import deprecated.freemind.modes.mindmapmode.hooks.MindMapHookAdapter;
+
+/**
+ * @author foltin
+ */
+public class ScriptingEngine extends MindMapHookAdapter {
+	public interface IErrorHandler {
+		void gotoLine(int pLineNumber);
+	}
+
+	public static final String SCRIPT_PREFIX = "script";
+	private static final HashMap sScriptCookies = new HashMap();
+
+	/**
+	 * @param node
+	 * @param pAlreadyAScriptExecuted
+	 * @param script
+	 * @param pMindMapController
+	 * @param pScriptCookies
+	 * @return true, if further scripts can be executed, false, if the user
+	 *         canceled or an error occurred.
+	 */
+	static boolean executeScript(final NodeModel node,
+	                             final BooleanHolder pAlreadyAScriptExecuted,
+	                             String script,
+	                             final MModeController pMindMapController,
+	                             final IErrorHandler pErrorHandler,
+	                             final PrintStream pOutStream,
+	                             final HashMap pScriptCookies) {
+		if (!pAlreadyAScriptExecuted.getValue()) {
+			final int showResult = new OptionalDontShowMeAgainDialog(
+			    Freeplane.getController().getViewController().getJFrame(),
+			    pMindMapController.getSelectedView(),
+			    "really_execute_script",
+			    "confirmation",
+			    new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
+			        ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING),
+			    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED)
+			    .show().getResult();
+			if (showResult != JOptionPane.OK_OPTION) {
+				return false;
+			}
+		}
+		pAlreadyAScriptExecuted.setValue(true);
+		final Binding binding = new Binding();
+		binding.setVariable("c", pMindMapController);
+		binding.setVariable("node", node);
+		binding.setVariable("cookies", ScriptingEngine.sScriptCookies);
+		final GroovyShell shell = new GroovyShell(binding);
+		boolean assignResult = false;
+		String assignTo = null;
+		if (script.startsWith("=")) {
+			script = script.substring(1);
+			assignResult = true;
+		}
+		else {
+			final int indexOfEquals = script.indexOf('=');
+			if (indexOfEquals > 0) {
+				final String start = script.substring(0, indexOfEquals);
+				if (start.matches("[a-zA-Z0-9_]+")) {
+					assignTo = start;
+					script = script.substring(indexOfEquals + 1);
+					assignResult = true;
+				}
+			}
+		}
+		/*
+		 * get preferences (and store them again after the script execution,
+		 * such that the scripts are not able to change them).
+		 */
+		final String executeWithoutAsking = Freeplane.getController()
+		    .getResourceController().getProperty(
+		        ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING);
+		final String executeWithoutFileRestriction = Freeplane
+		    .getController()
+		    .getResourceController()
+		    .getProperty(
+		        ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION);
+		final String executeWithoutNetworkRestriction = Freeplane
+		    .getController()
+		    .getResourceController()
+		    .getProperty(
+		        ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION);
+		final String executeWithoutExecRestriction = Freeplane
+		    .getController()
+		    .getResourceController()
+		    .getProperty(
+		        ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION);
+		final String signedScriptsWithoutRestriction = Freeplane
+		    .getController().getResourceController().getProperty(
+		        ResourceController.RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED);
+		/* *************** */
+		/* Signature */
+		/* *************** */
+		final PrintStream oldOut = System.out;
+		Object value = null;
+		GroovyRuntimeException e1 = null;
+		Throwable e2 = null;
+		boolean filePerm = Tools
+		    .isPreferenceTrue(executeWithoutFileRestriction);
+		boolean networkPerm = Tools
+		    .isPreferenceTrue(executeWithoutNetworkRestriction);
+		boolean execPerm = Tools
+		    .isPreferenceTrue(executeWithoutExecRestriction);
+		if (Tools.isPreferenceTrue(signedScriptsWithoutRestriction)) {
+			final boolean isSigned = new SignedScriptHandler().isScriptSigned(
+			    script, pOutStream);
+			if (isSigned) {
+				filePerm = true;
+				networkPerm = true;
+				execPerm = true;
+			}
+		}
+		final ScriptingSecurityManager scriptingSecurityManager = new ScriptingSecurityManager(
+		    filePerm, networkPerm, execPerm);
+		final FreeMindSecurityManager securityManager = (FreeMindSecurityManager) System
+		    .getSecurityManager();
+		try {
+			System.setOut(pOutStream);
+			securityManager.setFinalSecurityManager(scriptingSecurityManager);
+			value = shell.evaluate(script);
+		}
+		catch (final GroovyRuntimeException e) {
+			e1 = e;
+		}
+		catch (final Throwable e) {
+			e2 = e;
+		}
+		finally {
+			securityManager.setFinalSecurityManager(scriptingSecurityManager);
+			System.setOut(oldOut);
+			/* restore preferences (and assure that the values are unchanged!). */
+			Freeplane.getController().getResourceController().setProperty(
+			    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
+			    executeWithoutAsking);
+			Freeplane
+			    .getController()
+			    .getResourceController()
+			    .setProperty(
+			        ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION,
+			        executeWithoutFileRestriction);
+			Freeplane
+			    .getController()
+			    .getResourceController()
+			    .setProperty(
+			        ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION,
+			        executeWithoutNetworkRestriction);
+			Freeplane
+			    .getController()
+			    .getResourceController()
+			    .setProperty(
+			        ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION,
+			        executeWithoutExecRestriction);
+			Freeplane.getController().getResourceController().setProperty(
+			    ResourceController.RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED,
+			    signedScriptsWithoutRestriction);
+		}
+		/*
+		 * Cover exceptions in normal security context (ie. no problem with
+		 * (log) file writing etc.)
+		 */
+		if (e1 != null) {
+			final String resultString = e1.getMessage();
+			pOutStream.print("message: " + resultString);
+			final ModuleNode module = e1.getModule();
+			final ASTNode astNode = e1.getNode();
+			int lineNumber = -1;
+			if (module != null) {
+				lineNumber = module.getLineNumber();
+			}
+			else if (astNode != null) {
+				lineNumber = astNode.getLineNumber();
+			}
+			else {
+				lineNumber = ScriptingEngine.findLineNumberInString(
+				    resultString, lineNumber);
+			}
+			pOutStream.print("Line number: " + lineNumber);
+			pErrorHandler.gotoLine(lineNumber);
+			return false;
+		}
+		if (e2 != null) {
+			org.freeplane.main.Tools.logException(e2);
+			pOutStream.print(e2.getMessage());
+			final String cause = ((e2.getCause() != null) ? e2.getCause()
+			    .getMessage() : "");
+			final String message = ((e2.getMessage() != null) ? e2.getMessage()
+			        : "");
+			Freeplane
+			    .getController()
+			    .errorMessage(
+			        e2.getClass().getName()
+			                + ": "
+			                + cause
+			                + ((cause.length() != 0 && message.length() != 0) ? ", "
+			                        : "") + message);
+			return false;
+		}
+		pOutStream.print(Freeplane.getController().getResourceController()
+		    .getResourceString("plugins/ScriptEditor/window.Result")
+		        + value);
+		if (assignResult && value != null) {
+			if (assignTo == null) {
+				((MTextController) pMindMapController.getTextController())
+				    .setNodeText(node, value.toString());
+			}
+			else {
+				((MAttributeController) pMindMapController
+				    .getAttributeController()).editAttribute(node, assignTo,
+				    value.toString());
+			}
+		}
+		return true;
+	}
+
+	public static int findLineNumberInString(final String resultString,
+	                                         int lineNumber) {
+		final java.util.regex.Pattern pattern = java.util.regex.Pattern
+		    .compile(".*@ line ([0-9]+).*", java.util.regex.Pattern.DOTALL);
+		final Matcher matcher = pattern.matcher(resultString);
+		if (matcher.matches()) {
+			lineNumber = Integer.parseInt(matcher.group(1));
+		}
+		return lineNumber;
+	}
+
+	private void performExternalScript(final String pScriptLocation,
+	                                   final NodeModel pNode,
+	                                   final BooleanHolder pBooleanHolder) {
+		final ScriptingRegistration reg = (ScriptingRegistration) getPluginBaseClass();
+		final String scriptContent = Tools.getFile(new File(pScriptLocation));
+		if (scriptContent == null) {
+			return;
+		}
+		ScriptingEngine.executeScript(pNode, pBooleanHolder, scriptContent,
+		    getMindMapController(), new IErrorHandler() {
+			    public void gotoLine(final int pLineNumber) {
+			    }
+		    }, System.out, reg.getScriptCookies());
+	}
+
+	private void performScriptOperation(
+	                                    final NodeModel node,
+	                                    final BooleanHolder pAlreadyAScriptExecuted) {
+		Freeplane.getController().getViewController().setWaitingCursor(true);
+		for (final Iterator iter = node.getModeController().getMapController()
+		    .childrenUnfolded(node); iter.hasNext();) {
+			final NodeModel element = (NodeModel) iter.next();
+			performScriptOperation(element, pAlreadyAScriptExecuted);
+		}
+		final NodeAttributeTableModel attributes = node.getAttributes();
+		if (attributes == null) {
+			return;
+		}
+		for (int row = 0; row < attributes.getRowCount(); ++row) {
+			final String attrKey = (String) attributes.getName(row);
+			final String script = (String) attributes.getValue(row);
+			if (attrKey.startsWith(ScriptingEngine.SCRIPT_PREFIX)) {
+				final ScriptingRegistration reg = (ScriptingRegistration) getPluginBaseClass();
+				final boolean result = ScriptingEngine.executeScript(node,
+				    pAlreadyAScriptExecuted, script, getMindMapController(),
+				    new IErrorHandler() {
+					    public void gotoLine(final int pLineNumber) {
+					    }
+				    }, System.out, reg.getScriptCookies());
+				if (!result) {
+					break;
+				}
+			}
+		}
+		Freeplane.getController().getViewController().setWaitingCursor(false);
+	}
+
+	@Override
+	public void startup() {
+		super.startup();
+		final NodeModel node = Freeplane.getController().getMap().getRootNode();
+		final BooleanHolder booleanHolder = new BooleanHolder(false);
+		final String scriptLocation = getResourceString("ScriptLocation");
+		if (scriptLocation != null && scriptLocation.length() != 0) {
+			performExternalScript(scriptLocation, node, booleanHolder);
+			return;
+		}
+		performScriptOperation(node, booleanHolder);
+	}
+}

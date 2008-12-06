@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<plugin label="accessories/plugins/ExportToImage">
+	<plugin_action documentation="%accessories/plugins/ExportToImage_PNG.properties_documentation" name="%accessories/plugins/ExportToImage_PNG.properties_name" base="deprecated.freemind.extensions.ModeControllerHookAdapter" label="accessories/plugins/ExportToImage_PNG.properties" class_name="accessories.plugins.ExportToImage">
+		<plugin_mode class_name="org.freeplane.modes.mindmapmode"/>
+		<plugin_menu location="/menu_bar/file/export/export/exportPng"/>
+		<plugin_property name="image_type" value="png"/>
+		<plugin_property name="image_description" value="Portable Network Graphic (PNG)"/>
+	</plugin_action>
+	<plugin_action documentation="%accessories/plugins/ExportToImage_JPEG.properties_documentation" name="%accessories/plugins/ExportToImage_JPEG.properties_name" base="deprecated.freemind.extensions.ModeControllerHookAdapter" label="accessories/plugins/ExportToImage_JPEG.properties" class_name="accessories.plugins.ExportToImage">
+		<plugin_mode class_name="org.freeplane.modes.mindmapmode"/>
+		<plugin_menu location="/menu_bar/file/export/export/exportJPEG"/>
+		<plugin_property name="image_type" value="jpeg"/>
+		<plugin_property name="image_description" value="Compressed image (JPEG)"/>
+	</plugin_action>
+</plugin>
