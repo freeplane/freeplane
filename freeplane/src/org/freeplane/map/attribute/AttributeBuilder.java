@@ -19,16 +19,22 @@
  */
 package org.freeplane.map.attribute;
 
+import java.io.IOException;
+
 import org.freeplane.controller.Freeplane;
+import org.freeplane.extension.IExtension;
 import org.freeplane.io.IAttributeHandler;
 import org.freeplane.io.INodeCreator;
+import org.freeplane.io.INodeWriter;
+import org.freeplane.io.ITreeWriter;
 import org.freeplane.io.ReadManager;
+import org.freeplane.io.WriteManager;
 import org.freeplane.map.tree.MapController;
 import org.freeplane.map.tree.MapModel;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.NodeBuilder.NodeObject;
 
-class AttributeBuilder implements INodeCreator, IAttributeHandler {
+class AttributeBuilder implements INodeCreator, IAttributeHandler, INodeWriter<IExtension> {
 	static class AttributeLayout {
 		int attributeNameWidth = AttributeTableLayoutModel.DEFAULT_COLUMN_WIDTH;
 		int attributeValueWidth = AttributeTableLayoutModel.DEFAULT_COLUMN_WIDTH;
@@ -182,7 +188,7 @@ class AttributeBuilder implements INodeCreator, IAttributeHandler {
 
 	/**
 	 */
-	public void registerBy(final ReadManager reader) {
+	public void registerBy(final ReadManager reader, final WriteManager writer) {
 		reader.addNodeCreator("attribute_registry", this);
 		reader.addNodeCreator(AttributeBuilder.XML_NODE_ATTRIBUTE, this);
 		reader.addNodeCreator(
@@ -191,5 +197,12 @@ class AttributeBuilder implements INodeCreator, IAttributeHandler {
 		    AttributeBuilder.XML_NODE_REGISTERED_ATTRIBUTE_VALUE, this);
 		reader.addAttributeHandler(AttributeBuilder.XML_NODE_ATTRIBUTE_LAYOUT,
 		    this);
+		writer.addExtensionNodeWriter(NodeAttributeTableModel.class, this);
 	}
+
+	public void writeContent(ITreeWriter writer, Object node, IExtension extension)
+            throws IOException {
+		NodeAttributeTableModel attributes = (NodeAttributeTableModel) extension;
+		attributes.save(writer);
+    }
 }

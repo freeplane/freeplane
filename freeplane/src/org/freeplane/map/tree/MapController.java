@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
@@ -47,6 +48,8 @@ import org.freeplane.io.ReadManager;
 import org.freeplane.io.WriteManager;
 import org.freeplane.io.xml.TreeXmlReader;
 import org.freeplane.io.xml.TreeXmlWriter;
+import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
+import org.freeplane.io.xml.n3.nanoxml.XMLElement;
 import org.freeplane.io.xml.n3.nanoxml.XMLParseException;
 import org.freeplane.main.Tools;
 import org.freeplane.map.tree.mindmapmode.IMapChangeListener;
@@ -136,7 +139,6 @@ public class MapController {
 	}
 
 	private MapModel createdMap;
-	private MindMapNodeWriter currentNodeWriter;
 	protected final Collection<IMapChangeListener> mapChangeListeners;
 	final private Collection<IMapLifeCycleListener> mapLifeCycleListeners;
 	private boolean mapLoadingInProcess;
@@ -144,6 +146,7 @@ public class MapController {
 	private final NodeBuilder nodeBuilder;
 	final private ReadManager readManager;
 	private WriteManager writeManager;
+	final private MapWriter mapWriter;
 
 	public MapController(final ModeController modeController) {
 		super();
@@ -152,6 +155,9 @@ public class MapController {
 		readManager = new ReadManager();
 		nodeBuilder = new NodeBuilder(this);
 		nodeBuilder.registerBy(readManager);
+		writeManager = new WriteManager();
+		mapWriter = new MapWriter(writeManager);
+		writeManager.addNodeWriter("map", mapWriter);
 		createActions(modeController);
 		mapChangeListeners = new LinkedList<IMapChangeListener>();
 	}
@@ -426,9 +432,6 @@ public class MapController {
 	}
 
 	public WriteManager getWriteManager() {
-		if (writeManager == null) {
-			writeManager = new WriteManager();
-		}
 		return writeManager;
 	}
 
@@ -707,48 +710,17 @@ public class MapController {
 	 */
 	public void writeMapAsXml(final MapModel map, final Writer fileout,
 	                          final boolean saveInvisible) throws IOException {
-		fileout.write("<map ");
-		fileout.write("version=\"" + Controller.XML_VERSION + "\"");
-		fileout.write(">\n");
-		fileout
-		    .write("<!-- To view this file, download free mind mapping software FreeMind from http://freemind.sourceforge.net -->\n");
-		map.getRegistry().write(fileout);
-		final NodeModel rootNode = map.getRootNode();
-		writeNodeAsXml(fileout, rootNode, saveInvisible, true);
-		fileout.write("</map>\n");
+		final TreeXmlWriter xmlWriter = new TreeXmlWriter(writeManager,fileout);
+		final IXMLElement xmlMap = new XMLElement("map");
+		xmlMap.setAttribute("version", Controller.XML_VERSION);
+		mapWriter.setSaveInvisible(saveInvisible);
+		xmlWriter.addNode(map, xmlMap);
 		fileout.close();
 	}
 
-	public void writeNodeAsXml(final Writer writer, final NodeModel node,
-	                           final boolean writeInvisible,
-	                           final boolean writeChildren) throws IOException {
-		final MindMapNodeWriter oldNodeWriter = currentNodeWriter;
-		if (oldNodeWriter != null) {
-			writeManager.removeNodeWriter(NodeBuilder.XML_NODE, oldNodeWriter);
-			writeManager.removeAttributeWriter(NodeBuilder.XML_NODE,
-			    oldNodeWriter);
-		}
-		currentNodeWriter = new MindMapNodeWriter(this, writeChildren,
-		    writeInvisible, MapController.isSSaveOnlyIntrinsicallyNeededIds());
-		try {
-			final WriteManager writeManager = getWriteManager();
-			writeManager.addNodeWriter(NodeBuilder.XML_NODE, currentNodeWriter);
-			writeManager.addAttributeWriter(NodeBuilder.XML_NODE,
-			    currentNodeWriter);
-			final TreeXmlWriter xmlWriter = new TreeXmlWriter(writeManager,
-			    writer);
-			xmlWriter.addNode(node, NodeBuilder.XML_NODE);
-		}
-		finally {
-			writeManager.removeNodeWriter(NodeBuilder.XML_NODE,
-			    currentNodeWriter);
-			writeManager.removeAttributeWriter(NodeBuilder.XML_NODE,
-			    currentNodeWriter);
-			if (oldNodeWriter != null) {
-				writeManager.addNodeWriter(NodeBuilder.XML_NODE, oldNodeWriter);
-				writeManager.addAttributeWriter(NodeBuilder.XML_NODE,
-				    oldNodeWriter);
-			}
-		}
-	}
+	public void writeNodeAsXml(StringWriter stringWriter, NodeModel r,
+                               boolean saveInvisible, boolean b) throws IOException {
+		mapWriter.writeNodeAsXml(stringWriter, r, saveInvisible, b);
+    }
+
 }

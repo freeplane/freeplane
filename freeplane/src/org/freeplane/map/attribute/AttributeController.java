@@ -20,6 +20,7 @@
 package org.freeplane.map.attribute;
 
 import org.freeplane.io.ReadManager;
+import org.freeplane.io.WriteManager;
 import org.freeplane.map.tree.MapController;
 import org.freeplane.modes.ModeController;
 
@@ -27,11 +28,19 @@ import org.freeplane.modes.ModeController;
  * @author Dimitry Polivaev 22.11.2008
  */
 public class AttributeController {
+	protected ModeController getModeController() {
+    	return modeController;
+    }
+
+	final private ModeController modeController;
+
 	public AttributeController(final ModeController modeController) {
+		this.modeController = modeController;
 		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();
+		final WriteManager writeManager = mapController.getWriteManager();
 		final AttributeBuilder attributeBuilder = new AttributeBuilder(
 		    mapController);
-		attributeBuilder.registerBy(readManager);
+		attributeBuilder.registerBy(readManager, writeManager);
 	}
 }

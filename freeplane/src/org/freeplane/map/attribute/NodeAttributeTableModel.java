@@ -19,6 +19,7 @@
  */
 package org.freeplane.map.attribute;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -28,6 +29,7 @@ import javax.swing.table.AbstractTableModel;
 
 import org.freeplane.controller.Freeplane;
 import org.freeplane.extension.IExtension;
+import org.freeplane.io.ITreeWriter;
 import org.freeplane.io.xml.n3.nanoxml.XMLElement;
 import org.freeplane.map.tree.NodeModel;
 
@@ -285,25 +287,25 @@ public class NodeAttributeTableModel extends AbstractTableModel implements
 		return o;
 	}
 
-	public void save(final XMLElement node) {
-		saveLayout(node);
+	void save(final ITreeWriter writer) throws IOException {
+		saveLayout(writer);
 		if (attributes != null) {
 			for (int i = 0; i < attributes.size(); i++) {
-				saveAttribute(node, i);
+				saveAttribute(writer, i);
 			}
 		}
 	}
 
-	private void saveAttribute(final XMLElement node, final int i) {
+	private void saveAttribute(final ITreeWriter writer, final int i) throws IOException {
 		final XMLElement attributeElement = new XMLElement();
 		attributeElement.setName(AttributeBuilder.XML_NODE_ATTRIBUTE);
 		final Attribute attr = (Attribute) attributes.get(i);
 		attributeElement.setAttribute("NAME", attr.getName());
 		attributeElement.setAttribute("VALUE", attr.getValue());
-		node.addChild(attributeElement);
+		writer.addNode(attr, attributeElement);
 	}
 
-	private void saveLayout(final XMLElement node) {
+	private void saveLayout(final ITreeWriter writer) throws IOException {
 		if (layout != null) {
 			XMLElement attributeElement = null;
 			if (layout.getColumnWidth(0) != AttributeTableLayoutModel.DEFAULT_COLUMN_WIDTH) {
@@ -317,7 +319,7 @@ public class NodeAttributeTableModel extends AbstractTableModel implements
 				    .toString(layout.getColumnWidth(1)));
 			}
 			if (attributeElement != null) {
-				node.addChild(attributeElement);
+				writer.addNode(layout, attributeElement);
 			}
 		}
 	}

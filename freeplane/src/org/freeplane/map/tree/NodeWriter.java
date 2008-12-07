@@ -32,7 +32,7 @@ import org.freeplane.map.icon.MindIcon;
 import org.freeplane.map.text.NodeTextBuilder;
 import org.freeplane.modes.mindmapmode.EncryptionModel;
 
-class MindMapNodeWriter implements INodeWriter<String>,
+class NodeWriter implements INodeWriter<String>,
         IAttributeWriter<String> {
 	private EncryptionModel encryptionModel;
 	private boolean isTextNode;
@@ -41,7 +41,7 @@ class MindMapNodeWriter implements INodeWriter<String>,
 	final private boolean writeInvisible;
 	private XMLElement xmlNode;
 
-	public MindMapNodeWriter(final MapController mapController,
+	public NodeWriter(final MapController mapController,
 	                         final boolean writeChildren,
 	                         final boolean writeInvisible,
 	                         final boolean saveOnlyIntrinsicallyNeededIds) {
@@ -123,7 +123,6 @@ class MindMapNodeWriter implements INodeWriter<String>,
 			    .get(i)).getName());
 			xmlNode.addChild(iconElement);
 		}
-		node.getAttributes().save(xmlNode);
 	}
 
 	private void writeContent(final ITreeWriter writer,

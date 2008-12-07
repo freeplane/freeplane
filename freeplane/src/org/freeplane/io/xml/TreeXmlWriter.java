@@ -170,7 +170,7 @@ public class TreeXmlWriter implements ITreeWriter {
 		if (content.equals("")) {
 			return;
 		}
-		if (elementStarted == false) {
+		if (elementStarted == false && xmlElement != null) {
 			xmlwriter.write(xmlElement, true, 0, true, false);
 			elementStarted = true;
 		}
@@ -188,4 +188,10 @@ public class TreeXmlWriter implements ITreeWriter {
 	private ListHashTable getXmlWriters() {
 		return writeManager.getXmlWriters();
 	}
+
+	public void addComment(String comment) throws IOException {
+		xmlwriter.write("<!-- ");
+		xmlwriter.write(comment);
+		xmlwriter.write(" -->\n");
+    }
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="plugins/CollaborationJabber.xml|plugins/collaboration/jabber/**|plugins/collaboration/" kind="src" path="src"/>
+	<classpathentry excluding="plugins/CollaborationJabber.xml|plugins/collaboration/|plugins/collaboration/jabber/**" kind="src" path="src"/>
 	<classpathentry kind="lib" path="src/plugins/svg/xml-apis.jar"/>
 	<classpathentry kind="lib" path="src/plugins/svg/batik-bridge.jar"/>
 	<classpathentry kind="lib" path="src/plugins/svg/batik-css.jar"/>

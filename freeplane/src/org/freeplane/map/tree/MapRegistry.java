@@ -20,11 +20,11 @@
 package org.freeplane.map.tree;
 
 import java.io.IOException;
-import java.io.Writer;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.freeplane.io.ITreeWriter;
 import org.freeplane.map.attribute.AttributeRegistry;
 import org.freeplane.map.attribute.NodeAttributeTableModel;
 import org.freeplane.map.icon.MindIcon;
@@ -101,7 +101,7 @@ public class MapRegistry {
 	/**
 	 * @throws IOException
 	 */
-	public void write(final Writer fileout) throws IOException {
-		getAttributes().write(fileout);
+	public void write(final ITreeWriter writer) throws IOException {
+		getAttributes().write(writer);
 	}
 }

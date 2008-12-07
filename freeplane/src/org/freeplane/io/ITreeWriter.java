@@ -35,4 +35,6 @@ public interface ITreeWriter {
 	void addNode(Object userObject, String name) throws IOException;
 
 	void addNodeContent(String content) throws IOException;
+
+	void addComment(String string) throws IOException;
 }

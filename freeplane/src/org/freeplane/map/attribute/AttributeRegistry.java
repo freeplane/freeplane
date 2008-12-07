@@ -20,7 +20,6 @@
 package org.freeplane.map.attribute;
 
 import java.io.IOException;
-import java.io.Writer;
 import java.util.NoSuchElementException;
 
 import javax.swing.ComboBoxModel;
@@ -28,8 +27,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.EventListenerList;
 
+import org.freeplane.io.ITreeWriter;
 import org.freeplane.io.xml.n3.nanoxml.XMLElement;
-import org.freeplane.io.xml.n3.nanoxml.XMLWriter;
 import org.freeplane.map.attribute.mindmapnode.IAttributesListener;
 import org.freeplane.service.filter.util.ISortedListModel;
 import org.freeplane.service.filter.util.SortedComboBoxModel;
@@ -389,7 +388,7 @@ public class AttributeRegistry {
 	/**
 	 * @throws IOException
 	 */
-	public void write(final Writer fileout) throws IOException {
+	public void write(final ITreeWriter writer) throws IOException {
 		final XMLElement attributeRegistry = new XMLElement();
 		boolean toBeSaved = false;
 		if (isRestricted()) {
@@ -417,8 +416,7 @@ public class AttributeRegistry {
 		if (toBeSaved) {
 			attributeRegistry
 			    .setName(AttributeBuilder.XML_NODE_ATTRIBUTE_REGISTRY);
-			final XMLWriter xmlWriter = new XMLWriter(fileout);
-			xmlWriter.write(attributeRegistry);
+			writer.addNode(this, attributeRegistry);
 		}
 	}
 }
