@@ -30,9 +30,8 @@ import org.freeplane.main.Tools;
 import org.freeplane.map.icon.IIconInformation;
 import org.freeplane.map.icon.MindIcon;
 import org.freeplane.map.tree.NodeModel;
+import org.freeplane.modes.MultipleNodeAction;
 import org.freeplane.modes.mindmapmode.MModeController;
-
-import deprecated.freemind.modes.mindmapmode.actions.undo.MultipleNodeAction;
 
 class IconAction extends MultipleNodeAction implements IIconInformation {
 	final private MindIcon icon;

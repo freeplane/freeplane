@@ -22,9 +22,8 @@ package org.freeplane.map.edge.mindmapmode;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.map.tree.NodeModel;
+import org.freeplane.modes.MultipleNodeAction;
 import org.freeplane.modes.mindmapmode.MModeController;
-
-import deprecated.freemind.modes.mindmapmode.actions.undo.MultipleNodeAction;
 
 class EdgeStyleAction extends MultipleNodeAction {
 	final private String mStyle;

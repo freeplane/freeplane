@@ -80,6 +80,12 @@ public class TreeXmlWriter implements ITreeWriter {
 		xmlElement.setAttribute(key, value);
 	}
 
+	public void addComment(final String comment) throws IOException {
+		xmlwriter.write("<!-- ");
+		xmlwriter.write(comment);
+		xmlwriter.write(" -->\n");
+	}
+
 	public void addNode(final Object userObject, final IXMLElement element)
 	        throws IOException {
 		if (elementStarted == false && xmlElement != null) {
@@ -188,10 +194,4 @@ public class TreeXmlWriter implements ITreeWriter {
 	private ListHashTable getXmlWriters() {
 		return writeManager.getXmlWriters();
 	}
-
-	public void addComment(String comment) throws IOException {
-		xmlwriter.write("<!-- ");
-		xmlwriter.write(comment);
-		xmlwriter.write(" -->\n");
-    }
 }

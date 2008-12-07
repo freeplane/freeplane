@@ -142,11 +142,11 @@ public class MapController {
 	protected final Collection<IMapChangeListener> mapChangeListeners;
 	final private Collection<IMapLifeCycleListener> mapLifeCycleListeners;
 	private boolean mapLoadingInProcess;
+	final private MapWriter mapWriter;
 	final private ModeController modeController;
 	private final NodeBuilder nodeBuilder;
 	final private ReadManager readManager;
-	private WriteManager writeManager;
-	final private MapWriter mapWriter;
+	private final WriteManager writeManager;
 
 	public MapController(final ModeController modeController) {
 		super();
@@ -710,7 +710,7 @@ public class MapController {
 	 */
 	public void writeMapAsXml(final MapModel map, final Writer fileout,
 	                          final boolean saveInvisible) throws IOException {
-		final TreeXmlWriter xmlWriter = new TreeXmlWriter(writeManager,fileout);
+		final TreeXmlWriter xmlWriter = new TreeXmlWriter(writeManager, fileout);
 		final IXMLElement xmlMap = new XMLElement("map");
 		xmlMap.setAttribute("version", Controller.XML_VERSION);
 		mapWriter.setSaveInvisible(saveInvisible);
@@ -718,9 +718,9 @@ public class MapController {
 		fileout.close();
 	}
 
-	public void writeNodeAsXml(StringWriter stringWriter, NodeModel r,
-                               boolean saveInvisible, boolean b) throws IOException {
+	public void writeNodeAsXml(final StringWriter stringWriter,
+	                           final NodeModel r, final boolean saveInvisible,
+	                           final boolean b) throws IOException {
 		mapWriter.writeNodeAsXml(stringWriter, r, saveInvisible, b);
-    }
-
+	}
 }

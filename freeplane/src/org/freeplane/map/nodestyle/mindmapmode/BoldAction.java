@@ -22,10 +22,9 @@ package org.freeplane.map.nodestyle.mindmapmode;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.map.tree.NodeModel;
+import org.freeplane.modes.MultipleNodeAction;
 import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.ui.SelectableAction;
-
-import deprecated.freemind.modes.mindmapmode.actions.undo.MultipleNodeAction;
 
 @SelectableAction
 class BoldAction extends MultipleNodeAction {

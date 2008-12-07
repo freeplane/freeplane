@@ -28,8 +28,6 @@ import java.util.TreeSet;
 import java.util.Vector;
 import java.util.logging.Logger;
 
-import javax.swing.Action;
-
 import org.freeplane.controller.Freeplane;
 import org.freeplane.map.tree.MapModel;
 import org.freeplane.map.tree.NodeModel;
@@ -37,18 +35,11 @@ import org.freeplane.map.tree.view.MapView;
 import org.freeplane.map.tree.view.NodeView;
 import org.freeplane.modes.ModeControllerAction;
 import org.freeplane.modes.mindmapmode.MModeController;
+import org.freeplane.undo.IUndoableActor;
 
-import deprecated.freemind.modes.mindmapmode.actions.instance.ActionInstance;
-import deprecated.freemind.modes.mindmapmode.actions.instance.MoveNodesActionInstance;
-import deprecated.freemind.modes.mindmapmode.actions.instance.NodeListMemberActionInstance;
-import deprecated.freemind.modes.mindmapmode.actions.undo.ActionPair;
-import deprecated.freemind.modes.mindmapmode.actions.undo.IActor;
-
-class NodeUpAction extends ModeControllerAction implements IActor {
+class NodeUpAction extends ModeControllerAction {
 	public NodeUpAction(final MModeController modeController) {
 		super(modeController, "node_up");
-		modeController.getActionFactory().registerActor(this,
-		    getDoActionClass());
 	}
 
 	public void _moveNodes(final NodeModel selected, final List selecteds,
@@ -105,46 +96,9 @@ class NodeUpAction extends ModeControllerAction implements IActor {
 		}
 	}
 
-	public void act(final ActionInstance action) {
-		if (action instanceof MoveNodesActionInstance) {
-			final MoveNodesActionInstance moveAction = (MoveNodesActionInstance) action;
-			final NodeModel selected = getModeController().getMapController()
-			    .getNodeFromID(moveAction.getNode());
-			final Vector selecteds = new Vector();
-			for (final Iterator i = moveAction.getListNodeListMemberList()
-			    .iterator(); i.hasNext();) {
-				final NodeListMemberActionInstance node = (NodeListMemberActionInstance) i
-				    .next();
-				selecteds.add(getModeController().getMapController()
-				    .getNodeFromID(node.getNode()));
-			}
-			_moveNodes(selected, selecteds, moveAction.getDirection());
-		}
-	}
-
 	public void actionPerformed(final ActionEvent e) {
 		moveNodes(getModeController().getSelectedNode(), getModeController()
 		    .getSelectedNodes(), -1);
-	}
-
-	private MoveNodesActionInstance createMoveNodesAction(
-	                                                      final NodeModel selected,
-	                                                      final List selecteds,
-	                                                      final int direction) {
-		final MoveNodesActionInstance moveAction = new MoveNodesActionInstance();
-		moveAction.setDirection(direction);
-		moveAction.setNode(selected.createID());
-		for (final Iterator i = selecteds.iterator(); i.hasNext();) {
-			final NodeModel node = (NodeModel) i.next();
-			final NodeListMemberActionInstance nodeListMember = new NodeListMemberActionInstance();
-			nodeListMember.setNode(node.createID());
-			moveAction.addNodeListMember(nodeListMember);
-		}
-		return moveAction;
-	}
-
-	public Class getDoActionClass() {
-		return MoveNodesActionInstance.class;
 	}
 
 	/**
@@ -178,27 +132,24 @@ class NodeUpAction extends ModeControllerAction implements IActor {
 	 */
 	public void moveNodes(final NodeModel selected, final List selecteds,
 	                      final int direction) {
-		final MoveNodesActionInstance doAction = createMoveNodesAction(
-		    selected, selecteds, direction);
-		final MoveNodesActionInstance undoAction = createMoveNodesAction(
-		    selected, selecteds, -direction);
-		getMModeController().getActionFactory().startTransaction(
-		    (String) getValue(Action.NAME));
-		getMModeController().getActionFactory().executeAction(
-		    new ActionPair(doAction, undoAction));
-		getMModeController().getActionFactory().endTransaction(
-		    (String) getValue(Action.NAME));
+		final IUndoableActor actor = new IUndoableActor() {
+			public void act() {
+				_moveNodes(selected, selecteds, direction);
+			}
+
+			public String getDescription() {
+				return "moveNodes";
+			}
+
+			public void undo() {
+				_moveNodes(selected, selecteds, -direction);
+			}
+		};
+		getModeController().execute(actor);
 	}
 
-	/**
-	 * The direction is used if side left and right are present. then the next
-	 * suitable place on the same side# is searched. if there is no such place,
-	 * then the side is changed.
-	 *
-	 * @return returns the new index.
-	 */
-	public int moveNodeTo(final NodeModel child, final NodeModel newParent,
-	                      final int direction) {
+	private int moveNodeTo(final NodeModel child, final NodeModel newParent,
+	                       final int direction) {
 		final MapModel map = Freeplane.getController().getMap();
 		final int index = map.getIndexOfChild(newParent, child);
 		int newIndex = index;

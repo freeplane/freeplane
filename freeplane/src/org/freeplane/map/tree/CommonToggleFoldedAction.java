@@ -32,7 +32,7 @@ import org.freeplane.modes.ModeControllerAction;
  */
 class CommonToggleFoldedAction extends ModeControllerAction {
 	public CommonToggleFoldedAction(final ModeController controller) {
-		super(null, "toggle_folded");
+		super(controller, "toggle_folded");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

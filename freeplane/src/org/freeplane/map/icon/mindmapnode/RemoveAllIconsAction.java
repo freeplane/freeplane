@@ -29,9 +29,8 @@ import org.freeplane.controller.Freeplane;
 import org.freeplane.main.Tools;
 import org.freeplane.map.icon.IIconInformation;
 import org.freeplane.map.tree.NodeModel;
+import org.freeplane.modes.MultipleNodeAction;
 import org.freeplane.modes.mindmapmode.MModeController;
-
-import deprecated.freemind.modes.mindmapmode.actions.undo.MultipleNodeAction;
 
 /**
  * @author foltin

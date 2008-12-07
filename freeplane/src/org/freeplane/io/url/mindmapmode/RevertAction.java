@@ -30,14 +30,10 @@ import javax.swing.JOptionPane;
 
 import org.freeplane.controller.Freeplane;
 import org.freeplane.main.Tools;
+import org.freeplane.map.tree.MapController;
 import org.freeplane.map.tree.MapModel;
 import org.freeplane.modes.ModeControllerAction;
 import org.freeplane.modes.mindmapmode.MModeController;
-
-import deprecated.freemind.modes.mindmapmode.actions.instance.ActionInstance;
-import deprecated.freemind.modes.mindmapmode.actions.instance.RevertActionInstance;
-import deprecated.freemind.modes.mindmapmode.actions.undo.ActionPair;
-import deprecated.freemind.modes.mindmapmode.actions.undo.IActor;
 
 /**
  * Reverts the map to the saved version. In Xml, the old map is stored as xml
@@ -49,37 +45,25 @@ import deprecated.freemind.modes.mindmapmode.actions.undo.IActor;
  *
  * @author foltin
  */
-class RevertAction extends ModeControllerAction implements IActor {
-	final private MModeController controller;
+class RevertAction extends ModeControllerAction {
+	private static class RevertActionInstance {
+		private String filePrefix;
+		private String localFileName;
+		private String map;
 
-	/**
-	 */
-	public RevertAction(final MModeController modeController) {
-		super(modeController, "RevertAction", (String) null);
-		controller = modeController;
-		addActor(this);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * freemind.controller.actions.ActorXml#act(freemind.controller.actions.
-	 * generated.instance.XmlAction)
-	 */
-	public void act(final ActionInstance action) {
-		if (action instanceof RevertActionInstance) {
+		public void act() {
+			final MapController mapController = Freeplane.getController()
+			    .getModeController().getMapController();
 			try {
-				final RevertActionInstance revertAction = (RevertActionInstance) action;
 				Freeplane.getController().close(true);
-				if (revertAction.getLocalFileName() != null) {
-					controller.getMapController().newMap(
-					    Tools.fileToUrl(new File(revertAction
-					        .getLocalFileName())));
+				if (this.getLocalFileName() != null) {
+					mapController.newMap(Tools.fileToUrl(new File(this
+					    .getLocalFileName())));
 				}
 				else {
-					String filePrefix = controller.getText("freemind_reverted");
-					if (revertAction.getFilePrefix() != null) {
-						filePrefix = revertAction.getFilePrefix();
+					String filePrefix = Freeplane.getText("freemind_reverted");
+					if (this.getFilePrefix() != null) {
+						filePrefix = this.getFilePrefix();
 					}
 					final File tempFile = File
 					    .createTempFile(
@@ -89,16 +73,48 @@ class RevertAction extends ModeControllerAction implements IActor {
 					            .getResourceController()
 					            .getFreemindUserDirectory()));
 					final FileWriter fw = new FileWriter(tempFile);
-					fw.write(revertAction.getMap());
+					fw.write(this.getMap());
 					fw.close();
-					controller.getMapController().newMap(
-					    Tools.fileToUrl(tempFile));
+					mapController.newMap(Tools.fileToUrl(tempFile));
 				}
 			}
 			catch (final Exception e) {
 				org.freeplane.main.Tools.logException(e);
 			}
 		}
+
+		public String getFilePrefix() {
+			return filePrefix;
+		}
+
+		public String getLocalFileName() {
+			return localFileName;
+		}
+
+		public String getMap() {
+			return map;
+		}
+
+		public void setFilePrefix(final String filePrefix) {
+			this.filePrefix = filePrefix;
+		}
+
+		public void setLocalFileName(final String localFileName) {
+			this.localFileName = localFileName;
+		}
+
+		public void setMap(final String map) {
+			this.map = map;
+		}
+	}
+
+	final private MModeController controller;
+
+	/**
+	 */
+	public RevertAction(final MModeController modeController) {
+		super(modeController, "RevertAction", (String) null);
+		controller = modeController;
 	}
 
 	/*
@@ -116,14 +132,7 @@ class RevertAction extends ModeControllerAction implements IActor {
 				return;
 			}
 			final RevertActionInstance doAction = createRevertXmlAction(file);
-			final RevertActionInstance undoAction = createRevertXmlAction(
-			    Freeplane.getController().getMap(), null, file.getName());
-			controller.getActionFactory().startTransaction(
-			    this.getClass().getName());
-			controller.getActionFactory().executeAction(
-			    new ActionPair(doAction, undoAction));
-			controller.getActionFactory().endTransaction(
-			    this.getClass().getName());
+			doAction.act();
 		}
 		catch (final IOException e) {
 			org.freeplane.main.Tools.logException(e);
@@ -172,25 +181,9 @@ class RevertAction extends ModeControllerAction implements IActor {
 	 * (non-Javadoc)
 	 * @see freemind.controller.actions.ActorXml#getDoActionClass()
 	 */
-	public Class getDoActionClass() {
-		return RevertActionInstance.class;
-	}
-
 	public void openXmlInsteadOfMap(final String xmlFileContent) {
-		try {
-			final RevertActionInstance doAction = createRevertXmlAction(
-			    xmlFileContent, null, null);
-			final RevertActionInstance undoAction = createRevertXmlAction(
-			    Freeplane.getController().getMap(), null, null);
-			controller.getActionFactory().startTransaction(
-			    this.getClass().getName());
-			controller.getActionFactory().executeAction(
-			    new ActionPair(doAction, undoAction));
-			controller.getActionFactory().endTransaction(
-			    this.getClass().getName());
-		}
-		catch (final IOException e) {
-			org.freeplane.main.Tools.logException(e);
-		}
+		final RevertActionInstance doAction = createRevertXmlAction(
+		    xmlFileContent, null, null);
+		doAction.act();
 	}
 }

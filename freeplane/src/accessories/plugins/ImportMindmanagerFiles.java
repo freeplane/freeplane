@@ -107,11 +107,11 @@ public class ImportMindmanagerFiles extends ModeControllerHookAdapter {
 		    .getViewController().getContentPane();
 		final JFileChooser chooser = new JFileChooser();
 		chooser.addChoosableFileFilter(new ExportHook.ImageFilter(type, null /*
-																					 * No
-																					 * description
-																					 * so
-																					 * far
-																					 */));
+																						 * No
+																						 * description
+																						 * so
+																						 * far
+																						 */));
 		final File mmFile = Freeplane.getController().getMap().getFile();
 		if (mmFile != null && mmFile.getParentFile() != null) {
 			chooser.setSelectedFile(mmFile.getParentFile());

@@ -34,7 +34,8 @@ import org.freeplane.map.tree.MapModel;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.NodeBuilder.NodeObject;
 
-class AttributeBuilder implements INodeCreator, IAttributeHandler, INodeWriter<IExtension> {
+class AttributeBuilder implements INodeCreator, IAttributeHandler,
+        INodeWriter<IExtension> {
 	static class AttributeLayout {
 		int attributeNameWidth = AttributeTableLayoutModel.DEFAULT_COLUMN_WIDTH;
 		int attributeValueWidth = AttributeTableLayoutModel.DEFAULT_COLUMN_WIDTH;
@@ -200,9 +201,9 @@ class AttributeBuilder implements INodeCreator, IAttributeHandler, INodeWriter<I
 		writer.addExtensionNodeWriter(NodeAttributeTableModel.class, this);
 	}
 
-	public void writeContent(ITreeWriter writer, Object node, IExtension extension)
-            throws IOException {
-		NodeAttributeTableModel attributes = (NodeAttributeTableModel) extension;
+	public void writeContent(final ITreeWriter writer, final Object node,
+	                         final IExtension extension) throws IOException {
+		final NodeAttributeTableModel attributes = (NodeAttributeTableModel) extension;
 		attributes.save(writer);
-    }
+	}
 }

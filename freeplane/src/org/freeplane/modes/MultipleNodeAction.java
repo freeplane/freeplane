@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package deprecated.freemind.modes.mindmapmode.actions.undo;
+package org.freeplane.modes;
 
 import java.awt.event.ActionEvent;
 import java.util.ListIterator;
@@ -25,7 +25,6 @@ import java.util.ListIterator;
 import javax.swing.ImageIcon;
 
 import org.freeplane.map.tree.NodeModel;
-import org.freeplane.modes.ModeControllerAction;
 import org.freeplane.modes.mindmapmode.MModeController;
 
 /**

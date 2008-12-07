@@ -30,11 +30,11 @@ public interface ITreeWriter {
 
 	void addAttribute(String name, String value);
 
+	void addComment(String string) throws IOException;
+
 	void addNode(Object userObject, IXMLElement element) throws IOException;
 
 	void addNode(Object userObject, String name) throws IOException;
 
 	void addNodeContent(String content) throws IOException;
-
-	void addComment(String string) throws IOException;
 }

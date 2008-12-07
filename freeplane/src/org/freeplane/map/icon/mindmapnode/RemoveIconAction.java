@@ -30,10 +30,9 @@ import org.freeplane.main.Tools;
 import org.freeplane.map.icon.IIconInformation;
 import org.freeplane.map.icon.MindIcon;
 import org.freeplane.map.tree.NodeModel;
+import org.freeplane.modes.MultipleNodeAction;
 import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.undo.IUndoableActor;
-
-import deprecated.freemind.modes.mindmapmode.actions.undo.MultipleNodeAction;
 
 /**
  * @author foltin

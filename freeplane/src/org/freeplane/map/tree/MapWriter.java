@@ -31,51 +31,45 @@ import org.freeplane.io.xml.TreeXmlWriter;
  * @author Dimitry Polivaev
  * 07.12.2008
  */
-public class MapWriter implements INodeWriter<String>{
-
-	public MapWriter(WriteManager writeManager) {
-	    this.writeManager = writeManager;
-    }
-
+public class MapWriter implements INodeWriter<String> {
 	private NodeWriter currentNodeWriter;
-	public boolean isSaveInvisible() {
-    	return saveInvisible;
-    }
-
-	public void setSaveInvisible(boolean saveInvisible) {
-    	this.saveInvisible = saveInvisible;
-    }
-
 	private boolean saveInvisible;
 	final private WriteManager writeManager;
 
-	public void writeContent(ITreeWriter writer, Object node, String tag)
-            throws IOException {
-		writer.addNodeContent("<!--To view this file, download free mind mapping software FreeMind from http://freemind.sourceforge.net -->\n");
-		MapModel map = (MapModel) node;
+	public MapWriter(final WriteManager writeManager) {
+		this.writeManager = writeManager;
+	}
+
+	public boolean isSaveInvisible() {
+		return saveInvisible;
+	}
+
+	public void setSaveInvisible(final boolean saveInvisible) {
+		this.saveInvisible = saveInvisible;
+	}
+
+	public void writeContent(final ITreeWriter writer, final Object node,
+	                         final String tag) throws IOException {
+		writer
+		    .addNodeContent("<!--To view this file, download free mind mapping software FreeMind from http://freemind.sourceforge.net -->\n");
+		final MapModel map = (MapModel) node;
 		map.getRegistry().write(writer);
 		final NodeModel rootNode = map.getRootNode();
 		writeNode(writer, rootNode, saveInvisible, true);
-    }
-	public void writeNodeAsXml(final Writer writer, final NodeModel node,
-	                           final boolean writeInvisible,
-	                           final boolean writeChildren) throws IOException {
-		final TreeXmlWriter xmlWriter = new TreeXmlWriter(writeManager,
-		    writer);
-		writeNode(xmlWriter, node, writeInvisible, writeChildren);
 	}
 
 	private void writeNode(final ITreeWriter xmlWriter, final NodeModel node,
-                           final boolean writeInvisible,
-                           final boolean writeChildren) throws IOException {
-	    final NodeWriter oldNodeWriter = currentNodeWriter;
+	                       final boolean writeInvisible,
+	                       final boolean writeChildren) throws IOException {
+		final NodeWriter oldNodeWriter = currentNodeWriter;
 		if (oldNodeWriter != null) {
 			writeManager.removeNodeWriter(NodeBuilder.XML_NODE, oldNodeWriter);
 			writeManager.removeAttributeWriter(NodeBuilder.XML_NODE,
 			    oldNodeWriter);
 		}
-		currentNodeWriter = new NodeWriter(node.getModeController().getMapController(), writeChildren,
-		    writeInvisible, MapController.isSSaveOnlyIntrinsicallyNeededIds());
+		currentNodeWriter = new NodeWriter(node.getModeController()
+		    .getMapController(), writeChildren, writeInvisible, MapController
+		    .isSSaveOnlyIntrinsicallyNeededIds());
 		try {
 			writeManager.addNodeWriter(NodeBuilder.XML_NODE, currentNodeWriter);
 			writeManager.addAttributeWriter(NodeBuilder.XML_NODE,
@@ -93,5 +87,12 @@ public class MapWriter implements INodeWriter<String>{
 				    oldNodeWriter);
 			}
 		}
-    }
+	}
+
+	public void writeNodeAsXml(final Writer writer, final NodeModel node,
+	                           final boolean writeInvisible,
+	                           final boolean writeChildren) throws IOException {
+		final TreeXmlWriter xmlWriter = new TreeXmlWriter(writeManager, writer);
+		writeNode(xmlWriter, node, writeInvisible, writeChildren);
+	}
 }

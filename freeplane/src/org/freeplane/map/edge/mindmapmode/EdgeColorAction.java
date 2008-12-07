@@ -24,9 +24,8 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.controller.views.ColorTracker;
 import org.freeplane.map.tree.NodeModel;
+import org.freeplane.modes.MultipleNodeAction;
 import org.freeplane.modes.mindmapmode.MModeController;
-
-import deprecated.freemind.modes.mindmapmode.actions.undo.MultipleNodeAction;
 
 class EdgeColorAction extends MultipleNodeAction {
 	private Color actionColor;

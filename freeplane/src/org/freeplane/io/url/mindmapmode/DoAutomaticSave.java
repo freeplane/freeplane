@@ -98,8 +98,8 @@ public class DoAutomaticSave extends TimerTask {
 						((FileManager) model.getModeController()
 						    .getUrlManager()).saveInternal(model, tempFile,
 						    true /*
-																							 * =internal call
-																							 */);
+																												 * =internal call
+																												 */);
 						Freeplane.getController().getViewController().out(
 						    Freeplane.getController().getResourceController()
 						        .format("automatically_save_message",

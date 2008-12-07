@@ -28,10 +28,9 @@ import org.freeplane.controller.Freeplane;
 import org.freeplane.map.nodestyle.NodeStyleController;
 import org.freeplane.map.nodestyle.NodeStyleModel;
 import org.freeplane.map.tree.NodeModel;
+import org.freeplane.modes.MultipleNodeAction;
 import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.undo.IUndoableActor;
-
-import deprecated.freemind.modes.mindmapmode.actions.undo.MultipleNodeAction;
 
 /**
  * @author Dimitry Polivaev

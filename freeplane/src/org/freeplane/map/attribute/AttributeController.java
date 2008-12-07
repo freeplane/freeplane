@@ -28,10 +28,6 @@ import org.freeplane.modes.ModeController;
  * @author Dimitry Polivaev 22.11.2008
  */
 public class AttributeController {
-	protected ModeController getModeController() {
-    	return modeController;
-    }
-
 	final private ModeController modeController;
 
 	public AttributeController(final ModeController modeController) {
@@ -42,5 +38,9 @@ public class AttributeController {
 		final AttributeBuilder attributeBuilder = new AttributeBuilder(
 		    mapController);
 		attributeBuilder.registerBy(readManager, writeManager);
+	}
+
+	protected ModeController getModeController() {
+		return modeController;
 	}
 }

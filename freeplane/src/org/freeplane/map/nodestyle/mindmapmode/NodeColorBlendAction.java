@@ -24,9 +24,8 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.view.MapView;
+import org.freeplane.modes.MultipleNodeAction;
 import org.freeplane.modes.mindmapmode.MModeController;
-
-import deprecated.freemind.modes.mindmapmode.actions.undo.MultipleNodeAction;
 
 /**
  * @author foltin

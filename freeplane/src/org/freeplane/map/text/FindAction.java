@@ -58,8 +58,8 @@ class FindAction extends ModeControllerAction {
 		searchTerm = what;
 		final boolean found = find(getModeController().getSelectedNode(),
 		    subterms, /*
-		    		    				 * caseSensitive=
-		    		    				 */
+		    	    		    				 * caseSensitive=
+		    	    		    				 */
 		    false);
 		getModeController().getMapView().repaint();
 		if (!found) {

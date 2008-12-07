@@ -21,32 +21,77 @@ package org.freeplane.map.nodelocation.mindmapmode;
 
 import org.freeplane.controller.Freeplane;
 import org.freeplane.map.nodelocation.LocationController;
+import org.freeplane.map.nodelocation.LocationModel;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.mindmapmode.MModeController;
+import org.freeplane.undo.IUndoableActor;
 
 /**
  * @author Dimitry Polivaev
  */
 public class MLocationController extends LocationController {
-	static private boolean actionsCreated = false;
-	static private MoveNodeAction moveNodeAction;
+	private static final class ChangeNodePositionActor implements
+	        IUndoableActor {
+		private final int gap;
+		private final NodeModel node;
+		private final int oldHgap;
+		private final int oldParentVgap;
+		private final int oldShiftY;
+		private final int parentVGap;
+		private final int shiftY;
+
+		private ChangeNodePositionActor(final NodeModel node, final int gap,
+		                                final int shiftY, final int parentVGap) {
+			this.node = node;
+			this.gap = gap;
+			this.shiftY = shiftY;
+			this.parentVGap = parentVGap;
+			final LocationModel locationModel = node.getLocationModel();
+			oldHgap = locationModel.getHGap();
+			oldShiftY = locationModel.getShiftY();
+			oldParentVgap = !node.isRoot() ? node.getParentNode()
+			    .getLocationModel().getVGap() : 0;
+		}
+
+		public void act() {
+			moveNodePosition(node, parentVGap, gap, shiftY);
+		}
+
+		public String getDescription() {
+			return "moveNodePosition";
+		}
+
+		private void moveNodePosition(final NodeModel node,
+		                              final int parentVGap, final int hGap,
+		                              final int shiftY) {
+			final LocationModel locationModel = node.createLocationModel();
+			locationModel.setHGap(hGap);
+			locationModel.setShiftY(shiftY);
+			if (!node.isRoot()) {
+				node.getParentNode().createLocationModel().setVGap(parentVGap);
+			}
+			node.getModeController().getMapController().nodeChanged(node);
+		}
+
+		public void undo() {
+			moveNodePosition(node, oldParentVgap, oldHgap, oldShiftY);
+		}
+	}
+
+	private static boolean actionsCreated = false;
 
 	public MLocationController(final MModeController modeController) {
 		super(modeController);
-		createActions(modeController);
 		modeController.setNodeMotionListener(new MNodeMotionListener(
 		    modeController));
+		createActions(modeController);
 	}
 
-	/**
-	 * @param modeController
-	 */
 	private void createActions(final MModeController modeController) {
-		if (!actionsCreated) {
+		if (actionsCreated == false) {
 			actionsCreated = true;
-			moveNodeAction = new MoveNodeAction(modeController);
 			Freeplane.getController().addAction("moveNodeAction",
-			    moveNodeAction);
+			    new ResetNodeLocationAction(modeController));
 		}
 	}
 
@@ -56,6 +101,8 @@ public class MLocationController extends LocationController {
 
 	public void moveNodePosition(final NodeModel node, final int parentVGap,
 	                             final int hGap, final int shiftY) {
-		moveNodeAction.moveNodeTo(node, parentVGap, hGap, shiftY);
+		final IUndoableActor actor = new ChangeNodePositionActor(node, hGap,
+		    shiftY, parentVGap);
+		getModeController().execute(actor);
 	}
 }

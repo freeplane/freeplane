@@ -296,7 +296,8 @@ public class NodeAttributeTableModel extends AbstractTableModel implements
 		}
 	}
 
-	private void saveAttribute(final ITreeWriter writer, final int i) throws IOException {
+	private void saveAttribute(final ITreeWriter writer, final int i)
+	        throws IOException {
 		final XMLElement attributeElement = new XMLElement();
 		attributeElement.setName(AttributeBuilder.XML_NODE_ATTRIBUTE);
 		final Attribute attr = (Attribute) attributes.get(i);
