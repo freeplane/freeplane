@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.addins.mindmapmode.encrypt.mindmapnode;
+package org.freeplane.addins.encrypt;
 
 import java.awt.event.ActionEvent;
 
@@ -28,14 +28,26 @@ import org.freeplane.modes.mindmapmode.EncryptionModel;
 import org.freeplane.ui.dialogs.EnterPasswordDialog;
 
 @ActionDescriptor(
-	name = "accessories/plugins/NewEncryptedMap.properties_name", //
-	tooltip = "accessories/plugins/NewEncryptedMap.properties_documentation", //
-	iconPath = "accessories/plugins/icons/lock.png", //
-	locations = {"/menu_bar/file/open/"}
+	name="accessories/plugins/EncryptNode.properties_name", //
+	tooltip="accessories/plugins/EncryptNode.properties_documentation", //
+	iconPath="accessories/plugins/icons/lock.png", //
+	locations={"/menu_bar/extras/first/nodes/crypto"}
 )
-public class EncryptedMap extends FreeMindAction {
-	public EncryptedMap() {
+public class EncryptNode extends FreeMindAction {
+	public EncryptNode() {
 		super();
+	}
+
+	/**
+	 */
+	private void encrypt(final NodeModel node) {
+		final StringBuffer password = getUsersPassword();
+		if (password == null) {
+			return;
+		}
+		final EncryptionModel encryptedMindMapNode = new EncryptionModel(node);
+		encryptedMindMapNode.setPassword(password);
+		node.addExtension(encryptedMindMapNode);
 	}
 
 	/**
@@ -53,24 +65,9 @@ public class EncryptedMap extends FreeMindAction {
 	}
 
     public void actionPerformed(ActionEvent e) {
-    	newEncryptedMap();
-	}
-
-	/**
-	 *
-	 */
-	private void newEncryptedMap() {
-		final StringBuffer password = getUsersPassword();
-		if (password == null) {
-			return;
-		}
-		final ModeController newModeController = getMModeController();
-		final NodeModel node = new NodeModel(Controller.getText(
-		    "accessories/plugins/EncryptNode.properties_select_me"), null);
-		final EncryptionModel encryptedMindMapNode = new EncryptionModel(node);
-		encryptedMindMapNode.setPassword(password);
-		node.addExtension(encryptedMindMapNode);
-		newModeController.getMapController().newMap(node);
+    	NodeModel node = getModeController().getSelectedNode();
+    	encrypt(node);
+    	getModeController().getMapController().nodeRefresh(node);
 	}
 
 	@Override

@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.addins.mindmapmode.encrypt;
+package org.freeplane.addins.encrypt;
 
 import java.awt.event.ActionEvent;
 
