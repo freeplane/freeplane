@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-<plugin label="accessories/plugins/ApplyFormatPlugin">
-	<plugin_action documentation="%accessories/plugins/ApplyFormatPlugin.properties_documentation" name="%accessories/plugins/ApplyFormatPlugin.properties_name" base="deprecated.freemind.extensions.NodeHookAdapter" label="accessories/plugins/ApplyFormatPlugin.properties" class_name="accessories.plugins.ApplyFormatPlugin" instanciation="ApplyToRoot">
-		<plugin_mode class_name="org.freeplane.modes.mindmapmode"/>
-		<plugin_menu location="/menu_bar/format/change/apply_format_from_menu"/>
-	</plugin_action>
-</plugin>

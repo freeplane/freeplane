@@ -15,38 +15,43 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package accessories.plugins;
+package org.freeplane.addins.mindmapmode;
 
+import java.awt.event.ActionEvent;
 import java.util.Iterator;
 import java.util.List;
 
+import org.freeplane.controller.ActionDescriptor;
 import org.freeplane.controller.Controller;
+import org.freeplane.controller.FreeMindAction;
 import org.freeplane.map.pattern.mindmapnode.StylePatternFactory;
 import org.freeplane.map.tree.NodeModel;
+import org.freeplane.modes.ModeController;
+import org.freeplane.modes.mindmapmode.MModeController;
 
 import accessories.plugins.dialogs.ChooseFormatPopupDialog;
-import deprecated.freemind.modes.mindmapmode.hooks.MindMapNodeHookAdapter;
 import freemind.controller.actions.generated.instance.Pattern;
 
-/**
- * @author adapted to the plugin mechanism by ganzer
- */
-public class ApplyFormatPlugin extends MindMapNodeHookAdapter {
+@ActionDescriptor(name = "accessories/plugins/ApplyFormatPlugin.properties_name", //
+	locations = {"/menu_bar/format/change/apply_format_from_menu"}, //
+	tooltip = "accessories/plugins/ApplyFormatPlugin.properties_documentation" //
+)
+public class ApplyFormatPlugin extends FreeMindAction {
 	/**
 	 */
 	public ApplyFormatPlugin() {
 		super();
 	}
 
-	@Override
-	public void invoke(final NodeModel rootNode) {
-		final NodeModel focussed = getController().getSelectedNode();
-		final List selected = getController().getSelectedNodes();
+	public void actionPerformed(ActionEvent e) {
+		final ModeController modeController = getModeController();
+		final NodeModel focussed = modeController.getSelectedNode();
+		final List selected = modeController.getSelectedNodes();
 		final Pattern nodePattern = StylePatternFactory
 		    .createPatternFromSelected(focussed, selected);
 		final ChooseFormatPopupDialog formatDialog = new ChooseFormatPopupDialog(
 		    Controller.getController().getViewController().getJFrame(),
-		    getMindMapController(),
+		    (MModeController) modeController,
 		    "accessories/plugins/ApplyFormatPlugin.dialog.title", nodePattern);
 		formatDialog.setModal(true);
 		formatDialog.setVisible(true);
@@ -54,9 +59,10 @@ public class ApplyFormatPlugin extends MindMapNodeHookAdapter {
 			final Pattern pattern = formatDialog.getPattern();
 			for (final Iterator iter = selected.iterator(); iter.hasNext();) {
 				final NodeModel node = (NodeModel) iter.next();
-				getMindMapController().getPatternController().applyPattern(
+				getMModeController().getPatternController().applyPattern(
 				    node, pattern);
 			}
 		}
 	}
+
 }

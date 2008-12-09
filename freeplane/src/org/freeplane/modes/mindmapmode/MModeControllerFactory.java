@@ -26,6 +26,7 @@ import org.freeplane.addins.blinkingnodehook.BlinkingNodeHook;
 import org.freeplane.addins.creationmodificationplugin.CreationModificationPlugin;
 import org.freeplane.addins.hierarchicalicons.HierarchicalIcons;
 import org.freeplane.addins.latex.LatexNodeHook;
+import org.freeplane.addins.mindmapmode.ApplyFormatPlugin;
 import org.freeplane.addins.revision.RevisionPlugin;
 import org.freeplane.addins.time.ReminderHook;
 import org.freeplane.io.url.mindmapmode.FileManager;
@@ -42,6 +43,7 @@ import org.freeplane.map.pattern.mindmapnode.MPatternController;
 import org.freeplane.map.text.mindmapmode.MTextController;
 import org.freeplane.map.tree.mindmapmode.MMapController;
 import org.freeplane.ui.FreeMindToolBar;
+import org.freeplane.ui.MenuBuilder;
 
 /**
  * @author Dimitry Polivaev 24.11.2008
@@ -69,6 +71,9 @@ public class MModeControllerFactory {
 		new CreationModificationPlugin(modeController);
 		new ReminderHook(modeController);
 		new LatexNodeHook(modeController);
+		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
+		menuBuilder.addAnnotatedAction(new ApplyFormatPlugin());
+		
 	}
 
 	private MModeController createModeControllerImpl() {

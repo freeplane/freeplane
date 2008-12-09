@@ -15,25 +15,25 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package accessories.plugins;
+package org.freeplane.addins.mindmapmode;
 
 import java.awt.datatransfer.Transferable;
+import java.awt.event.ActionEvent;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
 import org.freeplane.controller.Controller;
+import org.freeplane.controller.FreeMindAction;
 import org.freeplane.main.Tools;
 import org.freeplane.map.clipboard.mindmapmode.MClipboardController;
 import org.freeplane.map.tree.NodeModel;
 
-import deprecated.freemind.modes.mindmapmode.hooks.MindMapNodeHookAdapter;
-
 /**
  * @author foltin
  */
-public class ChangeNodeLevelAction extends MindMapNodeHookAdapter {
+public class ChangeNodeLevelAction extends FreeMindAction {
 	/**
 	 *
 	 */
@@ -46,36 +46,35 @@ public class ChangeNodeLevelAction extends MindMapNodeHookAdapter {
 	 * @see freemind.extensions.NodeHook#invoke(freemind.modes.MindMapNode,
 	 * java.util.List)
 	 */
-	@Override
-	public void invoke(final NodeModel rootNode) {
+	public void actionPerformed(ActionEvent e) {
 		NodeModel selectedNode;
 		List selectedNodes;
 		{
-			final NodeModel focussed = getMindMapController().getSelectedNode();
-			final List selecteds = getMindMapController().getSelectedNodes();
+			final NodeModel focussed = getModeController().getSelectedNode();
+			final List selecteds = getModeController().getSelectedNodes();
 			selectedNode = focussed;
 			selectedNodes = selecteds;
 		}
-		getMindMapController().getMapController().sortNodesByDepth(
+		getModeController().getMapController().sortNodesByDepth(
 		    selectedNodes);
 		if (selectedNode.isRoot()) {
 			Controller.getController().errorMessage(
-			    getResourceString("cannot_add_parent_to_root"));
+				Controller.getText("cannot_add_parent_to_root"));
 			return;
 		}
 		final boolean upwards = Tools.safeEquals("left",
-		    getResourceString("action_type")) != selectedNode.isLeft();
+			Controller.getText("action_type")) != selectedNode.isLeft();
 		final NodeModel selectedParent = selectedNode.getParentNode();
 		for (final Iterator it = selectedNodes.iterator(); it.hasNext();) {
 			final NodeModel node = (NodeModel) it.next();
 			if (node.getParentNode() != selectedParent) {
 				Controller.getController().errorMessage(
-				    getResourceString("cannot_add_parent_diff_parents"));
+					Controller.getText("cannot_add_parent_diff_parents"));
 				return;
 			}
-			if (node == rootNode) {
+			if (node.isRoot()) {
 				Controller.getController().errorMessage(
-				    getResourceString("cannot_add_parent_to_root"));
+					Controller.getText("cannot_add_parent_to_root"));
 				return;
 			}
 		}
@@ -85,14 +84,14 @@ public class ChangeNodeLevelAction extends MindMapNodeHookAdapter {
 			final NodeModel node = (NodeModel) iter.next();
 			selectedNodesId.add(node.createID());
 		}
-		final MClipboardController clipboardController = (MClipboardController) getMindMapController()
+		final MClipboardController clipboardController = (MClipboardController) getModeController()
 		    .getClipboardController();
 		if (upwards) {
 			if (selectedParent.isRoot()) {
 				final boolean isLeft = selectedNode.isLeft();
 				final Transferable copy = clipboardController
 				    .cut(selectedNodes);
-				((MClipboardController) getMindMapController()
+				((MClipboardController) getModeController()
 				    .getClipboardController()).paste(copy, selectedParent,
 				    false, (!isLeft));
 				select(selectedNodeId, selectedNodesId);
@@ -104,12 +103,12 @@ public class ChangeNodeLevelAction extends MindMapNodeHookAdapter {
 			final boolean isLeft = selectedParent.isLeft();
 			final Transferable copy = clipboardController.cut(selectedNodes);
 			if (parentPosition == grandParent.getChildCount() - 1) {
-				((MClipboardController) getMindMapController()
+				((MClipboardController) getModeController()
 				    .getClipboardController()).paste(copy, grandParent, false,
 				    isLeft);
 			}
 			else {
-				((MClipboardController) getMindMapController()
+				((MClipboardController) getModeController()
 				    .getClipboardController()).paste(copy,
 				    ((NodeModel) grandParent.getChildAt(parentPosition + 1)),
 				    true, isLeft);
@@ -144,7 +143,7 @@ public class ChangeNodeLevelAction extends MindMapNodeHookAdapter {
 			if (directSibling != null) {
 				final Transferable copy = clipboardController
 				    .cut(selectedNodes);
-				((MClipboardController) getMindMapController()
+				((MClipboardController) getModeController()
 				    .getClipboardController()).paste(copy, directSibling,
 				    false, directSibling.isLeft());
 				select(selectedNodeId, selectedNodesId);
@@ -154,15 +153,16 @@ public class ChangeNodeLevelAction extends MindMapNodeHookAdapter {
 	}
 
 	private void select(final String selectedNodeId, final List selectedNodesIds) {
-		final NodeModel newInstanceOfSelectedNode = getMindMapController()
+		final NodeModel newInstanceOfSelectedNode = getModeController()
 		    .getMapController().getNodeFromID(selectedNodeId);
 		final List newSelecteds = new LinkedList();
 		for (final Iterator iter = selectedNodesIds.iterator(); iter.hasNext();) {
 			final String nodeId = (String) iter.next();
-			newSelecteds.add(getMindMapController().getMapController()
+			newSelecteds.add(getModeController().getMapController()
 			    .getNodeFromID(nodeId));
 		}
-		getMindMapController().selectMultipleNodes(newInstanceOfSelectedNode,
+		getModeController().selectMultipleNodes(newInstanceOfSelectedNode,
 		    newSelecteds);
 	}
+
 }

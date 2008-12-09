@@ -481,4 +481,8 @@ public class MenuBuilder extends UIBuilder {
 			break;
 		}
 	}
+
+	public void addAnnotatedAction(Action action) {
+		addAction(action, action.getClass().getAnnotation(ActionDescriptor.class));
+    }
 }

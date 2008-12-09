@@ -46,6 +46,9 @@ public abstract class MultipleNodeAction extends FreeMindAction {
 		super(name, imageIcon);
 	}
 
+	public MultipleNodeAction() {
+    }
+
 	public void actionPerformed(final ActionEvent e) {
 		for (final ListIterator it = getMModeController().getSelectedNodes()
 		    .listIterator(); it.hasNext();) {
