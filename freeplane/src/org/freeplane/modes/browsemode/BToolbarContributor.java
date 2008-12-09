@@ -25,7 +25,7 @@ import java.net.URL;
 
 import javax.swing.JLabel;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.controller.views.IMapTitleChangeListener;
 import org.freeplane.map.tree.MapModel;
 import org.freeplane.map.tree.view.MapView;
@@ -55,7 +55,7 @@ public class BToolbarContributor implements IMenuContributor,
 				}
 				catch (final Exception e1) {
 					org.freeplane.main.Tools.logException(e1);
-					Freeplane.getController().errorMessage(e1);
+					Controller.getController().errorMessage(e1);
 				}
 			}
 		});

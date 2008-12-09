@@ -41,7 +41,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.main.Tools;
 import org.freeplane.map.icon.MindIcon;
 import org.freeplane.map.tree.MapModel;
@@ -115,8 +115,8 @@ public class ExportWithXSLT extends ExportHook {
 			copyFromResource(MindIcon.getIconsPath(), myIcon
 			    .getIconBaseFileName(), directoryName2);
 		}
-		final File iconDir = new File(Freeplane.getController()
-		    .getResourceController().getFreemindUserDirectory(), "icons");
+		final File iconDir = new File(Controller.getResourceController()
+		    .getFreemindUserDirectory(), "icons");
 		if (iconDir.exists()) {
 			final String[] userIconArray = iconDir.list(new FilenameFilter() {
 				public boolean accept(final File dir, final String name) {
@@ -140,7 +140,7 @@ public class ExportWithXSLT extends ExportHook {
 		    new OutputStreamWriter(new FileOutputStream(pDirectoryName
 		            + File.separator + "map.mm")));
 		final MModeController controller = (MModeController) getController();
-		final MapModel map = Freeplane.getController().getMap();
+		final MapModel map = Controller.getController().getMap();
 		controller.getFilteredXml(map, fileout);
 		return success;
 	}
@@ -158,7 +158,7 @@ public class ExportWithXSLT extends ExportHook {
 	/**
 	 */
 	private void createImageFromMap(final String directoryName) {
-		if (Freeplane.getController().getMapView() == null) {
+		if (Controller.getController().getMapView() == null) {
 			return;
 		}
 		final BufferedImage image = createBufferedImage();
@@ -184,7 +184,7 @@ public class ExportWithXSLT extends ExportHook {
 	private String getAreaCode(final boolean create_image) {
 		String areaCode = "";
 		if (create_image) {
-			final NodeModel root = Freeplane.getController().getMap()
+			final NodeModel root = Controller.getController().getMap()
 			    .getRootNode();
 			final ClickableImageCreator creator = new ClickableImageCreator(
 			    root, getController(),
@@ -200,7 +200,7 @@ public class ExportWithXSLT extends ExportHook {
 	private StringWriter getMapXml() throws IOException {
 		final StringWriter writer = new StringWriter();
 		final MModeController controller = (MModeController) getController();
-		final MapModel map = Freeplane.getController().getMap();
+		final MapModel map = Controller.getController().getMap();
 		controller.getFilteredXml(map, writer);
 		return writer;
 	}
@@ -225,7 +225,7 @@ public class ExportWithXSLT extends ExportHook {
 	public void startup() {
 		super.startup();
 		final ModeController mc = getController();
-		final MapModel model = Freeplane.getController().getMap();
+		final MapModel model = Controller.getController().getMap();
 		if (Tools.safeEquals(getResourceString("file_type"), "user")) {
 			if (model == null) {
 				return;
@@ -303,7 +303,7 @@ public class ExportWithXSLT extends ExportHook {
 				return;
 			}
 			if (Tools.safeEquals(getResourceString("load_file"), "true")) {
-				Freeplane.getController().getViewController().openDocument(
+				Controller.getController().getViewController().openDocument(
 				    Tools.fileToUrl(saveFile));
 			}
 		}
@@ -325,7 +325,7 @@ public class ExportWithXSLT extends ExportHook {
 			trans.setParameter("destination_dir", resultFile.getName()
 			        + "_files/");
 			trans.setParameter("area_code", areaCode);
-			trans.setParameter("folding_type", Freeplane.getController()
+			trans.setParameter("folding_type", Controller
 			    .getResourceController().getProperty("html_export_folding"));
 			trans.transform(xmlSource, result);
 		}

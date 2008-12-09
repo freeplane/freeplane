@@ -21,14 +21,15 @@ package org.freeplane.map.tree.mindmapmode;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.modes.ModeControllerAction;
+import org.freeplane.controller.Controller;
+import org.freeplane.controller.FreeMindAction;
 import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.ui.FreemindMenuBar;
 
-class NodeDownAction extends ModeControllerAction {
-	public NodeDownAction(final MModeController controller) {
-		super(controller, "new_sibling_behind");
-		FreemindMenuBar.setLabelAndMnemonic(this, controller
+class NodeDownAction extends FreeMindAction {
+	public NodeDownAction() {
+		super("new_sibling_behind");
+		FreemindMenuBar.setLabelAndMnemonic(this, Controller
 		    .getText("node_down"));
 	}
 

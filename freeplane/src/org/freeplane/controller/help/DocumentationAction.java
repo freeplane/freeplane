@@ -27,7 +27,7 @@ import java.security.AccessControlException;
 import javax.swing.AbstractAction;
 import javax.swing.SwingUtilities;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.modes.browsemode.BModeController;
 import org.freeplane.ui.AlwaysEnabledAction;
@@ -36,20 +36,20 @@ import org.freeplane.ui.FreemindMenuBar;
 @AlwaysEnabledAction
 class DocumentationAction extends AbstractAction {
 	DocumentationAction() {
-		FreemindMenuBar.setLabelAndMnemonic(this, Freeplane
+		FreemindMenuBar.setLabelAndMnemonic(this, Controller
 		    .getText("documentation"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		String map = Freeplane.getText("browsemode_initial_map");
+		String map = Controller.getText("browsemode_initial_map");
 		map = ResourceController.removeTranslateComment(map);
 		if (map != null && map.startsWith(".")) {
 			try {
-				map = Freeplane.getController().getHelpController()
+				map = Controller.getController().getHelpController()
 				    .convertLocalLink(map);
 			}
 			catch (final AccessControlException ex) {
-				Freeplane.getController().getHelpController().webDocu(e);
+				Controller.getController().getHelpController().webDocu(e);
 				return;
 			}
 		}
@@ -66,9 +66,9 @@ class DocumentationAction extends AbstractAction {
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
 					try {
-						if (Freeplane.getController().selectMode(
+						if (Controller.getController().selectMode(
 						    BModeController.MODENAME)) {
-							((BModeController) Freeplane.getController()
+							((BModeController) Controller.getController()
 							    .getModeController()).getMapController()
 							    .newMap(endUrl);
 						}

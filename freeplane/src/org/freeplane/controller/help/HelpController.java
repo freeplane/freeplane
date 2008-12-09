@@ -24,7 +24,6 @@ import java.awt.event.ActionEvent;
 import javax.swing.Action;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.Freeplane;
 
 /**
  * @author Dimitry Polivaev
@@ -34,17 +33,17 @@ public class HelpController {
 
 	public HelpController() {
 		super();
-		final Controller controller = Freeplane.getController();
+		final Controller controller = Controller.getController();
 		controller.addAction("about", new AboutAction());
-		controller.addAction("freemindUrl", new OpenURLAction(controller
-		    .getResourceController().getText("Freeplane"), controller
+		controller.addAction("freemindUrl", new OpenURLAction(Controller
+		    .getResourceController().getText("Freeplane"), Controller
 		    .getResourceController().getProperty("webFreeMindLocation")));
-		controller.addAction("faq", new OpenURLAction(controller
-		    .getResourceController().getText("FAQ"), controller
+		controller.addAction("faq", new OpenURLAction(Controller
+		    .getResourceController().getText("FAQ"), Controller
 		    .getResourceController().getProperty("webFAQLocation")));
 		controller.addAction("keyDocumentation", new KeyDocumentationAction());
-		webDocu = new OpenURLAction(controller.getResourceController().getText(
-		    "webDocu"), controller.getResourceController().getProperty(
+		webDocu = new OpenURLAction(Controller.getResourceController().getText(
+		    "webDocu"), Controller.getResourceController().getProperty(
 		    "webDocuLocation"));
 		controller.addAction("webDocu", webDocu);
 		controller.addAction("documentation", new DocumentationAction());
@@ -54,8 +53,8 @@ public class HelpController {
 	/** Used for MAC!!! */
 	public String convertLocalLink(final String map) {
 		/* new handling for relative urls. fc, 29.10.2003. */
-		final String applicationPath = Freeplane.getController()
-		    .getResourceController().getFreemindBaseDir();
+		final String applicationPath = Controller.getResourceController()
+		    .getFreemindBaseDir();
 		return "file:" + applicationPath + map.substring(1);
 		/* end: new handling for relative urls. fc, 29.10.2003. */
 	}

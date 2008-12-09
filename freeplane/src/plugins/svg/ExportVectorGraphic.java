@@ -39,7 +39,7 @@ import org.apache.batik.svggen.SVGGeneratorContext;
 import org.apache.batik.svggen.SVGGraphics2D;
 import org.apache.batik.svggen.SVGGeneratorContext.GraphicContextDefaults;
 import org.apache.batik.util.SVGConstants;
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.map.tree.view.MapView;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
@@ -90,7 +90,7 @@ public class ExportVectorGraphic extends ExportHook {
 			trans.setParameter("destination_dir", resultFile.getName()
 			        + "_files/");
 			trans.setParameter("area_code", areaCode);
-			trans.setParameter("folding_type", Freeplane.getController()
+			trans.setParameter("folding_type", Controller
 			    .getResourceController().getProperty("html_export_folding"));
 			trans.transform(xmlSource, result);
 		}

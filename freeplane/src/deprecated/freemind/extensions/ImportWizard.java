@@ -29,7 +29,7 @@ import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 
 /**
  * Converts an unqualified class name to import statements by scanning through
@@ -138,8 +138,7 @@ public class ImportWizard {
 	public void buildClassList() {
 		String classPath = System.getProperty("java.class.path");
 		final String classPathSeparator = File.pathSeparator;
-		classPath = Freeplane.getController().getResourceController()
-		    .getFreemindBaseDir()
+		classPath = Controller.getResourceController().getFreemindBaseDir()
 		        + classPathSeparator + classPath;
 		final HashSet foundPlugins = new HashSet();
 		final StringTokenizer st = new StringTokenizer(classPath,

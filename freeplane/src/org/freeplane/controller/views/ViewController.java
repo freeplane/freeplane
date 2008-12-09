@@ -42,7 +42,6 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.Freeplane;
 import org.freeplane.map.tree.MapModel;
 import org.freeplane.map.tree.view.MapView;
 import org.freeplane.modes.ModeController;
@@ -82,8 +81,8 @@ abstract public class ViewController implements IMapViewChangeListener {
 
 	public ViewController() {
 		super();
-		final Controller controller = Freeplane.getController();
-		lastOpened = new LastOpenedList(controller.getResourceController()
+		final Controller controller = Controller.getController();
+		lastOpened = new LastOpenedList(Controller.getResourceController()
 		    .getProperty("lastOpened"));
 		mapViewManager = new MapViewManager();
 		mapViewManager.addMapViewChangeListener(this);
@@ -99,7 +98,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 		controller.addAction("zoomOut", zoomOut);
 		optionAntialiasAction = new OptionAntialiasAction();
 		controller.addAction("optionAntialiasAction", optionAntialiasAction);
-		userDefinedZoom = controller.getResourceController().getText(
+		userDefinedZoom = Controller.getResourceController().getText(
 		    "user_defined_zoom");
 		zoom = new JComboBox(getZooms());
 		zoom.setSelectedItem("100%");
@@ -133,7 +132,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 
 	public void afterMapViewChange(final MapView oldMapView,
 	                               final MapView newMapView) {
-		final ModeController oldModeController = Freeplane.getController()
+		final ModeController oldModeController = Controller.getController()
 		    .getModeController();
 		ModeController newModeController = oldModeController;
 		if (newMapView != null) {
@@ -146,7 +145,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 			obtainFocusForSelected();
 			newModeController = newMapView.getModeController();
 			if (newModeController != oldModeController) {
-				Freeplane.getController().selectMode(newModeController);
+				Controller.getController().selectMode(newModeController);
 			}
 			else if (oldMapView == null) {
 				newModeController.enableActions(true);
@@ -164,7 +163,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 
 	public void beforeMapViewChange(final MapView oldMapView,
 	                                final MapView newMapView) {
-		final ModeController modeController = Freeplane.getController()
+		final ModeController modeController = Controller.getController()
 		    .getModeController();
 		if (oldMapView != null) {
 			modeController.setVisible(false);
@@ -270,7 +269,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 	}
 
 	public void init() {
-		final JToolBar filterToolbar = Freeplane.getController()
+		final JToolBar filterToolbar = Controller.getController()
 		    .getFilterController().getFilterToolbar();
 		getContentPane().add(toolbarPanel, BorderLayout.NORTH);
 		getContentPane().add(leftToolbarPanel, BorderLayout.WEST);
@@ -344,17 +343,17 @@ abstract public class ViewController implements IMapViewChangeListener {
 				getMapViewManager().nextMapView();
 			}
 		}
-		Freeplane.getController().getResourceController().setProperty(
-		    "antialiasEdges", (antialiasEdges ? "true" : "false"));
-		Freeplane.getController().getResourceController().setProperty(
-		    "antialiasAll", (antialiasAll ? "true" : "false"));
+		Controller.getResourceController().setProperty("antialiasEdges",
+		    (antialiasEdges ? "true" : "false"));
+		Controller.getResourceController().setProperty("antialiasAll",
+		    (antialiasAll ? "true" : "false"));
 		final String lastOpenedString = lastOpened.save();
-		Freeplane.getController().getResourceController().setProperty(
-		    "lastOpened", lastOpenedString);
-		Freeplane.getController().getResourceController().setProperty(
-		    "toolbarVisible", (toolbarVisible ? "true" : "false"));
-		Freeplane.getController().getResourceController().setProperty(
-		    "leftToolbarVisible", (leftToolbarVisible ? "true" : "false"));
+		Controller.getResourceController().setProperty("lastOpened",
+		    lastOpenedString);
+		Controller.getResourceController().setProperty("toolbarVisible",
+		    (toolbarVisible ? "true" : "false"));
+		Controller.getResourceController().setProperty("leftToolbarVisible",
+		    (leftToolbarVisible ? "true" : "false"));
 		return true;
 	}
 
@@ -452,15 +451,15 @@ abstract public class ViewController implements IMapViewChangeListener {
 	 * Set the Frame title with mode and file if exist
 	 */
 	public void setTitle() {
-		final ModeController modeController = Freeplane.getController()
+		final ModeController modeController = Controller.getController()
 		    .getModeController();
 		if (modeController == null) {
 			setTitle("");
 			return;
 		}
-		final Object[] messageArguments = { Freeplane
+		final Object[] messageArguments = { Controller
 		    .getText(("mode_" + modeController.getModeName())) };
-		final MessageFormat formatter = new MessageFormat(Freeplane
+		final MessageFormat formatter = new MessageFormat(Controller
 		    .getText("mode_title"));
 		String title = formatter.format(messageArguments);
 		String rawTitle = "";
@@ -474,7 +473,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 			        + " - "
 			        + title
 			        + (model.isReadOnly() ? " ("
-			                + Freeplane.getText("read_only") + ")" : "");
+			                + Controller.getText("read_only") + ")" : "");
 			final String modelTitle = model.getTitle();
 			if (modelTitle != null) {
 				title += ' ' + modelTitle;
@@ -509,9 +508,8 @@ abstract public class ViewController implements IMapViewChangeListener {
 		getMapView().setZoom(zoom);
 		setZoomComboBox(zoom);
 		final Object[] messageArguments = { String.valueOf(zoom * 100f) };
-		final String stringResult = Freeplane.getController()
-		    .getResourceController().format("user_defined_zoom_status_bar",
-		        messageArguments);
+		final String stringResult = Controller.getResourceController().format(
+		    "user_defined_zoom_status_bar", messageArguments);
 		out(stringResult);
 	}
 
@@ -543,9 +541,9 @@ abstract public class ViewController implements IMapViewChangeListener {
 			final JMenuItem item = new JMenuItem(key);
 			if (firstElement) {
 				firstElement = false;
-				item.setAccelerator(KeyStroke.getKeyStroke(Freeplane
-				    .getController().getResourceController()
-				    .getAdjustableProperty("keystroke_open_first_in_history")));
+				item.setAccelerator(KeyStroke.getKeyStroke(Controller
+				    .getResourceController().getAdjustableProperty(
+				        "keystroke_open_first_in_history")));
 			}
 			item.addActionListener(lastOpenedActionListener);
 			menuBuilder.addMenuItem(FreemindMenuBar.FILE_MENU + "/last", item,

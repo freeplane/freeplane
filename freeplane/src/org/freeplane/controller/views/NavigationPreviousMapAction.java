@@ -24,19 +24,19 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.ui.FreemindMenuBar;
 
 class NavigationPreviousMapAction extends AbstractAction {
 	NavigationPreviousMapAction() {
-		super(null, new ImageIcon(Freeplane.getController()
-		    .getResourceController().getResource("images/1leftarrow.png")));
-		FreemindMenuBar.setLabelAndMnemonic(this, Freeplane
+		super(null, new ImageIcon(Controller.getResourceController()
+		    .getResource("images/1leftarrow.png")));
+		FreemindMenuBar.setLabelAndMnemonic(this, Controller
 		    .getText("previous_map"));
 		setEnabled(false);
 	}
 
 	public void actionPerformed(final ActionEvent event) {
-		Freeplane.getController().getMapViewManager().previousMapView();
+		Controller.getController().getMapViewManager().previousMapView();
 	}
 }

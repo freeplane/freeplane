@@ -21,30 +21,23 @@ package org.freeplane.io.url;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.controller.Freeplane;
-import org.freeplane.modes.ModeController;
-import org.freeplane.modes.ModeControllerAction;
+import org.freeplane.controller.Controller;
+import org.freeplane.controller.FreeMindAction;
 
-class SaveAction extends ModeControllerAction {
-	/**
-	 *
-	 */
-	final private ModeController modeController;
-
-	public SaveAction(final ModeController modeController) {
-		super(modeController, "save", "images/filesave.png");
-		this.modeController = modeController;
+class SaveAction extends FreeMindAction {
+	public SaveAction() {
+		super("save", "images/filesave.png");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final boolean success = getMModeController().save();
 		if (success) {
-			Freeplane.getController().getViewController().out(
-			    modeController.getText("saved"));
+			Controller.getController().getViewController().out(
+			    Controller.getText("saved"));
 		}
 		else {
-			Freeplane.getController().errorMessage("Saving failed.");
+			Controller.getController().errorMessage("Saving failed.");
 		}
-		Freeplane.getController().getViewController().setTitle();
+		Controller.getController().getViewController().setTitle();
 	}
 }

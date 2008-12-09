@@ -27,7 +27,7 @@ import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.controller.views.IMapViewChangeListener;
 import org.freeplane.io.xml.n3.nanoxml.IXMLParser;
 import org.freeplane.io.xml.n3.nanoxml.IXMLReader;
@@ -74,9 +74,9 @@ public class FilterController implements IMapViewChangeListener {
 	private MapModel map;
 
 	public FilterController() {
-		Freeplane.getController().getMapViewManager().addMapViewChangeListener(
-		    this);
-		Freeplane.getController().addAction("showFilterToolbarAction",
+		Controller.getController().getMapViewManager()
+		    .addMapViewChangeListener(this);
+		Controller.getController().addAction("showFilterToolbarAction",
 		    new ShowFilterToolbarAction());
 	}
 
@@ -117,11 +117,11 @@ public class FilterController implements IMapViewChangeListener {
 			filterToolbar = new FilterToolbar();
 			filterConditionModel = (DefaultComboBoxModel) filterToolbar
 			    .getFilterConditionModel();
-			MindIcon.factory("AttributeExist", new ImageIcon(Freeplane
-			    .getController().getResourceController().getResource(
+			MindIcon.factory("AttributeExist", new ImageIcon(Controller
+			    .getResourceController().getResource(
 			        "images/showAttributes.gif")));
 			MindIcon.factory(NodeNoteBase.NODE_NOTE_ICON, new ImageIcon(
-			    Freeplane.getController().getResourceController().getResource(
+			    Controller.getResourceController().getResource(
 			        "images/knotes.png")));
 			MindIcon.factory("encrypted");
 			MindIcon.factory("decrypted");
@@ -162,7 +162,7 @@ public class FilterController implements IMapViewChangeListener {
 	}
 
 	void refreshMap() {
-		Freeplane.getController().getModeController().getMapController()
+		Controller.getController().getModeController().getMapController()
 		    .refreshMap();
 	}
 

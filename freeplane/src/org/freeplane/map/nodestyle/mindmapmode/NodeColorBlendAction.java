@@ -25,7 +25,6 @@ import java.awt.event.ActionEvent;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.view.MapView;
 import org.freeplane.modes.MultipleNodeAction;
-import org.freeplane.modes.mindmapmode.MModeController;
 
 /**
  * @author foltin
@@ -34,8 +33,8 @@ class NodeColorBlendAction extends MultipleNodeAction {
 	/**
 	 *
 	 */
-	public NodeColorBlendAction(final MModeController modeController) {
-		super(modeController, "blend_color");
+	public NodeColorBlendAction() {
+		super("blend_color");
 	}
 
 	/*

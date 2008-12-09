@@ -19,7 +19,7 @@
  */
 package org.freeplane.map.nodelocation.mindmapmode;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.map.nodelocation.LocationController;
 import org.freeplane.map.nodelocation.LocationModel;
 import org.freeplane.map.tree.NodeModel;
@@ -90,8 +90,8 @@ public class MLocationController extends LocationController {
 	private void createActions(final MModeController modeController) {
 		if (actionsCreated == false) {
 			actionsCreated = true;
-			Freeplane.getController().addAction("moveNodeAction",
-			    new ResetNodeLocationAction(modeController));
+			Controller.getController().addAction("moveNodeAction",
+			    new ResetNodeLocationAction());
 		}
 	}
 

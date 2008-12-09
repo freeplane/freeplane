@@ -24,7 +24,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JComboBox;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 
 public class PersistentEditableComboBox extends JComboBox {
 	private ActionListener actionListener = null;
@@ -35,8 +35,8 @@ public class PersistentEditableComboBox extends JComboBox {
 		pStorageKey = storageKey;
 		setEditable(true);
 		addUrl("", false);
-		final String storedUrls = Freeplane.getController()
-		    .getResourceController().getProperty(pStorageKey);
+		final String storedUrls = Controller.getResourceController()
+		    .getProperty(pStorageKey);
 		if (storedUrls != null) {
 			final String[] array = storedUrls.split("\t");
 			for (int i = 0; i < array.length; i++) {
@@ -80,8 +80,8 @@ public class PersistentEditableComboBox extends JComboBox {
 				resultBuffer.append(element);
 				resultBuffer.append("\t");
 			}
-			Freeplane.getController().getResourceController().setProperty(
-			    pStorageKey, resultBuffer.toString());
+			Controller.getResourceController().setProperty(pStorageKey,
+			    resultBuffer.toString());
 		}
 		return true;
 	};

@@ -44,7 +44,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.controller.views.IMapViewChangeListener;
 import org.freeplane.main.Tools;
 import org.freeplane.map.text.mindmapmode.MTextController;
@@ -114,7 +114,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener,
 				final MessageFormat formatter = new MessageFormat(
 				    getResourceString("plugins/TimeManagement.xml_reminderNode_onlyOneDate"));
 				final String message = formatter.format(messageArguments);
-				final int result = JOptionPane.showConfirmDialog(Freeplane
+				final int result = JOptionPane.showConfirmDialog(Controller
 				    .getController().getViewController().getJFrame(), message,
 				    "FreeMind", JOptionPane.YES_NO_OPTION);
 				if (result == JOptionPane.NO_OPTION) {
@@ -142,7 +142,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener,
 
 	public void beforeMapViewChange(final MapView oldMapView,
 	                                final MapView newMapView) {
-		Freeplane.getController().getMapViewManager()
+		Controller.getController().getMapViewManager()
 		    .removeMapViewChangeListener(this);
 		disposeDialog();
 	}
@@ -179,7 +179,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener,
 	}
 
 	private String getResourceString(final String string) {
-		return Freeplane.getText(string);
+		return Controller.getText(string);
 	}
 
 	/**
@@ -251,12 +251,12 @@ class TimeManagement implements PropertyChangeListener, ActionListener,
 		}
 		TimeManagement.sCurrentlyOpenTimeManagement = this;
 		mController = getMindMapController();
-		Freeplane.getController().getMapViewManager().addMapViewChangeListener(
-		    this);
-		dialog = new JDialog(Freeplane.getController().getViewController()
+		Controller.getController().getMapViewManager()
+		    .addMapViewChangeListener(this);
+		dialog = new JDialog(Controller.getController().getViewController()
 		    .getJFrame(), false /*
-												 * not modal
-												 */);
+																 * not modal
+																 */);
 		dialog
 		    .setTitle(getResourceString("plugins/TimeManagement.xml_WindowTitle"));
 		dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);

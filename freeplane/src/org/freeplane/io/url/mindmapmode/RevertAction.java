@@ -28,12 +28,12 @@ import java.io.StringWriter;
 
 import javax.swing.JOptionPane;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
+import org.freeplane.controller.FreeMindAction;
 import org.freeplane.main.Tools;
 import org.freeplane.map.tree.MapController;
 import org.freeplane.map.tree.MapModel;
-import org.freeplane.modes.ModeControllerAction;
-import org.freeplane.modes.mindmapmode.MModeController;
+import org.freeplane.modes.ModeController;
 
 /**
  * Reverts the map to the saved version. In Xml, the old map is stored as xml
@@ -45,23 +45,23 @@ import org.freeplane.modes.mindmapmode.MModeController;
  *
  * @author foltin
  */
-class RevertAction extends ModeControllerAction {
+class RevertAction extends FreeMindAction {
 	private static class RevertActionInstance {
 		private String filePrefix;
 		private String localFileName;
 		private String map;
 
 		public void act() {
-			final MapController mapController = Freeplane.getController()
+			final MapController mapController = Controller.getController()
 			    .getModeController().getMapController();
 			try {
-				Freeplane.getController().close(true);
+				Controller.getController().close(true);
 				if (this.getLocalFileName() != null) {
 					mapController.newMap(Tools.fileToUrl(new File(this
 					    .getLocalFileName())));
 				}
 				else {
-					String filePrefix = Freeplane.getText("freemind_reverted");
+					String filePrefix = Controller.getText("freemind_reverted");
 					if (this.getFilePrefix() != null) {
 						filePrefix = this.getFilePrefix();
 					}
@@ -69,8 +69,7 @@ class RevertAction extends ModeControllerAction {
 					    .createTempFile(
 					        filePrefix,
 					        org.freeplane.io.url.mindmapmode.FileManager.FREEMIND_FILE_EXTENSION,
-					        new File(Freeplane.getController()
-					            .getResourceController()
+					        new File(Controller.getResourceController()
 					            .getFreemindUserDirectory()));
 					final FileWriter fw = new FileWriter(tempFile);
 					fw.write(this.getMap());
@@ -108,13 +107,10 @@ class RevertAction extends ModeControllerAction {
 		}
 	}
 
-	final private MModeController controller;
-
 	/**
 	 */
-	public RevertAction(final MModeController modeController) {
-		super(modeController, "RevertAction", (String) null);
-		controller = modeController;
+	public RevertAction() {
+		super("RevertAction", (String) null);
 	}
 
 	/*
@@ -124,8 +120,9 @@ class RevertAction extends ModeControllerAction {
 	 */
 	public void actionPerformed(final ActionEvent arg0) {
 		try {
-			final File file = Freeplane.getController().getMap().getFile();
+			final File file = Controller.getController().getMap().getFile();
 			if (file == null) {
+				final ModeController controller = getModeController();
 				JOptionPane.showMessageDialog(controller.getMapView(),
 				    controller.getText("map_not_saved"), "FreeMind",
 				    JOptionPane.ERROR_MESSAGE);
@@ -156,7 +153,8 @@ class RevertAction extends ModeControllerAction {
 	                                                  final String filePrefix)
 	        throws IOException {
 		final StringWriter writer = new StringWriter();
-		controller.getMapController().writeMapAsXml(map, writer, true);
+		map.getModeController().getMapController().writeMapAsXml(map, writer,
+		    true);
 		return createRevertXmlAction(writer.getBuffer().toString(), fileName,
 		    filePrefix);
 	}

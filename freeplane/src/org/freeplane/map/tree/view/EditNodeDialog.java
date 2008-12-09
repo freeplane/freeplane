@@ -40,7 +40,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.main.Tools;
 import org.freeplane.modes.ModeController;
 import org.freeplane.ui.FreemindMenuBar;
@@ -62,18 +62,18 @@ public class EditNodeDialog extends EditNodeBase {
 			    .setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 			int preferredHeight = getNode().getHeight();
 			preferredHeight = Math.max(preferredHeight, Integer
-			    .parseInt(Freeplane.getController().getResourceController()
-			        .getProperty("el__min_default_window_height")));
+			    .parseInt(Controller.getResourceController().getProperty(
+			        "el__min_default_window_height")));
 			preferredHeight = Math.min(preferredHeight, Integer
-			    .parseInt(Freeplane.getController().getResourceController()
-			        .getProperty("el__max_default_window_height")));
+			    .parseInt(Controller.getResourceController().getProperty(
+			        "el__max_default_window_height")));
 			int preferredWidth = getNode().getWidth();
 			preferredWidth = Math.max(preferredWidth, Integer
-			    .parseInt(Freeplane.getController().getResourceController()
-			        .getProperty("el__min_default_window_width")));
+			    .parseInt(Controller.getResourceController().getProperty(
+			        "el__min_default_window_width")));
 			preferredWidth = Math.min(preferredWidth, Integer
-			    .parseInt(Freeplane.getController().getResourceController()
-			        .getProperty("el__max_default_window_width")));
+			    .parseInt(Controller.getResourceController().getProperty(
+			        "el__max_default_window_width")));
 			editorScrollPane.setPreferredSize(new Dimension(preferredWidth,
 			    preferredHeight));
 			final JPanel panel = new JPanel();
@@ -189,7 +189,7 @@ public class EditNodeDialog extends EditNodeBase {
 			buttonPane.add(cancelButton);
 			buttonPane.add(splitButton);
 			buttonPane.setMaximumSize(new Dimension(1000, 20));
-			if (Freeplane.getController().getResourceController().getProperty(
+			if (Controller.getResourceController().getProperty(
 			    "el__buttons_position").equals("above")) {
 				panel.add(buttonPane);
 				panel.add(editorScrollPane);

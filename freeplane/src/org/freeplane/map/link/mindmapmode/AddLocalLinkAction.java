@@ -22,26 +22,26 @@ package org.freeplane.map.link.mindmapmode;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
+import org.freeplane.controller.FreeMindAction;
 import org.freeplane.map.tree.NodeModel;
-import org.freeplane.modes.ModeControllerAction;
 import org.freeplane.modes.mindmapmode.MModeController;
 
 /**
  * @author foltin
  */
-class AddLocalLinkAction extends ModeControllerAction {
+class AddLocalLinkAction extends FreeMindAction {
 	/**
 	 */
-	public AddLocalLinkAction(final MModeController modeController) {
-		super(modeController, "add_local_link", "images/LinkLocal.png");
+	public AddLocalLinkAction() {
+		super("add_local_link", "images/LinkLocal.png");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final MModeController modeController = getMModeController();
 		final List selecteds = modeController.getSelectedNodes();
 		if (selecteds.size() < 2) {
-			Freeplane.getController().errorMessage(
+			Controller.getController().errorMessage(
 			    modeController.getText("less_than_two_selected_nodes"));
 			return;
 		}

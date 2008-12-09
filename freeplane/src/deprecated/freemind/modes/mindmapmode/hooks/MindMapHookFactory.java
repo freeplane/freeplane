@@ -35,7 +35,7 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.ui.FreemindMenuBar;
 import org.jibx.runtime.IUnmarshallingContext;
@@ -106,9 +106,8 @@ public class MindMapHookFactory extends HookFactoryAdapter {
 					 */
 					xmlPluginFile = xmlPluginFile.replace('\\', '/')
 					        + MindMapHookFactory.importWizard.lookFor;
-					final URL pluginURL = Freeplane.getController()
-					    .getResourceController().getFreeMindClassLoader()
-					    .getResource(xmlPluginFile);
+					final URL pluginURL = Controller.getResourceController()
+					    .getFreeMindClassLoader().getResource(xmlPluginFile);
 					Plugin plugin = null;
 					try {
 						final InputStream in = pluginURL.openStream();

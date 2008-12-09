@@ -52,7 +52,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.main.Tools;
 import org.freeplane.ui.FreemindMenuBar;
 import org.freeplane.ui.UIBuilder;
@@ -208,7 +208,7 @@ public class ScriptEditorPanel extends JDialog {
 				final ScriptHolder script = mScriptModel
 				    .getScript(selectedIndex);
 				final String signedScript = new SignedScriptHandler()
-				    .signScript(script.mScript, Freeplane.getController()
+				    .signScript(script.mScript, Controller
 				        .getResourceController().getTextTranslator());
 				script.setScript(signedScript);
 				mScriptModel.setScript(selectedIndex, script);
@@ -236,9 +236,9 @@ public class ScriptEditorPanel extends JDialog {
 
 	public ScriptEditorPanel(final IScriptModel pScriptModel,
 	                         final boolean pHasNewScriptFunctionality) {
-		super(Freeplane.getController().getViewController().getJFrame(), true /* modal */);
+		super(Controller.getController().getViewController().getJFrame(), true /* modal */);
 		mScriptModel = pScriptModel;
-		this.setTitle(Freeplane.getText("plugins/ScriptEditor/window.title"));
+		this.setTitle(Controller.getText("plugins/ScriptEditor/window.title"));
 		this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		this.addWindowListener(new WindowAdapter() {
 			@Override
@@ -303,24 +303,24 @@ public class ScriptEditorPanel extends JDialog {
 		mScriptTextField.repaint();
 		final JMenuBar menuBar = new JMenuBar();
 		final JMenu menu = new JMenu();
-		FreemindMenuBar.setLabelAndMnemonic(menu, Freeplane
+		FreemindMenuBar.setLabelAndMnemonic(menu, Controller
 		    .getText("plugins/ScriptEditor.menu_actions"));
 		if (pHasNewScriptFunctionality) {
-			addAction(menu, new NewScriptAction(Freeplane
+			addAction(menu, new NewScriptAction(Controller
 			    .getText("plugins/ScriptEditor.new_script")));
 		}
-		mRunAction = new RunAction(Freeplane
+		mRunAction = new RunAction(Controller
 		    .getText("plugins/ScriptEditor.run"));
 		mRunAction.setEnabled(false);
 		addAction(menu, mRunAction);
-		mSignAction = new SignAction(Freeplane
+		mSignAction = new SignAction(Controller
 		    .getText("plugins/ScriptEditor.sign"));
 		mSignAction.setEnabled(false);
 		addAction(menu, mSignAction);
-		final AbstractAction cancelAction = new CancelAction(Freeplane
+		final AbstractAction cancelAction = new CancelAction(Controller
 		    .getText("plugins/ScriptEditor.cancel"));
 		addAction(menu, cancelAction);
-		final AbstractAction exitAction = new ExitAction(Freeplane
+		final AbstractAction exitAction = new ExitAction(Controller
 		    .getText("plugins/ScriptEditor.exit"));
 		addAction(menu, exitAction);
 		menuBar.add(menu);
@@ -353,7 +353,7 @@ public class ScriptEditorPanel extends JDialog {
 			select(mScriptList.getSelectedIndex());
 		}
 		if (pIsCanceled && mScriptModel.isDirty()) {
-			final int action = JOptionPane.showConfirmDialog(this, Freeplane
+			final int action = JOptionPane.showConfirmDialog(this, Controller
 			    .getText("ScriptEditorPanel.changed_cancel"), "FreeMind",
 			    JOptionPane.OK_CANCEL_OPTION);
 			if (action == JOptionPane.CANCEL_OPTION) {

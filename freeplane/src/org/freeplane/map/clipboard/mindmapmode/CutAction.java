@@ -26,28 +26,28 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
+import org.freeplane.controller.FreeMindAction;
 import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.mindmapmode.MMapController;
-import org.freeplane.modes.ModeControllerAction;
 import org.freeplane.modes.mindmapmode.MModeController;
 
 import deprecated.freemind.common.OptionalDontShowMeAgainDialog;
 
-class CutAction extends ModeControllerAction {
-	public CutAction(final MModeController c) {
-		super(c, "cut", "images/editcut.png");
+class CutAction extends FreeMindAction {
+	public CutAction() {
+		super("cut", "images/editcut.png");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final MModeController mMindMapController = getMModeController();
 		if (mMindMapController.getMapView().getRoot().isSelected()) {
-			Freeplane.getController().errorMessage(
-			    Freeplane.getText("cannot_delete_root"));
+			Controller.getController().errorMessage(
+			    Controller.getText("cannot_delete_root"));
 			return;
 		}
-		final int showResult = new OptionalDontShowMeAgainDialog(Freeplane
+		final int showResult = new OptionalDontShowMeAgainDialog(Controller
 		    .getController().getViewController().getJFrame(),
 		    mMindMapController.getSelectedView(), "really_cut_node",
 		    "confirmation",
@@ -61,7 +61,7 @@ class CutAction extends ModeControllerAction {
 		final Transferable copy = cut(mMindMapController.getMapView()
 		    .getSelectedNodesSortedByY());
 		mMindMapController.getClipboardController().setClipboardContents(copy);
-		Freeplane.getController().getViewController().obtainFocusForSelected();
+		Controller.getController().getViewController().obtainFocusForSelected();
 	}
 
 	Transferable cut(final List nodeList) {

@@ -31,7 +31,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 
 import deprecated.freemind.extensions.ExportHook;
 
@@ -58,8 +58,8 @@ public class ExportToImage extends ExportHook {
 			return false;
 		}
 		try {
-			Freeplane.getController().getViewController()
-			    .setWaitingCursor(true);
+			Controller.getController().getViewController().setWaitingCursor(
+			    true);
 			final FileOutputStream out = new FileOutputStream(chosenFile);
 			ImageIO.write(image, type, out);
 			out.close();
@@ -67,7 +67,7 @@ public class ExportToImage extends ExportHook {
 		catch (final IOException e1) {
 			org.freeplane.main.Tools.logException(e1);
 		}
-		Freeplane.getController().getViewController().setWaitingCursor(false);
+		Controller.getController().getViewController().setWaitingCursor(false);
 		return true;
 	}
 
@@ -97,7 +97,7 @@ public class ExportToImage extends ExportHook {
 			trans.setParameter("destination_dir", resultFile.getName()
 			        + "_files/");
 			trans.setParameter("area_code", areaCode);
-			trans.setParameter("folding_type", Freeplane.getController()
+			trans.setParameter("folding_type", Controller
 			    .getResourceController().getProperty("html_export_folding"));
 			trans.transform(xmlSource, result);
 		}

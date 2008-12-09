@@ -23,7 +23,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.main.Tools;
 import org.freeplane.map.clipboard.mindmapmode.MClipboardController;
 import org.freeplane.map.tree.NodeModel;
@@ -59,7 +59,7 @@ public class ChangeNodeLevelAction extends MindMapNodeHookAdapter {
 		getMindMapController().getMapController().sortNodesByDepth(
 		    selectedNodes);
 		if (selectedNode.isRoot()) {
-			Freeplane.getController().errorMessage(
+			Controller.getController().errorMessage(
 			    getResourceString("cannot_add_parent_to_root"));
 			return;
 		}
@@ -69,12 +69,12 @@ public class ChangeNodeLevelAction extends MindMapNodeHookAdapter {
 		for (final Iterator it = selectedNodes.iterator(); it.hasNext();) {
 			final NodeModel node = (NodeModel) it.next();
 			if (node.getParentNode() != selectedParent) {
-				Freeplane.getController().errorMessage(
+				Controller.getController().errorMessage(
 				    getResourceString("cannot_add_parent_diff_parents"));
 				return;
 			}
 			if (node == rootNode) {
-				Freeplane.getController().errorMessage(
+				Controller.getController().errorMessage(
 				    getResourceString("cannot_add_parent_to_root"));
 				return;
 			}

@@ -21,7 +21,7 @@ package org.freeplane.map.attribute;
 
 import java.io.IOException;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.extension.IExtension;
 import org.freeplane.io.IAttributeHandler;
 import org.freeplane.io.INodeCreator;
@@ -171,7 +171,7 @@ class AttributeBuilder implements INodeCreator, IAttributeHandler,
 				getMap().getRegistry().getAttributes().setRestricted(true);
 			}
 			if (name.equals("SHOW_ATTRIBUTES")) {
-				Freeplane.getController().getAttributeController()
+				Controller.getController().getAttributeController()
 				    .setAttributeViewType(getMap(), value.toString());
 			}
 			if (name.equals("FONT_SIZE")) {

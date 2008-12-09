@@ -47,7 +47,7 @@ class EdgeWidthAction extends MultipleNodeAction {
 	final private int mWidth;
 
 	public EdgeWidthAction(final MModeController controller, final int width) {
-		super(controller, null);
+		super(null);
 		mWidth = width;
 		putValue(Action.NAME, EdgeWidthAction.getWidthTitle(controller, width));
 	}

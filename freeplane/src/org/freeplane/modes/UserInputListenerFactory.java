@@ -62,7 +62,6 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.Freeplane;
 import org.freeplane.controller.views.MapViewManager;
 import org.freeplane.controller.views.ViewController;
 import org.freeplane.main.Tools;
@@ -98,9 +97,9 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		private void handlePopup(final MouseEvent e) {
 			if (e.isPopupTrigger()) {
 				JPopupMenu popup = null;
-				final java.lang.Object obj = Freeplane.getController()
+				final java.lang.Object obj = Controller.getController()
 				    .getMapView().detectCollision(e.getPoint());
-				popup = Freeplane.getController().getModeController()
+				popup = Controller.getController().getModeController()
 				    .getPopupForModel(obj);
 				popup.show(e.getComponent(), e.getX(), e.getY());
 				popup.setVisible(true);
@@ -108,8 +107,8 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		}
 
 		public void mouseClicked(final MouseEvent e) {
-			Freeplane.getController().getMapView().selectAsTheOnlyOneSelected(
-			    Freeplane.getController().getMapView().getSelected());
+			Controller.getController().getMapView().selectAsTheOnlyOneSelected(
+			    Controller.getController().getMapView().getSelected());
 		}
 
 		public void mouseDragged(final MouseEvent e) {
@@ -143,7 +142,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			}
 			handlePopup(e);
 			e.consume();
-			Freeplane.getController().getMapView().setMoveCursor(false);
+			Controller.getController().getMapView().setMoveCursor(false);
 		}
 	}
 
@@ -174,7 +173,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 
 		public void mousePressed(final MouseEvent e) {
 			if (e.getButton() == MouseEvent.BUTTON1) {
-				Freeplane.getController().getMapView().setMoveCursor(true);
+				Controller.getController().getMapView().setMoveCursor(true);
 				originX = e.getX();
 				originY = e.getY();
 			}
@@ -202,8 +201,8 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		}
 
 		public void dragGestureRecognized(final DragGestureEvent e) {
-			if (!Freeplane.getController().getResourceController()
-			    .getBoolProperty("draganddrop")) {
+			if (!Controller.getResourceController().getBoolProperty(
+			    "draganddrop")) {
 				return;
 			}
 			final NodeModel node = ((MainView) e.getComponent()).getNodeView()
@@ -221,7 +220,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 				cursor = DragSource.DefaultCopyDrop;
 				dragAction = "COPY";
 			}
-			final ModeController modeController = Freeplane.getController()
+			final ModeController modeController = Controller.getController()
 			    .getModeController();
 			final Transferable t = modeController.getClipboardController()
 			    .copy(modeController.getMapView());
@@ -294,17 +293,17 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 
 		public DefaultNodeKeyListener(final IEditHandler editHandler) {
 			this.editHandler = editHandler;
-			up = Freeplane.getController().getResourceController()
-			    .getAdjustableProperty("keystroke_move_up");
-			down = Freeplane.getController().getResourceController()
-			    .getAdjustableProperty("keystroke_move_down");
-			left = Freeplane.getController().getResourceController()
-			    .getAdjustableProperty("keystroke_move_left");
-			right = Freeplane.getController().getResourceController()
-			    .getAdjustableProperty("keystroke_move_right");
-			disabledKeyType = Freeplane.getController().getResourceController()
+			up = Controller.getResourceController().getAdjustableProperty(
+			    "keystroke_move_up");
+			down = Controller.getResourceController().getAdjustableProperty(
+			    "keystroke_move_down");
+			left = Controller.getResourceController().getAdjustableProperty(
+			    "keystroke_move_left");
+			right = Controller.getResourceController().getAdjustableProperty(
+			    "keystroke_move_right");
+			disabledKeyType = Controller.getResourceController()
 			    .getBoolProperty("disable_key_type");
-			keyTypeAddsNew = Freeplane.getController().getResourceController()
+			keyTypeAddsNew = Controller.getResourceController()
 			    .getBoolProperty("key_type_adds_new");
 			keyStrokeUp = KeyStroke.getKeyStroke(up);
 			keyStrokeDown = KeyStroke.getKeyStroke(down);
@@ -331,7 +330,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 				case KeyEvent.VK_RIGHT:
 				case KeyEvent.VK_PAGE_UP:
 				case KeyEvent.VK_PAGE_DOWN:
-					Freeplane.getController().getMapView().move(e);
+					Controller.getController().getMapView().move(e);
 					return;
 				case KeyEvent.VK_HOME:
 				case KeyEvent.VK_END:
@@ -372,7 +371,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 				doMove = true;
 			}
 			if (doMove) {
-				Freeplane.getController().getMapView().move(e);
+				Controller.getController().getMapView().move(e);
 				e.consume();
 				return;
 			}
@@ -380,7 +379,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 
 		public void keyReleased(final KeyEvent e) {
 			if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
-				Freeplane.getController().getMapView()
+				Controller.getController().getMapView()
 				    .resetShiftSelectionOrigin();
 			}
 		}
@@ -430,7 +429,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 					public void run() {
 						if (e.getModifiers() == 0
 						        && !c.isBlocked()
-						        && Freeplane.getController().getMapView()
+						        && Controller.getController().getMapView()
 						            .getSelection().size() <= 1) {
 							c.getMapController().extendSelection(e);
 						}
@@ -493,7 +492,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		public void mouseDragged(final MouseEvent e) {
 			stopTimerForDelayedSelection();
 			final NodeView nodeV = ((MainView) e.getComponent()).getNodeView();
-			if (!Freeplane.getController().getMapView().isSelected(nodeV)) {
+			if (!Controller.getController().getMapView().isSelected(nodeV)) {
 				UserInputListenerFactory.getModeController().getMapController()
 				    .extendSelection(e);
 			}
@@ -514,7 +513,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			final MainView node = ((MainView) e.getComponent());
 			final boolean isLink = (node).updateCursor(e.getX());
 			if (isLink) {
-				Freeplane.getController().getViewController().out(
+				Controller.getController().getViewController().out(
 				    UserInputListenerFactory.getModeController()
 				        .getLinkController().getLinkShortText(
 				            node.getNodeView().getModel()));
@@ -577,21 +576,21 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			}
 			DefaultNodeMouseMotionListener.delayedSelectionEnabled = new Tools.BooleanHolder();
 			DefaultNodeMouseMotionListener.delayedSelectionEnabled
-			    .setValue(Freeplane.getController().getResourceController()
-			        .getProperty("selection_method").equals(
-			            "selection_method_direct") ? false : true);
+			    .setValue(Controller.getResourceController().getProperty(
+			        "selection_method").equals("selection_method_direct") ? false
+			            : true);
 			/*
 			 * set time for delay to infinity, if selection_method equals
 			 * selection_method_by_click.
 			 */
-			if (Freeplane.getController().getResourceController().getProperty(
+			if (Controller.getResourceController().getProperty(
 			    "selection_method").equals("selection_method_by_click")) {
 				DefaultNodeMouseMotionListener.timeForDelayedSelection
 				    .setValue(Integer.MAX_VALUE);
 			}
 			else {
 				DefaultNodeMouseMotionListener.timeForDelayedSelection
-				    .setValue(Integer.parseInt(Freeplane.getController()
+				    .setValue(Integer.parseInt(Controller
 				        .getResourceController().getProperty(
 				            "time_for_delayed_selection")));
 			}
@@ -601,7 +600,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	public static final String NODE_POPUP = "/node_popup";
 
 	static private ModeController getModeController() {
-		return Freeplane.getController().getModeController();
+		return Controller.getController().getModeController();
 	}
 
 	final private Controller controller;
@@ -622,7 +621,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	private JPopupMenu nodePopupMenu;
 
 	public UserInputListenerFactory() {
-		controller = Freeplane.getController();
+		controller = Controller.getController();
 		mapsMenuActionListener = new MapsMenuActionListener();
 	}
 
@@ -753,7 +752,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	public void setMenuStructure(final String menuStructureResource) {
 		try {
 			InputStream in;
-			in = Freeplane.getController().getResourceController().getResource(
+			in = Controller.getResourceController().getResource(
 			    menuStructureResource).openStream();
 			final MenuStructure menuStructure = updateMenusFromXml(in);
 			setMenuStructure(menuStructure);
@@ -840,7 +839,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		menuBuilder.addPopupMenu(getNodePopupMenu(),
 		    UserInputListenerFactory.NODE_POPUP);
 		menuBuilder.addToolbar(getMainToolBar(), "/main_toolbar");
-		mapsPopupMenu.setName(Freeplane.getText("mindmaps"));
+		mapsPopupMenu.setName(Controller.getText("mindmaps"));
 		if (menuStructure != null) {
 			menuBuilder.processMenuCategory(menuStructure);
 		}
@@ -883,7 +882,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			else {
 				newItem.setSelected(false);
 			}
-			final String keystroke = controller.getResourceController()
+			final String keystroke = Controller.getResourceController()
 			    .getAdjustableProperty("keystroke_mode_" + key);
 			if (keystroke != null) {
 				newItem.setAccelerator(KeyStroke.getKeyStroke(keystroke));

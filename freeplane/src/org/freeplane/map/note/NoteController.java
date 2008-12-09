@@ -21,7 +21,7 @@ package org.freeplane.map.note;
 
 import javax.swing.ImageIcon;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.mindmapmode.MMapController;
@@ -72,7 +72,7 @@ public class NoteController {
 			    "images/knotes.png"));
 		}
 		boolean showIcon = enabled;
-		if (Freeplane.getController().getResourceController().getBoolProperty(
+		if (Controller.getResourceController().getBoolProperty(
 		    ResourceController.RESOURCES_DON_T_SHOW_NOTE_ICONS)) {
 			showIcon = false;
 		}

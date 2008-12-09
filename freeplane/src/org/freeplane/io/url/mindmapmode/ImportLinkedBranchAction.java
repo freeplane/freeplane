@@ -26,22 +26,21 @@ import java.net.URL;
 
 import javax.swing.JOptionPane;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
+import org.freeplane.controller.FreeMindAction;
 import org.freeplane.main.Tools;
 import org.freeplane.map.clipboard.mindmapmode.MClipboardController;
 import org.freeplane.map.tree.MapModel;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.mindmapmode.MMapController;
-import org.freeplane.modes.ModeControllerAction;
-import org.freeplane.modes.mindmapmode.MModeController;
 
-class ImportLinkedBranchAction extends ModeControllerAction {
-	public ImportLinkedBranchAction(final MModeController modeController) {
-		super(modeController, "import_linked_branch");
+class ImportLinkedBranchAction extends FreeMindAction {
+	public ImportLinkedBranchAction() {
+		super("import_linked_branch");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final MapModel map = Freeplane.getController().getMap();
+		final MapModel map = Controller.getController().getMap();
 		final NodeModel selected = getModeController().getSelectedNode();
 		if (selected == null || selected.getLink() == null) {
 			JOptionPane.showMessageDialog(getModeController().getMapView(),

@@ -42,13 +42,13 @@ import javax.swing.ListSelectionModel;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
+import org.freeplane.controller.FreeMindAction;
 import org.freeplane.controller.views.IMapViewChangeListener;
 import org.freeplane.main.Tools;
 import org.freeplane.map.attribute.AttributeRegistry;
 import org.freeplane.map.tree.MapRegistry;
 import org.freeplane.map.tree.view.MapView;
-import org.freeplane.modes.ModeControllerAction;
 import org.freeplane.service.filter.util.ISortedListModel;
 
 /**
@@ -56,9 +56,9 @@ import org.freeplane.service.filter.util.ISortedListModel;
  */
 public class AttributeManagerDialog extends JDialog implements
         IMapViewChangeListener {
-	private class ApplyAction extends ModeControllerAction {
+	private class ApplyAction extends FreeMindAction {
 		ApplyAction() {
-			super(null, "apply");
+			super("apply");
 		}
 
 		/*
@@ -72,9 +72,9 @@ public class AttributeManagerDialog extends JDialog implements
 		}
 	}
 
-	private class CancelAction extends ModeControllerAction {
+	private class CancelAction extends FreeMindAction {
 		CancelAction() {
-			super(null, "cancel");
+			super("cancel");
 		}
 
 		/*
@@ -130,9 +130,9 @@ public class AttributeManagerDialog extends JDialog implements
 		}
 	}
 
-	private class ImportAction extends ModeControllerAction {
+	private class ImportAction extends FreeMindAction {
 		ImportAction() {
-			super(null, "attributes_import");
+			super("attributes_import");
 		}
 
 		/*
@@ -150,9 +150,9 @@ public class AttributeManagerDialog extends JDialog implements
 		}
 	}
 
-	private class OKAction extends ModeControllerAction {
+	private class OKAction extends FreeMindAction {
 		OKAction() {
-			super(null, "ok");
+			super("ok");
 		}
 
 		/*
@@ -167,7 +167,7 @@ public class AttributeManagerDialog extends JDialog implements
 		}
 	}
 
-	static final Icon editButtonImage = new ImageIcon(Freeplane.getController()
+	static final Icon editButtonImage = new ImageIcon(Controller
 	    .getResourceController().getResource("images/edit12.png"));
 	private static final String[] fontSizes = { "6", "8", "10", "12", "14",
 	        "16", "18", "20", "24" };
@@ -178,10 +178,10 @@ public class AttributeManagerDialog extends JDialog implements
 	final private JTable view;
 
 	public AttributeManagerDialog() {
-		super(Freeplane.getController().getViewController().getJFrame(),
-		    Freeplane.getText("attributes_dialog_title"), true);
+		super(Controller.getController().getViewController().getJFrame(),
+		    Controller.getText("attributes_dialog_title"), true);
 		view = new AttributeRegistryTable(new EditListAction());
-		registry = Freeplane.getController().getMap().getRegistry();
+		registry = Controller.getController().getMap().getRegistry();
 		model = registry.getAttributes();
 		view.setModel(model.getTableModel());
 		view.getSelectionModel().setSelectionMode(
@@ -208,19 +208,19 @@ public class AttributeManagerDialog extends JDialog implements
 				model.setAttributeLayoutChanged();
 			}
 		});
-		size.setToolTipText(Freeplane.getText("attribute_font_size_tooltip"));
+		size.setToolTipText(Controller.getText("attribute_font_size_tooltip"));
 		southButtons.add(size);
 		southButtons.add(Box.createHorizontalGlue());
 		final JButton importBtn = new JButton(new ImportAction());
-		importBtn
-		    .setToolTipText(Freeplane.getText("attributes_import_tooltip"));
+		importBtn.setToolTipText(Controller
+		    .getText("attributes_import_tooltip"));
 		southButtons.add(importBtn);
 		southButtons.add(Box.createHorizontalGlue());
 		Tools.addEscapeActionToDialog(this);
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new ClosingListener());
-		Freeplane.getController().getMapViewManager().addMapViewChangeListener(
-		    this);
+		Controller.getController().getMapViewManager()
+		    .addMapViewChangeListener(this);
 		addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentShown(final ComponentEvent e) {

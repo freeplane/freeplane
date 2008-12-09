@@ -21,7 +21,7 @@ package org.freeplane.modes.filemode;
 
 import javax.swing.JPopupMenu;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.io.url.UrlManager;
 import org.freeplane.map.IPropertyGetter;
 import org.freeplane.map.clipboard.ClipboardController;
@@ -64,10 +64,8 @@ public class FModeControllerFactory {
 				    return "fork";
 			    }
 		    });
-		Freeplane.getController().addAction("center",
-		    new CenterAction(modeController));
-		Freeplane.getController().addAction("openPath",
-		    new OpenPathAction(modeController));
+		Controller.getController().addAction("center", new CenterAction());
+		Controller.getController().addAction("openPath", new OpenPathAction());
 		modeController.getUserInputListenerFactory().setNodePopupMenu(
 		    new JPopupMenu());
 		modeController.getUserInputListenerFactory().setMainToolBar(

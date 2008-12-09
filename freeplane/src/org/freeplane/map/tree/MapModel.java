@@ -32,7 +32,7 @@ import javax.swing.event.TreeModelListener;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.extension.ExtensionHashMap;
 import org.freeplane.extension.IExtension;
 import org.freeplane.extension.IExtensionCollection;
@@ -66,7 +66,7 @@ public class MapModel extends DefaultTreeModel implements IExtensionCollection {
 		filter = new DefaultFilter(NoFilteringCondition.createCondition(),
 		    true, false);
 		if (root == null) {
-			root = new NodeModel(Freeplane.getText("new_mindmap"), this);
+			root = new NodeModel(Controller.getText("new_mindmap"), this);
 			setRoot(root);
 		}
 		else {
@@ -439,7 +439,7 @@ public class MapModel extends DefaultTreeModel implements IExtensionCollection {
 			++changesPerformedSinceLastSave;
 		}
 		if (setTitle) {
-			Freeplane.getController().getViewController().setTitle();
+			Controller.getController().getViewController().setTitle();
 		}
 	};
 

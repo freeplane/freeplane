@@ -27,7 +27,7 @@ import java.util.TimerTask;
 import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.extension.IExtension;
 import org.freeplane.map.icon.MindIcon;
 import org.freeplane.map.tree.NodeModel;
@@ -160,7 +160,7 @@ class ReminderExtension implements IExtension {
 		final Date date = new Date(getRemindUserAt());
 		timer.schedule(task, date);
 		final Object[] messageArguments = { date };
-		final MessageFormat formatter = new MessageFormat(Freeplane
+		final MessageFormat formatter = new MessageFormat(Controller
 		    .getText("plugins/TimeManagement.xml_reminderNode_tooltip"));
 		final String message = formatter.format(messageArguments);
 		setToolTip(node, message);

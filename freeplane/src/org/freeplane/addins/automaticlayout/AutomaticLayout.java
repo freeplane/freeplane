@@ -40,7 +40,7 @@ import javax.swing.event.ListSelectionListener;
 import org.freeplane.addins.NodeHookDescriptor;
 import org.freeplane.addins.PersistentNodeHook;
 import org.freeplane.controller.ActionDescriptor;
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.extension.IExtension;
 import org.freeplane.io.IReadCompletionListener;
 import org.freeplane.map.pattern.mindmapnode.StylePatternFactory;
@@ -194,7 +194,7 @@ public class AutomaticLayout extends PersistentNodeHook implements
 			final Pattern choice = (Pattern) pat.getChoice(source
 			    .getSelectedIndex());
 			final ChooseFormatPopupDialog formatDialog = new ChooseFormatPopupDialog(
-			    Freeplane.getController().getViewController().getJFrame(),
+			    Controller.getController().getViewController().getJFrame(),
 			    mindMapController,
 			    "accessories/plugins/AutomaticLayout.properties_StyleDialogTitle",
 			    choice);
@@ -251,7 +251,7 @@ public class AutomaticLayout extends PersistentNodeHook implements
 		public void actionPerformed(final ActionEvent arg0) {
 			final Pattern pat = getPatternFromString();
 			final ChooseFormatPopupDialog formatDialog = new ChooseFormatPopupDialog(
-			    Freeplane.getController().getViewController().getJFrame(),
+			    Controller.getController().getViewController().getJFrame(),
 			    mindMapController,
 			    "accessories/plugins/AutomaticLayout.properties_StyleDialogTitle",
 			    pat);
@@ -331,8 +331,7 @@ public class AutomaticLayout extends PersistentNodeHook implements
 	public AutomaticLayout(final MModeController modeController) {
 		super(modeController);
 		final MyFreemindPropertyListener listener = new MyFreemindPropertyListener();
-		Freeplane.getController().getResourceController()
-		    .addPropertyChangeListener(listener);
+		Controller.getResourceController().addPropertyChangeListener(listener);
 		mAutomaticLayoutPropertyContributor = new AutomaticLayoutPropertyContributor(
 		    ((MModeController) getModeController()));
 		OptionPanel.addContributor(mAutomaticLayoutPropertyContributor);
@@ -394,9 +393,8 @@ public class AutomaticLayout extends PersistentNodeHook implements
 	/** get styles from preferences: */
 	private void reloadPatterns() {
 		if (AutomaticLayout.patterns == null) {
-			final String property = Freeplane.getController()
-			    .getResourceController().getProperty(
-			        AutomaticLayout.AUTOMATIC_FORMAT_LEVEL);
+			final String property = Controller.getResourceController()
+			    .getProperty(AutomaticLayout.AUTOMATIC_FORMAT_LEVEL);
 			AutomaticLayout.patterns = StylePatternFactory
 			    .getPatternsFromString(property);
 		}

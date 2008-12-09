@@ -21,7 +21,7 @@ package org.freeplane.map.edge;
 
 import java.awt.Color;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.io.ReadManager;
 import org.freeplane.io.WriteManager;
@@ -66,8 +66,8 @@ public class EdgeController {
 		updateStandards(modeController);
 		if (listener == null) {
 			listener = new EdgePropertyListener();
-			Freeplane.getController().getResourceController()
-			    .addPropertyChangeListener(listener);
+			Controller.getResourceController().addPropertyChangeListener(
+			    listener);
 		}
 		addColorGetter(PropertyChain.NODE,
 		    new IPropertyGetter<Color, NodeModel>() {
@@ -175,9 +175,8 @@ public class EdgeController {
 
 	private void updateStandards(final ModeController controller) {
 		if (standardColor == null) {
-			final String stdColor = Freeplane.getController()
-			    .getResourceController().getProperty(
-			        ResourceController.RESOURCES_EDGE_COLOR);
+			final String stdColor = Controller.getResourceController()
+			    .getProperty(ResourceController.RESOURCES_EDGE_COLOR);
 			if (stdColor != null && stdColor.length() == 7) {
 				standardColor = Tools.xmlToColor(stdColor);
 			}
@@ -186,9 +185,8 @@ public class EdgeController {
 			}
 		}
 		if (standardStyle == null) {
-			final String stdStyle = Freeplane.getController()
-			    .getResourceController().getProperty(
-			        ResourceController.RESOURCES_EDGE_STYLE);
+			final String stdStyle = Controller.getResourceController()
+			    .getProperty(ResourceController.RESOURCES_EDGE_STYLE);
 			if (stdStyle != null) {
 				standardStyle = stdStyle;
 			}

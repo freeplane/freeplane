@@ -23,11 +23,10 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.MultipleNodeAction;
-import org.freeplane.modes.mindmapmode.MModeController;
 
 class RemoveNodeBackgroundColorAction extends MultipleNodeAction {
-	public RemoveNodeBackgroundColorAction(final MModeController controller) {
-		super(controller, "remove_node_background_color");
+	public RemoveNodeBackgroundColorAction() {
+		super("remove_node_background_color");
 	}
 
 	@Override

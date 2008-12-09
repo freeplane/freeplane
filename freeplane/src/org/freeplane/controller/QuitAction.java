@@ -42,6 +42,6 @@ class QuitAction extends AbstractAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		Freeplane.getController().quit();
+		Controller.getController().quit();
 	}
 }

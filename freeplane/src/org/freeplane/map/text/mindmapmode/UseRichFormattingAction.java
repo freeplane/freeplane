@@ -22,24 +22,22 @@ package org.freeplane.map.text.mindmapmode;
 import org.freeplane.main.HtmlTools;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.mindmapmode.MindMapMapModel;
-import org.freeplane.modes.mindmapmode.MModeController;
 
 import deprecated.freemind.modes.mindmapmode.actions.undo.ISingleNodeOperation;
 import deprecated.freemind.modes.mindmapmode.actions.undo.NodeGeneralAction;
 
 class UseRichFormattingAction extends NodeGeneralAction {
-	public UseRichFormattingAction(final MModeController modeController) {
-		super(modeController, "use_rich_formatting", null,
-		    new ISingleNodeOperation() {
-			    public void apply(final MindMapMapModel map,
-			                      final NodeModel selected) {
-				    final String nodeText = selected.getText();
-				    if (!HtmlTools.isHtmlNode(nodeText)) {
-					    ((MTextController) modeController.getTextController())
-					        .setNodeText(selected, HtmlTools
-					            .plainToHTML(nodeText));
-				    }
-			    }
-		    });
+	public UseRichFormattingAction() {
+		super("use_rich_formatting", null);
+		setSingleNodeOperation(new ISingleNodeOperation() {
+			public void apply(final MindMapMapModel map,
+			                  final NodeModel selected) {
+				final String nodeText = selected.getText();
+				if (!HtmlTools.isHtmlNode(nodeText)) {
+					((MTextController) getModeController().getTextController())
+					    .setNodeText(selected, HtmlTools.plainToHTML(nodeText));
+				}
+			}
+		});
 	}
 }

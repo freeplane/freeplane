@@ -21,7 +21,7 @@ import java.awt.datatransfer.Transferable;
 import java.util.Iterator;
 import java.util.List;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.map.clipboard.mindmapmode.MClipboardController;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.mindmapmode.MMapController;
@@ -66,7 +66,7 @@ public class NewParentNode extends MindMapNodeHookAdapter {
 		getMindMapController().getMapController().sortNodesByDepth(
 		    selectedNodes);
 		if (focussed.isRoot()) {
-			Freeplane.getController().errorMessage(
+			Controller.getController().errorMessage(
 			    getResourceString("cannot_add_parent_to_root"));
 			return;
 		}
@@ -97,12 +97,12 @@ public class NewParentNode extends MindMapNodeHookAdapter {
 		for (final Iterator it = selectedNodes.iterator(); it.hasNext();) {
 			final NodeModel node = (NodeModel) it.next();
 			if (node.getParentNode() != selectedParent) {
-				Freeplane.getController().errorMessage(
+				Controller.getController().errorMessage(
 				    getResourceString("cannot_add_parent_diff_parents"));
 				return null;
 			}
 			if (node == rootNode) {
-				Freeplane.getController().errorMessage(
+				Controller.getController().errorMessage(
 				    getResourceString("cannot_add_parent_to_root"));
 				return null;
 			}

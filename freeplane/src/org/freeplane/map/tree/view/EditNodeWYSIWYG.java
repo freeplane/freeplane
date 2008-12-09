@@ -34,7 +34,7 @@ import javax.swing.JPanel;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.html.HTMLDocument;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.main.HtmlTools;
 import org.freeplane.main.Tools;
 import org.freeplane.modes.ModeController;
@@ -204,18 +204,18 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 			document.setBase(node.getMap().getModel().getURL());
 			int preferredHeight = (int) (node.getMainView().getHeight() * 1.2);
 			preferredHeight = Math.max(preferredHeight, Integer
-			    .parseInt(Freeplane.getController().getResourceController()
-			        .getProperty("el__min_default_window_height")));
+			    .parseInt(Controller.getResourceController().getProperty(
+			        "el__min_default_window_height")));
 			preferredHeight = Math.min(preferredHeight, Integer
-			    .parseInt(Freeplane.getController().getResourceController()
-			        .getProperty("el__max_default_window_height")));
+			    .parseInt(Controller.getResourceController().getProperty(
+			        "el__max_default_window_height")));
 			int preferredWidth = (int) (node.getMainView().getWidth() * 1.2);
 			preferredWidth = Math.max(preferredWidth, Integer
-			    .parseInt(Freeplane.getController().getResourceController()
-			        .getProperty("el__min_default_window_width")));
+			    .parseInt(Controller.getResourceController().getProperty(
+			        "el__min_default_window_width")));
 			preferredWidth = Math.min(preferredWidth, Integer
-			    .parseInt(Freeplane.getController().getResourceController()
-			        .getProperty("el__max_default_window_width")));
+			    .parseInt(Controller.getResourceController().getProperty(
+			        "el__max_default_window_width")));
 			htmlEditorPanel.setContentPanePreferredSize(new Dimension(
 			    preferredWidth, preferredHeight));
 			EditNodeWYSIWYG.htmlEditorWindow.pack();

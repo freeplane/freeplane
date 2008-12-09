@@ -24,7 +24,7 @@ import java.awt.print.Printable;
 
 import javax.swing.JComponent;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.map.tree.view.MapView;
 
 class Preview extends JComponent {
@@ -64,7 +64,7 @@ class Preview extends JComponent {
 	}
 
 	private PageFormat getPageFormat() {
-		return Freeplane.getController().getPrintController().getPageFormat();
+		return Controller.getController().getPrintController().getPageFormat();
 	}
 
 	private int getPageHeight(final PageFormat format) {

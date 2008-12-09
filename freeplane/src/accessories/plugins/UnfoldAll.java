@@ -21,7 +21,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.MouseWheelEvent;
 import java.util.Iterator;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.main.Tools;
 import org.freeplane.map.tree.MapController;
 import org.freeplane.map.tree.NodeModel;
@@ -53,7 +53,7 @@ public class UnfoldAll extends MindMapNodeHookAdapter {
 
 		public boolean handleMouseWheelEvent(final MouseWheelEvent e) {
 			if ((e.getModifiers() & InputEvent.ALT_MASK) != 0) {
-				final NodeModel rootNode = Freeplane.getController().getMap()
+				final NodeModel rootNode = Controller.getController().getMap()
 				    .getRootNode();
 				if (e.getWheelRotation() > 0) {
 					hookInstance.unfoldOneStage(rootNode);

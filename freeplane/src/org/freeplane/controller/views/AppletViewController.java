@@ -34,7 +34,6 @@ import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.Freeplane;
 import org.freeplane.main.FreemindVersionInformation;
 import org.freeplane.modes.browsemode.BModeController;
 import org.freeplane.ui.FreemindMenuBar;
@@ -97,9 +96,9 @@ public class AppletViewController extends ViewController {
 
 	@Override
 	public void init() {
-		final Controller controller = Freeplane.getController();
+		final Controller controller = Controller.getController();
 		controller.getViewController().changeAntialias(
-		    controller.getResourceController().getProperty(
+		    Controller.getResourceController().getProperty(
 		        ViewController.RESOURCE_ANTIALIAS));
 		controller.getViewController().setToolbarVisible(false);
 		controller.getViewController().setMenubarVisible(false);
@@ -123,9 +122,9 @@ public class AppletViewController extends ViewController {
 				org.freeplane.main.Tools.logException(e);
 			}
 		}
-		controller.selectMode(controller.getResourceController().getProperty(
+		controller.selectMode(Controller.getResourceController().getProperty(
 		    "initial_mode"));
-		String initialMapName = controller.getResourceController().getProperty(
+		String initialMapName = Controller.getResourceController().getProperty(
 		    "browsemode_initial_map");
 		if (initialMapName != null && initialMapName.startsWith(".")) {
 			/* new handling for relative urls. fc, 29.10.2003. */
@@ -135,7 +134,7 @@ public class AppletViewController extends ViewController {
 				initialMapName = documentBaseUrl.toString();
 			}
 			catch (final java.net.MalformedURLException e) {
-				Freeplane.getController().errorMessage(
+				Controller.getController().errorMessage(
 				    "Could not open relative URL " + initialMapName
 				            + ". It is malformed.");
 				System.err.println(e);
@@ -146,7 +145,7 @@ public class AppletViewController extends ViewController {
 		if (initialMapName != "") {
 			try {
 				final URL mapUrl = new URL(initialMapName);
-				((BModeController) Freeplane.getController()
+				((BModeController) Controller.getController()
 				    .getModeController()).getMapController().newMap(mapUrl);
 			}
 			catch (final Exception e) {
@@ -212,8 +211,8 @@ public class AppletViewController extends ViewController {
 
 	public void start() {
 		try {
-			if (Freeplane.getController().getMapView() != null) {
-				Freeplane.getController().getMapView().moveToRoot();
+			if (Controller.getController().getMapView() != null) {
+				Controller.getController().getMapView().moveToRoot();
 			}
 			else {
 				System.err.println("View is null.");

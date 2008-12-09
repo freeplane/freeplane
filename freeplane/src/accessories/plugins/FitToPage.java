@@ -23,7 +23,7 @@ import java.awt.Rectangle;
 
 import javax.swing.JViewport;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.map.tree.view.MapView;
 
 import deprecated.freemind.extensions.ModeControllerHookAdapter;
@@ -57,7 +57,7 @@ public class FitToPage extends ModeControllerHookAdapter {
 	@Override
 	public void startup() {
 		super.startup();
-		view = Freeplane.getController().getMapView();
+		view = Controller.getController().getMapView();
 		if (view == null) {
 			return;
 		}
@@ -71,7 +71,8 @@ public class FitToPage extends ModeControllerHookAdapter {
 
 	private void zoom() {
 		final Rectangle rect = view.getInnerBounds();
-		final double oldZoom = Freeplane.getController().getMapView().getZoom();
+		final double oldZoom = Controller.getController().getMapView()
+		    .getZoom();
 		final JViewport viewPort = (JViewport) view.getParent();
 		final Dimension viewer = viewPort.getExtentSize();
 		double newZoom = viewer.width * oldZoom / (rect.width + 0.0);
@@ -79,7 +80,7 @@ public class FitToPage extends ModeControllerHookAdapter {
 		if (heightZoom < newZoom) {
 			newZoom = heightZoom;
 		}
-		Freeplane.getController().getViewController()
-		    .setZoom((float) (newZoom));
+		Controller.getController().getViewController().setZoom(
+		    (float) (newZoom));
 	}
 }

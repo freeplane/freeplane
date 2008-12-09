@@ -28,7 +28,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.map.tree.MapModel;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.ModeController;
@@ -53,12 +53,9 @@ public class UrlManager {
 	private void createActions() {
 		if (!actionsCreated) {
 			actionsCreated = true;
-			Freeplane.getController().addAction("open",
-			    new OpenAction(modeController));
-			Freeplane.getController().addAction("save",
-			    new SaveAction(modeController));
-			Freeplane.getController().addAction("saveAs",
-			    new SaveAsAction(modeController));
+			Controller.getController().addAction("open", new OpenAction());
+			Controller.getController().addAction("save", new SaveAction());
+			Controller.getController().addAction("saveAs", new SaveAsAction());
 		}
 	}
 
@@ -85,7 +82,7 @@ public class UrlManager {
 	}
 
 	protected File getMapsParentFile() {
-		final MapModel map = Freeplane.getController().getMap();
+		final MapModel map = Controller.getController().getMap();
 		if ((map != null) && (map.getFile() != null)
 		        && (map.getFile().getParentFile() != null)) {
 			return map.getFile().getParentFile();
@@ -109,15 +106,15 @@ public class UrlManager {
 			    "FreeMind", JOptionPane.YES_NO_OPTION,
 			    JOptionPane.ERROR_MESSAGE);
 			if (showDetail == JOptionPane.YES_OPTION) {
-				Freeplane.getController().errorMessage(ex);
+				Controller.getController().errorMessage(ex);
 			}
 		}
 		else if (exceptionType.equals("java.io.FileNotFoundException")) {
-			Freeplane.getController().errorMessage(ex.getMessage());
+			Controller.getController().errorMessage(ex.getMessage());
 		}
 		else {
 			org.freeplane.main.Tools.logException(ex);
-			Freeplane.getController().errorMessage(ex);
+			Controller.getController().errorMessage(ex);
 		}
 	}
 
@@ -128,13 +125,13 @@ public class UrlManager {
 			urlStreamReader = new InputStreamReader(url.openStream());
 		}
 		catch (final AccessControlException ex) {
-			Freeplane.getController().errorMessage(
+			Controller.getController().errorMessage(
 			    "Could not open URL " + url.toString() + ". Access Denied.");
 			System.err.println(ex);
 			return null;
 		}
 		catch (final Exception ex) {
-			Freeplane.getController().errorMessage(
+			Controller.getController().errorMessage(
 			    "Could not open URL " + url.toString() + ".");
 			System.err.println(ex);
 			return null;

@@ -21,19 +21,19 @@ package org.freeplane.map.tree;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
+import org.freeplane.controller.FreeMindAction;
 import org.freeplane.map.tree.view.NodeView;
 import org.freeplane.modes.ModeController;
-import org.freeplane.modes.ModeControllerAction;
 
 /**
  * @author foltin
  */
-class CommonToggleChildrenFoldedAction extends ModeControllerAction {
+class CommonToggleChildrenFoldedAction extends FreeMindAction {
 	final private MapController mapController;
 
 	public CommonToggleChildrenFoldedAction(final MapController mapController) {
-		super(mapController.getModeController(), "toggle_children_folded", null);
+		super("toggle_children_folded");
 		this.mapController = mapController;
 	}
 
@@ -44,6 +44,6 @@ class CommonToggleChildrenFoldedAction extends ModeControllerAction {
 		mapController.toggleFolded(model.getModeController().getMapController()
 		    .childrenUnfolded(model));
 		modeController.getMapView().selectAsTheOnlyOneSelected(selected);
-		Freeplane.getController().getViewController().obtainFocusForSelected();
+		Controller.getController().getViewController().obtainFocusForSelected();
 	}
 }

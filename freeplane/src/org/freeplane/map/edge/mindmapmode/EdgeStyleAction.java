@@ -29,7 +29,7 @@ class EdgeStyleAction extends MultipleNodeAction {
 	final private String mStyle;
 
 	public EdgeStyleAction(final MModeController controller, final String style) {
-		super(controller, style);
+		super(style);
 		mStyle = style;
 	}
 

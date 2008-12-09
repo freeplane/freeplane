@@ -22,7 +22,7 @@ package org.freeplane.service.filter.condition;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.NamedObject;
 import org.freeplane.io.xml.n3.nanoxml.XMLElement;
 
@@ -59,7 +59,7 @@ public class ConditionFactory {
 		        + simpleCondition
 		        + (value != null ? " \"" + value + "\"" : "")
 		        + (ignoreCase && value != null ? ", "
-		                + Freeplane
+		                + Controller
 		                    .getText(ConditionFactory.FILTER_IGNORE_CASE) : "");
 		return description;
 	}
@@ -210,18 +210,14 @@ public class ConditionFactory {
 
 	public NamedObject[] getAttributeConditionNames() {
 		return new NamedObject[] {
-		        Freeplane.getController().getResourceController()
-		            .createTranslatedString(ConditionFactory.FILTER_EXIST),
-		        Freeplane.getController().getResourceController()
-		            .createTranslatedString(
-		                ConditionFactory.FILTER_DOES_NOT_EXIST),
-		        Freeplane
-		            .getController()
-		            .getResourceController()
-		            .createTranslatedString(ConditionFactory.FILTER_IS_EQUAL_TO),
-		        Freeplane.getController().getResourceController()
-		            .createTranslatedString(
-		                ConditionFactory.FILTER_IS_NOT_EQUAL_TO),
+		        Controller.getResourceController().createTranslatedString(
+		            ConditionFactory.FILTER_EXIST),
+		        Controller.getResourceController().createTranslatedString(
+		            ConditionFactory.FILTER_DOES_NOT_EXIST),
+		        Controller.getResourceController().createTranslatedString(
+		            ConditionFactory.FILTER_IS_EQUAL_TO),
+		        Controller.getResourceController().createTranslatedString(
+		            ConditionFactory.FILTER_IS_NOT_EQUAL_TO),
 		        NamedObject.literal(ConditionFactory.FILTER_GT),
 		        NamedObject.literal(ConditionFactory.FILTER_GE),
 		        NamedObject.literal(ConditionFactory.FILTER_LE),
@@ -229,22 +225,18 @@ public class ConditionFactory {
 	}
 
 	public Object[] getIconConditionNames() {
-		return new NamedObject[] { Freeplane.getController()
-		    .getResourceController().createTranslatedString(
-		        ConditionFactory.FILTER_CONTAINS), };
+		return new NamedObject[] { Controller.getResourceController()
+		    .createTranslatedString(ConditionFactory.FILTER_CONTAINS), };
 	}
 
 	public NamedObject[] getNodeConditionNames() {
 		return new NamedObject[] {
-		        Freeplane.getController().getResourceController()
-		            .createTranslatedString(ConditionFactory.FILTER_CONTAINS),
-		        Freeplane
-		            .getController()
-		            .getResourceController()
-		            .createTranslatedString(ConditionFactory.FILTER_IS_EQUAL_TO),
-		        Freeplane.getController().getResourceController()
-		            .createTranslatedString(
-		                ConditionFactory.FILTER_IS_NOT_EQUAL_TO),
+		        Controller.getResourceController().createTranslatedString(
+		            ConditionFactory.FILTER_CONTAINS),
+		        Controller.getResourceController().createTranslatedString(
+		            ConditionFactory.FILTER_IS_EQUAL_TO),
+		        Controller.getResourceController().createTranslatedString(
+		            ConditionFactory.FILTER_IS_NOT_EQUAL_TO),
 		        NamedObject.literal(ConditionFactory.FILTER_GT),
 		        NamedObject.literal(ConditionFactory.FILTER_GE),
 		        NamedObject.literal(ConditionFactory.FILTER_LE),

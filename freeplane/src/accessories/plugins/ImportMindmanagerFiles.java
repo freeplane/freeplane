@@ -38,7 +38,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.io.xml.n3.nanoxml.XMLParseException;
 import org.freeplane.main.Tools;
 import org.freeplane.modes.mindmapmode.MModeController;
@@ -103,16 +103,16 @@ public class ImportMindmanagerFiles extends ModeControllerHookAdapter {
 	public void startup() {
 		super.startup();
 		final String type = "mmap";
-		final Container component = Freeplane.getController()
+		final Container component = Controller.getController()
 		    .getViewController().getContentPane();
 		final JFileChooser chooser = new JFileChooser();
 		chooser.addChoosableFileFilter(new ExportHook.ImageFilter(type, null /*
-																						 * No
-																						 * description
-																						 * so
-																						 * far
-																						 */));
-		final File mmFile = Freeplane.getController().getMap().getFile();
+																										 * No
+																										 * description
+																										 * so
+																										 * far
+																										 */));
+		final File mmFile = Controller.getController().getMap().getFile();
 		if (mmFile != null && mmFile.getParentFile() != null) {
 			chooser.setSelectedFile(mmFile.getParentFile());
 		}

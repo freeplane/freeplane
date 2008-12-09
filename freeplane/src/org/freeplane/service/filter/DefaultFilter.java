@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.Freeplane;
 import org.freeplane.map.tree.MapModel;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.view.MapView;
@@ -100,7 +99,7 @@ public class DefaultFilter implements IFilter {
 	public void applyFilter() {
 		if (condition != null) {
 			try {
-				final Controller c = Freeplane.getController();
+				final Controller c = Controller.getController();
 				c.getViewController().setWaitingCursor(true);
 				final MapModel map = c.getModel();
 				final MapView mapView = c.getMapView();
@@ -113,8 +112,8 @@ public class DefaultFilter implements IFilter {
 				DefaultFilter.selectVisibleNode(mapView);
 			}
 			finally {
-				Freeplane.getController().getViewController().setWaitingCursor(
-				    false);
+				Controller.getController().getViewController()
+				    .setWaitingCursor(false);
 			}
 		}
 	}

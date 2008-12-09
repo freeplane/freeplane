@@ -24,7 +24,6 @@ import java.util.Vector;
 import javax.swing.JOptionPane;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.Freeplane;
 import org.freeplane.map.tree.view.MapView;
 import org.freeplane.modes.mindmapmode.MModeController;
 
@@ -44,13 +43,13 @@ public class SaveAll extends ModeControllerHookAdapter {
 	/**
 	 */
 	private Map getMapViews() {
-		return Freeplane.getController().getMapViewManager().getMapViews();
+		return Controller.getController().getMapViewManager().getMapViews();
 	}
 
 	@Override
 	public void startup() {
 		super.startup();
-		final Controller mainController = Freeplane.getController();
+		final Controller mainController = Controller.getController();
 		final MapView initialMapView = mainController.getMapView();
 		final Map mapViews = getMapViews();
 		final Vector v = new Vector();
@@ -62,7 +61,7 @@ public class SaveAll extends ModeControllerHookAdapter {
 			if (!((MModeController) mapView.getModeController()).save()) {
 				JOptionPane
 				    .showMessageDialog(
-				        Freeplane.getController().getViewController()
+				        Controller.getController().getViewController()
 				            .getContentPane(),
 				        "FreeMind",
 				        getResourceString("accessories/plugins/SaveAll.properties_save_all_cancelled"),

@@ -34,8 +34,8 @@ import org.freeplane.modes.mindmapmode.MModeController;
 class CloudColorAction extends MultipleNodeAction implements PopupMenuListener {
 	private Color actionColor;
 
-	public CloudColorAction(final MModeController controller) {
-		super(controller, "cloud_color", "images/Colors24.gif");
+	public CloudColorAction() {
+		super("cloud_color", "images/Colors24.gif");
 	}
 
 	@Override

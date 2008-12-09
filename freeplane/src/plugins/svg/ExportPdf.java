@@ -31,7 +31,7 @@ import org.apache.batik.transcoder.SVGAbstractTranscoder;
 import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.fop.svg.PDFTranscoder;
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.map.tree.view.MapView;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -49,12 +49,12 @@ public class ExportPdf extends ExportVectorGraphic {
 			return;
 		}
 		try {
-			final MapView view = Freeplane.getController().getMapView();
+			final MapView view = Controller.getController().getMapView();
 			if (view == null) {
 				return;
 			}
-			Freeplane.getController().getViewController()
-			    .setWaitingCursor(true);
+			Controller.getController().getViewController().setWaitingCursor(
+			    true);
 			final SVGGraphics2D g2d = fillSVGGraphics2D(view);
 			final PDFTranscoder pdfTranscoder = new PDFTranscoder();
 			/*
@@ -81,10 +81,10 @@ public class ExportPdf extends ExportVectorGraphic {
 		}
 		catch (final Exception e) {
 			org.freeplane.main.Tools.logException(e);
-			JOptionPane.showMessageDialog(Freeplane.getController()
+			JOptionPane.showMessageDialog(Controller.getController()
 			    .getViewController().getContentPane(), e.getLocalizedMessage(),
 			    null, JOptionPane.ERROR_MESSAGE);
 		}
-		Freeplane.getController().getViewController().setWaitingCursor(false);
+		Controller.getController().getViewController().setWaitingCursor(false);
 	}
 }

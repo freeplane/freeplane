@@ -32,7 +32,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.io.url.mindmapmode.FileManager;
 import org.freeplane.main.ExampleFileFilter;
 import org.freeplane.main.FixedHTMLWriter;
@@ -72,24 +72,24 @@ public class MTextController extends TextController {
 	private void createActions(final MModeController modeController) {
 		if (!actionsCreated) {
 			actionsCreated = true;
-			edit = new EditAction(modeController);
-			Freeplane.getController().addAction("edit", edit);
-			Freeplane.getController().addAction("useRichFormatting",
-			    new UseRichFormattingAction(modeController));
-			Freeplane.getController().addAction("usePlainText",
-			    new UsePlainTextAction(modeController));
-			Freeplane.getController().addAction("joinNodes",
-			    new JoinNodesAction(modeController));
-			Freeplane.getController().addAction("editLong",
-			    new EditLongAction(modeController));
-			Freeplane.getController().addAction("setImageByFileChooser",
-			    new SetImageByFileChooserAction(modeController));
+			edit = new EditAction();
+			Controller.getController().addAction("edit", edit);
+			Controller.getController().addAction("useRichFormatting",
+			    new UseRichFormattingAction());
+			Controller.getController().addAction("usePlainText",
+			    new UsePlainTextAction());
+			Controller.getController().addAction("joinNodes",
+			    new JoinNodesAction());
+			Controller.getController().addAction("editLong",
+			    new EditLongAction());
+			Controller.getController().addAction("setImageByFileChooser",
+			    new SetImageByFileChooserAction());
 		}
 	}
 
 	public void edit(final KeyEvent e, final boolean addNew,
 	                 final boolean editLong) {
-		((EditAction) Freeplane.getController().getAction("edit")).edit(e,
+		((EditAction) Controller.getController().getAction("edit")).edit(e,
 		    addNew, editLong);
 	}
 
@@ -169,7 +169,7 @@ public class MTextController extends TextController {
 	}
 
 	public void joinNodes(final NodeModel selectedNode, final List selectedNodes) {
-		((JoinNodesAction) Freeplane.getController().getAction("joinNodes"))
+		((JoinNodesAction) Controller.getController().getAction("joinNodes"))
 		    .joinNodes(selectedNode, selectedNodes);
 	}
 
@@ -214,7 +214,7 @@ public class MTextController extends TextController {
 			}
 			else {
 				final String relative = ((FileManager) getModeController()
-				    .getUrlManager()).getLinkByFileChooser(Freeplane
+				    .getUrlManager()).getLinkByFileChooser(Controller
 				    .getController().getMap(), filter);
 				if (relative != null) {
 					final String strText = "<html><img src=\"" + relative
@@ -229,8 +229,8 @@ public class MTextController extends TextController {
 	}
 
 	public void setNodeText(final NodeModel selected, final String newText) {
-		((EditAction) Freeplane.getController().getAction("edit")).setNodeText(
-		    selected, newText);
+		((EditAction) Controller.getController().getAction("edit"))
+		    .setNodeText(selected, newText);
 	}
 
 	public void splitNode(final NodeModel node, final int caretPosition,

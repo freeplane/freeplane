@@ -43,7 +43,6 @@ import javax.swing.text.JTextComponent;
 
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.FreeMindAction;
-import org.freeplane.controller.Freeplane;
 import org.freeplane.modes.ModeController;
 
 /**
@@ -109,10 +108,10 @@ public class EditNodeBase {
 		private EditNodeBase base;
 
 		EditDialog(final EditNodeBase base) {
-			super(Freeplane.getController().getViewController().getJFrame(),
+			super(Controller.getController().getViewController().getJFrame(),
 			    base.getText("edit_long_node"), /*
-			    		    				    											 * modal=
-			    		    				    											 */
+			    				    				    		    				    											 * modal=
+			    				    				    		    				    											 */
 			    true);
 			getContentPane().setLayout(new BorderLayout());
 			setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -211,8 +210,7 @@ public class EditNodeBase {
 	}
 
 	protected boolean binOptionIsTrue(final String option) {
-		return Freeplane.getController().getResourceController()
-		    .getBoolProperty(option);
+		return Controller.getResourceController().getBoolProperty(option);
 	}
 
 	public void closeEdit() {
@@ -231,7 +229,7 @@ public class EditNodeBase {
 		 *
 		 */
 	protected Controller getController() {
-		return Freeplane.getController();
+		return Controller.getController();
 	}
 
 	/**
@@ -259,7 +257,7 @@ public class EditNodeBase {
 	/**
 		 */
 	protected String getText(final String string) {
-		return Freeplane.getText(string);
+		return Controller.getText(string);
 	}
 
 	/**
@@ -272,7 +270,7 @@ public class EditNodeBase {
 		 *
 		 */
 	protected MapView getView() {
-		return Freeplane.getController().getMapView();
+		return Controller.getController().getMapView();
 	}
 
 	protected void redispatchKeyEvents(final JTextComponent textComponent,

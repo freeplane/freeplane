@@ -23,15 +23,14 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 
 import deprecated.freemind.preferences.IFreemindPropertyListener;
 
 class OptionAntialiasAction extends AbstractAction implements
         IFreemindPropertyListener {
 	OptionAntialiasAction() {
-		Freeplane.getController().getResourceController()
-		    .addPropertyChangeListener(this);
+		Controller.getResourceController().addPropertyChangeListener(this);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -46,24 +45,25 @@ class OptionAntialiasAction extends AbstractAction implements
 			return;
 		}
 		if (command.equals("antialias_none")) {
-			Freeplane.getController().getViewController().setAntialiasEdges(
+			Controller.getController().getViewController().setAntialiasEdges(
 			    false);
-			Freeplane.getController().getViewController()
-			    .setAntialiasAll(false);
+			Controller.getController().getViewController().setAntialiasAll(
+			    false);
 		}
 		if (command.equals("antialias_edges")) {
-			Freeplane.getController().getViewController().setAntialiasEdges(
+			Controller.getController().getViewController().setAntialiasEdges(
 			    true);
-			Freeplane.getController().getViewController()
-			    .setAntialiasAll(false);
+			Controller.getController().getViewController().setAntialiasAll(
+			    false);
 		}
 		if (command.equals("antialias_all")) {
-			Freeplane.getController().getViewController().setAntialiasEdges(
+			Controller.getController().getViewController().setAntialiasEdges(
 			    true);
-			Freeplane.getController().getViewController().setAntialiasAll(true);
+			Controller.getController().getViewController()
+			    .setAntialiasAll(true);
 		}
-		if (Freeplane.getController().getMapView() != null) {
-			Freeplane.getController().getMapView().repaint();
+		if (Controller.getController().getMapView() != null) {
+			Controller.getController().getMapView().repaint();
 		}
 	}
 

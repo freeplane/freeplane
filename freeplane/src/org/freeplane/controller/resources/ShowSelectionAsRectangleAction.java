@@ -23,7 +23,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.ui.FreemindMenuBar;
 import org.freeplane.ui.ISelectablePopupAction;
 
@@ -33,17 +33,15 @@ class ShowSelectionAsRectangleAction extends AbstractAction implements
 	 *
 	 */
 	public ShowSelectionAsRectangleAction() {
-		FreemindMenuBar.setLabelAndMnemonic(this, Freeplane
+		FreemindMenuBar.setLabelAndMnemonic(this, Controller
 		    .getText("selection_as_rectangle"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		Freeplane.getController().getResourceController()
-		    .toggleSelectionAsRectangle();
+		Controller.getResourceController().toggleSelectionAsRectangle();
 	}
 
 	public boolean isSelected() {
-		return Freeplane.getController().getResourceController()
-		    .isSelectionAsRectangle();
+		return Controller.getResourceController().isSelectionAsRectangle();
 	}
 }

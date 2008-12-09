@@ -27,7 +27,6 @@ import javax.swing.Action;
 import javax.swing.JMenuItem;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.Freeplane;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.view.MapView;
 import org.freeplane.map.tree.view.NodeView;
@@ -61,7 +60,7 @@ public class NodeHistory extends MindMapNodeHookAdapter {
 
 		private MapView getMapView() {
 			MapView mapView = null;
-			final Map mapViews = Freeplane.getController().getMapViewManager()
+			final Map mapViews = Controller.getController().getMapViewManager()
 			    .getMapViews();
 			for (final Iterator iter = mapViews.keySet().iterator(); iter
 			    .hasNext();) {
@@ -86,7 +85,7 @@ public class NodeHistory extends MindMapNodeHookAdapter {
 		private MapView getModuleGivenModeController(
 		                                             final MModeController pMindMapController) {
 			MapView mapView = null;
-			for (final Iterator iter = Freeplane.getController()
+			for (final Iterator iter = Controller.getController()
 			    .getMapViewManager().getMapViews().entrySet().iterator(); iter
 			    .hasNext();) {
 				final Map.Entry mapEntry = (Map.Entry) iter.next();
@@ -219,7 +218,7 @@ public class NodeHistory extends MindMapNodeHookAdapter {
 		}
 		final NodeHolder nodeHolder = (NodeHolder) NodeHistory.sNodeVector
 		    .get(NodeHistory.sCurrentPosition - 1);
-		final Controller mainController = Freeplane.getController();
+		final Controller mainController = Controller.getController();
 		final NodeModel toBeSelected = (nodeHolder).getNode();
 		boolean changeModule = false;
 		MapView newModule = null;

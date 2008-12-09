@@ -19,7 +19,7 @@
  */
 package org.freeplane.service.filter.condition;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.io.xml.n3.nanoxml.XMLElement;
 import org.freeplane.map.attribute.IAttributeTableModel;
 import org.freeplane.map.tree.NodeModel;
@@ -63,7 +63,7 @@ public class AttributeExistsCondition extends NodeCondition {
 
 	@Override
 	protected String createDesctiption() {
-		final String simpleCondition = Freeplane
+		final String simpleCondition = Controller
 		    .getText(ConditionFactory.FILTER_EXIST);
 		return ConditionFactory.createDescription(attribute, simpleCondition,
 		    null, false);

@@ -23,16 +23,16 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.ui.FreemindMenuBar;
 
 /** This closes only the current map */
 class CloseAction extends AbstractAction {
 	CloseAction() {
-		FreemindMenuBar.setLabelAndMnemonic(this, Freeplane.getText("close"));
+		FreemindMenuBar.setLabelAndMnemonic(this, Controller.getText("close"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		Freeplane.getController().close(false);
+		Controller.getController().close(false);
 	}
 }

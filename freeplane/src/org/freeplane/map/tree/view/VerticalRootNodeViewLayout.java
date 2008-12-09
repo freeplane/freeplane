@@ -24,7 +24,7 @@ import java.awt.Point;
 
 import javax.swing.JComponent;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.main.Tools;
 
 /**
@@ -32,8 +32,7 @@ import org.freeplane.main.Tools;
  */
 public class VerticalRootNodeViewLayout extends NodeViewLayoutAdapter {
 	static private VerticalRootNodeViewLayout instance = null;
-	public static boolean USE_COMMON_OUT_POINT_FOR_ROOT_NODE = Freeplane
-	    .getController()
+	public static boolean USE_COMMON_OUT_POINT_FOR_ROOT_NODE = Controller
 	    .getResourceController()
 	    .getBoolProperty(
 	        VerticalRootNodeViewLayout.USE_COMMON_OUT_POINT_FOR_ROOT_NODE_STRING);

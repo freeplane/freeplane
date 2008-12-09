@@ -21,25 +21,25 @@ package org.freeplane.map.tree.mindmapmode;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
+import org.freeplane.controller.FreeMindAction;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.view.MapView;
-import org.freeplane.modes.ModeControllerAction;
 import org.freeplane.modes.mindmapmode.MModeController;
 
-class ToggleChildrenFoldedAction extends ModeControllerAction {
-	public ToggleChildrenFoldedAction(final MModeController modeController) {
-		super(modeController, "toggle_children_folded");
+class ToggleChildrenFoldedAction extends FreeMindAction {
+	public ToggleChildrenFoldedAction() {
+		super("toggle_children_folded");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final MModeController modeController = getMModeController();
 		final NodeModel selected = modeController.getSelectedNode();
-		((ToggleFoldedAction) Freeplane.getController().getAction(
+		((ToggleFoldedAction) Controller.getController().getAction(
 		    "toggleFolded")).toggleFolded(selected.getModeController()
 		    .getMapController().childrenUnfolded(selected));
 		final MapView mapView = modeController.getMapView();
 		mapView.selectAsTheOnlyOneSelected(mapView.getNodeView(selected));
-		Freeplane.getController().getViewController().obtainFocusForSelected();
+		Controller.getController().getViewController().obtainFocusForSelected();
 	}
 }

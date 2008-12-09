@@ -82,7 +82,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.map.tree.view.NodeView;
 
 /**
@@ -633,8 +633,8 @@ public class Tools {
 		boolean successful = false;
 		try {
 			URL updaterUrl = null;
-			updaterUrl = Freeplane.getController().getResourceController()
-			    .getResource(xsltScript);
+			updaterUrl = Controller.getResourceController().getResource(
+			    xsltScript);
 			if (updaterUrl == null) {
 				throw new IllegalArgumentException(xsltScript + " not found.");
 			}

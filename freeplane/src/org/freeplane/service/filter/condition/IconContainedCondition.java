@@ -27,7 +27,7 @@ import java.util.Set;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.io.xml.n3.nanoxml.XMLElement;
 import org.freeplane.map.icon.MindIcon;
 import org.freeplane.map.tree.NodeModel;
@@ -100,8 +100,8 @@ public class IconContainedCondition implements ICondition {
 	 */
 	public JComponent getListCellRendererComponent() {
 		final JCondition component = new JCondition();
-		final String text = Freeplane.getText("filter_icon") + ' '
-		        + Freeplane.getText("filter_contains") + ' ';
+		final String text = Controller.getText("filter_icon") + ' '
+		        + Controller.getText("filter_contains") + ' ';
 		component.add(new JLabel(text));
 		component.add(MindIcon.factory(getIconName()).getRendererComponent());
 		return component;

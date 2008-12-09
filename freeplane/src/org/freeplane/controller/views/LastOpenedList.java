@@ -31,7 +31,7 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.io.xml.n3.nanoxml.XMLParseException;
 import org.freeplane.main.Tools;
 import org.freeplane.map.tree.view.MapView;
@@ -53,9 +53,8 @@ public class LastOpenedList {
 	final private Map mRestorableToMapName = new HashMap();
 
 	LastOpenedList(final String restored) {
-		maxEntries = new Integer(Freeplane.getController()
-		    .getResourceController().getProperty("last_opened_list_length"))
-		    .intValue();
+		maxEntries = new Integer(Controller.getResourceController()
+		    .getProperty("last_opened_list_length")).intValue();
 		load(restored);
 	}
 
@@ -100,16 +99,16 @@ public class LastOpenedList {
 	public void open(final String restoreable) throws FileNotFoundException,
 	        XMLParseException, MalformedURLException, IOException,
 	        URISyntaxException {
-		final boolean changedToMapView = Freeplane.getController()
+		final boolean changedToMapView = Controller.getController()
 		    .getMapViewManager().tryToChangeToMapView(
 		        (String) mRestorableToMapName.get(restoreable));
 		if ((restoreable != null) && !(changedToMapView)) {
 			final StringTokenizer token = new StringTokenizer(restoreable, ":");
 			if (token.hasMoreTokens()) {
 				final String mode = token.nextToken();
-				if (Freeplane.getController().selectMode(mode)) {
+				if (Controller.getController().selectMode(mode)) {
 					final String fileName = token.nextToken("").substring(1);
-					Freeplane.getController().getModeController()
+					Controller.getController().getModeController()
 					    .getMapController().newMap(
 					        Tools.fileToUrl(new File(fileName)));
 				}

@@ -34,7 +34,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.main.Tools;
 import org.freeplane.map.icon.MindIcon;
 import org.freeplane.map.tree.NodeModel;
@@ -56,9 +56,8 @@ public class MPatternController {
 	public MPatternController(final MModeController modeController) {
 		super();
 		this.modeController = modeController;
-		patternsFile = new File(Freeplane.getController()
-		    .getResourceController().getFreemindUserDirectory(), Freeplane
-		    .getController().getResourceController()
+		patternsFile = new File(Controller.getResourceController()
+		    .getFreemindUserDirectory(), Controller.getResourceController()
 		    .getProperty("patternsfile"));
 		createActions();
 	}
@@ -158,8 +157,8 @@ public class MPatternController {
 		for (int i = 0; i < patterns.length; ++i) {
 			final JMenuItem item = new JMenuItem(patterns[i]);
 			builder.addMenuItem(group, item, MenuBuilder.AS_CHILD);
-			item.setAccelerator(KeyStroke.getKeyStroke(Freeplane
-			    .getController().getResourceController().getAdjustableProperty(
+			item.setAccelerator(KeyStroke.getKeyStroke(Controller
+			    .getResourceController().getAdjustableProperty(
 			        "keystroke_apply_pattern_" + (i + 1))));
 		}
 	}

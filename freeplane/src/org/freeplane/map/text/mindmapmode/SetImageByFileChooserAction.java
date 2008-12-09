@@ -21,18 +21,17 @@ package org.freeplane.map.text.mindmapmode;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.controller.Freeplane;
-import org.freeplane.modes.ModeControllerAction;
-import org.freeplane.modes.mindmapmode.MModeController;
+import org.freeplane.controller.Controller;
+import org.freeplane.controller.FreeMindAction;
 
-class SetImageByFileChooserAction extends ModeControllerAction {
-	public SetImageByFileChooserAction(final MModeController modeController) {
-		super(null, "set_image_by_filechooser");
+class SetImageByFileChooserAction extends FreeMindAction {
+	public SetImageByFileChooserAction() {
+		super("set_image_by_filechooser");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		((MTextController) getModeController().getTextController())
 		    .setImageByFileChooser();
-		Freeplane.getController().getViewController().obtainFocusForSelected();
+		Controller.getController().getViewController().obtainFocusForSelected();
 	}
 }

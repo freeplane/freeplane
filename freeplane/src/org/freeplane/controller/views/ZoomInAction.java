@@ -23,7 +23,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.ui.FreemindMenuBar;
 
 class ZoomInAction extends AbstractAction {
@@ -34,7 +34,8 @@ class ZoomInAction extends AbstractAction {
 
 	public ZoomInAction(final ViewController controller) {
 		this.controller = controller;
-		FreemindMenuBar.setLabelAndMnemonic(this, Freeplane.getText("zoom_in"));
+		FreemindMenuBar
+		    .setLabelAndMnemonic(this, Controller.getText("zoom_in"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {

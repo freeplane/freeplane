@@ -23,17 +23,17 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.ImageIcon;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.ui.FreemindMenuBar;
 
 class PrintAction extends AbstractPrintAction {
 	final private boolean isDlg;
 
 	PrintAction(final PrintController controller, final boolean isDlg) {
-		super(controller, null, new ImageIcon(Freeplane.getController()
+		super(controller, null, new ImageIcon(Controller
 		    .getResourceController().getResource("images/fileprint.png")));
-		FreemindMenuBar.setLabelAndMnemonic(this, isDlg ? Freeplane
-		    .getText("print_dialog") : Freeplane.getText("print"));
+		FreemindMenuBar.setLabelAndMnemonic(this, isDlg ? Controller
+		    .getText("print_dialog") : Controller.getText("print"));
 		this.isDlg = isDlg;
 	}
 
@@ -42,8 +42,9 @@ class PrintAction extends AbstractPrintAction {
 		if (!controller.acquirePrinterJobAndPageFormat()) {
 			return;
 		}
-		controller.getPrinterJob().setPrintable(
-		    Freeplane.getController().getMapView(), controller.getPageFormat());
+		controller.getPrinterJob()
+		    .setPrintable(Controller.getController().getMapView(),
+		        controller.getPageFormat());
 		if (!isDlg || controller.getPrinterJob().printDialog()) {
 			try {
 				controller.getPrinterJob().print();

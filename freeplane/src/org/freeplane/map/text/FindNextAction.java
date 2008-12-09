@@ -22,17 +22,17 @@ package org.freeplane.map.text;
 import java.awt.event.ActionEvent;
 import java.util.Collection;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
+import org.freeplane.controller.FreeMindAction;
 import org.freeplane.main.HtmlTools;
 import org.freeplane.modes.ModeController;
-import org.freeplane.modes.ModeControllerAction;
 import org.freeplane.ui.FreemindMenuBar;
 
-class FindNextAction extends ModeControllerAction {
+class FindNextAction extends FreeMindAction {
 	final private FindAction find;
 
 	public FindNextAction(final ModeController controller, final FindAction find) {
-		super(controller, "find_next");
+		super("find_next");
 		FreemindMenuBar.setLabelAndMnemonic(this, controller
 		    .getText("find_next"));
 		this.find = find;
@@ -41,7 +41,7 @@ class FindNextAction extends ModeControllerAction {
 	public void actionPerformed(final ActionEvent e) {
 		final Collection subterms = find.getSubterms();
 		if (subterms == null) {
-			Freeplane.getController().informationMessage(
+			Controller.getController().informationMessage(
 			    getModeController().getText("no_previous_find"),
 			    getModeController().getMapView().getSelected());
 			return;
@@ -54,7 +54,7 @@ class FindNextAction extends ModeControllerAction {
 			final String searchTerm = messageText.startsWith("<html>") ? HtmlTools
 			    .toXMLEscapedText(find.getSearchTerm())
 			        : find.getSearchTerm();
-			Freeplane.getController().informationMessage(
+			Controller.getController().informationMessage(
 			    messageText.replaceAll("\\$1", searchTerm).replaceAll("\\$2",
 			        find.getFindFromText()),
 			    getModeController().getMapView().getSelected());

@@ -34,7 +34,7 @@ import javax.swing.KeyStroke;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.map.note.NoteController;
 import org.freeplane.map.note.NoteModel;
@@ -72,7 +72,7 @@ public class MNoteController extends NoteController {
 		}
 
 		private void docEvent() {
-			Freeplane.getController().getMap().setSaved(false);
+			Controller.getController().getMap().setSaved(false);
 		}
 
 		public void insertUpdate(final DocumentEvent arg0) {
@@ -120,11 +120,11 @@ public class MNoteController extends NoteController {
 		super(modeController);
 		if (!actionsCreated) {
 			actionsCreated = true;
-			Freeplane.getController().addAction("selectNoteAction",
+			Controller.getController().addAction("selectNoteAction",
 			    new SelectNoteAction(this, getModeController()));
-			Freeplane.getController().addAction("showHideNoteAction",
+			Controller.getController().addAction("showHideNoteAction",
 			    new ShowHideNoteAction(this, getModeController()));
-			Freeplane.getController().addAction("removeNoteAction",
+			Controller.getController().addAction("removeNoteAction",
 			    new RemoveNoteAction(this, getModeController()));
 		}
 	}
@@ -134,11 +134,11 @@ public class MNoteController extends NoteController {
 			SHTMLPanel.setResources(new TextResources() {
 				public String getString(String pKey) {
 					pKey = "simplyhtml." + pKey;
-					String resourceString = Freeplane.getController()
-					    .getResourceController().getText(pKey, null);
+					String resourceString = Controller.getResourceController()
+					    .getText(pKey, null);
 					if (resourceString == null) {
-						resourceString = Freeplane.getController()
-						    .getResourceController().getProperty(pKey);
+						resourceString = Controller.getResourceController()
+						    .getProperty(pKey);
 					}
 					return resourceString;
 				}
@@ -167,7 +167,7 @@ public class MNoteController extends NoteController {
 		if (splitPane == null) {
 			showNotesPanel();
 			splitPane = getSplitPane();
-			Freeplane.getController().getResourceController().setProperty(
+			Controller.getResourceController().setProperty(
 			    ResourceController.RESOURCES_USE_SPLIT_PANE, "true");
 		}
 		return splitPane;
@@ -175,7 +175,7 @@ public class MNoteController extends NoteController {
 
 	void hideNotesPanel() {
 		noteViewerComponent.setVisible(false);
-		Freeplane.getController().getViewController().removeSplitPane();
+		Controller.getController().getViewController().removeSplitPane();
 		mSplitPane = null;
 	}
 
@@ -239,15 +239,15 @@ public class MNoteController extends NoteController {
 	}
 
 	private boolean shouldUseSplitPane() {
-		return "true".equals(Freeplane.getController().getResourceController()
-		    .getProperty(ResourceController.RESOURCES_USE_SPLIT_PANE));
+		return "true".equals(Controller.getResourceController().getProperty(
+		    ResourceController.RESOURCES_USE_SPLIT_PANE));
 	}
 
 	public void showNotesPanel() {
 		final SouthPanel southPanel = new SouthPanel();
 		southPanel.add(noteViewerComponent, BorderLayout.CENTER);
 		noteViewerComponent.setVisible(true);
-		mSplitPane = Freeplane.getController().getViewController()
+		mSplitPane = Controller.getController().getViewController()
 		    .insertComponentIntoSplitPane(southPanel);
 		southPanel.revalidate();
 	}
@@ -266,8 +266,7 @@ public class MNoteController extends NoteController {
 		noteManager = new NoteManager(this);
 		noteViewerComponent = getHtmlEditorPanel();
 		final Action jumpToMapAction = new JumpToMapAction();
-		final String keystroke = Freeplane
-		    .getController()
+		final String keystroke = Controller
 		    .getResourceController()
 		    .getAdjustableProperty(
 		        "keystroke_accessories/plugins/NodeNote_jumpto.keystroke.alt_N");

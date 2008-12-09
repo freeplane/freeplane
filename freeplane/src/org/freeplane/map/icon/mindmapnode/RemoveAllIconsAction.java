@@ -25,12 +25,11 @@ import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.main.Tools;
 import org.freeplane.map.icon.IIconInformation;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.MultipleNodeAction;
-import org.freeplane.modes.mindmapmode.MModeController;
 
 /**
  * @author foltin
@@ -39,8 +38,8 @@ class RemoveAllIconsAction extends MultipleNodeAction implements
         IIconInformation {
 	/**
 	 */
-	public RemoveAllIconsAction(final MModeController modeController) {
-		super(modeController, "remove_all_icons", "images/edittrash.png");
+	public RemoveAllIconsAction() {
+		super("remove_all_icons", "images/edittrash.png");
 	}
 
 	@Override
@@ -57,9 +56,8 @@ class RemoveAllIconsAction extends MultipleNodeAction implements
 	}
 
 	public KeyStroke getKeyStroke() {
-		return Tools.getKeyStroke(Freeplane.getController()
-		    .getResourceController().getAdjustableProperty(
-		        getKeystrokeResourceName()));
+		return Tools.getKeyStroke(Controller.getResourceController()
+		    .getAdjustableProperty(getKeystrokeResourceName()));
 	}
 
 	public String getKeystrokeResourceName() {

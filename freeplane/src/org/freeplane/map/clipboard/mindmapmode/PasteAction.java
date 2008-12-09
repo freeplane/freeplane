@@ -33,7 +33,8 @@ import java.util.ListIterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
+import org.freeplane.controller.FreeMindAction;
 import org.freeplane.main.HtmlTools;
 import org.freeplane.main.Tools;
 import org.freeplane.map.clipboard.MindMapNodesSelection;
@@ -43,11 +44,9 @@ import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.MapController.NodeTreeCreator;
 import org.freeplane.map.tree.mindmapmode.MMapController;
 import org.freeplane.modes.ModeController;
-import org.freeplane.modes.ModeControllerAction;
-import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.undo.IUndoableActor;
 
-class PasteAction extends ModeControllerAction {
+class PasteAction extends FreeMindAction {
 	private interface DataFlavorHandler {
 		DataFlavor getDataFlavor();
 
@@ -70,8 +69,8 @@ class PasteAction extends ModeControllerAction {
 				throw new UnsupportedFlavorException(
 				    MindMapNodesSelection.htmlFlavor);
 			}
-			Freeplane.getController().getViewController()
-			    .setWaitingCursor(true);
+			Controller.getController().getViewController().setWaitingCursor(
+			    true);
 			textFromClipboard = textFromClipboard.replaceFirst(
 			    "(?i)(?s)<head>.*</head>", "").replaceFirst(
 			    "(?i)(?s)^.*<html[^>]*>", "<html>").replaceFirst(
@@ -80,16 +79,16 @@ class PasteAction extends ModeControllerAction {
 			    "(?i)(?s)</?tbody.*?>", "")
 			    .replaceAll("(?i)(?s)<!--.*?-->", "").replaceAll(
 			        "(?i)(?s)</?o[^>]*>", "");
-			if (Tools.safeEquals(Freeplane.getController()
-			    .getResourceController().getProperty(
-			        "cut_out_pictures_when_pasting_html"), "true")) {
+			if (Tools.safeEquals(Controller.getResourceController()
+			    .getProperty("cut_out_pictures_when_pasting_html"), "true")) {
 				textFromClipboard = textFromClipboard.replaceAll(
 				    "(?i)(?s)<img[^>]*>", "");
 			}
 			textFromClipboard = HtmlTools
 			    .unescapeHTMLUnicodeEntity(textFromClipboard);
-			final NodeModel node = getMModeController().getMapController()
-			    .newNode(textFromClipboard, Freeplane.getController().getMap());
+			final NodeModel node = getMModeController()
+			    .getMapController()
+			    .newNode(textFromClipboard, Controller.getController().getMap());
 			final Matcher m = PasteAction.HREF_PATTERN
 			    .matcher(textFromClipboard);
 			if (m.matches()) {
@@ -101,7 +100,7 @@ class PasteAction extends ModeControllerAction {
 				}
 			}
 			addUndoAction(node);
-			Freeplane.getController().getViewController().setWaitingCursor(
+			Controller.getController().getViewController().setWaitingCursor(
 			    false);
 		}
 	}
@@ -141,7 +140,7 @@ class PasteAction extends ModeControllerAction {
 				final String[] textLines = textFromClipboard
 				    .split(ModeController.NODESEPARATOR);
 				if (textLines.length > 1) {
-					Freeplane.getController().getViewController()
+					Controller.getController().getViewController()
 					    .setWaitingCursor(true);
 				}
 				final MapController mapController = getModeController()
@@ -178,8 +177,8 @@ class PasteAction extends ModeControllerAction {
 	static final Pattern nonLinkCharacter = Pattern.compile("[ \n()'\",;]");
 	private List newNodes;
 
-	public PasteAction(final MModeController adapter) {
-		super(adapter, "paste", "images/editpaste.png");
+	public PasteAction() {
+		super("paste", "images/editpaste.png");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -315,7 +314,7 @@ class PasteAction extends ModeControllerAction {
 			Tools.logException(e);
 		}
 		finally {
-			Freeplane.getController().getViewController().setWaitingCursor(
+			Controller.getController().getViewController().setWaitingCursor(
 			    false);
 		}
 	}
@@ -340,11 +339,11 @@ class PasteAction extends ModeControllerAction {
 		    .compile("([^@ <>\\*']+@[^@ <>\\*']+)");
 		final String[] textLines = textFromClipboard.split("\n");
 		if (textLines.length > 1) {
-			Freeplane.getController().getViewController()
-			    .setWaitingCursor(true);
+			Controller.getController().getViewController().setWaitingCursor(
+			    true);
 		}
 		if (asSibling) {
-			parent = new NodeModel(Freeplane.getController().getMap());
+			parent = new NodeModel(Controller.getController().getMap());
 		}
 		final ArrayList parentNodes = new ArrayList();
 		final ArrayList parentNodesDepths = new ArrayList();

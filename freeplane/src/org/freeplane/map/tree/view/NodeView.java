@@ -42,7 +42,7 @@ import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeNode;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.main.Tools;
 import org.freeplane.map.attribute.view.AttributeView;
 import org.freeplane.map.cloud.CloudModel;
@@ -460,9 +460,8 @@ public class NodeView extends JComponent implements TreeModelListener {
 	public int getMaxToolTipWidth() {
 		if (maxToolTipWidth == 0) {
 			try {
-				maxToolTipWidth = Freeplane.getController()
-				    .getResourceController().getIntProperty(
-				        "max_tooltip_width", 600);
+				maxToolTipWidth = Controller.getResourceController()
+				    .getIntProperty("max_tooltip_width", 600);
 			}
 			catch (final NumberFormatException e) {
 				maxToolTipWidth = 600;
@@ -767,8 +766,7 @@ public class NodeView extends JComponent implements TreeModelListener {
 
 	public int getZoomedFoldingSymbolHalfWidth() {
 		if (NodeView.FOLDING_SYMBOL_WIDTH == -1) {
-			NodeView.FOLDING_SYMBOL_WIDTH = Freeplane.getController()
-			    .getResourceController()
+			NodeView.FOLDING_SYMBOL_WIDTH = Controller.getResourceController()
 			    .getIntProperty("foldingsymbolwidth", 8);
 		}
 		final int preferredFoldingSymbolHalfWidth = (int) ((NodeView.FOLDING_SYMBOL_WIDTH * map

@@ -19,7 +19,7 @@
  */
 package deprecated.freemind.modes.mindmapmode.actions.undo;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.map.attribute.AttributeRegistry;
 import org.freeplane.map.attribute.IAttributeController;
 import org.freeplane.map.tree.NodeModel;
@@ -45,7 +45,8 @@ public abstract class AbstractActor implements IActor {
 	}
 
 	protected AttributeRegistry getAttributeRegistry() {
-		return Freeplane.getController().getMap().getRegistry().getAttributes();
+		return Controller.getController().getMap().getRegistry()
+		    .getAttributes();
 	}
 
 	protected NodeModel getNode(final String nodeID) {

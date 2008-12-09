@@ -22,28 +22,27 @@ package org.freeplane.map.link.mindmapmode;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
+import org.freeplane.controller.FreeMindAction;
 import org.freeplane.map.link.ArrowLinkModel;
 import org.freeplane.map.link.NodeLinks;
 import org.freeplane.map.tree.NodeModel;
-import org.freeplane.modes.ModeControllerAction;
-import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.undo.IUndoableActor;
 
 /**
  * @author foltin
  */
-class AddArrowLinkAction extends ModeControllerAction {
+class AddArrowLinkAction extends FreeMindAction {
 	/**
 	 */
-	public AddArrowLinkAction(final MModeController modeController) {
-		super(modeController, "add_link", "images/designer.png");
+	public AddArrowLinkAction() {
+		super("add_link", "images/designer.png");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final List selecteds = getMModeController().getSelectedNodes();
 		if (selecteds.size() < 2) {
-			Freeplane.getController().errorMessage(
+			Controller.getController().errorMessage(
 			    getMModeController().getText("less_than_two_selected_nodes"));
 			return;
 		}

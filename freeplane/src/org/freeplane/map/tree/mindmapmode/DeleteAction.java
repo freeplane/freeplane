@@ -24,19 +24,18 @@ import java.util.Iterator;
 
 import javax.swing.JOptionPane;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
+import org.freeplane.controller.FreeMindAction;
 import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.map.tree.NodeModel;
-import org.freeplane.modes.ModeController;
-import org.freeplane.modes.ModeControllerAction;
 import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.undo.IUndoableActor;
 
 import deprecated.freemind.common.OptionalDontShowMeAgainDialog;
 
-class DeleteAction extends ModeControllerAction {
-	public DeleteAction(final ModeController modeController) {
-		super(modeController, "remove_node", "images/editdelete.png");
+class DeleteAction extends FreeMindAction {
+	public DeleteAction() {
+		super("remove_node", "images/editdelete.png");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -48,7 +47,7 @@ class DeleteAction extends ModeControllerAction {
 				return;
 			}
 		}
-		final int showResult = new OptionalDontShowMeAgainDialog(Freeplane
+		final int showResult = new OptionalDontShowMeAgainDialog(Controller
 		    .getController().getViewController().getJFrame(), modeController
 		    .getSelectedView(), "really_remove_node", "confirmation",
 		    new OptionalDontShowMeAgainDialog.StandardPropertyHandler(

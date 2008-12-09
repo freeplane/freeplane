@@ -32,7 +32,7 @@ import java.util.Vector;
 
 import javax.swing.JPanel;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.map.edge.EdgeModel;
 import org.freeplane.map.icon.MindIcon;
@@ -250,8 +250,8 @@ public class StylePatternPanel extends JPanel implements ITextTranslator,
 		    StylePatternPanel.SET_NODE_COLOR);
 		controls.add(mSetNodeColor);
 		mNodeColor = new ColorProperty(StylePatternPanel.NODE_COLOR
-		        + ".tooltip", StylePatternPanel.NODE_COLOR, Freeplane
-		    .getController().getResourceController().getDefaultProperty(
+		        + ".tooltip", StylePatternPanel.NODE_COLOR, Controller
+		    .getResourceController().getDefaultProperty(
 		        ResourceController.RESOURCES_NODE_TEXT_COLOR));
 		controls.add(mNodeColor);
 		mSetNodeBackgroundColor = new ThreeCheckBoxProperty(
@@ -260,7 +260,7 @@ public class StylePatternPanel extends JPanel implements ITextTranslator,
 		controls.add(mSetNodeBackgroundColor);
 		mNodeBackgroundColor = new ColorProperty(
 		    StylePatternPanel.NODE_BACKGROUND_COLOR + ".tooltip",
-		    StylePatternPanel.NODE_BACKGROUND_COLOR, Freeplane.getController()
+		    StylePatternPanel.NODE_BACKGROUND_COLOR, Controller
 		        .getResourceController().getDefaultProperty(
 		            ResourceController.RESOURCES_BACKGROUND_COLOR));
 		controls.add(mNodeBackgroundColor);
@@ -354,8 +354,8 @@ public class StylePatternPanel extends JPanel implements ITextTranslator,
 		    StylePatternPanel.SET_EDGE_COLOR);
 		controls.add(mSetEdgeColor);
 		mEdgeColor = new ColorProperty(StylePatternPanel.EDGE_COLOR
-		        + ".tooltip", StylePatternPanel.EDGE_COLOR, Freeplane
-		    .getController().getResourceController().getDefaultProperty(
+		        + ".tooltip", StylePatternPanel.EDGE_COLOR, Controller
+		    .getResourceController().getDefaultProperty(
 		        ResourceController.RESOURCES_EDGE_COLOR));
 		controls.add(mEdgeColor);
 		/* **** */
@@ -528,27 +528,26 @@ public class StylePatternPanel extends JPanel implements ITextTranslator,
 
 	public void setPattern(final Pattern pattern) {
 		setPatternControls(pattern.getPatternNodeColor(), mSetNodeColor,
-		    mNodeColor, Freeplane.getController().getResourceController()
-		        .getDefaultProperty(
-		            ResourceController.RESOURCES_NODE_TEXT_COLOR));
+		    mNodeColor, Controller.getResourceController().getDefaultProperty(
+		        ResourceController.RESOURCES_NODE_TEXT_COLOR));
 		setPatternControls(pattern.getPatternNodeBackgroundColor(),
-		    mSetNodeBackgroundColor, mNodeBackgroundColor, Freeplane
-		        .getController().getResourceController().getDefaultProperty(
+		    mSetNodeBackgroundColor, mNodeBackgroundColor, Controller
+		        .getResourceController().getDefaultProperty(
 		            ResourceController.RESOURCES_BACKGROUND_COLOR));
 		setPatternControls(pattern.getPatternNodeStyle(), mSetNodeStyle,
 		    mNodeStyle, NodeStyleModel.SHAPE_AS_PARENT);
 		setPatternControls(pattern.getPatternNodeText(), mSetNodeText,
 		    mNodeText, "");
 		setPatternControls(pattern.getPatternEdgeColor(), mSetEdgeColor,
-		    mEdgeColor, Freeplane.getController().getResourceController()
-		        .getDefaultProperty(ResourceController.RESOURCES_EDGE_COLOR));
+		    mEdgeColor, Controller.getResourceController().getDefaultProperty(
+		        ResourceController.RESOURCES_EDGE_COLOR));
 		setPatternControls(pattern.getPatternEdgeStyle(), mSetEdgeStyle,
 		    mEdgeStyle, StylePatternPanel.EDGE_STYLES[0]);
 		setPatternControls(pattern.getPatternEdgeWidth(), mSetEdgeWidth,
 		    mEdgeWidth, StylePatternPanel.EDGE_WIDTHS[0],
 		    new EdgeWidthTransformer());
 		setPatternControls(pattern.getPatternNodeFontName(), mSetNodeFontName,
-		    mNodeFontName, Freeplane.getController().getResourceController()
+		    mNodeFontName, Controller.getResourceController()
 		        .getDefaultFontFamilyName());
 		setPatternControls(pattern.getPatternNodeFontSize(), mSetNodeFontSize,
 		    mNodeFontSize, sizes[0]);

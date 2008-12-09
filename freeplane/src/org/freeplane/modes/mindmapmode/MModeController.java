@@ -36,7 +36,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JMenuItem;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.io.url.mindmapmode.FileManager;
 import org.freeplane.map.attribute.IAttributeController;
 import org.freeplane.map.attribute.mindmapnode.MAttributeController;
@@ -105,7 +105,8 @@ public class MModeController extends ModeController {
 
 	public void addHook(final NodeModel focussed, final List selecteds,
 	                    final String hookName) {
-		((NodeHookAction) Freeplane.getController().getAction("nodeHookAction"))
+		((NodeHookAction) Controller.getController()
+		    .getAction("nodeHookAction"))
 		    .addHook(focussed, selecteds, hookName);
 	}
 
@@ -114,8 +115,8 @@ public class MModeController extends ModeController {
 	}
 
 	public void addUndoableActor(final IUndoableActor actor) {
-		final MindMapMapModel map = (MindMapMapModel) Freeplane.getController()
-		    .getMap();
+		final MindMapMapModel map = (MindMapMapModel) Controller
+		    .getController().getMap();
 		final IUndoHandler undoHandler = map.getUndoHandler();
 		undoHandler.addActor(actor);
 		undo.setEnabled(true);
@@ -125,20 +126,20 @@ public class MModeController extends ModeController {
 	private void createActions() {
 		if (!actionsCreated) {
 			actionsCreated = true;
-			undo = new UndoAction(this);
-			redo = new RedoAction(this);
+			undo = new UndoAction();
+			redo = new RedoAction();
 			undo.setRedo(redo);
 			redo.setUndo(undo);
-			Freeplane.getController().addAction("undo", undo);
-			Freeplane.getController().addAction("redo", redo);
+			Controller.getController().addAction("undo", undo);
+			Controller.getController().addAction("redo", redo);
 			undoActionHandler = new UndoActionHandler(this);
 			getActionFactory().registerUndoHandler(undoActionHandler);
-			Freeplane.getController().addAction("nodeHookAction",
+			Controller.getController().addAction("nodeHookAction",
 			    new NodeHookAction("no_title", this));
-			Freeplane.getController().addAction("selectBranchAction",
-			    new SelectBranchAction(this));
-			Freeplane.getController().addAction("selectAllAction",
-			    new SelectAllAction(this));
+			Controller.getController().addAction("selectBranchAction",
+			    new SelectBranchAction());
+			Controller.getController().addAction("selectAllAction",
+			    new SelectAllAction());
 		}
 	}
 

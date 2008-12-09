@@ -27,7 +27,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.map.icon.MindIcon;
 
 /**
@@ -48,7 +48,7 @@ public class ConditionRenderer implements ListCellRenderer {
 	                                              final boolean isSelected,
 	                                              final boolean cellHasFocus) {
 		if (value == null) {
-			return new JLabel(Freeplane.getText("filter_no_filtering"));
+			return new JLabel(Controller.getText("filter_no_filtering"));
 		}
 		JComponent component;
 		if (value instanceof MindIcon) {

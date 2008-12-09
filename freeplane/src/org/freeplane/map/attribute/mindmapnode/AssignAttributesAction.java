@@ -21,14 +21,13 @@ package org.freeplane.map.attribute.mindmapnode;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.modes.ModeControllerAction;
-import org.freeplane.modes.mindmapmode.MModeController;
+import org.freeplane.controller.FreeMindAction;
 
-class AssignAttributesAction extends ModeControllerAction {
+class AssignAttributesAction extends FreeMindAction {
 	protected AssignAttributeDialog assignAttributeDialog = null;
 
-	public AssignAttributesAction(final MModeController modeController) {
-		super(modeController, "attributes_assign_dialog");
+	public AssignAttributesAction() {
+		super("attributes_assign_dialog");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

@@ -25,25 +25,20 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.SwingUtilities;
 
+import org.freeplane.controller.FreeMindAction;
 import org.freeplane.map.attribute.view.AttributeTable;
 import org.freeplane.map.attribute.view.AttributeView;
 import org.freeplane.modes.ModeController;
-import org.freeplane.modes.ModeControllerAction;
 
-class EditAttributesAction extends ModeControllerAction {
-	/**
-	 *
-	 */
-	final private ModeController modeController;
-
-	public EditAttributesAction(final ModeController modeController) {
-		super(null, "attributes_edit_in_place");
-		this.modeController = modeController;
+class EditAttributesAction extends FreeMindAction {
+	public EditAttributesAction() {
+		super("attributes_edit_in_place");
 	};
 
 	public void actionPerformed(final ActionEvent e) {
 		final Component focusOwner = KeyboardFocusManager
 		    .getCurrentKeyboardFocusManager().getFocusOwner();
+		final ModeController modeController = getModeController();
 		final AttributeView attributeView = modeController.getMapView()
 		    .getSelected().getAttributeView();
 		final boolean attributesClosed = null == SwingUtilities

@@ -34,7 +34,6 @@ import java.util.ResourceBundle;
 import java.util.Vector;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.Freeplane;
 import org.freeplane.main.Tools;
 
 import deprecated.freemind.common.BooleanProperty;
@@ -374,7 +373,7 @@ public abstract class ResourceController {
 	}
 
 	public void init() {
-		final Controller controller = Freeplane.getController();
+		final Controller controller = Controller.getController();
 		controller.addAction("propertyAction", new PropertyAction());
 		controller.addAction("optionHTMLExportFoldingAction",
 		    new OptionHTMLExportFoldingAction());

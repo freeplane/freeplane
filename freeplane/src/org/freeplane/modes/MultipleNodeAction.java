@@ -24,29 +24,26 @@ import java.util.ListIterator;
 
 import javax.swing.ImageIcon;
 
+import org.freeplane.controller.FreeMindAction;
 import org.freeplane.map.tree.NodeModel;
-import org.freeplane.modes.mindmapmode.MModeController;
 
 /**
  * @author Dimitry Polivaev
  */
-public abstract class MultipleNodeAction extends ModeControllerAction {
-	public MultipleNodeAction(final MModeController modeController,
-	                          final String name) {
-		super(modeController, name);
+public abstract class MultipleNodeAction extends FreeMindAction {
+	public MultipleNodeAction(final String name) {
+		super(name);
 	}
 
 	/**
 	 *
 	 */
-	public MultipleNodeAction(final MModeController modeController,
-	                          final String name, final ImageIcon imageIcon) {
-		super(modeController, name, imageIcon);
+	public MultipleNodeAction(final String name, final ImageIcon imageIcon) {
+		super(name, imageIcon);
 	}
 
-	public MultipleNodeAction(final MModeController modeController,
-	                          final String name, final String imageIcon) {
-		super(modeController, name, imageIcon);
+	public MultipleNodeAction(final String name, final String imageIcon) {
+		super(name, imageIcon);
 	}
 
 	public void actionPerformed(final ActionEvent e) {

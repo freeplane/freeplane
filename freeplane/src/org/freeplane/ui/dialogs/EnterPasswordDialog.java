@@ -34,7 +34,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.WindowConstants;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 
 /** */
 public class EnterPasswordDialog extends JDialog {
@@ -113,7 +113,7 @@ public class EnterPasswordDialog extends JDialog {
 					cancelPressed();
 				}
 			});
-			jCancelButton.setText(Freeplane
+			jCancelButton.setText(Controller
 			    .getText("accessories/plugins/EncryptNode.properties_7"));
 		}
 		return jCancelButton;
@@ -141,12 +141,12 @@ public class EnterPasswordDialog extends JDialog {
 			gridBagConstraints1.gridx = 0;
 			gridBagConstraints1.gridy = 1;
 			gridBagConstraints1.fill = java.awt.GridBagConstraints.HORIZONTAL;
-			jLabel.setText(Freeplane
+			jLabel.setText(Controller
 			    .getText("accessories/plugins/EncryptNode.properties_2"));
 			gridBagConstraints2.gridx = 0;
 			gridBagConstraints2.gridy = 2;
 			gridBagConstraints2.fill = java.awt.GridBagConstraints.HORIZONTAL;
-			jLabel1.setText(Freeplane
+			jLabel1.setText(Controller
 			    .getText("accessories/plugins/EncryptNode.properties_3"));
 			gridBagConstraints3.gridx = 1;
 			gridBagConstraints3.gridy = 1;
@@ -162,9 +162,9 @@ public class EnterPasswordDialog extends JDialog {
 			gridBagConstraints5.fill = java.awt.GridBagConstraints.HORIZONTAL;
 			gridBagConstraints5.anchor = java.awt.GridBagConstraints.CENTER;
 			gridBagConstraints5.insets = new java.awt.Insets(0, 0, 20, 0);
-			jLabel2.setText(Freeplane
+			jLabel2.setText(Controller
 			    .getText("accessories/plugins/EncryptNode.properties_4"));
-			jLabel2.setToolTipText(Freeplane
+			jLabel2.setToolTipText(Controller
 			    .getText("accessories/plugins/EncryptNode.properties_5"));
 			gridBagConstraints6.gridx = 0;
 			gridBagConstraints6.gridy = 3;
@@ -199,7 +199,7 @@ public class EnterPasswordDialog extends JDialog {
 					okPressed();
 				}
 			});
-			jOKButton.setText(Freeplane
+			jOKButton.setText(Controller
 			    .getText("accessories/plugins/EncryptNode.properties_6"));
 		}
 		return jOKButton;
@@ -249,7 +249,7 @@ public class EnterPasswordDialog extends JDialog {
 	 * @return void
 	 */
 	private void initialize() {
-		this.setTitle(Freeplane
+		this.setTitle(Controller
 		    .getText("accessories/plugins/EncryptNode.properties_0"));
 		this.setSize(300, 200);
 		this.setContentPane(getJContentPane());
@@ -264,7 +264,7 @@ public class EnterPasswordDialog extends JDialog {
 
 	private void okPressed() {
 		if (!checkEqualAndMinimumSize()) {
-			JOptionPane.showMessageDialog(this, Freeplane
+			JOptionPane.showMessageDialog(this, Controller
 			    .getText("accessories/plugins/EncryptNode.properties_1"));
 			return;
 		}

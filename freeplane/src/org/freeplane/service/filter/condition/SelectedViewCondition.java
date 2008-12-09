@@ -21,7 +21,7 @@ package org.freeplane.service.filter.condition;
 
 import javax.swing.JComponent;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.io.xml.n3.nanoxml.XMLElement;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.view.NodeView;
@@ -43,7 +43,7 @@ public class SelectedViewCondition implements ICondition {
 	}
 
 	public boolean checkNode(final NodeModel node) {
-		final NodeView viewer = Freeplane.getController().getModeController()
+		final NodeView viewer = Controller.getController().getModeController()
 		    .getNodeView(node);
 		return viewer != null && viewer.isSelected();
 	}
@@ -59,7 +59,7 @@ public class SelectedViewCondition implements ICondition {
 	@Override
 	public String toString() {
 		if (SelectedViewCondition.description == null) {
-			SelectedViewCondition.description = Freeplane
+			SelectedViewCondition.description = Controller
 			    .getText("filter_selected_node_view");
 		}
 		return SelectedViewCondition.description;

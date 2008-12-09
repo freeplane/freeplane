@@ -28,7 +28,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.main.Tools;
 import org.freeplane.map.nodelocation.LocationModel;
 import org.freeplane.map.tree.NodeModel;
@@ -155,8 +155,8 @@ class MNodeMotionListener extends
 					    .getModel();
 					parentNode.createLocationModel().setVGap(
 					    getVGap(dragNextPoint, parentNode, dragStartingPoint));
-					Freeplane.getController().getMap().nodeRefresh(parentNode);
-					Freeplane.getController().getMap().nodeRefresh(
+					Controller.getController().getMap().nodeRefresh(parentNode);
+					Controller.getController().getMap().nodeRefresh(
 					    nodeV.getModel());
 				}
 				dragStartingPoint = point;

@@ -28,7 +28,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.main.Tools;
 
 /**
@@ -165,14 +165,14 @@ public class FreemindMenuBar extends JMenuBar {
 
 	static public JMenu createMenu(final String name) {
 		final JMenu menu = new JMenu();
-		final String text = Freeplane.getText(name);
+		final String text = Controller.getText(name);
 		FreemindMenuBar.setLabelAndMnemonic(menu, text);
 		return menu;
 	}
 
 	static public JMenuItem createMenuItem(final String name) {
 		final JMenuItem menu = new JMenuItem();
-		final String text = Freeplane.getText(name);
+		final String text = Controller.getText(name);
 		FreemindMenuBar.setLabelAndMnemonic(menu, text);
 		return menu;
 	}

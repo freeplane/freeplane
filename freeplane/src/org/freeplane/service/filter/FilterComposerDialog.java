@@ -51,8 +51,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileFilter;
 
+import org.freeplane.controller.Controller;
 import org.freeplane.controller.FreeMindAction;
-import org.freeplane.controller.Freeplane;
 import org.freeplane.controller.resources.NamedObject;
 import org.freeplane.main.Tools;
 import org.freeplane.map.attribute.AttributeRegistry;
@@ -60,7 +60,6 @@ import org.freeplane.map.icon.MindIcon;
 import org.freeplane.map.tree.MapModel;
 import org.freeplane.map.tree.MapRegistry;
 import org.freeplane.modes.ModeController;
-import org.freeplane.modes.ModeControllerAction;
 import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.service.filter.condition.ConditionNotSatisfiedDecorator;
 import org.freeplane.service.filter.condition.ConjunctConditions;
@@ -252,8 +251,7 @@ public class FilterComposerDialog extends JDialog {
 		}
 	}
 
-	private class CreateNotSatisfiedConditionAction extends
-	        ModeControllerAction {
+	private class CreateNotSatisfiedConditionAction extends FreeMindAction {
 		/*
 		 * (non-Javadoc)
 		 * @see
@@ -261,7 +259,7 @@ public class FilterComposerDialog extends JDialog {
 		 * )
 		 */
 		CreateNotSatisfiedConditionAction() {
-			super(null, "filter_not");
+			super("filter_not");
 		}
 
 		public void actionPerformed(final ActionEvent e) {
@@ -357,14 +355,14 @@ public class FilterComposerDialog extends JDialog {
 
 		@Override
 		public String getDescription() {
-			return Freeplane.getText("mindmaps_filter_desc");
+			return Controller.getText("mindmaps_filter_desc");
 		}
 	}
 
 	private class SaveAction implements ActionListener {
 		public void actionPerformed(final ActionEvent e) {
 			final JFileChooser chooser = getFileChooser();
-			chooser.setDialogTitle(Freeplane.getText("save_as"));
+			chooser.setDialogTitle(Controller.getText("save_as"));
 			final int returnVal = chooser
 			    .showSaveDialog(FilterComposerDialog.this);
 			if (returnVal != JFileChooser.APPROVE_OPTION) {
@@ -496,20 +494,20 @@ public class FilterComposerDialog extends JDialog {
 	final private JComboBox values;
 
 	public FilterComposerDialog(final FilterToolbar ft) {
-		super(Freeplane.getController().getViewController().getJFrame(),
-		    Freeplane.getText("filter_dialog"));
-		fc = Freeplane.getController().getFilterController();
+		super(Controller.getController().getViewController().getJFrame(),
+		    Controller.getText("filter_dialog"));
+		fc = Controller.getController().getFilterController();
 		final Box simpleConditionBox = Box.createHorizontalBox();
 		simpleConditionBox.setBorder(new EmptyBorder(5, 0, 5, 0));
 		getContentPane().add(simpleConditionBox, BorderLayout.NORTH);
 		attributes = new JComboBox();
 		filteredAttributeComboBoxModel = new ExtendedComboBoxModel(
 		    new NamedObject[] {
-		            Freeplane.getController().getResourceController()
-		                .createTranslatedString("filter_node"),
-		            Freeplane.getController().getResourceController()
-		                .createTranslatedString("filter_icon") });
-		final MapRegistry registry = Freeplane.getController().getModel()
+		            Controller.getResourceController().createTranslatedString(
+		                "filter_node"),
+		            Controller.getResourceController().createTranslatedString(
+		                "filter_icon") });
+		final MapRegistry registry = Controller.getController().getModel()
 		    .getRegistry();
 		registeredAttributes = registry.getAttributes();
 		filteredAttributeComboBoxModel.setExtensionList(registeredAttributes
@@ -543,7 +541,7 @@ public class FilterComposerDialog extends JDialog {
 		caseInsensitive = new JCheckBox();
 		simpleConditionBox.add(Box.createHorizontalGlue());
 		simpleConditionBox.add(caseInsensitive);
-		caseInsensitive.setText(Freeplane.getText("filter_ignore_case"));
+		caseInsensitive.setText(Controller.getText("filter_ignore_case"));
 		final Box conditionButtonBox = Box.createVerticalBox();
 		conditionButtonBox.setBorder(new EmptyBorder(0, 10, 0, 10));
 		getContentPane().add(conditionButtonBox, BorderLayout.EAST);
@@ -577,16 +575,16 @@ public class FilterComposerDialog extends JDialog {
 		getContentPane().add(controllerBox, BorderLayout.SOUTH);
 		final CloseAction closeAction = new CloseAction();
 		btnOK = new JButton();
-		FreemindMenuBar.setLabelAndMnemonic(btnOK, Freeplane.getText("ok"));
+		FreemindMenuBar.setLabelAndMnemonic(btnOK, Controller.getText("ok"));
 		btnOK.addActionListener(closeAction);
 		btnOK.setMaximumSize(FilterComposerDialog.maxButtonDimension);
 		btnApply = new JButton();
-		FreemindMenuBar.setLabelAndMnemonic(btnApply, Freeplane
+		FreemindMenuBar.setLabelAndMnemonic(btnApply, Controller
 		    .getText("apply"));
 		btnApply.addActionListener(closeAction);
 		btnApply.setMaximumSize(FilterComposerDialog.maxButtonDimension);
 		btnCancel = new JButton();
-		FreemindMenuBar.setLabelAndMnemonic(btnCancel, Freeplane
+		FreemindMenuBar.setLabelAndMnemonic(btnCancel, Controller
 		    .getText("cancel"));
 		btnCancel.addActionListener(closeAction);
 		btnCancel.setMaximumSize(FilterComposerDialog.maxButtonDimension);
@@ -597,16 +595,16 @@ public class FilterComposerDialog extends JDialog {
 		controllerBox.add(Box.createHorizontalGlue());
 		controllerBox.add(btnCancel);
 		controllerBox.add(Box.createHorizontalGlue());
-		if (!Freeplane.getController().getViewController().isApplet()) {
+		if (!Controller.getController().getViewController().isApplet()) {
 			final ActionListener saveAction = new SaveAction();
 			btnSave = new JButton();
-			FreemindMenuBar.setLabelAndMnemonic(btnSave, Freeplane
+			FreemindMenuBar.setLabelAndMnemonic(btnSave, Controller
 			    .getText("save"));
 			btnSave.addActionListener(saveAction);
 			btnSave.setMaximumSize(FilterComposerDialog.maxButtonDimension);
 			final ActionListener loadAction = new LoadAction();
 			btnLoad = new JButton();
-			FreemindMenuBar.setLabelAndMnemonic(btnLoad, Freeplane
+			FreemindMenuBar.setLabelAndMnemonic(btnLoad, Controller
 			    .getText("load"));
 			btnLoad.addActionListener(loadAction);
 			btnLoad.setMaximumSize(FilterComposerDialog.maxButtonDimension);
@@ -625,7 +623,7 @@ public class FilterComposerDialog extends JDialog {
 		conditionList.addListSelectionListener(conditionListListener);
 		conditionList.addMouseListener(new ConditionListMouseListener());
 		final JScrollPane conditionScrollPane = new JScrollPane(conditionList);
-		final JLabel conditionColumnHeader = new JLabel(Freeplane
+		final JLabel conditionColumnHeader = new JLabel(Controller
 		    .getText("filter_conditions"));
 		conditionColumnHeader.setHorizontalAlignment(SwingConstants.CENTER);
 		conditionScrollPane.setColumnHeaderView(conditionColumnHeader);

@@ -21,23 +21,22 @@ package org.freeplane.io.url;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
+import org.freeplane.controller.FreeMindAction;
 import org.freeplane.io.url.mindmapmode.FileManager;
-import org.freeplane.modes.ModeController;
-import org.freeplane.modes.ModeControllerAction;
 import org.freeplane.ui.AlwaysEnabledAction;
 
 @AlwaysEnabledAction
-class OpenAction extends ModeControllerAction {
+class OpenAction extends FreeMindAction {
 	/**
 	 *
 	 */
-	public OpenAction(final ModeController modeController) {
-		super(modeController, "open", "images/fileopen.png");
+	public OpenAction() {
+		super("open", "images/fileopen.png");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		((FileManager) getMModeController().getUrlManager()).open();
-		Freeplane.getController().getViewController().setTitle();
+		Controller.getController().getViewController().setTitle();
 	}
 }

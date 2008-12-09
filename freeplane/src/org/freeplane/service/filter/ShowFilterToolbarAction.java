@@ -25,7 +25,7 @@ import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JToggleButton;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.ui.SelectableAction;
 
 @SelectableAction
@@ -34,18 +34,18 @@ class ShowFilterToolbarAction extends AbstractAction {
 	 *
 	 */
 	ShowFilterToolbarAction() {
-		super(null, new ImageIcon(Freeplane.getController()
-		    .getResourceController().getResource("images/filter.gif")));
+		super(null, new ImageIcon(Controller.getResourceController()
+		    .getResource("images/filter.gif")));
 	}
 
 	public void actionPerformed(final ActionEvent event) {
 		final JToggleButton btnFilter = (JToggleButton) event.getSource();
 		if (btnFilter.getModel().isSelected()) {
-			Freeplane.getController().getFilterController().showFilterToolbar(
+			Controller.getController().getFilterController().showFilterToolbar(
 			    true);
 		}
 		else {
-			Freeplane.getController().getFilterController().showFilterToolbar(
+			Controller.getController().getFilterController().showFilterToolbar(
 			    false);
 		}
 	}

@@ -21,14 +21,13 @@ package org.freeplane.map.link.mindmapmode;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
+import org.freeplane.controller.FreeMindAction;
 import org.freeplane.io.url.mindmapmode.FileManager;
-import org.freeplane.modes.ModeControllerAction;
-import org.freeplane.modes.mindmapmode.MModeController;
 
-class SetLinkByFileChooserAction extends ModeControllerAction {
-	public SetLinkByFileChooserAction(final MModeController modeController) {
-		super(modeController, "set_link_by_filechooser");
+class SetLinkByFileChooserAction extends FreeMindAction {
+	public SetLinkByFileChooserAction() {
+		super("set_link_by_filechooser");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -37,7 +36,7 @@ class SetLinkByFileChooserAction extends ModeControllerAction {
 
 	public void setLinkByFileChooser() {
 		final String relative = ((FileManager) getModeController()
-		    .getUrlManager()).getLinkByFileChooser(Freeplane.getController()
+		    .getUrlManager()).getLinkByFileChooser(Controller.getController()
 		    .getMap());
 		if (relative != null) {
 			((MLinkController) getMModeController().getLinkController())

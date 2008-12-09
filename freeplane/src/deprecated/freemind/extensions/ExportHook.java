@@ -36,7 +36,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.main.Tools;
 import org.freeplane.map.tree.view.MapView;
 import org.freeplane.modes.mindmapmode.MModeController;
@@ -76,11 +76,11 @@ public class ExportHook extends ModeControllerHookAdapter {
 	 */
 	protected File chooseFile(final String type, final String description,
 	                          final String nameExtension) {
-		final Container component = Freeplane.getController()
+		final Container component = Controller.getController()
 		    .getViewController().getContentPane();
 		JFileChooser chooser = null;
 		chooser = new JFileChooser();
-		final File mmFile = Freeplane.getController().getMap().getFile();
+		final File mmFile = Controller.getController().getMap().getFile();
 		if (mmFile != null) {
 			final String proposedName = mmFile.getAbsolutePath().replaceFirst(
 			    "\\.[^.]*?$", "")
@@ -167,7 +167,7 @@ public class ExportHook extends ModeControllerHookAdapter {
 	}
 
 	public BufferedImage createBufferedImage() {
-		view = Freeplane.getController().getMapView();
+		view = Controller.getController().getMapView();
 		if (view == null) {
 			return null;
 		}

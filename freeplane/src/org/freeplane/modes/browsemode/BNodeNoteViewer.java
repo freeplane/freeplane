@@ -28,7 +28,7 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.map.note.NodeNoteBase;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.view.NodeView;
@@ -62,13 +62,13 @@ public class BNodeNoteViewer extends NodeNoteBase implements
 	}
 
 	public void onDeselect(final NodeView pNode) {
-		Freeplane.getController().getViewController().removeSplitPane();
+		Controller.getController().getViewController().removeSplitPane();
 	}
 
 	public void onSelect(final NodeView pNode) {
 		final String noteText = pNode.getModel().getNoteText();
 		if (noteText != null && !noteText.equals("")) {
-			Freeplane.getController().getViewController()
+			Controller.getController().getViewController()
 			    .insertComponentIntoSplitPane(getNoteViewerComponent(noteText));
 			noteViewer.setText(noteText != null ? noteText : "");
 		}

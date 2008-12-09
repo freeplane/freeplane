@@ -41,7 +41,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Vector;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.view.MapView;
 import org.freeplane.map.tree.view.NodeView;
@@ -144,10 +144,9 @@ public class ClipboardController {
 	private void createActions() {
 		if (!actionsCreated) {
 			actionsCreated = true;
-			Freeplane.getController().addAction("copy",
-			    new CopyAction(modeController));
-			Freeplane.getController().addAction("copySingle",
-			    new CopySingleAction(modeController));
+			Controller.getController().addAction("copy", new CopyAction());
+			Controller.getController().addAction("copySingle",
+			    new CopySingleAction());
 		}
 	}
 

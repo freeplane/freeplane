@@ -22,7 +22,7 @@ package org.freeplane.map.attribute.mindmapnode;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.map.attribute.Attribute;
 import org.freeplane.map.attribute.AttributeController;
 import org.freeplane.map.attribute.AttributeRegistry;
@@ -538,10 +538,10 @@ public class MAttributeController extends AttributeController implements
 	private void createActions() {
 		if (!actionsCreated) {
 			actionsCreated = true;
-			Freeplane.getController().addAction("editAttributes",
-			    new EditAttributesAction(modeController));
-			Freeplane.getController().addAction("assignAttributes",
-			    new AssignAttributesAction(modeController));
+			Controller.getController().addAction("editAttributes",
+			    new EditAttributesAction());
+			Controller.getController().addAction("assignAttributes",
+			    new AssignAttributesAction());
 		}
 	}
 
@@ -568,7 +568,8 @@ public class MAttributeController extends AttributeController implements
 	}
 
 	private AttributeRegistry getAttributeRegistry() {
-		return Freeplane.getController().getMap().getRegistry().getAttributes();
+		return Controller.getController().getMap().getRegistry()
+		    .getAttributes();
 	}
 
 	public AttributePopupMenu getAttributeTablePopupMenu() {

@@ -21,7 +21,7 @@ package deprecated.freemind.modes.mindmapmode.actions.undo;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.modes.ModeControllerAction;
+import org.freeplane.controller.FreeMindAction;
 import org.freeplane.modes.mindmapmode.MModeController;
 
 import deprecated.freemind.modes.mindmapmode.actions.instance.ActionInstance;
@@ -30,10 +30,9 @@ import deprecated.freemind.modes.mindmapmode.actions.instance.CompoundActionInst
 /**
  * @author foltin
  */
-public class CompoundActionHandler extends ModeControllerAction implements
-        IActor {
+public class CompoundActionHandler extends FreeMindAction implements IActor {
 	public CompoundActionHandler(final MModeController c) {
-		super(c, null);
+		super();
 		c.getActionFactory().registerActor(this, getDoActionClass());
 	}
 

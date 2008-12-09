@@ -32,7 +32,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.map.icon.IconController;
 import org.freeplane.map.icon.MindIcon;
 import org.freeplane.map.tree.NodeModel;
@@ -89,10 +89,10 @@ public class MIconController extends IconController {
 
 	public void addIconsToMenu(final MenuBuilder builder,
 	                           final String iconMenuString) {
-		builder.addMenuItem(iconMenuString + "/icons", new JMenuItem(Freeplane
+		builder.addMenuItem(iconMenuString + "/icons", new JMenuItem(Controller
 		    .getController().getAction("removeLastIconAction")),
 		    MenuBuilder.AS_CHILD);
-		builder.addMenuItem(iconMenuString + "/icons", new JMenuItem(Freeplane
+		builder.addMenuItem(iconMenuString + "/icons", new JMenuItem(Controller
 		    .getController().getAction("removeAllIconsAction")),
 		    MenuBuilder.AS_CHILD);
 		builder.addSeparator(iconMenuString + "/icons", MenuBuilder.AS_CHILD);
@@ -106,15 +106,14 @@ public class MIconController extends IconController {
 		if (!actionsCreated) {
 			actionsCreated = true;
 			final MModeController modeController = getMModeController();
-			final RemoveIconAction removeLastIconAction = new RemoveIconAction(
-			    modeController);
-			Freeplane.getController().addAction("removeLastIconAction",
+			final RemoveIconAction removeLastIconAction = new RemoveIconAction();
+			Controller.getController().addAction("removeLastIconAction",
 			    removeLastIconAction);
-			Freeplane.getController().addAction("removeAllIconsAction",
-			    new RemoveAllIconsAction(modeController));
+			Controller.getController().addAction("removeAllIconsAction",
+			    new RemoveAllIconsAction());
 			final Vector iconNames = MindIcon.getAllIconNames();
-			final File iconDir = new File(Freeplane.getController()
-			    .getResourceController().getFreemindUserDirectory(), "icons");
+			final File iconDir = new File(Controller.getResourceController()
+			    .getFreemindUserDirectory(), "icons");
 			if (iconDir.exists()) {
 				final String[] userIconArray = iconDir
 				    .list(new FilenameFilter() {
@@ -177,12 +176,12 @@ public class MIconController extends IconController {
 	}
 
 	public void removeAllIcons(final NodeModel node) {
-		((RemoveAllIconsAction) Freeplane.getController().getAction(
+		((RemoveAllIconsAction) Controller.getController().getAction(
 		    "removeAllIconsAction")).removeAllIcons(node);
 	}
 
 	public int removeIcon(final NodeModel node, final int position) {
-		return ((RemoveIconAction) Freeplane.getController().getAction(
+		return ((RemoveIconAction) Controller.getController().getAction(
 		    "removeLastIconAction")).removeIcon(node, position);
 	}
 
@@ -192,9 +191,9 @@ public class MIconController extends IconController {
 
 	private void updateIconToolbar(final JToolBar iconToolBar) {
 		iconToolBar.removeAll();
-		iconToolBar.add(Freeplane.getController().getAction(
+		iconToolBar.add(Controller.getController().getAction(
 		    "removeLastIconAction"));
-		iconToolBar.add(Freeplane.getController().getAction(
+		iconToolBar.add(Controller.getController().getAction(
 		    "removeAllIconsAction"));
 		iconToolBar.addSeparator();
 		for (int i = 0; i < iconActions.size(); ++i) {

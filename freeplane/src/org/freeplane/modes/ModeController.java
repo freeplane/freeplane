@@ -36,7 +36,7 @@ import java.util.logging.Logger;
 
 import javax.swing.JPopupMenu;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.io.url.UrlManager;
 import org.freeplane.map.attribute.IAttributeController;
 import org.freeplane.map.clipboard.ClipboardController;
@@ -126,11 +126,11 @@ public class ModeController {
 	public void centerNode(final NodeModel node) {
 		NodeView view = null;
 		if (node != null) {
-			view = Freeplane.getController().getMapView().getNodeView(node);
+			view = Controller.getController().getMapView().getNodeView(node);
 		}
 		if (view == null) {
 			getMapController().displayNode(node);
-			view = Freeplane.getController().getMapView().getNodeView(node);
+			view = Controller.getController().getMapView().getNodeView(node);
 		}
 		centerNode(view);
 	}
@@ -138,14 +138,14 @@ public class ModeController {
 	private void centerNode(final NodeView node) {
 		getMapView().centerNode(node);
 		getMapView().selectAsTheOnlyOneSelected(node);
-		Freeplane.getController().getViewController().obtainFocusForSelected();
+		Controller.getController().getViewController().obtainFocusForSelected();
 	}
 
 	public void doubleClick(final MouseEvent e) {
 	}
 
 	public void enableActions(final boolean enabled) {
-		Freeplane.getController().enableActions(enabled);
+		Controller.getController().enableActions(enabled);
 	}
 
 	public void execute(final IUndoableActor actor) {
@@ -201,7 +201,7 @@ public class ModeController {
 	}
 
 	public MapView getMapView() {
-		return Freeplane.getController().getMapView();
+		return Controller.getController().getMapView();
 	}
 
 	public String getModeName() {
@@ -248,8 +248,7 @@ public class ModeController {
 	}
 
 	public URL getResource(final String name) {
-		return Freeplane.getController().getResourceController().getResource(
-		    name);
+		return Controller.getResourceController().getResource(name);
 	}
 
 	public NodeModel getSelectedNode() {
@@ -291,7 +290,7 @@ public class ModeController {
 	}
 
 	public String getText(final String textId) {
-		return Freeplane.getText(textId);
+		return Controller.getText(textId);
 	}
 
 	public TextController getTextController() {
@@ -301,7 +300,7 @@ public class ModeController {
 	public ITextTranslator getTextTranslator() {
 		return new ITextTranslator() {
 			public String getText(final String key) {
-				return Freeplane.getText(key);
+				return Controller.getText(key);
 			}
 		};
 	}
@@ -435,7 +434,7 @@ public class ModeController {
 			final NodeView node = getNodeView(i.next());
 			getMapView().makeTheSelected(node);
 		}
-		Freeplane.getController().getViewController().obtainFocusForSelected();
+		Controller.getController().getViewController().obtainFocusForSelected();
 	}
 
 	public void setBlocked(final boolean isBlocked) {

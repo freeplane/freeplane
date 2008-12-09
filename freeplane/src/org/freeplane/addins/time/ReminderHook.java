@@ -60,9 +60,9 @@ public class ReminderHook extends PersistentNodeHook {
 	static private class NodeListAction extends FreeMindAction {
 		private final TimeList timeList;
 
-		public NodeListAction(final MModeController modeController) {
+		public NodeListAction() {
 			super(NodeListAction.class.getAnnotation(ActionDescriptor.class));
-			timeList = new TimeList(modeController, true);
+			timeList = new TimeList((MModeController) getModeController(), true);
 		}
 
 		public void actionPerformed(final ActionEvent e) {
@@ -76,9 +76,10 @@ public class ReminderHook extends PersistentNodeHook {
 	static private class TimeListAction extends FreeMindAction {
 		private final TimeList timeList;
 
-		public TimeListAction(final MModeController modeController) {
+		public TimeListAction() {
 			super(TimeListAction.class.getAnnotation(ActionDescriptor.class));
-			timeList = new TimeList(modeController, false);
+			timeList = new TimeList((MModeController) getModeController(),
+			    false);
 		}
 
 		public void actionPerformed(final ActionEvent e) {
@@ -114,11 +115,9 @@ public class ReminderHook extends PersistentNodeHook {
 			final Action timeManagementAction = new TimeManagementAction(
 			    (MModeController) modeController, this);
 			registerAction(timeManagementAction);
-			final Action timeListAction = new TimeListAction(
-			    (MModeController) modeController);
+			final Action timeListAction = new TimeListAction();
 			registerAction(timeListAction);
-			final Action nodeListAction = new NodeListAction(
-			    (MModeController) modeController);
+			final Action nodeListAction = new NodeListAction();
 			registerAction(nodeListAction);
 		}
 	}

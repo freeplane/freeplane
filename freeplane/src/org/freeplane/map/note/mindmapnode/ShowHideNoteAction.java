@@ -21,12 +21,12 @@ package org.freeplane.map.note.mindmapnode;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
+import org.freeplane.controller.FreeMindAction;
 import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.modes.ModeController;
-import org.freeplane.modes.ModeControllerAction;
 
-class ShowHideNoteAction extends ModeControllerAction {
+class ShowHideNoteAction extends FreeMindAction {
 	/**
 	 *
 	 */
@@ -34,8 +34,7 @@ class ShowHideNoteAction extends ModeControllerAction {
 
 	public ShowHideNoteAction(final MNoteController noteController,
 	                          final ModeController modeController) {
-		super(modeController,
-		    "accessories/plugins/NodeNote_hide_show.properties_name");
+		super("accessories/plugins/NodeNote_hide_show.properties_name");
 		this.noteController = noteController;
 	}
 
@@ -45,7 +44,7 @@ class ShowHideNoteAction extends ModeControllerAction {
 		}
 		else {
 			(noteController).hideNotesPanel();
-			Freeplane.getController().getResourceController().setProperty(
+			Controller.getResourceController().setProperty(
 			    ResourceController.RESOURCES_USE_SPLIT_PANE, "false");
 		}
 	}

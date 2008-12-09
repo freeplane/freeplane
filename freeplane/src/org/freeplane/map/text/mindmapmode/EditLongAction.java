@@ -21,15 +21,14 @@ package org.freeplane.map.text.mindmapmode;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.modes.ModeControllerAction;
-import org.freeplane.modes.mindmapmode.MModeController;
+import org.freeplane.controller.FreeMindAction;
 
-class EditLongAction extends ModeControllerAction {
+class EditLongAction extends FreeMindAction {
 	/**
 	 *
 	 */
-	public EditLongAction(final MModeController modeController) {
-		super(modeController, "edit_long_node");
+	public EditLongAction() {
+		super("edit_long_node");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

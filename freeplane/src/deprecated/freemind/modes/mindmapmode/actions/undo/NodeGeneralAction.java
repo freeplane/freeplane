@@ -24,11 +24,10 @@ import java.util.ListIterator;
 
 import javax.swing.Action;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.main.Tools;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.mindmapmode.MindMapMapModel;
-import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.ui.FreemindMenuBar;
 
 import deprecated.freemind.modes.mindmapmode.actions.instance.ActionInstance;
@@ -43,29 +42,26 @@ public class NodeGeneralAction extends AbstractUndoableAction {
 	 * the setName method to set your not translateble title after that. give a
 	 * resource name for the icon.
 	 */
-	protected NodeGeneralAction(final MModeController modeController,
-	                            final String textID, final String iconPath) {
-		super(modeController, textID, iconPath);
+	protected NodeGeneralAction(final String textID, final String iconPath) {
+		super(textID, iconPath);
 		if (textID != null) {
-			setName(modeController.getText(textID));
+			setName(Controller.getText(textID));
 		}
 		singleNodeOperation = null;
 		actor = null;
 	}
 
 	public NodeGeneralAction(
-	                         final MModeController modeController,
 	                         final String textID,
 	                         final String iconPath,
 	                         final deprecated.freemind.modes.mindmapmode.actions.undo.INodeActor actor) {
-		this(modeController, textID, iconPath);
+		this(textID, iconPath);
 		addActor(actor);
 	}
 
-	public NodeGeneralAction(final MModeController modeController,
-	                         final String textID, final String iconPath,
+	public NodeGeneralAction(final String textID, final String iconPath,
 	                         final ISingleNodeOperation singleNodeOperation) {
-		this(modeController, textID, iconPath);
+		this(textID, iconPath);
 		this.singleNodeOperation = singleNodeOperation;
 	}
 
@@ -122,7 +118,7 @@ public class NodeGeneralAction extends AbstractUndoableAction {
 			for (final ListIterator it = getMModeController()
 			    .getSelectedNodes().listIterator(); it.hasNext();) {
 				final NodeModel selected = (NodeModel) it.next();
-				singleNodeOperation.apply((MindMapMapModel) Freeplane
+				singleNodeOperation.apply((MindMapMapModel) Controller
 				    .getController().getMap(), selected);
 			}
 		}

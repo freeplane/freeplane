@@ -24,17 +24,17 @@ import java.io.File;
 
 import javax.swing.JOptionPane;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
+import org.freeplane.controller.FreeMindAction;
 import org.freeplane.map.tree.filemode.FMapController;
-import org.freeplane.modes.ModeControllerAction;
 
-class OpenPathAction extends ModeControllerAction {
-	OpenPathAction(final FModeController modeController) {
-		super(modeController, "open", null);
+class OpenPathAction extends FreeMindAction {
+	OpenPathAction() {
+		super("open");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final String inputValue = JOptionPane.showInputDialog(Freeplane
+		final String inputValue = JOptionPane.showInputDialog(Controller
 		    .getController().getMapView().getSelected(), getModeController()
 		    .getText("open"), "");
 		if (inputValue != null) {

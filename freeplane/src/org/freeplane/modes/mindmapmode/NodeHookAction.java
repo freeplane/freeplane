@@ -32,7 +32,7 @@ import javax.swing.JMenuItem;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.view.NodeView;
 import org.freeplane.ui.IMenuItemEnabledListener;
@@ -82,10 +82,10 @@ public class NodeHookAction extends AbstractAction implements IHookAction,
 	}
 
 	public void actionPerformed(final ActionEvent arg0) {
-		Freeplane.getController().getViewController().setWaitingCursor(true);
+		Controller.getController().getViewController().setWaitingCursor(true);
 		invoke(mMindMapController.getSelectedNode(), mMindMapController
 		    .getSelectedNodes());
-		Freeplane.getController().getViewController().setWaitingCursor(false);
+		Controller.getController().getViewController().setWaitingCursor(false);
 	}
 
 	public void addHook(final NodeModel focussed, final List selecteds,
@@ -184,7 +184,7 @@ public class NodeHookAction extends AbstractAction implements IHookAction,
 		for (final Iterator it = destinationNodes.iterator(); it.hasNext();) {
 			final NodeModel currentDestinationNode = (NodeModel) it.next();
 			final INodeHook hook = mMindMapController.createNodeHook(hookName,
-			    currentDestinationNode, Freeplane.getController().getMap());
+			    currentDestinationNode, Controller.getController().getMap());
 			currentDestinationNode.invokeHook(hook);
 			finishInvocation(focussed, selecteds, adaptedFocussedNode,
 			    destinationNodes);

@@ -21,12 +21,11 @@ package org.freeplane.map.tree.mindmapmode;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.modes.ModeControllerAction;
-import org.freeplane.modes.mindmapmode.MModeController;
+import org.freeplane.controller.FreeMindAction;
 
-class NewSiblingAction extends ModeControllerAction {
-	public NewSiblingAction(final MModeController controller) {
-		super(controller, "new_sibling_behind");
+class NewSiblingAction extends FreeMindAction {
+	public NewSiblingAction() {
+		super("new_sibling_behind");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

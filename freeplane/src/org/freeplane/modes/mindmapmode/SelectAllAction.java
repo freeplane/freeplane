@@ -21,6 +21,7 @@ package org.freeplane.modes.mindmapmode;
 
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.mindmapmode.MindMapMapModel;
+import org.freeplane.modes.ModeController;
 
 import deprecated.freemind.modes.mindmapmode.actions.undo.ISingleNodeOperation;
 import deprecated.freemind.modes.mindmapmode.actions.undo.NodeGeneralAction;
@@ -30,9 +31,11 @@ class SelectAllAction extends NodeGeneralAction {
 	/**
 	 *
 	 */
-	public SelectAllAction(final MModeController modeController) {
-		super(modeController, "select_all", null, new ISingleNodeOperation() {
+	public SelectAllAction() {
+		super("select_all", null);
+		setSingleNodeOperation(new ISingleNodeOperation() {
 			public void apply(final MindMapMapModel map, final NodeModel node) {
+				final ModeController modeController = getModeController();
 				modeController.selectBranch(modeController.getMapView()
 				    .getRoot(), false);
 			}

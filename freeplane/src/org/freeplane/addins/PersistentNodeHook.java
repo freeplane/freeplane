@@ -27,8 +27,8 @@ import java.util.List;
 import javax.swing.Action;
 
 import org.freeplane.controller.ActionDescriptor;
+import org.freeplane.controller.Controller;
 import org.freeplane.controller.FreeMindAction;
-import org.freeplane.controller.Freeplane;
 import org.freeplane.extension.IExtension;
 import org.freeplane.io.INodeWriter;
 import org.freeplane.io.ITreeWriter;
@@ -256,7 +256,7 @@ public abstract class PersistentNodeHook implements IExtension {
 
 	protected void registerAction(final Action action,
 	                              final ActionDescriptor actionAnnotation) {
-		Freeplane.getController().addAction(actionAnnotation.name(), action);
+		Controller.getController().addAction(actionAnnotation.name(), action);
 		if (actionAnnotation.locations().length != 0) {
 			getModeController().getUserInputListenerFactory().getMenuBuilder()
 			    .addAction(action, actionAnnotation);

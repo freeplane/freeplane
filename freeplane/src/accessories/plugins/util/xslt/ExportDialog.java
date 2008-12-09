@@ -33,7 +33,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.main.ExampleFileFilter;
 
 import accessories.plugins.util.window.WindowClosingAdapter;
@@ -62,14 +62,12 @@ public class ExportDialog extends JFrame {
 				        parent.fieldXsltFileName.getText()), new File(
 				        parent.fieldTargetFileName.getText()));
 			}
-			Freeplane
-			    .getController()
+			Controller
 			    .getResourceController()
 			    .setProperty(
 			        ExportDialog.ACCESSORIES_PLUGINS_UTIL_XSLT_EXPORT_DIALOG_STORE_XSLT,
 			        fieldXsltFileName.getText());
-			Freeplane
-			    .getController()
+			Controller
 			    .getResourceController()
 			    .setProperty(
 			        ExportDialog.ACCESSORIES_PLUGINS_UTIL_XSLT_EXPORT_DIALOG_STORE_TARGET,
@@ -103,13 +101,11 @@ public class ExportDialog extends JFrame {
 		 * GridBagConstraints.BOTH; gbl.setConstraints(list, gbc);
 		 * getContentPane().add(list);
 		 */
-		final String lastXsltFileName = Freeplane
-		    .getController()
+		final String lastXsltFileName = Controller
 		    .getResourceController()
 		    .getProperty(
 		        ExportDialog.ACCESSORIES_PLUGINS_UTIL_XSLT_EXPORT_DIALOG_STORE_XSLT);
-		final String lastTargetFileName = Freeplane
-		    .getController()
+		final String lastTargetFileName = Controller
 		    .getResourceController()
 		    .getProperty(
 		        ExportDialog.ACCESSORIES_PLUGINS_UTIL_XSLT_EXPORT_DIALOG_STORE_TARGET);

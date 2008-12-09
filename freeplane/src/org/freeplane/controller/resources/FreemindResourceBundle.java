@@ -28,7 +28,7 @@ import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 
 class FreemindResourceBundle extends ResourceBundle {
 	private static final String DEFAULT_LANGUAGE = "en";
@@ -83,9 +83,8 @@ class FreemindResourceBundle extends ResourceBundle {
 	 */
 	private PropertyResourceBundle getLanguageResources(final String lang)
 	        throws IOException {
-		final URL systemResource = Freeplane.getController()
-		    .getResourceController().getResource(
-		        "Resources_" + lang + ".properties");
+		final URL systemResource = Controller.getResourceController()
+		    .getResource("Resources_" + lang + ".properties");
 		if (systemResource == null) {
 			return null;
 		}

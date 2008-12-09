@@ -25,7 +25,7 @@ import java.awt.event.MouseWheelListener;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.map.tree.view.MapView;
 import org.freeplane.modes.ModeController;
@@ -48,8 +48,8 @@ public class MindMapMouseWheelEventHandler implements MouseWheelListener {
 	 */
 	public MindMapMouseWheelEventHandler(final ModeController controller) {
 		super();
-		Freeplane.getController().getResourceController()
-		    .addPropertyChangeListener(new IFreemindPropertyListener() {
+		Controller.getResourceController().addPropertyChangeListener(
+		    new IFreemindPropertyListener() {
 			    public void propertyChanged(final String propertyName,
 			                                final String newValue,
 			                                final String oldValue) {
@@ -60,7 +60,7 @@ public class MindMapMouseWheelEventHandler implements MouseWheelListener {
 				    }
 			    }
 		    });
-		MindMapMouseWheelEventHandler.SCROLL_SKIPS = Freeplane.getController()
+		MindMapMouseWheelEventHandler.SCROLL_SKIPS = Controller
 		    .getResourceController().getIntProperty(
 		        ResourceController.RESOURCES_WHEEL_VELOCITY, 8);
 	}
@@ -100,7 +100,7 @@ public class MindMapMouseWheelEventHandler implements MouseWheelListener {
 			newZoom = Math.max(1f / 32f, newZoom);
 			newZoom = Math.min(32f, newZoom);
 			if (newZoom != oldZoom) {
-				Freeplane.getController().getViewController().setZoom(newZoom);
+				Controller.getController().getViewController().setZoom(newZoom);
 			}
 		}
 		else if ((e.getModifiers() & MindMapMouseWheelEventHandler.HORIZONTAL_SCROLL_MASK) != 0) {

@@ -30,7 +30,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.KeyStroke;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.main.Tools;
 
 /**
@@ -75,8 +75,8 @@ public class MindIcon implements Comparable, IIconInformation {
 			return MindIcon.mAllIconNames;
 		}
 		final Vector mAllIconNames = new Vector();
-		final String icons = Freeplane.getController().getResourceController()
-		    .getProperty(MindIcon.PROPERTY_STRING_ICONS_LIST);
+		final String icons = Controller.getResourceController().getProperty(
+		    MindIcon.PROPERTY_STRING_ICONS_LIST);
 		final StringTokenizer tokenizer = new StringTokenizer(icons, ";");
 		while (tokenizer.hasMoreTokens()) {
 			mAllIconNames.add(tokenizer.nextToken());
@@ -124,24 +124,23 @@ public class MindIcon implements Comparable, IIconInformation {
 
 	public String getDescription() {
 		final String resource = new String("icon_" + getName());
-		return Freeplane.getController().getResourceController().getText(
-		    resource, resource);
+		return Controller.getResourceController().getText(resource, resource);
 	}
 
 	public ImageIcon getIcon() {
 		if (MindIcon.iconNotFound == null) {
-			MindIcon.iconNotFound = new ImageIcon(Freeplane.getController()
+			MindIcon.iconNotFound = new ImageIcon(Controller
 			    .getResourceController().getResource("images/IconNotFound.png"));
 		}
 		if (associatedIcon != null) {
 			return associatedIcon;
 		}
 		if (name != null) {
-			URL imageURL = Freeplane.getController().getResourceController()
-			    .getResource(getIconFileName());
+			URL imageURL = Controller.getResourceController().getResource(
+			    getIconFileName());
 			if (imageURL == null) {
 				try {
-					final File file = new File(Freeplane.getController()
+					final File file = new File(Controller
 					    .getResourceController().getFreemindUserDirectory(),
 					    "icons/" + getName() + ".png");
 					if (file.canRead()) {

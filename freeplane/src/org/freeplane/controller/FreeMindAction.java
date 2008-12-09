@@ -23,12 +23,20 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
 
+import org.freeplane.modes.ModeController;
+import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.ui.FreemindMenuBar;
+
+import deprecated.freemind.modes.mindmapmode.actions.undo.IActor;
 
 /**
  * @author Dimitry Polivaev
  */
 public abstract class FreeMindAction extends AbstractAction {
+	public FreeMindAction() {
+		super();
+	}
+
 	public FreeMindAction(final ActionDescriptor descriptor) {
 		this(descriptor.name(), descriptor.iconPath());
 	}
@@ -37,8 +45,17 @@ public abstract class FreeMindAction extends AbstractAction {
 	 * @param controller
 	 * @param string
 	 */
-	public FreeMindAction(final String string) {
-		this(string, null);
+	public FreeMindAction(final String title) {
+		this();
+		if (title != null && !title.equals("")) {
+			FreemindMenuBar
+			    .setLabelAndMnemonic(this, Controller.getText(title));
+		}
+	}
+
+	public FreeMindAction(final String title, final ImageIcon icon) {
+		this(title);
+		putValue(SMALL_ICON, icon);
 	}
 
 	/**
@@ -48,14 +65,29 @@ public abstract class FreeMindAction extends AbstractAction {
 	 *            is a path to an icon.
 	 */
 	public FreeMindAction(final String title, final String iconPath) {
-		super();
-		if (title != null && !title.equals("")) {
-			FreemindMenuBar.setLabelAndMnemonic(this, Freeplane.getText(title));
-		}
+		this(title);
 		if (iconPath != null && !iconPath.equals("")) {
-			final ImageIcon icon = new ImageIcon(Freeplane.getController()
+			final ImageIcon icon = new ImageIcon(Controller
 			    .getResourceController().getResource(iconPath));
 			putValue(Action.SMALL_ICON, icon);
 		}
+	}
+
+	/**
+	 * @deprecated
+	 */
+	@Deprecated
+	public void addActor(final IActor actor) {
+		getMModeController().getActionFactory().registerActor(actor,
+		    actor.getDoActionClass());
+	}
+
+	public MModeController getMModeController() {
+		return (MModeController) Controller.getController().getModeController(
+		    MModeController.MODENAME);
+	}
+
+	public ModeController getModeController() {
+		return Controller.getController().getModeController();
 	}
 }

@@ -33,7 +33,6 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.Freeplane;
 import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.io.url.mindmapmode.FileManager;
 import org.freeplane.io.xml.n3.nanoxml.XMLParseException;
@@ -78,7 +77,7 @@ public class MMapController extends MapController {
 					}
 				}
 			};
-			Freeplane.getController().getResourceController()
+			Controller.getResourceController()
 			    .addPropertyChangeListenerAndPropagate(
 			        sSaveIdPropertyChangeListener);
 		}
@@ -99,13 +98,13 @@ public class MMapController extends MapController {
 	 */
 	@Override
 	public boolean close(final boolean force) {
-		final MapModel map = Freeplane.getController().getMap();
+		final MapModel map = Controller.getController().getMap();
 		if (!force && !map.isSaved()) {
 			final String text = getModeController().getText("save_unsaved")
 			        + "\n" + map.getTitle();
 			final String title = Tools.removeMnemonic(getModeController()
 			    .getText("save"));
-			final int returnVal = JOptionPane.showOptionDialog(Freeplane
+			final int returnVal = JOptionPane.showOptionDialog(Controller
 			    .getController().getViewController().getContentPane(), text,
 			    title, JOptionPane.YES_NO_CANCEL_OPTION,
 			    JOptionPane.QUESTION_MESSAGE, null, null, null);
@@ -127,22 +126,22 @@ public class MMapController extends MapController {
 	private void createActions(final MModeController modeController) {
 		if (!actionsCreated) {
 			actionsCreated = true;
-			Freeplane.getController().addAction("newSibling",
-			    new NewSiblingAction(modeController));
-			Freeplane.getController().addAction("newPreviousSibling",
-			    new NewPreviousSiblingAction(modeController));
-			newChild = new NewChildAction(modeController);
-			Freeplane.getController().addAction("newChild", newChild);
-			delete = new DeleteAction(modeController);
-			Freeplane.getController().addAction("deleteChild", delete);
-			Freeplane.getController().addAction("undoableToggleFolded",
-			    new ToggleFoldedAction(modeController));
-			Freeplane.getController().addAction("undoableToggleChildrenFolded",
-			    new ToggleChildrenFoldedAction(modeController));
-			Freeplane.getController().addAction("nodeUp",
-			    new NodeUpAction(modeController));
-			Freeplane.getController().addAction("nodeDown",
-			    new NodeDownAction(modeController));
+			Controller.getController().addAction("newSibling",
+			    new NewSiblingAction());
+			Controller.getController().addAction("newPreviousSibling",
+			    new NewPreviousSiblingAction());
+			newChild = new NewChildAction();
+			Controller.getController().addAction("newChild", newChild);
+			delete = new DeleteAction();
+			Controller.getController().addAction("deleteChild", delete);
+			Controller.getController().addAction("undoableToggleFolded",
+			    new ToggleFoldedAction());
+			Controller.getController().addAction(
+			    "undoableToggleChildrenFolded",
+			    new ToggleChildrenFoldedAction());
+			Controller.getController().addAction("nodeUp", new NodeUpAction());
+			Controller.getController().addAction("nodeDown",
+			    new NodeDownAction());
 		}
 	}
 
@@ -197,7 +196,7 @@ public class MMapController extends MapController {
 			try {
 				final String lockingUser = tryToLock(map, file);
 				if (lockingUser != null) {
-					Freeplane.getController()
+					Controller.getController()
 					    .informationMessage(
 					        Tools.expandPlaceholders(getModeController()
 					            .getText("map_locked_by_open"), file.getName(),
@@ -210,7 +209,7 @@ public class MMapController extends MapController {
 			}
 			catch (final Exception e) {
 				org.freeplane.main.Tools.logException(e);
-				Freeplane.getController().informationMessage(
+				Controller.getController().informationMessage(
 				    Tools.expandPlaceholders(getModeController().getText(
 				        "locking_failed_by_open"), file.getName()));
 				((MindMapMapModel) map).setReadOnly(true);
@@ -241,7 +240,7 @@ public class MMapController extends MapController {
 			}
 		}
 		if (reader == null) {
-			final int showResult = new OptionalDontShowMeAgainDialog(Freeplane
+			final int showResult = new OptionalDontShowMeAgainDialog(Controller
 			    .getController().getViewController().getJFrame(),
 			    getModeController().getSelectedView(),
 			    "really_convert_to_current_version", "confirmation",
@@ -277,9 +276,9 @@ public class MMapController extends MapController {
 
 	@Override
 	public void loadURL(final String relative) {
-		final MapModel map = Freeplane.getController().getMap();
+		final MapModel map = Controller.getController().getMap();
 		if (map.getFile() == null) {
-			Freeplane.getController().getViewController().out(
+			Controller.getController().getViewController().out(
 			    "You must save the current map first!");
 			final boolean result = ((FileManager) getModeController()
 			    .getUrlManager()).save(map);
@@ -292,7 +291,7 @@ public class MMapController extends MapController {
 
 	public void moveNodes(final NodeModel selected, final List selecteds,
 	                      final int direction) {
-		((NodeUpAction) Freeplane.getController().getAction("nodeUp"))
+		((NodeUpAction) Controller.getController().getAction("nodeUp"))
 		    .moveNodes(selected, selecteds, direction);
 	}
 
@@ -354,7 +353,7 @@ public class MMapController extends MapController {
 
 	@Override
 	public void setFolded(final NodeModel node, final boolean folded) {
-		((ToggleFoldedAction) Freeplane.getController().getAction(
+		((ToggleFoldedAction) Controller.getController().getAction(
 		    "undoableToggleFolded")).setFolded(node, folded);
 	}
 
@@ -369,7 +368,7 @@ public class MMapController extends MapController {
 
 	@Override
 	public void toggleFolded() {
-		((ToggleFoldedAction) Freeplane.getController().getAction(
+		((ToggleFoldedAction) Controller.getController().getAction(
 		    "undoableToggleFolded")).toggleFolded();
 	}
 
@@ -389,7 +388,7 @@ public class MMapController extends MapController {
 		final String lockingUserOfOldLock = ((MindMapMapModel) map)
 		    .getLockManager().popLockingUserOfOldLock();
 		if (lockingUserOfOldLock != null) {
-			Freeplane.getController().informationMessage(
+			Controller.getController().informationMessage(
 			    Tools.expandPlaceholders(getModeController().getText(
 			        "locking_old_lock_removed"), file.getName(),
 			        lockingUserOfOldLock));

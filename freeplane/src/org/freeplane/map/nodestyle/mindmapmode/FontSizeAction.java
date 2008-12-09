@@ -23,7 +23,6 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.MultipleNodeAction;
-import org.freeplane.modes.mindmapmode.MModeController;
 
 /**
  * @author foltin
@@ -34,8 +33,8 @@ class FontSizeAction extends MultipleNodeAction {
 
 	/**
 	 */
-	public FontSizeAction(final MModeController modeController) {
-		super(modeController, "font_size");
+	public FontSizeAction() {
+		super("font_size");
 	}
 
 	/*

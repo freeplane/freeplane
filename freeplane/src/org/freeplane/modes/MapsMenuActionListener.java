@@ -24,7 +24,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.SwingUtilities;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 
 class MapsMenuActionListener implements ActionListener {
 	public MapsMenuActionListener() {
@@ -33,7 +33,7 @@ class MapsMenuActionListener implements ActionListener {
 	public void actionPerformed(final ActionEvent e) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				Freeplane.getController().getMapViewManager().changeToMapView(
+				Controller.getController().getMapViewManager().changeToMapView(
 				    e.getActionCommand());
 			}
 		});

@@ -23,7 +23,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.map.tree.MapModel;
 import org.freeplane.ui.FreemindMenuBar;
 
@@ -32,12 +32,12 @@ class HideAllAttributesAction extends AbstractAction {
 	 *
 	 */
 	public HideAllAttributesAction() {
-		FreemindMenuBar.setLabelAndMnemonic(this, Freeplane
+		FreemindMenuBar.setLabelAndMnemonic(this, Controller
 		    .getText("attributes_hide_all"));
 	};
 
 	public void actionPerformed(final ActionEvent e) {
-		final MapModel map = Freeplane.getController().getMap();
+		final MapModel map = Controller.getController().getMap();
 		setAttributeViewType(map);
 	}
 

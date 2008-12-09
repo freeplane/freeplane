@@ -22,12 +22,12 @@ package org.freeplane.modes.filemode;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
+import org.freeplane.controller.FreeMindAction;
 import org.freeplane.map.tree.filemode.FMapController;
-import org.freeplane.modes.ModeControllerAction;
 
-class CenterAction extends ModeControllerAction {
-	CenterAction(final FModeController modeController) {
-		super(modeController, "center", null);
+class CenterAction extends FreeMindAction {
+	CenterAction() {
+		super("center");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

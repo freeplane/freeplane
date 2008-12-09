@@ -45,7 +45,6 @@ import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.Freeplane;
 import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.main.Tools;
 import org.freeplane.ui.FreemindMenuBar;
@@ -60,8 +59,7 @@ public class ApplicationViewController extends ViewController {
 	final private ResourceController resourceController;
 
 	public ApplicationViewController() {
-		final Controller controller = Freeplane.getController();
-		resourceController = controller.getResourceController();
+		resourceController = Controller.getResourceController();
 		frame = new JFrame("Freeplane");
 	}
 
@@ -130,8 +128,7 @@ public class ApplicationViewController extends ViewController {
 		getJFrame().setIconImage(mWindowIcon.getImage());
 		getContentPane().setLayout(new BorderLayout());
 		super.init();
-		if (Freeplane.getController().getResourceController().getBoolProperty(
-		    "no_scrollbar")) {
+		if (Controller.getResourceController().getBoolProperty("no_scrollbar")) {
 			getScrollPane().setVerticalScrollBarPolicy(
 			    JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 			getScrollPane().setHorizontalScrollBarPolicy(
@@ -144,9 +141,8 @@ public class ApplicationViewController extends ViewController {
 			    JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		}
 		mContentComponent = getScrollPane();
-		final boolean shouldUseTabbedPane = Freeplane.getController()
-		    .getResourceController().getBoolProperty(
-		        ResourceController.RESOURCES_USE_TABBED_PANE);
+		final boolean shouldUseTabbedPane = Controller.getResourceController()
+		    .getBoolProperty(ResourceController.RESOURCES_USE_TABBED_PANE);
 		if (shouldUseTabbedPane) {
 			mapViewManager = new MapViewTabs(this, mContentComponent);
 		}
@@ -158,34 +154,34 @@ public class ApplicationViewController extends ViewController {
 		frame.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(final WindowEvent e) {
-				Freeplane.getController()
-				    .quit(new ActionEvent(this, 0, "quit"));
+				Controller.getController().quit(
+				    new ActionEvent(this, 0, "quit"));
 			}
 			/*
 			 * fc, 14.3.2008: Completely removed, as it damaged the focus if for
 			 * example the note window was active.
 			 */
 		});
-		if (Tools.safeEquals(Freeplane.getController().getResourceController()
-		    .getProperty("toolbarVisible"), "false")) {
-			Freeplane.getController().getViewController().setToolbarVisible(
+		if (Tools.safeEquals(Controller.getResourceController().getProperty(
+		    "toolbarVisible"), "false")) {
+			Controller.getController().getViewController().setToolbarVisible(
 			    false);
 		}
-		if (Tools.safeEquals(Freeplane.getController().getResourceController()
-		    .getProperty("leftToolbarVisible"), "false")) {
-			Freeplane.getController().getViewController()
+		if (Tools.safeEquals(Controller.getResourceController().getProperty(
+		    "leftToolbarVisible"), "false")) {
+			Controller.getController().getViewController()
 			    .setLeftToolbarVisible(false);
 		}
 		frame.setFocusTraversalKeysEnabled(false);
 		frame.pack();
-		int win_width = Freeplane.getController().getResourceController()
-		    .getIntProperty("appwindow_width", 0);
-		int win_height = Freeplane.getController().getResourceController()
-		    .getIntProperty("appwindow_height", 0);
-		int win_x = Freeplane.getController().getResourceController()
-		    .getIntProperty("appwindow_x", 0);
-		int win_y = Freeplane.getController().getResourceController()
-		    .getIntProperty("appwindow_y", 0);
+		int win_width = Controller.getResourceController().getIntProperty(
+		    "appwindow_width", 0);
+		int win_height = Controller.getResourceController().getIntProperty(
+		    "appwindow_height", 0);
+		int win_x = Controller.getResourceController().getIntProperty(
+		    "appwindow_x", 0);
+		int win_y = Controller.getResourceController().getIntProperty(
+		    "appwindow_y", 0);
 		win_width = (win_width > 0) ? win_width : 640;
 		win_height = (win_height > 0) ? win_height : 440;
 		final Toolkit defaultToolkit = Toolkit.getDefaultToolkit();
@@ -203,8 +199,8 @@ public class ApplicationViewController extends ViewController {
 		win_y = Math.max(screenInsets.top, win_y);
 		win_y = Math.min(screenWidth + screenInsets.top - win_height, win_y);
 		frame.setBounds(win_x, win_y, win_width, win_height);
-		int win_state = Integer.parseInt(Freeplane.getController()
-		    .getResourceController().getProperty("appwindow_state", "0"));
+		int win_state = Integer.parseInt(Controller.getResourceController()
+		    .getProperty("appwindow_state", "0"));
 		win_state = ((win_state & Frame.ICONIFIED) != 0) ? Frame.NORMAL
 		        : win_state;
 		frame.setExtendedState(win_state);
@@ -234,12 +230,11 @@ public class ApplicationViewController extends ViewController {
 		map.remove(keyStrokeF8);
 		mContentComponent = mSplitPane;
 		setContentComponent();
-		final int splitPanePosition = Freeplane.getController()
-		    .getResourceController().getIntProperty(
-		        ApplicationViewController.SPLIT_PANE_POSITION, -1);
-		final int lastSplitPanePosition = Freeplane.getController()
-		    .getResourceController().getIntProperty(
-		        ApplicationViewController.SPLIT_PANE_LAST_POSITION, -1);
+		final int splitPanePosition = Controller.getResourceController()
+		    .getIntProperty(ApplicationViewController.SPLIT_PANE_POSITION, -1);
+		final int lastSplitPanePosition = Controller.getResourceController()
+		    .getIntProperty(ApplicationViewController.SPLIT_PANE_LAST_POSITION,
+		        -1);
 		if (splitPanePosition != -1 && lastSplitPanePosition != -1) {
 			mSplitPane.setDividerLocation(splitPanePosition);
 			mSplitPane.setLastDividerLocation(lastSplitPanePosition);
@@ -277,9 +272,8 @@ public class ApplicationViewController extends ViewController {
 			String command = new String();
 			try {
 				final Object[] messageArguments = { url.toString() };
-				final MessageFormat formatter = new MessageFormat(Freeplane
-				    .getController().getResourceController().getProperty(
-				        propertyString));
+				final MessageFormat formatter = new MessageFormat(Controller
+				    .getResourceController().getProperty(propertyString));
 				browser_command = formatter.format(messageArguments);
 				if (url.getProtocol().equals("file")) {
 					command = "rundll32 url.dll,FileProtocolHandler "
@@ -300,7 +294,7 @@ public class ApplicationViewController extends ViewController {
 				Runtime.getRuntime().exec(command);
 			}
 			catch (final IOException x) {
-				Freeplane
+				Controller
 				    .getController()
 				    .errorMessage(
 				        "Could not invoke browser.\n\nFreemind excecuted the following statement on a command line:\n\""
@@ -315,14 +309,14 @@ public class ApplicationViewController extends ViewController {
 			try {
 				final Object[] messageArguments = { correctedUrl,
 				        url.toString() };
-				final MessageFormat formatter = new MessageFormat(Freeplane
-				    .getController().getResourceController().getProperty(
+				final MessageFormat formatter = new MessageFormat(Controller
+				    .getResourceController().getProperty(
 				        "default_browser_command_mac"));
 				browser_command = formatter.format(messageArguments);
 				Runtime.getRuntime().exec(browser_command);
 			}
 			catch (final IOException ex2) {
-				Freeplane
+				Controller
 				    .getController()
 				    .errorMessage(
 				        "Could not invoke browser.\n\nFreemind excecuted the following statement on a command line:\n\""
@@ -336,14 +330,14 @@ public class ApplicationViewController extends ViewController {
 			try {
 				final Object[] messageArguments = { correctedUrl,
 				        url.toString() };
-				final MessageFormat formatter = new MessageFormat(Freeplane
-				    .getController().getResourceController().getProperty(
+				final MessageFormat formatter = new MessageFormat(Controller
+				    .getResourceController().getProperty(
 				        "default_browser_command_other_os"));
 				browser_command = formatter.format(messageArguments);
 				Runtime.getRuntime().exec(browser_command);
 			}
 			catch (final IOException ex2) {
-				Freeplane
+				Controller
 				    .getController()
 				    .errorMessage(
 				        "Could not invoke browser.\n\nFreemind excecuted the following statement on a command line:\n\""

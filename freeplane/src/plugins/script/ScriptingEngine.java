@@ -32,7 +32,7 @@ import javax.swing.JOptionPane;
 
 import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.ModuleNode;
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.main.FreeMindSecurityManager;
 import org.freeplane.main.Tools;
@@ -75,7 +75,7 @@ public class ScriptingEngine extends MindMapHookAdapter {
 	                             final HashMap pScriptCookies) {
 		if (!pAlreadyAScriptExecuted.getValue()) {
 			final int showResult = new OptionalDontShowMeAgainDialog(
-			    Freeplane.getController().getViewController().getJFrame(),
+			    Controller.getController().getViewController().getJFrame(),
 			    pMindMapController.getSelectedView(),
 			    "really_execute_script",
 			    "confirmation",
@@ -114,26 +114,23 @@ public class ScriptingEngine extends MindMapHookAdapter {
 		 * get preferences (and store them again after the script execution,
 		 * such that the scripts are not able to change them).
 		 */
-		final String executeWithoutAsking = Freeplane.getController()
-		    .getResourceController().getProperty(
+		final String executeWithoutAsking = Controller.getResourceController()
+		    .getProperty(
 		        ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING);
-		final String executeWithoutFileRestriction = Freeplane
-		    .getController()
+		final String executeWithoutFileRestriction = Controller
 		    .getResourceController()
 		    .getProperty(
 		        ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION);
-		final String executeWithoutNetworkRestriction = Freeplane
-		    .getController()
+		final String executeWithoutNetworkRestriction = Controller
 		    .getResourceController()
 		    .getProperty(
 		        ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION);
-		final String executeWithoutExecRestriction = Freeplane
-		    .getController()
+		final String executeWithoutExecRestriction = Controller
 		    .getResourceController()
 		    .getProperty(
 		        ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION);
-		final String signedScriptsWithoutRestriction = Freeplane
-		    .getController().getResourceController().getProperty(
+		final String signedScriptsWithoutRestriction = Controller
+		    .getResourceController().getProperty(
 		        ResourceController.RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED);
 		/* *************** */
 		/* Signature */
@@ -176,28 +173,25 @@ public class ScriptingEngine extends MindMapHookAdapter {
 			securityManager.setFinalSecurityManager(scriptingSecurityManager);
 			System.setOut(oldOut);
 			/* restore preferences (and assure that the values are unchanged!). */
-			Freeplane.getController().getResourceController().setProperty(
+			Controller.getResourceController().setProperty(
 			    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
 			    executeWithoutAsking);
-			Freeplane
-			    .getController()
+			Controller
 			    .getResourceController()
 			    .setProperty(
 			        ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION,
 			        executeWithoutFileRestriction);
-			Freeplane
-			    .getController()
+			Controller
 			    .getResourceController()
 			    .setProperty(
 			        ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION,
 			        executeWithoutNetworkRestriction);
-			Freeplane
-			    .getController()
+			Controller
 			    .getResourceController()
 			    .setProperty(
 			        ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION,
 			        executeWithoutExecRestriction);
-			Freeplane.getController().getResourceController().setProperty(
+			Controller.getResourceController().setProperty(
 			    ResourceController.RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED,
 			    signedScriptsWithoutRestriction);
 		}
@@ -232,7 +226,7 @@ public class ScriptingEngine extends MindMapHookAdapter {
 			    .getMessage() : "");
 			final String message = ((e2.getMessage() != null) ? e2.getMessage()
 			        : "");
-			Freeplane
+			Controller
 			    .getController()
 			    .errorMessage(
 			        e2.getClass().getName()
@@ -242,7 +236,7 @@ public class ScriptingEngine extends MindMapHookAdapter {
 			                        : "") + message);
 			return false;
 		}
-		pOutStream.print(Freeplane
+		pOutStream.print(Controller
 		    .getText("plugins/ScriptEditor/window.Result")
 		        + value);
 		if (assignResult && value != null) {
@@ -288,7 +282,7 @@ public class ScriptingEngine extends MindMapHookAdapter {
 	private void performScriptOperation(
 	                                    final NodeModel node,
 	                                    final BooleanHolder pAlreadyAScriptExecuted) {
-		Freeplane.getController().getViewController().setWaitingCursor(true);
+		Controller.getController().getViewController().setWaitingCursor(true);
 		for (final Iterator iter = node.getModeController().getMapController()
 		    .childrenUnfolded(node); iter.hasNext();) {
 			final NodeModel element = (NodeModel) iter.next();
@@ -314,13 +308,14 @@ public class ScriptingEngine extends MindMapHookAdapter {
 				}
 			}
 		}
-		Freeplane.getController().getViewController().setWaitingCursor(false);
+		Controller.getController().getViewController().setWaitingCursor(false);
 	}
 
 	@Override
 	public void startup() {
 		super.startup();
-		final NodeModel node = Freeplane.getController().getMap().getRootNode();
+		final NodeModel node = Controller.getController().getMap()
+		    .getRootNode();
 		final BooleanHolder booleanHolder = new BooleanHolder(false);
 		final String scriptLocation = getResourceString("ScriptLocation");
 		if (scriptLocation != null && scriptLocation.length() != 0) {

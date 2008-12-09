@@ -19,7 +19,7 @@ package accessories.plugins;
 
 import javax.swing.JOptionPane;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.map.pattern.mindmapnode.StylePatternFactory;
 import org.freeplane.map.tree.NodeModel;
 
@@ -58,11 +58,12 @@ public class FormatPaste extends MindMapNodeHookAdapter {
 	 */
 	private void pasteFormat(final NodeModel node) {
 		if (FormatPaste.pattern == null) {
-			JOptionPane.showMessageDialog(Freeplane.getController()
+			JOptionPane.showMessageDialog(Controller.getController()
 			    .getViewController().getContentPane(),
 			    getResourceString("no_format_copy_before_format_paste"), "" /*
-			    		    				    				 * =Title
-			    		    				    				 */, JOptionPane.ERROR_MESSAGE);
+			    				    				    		    				    				 * =Title
+			    				    				    		    				    				 */,
+			    JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		getMindMapController().getPatternController().applyPattern(node,

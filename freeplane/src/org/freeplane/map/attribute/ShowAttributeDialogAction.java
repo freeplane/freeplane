@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.map.attribute.mindmapnode.AttributeManagerDialog;
 import org.freeplane.ui.FreemindMenuBar;
 
@@ -35,15 +35,15 @@ class ShowAttributeDialogAction extends AbstractAction {
 	 *
 	 */
 	ShowAttributeDialogAction() {
-		super(null, new ImageIcon(Freeplane.getController()
-		    .getResourceController().getResource("images/showAttributes.gif")));
-		FreemindMenuBar.setLabelAndMnemonic(this, Freeplane
+		super(null, new ImageIcon(Controller.getResourceController()
+		    .getResource("images/showAttributes.gif")));
+		FreemindMenuBar.setLabelAndMnemonic(this, Controller
 		    .getText("attributes_dialog"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		if (getAttributeDialog().isVisible() == false
-		        && Freeplane.getController().getMapView() != null) {
+		        && Controller.getController().getMapView() != null) {
 			getAttributeDialog().pack();
 			getAttributeDialog().show();
 		}

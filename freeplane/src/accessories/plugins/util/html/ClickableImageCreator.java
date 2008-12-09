@@ -25,7 +25,7 @@ import java.util.Vector;
 import javax.swing.JComponent;
 
 import org.apache.commons.lang.StringEscapeUtils;
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.view.MapView;
 import org.freeplane.map.tree.view.NodeView;
@@ -59,7 +59,7 @@ public class ClickableImageCreator {
 		super();
 		this.root = root;
 		this.regExpLinkReplacement = regExpLinkReplacement;
-		mapView = Freeplane.getController().getMapView();
+		mapView = Controller.getController().getMapView();
 		if (mapView != null) {
 			innerBounds = mapView.getInnerBounds();
 		}

@@ -25,7 +25,7 @@ import java.awt.event.ItemListener;
 import javax.swing.JComboBox;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.main.Tools;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.view.NodeView;
@@ -88,7 +88,7 @@ class MToolbarContributor implements IMenuContributor, INodeSelectionListener,
 	}
 
 	public void nodeChanged(final NodeChangeEvent event) {
-		if (event.getNode() != Freeplane.getController().getViewController()
+		if (event.getNode() != Controller.getController().getViewController()
 		    .getMapView().getSelected().getModel()) {
 			return;
 		}

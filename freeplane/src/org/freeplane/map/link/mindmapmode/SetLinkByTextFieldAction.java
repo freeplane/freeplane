@@ -23,23 +23,22 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JOptionPane;
 
+import org.freeplane.controller.Controller;
+import org.freeplane.controller.FreeMindAction;
 import org.freeplane.map.link.NodeLinks;
 import org.freeplane.map.tree.NodeModel;
-import org.freeplane.modes.ModeControllerAction;
-import org.freeplane.modes.mindmapmode.MModeController;
+import org.freeplane.modes.ModeController;
 import org.freeplane.undo.IUndoableActor;
 
-class SetLinkByTextFieldAction extends ModeControllerAction {
-	final private MModeController controller;
-
-	public SetLinkByTextFieldAction(final MModeController controller) {
-		super(controller, "set_link_by_textfield", (String) null);
-		this.controller = controller;
+class SetLinkByTextFieldAction extends FreeMindAction {
+	public SetLinkByTextFieldAction() {
+		super("set_link_by_textfield", (String) null);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
+		final ModeController controller = getModeController();
 		String inputValue = JOptionPane.showInputDialog(controller.getMapView()
-		    .getSelected(), controller.getText("edit_link_manually"),
+		    .getSelected(), Controller.getText("edit_link_manually"),
 		    controller.getSelectedNode().getLink());
 		if (inputValue != null) {
 			if (inputValue.equals("")) {

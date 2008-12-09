@@ -24,7 +24,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.util.ListIterator;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.map.nodestyle.NodeStyleController;
 import org.freeplane.map.nodestyle.NodeStyleModel;
 import org.freeplane.map.tree.NodeModel;
@@ -44,45 +44,44 @@ public class MNodeStyleController extends NodeStyleController {
 		super(modeController);
 		if (!actionsCreated) {
 			actionsCreated = true;
-			Freeplane.getController().addAction("bold",
-			    new BoldAction(modeController));
-			Freeplane.getController().addAction("italic",
-			    new ItalicAction(modeController));
-			fontSizeAction = new FontSizeAction(modeController);
-			Freeplane.getController().addAction("fontSize", fontSizeAction);
+			Controller.getController().addAction("bold", new BoldAction());
+			Controller.getController().addAction("italic", new ItalicAction());
+			fontSizeAction = new FontSizeAction();
+			Controller.getController().addAction("fontSize", fontSizeAction);
 			final MultipleNodeAction increaseNodeFont = new MultipleNodeAction(
-			    modeController, "increase_node_font_size") {
+			    "increase_node_font_size") {
 				@Override
 				protected void actionPerformed(final ActionEvent e,
 				                               final NodeModel node) {
 					increaseFontSize(node, 1);
 				}
 			};
-			Freeplane.getController().addAction("increaseNodeFont",
+			Controller.getController().addAction("increaseNodeFont",
 			    increaseNodeFont);
 			final MultipleNodeAction decreaseNodeFont = new MultipleNodeAction(
-			    modeController, "decrease_node_font_size") {
+			    "decrease_node_font_size") {
 				@Override
 				protected void actionPerformed(final ActionEvent e,
 				                               final NodeModel node) {
 					increaseFontSize(node, -1);
 				}
 			};
-			Freeplane.getController().addAction("decreaseNodeFont",
+			Controller.getController().addAction("decreaseNodeFont",
 			    decreaseNodeFont);
-			fontFamilyAction = new FontFamilyAction(modeController);
-			Freeplane.getController().addAction("fontFamily", fontFamilyAction);
-			Freeplane.getController().addAction("nodeColor",
-			    new NodeColorAction(modeController));
-			Freeplane.getController().addAction("nodeColorBlend",
-			    new NodeColorBlendAction(modeController));
-			Freeplane.getController().addAction("nodeBackgroundColor",
-			    new NodeBackgroundColorAction(modeController));
-			Freeplane.getController().addAction("removeNodeBackgroundColor",
-			    new RemoveNodeBackgroundColorAction(modeController));
-			Freeplane.getController().addAction("fork",
+			fontFamilyAction = new FontFamilyAction();
+			Controller.getController()
+			    .addAction("fontFamily", fontFamilyAction);
+			Controller.getController().addAction("nodeColor",
+			    new NodeColorAction());
+			Controller.getController().addAction("nodeColorBlend",
+			    new NodeColorBlendAction());
+			Controller.getController().addAction("nodeBackgroundColor",
+			    new NodeBackgroundColorAction());
+			Controller.getController().addAction("removeNodeBackgroundColor",
+			    new RemoveNodeBackgroundColorAction());
+			Controller.getController().addAction("fork",
 			    new NodeShapeAction(modeController, NodeStyleModel.STYLE_FORK));
-			Freeplane.getController()
+			Controller.getController()
 			    .addAction(
 			        "bubble",
 			        new NodeShapeAction(modeController,

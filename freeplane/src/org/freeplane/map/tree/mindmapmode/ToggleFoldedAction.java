@@ -22,18 +22,17 @@ package org.freeplane.map.tree.mindmapmode;
 import java.awt.event.ActionEvent;
 import java.util.ListIterator;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
+import org.freeplane.controller.FreeMindAction;
 import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.main.Tools;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.ModeController;
-import org.freeplane.modes.ModeControllerAction;
-import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.undo.IUndoableActor;
 
-class ToggleFoldedAction extends ModeControllerAction {
-	public ToggleFoldedAction(final MModeController controller) {
-		super(controller, "toggle_folded");
+class ToggleFoldedAction extends FreeMindAction {
+	public ToggleFoldedAction() {
+		super("toggle_folded");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -61,9 +60,8 @@ class ToggleFoldedAction extends ModeControllerAction {
 
 	private void toggleFolded(final NodeModel node) {
 		if (!node.getModeController().getMapController().hasChildren(node)
-		        && !Tools.safeEquals(Freeplane.getController()
-		            .getResourceController().getProperty(
-		                "enable_leaves_folding"), "true")) {
+		        && !Tools.safeEquals(Controller.getResourceController()
+		            .getProperty("enable_leaves_folding"), "true")) {
 			return;
 		}
 		final ModeController modeController = getModeController();
@@ -71,9 +69,8 @@ class ToggleFoldedAction extends ModeControllerAction {
 			public void act() {
 				modeController.getMapController()._setFolded(node,
 				    !node.isFolded());
-				if (Freeplane.getController().getResourceController()
-				    .getBoolProperty(
-				        ResourceController.RESOURCES_SAVE_FOLDING_STATE)) {
+				if (Controller.getResourceController().getBoolProperty(
+				    ResourceController.RESOURCES_SAVE_FOLDING_STATE)) {
 					modeController.getMapController().nodeChanged(node);
 				}
 			}

@@ -24,15 +24,14 @@ import java.awt.event.ActionEvent;
 import org.freeplane.map.nodelocation.LocationModel;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.MultipleNodeAction;
-import org.freeplane.modes.mindmapmode.MModeController;
 
 /**
  * @author Dimitry Polivaev
  * 07.12.2008
  */
 public class ResetNodeLocationAction extends MultipleNodeAction {
-	public ResetNodeLocationAction(final MModeController modeController) {
-		super(modeController, "reset_node_position");
+	public ResetNodeLocationAction() {
+		super("reset_node_position");
 	}
 
 	@Override

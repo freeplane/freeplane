@@ -25,7 +25,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.ModeController;
 
@@ -52,7 +52,7 @@ public class HookInstanciationMethod {
 		                                      final NodeModel focussed,
 		                                      final List selecteds) {
 			final Vector returnValue = new Vector();
-			addChilds(Freeplane.getController().getMap().getRootNode(),
+			addChilds(Controller.getController().getMap().getRootNode(),
 			    returnValue);
 			return returnValue;
 		}
@@ -86,14 +86,14 @@ public class HookInstanciationMethod {
 		public NodeModel getCenterNode(final ModeController controller,
 		                               final NodeModel focussed,
 		                               final List selecteds) {
-			return Freeplane.getController().getMap().getRootNode();
+			return Controller.getController().getMap().getRootNode();
 		}
 
 		public Collection getDestinationNodes(final ModeController controller,
 		                                      final NodeModel focussed,
 		                                      final List selecteds) {
 			final Vector returnValue = new Vector();
-			returnValue.add(Freeplane.getController().getMap().getRoot());
+			returnValue.add(Controller.getController().getMap().getRoot());
 			return returnValue;
 		}
 	}

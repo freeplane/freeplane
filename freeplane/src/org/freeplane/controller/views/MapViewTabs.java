@@ -34,7 +34,7 @@ import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.map.tree.MapModel;
 import org.freeplane.map.tree.view.MapView;
 
@@ -60,9 +60,9 @@ class MapViewTabs implements IMapViewChangeListener {
 				tabSelectionChanged();
 			}
 		});
-		Freeplane.getController().getMapViewManager().addMapViewChangeListener(
-		    this);
-		Freeplane.getController().getViewController()
+		Controller.getController().getMapViewManager()
+		    .addMapViewChangeListener(this);
+		Controller.getController().getViewController()
 		    .addMapTitleChangeListener(new IMapTitleChangeListener() {
 			    public void setMapTitle(final String pNewMapTitle,
 			                            final MapView pMapView,
@@ -152,8 +152,8 @@ class MapViewTabs implements IMapViewChangeListener {
 		}
 		final MapView mapView = (MapView) mTabbedPaneMapViews
 		    .get(selectedIndex);
-		if (mapView != Freeplane.getController().getMapView()) {
-			Freeplane.getController().getMapViewManager().changeToMapView(
+		if (mapView != Controller.getController().getMapView()) {
+			Controller.getController().getMapViewManager().changeToMapView(
 			    mapView.getName());
 		}
 		if (mContentComponent != null) {

@@ -25,7 +25,8 @@ import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
+import org.freeplane.controller.FreeMindAction;
 import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.main.HtmlTools;
 import org.freeplane.main.Tools;
@@ -38,19 +39,18 @@ import org.freeplane.map.tree.view.EditNodeTextField;
 import org.freeplane.map.tree.view.EditNodeWYSIWYG;
 import org.freeplane.map.tree.view.MapView;
 import org.freeplane.map.tree.view.NodeView;
-import org.freeplane.modes.ModeControllerAction;
 import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.undo.IUndoableActor;
 
 import deprecated.freemind.common.OptionalDontShowMeAgainDialog;
 
-class EditAction extends ModeControllerAction {
+class EditAction extends FreeMindAction {
 	private static final Pattern HTML_HEAD = Pattern.compile(
 	    "\\s*<head>.*</head>", Pattern.DOTALL);
 	private EditNodeBase mCurrentEditDialog = null;
 
-	public EditAction(final MModeController modeController) {
-		super(modeController, "edit_node");
+	public EditAction() {
+		super("edit_node");
 	}
 
 	/*
@@ -98,14 +98,14 @@ class EditAction extends ModeControllerAction {
 		stopEditing();
 		getMModeController().setBlocked(true);
 		String text = node.getModel().toString();
-		final String htmlEditingOption = Freeplane.getController()
-		    .getResourceController().getProperty("html_editing_option");
+		final String htmlEditingOption = Controller.getResourceController()
+		    .getProperty("html_editing_option");
 		final boolean editDefinitivelyLong = node.getIsLong() || editLong;
 		final boolean isHtmlNode = HtmlTools.isHtmlNode(text);
 		String useRichTextInNewLongNodes = "true";
 		if (!isHtmlNode && editDefinitivelyLong) {
 			final int showResult = new OptionalDontShowMeAgainDialog(
-			    Freeplane.getController().getViewController().getJFrame(),
+			    Controller.getController().getViewController().getJFrame(),
 			    getMModeController().getSelectedView(),
 			    "edit.edit_rich_text",
 			    "edit.decision",
@@ -144,7 +144,7 @@ class EditAction extends ModeControllerAction {
 					    ((MTextController) getMModeController()
 					        .getTextController()).splitNode(node.getModel(),
 					        position, newText);
-					    Freeplane.getController().getViewController()
+					    Controller.getController().getViewController()
 					        .obtainFocusForSelected();
 					    cancel();
 				    }
@@ -171,7 +171,7 @@ class EditAction extends ModeControllerAction {
 					    ((MTextController) getMModeController()
 					        .getTextController()).splitNode(node.getModel(),
 					        position, newText);
-					    Freeplane.getController().getViewController()
+					    Controller.getController().getViewController()
 					        .obtainFocusForSelected();
 					    cancel();
 				    }
@@ -198,7 +198,7 @@ class EditAction extends ModeControllerAction {
 					    ((MTextController) getMModeController()
 					        .getTextController()).splitNode(node.getModel(),
 					        position, newText);
-					    Freeplane.getController().getViewController()
+					    Controller.getController().getViewController()
 					        .obtainFocusForSelected();
 					    cancel();
 				    }
@@ -224,7 +224,7 @@ class EditAction extends ModeControllerAction {
 			    }
 
 			    private void endEdit() {
-				    Freeplane.getController().getViewController()
+				    Controller.getController().getViewController()
 				        .obtainFocusForSelected();
 				    getMModeController().setBlocked(false);
 				    mCurrentEditDialog = null;

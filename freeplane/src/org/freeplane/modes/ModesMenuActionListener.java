@@ -24,7 +24,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.SwingUtilities;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 
 class ModesMenuActionListener implements ActionListener {
 	public ModesMenuActionListener() {
@@ -33,7 +33,7 @@ class ModesMenuActionListener implements ActionListener {
 	public void actionPerformed(final ActionEvent e) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				Freeplane.getController().selectMode(e.getActionCommand());
+				Controller.getController().selectMode(e.getActionCommand());
 			}
 		});
 	}

@@ -24,7 +24,7 @@ import java.util.Vector;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.io.xml.n3.nanoxml.XMLElement;
 import org.freeplane.main.Tools;
 import org.freeplane.map.tree.NodeModel;
@@ -87,7 +87,7 @@ public class ConjunctConditions implements ICondition {
 		component.add(rendererComponent);
 		int i;
 		for (i = 1; i < conditions.length; i++) {
-			final String and = Tools.removeMnemonic(Freeplane
+			final String and = Tools.removeMnemonic(Controller
 			    .getText("filter_and"));
 			final String text = ' ' + and + ' ';
 			component.add(new JLabel(text));

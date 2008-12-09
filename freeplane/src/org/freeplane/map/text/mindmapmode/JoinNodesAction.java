@@ -27,21 +27,20 @@ import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
+import org.freeplane.controller.FreeMindAction;
 import org.freeplane.main.HtmlTools;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.mindmapmode.MMapController;
 import org.freeplane.map.tree.view.MapView;
-import org.freeplane.modes.ModeControllerAction;
-import org.freeplane.modes.mindmapmode.MModeController;
 
-class JoinNodesAction extends ModeControllerAction {
+class JoinNodesAction extends FreeMindAction {
 	final static Pattern BODY_END = Pattern.compile("</body>",
 	    Pattern.CASE_INSENSITIVE);
 	final static Pattern BODY_START = Pattern.compile("<body>",
 	    Pattern.CASE_INSENSITIVE);
 
-	public JoinNodesAction(final MModeController modeController) {
-		super(modeController, "join_nodes");
+	public JoinNodesAction() {
+		super("join_nodes");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

@@ -31,7 +31,7 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.map.clipboard.MindMapNodesSelection;
 import org.freeplane.map.link.mindmapmode.MLinkController;
 import org.freeplane.map.tree.NodeModel;
@@ -127,7 +127,7 @@ public class MindMapNodeDropListener implements DropTargetListener {
 			if (dropAction == DnDConstants.ACTION_LINK) {
 				int yesorno = JOptionPane.YES_OPTION;
 				if (mMindMapController.getMapView().getSelection().size() >= 5) {
-					yesorno = JOptionPane.showConfirmDialog(Freeplane
+					yesorno = JOptionPane.showConfirmDialog(Controller
 					    .getController().getViewController().getContentPane(),
 					    mMindMapController.getText("lots_of_links_warning"),
 					    Integer.toString(mMindMapController.getMapView()
@@ -151,7 +151,7 @@ public class MindMapNodeDropListener implements DropTargetListener {
 				    .isWriteable(targetNode)) {
 					final String message = mMindMapController
 					    .getText("node_is_write_protected");
-					JOptionPane.showMessageDialog(Freeplane.getController()
+					JOptionPane.showMessageDialog(Controller.getController()
 					    .getViewController().getContentPane(), message,
 					    "Freemind", JOptionPane.ERROR_MESSAGE);
 					return;
@@ -164,7 +164,7 @@ public class MindMapNodeDropListener implements DropTargetListener {
 						if (selecteds.contains(actualNode)) {
 							final String message = mMindMapController
 							    .getText("cannot_move_to_child");
-							JOptionPane.showMessageDialog(Freeplane
+							JOptionPane.showMessageDialog(Controller
 							    .getController().getViewController()
 							    .getContentPane(), message, "Freemind",
 							    JOptionPane.WARNING_MESSAGE);

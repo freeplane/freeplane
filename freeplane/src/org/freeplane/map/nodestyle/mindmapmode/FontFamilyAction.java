@@ -23,7 +23,6 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.MultipleNodeAction;
-import org.freeplane.modes.mindmapmode.MModeController;
 
 /**
  * @author foltin
@@ -33,8 +32,8 @@ class FontFamilyAction extends MultipleNodeAction {
 
 	/**
 	 */
-	public FontFamilyAction(final MModeController modeController) {
-		super(modeController, "font_family");
+	public FontFamilyAction() {
+		super("font_family");
 	}
 
 	@Override

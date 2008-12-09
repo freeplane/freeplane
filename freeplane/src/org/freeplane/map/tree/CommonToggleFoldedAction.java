@@ -23,16 +23,15 @@ import java.awt.event.ActionEvent;
 import java.util.Iterator;
 import java.util.ListIterator;
 
+import org.freeplane.controller.FreeMindAction;
 import org.freeplane.main.Tools;
-import org.freeplane.modes.ModeController;
-import org.freeplane.modes.ModeControllerAction;
 
 /**
  * @author foltin
  */
-class CommonToggleFoldedAction extends ModeControllerAction {
-	public CommonToggleFoldedAction(final ModeController controller) {
-		super(controller, "toggle_folded");
+class CommonToggleFoldedAction extends FreeMindAction {
+	public CommonToggleFoldedAction() {
+		super("toggle_folded");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

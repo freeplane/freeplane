@@ -26,7 +26,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.ListIterator;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.main.HtmlTools;
 import org.freeplane.main.Tools;
 import org.freeplane.map.icon.MindIcon;
@@ -152,8 +152,7 @@ class MindMapHTMLWriter {
 	}
 
 	private String getProperty(final String key) {
-		return Freeplane.getController().getResourceController().getProperty(
-		    key);
+		return Controller.getResourceController().getProperty(key);
 	}
 
 	boolean hasHtml(final NodeModel model) {
@@ -217,7 +216,7 @@ class MindMapHTMLWriter {
 		    .equals("html_export_fold_currently_folded") && rootNodeOfBranch
 		    .hasFoldedStrictDescendant())
 		        || htmlExportFoldingOption.equals("html_export_fold_all");
-		Freeplane.getController().getResourceController().getBoolProperty(
+		Controller.getResourceController().getBoolProperty(
 		    "export_icons_in_html");
 		fileout
 		    .write("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">"
@@ -290,7 +289,7 @@ class MindMapHTMLWriter {
 		if (!fontStyle.equals("")) {
 			fileout.write("<span style=\"" + fontStyle + "\">");
 		}
-		if (Freeplane.getController().getResourceController().getBoolProperty(
+		if (Controller.getResourceController().getBoolProperty(
 		    "export_icons_in_html")) {
 			writeIcons(model);
 		}
@@ -319,8 +318,8 @@ class MindMapHTMLWriter {
 			    .getMapController().childrenUnfolded(model); e.hasNext();) {
 				final NodeModel child = (NodeModel) e.next();
 				lastChildNumber = writeHTML(child, parentID, lastChildNumber,/*
-																																			 * isRoot=
-																																			 */
+																																																			 * isRoot=
+																																																			 */
 				false, treatChildrenAsParagraph, depth + 1);
 			}
 			return lastChildNumber;
@@ -333,9 +332,9 @@ class MindMapHTMLWriter {
 					final NodeModel child = (NodeModel) e.next();
 					lastChildNumber = writeHTML(child, parentID,
 					    lastChildNumber,/*
-					    					    										    										 * isRoot=
-					    					    										    										 */false,
-					    treatChildrenAsParagraph, depth + 1);
+					    										    										    					    										    										 * isRoot=
+					    										    										    					    										    										 */
+					    false, treatChildrenAsParagraph, depth + 1);
 				}
 			}
 			else if (createFolding) {
@@ -352,9 +351,9 @@ class MindMapHTMLWriter {
 					final NodeModel child = (NodeModel) e.next();
 					localLastChildNumber = writeHTML(child, localParentID,
 					    localLastChildNumber,/*
-					    					    										    											 * isRoot=
-					    					    										    											 */false,
-					    treatChildrenAsParagraph, depth + 1);
+					    										    										    					    										    											 * isRoot=
+					    										    										    					    										    											 */
+					    false, treatChildrenAsParagraph, depth + 1);
 				}
 			}
 			else {
@@ -367,9 +366,9 @@ class MindMapHTMLWriter {
 					final NodeModel child = (NodeModel) e.next();
 					lastChildNumber = writeHTML(child, parentID,
 					    lastChildNumber,/*
-					    					    										    										 * isRoot=
-					    					    										    										 */false,
-					    treatChildrenAsParagraph, depth + 1);
+					    										    										    					    										    										 * isRoot=
+					    										    										    					    										    										 */
+					    false, treatChildrenAsParagraph, depth + 1);
 				}
 			}
 			if (treatChildrenAsParagraph) {

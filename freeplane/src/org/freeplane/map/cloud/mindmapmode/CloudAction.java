@@ -23,7 +23,6 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.MultipleNodeAction;
-import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.ui.SelectableAction;
 
 /**
@@ -31,8 +30,8 @@ import org.freeplane.ui.SelectableAction;
  */
 @SelectableAction
 class CloudAction extends MultipleNodeAction {
-	public CloudAction(final MModeController controller) {
-		super(controller, "cloud", "images/Cloud24.gif");
+	public CloudAction() {
+		super("cloud", "images/Cloud24.gif");
 	}
 
 	/*

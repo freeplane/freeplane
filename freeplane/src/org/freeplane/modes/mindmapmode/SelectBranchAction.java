@@ -21,21 +21,21 @@ package org.freeplane.modes.mindmapmode;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.modes.ModeControllerAction;
+import org.freeplane.controller.FreeMindAction;
 
 /** */
-class SelectBranchAction extends ModeControllerAction {
+class SelectBranchAction extends FreeMindAction {
 	/**
 	 *
 	 */
-	public SelectBranchAction(final MModeController modeController) {
-		super(modeController, "select_branch", (String) null);
+	public SelectBranchAction() {
+		super("select_branch", (String) null);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		getMModeController().selectBranch(
 		    getMModeController().getSelectedView(), true /*
-																		 * = extend
-																		 */);
+																						 * = extend
+																						 */);
 	}
 }

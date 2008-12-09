@@ -21,19 +21,18 @@ package org.freeplane.io.url;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
+import org.freeplane.controller.FreeMindAction;
 import org.freeplane.io.url.mindmapmode.FileManager;
-import org.freeplane.modes.ModeController;
-import org.freeplane.modes.ModeControllerAction;
 
-class SaveAsAction extends ModeControllerAction {
-	public SaveAsAction(final ModeController modeController) {
-		super(modeController, "save_as", "images/filesaveas.png");
+class SaveAsAction extends FreeMindAction {
+	public SaveAsAction() {
+		super("save_as", "images/filesaveas.png");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		((FileManager) getModeController().getUrlManager()).saveAs(Freeplane
+		((FileManager) getModeController().getUrlManager()).saveAs(Controller
 		    .getController().getMap());
-		Freeplane.getController().getViewController().setTitle();
+		Controller.getController().getViewController().setTitle();
 	}
 }

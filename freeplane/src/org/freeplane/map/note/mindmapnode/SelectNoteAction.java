@@ -25,10 +25,10 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JSplitPane;
 
+import org.freeplane.controller.FreeMindAction;
 import org.freeplane.modes.ModeController;
-import org.freeplane.modes.ModeControllerAction;
 
-class SelectNoteAction extends ModeControllerAction {
+class SelectNoteAction extends FreeMindAction {
 	/**
 	 *
 	 */
@@ -36,8 +36,7 @@ class SelectNoteAction extends ModeControllerAction {
 
 	public SelectNoteAction(final MNoteController noteController,
 	                        final ModeController modeController) {
-		super(modeController,
-		    "accessories/plugins/NodeNote_jumpto.properties_name");
+		super("accessories/plugins/NodeNote_jumpto.properties_name");
 		this.noteController = noteController;
 	}
 

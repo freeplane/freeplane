@@ -19,7 +19,7 @@
  */
 package org.freeplane.service.filter.condition;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.io.xml.n3.nanoxml.XMLElement;
 import org.freeplane.main.Tools;
 
@@ -74,7 +74,7 @@ abstract class CompareConditionAdapter extends NodeCondition {
 				        : ConditionFactory.FILTER_GE;
 				break;
 			case 0:
-				simpleCondition = Freeplane
+				simpleCondition = Controller
 				    .getText(succeed ? ConditionFactory.FILTER_IS_EQUAL_TO
 				            : ConditionFactory.FILTER_IS_NOT_EQUAL_TO);
 				break;

@@ -46,12 +46,27 @@ import org.freeplane.ui.AlwaysEnabledAction;
  * MapModel(editing) or MapView(navigation).
  */
 public class Controller {
+	private static Controller controllerInstance;
 	public static final String JAVA_VERSION = System
 	    .getProperty("java.version");
 	public static final String ON_START_IF_NOT_SPECIFIED = "on_start_if_not_specified";
+	private static ResourceController resourceController;
 	public static final FreemindVersionInformation VERSION = new FreemindVersionInformation(
 	    "0.9.0 Freeplane 21");
 	public static final String XML_VERSION = "0.9.0";
+
+	public static Controller getController() {
+		return controllerInstance;
+	}
+
+	static public ResourceController getResourceController() {
+		return resourceController;
+	}
+
+	public static String getText(final String string) {
+		return resourceController.getText(string);
+	}
+
 	final private HashMap<Object, Action> actions;
 	private ModelessAttributeController attributeController;
 	private FilterController filterController;
@@ -64,12 +79,14 @@ public class Controller {
 	final private HashMap<String, ModeController> modeControllers;
 	private PrintController printController;
 	final private Action quit;
-	final private ResourceController resourceController;
 	private ViewController viewController;
 
 	public Controller(final ResourceController resourceController) {
-		this.resourceController = resourceController;
-		Freeplane.setController(this);
+		if (Controller.controllerInstance != null) {
+        	throw new RuntimeException("Controller already created");
+        }
+		Controller.resourceController = resourceController;
+        Controller.controllerInstance = this;
 		actions = new HashMap<Object, Action>();
 		modeControllers = new HashMap();
 		quit = new QuitAction(resourceController);
@@ -114,12 +131,12 @@ public class Controller {
 			myMessage = message.toString();
 		}
 		else {
-			myMessage = Freeplane.getText("undefined_error");
+			myMessage = Controller.getText("undefined_error");
 			if (myMessage == null) {
 				myMessage = "Undefined error";
 			}
 		}
-		JOptionPane.showMessageDialog(Freeplane.getController()
+		JOptionPane.showMessageDialog(Controller.getController()
 		    .getViewController().getContentPane(), myMessage, "FreeMind",
 		    JOptionPane.ERROR_MESSAGE);
 	}
@@ -192,10 +209,6 @@ public class Controller {
 		return printController;
 	}
 
-	public ResourceController getResourceController() {
-		return resourceController;
-	}
-
 	/**
 	 * @return
 	 */
@@ -204,7 +217,7 @@ public class Controller {
 	}
 
 	public void informationMessage(final Object message) {
-		JOptionPane.showMessageDialog(Freeplane.getController()
+		JOptionPane.showMessageDialog(Controller.getController()
 		    .getViewController().getContentPane(), message.toString(),
 		    "FreeMind", JOptionPane.INFORMATION_MESSAGE);
 	}
@@ -222,13 +235,13 @@ public class Controller {
 			return;
 		}
 		if (currentMapRestorable != null) {
-			Freeplane.getController().getResourceController().setProperty(
+			Controller.getResourceController().setProperty(
 			    Controller.ON_START_IF_NOT_SPECIFIED, currentMapRestorable);
 		}
 		if (modeController != null) {
 			modeController.shutdown();
 		}
-		Freeplane.getController().getViewController().exit();
+		Controller.getController().getViewController().exit();
 	}
 
 	/**

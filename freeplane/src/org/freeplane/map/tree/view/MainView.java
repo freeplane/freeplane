@@ -42,7 +42,7 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.main.HtmlTools;
 import org.freeplane.main.Tools;
 import org.freeplane.map.icon.MindIcon;
@@ -349,7 +349,7 @@ public abstract class MainView extends JLabel {
 		if (super.processKeyBinding(ks, e, condition, pressed)) {
 			return true;
 		}
-		final FreemindMenuBar freeMindMenuBar = Freeplane.getController()
+		final FreemindMenuBar freeMindMenuBar = Controller.getController()
 		    .getViewController().getFreeMindMenuBar();
 		return !freeMindMenuBar.isVisible()
 		        && freeMindMenuBar.processKeyBinding(ks, e,
@@ -417,7 +417,7 @@ public abstract class MainView extends JLabel {
 			else if (Tools.executableByExtension(link)) {
 				iconPath = "images/Executable.png";
 			}
-			final ImageIcon icon = new ImageIcon(Freeplane.getController()
+			final ImageIcon icon = new ImageIcon(Controller
 			    .getResourceController().getResource(iconPath));
 			iconImages.addImage(icon);
 		}
@@ -445,8 +445,8 @@ public abstract class MainView extends JLabel {
 				nodeText = "<html><base href=\"" + map.getModel().getURL()
 				        + "\">" + nodeText.substring(6);
 			}
-			final String htmlLongNodeHead = Freeplane.getController()
-			    .getResourceController().getProperty("html_long_node_head");
+			final String htmlLongNodeHead = Controller.getResourceController()
+			    .getProperty("html_long_node_head");
 			if (htmlLongNodeHead != null && !htmlLongNodeHead.equals("")) {
 				if (nodeText.matches("(?ims).*<head>.*")) {
 					nodeText = nodeText.replaceFirst("(?ims).*<head>.*",

@@ -26,18 +26,17 @@ import java.util.logging.Logger;
 
 import javax.swing.JFileChooser;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
+import org.freeplane.controller.FreeMindAction;
 import org.freeplane.main.Tools;
 import org.freeplane.map.link.mindmapmode.MLinkController;
 import org.freeplane.map.text.mindmapmode.MTextController;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.mindmapmode.MMapController;
-import org.freeplane.modes.ModeControllerAction;
-import org.freeplane.modes.mindmapmode.MModeController;
 
-class ImportFolderStructureAction extends ModeControllerAction {
-	public ImportFolderStructureAction(final MModeController controller) {
-		super(controller, "import_folder_structure");
+class ImportFolderStructureAction extends FreeMindAction {
+	public ImportFolderStructureAction() {
+		super("import_folder_structure");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -45,23 +44,23 @@ class ImportFolderStructureAction extends ModeControllerAction {
 		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		chooser.setDialogTitle(getModeController().getText(
 		    "select_folder_for_importing"));
-		final int returnVal = chooser.showOpenDialog(Freeplane.getController()
+		final int returnVal = chooser.showOpenDialog(Controller.getController()
 		    .getViewController().getContentPane());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			final File folder = chooser.getSelectedFile();
-			Freeplane.getController().getViewController().out(
+			Controller.getController().getViewController().out(
 			    "Importing folder structure ...");
 			try {
 				importFolderStructure(folder, getModeController()
 				    .getSelectedNode(),/*
-																										 * redisplay=
-																										 */
+																																										 * redisplay=
+																																										 */
 				true);
 			}
 			catch (final Exception ex) {
 				org.freeplane.main.Tools.logException(ex);
 			}
-			Freeplane.getController().getViewController().out(
+			Controller.getController().getViewController().out(
 			    "Folder structure imported.");
 		}
 	}

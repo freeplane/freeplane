@@ -28,13 +28,12 @@ import java.util.ListIterator;
 
 import javax.swing.JOptionPane;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
+import org.freeplane.controller.FreeMindAction;
 import org.freeplane.main.HtmlTools;
 import org.freeplane.map.tree.NodeModel;
-import org.freeplane.modes.ModeController;
-import org.freeplane.modes.ModeControllerAction;
 
-class FindAction extends ModeControllerAction {
+class FindAction extends FreeMindAction {
 	private boolean findCaseSensitive;
 	private NodeModel findFromNode;
 	private LinkedList findNodeQueue;
@@ -42,8 +41,8 @@ class FindAction extends ModeControllerAction {
 	private String searchTerm;
 	private Collection subterms;
 
-	public FindAction(final ModeController modeController) {
-		super(modeController, "find", "images/filefind.png");
+	public FindAction() {
+		super("find", "images/filefind.png");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -58,8 +57,8 @@ class FindAction extends ModeControllerAction {
 		searchTerm = what;
 		final boolean found = find(getModeController().getSelectedNode(),
 		    subterms, /*
-		    	    		    				 * caseSensitive=
-		    	    		    				 */
+		    		    		    	    		    				 * caseSensitive=
+		    		    		    	    		    				 */
 		    false);
 		getModeController().getMapView().repaint();
 		if (!found) {
@@ -68,7 +67,7 @@ class FindAction extends ModeControllerAction {
 			final String searchTerm = messageText.startsWith("<html>") ? HtmlTools
 			    .toXMLEscapedText(getSearchTerm())
 			        : getSearchTerm();
-			Freeplane.getController().informationMessage(
+			Controller.getController().informationMessage(
 			    messageText.replaceAll("\\$1", searchTerm).replaceAll("\\$2",
 			        getFindFromText()),
 			    getModeController().getMapView().getSelected());
@@ -121,8 +120,8 @@ class FindAction extends ModeControllerAction {
 	 */
 	public void displayNode(final NodeModel node,
 	                        final ArrayList nodesUnfoldedByDisplay) {
-		final Object[] path = Freeplane.getController().getMap().getPathToRoot(
-		    node);
+		final Object[] path = Controller.getController().getMap()
+		    .getPathToRoot(node);
 		for (int i = 0; i < path.length - 1; i++) {
 			final NodeModel nodeOnPath = (NodeModel) path[i];
 			if (nodeOnPath.getModeController().getMapController().isFolded(

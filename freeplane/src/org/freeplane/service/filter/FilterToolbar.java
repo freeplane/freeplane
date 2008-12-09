@@ -38,8 +38,8 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
+import org.freeplane.controller.Controller;
 import org.freeplane.controller.FreeMindAction;
-import org.freeplane.controller.Freeplane;
 import org.freeplane.map.tree.MapModel;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.service.filter.condition.ICondition;
@@ -92,7 +92,7 @@ class FilterToolbar extends FreeMindToolBar {
 			resetFilter();
 			setMapFilter();
 			refreshMap();
-			DefaultFilter.selectVisibleNode(Freeplane.getController()
+			DefaultFilter.selectVisibleNode(Controller.getController()
 			    .getMapView());
 		}
 
@@ -103,7 +103,7 @@ class FilterToolbar extends FreeMindToolBar {
 			if (map != null) {
 				activeFilter.applyFilter();
 				refreshMap();
-				DefaultFilter.selectVisibleNode(Freeplane.getController()
+				DefaultFilter.selectVisibleNode(Controller.getController()
 				    .getMapView());
 			}
 		}
@@ -133,13 +133,13 @@ class FilterToolbar extends FreeMindToolBar {
 		 *
 		 */
 		UnfoldAncestorsAction() {
-			super(null, new ImageIcon(Freeplane.getController()
-			    .getResourceController().getResource("images/unfold.png")));
+			super(null, new ImageIcon(Controller.getResourceController()
+			    .getResource("images/unfold.png")));
 		}
 
 		public void actionPerformed(final ActionEvent e) {
 			if (getSelectedCondition() != null) {
-				unfoldAncestors(Freeplane.getController().getModel()
+				unfoldAncestors(Controller.getController().getModel()
 				    .getRootNode());
 			}
 		}
@@ -148,7 +148,7 @@ class FilterToolbar extends FreeMindToolBar {
 			if (node.getModeController().getMapController().hasChildren(node)
 			        && (node.getModeController().getMapController().isFolded(
 			            node) != state)) {
-				Freeplane.getController().getModeController()
+				Controller.getController().getModeController()
 				    .getMapController().setFolded(node, state);
 			}
 		}
@@ -179,11 +179,11 @@ class FilterToolbar extends FreeMindToolBar {
 
 	FilterToolbar() {
 		super();
-		fc = Freeplane.getController().getFilterController();
+		fc = Controller.getController().getFilterController();
 		setVisible(false);
 		setFocusable(false);
 		filterChangeListener = new FilterChangeListener();
-		add(new JLabel(Freeplane.getText("filter_toolbar") + " "));
+		add(new JLabel(Controller.getText("filter_toolbar") + " "));
 		activeFilter = null;
 		activeFilterConditionComboBox = new JComboBox() {
 			@Override
@@ -192,7 +192,7 @@ class FilterToolbar extends FreeMindToolBar {
 			}
 		};
 		activeFilterConditionComboBox.setFocusable(false);
-		pathToFilterFile = Freeplane.getController().getResourceController()
+		pathToFilterFile = Controller.getResourceController()
 		    .getFreemindUserDirectory()
 		        + File.separator
 		        + "auto."
@@ -200,14 +200,14 @@ class FilterToolbar extends FreeMindToolBar {
 		btnEdit = add(new EditFilterAction());
 		add(btnEdit);
 		btnUnfoldAncestors = add(new UnfoldAncestorsAction());
-		btnUnfoldAncestors.setToolTipText(Freeplane
+		btnUnfoldAncestors.setToolTipText(Controller
 		    .getText("filter_unfold_ancestors"));
 		add(btnUnfoldAncestors);
-		showAncestors = new JCheckBox(Freeplane
+		showAncestors = new JCheckBox(Controller
 		    .getText("filter_show_ancestors"), true);
 		add(showAncestors);
 		showAncestors.getModel().addActionListener(filterChangeListener);
-		showDescendants = new JCheckBox(Freeplane
+		showDescendants = new JCheckBox(Controller
 		    .getText("filter_show_descendants"), false);
 		add(showDescendants);
 		showDescendants.getModel().addActionListener(filterChangeListener);

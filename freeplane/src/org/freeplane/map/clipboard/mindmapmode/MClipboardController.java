@@ -22,7 +22,7 @@ package org.freeplane.map.clipboard.mindmapmode;
 import java.awt.datatransfer.Transferable;
 import java.util.List;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.map.clipboard.ClipboardController;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.mindmapmode.MModeController;
@@ -47,19 +47,19 @@ public class MClipboardController extends ClipboardController {
 	}
 
 	/**
-	 * @param modeController
+	 * @param modeController 
 	 */
 	private void createActions(final MModeController modeController) {
 		if (!actionsCreated) {
 			actionsCreated = true;
-			Freeplane.getController().addAction("exportToHTML",
-			    new ExportToHTMLAction(modeController));
-			Freeplane.getController().addAction("exportBranchToHTML",
-			    new ExportBranchToHTMLAction(modeController));
-			cut = new CutAction(modeController);
-			Freeplane.getController().addAction("cut", cut);
-			paste = new PasteAction(modeController);
-			Freeplane.getController().addAction("paste", paste);
+			Controller.getController().addAction("exportToHTML",
+			    new ExportToHTMLAction());
+			Controller.getController().addAction("exportBranchToHTML",
+			    new ExportBranchToHTMLAction());
+			cut = new CutAction();
+			Controller.getController().addAction("cut", cut);
+			paste = new PasteAction();
+			Controller.getController().addAction("paste", paste);
 		}
 	}
 
@@ -68,7 +68,7 @@ public class MClipboardController extends ClipboardController {
 	}
 
 	public void paste(final NodeModel node, final NodeModel parent) {
-		((PasteAction) Freeplane.getController().getAction("paste")).paste(
+		((PasteAction) Controller.getController().getAction("paste")).paste(
 		    node, parent);
 	}
 
@@ -89,11 +89,11 @@ public class MClipboardController extends ClipboardController {
 		    .getModeController();
 		if (!asSibling
 		        && modeController.getMapController().isFolded(target)
-		        && Freeplane.getController().getResourceController()
-		            .getBoolProperty(RESOURCE_UNFOLD_ON_PASTE)) {
+		        && Controller.getResourceController().getBoolProperty(
+		            RESOURCE_UNFOLD_ON_PASTE)) {
 			modeController.getMapController().setFolded(target, false);
 		}
-		((PasteAction) Freeplane.getController().getAction("paste")).paste(t,
+		((PasteAction) Controller.getController().getAction("paste")).paste(t,
 		    target, asSibling, isLeft);
 	}
 

@@ -29,7 +29,7 @@ class NodeShapeAction extends MultipleNodeAction {
 	final private String actionShape;
 
 	public NodeShapeAction(final MModeController controller, final String shape) {
-		super(controller, shape);
+		super(shape);
 		actionShape = shape;
 	}
 

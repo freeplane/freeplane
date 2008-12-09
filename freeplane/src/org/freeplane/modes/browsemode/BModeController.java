@@ -24,7 +24,7 @@ import java.util.ListIterator;
 
 import javax.swing.ImageIcon;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.map.note.NodeNoteBase;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.view.MainView;
@@ -86,8 +86,8 @@ public class BModeController extends ModeController {
 		final String noteText = node.getNoteText();
 		if (noteText != null && !noteText.equals("")) {
 			if (noteIcon == null) {
-				noteIcon = new ImageIcon(Freeplane.getController()
-				    .getResourceController().getResource("images/knotes.png"));
+				noteIcon = new ImageIcon(Controller.getResourceController()
+				    .getResource("images/knotes.png"));
 			}
 			node.setStateIcon(NodeNoteBase.NODE_NOTE_ICON, noteIcon);
 		}

@@ -23,24 +23,24 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
+import org.freeplane.controller.FreeMindAction;
 import org.freeplane.map.tree.mindmapmode.MindMapMapModel;
-import org.freeplane.modes.ModeControllerAction;
 import org.freeplane.ui.AlwaysEnabledAction;
 import org.freeplane.undo.IUndoHandler;
 
 @AlwaysEnabledAction
-class RedoAction extends ModeControllerAction {
+class RedoAction extends FreeMindAction {
 	private Action undo;
 
-	public RedoAction(final MModeController modeController) {
-		super(modeController, "redo", "images/redo.png");
+	public RedoAction() {
+		super("redo", "images/redo.png");
 		setEnabled(false);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final MindMapMapModel map = (MindMapMapModel) Freeplane.getController()
-		    .getMap();
+		final MindMapMapModel map = (MindMapMapModel) Controller
+		    .getController().getMap();
 		final IUndoHandler undoHandler = map.getUndoHandler();
 		undoHandler.getRedoAction().actionPerformed(e);
 		undo.setEnabled(undoHandler.canUndo());
@@ -48,8 +48,8 @@ class RedoAction extends ModeControllerAction {
 	}
 
 	public void reset() {
-		final MindMapMapModel map = (MindMapMapModel) Freeplane.getController()
-		    .getMap();
+		final MindMapMapModel map = (MindMapMapModel) Controller
+		    .getController().getMap();
 		final IUndoHandler undoHandler = map.getUndoHandler();
 		undoHandler.resetRedo();
 		setEnabled(false);

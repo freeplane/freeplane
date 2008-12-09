@@ -22,19 +22,18 @@ package org.freeplane.map.tree.mindmapmode;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
+import org.freeplane.controller.FreeMindAction;
 import org.freeplane.map.text.mindmapmode.MTextController;
 import org.freeplane.map.tree.MapController;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.view.NodeView;
 import org.freeplane.modes.ModeController;
-import org.freeplane.modes.ModeControllerAction;
-import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.undo.IUndoableActor;
 
-class NewChildAction extends ModeControllerAction {
-	public NewChildAction(final MModeController modeController) {
-		super(modeController, "new_child", "images/idea.png");
+class NewChildAction extends FreeMindAction {
+	public NewChildAction() {
+		super("new_child", "images/idea.png");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -79,9 +78,10 @@ class NewChildAction extends ModeControllerAction {
 				if (parentFolded) {
 					mapController.setFolded(targetNode, false);
 				}
-				final int position = Freeplane.getController()
-				    .getResourceController().getProperty("placenewbranches")
-				    .equals("last") ? targetNode.getChildCount() : 0;
+				final int position = Controller.getResourceController()
+				    .getProperty("placenewbranches").equals("last") ? targetNode
+				    .getChildCount()
+				        : 0;
 				newNode = addNewNode(targetNode, position, targetNode
 				    .isNewChildLeft());
 				final NodeView nodeView = modeController.getNodeView(newNode);

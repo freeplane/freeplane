@@ -25,7 +25,7 @@ import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.main.Tools;
 import org.freeplane.map.icon.IIconInformation;
 import org.freeplane.map.icon.MindIcon;
@@ -37,7 +37,7 @@ class IconAction extends MultipleNodeAction implements IIconInformation {
 	final private MindIcon icon;
 
 	public IconAction(final MModeController controller, final MindIcon _icon) {
-		super(controller, "icon_" + _icon.getName(), _icon.getIcon());
+		super("icon_" + _icon.getName(), _icon.getIcon());
 		putValue(Action.SHORT_DESCRIPTION, _icon.getDescription());
 		icon = _icon;
 	}
@@ -71,9 +71,8 @@ class IconAction extends MultipleNodeAction implements IIconInformation {
 
 	public KeyStroke getKeyStroke() {
 		final String keystrokeResourceName = icon.getKeystrokeResourceName();
-		final String keyStrokeDescription = Freeplane.getController()
-		    .getResourceController().getAdjustableProperty(
-		        keystrokeResourceName);
+		final String keyStrokeDescription = Controller.getResourceController()
+		    .getAdjustableProperty(keystrokeResourceName);
 		return Tools.getKeyStroke(keyStrokeDescription);
 	}
 

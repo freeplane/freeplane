@@ -23,15 +23,14 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 
 import deprecated.freemind.preferences.IFreemindPropertyListener;
 
 class OptionSelectionMechanismAction extends AbstractAction implements
         IFreemindPropertyListener {
 	OptionSelectionMechanismAction() {
-		Freeplane.getController().getResourceController()
-		    .addPropertyChangeListener(this);
+		Controller.getResourceController().addPropertyChangeListener(this);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -42,14 +41,14 @@ class OptionSelectionMechanismAction extends AbstractAction implements
 	/**
 	 */
 	private void changeSelection(final String command) {
-		Freeplane.getController().getResourceController().setProperty(
-		    "selection_method", command);
-		Freeplane.getController().getModeController()
+		Controller.getResourceController().setProperty("selection_method",
+		    command);
+		Controller.getController().getModeController()
 		    .getUserInputListenerFactory().getNodeMouseMotionListener()
 		    .updateSelectionMethod();
-		final String statusBarString = Freeplane.getText(command);
+		final String statusBarString = Controller.getText(command);
 		if (statusBarString != null) {
-			Freeplane.getController().getViewController().out(statusBarString);
+			Controller.getController().getViewController().out(statusBarString);
 		}
 	}
 

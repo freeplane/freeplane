@@ -36,7 +36,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.Freeplane;
 
 import deprecated.freemind.preferences.IFreemindPropertyListener;
 
@@ -214,7 +213,7 @@ public class ApplicationResourceController extends ResourceController {
 		}
 		catch (final Exception ex) {
 		}
-		Freeplane.getController().getFilterController().saveConditions();
+		Controller.getController().getFilterController().saveConditions();
 	}
 
 	/**

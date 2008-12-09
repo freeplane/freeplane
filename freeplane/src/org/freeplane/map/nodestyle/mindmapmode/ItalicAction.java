@@ -23,7 +23,6 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.MultipleNodeAction;
-import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.ui.SelectableAction;
 
 @SelectableAction
@@ -32,8 +31,8 @@ class ItalicAction extends MultipleNodeAction {
 
 	/**
 	 */
-	public ItalicAction(final MModeController modeController) {
-		super(modeController, "italic", "images/Italic16.gif");
+	public ItalicAction() {
+		super("italic", "images/Italic16.gif");
 	}
 
 	@Override

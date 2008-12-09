@@ -26,38 +26,37 @@ import java.net.MalformedURLException;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
+import org.freeplane.controller.FreeMindAction;
 import org.freeplane.main.Tools;
 import org.freeplane.map.link.mindmapmode.MLinkController;
 import org.freeplane.map.text.mindmapmode.MTextController;
 import org.freeplane.map.tree.MapModel;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.mindmapmode.MMapController;
-import org.freeplane.modes.ModeControllerAction;
-import org.freeplane.modes.mindmapmode.MModeController;
 
 /** */
-class ExportBranchAction extends ModeControllerAction {
-	public ExportBranchAction(final MModeController pMindMapController) {
-		super(pMindMapController, "export_branch_new");
+class ExportBranchAction extends FreeMindAction {
+	public ExportBranchAction() {
+		super("export_branch_new");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final NodeModel node = getMModeController().getSelectedNode();
-		if (Freeplane.getController().getMap() == null || node == null
+		if (Controller.getController().getMap() == null || node == null
 		        || node.isRoot()) {
-			Freeplane.getController().getViewController().err(
+			Controller.getController().getViewController().err(
 			    "Could not export branch.");
 			return;
 		}
-		if (Freeplane.getController().getMap().getFile() == null) {
-			Freeplane.getController().getViewController().out(
+		if (Controller.getController().getMap().getFile() == null) {
+			Controller.getController().getViewController().out(
 			    "You must save the current map first!");
 			getMModeController().save();
 		}
 		JFileChooser chooser;
-		if (Freeplane.getController().getMap().getFile().getParentFile() != null) {
-			chooser = new JFileChooser(Freeplane.getController().getMap()
+		if (Controller.getController().getMap().getFile().getParentFile() != null) {
+			chooser = new JFileChooser(Controller.getController().getMap()
 			    .getFile().getParentFile());
 		}
 		else {
@@ -106,7 +105,7 @@ class ExportBranchAction extends ModeControllerAction {
 			final NodeModel parent = node.getParentNode();
 			try {
 				final String linkToNewMapString = Tools.toRelativeURL(Tools
-				    .fileToUrl(chosenFile), Freeplane.getController().getMap()
+				    .fileToUrl(chosenFile), Controller.getController().getMap()
 				    .getURL());
 				((MLinkController) getMModeController().getLinkController())
 				    .setLink(node, linkToNewMapString);
@@ -129,7 +128,7 @@ class ExportBranchAction extends ModeControllerAction {
 			((MTextController) getMModeController().getTextController())
 			    .setNodeText(newNode, node.getText());
 			try {
-				final String linkString = Tools.toRelativeURL(Freeplane
+				final String linkString = Tools.toRelativeURL(Controller
 				    .getController().getMap().getURL(), Tools
 				    .fileToUrl(chosenFile));
 				((MLinkController) getMModeController().getLinkController())

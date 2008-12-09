@@ -24,7 +24,7 @@ import java.net.URL;
 
 import javax.swing.AbstractAction;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.ui.AlwaysEnabledAction;
 import org.freeplane.ui.FreemindMenuBar;
@@ -32,21 +32,22 @@ import org.freeplane.ui.FreemindMenuBar;
 @AlwaysEnabledAction
 class KeyDocumentationAction extends AbstractAction {
 	KeyDocumentationAction() {
-		FreemindMenuBar.setLabelAndMnemonic(this, Freeplane.getText("KeyDoc"));
+		FreemindMenuBar.setLabelAndMnemonic(this, Controller.getText("KeyDoc"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		String urlText = Freeplane.getText("pdfKeyDocLocation");
+		String urlText = Controller.getText("pdfKeyDocLocation");
 		urlText = ResourceController.removeTranslateComment(urlText);
 		try {
 			if (urlText != null && urlText.startsWith(".")) {
-				urlText = Freeplane.getController().getHelpController()
+				urlText = Controller.getController().getHelpController()
 				    .convertLocalLink(urlText);
 			}
 			if (urlText != null && urlText != "") {
 				URL url = null;
 				url = new URL(urlText);
-				Freeplane.getController().getViewController().openDocument(url);
+				Controller.getController().getViewController()
+				    .openDocument(url);
 			}
 		}
 		catch (final Exception e2) {

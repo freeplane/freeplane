@@ -28,7 +28,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.main.Tools;
 
 import freemind.controller.actions.generated.instance.Plugin;
@@ -87,9 +87,8 @@ public class HookDescriptorBase {
 				}
 				urls[j++] = Tools.fileToUrl(file);
 			}
-			final ClassLoader loader = new URLClassLoader(urls, Freeplane
-			    .getController().getResourceController()
-			    .getFreeMindClassLoader());
+			final ClassLoader loader = new URLClassLoader(urls, Controller
+			    .getResourceController().getFreeMindClassLoader());
 			HookDescriptorBase.classLoaderCache.put(key, loader);
 			return loader;
 		}
@@ -104,8 +103,8 @@ public class HookDescriptorBase {
 			return string;
 		}
 		if (string.startsWith("%")) {
-			return Freeplane.getController().getResourceController()
-			    .getProperty(string.substring(1));
+			return Controller.getResourceController().getProperty(
+			    string.substring(1));
 		}
 		return string;
 	}
@@ -117,7 +116,7 @@ public class HookDescriptorBase {
 			return string;
 		}
 		if (string.startsWith("%")) {
-			return Freeplane.getText(string.substring(1));
+			return Controller.getText(string.substring(1));
 		}
 		return string;
 	}
@@ -149,8 +148,7 @@ public class HookDescriptorBase {
 	 * @return the relative/absolute(?) position of the plugin xml file.
 	 */
 	private String getPluginDirectory() {
-		return Freeplane.getController().getResourceController()
-		    .getFreemindBaseDir()
-		        + "/" + new File(mXmlPluginFile).getParent();
+		return Controller.getResourceController().getFreemindBaseDir() + "/"
+		        + new File(mXmlPluginFile).getParent();
 	}
 }

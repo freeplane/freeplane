@@ -23,7 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.main.Tools;
 import org.freeplane.map.edge.EdgeModel;
 import org.freeplane.map.edge.mindmapmode.MEdgeController;
@@ -71,7 +71,7 @@ class ApplyPatternAction extends NodeGeneralAction implements
 
 	public ApplyPatternAction(final MModeController controller,
 	                          final Pattern pattern) {
-		super(controller, null /* no text */, null /* = no icon */);
+		super(null /* no text */, null /* = no icon */);
 		setName(pattern.getName());
 		mpattern = pattern;
 		setSingleNodeOperation(this);
@@ -137,8 +137,8 @@ class ApplyPatternAction extends NodeGeneralAction implements
 		if (pattern.getPatternNodeFontName() != null) {
 			String nodeFontFamily = pattern.getPatternNodeFontName().getValue();
 			if (nodeFontFamily == null) {
-				nodeFontFamily = Freeplane.getController()
-				    .getResourceController().getDefaultFontFamilyName();
+				nodeFontFamily = Controller.getResourceController()
+				    .getDefaultFontFamilyName();
 			}
 			((MNodeStyleController) getMModeController()
 			    .getNodeStyleController()).setFontFamily(node, nodeFontFamily);
@@ -147,7 +147,7 @@ class ApplyPatternAction extends NodeGeneralAction implements
 			String nodeFontSize = pattern.getPatternNodeFontSize().getValue();
 			if (nodeFontSize == null) {
 				nodeFontSize = ""
-				        + Freeplane.getController().getResourceController()
+				        + Controller.getResourceController()
 				            .getDefaultFontSize();
 			}
 			((MNodeStyleController) getMModeController()

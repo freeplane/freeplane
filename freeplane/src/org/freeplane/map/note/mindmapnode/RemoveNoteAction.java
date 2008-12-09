@@ -26,17 +26,16 @@ import javax.swing.JOptionPane;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
+import org.freeplane.controller.FreeMindAction;
 import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.ModeController;
-import org.freeplane.modes.ModeControllerAction;
 import org.freeplane.modes.mindmapmode.MModeController;
 
 import deprecated.freemind.common.OptionalDontShowMeAgainDialog;
 
-class RemoveNoteAction extends ModeControllerAction implements
-        PopupMenuListener {
+class RemoveNoteAction extends FreeMindAction implements PopupMenuListener {
 	/**
 	 *
 	 */
@@ -44,12 +43,12 @@ class RemoveNoteAction extends ModeControllerAction implements
 
 	public RemoveNoteAction(final MNoteController noteController,
 	                        final ModeController modeController) {
-		super(modeController, "accessories/plugins/RemoveNote.properties_name");
+		super("accessories/plugins/RemoveNote.properties_name");
 		this.noteController = noteController;
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final int showResult = new OptionalDontShowMeAgainDialog(Freeplane
+		final int showResult = new OptionalDontShowMeAgainDialog(Controller
 		    .getController().getViewController().getJFrame(),
 		    ((MModeController) getModeController()).getSelectedView(),
 		    "really_remove_notes", "confirmation",
@@ -72,7 +71,11 @@ class RemoveNoteAction extends ModeControllerAction implements
 	@Override
 	public boolean isEnabled() {
 		boolean foundNote = false;
-		for (final Iterator iterator = getModeController().getSelectedNodes()
+		final ModeController modeController = getModeController();
+		if (modeController == null) {
+			return false;
+		}
+		for (final Iterator iterator = modeController.getSelectedNodes()
 		    .iterator(); iterator.hasNext();) {
 			final NodeModel node = (NodeModel) iterator.next();
 			if (node.getNoteText() != null) {

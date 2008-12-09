@@ -26,7 +26,7 @@ import java.util.Iterator;
 import org.freeplane.addins.NodeHookDescriptor;
 import org.freeplane.addins.PersistentNodeHook;
 import org.freeplane.controller.ActionDescriptor;
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.extension.IExtension;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.mindmapmode.MMapController;
@@ -91,7 +91,7 @@ public class CreationModificationPlugin extends PersistentNodeHook implements
 		        node.getHistoryInformation().getLastModifiedAt() };
 		if (tooltipFormat == null) {
 			// TODO
-			tooltipFormat = Freeplane
+			tooltipFormat = Controller
 			    .getText("CreationModificationPlugin.tooltip_format");
 		}
 		final MessageFormat formatter = new MessageFormat(tooltipFormat);

@@ -23,29 +23,29 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
+import org.freeplane.controller.FreeMindAction;
 import org.freeplane.controller.views.IMapViewChangeListener;
 import org.freeplane.map.tree.MapModel;
 import org.freeplane.map.tree.mindmapmode.MindMapMapModel;
 import org.freeplane.map.tree.view.MapView;
-import org.freeplane.modes.ModeControllerAction;
 import org.freeplane.ui.AlwaysEnabledAction;
 import org.freeplane.undo.IUndoHandler;
 
 @AlwaysEnabledAction
-class UndoAction extends ModeControllerAction implements IMapViewChangeListener {
+class UndoAction extends FreeMindAction implements IMapViewChangeListener {
 	private Action redo;
 
-	public UndoAction(final MModeController modeController) {
-		super(modeController, "undo", "images/undo.png");
-		Freeplane.getController().getMapViewManager().addMapViewChangeListener(
-		    this);
+	public UndoAction() {
+		super("undo", "images/undo.png");
+		Controller.getController().getMapViewManager()
+		    .addMapViewChangeListener(this);
 		setEnabled(false);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final MindMapMapModel map = (MindMapMapModel) Freeplane.getController()
-		    .getMap();
+		final MindMapMapModel map = (MindMapMapModel) Controller
+		    .getController().getMap();
 		final IUndoHandler undoHandler = map.getUndoHandler();
 		undoHandler.getUndoAction().actionPerformed(e);
 		setEnabled(undoHandler.canUndo());
@@ -71,11 +71,6 @@ class UndoAction extends ModeControllerAction implements IMapViewChangeListener 
 
 	public void beforeMapViewChange(final MapView oldMapView,
 	                                final MapView newMapView) {
-	}
-
-	@Override
-	public boolean isEnabled() {
-		return super.isEnabled();
 	}
 
 	public boolean isMapViewChangeAllowed(final MapView oldMapView,

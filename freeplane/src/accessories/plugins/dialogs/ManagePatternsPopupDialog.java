@@ -54,7 +54,7 @@ import javax.swing.WindowConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.main.Tools;
 import org.freeplane.map.pattern.mindmapnode.StylePatternFactory;
 import org.freeplane.map.pattern.mindmapnode.StylePatternPanel;
@@ -193,7 +193,7 @@ public class ManagePatternsPopupDialog extends JDialog implements
 	 * This is the default constructor
 	 */
 	public ManagePatternsPopupDialog(final MModeController controller) {
-		super(Freeplane.getController().getViewController().getJFrame());
+		super(Controller.getController().getViewController().getJFrame());
 		mController = controller;
 		List patternList = new Vector();
 		try {

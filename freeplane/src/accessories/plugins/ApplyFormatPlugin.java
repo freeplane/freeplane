@@ -20,7 +20,7 @@ package accessories.plugins;
 import java.util.Iterator;
 import java.util.List;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.map.pattern.mindmapnode.StylePatternFactory;
 import org.freeplane.map.tree.NodeModel;
 
@@ -45,7 +45,7 @@ public class ApplyFormatPlugin extends MindMapNodeHookAdapter {
 		final Pattern nodePattern = StylePatternFactory
 		    .createPatternFromSelected(focussed, selected);
 		final ChooseFormatPopupDialog formatDialog = new ChooseFormatPopupDialog(
-		    Freeplane.getController().getViewController().getJFrame(),
+		    Controller.getController().getViewController().getJFrame(),
 		    getMindMapController(),
 		    "accessories/plugins/ApplyFormatPlugin.dialog.title", nodePattern);
 		formatDialog.setModal(true);

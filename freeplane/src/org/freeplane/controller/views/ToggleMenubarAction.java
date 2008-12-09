@@ -23,7 +23,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.ui.FreemindMenuBar;
 import org.freeplane.ui.ISelectablePopupAction;
 
@@ -36,7 +36,7 @@ class ToggleMenubarAction extends AbstractAction implements
 
 	ToggleMenubarAction(final ViewController viewController) {
 		controller = viewController;
-		FreemindMenuBar.setLabelAndMnemonic(this, Freeplane
+		FreemindMenuBar.setLabelAndMnemonic(this, Controller
 		    .getText("toggle_menubar"));
 	}
 

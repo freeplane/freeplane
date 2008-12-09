@@ -34,7 +34,7 @@ import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.main.Tools;
 import org.freeplane.ui.dialogs.EnterPasswordDialog;
@@ -206,8 +206,8 @@ public class SignedScriptHandler {
 	public String signScript(final String pScript,
 	                         final ITextTranslator pTranslator) {
 		final ScriptContents content = new ScriptContents(pScript);
-		final EnterPasswordDialog pwdDialog = new EnterPasswordDialog(Freeplane
-		    .getController().getViewController().getJFrame(), false);
+		final EnterPasswordDialog pwdDialog = new EnterPasswordDialog(
+		    Controller.getController().getViewController().getJFrame(), false);
 		pwdDialog.setModal(true);
 		pwdDialog.setVisible(true);
 		if (pwdDialog.getResult() == EnterPasswordDialog.CANCEL) {
@@ -219,8 +219,7 @@ public class SignedScriptHandler {
 		try {
 			final Signature instance = Signature.getInstance("SHA1withDSA");
 			String keyName = SignedScriptHandler.FREEMIND_SCRIPT_KEY_NAME;
-			final String propertyKeyName = Freeplane
-			    .getController()
+			final String propertyKeyName = Controller
 			    .getResourceController()
 			    .getProperty(
 			        ResourceController.RESOURCES_SCRIPT_USER_KEY_NAME_FOR_SIGNING);
@@ -240,7 +239,7 @@ public class SignedScriptHandler {
 		}
 		catch (final Exception e) {
 			Tools.logException(e);
-			Freeplane.getController().errorMessage(e.getLocalizedMessage());
+			Controller.getController().errorMessage(e.getLocalizedMessage());
 		}
 		return content.mScript;
 	}

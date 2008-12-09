@@ -30,8 +30,8 @@ import org.freeplane.modes.mindmapmode.MModeController;
 class EdgeColorAction extends MultipleNodeAction {
 	private Color actionColor;
 
-	public EdgeColorAction(final MModeController controller) {
-		super(controller, "edge_color");
+	public EdgeColorAction() {
+		super("edge_color");
 	}
 
 	@Override

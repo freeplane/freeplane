@@ -23,17 +23,16 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
 
+import org.freeplane.controller.FreeMindAction;
 import org.freeplane.map.tree.NodeModel;
-import org.freeplane.modes.ModeControllerAction;
 
 /** Follow a graphical link (AKA connector) action. */
-class GotoLinkNodeAction extends ModeControllerAction {
+class GotoLinkNodeAction extends FreeMindAction {
 	NodeModel source;
 
 	public GotoLinkNodeAction(final LinkController linkController,
 	                          final NodeModel source) {
-		super(linkController.getModeController(), "goto_link_node_action",
-		    "images/Link.png");
+		super("goto_link_node_action", "images/Link.png");
 		this.source = source;
 		if (source != null) {
 			final String adaptedText = source.getShortText(linkController

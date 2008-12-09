@@ -25,7 +25,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.TimerTask;
 import java.util.Vector;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.map.tree.mindmapmode.MindMapMapModel;
 
 public class DoAutomaticSave extends TimerTask {
@@ -98,12 +98,12 @@ public class DoAutomaticSave extends TimerTask {
 						((FileManager) model.getModeController()
 						    .getUrlManager()).saveInternal(model, tempFile,
 						    true /*
-																												 * =internal call
-																												 */);
-						Freeplane.getController().getViewController().out(
-						    Freeplane.getController().getResourceController()
-						        .format("automatically_save_message",
-						            new Object[] { tempFile.toString() }));
+																																																 * =internal call
+																																																 */);
+						Controller.getController().getViewController().out(
+						    Controller.getResourceController().format(
+						        "automatically_save_message",
+						        new Object[] { tempFile.toString() }));
 					}
 					catch (final Exception e) {
 						System.err

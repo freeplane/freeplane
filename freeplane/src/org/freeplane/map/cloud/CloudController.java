@@ -23,7 +23,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Stroke;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.io.ReadManager;
 import org.freeplane.io.WriteManager;
@@ -61,8 +61,8 @@ public class CloudController {
 		colorHandlers = new PropertyChain<Color, NodeModel>();
 		if (listener == null) {
 			listener = new CloudAdapterListener();
-			Freeplane.getController().getResourceController()
-			    .addPropertyChangeListener(listener);
+			Controller.getResourceController().addPropertyChangeListener(
+			    listener);
 		}
 		updateStandards(modeController);
 		addColorGetter(PropertyChain.NODE,
@@ -109,9 +109,8 @@ public class CloudController {
 
 	private void updateStandards(final ModeController controller) {
 		if (standardColor == null) {
-			final String stdColor = Freeplane.getController()
-			    .getResourceController().getProperty(
-			        ResourceController.RESOURCES_CLOUD_COLOR);
+			final String stdColor = Controller.getResourceController()
+			    .getProperty(ResourceController.RESOURCES_CLOUD_COLOR);
 			standardColor = Tools.xmlToColor(stdColor);
 		}
 	}

@@ -55,7 +55,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JViewport;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.Freeplane;
 import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.main.Tools;
 import org.freeplane.map.link.ArrowLinkModel;
@@ -199,26 +198,24 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		rename();
 		if (MapView.standardNodeTextColor == null) {
 			try {
-				final String stdcolor = Freeplane.getController()
-				    .getResourceController().getProperty(
-				        ResourceController.RESOURCES_BACKGROUND_COLOR);
+				final String stdcolor = Controller.getResourceController()
+				    .getProperty(ResourceController.RESOURCES_BACKGROUND_COLOR);
 				MapView.standardMapBackgroundColor = Tools.xmlToColor(stdcolor);
 			}
 			catch (final Exception ex) {
 				MapView.standardMapBackgroundColor = Color.WHITE;
 			}
 			try {
-				final String stdcolor = Freeplane.getController()
-				    .getResourceController().getProperty(
-				        ResourceController.RESOURCES_NODE_TEXT_COLOR);
+				final String stdcolor = Controller.getResourceController()
+				    .getProperty(ResourceController.RESOURCES_NODE_TEXT_COLOR);
 				MapView.standardNodeTextColor = Tools.xmlToColor(stdcolor);
 			}
 			catch (final Exception ex) {
 				MapView.standardSelectColor = Color.WHITE;
 			}
 			try {
-				final String stdcolor = Freeplane.getController()
-				    .getResourceController().getProperty(
+				final String stdcolor = Controller.getResourceController()
+				    .getProperty(
 				        ResourceController.RESOURCES_SELECTED_NODE_COLOR);
 				MapView.standardSelectColor = Tools.xmlToColor(stdcolor);
 			}
@@ -226,8 +223,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 				MapView.standardSelectColor = Color.BLUE.darker();
 			}
 			try {
-				final String stdtextcolor = Freeplane
-				    .getController()
+				final String stdtextcolor = Controller
 				    .getResourceController()
 				    .getProperty(
 				        ResourceController.RESOURCES_SELECTED_NODE_RECTANGLE_COLOR);
@@ -238,8 +234,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 				MapView.standardSelectRectangleColor = Color.WHITE;
 			}
 			try {
-				final String drawCircle = Freeplane
-				    .getController()
+				final String drawCircle = Controller
 				    .getResourceController()
 				    .getProperty(
 				        ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION);
@@ -250,9 +245,8 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 				MapView.standardDrawRectangleForSelection = false;
 			}
 			try {
-				final String printOnWhite = Freeplane.getController()
-				    .getResourceController().getProperty(
-				        "printonwhitebackground");
+				final String printOnWhite = Controller.getResourceController()
+				    .getProperty("printonwhitebackground");
 				MapView.printOnWhiteBackground = Tools
 				    .xmlToBoolean(printOnWhite);
 			}
@@ -277,8 +271,8 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		    Collections.EMPTY_SET);
 		setFocusTraversalKeys(KeyboardFocusManager.UP_CYCLE_TRAVERSAL_KEYS,
 		    Collections.EMPTY_SET);
-		disableMoveCursor = Freeplane.getController().getResourceController()
-		    .getBoolProperty("disable_cursor_move_paper");
+		disableMoveCursor = Controller.getResourceController().getBoolProperty(
+		    "disable_cursor_move_paper");
 	}
 
 	/*
@@ -345,32 +339,32 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 				if (propertyName
 				    .equals(ResourceController.RESOURCES_NODE_TEXT_COLOR)) {
 					MapView.standardNodeTextColor = Tools.xmlToColor(newValue);
-					Freeplane.getController().getMapView().getRoot()
+					Controller.getController().getMapView().getRoot()
 					    .updateAll();
 				}
 				else if (propertyName
 				    .equals(ResourceController.RESOURCES_BACKGROUND_COLOR)) {
 					MapView.standardMapBackgroundColor = Tools
 					    .xmlToColor(newValue);
-					Freeplane.getController().getMapView().setBackground(
+					Controller.getController().getMapView().setBackground(
 					    MapView.standardMapBackgroundColor);
 				}
 				else if (propertyName
 				    .equals(ResourceController.RESOURCES_SELECTED_NODE_COLOR)) {
 					MapView.standardSelectColor = Tools.xmlToColor(newValue);
-					Freeplane.getController().getMapView().repaintSelecteds();
+					Controller.getController().getMapView().repaintSelecteds();
 				}
 				else if (propertyName
 				    .equals(ResourceController.RESOURCES_SELECTED_NODE_RECTANGLE_COLOR)) {
 					MapView.standardSelectRectangleColor = Tools
 					    .xmlToColor(newValue);
-					Freeplane.getController().getMapView().repaintSelecteds();
+					Controller.getController().getMapView().repaintSelecteds();
 				}
 				else if (propertyName
 				    .equals(ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION)) {
 					MapView.standardDrawRectangleForSelection = Tools
 					    .xmlToBoolean(newValue);
-					Freeplane.getController().getMapView().repaintSelecteds();
+					Controller.getController().getMapView().repaintSelecteds();
 				}
 				else if (propertyName.equals("printonwhitebackground")) {
 					MapView.printOnWhiteBackground = Tools
@@ -378,8 +372,8 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 				}
 			}
 		};
-		Freeplane.getController().getResourceController()
-		    .addPropertyChangeListener(MapView.propertyChangeListener);
+		Controller.getResourceController().addPropertyChangeListener(
+		    MapView.propertyChangeListener);
 	}
 
 	public void deselect(final NodeView newSelected) {
@@ -547,11 +541,11 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 	public int getMaxNodeWidth() {
 		if (maxNodeWidth == 0) {
 			try {
-				maxNodeWidth = Integer.parseInt(Freeplane.getController()
+				maxNodeWidth = Integer.parseInt(Controller
 				    .getResourceController().getProperty("max_node_width"));
 			}
 			catch (final NumberFormatException e) {
-				maxNodeWidth = Integer.parseInt(Freeplane.getController()
+				maxNodeWidth = Integer.parseInt(Controller
 				    .getResourceController().getProperty(
 				        "el__max_default_window_width"));
 			}
@@ -831,8 +825,9 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		    .getRenderingHint(RenderingHints.KEY_ANTIALIASING);
 		final Object textRenderingHint = g2
 		    .getRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING);
-		Freeplane.getController().getViewController().setEdgesRenderingHint(g2);
-		Freeplane.getController().getViewController().setTextRenderingHint(g2);
+		Controller.getController().getViewController()
+		    .setEdgesRenderingHint(g2);
+		Controller.getController().getViewController().setTextRenderingHint(g2);
 		final Object oldRenderingHintFM = g2
 		    .getRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS);
 		final Object newRenderingHintFM = getZoom() != 1F ? RenderingHints.VALUE_FRACTIONALMETRICS_ON
@@ -961,8 +956,8 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 				setBackground(Color.WHITE);
 			}
 			boundingRectangle = getInnerBounds();
-			fitToPage = Freeplane.getController().getResourceController()
-			    .getBoolProperty("fit_to_page");
+			fitToPage = Controller.getResourceController().getBoolProperty(
+			    "fit_to_page");
 			isPreparedForPrinting = true;
 		}
 	}
@@ -982,7 +977,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 	                 final int pageIndex) {
 		double userZoomFactor = 1;
 		try {
-			userZoomFactor = Double.parseDouble(Freeplane.getController()
+			userZoomFactor = Double.parseDouble(Controller
 			    .getResourceController().getProperty("user_zoom"));
 		}
 		catch (final Exception e) {

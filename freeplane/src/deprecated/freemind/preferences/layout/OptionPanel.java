@@ -45,7 +45,7 @@ import javax.swing.JSplitPane;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.controller.views.ViewController;
 import org.freeplane.main.FreemindStarter;
@@ -495,15 +495,11 @@ public class OptionPanel {
 		    ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION
 		            + ".tooltip",
 		    ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION));
-		controls
-		    .add(new ColorProperty(
-		        "standardselectednoderectanglecolor.tooltip",
-		        ResourceController.RESOURCES_SELECTED_NODE_RECTANGLE_COLOR,
-		        Freeplane
-		            .getController()
-		            .getResourceController()
-		            .getDefaultProperty(
-		                ResourceController.RESOURCES_SELECTED_NODE_RECTANGLE_COLOR)));
+		controls.add(new ColorProperty(
+		    "standardselectednoderectanglecolor.tooltip",
+		    ResourceController.RESOURCES_SELECTED_NODE_RECTANGLE_COLOR,
+		    Controller.getResourceController().getDefaultProperty(
+		        ResourceController.RESOURCES_SELECTED_NODE_RECTANGLE_COLOR)));
 		controls
 		    .add(new ColorProperty(
 		        "standardselectednodecolor.tooltip",
@@ -746,7 +742,7 @@ public class OptionPanel {
 		    "keystroke_assign_attributes"));
 		controls.add(new KeyProperty(topDialog, null,
 		    "keystroke_plugins/ScriptingEngine.keystroke.evaluate"));
-		final ModeController modeController = Freeplane.getController()
+		final ModeController modeController = Controller.getController()
 		    .getModeController();
 		if (modeController instanceof MModeController) {
 			final MModeController controller = (MModeController) modeController;
@@ -754,9 +750,9 @@ public class OptionPanel {
 			    .getIconController()).getIconActions();
 			final Vector actions = new Vector();
 			actions.addAll(iconActions);
-			actions.add(Freeplane.getController().getAction(
+			actions.add(Controller.getController().getAction(
 			    "removeLastIconAction"));
-			actions.add(Freeplane.getController().getAction(
+			actions.add(Controller.getController().getAction(
 			    "removeAllIconsAction"));
 			controls.add(new NextLineProperty());
 			controls.add(new SeparatorProperty("icons"));
@@ -871,8 +867,7 @@ public class OptionPanel {
 	 * @return
 	 */
 	private String getDefaultProperty(final String key) {
-		return Freeplane.getController().getResourceController()
-		    .getDefaultProperty(key);
+		return Controller.getResourceController().getDefaultProperty(key);
 	}
 
 	private Properties getOptionProperties() {
@@ -909,8 +904,8 @@ public class OptionPanel {
 			if (control instanceof PropertyBean) {
 				final PropertyBean bean = (PropertyBean) control;
 				final String label = bean.getLabel();
-				final String value = Freeplane.getController()
-				    .getResourceController().getAdjustableProperty(label);
+				final String value = Controller.getResourceController()
+				    .getAdjustableProperty(label);
 				bean.setValue(value);
 			}
 		}

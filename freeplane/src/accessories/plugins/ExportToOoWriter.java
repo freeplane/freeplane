@@ -36,7 +36,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.map.tree.MapModel;
 import org.freeplane.modes.mindmapmode.MModeController;
 
@@ -118,7 +118,7 @@ public class ExportToOoWriter extends ExportHook {
 		    new FileOutputStream(file));
 		final StringWriter writer = new StringWriter();
 		final MModeController controller = (MModeController) getController();
-		final MapModel map = Freeplane.getController().getMap();
+		final MapModel map = Controller.getController().getMap();
 		controller.getFilteredXml(map, writer);
 		final Result result = new StreamResult(zipout);
 		ZipEntry entry = new ZipEntry("content.xml");
@@ -151,14 +151,14 @@ public class ExportToOoWriter extends ExportHook {
 		if (chosenFile == null) {
 			return;
 		}
-		Freeplane.getController().getViewController().setWaitingCursor(true);
+		Controller.getController().getViewController().setWaitingCursor(true);
 		try {
 			exportToOoWriter(chosenFile);
 		}
 		catch (final IOException e) {
 			org.freeplane.main.Tools.logException(e);
 		}
-		Freeplane.getController().getViewController().setWaitingCursor(false);
+		Controller.getController().getViewController().setWaitingCursor(false);
 	}
 
 	public void transForm(final Source xmlSource, final InputStream xsltStream,
@@ -172,7 +172,7 @@ public class ExportToOoWriter extends ExportHook {
 			trans.setParameter("destination_dir", resultFile.getName()
 			        + "_files/");
 			trans.setParameter("area_code", areaCode);
-			trans.setParameter("folding_type", Freeplane.getController()
+			trans.setParameter("folding_type", Controller
 			    .getResourceController().getProperty("html_export_folding"));
 			trans.transform(xmlSource, result);
 		}

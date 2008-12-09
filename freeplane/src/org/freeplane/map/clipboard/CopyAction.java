@@ -22,14 +22,13 @@ package org.freeplane.map.clipboard;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 
+import org.freeplane.controller.FreeMindAction;
 import org.freeplane.map.tree.view.MapView;
-import org.freeplane.modes.ModeController;
-import org.freeplane.modes.ModeControllerAction;
 import org.freeplane.modes.mindmapmode.MModeController;
 
-class CopyAction extends ModeControllerAction {
-	public CopyAction(final ModeController controller) {
-		super(controller, "copy", "images/editcopy.png");
+class CopyAction extends FreeMindAction {
+	public CopyAction() {
+		super("copy", "images/editcopy.png");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

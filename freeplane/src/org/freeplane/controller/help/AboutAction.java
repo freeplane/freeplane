@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.ui.AlwaysEnabledAction;
 import org.freeplane.ui.FreemindMenuBar;
 
@@ -34,13 +34,14 @@ class AboutAction extends AbstractAction {
 	 *
 	 */
 	AboutAction() {
-		FreemindMenuBar.setLabelAndMnemonic(this, Freeplane.getText("about"));
+		FreemindMenuBar.setLabelAndMnemonic(this, Controller.getText("about"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		JOptionPane.showMessageDialog(Freeplane.getController()
-		    .getViewController().getViewport(), Freeplane.getText("about_text")
-		        + Freeplane.getController().getFreemindVersion(), Freeplane
+		JOptionPane.showMessageDialog(Controller.getController()
+		    .getViewController().getViewport(), Controller
+		    .getText("about_text")
+		        + Controller.getController().getFreemindVersion(), Controller
 		    .getText("about"), JOptionPane.INFORMATION_MESSAGE);
 	}
 }

@@ -46,7 +46,7 @@ import javax.swing.event.PopupMenuListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.controller.ActionDescriptor;
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 
 import freemind.controller.actions.generated.instance.MenuActionBase;
 import freemind.controller.actions.generated.instance.MenuCategoryBase;
@@ -126,7 +126,7 @@ public class MenuBuilder extends UIBuilder {
 	                      final ActionDescriptor actionAnnotation) {
 		String docu = actionAnnotation.tooltip();
 		if (!docu.equals("")) {
-			docu = Freeplane.getText(docu);
+			docu = Controller.getText(docu);
 			action.putValue(Action.SHORT_DESCRIPTION, docu);
 			action.putValue(Action.LONG_DESCRIPTION, docu);
 		}
@@ -164,9 +164,8 @@ public class MenuBuilder extends UIBuilder {
 			final JCheckBoxMenuItem item = new JAutoCheckBoxMenuItem((action));
 			addMenuItem(category, item, position);
 			if (keystroke != null) {
-				item.setAccelerator(KeyStroke.getKeyStroke(Freeplane
-				    .getController().getResourceController()
-				    .getAdjustableProperty(keystroke)));
+				item.setAccelerator(KeyStroke.getKeyStroke(Controller
+				    .getResourceController().getAdjustableProperty(keystroke)));
 			}
 			return;
 		}
@@ -215,8 +214,8 @@ public class MenuBuilder extends UIBuilder {
 			});
 		}
 		if (keystroke != null) {
-			final String keyProperty = Freeplane.getController()
-			    .getResourceController().getAdjustableProperty(keystroke);
+			final String keyProperty = Controller.getResourceController()
+			    .getAdjustableProperty(keystroke);
 			item.setAccelerator(KeyStroke.getKeyStroke(keyProperty));
 		}
 		return;
@@ -329,9 +328,8 @@ public class MenuBuilder extends UIBuilder {
 		final JRadioButtonMenuItem item = new JRadioButtonMenuItem(action);
 		addMenuItem(category, item, MenuBuilder.AS_CHILD);
 		if (keystroke != null) {
-			item.setAccelerator(KeyStroke.getKeyStroke(Freeplane
-			    .getController().getResourceController().getAdjustableProperty(
-			        keystroke)));
+			item.setAccelerator(KeyStroke.getKeyStroke(Controller
+			    .getResourceController().getAdjustableProperty(keystroke)));
 		}
 		item.setSelected(isSelected);
 		return item;
@@ -400,8 +398,8 @@ public class MenuBuilder extends UIBuilder {
 					if (cat instanceof MenuSubmenu) {
 						final MenuSubmenu submenu = (MenuSubmenu) cat;
 						final JMenu menuItem = new JMenu();
-						FreemindMenuBar.setLabelAndMnemonic(menuItem, Freeplane
-						    .getText(submenu.getNameRef()));
+						FreemindMenuBar.setLabelAndMnemonic(menuItem,
+						    Controller.getText(submenu.getNameRef()));
 						this.addMenuItem(categoryCopy, menuItem, newCategory,
 						    MenuBuilder.AS_CHILD);
 					}
@@ -423,7 +421,7 @@ public class MenuBuilder extends UIBuilder {
 				}
 				final String keystroke = action.getKeyRef();
 				try {
-					final Action theAction = Freeplane.getController()
+					final Action theAction = Controller.getController()
 					    .getAction(field);
 					final String theCategory = categoryCopy + "/" + name;
 					if (obj instanceof MenuRadioAction) {

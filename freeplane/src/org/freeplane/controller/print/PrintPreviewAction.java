@@ -23,14 +23,14 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JOptionPane;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.map.tree.view.MapView;
 import org.freeplane.ui.FreemindMenuBar;
 
 class PrintPreviewAction extends AbstractPrintAction {
 	PrintPreviewAction(final PrintController controller) {
 		super(controller);
-		FreemindMenuBar.setLabelAndMnemonic(this, Freeplane
+		FreemindMenuBar.setLabelAndMnemonic(this, Controller
 		    .getText("print_preview"));
 	}
 
@@ -38,8 +38,8 @@ class PrintPreviewAction extends AbstractPrintAction {
 		if (!getPrintController().acquirePrinterJobAndPageFormat()) {
 			return;
 		}
-		final MapView mapView = Freeplane.getController().getMapView();
-		final PreviewDialog previewDialog = new PreviewDialog(Freeplane
+		final MapView mapView = Controller.getController().getMapView();
+		final PreviewDialog previewDialog = new PreviewDialog(Controller
 		    .getText("print_preview_title"), mapView);
 		previewDialog.pack();
 		previewDialog.setLocationRelativeTo(JOptionPane

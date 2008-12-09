@@ -23,18 +23,16 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
 
-import org.freeplane.modes.ModeControllerAction;
-import org.freeplane.modes.mindmapmode.MModeController;
+import org.freeplane.controller.FreeMindAction;
 
 /**
  * @author foltin
  */
-public abstract class AbstractUndoableAction extends ModeControllerAction {
+public abstract class AbstractUndoableAction extends FreeMindAction {
 	private IActor actor;
 
-	protected AbstractUndoableAction(final MModeController controller,
-	                                 final String name, final String icon) {
-		super(controller, name, icon);
+	protected AbstractUndoableAction(final String name, final String icon) {
+		super(name, icon);
 	}
 
 	/*

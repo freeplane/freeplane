@@ -42,7 +42,6 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.Freeplane;
 import org.freeplane.controller.views.MapViewManager;
 import org.freeplane.io.ReadManager;
 import org.freeplane.io.WriteManager;
@@ -206,7 +205,7 @@ public class MapController {
 	 * Return false if user has canceled.
 	 */
 	public boolean close(final boolean force) {
-		final MapModel map = Freeplane.getController().getMap();
+		final MapModel map = Controller.getController().getMap();
 		map.destroy();
 		return true;
 	}
@@ -217,11 +216,10 @@ public class MapController {
 	private void createActions(final ModeController modeController) {
 		if (!actionsCreated) {
 			actionsCreated = true;
-			Freeplane.getController().addAction("newMap",
-			    new NewMapAction(modeController));
-			toggleFolded = new CommonToggleFoldedAction(modeController);
-			Freeplane.getController().addAction("toggleFolded", toggleFolded);
-			Freeplane.getController().addAction("toggleChildrenFolded",
+			Controller.getController().addAction("newMap", new NewMapAction());
+			toggleFolded = new CommonToggleFoldedAction();
+			Controller.getController().addAction("toggleFolded", toggleFolded);
+			Controller.getController().addAction("toggleChildrenFolded",
 			    new CommonToggleChildrenFoldedAction(this));
 		}
 	}
@@ -295,7 +293,7 @@ public class MapController {
 			e.consume();
 			String link = newlySelectedNodeView.getModel().getLink();
 			link = (link != null ? link : " ");
-			Freeplane.getController().getViewController().out(link);
+			Controller.getController().getViewController().out(link);
 		}
 		return retValue;
 	}
@@ -409,7 +407,7 @@ public class MapController {
 	 * Helper methods
 	 */
 	public NodeModel getNodeFromID(final String nodeID) {
-		final MapModel map = Freeplane.getController().getMap();
+		final MapModel map = Controller.getController().getMap();
 		final NodeModel node = map.getNodeForID(nodeID);
 		if (node == null) {
 			throw new IllegalArgumentException("Node belonging to the node id "
@@ -427,7 +425,7 @@ public class MapController {
 	}
 
 	public NodeModel getRootNode() {
-		final MapModel map = Freeplane.getController().getMap();
+		final MapModel map = Controller.getController().getMap();
 		return (NodeModel) map.getRoot();
 	}
 
@@ -492,7 +490,7 @@ public class MapController {
 				}
 				catch (final Exception e) {
 					org.freeplane.main.Tools.logException(e);
-					Freeplane.getController().getViewController().out(
+					Controller.getController().getViewController().out(
 					    Tools.expandPlaceholders(getModeController().getText(
 					        "link_not_found"), target));
 					return;
@@ -503,7 +501,7 @@ public class MapController {
 				 * Remark: getMap().getURL() returns URLs like file:/C:/... It
 				 * seems, that it does not cause any problems.
 				 */
-				final MapModel map = Freeplane.getController().getMap();
+				final MapModel map = Controller.getController().getMap();
 				absolute = new URL(map.getURL(), relative);
 			}
 			final URL originalURL = absolute;
@@ -515,8 +513,8 @@ public class MapController {
 			if ((extension != null)
 			        && extension
 			            .equals(org.freeplane.io.url.mindmapmode.FileManager.FREEMIND_FILE_EXTENSION_WITHOUT_DOT)) {
-				final MapViewManager mapViewManager = Freeplane.getController()
-				    .getMapViewManager();
+				final MapViewManager mapViewManager = Controller
+				    .getController().getMapViewManager();
 				/*
 				 * this can lead to confusion if the user handles multiple maps
 				 * with the same name. Obviously, this is wrong. Get a better
@@ -525,7 +523,7 @@ public class MapController {
 				final String mapExtensionKey = mapViewManager
 				    .checkIfFileIsAlreadyOpened(absolute);
 				if (mapExtensionKey == null) {
-					Freeplane.getController().getViewController()
+					Controller.getController().getViewController()
 					    .setWaitingCursor(true);
 					newMap(absolute);
 				}
@@ -534,14 +532,14 @@ public class MapController {
 				}
 				if (ref != null) {
 					try {
-						final ModeController newModeController = Freeplane
+						final ModeController newModeController = Controller
 						    .getController().getModeController();
 						newModeController.centerNode(newModeController
 						    .getMapController().getNodeFromID(ref));
 					}
 					catch (final Exception e) {
 						org.freeplane.main.Tools.logException(e);
-						Freeplane.getController().getViewController().out(
+						Controller.getController().getViewController().out(
 						    Tools.expandPlaceholders(getModeController()
 						        .getText("link_not_found"), ref));
 						return;
@@ -549,13 +547,13 @@ public class MapController {
 				}
 			}
 			else {
-				Freeplane.getController().getViewController().openDocument(
+				Controller.getController().getViewController().openDocument(
 				    originalURL);
 			}
 		}
 		catch (final MalformedURLException ex) {
 			org.freeplane.main.Tools.logException(ex);
-			Freeplane.getController().errorMessage(
+			Controller.getController().errorMessage(
 			    getModeController().getText("url_error") + "\n" + ex);
 			return;
 		}
@@ -563,7 +561,7 @@ public class MapController {
 			org.freeplane.main.Tools.logException(e);
 		}
 		finally {
-			Freeplane.getController().getViewController().setWaitingCursor(
+			Controller.getController().getViewController().setWaitingCursor(
 			    false);
 		}
 	}
@@ -590,7 +588,7 @@ public class MapController {
 	}
 
 	protected void newMapView(final MapModel mapModel) {
-		Freeplane.getController().getMapViewManager().newMapView(mapModel,
+		Controller.getController().getMapViewManager().newMapView(mapModel,
 		    mapModel.getModeController());
 		mapModel.setSaved(false);
 	}
@@ -659,7 +657,7 @@ public class MapController {
 	}
 
 	public void refreshMap() {
-		final MapModel map = Freeplane.getController().getMap();
+		final MapModel map = Controller.getController().getMap();
 		final NodeModel root = map.getRootNode();
 		refreshMapFrom(root);
 	}

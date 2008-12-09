@@ -21,7 +21,7 @@ package org.freeplane.map.edge.mindmapmode;
 
 import java.awt.Color;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.map.edge.EdgeController;
 import org.freeplane.map.edge.EdgeModel;
 import org.freeplane.map.tree.NodeModel;
@@ -38,35 +38,35 @@ public class MEdgeController extends EdgeController {
 		super(modeController);
 		if (!actionsCreated) {
 			actionsCreated = true;
-			Freeplane.getController().addAction("edgeColor",
-			    new EdgeColorAction(modeController));
-			Freeplane.getController().addAction("EdgeWidth_WIDTH_PARENT",
+			Controller.getController().addAction("edgeColor",
+			    new EdgeColorAction());
+			Controller.getController().addAction("EdgeWidth_WIDTH_PARENT",
 			    new EdgeWidthAction(modeController, EdgeModel.WIDTH_PARENT));
-			Freeplane.getController().addAction("EdgeWidth_WIDTH_THIN",
+			Controller.getController().addAction("EdgeWidth_WIDTH_THIN",
 			    new EdgeWidthAction(modeController, EdgeModel.WIDTH_THIN));
-			Freeplane.getController().addAction("EdgeWidth_1",
+			Controller.getController().addAction("EdgeWidth_1",
 			    new EdgeWidthAction(modeController, 1));
-			Freeplane.getController().addAction("EdgeWidth_2",
+			Controller.getController().addAction("EdgeWidth_2",
 			    new EdgeWidthAction(modeController, 2));
-			Freeplane.getController().addAction("EdgeWidth_4",
+			Controller.getController().addAction("EdgeWidth_4",
 			    new EdgeWidthAction(modeController, 4));
-			Freeplane.getController().addAction("EdgeWidth_8",
+			Controller.getController().addAction("EdgeWidth_8",
 			    new EdgeWidthAction(modeController, 8));
-			Freeplane.getController()
+			Controller.getController()
 			    .addAction(
 			        "EdgeStyle_linear",
 			        new EdgeStyleAction(modeController,
 			            EdgeModel.EDGESTYLE_LINEAR));
-			Freeplane.getController()
+			Controller.getController()
 			    .addAction(
 			        "EdgeStyle_bezier",
 			        new EdgeStyleAction(modeController,
 			            EdgeModel.EDGESTYLE_BEZIER));
-			Freeplane.getController().addAction(
+			Controller.getController().addAction(
 			    "EdgeStyle_sharp_linear",
 			    new EdgeStyleAction(modeController,
 			        EdgeModel.EDGESTYLE_SHARP_LINEAR));
-			Freeplane.getController().addAction(
+			Controller.getController().addAction(
 			    "EdgeStyle_sharp_bezier",
 			    new EdgeStyleAction(modeController,
 			        EdgeModel.EDGESTYLE_SHARP_BEZIER));

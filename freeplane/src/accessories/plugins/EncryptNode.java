@@ -21,7 +21,7 @@ import javax.swing.Action;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.view.MapView;
 import org.freeplane.modes.ModeController;
@@ -106,7 +106,7 @@ public class EncryptNode extends MindMapNodeHookAdapter {
 	private void doPasswordCheckAndDecryptNode(final EncryptionModel encNode) {
 		while (true) {
 			final EnterPasswordDialog pwdDialog = new EnterPasswordDialog(
-			    Freeplane.getController().getViewController().getJFrame(),
+			    Controller.getController().getViewController().getJFrame(),
 			    false);
 			pwdDialog.setModal(true);
 			pwdDialog.setVisible(true);
@@ -116,7 +116,7 @@ public class EncryptNode extends MindMapNodeHookAdapter {
 			if (!encNode.decrypt(pwdDialog.getPassword())) {
 				JOptionPane
 				    .showMessageDialog(
-				        Freeplane.getController().getViewController()
+				        Controller.getController().getViewController()
 				            .getContentPane(),
 				        getMindMapController()
 				            .getText(
@@ -145,8 +145,8 @@ public class EncryptNode extends MindMapNodeHookAdapter {
 	/**
 	 */
 	private StringBuffer getUsersPassword() {
-		final EnterPasswordDialog pwdDialog = new EnterPasswordDialog(Freeplane
-		    .getController().getViewController().getJFrame(), true);
+		final EnterPasswordDialog pwdDialog = new EnterPasswordDialog(
+		    Controller.getController().getViewController().getJFrame(), true);
 		pwdDialog.setModal(true);
 		pwdDialog.show();
 		if (pwdDialog.getResult() == EnterPasswordDialog.CANCEL) {
@@ -218,7 +218,7 @@ public class EncryptNode extends MindMapNodeHookAdapter {
 		else {
 			JOptionPane
 			    .showMessageDialog(
-			        Freeplane.getController().getViewController()
+			        Controller.getController().getViewController()
 			            .getContentPane(),
 			        mindMapController
 			            .getText("accessories/plugins/EncryptNode.properties_insert_encrypted_node_first"),

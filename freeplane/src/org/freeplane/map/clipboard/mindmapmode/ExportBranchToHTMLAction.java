@@ -23,13 +23,12 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 
+import org.freeplane.controller.FreeMindAction;
 import org.freeplane.map.clipboard.ClipboardController;
-import org.freeplane.modes.ModeController;
-import org.freeplane.modes.ModeControllerAction;
 
-class ExportBranchToHTMLAction extends ModeControllerAction {
-	public ExportBranchToHTMLAction(final ModeController controller) {
-		super(controller, "export_branch_to_html", null);
+class ExportBranchToHTMLAction extends FreeMindAction {
+	public ExportBranchToHTMLAction() {
+		super("export_branch_to_html");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

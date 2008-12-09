@@ -23,20 +23,19 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
+import org.freeplane.controller.FreeMindAction;
 import org.freeplane.map.clipboard.ClipboardController;
 import org.freeplane.map.tree.MapModel;
 import org.freeplane.map.tree.NodeModel;
-import org.freeplane.modes.ModeController;
-import org.freeplane.modes.ModeControllerAction;
 
-class ExportToHTMLAction extends ModeControllerAction {
-	public ExportToHTMLAction(final ModeController controller) {
-		super(controller, "export_to_html", null);
+class ExportToHTMLAction extends FreeMindAction {
+	public ExportToHTMLAction() {
+		super("export_to_html");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final MapModel map = Freeplane.getController().getMap();
+		final MapModel map = Controller.getController().getMap();
 		try {
 			final File file = new File(map.getFile() + ".html");
 			ClipboardController.saveHTML((NodeModel) map.getRoot(), file);

@@ -43,7 +43,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.controller.views.MapViewManager;
 import org.freeplane.main.Tools;
 import org.freeplane.map.attribute.AttributeRegistry;
@@ -143,10 +143,10 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 	final private DefaultTreeModel treeModel;
 
 	public ImportAttributesDialog(final Component parentComponent) {
-		super(Freeplane.getController().getViewController().getJFrame(),
-		    Freeplane.getText("attributes_import"), true);
+		super(Controller.getController().getViewController().getJFrame(),
+		    Controller.getText("attributes_import"), true);
 		this.parentComponent = parentComponent;
-		final TreeNodeInfo nodeInfo = new TreeNodeInfo(Freeplane
+		final TreeNodeInfo nodeInfo = new TreeNodeInfo(Controller
 		    .getText("attribute_top"));
 		topNode = new DefaultMutableTreeNode(nodeInfo);
 		treeModel = new DefaultTreeModel(topNode);
@@ -161,7 +161,7 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 		final Box buttons = Box.createHorizontalBox();
 		buttons.setBorder(new EmptyBorder(5, 5, 5, 5));
 		final JButton okBtn = new JButton();
-		FreemindMenuBar.setLabelAndMnemonic(okBtn, Freeplane.getText("ok"));
+		FreemindMenuBar.setLabelAndMnemonic(okBtn, Controller.getText("ok"));
 		okBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent e) {
 				performImport(topNode);
@@ -169,7 +169,7 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 			}
 		});
 		final JButton cancelBtn = new JButton();
-		FreemindMenuBar.setLabelAndMnemonic(cancelBtn, Freeplane
+		FreemindMenuBar.setLabelAndMnemonic(cancelBtn, Controller
 		    .getText("cancel"));
 		cancelBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent e) {
@@ -204,7 +204,7 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 		top.removeAllChildren();
 		final TreeNodeInfo topInfo = (TreeNodeInfo) top.getUserObject();
 		topInfo.setSelected(TreeNodeInfo.NOT_SELECTED);
-		final MapViewManager mapViewManager = Freeplane.getController()
+		final MapViewManager mapViewManager = Controller.getController()
 		    .getMapViewManager();
 		final MapModel currentMap = mapViewManager.getMapView().getModel();
 		currentAttributes = currentMap.getRegistry().getAttributes();
@@ -339,7 +339,7 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 	public void show() {
 		createMapSubTrees(topNode);
 		if (topNode.getChildCount() == 0) {
-			JOptionPane.showMessageDialog(parentComponent, Freeplane
+			JOptionPane.showMessageDialog(parentComponent, Controller
 			    .getText("attributes_no_import_candidates_found"), getTitle(),
 			    JOptionPane.INFORMATION_MESSAGE);
 			return;

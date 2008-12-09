@@ -28,7 +28,7 @@ import java.io.OutputStreamWriter;
 import javax.swing.JOptionPane;
 
 import org.apache.batik.svggen.SVGGraphics2D;
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.map.tree.view.MapView;
 
 public class ExportSvg extends ExportVectorGraphic {
@@ -41,12 +41,12 @@ public class ExportSvg extends ExportVectorGraphic {
 			return;
 		}
 		try {
-			final MapView view = Freeplane.getController().getMapView();
+			final MapView view = Controller.getController().getMapView();
 			if (view == null) {
 				return;
 			}
-			Freeplane.getController().getViewController()
-			    .setWaitingCursor(true);
+			Controller.getController().getViewController().setWaitingCursor(
+			    true);
 			final SVGGraphics2D g2d = fillSVGGraphics2D(view);
 			final FileOutputStream bos = new FileOutputStream(chosenFile);
 			final BufferedOutputStream bufStream = new BufferedOutputStream(bos);
@@ -59,10 +59,10 @@ public class ExportSvg extends ExportVectorGraphic {
 		}
 		catch (final Exception e) {
 			org.freeplane.main.Tools.logException(e);
-			JOptionPane.showMessageDialog(Freeplane.getController()
+			JOptionPane.showMessageDialog(Controller.getController()
 			    .getViewController().getContentPane(), e.getLocalizedMessage(),
 			    null, JOptionPane.ERROR_MESSAGE);
 		}
-		Freeplane.getController().getViewController().setWaitingCursor(false);
+		Controller.getController().getViewController().setWaitingCursor(false);
 	}
 }

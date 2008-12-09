@@ -22,7 +22,7 @@ package org.freeplane.map.nodestyle;
 import java.awt.Color;
 import java.awt.Font;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.io.ReadManager;
 import org.freeplane.io.WriteManager;
@@ -58,8 +58,7 @@ public class NodeStyleController {
 		addFontGetter(PropertyChain.DEFAULT,
 		    new IPropertyGetter<Font, NodeModel>() {
 			    public Font getProperty(final NodeModel node) {
-				    return Freeplane.getController().getResourceController()
-				        .getDefaultFont();
+				    return Controller.getResourceController().getDefaultFont();
 			    }
 		    });
 		addColorGetter(PropertyChain.NODE,
@@ -88,19 +87,18 @@ public class NodeStyleController {
 
 			    private String getShape(final NodeModel node) {
 				    String returnedString = node.getShape(); /*
-				    			    						    														 * Style string
-				    			    						    														 * returned
-				    			    						    														 */
+				    						    						    			    						    														 * Style string
+				    						    						    			    						    														 * returned
+				    						    						    			    						    														 */
 				    if (node.getShape() == null) {
 					    if (node.isRoot()) {
-						    returnedString = Freeplane
-						        .getController()
+						    returnedString = Controller
 						        .getResourceController()
 						        .getProperty(
 						            ResourceController.RESOURCES_ROOT_NODE_SHAPE);
 					    }
 					    else {
-						    final String stdstyle = Freeplane.getController()
+						    final String stdstyle = Controller
 						        .getResourceController().getProperty(
 						            ResourceController.RESOURCES_NODE_SHAPE);
 						    if (stdstyle.equals(NodeStyleModel.SHAPE_AS_PARENT)) {
@@ -114,8 +112,8 @@ public class NodeStyleController {
 				    else if (node.isRoot()
 				            && node.getShape().equals(
 				                NodeStyleModel.SHAPE_AS_PARENT)) {
-					    returnedString = Freeplane.getController()
-					        .getResourceController().getProperty(
+					    returnedString = Controller.getResourceController()
+					        .getProperty(
 					            ResourceController.RESOURCES_ROOT_NODE_SHAPE);
 				    }
 				    else if (node.getShape().equals(

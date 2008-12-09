@@ -24,17 +24,16 @@ import java.awt.event.ActionEvent;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
+import org.freeplane.controller.FreeMindAction;
 import org.freeplane.map.clipboard.mindmapmode.MClipboardController;
 import org.freeplane.map.tree.MapModel;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.mindmapmode.MMapController;
-import org.freeplane.modes.ModeControllerAction;
-import org.freeplane.modes.mindmapmode.MModeController;
 
-class ImportBranchAction extends ModeControllerAction {
-	public ImportBranchAction(final MModeController modeController) {
-		super(modeController, "import_branch");
+class ImportBranchAction extends FreeMindAction {
+	public ImportBranchAction() {
+		super("import_branch");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -48,7 +47,7 @@ class ImportBranchAction extends ModeControllerAction {
 		if (fileFilter != null) {
 			chooser.addChoosableFileFilter(fileFilter);
 		}
-		final int returnVal = chooser.showOpenDialog(Freeplane.getController()
+		final int returnVal = chooser.showOpenDialog(Controller.getController()
 		    .getViewController().getContentPane());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			try {

@@ -21,7 +21,7 @@ package org.freeplane.map.attribute;
 
 import javax.swing.Action;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.map.tree.MapModel;
 
 /**
@@ -39,13 +39,13 @@ public class ModelessAttributeController {
 		showAllAttributes = new ShowAllAttributesAction();
 		showSelectedAttributes = new ShowSelectedAttributesAction();
 		hideAllAttributes = new HideAllAttributesAction();
-		Freeplane.getController().addAction("showAttributeManagerAction",
+		Controller.getController().addAction("showAttributeManagerAction",
 		    showAttributeManagerAction);
-		Freeplane.getController().addAction("showAllAttributes",
+		Controller.getController().addAction("showAllAttributes",
 		    showAllAttributes);
-		Freeplane.getController().addAction("showSelectedAttributes",
+		Controller.getController().addAction("showSelectedAttributes",
 		    showSelectedAttributes);
-		Freeplane.getController().addAction("hideAllAttributes",
+		Controller.getController().addAction("hideAllAttributes",
 		    hideAllAttributes);
 	}
 

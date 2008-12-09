@@ -28,7 +28,7 @@ import java.io.StringWriter;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.jibx.runtime.BindingDirectory;
 import org.jibx.runtime.IBindingFactory;
 import org.jibx.runtime.IMarshallingContext;
@@ -85,9 +85,8 @@ public class XmlBindingTools {
 	public WindowConfigurationStorage decorateDialog(
 	                                                 final JDialog dialog,
 	                                                 final String window_preference_storage_property) {
-		final String marshalled = Freeplane.getController()
-		    .getResourceController().getProperty(
-		        window_preference_storage_property);
+		final String marshalled = Controller.getResourceController()
+		    .getProperty(window_preference_storage_property);
 		final WindowConfigurationStorage result = decorateDialog(marshalled,
 		    dialog);
 		return result;
@@ -137,7 +136,7 @@ public class XmlBindingTools {
 		storage.setHeight((dialog.getHeight()));
 		final String marshalled = marshall(storage);
 		final String result = marshalled;
-		Freeplane.getController().getResourceController().setProperty(
+		Controller.getResourceController().setProperty(
 		    window_preference_storage_property, result);
 	}
 

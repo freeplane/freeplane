@@ -24,20 +24,19 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
 
+import org.freeplane.controller.FreeMindAction;
 import org.freeplane.controller.views.ColorTracker;
 import org.freeplane.map.link.ArrowLinkModel;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.ModeController;
-import org.freeplane.modes.ModeControllerAction;
 import org.freeplane.undo.IUndoableActor;
 
-class ColorArrowLinkAction extends ModeControllerAction {
+class ColorArrowLinkAction extends FreeMindAction {
 	ArrowLinkModel arrowLink;
 
 	public ColorArrowLinkAction(final MLinkController modeController,
 	                            final ArrowLinkModel arrowLink) {
-		super(modeController.getModeController(), "arrow_link_color",
-		    "images/Colors24.gif");
+		super("arrow_link_color", "images/Colors24.gif");
 		this.arrowLink = arrowLink;
 	}
 

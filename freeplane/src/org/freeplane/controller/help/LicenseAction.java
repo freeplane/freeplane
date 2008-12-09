@@ -24,19 +24,20 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.ui.AlwaysEnabledAction;
 import org.freeplane.ui.FreemindMenuBar;
 
 @AlwaysEnabledAction
 class LicenseAction extends AbstractAction {
 	LicenseAction() {
-		FreemindMenuBar.setLabelAndMnemonic(this, Freeplane.getText("license"));
+		FreemindMenuBar
+		    .setLabelAndMnemonic(this, Controller.getText("license"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		JOptionPane.showMessageDialog(Freeplane.getController().getMapView(),
-		    Freeplane.getText("license_text"), Freeplane.getText("license"),
+		JOptionPane.showMessageDialog(Controller.getController().getMapView(),
+		    Controller.getText("license_text"), Controller.getText("license"),
 		    JOptionPane.INFORMATION_MESSAGE);
 	}
 }

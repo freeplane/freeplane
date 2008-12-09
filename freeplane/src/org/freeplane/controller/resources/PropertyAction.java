@@ -35,7 +35,6 @@ import javax.swing.WindowConstants;
 
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.FreeMindAction;
-import org.freeplane.controller.Freeplane;
 import org.freeplane.main.Tools;
 
 import deprecated.freemind.preferences.layout.OptionPanel;
@@ -53,7 +52,7 @@ class PropertyAction extends FreeMindAction {
 	}
 
 	public void actionPerformed(final ActionEvent arg0) {
-		final JDialog dialog = new JDialog(Freeplane.getController()
+		final JDialog dialog = new JDialog(Controller.getController()
 		    .getViewController().getJFrame(), true /* modal */);
 		dialog.setResizable(true);
 		dialog.setUndecorated(false);
@@ -67,18 +66,16 @@ class PropertyAction extends FreeMindAction {
 				    for (final Iterator i = sortedKeys.iterator(); i.hasNext();) {
 					    final String key = (String) i.next();
 					    final String newProperty = props.getProperty(key);
-					    final Controller controller = Freeplane.getController();
 					    propertiesChanged = propertiesChanged
-					            || !newProperty.equals(controller
+					            || !newProperty.equals(Controller
 					                .getResourceController().getProperty(key));
-					    controller.getResourceController().setProperty(key,
+					    Controller.getResourceController().setProperty(key,
 					        newProperty);
 				    }
 				    if (propertiesChanged) {
-					    JOptionPane.showMessageDialog(null, Freeplane
+					    JOptionPane.showMessageDialog(null, Controller
 					        .getText("option_changes_may_require_restart"));
-					    Freeplane.getController().getResourceController()
-					        .saveProperties();
+					    Controller.getResourceController().saveProperties();
 				    }
 			    }
 		    });

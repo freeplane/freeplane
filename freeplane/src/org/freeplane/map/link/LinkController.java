@@ -29,7 +29,7 @@ import java.util.Set;
 
 import javax.swing.JPopupMenu;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.io.ReadManager;
 import org.freeplane.io.WriteManager;
@@ -68,8 +68,8 @@ public class LinkController {
 		colorHandlers = new PropertyChain<Color, ArrowLinkModel>();
 		if (listener == null) {
 			listener = new ArrowLinkListener();
-			Freeplane.getController().getResourceController()
-			    .addPropertyChangeListener(listener);
+			Controller.getResourceController().addPropertyChangeListener(
+			    listener);
 		}
 		addColorGetter(PropertyChain.NODE,
 		    new IPropertyGetter<Color, ArrowLinkModel>() {
@@ -102,9 +102,9 @@ public class LinkController {
 	private void createActions(final ModeController modeController) {
 		if (!actionsCreated) {
 			actionsCreated = true;
-			Freeplane.getController().addAction("followLink",
-			    new FollowLinkAction(modeController));
-			Freeplane.getController().addAction("gotoLinkNodeAction",
+			Controller.getController().addAction("followLink",
+			    new FollowLinkAction());
+			Controller.getController().addAction("gotoLinkNodeAction",
 			    new GotoLinkNodeAction(this, null));
 		}
 	}
@@ -244,9 +244,8 @@ public class LinkController {
 	 */
 	private void updateStandards(final ModeController modeController) {
 		if (standardColor == null) {
-			final String stdColor = Freeplane.getController()
-			    .getResourceController().getProperty(
-			        ResourceController.RESOURCES_LINK_COLOR);
+			final String stdColor = Controller.getResourceController()
+			    .getProperty(ResourceController.RESOURCES_LINK_COLOR);
 			if (stdColor != null && stdColor.length() == 7) {
 				standardColor = Tools.xmlToColor(stdColor);
 			}

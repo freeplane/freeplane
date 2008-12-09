@@ -21,7 +21,8 @@ package org.freeplane.modes.browsemode;
 
 import javax.swing.JPopupMenu;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
+import org.freeplane.io.url.UrlManager;
 import org.freeplane.map.attribute.AttributeController;
 import org.freeplane.map.cloud.CloudController;
 import org.freeplane.map.edge.EdgeController;
@@ -46,6 +47,7 @@ public class BModeControllerFactory {
 		}
 		modeController = new BModeController();
 		modeController.setMapController(new BMapController(modeController));
+		modeController.setUrlManager(new UrlManager(modeController));
 		new AttributeController(modeController);
 		modeController.setLinkController(new LinkController(modeController));
 		modeController.setIconController(new IconController(modeController));
@@ -62,7 +64,7 @@ public class BModeControllerFactory {
 		final BToolbarContributor toolbarContributor = new BToolbarContributor(
 		    modeController);
 		modeController.addMenuContributor(toolbarContributor);
-		Freeplane.getController().getViewController()
+		Controller.getController().getViewController()
 		    .addMapTitleChangeListener(toolbarContributor);
 		modeController.getUserInputListenerFactory().setNodePopupMenu(
 		    new JPopupMenu());

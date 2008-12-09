@@ -23,7 +23,6 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.MultipleNodeAction;
-import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.ui.SelectableAction;
 
 @SelectableAction
@@ -32,8 +31,8 @@ class BoldAction extends MultipleNodeAction {
 
 	/**
 	 */
-	public BoldAction(final MModeController modeController) {
-		super(modeController, "bold", "images/Bold16.gif");
+	public BoldAction() {
+		super("bold", "images/Bold16.gif");
 	}
 
 	@Override

@@ -21,13 +21,13 @@ package org.freeplane.map.link.mindmapmode;
 
 import java.awt.event.ActionEvent;
 
+import org.freeplane.controller.FreeMindAction;
 import org.freeplane.map.link.ArrowLinkModel;
 import org.freeplane.map.link.NodeLinks;
 import org.freeplane.map.tree.NodeModel;
-import org.freeplane.modes.ModeControllerAction;
 import org.freeplane.undo.IUndoableActor;
 
-class RemoveArrowLinkAction extends ModeControllerAction {
+class RemoveArrowLinkAction extends FreeMindAction {
 	private ArrowLinkModel mArrowLink;
 
 	/**
@@ -35,8 +35,7 @@ class RemoveArrowLinkAction extends ModeControllerAction {
 	 */
 	public RemoveArrowLinkAction(final MLinkController linkController,
 	                             final ArrowLinkModel arrowLink) {
-		super(linkController.getModeController(), "remove_arrow_link",
-		    "images/edittrash.png");
+		super("remove_arrow_link", "images/edittrash.png");
 		setArrowLink(arrowLink);
 	}
 

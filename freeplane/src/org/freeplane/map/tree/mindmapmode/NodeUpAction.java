@@ -28,18 +28,17 @@ import java.util.TreeSet;
 import java.util.Vector;
 import java.util.logging.Logger;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
+import org.freeplane.controller.FreeMindAction;
 import org.freeplane.map.tree.MapModel;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.view.MapView;
 import org.freeplane.map.tree.view.NodeView;
-import org.freeplane.modes.ModeControllerAction;
-import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.undo.IUndoableActor;
 
-class NodeUpAction extends ModeControllerAction {
-	public NodeUpAction(final MModeController modeController) {
-		super(modeController, "node_up");
+class NodeUpAction extends FreeMindAction {
+	public NodeUpAction() {
+		super("node_up");
 	}
 
 	public void _moveNodes(final NodeModel selected, final List selecteds,
@@ -91,7 +90,7 @@ class NodeUpAction extends ModeControllerAction {
 				final NodeView nodeView = mapView.getNodeView(node);
 				mapView.makeTheSelected(nodeView);
 			}
-			Freeplane.getController().getViewController()
+			Controller.getController().getViewController()
 			    .obtainFocusForSelected();
 		}
 	}
@@ -150,7 +149,7 @@ class NodeUpAction extends ModeControllerAction {
 
 	private int moveNodeTo(final NodeModel child, final NodeModel newParent,
 	                       final int direction) {
-		final MapModel map = Freeplane.getController().getMap();
+		final MapModel map = Controller.getController().getMap();
 		final int index = map.getIndexOfChild(newParent, child);
 		int newIndex = index;
 		final int maxIndex = newParent.getChildCount();

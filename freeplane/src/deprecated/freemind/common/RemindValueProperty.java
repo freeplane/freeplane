@@ -17,7 +17,7 @@
  */
 package deprecated.freemind.common;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 
 /**
  * @author foltin
@@ -36,11 +36,11 @@ public class RemindValueProperty extends ThreeCheckBoxProperty {
 		state = newState;
 		String[] strings;
 		strings = new String[3];
-		strings[ThreeCheckBoxProperty.TRUE_VALUE_INT] = Freeplane.getText(
+		strings[ThreeCheckBoxProperty.TRUE_VALUE_INT] = Controller.getText(
 		    "OptionalDontShowMeAgainDialog.ok").replaceFirst("&", "");
-		strings[ThreeCheckBoxProperty.FALSE_VALUE_INT] = Freeplane.getText(
+		strings[ThreeCheckBoxProperty.FALSE_VALUE_INT] = Controller.getText(
 		    "OptionalDontShowMeAgainDialog.cancel").replaceFirst("&", "");
-		strings[ThreeCheckBoxProperty.DON_T_TOUCH_VALUE_INT] = Freeplane
+		strings[ThreeCheckBoxProperty.DON_T_TOUCH_VALUE_INT] = Controller
 		    .getText("OptionPanel.ask").replaceFirst("&", "");
 		mButton.setText(strings[state]);
 	}

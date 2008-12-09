@@ -23,7 +23,6 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.Freeplane;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.filemode.FMapController;
 import org.freeplane.map.tree.view.MainView;
@@ -72,7 +71,7 @@ public class FModeController extends ModeController {
 			e.consume();
 			String link = newlySelectedNodeView.getModel().getLink();
 			link = (link != null ? link : " ");
-			Freeplane.getController().getViewController().out(link);
+			Controller.getController().getViewController().out(link);
 		}
 		return retValue;
 	}
@@ -110,7 +109,7 @@ public class FModeController extends ModeController {
 
 	@Override
 	public void startup() {
-		final Controller controller = Freeplane.getController();
+		final Controller controller = Controller.getController();
 		controller.getMapViewManager().changeToMode(MODENAME);
 		if (controller.getMapView() == null) {
 			((FMapController) getMapController()).newMap(new File(

@@ -29,7 +29,7 @@ import java.io.Writer;
 import java.util.Iterator;
 import java.util.List;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.main.Tools;
 import org.freeplane.map.edge.EdgeModel;
 import org.freeplane.map.icon.MindIcon;
@@ -75,10 +75,10 @@ public class StylePatternFactory {
 		if (patternType != null) {
 			result = StylePatternFactory.addSeparatorIfNecessary(result);
 			if (patternType.getValue() == null) {
-				result += "-" + Freeplane.getText(patternString);
+				result += "-" + Controller.getText(patternString);
 			}
 			else {
-				result += "+" + Freeplane.getText(patternString) + " "
+				result += "+" + Controller.getText(patternString) + " "
 				        + patternType.getValue();
 			}
 		}
@@ -284,21 +284,21 @@ public class StylePatternFactory {
 		if (pPattern.getPatternNodeColor() != null) {
 			result = StylePatternFactory.addSeparatorIfNecessary(result);
 			if (pPattern.getPatternNodeColor().getValue() == null) {
-				result += "-" + Freeplane.getText("PatternToString.color");
+				result += "-" + Controller.getText("PatternToString.color");
 			}
 			else {
-				result += "+" + Freeplane.getText("PatternToString.color");
+				result += "+" + Controller.getText("PatternToString.color");
 			}
 		}
 		if (pPattern.getPatternNodeBackgroundColor() != null) {
 			result = StylePatternFactory.addSeparatorIfNecessary(result);
 			if (pPattern.getPatternNodeBackgroundColor().getValue() == null) {
 				result += "-"
-				        + Freeplane.getText("PatternToString.backgroundColor");
+				        + Controller.getText("PatternToString.backgroundColor");
 			}
 			else {
 				result += "+"
-				        + Freeplane.getText("PatternToString.backgroundColor");
+				        + Controller.getText("PatternToString.backgroundColor");
 			}
 		}
 		result = StylePatternFactory.addSubPatternToString(result, pPattern

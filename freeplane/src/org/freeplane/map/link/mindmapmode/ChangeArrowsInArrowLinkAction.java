@@ -21,11 +21,11 @@ package org.freeplane.map.link.mindmapmode;
 
 import java.awt.event.ActionEvent;
 
+import org.freeplane.controller.FreeMindAction;
 import org.freeplane.map.link.ArrowLinkModel;
-import org.freeplane.modes.ModeControllerAction;
 import org.freeplane.undo.IUndoableActor;
 
-class ChangeArrowsInArrowLinkAction extends ModeControllerAction {
+class ChangeArrowsInArrowLinkAction extends FreeMindAction {
 	ArrowLinkModel arrowLink;
 	boolean hasEndArrow;
 	boolean hasStartArrow;
@@ -36,8 +36,7 @@ class ChangeArrowsInArrowLinkAction extends ModeControllerAction {
 	                                     final ArrowLinkModel arrowLink,
 	                                     final boolean hasStartArrow,
 	                                     final boolean hasEndArrow) {
-		super(linkController.getModeController(),
-		    "change_arrows_in_arrow_link", iconPath);
+		super("change_arrows_in_arrow_link", iconPath);
 		this.arrowLink = arrowLink;
 		this.hasStartArrow = hasStartArrow;
 		this.hasEndArrow = hasEndArrow;

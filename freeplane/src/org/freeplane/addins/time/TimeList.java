@@ -66,7 +66,7 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.main.HtmlTools;
 import org.freeplane.main.Tools;
 import org.freeplane.map.icon.MindIcon;
@@ -555,7 +555,7 @@ class TimeList {
 	}
 
 	private String getResourceString(final String string) {
-		return Freeplane.getText(string);
+		return Controller.getText(string);
 	}
 
 	/**
@@ -612,7 +612,7 @@ class TimeList {
 		TimeList.COLUMN_TEXT = getResourceString("plugins/TimeList.xml_Text");
 		TimeList.COLUMN_DATE = getResourceString("plugins/TimeList.xml_Date");
 		TimeList.COLUMN_NOTES = getResourceString("plugins/TimeList.xml_Notes");
-		dialog = new JDialog(Freeplane.getController().getViewController()
+		dialog = new JDialog(Controller.getController().getViewController()
 		    .getJFrame(), true /* modal */);
 		String windowTitle;
 		if (showAllNodes) {
@@ -836,7 +836,8 @@ class TimeList {
 	 * Creates a table model for the new table and returns it.
 	 */
 	private DefaultTableModel updateModel() {
-		final NodeModel node = Freeplane.getController().getMap().getRootNode();
+		final NodeModel node = Controller.getController().getMap()
+		    .getRootNode();
 		final DefaultTableModel model = new DefaultTableModel() {
 			/*
 			 * (non-Javadoc)

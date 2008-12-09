@@ -23,7 +23,7 @@ import java.util.Vector;
 
 import javax.swing.Action;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.main.Tools;
 import org.freeplane.map.icon.mindmapnode.MIconController;
 import org.freeplane.map.tree.NodeModel;
@@ -52,12 +52,12 @@ public class IconSelectionPlugin extends MindMapNodeHookAdapter {
 		final Collection<Action> iconActions = ((MIconController) controller
 		    .getIconController()).getIconActions();
 		actions.addAll(iconActions);
-		actions
-		    .add(Freeplane.getController().getAction("removeLastIconAction"));
-		actions
-		    .add(Freeplane.getController().getAction("removeAllIconsAction"));
+		actions.add(Controller.getController()
+		    .getAction("removeLastIconAction"));
+		actions.add(Controller.getController()
+		    .getAction("removeAllIconsAction"));
 		final IconSelectionPopupDialog selectionDialog = new IconSelectionPopupDialog(
-		    Freeplane.getController().getViewController().getJFrame(), actions);
+		    Controller.getController().getViewController().getJFrame(), actions);
 		final MapView mapView = controller.getMapView();
 		mapView.scrollNodeToVisible(focussed, 0);
 		selectionDialog.pack();

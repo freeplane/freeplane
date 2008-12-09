@@ -25,7 +25,7 @@ import java.util.Vector;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 import org.freeplane.map.icon.MindIcon;
 import org.freeplane.ui.dialogs.IconSelectionPopupDialog;
 
@@ -63,8 +63,8 @@ public class IconProperty extends PropertyBean implements IPropertyControl,
 			descriptions.add(icon.getDescription());
 		}
 		final IconSelectionPopupDialog dialog = new IconSelectionPopupDialog(
-		    Freeplane.getController().getViewController().getJFrame(), icons);
-		dialog.setLocationRelativeTo(Freeplane.getController()
+		    Controller.getController().getViewController().getJFrame(), icons);
+		dialog.setLocationRelativeTo(Controller.getController()
 		    .getViewController().getJFrame());
 		dialog.setModal(true);
 		dialog.setVisible(true);

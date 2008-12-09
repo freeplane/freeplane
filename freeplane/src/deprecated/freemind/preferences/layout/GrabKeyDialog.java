@@ -34,7 +34,7 @@ import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
-import org.freeplane.controller.Freeplane;
+import org.freeplane.controller.Controller;
 
 /**
  * A dialog for getting shortcut keys.
@@ -375,7 +375,7 @@ public class GrabKeyDialog extends JDialog {
 	/**
 	 */
 	private String getText(final String resourceString) {
-		return Freeplane.getText("GrabKeyDialog." + resourceString);
+		return Controller.getText("GrabKeyDialog." + resourceString);
 	}
 
 	private void init(final KeyBinding binding, final Vector allBindings,

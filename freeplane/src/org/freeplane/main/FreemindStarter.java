@@ -27,7 +27,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.Freeplane;
 import org.freeplane.controller.help.HelpController;
 import org.freeplane.controller.print.PrintController;
 import org.freeplane.controller.resources.ApplicationResourceController;
@@ -85,7 +84,7 @@ public class FreemindStarter {
 	}
 
 	private ModeController createModeController(final String[] args) {
-		final ModeController ctrl = Freeplane.getController()
+		final ModeController ctrl = Controller.getController()
 		    .getModeController();
 		try {
 			final Class macClass = Class
@@ -123,21 +122,19 @@ public class FreemindStarter {
 			}
 		}
 		if (!fileLoaded) {
-			final String restoreable = Freeplane.getController()
-			    .getResourceController().getProperty(
-			        Controller.ON_START_IF_NOT_SPECIFIED);
-			if (Tools.isPreferenceTrue(Freeplane.getController()
-			    .getResourceController().getProperty(
-			        FreemindStarter.LOAD_LAST_MAP))
+			final String restoreable = Controller.getResourceController()
+			    .getProperty(Controller.ON_START_IF_NOT_SPECIFIED);
+			if (Tools.isPreferenceTrue(Controller.getResourceController()
+			    .getProperty(FreemindStarter.LOAD_LAST_MAP))
 			        && restoreable != null && restoreable.length() > 0) {
 				try {
-					Freeplane.getController().getViewController()
+					Controller.getController().getViewController()
 					    .getLastOpenedList().open(restoreable);
 					fileLoaded = true;
 				}
 				catch (final Exception e) {
 					org.freeplane.main.Tools.logException(e);
-					Freeplane.getController().getViewController().out(
+					Controller.getController().getViewController().out(
 					    "An error occured on opening the file: " + restoreable
 					            + ".");
 				}
@@ -187,10 +184,10 @@ public class FreemindStarter {
 			controller.addModeController(fileController);
 			feedBack.increase("Freeplane.progress.settingPreferences");
 			controller.getViewController().changeAntialias(
-			    Freeplane.getController().getResourceController().getProperty(
+			    Controller.getResourceController().getProperty(
 			        ViewController.RESOURCE_ANTIALIAS));
 			feedBack.increase("Freeplane.progress.propagateLookAndFeel");
-			SwingUtilities.updateComponentTreeUI(Freeplane.getController()
+			SwingUtilities.updateComponentTreeUI(Controller.getController()
 			    .getViewController().getJFrame());
 			feedBack.increase("Freeplane.progress.buildScreen");
 			viewController.init();
@@ -208,8 +205,8 @@ public class FreemindStarter {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					feedBack.increase("Freeplane.progress.createInitialMode");
-					controller.selectMode(Freeplane.getController()
-					    .getResourceController().getProperty("initial_mode"));
+					controller.selectMode(Controller.getResourceController()
+					    .getProperty("initial_mode"));
 					feedBack
 					    .increase("Freeplane.progress.startCreateController");
 					final ModeController ctrl = createModeController(args);
@@ -219,7 +216,7 @@ public class FreemindStarter {
 					if (splash != null) {
 						splash.setVisible(false);
 					}
-					Freeplane.getController().getViewController().getJFrame()
+					Controller.getController().getViewController().getJFrame()
 					    .setVisible(true);
 				}
 			});
@@ -238,7 +235,7 @@ public class FreemindStarter {
 	 */
 	private void updateLookAndFeel() {
 		try {
-			final String lookAndFeel = controller.getResourceController()
+			final String lookAndFeel = Controller.getResourceController()
 			    .getProperty("lookandfeel");
 			if (lookAndFeel.equals("windows")) {
 				UIManager

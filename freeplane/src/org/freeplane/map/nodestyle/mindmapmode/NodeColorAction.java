@@ -25,13 +25,12 @@ import java.awt.event.ActionEvent;
 import org.freeplane.controller.views.ColorTracker;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.MultipleNodeAction;
-import org.freeplane.modes.mindmapmode.MModeController;
 
 class NodeColorAction extends MultipleNodeAction {
 	private Color actionColor;
 
-	public NodeColorAction(final MModeController controller) {
-		super(controller, "node_color");
+	public NodeColorAction() {
+		super("node_color");
 	}
 
 	@Override

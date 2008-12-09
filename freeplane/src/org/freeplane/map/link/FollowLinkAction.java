@@ -26,14 +26,12 @@ import javax.swing.JMenuItem;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
+import org.freeplane.controller.FreeMindAction;
 import org.freeplane.map.tree.NodeModel;
-import org.freeplane.modes.ModeController;
-import org.freeplane.modes.ModeControllerAction;
 
-class FollowLinkAction extends ModeControllerAction implements
-        PopupMenuListener {
-	public FollowLinkAction(final ModeController modeController) {
-		super(modeController, "follow_link");
+class FollowLinkAction extends FreeMindAction implements PopupMenuListener {
+	public FollowLinkAction() {
+		super("follow_link");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
