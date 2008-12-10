@@ -50,7 +50,6 @@ import org.freeplane.ui.IEditHandler;
  * @author Dimitry Polivaev
  */
 public class MTextController extends TextController {
-	static private boolean actionsCreated = false;
 	static private EditAction edit;
 
 	public MTextController(final MModeController modeController) {
@@ -70,27 +69,21 @@ public class MTextController extends TextController {
 	 *
 	 */
 	private void createActions(final MModeController modeController) {
-		if (!actionsCreated) {
-			actionsCreated = true;
-			edit = new EditAction();
-			Controller.getController().addAction("edit", edit);
-			Controller.getController().addAction("useRichFormatting",
-			    new UseRichFormattingAction());
-			Controller.getController().addAction("usePlainText",
-			    new UsePlainTextAction());
-			Controller.getController().addAction("joinNodes",
-			    new JoinNodesAction());
-			Controller.getController().addAction("editLong",
-			    new EditLongAction());
-			Controller.getController().addAction("setImageByFileChooser",
-			    new SetImageByFileChooserAction());
-		}
+		edit = new EditAction();
+		modeController.addAction("edit", edit);
+		modeController.addAction("useRichFormatting",
+		    new UseRichFormattingAction());
+		modeController.addAction("usePlainText", new UsePlainTextAction());
+		modeController.addAction("joinNodes", new JoinNodesAction());
+		modeController.addAction("editLong", new EditLongAction());
+		modeController.addAction("setImageByFileChooser",
+		    new SetImageByFileChooserAction());
 	}
 
 	public void edit(final KeyEvent e, final boolean addNew,
 	                 final boolean editLong) {
-		((EditAction) Controller.getController().getAction("edit")).edit(e,
-		    addNew, editLong);
+		((EditAction) getModeController().getAction("edit")).edit(e, addNew,
+		    editLong);
 	}
 
 	public void edit(final NodeView node, final NodeView prevSelected,
@@ -169,7 +162,7 @@ public class MTextController extends TextController {
 	}
 
 	public void joinNodes(final NodeModel selectedNode, final List selectedNodes) {
-		((JoinNodesAction) Controller.getController().getAction("joinNodes"))
+		((JoinNodesAction) getModeController().getAction("joinNodes"))
 		    .joinNodes(selectedNode, selectedNodes);
 	}
 
@@ -229,8 +222,8 @@ public class MTextController extends TextController {
 	}
 
 	public void setNodeText(final NodeModel selected, final String newText) {
-		((EditAction) Controller.getController().getAction("edit"))
-		    .setNodeText(selected, newText);
+		((EditAction) getModeController().getAction("edit")).setNodeText(
+		    selected, newText);
 	}
 
 	public void splitNode(final NodeModel node, final int caretPosition,

@@ -46,7 +46,7 @@ public class ChangeNodeLevelAction extends FreeMindAction {
 	 * @see freemind.extensions.NodeHook#invoke(freemind.modes.MindMapNode,
 	 * java.util.List)
 	 */
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(final ActionEvent e) {
 		NodeModel selectedNode;
 		List selectedNodes;
 		{
@@ -55,26 +55,25 @@ public class ChangeNodeLevelAction extends FreeMindAction {
 			selectedNode = focussed;
 			selectedNodes = selecteds;
 		}
-		getModeController().getMapController().sortNodesByDepth(
-		    selectedNodes);
+		getModeController().getMapController().sortNodesByDepth(selectedNodes);
 		if (selectedNode.isRoot()) {
 			Controller.getController().errorMessage(
-				Controller.getText("cannot_add_parent_to_root"));
+			    Controller.getText("cannot_add_parent_to_root"));
 			return;
 		}
-		final boolean upwards = Tools.safeEquals("left",
-			Controller.getText("action_type")) != selectedNode.isLeft();
+		final boolean upwards = Tools.safeEquals("left", Controller
+		    .getText("action_type")) != selectedNode.isLeft();
 		final NodeModel selectedParent = selectedNode.getParentNode();
 		for (final Iterator it = selectedNodes.iterator(); it.hasNext();) {
 			final NodeModel node = (NodeModel) it.next();
 			if (node.getParentNode() != selectedParent) {
 				Controller.getController().errorMessage(
-					Controller.getText("cannot_add_parent_diff_parents"));
+				    Controller.getText("cannot_add_parent_diff_parents"));
 				return;
 			}
 			if (node.isRoot()) {
 				Controller.getController().errorMessage(
-					Controller.getText("cannot_add_parent_to_root"));
+				    Controller.getText("cannot_add_parent_to_root"));
 				return;
 			}
 		}
@@ -164,5 +163,4 @@ public class ChangeNodeLevelAction extends FreeMindAction {
 		getModeController().selectMultipleNodes(newInstanceOfSelectedNode,
 		    newSelecteds);
 	}
-
 }

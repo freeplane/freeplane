@@ -31,6 +31,7 @@ import java.util.List;
 import javax.swing.AbstractButton;
 import javax.swing.Action;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
@@ -47,6 +48,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.controller.ActionDescriptor;
 import org.freeplane.controller.Controller;
+import org.freeplane.main.Tools;
+import org.freeplane.modes.ModeController;
 
 import freemind.controller.actions.generated.instance.MenuActionBase;
 import freemind.controller.actions.generated.instance.MenuCategoryBase;
@@ -56,6 +59,93 @@ import freemind.controller.actions.generated.instance.MenuStructure;
 import freemind.controller.actions.generated.instance.MenuSubmenu;
 
 public class MenuBuilder extends UIBuilder {
+	private static class ActionHolder implements INameMnemonicHolder {
+		final private Action action;
+
+		public ActionHolder(final Action action) {
+			super();
+			this.action = action;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * @see freemind.main.Tools.IAbstractButton#getText()
+		 */
+		public String getText() {
+			return (String) action.getValue(Action.NAME);
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * @see
+		 * freemind.main.Tools.IAbstractButton#setDisplayedMnemonicIndex(int)
+		 */
+		public void setDisplayedMnemonicIndex(final int mnemoSignIndex) {
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * @see freemind.main.Tools.IAbstractButton#setMnemonic(char)
+		 */
+		public void setMnemonic(final char charAfterMnemoSign) {
+			int vk = charAfterMnemoSign;
+			if (vk >= 'a' && vk <= 'z') {
+				vk -= ('a' - 'A');
+			}
+			action.putValue(Action.MNEMONIC_KEY, new Integer(vk));
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * @see freemind.main.Tools.IAbstractButton#setText(java.lang.String)
+		 */
+		public void setText(final String text) {
+			action.putValue(Action.NAME, text);
+		}
+	}
+
+	public static class ButtonHolder implements INameMnemonicHolder {
+		final private AbstractButton btn;
+
+		public ButtonHolder(final AbstractButton btn) {
+			super();
+			this.btn = btn;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * @see freemind.main.Tools.IAbstractButton#getText()
+		 */
+		public String getText() {
+			return btn.getText();
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * @see
+		 * freemind.main.Tools.IAbstractButton#setDisplayedMnemonicIndex(int)
+		 */
+		public void setDisplayedMnemonicIndex(final int mnemoSignIndex) {
+			btn.setDisplayedMnemonicIndex(mnemoSignIndex);
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * @see freemind.main.Tools.IAbstractButton#setMnemonic(char)
+		 */
+		public void setMnemonic(final char charAfterMnemoSign) {
+			btn.setMnemonic(charAfterMnemoSign);
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * @see freemind.main.Tools.IAbstractButton#setText(java.lang.String)
+		 */
+		public void setText(final String text) {
+			btn.setText(text);
+		}
+	}
+
 	static private class DelegatingPopupMenuListener implements
 	        PopupMenuListener {
 		final private PopupMenuListener listener;
@@ -109,17 +199,87 @@ public class MenuBuilder extends UIBuilder {
 		}
 	}
 
+	interface INameMnemonicHolder {
+		/**
+		 */
+		String getText();
+
+		/**
+		 */
+		void setDisplayedMnemonicIndex(int mnemoSignIndex);
+
+		/**
+		 */
+		void setMnemonic(char charAfterMnemoSign);
+
+		/**
+		 */
+		void setText(String replaceAll);
+	}
+
 	private static Insets nullInsets = new Insets(0, 0, 0, 0);
 
-	public MenuBuilder() {
-		super(null);
+	static public JMenu createMenu(final String name) {
+		final JMenu menu = new JMenu();
+		final String text = Controller.getText(name);
+		MenuBuilder.setLabelAndMnemonic(menu, text);
+		return menu;
+	}
+
+	static public JMenuItem createMenuItem(final String name) {
+		final JMenuItem menu = new JMenuItem();
+		final String text = Controller.getText(name);
+		MenuBuilder.setLabelAndMnemonic(menu, text);
+		return menu;
 	}
 
 	/**
-	 *
+	 * Ampersand indicates that the character after it is a mnemo, unless the
+	 * character is a space. In "Find & Replace", ampersand does not label
+	 * mnemo, while in "&About", mnemo is "Alt + A".
 	 */
-	public MenuBuilder(final JMenuBar menubar) {
-		super(menubar);
+	public static void setLabelAndMnemonic(final AbstractButton btn,
+	                                       final String inLabel) {
+		MenuBuilder.setLabelAndMnemonic(new ButtonHolder(btn), inLabel);
+	}
+
+	/**
+	 * Ampersand indicates that the character after it is a mnemo, unless the
+	 * character is a space. In "Find & Replace", ampersand does not label
+	 * mnemo, while in "&About", mnemo is "Alt + A".
+	 */
+	public static void setLabelAndMnemonic(final Action action,
+	                                       final String inLabel) {
+		MenuBuilder.setLabelAndMnemonic(new ActionHolder(action), inLabel);
+	}
+
+	private static void setLabelAndMnemonic(final INameMnemonicHolder item,
+	                                        final String inLabel) {
+		String rawLabel = inLabel;
+		if (rawLabel == null) {
+			rawLabel = item.getText();
+		}
+		if (rawLabel == null) {
+			return;
+		}
+		item.setText(Tools.removeMnemonic(rawLabel));
+		final int mnemoSignIndex = rawLabel.indexOf("&");
+		if (mnemoSignIndex >= 0 && mnemoSignIndex + 1 < rawLabel.length()) {
+			final char charAfterMnemoSign = rawLabel.charAt(mnemoSignIndex + 1);
+			if (charAfterMnemoSign != ' ') {
+				if (!Tools.isMacOsX()) {
+					item.setMnemonic(charAfterMnemoSign);
+					item.setDisplayedMnemonicIndex(mnemoSignIndex);
+				}
+			}
+		}
+	}
+
+	final private ModeController modeController;
+
+	public MenuBuilder(final ModeController modeController) {
+		super(null);
+		this.modeController = modeController;
 	}
 
 	public void addAction(final Action action,
@@ -131,6 +291,13 @@ public class MenuBuilder extends UIBuilder {
 			action.putValue(Action.LONG_DESCRIPTION, docu);
 		}
 		final String actionName = actionAnnotation.name();
+		MenuBuilder.setLabelAndMnemonic(action, Controller.getText(actionName));
+		final String iconPath = actionAnnotation.iconPath();
+		if (!iconPath.equals("")) {
+			final ImageIcon icon = new ImageIcon(Controller
+			    .getResourceController().getResource(iconPath));
+			action.putValue(Action.SMALL_ICON, icon);
+		}
 		final String[] actionLocations = actionAnnotation.locations();
 		String keystroke = actionAnnotation.keyStroke();
 		if (keystroke.equals("")) {
@@ -219,6 +386,11 @@ public class MenuBuilder extends UIBuilder {
 			item.setAccelerator(KeyStroke.getKeyStroke(keyProperty));
 		}
 		return;
+	}
+
+	public void addAnnotatedAction(final Action action) {
+		addAction(action, action.getClass().getAnnotation(
+		    ActionDescriptor.class));
 	}
 
 	private void addButton(final String category, final Action action,
@@ -398,8 +570,8 @@ public class MenuBuilder extends UIBuilder {
 					if (cat instanceof MenuSubmenu) {
 						final MenuSubmenu submenu = (MenuSubmenu) cat;
 						final JMenu menuItem = new JMenu();
-						FreemindMenuBar.setLabelAndMnemonic(menuItem,
-						    Controller.getText(submenu.getNameRef()));
+						MenuBuilder.setLabelAndMnemonic(menuItem, Controller
+						    .getText(submenu.getNameRef()));
 						this.addMenuItem(categoryCopy, menuItem, newCategory,
 						    MenuBuilder.AS_CHILD);
 					}
@@ -421,8 +593,7 @@ public class MenuBuilder extends UIBuilder {
 				}
 				final String keystroke = action.getKeyRef();
 				try {
-					final Action theAction = Controller.getController()
-					    .getAction(field);
+					final Action theAction = modeController.getAction(field);
 					final String theCategory = categoryCopy + "/" + name;
 					if (obj instanceof MenuRadioAction) {
 						final JRadioButtonMenuItem item = (JRadioButtonMenuItem) this
@@ -481,8 +652,4 @@ public class MenuBuilder extends UIBuilder {
 			break;
 		}
 	}
-
-	public void addAnnotatedAction(Action action) {
-		addAction(action, action.getClass().getAnnotation(ActionDescriptor.class));
-    }
 }

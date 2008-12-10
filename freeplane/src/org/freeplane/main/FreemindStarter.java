@@ -35,9 +35,7 @@ import org.freeplane.controller.views.ViewController;
 import org.freeplane.map.attribute.ModelessAttributeController;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.ModeController;
-import org.freeplane.modes.browsemode.BModeController;
 import org.freeplane.modes.browsemode.BModeControllerFactory;
-import org.freeplane.modes.filemode.FModeController;
 import org.freeplane.modes.filemode.FModeControllerFactory;
 import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.modes.mindmapmode.MModeControllerFactory;
@@ -173,15 +171,9 @@ public class FreemindStarter {
 			controller
 			    .setAttributeController(new ModelessAttributeController());
 			controller.setHelpController(new HelpController());
-			final MModeController mindMapController = MModeControllerFactory
-			    .createModeController();
-			controller.addModeController(mindMapController);
-			final BModeController browseController = BModeControllerFactory
-			    .createModeController();
-			controller.addModeController(browseController);
-			final FModeController fileController = FModeControllerFactory
-			    .createModeController();
-			controller.addModeController(fileController);
+			MModeControllerFactory.createModeController();
+			BModeControllerFactory.createModeController();
+			FModeControllerFactory.createModeController();
 			feedBack.increase("Freeplane.progress.settingPreferences");
 			controller.getViewController().changeAntialias(
 			    Controller.getResourceController().getProperty(

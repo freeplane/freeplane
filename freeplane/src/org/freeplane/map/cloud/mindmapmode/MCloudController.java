@@ -21,7 +21,6 @@ package org.freeplane.map.cloud.mindmapmode;
 
 import java.awt.Color;
 
-import org.freeplane.controller.Controller;
 import org.freeplane.map.cloud.CloudController;
 import org.freeplane.map.cloud.CloudModel;
 import org.freeplane.map.tree.NodeModel;
@@ -32,16 +31,10 @@ import org.freeplane.undo.IUndoableActor;
  * @author Dimitry Polivaev
  */
 public class MCloudController extends CloudController {
-	static private boolean actionsCreated = false;
-
 	public MCloudController(final MModeController modeController) {
 		super(modeController);
-		if (!actionsCreated) {
-			actionsCreated = true;
-			Controller.getController().addAction("cloud", new CloudAction());
-			Controller.getController().addAction("cloudColor",
-			    new CloudColorAction());
-		}
+		modeController.addAction("cloud", new CloudAction());
+		modeController.addAction("cloudColor", new CloudColorAction());
 	}
 
 	public void setCloud(final NodeModel node, final boolean enable) {

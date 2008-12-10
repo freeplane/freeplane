@@ -25,7 +25,7 @@ import javax.swing.ImageIcon;
 
 import org.freeplane.modes.ModeController;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.ui.FreemindMenuBar;
+import org.freeplane.ui.MenuBuilder;
 
 import deprecated.freemind.modes.mindmapmode.actions.undo.IActor;
 
@@ -48,8 +48,7 @@ public abstract class FreeMindAction extends AbstractAction {
 	public FreeMindAction(final String title) {
 		this();
 		if (title != null && !title.equals("")) {
-			FreemindMenuBar
-			    .setLabelAndMnemonic(this, Controller.getText(title));
+			MenuBuilder.setLabelAndMnemonic(this, Controller.getText(title));
 		}
 	}
 

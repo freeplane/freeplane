@@ -52,8 +52,8 @@ class ImportExplorerFavoritesAction extends FreeMindAction {
 			    "Importing Favorites ...");
 			importExplorerFavorites(folder, getModeController()
 			    .getSelectedNode(),/*
-																																	 * redisplay=
-																																	 */
+																																							 * redisplay=
+																																							 */
 			true);
 			Controller.getController().getViewController().out(
 			    "Favorites imported.");

@@ -24,7 +24,6 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.util.ListIterator;
 
-import org.freeplane.controller.Controller;
 import org.freeplane.map.nodestyle.NodeStyleController;
 import org.freeplane.map.nodestyle.NodeStyleModel;
 import org.freeplane.map.tree.NodeModel;
@@ -36,57 +35,45 @@ import org.freeplane.undo.IUndoableActor;
  * @author Dimitry Polivaev
  */
 public class MNodeStyleController extends NodeStyleController {
-	static private boolean actionsCreated = false;
 	FontFamilyAction fontFamilyAction;
 	FontSizeAction fontSizeAction;
 
 	public MNodeStyleController(final MModeController modeController) {
 		super(modeController);
-		if (!actionsCreated) {
-			actionsCreated = true;
-			Controller.getController().addAction("bold", new BoldAction());
-			Controller.getController().addAction("italic", new ItalicAction());
-			fontSizeAction = new FontSizeAction();
-			Controller.getController().addAction("fontSize", fontSizeAction);
-			final MultipleNodeAction increaseNodeFont = new MultipleNodeAction(
-			    "increase_node_font_size") {
-				@Override
-				protected void actionPerformed(final ActionEvent e,
-				                               final NodeModel node) {
-					increaseFontSize(node, 1);
-				}
-			};
-			Controller.getController().addAction("increaseNodeFont",
-			    increaseNodeFont);
-			final MultipleNodeAction decreaseNodeFont = new MultipleNodeAction(
-			    "decrease_node_font_size") {
-				@Override
-				protected void actionPerformed(final ActionEvent e,
-				                               final NodeModel node) {
-					increaseFontSize(node, -1);
-				}
-			};
-			Controller.getController().addAction("decreaseNodeFont",
-			    decreaseNodeFont);
-			fontFamilyAction = new FontFamilyAction();
-			Controller.getController()
-			    .addAction("fontFamily", fontFamilyAction);
-			Controller.getController().addAction("nodeColor",
-			    new NodeColorAction());
-			Controller.getController().addAction("nodeColorBlend",
-			    new NodeColorBlendAction());
-			Controller.getController().addAction("nodeBackgroundColor",
-			    new NodeBackgroundColorAction());
-			Controller.getController().addAction("removeNodeBackgroundColor",
-			    new RemoveNodeBackgroundColorAction());
-			Controller.getController().addAction("fork",
-			    new NodeShapeAction(modeController, NodeStyleModel.STYLE_FORK));
-			Controller.getController()
-			    .addAction(
-			        "bubble",
-			        new NodeShapeAction(modeController,
-			            NodeStyleModel.STYLE_BUBBLE));
-		}
+		modeController.addAction("bold", new BoldAction());
+		modeController.addAction("italic", new ItalicAction());
+		fontSizeAction = new FontSizeAction();
+		modeController.addAction("fontSize", fontSizeAction);
+		final MultipleNodeAction increaseNodeFont = new MultipleNodeAction(
+		    "increase_node_font_size") {
+			@Override
+			protected void actionPerformed(final ActionEvent e,
+			                               final NodeModel node) {
+				increaseFontSize(node, 1);
+			}
+		};
+		modeController.addAction("increaseNodeFont", increaseNodeFont);
+		final MultipleNodeAction decreaseNodeFont = new MultipleNodeAction(
+		    "decrease_node_font_size") {
+			@Override
+			protected void actionPerformed(final ActionEvent e,
+			                               final NodeModel node) {
+				increaseFontSize(node, -1);
+			}
+		};
+		modeController.addAction("decreaseNodeFont", decreaseNodeFont);
+		fontFamilyAction = new FontFamilyAction();
+		modeController.addAction("fontFamily", fontFamilyAction);
+		modeController.addAction("nodeColor", new NodeColorAction());
+		modeController.addAction("nodeColorBlend", new NodeColorBlendAction());
+		modeController.addAction("nodeBackgroundColor",
+		    new NodeBackgroundColorAction());
+		modeController.addAction("removeNodeBackgroundColor",
+		    new RemoveNodeBackgroundColorAction());
+		modeController.addAction("fork", new NodeShapeAction(modeController,
+		    NodeStyleModel.STYLE_FORK));
+		modeController.addAction("bubble", new NodeShapeAction(modeController,
+		    NodeStyleModel.STYLE_BUBBLE));
 		final MToolbarContributor menuContributor = new MToolbarContributor(
 		    this);
 		modeController.addMenuContributor(menuContributor);

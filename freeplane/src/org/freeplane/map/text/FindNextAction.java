@@ -26,15 +26,14 @@ import org.freeplane.controller.Controller;
 import org.freeplane.controller.FreeMindAction;
 import org.freeplane.main.HtmlTools;
 import org.freeplane.modes.ModeController;
-import org.freeplane.ui.FreemindMenuBar;
+import org.freeplane.ui.MenuBuilder;
 
 class FindNextAction extends FreeMindAction {
 	final private FindAction find;
 
 	public FindNextAction(final ModeController controller, final FindAction find) {
 		super("find_next");
-		FreemindMenuBar.setLabelAndMnemonic(this, controller
-		    .getText("find_next"));
+		MenuBuilder.setLabelAndMnemonic(this, controller.getText("find_next"));
 		this.find = find;
 	}
 

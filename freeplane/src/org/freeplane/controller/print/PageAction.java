@@ -37,12 +37,12 @@ import javax.swing.JTextField;
 
 import org.freeplane.controller.Controller;
 import org.freeplane.main.Tools;
-import org.freeplane.ui.FreemindMenuBar;
+import org.freeplane.ui.MenuBuilder;
 
 class PageAction extends AbstractPrintAction {
 	PageAction(final PrintController controller) {
 		super(controller);
-		FreemindMenuBar.setLabelAndMnemonic(this, Controller.getText("page"));
+		MenuBuilder.setLabelAndMnemonic(this, Controller.getText("page"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -52,8 +52,8 @@ class PageAction extends AbstractPrintAction {
 		final JDialog dialog = new JDialog(Controller.getController()
 		    .getViewController().getJFrame(), Controller
 		    .getText("printing_settings"), /*
-																											 * modal=
-																											 */
+																													 * modal=
+																													 */
 		true);
 		final JCheckBox fitToPage = new JCheckBox(Controller
 		    .getText("fit_to_page"), Controller.getResourceController()
@@ -63,7 +63,7 @@ class PageAction extends AbstractPrintAction {
 		    .getResourceController().getProperty("user_zoom"), 3);
 		userZoom.setEditable(!fitToPage.isSelected());
 		final JButton okButton = new JButton();
-		FreemindMenuBar.setLabelAndMnemonic(okButton, Controller.getText("ok"));
+		MenuBuilder.setLabelAndMnemonic(okButton, Controller.getText("ok"));
 		final Tools.IntHolder eventSource = new Tools.IntHolder();
 		final JPanel panel = new JPanel();
 		final GridBagLayout gridbag = new GridBagLayout();

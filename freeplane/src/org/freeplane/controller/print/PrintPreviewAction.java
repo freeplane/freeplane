@@ -25,12 +25,12 @@ import javax.swing.JOptionPane;
 
 import org.freeplane.controller.Controller;
 import org.freeplane.map.tree.view.MapView;
-import org.freeplane.ui.FreemindMenuBar;
+import org.freeplane.ui.MenuBuilder;
 
 class PrintPreviewAction extends AbstractPrintAction {
 	PrintPreviewAction(final PrintController controller) {
 		super(controller);
-		FreemindMenuBar.setLabelAndMnemonic(this, Controller
+		MenuBuilder.setLabelAndMnemonic(this, Controller
 		    .getText("print_preview"));
 	}
 

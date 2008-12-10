@@ -31,6 +31,9 @@ import org.freeplane.map.tree.NodeModel;
  * @author Dimitry Polivaev
  */
 public abstract class MultipleNodeAction extends FreeMindAction {
+	public MultipleNodeAction() {
+	}
+
 	public MultipleNodeAction(final String name) {
 		super(name);
 	}
@@ -45,9 +48,6 @@ public abstract class MultipleNodeAction extends FreeMindAction {
 	public MultipleNodeAction(final String name, final String imageIcon) {
 		super(name, imageIcon);
 	}
-
-	public MultipleNodeAction() {
-    }
 
 	public void actionPerformed(final ActionEvent e) {
 		for (final ListIterator it = getMModeController().getSelectedNodes()

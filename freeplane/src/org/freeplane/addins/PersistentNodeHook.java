@@ -27,7 +27,6 @@ import java.util.List;
 import javax.swing.Action;
 
 import org.freeplane.controller.ActionDescriptor;
-import org.freeplane.controller.Controller;
 import org.freeplane.controller.FreeMindAction;
 import org.freeplane.extension.IExtension;
 import org.freeplane.io.INodeWriter;
@@ -45,8 +44,8 @@ import org.freeplane.undo.IUndoableActor;
 
 public abstract class PersistentNodeHook implements IExtension {
 	public class HookAction extends FreeMindAction {
-		public HookAction(final ActionDescriptor actionAnnotation) {
-			super(actionAnnotation.name(), actionAnnotation.iconPath());
+		public HookAction() {
+			super();
 		}
 
 		public void actionPerformed(final ActionEvent e) {
@@ -65,7 +64,7 @@ public abstract class PersistentNodeHook implements IExtension {
 	private class SelectableAction extends HookAction implements
 	        ISelectablePopupAction {
 		public SelectableAction() {
-			super(getActionAnnotation());
+			super();
 		}
 
 		public boolean isSelected() {
@@ -256,11 +255,9 @@ public abstract class PersistentNodeHook implements IExtension {
 
 	protected void registerAction(final Action action,
 	                              final ActionDescriptor actionAnnotation) {
-		Controller.getController().addAction(actionAnnotation.name(), action);
-		if (actionAnnotation.locations().length != 0) {
-			getModeController().getUserInputListenerFactory().getMenuBuilder()
-			    .addAction(action, actionAnnotation);
-		}
+		modeController.addAction(actionAnnotation.name(), action);
+		getModeController().getUserInputListenerFactory().getMenuBuilder()
+		    .addAction(action, actionAnnotation);
 	}
 
 	protected void remove(final NodeModel node, final IExtension extension) {

@@ -37,7 +37,6 @@ import org.freeplane.modes.ModeController;
  * @author Dimitry Polivaev
  */
 public class UrlManager {
-	static private boolean actionsCreated = false;
 	private static File lastCurrentDir = null;
 	final private ModeController modeController;
 
@@ -51,12 +50,9 @@ public class UrlManager {
 	 *
 	 */
 	private void createActions() {
-		if (!actionsCreated) {
-			actionsCreated = true;
-			Controller.getController().addAction("open", new OpenAction());
-			Controller.getController().addAction("save", new SaveAction());
-			Controller.getController().addAction("saveAs", new SaveAsAction());
-		}
+		modeController.addAction("open", new OpenAction());
+		modeController.addAction("save", new SaveAction());
+		modeController.addAction("saveAs", new SaveAsAction());
 	}
 
 	/**

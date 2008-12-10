@@ -26,7 +26,7 @@ import javax.swing.JOptionPane;
 
 import org.freeplane.controller.Controller;
 import org.freeplane.ui.AlwaysEnabledAction;
-import org.freeplane.ui.FreemindMenuBar;
+import org.freeplane.ui.MenuBuilder;
 
 @AlwaysEnabledAction
 class AboutAction extends AbstractAction {
@@ -34,7 +34,7 @@ class AboutAction extends AbstractAction {
 	 *
 	 */
 	AboutAction() {
-		FreemindMenuBar.setLabelAndMnemonic(this, Controller.getText("about"));
+		MenuBuilder.setLabelAndMnemonic(this, Controller.getText("about"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {

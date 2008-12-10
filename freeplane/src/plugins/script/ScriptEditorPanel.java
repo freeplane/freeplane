@@ -54,7 +54,7 @@ import javax.swing.text.Element;
 
 import org.freeplane.controller.Controller;
 import org.freeplane.main.Tools;
-import org.freeplane.ui.FreemindMenuBar;
+import org.freeplane.ui.MenuBuilder;
 import org.freeplane.ui.UIBuilder;
 
 import plugins.script.ScriptingEngine.IErrorHandler;
@@ -303,7 +303,7 @@ public class ScriptEditorPanel extends JDialog {
 		mScriptTextField.repaint();
 		final JMenuBar menuBar = new JMenuBar();
 		final JMenu menu = new JMenu();
-		FreemindMenuBar.setLabelAndMnemonic(menu, Controller
+		MenuBuilder.setLabelAndMnemonic(menu, Controller
 		    .getText("plugins/ScriptEditor.menu_actions"));
 		if (pHasNewScriptFunctionality) {
 			addAction(menu, new NewScriptAction(Controller
@@ -340,7 +340,7 @@ public class ScriptEditorPanel extends JDialog {
 
 	private void addAction(final JMenu menu, final AbstractAction action) {
 		final JMenuItem item = menu.add(action);
-		FreemindMenuBar.setLabelAndMnemonic(item, (String) action
+		MenuBuilder.setLabelAndMnemonic(item, (String) action
 		    .getValue(Action.NAME));
 		item.setIcon(new BlindIcon(UIBuilder.ICON_SIZE));
 	}

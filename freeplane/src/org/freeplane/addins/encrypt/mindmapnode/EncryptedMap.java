@@ -23,19 +23,43 @@ import org.freeplane.controller.ActionDescriptor;
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.FreeMindAction;
 import org.freeplane.map.tree.NodeModel;
+import org.freeplane.map.tree.view.NodeView;
+import org.freeplane.modes.INodeSelectionListener;
 import org.freeplane.modes.ModeController;
 import org.freeplane.modes.mindmapmode.EncryptionModel;
 import org.freeplane.ui.dialogs.EnterPasswordDialog;
 
-@ActionDescriptor(
-	name = "accessories/plugins/NewEncryptedMap.properties_name", //
-	tooltip = "accessories/plugins/NewEncryptedMap.properties_documentation", //
-	iconPath = "accessories/plugins/icons/lock.png", //
-	locations = {"/menu_bar/file/open/"}
-)
-public class EncryptedMap extends FreeMindAction {
-	public EncryptedMap() {
+@ActionDescriptor(name = "accessories/plugins/NewEncryptedMap.properties_name", //
+tooltip = "accessories/plugins/NewEncryptedMap.properties_documentation", //
+iconPath = "accessories/plugins/icons/lock.png", //
+locations = { "/menu_bar/file/open" })
+public class EncryptedMap extends FreeMindAction implements
+        INodeSelectionListener {
+	public EncryptedMap(final ModeController modeController) {
 		super();
+		modeController.addNodeSelectionListener(this);
+	}
+
+	public void actionPerformed(final ActionEvent e) {
+		newEncryptedMap();
+	}
+
+	public boolean canBeEnabled() {
+		boolean isEncryptedNode = false;
+		boolean isOpened = false;
+		final ModeController modeController = getModeController();
+		if (modeController == null) {
+			return false;
+		}
+		if (modeController.getSelectedNode() != null) {
+			final EncryptionModel enode = modeController.getSelectedNode()
+			    .getEncryptionModel();
+			if (enode != null) {
+				isEncryptedNode = true;
+				isOpened = enode.isAccessible();
+			}
+		}
+		return (!isEncryptedNode || isOpened);
 	}
 
 	/**
@@ -52,10 +76,6 @@ public class EncryptedMap extends FreeMindAction {
 		return password;
 	}
 
-    public void actionPerformed(ActionEvent e) {
-    	newEncryptedMap();
-	}
-
 	/**
 	 *
 	 */
@@ -65,29 +85,20 @@ public class EncryptedMap extends FreeMindAction {
 			return;
 		}
 		final ModeController newModeController = getMModeController();
-		final NodeModel node = new NodeModel(Controller.getText(
-		    "accessories/plugins/EncryptNode.properties_select_me"), null);
+		final NodeModel node = new NodeModel(Controller
+		    .getText("accessories/plugins/EncryptNode.properties_select_me"),
+		    null);
 		final EncryptionModel encryptedMindMapNode = new EncryptionModel(node);
 		encryptedMindMapNode.setPassword(password);
 		node.addExtension(encryptedMindMapNode);
 		newModeController.getMapController().newMap(node);
 	}
 
-	@Override
-	public boolean isEnabled() {
-		boolean isEncryptedNode = false;
-		boolean isOpened = false;
-		final ModeController modeController = getModeController();
-		if (modeController.getSelectedNode() != null) {
-			final EncryptionModel enode = modeController.getSelectedNode()
-			    .getEncryptionModel();
-			if (enode != null) {
-				isEncryptedNode = true;
-				isOpened = enode.isAccessible();
-			}
-		}
-		return (!isEncryptedNode || isOpened);
+	public void onDeselect(final NodeView node) {
+		setEnabled(false);
 	}
 
-
+	public void onSelect(final NodeView node) {
+		setEnabled(canBeEnabled());
+	}
 }

@@ -25,13 +25,13 @@ import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.ui.FreemindMenuBar;
+import org.freeplane.ui.MenuBuilder;
 
 class NavigationPreviousMapAction extends AbstractAction {
 	NavigationPreviousMapAction() {
 		super(null, new ImageIcon(Controller.getResourceController()
 		    .getResource("images/1leftarrow.png")));
-		FreemindMenuBar.setLabelAndMnemonic(this, Controller
+		MenuBuilder.setLabelAndMnemonic(this, Controller
 		    .getText("previous_map"));
 		setEnabled(false);
 	}

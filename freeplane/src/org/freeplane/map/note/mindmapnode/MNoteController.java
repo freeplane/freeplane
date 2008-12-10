@@ -101,7 +101,6 @@ public class MNoteController extends NoteController {
 		}
 	}
 
-	static private boolean actionsCreated = false;
 	private static SHTMLPanel htmlEditorPanel;
 	/**
 	 * Indicates, whether or not the main panel has to be refreshed with new
@@ -118,15 +117,12 @@ public class MNoteController extends NoteController {
 	 */
 	public MNoteController(final MModeController modeController) {
 		super(modeController);
-		if (!actionsCreated) {
-			actionsCreated = true;
-			Controller.getController().addAction("selectNoteAction",
-			    new SelectNoteAction(this, getModeController()));
-			Controller.getController().addAction("showHideNoteAction",
-			    new ShowHideNoteAction(this, getModeController()));
-			Controller.getController().addAction("removeNoteAction",
-			    new RemoveNoteAction(this, getModeController()));
-		}
+		modeController.addAction("selectNoteAction", new SelectNoteAction(this,
+		    getModeController()));
+		modeController.addAction("showHideNoteAction", new ShowHideNoteAction(
+		    this, getModeController()));
+		modeController.addAction("removeNoteAction", new RemoveNoteAction(this,
+		    getModeController()));
 	}
 
 	SHTMLPanel getHtmlEditorPanel() {

@@ -46,6 +46,7 @@ public class FModeControllerFactory {
 			return modeController;
 		}
 		modeController = new FModeController();
+		Controller.getController().addModeController(modeController);
 		modeController.setMapController(new FMapController(modeController));
 		modeController.setUrlManager(new UrlManager(modeController));
 		modeController.setIconController(new IconController(modeController));
@@ -64,8 +65,8 @@ public class FModeControllerFactory {
 				    return "fork";
 			    }
 		    });
-		Controller.getController().addAction("center", new CenterAction());
-		Controller.getController().addAction("openPath", new OpenPathAction());
+		modeController.addAction("center", new CenterAction());
+		modeController.addAction("openPath", new OpenPathAction());
 		modeController.getUserInputListenerFactory().setNodePopupMenu(
 		    new JPopupMenu());
 		modeController.getUserInputListenerFactory().setMainToolBar(

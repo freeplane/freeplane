@@ -40,7 +40,7 @@ import org.freeplane.main.Tools;
 import org.freeplane.map.pattern.mindmapnode.StylePatternPanel;
 import org.freeplane.map.pattern.mindmapnode.StylePatternPanel.StylePatternPanelType;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.ui.FreemindMenuBar;
+import org.freeplane.ui.MenuBuilder;
 
 import deprecated.freemind.common.ITextTranslator;
 import deprecated.freemind.common.XmlBindingTools;
@@ -101,7 +101,7 @@ public class ChooseFormatPopupDialog extends JDialog implements
 					cancelPressed();
 				}
 			});
-			FreemindMenuBar.setLabelAndMnemonic(jCancelButton, mController
+			MenuBuilder.setLabelAndMnemonic(jCancelButton, mController
 			    .getText(("cancel")));
 		}
 		return jCancelButton;
@@ -149,7 +149,7 @@ public class ChooseFormatPopupDialog extends JDialog implements
 					okPressed();
 				}
 			});
-			FreemindMenuBar.setLabelAndMnemonic(jOKButton, mController
+			MenuBuilder.setLabelAndMnemonic(jOKButton, mController
 			    .getText("ok"));
 		}
 		return jOKButton;

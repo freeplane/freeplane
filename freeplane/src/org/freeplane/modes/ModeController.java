@@ -34,8 +34,10 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.Action;
 import javax.swing.JPopupMenu;
 
+import org.freeplane.controller.ActionController;
 import org.freeplane.controller.Controller;
 import org.freeplane.io.url.UrlManager;
 import org.freeplane.map.attribute.IAttributeController;
@@ -67,6 +69,7 @@ import deprecated.freemind.extensions.IHookFactory;
  */
 public class ModeController {
 	public static final String NODESEPARATOR = "<nodeseparator>";
+	private final ActionController actionController;
 	private ClipboardController clipboardController;
 	private CloudController cloudController;
 	private EdgeController edgeController;
@@ -99,11 +102,16 @@ public class ModeController {
 	 * Instantiation order: first me and then the model.
 	 */
 	public ModeController() {
-		userInputListenerFactory = new UserInputListenerFactory();
+		userInputListenerFactory = new UserInputListenerFactory(this);
 		nodeSelectionListeners = new LinkedList();
 		nodeChangeListeners = new LinkedList();
 		menuContributors = new LinkedList();
 		nodeViewListeners = new LinkedList();
+		actionController = new ActionController();
+	}
+
+	public void addAction(final Object key, final Action value) {
+		actionController.addAction(key, value);
 	}
 
 	public void addMenuContributor(final IMenuContributor contributor) {
@@ -146,10 +154,19 @@ public class ModeController {
 
 	public void enableActions(final boolean enabled) {
 		Controller.getController().enableActions(enabled);
+		actionController.enableActions(enabled);
 	}
 
 	public void execute(final IUndoableActor actor) {
 		actor.act();
+	}
+
+	public Action getAction(final String key) {
+		final Action action = actionController.getAction(key);
+		if (action != null) {
+			return action;
+		}
+		return Controller.getController().getAction(key);
 	}
 
 	public IAttributeController getAttributeController() {
@@ -386,6 +403,10 @@ public class ModeController {
 	}
 
 	public void plainClick(final MouseEvent e) {
+	}
+
+	public Action removeAction(final String key) {
+		return actionController.removeAction(key);
 	}
 
 	public void removeNodeChangeListener(final INodeChangeListener listener) {

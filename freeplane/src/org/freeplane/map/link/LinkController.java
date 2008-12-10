@@ -55,7 +55,6 @@ public class LinkController {
 		}
 	}
 
-	static private boolean actionsCreated = false;
 	private static ArrowLinkListener listener = null;
 	public static final int STANDARD_WIDTH = 1;
 	static Color standardColor = null;
@@ -100,13 +99,9 @@ public class LinkController {
 	 *
 	 */
 	private void createActions(final ModeController modeController) {
-		if (!actionsCreated) {
-			actionsCreated = true;
-			Controller.getController().addAction("followLink",
-			    new FollowLinkAction());
-			Controller.getController().addAction("gotoLinkNodeAction",
-			    new GotoLinkNodeAction(this, null));
-		}
+		modeController.addAction("followLink", new FollowLinkAction());
+		modeController.addAction("gotoLinkNodeAction", new GotoLinkNodeAction(
+		    this, null));
 	}
 
 	protected void createArrowLinkPopup(final ArrowLinkModel link,

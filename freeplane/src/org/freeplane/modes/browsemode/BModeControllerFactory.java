@@ -24,6 +24,7 @@ import javax.swing.JPopupMenu;
 import org.freeplane.controller.Controller;
 import org.freeplane.io.url.UrlManager;
 import org.freeplane.map.attribute.AttributeController;
+import org.freeplane.map.clipboard.ClipboardController;
 import org.freeplane.map.cloud.CloudController;
 import org.freeplane.map.edge.EdgeController;
 import org.freeplane.map.icon.IconController;
@@ -46,6 +47,7 @@ public class BModeControllerFactory {
 			return modeController;
 		}
 		modeController = new BModeController();
+		Controller.getController().addModeController(modeController);
 		modeController.setMapController(new BMapController(modeController));
 		modeController.setUrlManager(new UrlManager(modeController));
 		new AttributeController(modeController);
@@ -57,6 +59,8 @@ public class BModeControllerFactory {
 		modeController.setCloudController(new CloudController(modeController));
 		modeController.setNoteController(new NoteController(modeController));
 		modeController.setTextController(new TextController(modeController));
+		modeController.setClipboardController(new ClipboardController(
+		    modeController));
 		modeController.setLocationController(new LocationController(
 		    modeController));
 		modeController.addNodeSelectionListener(new BNodeNoteViewer(

@@ -33,8 +33,8 @@ import accessories.plugins.dialogs.ChooseFormatPopupDialog;
 import freemind.controller.actions.generated.instance.Pattern;
 
 @ActionDescriptor(name = "accessories/plugins/ApplyFormatPlugin.properties_name", //
-	locations = {"/menu_bar/format/change/apply_format_from_menu"}, //
-	tooltip = "accessories/plugins/ApplyFormatPlugin.properties_documentation" //
+locations = { "/menu_bar/format/change" }, //
+tooltip = "accessories/plugins/ApplyFormatPlugin.properties_documentation" //
 )
 public class ApplyFormatPlugin extends FreeMindAction {
 	/**
@@ -43,7 +43,7 @@ public class ApplyFormatPlugin extends FreeMindAction {
 		super();
 	}
 
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(final ActionEvent e) {
 		final ModeController modeController = getModeController();
 		final NodeModel focussed = modeController.getSelectedNode();
 		final List selected = modeController.getSelectedNodes();
@@ -59,10 +59,9 @@ public class ApplyFormatPlugin extends FreeMindAction {
 			final Pattern pattern = formatDialog.getPattern();
 			for (final Iterator iter = selected.iterator(); iter.hasNext();) {
 				final NodeModel node = (NodeModel) iter.next();
-				getMModeController().getPatternController().applyPattern(
-				    node, pattern);
+				getMModeController().getPatternController().applyPattern(node,
+				    pattern);
 			}
 		}
 	}
-
 }

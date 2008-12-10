@@ -25,14 +25,14 @@ import javax.swing.AbstractAction;
 
 import org.freeplane.controller.Controller;
 import org.freeplane.map.tree.MapModel;
-import org.freeplane.ui.FreemindMenuBar;
+import org.freeplane.ui.MenuBuilder;
 
 class ShowAllAttributesAction extends AbstractAction {
 	/**
 	 *
 	 */
 	public ShowAllAttributesAction() {
-		FreemindMenuBar.setLabelAndMnemonic(this, Controller
+		MenuBuilder.setLabelAndMnemonic(this, Controller
 		    .getText("attributes_show_all"));
 	};
 

@@ -48,17 +48,15 @@ public class IconSelectionPlugin extends MindMapNodeHookAdapter {
 	public void invoke(final NodeModel rootNode) {
 		final NodeView focussed = getController().getSelectedView();
 		final Vector actions = new Vector();
-		final MModeController controller = getMindMapController();
-		final Collection<Action> iconActions = ((MIconController) controller
+		final MModeController modeController = getMindMapController();
+		final Collection<Action> iconActions = ((MIconController) modeController
 		    .getIconController()).getIconActions();
 		actions.addAll(iconActions);
-		actions.add(Controller.getController()
-		    .getAction("removeLastIconAction"));
-		actions.add(Controller.getController()
-		    .getAction("removeAllIconsAction"));
+		actions.add(modeController.getAction("removeLastIconAction"));
+		actions.add(modeController.getAction("removeAllIconsAction"));
 		final IconSelectionPopupDialog selectionDialog = new IconSelectionPopupDialog(
 		    Controller.getController().getViewController().getJFrame(), actions);
-		final MapView mapView = controller.getMapView();
+		final MapView mapView = modeController.getMapView();
 		mapView.scrollNodeToVisible(focussed, 0);
 		selectionDialog.pack();
 		Tools.setDialogLocationRelativeTo(selectionDialog, focussed);

@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.ui.FreemindMenuBar;
+import org.freeplane.ui.MenuBuilder;
 
 class PrintAction extends AbstractPrintAction {
 	final private boolean isDlg;
@@ -32,7 +32,7 @@ class PrintAction extends AbstractPrintAction {
 	PrintAction(final PrintController controller, final boolean isDlg) {
 		super(controller, null, new ImageIcon(Controller
 		    .getResourceController().getResource("images/fileprint.png")));
-		FreemindMenuBar.setLabelAndMnemonic(this, isDlg ? Controller
+		MenuBuilder.setLabelAndMnemonic(this, isDlg ? Controller
 		    .getText("print_dialog") : Controller.getText("print"));
 		this.isDlg = isDlg;
 	}

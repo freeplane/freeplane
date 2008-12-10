@@ -24,11 +24,11 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.ui.FreemindMenuBar;
+import org.freeplane.ui.MenuBuilder;
 
 class MoveToRootAction extends AbstractAction {
 	MoveToRootAction() {
-		FreemindMenuBar.setLabelAndMnemonic(this, Controller
+		MenuBuilder.setLabelAndMnemonic(this, Controller
 		    .getText("move_to_root"));
 	}
 

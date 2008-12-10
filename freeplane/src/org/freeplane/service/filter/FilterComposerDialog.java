@@ -66,7 +66,7 @@ import org.freeplane.service.filter.condition.ConjunctConditions;
 import org.freeplane.service.filter.condition.DisjunctConditions;
 import org.freeplane.service.filter.condition.ICondition;
 import org.freeplane.service.filter.util.ExtendedComboBoxModel;
-import org.freeplane.ui.FreemindMenuBar;
+import org.freeplane.ui.MenuBuilder;
 
 /**
  * @author Dimitry Polivaev
@@ -575,17 +575,16 @@ public class FilterComposerDialog extends JDialog {
 		getContentPane().add(controllerBox, BorderLayout.SOUTH);
 		final CloseAction closeAction = new CloseAction();
 		btnOK = new JButton();
-		FreemindMenuBar.setLabelAndMnemonic(btnOK, Controller.getText("ok"));
+		MenuBuilder.setLabelAndMnemonic(btnOK, Controller.getText("ok"));
 		btnOK.addActionListener(closeAction);
 		btnOK.setMaximumSize(FilterComposerDialog.maxButtonDimension);
 		btnApply = new JButton();
-		FreemindMenuBar.setLabelAndMnemonic(btnApply, Controller
-		    .getText("apply"));
+		MenuBuilder.setLabelAndMnemonic(btnApply, Controller.getText("apply"));
 		btnApply.addActionListener(closeAction);
 		btnApply.setMaximumSize(FilterComposerDialog.maxButtonDimension);
 		btnCancel = new JButton();
-		FreemindMenuBar.setLabelAndMnemonic(btnCancel, Controller
-		    .getText("cancel"));
+		MenuBuilder
+		    .setLabelAndMnemonic(btnCancel, Controller.getText("cancel"));
 		btnCancel.addActionListener(closeAction);
 		btnCancel.setMaximumSize(FilterComposerDialog.maxButtonDimension);
 		controllerBox.add(Box.createHorizontalGlue());
@@ -598,14 +597,14 @@ public class FilterComposerDialog extends JDialog {
 		if (!Controller.getController().getViewController().isApplet()) {
 			final ActionListener saveAction = new SaveAction();
 			btnSave = new JButton();
-			FreemindMenuBar.setLabelAndMnemonic(btnSave, Controller
-			    .getText("save"));
+			MenuBuilder
+			    .setLabelAndMnemonic(btnSave, Controller.getText("save"));
 			btnSave.addActionListener(saveAction);
 			btnSave.setMaximumSize(FilterComposerDialog.maxButtonDimension);
 			final ActionListener loadAction = new LoadAction();
 			btnLoad = new JButton();
-			FreemindMenuBar.setLabelAndMnemonic(btnLoad, Controller
-			    .getText("load"));
+			MenuBuilder
+			    .setLabelAndMnemonic(btnLoad, Controller.getText("load"));
 			btnLoad.addActionListener(loadAction);
 			btnLoad.setMaximumSize(FilterComposerDialog.maxButtonDimension);
 			controllerBox.add(btnSave);

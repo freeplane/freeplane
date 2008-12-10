@@ -52,7 +52,7 @@ import org.freeplane.map.icon.MindIcon;
 import org.freeplane.map.tree.MapModel;
 import org.freeplane.map.tree.view.MapView;
 import org.freeplane.service.filter.util.SortedComboBoxModel;
-import org.freeplane.ui.FreemindMenuBar;
+import org.freeplane.ui.MenuBuilder;
 
 class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 	static private class AttributeTreeNodeInfo extends TreeNodeInfo {
@@ -161,7 +161,7 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 		final Box buttons = Box.createHorizontalBox();
 		buttons.setBorder(new EmptyBorder(5, 5, 5, 5));
 		final JButton okBtn = new JButton();
-		FreemindMenuBar.setLabelAndMnemonic(okBtn, Controller.getText("ok"));
+		MenuBuilder.setLabelAndMnemonic(okBtn, Controller.getText("ok"));
 		okBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent e) {
 				performImport(topNode);
@@ -169,8 +169,8 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 			}
 		});
 		final JButton cancelBtn = new JButton();
-		FreemindMenuBar.setLabelAndMnemonic(cancelBtn, Controller
-		    .getText("cancel"));
+		MenuBuilder
+		    .setLabelAndMnemonic(cancelBtn, Controller.getText("cancel"));
 		cancelBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent e) {
 				dispose();

@@ -41,7 +41,6 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Vector;
 
-import org.freeplane.controller.Controller;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.view.MapView;
 import org.freeplane.map.tree.view.NodeView;
@@ -51,8 +50,6 @@ import org.freeplane.modes.ModeController;
  * @author Dimitry Polivaev
  */
 public class ClipboardController {
-	static private boolean actionsCreated = false;
-
 	static public void saveHTML(final NodeModel rootNodeOfBranch,
 	                            final File file) throws IOException {
 		final BufferedWriter fileout = new BufferedWriter(
@@ -142,12 +139,8 @@ public class ClipboardController {
 	 *
 	 */
 	private void createActions() {
-		if (!actionsCreated) {
-			actionsCreated = true;
-			Controller.getController().addAction("copy", new CopyAction());
-			Controller.getController().addAction("copySingle",
-			    new CopySingleAction());
-		}
+		modeController.addAction("copy", new CopyAction());
+		modeController.addAction("copySingle", new CopySingleAction());
 	}
 
 	public String createForNodesFlavor(

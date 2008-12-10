@@ -21,7 +21,6 @@ package org.freeplane.controller;
 
 import java.awt.event.ActionEvent;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Set;
 
 import javax.swing.Action;
@@ -39,7 +38,6 @@ import org.freeplane.map.tree.MapModel;
 import org.freeplane.map.tree.view.MapView;
 import org.freeplane.modes.ModeController;
 import org.freeplane.service.filter.FilterController;
-import org.freeplane.ui.AlwaysEnabledAction;
 
 /**
  * Provides the methods to edit/change a Node. Forwards all messages to
@@ -67,7 +65,7 @@ public class Controller {
 		return resourceController.getText(string);
 	}
 
-	final private HashMap<Object, Action> actions;
+	private final ActionController actionController;
 	private ModelessAttributeController attributeController;
 	private FilterController filterController;
 	private HelpController helpController;
@@ -83,11 +81,11 @@ public class Controller {
 
 	public Controller(final ResourceController resourceController) {
 		if (Controller.controllerInstance != null) {
-        	throw new RuntimeException("Controller already created");
-        }
+			throw new RuntimeException("Controller already created");
+		}
 		Controller.resourceController = resourceController;
-        Controller.controllerInstance = this;
-		actions = new HashMap<Object, Action>();
+		Controller.controllerInstance = this;
+		actionController = new ActionController();
 		modeControllers = new HashMap();
 		quit = new QuitAction(resourceController);
 		addAction("quit", quit);
@@ -95,10 +93,7 @@ public class Controller {
 	}
 
 	public void addAction(final Object key, final Action value) {
-		assert key != null;
-		assert value != null;
-		final Action oldAction = actions.put(key, value);
-		assert oldAction == null;
+		actionController.addAction(key, value);
 	}
 
 	public void addModeController(final ModeController modeController) {
@@ -116,13 +111,7 @@ public class Controller {
 	}
 
 	public void enableActions(final boolean enabled) {
-		final Iterator<Action> iterator = actions.values().iterator();
-		while (iterator.hasNext()) {
-			final Action action = iterator.next();
-			if (action.getClass().getAnnotation(AlwaysEnabledAction.class) == null) {
-				action.setEnabled(enabled);
-			}
-		}
+		actionController.enableActions(enabled);
 	}
 
 	public void errorMessage(final Object message) {
@@ -147,7 +136,7 @@ public class Controller {
 	}
 
 	public Action getAction(final String key) {
-		return actions.get(key);
+		return actionController.getAction(key);
 	}
 
 	public ModelessAttributeController getAttributeController() {
@@ -252,7 +241,7 @@ public class Controller {
 	}
 
 	public Action removeAction(final String key) {
-		return actions.remove(key);
+		return actionController.removeAction(key);
 	}
 
 	public void selectMode(final ModeController newModeController) {

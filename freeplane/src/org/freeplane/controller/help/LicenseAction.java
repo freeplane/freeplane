@@ -26,13 +26,12 @@ import javax.swing.JOptionPane;
 
 import org.freeplane.controller.Controller;
 import org.freeplane.ui.AlwaysEnabledAction;
-import org.freeplane.ui.FreemindMenuBar;
+import org.freeplane.ui.MenuBuilder;
 
 @AlwaysEnabledAction
 class LicenseAction extends AbstractAction {
 	LicenseAction() {
-		FreemindMenuBar
-		    .setLabelAndMnemonic(this, Controller.getText("license"));
+		MenuBuilder.setLabelAndMnemonic(this, Controller.getText("license"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {

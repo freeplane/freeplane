@@ -446,9 +446,9 @@ class TimeList {
 
 	/**
 	 */
-	public static String getPureRegularExpression(String text) {
-		text = text.replaceAll("([()\\.\\[\\]^$|])", "\\\\\\1");
-		text = text.replaceAll("\\*", ".*");
+	public static String getPureRegularExpression(final String text) {
+		//		text=text.replaceAll("([().\\[\\]^$|])", "\\\\$1");
+		//		text = text.replaceAll("\\*", ".*");
 		return text;
 	}
 

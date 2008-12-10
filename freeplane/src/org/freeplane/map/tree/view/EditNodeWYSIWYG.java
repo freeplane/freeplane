@@ -38,7 +38,7 @@ import org.freeplane.controller.Controller;
 import org.freeplane.main.HtmlTools;
 import org.freeplane.main.Tools;
 import org.freeplane.modes.ModeController;
-import org.freeplane.ui.FreemindMenuBar;
+import org.freeplane.ui.MenuBuilder;
 
 import com.lightdev.app.shtm.SHTMLPanel;
 
@@ -57,11 +57,10 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 			final JButton okButton = new JButton();
 			final JButton cancelButton = new JButton();
 			final JButton splitButton = new JButton();
-			FreemindMenuBar.setLabelAndMnemonic(okButton, base.getText("ok"));
-			FreemindMenuBar.setLabelAndMnemonic(cancelButton, base
+			MenuBuilder.setLabelAndMnemonic(okButton, base.getText("ok"));
+			MenuBuilder.setLabelAndMnemonic(cancelButton, base
 			    .getText("cancel"));
-			FreemindMenuBar.setLabelAndMnemonic(splitButton, base
-			    .getText("split"));
+			MenuBuilder.setLabelAndMnemonic(splitButton, base.getText("split"));
 			okButton.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent e) {
 					submit();

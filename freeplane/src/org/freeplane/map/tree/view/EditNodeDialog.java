@@ -43,7 +43,7 @@ import javax.swing.ScrollPaneConstants;
 import org.freeplane.controller.Controller;
 import org.freeplane.main.Tools;
 import org.freeplane.modes.ModeController;
-import org.freeplane.ui.FreemindMenuBar;
+import org.freeplane.ui.MenuBuilder;
 
 /**
  * @author foltin
@@ -82,11 +82,10 @@ public class EditNodeDialog extends EditNodeBase {
 			final JButton splitButton = new JButton();
 			final JCheckBox enterConfirms = new JCheckBox("",
 			    binOptionIsTrue("el__enter_confirms_by_default"));
-			FreemindMenuBar.setLabelAndMnemonic(okButton, getText("ok"));
-			FreemindMenuBar
-			    .setLabelAndMnemonic(cancelButton, getText("cancel"));
-			FreemindMenuBar.setLabelAndMnemonic(splitButton, getText("split"));
-			FreemindMenuBar.setLabelAndMnemonic(enterConfirms,
+			MenuBuilder.setLabelAndMnemonic(okButton, getText("ok"));
+			MenuBuilder.setLabelAndMnemonic(cancelButton, getText("cancel"));
+			MenuBuilder.setLabelAndMnemonic(splitButton, getText("split"));
+			MenuBuilder.setLabelAndMnemonic(enterConfirms,
 			    getText("enter_confirms"));
 			if (EditNodeDialog.booleanHolderForConfirmState == null) {
 				EditNodeDialog.booleanHolderForConfirmState = new Tools.BooleanHolder();

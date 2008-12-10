@@ -72,7 +72,6 @@ public class FileManager extends UrlManager {
 		}
 	}
 
-	static private boolean actionsCreated = false;
 	public static final String FREEMIND_FILE_EXTENSION = "."
 	        + FileManager.FREEMIND_FILE_EXTENSION_WITHOUT_DOT;
 	public static final String FREEMIND_FILE_EXTENSION_WITHOUT_DOT = "mm";
@@ -90,24 +89,17 @@ public class FileManager extends UrlManager {
 	 *
 	 */
 	private void createActions(final MModeController modeController) {
-		if (!actionsCreated) {
-			actionsCreated = true;
-			Controller.getController().addAction("exportBranch",
-			    new ExportBranchAction());
-			Controller.getController().addAction("importBranch",
-			    new ImportBranchAction());
-			Controller.getController().addAction("importLinkedBranch",
-			    new ImportLinkedBranchAction());
-			Controller.getController().addAction(
-			    "importLinkedBranchWithoutRoot",
-			    new ImportLinkedBranchWithoutRootAction());
-			Controller.getController().addAction("importExplorerFavorites",
-			    new ImportExplorerFavoritesAction());
-			Controller.getController().addAction("importFolderStructure",
-			    new ImportFolderStructureAction());
-			Controller.getController().addAction("revertAction",
-			    new RevertAction());
-		}
+		modeController.addAction("exportBranch", new ExportBranchAction());
+		modeController.addAction("importBranch", new ImportBranchAction());
+		modeController.addAction("importLinkedBranch",
+		    new ImportLinkedBranchAction());
+		modeController.addAction("importLinkedBranchWithoutRoot",
+		    new ImportLinkedBranchWithoutRootAction());
+		modeController.addAction("importExplorerFavorites",
+		    new ImportExplorerFavoritesAction());
+		modeController.addAction("importFolderStructure",
+		    new ImportFolderStructureAction());
+		modeController.addAction("revertAction", new RevertAction());
 	}
 
 	protected JFileChooser getFileChooser() {

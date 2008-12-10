@@ -48,7 +48,6 @@ import org.freeplane.undo.IUndoableActor;
  * @author Dimitry Polivaev
  */
 public class MIconController extends IconController {
-	static private boolean actionsCreated = false;
 	static final private Vector iconActions = new Vector();
 	final private JToolBar iconToolBar;
 	final private JAutoScrollBarPane iconToolBarScrollPane;
@@ -89,11 +88,11 @@ public class MIconController extends IconController {
 
 	public void addIconsToMenu(final MenuBuilder builder,
 	                           final String iconMenuString) {
-		builder.addMenuItem(iconMenuString + "/icons", new JMenuItem(Controller
-		    .getController().getAction("removeLastIconAction")),
+		builder.addMenuItem(iconMenuString + "/icons", new JMenuItem(
+		    getModeController().getAction("removeLastIconAction")),
 		    MenuBuilder.AS_CHILD);
-		builder.addMenuItem(iconMenuString + "/icons", new JMenuItem(Controller
-		    .getController().getAction("removeAllIconsAction")),
+		builder.addMenuItem(iconMenuString + "/icons", new JMenuItem(
+		    getModeController().getAction("removeAllIconsAction")),
 		    MenuBuilder.AS_CHILD);
 		builder.addSeparator(iconMenuString + "/icons", MenuBuilder.AS_CHILD);
 		for (int i = 0; i < iconActions.size(); ++i) {
@@ -103,42 +102,36 @@ public class MIconController extends IconController {
 	}
 
 	private void createIconActions() {
-		if (!actionsCreated) {
-			actionsCreated = true;
-			final MModeController modeController = getMModeController();
-			final RemoveIconAction removeLastIconAction = new RemoveIconAction();
-			Controller.getController().addAction("removeLastIconAction",
-			    removeLastIconAction);
-			Controller.getController().addAction("removeAllIconsAction",
-			    new RemoveAllIconsAction());
-			final Vector iconNames = MindIcon.getAllIconNames();
-			final File iconDir = new File(Controller.getResourceController()
-			    .getFreemindUserDirectory(), "icons");
-			if (iconDir.exists()) {
-				final String[] userIconArray = iconDir
-				    .list(new FilenameFilter() {
-					    public boolean accept(final File dir, final String name) {
-						    return name.matches(".*\\.png");
-					    }
-				    });
-				if (userIconArray != null) {
-					for (int i = 0; i < userIconArray.length; ++i) {
-						String iconName = userIconArray[i];
-						iconName = iconName.substring(0, iconName.length() - 4);
-						if (iconName.equals("")) {
-							continue;
-						}
-						iconNames.add(iconName);
+		final MModeController modeController = getMModeController();
+		final RemoveIconAction removeLastIconAction = new RemoveIconAction();
+		modeController.addAction("removeLastIconAction", removeLastIconAction);
+		modeController.addAction("removeAllIconsAction",
+		    new RemoveAllIconsAction());
+		final Vector iconNames = MindIcon.getAllIconNames();
+		final File iconDir = new File(Controller.getResourceController()
+		    .getFreemindUserDirectory(), "icons");
+		if (iconDir.exists()) {
+			final String[] userIconArray = iconDir.list(new FilenameFilter() {
+				public boolean accept(final File dir, final String name) {
+					return name.matches(".*\\.png");
+				}
+			});
+			if (userIconArray != null) {
+				for (int i = 0; i < userIconArray.length; ++i) {
+					String iconName = userIconArray[i];
+					iconName = iconName.substring(0, iconName.length() - 4);
+					if (iconName.equals("")) {
+						continue;
 					}
+					iconNames.add(iconName);
 				}
 			}
-			for (int i = 0; i < iconNames.size(); ++i) {
-				final String iconName = ((String) iconNames.get(i));
-				final MindIcon myIcon = MindIcon.factory(iconName);
-				final IconAction myAction = new IconAction(modeController,
-				    myIcon);
-				iconActions.add(myAction);
-			}
+		}
+		for (int i = 0; i < iconNames.size(); ++i) {
+			final String iconName = ((String) iconNames.get(i));
+			final MindIcon myIcon = MindIcon.factory(iconName);
+			final IconAction myAction = new IconAction(modeController, myIcon);
+			iconActions.add(myAction);
 		}
 	}
 
@@ -176,12 +169,12 @@ public class MIconController extends IconController {
 	}
 
 	public void removeAllIcons(final NodeModel node) {
-		((RemoveAllIconsAction) Controller.getController().getAction(
+		((RemoveAllIconsAction) getModeController().getAction(
 		    "removeAllIconsAction")).removeAllIcons(node);
 	}
 
 	public int removeIcon(final NodeModel node, final int position) {
-		return ((RemoveIconAction) Controller.getController().getAction(
+		return ((RemoveIconAction) getModeController().getAction(
 		    "removeLastIconAction")).removeIcon(node, position);
 	}
 
@@ -191,10 +184,8 @@ public class MIconController extends IconController {
 
 	private void updateIconToolbar(final JToolBar iconToolBar) {
 		iconToolBar.removeAll();
-		iconToolBar.add(Controller.getController().getAction(
-		    "removeLastIconAction"));
-		iconToolBar.add(Controller.getController().getAction(
-		    "removeAllIconsAction"));
+		iconToolBar.add(getModeController().getAction("removeLastIconAction"));
+		iconToolBar.add(getModeController().getAction("removeAllIconsAction"));
 		iconToolBar.addSeparator();
 		for (int i = 0; i < iconActions.size(); ++i) {
 			iconToolBar.add((Action) iconActions.get(i));

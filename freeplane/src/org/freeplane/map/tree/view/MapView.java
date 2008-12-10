@@ -43,11 +43,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.TreeMap;
 import java.util.Vector;
-import java.util.Map.Entry;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -622,7 +622,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		for (int i = 0; i < selection.size(); i++) {
 			selectedNodesSet.add(getSelected(i).getModel());
 		}
-		final TreeMap<Integer, NodeModel> sortedNodes = new TreeMap();
+		final TreeMap<Integer, LinkedList<NodeModel>> sortedNodes = new TreeMap();
 		final Point point = new Point();
 		iteration: for (int i = 0; i < selection.size(); i++) {
 			final NodeView view = getSelected(i);
@@ -635,12 +635,22 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 			}
 			view.getContent().getLocation(point);
 			Tools.convertPointToAncestor(view, point, this);
-			sortedNodes.put(new Integer(point.y), node);
+			final Integer pointY = new Integer(point.y);
+			LinkedList<NodeModel> nodeList = sortedNodes.get(pointY);
+			if (nodeList == null) {
+				nodeList = new LinkedList<NodeModel>();
+				sortedNodes.put(pointY, nodeList);
+			}
+			nodeList.add(node);
 		}
 		final ArrayList<NodeModel> selectedNodes = new ArrayList();
-		for (final Iterator<Entry<Integer, NodeModel>> it = sortedNodes
-		    .entrySet().iterator(); it.hasNext();) {
-			selectedNodes.add(it.next().getValue());
+		for (final Iterator<LinkedList<NodeModel>> it = sortedNodes.values()
+		    .iterator(); it.hasNext();) {
+			final LinkedList<NodeModel> nodeList = it.next();
+			for (final Iterator<NodeModel> itn = nodeList.iterator(); itn
+			    .hasNext();) {
+				selectedNodes.add(itn.next());
+			}
 		}
 		return selectedNodes;
 	}

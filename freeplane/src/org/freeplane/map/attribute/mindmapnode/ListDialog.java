@@ -54,7 +54,7 @@ import javax.swing.text.Document;
 import org.freeplane.controller.Controller;
 import org.freeplane.main.Tools;
 import org.freeplane.service.filter.util.ISortedListModel;
-import org.freeplane.ui.FreemindMenuBar;
+import org.freeplane.ui.MenuBuilder;
 
 public class ListDialog extends JDialog {
 	private class AddAction implements ActionListener {
@@ -186,21 +186,20 @@ public class ListDialog extends JDialog {
 		super(frame, title, true);
 		this.data = data;
 		final JButton closeButton = new JButton();
-		FreemindMenuBar.setLabelAndMnemonic(closeButton, Controller
+		MenuBuilder.setLabelAndMnemonic(closeButton, Controller
 		    .getText("close"));
 		closeButton.addActionListener(new CloseAction());
 		getRootPane().setDefaultButton(closeButton);
 		addButton = new JButton();
-		FreemindMenuBar.setLabelAndMnemonic(addButton, Controller
-		    .getText("add"));
+		MenuBuilder.setLabelAndMnemonic(addButton, Controller.getText("add"));
 		final AddAction addAction = new AddAction();
 		addButton.addActionListener(addAction);
 		renameButton = new JButton();
-		FreemindMenuBar.setLabelAndMnemonic(renameButton, Controller
+		MenuBuilder.setLabelAndMnemonic(renameButton, Controller
 		    .getText("rename"));
 		renameButton.addActionListener(new RenameAction());
 		deleteButton = new JButton();
-		FreemindMenuBar.setLabelAndMnemonic(deleteButton, Controller
+		MenuBuilder.setLabelAndMnemonic(deleteButton, Controller
 		    .getText("delete"));
 		deleteButton.addActionListener(new DeleteAction());
 		textField = new JTextField(20);

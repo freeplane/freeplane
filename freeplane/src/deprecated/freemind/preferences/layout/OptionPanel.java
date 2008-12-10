@@ -750,10 +750,8 @@ public class OptionPanel {
 			    .getIconController()).getIconActions();
 			final Vector actions = new Vector();
 			actions.addAll(iconActions);
-			actions.add(Controller.getController().getAction(
-			    "removeLastIconAction"));
-			actions.add(Controller.getController().getAction(
-			    "removeAllIconsAction"));
+			actions.add(modeController.getAction("removeLastIconAction"));
+			actions.add(modeController.getAction("removeAllIconsAction"));
 			controls.add(new NextLineProperty());
 			controls.add(new SeparatorProperty("icons"));
 			final Iterator iterator = actions.iterator();

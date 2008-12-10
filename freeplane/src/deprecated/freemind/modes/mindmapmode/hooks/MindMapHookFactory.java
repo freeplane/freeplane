@@ -37,7 +37,7 @@ import javax.swing.KeyStroke;
 
 import org.freeplane.controller.Controller;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.ui.FreemindMenuBar;
+import org.freeplane.ui.MenuBuilder;
 import org.jibx.runtime.IUnmarshallingContext;
 
 import deprecated.freemind.common.XmlBindingTools;
@@ -182,7 +182,7 @@ public class MindMapHookFactory extends HookFactoryAdapter {
 		final HookDescriptorPluginAction descriptor = getHookDescriptor(hookName);
 		final String name = descriptor.getName();
 		if (name != null) {
-			FreemindMenuBar.setLabelAndMnemonic(action, name);
+			MenuBuilder.setLabelAndMnemonic(action, name);
 		}
 		else {
 			action.putValue(Action.NAME, descriptor.getClassName());

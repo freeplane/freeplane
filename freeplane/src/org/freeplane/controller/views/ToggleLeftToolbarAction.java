@@ -24,8 +24,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.ui.FreemindMenuBar;
 import org.freeplane.ui.ISelectablePopupAction;
+import org.freeplane.ui.MenuBuilder;
 
 class ToggleLeftToolbarAction extends AbstractAction implements
         ISelectablePopupAction {
@@ -36,7 +36,7 @@ class ToggleLeftToolbarAction extends AbstractAction implements
 
 	ToggleLeftToolbarAction(final ViewController controller) {
 		this.controller = controller;
-		FreemindMenuBar.setLabelAndMnemonic(this, Controller
+		MenuBuilder.setLabelAndMnemonic(this, Controller
 		    .getText("toggle_left_toolbar"));
 	}
 

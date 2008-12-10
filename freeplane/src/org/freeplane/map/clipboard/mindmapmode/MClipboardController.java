@@ -31,7 +31,6 @@ import org.freeplane.modes.mindmapmode.MModeController;
  * @author Dimitry Polivaev
  */
 public class MClipboardController extends ClipboardController {
-	static private boolean actionsCreated = false;
 	static private CutAction cut;
 	static private PasteAction paste;
 	private static final String RESOURCE_UNFOLD_ON_PASTE = "unfold_on_paste";
@@ -50,17 +49,13 @@ public class MClipboardController extends ClipboardController {
 	 * @param modeController 
 	 */
 	private void createActions(final MModeController modeController) {
-		if (!actionsCreated) {
-			actionsCreated = true;
-			Controller.getController().addAction("exportToHTML",
-			    new ExportToHTMLAction());
-			Controller.getController().addAction("exportBranchToHTML",
-			    new ExportBranchToHTMLAction());
-			cut = new CutAction();
-			Controller.getController().addAction("cut", cut);
-			paste = new PasteAction();
-			Controller.getController().addAction("paste", paste);
-		}
+		modeController.addAction("exportToHTML", new ExportToHTMLAction());
+		modeController.addAction("exportBranchToHTML",
+		    new ExportBranchToHTMLAction());
+		cut = new CutAction();
+		modeController.addAction("cut", cut);
+		paste = new PasteAction();
+		modeController.addAction("paste", paste);
 	}
 
 	public Transferable cut(final List nodeList) {
@@ -68,8 +63,8 @@ public class MClipboardController extends ClipboardController {
 	}
 
 	public void paste(final NodeModel node, final NodeModel parent) {
-		((PasteAction) Controller.getController().getAction("paste")).paste(
-		    node, parent);
+		((PasteAction) getModeController().getAction("paste")).paste(node,
+		    parent);
 	}
 
 	public void paste(final Transferable t, final NodeModel parent) {
@@ -93,8 +88,8 @@ public class MClipboardController extends ClipboardController {
 		            RESOURCE_UNFOLD_ON_PASTE)) {
 			modeController.getMapController().setFolded(target, false);
 		}
-		((PasteAction) Controller.getController().getAction("paste")).paste(t,
-		    target, asSibling, isLeft);
+		((PasteAction) getModeController().getAction("paste")).paste(t, target,
+		    asSibling, isLeft);
 	}
 
 	public NodeModel pasteXMLWithoutRedisplay(final String pasted,

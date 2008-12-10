@@ -46,7 +46,6 @@ public class FreeMindApplet extends JApplet {
 		appletViewController.init();
 		final BModeController browseController = BModeControllerFactory
 		    .createModeController();
-		controller.addModeController(browseController);
 		controller.selectMode(browseController);
 	}
 

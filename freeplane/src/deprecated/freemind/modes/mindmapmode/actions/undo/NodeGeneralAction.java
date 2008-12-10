@@ -28,7 +28,7 @@ import org.freeplane.controller.Controller;
 import org.freeplane.main.Tools;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.mindmapmode.MindMapMapModel;
-import org.freeplane.ui.FreemindMenuBar;
+import org.freeplane.ui.MenuBuilder;
 
 import deprecated.freemind.modes.mindmapmode.actions.instance.ActionInstance;
 import deprecated.freemind.modes.mindmapmode.actions.instance.CompoundActionInstance;
@@ -99,7 +99,7 @@ public class NodeGeneralAction extends AbstractUndoableAction {
 
 	protected void setName(final String name) {
 		if (name != null) {
-			FreemindMenuBar.setLabelAndMnemonic(this, name);
+			MenuBuilder.setLabelAndMnemonic(this, name);
 			putValue(Action.SHORT_DESCRIPTION, Tools.removeMnemonic(name));
 		}
 	}

@@ -611,7 +611,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	final private ActionListener mapsMenuActionListener;
 	private JPopupMenu mapsPopupMenu;
 	private FreemindMenuBar menuBar;
-	private MenuBuilder menuBuilder;
+	private final MenuBuilder menuBuilder;
 	private MenuStructure menuStructure;
 	private DragGestureListener nodeDragListener;
 	private DropTargetListener nodeDropTargetListener;
@@ -620,9 +620,10 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	private INodeMouseMotionListener nodeMouseMotionListener;
 	private JPopupMenu nodePopupMenu;
 
-	public UserInputListenerFactory() {
+	public UserInputListenerFactory(final ModeController modeController) {
 		controller = Controller.getController();
 		mapsMenuActionListener = new MapsMenuActionListener();
+		menuBuilder = new MenuBuilder(modeController);
 	}
 
 	public Component getLeftToolBar() {
@@ -832,7 +833,6 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 
 	public void updateMenus(final ModeController modeController) {
 		final FreemindMenuBar menuBar = getMenuBar();
-		menuBuilder = new MenuBuilder();
 		menuBuilder.addMenuBar(menuBar, FreemindMenuBar.MENU_BAR_PREFIX);
 		mapsPopupMenu = new JPopupMenu();
 		menuBuilder.addPopupMenu(mapsPopupMenu, FreemindMenuBar.MAP_POPUP_MENU);

@@ -26,20 +26,48 @@ import org.freeplane.controller.Controller;
 import org.freeplane.controller.FreeMindAction;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.view.MapView;
+import org.freeplane.map.tree.view.NodeView;
+import org.freeplane.modes.INodeChangeListener;
+import org.freeplane.modes.INodeSelectionListener;
 import org.freeplane.modes.ModeController;
+import org.freeplane.modes.NodeChangeEvent;
 import org.freeplane.modes.mindmapmode.EncryptionModel;
 import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.ui.dialogs.EnterPasswordDialog;
 
-@ActionDescriptor(
-	tooltip="accessories/plugins/EnterPassword.properties_documentation", //
-	name="accessories/plugins/EnterPassword.properties_name", //
-	iconPath="accessories/plugins/icons/unlock.png", //
-	locations={"/menu_bar/extras/first/nodes/crypto"}
-)
-public class EnterPassword extends FreeMindAction {
-	public EnterPassword() {
+@ActionDescriptor(tooltip = "accessories/plugins/EnterPassword.properties_documentation", //
+name = "accessories/plugins/EnterPassword.properties_name", //
+iconPath = "accessories/plugins/icons/unlock.png", //
+locations = { "/menu_bar/extras/first/nodes/crypto" })
+public class EnterPassword extends FreeMindAction implements
+        INodeSelectionListener, INodeChangeListener {
+	public EnterPassword(final ModeController modeController) {
 		super();
+		modeController.addNodeSelectionListener(this);
+		modeController.addNodeChangeListener(this);
+	}
+
+	public void actionPerformed(final ActionEvent e) {
+		final NodeModel node = getModeController().getSelectedNode();
+		toggleCryptState(node);
+		getModeController().getMapController().nodeRefresh(node);
+		return;
+	}
+
+	public boolean canBeEnabled() {
+		boolean isEncryptedNode = false;
+		final ModeController modeController = getModeController();
+		if (modeController == null) {
+			return false;
+		}
+		if (modeController.getSelectedNode() != null) {
+			final EncryptionModel enode = modeController.getSelectedNode()
+			    .getEncryptionModel();
+			if (enode != null) {
+				isEncryptedNode = true;
+			}
+		}
+		return isEncryptedNode;
 	}
 
 	/**
@@ -69,13 +97,18 @@ public class EnterPassword extends FreeMindAction {
 			}
 		}
 	}
-    public void actionPerformed(ActionEvent e) {
-    	NodeModel node = getModeController().getSelectedNode();
-    	toggleCryptState(node);
-    	getModeController().getMapController().nodeRefresh(node);
-    	return;
+
+	public void nodeChanged(final NodeChangeEvent e) {
+		setEnabled(canBeEnabled());
 	}
 
+	public void onDeselect(final NodeView node) {
+		setEnabled(false);
+	}
+
+	public void onSelect(final NodeView node) {
+		setEnabled(canBeEnabled());
+	}
 
 	/**
 	 */
@@ -105,19 +138,4 @@ public class EnterPassword extends FreeMindAction {
 			        "Freemind", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
-	@Override
-	public boolean isEnabled() {
-		boolean isEncryptedNode = false;
-		final ModeController modeController = getModeController();
-		if (modeController.getSelectedNode() != null) {
-			final EncryptionModel enode = modeController.getSelectedNode()
-			    .getEncryptionModel();
-			if (enode != null) {
-				isEncryptedNode = true;
-			}
-		}
-		return isEncryptedNode;
-	}
-
-
 }

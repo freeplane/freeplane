@@ -45,7 +45,7 @@ public class ReminderHook extends PersistentNodeHook {
 	private class HideableAction extends HookAction implements
 	        IHideablePopupAction {
 		public HideableAction() {
-			super(getActionAnnotation());
+			super();
 		}
 
 		public boolean isVisible() {

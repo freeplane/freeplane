@@ -19,7 +19,6 @@
  */
 package org.freeplane.map.text;
 
-import org.freeplane.controller.Controller;
 import org.freeplane.io.ReadManager;
 import org.freeplane.map.tree.MapController;
 import org.freeplane.modes.ModeController;
@@ -28,7 +27,6 @@ import org.freeplane.modes.ModeController;
  * @author Dimitry Polivaev
  */
 public class TextController {
-	static private boolean actionsCreated = false;
 	final private ModeController modeController;
 
 	public TextController(final ModeController modeController) {
@@ -45,13 +43,10 @@ public class TextController {
 	 * @param modeController
 	 */
 	private void createActions(final ModeController modeController) {
-		if (!actionsCreated) {
-			actionsCreated = true;
-			final FindAction find = new FindAction();
-			Controller.getController().addAction("find", find);
-			Controller.getController().addAction("findNext",
-			    new FindNextAction(modeController, find));
-		}
+		final FindAction find = new FindAction();
+		modeController.addAction("find", find);
+		modeController.addAction("findNext", new FindNextAction(modeController,
+		    find));
 	}
 
 	public ModeController getModeController() {

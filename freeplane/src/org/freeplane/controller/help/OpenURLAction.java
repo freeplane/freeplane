@@ -28,7 +28,7 @@ import javax.swing.ImageIcon;
 
 import org.freeplane.controller.Controller;
 import org.freeplane.ui.AlwaysEnabledAction;
-import org.freeplane.ui.FreemindMenuBar;
+import org.freeplane.ui.MenuBuilder;
 
 @AlwaysEnabledAction
 class OpenURLAction extends AbstractAction {
@@ -37,7 +37,7 @@ class OpenURLAction extends AbstractAction {
 	OpenURLAction(final String description, final String url) {
 		super(null, new ImageIcon(Controller.getResourceController()
 		    .getResource("images/Link.png")));
-		FreemindMenuBar.setLabelAndMnemonic(this, description);
+		MenuBuilder.setLabelAndMnemonic(this, description);
 		this.url = url;
 	}
 

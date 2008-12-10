@@ -25,7 +25,7 @@ import javax.swing.AbstractAction;
 
 import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.ui.AlwaysEnabledAction;
-import org.freeplane.ui.FreemindMenuBar;
+import org.freeplane.ui.MenuBuilder;
 
 /**
  * Manages the history of visited maps. Maybe explicitly closed maps should be
@@ -37,7 +37,7 @@ class QuitAction extends AbstractAction {
 	 * @param resourceController
 	 */
 	QuitAction(final ResourceController resourceController) {
-		FreemindMenuBar.setLabelAndMnemonic(this, resourceController
+		MenuBuilder.setLabelAndMnemonic(this, resourceController
 		    .getText("quit"));
 	}
 

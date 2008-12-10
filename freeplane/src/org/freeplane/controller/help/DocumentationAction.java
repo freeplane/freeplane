@@ -31,12 +31,12 @@ import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.modes.browsemode.BModeController;
 import org.freeplane.ui.AlwaysEnabledAction;
-import org.freeplane.ui.FreemindMenuBar;
+import org.freeplane.ui.MenuBuilder;
 
 @AlwaysEnabledAction
 class DocumentationAction extends AbstractAction {
 	DocumentationAction() {
-		FreemindMenuBar.setLabelAndMnemonic(this, Controller
+		MenuBuilder.setLabelAndMnemonic(this, Controller
 		    .getText("documentation"));
 	}
 

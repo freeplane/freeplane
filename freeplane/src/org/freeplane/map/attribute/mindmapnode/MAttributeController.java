@@ -513,7 +513,6 @@ public class MAttributeController extends AttributeController implements
 		}
 	}
 
-	static private boolean actionsCreated = false;
 	InsertAttributeActor insertAttributeActor;
 	final private MModeController modeController;
 
@@ -536,13 +535,9 @@ public class MAttributeController extends AttributeController implements
 	 *
 	 */
 	private void createActions() {
-		if (!actionsCreated) {
-			actionsCreated = true;
-			Controller.getController().addAction("editAttributes",
-			    new EditAttributesAction());
-			Controller.getController().addAction("assignAttributes",
-			    new AssignAttributesAction());
-		}
+		modeController.addAction("editAttributes", new EditAttributesAction());
+		modeController.addAction("assignAttributes",
+		    new AssignAttributesAction());
 	}
 
 	public int editAttribute(final NodeModel pNode, final String pName,

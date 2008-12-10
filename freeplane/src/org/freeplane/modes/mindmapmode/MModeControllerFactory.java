@@ -24,11 +24,15 @@ import javax.swing.JPopupMenu;
 import org.freeplane.addins.automaticlayout.AutomaticLayout;
 import org.freeplane.addins.blinkingnodehook.BlinkingNodeHook;
 import org.freeplane.addins.creationmodificationplugin.CreationModificationPlugin;
+import org.freeplane.addins.encrypt.EnterPassword;
+import org.freeplane.addins.encrypt.mindmapnode.EncryptNode;
+import org.freeplane.addins.encrypt.mindmapnode.EncryptedMap;
 import org.freeplane.addins.hierarchicalicons.HierarchicalIcons;
 import org.freeplane.addins.latex.LatexNodeHook;
 import org.freeplane.addins.mindmapmode.ApplyFormatPlugin;
 import org.freeplane.addins.revision.RevisionPlugin;
 import org.freeplane.addins.time.ReminderHook;
+import org.freeplane.controller.Controller;
 import org.freeplane.io.url.mindmapmode.FileManager;
 import org.freeplane.map.attribute.mindmapnode.MAttributeController;
 import org.freeplane.map.clipboard.mindmapmode.MClipboardController;
@@ -71,9 +75,12 @@ public class MModeControllerFactory {
 		new CreationModificationPlugin(modeController);
 		new ReminderHook(modeController);
 		new LatexNodeHook(modeController);
-		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
+		final MenuBuilder menuBuilder = modeController
+		    .getUserInputListenerFactory().getMenuBuilder();
 		menuBuilder.addAnnotatedAction(new ApplyFormatPlugin());
-		
+		menuBuilder.addAnnotatedAction(new EncryptNode(modeController));
+		menuBuilder.addAnnotatedAction(new EncryptedMap(modeController));
+		menuBuilder.addAnnotatedAction(new EnterPassword(modeController));
 	}
 
 	private MModeController createModeControllerImpl() {
@@ -87,6 +94,7 @@ public class MModeControllerFactory {
 
 	private void createStandardControllers() {
 		modeController = new MModeController();
+		Controller.getController().addModeController(modeController);
 		modeController.setMapController(new MMapController(modeController));
 		modeController.setUrlManager(new FileManager(modeController));
 		modeController.setIconController(new MIconController(modeController));

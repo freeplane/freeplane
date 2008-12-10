@@ -37,7 +37,7 @@ import javax.swing.WindowConstants;
 
 import org.freeplane.controller.Controller;
 import org.freeplane.main.Tools;
-import org.freeplane.ui.FreemindMenuBar;
+import org.freeplane.ui.MenuBuilder;
 
 /**
  * Dialog with a decision that can be disabled.
@@ -186,7 +186,7 @@ public class OptionalDontShowMeAgainDialog {
 			boxString = "OptionalDontShowMeAgainDialog.rememberMyDescision";
 		}
 		mDontShowAgainBox = new JCheckBox(Controller.getText(boxString));
-		FreemindMenuBar.setLabelAndMnemonic(mDontShowAgainBox, null);
+		MenuBuilder.setLabelAndMnemonic(mDontShowAgainBox, null);
 		mDialog.getContentPane().add(
 		    mDontShowAgainBox,
 		    new GridBagConstraints(0, 2, 3, 1, 1.0, 1.0,
@@ -194,7 +194,7 @@ public class OptionalDontShowMeAgainDialog {
 		            5, 0, 0), 0, 0));
 		final JButton okButton = new JButton(Controller
 		    .getText("OptionalDontShowMeAgainDialog.ok"));
-		FreemindMenuBar.setLabelAndMnemonic(okButton, null);
+		MenuBuilder.setLabelAndMnemonic(okButton, null);
 		okButton.addActionListener(okAction);
 		mDialog.getContentPane().add(
 		    okButton,
@@ -203,7 +203,7 @@ public class OptionalDontShowMeAgainDialog {
 		            5, 0, 0), 0, 0));
 		final JButton cancelButton = new JButton(Controller
 		    .getText("OptionalDontShowMeAgainDialog.cancel"));
-		FreemindMenuBar.setLabelAndMnemonic(cancelButton, null);
+		MenuBuilder.setLabelAndMnemonic(cancelButton, null);
 		cancelButton.addActionListener(cancelAction);
 		mDialog.getContentPane().add(
 		    cancelButton,

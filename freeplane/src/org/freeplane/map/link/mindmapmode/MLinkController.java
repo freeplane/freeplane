@@ -27,7 +27,6 @@ import java.util.Set;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 
-import org.freeplane.controller.Controller;
 import org.freeplane.map.link.ArrowLinkModel;
 import org.freeplane.map.link.LinkController;
 import org.freeplane.map.link.LinkModel;
@@ -94,7 +93,6 @@ public class MLinkController extends LinkController {
 		}
 	}
 
-	static private boolean actionsCreated = false;
 	static private ColorArrowLinkAction colorArrowLinkAction;
 	static private SetLinkByFileChooserAction setLinkByFileChooser;
 	static private SetLinkByTextFieldAction setLinkByTextField;
@@ -110,14 +108,14 @@ public class MLinkController extends LinkController {
 	}
 
 	public void addLink(final NodeModel source, final NodeModel target) {
-		((AddArrowLinkAction) Controller.getController().getAction(
+		((AddArrowLinkAction) getModeController().getAction(
 		    "addArrowLinkAction")).addLink(source, target);
 	}
 
 	public void changeArrowsOfArrowLink(final ArrowLinkModel arrowLink,
 	                                    final boolean hasStartArrow,
 	                                    final boolean hasEndArrow) {
-		((ChangeArrowsInArrowLinkAction) Controller.getController().getAction(
+		((ChangeArrowsInArrowLinkAction) getModeController().getAction(
 		    "changeArrowsInArrowLinkAction")).changeArrowsOfArrowLink(
 		    arrowLink, hasStartArrow, hasEndArrow);
 	}
@@ -126,35 +124,27 @@ public class MLinkController extends LinkController {
 	 *
 	 */
 	private void createActions(final MModeController modeController) {
-		if (!actionsCreated) {
-			actionsCreated = true;
-			setLinkByFileChooser = new SetLinkByFileChooserAction();
-			Controller.getController().addAction("setLinkByFileChooser",
-			    setLinkByFileChooser);
-			final AddArrowLinkAction addArrowLinkAction = new AddArrowLinkAction();
-			Controller.getController().addAction("addArrowLinkAction",
-			    addArrowLinkAction);
-			Controller.getController().addAction("removeArrowLinkAction",
-			    new RemoveArrowLinkAction(this, null));
-			colorArrowLinkAction = new ColorArrowLinkAction(this, null);
-			Controller.getController().addAction("colorArrowLinkAction",
-			    colorArrowLinkAction);
-			Controller.getController().addAction(
-			    "changeArrowsInArrowLinkAction",
-			    new ChangeArrowsInArrowLinkAction(this, "none", null, null,
-			        true, true));
-			setLinkByTextField = new SetLinkByTextFieldAction();
-			Controller.getController().addAction("setLinkByTextField",
-			    setLinkByTextField);
-			Controller.getController().addAction("addLocalLinkAction",
-			    new AddLocalLinkAction());
-		}
+		setLinkByFileChooser = new SetLinkByFileChooserAction();
+		modeController.addAction("setLinkByFileChooser", setLinkByFileChooser);
+		final AddArrowLinkAction addArrowLinkAction = new AddArrowLinkAction();
+		modeController.addAction("addArrowLinkAction", addArrowLinkAction);
+		modeController.addAction("removeArrowLinkAction",
+		    new RemoveArrowLinkAction(this, null));
+		colorArrowLinkAction = new ColorArrowLinkAction(this, null);
+		modeController.addAction("colorArrowLinkAction", colorArrowLinkAction);
+		modeController.addAction("changeArrowsInArrowLinkAction",
+		    new ChangeArrowsInArrowLinkAction(this, "none", null, null, true,
+		        true));
+		setLinkByTextField = new SetLinkByTextFieldAction();
+		modeController.addAction("setLinkByTextField", setLinkByTextField);
+		modeController
+		    .addAction("addLocalLinkAction", new AddLocalLinkAction());
 	}
 
 	@Override
 	protected void createArrowLinkPopup(final ArrowLinkModel link,
 	                                    final JPopupMenu arrowLinkPopup) {
-		((RemoveArrowLinkAction) Controller.getController().getAction(
+		((RemoveArrowLinkAction) getModeController().getAction(
 		    "removeArrowLinkAction")).setArrowLink(link);
 		arrowLinkPopup.add(new RemoveArrowLinkAction(this, link));
 		arrowLinkPopup.add(new ColorArrowLinkAction(this, link));

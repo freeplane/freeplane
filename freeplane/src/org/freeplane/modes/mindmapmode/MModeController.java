@@ -74,7 +74,6 @@ public class MModeController extends ModeController {
 	public interface IMindMapControllerPlugin {
 	}
 
-	static private boolean actionsCreated = false;
 	static public final String MODENAME = "MindMap";
 	static private RedoAction redo;
 	static private UndoAction undo;
@@ -105,9 +104,8 @@ public class MModeController extends ModeController {
 
 	public void addHook(final NodeModel focussed, final List selecteds,
 	                    final String hookName) {
-		((NodeHookAction) Controller.getController()
-		    .getAction("nodeHookAction"))
-		    .addHook(focussed, selecteds, hookName);
+		((NodeHookAction) getAction("nodeHookAction")).addHook(focussed,
+		    selecteds, hookName);
 	}
 
 	public void addMouseWheelEventHandler(final IMouseWheelEventHandler handler) {
@@ -124,23 +122,17 @@ public class MModeController extends ModeController {
 	}
 
 	private void createActions() {
-		if (!actionsCreated) {
-			actionsCreated = true;
-			undo = new UndoAction();
-			redo = new RedoAction();
-			undo.setRedo(redo);
-			redo.setUndo(undo);
-			Controller.getController().addAction("undo", undo);
-			Controller.getController().addAction("redo", redo);
-			undoActionHandler = new UndoActionHandler(this);
-			getActionFactory().registerUndoHandler(undoActionHandler);
-			Controller.getController().addAction("nodeHookAction",
-			    new NodeHookAction("no_title", this));
-			Controller.getController().addAction("selectBranchAction",
-			    new SelectBranchAction());
-			Controller.getController().addAction("selectAllAction",
-			    new SelectAllAction());
-		}
+		undo = new UndoAction();
+		redo = new RedoAction();
+		undo.setRedo(redo);
+		redo.setUndo(undo);
+		addAction("undo", undo);
+		addAction("redo", redo);
+		undoActionHandler = new UndoActionHandler(this);
+		getActionFactory().registerUndoHandler(undoActionHandler);
+		addAction("nodeHookAction", new NodeHookAction("no_title", this));
+		addAction("selectBranchAction", new SelectBranchAction());
+		addAction("selectAllAction", new SelectAllAction());
 	}
 
 	public INodeHook createNodeHook(final String hookName,

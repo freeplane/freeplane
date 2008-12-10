@@ -124,7 +124,6 @@ public class MapController {
 		}
 	}
 
-	static private boolean actionsCreated = false;
 	private static boolean sSaveOnlyIntrinsicallyNeededIds = false;
 	static private CommonToggleFoldedAction toggleFolded;
 
@@ -214,14 +213,11 @@ public class MapController {
 	 *
 	 */
 	private void createActions(final ModeController modeController) {
-		if (!actionsCreated) {
-			actionsCreated = true;
-			Controller.getController().addAction("newMap", new NewMapAction());
-			toggleFolded = new CommonToggleFoldedAction();
-			Controller.getController().addAction("toggleFolded", toggleFolded);
-			Controller.getController().addAction("toggleChildrenFolded",
-			    new CommonToggleChildrenFoldedAction(this));
-		}
+		modeController.addAction("newMap", new NewMapAction());
+		toggleFolded = new CommonToggleFoldedAction();
+		modeController.addAction("toggleFolded", toggleFolded);
+		modeController.addAction("toggleChildrenFolded",
+		    new CommonToggleChildrenFoldedAction(this));
 	}
 
 	public NodeModel createNodeTreeFromXml(final MapModel map,

@@ -61,7 +61,7 @@ import org.freeplane.map.pattern.mindmapnode.StylePatternPanel;
 import org.freeplane.map.pattern.mindmapnode.StylePatternPanel.StylePatternPanelType;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.ui.FreemindMenuBar;
+import org.freeplane.ui.MenuBuilder;
 
 import com.jgoodies.forms.factories.ButtonBarFactory;
 
@@ -284,8 +284,7 @@ public class ManagePatternsPopupDialog extends JDialog implements
 					cancelPressed();
 				}
 			});
-			FreemindMenuBar.setLabelAndMnemonic(jCancelButton,
-			    getText("cancel"));
+			MenuBuilder.setLabelAndMnemonic(jCancelButton, getText("cancel"));
 		}
 		return jCancelButton;
 	}
@@ -335,18 +334,18 @@ public class ManagePatternsPopupDialog extends JDialog implements
 			/** Menu **/
 			{
 				final JMenuBar menu = new JMenuBar();
-				final JMenu mainItem = FreemindMenuBar
+				final JMenu mainItem = MenuBuilder
 				    .createMenu("ManagePatternsPopupDialog.Actions");
 				menu.add(mainItem);
-				final JMenuItem menuItemApplyPattern = FreemindMenuBar
+				final JMenuItem menuItemApplyPattern = MenuBuilder
 				    .createMenuItem("ManagePatternsPopupDialog.apply");
 				menuItemApplyPattern.addActionListener(applyActionListener);
 				mainItem.add(menuItemApplyPattern);
-				final JMenuItem menuItemAddPattern = FreemindMenuBar
+				final JMenuItem menuItemAddPattern = MenuBuilder
 				    .createMenuItem("ManagePatternsPopupDialog.add");
 				menuItemAddPattern.addActionListener(addPatternActionListener);
 				mainItem.add(menuItemAddPattern);
-				final JMenuItem menuItemPatternFromNodes = FreemindMenuBar
+				final JMenuItem menuItemPatternFromNodes = MenuBuilder
 				    .createMenuItem("ManagePatternsPopupDialog.from_nodes");
 				menuItemPatternFromNodes
 				    .addActionListener(fromNodesActionListener);
@@ -355,15 +354,15 @@ public class ManagePatternsPopupDialog extends JDialog implements
 			}
 			/* Popup menu */
 			popupMenu = new JPopupMenu();
-			final JMenuItem menuItemApply = FreemindMenuBar
+			final JMenuItem menuItemApply = MenuBuilder
 			    .createMenuItem("ManagePatternsPopupDialog.apply");
 			popupMenu.add(menuItemApply);
 			menuItemApply.addActionListener(applyActionListener);
-			final JMenuItem menuItemAdd = FreemindMenuBar
+			final JMenuItem menuItemAdd = MenuBuilder
 			    .createMenuItem("ManagePatternsPopupDialog.add");
 			popupMenu.add(menuItemAdd);
 			menuItemAdd.addActionListener(addPatternActionListener);
-			final JMenuItem menuItemDuplicate = FreemindMenuBar
+			final JMenuItem menuItemDuplicate = MenuBuilder
 			    .createMenuItem("ManagePatternsPopupDialog.duplicate");
 			popupMenu.add(menuItemDuplicate);
 			menuItemDuplicate.addActionListener(new ActionListener() {
@@ -371,12 +370,12 @@ public class ManagePatternsPopupDialog extends JDialog implements
 					duplicatePattern(actionEvent);
 				}
 			});
-			final JMenuItem menuItemFromNodes = FreemindMenuBar
+			final JMenuItem menuItemFromNodes = MenuBuilder
 			    .createMenuItem("ManagePatternsPopupDialog.from_nodes");
 			popupMenu.add(menuItemFromNodes);
 			menuItemFromNodes.addActionListener(fromNodesActionListener);
 			popupMenu.addSeparator();
-			final JMenuItem menuItemRemove = FreemindMenuBar
+			final JMenuItem menuItemRemove = MenuBuilder
 			    .createMenuItem("ManagePatternsPopupDialog.remove");
 			menuItemRemove.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent actionEvent) {

@@ -50,7 +50,6 @@ import deprecated.freemind.preferences.IFreemindPropertyListener;
  * @author Dimitry Polivaev
  */
 public class MMapController extends MapController {
-	static private boolean actionsCreated = false;
 	static private DeleteAction delete;
 	private static final String EXPECTED_START_STRINGS[] = {
 	        "<map version=\"" + Controller.XML_VERSION + "\"",
@@ -124,25 +123,19 @@ public class MMapController extends MapController {
 	}
 
 	private void createActions(final MModeController modeController) {
-		if (!actionsCreated) {
-			actionsCreated = true;
-			Controller.getController().addAction("newSibling",
-			    new NewSiblingAction());
-			Controller.getController().addAction("newPreviousSibling",
-			    new NewPreviousSiblingAction());
-			newChild = new NewChildAction();
-			Controller.getController().addAction("newChild", newChild);
-			delete = new DeleteAction();
-			Controller.getController().addAction("deleteChild", delete);
-			Controller.getController().addAction("undoableToggleFolded",
-			    new ToggleFoldedAction());
-			Controller.getController().addAction(
-			    "undoableToggleChildrenFolded",
-			    new ToggleChildrenFoldedAction());
-			Controller.getController().addAction("nodeUp", new NodeUpAction());
-			Controller.getController().addAction("nodeDown",
-			    new NodeDownAction());
-		}
+		modeController.addAction("newSibling", new NewSiblingAction());
+		modeController.addAction("newPreviousSibling",
+		    new NewPreviousSiblingAction());
+		newChild = new NewChildAction();
+		modeController.addAction("newChild", newChild);
+		delete = new DeleteAction();
+		modeController.addAction("deleteChild", delete);
+		modeController.addAction("undoableToggleFolded",
+		    new ToggleFoldedAction());
+		modeController.addAction("undoableToggleChildrenFolded",
+		    new ToggleChildrenFoldedAction());
+		modeController.addAction("nodeUp", new NodeUpAction());
+		modeController.addAction("nodeDown", new NodeDownAction());
 	}
 
 	public void deleteNode(final NodeModel node) {
@@ -291,8 +284,8 @@ public class MMapController extends MapController {
 
 	public void moveNodes(final NodeModel selected, final List selecteds,
 	                      final int direction) {
-		((NodeUpAction) Controller.getController().getAction("nodeUp"))
-		    .moveNodes(selected, selecteds, direction);
+		((NodeUpAction) getModeController().getAction("nodeUp")).moveNodes(
+		    selected, selecteds, direction);
 	}
 
 	/**
@@ -353,7 +346,7 @@ public class MMapController extends MapController {
 
 	@Override
 	public void setFolded(final NodeModel node, final boolean folded) {
-		((ToggleFoldedAction) Controller.getController().getAction(
+		((ToggleFoldedAction) getModeController().getAction(
 		    "undoableToggleFolded")).setFolded(node, folded);
 	}
 
@@ -368,7 +361,7 @@ public class MMapController extends MapController {
 
 	@Override
 	public void toggleFolded() {
-		((ToggleFoldedAction) Controller.getController().getAction(
+		((ToggleFoldedAction) getModeController().getAction(
 		    "undoableToggleFolded")).toggleFolded();
 	}
 

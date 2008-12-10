@@ -24,13 +24,12 @@ import java.awt.event.ActionEvent;
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.FreeMindAction;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.ui.FreemindMenuBar;
+import org.freeplane.ui.MenuBuilder;
 
 class NodeDownAction extends FreeMindAction {
 	public NodeDownAction() {
 		super("new_sibling_behind");
-		FreemindMenuBar.setLabelAndMnemonic(this, Controller
-		    .getText("node_down"));
+		MenuBuilder.setLabelAndMnemonic(this, Controller.getText("node_down"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {

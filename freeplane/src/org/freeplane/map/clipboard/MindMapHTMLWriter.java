@@ -318,8 +318,8 @@ class MindMapHTMLWriter {
 			    .getMapController().childrenUnfolded(model); e.hasNext();) {
 				final NodeModel child = (NodeModel) e.next();
 				lastChildNumber = writeHTML(child, parentID, lastChildNumber,/*
-																																																			 * isRoot=
-																																																			 */
+																																																											 * isRoot=
+																																																											 */
 				false, treatChildrenAsParagraph, depth + 1);
 			}
 			return lastChildNumber;
@@ -332,8 +332,8 @@ class MindMapHTMLWriter {
 					final NodeModel child = (NodeModel) e.next();
 					lastChildNumber = writeHTML(child, parentID,
 					    lastChildNumber,/*
-					    										    										    					    										    										 * isRoot=
-					    										    										    					    										    										 */
+					    										    										    										    					    										    										 * isRoot=
+					    										    										    										    					    										    										 */
 					    false, treatChildrenAsParagraph, depth + 1);
 				}
 			}
@@ -351,8 +351,8 @@ class MindMapHTMLWriter {
 					final NodeModel child = (NodeModel) e.next();
 					localLastChildNumber = writeHTML(child, localParentID,
 					    localLastChildNumber,/*
-					    										    										    					    										    											 * isRoot=
-					    										    										    					    										    											 */
+					    										    										    										    					    										    											 * isRoot=
+					    										    										    										    					    										    											 */
 					    false, treatChildrenAsParagraph, depth + 1);
 				}
 			}
@@ -366,8 +366,8 @@ class MindMapHTMLWriter {
 					final NodeModel child = (NodeModel) e.next();
 					lastChildNumber = writeHTML(child, parentID,
 					    lastChildNumber,/*
-					    										    										    					    										    										 * isRoot=
-					    										    										    					    										    										 */
+					    										    										    										    					    										    										 * isRoot=
+					    										    										    										    					    										    										 */
 					    false, treatChildrenAsParagraph, depth + 1);
 				}
 			}
