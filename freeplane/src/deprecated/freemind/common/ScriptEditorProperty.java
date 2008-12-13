@@ -19,15 +19,13 @@ package deprecated.freemind.common;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Iterator;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 
+import org.freeplane.extension.IExtension;
 import org.freeplane.main.HtmlTools;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.modes.mindmapmode.MModeController.IMindMapControllerPlugin;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
@@ -35,7 +33,7 @@ import deprecated.freemind.preferences.layout.OptionString;
 
 public class ScriptEditorProperty extends PropertyBean implements
         IPropertyControl, ActionListener {
-	public interface IScriptEditorStarter extends IMindMapControllerPlugin {
+	public interface IScriptEditorStarter extends IExtension {
 		String startEditor(String scriptInput);
 	}
 
@@ -60,17 +58,13 @@ public class ScriptEditorProperty extends PropertyBean implements
 	}
 
 	public void actionPerformed(final ActionEvent arg0) {
-		for (final Iterator iter = mMindMapController.getPlugins().iterator(); iter
-		    .hasNext();) {
-			final IMindMapControllerPlugin plugin = (IMindMapControllerPlugin) iter
-			    .next();
-			if (plugin instanceof IScriptEditorStarter) {
-				final IScriptEditorStarter starter = (IScriptEditorStarter) plugin;
-				final String resultScript = starter.startEditor(script);
-				if (resultScript != null) {
-					script = resultScript;
-					firePropertyChangeEvent();
-				}
+		final IScriptEditorStarter plugin = (IScriptEditorStarter) mMindMapController.getExtension(IScriptEditorStarter.class);
+		if (plugin != null) {
+			final IScriptEditorStarter starter = (IScriptEditorStarter) plugin;
+			final String resultScript = starter.startEditor(script);
+			if (resultScript != null) {
+				script = resultScript;
+				firePropertyChangeEvent();
 			}
 		}
 	}

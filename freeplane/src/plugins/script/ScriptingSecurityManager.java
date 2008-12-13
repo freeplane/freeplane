@@ -30,7 +30,7 @@ import org.freeplane.controller.Controller;
 /**
  * @author foltin
  */
-public class ScriptingSecurityManager extends SecurityManager {
+class ScriptingSecurityManager extends SecurityManager {
 	private static final int PERM_Accept = 0;
 	private static final int PERM_Connect = 1;
 	private static final int PERM_Delete = 7;

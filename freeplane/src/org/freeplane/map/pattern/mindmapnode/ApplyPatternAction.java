@@ -34,7 +34,6 @@ import org.freeplane.map.text.mindmapmode.MTextController;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.mindmapmode.MindMapMapModel;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.modes.mindmapmode.MModeController.IMindMapControllerPlugin;
 
 import deprecated.freemind.modes.mindmapmode.actions.undo.ISingleNodeOperation;
 import deprecated.freemind.modes.mindmapmode.actions.undo.NodeGeneralAction;
@@ -204,14 +203,10 @@ class ApplyPatternAction extends NodeGeneralAction implements
 				}
 			}
 		}
-		for (final Iterator i = getMModeController().getPlugins().iterator(); i
-		    .hasNext();) {
-			final IMindMapControllerPlugin action = (IMindMapControllerPlugin) i
-			    .next();
-			if (action instanceof IExternalPatternAction) {
-				final IExternalPatternAction externalAction = (IExternalPatternAction) action;
-				externalAction.act(node, pattern);
-			}
+		final IExternalPatternAction action = (IExternalPatternAction) getModeController().getExtension(IExternalPatternAction.class);
+		if (action != null) {
+			final IExternalPatternAction externalAction = (IExternalPatternAction) action;
+			externalAction.act(node, pattern);
 		}
 	}
 

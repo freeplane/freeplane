@@ -44,7 +44,7 @@ import deprecated.freemind.common.ITextTranslator;
 /**
  * @author foltin
  */
-public class SignedScriptHandler {
+class SignedScriptHandler {
 	public static class ScriptContents {
 		private static Pattern sSignWithKeyPattern = null;
 		public String mKeyName;

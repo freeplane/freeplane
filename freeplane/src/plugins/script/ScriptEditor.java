@@ -20,10 +20,13 @@
  */
 package plugins.script;
 
+import java.awt.event.ActionEvent;
 import java.io.PrintStream;
 import java.util.Iterator;
 import java.util.Vector;
 
+import org.freeplane.controller.ActionDescriptor;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.main.Tools.BooleanHolder;
 import org.freeplane.map.attribute.Attribute;
 import org.freeplane.map.attribute.mindmapnode.MAttributeController;
@@ -40,7 +43,17 @@ import freemind.controller.actions.generated.instance.ScriptEditorWindowConfigur
 /**
  * @author foltin
  */
-public class ScriptEditor extends MindMapHookAdapter {
+@ActionDescriptor(
+       name="plugins/ScriptEditor.xml_name",
+       tooltip="plugins/ScriptEditor.xml_documentation",
+       locations={"/menu_bar/extras/first/scripting"}
+)
+class ScriptEditor extends FreeplaneAction {
+	public ScriptEditor(ScriptingRegistration reg) {
+	    super();
+	    this.reg = reg;
+    }
+
 	final private class AttributeHolder {
 		Attribute mAttribute;
 		int mPosition;
@@ -51,6 +64,8 @@ public class ScriptEditor extends MindMapHookAdapter {
 			mPosition = pPosition;
 		}
 	}
+
+	final private ScriptingRegistration reg;
 
 	final private class NodeScriptModel implements IScriptModel {
 		private boolean isDirty = false;
@@ -133,7 +148,6 @@ public class ScriptEditor extends MindMapHookAdapter {
 		                             final PrintStream pOutStream,
 		                             final IErrorHandler pErrorHandler) {
 			final String script = getScript(pIndex).getScript();
-			final ScriptingRegistration reg = (ScriptingRegistration) getPluginBaseClass();
 			return ScriptingEngine.executeScript(mMindMapController
 			    .getSelectedNode(), new BooleanHolder(true), script,
 			    mMindMapController, pErrorHandler, pOutStream, reg
@@ -170,15 +184,13 @@ public class ScriptEditor extends MindMapHookAdapter {
 		                                 final ScriptEditorPanel pPanel,
 		                                 final ScriptEditorWindowConfigurationStorage pStorage,
 		                                 final String pWindow_preference_storage_property) {
-			getMindMapController().storeDialogPositions(pPanel, pStorage,
+			((MModeController)getModeController()).storeDialogPositions(pPanel, pStorage,
 			    pWindow_preference_storage_property);
 		}
 	}
 
-	@Override
-	public void startup() {
-		super.startup();
-		final NodeModel node = getMindMapController().getSelectedNode();
+	public void actionPerformed(ActionEvent e) {
+		final NodeModel node = getModeController().getSelectedNode();
 		final Vector scripts = new Vector();
 		for (int position = 0; position < node.getAttributeTableLength(); position++) {
 			final Attribute attribute = node.getAttribute(position);
@@ -187,9 +199,10 @@ public class ScriptEditor extends MindMapHookAdapter {
 			}
 		}
 		final NodeScriptModel nodeScriptModel = new NodeScriptModel(scripts,
-		    node, getMindMapController());
+		    node, (MModeController) getModeController());
 		final ScriptEditorPanel scriptEditorPanel = new ScriptEditorPanel(
 		    nodeScriptModel, true);
 		scriptEditorPanel.setVisible(true);
 	}
+
 }

@@ -53,6 +53,8 @@ import org.freeplane.map.tree.mindmapmode.MMapController;
 import org.freeplane.ui.FreeMindToolBar;
 import org.freeplane.ui.MenuBuilder;
 
+import plugins.help.FreeplaneHelpStarter;
+import plugins.script.ScriptingRegistration;
 import plugins.svg.ExportPdf;
 import plugins.svg.ExportSvg;
 
@@ -97,6 +99,9 @@ public class MModeControllerFactory {
 		menuBuilder.addAnnotatedAction(new ExportPdf());
 		menuBuilder.addAnnotatedAction(new ExportSvg());
 		menuBuilder.addAnnotatedAction(new ImportMindmanagerFiles());
+		
+		new ScriptingRegistration(modeController);
+		menuBuilder.addAnnotatedAction(new FreeplaneHelpStarter());
 	}
 
 	private MModeController createModeControllerImpl() {

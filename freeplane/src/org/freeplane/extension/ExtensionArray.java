@@ -34,7 +34,7 @@ public class ExtensionArray implements IModifiableExtensionCollection {
 		collection = new ArrayList(capacity);
 	}
 
-	public boolean add(final Class clazz, final IExtension extension) {
+	public boolean addExtension(final Class clazz, final IExtension extension) {
 		final int index = find(clazz);
 		if (index == -1) {
 			collection.add(extension);
@@ -50,9 +50,9 @@ public class ExtensionArray implements IModifiableExtensionCollection {
 	 * freemind.extensions.Extensions#addExtension(freemind.extensions.Extension
 	 * )
 	 */
-	public boolean add(final IExtension extension) {
+	public boolean addExtension(final IExtension extension) {
 		final Class clazz = extension.getClass();
-		return add(clazz, extension);
+		return addExtension(clazz, extension);
 	}
 
 	public boolean containsExtension(final Class clazz) {
@@ -117,7 +117,7 @@ public class ExtensionArray implements IModifiableExtensionCollection {
 	 * (non-Javadoc)
 	 * @see freemind.extensions.Extensions#removeExtension(java.lang.Class)
 	 */
-	public IExtension remove(final Class clazz) {
+	public IExtension removeExtension(final Class clazz) {
 		for (int i = 0; i < collection.size(); i++) {
 			if (clazz.equals(collection.get(i).getClass())) {
 				return collection.remove(i);
@@ -127,11 +127,11 @@ public class ExtensionArray implements IModifiableExtensionCollection {
 		        + clazz.getName() + " not found");
 	}
 
-	public boolean remove(final IExtension extension) {
+	public boolean removeExtension(final IExtension extension) {
 		return collection.remove(extension);
 	}
 
-	public void set(final Class clazz, final IExtension extension) {
+	public void setExtension(final Class clazz, final IExtension extension) {
 		final int index = find(clazz);
 		if (index >= 0) {
 			collection.set(index, extension);
@@ -147,8 +147,8 @@ public class ExtensionArray implements IModifiableExtensionCollection {
 	 * freemind.extensions.Extensions#setExtension(freemind.extensions.Extension
 	 * )
 	 */
-	public void set(final IExtension extension) {
+	public void setExtension(final IExtension extension) {
 		final Class clazz = extension.getClass();
-		set(clazz, extension);
+		setExtension(clazz, extension);
 	}
 }

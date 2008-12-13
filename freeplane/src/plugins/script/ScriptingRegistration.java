@@ -33,6 +33,7 @@ import org.freeplane.map.pattern.mindmapnode.IExternalPatternAction;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.ModeController;
 import org.freeplane.modes.mindmapmode.MModeController;
+import org.freeplane.ui.MenuBuilder;
 
 import plugins.script.ScriptEditorPanel.IScriptModel;
 import plugins.script.ScriptEditorPanel.ScriptHolder;
@@ -42,14 +43,12 @@ import deprecated.freemind.common.ScriptEditorProperty;
 import deprecated.freemind.common.SeparatorProperty;
 import deprecated.freemind.common.StringProperty;
 import deprecated.freemind.common.XmlBindingTools;
-import deprecated.freemind.extensions.IHookRegistration;
 import deprecated.freemind.preferences.IFreemindPropertyContributor;
 import deprecated.freemind.preferences.layout.OptionPanel;
 import freemind.controller.actions.generated.instance.Pattern;
 import freemind.controller.actions.generated.instance.ScriptEditorWindowConfigurationStorage;
 
-public class ScriptingRegistration implements IHookRegistration,
-        IExternalPatternAction {
+public class ScriptingRegistration implements IExternalPatternAction {
 	final private class PatternScriptModel implements IScriptModel {
 		final private String mOriginalScript;
 		private String mScript;
@@ -80,8 +79,8 @@ public class ScriptingRegistration implements IHookRegistration,
 		public boolean executeScript(final int pIndex,
 		                             final PrintStream pOutStream,
 		                             final IErrorHandler pErrorHandler) {
-			return ScriptingEngine.executeScript(controller.getSelectedNode(),
-			    new BooleanHolder(true), mScript, controller, pErrorHandler,
+			return ScriptingEngine.executeScript(modeController.getSelectedNode(),
+			    new BooleanHolder(true), mScript, modeController, pErrorHandler,
 			    pOutStream, getScriptCookies());
 		}
 
@@ -109,7 +108,7 @@ public class ScriptingRegistration implements IHookRegistration,
 		                                 final ScriptEditorPanel pPanel,
 		                                 final ScriptEditorWindowConfigurationStorage pStorage,
 		                                 final String pWindow_preference_storage_property) {
-			controller.storeDialogPositions(pPanel, pStorage,
+			modeController.storeDialogPositions(pPanel, pStorage,
 			    pWindow_preference_storage_property);
 		}
 	}
@@ -153,13 +152,14 @@ public class ScriptingRegistration implements IHookRegistration,
 		}
 	}
 
-	final private MModeController controller;
+	final private MModeController modeController;
 	final private HashMap mScriptCookies = new HashMap();
 	private ScriptEditorProperty.IScriptEditorStarter mScriptEditorStarter;
 	private ScriptingPluginPropertyContributor mScriptingPluginPropertyContributor;
 
 	public ScriptingRegistration(final ModeController controller) {
-		this.controller = (MModeController) controller;
+		this.modeController = (MModeController) controller;
+		register();
 	}
 
 	public void act(final NodeModel node, final Pattern pattern) {
@@ -167,25 +167,19 @@ public class ScriptingRegistration implements IHookRegistration,
 		        && pattern.getPatternScript().getValue() != null) {
 			ScriptingEngine.executeScript(node, new BooleanHolder(false),
 			    HtmlTools.unescapeHTMLUnicodeEntity(pattern.getPatternScript()
-			        .getValue()), controller, new IErrorHandler() {
+			        .getValue()), modeController, new IErrorHandler() {
 				    public void gotoLine(final int pLineNumber) {
 				    }
 			    }, System.out, getScriptCookies());
 		}
 	}
 
-	public void deRegister() {
-		controller.deregisterPlugin(this);
-		controller.deregisterPlugin(mScriptEditorStarter);
-		OptionPanel.removeContributor(mScriptingPluginPropertyContributor);
-	}
-
 	public HashMap getScriptCookies() {
 		return mScriptCookies;
 	}
 
-	public void register() {
-		controller.registerPlugin(this);
+	private void register() {
+		modeController.addExtension(IExternalPatternAction.class, this);
 		mScriptEditorStarter = new ScriptEditorProperty.IScriptEditorStarter() {
 			public String startEditor(final String pScriptInput) {
 				final PatternScriptModel patternScriptModel = new PatternScriptModel(
@@ -196,9 +190,13 @@ public class ScriptingRegistration implements IHookRegistration,
 				return patternScriptModel.getScript();
 			}
 		};
-		controller.registerPlugin(mScriptEditorStarter);
+		modeController.addExtension(ScriptEditorProperty.IScriptEditorStarter.class, mScriptEditorStarter);
 		mScriptingPluginPropertyContributor = new ScriptingPluginPropertyContributor(
-		    controller);
+		    modeController);
 		OptionPanel.addContributor(mScriptingPluginPropertyContributor);
+		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
+		menuBuilder.addAnnotatedAction(new ScriptEditor(this));
+		menuBuilder.addAnnotatedAction(new ScriptingEngine(this));
+
 	}
 }

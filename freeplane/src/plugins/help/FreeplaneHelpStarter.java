@@ -20,24 +20,31 @@
  */
 package plugins.help;
 
+import java.awt.event.ActionEvent;
 import java.net.URL;
 import java.util.logging.Logger;
 
 import javax.help.HelpBroker;
 import javax.help.HelpSet;
 
+import org.freeplane.controller.ActionDescriptor;
+import org.freeplane.controller.FreeplaneAction;
+
 import deprecated.freemind.extensions.ModeControllerHookAdapter;
 
 /**
  * @author foltin
  */
-public class FreemindHelpStarter extends ModeControllerHookAdapter {
+@ActionDescriptor(
+    name="plugins/FreemindHelp.xml_name", //
+    tooltip="plugins/FreemindHelp.xml_documentation", //
+    locations={"/menu_bar/help/doc"}
+)
+public class FreeplaneHelpStarter extends FreeplaneAction {
 	/**
 	 *
 	 */
-	@Override
-	public void startup() {
-		super.startup();
+	public void actionPerformed(ActionEvent e) {
 		final String helpHS = "plugins/help/doc/freemind.hs";
 		try {
 			final ClassLoader classLoader = this.getClass().getClassLoader();
@@ -55,4 +62,5 @@ public class FreemindHelpStarter extends ModeControllerHookAdapter {
 			return;
 		}
 	}
+
 }

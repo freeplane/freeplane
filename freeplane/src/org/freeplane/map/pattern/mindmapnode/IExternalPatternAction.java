@@ -19,11 +19,11 @@
  */
 package org.freeplane.map.pattern.mindmapnode;
 
+import org.freeplane.extension.IExtension;
 import org.freeplane.map.tree.NodeModel;
-import org.freeplane.modes.mindmapmode.MModeController.IMindMapControllerPlugin;
 
 import freemind.controller.actions.generated.instance.Pattern;
 
-public interface IExternalPatternAction extends IMindMapControllerPlugin {
+public interface IExternalPatternAction extends IExtension {
 	public void act(NodeModel node, Pattern pattern);
 }

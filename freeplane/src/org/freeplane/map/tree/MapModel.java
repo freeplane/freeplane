@@ -75,11 +75,11 @@ public class MapModel extends DefaultTreeModel implements IExtensionCollection {
 	}
 
 	public boolean addExtension(final Class clazz, final IExtension extension) {
-		return extensions.add(clazz, extension);
+		return extensions.addExtension(clazz, extension);
 	}
 
 	public boolean addExtension(final IExtension extension) {
-		return extensions.add(extension);
+		return extensions.addExtension(extension);
 	}
 
 	public boolean containsExtension(final Class clazz) {
@@ -384,19 +384,19 @@ public class MapModel extends DefaultTreeModel implements IExtensionCollection {
 	}
 
 	public IExtension removeExtension(final Class clazz) {
-		return extensions.remove(clazz);
+		return extensions.removeExtension(clazz);
 	}
 
 	public boolean removeExtension(final IExtension extension) {
-		return extensions.remove(extension);
+		return extensions.removeExtension(extension);
 	}
 
 	public void setExtension(final Class clazz, final IExtension extension) {
-		extensions.set(clazz, extension);
+		extensions.setExtension(clazz, extension);
 	}
 
 	public void setExtension(final IExtension extension) {
-		extensions.set(extension);
+		extensions.setExtension(extension);
 	}
 
 	public void setFile(final File file) {

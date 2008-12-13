@@ -37,12 +37,12 @@ public class ExtensionHashMap implements IModifiableExtensionCollection {
 		collection = new HashMap(initialCapacity, loadFactor);
 	}
 
-	public boolean add(final Class clazz, final IExtension extension) {
+	public boolean addExtension(final Class clazz, final IExtension extension) {
 		if (containsExtension(clazz)) {
 			throw new IllegalArgumentException("element with class "
 			        + clazz.getName() + " already exist");
 		}
-		set(clazz, extension);
+		setExtension(clazz, extension);
 		return true;
 	}
 
@@ -52,9 +52,9 @@ public class ExtensionHashMap implements IModifiableExtensionCollection {
 	 * freemind.extensions.Extensions#addExtension(freemind.extensions.Extension
 	 * )
 	 */
-	public boolean add(final IExtension extension) {
+	public boolean addExtension(final IExtension extension) {
 		final Class clazz = extension.getClass();
-		return add(clazz, extension);
+		return addExtension(clazz, extension);
 	}
 
 	public boolean containsExtension(final Class clazz) {
@@ -88,16 +88,16 @@ public class ExtensionHashMap implements IModifiableExtensionCollection {
 	 * (non-Javadoc)
 	 * @see freemind.extensions.Extensions#removeExtension(java.lang.Class)
 	 */
-	public IExtension remove(final Class clazz) {
+	public IExtension removeExtension(final Class clazz) {
 		return collection.remove(clazz);
 	}
 
-	public boolean remove(final IExtension extension) {
+	public boolean removeExtension(final IExtension extension) {
 		final Class clazz = extension.getClass();
-		return remove(clazz) != null;
+		return removeExtension(clazz) != null;
 	}
 
-	public void set(final Class clazz, final IExtension extension) {
+	public void setExtension(final Class clazz, final IExtension extension) {
 		collection.put(clazz, extension);
 	}
 
@@ -107,8 +107,8 @@ public class ExtensionHashMap implements IModifiableExtensionCollection {
 	 * freemind.extensions.Extensions#setExtension(freemind.extensions.Extension
 	 * )
 	 */
-	public void set(final IExtension extension) {
+	public void setExtension(final IExtension extension) {
 		final Class clazz = extension.getClass();
-		set(clazz, extension);
+		setExtension(clazz, extension);
 	}
 }

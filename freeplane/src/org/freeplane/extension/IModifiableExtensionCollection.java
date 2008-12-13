@@ -20,15 +20,15 @@
 package org.freeplane.extension;
 
 public interface IModifiableExtensionCollection extends IExtensionCollection {
-	public boolean add(Class clazz, IExtension extension);
+	public boolean addExtension(Class clazz, IExtension extension);
 
-	public boolean add(IExtension extension);
+	public boolean addExtension(IExtension extension);
 
-	public IExtension remove(Class clazz);
+	public IExtension removeExtension(Class clazz);
 
-	public boolean remove(IExtension extension);
+	public boolean removeExtension(IExtension extension);
 
-	public void set(Class clazz, IExtension extension);
+	public void setExtension(Class clazz, IExtension extension);
 
-	public void set(IExtension extension);
+	public void setExtension(IExtension extension);
 }

@@ -63,7 +63,7 @@ import freemind.controller.actions.generated.instance.ScriptEditorWindowConfigur
 
 /**
  */
-public class ScriptEditorPanel extends JDialog {
+class ScriptEditorPanel extends JDialog {
 	final private class CancelAction extends AbstractAction {
 		private CancelAction(final String pArg0) {
 			super(pArg0);

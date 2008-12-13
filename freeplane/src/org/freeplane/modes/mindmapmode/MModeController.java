@@ -69,8 +69,6 @@ import deprecated.freemind.modes.mindmapmode.hooks.MindMapHookFactory;
 import freemind.controller.actions.generated.instance.WindowConfigurationStorage;
 
 public class MModeController extends ModeController {
-	public interface IMindMapControllerPlugin {
-	}
 
 	static public final String MODENAME = "MindMap";
 	static private RedoAction redo;
@@ -78,11 +76,6 @@ public class MModeController extends ModeController {
 	final private ActionFactory actionFactory;
 	private MAttributeController attributeController;
 	private Vector hookActions;
-	/**
-	 * A general list of MindMapControllerPlugin s. Members need to be tested
-	 * for the right class and casted to be applied.
-	 */
-	final private HashSet mPlugins = new HashSet();
 	final private HashSet mRegisteredMouseWheelEventHandler = new HashSet();
 	final private List mRegistrations;
 	private IHookFactory nodeHookFactory;
@@ -171,10 +164,6 @@ public class MModeController extends ModeController {
 		mRegisteredMouseWheelEventHandler.remove(handler);
 	}
 
-	public void deregisterPlugin(final IMindMapControllerPlugin pPlugin) {
-		mPlugins.remove(pPlugin);
-	}
-
 	@Override
 	public void doubleClick(final MouseEvent e) {
 		/* perform action only if one selected node. */
@@ -235,10 +224,6 @@ public class MModeController extends ModeController {
 		return patternController;
 	}
 
-	public Set getPlugins() {
-		return Collections.unmodifiableSet(mPlugins);
-	}
-
 	@Override
 	public Set getRegisteredMouseWheelEventHandler() {
 		return Collections.unmodifiableSet(mRegisteredMouseWheelEventHandler);
@@ -296,10 +281,6 @@ public class MModeController extends ModeController {
 			}
 			((MMapController) getMapController()).toggleFolded();
 		}
-	}
-
-	public void registerPlugin(final IMindMapControllerPlugin pPlugin) {
-		mPlugins.add(pPlugin);
 	}
 
 	/**

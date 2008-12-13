@@ -22,7 +22,7 @@ import groovy.lang.Binding;
 import groovy.lang.GroovyRuntimeException;
 import groovy.lang.GroovyShell;
 
-import java.io.File;
+import java.awt.event.ActionEvent;
 import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -32,7 +32,9 @@ import javax.swing.JOptionPane;
 
 import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.ModuleNode;
+import org.freeplane.controller.ActionDescriptor;
 import org.freeplane.controller.Controller;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.main.FreeMindSecurityManager;
 import org.freeplane.main.Tools;
@@ -42,20 +44,29 @@ import org.freeplane.map.attribute.mindmapnode.MAttributeController;
 import org.freeplane.map.text.mindmapmode.MTextController;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.mindmapmode.MModeController;
-
 import deprecated.freemind.common.OptionalDontShowMeAgainDialog;
-import deprecated.freemind.modes.mindmapmode.hooks.MindMapHookAdapter;
 
 /**
  * @author foltin
  */
-public class ScriptingEngine extends MindMapHookAdapter {
+@ActionDescriptor(
+    name="plugins/ScriptingEngine.xml_name",
+    keyStroke="keystroke_plugins/ScriptingEngine.keystroke.evaluate",
+    locations={"/menu_bar/extras/first/scripting"}
+)
+class ScriptingEngine extends FreeplaneAction {
+	public ScriptingEngine(ScriptingRegistration reg) {
+	    super();
+	    this.reg = reg;
+    }
+
 	public interface IErrorHandler {
 		void gotoLine(int pLineNumber);
 	}
 
 	public static final String SCRIPT_PREFIX = "script";
 	private static final HashMap sScriptCookies = new HashMap();
+	final private ScriptingRegistration reg;
 
 	/**
 	 * @param node
@@ -264,21 +275,6 @@ public class ScriptingEngine extends MindMapHookAdapter {
 		return lineNumber;
 	}
 
-	private void performExternalScript(final String pScriptLocation,
-	                                   final NodeModel pNode,
-	                                   final BooleanHolder pBooleanHolder) {
-		final ScriptingRegistration reg = (ScriptingRegistration) getPluginBaseClass();
-		final String scriptContent = Tools.getFile(new File(pScriptLocation));
-		if (scriptContent == null) {
-			return;
-		}
-		ScriptingEngine.executeScript(pNode, pBooleanHolder, scriptContent,
-		    getMindMapController(), new IErrorHandler() {
-			    public void gotoLine(final int pLineNumber) {
-			    }
-		    }, System.out, reg.getScriptCookies());
-	}
-
 	private void performScriptOperation(
 	                                    final NodeModel node,
 	                                    final BooleanHolder pAlreadyAScriptExecuted) {
@@ -296,9 +292,8 @@ public class ScriptingEngine extends MindMapHookAdapter {
 			final String attrKey = (String) attributes.getName(row);
 			final String script = (String) attributes.getValue(row);
 			if (attrKey.startsWith(ScriptingEngine.SCRIPT_PREFIX)) {
-				final ScriptingRegistration reg = (ScriptingRegistration) getPluginBaseClass();
 				final boolean result = ScriptingEngine.executeScript(node,
-				    pAlreadyAScriptExecuted, script, getMindMapController(),
+				    pAlreadyAScriptExecuted, script, (MModeController) getModeController(),
 				    new IErrorHandler() {
 					    public void gotoLine(final int pLineNumber) {
 					    }
@@ -311,17 +306,11 @@ public class ScriptingEngine extends MindMapHookAdapter {
 		Controller.getController().getViewController().setWaitingCursor(false);
 	}
 
-	@Override
-	public void startup() {
-		super.startup();
+	public void actionPerformed(ActionEvent e) {
 		final NodeModel node = Controller.getController().getMap()
 		    .getRootNode();
 		final BooleanHolder booleanHolder = new BooleanHolder(false);
-		final String scriptLocation = getResourceString("ScriptLocation");
-		if (scriptLocation != null && scriptLocation.length() != 0) {
-			performExternalScript(scriptLocation, node, booleanHolder);
-			return;
-		}
 		performScriptOperation(node, booleanHolder);
 	}
+
 }

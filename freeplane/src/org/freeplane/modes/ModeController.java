@@ -42,6 +42,9 @@ import javax.swing.JPopupMenu;
 import org.freeplane.controller.ActionController;
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.FreeplaneAction;
+import org.freeplane.extension.ExtensionHashMap;
+import org.freeplane.extension.IExtension;
+import org.freeplane.extension.IExtensionCollection;
 import org.freeplane.io.url.UrlManager;
 import org.freeplane.map.attribute.IAttributeController;
 import org.freeplane.map.clipboard.ClipboardController;
@@ -71,7 +74,23 @@ import deprecated.freemind.extensions.IHookFactory;
  * default Actions you may want to use for easy editing of your model. Take
  * MindMapController as a sample.
  */
-public class ModeController {
+public class ModeController implements IExtensionCollection{
+	public boolean addExtension(Class clazz, IExtension extension) {
+	    return extensions.addExtension(clazz, extension);
+    }
+
+	public boolean addExtension(IExtension extension) {
+	    return extensions.addExtension(extension);
+    }
+
+	public IExtension removeExtension(Class clazz) {
+	    return extensions.removeExtension(clazz);
+    }
+
+	public boolean removeExtension(IExtension extension) {
+	    return extensions.removeExtension(extension);
+    }
+
 	private static class ActionDisplayerOnChange implements
 	        INodeChangeListener, INodeSelectionListener, IActionOnChange {
 		final FreeplaneAction action;
@@ -191,6 +210,7 @@ public class ModeController {
 		menuContributors = new LinkedList();
 		nodeViewListeners = new LinkedList();
 		actionController = new ActionController();
+		extensions = new ExtensionHashMap();
 	}
 
 	public void addAction(final Object key, final Action action) {
@@ -720,4 +740,22 @@ public class ModeController {
 			iterator.next().updateMenus(menuBuilder);
 		}
 	}
+
+	final private ExtensionHashMap extensions;
+	public boolean containsExtension(Class clazz) {
+	   return extensions.containsExtension(clazz);
+    }
+
+	public Iterator<IExtension> extensionIterator() {
+		   return extensions.extensionIterator();
+    }
+
+	public Iterator<IExtension> extensionIterator(Class clazz) {
+		   return extensions.extensionIterator(clazz);
+    }
+
+	public IExtension getExtension(Class clazz) {
+		   return extensions.getExtension(clazz);
+    }
+
 }
