@@ -43,7 +43,7 @@ import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.controller.views.IMapViewChangeListener;
 import org.freeplane.main.Tools;
 import org.freeplane.map.attribute.AttributeRegistry;
@@ -56,7 +56,7 @@ import org.freeplane.service.filter.util.ISortedListModel;
  */
 public class AttributeManagerDialog extends JDialog implements
         IMapViewChangeListener {
-	private class ApplyAction extends FreeMindAction {
+	private class ApplyAction extends FreeplaneAction {
 		ApplyAction() {
 			super("apply");
 		}
@@ -72,7 +72,7 @@ public class AttributeManagerDialog extends JDialog implements
 		}
 	}
 
-	private class CancelAction extends FreeMindAction {
+	private class CancelAction extends FreeplaneAction {
 		CancelAction() {
 			super("cancel");
 		}
@@ -130,7 +130,7 @@ public class AttributeManagerDialog extends JDialog implements
 		}
 	}
 
-	private class ImportAction extends FreeMindAction {
+	private class ImportAction extends FreeplaneAction {
 		ImportAction() {
 			super("attributes_import");
 		}
@@ -150,7 +150,7 @@ public class AttributeManagerDialog extends JDialog implements
 		}
 	}
 
-	private class OKAction extends FreeMindAction {
+	private class OKAction extends FreeplaneAction {
 		OKAction() {
 			super("ok");
 		}

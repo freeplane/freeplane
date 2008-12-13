@@ -22,12 +22,12 @@ package org.freeplane.io.url;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.io.url.mindmapmode.FileManager;
 import org.freeplane.ui.AlwaysEnabledAction;
 
 @AlwaysEnabledAction
-class OpenAction extends FreeMindAction {
+class OpenAction extends FreeplaneAction {
 	/**
 	 *
 	 */

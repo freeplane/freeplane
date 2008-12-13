@@ -26,11 +26,11 @@ public class XMLParserFactory {
 	/**
 	 * The Java properties key of the XML parser class name.
 	 */
-	public static final String CLASS_KEY = "net.n3.nanoxml.XMLParser";
+	public static final String CLASS_KEY = "org.freeplane.io.xml.n3.nanoxml.XMLParser";
 	/**
 	 * The class name of the default XML parser.
 	 */
-	public static final String DEFAULT_CLASS = "net.n3.nanoxml.StdXMLParser";
+	public static final String DEFAULT_CLASS = "org.freeplane.io.xml.n3.nanoxml.StdXMLParser";
 
 	/**
 	 * Creates a default parser.

@@ -25,13 +25,13 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.map.clipboard.mindmapmode.MClipboardController;
 import org.freeplane.map.tree.MapModel;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.mindmapmode.MMapController;
 
-class ImportBranchAction extends FreeMindAction {
+class ImportBranchAction extends FreeplaneAction {
 	public ImportBranchAction() {
 		super("import_branch");
 	}

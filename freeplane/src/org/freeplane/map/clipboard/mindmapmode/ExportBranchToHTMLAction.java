@@ -23,10 +23,10 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.map.clipboard.ClipboardController;
 
-class ExportBranchToHTMLAction extends FreeMindAction {
+class ExportBranchToHTMLAction extends FreeplaneAction {
 	public ExportBranchToHTMLAction() {
 		super("export_branch_to_html");
 	}

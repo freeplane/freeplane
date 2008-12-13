@@ -22,14 +22,14 @@ package org.freeplane.map.tree;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.map.tree.view.NodeView;
 import org.freeplane.modes.ModeController;
 
 /**
  * @author foltin
  */
-class CommonToggleChildrenFoldedAction extends FreeMindAction {
+class CommonToggleChildrenFoldedAction extends FreeplaneAction {
 	final private MapController mapController;
 
 	public CommonToggleChildrenFoldedAction(final MapController mapController) {

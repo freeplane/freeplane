@@ -27,14 +27,14 @@ import java.io.FileReader;
 import javax.swing.JFileChooser;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.main.Tools;
 import org.freeplane.map.link.mindmapmode.MLinkController;
 import org.freeplane.map.text.mindmapmode.MTextController;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.mindmapmode.MMapController;
 
-class ImportExplorerFavoritesAction extends FreeMindAction {
+class ImportExplorerFavoritesAction extends FreeplaneAction {
 	public ImportExplorerFavoritesAction() {
 		super("import_explorer_favorites");
 	}
@@ -52,8 +52,8 @@ class ImportExplorerFavoritesAction extends FreeMindAction {
 			    "Importing Favorites ...");
 			importExplorerFavorites(folder, getModeController()
 			    .getSelectedNode(),/*
-																																							 * redisplay=
-																																							 */
+																																										 * redisplay=
+																																										 */
 			true);
 			Controller.getController().getViewController().out(
 			    "Favorites imported.");

@@ -27,14 +27,14 @@ import java.net.URL;
 import javax.swing.JOptionPane;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.main.Tools;
 import org.freeplane.map.clipboard.mindmapmode.MClipboardController;
 import org.freeplane.map.tree.MapModel;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.mindmapmode.MMapController;
 
-class ImportLinkedBranchAction extends FreeMindAction {
+class ImportLinkedBranchAction extends FreeplaneAction {
 	public ImportLinkedBranchAction() {
 		super("import_linked_branch");
 	}

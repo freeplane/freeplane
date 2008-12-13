@@ -19,6 +19,14 @@
  */
 package org.freeplane.ui;
 
-public interface IHideablePopupAction {
-	boolean isVisible();
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+@Retention(RetentionPolicy.RUNTIME)
+public @interface VisibleAction {
+	static final String VISIBLE_PROPERTY = "visible";
+
+	boolean checkOnNodeChange() default false;
+
+	boolean checkOnPopup() default false;
 }

@@ -20,6 +20,7 @@
  */
 package plugins.svg;
 
+import java.awt.event.ActionEvent;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -28,15 +29,23 @@ import java.io.OutputStreamWriter;
 import javax.swing.JOptionPane;
 
 import org.apache.batik.svggen.SVGGraphics2D;
+import org.freeplane.controller.ActionDescriptor;
 import org.freeplane.controller.Controller;
 import org.freeplane.map.tree.view.MapView;
 
+@ActionDescriptor(
+    name="plugins/ExportSvg.xml_name",
+    locations={"/menu_bar/file/export/export"}
+)
 public class ExportSvg extends ExportVectorGraphic {
-	@Override
-	public void startup() {
-		super.startup();
-		final File chosenFile = chooseFile("svg",
-		    getResourceString("export_svg_text"), null);
+	public ExportSvg() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public void actionPerformed(final ActionEvent e) {
+		final File chosenFile = chooseFile("svg", Controller
+		    .getText("export_svg_text"), null);
 		if (chosenFile == null) {
 			return;
 		}
@@ -57,11 +66,11 @@ public class ExportSvg extends ExportVectorGraphic {
 			bos.flush();
 			bos.close();
 		}
-		catch (final Exception e) {
-			org.freeplane.main.Tools.logException(e);
+		catch (final Exception ex) {
+			org.freeplane.main.Tools.logException(ex);
 			JOptionPane.showMessageDialog(Controller.getController()
-			    .getViewController().getContentPane(), e.getLocalizedMessage(),
-			    null, JOptionPane.ERROR_MESSAGE);
+			    .getViewController().getContentPane(),
+			    ex.getLocalizedMessage(), null, JOptionPane.ERROR_MESSAGE);
 		}
 		Controller.getController().getViewController().setWaitingCursor(false);
 	}

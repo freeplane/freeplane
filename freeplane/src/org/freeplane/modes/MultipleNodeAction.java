@@ -24,13 +24,13 @@ import java.util.ListIterator;
 
 import javax.swing.ImageIcon;
 
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.map.tree.NodeModel;
 
 /**
  * @author Dimitry Polivaev
  */
-public abstract class MultipleNodeAction extends FreeMindAction {
+public abstract class MultipleNodeAction extends FreeplaneAction {
 	public MultipleNodeAction() {
 	}
 

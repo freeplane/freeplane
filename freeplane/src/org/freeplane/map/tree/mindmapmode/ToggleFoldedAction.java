@@ -23,14 +23,14 @@ import java.awt.event.ActionEvent;
 import java.util.ListIterator;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.main.Tools;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.ModeController;
 import org.freeplane.undo.IUndoableActor;
 
-class ToggleFoldedAction extends FreeMindAction {
+class ToggleFoldedAction extends FreeplaneAction {
 	public ToggleFoldedAction() {
 		super("toggle_folded");
 	}

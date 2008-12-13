@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.Action;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.controller.views.IMapViewChangeListener;
 import org.freeplane.map.tree.MapModel;
 import org.freeplane.map.tree.mindmapmode.MindMapMapModel;
@@ -33,7 +33,7 @@ import org.freeplane.ui.AlwaysEnabledAction;
 import org.freeplane.undo.IUndoHandler;
 
 @AlwaysEnabledAction
-class UndoAction extends FreeMindAction implements IMapViewChangeListener {
+class UndoAction extends FreeplaneAction implements IMapViewChangeListener {
 	private Action redo;
 
 	public UndoAction() {

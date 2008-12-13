@@ -21,9 +21,9 @@ package org.freeplane.map.text.mindmapmode;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 
-class EditLongAction extends FreeMindAction {
+class EditLongAction extends FreeplaneAction {
 	/**
 	 *
 	 */

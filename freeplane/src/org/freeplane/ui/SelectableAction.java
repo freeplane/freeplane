@@ -25,4 +25,8 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface SelectableAction {
 	static final String SELECTION_PROPERTY = "selected";
+
+	boolean checkOnNodeChange() default false;
+
+	boolean checkOnPopup() default false;
 }

@@ -19,6 +19,14 @@
  */
 package org.freeplane.ui;
 
-public interface ISelectablePopupAction {
-	boolean isSelected();
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+@Retention(RetentionPolicy.RUNTIME)
+public @interface EnabledAction {
+	static final String SELECTION_PROPERTY = "enabled";
+
+	boolean checkOnNodeChange() default false;
+
+	boolean checkOnPopup() default false;
 }

@@ -21,9 +21,9 @@ package org.freeplane.map.tree.mindmapmode;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 
-class NewSiblingAction extends FreeMindAction {
+class NewSiblingAction extends FreeplaneAction {
 	public NewSiblingAction() {
 		super("new_sibling_behind");
 	}

@@ -21,23 +21,19 @@ package org.freeplane.controller.views;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.AbstractAction;
+import org.freeplane.controller.FreeplaneAction;
+import org.freeplane.ui.SelectableAction;
 
-import org.freeplane.controller.Controller;
-import org.freeplane.ui.ISelectablePopupAction;
-import org.freeplane.ui.MenuBuilder;
-
-class ToggleMenubarAction extends AbstractAction implements
-        ISelectablePopupAction {
+@SelectableAction(checkOnPopup = true)
+class ToggleMenubarAction extends FreeplaneAction {
 	/**
 	 *
 	 */
 	final private ViewController controller;
 
 	ToggleMenubarAction(final ViewController viewController) {
+		super("toggle_menubar");
 		controller = viewController;
-		MenuBuilder.setLabelAndMnemonic(this, Controller
-		    .getText("toggle_menubar"));
 	}
 
 	public void actionPerformed(final ActionEvent event) {
@@ -45,6 +41,7 @@ class ToggleMenubarAction extends AbstractAction implements
 		controller.setMenubarVisible(controller.isMenubarVisible());
 	}
 
+	@Override
 	public boolean isSelected() {
 		return controller.isMenubarVisible();
 	}

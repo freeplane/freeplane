@@ -27,16 +27,12 @@ import java.util.Vector;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenuItem;
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
 
 import org.freeplane.controller.Controller;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.view.NodeView;
 import org.freeplane.ui.IMenuItemEnabledListener;
-import org.freeplane.ui.ISelectablePopupAction;
 
 import deprecated.freemind.extensions.HookInstanciationMethod;
 import deprecated.freemind.extensions.IHookFactory;
@@ -52,7 +48,7 @@ import deprecated.freemind.modes.mindmapmode.actions.undo.IHookAction;
  */
 @Deprecated
 public class NodeHookAction extends AbstractAction implements IHookAction,
-        IActor, PopupMenuListener {
+        IActor {
 	String _hookName;
 	MModeController mMindMapController;
 
@@ -210,49 +206,5 @@ public class NodeHookAction extends AbstractAction implements IHookAction,
 			}
 		}
 		return true;
-	}
-
-	public boolean isSelected(final JMenuItem pCheckItem, final Action pAction) {
-		final IHookFactory factory = getHookFactory();
-		final Object baseClass = factory.getPluginBaseClass(_hookName);
-		if (baseClass != null) {
-			if (baseClass instanceof ISelectablePopupAction) {
-				final ISelectablePopupAction listener = (ISelectablePopupAction) baseClass;
-				return listener.isSelected();
-			}
-		}
-		return false;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * javax.swing.event.PopupMenuListener#popupMenuCanceled(javax.swing.event
-	 * .PopupMenuEvent)
-	 */
-	public void popupMenuCanceled(final PopupMenuEvent e) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * javax.swing.event.PopupMenuListener#popupMenuWillBecomeInvisible(javax
-	 * .swing.event.PopupMenuEvent)
-	 */
-	public void popupMenuWillBecomeInvisible(final PopupMenuEvent e) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * javax.swing.event.PopupMenuListener#popupMenuWillBecomeVisible(javax.
-	 * swing.event.PopupMenuEvent)
-	 */
-	public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
-		final JMenuItem item = (JMenuItem) e.getSource();
-		item.setEnabled(isEnabled(item, this));
-		if (item instanceof JCheckBoxMenuItem) {
-			item.setSelected(isSelected(item, this));
-		}
 	}
 }

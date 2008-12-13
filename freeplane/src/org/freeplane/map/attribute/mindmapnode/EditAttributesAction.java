@@ -25,12 +25,12 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.SwingUtilities;
 
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.map.attribute.view.AttributeTable;
 import org.freeplane.map.attribute.view.AttributeView;
 import org.freeplane.modes.ModeController;
 
-class EditAttributesAction extends FreeMindAction {
+class EditAttributesAction extends FreeplaneAction {
 	public EditAttributesAction() {
 		super("attributes_edit_in_place");
 	};

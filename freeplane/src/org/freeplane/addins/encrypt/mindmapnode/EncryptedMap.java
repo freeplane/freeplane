@@ -21,7 +21,7 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.controller.ActionDescriptor;
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.view.NodeView;
 import org.freeplane.modes.INodeSelectionListener;
@@ -33,7 +33,7 @@ import org.freeplane.ui.dialogs.EnterPasswordDialog;
 tooltip = "accessories/plugins/NewEncryptedMap.properties_documentation", //
 iconPath = "accessories/plugins/icons/lock.png", //
 locations = { "/menu_bar/file/open" })
-public class EncryptedMap extends FreeMindAction implements
+public class EncryptedMap extends FreeplaneAction implements
         INodeSelectionListener {
 	public EncryptedMap(final ModeController modeController) {
 		super();

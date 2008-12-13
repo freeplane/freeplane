@@ -27,7 +27,7 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.ModeController;
@@ -35,7 +35,7 @@ import org.freeplane.modes.mindmapmode.MModeController;
 
 import deprecated.freemind.common.OptionalDontShowMeAgainDialog;
 
-class RemoveNoteAction extends FreeMindAction implements PopupMenuListener {
+class RemoveNoteAction extends FreeplaneAction implements PopupMenuListener {
 	/**
 	 *
 	 */

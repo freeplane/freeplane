@@ -23,7 +23,7 @@ import java.awt.event.ActionEvent;
 import java.util.List;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.map.link.ArrowLinkModel;
 import org.freeplane.map.link.NodeLinks;
 import org.freeplane.map.tree.NodeModel;
@@ -32,7 +32,7 @@ import org.freeplane.undo.IUndoableActor;
 /**
  * @author foltin
  */
-class AddArrowLinkAction extends FreeMindAction {
+class AddArrowLinkAction extends FreeplaneAction {
 	/**
 	 */
 	public AddArrowLinkAction() {

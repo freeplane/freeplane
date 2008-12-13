@@ -22,10 +22,10 @@ package org.freeplane.map.link.mindmapmode;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.io.url.mindmapmode.FileManager;
 
-class SetLinkByFileChooserAction extends FreeMindAction {
+class SetLinkByFileChooserAction extends FreeplaneAction {
 	public SetLinkByFileChooserAction() {
 		super("set_link_by_filechooser");
 	}

@@ -22,6 +22,8 @@ package org.freeplane.modes;
 import java.awt.dnd.DropTargetListener;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.io.Writer;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
@@ -39,6 +41,7 @@ import javax.swing.JPopupMenu;
 
 import org.freeplane.controller.ActionController;
 import org.freeplane.controller.Controller;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.io.url.UrlManager;
 import org.freeplane.map.attribute.IAttributeController;
 import org.freeplane.map.clipboard.ClipboardController;
@@ -51,6 +54,7 @@ import org.freeplane.map.nodestyle.NodeStyleController;
 import org.freeplane.map.note.NoteController;
 import org.freeplane.map.text.TextController;
 import org.freeplane.map.tree.MapController;
+import org.freeplane.map.tree.MapModel;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.view.MapView;
 import org.freeplane.map.tree.view.NodeView;
@@ -68,6 +72,85 @@ import deprecated.freemind.extensions.IHookFactory;
  * MindMapController as a sample.
  */
 public class ModeController {
+	private static class ActionDisplayerOnChange implements
+	        INodeChangeListener, INodeSelectionListener, IActionOnChange {
+		final FreeplaneAction action;
+
+		public ActionDisplayerOnChange(final FreeplaneAction action) {
+			super();
+			this.action = action;
+		}
+
+		public Action getAction() {
+			return action;
+		}
+
+		public void nodeChanged(final NodeChangeEvent event) {
+			action.setVisible(action.isVisible());
+		}
+
+		public void onDeselect(final NodeView node) {
+		}
+
+		public void onSelect(final NodeView node) {
+			action.setVisible(action.isVisible());
+		}
+	}
+
+	private static class ActionEnablerOnChange implements INodeChangeListener,
+	        INodeSelectionListener, IActionOnChange {
+		final FreeplaneAction action;
+
+		public ActionEnablerOnChange(final FreeplaneAction action) {
+			super();
+			this.action = action;
+		}
+
+		public Action getAction() {
+			return action;
+		}
+
+		public void nodeChanged(final NodeChangeEvent event) {
+			action.setEnabled(action.isEnabled());
+		}
+
+		public void onDeselect(final NodeView node) {
+		}
+
+		public void onSelect(final NodeView node) {
+			action.setEnabled(action.isEnabled());
+		}
+	}
+
+	private static class ActionSelectorOnChange implements INodeChangeListener,
+	        INodeSelectionListener, IActionOnChange {
+		final FreeplaneAction action;
+
+		public ActionSelectorOnChange(final FreeplaneAction action) {
+			super();
+			this.action = action;
+		}
+
+		public Action getAction() {
+			return action;
+		}
+
+		public void nodeChanged(final NodeChangeEvent event) {
+			action.setSelected(action.isSelected());
+		}
+
+		public void onDeselect(final NodeView node) {
+		}
+
+		public void onSelect(final NodeView node) {
+			action.setSelected(action.isSelected());
+		}
+	}
+
+	private interface IActionOnChange {
+		Action getAction();
+	}
+
 	public static final String NODESEPARATOR = "<nodeseparator>";
 	private final ActionController actionController;
 	private ClipboardController clipboardController;
@@ -110,8 +193,26 @@ public class ModeController {
 		actionController = new ActionController();
 	}
 
-	public void addAction(final Object key, final Action value) {
-		actionController.addAction(key, value);
+	public void addAction(final Object key, final Action action) {
+		actionController.addAction(key, action);
+		if (FreeplaneAction.checkEnabledOnChange(action)) {
+			final ActionEnablerOnChange listener = new ActionEnablerOnChange(
+			    (FreeplaneAction) action);
+			addNodeSelectionListener(listener);
+			addNodeChangeListener(listener);
+		}
+		if (FreeplaneAction.checkSelectionOnChange(action)) {
+			final ActionSelectorOnChange listener = new ActionSelectorOnChange(
+			    (FreeplaneAction) action);
+			addNodeSelectionListener(listener);
+			addNodeChangeListener(listener);
+		}
+		if (FreeplaneAction.checkVisibilityOnChange(action)) {
+			final ActionDisplayerOnChange listener = new ActionDisplayerOnChange(
+			    (FreeplaneAction) action);
+			addNodeSelectionListener(listener);
+			addNodeChangeListener(listener);
+		}
 	}
 
 	public void addMenuContributor(final IMenuContributor contributor) {
@@ -189,6 +290,11 @@ public class ModeController {
 	 */
 	public EdgeController getEdgeController() {
 		return edgeController;
+	}
+
+	public void getFilteredXml(final MapModel map, final Writer fileout)
+	        throws IOException {
+		getMapController().writeMapAsXml(map, fileout, false);
 	}
 
 	public IHookFactory getHookFactory() {
@@ -406,11 +512,54 @@ public class ModeController {
 	}
 
 	public Action removeAction(final String key) {
-		return actionController.removeAction(key);
+		final Action action = actionController.removeAction(key);
+		if (FreeplaneAction.checkEnabledOnChange(action)) {
+			removeNodeSelectionListener(ActionEnablerOnChange.class, action);
+			removeNodeChangeListener(ActionEnablerOnChange.class, action);
+		}
+		if (FreeplaneAction.checkSelectionOnChange(action)) {
+			removeNodeSelectionListener(ActionSelectorOnChange.class, action);
+			removeNodeChangeListener(ActionSelectorOnChange.class, action);
+		}
+		if (FreeplaneAction.checkVisibilityOnChange(action)) {
+			removeNodeSelectionListener(ActionDisplayerOnChange.class, action);
+			removeNodeChangeListener(ActionDisplayerOnChange.class, action);
+		}
+		return action;
+	}
+
+	private void removeNodeChangeListener(
+	                                      final Class<? extends IActionOnChange> clazz,
+	                                      final Action action) {
+		final Iterator<INodeChangeListener> iterator = nodeChangeListeners
+		    .iterator();
+		while (iterator.hasNext()) {
+			final INodeChangeListener next = iterator.next();
+			if (next instanceof IActionOnChange
+			        && ((IActionOnChange) next).getAction() == action) {
+				iterator.remove();
+				return;
+			}
+		}
 	}
 
 	public void removeNodeChangeListener(final INodeChangeListener listener) {
 		nodeChangeListeners.remove(listener);
+	}
+
+	private void removeNodeSelectionListener(
+	                                         final Class<? extends IActionOnChange> clazz,
+	                                         final Action action) {
+		final Iterator<INodeSelectionListener> iterator = nodeSelectionListeners
+		    .iterator();
+		while (iterator.hasNext()) {
+			final INodeSelectionListener next = iterator.next();
+			if (next instanceof IActionOnChange
+			        && ((IActionOnChange) next).getAction() == action) {
+				iterator.remove();
+				return;
+			}
+		}
 	}
 
 	public void removeNodeSelectionListener(

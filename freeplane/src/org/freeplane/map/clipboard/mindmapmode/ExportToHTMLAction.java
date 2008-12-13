@@ -24,12 +24,12 @@ import java.io.File;
 import java.io.IOException;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.map.clipboard.ClipboardController;
 import org.freeplane.map.tree.MapModel;
 import org.freeplane.map.tree.NodeModel;
 
-class ExportToHTMLAction extends FreeMindAction {
+class ExportToHTMLAction extends FreeplaneAction {
 	public ExportToHTMLAction() {
 		super("export_to_html");
 	}

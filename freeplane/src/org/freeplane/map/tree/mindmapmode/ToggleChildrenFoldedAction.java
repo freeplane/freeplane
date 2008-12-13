@@ -22,12 +22,12 @@ package org.freeplane.map.tree.mindmapmode;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.view.MapView;
 import org.freeplane.modes.mindmapmode.MModeController;
 
-class ToggleChildrenFoldedAction extends FreeMindAction {
+class ToggleChildrenFoldedAction extends FreeplaneAction {
 	public ToggleChildrenFoldedAction() {
 		super("toggle_children_folded");
 	}

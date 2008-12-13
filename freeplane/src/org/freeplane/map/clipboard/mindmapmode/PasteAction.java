@@ -34,7 +34,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.main.HtmlTools;
 import org.freeplane.main.Tools;
 import org.freeplane.map.clipboard.MindMapNodesSelection;
@@ -46,7 +46,7 @@ import org.freeplane.map.tree.mindmapmode.MMapController;
 import org.freeplane.modes.ModeController;
 import org.freeplane.undo.IUndoableActor;
 
-class PasteAction extends FreeMindAction {
+class PasteAction extends FreeplaneAction {
 	private interface DataFlavorHandler {
 		DataFlavor getDataFlavor();
 

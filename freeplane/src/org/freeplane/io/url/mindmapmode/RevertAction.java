@@ -29,7 +29,7 @@ import java.io.StringWriter;
 import javax.swing.JOptionPane;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.main.Tools;
 import org.freeplane.map.tree.MapController;
 import org.freeplane.map.tree.MapModel;
@@ -45,7 +45,7 @@ import org.freeplane.modes.ModeController;
  *
  * @author foltin
  */
-class RevertAction extends FreeMindAction {
+class RevertAction extends FreeplaneAction {
 	private static class RevertActionInstance {
 		private String filePrefix;
 		private String localFileName;

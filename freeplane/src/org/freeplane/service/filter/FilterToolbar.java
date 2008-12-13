@@ -39,7 +39,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.map.tree.MapModel;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.service.filter.condition.ICondition;
@@ -48,7 +48,7 @@ import org.freeplane.service.filter.condition.SelectedViewCondition;
 import org.freeplane.ui.FreeMindToolBar;
 
 class FilterToolbar extends FreeMindToolBar {
-	private class EditFilterAction extends FreeMindAction {
+	private class EditFilterAction extends FreeplaneAction {
 		EditFilterAction() {
 			super("filter_edit_description", "images/Btn_edit.gif");
 		}

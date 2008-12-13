@@ -39,17 +39,20 @@ import org.apache.batik.svggen.SVGGeneratorContext;
 import org.apache.batik.svggen.SVGGraphics2D;
 import org.apache.batik.svggen.SVGGeneratorContext.GraphicContextDefaults;
 import org.apache.batik.util.SVGConstants;
+import org.freeplane.addins.export.mindmapmode.ExportAction;
 import org.freeplane.controller.Controller;
 import org.freeplane.map.tree.view.MapView;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 
-import deprecated.freemind.extensions.ExportHook;
-
 /**
  * @author foltin
  */
-public class ExportVectorGraphic extends ExportHook {
+abstract class ExportVectorGraphic extends ExportAction {
+	public ExportVectorGraphic() {
+		super();
+	}
+
 	/**
 	 */
 	protected SVGGraphics2D fillSVGGraphics2D(final MapView view) {

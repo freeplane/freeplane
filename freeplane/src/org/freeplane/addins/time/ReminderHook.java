@@ -21,18 +21,16 @@ package org.freeplane.addins.time;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.Action;
-
 import org.freeplane.addins.NodeHookDescriptor;
 import org.freeplane.addins.PersistentNodeHook;
 import org.freeplane.controller.ActionDescriptor;
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.extension.IExtension;
 import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.ModeController;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.ui.IHideablePopupAction;
+import org.freeplane.ui.VisibleAction;
 
 /**
  * @author foltin
@@ -42,12 +40,13 @@ import org.freeplane.ui.IHideablePopupAction;
 tooltip = "accessories/plugins/RevisionPlugin.properties_documentation", //
 locations = { "/menu_bar/extras/first/time_management" })
 public class ReminderHook extends PersistentNodeHook {
-	private class HideableAction extends HookAction implements
-	        IHideablePopupAction {
+	@VisibleAction(checkOnNodeChange = true)
+	private class HideableAction extends HookAction {
 		public HideableAction() {
 			super();
 		}
 
+		@Override
 		public boolean isVisible() {
 			return isActiveForSelection();
 		}
@@ -57,7 +56,7 @@ public class ReminderHook extends PersistentNodeHook {
 	locations = { "/menu_bar/edit/find" }, //
 	keyStroke = "keystroke_plugins/TimeList.xml_key", //
 	tooltip = "plugins/NodeList.xml_documentation")
-	static private class NodeListAction extends FreeMindAction {
+	static private class NodeListAction extends FreeplaneAction {
 		private final TimeList timeList;
 
 		public NodeListAction() {
@@ -73,7 +72,7 @@ public class ReminderHook extends PersistentNodeHook {
 	@ActionDescriptor(name = "plugins/TimeList.xml_name", //
 	locations = { "/menu_bar/extras/first/time_management" }, //
 	tooltip = "plugins/TimeList.xml_documentation")
-	static private class TimeListAction extends FreeMindAction {
+	static private class TimeListAction extends FreeplaneAction {
 		private final TimeList timeList;
 
 		public TimeListAction() {
@@ -91,7 +90,7 @@ public class ReminderHook extends PersistentNodeHook {
 	locations = { "/menu_bar/extras/first/time_management" }, //
 	keyStroke = "keystroke_plugins/TimeManagement.xml_key", //
 	tooltip = "plugins/TimeManagement.xml_documentation")
-	static private class TimeManagementAction extends FreeMindAction {
+	static private class TimeManagementAction extends FreeplaneAction {
 		private final TimeManagement timeManagement;
 
 		public TimeManagementAction(final MModeController modeController,
@@ -112,12 +111,12 @@ public class ReminderHook extends PersistentNodeHook {
 	public ReminderHook(final ModeController modeController) {
 		super(modeController);
 		if (modeController instanceof MModeController) {
-			final Action timeManagementAction = new TimeManagementAction(
+			final FreeplaneAction timeManagementAction = new TimeManagementAction(
 			    (MModeController) modeController, this);
 			registerAction(timeManagementAction);
-			final Action timeListAction = new TimeListAction();
+			final FreeplaneAction timeListAction = new TimeListAction();
 			registerAction(timeListAction);
-			final Action nodeListAction = new NodeListAction();
+			final FreeplaneAction nodeListAction = new NodeListAction();
 			registerAction(nodeListAction);
 		}
 	}
@@ -130,7 +129,7 @@ public class ReminderHook extends PersistentNodeHook {
 	}
 
 	@Override
-	protected Action createAction() {
+	protected FreeplaneAction createAction() {
 		return getModeController() instanceof MModeController ? new HideableAction()
 		        : null;
 	}

@@ -42,14 +42,14 @@ import javax.swing.WindowConstants;
 import javax.swing.text.JTextComponent;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.modes.ModeController;
 
 /**
  * @author foltin
  */
 public class EditNodeBase {
-	protected class EditCopyAction extends FreeMindAction {
+	protected class EditCopyAction extends FreeplaneAction {
 		final private JTextComponent textComponent;
 
 		public EditCopyAction(final JTextComponent textComponent) {
@@ -110,8 +110,8 @@ public class EditNodeBase {
 		EditDialog(final EditNodeBase base) {
 			super(Controller.getController().getViewController().getJFrame(),
 			    base.getText("edit_long_node"), /*
-			    				    				    				    		    				    											 * modal=
-			    				    				    				    		    				    											 */
+			    		    				    				    				    		    				    											 * modal=
+			    		    				    				    				    		    				    											 */
 			    true);
 			getContentPane().setLayout(new BorderLayout());
 			setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);

@@ -15,8 +15,9 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package accessories.plugins;
+package org.freeplane.addins.export.mindmapmode;
 
+import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -36,21 +37,35 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import org.freeplane.controller.ActionDescriptor;
 import org.freeplane.controller.Controller;
 import org.freeplane.map.tree.MapModel;
-import org.freeplane.modes.mindmapmode.MModeController;
-
-import deprecated.freemind.extensions.ExportHook;
+import org.freeplane.modes.ModeController;
 
 /**
  * @author foltin
  */
-public class ExportToOoWriter extends ExportHook {
-	/**
-	 *
-	 */
+@ActionDescriptor(name = "accessories/plugins/ExportToOoWriter.properties_name", //
+tooltip = "accessories/plugins/ExportToOoWriter.properties_documentation", // 
+locations = { "/menu_bar/file/export/export" })
+public class ExportToOoWriter extends ExportAction {
 	public ExportToOoWriter() {
 		super();
+	}
+
+	public void actionPerformed(final ActionEvent e) {
+		final File chosenFile = chooseFile("odt", null, null);
+		if (chosenFile == null) {
+			return;
+		}
+		Controller.getController().getViewController().setWaitingCursor(true);
+		try {
+			exportToOoWriter(chosenFile);
+		}
+		catch (final IOException ex) {
+			org.freeplane.main.Tools.logException(ex);
+		}
+		Controller.getController().getViewController().setWaitingCursor(false);
 	}
 
 	/**
@@ -59,7 +74,8 @@ public class ExportToOoWriter extends ExportHook {
 	private boolean applyXsltFile(final String xsltFileName,
 	                              final StringWriter writer, final Result result)
 	        throws IOException {
-		final URL xsltUrl = getResource(xsltFileName);
+		final URL xsltUrl = Controller.getResourceController().getResource(
+		    xsltFileName);
 		if (xsltUrl == null) {
 			Logger.global
 			    .severe("Can't find " + xsltFileName + " as resource.");
@@ -89,7 +105,8 @@ public class ExportToOoWriter extends ExportHook {
 	private boolean copyFromResource(final String fileName,
 	                                 final OutputStream out) {
 		try {
-			final URL resource = getResource(fileName);
+			final URL resource = Controller.getResourceController()
+			    .getResource(fileName);
 			if (resource == null) {
 				Logger.global.severe("Cannot find resource: " + fileName);
 				return false;
@@ -117,7 +134,7 @@ public class ExportToOoWriter extends ExportHook {
 		final ZipOutputStream zipout = new ZipOutputStream(
 		    new FileOutputStream(file));
 		final StringWriter writer = new StringWriter();
-		final MModeController controller = (MModeController) getController();
+		final ModeController controller = getModeController();
 		final MapModel map = Controller.getController().getMap();
 		controller.getFilteredXml(map, writer);
 		final Result result = new StreamResult(zipout);
@@ -138,27 +155,6 @@ public class ExportToOoWriter extends ExportHook {
 		zipout.closeEntry();
 		zipout.close();
 		return resultValue;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see freemind.extensions.MindMapHook#startupMapHook()
-	 */
-	@Override
-	public void startup() {
-		super.startup();
-		final File chosenFile = chooseFile("odt", null, null);
-		if (chosenFile == null) {
-			return;
-		}
-		Controller.getController().getViewController().setWaitingCursor(true);
-		try {
-			exportToOoWriter(chosenFile);
-		}
-		catch (final IOException e) {
-			org.freeplane.main.Tools.logException(e);
-		}
-		Controller.getController().getViewController().setWaitingCursor(false);
 	}
 
 	public void transForm(final Source xmlSource, final InputStream xsltStream,

@@ -21,26 +21,24 @@ package org.freeplane.controller.resources;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.AbstractAction;
-
 import org.freeplane.controller.Controller;
-import org.freeplane.ui.ISelectablePopupAction;
-import org.freeplane.ui.MenuBuilder;
+import org.freeplane.controller.FreeplaneAction;
+import org.freeplane.ui.SelectableAction;
 
-class ShowSelectionAsRectangleAction extends AbstractAction implements
-        ISelectablePopupAction {
+@SelectableAction(checkOnPopup = true)
+class ShowSelectionAsRectangleAction extends FreeplaneAction {
 	/**
 	 *
 	 */
 	public ShowSelectionAsRectangleAction() {
-		MenuBuilder.setLabelAndMnemonic(this, Controller
-		    .getText("selection_as_rectangle"));
+		super("selection_as_rectangle");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		Controller.getResourceController().toggleSelectionAsRectangle();
 	}
 
+	@Override
 	public boolean isSelected() {
 		return Controller.getResourceController().isSelectionAsRectangle();
 	}

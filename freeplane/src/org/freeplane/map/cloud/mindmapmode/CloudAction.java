@@ -28,7 +28,7 @@ import org.freeplane.ui.SelectableAction;
 /**
  * @author foltin
  */
-@SelectableAction
+@SelectableAction(checkOnNodeChange = true)
 class CloudAction extends MultipleNodeAction {
 	public CloudAction() {
 		super("cloud", "images/Cloud24.gif");
@@ -47,6 +47,7 @@ class CloudAction extends MultipleNodeAction {
 		cloudController.setCloud(node, node.getCloud() == null);
 	}
 
+	@Override
 	public boolean isSelected() {
 		return getMModeController().getSelectedNode().getCloud() != null;
 	}

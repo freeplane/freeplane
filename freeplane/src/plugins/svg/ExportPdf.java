@@ -20,6 +20,7 @@
  */
 package plugins.svg;
 
+import java.awt.event.ActionEvent;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -31,6 +32,7 @@ import org.apache.batik.transcoder.SVGAbstractTranscoder;
 import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.fop.svg.PDFTranscoder;
+import org.freeplane.controller.ActionDescriptor;
 import org.freeplane.controller.Controller;
 import org.freeplane.map.tree.view.MapView;
 import org.w3c.dom.Document;
@@ -39,12 +41,18 @@ import org.w3c.dom.Element;
 /**
  * @author foltin
  */
+@ActionDescriptor(
+       name="plugins/ExportPdf.xml_name",
+       locations={"/menu_bar/file/export/export"}
+)
 public class ExportPdf extends ExportVectorGraphic {
-	@Override
-	public void startup() {
-		super.startup();
-		final File chosenFile = chooseFile("pdf",
-		    getResourceString("export_pdf_text"), null);
+	public ExportPdf() {
+		super();
+	}
+
+	public void actionPerformed(final ActionEvent e) {
+		final File chosenFile = chooseFile("pdf", Controller
+		    .getText("export_pdf_text"), null);
 		if (chosenFile == null) {
 			return;
 		}
@@ -79,11 +87,11 @@ public class ExportPdf extends ExportVectorGraphic {
 			ostream.flush();
 			ostream.close();
 		}
-		catch (final Exception e) {
-			org.freeplane.main.Tools.logException(e);
+		catch (final Exception ex) {
+			org.freeplane.main.Tools.logException(ex);
 			JOptionPane.showMessageDialog(Controller.getController()
-			    .getViewController().getContentPane(), e.getLocalizedMessage(),
-			    null, JOptionPane.ERROR_MESSAGE);
+			    .getViewController().getContentPane(),
+			    ex.getLocalizedMessage(), null, JOptionPane.ERROR_MESSAGE);
 		}
 		Controller.getController().getViewController().setWaitingCursor(false);
 	}

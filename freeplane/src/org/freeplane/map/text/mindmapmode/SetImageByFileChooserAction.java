@@ -22,9 +22,9 @@ package org.freeplane.map.text.mindmapmode;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 
-class SetImageByFileChooserAction extends FreeMindAction {
+class SetImageByFileChooserAction extends FreeplaneAction {
 	public SetImageByFileChooserAction() {
 		super("set_image_by_filechooser");
 	}

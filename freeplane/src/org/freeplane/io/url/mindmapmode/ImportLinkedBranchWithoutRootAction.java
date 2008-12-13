@@ -28,7 +28,7 @@ import java.util.ListIterator;
 import javax.swing.JOptionPane;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.main.Tools;
 import org.freeplane.map.clipboard.mindmapmode.MClipboardController;
 import org.freeplane.map.tree.MapModel;
@@ -38,7 +38,7 @@ import org.freeplane.map.tree.mindmapmode.MMapController;
 /**
  * This is exactly the opposite of exportBranch.
  */
-class ImportLinkedBranchWithoutRootAction extends FreeMindAction {
+class ImportLinkedBranchWithoutRootAction extends FreeplaneAction {
 	public ImportLinkedBranchWithoutRootAction() {
 		super("import_linked_branch_without_root");
 	}

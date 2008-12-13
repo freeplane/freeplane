@@ -23,7 +23,7 @@ import java.util.List;
 
 import org.freeplane.controller.ActionDescriptor;
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.map.pattern.mindmapnode.StylePatternFactory;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.ModeController;
@@ -36,7 +36,7 @@ import freemind.controller.actions.generated.instance.Pattern;
 locations = { "/menu_bar/format/change" }, //
 tooltip = "accessories/plugins/ApplyFormatPlugin.properties_documentation" //
 )
-public class ApplyFormatPlugin extends FreeMindAction {
+public class ApplyFormatPlugin extends FreeplaneAction {
 	/**
 	 */
 	public ApplyFormatPlugin() {

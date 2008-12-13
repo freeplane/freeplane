@@ -23,12 +23,12 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
 
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 
 /**
  * @author foltin
  */
-public abstract class AbstractUndoableAction extends FreeMindAction {
+public abstract class AbstractUndoableAction extends FreeplaneAction {
 	private IActor actor;
 
 	protected AbstractUndoableAction(final String name, final String icon) {

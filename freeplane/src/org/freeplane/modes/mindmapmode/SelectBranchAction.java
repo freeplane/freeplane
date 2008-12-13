@@ -21,10 +21,10 @@ package org.freeplane.modes.mindmapmode;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 
 /** */
-class SelectBranchAction extends FreeMindAction {
+class SelectBranchAction extends FreeplaneAction {
 	/**
 	 *
 	 */
@@ -35,7 +35,7 @@ class SelectBranchAction extends FreeMindAction {
 	public void actionPerformed(final ActionEvent e) {
 		getMModeController().selectBranch(
 		    getMModeController().getSelectedView(), true /*
-																								 * = extend
-																								 */);
+																									 * = extend
+																									 */);
 	}
 }

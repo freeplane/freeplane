@@ -25,10 +25,10 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JSplitPane;
 
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.modes.ModeController;
 
-class SelectNoteAction extends FreeMindAction {
+class SelectNoteAction extends FreeplaneAction {
 	/**
 	 *
 	 */

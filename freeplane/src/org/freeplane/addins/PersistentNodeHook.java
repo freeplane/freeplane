@@ -24,10 +24,8 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.Action;
-
 import org.freeplane.controller.ActionDescriptor;
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.extension.IExtension;
 import org.freeplane.io.INodeWriter;
 import org.freeplane.io.ITreeWriter;
@@ -39,11 +37,11 @@ import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.NodeBuilder.NodeObject;
 import org.freeplane.map.tree.view.NodeView;
 import org.freeplane.modes.ModeController;
-import org.freeplane.ui.ISelectablePopupAction;
+import org.freeplane.ui.SelectableAction;
 import org.freeplane.undo.IUndoableActor;
 
 public abstract class PersistentNodeHook implements IExtension {
-	public class HookAction extends FreeMindAction {
+	public class HookAction extends FreeplaneAction {
 		public HookAction() {
 			super();
 		}
@@ -61,12 +59,13 @@ public abstract class PersistentNodeHook implements IExtension {
 		}
 	}
 
-	private class SelectableAction extends HookAction implements
-	        ISelectablePopupAction {
-		public SelectableAction() {
+	@SelectableAction(checkOnNodeChange = true)
+	private class SelectableHookAction extends HookAction {
+		public SelectableHookAction() {
 			super();
 		}
 
+		@Override
 		public boolean isSelected() {
 			return isActiveForSelection();
 		}
@@ -83,7 +82,7 @@ public abstract class PersistentNodeHook implements IExtension {
 		}
 
 		public void act() {
-			if (node.containsExtension(extension)) {
+			if (extension != null && node.containsExtension(extension)) {
 				remove(node, extension);
 			}
 			else {
@@ -137,7 +136,7 @@ public abstract class PersistentNodeHook implements IExtension {
 		}
 	}
 
-	private final Action action;
+	private final FreeplaneAction action;
 	private final ModeController modeController;
 
 	public PersistentNodeHook(final ModeController modeController) {
@@ -166,8 +165,8 @@ public abstract class PersistentNodeHook implements IExtension {
 		getModeController().getMapController().nodeChanged(node);
 	}
 
-	protected Action createAction() {
-		final SelectableAction selectableAction = new SelectableAction();
+	protected FreeplaneAction createAction() {
+		final SelectableHookAction selectableAction = new SelectableHookAction();
 		return selectableAction;
 	}
 
@@ -248,12 +247,12 @@ public abstract class PersistentNodeHook implements IExtension {
 		return false;
 	}
 
-	protected void registerAction(final Action action) {
+	protected void registerAction(final FreeplaneAction action) {
 		registerAction(action, action.getClass().getAnnotation(
 		    ActionDescriptor.class));
 	}
 
-	protected void registerAction(final Action action,
+	protected void registerAction(final FreeplaneAction action,
 	                              final ActionDescriptor actionAnnotation) {
 		modeController.addAction(actionAnnotation.name(), action);
 		getModeController().getUserInputListenerFactory().getMenuBuilder()

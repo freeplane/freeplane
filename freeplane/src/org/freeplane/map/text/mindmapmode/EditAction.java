@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.main.HtmlTools;
 import org.freeplane.main.Tools;
@@ -44,7 +44,7 @@ import org.freeplane.undo.IUndoableActor;
 
 import deprecated.freemind.common.OptionalDontShowMeAgainDialog;
 
-class EditAction extends FreeMindAction {
+class EditAction extends FreeplaneAction {
 	private static final Pattern HTML_HEAD = Pattern.compile(
 	    "\\s*<head>.*</head>", Pattern.DOTALL);
 	private EditNodeBase mCurrentEditDialog = null;

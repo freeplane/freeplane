@@ -15,8 +15,9 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package accessories.plugins;
+package org.freeplane.addins.export.mindmapmode;
 
+import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -28,6 +29,8 @@ import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URL;
+import java.util.Enumeration;
+import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.logging.Logger;
@@ -42,41 +45,106 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.freeplane.controller.Controller;
+import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
+import org.freeplane.io.xml.n3.nanoxml.IXMLParser;
+import org.freeplane.io.xml.n3.nanoxml.IXMLReader;
+import org.freeplane.io.xml.n3.nanoxml.StdXMLReader;
+import org.freeplane.io.xml.n3.nanoxml.XMLParserFactory;
 import org.freeplane.main.Tools;
 import org.freeplane.map.icon.MindIcon;
 import org.freeplane.map.tree.MapModel;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.ModeController;
 import org.freeplane.modes.mindmapmode.MModeController;
+import org.freeplane.ui.MenuBuilder;
 
 import accessories.plugins.util.html.ClickableImageCreator;
 import accessories.plugins.util.xslt.ExportDialog;
-import deprecated.freemind.extensions.ExportHook;
 
 /**
  * @author foltin To change the template for this generated type comment go to
  *         Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
-public class ExportWithXSLT extends ExportHook {
+public class ExportWithXSLT extends ExportAction {
 	private static final String NAME_EXTENSION_PROPERTY = "name_extension";
+
+	public static void createXSLTExportActions(final ModeController modeController,
+	                                           final String xmlDescriptorFile) {
+		try {
+			final IXMLParser parser = XMLParserFactory.createDefaultXMLParser();
+			final URL resource = Controller.getResourceController().getResource(xmlDescriptorFile);
+			final IXMLReader reader = new StdXMLReader(resource.openStream());
+			parser.setReader(reader);
+			final IXMLElement xml = (IXMLElement) parser.parse();
+			final Enumeration actionDescriptors = xml.enumerateChildren();
+			while (actionDescriptors.hasMoreElements()) {
+				final IXMLElement descriptor = (IXMLElement) actionDescriptors
+				    .nextElement();
+				final String name = descriptor.getAttribute("name", null);
+				final String tooltip = descriptor.getAttribute("tooltip", null);
+				final String location = descriptor.getAttribute("location",
+				    null);
+				final IXMLElement xmlProperties = descriptor
+				    .getFirstChildNamed("properties");
+				final Properties properties = xmlProperties.getAttributes();
+				final ExportWithXSLT action = new ExportWithXSLT(name, tooltip,
+				    properties);
+				modeController.addAction(name, action);
+				modeController.getUserInputListenerFactory().getMenuBuilder()
+				    .addAction(location, action, location + "/" + name,
+				        MenuBuilder.AS_CHILD);
+			}
+		}
+		catch (final Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * For test purposes. True=no error
 	 */
 	private boolean mTransformResultWithoutError = false;
+	final private Properties properties;
 
-	/**
-	 *
-	 */
-	public ExportWithXSLT() {
-		super();
+	public ExportWithXSLT(final String name, final String tooltip,
+	                      final Properties properties) {
+		super(name);
+		this.properties = properties;
+		setTooltip(tooltip);
+	}
+
+	public void actionPerformed(final ActionEvent e) {
+		final ModeController mc = getModeController();
+		final MapModel model = Controller.getController().getMap();
+		if (Tools.safeEquals(getProperty("file_type"), "user")) {
+			if (model == null) {
+				return;
+			}
+			if ((model.getFile() == null) || model.isReadOnly()) {
+				if (((MModeController) mc).save()) {
+					export(model.getFile());
+					return;
+				}
+				else {
+					return;
+				}
+			}
+			else {
+				export(model.getFile());
+			}
+		}
+		else {
+			final File saveFile = chooseFile();
+			if (saveFile == null) {
+				return;
+			}
+			transform(saveFile);
+		}
 	}
 
 	protected File chooseFile() {
-		String nameExtension = null;
-		if (getProperties().containsKey(ExportWithXSLT.NAME_EXTENSION_PROPERTY)) {
-			nameExtension = getResourceString(ExportWithXSLT.NAME_EXTENSION_PROPERTY);
-		}
-		return chooseFile(getResourceString("file_type"),
+		final String nameExtension = getProperty(ExportWithXSLT.NAME_EXTENSION_PROPERTY);
+		return chooseFile(getProperty("file_type"),
 		    getTranslatableResourceString("file_description"), nameExtension);
 	}
 
@@ -139,9 +207,8 @@ public class ExportWithXSLT extends ExportHook {
 		final BufferedWriter fileout = new BufferedWriter(
 		    new OutputStreamWriter(new FileOutputStream(pDirectoryName
 		            + File.separator + "map.mm")));
-		final MModeController controller = (MModeController) getController();
 		final MapModel map = Controller.getController().getMap();
-		controller.getFilteredXml(map, fileout);
+		getModeController().getFilteredXml(map, fileout);
 		return success;
 	}
 
@@ -187,8 +254,8 @@ public class ExportWithXSLT extends ExportHook {
 			final NodeModel root = Controller.getController().getMap()
 			    .getRootNode();
 			final ClickableImageCreator creator = new ClickableImageCreator(
-			    root, getController(),
-			    getResourceString("link_replacement_regexp"));
+			    root, getModeController(),
+			    getProperty("link_replacement_regexp"));
 			areaCode = creator.generateHtml();
 		}
 		return areaCode;
@@ -199,57 +266,26 @@ public class ExportWithXSLT extends ExportHook {
 	 */
 	private StringWriter getMapXml() throws IOException {
 		final StringWriter writer = new StringWriter();
-		final MModeController controller = (MModeController) getController();
+		final MModeController controller = (MModeController) getModeController();
 		final MapModel map = Controller.getController().getMap();
 		controller.getFilteredXml(map, writer);
 		return writer;
 	}
 
+	public String getProperty(final String key) {
+		return properties.getProperty(key, null);
+	}
+
 	private String getTranslatableResourceString(final String resourceName) {
-		final String returnValue = getResourceString(resourceName);
+		final String returnValue = getProperty(resourceName);
 		if (returnValue != null && returnValue.startsWith("%")) {
-			return getController().getText(returnValue.substring(1));
+			return Controller.getText(returnValue.substring(1));
 		}
 		return returnValue;
 	}
 
 	public boolean isTransformResultWithoutError() {
 		return mTransformResultWithoutError;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see freemind.extensions.MindMapHook#startupMapHook()
-	 */
-	@Override
-	public void startup() {
-		super.startup();
-		final ModeController mc = getController();
-		final MapModel model = Controller.getController().getMap();
-		if (Tools.safeEquals(getResourceString("file_type"), "user")) {
-			if (model == null) {
-				return;
-			}
-			if ((model.getFile() == null) || model.isReadOnly()) {
-				if (((MModeController) mc).save()) {
-					export(model.getFile());
-					return;
-				}
-				else {
-					return;
-				}
-			}
-			else {
-				export(model.getFile());
-			}
-		}
-		else {
-			final File saveFile = chooseFile();
-			if (saveFile == null) {
-				return;
-			}
-			transform(saveFile);
-		}
 	}
 
 	/**
@@ -259,37 +295,33 @@ public class ExportWithXSLT extends ExportHook {
 		try {
 			mTransformResultWithoutError = true;
 			final boolean create_image = Tools.safeEquals(
-			    getResourceString("create_html_linked_image"), "true");
+			    getProperty("create_html_linked_image"), "true");
 			final String areaCode = getAreaCode(create_image);
-			final String xsltFileName = getResourceString("xslt_file");
+			final String xsltFileName = getProperty("xslt_file");
 			boolean success = transformMapWithXslt(xsltFileName, saveFile,
 			    areaCode);
 			if (!success) {
 				JOptionPane.showMessageDialog(null,
-				    getResourceString("error_applying_template"), "Freemind",
+				    getProperty("error_applying_template"), "Freemind",
 				    JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			if (success
-			        && Tools
-			            .safeEquals(getResourceString("create_dir"), "true")) {
+			if (success && Tools.safeEquals(getProperty("create_dir"), "true")) {
 				final String directoryName = saveFile.getAbsolutePath()
 				        + "_files";
 				success = createDirectory(directoryName);
 				if (success) {
-					final String files = getResourceString("files_to_copy");
-					final String filePrefix = getResourceString("file_prefix");
+					final String files = getProperty("files_to_copy");
+					final String filePrefix = getProperty("file_prefix");
 					copyFilesFromResourcesToDirectory(directoryName, files,
 					    filePrefix);
 				}
 				if (success
-				        && Tools.safeEquals(getResourceString("copy_icons"),
-				            "true")) {
+				        && Tools.safeEquals(getProperty("copy_icons"), "true")) {
 					success = copyIcons(directoryName);
 				}
 				if (success
-				        && Tools.safeEquals(getResourceString("copy_map"),
-				            "true")) {
+				        && Tools.safeEquals(getProperty("copy_map"), "true")) {
 					success = copyMap(directoryName);
 				}
 				if (success && create_image) {
@@ -298,11 +330,11 @@ public class ExportWithXSLT extends ExportHook {
 			}
 			if (!success) {
 				JOptionPane.showMessageDialog(null,
-				    getResourceString("error_creating_directory"), "Freemind",
+				    getProperty("error_creating_directory"), "Freemind",
 				    JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			if (Tools.safeEquals(getResourceString("load_file"), "true")) {
+			if (Tools.safeEquals(getProperty("load_file"), "true")) {
 				Controller.getController().getViewController().openDocument(
 				    Tools.fileToUrl(saveFile));
 			}
@@ -346,7 +378,8 @@ public class ExportWithXSLT extends ExportHook {
 		final StringWriter writer = getMapXml();
 		final StringReader reader = new StringReader(writer.getBuffer()
 		    .toString());
-		final URL xsltUrl = getResource(xsltFileName);
+		final URL xsltUrl = Controller.getResourceController().getResource(
+		    xsltFileName);
 		if (xsltUrl == null) {
 			Logger.global
 			    .severe("Can't find " + xsltFileName + " as resource.");

@@ -15,8 +15,9 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package accessories.plugins;
+package org.freeplane.addins.export.mindmapmode;
 
+import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -32,28 +33,59 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.freeplane.controller.Controller;
-
-import deprecated.freemind.extensions.ExportHook;
+import org.freeplane.modes.ModeController;
+import org.freeplane.ui.MenuBuilder;
 
 /**
  * @author foltin
  * @author kakeda
  * @author rreppel
  */
-public class ExportToImage extends ExportHook {
-	/**
-	 *
-	 */
-	public ExportToImage() {
-		super();
+public class ExportToImage extends ExportAction {
+	public static void createActions(final ModeController modeController) {
+		final MenuBuilder menuBuilder = modeController
+		    .getUserInputListenerFactory().getMenuBuilder();
+		final ExportToImage pngExport = new ExportToImage(
+			"accessories/plugins/ExportToImage_PNG.properties_name", 
+			"png",
+		    "Portable Network Graphic (PNG)");
+		pngExport
+		    .setTooltip("accessories/plugins/ExportToImage_PNG.properties_documentation");
+		modeController.addAction("ExportToImage_PNG", pngExport);
+		menuBuilder.addAction("/menu_bar/file/export/export", pngExport,
+		    "ExportToImage_PNG", MenuBuilder.AS_CHILD);
+		final ExportToImage jpgExport = new ExportToImage(
+			"accessories/plugins/ExportToImage_JPEG.properties_name", 
+			"jpg",
+		    "Compressed image (JPEG)");
+		pngExport
+		    .setTooltip("accessories/plugins/ExportToImage_JPEG.properties_documentation");
+		modeController.addAction("ExportToImage_JPEG", jpgExport);
+		menuBuilder.addAction("/menu_bar/file/export/export", jpgExport,
+		    "ExportToImage_JPEG", MenuBuilder.AS_CHILD);
+	}
+
+	private final String imageDescripton;
+	private final String imageType;
+
+	ExportToImage(final String title, final String imageType, final String imageDescripton) {
+		super(title);
+		this.imageType = imageType;
+		this.imageDescripton = imageDescripton;
+	}
+
+	public void actionPerformed(final ActionEvent e) {
+		final BufferedImage image = createBufferedImage();
+		if (image != null) {
+			exportToImage(image);
+		}
 	}
 
 	/**
 	 * Export image.
 	 */
-	public boolean exportToImage(final BufferedImage image, final String type,
-	                             final String description) {
-		final File chosenFile = chooseFile(type, description, null);
+	public boolean exportToImage(final BufferedImage image) {
+		final File chosenFile = chooseFile(imageType, imageDescripton, null);
 		if (chosenFile == null) {
 			return false;
 		}
@@ -61,7 +93,7 @@ public class ExportToImage extends ExportHook {
 			Controller.getController().getViewController().setWaitingCursor(
 			    true);
 			final FileOutputStream out = new FileOutputStream(chosenFile);
-			ImageIO.write(image, type, out);
+			ImageIO.write(image, imageType, out);
 			out.close();
 		}
 		catch (final IOException e1) {
@@ -69,21 +101,6 @@ public class ExportToImage extends ExportHook {
 		}
 		Controller.getController().getViewController().setWaitingCursor(false);
 		return true;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see freemind.extensions.MindMapHook#startupMapHook()
-	 */
-	@Override
-	public void startup() {
-		super.startup();
-		final BufferedImage image = createBufferedImage();
-		if (image != null) {
-			final String imageType = getResourceString("image_type");
-			exportToImage(image, imageType,
-			    getResourceString("image_description"));
-		}
 	}
 
 	public void transForm(final Source xmlSource, final InputStream xsltStream,

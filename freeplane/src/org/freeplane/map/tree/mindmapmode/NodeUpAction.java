@@ -29,14 +29,14 @@ import java.util.Vector;
 import java.util.logging.Logger;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.map.tree.MapModel;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.view.MapView;
 import org.freeplane.map.tree.view.NodeView;
 import org.freeplane.undo.IUndoableActor;
 
-class NodeUpAction extends FreeMindAction {
+class NodeUpAction extends FreeplaneAction {
 	public NodeUpAction() {
 		super("node_up");
 	}

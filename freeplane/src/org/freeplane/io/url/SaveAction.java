@@ -22,9 +22,9 @@ package org.freeplane.io.url;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 
-class SaveAction extends FreeMindAction {
+class SaveAction extends FreeplaneAction {
 	public SaveAction() {
 		super("save", "images/filesave.png");
 	}

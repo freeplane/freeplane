@@ -29,11 +29,11 @@ import java.util.ListIterator;
 import javax.swing.JOptionPane;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.main.HtmlTools;
 import org.freeplane.map.tree.NodeModel;
 
-class FindAction extends FreeMindAction {
+class FindAction extends FreeplaneAction {
 	private boolean findCaseSensitive;
 	private NodeModel findFromNode;
 	private LinkedList findNodeQueue;
@@ -57,8 +57,8 @@ class FindAction extends FreeMindAction {
 		searchTerm = what;
 		final boolean found = find(getModeController().getSelectedNode(),
 		    subterms, /*
-		    		    		    		    	    		    				 * caseSensitive=
-		    		    		    		    	    		    				 */
+		    	    		    		    		    	    		    				 * caseSensitive=
+		    	    		    		    		    	    		    				 */
 		    false);
 		getModeController().getMapView().repaint();
 		if (!found) {

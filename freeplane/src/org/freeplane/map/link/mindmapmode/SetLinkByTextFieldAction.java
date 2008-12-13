@@ -24,13 +24,13 @@ import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.map.link.NodeLinks;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.ModeController;
 import org.freeplane.undo.IUndoableActor;
 
-class SetLinkByTextFieldAction extends FreeMindAction {
+class SetLinkByTextFieldAction extends FreeplaneAction {
 	public SetLinkByTextFieldAction() {
 		super("set_link_by_textfield", (String) null);
 	}

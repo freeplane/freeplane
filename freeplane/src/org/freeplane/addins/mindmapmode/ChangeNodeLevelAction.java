@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Vector;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.main.Tools;
 import org.freeplane.map.clipboard.mindmapmode.MClipboardController;
 import org.freeplane.map.tree.NodeModel;
@@ -33,7 +33,7 @@ import org.freeplane.map.tree.NodeModel;
 /**
  * @author foltin
  */
-public class ChangeNodeLevelAction extends FreeMindAction {
+public class ChangeNodeLevelAction extends FreeplaneAction {
 	/**
 	 *
 	 */

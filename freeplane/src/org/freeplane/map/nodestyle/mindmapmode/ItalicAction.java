@@ -25,7 +25,7 @@ import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.MultipleNodeAction;
 import org.freeplane.ui.SelectableAction;
 
-@SelectableAction
+@SelectableAction(checkOnNodeChange = true)
 class ItalicAction extends MultipleNodeAction {
 	private boolean italic;
 
@@ -53,6 +53,7 @@ class ItalicAction extends MultipleNodeAction {
 		    node);
 	}
 
+	@Override
 	public boolean isSelected() {
 		return isItalic();
 	}

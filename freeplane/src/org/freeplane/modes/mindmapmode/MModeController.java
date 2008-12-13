@@ -20,8 +20,6 @@
 package org.freeplane.modes.mindmapmode;
 
 import java.awt.event.MouseEvent;
-import java.io.IOException;
-import java.io.Writer;
 import java.lang.reflect.Constructor;
 import java.util.Collections;
 import java.util.HashSet;
@@ -220,11 +218,6 @@ public class MModeController extends ModeController {
 		return attributeController;
 	}
 
-	public void getFilteredXml(final MapModel map, final Writer fileout)
-	        throws IOException {
-		getMapController().writeMapAsXml(map, fileout, false);
-	}
-
 	@Override
 	public IHookFactory getHookFactory() {
 		if (nodeHookFactory == null) {
@@ -411,10 +404,6 @@ public class MModeController extends ModeController {
 					    hookName, hookAction);
 					builder.addMenuItem(relativeKey, menuItem, key,
 					    MenuBuilder.AS_CHILD);
-					if (hookAction instanceof NodeHookAction) {
-						builder.addPopupMenuListener(key,
-						    (NodeHookAction) hookAction);
-					}
 				}
 			}
 		}

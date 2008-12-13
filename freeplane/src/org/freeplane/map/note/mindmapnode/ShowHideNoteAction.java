@@ -22,11 +22,11 @@ package org.freeplane.map.note.mindmapnode;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.modes.ModeController;
 
-class ShowHideNoteAction extends FreeMindAction {
+class ShowHideNoteAction extends FreeplaneAction {
 	/**
 	 *
 	 */

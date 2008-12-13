@@ -27,14 +27,14 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.main.Tools;
 import org.freeplane.map.link.mindmapmode.MLinkController;
 import org.freeplane.map.text.mindmapmode.MTextController;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.mindmapmode.MMapController;
 
-class ImportFolderStructureAction extends FreeMindAction {
+class ImportFolderStructureAction extends FreeplaneAction {
 	public ImportFolderStructureAction() {
 		super("import_folder_structure");
 	}
@@ -53,8 +53,8 @@ class ImportFolderStructureAction extends FreeMindAction {
 			try {
 				importFolderStructure(folder, getModeController()
 				    .getSelectedNode(),/*
-																																																		 * redisplay=
-																																																		 */
+																																																						 * redisplay=
+																																																						 */
 				true);
 			}
 			catch (final Exception ex) {

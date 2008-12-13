@@ -23,13 +23,13 @@ import java.awt.event.ActionEvent;
 import java.util.Iterator;
 import java.util.ListIterator;
 
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.main.Tools;
 
 /**
  * @author foltin
  */
-class CommonToggleFoldedAction extends FreeMindAction {
+class CommonToggleFoldedAction extends FreeplaneAction {
 	public CommonToggleFoldedAction() {
 		super("toggle_folded");
 	}

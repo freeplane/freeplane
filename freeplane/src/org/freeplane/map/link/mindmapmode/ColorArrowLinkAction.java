@@ -24,14 +24,14 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
 
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.controller.views.ColorTracker;
 import org.freeplane.map.link.ArrowLinkModel;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.ModeController;
 import org.freeplane.undo.IUndoableActor;
 
-class ColorArrowLinkAction extends FreeMindAction {
+class ColorArrowLinkAction extends FreeplaneAction {
 	ArrowLinkModel arrowLink;
 
 	public ColorArrowLinkAction(final MLinkController modeController,

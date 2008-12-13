@@ -25,7 +25,7 @@ import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.MultipleNodeAction;
 import org.freeplane.ui.SelectableAction;
 
-@SelectableAction
+@SelectableAction(checkOnNodeChange = true)
 class BoldAction extends MultipleNodeAction {
 	private boolean bold;
 
@@ -52,6 +52,7 @@ class BoldAction extends MultipleNodeAction {
 		return super.getMModeController().getNodeStyleController().isBold(node);
 	}
 
+	@Override
 	public boolean isSelected() {
 		return isBold();
 	}

@@ -23,7 +23,7 @@ import javax.swing.JOptionPane;
 
 import org.freeplane.controller.ActionDescriptor;
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.view.MapView;
 import org.freeplane.map.tree.view.NodeView;
@@ -39,7 +39,7 @@ import org.freeplane.ui.dialogs.EnterPasswordDialog;
 name = "accessories/plugins/EnterPassword.properties_name", //
 iconPath = "accessories/plugins/icons/unlock.png", //
 locations = { "/menu_bar/extras/first/nodes/crypto" })
-public class EnterPassword extends FreeMindAction implements
+public class EnterPassword extends FreeplaneAction implements
         INodeSelectionListener, INodeChangeListener {
 	public EnterPassword(final ModeController modeController) {
 		super();

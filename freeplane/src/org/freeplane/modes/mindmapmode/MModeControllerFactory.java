@@ -27,6 +27,10 @@ import org.freeplane.addins.creationmodificationplugin.CreationModificationPlugi
 import org.freeplane.addins.encrypt.EnterPassword;
 import org.freeplane.addins.encrypt.mindmapnode.EncryptNode;
 import org.freeplane.addins.encrypt.mindmapnode.EncryptedMap;
+import org.freeplane.addins.export.mindmapmode.ExportToImage;
+import org.freeplane.addins.export.mindmapmode.ExportToOoWriter;
+import org.freeplane.addins.export.mindmapmode.ExportWithXSLT;
+import org.freeplane.addins.export.mindmapmode.ImportMindmanagerFiles;
 import org.freeplane.addins.hierarchicalicons.HierarchicalIcons;
 import org.freeplane.addins.latex.LatexNodeHook;
 import org.freeplane.addins.mindmapmode.ApplyFormatPlugin;
@@ -48,6 +52,10 @@ import org.freeplane.map.text.mindmapmode.MTextController;
 import org.freeplane.map.tree.mindmapmode.MMapController;
 import org.freeplane.ui.FreeMindToolBar;
 import org.freeplane.ui.MenuBuilder;
+
+import plugins.svg.ExportPdf;
+import plugins.svg.ExportSvg;
+
 
 /**
  * @author Dimitry Polivaev 24.11.2008
@@ -81,6 +89,14 @@ public class MModeControllerFactory {
 		menuBuilder.addAnnotatedAction(new EncryptNode(modeController));
 		menuBuilder.addAnnotatedAction(new EncryptedMap(modeController));
 		menuBuilder.addAnnotatedAction(new EnterPassword(modeController));
+		ExportWithXSLT.createXSLTExportActions(modeController,
+		    "org/freeplane/addins/export/mindmapmode/ExportWithXSLT.xml");
+		ExportToImage.createActions(modeController);
+		
+		menuBuilder.addAnnotatedAction(new ExportToOoWriter());
+		menuBuilder.addAnnotatedAction(new ExportPdf());
+		menuBuilder.addAnnotatedAction(new ExportSvg());
+		menuBuilder.addAnnotatedAction(new ImportMindmanagerFiles());
 	}
 
 	private MModeController createModeControllerImpl() {

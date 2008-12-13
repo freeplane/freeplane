@@ -25,7 +25,7 @@ import java.util.Iterator;
 import javax.swing.JOptionPane;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.mindmapmode.MModeController;
@@ -33,7 +33,7 @@ import org.freeplane.undo.IUndoableActor;
 
 import deprecated.freemind.common.OptionalDontShowMeAgainDialog;
 
-class DeleteAction extends FreeMindAction {
+class DeleteAction extends FreeplaneAction {
 	public DeleteAction() {
 		super("remove_node", "images/editdelete.png");
 	}

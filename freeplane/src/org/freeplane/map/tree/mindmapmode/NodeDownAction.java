@@ -22,11 +22,11 @@ package org.freeplane.map.tree.mindmapmode;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.ui.MenuBuilder;
 
-class NodeDownAction extends FreeMindAction {
+class NodeDownAction extends FreeplaneAction {
 	public NodeDownAction() {
 		super("new_sibling_behind");
 		MenuBuilder.setLabelAndMnemonic(this, Controller.getText("node_down"));

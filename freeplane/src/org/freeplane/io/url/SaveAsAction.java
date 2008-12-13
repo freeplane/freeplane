@@ -22,10 +22,10 @@ package org.freeplane.io.url;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.io.url.mindmapmode.FileManager;
 
-class SaveAsAction extends FreeMindAction {
+class SaveAsAction extends FreeplaneAction {
 	public SaveAsAction() {
 		super("save_as", "images/filesaveas.png");
 	}

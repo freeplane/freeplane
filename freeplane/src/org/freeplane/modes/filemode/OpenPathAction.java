@@ -25,10 +25,10 @@ import java.io.File;
 import javax.swing.JOptionPane;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.map.tree.filemode.FMapController;
 
-class OpenPathAction extends FreeMindAction {
+class OpenPathAction extends FreeplaneAction {
 	OpenPathAction() {
 		super("open");
 	}

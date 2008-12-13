@@ -23,7 +23,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.map.text.mindmapmode.MTextController;
 import org.freeplane.map.tree.MapController;
 import org.freeplane.map.tree.NodeModel;
@@ -31,7 +31,7 @@ import org.freeplane.map.tree.view.NodeView;
 import org.freeplane.modes.ModeController;
 import org.freeplane.undo.IUndoableActor;
 
-class NewChildAction extends FreeMindAction {
+class NewChildAction extends FreeplaneAction {
 	public NewChildAction() {
 		super("new_child", "images/idea.png");
 	}

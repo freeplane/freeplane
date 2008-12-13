@@ -23,12 +23,12 @@ import java.awt.event.ActionEvent;
 import java.util.Collection;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.main.HtmlTools;
 import org.freeplane.modes.ModeController;
 import org.freeplane.ui.MenuBuilder;
 
-class FindNextAction extends FreeMindAction {
+class FindNextAction extends FreeplaneAction {
 	final private FindAction find;
 
 	public FindNextAction(final ModeController controller, final FindAction find) {

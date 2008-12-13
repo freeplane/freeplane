@@ -23,14 +23,14 @@ import java.awt.event.ActionEvent;
 import java.util.List;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.mindmapmode.MModeController;
 
 /**
  * @author foltin
  */
-class AddLocalLinkAction extends FreeMindAction {
+class AddLocalLinkAction extends FreeplaneAction {
 	/**
 	 */
 	public AddLocalLinkAction() {

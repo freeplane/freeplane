@@ -33,7 +33,6 @@ import javax.swing.Action;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -48,6 +47,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.controller.ActionDescriptor;
 import org.freeplane.controller.Controller;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.main.Tools;
 import org.freeplane.modes.ModeController;
 
@@ -282,13 +282,11 @@ public class MenuBuilder extends UIBuilder {
 		this.modeController = modeController;
 	}
 
-	public void addAction(final Action action,
+	public void addAction(final FreeplaneAction action,
 	                      final ActionDescriptor actionAnnotation) {
-		String docu = actionAnnotation.tooltip();
+		final String docu = actionAnnotation.tooltip();
 		if (!docu.equals("")) {
-			docu = Controller.getText(docu);
-			action.putValue(Action.SHORT_DESCRIPTION, docu);
-			action.putValue(Action.LONG_DESCRIPTION, docu);
+			action.setTooltip(docu);
 		}
 		final String actionName = actionAnnotation.name();
 		MenuBuilder.setLabelAndMnemonic(action, Controller.getText(actionName));
@@ -327,18 +325,12 @@ public class MenuBuilder extends UIBuilder {
 			addButton(category, action, position);
 			return;
 		}
-		if (action.getClass().getAnnotation(SelectableAction.class) != null) {
-			final JCheckBoxMenuItem item = new JAutoCheckBoxMenuItem((action));
-			addMenuItem(category, item, position);
-			if (keystroke != null) {
-				item.setAccelerator(KeyStroke.getKeyStroke(Controller
-				    .getResourceController().getAdjustableProperty(keystroke)));
-			}
-			return;
-		}
 		final JMenuItem item;
-		if (action instanceof ISelectablePopupAction) {
-			item = new JCheckBoxMenuItem(action);
+		if (action.getClass().getAnnotation(SelectableAction.class) != null) {
+			item = new JAutoCheckBoxMenuItem((action));
+		}
+		else if (action.getClass().getAnnotation(VisibleAction.class) != null) {
+			item = new JAutoVisibleMenuItem(action);
 		}
 		else {
 			item = new JMenuItem(action);
@@ -352,7 +344,7 @@ public class MenuBuilder extends UIBuilder {
 		if (action instanceof PopupMenuListener) {
 			addPopupMenuListener(key, (PopupMenuListener) action);
 		}
-		if (action instanceof ISelectablePopupAction) {
+		if (FreeplaneAction.checkSelectionOnPopup(action)) {
 			addPopupMenuListener(key, new PopupMenuListener() {
 				public void popupMenuCanceled(final PopupMenuEvent e) {
 				}
@@ -361,12 +353,11 @@ public class MenuBuilder extends UIBuilder {
 				}
 
 				public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
-					item.setSelected(((ISelectablePopupAction) action)
-					    .isSelected());
+					item.setSelected(((FreeplaneAction) action).isSelected());
 				}
 			});
 		}
-		if (action instanceof IHideablePopupAction) {
+		if (FreeplaneAction.checkVisibilityOnPopup(action)) {
 			addPopupMenuListener(key, new PopupMenuListener() {
 				public void popupMenuCanceled(final PopupMenuEvent e) {
 				}
@@ -375,8 +366,7 @@ public class MenuBuilder extends UIBuilder {
 				}
 
 				public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
-					item
-					    .setVisible(((IHideablePopupAction) action).isVisible());
+					item.setVisible(((FreeplaneAction) action).isVisible());
 				}
 			});
 		}
@@ -388,7 +378,7 @@ public class MenuBuilder extends UIBuilder {
 		return;
 	}
 
-	public void addAnnotatedAction(final Action action) {
+	public void addAnnotatedAction(final FreeplaneAction action) {
 		addAction(action, action.getClass().getAnnotation(
 		    ActionDescriptor.class));
 	}

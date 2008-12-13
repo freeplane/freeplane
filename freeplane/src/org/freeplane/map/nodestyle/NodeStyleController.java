@@ -87,9 +87,9 @@ public class NodeStyleController {
 
 			    private String getShape(final NodeModel node) {
 				    String returnedString = node.getShape(); /*
-				    						    						    						    			    						    														 * Style string
-				    						    						    						    			    						    														 * returned
-				    						    						    						    			    						    														 */
+				    			    						    						    						    			    						    														 * Style string
+				    			    						    						    						    			    						    														 * returned
+				    			    						    						    						    			    						    														 */
 				    if (node.getShape() == null) {
 					    if (node.isRoot()) {
 						    returnedString = Controller

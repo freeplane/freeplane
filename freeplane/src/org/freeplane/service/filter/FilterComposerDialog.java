@@ -52,7 +52,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileFilter;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeMindAction;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.controller.resources.NamedObject;
 import org.freeplane.main.Tools;
 import org.freeplane.map.attribute.AttributeRegistry;
@@ -75,7 +75,7 @@ public class FilterComposerDialog extends JDialog {
 	/**
 	 * @author Dimitry Polivaev
 	 */
-	private class AddConditionAction extends FreeMindAction {
+	private class AddConditionAction extends FreeplaneAction {
 		/*
 		 * (non-Javadoc)
 		 * @see
@@ -203,7 +203,7 @@ public class FilterComposerDialog extends JDialog {
 		}
 	}
 
-	private class CreateConjunctConditionAction extends FreeMindAction {
+	private class CreateConjunctConditionAction extends FreeplaneAction {
 		/*
 		 * (non-Javadoc)
 		 * @see
@@ -227,7 +227,7 @@ public class FilterComposerDialog extends JDialog {
 		}
 	}
 
-	private class CreateDisjunctConditionAction extends FreeMindAction {
+	private class CreateDisjunctConditionAction extends FreeplaneAction {
 		/*
 		 * (non-Javadoc)
 		 * @see
@@ -251,7 +251,7 @@ public class FilterComposerDialog extends JDialog {
 		}
 	}
 
-	private class CreateNotSatisfiedConditionAction extends FreeMindAction {
+	private class CreateNotSatisfiedConditionAction extends FreeplaneAction {
 		/*
 		 * (non-Javadoc)
 		 * @see
@@ -280,7 +280,7 @@ public class FilterComposerDialog extends JDialog {
 		}
 	}
 
-	private class DeleteConditionAction extends FreeMindAction {
+	private class DeleteConditionAction extends FreeplaneAction {
 		/*
 		 * (non-Javadoc)
 		 * @see
