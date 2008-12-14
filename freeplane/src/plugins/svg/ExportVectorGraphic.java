@@ -39,7 +39,7 @@ import org.apache.batik.svggen.SVGGeneratorContext;
 import org.apache.batik.svggen.SVGGraphics2D;
 import org.apache.batik.svggen.SVGGeneratorContext.GraphicContextDefaults;
 import org.apache.batik.util.SVGConstants;
-import org.freeplane.addins.mindmapmode.export.ExportAction;
+import org.freeplane.addins.export.mindmapmode.ExportAction;
 import org.freeplane.controller.Controller;
 import org.freeplane.map.tree.view.MapView;
 import org.w3c.dom.DOMImplementation;
