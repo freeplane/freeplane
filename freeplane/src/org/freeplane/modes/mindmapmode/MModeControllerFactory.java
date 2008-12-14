@@ -113,7 +113,7 @@ public class MModeControllerFactory {
 		
 		new ChangeNodeLevelAction(menuBuilder);
 		ExportWithXSLT.createXSLTExportActions(modeController,
-		    "org/freeplane/addins/export/mindmapmode/ExportWithXSLT.xml");
+		    "org/freeplane/addins/mindmapmode/export/ExportWithXSLT.xml");
 		ExportToImage.createActions(modeController);
 		
 		new NodeHistory(modeController);
