@@ -54,7 +54,7 @@ class ItalicAction extends MultipleNodeAction {
 	}
 
 	@Override
-	public boolean isSelected() {
-		return isItalic();
+	public void setSelected() {
+		setSelected(isItalic());
 	}
 }

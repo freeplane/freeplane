@@ -1,7 +1,20 @@
 <?xml version="1.0"?>
-<plugin label="accessories/plugins/NewParentNode">
-    <plugin_action documentation="%accessories/plugins/NewParentNode.properties_documentation" name="%accessories/plugins/NewParentNode.properties_name" key_stroke="%keystroke_accessories/plugins/NewParentNode.properties_key" base="deprecated.freemind.extensions.NodeHookAdapter" icon_path="accessories/plugins/icons/stock_text_indent.png" label="accessories/plugins/NewParentNode.properties" class_name="accessories.plugins.NewParentNode" instanciation="ApplyToRoot">
-        <plugin_mode class_name="org.freeplane.modes.mindmapmode"/>
-        <plugin_menu location="/menu_bar/insert/nodes/automaticLayout"/>
+<plugin
+    label="accessories/plugins/NewParentNode"
+>
+    <plugin_action
+        documentation="%accessories/plugins/NewParentNode.properties_documentation"
+        name="%accessories/plugins/NewParentNode.properties_name"
+        key_stroke="%keystroke_accessories/plugins/NewParentNode.properties_key"
+        base="deprecated.freemind.extensions.NodeHookAdapter"
+        icon_path="accessories/plugins/icons/stock_text_indent.png"
+        label="accessories/plugins/NewParentNode.properties"
+        class_name="accessories.plugins.NewParentNode"
+        instanciation="ApplyToRoot"
+    >
+        <plugin_mode
+            class_name="org.freeplane.modes.mindmapmode" />
+        <plugin_menu
+            location="/menu_bar/insert/nodes/automaticLayout" />
     </plugin_action>
 </plugin>

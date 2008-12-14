@@ -34,8 +34,7 @@ public class JAutoToggleButton extends JToggleButton implements
 	}
 
 	@Override
-	protected PropertyChangeListener createActionPropertyChangeListener(
-	                                                                    final Action a) {
+	protected PropertyChangeListener createActionPropertyChangeListener(final Action a) {
 		defaultPropertyChanegListener = super
 		    .createActionPropertyChangeListener(a);
 		return this;

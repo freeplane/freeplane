@@ -47,8 +47,8 @@ public class ReminderHook extends PersistentNodeHook {
 		}
 
 		@Override
-		public boolean isVisible() {
-			return isActiveForSelection();
+		public void setVisible() {
+			setVisible(isActiveForSelection());
 		}
 	}
 

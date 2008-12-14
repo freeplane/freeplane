@@ -66,8 +66,8 @@ public abstract class PersistentNodeHook implements IExtension {
 		}
 
 		@Override
-		public boolean isSelected() {
-			return isActiveForSelection();
+		public void setSelected() {
+			setSelected (isActiveForSelection());
 		}
 	}
 

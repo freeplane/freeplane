@@ -353,7 +353,7 @@ public class MenuBuilder extends UIBuilder {
 				}
 
 				public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
-					item.setSelected(((FreeplaneAction) action).isSelected());
+					((FreeplaneAction) action).setSelected();
 				}
 			});
 		}
@@ -366,7 +366,20 @@ public class MenuBuilder extends UIBuilder {
 				}
 
 				public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
-					item.setVisible(((FreeplaneAction) action).isVisible());
+					((FreeplaneAction) action).setVisible();
+				}
+			});
+		}
+		if (FreeplaneAction.checkEnabledOnPopup(action)) {
+			addPopupMenuListener(key, new PopupMenuListener() {
+				public void popupMenuCanceled(final PopupMenuEvent e) {
+				}
+
+				public void popupMenuWillBecomeInvisible(final PopupMenuEvent e) {
+				}
+
+				public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
+					((FreeplaneAction) action).setEnabled();
 				}
 			});
 		}

@@ -82,6 +82,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 	public ViewController() {
 		super();
 		final Controller controller = Controller.getController();
+		controller.setViewController(this);
 		lastOpened = new LastOpenedList(Controller.getResourceController()
 		    .getProperty("lastOpened"));
 		mapViewManager = new MapViewManager();

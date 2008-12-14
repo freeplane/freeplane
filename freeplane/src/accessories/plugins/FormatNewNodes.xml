@@ -1,5 +1,10 @@
 <?xml version="1.0"?>
-<plugin label="accessories.plugins.FormatNewNodes">
-	<!--fc, 6.4.2005: Disabled due to Daniel.  
-		<plugin_registration class_name="accessories.plugins.FormatNewNodes"><plugin_mode class_name="org.freeplane.modes.mindmapmode"/></plugin_registration> -->
+<plugin
+    label="accessories.plugins.FormatNewNodes"
+>
+    <!--
+        fc, 6.4.2005: Disabled due to Daniel. <plugin_registration
+        class_name="accessories.plugins.FormatNewNodes"><plugin_mode
+        class_name="org.freeplane.modes.mindmapmode"/></plugin_registration>
+    -->
 </plugin>

@@ -150,7 +150,7 @@ public class MapViewManager {
 			throw new IllegalArgumentException("Map mapView "
 			        + mapViewDisplayName + " not found.");
 		}
-		return setMapView(mapViewCandidate);
+		return changeToMapView(mapViewCandidate);
 	}
 
 	public boolean changeToMode(final String modeName) {
@@ -166,7 +166,7 @@ public class MapViewManager {
 				break;
 			}
 		}
-		final boolean changed = setMapView(mapViewCandidate);
+		final boolean changed = changeToMapView(mapViewCandidate);
 		if (changed) {
 			lastModeName = modeName;
 		}
@@ -211,13 +211,13 @@ public class MapViewManager {
 		mapViewVector.remove(mapView);
 		if (mapViewVector.isEmpty()) {
 			/* Keep the current running mode */
-			setMapView(null);
+			changeToMapView((MapView)null);
 		}
 		else {
 			if (index >= mapViewVector.size() || index < 0) {
 				index = mapViewVector.size() - 1;
 			}
-			setMapView(((MapView) mapViewVector.get(index)));
+			changeToMapView(((MapView) mapViewVector.get(index)));
 		}
 		listener.afterMapClose(mapView);
 		return true;
@@ -266,7 +266,7 @@ public class MapViewManager {
 	                       final ModeController modeController) {
 		final MapView mapView = new MapView(map);
 		addToOrChangeInMapViews(mapView.getName(), mapView);
-		setMapView(mapView);
+		changeToMapView(mapView);
 	}
 
 	void nextMapView() {
@@ -279,10 +279,10 @@ public class MapViewManager {
 			index = size - 1;
 		}
 		if (index + 1 < size && index >= 0) {
-			setMapView(((MapView) mapViewVector.get(index + 1)));
+			changeToMapView(((MapView) mapViewVector.get(index + 1)));
 		}
 		else if (size > 0) {
-			setMapView(((MapView) mapViewVector.get(0)));
+			changeToMapView(((MapView) mapViewVector.get(0)));
 		}
 	}
 
@@ -296,11 +296,11 @@ public class MapViewManager {
 			index = 0;
 		}
 		if (index > 0) {
-			setMapView(((MapView) mapViewVector.get(index - 1)));
+			changeToMapView(((MapView) mapViewVector.get(index - 1)));
 		}
 		else {
 			if (size > 0) {
-				setMapView(((MapView) mapViewVector.get(size - 1)));
+				changeToMapView(((MapView) mapViewVector.get(size - 1)));
 			}
 		}
 	}
@@ -327,7 +327,7 @@ public class MapViewManager {
 	 *
 	 * @return true if the set command was sucessful.
 	 */
-	boolean setMapView(final MapView newMapView) {
+	public boolean changeToMapView(final MapView newMapView) {
 		final MapView oldMapView = mapView;
 		if (!listener.isMapViewChangeAllowed(oldMapView, newMapView)) {
 			return false;
@@ -359,6 +359,6 @@ public class MapViewManager {
 	public void updateMapViewName() {
 		getMapView().rename();
 		addToOrChangeInMapViews(getMapView().getName(), getMapView());
-		setMapView(getMapView());
+		changeToMapView(getMapView());
 	}
 }

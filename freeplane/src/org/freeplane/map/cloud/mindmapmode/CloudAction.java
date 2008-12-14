@@ -48,7 +48,7 @@ class CloudAction extends MultipleNodeAction {
 	}
 
 	@Override
-	public boolean isSelected() {
-		return getMModeController().getSelectedNode().getCloud() != null;
+	public void setSelected() {
+		setSelected(getMModeController().getSelectedNode().getCloud() != null);
 	}
 }

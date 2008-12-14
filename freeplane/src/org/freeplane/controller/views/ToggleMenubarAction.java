@@ -42,7 +42,7 @@ class ToggleMenubarAction extends FreeplaneAction {
 	}
 
 	@Override
-	public boolean isSelected() {
-		return controller.isMenubarVisible();
+	public void setSelected() {
+		setSelected(controller.isMenubarVisible());
 	}
 }

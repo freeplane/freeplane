@@ -34,6 +34,7 @@ import org.freeplane.addins.export.mindmapmode.ImportMindmanagerFiles;
 import org.freeplane.addins.hierarchicalicons.HierarchicalIcons;
 import org.freeplane.addins.latex.LatexNodeHook;
 import org.freeplane.addins.mindmapmode.ApplyFormatPlugin;
+import org.freeplane.addins.nodehistory.mindmapmode.NodeHistory;
 import org.freeplane.addins.revision.RevisionPlugin;
 import org.freeplane.addins.time.ReminderHook;
 import org.freeplane.controller.Controller;
@@ -94,6 +95,8 @@ public class MModeControllerFactory {
 		ExportWithXSLT.createXSLTExportActions(modeController,
 		    "org/freeplane/addins/export/mindmapmode/ExportWithXSLT.xml");
 		ExportToImage.createActions(modeController);
+		
+		new NodeHistory(modeController);
 		
 		menuBuilder.addAnnotatedAction(new ExportToOoWriter());
 		menuBuilder.addAnnotatedAction(new ExportPdf());

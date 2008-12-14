@@ -1,9 +1,20 @@
 <?xml version="1.0"?>
-<plugin label="accessories/plugins/ManagePatterns">
-	<plugin_action documentation="%accessories/plugins/ManagePatterns.properties_documentation" name="%accessories/plugins/ManagePatterns.properties_name" base="deprecated.freemind.extensions.ModeControllerHookAdapter" label="accessories/plugins/ManagePatterns.properties" class_name="accessories.plugins.ManagePatterns"
-		key_stroke="%keystroke_accessories/plugins/ManagePatterns_manage_patterns_dialog">
-		<plugin_mode class_name="org.freeplane.modes.mindmapmode"/>
-		<plugin_menu location="/menu_bar/format/patterns/manage/ManagePatterns"/>
-		<plugin_menu location="/node_popup/patterns/manage/ManagePatterns"/>
-	</plugin_action>
+<plugin
+    label="accessories/plugins/ManagePatterns"
+>
+    <plugin_action
+        documentation="%accessories/plugins/ManagePatterns.properties_documentation"
+        name="%accessories/plugins/ManagePatterns.properties_name"
+        base="deprecated.freemind.extensions.ModeControllerHookAdapter"
+        label="accessories/plugins/ManagePatterns.properties"
+        class_name="accessories.plugins.ManagePatterns"
+        key_stroke="%keystroke_accessories/plugins/ManagePatterns_manage_patterns_dialog"
+    >
+        <plugin_mode
+            class_name="org.freeplane.modes.mindmapmode" />
+        <plugin_menu
+            location="/menu_bar/format/patterns/manage/ManagePatterns" />
+        <plugin_menu
+            location="/node_popup/patterns/manage/ManagePatterns" />
+    </plugin_action>
 </plugin>

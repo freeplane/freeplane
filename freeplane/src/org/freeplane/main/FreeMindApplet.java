@@ -42,7 +42,6 @@ public class FreeMindApplet extends JApplet {
 		resourceController = new AppletResourceController(this);
 		final Controller controller = new Controller(resourceController);
 		appletViewController = new AppletViewController(this);
-		controller.setViewController(appletViewController);
 		appletViewController.init();
 		final BModeController browseController = BModeControllerFactory
 		    .createModeController();

@@ -95,7 +95,7 @@ public abstract class FreeplaneAction extends AbstractAction {
 
 	public FreeplaneAction() {
 		super();
-		selected = true;
+		selected = false;
 		visible = true;
 	}
 
@@ -152,12 +152,16 @@ public abstract class FreeplaneAction extends AbstractAction {
 		return Controller.getController().getModeController();
 	}
 
-	public boolean isSelected() {
+	final public boolean isSelected() {
 		return selected;
 	}
 
-	public boolean isVisible() {
+	final public boolean isVisible() {
 		return visible;
+	}
+	
+	final public boolean isEnabled(){
+		return super.isEnabled();
 	}
 
 	public void setSelected(final boolean newValue) {
@@ -183,4 +187,13 @@ public abstract class FreeplaneAction extends AbstractAction {
 			    .valueOf(newValue));
 		}
 	}
+
+	public void setSelected() {
+    }
+
+	public void setVisible() {
+    }
+
+	public void setEnabled() {
+    }
 }

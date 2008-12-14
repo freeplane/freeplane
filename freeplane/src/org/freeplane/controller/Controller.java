@@ -32,6 +32,8 @@ import org.freeplane.controller.print.PrintController;
 import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.controller.views.MapViewManager;
 import org.freeplane.controller.views.ViewController;
+import org.freeplane.extension.ExtensionHashMap;
+import org.freeplane.extension.IExtension;
 import org.freeplane.main.FreemindVersionInformation;
 import org.freeplane.map.attribute.ModelessAttributeController;
 import org.freeplane.map.tree.MapModel;
@@ -85,6 +87,7 @@ public class Controller {
 		}
 		Controller.resourceController = resourceController;
 		Controller.controllerInstance = this;
+		extensions = new ExtensionHashMap();
 		actionController = new ActionController();
 		modeControllers = new HashMap();
 		quit = new QuitAction(resourceController);
@@ -285,4 +288,21 @@ public class Controller {
 	public void setViewController(final ViewController viewController) {
 		this.viewController = viewController;
 	}
+	final private ExtensionHashMap extensions;
+	public boolean addExtension(Class clazz, IExtension extension) {
+	    return extensions.addExtension(clazz, extension);
+    }
+
+	public boolean addExtension(IExtension extension) {
+	    return extensions.addExtension(extension);
+    }
+
+	public IExtension removeExtension(Class clazz) {
+	    return extensions.removeExtension(clazz);
+    }
+
+	public boolean removeExtension(IExtension extension) {
+	    return extensions.removeExtension(extension);
+    }
+
 }

@@ -1,13 +1,41 @@
 <?xml version="1.0"?>
-<plugin label="accessories/plugins/FormatCopy">
-    <plugin_action documentation="%accessories/plugins/FormatCopy.properties_documentation" name="%accessories/plugins/FormatCopy.properties_name" key_stroke="%keystroke_accessories/plugins/FormatCopy.properties.properties_key" base="deprecated.freemind.extensions.NodeHookAdapter" icon_path="accessories/plugins/icons/colorpicker.png" label="accessories/plugins/FormatCopy.properties" class_name="accessories.plugins.FormatPaste" instanciation="Other">
-        <plugin_mode class_name="org.freeplane.modes.mindmapmode"/>
-        <plugin_menu location="/menu_bar/edit/paste/copyFormat"/>
-        <plugin_property value="copy_format" name="actionType"/>
+<plugin
+    label="accessories/plugins/FormatCopy"
+>
+    <plugin_action
+        documentation="%accessories/plugins/FormatCopy.properties_documentation"
+        name="%accessories/plugins/FormatCopy.properties_name"
+        key_stroke="%keystroke_accessories/plugins/FormatCopy.properties.properties_key"
+        base="deprecated.freemind.extensions.NodeHookAdapter"
+        icon_path="accessories/plugins/icons/colorpicker.png"
+        label="accessories/plugins/FormatCopy.properties"
+        class_name="accessories.plugins.FormatPaste"
+        instanciation="Other"
+    >
+        <plugin_mode
+            class_name="org.freeplane.modes.mindmapmode" />
+        <plugin_menu
+            location="/menu_bar/edit/paste/copyFormat" />
+        <plugin_property
+            value="copy_format"
+            name="actionType" />
     </plugin_action>
-    <plugin_action documentation="%accessories/plugins/FormatPaste.properties_documentation" name="%accessories/plugins/FormatPaste.properties_name" key_stroke="%keystroke_accessories/plugins/FormatPaste.properties.properties_key" base="deprecated.freemind.extensions.NodeHookAdapter" icon_path="accessories/plugins/icons/color_fill.png" label="accessories/plugins/FormatPaste.properties" class_name="accessories.plugins.FormatPaste" instanciation="Other">
-        <plugin_mode class_name="org.freeplane.modes.mindmapmode"/>
-        <plugin_menu location="/menu_bar/edit/paste/pasteFormat"/>
-        <plugin_property value="paste_format" name="actionType"/>
+    <plugin_action
+        documentation="%accessories/plugins/FormatPaste.properties_documentation"
+        name="%accessories/plugins/FormatPaste.properties_name"
+        key_stroke="%keystroke_accessories/plugins/FormatPaste.properties.properties_key"
+        base="deprecated.freemind.extensions.NodeHookAdapter"
+        icon_path="accessories/plugins/icons/color_fill.png"
+        label="accessories/plugins/FormatPaste.properties"
+        class_name="accessories.plugins.FormatPaste"
+        instanciation="Other"
+    >
+        <plugin_mode
+            class_name="org.freeplane.modes.mindmapmode" />
+        <plugin_menu
+            location="/menu_bar/edit/paste/pasteFormat" />
+        <plugin_property
+            value="paste_format"
+            name="actionType" />
     </plugin_action>
 </plugin>

@@ -42,7 +42,7 @@ class ToggleLeftToolbarAction extends FreeplaneAction {
 	}
 
 	@Override
-	public boolean isSelected() {
-		return controller.isLeftToolbarVisible();
+	public void setSelected() {
+		setSelected(controller.isLeftToolbarVisible());
 	}
 }

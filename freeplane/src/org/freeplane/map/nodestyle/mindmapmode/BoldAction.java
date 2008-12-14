@@ -53,7 +53,7 @@ class BoldAction extends MultipleNodeAction {
 	}
 
 	@Override
-	public boolean isSelected() {
-		return isBold();
+	public void setSelected() {
+		setSelected(isBold());
 	}
 }

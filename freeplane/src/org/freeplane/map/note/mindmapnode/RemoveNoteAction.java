@@ -69,11 +69,12 @@ class RemoveNoteAction extends FreeplaneAction implements PopupMenuListener {
 	}
 
 	@Override
-	public boolean isEnabled() {
+	public void setEnabled() {
 		boolean foundNote = false;
 		final ModeController modeController = getModeController();
 		if (modeController == null) {
-			return false;
+			setEnabled (false);
+			return;
 		}
 		for (final Iterator iterator = modeController.getSelectedNodes()
 		    .iterator(); iterator.hasNext();) {
@@ -83,7 +84,7 @@ class RemoveNoteAction extends FreeplaneAction implements PopupMenuListener {
 				break;
 			}
 		}
-		return foundNote;
+		setEnabled(foundNote);
 	}
 
 	/*

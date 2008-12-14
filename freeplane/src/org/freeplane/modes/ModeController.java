@@ -40,11 +40,11 @@ import javax.swing.Action;
 import javax.swing.JPopupMenu;
 
 import org.freeplane.controller.ActionController;
+import org.freeplane.controller.ActionDescriptor;
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.extension.ExtensionHashMap;
 import org.freeplane.extension.IExtension;
-import org.freeplane.extension.IExtensionCollection;
 import org.freeplane.io.url.UrlManager;
 import org.freeplane.map.attribute.IAttributeController;
 import org.freeplane.map.clipboard.ClipboardController;
@@ -74,7 +74,7 @@ import deprecated.freemind.extensions.IHookFactory;
  * default Actions you may want to use for easy editing of your model. Take
  * MindMapController as a sample.
  */
-public class ModeController implements IExtensionCollection{
+public class ModeController {
 	public boolean addExtension(Class clazz, IExtension extension) {
 	    return extensions.addExtension(clazz, extension);
     }
@@ -105,14 +105,14 @@ public class ModeController implements IExtensionCollection{
 		}
 
 		public void nodeChanged(final NodeChangeEvent event) {
-			action.setVisible(action.isVisible());
+			action.setVisible();
 		}
 
 		public void onDeselect(final NodeView node) {
 		}
 
 		public void onSelect(final NodeView node) {
-			action.setVisible(action.isVisible());
+			action.setVisible();
 		}
 	}
 
@@ -130,14 +130,14 @@ public class ModeController implements IExtensionCollection{
 		}
 
 		public void nodeChanged(final NodeChangeEvent event) {
-			action.setEnabled(action.isEnabled());
+			action.setEnabled();
 		}
 
 		public void onDeselect(final NodeView node) {
 		}
 
 		public void onSelect(final NodeView node) {
-			action.setEnabled(action.isEnabled());
+			action.setEnabled();
 		}
 	}
 
@@ -155,14 +155,14 @@ public class ModeController implements IExtensionCollection{
 		}
 
 		public void nodeChanged(final NodeChangeEvent event) {
-			action.setSelected(action.isSelected());
+			action.setSelected();
 		}
 
 		public void onDeselect(final NodeView node) {
 		}
 
 		public void onSelect(final NodeView node) {
-			action.setSelected(action.isSelected());
+			action.setSelected();
 		}
 	}
 
@@ -213,6 +213,11 @@ public class ModeController implements IExtensionCollection{
 		extensions = new ExtensionHashMap();
 	}
 
+
+	public void addAnnotatedAction(Action action) {
+		final String name = action.getClass().getAnnotation(ActionDescriptor.class).name();
+		addAction(name, action);
+    }
 	public void addAction(final Object key, final Action action) {
 		actionController.addAction(key, action);
 		if (FreeplaneAction.checkEnabledOnChange(action)) {
