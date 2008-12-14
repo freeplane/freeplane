@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.addins.mindmapmode;
+package org.freeplane.addins.mindmapmode.patterns;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -30,8 +30,6 @@ import org.freeplane.map.pattern.mindmapnode.StylePatternFactory;
 import org.freeplane.modes.UserInputListenerFactory;
 import org.freeplane.modes.mindmapmode.MModeController;
 
-import accessories.plugins.dialogs.ChooseFormatPopupDialog;
-import accessories.plugins.dialogs.ManagePatternsPopupDialog;
 
 
 @ActionDescriptor(

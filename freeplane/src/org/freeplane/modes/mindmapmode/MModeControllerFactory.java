@@ -21,7 +21,6 @@ package org.freeplane.modes.mindmapmode;
 
 import javax.swing.JPopupMenu;
 
-import org.freeplane.addins.automaticlayout.AutomaticLayout;
 import org.freeplane.addins.blinkingnodehook.BlinkingNodeHook;
 import org.freeplane.addins.creationmodificationplugin.CreationModificationPlugin;
 import org.freeplane.addins.encrypt.EnterPassword;
@@ -33,16 +32,17 @@ import org.freeplane.addins.export.mindmapmode.ExportWithXSLT;
 import org.freeplane.addins.export.mindmapmode.ImportMindmanagerFiles;
 import org.freeplane.addins.hierarchicalicons.HierarchicalIcons;
 import org.freeplane.addins.latex.LatexNodeHook;
-import org.freeplane.addins.mindmapmode.ApplyFormatPlugin;
 import org.freeplane.addins.mindmapmode.ChangeNodeLevelAction;
 import org.freeplane.addins.mindmapmode.FormatPaste;
 import org.freeplane.addins.mindmapmode.IconSelectionPlugin;
-import org.freeplane.addins.mindmapmode.ManagePatterns;
 import org.freeplane.addins.mindmapmode.NewParentNode;
 import org.freeplane.addins.mindmapmode.SaveAll;
 import org.freeplane.addins.mindmapmode.SortNodes;
 import org.freeplane.addins.mindmapmode.SplitNode;
 import org.freeplane.addins.mindmapmode.UnfoldAll;
+import org.freeplane.addins.mindmapmode.patterns.ApplyFormatPlugin;
+import org.freeplane.addins.mindmapmode.patterns.AutomaticLayout;
+import org.freeplane.addins.mindmapmode.patterns.ManagePatterns;
 import org.freeplane.addins.misc.FitToPage;
 import org.freeplane.addins.nodehistory.mindmapmode.NodeHistory;
 import org.freeplane.addins.revision.RevisionPlugin;

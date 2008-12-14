@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package accessories.plugins.dialogs;
+package org.freeplane.addins.mindmapmode.patterns;
 
 /*
  * Fc, 8.4.06: ArrayListTransferHandler.java was adapted from Sun Tutorial
@@ -31,9 +31,10 @@ import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.TransferHandler;
 
-import accessories.plugins.dialogs.ManagePatternsPopupDialog.PatternListModel;
+import org.freeplane.addins.mindmapmode.patterns.ManagePatternsPopupDialog.PatternListModel;
 
-public class ArrayListTransferHandler extends TransferHandler {
+
+class ArrayListTransferHandler extends TransferHandler {
 	public class ArrayListTransferable implements Transferable {
 		ArrayList data;
 

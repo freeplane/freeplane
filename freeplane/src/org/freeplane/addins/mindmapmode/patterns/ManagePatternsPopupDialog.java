@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package accessories.plugins.dialogs;
+package org.freeplane.addins.mindmapmode.patterns;
 
 import java.awt.CardLayout;
 import java.awt.GridBagConstraints;
@@ -71,7 +71,7 @@ import freemind.controller.actions.generated.instance.ManageStyleEditorWindowCon
 import freemind.controller.actions.generated.instance.Pattern;
 
 /** */
-public class ManagePatternsPopupDialog extends JDialog implements
+class ManagePatternsPopupDialog extends JDialog implements
         ITextTranslator, KeyListener {
 	protected final class PatternListModel extends AbstractListModel {
 		final private List mPatternList;
@@ -176,7 +176,7 @@ public class ManagePatternsPopupDialog extends JDialog implements
 	private JButton jCancelButton;
 	private javax.swing.JPanel jContentPane = null;
 	private JButton jOKButton;
-	private accessories.plugins.dialogs.ArrayListTransferHandler mArrayListHandler;
+	private org.freeplane.addins.mindmapmode.patterns.ArrayListTransferHandler mArrayListHandler;
 	private CardLayout mCardLayout;
 	final private MModeController mController;
 	private boolean mIsDragging = false;

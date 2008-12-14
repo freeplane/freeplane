@@ -264,12 +264,12 @@ public class ExportWithXSLT extends ExportAction {
 	/**
 	 * @throws IOException
 	 */
-	private StringWriter getMapXml() throws IOException {
+	private String getMapXml() throws IOException {
 		final StringWriter writer = new StringWriter();
 		final MModeController controller = (MModeController) getModeController();
 		final MapModel map = Controller.getController().getMap();
 		controller.getFilteredXml(map, writer);
-		return writer;
+		return writer.getBuffer().toString();
 	}
 
 	public String getProperty(final String key) {
@@ -375,9 +375,8 @@ public class ExportWithXSLT extends ExportAction {
 	                                     final File saveFile,
 	                                     final String areaCode)
 	        throws IOException {
-		final StringWriter writer = getMapXml();
-		final StringReader reader = new StringReader(writer.getBuffer()
-		    .toString());
+		final String map = getMapXml();
+		final StringReader reader = new StringReader(map);
 		final URL xsltUrl = Controller.getResourceController().getResource(
 		    xsltFileName);
 		if (xsltUrl == null) {

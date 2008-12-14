@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package accessories.plugins.dialogs;
+package org.freeplane.addins.mindmapmode.patterns;
 
 import java.awt.Component;
 import java.awt.GridBagConstraints;
@@ -48,7 +48,7 @@ import freemind.controller.actions.generated.instance.Pattern;
 import freemind.controller.actions.generated.instance.WindowConfigurationStorage;
 
 /** */
-public class ChooseFormatPopupDialog extends JDialog implements
+class ChooseFormatPopupDialog extends JDialog implements
         ITextTranslator, KeyListener {
 	public static final int CANCEL = -1;
 	public static final int OK = 1;

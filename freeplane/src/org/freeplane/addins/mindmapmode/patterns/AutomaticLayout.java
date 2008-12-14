@@ -18,7 +18,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.addins.automaticlayout;
+package org.freeplane.addins.mindmapmode.patterns;
 
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
@@ -50,7 +50,6 @@ import org.freeplane.modes.INodeChangeListener;
 import org.freeplane.modes.NodeChangeEvent;
 import org.freeplane.modes.mindmapmode.MModeController;
 
-import accessories.plugins.dialogs.ChooseFormatPopupDialog;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
