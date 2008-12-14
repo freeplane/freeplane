@@ -15,9 +15,10 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package accessories.plugins;
+package org.freeplane.addins.mindmapmode;
 
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -29,19 +30,25 @@ import javax.swing.text.Element;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
+import org.freeplane.controller.ActionDescriptor;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.main.FixedHTMLWriter;
 import org.freeplane.map.text.mindmapmode.MTextController;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.mindmapmode.MMapController;
 import org.freeplane.map.tree.view.MapView;
-import org.freeplane.modes.mindmapmode.MModeController;
-
-import deprecated.freemind.modes.mindmapmode.hooks.MindMapNodeHookAdapter;
-
+import org.freeplane.modes.ModeController;
 /**
  * @author Dimitry Polivaev
  */
-public class SplitNode extends MindMapNodeHookAdapter {
+@ActionDescriptor(
+	tooltip="accessories/plugins/SplitNode.properties_documentation", //
+	name="accessories/plugins/SplitNode.properties_name", //
+	keyStroke="%keystroke_accessories/plugins/SplitNode.properties_key", //
+	iconPath="accessories/plugins/icons/stock_text_indent.png", //
+	locations={"/menu_bar/extras/first/join"}
+)
+public class SplitNode extends FreeplaneAction {
 	/**
 	 *
 	 */
@@ -68,10 +75,8 @@ public class SplitNode extends MindMapNodeHookAdapter {
 	 * @see freemind.extensions.NodeHook#invoke(freemind.modes.MindMapNode,
 	 * java.util.List)
 	 */
-	@Override
-	public void invoke(final NodeModel node) {
-		super.invoke(node);
-		final List list = getMindMapController().getSelectedNodes();
+	public void actionPerformed(ActionEvent e) {
+		final List list = getModeController().getSelectedNodes();
 		final ListIterator listIterator = list.listIterator();
 		while (listIterator.hasNext()) {
 			final NodeModel next = (NodeModel) listIterator.next();
@@ -88,7 +93,7 @@ public class SplitNode extends MindMapNodeHookAdapter {
 		if (parts == null || parts.length == 1) {
 			return;
 		}
-		final MModeController c = getMindMapController();
+		final ModeController c = getModeController();
 		int firstPartNumber = 0;
 		while (parts[firstPartNumber] == null) {
 			firstPartNumber++;

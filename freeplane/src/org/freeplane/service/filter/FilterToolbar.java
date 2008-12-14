@@ -148,7 +148,8 @@ class FilterToolbar extends FreeMindToolBar {
 			if (node.getModeController().getMapController().hasChildren(node)
 			        && (node.getModeController().getMapController().isFolded(
 			            node) != state)) {
-				Controller.getController().getModeController()
+				Controller.getController();
+				Controller.getModeController()
 				    .getMapController().setFolded(node, state);
 			}
 		}

@@ -82,7 +82,8 @@ public class FreemindStarter {
 	}
 
 	private ModeController createModeController(final String[] args) {
-		final ModeController ctrl = Controller.getController()
+		Controller.getController();
+		final ModeController ctrl = Controller
 		    .getModeController();
 		try {
 			final Class macClass = Class

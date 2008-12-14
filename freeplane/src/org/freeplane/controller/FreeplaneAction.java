@@ -30,8 +30,6 @@ import org.freeplane.ui.MenuBuilder;
 import org.freeplane.ui.SelectableAction;
 import org.freeplane.ui.VisibleAction;
 
-import deprecated.freemind.modes.mindmapmode.actions.undo.IActor;
-
 /**
  * @author Dimitry Polivaev
  */
@@ -134,34 +132,22 @@ public abstract class FreeplaneAction extends AbstractAction {
 		}
 	}
 
-	/**
-	 * @deprecated
-	 */
-	@Deprecated
-	public void addActor(final IActor actor) {
-		getMModeController().getActionFactory().registerActor(actor,
-		    actor.getDoActionClass());
-	}
-
 	public MModeController getMModeController() {
 		return (MModeController) Controller.getController().getModeController(
 		    MModeController.MODENAME);
 	}
 
 	public ModeController getModeController() {
-		return Controller.getController().getModeController();
+		Controller.getController();
+		return Controller.getModeController();
 	}
 
-	final public boolean isSelected() {
+	public boolean isSelected() {
 		return selected;
 	}
 
-	final public boolean isVisible() {
+	public boolean isVisible() {
 		return visible;
-	}
-	
-	final public boolean isEnabled(){
-		return super.isEnabled();
 	}
 
 	public void setSelected(final boolean newValue) {

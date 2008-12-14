@@ -528,8 +528,9 @@ public class MapController {
 				}
 				if (ref != null) {
 					try {
-						final ModeController newModeController = Controller
-						    .getController().getModeController();
+						Controller
+						    .getController();
+						final ModeController newModeController = Controller.getModeController();
 						newModeController.centerNode(newModeController
 						    .getMapController().getNodeFromID(ref));
 					}

@@ -30,16 +30,12 @@ import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.view.MainView;
 import org.freeplane.modes.ModeController;
 
-import deprecated.freemind.extensions.IHookFactory;
-
 public class BModeController extends ModeController {
 	static public final String MODENAME = "Browse";
-	final private IHookFactory mBrowseHookFactory;
 	private ImageIcon noteIcon;
 
 	BModeController() {
 		super();
-		mBrowseHookFactory = new BHookFactory();
 	}
 
 	public void doubleClick() {
@@ -50,11 +46,6 @@ public class BModeController extends ModeController {
 		else {
 			getLinkController().loadURL();
 		}
-	}
-
-	@Override
-	public IHookFactory getHookFactory() {
-		return mBrowseHookFactory;
 	}
 
 	@Override
@@ -96,16 +87,6 @@ public class BModeController extends ModeController {
 		while (children.hasNext()) {
 			setNoteIcon((NodeModel) children.next());
 		}
-	}
-
-	@Override
-	public void shutdown() {
-		super.shutdown();
-	}
-
-	@Override
-	public void startup() {
-		super.startup();
 	}
 
 	@Override

@@ -68,7 +68,8 @@ class DocumentationAction extends AbstractAction {
 					try {
 						if (Controller.getController().selectMode(
 						    BModeController.MODENAME)) {
-							((BModeController) Controller.getController()
+							Controller.getController();
+							((BModeController) Controller
 							    .getModeController()).getMapController()
 							    .newMap(endUrl);
 						}

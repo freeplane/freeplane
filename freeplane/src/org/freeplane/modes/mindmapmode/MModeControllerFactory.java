@@ -34,6 +34,16 @@ import org.freeplane.addins.export.mindmapmode.ImportMindmanagerFiles;
 import org.freeplane.addins.hierarchicalicons.HierarchicalIcons;
 import org.freeplane.addins.latex.LatexNodeHook;
 import org.freeplane.addins.mindmapmode.ApplyFormatPlugin;
+import org.freeplane.addins.mindmapmode.ChangeNodeLevelAction;
+import org.freeplane.addins.mindmapmode.FormatPaste;
+import org.freeplane.addins.mindmapmode.IconSelectionPlugin;
+import org.freeplane.addins.mindmapmode.ManagePatterns;
+import org.freeplane.addins.mindmapmode.NewParentNode;
+import org.freeplane.addins.mindmapmode.SaveAll;
+import org.freeplane.addins.mindmapmode.SortNodes;
+import org.freeplane.addins.mindmapmode.SplitNode;
+import org.freeplane.addins.mindmapmode.UnfoldAll;
+import org.freeplane.addins.misc.FitToPage;
 import org.freeplane.addins.nodehistory.mindmapmode.NodeHistory;
 import org.freeplane.addins.revision.RevisionPlugin;
 import org.freeplane.addins.time.ReminderHook;
@@ -85,13 +95,23 @@ public class MModeControllerFactory {
 		new BlinkingNodeHook(modeController);
 		new CreationModificationPlugin(modeController);
 		new ReminderHook(modeController);
-		new LatexNodeHook(modeController);
 		final MenuBuilder menuBuilder = modeController
 		    .getUserInputListenerFactory().getMenuBuilder();
 		menuBuilder.addAnnotatedAction(new ApplyFormatPlugin());
+		new FormatPaste(menuBuilder);
+		menuBuilder.addAnnotatedAction(new FitToPage());
 		menuBuilder.addAnnotatedAction(new EncryptNode(modeController));
 		menuBuilder.addAnnotatedAction(new EncryptedMap(modeController));
 		menuBuilder.addAnnotatedAction(new EnterPassword(modeController));
+		menuBuilder.addAnnotatedAction(new IconSelectionPlugin());
+		menuBuilder.addAnnotatedAction(new ManagePatterns());
+		menuBuilder.addAnnotatedAction(new NewParentNode());
+		menuBuilder.addAnnotatedAction(new SaveAll());
+		menuBuilder.addAnnotatedAction(new SortNodes());
+		menuBuilder.addAnnotatedAction(new SplitNode());
+		new UnfoldAll(modeController);
+		
+		new ChangeNodeLevelAction(menuBuilder);
 		ExportWithXSLT.createXSLTExportActions(modeController,
 		    "org/freeplane/addins/export/mindmapmode/ExportWithXSLT.xml");
 		ExportToImage.createActions(modeController);
@@ -99,12 +119,15 @@ public class MModeControllerFactory {
 		new NodeHistory(modeController);
 		
 		menuBuilder.addAnnotatedAction(new ExportToOoWriter());
-		menuBuilder.addAnnotatedAction(new ExportPdf());
-		menuBuilder.addAnnotatedAction(new ExportSvg());
 		menuBuilder.addAnnotatedAction(new ImportMindmanagerFiles());
 		
+		
+/* ******************* Plugins ********************* */		
+		new LatexNodeHook(modeController);		
 		new ScriptingRegistration(modeController);
 		menuBuilder.addAnnotatedAction(new FreeplaneHelpStarter());
+		menuBuilder.addAnnotatedAction(new ExportPdf());
+		menuBuilder.addAnnotatedAction(new ExportSvg());
 	}
 
 	private MModeController createModeControllerImpl() {
@@ -137,7 +160,6 @@ public class MModeControllerFactory {
 		    modeController));
 		modeController.setAttributeController(new MAttributeController(
 		    modeController));
-		modeController.createNodeHookActions();
 		final JPopupMenu popupmenu = new JPopupMenu();
 		modeController.getUserInputListenerFactory()
 		    .setNodePopupMenu(popupmenu);

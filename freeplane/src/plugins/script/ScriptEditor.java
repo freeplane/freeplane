@@ -37,7 +37,6 @@ import plugins.script.ScriptEditorPanel.IScriptModel;
 import plugins.script.ScriptEditorPanel.ScriptHolder;
 import plugins.script.ScriptingEngine.IErrorHandler;
 import deprecated.freemind.common.XmlBindingTools;
-import deprecated.freemind.modes.mindmapmode.hooks.MindMapHookAdapter;
 import freemind.controller.actions.generated.instance.ScriptEditorWindowConfigurationStorage;
 
 /**

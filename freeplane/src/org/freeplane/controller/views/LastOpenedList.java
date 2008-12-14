@@ -108,7 +108,8 @@ public class LastOpenedList {
 				final String mode = token.nextToken();
 				if (Controller.getController().selectMode(mode)) {
 					final String fileName = token.nextToken("").substring(1);
-					Controller.getController().getModeController()
+					Controller.getController();
+					Controller.getModeController()
 					    .getMapController().newMap(
 					        Tools.fileToUrl(new File(fileName)));
 				}

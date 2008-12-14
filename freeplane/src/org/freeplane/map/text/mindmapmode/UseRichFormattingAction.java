@@ -19,25 +19,23 @@
  */
 package org.freeplane.map.text.mindmapmode;
 
+import java.awt.event.ActionEvent;
+
 import org.freeplane.main.HtmlTools;
 import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.mindmapmode.MindMapMapModel;
+import org.freeplane.modes.MultipleNodeAction;
 
-import deprecated.freemind.modes.mindmapmode.actions.undo.ISingleNodeOperation;
-import deprecated.freemind.modes.mindmapmode.actions.undo.NodeGeneralAction;
-
-class UseRichFormattingAction extends NodeGeneralAction {
+class UseRichFormattingAction extends MultipleNodeAction {
 	public UseRichFormattingAction() {
-		super("use_rich_formatting", null);
-		setSingleNodeOperation(new ISingleNodeOperation() {
-			public void apply(final MindMapMapModel map,
-			                  final NodeModel selected) {
-				final String nodeText = selected.getText();
-				if (!HtmlTools.isHtmlNode(nodeText)) {
-					((MTextController) getModeController().getTextController())
-					    .setNodeText(selected, HtmlTools.plainToHTML(nodeText));
-				}
-			}
-		});
+		super("use_rich_formatting");
 	}
+
+	@Override
+    protected void actionPerformed(ActionEvent e, NodeModel node) {
+		final String nodeText = node.getText();
+		if (!HtmlTools.isHtmlNode(nodeText)) {
+			((MTextController) getModeController().getTextController())
+			    .setNodeText(node, HtmlTools.plainToHTML(nodeText));
+		}
+    }
 }

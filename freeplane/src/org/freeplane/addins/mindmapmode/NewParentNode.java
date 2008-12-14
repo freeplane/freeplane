@@ -15,19 +15,20 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package accessories.plugins;
+package org.freeplane.addins.mindmapmode;
 
 import java.awt.datatransfer.Transferable;
+import java.awt.event.ActionEvent;
 import java.util.Iterator;
 import java.util.List;
 
+import org.freeplane.controller.ActionDescriptor;
 import org.freeplane.controller.Controller;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.map.clipboard.mindmapmode.MClipboardController;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.mindmapmode.MMapController;
 import org.freeplane.map.tree.view.MapView;
-
-import deprecated.freemind.modes.mindmapmode.hooks.MindMapNodeHookAdapter;
 
 /**
  * @author foltin The original version was sent by Stephen Viles (sviles) https:
@@ -43,7 +44,14 @@ import deprecated.freemind.modes.mindmapmode.hooks.MindMapNodeHookAdapter;
  *         The code simply performs these actions in sequence, after validating
  *         the selected nodes.
  */
-public class NewParentNode extends MindMapNodeHookAdapter {
+@ActionDescriptor(
+    tooltip="accessories/plugins/NewParentNode.properties_documentation", //
+    name="accessories/plugins/NewParentNode.properties_name", //
+    keyStroke="keystroke_accessories/plugins/NewParentNode.properties_key", //
+    iconPath="accessories/plugins/icons/stock_text_indent.png", //
+    locations={"/menu_bar/insert/nodes"}
+)
+public class NewParentNode extends FreeplaneAction {
 	/**
 	 *
 	 */
@@ -56,21 +64,21 @@ public class NewParentNode extends MindMapNodeHookAdapter {
 	 * @see freemind.extensions.NodeHook#invoke(freemind.modes.MindMapNode,
 	 * java.util.List)
 	 */
-	@Override
-	public void invoke(final NodeModel rootNode) {
-		final MapView mapView = getMindMapController().getMapView();
-		final NodeModel focussed = getMindMapController().getSelectedNode();
-		final List selecteds = getMindMapController().getSelectedNodes();
+	public void actionPerformed(ActionEvent e) {
+	    // TODO Auto-generated method stub
+		final MapView mapView = getModeController().getMapView();
+		final NodeModel focussed = getModeController().getSelectedNode();
+		final List selecteds = getModeController().getSelectedNodes();
 		final NodeModel selectedNode = focussed;
 		final List selectedNodes = selecteds;
-		getMindMapController().getMapController().sortNodesByDepth(
+		getModeController().getMapController().sortNodesByDepth(
 		    selectedNodes);
 		if (focussed.isRoot()) {
 			Controller.getController().errorMessage(
-			    getResourceString("cannot_add_parent_to_root"));
+			    Controller.getText("cannot_add_parent_to_root"));
 			return;
 		}
-		final NodeModel newNode = moveToNewParent(rootNode, selectedNode,
+		final NodeModel newNode = moveToNewParent(selectedNode,
 		    selectedNodes);
 		if (newNode == null) {
 			return;
@@ -79,39 +87,38 @@ public class NewParentNode extends MindMapNodeHookAdapter {
 		mapView.repaint();
 	}
 
-	private NodeModel moveToNewParent(final NodeModel rootNode,
-	                                  final NodeModel selectedNode,
+	private NodeModel moveToNewParent(final NodeModel selectedNode,
 	                                  final List selectedNodes) {
 		final NodeModel selectedParent = selectedNode.getParentNode();
 		final int childPosition = selectedParent.getChildPosition(selectedNode);
-		final NodeModel newNode = ((MMapController) getMindMapController()
+		final NodeModel newNode = ((MMapController) getModeController()
 		    .getMapController()).addNewNode(selectedParent, childPosition,
 		    selectedNode.isLeft());
-		return moveToOtherNode(rootNode, selectedNodes, selectedParent, newNode);
+		return moveToOtherNode(selectedNodes, selectedParent, newNode);
 	}
 
-	private NodeModel moveToOtherNode(final NodeModel rootNode,
-	                                  final List selectedNodes,
+	private NodeModel moveToOtherNode(final List selectedNodes,
 	                                  final NodeModel selectedParent,
 	                                  final NodeModel newNode) {
 		for (final Iterator it = selectedNodes.iterator(); it.hasNext();) {
 			final NodeModel node = (NodeModel) it.next();
 			if (node.getParentNode() != selectedParent) {
 				Controller.getController().errorMessage(
-				    getResourceString("cannot_add_parent_diff_parents"));
+					Controller.getText("cannot_add_parent_diff_parents"));
 				return null;
 			}
-			if (node == rootNode) {
+			if (node.isRoot()) {
 				Controller.getController().errorMessage(
-				    getResourceString("cannot_add_parent_to_root"));
+					Controller.getText("cannot_add_parent_to_root"));
 				return null;
 			}
 		}
-		final Transferable copy = ((MClipboardController) getMindMapController()
+		final Transferable copy = ((MClipboardController) getModeController()
 		    .getClipboardController()).cut(selectedNodes);
-		((MClipboardController) getMindMapController().getClipboardController())
+		((MClipboardController) getModeController().getClipboardController())
 		    .paste(copy, newNode);
-		nodeChanged(selectedParent);
+		getModeController().getMapController().nodeChanged(selectedParent);
 		return newNode;
 	}
+
 }

@@ -19,6 +19,7 @@
  */
 package org.freeplane.map.pattern.mindmapnode;
 
+import java.awt.event.ActionEvent;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -32,16 +33,14 @@ import org.freeplane.map.icon.mindmapnode.MIconController;
 import org.freeplane.map.nodestyle.mindmapmode.MNodeStyleController;
 import org.freeplane.map.text.mindmapmode.MTextController;
 import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.mindmapmode.MindMapMapModel;
+import org.freeplane.modes.MultipleNodeAction;
 import org.freeplane.modes.mindmapmode.MModeController;
+import org.freeplane.ui.MenuBuilder;
 
-import deprecated.freemind.modes.mindmapmode.actions.undo.ISingleNodeOperation;
-import deprecated.freemind.modes.mindmapmode.actions.undo.NodeGeneralAction;
 import freemind.controller.actions.generated.instance.Pattern;
 import freemind.controller.actions.generated.instance.PatternEdgeWidth;
 
-class ApplyPatternAction extends NodeGeneralAction implements
-        ISingleNodeOperation {
+class ApplyPatternAction extends MultipleNodeAction{
 	/**
 	 */
 	public static String edgeWidthIntToString(final int value) {
@@ -70,13 +69,12 @@ class ApplyPatternAction extends NodeGeneralAction implements
 
 	public ApplyPatternAction(final MModeController controller,
 	                          final Pattern pattern) {
-		super(null /* no text */, null /* = no icon */);
-		setName(pattern.getName());
+		super();
 		mpattern = pattern;
-		setSingleNodeOperation(this);
+		MenuBuilder.setLabelAndMnemonic(this, pattern.getName());
 	}
 
-	public void apply(final MindMapMapModel map, final NodeModel node) {
+    protected void actionPerformed(ActionEvent e, NodeModel node) {
 		applyPattern(node, mpattern);
 	}
 
@@ -216,4 +214,5 @@ class ApplyPatternAction extends NodeGeneralAction implements
 	public Pattern getPattern() {
 		return mpattern;
 	}
+
 }

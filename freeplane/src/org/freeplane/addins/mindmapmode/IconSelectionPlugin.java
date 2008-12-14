@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package accessories.plugins;
+package org.freeplane.addins.mindmapmode;
 
 import java.awt.event.ActionEvent;
 import java.util.Collection;
@@ -23,32 +23,37 @@ import java.util.Vector;
 
 import javax.swing.Action;
 
+import org.freeplane.controller.ActionDescriptor;
 import org.freeplane.controller.Controller;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.main.Tools;
 import org.freeplane.map.icon.mindmapnode.MIconController;
-import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.view.MapView;
 import org.freeplane.map.tree.view.NodeView;
 import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.ui.dialogs.IconSelectionPopupDialog;
 
-import deprecated.freemind.modes.mindmapmode.hooks.MindMapNodeHookAdapter;
-
 /**
  * @author adapted to the plugin mechanism by ganzer
  */
-public class IconSelectionPlugin extends MindMapNodeHookAdapter {
+@ActionDescriptor(
+       tooltip="accessories/plugins/IconSelectionPlugin.properties_documentation", //
+       name="accessories/plugins/IconSelectionPlugin.properties_name", //
+       keyStroke="keystroke_accessories/plugins/IconSelectionPlugin.properties.properties_key", //
+       iconPath="accessories/plugins/icons/kalzium.png", //
+       locations={"/menu_bar/insert/icons"}
+)
+public class IconSelectionPlugin extends FreeplaneAction {
 	/**
 	 */
 	public IconSelectionPlugin() {
 		super();
 	}
 
-	@Override
-	public void invoke(final NodeModel rootNode) {
-		final NodeView focussed = getController().getSelectedView();
+	public void actionPerformed(ActionEvent e) {
+		final MModeController modeController = (MModeController) getModeController();
+		final NodeView focussed = modeController.getSelectedView();
 		final Vector actions = new Vector();
-		final MModeController modeController = getMindMapController();
 		final Collection<Action> iconActions = ((MIconController) modeController
 		    .getIconController()).getIconActions();
 		actions.addAll(iconActions);
@@ -69,4 +74,5 @@ public class IconSelectionPlugin extends MindMapNodeHookAdapter {
 			    selectionDialog.getModifiers()));
 		}
 	}
+
 }

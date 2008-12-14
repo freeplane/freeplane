@@ -30,8 +30,6 @@ import javax.help.HelpSet;
 import org.freeplane.controller.ActionDescriptor;
 import org.freeplane.controller.FreeplaneAction;
 
-import deprecated.freemind.extensions.ModeControllerHookAdapter;
-
 /**
  * @author foltin
  */

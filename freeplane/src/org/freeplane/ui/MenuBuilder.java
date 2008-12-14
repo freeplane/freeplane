@@ -302,7 +302,8 @@ public class MenuBuilder extends UIBuilder {
 			keystroke = null;
 		}
 		for (int i = 0; i < actionLocations.length; i++) {
-			addAction(actionLocations[i], actionName, action, keystroke,
+			final String key = actionLocations.length == 0 ? actionName :actionName + "[" + i + "]";
+			addAction(actionLocations[i], key , action, keystroke,
 			    MenuBuilder.AS_CHILD);
 		}
 	}

@@ -99,7 +99,8 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 				JPopupMenu popup = null;
 				final java.lang.Object obj = Controller.getController()
 				    .getMapView().detectCollision(e.getPoint());
-				popup = Controller.getController().getModeController()
+				Controller.getController();
+				popup = Controller.getModeController()
 				    .getPopupForModel(obj);
 				popup.show(e.getComponent(), e.getX(), e.getY());
 				popup.setVisible(true);
@@ -220,7 +221,8 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 				cursor = DragSource.DefaultCopyDrop;
 				dragAction = "COPY";
 			}
-			final ModeController modeController = Controller.getController()
+			Controller.getController();
+			final ModeController modeController = Controller
 			    .getModeController();
 			final Transferable t = modeController.getClipboardController()
 			    .copy(modeController.getMapView());
@@ -600,7 +602,8 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	public static final String NODE_POPUP = "/node_popup";
 
 	static private ModeController getModeController() {
-		return Controller.getController().getModeController();
+		Controller.getController();
+		return Controller.getModeController();
 	}
 
 	final private Controller controller;
@@ -874,7 +877,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			menuBuilder.addMenuItem(FreemindMenuBar.MODES_MENU, newItem,
 			    MenuBuilder.AS_CHILD);
 			group.add(newItem);
-			final ModeController modeController = controller
+			final ModeController modeController = Controller
 			    .getModeController();
 			if (modeController != null) {
 				newItem.setSelected(modeController.getModeName().equals(key));

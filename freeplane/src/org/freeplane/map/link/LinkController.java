@@ -213,25 +213,9 @@ public class LinkController {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see freemind.modes.IController#registerActions()
-	 */
-	public void registerActions() {
-		// TODO Auto-generated method stub
-	}
-
 	public IPropertyGetter<Color, ArrowLinkModel> removeColorGetter(
 	                                                                final Integer key) {
 		return colorHandlers.removeGetter(key);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see freemind.modes.IController#shutdown()
-	 */
-	public void shutdown() {
-		// TODO Auto-generated method stub
 	}
 
 	/**

@@ -177,8 +177,8 @@ public class Controller {
 	}
 
 	/** @return the current modeController. */
-	public ModeController getModeController() {
-		return modeController;
+	public static ModeController getModeController() {
+		return controllerInstance.modeController;
 	}
 
 	public ModeController getModeController(final String modeName) {

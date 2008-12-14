@@ -19,26 +19,25 @@
  */
 package org.freeplane.modes.mindmapmode;
 
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.mindmapmode.MindMapMapModel;
-import org.freeplane.modes.ModeController;
+import java.awt.event.ActionEvent;
 
-import deprecated.freemind.modes.mindmapmode.actions.undo.ISingleNodeOperation;
-import deprecated.freemind.modes.mindmapmode.actions.undo.NodeGeneralAction;
+import org.freeplane.map.tree.NodeModel;
+import org.freeplane.modes.ModeController;
+import org.freeplane.modes.MultipleNodeAction;
 
 /** */
-class SelectAllAction extends NodeGeneralAction {
+class SelectAllAction extends MultipleNodeAction {
 	/**
 	 *
 	 */
 	public SelectAllAction() {
-		super("select_all", null);
-		setSingleNodeOperation(new ISingleNodeOperation() {
-			public void apply(final MindMapMapModel map, final NodeModel node) {
-				final ModeController modeController = getModeController();
-				modeController.selectBranch(modeController.getMapView()
-				    .getRoot(), false);
-			}
-		});
+		super("select_all");
 	}
+
+	@Override
+    protected void actionPerformed(ActionEvent e, NodeModel node) {
+		final ModeController modeController = getModeController();
+		modeController.selectBranch(modeController.getMapView()
+		    .getRoot(), false);
+    }
 }

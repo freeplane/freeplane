@@ -29,8 +29,6 @@ import org.freeplane.map.tree.view.MainView;
 import org.freeplane.map.tree.view.NodeView;
 import org.freeplane.modes.ModeController;
 
-import deprecated.freemind.extensions.IHookFactory;
-
 public class FModeController extends ModeController {
 	static public final String MODENAME = "File";
 
@@ -77,11 +75,6 @@ public class FModeController extends ModeController {
 	}
 
 	@Override
-	public IHookFactory getHookFactory() {
-		throw new IllegalArgumentException("Not implemented yet.");
-	}
-
-	@Override
 	public String getModeName() {
 		return FModeController.MODENAME;
 	}
@@ -100,11 +93,6 @@ public class FModeController extends ModeController {
 			final NodeModel node = (component).getNodeView().getModel();
 			((FMapController) getMapController()).toggleFolded(node);
 		}
-	}
-
-	@Override
-	public void shutdown() {
-		super.shutdown();
 	}
 
 	@Override

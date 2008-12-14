@@ -61,13 +61,12 @@ import org.freeplane.map.tree.MapModel;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.view.MapView;
 import org.freeplane.map.tree.view.NodeView;
+import org.freeplane.modes.mindmapmode.IMouseWheelEventHandler;
 import org.freeplane.ui.IMouseListener;
 import org.freeplane.ui.MenuBuilder;
 import org.freeplane.undo.IUndoableActor;
 
 import deprecated.freemind.common.ITextTranslator;
-import deprecated.freemind.extensions.IHookFactory;
-
 /**
  * Derive from this class to implement the Controller for your mode. Overload
  * the methods you need for your data model, or use the defaults. There are some
@@ -75,6 +74,20 @@ import deprecated.freemind.extensions.IHookFactory;
  * MindMapController as a sample.
  */
 public class ModeController {
+	final private HashSet mRegisteredMouseWheelEventHandler = new HashSet();
+	public void addMouseWheelEventHandler(final IMouseWheelEventHandler handler) {
+		mRegisteredMouseWheelEventHandler.add(handler);
+	}
+
+	public void removeMouseWheelEventHandler(
+	                                             final IMouseWheelEventHandler handler) {
+		mRegisteredMouseWheelEventHandler.remove(handler);
+	}
+
+	public Set getMouseWheelEventHandlers() {
+		return Collections.unmodifiableSet(mRegisteredMouseWheelEventHandler);
+	}
+
 	public boolean addExtension(Class clazz, IExtension extension) {
 	    return extensions.addExtension(clazz, extension);
     }
@@ -322,10 +335,6 @@ public class ModeController {
 		getMapController().writeMapAsXml(map, fileout, false);
 	}
 
-	public IHookFactory getHookFactory() {
-		return null;
-	}
-
 	public IconController getIconController() {
 		return iconController;
 	}
@@ -389,10 +398,6 @@ public class ModeController {
 			return popupForModel;
 		}
 		return getUserInputListenerFactory().getMapPopup();
-	}
-
-	public Set getRegisteredMouseWheelEventHandler() {
-		return Collections.EMPTY_SET;
 	}
 
 	public URL getResource(final String name) {

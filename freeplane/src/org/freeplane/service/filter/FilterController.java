@@ -162,7 +162,8 @@ public class FilterController implements IMapViewChangeListener {
 	}
 
 	void refreshMap() {
-		Controller.getController().getModeController().getMapController()
+		Controller.getController();
+		Controller.getModeController().getMapController()
 		    .refreshMap();
 	}
 

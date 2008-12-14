@@ -742,7 +742,8 @@ public class OptionPanel {
 		    "keystroke_assign_attributes"));
 		controls.add(new KeyProperty(topDialog, null,
 		    "keystroke_plugins/ScriptingEngine.keystroke.evaluate"));
-		final ModeController modeController = Controller.getController()
+		Controller.getController();
+		final ModeController modeController = Controller
 		    .getModeController();
 		if (modeController instanceof MModeController) {
 			final MModeController controller = (MModeController) modeController;

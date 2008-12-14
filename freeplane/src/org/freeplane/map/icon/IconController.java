@@ -41,20 +41,4 @@ public class IconController {
 	public ModeController getModeController() {
 		return modeController;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see freemind.modes.IController#shutdown()
-	 */
-	public void shutdown() {
-		// TODO Auto-generated method stub
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see freemind.modes.IController#startup()
-	 */
-	public void startup() {
-		// TODO Auto-generated method stub
-	}
 }

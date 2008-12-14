@@ -15,13 +15,16 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package accessories.plugins;
+package org.freeplane.addins.mindmapmode;
 
+import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileWriter;
 
 import javax.swing.JOptionPane;
 
+import org.freeplane.controller.ActionDescriptor;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.map.pattern.mindmapnode.MPatternController;
 import org.freeplane.map.pattern.mindmapnode.StylePatternFactory;
 import org.freeplane.modes.UserInputListenerFactory;
@@ -29,10 +32,17 @@ import org.freeplane.modes.mindmapmode.MModeController;
 
 import accessories.plugins.dialogs.ChooseFormatPopupDialog;
 import accessories.plugins.dialogs.ManagePatternsPopupDialog;
-import deprecated.freemind.modes.mindmapmode.hooks.MindMapHookAdapter;
 
-/** */
-public class ManagePatterns extends MindMapHookAdapter {
+
+@ActionDescriptor(
+	tooltip="accessories/plugins/ManagePatterns.properties_documentation", //
+	name="accessories/plugins/ManagePatterns.properties_name", //
+	keyStroke="keystroke_accessories/plugins/ManagePatterns_manage_patterns_dialog", //
+	locations= {"/menu_bar/format/patterns/manage"
+			,"/node_popup/patterns/manage"
+	}
+)
+public class ManagePatterns extends FreeplaneAction {
 	/**
 	 *
 	 */
@@ -40,30 +50,29 @@ public class ManagePatterns extends MindMapHookAdapter {
 		super();
 	}
 
-	@Override
-	public void startup() {
-		super.startup();
-		final MModeController mindMapController = getMindMapController();
+	public void actionPerformed(ActionEvent e) {
+		final MModeController mindMapController = (MModeController) getModeController();
 		final ManagePatternsPopupDialog formatDialog = new ManagePatternsPopupDialog(
-		    mindMapController);
+			mindMapController);
 		formatDialog.setModal(true);
 		formatDialog.setVisible(true);
 		if (formatDialog.getResult() == ChooseFormatPopupDialog.OK) {
 			try {
 				final MPatternController patternController = mindMapController
-				    .getPatternController();
+				.getPatternController();
 				final File patternFile = patternController.getPatternsFile();
 				StylePatternFactory.savePatterns(new FileWriter(patternFile),
-				    formatDialog.getPatternList());
+					formatDialog.getPatternList());
 				patternController.loadPatterns(patternController
-				    .getPatternReader());
+					.getPatternReader());
 				patternController.createPatternSubMenu(mindMapController
-				    .getUserInputListenerFactory().getMenuBuilder(),
-				    UserInputListenerFactory.NODE_POPUP);
+					.getUserInputListenerFactory().getMenuBuilder(),
+					UserInputListenerFactory.NODE_POPUP);
 			}
-			catch (final Exception e) {
-				JOptionPane.showMessageDialog(null, e.getLocalizedMessage());
+			catch (final Exception ex) {
+				JOptionPane.showMessageDialog(null, ex.getLocalizedMessage());
 			}
 		}
 	}
+
 }

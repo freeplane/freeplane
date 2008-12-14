@@ -133,7 +133,8 @@ abstract public class ViewController implements IMapViewChangeListener {
 
 	public void afterMapViewChange(final MapView oldMapView,
 	                               final MapView newMapView) {
-		final ModeController oldModeController = Controller.getController()
+		Controller.getController();
+		final ModeController oldModeController = Controller
 		    .getModeController();
 		ModeController newModeController = oldModeController;
 		if (newMapView != null) {
@@ -164,7 +165,8 @@ abstract public class ViewController implements IMapViewChangeListener {
 
 	public void beforeMapViewChange(final MapView oldMapView,
 	                                final MapView newMapView) {
-		final ModeController modeController = Controller.getController()
+		Controller.getController();
+		final ModeController modeController = Controller
 		    .getModeController();
 		if (oldMapView != null) {
 			modeController.setVisible(false);
@@ -452,7 +454,8 @@ abstract public class ViewController implements IMapViewChangeListener {
 	 * Set the Frame title with mode and file if exist
 	 */
 	public void setTitle() {
-		final ModeController modeController = Controller.getController()
+		Controller.getController();
+		final ModeController modeController = Controller
 		    .getModeController();
 		if (modeController == null) {
 			setTitle("");

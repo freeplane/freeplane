@@ -62,8 +62,6 @@ import org.freeplane.modes.mindmapmode.EncryptionModel;
 import org.freeplane.service.filter.FilterInfo;
 import org.freeplane.service.filter.IFilter;
 
-import deprecated.freemind.extensions.INodeHook;
-
 /**
  * This class represents a single Node of a Tree. It contains direct handles to
  * its parent and children and to its view.
@@ -522,19 +520,6 @@ public class NodeModel implements MutableTreeNode, IExtensionCollection {
 			preferredChild = childNode;
 		}
 		child.setParent(this);
-	}
-
-	public void invokeHook(final INodeHook hook) {
-		hook.startup();
-		hook.setNode(this);
-		try {
-			hook.invoke(this);
-		}
-		catch (final Exception e) {
-			org.freeplane.main.Tools.logException(e);
-			return;
-		}
-		hook.shutdown();
 	}
 
 	/**

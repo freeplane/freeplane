@@ -15,24 +15,31 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package accessories.plugins;
+package org.freeplane.addins.mindmapmode;
 
+import java.awt.event.ActionEvent;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
 
+import org.freeplane.controller.ActionDescriptor;
 import org.freeplane.controller.Controller;
+import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.map.tree.view.MapView;
 import org.freeplane.modes.mindmapmode.MModeController;
 
-import deprecated.freemind.extensions.ModeControllerHookAdapter;
 
 /**
  * @author foltin
  */
-public class SaveAll extends ModeControllerHookAdapter {
+@ActionDescriptor(
+    tooltip="accessories/plugins/SaveAll.properties_documentation", //
+    name="accessories/plugins/SaveAll.properties_name", //
+    locations={"/menu_bar/file/open"}
+)
+public class SaveAll extends FreeplaneAction {
 	/**
 	 *
 	 */
@@ -46,9 +53,7 @@ public class SaveAll extends ModeControllerHookAdapter {
 		return Controller.getController().getMapViewManager().getMapViews();
 	}
 
-	@Override
-	public void startup() {
-		super.startup();
+	public void actionPerformed(ActionEvent e) {
 		final Controller mainController = Controller.getController();
 		final MapView initialMapView = mainController.getMapView();
 		final Map mapViews = getMapViews();
@@ -64,7 +69,7 @@ public class SaveAll extends ModeControllerHookAdapter {
 				        Controller.getController().getViewController()
 				            .getContentPane(),
 				        "FreeMind",
-				        getResourceString("accessories/plugins/SaveAll.properties_save_all_cancelled"),
+				        Controller.getText("accessories/plugins/SaveAll.properties_save_all_cancelled"),
 				        JOptionPane.ERROR_MESSAGE);
 				return;
 			}
@@ -72,4 +77,5 @@ public class SaveAll extends ModeControllerHookAdapter {
 		mainController.getMapViewManager().changeToMapView(
 		    initialMapView.toString());
 	}
+
 }

@@ -20,20 +20,7 @@
 package org.freeplane.modes.mindmapmode;
 
 import java.awt.event.MouseEvent;
-import java.lang.reflect.Constructor;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.Vector;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JMenuItem;
-
 import org.freeplane.controller.Controller;
 import org.freeplane.io.url.mindmapmode.FileManager;
 import org.freeplane.map.attribute.IAttributeController;
@@ -43,7 +30,6 @@ import org.freeplane.map.nodelocation.mindmapmode.MLocationController;
 import org.freeplane.map.note.mindmapnode.MNoteController;
 import org.freeplane.map.pattern.mindmapnode.MPatternController;
 import org.freeplane.map.text.mindmapmode.MTextController;
-import org.freeplane.map.tree.MapModel;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.mindmapmode.MMapController;
 import org.freeplane.map.tree.mindmapmode.MindMapMapModel;
@@ -56,16 +42,6 @@ import org.freeplane.undo.IUndoHandler;
 import org.freeplane.undo.IUndoableActor;
 
 import deprecated.freemind.common.XmlBindingTools;
-import deprecated.freemind.extensions.IHookFactory;
-import deprecated.freemind.extensions.IHookRegistration;
-import deprecated.freemind.extensions.IModeControllerHook;
-import deprecated.freemind.extensions.INodeHook;
-import deprecated.freemind.extensions.IHookFactory.RegistrationContainer;
-import deprecated.freemind.modes.mindmapmode.actions.undo.ActionFactory;
-import deprecated.freemind.modes.mindmapmode.actions.undo.CompoundActionHandler;
-import deprecated.freemind.modes.mindmapmode.actions.undo.IHookAction;
-import deprecated.freemind.modes.mindmapmode.actions.undo.UndoActionHandler;
-import deprecated.freemind.modes.mindmapmode.hooks.MindMapHookFactory;
 import freemind.controller.actions.generated.instance.WindowConfigurationStorage;
 
 public class MModeController extends ModeController {
@@ -73,34 +49,12 @@ public class MModeController extends ModeController {
 	static public final String MODENAME = "MindMap";
 	static private RedoAction redo;
 	static private UndoAction undo;
-	final private ActionFactory actionFactory;
 	private MAttributeController attributeController;
-	private Vector hookActions;
-	final private HashSet mRegisteredMouseWheelEventHandler = new HashSet();
-	final private List mRegistrations;
-	private IHookFactory nodeHookFactory;
 	private MPatternController patternController;
-	private UndoActionHandler undoActionHandler;
 
 	MModeController() {
 		super();
-		actionFactory = new ActionFactory();
-		mRegistrations = new Vector();
-		/**
-		 * This handler evaluates the compound xml actions. Don't delete it!
-		 */
-		new CompoundActionHandler(this);
 		createActions();
-	}
-
-	public void addHook(final NodeModel focussed, final List selecteds,
-	                    final String hookName) {
-		((NodeHookAction) getAction("nodeHookAction")).addHook(focussed,
-		    selecteds, hookName);
-	}
-
-	public void addMouseWheelEventHandler(final IMouseWheelEventHandler handler) {
-		mRegisteredMouseWheelEventHandler.add(handler);
 	}
 
 	public void addUndoableActor(final IUndoableActor actor) {
@@ -119,49 +73,8 @@ public class MModeController extends ModeController {
 		redo.setUndo(undo);
 		addAction("undo", undo);
 		addAction("redo", redo);
-		undoActionHandler = new UndoActionHandler(this);
-		getActionFactory().registerUndoHandler(undoActionHandler);
-		addAction("nodeHookAction", new NodeHookAction("no_title", this));
 		addAction("selectBranchAction", new SelectBranchAction());
 		addAction("selectAllAction", new SelectAllAction());
-	}
-
-	public INodeHook createNodeHook(final String hookName,
-	                                final NodeModel node, final MapModel map) {
-		final MindMapHookFactory hookFactory = (MindMapHookFactory) getHookFactory();
-		final INodeHook hook = hookFactory.createNodeHook(hookName);
-		hook.setController(this);
-		return hook;
-	}
-
-	/**
-	 *
-	 */
-	void createNodeHookActions() {
-		if (hookActions == null) {
-			hookActions = new Vector();
-			final MindMapHookFactory factory = (MindMapHookFactory) getHookFactory();
-			final List nodeHookNames = factory.getPossibleNodeHooks();
-			for (final Iterator i = nodeHookNames.iterator(); i.hasNext();) {
-				final String hookName = (String) i.next();
-				final NodeHookAction action = new NodeHookAction(hookName, this);
-				hookActions.add(action);
-			}
-			final List modeControllerHookNames = factory
-			    .getPossibleIModeControllerHooks();
-			for (final Iterator i = modeControllerHookNames.iterator(); i
-			    .hasNext();) {
-				final String hookName = (String) i.next();
-				final MindMapControllerHookAction action = new MindMapControllerHookAction(
-				    hookName, this);
-				hookActions.add(action);
-			}
-		}
-	}
-
-	public void deRegisterMouseWheelEventHandler(
-	                                             final IMouseWheelEventHandler handler) {
-		mRegisteredMouseWheelEventHandler.remove(handler);
 	}
 
 	@Override
@@ -186,9 +99,6 @@ public class MModeController extends ModeController {
 	@Override
 	public void enableActions(final boolean enabled) {
 		super.enableActions(enabled);
-		for (int i = 0; i < hookActions.size(); ++i) {
-			((Action) hookActions.get(i)).setEnabled(enabled);
-		}
 		((MIconController) getIconController()).enableActions(enabled);
 	}
 
@@ -198,21 +108,9 @@ public class MModeController extends ModeController {
 		addUndoableActor(actor);
 	}
 
-	public ActionFactory getActionFactory() {
-		return actionFactory;
-	}
-
 	@Override
 	public IAttributeController getAttributeController() {
 		return attributeController;
-	}
-
-	@Override
-	public IHookFactory getHookFactory() {
-		if (nodeHookFactory == null) {
-			nodeHookFactory = new MindMapHookFactory();
-		}
-		return nodeHookFactory;
 	}
 
 	@Override
@@ -223,23 +121,6 @@ public class MModeController extends ModeController {
 	public MPatternController getPatternController() {
 		return patternController;
 	}
-
-	@Override
-	public Set getRegisteredMouseWheelEventHandler() {
-		return Collections.unmodifiableSet(mRegisteredMouseWheelEventHandler);
-	}
-
-	public void invokeHook(final IModeControllerHook hook) {
-		try {
-			hook.setController(this);
-			hook.startup();
-			hook.shutdown();
-		}
-		catch (final Exception e) {
-			org.freeplane.main.Tools.logException(e);
-		}
-	}
-
 	public boolean isUndoAction() {
 		return ((MindMapMapModel) getMapView().getModel()).getUndoHandler()
 		    .isUndoActionRunning();
@@ -301,14 +182,7 @@ public class MModeController extends ModeController {
 	@Override
 	public void shutdown() {
 		super.shutdown();
-		for (final Iterator i = mRegistrations.iterator(); i.hasNext();) {
-			final IHookRegistration registrationInstance = (IHookRegistration) i
-			    .next();
-			registrationInstance.deRegister();
-		}
 		((MNoteController) getNoteController()).shutdownController();
-		getHookFactory().deregisterAllRegistrationContainer();
-		mRegistrations.clear();
 	}
 
 	/**
@@ -317,26 +191,6 @@ public class MModeController extends ModeController {
 	 */
 	@Override
 	public void startup() {
-		final IHookFactory hookFactory = getHookFactory();
-		final List pluginRegistrations = hookFactory.getRegistrations();
-		for (final Iterator i = pluginRegistrations.iterator(); i.hasNext();) {
-			try {
-				final RegistrationContainer container = (RegistrationContainer) i
-				    .next();
-				final Class registrationClass = container.hookRegistrationClass;
-				final Constructor hookConstructor = registrationClass
-				    .getConstructor(new Class[] { ModeController.class });
-				final IHookRegistration registrationInstance = (IHookRegistration) hookConstructor
-				    .newInstance(new Object[] { this });
-				hookFactory.registerRegistrationContainer(container,
-				    registrationInstance);
-				registrationInstance.register();
-				mRegistrations.add(registrationInstance);
-			}
-			catch (final Exception e) {
-				org.freeplane.main.Tools.logException(e);
-			}
-		}
 		super.startup();
 		((MNoteController) getNoteController()).startupController();
 	}
@@ -362,32 +216,6 @@ public class MModeController extends ModeController {
 		((MIconController) getIconController()).updateMenus(builder);
 		getPatternController().createPatternSubMenu(builder,
 		    UserInputListenerFactory.NODE_POPUP);
-		final MindMapHookFactory hookFactory = (MindMapHookFactory) getHookFactory();
-		for (int i = 0; i < hookActions.size(); ++i) {
-			final AbstractAction hookAction = (AbstractAction) hookActions
-			    .get(i);
-			final String hookName = ((IHookAction) hookAction).getHookName();
-			hookFactory.decorateAction(hookName, hookAction);
-			final List hookMenuPositions = hookFactory
-			    .getHookMenuPositions(hookName);
-			for (final Iterator j = hookMenuPositions.iterator(); j.hasNext();) {
-				final String key = (String) j.next();
-				final int pos = key.lastIndexOf('/');
-				final String relativeKey = key.substring(0, pos);
-				if (relativeKey.startsWith("/main_toolbar")) {
-					final JButton button = new JButton(hookAction);
-					button.setText(null);
-					builder.addComponent(relativeKey, button,
-					    MenuBuilder.AS_CHILD);
-				}
-				else {
-					final JMenuItem menuItem = hookFactory.getMenuItem(
-					    hookName, hookAction);
-					builder.addMenuItem(relativeKey, menuItem, key,
-					    MenuBuilder.AS_CHILD);
-				}
-			}
-		}
 		final String formatMenuString = FreemindMenuBar.FORMAT_MENU;
 		getPatternController().createPatternSubMenu(builder, formatMenuString);
 	}

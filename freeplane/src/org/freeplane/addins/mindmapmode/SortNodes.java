@@ -15,23 +15,30 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package accessories.plugins;
+package org.freeplane.addins.mindmapmode;
 
 import java.awt.datatransfer.Transferable;
+import java.awt.event.ActionEvent;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Vector;
 
+import org.freeplane.controller.ActionDescriptor;
 import org.freeplane.map.clipboard.mindmapmode.MClipboardController;
 import org.freeplane.map.tree.NodeModel;
-
-import deprecated.freemind.modes.mindmapmode.hooks.MindMapNodeHookAdapter;
+import org.freeplane.modes.MultipleNodeAction;
 
 /**
  * @author foltin
  */
-public class SortNodes extends MindMapNodeHookAdapter {
+@ActionDescriptor(
+    tooltip="accessories/plugins/SortNodes.properties_documentation", //
+    name="accessories/plugins/SortNodes.properties_name", //
+    keyStroke="keystroke_accessories/plugins/SortNodes.properties_key", //
+    locations={"/menu_bar/extras/first/nodes/sorting"}
+)
+public class SortNodes extends MultipleNodeAction {
 	final private class NodeTextComparator implements Comparator {
 		public int compare(final Object pArg0, final Object pArg1) {
 			if (pArg0 instanceof NodeModel) {
@@ -54,13 +61,8 @@ public class SortNodes extends MindMapNodeHookAdapter {
 		super();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see freemind.extensions.NodeHook#invoke(freemind.modes.MindMapNode,
-	 * java.util.List)
-	 */
 	@Override
-	public void invoke(final NodeModel node) {
+    protected void actionPerformed(ActionEvent e, NodeModel node) {
 		final Vector sortVector = new Vector();
 		sortVector.addAll(node.getChildren());
 		Collections.sort(sortVector, new NodeTextComparator());
@@ -68,10 +70,10 @@ public class SortNodes extends MindMapNodeHookAdapter {
 			final NodeModel child = (NodeModel) iter.next();
 			final Vector childList = new Vector();
 			childList.add(child);
-			final Transferable cut = ((MClipboardController) getMindMapController()
-			    .getClipboardController()).cut(childList);
-			((MClipboardController) getMindMapController()
-			    .getClipboardController()).paste(cut, node);
+			final MClipboardController clipboardController = (MClipboardController) getModeController()
+			    .getClipboardController();
+			final Transferable cut = clipboardController.cut(childList);
+			clipboardController.paste(cut, node);
 		}
 	}
 }

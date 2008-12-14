@@ -79,7 +79,7 @@ public class MindMapMouseWheelEventHandler implements MouseWheelListener {
 			return;
 		}
 		final Set registeredMouseWheelEventHandler = mController
-		    .getRegisteredMouseWheelEventHandler();
+		    .getMouseWheelEventHandlers();
 		for (final Iterator i = registeredMouseWheelEventHandler.iterator(); i
 		    .hasNext();) {
 			final IMouseWheelEventHandler handler = (IMouseWheelEventHandler) i

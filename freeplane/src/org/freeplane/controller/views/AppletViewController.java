@@ -145,7 +145,8 @@ public class AppletViewController extends ViewController {
 		if (initialMapName != "") {
 			try {
 				final URL mapUrl = new URL(initialMapName);
-				((BModeController) Controller.getController()
+				Controller.getController();
+				((BModeController) Controller
 				    .getModeController()).getMapController().newMap(mapUrl);
 			}
 			catch (final Exception e) {

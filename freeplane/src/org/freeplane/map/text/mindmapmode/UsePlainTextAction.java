@@ -19,25 +19,23 @@
  */
 package org.freeplane.map.text.mindmapmode;
 
+import java.awt.event.ActionEvent;
+
 import org.freeplane.main.HtmlTools;
 import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.mindmapmode.MindMapMapModel;
+import org.freeplane.modes.MultipleNodeAction;
 
-import deprecated.freemind.modes.mindmapmode.actions.undo.ISingleNodeOperation;
-import deprecated.freemind.modes.mindmapmode.actions.undo.NodeGeneralAction;
-
-class UsePlainTextAction extends NodeGeneralAction {
+class UsePlainTextAction extends MultipleNodeAction {
 	public UsePlainTextAction() {
-		super("use_plain_text", null);
-		setSingleNodeOperation(new ISingleNodeOperation() {
-			public void apply(final MindMapMapModel map,
-			                  final NodeModel selected) {
-				final String nodeText = selected.getText();
-				if (HtmlTools.isHtmlNode(nodeText)) {
-					((MTextController) getMModeController().getTextController())
-					    .setNodeText(selected, HtmlTools.htmlToPlain(nodeText));
-				}
-			}
-		});
+		super("use_plain_text");
 	}
+
+	@Override
+    protected void actionPerformed(ActionEvent e, NodeModel node) {
+			final String nodeText = node.getText();
+			if (HtmlTools.isHtmlNode(nodeText)) {
+				((MTextController) getMModeController().getTextController())
+				    .setNodeText(node, HtmlTools.htmlToPlain(nodeText));
+			}
+    }
 }
