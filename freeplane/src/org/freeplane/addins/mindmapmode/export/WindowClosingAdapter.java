@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.addins.export.mindmapmode;
+package org.freeplane.addins.mindmapmode.export;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
