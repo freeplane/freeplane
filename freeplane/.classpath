@@ -33,7 +33,7 @@
 	<classpathentry kind="lib" path="lib/SimplyHTML/SimplyHTML.jar" sourcepath="/simplyHtml/src"/>
 	<classpathentry kind="lib" path="lib/jarbundler-1.8.1.jar"/>
 	<classpathentry kind="lib" path="src/plugins/script/groovy-all-1.5.6.jar"/>
-	<classpathentry kind="lib" path="src/org/freeplane/addins/latex/HotEqn.jar"/>
+	<classpathentry kind="lib" path="src/plugins/latex/HotEqn.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
