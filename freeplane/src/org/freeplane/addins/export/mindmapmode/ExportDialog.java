@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package accessories.plugins.util.xslt;
+package org.freeplane.addins.export.mindmapmode;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -36,7 +36,6 @@ import javax.swing.JTextField;
 import org.freeplane.controller.Controller;
 import org.freeplane.main.ExampleFileFilter;
 
-import accessories.plugins.util.window.WindowClosingAdapter;
 
 public class ExportDialog extends JFrame {
 	class ExportListener implements ActionListener {

@@ -58,8 +58,6 @@ import org.freeplane.modes.ModeController;
 import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.ui.MenuBuilder;
 
-import accessories.plugins.util.html.ClickableImageCreator;
-import accessories.plugins.util.xslt.ExportDialog;
 
 /**
  * @author foltin To change the template for this generated type comment go to

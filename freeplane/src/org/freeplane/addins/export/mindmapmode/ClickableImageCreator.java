@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package accessories.plugins.util.html;
+package org.freeplane.addins.export.mindmapmode;
 
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -32,7 +32,7 @@ import org.freeplane.map.tree.view.NodeView;
 import org.freeplane.modes.ModeController;
 
 /** */
-public class ClickableImageCreator {
+class ClickableImageCreator {
 	public static class AreaHolder {
 		String alt;
 		Rectangle coordinates = new Rectangle();
