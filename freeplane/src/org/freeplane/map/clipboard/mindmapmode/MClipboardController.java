@@ -83,10 +83,4 @@ public class MClipboardController extends ClipboardController {
 		}
 		((PasteAction) getModeController().getAction("paste")).paste(t, target, asSibling, isLeft);
 	}
-
-	public NodeModel pasteXMLWithoutRedisplay(final String pasted, final NodeModel target,
-	                                          final boolean asSibling, final boolean changeSide,
-	                                          final boolean isLeft) {
-		return paste.pasteXMLWithoutRedisplay(pasted, target, asSibling, changeSide, isLeft);
-	}
 }

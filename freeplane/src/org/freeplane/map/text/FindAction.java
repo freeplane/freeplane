@@ -55,8 +55,8 @@ class FindAction extends FreeplaneAction {
 		final Collection subterms = breakSearchTermIntoSubterms(what);
 		searchTerm = what;
 		final boolean found = find(getModeController().getSelectedNode(), subterms, /*
-			    	    		    		    		    	    		    				 * caseSensitive=
-			    	    		    		    		    	    		    				 */
+				    	    		    		    		    	    		    				 * caseSensitive=
+				    	    		    		    		    	    		    				 */
 		false);
 		getModeController().getMapView().repaint();
 		if (!found) {

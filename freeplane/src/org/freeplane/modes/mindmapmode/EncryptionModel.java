@@ -20,6 +20,7 @@
 package org.freeplane.modes.mindmapmode;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.logging.Logger;
@@ -28,8 +29,8 @@ import javax.swing.ImageIcon;
 
 import org.freeplane.extension.IExtension;
 import org.freeplane.main.Tools.SingleDesEncrypter;
-import org.freeplane.map.clipboard.mindmapmode.MClipboardController;
 import org.freeplane.map.icon.MindIcon;
+import org.freeplane.map.tree.MapController;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.ModeController;
 
@@ -107,10 +108,7 @@ public class EncryptionModel implements IExtension {
 					if (string.length() == 0) {
 						continue;
 					}
-					final MModeController modeController = (MModeController) node
-					    .getModeController();
-					((MClipboardController) modeController.getClipboardController())
-					    .pasteXMLWithoutRedisplay(string, node, false, false, false);
+					pasteXML(string, node);
 				}
 				isDecrypted = true;
 			}
@@ -120,7 +118,6 @@ public class EncryptionModel implements IExtension {
 				return true;
 			}
 		}
-		node.setFolded(false);
 		return true;
 	}
 
@@ -221,6 +218,18 @@ public class EncryptionModel implements IExtension {
 			return node.getModeController().getMapController().isFolded(node);
 		}
 		return true;
+	}
+
+	private void pasteXML(final String pasted, final NodeModel target) {
+		try {
+			final MapController mapController = target.getModeController().getMapController();
+			final NodeModel node = mapController.createNodeTreeFromXml(target.getMap(),
+			    new StringReader(pasted));
+			mapController.insertNodeIntoWithoutUndo(node, target, target.getChildCount());
+		}
+		catch (final Exception ee) {
+			org.freeplane.main.Tools.logException(ee);
+		}
 	}
 
 	/**

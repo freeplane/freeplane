@@ -26,11 +26,7 @@ import org.freeplane.controller.Controller;
 import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.view.MapView;
-import org.freeplane.map.tree.view.NodeView;
-import org.freeplane.modes.INodeChangeListener;
-import org.freeplane.modes.INodeSelectionListener;
 import org.freeplane.modes.ModeController;
-import org.freeplane.modes.NodeChangeEvent;
 import org.freeplane.modes.mindmapmode.EncryptionModel;
 import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.ui.dialogs.EnterPasswordDialog;
@@ -39,69 +35,64 @@ import org.freeplane.ui.dialogs.EnterPasswordDialog;
 name = "accessories/plugins/EnterPassword.properties_name", //
 iconPath = "accessories/plugins/icons/unlock.png", //
 locations = { "/menu_bar/extras/first/nodes/crypto" })
-public class EnterPassword extends FreeplaneAction implements INodeSelectionListener,
-        INodeChangeListener {
+public class EnterPassword extends FreeplaneAction {
 	public EnterPassword(final ModeController modeController) {
 		super();
-		modeController.addNodeSelectionListener(this);
-		modeController.addNodeChangeListener(this);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final NodeModel node = getModeController().getSelectedNode();
 		toggleCryptState(node);
-		getModeController().getMapController().nodeRefresh(node);
-		return;
-	}
-
-	public boolean canBeEnabled() {
-		boolean isEncryptedNode = false;
-		final ModeController modeController = getModeController();
-		if (modeController == null) {
-			return false;
-		}
-		if (modeController.getSelectedNode() != null) {
-			final EncryptionModel enode = modeController.getSelectedNode().getEncryptionModel();
-			if (enode != null) {
-				isEncryptedNode = true;
-			}
-		}
-		return isEncryptedNode;
 	}
 
 	/**
 	 */
-	private void doPasswordCheckAndDecryptNode(final EncryptionModel encNode) {
+	private boolean doPasswordCheckAndDecryptNode(final EncryptionModel encNode) {
 		while (true) {
 			final EnterPasswordDialog pwdDialog = new EnterPasswordDialog(Controller
 			    .getController().getViewController().getJFrame(), false);
 			pwdDialog.setModal(true);
 			pwdDialog.setVisible(true);
 			if (pwdDialog.getResult() == EnterPasswordDialog.CANCEL) {
-				return;
+				return false;
 			}
 			if (!encNode.decrypt(pwdDialog.getPassword())) {
 				JOptionPane.showMessageDialog(Controller.getController().getViewController()
 				    .getContentPane(), getModeController().getText(
 				    "accessories/plugins/EncryptNode.properties_wrong_password"), "Freemind",
 				    JOptionPane.ERROR_MESSAGE);
+				return false;
 			}
 			else {
-				return;
+				return true;
 			}
 		}
 	}
 
-	public void nodeChanged(final NodeChangeEvent e) {
-		setEnabled(canBeEnabled());
+	/**
+	 */
+	private void encrypt(final NodeModel node) {
+		final StringBuffer password = getUsersPassword();
+		if (password == null) {
+			return;
+		}
+		final EncryptionModel encryptedMindMapNode = new EncryptionModel(node);
+		encryptedMindMapNode.setPassword(password);
+		node.addExtension(encryptedMindMapNode);
 	}
 
-	public void onDeselect(final NodeView node) {
-		setEnabled(false);
-	}
-
-	public void onSelect(final NodeView node) {
-		setEnabled(canBeEnabled());
+	/**
+	 */
+	private StringBuffer getUsersPassword() {
+		final EnterPasswordDialog pwdDialog = new EnterPasswordDialog(Controller.getController()
+		    .getViewController().getJFrame(), true);
+		pwdDialog.setModal(true);
+		pwdDialog.show();
+		if (pwdDialog.getResult() == EnterPasswordDialog.CANCEL) {
+			return null;
+		}
+		final StringBuffer password = pwdDialog.getPassword();
+		return password;
 	}
 
 	/**
@@ -112,21 +103,21 @@ public class EnterPassword extends FreeplaneAction implements INodeSelectionList
 		if (encNode != null) {
 			if (encNode.isAccessible()) {
 				node.setFolded(true);
-				mindMapController.getMapController().nodeStructureChanged(node);
 				encNode.setAccessible(false);
+				mindMapController.getMapController().nodeStructureChanged(node);
 			}
 			else {
-				doPasswordCheckAndDecryptNode(encNode);
-				mindMapController.getMapController().nodeStructureChanged(node);
+				if (doPasswordCheckAndDecryptNode(encNode)) {
+					node.setFolded(false);
+					mindMapController.getMapController().nodeStructureChanged(node);
+				}
 			}
 			final MapView mapView = mindMapController.getMapView();
 			mapView.selectAsTheOnlyOneSelected(mapView.getNodeView(node));
 		}
 		else {
-			JOptionPane.showMessageDialog(Controller.getController().getViewController()
-			    .getContentPane(), mindMapController
-			    .getText("accessories/plugins/EncryptNode.properties_insert_encrypted_node_first"),
-			    "Freemind", JOptionPane.INFORMATION_MESSAGE);
+			encrypt(node);
 		}
+		mindMapController.getMapController().nodeRefresh(node);
 	}
 }

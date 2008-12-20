@@ -88,7 +88,7 @@ class PasteAction extends FreeplaneAction {
 					    href);
 				}
 			}
-			addUndoAction(node);
+			PasteAction.this.paste(node, target, target.getChildCount());
 			Controller.getController().getViewController().setWaitingCursor(false);
 		}
 	}
@@ -108,8 +108,10 @@ class PasteAction extends FreeplaneAction {
 				node.setLeft(isLeft);
 				((MLinkController) node.getModeController().getLinkController()).setLink(node, file
 				    .getAbsolutePath());
-				insertNodeInto(node, target, asSibling, isLeft, false);
-				addUndoAction(node);
+				PasteAction.this.paste(node, target, asSibling, isLeft, false);
+				final NodeModel parentNode = node.getParentNode();
+				final int index = parentNode.getIndex(node);
+				PasteAction.this.paste(node, parentNode, index);
 			}
 		}
 	}
@@ -134,9 +136,8 @@ class PasteAction extends FreeplaneAction {
 				for (int i = 0; i < textLines.length; ++i) {
 					final NodeModel newModel = nodeTreeCreator
 					    .create(new StringReader(textLines[i]));
-					insertNodeInto(newModel, target, asSibling, isLeft, true);
 					newModel.setLeft(isLeft);
-					addUndoAction(newModel);
+					PasteAction.this.paste(newModel, target, target.getChildCount());
 				}
 				nodeTreeCreator.finish(target);
 			}
@@ -171,9 +172,41 @@ class PasteAction extends FreeplaneAction {
 		    .getMapView().getSelected().getModel());
 	}
 
-	private void addUndoAction(final NodeModel node) {
-		final NodeModel parentNode = node.getParentNode();
-		final int index = parentNode.getIndex(node);
+	/**
+	 */
+	private DataFlavorHandler[] getFlavorHandlers() {
+		final DataFlavorHandler[] dataFlavorHandlerList = new DataFlavorHandler[] {
+		        new FileListFlavorHandler(), new MindMapNodesFlavorHandler(),
+		        new DirectHtmlFlavorHandler(), new StringFlavorHandler() };
+		return dataFlavorHandlerList;
+	}
+
+	public void paste(final NodeModel node, final NodeModel parent) {
+		paste(node, parent, parent.getChildCount());
+	}
+
+	private void paste(final NodeModel node, final NodeModel target, final boolean asSibling,
+	                   final boolean isLeft, final boolean changeSide) {
+		NodeModel parent;
+		if (asSibling) {
+			parent = target.getParentNode();
+		}
+		else {
+			parent = target;
+		}
+		if (changeSide) {
+			node.setParent(parent);
+			node.setLeft(isLeft);
+		}
+		if (asSibling) {
+			paste(node, parent, parent.getChildPosition(target));
+		}
+		else {
+			paste(node, parent, parent.getChildCount());
+		}
+	}
+
+	public void paste(final NodeModel node, final NodeModel parentNode, final int index) {
 		final IUndoableActor actor = new IUndoableActor() {
 			public void act() {
 				(getModeController().getMapController()).insertNodeIntoWithoutUndo(node,
@@ -188,56 +221,7 @@ class PasteAction extends FreeplaneAction {
 				((MMapController) getModeController().getMapController()).deleteWithoutUndo(node);
 			}
 		};
-		getMModeController().addUndoableActor(actor);
-	}
-
-	/**
-	 */
-	private DataFlavorHandler[] getFlavorHandlers() {
-		final DataFlavorHandler[] dataFlavorHandlerList = new DataFlavorHandler[] {
-		        new FileListFlavorHandler(), new MindMapNodesFlavorHandler(),
-		        new DirectHtmlFlavorHandler(), new StringFlavorHandler() };
-		return dataFlavorHandlerList;
-	}
-
-	private void insertNodeInto(final NodeModel node, final NodeModel target,
-	                            final boolean asSibling, final boolean isLeft,
-	                            final boolean changeSide) {
-		NodeModel parent;
-		if (asSibling) {
-			parent = target.getParentNode();
-		}
-		else {
-			parent = target;
-		}
-		if (changeSide) {
-			node.setParent(parent);
-			node.setLeft(isLeft);
-		}
-		if (asSibling) {
-			insertNodeInto(node, parent, parent.getChildPosition(target));
-		}
-		else {
-			insertNodeIntoWithouUndo(node, target);
-		}
-	}
-
-	/**
-	 */
-	private void insertNodeInto(final NodeModel node, final NodeModel parent, final int i) {
-		getMModeController().getMapController().insertNodeIntoWithoutUndo(node, parent, i);
-	}
-
-	private void insertNodeIntoWithouUndo(final NodeModel node, final NodeModel parent) {
-		getMModeController().getMapController().insertNodeIntoWithoutUndo(node, parent);
-	}
-
-	/** URGENT: Change this method. */
-	public void paste(final NodeModel node, final NodeModel parent) {
-		if (node != null) {
-			insertNodeIntoWithouUndo(node, parent);
-			getMModeController().getMapController().nodeStructureChanged(parent);
-		}
+		getMModeController().execute(actor);
 	}
 
 	/**
@@ -373,15 +357,17 @@ class PasteAction extends FreeplaneAction {
 				if (depth > ((Integer) parentNodesDepths.get(j)).intValue()) {
 					for (int k = j + 1; k < parentNodes.size(); ++k) {
 						final NodeModel n = (NodeModel) parentNodes.get(k);
-						if (n.getParentNode() == parent) {
-							addUndoAction(n);
+						if (n.getParentNode() == null) {
+							paste(n, parent, parent.getChildCount());
 						}
 						parentNodes.remove(k);
 						parentNodesDepths.remove(k);
 					}
 					final NodeModel target = (NodeModel) parentNodes.get(j);
 					node.setLeft(isLeft);
-					insertNodeIntoWithouUndo(node, target);
+					if (target != parent) {
+						target.insert(node, target.getChildCount());
+					}
 					parentNodes.add(node);
 					parentNodesDepths.add(new Integer(depth));
 					break;
@@ -390,25 +376,10 @@ class PasteAction extends FreeplaneAction {
 		}
 		for (int k = 0; k < parentNodes.size(); ++k) {
 			final NodeModel n = (NodeModel) parentNodes.get(k);
-			if (n.getParentNode() == parent) {
-				addUndoAction(n);
+			if (n.getParentNode() == null) {
+				paste(n, parent, parent.getChildCount());
 			}
 		}
 		return pastedNode;
-	}
-
-	public NodeModel pasteXMLWithoutRedisplay(final String pasted, final NodeModel target,
-	                                          final boolean asSibling, final boolean changeSide,
-	                                          final boolean isLeft) {
-		try {
-			final NodeModel node = getModeController().getMapController().createNodeTreeFromXml(
-			    target.getMap(), new StringReader(pasted));
-			insertNodeInto(node, target, asSibling, isLeft, changeSide);
-			return node;
-		}
-		catch (final Exception ee) {
-			org.freeplane.main.Tools.logException(ee);
-			return null;
-		}
 	}
 }

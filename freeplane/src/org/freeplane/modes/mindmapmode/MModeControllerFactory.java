@@ -22,7 +22,6 @@ package org.freeplane.modes.mindmapmode;
 import javax.swing.JPopupMenu;
 
 import org.freeplane.addins.encrypt.EnterPassword;
-import org.freeplane.addins.encrypt.mindmapnode.EncryptNode;
 import org.freeplane.addins.encrypt.mindmapnode.EncryptedMap;
 import org.freeplane.addins.mindmapmode.ChangeNodeLevelAction;
 import org.freeplane.addins.mindmapmode.FormatPaste;
@@ -99,7 +98,6 @@ public class MModeControllerFactory {
 		menuBuilder.addAnnotatedAction(new ApplyFormatPlugin());
 		new FormatPaste(menuBuilder);
 		menuBuilder.addAnnotatedAction(new FitToPage());
-		menuBuilder.addAnnotatedAction(new EncryptNode(modeController));
 		menuBuilder.addAnnotatedAction(new EncryptedMap(modeController));
 		menuBuilder.addAnnotatedAction(new EnterPassword(modeController));
 		menuBuilder.addAnnotatedAction(new IconSelectionPlugin());

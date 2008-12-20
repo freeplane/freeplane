@@ -53,7 +53,7 @@ public class MModeController extends ModeController {
 		createActions();
 	}
 
-	public void addUndoableActor(final IUndoableActor actor) {
+	private void addUndoableActor(final IUndoableActor actor) {
 		final MindMapMapModel map = (MindMapMapModel) Controller.getController().getMap();
 		final IUndoHandler undoHandler = map.getUndoHandler();
 		undoHandler.addActor(actor);

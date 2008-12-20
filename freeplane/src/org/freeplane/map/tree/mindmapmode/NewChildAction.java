@@ -93,18 +93,10 @@ class NewChildAction extends FreeplaneAction {
 		final NodeModel newNode = getMModeController().getMapController().newNode("",
 		    parent.getMap());
 		newNode.setLeft(newNodeIsLeft);
-		getModeController().getMapController().insertNodeIntoWithoutUndo(newNode, parent, index);
-		addUndoAction(newNode);
-		return newNode;
-	}
-
-	private void addUndoAction(final NodeModel node) {
-		final NodeModel parentNode = node.getParentNode();
-		final int index = parentNode.getIndex(node);
 		final IUndoableActor actor = new IUndoableActor() {
 			public void act() {
 				((MMapController) getModeController().getMapController())
-				    .insertNodeIntoWithoutUndo(node, parentNode, index);
+				    .insertNodeIntoWithoutUndo(newNode, parent, index);
 			}
 
 			public String getDescription() {
@@ -112,9 +104,11 @@ class NewChildAction extends FreeplaneAction {
 			}
 
 			public void undo() {
-				((MMapController) getModeController().getMapController()).deleteWithoutUndo(node);
+				((MMapController) getModeController().getMapController())
+				    .deleteWithoutUndo(newNode);
 			}
 		};
-		getMModeController().addUndoableActor(actor);
+		getMModeController().execute(actor);
+		return newNode;
 	}
 }
