@@ -31,7 +31,7 @@ import org.freeplane.io.xml.TreeXmlWriter;
  * @author Dimitry Polivaev
  * 07.12.2008
  */
-public class MapWriter implements INodeWriter<String> {
+class MapWriter implements INodeWriter<String> {
 	private NodeWriter currentNodeWriter;
 	private boolean saveInvisible;
 	final private WriteManager writeManager;

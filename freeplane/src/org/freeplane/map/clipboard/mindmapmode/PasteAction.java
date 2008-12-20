@@ -39,9 +39,9 @@ import org.freeplane.main.HtmlTools;
 import org.freeplane.main.Tools;
 import org.freeplane.map.clipboard.MindMapNodesSelection;
 import org.freeplane.map.link.mindmapmode.MLinkController;
-import org.freeplane.map.tree.MapController;
+import org.freeplane.map.tree.MapReader;
 import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.MapController.NodeTreeCreator;
+import org.freeplane.map.tree.MapReader.NodeTreeCreator;
 import org.freeplane.map.tree.mindmapmode.MMapController;
 import org.freeplane.modes.ModeController;
 import org.freeplane.undo.IUndoableActor;
@@ -143,8 +143,8 @@ class PasteAction extends FreeplaneAction {
 					Controller.getController().getViewController()
 					    .setWaitingCursor(true);
 				}
-				final MapController mapController = getModeController()
-				    .getMapController();
+				final MapReader mapController = getModeController()
+				.getMapController().getMapReader();
 				final NodeTreeCreator nodeTreeCreator = mapController
 				    .nodeTreeCreator(target.getMap());
 				for (int i = 0; i < textLines.length; ++i) {

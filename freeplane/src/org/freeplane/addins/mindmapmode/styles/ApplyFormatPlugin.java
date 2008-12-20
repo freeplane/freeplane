@@ -24,12 +24,12 @@ import java.util.List;
 import org.freeplane.controller.ActionDescriptor;
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.FreeplaneAction;
+import org.freeplane.map.pattern.mindmapnode.Pattern;
 import org.freeplane.map.pattern.mindmapnode.StylePatternFactory;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.ModeController;
 import org.freeplane.modes.mindmapmode.MModeController;
 
-import freemind.controller.actions.generated.instance.Pattern;
 
 @ActionDescriptor(name = "accessories/plugins/ApplyFormatPlugin.properties_name", //
 locations = { "/menu_bar/format/change" }, //

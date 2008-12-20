@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.io.url.mindmapmode;
+package org.freeplane.map.url.mindmapmode;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -72,11 +72,11 @@ class ExportBranchAction extends FreeplaneAction {
 			File chosenFile = chooser.getSelectedFile();
 			final String ext = Tools.getExtension(chosenFile.getName());
 			if (!ext
-			    .equals(org.freeplane.io.url.mindmapmode.FileManager.FREEMIND_FILE_EXTENSION_WITHOUT_DOT)) {
+			    .equals(org.freeplane.map.url.mindmapmode.FileManager.FREEMIND_FILE_EXTENSION_WITHOUT_DOT)) {
 				chosenFile = new File(
 				    chosenFile.getParent(),
 				    chosenFile.getName()
-				            + org.freeplane.io.url.mindmapmode.FileManager.FREEMIND_FILE_EXTENSION);
+				            + org.freeplane.map.url.mindmapmode.FileManager.FREEMIND_FILE_EXTENSION);
 			}
 			try {
 				Tools.fileToUrl(chosenFile);

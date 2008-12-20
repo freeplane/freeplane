@@ -72,10 +72,8 @@ import deprecated.freemind.common.PropertyBean;
 import deprecated.freemind.common.RemindValueProperty;
 import deprecated.freemind.common.SeparatorProperty;
 import deprecated.freemind.common.StringProperty;
-import deprecated.freemind.common.XmlBindingTools;
+
 import deprecated.freemind.preferences.IFreemindPropertyContributor;
-import freemind.controller.actions.generated.instance.OptionPanelWindowConfigurationStorage;
-import freemind.controller.actions.generated.instance.WindowConfigurationStorage;
 
 /**
  * refactoring of class OptionPanel from package freemind.preferences.layout .
@@ -275,11 +273,9 @@ public class OptionPanel {
 		super();
 		topDialog = d;
 		this.feedback = feedback;
-		final WindowConfigurationStorage storage = XmlBindingTools
-		    .getInstance().decorateDialog(d,
-		        OptionPanel.PREFERENCE_STORAGE_PROPERTY);
-		if (storage != null
-		        && storage instanceof OptionPanelWindowConfigurationStorage) {
+		final String marshalled = Controller.getResourceController().getProperty(OptionPanel.PREFERENCE_STORAGE_PROPERTY);
+        final OptionPanelWindowConfigurationStorage storage = OptionPanelWindowConfigurationStorage.decorateDialog(marshalled,d);
+		if (storage != null) {
 			final OptionPanelWindowConfigurationStorage oWindowSettings = (OptionPanelWindowConfigurationStorage) storage;
 			selectedPanel = oWindowSettings.getPanel();
 		}
@@ -349,8 +345,7 @@ public class OptionPanel {
 	public void closeWindow() {
 		final OptionPanelWindowConfigurationStorage storage = new OptionPanelWindowConfigurationStorage();
 		storage.setPanel(selectedPanel);
-		XmlBindingTools.getInstance().storeDialogPositions(topDialog, storage,
-		    OptionPanel.PREFERENCE_STORAGE_PROPERTY);
+		storage.storeDialogPositions(topDialog,OptionPanel.PREFERENCE_STORAGE_PROPERTY);
 		topDialog.setVisible(false);
 		topDialog.dispose();
 	}

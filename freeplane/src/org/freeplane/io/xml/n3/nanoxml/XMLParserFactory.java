@@ -45,12 +45,20 @@ public class XMLParserFactory {
 	 * @throws java.lang.IllegalAccessException
 	 *             if the parser could not be created
 	 */
-	public static IXMLParser createDefaultXMLParser()
-	        throws ClassNotFoundException, InstantiationException,
-	        IllegalAccessException {
-		final String className = System.getProperty(XMLParserFactory.CLASS_KEY,
-		    XMLParserFactory.DEFAULT_CLASS);
-		return XMLParserFactory.createXMLParser(className, new StdXMLBuilder());
+	public static IXMLParser createDefaultXMLParser(){
+		try {
+	        return XMLParserFactory.createXMLParser(StdXMLParser.class.getName(), new StdXMLBuilder());
+        }
+        catch (ClassNotFoundException e) {
+	        e.printStackTrace();
+        }
+        catch (InstantiationException e) {
+	        e.printStackTrace();
+        }
+        catch (IllegalAccessException e) {
+	        e.printStackTrace();
+        }
+        return null;
 	}
 
 	/**

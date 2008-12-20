@@ -108,6 +108,10 @@ public class TreeXmlReader implements IXMLBuilder, ITreeReader {
 	                                       final String nsPrefix,
 	                                       final String nsURI) throws Exception {
 		xmlBuilder.elementAttributesProcessed(name, nsPrefix, nsURI);
+		if(nodeCreator != null){
+			final IXMLElement lastBuiltElement = xmlBuilder.getLastBuiltElement();
+			nodeCreator.setAttributes(tag, userObject, lastBuiltElement);
+		}
 	}
 
 	/*

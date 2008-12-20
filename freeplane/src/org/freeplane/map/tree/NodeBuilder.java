@@ -24,6 +24,7 @@ import java.util.HashMap;
 import org.freeplane.io.IAttributeHandler;
 import org.freeplane.io.INodeCreator;
 import org.freeplane.io.ReadManager;
+import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
 import org.freeplane.main.Tools;
 import org.freeplane.modes.mindmapmode.EncryptionModel;
 
@@ -48,11 +49,11 @@ public class NodeBuilder implements INodeCreator, IAttributeHandler {
 	public static final String XML_NODE_HISTORY_CREATED_AT = "CREATED";
 	public static final String XML_NODE_HISTORY_LAST_MODIFIED_AT = "MODIFIED";
 	private NodeModel mapChild = null;
-	private final MapController mMapController;
+	private final MapReader mapReader;
 	private final HashMap<String, String> newIds;
 
-	public NodeBuilder(final MapController mapController) {
-		mMapController = mapController;
+	public NodeBuilder(final MapReader mapController) {
+		mapReader = mapController;
 		newIds = new HashMap<String, String>();
 	}
 
@@ -97,7 +98,7 @@ public class NodeBuilder implements INodeCreator, IAttributeHandler {
 	}
 
 	private MapModel getMap() {
-		return mMapController.getCreatedMap();
+		return mapReader.getCreatedMap();
 	}
 
 	public NodeModel getMapChild() {
@@ -173,4 +174,7 @@ public class NodeBuilder implements INodeCreator, IAttributeHandler {
 	public void reset() {
 		mapChild = null;
 	}
+
+	public void setAttributes(String tag, Object node, IXMLElement attributes) {
+    }
 }

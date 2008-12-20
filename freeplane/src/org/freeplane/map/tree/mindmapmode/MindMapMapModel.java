@@ -24,10 +24,10 @@ import java.io.File;
 import java.util.Timer;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.io.url.mindmapmode.DoAutomaticSave;
 import org.freeplane.main.Tools;
 import org.freeplane.map.tree.MapModel;
 import org.freeplane.map.tree.NodeModel;
+import org.freeplane.map.url.mindmapmode.DoAutomaticSave;
 import org.freeplane.modes.ModeController;
 import org.freeplane.undo.IUndoHandler;
 import org.freeplane.undo.UndoHandler;

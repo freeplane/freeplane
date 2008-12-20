@@ -36,16 +36,17 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
 
+import org.freeplane.controller.Controller;
+import org.freeplane.controller.resources.WindowConfigurationStorage;
 import org.freeplane.main.Tools;
+import org.freeplane.map.pattern.mindmapnode.Pattern;
 import org.freeplane.map.pattern.mindmapnode.StylePatternPanel;
 import org.freeplane.map.pattern.mindmapnode.StylePatternPanel.StylePatternPanelType;
 import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.ui.MenuBuilder;
 
 import deprecated.freemind.common.ITextTranslator;
-import deprecated.freemind.common.XmlBindingTools;
-import freemind.controller.actions.generated.instance.Pattern;
-import freemind.controller.actions.generated.instance.WindowConfigurationStorage;
+
 
 /** */
 class ChooseFormatPopupDialog extends JDialog implements
@@ -81,9 +82,8 @@ class ChooseFormatPopupDialog extends JDialog implements
 	}
 
 	private void close() {
-		final WindowConfigurationStorage storage = new WindowConfigurationStorage();
-		mController.storeDialogPositions(this, storage,
-		    ChooseFormatPopupDialog.WINDOW_PREFERENCE_STORAGE_PROPERTY);
+		final WindowConfigurationStorage storage = new NormalWindowConfigurationStorage();
+		storage.storeDialogPositions(this, ChooseFormatPopupDialog.WINDOW_PREFERENCE_STORAGE_PROPERTY);
 		setVisible(false);
 		this.dispose();
 	}
@@ -207,8 +207,8 @@ class ChooseFormatPopupDialog extends JDialog implements
 		};
 		Tools.addEscapeActionToDialog(this, action);
 		pack();
-		XmlBindingTools.getInstance().decorateDialog(this,
-		    ChooseFormatPopupDialog.WINDOW_PREFERENCE_STORAGE_PROPERTY);
+		final String marshalled = Controller.getResourceController().getProperty(ChooseFormatPopupDialog.WINDOW_PREFERENCE_STORAGE_PROPERTY);
+        NormalWindowConfigurationStorage.decorateDialog(marshalled,this);
 	}
 
 	/*

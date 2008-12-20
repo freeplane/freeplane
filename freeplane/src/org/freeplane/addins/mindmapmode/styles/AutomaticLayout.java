@@ -43,6 +43,8 @@ import org.freeplane.controller.ActionDescriptor;
 import org.freeplane.controller.Controller;
 import org.freeplane.extension.IExtension;
 import org.freeplane.io.IReadCompletionListener;
+import org.freeplane.map.pattern.mindmapnode.Pattern;
+import org.freeplane.map.pattern.mindmapnode.Patterns;
 import org.freeplane.map.pattern.mindmapnode.StylePatternFactory;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.mindmapmode.IMapChangeListener;
@@ -57,13 +59,11 @@ import deprecated.freemind.common.IPropertyControl;
 import deprecated.freemind.common.ITextTranslator;
 import deprecated.freemind.common.PropertyBean;
 import deprecated.freemind.common.SeparatorProperty;
-import deprecated.freemind.common.XmlBindingTools;
+
 import deprecated.freemind.preferences.IFreemindPropertyContributor;
 import deprecated.freemind.preferences.IFreemindPropertyListener;
 import deprecated.freemind.preferences.layout.OptionPanel;
 import deprecated.freemind.preferences.layout.OptionString;
-import freemind.controller.actions.generated.instance.Pattern;
-import freemind.controller.actions.generated.instance.Patterns;
 
 @NodeHookDescriptor(hookName = "accessories/plugins/AutomaticLayout.properties")
 @ActionDescriptor(locations = "/menu_bar/extras/first/nodes/change", //
@@ -208,8 +208,7 @@ public class AutomaticLayout extends PersistentNodeHook implements
 						formatDialog.setVisible(true);
 						if (formatDialog.getResult() == ChooseFormatPopupDialog.OK) {
 							formatDialog.getPattern(choice);
-							patterns = XmlBindingTools.getInstance().marshall(
-							    pat);
+							patterns = pat.marshall();
 							setValue(patterns);
 							firePropertyChangeEvent();
 						}
@@ -259,7 +258,7 @@ public class AutomaticLayout extends PersistentNodeHook implements
 			if (formatDialog.getResult() == ChooseFormatPopupDialog.OK) {
 				final Pattern resultPattern = formatDialog.getPattern();
 				resultPattern.setName("dummy");
-				pattern = XmlBindingTools.getInstance().marshall(resultPattern);
+				pattern = resultPattern.marshall();
 				setValue(pattern);
 				firePropertyChangeEvent();
 			}

@@ -29,8 +29,9 @@ import org.freeplane.io.INodeWriter;
 import org.freeplane.io.ITreeWriter;
 import org.freeplane.io.ReadManager;
 import org.freeplane.io.WriteManager;
-import org.freeplane.map.tree.MapController;
+import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
 import org.freeplane.map.tree.MapModel;
+import org.freeplane.map.tree.MapReader;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.NodeBuilder.NodeObject;
 
@@ -57,10 +58,10 @@ class AttributeBuilder implements INodeCreator, IAttributeHandler,
 	public static final String XML_NODE_ATTRIBUTE_REGISTRY = "attribute_registry";
 	public static final String XML_NODE_REGISTERED_ATTRIBUTE_NAME = "attribute_name";
 	public static final String XML_NODE_REGISTERED_ATTRIBUTE_VALUE = "attribute_value";
-	final private MapController mapController;
+	final private MapReader mapReader;
 
-	public AttributeBuilder(final MapController mapController) {
-		this.mapController = mapController;
+	public AttributeBuilder(final MapReader mapReader) {
+		this.mapReader = mapReader;
 	}
 
 	public void completeNode(final Object parent, final String tag,
@@ -106,7 +107,7 @@ class AttributeBuilder implements INodeCreator, IAttributeHandler,
 	}
 
 	private MapModel getMap() {
-		return mapController.getCreatedMap();
+		return mapReader.getCreatedMap();
 	}
 
 	public boolean parseAttribute(final Object userObject, final String tag,
@@ -206,4 +207,7 @@ class AttributeBuilder implements INodeCreator, IAttributeHandler,
 		final NodeAttributeTableModel attributes = (NodeAttributeTableModel) extension;
 		attributes.save(writer);
 	}
+
+	public void setAttributes(String tag, Object node, IXMLElement attributes) {
+    }
 }

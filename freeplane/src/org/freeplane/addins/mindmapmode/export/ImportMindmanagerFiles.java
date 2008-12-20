@@ -98,7 +98,7 @@ public class ImportMindmanagerFiles extends FreeplaneAction {
 					final File tempFile = File
 					    .createTempFile(
 					        file.getName(),
-					        org.freeplane.io.url.mindmapmode.FileManager.FREEMIND_FILE_EXTENSION,
+					        org.freeplane.map.url.mindmapmode.FileManager.FREEMIND_FILE_EXTENSION,
 					        file.getParentFile());
 					final FileWriter fw = new FileWriter(tempFile);
 					fw.write(xml);

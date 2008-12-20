@@ -22,7 +22,6 @@ package org.freeplane.modes.browsemode;
 import javax.swing.JPopupMenu;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.io.url.UrlManager;
 import org.freeplane.map.attribute.AttributeController;
 import org.freeplane.map.clipboard.ClipboardController;
 import org.freeplane.map.cloud.CloudController;
@@ -34,6 +33,7 @@ import org.freeplane.map.nodestyle.NodeStyleController;
 import org.freeplane.map.note.NoteController;
 import org.freeplane.map.text.TextController;
 import org.freeplane.map.tree.browsemode.BMapController;
+import org.freeplane.map.url.UrlManager;
 import org.freeplane.ui.FreeMindToolBar;
 
 /**

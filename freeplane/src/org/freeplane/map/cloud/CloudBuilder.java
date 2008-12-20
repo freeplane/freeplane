@@ -29,6 +29,7 @@ import org.freeplane.io.INodeWriter;
 import org.freeplane.io.ITreeWriter;
 import org.freeplane.io.ReadManager;
 import org.freeplane.io.WriteManager;
+import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
 import org.freeplane.io.xml.n3.nanoxml.XMLElement;
 import org.freeplane.main.Tools;
 import org.freeplane.map.tree.NodeModel;
@@ -101,4 +102,7 @@ public class CloudBuilder implements INodeCreator, IAttributeHandler,
 		}
 		writer.addNode(model, cloud);
 	}
+
+	public void setAttributes(String tag, Object node, IXMLElement attributes) {
+    }
 }

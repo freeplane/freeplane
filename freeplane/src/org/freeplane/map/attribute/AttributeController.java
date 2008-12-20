@@ -22,6 +22,7 @@ package org.freeplane.map.attribute;
 import org.freeplane.io.ReadManager;
 import org.freeplane.io.WriteManager;
 import org.freeplane.map.tree.MapController;
+import org.freeplane.map.tree.MapReader;
 import org.freeplane.modes.ModeController;
 
 /**
@@ -35,8 +36,8 @@ public class AttributeController {
 		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();
 		final WriteManager writeManager = mapController.getWriteManager();
-		final AttributeBuilder attributeBuilder = new AttributeBuilder(
-		    mapController);
+		final MapReader mapReader = mapController.getMapReader();
+		final AttributeBuilder attributeBuilder = new AttributeBuilder(mapReader);
 		attributeBuilder.registerBy(readManager, writeManager);
 	}
 

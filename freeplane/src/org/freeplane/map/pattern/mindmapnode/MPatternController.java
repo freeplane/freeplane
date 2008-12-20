@@ -41,8 +41,6 @@ import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.ui.MenuBuilder;
 
-import freemind.controller.actions.generated.instance.Pattern;
-import freemind.controller.actions.generated.instance.PatternIcon;
 
 /**
  * @author Dimitry Polivaev
@@ -140,7 +138,7 @@ public class MPatternController {
 		for (int i = 0; i < patterns.length; i++) {
 			final Pattern actualPattern = (Pattern) patternsList.get(i);
 			patterns[i] = new ApplyPatternAction(modeController, actualPattern);
-			final PatternIcon patternIcon = actualPattern.getPatternIcon();
+			final PatternProperty patternIcon = actualPattern.getPatternIcon();
 			if (patternIcon != null && patternIcon.getValue() != null) {
 				patterns[i].putValue(Action.SMALL_ICON, MindIcon.factory(
 				    patternIcon.getValue()).getIcon());

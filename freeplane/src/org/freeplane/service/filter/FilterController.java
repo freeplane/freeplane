@@ -35,6 +35,7 @@ import org.freeplane.io.xml.n3.nanoxml.StdXMLParser;
 import org.freeplane.io.xml.n3.nanoxml.StdXMLReader;
 import org.freeplane.io.xml.n3.nanoxml.XMLElement;
 import org.freeplane.io.xml.n3.nanoxml.XMLException;
+import org.freeplane.io.xml.n3.nanoxml.XMLParserFactory;
 import org.freeplane.io.xml.n3.nanoxml.XMLWriter;
 import org.freeplane.map.icon.MindIcon;
 import org.freeplane.map.note.NodeNoteBase;
@@ -145,7 +146,7 @@ public class FilterController implements IMapViewChangeListener {
 	                    final String pathToFilterFile) throws IOException {
 		filterConditionModel.removeAllElements();
 		try {
-			final IXMLParser parser = new StdXMLParser();
+			final IXMLParser parser = XMLParserFactory.createDefaultXMLParser();
 			final IXMLReader reader = StdXMLReader.fileReader(pathToFilterFile);
 			parser.setReader(reader);
 			final XMLElement loader = (XMLElement) parser.parse();

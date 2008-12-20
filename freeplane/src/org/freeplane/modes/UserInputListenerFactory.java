@@ -44,8 +44,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.Point2D;
-import java.io.IOException;
-import java.io.InputStream;
+import java.net.URL;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -78,11 +77,6 @@ import org.freeplane.ui.INodeMouseMotionListener;
 import org.freeplane.ui.IUserInputListenerFactory;
 import org.freeplane.ui.MenuBuilder;
 import org.freeplane.ui.UIBuilder;
-import org.jibx.runtime.IUnmarshallingContext;
-import org.jibx.runtime.JiBXException;
-
-import deprecated.freemind.common.XmlBindingTools;
-import freemind.controller.actions.generated.instance.MenuStructure;
 
 public class UserInputListenerFactory implements IUserInputListenerFactory {
 	/**
@@ -615,7 +609,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	private JPopupMenu mapsPopupMenu;
 	private FreemindMenuBar menuBar;
 	private final MenuBuilder menuBuilder;
-	private MenuStructure menuStructure;
+	private URL menuStructure;
 	private DragGestureListener nodeDragListener;
 	private DropTargetListener nodeDropTargetListener;
 	private KeyListener nodeKeyListener;
@@ -667,7 +661,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		return menuBuilder;
 	}
 
-	public MenuStructure getMenuStructure() {
+	public URL getMenuStructure() {
 		return menuStructure;
 	}
 
@@ -746,7 +740,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		this.menuBar = menuBar;
 	}
 
-	private void setMenuStructure(final MenuStructure menuStructure) {
+	private void setMenuStructure(final URL menuStructure) {
 		if (this.menuStructure != null) {
 			throw new RuntimeException("already set");
 		}
@@ -754,16 +748,9 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	}
 
 	public void setMenuStructure(final String menuStructureResource) {
-		try {
-			InputStream in;
-			in = Controller.getResourceController().getResource(
-			    menuStructureResource).openStream();
-			final MenuStructure menuStructure = updateMenusFromXml(in);
-			setMenuStructure(menuStructure);
-		}
-		catch (final IOException e) {
-			org.freeplane.main.Tools.logException(e);
-		}
+		final URL menuStructure = Controller.getResourceController().getResource(
+		    menuStructureResource);
+		setMenuStructure(menuStructure);
 	}
 
 	public void setNodeDropTargetListener(
@@ -849,21 +836,6 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		final ViewController viewController = controller.getViewController();
 		viewController.updateMenus(menuBuilder);
 		updateMapList();
-	}
-
-	private MenuStructure updateMenusFromXml(final InputStream in) {
-		try {
-			final IUnmarshallingContext unmarshaller = XmlBindingTools
-			    .getInstance().createUnmarshaller();
-			final MenuStructure menus = (MenuStructure) unmarshaller
-			    .unmarshalDocument(in, null);
-			return menus;
-		}
-		catch (final JiBXException e) {
-			org.freeplane.main.Tools.logException(e);
-			throw new IllegalArgumentException(
-			    "Menu structure could not be read.");
-		}
 	}
 
 	private void updateModeMenu() {

@@ -17,12 +17,22 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.map.pattern.mindmapnode;
+package org.freeplane.map.url;
 
-import org.freeplane.extension.IExtension;
-import org.freeplane.map.tree.NodeModel;
+import java.awt.event.ActionEvent;
 
+import org.freeplane.controller.Controller;
+import org.freeplane.controller.FreeplaneAction;
+import org.freeplane.map.url.mindmapmode.FileManager;
 
-public interface IExternalPatternAction extends IExtension {
-	public void act(NodeModel node, Pattern pattern);
+class SaveAsAction extends FreeplaneAction {
+	public SaveAsAction() {
+		super("save_as", "images/filesaveas.png");
+	}
+
+	public void actionPerformed(final ActionEvent e) {
+		((FileManager) getModeController().getUrlManager()).saveAs(Controller
+		    .getController().getMap());
+		Controller.getController().getViewController().setTitle();
+	}
 }

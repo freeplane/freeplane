@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.freeplane.controller.ActionDescriptor;
+import org.freeplane.controller.Controller;
 import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.main.Tools.BooleanHolder;
 import org.freeplane.map.attribute.Attribute;
@@ -36,8 +37,7 @@ import org.freeplane.modes.mindmapmode.MModeController;
 import plugins.script.ScriptEditorPanel.IScriptModel;
 import plugins.script.ScriptEditorPanel.ScriptHolder;
 import plugins.script.ScriptingEngine.IErrorHandler;
-import deprecated.freemind.common.XmlBindingTools;
-import freemind.controller.actions.generated.instance.ScriptEditorWindowConfigurationStorage;
+
 
 /**
  * @author foltin
@@ -115,9 +115,8 @@ class ScriptEditor extends FreeplaneAction {
 		public ScriptEditorWindowConfigurationStorage decorateDialog(
 		                                                             final ScriptEditorPanel pPanel,
 		                                                             final String pWindow_preference_storage_property) {
-			return (ScriptEditorWindowConfigurationStorage) XmlBindingTools
-			    .getInstance().decorateDialog(pPanel,
-			        pWindow_preference_storage_property);
+			final String marshalled = Controller.getResourceController().getProperty(pWindow_preference_storage_property);
+            return ScriptEditorWindowConfigurationStorage.decorateDialog(marshalled,pPanel);
 		}
 
 		public void endDialog(final boolean pIsCanceled) {
@@ -183,8 +182,7 @@ class ScriptEditor extends FreeplaneAction {
 		                                 final ScriptEditorPanel pPanel,
 		                                 final ScriptEditorWindowConfigurationStorage pStorage,
 		                                 final String pWindow_preference_storage_property) {
-			((MModeController)getModeController()).storeDialogPositions(pPanel, pStorage,
-			    pWindow_preference_storage_property);
+			pStorage.storeDialogPositions(pPanel, pWindow_preference_storage_property);
 		}
 	}
 

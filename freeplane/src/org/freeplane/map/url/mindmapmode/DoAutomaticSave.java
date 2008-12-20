@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.io.url.mindmapmode;
+package org.freeplane.map.url.mindmapmode;
 
 import java.awt.EventQueue;
 import java.io.File;
@@ -80,7 +80,7 @@ public class DoAutomaticSave extends TimerTask {
 							        "FM_"
 							                + ((model.toString() == null) ? "unnamed"
 							                        : model.toString()),
-							        org.freeplane.io.url.mindmapmode.FileManager.FREEMIND_FILE_EXTENSION,
+							        org.freeplane.map.url.mindmapmode.FileManager.FREEMIND_FILE_EXTENSION,
 							        pathToStore);
 							if (filesShouldBeDeletedAfterShutdown) {
 								tempFile.deleteOnExit();

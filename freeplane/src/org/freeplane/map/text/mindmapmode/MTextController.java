@@ -33,7 +33,6 @@ import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.io.url.mindmapmode.FileManager;
 import org.freeplane.main.ExampleFileFilter;
 import org.freeplane.main.FixedHTMLWriter;
 import org.freeplane.main.Tools;
@@ -42,6 +41,7 @@ import org.freeplane.map.text.TextController;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.mindmapmode.MMapController;
 import org.freeplane.map.tree.view.NodeView;
+import org.freeplane.map.url.mindmapmode.FileManager;
 import org.freeplane.modes.UserInputListenerFactory;
 import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.ui.IEditHandler;

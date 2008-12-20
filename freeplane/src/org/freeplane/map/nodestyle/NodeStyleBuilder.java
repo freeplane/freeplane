@@ -30,6 +30,7 @@ import org.freeplane.io.INodeWriter;
 import org.freeplane.io.ITreeWriter;
 import org.freeplane.io.ReadManager;
 import org.freeplane.io.WriteManager;
+import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
 import org.freeplane.io.xml.n3.nanoxml.XMLElement;
 import org.freeplane.main.Tools;
 import org.freeplane.map.tree.NodeBuilder;
@@ -159,4 +160,7 @@ public class NodeStyleBuilder implements INodeCreator, IAttributeHandler,
 			writer.addNode(font, fontElement);
 		}
 	}
+
+	public void setAttributes(String tag, Object node, IXMLElement attributes) {
+    }
 }

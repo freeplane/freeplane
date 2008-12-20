@@ -24,10 +24,10 @@ import java.awt.Container;
 import java.awt.Insets;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.ref.WeakReference;
-import java.util.Iterator;
-import java.util.List;
-
+import java.net.URL;
 import javax.swing.AbstractButton;
 import javax.swing.Action;
 import javax.swing.ButtonGroup;
@@ -48,17 +48,134 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeplane.controller.ActionDescriptor;
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.FreeplaneAction;
+import org.freeplane.io.NodeCreatorAdapter;
+import org.freeplane.io.ReadManager;
+import org.freeplane.io.xml.TreeXmlReader;
+import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
 import org.freeplane.main.Tools;
 import org.freeplane.modes.ModeController;
 
-import freemind.controller.actions.generated.instance.MenuActionBase;
-import freemind.controller.actions.generated.instance.MenuCategoryBase;
-import freemind.controller.actions.generated.instance.MenuRadioAction;
-import freemind.controller.actions.generated.instance.MenuSeparator;
-import freemind.controller.actions.generated.instance.MenuStructure;
-import freemind.controller.actions.generated.instance.MenuSubmenu;
-
 public class MenuBuilder extends UIBuilder {
+	
+	final MenuStructureReader reader;
+	
+	private static class MenuPath {
+		String parentPath;		
+		String path;		
+		MenuPath(String path){
+			this.parentPath = path;
+		}
+		static MenuPath emptyPath(){
+			final MenuPath menuPath = new MenuPath("");
+			menuPath.path = "";
+			return menuPath;
+		}
+		void setName(String name){
+			path = parentPath + '/' + name;
+		}
+		public String toString(){
+			return path;
+		}
+	}
+	
+	private class MenuStructureReader {
+		private final class StructureCreator  extends NodeCreatorAdapter{
+	        public Object createNode(Object parent, String tag) {
+	        	return MenuPath.emptyPath();
+	        }
+        }
+		private ButtonGroup buttonGroup;
+
+		private final class CategoryCreator extends NodeCreatorAdapter {
+	        public Object createNode(Object parent, String tag) {
+				buttonGroup = null;
+	        	return new MenuPath(parent.toString());
+	        }
+
+	        public void setAttributes(String tag, Object node, IXMLElement attributes) {
+				MenuPath menuPath = (MenuPath) node;
+				menuPath.setName(attributes.getAttribute("name", null));
+				if (!contains(menuPath.path)) {
+					if (tag.equals("menu_submenu")) {
+						final JMenu menuItem = new JMenu();
+						MenuBuilder.setLabelAndMnemonic(menuItem, Controller.getText(attributes
+						    .getAttribute("name_ref", null)));
+						addMenuItem(menuPath.parentPath, menuItem, menuPath.path,
+						    MenuBuilder.AS_CHILD);
+					}
+					else {
+						if (!(menuPath.parentPath.equals(""))) {
+							addMenuItemGroup(menuPath.parentPath, menuPath.path,
+							    MenuBuilder.AS_CHILD);
+						}
+					}
+				}
+			}
+        }
+		
+		private final class ActionCreator extends NodeCreatorAdapter{
+	        public Object createNode(Object parent, String tag) {
+	        	return new MenuPath(parent.toString());
+	        }
+
+	        public void setAttributes(String tag, Object node, IXMLElement attributes) {
+				MenuPath menuPath = (MenuPath) node;
+				final String field = attributes.getAttribute("field", null);
+				String name = attributes.getAttribute("name", null);
+				if (name == null) {
+					name = field;
+				}
+				menuPath.setName(name);
+				final String keystroke = attributes.getAttribute("key_ref", null);
+				try {
+					final Action theAction = modeController.getAction(field);
+					if (tag.equals("menu_radio_action")) {
+						final JRadioButtonMenuItem item = (JRadioButtonMenuItem) addRadioItem(menuPath.parentPath, theAction, keystroke,
+						        "true".equals(attributes.getAttribute("selected", "false")));
+						if(buttonGroup == null){
+							buttonGroup = new ButtonGroup();
+						}
+						buttonGroup.add(item);
+					}
+					else {
+						addAction(menuPath.parentPath, menuPath.path, theAction,
+						    keystroke, MenuBuilder.AS_CHILD);
+					}
+				}
+				catch (final Exception e1) {
+					org.freeplane.main.Tools.logException(e1);
+				}
+	        }
+        }
+		
+		private final class SeparatorCreator extends NodeCreatorAdapter {
+	        public Object createNode(Object parent, String tag) {
+	        	addSeparator(parent.toString(), MenuBuilder.AS_CHILD);
+	        	return parent;
+	        }
+        }
+		final private ReadManager readManager;
+		MenuStructureReader(){
+			readManager = new ReadManager();
+			readManager.addNodeCreator("menu_structure", new StructureCreator());
+			readManager.addNodeCreator("menu_category", new CategoryCreator());
+			readManager.addNodeCreator("menu_submenu", new CategoryCreator());
+			readManager.addNodeCreator("menu_action", new ActionCreator());
+			readManager.addNodeCreator("menu_radio_action", new ActionCreator());
+			readManager.addNodeCreator("menu_separator", new SeparatorCreator());
+		}
+
+		public void processMenu(URL menu) {
+			final TreeXmlReader reader = new TreeXmlReader(readManager);
+			try {
+	            reader.load(new InputStreamReader(menu.openStream()));
+            }
+            catch (IOException e) {
+	            throw new RuntimeException(e);
+            }
+        }
+
+	}
 	private static class ActionHolder implements INameMnemonicHolder {
 		final private Action action;
 
@@ -280,6 +397,7 @@ public class MenuBuilder extends UIBuilder {
 	public MenuBuilder(final ModeController modeController) {
 		super(null);
 		this.modeController = modeController;
+		reader = new MenuStructureReader();
 	}
 
 	public void addAction(final FreeplaneAction action,
@@ -562,70 +680,8 @@ public class MenuBuilder extends UIBuilder {
 		return super.getParentComponentCount(parentComponent);
 	}
 
-	private void processMenuCategory(final List list, final String category) {
-		final String categoryCopy = category;
-		ButtonGroup buttonGroup = null;
-		for (final Iterator i = list.iterator(); i.hasNext();) {
-			final Object obj = i.next();
-			if (obj instanceof MenuCategoryBase) {
-				final MenuCategoryBase cat = (MenuCategoryBase) obj;
-				final String newCategory = categoryCopy + "/" + cat.getName();
-				if (!this.contains(newCategory)) {
-					if (cat instanceof MenuSubmenu) {
-						final MenuSubmenu submenu = (MenuSubmenu) cat;
-						final JMenu menuItem = new JMenu();
-						MenuBuilder.setLabelAndMnemonic(menuItem, Controller
-						    .getText(submenu.getNameRef()));
-						this.addMenuItem(categoryCopy, menuItem, newCategory,
-						    MenuBuilder.AS_CHILD);
-					}
-					else {
-						if (!(categoryCopy.equals(""))) {
-							this.addMenuItemGroup(categoryCopy, newCategory,
-							    MenuBuilder.AS_CHILD);
-						}
-					}
-				}
-				processMenuCategory(cat.getListChoiceList(), newCategory);
-			}
-			else if (obj instanceof MenuActionBase) {
-				final MenuActionBase action = (MenuActionBase) obj;
-				final String field = action.getField();
-				String name = action.getName();
-				if (name == null) {
-					name = field;
-				}
-				final String keystroke = action.getKeyRef();
-				try {
-					final Action theAction = modeController.getAction(field);
-					final String theCategory = categoryCopy + "/" + name;
-					if (obj instanceof MenuRadioAction) {
-						final JRadioButtonMenuItem item = (JRadioButtonMenuItem) this
-						    .addRadioItem(categoryCopy, theAction, keystroke,
-						        ((MenuRadioAction) obj).getSelected());
-						if (buttonGroup == null) {
-							buttonGroup = new ButtonGroup();
-						}
-						buttonGroup.add(item);
-					}
-					else {
-						this.addAction(categoryCopy, theCategory, theAction,
-						    keystroke, MenuBuilder.AS_CHILD);
-					}
-				}
-				catch (final Exception e1) {
-					org.freeplane.main.Tools.logException(e1);
-				}
-			}
-			else if (obj instanceof MenuSeparator) {
-				this.addSeparator(categoryCopy, MenuBuilder.AS_CHILD);
-			} /* else exception */
-		}
-	}
-
-	public void processMenuCategory(final MenuStructure menu) {
-		final List list = menu.getListChoiceList();
-		processMenuCategory(list, "");
+	public void processMenuCategory(final URL menu) {
+		reader.processMenu(menu);
 	}
 
 	public void removePopupMenuListener(final Object key,

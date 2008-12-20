@@ -19,9 +19,11 @@
  */
 package org.freeplane.map.icon;
 
+
 import org.freeplane.io.IAttributeHandler;
 import org.freeplane.io.INodeCreator;
 import org.freeplane.io.ReadManager;
+import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.NodeBuilder.NodeObject;
 
@@ -65,4 +67,7 @@ class IconBuilder implements INodeCreator, IAttributeHandler {
 	public void registerBy(final ReadManager reader) {
 		reader.addNodeCreator("icon", this);
 	}
+
+	public void setAttributes(String tag, Object node, IXMLElement attributes) {
+    }
 }

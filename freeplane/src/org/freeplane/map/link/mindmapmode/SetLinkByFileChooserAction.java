@@ -23,7 +23,7 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.FreeplaneAction;
-import org.freeplane.io.url.mindmapmode.FileManager;
+import org.freeplane.map.url.mindmapmode.FileManager;
 
 class SetLinkByFileChooserAction extends FreeplaneAction {
 	public SetLinkByFileChooserAction() {

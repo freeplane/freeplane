@@ -20,9 +20,7 @@
 package org.freeplane.modes.mindmapmode;
 
 import java.awt.event.MouseEvent;
-import javax.swing.JDialog;
 import org.freeplane.controller.Controller;
-import org.freeplane.io.url.mindmapmode.FileManager;
 import org.freeplane.map.attribute.IAttributeController;
 import org.freeplane.map.attribute.mindmapnode.MAttributeController;
 import org.freeplane.map.icon.mindmapnode.MIconController;
@@ -34,15 +32,13 @@ import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.mindmapmode.MMapController;
 import org.freeplane.map.tree.mindmapmode.MindMapMapModel;
 import org.freeplane.map.tree.view.MainView;
+import org.freeplane.map.url.mindmapmode.FileManager;
 import org.freeplane.modes.ModeController;
 import org.freeplane.modes.UserInputListenerFactory;
 import org.freeplane.ui.FreemindMenuBar;
 import org.freeplane.ui.MenuBuilder;
 import org.freeplane.undo.IUndoHandler;
 import org.freeplane.undo.IUndoableActor;
-
-import deprecated.freemind.common.XmlBindingTools;
-import freemind.controller.actions.generated.instance.WindowConfigurationStorage;
 
 public class MModeController extends ModeController {
 
@@ -193,14 +189,6 @@ public class MModeController extends ModeController {
 	public void startup() {
 		super.startup();
 		((MNoteController) getNoteController()).startupController();
-	}
-
-	public void storeDialogPositions(
-	                                 final JDialog dialog,
-	                                 final WindowConfigurationStorage pStorage,
-	                                 final String window_preference_storage_property) {
-		XmlBindingTools.getInstance().storeDialogPositions(dialog, pStorage,
-		    window_preference_storage_property);
 	}
 
 	public void undo() {

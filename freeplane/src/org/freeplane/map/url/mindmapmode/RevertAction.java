@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.io.url.mindmapmode;
+package org.freeplane.map.url.mindmapmode;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -69,7 +69,7 @@ class RevertAction extends FreeplaneAction {
 					final File tempFile = File
 					    .createTempFile(
 					        filePrefix,
-					        org.freeplane.io.url.mindmapmode.FileManager.FREEMIND_FILE_EXTENSION,
+					        org.freeplane.map.url.mindmapmode.FileManager.FREEMIND_FILE_EXTENSION,
 					        new File(Controller.getResourceController()
 					            .getFreemindUserDirectory()));
 					final FileWriter fw = new FileWriter(tempFile);

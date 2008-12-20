@@ -35,7 +35,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -45,7 +44,6 @@ import org.freeplane.controller.Controller;
 import org.freeplane.controller.views.MapViewManager;
 import org.freeplane.io.ReadManager;
 import org.freeplane.io.WriteManager;
-import org.freeplane.io.xml.TreeXmlReader;
 import org.freeplane.io.xml.TreeXmlWriter;
 import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
 import org.freeplane.io.xml.n3.nanoxml.XMLElement;
@@ -62,6 +60,10 @@ import org.freeplane.modes.mindmapmode.EncryptionModel;
  * @author Dimitry Polivaev
  */
 public class MapController {
+	public MapReader getMapReader() {
+    	return mapReader;
+    }
+
 	/**
 	 * This class sortes nodes by ascending depth of their paths to root. This
 	 * is useful to assure that children are cutted <b>before </b> their
@@ -94,36 +96,6 @@ public class MapController {
 		}
 	}
 
-	public class NodeTreeCreator {
-		public NodeModel create(final Reader pReader) {
-			final TreeXmlReader reader = new TreeXmlReader(readManager);
-			reader.load(pReader);
-			final NodeModel node = nodeBuilder.getMapChild();
-			nodeBuilder.reset();
-			return node;
-		}
-
-		public NodeModel createNodeTreeFromXml(final MapModel map,
-		                                       final Reader pReader)
-		        throws XMLParseException, IOException {
-			start(map);
-			final NodeModel node = create(pReader);
-			finish(node);
-			return node;
-		}
-
-		public void finish(final NodeModel node) {
-			final HashMap<String, String> newIds = nodeBuilder.getNewIds();
-			readManager.readingCompleted(node, newIds);
-			newIds.clear();
-			createdMap = null;
-		}
-
-		void start(final MapModel map) {
-			createdMap = map;
-		}
-	}
-
 	private static boolean sSaveOnlyIntrinsicallyNeededIds = false;
 	static private CommonToggleFoldedAction toggleFolded;
 
@@ -136,25 +108,22 @@ public class MapController {
 		MapController.sSaveOnlyIntrinsicallyNeededIds = sSaveOnlyIntrinsicallyNeededIds;
 	}
 
-	private MapModel createdMap;
 	protected final Collection<IMapChangeListener> mapChangeListeners;
 	final private Collection<IMapLifeCycleListener> mapLifeCycleListeners;
-	private boolean mapLoadingInProcess;
+	final private MapReader mapReader;
 	final private MapWriter mapWriter;
 	final private ModeController modeController;
-	private final NodeBuilder nodeBuilder;
-	final private ReadManager readManager;
 	private final WriteManager writeManager;
+	final private ReadManager readManager;
 
 	public MapController(final ModeController modeController) {
 		super();
 		this.modeController = modeController;
 		mapLifeCycleListeners = new LinkedList<IMapLifeCycleListener>();
-		readManager = new ReadManager();
-		nodeBuilder = new NodeBuilder(this);
-		nodeBuilder.registerBy(readManager);
 		writeManager = new WriteManager();
 		mapWriter = new MapWriter(writeManager);
+		readManager = new ReadManager();
+		mapReader = new MapReader(readManager);
 		writeManager.addNodeWriter("map", mapWriter);
 		createActions(modeController);
 		mapChangeListeners = new LinkedList<IMapChangeListener>();
@@ -218,21 +187,6 @@ public class MapController {
 		modeController.addAction("toggleFolded", toggleFolded);
 		modeController.addAction("toggleChildrenFolded",
 		    new CommonToggleChildrenFoldedAction(this));
-	}
-
-	public NodeModel createNodeTreeFromXml(final MapModel map,
-	                                       final Reader pReader)
-	        throws XMLParseException, IOException {
-		try {
-			mapLoadingInProcess = true;
-			final NodeModel topNode = new NodeTreeCreator()
-			    .createNodeTreeFromXml(map, pReader);
-			mapLoadingInProcess = false;
-			return topNode;
-		}
-		finally {
-			mapLoadingInProcess = false;
-		}
 	}
 
 	public void displayNode(final NodeModel node) {
@@ -345,10 +299,6 @@ public class MapController {
 		}
 	}
 
-	public MapModel getCreatedMap() {
-		return createdMap;
-	}
-
 	/**
 	 * Determines whether the nodes should be folded or unfolded depending on
 	 * their states. If not all nodes have the same folding status, the result
@@ -414,10 +364,6 @@ public class MapController {
 
 	public String getNodeID(final NodeModel selected) {
 		return selected.createID();
-	}
-
-	public ReadManager getReadManager() {
-		return readManager;
 	}
 
 	public NodeModel getRootNode() {
@@ -508,7 +454,7 @@ public class MapController {
 			final String extension = Tools.getExtension(absolute.toString());
 			if ((extension != null)
 			        && extension
-			            .equals(org.freeplane.io.url.mindmapmode.FileManager.FREEMIND_FILE_EXTENSION_WITHOUT_DOT)) {
+			            .equals(org.freeplane.map.url.mindmapmode.FileManager.FREEMIND_FILE_EXTENSION_WITHOUT_DOT)) {
 				final MapViewManager mapViewManager = Controller
 				    .getController().getMapViewManager();
 				/*
@@ -629,7 +575,7 @@ public class MapController {
 	private void nodeRefresh(final NodeModel node, final Object property,
 	                         final Object oldValue, final Object newValue,
 	                         final boolean isUpdate) {
-		if (mapLoadingInProcess) {
+		if (mapReader.isMapLoadingInProcess()) {
 			return;
 		}
 		if (isUpdate) {
@@ -645,12 +591,6 @@ public class MapController {
 	 */
 	public void nodeStructureChanged(final NodeModel node) {
 		node.getMap().nodeStructureChanged(node);
-	}
-
-	public NodeTreeCreator nodeTreeCreator(final MapModel map) {
-		final NodeTreeCreator nodeTreeCreator = new NodeTreeCreator();
-		nodeTreeCreator.start(map);
-		return nodeTreeCreator;
 	}
 
 	public void refreshMap() {
@@ -718,4 +658,12 @@ public class MapController {
 	                           final boolean b) throws IOException {
 		mapWriter.writeNodeAsXml(stringWriter, r, saveInvisible, b);
 	}
+
+	public ReadManager getReadManager() {
+	    return readManager;
+    }
+
+	public NodeModel createNodeTreeFromXml(MapModel map, Reader reader) throws XMLParseException, IOException {
+		return mapReader.createNodeTreeFromXml(map, reader);
+    }
 }

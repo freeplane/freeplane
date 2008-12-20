@@ -56,6 +56,7 @@ import javax.swing.event.ListSelectionListener;
 
 import org.freeplane.controller.Controller;
 import org.freeplane.main.Tools;
+import org.freeplane.map.pattern.mindmapnode.Pattern;
 import org.freeplane.map.pattern.mindmapnode.StylePatternFactory;
 import org.freeplane.map.pattern.mindmapnode.StylePatternPanel;
 import org.freeplane.map.pattern.mindmapnode.StylePatternPanel.StylePatternPanelType;
@@ -66,9 +67,7 @@ import org.freeplane.ui.MenuBuilder;
 import com.jgoodies.forms.factories.ButtonBarFactory;
 
 import deprecated.freemind.common.ITextTranslator;
-import deprecated.freemind.common.XmlBindingTools;
-import freemind.controller.actions.generated.instance.ManageStyleEditorWindowConfigurationStorage;
-import freemind.controller.actions.generated.instance.Pattern;
+
 
 /** */
 class ManagePatternsPopupDialog extends JDialog implements
@@ -245,23 +244,25 @@ class ManagePatternsPopupDialog extends JDialog implements
 	private void close() {
 		final ManageStyleEditorWindowConfigurationStorage storage = new ManageStyleEditorWindowConfigurationStorage();
 		storage.setDividerPosition(mSplitPane.getDividerLocation());
-		mController.storeDialogPositions(this, storage,
-		    ManagePatternsPopupDialog.WINDOW_PREFERENCE_STORAGE_PROPERTY);
+		storage.storeDialogPositions(this, ManagePatternsPopupDialog.WINDOW_PREFERENCE_STORAGE_PROPERTY);
 		this.dispose();
 	}
 
 	private void duplicatePattern(final ActionEvent actionEvent) {
-		final int selectedIndex = mList.getSelectedIndex();
-		writePatternBackToModel();
-		setLastSelectedPattern(null);
-		final Pattern oldPattern = mPatternListModel
-		    .getPatternAt(selectedIndex);
-		final XmlBindingTools instance = XmlBindingTools.getInstance();
-		final Pattern newPattern = (Pattern) instance.unMarshall(instance
-		    .marshall(oldPattern));
-		newPattern.setName(searchForNameForNewPattern());
-		mPatternListModel.addPattern(newPattern, selectedIndex);
-		mList.setSelectedIndex(selectedIndex);
+		try {
+	        final int selectedIndex = mList.getSelectedIndex();
+	        writePatternBackToModel();
+	        setLastSelectedPattern(null);
+	        final Pattern oldPattern = mPatternListModel
+	            .getPatternAt(selectedIndex);
+	        final Pattern newPattern = (Pattern) oldPattern.clone();
+	        newPattern.setName(searchForNameForNewPattern());
+	        mPatternListModel.addPattern(newPattern, selectedIndex);
+	        mList.setSelectedIndex(selectedIndex);
+        }
+        catch (CloneNotSupportedException e) {
+	        e.printStackTrace();
+        }
 	}
 
 	/**
@@ -504,9 +505,8 @@ class ManagePatternsPopupDialog extends JDialog implements
 			}
 		}
 		this.pack();
-		final ManageStyleEditorWindowConfigurationStorage decorateDialog = (ManageStyleEditorWindowConfigurationStorage) XmlBindingTools
-		    .getInstance().decorateDialog(this,
-		        ManagePatternsPopupDialog.WINDOW_PREFERENCE_STORAGE_PROPERTY);
+		final String marshalled = Controller.getResourceController().getProperty(ManagePatternsPopupDialog.WINDOW_PREFERENCE_STORAGE_PROPERTY);
+        final ManageStyleEditorWindowConfigurationStorage decorateDialog = ManageStyleEditorWindowConfigurationStorage.decorateDialog(marshalled,this);
 		if (decorateDialog != null) {
 			mSplitPane.setDividerLocation(decorateDialog.getDividerPosition());
 		}

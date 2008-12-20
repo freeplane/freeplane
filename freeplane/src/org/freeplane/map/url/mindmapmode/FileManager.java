@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.io.url.mindmapmode;
+package org.freeplane.map.url.mindmapmode;
 
 import java.awt.dnd.DropTarget;
 import java.io.BufferedWriter;
@@ -35,12 +35,12 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.io.url.UrlManager;
 import org.freeplane.main.Tools;
 import org.freeplane.map.tree.MapModel;
 import org.freeplane.map.tree.mindmapmode.MMapController;
 import org.freeplane.map.tree.mindmapmode.MindMapMapModel;
 import org.freeplane.map.tree.view.MapView;
+import org.freeplane.map.url.UrlManager;
 import org.freeplane.modes.mindmapmode.MModeController;
 
 /**
@@ -56,7 +56,7 @@ public class FileManager extends UrlManager {
 			final String extension = Tools.getExtension(f.getName());
 			if (extension != null) {
 				if (extension
-				    .equals(org.freeplane.io.url.mindmapmode.FileManager.FREEMIND_FILE_EXTENSION_WITHOUT_DOT)) {
+				    .equals(org.freeplane.map.url.mindmapmode.FileManager.FREEMIND_FILE_EXTENSION_WITHOUT_DOT)) {
 					return true;
 				}
 				else {
@@ -281,7 +281,7 @@ public class FileManager extends UrlManager {
 			chooser
 			    .setSelectedFile(new File(
 			        getFileNameProposal(map)
-			                + org.freeplane.io.url.mindmapmode.FileManager.FREEMIND_FILE_EXTENSION));
+			                + org.freeplane.map.url.mindmapmode.FileManager.FREEMIND_FILE_EXTENSION));
 		}
 		chooser.setDialogTitle(getMModeController().getText("save_as"));
 		final int returnVal = chooser.showSaveDialog(getMModeController()
@@ -293,11 +293,11 @@ public class FileManager extends UrlManager {
 		setLastCurrentDir(f.getParentFile());
 		final String ext = Tools.getExtension(f.getName());
 		if (!ext
-		    .equals(org.freeplane.io.url.mindmapmode.FileManager.FREEMIND_FILE_EXTENSION_WITHOUT_DOT)) {
+		    .equals(org.freeplane.map.url.mindmapmode.FileManager.FREEMIND_FILE_EXTENSION_WITHOUT_DOT)) {
 			f = new File(
 			    f.getParent(),
 			    f.getName()
-			            + org.freeplane.io.url.mindmapmode.FileManager.FREEMIND_FILE_EXTENSION);
+			            + org.freeplane.map.url.mindmapmode.FileManager.FREEMIND_FILE_EXTENSION);
 		}
 		if (f.exists()) {
 			final int overwriteMap = JOptionPane.showConfirmDialog(

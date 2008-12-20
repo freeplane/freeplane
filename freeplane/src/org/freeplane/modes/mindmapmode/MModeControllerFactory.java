@@ -47,7 +47,6 @@ import org.freeplane.addins.misc.CreationModificationPlugin;
 import org.freeplane.addins.misc.FitToPage;
 import org.freeplane.addins.misc.HierarchicalIcons;
 import org.freeplane.controller.Controller;
-import org.freeplane.io.url.mindmapmode.FileManager;
 import org.freeplane.map.attribute.mindmapnode.MAttributeController;
 import org.freeplane.map.clipboard.mindmapmode.MClipboardController;
 import org.freeplane.map.cloud.mindmapmode.MCloudController;
@@ -60,6 +59,7 @@ import org.freeplane.map.note.mindmapnode.MNoteController;
 import org.freeplane.map.pattern.mindmapnode.MPatternController;
 import org.freeplane.map.text.mindmapmode.MTextController;
 import org.freeplane.map.tree.mindmapmode.MMapController;
+import org.freeplane.map.url.mindmapmode.FileManager;
 import org.freeplane.ui.FreeMindToolBar;
 import org.freeplane.ui.MenuBuilder;
 

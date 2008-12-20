@@ -37,8 +37,6 @@ import org.freeplane.modes.MultipleNodeAction;
 import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.ui.MenuBuilder;
 
-import freemind.controller.actions.generated.instance.Pattern;
-import freemind.controller.actions.generated.instance.PatternEdgeWidth;
 
 class ApplyPatternAction extends MultipleNodeAction{
 	/**
@@ -170,7 +168,7 @@ class ApplyPatternAction extends MultipleNodeAction{
 			((MEdgeController) getMModeController().getEdgeController())
 			    .setStyle(node, pattern.getPatternEdgeStyle().getValue());
 		}
-		final PatternEdgeWidth patternEdgeWidth = pattern.getPatternEdgeWidth();
+		final PatternProperty patternEdgeWidth = pattern.getPatternEdgeWidth();
 		if (patternEdgeWidth != null) {
 			int width;
 			if (patternEdgeWidth.getValue() != null) {

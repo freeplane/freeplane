@@ -67,6 +67,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
 import org.freeplane.controller.Controller;
+import org.freeplane.controller.resources.WindowConfigurationStorage;
 import org.freeplane.main.HtmlTools;
 import org.freeplane.main.Tools;
 import org.freeplane.map.icon.MindIcon;
@@ -81,10 +82,7 @@ import org.freeplane.ui.UIBuilder;
 import com.jgoodies.forms.factories.ButtonBarFactory;
 
 import deprecated.freemind.common.BlindIcon;
-import deprecated.freemind.common.XmlBindingTools;
-import freemind.controller.actions.generated.instance.TimeWindowColumnSetting;
-import freemind.controller.actions.generated.instance.TimeWindowConfigurationStorage;
-import freemind.controller.actions.generated.instance.WindowConfigurationStorage;
+
 
 /**
  * @author foltin
@@ -511,8 +509,7 @@ class TimeList {
 			setting.setColumnSorting(sorter.getSortingStatus(i));
 			storage.addTimeWindowColumnSetting(setting);
 		}
-		getMindMapController().storeDialogPositions(dialog, storage,
-		    TimeList.WINDOW_PREFERENCE_STORAGE_PROPERTY);
+		storage.storeDialogPositions(dialog, TimeList.WINDOW_PREFERENCE_STORAGE_PROPERTY);
 		dialog.setVisible(false);
 		dialog.dispose();
 	}
@@ -813,9 +810,9 @@ class TimeList {
 				mTreeLabel.setText(getNodeText(mindMapNode));
 			}
 		});
-		final WindowConfigurationStorage storage = XmlBindingTools
-		    .getInstance().decorateDialog(dialog,
-		        TimeList.WINDOW_PREFERENCE_STORAGE_PROPERTY);
+		final String marshalled = Controller.getResourceController().getProperty(TimeList.WINDOW_PREFERENCE_STORAGE_PROPERTY);
+        final WindowConfigurationStorage result = TimeWindowConfigurationStorage.decorateDialog(marshalled,dialog);
+		final WindowConfigurationStorage storage = result;
 		if (storage != null) {
 			timeTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 			int column = 0;

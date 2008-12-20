@@ -25,11 +25,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
+import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.main.HtmlTools;
 import org.freeplane.main.Tools;
 import org.freeplane.main.Tools.BooleanHolder;
 import org.freeplane.map.pattern.mindmapnode.IExternalPatternAction;
+import org.freeplane.map.pattern.mindmapnode.Pattern;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.ModeController;
 import org.freeplane.modes.mindmapmode.MModeController;
@@ -42,11 +44,9 @@ import deprecated.freemind.common.BooleanProperty;
 import deprecated.freemind.common.ScriptEditorProperty;
 import deprecated.freemind.common.SeparatorProperty;
 import deprecated.freemind.common.StringProperty;
-import deprecated.freemind.common.XmlBindingTools;
+
 import deprecated.freemind.preferences.IFreemindPropertyContributor;
 import deprecated.freemind.preferences.layout.OptionPanel;
-import freemind.controller.actions.generated.instance.Pattern;
-import freemind.controller.actions.generated.instance.ScriptEditorWindowConfigurationStorage;
 
 public class ScriptingRegistration implements IExternalPatternAction {
 	final private class PatternScriptModel implements IScriptModel {
@@ -62,12 +62,10 @@ public class ScriptingRegistration implements IExternalPatternAction {
 			return 0;
 		}
 
-		public ScriptEditorWindowConfigurationStorage decorateDialog(
-		                                                             final ScriptEditorPanel pPanel,
+		public ScriptEditorWindowConfigurationStorage decorateDialog(final ScriptEditorPanel pPanel,
 		                                                             final String pWindow_preference_storage_property) {
-			return (ScriptEditorWindowConfigurationStorage) XmlBindingTools
-			    .getInstance().decorateDialog(pPanel,
-			        pWindow_preference_storage_property);
+			final String marshalled = Controller.getResourceController().getProperty(pWindow_preference_storage_property);
+            return ScriptEditorWindowConfigurationStorage.decorateDialog(marshalled,pPanel);
 		}
 
 		public void endDialog(final boolean pIsCanceled) {
@@ -108,8 +106,7 @@ public class ScriptingRegistration implements IExternalPatternAction {
 		                                 final ScriptEditorPanel pPanel,
 		                                 final ScriptEditorWindowConfigurationStorage pStorage,
 		                                 final String pWindow_preference_storage_property) {
-			modeController.storeDialogPositions(pPanel, pStorage,
-			    pWindow_preference_storage_property);
+			pStorage.storeDialogPositions(pPanel, pWindow_preference_storage_property);
 		}
 	}
 

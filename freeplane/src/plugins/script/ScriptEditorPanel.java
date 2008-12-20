@@ -59,7 +59,6 @@ import org.freeplane.ui.UIBuilder;
 
 import plugins.script.ScriptingEngine.IErrorHandler;
 import deprecated.freemind.common.BlindIcon;
-import freemind.controller.actions.generated.instance.ScriptEditorWindowConfigurationStorage;
 
 /**
  */

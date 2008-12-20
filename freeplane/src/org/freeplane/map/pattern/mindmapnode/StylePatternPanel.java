@@ -57,22 +57,6 @@ import deprecated.freemind.common.SeparatorProperty;
 import deprecated.freemind.common.StringProperty;
 import deprecated.freemind.common.ThreeCheckBoxProperty;
 import deprecated.freemind.preferences.layout.OptionString;
-import freemind.controller.actions.generated.instance.Pattern;
-import freemind.controller.actions.generated.instance.PatternChild;
-import freemind.controller.actions.generated.instance.PatternEdgeColor;
-import freemind.controller.actions.generated.instance.PatternEdgeStyle;
-import freemind.controller.actions.generated.instance.PatternEdgeWidth;
-import freemind.controller.actions.generated.instance.PatternIcon;
-import freemind.controller.actions.generated.instance.PatternNodeBackgroundColor;
-import freemind.controller.actions.generated.instance.PatternNodeColor;
-import freemind.controller.actions.generated.instance.PatternNodeFontBold;
-import freemind.controller.actions.generated.instance.PatternNodeFontItalic;
-import freemind.controller.actions.generated.instance.PatternNodeFontName;
-import freemind.controller.actions.generated.instance.PatternNodeFontSize;
-import freemind.controller.actions.generated.instance.PatternNodeStyle;
-import freemind.controller.actions.generated.instance.PatternNodeText;
-import freemind.controller.actions.generated.instance.PatternPropertyBase;
-import freemind.controller.actions.generated.instance.PatternScript;
 
 /**
  * @author foltin
@@ -409,8 +393,8 @@ public class StylePatternPanel extends JPanel implements ITextTranslator,
 		return childNames;
 	}
 
-	private PatternPropertyBase getPatternResult(
-	                                             final PatternPropertyBase baseProperty,
+	private PatternProperty getPatternResult(
+	                                             final PatternProperty baseProperty,
 	                                             final ThreeCheckBoxProperty threeCheckBoxProperty,
 	                                             final PropertyBean property) {
 		final IValueTransformator transformer = new IdentityTransformer();
@@ -420,8 +404,8 @@ public class StylePatternPanel extends JPanel implements ITextTranslator,
 
 	/**
 	 */
-	private PatternPropertyBase getPatternResult(
-	                                             final PatternPropertyBase baseProperty,
+	private PatternProperty getPatternResult(
+	                                             final PatternProperty baseProperty,
 	                                             final ThreeCheckBoxProperty threeCheckBoxProperty,
 	                                             final PropertyBean property,
 	                                             final IValueTransformator transformer) {
@@ -445,43 +429,43 @@ public class StylePatternPanel extends JPanel implements ITextTranslator,
 	}
 
 	public Pattern getResultPattern(final Pattern pattern) {
-		pattern.setPatternNodeColor((PatternNodeColor) getPatternResult(
-		    new PatternNodeColor(), mSetNodeColor, mNodeColor));
+		pattern.setPatternNodeColor((PatternProperty) getPatternResult(
+		    new PatternProperty(), mSetNodeColor, mNodeColor));
 		pattern
-		    .setPatternNodeBackgroundColor((PatternNodeBackgroundColor) getPatternResult(
-		        new PatternNodeBackgroundColor(), mSetNodeBackgroundColor,
+		    .setPatternNodeBackgroundColor((PatternProperty) getPatternResult(
+		        new PatternProperty(), mSetNodeBackgroundColor,
 		        mNodeBackgroundColor));
-		pattern.setPatternNodeStyle((PatternNodeStyle) getPatternResult(
-		    new PatternNodeStyle(), mSetNodeStyle, mNodeStyle));
-		pattern.setPatternNodeText((PatternNodeText) getPatternResult(
-		    new PatternNodeText(), mSetNodeText, mNodeText));
+		pattern.setPatternNodeStyle((PatternProperty) getPatternResult(
+		    new PatternProperty(), mSetNodeStyle, mNodeStyle));
+		pattern.setPatternNodeText((PatternProperty) getPatternResult(
+		    new PatternProperty(), mSetNodeText, mNodeText));
 		/* edges */
-		pattern.setPatternEdgeColor((PatternEdgeColor) getPatternResult(
-		    new PatternEdgeColor(), mSetEdgeColor, mEdgeColor));
-		pattern.setPatternEdgeStyle((PatternEdgeStyle) getPatternResult(
-		    new PatternEdgeStyle(), mSetEdgeStyle, mEdgeStyle));
-		pattern.setPatternEdgeWidth((PatternEdgeWidth) getPatternResult(
-		    new PatternEdgeWidth(), mSetEdgeWidth, mEdgeWidth,
+		pattern.setPatternEdgeColor((PatternProperty) getPatternResult(
+		    new PatternProperty(), mSetEdgeColor, mEdgeColor));
+		pattern.setPatternEdgeStyle((PatternProperty) getPatternResult(
+		    new PatternProperty(), mSetEdgeStyle, mEdgeStyle));
+		pattern.setPatternEdgeWidth((PatternProperty) getPatternResult(
+		    new PatternProperty(), mSetEdgeWidth, mEdgeWidth,
 		    new EdgeWidthBackTransformer()));
 		/* font */
-		pattern.setPatternNodeFontName((PatternNodeFontName) getPatternResult(
-		    new PatternNodeFontName(), mSetNodeFontName, mNodeFontName));
-		pattern.setPatternNodeFontSize((PatternNodeFontSize) getPatternResult(
-		    new PatternNodeFontSize(), mSetNodeFontSize, mNodeFontSize));
-		pattern.setPatternNodeFontBold((PatternNodeFontBold) getPatternResult(
-		    new PatternNodeFontBold(), mSetNodeFontBold, mNodeFontBold));
+		pattern.setPatternNodeFontName((PatternProperty) getPatternResult(
+		    new PatternProperty(), mSetNodeFontName, mNodeFontName));
+		pattern.setPatternNodeFontSize((PatternProperty) getPatternResult(
+		    new PatternProperty(), mSetNodeFontSize, mNodeFontSize));
+		pattern.setPatternNodeFontBold((PatternProperty) getPatternResult(
+		    new PatternProperty(), mSetNodeFontBold, mNodeFontBold));
 		pattern
-		    .setPatternNodeFontItalic((PatternNodeFontItalic) getPatternResult(
-		        new PatternNodeFontItalic(), mSetNodeFontItalic,
+		    .setPatternNodeFontItalic((PatternProperty) getPatternResult(
+		        new PatternProperty(), mSetNodeFontItalic,
 		        mNodeFontItalic));
-		pattern.setPatternIcon((PatternIcon) getPatternResult(
-		    new PatternIcon(), mSetIcon, mIcon));
-		pattern.setPatternScript((PatternScript) getPatternResult(
-		    new PatternScript(), mSetScriptPattern, mScriptPattern));
+		pattern.setPatternIcon((PatternProperty) getPatternResult(
+		    new PatternProperty(), mSetIcon, mIcon));
+		pattern.setPatternScript((PatternProperty) getPatternResult(
+		    new PatternProperty(), mSetScriptPattern, mScriptPattern));
 		if (StylePatternPanelType.WITH_NAME_AND_CHILDS.equals(mType)) {
 			pattern.setName(mName.getValue());
-			pattern.setPatternChild((PatternChild) getPatternResult(
-			    new PatternChild(), mSetChildPattern, mChildPattern));
+			pattern.setPatternChild((PatternProperty) getPatternResult(
+			    new PatternProperty(), mSetChildPattern, mChildPattern));
 		}
 		return pattern;
 	}
@@ -576,7 +560,7 @@ public class StylePatternPanel extends JPanel implements ITextTranslator,
 		}
 	}
 
-	private void setPatternControls(final PatternPropertyBase patternProperty,
+	private void setPatternControls(final PatternProperty patternProperty,
 	                                final PropertyBean threeCheckBoxProperty,
 	                                final PropertyBean property,
 	                                final String defaultValue) {
@@ -586,7 +570,7 @@ public class StylePatternPanel extends JPanel implements ITextTranslator,
 
 	/**
 	 */
-	private void setPatternControls(final PatternPropertyBase patternProperty,
+	private void setPatternControls(final PatternProperty patternProperty,
 	                                final PropertyBean threeCheckBoxProperty,
 	                                final PropertyBean property,
 	                                final String defaultValue,

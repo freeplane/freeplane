@@ -34,12 +34,12 @@ import javax.swing.JOptionPane;
 
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ResourceController;
-import org.freeplane.io.url.mindmapmode.FileManager;
 import org.freeplane.io.xml.n3.nanoxml.XMLParseException;
 import org.freeplane.main.Tools;
 import org.freeplane.map.tree.MapController;
 import org.freeplane.map.tree.MapModel;
 import org.freeplane.map.tree.NodeModel;
+import org.freeplane.map.url.mindmapmode.FileManager;
 import org.freeplane.modes.mindmapmode.EncryptionModel;
 import org.freeplane.modes.mindmapmode.MModeController;
 
