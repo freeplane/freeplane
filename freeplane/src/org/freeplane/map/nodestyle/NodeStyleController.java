@@ -49,89 +49,75 @@ public class NodeStyleController {
 		textColorHandlers = new PropertyChain<Color, NodeModel>();
 		backgroundColorHandlers = new PropertyChain<Color, NodeModel>();
 		shapeHandlers = new PropertyChain<String, NodeModel>();
-		addFontGetter(PropertyChain.NODE,
-		    new IPropertyGetter<Font, NodeModel>() {
-			    public Font getProperty(final NodeModel node) {
-				    return node.getFont();
-			    }
-		    });
-		addFontGetter(PropertyChain.DEFAULT,
-		    new IPropertyGetter<Font, NodeModel>() {
-			    public Font getProperty(final NodeModel node) {
-				    return Controller.getResourceController().getDefaultFont();
-			    }
-		    });
-		addColorGetter(PropertyChain.NODE,
-		    new IPropertyGetter<Color, NodeModel>() {
-			    public Color getProperty(final NodeModel node) {
-				    return node.getColor();
-			    }
-		    });
-		addColorGetter(PropertyChain.DEFAULT,
-		    new IPropertyGetter<Color, NodeModel>() {
-			    public Color getProperty(final NodeModel node) {
-				    return MapView.standardNodeTextColor;
-			    }
-		    });
-		addBackgroundColorGetter(PropertyChain.NODE,
-		    new IPropertyGetter<Color, NodeModel>() {
-			    public Color getProperty(final NodeModel node) {
-				    return node.getBackgroundColor();
-			    }
-		    });
-		addShapeGetter(PropertyChain.NODE,
-		    new IPropertyGetter<String, NodeModel>() {
-			    public String getProperty(final NodeModel node) {
-				    return getShape(node);
-			    }
+		addFontGetter(PropertyChain.NODE, new IPropertyGetter<Font, NodeModel>() {
+			public Font getProperty(final NodeModel node) {
+				return node.getFont();
+			}
+		});
+		addFontGetter(PropertyChain.DEFAULT, new IPropertyGetter<Font, NodeModel>() {
+			public Font getProperty(final NodeModel node) {
+				return Controller.getResourceController().getDefaultFont();
+			}
+		});
+		addColorGetter(PropertyChain.NODE, new IPropertyGetter<Color, NodeModel>() {
+			public Color getProperty(final NodeModel node) {
+				return node.getColor();
+			}
+		});
+		addColorGetter(PropertyChain.DEFAULT, new IPropertyGetter<Color, NodeModel>() {
+			public Color getProperty(final NodeModel node) {
+				return MapView.standardNodeTextColor;
+			}
+		});
+		addBackgroundColorGetter(PropertyChain.NODE, new IPropertyGetter<Color, NodeModel>() {
+			public Color getProperty(final NodeModel node) {
+				return node.getBackgroundColor();
+			}
+		});
+		addShapeGetter(PropertyChain.NODE, new IPropertyGetter<String, NodeModel>() {
+			public String getProperty(final NodeModel node) {
+				return getShape(node);
+			}
 
-			    private String getShape(final NodeModel node) {
-				    String returnedString = node.getShape(); /*
-				    			    						    						    						    			    						    														 * Style string
-				    			    						    						    						    			    						    														 * returned
-				    			    						    						    						    			    						    														 */
-				    if (node.getShape() == null) {
-					    if (node.isRoot()) {
-						    returnedString = Controller
-						        .getResourceController()
-						        .getProperty(
-						            ResourceController.RESOURCES_ROOT_NODE_SHAPE);
-					    }
-					    else {
-						    final String stdstyle = Controller
-						        .getResourceController().getProperty(
-						            ResourceController.RESOURCES_NODE_SHAPE);
-						    if (stdstyle.equals(NodeStyleModel.SHAPE_AS_PARENT)) {
-							    returnedString = getShape(node.getParentNode());
-						    }
-						    else {
-							    returnedString = stdstyle;
-						    }
-					    }
-				    }
-				    else if (node.isRoot()
-				            && node.getShape().equals(
-				                NodeStyleModel.SHAPE_AS_PARENT)) {
-					    returnedString = Controller.getResourceController()
-					        .getProperty(
-					            ResourceController.RESOURCES_ROOT_NODE_SHAPE);
-				    }
-				    else if (node.getShape().equals(
-				        NodeStyleModel.SHAPE_AS_PARENT)) {
-					    returnedString = getShape(node.getParentNode());
-				    }
-				    if (returnedString.equals(NodeStyleModel.SHAPE_COMBINED)) {
-					    if (node.getModeController().getMapController()
-					        .isFolded(node)) {
-						    return NodeStyleModel.STYLE_BUBBLE;
-					    }
-					    else {
-						    return NodeStyleModel.STYLE_FORK;
-					    }
-				    }
-				    return returnedString;
-			    }
-		    });
+			private String getShape(final NodeModel node) {
+				String returnedString = node.getShape(); /*
+							    			    						    						    						    			    						    														 * Style string
+							    			    						    						    						    			    						    														 * returned
+							    			    						    						    						    			    						    														 */
+				if (node.getShape() == null) {
+					if (node.isRoot()) {
+						returnedString = Controller.getResourceController().getProperty(
+						    ResourceController.RESOURCES_ROOT_NODE_SHAPE);
+					}
+					else {
+						final String stdstyle = Controller.getResourceController().getProperty(
+						    ResourceController.RESOURCES_NODE_SHAPE);
+						if (stdstyle.equals(NodeStyleModel.SHAPE_AS_PARENT)) {
+							returnedString = getShape(node.getParentNode());
+						}
+						else {
+							returnedString = stdstyle;
+						}
+					}
+				}
+				else if (node.isRoot() && node.getShape().equals(NodeStyleModel.SHAPE_AS_PARENT)) {
+					returnedString = Controller.getResourceController().getProperty(
+					    ResourceController.RESOURCES_ROOT_NODE_SHAPE);
+				}
+				else if (node.getShape().equals(NodeStyleModel.SHAPE_AS_PARENT)) {
+					returnedString = getShape(node.getParentNode());
+				}
+				if (returnedString.equals(NodeStyleModel.SHAPE_COMBINED)) {
+					if (node.getModeController().getMapController().isFolded(node)) {
+						return NodeStyleModel.STYLE_BUBBLE;
+					}
+					else {
+						return NodeStyleModel.STYLE_FORK;
+					}
+				}
+				return returnedString;
+			}
+		});
 		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();
 		final WriteManager writeManager = mapController.getWriteManager();
@@ -201,8 +187,7 @@ public class NodeStyleController {
 		return getFont(node).isItalic();
 	}
 
-	public IPropertyGetter<Color, NodeModel> removeBackgroundColorGetter(
-	                                                                     final Integer key) {
+	public IPropertyGetter<Color, NodeModel> removeBackgroundColorGetter(final Integer key) {
 		return backgroundColorHandlers.removeGetter(key);
 	}
 
@@ -214,8 +199,7 @@ public class NodeStyleController {
 		return fontHandlers.removeGetter(key);
 	}
 
-	public IPropertyGetter<String, NodeModel> removeShapeGetter(
-	                                                            final Integer key) {
+	public IPropertyGetter<String, NodeModel> removeShapeGetter(final Integer key) {
 		return shapeHandlers.removeGetter(key);
 	}
 }

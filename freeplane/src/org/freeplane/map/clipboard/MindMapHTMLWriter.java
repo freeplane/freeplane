@@ -66,8 +66,7 @@ class MindMapHTMLWriter {
 		return cvt;
 	}
 
-	private static String writeHTML_escapeUnicodeAndSpecialCharacters(
-	                                                                  final String text) {
+	private static String writeHTML_escapeUnicodeAndSpecialCharacters(final String text) {
 		final int len = text.length();
 		final StringBuffer result = new StringBuffer(len);
 		int intValue;
@@ -132,8 +131,7 @@ class MindMapHTMLWriter {
 		final Font font = model.getFont();
 		if (font != null) {
 			if (font.getSize() != 0) {
-				final int defaultFontSize = Integer
-				    .parseInt(getProperty("defaultfontsize"));
+				final int defaultFontSize = Integer.parseInt(getProperty("defaultfontsize"));
 				final int procentSize = (int) (font.getSize() * 100 / defaultFontSize);
 				if (procentSize != 100) {
 					fontStyle += "font-size: " + procentSize + "%;";
@@ -160,46 +158,37 @@ class MindMapHTMLWriter {
 	}
 
 	private boolean isHeading(final NodeModel model, final int depth) {
-		return basedOnHeadings
-		        && model.getModeController().getMapController().hasChildren(
-		            model) && depth <= 6 && !hasHtml(model);
+		return basedOnHeadings && model.getModeController().getMapController().hasChildren(model)
+		        && depth <= 6 && !hasHtml(model);
 	}
 
-	private void writeBodyWithFolding(final NodeModel rootNodeOfBranch)
-	        throws IOException {
+	private void writeBodyWithFolding(final NodeModel rootNodeOfBranch) throws IOException {
 		writeJavaScript();
-		fileout
-		    .write("<SPAN class=\"foldspecial\" onclick=\"fold_document()\">All +</SPAN>"
-		            + MindMapHTMLWriter.el);
-		fileout
-		    .write("<SPAN class=\"foldspecial\" onclick=\"unfold_document()\">All -</SPAN>"
-		            + MindMapHTMLWriter.el);
+		fileout.write("<SPAN class=\"foldspecial\" onclick=\"fold_document()\">All +</SPAN>"
+		        + MindMapHTMLWriter.el);
+		fileout.write("<SPAN class=\"foldspecial\" onclick=\"unfold_document()\">All -</SPAN>"
+		        + MindMapHTMLWriter.el);
 		writeHTML(rootNodeOfBranch, "1", 0, /* isRoot */true, true, /* depth */
 		1);
-		fileout.write("<SCRIPT type=\"text/javascript\">"
-		        + MindMapHTMLWriter.el);
+		fileout.write("<SCRIPT type=\"text/javascript\">" + MindMapHTMLWriter.el);
 		fileout.write("fold_document();" + MindMapHTMLWriter.el);
 		fileout.write("</SCRIPT>" + MindMapHTMLWriter.el);
 	}
 
-	private void writeFoldingButtons(final String localParentID)
-	        throws IOException {
+	private void writeFoldingButtons(final String localParentID) throws IOException {
 		fileout.write("<span id=\"show" + localParentID
-		        + "\" class=\"foldclosed\" onClick=\"show_folder('"
-		        + localParentID + "')\" style=\"POSITION: absolute\">+</span> "
-		        + "<span id=\"hide" + localParentID
-		        + "\" class=\"foldopened\" onClick=\"hide_folder('"
-		        + localParentID + "')\">-</span>");
+		        + "\" class=\"foldclosed\" onClick=\"show_folder('" + localParentID
+		        + "')\" style=\"POSITION: absolute\">+</span> " + "<span id=\"hide" + localParentID
+		        + "\" class=\"foldopened\" onClick=\"hide_folder('" + localParentID
+		        + "')\">-</span>");
 		fileout.write("\n");
 	}
 
-	void writeHTML(final Collection<NodeModel> selectedNodes)
-	        throws IOException {
-		fileout.write("<html>" + MindMapHTMLWriter.el + "<head>"
-		        + MindMapHTMLWriter.el);
+	void writeHTML(final Collection<NodeModel> selectedNodes) throws IOException {
+		fileout.write("<html>" + MindMapHTMLWriter.el + "<head>" + MindMapHTMLWriter.el);
 		writeStyle();
-		fileout.write(MindMapHTMLWriter.el + "</head>" + MindMapHTMLWriter.el
-		        + "<body>" + MindMapHTMLWriter.el);
+		fileout.write(MindMapHTMLWriter.el + "</head>" + MindMapHTMLWriter.el + "<body>"
+		        + MindMapHTMLWriter.el);
 		final Iterator iterator = selectedNodes.iterator();
 		while (iterator.hasNext()) {
 			final NodeModel node = (NodeModel) iterator.next();
@@ -212,27 +201,23 @@ class MindMapHTMLWriter {
 
 	void writeHTML(final NodeModel rootNodeOfBranch) throws IOException {
 		final String htmlExportFoldingOption = getProperty("html_export_folding");
-		writeFoldingCode = (htmlExportFoldingOption
-		    .equals("html_export_fold_currently_folded") && rootNodeOfBranch
+		writeFoldingCode = (htmlExportFoldingOption.equals("html_export_fold_currently_folded") && rootNodeOfBranch
 		    .hasFoldedStrictDescendant())
 		        || htmlExportFoldingOption.equals("html_export_fold_all");
-		Controller.getResourceController().getBoolProperty(
-		    "export_icons_in_html");
+		Controller.getResourceController().getBoolProperty("export_icons_in_html");
 		fileout
 		    .write("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">"
 		            + MindMapHTMLWriter.el
 		            + "<html>"
 		            + MindMapHTMLWriter.el
-		            + "<head>" + MindMapHTMLWriter.el);
-		fileout
-		    .write("<title>"
-		            + MindMapHTMLWriter
-		                .writeHTML_escapeUnicodeAndSpecialCharacters(rootNodeOfBranch
-		                    .getPlainTextContent().replace('\n', ' '))
-		            + "</title>" + MindMapHTMLWriter.el);
+		            + "<head>"
+		            + MindMapHTMLWriter.el);
+		fileout.write("<title>"
+		        + MindMapHTMLWriter.writeHTML_escapeUnicodeAndSpecialCharacters(rootNodeOfBranch
+		            .getPlainTextContent().replace('\n', ' ')) + "</title>" + MindMapHTMLWriter.el);
 		writeStyle();
-		fileout.write(MindMapHTMLWriter.el + "</head>" + MindMapHTMLWriter.el
-		        + "<body>" + MindMapHTMLWriter.el);
+		fileout.write(MindMapHTMLWriter.el + "</head>" + MindMapHTMLWriter.el + "<body>"
+		        + MindMapHTMLWriter.el);
 		if (writeFoldingCode) {
 			writeBodyWithFolding(rootNodeOfBranch);
 		}
@@ -245,18 +230,15 @@ class MindMapHTMLWriter {
 		fileout.close();
 	}
 
-	private int writeHTML(final NodeModel model, final String parentID,
-	                      int lastChildNumber, final boolean isRoot,
-	                      final boolean treatAsParagraph, final int depth)
+	private int writeHTML(final NodeModel model, final String parentID, int lastChildNumber,
+	                      final boolean isRoot, final boolean treatAsParagraph, final int depth)
 	        throws IOException {
-		boolean createFolding = model.getModeController().getMapController()
-		    .isFolded(model);
+		boolean createFolding = model.getModeController().getMapController().isFolded(model);
 		if (getProperty("html_export_folding").equals("html_export_fold_all")) {
-			createFolding = model.getModeController().getMapController()
-			    .hasChildren(model);
+			createFolding = model.getModeController().getMapController().hasChildren(model);
 		}
-		if (getProperty("html_export_folding").equals("html_export_no_folding")
-		        || basedOnHeadings || isRoot) {
+		if (getProperty("html_export_folding").equals("html_export_no_folding") || basedOnHeadings
+		        || isRoot) {
 			createFolding = false;
 		}
 		final boolean heading = isHeading(model, depth);
@@ -282,15 +264,14 @@ class MindMapHTMLWriter {
 			if (link.endsWith(".mm")) {
 				link += ".html";
 			}
-			fileout.write("<a href=\"" + link
-			        + "\" target=\"_blank\"><span class=l>~</span>&nbsp;");
+			fileout
+			    .write("<a href=\"" + link + "\" target=\"_blank\"><span class=l>~</span>&nbsp;");
 		}
 		final String fontStyle = fontStyle(model);
 		if (!fontStyle.equals("")) {
 			fileout.write("<span style=\"" + fontStyle + "\">");
 		}
-		if (Controller.getResourceController().getBoolProperty(
-		    "export_icons_in_html")) {
+		if (Controller.getResourceController().getBoolProperty("export_icons_in_html")) {
 			writeIcons(model);
 		}
 		writeModelContent(model);
@@ -305,55 +286,49 @@ class MindMapHTMLWriter {
 			fileout.write("</h" + depth + ">" + MindMapHTMLWriter.el);
 		}
 		boolean treatChildrenAsParagraph = false;
-		for (final ListIterator e = model.getModeController()
-		    .getMapController().childrenUnfolded(model); e.hasNext();) {
+		for (final ListIterator e = model.getModeController().getMapController().childrenUnfolded(
+		    model); e.hasNext();) {
 			if (((NodeModel) e.next()).toString().length() > 100) {
 				treatChildrenAsParagraph = true;
 				break;
 			}
 		}
-		if (getProperty("html_export_folding").equals(
-		    "html_export_based_on_headings")) {
-			for (final ListIterator e = model.getModeController()
-			    .getMapController().childrenUnfolded(model); e.hasNext();) {
+		if (getProperty("html_export_folding").equals("html_export_based_on_headings")) {
+			for (final ListIterator e = model.getModeController().getMapController()
+			    .childrenUnfolded(model); e.hasNext();) {
 				final NodeModel child = (NodeModel) e.next();
 				lastChildNumber = writeHTML(child, parentID, lastChildNumber,/*
-																																																															 * isRoot=
-																																																															 */
+																																																																			 * isRoot=
+																																																																			 */
 				false, treatChildrenAsParagraph, depth + 1);
 			}
 			return lastChildNumber;
 		}
 		if (model.getModeController().getMapController().hasChildren(model)) {
-			if (getProperty("html_export_folding").equals(
-			    "html_export_based_on_headings")) {
-				for (final ListIterator e = model.getModeController()
-				    .getMapController().childrenUnfolded(model); e.hasNext();) {
+			if (getProperty("html_export_folding").equals("html_export_based_on_headings")) {
+				for (final ListIterator e = model.getModeController().getMapController()
+				    .childrenUnfolded(model); e.hasNext();) {
 					final NodeModel child = (NodeModel) e.next();
-					lastChildNumber = writeHTML(child, parentID,
-					    lastChildNumber,/*
-					    					    										    										    										    					    										    										 * isRoot=
-					    					    										    										    										    					    										    										 */
-					    false, treatChildrenAsParagraph, depth + 1);
+					lastChildNumber = writeHTML(child, parentID, lastChildNumber,/*
+										    					    										    										    										    					    										    										 * isRoot=
+										    					    										    										    										    					    										    										 */
+					false, treatChildrenAsParagraph, depth + 1);
 				}
 			}
 			else if (createFolding) {
-				fileout
-				    .write("<ul id=\"fold"
-				            + localParentID
-				            + "\" style=\"POSITION: relative; VISIBILITY: visible;\">");
+				fileout.write("<ul id=\"fold" + localParentID
+				        + "\" style=\"POSITION: relative; VISIBILITY: visible;\">");
 				if (treatChildrenAsParagraph) {
 					fileout.write("<li>");
 				}
 				int localLastChildNumber = 0;
-				for (final ListIterator e = model.getModeController()
-				    .getMapController().childrenUnfolded(model); e.hasNext();) {
+				for (final ListIterator e = model.getModeController().getMapController()
+				    .childrenUnfolded(model); e.hasNext();) {
 					final NodeModel child = (NodeModel) e.next();
-					localLastChildNumber = writeHTML(child, localParentID,
-					    localLastChildNumber,/*
-					    					    										    										    										    					    										    											 * isRoot=
-					    					    										    										    										    					    										    											 */
-					    false, treatChildrenAsParagraph, depth + 1);
+					localLastChildNumber = writeHTML(child, localParentID, localLastChildNumber,/*
+										    					    										    										    										    					    										    											 * isRoot=
+										    					    										    										    										    					    										    											 */
+					false, treatChildrenAsParagraph, depth + 1);
 				}
 			}
 			else {
@@ -361,14 +336,13 @@ class MindMapHTMLWriter {
 				if (treatChildrenAsParagraph) {
 					fileout.write("<li>");
 				}
-				for (final ListIterator e = model.getModeController()
-				    .getMapController().childrenUnfolded(model); e.hasNext();) {
+				for (final ListIterator e = model.getModeController().getMapController()
+				    .childrenUnfolded(model); e.hasNext();) {
 					final NodeModel child = (NodeModel) e.next();
-					lastChildNumber = writeHTML(child, parentID,
-					    lastChildNumber,/*
-					    					    										    										    										    					    										    										 * isRoot=
-					    					    										    										    										    					    										    										 */
-					    false, treatChildrenAsParagraph, depth + 1);
+					lastChildNumber = writeHTML(child, parentID, lastChildNumber,/*
+										    					    										    										    										    					    										    										 * isRoot=
+										    					    										    										    										    					    										    										 */
+					false, treatChildrenAsParagraph, depth + 1);
 				}
 			}
 			if (treatChildrenAsParagraph) {
@@ -378,19 +352,15 @@ class MindMapHTMLWriter {
 			fileout.write("</ul>");
 		}
 		if (!treatAsParagraph) {
-			fileout
-			    .write(MindMapHTMLWriter.el + "</li>" + MindMapHTMLWriter.el);
+			fileout.write(MindMapHTMLWriter.el + "</li>" + MindMapHTMLWriter.el);
 		}
 		return lastChildNumber;
 	}
 
 	private void writeIcons(final NodeModel model) throws IOException {
 		for (int i = 0; i < model.getIcons().size(); ++i) {
-			fileout.write("<img src=\""
-			        + ((MindIcon) model.getIcons().get(i)).getIconFileName()
-			        + "\" alt=\""
-			        + ((MindIcon) model.getIcons().get(i)).getDescription()
-			        + "\">");
+			fileout.write("<img src=\"" + ((MindIcon) model.getIcons().get(i)).getIconFileName()
+			        + "\" alt=\"" + ((MindIcon) model.getIcons().get(i)).getDescription() + "\">");
 		}
 	}
 
@@ -554,22 +524,18 @@ class MindMapHTMLWriter {
 		            + ""
 		            + MindMapHTMLWriter.el
 		            + "   scrollBy(0,0); // This is a work around to make it work in Browsers (Explorer, Mozilla)"
-		            + MindMapHTMLWriter.el + "}" + MindMapHTMLWriter.el + ""
-		            + MindMapHTMLWriter.el + "function fold_document() {"
-		            + MindMapHTMLWriter.el + "   var i;" + MindMapHTMLWriter.el
-		            + "   var folder = '1';" + MindMapHTMLWriter.el
+		            + MindMapHTMLWriter.el + "}" + MindMapHTMLWriter.el + "" + MindMapHTMLWriter.el
+		            + "function fold_document() {" + MindMapHTMLWriter.el + "   var i;"
+		            + MindMapHTMLWriter.el + "   var folder = '1';" + MindMapHTMLWriter.el
 		            + "   for (i=1; layer_exists('fold'+folder+'_'+i); ++i) {"
-		            + MindMapHTMLWriter.el
-		            + "       hide_folder(folder+'_'+i); }"
-		            + MindMapHTMLWriter.el + "}" + MindMapHTMLWriter.el + ""
-		            + MindMapHTMLWriter.el + "function unfold_document() {"
-		            + MindMapHTMLWriter.el + "   var i;" + MindMapHTMLWriter.el
-		            + "   var folder = '1';" + MindMapHTMLWriter.el
+		            + MindMapHTMLWriter.el + "       hide_folder(folder+'_'+i); }"
+		            + MindMapHTMLWriter.el + "}" + MindMapHTMLWriter.el + "" + MindMapHTMLWriter.el
+		            + "function unfold_document() {" + MindMapHTMLWriter.el + "   var i;"
+		            + MindMapHTMLWriter.el + "   var folder = '1';" + MindMapHTMLWriter.el
 		            + "   for (i=1; layer_exists('fold'+folder+'_'+i); ++i) {"
-		            + MindMapHTMLWriter.el
-		            + "       show_folder_completely(folder+'_'+i); }"
-		            + MindMapHTMLWriter.el + "}" + MindMapHTMLWriter.el + ""
-		            + MindMapHTMLWriter.el + "</script>" + MindMapHTMLWriter.el);
+		            + MindMapHTMLWriter.el + "       show_folder_completely(folder+'_'+i); }"
+		            + MindMapHTMLWriter.el + "}" + MindMapHTMLWriter.el + "" + MindMapHTMLWriter.el
+		            + "</script>" + MindMapHTMLWriter.el);
 	}
 
 	private void writeModelContent(final NodeModel model) throws IOException {
@@ -596,15 +562,14 @@ class MindMapHTMLWriter {
 			fileout.write(HtmlTools.unicodeToHTMLUnicodeEntity(output));
 		}
 		else {
-			fileout.write(MindMapHTMLWriter
-			    .writeHTML_escapeUnicodeAndSpecialCharacters(model.toString()));
+			fileout.write(MindMapHTMLWriter.writeHTML_escapeUnicodeAndSpecialCharacters(model
+			    .toString()));
 		}
 	}
 
 	private void writeStyle() throws IOException {
 		fileout.write("<style type=\"text/css\">" + MindMapHTMLWriter.el);
-		fileout.write("    li { list-style: none;  margin: 0; }"
-		        + MindMapHTMLWriter.el);
+		fileout.write("    li { list-style: none;  margin: 0; }" + MindMapHTMLWriter.el);
 		fileout.write("    p { margin: 0; }" + MindMapHTMLWriter.el);
 		if (writeFoldingCode) {
 			fileout
@@ -633,9 +598,7 @@ class MindMapHTMLWriter {
 			            + "    span.foldspecial { color: #666666; font-size: xx-small; border-style: none solid solid none;"
 			            + MindMapHTMLWriter.el
 			            + "    border-color: #CCCCCC; border-width: 1; font-family: sans-serif; padding: 0em 0.1em 0em 0.1em; background: #e0e0e0;"
-			            + MindMapHTMLWriter.el
-			            + "    cursor:pointer; }"
-			            + MindMapHTMLWriter.el);
+			            + MindMapHTMLWriter.el + "    cursor:pointer; }" + MindMapHTMLWriter.el);
 		}
 		fileout
 		    .write(MindMapHTMLWriter.el

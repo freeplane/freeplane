@@ -45,8 +45,7 @@ import javax.swing.border.BevelBorder;
 import org.freeplane.controller.Controller;
 import org.freeplane.map.icon.IIconInformation;
 
-public class IconSelectionPopupDialog extends JDialog implements KeyListener,
-        MouseListener {
+public class IconSelectionPopupDialog extends JDialog implements KeyListener, MouseListener {
 	static class Position {
 		final private int x, y;
 
@@ -114,19 +113,15 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener,
 		for (int i = 0; i < numOfIcons; ++i) {
 			final IIconInformation icon = (IIconInformation) icons.get(i);
 			iconPanel.add(iconLabels[i] = new JLabel(icon.getIcon()));
-			iconLabels[i].setBorder(BorderFactory
-			    .createBevelBorder(BevelBorder.RAISED));
+			iconLabels[i].setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 			iconLabels[i].addMouseListener(this);
 		}
 		final int perIconSize = 27;
-		iconPanel.setPreferredSize(new Dimension(xDimension * perIconSize,
-		    yDimension * perIconSize));
-		iconPanel.setMinimumSize(new Dimension(xDimension * perIconSize,
-		    yDimension * perIconSize));
-		iconPanel.setMaximumSize(new Dimension(xDimension * perIconSize,
-		    yDimension * perIconSize));
-		iconPanel.setSize(new Dimension(xDimension * perIconSize, yDimension
-		        * perIconSize));
+		iconPanel
+		    .setPreferredSize(new Dimension(xDimension * perIconSize, yDimension * perIconSize));
+		iconPanel.setMinimumSize(new Dimension(xDimension * perIconSize, yDimension * perIconSize));
+		iconPanel.setMaximumSize(new Dimension(xDimension * perIconSize, yDimension * perIconSize));
+		iconPanel.setSize(new Dimension(xDimension * perIconSize, yDimension * perIconSize));
 		getContentPane().add(iconPanel, BorderLayout.CENTER);
 		descriptionLabel = new JLabel(" ");
 		getContentPane().add(descriptionLabel, BorderLayout.SOUTH);
@@ -147,8 +142,8 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener,
 	}
 
 	private boolean canSelect(final Position position) {
-		return ((position.getX() >= 0) && (position.getX() < xDimension)
-		        && (position.getY() >= 0) && (position.getY() < yDimension) && (calculateIndex(position) < numOfIcons));
+		return ((position.getX() >= 0) && (position.getX() < xDimension) && (position.getY() >= 0)
+		        && (position.getY() < yDimension) && (calculateIndex(position) < numOfIcons));
 	}
 
 	private void close() {
@@ -166,16 +161,16 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener,
 	}
 
 	private void cursorLeft() {
-		final Position newPosition = new Position(
-		    getSelectedPosition().getX() - 1, getSelectedPosition().getY());
+		final Position newPosition = new Position(getSelectedPosition().getX() - 1,
+		    getSelectedPosition().getY());
 		if (canSelect(newPosition)) {
 			select(newPosition);
 		}
 	}
 
 	private void cursorRight() {
-		final Position newPosition = new Position(
-		    getSelectedPosition().getX() + 1, getSelectedPosition().getY());
+		final Position newPosition = new Position(getSelectedPosition().getX() + 1,
+		    getSelectedPosition().getY());
 		if (canSelect(newPosition)) {
 			select(newPosition);
 		}
@@ -197,9 +192,8 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener,
 			        && (keyEvent.getKeyCode() == iconKeyStroke.getKeyCode()
 			                && keyEvent.getKeyCode() != 0
 			                && (iconKeyStroke.getModifiers() & InputEvent.SHIFT_MASK) == (keyEvent
-			                    .getModifiers() & InputEvent.SHIFT_MASK) || keyEvent
-			            .getKeyChar() == iconKeyStroke.getKeyChar())
-			        && keyEvent.getKeyChar() != 0
+			                    .getModifiers() & InputEvent.SHIFT_MASK) || keyEvent.getKeyChar() == iconKeyStroke
+			            .getKeyChar()) && keyEvent.getKeyChar() != 0
 			        && keyEvent.getKeyChar() != KeyEvent.CHAR_UNDEFINED) {
 				return i;
 			}
@@ -346,13 +340,11 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener,
 		setSelectedPosition(position);
 		highlight(position);
 		final int index = calculateIndex(position);
-		final IIconInformation iconInformation = (IIconInformation) icons
-		    .get(index);
-		final String keyStroke = Controller.getResourceController()
-		    .getAdjustableProperty(iconInformation.getKeystrokeResourceName());
+		final IIconInformation iconInformation = (IIconInformation) icons.get(index);
+		final String keyStroke = Controller.getResourceController().getAdjustableProperty(
+		    iconInformation.getKeystrokeResourceName());
 		if (keyStroke != null) {
-			descriptionLabel.setText(iconInformation.getDescription() + ", "
-			        + keyStroke);
+			descriptionLabel.setText(iconInformation.getDescription() + ", " + keyStroke);
 		}
 		else {
 			descriptionLabel.setText(iconInformation.getDescription());

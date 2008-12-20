@@ -22,6 +22,5 @@ package org.freeplane.io;
 import java.io.IOException;
 
 public interface INodeWriter<T> {
-	void writeContent(ITreeWriter writer, Object node, T tag)
-	        throws IOException;
+	void writeContent(ITreeWriter writer, Object node, T tag) throws IOException;
 }

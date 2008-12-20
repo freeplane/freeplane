@@ -40,8 +40,8 @@ public class DisjunctConditions implements ICondition {
 		final Vector children = element.getChildren();
 		final Object[] conditions = new Object[children.size()];
 		for (int i = 0; i < conditions.length; i++) {
-			final ICondition cond = FilterController.getConditionFactory()
-			    .loadCondition((XMLElement) children.get(i));
+			final ICondition cond = FilterController.getConditionFactory().loadCondition(
+			    (XMLElement) children.get(i));
 			conditions[i] = cond;
 		}
 		return new DisjunctConditions(conditions);
@@ -87,8 +87,7 @@ public class DisjunctConditions implements ICondition {
 		component.add(rendererComponent);
 		int i;
 		for (i = 1; i < conditions.length; i++) {
-			final String or = Tools.removeMnemonic(Controller
-			    .getText("filter_or"));
+			final String or = Tools.removeMnemonic(Controller.getText("filter_or"));
 			final String text = ' ' + or + ' ';
 			component.add(new JLabel(text));
 			cond = (ICondition) conditions[i];

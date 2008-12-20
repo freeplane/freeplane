@@ -40,20 +40,19 @@ class DeleteAction extends FreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final MModeController modeController = getMModeController();
-		for (final Iterator iterator = modeController.getSelectedNodes()
-		    .iterator(); iterator.hasNext();) {
+		for (final Iterator iterator = modeController.getSelectedNodes().iterator(); iterator
+		    .hasNext();) {
 			final NodeModel node = (NodeModel) iterator.next();
 			if (node.isRoot()) {
 				return;
 			}
 		}
-		final int showResult = new OptionalDontShowMeAgainDialog(Controller
-		    .getController().getViewController().getJFrame(), modeController
-		    .getSelectedView(), "really_remove_node", "confirmation",
+		final int showResult = new OptionalDontShowMeAgainDialog(Controller.getController()
+		    .getViewController().getJFrame(), modeController.getSelectedView(),
+		    "really_remove_node", "confirmation",
 		    new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
 		        ResourceController.RESOURCES_DELETE_NODES_WITHOUT_QUESTION),
-		    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED).show()
-		    .getResult();
+		    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED).show().getResult();
 		if (showResult != JOptionPane.OK_OPTION) {
 			return;
 		}
@@ -64,8 +63,7 @@ class DeleteAction extends FreeplaneAction {
 		}
 	}
 
-	public IUndoableActor createActor(final int index,
-	                                  final NodeModel parentNode,
+	public IUndoableActor createActor(final int index, final NodeModel parentNode,
 	                                  final NodeModel node) {
 		final IUndoableActor actor = new IUndoableActor() {
 			public void act() {
@@ -95,7 +93,6 @@ class DeleteAction extends FreeplaneAction {
 	}
 
 	void deleteWithoutUndo(final NodeModel node) {
-		((MMapController) getModeController().getMapController())
-		    .deleteWithoutUndo(node);
+		((MMapController) getModeController().getMapController()).deleteWithoutUndo(node);
 	}
 }

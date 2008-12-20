@@ -40,19 +40,16 @@ class NodeWriter implements INodeWriter<String>, IAttributeWriter<String> {
 	final private boolean writeInvisible;
 	private XMLElement xmlNode;
 
-	public NodeWriter(final MapController mapController,
-	                  final boolean writeChildren,
-	                  final boolean writeInvisible,
-	                  final boolean saveOnlyIntrinsicallyNeededIds) {
+	public NodeWriter(final MapController mapController, final boolean writeChildren,
+	                  final boolean writeInvisible, final boolean saveOnlyIntrinsicallyNeededIds) {
 		this.writeChildren = writeChildren;
 		this.writeInvisible = writeInvisible;
 		this.saveOnlyIntrinsicallyNeededIds = saveOnlyIntrinsicallyNeededIds;
 	}
 
-	private void saveChildren(final ITreeWriter writer, final NodeModel node)
-	        throws IOException {
-		for (final ListIterator e = node.getModeController().getMapController()
-		    .childrenUnfolded(node); e.hasNext();) {
+	private void saveChildren(final ITreeWriter writer, final NodeModel node) throws IOException {
+		for (final ListIterator e = node.getModeController().getMapController().childrenUnfolded(
+		    node); e.hasNext();) {
 			final NodeModel child = (NodeModel) e.next();
 			if (writeInvisible || child.isVisible()) {
 				writer.addNode(child, NodeBuilder.XML_NODE);
@@ -69,8 +66,7 @@ class NodeWriter implements INodeWriter<String>, IAttributeWriter<String> {
 	 * freeplane.io.IAttributeWriter#saveAttributes(freeplane.io.ITreeWriter,
 	 * java.lang.Object, java.lang.String)
 	 */
-	public void writeAttributes(final ITreeWriter writer, final Object content,
-	                            final String tag) {
+	public void writeAttributes(final ITreeWriter writer, final Object content, final String tag) {
 		if (tag.equals(NodeBuilder.XML_NODE)) {
 			final NodeModel nodeAdapter = (NodeModel) content;
 			writeAttributesGenerateContent(writer, nodeAdapter);
@@ -78,8 +74,7 @@ class NodeWriter implements INodeWriter<String>, IAttributeWriter<String> {
 		}
 	}
 
-	private void writeAttributesGenerateContent(final ITreeWriter writer,
-	                                            final NodeModel node) {
+	private void writeAttributesGenerateContent(final ITreeWriter writer, final NodeModel node) {
 		/** fc, 12.6.2005: XML must not contain any zero characters. */
 		final String text = node.toString().replace('\0', ' ');
 		isTextNode = !HtmlTools.isHtmlNode(text);
@@ -90,8 +85,7 @@ class NodeWriter implements INodeWriter<String>, IAttributeWriter<String> {
 		encryptionModel = node.getEncryptionModel();
 		if (encryptionModel != null) {
 			final String additionalInfo = encryptionModel.getEncryptedContent();
-			writer.addAttribute(NodeBuilder.XML_NODE_ENCRYPTED_CONTENT,
-			    additionalInfo);
+			writer.addAttribute(NodeBuilder.XML_NODE_ENCRYPTED_CONTENT, additionalInfo);
 		}
 		if (node.getModeController().getMapController().isFolded(node)) {
 			writer.addAttribute("FOLDED", "true");
@@ -101,31 +95,28 @@ class NodeWriter implements INodeWriter<String>, IAttributeWriter<String> {
 		}
 		final String id = node.createID();
 		final boolean saveID = saveOnlyIntrinsicallyNeededIds
-		        || !node.getModeController().getLinkController().getLinksTo(
-		            node).isEmpty();
+		        || !node.getModeController().getLinkController().getLinksTo(node).isEmpty();
 		if (saveID) {
 			if (id != null) {
 				writer.addAttribute("ID", id);
 			}
 		}
 		if (node.getHistoryInformation() != null) {
-			writer.addAttribute(NodeBuilder.XML_NODE_HISTORY_CREATED_AT, Tools
-			    .dateToString(node.getHistoryInformation().getCreatedAt()));
-			writer.addAttribute(NodeBuilder.XML_NODE_HISTORY_LAST_MODIFIED_AT,
-			    Tools.dateToString(node.getHistoryInformation()
-			        .getLastModifiedAt()));
+			writer.addAttribute(NodeBuilder.XML_NODE_HISTORY_CREATED_AT, Tools.dateToString(node
+			    .getHistoryInformation().getCreatedAt()));
+			writer.addAttribute(NodeBuilder.XML_NODE_HISTORY_LAST_MODIFIED_AT, Tools
+			    .dateToString(node.getHistoryInformation().getLastModifiedAt()));
 		}
 		for (int i = 0; i < node.getIcons().size(); ++i) {
 			final XMLElement iconElement = new XMLElement();
 			iconElement.setName("icon");
-			iconElement.setAttribute("BUILTIN", ((MindIcon) node.getIcons()
-			    .get(i)).getName());
+			iconElement.setAttribute("BUILTIN", ((MindIcon) node.getIcons().get(i)).getName());
 			xmlNode.addChild(iconElement);
 		}
 	}
 
-	private void writeContent(final ITreeWriter writer,
-	                          final NodeModel nodeAdapter) throws IOException {
+	private void writeContent(final ITreeWriter writer, final NodeModel nodeAdapter)
+	        throws IOException {
 		if (!isTextNode) {
 			final XMLElement htmlElement = new XMLElement();
 			htmlElement.setName(NodeTextBuilder.XML_NODE_XHTML_CONTENT_TAG);
@@ -139,15 +130,14 @@ class NodeWriter implements INodeWriter<String>, IAttributeWriter<String> {
 		}
 		if (encryptionModel == null
 		        && writeChildren
-		        && nodeAdapter.getModeController().getMapController()
-		            .childrenUnfolded(nodeAdapter).hasNext()) {
+		        && nodeAdapter.getModeController().getMapController().childrenUnfolded(nodeAdapter)
+		            .hasNext()) {
 			saveChildren(writer, nodeAdapter);
 		}
 	}
 
-	public void writeContent(final org.freeplane.io.ITreeWriter writer,
-	                         final Object content, final String tag)
-	        throws IOException {
+	public void writeContent(final org.freeplane.io.ITreeWriter writer, final Object content,
+	                         final String tag) throws IOException {
 		if (tag.equals(NodeTextBuilder.XML_NODE_XHTML_CONTENT_TAG)) {
 			writer.addNodeContent((String) content);
 			return;

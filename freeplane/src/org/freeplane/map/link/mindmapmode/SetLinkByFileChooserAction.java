@@ -35,12 +35,11 @@ class SetLinkByFileChooserAction extends FreeplaneAction {
 	}
 
 	public void setLinkByFileChooser() {
-		final String relative = ((FileManager) getModeController()
-		    .getUrlManager()).getLinkByFileChooser(Controller.getController()
-		    .getMap());
+		final String relative = ((FileManager) getModeController().getUrlManager())
+		    .getLinkByFileChooser(Controller.getController().getMap());
 		if (relative != null) {
-			((MLinkController) getMModeController().getLinkController())
-			    .setLink(getMModeController().getSelectedNode(), relative);
+			((MLinkController) getMModeController().getLinkController()).setLink(
+			    getMModeController().getSelectedNode(), relative);
 		}
 	}
 }

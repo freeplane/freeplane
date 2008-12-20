@@ -45,8 +45,7 @@ class RemoveIconAction extends MultipleNodeAction implements IIconInformation {
 
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		if ((e.getModifiers() & ~ActionEvent.SHIFT_MASK
-		        & ~ActionEvent.CTRL_MASK & ActionEvent.ALT_MASK) != 0) {
+		if ((e.getModifiers() & ~ActionEvent.SHIFT_MASK & ~ActionEvent.CTRL_MASK & ActionEvent.ALT_MASK) != 0) {
 			removeIcon(node, MindIcon.LAST);
 			return;
 		}
@@ -65,8 +64,8 @@ class RemoveIconAction extends MultipleNodeAction implements IIconInformation {
 	}
 
 	public KeyStroke getKeyStroke() {
-		return Tools.getKeyStroke(Controller.getResourceController()
-		    .getAdjustableProperty(getKeystrokeResourceName()));
+		return Tools.getKeyStroke(Controller.getResourceController().getAdjustableProperty(
+		    getKeystrokeResourceName()));
 	}
 
 	public String getKeystrokeResourceName() {
@@ -79,8 +78,7 @@ class RemoveIconAction extends MultipleNodeAction implements IIconInformation {
 
 			public void act() {
 				node.removeIcon(position);
-				getModeController().getMapController().nodeChanged(node,
-				    "icon", icon, null);
+				getModeController().getMapController().nodeChanged(node, "icon", icon, null);
 			}
 
 			public String getDescription() {
@@ -89,8 +87,7 @@ class RemoveIconAction extends MultipleNodeAction implements IIconInformation {
 
 			public void undo() {
 				node.addIcon(icon, position);
-				getModeController().getMapController().nodeChanged(node,
-				    "icon", null, icon);
+				getModeController().getMapController().nodeChanged(node, "icon", null, icon);
 			}
 		};
 		getMModeController().execute(actor);

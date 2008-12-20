@@ -31,7 +31,6 @@ import org.freeplane.controller.Controller;
 import org.freeplane.controller.views.IMapViewChangeListener;
 import org.freeplane.io.xml.n3.nanoxml.IXMLParser;
 import org.freeplane.io.xml.n3.nanoxml.IXMLReader;
-import org.freeplane.io.xml.n3.nanoxml.StdXMLParser;
 import org.freeplane.io.xml.n3.nanoxml.StdXMLReader;
 import org.freeplane.io.xml.n3.nanoxml.XMLElement;
 import org.freeplane.io.xml.n3.nanoxml.XMLException;
@@ -57,8 +56,8 @@ public class FilterController implements IMapViewChangeListener {
 
 	private static IFilter createTransparentFilter() {
 		if (FilterController.inactiveFilter == null) {
-			FilterController.inactiveFilter = new DefaultFilter(
-			    NoFilteringCondition.createCondition(), true, false);
+			FilterController.inactiveFilter = new DefaultFilter(NoFilteringCondition
+			    .createCondition(), true, false);
 		}
 		return FilterController.inactiveFilter;
 	}
@@ -75,8 +74,7 @@ public class FilterController implements IMapViewChangeListener {
 	private MapModel map;
 
 	public FilterController() {
-		Controller.getController().getMapViewManager()
-		    .addMapViewChangeListener(this);
+		Controller.getController().getMapViewManager().addMapViewChangeListener(this);
 		Controller.getController().addAction("showFilterToolbarAction",
 		    new ShowFilterToolbarAction());
 	}
@@ -84,10 +82,8 @@ public class FilterController implements IMapViewChangeListener {
 	public void afterMapClose(final MapView pOldMapView) {
 	}
 
-	public void afterMapViewChange(final MapView oldMapView,
-	                               final MapView newMapView) {
-		final MapModel newMap = newMapView != null ? newMapView.getModel()
-		        : null;
+	public void afterMapViewChange(final MapView oldMapView, final MapView newMapView) {
+		final MapModel newMap = newMapView != null ? newMapView.getModel() : null;
 		final FilterComposerDialog fd = getFilterToolbar().getFilterDialog();
 		if (fd != null) {
 			fd.mapChanged(newMap);
@@ -96,8 +92,7 @@ public class FilterController implements IMapViewChangeListener {
 		getFilterToolbar().mapChanged(newMap);
 	}
 
-	public void beforeMapViewChange(final MapView oldMapView,
-	                                final MapView newMapView) {
+	public void beforeMapViewChange(final MapView oldMapView, final MapView newMapView) {
 	}
 
 	ConditionRenderer getConditionRenderer() {
@@ -116,14 +111,11 @@ public class FilterController implements IMapViewChangeListener {
 	public FilterToolbar getFilterToolbar() {
 		if (filterToolbar == null) {
 			filterToolbar = new FilterToolbar();
-			filterConditionModel = (DefaultComboBoxModel) filterToolbar
-			    .getFilterConditionModel();
-			MindIcon.factory("AttributeExist", new ImageIcon(Controller
-			    .getResourceController().getResource(
-			        "images/showAttributes.gif")));
-			MindIcon.factory(NodeNoteBase.NODE_NOTE_ICON, new ImageIcon(
-			    Controller.getResourceController().getResource(
-			        "images/knotes.png")));
+			filterConditionModel = (DefaultComboBoxModel) filterToolbar.getFilterConditionModel();
+			MindIcon.factory("AttributeExist", new ImageIcon(Controller.getResourceController()
+			    .getResource("images/showAttributes.gif")));
+			MindIcon.factory(NodeNoteBase.NODE_NOTE_ICON, new ImageIcon(Controller
+			    .getResourceController().getResource("images/knotes.png")));
 			MindIcon.factory("encrypted");
 			MindIcon.factory("decrypted");
 			filterToolbar.initConditions();
@@ -137,8 +129,7 @@ public class FilterController implements IMapViewChangeListener {
 		return map;
 	}
 
-	public boolean isMapViewChangeAllowed(final MapView oldMapView,
-	                                      final MapView newMapView) {
+	public boolean isMapViewChangeAllowed(final MapView oldMapView, final MapView newMapView) {
 		return true;
 	}
 
@@ -152,9 +143,8 @@ public class FilterController implements IMapViewChangeListener {
 			final XMLElement loader = (XMLElement) parser.parse();
 			final Vector conditions = loader.getChildren();
 			for (int i = 0; i < conditions.size(); i++) {
-				filterConditionModel.addElement(FilterController
-				    .getConditionFactory().loadCondition(
-				        (XMLElement) conditions.get(i)));
+				filterConditionModel.addElement(FilterController.getConditionFactory()
+				    .loadCondition((XMLElement) conditions.get(i)));
 			}
 		}
 		catch (final XMLException e) {
@@ -164,8 +154,7 @@ public class FilterController implements IMapViewChangeListener {
 
 	void refreshMap() {
 		Controller.getController();
-		Controller.getModeController().getMapController()
-		    .refreshMap();
+		Controller.getModeController().getMapController().refreshMap();
 	}
 
 	public void saveConditions() {
@@ -180,8 +169,7 @@ public class FilterController implements IMapViewChangeListener {
 		saver.setName("filter_conditions");
 		final Writer writer = new FileWriter(pathToFilterFile);
 		for (int i = 0; i < filterConditionModel.getSize(); i++) {
-			final ICondition cond = (ICondition) filterConditionModel
-			    .getElementAt(i);
+			final ICondition cond = (ICondition) filterConditionModel.getElementAt(i);
 			cond.toXml(saver);
 		}
 		final XMLWriter xmlWriter = new XMLWriter(writer);
@@ -189,8 +177,7 @@ public class FilterController implements IMapViewChangeListener {
 		writer.close();
 	}
 
-	public void setFilterConditionModel(
-	                                    final DefaultComboBoxModel filterConditionModel) {
+	public void setFilterConditionModel(final DefaultComboBoxModel filterConditionModel) {
 		this.filterConditionModel = filterConditionModel;
 		filterToolbar.setFilterConditionModel(filterConditionModel);
 	}

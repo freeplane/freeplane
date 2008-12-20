@@ -44,8 +44,7 @@ public class SelectedViewCondition implements ICondition {
 
 	public boolean checkNode(final NodeModel node) {
 		Controller.getController();
-		final NodeView viewer = Controller.getModeController()
-		    .getNodeView(node);
+		final NodeView viewer = Controller.getModeController().getNodeView(node);
 		return viewer != null && viewer.isSelected();
 	}
 
@@ -60,8 +59,7 @@ public class SelectedViewCondition implements ICondition {
 	@Override
 	public String toString() {
 		if (SelectedViewCondition.description == null) {
-			SelectedViewCondition.description = Controller
-			    .getText("filter_selected_node_view");
+			SelectedViewCondition.description = Controller.getText("filter_selected_node_view");
 		}
 		return SelectedViewCondition.description;
 	}

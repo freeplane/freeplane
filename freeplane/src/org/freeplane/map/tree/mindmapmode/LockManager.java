@@ -38,8 +38,7 @@ class LockManager extends TimerTask {
 	final long lockUpdatePeriod = 4 * 60 * 1000;
 
 	private File getSemaphoreFile(final File mapFile) {
-		return new File(mapFile.getParent()
-		        + System.getProperty("file.separator") + "$~"
+		return new File(mapFile.getParent() + System.getProperty("file.separator") + "$~"
 		        + mapFile.getName() + "~");
 	}
 
@@ -66,8 +65,7 @@ class LockManager extends TimerTask {
 	@Override
 	public synchronized void run() {
 		if (lockedSemaphoreFile == null) {
-			System.err
-			    .println("unexpected: lockedSemaphoreFile is null upon lock update");
+			System.err.println("unexpected: lockedSemaphoreFile is null upon lock update");
 			return;
 		}
 		try {
@@ -85,11 +83,9 @@ class LockManager extends TimerTask {
 			return null;
 		}
 		try {
-			final BufferedReader semaphoreReader = new BufferedReader(
-			    new FileReader(semaphoreFile));
+			final BufferedReader semaphoreReader = new BufferedReader(new FileReader(semaphoreFile));
 			final String lockingUser = semaphoreReader.readLine();
-			final long lockTime = new Long(semaphoreReader.readLine())
-			    .longValue();
+			final long lockTime = new Long(semaphoreReader.readLine()).longValue();
 			final long timeDifference = System.currentTimeMillis() - lockTime;
 			if (timeDifference > lockSafetyPeriod) {
 				semaphoreReader.close();
@@ -112,10 +108,8 @@ class LockManager extends TimerTask {
 		return null;
 	}
 
-	private void writeSemaphoreFile(final File inSemaphoreFile)
-	        throws Exception {
-		FileOutputStream semaphoreOutputStream = new FileOutputStream(
-		    inSemaphoreFile);
+	private void writeSemaphoreFile(final File inSemaphoreFile) throws Exception {
+		FileOutputStream semaphoreOutputStream = new FileOutputStream(inSemaphoreFile);
 		FileLock lock = null;
 		try {
 			lock = semaphoreOutputStream.getChannel().tryLock();
@@ -131,8 +125,7 @@ class LockManager extends TimerTask {
 		}
 		semaphoreOutputStream.write(System.getProperty("user.name").getBytes());
 		semaphoreOutputStream.write('\n');
-		semaphoreOutputStream.write(String.valueOf(System.currentTimeMillis())
-		    .getBytes());
+		semaphoreOutputStream.write(String.valueOf(System.currentTimeMillis()).getBytes());
 		semaphoreOutputStream.close();
 		semaphoreOutputStream = null;
 		Tools.setHidden(inSemaphoreFile, true, /* synchro= */false);

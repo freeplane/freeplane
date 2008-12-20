@@ -31,8 +31,7 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 import deprecated.freemind.preferences.layout.OptionString;
 
-public class ThreeCheckBoxProperty extends PropertyBean implements
-        IPropertyControl {
+public class ThreeCheckBoxProperty extends PropertyBean implements IPropertyControl {
 	public static final String DON_T_TOUCH_VALUE = "don_t_touch";
 	protected static final int DON_T_TOUCH_VALUE_INT = 2;
 	static public final String FALSE_VALUE = "false";
@@ -93,8 +92,7 @@ public class ThreeCheckBoxProperty extends PropertyBean implements
 	}
 
 	public void layout(final DefaultFormBuilder builder) {
-		final JLabel label = builder.append(OptionString.getText(getLabel()),
-		    mButton);
+		final JLabel label = builder.append(OptionString.getText(getLabel()), mButton);
 		label.setToolTipText(OptionString.getText(getDescription()));
 	}
 
@@ -119,10 +117,9 @@ public class ThreeCheckBoxProperty extends PropertyBean implements
 	public void setValue(final String value) {
 		if (value == null
 		        || !(value.toLowerCase().equals(mTrueValue)
-		                || value.toLowerCase().equals(mFalseValue) || value
-		            .toLowerCase().equals(mDontTouchValue))) {
-			throw new IllegalArgumentException("Cannot set a boolean to "
-			        + value);
+		                || value.toLowerCase().equals(mFalseValue) || value.toLowerCase().equals(
+		            mDontTouchValue))) {
+			throw new IllegalArgumentException("Cannot set a boolean to " + value);
 		}
 		setState(transformString(value));
 	}

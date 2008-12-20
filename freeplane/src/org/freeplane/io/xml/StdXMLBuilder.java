@@ -93,17 +93,16 @@ public class StdXMLBuilder implements IXMLBuilder {
 	 * @throws java.lang.Exception
 	 *             If an exception occurred while processing the event.
 	 */
-	public void addAttribute(final String key, final String nsPrefix,
-	                         final String nsURI, final String value,
-	                         final String type) throws Exception {
+	public void addAttribute(final String key, final String nsPrefix, final String nsURI,
+	                         final String value, final String type) throws Exception {
 		String fullName = key;
 		if (nsPrefix != null) {
 			fullName = nsPrefix + ':' + key;
 		}
 		final IXMLElement top = (IXMLElement) stack.peek();
 		if (top.hasAttribute(fullName)) {
-			throw new XMLParseException(top.getSystemID(), top.getLineNr(),
-			    "Duplicate attribute: " + key);
+			throw new XMLParseException(top.getSystemID(), top.getLineNr(), "Duplicate attribute: "
+			        + key);
 		}
 		if (nsPrefix != null) {
 			top.setAttribute(fullName, nsURI, value);
@@ -127,8 +126,7 @@ public class StdXMLBuilder implements IXMLBuilder {
 	 * @param lineNr
 	 *            the line in the source where the element starts.
 	 */
-	public void addPCData(final Reader reader, final String systemID,
-	                      final int lineNr) {
+	public void addPCData(final Reader reader, final String systemID, final int lineNr) {
 		int bufSize = 2048;
 		int sizeRead = 0;
 		final StringBuffer str = new StringBuffer(bufSize);
@@ -175,8 +173,7 @@ public class StdXMLBuilder implements IXMLBuilder {
 	 *            been specified, or no URI is associated with nsPrefix, this
 	 *            parameter is null.
 	 */
-	public void elementAttributesProcessed(final String name,
-	                                       final String nsPrefix,
+	public void elementAttributesProcessed(final String name, final String nsPrefix,
 	                                       final String nsURI) {
 	}
 
@@ -194,8 +191,7 @@ public class StdXMLBuilder implements IXMLBuilder {
 	 *            been specified, or no URI is associated with nsPrefix, this
 	 *            parameter is null.
 	 */
-	public void endElement(final String name, final String nsPrefix,
-	                       final String nsURI) {
+	public void endElement(final String name, final String nsPrefix, final String nsURI) {
 		final IXMLElement elt = (IXMLElement) stack.pop();
 		if (elt.getChildrenCount() == 1) {
 			final IXMLElement child = elt.getChildAtIndex(0);
@@ -247,8 +243,7 @@ public class StdXMLBuilder implements IXMLBuilder {
 	 * @param reader
 	 *            to read the data from the PI.
 	 */
-	public void newProcessingInstruction(final String target,
-	                                     final Reader reader) {
+	public void newProcessingInstruction(final String target, final Reader reader) {
 	}
 
 	/**
@@ -283,15 +278,13 @@ public class StdXMLBuilder implements IXMLBuilder {
 	 * @param lineNr
 	 *            the line in the source where the element starts.
 	 */
-	public void startElement(final String name, final String nsPrefix,
-	                         final String nsURI, final String systemID,
-	                         final int lineNr) {
+	public void startElement(final String name, final String nsPrefix, final String nsURI,
+	                         final String systemID, final int lineNr) {
 		String fullName = name;
 		if (nsPrefix != null) {
 			fullName = nsPrefix + ':' + name;
 		}
-		final IXMLElement elt = prototype.createElement(fullName, nsURI,
-		    systemID, lineNr);
+		final IXMLElement elt = prototype.createElement(fullName, nsURI, systemID, lineNr);
 		last = elt;
 		if (stack.empty()) {
 			root = elt;

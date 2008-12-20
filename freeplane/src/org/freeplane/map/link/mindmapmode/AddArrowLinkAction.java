@@ -57,16 +57,14 @@ class AddArrowLinkAction extends FreeplaneAction {
 			private ArrowLinkModel arrowLink;
 
 			public void act() {
-				NodeLinks nodeLinks = (NodeLinks) source
-				    .getExtension(NodeLinks.class);
+				NodeLinks nodeLinks = (NodeLinks) source.getExtension(NodeLinks.class);
 				if (nodeLinks == null) {
 					nodeLinks = new NodeLinks();
 					source.addExtension(nodeLinks);
 				}
 				arrowLink = new ArrowLinkModel(source, targetID);
 				nodeLinks.addArrowlink(arrowLink);
-				source.getModeController().getMapController().nodeChanged(
-				    source);
+				source.getModeController().getMapController().nodeChanged(source);
 			}
 
 			public String getDescription() {
@@ -74,11 +72,9 @@ class AddArrowLinkAction extends FreeplaneAction {
 			}
 
 			public void undo() {
-				final NodeLinks nodeLinks = (NodeLinks) source
-				    .getExtension(NodeLinks.class);
+				final NodeLinks nodeLinks = (NodeLinks) source.getExtension(NodeLinks.class);
 				nodeLinks.removeArrowlink(arrowLink);
-				source.getModeController().getMapController().nodeChanged(
-				    source);
+				source.getModeController().getMapController().nodeChanged(source);
 			}
 		};
 		getMModeController().execute(actor);

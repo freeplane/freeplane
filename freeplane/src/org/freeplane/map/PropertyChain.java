@@ -27,16 +27,14 @@ public class PropertyChain<V, T> implements IPropertyGetter<V, T> {
 	static public Integer NODE = new Integer(10);
 	final private TreeMap handlers = new TreeMap();
 
-	public IPropertyGetter addGetter(final Integer key,
-	                                 final IPropertyGetter getter) {
+	public IPropertyGetter addGetter(final Integer key, final IPropertyGetter getter) {
 		return (IPropertyGetter) handlers.put(key, getter);
 	}
 
 	public V getProperty(final T node) {
 		final Iterator iterator = handlers.values().iterator();
 		while (iterator.hasNext()) {
-			final IPropertyGetter<V, T> getter = (IPropertyGetter) iterator
-			    .next();
+			final IPropertyGetter<V, T> getter = (IPropertyGetter) iterator.next();
 			final V property = getter.getProperty(node);
 			if (property != null) {
 				return property;

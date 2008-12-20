@@ -30,7 +30,6 @@ import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.ModeController;
 import org.freeplane.modes.mindmapmode.MModeController;
 
-
 @ActionDescriptor(name = "accessories/plugins/ApplyFormatPlugin.properties_name", //
 locations = { "/menu_bar/format/change" }, //
 tooltip = "accessories/plugins/ApplyFormatPlugin.properties_documentation" //
@@ -46,11 +45,10 @@ public class ApplyFormatPlugin extends FreeplaneAction {
 		final ModeController modeController = getModeController();
 		final NodeModel focussed = modeController.getSelectedNode();
 		final List selected = modeController.getSelectedNodes();
-		final Pattern nodePattern = StylePatternFactory
-		    .createPatternFromSelected(focussed, selected);
-		final ChooseFormatPopupDialog formatDialog = new ChooseFormatPopupDialog(
-		    Controller.getController().getViewController().getJFrame(),
-		    (MModeController) modeController,
+		final Pattern nodePattern = StylePatternFactory.createPatternFromSelected(focussed,
+		    selected);
+		final ChooseFormatPopupDialog formatDialog = new ChooseFormatPopupDialog(Controller
+		    .getController().getViewController().getJFrame(), (MModeController) modeController,
 		    "accessories/plugins/ApplyFormatPlugin.dialog.title", nodePattern);
 		formatDialog.setModal(true);
 		formatDialog.setVisible(true);
@@ -58,8 +56,7 @@ public class ApplyFormatPlugin extends FreeplaneAction {
 			final Pattern pattern = formatDialog.getPattern();
 			for (final Iterator iter = selected.iterator(); iter.hasNext();) {
 				final NodeModel node = (NodeModel) iter.next();
-				getMModeController().getPatternController().applyPattern(node,
-				    pattern);
+				getMModeController().getPatternController().applyPattern(node, pattern);
 			}
 		}
 	}

@@ -33,9 +33,8 @@ class SelectBranchAction extends FreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		getMModeController().selectBranch(
-		    getMModeController().getSelectedView(), true /*
-																									 * = extend
-																									 */);
+		getMModeController().selectBranch(getMModeController().getSelectedView(), true /*
+																										 * = extend
+																										 */);
 	}
 }

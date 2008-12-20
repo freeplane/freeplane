@@ -68,24 +68,21 @@ public abstract class UIBuilder {
 		string2Element.put(this, rootNode);
 	}
 
-	protected void addComponent(final Container container,
-	                            final Component component, final int index) {
+	protected void addComponent(final Container container, final Component component,
+	                            final int index) {
 		container.add(component, index);
 	}
 
 	/**
 	 */
-	protected void addComponent(final DefaultMutableTreeNode childNode,
-	                            final int position) {
+	protected void addComponent(final DefaultMutableTreeNode childNode, final int position) {
 		int index;
-		final Container parentComponent = getParentComponent(childNode,
-		    Container.class);
+		final Container parentComponent = getParentComponent(childNode, Container.class);
 		if (parentComponent == null) {
 			return;
 		}
 		if (position == UIBuilder.AS_CHILD
-		        && ((DefaultMutableTreeNode) childNode.getParent())
-		            .getUserObject() instanceof Container) {
+		        && ((DefaultMutableTreeNode) childNode.getParent()).getUserObject() instanceof Container) {
 			index = getParentComponentCount(parentComponent) - 1;
 		}
 		else {
@@ -107,8 +104,7 @@ public abstract class UIBuilder {
 		addComponent(parentComponent, component, index);
 	}
 
-	protected DefaultMutableTreeNode addElement(final Object relativeKey,
-	                                            final Object element,
+	protected DefaultMutableTreeNode addElement(final Object relativeKey, final Object element,
 	                                            final int position) {
 		final DefaultMutableTreeNode relativeNode = getNode(relativeKey);
 		final DefaultMutableTreeNode node = new Node(element);
@@ -119,8 +115,8 @@ public abstract class UIBuilder {
 		return node;
 	}
 
-	protected void addElement(final Object relativeKey, final Object element,
-	                          final Object key, final int position) {
+	protected void addElement(final Object relativeKey, final Object element, final Object key,
+	                          final int position) {
 		final DefaultMutableTreeNode existingNode = get(key);
 		if (existingNode != null) {
 			throw new RuntimeException(key.toString() + " added twice");
@@ -144,8 +140,7 @@ public abstract class UIBuilder {
 				final DefaultMutableTreeNode parent = (DefaultMutableTreeNode) relativeNode
 				    .getParent();
 				if (parent == null) {
-					throw new RuntimeException(
-					    "relative node has no parent element");
+					throw new RuntimeException("relative node has no parent element");
 				}
 				final int index = parent.getIndex(relativeNode);
 				parent.insert(node, index);
@@ -155,8 +150,7 @@ public abstract class UIBuilder {
 				final DefaultMutableTreeNode parent = (DefaultMutableTreeNode) relativeNode
 				    .getParent();
 				if (parent == null) {
-					throw new RuntimeException(
-					    "relative node has no parent element");
+					throw new RuntimeException("relative node has no parent element");
 				}
 				final int index = parent.getIndex(relativeNode);
 				parent.insert(node, index + 1);
@@ -181,13 +175,11 @@ public abstract class UIBuilder {
 		return (DefaultMutableTreeNode) object;
 	}
 
-	protected Component getChildComponent(final Container parentComponent,
-	                                      final int index) {
+	protected Component getChildComponent(final Container parentComponent, final int index) {
 		return parentComponent.getComponent(index);
 	}
 
-	protected Container getContainer(final DefaultMutableTreeNode node,
-	                                 final Class clazz) {
+	protected Container getContainer(final DefaultMutableTreeNode node, final Class clazz) {
 		if (node == null) {
 			return null;
 		}
@@ -199,8 +191,7 @@ public abstract class UIBuilder {
 	}
 
 	protected DefaultMutableTreeNode getNode(final Object key) {
-		final DefaultMutableTreeNode node = ((DefaultMutableTreeNode) string2Element
-		    .get(key));
+		final DefaultMutableTreeNode node = ((DefaultMutableTreeNode) string2Element.get(key));
 		if (node == null) {
 			Logger.global.warning(key + " not found");
 		}
@@ -210,10 +201,8 @@ public abstract class UIBuilder {
 	/**
 	 * @param clazz
 	 */
-	private Container getParentComponent(final DefaultMutableTreeNode child,
-	                                     final Class clazz) {
-		final DefaultMutableTreeNode parent = (DefaultMutableTreeNode) child
-		    .getParent();
+	private Container getParentComponent(final DefaultMutableTreeNode child, final Class clazz) {
+		final DefaultMutableTreeNode parent = (DefaultMutableTreeNode) child.getParent();
 		return getContainer(parent, clazz);
 	}
 
@@ -222,8 +211,7 @@ public abstract class UIBuilder {
 	}
 
 	private Component getPrevious(final DefaultMutableTreeNode childNode) {
-		final DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) childNode
-		    .getParent();
+		final DefaultMutableTreeNode parentNode = (DefaultMutableTreeNode) childNode.getParent();
 		if (parentNode == null || parentNode.getUserObject() == null) {
 			return null;
 		}
@@ -239,14 +227,12 @@ public abstract class UIBuilder {
 	 */
 	private Component getPrevious(final TreeNode parentNode, final int last) {
 		for (int i = last; i >= 0; i--) {
-			final DefaultMutableTreeNode child = (DefaultMutableTreeNode) parentNode
-			    .getChildAt(i);
+			final DefaultMutableTreeNode child = (DefaultMutableTreeNode) parentNode.getChildAt(i);
 			final Object userObject = child.getUserObject();
 			if (userObject instanceof Component) {
 				return (Component) userObject;
 			}
-			final Component childComponent = getPrevious(child, child
-			    .getChildCount() - 1);
+			final Component childComponent = getPrevious(child, child.getChildCount() - 1);
 			if (childComponent != null) {
 				return childComponent;
 			}
@@ -269,8 +255,7 @@ public abstract class UIBuilder {
 		}
 		final Enumeration children = node.children();
 		while (children.hasMoreElements()) {
-			final DefaultMutableTreeNode child = (DefaultMutableTreeNode) children
-			    .nextElement();
+			final DefaultMutableTreeNode child = (DefaultMutableTreeNode) children.nextElement();
 			final Object userObject = child.getUserObject();
 			if (userObject instanceof Component) {
 				parentComponent.remove((Component) userObject);
@@ -308,12 +293,10 @@ public abstract class UIBuilder {
 	}
 
 	public void removeElement(final Object key) {
-		final DefaultMutableTreeNode node = ((DefaultMutableTreeNode) string2Element
-		    .remove(key));
+		final DefaultMutableTreeNode node = ((DefaultMutableTreeNode) string2Element.remove(key));
 		if (node != null) {
 			removeChildKeys((Node) node);
-			final Container parentComponent = getParentComponent(node,
-			    Container.class);
+			final Container parentComponent = getParentComponent(node, Container.class);
 			if (parentComponent == null) {
 				return;
 			}

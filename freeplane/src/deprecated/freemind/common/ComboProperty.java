@@ -38,20 +38,18 @@ public class ComboProperty extends PropertyBean implements IPropertyControl {
 	JComboBox mComboBox = new JComboBox();
 	private Vector possibleValues;
 
-	public ComboProperty(final String description, final String label,
-	                     final List possibles, final List possibleTranslations) {
+	public ComboProperty(final String description, final String label, final List possibles,
+	                     final List possibleTranslations) {
 		this.description = description;
 		this.label = label;
 		fillPossibleValues(possibles);
-		mComboBox.setModel(new DefaultComboBoxModel(new Vector(
-		    possibleTranslations)));
+		mComboBox.setModel(new DefaultComboBoxModel(new Vector(possibleTranslations)));
 	}
 
 	/**
 	 * @param pTranslator
 	 */
-	public ComboProperty(final String description, final String label,
-	                     final String[] possibles) {
+	public ComboProperty(final String description, final String label, final String[] possibles) {
 		super();
 		this.description = description;
 		this.label = label;
@@ -69,14 +67,12 @@ public class ComboProperty extends PropertyBean implements IPropertyControl {
 		});
 	}
 
-	public ComboProperty(final String description, final String label,
-	                     final String[] possibles,
+	public ComboProperty(final String description, final String label, final String[] possibles,
 	                     final List possibleTranslations) {
 		this.description = description;
 		this.label = label;
 		fillPossibleValues(possibles);
-		mComboBox.setModel(new DefaultComboBoxModel(new Vector(
-		    possibleTranslations)));
+		mComboBox.setModel(new DefaultComboBoxModel(new Vector(possibleTranslations)));
 	}
 
 	/**
@@ -107,8 +103,7 @@ public class ComboProperty extends PropertyBean implements IPropertyControl {
 	}
 
 	public void layout(final DefaultFormBuilder builder) {
-		final JLabel label = builder.append(OptionString.getText(getLabel()),
-		    mComboBox);
+		final JLabel label = builder.append(OptionString.getText(getLabel()), mComboBox);
 		label.setToolTipText(OptionString.getText(getDescription()));
 	}
 
@@ -122,9 +117,8 @@ public class ComboProperty extends PropertyBean implements IPropertyControl {
 			mComboBox.setSelectedIndex(possibleValues.indexOf(value));
 		}
 		else {
-			System.err.println("Can't set the value:" + value
-			        + " into the combo box " + getLabel() + "/"
-			        + getDescription());
+			System.err.println("Can't set the value:" + value + " into the combo box " + getLabel()
+			        + "/" + getDescription());
 			if (mComboBox.getModel().getSize() > 0) {
 				mComboBox.setSelectedIndex(0);
 			}
@@ -137,10 +131,8 @@ public class ComboProperty extends PropertyBean implements IPropertyControl {
 	 * should call this method only shortly before setting the value with
 	 * setValue.
 	 */
-	public void updateComboBoxEntries(final List possibles,
-	                                  final List possibleTranslations) {
-		mComboBox.setModel(new DefaultComboBoxModel(new Vector(
-		    possibleTranslations)));
+	public void updateComboBoxEntries(final List possibles, final List possibleTranslations) {
+		mComboBox.setModel(new DefaultComboBoxModel(new Vector(possibleTranslations)));
 		fillPossibleValues(possibles);
 		if (possibles.size() > 0) {
 			mComboBox.setSelectedIndex(0);

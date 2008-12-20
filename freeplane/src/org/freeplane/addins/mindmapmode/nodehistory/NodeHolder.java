@@ -34,21 +34,6 @@ import org.freeplane.modes.ModeController;
  * 13.12.2008
  */
 class NodeHolder {
-	@Override
-    public boolean equals(Object obj) {
-		if(! (obj instanceof NodeHolder)){
-			return false;
-		}
-		NodeHolder nodeHolder = (NodeHolder) obj;
-		return nodeHolder.mMapView.get() == mMapView.get() && nodeHolder.mNodeId.equals(mNodeId);
-    }
-
-	@Override
-    public int hashCode() {
-		final MapView mapView = mMapView.get();
-		return mapView != null ? mapView.hashCode() * 37  : 0 + mNodeId.hashCode();
-    }
-
 	public WeakReference<MapView> mMapView;
 	public String mNodeId;
 
@@ -58,12 +43,19 @@ class NodeHolder {
 		mMapView = new WeakReference(mapView);
 	}
 
+	@Override
+	public boolean equals(final Object obj) {
+		if (!(obj instanceof NodeHolder)) {
+			return false;
+		}
+		final NodeHolder nodeHolder = (NodeHolder) obj;
+		return nodeHolder.mMapView.get() == mMapView.get() && nodeHolder.mNodeId.equals(mNodeId);
+	}
+
 	MapView getMapView() {
-		MapView mapView = mMapView.get();
-		final Map mapViews = Controller.getController().getMapViewManager()
-		    .getMapViews();
-		for (final Iterator iter = mapViews.values().iterator(); iter
-		    .hasNext();) {
+		final MapView mapView = mMapView.get();
+		final Map mapViews = Controller.getController().getMapViewManager().getMapViews();
+		for (final Iterator iter = mapViews.values().iterator(); iter.hasNext();) {
 			final MapView m = (MapView) iter.next();
 			if (m == mapView) {
 				return mapView;
@@ -88,6 +80,12 @@ class NodeHolder {
 			return modeController.getModel().getNodeForID(mNodeId);
 		}
 		return null;
+	}
+
+	@Override
+	public int hashCode() {
+		final MapView mapView = mMapView.get();
+		return mapView != null ? mapView.hashCode() * 37 : 0 + mNodeId.hashCode();
 	}
 
 	public boolean isIdentical(final NodeView pNode) {

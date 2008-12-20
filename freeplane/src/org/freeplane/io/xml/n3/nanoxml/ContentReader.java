@@ -54,8 +54,7 @@ class ContentReader extends Reader {
 	 * @param buffer
 	 *            data that has already been read from <code>reader</code>
 	 */
-	ContentReader(final IXMLReader reader, final IXMLEntityResolver resolver,
-	              final String buffer) {
+	ContentReader(final IXMLReader reader, final IXMLEntityResolver resolver, final String buffer) {
 		this.reader = reader;
 		this.resolver = resolver;
 		this.buffer = buffer;
@@ -125,8 +124,7 @@ class ContentReader extends Reader {
 	 *             if an error occurred reading the data
 	 */
 	@Override
-	public int read(final char[] outputBuffer, final int offset, int size)
-	        throws IOException {
+	public int read(final char[] outputBuffer, final int offset, int size) throws IOException {
 		try {
 			int charsRead = 0;
 			final int bufferLength = buffer.length();

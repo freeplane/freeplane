@@ -30,16 +30,10 @@ import org.freeplane.map.pattern.mindmapnode.StylePatternFactory;
 import org.freeplane.modes.UserInputListenerFactory;
 import org.freeplane.modes.mindmapmode.MModeController;
 
-
-
-@ActionDescriptor(
-	tooltip="accessories/plugins/ManagePatterns.properties_documentation", //
-	name="accessories/plugins/ManagePatterns.properties_name", //
-	keyStroke="keystroke_accessories/plugins/ManagePatterns_manage_patterns_dialog", //
-	locations= {"/menu_bar/format/patterns/manage"
-			,"/node_popup/patterns/manage"
-	}
-)
+@ActionDescriptor(tooltip = "accessories/plugins/ManagePatterns.properties_documentation", //
+name = "accessories/plugins/ManagePatterns.properties_name", //
+keyStroke = "keystroke_accessories/plugins/ManagePatterns_manage_patterns_dialog", //
+locations = { "/menu_bar/format/patterns/manage", "/node_popup/patterns/manage" })
 public class ManagePatterns extends FreeplaneAction {
 	/**
 	 *
@@ -48,29 +42,27 @@ public class ManagePatterns extends FreeplaneAction {
 		super();
 	}
 
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(final ActionEvent e) {
 		final MModeController mindMapController = (MModeController) getModeController();
 		final ManagePatternsPopupDialog formatDialog = new ManagePatternsPopupDialog(
-			mindMapController);
+		    mindMapController);
 		formatDialog.setModal(true);
 		formatDialog.setVisible(true);
 		if (formatDialog.getResult() == ChooseFormatPopupDialog.OK) {
 			try {
 				final MPatternController patternController = mindMapController
-				.getPatternController();
+				    .getPatternController();
 				final File patternFile = patternController.getPatternsFile();
-				StylePatternFactory.savePatterns(new FileWriter(patternFile),
-					formatDialog.getPatternList());
-				patternController.loadPatterns(patternController
-					.getPatternReader());
+				StylePatternFactory.savePatterns(new FileWriter(patternFile), formatDialog
+				    .getPatternList());
+				patternController.loadPatterns(patternController.getPatternReader());
 				patternController.createPatternSubMenu(mindMapController
-					.getUserInputListenerFactory().getMenuBuilder(),
-					UserInputListenerFactory.NODE_POPUP);
+				    .getUserInputListenerFactory().getMenuBuilder(),
+				    UserInputListenerFactory.NODE_POPUP);
 			}
 			catch (final Exception ex) {
 				JOptionPane.showMessageDialog(null, ex.getLocalizedMessage());
 			}
 		}
 	}
-
 }

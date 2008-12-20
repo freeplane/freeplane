@@ -49,18 +49,16 @@ class PageAction extends AbstractPrintAction {
 		if (!getPrintController().acquirePrinterJobAndPageFormat()) {
 			return;
 		}
-		final JDialog dialog = new JDialog(Controller.getController()
-		    .getViewController().getJFrame(), Controller
-		    .getText("printing_settings"), /*
-																														 * modal=
-																														 */
+		final JDialog dialog = new JDialog(Controller.getController().getViewController()
+		    .getJFrame(), Controller.getText("printing_settings"), /*
+																															 * modal=
+																															 */
 		true);
-		final JCheckBox fitToPage = new JCheckBox(Controller
-		    .getText("fit_to_page"), Controller.getResourceController()
-		    .getBoolProperty("fit_to_page"));
+		final JCheckBox fitToPage = new JCheckBox(Controller.getText("fit_to_page"), Controller
+		    .getResourceController().getBoolProperty("fit_to_page"));
 		final JLabel userZoomL = new JLabel(Controller.getText("user_zoom"));
-		final JTextField userZoom = new JTextField(Controller
-		    .getResourceController().getProperty("user_zoom"), 3);
+		final JTextField userZoom = new JTextField(Controller.getResourceController().getProperty(
+		    "user_zoom"), 3);
 		userZoom.setEditable(!fitToPage.isSelected());
 		final JButton okButton = new JButton();
 		MenuBuilder.setLabelAndMnemonic(okButton, Controller.getText("ok"));
@@ -77,8 +75,7 @@ class PageAction extends AbstractPrintAction {
 		});
 		fitToPage.addItemListener(new ItemListener() {
 			public void itemStateChanged(final ItemEvent e) {
-				userZoom
-				    .setEditable(e.getStateChange() == ItemEvent.DESELECTED);
+				userZoom.setEditable(e.getStateChange() == ItemEvent.DESELECTED);
 			}
 		});
 		c.gridx = 0;
@@ -103,14 +100,12 @@ class PageAction extends AbstractPrintAction {
 		panel.setLayout(gridbag);
 		dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		dialog.setContentPane(panel);
-		dialog.setLocationRelativeTo(Controller.getController()
-		    .getViewController().getJFrame());
+		dialog.setLocationRelativeTo(Controller.getController().getViewController().getJFrame());
 		dialog.getRootPane().setDefaultButton(okButton);
 		dialog.pack();
 		dialog.setVisible(true);
 		if (eventSource.getValue() == 1) {
-			Controller.getResourceController().setProperty("user_zoom",
-			    userZoom.getText());
+			Controller.getResourceController().setProperty("user_zoom", userZoom.getText());
 			Controller.getResourceController().setProperty("fit_to_page",
 			    (fitToPage.isSelected() ? "true" : "false"));
 		}
@@ -118,19 +113,16 @@ class PageAction extends AbstractPrintAction {
 			return;
 		}
 		final PrintController printController = getPrintController();
-		printController.setPageFormat(printController.getPrinterJob()
-		    .pageDialog(printController.getPageFormat()));
+		printController.setPageFormat(printController.getPrinterJob().pageDialog(
+		    printController.getPageFormat()));
 		if (printController.getPageFormat().getOrientation() == PageFormat.LANDSCAPE) {
-			Controller.getResourceController().setProperty("page_orientation",
-			    "landscape");
+			Controller.getResourceController().setProperty("page_orientation", "landscape");
 		}
 		else if (printController.getPageFormat().getOrientation() == PageFormat.PORTRAIT) {
-			Controller.getResourceController().setProperty("page_orientation",
-			    "portrait");
+			Controller.getResourceController().setProperty("page_orientation", "portrait");
 		}
 		else if (printController.getPageFormat().getOrientation() == PageFormat.REVERSE_LANDSCAPE) {
-			Controller.getResourceController().setProperty("page_orientation",
-			    "reverse_landscape");
+			Controller.getResourceController().setProperty("page_orientation", "reverse_landscape");
 		}
 	}
 }

@@ -58,15 +58,12 @@ public class BezierEdgeView extends EdgeView {
 	private void update() {
 		final int sign = (getTarget().isLeft()) ? -1 : 1;
 		int sourceSign = 1;
-		if (getSource().isRoot()
-		        && !VerticalRootNodeViewLayout.USE_COMMON_OUT_POINT_FOR_ROOT_NODE) {
+		if (getSource().isRoot() && !VerticalRootNodeViewLayout.USE_COMMON_OUT_POINT_FOR_ROOT_NODE) {
 			sourceSign = 0;
 		}
-		final int xctrl = getMap().getZoomed(
-		    sourceSign * sign * BezierEdgeView.XCTRL);
-		final int childXctrl = getMap().getZoomed(
-		    -1 * sign * BezierEdgeView.CHILD_XCTRL);
-		graph.setCurve(start.x, start.y, start.x + xctrl, start.y, end.x
-		        + childXctrl, end.y, end.x, end.y);
+		final int xctrl = getMap().getZoomed(sourceSign * sign * BezierEdgeView.XCTRL);
+		final int childXctrl = getMap().getZoomed(-1 * sign * BezierEdgeView.CHILD_XCTRL);
+		graph.setCurve(start.x, start.y, start.x + xctrl, start.y, end.x + childXctrl, end.y,
+		    end.x, end.y);
 	}
 }

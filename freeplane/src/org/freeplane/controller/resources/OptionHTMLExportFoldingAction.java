@@ -27,7 +27,6 @@ import org.freeplane.controller.Controller;
 
 class OptionHTMLExportFoldingAction extends AbstractAction {
 	public void actionPerformed(final ActionEvent e) {
-		Controller.getResourceController().setProperty("html_export_folding",
-		    e.getActionCommand());
+		Controller.getResourceController().setProperty("html_export_folding", e.getActionCommand());
 	}
 }

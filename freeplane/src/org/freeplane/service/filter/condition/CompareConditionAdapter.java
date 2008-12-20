@@ -39,12 +39,10 @@ abstract class CompareConditionAdapter extends NodeCondition {
 	public void attributesToXml(final XMLElement child) {
 		super.attributesToXml(child);
 		child.setAttribute(CompareConditionAdapter.VALUE, conditionValue);
-		child.setAttribute(CompareConditionAdapter.IGNORE_CASE, Tools
-		    .BooleanToXml(ignoreCase));
+		child.setAttribute(CompareConditionAdapter.IGNORE_CASE, Tools.BooleanToXml(ignoreCase));
 	}
 
-	protected int compareTo(final String nodeValue)
-	        throws NumberFormatException {
+	protected int compareTo(final String nodeValue) throws NumberFormatException {
 		try {
 			final int i2 = Integer.parseInt(conditionValue);
 			final int i1 = Integer.parseInt(nodeValue);
@@ -57,35 +55,31 @@ abstract class CompareConditionAdapter extends NodeCondition {
 			d2 = Double.parseDouble(conditionValue);
 		}
 		catch (final NumberFormatException fne) {
-			return ignoreCase ? nodeValue.compareToIgnoreCase(conditionValue)
-			        : nodeValue.compareTo(conditionValue);
+			return ignoreCase ? nodeValue.compareToIgnoreCase(conditionValue) : nodeValue
+			    .compareTo(conditionValue);
 		};
 		final double d1 = Double.parseDouble(nodeValue);
 		return Double.compare(d1, d2);
 	}
 
-	public String createDescription(final String attribute,
-	                                final int comparationResult,
+	public String createDescription(final String attribute, final int comparationResult,
 	                                final boolean succeed) {
 		String simpleCondition;
 		switch (comparationResult) {
 			case -1:
-				simpleCondition = succeed ? ConditionFactory.FILTER_LT
-				        : ConditionFactory.FILTER_GE;
+				simpleCondition = succeed ? ConditionFactory.FILTER_LT : ConditionFactory.FILTER_GE;
 				break;
 			case 0:
-				simpleCondition = Controller
-				    .getText(succeed ? ConditionFactory.FILTER_IS_EQUAL_TO
-				            : ConditionFactory.FILTER_IS_NOT_EQUAL_TO);
+				simpleCondition = Controller.getText(succeed ? ConditionFactory.FILTER_IS_EQUAL_TO
+				        : ConditionFactory.FILTER_IS_NOT_EQUAL_TO);
 				break;
 			case 1:
-				simpleCondition = succeed ? ConditionFactory.FILTER_GT
-				        : ConditionFactory.FILTER_LE;
+				simpleCondition = succeed ? ConditionFactory.FILTER_GT : ConditionFactory.FILTER_LE;
 				break;
 			default:
 				throw new IllegalArgumentException();
 		}
-		return ConditionFactory.createDescription(attribute, simpleCondition,
-		    conditionValue, ignoreCase);
+		return ConditionFactory.createDescription(attribute, simpleCondition, conditionValue,
+		    ignoreCase);
 	}
 }

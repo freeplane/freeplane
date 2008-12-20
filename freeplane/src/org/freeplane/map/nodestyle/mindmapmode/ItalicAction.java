@@ -43,14 +43,13 @@ class ItalicAction extends MultipleNodeAction {
 
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel selected) {
-		((MNodeStyleController) super.getMModeController()
-		    .getNodeStyleController()).setItalic(selected, italic);
+		((MNodeStyleController) super.getMModeController().getNodeStyleController()).setItalic(
+		    selected, italic);
 	}
 
 	boolean isItalic() {
 		final NodeModel node = super.getMModeController().getSelectedNode();
-		return super.getMModeController().getNodeStyleController().isItalic(
-		    node);
+		return super.getMModeController().getNodeStyleController().isItalic(node);
 	}
 
 	@Override

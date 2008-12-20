@@ -58,8 +58,7 @@ public class MNoteController extends NoteController {
 
 		public void actionPerformed(final ActionEvent e) {
 			if (getPositionToRecover() != null) {
-				mSplitPane
-				    .setDividerLocation(getPositionToRecover().intValue());
+				mSplitPane.setDividerLocation(getPositionToRecover().intValue());
 				setPositionToRecover(null);
 			}
 			getModeController().getMapView().getSelected().requestFocus();
@@ -91,13 +90,10 @@ public class MNoteController extends NoteController {
 		}
 
 		@Override
-		protected boolean processKeyBinding(final KeyStroke ks,
-		                                    final KeyEvent e,
-		                                    final int condition,
-		                                    final boolean pressed) {
+		protected boolean processKeyBinding(final KeyStroke ks, final KeyEvent e,
+		                                    final int condition, final boolean pressed) {
 			return super.processKeyBinding(ks, e, condition, pressed)
-			        || e.getKeyChar() == KeyEvent.VK_SPACE
-			        || e.getKeyChar() == KeyEvent.VK_ALT;
+			        || e.getKeyChar() == KeyEvent.VK_SPACE || e.getKeyChar() == KeyEvent.VK_ALT;
 		}
 	}
 
@@ -117,12 +113,12 @@ public class MNoteController extends NoteController {
 	 */
 	public MNoteController(final MModeController modeController) {
 		super(modeController);
-		modeController.addAction("selectNoteAction", new SelectNoteAction(this,
+		modeController.addAction("selectNoteAction",
+		    new SelectNoteAction(this, getModeController()));
+		modeController.addAction("showHideNoteAction", new ShowHideNoteAction(this,
 		    getModeController()));
-		modeController.addAction("showHideNoteAction", new ShowHideNoteAction(
-		    this, getModeController()));
-		modeController.addAction("removeNoteAction", new RemoveNoteAction(this,
-		    getModeController()));
+		modeController.addAction("removeNoteAction",
+		    new RemoveNoteAction(this, getModeController()));
 	}
 
 	SHTMLPanel getHtmlEditorPanel() {
@@ -130,11 +126,9 @@ public class MNoteController extends NoteController {
 			SHTMLPanel.setResources(new TextResources() {
 				public String getString(String pKey) {
 					pKey = "simplyhtml." + pKey;
-					String resourceString = Controller.getResourceController()
-					    .getText(pKey, null);
+					String resourceString = Controller.getResourceController().getText(pKey, null);
 					if (resourceString == null) {
-						resourceString = Controller.getResourceController()
-						    .getProperty(pKey);
+						resourceString = Controller.getResourceController().getProperty(pKey);
 					}
 					return resourceString;
 				}
@@ -243,8 +237,8 @@ public class MNoteController extends NoteController {
 		final SouthPanel southPanel = new SouthPanel();
 		southPanel.add(noteViewerComponent, BorderLayout.CENTER);
 		noteViewerComponent.setVisible(true);
-		mSplitPane = Controller.getController().getViewController()
-		    .insertComponentIntoSplitPane(southPanel);
+		mSplitPane = Controller.getController().getViewController().insertComponentIntoSplitPane(
+		    southPanel);
 		southPanel.revalidate();
 	}
 
@@ -262,15 +256,11 @@ public class MNoteController extends NoteController {
 		noteManager = new NoteManager(this);
 		noteViewerComponent = getHtmlEditorPanel();
 		final Action jumpToMapAction = new JumpToMapAction();
-		final String keystroke = Controller
-		    .getResourceController()
-		    .getAdjustableProperty(
-		        "keystroke_accessories/plugins/NodeNote_jumpto.keystroke.alt_N");
-		noteViewerComponent.getInputMap(
-		    JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
+		final String keystroke = Controller.getResourceController().getAdjustableProperty(
+		    "keystroke_accessories/plugins/NodeNote_jumpto.keystroke.alt_N");
+		noteViewerComponent.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
 		    KeyStroke.getKeyStroke(keystroke), "jumpToMapAction");
-		noteViewerComponent.getActionMap().put("jumpToMapAction",
-		    jumpToMapAction);
+		noteViewerComponent.getActionMap().put("jumpToMapAction", jumpToMapAction);
 		if (shouldUseSplitPane()) {
 			showNotesPanel();
 		}

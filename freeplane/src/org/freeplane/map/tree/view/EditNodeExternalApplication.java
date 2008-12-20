@@ -35,8 +35,7 @@ public class EditNodeExternalApplication extends EditNodeBase {
 	final private KeyEvent firstEvent;
 
 	public EditNodeExternalApplication(final NodeView node, final String text,
-	                                   final KeyEvent firstEvent,
-	                                   final ModeController controller,
+	                                   final KeyEvent firstEvent, final ModeController controller,
 	                                   final IEditControl editControl) {
 		super(node, text, controller, editControl);
 		this.firstEvent = firstEvent;
@@ -52,19 +51,16 @@ public class EditNodeExternalApplication extends EditNodeBase {
 			public void run() {
 				FileWriter writer = null;
 				try {
-					final File temporaryFile = File.createTempFile("tmm",
-					    ".html");
+					final File temporaryFile = File.createTempFile("tmm", ".html");
 					writer = new FileWriter(temporaryFile);
 					writer.write(EditNodeExternalApplication.this.text);
 					writer.close();
-					final String htmlEditingCommand = Controller
-					    .getResourceController().getProperty(
-					        "html_editing_command");
-					final String expandedHtmlEditingCommand = new MessageFormat(
-					    htmlEditingCommand).format(new String[] { temporaryFile
-					    .toString() });
-					final Process htmlEditorProcess = Runtime.getRuntime()
-					    .exec(expandedHtmlEditingCommand);
+					final String htmlEditingCommand = Controller.getResourceController()
+					    .getProperty("html_editing_command");
+					final String expandedHtmlEditingCommand = new MessageFormat(htmlEditingCommand)
+					    .format(new String[] { temporaryFile.toString() });
+					final Process htmlEditorProcess = Runtime.getRuntime().exec(
+					    expandedHtmlEditingCommand);
 					htmlEditorProcess.waitFor();
 					final String content = Tools.getFile(temporaryFile);
 					if (content == null) {

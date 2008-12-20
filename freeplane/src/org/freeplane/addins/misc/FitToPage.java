@@ -33,11 +33,9 @@ import org.freeplane.map.tree.view.MapView;
  * @author foltin
  * @author Dimitry Polivaev
  */
-@ActionDescriptor(
-        tooltip="accessories/plugins/FitToPage.properties_documentation", //
-        name="accessories/plugins/FitToPage.properties_name", //
-        locations={"/menu_bar/view/zoom"}
-	)
+@ActionDescriptor(tooltip = "accessories/plugins/FitToPage.properties_documentation", //
+name = "accessories/plugins/FitToPage.properties_name", //
+locations = { "/menu_bar/view/zoom" })
 public class FitToPage extends FreeplaneAction {
 	private MapView view;
 
@@ -48,19 +46,7 @@ public class FitToPage extends FreeplaneAction {
 		super();
 	}
 
-	private void scroll() {
-		final Rectangle rect = view.getInnerBounds();
-		final Rectangle viewer = view.getVisibleRect();
-		view.scrollBy(shift(rect.x, rect.width, viewer.x, viewer.width), shift(
-		    rect.y, rect.height, viewer.y, viewer.height));
-	}
-
-	private int shift(final int coord1, final int size1, final int coord2,
-	                  final int size2) {
-		return coord1 - coord2 + (size1 - size2) / 2;
-	}
-
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(final ActionEvent e) {
 		view = Controller.getController().getMapView();
 		if (view == null) {
 			return;
@@ -73,10 +59,20 @@ public class FitToPage extends FreeplaneAction {
 		});
 	}
 
+	private void scroll() {
+		final Rectangle rect = view.getInnerBounds();
+		final Rectangle viewer = view.getVisibleRect();
+		view.scrollBy(shift(rect.x, rect.width, viewer.x, viewer.width), shift(rect.y, rect.height,
+		    viewer.y, viewer.height));
+	}
+
+	private int shift(final int coord1, final int size1, final int coord2, final int size2) {
+		return coord1 - coord2 + (size1 - size2) / 2;
+	}
+
 	private void zoom() {
 		final Rectangle rect = view.getInnerBounds();
-		final double oldZoom = Controller.getController().getMapView()
-		    .getZoom();
+		final double oldZoom = Controller.getController().getMapView().getZoom();
 		final JViewport viewPort = (JViewport) view.getParent();
 		final Dimension viewer = viewPort.getExtentSize();
 		double newZoom = viewer.width * oldZoom / (rect.width + 0.0);
@@ -84,8 +80,6 @@ public class FitToPage extends FreeplaneAction {
 		if (heightZoom < newZoom) {
 			newZoom = heightZoom;
 		}
-		Controller.getController().getViewController().setZoom(
-		    (float) (newZoom));
+		Controller.getController().getViewController().setZoom((float) (newZoom));
 	}
-
 }

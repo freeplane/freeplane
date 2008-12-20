@@ -61,21 +61,16 @@ public class EditNodeDialog extends EditNodeBase {
 			editorScrollPane
 			    .setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 			int preferredHeight = getNode().getHeight();
-			preferredHeight = Math.max(preferredHeight, Integer
-			    .parseInt(Controller.getResourceController().getProperty(
-			        "el__min_default_window_height")));
-			preferredHeight = Math.min(preferredHeight, Integer
-			    .parseInt(Controller.getResourceController().getProperty(
-			        "el__max_default_window_height")));
+			preferredHeight = Math.max(preferredHeight, Integer.parseInt(Controller
+			    .getResourceController().getProperty("el__min_default_window_height")));
+			preferredHeight = Math.min(preferredHeight, Integer.parseInt(Controller
+			    .getResourceController().getProperty("el__max_default_window_height")));
 			int preferredWidth = getNode().getWidth();
-			preferredWidth = Math.max(preferredWidth, Integer
-			    .parseInt(Controller.getResourceController().getProperty(
-			        "el__min_default_window_width")));
-			preferredWidth = Math.min(preferredWidth, Integer
-			    .parseInt(Controller.getResourceController().getProperty(
-			        "el__max_default_window_width")));
-			editorScrollPane.setPreferredSize(new Dimension(preferredWidth,
-			    preferredHeight));
+			preferredWidth = Math.max(preferredWidth, Integer.parseInt(Controller
+			    .getResourceController().getProperty("el__min_default_window_width")));
+			preferredWidth = Math.min(preferredWidth, Integer.parseInt(Controller
+			    .getResourceController().getProperty("el__max_default_window_width")));
+			editorScrollPane.setPreferredSize(new Dimension(preferredWidth, preferredHeight));
 			final JPanel panel = new JPanel();
 			final JButton okButton = new JButton();
 			final JButton cancelButton = new JButton();
@@ -85,17 +80,13 @@ public class EditNodeDialog extends EditNodeBase {
 			MenuBuilder.setLabelAndMnemonic(okButton, getText("ok"));
 			MenuBuilder.setLabelAndMnemonic(cancelButton, getText("cancel"));
 			MenuBuilder.setLabelAndMnemonic(splitButton, getText("split"));
-			MenuBuilder.setLabelAndMnemonic(enterConfirms,
-			    getText("enter_confirms"));
+			MenuBuilder.setLabelAndMnemonic(enterConfirms, getText("enter_confirms"));
 			if (EditNodeDialog.booleanHolderForConfirmState == null) {
 				EditNodeDialog.booleanHolderForConfirmState = new Tools.BooleanHolder();
-				EditNodeDialog.booleanHolderForConfirmState
-				    .setValue(enterConfirms.isSelected());
+				EditNodeDialog.booleanHolderForConfirmState.setValue(enterConfirms.isSelected());
 			}
 			else {
-				enterConfirms
-				    .setSelected(EditNodeDialog.booleanHolderForConfirmState
-				        .getValue());
+				enterConfirms.setSelected(EditNodeDialog.booleanHolderForConfirmState.getValue());
 			}
 			okButton.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent e) {
@@ -188,8 +179,8 @@ public class EditNodeDialog extends EditNodeBase {
 			buttonPane.add(cancelButton);
 			buttonPane.add(splitButton);
 			buttonPane.setMaximumSize(new Dimension(1000, 20));
-			if (Controller.getResourceController().getProperty(
-			    "el__buttons_position").equals("above")) {
+			if (Controller.getResourceController().getProperty("el__buttons_position").equals(
+			    "above")) {
 				panel.add(buttonPane);
 				panel.add(editorScrollPane);
 			}
@@ -248,8 +239,7 @@ public class EditNodeDialog extends EditNodeBase {
 		 */
 		@Override
 		protected void split() {
-			getEditControl().split(textArea.getText(),
-			    textArea.getCaretPosition());
+			getEditControl().split(textArea.getText(), textArea.getCaretPosition());
 			super.split();
 		}
 
@@ -268,10 +258,8 @@ public class EditNodeDialog extends EditNodeBase {
 	private static Tools.BooleanHolder booleanHolderForConfirmState;
 	final private KeyEvent firstEvent;
 
-	public EditNodeDialog(final NodeView node, final String text,
-	                      final KeyEvent firstEvent,
-	                      final ModeController controller,
-	                      final IEditControl editControl) {
+	public EditNodeDialog(final NodeView node, final String text, final KeyEvent firstEvent,
+	                      final ModeController controller, final IEditControl editControl) {
 		super(node, text, controller, editControl);
 		this.firstEvent = firstEvent;
 	}

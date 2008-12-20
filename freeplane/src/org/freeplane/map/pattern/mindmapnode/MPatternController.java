@@ -41,7 +41,6 @@ import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.ui.MenuBuilder;
 
-
 /**
  * @author Dimitry Polivaev
  */
@@ -54,9 +53,8 @@ public class MPatternController {
 	public MPatternController(final MModeController modeController) {
 		super();
 		this.modeController = modeController;
-		patternsFile = new File(Controller.getResourceController()
-		    .getFreemindUserDirectory(), Controller.getResourceController()
-		    .getProperty("patternsfile"));
+		patternsFile = new File(Controller.getResourceController().getFreemindUserDirectory(),
+		    Controller.getResourceController().getProperty("patternsfile"));
 		createActions();
 	}
 
@@ -93,40 +91,34 @@ public class MPatternController {
 			// repair old patterns:
 			final String repairTitle = "Repair patterns";
 			final File patternsFile = getPatternsFile();
-			final int result = JOptionPane
-			    .showConfirmDialog(
-			        null,
-			        "<html>The pattern file format has changed, <br>"
-			                + "and it seems, that your pattern file<br>"
-			                + "'"
-			                + patternsFile.getAbsolutePath()
-			                + "'<br> is formatted in the old way. <br>"
-			                + "Should I try to repair the pattern file <br>"
-			                + "(otherwise, you should update it by hand or delete it)?",
-			        repairTitle, JOptionPane.YES_NO_OPTION);
+			final int result = JOptionPane.showConfirmDialog(null,
+			    "<html>The pattern file format has changed, <br>"
+			            + "and it seems, that your pattern file<br>" + "'"
+			            + patternsFile.getAbsolutePath()
+			            + "'<br> is formatted in the old way. <br>"
+			            + "Should I try to repair the pattern file <br>"
+			            + "(otherwise, you should update it by hand or delete it)?", repairTitle,
+			    JOptionPane.YES_NO_OPTION);
 			if (result == JOptionPane.YES_OPTION) {
 				// try xslt script:
 				boolean success = false;
 				try {
-					loadPatterns(Tools.getUpdateReader(patternsFile,
-					    "patterns_updater.xslt"));
+					loadPatterns(Tools.getUpdateReader(patternsFile, "patterns_updater.xslt"));
 					// save patterns directly:
-					StylePatternFactory.savePatterns(new FileWriter(
-					    patternsFile), mPatternsList);
+					StylePatternFactory.savePatterns(new FileWriter(patternsFile), mPatternsList);
 					success = true;
 				}
 				catch (final Exception e) {
 					org.freeplane.main.Tools.logException(e);
 				}
 				if (success) {
-					JOptionPane.showMessageDialog(null,
-					    "Successfully repaired the pattern file.", repairTitle,
-					    JOptionPane.PLAIN_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Successfully repaired the pattern file.",
+					    repairTitle, JOptionPane.PLAIN_MESSAGE);
 				}
 				else {
 					JOptionPane.showMessageDialog(null,
-					    "An error occured repairing the pattern file.",
-					    repairTitle, JOptionPane.WARNING_MESSAGE);
+					    "An error occured repairing the pattern file.", repairTitle,
+					    JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		}
@@ -140,24 +132,22 @@ public class MPatternController {
 			patterns[i] = new ApplyPatternAction(modeController, actualPattern);
 			final PatternProperty patternIcon = actualPattern.getPatternIcon();
 			if (patternIcon != null && patternIcon.getValue() != null) {
-				patterns[i].putValue(Action.SMALL_ICON, MindIcon.factory(
-				    patternIcon.getValue()).getIcon());
+				patterns[i].putValue(Action.SMALL_ICON, MindIcon.factory(patternIcon.getValue())
+				    .getIcon());
 			}
 		}
 	}
 
 	/**
 	 */
-	public void createPatternSubMenu(final MenuBuilder builder,
-	                                 final String formatMenuString) {
+	public void createPatternSubMenu(final MenuBuilder builder, final String formatMenuString) {
 		final String group = formatMenuString + "/patterns/patterns";
 		builder.removeChildElements(group);
 		for (int i = 0; i < patterns.length; ++i) {
 			final JMenuItem item = new JMenuItem(patterns[i]);
 			builder.addMenuItem(group, item, MenuBuilder.AS_CHILD);
-			item.setAccelerator(KeyStroke.getKeyStroke(Controller
-			    .getResourceController().getAdjustableProperty(
-			        "keystroke_apply_pattern_" + (i + 1))));
+			item.setAccelerator(KeyStroke.getKeyStroke(Controller.getResourceController()
+			    .getAdjustableProperty("keystroke_apply_pattern_" + (i + 1))));
 		}
 	}
 
@@ -172,10 +162,8 @@ public class MPatternController {
 			reader = new FileReader(patternsFile);
 		}
 		else {
-			System.out.println("User patterns file " + patternsFile
-			        + " not found.");
-			reader = new InputStreamReader(modeController.getResource(
-			    "patterns.xml").openStream());
+			System.out.println("User patterns file " + patternsFile + " not found.");
+			reader = new InputStreamReader(modeController.getResource("patterns.xml").openStream());
 		}
 		return reader;
 	}

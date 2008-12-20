@@ -63,10 +63,8 @@ public class AttributeNotExistsCondition extends NodeCondition {
 
 	@Override
 	protected String createDesctiption() {
-		final String simpleCondition = Controller
-		    .getText(ConditionFactory.FILTER_DOES_NOT_EXIST);
-		return ConditionFactory.createDescription(attribute, simpleCondition,
-		    null, false);
+		final String simpleCondition = Controller.getText(ConditionFactory.FILTER_DOES_NOT_EXIST);
+		return ConditionFactory.createDescription(attribute, simpleCondition, null, false);
 	}
 
 	public void toXml(final XMLElement element) {

@@ -63,8 +63,7 @@ public class MapModel extends DefaultTreeModel implements IExtensionCollection {
 		mModeController = modeController;
 		nodes = new HashMap<String, NodeModel>();
 		registry = new MapRegistry(this, modeController);
-		filter = new DefaultFilter(NoFilteringCondition.createCondition(),
-		    true, false);
+		filter = new DefaultFilter(NoFilteringCondition.createCondition(), true, false);
 		if (root == null) {
 			root = new NodeModel(Controller.getText("new_mindmap"), this);
 			setRoot(root);
@@ -98,25 +97,20 @@ public class MapModel extends DefaultTreeModel implements IExtensionCollection {
 	}
 
 	@Override
-	protected void fireTreeNodesChanged(final Object source,
-	                                    final Object[] path,
-	                                    final int[] childIndices,
-	                                    final Object[] children) {
+	protected void fireTreeNodesChanged(final Object source, final Object[] path,
+	                                    final int[] childIndices, final Object[] children) {
 		final Object[] listeners = listenerList.getListenerList();
 		TreeModelEvent e = null;
-		e = fireTreeNodesChanged(source, path, childIndices, children,
-		    listeners, e);
+		e = fireTreeNodesChanged(source, path, childIndices, children, listeners, e);
 		final NodeModel node = (NodeModel) path[path.length - 1];
-		fireTreeNodesChanged(source, path, childIndices, children, node
-		    .getListeners().getListenerList(), e);
+		fireTreeNodesChanged(source, path, childIndices, children, node.getListeners()
+		    .getListenerList(), e);
 	}
 
-	protected TreeModelEvent fireTreeNodesChanged(final Object source,
-	                                              final Object[] path,
+	protected TreeModelEvent fireTreeNodesChanged(final Object source, final Object[] path,
 	                                              final int[] childIndices,
 	                                              final Object[] children,
-	                                              final Object[] listeners,
-	                                              TreeModelEvent e) {
+	                                              final Object[] listeners, TreeModelEvent e) {
 		for (int i = listeners.length - 2; i >= 0; i -= 2) {
 			if (listeners[i] == TreeModelListener.class) {
 				if (e == null) {
@@ -144,28 +138,23 @@ public class MapModel extends DefaultTreeModel implements IExtensionCollection {
 	 * @see EventListenerList
 	 */
 	@Override
-	protected void fireTreeNodesInserted(final Object source,
-	                                     final Object[] path,
-	                                     final int[] childIndices,
-	                                     final Object[] children) {
+	protected void fireTreeNodesInserted(final Object source, final Object[] path,
+	                                     final int[] childIndices, final Object[] children) {
 		for (int i = 0; i < children.length; i++) {
 			registryNodeRecursive((NodeModel) children[i]);
 		}
 		final Object[] listeners = listenerList.getListenerList();
 		TreeModelEvent e = null;
-		e = fireTreeNodesInserted(source, path, childIndices, children,
-		    listeners, e);
+		e = fireTreeNodesInserted(source, path, childIndices, children, listeners, e);
 		final NodeModel node = (NodeModel) path[path.length - 1];
-		fireTreeNodesInserted(source, path, childIndices, children, node
-		    .getListeners().getListenerList(), e);
+		fireTreeNodesInserted(source, path, childIndices, children, node.getListeners()
+		    .getListenerList(), e);
 	}
 
-	protected TreeModelEvent fireTreeNodesInserted(final Object source,
-	                                               final Object[] path,
+	protected TreeModelEvent fireTreeNodesInserted(final Object source, final Object[] path,
 	                                               final int[] childIndices,
 	                                               final Object[] children,
-	                                               final Object[] listeners,
-	                                               TreeModelEvent e) {
+	                                               final Object[] listeners, TreeModelEvent e) {
 		for (int i = listeners.length - 2; i >= 0; i -= 2) {
 			if (listeners[i] == TreeModelListener.class) {
 				if (e == null) {
@@ -178,28 +167,23 @@ public class MapModel extends DefaultTreeModel implements IExtensionCollection {
 	}
 
 	@Override
-	protected void fireTreeNodesRemoved(final Object source,
-	                                    final Object[] path,
-	                                    final int[] childIndices,
-	                                    final Object[] children) {
+	protected void fireTreeNodesRemoved(final Object source, final Object[] path,
+	                                    final int[] childIndices, final Object[] children) {
 		for (int i = 0; i < children.length; i++) {
 			unregistryNode((NodeModel) children[i]);
 		}
 		final Object[] listeners = listenerList.getListenerList();
 		TreeModelEvent e = null;
-		e = fireTreeNodesRemoved(source, path, childIndices, children,
-		    listeners, e);
+		e = fireTreeNodesRemoved(source, path, childIndices, children, listeners, e);
 		final NodeModel node = (NodeModel) path[path.length - 1];
-		fireTreeNodesRemoved(source, path, childIndices, children, node
-		    .getListeners().getListenerList(), e);
+		fireTreeNodesRemoved(source, path, childIndices, children, node.getListeners()
+		    .getListenerList(), e);
 	}
 
-	protected TreeModelEvent fireTreeNodesRemoved(final Object source,
-	                                              final Object[] path,
+	protected TreeModelEvent fireTreeNodesRemoved(final Object source, final Object[] path,
 	                                              final int[] childIndices,
 	                                              final Object[] children,
-	                                              final Object[] listeners,
-	                                              TreeModelEvent e) {
+	                                              final Object[] listeners, TreeModelEvent e) {
 		for (int i = listeners.length - 2; i >= 0; i -= 2) {
 			if (listeners[i] == TreeModelListener.class) {
 				if (e == null) {
@@ -212,25 +196,20 @@ public class MapModel extends DefaultTreeModel implements IExtensionCollection {
 	}
 
 	@Override
-	protected void fireTreeStructureChanged(final Object source,
-	                                        final Object[] path,
-	                                        final int[] childIndices,
-	                                        final Object[] children) {
+	protected void fireTreeStructureChanged(final Object source, final Object[] path,
+	                                        final int[] childIndices, final Object[] children) {
 		final Object[] listeners = listenerList.getListenerList();
 		TreeModelEvent e = null;
-		e = fireTreeStructureChanged(source, path, childIndices, children,
-		    listeners, e);
+		e = fireTreeStructureChanged(source, path, childIndices, children, listeners, e);
 		final NodeModel node = (NodeModel) path[path.length - 1];
-		fireTreeStructureChanged(source, path, childIndices, children, node
-		    .getListeners().getListenerList(), e);
+		fireTreeStructureChanged(source, path, childIndices, children, node.getListeners()
+		    .getListenerList(), e);
 	}
 
-	protected TreeModelEvent fireTreeStructureChanged(final Object source,
-	                                                  final Object[] path,
+	protected TreeModelEvent fireTreeStructureChanged(final Object source, final Object[] path,
 	                                                  final int[] childIndices,
 	                                                  final Object[] children,
-	                                                  final Object[] listeners,
-	                                                  TreeModelEvent e) {
+	                                                  final Object[] listeners, TreeModelEvent e) {
 		for (int i = listeners.length - 2; i >= 0; i -= 2) {
 			if (listeners[i] == TreeModelListener.class) {
 				if (e == null) {
@@ -256,8 +235,7 @@ public class MapModel extends DefaultTreeModel implements IExtensionCollection {
 				 * The prefix is to enable the id to be an ID in the sense of
 				 * XML/DTD.
 				 */
-				returnValue = prefix
-				        + Integer.toString(ran.nextInt(UNDEFINED_NODE_ID));
+				returnValue = prefix + Integer.toString(ran.nextInt(UNDEFINED_NODE_ID));
 			}
 		} while (nodes.get(returnValue) != null);
 		return returnValue;

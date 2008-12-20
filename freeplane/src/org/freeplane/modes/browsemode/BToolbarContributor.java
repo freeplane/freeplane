@@ -34,8 +34,7 @@ import org.freeplane.modes.ModeController;
 import org.freeplane.ui.MenuBuilder;
 import org.freeplane.ui.dialogs.PersistentEditableComboBox;
 
-public class BToolbarContributor implements IMenuContributor,
-        IMapTitleChangeListener {
+public class BToolbarContributor implements IMenuContributor, IMapTitleChangeListener {
 	private static final String BROWSE_URL_STORAGE_KEY = "browse_url_storage";
 	final private ModeController modeController;
 	private PersistentEditableComboBox urlfield = null;
@@ -46,8 +45,7 @@ public class BToolbarContributor implements IMenuContributor,
 		urlfield.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent e) {
 				final String urlText = urlfield.getText();
-				if ("".equals(urlText)
-				        || e.getActionCommand().equals("comboBoxEdited")) {
+				if ("".equals(urlText) || e.getActionCommand().equals("comboBoxEdited")) {
 					return;
 				}
 				try {
@@ -61,8 +59,7 @@ public class BToolbarContributor implements IMenuContributor,
 		});
 	}
 
-	public void setMapTitle(final String newMapTitle, final MapView mapView,
-	                        final MapModel model) {
+	public void setMapTitle(final String newMapTitle, final MapView mapView, final MapModel model) {
 		if (model == null) {
 			return;
 		}
@@ -81,8 +78,7 @@ public class BToolbarContributor implements IMenuContributor,
 	}
 
 	public void updateMenus(final MenuBuilder builder) {
-		builder.addComponent("/main_toolbar", new JLabel("URL:"),
-		    MenuBuilder.AS_CHILD);
+		builder.addComponent("/main_toolbar", new JLabel("URL:"), MenuBuilder.AS_CHILD);
 		builder.addComponent("/main_toolbar", urlfield, MenuBuilder.AS_CHILD);
 	}
 }

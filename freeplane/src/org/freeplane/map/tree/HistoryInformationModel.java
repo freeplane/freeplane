@@ -41,8 +41,7 @@ public class HistoryInformationModel {
 		lastModifiedAt = now;
 	}
 
-	public HistoryInformationModel(final Date createdAt,
-	                               final Date lastModifiedAt) {
+	public HistoryInformationModel(final Date createdAt, final Date lastModifiedAt) {
 		this.createdAt = createdAt.getTime();
 		this.lastModifiedAt = lastModifiedAt.getTime();
 	}

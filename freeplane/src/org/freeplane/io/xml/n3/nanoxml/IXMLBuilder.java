@@ -54,8 +54,8 @@ public interface IXMLBuilder {
 	 * @throws java.lang.Exception
 	 *             If an exception occurred while processing the event.
 	 */
-	public void addAttribute(String key, String nsPrefix, String nsURI,
-	                         String value, String type) throws Exception;
+	public void addAttribute(String key, String nsPrefix, String nsURI, String value, String type)
+	        throws Exception;
 
 	/**
 	 * This method is called when a PCDATA element is encountered. A Java reader
@@ -75,8 +75,7 @@ public interface IXMLBuilder {
 	 * @throws java.lang.Exception
 	 *             If an exception occurred while processing the event.
 	 */
-	public void addPCData(Reader reader, String systemID, int lineNr)
-	        throws Exception;
+	public void addPCData(Reader reader, String systemID, int lineNr) throws Exception;
 
 	/**
 	 * This method is called when the attributes of an XML element have been
@@ -96,8 +95,8 @@ public interface IXMLBuilder {
 	 * @throws java.lang.Exception
 	 *             If an exception occurred while processing the event.
 	 */
-	public void elementAttributesProcessed(String name, String nsPrefix,
-	                                       String nsURI) throws Exception;
+	public void elementAttributesProcessed(String name, String nsPrefix, String nsURI)
+	        throws Exception;
 
 	/**
 	 * This method is called when the end of an XML elemnt is encountered.
@@ -115,8 +114,7 @@ public interface IXMLBuilder {
 	 * @throws java.lang.Exception
 	 *             If an exception occurred while processing the event.
 	 */
-	public void endElement(String name, String nsPrefix, String nsURI)
-	        throws Exception;
+	public void endElement(String name, String nsPrefix, String nsURI) throws Exception;
 
 	/**
 	 * Returns the result of the building process. This method is called just
@@ -142,8 +140,7 @@ public interface IXMLBuilder {
 	 * @throws java.lang.Exception
 	 *             If an exception occurred while processing the event.
 	 */
-	public void newProcessingInstruction(String target, Reader reader)
-	        throws Exception;
+	public void newProcessingInstruction(String target, Reader reader) throws Exception;
 
 	/**
 	 * This method is called before the parser starts processing its input.
@@ -177,6 +174,6 @@ public interface IXMLBuilder {
 	 * @throws java.lang.Exception
 	 *             If an exception occurred while processing the event.
 	 */
-	public void startElement(String name, String nsPrefix, String nsURI,
-	                         String systemID, int lineNr) throws Exception;
+	public void startElement(String name, String nsPrefix, String nsURI, String systemID, int lineNr)
+	        throws Exception;
 }

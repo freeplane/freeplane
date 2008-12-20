@@ -26,8 +26,8 @@ import javax.swing.event.TableModelListener;
 
 import org.freeplane.service.filter.util.ISortedListModel;
 
-class AttributeRegistryComboBoxColumnModel extends AbstractListModel implements
-        TableModelListener, ComboBoxModel, ISortedListModel {
+class AttributeRegistryComboBoxColumnModel extends AbstractListModel implements TableModelListener,
+        ComboBoxModel, ISortedListModel {
 	final private AttributeRegistry model;
 	private Object selectedItem;
 
@@ -112,8 +112,7 @@ class AttributeRegistryComboBoxColumnModel extends AbstractListModel implements
 	 * java.lang.Object)
 	 */
 	public void replace(final Object oldO, final Object newO) {
-		model.getAttributeController().performReplaceAtributeName(
-		    oldO.toString(), newO.toString());
+		model.getAttributeController().performReplaceAtributeName(oldO.toString(), newO.toString());
 	}
 
 	/*

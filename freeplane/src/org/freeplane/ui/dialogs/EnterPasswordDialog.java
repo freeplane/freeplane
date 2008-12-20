@@ -62,8 +62,7 @@ public class EnterPasswordDialog extends JDialog {
 	/**
 	 * This is the default constructor
 	 */
-	public EnterPasswordDialog(final JFrame caller,
-	                           final boolean enterTwoPasswords) {
+	public EnterPasswordDialog(final JFrame caller, final boolean enterTwoPasswords) {
 		super(caller, "", true /* =modal */);
 		this.enterTwoPasswords = enterTwoPasswords;
 		initialize();
@@ -141,13 +140,11 @@ public class EnterPasswordDialog extends JDialog {
 			gridBagConstraints1.gridx = 0;
 			gridBagConstraints1.gridy = 1;
 			gridBagConstraints1.fill = java.awt.GridBagConstraints.HORIZONTAL;
-			jLabel.setText(Controller
-			    .getText("accessories/plugins/EncryptNode.properties_2"));
+			jLabel.setText(Controller.getText("accessories/plugins/EncryptNode.properties_2"));
 			gridBagConstraints2.gridx = 0;
 			gridBagConstraints2.gridy = 2;
 			gridBagConstraints2.fill = java.awt.GridBagConstraints.HORIZONTAL;
-			jLabel1.setText(Controller
-			    .getText("accessories/plugins/EncryptNode.properties_3"));
+			jLabel1.setText(Controller.getText("accessories/plugins/EncryptNode.properties_3"));
 			gridBagConstraints3.gridx = 1;
 			gridBagConstraints3.gridy = 1;
 			gridBagConstraints3.weightx = 1.0;
@@ -162,8 +159,7 @@ public class EnterPasswordDialog extends JDialog {
 			gridBagConstraints5.fill = java.awt.GridBagConstraints.HORIZONTAL;
 			gridBagConstraints5.anchor = java.awt.GridBagConstraints.CENTER;
 			gridBagConstraints5.insets = new java.awt.Insets(0, 0, 20, 0);
-			jLabel2.setText(Controller
-			    .getText("accessories/plugins/EncryptNode.properties_4"));
+			jLabel2.setText(Controller.getText("accessories/plugins/EncryptNode.properties_4"));
 			jLabel2.setToolTipText(Controller
 			    .getText("accessories/plugins/EncryptNode.properties_5"));
 			gridBagConstraints6.gridx = 0;
@@ -199,8 +195,7 @@ public class EnterPasswordDialog extends JDialog {
 					okPressed();
 				}
 			});
-			jOKButton.setText(Controller
-			    .getText("accessories/plugins/EncryptNode.properties_6"));
+			jOKButton.setText(Controller.getText("accessories/plugins/EncryptNode.properties_6"));
 		}
 		return jOKButton;
 	}
@@ -249,8 +244,7 @@ public class EnterPasswordDialog extends JDialog {
 	 * @return void
 	 */
 	private void initialize() {
-		this.setTitle(Controller
-		    .getText("accessories/plugins/EncryptNode.properties_0"));
+		this.setTitle(Controller.getText("accessories/plugins/EncryptNode.properties_0"));
 		this.setSize(300, 200);
 		this.setContentPane(getJContentPane());
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);

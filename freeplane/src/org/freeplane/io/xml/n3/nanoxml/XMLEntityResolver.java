@@ -54,8 +54,7 @@ public class XMLEntityResolver implements IXMLEntityResolver {
 	 * @param systemID
 	 *            the system ID of the entity.
 	 */
-	public void addExternalEntity(final String name, final String publicID,
-	                              final String systemID) {
+	public void addExternalEntity(final String name, final String publicID, final String systemID) {
 		if (!entities.containsKey(name)) {
 			entities.put(name, new String[] { publicID, systemID });
 		}
@@ -94,8 +93,7 @@ public class XMLEntityResolver implements IXMLEntityResolver {
 	 *            the name of the entity.
 	 * @return the reader, or null if the entity could not be resolved.
 	 */
-	public Reader getEntity(final IXMLReader xmlReader, final String name)
-	        throws XMLParseException {
+	public Reader getEntity(final IXMLReader xmlReader, final String name) throws XMLParseException {
 		final Object obj = entities.get(name);
 		if (obj == null) {
 			return null;
@@ -131,10 +129,8 @@ public class XMLEntityResolver implements IXMLEntityResolver {
 	 *            the system ID
 	 * @return the reader, or null if the reader could not be created/opened
 	 */
-	protected Reader openExternalEntity(final IXMLReader xmlReader,
-	                                    final String publicID,
-	                                    final String systemID)
-	        throws XMLParseException {
+	protected Reader openExternalEntity(final IXMLReader xmlReader, final String publicID,
+	                                    final String systemID) throws XMLParseException {
 		final String parentSystemID = xmlReader.getSystemID();
 		try {
 			return xmlReader.openStream(publicID, systemID);

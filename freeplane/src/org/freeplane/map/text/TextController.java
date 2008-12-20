@@ -45,8 +45,7 @@ public class TextController {
 	private void createActions(final ModeController modeController) {
 		final FindAction find = new FindAction();
 		modeController.addAction("find", find);
-		modeController.addAction("findNext", new FindNextAction(modeController,
-		    find));
+		modeController.addAction("findNext", new FindNextAction(modeController, find));
 	}
 
 	public ModeController getModeController() {

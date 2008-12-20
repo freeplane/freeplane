@@ -34,19 +34,17 @@ class ShowFilterToolbarAction extends AbstractAction {
 	 *
 	 */
 	ShowFilterToolbarAction() {
-		super(null, new ImageIcon(Controller.getResourceController()
-		    .getResource("images/filter.gif")));
+		super(null, new ImageIcon(Controller.getResourceController().getResource(
+		    "images/filter.gif")));
 	}
 
 	public void actionPerformed(final ActionEvent event) {
 		final JToggleButton btnFilter = (JToggleButton) event.getSource();
 		if (btnFilter.getModel().isSelected()) {
-			Controller.getController().getFilterController().showFilterToolbar(
-			    true);
+			Controller.getController().getFilterController().showFilterToolbar(true);
 		}
 		else {
-			Controller.getController().getFilterController().showFilterToolbar(
-			    false);
+			Controller.getController().getFilterController().showFilterToolbar(false);
 		}
 	}
 }

@@ -52,14 +52,12 @@ import org.freeplane.modes.INodeChangeListener;
 import org.freeplane.modes.NodeChangeEvent;
 import org.freeplane.modes.mindmapmode.MModeController;
 
-
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 import deprecated.freemind.common.IPropertyControl;
 import deprecated.freemind.common.ITextTranslator;
 import deprecated.freemind.common.PropertyBean;
 import deprecated.freemind.common.SeparatorProperty;
-
 import deprecated.freemind.preferences.IFreemindPropertyContributor;
 import deprecated.freemind.preferences.IFreemindPropertyListener;
 import deprecated.freemind.preferences.layout.OptionPanel;
@@ -69,25 +67,22 @@ import deprecated.freemind.preferences.layout.OptionString;
 @ActionDescriptor(locations = "/menu_bar/extras/first/nodes/change", //
 name = "accessories/plugins/AutomaticLayout.properties_name", //
 tooltip = "accessories/plugins/AutomaticLayout.properties_documentation")
-public class AutomaticLayout extends PersistentNodeHook implements
-        IMapChangeListener, INodeChangeListener, IReadCompletionListener {
+public class AutomaticLayout extends PersistentNodeHook implements IMapChangeListener,
+        INodeChangeListener, IReadCompletionListener {
 	private static final class AutomaticLayoutPropertyContributor implements
 	        IFreemindPropertyContributor {
 		final private MModeController modeController;
 
-		public AutomaticLayoutPropertyContributor(
-		                                          final MModeController modeController) {
+		public AutomaticLayoutPropertyContributor(final MModeController modeController) {
 			this.modeController = modeController;
 		}
 
 		public List getControls() {
 			final Vector controls = new Vector();
-			controls
-			    .add(new OptionPanel.NewTabProperty(
-			        "accessories/plugins/AutomaticLayout.properties_PatternTabName"));
-			controls
-			    .add(new SeparatorProperty(
-			        "accessories/plugins/AutomaticLayout.properties_PatternSeparatorName"));
+			controls.add(new OptionPanel.NewTabProperty(
+			    "accessories/plugins/AutomaticLayout.properties_PatternTabName"));
+			controls.add(new SeparatorProperty(
+			    "accessories/plugins/AutomaticLayout.properties_PatternSeparatorName"));
 			controls.add(new StylePatternListProperty("level",
 			    AutomaticLayout.AUTOMATIC_FORMAT_LEVEL, modeController));
 			return controls;
@@ -99,18 +94,17 @@ public class AutomaticLayout extends PersistentNodeHook implements
 	 *
 	 * @author foltin
 	 */
-	static class MyFreemindPropertyListener implements
-	        IFreemindPropertyListener {
-		public void propertyChanged(final String propertyName,
-		                            final String newValue, final String oldValue) {
+	static class MyFreemindPropertyListener implements IFreemindPropertyListener {
+		public void propertyChanged(final String propertyName, final String newValue,
+		                            final String oldValue) {
 			if (propertyName.startsWith(AutomaticLayout.AUTOMATIC_FORMAT_LEVEL)) {
 				AutomaticLayout.patterns = null;
 			}
 		}
 	}
 
-	public static class StylePatternListProperty extends PropertyBean implements
-	        IPropertyControl, ListSelectionListener {
+	public static class StylePatternListProperty extends PropertyBean implements IPropertyControl,
+	        ListSelectionListener {
 		String description;
 		String label;
 		final private DefaultListModel mDefaultListModel;
@@ -119,8 +113,7 @@ public class AutomaticLayout extends PersistentNodeHook implements
 		JList mList;
 		String patterns;
 
-		public StylePatternListProperty(final String description,
-		                                final String label,
+		public StylePatternListProperty(final String description, final String label,
 		                                final MModeController pController) {
 			super();
 			this.description = description;
@@ -153,8 +146,7 @@ public class AutomaticLayout extends PersistentNodeHook implements
 		}
 
 		public void layout(final DefaultFormBuilder builder) {
-			final JLabel label = builder.append(OptionString
-			    .getText(getLabel()));
+			final JLabel label = builder.append(OptionString.getText(getLabel()));
 			builder.append(new JLabel());
 			label.setToolTipText(OptionString.getText(getDescription()));
 			builder.appendSeparator();
@@ -173,13 +165,10 @@ public class AutomaticLayout extends PersistentNodeHook implements
 			int j = 1;
 			final StylePropertyTranslator stylePropertyTranslator = new StylePropertyTranslator(
 			    mindMapController);
-			for (final Iterator i = resultPatterns.getListChoiceList()
-			    .iterator(); i.hasNext();) {
+			for (final Iterator i = resultPatterns.getListChoiceList().iterator(); i.hasNext();) {
 				final Pattern pattern = (Pattern) i.next();
-				mDefaultListModel.addElement(OptionString.getText("level" + j)
-				        + ": "
-				        + StylePatternFactory.toString(pattern,
-				            stylePropertyTranslator));
+				mDefaultListModel.addElement(OptionString.getText("level" + j) + ": "
+				        + StylePatternFactory.toString(pattern, stylePropertyTranslator));
 				j++;
 			}
 		}
@@ -190,13 +179,10 @@ public class AutomaticLayout extends PersistentNodeHook implements
 			if (source.getSelectedIndex() < 0) {
 				return;
 			}
-			final Pattern choice = (Pattern) pat.getChoice(source
-			    .getSelectedIndex());
-			final ChooseFormatPopupDialog formatDialog = new ChooseFormatPopupDialog(
-			    Controller.getController().getViewController().getJFrame(),
-			    mindMapController,
-			    "accessories/plugins/AutomaticLayout.properties_StyleDialogTitle",
-			    choice);
+			final Pattern choice = pat.getChoice(source.getSelectedIndex());
+			final ChooseFormatPopupDialog formatDialog = new ChooseFormatPopupDialog(Controller
+			    .getController().getViewController().getJFrame(), mindMapController,
+			    "accessories/plugins/AutomaticLayout.properties_StyleDialogTitle", choice);
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					if (mDialogIsShown) {
@@ -225,16 +211,15 @@ public class AutomaticLayout extends PersistentNodeHook implements
 	 * Currently not used. Is useful if you want to make single patterns
 	 * changeable.
 	 */
-	public static class StylePatternProperty extends PropertyBean implements
-	        IPropertyControl, ActionListener {
+	public static class StylePatternProperty extends PropertyBean implements IPropertyControl,
+	        ActionListener {
 		String description;
 		String label;
 		JButton mButton;
 		final private MModeController mindMapController;
 		String pattern;
 
-		public StylePatternProperty(final String description,
-		                            final String label,
+		public StylePatternProperty(final String description, final String label,
 		                            final ITextTranslator pTranslator,
 		                            final MModeController pController) {
 			super();
@@ -248,11 +233,9 @@ public class AutomaticLayout extends PersistentNodeHook implements
 
 		public void actionPerformed(final ActionEvent arg0) {
 			final Pattern pat = getPatternFromString();
-			final ChooseFormatPopupDialog formatDialog = new ChooseFormatPopupDialog(
-			    Controller.getController().getViewController().getJFrame(),
-			    mindMapController,
-			    "accessories/plugins/AutomaticLayout.properties_StyleDialogTitle",
-			    pat);
+			final ChooseFormatPopupDialog formatDialog = new ChooseFormatPopupDialog(Controller
+			    .getController().getViewController().getJFrame(), mindMapController,
+			    "accessories/plugins/AutomaticLayout.properties_StyleDialogTitle", pat);
 			formatDialog.setModal(true);
 			formatDialog.setVisible(true);
 			if (formatDialog.getResult() == ChooseFormatPopupDialog.OK) {
@@ -283,8 +266,7 @@ public class AutomaticLayout extends PersistentNodeHook implements
 		}
 
 		public void layout(final DefaultFormBuilder builder) {
-			final JLabel label = builder.append(OptionString
-			    .getText(getLabel()), mButton);
+			final JLabel label = builder.append(OptionString.getText(getLabel()), mButton);
 			label.setToolTipText(OptionString.getText(getDescription()));
 		}
 
@@ -296,8 +278,8 @@ public class AutomaticLayout extends PersistentNodeHook implements
 		public void setValue(final String value) {
 			pattern = value;
 			final Pattern resultPattern = getPatternFromString();
-			final String patternString = StylePatternFactory.toString(
-			    resultPattern, new StylePropertyTranslator(mindMapController));
+			final String patternString = StylePatternFactory.toString(resultPattern,
+			    new StylePropertyTranslator(mindMapController));
 			mButton.setText(patternString);
 			mButton.setToolTipText(patternString);
 		}
@@ -333,8 +315,7 @@ public class AutomaticLayout extends PersistentNodeHook implements
 		mAutomaticLayoutPropertyContributor = new AutomaticLayoutPropertyContributor(
 		    ((MModeController) getModeController()));
 		OptionPanel.addContributor(mAutomaticLayoutPropertyContributor);
-		modeController.getMapController().getReadManager()
-		    .addReadCompletionListener(this);
+		modeController.getMapController().getReadManager().addReadCompletionListener(this);
 	}
 
 	/*
@@ -362,22 +343,19 @@ public class AutomaticLayout extends PersistentNodeHook implements
 	public void onNodeDeleted(final NodeModel parent, final NodeModel child) {
 	}
 
-	public void onNodeInserted(final NodeModel parent, final NodeModel child,
-	                           final int newIndex) {
+	public void onNodeInserted(final NodeModel parent, final NodeModel child, final int newIndex) {
 		setStyleRecursive(child);
 	}
 
-	public void onNodeMoved(final NodeModel oldParent,
-	                        final NodeModel newParent, final NodeModel child,
-	                        final int newIndex) {
+	public void onNodeMoved(final NodeModel oldParent, final NodeModel newParent,
+	                        final NodeModel child, final int newIndex) {
 		setStyleRecursive(child);
 	}
 
 	public void onPreNodeDelete(final NodeModel model) {
 	}
 
-	public void readingCompleted(final NodeModel topNode,
-	                             final HashMap<String, String> newIds) {
+	public void readingCompleted(final NodeModel topNode, final HashMap<String, String> newIds) {
 		if (!topNode.containsExtension(getClass())) {
 			return;
 		}
@@ -391,10 +369,9 @@ public class AutomaticLayout extends PersistentNodeHook implements
 	/** get styles from preferences: */
 	private void reloadPatterns() {
 		if (AutomaticLayout.patterns == null) {
-			final String property = Controller.getResourceController()
-			    .getProperty(AutomaticLayout.AUTOMATIC_FORMAT_LEVEL);
-			AutomaticLayout.patterns = StylePatternFactory
-			    .getPatternsFromString(property);
+			final String property = Controller.getResourceController().getProperty(
+			    AutomaticLayout.AUTOMATIC_FORMAT_LEVEL);
+			AutomaticLayout.patterns = StylePatternFactory.getPatternsFromString(property);
 		}
 	}
 
@@ -426,9 +403,8 @@ public class AutomaticLayout extends PersistentNodeHook implements
 		if (depth < AutomaticLayout.patterns.sizeChoiceList()) {
 			myIndex = depth;
 		}
-		final Pattern p = (Pattern) AutomaticLayout.patterns.getChoice(myIndex);
-		((MModeController) getModeController()).getPatternController()
-		    .applyPattern(node, p);
+		final Pattern p = AutomaticLayout.patterns.getChoice(myIndex);
+		((MModeController) getModeController()).getPatternController().applyPattern(node, p);
 	}
 
 	/**
@@ -444,8 +420,8 @@ public class AutomaticLayout extends PersistentNodeHook implements
 			return;
 		}
 		setStyleImpl(node);
-		for (final Iterator i = node.getModeController().getMapController()
-		    .childrenUnfolded(node); i.hasNext();) {
+		for (final Iterator i = node.getModeController().getMapController().childrenUnfolded(node); i
+		    .hasNext();) {
 			final NodeModel child = (NodeModel) i.next();
 			setStyleRecursiveImpl(child);
 		}

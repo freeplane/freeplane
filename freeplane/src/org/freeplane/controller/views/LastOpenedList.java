@@ -53,8 +53,8 @@ public class LastOpenedList {
 	final private Map mRestorableToMapName = new HashMap();
 
 	LastOpenedList(final String restored) {
-		maxEntries = new Integer(Controller.getResourceController()
-		    .getProperty("last_opened_list_length")).intValue();
+		maxEntries = new Integer(Controller.getResourceController().getProperty(
+		    "last_opened_list_length")).intValue();
 		load(restored);
 	}
 
@@ -81,8 +81,8 @@ public class LastOpenedList {
 		if (mapView == null || mapView.getModel() == null) {
 			return;
 		}
-		final String restoreString = mapView.getModeController()
-		    .getUrlManager().getRestoreable(mapView.getModel());
+		final String restoreString = mapView.getModeController().getUrlManager().getRestoreable(
+		    mapView.getModel());
 		if (restoreString == null) {
 			return;
 		}
@@ -96,12 +96,10 @@ public class LastOpenedList {
 		}
 	}
 
-	public void open(final String restoreable) throws FileNotFoundException,
-	        XMLParseException, MalformedURLException, IOException,
-	        URISyntaxException {
-		final boolean changedToMapView = Controller.getController()
-		    .getMapViewManager().tryToChangeToMapView(
-		        (String) mRestorableToMapName.get(restoreable));
+	public void open(final String restoreable) throws FileNotFoundException, XMLParseException,
+	        MalformedURLException, IOException, URISyntaxException {
+		final boolean changedToMapView = Controller.getController().getMapViewManager()
+		    .tryToChangeToMapView((String) mRestorableToMapName.get(restoreable));
 		if ((restoreable != null) && !(changedToMapView)) {
 			final StringTokenizer token = new StringTokenizer(restoreable, ":");
 			if (token.hasMoreTokens()) {
@@ -109,9 +107,8 @@ public class LastOpenedList {
 				if (Controller.getController().selectMode(mode)) {
 					final String fileName = token.nextToken("").substring(1);
 					Controller.getController();
-					Controller.getModeController()
-					    .getMapController().newMap(
-					        Tools.fileToUrl(new File(fileName)));
+					Controller.getModeController().getMapController().newMap(
+					    Tools.fileToUrl(new File(fileName)));
 				}
 			}
 		}

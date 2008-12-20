@@ -44,29 +44,20 @@ import org.freeplane.map.attribute.mindmapnode.MAttributeController;
 import org.freeplane.map.text.mindmapmode.MTextController;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.mindmapmode.MModeController;
+
 import deprecated.freemind.common.OptionalDontShowMeAgainDialog;
 
 /**
  * @author foltin
  */
-@ActionDescriptor(
-    name="plugins/ScriptingEngine.xml_name",
-    keyStroke="keystroke_plugins/ScriptingEngine.keystroke.evaluate",
-    locations={"/menu_bar/extras/first/scripting"}
-)
+@ActionDescriptor(name = "plugins/ScriptingEngine.xml_name", keyStroke = "keystroke_plugins/ScriptingEngine.keystroke.evaluate", locations = { "/menu_bar/extras/first/scripting" })
 class ScriptingEngine extends FreeplaneAction {
-	public ScriptingEngine(ScriptingRegistration reg) {
-	    super();
-	    this.reg = reg;
-    }
-
 	public interface IErrorHandler {
 		void gotoLine(int pLineNumber);
 	}
 
 	public static final String SCRIPT_PREFIX = "script";
 	private static final HashMap sScriptCookies = new HashMap();
-	final private ScriptingRegistration reg;
 
 	/**
 	 * @param node
@@ -77,23 +68,17 @@ class ScriptingEngine extends FreeplaneAction {
 	 * @return true, if further scripts can be executed, false, if the user
 	 *         canceled or an error occurred.
 	 */
-	static boolean executeScript(final NodeModel node,
-	                             final BooleanHolder pAlreadyAScriptExecuted,
-	                             String script,
-	                             final MModeController pMindMapController,
-	                             final IErrorHandler pErrorHandler,
-	                             final PrintStream pOutStream,
+	static boolean executeScript(final NodeModel node, final BooleanHolder pAlreadyAScriptExecuted,
+	                             String script, final MModeController pMindMapController,
+	                             final IErrorHandler pErrorHandler, final PrintStream pOutStream,
 	                             final HashMap pScriptCookies) {
 		if (!pAlreadyAScriptExecuted.getValue()) {
-			final int showResult = new OptionalDontShowMeAgainDialog(
-			    Controller.getController().getViewController().getJFrame(),
-			    pMindMapController.getSelectedView(),
-			    "really_execute_script",
-			    "confirmation",
+			final int showResult = new OptionalDontShowMeAgainDialog(Controller.getController()
+			    .getViewController().getJFrame(), pMindMapController.getSelectedView(),
+			    "really_execute_script", "confirmation",
 			    new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
 			        ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING),
-			    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED)
-			    .show().getResult();
+			    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED).show().getResult();
 			if (showResult != JOptionPane.OK_OPTION) {
 				return false;
 			}
@@ -125,24 +110,16 @@ class ScriptingEngine extends FreeplaneAction {
 		 * get preferences (and store them again after the script execution,
 		 * such that the scripts are not able to change them).
 		 */
-		final String executeWithoutAsking = Controller.getResourceController()
-		    .getProperty(
-		        ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING);
-		final String executeWithoutFileRestriction = Controller
-		    .getResourceController()
-		    .getProperty(
-		        ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION);
-		final String executeWithoutNetworkRestriction = Controller
-		    .getResourceController()
-		    .getProperty(
-		        ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION);
-		final String executeWithoutExecRestriction = Controller
-		    .getResourceController()
-		    .getProperty(
-		        ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION);
-		final String signedScriptsWithoutRestriction = Controller
-		    .getResourceController().getProperty(
-		        ResourceController.RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED);
+		final String executeWithoutAsking = Controller.getResourceController().getProperty(
+		    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING);
+		final String executeWithoutFileRestriction = Controller.getResourceController()
+		    .getProperty(ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION);
+		final String executeWithoutNetworkRestriction = Controller.getResourceController()
+		    .getProperty(ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION);
+		final String executeWithoutExecRestriction = Controller.getResourceController()
+		    .getProperty(ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION);
+		final String signedScriptsWithoutRestriction = Controller.getResourceController()
+		    .getProperty(ResourceController.RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED);
 		/* *************** */
 		/* Signature */
 		/* *************** */
@@ -150,15 +127,11 @@ class ScriptingEngine extends FreeplaneAction {
 		Object value = null;
 		GroovyRuntimeException e1 = null;
 		Throwable e2 = null;
-		boolean filePerm = Tools
-		    .isPreferenceTrue(executeWithoutFileRestriction);
-		boolean networkPerm = Tools
-		    .isPreferenceTrue(executeWithoutNetworkRestriction);
-		boolean execPerm = Tools
-		    .isPreferenceTrue(executeWithoutExecRestriction);
+		boolean filePerm = Tools.isPreferenceTrue(executeWithoutFileRestriction);
+		boolean networkPerm = Tools.isPreferenceTrue(executeWithoutNetworkRestriction);
+		boolean execPerm = Tools.isPreferenceTrue(executeWithoutExecRestriction);
 		if (Tools.isPreferenceTrue(signedScriptsWithoutRestriction)) {
-			final boolean isSigned = new SignedScriptHandler().isScriptSigned(
-			    script, pOutStream);
+			final boolean isSigned = new SignedScriptHandler().isScriptSigned(script, pOutStream);
 			if (isSigned) {
 				filePerm = true;
 				networkPerm = true;
@@ -185,23 +158,16 @@ class ScriptingEngine extends FreeplaneAction {
 			System.setOut(oldOut);
 			/* restore preferences (and assure that the values are unchanged!). */
 			Controller.getResourceController().setProperty(
-			    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
-			    executeWithoutAsking);
-			Controller
-			    .getResourceController()
-			    .setProperty(
-			        ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION,
-			        executeWithoutFileRestriction);
-			Controller
-			    .getResourceController()
-			    .setProperty(
-			        ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION,
-			        executeWithoutNetworkRestriction);
-			Controller
-			    .getResourceController()
-			    .setProperty(
-			        ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION,
-			        executeWithoutExecRestriction);
+			    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING, executeWithoutAsking);
+			Controller.getResourceController().setProperty(
+			    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION,
+			    executeWithoutFileRestriction);
+			Controller.getResourceController().setProperty(
+			    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION,
+			    executeWithoutNetworkRestriction);
+			Controller.getResourceController().setProperty(
+			    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION,
+			    executeWithoutExecRestriction);
 			Controller.getResourceController().setProperty(
 			    ResourceController.RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED,
 			    signedScriptsWithoutRestriction);
@@ -223,8 +189,7 @@ class ScriptingEngine extends FreeplaneAction {
 				lineNumber = astNode.getLineNumber();
 			}
 			else {
-				lineNumber = ScriptingEngine.findLineNumberInString(
-				    resultString, lineNumber);
+				lineNumber = ScriptingEngine.findLineNumberInString(resultString, lineNumber);
 			}
 			pOutStream.print("Line number: " + lineNumber);
 			pErrorHandler.gotoLine(lineNumber);
@@ -233,41 +198,30 @@ class ScriptingEngine extends FreeplaneAction {
 		if (e2 != null) {
 			org.freeplane.main.Tools.logException(e2);
 			pOutStream.print(e2.getMessage());
-			final String cause = ((e2.getCause() != null) ? e2.getCause()
-			    .getMessage() : "");
-			final String message = ((e2.getMessage() != null) ? e2.getMessage()
-			        : "");
-			Controller
-			    .getController()
-			    .errorMessage(
-			        e2.getClass().getName()
-			                + ": "
-			                + cause
-			                + ((cause.length() != 0 && message.length() != 0) ? ", "
-			                        : "") + message);
+			final String cause = ((e2.getCause() != null) ? e2.getCause().getMessage() : "");
+			final String message = ((e2.getMessage() != null) ? e2.getMessage() : "");
+			Controller.getController().errorMessage(
+			    e2.getClass().getName() + ": " + cause
+			            + ((cause.length() != 0 && message.length() != 0) ? ", " : "") + message);
 			return false;
 		}
-		pOutStream.print(Controller
-		    .getText("plugins/ScriptEditor/window.Result")
-		        + value);
+		pOutStream.print(Controller.getText("plugins/ScriptEditor/window.Result") + value);
 		if (assignResult && value != null) {
 			if (assignTo == null) {
-				((MTextController) pMindMapController.getTextController())
-				    .setNodeText(node, value.toString());
+				((MTextController) pMindMapController.getTextController()).setNodeText(node, value
+				    .toString());
 			}
 			else {
-				((MAttributeController) pMindMapController
-				    .getAttributeController()).editAttribute(node, assignTo,
-				    value.toString());
+				((MAttributeController) pMindMapController.getAttributeController()).editAttribute(
+				    node, assignTo, value.toString());
 			}
 		}
 		return true;
 	}
 
-	public static int findLineNumberInString(final String resultString,
-	                                         int lineNumber) {
-		final java.util.regex.Pattern pattern = java.util.regex.Pattern
-		    .compile(".*@ line ([0-9]+).*", java.util.regex.Pattern.DOTALL);
+	public static int findLineNumberInString(final String resultString, int lineNumber) {
+		final java.util.regex.Pattern pattern = java.util.regex.Pattern.compile(
+		    ".*@ line ([0-9]+).*", java.util.regex.Pattern.DOTALL);
 		final Matcher matcher = pattern.matcher(resultString);
 		if (matcher.matches()) {
 			lineNumber = Integer.parseInt(matcher.group(1));
@@ -275,12 +229,24 @@ class ScriptingEngine extends FreeplaneAction {
 		return lineNumber;
 	}
 
-	private void performScriptOperation(
-	                                    final NodeModel node,
+	final private ScriptingRegistration reg;
+
+	public ScriptingEngine(final ScriptingRegistration reg) {
+		super();
+		this.reg = reg;
+	}
+
+	public void actionPerformed(final ActionEvent e) {
+		final NodeModel node = Controller.getController().getMap().getRootNode();
+		final BooleanHolder booleanHolder = new BooleanHolder(false);
+		performScriptOperation(node, booleanHolder);
+	}
+
+	private void performScriptOperation(final NodeModel node,
 	                                    final BooleanHolder pAlreadyAScriptExecuted) {
 		Controller.getController().getViewController().setWaitingCursor(true);
-		for (final Iterator iter = node.getModeController().getMapController()
-		    .childrenUnfolded(node); iter.hasNext();) {
+		for (final Iterator iter = node.getModeController().getMapController().childrenUnfolded(
+		    node); iter.hasNext();) {
 			final NodeModel element = (NodeModel) iter.next();
 			performScriptOperation(element, pAlreadyAScriptExecuted);
 		}
@@ -292,9 +258,8 @@ class ScriptingEngine extends FreeplaneAction {
 			final String attrKey = (String) attributes.getName(row);
 			final String script = (String) attributes.getValue(row);
 			if (attrKey.startsWith(ScriptingEngine.SCRIPT_PREFIX)) {
-				final boolean result = ScriptingEngine.executeScript(node,
-				    pAlreadyAScriptExecuted, script, (MModeController) getModeController(),
-				    new IErrorHandler() {
+				final boolean result = ScriptingEngine.executeScript(node, pAlreadyAScriptExecuted,
+				    script, (MModeController) getModeController(), new IErrorHandler() {
 					    public void gotoLine(final int pLineNumber) {
 					    }
 				    }, System.out, reg.getScriptCookies());
@@ -305,12 +270,4 @@ class ScriptingEngine extends FreeplaneAction {
 		}
 		Controller.getController().getViewController().setWaitingCursor(false);
 	}
-
-	public void actionPerformed(ActionEvent e) {
-		final NodeModel node = Controller.getController().getMap()
-		    .getRootNode();
-		final BooleanHolder booleanHolder = new BooleanHolder(false);
-		performScriptOperation(node, booleanHolder);
-	}
-
 }

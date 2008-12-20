@@ -36,11 +36,10 @@ import org.freeplane.map.tree.NodeModel;
 /**
  * @author Dimitry Polivaev
  */
-public class NodeAttributeTableModel extends AbstractTableModel implements
-        IAttributeTableModel, IExtension {
+public class NodeAttributeTableModel extends AbstractTableModel implements IAttributeTableModel,
+        IExtension {
 	private static final int CAPACITY_INCREMENT = 10;
-	public static final NodeAttributeTableModel EMTPY_ATTRIBUTES = new NodeAttributeTableModel(
-	    null) {
+	public static final NodeAttributeTableModel EMTPY_ATTRIBUTES = new NodeAttributeTableModel(null) {
 		@Override
 		public void addRowNoUndo(final Attribute newAttribute) {
 			throw new NoSuchMethodError();
@@ -52,8 +51,7 @@ public class NodeAttributeTableModel extends AbstractTableModel implements
 		}
 
 		@Override
-		public void insertRow(final int index, final String name,
-		                      final String value) {
+		public void insertRow(final int index, final String name, final String value) {
 			throw new NoSuchMethodError();
 		}
 
@@ -83,8 +81,7 @@ public class NodeAttributeTableModel extends AbstractTableModel implements
 		}
 	};
 	static private ImageIcon noteIcon = null;
-	private static boolean SHOW_ATTRIBUTE_ICON = Controller
-	    .getResourceController()
+	private static boolean SHOW_ATTRIBUTE_ICON = Controller.getResourceController()
 	    .getBoolProperty("el__show_icon_for_attributes");
 	private static final String STATE_ICON = "AttributeExist";
 	private Vector attributes = null;
@@ -112,8 +109,7 @@ public class NodeAttributeTableModel extends AbstractTableModel implements
 
 	private void allocateAttributes(final int size) {
 		if (attributes == null && size > 0) {
-			attributes = new Vector(size,
-			    NodeAttributeTableModel.CAPACITY_INCREMENT);
+			attributes = new Vector(size, NodeAttributeTableModel.CAPACITY_INCREMENT);
 		}
 	}
 
@@ -126,12 +122,10 @@ public class NodeAttributeTableModel extends AbstractTableModel implements
 	public void enableStateIcon() {
 		if (NodeAttributeTableModel.SHOW_ATTRIBUTE_ICON && getRowCount() == 1) {
 			if (NodeAttributeTableModel.noteIcon == null) {
-				NodeAttributeTableModel.noteIcon = new ImageIcon(Controller
-				    .getResourceController().getResource(
-				        "images/showAttributes.gif"));
+				NodeAttributeTableModel.noteIcon = new ImageIcon(Controller.getResourceController()
+				    .getResource("images/showAttributes.gif"));
 			}
-			node.setStateIcon(NodeAttributeTableModel.STATE_ICON,
-			    NodeAttributeTableModel.noteIcon);
+			node.setStateIcon(NodeAttributeTableModel.STATE_ICON, NodeAttributeTableModel.noteIcon);
 		}
 	}
 
@@ -258,12 +252,10 @@ public class NodeAttributeTableModel extends AbstractTableModel implements
 		return null;
 	}
 
-	private XMLElement initializeNodeAttributeLayoutXMLElement(
-	                                                           XMLElement attributeElement) {
+	private XMLElement initializeNodeAttributeLayoutXMLElement(XMLElement attributeElement) {
 		if (attributeElement == null) {
 			attributeElement = new XMLElement();
-			attributeElement
-			    .setName(AttributeBuilder.XML_NODE_ATTRIBUTE_LAYOUT);
+			attributeElement.setName(AttributeBuilder.XML_NODE_ATTRIBUTE_LAYOUT);
 		}
 		return attributeElement;
 	}
@@ -296,8 +288,7 @@ public class NodeAttributeTableModel extends AbstractTableModel implements
 		}
 	}
 
-	private void saveAttribute(final ITreeWriter writer, final int i)
-	        throws IOException {
+	private void saveAttribute(final ITreeWriter writer, final int i) throws IOException {
 		final XMLElement attributeElement = new XMLElement();
 		attributeElement.setName(AttributeBuilder.XML_NODE_ATTRIBUTE);
 		final Attribute attr = (Attribute) attributes.get(i);
@@ -311,13 +302,12 @@ public class NodeAttributeTableModel extends AbstractTableModel implements
 			XMLElement attributeElement = null;
 			if (layout.getColumnWidth(0) != AttributeTableLayoutModel.DEFAULT_COLUMN_WIDTH) {
 				attributeElement = initializeNodeAttributeLayoutXMLElement(attributeElement);
-				attributeElement.setAttribute("NAME_WIDTH", Integer
-				    .toString(getColumnWidth(0)));
+				attributeElement.setAttribute("NAME_WIDTH", Integer.toString(getColumnWidth(0)));
 			}
 			if (layout.getColumnWidth(1) != AttributeTableLayoutModel.DEFAULT_COLUMN_WIDTH) {
 				attributeElement = initializeNodeAttributeLayoutXMLElement(attributeElement);
-				attributeElement.setAttribute("VALUE_WIDTH", Integer
-				    .toString(layout.getColumnWidth(1)));
+				attributeElement.setAttribute("VALUE_WIDTH", Integer.toString(layout
+				    .getColumnWidth(1)));
 			}
 			if (attributeElement != null) {
 				writer.addNode(layout, attributeElement);

@@ -53,7 +53,6 @@ public class BlindIcon implements Icon {
 	 * @see javax.swing.Icon#paintIcon(java.awt.Component, java.awt.Graphics,
 	 * int, int)
 	 */
-	public void paintIcon(final Component arg0, final Graphics arg1,
-	                      final int arg2, final int arg3) {
+	public void paintIcon(final Component arg0, final Graphics arg1, final int arg2, final int arg3) {
 	}
 }

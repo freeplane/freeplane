@@ -44,8 +44,7 @@ public class XMLParseException extends XMLException {
 	 * @param msg
 	 *            the message of the exception.
 	 */
-	public XMLParseException(final String systemID, final int lineNr,
-	                         final String msg) {
+	public XMLParseException(final String systemID, final int lineNr, final String msg) {
 		super(systemID, lineNr, null, msg, true);
 	}
 }

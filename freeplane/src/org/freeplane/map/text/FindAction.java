@@ -46,30 +46,25 @@ class FindAction extends FreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final String what = JOptionPane.showInputDialog(getModeController()
-		    .getMapView().getSelected(), getModeController().getText(
-		    "find_what"), getModeController().getText("find"),
-		    JOptionPane.QUESTION_MESSAGE);
+		final String what = JOptionPane.showInputDialog(getModeController().getMapView()
+		    .getSelected(), getModeController().getText("find_what"), getModeController().getText(
+		    "find"), JOptionPane.QUESTION_MESSAGE);
 		if (what == null || what.equals("")) {
 			return;
 		}
 		final Collection subterms = breakSearchTermIntoSubterms(what);
 		searchTerm = what;
-		final boolean found = find(getModeController().getSelectedNode(),
-		    subterms, /*
-		    	    		    		    		    	    		    				 * caseSensitive=
-		    	    		    		    		    	    		    				 */
-		    false);
+		final boolean found = find(getModeController().getSelectedNode(), subterms, /*
+			    	    		    		    		    	    		    				 * caseSensitive=
+			    	    		    		    		    	    		    				 */
+		false);
 		getModeController().getMapView().repaint();
 		if (!found) {
-			final String messageText = getModeController().getText(
-			    "no_found_from");
+			final String messageText = getModeController().getText("no_found_from");
 			final String searchTerm = messageText.startsWith("<html>") ? HtmlTools
-			    .toXMLEscapedText(getSearchTerm())
-			        : getSearchTerm();
+			    .toXMLEscapedText(getSearchTerm()) : getSearchTerm();
 			Controller.getController().informationMessage(
-			    messageText.replaceAll("\\$1", searchTerm).replaceAll("\\$2",
-			        getFindFromText()),
+			    messageText.replaceAll("\\$1", searchTerm).replaceAll("\\$2", getFindFromText()),
 			    getModeController().getMapView().getSelected());
 		}
 	}
@@ -89,8 +84,7 @@ class FindAction extends FreeplaneAction {
 				subterms.add(subterm.toString());
 				subterm.setLength(0);
 			}
-			else if (myChar == '"' && i > 0 && i < len - 1
-			        && searchTerm.charAt(i - 1) != ' '
+			else if (myChar == '"' && i > 0 && i < len - 1 && searchTerm.charAt(i - 1) != ' '
 			        && searchTerm.charAt(i + 1) != ' ') {
 				subterm.append(myChar);
 			}
@@ -118,19 +112,15 @@ class FindAction extends FreeplaneAction {
 	 * Display a node in the display (used by find and the goto action by arrow
 	 * link actions).
 	 */
-	public void displayNode(final NodeModel node,
-	                        final ArrayList nodesUnfoldedByDisplay) {
-		final Object[] path = Controller.getController().getMap()
-		    .getPathToRoot(node);
+	public void displayNode(final NodeModel node, final ArrayList nodesUnfoldedByDisplay) {
+		final Object[] path = Controller.getController().getMap().getPathToRoot(node);
 		for (int i = 0; i < path.length - 1; i++) {
 			final NodeModel nodeOnPath = (NodeModel) path[i];
-			if (nodeOnPath.getModeController().getMapController().isFolded(
-			    nodeOnPath)) {
+			if (nodeOnPath.getModeController().getMapController().isFolded(nodeOnPath)) {
 				if (nodesUnfoldedByDisplay != null) {
 					nodesUnfoldedByDisplay.add(nodeOnPath);
 				}
-				getModeController().getMapController().setFolded(nodeOnPath,
-				    false);
+				getModeController().getMapController().setFolded(nodeOnPath, false);
 			}
 		}
 	}
@@ -143,8 +133,7 @@ class FindAction extends FreeplaneAction {
 			while (i.hasPrevious()) {
 				final NodeModel node = (NodeModel) i.previous();
 				try {
-					getModeController().getMapController()
-					    .setFolded(node, true);
+					getModeController().getMapController().setFolded(node, true);
 				}
 				catch (final Exception e) {
 				}
@@ -153,15 +142,14 @@ class FindAction extends FreeplaneAction {
 		}
 		while (!nodes.isEmpty()) {
 			final NodeModel node = (NodeModel) nodes.removeFirst();
-			for (final ListIterator i = node.getModeController()
-			    .getMapController().childrenUnfolded(node); i.hasNext();) {
+			for (final ListIterator i = node.getModeController().getMapController()
+			    .childrenUnfolded(node); i.hasNext();) {
 				nodes.addLast(i.next());
 			}
 			if (!node.isVisible()) {
 				continue;
 			}
-			final String nodeText = caseSensitive ? node.toString() : node
-			    .toString().toLowerCase();
+			final String nodeText = caseSensitive ? node.toString() : node.toString().toLowerCase();
 			this.subterms = subterms;
 			findCaseSensitive = caseSensitive;
 			findNodeQueue = nodes;
@@ -182,8 +170,7 @@ class FindAction extends FreeplaneAction {
 		return false;
 	}
 
-	public boolean find(final NodeModel node, final Collection subterms,
-	                    final boolean caseSensitive) {
+	public boolean find(final NodeModel node, final Collection subterms, final boolean caseSensitive) {
 		findNodesUnfoldedByLastFind = new ArrayList();
 		final LinkedList nodes = new LinkedList();
 		nodes.addFirst(node);
@@ -204,8 +191,7 @@ class FindAction extends FreeplaneAction {
 	public boolean findNext() {
 		if (subterms != null) {
 			if (findNodeQueue.isEmpty()) {
-				return find(getModeController().getSelectedNode(), subterms,
-				    findCaseSensitive);
+				return find(getModeController().getSelectedNode(), subterms, findCaseSensitive);
 			}
 			return find(findNodeQueue, subterms, findCaseSensitive);
 		}
@@ -213,10 +199,9 @@ class FindAction extends FreeplaneAction {
 	}
 
 	public String getFindFromText() {
-		final String plainNodeText = HtmlTools.htmlToPlain(
-		    findFromNode.toString()).replaceAll("\n", " ");
-		return plainNodeText.length() <= 30 ? plainNodeText : plainNodeText
-		    .substring(0, 30)
+		final String plainNodeText = HtmlTools.htmlToPlain(findFromNode.toString()).replaceAll(
+		    "\n", " ");
+		return plainNodeText.length() <= 30 ? plainNodeText : plainNodeText.substring(0, 30)
 		        + "...";
 	}
 

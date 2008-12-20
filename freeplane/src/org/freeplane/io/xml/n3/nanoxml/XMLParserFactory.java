@@ -45,20 +45,21 @@ public class XMLParserFactory {
 	 * @throws java.lang.IllegalAccessException
 	 *             if the parser could not be created
 	 */
-	public static IXMLParser createDefaultXMLParser(){
+	public static IXMLParser createDefaultXMLParser() {
 		try {
-	        return XMLParserFactory.createXMLParser(StdXMLParser.class.getName(), new StdXMLBuilder());
-        }
-        catch (ClassNotFoundException e) {
-	        e.printStackTrace();
-        }
-        catch (InstantiationException e) {
-	        e.printStackTrace();
-        }
-        catch (IllegalAccessException e) {
-	        e.printStackTrace();
-        }
-        return null;
+			return XMLParserFactory.createXMLParser(StdXMLParser.class.getName(),
+			    new StdXMLBuilder());
+		}
+		catch (final ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		catch (final InstantiationException e) {
+			e.printStackTrace();
+		}
+		catch (final IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	/**
@@ -77,8 +78,7 @@ public class XMLParserFactory {
 	 *             if the parser could not be created
 	 */
 	public static IXMLParser createDefaultXMLParser(final IXMLBuilder builder)
-	        throws ClassNotFoundException, InstantiationException,
-	        IllegalAccessException {
+	        throws ClassNotFoundException, InstantiationException, IllegalAccessException {
 		final String className = System.getProperty(XMLParserFactory.CLASS_KEY,
 		    XMLParserFactory.DEFAULT_CLASS);
 		return XMLParserFactory.createXMLParser(className, builder);
@@ -99,10 +99,8 @@ public class XMLParserFactory {
 	 * @throws java.lang.IllegalAccessException
 	 *             if the parser could not be created
 	 */
-	public static IXMLParser createXMLParser(final String className,
-	                                         final IXMLBuilder builder)
-	        throws ClassNotFoundException, InstantiationException,
-	        IllegalAccessException {
+	public static IXMLParser createXMLParser(final String className, final IXMLBuilder builder)
+	        throws ClassNotFoundException, InstantiationException, IllegalAccessException {
 		final Class cls = Class.forName(className);
 		final IXMLParser parser = (IXMLParser) cls.newInstance();
 		parser.setBuilder(builder);

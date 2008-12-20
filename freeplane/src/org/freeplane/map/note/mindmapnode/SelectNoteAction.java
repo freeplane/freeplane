@@ -50,12 +50,10 @@ class SelectNoteAction extends FreeplaneAction {
 		final JSplitPane splitPane = noteController.getSplitPaneToScreen();
 		final int oldSize = splitPane.getDividerLocation();
 		noteController.setPositionToRecover(new Integer(oldSize));
-		KeyboardFocusManager.getCurrentKeyboardFocusManager()
-		    .clearGlobalFocusOwner();
+		KeyboardFocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				noteController.getHtmlEditorPanel().getMostRecentFocusOwner()
-				    .requestFocus();
+				noteController.getHtmlEditorPanel().getMostRecentFocusOwner().requestFocus();
 			}
 		});
 	}

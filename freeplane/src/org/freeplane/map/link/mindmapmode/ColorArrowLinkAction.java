@@ -34,27 +34,23 @@ import org.freeplane.undo.IUndoableActor;
 class ColorArrowLinkAction extends FreeplaneAction {
 	ArrowLinkModel arrowLink;
 
-	public ColorArrowLinkAction(final MLinkController modeController,
-	                            final ArrowLinkModel arrowLink) {
+	public ColorArrowLinkAction(final MLinkController modeController, final ArrowLinkModel arrowLink) {
 		super("arrow_link_color", "images/Colors24.gif");
 		this.arrowLink = arrowLink;
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final ModeController modeController = getModeController();
-		final Color selectedColor = modeController.getLinkController()
-		    .getColor(arrowLink);
-		final Color color = ColorTracker.showCommonJColorChooserDialog(
-		    modeController.getMapView().getSelected(), (String) this
-		        .getValue(Action.NAME), selectedColor);
+		final Color selectedColor = modeController.getLinkController().getColor(arrowLink);
+		final Color color = ColorTracker.showCommonJColorChooserDialog(modeController.getMapView()
+		    .getSelected(), (String) this.getValue(Action.NAME), selectedColor);
 		if (color == null) {
 			return;
 		}
 		setArrowLinkColor(arrowLink, color);
 	}
 
-	public void setArrowLinkColor(final ArrowLinkModel arrowLink,
-	                              final Color color) {
+	public void setArrowLinkColor(final ArrowLinkModel arrowLink, final Color color) {
 		final IUndoableActor actor = new IUndoableActor() {
 			private Color oldColor;
 

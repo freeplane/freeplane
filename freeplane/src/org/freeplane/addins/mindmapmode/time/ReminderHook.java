@@ -77,8 +77,7 @@ public class ReminderHook extends PersistentNodeHook {
 
 		public TimeListAction() {
 			super(TimeListAction.class.getAnnotation(ActionDescriptor.class));
-			timeList = new TimeList((MModeController) getModeController(),
-			    false);
+			timeList = new TimeList((MModeController) getModeController(), false);
 		}
 
 		public void actionPerformed(final ActionEvent e) {
@@ -95,8 +94,7 @@ public class ReminderHook extends PersistentNodeHook {
 
 		public TimeManagementAction(final MModeController modeController,
 		                            final ReminderHook reminderHook) {
-			super(TimeManagementAction.class
-			    .getAnnotation(ActionDescriptor.class));
+			super(TimeManagementAction.class.getAnnotation(ActionDescriptor.class));
 			timeManagement = new TimeManagement(modeController, reminderHook);
 		}
 
@@ -130,16 +128,14 @@ public class ReminderHook extends PersistentNodeHook {
 
 	@Override
 	protected FreeplaneAction createAction() {
-		return getModeController() instanceof MModeController ? new HideableAction()
-		        : null;
+		return getModeController() instanceof MModeController ? new HideableAction() : null;
 	}
 
 	@Override
-	protected IExtension createExtension(final NodeModel node,
-	                                     final IXMLElement element) {
+	protected IExtension createExtension(final NodeModel node, final IXMLElement element) {
 		final ReminderExtension reminderExtension = new ReminderExtension(node);
-		final String attribute = element.getFirstChildNamed("Parameters")
-		    .getAttribute(ReminderExtension.REMINDUSERAT, "0");
+		final String attribute = element.getFirstChildNamed("Parameters").getAttribute(
+		    ReminderExtension.REMINDUSERAT, "0");
 		reminderExtension.setRemindUserAt(Long.parseLong(attribute));
 		return reminderExtension;
 	}
@@ -157,13 +153,12 @@ public class ReminderHook extends PersistentNodeHook {
 	}
 
 	@Override
-	protected void saveExtension(final IExtension extension,
-	                             final IXMLElement element) {
+	protected void saveExtension(final IExtension extension, final IXMLElement element) {
 		super.saveExtension(extension, element);
 		final ReminderExtension reminderExtension = (ReminderExtension) extension;
 		final IXMLElement parameters = element.createElement("Parameters");
-		parameters.setAttribute(ReminderExtension.REMINDUSERAT, Long
-		    .toString(reminderExtension.getRemindUserAt()));
+		parameters.setAttribute(ReminderExtension.REMINDUSERAT, Long.toString(reminderExtension
+		    .getRemindUserAt()));
 		element.addChild(parameters);
 	}
 }

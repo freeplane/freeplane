@@ -43,10 +43,8 @@ class ExportBranchAction extends FreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final NodeModel node = getMModeController().getSelectedNode();
-		if (Controller.getController().getMap() == null || node == null
-		        || node.isRoot()) {
-			Controller.getController().getViewController().err(
-			    "Could not export branch.");
+		if (Controller.getController().getMap() == null || node == null || node.isRoot()) {
+			Controller.getController().getViewController().err("Could not export branch.");
 			return;
 		}
 		if (Controller.getController().getMap().getFile() == null) {
@@ -56,41 +54,36 @@ class ExportBranchAction extends FreeplaneAction {
 		}
 		JFileChooser chooser;
 		if (Controller.getController().getMap().getFile().getParentFile() != null) {
-			chooser = new JFileChooser(Controller.getController().getMap()
-			    .getFile().getParentFile());
+			chooser = new JFileChooser(Controller.getController().getMap().getFile()
+			    .getParentFile());
 		}
 		else {
 			chooser = new JFileChooser();
 		}
 		if (((FileManager) getModeController().getUrlManager()).getFileFilter() != null) {
-			chooser.addChoosableFileFilter(((FileManager) getModeController()
-			    .getUrlManager()).getFileFilter());
+			chooser.addChoosableFileFilter(((FileManager) getModeController().getUrlManager())
+			    .getFileFilter());
 		}
-		final int returnVal = chooser.showSaveDialog(getMModeController()
-		    .getSelectedView());
+		final int returnVal = chooser.showSaveDialog(getMModeController().getSelectedView());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File chosenFile = chooser.getSelectedFile();
 			final String ext = Tools.getExtension(chosenFile.getName());
 			if (!ext
 			    .equals(org.freeplane.map.url.mindmapmode.FileManager.FREEMIND_FILE_EXTENSION_WITHOUT_DOT)) {
-				chosenFile = new File(
-				    chosenFile.getParent(),
-				    chosenFile.getName()
-				            + org.freeplane.map.url.mindmapmode.FileManager.FREEMIND_FILE_EXTENSION);
+				chosenFile = new File(chosenFile.getParent(), chosenFile.getName()
+				        + org.freeplane.map.url.mindmapmode.FileManager.FREEMIND_FILE_EXTENSION);
 			}
 			try {
 				Tools.fileToUrl(chosenFile);
 			}
 			catch (final MalformedURLException ex) {
-				JOptionPane.showMessageDialog(
-				    getMModeController().getMapView(),
+				JOptionPane.showMessageDialog(getMModeController().getMapView(),
 				    "couldn't create valid URL!");
 				return;
 			}
 			if (chosenFile.exists()) {
-				final int overwriteMap = JOptionPane.showConfirmDialog(
-				    getMModeController().getMapView(), getMModeController()
-				        .getText("map_already_exists"), "FreeMind",
+				final int overwriteMap = JOptionPane.showConfirmDialog(getMModeController()
+				    .getMapView(), getMModeController().getText("map_already_exists"), "FreeMind",
 				    JOptionPane.YES_NO_OPTION);
 				if (overwriteMap != JOptionPane.YES_OPTION) {
 					return;
@@ -104,35 +97,29 @@ class ExportBranchAction extends FreeplaneAction {
 			 */
 			final NodeModel parent = node.getParentNode();
 			try {
-				final String linkToNewMapString = Tools.toRelativeURL(Tools
-				    .fileToUrl(chosenFile), Controller.getController().getMap()
-				    .getURL());
-				((MLinkController) getMModeController().getLinkController())
-				    .setLink(node, linkToNewMapString);
+				final String linkToNewMapString = Tools.toRelativeURL(Tools.fileToUrl(chosenFile),
+				    Controller.getController().getMap().getURL());
+				((MLinkController) getMModeController().getLinkController()).setLink(node,
+				    linkToNewMapString);
 			}
 			catch (final MalformedURLException ex) {
 				Tools.logException(ex);
 			}
 			final int nodePosition = parent.getChildPosition(node);
-			((MMapController) getModeController().getMapController())
-			    .deleteNode(node);
+			((MMapController) getModeController().getMapController()).deleteNode(node);
 			node.setParent(null);
 			node.setFolded(false);
-			final MapModel map = getMModeController().getMapController()
-			    .newMap(node);
-			((FileManager) getMModeController().getUrlManager()).save(map,
-			    chosenFile);
-			final NodeModel newNode = ((MMapController) getModeController()
-			    .getMapController()).addNewNode(parent, nodePosition, node
-			    .isLeft());
-			((MTextController) getMModeController().getTextController())
-			    .setNodeText(newNode, node.getText());
+			final MapModel map = getMModeController().getMapController().newMap(node);
+			((FileManager) getMModeController().getUrlManager()).save(map, chosenFile);
+			final NodeModel newNode = ((MMapController) getModeController().getMapController())
+			    .addNewNode(parent, nodePosition, node.isLeft());
+			((MTextController) getMModeController().getTextController()).setNodeText(newNode, node
+			    .getText());
 			try {
-				final String linkString = Tools.toRelativeURL(Controller
-				    .getController().getMap().getURL(), Tools
-				    .fileToUrl(chosenFile));
-				((MLinkController) getMModeController().getLinkController())
-				    .setLink(newNode, linkString);
+				final String linkString = Tools.toRelativeURL(Controller.getController().getMap()
+				    .getURL(), Tools.fileToUrl(chosenFile));
+				((MLinkController) getMModeController().getLinkController()).setLink(newNode,
+				    linkString);
 			}
 			catch (final MalformedURLException ex) {
 				Tools.logException(ex);

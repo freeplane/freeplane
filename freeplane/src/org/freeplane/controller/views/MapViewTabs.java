@@ -44,13 +44,12 @@ class MapViewTabs implements IMapViewChangeListener {
 	final private Vector mTabbedPaneMapViews;
 	private boolean mTabbedPaneSelectionUpdate = true;
 
-	public MapViewTabs(final ApplicationViewController fm,
-	                   final JComponent contentComponent) {
+	public MapViewTabs(final ApplicationViewController fm, final JComponent contentComponent) {
 		mContentComponent = contentComponent;
 		InputMap map;
 		map = (InputMap) UIManager.get("TabbedPane.ancestorInputMap");
-		final KeyStroke keyStrokeCtrlUp = KeyStroke.getKeyStroke(
-		    KeyEvent.VK_UP, InputEvent.CTRL_DOWN_MASK);
+		final KeyStroke keyStrokeCtrlUp = KeyStroke.getKeyStroke(KeyEvent.VK_UP,
+		    InputEvent.CTRL_DOWN_MASK);
 		map.remove(keyStrokeCtrlUp);
 		mTabbedPane = new JTabbedPane();
 		mTabbedPane.setFocusable(false);
@@ -60,12 +59,10 @@ class MapViewTabs implements IMapViewChangeListener {
 				tabSelectionChanged();
 			}
 		});
-		Controller.getController().getMapViewManager()
-		    .addMapViewChangeListener(this);
-		Controller.getController().getViewController()
-		    .addMapTitleChangeListener(new IMapTitleChangeListener() {
-			    public void setMapTitle(final String pNewMapTitle,
-			                            final MapView pMapView,
+		Controller.getController().getMapViewManager().addMapViewChangeListener(this);
+		Controller.getController().getViewController().addMapTitleChangeListener(
+		    new IMapTitleChangeListener() {
+			    public void setMapTitle(final String pNewMapTitle, final MapView pMapView,
 			                            final MapModel pModel) {
 				    for (int i = 0; i < mTabbedPaneMapViews.size(); ++i) {
 					    if (mTabbedPaneMapViews.get(i) == pMapView) {
@@ -91,8 +88,7 @@ class MapViewTabs implements IMapViewChangeListener {
 		}
 	}
 
-	public void afterMapViewChange(final MapView pOldMapView,
-	                               final MapView pNewMapView) {
+	public void afterMapViewChange(final MapView pOldMapView, final MapView pNewMapView) {
 		final int selectedIndex = mTabbedPane.getSelectedIndex();
 		if (pNewMapView == null) {
 			return;
@@ -112,28 +108,24 @@ class MapViewTabs implements IMapViewChangeListener {
 		mTabbedPane.setSelectedIndex(mTabbedPane.getTabCount() - 1);
 	}
 
-	public void beforeMapViewChange(final MapView pOldMapView,
-	                                final MapView pNewMapView) {
+	public void beforeMapViewChange(final MapView pOldMapView, final MapView pNewMapView) {
 	}
 
-	public boolean isMapViewChangeAllowed(final MapView pOldMapView,
-	                                      final MapView pNewMapView) {
+	public boolean isMapViewChangeAllowed(final MapView pOldMapView, final MapView pNewMapView) {
 		return true;
 	}
 
 	public void removeContentComponent() {
 		mContentComponent = null;
 		if (mTabbedPane.getSelectedIndex() >= 0) {
-			mTabbedPane.setComponentAt(mTabbedPane.getSelectedIndex(),
-			    new JPanel());
+			mTabbedPane.setComponentAt(mTabbedPane.getSelectedIndex(), new JPanel());
 		}
 	}
 
 	public void setContentComponent(final Component mContentComponent) {
 		this.mContentComponent = mContentComponent;
 		if (mTabbedPane.getSelectedIndex() >= 0) {
-			mTabbedPane.setComponentAt(mTabbedPane.getSelectedIndex(),
-			    mContentComponent);
+			mTabbedPane.setComponentAt(mTabbedPane.getSelectedIndex(), mContentComponent);
 		}
 	}
 
@@ -150,11 +142,9 @@ class MapViewTabs implements IMapViewChangeListener {
 		if (selectedIndex < 0) {
 			return;
 		}
-		final MapView mapView = (MapView) mTabbedPaneMapViews
-		    .get(selectedIndex);
+		final MapView mapView = (MapView) mTabbedPaneMapViews.get(selectedIndex);
 		if (mapView != Controller.getController().getMapView()) {
-			Controller.getController().getMapViewManager().changeToMapView(
-			    mapView.getName());
+			Controller.getController().getMapViewManager().changeToMapView(mapView.getName());
 		}
 		if (mContentComponent != null) {
 			mContentComponent.setVisible(true);

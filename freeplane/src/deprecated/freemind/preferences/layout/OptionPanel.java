@@ -72,7 +72,6 @@ import deprecated.freemind.common.PropertyBean;
 import deprecated.freemind.common.RemindValueProperty;
 import deprecated.freemind.common.SeparatorProperty;
 import deprecated.freemind.common.StringProperty;
-
 import deprecated.freemind.preferences.IFreemindPropertyContributor;
 
 /**
@@ -101,8 +100,8 @@ public class OptionPanel {
 		final private JPanel centralPanel;
 		final private String tabName;
 
-		private ChangeTabAction(final CardLayout cardLayout,
-		                        final JPanel centralPanel, final String tabName) {
+		private ChangeTabAction(final CardLayout cardLayout, final JPanel centralPanel,
+		                        final String tabName) {
 			super();
 			this.cardLayout = cardLayout;
 			this.centralPanel = centralPanel;
@@ -116,8 +115,7 @@ public class OptionPanel {
 				final JButton button = (JButton) i.next();
 				button.setForeground(null);
 			}
-			getTabButton(tabName)
-			    .setForeground(OptionPanel.MARKED_BUTTON_COLOR);
+			getTabButton(tabName).setForeground(OptionPanel.MARKED_BUTTON_COLOR);
 			selectedPanel = tabName;
 		}
 	}
@@ -126,8 +124,7 @@ public class OptionPanel {
 		void writeProperties(Properties props);
 	}
 
-	private static class KeyProperty extends PropertyBean implements
-	        IPropertyControl {
+	private static class KeyProperty extends PropertyBean implements IPropertyControl {
 		private static RowSpec rowSpec;
 		String description;
 		private ImageIcon icon;
@@ -138,8 +135,7 @@ public class OptionPanel {
 
 		/**
 		 */
-		public KeyProperty(final JDialog dialog, final String description,
-		                   final String label) {
+		public KeyProperty(final JDialog dialog, final String description, final String label) {
 			super();
 			this.description = description;
 			this.label = label;
@@ -147,9 +143,8 @@ public class OptionPanel {
 				public void actionPerformed(final ActionEvent arg0) {
 					final Vector allKeybindings = new Vector();
 					final GrabKeyDialog keyDialog = new GrabKeyDialog(dialog,
-					    new GrabKeyDialog.KeyBinding(getLabel(), getLabel(),
-					        getValue(), false), allKeybindings, null,
-					    modifierMask);
+					    new GrabKeyDialog.KeyBinding(getLabel(), getLabel(), getValue(), false),
+					    allKeybindings, null, modifierMask);
 					if (keyDialog.isOK()) {
 						setValue(keyDialog.getShortcut());
 						firePropertyChangeEvent();
@@ -249,13 +244,11 @@ public class OptionPanel {
 	private static final String PREFERENCE_STORAGE_PROPERTY = "OptionPanel_Window_Properties";
 	private static Set sContributors = new HashSet();
 
-	public static void addContributor(
-	                                  final IFreemindPropertyContributor contributor) {
+	public static void addContributor(final IFreemindPropertyContributor contributor) {
 		OptionPanel.sContributors.add(contributor);
 	}
 
-	public static void removeContributor(
-	                                     final IFreemindPropertyContributor contributor) {
+	public static void removeContributor(final IFreemindPropertyContributor contributor) {
 		OptionPanel.sContributors.remove(contributor);
 	}
 
@@ -273,8 +266,10 @@ public class OptionPanel {
 		super();
 		topDialog = d;
 		this.feedback = feedback;
-		final String marshalled = Controller.getResourceController().getProperty(OptionPanel.PREFERENCE_STORAGE_PROPERTY);
-        final OptionPanelWindowConfigurationStorage storage = OptionPanelWindowConfigurationStorage.decorateDialog(marshalled,d);
+		final String marshalled = Controller.getResourceController().getProperty(
+		    OptionPanel.PREFERENCE_STORAGE_PROPERTY);
+		final OptionPanelWindowConfigurationStorage storage = OptionPanelWindowConfigurationStorage
+		    .decorateDialog(marshalled, d);
 		if (storage != null) {
 			final OptionPanelWindowConfigurationStorage oWindowSettings = (OptionPanelWindowConfigurationStorage) storage;
 			selectedPanel = oWindowSettings.getPanel();
@@ -283,8 +278,7 @@ public class OptionPanel {
 
 	public void buildPanel() {
 		final FormLayout leftLayout = new FormLayout("80dlu", "");
-		final DefaultFormBuilder leftBuilder = new DefaultFormBuilder(
-		    leftLayout);
+		final DefaultFormBuilder leftBuilder = new DefaultFormBuilder(leftLayout);
 		final CardLayout cardLayout = new VariableSizeCardLayout();
 		final JPanel rightStack = new JPanel(cardLayout);
 		FormLayout rightLayout = null;
@@ -302,10 +296,9 @@ public class OptionPanel {
 				rightBuilder = new DefaultFormBuilder(rightLayout);
 				rightBuilder.setDefaultDialogBorder();
 				lastTabName = newTab.getLabel();
-				final JButton tabButton = new JButton(OptionString
-				    .getText(lastTabName));
-				final ChangeTabAction changeTabAction = new ChangeTabAction(
-				    cardLayout, rightStack, lastTabName);
+				final JButton tabButton = new JButton(OptionString.getText(lastTabName));
+				final ChangeTabAction changeTabAction = new ChangeTabAction(cardLayout, rightStack,
+				    lastTabName);
 				tabButton.addActionListener(changeTabAction);
 				registerTabButton(tabButton, lastTabName, changeTabAction);
 				leftBuilder.append(tabButton);
@@ -316,12 +309,10 @@ public class OptionPanel {
 		}
 		rightStack.add(rightBuilder.getPanel(), lastTabName);
 		if (selectedPanel != null && tabActionMap.containsKey(selectedPanel)) {
-			((ChangeTabAction) tabActionMap.get(selectedPanel))
-			    .actionPerformed(null);
+			((ChangeTabAction) tabActionMap.get(selectedPanel)).actionPerformed(null);
 		}
-		final JSplitPane centralPanel = new JSplitPane(
-		    JSplitPane.HORIZONTAL_SPLIT, leftBuilder.getPanel(),
-		    new JScrollPane(rightStack));
+		final JSplitPane centralPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftBuilder
+		    .getPanel(), new JScrollPane(rightStack));
 		topDialog.getContentPane().add(centralPanel, BorderLayout.CENTER);
 		final JButton cancelButton = new JButton(OptionString.getText("Cancel"));
 		cancelButton.addActionListener(new ActionListener() {
@@ -337,15 +328,14 @@ public class OptionPanel {
 			}
 		});
 		topDialog.getRootPane().setDefaultButton(okButton);
-		topDialog.getContentPane().add(
-		    ButtonBarFactory.buildOKCancelBar(cancelButton, okButton),
+		topDialog.getContentPane().add(ButtonBarFactory.buildOKCancelBar(cancelButton, okButton),
 		    BorderLayout.SOUTH);
 	}
 
 	public void closeWindow() {
 		final OptionPanelWindowConfigurationStorage storage = new OptionPanelWindowConfigurationStorage();
 		storage.setPanel(selectedPanel);
-		storage.storeDialogPositions(topDialog,OptionPanel.PREFERENCE_STORAGE_PROPERTY);
+		storage.storeDialogPositions(topDialog, OptionPanel.PREFERENCE_STORAGE_PROPERTY);
 		topDialog.setVisible(false);
 		topDialog.dispose();
 	}
@@ -367,43 +357,37 @@ public class OptionPanel {
 		 * For the codes see
 		 * http://www.loc.gov/standards/iso639-2/php/English_list.php
 		 */
-		"language.tooltip", ResourceController.RESOURCE_LANGUAGE, new String[] {
-		        "automatic", "ar", "cs", "de", "dk", "en", "el", "es", "et",
-		        "fr", "gl", "hr", "hu", "id", "it", "ja", "kr", "lt", "nl",
-		        "nn", "nb", "pl", "pt_BR", "pt_PT", "ru", "sk", "se", "sl",
-		        "tr", "uk_UA", "vi", "zh_TW", "zh_CN" }));
+		"language.tooltip", ResourceController.RESOURCE_LANGUAGE, new String[] { "automatic", "ar",
+		        "cs", "de", "dk", "en", "el", "es", "et", "fr", "gl", "hr", "hu", "id", "it", "ja",
+		        "kr", "lt", "nl", "nn", "nb", "pl", "pt_BR", "pt_PT", "ru", "sk", "se", "sl", "tr",
+		        "uk_UA", "vi", "zh_TW", "zh_CN" }));
 		controls.add(new NextLineProperty());
 		controls.add(new SeparatorProperty("files"));
 		controls.add(new StringProperty(null, "last_opened_list_length"));
 		controls.add(new BooleanProperty("load_last_map" + ".tooltip",
 		    FreemindStarter.LOAD_LAST_MAP));
-		controls.add(new BooleanProperty(
-		    "experimental_file_locking_on.tooltip",
+		controls.add(new BooleanProperty("experimental_file_locking_on.tooltip",
 		    "experimental_file_locking_on"));
 		controls.add(new NextLineProperty());
 		controls.add(new StringProperty(null, "userproperties"));
 		controls.add(new StringProperty(null, "patternsfile"));
-		controls.add(new StringProperty("browsemode_initial_map.tooltip",
-		    "browsemode_initial_map"));
+		controls
+		    .add(new StringProperty("browsemode_initial_map.tooltip", "browsemode_initial_map"));
 		controls.add(new NextLineProperty());
 		controls.add(new SeparatorProperty("automatic_save"));
 		controls.add(new StringProperty("time_for_automatic_save.tooltip",
 		    "time_for_automatic_save"));
-		controls.add(new BooleanProperty(
-		    "delete_automatic_saves_at_exit.tooltip",
+		controls.add(new BooleanProperty("delete_automatic_saves_at_exit.tooltip",
 		    "delete_automatic_saves_at_exit"));
-		controls.add(new StringProperty(
-		    "number_of_different_files_for_automatic_save.tooltip",
+		controls.add(new StringProperty("number_of_different_files_for_automatic_save.tooltip",
 		    "number_of_different_files_for_automatic_save"));
 		controls.add(new StringProperty("path_to_automatic_saves.tooltip",
 		    "path_to_automatic_saves"));
 		controls.add(new NextLineProperty());
 		controls.add(new SeparatorProperty("save"));
-		controls.add(new BooleanProperty(
-		    "resources_save_folding_state.tooltip",
+		controls.add(new BooleanProperty("resources_save_folding_state.tooltip",
 		    ResourceController.RESOURCES_SAVE_FOLDING_STATE));
-		controls.add(new BooleanProperty(
-		    "save_only_intrisically_needed_ids.tooltip",
+		controls.add(new BooleanProperty("save_only_intrisically_needed_ids.tooltip",
 		    "save_only_intrisically_needed_ids"));
 		/***********************************************************************
 		 * Defaults
@@ -411,14 +395,11 @@ public class OptionPanel {
 		 */
 		controls.add(new NewTabProperty("Defaults"));
 		controls.add(new SeparatorProperty("default_styles"));
-		controls
-		    .add(new ComboProperty("standardnodeshape.tooltip",
-		        ResourceController.RESOURCES_NODE_SHAPE,
-		        NodeStyleModel.NODE_STYLES));
+		controls.add(new ComboProperty("standardnodeshape.tooltip",
+		    ResourceController.RESOURCES_NODE_SHAPE, NodeStyleModel.NODE_STYLES));
 		controls.add(new ComboProperty("standardrootnodeshape.tooltip",
-		    ResourceController.RESOURCES_ROOT_NODE_SHAPE, new String[] {
-		            NodeStyleModel.STYLE_FORK, NodeStyleModel.STYLE_BUBBLE,
-		            NodeStyleModel.SHAPE_COMBINED }));
+		    ResourceController.RESOURCES_ROOT_NODE_SHAPE, new String[] { NodeStyleModel.STYLE_FORK,
+		            NodeStyleModel.STYLE_BUBBLE, NodeStyleModel.SHAPE_COMBINED }));
 		controls.add(new NextLineProperty());
 		controls.add(new SeparatorProperty("default_colors"));
 		controls.add(new ColorProperty("standardnodetextcolor.tooltip",
@@ -443,15 +424,14 @@ public class OptionPanel {
 		controls.add(new StringProperty("defaultfont.tooltip", "defaultfont"));
 		controls.add(new StringProperty(null, "defaultfontstyle"));
 		controls.add(new StringProperty(null, "defaultfontsize"));
-		controls.add(new NumberProperty("max_node_width.tooltip",
-		    "max_node_width", 1, Integer.MAX_VALUE, 1));
-		controls.add(new NumberProperty("max_tooltip_width.tooltip",
-		    "max_tooltip_width", 1, Integer.MAX_VALUE, 1));
+		controls.add(new NumberProperty("max_node_width.tooltip", "max_node_width", 1,
+		    Integer.MAX_VALUE, 1));
+		controls.add(new NumberProperty("max_tooltip_width.tooltip", "max_tooltip_width", 1,
+		    Integer.MAX_VALUE, 1));
 		controls.add(new NextLineProperty());
 		controls.add(new SeparatorProperty("other_defaults"));
 		controls.add(new ComboProperty("standardedgestyle.tooltip",
-		    ResourceController.RESOURCES_EDGE_STYLE, new String[] { "bezier",
-		            "linear" }));
+		    ResourceController.RESOURCES_EDGE_STYLE, new String[] { "bezier", "linear" }));
 		/***********************************************************************
 		 * Appearance
 		 * ****************************************************************
@@ -479,41 +459,34 @@ public class OptionPanel {
 			lafNames[i + 5] = className;
 			translatedLafNames.add(info.getName());
 		}
-		controls.add(new ComboProperty("lookandfeel.tooltip", "lookandfeel",
-		    lafNames, translatedLafNames));
+		controls.add(new ComboProperty("lookandfeel.tooltip", "lookandfeel", lafNames,
+		    translatedLafNames));
 		controls.add(new BooleanProperty("use_tabbed_pane.tooltip",
 		    ResourceController.RESOURCES_USE_TABBED_PANE));
 		/* ***************************************************************** */
 		controls.add(new NextLineProperty());
 		controls.add(new SeparatorProperty("selection_colors"));
-		controls.add(new BooleanProperty(
-		    ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION
-		            + ".tooltip",
-		    ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION));
-		controls.add(new ColorProperty(
-		    "standardselectednoderectanglecolor.tooltip",
-		    ResourceController.RESOURCES_SELECTED_NODE_RECTANGLE_COLOR,
-		    Controller.getResourceController().getDefaultProperty(
-		        ResourceController.RESOURCES_SELECTED_NODE_RECTANGLE_COLOR)));
-		controls
-		    .add(new ColorProperty(
-		        "standardselectednodecolor.tooltip",
-		        ResourceController.RESOURCES_SELECTED_NODE_COLOR,
-		        getDefaultProperty(ResourceController.RESOURCES_SELECTED_NODE_COLOR)));
+		controls.add(new BooleanProperty(ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION
+		        + ".tooltip", ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION));
+		controls.add(new ColorProperty("standardselectednoderectanglecolor.tooltip",
+		    ResourceController.RESOURCES_SELECTED_NODE_RECTANGLE_COLOR, Controller
+		        .getResourceController().getDefaultProperty(
+		            ResourceController.RESOURCES_SELECTED_NODE_RECTANGLE_COLOR)));
+		controls.add(new ColorProperty("standardselectednodecolor.tooltip",
+		    ResourceController.RESOURCES_SELECTED_NODE_COLOR,
+		    getDefaultProperty(ResourceController.RESOURCES_SELECTED_NODE_COLOR)));
 		/* ***************************************************************** */
 		controls.add(new NextLineProperty());
 		final String RESOURCE_ROOT_NODE = "root_node_appearance";
 		final String RESOURCE_USE_COMMON_OUT_POINT_FOR_ROOT_NODE = "use_common_out_point_for_root_node";
 		controls.add(new SeparatorProperty(RESOURCE_ROOT_NODE));
-		controls.add(new BooleanProperty(
-		    RESOURCE_USE_COMMON_OUT_POINT_FOR_ROOT_NODE + ".tooltip",
+		controls.add(new BooleanProperty(RESOURCE_USE_COMMON_OUT_POINT_FOR_ROOT_NODE + ".tooltip",
 		    RESOURCE_USE_COMMON_OUT_POINT_FOR_ROOT_NODE));
 		/* ***************************************************************** */
 		controls.add(new NextLineProperty());
 		controls.add(new SeparatorProperty("anti_alias"));
-		controls.add(new ComboProperty("antialias.tooltip",
-		    ViewController.RESOURCE_ANTIALIAS, new String[] {
-		            "antialias_edges", "antialias_all", "antialias_none" }));
+		controls.add(new ComboProperty("antialias.tooltip", ViewController.RESOURCE_ANTIALIAS,
+		    new String[] { "antialias_edges", "antialias_all", "antialias_none" }));
 		/* ***************************************************************** */
 		controls.add(new NextLineProperty());
 		controls.add(new SeparatorProperty("initial_map_size"));
@@ -522,25 +495,21 @@ public class OptionPanel {
 		/* ***************************************************************** */
 		controls.add(new NextLineProperty());
 		controls.add(new SeparatorProperty("hyperlink_types"));
-		controls.add(new ComboProperty("links.tooltip", "links", new String[] {
-		        "relative", "absolute" }));
+		controls.add(new ComboProperty("links.tooltip", "links", new String[] { "relative",
+		        "absolute" }));
 		/* ***************************************************************** */
 		controls.add(new NextLineProperty());
 		controls.add(new SeparatorProperty("edit_long_node_window"));
-		controls.add(new StringProperty("el__buttons_position.tooltip",
-		    "el__buttons_position"));
-		controls
-		    .add(new BooleanProperty(null, "el__position_window_below_node"));
+		controls.add(new StringProperty("el__buttons_position.tooltip", "el__buttons_position"));
+		controls.add(new BooleanProperty(null, "el__position_window_below_node"));
 		controls.add(new StringProperty(null, "el__min_default_window_height"));
 		controls.add(new StringProperty(null, "el__max_default_window_height"));
 		controls.add(new StringProperty(null, "el__min_default_window_width"));
 		controls.add(new StringProperty(null, "el__max_default_window_width"));
-		controls
-		    .add(new BooleanProperty(null, "el__enter_confirms_by_default"));
+		controls.add(new BooleanProperty(null, "el__enter_confirms_by_default"));
 		controls.add(new BooleanProperty(null, "el__show_icon_for_attributes"));
 		controls.add(new SeparatorProperty("icon_properties"));
-		controls.add(new BooleanProperty(null,
-		    ResourceController.RESOURCES_DON_T_SHOW_NOTE_ICONS));
+		controls.add(new BooleanProperty(null, ResourceController.RESOURCES_DON_T_SHOW_NOTE_ICONS));
 		controls.add(new StringProperty("icon_order_description",
 		    MindIcon.PROPERTY_STRING_ICONS_LIST));
 		/***********************************************************************
@@ -557,35 +526,24 @@ public class OptionPanel {
 		controls.add(new KeyProperty(topDialog, null, "keystroke_print"));
 		controls.add(new KeyProperty(topDialog, null, "keystroke_close"));
 		controls.add(new KeyProperty(topDialog, null, "keystroke_quit"));
-		controls
-		    .add(new KeyProperty(topDialog, null, "keystroke_option_dialog"));
-		controls.add(new KeyProperty(topDialog, null,
-		    "keystroke_export_to_html"));
-		controls.add(new KeyProperty(topDialog, null,
-		    "keystroke_export_branch_to_html"));
-		controls.add(new KeyProperty(topDialog, null,
-		    "keystroke_open_first_in_history"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_option_dialog"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_export_to_html"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_export_branch_to_html"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_open_first_in_history"));
 		controls.add(new KeyProperty(topDialog, null, "keystroke_previousMap"));
 		controls.add(new KeyProperty(topDialog, null, "keystroke_nextMap"));
-		controls
-		    .add(new KeyProperty(topDialog, null, "keystroke_mode_MindMap"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_mode_MindMap"));
 		controls.add(new KeyProperty(topDialog, null, "keystroke_mode_Browse"));
 		controls.add(new KeyProperty(topDialog, null, "keystroke_mode_File"));
-		controls.add(new KeyProperty(topDialog, null,
-		    "keystroke_node_toggle_italic"));
-		controls.add(new KeyProperty(topDialog, null,
-		    "keystroke_node_toggle_boldface"));
-		controls.add(new KeyProperty(topDialog, null,
-		    "keystroke_node_toggle_underlined"));
-		controls.add(new KeyProperty(topDialog, null,
-		    "keystroke_node_toggle_cloud"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_node_toggle_italic"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_node_toggle_boldface"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_node_toggle_underlined"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_node_toggle_cloud"));
 		controls.add(new KeyProperty(topDialog, null, "keystroke_undo"));
 		controls.add(new KeyProperty(topDialog, null, "keystroke_redo"));
-		controls
-		    .add(new KeyProperty(topDialog, null, "keystroke_delete_child"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_delete_child"));
 		controls.add(new KeyProperty(topDialog, null, "keystroke_select_all"));
-		controls
-		    .add(new KeyProperty(topDialog, null, "keystroke_select_branch"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_select_branch"));
 		controls.add(new KeyProperty(topDialog, null, "keystroke_zoom_out"));
 		controls.add(new KeyProperty(topDialog, null, "keystroke_zoom_in"));
 		controls.add(new NextLineProperty());
@@ -595,10 +553,8 @@ public class OptionPanel {
 		controls.add(new KeyProperty(topDialog, null, "keystroke_copy_single"));
 		controls.add(new KeyProperty(topDialog, null, "keystroke_paste"));
 		controls.add(new KeyProperty(topDialog, null, "keystroke_remove"));
-		controls.add(new KeyProperty(topDialog, null,
-		    "keystroke_add_arrow_link_action"));
-		controls.add(new KeyProperty(topDialog, null,
-		    "keystroke_add_local_link_action"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_add_arrow_link_action"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_add_local_link_action"));
 		controls.add(new NextLineProperty());
 		controls.add(new SeparatorProperty("node_navigation_commands"));
 		controls.add(new KeyProperty(topDialog, null, "keystroke_moveToRoot"));
@@ -611,108 +567,70 @@ public class OptionPanel {
 		controls.add(new SeparatorProperty("new_node_commands"));
 		controls.add(new KeyProperty(topDialog, null, "keystroke_add"));
 		controls.add(new KeyProperty(topDialog, null, "keystroke_add_child"));
-		controls
-		    .add(new KeyProperty(topDialog, null, "keystroke_add_child_mac"));
-		controls.add(new KeyProperty(topDialog, null,
-		    "keystroke_add_sibling_before"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_add_child_mac"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_add_sibling_before"));
 		controls.add(new NextLineProperty());
 		controls.add(new SeparatorProperty("node_editing_commands"));
 		controls.add(new KeyProperty(topDialog, null, "keystroke_edit"));
-		controls.add(new KeyProperty(topDialog, null,
-		    "keystroke_edit_long_node"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_edit_long_node"));
 		controls.add(new KeyProperty(topDialog, null, "keystroke_join_nodes"));
-		controls
-		    .add(new KeyProperty(topDialog, null, "keystroke_toggle_folded"));
-		controls.add(new KeyProperty(topDialog, null,
-		    "keystroke_toggle_children_folded"));
-		controls.add(new KeyProperty(topDialog, null,
-		    "keystroke_set_link_by_filechooser"));
-		controls.add(new KeyProperty(topDialog, null,
-		    "keystroke_set_link_by_textfield"));
-		controls.add(new KeyProperty(topDialog, null,
-		    "keystroke_set_image_by_filechooser"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_toggle_folded"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_toggle_children_folded"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_set_link_by_filechooser"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_set_link_by_textfield"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_set_image_by_filechooser"));
 		controls.add(new KeyProperty(topDialog, null, "keystroke_node_up"));
 		controls.add(new KeyProperty(topDialog, null, "keystroke_node_down"));
-		controls.add(new KeyProperty(topDialog, null,
-		    "keystroke_node_increase_font_size"));
-		controls.add(new KeyProperty(topDialog, null,
-		    "keystroke_node_decrease_font_size"));
-		controls
-		    .add(new KeyProperty(topDialog, null, "keystroke_export_branch"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_node_increase_font_size"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_node_decrease_font_size"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_export_branch"));
 		controls.add(new KeyProperty(topDialog, null, "keystroke_node_color"));
-		controls.add(new KeyProperty(topDialog, null,
-		    "keystroke_node_color_blend"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_node_color_blend"));
 		controls.add(new KeyProperty(topDialog, null, "keystroke_edge_color"));
 		controls.add(new KeyProperty(topDialog, null, "keystroke_find"));
 		controls.add(new KeyProperty(topDialog, null, "keystroke_find_next"));
 		controls.add(new NextLineProperty());
 		controls.add(new SeparatorProperty("patterns"));
-		controls
-		    .add(new KeyProperty(topDialog, null,
-		        "keystroke_accessories/plugins/ManagePatterns_manage_patterns_dialog"));
 		controls.add(new KeyProperty(topDialog, null,
-		    "keystroke_apply_pattern_1"));
-		controls.add(new KeyProperty(topDialog, null,
-		    "keystroke_apply_pattern_2"));
-		controls.add(new KeyProperty(topDialog, null,
-		    "keystroke_apply_pattern_3"));
-		controls.add(new KeyProperty(topDialog, null,
-		    "keystroke_apply_pattern_4"));
-		controls.add(new KeyProperty(topDialog, null,
-		    "keystroke_apply_pattern_5"));
-		controls.add(new KeyProperty(topDialog, null,
-		    "keystroke_apply_pattern_6"));
-		controls.add(new KeyProperty(topDialog, null,
-		    "keystroke_apply_pattern_7"));
-		controls.add(new KeyProperty(topDialog, null,
-		    "keystroke_apply_pattern_8"));
-		controls.add(new KeyProperty(topDialog, null,
-		    "keystroke_apply_pattern_9"));
-		controls.add(new KeyProperty(topDialog, null,
-		    "keystroke_apply_pattern_10"));
-		controls.add(new KeyProperty(topDialog, null,
-		    "keystroke_apply_pattern_11"));
-		controls.add(new KeyProperty(topDialog, null,
-		    "keystroke_apply_pattern_12"));
-		controls.add(new KeyProperty(topDialog, null,
-		    "keystroke_apply_pattern_13"));
-		controls.add(new KeyProperty(topDialog, null,
-		    "keystroke_apply_pattern_14"));
-		controls.add(new KeyProperty(topDialog, null,
-		    "keystroke_apply_pattern_15"));
-		controls.add(new KeyProperty(topDialog, null,
-		    "keystroke_apply_pattern_16"));
-		controls.add(new KeyProperty(topDialog, null,
-		    "keystroke_apply_pattern_17"));
-		controls.add(new KeyProperty(topDialog, null,
-		    "keystroke_apply_pattern_18"));
+		    "keystroke_accessories/plugins/ManagePatterns_manage_patterns_dialog"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_apply_pattern_1"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_apply_pattern_2"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_apply_pattern_3"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_apply_pattern_4"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_apply_pattern_5"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_apply_pattern_6"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_apply_pattern_7"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_apply_pattern_8"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_apply_pattern_9"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_apply_pattern_10"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_apply_pattern_11"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_apply_pattern_12"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_apply_pattern_13"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_apply_pattern_14"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_apply_pattern_15"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_apply_pattern_16"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_apply_pattern_17"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_apply_pattern_18"));
 		controls.add(new NextLineProperty());
 		controls.add(new SeparatorProperty("others"));
-		controls
-		    .add(new KeyProperty(topDialog, null,
-		        "keystroke_accessories/plugins/ChangeNodeLevelAction_left.properties_key"));
-		controls
-		    .add(new KeyProperty(topDialog, null,
-		        "keystroke_accessories/plugins/ChangeNodeLevelAction_right.properties_key"));
-		controls
-		    .add(new KeyProperty(topDialog, null,
-		        "keystroke_accessories/plugins/FormatCopy.properties.properties_key"));
-		controls
-		    .add(new KeyProperty(topDialog, null,
-		        "keystroke_accessories/plugins/FormatPaste.properties.properties_key"));
-		controls
-		    .add(new KeyProperty(topDialog, null,
-		        "keystroke_accessories/plugins/IconSelectionPlugin.properties.properties_key"));
+		controls.add(new KeyProperty(topDialog, null,
+		    "keystroke_accessories/plugins/ChangeNodeLevelAction_left.properties_key"));
+		controls.add(new KeyProperty(topDialog, null,
+		    "keystroke_accessories/plugins/ChangeNodeLevelAction_right.properties_key"));
+		controls.add(new KeyProperty(topDialog, null,
+		    "keystroke_accessories/plugins/FormatCopy.properties.properties_key"));
+		controls.add(new KeyProperty(topDialog, null,
+		    "keystroke_accessories/plugins/FormatPaste.properties.properties_key"));
+		controls.add(new KeyProperty(topDialog, null,
+		    "keystroke_accessories/plugins/IconSelectionPlugin.properties.properties_key"));
 		controls.add(new KeyProperty(topDialog, null,
 		    "keystroke_accessories/plugins/NewParentNode.properties_key"));
 		controls.add(new KeyProperty(topDialog, null,
 		    "keystroke_accessories/plugins/NodeNote_jumpto.keystroke.alt_N"));
-		controls
-		    .add(new KeyProperty(topDialog, null,
-		        "keystroke_accessories/plugins/NodeNote_hide_show.keystroke.control_shift_less"));
-		controls
-		    .add(new KeyProperty(topDialog, null,
-		        "keystroke_accessories/plugins/RemoveNote.properties.properties_key"));
+		controls.add(new KeyProperty(topDialog, null,
+		    "keystroke_accessories/plugins/NodeNote_hide_show.keystroke.control_shift_less"));
+		controls.add(new KeyProperty(topDialog, null,
+		    "keystroke_accessories/plugins/RemoveNote.properties.properties_key"));
 		controls.add(new KeyProperty(topDialog, null,
 		    "keystroke_accessories/plugins/UnfoldAll.keystroke.alt_PAGE_UP"));
 		controls.add(new KeyProperty(topDialog, null,
@@ -723,23 +641,16 @@ public class OptionPanel {
 		    "keystroke_accessories/plugins/UnfoldAll.keystroke.alt_END"));
 		controls.add(new NextLineProperty());
 		controls.add(new SeparatorProperty("attributes"));
-		controls.add(new KeyProperty(topDialog, null,
-		    "keystroke_edit_attributes"));
-		controls.add(new KeyProperty(topDialog, null,
-		    "keystroke_show_all_attributes"));
-		controls.add(new KeyProperty(topDialog, null,
-		    "keystroke_show_selected_attributes"));
-		controls.add(new KeyProperty(topDialog, null,
-		    "keystroke_hide_all_attributes"));
-		controls.add(new KeyProperty(topDialog, null,
-		    "keystroke_show_attribute_manager"));
-		controls.add(new KeyProperty(topDialog, null,
-		    "keystroke_assign_attributes"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_edit_attributes"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_show_all_attributes"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_show_selected_attributes"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_hide_all_attributes"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_show_attribute_manager"));
+		controls.add(new KeyProperty(topDialog, null, "keystroke_assign_attributes"));
 		controls.add(new KeyProperty(topDialog, null,
 		    "keystroke_plugins/ScriptingEngine.keystroke.evaluate"));
 		Controller.getController();
-		final ModeController modeController = Controller
-		    .getModeController();
+		final ModeController modeController = Controller.getModeController();
 		if (modeController instanceof MModeController) {
 			final MModeController controller = (MModeController) modeController;
 			final Collection<Action> iconActions = ((MIconController) controller
@@ -752,10 +663,9 @@ public class OptionPanel {
 			controls.add(new SeparatorProperty("icons"));
 			final Iterator iterator = actions.iterator();
 			while (iterator.hasNext()) {
-				final IIconInformation info = (IIconInformation) iterator
-				    .next();
-				final KeyProperty keyProperty = new KeyProperty(topDialog,
-				    null, info.getKeystrokeResourceName());
+				final IIconInformation info = (IIconInformation) iterator.next();
+				final KeyProperty keyProperty = new KeyProperty(topDialog, null, info
+				    .getKeystrokeResourceName());
 				keyProperty.setLabelText(info.getDescription());
 				keyProperty.setImageIcon(info.getIcon());
 				keyProperty.disableModifiers();
@@ -767,47 +677,35 @@ public class OptionPanel {
 		 */
 		controls.add(new NewTabProperty("Behaviour"));
 		controls.add(new SeparatorProperty("behaviour"));
-		controls.add(new ComboProperty("placenewbranches.tooltip",
-		    "placenewbranches", new String[] { "first", "last" }));
+		controls.add(new ComboProperty("placenewbranches.tooltip", "placenewbranches",
+		    new String[] { "first", "last" }));
 		controls.add(new BooleanProperty("draganddrop.tooltip", "draganddrop"));
-		controls.add(new BooleanProperty("unfold_on_paste.tooltip",
-		    "unfold_on_paste"));
+		controls.add(new BooleanProperty("unfold_on_paste.tooltip", "unfold_on_paste"));
 		controls.add(new BooleanProperty("disable_cursor_move_paper.tooltip",
 		    "disable_cursor_move_paper"));
-		controls.add(new BooleanProperty("enable_leaves_folding.tooltip",
-		    "enable_leaves_folding"));
-		controls.add(new StringProperty("foldingsymbolwidth.tooltip",
-		    "foldingsymbolwidth"));
+		controls.add(new BooleanProperty("enable_leaves_folding.tooltip", "enable_leaves_folding"));
+		controls.add(new StringProperty("foldingsymbolwidth.tooltip", "foldingsymbolwidth"));
 		controls.add(new NextLineProperty());
 		controls.add(new SeparatorProperty("key_typing"));
-		controls.add(new BooleanProperty("disable_key_type.tooltip",
-		    "disable_key_type"));
-		controls.add(new BooleanProperty("key_type_adds_new.tooltip",
-		    "key_type_adds_new"));
+		controls.add(new BooleanProperty("disable_key_type.tooltip", "disable_key_type"));
+		controls.add(new BooleanProperty("key_type_adds_new.tooltip", "key_type_adds_new"));
 		controls.add(new NextLineProperty());
 		controls.add(new SeparatorProperty("resources_notifications"));
-		controls
-		    .add(new RemindValueProperty(
-		        "remind_type_of_new_nodes.tooltip",
-		        ResourceController.RESOURCES_REMIND_USE_RICH_TEXT_IN_NEW_LONG_NODES));
+		controls.add(new RemindValueProperty("remind_type_of_new_nodes.tooltip",
+		    ResourceController.RESOURCES_REMIND_USE_RICH_TEXT_IN_NEW_LONG_NODES));
 		controls.add(new DontShowNotificationProperty(
 		    "resources_convert_to_current_version.tooltip",
 		    ResourceController.RESOURCES_CONVERT_TO_CURRENT_VERSION));
-		controls.add(new DontShowNotificationProperty(
-		    "delete_nodes_without_question.tooltip",
+		controls.add(new DontShowNotificationProperty("delete_nodes_without_question.tooltip",
 		    ResourceController.RESOURCES_DELETE_NODES_WITHOUT_QUESTION));
-		controls.add(new DontShowNotificationProperty(
-		    "cut_nodes_without_question.tooltip",
+		controls.add(new DontShowNotificationProperty("cut_nodes_without_question.tooltip",
 		    ResourceController.RESOURCES_CUT_NODES_WITHOUT_QUESTION));
-		controls.add(new DontShowNotificationProperty(
-		    "remove_notes_without_question.tooltip",
+		controls.add(new DontShowNotificationProperty("remove_notes_without_question.tooltip",
 		    ResourceController.RESOURCES_REMOVE_NOTES_WITHOUT_QUESTION));
-		controls.add(new DontShowNotificationProperty(
-		    "execute_scripts_without_asking.tooltip",
+		controls.add(new DontShowNotificationProperty("execute_scripts_without_asking.tooltip",
 		    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING));
 		controls.add(new NextLineProperty());
-		controls.add(new SeparatorProperty(
-		    ResourceController.RESOURCES_SELECTION_METHOD));
+		controls.add(new SeparatorProperty(ResourceController.RESOURCES_SELECTION_METHOD));
 		controls.add(new ComboProperty("selection_method.tooltip",
 		    ResourceController.RESOURCES_SELECTION_METHOD, new String[] {
 		            "selection_method_direct", "selection_method_delayed",
@@ -820,35 +718,28 @@ public class OptionPanel {
 		    ResourceController.RESOURCES_WHEEL_VELOCITY, 1, 250, 1));
 		controls.add(new NextLineProperty());
 		controls.add(new SeparatorProperty("undo"));
-		controls.add(new NumberProperty("undo_levels.tooltip", "undo_levels",
-		    2, 1000, 1));
+		controls.add(new NumberProperty("undo_levels.tooltip", "undo_levels", 2, 1000, 1));
 		/***********************************************************************
 		 * Browser/external apps
 		 * ****************************************************************
 		 */
 		controls.add(new NewTabProperty("HTML"));
 		controls.add(new SeparatorProperty("browser"));
-		controls.add(new StringProperty(
-		    "default_browser_command_windows_nt.tooltip",
+		controls.add(new StringProperty("default_browser_command_windows_nt.tooltip",
 		    "default_browser_command_windows_nt"));
-		controls.add(new StringProperty(
-		    "default_browser_command_windows_9x.tooltip",
+		controls.add(new StringProperty("default_browser_command_windows_9x.tooltip",
 		    "default_browser_command_windows_9x"));
-		controls.add(new StringProperty(
-		    "default_browser_command_other_os.tooltip",
+		controls.add(new StringProperty("default_browser_command_other_os.tooltip",
 		    "default_browser_command_other_os"));
 		controls.add(new StringProperty("default_browser_command_mac.tooltip",
 		    "default_browser_command_mac"));
 		controls.add(new SeparatorProperty("html_export"));
-		controls.add(new ComboProperty(null, "html_export_folding",
-		    new String[] { "html_export_no_folding",
-		            "html_export_fold_currently_folded",
-		            "html_export_fold_all", "html_export_based_on_headings" }));
+		controls.add(new ComboProperty(null, "html_export_folding", new String[] {
+		        "html_export_no_folding", "html_export_fold_currently_folded",
+		        "html_export_fold_all", "html_export_based_on_headings" }));
 		controls.add(new NextLineProperty());
-		controls.add(new BooleanProperty("export_icons_in_html.tooltip",
-		    "export_icons_in_html"));
-		for (final Iterator iter = OptionPanel.sContributors.iterator(); iter
-		    .hasNext();) {
+		controls.add(new BooleanProperty("export_icons_in_html.tooltip", "export_icons_in_html"));
+		for (final Iterator iter = OptionPanel.sContributors.iterator(); iter.hasNext();) {
 			final IFreemindPropertyContributor contributor = (IFreemindPropertyContributor) iter
 			    .next();
 			controls.addAll(contributor.getControls());

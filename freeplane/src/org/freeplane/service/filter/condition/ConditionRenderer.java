@@ -42,10 +42,8 @@ public class ConditionRenderer implements ListCellRenderer {
 	 * javax.swing.ListCellRenderer#getListCellRendererComponent(javax.swing
 	 * .JList, java.lang.Object, int, boolean, boolean)
 	 */
-	public Component getListCellRendererComponent(final JList list,
-	                                              final Object value,
-	                                              final int index,
-	                                              final boolean isSelected,
+	public Component getListCellRendererComponent(final JList list, final Object value,
+	                                              final int index, final boolean isSelected,
 	                                              final boolean cellHasFocus) {
 		if (value == null) {
 			return new JLabel(Controller.getText("filter_no_filtering"));

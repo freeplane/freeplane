@@ -54,8 +54,7 @@ import org.freeplane.service.filter.util.ISortedListModel;
 /**
  * @author Dimitry Polivaev
  */
-public class AttributeManagerDialog extends JDialog implements
-        IMapViewChangeListener {
+public class AttributeManagerDialog extends JDialog implements IMapViewChangeListener {
 	private class ApplyAction extends FreeplaneAction {
 		ApplyAction() {
 			super("apply");
@@ -109,9 +108,8 @@ public class AttributeManagerDialog extends JDialog implements
 		}
 
 		public void actionPerformed(final ActionEvent e) {
-			ListDialog.showDialog((Component) e.getSource(),
-			    AttributeManagerDialog.this, labelText, title, listBoxModel,
-			    "xxxxxxxxxxxxxxxxxxxxx");
+			ListDialog.showDialog((Component) e.getSource(), AttributeManagerDialog.this,
+			    labelText, title, listBoxModel, "xxxxxxxxxxxxxxxxxxxxx");
 		}
 
 		public int getRow() {
@@ -143,8 +141,7 @@ public class AttributeManagerDialog extends JDialog implements
 		 */
 		public void actionPerformed(final ActionEvent e) {
 			if (importDialog == null) {
-				importDialog = new ImportAttributesDialog(
-				    AttributeManagerDialog.this);
+				importDialog = new ImportAttributesDialog(AttributeManagerDialog.this);
 			}
 			importDialog.show();
 		}
@@ -167,10 +164,9 @@ public class AttributeManagerDialog extends JDialog implements
 		}
 	}
 
-	static final Icon editButtonImage = new ImageIcon(Controller
-	    .getResourceController().getResource("images/edit12.png"));
-	private static final String[] fontSizes = { "6", "8", "10", "12", "14",
-	        "16", "18", "20", "24" };
+	static final Icon editButtonImage = new ImageIcon(Controller.getResourceController()
+	    .getResource("images/edit12.png"));
+	private static final String[] fontSizes = { "6", "8", "10", "12", "14", "16", "18", "20", "24" };
 	private ImportAttributesDialog importDialog = null;
 	private AttributeRegistry model;
 	private MapRegistry registry;
@@ -178,14 +174,13 @@ public class AttributeManagerDialog extends JDialog implements
 	final private JTable view;
 
 	public AttributeManagerDialog() {
-		super(Controller.getController().getViewController().getJFrame(),
-		    Controller.getText("attributes_dialog_title"), true);
+		super(Controller.getController().getViewController().getJFrame(), Controller
+		    .getText("attributes_dialog_title"), true);
 		view = new AttributeRegistryTable(new EditListAction());
 		registry = Controller.getController().getMap().getRegistry();
 		model = registry.getAttributes();
 		view.setModel(model.getTableModel());
-		view.getSelectionModel().setSelectionMode(
-		    ListSelectionModel.SINGLE_SELECTION);
+		view.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		view.getTableHeader().setReorderingAllowed(false);
 		final JScrollPane scrollPane = new JScrollPane(view);
 		getContentPane().add(scrollPane, BorderLayout.CENTER);
@@ -212,15 +207,13 @@ public class AttributeManagerDialog extends JDialog implements
 		southButtons.add(size);
 		southButtons.add(Box.createHorizontalGlue());
 		final JButton importBtn = new JButton(new ImportAction());
-		importBtn.setToolTipText(Controller
-		    .getText("attributes_import_tooltip"));
+		importBtn.setToolTipText(Controller.getText("attributes_import_tooltip"));
 		southButtons.add(importBtn);
 		southButtons.add(Box.createHorizontalGlue());
 		Tools.addEscapeActionToDialog(this);
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new ClosingListener());
-		Controller.getController().getMapViewManager()
-		    .addMapViewChangeListener(this);
+		Controller.getController().getMapViewManager().addMapViewChangeListener(this);
 		addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentShown(final ComponentEvent e) {
@@ -232,8 +225,7 @@ public class AttributeManagerDialog extends JDialog implements
 	public void afterMapClose(final MapView pOldMapView) {
 	}
 
-	public void afterMapViewChange(final MapView oldMapView,
-	                               final MapView newMapView) {
+	public void afterMapViewChange(final MapView oldMapView, final MapView newMapView) {
 		if (newMapView != null) {
 			registry = newMapView.getModel().getRegistry();
 			model = registry.getAttributes();
@@ -248,12 +240,10 @@ public class AttributeManagerDialog extends JDialog implements
 		model.applyChanges();
 	}
 
-	public void beforeMapViewChange(final MapView oldMapView,
-	                                final MapView newMapView) {
+	public void beforeMapViewChange(final MapView oldMapView, final MapView newMapView) {
 	}
 
-	public boolean isMapViewChangeAllowed(final MapView oldMapView,
-	                                      final MapView newMapView) {
+	public boolean isMapViewChangeAllowed(final MapView oldMapView, final MapView newMapView) {
 		return !isVisible();
 	}
 

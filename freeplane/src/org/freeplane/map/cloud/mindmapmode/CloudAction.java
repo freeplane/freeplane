@@ -42,8 +42,8 @@ class CloudAction extends MultipleNodeAction {
 	 */
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		final MCloudController cloudController = (MCloudController) node
-		    .getModeController().getCloudController();
+		final MCloudController cloudController = (MCloudController) node.getModeController()
+		    .getCloudController();
 		cloudController.setCloud(node, node.getCloud() == null);
 	}
 

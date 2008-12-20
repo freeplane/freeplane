@@ -41,10 +41,8 @@ public class DoAutomaticSave extends TimerTask {
 	final private File pathToStore;
 	final private Vector tempFileStack;
 
-	public DoAutomaticSave(final MindMapMapModel model,
-	                       final int numberOfTempFiles,
-	                       final boolean filesShouldBeDeletedAfterShutdown,
-	                       final File pathToStore) {
+	public DoAutomaticSave(final MindMapMapModel model, final int numberOfTempFiles,
+	                       final boolean filesShouldBeDeletedAfterShutdown, final File pathToStore) {
 		this.model = model;
 		tempFileStack = new Vector();
 		numberOfFiles = ((numberOfTempFiles > 0) ? numberOfTempFiles : 1);
@@ -78,8 +76,8 @@ public class DoAutomaticSave extends TimerTask {
 							tempFile = File
 							    .createTempFile(
 							        "FM_"
-							                + ((model.toString() == null) ? "unnamed"
-							                        : model.toString()),
+							                + ((model.toString() == null) ? "unnamed" : model
+							                    .toString()),
 							        org.freeplane.map.url.mindmapmode.FileManager.FREEMIND_FILE_EXTENSION,
 							        pathToStore);
 							if (filesShouldBeDeletedAfterShutdown) {
@@ -87,28 +85,24 @@ public class DoAutomaticSave extends TimerTask {
 							}
 						}
 						catch (final Exception e) {
-							System.err
-							    .println("Error in automatic MindMapMapModel.save(): "
-							            + e.getMessage());
+							System.err.println("Error in automatic MindMapMapModel.save(): "
+							        + e.getMessage());
 							org.freeplane.main.Tools.logException(e);
 							return;
 						}
 					}
 					try {
-						((FileManager) model.getModeController()
-						    .getUrlManager())
-						    .saveInternal(model, tempFile, true /*
-						    					    																																																				 * =internal call
-						    					    																																																				 */);
+						((FileManager) model.getModeController().getUrlManager()).saveInternal(
+						    model, tempFile, true /*
+											    					    																																																				 * =internal call
+											    					    																																																				 */);
 						Controller.getController().getViewController().out(
-						    Controller.getResourceController().format(
-						        "automatically_save_message",
+						    Controller.getResourceController().format("automatically_save_message",
 						        new Object[] { tempFile.toString() }));
 					}
 					catch (final Exception e) {
-						System.err
-						    .println("Error in automatic MindMapMapModel.save(): "
-						            + e.getMessage());
+						System.err.println("Error in automatic MindMapMapModel.save(): "
+						        + e.getMessage());
 						org.freeplane.main.Tools.logException(e);
 					}
 					tempFileStack.add(tempFile);

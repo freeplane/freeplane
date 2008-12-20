@@ -83,8 +83,7 @@ public class SortedMapVector {
 		return findElement(key, 0, size());
 	}
 
-	private int findElement(final Comparable key, final int first,
-	                        final int size) {
+	private int findElement(final Comparable key, final int first, final int size) {
 		if (size == 0) {
 			return first | SortedMapVector.ELEMENT_NOT_FOUND_FLAG;
 		}
@@ -96,8 +95,7 @@ public class SortedMapVector {
 		if (comparationResult < 0) {
 			if (halfSize <= 1) {
 				if (middle != first) {
-					comparationResult = key.compareTo(((MapElement) elements
-					    .get(first)).getKey());
+					comparationResult = key.compareTo(((MapElement) elements.get(first)).getKey());
 				}
 				if (comparationResult < 0) {
 					return first | SortedMapVector.ELEMENT_NOT_FOUND_FLAG;
@@ -115,8 +113,7 @@ public class SortedMapVector {
 		else {
 			if (halfSize <= 1) {
 				if (middle != last) {
-					comparationResult = key.compareTo(((MapElement) elements
-					    .get(last)).getKey());
+					comparationResult = key.compareTo(((MapElement) elements.get(last)).getKey());
 				}
 				if (comparationResult < 0) {
 					return last | SortedMapVector.ELEMENT_NOT_FOUND_FLAG;

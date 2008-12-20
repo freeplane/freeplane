@@ -64,8 +64,7 @@ public class BooleanProperty extends PropertyBean implements IPropertyControl {
 	}
 
 	public void layout(final DefaultFormBuilder builder) {
-		final JLabel label = builder.append(OptionString.getText(getLabel()),
-		    mCheckBox);
+		final JLabel label = builder.append(OptionString.getText(getLabel()), mCheckBox);
 		label.setToolTipText(OptionString.getText(getDescription()));
 	}
 
@@ -76,10 +75,9 @@ public class BooleanProperty extends PropertyBean implements IPropertyControl {
 	@Override
 	public void setValue(final String value) {
 		if (value == null
-		        || !(value.toLowerCase().equals(mTrueValue) || value
-		            .toLowerCase().equals(mFalseValue))) {
-			throw new IllegalArgumentException("Cannot set a boolean to "
-			        + value);
+		        || !(value.toLowerCase().equals(mTrueValue) || value.toLowerCase().equals(
+		            mFalseValue))) {
+			throw new IllegalArgumentException("Cannot set a boolean to " + value);
 		}
 		mCheckBox.setSelected(value.toLowerCase().equals(mTrueValue));
 	}

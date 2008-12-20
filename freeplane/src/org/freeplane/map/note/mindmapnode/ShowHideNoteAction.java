@@ -26,13 +26,9 @@ import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.modes.ModeController;
 import org.freeplane.ui.SelectableAction;
-@SelectableAction(checkOnPopup=true)
-class ShowHideNoteAction extends FreeplaneAction {
-	@Override
-    public void setSelected() {
-		setSelected(noteController.getSplitPane() != null);
-    }
 
+@SelectableAction(checkOnPopup = true)
+class ShowHideNoteAction extends FreeplaneAction {
 	/**
 	 *
 	 */
@@ -54,5 +50,9 @@ class ShowHideNoteAction extends FreeplaneAction {
 			    ResourceController.RESOURCES_USE_SPLIT_PANE, "false");
 		}
 	}
-	
+
+	@Override
+	public void setSelected() {
+		setSelected(noteController.getSplitPane() != null);
+	}
 }

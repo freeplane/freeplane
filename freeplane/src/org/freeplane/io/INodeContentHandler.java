@@ -22,6 +22,5 @@ package org.freeplane.io;
 import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
 
 public interface INodeContentHandler {
-	boolean setContent(Object node, String tag, IXMLElement attributes,
-	                   String content);
+	boolean setContent(Object node, String tag, IXMLElement attributes, String content);
 }

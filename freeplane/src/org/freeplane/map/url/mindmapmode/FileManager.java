@@ -91,14 +91,11 @@ public class FileManager extends UrlManager {
 	private void createActions(final MModeController modeController) {
 		modeController.addAction("exportBranch", new ExportBranchAction());
 		modeController.addAction("importBranch", new ImportBranchAction());
-		modeController.addAction("importLinkedBranch",
-		    new ImportLinkedBranchAction());
+		modeController.addAction("importLinkedBranch", new ImportLinkedBranchAction());
 		modeController.addAction("importLinkedBranchWithoutRoot",
 		    new ImportLinkedBranchWithoutRootAction());
-		modeController.addAction("importExplorerFavorites",
-		    new ImportExplorerFavoritesAction());
-		modeController.addAction("importFolderStructure",
-		    new ImportFolderStructureAction());
+		modeController.addAction("importExplorerFavorites", new ImportExplorerFavoritesAction());
+		modeController.addAction("importFolderStructure", new ImportFolderStructureAction());
 		modeController.addAction("revertAction", new RevertAction());
 	}
 
@@ -135,17 +132,15 @@ public class FileManager extends UrlManager {
 		return getLinkByFileChooser(map, getFileFilter());
 	}
 
-	public String getLinkByFileChooser(final MapModel map,
-	                                   final FileFilter fileFilter) {
+	public String getLinkByFileChooser(final MapModel map, final FileFilter fileFilter) {
 		URL link;
 		String relative = null;
 		File input;
 		JFileChooser chooser = null;
 		if (map.getFile() == null) {
-			JOptionPane.showMessageDialog(Controller.getController()
-			    .getViewController().getContentPane(), getModeController()
-			    .getText("not_saved_for_link_error"), "FreeMind",
-			    JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(Controller.getController().getViewController()
+			    .getContentPane(), getModeController().getText("not_saved_for_link_error"),
+			    "FreeMind", JOptionPane.WARNING_MESSAGE);
 			return null;
 		}
 		if (getLastCurrentDir() != null) {
@@ -160,8 +155,8 @@ public class FileManager extends UrlManager {
 		else {
 			chooser.setFileFilter(chooser.getAcceptAllFileFilter());
 		}
-		final int returnVal = chooser.showOpenDialog(Controller.getController()
-		    .getViewController().getContentPane());
+		final int returnVal = chooser.showOpenDialog(Controller.getController().getViewController()
+		    .getContentPane());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			input = chooser.getSelectedFile();
 			setLastCurrentDir(input.getParentFile());
@@ -170,15 +165,12 @@ public class FileManager extends UrlManager {
 				relative = link.toString();
 			}
 			catch (final MalformedURLException ex) {
-				Controller.getController().errorMessage(
-				    getModeController().getText("url_error"));
+				Controller.getController().errorMessage(getModeController().getText("url_error"));
 				return null;
 			}
-			if (Controller.getResourceController().getProperty("links").equals(
-			    "relative")) {
+			if (Controller.getResourceController().getProperty("links").equals("relative")) {
 				try {
-					relative = Tools.toRelativeURL(Tools.fileToUrl(map
-					    .getFile()), link);
+					relative = Tools.toRelativeURL(Tools.fileToUrl(map.getFile()), link);
 				}
 				catch (final MalformedURLException ex) {
 					Controller.getController().errorMessage(
@@ -211,8 +203,7 @@ public class FileManager extends UrlManager {
 
 	public void open() {
 		final JFileChooser chooser = getFileChooser();
-		final int returnVal = chooser.showOpenDialog(getMModeController()
-		    .getMapView());
+		final int returnVal = chooser.showOpenDialog(getMModeController().getMapView());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File[] selectedFiles;
 			if (chooser.isMultiSelectionEnabled()) {
@@ -225,8 +216,7 @@ public class FileManager extends UrlManager {
 				final File theFile = selectedFiles[i];
 				try {
 					setLastCurrentDir(theFile.getParentFile());
-					getMModeController().getMapController().newMap(
-					    Tools.fileToUrl(theFile));
+					getMModeController().getMapController().newMap(Tools.fileToUrl(theFile));
 				}
 				catch (final Exception ex) {
 					handleLoadingException(ex);
@@ -254,19 +244,19 @@ public class FileManager extends UrlManager {
 	 */
 	public boolean save(final MapModel map, final File file) {
 		try {
-			final String lockingUser = ((MMapController) getModeController()
-			    .getMapController()).tryToLock(map, file);
+			final String lockingUser = ((MMapController) getModeController().getMapController())
+			    .tryToLock(map, file);
 			if (lockingUser != null) {
 				Controller.getController().informationMessage(
-				    Tools.expandPlaceholders(getMModeController().getText(
-				        "map_locked_by_save_as"), file.getName(), lockingUser));
+				    Tools.expandPlaceholders(getMModeController().getText("map_locked_by_save_as"),
+				        file.getName(), lockingUser));
 				return false;
 			}
 		}
 		catch (final Exception e) {
 			Controller.getController().informationMessage(
-			    Tools.expandPlaceholders(getMModeController().getText(
-			        "locking_failed_by_save_as"), file.getName()));
+			    Tools.expandPlaceholders(getMModeController().getText("locking_failed_by_save_as"),
+			        file.getName()));
 			return false;
 		}
 		return saveInternal((MindMapMapModel) map, file, false);
@@ -278,14 +268,11 @@ public class FileManager extends UrlManager {
 	public boolean saveAs(final MapModel map) {
 		final JFileChooser chooser = getFileChooser();
 		if (getMapsParentFile() == null) {
-			chooser
-			    .setSelectedFile(new File(
-			        getFileNameProposal(map)
-			                + org.freeplane.map.url.mindmapmode.FileManager.FREEMIND_FILE_EXTENSION));
+			chooser.setSelectedFile(new File(getFileNameProposal(map)
+			        + org.freeplane.map.url.mindmapmode.FileManager.FREEMIND_FILE_EXTENSION));
 		}
 		chooser.setDialogTitle(getMModeController().getText("save_as"));
-		final int returnVal = chooser.showSaveDialog(getMModeController()
-		    .getMapView());
+		final int returnVal = chooser.showSaveDialog(getMModeController().getMapView());
 		if (returnVal != JFileChooser.APPROVE_OPTION) {
 			return false;
 		}
@@ -294,15 +281,12 @@ public class FileManager extends UrlManager {
 		final String ext = Tools.getExtension(f.getName());
 		if (!ext
 		    .equals(org.freeplane.map.url.mindmapmode.FileManager.FREEMIND_FILE_EXTENSION_WITHOUT_DOT)) {
-			f = new File(
-			    f.getParent(),
-			    f.getName()
-			            + org.freeplane.map.url.mindmapmode.FileManager.FREEMIND_FILE_EXTENSION);
+			f = new File(f.getParent(), f.getName()
+			        + org.freeplane.map.url.mindmapmode.FileManager.FREEMIND_FILE_EXTENSION);
 		}
 		if (f.exists()) {
-			final int overwriteMap = JOptionPane.showConfirmDialog(
-			    getMModeController().getMapView(), getMModeController()
-			        .getText("map_already_exists"), "FreeMind",
+			final int overwriteMap = JOptionPane.showConfirmDialog(getMModeController()
+			    .getMapView(), getMModeController().getText("map_already_exists"), "FreeMind",
 			    JOptionPane.YES_NO_OPTION);
 			if (overwriteMap != JOptionPane.YES_OPTION) {
 				return false;
@@ -317,8 +301,7 @@ public class FileManager extends UrlManager {
 	 * This method is intended to provide both normal save routines and saving
 	 * of temporary (internal) files.
 	 */
-	boolean saveInternal(final MindMapMapModel map, final File file,
-	                     final boolean isInternal) {
+	boolean saveInternal(final MindMapMapModel map, final File file, final boolean isInternal) {
 		if (!isInternal && map.isReadOnly()) {
 			System.err.println("Attempt to save read-only map.");
 			return false;
@@ -327,10 +310,9 @@ public class FileManager extends UrlManager {
 			if (map.getTimerForAutomaticSaving() != null) {
 				map.getTimerForAutomaticSaving().cancel();
 			}
-			final BufferedWriter fileout = new BufferedWriter(
-			    new OutputStreamWriter(new FileOutputStream(file)));
-			getMModeController().getMapController().writeMapAsXml(map, fileout,
-			    true);
+			final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(
+			    new FileOutputStream(file)));
+			getMModeController().getMapController().writeMapAsXml(map, fileout, true);
 			if (!isInternal) {
 				map.setFile(file);
 				map.setSaved(true);
@@ -339,8 +321,8 @@ public class FileManager extends UrlManager {
 			return true;
 		}
 		catch (final FileNotFoundException e) {
-			final String message = Tools.expandPlaceholders(
-			    getMModeController().getText("save_failed"), file.getName());
+			final String message = Tools.expandPlaceholders(getMModeController().getText(
+			    "save_failed"), file.getName());
 			if (!isInternal) {
 				Controller.getController().errorMessage(message);
 			}
@@ -349,8 +331,7 @@ public class FileManager extends UrlManager {
 			}
 		}
 		catch (final Exception e) {
-			Logger.global
-			    .log(Level.SEVERE, "Error in MindMapMapModel.save(): ");
+			Logger.global.log(Level.SEVERE, "Error in MindMapMapModel.save(): ");
 			Tools.logException(e);
 		}
 		map.scheduleTimerForAutomaticSaving();

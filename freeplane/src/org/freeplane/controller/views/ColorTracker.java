@@ -43,8 +43,7 @@ public class ColorTracker implements ActionListener, Serializable {
 		}
 	}
 
-	static class DisposeOnClose extends ComponentAdapter implements
-	        Serializable {
+	static class DisposeOnClose extends ComponentAdapter implements Serializable {
 		@Override
 		public void componentHidden(final ComponentEvent e) {
 			final Window w = (Window) e.getComponent();
@@ -59,16 +58,13 @@ public class ColorTracker implements ActionListener, Serializable {
 		return ColorTracker.colorChooser;
 	}
 
-	public static Color showCommonJColorChooserDialog(
-	                                                  final Component component,
-	                                                  final String title,
-	                                                  final Color initialColor)
+	public static Color showCommonJColorChooserDialog(final Component component,
+	                                                  final String title, final Color initialColor)
 	        throws HeadlessException {
 		final JColorChooser pane = ColorTracker.getCommonJColorChooser();
 		pane.setColor(initialColor);
 		final ColorTracker ok = new ColorTracker(pane);
-		final JDialog dialog = JColorChooser.createDialog(component, title,
-		    true, pane, ok, null);
+		final JDialog dialog = JColorChooser.createDialog(component, title, true, pane, ok, null);
 		dialog.addWindowListener(new Closer());
 		dialog.addComponentListener(new DisposeOnClose());
 		dialog.show();

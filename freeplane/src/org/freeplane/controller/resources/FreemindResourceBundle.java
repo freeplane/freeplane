@@ -43,11 +43,9 @@ class FreemindResourceBundle extends ResourceBundle {
 	FreemindResourceBundle(final ResourceController controller) {
 		this.controller = controller;
 		try {
-			String lang = this.controller
-			    .getProperty(ResourceController.RESOURCE_LANGUAGE);
+			String lang = this.controller.getProperty(ResourceController.RESOURCE_LANGUAGE);
 			if (lang == null || lang.equals("automatic")) {
-				lang = Locale.getDefault().getLanguage() + "_"
-				        + Locale.getDefault().getCountry();
+				lang = Locale.getDefault().getLanguage() + "_" + Locale.getDefault().getCountry();
 				if (getLanguageResources(lang) == null) {
 					lang = Locale.getDefault().getLanguage();
 					if (getLanguageResources(lang) == null) {
@@ -81,10 +79,9 @@ class FreemindResourceBundle extends ResourceBundle {
 	/**
 	 * @throws IOException
 	 */
-	private PropertyResourceBundle getLanguageResources(final String lang)
-	        throws IOException {
-		final URL systemResource = Controller.getResourceController()
-		    .getResource("Resources_" + lang + ".properties");
+	private PropertyResourceBundle getLanguageResources(final String lang) throws IOException {
+		final URL systemResource = Controller.getResourceController().getResource(
+		    "Resources_" + lang + ".properties");
 		if (systemResource == null) {
 			return null;
 		}
@@ -128,8 +125,7 @@ class FreemindResourceBundle extends ResourceBundle {
 		}
 		catch (final Exception ex) {
 			Logger.global.severe("Warning - resource string not found:" + key);
-			return defaultResources.getString(key)
-			        + FreemindResourceBundle.POSTFIX_TRANSLATE_ME;
+			return defaultResources.getString(key) + FreemindResourceBundle.POSTFIX_TRANSLATE_ME;
 		}
 	}
 }

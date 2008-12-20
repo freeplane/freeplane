@@ -39,8 +39,7 @@ public class BMapController extends MapController {
 
 	@Override
 	protected void newMapView(final MapModel mapModel) {
-		((BModeController) getModeController()).setNoteIcon(mapModel
-		    .getRootNode());
+		((BModeController) getModeController()).setNoteIcon(mapModel.getRootNode());
 		super.newMapView(mapModel);
 	}
 

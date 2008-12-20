@@ -67,9 +67,9 @@ public class GrabKeyDialog extends JDialog {
 		private boolean canClose() {
 			final String shortcutString = shortcut.getText();
 			if (shortcutString.length() == 0 && binding.isAssigned()) {
-				final int answer = JOptionPane.showConfirmDialog(
-				    GrabKeyDialog.this, getText("grab-key.remove-ask"), null,
-				    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+				final int answer = JOptionPane.showConfirmDialog(GrabKeyDialog.this,
+				    getText("grab-key.remove-ask"), null, JOptionPane.YES_NO_OPTION,
+				    JOptionPane.QUESTION_MESSAGE);
 				if (answer == JOptionPane.YES_OPTION) {
 					shortcut.setText(null);
 					isOK = true;
@@ -93,13 +93,11 @@ public class GrabKeyDialog extends JDialog {
 				    getText("grab-key.prefix-shortcut"));
 				return false;
 			}
-			final int answer = JOptionPane.showConfirmDialog(
-			    GrabKeyDialog.this, getText("grab-key.duplicate-shortcut")
-			            + new Object[] { other.label }, null,
+			final int answer = JOptionPane.showConfirmDialog(GrabKeyDialog.this,
+			    getText("grab-key.duplicate-shortcut") + new Object[] { other.label }, null,
 			    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 			if (answer == JOptionPane.YES_OPTION) {
-				if (other.shortcut != null
-				        && shortcutString.startsWith(other.shortcut)) {
+				if (other.shortcut != null && shortcutString.startsWith(other.shortcut)) {
 					other.shortcut = null;
 				}
 				isOK = true;
@@ -138,10 +136,9 @@ public class GrabKeyDialog extends JDialog {
 		@Override
 		protected void processKeyEvent(final KeyEvent _evt) {
 			if ((getModifierMask() & _evt.getModifiers()) != 0) {
-				final KeyEvent evt = new KeyEvent(_evt.getComponent(), _evt
-				    .getID(), _evt.getWhen(), ~getModifierMask()
-				        & _evt.getModifiers(), _evt.getKeyCode(), _evt
-				    .getKeyChar(), _evt.getKeyLocation());
+				final KeyEvent evt = new KeyEvent(_evt.getComponent(), _evt.getID(),
+				    _evt.getWhen(), ~getModifierMask() & _evt.getModifiers(), _evt.getKeyCode(),
+				    _evt.getKeyChar(), _evt.getKeyLocation());
 				processKeyEvent(evt);
 				if (evt.isConsumed()) {
 					_evt.consume();
@@ -150,22 +147,19 @@ public class GrabKeyDialog extends JDialog {
 			}
 			final KeyEvent evt = KeyEventWorkaround.processKeyEvent(_evt);
 			if (debugBuffer != null) {
-				debugBuffer.insert(debugBuffer.getLength(), "Event "
-				        + GrabKeyDialog.toString(_evt)
+				debugBuffer.insert(debugBuffer.getLength(), "Event " + GrabKeyDialog.toString(_evt)
 				        + (evt == null ? " filtered\n" : " passed\n"));
 			}
 			if (evt == null) {
 				return;
 			}
 			evt.consume();
-			final KeyEventTranslator.Key key = KeyEventTranslator
-			    .translateKeyEvent(evt);
+			final KeyEventTranslator.Key key = KeyEventTranslator.translateKeyEvent(evt);
 			if (key == null) {
 				return;
 			}
 			if (debugBuffer != null) {
-				debugBuffer.insert(debugBuffer.getLength(),
-				    "==> Translated to " + key + "\n");
+				debugBuffer.insert(debugBuffer.getLength(), "==> Translated to " + key + "\n");
 			}
 			final StringBuffer keyString = new StringBuffer(/* getText() */);
 			if (key.modifiers != null) {
@@ -215,8 +209,8 @@ public class GrabKeyDialog extends JDialog {
 		public String name;
 		public String shortcut;
 
-		public KeyBinding(final String name, final String label,
-		                  final String shortcut, final boolean isPrefix) {
+		public KeyBinding(final String name, final String label, final String shortcut,
+		                  final boolean isPrefix) {
 			this.name = name;
 			this.label = label;
 			this.shortcut = shortcut;
@@ -252,9 +246,9 @@ public class GrabKeyDialog extends JDialog {
 				id = "unknown type";
 				break;
 		}
-		return id + ",keyCode=0x" + Integer.toString(evt.getKeyCode(), 16)
-		        + ",keyChar=0x" + Integer.toString(evt.getKeyChar(), 16)
-		        + ",modifiers=0x" + Integer.toString(evt.getModifiers(), 16);
+		return id + ",keyCode=0x" + Integer.toString(evt.getKeyCode(), 16) + ",keyChar=0x"
+		        + Integer.toString(evt.getKeyChar(), 16) + ",modifiers=0x"
+		        + Integer.toString(evt.getModifiers(), 16);
 	}
 
 	private Vector allBindings;
@@ -282,14 +276,13 @@ public class GrabKeyDialog extends JDialog {
 	 *            debug info will be dumped to this buffer (may be null)
 	 * @since jEdit 4.1pre7
 	 */
-	public GrabKeyDialog(final Dialog parent, final KeyBinding binding,
-	                     final Vector allBindings, final Buffer debugBuffer) {
+	public GrabKeyDialog(final Dialog parent, final KeyBinding binding, final Vector allBindings,
+	                     final Buffer debugBuffer) {
 		this(parent, binding, allBindings, debugBuffer, 0);
 	}
 
-	public GrabKeyDialog(final Dialog parent, final KeyBinding binding,
-	                     final Vector allBindings, final Buffer debugBuffer,
-	                     final int modifierMask) {
+	public GrabKeyDialog(final Dialog parent, final KeyBinding binding, final Vector allBindings,
+	                     final Buffer debugBuffer, final int modifierMask) {
 		super(parent, "grab-key.title", true);
 		this.modifierMask = modifierMask;
 		setTitle(getText("grab-key.title"));
@@ -378,8 +371,7 @@ public class GrabKeyDialog extends JDialog {
 		return Controller.getText("GrabKeyDialog." + resourceString);
 	}
 
-	private void init(final KeyBinding binding, final Vector allBindings,
-	                  final Buffer debugBuffer) {
+	private void init(final KeyBinding binding, final Vector allBindings, final Buffer debugBuffer) {
 		this.binding = binding;
 		this.allBindings = allBindings;
 		this.debugBuffer = debugBuffer;
@@ -406,9 +398,8 @@ public class GrabKeyDialog extends JDialog {
 		};
 		content.setBorder(new EmptyBorder(12, 12, 12, 12));
 		setContentPane(content);
-		new JLabel(
-		    debugBuffer == null ? (getText("grab-key.caption") + " " + binding.label)
-		            : (getText("grab-key.keyboard-test")));
+		new JLabel(debugBuffer == null ? (getText("grab-key.caption") + " " + binding.label)
+		        : (getText("grab-key.keyboard-test")));
 		final Box input = Box.createHorizontalBox();
 		shortcut = new InputPane();
 		input.add(shortcut);

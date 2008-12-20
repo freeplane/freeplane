@@ -51,8 +51,7 @@ class BubbleMainView extends MainView {
 	@Override
 	public int getDeltaX() {
 		final NodeModel model = getNodeView().getModel();
-		if (model.getModeController().getMapController().isFolded(model)
-		        && getNodeView().isLeft()) {
+		if (model.getModeController().getMapController().isFolded(model) && getNodeView().isLeft()) {
 			return super.getDeltaX() + getZoomedFoldingSymbolHalfWidth() * 2;
 		}
 		return super.getDeltaX();
@@ -130,8 +129,7 @@ class BubbleMainView extends MainView {
 		}
 		paintSelected(g);
 		paintDragOver(g);
-		final Color edgeColor = model.getModeController().getEdgeController()
-		    .getColor(model);
+		final Color edgeColor = model.getModeController().getEdgeController().getColor(model);
 		g.setColor(edgeColor);
 		g.setStroke(BubbleMainView.DEF_STROKE);
 		g.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 10, 10);
@@ -149,8 +147,7 @@ class BubbleMainView extends MainView {
 		super.paintSelected(graphics);
 		if (getNodeView().useSelectionColors()) {
 			graphics.setColor(MapView.standardSelectColor);
-			graphics.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 10,
-			    10);
+			graphics.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 10, 10);
 		}
 	}
 }

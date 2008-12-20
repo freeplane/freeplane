@@ -55,13 +55,12 @@ import org.freeplane.ui.UIBuilder;
  */
 abstract public class ViewController implements IMapViewChangeListener {
 	public static final String RESOURCE_ANTIALIAS = "antialias";
-	private static final String[] zooms = { "25%", "50%", "75%", "100%",
-	        "150%", "200%", "300%", "400%" };
+	private static final String[] zooms = { "25%", "50%", "75%", "100%", "150%", "200%", "300%",
+	        "400%" };
 	private boolean antialiasAll = false;
 	private boolean antialiasEdges = false;
 	final private LastOpenedList lastOpened;
-	final private ActionListener lastOpenedActionListener = new LastOpenedActionListener(
-	    this);
+	final private ActionListener lastOpenedActionListener = new LastOpenedActionListener(this);
 	final private JPanel leftToolbarPanel;
 	private boolean leftToolbarVisible;
 	final private MapViewManager mapViewManager;
@@ -99,8 +98,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 		controller.addAction("zoomOut", zoomOut);
 		optionAntialiasAction = new OptionAntialiasAction();
 		controller.addAction("optionAntialiasAction", optionAntialiasAction);
-		userDefinedZoom = Controller.getResourceController().getText(
-		    "user_defined_zoom");
+		userDefinedZoom = Controller.getResourceController().getText("user_defined_zoom");
 		zoom = new JComboBox(getZooms());
 		zoom.setSelectedItem("100%");
 		zoom.addItem(userDefinedZoom);
@@ -113,8 +111,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 		});
 		controller.addAction("toggleMenubar", new ToggleMenubarAction(this));
 		controller.addAction("toggleToolbar", new ToggleToolbarAction(this));
-		controller.addAction("toggleLeftToolbar", new ToggleLeftToolbarAction(
-		    this));
+		controller.addAction("toggleLeftToolbar", new ToggleLeftToolbarAction(this));
 		toolbarVisible = true;
 		leftToolbarVisible = true;
 		menubarVisible = true;
@@ -123,19 +120,16 @@ abstract public class ViewController implements IMapViewChangeListener {
 		status = new JLabel("!");
 	}
 
-	public void addMapTitleChangeListener(
-	                                      final IMapTitleChangeListener pMapTitleChangeListener) {
+	public void addMapTitleChangeListener(final IMapTitleChangeListener pMapTitleChangeListener) {
 		mMapTitleChangeListenerSet.add(pMapTitleChangeListener);
 	}
 
 	public void afterMapClose(final MapView pOldMapView) {
 	}
 
-	public void afterMapViewChange(final MapView oldMapView,
-	                               final MapView newMapView) {
+	public void afterMapViewChange(final MapView oldMapView, final MapView newMapView) {
 		Controller.getController();
-		final ModeController oldModeController = Controller
-		    .getModeController();
+		final ModeController oldModeController = Controller.getModeController();
 		ModeController newModeController = oldModeController;
 		if (newMapView != null) {
 			setViewportView(newMapView);
@@ -163,11 +157,9 @@ abstract public class ViewController implements IMapViewChangeListener {
 		newModeController.getUserInputListenerFactory().updateMapList();
 	}
 
-	public void beforeMapViewChange(final MapView oldMapView,
-	                                final MapView newMapView) {
+	public void beforeMapViewChange(final MapView oldMapView, final MapView newMapView) {
 		Controller.getController();
-		final ModeController modeController = Controller
-		    .getModeController();
+		final ModeController modeController = Controller.getModeController();
 		if (oldMapView != null) {
 			modeController.setVisible(false);
 		}
@@ -272,8 +264,8 @@ abstract public class ViewController implements IMapViewChangeListener {
 	}
 
 	public void init() {
-		final JToolBar filterToolbar = Controller.getController()
-		    .getFilterController().getFilterToolbar();
+		final JToolBar filterToolbar = Controller.getController().getFilterController()
+		    .getFilterToolbar();
 		getContentPane().add(toolbarPanel, BorderLayout.NORTH);
 		getContentPane().add(leftToolbarPanel, BorderLayout.WEST);
 		toolbarPanel.add(filterToolbar, BorderLayout.SOUTH);
@@ -281,8 +273,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 		status.setText("");
 	}
 
-	abstract public JSplitPane insertComponentIntoSplitPane(
-	                                                        JComponent noteViewerComponent);
+	abstract public JSplitPane insertComponentIntoSplitPane(JComponent noteViewerComponent);
 
 	abstract public boolean isApplet();
 
@@ -290,8 +281,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 		return leftToolbarVisible;
 	}
 
-	public boolean isMapViewChangeAllowed(final MapView oldMapView,
-	                                      final MapView newMapView) {
+	public boolean isMapViewChangeAllowed(final MapView oldMapView, final MapView newMapView) {
 		return true;
 	}
 
@@ -336,8 +326,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 	public boolean quit() {
 		while (getMapViewManager().getMapViewVector().size() > 0) {
 			if (getMapView() != null) {
-				final boolean closingNotCancelled = getMapViewManager().close(
-				    false);
+				final boolean closingNotCancelled = getMapViewManager().close(false);
 				if (!closingNotCancelled) {
 					return false;
 				}
@@ -351,8 +340,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 		Controller.getResourceController().setProperty("antialiasAll",
 		    (antialiasAll ? "true" : "false"));
 		final String lastOpenedString = lastOpened.save();
-		Controller.getResourceController().setProperty("lastOpened",
-		    lastOpenedString);
+		Controller.getResourceController().setProperty("lastOpened", lastOpenedString);
 		Controller.getResourceController().setProperty("toolbarVisible",
 		    (toolbarVisible ? "true" : "false"));
 		Controller.getResourceController().setProperty("leftToolbarVisible",
@@ -360,8 +348,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 		return true;
 	}
 
-	public void removeMapTitleChangeListener(
-	                                         final IMapTitleChangeListener pMapTitleChangeListener) {
+	public void removeMapTitleChangeListener(final IMapTitleChangeListener pMapTitleChangeListener) {
 		mMapTitleChangeListenerSet.remove(pMapTitleChangeListener);
 	}
 
@@ -379,32 +366,29 @@ abstract public class ViewController implements IMapViewChangeListener {
 			oldModeController.enableActions(false);
 			final UserInputListenerFactory userInputListenerFactory = oldModeController
 			    .getUserInputListenerFactory();
-			final JToolBar modeToolBar = userInputListenerFactory
-			    .getMainToolBar();
+			final JToolBar modeToolBar = userInputListenerFactory.getMainToolBar();
 			if (modeToolBar != null) {
 				toolbarPanel.remove(modeToolBar);
 			}
-			final Component leftToolBar = userInputListenerFactory
-			    .getLeftToolBar();
+			final Component leftToolBar = userInputListenerFactory.getLeftToolBar();
 			if (leftToolBar != null) {
 				leftToolbarPanel.remove(leftToolBar);
 			}
 		}
 		newModeController.enableActions(true);
-		final JToolBar newToolBar = newModeController
-		    .getUserInputListenerFactory().getMainToolBar();
+		final JToolBar newToolBar = newModeController.getUserInputListenerFactory()
+		    .getMainToolBar();
 		if (newToolBar != null) {
 			toolbarPanel.add(newToolBar, BorderLayout.NORTH);
 			newToolBar.repaint();
 		}
 		/* new left toolbar. */
-		final Component newLeftToolBar = newModeController
-		    .getUserInputListenerFactory().getLeftToolBar();
+		final Component newLeftToolBar = newModeController.getUserInputListenerFactory()
+		    .getLeftToolBar();
 		if (newLeftToolBar != null) {
 			leftToolbarPanel.add(newLeftToolBar, BorderLayout.WEST);
 		}
-		setFreeMindMenuBar(newModeController.getUserInputListenerFactory()
-		    .getMenuBar());
+		setFreeMindMenuBar(newModeController.getUserInputListenerFactory().getMenuBar());
 		newModeController.getUserInputListenerFactory().updateMapList();
 	}
 
@@ -418,12 +402,10 @@ abstract public class ViewController implements IMapViewChangeListener {
 
 	public void setEdgesRenderingHint(final Graphics2D g) {
 		if (getAntialiasEdges()) {
-			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-			    RenderingHints.VALUE_ANTIALIAS_ON);
+			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		}
 		else {
-			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-			    RenderingHints.VALUE_ANTIALIAS_OFF);
+			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
 		}
 	}
 
@@ -455,16 +437,14 @@ abstract public class ViewController implements IMapViewChangeListener {
 	 */
 	public void setTitle() {
 		Controller.getController();
-		final ModeController modeController = Controller
-		    .getModeController();
+		final ModeController modeController = Controller.getModeController();
 		if (modeController == null) {
 			setTitle("");
 			return;
 		}
-		final Object[] messageArguments = { Controller
-		    .getText(("mode_" + modeController.getModeName())) };
-		final MessageFormat formatter = new MessageFormat(Controller
-		    .getText("mode_title"));
+		final Object[] messageArguments = { Controller.getText(("mode_" + modeController
+		    .getModeName())) };
+		final MessageFormat formatter = new MessageFormat(Controller.getText("mode_title"));
 		String title = formatter.format(messageArguments);
 		String rawTitle = "";
 		MapModel model = null;
@@ -472,22 +452,16 @@ abstract public class ViewController implements IMapViewChangeListener {
 		if (mapView != null) {
 			model = mapView.getModel();
 			rawTitle = mapView.getName();
-			title = rawTitle
-			        + (model.isSaved() ? "" : "*")
-			        + " - "
-			        + title
-			        + (model.isReadOnly() ? " ("
-			                + Controller.getText("read_only") + ")" : "");
+			title = rawTitle + (model.isSaved() ? "" : "*") + " - " + title
+			        + (model.isReadOnly() ? " (" + Controller.getText("read_only") + ")" : "");
 			final String modelTitle = model.getTitle();
 			if (modelTitle != null) {
 				title += ' ' + modelTitle;
 			}
 		}
 		setTitle(title);
-		for (final Iterator iterator = mMapTitleChangeListenerSet.iterator(); iterator
-		    .hasNext();) {
-			final IMapTitleChangeListener listener = (IMapTitleChangeListener) iterator
-			    .next();
+		for (final Iterator iterator = mMapTitleChangeListenerSet.iterator(); iterator.hasNext();) {
+			final IMapTitleChangeListener listener = (IMapTitleChangeListener) iterator.next();
 			listener.setMapTitle(rawTitle, mapView, model);
 		}
 	}
@@ -545,17 +519,15 @@ abstract public class ViewController implements IMapViewChangeListener {
 			final JMenuItem item = new JMenuItem(key);
 			if (firstElement) {
 				firstElement = false;
-				item.setAccelerator(KeyStroke.getKeyStroke(Controller
-				    .getResourceController().getAdjustableProperty(
-				        "keystroke_open_first_in_history")));
+				item.setAccelerator(KeyStroke.getKeyStroke(Controller.getResourceController()
+				    .getAdjustableProperty("keystroke_open_first_in_history")));
 			}
 			item.addActionListener(lastOpenedActionListener);
-			menuBuilder.addMenuItem(FreemindMenuBar.FILE_MENU + "/last", item,
-			    UIBuilder.AS_CHILD);
+			menuBuilder.addMenuItem(FreemindMenuBar.FILE_MENU + "/last", item, UIBuilder.AS_CHILD);
 		}
 		if (menuBuilder.contains("/main_toolbar/zoom")) {
-			menuBuilder.addComponent("/main_toolbar/zoom", getZoomComboBox(),
-			    zoomIn, MenuBuilder.AS_CHILD);
+			menuBuilder.addComponent("/main_toolbar/zoom", getZoomComboBox(), zoomIn,
+			    MenuBuilder.AS_CHILD);
 		}
 	}
 

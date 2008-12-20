@@ -31,11 +31,11 @@ class UsePlainTextAction extends MultipleNodeAction {
 	}
 
 	@Override
-    protected void actionPerformed(ActionEvent e, NodeModel node) {
-			final String nodeText = node.getText();
-			if (HtmlTools.isHtmlNode(nodeText)) {
-				((MTextController) getMModeController().getTextController())
-				    .setNodeText(node, HtmlTools.htmlToPlain(nodeText));
-			}
-    }
+	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
+		final String nodeText = node.getText();
+		if (HtmlTools.isHtmlNode(nodeText)) {
+			((MTextController) getMModeController().getTextController()).setNodeText(node,
+			    HtmlTools.htmlToPlain(nodeText));
+		}
+	}
 }

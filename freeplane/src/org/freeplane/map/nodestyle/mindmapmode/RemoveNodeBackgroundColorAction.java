@@ -31,7 +31,7 @@ class RemoveNodeBackgroundColorAction extends MultipleNodeAction {
 
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		((MNodeStyleController) super.getMModeController()
-		    .getNodeStyleController()).setBackgroundColor(node, null);
+		((MNodeStyleController) super.getMModeController().getNodeStyleController())
+		    .setBackgroundColor(node, null);
 	}
 }

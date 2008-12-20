@@ -41,18 +41,14 @@ import org.w3c.dom.Element;
 /**
  * @author foltin
  */
-@ActionDescriptor(
-       name="plugins/ExportPdf.xml_name",
-       locations={"/menu_bar/file/export/export"}
-)
+@ActionDescriptor(name = "plugins/ExportPdf.xml_name", locations = { "/menu_bar/file/export/export" })
 public class ExportPdf extends ExportVectorGraphic {
 	public ExportPdf() {
 		super();
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final File chosenFile = chooseFile("pdf", Controller
-		    .getText("export_pdf_text"), null);
+		final File chosenFile = chooseFile("pdf", Controller.getText("export_pdf_text"), null);
 		if (chosenFile == null) {
 			return;
 		}
@@ -61,8 +57,7 @@ public class ExportPdf extends ExportVectorGraphic {
 			if (view == null) {
 				return;
 			}
-			Controller.getController().getViewController().setWaitingCursor(
-			    true);
+			Controller.getController().getViewController().setWaitingCursor(true);
 			final SVGGraphics2D g2d = fillSVGGraphics2D(view);
 			final PDFTranscoder pdfTranscoder = new PDFTranscoder();
 			/*
@@ -70,18 +65,16 @@ public class ExportPdf extends ExportVectorGraphic {
 			 * Frank Spangenberg (f_spangenberg) Summary: Large mind maps
 			 * produce invalid PDF
 			 */
-			pdfTranscoder.addTranscodingHint(
-			    SVGAbstractTranscoder.KEY_MAX_HEIGHT, new Float(19200));
-			pdfTranscoder.addTranscodingHint(
-			    SVGAbstractTranscoder.KEY_MAX_WIDTH, new Float(19200));
+			pdfTranscoder
+			    .addTranscodingHint(SVGAbstractTranscoder.KEY_MAX_HEIGHT, new Float(19200));
+			pdfTranscoder.addTranscodingHint(SVGAbstractTranscoder.KEY_MAX_WIDTH, new Float(19200));
 			/* end patch */
 			final Document doc = g2d.getDOMFactory();
 			final Element rootE = doc.getDocumentElement();
 			g2d.getRoot(rootE);
 			final TranscoderInput input = new TranscoderInput(doc);
 			final FileOutputStream ostream = new FileOutputStream(chosenFile);
-			final BufferedOutputStream bufStream = new BufferedOutputStream(
-			    ostream);
+			final BufferedOutputStream bufStream = new BufferedOutputStream(ostream);
 			final TranscoderOutput output = new TranscoderOutput(bufStream);
 			pdfTranscoder.transcode(input, output);
 			ostream.flush();
@@ -89,9 +82,8 @@ public class ExportPdf extends ExportVectorGraphic {
 		}
 		catch (final Exception ex) {
 			org.freeplane.main.Tools.logException(ex);
-			JOptionPane.showMessageDialog(Controller.getController()
-			    .getViewController().getContentPane(),
-			    ex.getLocalizedMessage(), null, JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(Controller.getController().getViewController()
+			    .getContentPane(), ex.getLocalizedMessage(), null, JOptionPane.ERROR_MESSAGE);
 		}
 		Controller.getController().getViewController().setWaitingCursor(false);
 	}

@@ -41,8 +41,7 @@ import org.freeplane.modes.mindmapmode.MModeController;
 /**
  * The MouseMotionListener which belongs to every NodeView
  */
-class MNodeMotionListener extends
-        UserInputListenerFactory.DefaultNodeMotionListener {
+class MNodeMotionListener extends UserInputListenerFactory.DefaultNodeMotionListener {
 	final private MModeController c;
 	private Point dragStartingPoint = null;
 	private int originalHGap;
@@ -62,8 +61,7 @@ class MNodeMotionListener extends
 	private int getHGap(final Point dragNextPoint, final NodeModel node,
 	                    final Point dragStartingPoint) {
 		int oldHGap = node.getLocationModel().getHGap();
-		int hGapChange = (int) ((dragNextPoint.x - dragStartingPoint.x) / c
-		    .getMapView().getZoom());
+		int hGapChange = (int) ((dragNextPoint.x - dragStartingPoint.x) / c.getMapView().getZoom());
 		if (node.isLeft()) {
 			hGapChange = -hGapChange;
 		}
@@ -76,8 +74,8 @@ class MNodeMotionListener extends
 	private int getNodeShiftY(final Point dragNextPoint, final NodeModel node,
 	                          final Point dragStartingPoint) {
 		int shiftY = node.getLocationModel().getShiftY();
-		final int shiftYChange = (int) ((dragNextPoint.y - dragStartingPoint.y) / c
-		    .getMapView().getZoom());
+		final int shiftYChange = (int) ((dragNextPoint.y - dragStartingPoint.y) / c.getMapView()
+		    .getZoom());
 		shiftY += shiftYChange;
 		return shiftY;
 	}
@@ -93,8 +91,8 @@ class MNodeMotionListener extends
 	private int getVGap(final Point dragNextPoint, final NodeModel node,
 	                    final Point dragStartingPoint) {
 		int oldVGap = node.getLocationModel().getVGap();
-		final int vGapChange = (int) ((dragNextPoint.y - dragStartingPoint.y) / c
-		    .getMapView().getZoom());
+		final int vGapChange = (int) ((dragNextPoint.y - dragStartingPoint.y) / c.getMapView()
+		    .getZoom());
 		oldVGap = Math.max(0, oldVGap - vGapChange);
 		return oldVGap;
 	}
@@ -109,16 +107,14 @@ class MNodeMotionListener extends
 			if (e.getModifiersEx() == 0) {
 				final NodeView nodeV = getNodeView(e);
 				final NodeModel node = nodeV.getModel();
-				c.moveNodePosition(node, node.getLocationModel().getVGap(),
-				    LocationModel.HGAP, 0);
+				c.moveNodePosition(node, node.getLocationModel().getVGap(), LocationModel.HGAP, 0);
 				return;
 			}
 			if (e.getModifiersEx() == InputEvent.CTRL_DOWN_MASK) {
 				final NodeView nodeV = getNodeView(e);
 				final NodeModel node = nodeV.getModel();
-				c.moveNodePosition(node, LocationModel.VGAP, node
-				    .getLocationModel().getHGap(), node.getLocationModel()
-				    .getShiftY());
+				c.moveNodePosition(node, LocationModel.VGAP, node.getLocationModel().getHGap(),
+				    node.getLocationModel().getShiftY());
 				return;
 			}
 		}
@@ -133,8 +129,7 @@ class MNodeMotionListener extends
 			final NodeView nodeV = getNodeView(e);
 			final MapView mapView = nodeV.getMap();
 			final Point point = e.getPoint();
-			Tools.convertPointToAncestor(motionListenerView, point,
-			    JScrollPane.class);
+			Tools.convertPointToAncestor(motionListenerView, point, JScrollPane.class);
 			if (!isActive()) {
 				setDragStartingPoint(point, nodeV.getModel());
 			}
@@ -142,30 +137,24 @@ class MNodeMotionListener extends
 				final Point dragNextPoint = point;
 				if ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == 0) {
 					final NodeModel node = nodeV.getModel();
-					final LocationModel locationModel = node
-					    .createLocationModel();
-					locationModel.setShiftY(getNodeShiftY(dragNextPoint, node,
-					    dragStartingPoint));
-					locationModel.setHGap(getHGap(dragNextPoint, node,
-					    dragStartingPoint));
+					final LocationModel locationModel = node.createLocationModel();
+					locationModel.setShiftY(getNodeShiftY(dragNextPoint, node, dragStartingPoint));
+					locationModel.setHGap(getHGap(dragNextPoint, node, dragStartingPoint));
 					c.getMapController().nodeRefresh(node);
 				}
 				else {
-					final NodeModel parentNode = nodeV.getVisibleParentView()
-					    .getModel();
+					final NodeModel parentNode = nodeV.getVisibleParentView().getModel();
 					parentNode.createLocationModel().setVGap(
 					    getVGap(dragNextPoint, parentNode, dragStartingPoint));
 					Controller.getController().getMap().nodeRefresh(parentNode);
-					Controller.getController().getMap().nodeRefresh(
-					    nodeV.getModel());
+					Controller.getController().getMap().nodeRefresh(nodeV.getModel());
 				}
 				dragStartingPoint = point;
 			}
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					final Rectangle r = motionListenerView.getBounds();
-					final boolean isEventPointVisible = mapView
-					    .getVisibleRect().contains(r);
+					final boolean isEventPointVisible = mapView.getVisibleRect().contains(r);
 					if (!isEventPointVisible) {
 						mapView.scrollRectToVisible(r);
 					}
@@ -180,8 +169,7 @@ class MNodeMotionListener extends
 			return;
 		}
 		if (!isActive()) {
-			final NodeMotionListenerView v = (NodeMotionListenerView) e
-			    .getSource();
+			final NodeMotionListenerView v = (NodeMotionListenerView) e.getSource();
 			v.setMouseEntered();
 		}
 	}
@@ -189,8 +177,7 @@ class MNodeMotionListener extends
 	@Override
 	public void mouseExited(final MouseEvent e) {
 		if (!isActive()) {
-			final NodeMotionListenerView v = (NodeMotionListenerView) e
-			    .getSource();
+			final NodeMotionListenerView v = (NodeMotionListenerView) e.getSource();
 			v.setMouseExited();
 		}
 	}
@@ -224,8 +211,7 @@ class MNodeMotionListener extends
 	/**
 	 */
 	private void resetPositions(final NodeModel node) {
-		final LocationModel locationModel = node.getParentNode()
-		    .getLocationModel();
+		final LocationModel locationModel = node.getParentNode().getLocationModel();
 		locationModel.setVGap(originalParentVGap);
 		node.getLocationModel().setHGap(originalHGap);
 		node.getLocationModel().setShiftY(originalShiftY);
@@ -234,8 +220,7 @@ class MNodeMotionListener extends
 	void setDragStartingPoint(final Point point, final NodeModel node) {
 		dragStartingPoint = point;
 		if (point != null) {
-			originalParentVGap = node.getParentNode().getLocationModel()
-			    .getVGap();
+			originalParentVGap = node.getParentNode().getLocationModel().getVGap();
 			originalHGap = node.getLocationModel().getHGap();
 			originalShiftY = node.getLocationModel().getShiftY();
 		}

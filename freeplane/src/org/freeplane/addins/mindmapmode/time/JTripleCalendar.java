@@ -114,8 +114,7 @@ class JTripleCalendar extends JPanel implements PropertyChangeListener {
 	}
 
 	public void propertyChange(final PropertyChangeEvent evt) {
-		final Calendar gregorianCalendar = (Calendar) calendarWidget
-		    .getCalendar().clone();
+		final Calendar gregorianCalendar = (Calendar) calendarWidget.getCalendar().clone();
 		gregorianCalendar.add(Calendar.MONTH, -1);
 		leftPanel.setDate(gregorianCalendar);
 		gregorianCalendar.add(Calendar.MONTH, 2);

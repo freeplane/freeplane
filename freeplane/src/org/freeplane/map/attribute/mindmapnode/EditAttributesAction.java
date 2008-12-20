@@ -36,13 +36,13 @@ class EditAttributesAction extends FreeplaneAction {
 	};
 
 	public void actionPerformed(final ActionEvent e) {
-		final Component focusOwner = KeyboardFocusManager
-		    .getCurrentKeyboardFocusManager().getFocusOwner();
+		final Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager()
+		    .getFocusOwner();
 		final ModeController modeController = getModeController();
-		final AttributeView attributeView = modeController.getMapView()
-		    .getSelected().getAttributeView();
-		final boolean attributesClosed = null == SwingUtilities
-		    .getAncestorOfClass(AttributeTable.class, focusOwner);
+		final AttributeView attributeView = modeController.getMapView().getSelected()
+		    .getAttributeView();
+		final boolean attributesClosed = null == SwingUtilities.getAncestorOfClass(
+		    AttributeTable.class, focusOwner);
 		if (attributesClosed) {
 			attributeView.startEditing();
 		}

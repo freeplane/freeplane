@@ -71,8 +71,7 @@ public class UndoHandler implements IUndoHandler {
 		final long currentTime = System.currentTimeMillis();
 		if ((actorList.size() > 0)
 		        && (actionFrameStarted || currentTime - timeOfLastAdd < UndoHandler.TIME_TO_BEGIN_NEW_ACTION)) {
-			final IUndoableActor lastActor = (IUndoableActor) actorIterator
-			    .previous();
+			final IUndoableActor lastActor = (IUndoableActor) actorIterator.previous();
 			CompoundActor compoundActor;
 			if (!(lastActor instanceof CompoundActor)) {
 				compoundActor = new CompoundActor();
@@ -142,8 +141,7 @@ public class UndoHandler implements IUndoHandler {
 	 */
 	public void redo() {
 		if (canRedo()) {
-			final IUndoableActor redoActor = (IUndoableActor) actorIterator
-			    .next();
+			final IUndoableActor redoActor = (IUndoableActor) actorIterator.next();
 			isUndoActionRunning = true;
 			redoActor.act();
 			isUndoActionRunning = false;
@@ -174,8 +172,7 @@ public class UndoHandler implements IUndoHandler {
 	 */
 	public void undo() {
 		if (canUndo()) {
-			final IUndoableActor actor = (IUndoableActor) actorIterator
-			    .previous();
+			final IUndoableActor actor = (IUndoableActor) actorIterator.previous();
 			isUndoActionRunning = true;
 			actor.undo();
 			isUndoActionRunning = false;

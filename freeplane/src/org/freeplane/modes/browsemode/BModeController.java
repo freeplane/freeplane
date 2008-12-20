@@ -77,13 +77,13 @@ public class BModeController extends ModeController {
 		final String noteText = node.getNoteText();
 		if (noteText != null && !noteText.equals("")) {
 			if (noteIcon == null) {
-				noteIcon = new ImageIcon(Controller.getResourceController()
-				    .getResource("images/knotes.png"));
+				noteIcon = new ImageIcon(Controller.getResourceController().getResource(
+				    "images/knotes.png"));
 			}
 			node.setStateIcon(NodeNoteBase.NODE_NOTE_ICON, noteIcon);
 		}
-		final ListIterator children = node.getModeController()
-		    .getMapController().childrenUnfolded(node);
+		final ListIterator children = node.getModeController().getMapController().childrenUnfolded(
+		    node);
 		while (children.hasNext()) {
 			setNoteIcon((NodeModel) children.next());
 		}

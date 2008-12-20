@@ -35,11 +35,9 @@ class CopyAction extends FreeplaneAction {
 		final MModeController modeController = getMModeController();
 		final MapView mapView = modeController.getMapView();
 		if (mapView != null) {
-			final Transferable copy = modeController.getClipboardController()
-			    .copy(mapView);
+			final Transferable copy = modeController.getClipboardController().copy(mapView);
 			if (copy != null) {
-				modeController.getClipboardController().setClipboardContents(
-				    copy);
+				modeController.getClipboardController().setClipboardContents(copy);
 			}
 		}
 	}

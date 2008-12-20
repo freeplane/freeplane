@@ -20,6 +20,7 @@
 package org.freeplane.modes.mindmapmode;
 
 import java.awt.event.MouseEvent;
+
 import org.freeplane.controller.Controller;
 import org.freeplane.map.attribute.IAttributeController;
 import org.freeplane.map.attribute.mindmapnode.MAttributeController;
@@ -41,7 +42,6 @@ import org.freeplane.undo.IUndoHandler;
 import org.freeplane.undo.IUndoableActor;
 
 public class MModeController extends ModeController {
-
 	static public final String MODENAME = "MindMap";
 	static private RedoAction redo;
 	static private UndoAction undo;
@@ -54,8 +54,7 @@ public class MModeController extends ModeController {
 	}
 
 	public void addUndoableActor(final IUndoableActor actor) {
-		final MindMapMapModel map = (MindMapMapModel) Controller
-		    .getController().getMap();
+		final MindMapMapModel map = (MindMapMapModel) Controller.getController().getMap();
 		final IUndoHandler undoHandler = map.getUndoHandler();
 		undoHandler.addActor(actor);
 		undo.setEnabled(true);
@@ -79,11 +78,9 @@ public class MModeController extends ModeController {
 		if (getSelectedNodes().size() != 1) {
 			return;
 		}
-		final NodeModel node = ((MainView) e.getComponent()).getNodeView()
-		    .getModel();
-		if (!e.isAltDown() && !e.isControlDown() && !e.isShiftDown()
-		        && !e.isPopupTrigger() && e.getButton() == MouseEvent.BUTTON1
-		        && (node.getLink() == null)) {
+		final NodeModel node = ((MainView) e.getComponent()).getNodeView().getModel();
+		if (!e.isAltDown() && !e.isControlDown() && !e.isShiftDown() && !e.isPopupTrigger()
+		        && e.getButton() == MouseEvent.BUTTON1 && (node.getLink() == null)) {
 			((MTextController) getTextController()).edit(null, false, false);
 		}
 	}
@@ -117,9 +114,9 @@ public class MModeController extends ModeController {
 	public MPatternController getPatternController() {
 		return patternController;
 	}
+
 	public boolean isUndoAction() {
-		return ((MindMapMapModel) getMapView().getModel()).getUndoHandler()
-		    .isUndoActionRunning();
+		return ((MindMapMapModel) getMapView().getModel()).getUndoHandler().isUndoActionRunning();
 	}
 
 	/**
@@ -128,15 +125,13 @@ public class MModeController extends ModeController {
 	 * @param hgap
 	 * @param i
 	 */
-	public void moveNodePosition(final NodeModel node, final int gap,
-	                             final int hgap, final int i) {
-		((MLocationController) getLocationController()).moveNodePosition(node,
-		    gap, hgap, i);
+	public void moveNodePosition(final NodeModel node, final int gap, final int hgap, final int i) {
+		((MLocationController) getLocationController()).moveNodePosition(node, gap, hgap, i);
 	}
 
 	@Override
-	public void onUpdate(final NodeModel node, final Object property,
-	                     final Object oldValue, final Object newValue) {
+	public void onUpdate(final NodeModel node, final Object property, final Object oldValue,
+	                     final Object newValue) {
 		super.onUpdate(node, property, oldValue, newValue);
 	}
 
@@ -202,8 +197,7 @@ public class MModeController extends ModeController {
 	public void updateMenus(final MenuBuilder builder) {
 		((MIconController) getIconController()).updateIconToolbar();
 		((MIconController) getIconController()).updateMenus(builder);
-		getPatternController().createPatternSubMenu(builder,
-		    UserInputListenerFactory.NODE_POPUP);
+		getPatternController().createPatternSubMenu(builder, UserInputListenerFactory.NODE_POPUP);
 		final String formatMenuString = FreemindMenuBar.FORMAT_MENU;
 		getPatternController().createPatternSubMenu(builder, formatMenuString);
 	}

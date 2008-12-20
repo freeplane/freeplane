@@ -29,35 +29,26 @@ import javax.swing.KeyStroke;
  * Moreover, the StructuredMenuHolder of all menus are hold here.
  */
 public class FreemindMenuBar extends JMenuBar {
-	public static final String EDIT_MENU = FreemindMenuBar.MENU_BAR_PREFIX
-	        + "/edit";
-	public static final String EXTRAS_MENU = FreemindMenuBar.MENU_BAR_PREFIX
-	        + "/extras";
-	public static final String FILE_MENU = FreemindMenuBar.MENU_BAR_PREFIX
-	        + "/file";
-	public static final String FORMAT_MENU = FreemindMenuBar.MENU_BAR_PREFIX
-	        + "/format";
-	public static final String HELP_MENU = FreemindMenuBar.MENU_BAR_PREFIX
-	        + "/help";
-	public static final String INSERT_MENU = FreemindMenuBar.MENU_BAR_PREFIX
-	        + "/insert";
+	public static final String EDIT_MENU = FreemindMenuBar.MENU_BAR_PREFIX + "/edit";
+	public static final String EXTRAS_MENU = FreemindMenuBar.MENU_BAR_PREFIX + "/extras";
+	public static final String FILE_MENU = FreemindMenuBar.MENU_BAR_PREFIX + "/file";
+	public static final String FORMAT_MENU = FreemindMenuBar.MENU_BAR_PREFIX + "/format";
+	public static final String HELP_MENU = FreemindMenuBar.MENU_BAR_PREFIX + "/help";
+	public static final String INSERT_MENU = FreemindMenuBar.MENU_BAR_PREFIX + "/insert";
 	public static final String MAP_POPUP_MENU = "/map_popup";
 	public static final String MENU_BAR_PREFIX = "/menu_bar";
-	public static final String MINDMAP_MENU = FreemindMenuBar.MENU_BAR_PREFIX
-	        + "/mindmaps";
+	public static final String MINDMAP_MENU = FreemindMenuBar.MENU_BAR_PREFIX + "/mindmaps";
 	public static final String MODES_MENU = FreemindMenuBar.MINDMAP_MENU;
-	public static final String NAVIGATE_MENU = FreemindMenuBar.MENU_BAR_PREFIX
-	        + "/navigate";
-	public static final String VIEW_MENU = FreemindMenuBar.MENU_BAR_PREFIX
-	        + "/view";
+	public static final String NAVIGATE_MENU = FreemindMenuBar.MENU_BAR_PREFIX + "/navigate";
+	public static final String VIEW_MENU = FreemindMenuBar.MENU_BAR_PREFIX + "/view";
 
 	public FreemindMenuBar() {
 	}
 
 	// make method public
 	@Override
-	public boolean processKeyBinding(final KeyStroke ks, final KeyEvent e,
-	                                 final int condition, final boolean pressed) {
+	public boolean processKeyBinding(final KeyStroke ks, final KeyEvent e, final int condition,
+	                                 final boolean pressed) {
 		return super.processKeyBinding(ks, e, condition, pressed);
 	}
 }

@@ -50,8 +50,7 @@ public class MultipleImage extends ImageIcon {
 	public int getIconHeight() {
 		int myY = 0;
 		for (int i = 0; i < mImages.size(); i++) {
-			final int otherHeight = ((ImageIcon) mImages.get(i))
-			    .getIconHeight();
+			final int otherHeight = ((ImageIcon) mImages.get(i)).getIconHeight();
 			if (otherHeight > myY) {
 				myY = otherHeight;
 			}
@@ -78,15 +77,14 @@ public class MultipleImage extends ImageIcon {
 		if (w == 0 || h == 0) {
 			return null;
 		}
-		final BufferedImage outImage = new BufferedImage(w, h,
-		    BufferedImage.TYPE_INT_ARGB);
+		final BufferedImage outImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 		final Graphics2D g = outImage.createGraphics();
 		double myX = 0;
 		for (final Iterator i = mImages.iterator(); i.hasNext();) {
 			final ImageIcon currentIcon = (ImageIcon) i.next();
 			final double pwidth = (currentIcon.getIconWidth() * zoomFactor);
-			final AffineTransform inttrans = AffineTransform.getScaleInstance(
-			    zoomFactor, zoomFactor);
+			final AffineTransform inttrans = AffineTransform.getScaleInstance(zoomFactor,
+			    zoomFactor);
 			g.drawImage(currentIcon.getImage(), inttrans, null);
 			g.translate(pwidth, 0);
 			myX += pwidth;
@@ -102,8 +100,7 @@ public class MultipleImage extends ImageIcon {
 	}
 
 	@Override
-	public void paintIcon(final Component c, final Graphics g, final int x,
-	                      final int y) {
+	public void paintIcon(final Component c, final Graphics g, final int x, final int y) {
 		if (getImage() != null) {
 			super.paintIcon(c, g, x, y);
 		}

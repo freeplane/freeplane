@@ -50,10 +50,10 @@ public class FreemindStarter {
 			final String message = "Warning: FreeMind requires version Java 1.5.0 or higher (your version: "
 			        + Controller.JAVA_VERSION
 			        + ", installed in "
-			        + System.getProperty("java.home") + ").";
+			        + System.getProperty("java.home")
+			        + ").";
 			System.err.println(message);
-			JOptionPane.showMessageDialog(null, message, "FreeMind",
-			    JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null, message, "FreeMind", JOptionPane.WARNING_MESSAGE);
 			System.exit(1);
 		}
 	}
@@ -83,11 +83,9 @@ public class FreemindStarter {
 
 	private ModeController createModeController(final String[] args) {
 		Controller.getController();
-		final ModeController ctrl = Controller
-		    .getModeController();
+		final ModeController ctrl = Controller.getModeController();
 		try {
-			final Class macClass = Class
-			    .forName("accessories.plugins.MacChanges");
+			final Class macClass = Class.forName("accessories.plugins.MacChanges");
 			macClass.getConstructors()[0].newInstance(new Object[] { this });
 		}
 		catch (final Exception e1) {
@@ -95,47 +93,41 @@ public class FreemindStarter {
 		return ctrl;
 	}
 
-	private void loadMaps(final String[] args,
-	                      final ModeController pModeController) {
+	private void loadMaps(final String[] args, final ModeController pModeController) {
 		boolean fileLoaded = false;
 		for (int i = 0; i < args.length; i++) {
 			String fileArgument = args[i];
-			if (fileArgument
-			    .toLowerCase()
-			    .endsWith(
-			        org.freeplane.map.url.mindmapmode.FileManager.FREEMIND_FILE_EXTENSION)) {
+			if (fileArgument.toLowerCase().endsWith(
+			    org.freeplane.map.url.mindmapmode.FileManager.FREEMIND_FILE_EXTENSION)) {
 				if (!Tools.isAbsolutePath(fileArgument)) {
 					fileArgument = System.getProperty("user.dir")
-					        + System.getProperty("file.separator")
-					        + fileArgument;
+					        + System.getProperty("file.separator") + fileArgument;
 				}
 				try {
-					((MModeController) pModeController).getMapController()
-					    .newMap(Tools.fileToUrl(new File(fileArgument)));
+					((MModeController) pModeController).getMapController().newMap(
+					    Tools.fileToUrl(new File(fileArgument)));
 					fileLoaded = true;
 				}
 				catch (final Exception ex) {
-					System.err.println("File " + fileArgument
-					        + " not found error");
+					System.err.println("File " + fileArgument + " not found error");
 				}
 			}
 		}
 		if (!fileLoaded) {
-			final String restoreable = Controller.getResourceController()
-			    .getProperty(Controller.ON_START_IF_NOT_SPECIFIED);
-			if (Tools.isPreferenceTrue(Controller.getResourceController()
-			    .getProperty(FreemindStarter.LOAD_LAST_MAP))
+			final String restoreable = Controller.getResourceController().getProperty(
+			    Controller.ON_START_IF_NOT_SPECIFIED);
+			if (Tools.isPreferenceTrue(Controller.getResourceController().getProperty(
+			    FreemindStarter.LOAD_LAST_MAP))
 			        && restoreable != null && restoreable.length() > 0) {
 				try {
-					Controller.getController().getViewController()
-					    .getLastOpenedList().open(restoreable);
+					Controller.getController().getViewController().getLastOpenedList().open(
+					    restoreable);
 					fileLoaded = true;
 				}
 				catch (final Exception e) {
 					org.freeplane.main.Tools.logException(e);
 					Controller.getController().getViewController().out(
-					    "An error occured on opening the file: " + restoreable
-					            + ".");
+					    "An error occured on opening the file: " + restoreable + ".");
 				}
 			}
 		}
@@ -168,19 +160,17 @@ public class FreemindStarter {
 			final ApplicationViewController viewController = new ApplicationViewController();
 			controller.setFilterController(new FilterController());
 			controller.setPrintController(new PrintController());
-			controller
-			    .setAttributeController(new ModelessAttributeController());
+			controller.setAttributeController(new ModelessAttributeController());
 			controller.setHelpController(new HelpController());
 			MModeControllerFactory.createModeController();
 			BModeControllerFactory.createModeController();
 			FModeControllerFactory.createModeController();
 			feedBack.increase("Freeplane.progress.settingPreferences");
 			controller.getViewController().changeAntialias(
-			    Controller.getResourceController().getProperty(
-			        ViewController.RESOURCE_ANTIALIAS));
+			    Controller.getResourceController().getProperty(ViewController.RESOURCE_ANTIALIAS));
 			feedBack.increase("Freeplane.progress.propagateLookAndFeel");
-			SwingUtilities.updateComponentTreeUI(Controller.getController()
-			    .getViewController().getJFrame());
+			SwingUtilities.updateComponentTreeUI(Controller.getController().getViewController()
+			    .getJFrame());
 			feedBack.increase("Freeplane.progress.buildScreen");
 			viewController.init();
 			try {
@@ -197,10 +187,9 @@ public class FreemindStarter {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					feedBack.increase("Freeplane.progress.createInitialMode");
-					controller.selectMode(Controller.getResourceController()
-					    .getProperty("initial_mode"));
-					feedBack
-					    .increase("Freeplane.progress.startCreateController");
+					controller.selectMode(Controller.getResourceController().getProperty(
+					    "initial_mode"));
+					feedBack.increase("Freeplane.progress.startCreateController");
 					final ModeController ctrl = createModeController(args);
 					feedBack.increase("Freeplane.progress.loadMaps");
 					loadMaps(args, ctrl);
@@ -208,16 +197,14 @@ public class FreemindStarter {
 					if (splash != null) {
 						splash.setVisible(false);
 					}
-					Controller.getController().getViewController().getJFrame()
-					    .setVisible(true);
+					Controller.getController().getViewController().getJFrame().setVisible(true);
 				}
 			});
 		}
 		catch (final Exception e) {
 			e.printStackTrace();
-			JOptionPane.showMessageDialog(null,
-			    "freemind.main.FreeMind can't be started", "Startup problem",
-			    JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "freemind.main.FreeMind can't be started",
+			    "Startup problem", JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
 		}
 	}
@@ -230,23 +217,19 @@ public class FreemindStarter {
 			final String lookAndFeel = Controller.getResourceController()
 			    .getProperty("lookandfeel");
 			if (lookAndFeel.equals("windows")) {
-				UIManager
-				    .setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+				UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 			}
 			else if (lookAndFeel.equals("motif")) {
-				UIManager
-				    .setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+				UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
 			}
 			else if (lookAndFeel.equals("mac")) {
 				UIManager.setLookAndFeel("javax.swing.plaf.mac.MacLookAndFeel");
 			}
 			else if (lookAndFeel.equals("metal")) {
-				UIManager
-				    .setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+				UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
 			}
 			else if (lookAndFeel.equals("gtk")) {
-				UIManager
-				    .setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+				UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
 			}
 			else if (lookAndFeel.equals("nothing")) {
 			}
@@ -254,8 +237,7 @@ public class FreemindStarter {
 				UIManager.setLookAndFeel(lookAndFeel);
 			}
 			else {
-				UIManager.setLookAndFeel(UIManager
-				    .getSystemLookAndFeelClassName());
+				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			}
 		}
 		catch (final Exception ex) {

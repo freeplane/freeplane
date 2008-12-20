@@ -71,24 +71,18 @@ public class ExportToOoWriter extends ExportAction {
 	/**
 	 * @return true, if successful.
 	 */
-	private boolean applyXsltFile(final String xsltFileName,
-	                              final StringWriter writer, final Result result)
-	        throws IOException {
-		final URL xsltUrl = Controller.getResourceController().getResource(
-		    xsltFileName);
+	private boolean applyXsltFile(final String xsltFileName, final StringWriter writer,
+	                              final Result result) throws IOException {
+		final URL xsltUrl = Controller.getResourceController().getResource(xsltFileName);
 		if (xsltUrl == null) {
-			Logger.global
-			    .severe("Can't find " + xsltFileName + " as resource.");
-			throw new IllegalArgumentException("Can't find " + xsltFileName
-			        + " as resource.");
+			Logger.global.severe("Can't find " + xsltFileName + " as resource.");
+			throw new IllegalArgumentException("Can't find " + xsltFileName + " as resource.");
 		}
 		final InputStream xsltStream = xsltUrl.openStream();
 		final Source xsltSource = new StreamSource(xsltStream);
 		try {
-			final StringReader reader = new StringReader(writer.getBuffer()
-			    .toString());
-			final TransformerFactory transFact = TransformerFactory
-			    .newInstance();
+			final StringReader reader = new StringReader(writer.getBuffer().toString());
+			final TransformerFactory transFact = TransformerFactory.newInstance();
 			final Transformer trans = transFact.newTransformer(xsltSource);
 			trans.transform(new StreamSource(reader), result);
 			return true;
@@ -102,11 +96,9 @@ public class ExportToOoWriter extends ExportAction {
 	/**
 	 * @return true, if successful.
 	 */
-	private boolean copyFromResource(final String fileName,
-	                                 final OutputStream out) {
+	private boolean copyFromResource(final String fileName, final OutputStream out) {
 		try {
-			final URL resource = Controller.getResourceController()
-			    .getResource(fileName);
+			final URL resource = Controller.getResourceController().getResource(fileName);
 			if (resource == null) {
 				Logger.global.severe("Cannot find resource: " + fileName);
 				return false;
@@ -121,9 +113,8 @@ public class ExportToOoWriter extends ExportAction {
 			return true;
 		}
 		catch (final Exception e) {
-			Logger.global.severe("File not found or could not be copied. "
-			        + "Was earching for " + fileName + " and should go to "
-			        + out);
+			Logger.global.severe("File not found or could not be copied. " + "Was earching for "
+			        + fileName + " and should go to " + out);
 			org.freeplane.main.Tools.logException(e);
 			return false;
 		}
@@ -131,8 +122,7 @@ public class ExportToOoWriter extends ExportAction {
 
 	public boolean exportToOoWriter(final File file) throws IOException {
 		boolean resultValue = true;
-		final ZipOutputStream zipout = new ZipOutputStream(
-		    new FileOutputStream(file));
+		final ZipOutputStream zipout = new ZipOutputStream(new FileOutputStream(file));
 		final StringWriter writer = new StringWriter();
 		final ModeController controller = getModeController();
 		final MapModel map = Controller.getController().getMap();
@@ -140,18 +130,15 @@ public class ExportToOoWriter extends ExportAction {
 		final Result result = new StreamResult(zipout);
 		ZipEntry entry = new ZipEntry("content.xml");
 		zipout.putNextEntry(entry);
-		resultValue &= applyXsltFile("accessories/mm2oowriter.xsl", writer,
-		    result);
+		resultValue &= applyXsltFile("accessories/mm2oowriter.xsl", writer, result);
 		zipout.closeEntry();
 		entry = new ZipEntry("META-INF/manifest.xml");
 		zipout.putNextEntry(entry);
-		resultValue &= applyXsltFile("accessories/mm2oowriter.manifest.xsl",
-		    writer, result);
+		resultValue &= applyXsltFile("accessories/mm2oowriter.manifest.xsl", writer, result);
 		zipout.closeEntry();
 		entry = new ZipEntry("styles.xml");
 		zipout.putNextEntry(entry);
-		resultValue &= copyFromResource("accessories/mm2oowriterStyles.xml",
-		    zipout);
+		resultValue &= copyFromResource("accessories/mm2oowriterStyles.xml", zipout);
 		zipout.closeEntry();
 		zipout.close();
 		return resultValue;
@@ -162,14 +149,12 @@ public class ExportToOoWriter extends ExportAction {
 		final Source xsltSource = new StreamSource(xsltStream);
 		final Result result = new StreamResult(resultFile);
 		try {
-			final TransformerFactory transFact = TransformerFactory
-			    .newInstance();
+			final TransformerFactory transFact = TransformerFactory.newInstance();
 			final Transformer trans = transFact.newTransformer(xsltSource);
-			trans.setParameter("destination_dir", resultFile.getName()
-			        + "_files/");
+			trans.setParameter("destination_dir", resultFile.getName() + "_files/");
 			trans.setParameter("area_code", areaCode);
-			trans.setParameter("folding_type", Controller
-			    .getResourceController().getProperty("html_export_folding"));
+			trans.setParameter("folding_type", Controller.getResourceController().getProperty(
+			    "html_export_folding"));
 			trans.transform(xmlSource, result);
 		}
 		catch (final Exception e) {

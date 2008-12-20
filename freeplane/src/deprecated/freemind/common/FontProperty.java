@@ -43,10 +43,9 @@ public class FontProperty extends PropertyBean implements IPropertyControl {
 		super();
 		this.description = description;
 		this.label = label;
-		mAvailableFontFamilyNames = GraphicsEnvironment
-		    .getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
-		mFontComboBox.setModel(new DefaultComboBoxModel(
-		    mAvailableFontFamilyNames));
+		mAvailableFontFamilyNames = GraphicsEnvironment.getLocalGraphicsEnvironment()
+		    .getAvailableFontFamilyNames();
+		mFontComboBox.setModel(new DefaultComboBoxModel(mAvailableFontFamilyNames));
 		mFontComboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent pE) {
 				firePropertyChangeEvent();
@@ -69,8 +68,7 @@ public class FontProperty extends PropertyBean implements IPropertyControl {
 	}
 
 	public void layout(final DefaultFormBuilder builder) {
-		final JLabel label = builder.append(OptionString.getText(getLabel()),
-		    mFontComboBox);
+		final JLabel label = builder.append(OptionString.getText(getLabel()), mFontComboBox);
 		label.setToolTipText(OptionString.getText(getDescription()));
 	}
 

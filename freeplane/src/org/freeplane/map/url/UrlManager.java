@@ -79,8 +79,7 @@ public class UrlManager {
 
 	protected File getMapsParentFile() {
 		final MapModel map = Controller.getController().getMap();
-		if ((map != null) && (map.getFile() != null)
-		        && (map.getFile().getParentFile() != null)) {
+		if ((map != null) && (map.getFile() != null) && (map.getFile().getParentFile() != null)) {
 			return map.getFile().getParentFile();
 		}
 		return null;
@@ -97,9 +96,8 @@ public class UrlManager {
 	public void handleLoadingException(final Exception ex) {
 		final String exceptionType = ex.getClass().getName();
 		if (exceptionType.equals("freemind.main.XMLParseException")) {
-			final int showDetail = JOptionPane.showConfirmDialog(modeController
-			    .getMapView(), modeController.getText("map_corrupted"),
-			    "FreeMind", JOptionPane.YES_NO_OPTION,
+			final int showDetail = JOptionPane.showConfirmDialog(modeController.getMapView(),
+			    modeController.getText("map_corrupted"), "FreeMind", JOptionPane.YES_NO_OPTION,
 			    JOptionPane.ERROR_MESSAGE);
 			if (showDetail == JOptionPane.YES_OPTION) {
 				Controller.getController().errorMessage(ex);
@@ -127,14 +125,12 @@ public class UrlManager {
 			return null;
 		}
 		catch (final Exception ex) {
-			Controller.getController().errorMessage(
-			    "Could not open URL " + url.toString() + ".");
+			Controller.getController().errorMessage("Could not open URL " + url.toString() + ".");
 			System.err.println(ex);
 			return null;
 		}
 		try {
-			root = modeController.getMapController().createNodeTreeFromXml(
-			    (map), urlStreamReader);
+			root = modeController.getMapController().createNodeTreeFromXml((map), urlStreamReader);
 			urlStreamReader.close();
 			return root;
 		}

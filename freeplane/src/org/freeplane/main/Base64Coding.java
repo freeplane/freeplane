@@ -42,8 +42,7 @@ public class Base64Coding {
 	 * present in the string then the 65 special base64 chars.
 	 */
 	public static byte[] decode64(final String s) {
-		final ByteArrayOutputStream bs = new ByteArrayOutputStream(
-		    (s.length() / 4) * 3);
+		final ByteArrayOutputStream bs = new ByteArrayOutputStream((s.length() / 4) * 3);
 		final char[] c = new char[s.length()];
 		s.getChars(0, s.length(), c, 0);
 		int endchar = -1;

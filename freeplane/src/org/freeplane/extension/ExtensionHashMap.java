@@ -39,8 +39,8 @@ public class ExtensionHashMap implements IModifiableExtensionCollection {
 
 	public boolean addExtension(final Class clazz, final IExtension extension) {
 		if (containsExtension(clazz)) {
-			throw new IllegalArgumentException("element with class "
-			        + clazz.getName() + " already exist");
+			throw new IllegalArgumentException("element with class " + clazz.getName()
+			        + " already exist");
 		}
 		setExtension(clazz, extension);
 		return true;

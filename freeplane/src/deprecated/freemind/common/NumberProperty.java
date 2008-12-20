@@ -37,8 +37,8 @@ public class NumberProperty extends PropertyBean implements IPropertyControl {
 
 	/**
 	 */
-	public NumberProperty(final String description, final String label,
-	                      final int min, final int max, final int step) {
+	public NumberProperty(final String description, final String label, final int min,
+	                      final int max, final int step) {
 		this.min = min;
 		this.max = max;
 		this.step = step;
@@ -67,8 +67,7 @@ public class NumberProperty extends PropertyBean implements IPropertyControl {
 	}
 
 	public void layout(final DefaultFormBuilder builder) {
-		final JLabel label = builder.append(OptionString.getText(getLabel()),
-		    spinner);
+		final JLabel label = builder.append(OptionString.getText(getLabel()), spinner);
 		label.setToolTipText(OptionString.getText(getDescription()));
 	}
 

@@ -27,8 +27,7 @@ import org.freeplane.controller.Controller;
 
 import deprecated.freemind.preferences.IFreemindPropertyListener;
 
-class OptionSelectionMechanismAction extends AbstractAction implements
-        IFreemindPropertyListener {
+class OptionSelectionMechanismAction extends AbstractAction implements IFreemindPropertyListener {
 	OptionSelectionMechanismAction() {
 		Controller.getResourceController().addPropertyChangeListener(this);
 	}
@@ -41,11 +40,9 @@ class OptionSelectionMechanismAction extends AbstractAction implements
 	/**
 	 */
 	private void changeSelection(final String command) {
-		Controller.getResourceController().setProperty("selection_method",
-		    command);
+		Controller.getResourceController().setProperty("selection_method", command);
 		Controller.getController();
-		Controller.getModeController()
-		    .getUserInputListenerFactory().getNodeMouseMotionListener()
+		Controller.getModeController().getUserInputListenerFactory().getNodeMouseMotionListener()
 		    .updateSelectionMethod();
 		final String statusBarString = Controller.getText(command);
 		if (statusBarString != null) {
@@ -53,8 +50,8 @@ class OptionSelectionMechanismAction extends AbstractAction implements
 		}
 	}
 
-	public void propertyChanged(final String propertyName,
-	                            final String newValue, final String oldValue) {
+	public void propertyChanged(final String propertyName, final String newValue,
+	                            final String oldValue) {
 		if (propertyName.equals(ResourceController.RESOURCES_SELECTION_METHOD)) {
 			changeSelection(newValue);
 		}

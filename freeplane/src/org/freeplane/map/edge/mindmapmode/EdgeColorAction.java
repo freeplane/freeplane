@@ -38,11 +38,9 @@ class EdgeColorAction extends MultipleNodeAction {
 	public void actionPerformed(final ActionEvent e) {
 		final MModeController controller = getMModeController();
 		final NodeModel model = controller.getSelectedNode();
-		final Color edgeColor = model.getModeController().getEdgeController()
-		    .getColor(model);
-		actionColor = ColorTracker.showCommonJColorChooserDialog(controller
-		    .getMapView().getSelected(), controller
-		    .getText("choose_edge_color"), edgeColor);
+		final Color edgeColor = model.getModeController().getEdgeController().getColor(model);
+		actionColor = ColorTracker.showCommonJColorChooserDialog(controller.getMapView()
+		    .getSelected(), controller.getText("choose_edge_color"), edgeColor);
 		if (actionColor == null) {
 			return;
 		}
@@ -57,8 +55,8 @@ class EdgeColorAction extends MultipleNodeAction {
 	 */
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		final MEdgeController edgeController = (MEdgeController) node
-		    .getModeController().getEdgeController();
+		final MEdgeController edgeController = (MEdgeController) node.getModeController()
+		    .getEdgeController();
 		edgeController.setColor(node, actionColor);
 	}
 }

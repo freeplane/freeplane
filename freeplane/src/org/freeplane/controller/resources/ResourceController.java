@@ -81,8 +81,7 @@ public abstract class ResourceController {
 	 */
 	public static String removeTranslateComment(String inputString) {
 		if (inputString != null
-		        && inputString
-		            .endsWith(FreemindResourceBundle.POSTFIX_TRANSLATE_ME)) {
+		        && inputString.endsWith(FreemindResourceBundle.POSTFIX_TRANSLATE_ME)) {
 			inputString = inputString.substring(0, inputString.length()
 			        - FreemindResourceBundle.POSTFIX_TRANSLATE_ME.length());
 		}
@@ -97,8 +96,7 @@ public abstract class ResourceController {
 		super();
 	}
 
-	public void addPropertyChangeListener(
-	                                      final IFreemindPropertyListener listener) {
+	public void addPropertyChangeListener(final IFreemindPropertyListener listener) {
 		propertyChangeListeners.add(listener);
 	}
 
@@ -108,8 +106,7 @@ public abstract class ResourceController {
 	 *            to the listener after registration. Here, the oldValue
 	 *            parameter is set to null.
 	 */
-	public void addPropertyChangeListenerAndPropagate(
-	                                                  final IFreemindPropertyListener listener) {
+	public void addPropertyChangeListenerAndPropagate(final IFreemindPropertyListener listener) {
 		addPropertyChangeListener(listener);
 		final Properties properties = getProperties();
 		for (final Iterator it = properties.keySet().iterator(); it.hasNext();) {
@@ -127,21 +124,18 @@ public abstract class ResourceController {
 		return new NamedObject(key, fs);
 	}
 
-	protected void firePropertyChanged(final String property,
-	                                   final String value, final String oldValue) {
+	protected void firePropertyChanged(final String property, final String value,
+	                                   final String oldValue) {
 		if (oldValue == null || !oldValue.equals(value)) {
 			setProperty(property, value);
-			for (final Iterator i = getPropertyChangeListeners().iterator(); i
-			    .hasNext();) {
-				final IFreemindPropertyListener listener = (IFreemindPropertyListener) i
-				    .next();
+			for (final Iterator i = getPropertyChangeListeners().iterator(); i.hasNext();) {
+				final IFreemindPropertyListener listener = (IFreemindPropertyListener) i.next();
 				listener.propertyChanged(property, value, oldValue);
 			}
 		}
 	}
 
-	public String format(final String resourceKey,
-	                     final Object[] messageArguments) {
+	public String format(final String resourceKey, final Object[] messageArguments) {
 		final MessageFormat formatter = new MessageFormat(getText(resourceKey));
 		final String stringResult = formatter.format(messageArguments);
 		return stringResult;
@@ -153,9 +147,8 @@ public abstract class ResourceController {
 			return value;
 		}
 		if (value.startsWith("?") && !value.equals("?")) {
-			final String localValue = ((FreemindResourceBundle) getResources())
-			    .getResourceString(ResourceController.LOCAL_PROPERTIES + label,
-			        null);
+			final String localValue = ((FreemindResourceBundle) getResources()).getResourceString(
+			    ResourceController.LOCAL_PROPERTIES + label, null);
 			value = localValue == null ? value.substring(1).trim() : localValue;
 			setDefaultProperty(label, value);
 		}
@@ -219,15 +212,12 @@ public abstract class ResourceController {
 				if (dir == null) {
 					final String classname = this.getClass().getName();
 					final URL url = this.getClass().getResource(
-					    classname.replaceFirst("^"
-					            + this.getClass().getPackage().getName() + ".",
+					    classname.replaceFirst("^" + this.getClass().getPackage().getName() + ".",
 					        "")
 					            + ".class");
-					file = new File(URLDecoder.decode(url.getPath()
-					    .replaceFirst("^(file:|jar:)+", "").replaceFirst(
-					        "!.*$", "").replaceFirst(
-					        classname.replace('.', '/') + ".class$", ""),
-					    "UTF-8"));
+					file = new File(URLDecoder.decode(url.getPath().replaceFirst("^(file:|jar:)+",
+					    "").replaceFirst("!.*$", "").replaceFirst(
+					    classname.replace('.', '/') + ".class$", ""), "UTF-8"));
 					if (file.isFile()) {
 						file = file.getParentFile();
 					}
@@ -244,20 +234,18 @@ public abstract class ResourceController {
 					file = new File(dir);
 				}
 				if (!file.exists()) {
-					throw new IllegalArgumentException("FreeMind base dir '"
-					        + file + "' does not exist.");
+					throw new IllegalArgumentException("FreeMind base dir '" + file
+					        + "' does not exist.");
 				}
 				if (!file.isDirectory()) {
-					throw new IllegalArgumentException(
-					    "FreeMind base dir (!) '" + file
-					            + "' is not a directory.");
+					throw new IllegalArgumentException("FreeMind base dir (!) '" + file
+					        + "' is not a directory.");
 				}
 				baseDir = file.getCanonicalPath();
 			}
 			catch (final Exception e) {
 				Tools.logException(e);
-				throw new IllegalArgumentException(
-				    "FreeMind base dir can't be determined.");
+				throw new IllegalArgumentException("FreeMind base dir can't be determined.");
 			}
 		}
 		return baseDir;
@@ -307,8 +295,8 @@ public abstract class ResourceController {
 	public ClassLoader getFreeMindClassLoader() {
 		final ClassLoader classLoader = this.getClass().getClassLoader();
 		try {
-			return new URLClassLoader(new URL[] { Tools.fileToUrl(new File(
-			    getFreemindBaseDir())) }, classLoader);
+			return new URLClassLoader(
+			    new URL[] { Tools.fileToUrl(new File(getFreemindBaseDir())) }, classLoader);
 		}
 		catch (final MalformedURLException e) {
 			org.freeplane.main.Tools.logException(e);
@@ -360,8 +348,7 @@ public abstract class ResourceController {
 	}
 
 	public String getText(final String key, final String resource) {
-		return ((FreemindResourceBundle) getResources()).getResourceString(key,
-		    resource);
+		return ((FreemindResourceBundle) getResources()).getResourceString(key, resource);
 	}
 
 	public ITextTranslator getTextTranslator() {
@@ -375,22 +362,18 @@ public abstract class ResourceController {
 	public void init() {
 		final Controller controller = Controller.getController();
 		controller.addAction("propertyAction", new PropertyAction());
-		controller.addAction("optionHTMLExportFoldingAction",
-		    new OptionHTMLExportFoldingAction());
-		controller.addAction("optionSelectionMechanismAction",
-		    new OptionSelectionMechanismAction());
-		controller.addAction("showSelectionAsRectangle",
-		    new ShowSelectionAsRectangleAction());
+		controller.addAction("optionHTMLExportFoldingAction", new OptionHTMLExportFoldingAction());
+		controller
+		    .addAction("optionSelectionMechanismAction", new OptionSelectionMechanismAction());
+		controller.addAction("showSelectionAsRectangle", new ShowSelectionAsRectangleAction());
 	}
 
 	boolean isSelectionAsRectangle() {
-		return getProperty(
-		    ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION)
+		return getProperty(ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION)
 		    .equalsIgnoreCase(BooleanProperty.TRUE_VALUE);
 	}
 
-	public void removePropertyChangeListener(
-	                                         final IFreemindPropertyListener listener) {
+	public void removePropertyChangeListener(final IFreemindPropertyListener listener) {
 		propertyChangeListeners.remove(listener);
 	}
 
@@ -402,13 +385,11 @@ public abstract class ResourceController {
 
 	public void toggleSelectionAsRectangle() {
 		if (isSelectionAsRectangle()) {
-			setProperty(
-			    ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION,
+			setProperty(ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION,
 			    BooleanProperty.FALSE_VALUE);
 		}
 		else {
-			setProperty(
-			    ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION,
+			setProperty(ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION,
 			    BooleanProperty.TRUE_VALUE);
 		}
 	}

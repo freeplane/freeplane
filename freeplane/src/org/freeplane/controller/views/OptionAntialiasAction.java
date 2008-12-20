@@ -27,8 +27,7 @@ import org.freeplane.controller.Controller;
 
 import deprecated.freemind.preferences.IFreemindPropertyListener;
 
-class OptionAntialiasAction extends AbstractAction implements
-        IFreemindPropertyListener {
+class OptionAntialiasAction extends AbstractAction implements IFreemindPropertyListener {
 	OptionAntialiasAction() {
 		Controller.getResourceController().addPropertyChangeListener(this);
 	}
@@ -45,30 +44,24 @@ class OptionAntialiasAction extends AbstractAction implements
 			return;
 		}
 		if (command.equals("antialias_none")) {
-			Controller.getController().getViewController().setAntialiasEdges(
-			    false);
-			Controller.getController().getViewController().setAntialiasAll(
-			    false);
+			Controller.getController().getViewController().setAntialiasEdges(false);
+			Controller.getController().getViewController().setAntialiasAll(false);
 		}
 		if (command.equals("antialias_edges")) {
-			Controller.getController().getViewController().setAntialiasEdges(
-			    true);
-			Controller.getController().getViewController().setAntialiasAll(
-			    false);
+			Controller.getController().getViewController().setAntialiasEdges(true);
+			Controller.getController().getViewController().setAntialiasAll(false);
 		}
 		if (command.equals("antialias_all")) {
-			Controller.getController().getViewController().setAntialiasEdges(
-			    true);
-			Controller.getController().getViewController()
-			    .setAntialiasAll(true);
+			Controller.getController().getViewController().setAntialiasEdges(true);
+			Controller.getController().getViewController().setAntialiasAll(true);
 		}
 		if (Controller.getController().getMapView() != null) {
 			Controller.getController().getMapView().repaint();
 		}
 	}
 
-	public void propertyChanged(final String propertyName,
-	                            final String newValue, final String oldValue) {
+	public void propertyChanged(final String propertyName, final String newValue,
+	                            final String oldValue) {
 		if (propertyName.equals(ViewController.RESOURCE_ANTIALIAS)) {
 			changeAntialias(newValue);
 		}

@@ -44,13 +44,11 @@ import org.freeplane.map.tree.view.MapView;
  *         The code simply performs these actions in sequence, after validating
  *         the selected nodes.
  */
-@ActionDescriptor(
-    tooltip="accessories/plugins/NewParentNode.properties_documentation", //
-    name="accessories/plugins/NewParentNode.properties_name", //
-    keyStroke="keystroke_accessories/plugins/NewParentNode.properties_key", //
-    iconPath="accessories/plugins/icons/stock_text_indent.png", //
-    locations={"/menu_bar/insert/nodes"}
-)
+@ActionDescriptor(tooltip = "accessories/plugins/NewParentNode.properties_documentation", //
+name = "accessories/plugins/NewParentNode.properties_name", //
+keyStroke = "keystroke_accessories/plugins/NewParentNode.properties_key", //
+iconPath = "accessories/plugins/icons/stock_text_indent.png", //
+locations = { "/menu_bar/insert/nodes" })
 public class NewParentNode extends FreeplaneAction {
 	/**
 	 *
@@ -64,22 +62,20 @@ public class NewParentNode extends FreeplaneAction {
 	 * @see freemind.extensions.NodeHook#invoke(freemind.modes.MindMapNode,
 	 * java.util.List)
 	 */
-	public void actionPerformed(ActionEvent e) {
-	    // TODO Auto-generated method stub
+	public void actionPerformed(final ActionEvent e) {
+		// TODO Auto-generated method stub
 		final MapView mapView = getModeController().getMapView();
 		final NodeModel focussed = getModeController().getSelectedNode();
 		final List selecteds = getModeController().getSelectedNodes();
 		final NodeModel selectedNode = focussed;
 		final List selectedNodes = selecteds;
-		getModeController().getMapController().sortNodesByDepth(
-		    selectedNodes);
+		getModeController().getMapController().sortNodesByDepth(selectedNodes);
 		if (focussed.isRoot()) {
-			Controller.getController().errorMessage(
-			    Controller.getText("cannot_add_parent_to_root"));
+			Controller.getController()
+			    .errorMessage(Controller.getText("cannot_add_parent_to_root"));
 			return;
 		}
-		final NodeModel newNode = moveToNewParent(selectedNode,
-		    selectedNodes);
+		final NodeModel newNode = moveToNewParent(selectedNode, selectedNodes);
 		if (newNode == null) {
 			return;
 		}
@@ -87,38 +83,33 @@ public class NewParentNode extends FreeplaneAction {
 		mapView.repaint();
 	}
 
-	private NodeModel moveToNewParent(final NodeModel selectedNode,
-	                                  final List selectedNodes) {
+	private NodeModel moveToNewParent(final NodeModel selectedNode, final List selectedNodes) {
 		final NodeModel selectedParent = selectedNode.getParentNode();
 		final int childPosition = selectedParent.getChildPosition(selectedNode);
-		final NodeModel newNode = ((MMapController) getModeController()
-		    .getMapController()).addNewNode(selectedParent, childPosition,
-		    selectedNode.isLeft());
+		final NodeModel newNode = ((MMapController) getModeController().getMapController())
+		    .addNewNode(selectedParent, childPosition, selectedNode.isLeft());
 		return moveToOtherNode(selectedNodes, selectedParent, newNode);
 	}
 
-	private NodeModel moveToOtherNode(final List selectedNodes,
-	                                  final NodeModel selectedParent,
+	private NodeModel moveToOtherNode(final List selectedNodes, final NodeModel selectedParent,
 	                                  final NodeModel newNode) {
 		for (final Iterator it = selectedNodes.iterator(); it.hasNext();) {
 			final NodeModel node = (NodeModel) it.next();
 			if (node.getParentNode() != selectedParent) {
 				Controller.getController().errorMessage(
-					Controller.getText("cannot_add_parent_diff_parents"));
+				    Controller.getText("cannot_add_parent_diff_parents"));
 				return null;
 			}
 			if (node.isRoot()) {
 				Controller.getController().errorMessage(
-					Controller.getText("cannot_add_parent_to_root"));
+				    Controller.getText("cannot_add_parent_to_root"));
 				return null;
 			}
 		}
 		final Transferable copy = ((MClipboardController) getModeController()
 		    .getClipboardController()).cut(selectedNodes);
-		((MClipboardController) getModeController().getClipboardController())
-		    .paste(copy, newNode);
+		((MClipboardController) getModeController().getClipboardController()).paste(copy, newNode);
 		getModeController().getMapController().nodeChanged(selectedParent);
 		return newNode;
 	}
-
 }

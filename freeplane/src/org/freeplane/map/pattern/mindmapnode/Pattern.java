@@ -7,7 +7,6 @@ import java.io.StringWriter;
 import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
 import org.freeplane.io.xml.n3.nanoxml.IXMLParser;
 import org.freeplane.io.xml.n3.nanoxml.IXMLReader;
-import org.freeplane.io.xml.n3.nanoxml.StdXMLParser;
 import org.freeplane.io.xml.n3.nanoxml.StdXMLReader;
 import org.freeplane.io.xml.n3.nanoxml.XMLElement;
 import org.freeplane.io.xml.n3.nanoxml.XMLException;
@@ -15,149 +14,114 @@ import org.freeplane.io.xml.n3.nanoxml.XMLParserFactory;
 import org.freeplane.io.xml.n3.nanoxml.XMLWriter;
 
 public class Pattern implements Cloneable {
+	public static Pattern unMarshall(final IXMLElement xmlPattern) {
+		final Pattern pattern = new Pattern();
+		pattern.unMarshallImpl(xmlPattern);
+		return pattern;
+	}
+
+	public static Pattern unMarshall(final String patternString) {
+		try {
+			final IXMLParser parser = XMLParserFactory.createDefaultXMLParser();
+			final IXMLReader xmlReader = new StdXMLReader(new StringReader(patternString));
+			parser.setReader(xmlReader);
+			final IXMLElement xml = (IXMLElement) parser.parse();
+			return Pattern.unMarshall(xml);
+		}
+		catch (final XMLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	private String name;
+	private PatternProperty patternChild;
+	private PatternProperty patternEdgeColor;
+	private PatternProperty patternEdgeStyle;
+	private PatternProperty patternEdgeWidth;
+	private PatternProperty patternIcon;
+	private PatternProperty patternNodeBackgroundColor;
+	private PatternProperty patternNodeColor;
+	private PatternProperty patternNodeFontBold;
+	private PatternProperty patternNodeFontItalic;
+	private PatternProperty patternNodeFontName;
+	private PatternProperty patternNodeFontSize;
+	private PatternProperty patternNodeStyle;
+	private PatternProperty patternNodeText;
+	private PatternProperty patternScript;
+
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
 
-	private PatternProperty patternNodeBackgroundColor;
-	private PatternProperty patternNodeColor;
-	private PatternProperty patternNodeStyle;
-	private PatternProperty patternNodeText;
-	private PatternProperty patternNodeFontName;
-	private PatternProperty patternNodeFontBold;
-	private PatternProperty patternNodeFontItalic;
-	private PatternProperty patternNodeFontSize;
-	private PatternProperty patternIcon;
-	private PatternProperty patternEdgeColor;
-	private PatternProperty patternEdgeStyle;
-	private PatternProperty patternEdgeWidth;
-	private PatternProperty patternChild;
-	private PatternProperty patternScript;
-	private String name;
-
-	public PatternProperty getPatternNodeBackgroundColor() {
-		return this.patternNodeBackgroundColor;
-	}
-
-	public void setPatternNodeBackgroundColor(PatternProperty patternNodeBackgroundColor) {
-		this.patternNodeBackgroundColor = patternNodeBackgroundColor;
-	}
-
-	public PatternProperty getPatternNodeColor() {
-		return this.patternNodeColor;
-	}
-
-	public void setPatternNodeColor(PatternProperty patternNodeColor) {
-		this.patternNodeColor = patternNodeColor;
-	}
-
-	public PatternProperty getPatternNodeStyle() {
-		return this.patternNodeStyle;
-	}
-
-	public void setPatternNodeStyle(PatternProperty patternNodeStyle) {
-		this.patternNodeStyle = patternNodeStyle;
-	}
-
-	public PatternProperty getPatternNodeText() {
-		return this.patternNodeText;
-	}
-
-	public void setPatternNodeText(PatternProperty patternNodeText) {
-		this.patternNodeText = patternNodeText;
-	}
-
-	public PatternProperty getPatternNodeFontName() {
-		return this.patternNodeFontName;
-	}
-
-	public void setPatternNodeFontName(PatternProperty patternNodeFontName) {
-		this.patternNodeFontName = patternNodeFontName;
-	}
-
-	public PatternProperty getPatternNodeFontBold() {
-		return this.patternNodeFontBold;
-	}
-
-	public void setPatternNodeFontBold(PatternProperty patternNodeFontBold) {
-		this.patternNodeFontBold = patternNodeFontBold;
-	}
-
-	public PatternProperty getPatternNodeFontItalic() {
-		return this.patternNodeFontItalic;
-	}
-
-	public void setPatternNodeFontItalic(PatternProperty patternNodeFontItalic) {
-		this.patternNodeFontItalic = patternNodeFontItalic;
-	}
-
-	public PatternProperty getPatternNodeFontSize() {
-		return this.patternNodeFontSize;
-	}
-
-	public void setPatternNodeFontSize(PatternProperty patternNodeFontSize) {
-		this.patternNodeFontSize = patternNodeFontSize;
-	}
-
-	public PatternProperty getPatternIcon() {
-		return this.patternIcon;
-	}
-
-	public void setPatternIcon(PatternProperty patternIcon) {
-		this.patternIcon = patternIcon;
-	}
-
-	public PatternProperty getPatternEdgeColor() {
-		return this.patternEdgeColor;
-	}
-
-	public void setPatternEdgeColor(PatternProperty patternEdgeColor) {
-		this.patternEdgeColor = patternEdgeColor;
-	}
-
-	public PatternProperty getPatternEdgeStyle() {
-		return this.patternEdgeStyle;
-	}
-
-	public void setPatternEdgeStyle(PatternProperty patternEdgeStyle) {
-		this.patternEdgeStyle = patternEdgeStyle;
-	}
-
-	public PatternProperty getPatternEdgeWidth() {
-		return this.patternEdgeWidth;
-	}
-
-	public void setPatternEdgeWidth(PatternProperty patternEdgeWidth) {
-		this.patternEdgeWidth = patternEdgeWidth;
+	public String getName() {
+		return name;
 	}
 
 	public PatternProperty getPatternChild() {
-		return this.patternChild;
+		return patternChild;
 	}
 
-	public void setPatternChild(PatternProperty patternChild) {
-		this.patternChild = patternChild;
+	public PatternProperty getPatternEdgeColor() {
+		return patternEdgeColor;
+	}
+
+	public PatternProperty getPatternEdgeStyle() {
+		return patternEdgeStyle;
+	}
+
+	public PatternProperty getPatternEdgeWidth() {
+		return patternEdgeWidth;
+	}
+
+	public PatternProperty getPatternIcon() {
+		return patternIcon;
+	}
+
+	public PatternProperty getPatternNodeBackgroundColor() {
+		return patternNodeBackgroundColor;
+	}
+
+	public PatternProperty getPatternNodeColor() {
+		return patternNodeColor;
+	}
+
+	public PatternProperty getPatternNodeFontBold() {
+		return patternNodeFontBold;
+	}
+
+	public PatternProperty getPatternNodeFontItalic() {
+		return patternNodeFontItalic;
+	}
+
+	public PatternProperty getPatternNodeFontName() {
+		return patternNodeFontName;
+	}
+
+	public PatternProperty getPatternNodeFontSize() {
+		return patternNodeFontSize;
+	}
+
+	public PatternProperty getPatternNodeStyle() {
+		return patternNodeStyle;
+	}
+
+	public PatternProperty getPatternNodeText() {
+		return patternNodeText;
 	}
 
 	public PatternProperty getPatternScript() {
-		return this.patternScript;
+		return patternScript;
 	}
 
-	public void setPatternScript(PatternProperty patternScript) {
-		this.patternScript = patternScript;
-	}
-
-	public String getName() {
-		return this.name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
+	private void marschall(final IXMLElement xml, final String string,
+	                       final PatternProperty patternNodeBackgroundColor2) {
+		// TODO Auto-generated method stub
 	}
 
 	public String marshall() {
-		IXMLElement xml= new XMLElement("pattern");
+		final IXMLElement xml = new XMLElement("pattern");
 		xml.setAttribute("name", name);
 		marschall(xml, "pattern_node_background_color", patternNodeBackgroundColor);
 		marschall(xml, "pattern_node_color", patternNodeColor);
@@ -174,47 +138,82 @@ public class Pattern implements Cloneable {
 		marschall(xml, "pattern_node_child", patternChild);
 		marschall(xml, "pattern_node_script", patternScript);
 		final StringWriter string = new StringWriter();
-		XMLWriter writer = new XMLWriter(string); 
+		final XMLWriter writer = new XMLWriter(string);
 		try {
-	        writer.write(xml);
-	        return string.toString();
-        }
-        catch (IOException e) {
-	        e.printStackTrace();
-	        return null;
-        }
-	}
-
-	private void marschall(IXMLElement xml, String string,
-                           PatternProperty patternNodeBackgroundColor2) {
-	    // TODO Auto-generated method stub
-	    
-    }
-
-	public static Pattern unMarshall(String patternString) {
-		try {
-			IXMLParser parser =  XMLParserFactory.createDefaultXMLParser();
-			IXMLReader xmlReader = new StdXMLReader(new StringReader(patternString));
-			parser.setReader(xmlReader);
-			IXMLElement xml = (IXMLElement) parser.parse();
-			return unMarshall(xml);
+			writer.write(xml);
+			return string.toString();
 		}
-		catch (XMLException e) {
+		catch (final IOException e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
 
-	public static Pattern unMarshall(IXMLElement xmlPattern) {
-		Pattern pattern = new Pattern();
-		pattern.unMarshallImpl(xmlPattern);
-		return pattern;
+	public void setName(final String name) {
+		this.name = name;
 	}
 
-	private void unMarshallImpl(IXMLElement xmlPattern) {
+	public void setPatternChild(final PatternProperty patternChild) {
+		this.patternChild = patternChild;
+	}
+
+	public void setPatternEdgeColor(final PatternProperty patternEdgeColor) {
+		this.patternEdgeColor = patternEdgeColor;
+	}
+
+	public void setPatternEdgeStyle(final PatternProperty patternEdgeStyle) {
+		this.patternEdgeStyle = patternEdgeStyle;
+	}
+
+	public void setPatternEdgeWidth(final PatternProperty patternEdgeWidth) {
+		this.patternEdgeWidth = patternEdgeWidth;
+	}
+
+	public void setPatternIcon(final PatternProperty patternIcon) {
+		this.patternIcon = patternIcon;
+	}
+
+	public void setPatternNodeBackgroundColor(final PatternProperty patternNodeBackgroundColor) {
+		this.patternNodeBackgroundColor = patternNodeBackgroundColor;
+	}
+
+	public void setPatternNodeColor(final PatternProperty patternNodeColor) {
+		this.patternNodeColor = patternNodeColor;
+	}
+
+	public void setPatternNodeFontBold(final PatternProperty patternNodeFontBold) {
+		this.patternNodeFontBold = patternNodeFontBold;
+	}
+
+	public void setPatternNodeFontItalic(final PatternProperty patternNodeFontItalic) {
+		this.patternNodeFontItalic = patternNodeFontItalic;
+	}
+
+	public void setPatternNodeFontName(final PatternProperty patternNodeFontName) {
+		this.patternNodeFontName = patternNodeFontName;
+	}
+
+	public void setPatternNodeFontSize(final PatternProperty patternNodeFontSize) {
+		this.patternNodeFontSize = patternNodeFontSize;
+	}
+
+	public void setPatternNodeStyle(final PatternProperty patternNodeStyle) {
+		this.patternNodeStyle = patternNodeStyle;
+	}
+
+	public void setPatternNodeText(final PatternProperty patternNodeText) {
+		this.patternNodeText = patternNodeText;
+	}
+
+	public void setPatternScript(final PatternProperty patternScript) {
+		this.patternScript = patternScript;
+	}
+
+	private void unMarshallImpl(final IXMLElement xmlPattern) {
 		name = xmlPattern.getAttribute("name", null);
 		{
-			final IXMLElement xmlProperty = xmlPattern.getFirstChildNamed("pattern_node_background_color");
+			final IXMLElement xmlProperty = xmlPattern
+			    .getFirstChildNamed("pattern_node_background_color");
 			if (xmlProperty != null) {
 				patternNodeBackgroundColor = new PatternProperty();
 				patternNodeBackgroundColor.value = xmlProperty.getAttribute("value", null);

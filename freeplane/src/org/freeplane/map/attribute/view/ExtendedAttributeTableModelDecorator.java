@@ -26,8 +26,7 @@ import org.freeplane.map.attribute.Attribute;
 /**
  * @author Dimitry Polivaev
  */
-class ExtendedAttributeTableModelDecorator extends
-        AttributeTableModelDecoratorAdapter {
+class ExtendedAttributeTableModelDecorator extends AttributeTableModelDecoratorAdapter {
 	private static final int AFTER_LAST_ROW = Integer.MAX_VALUE;
 	int newRow;
 
@@ -90,19 +89,15 @@ class ExtendedAttributeTableModelDecorator extends
 	/**
 	 */
 	public void moveRowDown(final int row) {
-		final Attribute attribute = (Attribute) nodeAttributeModel
-		    .removeRow(row);
-		nodeAttributeModel.insertRow(row + 1, attribute.getName(), attribute
-		    .getValue());
+		final Attribute attribute = (Attribute) nodeAttributeModel.removeRow(row);
+		nodeAttributeModel.insertRow(row + 1, attribute.getName(), attribute.getValue());
 	}
 
 	/**
 	 */
 	public void moveRowUp(final int row) {
-		final Attribute attribute = (Attribute) nodeAttributeModel
-		    .removeRow(row);
-		nodeAttributeModel.insertRow(row - 1, attribute.getName(), attribute
-		    .getValue());
+		final Attribute attribute = (Attribute) nodeAttributeModel.removeRow(row);
+		nodeAttributeModel.insertRow(row - 1, attribute.getName(), attribute.getValue());
 	}
 
 	public Object removeRow(final int index) {

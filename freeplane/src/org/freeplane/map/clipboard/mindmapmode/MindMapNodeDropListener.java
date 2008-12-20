@@ -65,15 +65,13 @@ public class MindMapNodeDropListener implements DropTargetListener {
 	}
 
 	public void dragExit(final DropTargetEvent e) {
-		final MainView draggedNode = (MainView) e.getDropTargetContext()
-		    .getComponent();
+		final MainView draggedNode = (MainView) e.getDropTargetContext().getComponent();
 		draggedNode.setDraggedOver(NodeView.DRAGGED_OVER_NO);
 		draggedNode.repaint();
 	}
 
 	public void dragOver(final DropTargetDragEvent e) {
-		final MainView draggedNode = (MainView) e.getDropTargetContext()
-		    .getComponent();
+		final MainView draggedNode = (MainView) e.getDropTargetContext().getComponent();
 		final int oldDraggedOver = draggedNode.getDraggedOver();
 		draggedNode.setDraggedOver(e.getLocation());
 		final int newDraggedOver = draggedNode.getDraggedOver();
@@ -90,14 +88,12 @@ public class MindMapNodeDropListener implements DropTargetListener {
 		try {
 			int dropAction = dtde.getDropAction();
 			final Transferable t = dtde.getTransferable();
-			final MainView mainView = (MainView) dtde.getDropTargetContext()
-			    .getComponent();
+			final MainView mainView = (MainView) dtde.getDropTargetContext().getComponent();
 			final NodeView targetNodeView = mainView.getNodeView();
 			final NodeModel targetNode = targetNodeView.getModel();
 			final NodeModel targetNodeModel = targetNode;
 			if (dtde.isLocalTransfer()
-			        && t
-			            .isDataFlavorSupported(MindMapNodesSelection.dropActionFlavor)) {
+			        && t.isDataFlavorSupported(MindMapNodesSelection.dropActionFlavor)) {
 				final String sourceAction = (String) t
 				    .getTransferData(MindMapNodesSelection.dropActionFlavor);
 				if (sourceAction.equals("LINK")) {
@@ -109,51 +105,43 @@ public class MindMapNodeDropListener implements DropTargetListener {
 			}
 			mainView.setDraggedOver(NodeView.DRAGGED_OVER_NO);
 			mainView.repaint();
-			if (dtde.isLocalTransfer()
-			        && (dropAction == DnDConstants.ACTION_MOVE)
+			if (dtde.isLocalTransfer() && (dropAction == DnDConstants.ACTION_MOVE)
 			        && !isDropAcceptable(dtde)) {
 				dtde.rejectDrop();
 				return;
 			}
 			dtde.acceptDrop(dtde.getDropAction());
 			if (!dtde.isLocalTransfer()) {
-				((MClipboardController) mMindMapController
-				    .getClipboardController()).paste(t, targetNode, mainView
-				    .dropAsSibling(dtde.getLocation().getX()), mainView
-				    .dropPosition(dtde.getLocation().getX()));
+				((MClipboardController) mMindMapController.getClipboardController()).paste(t,
+				    targetNode, mainView.dropAsSibling(dtde.getLocation().getX()), mainView
+				        .dropPosition(dtde.getLocation().getX()));
 				dtde.dropComplete(true);
 				return;
 			}
 			if (dropAction == DnDConstants.ACTION_LINK) {
 				int yesorno = JOptionPane.YES_OPTION;
 				if (mMindMapController.getMapView().getSelection().size() >= 5) {
-					yesorno = JOptionPane.showConfirmDialog(Controller
-					    .getController().getViewController().getContentPane(),
-					    mMindMapController.getText("lots_of_links_warning"),
-					    Integer.toString(mMindMapController.getMapView()
-					        .getSelection().size())
-					            + " links to the same node",
-					    JOptionPane.YES_NO_OPTION);
+					yesorno = JOptionPane.showConfirmDialog(Controller.getController()
+					    .getViewController().getContentPane(), mMindMapController
+					    .getText("lots_of_links_warning"), Integer.toString(mMindMapController
+					    .getMapView().getSelection().size())
+					        + " links to the same node", JOptionPane.YES_NO_OPTION);
 				}
 				if (yesorno == JOptionPane.YES_OPTION) {
-					for (final Iterator<NodeView> it = mMindMapController
-					    .getMapView().getSelection().iterator(); it.hasNext();) {
-						final NodeModel selectedNodeModel = (it.next())
-						    .getModel();
-						((MLinkController) mMindMapController
-						    .getLinkController()).addLink(selectedNodeModel,
-						    targetNodeModel);
+					for (final Iterator<NodeView> it = mMindMapController.getMapView()
+					    .getSelection().iterator(); it.hasNext();) {
+						final NodeModel selectedNodeModel = (it.next()).getModel();
+						((MLinkController) mMindMapController.getLinkController()).addLink(
+						    selectedNodeModel, targetNodeModel);
 					}
 				}
 			}
 			else {
 				if (!((MMapController) mMindMapController.getMapController())
 				    .isWriteable(targetNode)) {
-					final String message = mMindMapController
-					    .getText("node_is_write_protected");
-					JOptionPane.showMessageDialog(Controller.getController()
-					    .getViewController().getContentPane(), message,
-					    "Freemind", JOptionPane.ERROR_MESSAGE);
+					final String message = mMindMapController.getText("node_is_write_protected");
+					JOptionPane.showMessageDialog(Controller.getController().getViewController()
+					    .getContentPane(), message, "Freemind", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				Transferable trans = null;
@@ -164,29 +152,24 @@ public class MindMapNodeDropListener implements DropTargetListener {
 						if (selecteds.contains(actualNode)) {
 							final String message = mMindMapController
 							    .getText("cannot_move_to_child");
-							JOptionPane.showMessageDialog(Controller
-							    .getController().getViewController()
-							    .getContentPane(), message, "Freemind",
+							JOptionPane.showMessageDialog(Controller.getController()
+							    .getViewController().getContentPane(), message, "Freemind",
 							    JOptionPane.WARNING_MESSAGE);
 							dtde.dropComplete(true);
 							return;
 						}
-						actualNode = (actualNode.isRoot()) ? null : actualNode
-						    .getParentNode();
+						actualNode = (actualNode.isRoot()) ? null : actualNode.getParentNode();
 					} while (actualNode != null);
-					trans = ((MClipboardController) mMindMapController
-					    .getClipboardController()).cut(mMindMapController
-					    .getMapView().getSelectedNodesSortedByY());
+					trans = ((MClipboardController) mMindMapController.getClipboardController())
+					    .cut(mMindMapController.getMapView().getSelectedNodesSortedByY());
 				}
 				else {
 					trans = mMindMapController.getClipboardController().copy(
 					    mMindMapController.getMapView());
 				}
-				mMindMapController.getMapView().selectAsTheOnlyOneSelected(
-				    targetNodeView);
-				((MClipboardController) mMindMapController
-				    .getClipboardController()).paste(trans, targetNode,
-				    mainView.dropAsSibling(dtde.getLocation().getX()), mainView
+				mMindMapController.getMapView().selectAsTheOnlyOneSelected(targetNodeView);
+				((MClipboardController) mMindMapController.getClipboardController()).paste(trans,
+				    targetNode, mainView.dropAsSibling(dtde.getLocation().getX()), mainView
 				        .dropPosition(dtde.getLocation().getX()));
 			}
 		}
@@ -213,11 +196,10 @@ public class MindMapNodeDropListener implements DropTargetListener {
 	}
 
 	private boolean isDropAcceptable(final DropTargetDropEvent event) {
-		final NodeModel node = ((MainView) event.getDropTargetContext()
-		    .getComponent()).getNodeView().getModel();
+		final NodeModel node = ((MainView) event.getDropTargetContext().getComponent())
+		    .getNodeView().getModel();
 		final NodeModel selected = mMindMapController.getSelectedNode();
-		if (!((MMapController) mMindMapController.getMapController())
-		    .isWriteable(node)) {
+		if (!((MMapController) mMindMapController.getMapController()).isWriteable(node)) {
 			return false;
 		}
 		return ((node != selected) && !node.isDescendantOf(selected));

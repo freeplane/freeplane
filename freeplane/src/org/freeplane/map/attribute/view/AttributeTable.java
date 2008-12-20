@@ -59,8 +59,7 @@ import org.freeplane.map.tree.view.NodeView;
 /**
  * @author Dimitry Polivaev
  */
-public class AttributeTable extends JTable implements
-        IColumnWidthChangeListener {
+public class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	static private class HeaderMouseListener extends MouseAdapter {
 		@Override
 		public void mouseReleased(final MouseEvent e) {
@@ -72,12 +71,11 @@ public class AttributeTable extends JTable implements
 			final JViewport port = (JViewport) table.getParent();
 			final Dimension extentSize = port.getExtentSize();
 			if (preferredScrollableViewportSize.width != extentSize.width) {
-				final IAttributeTableModel model = (IAttributeTableModel) table
-				    .getModel();
+				final IAttributeTableModel model = (IAttributeTableModel) table.getModel();
 				for (int col = 0; col < table.getColumnCount(); col++) {
 					final int modelColumnWidth = model.getColumnWidth(col);
-					final int currentColumnWidth = (int) (table
-					    .getColumnModel().getColumn(col).getWidth() / zoom);
+					final int currentColumnWidth = (int) (table.getColumnModel().getColumn(col)
+					    .getWidth() / zoom);
 					if (modelColumnWidth != currentColumnWidth) {
 						model.setColumnWidth(col, currentColumnWidth);
 					}
@@ -101,19 +99,18 @@ public class AttributeTable extends JTable implements
 				focusedTable = (AttributeTable) source;
 			}
 			else {
-				focusedTable = (AttributeTable) SwingUtilities
-				    .getAncestorOfClass(AttributeTable.class, source);
+				focusedTable = (AttributeTable) SwingUtilities.getAncestorOfClass(
+				    AttributeTable.class, source);
 			}
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					if (focusedTable != null) {
-						final Component newNodeViewInFocus = SwingUtilities
-						    .getAncestorOfClass(NodeView.class, focusedTable);
+						final Component newNodeViewInFocus = SwingUtilities.getAncestorOfClass(
+						    NodeView.class, focusedTable);
 						if (newNodeViewInFocus != null) {
 							final NodeView viewer = (NodeView) newNodeViewInFocus;
 							if (viewer != viewer.getMap().getSelected()) {
-								viewer.getMap().selectAsTheOnlyOneSelected(
-								    viewer, false);
+								viewer.getMap().selectAsTheOnlyOneSelected(viewer, false);
 							}
 						}
 					}
@@ -128,18 +125,16 @@ public class AttributeTable extends JTable implements
 		 */
 		public void focusLost(final FocusEvent event) {
 			final Component oppositeComponent = event.getOppositeComponent();
-			final Component newTable = SwingUtilities.getAncestorOfClass(
-			    AttributeTable.class, oppositeComponent);
+			final Component newTable = SwingUtilities.getAncestorOfClass(AttributeTable.class,
+			    oppositeComponent);
 			if (focusedTable != null && focusedTable != newTable) {
 				if (focusedTable.isEditing()) {
 					focusedTable.getCellEditor().stopCellEditing();
 				}
 				if (!focusedTable.attributeView.isPopupShown()) {
-					final AttributeView attributeView = focusedTable
-					    .getAttributeView();
-					final String currentAttributeViewType = attributeView
-					    .getNode().getMap().getRegistry().getAttributes()
-					    .getAttributeViewType();
+					final AttributeView attributeView = focusedTable.getAttributeView();
+					final String currentAttributeViewType = attributeView.getNode().getMap()
+					    .getRegistry().getAttributes().getAttributeViewType();
 					if (attributeView.getViewType() != currentAttributeViewType) {
 						attributeView.stateChanged(null);
 					}
@@ -205,8 +200,8 @@ public class AttributeTable extends JTable implements
 	}
 
 	@Override
-	public void changeSelection(int rowIndex, int columnIndex,
-	                            final boolean toggle, final boolean extend) {
+	public void changeSelection(int rowIndex, int columnIndex, final boolean toggle,
+	                            final boolean extend) {
 		final int rowCount = getRowCount();
 		if (rowCount == 0) {
 			return;
@@ -222,12 +217,10 @@ public class AttributeTable extends JTable implements
 	public void columnWidthChanged(final ColumnWidthChangeEvent event) {
 		final float zoom = getZoom();
 		final int col = event.getColumnNumber();
-		final AttributeTableLayoutModel layoutModel = (AttributeTableLayoutModel) event
-		    .getSource();
+		final AttributeTableLayoutModel layoutModel = (AttributeTableLayoutModel) event.getSource();
 		final int width = layoutModel.getColumnWidth(col);
 		getColumnModel().getColumn(col).setPreferredWidth((int) (width * zoom));
-		getAttributeView().getNode().getMap().nodeChanged(
-		    getAttributeView().getNode());
+		getAttributeView().getNode().getMap().nodeChanged(getAttributeView().getNode());
 	}
 
 	/**
@@ -264,8 +257,8 @@ public class AttributeTable extends JTable implements
 	}
 
 	private float getFontSize() {
-		return (attributeView.getNodeView().getModel().getMap().getRegistry()
-		    .getAttributes().getFontSize());
+		return (attributeView.getNodeView().getModel().getMap().getRegistry().getAttributes()
+		    .getFontSize());
 	}
 
 	@Override
@@ -275,8 +268,7 @@ public class AttributeTable extends JTable implements
 		}
 		final float zoom = getZoom();
 		final Dimension dimension = super.getPreferredSize();
-		dimension.width = Math.min((int) (AttributeTable.MAX_WIDTH * zoom),
-		    dimension.width);
+		dimension.width = Math.min((int) (AttributeTable.MAX_WIDTH * zoom), dimension.width);
 		dimension.height = Math.min((int) (AttributeTable.MAX_HEIGTH * zoom)
 		        - getTableHeaderHeight(), dimension.height);
 		return dimension;
@@ -296,8 +288,7 @@ public class AttributeTable extends JTable implements
 	public void insertRow(final int row) {
 		if (getModel() instanceof ExtendedAttributeTableModelDecorator) {
 			final ExtendedAttributeTableModelDecorator model = (ExtendedAttributeTableModelDecorator) getModel();
-			if (isEditing() && getCellEditor() != null
-			        && !getCellEditor().stopCellEditing()) {
+			if (isEditing() && getCellEditor() != null && !getCellEditor().stopCellEditing()) {
 				return;
 			}
 			model.insertRow(row);
@@ -335,22 +326,18 @@ public class AttributeTable extends JTable implements
 	 *
 	 */
 	@Override
-	public Component prepareEditor(final TableCellEditor tce, final int row,
-	                               final int col) {
+	public Component prepareEditor(final TableCellEditor tce, final int row, final int col) {
 		ComboBoxModel model;
-		final JComboBox comboBox = (JComboBox) ((DefaultCellEditor) tce)
-		    .getComponent();
+		final JComboBox comboBox = (JComboBox) ((DefaultCellEditor) tce).getComponent();
 		final NodeModel node = getAttributeTableModel().getNode();
-		final AttributeRegistry attributes = node.getMap().getRegistry()
-		    .getAttributes();
+		final AttributeRegistry attributes = node.getMap().getRegistry().getAttributes();
 		switch (col) {
 			case 0:
 				model = attributes.getComboBoxModel();
 				comboBox.setEditable(!attributes.isRestricted());
 				break;
 			case 1:
-				final String attrName = getAttributeTableModel().getValueAt(
-				    row, 0).toString();
+				final String attrName = getAttributeTableModel().getValueAt(row, 0).toString();
 				model = attributes.getDefaultComboBoxModel(attrName);
 				comboBox.setEditable(!attributes.isRestricted(attrName));
 				break;
@@ -360,42 +347,33 @@ public class AttributeTable extends JTable implements
 		comboBox.setModel(model);
 		model.setSelectedItem(getValueAt(row, col));
 		comboBox.addFocusListener(AttributeTable.focusListener);
-		comboBox.getEditor().getEditorComponent().addFocusListener(
-		    AttributeTable.focusListener);
+		comboBox.getEditor().getEditorComponent().addFocusListener(AttributeTable.focusListener);
 		final Component editor = super.prepareEditor(tce, row, col);
 		updateFontSize(editor, getZoom());
 		return editor;
 	}
 
 	@Override
-	protected boolean processKeyBinding(final KeyStroke ks, final KeyEvent e,
-	                                    final int condition,
+	protected boolean processKeyBinding(final KeyStroke ks, final KeyEvent e, final int condition,
 	                                    final boolean pressed) {
-		if (ks.getKeyCode() == KeyEvent.VK_TAB && e.getModifiers() == 0
-		        && pressed && getSelectedColumn() == 1
-		        && getSelectedRow() == getRowCount() - 1
+		if (ks.getKeyCode() == KeyEvent.VK_TAB && e.getModifiers() == 0 && pressed
+		        && getSelectedColumn() == 1 && getSelectedRow() == getRowCount() - 1
 		        && getModel() instanceof ExtendedAttributeTableModelDecorator) {
 			insertRow(getRowCount());
 			return true;
 		}
-		if (ks.getKeyCode() == KeyEvent.VK_ESCAPE && e.getModifiers() == 0
-		        && pressed) {
+		if (ks.getKeyCode() == KeyEvent.VK_ESCAPE && e.getModifiers() == 0 && pressed) {
 			attributeView.getNodeView().requestFocus();
 			return true;
 		}
 		boolean retValue = super.processKeyBinding(ks, e, condition, pressed);
-		if (!retValue
-		        && condition == JComponent.WHEN_FOCUSED
-		        && isFocusOwner()
-		        && ks.getKeyCode() != KeyEvent.VK_TAB
-		        && e != null
-		        && e.getID() == KeyEvent.KEY_PRESSED
-		        && !e.isActionKey()
+		if (!retValue && condition == JComponent.WHEN_FOCUSED && isFocusOwner()
+		        && ks.getKeyCode() != KeyEvent.VK_TAB && e != null
+		        && e.getID() == KeyEvent.KEY_PRESSED && !e.isActionKey()
 		        && e.getKeyChar() != KeyEvent.CHAR_UNDEFINED
 		        && 0 == (e.getModifiers() & (InputEvent.CTRL_MASK | InputEvent.ALT_MASK))) {
 			final int leadRow = getSelectionModel().getLeadSelectionIndex();
-			final int leadColumn = getColumnModel().getSelectionModel()
-			    .getLeadSelectionIndex();
+			final int leadColumn = getColumnModel().getSelectionModel().getLeadSelectionIndex();
 			if (leadRow != -1 && leadColumn != -1 && !isEditing()) {
 				if (!editCellAt(leadRow, leadColumn)) {
 					return false;
@@ -408,9 +386,8 @@ public class AttributeTable extends JTable implements
 					final ComboBoxEditor editor = comboBox.getEditor();
 					editor.selectAll();
 					KeyEvent keyEv;
-					keyEv = new KeyEvent(editor.getEditorComponent(),
-					    KeyEvent.KEY_TYPED, e.getWhen(), e.getModifiers(),
-					    KeyEvent.VK_UNDEFINED, e.getKeyChar(),
+					keyEv = new KeyEvent(editor.getEditorComponent(), KeyEvent.KEY_TYPED, e
+					    .getWhen(), e.getModifiers(), KeyEvent.VK_UNDEFINED, e.getKeyChar(),
 					    KeyEvent.KEY_LOCATION_UNKNOWN);
 					retValue = SwingUtilities.processKeyBindings(keyEv);
 				}
@@ -436,8 +413,7 @@ public class AttributeTable extends JTable implements
 	private void removeListenerFromEditor() {
 		final JComboBox comboBox = (JComboBox) getEditorComponent();
 		comboBox.removeFocusListener(AttributeTable.focusListener);
-		comboBox.getEditor().getEditorComponent().removeFocusListener(
-		    AttributeTable.focusListener);
+		comboBox.getEditor().getEditorComponent().removeFocusListener(AttributeTable.focusListener);
 		comboBox.setModel(new DefaultComboBoxModel());
 	}
 
@@ -461,8 +437,7 @@ public class AttributeTable extends JTable implements
 	public void setOptimalColumnWidths() {
 		Component comp = null;
 		int cellWidth = 0;
-		int maxCellWidth = 2 * (int) (Math.ceil(getFontSize()
-		        + AttributeTable.TABLE_ROW_HEIGHT));
+		int maxCellWidth = 2 * (int) (Math.ceil(getFontSize() + AttributeTable.TABLE_ROW_HEIGHT));
 		for (int col = 0; col < 2; col++) {
 			for (int row = 0; row < getRowCount(); row++) {
 				comp = AttributeTable.dtcr.getTableCellRendererComponent(this,
@@ -480,8 +455,7 @@ public class AttributeTable extends JTable implements
 		if (getParent() == null) {
 			return;
 		}
-		if (e.getType() == TableModelEvent.DELETE
-		        && e.getFirstRow() == highRowIndex
+		if (e.getType() == TableModelEvent.DELETE && e.getFirstRow() == highRowIndex
 		        && e.getFirstRow() == getRowCount() && e.getFirstRow() != 0) {
 			changeSelection(e.getFirstRow() - 1, 0, false, false);
 		}
@@ -527,25 +501,20 @@ public class AttributeTable extends JTable implements
 		if (rowCount == 0) {
 			return;
 		}
-		final int constHeight = getTableHeaderHeight()
-		        + AttributeTable.EXTRA_HEIGHT;
+		final int constHeight = getTableHeaderHeight() + AttributeTable.EXTRA_HEIGHT;
 		final float zoom = getZoom();
 		final float fontSize = getFontSize();
-		final float tableRowHeight = fontSize + zoom
-		        * AttributeTable.TABLE_ROW_HEIGHT;
-		int newHeight = (int) ((tableRowHeight * rowCount + (zoom - 1)
-		        * constHeight) / rowCount);
+		final float tableRowHeight = fontSize + zoom * AttributeTable.TABLE_ROW_HEIGHT;
+		int newHeight = (int) ((tableRowHeight * rowCount + (zoom - 1) * constHeight) / rowCount);
 		if (newHeight < 1) {
 			newHeight = 1;
 		}
 		final int highRowsNumber = (int) ((tableRowHeight - newHeight) * rowCount);
 		for (int i = 0; i < highRowsNumber; i++) {
-			setRowHeight(i, 1 + newHeight
-			        + (i == highRowIndex ? AttributeTable.EXTRA_HEIGHT : 0));
+			setRowHeight(i, 1 + newHeight + (i == highRowIndex ? AttributeTable.EXTRA_HEIGHT : 0));
 		}
 		for (int i = highRowsNumber; i < rowCount; i++) {
-			setRowHeight(i, newHeight
-			        + (i == highRowIndex ? AttributeTable.EXTRA_HEIGHT : 0));
+			setRowHeight(i, newHeight + (i == highRowIndex ? AttributeTable.EXTRA_HEIGHT : 0));
 		}
 	}
 

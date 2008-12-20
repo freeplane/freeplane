@@ -38,10 +38,9 @@ import deprecated.freemind.preferences.IFreemindPropertyListener;
  * @author Dimitry Polivaev
  */
 public class EdgeController {
-	protected static class EdgePropertyListener implements
-	        IFreemindPropertyListener {
-		public void propertyChanged(final String propertyName,
-		                            final String newValue, final String oldValue) {
+	protected static class EdgePropertyListener implements IFreemindPropertyListener {
+		public void propertyChanged(final String propertyName, final String newValue,
+		                            final String oldValue) {
 			if (propertyName.equals(ResourceController.RESOURCES_EDGE_COLOR)) {
 				standardColor = Tools.xmlToColor(newValue);
 			}
@@ -66,62 +65,55 @@ public class EdgeController {
 		updateStandards(modeController);
 		if (listener == null) {
 			listener = new EdgePropertyListener();
-			Controller.getResourceController().addPropertyChangeListener(
-			    listener);
+			Controller.getResourceController().addPropertyChangeListener(listener);
 		}
-		addColorGetter(PropertyChain.NODE,
-		    new IPropertyGetter<Color, NodeModel>() {
-			    public Color getProperty(final NodeModel node) {
-				    final EdgeModel edge = node.getEdge();
-				    return edge == null ? null : edge.getColor();
-			    }
-		    });
-		addColorGetter(PropertyChain.DEFAULT,
-		    new IPropertyGetter<Color, NodeModel>() {
-			    public Color getProperty(final NodeModel node) {
-				    if (node.isRoot()) {
-					    return standardColor;
-				    }
-				    return getProperty(node.getParentNode());
-			    }
-		    });
-		addStyleGetter(PropertyChain.NODE,
-		    new IPropertyGetter<String, NodeModel>() {
-			    public String getProperty(final NodeModel node) {
-				    final EdgeModel edge = node.getEdge();
-				    return edge == null ? null : edge.getStyle();
-			    }
-		    });
-		addStyleGetter(PropertyChain.DEFAULT,
-		    new IPropertyGetter<String, NodeModel>() {
-			    public String getProperty(final NodeModel node) {
-				    if (node.isRoot()) {
-					    return standardStyle;
-				    }
-				    return getProperty(node.getParentNode());
-			    }
-		    });
-		addWidthGetter(PropertyChain.NODE,
-		    new IPropertyGetter<Integer, NodeModel>() {
-			    public Integer getProperty(final NodeModel node) {
-				    final EdgeModel edge = node.getEdge();
-				    int width = edge == null ? DEFAULT_WIDTH : edge.getWidth();
-				    if (width == EdgeModel.WIDTH_PARENT) {
-					    if (node.isRoot()) {
-						    width = EdgeModel.WIDTH_THIN;
-						    return new Integer(width);
-					    }
-					    return getProperty(node.getParentNode());
-				    }
-				    return width != DEFAULT_WIDTH ? new Integer(width) : null;
-			    }
-		    });
-		addWidthGetter(PropertyChain.DEFAULT,
-		    new IPropertyGetter<Integer, NodeModel>() {
-			    public Integer getProperty(final NodeModel node) {
-				    return new Integer(EdgeModel.WIDTH_THIN);
-			    }
-		    });
+		addColorGetter(PropertyChain.NODE, new IPropertyGetter<Color, NodeModel>() {
+			public Color getProperty(final NodeModel node) {
+				final EdgeModel edge = node.getEdge();
+				return edge == null ? null : edge.getColor();
+			}
+		});
+		addColorGetter(PropertyChain.DEFAULT, new IPropertyGetter<Color, NodeModel>() {
+			public Color getProperty(final NodeModel node) {
+				if (node.isRoot()) {
+					return standardColor;
+				}
+				return getProperty(node.getParentNode());
+			}
+		});
+		addStyleGetter(PropertyChain.NODE, new IPropertyGetter<String, NodeModel>() {
+			public String getProperty(final NodeModel node) {
+				final EdgeModel edge = node.getEdge();
+				return edge == null ? null : edge.getStyle();
+			}
+		});
+		addStyleGetter(PropertyChain.DEFAULT, new IPropertyGetter<String, NodeModel>() {
+			public String getProperty(final NodeModel node) {
+				if (node.isRoot()) {
+					return standardStyle;
+				}
+				return getProperty(node.getParentNode());
+			}
+		});
+		addWidthGetter(PropertyChain.NODE, new IPropertyGetter<Integer, NodeModel>() {
+			public Integer getProperty(final NodeModel node) {
+				final EdgeModel edge = node.getEdge();
+				int width = edge == null ? DEFAULT_WIDTH : edge.getWidth();
+				if (width == EdgeModel.WIDTH_PARENT) {
+					if (node.isRoot()) {
+						width = EdgeModel.WIDTH_THIN;
+						return new Integer(width);
+					}
+					return getProperty(node.getParentNode());
+				}
+				return width != DEFAULT_WIDTH ? new Integer(width) : null;
+			}
+		});
+		addWidthGetter(PropertyChain.DEFAULT, new IPropertyGetter<Integer, NodeModel>() {
+			public Integer getProperty(final NodeModel node) {
+				return new Integer(EdgeModel.WIDTH_THIN);
+			}
+		});
 		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();
 		final WriteManager writeManager = mapController.getWriteManager();
@@ -163,20 +155,18 @@ public class EdgeController {
 		return colorHandlers.removeGetter(key);
 	}
 
-	public IPropertyGetter<String, NodeModel> removeStyleGetter(
-	                                                            final Integer key) {
+	public IPropertyGetter<String, NodeModel> removeStyleGetter(final Integer key) {
 		return styleHandlers.removeGetter(key);
 	}
 
-	public IPropertyGetter<Integer, NodeModel> removeWidthGetter(
-	                                                             final Integer key) {
+	public IPropertyGetter<Integer, NodeModel> removeWidthGetter(final Integer key) {
 		return widthHandlers.removeGetter(key);
 	}
 
 	private void updateStandards(final ModeController controller) {
 		if (standardColor == null) {
-			final String stdColor = Controller.getResourceController()
-			    .getProperty(ResourceController.RESOURCES_EDGE_COLOR);
+			final String stdColor = Controller.getResourceController().getProperty(
+			    ResourceController.RESOURCES_EDGE_COLOR);
 			if (stdColor != null && stdColor.length() == 7) {
 				standardColor = Tools.xmlToColor(stdColor);
 			}
@@ -185,8 +175,8 @@ public class EdgeController {
 			}
 		}
 		if (standardStyle == null) {
-			final String stdStyle = Controller.getResourceController()
-			    .getProperty(ResourceController.RESOURCES_EDGE_STYLE);
+			final String stdStyle = Controller.getResourceController().getProperty(
+			    ResourceController.RESOURCES_EDGE_STYLE);
 			if (stdStyle != null) {
 				standardStyle = stdStyle;
 			}

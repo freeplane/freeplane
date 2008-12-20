@@ -32,7 +32,6 @@ class EditLongAction extends FreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		((MTextController) getModeController().getTextController()).edit(null,
-		    false, true);
+		((MTextController) getModeController().getTextController()).edit(null, false, true);
 	}
 }

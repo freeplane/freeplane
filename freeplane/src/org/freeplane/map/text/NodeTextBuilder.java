@@ -34,10 +34,9 @@ public class NodeTextBuilder implements INodeContentHandler, IAttributeHandler {
 	public static final String XML_NODE_XHTML_TYPE_NOTE = "NOTE";
 	public static final String XML_NODE_XHTML_TYPE_TAG = "TYPE";
 
-	public boolean parseAttribute(final Object userObject, final String tag,
-	                              final String name, final String value) {
-		if (tag.equals(NodeBuilder.XML_NODE)
-		        && userObject instanceof NodeObject) {
+	public boolean parseAttribute(final Object userObject, final String tag, final String name,
+	                              final String value) {
+		if (tag.equals(NodeBuilder.XML_NODE) && userObject instanceof NodeObject) {
 			final NodeModel node = ((NodeObject) userObject).node;
 			if (name.equals(NodeTextBuilder.XML_NODE_TEXT)) {
 				node.setText(value);
@@ -54,15 +53,14 @@ public class NodeTextBuilder implements INodeContentHandler, IAttributeHandler {
 		reader.addNodeContentHandler("richcontent", this);
 	}
 
-	public boolean setContent(final Object node, final String tag,
-	                          final IXMLElement attributes, final String content) {
+	public boolean setContent(final Object node, final String tag, final IXMLElement attributes,
+	                          final String content) {
 		if (tag.equals("richcontent")) {
 			final String xmlText = content;
 			final Object typeAttribute = attributes.getAttribute(
 			    NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG, null);
 			if (typeAttribute == null
-			        || NodeTextBuilder.XML_NODE_XHTML_TYPE_NODE
-			            .equals(typeAttribute)) {
+			        || NodeTextBuilder.XML_NODE_XHTML_TYPE_NODE.equals(typeAttribute)) {
 				((NodeObject) node).node.setXmlText(xmlText);
 				return true;
 			}

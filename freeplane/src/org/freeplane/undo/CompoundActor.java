@@ -51,15 +51,12 @@ public class CompoundActor implements IUndoableActor {
 		if (actorList.size() == 0) {
 			return "";
 		}
-		final String firstDescription = ((IUndoableActor) actorList.getFirst())
-		    .getDescription();
+		final String firstDescription = ((IUndoableActor) actorList.getFirst()).getDescription();
 		if (actorList.size() == 1) {
 			return firstDescription;
 		}
-		final String lastDescription = ((IUndoableActor) actorList.getLast())
-		    .getDescription();
-		if (actorList.size() == 2 && !firstDescription.equals("")
-		        && !lastDescription.equals("")) {
+		final String lastDescription = ((IUndoableActor) actorList.getLast()).getDescription();
+		if (actorList.size() == 2 && !firstDescription.equals("") && !lastDescription.equals("")) {
 			return firstDescription + ", " + lastDescription;
 		}
 		return firstDescription + "... " + lastDescription;

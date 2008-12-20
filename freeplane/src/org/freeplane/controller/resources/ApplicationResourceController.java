@@ -59,8 +59,7 @@ public class ApplicationResourceController extends ResourceController {
 		setDefaultLocale(props);
 		autoPropertiesFile = getUserPreferencesFile(defProps);
 		addPropertyChangeListener(new IFreemindPropertyListener() {
-			public void propertyChanged(final String propertyName,
-			                            final String newValue,
+			public void propertyChanged(final String propertyName, final String newValue,
 			                            final String oldValue) {
 				if (propertyName.equals(ResourceController.RESOURCE_LANGUAGE)) {
 					clearLanguageResources();
@@ -81,8 +80,8 @@ public class ApplicationResourceController extends ResourceController {
 			}
 		}
 		try {
-			mFileHandler = new FileHandler(getFreemindUserDirectory()
-			        + File.separator + "log", 1400000, 5, false);
+			mFileHandler = new FileHandler(getFreemindUserDirectory() + File.separator + "log",
+			    1400000, 5, false);
 			mFileHandler.setFormatter(new StdFormatter());
 			mFileHandler.setLevel(Level.INFO);
 			parentLogger.addHandler(mFileHandler);
@@ -105,8 +104,7 @@ public class ApplicationResourceController extends ResourceController {
 	}
 
 	private void createUserDirectory(final Properties pDefaultProperties) {
-		final File userPropertiesFolder = new File(
-		    getFreeMindUserDirectory(pDefaultProperties));
+		final File userPropertiesFolder = new File(getFreeMindUserDirectory(pDefaultProperties));
 		try {
 			if (!userPropertiesFolder.exists()) {
 				userPropertiesFolder.mkdir();
@@ -114,9 +112,8 @@ public class ApplicationResourceController extends ResourceController {
 		}
 		catch (final Exception e) {
 			e.printStackTrace();
-			System.err
-			    .println("Cannot create folder for user properties and logging: '"
-			            + userPropertiesFolder.getAbsolutePath() + "'");
+			System.err.println("Cannot create folder for user properties and logging: '"
+			        + userPropertiesFolder.getAbsolutePath() + "'");
 		}
 	}
 
@@ -127,8 +124,7 @@ public class ApplicationResourceController extends ResourceController {
 
 	@Override
 	public String getFreemindUserDirectory() {
-		return System.getProperty("user.home") + File.separator
-		        + getProperty("properties_folder");
+		return System.getProperty("user.home") + File.separator + getProperty("properties_folder");
 	}
 
 	private String getFreeMindUserDirectory(final Properties defaultPreferences) {
@@ -153,14 +149,13 @@ public class ApplicationResourceController extends ResourceController {
 
 	private File getUserPreferencesFile(final Properties defaultPreferences) {
 		if (defaultPreferences == null) {
-			System.err
-			    .println("Panic! Error while loading default properties.");
+			System.err.println("Panic! Error while loading default properties.");
 			System.exit(1);
 		}
 		final String freemindDirectory = getFreeMindUserDirectory(defaultPreferences);
 		final File userPropertiesFolder = new File(freemindDirectory);
-		final File autoPropertiesFile = new File(userPropertiesFolder,
-		    defaultPreferences.getProperty("autoproperties"));
+		final File autoPropertiesFile = new File(userPropertiesFolder, defaultPreferences
+		    .getProperty("autoproperties"));
 		return autoPropertiesFile;
 	}
 
@@ -176,8 +171,7 @@ public class ApplicationResourceController extends ResourceController {
 		}
 		catch (final Exception ex) {
 			ex.printStackTrace();
-			System.err
-			    .println("Panic! Error while loading default properties.");
+			System.err.println("Panic! Error while loading default properties.");
 		}
 		return props;
 	}
@@ -202,8 +196,7 @@ public class ApplicationResourceController extends ResourceController {
 	public void saveProperties() {
 		try {
 			final OutputStream out = new FileOutputStream(autoPropertiesFile);
-			final OutputStreamWriter outputStreamWriter = new OutputStreamWriter(
-			    out, "8859_1");
+			final OutputStreamWriter outputStreamWriter = new OutputStreamWriter(out, "8859_1");
 			outputStreamWriter.write("#FreeMind ");
 			outputStreamWriter.write(Controller.VERSION.toString());
 			outputStreamWriter.write('\n');
@@ -220,8 +213,7 @@ public class ApplicationResourceController extends ResourceController {
 	 * @param pProperties
 	 */
 	private void setDefaultLocale(final Properties pProperties) {
-		final String lang = pProperties
-		    .getProperty(ResourceController.RESOURCE_LANGUAGE);
+		final String lang = pProperties.getProperty(ResourceController.RESOURCE_LANGUAGE);
 		if (lang == null) {
 			return;
 		}
@@ -231,8 +223,7 @@ public class ApplicationResourceController extends ResourceController {
 				localeDef = new Locale(lang);
 				break;
 			case 5:
-				localeDef = new Locale(lang.substring(0, 1), lang.substring(3,
-				    4));
+				localeDef = new Locale(lang.substring(0, 1), lang.substring(3, 4));
 				break;
 			default:
 				return;

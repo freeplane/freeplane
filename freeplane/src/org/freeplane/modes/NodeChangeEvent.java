@@ -31,8 +31,8 @@ public class NodeChangeEvent extends AWTEvent {
 	final private Object oldValue;
 	final private Object property;
 
-	public NodeChangeEvent(final NodeModel node, final Object property,
-	                       final Object oldValue, final Object newValue) {
+	public NodeChangeEvent(final NodeModel node, final Object property, final Object oldValue,
+	                       final Object newValue) {
 		super(node, 0);
 		this.oldValue = oldValue;
 		this.newValue = newValue;

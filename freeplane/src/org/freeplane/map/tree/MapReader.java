@@ -32,12 +32,6 @@ import org.freeplane.io.xml.n3.nanoxml.XMLParseException;
  * 20.12.2008
  */
 public class MapReader {
-	public MapReader(ReadManager readManager) {
-		this.readManager = readManager;
-		nodeBuilder = new NodeBuilder(this);
-		nodeBuilder.registerBy(readManager);
-    }
-
 	public class NodeTreeCreator {
 		public NodeModel create(final Reader pReader) {
 			final TreeXmlReader reader = new TreeXmlReader(readManager);
@@ -47,8 +41,7 @@ public class MapReader {
 			return node;
 		}
 
-		public NodeModel createNodeTreeFromXml(final MapModel map,
-		                                       final Reader pReader)
+		public NodeModel createNodeTreeFromXml(final MapModel map, final Reader pReader)
 		        throws XMLParseException, IOException {
 			start(map);
 			final NodeModel node = create(pReader);
@@ -72,26 +65,24 @@ public class MapReader {
 	private boolean mapLoadingInProcess;
 	private final NodeBuilder nodeBuilder;
 	final private ReadManager readManager;
-	
-	public NodeModel createNodeTreeFromXml(final MapModel map,
-	                                       final Reader pReader)
+
+	public MapReader(final ReadManager readManager) {
+		this.readManager = readManager;
+		nodeBuilder = new NodeBuilder(this);
+		nodeBuilder.registerBy(readManager);
+	}
+
+	public NodeModel createNodeTreeFromXml(final MapModel map, final Reader pReader)
 	        throws XMLParseException, IOException {
 		try {
-			this.mapLoadingInProcess = true;
-			final NodeModel topNode = new NodeTreeCreator()
-			    .createNodeTreeFromXml(map, pReader);
-			this.mapLoadingInProcess = false;
+			mapLoadingInProcess = true;
+			final NodeModel topNode = new NodeTreeCreator().createNodeTreeFromXml(map, pReader);
+			mapLoadingInProcess = false;
 			return topNode;
 		}
 		finally {
-			this.mapLoadingInProcess = false;
+			mapLoadingInProcess = false;
 		}
-	}
-
-	public NodeTreeCreator nodeTreeCreator(final MapModel map) {
-		final NodeTreeCreator nodeTreeCreator = new NodeTreeCreator();
-		nodeTreeCreator.start(map);
-		return nodeTreeCreator;
 	}
 
 	public MapModel getCreatedMap() {
@@ -99,8 +90,12 @@ public class MapReader {
 	}
 
 	public boolean isMapLoadingInProcess() {
-	    return mapLoadingInProcess;
-    }
+		return mapLoadingInProcess;
+	}
 
-
+	public NodeTreeCreator nodeTreeCreator(final MapModel map) {
+		final NodeTreeCreator nodeTreeCreator = new NodeTreeCreator();
+		nodeTreeCreator.start(map);
+		return nodeTreeCreator;
+	}
 }

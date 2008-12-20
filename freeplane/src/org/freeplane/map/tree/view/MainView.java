@@ -53,8 +53,7 @@ import org.freeplane.ui.FreemindMenuBar;
  * Base class for all node views.
  */
 public abstract class MainView extends JLabel {
-	static Dimension maximumSize = new Dimension(Integer.MAX_VALUE,
-	    Integer.MAX_VALUE);
+	static Dimension maximumSize = new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
 	private static final int MIN_HOR_NODE_SIZE = 10;
 	static Dimension minimumSize = new Dimension(0, 0);
 	static final float ZOOM_CORRECTION_FACTOR = 0.97F;
@@ -155,8 +154,7 @@ public abstract class MainView extends JLabel {
 	}
 
 	public NodeView getNodeView() {
-		return (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class,
-		    this);
+		return (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, this);
 	}
 
 	/*
@@ -166,9 +164,8 @@ public abstract class MainView extends JLabel {
 	@Override
 	public Dimension getPreferredSize() {
 		final String text = getText();
-		final boolean isEmpty = text.length() == 0
-		        || HtmlTools.isHtmlNode(text) && text.indexOf("<img") < 0
-		        && HtmlTools.htmlToPlain(text).length() == 0;
+		final boolean isEmpty = text.length() == 0 || HtmlTools.isHtmlNode(text)
+		        && text.indexOf("<img") < 0 && HtmlTools.htmlToPlain(text).length() == 0;
 		if (isEmpty) {
 			setText("!");
 		}
@@ -181,8 +178,8 @@ public abstract class MainView extends JLabel {
 		if (isCurrentlyPrinting() && MapView.NEED_PREF_SIZE_BUG_FIX) {
 			prefSize.width += getNodeView().getMap().getZoomed(10);
 		}
-		prefSize.width = Math.max(getNodeView().getMap().getZoomed(
-		    MainView.MIN_HOR_NODE_SIZE), prefSize.width);
+		prefSize.width = Math.max(getNodeView().getMap().getZoomed(MainView.MIN_HOR_NODE_SIZE),
+		    prefSize.width);
 		if (isEmpty) {
 			setText("");
 		}
@@ -240,9 +237,8 @@ public abstract class MainView extends JLabel {
 		final NodeModel model = getNodeView().getModel();
 		return model.getLink() != null
 		        && (model.isRoot()
-		                || !model.getModeController().getMapController()
-		                    .hasChildren(model) || isInVerticalRegion(xCoord,
-		            1. / 2));
+		                || !model.getModeController().getMapController().hasChildren(model) || isInVerticalRegion(
+		            xCoord, 1. / 2));
 	}
 
 	/**
@@ -281,41 +277,33 @@ public abstract class MainView extends JLabel {
 	public void paintDragOver(final Graphics2D graphics) {
 		if (isDraggedOver == NodeView.DRAGGED_OVER_SON) {
 			if (getNodeView().isLeft()) {
-				graphics.setPaint(new GradientPaint(getWidth() * 3 / 4, 0,
-				    getNodeView().getMap().getBackground(), getWidth() / 4, 0,
-				    NodeView.dragColor));
+				graphics.setPaint(new GradientPaint(getWidth() * 3 / 4, 0, getNodeView().getMap()
+				    .getBackground(), getWidth() / 4, 0, NodeView.dragColor));
 				graphics.fillRect(0, 0, getWidth() * 3 / 4, getHeight() - 1);
 			}
 			else {
-				graphics.setPaint(new GradientPaint(getWidth() / 4, 0,
-				    getNodeView().getMap().getBackground(), getWidth() * 3 / 4,
-				    0, NodeView.dragColor));
-				graphics.fillRect(getWidth() / 4, 0, getWidth() - 1,
-				    getHeight() - 1);
+				graphics.setPaint(new GradientPaint(getWidth() / 4, 0, getNodeView().getMap()
+				    .getBackground(), getWidth() * 3 / 4, 0, NodeView.dragColor));
+				graphics.fillRect(getWidth() / 4, 0, getWidth() - 1, getHeight() - 1);
 			}
 		}
 		if (isDraggedOver == NodeView.DRAGGED_OVER_SIBLING) {
-			graphics.setPaint(new GradientPaint(0, getHeight() * 3 / 5,
-			    getNodeView().getMap().getBackground(), 0, getHeight() / 5,
-			    NodeView.dragColor));
+			graphics.setPaint(new GradientPaint(0, getHeight() * 3 / 5, getNodeView().getMap()
+			    .getBackground(), 0, getHeight() / 5, NodeView.dragColor));
 			graphics.fillRect(0, 0, getWidth() - 1, getHeight() - 1);
 		}
 	}
 
 	void paintFoldingMark(final Graphics2D g, final Point p) {
 		final int zoomedFoldingSymbolHalfWidth = getZoomedFoldingSymbolHalfWidth();
-		p.translate(-zoomedFoldingSymbolHalfWidth,
-		    -zoomedFoldingSymbolHalfWidth);
+		p.translate(-zoomedFoldingSymbolHalfWidth, -zoomedFoldingSymbolHalfWidth);
 		final Color color = g.getColor();
 		g.setColor(Color.WHITE);
-		g.fillOval(p.x, p.y, zoomedFoldingSymbolHalfWidth * 2,
-		    zoomedFoldingSymbolHalfWidth * 2);
+		g.fillOval(p.x, p.y, zoomedFoldingSymbolHalfWidth * 2, zoomedFoldingSymbolHalfWidth * 2);
 		final NodeModel model = getNodeView().getModel();
-		final Color edgeColor = model.getModeController().getEdgeController()
-		    .getColor(model);
+		final Color edgeColor = model.getModeController().getEdgeController().getColor(model);
 		g.setColor(edgeColor);
-		g.drawOval(p.x, p.y, zoomedFoldingSymbolHalfWidth * 2,
-		    zoomedFoldingSymbolHalfWidth * 2);
+		g.drawOval(p.x, p.y, zoomedFoldingSymbolHalfWidth * 2, zoomedFoldingSymbolHalfWidth * 2);
 		g.setColor(color);
 	}
 
@@ -324,8 +312,7 @@ public abstract class MainView extends JLabel {
 			paintBackground(graphics, getNodeView().getSelectedColor());
 		}
 		else {
-			final Color backgroundColor = getNodeView().getModel()
-			    .getBackgroundColor();
+			final Color backgroundColor = getNodeView().getModel().getBackgroundColor();
 			if (backgroundColor != null) {
 				paintBackground(graphics, backgroundColor);
 			}
@@ -343,17 +330,16 @@ public abstract class MainView extends JLabel {
 	 * java.awt.event.KeyEvent, int, boolean)
 	 */
 	@Override
-	protected boolean processKeyBinding(final KeyStroke ks, final KeyEvent e,
-	                                    final int condition,
+	protected boolean processKeyBinding(final KeyStroke ks, final KeyEvent e, final int condition,
 	                                    final boolean pressed) {
 		if (super.processKeyBinding(ks, e, condition, pressed)) {
 			return true;
 		}
-		final FreemindMenuBar freeMindMenuBar = Controller.getController()
-		    .getViewController().getFreeMindMenuBar();
+		final FreemindMenuBar freeMindMenuBar = Controller.getController().getViewController()
+		    .getFreeMindMenuBar();
 		return !freeMindMenuBar.isVisible()
-		        && freeMindMenuBar.processKeyBinding(ks, e,
-		            JComponent.WHEN_IN_FOCUSED_WINDOW, pressed);
+		        && freeMindMenuBar.processKeyBinding(ks, e, JComponent.WHEN_IN_FOCUSED_WINDOW,
+		            pressed);
 	}
 
 	public void setDraggedOver(final int draggedOver) {
@@ -370,24 +356,20 @@ public abstract class MainView extends JLabel {
 	 */
 	public boolean updateCursor(final double xCoord) {
 		final boolean followLink = isInFollowLinkRegion(xCoord);
-		final int requiredCursor = followLink ? Cursor.HAND_CURSOR
-		        : Cursor.DEFAULT_CURSOR;
+		final int requiredCursor = followLink ? Cursor.HAND_CURSOR : Cursor.DEFAULT_CURSOR;
 		if (getCursor().getType() != requiredCursor) {
-			setCursor(requiredCursor != Cursor.DEFAULT_CURSOR ? new Cursor(
-			    requiredCursor) : null);
+			setCursor(requiredCursor != Cursor.DEFAULT_CURSOR ? new Cursor(requiredCursor) : null);
 		}
 		return followLink;
 	}
 
 	public void updateFont(final NodeModel model) {
-		final Font font = model.getModeController().getNodeStyleController()
-		    .getFont(model);
+		final Font font = model.getModeController().getNodeStyleController().getFont(model);
 		setFont(font);
 	}
 
 	void updateIcons(final NodeModel node) {
-		setHorizontalTextPosition(node.isLeft() ? SwingConstants.LEADING
-		        : SwingConstants.TRAILING);
+		setHorizontalTextPosition(node.isLeft() ? SwingConstants.LEADING : SwingConstants.TRAILING);
 		final MultipleImage iconImages = new MultipleImage(1.0f);
 		boolean iconPresent = false;
 		/* fc, 06.10.2003: images? */
@@ -417,8 +399,8 @@ public abstract class MainView extends JLabel {
 			else if (Tools.executableByExtension(link)) {
 				iconPath = "images/Executable.png";
 			}
-			final ImageIcon icon = new ImageIcon(Controller
-			    .getResourceController().getResource(iconPath));
+			final ImageIcon icon = new ImageIcon(Controller.getResourceController().getResource(
+			    iconPath));
 			iconImages.addImage(icon);
 		}
 		setIcon((iconPresent ? iconImages : null));
@@ -431,8 +413,8 @@ public abstract class MainView extends JLabel {
 			final String[] lines = nodeText.split("\n");
 			for (int line = 0; line < lines.length; line++) {
 				setText(lines[line]);
-				widthMustBeRestricted = getPreferredSize().width > map
-				    .getZoomed(map.getMaxNodeWidth())
+				widthMustBeRestricted = getPreferredSize().width > map.getZoomed(map
+				    .getMaxNodeWidth())
 				        + getIconWidth();
 				if (widthMustBeRestricted) {
 					break;
@@ -442,25 +424,25 @@ public abstract class MainView extends JLabel {
 		}
 		if (isHtml) {
 			if (nodeText.indexOf("<img") >= 0 && nodeText.indexOf("<base ") < 0) {
-				nodeText = "<html><base href=\"" + map.getModel().getURL()
-				        + "\">" + nodeText.substring(6);
+				nodeText = "<html><base href=\"" + map.getModel().getURL() + "\">"
+				        + nodeText.substring(6);
 			}
-			final String htmlLongNodeHead = Controller.getResourceController()
-			    .getProperty("html_long_node_head");
+			final String htmlLongNodeHead = Controller.getResourceController().getProperty(
+			    "html_long_node_head");
 			if (htmlLongNodeHead != null && !htmlLongNodeHead.equals("")) {
 				if (nodeText.matches("(?ims).*<head>.*")) {
-					nodeText = nodeText.replaceFirst("(?ims).*<head>.*",
-					    "<head>" + htmlLongNodeHead);
+					nodeText = nodeText.replaceFirst("(?ims).*<head>.*", "<head>"
+					        + htmlLongNodeHead);
 				}
 				else {
-					nodeText = nodeText.replaceFirst("(?ims)<html>",
-					    "<html><head>" + htmlLongNodeHead + "</head>");
+					nodeText = nodeText.replaceFirst("(?ims)<html>", "<html><head>"
+					        + htmlLongNodeHead + "</head>");
 				}
 			}
 			if (nodeText.length() < 30000) {
 				setText(nodeText);
-				widthMustBeRestricted = getPreferredSize().width > map
-				    .getZoomed(map.getMaxNodeWidth())
+				widthMustBeRestricted = getPreferredSize().width > map.getZoomed(map
+				    .getMaxNodeWidth())
 				        + getIconWidth();
 			}
 			else {
@@ -479,16 +461,15 @@ public abstract class MainView extends JLabel {
 			String text = "<html><table border=1 style=\"border-color: white\">";
 			for (int line = startingLine; line < lines.length; line++) {
 				text += "<tr><td style=\"border-color: white;\">"
-				        + HtmlTools.toXMLEscapedText(lines[line]).replaceAll(
-				            "\t", "<td style=\"border-color: white\">");
+				        + HtmlTools.toXMLEscapedText(lines[line]).replaceAll("\t",
+				            "<td style=\"border-color: white\">");
 			}
 			setText(text);
 		}
 		else if (isLong) {
 			String text = HtmlTools.plainToHTML(nodeText);
 			if (widthMustBeRestricted) {
-				text = text.replaceFirst("(?i)<p>", "<p width=\""
-				        + map.getMaxNodeWidth() + "\">");
+				text = text.replaceFirst("(?i)<p>", "<p width=\"" + map.getMaxNodeWidth() + "\">");
 			}
 			setText(text);
 		}
@@ -498,8 +479,7 @@ public abstract class MainView extends JLabel {
 	}
 
 	void updateTextColor(final NodeModel model) {
-		final Color color = model.getModeController().getNodeStyleController()
-		    .getColor(model);
+		final Color color = model.getModeController().getNodeStyleController().getColor(model);
 		setForeground(color);
 	}
 }

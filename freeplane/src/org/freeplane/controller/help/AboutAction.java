@@ -38,10 +38,8 @@ class AboutAction extends AbstractAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		JOptionPane.showMessageDialog(Controller.getController()
-		    .getViewController().getViewport(), Controller
-		    .getText("about_text")
-		        + Controller.getController().getFreemindVersion(), Controller
-		    .getText("about"), JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(Controller.getController().getViewController().getViewport(),
+		    Controller.getText("about_text") + Controller.getController().getFreemindVersion(),
+		    Controller.getText("about"), JOptionPane.INFORMATION_MESSAGE);
 	}
 }

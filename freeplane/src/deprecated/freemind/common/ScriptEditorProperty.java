@@ -19,6 +19,7 @@ package deprecated.freemind.common;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
@@ -31,8 +32,7 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 import deprecated.freemind.preferences.layout.OptionString;
 
-public class ScriptEditorProperty extends PropertyBean implements
-        IPropertyControl, ActionListener {
+public class ScriptEditorProperty extends PropertyBean implements IPropertyControl, ActionListener {
 	public interface IScriptEditorStarter extends IExtension {
 		String startEditor(String scriptInput);
 	}
@@ -58,9 +58,10 @@ public class ScriptEditorProperty extends PropertyBean implements
 	}
 
 	public void actionPerformed(final ActionEvent arg0) {
-		final IScriptEditorStarter plugin = (IScriptEditorStarter) mMindMapController.getExtension(IScriptEditorStarter.class);
+		final IScriptEditorStarter plugin = (IScriptEditorStarter) mMindMapController
+		    .getExtension(IScriptEditorStarter.class);
 		if (plugin != null) {
-			final IScriptEditorStarter starter = (IScriptEditorStarter) plugin;
+			final IScriptEditorStarter starter = plugin;
 			final String resultScript = starter.startEditor(script);
 			if (resultScript != null) {
 				script = resultScript;
@@ -80,13 +81,11 @@ public class ScriptEditorProperty extends PropertyBean implements
 
 	@Override
 	public String getValue() {
-		return HtmlTools.unicodeToHTMLUnicodeEntity(HtmlTools
-		    .toXMLEscapedText(script));
+		return HtmlTools.unicodeToHTMLUnicodeEntity(HtmlTools.toXMLEscapedText(script));
 	}
 
 	public void layout(final DefaultFormBuilder builder) {
-		final JLabel label = builder.append(OptionString.getText(getLabel()),
-		    mButton);
+		final JLabel label = builder.append(OptionString.getText(getLabel()), mButton);
 		label.setToolTipText(OptionString.getText(getDescription()));
 	}
 
@@ -100,8 +99,7 @@ public class ScriptEditorProperty extends PropertyBean implements
 		if (result == null) {
 			result = "";
 		}
-		script = HtmlTools.toXMLUnescapedText(HtmlTools
-		    .unescapeHTMLUnicodeEntity(result));
+		script = HtmlTools.toXMLUnescapedText(HtmlTools.unescapeHTMLUnicodeEntity(result));
 		mButton.setText(script);
 	}
 

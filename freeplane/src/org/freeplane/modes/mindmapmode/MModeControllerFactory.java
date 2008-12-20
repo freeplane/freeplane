@@ -69,7 +69,6 @@ import plugins.script.ScriptingRegistration;
 import plugins.svg.ExportPdf;
 import plugins.svg.ExportSvg;
 
-
 /**
  * @author Dimitry Polivaev 24.11.2008
  */
@@ -95,8 +94,8 @@ public class MModeControllerFactory {
 		new BlinkingNodeHook(modeController);
 		new CreationModificationPlugin(modeController);
 		new ReminderHook(modeController);
-		final MenuBuilder menuBuilder = modeController
-		    .getUserInputListenerFactory().getMenuBuilder();
+		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory()
+		    .getMenuBuilder();
 		menuBuilder.addAnnotatedAction(new ApplyFormatPlugin());
 		new FormatPaste(menuBuilder);
 		menuBuilder.addAnnotatedAction(new FitToPage());
@@ -110,20 +109,15 @@ public class MModeControllerFactory {
 		menuBuilder.addAnnotatedAction(new SortNodes());
 		menuBuilder.addAnnotatedAction(new SplitNode());
 		new UnfoldAll(modeController);
-		
 		new ChangeNodeLevelAction(menuBuilder);
 		ExportWithXSLT.createXSLTExportActions(modeController,
 		    "org/freeplane/addins/mindmapmode/export/ExportWithXSLT.xml");
 		ExportToImage.createActions(modeController);
-		
 		new NodeHistory(modeController);
-		
 		menuBuilder.addAnnotatedAction(new ExportToOoWriter());
 		menuBuilder.addAnnotatedAction(new ImportMindmanagerFiles());
-		
-		
-/* ******************* Plugins ********************* */		
-		new LatexNodeHook(modeController);		
+		/* ******************* Plugins ********************* */
+		new LatexNodeHook(modeController);
 		new ScriptingRegistration(modeController);
 		menuBuilder.addAnnotatedAction(new FreeplaneHelpStarter());
 		menuBuilder.addAnnotatedAction(new ExportPdf());
@@ -145,29 +139,22 @@ public class MModeControllerFactory {
 		modeController.setMapController(new MMapController(modeController));
 		modeController.setUrlManager(new FileManager(modeController));
 		modeController.setIconController(new MIconController(modeController));
-		modeController.setNodeStyleController(new MNodeStyleController(
-		    modeController));
+		modeController.setNodeStyleController(new MNodeStyleController(modeController));
 		modeController.setEdgeController(new MEdgeController(modeController));
 		modeController.setCloudController(new MCloudController(modeController));
 		modeController.setNoteController(new MNoteController(modeController));
 		modeController.setLinkController(new MLinkController(modeController));
-		modeController.setPatternController(new MPatternController(
-		    modeController));
+		modeController.setPatternController(new MPatternController(modeController));
 		modeController.setTextController(new MTextController(modeController));
-		modeController.setClipboardController(new MClipboardController(
-		    modeController));
-		modeController.setLocationController(new MLocationController(
-		    modeController));
-		modeController.setAttributeController(new MAttributeController(
-		    modeController));
+		modeController.setClipboardController(new MClipboardController(modeController));
+		modeController.setLocationController(new MLocationController(modeController));
+		modeController.setAttributeController(new MAttributeController(modeController));
 		final JPopupMenu popupmenu = new JPopupMenu();
-		modeController.getUserInputListenerFactory()
-		    .setNodePopupMenu(popupmenu);
+		modeController.getUserInputListenerFactory().setNodePopupMenu(popupmenu);
 		final FreeMindToolBar toolbar = new FreeMindToolBar();
 		modeController.getUserInputListenerFactory().setMainToolBar(toolbar);
 		modeController.getUserInputListenerFactory().setLeftToolBar(
-		    ((MIconController) modeController.getIconController())
-		        .getIconToolBarScrollPane());
+		    ((MIconController) modeController.getIconController()).getIconToolBarScrollPane());
 		new RevisionPlugin(modeController);
 		modeController.updateMenus("org/freeplane/modes/mindmapmode/menu.xml");
 	}

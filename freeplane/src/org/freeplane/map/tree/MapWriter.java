@@ -48,8 +48,8 @@ class MapWriter implements INodeWriter<String> {
 		this.saveInvisible = saveInvisible;
 	}
 
-	public void writeContent(final ITreeWriter writer, final Object node,
-	                         final String tag) throws IOException {
+	public void writeContent(final ITreeWriter writer, final Object node, final String tag)
+	        throws IOException {
 		writer
 		    .addNodeContent("<!--To view this file, download free mind mapping software FreeMind from http://freemind.sourceforge.net -->\n");
 		final MapModel map = (MapModel) node;
@@ -59,39 +59,33 @@ class MapWriter implements INodeWriter<String> {
 	}
 
 	private void writeNode(final ITreeWriter xmlWriter, final NodeModel node,
-	                       final boolean writeInvisible,
-	                       final boolean writeChildren) throws IOException {
+	                       final boolean writeInvisible, final boolean writeChildren)
+	        throws IOException {
 		final NodeWriter oldNodeWriter = currentNodeWriter;
 		if (oldNodeWriter != null) {
 			writeManager.removeNodeWriter(NodeBuilder.XML_NODE, oldNodeWriter);
-			writeManager.removeAttributeWriter(NodeBuilder.XML_NODE,
-			    oldNodeWriter);
+			writeManager.removeAttributeWriter(NodeBuilder.XML_NODE, oldNodeWriter);
 		}
-		currentNodeWriter = new NodeWriter(node.getModeController()
-		    .getMapController(), writeChildren, writeInvisible, MapController
-		    .isSSaveOnlyIntrinsicallyNeededIds());
+		currentNodeWriter = new NodeWriter(node.getModeController().getMapController(),
+		    writeChildren, writeInvisible, MapController.isSSaveOnlyIntrinsicallyNeededIds());
 		try {
 			writeManager.addNodeWriter(NodeBuilder.XML_NODE, currentNodeWriter);
-			writeManager.addAttributeWriter(NodeBuilder.XML_NODE,
-			    currentNodeWriter);
+			writeManager.addAttributeWriter(NodeBuilder.XML_NODE, currentNodeWriter);
 			xmlWriter.addNode(node, NodeBuilder.XML_NODE);
 		}
 		finally {
-			writeManager.removeNodeWriter(NodeBuilder.XML_NODE,
-			    currentNodeWriter);
-			writeManager.removeAttributeWriter(NodeBuilder.XML_NODE,
-			    currentNodeWriter);
+			writeManager.removeNodeWriter(NodeBuilder.XML_NODE, currentNodeWriter);
+			writeManager.removeAttributeWriter(NodeBuilder.XML_NODE, currentNodeWriter);
 			if (oldNodeWriter != null) {
 				writeManager.addNodeWriter(NodeBuilder.XML_NODE, oldNodeWriter);
-				writeManager.addAttributeWriter(NodeBuilder.XML_NODE,
-				    oldNodeWriter);
+				writeManager.addAttributeWriter(NodeBuilder.XML_NODE, oldNodeWriter);
 			}
 		}
 	}
 
 	public void writeNodeAsXml(final Writer writer, final NodeModel node,
-	                           final boolean writeInvisible,
-	                           final boolean writeChildren) throws IOException {
+	                           final boolean writeInvisible, final boolean writeChildren)
+	        throws IOException {
 		final TreeXmlWriter xmlWriter = new TreeXmlWriter(writeManager, writer);
 		writeNode(xmlWriter, node, writeInvisible, writeChildren);
 	}

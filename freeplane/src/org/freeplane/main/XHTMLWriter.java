@@ -64,8 +64,7 @@ public class XHTMLWriter extends FixedHTMLWriter {
 		 *            Number of chars to be written
 		 */
 		@Override
-		public void write(final char[] cbuf, int off, int len)
-		        throws IOException {
+		public void write(final char[] cbuf, int off, int len) throws IOException {
 			while (len-- > 0) {
 				write(cbuf[off++]);
 			}
@@ -109,12 +108,10 @@ public class XHTMLWriter extends FixedHTMLWriter {
 					insideValue = true;
 				}
 				else if (c == '>') {
-					if (tag.equals("img") || tag.equals("br")
-					        || tag.equals("hr") || tag.equals("input")
-					        || tag.equals("meta") || tag.equals("link")
-					        || tag.equals("area") || tag.equals("base")
-					        || tag.equals("basefont") || tag.equals("frame")
-					        || tag.equals("iframe") || tag.equals("col")) {
+					if (tag.equals("img") || tag.equals("br") || tag.equals("hr")
+					        || tag.equals("input") || tag.equals("meta") || tag.equals("link")
+					        || tag.equals("area") || tag.equals("base") || tag.equals("basefont")
+					        || tag.equals("frame") || tag.equals("iframe") || tag.equals("col")) {
 						super.write(" /");
 					}
 					insideTag = false;
@@ -140,8 +137,7 @@ public class XHTMLWriter extends FixedHTMLWriter {
 		 *            Number of chars to be written
 		 */
 		@Override
-		public void write(final String str, final int off, final int len)
-		        throws IOException {
+		public void write(final String str, final int off, final int len) throws IOException {
 			write(str.toCharArray(), off, len);
 		}
 	}
@@ -155,8 +151,8 @@ public class XHTMLWriter extends FixedHTMLWriter {
 	 * @param writer
 	 *            XHTML target
 	 */
-	public static void html2xhtml(final Reader reader, final Writer writer)
-	        throws IOException, BadLocationException {
+	public static void html2xhtml(final Reader reader, final Writer writer) throws IOException,
+	        BadLocationException {
 		final HTMLEditorKit kit = new HTMLEditorKit();
 		final Document doc = kit.createDefaultDocument();
 		kit.read(reader, doc, doc.getLength());
@@ -211,8 +207,7 @@ public class XHTMLWriter extends FixedHTMLWriter {
 	 * @param len
 	 *            Length
 	 */
-	public XHTMLWriter(final Writer writer, final HTMLDocument doc,
-	                   final int pos, final int len) {
+	public XHTMLWriter(final Writer writer, final HTMLDocument doc, final int pos, final int len) {
 		super(new XHTMLFilterWriter(writer), doc, pos, len);
 		setLineLength(Integer.MAX_VALUE);
 	}

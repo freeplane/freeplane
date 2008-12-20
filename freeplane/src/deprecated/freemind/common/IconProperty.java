@@ -33,8 +33,7 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 import deprecated.freemind.preferences.layout.OptionString;
 
-public class IconProperty extends PropertyBean implements IPropertyControl,
-        ActionListener {
+public class IconProperty extends PropertyBean implements IPropertyControl, ActionListener {
 	String description;
 	String label;
 	private MindIcon mActualIcon = null;
@@ -44,8 +43,7 @@ public class IconProperty extends PropertyBean implements IPropertyControl,
 	 */
 	final private Vector mIcons;
 
-	public IconProperty(final String description, final String label,
-	                    final Vector icons) {
+	public IconProperty(final String description, final String label, final Vector icons) {
 		super();
 		this.description = description;
 		this.label = label;
@@ -62,10 +60,9 @@ public class IconProperty extends PropertyBean implements IPropertyControl,
 			icons.add(icon);
 			descriptions.add(icon.getDescription());
 		}
-		final IconSelectionPopupDialog dialog = new IconSelectionPopupDialog(
-		    Controller.getController().getViewController().getJFrame(), icons);
-		dialog.setLocationRelativeTo(Controller.getController()
-		    .getViewController().getJFrame());
+		final IconSelectionPopupDialog dialog = new IconSelectionPopupDialog(Controller
+		    .getController().getViewController().getJFrame(), icons);
+		dialog.setLocationRelativeTo(Controller.getController().getViewController().getJFrame());
 		dialog.setModal(true);
 		dialog.setVisible(true);
 		final int result = dialog.getResult();
@@ -91,8 +88,7 @@ public class IconProperty extends PropertyBean implements IPropertyControl,
 	}
 
 	public void layout(final DefaultFormBuilder builder) {
-		final JLabel label = builder.append(OptionString.getText(getLabel()),
-		    mButton);
+		final JLabel label = builder.append(OptionString.getText(getLabel()), mButton);
 		label.setToolTipText(OptionString.getText(getDescription()));
 	}
 

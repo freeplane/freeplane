@@ -45,14 +45,13 @@ import org.freeplane.modes.mindmapmode.MModeController;
 @ActionDescriptor(locations = { "/menu_bar/format/nodes/automaticLayout2" }, //
 name = "accessories/plugins/HierarchicalIcons.properties_name", //
 tooltip = "accessories/plugins/HierarchicalIcons.properties_documentation")
-public class HierarchicalIcons extends PersistentNodeHook implements
-        INodeChangeListener, IMapChangeListener, IReadCompletionListener {
+public class HierarchicalIcons extends PersistentNodeHook implements INodeChangeListener,
+        IMapChangeListener, IReadCompletionListener {
 	final private HashMap /* of MindMapNode to a TreeSet */nodeIconSets = new HashMap();
 
 	public HierarchicalIcons(final MModeController modeController) {
 		super(modeController);
-		modeController.getMapController().getReadManager()
-		    .addReadCompletionListener(this);
+		modeController.getMapController().getReadManager().addReadCompletionListener(this);
 	}
 
 	@Override
@@ -67,8 +66,7 @@ public class HierarchicalIcons extends PersistentNodeHook implements
 
 	/**
 	 */
-	private void addAccumulatedIconsToTreeSet(final NodeModel child,
-	                                          final TreeSet iconSet,
+	private void addAccumulatedIconsToTreeSet(final NodeModel child, final TreeSet iconSet,
 	                                          final TreeSet childsTreeSet) {
 		for (final Iterator i = child.getIcons().iterator(); i.hasNext();) {
 			final MindIcon icon = (MindIcon) i.next();
@@ -92,8 +90,8 @@ public class HierarchicalIcons extends PersistentNodeHook implements
 			}
 			return;
 		}
-		for (final Iterator i = node.getModeController().getMapController()
-		    .childrenUnfolded(node); i.hasNext();) {
+		for (final Iterator i = node.getModeController().getMapController().childrenUnfolded(node); i
+		    .hasNext();) {
 			final NodeModel child = (NodeModel) i.next();
 			gatherLeavesAndSetParentsStyle(child);
 		}
@@ -106,8 +104,8 @@ public class HierarchicalIcons extends PersistentNodeHook implements
 			setStyle(node);
 			return;
 		}
-		for (final Iterator i = node.getModeController().getMapController()
-		    .childrenUnfolded(node); i.hasNext();) {
+		for (final Iterator i = node.getModeController().getMapController().childrenUnfolded(node); i
+		    .hasNext();) {
 			final NodeModel child = (NodeModel) i.next();
 			gatherLeavesAndSetStyle(child);
 		}
@@ -124,14 +122,12 @@ public class HierarchicalIcons extends PersistentNodeHook implements
 		setStyleRecursive(parent);
 	}
 
-	public void onNodeInserted(final NodeModel parent, final NodeModel child,
-	                           final int newIndex) {
+	public void onNodeInserted(final NodeModel parent, final NodeModel child, final int newIndex) {
 		setStyleRecursive(child);
 	}
 
-	public void onNodeMoved(final NodeModel oldParent,
-	                        final NodeModel newParent, final NodeModel child,
-	                        final int newIndex) {
+	public void onNodeMoved(final NodeModel oldParent, final NodeModel newParent,
+	                        final NodeModel child, final int newIndex) {
 		setStyleRecursive(oldParent);
 		setStyleRecursive(child);
 	}
@@ -149,11 +145,9 @@ public class HierarchicalIcons extends PersistentNodeHook implements
 		setStyleRecursive(updatedNode);
 	}
 
-	public void readingCompleted(final NodeModel topNode,
-	                             final HashMap<String, String> newIds) {
+	public void readingCompleted(final NodeModel topNode, final HashMap<String, String> newIds) {
 		if (!topNode.containsExtension(getClass())
-		        && !topNode.getMap().getRootNode()
-		            .containsExtension(getClass())) {
+		        && !topNode.getMap().getRootNode().containsExtension(getClass())) {
 			return;
 		}
 		gatherLeavesAndSetStyle(topNode);
@@ -175,8 +169,8 @@ public class HierarchicalIcons extends PersistentNodeHook implements
 	private void removeIcons(final NodeModel node) {
 		node.setStateIcon(getHookName(), null);
 		getModeController().getMapController().nodeRefresh(node);
-		for (final Iterator i = node.getModeController().getMapController()
-		    .childrenUnfolded(node); i.hasNext();) {
+		for (final Iterator i = node.getModeController().getMapController().childrenUnfolded(node); i
+		    .hasNext();) {
 			final NodeModel child = (NodeModel) i.next();
 			removeIcons(child);
 		}
@@ -184,11 +178,10 @@ public class HierarchicalIcons extends PersistentNodeHook implements
 
 	private void setStyle(final NodeModel node) {
 		final TreeSet iconSet = new TreeSet();
-		for (final Iterator i = node.getModeController().getMapController()
-		    .childrenUnfolded(node); i.hasNext();) {
+		for (final Iterator i = node.getModeController().getMapController().childrenUnfolded(node); i
+		    .hasNext();) {
 			final NodeModel child = (NodeModel) i.next();
-			addAccumulatedIconsToTreeSet(child, iconSet, (TreeSet) nodeIconSets
-			    .get(child));
+			addAccumulatedIconsToTreeSet(child, iconSet, (TreeSet) nodeIconSets.get(child));
 		}
 		for (final Iterator i = node.getIcons().iterator(); i.hasNext();) {
 			final MindIcon icon = (MindIcon) i.next();

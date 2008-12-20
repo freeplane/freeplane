@@ -38,14 +38,12 @@ class UndoAction extends FreeplaneAction implements IMapViewChangeListener {
 
 	public UndoAction() {
 		super("undo", "images/undo.png");
-		Controller.getController().getMapViewManager()
-		    .addMapViewChangeListener(this);
+		Controller.getController().getMapViewManager().addMapViewChangeListener(this);
 		setEnabled(false);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final MindMapMapModel map = (MindMapMapModel) Controller
-		    .getController().getMap();
+		final MindMapMapModel map = (MindMapMapModel) Controller.getController().getMap();
 		final IUndoHandler undoHandler = map.getUndoHandler();
 		undoHandler.getUndoAction().actionPerformed(e);
 		setEnabled(undoHandler.canUndo());
@@ -55,26 +53,22 @@ class UndoAction extends FreeplaneAction implements IMapViewChangeListener {
 	public void afterMapClose(final MapView oldMapView) {
 	}
 
-	public void afterMapViewChange(final MapView oldMapView,
-	                               final MapView newMapView) {
+	public void afterMapViewChange(final MapView oldMapView, final MapView newMapView) {
 		if (newMapView == null) {
 			return;
 		}
 		final MapModel map = newMapView.getModel();
 		if (map instanceof MindMapMapModel) {
-			final IUndoHandler undoHandler = ((MindMapMapModel) map)
-			    .getUndoHandler();
+			final IUndoHandler undoHandler = ((MindMapMapModel) map).getUndoHandler();
 			setEnabled(undoHandler.canUndo());
 			redo.setEnabled(undoHandler.canRedo());
 		}
 	}
 
-	public void beforeMapViewChange(final MapView oldMapView,
-	                                final MapView newMapView) {
+	public void beforeMapViewChange(final MapView oldMapView, final MapView newMapView) {
 	}
 
-	public boolean isMapViewChangeAllowed(final MapView oldMapView,
-	                                      final MapView newMapView) {
+	public boolean isMapViewChangeAllowed(final MapView oldMapView, final MapView newMapView) {
 		return true;
 	}
 

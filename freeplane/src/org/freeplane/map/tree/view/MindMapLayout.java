@@ -77,8 +77,8 @@ public class MindMapLayout implements LayoutManager {
 		final int calcYBorderSize = calcYBorderSize(mapView);
 		getRoot(mapView).validate();
 		getRoot(mapView).setLocation(calcXBorderSize, calcYBorderSize);
-		mapView.setSize(calcXBorderSize * 2 + getRoot(mapView).getWidth(),
-		    calcYBorderSize * 2 + getRoot(mapView).getHeight());
+		mapView.setSize(calcXBorderSize * 2 + getRoot(mapView).getWidth(), calcYBorderSize * 2
+		        + getRoot(mapView).getHeight());
 		final int componentCount = mapView.getComponentCount();
 		for (int i = 0; i < componentCount; i++) {
 			final Component component = mapView.getComponent(i);
@@ -101,9 +101,8 @@ public class MindMapLayout implements LayoutManager {
 	public Dimension preferredLayoutSize(final Container c) {
 		final MapView mapView = (MapView) c;
 		final Dimension preferredSize = mapView.getRoot().getPreferredSize();
-		return new Dimension(
-		    2 * calcXBorderSize(mapView) + preferredSize.width, 2
-		            * calcYBorderSize(mapView) + preferredSize.height);
+		return new Dimension(2 * calcXBorderSize(mapView) + preferredSize.width, 2
+		        * calcYBorderSize(mapView) + preferredSize.height);
 	}
 
 	public void removeLayoutComponent(final Component comp) {

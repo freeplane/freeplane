@@ -36,9 +36,8 @@ public class ResetNodeLocationAction extends MultipleNodeAction {
 
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		((MLocationController) getModeController().getLocationController())
-		    .moveNodePosition(node, LocationModel.NULL_LOCATION.getVGap(),
-		        LocationModel.NULL_LOCATION.getHGap(),
-		        LocationModel.NULL_LOCATION.getShiftY());
+		((MLocationController) getModeController().getLocationController()).moveNodePosition(node,
+		    LocationModel.NULL_LOCATION.getVGap(), LocationModel.NULL_LOCATION.getHGap(),
+		    LocationModel.NULL_LOCATION.getShiftY());
 	}
 }

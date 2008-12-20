@@ -71,8 +71,7 @@ public class NodeLinks implements IExtension {
 		final Iterator<LinkModel> iterator = links.iterator();
 		while (iterator.hasNext()) {
 			final LinkModel link = iterator.next();
-			if (link instanceof ArrowLinkModel
-			        && link.getTargetID().equals(targetID)) {
+			if (link instanceof ArrowLinkModel && link.getTargetID().equals(targetID)) {
 				return;
 			}
 		}
@@ -99,8 +98,7 @@ public class NodeLinks implements IExtension {
 
 	public void removeArrowlink(final ArrowLinkModel link) {
 		final NodeModel node = link.getSource();
-		final Iterator<LinkModel> iterator = NodeLinks.getLinkExtension(node).links
-		    .iterator();
+		final Iterator<LinkModel> iterator = NodeLinks.getLinkExtension(node).links.iterator();
 		while (iterator.hasNext()) {
 			final LinkModel i = iterator.next();
 			if (i == link) {

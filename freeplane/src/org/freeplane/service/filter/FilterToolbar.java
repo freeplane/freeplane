@@ -54,8 +54,7 @@ class FilterToolbar extends FreeMindToolBar {
 		}
 
 		public void actionPerformed(final ActionEvent arg0) {
-			final Object selectedItem = getFilterConditionModel()
-			    .getSelectedItem();
+			final Object selectedItem = getFilterConditionModel().getSelectedItem();
 			if (selectedItem != null) {
 				getFilterDialog().setSelectedItem(selectedItem);
 			}
@@ -77,8 +76,8 @@ class FilterToolbar extends FreeMindToolBar {
 		}
 	}
 
-	private class FilterChangeListener extends AbstractAction implements
-	        ItemListener, PropertyChangeListener {
+	private class FilterChangeListener extends AbstractAction implements ItemListener,
+	        PropertyChangeListener {
 		/*
 		 * (non-Javadoc)
 		 * @see
@@ -92,8 +91,7 @@ class FilterToolbar extends FreeMindToolBar {
 			resetFilter();
 			setMapFilter();
 			refreshMap();
-			DefaultFilter.selectVisibleNode(Controller.getController()
-			    .getMapView());
+			DefaultFilter.selectVisibleNode(Controller.getController().getMapView());
 		}
 
 		private void filterChanged() {
@@ -103,8 +101,7 @@ class FilterToolbar extends FreeMindToolBar {
 			if (map != null) {
 				activeFilter.applyFilter();
 				refreshMap();
-				DefaultFilter.selectVisibleNode(Controller.getController()
-				    .getMapView());
+				DefaultFilter.selectVisibleNode(Controller.getController().getMapView());
 			}
 		}
 
@@ -133,33 +130,29 @@ class FilterToolbar extends FreeMindToolBar {
 		 *
 		 */
 		UnfoldAncestorsAction() {
-			super(null, new ImageIcon(Controller.getResourceController()
-			    .getResource("images/unfold.png")));
+			super(null, new ImageIcon(Controller.getResourceController().getResource(
+			    "images/unfold.png")));
 		}
 
 		public void actionPerformed(final ActionEvent e) {
 			if (getSelectedCondition() != null) {
-				unfoldAncestors(Controller.getController().getModel()
-				    .getRootNode());
+				unfoldAncestors(Controller.getController().getModel().getRootNode());
 			}
 		}
 
 		private void setFolded(final NodeModel node, final boolean state) {
 			if (node.getModeController().getMapController().hasChildren(node)
-			        && (node.getModeController().getMapController().isFolded(
-			            node) != state)) {
+			        && (node.getModeController().getMapController().isFolded(node) != state)) {
 				Controller.getController();
-				Controller.getModeController()
-				    .getMapController().setFolded(node, state);
+				Controller.getModeController().getMapController().setFolded(node, state);
 			}
 		}
 
 		private void unfoldAncestors(final NodeModel parent) {
-			for (final Iterator i = parent.getModeController()
-			    .getMapController().childrenUnfolded(parent); i.hasNext();) {
+			for (final Iterator i = parent.getModeController().getMapController().childrenUnfolded(
+			    parent); i.hasNext();) {
 				final NodeModel node = (NodeModel) i.next();
-				if (showDescendants.isSelected()
-				        || node.getFilterInfo().isAncestor()) {
+				if (showDescendants.isSelected() || node.getFilterInfo().isAncestor()) {
 					setFolded(node, false);
 					unfoldAncestors(node);
 				}
@@ -193,34 +186,26 @@ class FilterToolbar extends FreeMindToolBar {
 			}
 		};
 		activeFilterConditionComboBox.setFocusable(false);
-		pathToFilterFile = Controller.getResourceController()
-		    .getFreemindUserDirectory()
-		        + File.separator
-		        + "auto."
-		        + FilterController.FREEMIND_FILTER_EXTENSION_WITHOUT_DOT;
+		pathToFilterFile = Controller.getResourceController().getFreemindUserDirectory()
+		        + File.separator + "auto." + FilterController.FREEMIND_FILTER_EXTENSION_WITHOUT_DOT;
 		btnEdit = add(new EditFilterAction());
 		add(btnEdit);
 		btnUnfoldAncestors = add(new UnfoldAncestorsAction());
-		btnUnfoldAncestors.setToolTipText(Controller
-		    .getText("filter_unfold_ancestors"));
+		btnUnfoldAncestors.setToolTipText(Controller.getText("filter_unfold_ancestors"));
 		add(btnUnfoldAncestors);
-		showAncestors = new JCheckBox(Controller
-		    .getText("filter_show_ancestors"), true);
+		showAncestors = new JCheckBox(Controller.getText("filter_show_ancestors"), true);
 		add(showAncestors);
 		showAncestors.getModel().addActionListener(filterChangeListener);
-		showDescendants = new JCheckBox(Controller
-		    .getText("filter_show_descendants"), false);
+		showDescendants = new JCheckBox(Controller.getText("filter_show_descendants"), false);
 		add(showDescendants);
 		showDescendants.getModel().addActionListener(filterChangeListener);
 	}
 
 	void addStandardConditions() {
-		final DefaultComboBoxModel filterConditionModel = fc
-		    .getFilterConditionModel();
+		final DefaultComboBoxModel filterConditionModel = fc.getFilterConditionModel();
 		final ICondition noFiltering = NoFilteringCondition.createCondition();
 		filterConditionModel.insertElementAt(noFiltering, 0);
-		filterConditionModel.insertElementAt(SelectedViewCondition
-		    .CreateCondition(), 1);
+		filterConditionModel.insertElementAt(SelectedViewCondition.CreateCondition(), 1);
 		if (filterConditionModel.getSelectedItem() == null) {
 			filterConditionModel.setSelectedItem(noFiltering);
 		}
@@ -252,8 +237,7 @@ class FilterToolbar extends FreeMindToolBar {
 		add(activeFilterConditionComboBox);
 		add(Box.createHorizontalGlue());
 		activeFilterConditionComboBox.addItemListener(filterChangeListener);
-		activeFilterConditionComboBox
-		    .addPropertyChangeListener(filterChangeListener);
+		activeFilterConditionComboBox.addPropertyChangeListener(filterChangeListener);
 	}
 
 	/**
@@ -267,8 +251,7 @@ class FilterToolbar extends FreeMindToolBar {
 			filter = newMap.getFilter();
 			if (filter != activeFilter) {
 				activeFilter = filter;
-				activeFilterConditionComboBox.setSelectedItem(filter
-				    .getCondition());
+				activeFilterConditionComboBox.setSelectedItem(filter.getCondition());
 				showAncestors.setSelected(filter.areAncestorsShown());
 				showDescendants.setSelected(filter.areDescendantsShown());
 			}
@@ -304,9 +287,8 @@ class FilterToolbar extends FreeMindToolBar {
 
 	void setMapFilter() {
 		if (activeFilter == null) {
-			activeFilter = new DefaultFilter(getSelectedCondition(),
-			    showAncestors.getModel().isSelected(), showDescendants
-			        .getModel().isSelected());
+			activeFilter = new DefaultFilter(getSelectedCondition(), showAncestors.getModel()
+			    .isSelected(), showDescendants.getModel().isSelected());
 		}
 		final MapModel map = fc.getMap();
 		if (map != null) {

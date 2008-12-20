@@ -33,10 +33,7 @@ import org.freeplane.controller.ActionDescriptor;
 import org.freeplane.controller.Controller;
 import org.freeplane.map.tree.view.MapView;
 
-@ActionDescriptor(
-    name="plugins/ExportSvg.xml_name",
-    locations={"/menu_bar/file/export/export"}
-)
+@ActionDescriptor(name = "plugins/ExportSvg.xml_name", locations = { "/menu_bar/file/export/export" })
 public class ExportSvg extends ExportVectorGraphic {
 	public ExportSvg() {
 		super();
@@ -44,8 +41,7 @@ public class ExportSvg extends ExportVectorGraphic {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final File chosenFile = chooseFile("svg", Controller
-		    .getText("export_svg_text"), null);
+		final File chosenFile = chooseFile("svg", Controller.getText("export_svg_text"), null);
 		if (chosenFile == null) {
 			return;
 		}
@@ -54,13 +50,11 @@ public class ExportSvg extends ExportVectorGraphic {
 			if (view == null) {
 				return;
 			}
-			Controller.getController().getViewController().setWaitingCursor(
-			    true);
+			Controller.getController().getViewController().setWaitingCursor(true);
 			final SVGGraphics2D g2d = fillSVGGraphics2D(view);
 			final FileOutputStream bos = new FileOutputStream(chosenFile);
 			final BufferedOutputStream bufStream = new BufferedOutputStream(bos);
-			final OutputStreamWriter osw = new OutputStreamWriter(bufStream,
-			    "UTF-8");
+			final OutputStreamWriter osw = new OutputStreamWriter(bufStream, "UTF-8");
 			g2d.stream(osw);
 			osw.flush();
 			bos.flush();
@@ -68,9 +62,8 @@ public class ExportSvg extends ExportVectorGraphic {
 		}
 		catch (final Exception ex) {
 			org.freeplane.main.Tools.logException(ex);
-			JOptionPane.showMessageDialog(Controller.getController()
-			    .getViewController().getContentPane(),
-			    ex.getLocalizedMessage(), null, JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(Controller.getController().getViewController()
+			    .getContentPane(), ex.getLocalizedMessage(), null, JOptionPane.ERROR_MESSAGE);
 		}
 		Controller.getController().getViewController().setWaitingCursor(false);
 	}

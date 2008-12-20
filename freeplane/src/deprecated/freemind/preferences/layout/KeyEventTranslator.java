@@ -43,8 +43,7 @@ public class KeyEventTranslator {
 		public boolean equals(final Object o) {
 			if (o instanceof Key) {
 				final Key k = (Key) o;
-				if ((modifiers.equals(k.modifiers)) && key == k.key
-				        && input == k.input) {
+				if ((modifiers.equals(k.modifiers)) && key == k.key && input == k.input) {
 					return true;
 				}
 			}
@@ -58,8 +57,7 @@ public class KeyEventTranslator {
 
 		@Override
 		public String toString() {
-			return (modifiers == null ? "" : modifiers) + "<"
-			        + Integer.toString(key, 16) + ","
+			return (modifiers == null ? "" : modifiers) + "<" + Integer.toString(key, 16) + ","
 			        + Integer.toString(input, 16) + ">";
 		}
 	}
@@ -75,9 +73,8 @@ public class KeyEventTranslator {
 			InputEvent.SHIFT_MASK /* == S+ */);
 		}
 		else {
-			KeyEventTranslator.setModifierMapping(InputEvent.CTRL_MASK,
-			    InputEvent.ALT_MASK, InputEvent.META_MASK,
-			    InputEvent.SHIFT_MASK);
+			KeyEventTranslator.setModifierMapping(InputEvent.CTRL_MASK, InputEvent.ALT_MASK,
+			    InputEvent.META_MASK, InputEvent.SHIFT_MASK);
 		}
 	}
 
@@ -105,20 +102,16 @@ public class KeyEventTranslator {
 	public static String getModifierString(final InputEvent evt) {
 		final StringBuffer buf = new StringBuffer();
 		if (evt.isControlDown()) {
-			buf.append(KeyEventTranslator
-			    .getSymbolicModifierName(InputEvent.CTRL_MASK));
+			buf.append(KeyEventTranslator.getSymbolicModifierName(InputEvent.CTRL_MASK));
 		}
 		if (evt.isAltDown()) {
-			buf.append(KeyEventTranslator
-			    .getSymbolicModifierName(InputEvent.ALT_MASK));
+			buf.append(KeyEventTranslator.getSymbolicModifierName(InputEvent.ALT_MASK));
 		}
 		if (evt.isMetaDown()) {
-			buf.append(KeyEventTranslator
-			    .getSymbolicModifierName(InputEvent.META_MASK));
+			buf.append(KeyEventTranslator.getSymbolicModifierName(InputEvent.META_MASK));
 		}
 		if (evt.isShiftDown()) {
-			buf.append(KeyEventTranslator
-			    .getSymbolicModifierName(InputEvent.SHIFT_MASK));
+			buf.append(KeyEventTranslator.getSymbolicModifierName(InputEvent.SHIFT_MASK));
 		}
 		return (buf.length() == 0 ? null : buf.toString());
 	}
@@ -158,8 +151,7 @@ public class KeyEventTranslator {
 			else {
 				buf.append(GrabKeyDialog.MODIFIER_SEPARATOR);
 			}
-			buf.append(KeyEventTranslator
-			    .getSymbolicModifierName(InputEvent.CTRL_MASK));
+			buf.append(KeyEventTranslator.getSymbolicModifierName(InputEvent.CTRL_MASK));
 		}
 		if ((mods & InputEvent.ALT_MASK) != 0) {
 			if (buf == null) {
@@ -168,8 +160,7 @@ public class KeyEventTranslator {
 			else {
 				buf.append(GrabKeyDialog.MODIFIER_SEPARATOR);
 			}
-			buf.append(KeyEventTranslator
-			    .getSymbolicModifierName(InputEvent.ALT_MASK));
+			buf.append(KeyEventTranslator.getSymbolicModifierName(InputEvent.ALT_MASK));
 		}
 		if ((mods & InputEvent.META_MASK) != 0) {
 			if (buf == null) {
@@ -178,8 +169,7 @@ public class KeyEventTranslator {
 			else {
 				buf.append(GrabKeyDialog.MODIFIER_SEPARATOR);
 			}
-			buf.append(KeyEventTranslator
-			    .getSymbolicModifierName(InputEvent.META_MASK));
+			buf.append(KeyEventTranslator.getSymbolicModifierName(InputEvent.META_MASK));
 		}
 		if ((mods & InputEvent.SHIFT_MASK) != 0) {
 			if (buf == null) {
@@ -188,8 +178,7 @@ public class KeyEventTranslator {
 			else {
 				buf.append(GrabKeyDialog.MODIFIER_SEPARATOR);
 			}
-			buf.append(KeyEventTranslator
-			    .getSymbolicModifierName(InputEvent.SHIFT_MASK));
+			buf.append(KeyEventTranslator.getSymbolicModifierName(InputEvent.SHIFT_MASK));
 		}
 		if (buf == null) {
 			return null;
@@ -236,15 +225,13 @@ public class KeyEventTranslator {
 		}
 		final String key = keyStroke.substring(index + 1);
 		if (key.length() == 1) {
-			return new Key(KeyEventTranslator.modifiersToString(modifiers), 0,
-			    key.charAt(0));
+			return new Key(KeyEventTranslator.modifiersToString(modifiers), 0, key.charAt(0));
 		}
 		else if (key.length() == 0) {
 			return null;
 		}
 		else if (key.equals("SPACE")) {
-			return new Key(KeyEventTranslator.modifiersToString(modifiers), 0,
-			    ' ');
+			return new Key(KeyEventTranslator.modifiersToString(modifiers), 0, ' ');
 		}
 		else {
 			int ch;
@@ -254,8 +241,7 @@ public class KeyEventTranslator {
 			catch (final Exception e) {
 				return null;
 			}
-			return new Key(KeyEventTranslator.modifiersToString(modifiers), ch,
-			    '\0');
+			return new Key(KeyEventTranslator.modifiersToString(modifiers), ch, '\0');
 		}
 	}
 
@@ -285,25 +271,19 @@ public class KeyEventTranslator {
 	 *            The modifier(s) to map the <code>S</code> modifier to
 	 * @since jEdit 4.2pre3
 	 */
-	public static void setModifierMapping(final int c, final int a,
-	                                      final int m, final int s) {
-		final int duplicateMapping = ((c & a) | (c & m) | (c & s) | (a & m)
-		        | (a & s) | (m & s));
+	public static void setModifierMapping(final int c, final int a, final int m, final int s) {
+		final int duplicateMapping = ((c & a) | (c & m) | (c & s) | (a & m) | (a & s) | (m & s));
 		if ((duplicateMapping & InputEvent.CTRL_MASK) != 0) {
-			throw new IllegalArgumentException(
-			    "CTRL is mapped to more than one modifier");
+			throw new IllegalArgumentException("CTRL is mapped to more than one modifier");
 		}
 		if ((duplicateMapping & InputEvent.ALT_MASK) != 0) {
-			throw new IllegalArgumentException(
-			    "ALT is mapped to more than one modifier");
+			throw new IllegalArgumentException("ALT is mapped to more than one modifier");
 		}
 		if ((duplicateMapping & InputEvent.META_MASK) != 0) {
-			throw new IllegalArgumentException(
-			    "META is mapped to more than one modifier");
+			throw new IllegalArgumentException("META is mapped to more than one modifier");
 		}
 		if ((duplicateMapping & InputEvent.SHIFT_MASK) != 0) {
-			throw new IllegalArgumentException(
-			    "SHIFT is mapped to more than one modifier");
+			throw new IllegalArgumentException("SHIFT is mapped to more than one modifier");
 		}
 		KeyEventTranslator.c = c;
 		KeyEventTranslator.a = a;
@@ -329,29 +309,28 @@ public class KeyEventTranslator {
 						return null;
 					}
 					else {
-						returnValue = new Key(KeyEventTranslator
-						    .modifiersToString(modifiers), '\0', Character
-						    .toUpperCase((char) keyCode));
+						returnValue = new Key(KeyEventTranslator.modifiersToString(modifiers),
+						    '\0', Character.toUpperCase((char) keyCode));
 					}
 				}
 				else {
 					if (keyCode == KeyEvent.VK_TAB) {
 						evt.consume();
-						returnValue = new Key(KeyEventTranslator
-						    .modifiersToString(modifiers), keyCode, '\0');
+						returnValue = new Key(KeyEventTranslator.modifiersToString(modifiers),
+						    keyCode, '\0');
 					}
 					else if (keyCode == KeyEvent.VK_SPACE) {
 						if ((modifiers & ~InputEvent.SHIFT_MASK) == 0) {
 							returnValue = null;
 						}
 						else {
-							returnValue = new Key(KeyEventTranslator
-							    .modifiersToString(modifiers), 0, ' ');
+							returnValue = new Key(KeyEventTranslator.modifiersToString(modifiers),
+							    0, ' ');
 						}
 					}
 					else {
-						returnValue = new Key(KeyEventTranslator
-						    .modifiersToString(modifiers), keyCode, '\0');
+						returnValue = new Key(KeyEventTranslator.modifiersToString(modifiers),
+						    keyCode, '\0');
 					}
 				}
 				break;
@@ -370,8 +349,7 @@ public class KeyEventTranslator {
 				int ignoreMods;
 				if (KeyEventWorkaround.ALT_KEY_PRESSED_DISABLED) {
 					/* on MacOS, A+ can be user input */
-					ignoreMods = (InputEvent.SHIFT_MASK
-					        | InputEvent.ALT_GRAPH_MASK | InputEvent.ALT_MASK);
+					ignoreMods = (InputEvent.SHIFT_MASK | InputEvent.ALT_GRAPH_MASK | InputEvent.ALT_MASK);
 				}
 				else {
 					/* on MacOS, A+ can be user input */
@@ -381,8 +359,8 @@ public class KeyEventTranslator {
 				        && evt.getWhen() - KeyEventWorkaround.lastKeyTime < 750
 				        && (KeyEventWorkaround.modifiers & ~ignoreMods) != 0) {
 					if (KeyEventWorkaround.ALTERNATIVE_DISPATCHER) {
-						returnValue = new Key(KeyEventTranslator
-						    .modifiersToString(modifiers), 0, ch);
+						returnValue = new Key(KeyEventTranslator.modifiersToString(modifiers), 0,
+						    ch);
 					}
 					else {
 						return null;
@@ -390,8 +368,8 @@ public class KeyEventTranslator {
 				}
 				else {
 					if (ch == ' ') {
-						returnValue = new Key(KeyEventTranslator
-						    .modifiersToString(modifiers), 0, ch);
+						returnValue = new Key(KeyEventTranslator.modifiersToString(modifiers), 0,
+						    ch);
 					}
 					else {
 						returnValue = new Key(null, 0, ch);

@@ -76,8 +76,7 @@ class ReminderExtension implements IExtension {
 	private String mStateTooltipName = null;
 	private final NodeModel node;
 	private long remindUserAt = 0;
-	final private String STATE_TOOLTIP = TimerBlinkTask.class.getName()
-	        + "_STATE_";
+	final private String STATE_TOOLTIP = TimerBlinkTask.class.getName() + "_STATE_";
 	private Timer timer;
 
 	public ReminderExtension(final NodeModel node) {
@@ -98,8 +97,7 @@ class ReminderExtension implements IExtension {
 		displayState(ReminderExtension.REMOVE_CLOCK, node, true);
 	}
 
-	void displayState(final int stateAdded, final NodeModel pNode,
-	                  final boolean recurse) {
+	void displayState(final int stateAdded, final NodeModel pNode, final boolean recurse) {
 		ImageIcon icon = null;
 		if (stateAdded == CLOCK_VISIBLE) {
 			icon = getClockIcon();
@@ -172,7 +170,7 @@ class ReminderExtension implements IExtension {
 	}
 
 	protected void setToolTip(final NodeModel node, final String value) {
-		((MMapController) node.getModeController().getMapController())
-		    .setToolTip(node, getClass().getName(), value);
+		((MMapController) node.getModeController().getMapController()).setToolTip(node, getClass()
+		    .getName(), value);
 	}
 }

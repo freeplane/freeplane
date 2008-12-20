@@ -32,10 +32,8 @@ class CenterAction extends FreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		if (getModeController().getSelectedNode() != null) {
-			final File file = ((FNodeModel) getModeController()
-			    .getSelectedNode()).getFile();
-			((FMapController) getModeController().getMapController())
-			    .newMap(file);
+			final File file = ((FNodeModel) getModeController().getSelectedNode()).getFile();
+			((FMapController) getModeController().getMapController()).newMap(file);
 		}
 	}
 }

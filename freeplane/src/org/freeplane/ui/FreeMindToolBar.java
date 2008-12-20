@@ -98,8 +98,7 @@ public class FreeMindToolBar extends JToolBar {
 	}
 
 	@Override
-	public void add(final Component comp, final Object constraints,
-	                final int index) {
+	public void add(final Component comp, final Object constraints, final int index) {
 		super.add(comp, constraints, index);
 		configureComponent(comp);
 	}

@@ -37,14 +37,12 @@ public class XmlExporter {
 	public XmlExporter() {
 	}
 
-	public void transForm(final File xmlFile, final File xsltFile,
-	                      final File resultFile) {
+	public void transForm(final File xmlFile, final File xsltFile, final File resultFile) {
 		final Source xmlSource = new StreamSource(xmlFile);
 		final Source xsltSource = new StreamSource(xsltFile);
 		final Result result = new StreamResult(resultFile);
 		try {
-			final TransformerFactory transFact = TransformerFactory
-			    .newInstance();
+			final TransformerFactory transFact = TransformerFactory.newInstance();
 			final Transformer trans = transFact.newTransformer(xsltSource);
 			trans.transform(xmlSource, result);
 		}

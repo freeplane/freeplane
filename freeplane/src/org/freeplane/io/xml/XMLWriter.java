@@ -111,9 +111,9 @@ public class XMLWriter {
 	 *            how many spaces to indent the element.
 	 * @param endElement
 	 */
-	protected void write(final IXMLElement xml, final boolean prettyPrint,
-	                     final int indent, final boolean collapseEmptyElements,
-	                     final boolean endElement) throws IOException {
+	protected void write(final IXMLElement xml, final boolean prettyPrint, final int indent,
+	                     final boolean collapseEmptyElements, final boolean endElement)
+	        throws IOException {
 		if (prettyPrint) {
 			for (int i = 0; i < indent; i++) {
 				writer.print(' ');
@@ -185,10 +185,8 @@ public class XMLWriter {
 				}
 				enumeration = xml.enumerateChildren();
 				while (enumeration.hasMoreElements()) {
-					final IXMLElement child = (IXMLElement) enumeration
-					    .nextElement();
-					this.write(child, prettyPrint, indent + 4,
-					    collapseEmptyElements, true);
+					final IXMLElement child = (IXMLElement) enumeration.nextElement();
+					this.write(child, prettyPrint, indent + 4, collapseEmptyElements, true);
 				}
 				if (prettyPrint) {
 					for (int i = 0; i < indent; i++) {

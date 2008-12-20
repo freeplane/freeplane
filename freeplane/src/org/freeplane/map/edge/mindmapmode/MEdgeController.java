@@ -34,31 +34,26 @@ public class MEdgeController extends EdgeController {
 	public MEdgeController(final MModeController modeController) {
 		super(modeController);
 		modeController.addAction("edgeColor", new EdgeColorAction());
-		modeController.addAction("EdgeWidth_WIDTH_PARENT", new EdgeWidthAction(
-		    modeController, EdgeModel.WIDTH_PARENT));
-		modeController.addAction("EdgeWidth_WIDTH_THIN", new EdgeWidthAction(
-		    modeController, EdgeModel.WIDTH_THIN));
-		modeController.addAction("EdgeWidth_1", new EdgeWidthAction(
-		    modeController, 1));
-		modeController.addAction("EdgeWidth_2", new EdgeWidthAction(
-		    modeController, 2));
-		modeController.addAction("EdgeWidth_4", new EdgeWidthAction(
-		    modeController, 4));
-		modeController.addAction("EdgeWidth_8", new EdgeWidthAction(
-		    modeController, 8));
-		modeController.addAction("EdgeStyle_linear", new EdgeStyleAction(
-		    modeController, EdgeModel.EDGESTYLE_LINEAR));
-		modeController.addAction("EdgeStyle_bezier", new EdgeStyleAction(
-		    modeController, EdgeModel.EDGESTYLE_BEZIER));
-		modeController.addAction("EdgeStyle_sharp_linear", new EdgeStyleAction(
-		    modeController, EdgeModel.EDGESTYLE_SHARP_LINEAR));
-		modeController.addAction("EdgeStyle_sharp_bezier", new EdgeStyleAction(
-		    modeController, EdgeModel.EDGESTYLE_SHARP_BEZIER));
+		modeController.addAction("EdgeWidth_WIDTH_PARENT", new EdgeWidthAction(modeController,
+		    EdgeModel.WIDTH_PARENT));
+		modeController.addAction("EdgeWidth_WIDTH_THIN", new EdgeWidthAction(modeController,
+		    EdgeModel.WIDTH_THIN));
+		modeController.addAction("EdgeWidth_1", new EdgeWidthAction(modeController, 1));
+		modeController.addAction("EdgeWidth_2", new EdgeWidthAction(modeController, 2));
+		modeController.addAction("EdgeWidth_4", new EdgeWidthAction(modeController, 4));
+		modeController.addAction("EdgeWidth_8", new EdgeWidthAction(modeController, 8));
+		modeController.addAction("EdgeStyle_linear", new EdgeStyleAction(modeController,
+		    EdgeModel.EDGESTYLE_LINEAR));
+		modeController.addAction("EdgeStyle_bezier", new EdgeStyleAction(modeController,
+		    EdgeModel.EDGESTYLE_BEZIER));
+		modeController.addAction("EdgeStyle_sharp_linear", new EdgeStyleAction(modeController,
+		    EdgeModel.EDGESTYLE_SHARP_LINEAR));
+		modeController.addAction("EdgeStyle_sharp_bezier", new EdgeStyleAction(modeController,
+		    EdgeModel.EDGESTYLE_SHARP_BEZIER));
 	}
 
 	public void setColor(final NodeModel node, final Color color) {
-		final MModeController modeController = (MModeController) node
-		    .getModeController();
+		final MModeController modeController = (MModeController) node.getModeController();
 		final Color oldColor = getColor(node);
 		if (color.equals(oldColor)) {
 			return;
@@ -82,8 +77,7 @@ public class MEdgeController extends EdgeController {
 	}
 
 	public void setStyle(final NodeModel node, final String style) {
-		final MModeController modeController = (MModeController) node
-		    .getModeController();
+		final MModeController modeController = (MModeController) node.getModeController();
 		final String oldStyle = getStyle(node);
 		if (style.equals(oldStyle)) {
 			return;
@@ -107,8 +101,7 @@ public class MEdgeController extends EdgeController {
 	}
 
 	public void setWidth(final NodeModel node, final int width) {
-		final MModeController modeController = (MModeController) node
-		    .getModeController();
+		final MModeController modeController = (MModeController) node.getModeController();
 		final int oldWidth = getWidth(node);
 		if (width == oldWidth) {
 			return;

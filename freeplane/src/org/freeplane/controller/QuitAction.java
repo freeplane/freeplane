@@ -37,8 +37,7 @@ class QuitAction extends AbstractAction {
 	 * @param resourceController
 	 */
 	QuitAction(final ResourceController resourceController) {
-		MenuBuilder.setLabelAndMnemonic(this, resourceController
-		    .getText("quit"));
+		MenuBuilder.setLabelAndMnemonic(this, resourceController.getText("quit"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {

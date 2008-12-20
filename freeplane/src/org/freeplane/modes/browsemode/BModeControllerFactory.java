@@ -53,27 +53,20 @@ public class BModeControllerFactory {
 		new AttributeController(modeController);
 		modeController.setLinkController(new LinkController(modeController));
 		modeController.setIconController(new IconController(modeController));
-		modeController.setNodeStyleController(new NodeStyleController(
-		    modeController));
+		modeController.setNodeStyleController(new NodeStyleController(modeController));
 		modeController.setEdgeController(new EdgeController(modeController));
 		modeController.setCloudController(new CloudController(modeController));
 		modeController.setNoteController(new NoteController(modeController));
 		modeController.setTextController(new TextController(modeController));
-		modeController.setClipboardController(new ClipboardController(
-		    modeController));
-		modeController.setLocationController(new LocationController(
-		    modeController));
-		modeController.addNodeSelectionListener(new BNodeNoteViewer(
-		    modeController));
-		final BToolbarContributor toolbarContributor = new BToolbarContributor(
-		    modeController);
+		modeController.setClipboardController(new ClipboardController(modeController));
+		modeController.setLocationController(new LocationController(modeController));
+		modeController.addNodeSelectionListener(new BNodeNoteViewer(modeController));
+		final BToolbarContributor toolbarContributor = new BToolbarContributor(modeController);
 		modeController.addMenuContributor(toolbarContributor);
 		Controller.getController().getViewController()
 		    .addMapTitleChangeListener(toolbarContributor);
-		modeController.getUserInputListenerFactory().setNodePopupMenu(
-		    new JPopupMenu());
-		modeController.getUserInputListenerFactory().setMainToolBar(
-		    new FreeMindToolBar());
+		modeController.getUserInputListenerFactory().setNodePopupMenu(new JPopupMenu());
+		modeController.getUserInputListenerFactory().setMainToolBar(new FreeMindToolBar());
 		modeController.updateMenus("org/freeplane/modes/browsemode/menu.xml");
 		return modeController;
 	}

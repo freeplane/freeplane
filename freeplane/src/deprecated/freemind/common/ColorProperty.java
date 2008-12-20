@@ -35,8 +35,7 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 import deprecated.freemind.preferences.layout.OptionString;
 
-public class ColorProperty extends PropertyBean implements IPropertyControl,
-        ActionListener {
+public class ColorProperty extends PropertyBean implements IPropertyControl, ActionListener {
 	Color color;
 	final private String defaultColor;
 	String description;
@@ -48,8 +47,7 @@ public class ColorProperty extends PropertyBean implements IPropertyControl,
 	 * @param defaultColor
 	 * @param pTranslator
 	 */
-	public ColorProperty(final String description, final String label,
-	                     final String defaultColor) {
+	public ColorProperty(final String description, final String label, final String defaultColor) {
 		super();
 		this.description = description;
 		this.label = label;
@@ -60,8 +58,8 @@ public class ColorProperty extends PropertyBean implements IPropertyControl,
 	}
 
 	public void actionPerformed(final ActionEvent arg0) {
-		final Color result = ColorTracker.showCommonJColorChooserDialog(mButton
-		    .getRootPane(), OptionString.getText(getLabel()), getColorValue());
+		final Color result = ColorTracker.showCommonJColorChooserDialog(mButton.getRootPane(),
+		    OptionString.getText(getLabel()), getColorValue());
 		if (result != null) {
 			setColorValue(result);
 			firePropertyChangeEvent();
@@ -89,11 +87,9 @@ public class ColorProperty extends PropertyBean implements IPropertyControl,
 	}
 
 	public void layout(final DefaultFormBuilder builder) {
-		final JLabel label = builder.append(OptionString.getText(getLabel()),
-		    mButton);
+		final JLabel label = builder.append(OptionString.getText(getLabel()), mButton);
 		label.setToolTipText(OptionString.getText(getDescription()));
-		final JMenuItem item = new JMenuItem(OptionString
-		    .getText("ColorProperty.ResetColor"));
+		final JMenuItem item = new JMenuItem(OptionString.getText("ColorProperty.ResetColor"));
 		item.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent e) {
 				setValue(defaultColor);

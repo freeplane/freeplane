@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.ref.WeakReference;
 import java.net.URL;
+
 import javax.swing.AbstractButton;
 import javax.swing.Action;
 import javax.swing.ButtonGroup;
@@ -56,126 +57,6 @@ import org.freeplane.main.Tools;
 import org.freeplane.modes.ModeController;
 
 public class MenuBuilder extends UIBuilder {
-	
-	final MenuStructureReader reader;
-	
-	private static class MenuPath {
-		String parentPath;		
-		String path;		
-		MenuPath(String path){
-			this.parentPath = path;
-		}
-		static MenuPath emptyPath(){
-			final MenuPath menuPath = new MenuPath("");
-			menuPath.path = "";
-			return menuPath;
-		}
-		void setName(String name){
-			path = parentPath + '/' + name;
-		}
-		public String toString(){
-			return path;
-		}
-	}
-	
-	private class MenuStructureReader {
-		private final class StructureCreator  extends NodeCreatorAdapter{
-	        public Object createNode(Object parent, String tag) {
-	        	return MenuPath.emptyPath();
-	        }
-        }
-		private ButtonGroup buttonGroup;
-
-		private final class CategoryCreator extends NodeCreatorAdapter {
-	        public Object createNode(Object parent, String tag) {
-				buttonGroup = null;
-	        	return new MenuPath(parent.toString());
-	        }
-
-	        public void setAttributes(String tag, Object node, IXMLElement attributes) {
-				MenuPath menuPath = (MenuPath) node;
-				menuPath.setName(attributes.getAttribute("name", null));
-				if (!contains(menuPath.path)) {
-					if (tag.equals("menu_submenu")) {
-						final JMenu menuItem = new JMenu();
-						MenuBuilder.setLabelAndMnemonic(menuItem, Controller.getText(attributes
-						    .getAttribute("name_ref", null)));
-						addMenuItem(menuPath.parentPath, menuItem, menuPath.path,
-						    MenuBuilder.AS_CHILD);
-					}
-					else {
-						if (!(menuPath.parentPath.equals(""))) {
-							addMenuItemGroup(menuPath.parentPath, menuPath.path,
-							    MenuBuilder.AS_CHILD);
-						}
-					}
-				}
-			}
-        }
-		
-		private final class ActionCreator extends NodeCreatorAdapter{
-	        public Object createNode(Object parent, String tag) {
-	        	return new MenuPath(parent.toString());
-	        }
-
-	        public void setAttributes(String tag, Object node, IXMLElement attributes) {
-				MenuPath menuPath = (MenuPath) node;
-				final String field = attributes.getAttribute("field", null);
-				String name = attributes.getAttribute("name", null);
-				if (name == null) {
-					name = field;
-				}
-				menuPath.setName(name);
-				final String keystroke = attributes.getAttribute("key_ref", null);
-				try {
-					final Action theAction = modeController.getAction(field);
-					if (tag.equals("menu_radio_action")) {
-						final JRadioButtonMenuItem item = (JRadioButtonMenuItem) addRadioItem(menuPath.parentPath, theAction, keystroke,
-						        "true".equals(attributes.getAttribute("selected", "false")));
-						if(buttonGroup == null){
-							buttonGroup = new ButtonGroup();
-						}
-						buttonGroup.add(item);
-					}
-					else {
-						addAction(menuPath.parentPath, menuPath.path, theAction,
-						    keystroke, MenuBuilder.AS_CHILD);
-					}
-				}
-				catch (final Exception e1) {
-					org.freeplane.main.Tools.logException(e1);
-				}
-	        }
-        }
-		
-		private final class SeparatorCreator extends NodeCreatorAdapter {
-	        public Object createNode(Object parent, String tag) {
-	        	addSeparator(parent.toString(), MenuBuilder.AS_CHILD);
-	        	return parent;
-	        }
-        }
-		final private ReadManager readManager;
-		MenuStructureReader(){
-			readManager = new ReadManager();
-			readManager.addNodeCreator("menu_structure", new StructureCreator());
-			readManager.addNodeCreator("menu_category", new CategoryCreator());
-			readManager.addNodeCreator("menu_submenu", new CategoryCreator());
-			readManager.addNodeCreator("menu_action", new ActionCreator());
-			readManager.addNodeCreator("menu_radio_action", new ActionCreator());
-			readManager.addNodeCreator("menu_separator", new SeparatorCreator());
-		}
-
-		public void processMenu(URL menu) {
-			final TreeXmlReader reader = new TreeXmlReader(readManager);
-			try {
-	            reader.load(new InputStreamReader(menu.openStream()));
-            }
-            catch (IOException e) {
-	            throw new RuntimeException(e);
-            }
-        }
-
-	}
 	private static class ActionHolder implements INameMnemonicHolder {
 		final private Action action;
 
@@ -263,13 +144,11 @@ public class MenuBuilder extends UIBuilder {
 		}
 	}
 
-	static private class DelegatingPopupMenuListener implements
-	        PopupMenuListener {
+	static private class DelegatingPopupMenuListener implements PopupMenuListener {
 		final private PopupMenuListener listener;
 		final private Object source;
 
-		public DelegatingPopupMenuListener(final PopupMenuListener listener,
-		                                   final Object source) {
+		public DelegatingPopupMenuListener(final PopupMenuListener listener, final Object source) {
 			super();
 			this.listener = listener;
 			this.source = source;
@@ -334,6 +213,135 @@ public class MenuBuilder extends UIBuilder {
 		void setText(String replaceAll);
 	}
 
+	private static class MenuPath {
+		static MenuPath emptyPath() {
+			final MenuPath menuPath = new MenuPath("");
+			menuPath.path = "";
+			return menuPath;
+		}
+
+		String parentPath;
+		String path;
+
+		MenuPath(final String path) {
+			parentPath = path;
+		}
+
+		void setName(final String name) {
+			path = parentPath + '/' + name;
+		}
+
+		@Override
+		public String toString() {
+			return path;
+		}
+	}
+
+	private class MenuStructureReader {
+		private final class ActionCreator extends NodeCreatorAdapter {
+			public Object createNode(final Object parent, final String tag) {
+				return new MenuPath(parent.toString());
+			}
+
+			@Override
+			public void setAttributes(final String tag, final Object node,
+			                          final IXMLElement attributes) {
+				final MenuPath menuPath = (MenuPath) node;
+				final String field = attributes.getAttribute("field", null);
+				String name = attributes.getAttribute("name", null);
+				if (name == null) {
+					name = field;
+				}
+				menuPath.setName(name);
+				final String keystroke = attributes.getAttribute("key_ref", null);
+				try {
+					final Action theAction = modeController.getAction(field);
+					if (tag.equals("menu_radio_action")) {
+						final JRadioButtonMenuItem item = (JRadioButtonMenuItem) addRadioItem(
+						    menuPath.parentPath, theAction, keystroke, "true".equals(attributes
+						        .getAttribute("selected", "false")));
+						if (buttonGroup == null) {
+							buttonGroup = new ButtonGroup();
+						}
+						buttonGroup.add(item);
+					}
+					else {
+						addAction(menuPath.parentPath, menuPath.path, theAction, keystroke,
+						    MenuBuilder.AS_CHILD);
+					}
+				}
+				catch (final Exception e1) {
+					org.freeplane.main.Tools.logException(e1);
+				}
+			}
+		}
+
+		private final class CategoryCreator extends NodeCreatorAdapter {
+			public Object createNode(final Object parent, final String tag) {
+				buttonGroup = null;
+				return new MenuPath(parent.toString());
+			}
+
+			@Override
+			public void setAttributes(final String tag, final Object node,
+			                          final IXMLElement attributes) {
+				final MenuPath menuPath = (MenuPath) node;
+				menuPath.setName(attributes.getAttribute("name", null));
+				if (!contains(menuPath.path)) {
+					if (tag.equals("menu_submenu")) {
+						final JMenu menuItem = new JMenu();
+						MenuBuilder.setLabelAndMnemonic(menuItem, Controller.getText(attributes
+						    .getAttribute("name_ref", null)));
+						addMenuItem(menuPath.parentPath, menuItem, menuPath.path,
+						    MenuBuilder.AS_CHILD);
+					}
+					else {
+						if (!(menuPath.parentPath.equals(""))) {
+							addMenuItemGroup(menuPath.parentPath, menuPath.path,
+							    MenuBuilder.AS_CHILD);
+						}
+					}
+				}
+			}
+		}
+
+		private final class SeparatorCreator extends NodeCreatorAdapter {
+			public Object createNode(final Object parent, final String tag) {
+				addSeparator(parent.toString(), MenuBuilder.AS_CHILD);
+				return parent;
+			}
+		}
+
+		private final class StructureCreator extends NodeCreatorAdapter {
+			public Object createNode(final Object parent, final String tag) {
+				return MenuPath.emptyPath();
+			}
+		}
+
+		private ButtonGroup buttonGroup;
+		final private ReadManager readManager;
+
+		MenuStructureReader() {
+			readManager = new ReadManager();
+			readManager.addNodeCreator("menu_structure", new StructureCreator());
+			readManager.addNodeCreator("menu_category", new CategoryCreator());
+			readManager.addNodeCreator("menu_submenu", new CategoryCreator());
+			readManager.addNodeCreator("menu_action", new ActionCreator());
+			readManager.addNodeCreator("menu_radio_action", new ActionCreator());
+			readManager.addNodeCreator("menu_separator", new SeparatorCreator());
+		}
+
+		public void processMenu(final URL menu) {
+			final TreeXmlReader reader = new TreeXmlReader(readManager);
+			try {
+				reader.load(new InputStreamReader(menu.openStream()));
+			}
+			catch (final IOException e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
+
 	private static Insets nullInsets = new Insets(0, 0, 0, 0);
 
 	static public JMenu createMenu(final String name) {
@@ -355,8 +363,7 @@ public class MenuBuilder extends UIBuilder {
 	 * character is a space. In "Find & Replace", ampersand does not label
 	 * mnemo, while in "&About", mnemo is "Alt + A".
 	 */
-	public static void setLabelAndMnemonic(final AbstractButton btn,
-	                                       final String inLabel) {
+	public static void setLabelAndMnemonic(final AbstractButton btn, final String inLabel) {
 		MenuBuilder.setLabelAndMnemonic(new ButtonHolder(btn), inLabel);
 	}
 
@@ -365,13 +372,11 @@ public class MenuBuilder extends UIBuilder {
 	 * character is a space. In "Find & Replace", ampersand does not label
 	 * mnemo, while in "&About", mnemo is "Alt + A".
 	 */
-	public static void setLabelAndMnemonic(final Action action,
-	                                       final String inLabel) {
+	public static void setLabelAndMnemonic(final Action action, final String inLabel) {
 		MenuBuilder.setLabelAndMnemonic(new ActionHolder(action), inLabel);
 	}
 
-	private static void setLabelAndMnemonic(final INameMnemonicHolder item,
-	                                        final String inLabel) {
+	private static void setLabelAndMnemonic(final INameMnemonicHolder item, final String inLabel) {
 		String rawLabel = inLabel;
 		if (rawLabel == null) {
 			rawLabel = item.getText();
@@ -393,6 +398,7 @@ public class MenuBuilder extends UIBuilder {
 	}
 
 	final private ModeController modeController;
+	final MenuStructureReader reader;
 
 	public MenuBuilder(final ModeController modeController) {
 		super(null);
@@ -400,8 +406,7 @@ public class MenuBuilder extends UIBuilder {
 		reader = new MenuStructureReader();
 	}
 
-	public void addAction(final FreeplaneAction action,
-	                      final ActionDescriptor actionAnnotation) {
+	public void addAction(final FreeplaneAction action, final ActionDescriptor actionAnnotation) {
 		final String docu = actionAnnotation.tooltip();
 		if (!docu.equals("")) {
 			action.setTooltip(docu);
@@ -410,8 +415,8 @@ public class MenuBuilder extends UIBuilder {
 		MenuBuilder.setLabelAndMnemonic(action, Controller.getText(actionName));
 		final String iconPath = actionAnnotation.iconPath();
 		if (!iconPath.equals("")) {
-			final ImageIcon icon = new ImageIcon(Controller
-			    .getResourceController().getResource(iconPath));
+			final ImageIcon icon = new ImageIcon(Controller.getResourceController().getResource(
+			    iconPath));
 			action.putValue(Action.SMALL_ICON, icon);
 		}
 		final String[] actionLocations = actionAnnotation.locations();
@@ -420,9 +425,9 @@ public class MenuBuilder extends UIBuilder {
 			keystroke = null;
 		}
 		for (int i = 0; i < actionLocations.length; i++) {
-			final String key = actionLocations.length == 0 ? actionName :actionName + "[" + i + "]";
-			addAction(actionLocations[i], key , action, keystroke,
-			    MenuBuilder.AS_CHILD);
+			final String key = actionLocations.length == 0 ? actionName : actionName + "[" + i
+			        + "]";
+			addAction(actionLocations[i], key, action, keystroke, MenuBuilder.AS_CHILD);
 		}
 	}
 
@@ -431,14 +436,13 @@ public class MenuBuilder extends UIBuilder {
 	 * @param keystroke
 	 *            can be null, if no keystroke should be assigned.
 	 */
-	public void addAction(final String category, final Action action,
-	                      final String keystroke, final int position) {
+	public void addAction(final String category, final Action action, final String keystroke,
+	                      final int position) {
 		addAction(category, null, action, keystroke, position);
 	}
 
-	public void addAction(final String category, final String key,
-	                      final Action action, final String keystroke,
-	                      final int position) {
+	public void addAction(final String category, final String key, final Action action,
+	                      final String keystroke, final int position) {
 		assert action != null;
 		if (getContainer(get(category), Container.class) instanceof JToolBar) {
 			addButton(category, action, position);
@@ -503,20 +507,18 @@ public class MenuBuilder extends UIBuilder {
 			});
 		}
 		if (keystroke != null) {
-			final String keyProperty = Controller.getResourceController()
-			    .getAdjustableProperty(keystroke);
+			final String keyProperty = Controller.getResourceController().getAdjustableProperty(
+			    keystroke);
 			item.setAccelerator(KeyStroke.getKeyStroke(keyProperty));
 		}
 		return;
 	}
 
 	public void addAnnotatedAction(final FreeplaneAction action) {
-		addAction(action, action.getClass().getAnnotation(
-		    ActionDescriptor.class));
+		addAction(action, action.getClass().getAnnotation(ActionDescriptor.class));
 	}
 
-	private void addButton(final String category, final Action action,
-	                       final int position) {
+	private void addButton(final String category, final Action action, final int position) {
 		final AbstractButton button;
 		if (action.getClass().getAnnotation(SelectableAction.class) != null) {
 			button = new JAutoToggleButton(action);
@@ -529,15 +531,14 @@ public class MenuBuilder extends UIBuilder {
 	}
 
 	@Override
-	protected void addComponent(final Container container,
-	                            final Component component, final int index) {
+	protected void addComponent(final Container container, final Component component,
+	                            final int index) {
 		if (container instanceof JMenu) {
 			final JMenu menu = (JMenu) container;
 			menu.getPopupMenu().insert(component, index);
 			return;
 		}
-		if (container instanceof JToolBar
-		        && component instanceof AbstractButton) {
+		if (container instanceof JToolBar && component instanceof AbstractButton) {
 			{
 				((AbstractButton) component).setMargin(MenuBuilder.nullInsets);
 			}
@@ -545,14 +546,13 @@ public class MenuBuilder extends UIBuilder {
 		super.addComponent(container, component, index);
 	}
 
-	public void addComponent(final String parent, final Container item,
-	                         final Action action, final int position) {
+	public void addComponent(final String parent, final Container item, final Action action,
+	                         final int position) {
 		action.addPropertyChangeListener(new Enabler(item));
 		addElement(parent, item, position);
 	}
 
-	public void addComponent(final String parent, final Container item,
-	                         final int position) {
+	public void addComponent(final String parent, final Container item, final int position) {
 		addElement(parent, item, position);
 	}
 
@@ -567,13 +567,12 @@ public class MenuBuilder extends UIBuilder {
 		addElement(this, item, UIBuilder.AS_CHILD);
 	}
 
-	public void addMenuItem(final String relativeKey, final JMenuItem item,
-	                        final int position) {
+	public void addMenuItem(final String relativeKey, final JMenuItem item, final int position) {
 		addElement(relativeKey, item, position);
 	}
 
-	public void addMenuItem(final String relativeKey, final JMenuItem item,
-	                        final String key, final int position) {
+	public void addMenuItem(final String relativeKey, final JMenuItem item, final String key,
+	                        final int position) {
 		addElement(relativeKey, item, key, position);
 	}
 
@@ -581,8 +580,7 @@ public class MenuBuilder extends UIBuilder {
 		addElement(this, key, key, position);
 	}
 
-	public void addMenuItemGroup(final String relativeKey, final String key,
-	                             final int position) {
+	public void addMenuItemGroup(final String relativeKey, final String key, final int position) {
 		addElement(relativeKey, key, key, position);
 	}
 
@@ -590,8 +588,7 @@ public class MenuBuilder extends UIBuilder {
 		addElement(this, menu, key, UIBuilder.AS_CHILD);
 	}
 
-	public void addPopupMenuListener(final Object key,
-	                                 final PopupMenuListener listener) {
+	public void addPopupMenuListener(final Object key, final PopupMenuListener listener) {
 		final DefaultMutableTreeNode node = get(key);
 		assert (node != null);
 		final JPopupMenu popup;
@@ -599,8 +596,8 @@ public class MenuBuilder extends UIBuilder {
 			popup = (JPopupMenu) node.getUserObject();
 		}
 		else {
-			final Container container = getContainer(
-			    ((DefaultMutableTreeNode) node.getParent()), Container.class);
+			final Container container = getContainer(((DefaultMutableTreeNode) node.getParent()),
+			    Container.class);
 			if (container instanceof JPopupMenu) {
 				popup = (JPopupMenu) container;
 			}
@@ -612,18 +609,16 @@ public class MenuBuilder extends UIBuilder {
 			}
 		}
 		final Object userObject = node.getUserObject();
-		popup.addPopupMenuListener(new DelegatingPopupMenuListener(listener,
-		    userObject));
+		popup.addPopupMenuListener(new DelegatingPopupMenuListener(listener, userObject));
 	}
 
 	public JMenuItem addRadioItem(final String category, final Action action,
-	                              final String keystroke,
-	                              final boolean isSelected) {
+	                              final String keystroke, final boolean isSelected) {
 		final JRadioButtonMenuItem item = new JRadioButtonMenuItem(action);
 		addMenuItem(category, item, MenuBuilder.AS_CHILD);
 		if (keystroke != null) {
-			item.setAccelerator(KeyStroke.getKeyStroke(Controller
-			    .getResourceController().getAdjustableProperty(keystroke)));
+			item.setAccelerator(KeyStroke.getKeyStroke(Controller.getResourceController()
+			    .getAdjustableProperty(keystroke)));
 		}
 		item.setSelected(isSelected);
 		return item;
@@ -658,8 +653,7 @@ public class MenuBuilder extends UIBuilder {
 	}
 
 	@Override
-	protected Component getChildComponent(final Container parentComponent,
-	                                      final int index) {
+	protected Component getChildComponent(final Container parentComponent, final int index) {
 		if (parentComponent instanceof JMenu) {
 			return ((JMenu) parentComponent).getMenuComponent(index);
 		}
@@ -684,8 +678,7 @@ public class MenuBuilder extends UIBuilder {
 		reader.processMenu(menu);
 	}
 
-	public void removePopupMenuListener(final Object key,
-	                                    final PopupMenuListener listener) {
+	public void removePopupMenuListener(final Object key, final PopupMenuListener listener) {
 		final DefaultMutableTreeNode node = get(key);
 		final Container container = getContainer(node, Container.class);
 		final JPopupMenu popup;
@@ -699,13 +692,11 @@ public class MenuBuilder extends UIBuilder {
 			throw new RuntimeException("no popup menu found!");
 		}
 		final Object userObject = node.getUserObject();
-		final PopupMenuListener[] popupMenuListeners = popup
-		    .getPopupMenuListeners();
+		final PopupMenuListener[] popupMenuListeners = popup.getPopupMenuListeners();
 		for (int i = 0; i < popupMenuListeners.length; i++) {
 			final PopupMenuListener popupMenuListener = popupMenuListeners[i];
 			if (!(popupMenuListener instanceof DelegatingPopupMenuListener)
-			        || !(((DelegatingPopupMenuListener) popupMenuListener)
-			            .getSource() == userObject)) {
+			        || !(((DelegatingPopupMenuListener) popupMenuListener).getSource() == userObject)) {
 				continue;
 			}
 			popup.removePopupMenuListener(popupMenuListener);

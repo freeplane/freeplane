@@ -61,8 +61,8 @@ public class StdXMLReader implements IXMLReader {
 	 * @throws java.io.IOException
 	 *             if an I/O error occurred
 	 */
-	public static IXMLReader fileReader(final String filename)
-	        throws FileNotFoundException, IOException {
+	public static IXMLReader fileReader(final String filename) throws FileNotFoundException,
+	        IOException {
 		final StdXMLReader r = new StdXMLReader(new FileInputStream(filename));
 		r.setSystemID(filename);
 		for (int i = 0; i < r.readers.size(); i++) {
@@ -149,8 +149,8 @@ public class StdXMLReader implements IXMLReader {
 	 * @throws IOException
 	 *             if an error occurred opening the stream
 	 */
-	public StdXMLReader(final String publicID, String systemID)
-	        throws MalformedURLException, FileNotFoundException, IOException {
+	public StdXMLReader(final String publicID, String systemID) throws MalformedURLException,
+	        FileNotFoundException, IOException {
 		URL systemIDasURL = null;
 		try {
 			systemIDasURL = new URL(systemID);
@@ -166,8 +166,7 @@ public class StdXMLReader implements IXMLReader {
 		}
 		currentReader = new StackedReader();
 		readers = new Stack();
-		final Reader reader = this.openStream(publicID, systemIDasURL
-		    .toString());
+		final Reader reader = this.openStream(publicID, systemIDasURL.toString());
 		currentReader.lineReader = new LineNumberReader(reader);
 		currentReader.pbReader = new PushbackReader(currentReader.lineReader, 2);
 	}
@@ -330,8 +329,7 @@ public class StdXMLReader implements IXMLReader {
 		if (url.getRef() != null) {
 			final String ref = url.getRef();
 			if (url.getFile().length() > 0) {
-				url = new URL(url.getProtocol(), url.getHost(), url.getPort(),
-				    url.getFile());
+				url = new URL(url.getProtocol(), url.getHost(), url.getPort(), url.getFile());
 				url = new URL("jar:" + url + '!' + ref);
 			}
 			else {
@@ -346,8 +344,7 @@ public class StdXMLReader implements IXMLReader {
 			return reader;
 		}
 		final String charsReadStr = charsRead.toString();
-		final PushbackReader pbreader = new PushbackReader(reader, charsReadStr
-		    .length());
+		final PushbackReader pbreader = new PushbackReader(reader, charsReadStr.length());
 		for (int i = charsReadStr.length() - 1; i >= 0; i--) {
 			pbreader.unread(charsReadStr.charAt(i));
 		}
@@ -418,8 +415,7 @@ public class StdXMLReader implements IXMLReader {
 	 * @param isInternalEntity
 	 *            true if the reader is produced by resolving an internal entity
 	 */
-	public void startNewStream(final Reader reader,
-	                           final boolean isInternalEntity) {
+	public void startNewStream(final Reader reader, final boolean isInternalEntity) {
 		final StackedReader oldReader = currentReader;
 		readers.push(currentReader);
 		currentReader = new StackedReader();
@@ -429,8 +425,7 @@ public class StdXMLReader implements IXMLReader {
 		}
 		else {
 			currentReader.lineReader = new LineNumberReader(reader);
-			currentReader.pbReader = new PushbackReader(
-			    currentReader.lineReader, 2);
+			currentReader.pbReader = new PushbackReader(currentReader.lineReader, 2);
 		}
 		currentReader.systemId = oldReader.systemId;
 		currentReader.publicId = oldReader.publicId;
@@ -446,8 +441,7 @@ public class StdXMLReader implements IXMLReader {
 	 * @throws java.io.IOException
 	 *             if an I/O error occurred
 	 */
-	protected Reader stream2reader(final InputStream stream,
-	                               final StringBuffer charsRead)
+	protected Reader stream2reader(final InputStream stream, final StringBuffer charsRead)
 	        throws IOException {
 		final PushbackInputStream pbstream = new PushbackInputStream(stream);
 		int b = pbstream.read();

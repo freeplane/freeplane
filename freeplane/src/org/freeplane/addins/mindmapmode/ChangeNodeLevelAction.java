@@ -36,30 +36,30 @@ import org.freeplane.ui.MenuBuilder;
  * @author foltin
  */
 public class ChangeNodeLevelAction {
-	@ActionDescriptor(tooltip = "accessories/plugins/ChangeNodeLevelAction_left.properties_documentation", //
-	name = "accessories/plugins/ChangeNodeLevelAction_left.properties_name", //
-	keyStroke = "keystroke_accessories/plugins/ChangeNodeLevelAction_left.properties_key", //
-	locations = { "/menu_bar/navigate/nodes" })
-	private class ChangeNodeLevelUpwardsAction extends FreeplaneAction {
-		public void actionPerformed(ActionEvent e) {
-			ChangeNodeLevelAction.this.actionPerformed(getModeController(), true);
-		}
-	};
-
 	@ActionDescriptor(tooltip = "accessories/plugins/ChangeNodeLevelAction_right.properties_documentation", //
 	name = "accessories/plugins/ChangeNodeLevelAction_right.properties_name", //
 	keyStroke = "keystroke_accessories/plugins/ChangeNodeLevelAction_right.properties_key", //
 	locations = { "/menu_bar/navigate/nodes" })
 	private class ChangeNodeLevelDownwardsAction extends FreeplaneAction {
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(final ActionEvent e) {
 			ChangeNodeLevelAction.this.actionPerformed(getModeController(), false);
+		}
+	};
+
+	@ActionDescriptor(tooltip = "accessories/plugins/ChangeNodeLevelAction_left.properties_documentation", //
+	name = "accessories/plugins/ChangeNodeLevelAction_left.properties_name", //
+	keyStroke = "keystroke_accessories/plugins/ChangeNodeLevelAction_left.properties_key", //
+	locations = { "/menu_bar/navigate/nodes" })
+	private class ChangeNodeLevelUpwardsAction extends FreeplaneAction {
+		public void actionPerformed(final ActionEvent e) {
+			ChangeNodeLevelAction.this.actionPerformed(getModeController(), true);
 		}
 	};
 
 	/**
 	 *
 	 */
-	public ChangeNodeLevelAction(MenuBuilder menuBuilder) {
+	public ChangeNodeLevelAction(final MenuBuilder menuBuilder) {
 		menuBuilder.addAnnotatedAction(new ChangeNodeLevelUpwardsAction());
 		menuBuilder.addAnnotatedAction(new ChangeNodeLevelDownwardsAction());
 	}
@@ -69,7 +69,7 @@ public class ChangeNodeLevelAction {
 	 * @see freemind.extensions.NodeHook#invoke(freemind.modes.MindMapNode,
 	 * java.util.List)
 	 */
-	public void actionPerformed(ModeController modeController, boolean upwards) {
+	public void actionPerformed(final ModeController modeController, final boolean upwards) {
 		NodeModel selectedNode;
 		List selectedNodes;
 		{
@@ -159,7 +159,7 @@ public class ChangeNodeLevelAction {
 		}
 	}
 
-	private void select(ModeController modeController, final String selectedNodeId,
+	private void select(final ModeController modeController, final String selectedNodeId,
 	                    final List selectedNodesIds) {
 		final NodeModel newInstanceOfSelectedNode = modeController.getMapController()
 		    .getNodeFromID(selectedNodeId);

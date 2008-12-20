@@ -157,8 +157,8 @@ public class NodeModel implements MutableTreeNode, IExtensionCollection {
 	 * Correct iterative level values of children
 	 */
 	private void changeChildCloudIterativeLevels(final int deltaLevel) {
-		for (final ListIterator e = getModeController().getMapController()
-		    .childrenUnfolded(this); e.hasNext();) {
+		for (final ListIterator e = getModeController().getMapController().childrenUnfolded(this); e
+		    .hasNext();) {
 			final NodeModel childNode = (NodeModel) e.next();
 			final CloudModel childCloud = childNode.getCloud();
 			if (childCloud != null) {
@@ -261,8 +261,7 @@ public class NodeModel implements MutableTreeNode, IExtensionCollection {
 
 	public NodeAttributeTableModel getAttributes() {
 		final NodeAttributeTableModel attributes = (NodeAttributeTableModel) getExtension(NodeAttributeTableModel.class);
-		return attributes != null ? attributes
-		        : NodeAttributeTableModel.EMTPY_ATTRIBUTES;
+		return attributes != null ? attributes : NodeAttributeTableModel.EMTPY_ATTRIBUTES;
 	}
 
 	public int getAttributeTableLength() {
@@ -283,9 +282,7 @@ public class NodeModel implements MutableTreeNode, IExtensionCollection {
 			return 0;
 		}
 		final EncryptionModel encryptionModel = getEncryptionModel();
-		return encryptionModel == null || encryptionModel.isAccessible() ? children
-		    .size()
-		        : 0;
+		return encryptionModel == null || encryptionModel.isAccessible() ? children.size() : 0;
 	}
 
 	public int getChildPosition(final NodeModel childNode) {
@@ -299,8 +296,7 @@ public class NodeModel implements MutableTreeNode, IExtensionCollection {
 	}
 
 	public List<NodeModel> getChildren() {
-		return Collections.unmodifiableList((children != null) ? children
-		        : Collections.EMPTY_LIST);
+		return Collections.unmodifiableList((children != null) ? children : Collections.EMPTY_LIST);
 	}
 
 	public CloudModel getCloud() {
@@ -489,8 +485,8 @@ public class NodeModel implements MutableTreeNode, IExtensionCollection {
 	 * sufficient to return true.
 	 */
 	public boolean hasFoldedStrictDescendant() {
-		for (final ListIterator e = getModeController().getMapController()
-		    .childrenUnfolded(this); e.hasNext();) {
+		for (final ListIterator e = getModeController().getMapController().childrenUnfolded(this); e
+		    .hasNext();) {
 			final NodeModel child = (NodeModel) e.next();
 			if (child.getModeController().getMapController().isFolded(child)
 			        || child.hasFoldedStrictDescendant()) {
@@ -507,8 +503,7 @@ public class NodeModel implements MutableTreeNode, IExtensionCollection {
 	public void insert(final MutableTreeNode child, int index) {
 		final EncryptionModel encryptionModel = getEncryptionModel();
 		if (encryptionModel != null && !encryptionModel.isAccessible()) {
-			throw new IllegalArgumentException(
-			    "Trying to insert nodes into a ciphered node.");
+			throw new IllegalArgumentException("Trying to insert nodes into a ciphered node.");
 		}
 		final NodeModel childNode = (NodeModel) child;
 		if (index < 0) {
@@ -593,8 +588,7 @@ public class NodeModel implements MutableTreeNode, IExtensionCollection {
 				preferredChild = (children.get(index + 1));
 			}
 			else {
-				preferredChild = (index > 0) ? (NodeModel) (children
-				    .get(index - 1)) : null;
+				preferredChild = (index > 0) ? (NodeModel) (children.get(index - 1)) : null;
 			}
 		}
 		node.setParent(null);
@@ -674,8 +668,7 @@ public class NodeModel implements MutableTreeNode, IExtensionCollection {
 		styleModel.setFont(font);
 	}
 
-	public void setHistoryInformation(
-	                                  final HistoryInformationModel historyInformation) {
+	public void setHistoryInformation(final HistoryInformationModel historyInformation) {
 		this.historyInformation = historyInformation;
 	}
 

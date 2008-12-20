@@ -67,7 +67,7 @@ public abstract class PersistentNodeHook implements IExtension {
 
 		@Override
 		public void setSelected() {
-			setSelected (isActiveForSelection());
+			setSelected(isActiveForSelection());
 		}
 	}
 
@@ -77,8 +77,7 @@ public abstract class PersistentNodeHook implements IExtension {
 
 		private ToggleHookActor(final NodeModel node, final IExtension extension) {
 			this.node = node;
-			this.extension = extension != null ? extension : node
-			    .getExtension(getExtensionClass());
+			this.extension = extension != null ? extension : node.getExtension(getExtensionClass());
 		}
 
 		public void act() {
@@ -105,13 +104,10 @@ public abstract class PersistentNodeHook implements IExtension {
 	protected class XmlReader implements IXMLElementHandler {
 		public boolean parse(final Object userObject, final String tag,
 		                     final IXMLElement lastBuiltElement) {
-			if (getHookName().equals(
-			    lastBuiltElement.getAttribute("NAME", null))) {
+			if (getHookName().equals(lastBuiltElement.getAttribute("NAME", null))) {
 				if (getHookAnnotation().onceForMap()) {
-					final IXMLElement parentNodeElement = lastBuiltElement
-					    .getParent().getParent();
-					if (parentNodeElement == null
-					        || parentNodeElement.getName().equals("node")) {
+					final IXMLElement parentNodeElement = lastBuiltElement.getParent().getParent();
+					if (parentNodeElement == null || parentNodeElement.getName().equals("node")) {
 						return true;
 					}
 				}
@@ -153,10 +149,9 @@ public abstract class PersistentNodeHook implements IExtension {
 			action = null;
 		}
 		final MapController mapController = modeController.getMapController();
-		mapController.getReadManager().addXMLElementHandler("hook",
-		    createXmlReader());
-		mapController.getWriteManager().addExtensionNodeWriter(
-		    getExtensionClass(), createXmlWriter());
+		mapController.getReadManager().addXMLElementHandler("hook", createXmlReader());
+		mapController.getWriteManager().addExtensionNodeWriter(getExtensionClass(),
+		    createXmlWriter());
 	}
 
 	protected void add(final NodeModel node, final IExtension extension) {
@@ -174,8 +169,7 @@ public abstract class PersistentNodeHook implements IExtension {
 		return createExtension(node, null);
 	}
 
-	protected IExtension createExtension(final NodeModel node,
-	                                     final IXMLElement element) {
+	protected IExtension createExtension(final NodeModel node, final IXMLElement element) {
 		return this;
 	}
 
@@ -188,8 +182,7 @@ public abstract class PersistentNodeHook implements IExtension {
 	}
 
 	protected ActionDescriptor getActionAnnotation() {
-		final ActionDescriptor annotation = getClass().getAnnotation(
-		    ActionDescriptor.class);
+		final ActionDescriptor annotation = getClass().getAnnotation(ActionDescriptor.class);
 		return annotation;
 	}
 
@@ -198,8 +191,7 @@ public abstract class PersistentNodeHook implements IExtension {
 	}
 
 	private NodeHookDescriptor getHookAnnotation() {
-		final NodeHookDescriptor annotation = getClass().getAnnotation(
-		    NodeHookDescriptor.class);
+		final NodeHookDescriptor annotation = getClass().getAnnotation(NodeHookDescriptor.class);
 		return annotation;
 	}
 
@@ -225,8 +217,7 @@ public abstract class PersistentNodeHook implements IExtension {
 	}
 
 	protected NodeModel[] getSelectedNodes() {
-		final List<NodeView> selection = getModeController().getMapView()
-		    .getSelection();
+		final List<NodeView> selection = getModeController().getMapView().getSelection();
 		final int size = selection.size();
 		final NodeModel[] nodes = new NodeModel[size];
 		final Iterator<NodeView> iterator = selection.iterator();
@@ -248,15 +239,14 @@ public abstract class PersistentNodeHook implements IExtension {
 	}
 
 	protected void registerAction(final FreeplaneAction action) {
-		registerAction(action, action.getClass().getAnnotation(
-		    ActionDescriptor.class));
+		registerAction(action, action.getClass().getAnnotation(ActionDescriptor.class));
 	}
 
 	protected void registerAction(final FreeplaneAction action,
 	                              final ActionDescriptor actionAnnotation) {
 		modeController.addAction(actionAnnotation.name(), action);
-		getModeController().getUserInputListenerFactory().getMenuBuilder()
-		    .addAction(action, actionAnnotation);
+		getModeController().getUserInputListenerFactory().getMenuBuilder().addAction(action,
+		    actionAnnotation);
 	}
 
 	protected void remove(final NodeModel node, final IExtension extension) {
@@ -264,13 +254,11 @@ public abstract class PersistentNodeHook implements IExtension {
 		getModeController().getMapController().nodeChanged(node);
 	}
 
-	protected void saveExtension(final IExtension extension,
-	                             final IXMLElement element) {
+	protected void saveExtension(final IExtension extension, final IXMLElement element) {
 		element.setAttribute("NAME", getHookName());
 	}
 
-	public void undoableActivateHook(final NodeModel node,
-	                                 final IExtension extension) {
+	public void undoableActivateHook(final NodeModel node, final IExtension extension) {
 		undoableToggleHook(node, extension);
 	}
 
@@ -278,8 +266,7 @@ public abstract class PersistentNodeHook implements IExtension {
 		undoableToggleHook(node, null);
 	}
 
-	private void undoableToggleHook(final NodeModel node,
-	                                final IExtension extension) {
+	private void undoableToggleHook(final NodeModel node, final IExtension extension) {
 		final IUndoableActor actor = new ToggleHookActor(node, extension);
 		getModeController().execute(actor);
 	}

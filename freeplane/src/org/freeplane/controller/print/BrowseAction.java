@@ -26,8 +26,7 @@ class BrowseAction extends AbstractAction {
 	protected int pageStep;
 	protected Preview preview;
 
-	public BrowseAction(final Preview preview, final JLabel pageNumber,
-	                    final int pageStep) {
+	public BrowseAction(final Preview preview, final JLabel pageNumber, final int pageStep) {
 		super();
 		this.preview = preview;
 		this.pageStep = pageStep;
@@ -52,7 +51,6 @@ class BrowseAction extends AbstractAction {
 
 	private void paintPageIndex() {
 		pageNumber.setText(getPageIndexText());
-		pageNumber.paintImmediately(0, 0, pageNumber.getWidth(), pageNumber
-		    .getHeight());
+		pageNumber.paintImmediately(0, 0, pageNumber.getWidth(), pageNumber.getHeight());
 	}
 }

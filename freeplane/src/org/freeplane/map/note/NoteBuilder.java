@@ -41,15 +41,14 @@ public class NoteBuilder implements INodeContentHandler {
 	 * java.lang.String, freeplane.io.xml.n3.nanoxml.IXMLElement,
 	 * java.lang.String)
 	 */
-	public boolean setContent(final Object node, final String tag,
-	                          final IXMLElement attributes, final String content) {
+	public boolean setContent(final Object node, final String tag, final IXMLElement attributes,
+	                          final String content) {
 		if (tag.equals("richcontent")) {
 			final String xmlText = content;
 			final Object typeAttribute = attributes.getAttribute(
 			    NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG, null);
 			if (typeAttribute != null
-			        && !NodeTextBuilder.XML_NODE_XHTML_TYPE_NODE
-			            .equals(typeAttribute)) {
+			        && !NodeTextBuilder.XML_NODE_XHTML_TYPE_NODE.equals(typeAttribute)) {
 				final NoteModel note = new NoteModel();
 				note.setXmlNoteText(xmlText);
 				((NodeObject) node).node.addExtension(note);

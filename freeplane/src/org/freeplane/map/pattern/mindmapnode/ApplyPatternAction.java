@@ -37,8 +37,7 @@ import org.freeplane.modes.MultipleNodeAction;
 import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.ui.MenuBuilder;
 
-
-class ApplyPatternAction extends MultipleNodeAction{
+class ApplyPatternAction extends MultipleNodeAction {
 	/**
 	 */
 	public static String edgeWidthIntToString(final int value) {
@@ -65,133 +64,114 @@ class ApplyPatternAction extends MultipleNodeAction{
 
 	final private Pattern mpattern;
 
-	public ApplyPatternAction(final MModeController controller,
-	                          final Pattern pattern) {
+	public ApplyPatternAction(final MModeController controller, final Pattern pattern) {
 		super();
 		mpattern = pattern;
 		MenuBuilder.setLabelAndMnemonic(this, pattern.getName());
 	}
 
-    protected void actionPerformed(ActionEvent e, NodeModel node) {
+	@Override
+	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
 		applyPattern(node, mpattern);
 	}
 
 	public void applyPattern(final NodeModel node, final Pattern pattern) {
 		if (pattern.getPatternNodeText() != null) {
 			if (pattern.getPatternNodeText().getValue() != null) {
-				((MTextController) getMModeController().getTextController())
-				    .setNodeText(node, pattern.getPatternNodeText().getValue());
+				((MTextController) getMModeController().getTextController()).setNodeText(node,
+				    pattern.getPatternNodeText().getValue());
 			}
 			else {
-				((MTextController) getMModeController().getTextController())
-				    .setNodeText(node, "");
+				((MTextController) getMModeController().getTextController()).setNodeText(node, "");
 			}
 		}
 		if (pattern.getPatternNodeColor() != null) {
-			((MNodeStyleController) getMModeController()
-			    .getNodeStyleController()).setColor(node, Tools
-			    .xmlToColor(pattern.getPatternNodeColor().getValue()));
+			((MNodeStyleController) getMModeController().getNodeStyleController()).setColor(node,
+			    Tools.xmlToColor(pattern.getPatternNodeColor().getValue()));
 		}
 		if (pattern.getPatternNodeBackgroundColor() != null) {
-			((MNodeStyleController) getMModeController()
-			    .getNodeStyleController())
-			    .setBackgroundColor(node, Tools.xmlToColor(pattern
-			        .getPatternNodeBackgroundColor().getValue()));
+			((MNodeStyleController) getMModeController().getNodeStyleController())
+			    .setBackgroundColor(node, Tools.xmlToColor(pattern.getPatternNodeBackgroundColor()
+			        .getValue()));
 		}
 		if (pattern.getPatternNodeStyle() != null) {
-			((MNodeStyleController) getMModeController()
-			    .getNodeStyleController()).setShape(node, pattern
-			    .getPatternNodeStyle().getValue());
+			((MNodeStyleController) getMModeController().getNodeStyleController()).setShape(node,
+			    pattern.getPatternNodeStyle().getValue());
 		}
 		if (pattern.getPatternIcon() != null) {
 			final String iconName = pattern.getPatternIcon().getValue();
 			if (iconName == null) {
-				while (((MIconController) getModeController()
-				    .getIconController()).removeIcon(node, MindIcon.LAST) > 0) {
+				while (((MIconController) getModeController().getIconController()).removeIcon(node,
+				    MindIcon.LAST) > 0) {
 				}
 			}
 			else {
 				final List icons = node.getIcons();
 				boolean found = false;
-				for (final Iterator iterator = icons.iterator(); iterator
-				    .hasNext();) {
+				for (final Iterator iterator = icons.iterator(); iterator.hasNext();) {
 					final MindIcon icon = (MindIcon) iterator.next();
-					if (icon.getName() != null
-					        && icon.getName().equals(iconName)) {
+					if (icon.getName() != null && icon.getName().equals(iconName)) {
 						found = true;
 						break;
 					}
 				}
 				if (!found) {
-					((MIconController) getMModeController().getIconController())
-					    .addIcon(node, MindIcon.factory(iconName),
-					        MindIcon.LAST);
+					((MIconController) getMModeController().getIconController()).addIcon(node,
+					    MindIcon.factory(iconName), MindIcon.LAST);
 				}
 			}
 		}
 		if (pattern.getPatternNodeFontName() != null) {
 			String nodeFontFamily = pattern.getPatternNodeFontName().getValue();
 			if (nodeFontFamily == null) {
-				nodeFontFamily = Controller.getResourceController()
-				    .getDefaultFontFamilyName();
+				nodeFontFamily = Controller.getResourceController().getDefaultFontFamilyName();
 			}
-			((MNodeStyleController) getMModeController()
-			    .getNodeStyleController()).setFontFamily(node, nodeFontFamily);
+			((MNodeStyleController) getMModeController().getNodeStyleController()).setFontFamily(
+			    node, nodeFontFamily);
 		}
 		if (pattern.getPatternNodeFontSize() != null) {
 			String nodeFontSize = pattern.getPatternNodeFontSize().getValue();
 			if (nodeFontSize == null) {
-				nodeFontSize = ""
-				        + Controller.getResourceController()
-				            .getDefaultFontSize();
+				nodeFontSize = "" + Controller.getResourceController().getDefaultFontSize();
 			}
-			((MNodeStyleController) getMModeController()
-			    .getNodeStyleController()).setFontSize(node, Integer
-			    .parseInt(nodeFontSize));
+			((MNodeStyleController) getMModeController().getNodeStyleController()).setFontSize(
+			    node, Integer.parseInt(nodeFontSize));
 		}
 		if (pattern.getPatternNodeFontItalic() != null) {
-			((MNodeStyleController) getMModeController()
-			    .getNodeStyleController()).setItalic(node, "true"
-			    .equals(pattern.getPatternNodeFontItalic().getValue()));
+			((MNodeStyleController) getMModeController().getNodeStyleController()).setItalic(node,
+			    "true".equals(pattern.getPatternNodeFontItalic().getValue()));
 		}
 		if (pattern.getPatternNodeFontBold() != null) {
-			((MNodeStyleController) getMModeController()
-			    .getNodeStyleController()).setBold(node, "true".equals(pattern
-			    .getPatternNodeFontBold().getValue()));
+			((MNodeStyleController) getMModeController().getNodeStyleController()).setBold(node,
+			    "true".equals(pattern.getPatternNodeFontBold().getValue()));
 		}
 		if (pattern.getPatternEdgeColor() != null) {
-			((MEdgeController) getMModeController().getEdgeController())
-			    .setColor(node, Tools.xmlToColor(pattern.getPatternEdgeColor()
-			        .getValue()));
+			((MEdgeController) getMModeController().getEdgeController()).setColor(node, Tools
+			    .xmlToColor(pattern.getPatternEdgeColor().getValue()));
 		}
 		if (pattern.getPatternEdgeStyle() != null) {
-			((MEdgeController) getMModeController().getEdgeController())
-			    .setStyle(node, pattern.getPatternEdgeStyle().getValue());
+			((MEdgeController) getMModeController().getEdgeController()).setStyle(node, pattern
+			    .getPatternEdgeStyle().getValue());
 		}
 		final PatternProperty patternEdgeWidth = pattern.getPatternEdgeWidth();
 		if (patternEdgeWidth != null) {
 			int width;
 			if (patternEdgeWidth.getValue() != null) {
-				width = ApplyPatternAction
-				    .edgeWidthStringToInt(patternEdgeWidth.getValue());
+				width = ApplyPatternAction.edgeWidthStringToInt(patternEdgeWidth.getValue());
 			}
 			else {
 				width = EdgeModel.WIDTH_PARENT;
 			}
-			((MEdgeController) getMModeController().getEdgeController())
-			    .setWidth(node, width);
+			((MEdgeController) getMModeController().getEdgeController()).setWidth(node, width);
 		}
-		if (pattern.getPatternChild() != null
-		        && pattern.getPatternChild().getValue() != null) {
-			final String searchedPatternName = pattern.getPatternChild()
-			    .getValue();
-			final ApplyPatternAction[] patterns = getMModeController()
-			    .getPatternController().patterns;
+		if (pattern.getPatternChild() != null && pattern.getPatternChild().getValue() != null) {
+			final String searchedPatternName = pattern.getPatternChild().getValue();
+			final ApplyPatternAction[] patterns = getMModeController().getPatternController().patterns;
 			for (int i = 0; i < patterns.length; i++) {
 				final ApplyPatternAction action = patterns[i];
 				if (action.getPattern().getName().equals(searchedPatternName)) {
-					for (final ListIterator j = node.getModeController()
-					    .getMapController().childrenUnfolded(node); j.hasNext();) {
+					for (final ListIterator j = node.getModeController().getMapController()
+					    .childrenUnfolded(node); j.hasNext();) {
 						final NodeModel child = (NodeModel) j.next();
 						applyPattern(child, action.getPattern());
 					}
@@ -199,9 +179,10 @@ class ApplyPatternAction extends MultipleNodeAction{
 				}
 			}
 		}
-		final IExternalPatternAction action = (IExternalPatternAction) getModeController().getExtension(IExternalPatternAction.class);
+		final IExternalPatternAction action = (IExternalPatternAction) getModeController()
+		    .getExtension(IExternalPatternAction.class);
 		if (action != null) {
-			final IExternalPatternAction externalAction = (IExternalPatternAction) action;
+			final IExternalPatternAction externalAction = action;
 			externalAction.act(node, pattern);
 		}
 	}
@@ -212,5 +193,4 @@ class ApplyPatternAction extends MultipleNodeAction{
 	public Pattern getPattern() {
 		return mpattern;
 	}
-
 }

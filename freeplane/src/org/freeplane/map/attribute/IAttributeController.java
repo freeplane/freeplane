@@ -22,8 +22,7 @@ package org.freeplane.map.attribute;
 import org.freeplane.map.tree.NodeModel;
 
 public interface IAttributeController {
-	void performInsertRow(NodeAttributeTableModel model, int index,
-	                      String name, String value);
+	void performInsertRow(NodeAttributeTableModel model, int index, String name, String value);
 
 	void performRegistryAttribute(String name);
 
@@ -39,8 +38,7 @@ public interface IAttributeController {
 
 	void performReplaceAtributeName(String oldName, String newName);
 
-	void performReplaceAttributeValue(String name, String oldValue,
-	                                  String newValue);
+	void performReplaceAttributeValue(String name, String oldValue, String newValue);
 
 	void performSetColumnWidth(NodeAttributeTableModel model, int col, int width);
 
@@ -48,8 +46,7 @@ public interface IAttributeController {
 
 	void performSetRestriction(int i, boolean b);
 
-	void performSetValueAt(NodeAttributeTableModel model, Object o, int row,
-	                       int col);
+	void performSetValueAt(NodeAttributeTableModel model, Object o, int row, int col);
 
 	void performSetVisibility(int i, boolean b);
 }

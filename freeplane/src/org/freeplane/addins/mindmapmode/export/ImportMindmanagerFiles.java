@@ -57,11 +57,10 @@ public class ImportMindmanagerFiles extends FreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final String type = "mmap";
-		final Container component = Controller.getController()
-		    .getViewController().getContentPane();
+		final Container component = Controller.getController().getViewController().getContentPane();
 		final JFileChooser chooser = new JFileChooser();
 		chooser.addChoosableFileFilter(new ExportFilter(type, null /*
-																													 */));
+																														 */));
 		final File mmFile = Controller.getController().getMap().getFile();
 		if (mmFile != null && mmFile.getParentFile() != null) {
 			chooser.setSelectedFile(mmFile.getParentFile());
@@ -76,35 +75,29 @@ public class ImportMindmanagerFiles extends FreeplaneAction {
 
 	private void importMindmanagerFile(final File file) {
 		try {
-			final ZipInputStream in = new ZipInputStream(new FileInputStream(
-			    file));
+			final ZipInputStream in = new ZipInputStream(new FileInputStream(file));
 			while (in.available() != 0) {
 				final ZipEntry entry = in.getNextEntry();
 				if (!entry.getName().equals("Document.xml")) {
 					continue;
 				}
 				final String xsltFileName = "accessories/mindmanager2mm.xsl";
-				final URL xsltUrl = Controller.getResourceController()
-				    .getResource(xsltFileName);
+				final URL xsltUrl = Controller.getResourceController().getResource(xsltFileName);
 				if (xsltUrl == null) {
-					Logger.global.severe("Can't find " + xsltFileName
+					Logger.global.severe("Can't find " + xsltFileName + " as resource.");
+					throw new IllegalArgumentException("Can't find " + xsltFileName
 					        + " as resource.");
-					throw new IllegalArgumentException("Can't find "
-					        + xsltFileName + " as resource.");
 				}
 				final InputStream xsltFile = xsltUrl.openStream();
 				final String xml = transForm(new StreamSource(in), xsltFile);
 				if (xml != null) {
-					final File tempFile = File
-					    .createTempFile(
-					        file.getName(),
-					        org.freeplane.map.url.mindmapmode.FileManager.FREEMIND_FILE_EXTENSION,
-					        file.getParentFile());
+					final File tempFile = File.createTempFile(file.getName(),
+					    org.freeplane.map.url.mindmapmode.FileManager.FREEMIND_FILE_EXTENSION, file
+					        .getParentFile());
 					final FileWriter fw = new FileWriter(tempFile);
 					fw.write(xml);
 					fw.close();
-					getModeController().getMapController().newMap(
-					    Tools.fileToUrl(tempFile));
+					getModeController().getMapController().newMap(Tools.fileToUrl(tempFile));
 				}
 				break;
 			}
@@ -125,8 +118,7 @@ public class ImportMindmanagerFiles extends FreeplaneAction {
 		final StringWriter writer = new StringWriter();
 		final Result result = new StreamResult(writer);
 		try {
-			final TransformerFactory transFact = TransformerFactory
-			    .newInstance();
+			final TransformerFactory transFact = TransformerFactory.newInstance();
 			final Transformer trans = transFact.newTransformer(xsltSource);
 			trans.transform(xmlSource, result);
 		}

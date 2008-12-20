@@ -39,13 +39,11 @@ public class WriteManager {
 	 * freeplane.persistence.ISaverManager#addAttributeSaver(java.lang.String,
 	 * freeplane.persistence.AttributeSaver)
 	 */
-	public void addAttributeWriter(final String parentTag,
-	                               final IAttributeWriter aw) {
+	public void addAttributeWriter(final String parentTag, final IAttributeWriter aw) {
 		attributeWriters.add(parentTag, aw);
 	}
 
-	public void addExtensionAttributeWriter(
-	                                        final Class<? extends IExtension> clazz,
+	public void addExtensionAttributeWriter(final Class<? extends IExtension> clazz,
 	                                        final IAttributeWriter<IExtension> aw) {
 		extensionAttributeWriters.add(clazz, aw);
 	}
@@ -75,8 +73,7 @@ public class WriteManager {
 	 * freeplane.persistence.ISaverManager#addXMLElementSaver(java.lang.String,
 	 * freeplane.persistence.XMLElementSaver)
 	 */
-	public void addXMLElementWriter(final String parentTag,
-	                                final IXMLElementWriter xw) {
+	public void addXMLElementWriter(final String parentTag, final IXMLElementWriter xw) {
 		xmlWriters.add(parentTag, xw);
 	}
 
@@ -123,19 +120,16 @@ public class WriteManager {
 	 * freeplane.persistence.ISaverManager#removeAttributeSaver(java.lang.String
 	 * , freeplane.persistence.AttributeSaver)
 	 */
-	public void removeAttributeWriter(final String parentTag,
-	                                  final IAttributeWriter aw) {
+	public void removeAttributeWriter(final String parentTag, final IAttributeWriter aw) {
 		attributeWriters.remove(parentTag, aw);
 	}
 
-	public void removeExtensionAttributeWriter(
-	                                           final Class<? extends IExtension> clazz,
+	public void removeExtensionAttributeWriter(final Class<? extends IExtension> clazz,
 	                                           final IAttributeWriter<IExtension> aw) {
 		extensionAttributeWriters.remove(clazz, aw);
 	}
 
-	public void removeExtensionNodeWriter(
-	                                      final Class<? extends IExtension> clazz,
+	public void removeExtensionNodeWriter(final Class<? extends IExtension> clazz,
 	                                      final INodeWriter<IExtension> nw) {
 		extensionNodeWriters.remove(clazz, nw);
 	}
@@ -161,8 +155,7 @@ public class WriteManager {
 	 * freeplane.persistence.ISaverManager#removeXMLElementSaver(java.lang.String
 	 * , freeplane.persistence.XMLElementSaver)
 	 */
-	public void removeXMLElementWriter(final String parentTag,
-	                                   final IXMLElementWriter xw) {
+	public void removeXMLElementWriter(final String parentTag, final IXMLElementWriter xw) {
 		xmlWriters.remove(parentTag, xw);
 	}
 }

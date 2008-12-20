@@ -44,12 +44,10 @@ public class CloudView {
 	static private CloudView heightCalculator = new CloudView(null, null);
 
 	/** the layout functions can get the additional height of the clouded node . */
-	static public int getAdditionalHeigth(final CloudModel cloudModel,
-	                                      final NodeView source) {
+	static public int getAdditionalHeigth(final CloudModel cloudModel, final NodeView source) {
 		CloudView.heightCalculator.cloudModel = cloudModel;
 		CloudView.heightCalculator.source = source;
-		return (int) (1.1 * CloudView.heightCalculator
-		    .getDistanceToConvexHull());
+		return (int) (1.1 * CloudView.heightCalculator.getDistanceToConvexHull());
 	}
 
 	protected CloudModel cloudModel;
@@ -102,8 +100,7 @@ public class CloudView {
 		if (width < 1) {
 			return CloudView.DEF_STROKE;
 		}
-		return new BasicStroke(width, BasicStroke.CAP_BUTT,
-		    BasicStroke.JOIN_MITER);
+		return new BasicStroke(width, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER);
 	}
 
 	public int getWidth() {
@@ -170,12 +167,12 @@ public class CloudView {
 				for (int j = 0; j < length / distanceBetweenPoints - 1; ++j) {
 					if ((j + 2) * distanceBetweenPoints < length) {
 						x3 = x0 + (j + 1) * distanceBetweenPoints * dxn; /*
-																																																																									 * the
-																																																																									 * drawing
-																																																																									 * end
-																																																																									 * point
-																																																																									 * .
-																																																																									 */
+																																																																														 * the
+																																																																														 * drawing
+																																																																														 * end
+																																																																														 * point
+																																																																														 * .
+																																																																														 */
 						y3 = y0 + (j + 1) * distanceBetweenPoints * dyn;
 					}
 					else {
@@ -183,8 +180,7 @@ public class CloudView {
 						x3 = x1;
 						y3 = y1;
 					}
-					paintClouds(g, gstroke, x2, y2, x3, y3,
-					    distanceToConvexHull);
+					paintClouds(g, gstroke, x2, y2, x3, y3, distanceToConvexHull);
 					x2 = x3;
 					y2 = y3;
 				}
@@ -200,9 +196,9 @@ public class CloudView {
 		g.dispose();
 	}
 
-	private void paintClouds(final Graphics2D g, final Graphics2D gstroke,
-	                         final double x0, final double y0, final double x1,
-	                         final double y1, final double distanceToConvexHull) {
+	private void paintClouds(final Graphics2D g, final Graphics2D gstroke, final double x0,
+	                         final double y0, final double x1, final double y1,
+	                         final double distanceToConvexHull) {
 		double x2, y2, dx, dy;
 		dx = x1 - x0;
 		dy = y1 - y0;

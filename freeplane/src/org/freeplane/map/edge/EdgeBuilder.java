@@ -38,8 +38,7 @@ class EdgeBuilder implements INodeCreator, INodeWriter<IExtension> {
 	public EdgeBuilder() {
 	}
 
-	public void completeNode(final Object parent, final String tag,
-	                         final Object userObject) {
+	public void completeNode(final Object parent, final String tag, final Object userObject) {
 		/* attributes */
 		if (parent instanceof NodeObject) {
 			final NodeModel node = ((NodeObject) parent).node;
@@ -62,8 +61,8 @@ class EdgeBuilder implements INodeCreator, INodeWriter<IExtension> {
 		return null;
 	}
 
-	public boolean parseAttribute(final Object userObject, final String tag,
-	                              final String name, final String value) {
+	public boolean parseAttribute(final Object userObject, final String tag, final String name,
+	                              final String value) {
 		if (userObject instanceof EdgeModel) {
 			final EdgeModel edge = (EdgeModel) userObject;
 			if (name.equals("STYLE")) {
@@ -92,14 +91,16 @@ class EdgeBuilder implements INodeCreator, INodeWriter<IExtension> {
 		writer.addExtensionNodeWriter(EdgeModel.class, this);
 	}
 
-	public void writeContent(final ITreeWriter writer, final Object node,
-	                         final IExtension extension) throws IOException {
+	public void setAttributes(final String tag, final Object node, final IXMLElement attributes) {
+	}
+
+	public void writeContent(final ITreeWriter writer, final Object node, final IExtension extension)
+	        throws IOException {
 		final EdgeModel model = (EdgeModel) extension;
 		final String style = model.getStyle();
 		final Color color = model.getColor();
 		final int width = model.getWidth();
-		if (style != null || color != null
-		        || width != EdgeController.DEFAULT_WIDTH) {
+		if (style != null || color != null || width != EdgeController.DEFAULT_WIDTH) {
 			final XMLElement edge = new XMLElement();
 			edge.setName("edge");
 			if (style != null) {
@@ -110,8 +111,7 @@ class EdgeBuilder implements INodeCreator, INodeWriter<IExtension> {
 			}
 			if (width != EdgeModel.WIDTH_PARENT) {
 				if (width == EdgeModel.WIDTH_THIN) {
-					edge
-					    .setAttribute("WIDTH", EdgeModel.EDGE_WIDTH_THIN_STRING);
+					edge.setAttribute("WIDTH", EdgeModel.EDGE_WIDTH_THIN_STRING);
 				}
 				else {
 					edge.setAttribute("WIDTH", Integer.toString(width));
@@ -120,7 +120,4 @@ class EdgeBuilder implements INodeCreator, INodeWriter<IExtension> {
 			writer.addNode(model, edge);
 		}
 	}
-
-	public void setAttributes(String tag, Object node, IXMLElement attributes) {
-    }
 }

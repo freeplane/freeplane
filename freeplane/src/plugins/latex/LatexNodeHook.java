@@ -41,8 +41,7 @@ onceForMap = false)
 @ActionDescriptor(name = "plugins/latex/LatexNodeHook.properties_name", //
 locations = "/menu_bar/insert/other", //
 tooltip = "plugins/latex/LatexNodeHook.properties_documentation")
-public class LatexNodeHook extends PersistentNodeHook implements
-        INodeViewLifeCycleListener {
+public class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCycleListener {
 	/**
 	 */
 	public LatexNodeHook(final ModeController modeController) {
@@ -62,8 +61,7 @@ public class LatexNodeHook extends PersistentNodeHook implements
 	}
 
 	@Override
-	protected IExtension createExtension(final NodeModel node,
-	                                     final IXMLElement element) {
+	protected IExtension createExtension(final NodeModel node, final IXMLElement element) {
 		final LatexExtension latexExtension = new LatexExtension(node);
 		if (element != null) {
 			latexExtension.setEquation(element.getAttribute("EQUATION"));
@@ -77,8 +75,8 @@ public class LatexNodeHook extends PersistentNodeHook implements
 	}
 
 	public void onViewCreated(final NodeView nodeView) {
-		final LatexExtension latexExtension = (LatexExtension) nodeView
-		    .getModel().getExtension(LatexExtension.class);
+		final LatexExtension latexExtension = (LatexExtension) nodeView.getModel().getExtension(
+		    LatexExtension.class);
 		if (latexExtension == null) {
 			return;
 		}
@@ -86,8 +84,8 @@ public class LatexNodeHook extends PersistentNodeHook implements
 	}
 
 	public void onViewRemoved(final NodeView nodeView) {
-		final LatexExtension latexExtension = (LatexExtension) nodeView
-		    .getModel().getExtension(LatexExtension.class);
+		final LatexExtension latexExtension = (LatexExtension) nodeView.getModel().getExtension(
+		    LatexExtension.class);
 		if (latexExtension == null) {
 			return;
 		}
@@ -102,8 +100,7 @@ public class LatexNodeHook extends PersistentNodeHook implements
 	}
 
 	@Override
-	protected void saveExtension(final IExtension extension,
-	                             final IXMLElement element) {
+	protected void saveExtension(final IExtension extension, final IXMLElement element) {
 		final LatexExtension latexExtension = (LatexExtension) extension;
 		element.setAttribute("EQUATION", latexExtension.getEquation());
 		super.saveExtension(extension, element);

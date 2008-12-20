@@ -42,37 +42,30 @@ class ImportExplorerFavoritesAction extends FreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		final JFileChooser chooser = new JFileChooser();
 		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		chooser.setDialogTitle(getModeController().getText(
-		    "select_favorites_folder"));
-		final int returnVal = chooser.showOpenDialog(Controller.getController()
-		    .getViewController().getContentPane());
+		chooser.setDialogTitle(getModeController().getText("select_favorites_folder"));
+		final int returnVal = chooser.showOpenDialog(Controller.getController().getViewController()
+		    .getContentPane());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			final File folder = chooser.getSelectedFile();
-			Controller.getController().getViewController().out(
-			    "Importing Favorites ...");
-			importExplorerFavorites(folder, getModeController()
-			    .getSelectedNode(),/*
-																																										 * redisplay=
-																																										 */
+			Controller.getController().getViewController().out("Importing Favorites ...");
+			importExplorerFavorites(folder, getModeController().getSelectedNode(),/*
+																																													 * redisplay=
+																																													 */
 			true);
-			Controller.getController().getViewController().out(
-			    "Favorites imported.");
+			Controller.getController().getViewController().out("Favorites imported.");
 		}
 	}
 
 	/**
 	 */
 	private NodeModel addNode(final NodeModel target, final String nodeContent) {
-		final NodeModel node = ((MMapController) getModeController()
-		    .getMapController()).addNewNode(target, target.getChildCount(),
-		    target.isNewChildLeft());
-		((MTextController) getMModeController().getTextController())
-		    .setNodeText(node, nodeContent);
+		final NodeModel node = ((MMapController) getModeController().getMapController())
+		    .addNewNode(target, target.getChildCount(), target.isNewChildLeft());
+		((MTextController) getMModeController().getTextController()).setNodeText(node, nodeContent);
 		return node;
 	}
 
-	public boolean importExplorerFavorites(final File folder,
-	                                       final NodeModel target,
+	public boolean importExplorerFavorites(final File folder, final NodeModel target,
 	                                       final boolean redisplay) {
 		boolean favoritesFound = false;
 		if (folder.isDirectory()) {
@@ -81,32 +74,28 @@ class ImportExplorerFavoritesAction extends FreeplaneAction {
 				if (list[i].isDirectory()) {
 					final String nodeContent = list[i].getName();
 					final NodeModel node = addNode(target, nodeContent);
-					final boolean favoritesFoundInSubfolder = importExplorerFavorites(
-					    list[i], node, false);
+					final boolean favoritesFoundInSubfolder = importExplorerFavorites(list[i],
+					    node, false);
 					if (favoritesFoundInSubfolder) {
 						favoritesFound = true;
 					}
 					else {
-						((MMapController) getModeController()
-						    .getMapController()).deleteNode(node);
+						((MMapController) getModeController().getMapController()).deleteNode(node);
 					}
 				}
 			}
 			for (int i = 0; i < list.length; i++) {
-				if (!list[i].isDirectory()
-				        && Tools.getExtension(list[i]).equals("url")) {
+				if (!list[i].isDirectory() && Tools.getExtension(list[i]).equals("url")) {
 					favoritesFound = true;
 					try {
-						final NodeModel node = addNode(target, Tools
-						    .removeExtension(list[i].getName()));
-						final BufferedReader in = new BufferedReader(
-						    new FileReader(list[i]));
+						final NodeModel node = addNode(target, Tools.removeExtension(list[i]
+						    .getName()));
+						final BufferedReader in = new BufferedReader(new FileReader(list[i]));
 						while (in.ready()) {
 							final String line = in.readLine();
 							if (line.startsWith("URL=")) {
-								((MLinkController) node.getModeController()
-								    .getLinkController()).setLink(node, line
-								    .substring(4));
+								((MLinkController) node.getModeController().getLinkController())
+								    .setLink(node, line.substring(4));
 								break;
 							}
 						}

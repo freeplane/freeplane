@@ -44,7 +44,6 @@ import deprecated.freemind.common.BooleanProperty;
 import deprecated.freemind.common.ScriptEditorProperty;
 import deprecated.freemind.common.SeparatorProperty;
 import deprecated.freemind.common.StringProperty;
-
 import deprecated.freemind.preferences.IFreemindPropertyContributor;
 import deprecated.freemind.preferences.layout.OptionPanel;
 
@@ -62,10 +61,12 @@ public class ScriptingRegistration implements IExternalPatternAction {
 			return 0;
 		}
 
-		public ScriptEditorWindowConfigurationStorage decorateDialog(final ScriptEditorPanel pPanel,
+		public ScriptEditorWindowConfigurationStorage decorateDialog(
+		                                                             final ScriptEditorPanel pPanel,
 		                                                             final String pWindow_preference_storage_property) {
-			final String marshalled = Controller.getResourceController().getProperty(pWindow_preference_storage_property);
-            return ScriptEditorWindowConfigurationStorage.decorateDialog(marshalled,pPanel);
+			final String marshalled = Controller.getResourceController().getProperty(
+			    pWindow_preference_storage_property);
+			return ScriptEditorWindowConfigurationStorage.decorateDialog(marshalled, pPanel);
 		}
 
 		public void endDialog(final boolean pIsCanceled) {
@@ -74,12 +75,11 @@ public class ScriptingRegistration implements IExternalPatternAction {
 			}
 		}
 
-		public boolean executeScript(final int pIndex,
-		                             final PrintStream pOutStream,
+		public boolean executeScript(final int pIndex, final PrintStream pOutStream,
 		                             final IErrorHandler pErrorHandler) {
 			return ScriptingEngine.executeScript(modeController.getSelectedNode(),
-			    new BooleanHolder(true), mScript, modeController, pErrorHandler,
-			    pOutStream, getScriptCookies());
+			    new BooleanHolder(true), mScript, modeController, pErrorHandler, pOutStream,
+			    getScriptCookies());
 		}
 
 		public int getAmountOfScripts() {
@@ -102,8 +102,7 @@ public class ScriptingRegistration implements IExternalPatternAction {
 			mScript = pScript.getScript();
 		}
 
-		public void storeDialogPositions(
-		                                 final ScriptEditorPanel pPanel,
+		public void storeDialogPositions(final ScriptEditorPanel pPanel,
 		                                 final ScriptEditorWindowConfigurationStorage pStorage,
 		                                 final String pWindow_preference_storage_property) {
 			pStorage.storeDialogPositions(pPanel, pWindow_preference_storage_property);
@@ -112,38 +111,27 @@ public class ScriptingRegistration implements IExternalPatternAction {
 
 	private static final class ScriptingPluginPropertyContributor implements
 	        IFreemindPropertyContributor {
-		public ScriptingPluginPropertyContributor(
-		                                          final MModeController modeController) {
+		public ScriptingPluginPropertyContributor(final MModeController modeController) {
 		}
 
 		public List getControls() {
 			final Vector controls = new Vector();
-			controls.add(new OptionPanel.NewTabProperty(
-			    "plugins/scripting/tab_name"));
-			controls.add(new SeparatorProperty(
-			    "plugins/scripting/separatorPropertyName"));
-			controls
-			    .add(new BooleanProperty(
-			        ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION
-			                + ".tooltip",
-			        ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION));
-			controls
-			    .add(new BooleanProperty(
-			        ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION
-			                + ".tooltip",
-			        ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION));
-			controls
-			    .add(new BooleanProperty(
-			        ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION
-			                + ".tooltip",
-			        ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION));
+			controls.add(new OptionPanel.NewTabProperty("plugins/scripting/tab_name"));
+			controls.add(new SeparatorProperty("plugins/scripting/separatorPropertyName"));
 			controls.add(new BooleanProperty(
-			    ResourceController.RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED
+			    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION + ".tooltip",
+			    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION));
+			controls.add(new BooleanProperty(
+			    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION
 			            + ".tooltip",
-			    ResourceController.RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED));
+			    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION));
+			controls.add(new BooleanProperty(
+			    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION + ".tooltip",
+			    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION));
+			controls.add(new BooleanProperty(ResourceController.RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED
+			        + ".tooltip", ResourceController.RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED));
 			controls.add(new StringProperty(
-			    ResourceController.RESOURCES_SCRIPT_USER_KEY_NAME_FOR_SIGNING
-			            + ".tooltip",
+			    ResourceController.RESOURCES_SCRIPT_USER_KEY_NAME_FOR_SIGNING + ".tooltip",
 			    ResourceController.RESOURCES_SCRIPT_USER_KEY_NAME_FOR_SIGNING));
 			return controls;
 		}
@@ -155,16 +143,15 @@ public class ScriptingRegistration implements IExternalPatternAction {
 	private ScriptingPluginPropertyContributor mScriptingPluginPropertyContributor;
 
 	public ScriptingRegistration(final ModeController controller) {
-		this.modeController = (MModeController) controller;
+		modeController = (MModeController) controller;
 		register();
 	}
 
 	public void act(final NodeModel node, final Pattern pattern) {
-		if (pattern.getPatternScript() != null
-		        && pattern.getPatternScript().getValue() != null) {
-			ScriptingEngine.executeScript(node, new BooleanHolder(false),
-			    HtmlTools.unescapeHTMLUnicodeEntity(pattern.getPatternScript()
-			        .getValue()), modeController, new IErrorHandler() {
+		if (pattern.getPatternScript() != null && pattern.getPatternScript().getValue() != null) {
+			ScriptingEngine.executeScript(node, new BooleanHolder(false), HtmlTools
+			    .unescapeHTMLUnicodeEntity(pattern.getPatternScript().getValue()), modeController,
+			    new IErrorHandler() {
 				    public void gotoLine(final int pLineNumber) {
 				    }
 			    }, System.out, getScriptCookies());
@@ -179,21 +166,20 @@ public class ScriptingRegistration implements IExternalPatternAction {
 		modeController.addExtension(IExternalPatternAction.class, this);
 		mScriptEditorStarter = new ScriptEditorProperty.IScriptEditorStarter() {
 			public String startEditor(final String pScriptInput) {
-				final PatternScriptModel patternScriptModel = new PatternScriptModel(
-				    pScriptInput);
+				final PatternScriptModel patternScriptModel = new PatternScriptModel(pScriptInput);
 				final ScriptEditorPanel scriptEditorPanel = new ScriptEditorPanel(
 				    patternScriptModel, false);
 				scriptEditorPanel.setVisible(true);
 				return patternScriptModel.getScript();
 			}
 		};
-		modeController.addExtension(ScriptEditorProperty.IScriptEditorStarter.class, mScriptEditorStarter);
-		mScriptingPluginPropertyContributor = new ScriptingPluginPropertyContributor(
-		    modeController);
+		modeController.addExtension(ScriptEditorProperty.IScriptEditorStarter.class,
+		    mScriptEditorStarter);
+		mScriptingPluginPropertyContributor = new ScriptingPluginPropertyContributor(modeController);
 		OptionPanel.addContributor(mScriptingPluginPropertyContributor);
-		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
+		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory()
+		    .getMenuBuilder();
 		menuBuilder.addAnnotatedAction(new ScriptEditor(this));
 		menuBuilder.addAnnotatedAction(new ScriptingEngine(this));
-
 	}
 }

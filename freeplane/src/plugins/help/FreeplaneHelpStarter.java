@@ -33,16 +33,14 @@ import org.freeplane.controller.FreeplaneAction;
 /**
  * @author foltin
  */
-@ActionDescriptor(
-    name="plugins/FreemindHelp.xml_name", //
-    tooltip="plugins/FreemindHelp.xml_documentation", //
-    locations={"/menu_bar/help/doc"}
-)
+@ActionDescriptor(name = "plugins/FreemindHelp.xml_name", //
+tooltip = "plugins/FreemindHelp.xml_documentation", //
+locations = { "/menu_bar/help/doc" })
 public class FreeplaneHelpStarter extends FreeplaneAction {
 	/**
 	 *
 	 */
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(final ActionEvent e) {
 		final String helpHS = "plugins/help/doc/freemind.hs";
 		try {
 			final ClassLoader classLoader = this.getClass().getClassLoader();
@@ -60,5 +58,4 @@ public class FreeplaneHelpStarter extends FreeplaneAction {
 			return;
 		}
 	}
-
 }

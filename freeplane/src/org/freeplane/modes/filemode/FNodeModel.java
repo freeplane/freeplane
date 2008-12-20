@@ -53,8 +53,7 @@ public class FNodeModel extends NodeModel {
 				for (int i = 0; i < files.length; i++) {
 					final File childFile = new File(path, files[i]);
 					if (!childFile.isHidden()) {
-						final FNodeModel fileNodeModel = new FNodeModel(
-						    childFile, getMap());
+						final FNodeModel fileNodeModel = new FNodeModel(childFile, getMap());
 						fileNodeModel.setLeft(isNewChildLeft());
 						insert(fileNodeModel, getChildCount());
 					}

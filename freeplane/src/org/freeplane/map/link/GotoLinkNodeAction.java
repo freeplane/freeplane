@@ -30,13 +30,11 @@ import org.freeplane.map.tree.NodeModel;
 class GotoLinkNodeAction extends FreeplaneAction {
 	NodeModel source;
 
-	public GotoLinkNodeAction(final LinkController linkController,
-	                          final NodeModel source) {
+	public GotoLinkNodeAction(final LinkController linkController, final NodeModel source) {
 		super("goto_link_node_action", "images/Link.png");
 		this.source = source;
 		if (source != null) {
-			final String adaptedText = source.getShortText(linkController
-			    .getModeController());
+			final String adaptedText = source.getShortText(linkController.getModeController());
 			putValue(Action.NAME, linkController.getModeController().getText(
 			    "follow_graphical_link")
 			        + adaptedText);

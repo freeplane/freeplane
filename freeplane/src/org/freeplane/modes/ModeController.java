@@ -67,6 +67,7 @@ import org.freeplane.ui.MenuBuilder;
 import org.freeplane.undo.IUndoableActor;
 
 import deprecated.freemind.common.ITextTranslator;
+
 /**
  * Derive from this class to implement the Controller for your mode. Overload
  * the methods you need for your data model, or use the defaults. There are some
@@ -74,38 +75,8 @@ import deprecated.freemind.common.ITextTranslator;
  * MindMapController as a sample.
  */
 public class ModeController {
-	final private HashSet mRegisteredMouseWheelEventHandler = new HashSet();
-	public void addMouseWheelEventHandler(final IMouseWheelEventHandler handler) {
-		mRegisteredMouseWheelEventHandler.add(handler);
-	}
-
-	public void removeMouseWheelEventHandler(
-	                                             final IMouseWheelEventHandler handler) {
-		mRegisteredMouseWheelEventHandler.remove(handler);
-	}
-
-	public Set getMouseWheelEventHandlers() {
-		return Collections.unmodifiableSet(mRegisteredMouseWheelEventHandler);
-	}
-
-	public boolean addExtension(Class clazz, IExtension extension) {
-	    return extensions.addExtension(clazz, extension);
-    }
-
-	public boolean addExtension(IExtension extension) {
-	    return extensions.addExtension(extension);
-    }
-
-	public IExtension removeExtension(Class clazz) {
-	    return extensions.removeExtension(clazz);
-    }
-
-	public boolean removeExtension(IExtension extension) {
-	    return extensions.removeExtension(extension);
-    }
-
-	private static class ActionDisplayerOnChange implements
-	        INodeChangeListener, INodeSelectionListener, IActionOnChange {
+	private static class ActionDisplayerOnChange implements INodeChangeListener,
+	        INodeSelectionListener, IActionOnChange {
 		final FreeplaneAction action;
 
 		public ActionDisplayerOnChange(final FreeplaneAction action) {
@@ -188,11 +159,13 @@ public class ModeController {
 	private ClipboardController clipboardController;
 	private CloudController cloudController;
 	private EdgeController edgeController;
+	final private ExtensionHashMap extensions;
 	private IconController iconController;
 	private boolean isBlocked = false;
 	private LinkController linkController;
 	private MapController mapController;
 	final private LinkedList<IMenuContributor> menuContributors;
+	final private HashSet mRegisteredMouseWheelEventHandler = new HashSet();
 	final private LinkedList<INodeChangeListener> nodeChangeListeners;
 	final private LinkedList<INodeSelectionListener> nodeSelectionListeners;
 	/**
@@ -202,8 +175,7 @@ public class ModeController {
 	private NodeStyleController nodeStyleController;
 	final private LinkedList<INodeViewLifeCycleListener> nodeViewListeners;
 	private NoteController noteController;
-	final private ControllerPopupMenuListener popupListener = new ControllerPopupMenuListener(
-	    this);
+	final private ControllerPopupMenuListener popupListener = new ControllerPopupMenuListener(this);
 	/**
 	 * Take care! This listener is also used for modelpopups (as for graphical
 	 * links).
@@ -226,11 +198,6 @@ public class ModeController {
 		extensions = new ExtensionHashMap();
 	}
 
-
-	public void addAnnotatedAction(Action action) {
-		final String name = action.getClass().getAnnotation(ActionDescriptor.class).name();
-		addAction(name, action);
-    }
 	public void addAction(final Object key, final Action action) {
 		actionController.addAction(key, action);
 		if (FreeplaneAction.checkEnabledOnChange(action)) {
@@ -253,8 +220,25 @@ public class ModeController {
 		}
 	}
 
+	public void addAnnotatedAction(final Action action) {
+		final String name = action.getClass().getAnnotation(ActionDescriptor.class).name();
+		addAction(name, action);
+	}
+
+	public boolean addExtension(final Class clazz, final IExtension extension) {
+		return extensions.addExtension(clazz, extension);
+	}
+
+	public boolean addExtension(final IExtension extension) {
+		return extensions.addExtension(extension);
+	}
+
 	public void addMenuContributor(final IMenuContributor contributor) {
 		menuContributors.add(contributor);
+	}
+
+	public void addMouseWheelEventHandler(final IMouseWheelEventHandler handler) {
+		mRegisteredMouseWheelEventHandler.add(handler);
 	}
 
 	public void addNodeChangeListener(final INodeChangeListener listener) {
@@ -265,8 +249,7 @@ public class ModeController {
 		nodeSelectionListeners.add(listener);
 	}
 
-	public void addNodeViewLifeCycleListener(
-	                                         final INodeViewLifeCycleListener listener) {
+	public void addNodeViewLifeCycleListener(final INodeViewLifeCycleListener listener) {
 		nodeViewListeners.add(listener);
 	}
 
@@ -288,6 +271,10 @@ public class ModeController {
 		Controller.getController().getViewController().obtainFocusForSelected();
 	}
 
+	public boolean containsExtension(final Class clazz) {
+		return extensions.containsExtension(clazz);
+	}
+
 	public void doubleClick(final MouseEvent e) {
 	}
 
@@ -298,6 +285,14 @@ public class ModeController {
 
 	public void execute(final IUndoableActor actor) {
 		actor.act();
+	}
+
+	public Iterator<IExtension> extensionIterator() {
+		return extensions.extensionIterator();
+	}
+
+	public Iterator<IExtension> extensionIterator(final Class clazz) {
+		return extensions.extensionIterator(clazz);
 	}
 
 	public Action getAction(final String key) {
@@ -330,8 +325,11 @@ public class ModeController {
 		return edgeController;
 	}
 
-	public void getFilteredXml(final MapModel map, final Writer fileout)
-	        throws IOException {
+	public IExtension getExtension(final Class clazz) {
+		return extensions.getExtension(clazz);
+	}
+
+	public void getFilteredXml(final MapModel map, final Writer fileout) throws IOException {
 		getMapController().writeMapAsXml(map, fileout, false);
 	}
 
@@ -365,6 +363,10 @@ public class ModeController {
 		return null;
 	}
 
+	public Set getMouseWheelEventHandlers() {
+		return Collections.unmodifiableSet(mRegisteredMouseWheelEventHandler);
+	}
+
 	/**
 	 * @return
 	 */
@@ -391,8 +393,7 @@ public class ModeController {
 	}
 
 	public JPopupMenu getPopupForModel(final java.lang.Object obj) {
-		final JPopupMenu popupForModel = getLinkController().getPopupForModel(
-		    obj);
+		final JPopupMenu popupForModel = getLinkController().getPopupForModel(obj);
 		if (popupForModel != null) {
 			popupForModel.addPopupMenuListener(popupListener);
 			return popupForModel;
@@ -468,8 +469,7 @@ public class ModeController {
 
 	public boolean hasOneVisibleChild(final NodeModel parent) {
 		int count = 0;
-		for (final ListIterator i = getMapController().childrenUnfolded(parent); i
-		    .hasNext();) {
+		for (final ListIterator i = getMapController().childrenUnfolded(parent); i.hasNext();) {
 			if (((NodeModel) i.next()).isVisible()) {
 				count++;
 			}
@@ -488,22 +488,18 @@ public class ModeController {
 		try {
 			final HashSet copy = new HashSet(nodeSelectionListeners);
 			for (final Iterator iter = copy.iterator(); iter.hasNext();) {
-				final INodeSelectionListener listener = (INodeSelectionListener) iter
-				    .next();
+				final INodeSelectionListener listener = (INodeSelectionListener) iter.next();
 				listener.onDeselect(node);
 			}
 		}
 		catch (final RuntimeException e) {
-			Logger.global.log(Level.SEVERE,
-			    "Error in node selection listeners", e);
+			Logger.global.log(Level.SEVERE, "Error in node selection listeners", e);
 		}
 	}
 
 	public void onSelect(final NodeView node) {
-		for (final Iterator iter = nodeSelectionListeners.iterator(); iter
-		    .hasNext();) {
-			final INodeSelectionListener listener = (INodeSelectionListener) iter
-			    .next();
+		for (final Iterator iter = nodeSelectionListeners.iterator(); iter.hasNext();) {
+			final INodeSelectionListener listener = (INodeSelectionListener) iter.next();
 			listener.onSelect(node);
 		}
 	}
@@ -512,28 +508,24 @@ public class ModeController {
 	 * @param isUpdate
 	 * @param node
 	 */
-	public void onUpdate(final NodeModel node, final Object property,
-	                     final Object oldValue, final Object newValue) {
-		final Iterator<INodeChangeListener> iterator = nodeChangeListeners
-		    .iterator();
+	public void onUpdate(final NodeModel node, final Object property, final Object oldValue,
+	                     final Object newValue) {
+		final Iterator<INodeChangeListener> iterator = nodeChangeListeners.iterator();
 		while (iterator.hasNext()) {
-			iterator.next().nodeChanged(
-			    new NodeChangeEvent(node, property, oldValue, newValue));
+			iterator.next().nodeChanged(new NodeChangeEvent(node, property, oldValue, newValue));
 		}
 	}
 
 	public void onViewCreated(final NodeView node) {
 		for (final Iterator i = nodeViewListeners.iterator(); i.hasNext();) {
-			final INodeViewLifeCycleListener hook = (INodeViewLifeCycleListener) i
-			    .next();
+			final INodeViewLifeCycleListener hook = (INodeViewLifeCycleListener) i.next();
 			hook.onViewCreated(node);
 		}
 	}
 
 	public void onViewRemoved(final NodeView node) {
 		for (final Iterator i = nodeViewListeners.iterator(); i.hasNext();) {
-			final INodeViewLifeCycleListener hook = (INodeViewLifeCycleListener) i
-			    .next();
+			final INodeViewLifeCycleListener hook = (INodeViewLifeCycleListener) i.next();
 			hook.onViewRemoved(node);
 		}
 	}
@@ -558,15 +550,24 @@ public class ModeController {
 		return action;
 	}
 
-	private void removeNodeChangeListener(
-	                                      final Class<? extends IActionOnChange> clazz,
+	public IExtension removeExtension(final Class clazz) {
+		return extensions.removeExtension(clazz);
+	}
+
+	public boolean removeExtension(final IExtension extension) {
+		return extensions.removeExtension(extension);
+	}
+
+	public void removeMouseWheelEventHandler(final IMouseWheelEventHandler handler) {
+		mRegisteredMouseWheelEventHandler.remove(handler);
+	}
+
+	private void removeNodeChangeListener(final Class<? extends IActionOnChange> clazz,
 	                                      final Action action) {
-		final Iterator<INodeChangeListener> iterator = nodeChangeListeners
-		    .iterator();
+		final Iterator<INodeChangeListener> iterator = nodeChangeListeners.iterator();
 		while (iterator.hasNext()) {
 			final INodeChangeListener next = iterator.next();
-			if (next instanceof IActionOnChange
-			        && ((IActionOnChange) next).getAction() == action) {
+			if (next instanceof IActionOnChange && ((IActionOnChange) next).getAction() == action) {
 				iterator.remove();
 				return;
 			}
@@ -577,28 +578,23 @@ public class ModeController {
 		nodeChangeListeners.remove(listener);
 	}
 
-	private void removeNodeSelectionListener(
-	                                         final Class<? extends IActionOnChange> clazz,
+	private void removeNodeSelectionListener(final Class<? extends IActionOnChange> clazz,
 	                                         final Action action) {
-		final Iterator<INodeSelectionListener> iterator = nodeSelectionListeners
-		    .iterator();
+		final Iterator<INodeSelectionListener> iterator = nodeSelectionListeners.iterator();
 		while (iterator.hasNext()) {
 			final INodeSelectionListener next = iterator.next();
-			if (next instanceof IActionOnChange
-			        && ((IActionOnChange) next).getAction() == action) {
+			if (next instanceof IActionOnChange && ((IActionOnChange) next).getAction() == action) {
 				iterator.remove();
 				return;
 			}
 		}
 	}
 
-	public void removeNodeSelectionListener(
-	                                        final INodeSelectionListener listener) {
+	public void removeNodeSelectionListener(final INodeSelectionListener listener) {
 		nodeSelectionListeners.remove(listener);
 	}
 
-	public void removeNodeViewLifeCycleListener(
-	                                            final INodeViewLifeCycleListener listener) {
+	public void removeNodeViewLifeCycleListener(final INodeViewLifeCycleListener listener) {
 		nodeViewListeners.remove(listener);
 	}
 
@@ -613,18 +609,15 @@ public class ModeController {
 		getMapView().selectBranch(selected, extend);
 	}
 
-	public void selectMultipleNodes(final NodeModel focussed,
-	                                final Collection selecteds) {
+	public void selectMultipleNodes(final NodeModel focussed, final Collection selecteds) {
 		selectMultipleNodesImpl(focussed, selecteds);
 	}
 
-	public void selectMultipleNodes(final NodeView focussed,
-	                                final Collection selecteds) {
+	public void selectMultipleNodes(final NodeView focussed, final Collection selecteds) {
 		selectMultipleNodesImpl(focussed, selecteds);
 	}
 
-	private void selectMultipleNodesImpl(final Object focussed,
-	                                     final Collection selecteds) {
+	private void selectMultipleNodesImpl(final Object focussed, final Collection selecteds) {
 		for (final Iterator i = selecteds.iterator(); i.hasNext();) {
 			final NodeModel node = (NodeModel) (i.next());
 			getMapController().displayNode(node);
@@ -641,8 +634,7 @@ public class ModeController {
 		this.isBlocked = isBlocked;
 	}
 
-	public void setClipboardController(
-	                                   final ClipboardController clipboardController) {
+	public void setClipboardController(final ClipboardController clipboardController) {
 		this.clipboardController = clipboardController;
 	}
 
@@ -662,8 +654,7 @@ public class ModeController {
 		this.linkController = linkController;
 	}
 
-	public void setLocationController(
-	                                  final LocationController positionController) {
+	public void setLocationController(final LocationController positionController) {
 		this.positionController = positionController;
 	}
 
@@ -671,15 +662,12 @@ public class ModeController {
 		this.mapController = mapController;
 	}
 
-	public void setMapMouseMotionListener(
-	                                      final IMouseListener mapMouseMotionListener) {
+	public void setMapMouseMotionListener(final IMouseListener mapMouseMotionListener) {
 		userInputListenerFactory.setMapMouseListener(mapMouseMotionListener);
 	}
 
-	public void setNodeDropTargetListener(
-	                                      final DropTargetListener nodeDropTargetListener) {
-		userInputListenerFactory
-		    .setNodeDropTargetListener(nodeDropTargetListener);
+	public void setNodeDropTargetListener(final DropTargetListener nodeDropTargetListener) {
+		userInputListenerFactory.setNodeDropTargetListener(nodeDropTargetListener);
 	}
 
 	public void setNodeKeyListener(final KeyListener nodeKeyListener) {
@@ -690,8 +678,7 @@ public class ModeController {
 		userInputListenerFactory.setNodeMotionListener(nodeMotionListener);
 	}
 
-	public void setNodeStyleController(
-	                                   final NodeStyleController textStyleController) {
+	public void setNodeStyleController(final NodeStyleController textStyleController) {
 		nodeStyleController = textStyleController;
 	}
 
@@ -742,30 +729,11 @@ public class ModeController {
 		final UserInputListenerFactory userInputListenerFactory = getUserInputListenerFactory();
 		userInputListenerFactory.setMenuStructure(resource);
 		userInputListenerFactory.updateMenus(this);
-		final MenuBuilder menuBuilder = userInputListenerFactory
-		    .getMenuBuilder();
+		final MenuBuilder menuBuilder = userInputListenerFactory.getMenuBuilder();
 		updateMenus(menuBuilder);
 		final Iterator<IMenuContributor> iterator = menuContributors.iterator();
 		while (iterator.hasNext()) {
 			iterator.next().updateMenus(menuBuilder);
 		}
 	}
-
-	final private ExtensionHashMap extensions;
-	public boolean containsExtension(Class clazz) {
-	   return extensions.containsExtension(clazz);
-    }
-
-	public Iterator<IExtension> extensionIterator() {
-		   return extensions.extensionIterator();
-    }
-
-	public Iterator<IExtension> extensionIterator(Class clazz) {
-		   return extensions.extensionIterator(clazz);
-    }
-
-	public IExtension getExtension(Class clazz) {
-		   return extensions.getExtension(clazz);
-    }
-
 }

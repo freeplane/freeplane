@@ -38,8 +38,7 @@ public class ExtendedComboBoxModel extends DefaultComboBoxModel {
 		 */
 		public void contentsChanged(final ListDataEvent e) {
 			final int size = getOwnSize();
-			fireContentsChanged(getModel(), size + e.getIndex0(), size
-			        + e.getIndex1());
+			fireContentsChanged(getModel(), size + e.getIndex0(), size + e.getIndex1());
 		}
 
 		/*
@@ -50,8 +49,7 @@ public class ExtendedComboBoxModel extends DefaultComboBoxModel {
 		 */
 		public void intervalAdded(final ListDataEvent e) {
 			final int size = getOwnSize();
-			fireIntervalAdded(getModel(), size + e.getIndex0(), size
-			        + e.getIndex1());
+			fireIntervalAdded(getModel(), size + e.getIndex0(), size + e.getIndex1());
 		}
 
 		/*
@@ -62,8 +60,7 @@ public class ExtendedComboBoxModel extends DefaultComboBoxModel {
 		 */
 		public void intervalRemoved(final ListDataEvent e) {
 			final int size = getOwnSize();
-			fireIntervalRemoved(getModel(), size + e.getIndex0(), size
-			        + e.getIndex1());
+			fireIntervalRemoved(getModel(), size + e.getIndex0(), size + e.getIndex1());
 		}
 	}
 
@@ -160,8 +157,7 @@ public class ExtendedComboBoxModel extends DefaultComboBoxModel {
 				extension.removeListDataListener(extensionDataListener);
 				final int extensionSize = getExtensionSize();
 				if (extensionSize > 0) {
-					fireIntervalRemoved(this, ownSize, ownSize + extensionSize
-					        - 1);
+					fireIntervalRemoved(this, ownSize, ownSize + extensionSize - 1);
 				}
 			}
 		}

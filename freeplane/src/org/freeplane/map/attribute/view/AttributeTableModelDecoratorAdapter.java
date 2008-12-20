@@ -32,8 +32,8 @@ import org.freeplane.map.tree.NodeModel;
 /**
  * @author Dimitry Polivaev
  */
-abstract class AttributeTableModelDecoratorAdapter extends AbstractTableModel
-        implements IAttributeTableModel, TableModelListener, ChangeListener {
+abstract class AttributeTableModelDecoratorAdapter extends AbstractTableModel implements
+        IAttributeTableModel, TableModelListener, ChangeListener {
 	protected AttributeRegistry attributeRegistry;
 	protected NodeAttributeTableModel nodeAttributeModel;
 

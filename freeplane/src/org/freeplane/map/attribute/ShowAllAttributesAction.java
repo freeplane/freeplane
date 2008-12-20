@@ -32,8 +32,7 @@ class ShowAllAttributesAction extends AbstractAction {
 	 *
 	 */
 	public ShowAllAttributesAction() {
-		MenuBuilder.setLabelAndMnemonic(this, Controller
-		    .getText("attributes_show_all"));
+		MenuBuilder.setLabelAndMnemonic(this, Controller.getText("attributes_show_all"));
 	};
 
 	public void actionPerformed(final ActionEvent e) {

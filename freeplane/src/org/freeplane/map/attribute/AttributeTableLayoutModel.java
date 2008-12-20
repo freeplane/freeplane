@@ -33,8 +33,7 @@ public class AttributeTableLayoutModel {
 	ChangeEvent changeEvent = null;
 	ColumnWidthChangeEvent[] layoutChangeEvent = { null, null };
 	private EventListenerList listenerList = null;
-	final private int[] width = {
-	        AttributeTableLayoutModel.DEFAULT_COLUMN_WIDTH,
+	final private int[] width = { AttributeTableLayoutModel.DEFAULT_COLUMN_WIDTH,
 	        AttributeTableLayoutModel.DEFAULT_COLUMN_WIDTH };
 
 	public AttributeTableLayoutModel() {
@@ -50,8 +49,7 @@ public class AttributeTableLayoutModel {
 		for (int i = listeners.length - 2; i >= 0; i -= 2) {
 			if (listeners[i] == IColumnWidthChangeListener.class) {
 				if (layoutChangeEvent[col] == null) {
-					layoutChangeEvent[col] = new ColumnWidthChangeEvent(this,
-					    col);
+					layoutChangeEvent[col] = new ColumnWidthChangeEvent(this, col);
 				}
 				((IColumnWidthChangeListener) listeners[i + 1])
 				    .columnWidthChanged(layoutChangeEvent[col]);
@@ -73,8 +71,7 @@ public class AttributeTableLayoutModel {
 		return listenerList;
 	}
 
-	public void removeColumnWidthChangeListener(
-	                                            final IColumnWidthChangeListener l) {
+	public void removeColumnWidthChangeListener(final IColumnWidthChangeListener l) {
 		getListenerList().remove(IColumnWidthChangeListener.class, l);
 	}
 

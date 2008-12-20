@@ -44,8 +44,7 @@ public class NoteWriter implements INodeWriter<IExtension> {
 	 * @param note
 	 * @throws IOException
 	 */
-	private void saveContent(final ITreeWriter writer, final NoteModel note)
-	        throws IOException {
+	private void saveContent(final ITreeWriter writer, final NoteModel note) throws IOException {
 		if (note.getXmlNoteText() != null) {
 			final XMLElement htmlElement = new XMLElement();
 			htmlElement.setName(NodeTextBuilder.XML_NODE_XHTML_CONTENT_TAG);
@@ -61,8 +60,8 @@ public class NoteWriter implements INodeWriter<IExtension> {
 	 * @see freeplane.io.INodeWriter#saveContent(freeplane.io.ITreeWriter,
 	 * java.lang.Object, java.lang.String)
 	 */
-	public void writeContent(final ITreeWriter writer, final Object content,
-	                         final IExtension note) throws IOException {
+	public void writeContent(final ITreeWriter writer, final Object content, final IExtension note)
+	        throws IOException {
 		final NodeModel node = (NodeModel) content;
 		noteManager.onWrite(node);
 		saveContent(writer, (NoteModel) note);

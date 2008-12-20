@@ -43,36 +43,31 @@ class CutAction extends FreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		final MModeController mMindMapController = getMModeController();
 		if (mMindMapController.getMapView().getRoot().isSelected()) {
-			Controller.getController().errorMessage(
-			    Controller.getText("cannot_delete_root"));
+			Controller.getController().errorMessage(Controller.getText("cannot_delete_root"));
 			return;
 		}
-		final int showResult = new OptionalDontShowMeAgainDialog(Controller
-		    .getController().getViewController().getJFrame(),
-		    mMindMapController.getSelectedView(), "really_cut_node",
-		    "confirmation",
+		final int showResult = new OptionalDontShowMeAgainDialog(Controller.getController()
+		    .getViewController().getJFrame(), mMindMapController.getSelectedView(),
+		    "really_cut_node", "confirmation",
 		    new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
 		        ResourceController.RESOURCES_CUT_NODES_WITHOUT_QUESTION),
-		    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED).show()
-		    .getResult();
+		    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED).show().getResult();
 		if (showResult != JOptionPane.OK_OPTION) {
 			return;
 		}
-		final Transferable copy = cut(mMindMapController.getMapView()
-		    .getSelectedNodesSortedByY());
+		final Transferable copy = cut(mMindMapController.getMapView().getSelectedNodesSortedByY());
 		mMindMapController.getClipboardController().setClipboardContents(copy);
 		Controller.getController().getViewController().obtainFocusForSelected();
 	}
 
 	Transferable cut(final List nodeList) {
 		getModeController().getMapController().sortNodesByDepth(nodeList);
-		final Transferable totalCopy = getModeController()
-		    .getClipboardController().copy(nodeList, true);
+		final Transferable totalCopy = getModeController().getClipboardController().copy(nodeList,
+		    true);
 		for (final Iterator i = nodeList.iterator(); i.hasNext();) {
 			final NodeModel node = (NodeModel) i.next();
 			if (node.getParentNode() != null) {
-				((MMapController) getModeController().getMapController())
-				    .deleteNode(node);
+				((MMapController) getModeController().getMapController()).deleteNode(node);
 			}
 		}
 		return totalCopy;

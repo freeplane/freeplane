@@ -35,8 +35,7 @@ public class FixedHTMLWriter extends HTMLWriter {
 	 * tag/attribute. Other CSS attributes will be placed in an HTML style
 	 * attribute.
 	 */
-	private static void convertToHTML(final AttributeSet from,
-	                                  final MutableAttributeSet to) {
+	private static void convertToHTML(final AttributeSet from, final MutableAttributeSet to) {
 		if (from == null) {
 			return;
 		}
@@ -85,8 +84,7 @@ public class FixedHTMLWriter extends HTMLWriter {
 	 * @param len
 	 *            Length
 	 */
-	public FixedHTMLWriter(final Writer writer, final HTMLDocument doc,
-	                       final int pos, final int len) {
+	public FixedHTMLWriter(final Writer writer, final HTMLDocument doc, final int pos, final int len) {
 		super(writer, doc, pos, len);
 	}
 

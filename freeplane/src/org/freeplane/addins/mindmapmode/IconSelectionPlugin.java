@@ -36,13 +36,11 @@ import org.freeplane.ui.dialogs.IconSelectionPopupDialog;
 /**
  * @author adapted to the plugin mechanism by ganzer
  */
-@ActionDescriptor(
-       tooltip="accessories/plugins/IconSelectionPlugin.properties_documentation", //
-       name="accessories/plugins/IconSelectionPlugin.properties_name", //
-       keyStroke="keystroke_accessories/plugins/IconSelectionPlugin.properties.properties_key", //
-       iconPath="accessories/plugins/icons/kalzium.png", //
-       locations={"/menu_bar/insert/icons"}
-)
+@ActionDescriptor(tooltip = "accessories/plugins/IconSelectionPlugin.properties_documentation", //
+name = "accessories/plugins/IconSelectionPlugin.properties_name", //
+keyStroke = "keystroke_accessories/plugins/IconSelectionPlugin.properties.properties_key", //
+iconPath = "accessories/plugins/icons/kalzium.png", //
+locations = { "/menu_bar/insert/icons" })
 public class IconSelectionPlugin extends FreeplaneAction {
 	/**
 	 */
@@ -50,7 +48,7 @@ public class IconSelectionPlugin extends FreeplaneAction {
 		super();
 	}
 
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(final ActionEvent e) {
 		final MModeController modeController = (MModeController) getModeController();
 		final NodeView focussed = modeController.getSelectedView();
 		final Vector actions = new Vector();
@@ -59,8 +57,8 @@ public class IconSelectionPlugin extends FreeplaneAction {
 		actions.addAll(iconActions);
 		actions.add(modeController.getAction("removeLastIconAction"));
 		actions.add(modeController.getAction("removeAllIconsAction"));
-		final IconSelectionPopupDialog selectionDialog = new IconSelectionPopupDialog(
-		    Controller.getController().getViewController().getJFrame(), actions);
+		final IconSelectionPopupDialog selectionDialog = new IconSelectionPopupDialog(Controller
+		    .getController().getViewController().getJFrame(), actions);
 		final MapView mapView = modeController.getMapView();
 		mapView.scrollNodeToVisible(focussed, 0);
 		selectionDialog.pack();
@@ -70,9 +68,8 @@ public class IconSelectionPlugin extends FreeplaneAction {
 		final int result = selectionDialog.getResult();
 		if (result >= 0) {
 			final Action action = (Action) actions.get(result);
-			action.actionPerformed(new ActionEvent(action, 0, "icon",
-			    selectionDialog.getModifiers()));
+			action.actionPerformed(new ActionEvent(action, 0, "icon", selectionDialog
+			    .getModifiers()));
 		}
 	}
-
 }

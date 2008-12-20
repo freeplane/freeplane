@@ -48,15 +48,12 @@ public class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 	}
 
 	@Override
-	public Component getTableCellRendererComponent(final JTable table,
-	                                               final Object value,
+	public Component getTableCellRendererComponent(final JTable table, final Object value,
 	                                               final boolean isSelected,
-	                                               final boolean hasFocus,
-	                                               final int row,
+	                                               final boolean hasFocus, final int row,
 	                                               final int column) {
-		final Component rendererComponent = super
-		    .getTableCellRendererComponent(table, value, hasFocus, false, row,
-		        column);
+		final Component rendererComponent = super.getTableCellRendererComponent(table, value,
+		    hasFocus, false, row, column);
 		if (hasFocus) {
 			setBorder(UIManager.getBorder("Table.focusCellHighlightBorder"));
 		}

@@ -57,8 +57,7 @@ public class NodeBuilder implements INodeCreator, IAttributeHandler {
 		newIds = new HashMap<String, String>();
 	}
 
-	public void completeNode(final Object parent, final String tag,
-	                         final Object userObject) {
+	public void completeNode(final Object parent, final String tag, final Object userObject) {
 		if (tag.equals("node") && parent instanceof MapModel) {
 			mapChild = ((NodeObject) userObject).node;
 			return;
@@ -72,10 +71,8 @@ public class NodeBuilder implements INodeCreator, IAttributeHandler {
 		}
 	}
 
-	protected void createEncryptedNode(final NodeModel node,
-	                                   final String additionalInfo) {
-		final EncryptionModel encryptionModel = new EncryptionModel(node,
-		    additionalInfo);
+	protected void createEncryptedNode(final NodeModel node, final String additionalInfo) {
+		final EncryptionModel encryptionModel = new EncryptionModel(node, additionalInfo);
 		node.addExtension(encryptionModel);
 	}
 
@@ -110,10 +107,9 @@ public class NodeBuilder implements INodeCreator, IAttributeHandler {
 		return ids;
 	}
 
-	public boolean parseAttribute(final Object userObject, final String tag,
-	                              final String name, final String value) {
-		if (tag.equals(NodeBuilder.XML_NODE)
-		        && userObject instanceof NodeObject) {
+	public boolean parseAttribute(final Object userObject, final String tag, final String name,
+	                              final String value) {
+		if (tag.equals(NodeBuilder.XML_NODE) && userObject instanceof NodeObject) {
 			if (name.equals(NodeBuilder.XML_NODE_ENCRYPTED_CONTENT)) {
 				final NodeObject nodeObject = (NodeObject) userObject;
 				createEncryptedNode(nodeObject.node, value);
@@ -123,21 +119,16 @@ public class NodeBuilder implements INodeCreator, IAttributeHandler {
 				final NodeModel node = ((NodeObject) userObject).node;
 				if (name.equals(NodeBuilder.XML_NODE_HISTORY_CREATED_AT)) {
 					if (node.getHistoryInformation() == null) {
-						node
-						    .setHistoryInformation(new HistoryInformationModel());
+						node.setHistoryInformation(new HistoryInformationModel());
 					}
-					node.getHistoryInformation().setCreatedAt(
-					    Tools.xmlToDate(value));
+					node.getHistoryInformation().setCreatedAt(Tools.xmlToDate(value));
 					return true;
 				}
-				else if (name
-				    .equals(NodeBuilder.XML_NODE_HISTORY_LAST_MODIFIED_AT)) {
+				else if (name.equals(NodeBuilder.XML_NODE_HISTORY_LAST_MODIFIED_AT)) {
 					if (node.getHistoryInformation() == null) {
-						node
-						    .setHistoryInformation(new HistoryInformationModel());
+						node.setHistoryInformation(new HistoryInformationModel());
 					}
-					node.getHistoryInformation().setLastModifiedAt(
-					    Tools.xmlToDate(value));
+					node.getHistoryInformation().setLastModifiedAt(Tools.xmlToDate(value));
 					return true;
 				}
 				else if (name.equals("FOLDED")) {
@@ -175,6 +166,6 @@ public class NodeBuilder implements INodeCreator, IAttributeHandler {
 		mapChild = null;
 	}
 
-	public void setAttributes(String tag, Object node, IXMLElement attributes) {
-    }
+	public void setAttributes(final String tag, final Object node, final IXMLElement attributes) {
+	}
 }

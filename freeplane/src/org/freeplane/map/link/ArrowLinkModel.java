@@ -46,16 +46,14 @@ public class ArrowLinkModel extends LinkModel {
 		endArrow = "Default";
 	}
 
-	private void changeInclination(int deltaX, final int deltaY,
-	                               final NodeView linkedNodeView,
+	private void changeInclination(int deltaX, final int deltaY, final NodeView linkedNodeView,
 	                               final Point changedInclination) {
 		if (linkedNodeView.isLeft()) {
 			deltaX = -deltaX;
 		}
 		changedInclination.translate(deltaX, deltaY);
 		if (changedInclination.x != 0
-		        && Math.abs((double) changedInclination.y
-		                / changedInclination.x) < 0.015) {
+		        && Math.abs((double) changedInclination.y / changedInclination.x) < 0.015) {
 			changedInclination.y = 0;
 		}
 		final double k = changedInclination.distance(0, 0);
@@ -75,29 +73,24 @@ public class ArrowLinkModel extends LinkModel {
 	 * @see freemind.modes.MindMapArrowLink#changeInclination(int, int, int,
 	 * int)
 	 */
-	public void changeInclination(final MapView map, final int originX,
-	                              final int originY, final int deltaX,
-	                              final int deltaY) {
+	public void changeInclination(final MapView map, final int originX, final int originY,
+	                              final int deltaX, final int deltaY) {
 		double distSqToTarget = 0;
 		double distSqToSource = 0;
 		final NodeView targetView = map.getNodeView(getTarget());
 		final NodeView sourceView = map.getNodeView(getSource());
 		if (targetView != null && sourceView != null) {
-			final Point targetLinkPoint = targetView
-			    .getLinkPoint(getEndInclination());
-			final Point sourceLinkPoint = sourceView
-			    .getLinkPoint(getStartInclination());
+			final Point targetLinkPoint = targetView.getLinkPoint(getEndInclination());
+			final Point sourceLinkPoint = sourceView.getLinkPoint(getStartInclination());
 			distSqToTarget = targetLinkPoint.distanceSq(originX, originY);
 			distSqToSource = sourceLinkPoint.distanceSq(originX, originY);
 		}
-		if ((targetView == null || sourceView != null)
-		        && distSqToSource < distSqToTarget * 2.25) {
+		if ((targetView == null || sourceView != null) && distSqToSource < distSqToTarget * 2.25) {
 			final Point changedInclination = getStartInclination();
 			changeInclination(deltaX, deltaY, sourceView, changedInclination);
 			setStartInclination(changedInclination);
 		}
-		if ((sourceView == null || targetView != null)
-		        && distSqToTarget < distSqToSource * 2.25) {
+		if ((sourceView == null || targetView != null) && distSqToTarget < distSqToSource * 2.25) {
 			final Point changedInclination = getEndInclination();
 			changeInclination(deltaX, deltaY, targetView, changedInclination);
 			setEndInclination(changedInclination);

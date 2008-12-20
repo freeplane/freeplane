@@ -86,8 +86,8 @@ public class AttributeRegistry {
 		if (isAttributeLayoutChanged == false) {
 			return;
 		}
-		getAttributeController().performSetRestriction(
-		    AttributeRegistry.GLOBAL, restrictionModel.booleanValue());
+		getAttributeController().performSetRestriction(AttributeRegistry.GLOBAL,
+		    restrictionModel.booleanValue());
 		for (int i = 0; i < elements.size(); i++) {
 			final AttributeRegistryElement element = getElement(i);
 			getAttributeController().performSetVisibility(i,
@@ -131,8 +131,7 @@ public class AttributeRegistry {
 				if (attributesEvent == null) {
 					attributesEvent = new ChangeEvent(this);
 				}
-				((IAttributesListener) listeners[i + 1])
-				    .attributesChanged(changeEvent);
+				((IAttributesListener) listeners[i + 1]).attributesChanged(changeEvent);
 			}
 		}
 	}
@@ -159,8 +158,7 @@ public class AttributeRegistry {
 
 	private AttributeRegistryComboBoxColumnModel getCombinedModel() {
 		if (myComboBoxColumnModel == null) {
-			myComboBoxColumnModel = new AttributeRegistryComboBoxColumnModel(
-			    this);
+			myComboBoxColumnModel = new AttributeRegistryComboBoxColumnModel(this);
 		}
 		return myComboBoxColumnModel;
 	}
@@ -309,8 +307,7 @@ public class AttributeRegistry {
 		for (int i = 0; i < elements.size(); i++) {
 			final AttributeRegistryElement element = getElement(i);
 			element.setVisibilityModel(Boolean.valueOf(element.isVisible()));
-			element
-			    .setRestrictionModel(Boolean.valueOf(element.isRestricted()));
+			element.setRestrictionModel(Boolean.valueOf(element.isRestricted()));
 		}
 		isAttributeLayoutChanged = false;
 	}
@@ -396,13 +393,11 @@ public class AttributeRegistry {
 			toBeSaved = true;
 		}
 		if (!attributeViewType.equals(AttributeTableLayoutModel.SHOW_ALL)) {
-			attributeRegistry
-			    .setAttribute("SHOW_ATTRIBUTES", attributeViewType);
+			attributeRegistry.setAttribute("SHOW_ATTRIBUTES", attributeViewType);
 			toBeSaved = true;
 		}
 		if (getFontSize() != AttributeRegistry.TABLE_FONT_SIZE) {
-			attributeRegistry.setAttribute("FONT_SIZE", Integer
-			    .toString(getFontSize()));
+			attributeRegistry.setAttribute("FONT_SIZE", Integer.toString(getFontSize()));
 			toBeSaved = true;
 		}
 		for (int i = 0; i < size(); i++) {
@@ -414,8 +409,7 @@ public class AttributeRegistry {
 			}
 		}
 		if (toBeSaved) {
-			attributeRegistry
-			    .setName(AttributeBuilder.XML_NODE_ATTRIBUTE_REGISTRY);
+			attributeRegistry.setName(AttributeBuilder.XML_NODE_ATTRIBUTE_REGISTRY);
 			writer.addNode(this, attributeRegistry);
 		}
 	}

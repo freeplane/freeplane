@@ -50,8 +50,8 @@ public class ArrowLinkView {
 	protected NodeView source, target;
 
 	/* Note, that source and target are nodeviews and not nodemodels!. */
-	public ArrowLinkView(final ArrowLinkModel arrowLinkModel,
-	                     final NodeView source, final NodeView target) {
+	public ArrowLinkView(final ArrowLinkModel arrowLinkModel, final NodeView source,
+	                     final NodeView target) {
 		this.arrowLinkModel = arrowLinkModel;
 		this.source = source;
 		this.target = target;
@@ -70,8 +70,8 @@ public class ArrowLinkView {
 
 	/**
 	 */
-	public void changeInclination(final int originX, final int originY,
-	                              final int newX, final int newY) {
+	public void changeInclination(final int originX, final int originY, final int newX,
+	                              final int newY) {
 	}
 
 	/**
@@ -83,21 +83,20 @@ public class ArrowLinkView {
 			return false;
 		}
 		final Rectangle2D rec = getControlPoint(p);
-		final FlatteningPathIterator pi = new FlatteningPathIterator(
-		    arrowLinkCurve.getPathIterator(null),
-		    MAXIMAL_RECTANGLE_SIZE_FOR_COLLISION_DETECTION / 4, 10/*
-																																						 * =maximal 2 ^
-																																						 * 10 = 1024
-																																						 * points .
-																																						 */);
+		final FlatteningPathIterator pi = new FlatteningPathIterator(arrowLinkCurve
+		    .getPathIterator(null), MAXIMAL_RECTANGLE_SIZE_FOR_COLLISION_DETECTION / 4, 10/*
+																																								 * =maximal 2 ^
+																																								 * 10 = 1024
+																																								 * points .
+																																								 */);
 		double oldCoordinateX = 0, oldCoordinateY = 0;
 		while (pi.isDone() == false) {
 			final double[] coordinates = new double[6];
 			final int type = pi.currentSegment(coordinates);
 			switch (type) {
 				case PathIterator.SEG_LINETO:
-					if (rec.intersectsLine(oldCoordinateX, oldCoordinateY,
-					    coordinates[0], coordinates[1])) {
+					if (rec.intersectsLine(oldCoordinateX, oldCoordinateY, coordinates[0],
+					    coordinates[1])) {
 						return true;
 					}
 					/*
@@ -128,14 +127,12 @@ public class ArrowLinkView {
 
 	public Color getColor() {
 		final ArrowLinkModel model = getModel();
-		return model.getTarget().getModeController().getLinkController()
-		    .getColor(model);
+		return model.getTarget().getModeController().getLinkController().getColor(model);
 	}
 
 	protected Rectangle2D getControlPoint(final Point2D p) {
 		final int side = MAXIMAL_RECTANGLE_SIZE_FOR_COLLISION_DETECTION;
-		return new Rectangle2D.Double(p.getX() - side / 2, p.getY() - side / 2,
-		    side, side);
+		return new Rectangle2D.Double(p.getX() - side / 2, p.getY() - side / 2, side, side);
 	}
 
 	protected MapView getMap() {
@@ -163,14 +160,12 @@ public class ArrowLinkView {
 		if (width < 1) {
 			return ArrowLinkView.DEF_STROKE;
 		}
-		return new BasicStroke(width, BasicStroke.CAP_BUTT,
-		    BasicStroke.JOIN_MITER);
+		return new BasicStroke(width, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER);
 	}
 
 	public int getWidth() {
 		final ArrowLinkModel model = getModel();
-		return model.getTarget().getModeController().getLinkController()
-		    .getWidth(model);
+		return model.getTarget().getModeController().getLinkController().getWidth(model);
 	}
 
 	protected double getZoom() {
@@ -205,8 +200,8 @@ public class ArrowLinkView {
 		/* set stroke. */
 		g.setStroke(getStroke());
 		if (!isSourceVisible() || !isTargetVisible()) {
-			g.setStroke(new BasicStroke(getWidth(), BasicStroke.CAP_ROUND,
-			    BasicStroke.JOIN_ROUND, 0, new float[] { 0, 3, 0, 3 }, 0));
+			g.setStroke(new BasicStroke(getWidth(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND,
+			    0, new float[] { 0, 3, 0, 3 }, 0));
 		}
 		if (isSourceVisible()) {
 			p1 = source.getLinkPoint(arrowLinkModel.getStartInclination());
@@ -218,12 +213,9 @@ public class ArrowLinkView {
 		}
 		if (arrowLinkModel.getEndInclination() == null
 		        || arrowLinkModel.getStartInclination() == null) {
-			final double dellength = isSourceVisible() && isTargetVisible() ? p1
-			    .distance(p2)
-			        / getZoom()
-			        : 30;
-			if (isSourceVisible()
-			        && arrowLinkModel.getStartInclination() == null) {
+			final double dellength = isSourceVisible() && isTargetVisible() ? p1.distance(p2)
+			        / getZoom() : 30;
+			if (isSourceVisible() && arrowLinkModel.getStartInclination() == null) {
 				final Point incl = calcInclination(source, dellength);
 				arrowLinkModel.setStartInclination(incl);
 				p1 = source.getLinkPoint(arrowLinkModel.getStartInclination());
@@ -239,9 +231,8 @@ public class ArrowLinkView {
 		if (p1 != null) {
 			p3 = new Point(p1);
 			p3.translate(((sourceIsLeft) ? -1 : 1)
-			        * getMap()
-			            .getZoomed(arrowLinkModel.getStartInclination().x),
-			    getMap().getZoomed(arrowLinkModel.getStartInclination().y));
+			        * getMap().getZoomed(arrowLinkModel.getStartInclination().x), getMap()
+			    .getZoomed(arrowLinkModel.getStartInclination().y));
 			if (p2 == null) {
 				arrowLinkCurve.setCurve(p1, p3, p1, p3);
 			}
@@ -249,8 +240,8 @@ public class ArrowLinkView {
 		if (p2 != null) {
 			p4 = new Point(p2);
 			p4.translate(((targetIsLeft) ? -1 : 1)
-			        * getMap().getZoomed(arrowLinkModel.getEndInclination().x),
-			    getMap().getZoomed(arrowLinkModel.getEndInclination().y));
+			        * getMap().getZoomed(arrowLinkModel.getEndInclination().x), getMap().getZoomed(
+			    arrowLinkModel.getEndInclination().y));
 			if (p1 == null) {
 				arrowLinkCurve.setCurve(p2, p4, p2, p4);
 			}
@@ -265,10 +256,9 @@ public class ArrowLinkView {
 		if (isTargetVisible() && !arrowLinkModel.getEndArrow().equals("None")) {
 			paintArrow(p2, p4, g);
 		}
-		if (arrowLinkModel.getShowControlPointsFlag() || !isSourceVisible()
-		        || !isTargetVisible()) {
-			g.setStroke(new BasicStroke(getWidth(), BasicStroke.CAP_ROUND,
-			    BasicStroke.JOIN_ROUND, 0, new float[] { 0, 3, 0, 3 }, 0));
+		if (arrowLinkModel.getShowControlPointsFlag() || !isSourceVisible() || !isTargetVisible()) {
+			g.setStroke(new BasicStroke(getWidth(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND,
+			    0, new float[] { 0, 3, 0, 3 }, 0));
 			if (p1 != null) {
 				g.drawLine(p1.x, p1.y, p3.x, p3.y);
 			}
@@ -289,17 +279,15 @@ public class ArrowLinkView {
 		dx = p3.x - p1.x; /* direction of p1 -> p3 */
 		dy = p3.y - p1.y;
 		final double length = Math.sqrt(dx * dx + dy * dy) / (getZoom() * 10/*
-																														 * =zoom factor for arrows
-																														 */);
+																																 * =zoom factor for arrows
+																																 */);
 		dxn = dx / length; /* normalized direction of p1 -> p3 */
 		dyn = dy / length;
 		final double width = .5f;
 		final Polygon p = new Polygon();
 		p.addPoint((p1.x), (p1.y));
-		p.addPoint((int) (p1.x + dxn + width * dyn), (int) (p1.y + dyn - width
-		        * dxn));
-		p.addPoint((int) (p1.x + dxn - width * dyn), (int) (p1.y + dyn + width
-		        * dxn));
+		p.addPoint((int) (p1.x + dxn + width * dyn), (int) (p1.y + dyn - width * dxn));
+		p.addPoint((int) (p1.x + dxn - width * dyn), (int) (p1.y + dyn + width * dxn));
 		p.addPoint((p1.x), (p1.y));
 		g.fillPolygon(p);
 	}

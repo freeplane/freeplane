@@ -51,8 +51,7 @@ public class HtmlTools {
 		 * @param pIsTag
 		 */
 		public IndexPair(final int pOriginalStart, final int pOriginalEnd,
-		                 final int pReplacedStart, final int pReplacedEnd,
-		                 final boolean pIsTag) {
+		                 final int pReplacedStart, final int pReplacedEnd, final boolean pIsTag) {
 			super();
 			originalStart = pOriginalStart;
 			originalEnd = pOriginalEnd;
@@ -83,15 +82,13 @@ public class HtmlTools {
 		}
 	}
 
-	private static final Pattern FIND_TAGS_PATTERN = Pattern
-	    .compile("([^<]*)(<[^>]+>)");
-	private static final Pattern HTML_PATTERN = Pattern
-	    .compile("(?s)^\\s*<\\s*html.*?>.*");
+	private static final Pattern FIND_TAGS_PATTERN = Pattern.compile("([^<]*)(<[^>]+>)");
+	private static final Pattern HTML_PATTERN = Pattern.compile("(?s)^\\s*<\\s*html.*?>.*");
 	private static HtmlTools sInstance = new HtmlTools();
 	private static final Pattern SLASHED_TAGS_PATTERN = Pattern.compile("<(("
 	        + "br|area|base|basefont|" + "bgsound|button|col|colgroup|embed|hr"
-	        + "|img|input|isindex|keygen|link|meta"
-	        + "|object|plaintext|spacer|wbr" + ")(\\s[^>]*)?)/>");
+	        + "|img|input|isindex|keygen|link|meta" + "|object|plaintext|spacer|wbr"
+	        + ")(\\s[^>]*)?)/>");
 	private static final Pattern TAGS_PATTERN = Pattern.compile("(?s)<[^><]*>");
 
 	public static HtmlTools getInstance() {
@@ -102,25 +99,20 @@ public class HtmlTools {
 		return HtmlTools.htmlToPlain(text, /* strictHTMLOnly= */true);
 	}
 
-	public static String htmlToPlain(final String text,
-	                                 final boolean strictHTMLOnly) {
+	public static String htmlToPlain(final String text, final boolean strictHTMLOnly) {
 		if (strictHTMLOnly && !HtmlTools.isHtmlNode(text)) {
 			return text;
 		}
-		String intermediate = text.replaceAll("(?ims)[\n\t]", "").replaceAll(
-		    "(?ims) +", " ").replaceAll("(?ims)<br.*?>", "\n").replaceAll(
-		    "(?ims)<p.*?>", "\n\n").replaceAll("(?ims)<div.*?>", "\n")
-		    .replaceAll("(?ims)<tr.*?>", "\n")
-		    .replaceAll("(?ims)<dt.*?>", "\n").replaceAll("(?ims)<dd.*?>",
-		        "\n   ").replaceAll("(?ims)<td.*?>", " ").replaceAll(
-		        "(?ims)<[uo]l.*?>", "\n")
-		    .replaceAll("(?ims)<li.*?>", "\n   * ").replaceAll(
-		        "(?ims) *</[^>]*>", "").replaceAll("(?ims)<[^/][^>]*> *", "")
-		    .replaceAll("^\n+", "").trim();
+		String intermediate = text.replaceAll("(?ims)[\n\t]", "").replaceAll("(?ims) +", " ")
+		    .replaceAll("(?ims)<br.*?>", "\n").replaceAll("(?ims)<p.*?>", "\n\n").replaceAll(
+		        "(?ims)<div.*?>", "\n").replaceAll("(?ims)<tr.*?>", "\n").replaceAll(
+		        "(?ims)<dt.*?>", "\n").replaceAll("(?ims)<dd.*?>", "\n   ").replaceAll(
+		        "(?ims)<td.*?>", " ").replaceAll("(?ims)<[uo]l.*?>", "\n").replaceAll(
+		        "(?ims)<li.*?>", "\n   * ").replaceAll("(?ims) *</[^>]*>", "").replaceAll(
+		        "(?ims)<[^/][^>]*> *", "").replaceAll("^\n+", "").trim();
 		intermediate = HtmlTools.unescapeHTMLUnicodeEntity(intermediate);
-		intermediate = intermediate.replaceAll("(?ims)&lt;", "<").replaceAll(
-		    "(?ims)&gt;", ">").replaceAll("(?ims)&quot;", "\"").replaceAll(
-		    "(?ims)&nbsp;", " ");
+		intermediate = intermediate.replaceAll("(?ims)&lt;", "<").replaceAll("(?ims)&gt;", ">")
+		    .replaceAll("(?ims)&quot;", "\"").replaceAll("(?ims)&nbsp;", " ");
 		return intermediate.replaceAll("(?ims)&amp;", "&");
 	}
 
@@ -136,8 +128,7 @@ public class HtmlTools {
 				return false;
 			}
 		}
-		return HtmlTools.HTML_PATTERN.matcher(text.toLowerCase(Locale.ENGLISH))
-		    .matches();
+		return HtmlTools.HTML_PATTERN.matcher(text.toLowerCase(Locale.ENGLISH)).matches();
 	}
 
 	public static String plainToHTML(final String text) {
@@ -159,8 +150,7 @@ public class HtmlTools {
 					result.append("&gt;");
 					break;
 				case ' ':
-					if (i > 0 && i < lengthMinus1
-					        && textTabsExpanded.charAt(i - 1) > 32
+					if (i > 0 && i < lengthMinus1 && textTabsExpanded.charAt(i - 1) > 32
 					        && textTabsExpanded.charAt(i + 1) > 32) {
 						result.append(' ');
 					}
@@ -196,8 +186,8 @@ public class HtmlTools {
 	}
 
 	public static String toXMLEscapedText(final String text) {
-		return text.replaceAll("&", "&amp;").replaceAll("<", "&lt;")
-		    .replaceAll(">", "&gt;").replaceAll("\"", "&quot;");
+		return text.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;")
+		    .replaceAll("\"", "&quot;");
 	}
 
 	public static String toXMLEscapedTextExpandingWhitespace(String text) {
@@ -218,8 +208,7 @@ public class HtmlTools {
 					result.append("&gt;");
 					break;
 				case ' ':
-					if (i > 0 && i < len - 1 && text.charAt(i - 1) > 32
-					        && text.charAt(i + 1) > 32) {
+					if (i > 0 && i < len - 1 && text.charAt(i - 1) > 32 && text.charAt(i + 1) > 32) {
 						result.append(' ');
 					}
 					else {
@@ -234,8 +223,8 @@ public class HtmlTools {
 	}
 
 	public static String toXMLUnescapedText(final String text) {
-		return text.replaceAll("&lt;", "<").replaceAll("&gt;", ">").replaceAll(
-		    "&quot;", "\"").replaceAll("&amp;", "&");
+		return text.replaceAll("&lt;", "<").replaceAll("&gt;", ">").replaceAll("&quot;", "\"")
+		    .replaceAll("&amp;", "&");
 	}
 
 	public static String unescapeHTMLUnicodeEntity(final String text) {
@@ -250,12 +239,10 @@ public class HtmlTools {
 					if (entity.charAt(0) == '#') {
 						try {
 							if (entity.charAt(1) == 'x') {
-								result.append((char) Integer.parseInt(entity
-								    .substring(2), 16));
+								result.append((char) Integer.parseInt(entity.substring(2), 16));
 							}
 							else {
-								result.append((char) Integer.parseInt(entity
-								    .substring(1), 10));
+								result.append((char) Integer.parseInt(entity.substring(1), 10));
 							}
 						}
 						catch (final NumberFormatException e) {
@@ -291,16 +278,14 @@ public class HtmlTools {
 		/*
 		 * Heuristic reserve for expansion : factor 1.2
 		 */
-		final StringBuffer result = new StringBuffer(
-		    (int) (text.length() * 1.2));
+		final StringBuffer result = new StringBuffer((int) (text.length() * 1.2));
 		int intValue;
 		char myChar;
 		for (int i = 0; i < text.length(); ++i) {
 			myChar = text.charAt(i);
 			intValue = text.charAt(i);
 			if (intValue < 32 || intValue > 126) {
-				result.append("&#x").append(Integer.toString(intValue, 16))
-				    .append(';');
+				result.append("&#x").append(Integer.toString(intValue, 16)).append(';');
 			}
 			else {
 				result.append(myChar);
@@ -320,8 +305,7 @@ public class HtmlTools {
 	 * @return the maximal index i such that pI is mapped to i by removing all
 	 *         tags from the original input.
 	 */
-	public int getMaximalOriginalPosition(final int pI,
-	                                      final ArrayList pListOfIndices) {
+	public int getMaximalOriginalPosition(final int pI, final ArrayList pListOfIndices) {
 		for (int i = pListOfIndices.size() - 1; i >= 0; --i) {
 			final IndexPair pair = (IndexPair) pListOfIndices.get(i);
 			if (pI >= pair.replacedStart) {
@@ -336,8 +320,7 @@ public class HtmlTools {
 		throw new IllegalArgumentException("Position " + pI + " not found.");
 	}
 
-	public int getMinimalOriginalPosition(final int pI,
-	                                      final ArrayList pListOfIndices) {
+	public int getMinimalOriginalPosition(final int pI, final ArrayList pListOfIndices) {
 		for (final Iterator iter = pListOfIndices.iterator(); iter.hasNext();) {
 			final IndexPair pair = (IndexPair) iter.next();
 			if (pI >= pair.replacedStart && pI <= pair.replacedEnd) {
@@ -352,8 +335,8 @@ public class HtmlTools {
 	 * method is very difficult. If you have a simplier method, please supply
 	 * it. But look that it complies with FindTextTests!!!
 	 */
-	public String getReplaceResult(final Pattern pattern,
-	                               final String replacement, final String text) {
+	public String getReplaceResult(final Pattern pattern, final String replacement,
+	                               final String text) {
 		final ArrayList splittedStringList = new ArrayList();
 		String stringWithoutTags = null;
 		{
@@ -366,22 +349,22 @@ public class HtmlTools {
 				matcher.appendReplacement(sb, "$1");
 				IndexPair indexPair;
 				if (textWithoutTag.length() > 0) {
-					indexPair = new IndexPair(lastMatchEnd, matcher.end(1),
-					    replStart, sb.length(), false);
+					indexPair = new IndexPair(lastMatchEnd, matcher.end(1), replStart, sb.length(),
+					    false);
 					lastMatchEnd = matcher.end(1);
 					splittedStringList.add(indexPair);
 				}
 				replStart = sb.length();
-				indexPair = new IndexPair(lastMatchEnd, matcher.end(2),
-				    replStart, sb.length(), true);
+				indexPair = new IndexPair(lastMatchEnd, matcher.end(2), replStart, sb.length(),
+				    true);
 				lastMatchEnd = matcher.end(2);
 				splittedStringList.add(indexPair);
 			}
 			final int replStart = sb.length();
 			matcher.appendTail(sb);
 			if (sb.length() != replStart) {
-				final IndexPair indexPair = new IndexPair(lastMatchEnd, text
-				    .length(), replStart, sb.length(), false);
+				final IndexPair indexPair = new IndexPair(lastMatchEnd, text.length(), replStart,
+				    sb.length(), false);
 				splittedStringList.add(indexPair);
 			}
 			stringWithoutTags = sb.toString();
@@ -397,42 +380,36 @@ public class HtmlTools {
 			final int mStart = matcher.start();
 			final int mEnd = matcher.end();
 			int state = 0;
-			for (final Iterator iter = splittedStringList.iterator(); iter
-			    .hasNext();) {
+			for (final Iterator iter = splittedStringList.iterator(); iter.hasNext();) {
 				final IndexPair pair = (IndexPair) iter.next();
 				switch (state) {
 					case 0:
 						if (!pair.mIsTag && pair.replacedStart <= mStart
 						        && pair.replacedEnd > mStart) {
 							state = 1;
-							sbResult.append(text.substring(pair.originalStart,
-							    pair.originalStart + mStart
-							            - pair.replacedStart));
+							sbResult.append(text.substring(pair.originalStart, pair.originalStart
+							        + mStart - pair.replacedStart));
 							sbResult.append(replacement);
 						}
 						else {
-							sbResult.append(text.substring(pair.originalStart,
-							    pair.originalEnd));
+							sbResult.append(text.substring(pair.originalStart, pair.originalEnd));
 							break;
 						}
 					case 1:
-						if (!pair.mIsTag && pair.replacedStart <= mEnd
-						        && pair.replacedEnd > mEnd) {
+						if (!pair.mIsTag && pair.replacedStart <= mEnd && pair.replacedEnd > mEnd) {
 							state = 2;
-							sbResult.append(text.substring(pair.originalStart
-							        + mEnd - pair.replacedStart,
-							    pair.originalEnd));
+							sbResult.append(text.substring(pair.originalStart + mEnd
+							        - pair.replacedStart, pair.originalEnd));
 						}
 						else {
 							if (pair.mIsTag) {
-								sbResult.append(text.substring(
-								    pair.originalStart, pair.originalEnd));
+								sbResult.append(text
+								    .substring(pair.originalStart, pair.originalEnd));
 							}
 						}
 						break;
 					case 2:
-						sbResult.append(text.substring(pair.originalStart,
-						    pair.originalEnd));
+						sbResult.append(text.substring(pair.originalStart, pair.originalEnd));
 						break;
 				}
 			}
@@ -450,13 +427,13 @@ public class HtmlTools {
 		try {
 			final SAXParserFactory factory = SAXParserFactory.newInstance();
 			factory.setValidating(false);
-			factory.newSAXParser().parse(
-			    new InputSource(new StringReader(xml)), new DefaultHandler());
+			factory.newSAXParser().parse(new InputSource(new StringReader(xml)),
+			    new DefaultHandler());
 			return true;
 		}
 		catch (final SAXParseException e) {
-			Logger.global.log(Level.SEVERE, "XmlParseError on line "
-			        + e.getLineNumber() + " of " + xml, e);
+			Logger.global.log(Level.SEVERE, "XmlParseError on line " + e.getLineNumber() + " of "
+			        + xml, e);
 		}
 		catch (final Exception e) {
 			Logger.global.log(Level.SEVERE, "XmlParseError", e);
@@ -465,8 +442,7 @@ public class HtmlTools {
 	}
 
 	public String toHtml(final String xhtmlText) {
-		return HtmlTools.SLASHED_TAGS_PATTERN.matcher(xhtmlText).replaceAll(
-		    "<$1>");
+		return HtmlTools.SLASHED_TAGS_PATTERN.matcher(xhtmlText).replaceAll("<$1>");
 	}
 
 	public String toXhtml(String htmlText) {

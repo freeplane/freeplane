@@ -28,9 +28,8 @@ public class FreemindVersionInformation {
 	public int mNum = 0;
 	public String mType = "";
 
-	public FreemindVersionInformation(final int pMaj, final int pMid,
-	                                  final int pMin, final String pType,
-	                                  final int pNum) {
+	public FreemindVersionInformation(final int pMaj, final int pMid, final int pMin,
+	                                  final String pType, final int pNum) {
 		super();
 		mMaj = pMaj;
 		mMid = pMid;
@@ -47,8 +46,8 @@ public class FreemindVersionInformation {
 			info[i++] = t.nextToken();
 		}
 		if (info.length != 3 && info.length != 5) {
-			throw new IllegalArgumentException(
-			    "Wrong number of tokens for version information: " + pString);
+			throw new IllegalArgumentException("Wrong number of tokens for version information: "
+			        + pString);
 		}
 		mMaj = Integer.parseInt(info[0]);
 		mMid = Integer.parseInt(info[1]);

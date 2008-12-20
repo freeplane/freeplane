@@ -30,12 +30,9 @@ class ChangeArrowsInArrowLinkAction extends FreeplaneAction {
 	boolean hasEndArrow;
 	boolean hasStartArrow;
 
-	public ChangeArrowsInArrowLinkAction(final MLinkController linkController,
-	                                     final String text,
-	                                     final String iconPath,
-	                                     final ArrowLinkModel arrowLink,
-	                                     final boolean hasStartArrow,
-	                                     final boolean hasEndArrow) {
+	public ChangeArrowsInArrowLinkAction(final MLinkController linkController, final String text,
+	                                     final String iconPath, final ArrowLinkModel arrowLink,
+	                                     final boolean hasStartArrow, final boolean hasEndArrow) {
 		super("change_arrows_in_arrow_link", iconPath);
 		this.arrowLink = arrowLink;
 		this.hasStartArrow = hasStartArrow;
@@ -46,8 +43,7 @@ class ChangeArrowsInArrowLinkAction extends FreeplaneAction {
 		changeArrowsOfArrowLink(arrowLink, hasStartArrow, hasEndArrow);
 	}
 
-	public void changeArrowsOfArrowLink(final ArrowLinkModel link,
-	                                    final boolean hasStartArrow,
+	public void changeArrowsOfArrowLink(final ArrowLinkModel link, final boolean hasStartArrow,
 	                                    final boolean hasEndArrow) {
 		final IUndoableActor actor = new IUndoableActor() {
 			final private String oldEndArrow = link.getEndArrow();
@@ -56,8 +52,7 @@ class ChangeArrowsInArrowLinkAction extends FreeplaneAction {
 			public void act() {
 				link.setStartArrow(hasStartArrow ? "Default" : "None");
 				link.setEndArrow(hasEndArrow ? "Default" : "None");
-				getModeController().getMapController().nodeChanged(
-				    link.getSource());
+				getModeController().getMapController().nodeChanged(link.getSource());
 			}
 
 			public String getDescription() {
@@ -67,8 +62,7 @@ class ChangeArrowsInArrowLinkAction extends FreeplaneAction {
 			public void undo() {
 				link.setStartArrow(oldStartArrow);
 				link.setEndArrow(oldEndArrow);
-				getModeController().getMapController().nodeChanged(
-				    link.getSource());
+				getModeController().getMapController().nodeChanged(link.getSource());
 			}
 		};
 		getMModeController().execute(actor);

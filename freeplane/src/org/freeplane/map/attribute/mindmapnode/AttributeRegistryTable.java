@@ -43,8 +43,7 @@ import org.freeplane.service.filter.util.ISortedListModel;
  * @author Dimitry Polivaev
  */
 class AttributeRegistryTable extends JTable {
-	static private class ButtonEditor extends AbstractCellEditor implements
-	        TableCellEditor {
+	static private class ButtonEditor extends AbstractCellEditor implements TableCellEditor {
 		final private JButton editButton;
 		private Object value;
 
@@ -72,10 +71,8 @@ class AttributeRegistryTable extends JTable {
 		 * javax.swing.table.TableCellEditor#getTableCellEditorComponent(javax
 		 * .swing.JTable, java.lang.Object, boolean, int, int)
 		 */
-		public Component getTableCellEditorComponent(final JTable table,
-		                                             final Object value,
-		                                             final boolean isSelected,
-		                                             final int row,
+		public Component getTableCellEditorComponent(final JTable table, final Object value,
+		                                             final boolean isSelected, final int row,
 		                                             final int column) {
 			this.value = value;
 			return editButton;
@@ -101,12 +98,9 @@ class AttributeRegistryTable extends JTable {
 		 * javax.swing.table.TableCellRenderer#getTableCellRendererComponent
 		 * (javax.swing.JTable, java.lang.Object, boolean, boolean, int, int)
 		 */
-		public Component getTableCellRendererComponent(
-		                                               final JTable table,
-		                                               final Object value,
+		public Component getTableCellRendererComponent(final JTable table, final Object value,
 		                                               final boolean isSelected,
-		                                               final boolean hasFocus,
-		                                               final int row,
+		                                               final boolean hasFocus, final int row,
 		                                               final int column) {
 			return renderingEditButton;
 		}
@@ -130,28 +124,23 @@ class AttributeRegistryTable extends JTable {
 		}
 	}
 
-	static final private Icon checkBoxImage = new ImageIcon(Controller
-	    .getResourceController().getResource("images/checkbox12.png"));
+	static final private Icon checkBoxImage = new ImageIcon(Controller.getResourceController()
+	    .getResource("images/checkbox12.png"));
 	private static final ButtonRenderer editButtonRenderer = new ButtonRenderer(
-	    AttributeManagerDialog.editButtonImage, Controller
-	        .getText("attributes_edit_tooltip"));
+	    AttributeManagerDialog.editButtonImage, Controller.getText("attributes_edit_tooltip"));
 	final private AttributeManagerDialog.EditListAction editListAction;
 	final private ButtonEditor selectAllButtonEditor;
 	final private ButtonRenderer selectAllButtonRenderer;
 
-	public AttributeRegistryTable(
-	                              final AttributeManagerDialog.EditListAction editListAction) {
+	public AttributeRegistryTable(final AttributeManagerDialog.EditListAction editListAction) {
 		super();
 		this.editListAction = editListAction;
 		getTableHeader().setReorderingAllowed(false);
-		selectAllButtonRenderer = new ButtonRenderer(
-		    AttributeRegistryTable.checkBoxImage, Controller
-		        .getText("attributes_select_all_tooltip"));
+		selectAllButtonRenderer = new ButtonRenderer(AttributeRegistryTable.checkBoxImage,
+		    Controller.getText("attributes_select_all_tooltip"));
 		selectAllButtonEditor = new ButtonEditor(new ToggleAllAction());
-		setDefaultEditor(ISortedListModel.class, new ButtonEditor(
-		    editListAction));
-		setDefaultRenderer(ISortedListModel.class,
-		    AttributeRegistryTable.editButtonRenderer);
+		setDefaultEditor(ISortedListModel.class, new ButtonEditor(editListAction));
+		setDefaultRenderer(ISortedListModel.class, AttributeRegistryTable.editButtonRenderer);
 		setRowHeight(20);
 		setRowSelectionAllowed(false);
 	}
@@ -169,8 +158,7 @@ class AttributeRegistryTable extends JTable {
 		if (row == 0 && column == 1) {
 			return selectAllButtonRenderer;
 		}
-		final TableCellRenderer tableCellRenderer = super.getCellRenderer(row,
-		    column);
+		final TableCellRenderer tableCellRenderer = super.getCellRenderer(row, column);
 		if (tableCellRenderer instanceof JLabel) {
 			final JLabel label = (JLabel) tableCellRenderer;
 			if (row == 0) {
@@ -184,14 +172,12 @@ class AttributeRegistryTable extends JTable {
 			final JComponent label = (JComponent) tableCellRenderer;
 			switch (column) {
 				case 1:
-					label.setToolTipText(Controller
-					    .getText("attributes_visible_tooltip"));
+					label.setToolTipText(Controller.getText("attributes_visible_tooltip"));
 					break;
 				case 2:
 					if (row == 0) {
-						label
-						    .setToolTipText(Controller
-						        .getText("attributes_restricted_attributes_tooltip"));
+						label.setToolTipText(Controller
+						    .getText("attributes_restricted_attributes_tooltip"));
 					}
 					else {
 						label.setToolTipText(Controller
@@ -204,14 +190,11 @@ class AttributeRegistryTable extends JTable {
 	}
 
 	@Override
-	public Component prepareEditor(final TableCellEditor editor, final int row,
-	                               final int column) {
+	public Component prepareEditor(final TableCellEditor editor, final int row, final int column) {
 		if (column == 3) {
-			final ISortedListModel list = (ISortedListModel) getModel()
-			    .getValueAt(row, column);
+			final ISortedListModel list = (ISortedListModel) getModel().getValueAt(row, column);
 			final String title = getModel().getValueAt(row, 0).toString();
-			final String labelText = Controller
-			    .getText("attribute_list_box_label_text");
+			final String labelText = Controller.getText("attribute_list_box_label_text");
 			editListAction.setListBoxModel(title, labelText, list);
 		}
 		return super.prepareEditor(editor, row, column);
@@ -224,8 +207,8 @@ class AttributeRegistryTable extends JTable {
 			for (int i = 1; i < getColumnCount(); i++) {
 				getColumnModel().getColumn(i).setMinWidth(20);
 				final int prefWidth = getTableHeader().getDefaultRenderer()
-				    .getTableCellRendererComponent(this, getColumnName(i),
-				        false, false, -1, i).getPreferredSize().width;
+				    .getTableCellRendererComponent(this, getColumnName(i), false, false, -1, i)
+				    .getPreferredSize().width;
 				getColumnModel().getColumn(i).setPreferredWidth(prefWidth);
 			}
 		}

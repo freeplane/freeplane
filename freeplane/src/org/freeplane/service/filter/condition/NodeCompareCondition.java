@@ -31,20 +31,17 @@ class NodeCompareCondition extends CompareConditionAdapter {
 	static final String VALUE = "value";
 
 	static ICondition load(final XMLElement element) {
-		return new NodeCompareCondition(element.getAttribute(
-		    NodeCompareCondition.VALUE, null), Tools.xmlToBoolean(element
-		    .getAttribute(CompareConditionAdapter.IGNORE_CASE, null)), Integer
-		    .parseInt(element.getAttribute(
-		        NodeCompareCondition.COMPARATION_RESULT, null)), Tools
-		    .xmlToBoolean(element.getAttribute(NodeCompareCondition.SUCCEED,
-		        null)));
+		return new NodeCompareCondition(element.getAttribute(NodeCompareCondition.VALUE, null),
+		    Tools.xmlToBoolean(element.getAttribute(CompareConditionAdapter.IGNORE_CASE, null)),
+		    Integer.parseInt(element.getAttribute(NodeCompareCondition.COMPARATION_RESULT, null)),
+		    Tools.xmlToBoolean(element.getAttribute(NodeCompareCondition.SUCCEED, null)));
 	}
 
 	final private int comparationResult;
 	final private boolean succeed;
 
-	NodeCompareCondition(final String value, final boolean ignoreCase,
-	                     final int comparationResult, final boolean succeed) {
+	NodeCompareCondition(final String value, final boolean ignoreCase, final int comparationResult,
+	                     final boolean succeed) {
 		super(value, ignoreCase);
 		this.comparationResult = comparationResult;
 		this.succeed = succeed;
@@ -61,10 +58,8 @@ class NodeCompareCondition extends CompareConditionAdapter {
 
 	@Override
 	protected String createDesctiption() {
-		final String nodeCondition = Controller
-		    .getText(ConditionFactory.FILTER_NODE);
-		return super.createDescription(nodeCondition, comparationResult,
-		    succeed);
+		final String nodeCondition = Controller.getText(ConditionFactory.FILTER_NODE);
+		return super.createDescription(nodeCondition, comparationResult, succeed);
 	}
 
 	public void toXml(final XMLElement element) {
@@ -73,8 +68,7 @@ class NodeCompareCondition extends CompareConditionAdapter {
 		super.attributesToXml(child);
 		child.setAttribute(NodeCompareCondition.COMPARATION_RESULT, Integer
 		    .toString(comparationResult));
-		child.setAttribute(NodeCompareCondition.SUCCEED, Tools
-		    .BooleanToXml(succeed));
+		child.setAttribute(NodeCompareCondition.SUCCEED, Tools.BooleanToXml(succeed));
 		element.addChild(child);
 	}
 }

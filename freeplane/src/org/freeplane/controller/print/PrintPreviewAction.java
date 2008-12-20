@@ -30,8 +30,7 @@ import org.freeplane.ui.MenuBuilder;
 class PrintPreviewAction extends AbstractPrintAction {
 	PrintPreviewAction(final PrintController controller) {
 		super(controller);
-		MenuBuilder.setLabelAndMnemonic(this, Controller
-		    .getText("print_preview"));
+		MenuBuilder.setLabelAndMnemonic(this, Controller.getText("print_preview"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -42,8 +41,7 @@ class PrintPreviewAction extends AbstractPrintAction {
 		final PreviewDialog previewDialog = new PreviewDialog(Controller
 		    .getText("print_preview_title"), mapView);
 		previewDialog.pack();
-		previewDialog.setLocationRelativeTo(JOptionPane
-		    .getFrameForComponent(mapView));
+		previewDialog.setLocationRelativeTo(JOptionPane.getFrameForComponent(mapView));
 		previewDialog.setVisible(true);
 	}
 }

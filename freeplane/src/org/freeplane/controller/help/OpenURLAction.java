@@ -35,20 +35,18 @@ class OpenURLAction extends AbstractAction {
 	final private String url;
 
 	OpenURLAction(final String description, final String url) {
-		super(null, new ImageIcon(Controller.getResourceController()
-		    .getResource("images/Link.png")));
+		super(null,
+		    new ImageIcon(Controller.getResourceController().getResource("images/Link.png")));
 		MenuBuilder.setLabelAndMnemonic(this, description);
 		this.url = url;
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		try {
-			Controller.getController().getViewController().openDocument(
-			    new URL(url));
+			Controller.getController().getViewController().openDocument(new URL(url));
 		}
 		catch (final MalformedURLException ex) {
-			Controller.getController().errorMessage(
-			    Controller.getText("url_error") + "\n" + ex);
+			Controller.getController().errorMessage(Controller.getText("url_error") + "\n" + ex);
 		}
 		catch (final Exception ex) {
 			Controller.getController().errorMessage(ex);

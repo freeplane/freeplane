@@ -71,17 +71,12 @@ public class ApplicationViewController extends ViewController {
 	public void exit() {
 		final int winState = frame.getExtendedState();
 		if (JFrame.MAXIMIZED_BOTH != (winState & JFrame.MAXIMIZED_BOTH)) {
-			resourceController.setProperty("appwindow_x", String.valueOf(frame
-			    .getX()));
-			resourceController.setProperty("appwindow_y", String.valueOf(frame
-			    .getY()));
-			resourceController.setProperty("appwindow_width", String
-			    .valueOf(frame.getWidth()));
-			resourceController.setProperty("appwindow_height", String
-			    .valueOf(frame.getHeight()));
+			resourceController.setProperty("appwindow_x", String.valueOf(frame.getX()));
+			resourceController.setProperty("appwindow_y", String.valueOf(frame.getY()));
+			resourceController.setProperty("appwindow_width", String.valueOf(frame.getWidth()));
+			resourceController.setProperty("appwindow_height", String.valueOf(frame.getHeight()));
 		}
-		resourceController.setProperty("appwindow_state", String
-		    .valueOf(winState));
+		resourceController.setProperty("appwindow_state", String.valueOf(winState));
 		resourceController.saveProperties();
 		System.exit(0);
 	}
@@ -129,20 +124,16 @@ public class ApplicationViewController extends ViewController {
 		getContentPane().setLayout(new BorderLayout());
 		super.init();
 		if (Controller.getResourceController().getBoolProperty("no_scrollbar")) {
-			getScrollPane().setVerticalScrollBarPolicy(
-			    JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-			getScrollPane().setHorizontalScrollBarPolicy(
-			    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+			getScrollPane().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+			getScrollPane().setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		}
 		else {
-			getScrollPane().setVerticalScrollBarPolicy(
-			    JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-			getScrollPane().setHorizontalScrollBarPolicy(
-			    JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+			getScrollPane().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+			getScrollPane().setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		}
 		mContentComponent = getScrollPane();
-		final boolean shouldUseTabbedPane = Controller.getResourceController()
-		    .getBoolProperty(ResourceController.RESOURCES_USE_TABBED_PANE);
+		final boolean shouldUseTabbedPane = Controller.getResourceController().getBoolProperty(
+		    ResourceController.RESOURCES_USE_TABBED_PANE);
 		if (shouldUseTabbedPane) {
 			mapViewManager = new MapViewTabs(this, mContentComponent);
 		}
@@ -154,67 +145,55 @@ public class ApplicationViewController extends ViewController {
 		frame.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(final WindowEvent e) {
-				Controller.getController().quit(
-				    new ActionEvent(this, 0, "quit"));
+				Controller.getController().quit(new ActionEvent(this, 0, "quit"));
 			}
 			/*
 			 * fc, 14.3.2008: Completely removed, as it damaged the focus if for
 			 * example the note window was active.
 			 */
 		});
-		if (Tools.safeEquals(Controller.getResourceController().getProperty(
-		    "toolbarVisible"), "false")) {
-			Controller.getController().getViewController().setToolbarVisible(
-			    false);
+		if (Tools.safeEquals(Controller.getResourceController().getProperty("toolbarVisible"),
+		    "false")) {
+			Controller.getController().getViewController().setToolbarVisible(false);
 		}
-		if (Tools.safeEquals(Controller.getResourceController().getProperty(
-		    "leftToolbarVisible"), "false")) {
-			Controller.getController().getViewController()
-			    .setLeftToolbarVisible(false);
+		if (Tools.safeEquals(Controller.getResourceController().getProperty("leftToolbarVisible"),
+		    "false")) {
+			Controller.getController().getViewController().setLeftToolbarVisible(false);
 		}
 		frame.setFocusTraversalKeysEnabled(false);
 		frame.pack();
-		int win_width = Controller.getResourceController().getIntProperty(
-		    "appwindow_width", 0);
-		int win_height = Controller.getResourceController().getIntProperty(
-		    "appwindow_height", 0);
-		int win_x = Controller.getResourceController().getIntProperty(
-		    "appwindow_x", 0);
-		int win_y = Controller.getResourceController().getIntProperty(
-		    "appwindow_y", 0);
+		int win_width = Controller.getResourceController().getIntProperty("appwindow_width", 0);
+		int win_height = Controller.getResourceController().getIntProperty("appwindow_height", 0);
+		int win_x = Controller.getResourceController().getIntProperty("appwindow_x", 0);
+		int win_y = Controller.getResourceController().getIntProperty("appwindow_y", 0);
 		win_width = (win_width > 0) ? win_width : 640;
 		win_height = (win_height > 0) ? win_height : 440;
 		final Toolkit defaultToolkit = Toolkit.getDefaultToolkit();
-		final Insets screenInsets = defaultToolkit.getScreenInsets(frame
-		    .getGraphicsConfiguration());
+		final Insets screenInsets = defaultToolkit
+		    .getScreenInsets(frame.getGraphicsConfiguration());
 		final Dimension screenSize = defaultToolkit.getScreenSize();
-		final int screenWidth = screenSize.width - screenInsets.left
-		        - screenInsets.right;
+		final int screenWidth = screenSize.width - screenInsets.left - screenInsets.right;
 		win_width = Math.min(win_width, screenWidth);
-		final int screenHeight = screenSize.height - screenInsets.top
-		        - screenInsets.bottom;
+		final int screenHeight = screenSize.height - screenInsets.top - screenInsets.bottom;
 		win_height = Math.min(win_height, screenHeight);
 		win_x = Math.max(screenInsets.left, win_x);
 		win_x = Math.min(screenWidth + screenInsets.left - win_width, win_x);
 		win_y = Math.max(screenInsets.top, win_y);
 		win_y = Math.min(screenWidth + screenInsets.top - win_height, win_y);
 		frame.setBounds(win_x, win_y, win_width, win_height);
-		int win_state = Integer.parseInt(Controller.getResourceController()
-		    .getProperty("appwindow_state", "0"));
-		win_state = ((win_state & Frame.ICONIFIED) != 0) ? Frame.NORMAL
-		        : win_state;
+		int win_state = Integer.parseInt(Controller.getResourceController().getProperty(
+		    "appwindow_state", "0"));
+		win_state = ((win_state & Frame.ICONIFIED) != 0) ? Frame.NORMAL : win_state;
 		frame.setExtendedState(win_state);
 	}
 
 	@Override
-	public JSplitPane insertComponentIntoSplitPane(
-	                                               final JComponent pMindMapComponent) {
+	public JSplitPane insertComponentIntoSplitPane(final JComponent pMindMapComponent) {
 		if (mSplitPane != null) {
 			return mSplitPane;
 		}
 		removeContentComponent();
-		mSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, getScrollPane(),
-		    pMindMapComponent);
+		mSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, getScrollPane(), pMindMapComponent);
 		mSplitPane.setContinuousLayout(true);
 		mSplitPane.setOneTouchExpandable(false);
 		/*
@@ -222,19 +201,17 @@ public class ApplicationViewController extends ViewController {
 		 * from resizing the window.
 		 */
 		mSplitPane.setResizeWeight(1.0d);
-		final InputMap map = (InputMap) UIManager
-		    .get("SplitPane.ancestorInputMap");
+		final InputMap map = (InputMap) UIManager.get("SplitPane.ancestorInputMap");
 		final KeyStroke keyStrokeF6 = KeyStroke.getKeyStroke(KeyEvent.VK_F6, 0);
 		final KeyStroke keyStrokeF8 = KeyStroke.getKeyStroke(KeyEvent.VK_F8, 0);
 		map.remove(keyStrokeF6);
 		map.remove(keyStrokeF8);
 		mContentComponent = mSplitPane;
 		setContentComponent();
-		final int splitPanePosition = Controller.getResourceController()
-		    .getIntProperty(ApplicationViewController.SPLIT_PANE_POSITION, -1);
-		final int lastSplitPanePosition = Controller.getResourceController()
-		    .getIntProperty(ApplicationViewController.SPLIT_PANE_LAST_POSITION,
-		        -1);
+		final int splitPanePosition = Controller.getResourceController().getIntProperty(
+		    ApplicationViewController.SPLIT_PANE_POSITION, -1);
+		final int lastSplitPanePosition = Controller.getResourceController().getIntProperty(
+		    ApplicationViewController.SPLIT_PANE_LAST_POSITION, -1);
 		if (splitPanePosition != -1 && lastSplitPanePosition != -1) {
 			mSplitPane.setDividerLocation(splitPanePosition);
 			mSplitPane.setLastDividerLocation(lastSplitPanePosition);
@@ -255,13 +232,11 @@ public class ApplicationViewController extends ViewController {
 	public void openDocument(final URL url) throws Exception {
 		String correctedUrl = new String(url.toExternalForm());
 		if (url.getProtocol().equals("file")) {
-			correctedUrl = correctedUrl.replace('\\', '/').replaceAll(" ",
-			    "%20");
+			correctedUrl = correctedUrl.replace('\\', '/').replaceAll(" ", "%20");
 		}
 		final String osName = System.getProperty("os.name");
 		if (osName.substring(0, 3).equals("Win")) {
-			String propertyString = new String(
-			    "default_browser_command_windows");
+			String propertyString = new String("default_browser_command_windows");
 			if (osName.indexOf("9") != -1 || osName.indexOf("Me") != -1) {
 				propertyString += "_9x";
 			}
@@ -276,17 +251,13 @@ public class ApplicationViewController extends ViewController {
 				    .getResourceController().getProperty(propertyString));
 				browser_command = formatter.format(messageArguments);
 				if (url.getProtocol().equals("file")) {
-					command = "rundll32 url.dll,FileProtocolHandler "
-					        + url.toString();
-					if (System.getProperty("os.name")
-					    .startsWith("Windows 2000")) {
-						command = "rundll32 shell32.dll,ShellExec_RunDLL "
-						        + url.toString();
+					command = "rundll32 url.dll,FileProtocolHandler " + url.toString();
+					if (System.getProperty("os.name").startsWith("Windows 2000")) {
+						command = "rundll32 shell32.dll,ShellExec_RunDLL " + url.toString();
 					}
 				}
 				else if (url.toString().startsWith("mailto:")) {
-					command = "rundll32 url.dll,FileProtocolHandler "
-					        + url.toString();
+					command = "rundll32 url.dll,FileProtocolHandler " + url.toString();
 				}
 				else {
 					command = browser_command;
@@ -294,24 +265,20 @@ public class ApplicationViewController extends ViewController {
 				Runtime.getRuntime().exec(command);
 			}
 			catch (final IOException x) {
-				Controller
-				    .getController()
-				    .errorMessage(
-				        "Could not invoke browser.\n\nFreemind excecuted the following statement on a command line:\n\""
-				                + command
-				                + "\".\n\nYou may look at the user or default property called '"
-				                + propertyString + "'.");
+				Controller.getController().errorMessage(
+				    "Could not invoke browser.\n\nFreemind excecuted the following statement on a command line:\n\""
+				            + command
+				            + "\".\n\nYou may look at the user or default property called '"
+				            + propertyString + "'.");
 				System.err.println("Caught: " + x);
 			}
 		}
 		else if (osName.startsWith("Mac OS")) {
 			String browser_command = new String();
 			try {
-				final Object[] messageArguments = { correctedUrl,
-				        url.toString() };
+				final Object[] messageArguments = { correctedUrl, url.toString() };
 				final MessageFormat formatter = new MessageFormat(Controller
-				    .getResourceController().getProperty(
-				        "default_browser_command_mac"));
+				    .getResourceController().getProperty("default_browser_command_mac"));
 				browser_command = formatter.format(messageArguments);
 				Runtime.getRuntime().exec(browser_command);
 			}
@@ -328,11 +295,9 @@ public class ApplicationViewController extends ViewController {
 		else {
 			String browser_command = new String();
 			try {
-				final Object[] messageArguments = { correctedUrl,
-				        url.toString() };
+				final Object[] messageArguments = { correctedUrl, url.toString() };
 				final MessageFormat formatter = new MessageFormat(Controller
-				    .getResourceController().getProperty(
-				        "default_browser_command_other_os"));
+				    .getResourceController().getProperty("default_browser_command_other_os"));
 				browser_command = formatter.format(messageArguments);
 				Runtime.getRuntime().exec(browser_command);
 			}
@@ -361,12 +326,10 @@ public class ApplicationViewController extends ViewController {
 	@Override
 	public void removeSplitPane() {
 		if (mSplitPane != null) {
-			resourceController.setProperty(
-			    ApplicationViewController.SPLIT_PANE_POSITION, ""
-			            + mSplitPane.getDividerLocation());
-			resourceController.setProperty(
-			    ApplicationViewController.SPLIT_PANE_LAST_POSITION, ""
-			            + mSplitPane.getLastDividerLocation());
+			resourceController.setProperty(ApplicationViewController.SPLIT_PANE_POSITION, ""
+			        + mSplitPane.getDividerLocation());
+			resourceController.setProperty(ApplicationViewController.SPLIT_PANE_LAST_POSITION, ""
+			        + mSplitPane.getLastDividerLocation());
 			removeContentComponent();
 			mContentComponent = getScrollPane();
 			setContentComponent();

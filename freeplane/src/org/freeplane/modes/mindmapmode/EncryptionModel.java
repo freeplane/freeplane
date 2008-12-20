@@ -75,8 +75,7 @@ public class EncryptionModel implements IExtension {
 	public boolean checkPassword(final StringBuffer givenPassword) {
 		if (password != null) {
 			if (!equals(givenPassword, password)) {
-				EncryptionModel.logger
-				    .warning("Wrong password supplied (cached!=given).");
+				EncryptionModel.logger.warning("Wrong password supplied (cached!=given).");
 				return false;
 			}
 			return true;
@@ -84,8 +83,7 @@ public class EncryptionModel implements IExtension {
 		final String decryptedNode = decryptXml(encryptedContent, givenPassword);
 		if (decryptedNode == null || decryptedNode.equals("")
 		        || !decryptedNode.startsWith("<node ")) {
-			EncryptionModel.logger
-			    .warning("Wrong password supplied (stored!=given).");
+			EncryptionModel.logger.warning("Wrong password supplied (stored!=given).");
 			return false;
 		}
 		password = givenPassword;
@@ -103,8 +101,7 @@ public class EncryptionModel implements IExtension {
 		if (!isDecrypted) {
 			try {
 				final String childXml = decryptXml(encryptedContent, password);
-				final String[] childs = childXml
-				    .split(ModeController.NODESEPARATOR);
+				final String[] childs = childXml.split(ModeController.NODESEPARATOR);
 				for (int i = childs.length - 1; i >= 0; i--) {
 					final String string = childs[i];
 					if (string.length() == 0) {
@@ -112,9 +109,8 @@ public class EncryptionModel implements IExtension {
 					}
 					final MModeController modeController = (MModeController) node
 					    .getModeController();
-					((MClipboardController) modeController
-					    .getClipboardController()).pasteXMLWithoutRedisplay(
-					    string, node, false, false, false);
+					((MClipboardController) modeController.getClipboardController())
+					    .pasteXMLWithoutRedisplay(string, node, false, false, false);
 				}
 				isDecrypted = true;
 			}
@@ -131,8 +127,7 @@ public class EncryptionModel implements IExtension {
 	/**
 	 * @return null if the password is wrong.
 	 */
-	private String decryptXml(final String encryptedString,
-	                          final StringBuffer pwd) {
+	private String decryptXml(final String encryptedString, final StringBuffer pwd) {
 		final SingleDesEncrypter encrypter = new SingleDesEncrypter(pwd);
 		final String decrypted = encrypter.decrypt(encryptedString);
 		return decrypted;
@@ -142,8 +137,7 @@ public class EncryptionModel implements IExtension {
 	 */
 	private String encryptXml(final StringBuffer childXml) {
 		try {
-			final SingleDesEncrypter encrypter = new SingleDesEncrypter(
-			    password);
+			final SingleDesEncrypter encrypter = new SingleDesEncrypter(password);
 			final String encrypted = encrypter.encrypt(childXml.toString());
 			return encrypted;
 		}
@@ -155,8 +149,7 @@ public class EncryptionModel implements IExtension {
 
 	/**
 	 */
-	private boolean equals(final StringBuffer givenPassword,
-	                       final StringBuffer password2) {
+	private boolean equals(final StringBuffer givenPassword, final StringBuffer password2) {
 		if (givenPassword.length() != password.length()) {
 			return false;
 		}
@@ -175,11 +168,10 @@ public class EncryptionModel implements IExtension {
 	 */
 	private void generateEncryptedContent() throws IOException {
 		final StringWriter sWriter = new StringWriter();
-		for (final Iterator i = node.getModeController().getMapController()
-		    .childrenUnfolded(node); i.hasNext();) {
+		for (final Iterator i = node.getModeController().getMapController().childrenUnfolded(node); i
+		    .hasNext();) {
 			final NodeModel child = (NodeModel) i.next();
-			child.getModeController().getMapController().writeNodeAsXml(
-			    sWriter, child, true, true);
+			child.getModeController().getMapController().writeNodeAsXml(sWriter, child, true, true);
 			if (i.hasNext()) {
 				sWriter.write(ModeController.NODESEPARATOR);
 			}
@@ -205,12 +197,10 @@ public class EncryptionModel implements IExtension {
 			EncryptionModel.logger = Logger.global;
 		}
 		if (EncryptionModel.encryptedIcon == null) {
-			EncryptionModel.encryptedIcon = MindIcon.factory("encrypted")
-			    .getIcon();
+			EncryptionModel.encryptedIcon = MindIcon.factory("encrypted").getIcon();
 		}
 		if (EncryptionModel.decryptedIcon == null) {
-			EncryptionModel.decryptedIcon = MindIcon.factory("decrypted")
-			    .getIcon();
+			EncryptionModel.decryptedIcon = MindIcon.factory("decrypted").getIcon();
 		}
 		updateIcon();
 	}

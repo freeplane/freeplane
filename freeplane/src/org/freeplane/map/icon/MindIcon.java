@@ -129,20 +129,18 @@ public class MindIcon implements Comparable, IIconInformation {
 
 	public ImageIcon getIcon() {
 		if (MindIcon.iconNotFound == null) {
-			MindIcon.iconNotFound = new ImageIcon(Controller
-			    .getResourceController().getResource("images/IconNotFound.png"));
+			MindIcon.iconNotFound = new ImageIcon(Controller.getResourceController().getResource(
+			    "images/IconNotFound.png"));
 		}
 		if (associatedIcon != null) {
 			return associatedIcon;
 		}
 		if (name != null) {
-			URL imageURL = Controller.getResourceController().getResource(
-			    getIconFileName());
+			URL imageURL = Controller.getResourceController().getResource(getIconFileName());
 			if (imageURL == null) {
 				try {
-					final File file = new File(Controller
-					    .getResourceController().getFreemindUserDirectory(),
-					    "icons/" + getName() + ".png");
+					final File file = new File(Controller.getResourceController()
+					    .getFreemindUserDirectory(), "icons/" + getName() + ".png");
 					if (file.canRead()) {
 						imageURL = Tools.fileToUrl(file);
 					}
@@ -150,8 +148,8 @@ public class MindIcon implements Comparable, IIconInformation {
 				catch (final Exception e) {
 				}
 			}
-			final ImageIcon icon = imageURL == null ? MindIcon.iconNotFound
-			        : new ImageIcon(imageURL);
+			final ImageIcon icon = imageURL == null ? MindIcon.iconNotFound : new ImageIcon(
+			    imageURL);
 			setIcon(icon);
 			return icon;
 		}

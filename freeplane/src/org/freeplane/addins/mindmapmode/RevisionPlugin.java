@@ -36,8 +36,7 @@ import org.freeplane.modes.mindmapmode.MModeController;
  */
 @NodeHookDescriptor(hookName = "accessories/plugins/RevisionPlugin.properties")
 @ActionDescriptor(name = "accessories/plugins/RevisionPlugin.properties_name")
-public class RevisionPlugin extends PersistentNodeHook implements
-        INodeChangeListener {
+public class RevisionPlugin extends PersistentNodeHook implements INodeChangeListener {
 	public RevisionPlugin(final MModeController modeController) {
 		super(modeController);
 	}
@@ -53,8 +52,7 @@ public class RevisionPlugin extends PersistentNodeHook implements
 		        && !((MModeController) getModeController()).isUndoAction()) {
 			final MNodeStyleController nodeStyleController = (MNodeStyleController) getModeController()
 			    .getNodeStyleController();
-			nodeStyleController.setBackgroundColor(event.getNode(),
-			    Color.YELLOW);
+			nodeStyleController.setBackgroundColor(event.getNode(), Color.YELLOW);
 		}
 	}
 

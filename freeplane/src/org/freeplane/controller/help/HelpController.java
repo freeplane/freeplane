@@ -35,16 +35,14 @@ public class HelpController {
 		super();
 		final Controller controller = Controller.getController();
 		controller.addAction("about", new AboutAction());
-		controller.addAction("freemindUrl", new OpenURLAction(Controller
-		    .getResourceController().getText("Freeplane"), Controller
-		    .getResourceController().getProperty("webFreeMindLocation")));
-		controller.addAction("faq", new OpenURLAction(Controller
-		    .getResourceController().getText("FAQ"), Controller
-		    .getResourceController().getProperty("webFAQLocation")));
+		controller.addAction("freemindUrl", new OpenURLAction(Controller.getResourceController()
+		    .getText("Freeplane"), Controller.getResourceController().getProperty(
+		    "webFreeMindLocation")));
+		controller.addAction("faq", new OpenURLAction(Controller.getResourceController().getText(
+		    "FAQ"), Controller.getResourceController().getProperty("webFAQLocation")));
 		controller.addAction("keyDocumentation", new KeyDocumentationAction());
-		webDocu = new OpenURLAction(Controller.getResourceController().getText(
-		    "webDocu"), Controller.getResourceController().getProperty(
-		    "webDocuLocation"));
+		webDocu = new OpenURLAction(Controller.getResourceController().getText("webDocu"),
+		    Controller.getResourceController().getProperty("webDocuLocation"));
 		controller.addAction("webDocu", webDocu);
 		controller.addAction("documentation", new DocumentationAction());
 		controller.addAction("license", new LicenseAction());
@@ -53,8 +51,7 @@ public class HelpController {
 	/** Used for MAC!!! */
 	public String convertLocalLink(final String map) {
 		/* new handling for relative urls. fc, 29.10.2003. */
-		final String applicationPath = Controller.getResourceController()
-		    .getFreemindBaseDir();
+		final String applicationPath = Controller.getResourceController().getFreemindBaseDir();
 		return "file:" + applicationPath + map.substring(1);
 		/* end: new handling for relative urls. fc, 29.10.2003. */
 	}

@@ -109,8 +109,7 @@ class CDATAReader extends Reader {
 	 *             if an error occurred reading the data
 	 */
 	@Override
-	public int read(final char[] buffer, final int offset, int size)
-	        throws IOException {
+	public int read(final char[] buffer, final int offset, int size) throws IOException {
 		int charsRead = 0;
 		if (atEndOfData) {
 			return -1;

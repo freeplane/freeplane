@@ -62,8 +62,7 @@ public class StringProperty extends PropertyBean implements IPropertyControl {
 	}
 
 	public void layout(final DefaultFormBuilder builder) {
-		final JLabel label = builder.append(OptionString.getText(getLabel()),
-		    mTextField);
+		final JLabel label = builder.append(OptionString.getText(getLabel()), mTextField);
 		label.setToolTipText(OptionString.getText(getDescription()));
 	}
 

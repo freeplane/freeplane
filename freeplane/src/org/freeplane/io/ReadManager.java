@@ -47,8 +47,7 @@ public class ReadManager {
 	 * @see freeplane.persistence.Reader#addAttributeLoader(java.lang.String,
 	 * freeplane.persistence.AttributeLoader)
 	 */
-	public void addAttributeHandler(final String parentTag,
-	                                final IAttributeHandler a) {
+	public void addAttributeHandler(final String parentTag, final IAttributeHandler a) {
 		attributeHandlers.add(parentTag, a);
 	}
 
@@ -57,8 +56,7 @@ public class ReadManager {
 	 * @see freeplane.persistence.Reader#addNodeContentLoader(java.lang.String,
 	 * freeplane.persistence.NodeContentLoader)
 	 */
-	public void addNodeContentHandler(final String parentTag,
-	                                  final INodeContentHandler nc) {
+	public void addNodeContentHandler(final String parentTag, final INodeContentHandler nc) {
 		nodeContentHandlers.add(parentTag, nc);
 	}
 
@@ -75,8 +73,7 @@ public class ReadManager {
 		readCompletionListeners.add(listener);
 	}
 
-	public void addXMLElementHandler(final String parentTag,
-	                                 final IXMLElementHandler x) {
+	public void addXMLElementHandler(final String parentTag, final IXMLElementHandler x) {
 		xmlHandlers.add(parentTag, x);
 	}
 
@@ -96,10 +93,8 @@ public class ReadManager {
 		return xmlHandlers;
 	}
 
-	public void readingCompleted(final NodeModel topNode,
-	                             final HashMap<String, String> newIds) {
-		final Iterator<IReadCompletionListener> iterator = readCompletionListeners
-		    .iterator();
+	public void readingCompleted(final NodeModel topNode, final HashMap<String, String> newIds) {
+		final Iterator<IReadCompletionListener> iterator = readCompletionListeners.iterator();
 		while (iterator.hasNext()) {
 			iterator.next().readingCompleted(topNode, newIds);
 		}
@@ -110,8 +105,7 @@ public class ReadManager {
 	 * @see freeplane.persistence.Reader#removeAttributeLoader(java.lang.String,
 	 * freeplane.persistence.AttributeLoader)
 	 */
-	public void removeAttributeHandler(final String parentTag,
-	                                   final IAttributeHandler a) {
+	public void removeAttributeHandler(final String parentTag, final IAttributeHandler a) {
 		attributeHandlers.remove(parentTag, a);
 	}
 
@@ -121,8 +115,7 @@ public class ReadManager {
 	 * freeplane.persistence.Reader#removeNodeContentLoader(java.lang.String,
 	 * freeplane.persistence.NodeContentLoader)
 	 */
-	public void removeNodeContentHandler(final String parentTag,
-	                                     final INodeContentHandler n) {
+	public void removeNodeContentHandler(final String parentTag, final INodeContentHandler n) {
 		nodeContentHandlers.remove(parentTag, n);
 	}
 
@@ -135,13 +128,11 @@ public class ReadManager {
 		nodeCreators.remove(parentTag, nc);
 	}
 
-	public void removeReadCompletionListener(
-	                                         final IReadCompletionListener listener) {
+	public void removeReadCompletionListener(final IReadCompletionListener listener) {
 		readCompletionListeners.remove(listener);
 	}
 
-	public void removeXMLElementHandler(final String parentTag,
-	                                    final IXMLElementHandler x) {
+	public void removeXMLElementHandler(final String parentTag, final IXMLElementHandler x) {
 		xmlHandlers.remove(parentTag, x);
 	}
 }

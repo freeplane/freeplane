@@ -61,8 +61,7 @@ import deprecated.freemind.preferences.layout.OptionString;
 /**
  * @author foltin
  */
-public class StylePatternPanel extends JPanel implements ITextTranslator,
-        PropertyChangeListener {
+public class StylePatternPanel extends JPanel implements ITextTranslator, PropertyChangeListener {
 	final private class EdgeWidthBackTransformer implements IValueTransformator {
 		public String transform(final String value) {
 			return transformStringToWidth(value);
@@ -97,13 +96,12 @@ public class StylePatternPanel extends JPanel implements ITextTranslator,
 	private static final String CLEAR_ALL_SETTERS = "clear_all_setters";
 	private static final String EDGE_COLOR = "edgecolor";
 	private static final String EDGE_STYLE = "edgestyle";
-	private static final String[] EDGE_STYLES = new String[] {
-	        EdgeModel.EDGESTYLE_LINEAR, EdgeModel.EDGESTYLE_BEZIER,
-	        EdgeModel.EDGESTYLE_SHARP_LINEAR, EdgeModel.EDGESTYLE_SHARP_BEZIER };
+	private static final String[] EDGE_STYLES = new String[] { EdgeModel.EDGESTYLE_LINEAR,
+	        EdgeModel.EDGESTYLE_BEZIER, EdgeModel.EDGESTYLE_SHARP_LINEAR,
+	        EdgeModel.EDGESTYLE_SHARP_BEZIER };
 	private static final String EDGE_WIDTH = "edgewidth";
-	private static final String[] EDGE_WIDTHS = new String[] {
-	        "EdgeWidth_parent", "EdgeWidth_thin", "EdgeWidth_1", "EdgeWidth_2",
-	        "EdgeWidth_4", "EdgeWidth_8" };
+	private static final String[] EDGE_WIDTHS = new String[] { "EdgeWidth_parent",
+	        "EdgeWidth_thin", "EdgeWidth_1", "EdgeWidth_2", "EdgeWidth_4", "EdgeWidth_8" };
 	private static final String ICON = "icon";
 	private static final String NODE_BACKGROUND_COLOR = "nodebackgroundcolor";
 	private static final String NODE_COLOR = "nodecolor";
@@ -170,15 +168,14 @@ public class StylePatternPanel extends JPanel implements ITextTranslator,
 	private ThreeCheckBoxProperty mSetNodeText;
 	private ThreeCheckBoxProperty mSetScriptPattern;
 	final private StylePatternPanelType mType;
-	final private String[] sizes = new String[] { "2", "4", "6", "8", "10",
-	        "12", "14", "16", "18", "20", "22", "24", "30", "36", "48", "72" };
+	final private String[] sizes = new String[] { "2", "4", "6", "8", "10", "12", "14", "16", "18",
+	        "20", "22", "24", "30", "36", "48", "72" };
 
 	/**
 	 * @throws HeadlessException
 	 */
 	public StylePatternPanel(final MModeController pMindMapController,
-	                         final StylePatternPanelType pType)
-	        throws HeadlessException {
+	                         final StylePatternPanelType pType) throws HeadlessException {
 		super();
 		mMindMapController = pMindMapController;
 		mType = pType;
@@ -194,10 +191,9 @@ public class StylePatternPanel extends JPanel implements ITextTranslator,
 		}
 		mClearSetters.addPropertyChangeListener(new PropertyChangeListener() {
 			public void propertyChange(final PropertyChangeEvent pEvt) {
-				for (final Iterator iter = mPropertyChangePropagation.keySet()
-				    .iterator(); iter.hasNext();) {
-					final ThreeCheckBoxProperty booleanProp = (ThreeCheckBoxProperty) iter
-					    .next();
+				for (final Iterator iter = mPropertyChangePropagation.keySet().iterator(); iter
+				    .hasNext();) {
+					final ThreeCheckBoxProperty booleanProp = (ThreeCheckBoxProperty) iter.next();
 					booleanProp.setValue(mClearSetters.getValue());
 				}
 			}
@@ -207,153 +203,128 @@ public class StylePatternPanel extends JPanel implements ITextTranslator,
 	private Vector getControls() {
 		final Vector controls = new Vector();
 		controls.add(new SeparatorProperty("General"));
-		mClearSetters = new ThreeCheckBoxProperty(
-		    StylePatternPanel.CLEAR_ALL_SETTERS + ".tooltip",
+		mClearSetters = new ThreeCheckBoxProperty(StylePatternPanel.CLEAR_ALL_SETTERS + ".tooltip",
 		    StylePatternPanel.CLEAR_ALL_SETTERS);
 		mClearSetters.setValue(ThreeCheckBoxProperty.TRUE_VALUE);
 		controls.add(mClearSetters);
 		if (StylePatternPanelType.WITH_NAME_AND_CHILDS.equals(mType)) {
-			mName = new StringProperty(
-			    StylePatternPanel.NODE_NAME + ".tooltip",
+			mName = new StringProperty(StylePatternPanel.NODE_NAME + ".tooltip",
 			    StylePatternPanel.NODE_NAME);
 			controls.add(mName);
-			mSetChildPattern = new ThreeCheckBoxProperty(
-			    StylePatternPanel.SET_CHILD_PATTERN + ".tooltip",
-			    StylePatternPanel.SET_CHILD_PATTERN);
+			mSetChildPattern = new ThreeCheckBoxProperty(StylePatternPanel.SET_CHILD_PATTERN
+			        + ".tooltip", StylePatternPanel.SET_CHILD_PATTERN);
 			controls.add(mSetChildPattern);
 			final Vector childNames = new Vector();
-			mChildPattern = new ComboProperty(StylePatternPanel.CHILD_PATTERN
-			        + ".tooltip", StylePatternPanel.CHILD_PATTERN, childNames,
-			    childNames);
+			mChildPattern = new ComboProperty(StylePatternPanel.CHILD_PATTERN + ".tooltip",
+			    StylePatternPanel.CHILD_PATTERN, childNames, childNames);
 			controls.add(mChildPattern);
 		}
 		controls.add(new NextLineProperty());
 		controls.add(new SeparatorProperty("NodeColors"));
-		mSetNodeColor = new ThreeCheckBoxProperty(
-		    StylePatternPanel.SET_NODE_COLOR + ".tooltip",
+		mSetNodeColor = new ThreeCheckBoxProperty(StylePatternPanel.SET_NODE_COLOR + ".tooltip",
 		    StylePatternPanel.SET_NODE_COLOR);
 		controls.add(mSetNodeColor);
-		mNodeColor = new ColorProperty(StylePatternPanel.NODE_COLOR
-		        + ".tooltip", StylePatternPanel.NODE_COLOR, Controller
-		    .getResourceController().getDefaultProperty(
+		mNodeColor = new ColorProperty(StylePatternPanel.NODE_COLOR + ".tooltip",
+		    StylePatternPanel.NODE_COLOR, Controller.getResourceController().getDefaultProperty(
 		        ResourceController.RESOURCES_NODE_TEXT_COLOR));
 		controls.add(mNodeColor);
 		mSetNodeBackgroundColor = new ThreeCheckBoxProperty(
 		    StylePatternPanel.SET_NODE_BACKGROUND_COLOR + ".tooltip",
 		    StylePatternPanel.SET_NODE_BACKGROUND_COLOR);
 		controls.add(mSetNodeBackgroundColor);
-		mNodeBackgroundColor = new ColorProperty(
-		    StylePatternPanel.NODE_BACKGROUND_COLOR + ".tooltip",
-		    StylePatternPanel.NODE_BACKGROUND_COLOR, Controller
-		        .getResourceController().getDefaultProperty(
-		            ResourceController.RESOURCES_BACKGROUND_COLOR));
+		mNodeBackgroundColor = new ColorProperty(StylePatternPanel.NODE_BACKGROUND_COLOR
+		        + ".tooltip", StylePatternPanel.NODE_BACKGROUND_COLOR, Controller
+		    .getResourceController().getDefaultProperty(
+		        ResourceController.RESOURCES_BACKGROUND_COLOR));
 		controls.add(mNodeBackgroundColor);
 		controls.add(new SeparatorProperty("NodeStyles"));
-		mSetNodeStyle = new ThreeCheckBoxProperty(
-		    StylePatternPanel.SET_NODE_STYLE + ".tooltip",
+		mSetNodeStyle = new ThreeCheckBoxProperty(StylePatternPanel.SET_NODE_STYLE + ".tooltip",
 		    StylePatternPanel.SET_NODE_STYLE);
 		controls.add(mSetNodeStyle);
-		mNodeStyle = new ComboProperty(StylePatternPanel.NODE_STYLE
-		        + ".tooltip", StylePatternPanel.NODE_STYLE,
-		    NodeStyleModel.NODE_STYLES);
+		mNodeStyle = new ComboProperty(StylePatternPanel.NODE_STYLE + ".tooltip",
+		    StylePatternPanel.NODE_STYLE, NodeStyleModel.NODE_STYLES);
 		controls.add(mNodeStyle);
 		mIconInformationVector = new Vector();
 		final MModeController controller = mMindMapController;
-		final Collection mindIcons = ((MIconController) controller
-		    .getIconController()).getMindIcons();
+		final Collection mindIcons = ((MIconController) controller.getIconController())
+		    .getMindIcons();
 		mIconInformationVector.addAll(mindIcons);
-		mSetIcon = new ThreeCheckBoxProperty(StylePatternPanel.SET_ICON
-		        + ".tooltip", StylePatternPanel.SET_ICON);
+		mSetIcon = new ThreeCheckBoxProperty(StylePatternPanel.SET_ICON + ".tooltip",
+		    StylePatternPanel.SET_ICON);
 		controls.add(mSetIcon);
-		mIcon = new IconProperty(StylePatternPanel.ICON + ".tooltip",
-		    StylePatternPanel.ICON, mIconInformationVector);
+		mIcon = new IconProperty(StylePatternPanel.ICON + ".tooltip", StylePatternPanel.ICON,
+		    mIconInformationVector);
 		controls.add(mIcon);
 		controls.add(new NextLineProperty());
 		controls.add(new SeparatorProperty("NodeFont"));
-		mSetNodeFontName = new ThreeCheckBoxProperty(
-		    StylePatternPanel.SET_NODE_FONT_NAME + ".tooltip",
-		    StylePatternPanel.SET_NODE_FONT_NAME);
+		mSetNodeFontName = new ThreeCheckBoxProperty(StylePatternPanel.SET_NODE_FONT_NAME
+		        + ".tooltip", StylePatternPanel.SET_NODE_FONT_NAME);
 		controls.add(mSetNodeFontName);
-		mNodeFontName = new FontProperty(StylePatternPanel.NODE_FONT_NAME
-		        + ".tooltip", StylePatternPanel.NODE_FONT_NAME);
+		mNodeFontName = new FontProperty(StylePatternPanel.NODE_FONT_NAME + ".tooltip",
+		    StylePatternPanel.NODE_FONT_NAME);
 		controls.add(mNodeFontName);
-		mSetNodeFontSize = new ThreeCheckBoxProperty(
-		    StylePatternPanel.SET_NODE_FONT_SIZE + ".tooltip",
-		    StylePatternPanel.SET_NODE_FONT_SIZE);
+		mSetNodeFontSize = new ThreeCheckBoxProperty(StylePatternPanel.SET_NODE_FONT_SIZE
+		        + ".tooltip", StylePatternPanel.SET_NODE_FONT_SIZE);
 		controls.add(mSetNodeFontSize);
 		final Vector sizesVector = new Vector();
 		for (int i = 0; i < sizes.length; i++) {
 			sizesVector.add(sizes[i]);
 		}
-		mNodeFontSize = new ComboProperty(StylePatternPanel.NODE_FONT_SIZE
-		        + ".tooltip", StylePatternPanel.NODE_FONT_SIZE, sizes,
-		    sizesVector);
+		mNodeFontSize = new ComboProperty(StylePatternPanel.NODE_FONT_SIZE + ".tooltip",
+		    StylePatternPanel.NODE_FONT_SIZE, sizes, sizesVector);
 		controls.add(mNodeFontSize);
-		mSetNodeFontBold = new ThreeCheckBoxProperty(
-		    StylePatternPanel.SET_NODE_FONT_BOLD + ".tooltip",
-		    StylePatternPanel.SET_NODE_FONT_BOLD);
+		mSetNodeFontBold = new ThreeCheckBoxProperty(StylePatternPanel.SET_NODE_FONT_BOLD
+		        + ".tooltip", StylePatternPanel.SET_NODE_FONT_BOLD);
 		controls.add(mSetNodeFontBold);
-		mNodeFontBold = new BooleanProperty(StylePatternPanel.NODE_FONT_BOLD
-		        + ".tooltip", StylePatternPanel.NODE_FONT_BOLD);
+		mNodeFontBold = new BooleanProperty(StylePatternPanel.NODE_FONT_BOLD + ".tooltip",
+		    StylePatternPanel.NODE_FONT_BOLD);
 		controls.add(mNodeFontBold);
-		mSetNodeFontItalic = new ThreeCheckBoxProperty(
-		    StylePatternPanel.SET_NODE_FONT_ITALIC + ".tooltip",
-		    StylePatternPanel.SET_NODE_FONT_ITALIC);
+		mSetNodeFontItalic = new ThreeCheckBoxProperty(StylePatternPanel.SET_NODE_FONT_ITALIC
+		        + ".tooltip", StylePatternPanel.SET_NODE_FONT_ITALIC);
 		controls.add(mSetNodeFontItalic);
-		mNodeFontItalic = new BooleanProperty(
-		    StylePatternPanel.NODE_FONT_ITALIC + ".tooltip",
+		mNodeFontItalic = new BooleanProperty(StylePatternPanel.NODE_FONT_ITALIC + ".tooltip",
 		    StylePatternPanel.NODE_FONT_ITALIC);
 		controls.add(mNodeFontItalic);
 		/* **** */
-		mSetNodeText = new ThreeCheckBoxProperty(
-		    StylePatternPanel.SET_NODE_TEXT + ".tooltip",
+		mSetNodeText = new ThreeCheckBoxProperty(StylePatternPanel.SET_NODE_TEXT + ".tooltip",
 		    StylePatternPanel.SET_NODE_TEXT);
 		controls.add(mSetNodeText);
-		mNodeText = new StringProperty(
-		    StylePatternPanel.NODE_TEXT + ".tooltip",
+		mNodeText = new StringProperty(StylePatternPanel.NODE_TEXT + ".tooltip",
 		    StylePatternPanel.NODE_TEXT);
 		controls.add(mNodeText);
 		/* **** */
 		controls.add(new SeparatorProperty("EdgeControls"));
-		mSetEdgeWidth = new ThreeCheckBoxProperty(
-		    StylePatternPanel.SET_EDGE_WIDTH + ".tooltip",
+		mSetEdgeWidth = new ThreeCheckBoxProperty(StylePatternPanel.SET_EDGE_WIDTH + ".tooltip",
 		    StylePatternPanel.SET_EDGE_WIDTH);
 		controls.add(mSetEdgeWidth);
-		mEdgeWidth = new ComboProperty(StylePatternPanel.EDGE_WIDTH
-		        + ".tooltip", StylePatternPanel.EDGE_WIDTH,
-		    StylePatternPanel.EDGE_WIDTHS);
+		mEdgeWidth = new ComboProperty(StylePatternPanel.EDGE_WIDTH + ".tooltip",
+		    StylePatternPanel.EDGE_WIDTH, StylePatternPanel.EDGE_WIDTHS);
 		controls.add(mEdgeWidth);
 		/* **** */
-		mSetEdgeStyle = new ThreeCheckBoxProperty(
-		    StylePatternPanel.SET_EDGE_STYLE + ".tooltip",
+		mSetEdgeStyle = new ThreeCheckBoxProperty(StylePatternPanel.SET_EDGE_STYLE + ".tooltip",
 		    StylePatternPanel.SET_EDGE_STYLE);
 		controls.add(mSetEdgeStyle);
-		mEdgeStyle = new ComboProperty(StylePatternPanel.EDGE_STYLE
-		        + ".tooltip", StylePatternPanel.EDGE_STYLE,
-		    StylePatternPanel.EDGE_STYLES);
+		mEdgeStyle = new ComboProperty(StylePatternPanel.EDGE_STYLE + ".tooltip",
+		    StylePatternPanel.EDGE_STYLE, StylePatternPanel.EDGE_STYLES);
 		controls.add(mEdgeStyle);
 		/* **** */
-		mSetEdgeColor = new ThreeCheckBoxProperty(
-		    StylePatternPanel.SET_EDGE_COLOR + ".tooltip",
+		mSetEdgeColor = new ThreeCheckBoxProperty(StylePatternPanel.SET_EDGE_COLOR + ".tooltip",
 		    StylePatternPanel.SET_EDGE_COLOR);
 		controls.add(mSetEdgeColor);
-		mEdgeColor = new ColorProperty(StylePatternPanel.EDGE_COLOR
-		        + ".tooltip", StylePatternPanel.EDGE_COLOR, Controller
-		    .getResourceController().getDefaultProperty(
+		mEdgeColor = new ColorProperty(StylePatternPanel.EDGE_COLOR + ".tooltip",
+		    StylePatternPanel.EDGE_COLOR, Controller.getResourceController().getDefaultProperty(
 		        ResourceController.RESOURCES_EDGE_COLOR));
 		controls.add(mEdgeColor);
 		/* **** */
 		controls.add(new SeparatorProperty("ScriptingControl"));
-		mSetScriptPattern = new ThreeCheckBoxProperty(
-		    StylePatternPanel.SET_SCRIPT + ".tooltip",
+		mSetScriptPattern = new ThreeCheckBoxProperty(StylePatternPanel.SET_SCRIPT + ".tooltip",
 		    StylePatternPanel.SET_SCRIPT);
 		controls.add(mSetScriptPattern);
-		mScriptPattern = new ScriptEditorProperty(StylePatternPanel.SCRIPT
-		        + ".tooltip", StylePatternPanel.SCRIPT, mMindMapController);
+		mScriptPattern = new ScriptEditorProperty(StylePatternPanel.SCRIPT + ".tooltip",
+		    StylePatternPanel.SCRIPT, mMindMapController);
 		controls.add(mScriptPattern);
 		mPropertyChangePropagation.put(mSetNodeColor, mNodeColor);
-		mPropertyChangePropagation.put(mSetNodeBackgroundColor,
-		    mNodeBackgroundColor);
+		mPropertyChangePropagation.put(mSetNodeBackgroundColor, mNodeBackgroundColor);
 		mPropertyChangePropagation.put(mSetNodeStyle, mNodeStyle);
 		mPropertyChangePropagation.put(mSetNodeFontName, mNodeFontName);
 		mPropertyChangePropagation.put(mSetNodeFontSize, mNodeFontSize);
@@ -373,10 +344,8 @@ public class StylePatternPanel extends JPanel implements ITextTranslator,
 
 	private HashMap getEdgeWidthTransformation() {
 		final HashMap transformator = new HashMap();
-		transformator.put(StylePatternPanel.EDGE_WIDTHS[0], new Integer(
-		    EdgeModel.WIDTH_PARENT));
-		transformator.put(StylePatternPanel.EDGE_WIDTHS[1], new Integer(
-		    EdgeModel.WIDTH_THIN));
+		transformator.put(StylePatternPanel.EDGE_WIDTHS[0], new Integer(EdgeModel.WIDTH_PARENT));
+		transformator.put(StylePatternPanel.EDGE_WIDTHS[1], new Integer(EdgeModel.WIDTH_THIN));
 		transformator.put(StylePatternPanel.EDGE_WIDTHS[2], new Integer(1));
 		transformator.put(StylePatternPanel.EDGE_WIDTHS[3], new Integer(2));
 		transformator.put(StylePatternPanel.EDGE_WIDTHS[4], new Integer(4));
@@ -393,22 +362,19 @@ public class StylePatternPanel extends JPanel implements ITextTranslator,
 		return childNames;
 	}
 
-	private PatternProperty getPatternResult(
-	                                             final PatternProperty baseProperty,
-	                                             final ThreeCheckBoxProperty threeCheckBoxProperty,
-	                                             final PropertyBean property) {
+	private PatternProperty getPatternResult(final PatternProperty baseProperty,
+	                                         final ThreeCheckBoxProperty threeCheckBoxProperty,
+	                                         final PropertyBean property) {
 		final IValueTransformator transformer = new IdentityTransformer();
-		return getPatternResult(baseProperty, threeCheckBoxProperty, property,
-		    transformer);
+		return getPatternResult(baseProperty, threeCheckBoxProperty, property, transformer);
 	}
 
 	/**
 	 */
-	private PatternProperty getPatternResult(
-	                                             final PatternProperty baseProperty,
-	                                             final ThreeCheckBoxProperty threeCheckBoxProperty,
-	                                             final PropertyBean property,
-	                                             final IValueTransformator transformer) {
+	private PatternProperty getPatternResult(final PatternProperty baseProperty,
+	                                         final ThreeCheckBoxProperty threeCheckBoxProperty,
+	                                         final PropertyBean property,
+	                                         final IValueTransformator transformer) {
 		final String checkboxResult = threeCheckBoxProperty.getValue();
 		if (checkboxResult == null) {
 			return null;
@@ -429,43 +395,37 @@ public class StylePatternPanel extends JPanel implements ITextTranslator,
 	}
 
 	public Pattern getResultPattern(final Pattern pattern) {
-		pattern.setPatternNodeColor((PatternProperty) getPatternResult(
-		    new PatternProperty(), mSetNodeColor, mNodeColor));
+		pattern.setPatternNodeColor(getPatternResult(new PatternProperty(), mSetNodeColor,
+		    mNodeColor));
+		pattern.setPatternNodeBackgroundColor(getPatternResult(new PatternProperty(),
+		    mSetNodeBackgroundColor, mNodeBackgroundColor));
+		pattern.setPatternNodeStyle(getPatternResult(new PatternProperty(), mSetNodeStyle,
+		    mNodeStyle));
 		pattern
-		    .setPatternNodeBackgroundColor((PatternProperty) getPatternResult(
-		        new PatternProperty(), mSetNodeBackgroundColor,
-		        mNodeBackgroundColor));
-		pattern.setPatternNodeStyle((PatternProperty) getPatternResult(
-		    new PatternProperty(), mSetNodeStyle, mNodeStyle));
-		pattern.setPatternNodeText((PatternProperty) getPatternResult(
-		    new PatternProperty(), mSetNodeText, mNodeText));
+		    .setPatternNodeText(getPatternResult(new PatternProperty(), mSetNodeText, mNodeText));
 		/* edges */
-		pattern.setPatternEdgeColor((PatternProperty) getPatternResult(
-		    new PatternProperty(), mSetEdgeColor, mEdgeColor));
-		pattern.setPatternEdgeStyle((PatternProperty) getPatternResult(
-		    new PatternProperty(), mSetEdgeStyle, mEdgeStyle));
-		pattern.setPatternEdgeWidth((PatternProperty) getPatternResult(
-		    new PatternProperty(), mSetEdgeWidth, mEdgeWidth,
-		    new EdgeWidthBackTransformer()));
+		pattern.setPatternEdgeColor(getPatternResult(new PatternProperty(), mSetEdgeColor,
+		    mEdgeColor));
+		pattern.setPatternEdgeStyle(getPatternResult(new PatternProperty(), mSetEdgeStyle,
+		    mEdgeStyle));
+		pattern.setPatternEdgeWidth(getPatternResult(new PatternProperty(), mSetEdgeWidth,
+		    mEdgeWidth, new EdgeWidthBackTransformer()));
 		/* font */
-		pattern.setPatternNodeFontName((PatternProperty) getPatternResult(
-		    new PatternProperty(), mSetNodeFontName, mNodeFontName));
-		pattern.setPatternNodeFontSize((PatternProperty) getPatternResult(
-		    new PatternProperty(), mSetNodeFontSize, mNodeFontSize));
-		pattern.setPatternNodeFontBold((PatternProperty) getPatternResult(
-		    new PatternProperty(), mSetNodeFontBold, mNodeFontBold));
-		pattern
-		    .setPatternNodeFontItalic((PatternProperty) getPatternResult(
-		        new PatternProperty(), mSetNodeFontItalic,
-		        mNodeFontItalic));
-		pattern.setPatternIcon((PatternProperty) getPatternResult(
-		    new PatternProperty(), mSetIcon, mIcon));
-		pattern.setPatternScript((PatternProperty) getPatternResult(
-		    new PatternProperty(), mSetScriptPattern, mScriptPattern));
+		pattern.setPatternNodeFontName(getPatternResult(new PatternProperty(), mSetNodeFontName,
+		    mNodeFontName));
+		pattern.setPatternNodeFontSize(getPatternResult(new PatternProperty(), mSetNodeFontSize,
+		    mNodeFontSize));
+		pattern.setPatternNodeFontBold(getPatternResult(new PatternProperty(), mSetNodeFontBold,
+		    mNodeFontBold));
+		pattern.setPatternNodeFontItalic(getPatternResult(new PatternProperty(),
+		    mSetNodeFontItalic, mNodeFontItalic));
+		pattern.setPatternIcon(getPatternResult(new PatternProperty(), mSetIcon, mIcon));
+		pattern.setPatternScript(getPatternResult(new PatternProperty(), mSetScriptPattern,
+		    mScriptPattern));
 		if (StylePatternPanelType.WITH_NAME_AND_CHILDS.equals(mType)) {
 			pattern.setName(mName.getValue());
-			pattern.setPatternChild((PatternProperty) getPatternResult(
-			    new PatternProperty(), mSetChildPattern, mChildPattern));
+			pattern.setPatternChild(getPatternResult(new PatternProperty(), mSetChildPattern,
+			    mChildPattern));
 		}
 		return pattern;
 	}
@@ -482,8 +442,7 @@ public class StylePatternPanel extends JPanel implements ITextTranslator,
 		final JPanel rightStack = new JPanel(cardLayout);
 		final String form = "right:max(40dlu;p), 4dlu, 20dlu, 7dlu,right:max(40dlu;p), 4dlu, 80dlu, 7dlu";
 		final FormLayout rightLayout = new FormLayout(form, "");
-		final DefaultFormBuilder rightBuilder = new DefaultFormBuilder(
-		    rightLayout);
+		final DefaultFormBuilder rightBuilder = new DefaultFormBuilder(rightLayout);
 		rightBuilder.setDefaultDialogBorder();
 		mControls = getControls();
 		for (final Iterator i = mControls.iterator(); i.hasNext();) {
@@ -500,85 +459,68 @@ public class StylePatternPanel extends JPanel implements ITextTranslator,
 	 */
 	public void propertyChange(final PropertyChangeEvent pEvt) {
 		if (mPropertyChangePropagation.containsKey(pEvt.getSource())) {
-			final ThreeCheckBoxProperty booleanProp = (ThreeCheckBoxProperty) pEvt
-			    .getSource();
+			final ThreeCheckBoxProperty booleanProp = (ThreeCheckBoxProperty) pEvt.getSource();
 			final IPropertyControl bean = (IPropertyControl) mPropertyChangePropagation
 			    .get(booleanProp);
-			bean.setEnabled(ThreeCheckBoxProperty.TRUE_VALUE.equals(booleanProp
-			    .getValue()));
+			bean.setEnabled(ThreeCheckBoxProperty.TRUE_VALUE.equals(booleanProp.getValue()));
 			return;
 		}
 	}
 
 	public void setPattern(final Pattern pattern) {
-		setPatternControls(pattern.getPatternNodeColor(), mSetNodeColor,
-		    mNodeColor, Controller.getResourceController().getDefaultProperty(
+		setPatternControls(pattern.getPatternNodeColor(), mSetNodeColor, mNodeColor, Controller
+		    .getResourceController().getDefaultProperty(
 		        ResourceController.RESOURCES_NODE_TEXT_COLOR));
-		setPatternControls(pattern.getPatternNodeBackgroundColor(),
-		    mSetNodeBackgroundColor, mNodeBackgroundColor, Controller
-		        .getResourceController().getDefaultProperty(
-		            ResourceController.RESOURCES_BACKGROUND_COLOR));
-		setPatternControls(pattern.getPatternNodeStyle(), mSetNodeStyle,
-		    mNodeStyle, NodeStyleModel.SHAPE_AS_PARENT);
-		setPatternControls(pattern.getPatternNodeText(), mSetNodeText,
-		    mNodeText, "");
-		setPatternControls(pattern.getPatternEdgeColor(), mSetEdgeColor,
-		    mEdgeColor, Controller.getResourceController().getDefaultProperty(
-		        ResourceController.RESOURCES_EDGE_COLOR));
-		setPatternControls(pattern.getPatternEdgeStyle(), mSetEdgeStyle,
-		    mEdgeStyle, StylePatternPanel.EDGE_STYLES[0]);
-		setPatternControls(pattern.getPatternEdgeWidth(), mSetEdgeWidth,
-		    mEdgeWidth, StylePatternPanel.EDGE_WIDTHS[0],
-		    new EdgeWidthTransformer());
-		setPatternControls(pattern.getPatternNodeFontName(), mSetNodeFontName,
-		    mNodeFontName, Controller.getResourceController()
-		        .getDefaultFontFamilyName());
-		setPatternControls(pattern.getPatternNodeFontSize(), mSetNodeFontSize,
-		    mNodeFontSize, sizes[0]);
-		setPatternControls(pattern.getPatternNodeFontBold(), mSetNodeFontBold,
-		    mNodeFontBold, BooleanProperty.TRUE_VALUE);
-		setPatternControls(pattern.getPatternNodeFontItalic(),
-		    mSetNodeFontItalic, mNodeFontItalic, BooleanProperty.TRUE_VALUE);
+		setPatternControls(pattern.getPatternNodeBackgroundColor(), mSetNodeBackgroundColor,
+		    mNodeBackgroundColor, Controller.getResourceController().getDefaultProperty(
+		        ResourceController.RESOURCES_BACKGROUND_COLOR));
+		setPatternControls(pattern.getPatternNodeStyle(), mSetNodeStyle, mNodeStyle,
+		    NodeStyleModel.SHAPE_AS_PARENT);
+		setPatternControls(pattern.getPatternNodeText(), mSetNodeText, mNodeText, "");
+		setPatternControls(pattern.getPatternEdgeColor(), mSetEdgeColor, mEdgeColor, Controller
+		    .getResourceController().getDefaultProperty(ResourceController.RESOURCES_EDGE_COLOR));
+		setPatternControls(pattern.getPatternEdgeStyle(), mSetEdgeStyle, mEdgeStyle,
+		    StylePatternPanel.EDGE_STYLES[0]);
+		setPatternControls(pattern.getPatternEdgeWidth(), mSetEdgeWidth, mEdgeWidth,
+		    StylePatternPanel.EDGE_WIDTHS[0], new EdgeWidthTransformer());
+		setPatternControls(pattern.getPatternNodeFontName(), mSetNodeFontName, mNodeFontName,
+		    Controller.getResourceController().getDefaultFontFamilyName());
+		setPatternControls(pattern.getPatternNodeFontSize(), mSetNodeFontSize, mNodeFontSize,
+		    sizes[0]);
+		setPatternControls(pattern.getPatternNodeFontBold(), mSetNodeFontBold, mNodeFontBold,
+		    BooleanProperty.TRUE_VALUE);
+		setPatternControls(pattern.getPatternNodeFontItalic(), mSetNodeFontItalic, mNodeFontItalic,
+		    BooleanProperty.TRUE_VALUE);
 		final MindIcon firstInfo = (MindIcon) mIconInformationVector.get(0);
-		setPatternControls(pattern.getPatternIcon(), mSetIcon, mIcon, firstInfo
-		    .getName());
-		setPatternControls(pattern.getPatternScript(), mSetScriptPattern,
-		    mScriptPattern, "");
+		setPatternControls(pattern.getPatternIcon(), mSetIcon, mIcon, firstInfo.getName());
+		setPatternControls(pattern.getPatternScript(), mSetScriptPattern, mScriptPattern, "");
 		if (StylePatternPanelType.WITH_NAME_AND_CHILDS.equals(mType)) {
 			mName.setValue(pattern.getName());
-			setPatternControls(pattern.getPatternChild(), mSetChildPattern,
-			    mChildPattern,
-			    (mPatternList.size() > 0) ? ((Pattern) mPatternList.get(0))
-			        .getName() : null);
+			setPatternControls(pattern.getPatternChild(), mSetChildPattern, mChildPattern,
+			    (mPatternList.size() > 0) ? ((Pattern) mPatternList.get(0)).getName() : null);
 		}
-		for (final Iterator iter = mPropertyChangePropagation.keySet()
-		    .iterator(); iter.hasNext();) {
-			final ThreeCheckBoxProperty prop = (ThreeCheckBoxProperty) iter
-			    .next();
-			propertyChange(new PropertyChangeEvent(prop, prop.getLabel(), null,
-			    prop.getValue()));
+		for (final Iterator iter = mPropertyChangePropagation.keySet().iterator(); iter.hasNext();) {
+			final ThreeCheckBoxProperty prop = (ThreeCheckBoxProperty) iter.next();
+			propertyChange(new PropertyChangeEvent(prop, prop.getLabel(), null, prop.getValue()));
 		}
 	}
 
 	private void setPatternControls(final PatternProperty patternProperty,
 	                                final PropertyBean threeCheckBoxProperty,
-	                                final PropertyBean property,
-	                                final String defaultValue) {
-		setPatternControls(patternProperty, threeCheckBoxProperty, property,
-		    defaultValue, new IdentityTransformer());
+	                                final PropertyBean property, final String defaultValue) {
+		setPatternControls(patternProperty, threeCheckBoxProperty, property, defaultValue,
+		    new IdentityTransformer());
 	}
 
 	/**
 	 */
 	private void setPatternControls(final PatternProperty patternProperty,
 	                                final PropertyBean threeCheckBoxProperty,
-	                                final PropertyBean property,
-	                                final String defaultValue,
+	                                final PropertyBean property, final String defaultValue,
 	                                final IValueTransformator transformer) {
 		if (patternProperty == null) {
 			property.setValue(defaultValue);
-			threeCheckBoxProperty
-			    .setValue(ThreeCheckBoxProperty.DON_T_TOUCH_VALUE);
+			threeCheckBoxProperty.setValue(ThreeCheckBoxProperty.DON_T_TOUCH_VALUE);
 			return;
 		}
 		if (patternProperty.getValue() == null) {
@@ -603,11 +545,9 @@ public class StylePatternPanel extends JPanel implements ITextTranslator,
 		if (pEdgeWidth == null) {
 			return null;
 		}
-		final int edgeWidth = ApplyPatternAction
-		    .edgeWidthStringToInt(pEdgeWidth);
+		final int edgeWidth = ApplyPatternAction.edgeWidthStringToInt(pEdgeWidth);
 		final HashMap transformator = getEdgeWidthTransformation();
-		for (final Iterator iter = transformator.keySet().iterator(); iter
-		    .hasNext();) {
+		for (final Iterator iter = transformator.keySet().iterator(); iter.hasNext();) {
 			final String widthString = (String) iter.next();
 			final Integer width = (Integer) transformator.get(widthString);
 			if (edgeWidth == width.intValue()) {

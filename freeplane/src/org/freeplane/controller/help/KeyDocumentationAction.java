@@ -40,14 +40,12 @@ class KeyDocumentationAction extends AbstractAction {
 		urlText = ResourceController.removeTranslateComment(urlText);
 		try {
 			if (urlText != null && urlText.startsWith(".")) {
-				urlText = Controller.getController().getHelpController()
-				    .convertLocalLink(urlText);
+				urlText = Controller.getController().getHelpController().convertLocalLink(urlText);
 			}
 			if (urlText != null && urlText != "") {
 				URL url = null;
 				url = new URL(urlText);
-				Controller.getController().getViewController()
-				    .openDocument(url);
+				Controller.getController().getViewController().openDocument(url);
 			}
 		}
 		catch (final Exception e2) {

@@ -33,25 +33,26 @@ import org.freeplane.ui.EnabledAction;
  * @author Dimitry Polivaev
  * 13.12.2008
  */
-@EnabledAction(checkOnNodeChange=true)
-@ActionDescriptor(
-       name="accessories/plugins/NodeHistoryBack.properties_name", //
-       tooltip="accessories/plugins/NodeHistoryBack.properties_documentation", //
-       keyStroke="keystroke_accessories/plugins/NodeHistoryBack.keystroke.alt_BACK", //
-       iconPath="accessories/plugins/icons/back.png", //
-       locations={"/menu_bar/navigate/folding", 
-    		   "/main_toolbar/folding"}
-)
-class BackAction extends FreeplaneAction{
-	public BackAction(NodeHistory nodeHistory) {
-	    super();
-	    this.nodeHistory = nodeHistory;
-    }
+@EnabledAction(checkOnNodeChange = true)
+@ActionDescriptor(name = "accessories/plugins/NodeHistoryBack.properties_name", //
+tooltip = "accessories/plugins/NodeHistoryBack.properties_documentation", //
+keyStroke = "keystroke_accessories/plugins/NodeHistoryBack.keystroke.alt_BACK", //
+iconPath = "accessories/plugins/icons/back.png", //
+locations = { "/menu_bar/navigate/folding", "/main_toolbar/folding" })
+class BackAction extends FreeplaneAction {
 	final private NodeHistory nodeHistory;
-	public void actionPerformed(ActionEvent e) {
+
+	public BackAction(final NodeHistory nodeHistory) {
+		super();
+		this.nodeHistory = nodeHistory;
+	}
+
+	public void actionPerformed(final ActionEvent e) {
 		nodeHistory.goBack();
-    }
-	public void setEnabled(){
+	}
+
+	@Override
+	public void setEnabled() {
 		setEnabled(nodeHistory.canGoBack());
 	}
 }

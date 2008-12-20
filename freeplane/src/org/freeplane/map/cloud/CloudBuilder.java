@@ -35,13 +35,11 @@ import org.freeplane.main.Tools;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.NodeBuilder.NodeObject;
 
-public class CloudBuilder implements INodeCreator, IAttributeHandler,
-        INodeWriter<IExtension> {
+public class CloudBuilder implements INodeCreator, IAttributeHandler, INodeWriter<IExtension> {
 	public CloudBuilder() {
 	}
 
-	public void completeNode(final Object parent, final String tag,
-	                         final Object userObject) {
+	public void completeNode(final Object parent, final String tag, final Object userObject) {
 		if (parent instanceof NodeObject) {
 			final NodeModel node = ((NodeObject) parent).node;
 			if (userObject instanceof CloudModel) {
@@ -58,8 +56,8 @@ public class CloudBuilder implements INodeCreator, IAttributeHandler,
 		return null;
 	}
 
-	public boolean parseAttribute(final Object userObject, final String tag,
-	                              final String name, final String value) {
+	public boolean parseAttribute(final Object userObject, final String tag, final String name,
+	                              final String value) {
 		if (userObject instanceof CloudModel) {
 			final CloudModel cloud = (CloudModel) userObject;
 			if (name.equals("STYLE")) {
@@ -83,8 +81,11 @@ public class CloudBuilder implements INodeCreator, IAttributeHandler,
 		writer.addExtensionNodeWriter(CloudModel.class, this);
 	}
 
-	public void writeContent(final ITreeWriter writer, final Object node,
-	                         final IExtension extension) throws IOException {
+	public void setAttributes(final String tag, final Object node, final IXMLElement attributes) {
+	}
+
+	public void writeContent(final ITreeWriter writer, final Object node, final IExtension extension)
+	        throws IOException {
 		final CloudModel model = (CloudModel) extension;
 		final XMLElement cloud = new XMLElement();
 		cloud.setName("cloud");
@@ -102,7 +103,4 @@ public class CloudBuilder implements INodeCreator, IAttributeHandler,
 		}
 		writer.addNode(model, cloud);
 	}
-
-	public void setAttributes(String tag, Object node, IXMLElement attributes) {
-    }
 }

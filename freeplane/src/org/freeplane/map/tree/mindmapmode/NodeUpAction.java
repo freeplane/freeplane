@@ -41,16 +41,14 @@ class NodeUpAction extends FreeplaneAction {
 		super("node_up");
 	}
 
-	public void _moveNodes(final NodeModel selected, final List selecteds,
-	                       final int direction) {
-		final Comparator comparator = (direction == -1) ? null
-		        : new Comparator() {
-			        public int compare(final Object o1, final Object o2) {
-				        final int i1 = ((Integer) o1).intValue();
-				        final int i2 = ((Integer) o2).intValue();
-				        return i2 - i1;
-			        }
-		        };
+	public void _moveNodes(final NodeModel selected, final List selecteds, final int direction) {
+		final Comparator comparator = (direction == -1) ? null : new Comparator() {
+			public int compare(final Object o1, final Object o2) {
+				final int i1 = ((Integer) o1).intValue();
+				final int i2 = ((Integer) o2).intValue();
+				return i2 - i1;
+			}
+		};
 		if (!selected.isRoot()) {
 			final NodeModel parent = selected.getParentNode();
 			final Vector sortedChildren = getSortedSiblings(parent);
@@ -58,8 +56,7 @@ class NodeUpAction extends FreeplaneAction {
 			for (final Iterator i = selecteds.iterator(); i.hasNext();) {
 				final NodeModel node = (NodeModel) i.next();
 				if (node.getParent() != parent) {
-					Logger.global
-					    .warning("Not all selected nodes have the same parent.");
+					Logger.global.warning("Not all selected nodes have the same parent.");
 					return;
 				}
 				range.add(new Integer(sortedChildren.indexOf(node)));
@@ -75,8 +72,7 @@ class NodeUpAction extends FreeplaneAction {
 			}
 			for (final Iterator i = range.iterator(); i.hasNext();) {
 				final Integer position = (Integer) i.next();
-				final NodeModel node = (NodeModel) sortedChildren.get(position
-				    .intValue());
+				final NodeModel node = (NodeModel) sortedChildren.get(position.intValue());
 				moveNodeTo(node, parent, direction);
 			}
 			final MapView mapView = getModeController().getMapView();
@@ -85,19 +81,16 @@ class NodeUpAction extends FreeplaneAction {
 			mapView.scrollNodeToVisible(selectedNodeView);
 			for (final Iterator i = range.iterator(); i.hasNext();) {
 				final Integer position = (Integer) i.next();
-				final NodeModel node = (NodeModel) sortedChildren.get(position
-				    .intValue());
+				final NodeModel node = (NodeModel) sortedChildren.get(position.intValue());
 				final NodeView nodeView = mapView.getNodeView(node);
 				mapView.makeTheSelected(nodeView);
 			}
-			Controller.getController().getViewController()
-			    .obtainFocusForSelected();
+			Controller.getController().getViewController().obtainFocusForSelected();
 		}
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		moveNodes(getModeController().getSelectedNode(), getModeController()
-		    .getSelectedNodes(), -1);
+		moveNodes(getModeController().getSelectedNode(), getModeController().getSelectedNodes(), -1);
 	}
 
 	/**
@@ -105,8 +98,8 @@ class NodeUpAction extends FreeplaneAction {
 	 */
 	private Vector getSortedSiblings(final NodeModel node) {
 		final Vector nodes = new Vector();
-		for (final Iterator i = node.getModeController().getMapController()
-		    .childrenUnfolded(node); i.hasNext();) {
+		for (final Iterator i = node.getModeController().getMapController().childrenUnfolded(node); i
+		    .hasNext();) {
 			nodes.add(i.next());
 		}
 		Collections.sort(nodes, new Comparator() {
@@ -129,8 +122,7 @@ class NodeUpAction extends FreeplaneAction {
 
 	/**
 	 */
-	public void moveNodes(final NodeModel selected, final List selecteds,
-	                      final int direction) {
+	public void moveNodes(final NodeModel selected, final List selecteds, final int direction) {
 		final IUndoableActor actor = new IUndoableActor() {
 			public void act() {
 				_moveNodes(selected, selecteds, direction);
@@ -147,8 +139,7 @@ class NodeUpAction extends FreeplaneAction {
 		getModeController().execute(actor);
 	}
 
-	private int moveNodeTo(final NodeModel child, final NodeModel newParent,
-	                       final int direction) {
+	private int moveNodeTo(final NodeModel child, final NodeModel newParent, final int direction) {
 		final MapModel map = Controller.getController().getMap();
 		final int index = map.getIndexOfChild(newParent, child);
 		int newIndex = index;
@@ -161,11 +152,10 @@ class NodeUpAction extends FreeplaneAction {
 		if (newPositionInVector >= maxIndex) {
 			newPositionInVector = 0;
 		}
-		final NodeModel destinationNode = (NodeModel) sortedNodesIndices
-		    .get(newPositionInVector);
+		final NodeModel destinationNode = (NodeModel) sortedNodesIndices.get(newPositionInVector);
 		newIndex = map.getIndexOfChild(newParent, destinationNode);
-		((MMapController) map.getModeController().getMapController())
-		    .moveNodeToWithoutUndo(child, newParent, newIndex);
+		((MMapController) map.getModeController().getMapController()).moveNodeToWithoutUndo(child,
+		    newParent, newIndex);
 		return newIndex;
 	}
 }

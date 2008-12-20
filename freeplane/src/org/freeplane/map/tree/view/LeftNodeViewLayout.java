@@ -44,8 +44,7 @@ public class LeftNodeViewLayout extends NodeViewLayoutAdapter {
 		return mainView.getRightPoint();
 	}
 
-	public Point getMainViewOutPoint(final NodeView view,
-	                                 final NodeView targetView,
+	public Point getMainViewOutPoint(final NodeView view, final NodeView targetView,
 	                                 final Point destinationPoint) {
 		final MainView mainView = view.getMainView();
 		return mainView.getLeftPoint();
@@ -59,12 +58,10 @@ public class LeftNodeViewLayout extends NodeViewLayoutAdapter {
 		final int x = Math.max(getSpaceAround(), -childHorizontalShift);
 		if (getView().isContentVisible()) {
 			getContent().setVisible(true);
-			final Dimension contentPreferredSize = getContent()
-			    .getPreferredSize();
+			final Dimension contentPreferredSize = getContent().getPreferredSize();
 			childVerticalShift += (contentPreferredSize.height - contentHeight) / 2;
 			final int y = Math.max(getSpaceAround(), -childVerticalShift);
-			getContent().setBounds(x, y, contentPreferredSize.width,
-			    contentPreferredSize.height);
+			getContent().setBounds(x, y, contentPreferredSize.width, contentPreferredSize.height);
 		}
 		else {
 			getContent().setVisible(false);

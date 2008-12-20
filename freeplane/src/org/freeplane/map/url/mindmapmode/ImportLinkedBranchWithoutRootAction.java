@@ -47,16 +47,15 @@ class ImportLinkedBranchWithoutRootAction extends FreeplaneAction {
 		final MapModel map = Controller.getController().getMap();
 		final NodeModel selected = getModeController().getSelectedNode();
 		if (selected == null || selected.getLink() == null) {
-			JOptionPane.showMessageDialog(getModeController().getMapView(),
-			    getModeController().getText("import_linked_branch_no_link"));
+			JOptionPane.showMessageDialog(getModeController().getMapView(), getModeController()
+			    .getText("import_linked_branch_no_link"));
 			return;
 		}
 		URL absolute = null;
 		try {
 			final String relative = selected.getLink();
-			absolute = Tools.isAbsolutePath(relative) ? Tools
-			    .fileToUrl(new File(relative)) : new URL(Tools.fileToUrl(map
-			    .getFile()), relative);
+			absolute = Tools.isAbsolutePath(relative) ? Tools.fileToUrl(new File(relative))
+			        : new URL(Tools.fileToUrl(map.getFile()), relative);
 		}
 		catch (final MalformedURLException ex) {
 			JOptionPane.showMessageDialog(getModeController().getMapView(),
@@ -64,14 +63,13 @@ class ImportLinkedBranchWithoutRootAction extends FreeplaneAction {
 			return;
 		}
 		try {
-			final NodeModel node = ((MMapController) getMModeController()
-			    .getMapController())
+			final NodeModel node = ((MMapController) getMModeController().getMapController())
 			    .loadTree(map, new File(absolute.getFile()));
-			for (final ListIterator i = node.getModeController()
-			    .getMapController().childrenUnfolded(node); i.hasNext();) {
+			for (final ListIterator i = node.getModeController().getMapController()
+			    .childrenUnfolded(node); i.hasNext();) {
 				final NodeModel importNode = (NodeModel) i.next();
-				((MClipboardController) getMModeController()
-				    .getClipboardController()).paste(importNode, selected);
+				((MClipboardController) getMModeController().getClipboardController()).paste(
+				    importNode, selected);
 			}
 		}
 		catch (final Exception ex) {

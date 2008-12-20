@@ -52,8 +52,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 		for (int i = 0; i < childCount; i++) {
 			final NodeView child = (NodeView) getView().getComponent(i);
 			if (child.isLeft() == isLeft) {
-				final int additionalCloudHeigth = child
-				    .getAdditionalCloudHeigth();
+				final int additionalCloudHeigth = child.getAdditionalCloudHeigth();
 				final int contentHeight = child.getContent().getHeight();
 				height += contentHeight + additionalCloudHeigth;
 				count++;
@@ -78,11 +77,9 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 			final NodeView child = (NodeView) getView().getComponent(i);
 			int shiftCandidate;
 			if (child.isLeft()) {
-				shiftCandidate = -child.getContent().getX()
-				        - child.getContent().getWidth();
+				shiftCandidate = -child.getContent().getX() - child.getContent().getWidth();
 				if (child.isContentVisible()) {
-					shiftCandidate -= child.getHGap()
-					        + child.getAdditionalCloudHeigth() / 2;
+					shiftCandidate -= child.getHGap() + child.getAdditionalCloudHeigth() / 2;
 				}
 			}
 			else {
@@ -182,8 +179,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 			final int additionalCloudHeigth = child.getAdditionalCloudHeigth() / 2;
 			y += additionalCloudHeigth;
 			final int shiftY = child.getShift();
-			final int childHGap = child.getContent().isVisible() ? child
-			    .getHGap() : 0;
+			final int childHGap = child.getContent().isVisible() ? child.getHGap() : 0;
 			final int x = baseX - childHGap - child.getContent().getX()
 			        - child.getContent().getWidth();
 			if (shiftY < 0) {
@@ -194,12 +190,10 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 				y += shiftY;
 				child.setLocation(x, y);
 			}
-			y += child.getHeight() - 2 * getSpaceAround() + getVGap()
-			        + additionalCloudHeigth;
+			y += child.getHeight() - 2 * getSpaceAround() + getVGap() + additionalCloudHeigth;
 			right = Math.max(right, x + child.getWidth());
 		}
-		final int bottom = getContent().getY() + getContent().getHeight()
-		        + getSpaceAround();
+		final int bottom = getContent().getY() + getContent().getHeight() + getSpaceAround();
 		if (child != null) {
 			getView().setSize(
 			    right,
@@ -225,8 +219,7 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 			final int additionalCloudHeigth = child.getAdditionalCloudHeigth() / 2;
 			y += additionalCloudHeigth;
 			final int shiftY = child.getShift();
-			final int childHGap = child.getContent().isVisible() ? child
-			    .getHGap() : 0;
+			final int childHGap = child.getContent().isVisible() ? child.getHGap() : 0;
 			final int x = baseX + childHGap - child.getContent().getX();
 			if (shiftY < 0) {
 				child.setLocation(x, y);
@@ -236,13 +229,10 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 				y += shiftY;
 				child.setLocation(x, y);
 			}
-			y += child.getHeight() - 2 * getSpaceAround() + getVGap()
-			        + additionalCloudHeigth;
-			right = Math.max(right, x + child.getWidth()
-			        + additionalCloudHeigth);
+			y += child.getHeight() - 2 * getSpaceAround() + getVGap() + additionalCloudHeigth;
+			right = Math.max(right, x + child.getWidth() + additionalCloudHeigth);
 		}
-		final int bottom = getContent().getY() + getContent().getHeight()
-		        + getSpaceAround();
+		final int bottom = getContent().getY() + getContent().getHeight() + getSpaceAround();
 		if (child != null) {
 			getView().setSize(
 			    right,

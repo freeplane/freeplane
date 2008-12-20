@@ -34,14 +34,12 @@ class OpenPathAction extends FreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final String inputValue = JOptionPane.showInputDialog(Controller
-		    .getController().getMapView().getSelected(), getModeController()
-		    .getText("open"), "");
+		final String inputValue = JOptionPane.showInputDialog(Controller.getController()
+		    .getMapView().getSelected(), getModeController().getText("open"), "");
 		if (inputValue != null) {
 			final File newCenter = new File(inputValue);
 			if (newCenter.exists()) {
-				((FMapController) getModeController().getMapController())
-				    .newMap(newCenter);
+				((FMapController) getModeController().getMapController()).newMap(newCenter);
 			}
 		}
 	}

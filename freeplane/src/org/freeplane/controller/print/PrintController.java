@@ -69,16 +69,16 @@ public class PrintController {
 		}
 		if (pageFormat == null) {
 			pageFormat = printerJob.defaultPage();
-			if (Tools.safeEquals(Controller.getResourceController()
-			    .getProperty("page_orientation"), "landscape")) {
+			if (Tools.safeEquals(
+			    Controller.getResourceController().getProperty("page_orientation"), "landscape")) {
 				pageFormat.setOrientation(PageFormat.LANDSCAPE);
 			}
-			else if (Tools.safeEquals(Controller.getResourceController()
-			    .getProperty("page_orientation"), "portrait")) {
+			else if (Tools.safeEquals(Controller.getResourceController().getProperty(
+			    "page_orientation"), "portrait")) {
 				pageFormat.setOrientation(PageFormat.PORTRAIT);
 			}
-			else if (Tools.safeEquals(Controller.getResourceController()
-			    .getProperty("page_orientation"), "reverse_landscape")) {
+			else if (Tools.safeEquals(Controller.getResourceController().getProperty(
+			    "page_orientation"), "reverse_landscape")) {
 				pageFormat.setOrientation(PageFormat.REVERSE_LANDSCAPE);
 			}
 		}

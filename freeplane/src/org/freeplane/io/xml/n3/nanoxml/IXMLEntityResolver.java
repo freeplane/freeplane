@@ -58,8 +58,7 @@ public interface IXMLEntityResolver {
 	 * @throws org.freeplane.io.xml.n3.nanoxml.XMLParseException
 	 *             If an exception occurred while resolving the entity.
 	 */
-	public Reader getEntity(IXMLReader xmlReader, String name)
-	        throws XMLParseException;
+	public Reader getEntity(IXMLReader xmlReader, String name) throws XMLParseException;
 
 	/**
 	 * Returns true if an entity is external.

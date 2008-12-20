@@ -39,8 +39,8 @@ import org.freeplane.ui.dialogs.EnterPasswordDialog;
 name = "accessories/plugins/EnterPassword.properties_name", //
 iconPath = "accessories/plugins/icons/unlock.png", //
 locations = { "/menu_bar/extras/first/nodes/crypto" })
-public class EnterPassword extends FreeplaneAction implements
-        INodeSelectionListener, INodeChangeListener {
+public class EnterPassword extends FreeplaneAction implements INodeSelectionListener,
+        INodeChangeListener {
 	public EnterPassword(final ModeController modeController) {
 		super();
 		modeController.addNodeSelectionListener(this);
@@ -61,8 +61,7 @@ public class EnterPassword extends FreeplaneAction implements
 			return false;
 		}
 		if (modeController.getSelectedNode() != null) {
-			final EncryptionModel enode = modeController.getSelectedNode()
-			    .getEncryptionModel();
+			final EncryptionModel enode = modeController.getSelectedNode().getEncryptionModel();
 			if (enode != null) {
 				isEncryptedNode = true;
 			}
@@ -74,23 +73,18 @@ public class EnterPassword extends FreeplaneAction implements
 	 */
 	private void doPasswordCheckAndDecryptNode(final EncryptionModel encNode) {
 		while (true) {
-			final EnterPasswordDialog pwdDialog = new EnterPasswordDialog(
-			    Controller.getController().getViewController().getJFrame(),
-			    false);
+			final EnterPasswordDialog pwdDialog = new EnterPasswordDialog(Controller
+			    .getController().getViewController().getJFrame(), false);
 			pwdDialog.setModal(true);
 			pwdDialog.setVisible(true);
 			if (pwdDialog.getResult() == EnterPasswordDialog.CANCEL) {
 				return;
 			}
 			if (!encNode.decrypt(pwdDialog.getPassword())) {
-				JOptionPane
-				    .showMessageDialog(
-				        Controller.getController().getViewController()
-				            .getContentPane(),
-				        getModeController()
-				            .getText(
-				                "accessories/plugins/EncryptNode.properties_wrong_password"),
-				        "Freemind", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(Controller.getController().getViewController()
+				    .getContentPane(), getModeController().getText(
+				    "accessories/plugins/EncryptNode.properties_wrong_password"), "Freemind",
+				    JOptionPane.ERROR_MESSAGE);
 			}
 			else {
 				return;
@@ -129,13 +123,10 @@ public class EnterPassword extends FreeplaneAction implements
 			mapView.selectAsTheOnlyOneSelected(mapView.getNodeView(node));
 		}
 		else {
-			JOptionPane
-			    .showMessageDialog(
-			        Controller.getController().getViewController()
-			            .getContentPane(),
-			        mindMapController
-			            .getText("accessories/plugins/EncryptNode.properties_insert_encrypted_node_first"),
-			        "Freemind", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(Controller.getController().getViewController()
+			    .getContentPane(), mindMapController
+			    .getText("accessories/plugins/EncryptNode.properties_insert_encrypted_node_first"),
+			    "Freemind", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 }

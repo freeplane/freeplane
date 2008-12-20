@@ -40,8 +40,8 @@ public class ExtensionArray implements IModifiableExtensionCollection {
 			collection.add(extension);
 			return true;
 		}
-		throw new IllegalArgumentException("element with class "
-		        + clazz.getName() + " already exist");
+		throw new IllegalArgumentException("element with class " + clazz.getName()
+		        + " already exist");
 	}
 
 	/*
@@ -123,8 +123,7 @@ public class ExtensionArray implements IModifiableExtensionCollection {
 				return collection.remove(i);
 			}
 		}
-		throw new NoSuchElementException("element with class "
-		        + clazz.getName() + " not found");
+		throw new NoSuchElementException("element with class " + clazz.getName() + " not found");
 	}
 
 	public boolean removeExtension(final IExtension extension) {

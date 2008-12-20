@@ -29,25 +29,26 @@ import org.freeplane.ui.EnabledAction;
  * @author Dimitry Polivaev
  * 13.12.2008
  */
-@EnabledAction(checkOnNodeChange=true)
-@ActionDescriptor(
-       name="accessories/plugins/NodeHistoryForward.properties_name", //
-       tooltip="accessories/plugins/NodeHistoryForward.properties_documentation", //
-       keyStroke="keystroke_accessories/plugins/NodeHistoryForward.keystroke.alt_FORWARD", //
-       iconPath="accessories/plugins/icons/forward.png", //
-       locations={"/menu_bar/navigate/folding", 
-    		   "/main_toolbar/folding"}
-)
-class ForwardAction extends FreeplaneAction{
-	public ForwardAction(NodeHistory nodeHistory) {
-	    super();
-	    this.nodeHistory = nodeHistory;
-    }
+@EnabledAction(checkOnNodeChange = true)
+@ActionDescriptor(name = "accessories/plugins/NodeHistoryForward.properties_name", //
+tooltip = "accessories/plugins/NodeHistoryForward.properties_documentation", //
+keyStroke = "keystroke_accessories/plugins/NodeHistoryForward.keystroke.alt_FORWARD", //
+iconPath = "accessories/plugins/icons/forward.png", //
+locations = { "/menu_bar/navigate/folding", "/main_toolbar/folding" })
+class ForwardAction extends FreeplaneAction {
 	final private NodeHistory nodeHistory;
-	public void actionPerformed(ActionEvent e) {
+
+	public ForwardAction(final NodeHistory nodeHistory) {
+		super();
+		this.nodeHistory = nodeHistory;
+	}
+
+	public void actionPerformed(final ActionEvent e) {
 		nodeHistory.goForward();
-    }
-	public void setEnabled(){
-		setEnabled (nodeHistory.canGoForward());
+	}
+
+	@Override
+	public void setEnabled() {
+		setEnabled(nodeHistory.canGoForward());
 	}
 }

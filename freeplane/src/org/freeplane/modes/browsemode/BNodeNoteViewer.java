@@ -38,8 +38,7 @@ import org.freeplane.modes.ModeController;
 /**
  * @author foltin
  */
-public class BNodeNoteViewer extends NodeNoteBase implements
-        INodeSelectionListener {
+public class BNodeNoteViewer extends NodeNoteBase implements INodeSelectionListener {
 	private static ImageIcon noteIcon = null;
 	final private ModeController mBrowseController;
 	private JComponent noteScrollPane;
@@ -68,8 +67,8 @@ public class BNodeNoteViewer extends NodeNoteBase implements
 	public void onSelect(final NodeView pNode) {
 		final String noteText = pNode.getModel().getNoteText();
 		if (noteText != null && !noteText.equals("")) {
-			Controller.getController().getViewController()
-			    .insertComponentIntoSplitPane(getNoteViewerComponent(noteText));
+			Controller.getController().getViewController().insertComponentIntoSplitPane(
+			    getNoteViewerComponent(noteText));
 			noteViewer.setText(noteText != null ? noteText : "");
 		}
 	}
@@ -84,7 +83,6 @@ public class BNodeNoteViewer extends NodeNoteBase implements
 			BNodeNoteViewer.noteIcon = new ImageIcon(mBrowseController
 			    .getResource("images/knotes.png"));
 		}
-		node.setStateIcon(NodeNoteBase.NODE_NOTE_ICON,
-		    (enabled) ? BNodeNoteViewer.noteIcon : null);
+		node.setStateIcon(NodeNoteBase.NODE_NOTE_ICON, (enabled) ? BNodeNoteViewer.noteIcon : null);
 	}
 }

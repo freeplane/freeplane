@@ -35,8 +35,7 @@ import org.freeplane.ui.VisibleAction;
  */
 public abstract class FreeplaneAction extends AbstractAction {
 	static public boolean checkEnabledOnChange(final Action action) {
-		final EnabledAction annotation = action.getClass().getAnnotation(
-		    EnabledAction.class);
+		final EnabledAction annotation = action.getClass().getAnnotation(EnabledAction.class);
 		if (!(action instanceof FreeplaneAction) || annotation == null) {
 			return false;
 		}
@@ -44,8 +43,7 @@ public abstract class FreeplaneAction extends AbstractAction {
 	}
 
 	static public boolean checkEnabledOnPopup(final Action action) {
-		final EnabledAction annotation = action.getClass().getAnnotation(
-		    EnabledAction.class);
+		final EnabledAction annotation = action.getClass().getAnnotation(EnabledAction.class);
 		if (annotation == null) {
 			return false;
 		}
@@ -53,8 +51,7 @@ public abstract class FreeplaneAction extends AbstractAction {
 	}
 
 	static public boolean checkSelectionOnChange(final Action action) {
-		final SelectableAction annotation = action.getClass().getAnnotation(
-		    SelectableAction.class);
+		final SelectableAction annotation = action.getClass().getAnnotation(SelectableAction.class);
 		if (!(action instanceof FreeplaneAction) || annotation == null) {
 			return false;
 		}
@@ -62,8 +59,7 @@ public abstract class FreeplaneAction extends AbstractAction {
 	}
 
 	static public boolean checkSelectionOnPopup(final Action action) {
-		final SelectableAction annotation = action.getClass().getAnnotation(
-		    SelectableAction.class);
+		final SelectableAction annotation = action.getClass().getAnnotation(SelectableAction.class);
 		if (annotation == null) {
 			return false;
 		}
@@ -71,8 +67,7 @@ public abstract class FreeplaneAction extends AbstractAction {
 	}
 
 	static public boolean checkVisibilityOnChange(final Action action) {
-		final VisibleAction annotation = action.getClass().getAnnotation(
-		    VisibleAction.class);
+		final VisibleAction annotation = action.getClass().getAnnotation(VisibleAction.class);
 		if (!(action instanceof FreeplaneAction) || annotation == null) {
 			return false;
 		}
@@ -80,8 +75,7 @@ public abstract class FreeplaneAction extends AbstractAction {
 	}
 
 	static public boolean checkVisibilityOnPopup(final Action action) {
-		final VisibleAction annotation = action.getClass().getAnnotation(
-		    VisibleAction.class);
+		final VisibleAction annotation = action.getClass().getAnnotation(VisibleAction.class);
 		if (annotation == null) {
 			return false;
 		}
@@ -126,8 +120,8 @@ public abstract class FreeplaneAction extends AbstractAction {
 	public FreeplaneAction(final String title, final String iconPath) {
 		this(title);
 		if (iconPath != null && !iconPath.equals("")) {
-			final ImageIcon icon = new ImageIcon(Controller
-			    .getResourceController().getResource(iconPath));
+			final ImageIcon icon = new ImageIcon(Controller.getResourceController().getResource(
+			    iconPath));
 			putValue(Action.SMALL_ICON, icon);
 		}
 	}
@@ -150,12 +144,17 @@ public abstract class FreeplaneAction extends AbstractAction {
 		return visible;
 	}
 
+	public void setEnabled() {
+	}
+
+	public void setSelected() {
+	}
+
 	public void setSelected(final boolean newValue) {
 		final boolean oldValue = selected;
 		if (oldValue != newValue) {
 			selected = newValue;
-			firePropertyChange("selected", Boolean.valueOf(oldValue), Boolean
-			    .valueOf(newValue));
+			firePropertyChange("selected", Boolean.valueOf(oldValue), Boolean.valueOf(newValue));
 		}
 	}
 
@@ -165,21 +164,14 @@ public abstract class FreeplaneAction extends AbstractAction {
 		putValue(Action.LONG_DESCRIPTION, tooltipLocalized);
 	}
 
+	public void setVisible() {
+	}
+
 	public void setVisible(final boolean newValue) {
 		final boolean oldValue = visible;
 		if (oldValue != newValue) {
 			visible = newValue;
-			firePropertyChange("visible", Boolean.valueOf(oldValue), Boolean
-			    .valueOf(newValue));
+			firePropertyChange("visible", Boolean.valueOf(oldValue), Boolean.valueOf(newValue));
 		}
 	}
-
-	public void setSelected() {
-    }
-
-	public void setVisible() {
-    }
-
-	public void setEnabled() {
-    }
 }

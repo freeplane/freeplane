@@ -25,30 +25,27 @@ import java.awt.geom.QuadCurve2D;
 import java.awt.geom.Rectangle2D;
 
 class PathBBox {
-	private static void accum(final double[] bounds, final double x,
-	                          final double y) {
+	private static void accum(final double[] bounds, final double x, final double y) {
 		bounds[0] = Math.min(bounds[0], x);
 		bounds[1] = Math.min(bounds[1], y);
 		bounds[2] = Math.max(bounds[2], x);
 		bounds[3] = Math.max(bounds[3], y);
 	}
 
-	private static void accumCubic(final double bounds[], final double t,
-	                               final double curx, final double cury,
-	                               final double cpx0, final double cpy0,
-	                               final double cpx1, final double cpy1,
-	                               final double endx, final double endy) {
+	private static void accumCubic(final double bounds[], final double t, final double curx,
+	                               final double cury, final double cpx0, final double cpy0,
+	                               final double cpx1, final double cpy1, final double endx,
+	                               final double endy) {
 		final double u = (1 - t);
-		final double x = curx * u * u * u + 3.0 * cpx0 * t * u * u + 3.0 * cpx1
-		        * t * t * u + endx * t * t * t;
-		final double y = cury * u * u * u + 3.0 * cpy0 * t * u * u + 3.0 * cpy1
-		        * t * t * u + endy * t * t * t;
+		final double x = curx * u * u * u + 3.0 * cpx0 * t * u * u + 3.0 * cpx1 * t * t * u + endx
+		        * t * t * t;
+		final double y = cury * u * u * u + 3.0 * cpy0 * t * u * u + 3.0 * cpy1 * t * t * u + endy
+		        * t * t * t;
 		PathBBox.accum(bounds, x, y);
 	}
 
-	private static void accumQuad(final double bounds[], final double t,
-	                              final double curx, final double cury,
-	                              final double cpx0, final double cpy0,
+	private static void accumQuad(final double bounds[], final double t, final double curx,
+	                              final double cury, final double cpx0, final double cpy0,
 	                              final double endx, final double endy) {
 		final double u = (1 - t);
 		final double x = curx * u * u + 2.0 * cpx0 * t * u + endx * t * t;
@@ -56,9 +53,8 @@ class PathBBox {
 		PathBBox.accum(bounds, x, y);
 	}
 
-	private static int findCubicZeros(final double zeros[], final double cur,
-	                                  final double cp0, final double cp1,
-	                                  final double end) {
+	private static int findCubicZeros(final double zeros[], final double cur, final double cp0,
+	                                  final double cp1, final double end) {
 		zeros[0] = (cp0 - cur) * 3.0;
 		zeros[1] = (cp1 - cp0 - cp0 + cur) * 6.0;
 		zeros[2] = (end + (cp0 - cp1) * 3.0 - cur) * 3.0;
@@ -74,8 +70,7 @@ class PathBBox {
 		return ret;
 	}
 
-	private static double findQuadZero(final double cur, final double cp,
-	                                   final double end) {
+	private static double findQuadZero(final double cur, final double cp, final double end) {
 		return -(cp + cp - cur - cur) / (2.0 * (cur - cp - cp + end));
 	}
 
@@ -88,8 +83,7 @@ class PathBBox {
 		double movx = 0;
 		double movy = 0;
 		double cpx0, cpy0, cpx1, cpy1, endx, endy;
-		for (final PathIterator pi = s.getPathIterator(null); !pi.isDone(); pi
-		    .next()) {
+		for (final PathIterator pi = s.getPathIterator(null); !pi.isDone(); pi.next()) {
 			pi.currentSegment(coords);
 			switch (pi.currentSegment(coords)) {
 				case PathIterator.SEG_MOVETO:
@@ -116,13 +110,11 @@ class PathBBox {
 					endy = coords[3];
 					double t = PathBBox.findQuadZero(curx, cpx0, endx);
 					if (t > 0 && t < 1) {
-						PathBBox.accumQuad(bounds, t, curx, cury, cpx0, cpy0,
-						    endx, endy);
+						PathBBox.accumQuad(bounds, t, curx, cury, cpx0, cpy0, endx, endy);
 					}
 					t = PathBBox.findQuadZero(cury, cpy0, endy);
 					if (t > 0 && t < 1) {
-						PathBBox.accumQuad(bounds, t, curx, cury, cpx0, cpy0,
-						    endx, endy);
+						PathBBox.accumQuad(bounds, t, curx, cury, cpx0, cpy0, endx, endy);
 					}
 					curx = endx;
 					cury = endy;
@@ -135,17 +127,15 @@ class PathBBox {
 					cpy1 = coords[3];
 					endx = coords[4];
 					endy = coords[5];
-					int num = PathBBox.findCubicZeros(coords, curx, cpx0, cpx1,
-					    endx);
+					int num = PathBBox.findCubicZeros(coords, curx, cpx0, cpx1, endx);
 					for (int i = 0; i < num; i++) {
-						PathBBox.accumCubic(bounds, coords[i], curx, cury,
-						    cpx0, cpy0, cpx1, cpy1, endx, endy);
+						PathBBox.accumCubic(bounds, coords[i], curx, cury, cpx0, cpy0, cpx1, cpy1,
+						    endx, endy);
 					}
-					num = PathBBox.findCubicZeros(coords, cury, cpy0, cpy1,
-					    endy);
+					num = PathBBox.findCubicZeros(coords, cury, cpy0, cpy1, endy);
 					for (int i = 0; i < num; i++) {
-						PathBBox.accumCubic(bounds, coords[i], curx, cury,
-						    cpx0, cpy0, cpx1, cpy1, endx, endy);
+						PathBBox.accumCubic(bounds, coords[i], curx, cury, cpx0, cpy0, cpx1, cpy1,
+						    endx, endy);
 					}
 					curx = endx;
 					cury = endy;
@@ -157,7 +147,7 @@ class PathBBox {
 					break;
 			}
 		}
-		return new Rectangle2D.Double(bounds[0], bounds[1], bounds[2]
-		        - bounds[0], bounds[3] - bounds[1]);
+		return new Rectangle2D.Double(bounds[0], bounds[1], bounds[2] - bounds[0], bounds[3]
+		        - bounds[1]);
 	}
 }

@@ -25,8 +25,7 @@ import java.beans.PropertyChangeListener;
 import javax.swing.Action;
 import javax.swing.JCheckBoxMenuItem;
 
-public class JAutoCheckBoxMenuItem extends JCheckBoxMenuItem implements
-        PropertyChangeListener {
+public class JAutoCheckBoxMenuItem extends JCheckBoxMenuItem implements PropertyChangeListener {
 	private PropertyChangeListener defaultPropertyChanegListener;
 
 	public JAutoCheckBoxMenuItem(final Action a) {
@@ -34,10 +33,8 @@ public class JAutoCheckBoxMenuItem extends JCheckBoxMenuItem implements
 	}
 
 	@Override
-	protected PropertyChangeListener createActionPropertyChangeListener(
-	                                                                    final Action a) {
-		defaultPropertyChanegListener = super
-		    .createActionPropertyChangeListener(a);
+	protected PropertyChangeListener createActionPropertyChangeListener(final Action a) {
+		defaultPropertyChanegListener = super.createActionPropertyChangeListener(a);
 		return this;
 	};
 

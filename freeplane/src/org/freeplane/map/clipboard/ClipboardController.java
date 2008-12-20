@@ -50,16 +50,16 @@ import org.freeplane.modes.ModeController;
  * @author Dimitry Polivaev
  */
 public class ClipboardController {
-	static public void saveHTML(final NodeModel rootNodeOfBranch,
-	                            final File file) throws IOException {
-		final BufferedWriter fileout = new BufferedWriter(
-		    new OutputStreamWriter(new FileOutputStream(file)));
+	static public void saveHTML(final NodeModel rootNodeOfBranch, final File file)
+	        throws IOException {
+		final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(
+		    new FileOutputStream(file)));
 		final MindMapHTMLWriter htmlWriter = new MindMapHTMLWriter(fileout);
 		htmlWriter.writeHTML(rootNodeOfBranch);
 	}
 
-	static public void writeHTML(final Collection<NodeModel> selectedNodes,
-	                             final Writer fileout) throws IOException {
+	static public void writeHTML(final Collection<NodeModel> selectedNodes, final Writer fileout)
+	        throws IOException {
 		final MindMapHTMLWriter htmlWriter = new MindMapHTMLWriter(fileout);
 		htmlWriter.writeHTML(selectedNodes);
 	}
@@ -82,20 +82,18 @@ public class ClipboardController {
 		if (color != null) {
 			colors.add(color);
 		}
-		for (final ListIterator e = getModeController().getMapController()
-		    .childrenUnfolded(node); e.hasNext();) {
+		for (final ListIterator e = getModeController().getMapController().childrenUnfolded(node); e
+		    .hasNext();) {
 			collectColors((NodeModel) e.next(), colors);
 		}
 	}
 
-	public Transferable copy(final Collection<NodeModel> selectedNodes,
-	                         final boolean copyInvisible) {
+	public Transferable copy(final Collection<NodeModel> selectedNodes, final boolean copyInvisible) {
 		try {
-			final String forNodesFlavor = createForNodesFlavor(selectedNodes,
-			    copyInvisible);
+			final String forNodesFlavor = createForNodesFlavor(selectedNodes, copyInvisible);
 			final String plainText = getAsPlainText(selectedNodes);
-			return new MindMapNodesSelection(forNodesFlavor, plainText,
-			    getAsRTF(selectedNodes), getAsHTML(selectedNodes), null, null);
+			return new MindMapNodesSelection(forNodesFlavor, plainText, getAsRTF(selectedNodes),
+			    getAsHTML(selectedNodes), null, null);
 		}
 		catch (final UnsupportedFlavorException ex) {
 			org.freeplane.main.Tools.logException(ex);
@@ -114,20 +112,18 @@ public class ClipboardController {
 		final StringWriter stringWriter = new StringWriter();
 		try {
 			final NodeModel r = (node);
-			r.getModeController().getMapController().writeNodeAsXml(
-			    stringWriter, r, saveInvisible, true);
+			r.getModeController().getMapController().writeNodeAsXml(stringWriter, r, saveInvisible,
+			    true);
 		}
 		catch (final IOException e) {
 		}
-		return new MindMapNodesSelection(stringWriter.toString(), null, null,
-		    null, null, null);
+		return new MindMapNodesSelection(stringWriter.toString(), null, null, null, null, null);
 	}
 
 	public Transferable copySingle(final MapView mapView) {
 		final List source = mapView.getSelection();
 		final Collection target = new Vector(source.size());
-		final ListIterator<NodeView> iterator = source.listIterator(source
-		    .size());
+		final ListIterator<NodeView> iterator = source.listIterator(source.size());
 		while (iterator.hasPrevious()) {
 			final NodeModel node = iterator.previous().getModel();
 			target.add(shallowCopy(node));
@@ -143,8 +139,7 @@ public class ClipboardController {
 		modeController.addAction("copySingle", new CopySingleAction());
 	}
 
-	public String createForNodesFlavor(
-	                                   final Collection<NodeModel> selectedNodes,
+	public String createForNodesFlavor(final Collection<NodeModel> selectedNodes,
 	                                   final boolean copyInvisible)
 	        throws UnsupportedFlavorException, IOException {
 		String forNodesFlavor = "";
@@ -252,8 +247,8 @@ public class ClipboardController {
 
 	public boolean saveTXT(final NodeModel rootNodeOfBranch, final File file) {
 		try {
-			final BufferedWriter fileout = new BufferedWriter(
-			    new OutputStreamWriter(new FileOutputStream(file)));
+			final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(
+			    new FileOutputStream(file)));
 			writeTXT(rootNodeOfBranch, fileout,/* depth= */
 			0);
 			fileout.close();
@@ -278,12 +273,10 @@ public class ClipboardController {
 	public NodeModel shallowCopy(final NodeModel source) {
 		try {
 			final StringWriter writer = new StringWriter();
-			modeController.getMapController().writeNodeAsXml(writer, source,
-			    true, false);
+			modeController.getMapController().writeNodeAsXml(writer, source, true, false);
 			final String result = writer.toString();
-			final NodeModel copy = modeController.getMapController()
-			    .createNodeTreeFromXml(source.getMap(),
-			        new StringReader(result));
+			final NodeModel copy = modeController.getMapController().createNodeTreeFromXml(
+			    source.getMap(), new StringReader(result));
 			copy.setFolded(false);
 			return copy;
 		}
@@ -293,11 +286,10 @@ public class ClipboardController {
 		}
 	}
 
-	private void writeChildrenRTF(final NodeModel mindMapNodeModel,
-	                              final Writer fileout, final int depth,
-	                              final HashMap colorTable) throws IOException {
-		for (final ListIterator e = getModeController().getMapController()
-		    .childrenUnfolded(mindMapNodeModel); e.hasNext();) {
+	private void writeChildrenRTF(final NodeModel mindMapNodeModel, final Writer fileout,
+	                              final int depth, final HashMap colorTable) throws IOException {
+		for (final ListIterator e = getModeController().getMapController().childrenUnfolded(
+		    mindMapNodeModel); e.hasNext();) {
 			final NodeModel child = (NodeModel) e.next();
 			if (child.isVisible()) {
 				writeRTF(child, fileout, depth + 1, colorTable);
@@ -308,11 +300,10 @@ public class ClipboardController {
 		}
 	}
 
-	private void writeChildrenText(final NodeModel mindMapNodeModel,
-	                               final Writer fileout, final int depth)
-	        throws IOException {
-		for (final ListIterator e = getModeController().getMapController()
-		    .childrenUnfolded(mindMapNodeModel); e.hasNext();) {
+	private void writeChildrenText(final NodeModel mindMapNodeModel, final Writer fileout,
+	                               final int depth) throws IOException {
+		for (final ListIterator e = getModeController().getMapController().childrenUnfolded(
+		    mindMapNodeModel); e.hasNext();) {
 			final NodeModel child = (NodeModel) e.next();
 			if (child.isVisible()) {
 				writeTXT(child, fileout, depth + 1);
@@ -323,8 +314,7 @@ public class ClipboardController {
 		}
 	}
 
-	public boolean writeRTF(final Collection<NodeModel> selectedNodes,
-	                        final BufferedWriter fileout) {
+	public boolean writeRTF(final Collection<NodeModel> selectedNodes, final BufferedWriter fileout) {
 		try {
 			final HashSet colors = new HashSet();
 			for (final Iterator it = selectedNodes.iterator(); it.hasNext();) {
@@ -335,19 +325,16 @@ public class ClipboardController {
 			int colorPosition = 2;
 			for (final Iterator it = colors.iterator(); it.hasNext(); ++colorPosition) {
 				final Color color = (Color) it.next();
-				colorTableString += "\\red" + color.getRed() + "\\green"
-				        + color.getGreen() + "\\blue" + color.getBlue() + ";";
+				colorTableString += "\\red" + color.getRed() + "\\green" + color.getGreen()
+				        + "\\blue" + color.getBlue() + ";";
 				colorTable.put(color, new Integer(colorPosition));
 			}
 			colorTableString += "}";
 			fileout
 			    .write("{\\rtf1\\ansi\\ansicpg1252\\deff0\\deflang1033{\\fonttbl{\\f0\\fswiss\\fcharset0 Arial;}"
-			            + colorTableString
-			            + "}"
-			            + "\\viewkind4\\uc1\\pard\\f0\\fs20{}");
+			            + colorTableString + "}" + "\\viewkind4\\uc1\\pard\\f0\\fs20{}");
 			for (final Iterator it = selectedNodes.iterator(); it.hasNext();) {
-				writeRTF(((NodeModel) it.next()), fileout,/* depth= */0,
-				    colorTable);
+				writeRTF(((NodeModel) it.next()), fileout,/* depth= */0, colorTable);
 			}
 			fileout.write("}");
 			return true;
@@ -358,8 +345,7 @@ public class ClipboardController {
 		}
 	}
 
-	public void writeRTF(final NodeModel mindMapNodeModel,
-	                     final Writer fileout, final int depth,
+	public void writeRTF(final NodeModel mindMapNodeModel, final Writer fileout, final int depth,
 	                     final HashMap colorTable) throws IOException {
 		String pre = "{" + "\\li" + depth * 350;
 		String level;
@@ -371,9 +357,7 @@ public class ClipboardController {
 		}
 		String fontsize = "";
 		if (mindMapNodeModel.getColor() != null) {
-			pre += "\\cf"
-			        + ((Integer) colorTable.get(mindMapNodeModel.getColor()))
-			            .intValue();
+			pre += "\\cf" + ((Integer) colorTable.get(mindMapNodeModel.getColor())).intValue();
 		}
 		final Font font = mindMapNodeModel.getFont();
 		if (font != null) {
@@ -397,8 +381,7 @@ public class ClipboardController {
 			final String text = rtfEscapeUnicodeAndSpecialCharacters(mindMapNodeModel
 			    .getPlainTextContent());
 			if (mindMapNodeModel.getLink() != null) {
-				final String link = rtfEscapeUnicodeAndSpecialCharacters(mindMapNodeModel
-				    .getLink());
+				final String link = rtfEscapeUnicodeAndSpecialCharacters(mindMapNodeModel.getLink());
 				if (link.equals(mindMapNodeModel.toString())) {
 					fileout.write(pre + "<{\\ul\\cf1 " + link + "}>" + "}");
 				}
@@ -416,8 +399,7 @@ public class ClipboardController {
 		writeChildrenRTF(mindMapNodeModel, fileout, depth, colorTable);
 	}
 
-	public void writeTXT(final NodeModel mindMapNodeModel,
-	                     final Writer fileout, final int depth)
+	public void writeTXT(final NodeModel mindMapNodeModel, final Writer fileout, final int depth)
 	        throws IOException {
 		final String plainTextContent = mindMapNodeModel.getPlainTextContent();
 		for (int i = 0; i < depth; ++i) {

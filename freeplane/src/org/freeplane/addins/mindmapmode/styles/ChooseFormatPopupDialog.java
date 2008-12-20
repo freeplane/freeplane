@@ -47,10 +47,8 @@ import org.freeplane.ui.MenuBuilder;
 
 import deprecated.freemind.common.ITextTranslator;
 
-
 /** */
-class ChooseFormatPopupDialog extends JDialog implements
-        ITextTranslator, KeyListener {
+class ChooseFormatPopupDialog extends JDialog implements ITextTranslator, KeyListener {
 	public static final int CANCEL = -1;
 	public static final int OK = 1;
 	private static final String WINDOW_PREFERENCE_STORAGE_PROPERTY = "accessories.plugins.dialogs.ChooseFormatPopupDialog.window_storage";
@@ -65,10 +63,8 @@ class ChooseFormatPopupDialog extends JDialog implements
 	 * This constructor is used, if you need the user to enter a pattern
 	 * generally.
 	 */
-	public ChooseFormatPopupDialog(final JFrame caller,
-	                               final MModeController controller,
-	                               final String dialogTitle,
-	                               final Pattern pattern) {
+	public ChooseFormatPopupDialog(final JFrame caller, final MModeController controller,
+	                               final String dialogTitle, final Pattern pattern) {
 		super(caller);
 		mController = controller;
 		initialize(dialogTitle);
@@ -83,7 +79,8 @@ class ChooseFormatPopupDialog extends JDialog implements
 
 	private void close() {
 		final WindowConfigurationStorage storage = new NormalWindowConfigurationStorage();
-		storage.storeDialogPositions(this, ChooseFormatPopupDialog.WINDOW_PREFERENCE_STORAGE_PROPERTY);
+		storage.storeDialogPositions(this,
+		    ChooseFormatPopupDialog.WINDOW_PREFERENCE_STORAGE_PROPERTY);
 		setVisible(false);
 		this.dispose();
 	}
@@ -101,8 +98,7 @@ class ChooseFormatPopupDialog extends JDialog implements
 					cancelPressed();
 				}
 			});
-			MenuBuilder.setLabelAndMnemonic(jCancelButton, mController
-			    .getText(("cancel")));
+			MenuBuilder.setLabelAndMnemonic(jCancelButton, mController.getText(("cancel")));
 		}
 		return jCancelButton;
 	}
@@ -121,16 +117,13 @@ class ChooseFormatPopupDialog extends JDialog implements
 			 * int gridheight, double weightx, double weighty, int anchor, int
 			 * fill, Insets insets, int ipadx, int ipady)
 			 */
-			jContentPane.add(new JScrollPane(getStylePatternFrame()),
-			    new GridBagConstraints(0, 0, 2, 1, 2.0, 8.0,
-			        GridBagConstraints.WEST, GridBagConstraints.BOTH,
-			        new Insets(0, 0, 0, 0), 0, 0));
-			jContentPane.add(getJOKButton(), new GridBagConstraints(0, 1, 1, 1,
-			    1.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.NONE,
-			    new Insets(0, 0, 0, 0), 0, 0));
-			jContentPane.add(getJCancelButton(), new GridBagConstraints(1, 1,
-			    1, 1, 1.0, 0.0, GridBagConstraints.EAST,
-			    GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+			jContentPane.add(new JScrollPane(getStylePatternFrame()), new GridBagConstraints(0, 0,
+			    2, 1, 2.0, 8.0, GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(0, 0,
+			        0, 0), 0, 0));
+			jContentPane.add(getJOKButton(), new GridBagConstraints(0, 1, 1, 1, 1.0, 0.0,
+			    GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+			jContentPane.add(getJCancelButton(), new GridBagConstraints(1, 1, 1, 1, 1.0, 0.0,
+			    GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 			getRootPane().setDefaultButton(getJOKButton());
 		}
 		return jContentPane;
@@ -149,8 +142,7 @@ class ChooseFormatPopupDialog extends JDialog implements
 					okPressed();
 				}
 			});
-			MenuBuilder.setLabelAndMnemonic(jOKButton, mController
-			    .getText("ok"));
+			MenuBuilder.setLabelAndMnemonic(jOKButton, mController.getText("ok"));
 		}
 		return jOKButton;
 	}
@@ -207,8 +199,9 @@ class ChooseFormatPopupDialog extends JDialog implements
 		};
 		Tools.addEscapeActionToDialog(this, action);
 		pack();
-		final String marshalled = Controller.getResourceController().getProperty(ChooseFormatPopupDialog.WINDOW_PREFERENCE_STORAGE_PROPERTY);
-        NormalWindowConfigurationStorage.decorateDialog(marshalled,this);
+		final String marshalled = Controller.getResourceController().getProperty(
+		    ChooseFormatPopupDialog.WINDOW_PREFERENCE_STORAGE_PROPERTY);
+		NormalWindowConfigurationStorage.decorateDialog(marshalled, this);
 	}
 
 	/*

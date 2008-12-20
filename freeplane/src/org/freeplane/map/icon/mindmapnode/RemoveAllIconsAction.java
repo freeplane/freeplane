@@ -34,8 +34,7 @@ import org.freeplane.modes.MultipleNodeAction;
 /**
  * @author foltin
  */
-class RemoveAllIconsAction extends MultipleNodeAction implements
-        IIconInformation {
+class RemoveAllIconsAction extends MultipleNodeAction implements IIconInformation {
 	/**
 	 */
 	public RemoveAllIconsAction() {
@@ -56,8 +55,8 @@ class RemoveAllIconsAction extends MultipleNodeAction implements
 	}
 
 	public KeyStroke getKeyStroke() {
-		return Tools.getKeyStroke(Controller.getResourceController()
-		    .getAdjustableProperty(getKeystrokeResourceName()));
+		return Tools.getKeyStroke(Controller.getResourceController().getAdjustableProperty(
+		    getKeystrokeResourceName()));
 	}
 
 	public String getKeystrokeResourceName() {

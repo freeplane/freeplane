@@ -43,8 +43,7 @@ public class MCloudController extends CloudController {
 			return;
 		}
 		final Color color = cloud != null ? cloud.getColor() : null;
-		final MModeController modeController = (MModeController) node
-		    .getModeController();
+		final MModeController modeController = (MModeController) node.getModeController();
 		final IUndoableActor actor = new IUndoableActor() {
 			public void act() {
 				if (enable) {
@@ -85,8 +84,7 @@ public class MCloudController extends CloudController {
 
 	public void setColor(final NodeModel node, final Color color) {
 		setCloud(node, true);
-		final MModeController modeController = (MModeController) node
-		    .getModeController();
+		final MModeController modeController = (MModeController) node.getModeController();
 		final Color oldColor = node.getCloud().getColor();
 		if (color.equals(oldColor)) {
 			return;

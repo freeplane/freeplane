@@ -25,8 +25,7 @@ import java.beans.PropertyChangeListener;
 import javax.swing.Action;
 import javax.swing.JMenuItem;
 
-public class JAutoVisibleMenuItem extends JMenuItem implements
-        PropertyChangeListener {
+public class JAutoVisibleMenuItem extends JMenuItem implements PropertyChangeListener {
 	private PropertyChangeListener defaultPropertyChanegListener;
 
 	public JAutoVisibleMenuItem(final Action a) {
@@ -34,10 +33,8 @@ public class JAutoVisibleMenuItem extends JMenuItem implements
 	}
 
 	@Override
-	protected PropertyChangeListener createActionPropertyChangeListener(
-	                                                                    final Action a) {
-		defaultPropertyChanegListener = super
-		    .createActionPropertyChangeListener(a);
+	protected PropertyChangeListener createActionPropertyChangeListener(final Action a) {
+		defaultPropertyChanegListener = super.createActionPropertyChangeListener(a);
 		return this;
 	};
 

@@ -42,21 +42,20 @@ class ImportBranchAction extends FreeplaneAction {
 			return;
 		}
 		final JFileChooser chooser = new JFileChooser();
-		final FileFilter fileFilter = ((FileManager) getModeController()
-		    .getUrlManager()).getFileFilter();
+		final FileFilter fileFilter = ((FileManager) getModeController().getUrlManager())
+		    .getFileFilter();
 		if (fileFilter != null) {
 			chooser.addChoosableFileFilter(fileFilter);
 		}
-		final int returnVal = chooser.showOpenDialog(Controller.getController()
-		    .getViewController().getContentPane());
+		final int returnVal = chooser.showOpenDialog(Controller.getController().getViewController()
+		    .getContentPane());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			try {
 				final MapModel map = parent.getMap();
-				final NodeModel node = ((MMapController) getMModeController()
-				    .getMapController()).loadTree(map, chooser
-				    .getSelectedFile());
-				((MClipboardController) getMModeController()
-				    .getClipboardController()).paste(node, parent);
+				final NodeModel node = ((MMapController) getMModeController().getMapController())
+				    .loadTree(map, chooser.getSelectedFile());
+				((MClipboardController) getMModeController().getClipboardController()).paste(node,
+				    parent);
 			}
 			catch (final Exception ex) {
 				getModeController().getUrlManager().handleLoadingException(ex);

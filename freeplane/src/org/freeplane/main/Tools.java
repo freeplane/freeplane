@@ -117,11 +117,10 @@ public class Tools {
 		int iterationCount = 19;
 		final private String mAlgorithm;
 		final private char[] passPhrase;
-		byte[] salt = { (byte) 0xA9, (byte) 0x9B, (byte) 0xC8, (byte) 0x32,
-		        (byte) 0x56, (byte) 0x35, (byte) 0xE3, (byte) 0x03 };
+		byte[] salt = { (byte) 0xA9, (byte) 0x9B, (byte) 0xC8, (byte) 0x32, (byte) 0x56,
+		        (byte) 0x35, (byte) 0xE3, (byte) 0x03 };
 
-		public DesEncrypter(final StringBuffer pPassPhrase,
-		                    final String pAlgorithm) {
+		public DesEncrypter(final StringBuffer pPassPhrase, final String pAlgorithm) {
 			passPhrase = new char[pPassPhrase.length()];
 			pPassPhrase.getChars(0, passPhrase.length, passPhrase, 0);
 			mAlgorithm = pAlgorithm;
@@ -133,11 +132,9 @@ public class Tools {
 			}
 			try {
 				byte[] salt = null;
-				final int indexOfSaltIndicator = str
-				    .indexOf(DesEncrypter.SALT_PRESENT_INDICATOR);
+				final int indexOfSaltIndicator = str.indexOf(DesEncrypter.SALT_PRESENT_INDICATOR);
 				if (indexOfSaltIndicator >= 0) {
-					final String saltString = str.substring(0,
-					    indexOfSaltIndicator);
+					final String saltString = str.substring(0, indexOfSaltIndicator);
 					str = str.substring(indexOfSaltIndicator + 1);
 					salt = Tools.fromBase64(saltString);
 				}
@@ -164,8 +161,7 @@ public class Tools {
 				}
 				init(newSalt);
 				final byte[] enc = ecipher.doFinal(utf8);
-				return Tools.toBase64(newSalt)
-				        + DesEncrypter.SALT_PRESENT_INDICATOR
+				return Tools.toBase64(newSalt) + DesEncrypter.SALT_PRESENT_INDICATOR
 				        + Tools.toBase64(enc);
 			}
 			catch (final javax.crypto.BadPaddingException e) {
@@ -185,14 +181,13 @@ public class Tools {
 			}
 			if (ecipher == null) {
 				try {
-					final KeySpec keySpec = new PBEKeySpec(passPhrase, salt,
-					    iterationCount);
-					final SecretKey key = SecretKeyFactory.getInstance(
-					    mAlgorithm).generateSecret(keySpec);
+					final KeySpec keySpec = new PBEKeySpec(passPhrase, salt, iterationCount);
+					final SecretKey key = SecretKeyFactory.getInstance(mAlgorithm).generateSecret(
+					    keySpec);
 					ecipher = Cipher.getInstance(mAlgorithm);
 					dcipher = Cipher.getInstance(mAlgorithm);
-					final AlgorithmParameterSpec paramSpec = new PBEParameterSpec(
-					    salt, iterationCount);
+					final AlgorithmParameterSpec paramSpec = new PBEParameterSpec(salt,
+					    iterationCount);
 					ecipher.init(Cipher.ENCRYPT_MODE, key, paramSpec);
 					dcipher.init(Cipher.DECRYPT_MODE, key, paramSpec);
 				}
@@ -279,10 +274,9 @@ public class Tools {
 	}
 
 	private static Set availableFontFamilyNames = null;
-	public static final Set executableExtensions = new HashSet(Arrays
-	    .asList(new String[] { "exe", "com", "vbs", "bat", "lnk" }));
-	public static final String JAVA_VERSION = System
-	    .getProperty("java.version");
+	public static final Set executableExtensions = new HashSet(Arrays.asList(new String[] { "exe",
+	        "com", "vbs", "bat", "lnk" }));
+	public static final String JAVA_VERSION = System.getProperty("java.version");
 	private static String sEnvFonts[] = null;
 
 	public static void addEscapeActionToDialog(final JDialog dialog) {
@@ -294,21 +288,16 @@ public class Tools {
 		Tools.addEscapeActionToDialog(dialog, new EscapeAction());
 	}
 
-	public static void addEscapeActionToDialog(final JDialog dialog,
-	                                           final Action action) {
+	public static void addEscapeActionToDialog(final JDialog dialog, final Action action) {
 		Tools.addKeyActionToDialog(dialog, action, "ESCAPE", "end_dialog");
 	}
 
-	public static void addKeyActionToDialog(final JDialog dialog,
-	                                        final Action action,
-	                                        final String keyStroke,
-	                                        final String actionId) {
+	public static void addKeyActionToDialog(final JDialog dialog, final Action action,
+	                                        final String keyStroke, final String actionId) {
 		action.putValue(Action.NAME, actionId);
-		dialog.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-		    .put(KeyStroke.getKeyStroke(keyStroke),
-		        action.getValue(Action.NAME));
-		dialog.getRootPane().getActionMap().put(action.getValue(Action.NAME),
-		    action);
+		dialog.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+		    KeyStroke.getKeyStroke(keyStroke), action.getValue(Action.NAME));
+		dialog.getRootPane().getActionMap().put(action.getValue(Action.NAME), action);
 	}
 
 	public static String BooleanToXml(final boolean col) {
@@ -351,8 +340,7 @@ public class Tools {
 		compressor.setLevel(Deflater.BEST_COMPRESSION);
 		compressor.setInput(input);
 		compressor.finish();
-		final ByteArrayOutputStream bos = new ByteArrayOutputStream(
-		    input.length);
+		final ByteArrayOutputStream bos = new ByteArrayOutputStream(input.length);
 		final byte[] buf = new byte[1024];
 		while (!compressor.finished()) {
 			final int count = compressor.deflate(buf);
@@ -367,8 +355,7 @@ public class Tools {
 		return Tools.toBase64(compressedData);
 	}
 
-	public static void convertPointFromAncestor(final Component source,
-	                                            final Point p, Component c) {
+	public static void convertPointFromAncestor(final Component source, final Point p, Component c) {
 		int x, y;
 		while (c != source) {
 			x = c.getX();
@@ -379,11 +366,9 @@ public class Tools {
 		};
 	}
 
-	public static void convertPointToAncestor(final Component source,
-	                                          final Point point,
+	public static void convertPointToAncestor(final Component source, final Point point,
 	                                          final Class ancestorClass) {
-		final Component destination = SwingUtilities.getAncestorOfClass(
-		    ancestorClass, source);
+		final Component destination = SwingUtilities.getAncestorOfClass(ancestorClass, source);
 		Tools.convertPointToAncestor(source, point, destination);
 	}
 
@@ -399,8 +384,7 @@ public class Tools {
 		};
 	}
 
-	public static void copyStream(final InputStream in, final OutputStream out)
-	        throws IOException {
+	public static void copyStream(final InputStream in, final OutputStream out) throws IOException {
 		final byte[] buf = new byte[1024];
 		int len;
 		while ((len = in.read(buf)) > 0) {
@@ -418,8 +402,7 @@ public class Tools {
 		final byte[] compressedData = Tools.fromBase64(compressedMessage);
 		final Inflater decompressor = new Inflater();
 		decompressor.setInput(compressedData);
-		final ByteArrayOutputStream bos = new ByteArrayOutputStream(
-		    compressedData.length);
+		final ByteArrayOutputStream bos = new ByteArrayOutputStream(compressedData.length);
 		final byte[] buf = new byte[1024];
 		while (!decompressor.finished()) {
 			try {
@@ -464,8 +447,7 @@ public class Tools {
 		return result;
 	}
 
-	public static String expandPlaceholders(final String message,
-	                                        final String s1, final String s2) {
+	public static String expandPlaceholders(final String message, final String s1, final String s2) {
 		String result = message;
 		if (s1 != null) {
 			result = result.replaceAll("\\$1", s1);
@@ -476,8 +458,7 @@ public class Tools {
 		return result;
 	}
 
-	public static String expandPlaceholders(final String message,
-	                                        final String s1, final String s2,
+	public static String expandPlaceholders(final String message, final String s1, final String s2,
 	                                        final String s3) {
 		String result = message;
 		if (s1 != null) {
@@ -503,8 +484,7 @@ public class Tools {
 		if (text == null || text.length() == 0) {
 			return text;
 		}
-		return text.substring(0, 1).toUpperCase()
-		        + text.substring(1, text.length());
+		return text.substring(0, 1).toUpperCase() + text.substring(1, text.length());
 	}
 
 	/**
@@ -519,8 +499,7 @@ public class Tools {
 	 *
 	 * @throws FileNotFoundException
 	 */
-	public static Reader getActualReader(final File file)
-	        throws FileNotFoundException {
+	public static Reader getActualReader(final File file) throws FileNotFoundException {
 		return new BufferedReader(new FileReader(file));
 	}
 
@@ -549,8 +528,7 @@ public class Tools {
 	 */
 	private static String[] getAvailableFonts() {
 		if (Tools.sEnvFonts == null) {
-			final GraphicsEnvironment gEnv = GraphicsEnvironment
-			    .getLocalGraphicsEnvironment();
+			final GraphicsEnvironment gEnv = GraphicsEnvironment.getLocalGraphicsEnvironment();
 			Tools.sEnvFonts = gEnv.getAvailableFontFamilyNames();
 		}
 		return Tools.sEnvFonts;
@@ -568,8 +546,7 @@ public class Tools {
 	 */
 	public static String getExtension(final String s) {
 		final int i = s.lastIndexOf('.');
-		return (i > 0 && i < s.length() - 1) ? s.substring(i + 1).toLowerCase()
-		    .trim() : "";
+		return (i > 0 && i < s.length() - 1) ? s.substring(i + 1).toLowerCase().trim() : "";
 	}
 
 	/**
@@ -611,8 +588,7 @@ public class Tools {
 		if (keyStrokeDescription == null) {
 			return null;
 		}
-		final KeyStroke keyStroke = KeyStroke
-		    .getKeyStroke(keyStrokeDescription);
+		final KeyStroke keyStroke = KeyStroke.getKeyStroke(keyStrokeDescription);
 		if (keyStroke != null) {
 			return keyStroke;
 		}
@@ -625,16 +601,14 @@ public class Tools {
 	 *
 	 * @throws IOException
 	 */
-	public static Reader getUpdateReader(final File file,
-	                                     final String xsltScript)
+	public static Reader getUpdateReader(final File file, final String xsltScript)
 	        throws IOException {
 		StringWriter writer = null;
 		InputStream inputStream = null;
 		boolean successful = false;
 		try {
 			URL updaterUrl = null;
-			updaterUrl = Controller.getResourceController().getResource(
-			    xsltScript);
+			updaterUrl = Controller.getResourceController().getResource(xsltScript);
 			if (updaterUrl == null) {
 				throw new IllegalArgumentException(xsltScript + " not found.");
 			}
@@ -650,8 +624,7 @@ public class Tools {
 				}
 
 				public void run() {
-					final TransformerFactory transFact = TransformerFactory
-					    .newInstance();
+					final TransformerFactory transFact = TransformerFactory.newInstance();
 					Transformer trans;
 					try {
 						trans = transFact.newTransformer(xsltSource);
@@ -693,14 +666,12 @@ public class Tools {
 	 *
 	 * @throws MalformedURLException
 	 */
-	public static URL getURLWithoutReference(final URL input)
-	        throws MalformedURLException {
+	public static URL getURLWithoutReference(final URL input) throws MalformedURLException {
 		return new URL(input.toString().replaceFirst("#.*", ""));
 	}
 
 	public static boolean isAbsolutePath(final String path) {
-		final String osNameStart = System.getProperty("os.name")
-		    .substring(0, 3);
+		final String osNameStart = System.getProperty("os.name").substring(0, 3);
 		final String fileSeparator = System.getProperty("file.separator");
 		if (osNameStart.equals("Win")) {
 			return ((path.length() > 1) && path.substring(1, 2).equals(":"))
@@ -759,11 +730,9 @@ public class Tools {
 		final DataFlavor[] dataFlavors = t.getTransferDataFlavors();
 		for (int i = 0; i < dataFlavors.length; i++) {
 			System.out.println("  Flavor:\t" + dataFlavors[i]);
-			System.out.println("    Supported:\t"
-			        + t.isDataFlavorSupported(dataFlavors[i]));
+			System.out.println("    Supported:\t" + t.isDataFlavorSupported(dataFlavors[i]));
 			try {
-				System.out.println("    Content:\t"
-				        + t.getTransferData(dataFlavors[i]));
+				System.out.println("    Content:\t" + t.getTransferData(dataFlavors[i]));
 			}
 			catch (final Exception e) {
 			}
@@ -803,11 +772,9 @@ public class Tools {
 		return iterator;
 	}
 
-	public static boolean safeEquals(final BooleanHolder holder,
-	                                 final BooleanHolder holder2) {
+	public static boolean safeEquals(final BooleanHolder holder, final BooleanHolder holder2) {
 		return (holder == null && holder2 == null)
-		        || (holder != null && holder2 != null && holder.getValue() == holder2
-		            .getValue());
+		        || (holder != null && holder2 != null && holder.getValue() == holder2.getValue());
 	}
 
 	public static boolean safeEquals(final Color color1, final Color color2) {
@@ -825,15 +792,13 @@ public class Tools {
 		        || (string1 == null && string2 == null);
 	}
 
-	public static boolean safeEqualsIgnoreCase(final String string1,
-	                                           final String string2) {
-		return (string1 != null && string2 != null && string1.toLowerCase()
-		    .equals(string2.toLowerCase()))
+	public static boolean safeEqualsIgnoreCase(final String string1, final String string2) {
+		return (string1 != null && string2 != null && string1.toLowerCase().equals(
+		    string2.toLowerCase()))
 		        || (string1 == null && string2 == null);
 	}
 
-	public static void setDialogLocationRelativeTo(final JDialog dialog,
-	                                               Component c) {
+	public static void setDialogLocationRelativeTo(final JDialog dialog, Component c) {
 		if (c == null) {
 			return;
 		}
@@ -857,10 +822,8 @@ public class Tools {
 		final Dimension screenSize = defaultToolkit.getScreenSize();
 		final int minX = Math.max(parentLocation.x, screenInsets.left);
 		final int minY = Math.max(parentLocation.y, screenInsets.top);
-		final int maxX = Math.min(parentLocation.x + pw, screenSize.width
-		        - screenInsets.right);
-		final int maxY = Math.min(parentLocation.y + ph, screenSize.height
-		        - screenInsets.bottom);
+		final int maxX = Math.min(parentLocation.x + pw, screenSize.width - screenInsets.right);
+		final int maxY = Math.min(parentLocation.y + ph, screenSize.height - screenInsets.bottom);
 		int dx, dy;
 		if (compLocation.x + cw < minX) {
 			dx = minX;
@@ -917,15 +880,12 @@ public class Tools {
 		dialog.setLocation(dx, dy);
 	}
 
-	public static void setHidden(final File file, final boolean hidden,
-	                             final boolean synchronously) {
-		final String osNameStart = System.getProperty("os.name")
-		    .substring(0, 3);
+	public static void setHidden(final File file, final boolean hidden, final boolean synchronously) {
+		final String osNameStart = System.getProperty("os.name").substring(0, 3);
 		if (osNameStart.equals("Win")) {
 			try {
 				Runtime.getRuntime().exec(
-				    "attrib " + (hidden ? "+" : "-") + "H \""
-				            + file.getAbsolutePath() + "\"");
+				    "attrib " + (hidden ? "+" : "-") + "H \"" + file.getAbsolutePath() + "\"");
 				if (!synchronously) {
 					return;
 				}
@@ -973,14 +933,10 @@ public class Tools {
 			String baseString = base.getFile();
 			String targetString = target.getFile();
 			String result = "";
-			baseString = baseString.substring(0,
-			    baseString.lastIndexOf("/") + 1);
-			targetString = targetString.substring(0, targetString
-			    .lastIndexOf("/") + 1);
-			final StringTokenizer baseTokens = new StringTokenizer(baseString,
-			    "/");
-			final StringTokenizer targetTokens = new StringTokenizer(
-			    targetString, "/");
+			baseString = baseString.substring(0, baseString.lastIndexOf("/") + 1);
+			targetString = targetString.substring(0, targetString.lastIndexOf("/") + 1);
+			final StringTokenizer baseTokens = new StringTokenizer(baseString, "/");
+			final StringTokenizer targetTokens = new StringTokenizer(targetString, "/");
 			String nextBaseToken = "", nextTargetToken = "";
 			while (baseTokens.hasMoreTokens() && targetTokens.hasMoreTokens()) {
 				nextBaseToken = baseTokens.nextToken();
@@ -1001,8 +957,8 @@ public class Tools {
 						nextTargetToken = targetTokens.nextToken();
 					}
 					final String temp = target.getFile();
-					result = result.concat(temp.substring(
-					    temp.lastIndexOf("/") + 1, temp.length()));
+					result = result
+					    .concat(temp.substring(temp.lastIndexOf("/") + 1, temp.length()));
 					return result;
 				}
 			}
@@ -1015,8 +971,7 @@ public class Tools {
 				result = result.concat(nextTargetToken + "/");
 			}
 			final String temp = target.getFile();
-			result = result.concat(temp.substring(temp.lastIndexOf("/") + 1,
-			    temp.length()));
+			result = result.concat(temp.substring(temp.lastIndexOf("/") + 1, temp.length()));
 			return result;
 		}
 		return target.toString();
@@ -1030,13 +985,10 @@ public class Tools {
 	 * slightly differently.
 	 */
 	public static String urlGetFile(final URL url) {
-		final String osNameStart = System.getProperty("os.name")
-		    .substring(0, 3);
+		final String osNameStart = System.getProperty("os.name").substring(0, 3);
 		if (osNameStart.equals("Win") && url.getProtocol().equals("file")) {
-			final String fileName = url.toString().replaceFirst("^file:", "")
-			    .replace('/', '\\');
-			return (fileName.indexOf(':') >= 0) ? fileName.replaceFirst(
-			    "^\\\\*", "") : fileName;
+			final String fileName = url.toString().replaceFirst("^file:", "").replace('/', '\\');
+			return (fileName.indexOf(':') >= 0) ? fileName.replaceFirst("^\\\\*", "") : fileName;
 		}
 		else {
 			return url.getFile();
@@ -1083,8 +1035,7 @@ public class Tools {
 			return new Color(red, green, blue);
 		}
 		else {
-			throw new IllegalArgumentException("No xml color given by '"
-			        + string + "'.");
+			throw new IllegalArgumentException("No xml color given by '" + string + "'.");
 		}
 	}
 
@@ -1105,15 +1056,13 @@ public class Tools {
 			return null;
 		}
 		if (string.startsWith("java.awt.Point")) {
-			string = string.replaceAll(
-			    "java\\.awt\\.Point\\[x=([0-9]*),y=([0-9]*)\\]", "$1;$2");
+			string = string.replaceAll("java\\.awt\\.Point\\[x=([0-9]*),y=([0-9]*)\\]", "$1;$2");
 		}
 		final List l = Tools.stringToList(string);
 		final ListIterator it = l.listIterator(0);
 		if (l.size() != 2) {
-			throw new IllegalArgumentException(
-			    "A point must consist of two numbers (and not: '" + string
-			            + "').");
+			throw new IllegalArgumentException("A point must consist of two numbers (and not: '"
+			        + string + "').");
 		}
 		final int x = Integer.parseInt((String) it.next());
 		final int y = Integer.parseInt((String) it.next());

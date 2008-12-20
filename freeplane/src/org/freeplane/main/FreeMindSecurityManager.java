@@ -80,8 +80,7 @@ public final class FreeMindSecurityManager extends SecurityManager {
 	}
 
 	@Override
-	public void checkConnect(final String pHost, final int pPort,
-	                         final Object pContext) {
+	public void checkConnect(final String pHost, final int pPort, final Object pContext) {
 		if (mFinalSecurityManager == null) {
 			return;
 		}
@@ -300,15 +299,13 @@ public final class FreeMindSecurityManager extends SecurityManager {
 	 * @param pFinalSecurityManager
 	 *            set twice the same to remove it.
 	 */
-	public void setFinalSecurityManager(
-	                                    final SecurityManager pFinalSecurityManager) {
+	public void setFinalSecurityManager(final SecurityManager pFinalSecurityManager) {
 		if (pFinalSecurityManager == mFinalSecurityManager) {
 			mFinalSecurityManager = null;
 			return;
 		}
 		if (mFinalSecurityManager != null) {
-			throw new SecurityException(
-			    "There is a SecurityManager installed already.");
+			throw new SecurityException("There is a SecurityManager installed already.");
 		}
 		mFinalSecurityManager = pFinalSecurityManager;
 	}

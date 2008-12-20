@@ -33,8 +33,8 @@ class MapsMenuActionListener implements ActionListener {
 	public void actionPerformed(final ActionEvent e) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				Controller.getController().getMapViewManager().changeToMapView(
-				    e.getActionCommand());
+				Controller.getController().getMapViewManager()
+				    .changeToMapView(e.getActionCommand());
 			}
 		});
 	}

@@ -71,8 +71,7 @@ public interface IXMLElement {
 	 * @param lineNr
 	 *            the line in the XML data where the element starts.
 	 */
-	public IXMLElement createElement(String fullName, String systemID,
-	                                 int lineNr);
+	public IXMLElement createElement(String fullName, String systemID, int lineNr);
 
 	/**
 	 * Creates an empty element.
@@ -86,8 +85,7 @@ public interface IXMLElement {
 	 * @param lineNr
 	 *            the line in the XML data where the element starts.
 	 */
-	public IXMLElement createElement(String fullName, String namespace,
-	                                 String systemID, int lineNr);
+	public IXMLElement createElement(String fullName, String namespace, String systemID, int lineNr);
 
 	/**
 	 * Creates an element to be used for #PCDATA content.
@@ -181,8 +179,7 @@ public interface IXMLElement {
 	 *            the default value of the attribute.
 	 * @return the value, or defaultValue if the attribute does not exist.
 	 */
-	public String getAttribute(String name, String namespace,
-	                           String defaultValue);
+	public String getAttribute(String name, String namespace, String defaultValue);
 
 	/**
 	 * Returns the number of attributes.
@@ -243,8 +240,7 @@ public interface IXMLElement {
 	 * @throws java.lang.ArrayIndexOutOfBoundsException
 	 *             if the index is out of bounds.
 	 */
-	public IXMLElement getChildAtIndex(int index)
-	        throws ArrayIndexOutOfBoundsException;
+	public IXMLElement getChildAtIndex(int index) throws ArrayIndexOutOfBoundsException;
 
 	/**
 	 * Returns a vector containing all the child elements.

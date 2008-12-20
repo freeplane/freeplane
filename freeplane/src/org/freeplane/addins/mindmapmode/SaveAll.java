@@ -30,15 +30,12 @@ import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.map.tree.view.MapView;
 import org.freeplane.modes.mindmapmode.MModeController;
 
-
 /**
  * @author foltin
  */
-@ActionDescriptor(
-    tooltip="accessories/plugins/SaveAll.properties_documentation", //
-    name="accessories/plugins/SaveAll.properties_name", //
-    locations={"/menu_bar/file/open"}
-)
+@ActionDescriptor(tooltip = "accessories/plugins/SaveAll.properties_documentation", //
+name = "accessories/plugins/SaveAll.properties_name", //
+locations = { "/menu_bar/file/open" })
 public class SaveAll extends FreeplaneAction {
 	/**
 	 *
@@ -47,13 +44,7 @@ public class SaveAll extends FreeplaneAction {
 		super();
 	}
 
-	/**
-	 */
-	private Map getMapViews() {
-		return Controller.getController().getMapViewManager().getMapViews();
-	}
-
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(final ActionEvent e) {
 		final Controller mainController = Controller.getController();
 		final MapView initialMapView = mainController.getMapView();
 		final Map mapViews = getMapViews();
@@ -61,21 +52,21 @@ public class SaveAll extends FreeplaneAction {
 		v.addAll(mapViews.values());
 		for (final Iterator iter = v.iterator(); iter.hasNext();) {
 			final MapView mapView = (MapView) iter.next();
-			mainController.getMapViewManager().changeToMapView(
-			    mapView.getName());
+			mainController.getMapViewManager().changeToMapView(mapView.getName());
 			if (!((MModeController) mapView.getModeController()).save()) {
-				JOptionPane
-				    .showMessageDialog(
-				        Controller.getController().getViewController()
-				            .getContentPane(),
-				        "FreeMind",
-				        Controller.getText("accessories/plugins/SaveAll.properties_save_all_cancelled"),
-				        JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(Controller.getController().getViewController()
+				    .getContentPane(), "FreeMind", Controller
+				    .getText("accessories/plugins/SaveAll.properties_save_all_cancelled"),
+				    JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 		}
-		mainController.getMapViewManager().changeToMapView(
-		    initialMapView.toString());
+		mainController.getMapViewManager().changeToMapView(initialMapView.toString());
 	}
 
+	/**
+	 */
+	private Map getMapViews() {
+		return Controller.getController().getMapViewManager().getMapViews();
+	}
 }

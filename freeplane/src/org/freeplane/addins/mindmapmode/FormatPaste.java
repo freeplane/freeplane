@@ -31,68 +31,27 @@ import org.freeplane.modes.MultipleNodeAction;
 import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.ui.MenuBuilder;
 
-
 /**
  * @author foltin
  */
-@ActionDescriptor(
-    tooltip="accessories/plugins/FormatPaste.properties_documentation", //
-    name="accessories/plugins/FormatPaste.properties_name", //
-    keyStroke="keystroke_accessories/plugins/FormatPaste.properties.properties_key", //
-    iconPath = "accessories/plugins/icons/color_fill.png", //
-    locations={"/menu_bar/edit/paste"}
-)
-public class FormatPaste extends MultipleNodeAction {
-	public FormatPaste(MenuBuilder menuBuilder) {
-		super();
-		menuBuilder.addAnnotatedAction(new FormatCopy());
-		menuBuilder.addAnnotatedAction(this);
-	}
-
-
-	@Override
-    protected void actionPerformed(ActionEvent e, NodeModel node) {
-			pasteFormat(node);
-	}
-
-	/**
-	 */
-	private void pasteFormat(final NodeModel node) {
-		Pattern pattern = FormatCopy.getPattern();
-		if ( pattern == null) {
-			JOptionPane.showMessageDialog(Controller.getController()
-			    .getViewController().getContentPane(),
-			    Controller.getText("no_format_copy_before_format_paste"), "" /*
-			    		    				    				    				    		    				    				 * =Title
-			    		    				    				    				    		    				    				 */,
-			    JOptionPane.ERROR_MESSAGE);
-			return;
-		}
-		((MModeController)getModeController()).getPatternController().applyPattern(node,
-		    pattern);
-	}
-}
-
-/**
- * @author foltin
- */
-@ActionDescriptor(
-        tooltip="accessories/plugins/FormatCopy.properties_documentation", //
-        name="accessories/plugins/FormatCopy.properties_name", //,
-        iconPath = "accessories/plugins/icons/colorpicker.png", //
-        keyStroke="keystroke_accessories/plugins/FormatCopy.properties.properties_key", //
-        locations={"/menu_bar/edit/paste"}
-)
-
+@ActionDescriptor(tooltip = "accessories/plugins/FormatCopy.properties_documentation", //
+name = "accessories/plugins/FormatCopy.properties_name", //,
+iconPath = "accessories/plugins/icons/colorpicker.png", //
+keyStroke = "keystroke_accessories/plugins/FormatCopy.properties.properties_key", //
+locations = { "/menu_bar/edit/paste" })
 class FormatCopy extends FreeplaneAction {
-	public static Pattern getPattern() {
-    	return pattern;
-    }
-
 	private static Pattern pattern = null;
+
+	public static Pattern getPattern() {
+		return pattern;
+	}
 
 	public FormatCopy() {
 		super();
+	}
+
+	public void actionPerformed(final ActionEvent e) {
+		copyFormat(getModeController().getSelectedNode());
 	}
 
 	/**
@@ -100,9 +59,39 @@ class FormatCopy extends FreeplaneAction {
 	private void copyFormat(final NodeModel node) {
 		FormatCopy.pattern = StylePatternFactory.createPatternFromNode(node);
 	}
-	
-	public void actionPerformed(ActionEvent e) {
-			copyFormat(getModeController().getSelectedNode());
+}
+
+/**
+ * @author foltin
+ */
+@ActionDescriptor(tooltip = "accessories/plugins/FormatPaste.properties_documentation", //
+name = "accessories/plugins/FormatPaste.properties_name", //
+keyStroke = "keystroke_accessories/plugins/FormatPaste.properties.properties_key", //
+iconPath = "accessories/plugins/icons/color_fill.png", //
+locations = { "/menu_bar/edit/paste" })
+public class FormatPaste extends MultipleNodeAction {
+	public FormatPaste(final MenuBuilder menuBuilder) {
+		super();
+		menuBuilder.addAnnotatedAction(new FormatCopy());
+		menuBuilder.addAnnotatedAction(this);
 	}
 
+	@Override
+	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
+		pasteFormat(node);
+	}
+
+	/**
+	 */
+	private void pasteFormat(final NodeModel node) {
+		final Pattern pattern = FormatCopy.getPattern();
+		if (pattern == null) {
+			JOptionPane.showMessageDialog(Controller.getController().getViewController()
+			    .getContentPane(), Controller.getText("no_format_copy_before_format_paste"), "" /*
+					    		    				    				    				    		    				    				 * =Title
+					    		    				    				    				    		    				    				 */, JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		((MModeController) getModeController()).getPatternController().applyPattern(node, pattern);
+	}
 }

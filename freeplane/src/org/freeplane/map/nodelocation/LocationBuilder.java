@@ -32,10 +32,9 @@ import org.freeplane.map.tree.NodeBuilder.NodeObject;
  * @author Dimitry Polivaev
  * 06.12.2008
  */
-class LocationBuilder implements IAttributeHandler,
-        IAttributeWriter<IExtension> {
-	public boolean parseAttribute(final Object userObject, final String tag,
-	                              final String name, final String value) {
+class LocationBuilder implements IAttributeHandler, IAttributeWriter<IExtension> {
+	public boolean parseAttribute(final Object userObject, final String tag, final String name,
+	                              final String value) {
 		final NodeModel node = ((NodeObject) userObject).node;
 		if (name.equals("VSHIFT")) {
 			node.createLocationModel().setShiftY(Integer.parseInt(value));
@@ -52,14 +51,12 @@ class LocationBuilder implements IAttributeHandler,
 		return false;
 	}
 
-	void registerBy(final ReadManager readManager,
-	                final WriteManager writeManager) {
+	void registerBy(final ReadManager readManager, final WriteManager writeManager) {
 		readManager.addAttributeHandler("node", this);
 		writeManager.addExtensionAttributeWriter(LocationModel.class, this);
 	}
 
-	public void writeAttributes(final ITreeWriter writer,
-	                            final Object userObject,
+	public void writeAttributes(final ITreeWriter writer, final Object userObject,
 	                            final IExtension extension) {
 		final LocationModel locationModel = (LocationModel) extension;
 		final int vGap = locationModel.getVGap();

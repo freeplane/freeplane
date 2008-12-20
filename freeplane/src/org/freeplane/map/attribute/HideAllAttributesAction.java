@@ -32,8 +32,7 @@ class HideAllAttributesAction extends AbstractAction {
 	 *
 	 */
 	public HideAllAttributesAction() {
-		MenuBuilder.setLabelAndMnemonic(this, Controller
-		    .getText("attributes_hide_all"));
+		MenuBuilder.setLabelAndMnemonic(this, Controller.getText("attributes_hide_all"));
 	};
 
 	public void actionPerformed(final ActionEvent e) {

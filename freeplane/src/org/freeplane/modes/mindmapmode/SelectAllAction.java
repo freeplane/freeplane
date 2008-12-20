@@ -35,9 +35,8 @@ class SelectAllAction extends MultipleNodeAction {
 	}
 
 	@Override
-    protected void actionPerformed(ActionEvent e, NodeModel node) {
+	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
 		final ModeController modeController = getModeController();
-		modeController.selectBranch(modeController.getMapView()
-		    .getRoot(), false);
-    }
+		modeController.selectBranch(modeController.getMapView().getRoot(), false);
+	}
 }

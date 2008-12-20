@@ -35,10 +35,9 @@ class NodeColorAction extends MultipleNodeAction {
 
 	@Override
 	public void actionPerformed(final ActionEvent e) {
-		actionColor = ColorTracker.showCommonJColorChooserDialog(super
-		    .getMModeController().getMapView().getSelected(), super
-		    .getMModeController().getText("choose_node_color"), super
-		    .getMModeController().getSelectedNode().getColor());
+		actionColor = ColorTracker.showCommonJColorChooserDialog(super.getMModeController()
+		    .getMapView().getSelected(), super.getMModeController().getText("choose_node_color"),
+		    super.getMModeController().getSelectedNode().getColor());
 		if (actionColor == null) {
 			return;
 		}
@@ -47,7 +46,7 @@ class NodeColorAction extends MultipleNodeAction {
 
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		((MNodeStyleController) super.getMModeController()
-		    .getNodeStyleController()).setColor(node, actionColor);
+		((MNodeStyleController) super.getMModeController().getNodeStyleController()).setColor(node,
+		    actionColor);
 	}
 }

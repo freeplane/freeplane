@@ -41,8 +41,7 @@ public class MClipboardController extends ClipboardController {
 	public MClipboardController(final MModeController modeController) {
 		super(modeController);
 		createActions(modeController);
-		modeController.setNodeDropTargetListener(new MindMapNodeDropListener(
-		    modeController));
+		modeController.setNodeDropTargetListener(new MindMapNodeDropListener(modeController));
 	}
 
 	/**
@@ -50,8 +49,7 @@ public class MClipboardController extends ClipboardController {
 	 */
 	private void createActions(final MModeController modeController) {
 		modeController.addAction("exportToHTML", new ExportToHTMLAction());
-		modeController.addAction("exportBranchToHTML",
-		    new ExportBranchToHTMLAction());
+		modeController.addAction("exportBranchToHTML", new ExportBranchToHTMLAction());
 		cut = new CutAction();
 		modeController.addAction("cut", cut);
 		paste = new PasteAction();
@@ -63,13 +61,11 @@ public class MClipboardController extends ClipboardController {
 	}
 
 	public void paste(final NodeModel node, final NodeModel parent) {
-		((PasteAction) getModeController().getAction("paste")).paste(node,
-		    parent);
+		((PasteAction) getModeController().getAction("paste")).paste(node, parent);
 	}
 
 	public void paste(final Transferable t, final NodeModel parent) {
-		paste(t, /* target= */parent, /* asSibling= */false, parent
-		    .isNewChildLeft());
+		paste(t, /* target= */parent, /* asSibling= */false, parent.isNewChildLeft());
 	}
 
 	/**
@@ -78,26 +74,19 @@ public class MClipboardController extends ClipboardController {
 	 *            right.
 	 * @return true, if successfully.
 	 **/
-	public void paste(final Transferable t, final NodeModel target,
-	                  final boolean asSibling, final boolean isLeft) {
-		final MModeController modeController = (MModeController) target
-		    .getModeController();
-		if (!asSibling
-		        && modeController.getMapController().isFolded(target)
-		        && Controller.getResourceController().getBoolProperty(
-		            RESOURCE_UNFOLD_ON_PASTE)) {
+	public void paste(final Transferable t, final NodeModel target, final boolean asSibling,
+	                  final boolean isLeft) {
+		final MModeController modeController = (MModeController) target.getModeController();
+		if (!asSibling && modeController.getMapController().isFolded(target)
+		        && Controller.getResourceController().getBoolProperty(RESOURCE_UNFOLD_ON_PASTE)) {
 			modeController.getMapController().setFolded(target, false);
 		}
-		((PasteAction) getModeController().getAction("paste")).paste(t, target,
-		    asSibling, isLeft);
+		((PasteAction) getModeController().getAction("paste")).paste(t, target, asSibling, isLeft);
 	}
 
-	public NodeModel pasteXMLWithoutRedisplay(final String pasted,
-	                                          final NodeModel target,
-	                                          final boolean asSibling,
-	                                          final boolean changeSide,
+	public NodeModel pasteXMLWithoutRedisplay(final String pasted, final NodeModel target,
+	                                          final boolean asSibling, final boolean changeSide,
 	                                          final boolean isLeft) {
-		return paste.pasteXMLWithoutRedisplay(pasted, target, asSibling,
-		    changeSide, isLeft);
+		return paste.pasteXMLWithoutRedisplay(pasted, target, asSibling, changeSide, isLeft);
 	}
 }

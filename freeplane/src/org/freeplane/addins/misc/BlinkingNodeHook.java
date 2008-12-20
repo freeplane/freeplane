@@ -81,11 +81,9 @@ public class BlinkingNodeHook extends PersistentNodeHook {
 							if (!view.isVisible()) {
 								return;
 							}
-							final Color col = view.getMainView()
-							    .getForeground();
+							final Color col = view.getMainView().getForeground();
 							int index = -1;
-							if (col != null
-							        && BlinkingNodeHook.colors.contains(col)) {
+							if (col != null && BlinkingNodeHook.colors.contains(col)) {
 								index = BlinkingNodeHook.colors.indexOf(col);
 							}
 							index++;
@@ -110,8 +108,7 @@ public class BlinkingNodeHook extends PersistentNodeHook {
 	}
 
 	@Override
-	protected IExtension createExtension(final NodeModel node,
-	                                     final IXMLElement element) {
+	protected IExtension createExtension(final NodeModel node, final IXMLElement element) {
 		return new TimerColorChanger(node);
 	}
 

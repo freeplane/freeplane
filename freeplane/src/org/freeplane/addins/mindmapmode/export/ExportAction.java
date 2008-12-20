@@ -59,22 +59,17 @@ abstract public class ExportAction extends FreeplaneAction {
 	 */
 	protected File chooseFile(final String type, final String description,
 	                          final String nameExtension) {
-		final Container component = Controller.getController()
-		    .getViewController().getContentPane();
+		final Container component = Controller.getController().getViewController().getContentPane();
 		JFileChooser chooser = null;
 		chooser = new JFileChooser();
 		final File mmFile = Controller.getController().getMap().getFile();
 		if (mmFile != null) {
-			final String proposedName = mmFile.getAbsolutePath().replaceFirst(
-			    "\\.[^.]*?$", "")
-			        + ((nameExtension != null) ? nameExtension : "")
-			        + "."
-			        + type;
+			final String proposedName = mmFile.getAbsolutePath().replaceFirst("\\.[^.]*?$", "")
+			        + ((nameExtension != null) ? nameExtension : "") + "." + type;
 			chooser.setSelectedFile(new File(proposedName));
 		}
 		final ModeController mindMapController = getModeController();
-		final File lastCurrentDir = mindMapController.getUrlManager()
-		    .getLastCurrentDir();
+		final File lastCurrentDir = mindMapController.getUrlManager().getLastCurrentDir();
 		if (lastCurrentDir != null) {
 			chooser.setCurrentDirectory(lastCurrentDir);
 		}
@@ -84,19 +79,16 @@ abstract public class ExportAction extends FreeplaneAction {
 			return null;
 		}
 		File chosenFile = chooser.getSelectedFile();
-		mindMapController.getUrlManager().setLastCurrentDir(
-		    chosenFile.getParentFile());
+		mindMapController.getUrlManager().setLastCurrentDir(chosenFile.getParentFile());
 		final String ext = Tools.getExtension(chosenFile.getName());
 		if (!Tools.safeEqualsIgnoreCase(ext, type)) {
-			chosenFile = new File(chosenFile.getParent(), chosenFile.getName()
-			        + "." + type);
+			chosenFile = new File(chosenFile.getParent(), chosenFile.getName() + "." + type);
 		}
 		if (chosenFile.exists()) {
 			final String overwriteText = MessageFormat.format(Controller
-			    .getText("file_already_exists"), new Object[] { chosenFile
-			    .toString() });
-			final int overwriteMap = JOptionPane.showConfirmDialog(component,
-			    overwriteText, overwriteText, JOptionPane.YES_NO_OPTION);
+			    .getText("file_already_exists"), new Object[] { chosenFile.toString() });
+			final int overwriteMap = JOptionPane.showConfirmDialog(component, overwriteText,
+			    overwriteText, JOptionPane.YES_NO_OPTION);
 			if (overwriteMap != JOptionPane.YES_OPTION) {
 				return null;
 			}
@@ -115,14 +107,12 @@ abstract public class ExportAction extends FreeplaneAction {
 				return;
 			}
 			final InputStream in = new FileInputStream(resource);
-			final OutputStream out = new FileOutputStream(destinationDirectory
-			        + "/" + fileName);
+			final OutputStream out = new FileOutputStream(destinationDirectory + "/" + fileName);
 			Tools.copyStream(in, out);
 		}
 		catch (final Exception e) {
-			Logger.global.severe("File not found or could not be copied. "
-			        + "Was earching for " + dir + fileName
-			        + " and should go to " + destinationDirectory);
+			Logger.global.severe("File not found or could not be copied. " + "Was earching for "
+			        + dir + fileName + " and should go to " + destinationDirectory);
 		}
 	}
 
@@ -131,22 +121,18 @@ abstract public class ExportAction extends FreeplaneAction {
 	protected void copyFromResource(final String prefix, final String fileName,
 	                                final String destinationDirectory) {
 		try {
-			final URL resource = Controller.getResourceController()
-			    .getResource(prefix + fileName);
+			final URL resource = Controller.getResourceController().getResource(prefix + fileName);
 			if (resource == null) {
-				Logger.global.severe("Cannot find resource: " + prefix
-				        + fileName);
+				Logger.global.severe("Cannot find resource: " + prefix + fileName);
 				return;
 			}
 			final InputStream in = resource.openStream();
-			final OutputStream out = new FileOutputStream(destinationDirectory
-			        + "/" + fileName);
+			final OutputStream out = new FileOutputStream(destinationDirectory + "/" + fileName);
 			Tools.copyStream(in, out);
 		}
 		catch (final Exception e) {
-			Logger.global.severe("File not found or could not be copied. "
-			        + "Was earching for " + prefix + fileName
-			        + " and should go to " + destinationDirectory);
+			Logger.global.severe("File not found or could not be copied. " + "Was earching for "
+			        + prefix + fileName + " and should go to " + destinationDirectory);
 		}
 	}
 
@@ -157,14 +143,12 @@ abstract public class ExportAction extends FreeplaneAction {
 		}
 		view.preparePrinting();
 		final Rectangle innerBounds = view.getInnerBounds();
-		BufferedImage myImage = (BufferedImage) view.createImage(view
-		    .getWidth(), view.getHeight());
+		BufferedImage myImage = (BufferedImage) view.createImage(view.getWidth(), view.getHeight());
 		final Graphics g = myImage.getGraphics();
-		g.clipRect(innerBounds.x, innerBounds.y, innerBounds.width,
-		    innerBounds.height);
+		g.clipRect(innerBounds.x, innerBounds.y, innerBounds.width, innerBounds.height);
 		view.print(g);
-		myImage = myImage.getSubimage(innerBounds.x, innerBounds.y,
-		    innerBounds.width, innerBounds.height);
+		myImage = myImage.getSubimage(innerBounds.x, innerBounds.y, innerBounds.width,
+		    innerBounds.height);
 		return myImage;
 	}
 }

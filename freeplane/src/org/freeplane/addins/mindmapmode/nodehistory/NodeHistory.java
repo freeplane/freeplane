@@ -35,10 +35,10 @@ import org.freeplane.ui.MenuBuilder;
  * @author foltin
  */
 public class NodeHistory implements IExtension, INodeSelectionListener {
+	private NodeHolder currentNodeHolder;
 	final private MModeController modeController;
 	private ListIterator<NodeHolder> nodeIterator;
-	private NodeHolder currentNodeHolder;
-	private LinkedList<NodeHolder> nodes;
+	private final LinkedList<NodeHolder> nodes;
 
 	public NodeHistory(final MModeController modeController) {
 		this.modeController = modeController;
@@ -83,7 +83,7 @@ public class NodeHistory implements IExtension, INodeSelectionListener {
 				return;
 			}
 		}
-		if(lastNodeHolder.equals(currentNodeHolder)){
+		if (lastNodeHolder.equals(currentNodeHolder)) {
 			go(back);
 			return;
 		}
@@ -137,7 +137,7 @@ public class NodeHistory implements IExtension, INodeSelectionListener {
 			nodeIterator.next();
 			nodeIterator.remove();
 		}
-		if(nodes.size() > 100){
+		if (nodes.size() > 100) {
 			nodes.removeFirst();
 			nodeIterator = nodes.listIterator(nodes.size());
 		}

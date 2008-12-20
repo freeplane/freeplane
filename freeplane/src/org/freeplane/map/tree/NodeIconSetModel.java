@@ -61,8 +61,8 @@ class NodeIconSetModel {
 
 	public MindIcon getIcon(final int position) {
 		final List icons = getIcons();
-		return (MindIcon) (position == MindIcon.LAST ? icons
-		    .get(icons.size() - 1) : icons.get(position));
+		return (MindIcon) (position == MindIcon.LAST ? icons.get(icons.size() - 1) : icons
+		    .get(position));
 	}
 
 	List getIcons() {

@@ -55,16 +55,14 @@ class NodeViewFactory {
 			for (int i = 0; i < componentCount; i++) {
 				final Component component = parent.getComponent(i);
 				if (component.isVisible()) {
-					final Dimension preferredCompSize = component
-					    .getPreferredSize();
+					final Dimension preferredCompSize = component.getPreferredSize();
 					if (component instanceof MainView) {
-						component.setBounds(0, y, width,
-						    preferredCompSize.height);
+						component.setBounds(0, y, width, preferredCompSize.height);
 					}
 					else {
 						final int x = (int) (component.getAlignmentX() * (width - preferredCompSize.width));
-						component.setBounds(x, y, preferredCompSize.width,
-						    preferredCompSize.height);
+						component
+						    .setBounds(x, y, preferredCompSize.width, preferredCompSize.height);
 					}
 					y += preferredCompSize.height;
 				}
@@ -81,11 +79,9 @@ class NodeViewFactory {
 			for (int i = 0; i < componentCount; i++) {
 				final Component component = parent.getComponent(i);
 				if (component.isVisible()) {
-					final Dimension preferredCompSize = component
-					    .getPreferredSize();
+					final Dimension preferredCompSize = component.getPreferredSize();
 					prefSize.height += preferredCompSize.height;
-					prefSize.width = Math.max(prefSize.width,
-					    preferredCompSize.width);
+					prefSize.width = Math.max(prefSize.width, preferredCompSize.width);
 				}
 			}
 			return prefSize;
@@ -125,8 +121,7 @@ class NodeViewFactory {
 
 	EdgeView getEdge(final NodeView newView) {
 		final NodeModel model = newView.getModel();
-		final String edgeStyle = model.getModeController().getEdgeController()
-		    .getStyle(model);
+		final String edgeStyle = model.getModeController().getEdgeController().getStyle(model);
 		if (edgeStyle.equals(EdgeModel.EDGESTYLE_LINEAR)) {
 			return getLinearEdgeView();
 		}
@@ -174,8 +169,7 @@ class NodeViewFactory {
 		if (model.isRoot()) {
 			return new RootMainView();
 		}
-		final String shape = model.getModeController().getNodeStyleController()
-		    .getShape(model);
+		final String shape = model.getModeController().getNodeStyleController().getShape(model);
 		if (shape.equals(NodeStyleModel.STYLE_FORK)) {
 			return new ForkMainView();
 		}
@@ -191,8 +185,8 @@ class NodeViewFactory {
 	/**
 	 * Factory method which creates the right NodeView for the model.
 	 */
-	NodeView newNodeView(final NodeModel model, final int position,
-	                     final MapView map, final Container parent) {
+	NodeView newNodeView(final NodeModel model, final int position, final MapView map,
+	                     final Container parent) {
 		final NodeView newView = new NodeView(model, position, map, parent);
 		if (model.isRoot()) {
 			final MainView mainView = new RootMainView();

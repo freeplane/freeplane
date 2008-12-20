@@ -55,14 +55,12 @@ public class MTextController extends TextController {
 	public MTextController(final MModeController modeController) {
 		super(modeController);
 		createActions(modeController);
-		modeController
-		    .setNodeKeyListener(new UserInputListenerFactory.DefaultNodeKeyListener(
-		        new IEditHandler() {
-			        public void edit(final KeyEvent e, final boolean addNew,
-			                         final boolean editLong) {
-				        MTextController.this.edit(e, addNew, editLong);
-			        }
-		        }));
+		modeController.setNodeKeyListener(new UserInputListenerFactory.DefaultNodeKeyListener(
+		    new IEditHandler() {
+			    public void edit(final KeyEvent e, final boolean addNew, final boolean editLong) {
+				    MTextController.this.edit(e, addNew, editLong);
+			    }
+		    }));
 	}
 
 	/**
@@ -71,26 +69,20 @@ public class MTextController extends TextController {
 	private void createActions(final MModeController modeController) {
 		edit = new EditAction();
 		modeController.addAction("edit", edit);
-		modeController.addAction("useRichFormatting",
-		    new UseRichFormattingAction());
+		modeController.addAction("useRichFormatting", new UseRichFormattingAction());
 		modeController.addAction("usePlainText", new UsePlainTextAction());
 		modeController.addAction("joinNodes", new JoinNodesAction());
 		modeController.addAction("editLong", new EditLongAction());
-		modeController.addAction("setImageByFileChooser",
-		    new SetImageByFileChooserAction());
+		modeController.addAction("setImageByFileChooser", new SetImageByFileChooserAction());
 	}
 
-	public void edit(final KeyEvent e, final boolean addNew,
-	                 final boolean editLong) {
-		((EditAction) getModeController().getAction("edit")).edit(e, addNew,
-		    editLong);
+	public void edit(final KeyEvent e, final boolean addNew, final boolean editLong) {
+		((EditAction) getModeController().getAction("edit")).edit(e, addNew, editLong);
 	}
 
-	public void edit(final NodeView node, final NodeView prevSelected,
-	                 final KeyEvent firstEvent, final boolean isNewNode,
-	                 final boolean parentFolded, final boolean editLong) {
-		edit.edit(node, prevSelected, firstEvent, isNewNode, parentFolded,
-		    editLong);
+	public void edit(final NodeView node, final NodeView prevSelected, final KeyEvent firstEvent,
+	                 final boolean isNewNode, final boolean parentFolded, final boolean editLong) {
+		edit.edit(node, prevSelected, firstEvent, isNewNode, parentFolded, editLong);
 	}
 
 	private String[] getContent(final String text, final int pos) {
@@ -107,36 +99,29 @@ public class MTextController extends TextController {
 				final char[] firstText = doc.getText(0, pos).toCharArray();
 				int firstStart = 0;
 				int firstLen = pos;
-				while ((firstStart < firstLen)
-				        && (firstText[firstStart] <= ' ')) {
+				while ((firstStart < firstLen) && (firstText[firstStart] <= ' ')) {
 					firstStart++;
 				}
-				while ((firstStart < firstLen)
-				        && (firstText[firstLen - 1] <= ' ')) {
+				while ((firstStart < firstLen) && (firstText[firstLen - 1] <= ' ')) {
 					firstLen--;
 				}
 				int secondStart = 0;
 				int secondLen = doc.getLength() - pos;
-				final char[] secondText = doc.getText(pos, secondLen)
-				    .toCharArray();
-				while ((secondStart < secondLen)
-				        && (secondText[secondStart] <= ' ')) {
+				final char[] secondText = doc.getText(pos, secondLen).toCharArray();
+				while ((secondStart < secondLen) && (secondText[secondStart] <= ' ')) {
 					secondStart++;
 				}
-				while ((secondStart < secondLen)
-				        && (secondText[secondLen - 1] <= ' ')) {
+				while ((secondStart < secondLen) && (secondText[secondLen - 1] <= ' ')) {
 					secondLen--;
 				}
 				if (firstStart == firstLen || secondStart == secondLen) {
 					return null;
 				}
 				StringWriter out = new StringWriter();
-				new FixedHTMLWriter(out, doc, firstStart, firstLen - firstStart)
-				    .write();
+				new FixedHTMLWriter(out, doc, firstStart, firstLen - firstStart).write();
 				strings[0] = out.toString();
 				out = new StringWriter();
-				new FixedHTMLWriter(out, doc, pos + secondStart, secondLen
-				        - secondStart).write();
+				new FixedHTMLWriter(out, doc, pos + secondStart, secondLen - secondStart).write();
 				strings[1] = out.toString();
 				return strings;
 			}
@@ -162,8 +147,8 @@ public class MTextController extends TextController {
 	}
 
 	public void joinNodes(final NodeModel selectedNode, final List selectedNodes) {
-		((JoinNodesAction) getModeController().getAction("joinNodes"))
-		    .joinNodes(selectedNode, selectedNodes);
+		((JoinNodesAction) getModeController().getAction("joinNodes")).joinNodes(selectedNode,
+		    selectedNodes);
 	}
 
 	public void setImageByFileChooser() {
@@ -174,8 +159,8 @@ public class MTextController extends TextController {
 		filter.addExtension("gif");
 		filter.setDescription("JPG, PNG and GIF Images");
 		boolean picturesAmongSelecteds = false;
-		for (final ListIterator e = getModeController().getSelectedNodes()
-		    .listIterator(); e.hasNext();) {
+		for (final ListIterator e = getModeController().getSelectedNodes().listIterator(); e
+		    .hasNext();) {
 			final String link = ((NodeModel) e.next()).getLink();
 			if (link != null) {
 				if (filter.accept(new File(link))) {
@@ -186,32 +171,27 @@ public class MTextController extends TextController {
 		}
 		try {
 			if (picturesAmongSelecteds) {
-				for (final ListIterator e = getModeController()
-				    .getSelectedNodes().listIterator(); e.hasNext();) {
+				for (final ListIterator e = getModeController().getSelectedNodes().listIterator(); e
+				    .hasNext();) {
 					final NodeModel node = (NodeModel) e.next();
 					if (node.getLink() != null) {
 						final String possiblyRelative = node.getLink();
-						final String relative = Tools
-						    .isAbsolutePath(possiblyRelative) ? Tools
-						    .fileToUrl(new File(possiblyRelative)).toString()
-						        : possiblyRelative;
+						final String relative = Tools.isAbsolutePath(possiblyRelative) ? Tools
+						    .fileToUrl(new File(possiblyRelative)).toString() : possiblyRelative;
 						if (relative != null) {
-							final String strText = "<html><img src=\""
-							        + relative + "\">";
-							((MLinkController) getModeController()
-							    .getLinkController()).setLink(node, null);
+							final String strText = "<html><img src=\"" + relative + "\">";
+							((MLinkController) getModeController().getLinkController()).setLink(
+							    node, null);
 							setNodeText(node, strText);
 						}
 					}
 				}
 			}
 			else {
-				final String relative = ((FileManager) getModeController()
-				    .getUrlManager()).getLinkByFileChooser(Controller
-				    .getController().getMap(), filter);
+				final String relative = ((FileManager) getModeController().getUrlManager())
+				    .getLinkByFileChooser(Controller.getController().getMap(), filter);
 				if (relative != null) {
-					final String strText = "<html><img src=\"" + relative
-					        + "\">";
+					final String strText = "<html><img src=\"" + relative + "\">";
 					setNodeText(getModeController().getSelectedNode(), strText);
 				}
 			}
@@ -222,12 +202,10 @@ public class MTextController extends TextController {
 	}
 
 	public void setNodeText(final NodeModel selected, final String newText) {
-		((EditAction) getModeController().getAction("edit")).setNodeText(
-		    selected, newText);
+		((EditAction) getModeController().getAction("edit")).setNodeText(selected, newText);
 	}
 
-	public void splitNode(final NodeModel node, final int caretPosition,
-	                      final String newText) {
+	public void splitNode(final NodeModel node, final int caretPosition, final String newText) {
 		if (node.isRoot()) {
 			return;
 		}
@@ -240,9 +218,8 @@ public class MTextController extends TextController {
 		final String newLowerContent = strings[1];
 		setNodeText(node, newUpperContent);
 		final NodeModel parent = node.getParentNode();
-		final NodeModel lowerNode = ((MMapController) getModeController()
-		    .getMapController()).addNewNode(parent, parent
-		    .getChildPosition(node) + 1, node.isLeft());
+		final NodeModel lowerNode = ((MMapController) getModeController().getMapController())
+		    .addNewNode(parent, parent.getChildPosition(node) + 1, node.isLeft());
 		lowerNode.setColor(node.getColor());
 		lowerNode.setFont(node.getFont());
 		setNodeText(lowerNode, newLowerContent);

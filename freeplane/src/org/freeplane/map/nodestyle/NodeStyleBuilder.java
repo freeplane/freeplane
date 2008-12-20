@@ -37,8 +37,8 @@ import org.freeplane.map.tree.NodeBuilder;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.NodeBuilder.NodeObject;
 
-public class NodeStyleBuilder implements INodeCreator, IAttributeHandler,
-        INodeWriter<IExtension>, IAttributeWriter<IExtension> {
+public class NodeStyleBuilder implements INodeCreator, IAttributeHandler, INodeWriter<IExtension>,
+        IAttributeWriter<IExtension> {
 	static class FontProperties {
 		String fontName;
 		int fontSize = 0;
@@ -48,14 +48,12 @@ public class NodeStyleBuilder implements INodeCreator, IAttributeHandler,
 	public NodeStyleBuilder() {
 	}
 
-	public void completeNode(final Object parent, final String tag,
-	                         final Object userObject) {
+	public void completeNode(final Object parent, final String tag, final Object userObject) {
 		if (parent instanceof NodeObject) {
 			final NodeModel node = ((NodeObject) parent).node;
 			if (tag.equals("font")) {
 				final FontProperties fp = (FontProperties) userObject;
-				final Font font = new Font(fp.fontName, fp.fontStyle,
-				    fp.fontSize);
+				final Font font = new Font(fp.fontName, fp.fontStyle, fp.fontSize);
 				node.setFont(font);
 				return;
 			}
@@ -70,10 +68,9 @@ public class NodeStyleBuilder implements INodeCreator, IAttributeHandler,
 		return null;
 	}
 
-	public boolean parseAttribute(final Object userObject, final String tag,
-	                              final String name, final String value) {
-		if (tag.equals(NodeBuilder.XML_NODE)
-		        && userObject instanceof NodeObject) {
+	public boolean parseAttribute(final Object userObject, final String tag, final String name,
+	                              final String value) {
+		if (tag.equals(NodeBuilder.XML_NODE) && userObject instanceof NodeObject) {
 			final NodeModel node = ((NodeObject) userObject).node;
 			if (name.equals("COLOR")) {
 				if (value.length() == 7) {
@@ -123,24 +120,25 @@ public class NodeStyleBuilder implements INodeCreator, IAttributeHandler,
 		writer.addExtensionAttributeWriter(NodeStyleModel.class, this);
 	}
 
-	public void writeAttributes(final ITreeWriter writer,
-	                            final Object userObject,
+	public void setAttributes(final String tag, final Object node, final IXMLElement attributes) {
+	}
+
+	public void writeAttributes(final ITreeWriter writer, final Object userObject,
 	                            final IExtension extension) {
 		final NodeStyleModel style = (NodeStyleModel) extension;
 		if (style.getColor() != null) {
 			writer.addAttribute("COLOR", Tools.colorToXml(style.getColor()));
 		}
 		if (style.getBackgroundColor() != null) {
-			writer.addAttribute("BACKGROUND_COLOR", Tools.colorToXml(style
-			    .getBackgroundColor()));
+			writer.addAttribute("BACKGROUND_COLOR", Tools.colorToXml(style.getBackgroundColor()));
 		}
 		if (style.getShape() != null) {
 			writer.addAttribute("STYLE", style.getShape());
 		}
 	}
 
-	public void writeContent(final ITreeWriter writer, final Object node,
-	                         final IExtension extension) throws IOException {
+	public void writeContent(final ITreeWriter writer, final Object node, final IExtension extension)
+	        throws IOException {
 		final NodeStyleModel style = (NodeStyleModel) extension;
 		final Font font = style.getFont();
 		if (font != null) {
@@ -148,8 +146,7 @@ public class NodeStyleBuilder implements INodeCreator, IAttributeHandler,
 			fontElement.setName("font");
 			fontElement.setAttribute("NAME", font.getFamily());
 			if (font.getSize() != 0) {
-				fontElement.setAttribute("SIZE", Integer.toString(font
-				    .getSize()));
+				fontElement.setAttribute("SIZE", Integer.toString(font.getSize()));
 			}
 			if (font.isBold()) {
 				fontElement.setAttribute("BOLD", "true");
@@ -160,7 +157,4 @@ public class NodeStyleBuilder implements INodeCreator, IAttributeHandler,
 			writer.addNode(font, fontElement);
 		}
 	}
-
-	public void setAttributes(String tag, Object node, IXMLElement attributes) {
-    }
 }

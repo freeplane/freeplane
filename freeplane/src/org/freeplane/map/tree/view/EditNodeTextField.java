@@ -48,10 +48,8 @@ public class EditNodeTextField extends EditNodeBase {
 	final private KeyEvent firstEvent;
 	private JTextField textfield;
 
-	public EditNodeTextField(final NodeView node, final String text,
-	                         final KeyEvent firstEvent,
-	                         final ModeController controller,
-	                         final IEditControl editControl) {
+	public EditNodeTextField(final NodeView node, final String text, final KeyEvent firstEvent,
+	                         final ModeController controller, final IEditControl editControl) {
 		super(node, text, controller, editControl);
 		this.firstEvent = firstEvent;
 	}
@@ -62,8 +60,7 @@ public class EditNodeTextField extends EditNodeBase {
 		textfield.removeFocusListener(textFieldListener);
 		textfield.removeKeyListener((KeyListener) textFieldListener);
 		textfield.removeMouseListener((MouseListener) textFieldListener);
-		getNode()
-		    .removeComponentListener((ComponentListener) textFieldListener);
+		getNode().removeComponentListener((ComponentListener) textFieldListener);
 		parent.remove(0);
 		parent.revalidate();
 		parent.repaint(bounds);
@@ -71,8 +68,8 @@ public class EditNodeTextField extends EditNodeBase {
 	}
 
 	public void show() {
-		textfield = (getText().length() < 8) ? new JTextField(getText(), 8)
-		        : new JTextField(getText());
+		textfield = (getText().length() < 8) ? new JTextField(getText(), 8) : new JTextField(
+		    getText());
 		final int cursorWidth = 1;
 		int xOffset = 0;
 		final int yOffset = -1;
@@ -86,9 +83,8 @@ public class EditNodeTextField extends EditNodeBase {
 		xOffset += nodeView.getMainView().getTextX();
 		int xExtraWidth = 0;
 		if (MINIMAL_LEAF_WIDTH > xSize
-		        && (model.getModeController().getMapController()
-		            .isFolded(model) || !model.getModeController()
-		            .getMapController().hasChildren(model))) {
+		        && (model.getModeController().getMapController().isFolded(model) || !model
+		            .getModeController().getMapController().hasChildren(model))) {
 			xExtraWidth = MINIMAL_LEAF_WIDTH - xSize;
 			xSize = MINIMAL_LEAF_WIDTH;
 			if (nodeView.isLeft()) {
@@ -104,14 +100,12 @@ public class EditNodeTextField extends EditNodeBase {
 				textfield.setHorizontalAlignment(SwingConstants.RIGHT);
 			}
 		}
-		textfield.setSize(xSize, nodeView.getMainView().getHeight()
-		        + heightAddition);
+		textfield.setSize(xSize, nodeView.getMainView().getHeight() + heightAddition);
 		Font font = nodeView.getTextFont();
 		final MapView mapView = nodeView.getMap();
 		final float zoom = mapView.getZoom();
 		if (zoom != 1F) {
-			font = font.deriveFont(font.getSize() * zoom
-			        * MainView.ZOOM_CORRECTION_FACTOR);
+			font = font.deriveFont(font.getSize() * zoom * MainView.ZOOM_CORRECTION_FACTOR);
 		}
 		textfield.setFont(font);
 		final Color nodeTextColor = nodeView.getTextColor();
@@ -123,8 +117,8 @@ public class EditNodeTextField extends EditNodeBase {
 		final int CANCEL = 2;
 		final Tools.IntHolder eventSource = new Tools.IntHolder();
 		eventSource.setValue(EDIT);
-		class TextFieldListener implements KeyListener, FocusListener,
-		        MouseListener, ComponentListener {
+		class TextFieldListener implements KeyListener, FocusListener, MouseListener,
+		        ComponentListener {
 			public void componentHidden(final ComponentEvent e) {
 				focusLost(null);
 			}
@@ -223,8 +217,7 @@ public class EditNodeTextField extends EditNodeBase {
 		textfield.addMouseListener(textFieldListener);
 		getView().scrollNodeToVisible(nodeView, xExtraWidth);
 		final Point textFieldLocation = new Point();
-		Tools.convertPointToAncestor(nodeView.getMainView(), textFieldLocation,
-		    mapView);
+		Tools.convertPointToAncestor(nodeView.getMainView(), textFieldLocation, mapView);
 		if (xExtraWidth < 0) {
 			textFieldLocation.x += xExtraWidth;
 		}

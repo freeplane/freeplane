@@ -28,8 +28,7 @@ import org.freeplane.ui.MenuBuilder;
 
 class MoveToRootAction extends AbstractAction {
 	MoveToRootAction() {
-		MenuBuilder.setLabelAndMnemonic(this, Controller
-		    .getText("move_to_root"));
+		MenuBuilder.setLabelAndMnemonic(this, Controller.getText("move_to_root"));
 	}
 
 	public void actionPerformed(final ActionEvent event) {

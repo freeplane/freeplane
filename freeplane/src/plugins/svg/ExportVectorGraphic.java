@@ -56,13 +56,10 @@ abstract class ExportVectorGraphic extends ExportAction {
 	/**
 	 */
 	protected SVGGraphics2D fillSVGGraphics2D(final MapView view) {
-		final DOMImplementation impl = GenericDOMImplementation
-		    .getDOMImplementation();
+		final DOMImplementation impl = GenericDOMImplementation.getDOMImplementation();
 		final String namespaceURI = SVGConstants.SVG_NAMESPACE_URI;
-		final Document domFactory = impl.createDocument(namespaceURI, "svg",
-		    null);
-		final SVGGeneratorContext ctx = SVGGeneratorContext
-		    .createDefault(domFactory);
+		final Document domFactory = impl.createDocument(namespaceURI, "svg", null);
+		final SVGGeneratorContext ctx = SVGGeneratorContext.createDefault(domFactory);
 		ctx.setEmbeddedFontsOn(true);
 		final GraphicContextDefaults defaults = new GraphicContextDefaults();
 		defaults.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -75,8 +72,7 @@ abstract class ExportVectorGraphic extends ExportAction {
 		    RenderingHints.VALUE_ANTIALIAS_DEFAULT);
 		view.preparePrinting();
 		final Rectangle innerBounds = view.getInnerBounds();
-		g2d.setSVGCanvasSize(new Dimension(innerBounds.width,
-		    innerBounds.height));
+		g2d.setSVGCanvasSize(new Dimension(innerBounds.width, innerBounds.height));
 		g2d.translate(-innerBounds.x, -innerBounds.y);
 		view.print(g2d);
 		return g2d;
@@ -87,14 +83,12 @@ abstract class ExportVectorGraphic extends ExportAction {
 		final Source xsltSource = new StreamSource(xsltStream);
 		final Result result = new StreamResult(resultFile);
 		try {
-			final TransformerFactory transFact = TransformerFactory
-			    .newInstance();
+			final TransformerFactory transFact = TransformerFactory.newInstance();
 			final Transformer trans = transFact.newTransformer(xsltSource);
-			trans.setParameter("destination_dir", resultFile.getName()
-			        + "_files/");
+			trans.setParameter("destination_dir", resultFile.getName() + "_files/");
 			trans.setParameter("area_code", areaCode);
-			trans.setParameter("folding_type", Controller
-			    .getResourceController().getProperty("html_export_folding"));
+			trans.setParameter("folding_type", Controller.getResourceController().getProperty(
+			    "html_export_folding"));
 			trans.transform(xmlSource, result);
 		}
 		catch (final Exception e) {

@@ -102,10 +102,10 @@ public class SharpBezierEdgeView extends EdgeView {
 		}
 		final float w = (getWidth() / 2f + 1) * zoom;
 		final float w2 = w / 2;
-		line1.setCurve(start.x - deltaX, start.y - deltaY, one.x - deltaX,
-		    one.y - deltaY, two.x, two.y - w2, end.x, end.y);
-		line2.setCurve(end.x, end.y, two.x, two.y + w2, one.x + deltaX, one.y
-		        + deltaY, start.x + deltaX, start.y + deltaY);
+		line1.setCurve(start.x - deltaX, start.y - deltaY, one.x - deltaX, one.y - deltaY, two.x,
+		    two.y - w2, end.x, end.y);
+		line2.setCurve(end.x, end.y, two.x, two.y + w2, one.x + deltaX, one.y + deltaY, start.x
+		        + deltaX, start.y + deltaY);
 		graph.reset();
 		graph.append(line1, true);
 		graph.append(line2, true);

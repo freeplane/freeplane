@@ -37,11 +37,11 @@ public class NoteController {
 	public NoteController(final ModeController modeController) {
 		super();
 		this.modeController = modeController;
-		modeController.getMapController().getReadManager()
-		    .addNodeContentHandler("richcontent", new NoteBuilder(this));
+		modeController.getMapController().getReadManager().addNodeContentHandler("richcontent",
+		    new NoteBuilder(this));
 		final NoteWriter noteWriter = new NoteWriter(this);
-		modeController.getMapController().getWriteManager()
-		    .addExtensionNodeWriter(NoteModel.class, noteWriter);
+		modeController.getMapController().getWriteManager().addExtensionNodeWriter(NoteModel.class,
+		    noteWriter);
 	}
 
 	public ModeController getModeController() {
@@ -49,14 +49,12 @@ public class NoteController {
 	}
 
 	public final String getNoteText(final NodeModel node) {
-		final NoteModel extension = (NoteModel) node
-		    .getExtension(NoteModel.class);
+		final NoteModel extension = (NoteModel) node.getExtension(NoteModel.class);
 		return extension != null ? extension.getNoteText() : null;
 	}
 
 	public final String getXmlNoteText(final NodeModel node) {
-		final NoteModel extension = (NoteModel) node
-		    .getExtension(NoteModel.class);
+		final NoteModel extension = (NoteModel) node.getExtension(NoteModel.class);
 		return extension != null ? extension.getXmlNoteText() : null;
 	}
 
@@ -68,17 +66,15 @@ public class NoteController {
 
 	protected void setStateIcon(final NodeModel node, final boolean enabled) {
 		if (noteIcon == null) {
-			noteIcon = new ImageIcon(getModeController().getResource(
-			    "images/knotes.png"));
+			noteIcon = new ImageIcon(getModeController().getResource("images/knotes.png"));
 		}
 		boolean showIcon = enabled;
 		if (Controller.getResourceController().getBoolProperty(
 		    ResourceController.RESOURCES_DON_T_SHOW_NOTE_ICONS)) {
 			showIcon = false;
 		}
-		node.setStateIcon(NodeNoteBase.NODE_NOTE_ICON, (showIcon) ? noteIcon
-		        : null);
-		((MMapController) getModeController().getMapController()).setToolTip(
-		    node, "nodeNoteText", (enabled) ? node.getNoteText() : null);
+		node.setStateIcon(NodeNoteBase.NODE_NOTE_ICON, (showIcon) ? noteIcon : null);
+		((MMapController) getModeController().getMapController()).setToolTip(node, "nodeNoteText",
+		    (enabled) ? node.getNoteText() : null);
 	}
 }

@@ -47,8 +47,7 @@ import org.freeplane.service.filter.FilterController;
  */
 public class Controller {
 	private static Controller controllerInstance;
-	public static final String JAVA_VERSION = System
-	    .getProperty("java.version");
+	public static final String JAVA_VERSION = System.getProperty("java.version");
 	public static final String ON_START_IF_NOT_SPECIFIED = "on_start_if_not_specified";
 	private static ResourceController resourceController;
 	public static final FreemindVersionInformation VERSION = new FreemindVersionInformation(
@@ -57,6 +56,11 @@ public class Controller {
 
 	public static Controller getController() {
 		return controllerInstance;
+	}
+
+	/** @return the current modeController. */
+	public static ModeController getModeController() {
+		return controllerInstance.modeController;
 	}
 
 	static public ResourceController getResourceController() {
@@ -69,6 +73,7 @@ public class Controller {
 
 	private final ActionController actionController;
 	private ModelessAttributeController attributeController;
+	final private ExtensionHashMap extensions;
 	private FilterController filterController;
 	private HelpController helpController;
 	/**
@@ -97,6 +102,14 @@ public class Controller {
 
 	public void addAction(final Object key, final Action value) {
 		actionController.addAction(key, value);
+	}
+
+	public boolean addExtension(final Class clazz, final IExtension extension) {
+		return extensions.addExtension(clazz, extension);
+	}
+
+	public boolean addExtension(final IExtension extension) {
+		return extensions.addExtension(extension);
 	}
 
 	public void addModeController(final ModeController modeController) {
@@ -128,14 +141,13 @@ public class Controller {
 				myMessage = "Undefined error";
 			}
 		}
-		JOptionPane.showMessageDialog(Controller.getController()
-		    .getViewController().getContentPane(), myMessage, "FreeMind",
-		    JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(Controller.getController().getViewController()
+		    .getContentPane(), myMessage, "FreeMind", JOptionPane.ERROR_MESSAGE);
 	}
 
 	public void errorMessage(final Object message, final JComponent component) {
-		JOptionPane.showMessageDialog(component, message.toString(),
-		    "FreeMind", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(component, message.toString(), "FreeMind",
+		    JOptionPane.ERROR_MESSAGE);
 	}
 
 	public Action getAction(final String key) {
@@ -176,11 +188,6 @@ public class Controller {
 		return getViewController().getMapViewManager();
 	}
 
-	/** @return the current modeController. */
-	public static ModeController getModeController() {
-		return controllerInstance.modeController;
-	}
-
 	public ModeController getModeController(final String modeName) {
 		return modeControllers.get(modeName);
 	}
@@ -209,26 +216,24 @@ public class Controller {
 	}
 
 	public void informationMessage(final Object message) {
-		JOptionPane.showMessageDialog(Controller.getController()
-		    .getViewController().getContentPane(), message.toString(),
-		    "FreeMind", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(Controller.getController().getViewController()
+		    .getContentPane(), message.toString(), "FreeMind", JOptionPane.INFORMATION_MESSAGE);
 	}
 
-	public void informationMessage(final Object message,
-	                               final JComponent component) {
-		JOptionPane.showMessageDialog(component, message.toString(),
-		    "FreeMind", JOptionPane.INFORMATION_MESSAGE);
+	public void informationMessage(final Object message, final JComponent component) {
+		JOptionPane.showMessageDialog(component, message.toString(), "FreeMind",
+		    JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	void quit() {
-		final String currentMapRestorable = getModeController().getUrlManager()
+		final String currentMapRestorable = Controller.getModeController().getUrlManager()
 		    .getRestoreable(getMap());
 		if (!getViewController().quit()) {
 			return;
 		}
 		if (currentMapRestorable != null) {
-			Controller.getResourceController().setProperty(
-			    Controller.ON_START_IF_NOT_SPECIFIED, currentMapRestorable);
+			Controller.getResourceController().setProperty(Controller.ON_START_IF_NOT_SPECIFIED,
+			    currentMapRestorable);
 		}
 		if (modeController != null) {
 			modeController.shutdown();
@@ -245,6 +250,14 @@ public class Controller {
 
 	public Action removeAction(final String key) {
 		return actionController.removeAction(key);
+	}
+
+	public IExtension removeExtension(final Class clazz) {
+		return extensions.removeExtension(clazz);
+	}
+
+	public boolean removeExtension(final IExtension extension) {
+		return extensions.removeExtension(extension);
 	}
 
 	public void selectMode(final ModeController newModeController) {
@@ -268,8 +281,7 @@ public class Controller {
 		return getMapViewManager().changeToMode(modeName);
 	}
 
-	public void setAttributeController(
-	                                   final ModelessAttributeController attributeController) {
+	public void setAttributeController(final ModelessAttributeController attributeController) {
 		this.attributeController = attributeController;
 	}
 
@@ -288,21 +300,4 @@ public class Controller {
 	public void setViewController(final ViewController viewController) {
 		this.viewController = viewController;
 	}
-	final private ExtensionHashMap extensions;
-	public boolean addExtension(Class clazz, IExtension extension) {
-	    return extensions.addExtension(clazz, extension);
-    }
-
-	public boolean addExtension(IExtension extension) {
-	    return extensions.addExtension(extension);
-    }
-
-	public IExtension removeExtension(Class clazz) {
-	    return extensions.removeExtension(clazz);
-    }
-
-	public boolean removeExtension(IExtension extension) {
-	    return extensions.removeExtension(extension);
-    }
-
 }

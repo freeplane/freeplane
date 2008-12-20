@@ -33,8 +33,7 @@ import org.freeplane.ui.dialogs.EnterPasswordDialog;
 tooltip = "accessories/plugins/EncryptNode.properties_documentation", //
 iconPath = "accessories/plugins/icons/lock.png", //
 locations = { "/menu_bar/extras/first/nodes/crypto" })
-public class EncryptNode extends FreeplaneAction implements
-        INodeSelectionListener {
+public class EncryptNode extends FreeplaneAction implements INodeSelectionListener {
 	public EncryptNode(final ModeController modeController) {
 		super();
 		modeController.addNodeSelectionListener(this);
@@ -54,8 +53,7 @@ public class EncryptNode extends FreeplaneAction implements
 			return false;
 		}
 		if (modeController.getSelectedNode() != null) {
-			final EncryptionModel enode = modeController.getSelectedNode()
-			    .getEncryptionModel();
+			final EncryptionModel enode = modeController.getSelectedNode().getEncryptionModel();
 			if (enode != null) {
 				isEncryptedNode = true;
 				isOpened = enode.isAccessible();
@@ -79,8 +77,8 @@ public class EncryptNode extends FreeplaneAction implements
 	/**
 	 */
 	private StringBuffer getUsersPassword() {
-		final EnterPasswordDialog pwdDialog = new EnterPasswordDialog(
-		    Controller.getController().getViewController().getJFrame(), true);
+		final EnterPasswordDialog pwdDialog = new EnterPasswordDialog(Controller.getController()
+		    .getViewController().getJFrame(), true);
 		pwdDialog.setModal(true);
 		pwdDialog.show();
 		if (pwdDialog.getResult() == EnterPasswordDialog.CANCEL) {

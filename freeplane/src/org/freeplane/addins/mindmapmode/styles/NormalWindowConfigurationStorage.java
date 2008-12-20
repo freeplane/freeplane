@@ -5,15 +5,14 @@ import javax.swing.JDialog;
 import org.freeplane.controller.resources.WindowConfigurationStorage;
 import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
 
-
 class NormalWindowConfigurationStorage extends WindowConfigurationStorage {
+	public static void decorateDialog(final String marshalled, final JDialog dialog) {
+		final NormalWindowConfigurationStorage storage = new NormalWindowConfigurationStorage();
+		storage.unmarschall(marshalled, dialog);
+	}
 
 	@Override
-	protected void marschallSpecificElements(IXMLElement xml) {
+	protected void marschallSpecificElements(final IXMLElement xml) {
 		xml.setName("window_configuration_storage");
-	}
-	public static void decorateDialog(String marshalled, JDialog dialog) {
-		NormalWindowConfigurationStorage storage = new NormalWindowConfigurationStorage();
-		storage.unmarschall(marshalled, dialog);
 	}
 }

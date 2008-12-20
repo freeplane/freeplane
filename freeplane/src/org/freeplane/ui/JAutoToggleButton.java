@@ -25,8 +25,7 @@ import java.beans.PropertyChangeListener;
 import javax.swing.Action;
 import javax.swing.JToggleButton;
 
-public class JAutoToggleButton extends JToggleButton implements
-        PropertyChangeListener {
+public class JAutoToggleButton extends JToggleButton implements PropertyChangeListener {
 	private PropertyChangeListener defaultPropertyChanegListener;
 
 	public JAutoToggleButton(final Action a) {
@@ -35,8 +34,7 @@ public class JAutoToggleButton extends JToggleButton implements
 
 	@Override
 	protected PropertyChangeListener createActionPropertyChangeListener(final Action a) {
-		defaultPropertyChanegListener = super
-		    .createActionPropertyChangeListener(a);
+		defaultPropertyChanegListener = super.createActionPropertyChangeListener(a);
 		return this;
 	};
 

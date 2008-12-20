@@ -93,13 +93,11 @@ class Preview extends JComponent {
 		final PageFormat format = getPageFormat();
 		paintPaper(g, format);
 		if (previewPageImage == null) {
-			previewPageImage = (BufferedImage) createImage(
-			    getPageWidth(format) - 1, getPageHeight(format) - 1);
+			previewPageImage = (BufferedImage) createImage(getPageWidth(format) - 1,
+			    getPageHeight(format) - 1);
 			imageGraphics = previewPageImage.createGraphics();
 			imageGraphics.scale(zoom, zoom);
-			while (Printable.NO_SUCH_PAGE == view.print(imageGraphics, format,
-			    index)
-			        && index > 0) {
+			while (Printable.NO_SUCH_PAGE == view.print(imageGraphics, format, index) && index > 0) {
 				index -= 1;
 			}
 		}
@@ -114,8 +112,9 @@ class Preview extends JComponent {
 	}
 
 	public void resize() {
-		final int size = (int) Math.max(getPageFormat().getWidth() * zoom,
-		    getPageFormat().getHeight() * zoom);
+		final int size = (int) Math.max(getPageFormat().getWidth() * zoom, getPageFormat()
+		    .getHeight()
+		        * zoom);
 		setPreferredSize(new Dimension(size, size));
 		previewPageImage = null;
 		revalidate();

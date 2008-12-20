@@ -18,8 +18,7 @@
 package deprecated.freemind.common;
 
 public class DontShowNotificationProperty extends BooleanProperty {
-	public DontShowNotificationProperty(final String description,
-	                                    final String label) {
+	public DontShowNotificationProperty(final String description, final String label) {
 		super(description, label);
 		mTrueValue = "true";
 		mFalseValue = "";

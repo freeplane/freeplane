@@ -33,8 +33,7 @@ import org.freeplane.ui.dialogs.EnterPasswordDialog;
 tooltip = "accessories/plugins/NewEncryptedMap.properties_documentation", //
 iconPath = "accessories/plugins/icons/lock.png", //
 locations = { "/menu_bar/file/open" })
-public class EncryptedMap extends FreeplaneAction implements
-        INodeSelectionListener {
+public class EncryptedMap extends FreeplaneAction implements INodeSelectionListener {
 	public EncryptedMap(final ModeController modeController) {
 		super();
 		modeController.addNodeSelectionListener(this);
@@ -52,8 +51,7 @@ public class EncryptedMap extends FreeplaneAction implements
 			return false;
 		}
 		if (modeController.getSelectedNode() != null) {
-			final EncryptionModel enode = modeController.getSelectedNode()
-			    .getEncryptionModel();
+			final EncryptionModel enode = modeController.getSelectedNode().getEncryptionModel();
 			if (enode != null) {
 				isEncryptedNode = true;
 				isOpened = enode.isAccessible();
@@ -65,8 +63,8 @@ public class EncryptedMap extends FreeplaneAction implements
 	/**
 	 */
 	private StringBuffer getUsersPassword() {
-		final EnterPasswordDialog pwdDialog = new EnterPasswordDialog(
-		    Controller.getController().getViewController().getJFrame(), true);
+		final EnterPasswordDialog pwdDialog = new EnterPasswordDialog(Controller.getController()
+		    .getViewController().getJFrame(), true);
 		pwdDialog.setModal(true);
 		pwdDialog.show();
 		if (pwdDialog.getResult() == EnterPasswordDialog.CANCEL) {
@@ -86,8 +84,7 @@ public class EncryptedMap extends FreeplaneAction implements
 		}
 		final ModeController newModeController = getMModeController();
 		final NodeModel node = new NodeModel(Controller
-		    .getText("accessories/plugins/EncryptNode.properties_select_me"),
-		    null);
+		    .getText("accessories/plugins/EncryptNode.properties_select_me"), null);
 		final EncryptionModel encryptedMindMapNode = new EncryptionModel(node);
 		encryptedMindMapNode.setPassword(password);
 		node.addExtension(encryptedMindMapNode);

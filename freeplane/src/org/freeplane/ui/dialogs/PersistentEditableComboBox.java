@@ -35,8 +35,7 @@ public class PersistentEditableComboBox extends JComboBox {
 		pStorageKey = storageKey;
 		setEditable(true);
 		addUrl("", false);
-		final String storedUrls = Controller.getResourceController()
-		    .getProperty(pStorageKey);
+		final String storedUrls = Controller.getResourceController().getProperty(pStorageKey);
 		if (storedUrls != null) {
 			final String[] array = storedUrls.split("\t");
 			for (int i = 0; i < array.length; i++) {
@@ -60,8 +59,7 @@ public class PersistentEditableComboBox extends JComboBox {
 		actionListener = arg0;
 	}
 
-	private boolean addUrl(final String selectedItem,
-	                       final boolean calledFromSetText) {
+	private boolean addUrl(final String selectedItem, final boolean calledFromSetText) {
 		for (int i = 0; i < getModel().getSize(); i++) {
 			final String element = (String) getModel().getElementAt(i);
 			if (element.equals(selectedItem)) {
@@ -80,8 +78,7 @@ public class PersistentEditableComboBox extends JComboBox {
 				resultBuffer.append(element);
 				resultBuffer.append("\t");
 			}
-			Controller.getResourceController().setProperty(pStorageKey,
-			    resultBuffer.toString());
+			Controller.getResourceController().setProperty(pStorageKey, resultBuffer.toString());
 		}
 		return true;
 	};

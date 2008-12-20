@@ -35,8 +35,7 @@ import org.freeplane.map.tree.MapReader;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.NodeBuilder.NodeObject;
 
-class AttributeBuilder implements INodeCreator, IAttributeHandler,
-        INodeWriter<IExtension> {
+class AttributeBuilder implements INodeCreator, IAttributeHandler, INodeWriter<IExtension> {
 	static class AttributeLayout {
 		int attributeNameWidth = AttributeTableLayoutModel.DEFAULT_COLUMN_WIDTH;
 		int attributeValueWidth = AttributeTableLayoutModel.DEFAULT_COLUMN_WIDTH;
@@ -64,18 +63,17 @@ class AttributeBuilder implements INodeCreator, IAttributeHandler,
 		this.mapReader = mapReader;
 	}
 
-	public void completeNode(final Object parent, final String tag,
-	                         final Object userObject) {
+	public void completeNode(final Object parent, final String tag, final Object userObject) {
 		/* attributes */
 		if (tag.equals(AttributeBuilder.XML_NODE_REGISTERED_ATTRIBUTE_NAME)) {
 			final RegisteredAttributeProperties rap = (RegisteredAttributeProperties) userObject;
 			if (rap.visible) {
-				getMap().getRegistry().getAttributes().getElement(
-				    rap.attributeName).setVisibility(true);
+				getMap().getRegistry().getAttributes().getElement(rap.attributeName).setVisibility(
+				    true);
 			}
 			if (rap.restricted) {
-				getMap().getRegistry().getAttributes().getElement(
-				    rap.attributeName).setRestriction(true);
+				getMap().getRegistry().getAttributes().getElement(rap.attributeName)
+				    .setRestriction(true);
 			}
 			return;
 		}
@@ -83,8 +81,7 @@ class AttributeBuilder implements INodeCreator, IAttributeHandler,
 			final NodeModel node = ((NodeObject) parent).node;
 			if (tag.equals(AttributeBuilder.XML_NODE_ATTRIBUTE)) {
 				final AttributeProperties ap = (AttributeProperties) userObject;
-				final Attribute attribute = new Attribute(ap.attributeName,
-				    ap.attributeValue);
+				final Attribute attribute = new Attribute(ap.attributeName, ap.attributeValue);
 				node.createAttributeTableModel();
 				node.getAttributes().addRowNoUndo(attribute);
 				return;
@@ -110,8 +107,8 @@ class AttributeBuilder implements INodeCreator, IAttributeHandler,
 		return mapReader.getCreatedMap();
 	}
 
-	public boolean parseAttribute(final Object userObject, final String tag,
-	                              final String name, final String value) {
+	public boolean parseAttribute(final Object userObject, final String tag, final String name,
+	                              final String value) {
 		if (tag.equals(AttributeBuilder.XML_NODE_REGISTERED_ATTRIBUTE_NAME)) {
 			final RegisteredAttributeProperties rap = (RegisteredAttributeProperties) userObject;
 			if (name.equals("NAME")) {
@@ -137,8 +134,7 @@ class AttributeBuilder implements INodeCreator, IAttributeHandler,
 		if (tag.equals(AttributeBuilder.XML_NODE_ATTRIBUTE_LAYOUT)) {
 			final NodeModel node = ((NodeObject) userObject).node;
 			node.createAttributeTableModel();
-			final AttributeTableLayoutModel layout = node.getAttributes()
-			    .getLayout();
+			final AttributeTableLayoutModel layout = node.getAttributes().getLayout();
 			if (name.equals("NAME_WIDTH")) {
 				layout.setColumnWidth(0, Integer.parseInt(value));;
 			}
@@ -172,8 +168,8 @@ class AttributeBuilder implements INodeCreator, IAttributeHandler,
 				getMap().getRegistry().getAttributes().setRestricted(true);
 			}
 			if (name.equals("SHOW_ATTRIBUTES")) {
-				Controller.getController().getAttributeController()
-				    .setAttributeViewType(getMap(), value.toString());
+				Controller.getController().getAttributeController().setAttributeViewType(getMap(),
+				    value.toString());
 			}
 			if (name.equals("FONT_SIZE")) {
 				try {
@@ -193,21 +189,18 @@ class AttributeBuilder implements INodeCreator, IAttributeHandler,
 	public void registerBy(final ReadManager reader, final WriteManager writer) {
 		reader.addNodeCreator("attribute_registry", this);
 		reader.addNodeCreator(AttributeBuilder.XML_NODE_ATTRIBUTE, this);
-		reader.addNodeCreator(
-		    AttributeBuilder.XML_NODE_REGISTERED_ATTRIBUTE_NAME, this);
-		reader.addNodeCreator(
-		    AttributeBuilder.XML_NODE_REGISTERED_ATTRIBUTE_VALUE, this);
-		reader.addAttributeHandler(AttributeBuilder.XML_NODE_ATTRIBUTE_LAYOUT,
-		    this);
+		reader.addNodeCreator(AttributeBuilder.XML_NODE_REGISTERED_ATTRIBUTE_NAME, this);
+		reader.addNodeCreator(AttributeBuilder.XML_NODE_REGISTERED_ATTRIBUTE_VALUE, this);
+		reader.addAttributeHandler(AttributeBuilder.XML_NODE_ATTRIBUTE_LAYOUT, this);
 		writer.addExtensionNodeWriter(NodeAttributeTableModel.class, this);
 	}
 
-	public void writeContent(final ITreeWriter writer, final Object node,
-	                         final IExtension extension) throws IOException {
+	public void setAttributes(final String tag, final Object node, final IXMLElement attributes) {
+	}
+
+	public void writeContent(final ITreeWriter writer, final Object node, final IExtension extension)
+	        throws IOException {
 		final NodeAttributeTableModel attributes = (NodeAttributeTableModel) extension;
 		attributes.save(writer);
 	}
-
-	public void setAttributes(String tag, Object node, IXMLElement attributes) {
-    }
 }

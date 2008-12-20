@@ -87,8 +87,7 @@ class ScriptingSecurityManager extends SecurityManager {
 	}
 
 	@Override
-	public void checkConnect(final String pHost, final int pPort,
-	                         final Object pContext) {
+	public void checkConnect(final String pHost, final int pPort, final Object pContext) {
 		if (mWithoutNetworkRestriction) {
 			return;
 		}
@@ -265,11 +264,9 @@ class ScriptingSecurityManager extends SecurityManager {
 		    ScriptingSecurityManager.PERM_Write);
 	}
 
-	private SecurityException getException(final int pPermissionGroup,
-	                                       final int pPermission) {
+	private SecurityException getException(final int pPermissionGroup, final int pPermission) {
 		return new SecurityException(Controller.getResourceController().format(
 		    "plugins/ScriptEditor.FORBIDDEN_ACTION",
-		    new Integer[] { new Integer(pPermissionGroup),
-		            new Integer(pPermission) }));
+		    new Integer[] { new Integer(pPermissionGroup), new Integer(pPermission) }));
 	}
 }

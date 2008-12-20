@@ -45,8 +45,7 @@ class ForkMainView extends MainView {
 	@Override
 	public int getDeltaX() {
 		final NodeModel model = getNodeView().getModel();
-		if (model.getModeController().getMapController().isFolded(model)
-		        && getNodeView().isLeft()) {
+		if (model.getModeController().getMapController().isFolded(model) && getNodeView().isLeft()) {
 			return super.getDeltaX() + getZoomedFoldingSymbolHalfWidth() * 3;
 		}
 		return super.getDeltaX();
@@ -55,8 +54,7 @@ class ForkMainView extends MainView {
 	@Override
 	Point getLeftPoint() {
 		final NodeModel model = getNodeView().getModel();
-		int edgeWidth = model.getModeController().getEdgeController().getWidth(
-		    model);
+		int edgeWidth = model.getModeController().getEdgeController().getWidth(model);
 		if (edgeWidth == 0) {
 			edgeWidth = 1;
 		}
@@ -79,8 +77,7 @@ class ForkMainView extends MainView {
 		int width = getWidth();
 		final NodeModel model = getNodeView().getModel();
 		if (model.getModeController().getMapController().isFolded(model)) {
-			width += getZoomedFoldingSymbolHalfWidth() * 2
-			        + getZoomedFoldingSymbolHalfWidth();
+			width += getZoomedFoldingSymbolHalfWidth() * 2 + getZoomedFoldingSymbolHalfWidth();
 		}
 		return width;
 	}
@@ -88,13 +85,11 @@ class ForkMainView extends MainView {
 	@Override
 	Point getRightPoint() {
 		final NodeModel model = getNodeView().getModel();
-		int edgeWidth = model.getModeController().getEdgeController().getWidth(
-		    model);
+		int edgeWidth = model.getModeController().getEdgeController().getWidth(model);
 		if (edgeWidth == 0) {
 			edgeWidth = 1;
 		}
-		final Point in = new Point(getWidth() - 1, getHeight() - edgeWidth / 2
-		        - 1);
+		final Point in = new Point(getWidth() - 1, getHeight() - edgeWidth / 2 - 1);
 		return in;
 	}
 
@@ -117,16 +112,13 @@ class ForkMainView extends MainView {
 		}
 		paintSelected(g);
 		paintDragOver(g);
-		int edgeWidth = model.getModeController().getEdgeController().getWidth(
-		    model);
+		int edgeWidth = model.getModeController().getEdgeController().getWidth(model);
 		if (edgeWidth == 0) {
 			edgeWidth = 1;
 		}
 		final Color oldColor = g.getColor();
-		g.setColor(model.getModeController().getEdgeController()
-		    .getColor(model));
-		g.drawLine(0, getHeight() - edgeWidth / 2 - 1, getWidth(), getHeight()
-		        - edgeWidth / 2 - 1);
+		g.setColor(model.getModeController().getEdgeController().getColor(model));
+		g.drawLine(0, getHeight() - edgeWidth / 2 - 1, getWidth(), getHeight() - edgeWidth / 2 - 1);
 		g.setColor(oldColor);
 		super.paint(g);
 	}

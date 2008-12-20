@@ -42,17 +42,15 @@ import org.freeplane.map.tree.NodeBuilder;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.NodeBuilder.NodeObject;
 
-class LinkBuilder implements INodeCreator, IAttributeHandler,
-        IReadCompletionListener, INodeWriter<IExtension>,
-        IAttributeWriter<IExtension> {
+class LinkBuilder implements INodeCreator, IAttributeHandler, IReadCompletionListener,
+        INodeWriter<IExtension>, IAttributeWriter<IExtension> {
 	final private HashSet<ArrowLinkModel> arrowLinks;
 
 	public LinkBuilder() {
 		arrowLinks = new HashSet<ArrowLinkModel>();
 	}
 
-	public void completeNode(final Object parent, final String tag,
-	                         final Object userObject) {
+	public void completeNode(final Object parent, final String tag, final Object userObject) {
 		if (parent instanceof NodeObject) {
 			final NodeModel node = ((NodeObject) parent).node;
 			if (userObject instanceof ArrowLinkModel) {
@@ -63,8 +61,7 @@ class LinkBuilder implements INodeCreator, IAttributeHandler,
 		}
 	}
 
-	protected ArrowLinkModel createArrowLink(final NodeModel source,
-	                                         final String targetID) {
+	protected ArrowLinkModel createArrowLink(final NodeModel source, final String targetID) {
 		return new ArrowLinkModel(source, targetID);
 	}
 
@@ -75,14 +72,12 @@ class LinkBuilder implements INodeCreator, IAttributeHandler,
 		return null;
 	}
 
-	public boolean parseAttribute(final Object userObject, final String tag,
-	                              final String name, final String value) {
-		if (tag.equals(NodeBuilder.XML_NODE)
-		        && userObject instanceof NodeObject) {
+	public boolean parseAttribute(final Object userObject, final String tag, final String name,
+	                              final String value) {
+		if (tag.equals(NodeBuilder.XML_NODE) && userObject instanceof NodeObject) {
 			if (name.equals("LINK")) {
 				final NodeModel node = ((NodeObject) userObject).node;
-				(node.getModeController().getLinkController()).loadLink(node,
-				    value);
+				(node.getModeController().getLinkController()).loadLink(node, value);
 				return true;
 			}
 		}
@@ -102,8 +97,7 @@ class LinkBuilder implements INodeCreator, IAttributeHandler,
 				arrowLink.setReferenceText((value.toString()));
 			}
 			else if (name.equals("STARTINCLINATION")) {
-				arrowLink.setStartInclination(Tools
-				    .xmlToPoint(value.toString()));
+				arrowLink.setStartInclination(Tools.xmlToPoint(value.toString()));
 			}
 			else if (name.equals("ENDINCLINATION")) {
 				arrowLink.setEndInclination(Tools.xmlToPoint(value.toString()));
@@ -126,8 +120,7 @@ class LinkBuilder implements INodeCreator, IAttributeHandler,
 	 * Completes the links within the getMap(). They are registered in the
 	 * registry.
 	 */
-	public void readingCompleted(final NodeModel topNode,
-	                             final HashMap<String, String> newIds) {
+	public void readingCompleted(final NodeModel topNode, final HashMap<String, String> newIds) {
 		final Iterator<ArrowLinkModel> iterator = arrowLinks.iterator();
 		while (iterator.hasNext()) {
 			final ArrowLinkModel arrowLink = iterator.next();
@@ -176,13 +169,11 @@ class LinkBuilder implements INodeCreator, IAttributeHandler,
 		}
 		final Point startInclination = model.getStartInclination();
 		if (startInclination != null) {
-			arrowLink.setAttribute("STARTINCLINATION", Tools
-			    .PointToXml(startInclination));
+			arrowLink.setAttribute("STARTINCLINATION", Tools.PointToXml(startInclination));
 		}
 		final Point endInclination = model.getEndInclination();
 		if (endInclination != null) {
-			arrowLink.setAttribute("ENDINCLINATION", Tools
-			    .PointToXml(endInclination));
+			arrowLink.setAttribute("ENDINCLINATION", Tools.PointToXml(endInclination));
 		}
 		final String startArrow = model.getStartArrow();
 		if (startArrow != null) {
@@ -195,8 +186,10 @@ class LinkBuilder implements INodeCreator, IAttributeHandler,
 		return arrowLink;
 	}
 
-	public void writeAttributes(final ITreeWriter writer,
-	                            final Object userObject,
+	public void setAttributes(final String tag, final Object node, final IXMLElement attributes) {
+	}
+
+	public void writeAttributes(final ITreeWriter writer, final Object userObject,
 	                            final IExtension extension) {
 		final NodeLinks links = (NodeLinks) extension;
 		final String link = links.getLink();
@@ -205,8 +198,8 @@ class LinkBuilder implements INodeCreator, IAttributeHandler,
 		}
 	}
 
-	public void writeContent(final ITreeWriter writer, final Object node,
-	                         final IExtension extension) throws IOException {
+	public void writeContent(final ITreeWriter writer, final Object node, final IExtension extension)
+	        throws IOException {
 		final NodeLinks links = (NodeLinks) extension;
 		final Iterator<LinkModel> iterator = links.getLinks().iterator();
 		while (iterator.hasNext()) {
@@ -218,7 +211,4 @@ class LinkBuilder implements INodeCreator, IAttributeHandler,
 			}
 		}
 	}
-
-	public void setAttributes(String tag, Object node, IXMLElement attributes) {
-    }
 }

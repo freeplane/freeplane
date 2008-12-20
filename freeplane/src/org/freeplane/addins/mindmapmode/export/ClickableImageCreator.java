@@ -53,8 +53,7 @@ class ClickableImageCreator {
 	 *            if for example the link abc must be replaced with FMabcFM,
 	 *            then this string has to be FM$1FM.
 	 */
-	public ClickableImageCreator(final NodeModel root,
-	                             final ModeController modeController,
+	public ClickableImageCreator(final NodeModel root, final ModeController modeController,
 	                             final String regExpLinkReplacement) {
 		super();
 		this.root = root;
@@ -90,8 +89,8 @@ class ClickableImageCreator {
 			holder.coordinates.width = content.getWidth();
 			holder.coordinates.height = content.getHeight();
 			area.add(holder);
-			for (final Iterator i = node.getModeController().getMapController()
-			    .childrenUnfolded(node); i.hasNext();) {
+			for (final Iterator i = node.getModeController().getMapController().childrenUnfolded(
+			    node); i.hasNext();) {
 				final NodeModel child = (NodeModel) i.next();
 				createArea(child);
 			}
@@ -103,15 +102,12 @@ class ClickableImageCreator {
 		for (final Iterator i = area.iterator(); i.hasNext();) {
 			final AreaHolder holder = (AreaHolder) i.next();
 			htmlArea.append("<area shape=\"" + holder.shape + "\" href=\"#"
-			        + holder.href.replaceFirst("^(.*)$", regExpLinkReplacement)
-			        + "\" alt=\"" + StringEscapeUtils.escapeHtml(holder.alt)
-			        + "\" title=\""
-			        + StringEscapeUtils.escapeHtml(holder.title)
-			        + "\" coords=\"" + holder.coordinates.x + ","
-			        + holder.coordinates.y + ","
+			        + holder.href.replaceFirst("^(.*)$", regExpLinkReplacement) + "\" alt=\""
+			        + StringEscapeUtils.escapeHtml(holder.alt) + "\" title=\""
+			        + StringEscapeUtils.escapeHtml(holder.title) + "\" coords=\""
+			        + holder.coordinates.x + "," + holder.coordinates.y + ","
 			        + (holder.coordinates.width + holder.coordinates.x) + ","
-			        + +(holder.coordinates.height + holder.coordinates.y)
-			        + "\" />");
+			        + +(holder.coordinates.height + holder.coordinates.y) + "\" />");
 		}
 		return htmlArea.toString();
 	}

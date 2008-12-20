@@ -32,12 +32,10 @@ import org.freeplane.modes.MultipleNodeAction;
 /**
  * @author foltin
  */
-@ActionDescriptor(
-    tooltip="accessories/plugins/SortNodes.properties_documentation", //
-    name="accessories/plugins/SortNodes.properties_name", //
-    keyStroke="keystroke_accessories/plugins/SortNodes.properties_key", //
-    locations={"/menu_bar/extras/first/nodes/sorting"}
-)
+@ActionDescriptor(tooltip = "accessories/plugins/SortNodes.properties_documentation", //
+name = "accessories/plugins/SortNodes.properties_name", //
+keyStroke = "keystroke_accessories/plugins/SortNodes.properties_key", //
+locations = { "/menu_bar/extras/first/nodes/sorting" })
 public class SortNodes extends MultipleNodeAction {
 	final private class NodeTextComparator implements Comparator {
 		public int compare(final Object pArg0, final Object pArg1) {
@@ -62,7 +60,7 @@ public class SortNodes extends MultipleNodeAction {
 	}
 
 	@Override
-    protected void actionPerformed(ActionEvent e, NodeModel node) {
+	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
 		final Vector sortVector = new Vector();
 		sortVector.addAll(node.getChildren());
 		Collections.sort(sortVector, new NodeTextComparator());

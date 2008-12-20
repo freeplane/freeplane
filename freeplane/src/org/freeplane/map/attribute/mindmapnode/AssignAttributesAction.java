@@ -32,8 +32,7 @@ class AssignAttributesAction extends FreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		if (assignAttributeDialog == null) {
-			assignAttributeDialog = new AssignAttributeDialog(
-			    getModeController().getMapView());
+			assignAttributeDialog = new AssignAttributeDialog(getModeController().getMapView());
 		}
 		assignAttributeDialog.show();
 	}

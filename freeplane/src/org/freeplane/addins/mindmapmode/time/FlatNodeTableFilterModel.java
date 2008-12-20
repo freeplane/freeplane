@@ -54,8 +54,7 @@ class FlatNodeTableFilterModel extends AbstractTableModel {
 	/**
 	 * @param node_text_column
 	 */
-	public FlatNodeTableFilterModel(final TableModel tableModel,
-	                                final int node_text_column) {
+	public FlatNodeTableFilterModel(final TableModel tableModel, final int node_text_column) {
 		super();
 		mTableModel = tableModel;
 		mNodeTextColumn = node_text_column;
@@ -116,8 +115,7 @@ class FlatNodeTableFilterModel extends AbstractTableModel {
 	private void updateIndexArray() {
 		final ArrayList newIndexArray = new ArrayList();
 		for (int i = 0; i < mTableModel.getRowCount(); i++) {
-			final NodeHolder nodeContent = (NodeHolder) mTableModel.getValueAt(
-			    i, mNodeTextColumn);
+			final NodeHolder nodeContent = (NodeHolder) mTableModel.getValueAt(i, mNodeTextColumn);
 			if (mPattern.matcher(nodeContent.toString()).matches()) {
 				newIndexArray.add(new Integer(i));
 			}

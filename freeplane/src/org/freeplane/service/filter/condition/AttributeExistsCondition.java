@@ -63,10 +63,8 @@ public class AttributeExistsCondition extends NodeCondition {
 
 	@Override
 	protected String createDesctiption() {
-		final String simpleCondition = Controller
-		    .getText(ConditionFactory.FILTER_EXIST);
-		return ConditionFactory.createDescription(attribute, simpleCondition,
-		    null, false);
+		final String simpleCondition = Controller.getText(ConditionFactory.FILTER_EXIST);
+		return ConditionFactory.createDescription(attribute, simpleCondition, null, false);
 	}
 
 	public void toXml(final XMLElement element) {

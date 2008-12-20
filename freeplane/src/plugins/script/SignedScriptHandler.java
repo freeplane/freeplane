@@ -60,19 +60,16 @@ class SignedScriptHandler {
 
 		public ScriptContents(final String pScript) {
 			this();
-			final int indexOfSignaturePrefix = pScript
-			    .lastIndexOf(SignedScriptHandler.SIGN_PREFIX);
+			final int indexOfSignaturePrefix = pScript.lastIndexOf(SignedScriptHandler.SIGN_PREFIX);
 			final int indexOfSignature = indexOfSignaturePrefix
 			        + SignedScriptHandler.SIGN_PREFIX.length();
-			if (indexOfSignaturePrefix > 0
-			        && pScript.length() > indexOfSignature) {
+			if (indexOfSignaturePrefix > 0 && pScript.length() > indexOfSignature) {
 				mSignature = pScript.substring(indexOfSignature);
 				mScript = pScript.substring(0, indexOfSignaturePrefix);
 				mKeyName = null;
 			}
 			else {
-				final Matcher matcher = ScriptContents.sSignWithKeyPattern
-				    .matcher(pScript);
+				final Matcher matcher = ScriptContents.sSignWithKeyPattern.matcher(pScript);
 				if (matcher.find()) {
 					mScript = pScript.substring(0, matcher.start());
 					mKeyName = matcher.group(1);
@@ -114,10 +111,9 @@ class SignedScriptHandler {
 		}
 		java.io.FileInputStream fis = null;
 		try {
-			SignedScriptHandler.mKeyStore = KeyStore.getInstance(KeyStore
-			    .getDefaultType());
-			fis = new java.io.FileInputStream(System.getProperty("user.home")
-			        + File.separator + ".keystore");
+			SignedScriptHandler.mKeyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+			fis = new java.io.FileInputStream(System.getProperty("user.home") + File.separator
+			        + ".keystore");
 			SignedScriptHandler.mKeyStore.load(fis, pPassword);
 		}
 		catch (final Exception e) {
@@ -135,13 +131,11 @@ class SignedScriptHandler {
 		}
 	}
 
-	public boolean isScriptSigned(final String pScript,
-	                              final OutputStream pOutStream) {
+	public boolean isScriptSigned(final String pScript, final OutputStream pOutStream) {
 		final ScriptContents content = new ScriptContents(pScript);
 		if (content.mSignature != null) {
 			try {
-				final Signature instanceVerify = Signature
-				    .getInstance("SHA1withDSA");
+				final Signature instanceVerify = Signature.getInstance("SHA1withDSA");
 				if (content.mKeyName == null) {
 					/**
 					 * This is the FreeMind public key. keytool -v -rfc
@@ -162,21 +156,17 @@ class SignedScriptHandler {
 					        + "Vhtye5jY3X9w24DJ3yNJbNl2tfkOBIc0KfgyxONTSJKtUpmLI3btUxy3pQf/T8BShlY3PAC0fp3M"
 					        + "eDG8WRq1wM3luLd1V9SS8EG6tPJBZ3mciCUymTT7n9CZNzATIpqNIXHSD/wljRABedUi8PMg4KbV"
 					        + "Pnhu6Y6b1uAwCwYHKoZIzjgEAwUAAzAAMC0CFQCFHGwe+HHOvY0MmKYHbiq7fRxMGwIUC0voAGYU"
-					        + "u6vgVFqdLI5F96JLTqk="
-					        + "\n-----END CERTIFICATE-----\n";
-					final CertificateFactory cf = CertificateFactory
-					    .getInstance("X.509");
-					final Collection c = cf
-					    .generateCertificates(new ByteArrayInputStream(cer
-					        .getBytes()));
+					        + "u6vgVFqdLI5F96JLTqk=" + "\n-----END CERTIFICATE-----\n";
+					final CertificateFactory cf = CertificateFactory.getInstance("X.509");
+					final Collection c = cf.generateCertificates(new ByteArrayInputStream(cer
+					    .getBytes()));
 					final Iterator i = c.iterator();
 					if (i.hasNext()) {
 						final Certificate cert = (Certificate) i.next();
 						instanceVerify.initVerify(cert);
 					}
 					else {
-						throw new IllegalArgumentException(
-						    "Internal certificate wrong.");
+						throw new IllegalArgumentException("Internal certificate wrong.");
 					}
 				}
 				else {
@@ -185,8 +175,7 @@ class SignedScriptHandler {
 					    .getCertificate(content.mKeyName));
 				}
 				instanceVerify.update(content.mScript.getBytes());
-				final boolean verify = instanceVerify.verify(Tools
-				    .fromBase64(content.mSignature));
+				final boolean verify = instanceVerify.verify(Tools.fromBase64(content.mSignature));
 				return verify;
 			}
 			catch (final Exception e) {
@@ -203,26 +192,22 @@ class SignedScriptHandler {
 		return false;
 	}
 
-	public String signScript(final String pScript,
-	                         final ITextTranslator pTranslator) {
+	public String signScript(final String pScript, final ITextTranslator pTranslator) {
 		final ScriptContents content = new ScriptContents(pScript);
-		final EnterPasswordDialog pwdDialog = new EnterPasswordDialog(
-		    Controller.getController().getViewController().getJFrame(), false);
+		final EnterPasswordDialog pwdDialog = new EnterPasswordDialog(Controller.getController()
+		    .getViewController().getJFrame(), false);
 		pwdDialog.setModal(true);
 		pwdDialog.setVisible(true);
 		if (pwdDialog.getResult() == EnterPasswordDialog.CANCEL) {
 			return content.mScript;
 		}
-		final char[] password = pwdDialog.getPassword().toString()
-		    .toCharArray();
+		final char[] password = pwdDialog.getPassword().toString().toCharArray();
 		initializeKeystore(password);
 		try {
 			final Signature instance = Signature.getInstance("SHA1withDSA");
 			String keyName = SignedScriptHandler.FREEMIND_SCRIPT_KEY_NAME;
-			final String propertyKeyName = Controller
-			    .getResourceController()
-			    .getProperty(
-			        ResourceController.RESOURCES_SCRIPT_USER_KEY_NAME_FOR_SIGNING);
+			final String propertyKeyName = Controller.getResourceController().getProperty(
+			    ResourceController.RESOURCES_SCRIPT_USER_KEY_NAME_FOR_SIGNING);
 			if (content.mKeyName != null) {
 				keyName = content.mKeyName;
 			}
@@ -230,8 +215,7 @@ class SignedScriptHandler {
 				content.mKeyName = propertyKeyName;
 				keyName = content.mKeyName;
 			}
-			instance.initSign((PrivateKey) SignedScriptHandler.mKeyStore
-			    .getKey(keyName, password));
+			instance.initSign((PrivateKey) SignedScriptHandler.mKeyStore.getKey(keyName, password));
 			instance.update(content.mScript.getBytes());
 			final byte[] signature = instance.sign();
 			content.mSignature = Tools.toBase64(signature);

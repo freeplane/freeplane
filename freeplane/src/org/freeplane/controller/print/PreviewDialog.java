@@ -49,14 +49,12 @@ public class PreviewDialog extends JDialog implements ActionListener {
 		final JToolBar toolbar = new FreeMindToolBar();
 		getContentPane().add(toolbar, "North");
 		pageNumber = new JLabel("- 1 -");
-		final JButton button = getButton("Back24.gif", new BrowseAction(
-		    preview, pageNumber, -1));
+		final JButton button = getButton("Back24.gif", new BrowseAction(preview, pageNumber, -1));
 		toolbar.add(button);
 		pageNumber.setPreferredSize(button.getPreferredSize());
 		pageNumber.setHorizontalAlignment(SwingConstants.CENTER);
 		toolbar.add(pageNumber);
-		toolbar.add(getButton("Forward24.gif", new BrowseAction(preview,
-		    pageNumber, 1)));
+		toolbar.add(getButton("Forward24.gif", new BrowseAction(preview, pageNumber, 1)));
 		toolbar.add(new JToolBar.Separator());
 		toolbar.add(getButton("ZoomIn24.gif", new ZoomAction(preview,
 		    PreviewDialog.DEFAULT_ZOOM_FACTOR_STEP)));
@@ -80,12 +78,10 @@ public class PreviewDialog extends JDialog implements ActionListener {
 		return getButton(null, iconName, action);
 	}
 
-	private JButton getButton(final String name, final String iconName,
-	                          final AbstractAction action) {
+	private JButton getButton(final String name, final String iconName, final AbstractAction action) {
 		JButton result = null;
 		ImageIcon icon = null;
-		final URL imageURL = getClass().getClassLoader().getResource(
-		    "images/" + iconName);
+		final URL imageURL = getClass().getClassLoader().getResource("images/" + iconName);
 		if (imageURL != null) {
 			icon = new ImageIcon(imageURL);
 		}

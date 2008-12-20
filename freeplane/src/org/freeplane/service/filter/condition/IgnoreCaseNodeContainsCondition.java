@@ -45,12 +45,9 @@ class IgnoreCaseNodeContainsCondition extends NodeCondition {
 
 	@Override
 	protected String createDesctiption() {
-		final String nodeCondition = Controller
-		    .getText(ConditionFactory.FILTER_NODE);
-		final String simpleCondition = Controller
-		    .getText(ConditionFactory.FILTER_CONTAINS);
-		return ConditionFactory.createDescription(nodeCondition,
-		    simpleCondition, value, true);
+		final String nodeCondition = Controller.getText(ConditionFactory.FILTER_NODE);
+		final String simpleCondition = Controller.getText(ConditionFactory.FILTER_CONTAINS);
+		return ConditionFactory.createDescription(nodeCondition, simpleCondition, value, true);
 	}
 
 	public void toXml(final XMLElement element) {

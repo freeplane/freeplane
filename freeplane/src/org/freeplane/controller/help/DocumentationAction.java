@@ -36,8 +36,7 @@ import org.freeplane.ui.MenuBuilder;
 @AlwaysEnabledAction
 class DocumentationAction extends AbstractAction {
 	DocumentationAction() {
-		MenuBuilder.setLabelAndMnemonic(this, Controller
-		    .getText("documentation"));
+		MenuBuilder.setLabelAndMnemonic(this, Controller.getText("documentation"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -45,8 +44,7 @@ class DocumentationAction extends AbstractAction {
 		map = ResourceController.removeTranslateComment(map);
 		if (map != null && map.startsWith(".")) {
 			try {
-				map = Controller.getController().getHelpController()
-				    .convertLocalLink(map);
+				map = Controller.getController().getHelpController().convertLocalLink(map);
 			}
 			catch (final AccessControlException ex) {
 				Controller.getController().getHelpController().webDocu(e);
@@ -66,11 +64,9 @@ class DocumentationAction extends AbstractAction {
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
 					try {
-						if (Controller.getController().selectMode(
-						    BModeController.MODENAME)) {
+						if (Controller.getController().selectMode(BModeController.MODENAME)) {
 							Controller.getController();
-							((BModeController) Controller
-							    .getModeController()).getMapController()
+							((BModeController) Controller.getModeController()).getMapController()
 							    .newMap(endUrl);
 						}
 					}

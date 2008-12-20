@@ -52,33 +52,31 @@ class PropertyAction extends FreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent arg0) {
-		final JDialog dialog = new JDialog(Controller.getController()
-		    .getViewController().getJFrame(), true /* modal */);
+		final JDialog dialog = new JDialog(Controller.getController().getViewController()
+		    .getJFrame(), true /* modal */);
 		dialog.setResizable(true);
 		dialog.setUndecorated(false);
-		final OptionPanel options = new OptionPanel(dialog,
-		    new IOptionPanelFeedback() {
-			    public void writeProperties(final Properties props) {
-				    final Vector sortedKeys = new Vector();
-				    sortedKeys.addAll(props.keySet());
-				    Collections.sort(sortedKeys);
-				    boolean propertiesChanged = false;
-				    for (final Iterator i = sortedKeys.iterator(); i.hasNext();) {
-					    final String key = (String) i.next();
-					    final String newProperty = props.getProperty(key);
-					    propertiesChanged = propertiesChanged
-					            || !newProperty.equals(Controller
-					                .getResourceController().getProperty(key));
-					    Controller.getResourceController().setProperty(key,
-					        newProperty);
-				    }
-				    if (propertiesChanged) {
-					    JOptionPane.showMessageDialog(null, Controller
-					        .getText("option_changes_may_require_restart"));
-					    Controller.getResourceController().saveProperties();
-				    }
-			    }
-		    });
+		final OptionPanel options = new OptionPanel(dialog, new IOptionPanelFeedback() {
+			public void writeProperties(final Properties props) {
+				final Vector sortedKeys = new Vector();
+				sortedKeys.addAll(props.keySet());
+				Collections.sort(sortedKeys);
+				boolean propertiesChanged = false;
+				for (final Iterator i = sortedKeys.iterator(); i.hasNext();) {
+					final String key = (String) i.next();
+					final String newProperty = props.getProperty(key);
+					propertiesChanged = propertiesChanged
+					        || !newProperty.equals(Controller.getResourceController().getProperty(
+					            key));
+					Controller.getResourceController().setProperty(key, newProperty);
+				}
+				if (propertiesChanged) {
+					JOptionPane.showMessageDialog(null, Controller
+					    .getText("option_changes_may_require_restart"));
+					Controller.getResourceController().saveProperties();
+				}
+			}
+		});
 		options.buildPanel();
 		options.setProperties();
 		dialog.setTitle("Freemind Properties");

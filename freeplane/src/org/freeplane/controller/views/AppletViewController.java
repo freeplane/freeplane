@@ -98,8 +98,7 @@ public class AppletViewController extends ViewController {
 	public void init() {
 		final Controller controller = Controller.getController();
 		controller.getViewController().changeAntialias(
-		    Controller.getResourceController().getProperty(
-		        ViewController.RESOURCE_ANTIALIAS));
+		    Controller.getResourceController().getProperty(ViewController.RESOURCE_ANTIALIAS));
 		controller.getViewController().setToolbarVisible(false);
 		controller.getViewController().setMenubarVisible(false);
 		getContentPane().add(getScrollPane(), BorderLayout.CENTER);
@@ -122,21 +121,18 @@ public class AppletViewController extends ViewController {
 				org.freeplane.main.Tools.logException(e);
 			}
 		}
-		controller.selectMode(Controller.getResourceController().getProperty(
-		    "initial_mode"));
+		controller.selectMode(Controller.getResourceController().getProperty("initial_mode"));
 		String initialMapName = Controller.getResourceController().getProperty(
 		    "browsemode_initial_map");
 		if (initialMapName != null && initialMapName.startsWith(".")) {
 			/* new handling for relative urls. fc, 29.10.2003. */
 			try {
-				final URL documentBaseUrl = new URL(applet.getDocumentBase(),
-				    initialMapName);
+				final URL documentBaseUrl = new URL(applet.getDocumentBase(), initialMapName);
 				initialMapName = documentBaseUrl.toString();
 			}
 			catch (final java.net.MalformedURLException e) {
 				Controller.getController().errorMessage(
-				    "Could not open relative URL " + initialMapName
-				            + ". It is malformed.");
+				    "Could not open relative URL " + initialMapName + ". It is malformed.");
 				System.err.println(e);
 				return;
 			}
@@ -146,8 +142,8 @@ public class AppletViewController extends ViewController {
 			try {
 				final URL mapUrl = new URL(initialMapName);
 				Controller.getController();
-				((BModeController) Controller
-				    .getModeController()).getMapController().newMap(mapUrl);
+				((BModeController) Controller.getModeController()).getMapController()
+				    .newMap(mapUrl);
 			}
 			catch (final Exception e) {
 				org.freeplane.main.Tools.logException(e);
@@ -156,8 +152,7 @@ public class AppletViewController extends ViewController {
 	}
 
 	@Override
-	public JSplitPane insertComponentIntoSplitPane(
-	                                               final JComponent pMindMapComponent) {
+	public JSplitPane insertComponentIntoSplitPane(final JComponent pMindMapComponent) {
 		if (mComponentInSplitPane == pMindMapComponent) {
 			return null;
 		}

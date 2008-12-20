@@ -38,21 +38,11 @@ import plugins.script.ScriptEditorPanel.IScriptModel;
 import plugins.script.ScriptEditorPanel.ScriptHolder;
 import plugins.script.ScriptingEngine.IErrorHandler;
 
-
 /**
  * @author foltin
  */
-@ActionDescriptor(
-       name="plugins/ScriptEditor.xml_name",
-       tooltip="plugins/ScriptEditor.xml_documentation",
-       locations={"/menu_bar/extras/first/scripting"}
-)
+@ActionDescriptor(name = "plugins/ScriptEditor.xml_name", tooltip = "plugins/ScriptEditor.xml_documentation", locations = { "/menu_bar/extras/first/scripting" })
 class ScriptEditor extends FreeplaneAction {
-	public ScriptEditor(ScriptingRegistration reg) {
-	    super();
-	    this.reg = reg;
-    }
-
 	final private class AttributeHolder {
 		Attribute mAttribute;
 		int mPosition;
@@ -63,8 +53,6 @@ class ScriptEditor extends FreeplaneAction {
 			mPosition = pPosition;
 		}
 	}
-
-	final private ScriptingRegistration reg;
 
 	final private class NodeScriptModel implements IScriptModel {
 		private boolean isDirty = false;
@@ -94,20 +82,17 @@ class ScriptEditor extends FreeplaneAction {
 			boolean found;
 			do {
 				found = false;
-				for (final Iterator iterator = mScripts.iterator(); iterator
-				    .hasNext();) {
-					final AttributeHolder holder = (AttributeHolder) iterator
-					    .next();
-					if ((scriptName + scriptNameSuffix)
-					    .equals(holder.mAttribute.getName())) {
+				for (final Iterator iterator = mScripts.iterator(); iterator.hasNext();) {
+					final AttributeHolder holder = (AttributeHolder) iterator.next();
+					if ((scriptName + scriptNameSuffix).equals(holder.mAttribute.getName())) {
 						found = true;
 						scriptNameSuffix++;
 						break;
 					}
 				}
 			} while (found);
-			mScripts.add(new AttributeHolder(new Attribute(scriptName
-			        + scriptNameSuffix, ""), attributeIndex));
+			mScripts.add(new AttributeHolder(new Attribute(scriptName + scriptNameSuffix, ""),
+			    attributeIndex));
 			isDirty = true;
 			return index;
 		}
@@ -115,17 +100,16 @@ class ScriptEditor extends FreeplaneAction {
 		public ScriptEditorWindowConfigurationStorage decorateDialog(
 		                                                             final ScriptEditorPanel pPanel,
 		                                                             final String pWindow_preference_storage_property) {
-			final String marshalled = Controller.getResourceController().getProperty(pWindow_preference_storage_property);
-            return ScriptEditorWindowConfigurationStorage.decorateDialog(marshalled,pPanel);
+			final String marshalled = Controller.getResourceController().getProperty(
+			    pWindow_preference_storage_property);
+			return ScriptEditorWindowConfigurationStorage.decorateDialog(marshalled, pPanel);
 		}
 
 		public void endDialog(final boolean pIsCanceled) {
 			if (!pIsCanceled) {
-				final int attributeTableLength = mNode
-				    .getAttributeTableLength();
+				final int attributeTableLength = mNode.getAttributeTableLength();
 				for (final Iterator iter = mScripts.iterator(); iter.hasNext();) {
-					final AttributeHolder holder = (AttributeHolder) iter
-					    .next();
+					final AttributeHolder holder = (AttributeHolder) iter.next();
 					final Attribute attribute = holder.mAttribute;
 					final int position = holder.mPosition;
 					final MAttributeController attributeController = (MAttributeController) mMindMapController
@@ -133,22 +117,18 @@ class ScriptEditor extends FreeplaneAction {
 					if (attributeTableLength <= position) {
 						attributeController.addAttribute(mNode, attribute);
 					}
-					else if (mNode.getAttribute(position).getValue() != attribute
-					    .getValue()) {
-						attributeController.setAttribute(mNode, position,
-						    attribute);
+					else if (mNode.getAttribute(position).getValue() != attribute.getValue()) {
+						attributeController.setAttribute(mNode, position, attribute);
 					}
 				}
 			}
 		}
 
-		public boolean executeScript(final int pIndex,
-		                             final PrintStream pOutStream,
+		public boolean executeScript(final int pIndex, final PrintStream pOutStream,
 		                             final IErrorHandler pErrorHandler) {
 			final String script = getScript(pIndex).getScript();
-			return ScriptingEngine.executeScript(mMindMapController
-			    .getSelectedNode(), new BooleanHolder(true), script,
-			    mMindMapController, pErrorHandler, pOutStream, reg
+			return ScriptingEngine.executeScript(mMindMapController.getSelectedNode(),
+			    new BooleanHolder(true), script, mMindMapController, pErrorHandler, pOutStream, reg
 			        .getScriptCookies());
 		}
 
@@ -166,8 +146,7 @@ class ScriptEditor extends FreeplaneAction {
 		}
 
 		public void setScript(final int pIndex, final ScriptHolder pScript) {
-			final AttributeHolder oldHolder = (AttributeHolder) mScripts
-			    .get(pIndex);
+			final AttributeHolder oldHolder = (AttributeHolder) mScripts.get(pIndex);
 			if (!pScript.mScriptName.equals(oldHolder.mAttribute.getName())) {
 				isDirty = true;
 			}
@@ -178,15 +157,21 @@ class ScriptEditor extends FreeplaneAction {
 			oldHolder.mAttribute.setValue(pScript.mScript);
 		}
 
-		public void storeDialogPositions(
-		                                 final ScriptEditorPanel pPanel,
+		public void storeDialogPositions(final ScriptEditorPanel pPanel,
 		                                 final ScriptEditorWindowConfigurationStorage pStorage,
 		                                 final String pWindow_preference_storage_property) {
 			pStorage.storeDialogPositions(pPanel, pWindow_preference_storage_property);
 		}
 	}
 
-	public void actionPerformed(ActionEvent e) {
+	final private ScriptingRegistration reg;
+
+	public ScriptEditor(final ScriptingRegistration reg) {
+		super();
+		this.reg = reg;
+	}
+
+	public void actionPerformed(final ActionEvent e) {
 		final NodeModel node = getModeController().getSelectedNode();
 		final Vector scripts = new Vector();
 		for (int position = 0; position < node.getAttributeTableLength(); position++) {
@@ -195,11 +180,9 @@ class ScriptEditor extends FreeplaneAction {
 				scripts.add(new AttributeHolder(attribute, position));
 			}
 		}
-		final NodeScriptModel nodeScriptModel = new NodeScriptModel(scripts,
-		    node, (MModeController) getModeController());
-		final ScriptEditorPanel scriptEditorPanel = new ScriptEditorPanel(
-		    nodeScriptModel, true);
+		final NodeScriptModel nodeScriptModel = new NodeScriptModel(scripts, node,
+		    (MModeController) getModeController());
+		final ScriptEditorPanel scriptEditorPanel = new ScriptEditorPanel(nodeScriptModel, true);
 		scriptEditorPanel.setVisible(true);
 	}
-
 }

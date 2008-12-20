@@ -36,12 +36,10 @@ public class AttributeCompareCondition extends CompareConditionAdapter {
 	static ICondition load(final XMLElement element) {
 		return new AttributeCompareCondition(element.getAttribute(
 		    AttributeCompareCondition.ATTRIBUTE, null), element.getAttribute(
-		    CompareConditionAdapter.VALUE, null), Tools.xmlToBoolean(element
-		    .getAttribute(CompareConditionAdapter.IGNORE_CASE, null)), Integer
-		    .parseInt(element.getAttribute(
-		        AttributeCompareCondition.COMPARATION_RESULT, null)), Tools
-		    .xmlToBoolean(element.getAttribute(
-		        AttributeCompareCondition.SUCCEED, null)));
+		    CompareConditionAdapter.VALUE, null), Tools.xmlToBoolean(element.getAttribute(
+		    CompareConditionAdapter.IGNORE_CASE, null)), Integer.parseInt(element.getAttribute(
+		    AttributeCompareCondition.COMPARATION_RESULT, null)), Tools.xmlToBoolean(element
+		    .getAttribute(AttributeCompareCondition.SUCCEED, null)));
 	}
 
 	final private String attribute;
@@ -50,10 +48,8 @@ public class AttributeCompareCondition extends CompareConditionAdapter {
 
 	/**
 	 */
-	public AttributeCompareCondition(final String attribute,
-	                                 final String value,
-	                                 final boolean ignoreCase,
-	                                 final int comparationResult,
+	public AttributeCompareCondition(final String attribute, final String value,
+	                                 final boolean ignoreCase, final int comparationResult,
 	                                 final boolean succeed) {
 		super(value, ignoreCase);
 		this.attribute = attribute;
@@ -72,8 +68,7 @@ public class AttributeCompareCondition extends CompareConditionAdapter {
 		for (int i = 0; i < attributes.getRowCount(); i++) {
 			try {
 				if (attributes.getValueAt(i, 0).equals(attribute)
-				        && succeed == (compareTo(attributes.getValueAt(i, 1)
-				            .toString()) == comparationResult)) {
+				        && succeed == (compareTo(attributes.getValueAt(i, 1).toString()) == comparationResult)) {
 					return true;
 				}
 			}
@@ -93,10 +88,9 @@ public class AttributeCompareCondition extends CompareConditionAdapter {
 		child.setName(AttributeCompareCondition.NAME);
 		super.attributesToXml(child);
 		child.setAttribute(AttributeCompareCondition.ATTRIBUTE, attribute);
-		child.setAttribute(AttributeCompareCondition.COMPARATION_RESULT,
-		    Integer.toString(comparationResult));
-		child.setAttribute(AttributeCompareCondition.SUCCEED, Tools
-		    .BooleanToXml(succeed));
+		child.setAttribute(AttributeCompareCondition.COMPARATION_RESULT, Integer
+		    .toString(comparationResult));
+		child.setAttribute(AttributeCompareCondition.SUCCEED, Tools.BooleanToXml(succeed));
 		element.addChild(child);
 	}
 }

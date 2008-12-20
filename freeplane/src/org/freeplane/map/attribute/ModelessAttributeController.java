@@ -41,26 +41,20 @@ public class ModelessAttributeController {
 		hideAllAttributes = new HideAllAttributesAction();
 		Controller.getController().addAction("showAttributeManagerAction",
 		    showAttributeManagerAction);
-		Controller.getController().addAction("showAllAttributes",
-		    showAllAttributes);
-		Controller.getController().addAction("showSelectedAttributes",
-		    showSelectedAttributes);
-		Controller.getController().addAction("hideAllAttributes",
-		    hideAllAttributes);
+		Controller.getController().addAction("showAllAttributes", showAllAttributes);
+		Controller.getController().addAction("showSelectedAttributes", showSelectedAttributes);
+		Controller.getController().addAction("hideAllAttributes", hideAllAttributes);
 	}
 
 	public void setAttributeViewType(final MapModel map, final String value) {
 		if (value.equals(AttributeTableLayoutModel.SHOW_SELECTED)) {
-			((ShowSelectedAttributesAction) showSelectedAttributes)
-			    .setAttributeViewType(map);
+			((ShowSelectedAttributesAction) showSelectedAttributes).setAttributeViewType(map);
 		}
 		else if (value.equals(AttributeTableLayoutModel.HIDE_ALL)) {
-			((HideAllAttributesAction) hideAllAttributes)
-			    .setAttributeViewType(map);
+			((HideAllAttributesAction) hideAllAttributes).setAttributeViewType(map);
 		}
 		else if (value.equals(AttributeTableLayoutModel.SHOW_ALL)) {
-			((ShowAllAttributesAction) showAllAttributes)
-			    .setAttributeViewType(map);
+			((ShowAllAttributesAction) showAllAttributes).setAttributeViewType(map);
 		}
 	}
 }

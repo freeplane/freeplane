@@ -34,37 +34,32 @@ import org.freeplane.map.tree.mindmapmode.MMapController;
 import org.freeplane.map.tree.view.MapView;
 
 class JoinNodesAction extends FreeplaneAction {
-	final static Pattern BODY_END = Pattern.compile("</body>",
-	    Pattern.CASE_INSENSITIVE);
-	final static Pattern BODY_START = Pattern.compile("<body>",
-	    Pattern.CASE_INSENSITIVE);
+	final static Pattern BODY_END = Pattern.compile("</body>", Pattern.CASE_INSENSITIVE);
+	final static Pattern BODY_START = Pattern.compile("<body>", Pattern.CASE_INSENSITIVE);
 
 	public JoinNodesAction() {
 		super("join_nodes");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final NodeModel selectedNode = getModeController().getMapView()
-		    .getSelected().getModel();
+		final NodeModel selectedNode = getModeController().getMapView().getSelected().getModel();
 		final ArrayList selectedNodes = getModeController().getMapView()
 		    .getSelectedNodesSortedByY();
 		joinNodes(selectedNode, selectedNodes);
 	}
 
-	private String addContent(String content, final boolean isHtml,
-	                          String nodeContent, final boolean isHtmlNode) {
+	private String addContent(String content, final boolean isHtml, String nodeContent,
+	                          final boolean isHtmlNode) {
 		if (isHtml) {
 			final String start[] = JoinNodesAction.BODY_END.split(content, -2);
 			content = start[0];
 			if (!isHtmlNode) {
-				final String end[] = JoinNodesAction.BODY_START.split(content,
-				    2);
+				final String end[] = JoinNodesAction.BODY_START.split(content, 2);
 				nodeContent = end[0] + "<body><p>" + nodeContent + "</p>";
 			}
 		}
 		if (isHtmlNode & !content.equals("")) {
-			final String end[] = JoinNodesAction.BODY_START.split(nodeContent,
-			    2);
+			final String end[] = JoinNodesAction.BODY_START.split(nodeContent, 2);
 			nodeContent = end[1];
 			if (!isHtml) {
 				content = end[0] + "<body><p>" + content + "</p>";
@@ -83,9 +78,8 @@ class JoinNodesAction extends FreeplaneAction {
 		for (final Iterator it = selectedNodes.iterator(); it.hasNext();) {
 			final NodeModel node = (NodeModel) it.next();
 			if (node.getModeController().getMapController().hasChildren(node)) {
-				JOptionPane.showMessageDialog(mapView, getModeController()
-				    .getText("cannot_join_nodes_with_children"), "FreeMind",
-				    JOptionPane.WARNING_MESSAGE);
+				JOptionPane.showMessageDialog(mapView, getModeController().getText(
+				    "cannot_join_nodes_with_children"), "FreeMind", JOptionPane.WARNING_MESSAGE);
 				return;
 			}
 		}
@@ -96,13 +90,12 @@ class JoinNodesAction extends FreeplaneAction {
 			final boolean isHtmlNode = HtmlTools.isHtmlNode(nodeContent);
 			newContent = addContent(newContent, isHtml, nodeContent, isHtmlNode);
 			if (node != selectedNode) {
-				((MMapController) getModeController().getMapController())
-				    .deleteNode(node);
+				((MMapController) getModeController().getMapController()).deleteNode(node);
 			}
 			isHtml = isHtml || isHtmlNode;
 		}
 		mapView.selectAsTheOnlyOneSelected(mapView.getNodeView(selectedNode));
-		((MTextController) getMModeController().getTextController())
-		    .setNodeText(selectedNode, newContent);
+		((MTextController) getMModeController().getTextController()).setNodeText(selectedNode,
+		    newContent);
 	}
 }

@@ -87,16 +87,13 @@ public class XMLValidationException extends XMLException {
 	 * @param msg
 	 *            the message of the exception.
 	 */
-	public XMLValidationException(final int errorType, final String systemID,
-	                              final int lineNr, final String elementName,
-	                              final String attributeName,
+	public XMLValidationException(final int errorType, final String systemID, final int lineNr,
+	                              final String elementName, final String attributeName,
 	                              final String attributeValue, final String msg) {
 		super(systemID, lineNr, null, msg
 		        + ((elementName == null) ? "" : (", element=" + elementName))
-		        + ((attributeName == null) ? ""
-		                : (", attribute=" + attributeName))
-		        + ((attributeValue == null) ? "" : (", value='"
-		                + attributeValue + "'")), false);
+		        + ((attributeName == null) ? "" : (", attribute=" + attributeName))
+		        + ((attributeValue == null) ? "" : (", value='" + attributeValue + "'")), false);
 		this.elementName = elementName;
 		this.attributeName = attributeName;
 		this.attributeValue = attributeValue;

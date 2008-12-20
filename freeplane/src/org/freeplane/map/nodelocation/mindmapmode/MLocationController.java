@@ -29,8 +29,7 @@ import org.freeplane.undo.IUndoableActor;
  * @author Dimitry Polivaev
  */
 public class MLocationController extends LocationController {
-	private static final class ChangeNodePositionActor implements
-	        IUndoableActor {
+	private static final class ChangeNodePositionActor implements IUndoableActor {
 		private final int gap;
 		private final NodeModel node;
 		private final int oldHgap;
@@ -39,8 +38,8 @@ public class MLocationController extends LocationController {
 		private final int parentVGap;
 		private final int shiftY;
 
-		private ChangeNodePositionActor(final NodeModel node, final int gap,
-		                                final int shiftY, final int parentVGap) {
+		private ChangeNodePositionActor(final NodeModel node, final int gap, final int shiftY,
+		                                final int parentVGap) {
 			this.node = node;
 			this.gap = gap;
 			this.shiftY = shiftY;
@@ -48,8 +47,7 @@ public class MLocationController extends LocationController {
 			final LocationModel locationModel = node.getLocationModel();
 			oldHgap = locationModel.getHGap();
 			oldShiftY = locationModel.getShiftY();
-			oldParentVgap = !node.isRoot() ? node.getParentNode()
-			    .getLocationModel().getVGap() : 0;
+			oldParentVgap = !node.isRoot() ? node.getParentNode().getLocationModel().getVGap() : 0;
 		}
 
 		public void act() {
@@ -60,8 +58,7 @@ public class MLocationController extends LocationController {
 			return "moveNodePosition";
 		}
 
-		private void moveNodePosition(final NodeModel node,
-		                              final int parentVGap, final int hGap,
+		private void moveNodePosition(final NodeModel node, final int parentVGap, final int hGap,
 		                              final int shiftY) {
 			final LocationModel locationModel = node.createLocationModel();
 			locationModel.setHGap(hGap);
@@ -79,24 +76,21 @@ public class MLocationController extends LocationController {
 
 	public MLocationController(final MModeController modeController) {
 		super(modeController);
-		modeController.setNodeMotionListener(new MNodeMotionListener(
-		    modeController));
+		modeController.setNodeMotionListener(new MNodeMotionListener(modeController));
 		createActions(modeController);
 	}
 
 	private void createActions(final MModeController modeController) {
-		modeController.addAction("moveNodeAction",
-		    new ResetNodeLocationAction());
+		modeController.addAction("moveNodeAction", new ResetNodeLocationAction());
 	}
 
 	public MModeController getMModeController() {
 		return (MModeController) getModeController();
 	}
 
-	public void moveNodePosition(final NodeModel node, final int parentVGap,
-	                             final int hGap, final int shiftY) {
-		final IUndoableActor actor = new ChangeNodePositionActor(node, hGap,
-		    shiftY, parentVGap);
+	public void moveNodePosition(final NodeModel node, final int parentVGap, final int hGap,
+	                             final int shiftY) {
+		final IUndoableActor actor = new ChangeNodePositionActor(node, hGap, shiftY, parentVGap);
 		getModeController().execute(actor);
 	}
 }

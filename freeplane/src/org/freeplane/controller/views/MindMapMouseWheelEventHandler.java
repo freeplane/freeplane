@@ -38,8 +38,7 @@ import deprecated.freemind.preferences.IFreemindPropertyListener;
  */
 public class MindMapMouseWheelEventHandler implements MouseWheelListener {
 	private static final int HORIZONTAL_SCROLL_MASK = InputEvent.SHIFT_MASK
-	        | InputEvent.BUTTON1_MASK | InputEvent.BUTTON2_MASK
-	        | InputEvent.BUTTON3_MASK;
+	        | InputEvent.BUTTON1_MASK | InputEvent.BUTTON2_MASK | InputEvent.BUTTON3_MASK;
 	private static int SCROLL_SKIPS = 8;
 	private static final int ZOOM_MASK = InputEvent.CTRL_MASK;
 
@@ -50,19 +49,15 @@ public class MindMapMouseWheelEventHandler implements MouseWheelListener {
 		super();
 		Controller.getResourceController().addPropertyChangeListener(
 		    new IFreemindPropertyListener() {
-			    public void propertyChanged(final String propertyName,
-			                                final String newValue,
+			    public void propertyChanged(final String propertyName, final String newValue,
 			                                final String oldValue) {
-				    if (propertyName
-				        .equals(ResourceController.RESOURCES_WHEEL_VELOCITY)) {
-					    MindMapMouseWheelEventHandler.SCROLL_SKIPS = Integer
-					        .parseInt(newValue);
+				    if (propertyName.equals(ResourceController.RESOURCES_WHEEL_VELOCITY)) {
+					    MindMapMouseWheelEventHandler.SCROLL_SKIPS = Integer.parseInt(newValue);
 				    }
 			    }
 		    });
-		MindMapMouseWheelEventHandler.SCROLL_SKIPS = Controller
-		    .getResourceController().getIntProperty(
-		        ResourceController.RESOURCES_WHEEL_VELOCITY, 8);
+		MindMapMouseWheelEventHandler.SCROLL_SKIPS = Controller.getResourceController()
+		    .getIntProperty(ResourceController.RESOURCES_WHEEL_VELOCITY, 8);
 	}
 
 	/*
@@ -73,17 +68,13 @@ public class MindMapMouseWheelEventHandler implements MouseWheelListener {
 	 */
 	public void mouseWheelMoved(final MouseWheelEvent e) {
 		final MapView mapView = (MapView) e.getSource();
-		final ModeController mController = mapView.getModel()
-		    .getModeController();
+		final ModeController mController = mapView.getModel().getModeController();
 		if (mController.isBlocked()) {
 			return;
 		}
-		final Set registeredMouseWheelEventHandler = mController
-		    .getMouseWheelEventHandlers();
-		for (final Iterator i = registeredMouseWheelEventHandler.iterator(); i
-		    .hasNext();) {
-			final IMouseWheelEventHandler handler = (IMouseWheelEventHandler) i
-			    .next();
+		final Set registeredMouseWheelEventHandler = mController.getMouseWheelEventHandlers();
+		for (final Iterator i = registeredMouseWheelEventHandler.iterator(); i.hasNext();) {
+			final IMouseWheelEventHandler handler = (IMouseWheelEventHandler) i.next();
 			final boolean result = handler.handleMouseWheelEvent(e);
 			if (result) {
 				return;
@@ -104,14 +95,12 @@ public class MindMapMouseWheelEventHandler implements MouseWheelListener {
 			}
 		}
 		else if ((e.getModifiers() & MindMapMouseWheelEventHandler.HORIZONTAL_SCROLL_MASK) != 0) {
-			((MapView) e.getComponent()).scrollBy(
-			    MindMapMouseWheelEventHandler.SCROLL_SKIPS
-			            * e.getWheelRotation(), 0);
+			((MapView) e.getComponent()).scrollBy(MindMapMouseWheelEventHandler.SCROLL_SKIPS
+			        * e.getWheelRotation(), 0);
 		}
 		else {
-			((MapView) e.getComponent()).scrollBy(0,
-			    MindMapMouseWheelEventHandler.SCROLL_SKIPS
-			            * e.getWheelRotation());
+			((MapView) e.getComponent()).scrollBy(0, MindMapMouseWheelEventHandler.SCROLL_SKIPS
+			        * e.getWheelRotation());
 		}
 	}
 }

@@ -42,8 +42,7 @@ import org.freeplane.modes.mindmapmode.MModeController;
 name = "accessories/plugins/CreationModificationPlugin.properties_name", //
 iconPath = "accessories/plugins/icons/kword.png", //
 tooltip = "accessories/plugins/CreationModificationPlugin.properties_documentation")
-public class CreationModificationPlugin extends PersistentNodeHook implements
-        INodeChangeListener {
+public class CreationModificationPlugin extends PersistentNodeHook implements INodeChangeListener {
 	private String tooltipFormat = "<html>Created:  {0,date} {0,time}<br>Modified: {1,date} {1,time}</html>";
 
 	/**
@@ -78,21 +77,19 @@ public class CreationModificationPlugin extends PersistentNodeHook implements
 	 */
 	private void removeToolTipRecursively(final NodeModel node) {
 		setToolTip(node, getHookName(), null);
-		for (final Iterator i = node.getModeController().getMapController()
-		    .childrenUnfolded(node); i.hasNext();) {
+		for (final Iterator i = node.getModeController().getMapController().childrenUnfolded(node); i
+		    .hasNext();) {
 			final NodeModel child = (NodeModel) i.next();
 			removeToolTipRecursively(child);
 		}
 	}
 
 	private void setStyle(final NodeModel node) {
-		final Object[] messageArguments = {
-		        node.getHistoryInformation().getCreatedAt(),
+		final Object[] messageArguments = { node.getHistoryInformation().getCreatedAt(),
 		        node.getHistoryInformation().getLastModifiedAt() };
 		if (tooltipFormat == null) {
 			// TODO
-			tooltipFormat = Controller
-			    .getText("CreationModificationPlugin.tooltip_format");
+			tooltipFormat = Controller.getText("CreationModificationPlugin.tooltip_format");
 		}
 		final MessageFormat formatter = new MessageFormat(tooltipFormat);
 		final String message = formatter.format(messageArguments);
@@ -103,16 +100,14 @@ public class CreationModificationPlugin extends PersistentNodeHook implements
 	 */
 	private void setStyleRecursive(final NodeModel node) {
 		setStyle(node);
-		for (final Iterator i = node.getModeController().getMapController()
-		    .childrenFolded(node); i.hasNext();) {
+		for (final Iterator i = node.getModeController().getMapController().childrenFolded(node); i
+		    .hasNext();) {
 			final NodeModel child = (NodeModel) i.next();
 			setStyleRecursive(child);
 		}
 	}
 
-	protected void setToolTip(final NodeModel node, final String key,
-	                          final String value) {
-		((MMapController) getModeController().getMapController()).setToolTip(
-		    node, key, value);
+	protected void setToolTip(final NodeModel node, final String key, final String value) {
+		((MMapController) getModeController().getMapController()).setToolTip(node, key, value);
 	}
 }

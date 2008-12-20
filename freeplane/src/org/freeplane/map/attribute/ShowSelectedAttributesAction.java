@@ -32,8 +32,7 @@ class ShowSelectedAttributesAction extends AbstractAction {
 	 *
 	 */
 	public ShowSelectedAttributesAction() {
-		MenuBuilder.setLabelAndMnemonic(this, Controller
-		    .getText("attributes_show_selected"));
+		MenuBuilder.setLabelAndMnemonic(this, Controller.getText("attributes_show_selected"));
 	};
 
 	public void actionPerformed(final ActionEvent e) {
@@ -44,8 +43,7 @@ class ShowSelectedAttributesAction extends AbstractAction {
 	void setAttributeViewType(final MapModel map) {
 		final AttributeRegistry attributes = map.getRegistry().getAttributes();
 		if (attributes.getAttributeViewType() != AttributeTableLayoutModel.SHOW_SELECTED) {
-			attributes
-			    .setAttributeViewType(AttributeTableLayoutModel.SHOW_SELECTED);
+			attributes.setAttributeViewType(AttributeTableLayoutModel.SHOW_SELECTED);
 		}
 	}
 }

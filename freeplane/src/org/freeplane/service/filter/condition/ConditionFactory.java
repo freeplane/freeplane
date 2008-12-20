@@ -43,24 +43,21 @@ public class ConditionFactory {
 	static final String FILTER_LT = "<";
 	static final String FILTER_NODE = "filter_node";
 
-	static public JComponent createCellRendererComponent(
-	                                                     final String description) {
+	static public JComponent createCellRendererComponent(final String description) {
 		final JCondition component = new JCondition();
 		final JLabel label = new JLabel(description);
 		component.add(label);
 		return component;
 	}
 
-	static String createDescription(final String attribute,
-	                                final String simpleCondition,
+	static String createDescription(final String attribute, final String simpleCondition,
 	                                final String value, final boolean ignoreCase) {
 		final String description = attribute
 		        + " "
 		        + simpleCondition
 		        + (value != null ? " \"" + value + "\"" : "")
 		        + (ignoreCase && value != null ? ", "
-		                + Controller
-		                    .getText(ConditionFactory.FILTER_IGNORE_CASE) : "");
+		                + Controller.getText(ConditionFactory.FILTER_IGNORE_CASE) : "");
 		return description;
 	}
 
@@ -70,11 +67,9 @@ public class ConditionFactory {
 	public ConditionFactory() {
 	}
 
-	public ICondition createAttributeCondition(
-	                                           final String attribute,
+	public ICondition createAttributeCondition(final String attribute,
 	                                           final NamedObject simpleCondition,
-	                                           final String value,
-	                                           final boolean ignoreCase) {
+	                                           final String value, final boolean ignoreCase) {
 		if (simpleCondition.equals(ConditionFactory.FILTER_EXIST)) {
 			return new AttributeExistsCondition(attribute);
 		}
@@ -83,62 +78,49 @@ public class ConditionFactory {
 		}
 		if (ignoreCase) {
 			if (simpleCondition.equals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
-				return new AttributeCompareCondition(attribute, value, true, 0,
-				    true);
+				return new AttributeCompareCondition(attribute, value, true, 0, true);
 			}
 			if (simpleCondition.equals(ConditionFactory.FILTER_IS_NOT_EQUAL_TO)) {
-				return new AttributeCompareCondition(attribute, value, true, 0,
-				    false);
+				return new AttributeCompareCondition(attribute, value, true, 0, false);
 			}
 			if (simpleCondition.equals(ConditionFactory.FILTER_GT)) {
-				return new AttributeCompareCondition(attribute, value, true, 1,
-				    true);
+				return new AttributeCompareCondition(attribute, value, true, 1, true);
 			}
 			if (simpleCondition.equals(ConditionFactory.FILTER_GE)) {
-				return new AttributeCompareCondition(attribute, value, true,
-				    -1, false);
+				return new AttributeCompareCondition(attribute, value, true, -1, false);
 			}
 			if (simpleCondition.equals(ConditionFactory.FILTER_LT)) {
-				return new AttributeCompareCondition(attribute, value, true,
-				    -1, true);
+				return new AttributeCompareCondition(attribute, value, true, -1, true);
 			}
 			if (simpleCondition.equals(ConditionFactory.FILTER_LE)) {
-				return new AttributeCompareCondition(attribute, value, true, 1,
-				    false);
+				return new AttributeCompareCondition(attribute, value, true, 1, false);
 			}
 		}
 		else {
 			if (simpleCondition.equals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
-				return new AttributeCompareCondition(attribute, value, false,
-				    0, true);
+				return new AttributeCompareCondition(attribute, value, false, 0, true);
 			}
 			if (simpleCondition.equals(ConditionFactory.FILTER_IS_NOT_EQUAL_TO)) {
-				return new AttributeCompareCondition(attribute, value, false,
-				    0, false);
+				return new AttributeCompareCondition(attribute, value, false, 0, false);
 			}
 			if (simpleCondition.equals(ConditionFactory.FILTER_GT)) {
-				return new AttributeCompareCondition(attribute, value, false,
-				    1, true);
+				return new AttributeCompareCondition(attribute, value, false, 1, true);
 			}
 			if (simpleCondition.equals(ConditionFactory.FILTER_GE)) {
-				return new AttributeCompareCondition(attribute, value, false,
-				    -1, false);
+				return new AttributeCompareCondition(attribute, value, false, -1, false);
 			}
 			if (simpleCondition.equals(ConditionFactory.FILTER_LT)) {
-				return new AttributeCompareCondition(attribute, value, false,
-				    -1, true);
+				return new AttributeCompareCondition(attribute, value, false, -1, true);
 			}
 			if (simpleCondition.equals(ConditionFactory.FILTER_LE)) {
-				return new AttributeCompareCondition(attribute, value, false,
-				    1, false);
+				return new AttributeCompareCondition(attribute, value, false, 1, false);
 			}
 		}
 		return null;
 	}
 
 	public ICondition createCondition(final NamedObject attribute,
-	                                  final NamedObject simpleCondition,
-	                                  final String value,
+	                                  final NamedObject simpleCondition, final String value,
 	                                  final boolean ignoreCase) {
 		if (attribute.equals(ConditionFactory.FILTER_ICON)
 		        && simpleCondition.equals(ConditionFactory.FILTER_CONTAINS)) {
@@ -150,8 +132,7 @@ public class ConditionFactory {
 		return null;
 	}
 
-	protected ICondition createNodeCondition(final NamedObject simpleCondition,
-	                                         final String value,
+	protected ICondition createNodeCondition(final NamedObject simpleCondition, final String value,
 	                                         final boolean ignoreCase) {
 		if (ignoreCase) {
 			if (simpleCondition.equals(ConditionFactory.FILTER_CONTAINS)) {
@@ -225,8 +206,8 @@ public class ConditionFactory {
 	}
 
 	public Object[] getIconConditionNames() {
-		return new NamedObject[] { Controller.getResourceController()
-		    .createTranslatedString(ConditionFactory.FILTER_CONTAINS), };
+		return new NamedObject[] { Controller.getResourceController().createTranslatedString(
+		    ConditionFactory.FILTER_CONTAINS), };
 	}
 
 	public NamedObject[] getNodeConditionNames() {
@@ -247,8 +228,7 @@ public class ConditionFactory {
 		if (element.getName().equalsIgnoreCase(NodeContainsCondition.NAME)) {
 			return NodeContainsCondition.load(element);
 		}
-		if (element.getName().equalsIgnoreCase(
-		    IgnoreCaseNodeContainsCondition.NAME)) {
+		if (element.getName().equalsIgnoreCase(IgnoreCaseNodeContainsCondition.NAME)) {
 			return IgnoreCaseNodeContainsCondition.load(element);
 		}
 		if (element.getName().equalsIgnoreCase(NodeCompareCondition.NAME)) {
@@ -260,15 +240,13 @@ public class ConditionFactory {
 		if (element.getName().equalsIgnoreCase(AttributeExistsCondition.NAME)) {
 			return AttributeExistsCondition.load(element);
 		}
-		if (element.getName()
-		    .equalsIgnoreCase(AttributeNotExistsCondition.NAME)) {
+		if (element.getName().equalsIgnoreCase(AttributeNotExistsCondition.NAME)) {
 			return AttributeNotExistsCondition.load(element);
 		}
 		if (element.getName().equalsIgnoreCase(IconContainedCondition.NAME)) {
 			return IconContainedCondition.load(element);
 		}
-		if (element.getName().equalsIgnoreCase(
-		    ConditionNotSatisfiedDecorator.NAME)) {
+		if (element.getName().equalsIgnoreCase(ConditionNotSatisfiedDecorator.NAME)) {
 			return ConditionNotSatisfiedDecorator.load(element);
 		}
 		if (element.getName().equalsIgnoreCase(ConjunctConditions.NAME)) {

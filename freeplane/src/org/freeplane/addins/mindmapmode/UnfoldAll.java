@@ -35,61 +35,46 @@ import org.freeplane.ui.MenuBuilder;
  * @author foltin
  */
 public class UnfoldAll implements IMouseWheelEventHandler {
-	@ActionDescriptor(tooltip = "accessories/plugins/UnfoldAll.properties_documentation", name = "accessories/plugins/UnfoldAll.properties_name", keyStroke = "keystroke_accessories/plugins/UnfoldAll.keystroke.alt_END", iconPath = "accessories/plugins/icons/hotlistadd.png", locations = {
-	        "/menu_bar/navigate/folding", "/main_toolbar/folding" })
-	private class UnfoldAllAction extends FreeplaneAction {
-		public void actionPerformed(ActionEvent e) {
-			unfoldAll(getModeController().getSelectedNode());
-		}
-	}
-
 	@ActionDescriptor(tooltip = "accessories/plugins/FoldAll.properties_documentation", name = "accessories/plugins/FoldAll.properties_name", keyStroke = "keystroke_accessories/plugins/UnfoldAll.keystroke.alt_HOME", iconPath = "accessories/plugins/icons/hotlistdel.png", locations = {
 	        "/menu_bar/navigate/folding", "/main_toolbar/folding" })
 	private class FoldAllAction extends FreeplaneAction {
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(final ActionEvent e) {
 			foldAll(getModeController().getSelectedNode());
-		}
-	}
-
-	@ActionDescriptor(tooltip = "accessories/plugins/UnfoldOneLevel.properties_documentation", name = "accessories/plugins/UnfoldOneLevel.properties_name", keyStroke = "keystroke_accessories/plugins/UnfoldAll.keystroke.alt_PAGE_DOWN", iconPath = "accessories/plugins/icons/edit_add.png", locations = {
-	        "/menu_bar/navigate/folding", "/main_toolbar/folding" })
-	private class UnfoldOneLevelAction extends FreeplaneAction {
-		public void actionPerformed(ActionEvent e) {
-			unfoldOneStage(getModeController().getSelectedNode());
 		}
 	}
 
 	@ActionDescriptor(tooltip = "accessories/plugins/FoldOneLevel.properties_documentation", name = "accessories/plugins/FoldOneLevel.properties_name", keyStroke = "keystroke_accessories/plugins/UnfoldAll.keystroke.alt_PAGE_UP", iconPath = "accessories/plugins/icons/edit_remove.png", locations = {
 	        "/menu_bar/navigate/folding", "/main_toolbar/folding" })
 	private class FoldOneLevelAction extends FreeplaneAction {
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(final ActionEvent e) {
 			foldOneStage(getModeController().getSelectedNode());
 		}
 	}
 
-	public boolean handleMouseWheelEvent(final MouseWheelEvent e) {
-		if ((e.getModifiers() & InputEvent.ALT_MASK) != 0) {
-			final NodeModel rootNode = Controller.getController().getMap().getRootNode();
-			if (e.getWheelRotation() > 0) {
-				unfoldOneStage(rootNode);
-			}
-			else {
-				final ModeController modeController = Controller.getModeController();
-				modeController.select(modeController.getMapView().getRoot());
-				foldOneStage(rootNode);
-			}
-			return true;
+	@ActionDescriptor(tooltip = "accessories/plugins/UnfoldAll.properties_documentation", name = "accessories/plugins/UnfoldAll.properties_name", keyStroke = "keystroke_accessories/plugins/UnfoldAll.keystroke.alt_END", iconPath = "accessories/plugins/icons/hotlistadd.png", locations = {
+	        "/menu_bar/navigate/folding", "/main_toolbar/folding" })
+	private class UnfoldAllAction extends FreeplaneAction {
+		public void actionPerformed(final ActionEvent e) {
+			unfoldAll(getModeController().getSelectedNode());
 		}
-		return false;
+	}
+
+	@ActionDescriptor(tooltip = "accessories/plugins/UnfoldOneLevel.properties_documentation", name = "accessories/plugins/UnfoldOneLevel.properties_name", keyStroke = "keystroke_accessories/plugins/UnfoldAll.keystroke.alt_PAGE_DOWN", iconPath = "accessories/plugins/icons/edit_add.png", locations = {
+	        "/menu_bar/navigate/folding", "/main_toolbar/folding" })
+	private class UnfoldOneLevelAction extends FreeplaneAction {
+		public void actionPerformed(final ActionEvent e) {
+			unfoldOneStage(getModeController().getSelectedNode());
+		}
 	}
 
 	/**
 	 *
 	 */
-	public UnfoldAll(ModeController modeController) {
+	public UnfoldAll(final ModeController modeController) {
 		super();
 		modeController.addMouseWheelEventHandler(this);
-		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
+		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory()
+		    .getMenuBuilder();
 		menuBuilder.addAnnotatedAction(new UnfoldAllAction());
 		menuBuilder.addAnnotatedAction(new FoldAllAction());
 		menuBuilder.addAnnotatedAction(new UnfoldOneLevelAction());
@@ -191,6 +176,22 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 			}
 		}
 		return k;
+	}
+
+	public boolean handleMouseWheelEvent(final MouseWheelEvent e) {
+		if ((e.getModifiers() & InputEvent.ALT_MASK) != 0) {
+			final NodeModel rootNode = Controller.getController().getMap().getRootNode();
+			if (e.getWheelRotation() > 0) {
+				unfoldOneStage(rootNode);
+			}
+			else {
+				final ModeController modeController = Controller.getModeController();
+				modeController.select(modeController.getMapView().getRoot());
+				foldOneStage(rootNode);
+			}
+			return true;
+		}
+		return false;
 	}
 
 	protected void setFolded(final NodeModel node, final boolean state) {

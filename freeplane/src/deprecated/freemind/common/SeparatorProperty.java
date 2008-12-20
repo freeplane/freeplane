@@ -40,8 +40,7 @@ public class SeparatorProperty implements IPropertyControl {
 	}
 
 	public void layout(final DefaultFormBuilder builder) {
-		builder
-		    .appendSeparator(OptionString.getText("separator." + getLabel()));
+		builder.appendSeparator(OptionString.getText("separator." + getLabel()));
 	}
 
 	public void setEnabled(final boolean pEnabled) {

@@ -43,8 +43,8 @@ class CommonToggleFoldedAction extends FreeplaneAction {
 	}
 
 	public void toggleFolded(final ListIterator listIterator) {
-		final boolean fold = getModeController().getMapController()
-		    .getFoldingState(Tools.resetIterator(listIterator));
+		final boolean fold = getModeController().getMapController().getFoldingState(
+		    Tools.resetIterator(listIterator));
 		for (final Iterator i = Tools.resetIterator(listIterator); i.hasNext();) {
 			final NodeModel node = (NodeModel) i.next();
 			getModeController().getMapController().setFolded(node, fold);

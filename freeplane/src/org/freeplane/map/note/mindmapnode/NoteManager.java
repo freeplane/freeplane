@@ -41,8 +41,8 @@ final class NoteManager implements INodeSelectionListener {
 	}
 
 	public void onDeselect(final NodeView node) {
-		noteController.getNoteViewerComponent().getDocument()
-		    .removeDocumentListener(mNoteDocumentListener);
+		noteController.getNoteViewerComponent().getDocument().removeDocumentListener(
+		    mNoteDocumentListener);
 		onWrite(node.getModel());
 		this.node = null;
 	}
@@ -57,8 +57,7 @@ final class NoteManager implements INodeSelectionListener {
 			return;
 		}
 		boolean editorContentEmpty = true;
-		final String documentText = noteController.getNoteViewerComponent()
-		    .getDocumentText();
+		final String documentText = noteController.getNoteViewerComponent().getDocumentText();
 		editorContentEmpty = documentText.equals(EMPTY_EDITOR_STRING)
 		        || documentText.equals(EMPTY_EDITOR_STRING_ALTERNATIVE);
 		noteController.getModeController().removeNodeSelectionListener(this);
@@ -75,8 +74,7 @@ final class NoteManager implements INodeSelectionListener {
 	}
 
 	void updateEditor() {
-		final HTMLDocument document = noteController.getNoteViewerComponent()
-		    .getDocument();
+		final HTMLDocument document = noteController.getNoteViewerComponent().getDocument();
 		document.removeDocumentListener(mNoteDocumentListener);
 		try {
 			document.setBase(node.getMap().getFile().toURL());
@@ -85,13 +83,11 @@ final class NoteManager implements INodeSelectionListener {
 		}
 		final String note = node.getNoteText();
 		if (note != null) {
-			noteController.getNoteViewerComponent().setCurrentDocumentContent(
-			    note);
+			noteController.getNoteViewerComponent().setCurrentDocumentContent(note);
 			noteController.setLastContentEmpty(false);
 		}
 		else if (!noteController.isLastContentEmpty()) {
-			noteController.getNoteViewerComponent().setCurrentDocumentContent(
-			    "");
+			noteController.getNoteViewerComponent().setCurrentDocumentContent("");
 			noteController.setLastContentEmpty(true);
 		}
 		document.addDocumentListener(mNoteDocumentListener);

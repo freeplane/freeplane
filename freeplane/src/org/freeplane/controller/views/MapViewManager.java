@@ -43,8 +43,7 @@ import org.freeplane.modes.ModeController;
  * (the controller observes changes to the map mapViews here).
  */
 public class MapViewManager {
-	static private class MapViewChangeObserverCompound implements
-	        IMapViewChangeListener {
+	static private class MapViewChangeObserverCompound implements IMapViewChangeListener {
 		final private HashSet listeners = new HashSet();
 
 		public void addListener(final IMapViewChangeListener listener) {
@@ -52,43 +51,31 @@ public class MapViewManager {
 		}
 
 		public void afterMapClose(final MapView pOldMapView) {
-			for (final Iterator iter = new Vector(listeners).iterator(); iter
-			    .hasNext();) {
-				final IMapViewChangeListener observer = (IMapViewChangeListener) iter
-				    .next();
+			for (final Iterator iter = new Vector(listeners).iterator(); iter.hasNext();) {
+				final IMapViewChangeListener observer = (IMapViewChangeListener) iter.next();
 				observer.afterMapClose(pOldMapView);
 			}
 		}
 
-		public void afterMapViewChange(final MapView oldMapView,
-		                               final MapView newMapView) {
-			for (final Iterator iter = new Vector(listeners).iterator(); iter
-			    .hasNext();) {
-				final IMapViewChangeListener observer = (IMapViewChangeListener) iter
-				    .next();
+		public void afterMapViewChange(final MapView oldMapView, final MapView newMapView) {
+			for (final Iterator iter = new Vector(listeners).iterator(); iter.hasNext();) {
+				final IMapViewChangeListener observer = (IMapViewChangeListener) iter.next();
 				observer.afterMapViewChange(oldMapView, newMapView);
 			}
 		}
 
-		public void beforeMapViewChange(final MapView oldMapView,
-		                                final MapView newMapView) {
-			for (final Iterator iter = new Vector(listeners).iterator(); iter
-			    .hasNext();) {
-				final IMapViewChangeListener observer = (IMapViewChangeListener) iter
-				    .next();
+		public void beforeMapViewChange(final MapView oldMapView, final MapView newMapView) {
+			for (final Iterator iter = new Vector(listeners).iterator(); iter.hasNext();) {
+				final IMapViewChangeListener observer = (IMapViewChangeListener) iter.next();
 				observer.beforeMapViewChange(oldMapView, newMapView);
 			}
 		}
 
-		public boolean isMapViewChangeAllowed(final MapView oldMapView,
-		                                      final MapView newMapView) {
+		public boolean isMapViewChangeAllowed(final MapView oldMapView, final MapView newMapView) {
 			boolean returnValue = true;
-			for (final Iterator iter = new Vector(listeners).iterator(); iter
-			    .hasNext();) {
-				final IMapViewChangeListener observer = (IMapViewChangeListener) iter
-				    .next();
-				returnValue = observer.isMapViewChangeAllowed(oldMapView,
-				    newMapView);
+			for (final Iterator iter = new Vector(listeners).iterator(); iter.hasNext();) {
+				final IMapViewChangeListener observer = (IMapViewChangeListener) iter.next();
+				returnValue = observer.isMapViewChangeAllowed(oldMapView, newMapView);
 				if (!returnValue) {
 					break;
 				}
@@ -121,8 +108,7 @@ public class MapViewManager {
 		listener.addListener(pListener);
 	}
 
-	private void addToOrChangeInMapViews(final String key,
-	                                     final MapView newOrChangedMapView) {
+	private void addToOrChangeInMapViews(final String key, final MapView newOrChangedMapView) {
 		String extension = "";
 		int count = 1;
 		final List mapKeys = getMapKeys();
@@ -136,10 +122,28 @@ public class MapViewManager {
 		}
 	}
 
+	/**
+	 * is null if the old mode should be closed.
+	 *
+	 * @return true if the set command was sucessful.
+	 */
+	public boolean changeToMapView(final MapView newMapView) {
+		final MapView oldMapView = mapView;
+		if (!listener.isMapViewChangeAllowed(oldMapView, newMapView)) {
+			return false;
+		}
+		listener.beforeMapViewChange(oldMapView, newMapView);
+		mapView = newMapView;
+		listener.afterMapViewChange(oldMapView, newMapView);
+		if (mapView != null) {
+			lastModeName = mapView.getModeController().getModeName();
+		}
+		return true;
+	}
+
 	public boolean changeToMapView(final String mapViewDisplayName) {
 		MapView mapViewCandidate = null;
-		for (final Iterator iterator = mapViewVector.iterator(); iterator
-		    .hasNext();) {
+		for (final Iterator iterator = mapViewVector.iterator(); iterator.hasNext();) {
 			final MapView mapMod = (MapView) iterator.next();
 			if (Tools.safeEquals(mapViewDisplayName, mapMod.getName())) {
 				mapViewCandidate = mapMod;
@@ -147,8 +151,7 @@ public class MapViewManager {
 			}
 		}
 		if (mapViewCandidate == null) {
-			throw new IllegalArgumentException("Map mapView "
-			        + mapViewDisplayName + " not found.");
+			throw new IllegalArgumentException("Map mapView " + mapViewDisplayName + " not found.");
 		}
 		return changeToMapView(mapViewCandidate);
 	}
@@ -158,8 +161,7 @@ public class MapViewManager {
 			return true;
 		}
 		MapView mapViewCandidate = null;
-		for (final Iterator iterator = mapViewVector.iterator(); iterator
-		    .hasNext();) {
+		for (final Iterator iterator = mapViewVector.iterator(); iterator.hasNext();) {
 			final MapView mapMod = (MapView) iterator.next();
 			if (modeName.equals(mapMod.getModeController().getModeName())) {
 				mapViewCandidate = mapMod;
@@ -180,8 +182,7 @@ public class MapViewManager {
 	 *
 	 * @return null, if not found, the map+extension identifier otherwise.
 	 */
-	public String checkIfFileIsAlreadyOpened(final URL urlToCheck)
-	        throws MalformedURLException {
+	public String checkIfFileIsAlreadyOpened(final URL urlToCheck) throws MalformedURLException {
 		for (final Iterator iter = mapViewVector.iterator(); iter.hasNext();) {
 			final MapView mapView = (MapView) iter.next();
 			if (mapView.getModel() != null) {
@@ -202,8 +203,8 @@ public class MapViewManager {
 	 */
 	public boolean close(final boolean force) {
 		final MapView mapView = getMapView();
-		final boolean closingNotCancelled = mapView.getModeController()
-		    .getMapController().close(force);
+		final boolean closingNotCancelled = mapView.getModeController().getMapController().close(
+		    force);
 		if (!closingNotCancelled) {
 			return false;
 		}
@@ -211,7 +212,7 @@ public class MapViewManager {
 		mapViewVector.remove(mapView);
 		if (mapViewVector.isEmpty()) {
 			/* Keep the current running mode */
-			changeToMapView((MapView)null);
+			changeToMapView((MapView) null);
 		}
 		else {
 			if (index >= mapViewVector.size() || index < 0) {
@@ -226,8 +227,7 @@ public class MapViewManager {
 	/** @return an unmodifiable set of all display names of current opened maps. */
 	public List getMapKeys() {
 		final LinkedList returnValue = new LinkedList();
-		for (final Iterator iterator = mapViewVector.iterator(); iterator
-		    .hasNext();) {
+		for (final Iterator iterator = mapViewVector.iterator(); iterator.hasNext();) {
 			final MapView mapView = (MapView) iterator.next();
 			returnValue.add(mapView.getName());
 		}
@@ -246,8 +246,7 @@ public class MapViewManager {
 	@Deprecated
 	public Map getMapViews() {
 		final HashMap returnValue = new HashMap();
-		for (final Iterator iterator = mapViewVector.iterator(); iterator
-		    .hasNext();) {
+		for (final Iterator iterator = mapViewVector.iterator(); iterator.hasNext();) {
 			final MapView mapView = (MapView) iterator.next();
 			returnValue.put(mapView.getName(), mapView);
 		}
@@ -262,8 +261,7 @@ public class MapViewManager {
 		return mapViewVector.size();
 	}
 
-	public void newMapView(final MapModel map,
-	                       final ModeController modeController) {
+	public void newMapView(final MapModel map, final ModeController modeController) {
 		final MapView mapView = new MapView(map);
 		addToOrChangeInMapViews(mapView.getName(), mapView);
 		changeToMapView(mapView);
@@ -305,8 +303,7 @@ public class MapViewManager {
 		}
 	}
 
-	public void removeMapViewChangeListener(
-	                                        final IMapViewChangeListener pListener) {
+	public void removeMapViewChangeListener(final IMapViewChangeListener pListener) {
 		listener.removeListener(pListener);
 	}
 
@@ -314,31 +311,10 @@ public class MapViewManager {
 		if (mapViewUrl == null) {
 			return false;
 		}
-		if (urlToCheck.getProtocol().equals("file")
-		        && mapViewUrl.getProtocol().equals("file")) {
-			return (new File(urlToCheck.getFile())).equals(new File(mapViewUrl
-			    .getFile()));
+		if (urlToCheck.getProtocol().equals("file") && mapViewUrl.getProtocol().equals("file")) {
+			return (new File(urlToCheck.getFile())).equals(new File(mapViewUrl.getFile()));
 		}
 		return urlToCheck.sameFile(mapViewUrl);
-	}
-
-	/**
-	 * is null if the old mode should be closed.
-	 *
-	 * @return true if the set command was sucessful.
-	 */
-	public boolean changeToMapView(final MapView newMapView) {
-		final MapView oldMapView = mapView;
-		if (!listener.isMapViewChangeAllowed(oldMapView, newMapView)) {
-			return false;
-		}
-		listener.beforeMapViewChange(oldMapView, newMapView);
-		mapView = newMapView;
-		listener.afterMapViewChange(oldMapView, newMapView);
-		if (mapView != null) {
-			lastModeName = mapView.getModeController().getModeName();
-		}
-		return true;
 	}
 
 	/**

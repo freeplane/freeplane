@@ -40,10 +40,9 @@ import deprecated.freemind.preferences.IFreemindPropertyListener;
  * @author Dimitry Polivaev
  */
 public class CloudController {
-	protected static class CloudAdapterListener implements
-	        IFreemindPropertyListener {
-		public void propertyChanged(final String propertyName,
-		                            final String newValue, final String oldValue) {
+	protected static class CloudAdapterListener implements IFreemindPropertyListener {
+		public void propertyChanged(final String propertyName, final String newValue,
+		                            final String oldValue) {
 			if (propertyName.equals(ResourceController.RESOURCES_CLOUD_COLOR)) {
 				standardColor = Tools.xmlToColor(newValue);
 			}
@@ -61,23 +60,20 @@ public class CloudController {
 		colorHandlers = new PropertyChain<Color, NodeModel>();
 		if (listener == null) {
 			listener = new CloudAdapterListener();
-			Controller.getResourceController().addPropertyChangeListener(
-			    listener);
+			Controller.getResourceController().addPropertyChangeListener(listener);
 		}
 		updateStandards(modeController);
-		addColorGetter(PropertyChain.NODE,
-		    new IPropertyGetter<Color, NodeModel>() {
-			    public Color getProperty(final NodeModel node) {
-				    final CloudModel cloud = node.getCloud();
-				    return cloud != null ? cloud.getColor() : null;
-			    }
-		    });
-		addColorGetter(PropertyChain.DEFAULT,
-		    new IPropertyGetter<Color, NodeModel>() {
-			    public Color getProperty(final NodeModel node) {
-				    return standardColor;
-			    }
-		    });
+		addColorGetter(PropertyChain.NODE, new IPropertyGetter<Color, NodeModel>() {
+			public Color getProperty(final NodeModel node) {
+				final CloudModel cloud = node.getCloud();
+				return cloud != null ? cloud.getColor() : null;
+			}
+		});
+		addColorGetter(PropertyChain.DEFAULT, new IPropertyGetter<Color, NodeModel>() {
+			public Color getProperty(final NodeModel node) {
+				return standardColor;
+			}
+		});
 		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();
 		final WriteManager writeManager = mapController.getWriteManager();
@@ -109,8 +105,8 @@ public class CloudController {
 
 	private void updateStandards(final ModeController controller) {
 		if (standardColor == null) {
-			final String stdColor = Controller.getResourceController()
-			    .getProperty(ResourceController.RESOURCES_CLOUD_COLOR);
+			final String stdColor = Controller.getResourceController().getProperty(
+			    ResourceController.RESOURCES_CLOUD_COLOR);
 			standardColor = Tools.xmlToColor(stdColor);
 		}
 	}

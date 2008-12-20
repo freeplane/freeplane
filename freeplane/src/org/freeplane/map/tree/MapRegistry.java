@@ -44,8 +44,7 @@ public class MapRegistry {
 	public MapRegistry(final MapModel map, final ModeController modeController) {
 		super();
 		mapIcons = new SortedMapListModel();
-		attributes = new AttributeRegistry(modeController
-		    .getAttributeController());
+		attributes = new AttributeRegistry(modeController.getAttributeController());
 	}
 
 	public void addIcon(final MindIcon icon) {
@@ -70,8 +69,8 @@ public class MapRegistry {
 		for (int i = 0; i < model.getRowCount(); i++) {
 			attributes.registry(model.getAttribute(i));
 		}
-		final ListIterator<NodeModel> iterator = node.getModeController()
-		    .getMapController().childrenUnfolded(node);
+		final ListIterator<NodeModel> iterator = node.getModeController().getMapController()
+		    .childrenUnfolded(node);
 		while (iterator.hasNext()) {
 			final NodeModel next = iterator.next();
 			registryAttributes(next);
@@ -85,8 +84,8 @@ public class MapRegistry {
 			final MindIcon icon = (MindIcon) i.next();
 			addIcon(icon);
 		}
-		final ListIterator<NodeModel> iterator = node.getModeController()
-		    .getMapController().childrenUnfolded(node);
+		final ListIterator<NodeModel> iterator = node.getModeController().getMapController()
+		    .childrenUnfolded(node);
 		while (iterator.hasNext()) {
 			final NodeModel next = iterator.next();
 			registryNodeIcons(next);

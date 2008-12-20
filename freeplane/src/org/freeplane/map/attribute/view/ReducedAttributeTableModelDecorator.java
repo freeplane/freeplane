@@ -29,8 +29,7 @@ import org.freeplane.map.attribute.Attribute;
 /**
  * @author Dimitry Polivaev
  */
-class ReducedAttributeTableModelDecorator extends
-        AttributeTableModelDecoratorAdapter {
+class ReducedAttributeTableModelDecorator extends AttributeTableModelDecoratorAdapter {
 	private Vector index = null;
 	private int visibleRowCount;
 
@@ -101,8 +100,7 @@ class ReducedAttributeTableModelDecorator extends
 			visibleRowCount = 0;
 			index.clear();
 			for (int i = 0; i < nodeAttributeModel.getRowCount(); i++) {
-				final String name = (String) nodeAttributeModel
-				    .getValueAt(i, 0);
+				final String name = (String) nodeAttributeModel.getValueAt(i, 0);
 				if (attributeRegistry.getElement(name).isVisible()) {
 					index.add(new Integer(i));
 					visibleRowCount++;

@@ -28,8 +28,7 @@ class NodeContainsCondition extends NodeCondition {
 	static final String VALUE = "value";
 
 	static ICondition load(final XMLElement element) {
-		return new NodeContainsCondition(element.getAttribute(
-		    NodeContainsCondition.VALUE, null));
+		return new NodeContainsCondition(element.getAttribute(NodeContainsCondition.VALUE, null));
 	}
 
 	final private String value;
@@ -45,12 +44,9 @@ class NodeContainsCondition extends NodeCondition {
 
 	@Override
 	protected String createDesctiption() {
-		final String nodeCondition = Controller
-		    .getText(ConditionFactory.FILTER_NODE);
-		final String simpleCondition = Controller
-		    .getText(ConditionFactory.FILTER_CONTAINS);
-		return ConditionFactory.createDescription(nodeCondition,
-		    simpleCondition, value, false);
+		final String nodeCondition = Controller.getText(ConditionFactory.FILTER_NODE);
+		final String simpleCondition = Controller.getText(ConditionFactory.FILTER_CONTAINS);
+		return ConditionFactory.createDescription(nodeCondition, simpleCondition, value, false);
 	}
 
 	public void toXml(final XMLElement element) {

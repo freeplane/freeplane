@@ -37,8 +37,7 @@ public class FModeController extends ModeController {
 	}
 
 	public boolean extendSelection(final MouseEvent e) {
-		final NodeView newlySelectedNodeView = ((MainView) e.getComponent())
-		    .getNodeView();
+		final NodeView newlySelectedNodeView = ((MainView) e.getComponent()).getNodeView();
 		final boolean extend = e.isControlDown();
 		final boolean range = e.isShiftDown();
 		final boolean branch = e.isAltGraphDown() || e.isAltDown();
@@ -46,8 +45,7 @@ public class FModeController extends ModeController {
 		 * windows alt, linux altgraph ....
 		 */
 		boolean retValue = false;
-		if (extend || range || branch
-		        || !getMapView().isSelected(newlySelectedNodeView)) {
+		if (extend || range || branch || !getMapView().isSelected(newlySelectedNodeView)) {
 			if (!range) {
 				if (extend) {
 					getMapView().toggleSelected(newlySelectedNodeView);
@@ -100,8 +98,7 @@ public class FModeController extends ModeController {
 		final Controller controller = Controller.getController();
 		controller.getMapViewManager().changeToMode(MODENAME);
 		if (controller.getMapView() == null) {
-			((FMapController) getMapController()).newMap(new File(
-			    File.separator));
+			((FMapController) getMapController()).newMap(new File(File.separator));
 		}
 		super.startup();
 	}

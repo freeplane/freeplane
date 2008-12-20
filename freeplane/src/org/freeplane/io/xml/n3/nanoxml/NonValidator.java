@@ -66,8 +66,8 @@ public class NonValidator implements IXMLValidator {
 	 * @param lineNr
 	 *            the line number in the XML data of the element.
 	 */
-	public void attributeAdded(final String key, final String value,
-	                           final String systemId, final int lineNr) {
+	public void attributeAdded(final String key, final String value, final String systemId,
+	                           final int lineNr) {
 		final Properties props = (Properties) currentElements.peek();
 		if (props.containsKey(key)) {
 			props.remove(key);
@@ -88,10 +88,8 @@ public class NonValidator implements IXMLValidator {
 	 * @param lineNr
 	 *            the line number in the XML data of the element.
 	 */
-	public void elementAttributesProcessed(final String name,
-	                                       final Properties extraAttributes,
-	                                       final String systemId,
-	                                       final int lineNr) {
+	public void elementAttributesProcessed(final String name, final Properties extraAttributes,
+	                                       final String systemId, final int lineNr) {
 		final Properties props = (Properties) currentElements.pop();
 		final Enumeration enumeration = props.keys();
 		while (enumeration.hasMoreElements()) {
@@ -110,8 +108,7 @@ public class NonValidator implements IXMLValidator {
 	 * @param lineNr
 	 *            the line number in the XML data of the element.
 	 */
-	public void elementEnded(final String name, final String systemId,
-	                         final int lineNr) {
+	public void elementEnded(final String name, final String systemId, final int lineNr) {
 	}
 
 	/**
@@ -124,8 +121,7 @@ public class NonValidator implements IXMLValidator {
 	 * @param lineNr
 	 *            the line number in the XML data of the element.
 	 */
-	public void elementStarted(final String name, final String systemId,
-	                           final int lineNr) {
+	public void elementStarted(final String name, final String systemId, final int lineNr) {
 		Properties attribs = (Properties) attributeDefaultValues.get(name);
 		if (attribs == null) {
 			attribs = new Properties();
@@ -174,8 +170,8 @@ public class NonValidator implements IXMLValidator {
 	 *             If something went wrong.
 	 */
 	public void parseDTD(final String publicID, final IXMLReader reader,
-	                     final IXMLEntityResolver entityResolver,
-	                     final boolean external) throws Exception {
+	                     final IXMLEntityResolver entityResolver, final boolean external)
+	        throws Exception {
 		XMLUtil.skipWhitespace(reader, null);
 		final int origLevel = reader.getStreamLevel();
 		for (;;) {
@@ -192,8 +188,7 @@ public class NonValidator implements IXMLValidator {
 				return;
 			}
 			else {
-				XMLUtil.errorInvalidInput(reader.getSystemID(), reader
-				    .getLineNr(), str);
+				XMLUtil.errorInvalidInput(reader.getSystemID(), reader.getLineNr(), str);
 			}
 			do {
 				ch = reader.read();
@@ -201,8 +196,7 @@ public class NonValidator implements IXMLValidator {
 					reader.unread(ch);
 					return;
 				}
-			} while ((ch == ' ') || (ch == '\t') || (ch == '\n')
-			        || (ch == '\r'));
+			} while ((ch == ' ') || (ch == '\t') || (ch == '\n') || (ch == '\r'));
 			reader.unread(ch);
 		}
 	}
@@ -228,8 +222,7 @@ public class NonValidator implements IXMLValidator {
 	 * @throws java.lang.Exception
 	 *             If something went wrong.
 	 */
-	protected void processAttList(final IXMLReader reader,
-	                              final IXMLEntityResolver entityResolver)
+	protected void processAttList(final IXMLReader reader, final IXMLEntityResolver entityResolver)
 	        throws Exception {
 		if (!XMLUtil.checkLiteral(reader, "TTLIST")) {
 			XMLUtil.skipTag(reader);
@@ -270,8 +263,7 @@ public class NonValidator implements IXMLValidator {
 					str = XMLUtil.read(reader, '%');
 					ch = str.charAt(0);
 					while (ch == '%') {
-						XMLUtil.processEntity(str, reader,
-						    parameterEntityResolver);
+						XMLUtil.processEntity(str, reader, parameterEntityResolver);
 						str = XMLUtil.read(reader, '%');
 						ch = str.charAt(0);
 					}
@@ -297,8 +289,7 @@ public class NonValidator implements IXMLValidator {
 					str = XMLUtil.read(reader, '%');
 					ch = str.charAt(0);
 					while (ch == '%') {
-						XMLUtil.processEntity(str, reader,
-						    parameterEntityResolver);
+						XMLUtil.processEntity(str, reader, parameterEntityResolver);
 						str = XMLUtil.read(reader, '%');
 						ch = str.charAt(0);
 					}
@@ -308,8 +299,7 @@ public class NonValidator implements IXMLValidator {
 			else {
 				reader.unread(ch);
 			}
-			final String value = XMLUtil.scanString(reader, '%',
-			    parameterEntityResolver);
+			final String value = XMLUtil.scanString(reader, '%', parameterEntityResolver);
 			props.put(attName, value);
 			XMLUtil.skipWhitespace(reader, null);
 			str = XMLUtil.read(reader, '%');
@@ -335,8 +325,7 @@ public class NonValidator implements IXMLValidator {
 	 * @throws java.lang.Exception
 	 *             If something went wrong.
 	 */
-	protected void processConditionalSection(
-	                                         final IXMLReader reader,
+	protected void processConditionalSection(final IXMLReader reader,
 	                                         final IXMLEntityResolver entityResolver)
 	        throws Exception {
 		XMLUtil.skipWhitespace(reader, null);
@@ -392,8 +381,7 @@ public class NonValidator implements IXMLValidator {
 	 * @throws java.lang.Exception
 	 *             If something went wrong.
 	 */
-	protected void processElement(final IXMLReader reader,
-	                              final IXMLEntityResolver entityResolver)
+	protected void processElement(final IXMLReader reader, final IXMLEntityResolver entityResolver)
 	        throws Exception {
 		String str = XMLUtil.read(reader, '%');
 		char ch = str.charAt(0);
@@ -431,8 +419,7 @@ public class NonValidator implements IXMLValidator {
 	 * @throws java.lang.Exception
 	 *             If something went wrong.
 	 */
-	protected void processEntity(final IXMLReader reader,
-	                             IXMLEntityResolver entityResolver)
+	protected void processEntity(final IXMLReader reader, IXMLEntityResolver entityResolver)
 	        throws Exception {
 		if (!XMLUtil.checkLiteral(reader, "NTITY")) {
 			XMLUtil.skipTag(reader);
@@ -459,11 +446,9 @@ public class NonValidator implements IXMLValidator {
 					return;
 				}
 				XMLUtil.skipWhitespace(reader, null);
-				publicID = XMLUtil.scanString(reader, '%',
-				    parameterEntityResolver);
+				publicID = XMLUtil.scanString(reader, '%', parameterEntityResolver);
 				XMLUtil.skipWhitespace(reader, null);
-				systemID = XMLUtil.scanString(reader, '%',
-				    parameterEntityResolver);
+				systemID = XMLUtil.scanString(reader, '%', parameterEntityResolver);
 				XMLUtil.skipWhitespace(reader, null);
 				XMLUtil.readChar(reader, '%');
 				break;
@@ -473,16 +458,14 @@ public class NonValidator implements IXMLValidator {
 					return;
 				}
 				XMLUtil.skipWhitespace(reader, null);
-				systemID = XMLUtil.scanString(reader, '%',
-				    parameterEntityResolver);
+				systemID = XMLUtil.scanString(reader, '%', parameterEntityResolver);
 				XMLUtil.skipWhitespace(reader, null);
 				XMLUtil.readChar(reader, '%');
 				break;
 			case '"':
 			case '\'':
 				reader.unread(ch);
-				final String value = XMLUtil.scanString(reader, '%',
-				    parameterEntityResolver);
+				final String value = XMLUtil.scanString(reader, '%', parameterEntityResolver);
 				entityResolver.addInternalEntity(key, value);
 				XMLUtil.skipWhitespace(reader, null);
 				XMLUtil.readChar(reader, '%');
@@ -506,8 +489,7 @@ public class NonValidator implements IXMLValidator {
 	 *             If something went wrong.
 	 */
 	protected void processIgnoreSection(final IXMLReader reader,
-	                                    final IXMLEntityResolver entityResolver)
-	        throws Exception {
+	                                    final IXMLEntityResolver entityResolver) throws Exception {
 		if (!XMLUtil.checkLiteral(reader, "NORE")) {
 			XMLUtil.skipTag(reader);
 			return;

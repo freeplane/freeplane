@@ -52,8 +52,7 @@ import deprecated.freemind.preferences.IFreemindPropertyListener;
 public class MMapController extends MapController {
 	static private DeleteAction delete;
 	private static final String EXPECTED_START_STRINGS[] = {
-	        "<map version=\"" + Controller.XML_VERSION + "\"",
-	        "<map version=\"0.7.1\"" };
+	        "<map version=\"" + Controller.XML_VERSION + "\"", "<map version=\"0.7.1\"" };
 	private static final String FREEMIND_VERSION_UPDATER_XSLT = "freemind/modes/mindmapmode/freemind_version_updater.xslt";
 	public static final int NEW_CHILD = 2;
 	public static final int NEW_CHILD_WITHOUT_FOCUS = 1;
@@ -66,19 +65,16 @@ public class MMapController extends MapController {
 		super(modeController);
 		if (sSaveIdPropertyChangeListener == null) {
 			sSaveIdPropertyChangeListener = new IFreemindPropertyListener() {
-				public void propertyChanged(final String propertyName,
-				                            final String newValue,
+				public void propertyChanged(final String propertyName, final String newValue,
 				                            final String oldValue) {
-					if (propertyName
-					    .equals("save_only_intrisically_needed_ids")) {
-						MapController.setSaveOnlyIntrinsicallyNeededIds(Boolean
-						    .valueOf(newValue).booleanValue());
+					if (propertyName.equals("save_only_intrisically_needed_ids")) {
+						MapController.setSaveOnlyIntrinsicallyNeededIds(Boolean.valueOf(newValue)
+						    .booleanValue());
 					}
 				}
 			};
-			Controller.getResourceController()
-			    .addPropertyChangeListenerAndPropagate(
-			        sSaveIdPropertyChangeListener);
+			Controller.getResourceController().addPropertyChangeListenerAndPropagate(
+			    sSaveIdPropertyChangeListener);
 		}
 		createActions(modeController);
 	}
@@ -87,8 +83,7 @@ public class MMapController extends MapController {
 		return newChild.addNewNode(newNodeMode, e);
 	}
 
-	public NodeModel addNewNode(final NodeModel parent, final int index,
-	                            final boolean newNodeIsLeft) {
+	public NodeModel addNewNode(final NodeModel parent, final int index, final boolean newNodeIsLeft) {
 		return newChild.addNewNode(parent, index, newNodeIsLeft);
 	}
 
@@ -99,14 +94,11 @@ public class MMapController extends MapController {
 	public boolean close(final boolean force) {
 		final MapModel map = Controller.getController().getMap();
 		if (!force && !map.isSaved()) {
-			final String text = getModeController().getText("save_unsaved")
-			        + "\n" + map.getTitle();
-			final String title = Tools.removeMnemonic(getModeController()
-			    .getText("save"));
-			final int returnVal = JOptionPane.showOptionDialog(Controller
-			    .getController().getViewController().getContentPane(), text,
-			    title, JOptionPane.YES_NO_CANCEL_OPTION,
-			    JOptionPane.QUESTION_MESSAGE, null, null, null);
+			final String text = getModeController().getText("save_unsaved") + "\n" + map.getTitle();
+			final String title = Tools.removeMnemonic(getModeController().getText("save"));
+			final int returnVal = JOptionPane.showOptionDialog(Controller.getController()
+			    .getViewController().getContentPane(), text, title,
+			    JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 			if (returnVal == JOptionPane.YES_OPTION) {
 				final boolean savingNotCancelled = ((FileManager) getModeController()
 				    .getUrlManager()).save(map);
@@ -124,16 +116,13 @@ public class MMapController extends MapController {
 
 	private void createActions(final MModeController modeController) {
 		modeController.addAction("newSibling", new NewSiblingAction());
-		modeController.addAction("newPreviousSibling",
-		    new NewPreviousSiblingAction());
+		modeController.addAction("newPreviousSibling", new NewPreviousSiblingAction());
 		newChild = new NewChildAction();
 		modeController.addAction("newChild", newChild);
 		delete = new DeleteAction();
 		modeController.addAction("deleteChild", delete);
-		modeController.addAction("undoableToggleFolded",
-		    new ToggleFoldedAction());
-		modeController.addAction("undoableToggleChildrenFolded",
-		    new ToggleChildrenFoldedAction());
+		modeController.addAction("undoableToggleFolded", new ToggleFoldedAction());
+		modeController.addAction("undoableToggleChildrenFolded", new ToggleChildrenFoldedAction());
 		modeController.addAction("nodeUp", new NodeUpAction());
 		modeController.addAction("nodeDown", new NodeDownAction());
 	}
@@ -158,8 +147,7 @@ public class MMapController extends MapController {
 	}
 
 	@Override
-	public void insertNodeIntoWithoutUndo(final NodeModel newNode,
-	                                      final NodeModel parent,
+	public void insertNodeIntoWithoutUndo(final NodeModel newNode, final NodeModel parent,
 	                                      final int index) {
 		parent.getMap().setSaved(false);
 		super.insertNodeIntoWithoutUndo(newNode, parent, index);
@@ -174,13 +162,12 @@ public class MMapController extends MapController {
 	}
 
 	@Override
-	public void load(final MapModel map, final URL url)
-	        throws FileNotFoundException, IOException, XMLParseException,
-	        URISyntaxException {
+	public void load(final MapModel map, final URL url) throws FileNotFoundException, IOException,
+	        XMLParseException, URISyntaxException {
 		final File file = Tools.urlToFile(url);
 		if (!file.exists()) {
-			throw new FileNotFoundException(Tools.expandPlaceholders(
-			    getModeController().getText("file_not_found"), file.getPath()));
+			throw new FileNotFoundException(Tools.expandPlaceholders(getModeController().getText(
+			    "file_not_found"), file.getPath()));
 		}
 		if (!file.canWrite()) {
 			((MindMapMapModel) map).setReadOnly(true);
@@ -189,11 +176,9 @@ public class MMapController extends MapController {
 			try {
 				final String lockingUser = tryToLock(map, file);
 				if (lockingUser != null) {
-					Controller.getController()
-					    .informationMessage(
-					        Tools.expandPlaceholders(getModeController()
-					            .getText("map_locked_by_open"), file.getName(),
-					            lockingUser));
+					Controller.getController().informationMessage(
+					    Tools.expandPlaceholders(getModeController().getText("map_locked_by_open"),
+					        file.getName(), lockingUser));
 					((MindMapMapModel) map).setReadOnly(true);
 				}
 				else {
@@ -203,8 +188,8 @@ public class MMapController extends MapController {
 			catch (final Exception e) {
 				org.freeplane.main.Tools.logException(e);
 				Controller.getController().informationMessage(
-				    Tools.expandPlaceholders(getModeController().getText(
-				        "locking_failed_by_open"), file.getName()));
+				    Tools.expandPlaceholders(getModeController().getText("locking_failed_by_open"),
+				        file.getName()));
 				((MindMapMapModel) map).setReadOnly(true);
 			}
 		}
@@ -215,8 +200,8 @@ public class MMapController extends MapController {
 		((MindMapMapModel) map).setFile(file);
 	}
 
-	public NodeModel loadTree(final MapModel map, final File file)
-	        throws XMLParseException, IOException {
+	public NodeModel loadTree(final MapModel map, final File file) throws XMLParseException,
+	        IOException {
 		int versionInfoLength;
 		versionInfoLength = EXPECTED_START_STRINGS[0].length();
 		final StringBuffer buffer = readFileStart(file, versionInfoLength);
@@ -233,20 +218,17 @@ public class MMapController extends MapController {
 			}
 		}
 		if (reader == null) {
-			final int showResult = new OptionalDontShowMeAgainDialog(Controller
-			    .getController().getViewController().getJFrame(),
-			    getModeController().getSelectedView(),
+			final int showResult = new OptionalDontShowMeAgainDialog(Controller.getController()
+			    .getViewController().getJFrame(), getModeController().getSelectedView(),
 			    "really_convert_to_current_version", "confirmation",
 			    new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
 			        ResourceController.RESOURCES_CONVERT_TO_CURRENT_VERSION),
-			    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED)
-			    .show().getResult();
+			    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED).show().getResult();
 			if (showResult != JOptionPane.OK_OPTION) {
 				reader = Tools.getActualReader(file);
 			}
 			else {
-				reader = Tools.getUpdateReader(file,
-				    FREEMIND_VERSION_UPDATER_XSLT);
+				reader = Tools.getUpdateReader(file, FREEMIND_VERSION_UPDATER_XSLT);
 			}
 		}
 		try {
@@ -273,8 +255,7 @@ public class MMapController extends MapController {
 		if (map.getFile() == null) {
 			Controller.getController().getViewController().out(
 			    "You must save the current map first!");
-			final boolean result = ((FileManager) getModeController()
-			    .getUrlManager()).save(map);
+			final boolean result = ((FileManager) getModeController().getUrlManager()).save(map);
 			if (!result) {
 				return;
 			}
@@ -282,10 +263,9 @@ public class MMapController extends MapController {
 		super.loadURL(relative);
 	}
 
-	public void moveNodes(final NodeModel selected, final List selecteds,
-	                      final int direction) {
-		((NodeUpAction) getModeController().getAction("nodeUp")).moveNodes(
-		    selected, selecteds, direction);
+	public void moveNodes(final NodeModel selected, final List selecteds, final int direction) {
+		((NodeUpAction) getModeController().getAction("nodeUp")).moveNodes(selected, selecteds,
+		    direction);
 	}
 
 	/**
@@ -295,8 +275,7 @@ public class MMapController extends MapController {
 	 *
 	 * @return returns the new index.
 	 */
-	int moveNodeToWithoutUndo(final NodeModel child, final NodeModel newParent,
-	                          final int newIndex) {
+	int moveNodeToWithoutUndo(final NodeModel child, final NodeModel newParent, final int newIndex) {
 		final MapModel map = child.getMap();
 		final NodeModel oldParent = child.getParentNode();
 		map.removeNodeFromParent(child);
@@ -307,8 +286,7 @@ public class MMapController extends MapController {
 
 	@Override
 	public MapModel newModel(final NodeModel root) {
-		final MindMapMapModel mindMapMapModel = new MindMapMapModel(root,
-		    getModeController());
+		final MindMapMapModel mindMapMapModel = new MindMapMapModel(root, getModeController());
 		fireMapCreated(mindMapMapModel);
 		return mindMapMapModel;
 	}
@@ -346,23 +324,21 @@ public class MMapController extends MapController {
 
 	@Override
 	public void setFolded(final NodeModel node, final boolean folded) {
-		((ToggleFoldedAction) getModeController().getAction(
-		    "undoableToggleFolded")).setFolded(node, folded);
+		((ToggleFoldedAction) getModeController().getAction("undoableToggleFolded")).setFolded(
+		    node, folded);
 	}
 
 	/**
 	*
 	*/
-	public void setToolTip(final NodeModel node, final String key,
-	                       final String value) {
+	public void setToolTip(final NodeModel node, final String key, final String value) {
 		node.setToolTip(key, value);
 		nodeRefresh(node);
 	}
 
 	@Override
 	public void toggleFolded() {
-		((ToggleFoldedAction) getModeController().getAction(
-		    "undoableToggleFolded")).toggleFolded();
+		((ToggleFoldedAction) getModeController().getAction("undoableToggleFolded")).toggleFolded();
 	}
 
 	/**
@@ -374,17 +350,14 @@ public class MMapController extends MapController {
 	 *             , when the locking failed for other reasons than that the
 	 *             file is being edited.
 	 */
-	public String tryToLock(final MapModel map, final File file)
-	        throws Exception {
-		final String lockingUser = ((MindMapMapModel) map).getLockManager()
-		    .tryToLock(file);
-		final String lockingUserOfOldLock = ((MindMapMapModel) map)
-		    .getLockManager().popLockingUserOfOldLock();
+	public String tryToLock(final MapModel map, final File file) throws Exception {
+		final String lockingUser = ((MindMapMapModel) map).getLockManager().tryToLock(file);
+		final String lockingUserOfOldLock = ((MindMapMapModel) map).getLockManager()
+		    .popLockingUserOfOldLock();
 		if (lockingUserOfOldLock != null) {
 			Controller.getController().informationMessage(
-			    Tools.expandPlaceholders(getModeController().getText(
-			        "locking_old_lock_removed"), file.getName(),
-			        lockingUserOfOldLock));
+			    Tools.expandPlaceholders(getModeController().getText("locking_old_lock_removed"),
+			        file.getName(), lockingUserOfOldLock));
 		}
 		if (lockingUser == null) {
 			((MindMapMapModel) map).setReadOnly(false);

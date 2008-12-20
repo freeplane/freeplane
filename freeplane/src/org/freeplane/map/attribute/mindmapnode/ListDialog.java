@@ -102,8 +102,7 @@ public class ListDialog extends JDialog {
 		}
 	}
 
-	final private class ListSelectionChangeListener implements
-	        ListSelectionListener {
+	final private class ListSelectionChangeListener implements ListSelectionListener {
 		/*
 		 * (non-Javadoc)
 		 * @see
@@ -161,14 +160,12 @@ public class ListDialog extends JDialog {
 
 	private static ListDialog dialog;
 
-	public static void showDialog(final Component frameComp,
-	                              final Component locationComp,
+	public static void showDialog(final Component frameComp, final Component locationComp,
 	                              final String labelText, final String title,
-	                              final ISortedListModel possibleValues,
-	                              final String longValue) {
+	                              final ISortedListModel possibleValues, final String longValue) {
 		final Frame frame = JOptionPane.getFrameForComponent(frameComp);
-		ListDialog.dialog = new ListDialog(frame, locationComp, labelText,
-		    title, possibleValues, longValue);
+		ListDialog.dialog = new ListDialog(frame, locationComp, labelText, title, possibleValues,
+		    longValue);
 		Tools.addEscapeActionToDialog(ListDialog.dialog);
 		ListDialog.dialog.show();
 	}
@@ -180,14 +177,12 @@ public class ListDialog extends JDialog {
 	final private JButton renameButton;
 	final private JTextField textField;
 
-	private ListDialog(final Frame frame, final Component locationComp,
-	                   final String labelText, final String title,
-	                   final ISortedListModel data, final String longValue) {
+	private ListDialog(final Frame frame, final Component locationComp, final String labelText,
+	                   final String title, final ISortedListModel data, final String longValue) {
 		super(frame, title, true);
 		this.data = data;
 		final JButton closeButton = new JButton();
-		MenuBuilder.setLabelAndMnemonic(closeButton, Controller
-		    .getText("close"));
+		MenuBuilder.setLabelAndMnemonic(closeButton, Controller.getText("close"));
 		closeButton.addActionListener(new CloseAction());
 		getRootPane().setDefaultButton(closeButton);
 		addButton = new JButton();
@@ -195,20 +190,17 @@ public class ListDialog extends JDialog {
 		final AddAction addAction = new AddAction();
 		addButton.addActionListener(addAction);
 		renameButton = new JButton();
-		MenuBuilder.setLabelAndMnemonic(renameButton, Controller
-		    .getText("rename"));
+		MenuBuilder.setLabelAndMnemonic(renameButton, Controller.getText("rename"));
 		renameButton.addActionListener(new RenameAction());
 		deleteButton = new JButton();
-		MenuBuilder.setLabelAndMnemonic(deleteButton, Controller
-		    .getText("delete"));
+		MenuBuilder.setLabelAndMnemonic(deleteButton, Controller.getText("delete"));
 		deleteButton.addActionListener(new DeleteAction());
 		textField = new JTextField(20);
 		textField.getDocument().addDocumentListener(new TextChangeListener());
 		list = new JList(data) {
 			@Override
 			public int getScrollableUnitIncrement(final Rectangle visibleRect,
-			                                      final int orientation,
-			                                      final int direction) {
+			                                      final int orientation, final int direction) {
 				int row;
 				if (orientation == SwingConstants.VERTICAL && direction < 0
 				        && (row = getFirstVisibleIndex()) != -1) {
@@ -217,16 +209,14 @@ public class ListDialog extends JDialog {
 						final Point loc = r.getLocation();
 						loc.y--;
 						final int prevIndex = locationToIndex(loc);
-						final Rectangle prevR = getCellBounds(prevIndex,
-						    prevIndex);
+						final Rectangle prevR = getCellBounds(prevIndex, prevIndex);
 						if (prevR == null || prevR.y >= r.y) {
 							return 0;
 						}
 						return prevR.height;
 					}
 				}
-				return super.getScrollableUnitIncrement(visibleRect,
-				    orientation, direction);
+				return super.getScrollableUnitIncrement(visibleRect, orientation, direction);
 			}
 		};
 		list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);

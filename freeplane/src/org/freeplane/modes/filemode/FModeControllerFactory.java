@@ -50,15 +50,12 @@ public class FModeControllerFactory {
 		modeController.setMapController(new FMapController(modeController));
 		modeController.setUrlManager(new UrlManager(modeController));
 		modeController.setIconController(new IconController(modeController));
-		modeController.setNodeStyleController(new NodeStyleController(
-		    modeController));
+		modeController.setNodeStyleController(new NodeStyleController(modeController));
 		modeController.setEdgeController(new EdgeController(modeController));
 		modeController.setLinkController(new FLinkController(modeController));
 		modeController.setTextController(new TextController(modeController));
-		modeController.setClipboardController(new ClipboardController(
-		    modeController));
-		modeController.setLocationController(new LocationController(
-		    modeController));
+		modeController.setClipboardController(new ClipboardController(modeController));
+		modeController.setLocationController(new LocationController(modeController));
 		modeController.getNodeStyleController().addShapeGetter(new Integer(0),
 		    new IPropertyGetter<String, NodeModel>() {
 			    public String getProperty(final NodeModel node) {
@@ -67,10 +64,8 @@ public class FModeControllerFactory {
 		    });
 		modeController.addAction("center", new CenterAction());
 		modeController.addAction("openPath", new OpenPathAction());
-		modeController.getUserInputListenerFactory().setNodePopupMenu(
-		    new JPopupMenu());
-		modeController.getUserInputListenerFactory().setMainToolBar(
-		    new FreeMindToolBar());
+		modeController.getUserInputListenerFactory().setNodePopupMenu(new JPopupMenu());
+		modeController.getUserInputListenerFactory().setMainToolBar(new FreeMindToolBar());
 		modeController.updateMenus("org/freeplane/modes/filemode/menu.xml");
 		return modeController;
 	}

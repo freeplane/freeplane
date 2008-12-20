@@ -38,16 +38,15 @@ import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.mindmapmode.MMapController;
 import org.freeplane.map.tree.view.MapView;
 import org.freeplane.modes.ModeController;
+
 /**
  * @author Dimitry Polivaev
  */
-@ActionDescriptor(
-	tooltip="accessories/plugins/SplitNode.properties_documentation", //
-	name="accessories/plugins/SplitNode.properties_name", //
-	keyStroke="%keystroke_accessories/plugins/SplitNode.properties_key", //
-	iconPath="accessories/plugins/icons/stock_text_indent.png", //
-	locations={"/menu_bar/extras/first/join"}
-)
+@ActionDescriptor(tooltip = "accessories/plugins/SplitNode.properties_documentation", //
+name = "accessories/plugins/SplitNode.properties_name", //
+keyStroke = "%keystroke_accessories/plugins/SplitNode.properties_key", //
+iconPath = "accessories/plugins/icons/stock_text_indent.png", //
+locations = { "/menu_bar/extras/first/join" })
 public class SplitNode extends FreeplaneAction {
 	/**
 	 *
@@ -56,32 +55,31 @@ public class SplitNode extends FreeplaneAction {
 		super();
 	}
 
-	private Element getParentElement(final HTMLDocument doc) {
-		final Element htmlRoot = doc.getDefaultRootElement();
-		Element parentCandidate = htmlRoot.getElement(htmlRoot
-		    .getElementCount() - 1);
-		do {
-			if (parentCandidate.getElementCount() > 1) {
-				return parentCandidate;
-			}
-			parentCandidate = parentCandidate.getElement(0);
-		} while (!(parentCandidate.isLeaf() || parentCandidate.getName()
-		    .equalsIgnoreCase("p-implied")));
-		return null;
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * @see freemind.extensions.NodeHook#invoke(freemind.modes.MindMapNode,
 	 * java.util.List)
 	 */
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(final ActionEvent e) {
 		final List list = getModeController().getSelectedNodes();
 		final ListIterator listIterator = list.listIterator();
 		while (listIterator.hasNext()) {
 			final NodeModel next = (NodeModel) listIterator.next();
 			splitNode(next);
 		}
+	}
+
+	private Element getParentElement(final HTMLDocument doc) {
+		final Element htmlRoot = doc.getDefaultRootElement();
+		Element parentCandidate = htmlRoot.getElement(htmlRoot.getElementCount() - 1);
+		do {
+			if (parentCandidate.getElementCount() > 1) {
+				return parentCandidate;
+			}
+			parentCandidate = parentCandidate.getElement(0);
+		} while (!(parentCandidate.isLeaf() || parentCandidate.getName().equalsIgnoreCase(
+		    "p-implied")));
+		return null;
 	}
 
 	private void splitNode(final NodeModel node) {
@@ -98,21 +96,19 @@ public class SplitNode extends FreeplaneAction {
 		while (parts[firstPartNumber] == null) {
 			firstPartNumber++;
 		}
-		((MTextController) c.getTextController()).setNodeText(node,
-		    parts[firstPartNumber]);
+		((MTextController) c.getTextController()).setNodeText(node, parts[firstPartNumber]);
 		final NodeModel parent = node.getParentNode();
 		final int nodePosition = parent.getChildPosition(node) + 1;
 		for (int i = parts.length - 1; i > firstPartNumber; i--) {
-			final NodeModel lowerNode = ((MMapController) c.getMapController())
-			    .addNewNode(parent, nodePosition, node.isLeft());
+			final NodeModel lowerNode = ((MMapController) c.getMapController()).addNewNode(parent,
+			    nodePosition, node.isLeft());
 			final String part = parts[i];
 			if (part == null) {
 				continue;
 			}
 			lowerNode.setColor(node.getColor());
 			lowerNode.setFont(node.getFont());
-			((MTextController) c.getTextController()).setNodeText(lowerNode,
-			    part);
+			((MTextController) c.getTextController()).setNodeText(lowerNode, part);
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					final MapView mapView = c.getMapView();
@@ -141,12 +137,10 @@ public class SplitNode extends FreeplaneAction {
 					final Element current = parent.getElement(i);
 					final int start = current.getStartOffset();
 					final int end = current.getEndOffset();
-					final String paragraphText = doc
-					    .getText(start, end - start).trim();
+					final String paragraphText = doc.getText(start, end - start).trim();
 					if (paragraphText.length() > 0) {
 						final StringWriter out = new StringWriter();
-						new FixedHTMLWriter(out, doc, start, end - start)
-						    .write();
+						new FixedHTMLWriter(out, doc, start, end - start).write();
 						final String string = out.toString();
 						if (!string.equals("")) {
 							parts[i] = string;

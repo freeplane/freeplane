@@ -79,8 +79,8 @@ public interface IXMLReader {
 	 * @throws java.io.IOException
 	 *             If an error occurred opening the stream.
 	 */
-	public Reader openStream(String publicID, String systemID)
-	        throws MalformedURLException, FileNotFoundException, IOException;
+	public Reader openStream(String publicID, String systemID) throws MalformedURLException,
+	        FileNotFoundException, IOException;
 
 	/**
 	 * Reads a character.

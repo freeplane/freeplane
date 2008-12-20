@@ -19,7 +19,6 @@
  */
 package org.freeplane.map.icon;
 
-
 import org.freeplane.io.IAttributeHandler;
 import org.freeplane.io.INodeCreator;
 import org.freeplane.io.ReadManager;
@@ -32,8 +31,7 @@ class IconBuilder implements INodeCreator, IAttributeHandler {
 		String iconName;
 	}
 
-	public void completeNode(final Object parent, final String tag,
-	                         final Object userObject) {
+	public void completeNode(final Object parent, final String tag, final Object userObject) {
 		if (parent instanceof NodeObject && tag.equals("icon")) {
 			final NodeModel node = ((NodeObject) parent).node;
 			final IconProperties ip = (IconProperties) userObject;
@@ -49,8 +47,8 @@ class IconBuilder implements INodeCreator, IAttributeHandler {
 		return null;
 	}
 
-	public boolean parseAttribute(final Object userObject, final String tag,
-	                              final String name, final String value) {
+	public boolean parseAttribute(final Object userObject, final String tag, final String name,
+	                              final String value) {
 		/* icons */
 		if (tag.equals("icon")) {
 			final IconProperties ip = (IconProperties) userObject;
@@ -68,6 +66,6 @@ class IconBuilder implements INodeCreator, IAttributeHandler {
 		reader.addNodeCreator("icon", this);
 	}
 
-	public void setAttributes(String tag, Object node, IXMLElement attributes) {
-    }
+	public void setAttributes(final String tag, final Object node, final IXMLElement attributes) {
+	}
 }

@@ -60,8 +60,7 @@ public class EditNodeBase {
 		public void actionPerformed(final ActionEvent e) {
 			final String selection = textComponent.getSelectedText();
 			if (selection != null) {
-				getClipboard()
-				    .setContents(new StringSelection(selection), null);
+				getClipboard().setContents(new StringSelection(selection), null);
 			}
 		}
 	}
@@ -108,11 +107,11 @@ public class EditNodeBase {
 		private EditNodeBase base;
 
 		EditDialog(final EditNodeBase base) {
-			super(Controller.getController().getViewController().getJFrame(),
-			    base.getText("edit_long_node"), /*
-			    		    				    				    				    		    				    											 * modal=
-			    		    				    				    				    		    				    											 */
-			    true);
+			super(Controller.getController().getViewController().getJFrame(), base
+			    .getText("edit_long_node"), /*
+					    		    				    				    				    		    				    											 * modal=
+					    		    				    				    				    		    				    											 */
+			true);
 			getContentPane().setLayout(new BorderLayout());
 			setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 			final DialogWindowListener dfl = new DialogWindowListener();
@@ -127,8 +126,7 @@ public class EditNodeBase {
 		protected void confirmedCancel() {
 			if (isChanged()) {
 				final int action = JOptionPane.showConfirmDialog(this, base
-				    .getText("long_node_changed_cancel"), "",
-				    JOptionPane.OK_CANCEL_OPTION);
+				    .getText("long_node_changed_cancel"), "", JOptionPane.OK_CANCEL_OPTION);
 				if (action == JOptionPane.CANCEL_OPTION) {
 					return;
 				}
@@ -139,8 +137,7 @@ public class EditNodeBase {
 		protected void confirmedSubmit() {
 			if (isChanged()) {
 				final int action = JOptionPane.showConfirmDialog(this, base
-				    .getText("long_node_changed_submit"), "",
-				    JOptionPane.YES_NO_CANCEL_OPTION);
+				    .getText("long_node_changed_submit"), "", JOptionPane.YES_NO_CANCEL_OPTION);
 				if (action == JOptionPane.CANCEL_OPTION) {
 					return;
 				}
@@ -201,8 +198,8 @@ public class EditNodeBase {
 	protected String text;
 	protected FocusListener textFieldListener = null;
 
-	EditNodeBase(final NodeView node, final String text,
-	             final ModeController controller, final IEditControl editControl) {
+	EditNodeBase(final NodeView node, final String text, final ModeController controller,
+	             final IEditControl editControl) {
 		this.controller = controller;
 		this.editControl = editControl;
 		this.node = node;
@@ -314,8 +311,7 @@ public class EditNodeBase {
 					textComponent.setCaretPosition(0);
 					break;
 				case KeyEvent.VK_END:
-					textComponent.setCaretPosition(textComponent.getDocument()
-					    .getLength());
+					textComponent.setCaretPosition(textComponent.getDocument().getLength());
 					break;
 			}
 		}

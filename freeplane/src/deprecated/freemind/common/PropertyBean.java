@@ -30,12 +30,9 @@ public abstract class PropertyBean {
 	}
 
 	protected void firePropertyChangeEvent() {
-		final PropertyChangeEvent evt = new PropertyChangeEvent(this,
-		    getLabel(), null, getValue());
-		for (final Iterator i = mPropertyChangeListeners.iterator(); i
-		    .hasNext();) {
-			final PropertyChangeListener listener = (PropertyChangeListener) i
-			    .next();
+		final PropertyChangeEvent evt = new PropertyChangeEvent(this, getLabel(), null, getValue());
+		for (final Iterator i = mPropertyChangeListeners.iterator(); i.hasNext();) {
+			final PropertyChangeListener listener = (PropertyChangeListener) i.next();
 			listener.propertyChange(evt);
 		}
 	}
@@ -45,8 +42,7 @@ public abstract class PropertyBean {
 
 	public abstract String getValue();
 
-	public void removePropertyChangeListener(
-	                                         final PropertyChangeListener listener) {
+	public void removePropertyChangeListener(final PropertyChangeListener listener) {
 		mPropertyChangeListeners.remove(listener);
 	}
 

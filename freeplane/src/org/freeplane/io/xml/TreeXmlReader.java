@@ -53,8 +53,7 @@ public class TreeXmlReader implements IXMLBuilder, ITreeReader {
 		this.parseManager = parseManager;
 	}
 
-	private boolean addAttribute(final Iterator iterator, final String key,
-	                             final String value) {
+	private boolean addAttribute(final Iterator iterator, final String key, final String value) {
 		while (iterator.hasNext()) {
 			final IAttributeHandler al = (IAttributeHandler) iterator.next();
 			if (al.parseAttribute(userObject, tag, key, value)) {
@@ -71,9 +70,8 @@ public class TreeXmlReader implements IXMLBuilder, ITreeReader {
 	 * .String, java.lang.String, java.lang.String, java.lang.String,
 	 * java.lang.String)
 	 */
-	public void addAttribute(final String key, final String nsPrefix,
-	                         final String nsURI, final String value,
-	                         final String type) throws Exception {
+	public void addAttribute(final String key, final String nsPrefix, final String nsURI,
+	                         final String value, final String type) throws Exception {
 		if (saveAsXmlUntil == null) {
 			final Iterator ncIter = getNodeCreators().iterator(tag);
 			if (addAttribute(ncIter, key, value)) {
@@ -93,8 +91,8 @@ public class TreeXmlReader implements IXMLBuilder, ITreeReader {
 	 * freeplane.persistence.xml.n3.nanoxml.IXMLBuilder#addPCData(java.io.Reader
 	 * , java.lang.String, int)
 	 */
-	public void addPCData(final Reader reader, final String systemID,
-	                      final int lineNr) throws Exception {
+	public void addPCData(final Reader reader, final String systemID, final int lineNr)
+	        throws Exception {
 		xmlBuilder.addPCData(reader, systemID, lineNr);
 	}
 
@@ -104,11 +102,10 @@ public class TreeXmlReader implements IXMLBuilder, ITreeReader {
 	 * freeplane.persistence.xml.n3.nanoxml.IXMLBuilder#elementAttributesProcessed
 	 * (java.lang.String, java.lang.String, java.lang.String)
 	 */
-	public void elementAttributesProcessed(final String name,
-	                                       final String nsPrefix,
+	public void elementAttributesProcessed(final String name, final String nsPrefix,
 	                                       final String nsURI) throws Exception {
 		xmlBuilder.elementAttributesProcessed(name, nsPrefix, nsURI);
-		if(nodeCreator != null){
+		if (nodeCreator != null) {
 			final IXMLElement lastBuiltElement = xmlBuilder.getLastBuiltElement();
 			nodeCreator.setAttributes(tag, userObject, lastBuiltElement);
 		}
@@ -120,8 +117,8 @@ public class TreeXmlReader implements IXMLBuilder, ITreeReader {
 	 * freeplane.persistence.xml.n3.nanoxml.IXMLBuilder#endElement(java.lang
 	 * .String, java.lang.String, java.lang.String)
 	 */
-	public void endElement(final String name, final String nsPrefix,
-	                       final String nsURI) throws Exception {
+	public void endElement(final String name, final String nsPrefix, final String nsURI)
+	        throws Exception {
 		final IXMLElement lastBuiltElement = xmlBuilder.getParentElement();
 		xmlBuilder.endElement(name, nsPrefix, nsURI);
 		if (saveAsXmlUntil == lastBuiltElement) {
@@ -197,8 +194,7 @@ public class TreeXmlReader implements IXMLBuilder, ITreeReader {
 	 * freeplane.persistence.xml.n3.nanoxml.IXMLBuilder#newProcessingInstruction
 	 * (java.lang.String, java.io.Reader)
 	 */
-	public void newProcessingInstruction(final String target,
-	                                     final Reader reader) throws Exception {
+	public void newProcessingInstruction(final String target, final Reader reader) throws Exception {
 		xmlBuilder.newProcessingInstruction(target, reader);
 	}
 
@@ -213,8 +209,7 @@ public class TreeXmlReader implements IXMLBuilder, ITreeReader {
 		final Iterator iterator = getNodeContentLoaders().iterator(tag);
 		final IXMLElement xmlElement = xmlBuilder.getLastBuiltElement();
 		while (iterator.hasNext() && userObject != null) {
-			final INodeContentHandler ncl = (INodeContentHandler) iterator
-			    .next();
+			final INodeContentHandler ncl = (INodeContentHandler) iterator.next();
 			if (ncl.setContent(userObject, tag, xmlElement, content)) {
 				return;
 			}
@@ -227,8 +222,7 @@ public class TreeXmlReader implements IXMLBuilder, ITreeReader {
 	 * freeplane.persistence.xml.n3.nanoxml.IXMLBuilder#startBuilding(java.lang
 	 * .String, int)
 	 */
-	public void startBuilding(final String systemID, final int lineNr)
-	        throws Exception {
+	public void startBuilding(final String systemID, final int lineNr) throws Exception {
 		xmlBuilder = new StdXMLBuilder();
 		xmlBuilder.startBuilding(systemID, lineNr);
 		saveAsXmlUntil = null;
@@ -240,9 +234,8 @@ public class TreeXmlReader implements IXMLBuilder, ITreeReader {
 	 * freeplane.persistence.xml.n3.nanoxml.IXMLBuilder#startElement(java.lang
 	 * .String, java.lang.String, java.lang.String, java.lang.String, int)
 	 */
-	public void startElement(final String name, final String nsPrefix,
-	                         final String nsURI, final String systemID,
-	                         final int lineNr) throws Exception {
+	public void startElement(final String name, final String nsPrefix, final String nsURI,
+	                         final String systemID, final int lineNr) throws Exception {
 		if (saveAsXmlUntil != null) {
 			xmlBuilder.startElement(name, nsPrefix, nsURI, systemID, lineNr);
 			return;

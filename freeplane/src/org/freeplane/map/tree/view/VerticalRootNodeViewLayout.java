@@ -32,10 +32,8 @@ import org.freeplane.main.Tools;
  */
 public class VerticalRootNodeViewLayout extends NodeViewLayoutAdapter {
 	static private VerticalRootNodeViewLayout instance = null;
-	public static boolean USE_COMMON_OUT_POINT_FOR_ROOT_NODE = Controller
-	    .getResourceController()
-	    .getBoolProperty(
-	        VerticalRootNodeViewLayout.USE_COMMON_OUT_POINT_FOR_ROOT_NODE_STRING);
+	public static boolean USE_COMMON_OUT_POINT_FOR_ROOT_NODE = Controller.getResourceController()
+	    .getBoolProperty(VerticalRootNodeViewLayout.USE_COMMON_OUT_POINT_FOR_ROOT_NODE_STRING);
 	private static final String USE_COMMON_OUT_POINT_FOR_ROOT_NODE_STRING = "use_common_out_point_for_root_node";
 
 	static VerticalRootNodeViewLayout getInstance() {
@@ -50,8 +48,7 @@ public class VerticalRootNodeViewLayout extends NodeViewLayoutAdapter {
 		return centerPoint;
 	}
 
-	public Point getMainViewOutPoint(final NodeView view,
-	                                 final NodeView targetView,
+	public Point getMainViewOutPoint(final NodeView view, final NodeView targetView,
 	                                 final Point destinationPoint) {
 		final MainView mainView = view.getMainView();
 		if (VerticalRootNodeViewLayout.USE_COMMON_OUT_POINT_FOR_ROOT_NODE) {
@@ -67,13 +64,11 @@ public class VerticalRootNodeViewLayout extends NodeViewLayoutAdapter {
 		final double nWidth = mainView.getWidth() / 2f;
 		final double nHeight = mainView.getHeight() / 2f;
 		final Point centerPoint = new Point((int) nWidth, (int) nHeight);
-		double angle = Math.atan((p.y - centerPoint.y + 0f)
-		        / (p.x - centerPoint.x + 0f));
+		double angle = Math.atan((p.y - centerPoint.y + 0f) / (p.x - centerPoint.x + 0f));
 		if (p.x < centerPoint.x) {
 			angle += Math.PI;
 		}
-		final Point out = new Point(centerPoint.x
-		        + (int) (Math.cos(angle) * nWidth), centerPoint.y
+		final Point out = new Point(centerPoint.x + (int) (Math.cos(angle) * nWidth), centerPoint.y
 		        + (int) (Math.sin(angle) * nHeight));
 		return out;
 	}
@@ -85,25 +80,22 @@ public class VerticalRootNodeViewLayout extends NodeViewLayoutAdapter {
 		final int leftContentHeight = getChildContentHeight(true);
 		int leftChildVerticalShift = getChildVerticalShift(true);
 		final int childHorizontalShift = getChildHorizontalShift();
-		final int contentHeight = Math.max(rightContentHeight,
-		    leftContentHeight);
+		final int contentHeight = Math.max(rightContentHeight, leftContentHeight);
 		final int x = Math.max(getSpaceAround(), -childHorizontalShift);
 		if (getView().isContentVisible()) {
 			getContent().setVisible(true);
-			final Dimension contentPreferredSize = getContent()
-			    .getPreferredSize();
+			final Dimension contentPreferredSize = getContent().getPreferredSize();
 			rightChildVerticalShift += (contentPreferredSize.height - rightContentHeight) / 2;
 			leftChildVerticalShift += (contentPreferredSize.height - leftContentHeight) / 2;
-			final int childVerticalShift = Math.min(rightChildVerticalShift,
-			    leftChildVerticalShift);
+			final int childVerticalShift = Math
+			    .min(rightChildVerticalShift, leftChildVerticalShift);
 			final int y = Math.max(getSpaceAround(), -childVerticalShift);
-			getContent().setBounds(x, y, contentPreferredSize.width,
-			    contentPreferredSize.height);
+			getContent().setBounds(x, y, contentPreferredSize.width, contentPreferredSize.height);
 		}
 		else {
 			getContent().setVisible(false);
-			final int childVerticalShift = Math.min(rightChildVerticalShift,
-			    leftChildVerticalShift);
+			final int childVerticalShift = Math
+			    .min(rightChildVerticalShift, leftChildVerticalShift);
 			final int y = Math.max(getSpaceAround(), -childVerticalShift);
 			getContent().setBounds(x, y, 0, contentHeight);
 		}

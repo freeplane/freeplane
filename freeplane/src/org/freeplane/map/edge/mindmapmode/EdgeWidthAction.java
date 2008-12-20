@@ -29,8 +29,7 @@ import org.freeplane.modes.MultipleNodeAction;
 import org.freeplane.modes.mindmapmode.MModeController;
 
 class EdgeWidthAction extends MultipleNodeAction {
-	private static String getWidthTitle(final MModeController controller,
-	                                    final int width) {
+	private static String getWidthTitle(final MModeController controller, final int width) {
 		String returnValue;
 		if (width == EdgeModel.WIDTH_PARENT) {
 			returnValue = ("edge_width_parent");
@@ -60,7 +59,6 @@ class EdgeWidthAction extends MultipleNodeAction {
 	 */
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		((MEdgeController) getMModeController().getEdgeController()).setWidth(
-		    node, mWidth);
+		((MEdgeController) getMModeController().getEdgeController()).setWidth(node, mWidth);
 	}
 }

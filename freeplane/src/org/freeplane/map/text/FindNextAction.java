@@ -48,15 +48,12 @@ class FindNextAction extends FreeplaneAction {
 		final boolean found = find.findNext();
 		getModeController().getMapView().repaint();
 		if (!found) {
-			final String messageText = getModeController().getText(
-			    "no_more_found_from");
+			final String messageText = getModeController().getText("no_more_found_from");
 			final String searchTerm = messageText.startsWith("<html>") ? HtmlTools
-			    .toXMLEscapedText(find.getSearchTerm())
-			        : find.getSearchTerm();
+			    .toXMLEscapedText(find.getSearchTerm()) : find.getSearchTerm();
 			Controller.getController().informationMessage(
 			    messageText.replaceAll("\\$1", searchTerm).replaceAll("\\$2",
-			        find.getFindFromText()),
-			    getModeController().getMapView().getSelected());
+			        find.getFindFromText()), getModeController().getMapView().getSelected());
 		}
 	}
 }

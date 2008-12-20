@@ -38,8 +38,8 @@ public class ConditionNotSatisfiedDecorator implements ICondition {
 
 	static ICondition load(final XMLElement element) {
 		final Vector children = element.getChildren();
-		final ICondition cond = FilterController.getConditionFactory()
-		    .loadCondition((XMLElement) children.get(0));
+		final ICondition cond = FilterController.getConditionFactory().loadCondition(
+		    (XMLElement) children.get(0));
 		return new ConditionNotSatisfiedDecorator(cond);
 	}
 
@@ -71,12 +71,10 @@ public class ConditionNotSatisfiedDecorator implements ICondition {
 	 */
 	public JComponent getListCellRendererComponent() {
 		final JCondition component = new JCondition();
-		final String not = Tools.removeMnemonic(Controller
-		    .getText("filter_not"));
+		final String not = Tools.removeMnemonic(Controller.getText("filter_not"));
 		final String text = not + ' ';
 		component.add(new JLabel(text));
-		final JComponent renderer = originalCondition
-		    .getListCellRendererComponent();
+		final JComponent renderer = originalCondition.getListCellRendererComponent();
 		renderer.setOpaque(false);
 		component.add(renderer);
 		return component;

@@ -31,11 +31,11 @@ class UseRichFormattingAction extends MultipleNodeAction {
 	}
 
 	@Override
-    protected void actionPerformed(ActionEvent e, NodeModel node) {
+	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
 		final String nodeText = node.getText();
 		if (!HtmlTools.isHtmlNode(nodeText)) {
-			((MTextController) getModeController().getTextController())
-			    .setNodeText(node, HtmlTools.plainToHTML(nodeText));
+			((MTextController) getModeController().getTextController()).setNodeText(node, HtmlTools
+			    .plainToHTML(nodeText));
 		}
-    }
+	}
 }

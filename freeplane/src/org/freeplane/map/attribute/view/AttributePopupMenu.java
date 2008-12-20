@@ -82,8 +82,7 @@ public class AttributePopupMenu extends JPopupMenu implements MouseListener {
 	 */
 	private JMenuItem getDelete() {
 		if (delete == null) {
-			delete = new JMenuItem(Controller
-			    .getText("attributes_popup_delete"));
+			delete = new JMenuItem(Controller.getText("attributes_popup_delete"));
 			delete.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent e) {
 					table.removeRow(row);
@@ -128,8 +127,7 @@ public class AttributePopupMenu extends JPopupMenu implements MouseListener {
 	 */
 	private JMenuItem getOptimalWidth() {
 		if (optimalWidth == null) {
-			optimalWidth = new JMenuItem(Controller
-			    .getText("attributes_popup_optimal_width"));
+			optimalWidth = new JMenuItem(Controller.getText("attributes_popup_optimal_width"));
 			optimalWidth.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent e) {
 					table.setOptimalColumnWidths();
@@ -224,8 +222,7 @@ public class AttributePopupMenu extends JPopupMenu implements MouseListener {
 		maybeShowPopup(e);
 	}
 
-	private void selectTable(final Component component, final Point point)
-	        throws AssertionError {
+	private void selectTable(final Component component, final Point point) throws AssertionError {
 		final int componentCount = getComponentCount();
 		for (int i = componentCount; i > 0;) {
 			remove(--i);

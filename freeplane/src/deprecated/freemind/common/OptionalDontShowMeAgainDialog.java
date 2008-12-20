@@ -60,8 +60,7 @@ public class OptionalDontShowMeAgainDialog {
 	/**
 	 * Standard property handler, if you have a controller and a property.
 	 */
-	public static class StandardPropertyHandler implements
-	        IDontShowPropertyHandler {
+	public static class StandardPropertyHandler implements IDontShowPropertyHandler {
 		final private String mPropertyName;
 
 		public StandardPropertyHandler(final String pPropertyName) {
@@ -69,13 +68,11 @@ public class OptionalDontShowMeAgainDialog {
 		}
 
 		public String getProperty() {
-			return Controller.getResourceController()
-			    .getProperty(mPropertyName);
+			return Controller.getResourceController().getProperty(mPropertyName);
 		}
 
 		public void setProperty(final String pValue) {
-			Controller.getResourceController().setProperty(mPropertyName,
-			    pValue);
+			Controller.getResourceController().setProperty(mPropertyName, pValue);
 		}
 	}
 
@@ -91,11 +88,8 @@ public class OptionalDontShowMeAgainDialog {
 	private int mResult = JOptionPane.CANCEL_OPTION;
 	final private String mTitleId;
 
-	public OptionalDontShowMeAgainDialog(
-	                                     final JFrame pFrame,
-	                                     final Component pComponent,
-	                                     final String pMessageId,
-	                                     final String pTitleId,
+	public OptionalDontShowMeAgainDialog(final JFrame pFrame, final Component pComponent,
+	                                     final String pMessageId, final String pTitleId,
 	                                     final IDontShowPropertyHandler pDontShowPropertyHandler,
 	                                     final int pMessageType) {
 		mComponent = pComponent;
@@ -115,9 +109,8 @@ public class OptionalDontShowMeAgainDialog {
 				}
 			}
 			else {
-				mDontShowPropertyHandler
-				    .setProperty((mResult == JOptionPane.OK_OPTION) ? "true"
-				            : "false");
+				mDontShowPropertyHandler.setProperty((mResult == JOptionPane.OK_OPTION) ? "true"
+				        : "false");
 			}
 		}
 		else {
@@ -168,16 +161,14 @@ public class OptionalDontShowMeAgainDialog {
 		mDialog.getContentPane().setLayout(new GridBagLayout());
 		mDialog.getContentPane().add(
 		    new JLabel(Controller.getText(mMessageId)),
-		    new GridBagConstraints(1, 0, 1, 1, 1.0, 1.0,
-		        GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(5,
-		            5, 0, 0), 0, 0));
-		final ImageIcon questionMark = new ImageIcon(Controller
-		    .getResourceController().getResource("images/icons/help.png"));
+		    new GridBagConstraints(1, 0, 1, 1, 1.0, 1.0, GridBagConstraints.WEST,
+		        GridBagConstraints.BOTH, new Insets(5, 5, 0, 0), 0, 0));
+		final ImageIcon questionMark = new ImageIcon(Controller.getResourceController()
+		    .getResource("images/icons/help.png"));
 		mDialog.getContentPane().add(
 		    new JLabel(questionMark),
-		    new GridBagConstraints(0, 0, 1, 2, 1.0, 2.0,
-		        GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(5,
-		            5, 0, 0), 0, 0));
+		    new GridBagConstraints(0, 0, 1, 2, 1.0, 2.0, GridBagConstraints.WEST,
+		        GridBagConstraints.BOTH, new Insets(5, 5, 0, 0), 0, 0));
 		String boxString;
 		if (mMessageType == OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED) {
 			boxString = "OptionalDontShowMeAgainDialog.dontShowAgain";
@@ -189,27 +180,23 @@ public class OptionalDontShowMeAgainDialog {
 		MenuBuilder.setLabelAndMnemonic(mDontShowAgainBox, null);
 		mDialog.getContentPane().add(
 		    mDontShowAgainBox,
-		    new GridBagConstraints(0, 2, 3, 1, 1.0, 1.0,
-		        GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(5,
-		            5, 0, 0), 0, 0));
-		final JButton okButton = new JButton(Controller
-		    .getText("OptionalDontShowMeAgainDialog.ok"));
+		    new GridBagConstraints(0, 2, 3, 1, 1.0, 1.0, GridBagConstraints.WEST,
+		        GridBagConstraints.BOTH, new Insets(5, 5, 0, 0), 0, 0));
+		final JButton okButton = new JButton(Controller.getText("OptionalDontShowMeAgainDialog.ok"));
 		MenuBuilder.setLabelAndMnemonic(okButton, null);
 		okButton.addActionListener(okAction);
 		mDialog.getContentPane().add(
 		    okButton,
-		    new GridBagConstraints(2, 3, 1, 1, 1.0, 1.0,
-		        GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(5,
-		            5, 0, 0), 0, 0));
+		    new GridBagConstraints(2, 3, 1, 1, 1.0, 1.0, GridBagConstraints.WEST,
+		        GridBagConstraints.BOTH, new Insets(5, 5, 0, 0), 0, 0));
 		final JButton cancelButton = new JButton(Controller
 		    .getText("OptionalDontShowMeAgainDialog.cancel"));
 		MenuBuilder.setLabelAndMnemonic(cancelButton, null);
 		cancelButton.addActionListener(cancelAction);
 		mDialog.getContentPane().add(
 		    cancelButton,
-		    new GridBagConstraints(3, 3, 1, 1, 1.0, 1.0,
-		        GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(5,
-		            5, 0, 0), 0, 0));
+		    new GridBagConstraints(3, 3, 1, 1, 1.0, 1.0, GridBagConstraints.WEST,
+		        GridBagConstraints.BOTH, new Insets(5, 5, 0, 0), 0, 0));
 		mDialog.getRootPane().setDefaultButton(okButton);
 		mDialog.pack();
 		Tools.setDialogLocationRelativeTo(mDialog, mComponent);

@@ -48,43 +48,22 @@ class RemoveNoteAction extends FreeplaneAction implements PopupMenuListener {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final int showResult = new OptionalDontShowMeAgainDialog(Controller
-		    .getController().getViewController().getJFrame(),
-		    ((MModeController) getModeController()).getSelectedView(),
-		    "really_remove_notes", "confirmation",
+		final int showResult = new OptionalDontShowMeAgainDialog(Controller.getController()
+		    .getViewController().getJFrame(), ((MModeController) getModeController())
+		    .getSelectedView(), "really_remove_notes", "confirmation",
 		    new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
 		        ResourceController.RESOURCES_REMOVE_NOTES_WITHOUT_QUESTION),
-		    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED).show()
-		    .getResult();
+		    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED).show().getResult();
 		if (showResult != JOptionPane.OK_OPTION) {
 			return;
 		}
-		for (final Iterator iterator = ((MModeController) getModeController())
-		    .getSelectedNodes().iterator(); iterator.hasNext();) {
+		for (final Iterator iterator = ((MModeController) getModeController()).getSelectedNodes()
+		    .iterator(); iterator.hasNext();) {
 			final NodeModel node = (NodeModel) iterator.next();
 			if (node.getNoteText() != null) {
 				removeNote(node);
 			}
 		}
-	}
-
-	@Override
-	public void setEnabled() {
-		boolean foundNote = false;
-		final ModeController modeController = getModeController();
-		if (modeController == null) {
-			setEnabled (false);
-			return;
-		}
-		for (final Iterator iterator = modeController.getSelectedNodes()
-		    .iterator(); iterator.hasNext();) {
-			final NodeModel node = (NodeModel) iterator.next();
-			if (node.getNoteText() != null) {
-				foundNote = true;
-				break;
-			}
-		}
-		setEnabled(foundNote);
 	}
 
 	/*
@@ -120,5 +99,24 @@ class RemoveNoteAction extends FreeplaneAction implements PopupMenuListener {
 			noteController.getHtmlEditorPanel().setCurrentDocumentContent("");
 		}
 		noteController.setNoteText(node, null);
+	}
+
+	@Override
+	public void setEnabled() {
+		boolean foundNote = false;
+		final ModeController modeController = getModeController();
+		if (modeController == null) {
+			setEnabled(false);
+			return;
+		}
+		for (final Iterator iterator = modeController.getSelectedNodes().iterator(); iterator
+		    .hasNext();) {
+			final NodeModel node = (NodeModel) iterator.next();
+			if (node.getNoteText() != null) {
+				foundNote = true;
+				break;
+			}
+		}
+		setEnabled(foundNote);
 	}
 }

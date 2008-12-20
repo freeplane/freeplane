@@ -168,14 +168,12 @@ public class ExampleFileFilter extends FileFilter {
 	public String getDescription() {
 		if (fullDescription == null) {
 			if (description == null || isExtensionListInDescription()) {
-				fullDescription = description == null ? "(" : description
-				        + " (";
+				fullDescription = description == null ? "(" : description + " (";
 				final Enumeration extensions = filters.keys();
 				if (extensions != null) {
 					fullDescription += "." + (String) extensions.nextElement();
 					while (extensions.hasMoreElements()) {
-						fullDescription += ", ."
-						        + (String) extensions.nextElement();
+						fullDescription += ", ." + (String) extensions.nextElement();
 					}
 				}
 				fullDescription += ")";

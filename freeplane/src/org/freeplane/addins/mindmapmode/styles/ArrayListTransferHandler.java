@@ -33,7 +33,6 @@ import javax.swing.TransferHandler;
 
 import org.freeplane.addins.mindmapmode.styles.ManagePatternsPopupDialog.PatternListModel;
 
-
 class ArrayListTransferHandler extends TransferHandler {
 	public class ArrayListTransferable implements Transferable {
 		ArrayList data;
@@ -42,8 +41,7 @@ class ArrayListTransferHandler extends TransferHandler {
 			data = alist;
 		}
 
-		public Object getTransferData(final DataFlavor flavor)
-		        throws UnsupportedFlavorException {
+		public Object getTransferData(final DataFlavor flavor) throws UnsupportedFlavorException {
 			if (!isDataFlavorSupported(flavor)) {
 				throw new UnsupportedFlavorException(flavor);
 			}
@@ -75,8 +73,7 @@ class ArrayListTransferHandler extends TransferHandler {
 			localArrayListFlavor = new DataFlavor(localArrayListType);
 		}
 		catch (final ClassNotFoundException e) {
-			System.out
-			    .println("ArrayListTransferHandler: unable to create data flavor");
+			System.out.println("ArrayListTransferHandler: unable to create data flavor");
 		}
 	}
 
@@ -112,8 +109,7 @@ class ArrayListTransferHandler extends TransferHandler {
 	}
 
 	@Override
-	protected void exportDone(final JComponent c, final Transferable data,
-	                          final int action) {
+	protected void exportDone(final JComponent c, final Transferable data, final int action) {
 		if ((action == TransferHandler.MOVE) && (indices != null)) {
 			final PatternListModel model = (PatternListModel) source.getModel();
 			if (addCount > 0) {
@@ -175,8 +171,7 @@ class ArrayListTransferHandler extends TransferHandler {
 		}
 		int index = target.getSelectedIndex();
 		if (source.equals(target)) {
-			if (indices != null && index >= indices[0] - 1
-			        && index <= indices[indices.length - 1]) {
+			if (indices != null && index >= indices[0] - 1 && index <= indices[indices.length - 1]) {
 				indices = null;
 				return true;
 			}

@@ -41,7 +41,6 @@ class EdgeStyleAction extends MultipleNodeAction {
 	 */
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		((MEdgeController) getMModeController().getEdgeController()).setStyle(
-		    node, mStyle);
+		((MEdgeController) getMModeController().getEdgeController()).setStyle(node, mStyle);
 	}
 }

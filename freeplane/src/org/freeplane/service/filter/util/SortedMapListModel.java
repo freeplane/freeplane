@@ -27,8 +27,7 @@ import java.util.TreeSet;
 
 import javax.swing.AbstractListModel;
 
-public class SortedMapListModel extends AbstractListModel implements
-        ISortedListModel {
+public class SortedMapListModel extends AbstractListModel implements ISortedListModel {
 	SortedSet model;
 
 	public SortedMapListModel() {

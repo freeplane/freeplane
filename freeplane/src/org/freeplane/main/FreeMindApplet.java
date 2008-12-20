@@ -43,8 +43,7 @@ public class FreeMindApplet extends JApplet {
 		final Controller controller = new Controller(resourceController);
 		appletViewController = new AppletViewController(this);
 		appletViewController.init();
-		final BModeController browseController = BModeControllerFactory
-		    .createModeController();
+		final BModeController browseController = BModeControllerFactory.createModeController();
 		controller.selectMode(browseController);
 	}
 
@@ -59,23 +58,19 @@ public class FreeMindApplet extends JApplet {
 			resourceController.setPropertyByParameter("lookandfeel");
 			lookAndFeel = resourceController.getProperty("lookandfeel");
 			if (lookAndFeel.equals("windows")) {
-				UIManager
-				    .setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+				UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 			}
 			else if (lookAndFeel.equals("motif")) {
-				UIManager
-				    .setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+				UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
 			}
 			else if (lookAndFeel.equals("mac")) {
 				UIManager.setLookAndFeel("javax.swing.plaf.mac.MacLookAndFeel");
 			}
 			else if (lookAndFeel.equals("metal")) {
-				UIManager
-				    .setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+				UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
 			}
 			else if (lookAndFeel.equals("gtk")) {
-				UIManager
-				    .setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+				UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
 			}
 			else if (lookAndFeel.equals("nothing")) {
 			}
@@ -83,8 +78,7 @@ public class FreeMindApplet extends JApplet {
 				UIManager.setLookAndFeel(lookAndFeel);
 			}
 			else {
-				UIManager.setLookAndFeel(UIManager
-				    .getSystemLookAndFeelClassName());
+				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			}
 		}
 		catch (final Exception ex) {

@@ -35,15 +35,13 @@ import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.service.filter.util.SortedComboBoxModel;
 import org.freeplane.undo.IUndoableActor;
 
-public class MAttributeController extends AttributeController implements
-        IAttributeController {
+public class MAttributeController extends AttributeController implements IAttributeController {
 	private class AttributeChanger implements IVisitor {
 		final private Object name;
 		final private Object newValue;
 		final private Object oldValue;
 
-		public AttributeChanger(final Object name, final Object oldValue,
-		                        final Object newValue) {
+		public AttributeChanger(final Object name, final Object oldValue, final Object newValue) {
 			super();
 			this.name = name;
 			this.oldValue = oldValue;
@@ -58,12 +56,10 @@ public class MAttributeController extends AttributeController implements
 		 */
 		public void visit(final NodeAttributeTableModel model) {
 			for (int i = 0; i < model.getRowCount(); i++) {
-				if (model.getName(i).equals(name)
-				        && model.getValue(i).equals(oldValue)) {
+				if (model.getName(i).equals(name) && model.getValue(i).equals(oldValue)) {
 					final int row = i;
 					final String newValue = this.newValue.toString();
-					final IUndoableActor actor = new SetAttributeValueActor(
-					    model, row, newValue);
+					final IUndoableActor actor = new SetAttributeValueActor(model, row, newValue);
 					getModeController().execute(actor);
 				}
 			}
@@ -88,8 +84,7 @@ public class MAttributeController extends AttributeController implements
 			for (int i = 0; i < model.getRowCount(); i++) {
 				if (model.getName(i).equals(name)) {
 					final int row = i;
-					final IUndoableActor actor = new RemoveAttributeActor(
-					    model, row);
+					final IUndoableActor actor = new RemoveAttributeActor(model, row);
 					getModeController().execute(actor);
 				}
 			}
@@ -118,8 +113,8 @@ public class MAttributeController extends AttributeController implements
 					final int row = i;
 					final String name = newName.toString();
 					final String oldName = this.oldName.toString();
-					final IUndoableActor actor = new SetAttributeNameActor(
-					    model, name, oldName, row);
+					final IUndoableActor actor = new SetAttributeNameActor(model, name, oldName,
+					    row);
 					getModeController().execute(actor);
 				}
 			}
@@ -144,10 +139,8 @@ public class MAttributeController extends AttributeController implements
 		 */
 		public void visit(final NodeAttributeTableModel model) {
 			for (int i = 0; i < model.getRowCount(); i++) {
-				if (model.getName(i).equals(name)
-				        && model.getValue(i).equals(value)) {
-					final IUndoableActor actor = new RemoveAttributeActor(
-					    model, i);
+				if (model.getName(i).equals(name) && model.getValue(i).equals(value)) {
+					final IUndoableActor actor = new RemoveAttributeActor(model, i);
 					getModeController().execute(actor);
 				}
 			}
@@ -160,9 +153,8 @@ public class MAttributeController extends AttributeController implements
 		private final int row;
 		private final String value;
 
-		private InsertAttributeActor(final NodeAttributeTableModel model,
-		                             final int row, final String name,
-		                             final String value) {
+		private InsertAttributeActor(final NodeAttributeTableModel model, final int row,
+		                             final String name, final String value) {
 			this.row = row;
 			this.name = name;
 			this.model = model;
@@ -198,8 +190,8 @@ public class MAttributeController extends AttributeController implements
 		 */
 		void iterate(final NodeModel node) {
 			visitor.visit(node.getAttributes());
-			final ListIterator iterator = node.getModeController()
-			    .getMapController().childrenUnfolded(node);
+			final ListIterator iterator = node.getModeController().getMapController()
+			    .childrenUnfolded(node);
 			while (iterator.hasNext()) {
 				final NodeModel child = (NodeModel) iterator.next();
 				iterate(child);
@@ -215,8 +207,7 @@ public class MAttributeController extends AttributeController implements
 		private final String name;
 		private final AttributeRegistry registry;
 
-		private RegistryAttributeActor(final String name,
-		                               final AttributeRegistry registry) {
+		private RegistryAttributeActor(final String name, final AttributeRegistry registry) {
 			this.name = name;
 			this.registry = registry;
 		}
@@ -224,8 +215,7 @@ public class MAttributeController extends AttributeController implements
 		public void act() {
 			final AttributeRegistryElement attributeRegistryElement = new AttributeRegistryElement(
 			    registry, name);
-			final int index = registry.getElements().add(name,
-			    attributeRegistryElement);
+			final int index = registry.getElements().add(name, attributeRegistryElement);
 			registry.getTableModel().fireTableRowsInserted(index, index);
 		}
 
@@ -242,8 +232,7 @@ public class MAttributeController extends AttributeController implements
 		private final AttributeRegistryElement element;
 		private final String newValue;
 
-		private RegistryAttributeValueActor(
-		                                    final AttributeRegistryElement element,
+		private RegistryAttributeValueActor(final AttributeRegistryElement element,
 		                                    final String newValue) {
 			this.element = element;
 			this.newValue = newValue;
@@ -265,8 +254,7 @@ public class MAttributeController extends AttributeController implements
 	private static class RemoveAttributeActor implements IUndoableActor {
 		final private InsertAttributeActor insertActor;
 
-		private RemoveAttributeActor(final NodeAttributeTableModel model,
-		                             final int row) {
+		private RemoveAttributeActor(final NodeAttributeTableModel model, final int row) {
 			final Attribute attribute = model.getAttribute(row);
 			final String name = attribute.getName();
 			final String value = attribute.getValue();
@@ -292,10 +280,8 @@ public class MAttributeController extends AttributeController implements
 		private final String oldValue;
 		private final AttributeRegistry registry;
 
-		private ReplaceAttributeValueActor(final AttributeRegistry registry,
-		                                   final String name,
-		                                   final String oldValue,
-		                                   final String newValue) {
+		private ReplaceAttributeValueActor(final AttributeRegistry registry, final String name,
+		                                   final String oldValue, final String newValue) {
 			this.registry = registry;
 			this.name = name;
 			this.oldValue = oldValue;
@@ -321,8 +307,7 @@ public class MAttributeController extends AttributeController implements
 		private final int oldWidth;
 		private final int width;
 
-		private SetAttributeColumnWidthActor(final int col, final int oldWidth,
-		                                     final int width,
+		private SetAttributeColumnWidthActor(final int col, final int oldWidth, final int width,
 		                                     final NodeAttributeTableModel model) {
 			this.col = col;
 			this.oldWidth = oldWidth;
@@ -349,9 +334,8 @@ public class MAttributeController extends AttributeController implements
 		private final String oldName;
 		private final int row;
 
-		private SetAttributeNameActor(final NodeAttributeTableModel model,
-		                              final String name, final String oldName,
-		                              final int row) {
+		private SetAttributeNameActor(final NodeAttributeTableModel model, final String name,
+		                              final String oldName, final int row) {
 			this.model = model;
 			this.name = name;
 			this.oldName = oldName;
@@ -378,8 +362,7 @@ public class MAttributeController extends AttributeController implements
 		private final boolean isRestricted;
 		private final AttributeRegistry registry;
 
-		private SetAttributeRestrictedActor(final AttributeRegistry registry,
-		                                    final int index,
+		private SetAttributeRestrictedActor(final AttributeRegistry registry, final int index,
 		                                    final boolean isRestricted) {
 			this.registry = registry;
 			this.index = index;
@@ -414,8 +397,8 @@ public class MAttributeController extends AttributeController implements
 		private final String oldValue;
 		private final int row;
 
-		private SetAttributeValueActor(final NodeAttributeTableModel model,
-		                               final int row, final String newValue) {
+		private SetAttributeValueActor(final NodeAttributeTableModel model, final int row,
+		                               final String newValue) {
 			this.row = row;
 			oldValue = model.getAttribute(row).getValue();
 			this.newValue = newValue;
@@ -442,10 +425,8 @@ public class MAttributeController extends AttributeController implements
 		private final int index;
 		private final boolean isVisible;
 
-		private SetAttributeVisibleActor(
-		                                 final AttributeRegistry attributeRegistry,
-		                                 final int index,
-		                                 final boolean isVisible) {
+		private SetAttributeVisibleActor(final AttributeRegistry attributeRegistry,
+		                                 final int index, final boolean isVisible) {
 			this.attributeRegistry = attributeRegistry;
 			this.index = index;
 			this.isVisible = isVisible;
@@ -472,8 +453,7 @@ public class MAttributeController extends AttributeController implements
 	private static class UnregistryAttributeActor implements IUndoableActor {
 		final private RegistryAttributeActor registryActor;
 
-		private UnregistryAttributeActor(final String name,
-		                                 final AttributeRegistry registry) {
+		private UnregistryAttributeActor(final String name, final AttributeRegistry registry) {
 			registryActor = new RegistryAttributeActor(name, registry);
 		}
 
@@ -490,12 +470,10 @@ public class MAttributeController extends AttributeController implements
 		}
 	}
 
-	private static class UnregistryAttributeValueActor implements
-	        IUndoableActor {
+	private static class UnregistryAttributeValueActor implements IUndoableActor {
 		final private RegistryAttributeValueActor registryActor;
 
-		private UnregistryAttributeValueActor(
-		                                      final AttributeRegistryElement element,
+		private UnregistryAttributeValueActor(final AttributeRegistryElement element,
 		                                      final String newValue) {
 			registryActor = new RegistryAttributeValueActor(element, newValue);
 		}
@@ -526,8 +504,7 @@ public class MAttributeController extends AttributeController implements
 		node.createAttributeTableModel();
 		final NodeAttributeTableModel attributes = node.getAttributes();
 		final int rowCount = attributes.getRowCount();
-		performInsertRow(attributes, rowCount, pAttribute.getName(), pAttribute
-		    .getValue());
+		performInsertRow(attributes, rowCount, pAttribute.getName(), pAttribute.getValue());
 		return rowCount;
 	}
 
@@ -536,12 +513,10 @@ public class MAttributeController extends AttributeController implements
 	 */
 	private void createActions() {
 		modeController.addAction("editAttributes", new EditAttributesAction());
-		modeController.addAction("assignAttributes",
-		    new AssignAttributesAction());
+		modeController.addAction("assignAttributes", new AssignAttributesAction());
 	}
 
-	public int editAttribute(final NodeModel pNode, final String pName,
-	                         final String pNewValue) {
+	public int editAttribute(final NodeModel pNode, final String pName, final String pNewValue) {
 		pNode.createAttributeTableModel();
 		final Attribute newAttribute = new Attribute(pName, pNewValue);
 		final NodeAttributeTableModel attributes = pNode.getAttributes();
@@ -563,49 +538,42 @@ public class MAttributeController extends AttributeController implements
 	}
 
 	private AttributeRegistry getAttributeRegistry() {
-		return Controller.getController().getMap().getRegistry()
-		    .getAttributes();
+		return Controller.getController().getMap().getRegistry().getAttributes();
 	}
 
 	public AttributePopupMenu getAttributeTablePopupMenu() {
 		return new AttributePopupMenu();
 	}
 
-	public void performInsertRow(final NodeAttributeTableModel model,
-	                             final int row, final String name, String value) {
+	public void performInsertRow(final NodeAttributeTableModel model, final int row,
+	                             final String name, String value) {
 		final AttributeRegistry attributes = getAttributeRegistry();
 		if (name.equals("")) {
 			return;
 		}
 		try {
-			final AttributeRegistryElement element = attributes
-			    .getElement(name);
+			final AttributeRegistryElement element = attributes.getElement(name);
 			final int index = element.getValues().getIndexOf(value);
 			if (index == -1) {
 				if (element.isRestricted()) {
 					value = element.getValues().firstElement().toString();
 				}
 				else {
-					final IUndoableActor actor = new RegistryAttributeValueActor(
-					    element, value);
+					final IUndoableActor actor = new RegistryAttributeValueActor(element, value);
 					getModeController().execute(actor);
 				}
 			}
 		}
 		catch (final NoSuchElementException ex) {
 			final AttributeRegistry registry = getAttributeRegistry();
-			final IUndoableActor nameActor = new RegistryAttributeActor(name,
-			    registry);
+			final IUndoableActor nameActor = new RegistryAttributeActor(name, registry);
 			getModeController().execute(nameActor);
-			final AttributeRegistryElement element = getAttributeRegistry()
-			    .getElement(name);
-			final IUndoableActor valueActor = new RegistryAttributeValueActor(
-			    element, value);
+			final AttributeRegistryElement element = getAttributeRegistry().getElement(name);
+			final IUndoableActor valueActor = new RegistryAttributeValueActor(element, value);
 			getModeController().execute(valueActor);
 		}
 		final String newValue = value;
-		final IUndoableActor actor = new InsertAttributeActor(model, row, name,
-		    newValue);
+		final IUndoableActor actor = new InsertAttributeActor(model, row, name, newValue);
 		getModeController().execute(actor);
 	}
 
@@ -618,60 +586,50 @@ public class MAttributeController extends AttributeController implements
 			attributeRegistry.getElement(name);
 		}
 		catch (final NoSuchElementException ex) {
-			final IUndoableActor actor = new RegistryAttributeActor(name,
-			    attributeRegistry);
+			final IUndoableActor actor = new RegistryAttributeActor(name, attributeRegistry);
 			getModeController().execute(actor);
 			return;
 		}
 	}
 
-	public void performRegistryAttributeValue(final String name,
-	                                          final String value) {
+	public void performRegistryAttributeValue(final String name, final String value) {
 		if (name.equals("")) {
 			return;
 		}
 		final AttributeRegistry attributeRegistry = getAttributeRegistry();
 		try {
-			final AttributeRegistryElement element = attributeRegistry
-			    .getElement(name);
+			final AttributeRegistryElement element = attributeRegistry.getElement(name);
 			if (element.getValues().contains(value)) {
 				return;
 			}
-			final IUndoableActor actor = new RegistryAttributeValueActor(
-			    element, value);
+			final IUndoableActor actor = new RegistryAttributeValueActor(element, value);
 			getModeController().execute(actor);
 			return;
 		}
 		catch (final NoSuchElementException ex) {
-			final IUndoableActor nameActor = new RegistryAttributeActor(name,
-			    attributeRegistry);
+			final IUndoableActor nameActor = new RegistryAttributeActor(name, attributeRegistry);
 			getModeController().execute(nameActor);
-			final AttributeRegistryElement element = attributeRegistry
-			    .getElement(name);
-			final IUndoableActor valueActor = new RegistryAttributeValueActor(
-			    element, value);
+			final AttributeRegistryElement element = attributeRegistry.getElement(name);
+			final IUndoableActor valueActor = new RegistryAttributeValueActor(element, value);
 			getModeController().execute(valueActor);
 		}
 	}
 
 	public void performRegistrySubtreeAttributes(final NodeModel node) {
 		for (int i = 0; i < node.getAttributes().getRowCount(); i++) {
-			final String name = node.getAttributes().getValueAt(i, 0)
-			    .toString();
-			final String value = node.getAttributes().getValueAt(i, 1)
-			    .toString();
+			final String name = node.getAttributes().getValueAt(i, 0).toString();
+			final String value = node.getAttributes().getValueAt(i, 1).toString();
 			performRegistryAttributeValue(name, value);
 		}
-		for (final ListIterator e = node.getModeController().getMapController()
-		    .childrenUnfolded(node); e.hasNext();) {
+		for (final ListIterator e = node.getModeController().getMapController().childrenUnfolded(
+		    node); e.hasNext();) {
 			final NodeModel child = (NodeModel) e.next();
 			performRegistrySubtreeAttributes(child);
 		}
 	}
 
 	public void performRemoveAttribute(final String name) {
-		final IUndoableActor actor = new UnregistryAttributeActor(name,
-		    getAttributeRegistry());
+		final IUndoableActor actor = new UnregistryAttributeActor(name, getAttributeRegistry());
 		getModeController().execute(actor);
 		final IVisitor remover = new AttributeRemover(name);
 		final Iterator iterator = new Iterator(remover);
@@ -679,8 +637,7 @@ public class MAttributeController extends AttributeController implements
 		iterator.iterate(root);
 	}
 
-	public void performRemoveAttributeValue(final String name,
-	                                        final String value) {
+	public void performRemoveAttributeValue(final String name, final String value) {
 		final IUndoableActor unregistryActor = new UnregistryAttributeValueActor(
 		    getAttributeRegistry().getElement(name), value);
 		getModeController().execute(unregistryActor);
@@ -690,14 +647,12 @@ public class MAttributeController extends AttributeController implements
 		iterator.iterate(root);
 	}
 
-	public void performRemoveRow(final NodeAttributeTableModel model,
-	                             final int row) {
+	public void performRemoveRow(final NodeAttributeTableModel model, final int row) {
 		final IUndoableActor actor = new RemoveAttributeActor(model, row);
 		getModeController().execute(actor);
 	}
 
-	public void performReplaceAtributeName(final String oldName,
-	                                       final String newName) {
+	public void performReplaceAtributeName(final String oldName, final String newName) {
 		if (oldName.equals("") || newName.equals("") || oldName.equals(newName)) {
 			return;
 		}
@@ -705,30 +660,26 @@ public class MAttributeController extends AttributeController implements
 		final int iOld = registry.getElements().indexOf(oldName);
 		final AttributeRegistryElement oldElement = registry.getElement(iOld);
 		final SortedComboBoxModel values = oldElement.getValues();
-		final IUndoableActor registryActor = new RegistryAttributeActor(
-		    newName, registry);
+		final IUndoableActor registryActor = new RegistryAttributeActor(newName, registry);
 		getModeController().execute(registryActor);
-		final AttributeRegistryElement newElement = registry
-		    .getElement(newName);
+		final AttributeRegistryElement newElement = registry.getElement(newName);
 		for (int i = 0; i < values.getSize(); i++) {
-			final IUndoableActor registryValueActor = new RegistryAttributeValueActor(
-			    newElement, values.getElementAt(i).toString());
+			final IUndoableActor registryValueActor = new RegistryAttributeValueActor(newElement,
+			    values.getElementAt(i).toString());
 			getModeController().execute(registryValueActor);
 		}
 		final IVisitor replacer = new AttributeRenamer(oldName, newName);
 		final Iterator iterator = new Iterator(replacer);
 		final NodeModel root = modeController.getMapController().getRootNode();
 		iterator.iterate(root);
-		final IUndoableActor unregistryActor = new UnregistryAttributeActor(
-		    oldName, registry);
+		final IUndoableActor unregistryActor = new UnregistryAttributeActor(oldName, registry);
 		getModeController().execute(unregistryActor);
 	}
 
-	public void performReplaceAttributeValue(final String name,
-	                                         final String oldValue,
+	public void performReplaceAttributeValue(final String name, final String oldValue,
 	                                         final String newValue) {
-		final IUndoableActor actor = new ReplaceAttributeValueActor(
-		    getAttributeRegistry(), name, oldValue, newValue);
+		final IUndoableActor actor = new ReplaceAttributeValueActor(getAttributeRegistry(), name,
+		    oldValue, newValue);
 		getModeController().execute(actor);
 		final IVisitor replacer = new AttributeChanger(name, oldValue, newValue);
 		final Iterator iterator = new Iterator(replacer);
@@ -736,19 +687,17 @@ public class MAttributeController extends AttributeController implements
 		iterator.iterate(root);
 	}
 
-	public void performSetColumnWidth(final NodeAttributeTableModel model,
-	                                  final int col, final int width) {
+	public void performSetColumnWidth(final NodeAttributeTableModel model, final int col,
+	                                  final int width) {
 		final int oldWidth = model.getLayout().getColumnWidth(col);
 		if (width == oldWidth) {
 			return;
 		}
-		final IUndoableActor actor = new SetAttributeColumnWidthActor(col,
-		    oldWidth, width, model);
+		final IUndoableActor actor = new SetAttributeColumnWidthActor(col, oldWidth, width, model);
 		getModeController().execute(actor);
 	}
 
-	public void performSetFontSize(final AttributeRegistry registry,
-	                               final int size) {
+	public void performSetFontSize(final AttributeRegistry registry, final int size) {
 		final int oldSize = registry.getFontSize();
 		if (size == oldSize) {
 			return;
@@ -769,26 +718,24 @@ public class MAttributeController extends AttributeController implements
 		getModeController().execute(actor);
 	}
 
-	public void performSetRestriction(final int index,
-	                                  final boolean isRestricted) {
+	public void performSetRestriction(final int index, final boolean isRestricted) {
 		boolean currentValue;
 		if (index == AttributeRegistry.GLOBAL) {
 			currentValue = getAttributeRegistry().isRestricted();
 		}
 		else {
-			currentValue = getAttributeRegistry().getElement(index)
-			    .isRestricted();
+			currentValue = getAttributeRegistry().getElement(index).isRestricted();
 		}
 		if (currentValue == isRestricted) {
 			return;
 		}
-		final IUndoableActor actor = new SetAttributeRestrictedActor(
-		    getAttributeRegistry(), index, isRestricted);
+		final IUndoableActor actor = new SetAttributeRestrictedActor(getAttributeRegistry(), index,
+		    isRestricted);
 		getModeController().execute(actor);
 	}
 
-	public void performSetValueAt(final NodeAttributeTableModel model,
-	                              final Object o, final int row, final int col) {
+	public void performSetValueAt(final NodeAttributeTableModel model, final Object o,
+	                              final int row, final int col) {
 		final Attribute attribute = model.getAttribute(row);
 		final AttributeRegistry registry = getAttributeRegistry();
 		switch (col) {
@@ -798,24 +745,21 @@ public class MAttributeController extends AttributeController implements
 				if (oldName.equals(name)) {
 					return;
 				}
-				final IUndoableActor nameActor = new SetAttributeNameActor(
-				    model, name, oldName, row);
+				final IUndoableActor nameActor = new SetAttributeNameActor(model, name, oldName,
+				    row);
 				getModeController().execute(nameActor);
 				try {
-					final AttributeRegistryElement element = registry
-					    .getElement(name);
+					final AttributeRegistryElement element = registry.getElement(name);
 					final String value = model.getValueAt(row, 1).toString();
 					final int index = element.getValues().getIndexOf(value);
 					if (index == -1) {
-						final IUndoableActor valueActor = new SetAttributeValueActor(
-						    model, row, element.getValues().firstElement()
-						        .toString());
+						final IUndoableActor valueActor = new SetAttributeValueActor(model, row,
+						    element.getValues().firstElement().toString());
 						getModeController().execute(valueActor);
 					}
 				}
 				catch (final NoSuchElementException ex) {
-					final IUndoableActor registryActor = new RegistryAttributeActor(
-					    name, registry);
+					final IUndoableActor registryActor = new RegistryAttributeActor(name, registry);
 					getModeController().execute(registryActor);
 				}
 				break;
@@ -825,16 +769,14 @@ public class MAttributeController extends AttributeController implements
 				if (attribute.getValue().equals(value)) {
 					return;
 				}
-				final IUndoableActor actor = new SetAttributeValueActor(model,
-				    row, value);
+				final IUndoableActor actor = new SetAttributeValueActor(model, row, value);
 				getModeController().execute(actor);
 				final String name = model.getValueAt(row, 0).toString();
-				final AttributeRegistryElement element = registry
-				    .getElement(name);
+				final AttributeRegistryElement element = registry.getElement(name);
 				final int index = element.getValues().getIndexOf(value);
 				if (index == -1) {
-					final IUndoableActor registryActor = new RegistryAttributeValueActor(
-					    element, value);
+					final IUndoableActor registryActor = new RegistryAttributeValueActor(element,
+					    value);
 					getModeController().execute(registryActor);
 				}
 				break;
@@ -847,8 +789,8 @@ public class MAttributeController extends AttributeController implements
 		if (attributeRegistry.getElement(index).isVisible() == isVisible) {
 			return;
 		}
-		final IUndoableActor actor = new SetAttributeVisibleActor(
-		    attributeRegistry, index, isVisible);
+		final IUndoableActor actor = new SetAttributeVisibleActor(attributeRegistry, index,
+		    isVisible);
 		getModeController().execute(actor);
 	}
 
@@ -857,8 +799,7 @@ public class MAttributeController extends AttributeController implements
 		performRemoveRow(pNode.getAttributes(), pPosition);
 	}
 
-	public void setAttribute(final NodeModel pNode, final int pPosition,
-	                         final Attribute pAttribute) {
+	public void setAttribute(final NodeModel pNode, final int pPosition, final Attribute pAttribute) {
 		pNode.createAttributeTableModel();
 		pNode.getAttributes().setValueAt(pAttribute.getName(), pPosition, 0);
 		pNode.getAttributes().setValueAt(pAttribute.getValue(), pPosition, 1);

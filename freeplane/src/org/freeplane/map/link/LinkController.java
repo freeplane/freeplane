@@ -47,8 +47,8 @@ import deprecated.freemind.preferences.IFreemindPropertyListener;
  */
 public class LinkController {
 	private static class ArrowLinkListener implements IFreemindPropertyListener {
-		public void propertyChanged(final String propertyName,
-		                            final String newValue, final String oldValue) {
+		public void propertyChanged(final String propertyName, final String newValue,
+		                            final String oldValue) {
 			if (propertyName.equals(ResourceController.RESOURCES_LINK_COLOR)) {
 				standardColor = Tools.xmlToColor(newValue);
 			}
@@ -67,21 +67,18 @@ public class LinkController {
 		colorHandlers = new PropertyChain<Color, ArrowLinkModel>();
 		if (listener == null) {
 			listener = new ArrowLinkListener();
-			Controller.getResourceController().addPropertyChangeListener(
-			    listener);
+			Controller.getResourceController().addPropertyChangeListener(listener);
 		}
-		addColorGetter(PropertyChain.NODE,
-		    new IPropertyGetter<Color, ArrowLinkModel>() {
-			    public Color getProperty(final ArrowLinkModel model) {
-				    return model.getColor();
-			    }
-		    });
-		addColorGetter(PropertyChain.DEFAULT,
-		    new IPropertyGetter<Color, ArrowLinkModel>() {
-			    public Color getProperty(final ArrowLinkModel model) {
-				    return standardColor;
-			    }
-		    });
+		addColorGetter(PropertyChain.NODE, new IPropertyGetter<Color, ArrowLinkModel>() {
+			public Color getProperty(final ArrowLinkModel model) {
+				return model.getColor();
+			}
+		});
+		addColorGetter(PropertyChain.DEFAULT, new IPropertyGetter<Color, ArrowLinkModel>() {
+			public Color getProperty(final ArrowLinkModel model) {
+				return standardColor;
+			}
+		});
 		createActions(modeController);
 		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();
@@ -100,12 +97,10 @@ public class LinkController {
 	 */
 	private void createActions(final ModeController modeController) {
 		modeController.addAction("followLink", new FollowLinkAction());
-		modeController.addAction("gotoLinkNodeAction", new GotoLinkNodeAction(
-		    this, null));
+		modeController.addAction("gotoLinkNodeAction", new GotoLinkNodeAction(this, null));
 	}
 
-	protected void createArrowLinkPopup(final ArrowLinkModel link,
-	                                    final JPopupMenu arrowLinkPopup) {
+	protected void createArrowLinkPopup(final ArrowLinkModel link, final JPopupMenu arrowLinkPopup) {
 		arrowLinkPopup.add(new GotoLinkNodeAction(this, link.getSource()));
 		arrowLinkPopup.add(new GotoLinkNodeAction(this, link.getTarget()));
 		arrowLinkPopup.addSeparator();
@@ -117,15 +112,12 @@ public class LinkController {
 		links.addAll(link.getTarget().getLinks());
 		final Iterator<LinkModel> iterator = links.iterator();
 		while (iterator.hasNext()) {
-			final ArrowLinkModel foreign_link = (ArrowLinkModel) iterator
-			    .next();
+			final ArrowLinkModel foreign_link = (ArrowLinkModel) iterator.next();
 			if (NodeAlreadyVisited.add(foreign_link.getTarget())) {
-				arrowLinkPopup.add(new GotoLinkNodeAction(this, foreign_link
-				    .getTarget()));
+				arrowLinkPopup.add(new GotoLinkNodeAction(this, foreign_link.getTarget()));
 			}
 			if (NodeAlreadyVisited.add(foreign_link.getSource())) {
-				arrowLinkPopup.add(new GotoLinkNodeAction(this, foreign_link
-				    .getSource()));
+				arrowLinkPopup.add(new GotoLinkNodeAction(this, foreign_link.getSource()));
 			}
 		}
 	}
@@ -146,8 +138,8 @@ public class LinkController {
 		}
 		if (adaptedText.startsWith("#")) {
 			try {
-				final NodeModel dest = modeController.getMapController()
-				    .getNodeFromID(adaptedText.substring(1));
+				final NodeModel dest = modeController.getMapController().getNodeFromID(
+				    adaptedText.substring(1));
 				return dest.getShortText(modeController);
 			}
 			catch (final Exception e) {
@@ -161,8 +153,7 @@ public class LinkController {
 		if (target.hasID() == false) {
 			return Collections.emptySet();
 		}
-		final MapLinks links = (MapLinks) target.getMap().getExtension(
-		    MapLinks.class);
+		final MapLinks links = (MapLinks) target.getMap().getExtension(MapLinks.class);
 		if (links == null) {
 			return Collections.emptySet();
 		}
@@ -213,8 +204,7 @@ public class LinkController {
 		}
 	}
 
-	public IPropertyGetter<Color, ArrowLinkModel> removeColorGetter(
-	                                                                final Integer key) {
+	public IPropertyGetter<Color, ArrowLinkModel> removeColorGetter(final Integer key) {
 		return colorHandlers.removeGetter(key);
 	}
 
@@ -223,8 +213,8 @@ public class LinkController {
 	 */
 	private void updateStandards(final ModeController modeController) {
 		if (standardColor == null) {
-			final String stdColor = Controller.getResourceController()
-			    .getProperty(ResourceController.RESOURCES_LINK_COLOR);
+			final String stdColor = Controller.getResourceController().getProperty(
+			    ResourceController.RESOURCES_LINK_COLOR);
 			if (stdColor != null && stdColor.length() == 7) {
 				standardColor = Tools.xmlToColor(stdColor);
 			}

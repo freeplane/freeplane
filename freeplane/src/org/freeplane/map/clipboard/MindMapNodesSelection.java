@@ -41,10 +41,8 @@ public class MindMapNodesSelection implements Transferable, ClipboardOwner {
 		try {
 			MindMapNodesSelection.mindMapNodesFlavor = new DataFlavor(
 			    "text/freemind-nodes; class=java.lang.String");
-			MindMapNodesSelection.rtfFlavor = new DataFlavor(
-			    "text/rtf; class=java.io.InputStream");
-			MindMapNodesSelection.htmlFlavor = new DataFlavor(
-			    "text/html; class=java.lang.String");
+			MindMapNodesSelection.rtfFlavor = new DataFlavor("text/rtf; class=java.io.InputStream");
+			MindMapNodesSelection.htmlFlavor = new DataFlavor("text/html; class=java.lang.String");
 			MindMapNodesSelection.fileListFlavor = new DataFlavor(
 			    "application/x-java-file-list; class=java.util.List");
 			MindMapNodesSelection.dropActionFlavor = new DataFlavor(
@@ -61,12 +59,9 @@ public class MindMapNodesSelection implements Transferable, ClipboardOwner {
 	final private String rtfContent;
 	final private String stringContent;
 
-	public MindMapNodesSelection(final String nodesContent,
-	                             final String stringContent,
-	                             final String rtfContent,
-	                             final String htmlContent,
-	                             final String dropActionContent,
-	                             final List fileList) {
+	public MindMapNodesSelection(final String nodesContent, final String stringContent,
+	                             final String rtfContent, final String htmlContent,
+	                             final String dropActionContent, final List fileList) {
 		this.nodesContent = nodesContent;
 		this.rtfContent = rtfContent;
 		this.stringContent = stringContent;
@@ -75,8 +70,7 @@ public class MindMapNodesSelection implements Transferable, ClipboardOwner {
 		this.fileList = fileList;
 	}
 
-	public Object getTransferData(final DataFlavor flavor)
-	        throws UnsupportedFlavorException {
+	public Object getTransferData(final DataFlavor flavor) throws UnsupportedFlavorException {
 		if (flavor.equals(DataFlavor.stringFlavor)) {
 			return stringContent;
 		}
@@ -90,8 +84,7 @@ public class MindMapNodesSelection implements Transferable, ClipboardOwner {
 			final byte[] byteArray = rtfContent.getBytes();
 			return new ByteArrayInputStream(byteArray);
 		}
-		if (flavor.equals(MindMapNodesSelection.htmlFlavor)
-		        && htmlContent != null) {
+		if (flavor.equals(MindMapNodesSelection.htmlFlavor) && htmlContent != null) {
 			return htmlContent;
 		}
 		if (flavor.equals(MindMapNodesSelection.fileListFlavor)) {
@@ -102,41 +95,34 @@ public class MindMapNodesSelection implements Transferable, ClipboardOwner {
 
 	public DataFlavor[] getTransferDataFlavors() {
 		return new DataFlavor[] { DataFlavor.stringFlavor,
-		        MindMapNodesSelection.mindMapNodesFlavor,
-		        MindMapNodesSelection.rtfFlavor,
-		        MindMapNodesSelection.htmlFlavor,
-		        MindMapNodesSelection.dropActionFlavor };
+		        MindMapNodesSelection.mindMapNodesFlavor, MindMapNodesSelection.rtfFlavor,
+		        MindMapNodesSelection.htmlFlavor, MindMapNodesSelection.dropActionFlavor };
 	}
 
 	public boolean isDataFlavorSupported(final DataFlavor flavor) {
 		if (flavor.equals(DataFlavor.stringFlavor) && stringContent != null) {
 			return true;
 		}
-		if (flavor.equals(MindMapNodesSelection.mindMapNodesFlavor)
-		        && nodesContent != null) {
+		if (flavor.equals(MindMapNodesSelection.mindMapNodesFlavor) && nodesContent != null) {
 			return true;
 		}
-		if (flavor.equals(MindMapNodesSelection.rtfFlavor)
-		        && rtfContent != null) {
+		if (flavor.equals(MindMapNodesSelection.rtfFlavor) && rtfContent != null) {
 			return true;
 		}
-		if (flavor.equals(MindMapNodesSelection.dropActionFlavor)
-		        && dropActionContent != null) {
+		if (flavor.equals(MindMapNodesSelection.dropActionFlavor) && dropActionContent != null) {
 			return true;
 		}
-		if (flavor.equals(MindMapNodesSelection.htmlFlavor)
-		        && htmlContent != null) {
+		if (flavor.equals(MindMapNodesSelection.htmlFlavor) && htmlContent != null) {
 			return true;
 		}
-		if (flavor.equals(MindMapNodesSelection.fileListFlavor)
-		        && (fileList != null) && fileList.size() > 0) {
+		if (flavor.equals(MindMapNodesSelection.fileListFlavor) && (fileList != null)
+		        && fileList.size() > 0) {
 			return true;
 		}
 		return false;
 	}
 
-	public void lostOwnership(final Clipboard clipboard,
-	                          final Transferable contents) {
+	public void lostOwnership(final Clipboard clipboard, final Transferable contents) {
 	}
 
 	public void setDropAction(final String dropActionContent) {

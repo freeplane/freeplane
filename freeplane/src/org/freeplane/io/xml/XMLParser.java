@@ -35,8 +35,8 @@ public class XMLParser extends StdXMLParser implements IXMLParser {
 	}
 
 	@Override
-	protected void processElement(final String defaultNamespace,
-	                              final Properties namespaces) throws Exception {
+	protected void processElement(final String defaultNamespace, final Properties namespaces)
+	        throws Exception {
 		try {
 			super.processElement(defaultNamespace, namespaces);
 		}
@@ -47,8 +47,7 @@ public class XMLParser extends StdXMLParser implements IXMLParser {
 
 	@Override
 	protected void processElementContent(final String defaultNamespace,
-	                                     final Properties namespaces,
-	                                     final String fullName,
+	                                     final Properties namespaces, final String fullName,
 	                                     final String name, final String prefix)
 	        throws IOException, XMLParseException, Exception {
 		if (skipNextElementContent) {
@@ -76,8 +75,8 @@ public class XMLParser extends StdXMLParser implements IXMLParser {
 					if (ch == '>') {
 						level--;
 						if (level == 0) {
-							throw new XMLParseException(reader.getSystemID(),
-							    reader.getLineNr(), "Invalid input: />");
+							throw new XMLParseException(reader.getSystemID(), reader.getLineNr(),
+							    "Invalid input: />");
 						}
 					}
 					waitingBuf.append('/');
@@ -87,7 +86,6 @@ public class XMLParser extends StdXMLParser implements IXMLParser {
 			builder.setElementContent(waitingBuf.toString().trim());
 			return;
 		}
-		super.processElementContent(defaultNamespace, namespaces, fullName,
-		    name, prefix);
+		super.processElementContent(defaultNamespace, namespaces, fullName, name, prefix);
 	}
 }

@@ -70,23 +70,18 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 
 	static private class MyRenderer extends DefaultTreeCellRenderer {
 		static final Icon iconFull = MindIcon.factory("button_ok").getIcon();
-		static final Icon iconNotSelected = MindIcon.factory("button_cancel")
-		    .getIcon();
+		static final Icon iconNotSelected = MindIcon.factory("button_cancel").getIcon();
 		static final Icon iconPartial = MindIcon.factory("forward").getIcon();
 
 		public MyRenderer() {
 		}
 
 		@Override
-		public Component getTreeCellRendererComponent(final JTree tree,
-		                                              final Object value,
-		                                              final boolean sel,
-		                                              final boolean expanded,
-		                                              final boolean leaf,
-		                                              final int row,
+		public Component getTreeCellRendererComponent(final JTree tree, final Object value,
+		                                              final boolean sel, final boolean expanded,
+		                                              final boolean leaf, final int row,
 		                                              final boolean hasFocus) {
-			super.getTreeCellRendererComponent(tree, value, false, expanded,
-			    leaf, row, false);
+			super.getTreeCellRendererComponent(tree, value, false, expanded, leaf, row, false);
 			final DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
 			final TreeNodeInfo info = (TreeNodeInfo) node.getUserObject();
 			switch (info.getSelected()) {
@@ -143,16 +138,14 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 	final private DefaultTreeModel treeModel;
 
 	public ImportAttributesDialog(final Component parentComponent) {
-		super(Controller.getController().getViewController().getJFrame(),
-		    Controller.getText("attributes_import"), true);
+		super(Controller.getController().getViewController().getJFrame(), Controller
+		    .getText("attributes_import"), true);
 		this.parentComponent = parentComponent;
-		final TreeNodeInfo nodeInfo = new TreeNodeInfo(Controller
-		    .getText("attribute_top"));
+		final TreeNodeInfo nodeInfo = new TreeNodeInfo(Controller.getText("attribute_top"));
 		topNode = new DefaultMutableTreeNode(nodeInfo);
 		treeModel = new DefaultTreeModel(topNode);
 		tree = new JTree(treeModel);
-		tree.getSelectionModel().setSelectionMode(
-		    TreeSelectionModel.SINGLE_TREE_SELECTION);
+		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		tree.addTreeSelectionListener(this);
 		scrollPane = new JScrollPane();
 		scrollPane.setViewportView(tree);
@@ -169,8 +162,7 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 			}
 		});
 		final JButton cancelBtn = new JButton();
-		MenuBuilder
-		    .setLabelAndMnemonic(cancelBtn, Controller.getText("cancel"));
+		MenuBuilder.setLabelAndMnemonic(cancelBtn, Controller.getText("cancel"));
 		cancelBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent e) {
 				dispose();
@@ -189,10 +181,9 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 	                                     final AttributeRegistry attributes) {
 		for (int i = 0; i < attributes.size(); i++) {
 			final AttributeRegistryElement element = attributes.getElement(i);
-			final TreeNodeInfo treeNodeInfo = new AttributeTreeNodeInfo(element
-			    .getKey().toString(), element.isRestricted());
-			final DefaultMutableTreeNode attributeInfo = new DefaultMutableTreeNode(
-			    treeNodeInfo);
+			final TreeNodeInfo treeNodeInfo = new AttributeTreeNodeInfo(
+			    element.getKey().toString(), element.isRestricted());
+			final DefaultMutableTreeNode attributeInfo = new DefaultMutableTreeNode(treeNodeInfo);
 			createValueSubTrees(attributeInfo, element, currentAttributes);
 			if (attributeInfo.getChildCount() != 0) {
 				mapInfo.add(attributeInfo);
@@ -204,12 +195,10 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 		top.removeAllChildren();
 		final TreeNodeInfo topInfo = (TreeNodeInfo) top.getUserObject();
 		topInfo.setSelected(TreeNodeInfo.NOT_SELECTED);
-		final MapViewManager mapViewManager = Controller.getController()
-		    .getMapViewManager();
+		final MapViewManager mapViewManager = Controller.getController().getMapViewManager();
 		final MapModel currentMap = mapViewManager.getMapView().getModel();
 		currentAttributes = currentMap.getRegistry().getAttributes();
-		final Iterator iterator = mapViewManager.getMapViews().entrySet()
-		    .iterator();
+		final Iterator iterator = mapViewManager.getMapViews().entrySet().iterator();
 		while (iterator.hasNext()) {
 			final Map.Entry entry = (Map.Entry) iterator.next();
 			final String nextmapName = entry.getKey().toString();
@@ -219,18 +208,15 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 				continue;
 			}
 			final TreeNodeInfo treeNodeInfo = new TreeNodeInfo(nextmapName);
-			final DefaultMutableTreeNode mapInfo = new DefaultMutableTreeNode(
-			    treeNodeInfo);
-			createAttributeSubTrees(mapInfo, nextMap.getRegistry()
-			    .getAttributes());
+			final DefaultMutableTreeNode mapInfo = new DefaultMutableTreeNode(treeNodeInfo);
+			createAttributeSubTrees(mapInfo, nextMap.getRegistry().getAttributes());
 			if (mapInfo.getChildCount() != 0) {
 				top.add(mapInfo);
 			}
 		}
 	}
 
-	private void createValueSubTrees(
-	                                 final DefaultMutableTreeNode attributeInfo,
+	private void createValueSubTrees(final DefaultMutableTreeNode attributeInfo,
 	                                 final AttributeRegistryElement element,
 	                                 final AttributeRegistry currentAttributes) {
 		final String attributeName = element.getKey().toString();
@@ -238,10 +224,8 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 		for (int i = 0; i < values.getSize(); i++) {
 			final Object nextElement = values.getElementAt(i);
 			if (!currentAttributes.exist(attributeName, nextElement)) {
-				final TreeNodeInfo treeNodeInfo = new TreeNodeInfo(nextElement
-				    .toString());
-				final DefaultMutableTreeNode valueInfo = new DefaultMutableTreeNode(
-				    treeNodeInfo);
+				final TreeNodeInfo treeNodeInfo = new TreeNodeInfo(nextElement.toString());
+				final DefaultMutableTreeNode valueInfo = new DefaultMutableTreeNode(treeNodeInfo);
 				attributeInfo.add(valueInfo);
 			}
 		}
@@ -255,26 +239,22 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 		final String name = info.getInfo();
 		boolean attributeNameRegistered = false;
 		for (int i = 0; i < node.getChildCount(); i++) {
-			final DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) node
-			    .getChildAt(i);
+			final DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) node.getChildAt(i);
 			if (childNode.isLeaf()) {
 				if (attributeNameRegistered == false) {
 					attributeNameRegistered = true;
 					if (-1 == currentAttributes.indexOf(name)) {
-						currentAttributes.getAttributeController()
-						    .performRegistryAttribute(name);
+						currentAttributes.getAttributeController().performRegistryAttribute(name);
 						final int index = currentAttributes.indexOf(name);
-						currentAttributes.getAttributeController()
-						    .performSetRestriction(index,
-						        ((AttributeTreeNodeInfo) info).isRestricted());
+						currentAttributes.getAttributeController().performSetRestriction(index,
+						    ((AttributeTreeNodeInfo) info).isRestricted());
 					}
 				}
-				final TreeNodeInfo childInfo = (TreeNodeInfo) childNode
-				    .getUserObject();
+				final TreeNodeInfo childInfo = (TreeNodeInfo) childNode.getUserObject();
 				if (childInfo.getSelected() == TreeNodeInfo.FULL_SELECTED) {
 					final String value = childInfo.getInfo();
-					currentAttributes.getAttributeController()
-					    .performRegistryAttributeValue(name, value);
+					currentAttributes.getAttributeController().performRegistryAttributeValue(name,
+					    value);
 				}
 			}
 			else {
@@ -283,23 +263,20 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 		}
 	}
 
-	private void setParentSelectionType(
-	                                    final DefaultMutableTreeNode selectedNode,
+	private void setParentSelectionType(final DefaultMutableTreeNode selectedNode,
 	                                    final int newSelectionType) {
 		final TreeNode parentNode = selectedNode.getParent();
 		if (parentNode == null) {
 			return;
 		}
 		final DefaultMutableTreeNode defaultMutableParentNode = (DefaultMutableTreeNode) parentNode;
-		final TreeNodeInfo info = (TreeNodeInfo) (defaultMutableParentNode)
-		    .getUserObject();
+		final TreeNodeInfo info = (TreeNodeInfo) (defaultMutableParentNode).getUserObject();
 		if (newSelectionType == TreeNodeInfo.PARTIAL_SELECTED) {
 			if (info.getSelected() != TreeNodeInfo.PARTIAL_SELECTED) {
 				info.setSelected(TreeNodeInfo.PARTIAL_SELECTED);
 				treeModel.nodeChanged(defaultMutableParentNode);
 			}
-			setParentSelectionType(defaultMutableParentNode,
-			    TreeNodeInfo.PARTIAL_SELECTED);
+			setParentSelectionType(defaultMutableParentNode, TreeNodeInfo.PARTIAL_SELECTED);
 			return;
 		}
 		for (int i = 0; i < defaultMutableParentNode.getChildCount(); i++) {
@@ -310,8 +287,7 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 					info.setSelected(TreeNodeInfo.PARTIAL_SELECTED);
 					treeModel.nodeChanged(defaultMutableParentNode);
 				}
-				setParentSelectionType(defaultMutableParentNode,
-				    TreeNodeInfo.PARTIAL_SELECTED);
+				setParentSelectionType(defaultMutableParentNode, TreeNodeInfo.PARTIAL_SELECTED);
 				return;
 			}
 		}
@@ -322,8 +298,7 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 		setParentSelectionType(defaultMutableParentNode, newSelectionType);
 	}
 
-	private void setSelectionType(final TreeNode selectedNode,
-	                              final int newSelectionType) {
+	private void setSelectionType(final TreeNode selectedNode, final int newSelectionType) {
 		final TreeNodeInfo info = (TreeNodeInfo) ((DefaultMutableTreeNode) selectedNode)
 		    .getUserObject();
 		if (info.getSelected() != newSelectionType) {

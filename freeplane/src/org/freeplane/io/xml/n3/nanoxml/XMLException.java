@@ -42,9 +42,8 @@ public class XMLException extends Exception {
 	 *            true if the systemID, lineNr and e params need to be appended
 	 *            to the message
 	 */
-	private static String buildMessage(final String systemID, final int lineNr,
-	                                   final Exception e, final String msg,
-	                                   final boolean reportParams) {
+	private static String buildMessage(final String systemID, final int lineNr, final Exception e,
+	                                   final String msg, final boolean reportParams) {
 		String str = msg;
 		if (reportParams) {
 			if (systemID != null) {
@@ -107,8 +106,7 @@ public class XMLException extends Exception {
 	 * @param e
 	 *            the encapsulated exception.
 	 */
-	public XMLException(final String systemID, final int lineNr,
-	                    final Exception e) {
+	public XMLException(final String systemID, final int lineNr, final Exception e) {
 		this(systemID, lineNr, e, "Nested Exception", true);
 	}
 
@@ -127,15 +125,13 @@ public class XMLException extends Exception {
 	 *            true if the systemID, lineNr and e params need to be appended
 	 *            to the message
 	 */
-	public XMLException(final String systemID, final int lineNr,
-	                    final Exception e, final String msg,
-	                    final boolean reportParams) {
+	public XMLException(final String systemID, final int lineNr, final Exception e,
+	                    final String msg, final boolean reportParams) {
 		super(XMLException.buildMessage(systemID, lineNr, e, msg, reportParams));
 		this.systemID = systemID;
 		this.lineNr = lineNr;
 		encapsulatedException = e;
-		this.msg = XMLException.buildMessage(systemID, lineNr, e, msg,
-		    reportParams);
+		this.msg = XMLException.buildMessage(systemID, lineNr, e, msg, reportParams);
 	}
 
 	/**
@@ -148,8 +144,7 @@ public class XMLException extends Exception {
 	 * @param msg
 	 *            the message of the exception.
 	 */
-	public XMLException(final String systemID, final int lineNr,
-	                    final String msg) {
+	public XMLException(final String systemID, final int lineNr, final String msg) {
 		this(systemID, lineNr, null, msg, true);
 	}
 

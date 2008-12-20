@@ -36,7 +36,6 @@ import javax.swing.JTextField;
 import org.freeplane.controller.Controller;
 import org.freeplane.main.ExampleFileFilter;
 
-
 public class ExportDialog extends JFrame {
 	class ExportListener implements ActionListener {
 		private boolean cancel = false;
@@ -56,21 +55,15 @@ public class ExportDialog extends JFrame {
 		public void actionPerformed(final ActionEvent e) {
 			if (!cancel) {
 				xe = new XmlExporter();
-				xe
-				    .transForm(parent.xmlFile, new File(
-				        parent.fieldXsltFileName.getText()), new File(
-				        parent.fieldTargetFileName.getText()));
+				xe.transForm(parent.xmlFile, new File(parent.fieldXsltFileName.getText()),
+				    new File(parent.fieldTargetFileName.getText()));
 			}
-			Controller
-			    .getResourceController()
-			    .setProperty(
-			        ExportDialog.ACCESSORIES_PLUGINS_UTIL_XSLT_EXPORT_DIALOG_STORE_XSLT,
-			        fieldXsltFileName.getText());
-			Controller
-			    .getResourceController()
-			    .setProperty(
-			        ExportDialog.ACCESSORIES_PLUGINS_UTIL_XSLT_EXPORT_DIALOG_STORE_TARGET,
-			        fieldTargetFileName.getText());
+			Controller.getResourceController().setProperty(
+			    ExportDialog.ACCESSORIES_PLUGINS_UTIL_XSLT_EXPORT_DIALOG_STORE_XSLT,
+			    fieldXsltFileName.getText());
+			Controller.getResourceController().setProperty(
+			    ExportDialog.ACCESSORIES_PLUGINS_UTIL_XSLT_EXPORT_DIALOG_STORE_TARGET,
+			    fieldTargetFileName.getText());
 			parent.setVisible(false);
 			parent.dispose();
 			/*
@@ -100,14 +93,10 @@ public class ExportDialog extends JFrame {
 		 * GridBagConstraints.BOTH; gbl.setConstraints(list, gbc);
 		 * getContentPane().add(list);
 		 */
-		final String lastXsltFileName = Controller
-		    .getResourceController()
-		    .getProperty(
-		        ExportDialog.ACCESSORIES_PLUGINS_UTIL_XSLT_EXPORT_DIALOG_STORE_XSLT);
-		final String lastTargetFileName = Controller
-		    .getResourceController()
-		    .getProperty(
-		        ExportDialog.ACCESSORIES_PLUGINS_UTIL_XSLT_EXPORT_DIALOG_STORE_TARGET);
+		final String lastXsltFileName = Controller.getResourceController().getProperty(
+		    ExportDialog.ACCESSORIES_PLUGINS_UTIL_XSLT_EXPORT_DIALOG_STORE_XSLT);
+		final String lastTargetFileName = Controller.getResourceController().getProperty(
+		    ExportDialog.ACCESSORIES_PLUGINS_UTIL_XSLT_EXPORT_DIALOG_STORE_TARGET);
 		gbc = makegbc(0, 0, 1, 1);
 		gbc.fill = GridBagConstraints.NONE;
 		final JLabel label = new JLabel("Choose XSL File ");
@@ -136,14 +125,14 @@ public class ExportDialog extends JFrame {
 		gbc = makegbc(2, 0, 1, 1);
 		gbc.fill = GridBagConstraints.NONE;
 		gbl.setConstraints(xslbutton, gbc);
-		xslbutton.addActionListener(new FileChooseListener(0,
-		    fieldXsltFileName, xslbutton, xmlFile));
+		xslbutton
+		    .addActionListener(new FileChooseListener(0, fieldXsltFileName, xslbutton, xmlFile));
 		getContentPane().add(xslbutton);
 		final JButton exportbutton = new JButton("Browse");
 		gbc = makegbc(2, 1, 1, 1);
 		gbc.fill = GridBagConstraints.NONE;
-		exportbutton.addActionListener(new FileChooseListener(1,
-		    fieldTargetFileName, exportbutton, xmlFile));
+		exportbutton.addActionListener(new FileChooseListener(1, fieldTargetFileName, exportbutton,
+		    xmlFile));
 		gbl.setConstraints(exportbutton, gbc);
 		getContentPane().add(exportbutton);
 		final JButton button = new JButton("Export");
@@ -162,8 +151,7 @@ public class ExportDialog extends JFrame {
 		pack();
 	}
 
-	private GridBagConstraints makegbc(final int x, final int y,
-	                                   final int width, final int height) {
+	private GridBagConstraints makegbc(final int x, final int y, final int width, final int height) {
 		final GridBagConstraints gbc = new GridBagConstraints();
 		gbc.gridx = x;
 		gbc.gridy = y;
@@ -184,8 +172,8 @@ class FileChooseListener implements ActionListener {
 	private File xf = null;
 	final private String xslch = "Choose XSL Template";
 
-	public FileChooseListener(final int wit, final JTextField jt,
-	                          final Component c, final File mmFile) {
+	public FileChooseListener(final int wit, final JTextField jt, final Component c,
+	                          final File mmFile) {
 		parent = c;
 		jtf = jt;
 		kind = wit;
@@ -209,41 +197,31 @@ class FileChooseListener implements ActionListener {
 		}
 		ExampleFileFilter filter = null;
 		if (kind == 0) {
-			filter = new ExampleFileFilter(new String("xsl"),
-			    "XSLT Templatefile");
+			filter = new ExampleFileFilter(new String("xsl"), "XSLT Templatefile");
 			chooser.setFileFilter(filter);
 		};
 		final int returnVal = chooser.showDialog(parent, WindowTitle);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			try {
 				if (kind == 0) {
-					if (!new File(chooser.getSelectedFile().getAbsolutePath())
-					    .exists()) {
+					if (!new File(chooser.getSelectedFile().getAbsolutePath()).exists()) {
 						final Object Message = "The XSL Template chosen doesn't seem to exist. \nPlease Choose another.";
-						JOptionPane.showMessageDialog(null, Message,
-						    "Warning File does not exist",
+						JOptionPane.showMessageDialog(null, Message, "Warning File does not exist",
 						    JOptionPane.WARNING_MESSAGE);
 					}
 					else {
-						jtf
-						    .setText(chooser.getSelectedFile()
-						        .getAbsolutePath());
+						jtf.setText(chooser.getSelectedFile().getAbsolutePath());
 					};
 				}
 				if (kind == 1) {
-					if (!new File(chooser.getSelectedFile().getAbsolutePath())
-					    .exists()) {
-						jtf
-						    .setText(chooser.getSelectedFile()
-						        .getAbsolutePath());
+					if (!new File(chooser.getSelectedFile().getAbsolutePath()).exists()) {
+						jtf.setText(chooser.getSelectedFile().getAbsolutePath());
 					}
 					else {
 						final int i = JOptionPane.showConfirmDialog(null,
-						    "File exists. Do You want to overwrite?",
-						    "Warning, File exists", 2);
+						    "File exists. Do You want to overwrite?", "Warning, File exists", 2);
 						if (i == JOptionPane.YES_OPTION) {
-							jtf.setText(chooser.getSelectedFile()
-							    .getAbsolutePath());
+							jtf.setText(chooser.getSelectedFile().getAbsolutePath());
 						}
 					};
 				};

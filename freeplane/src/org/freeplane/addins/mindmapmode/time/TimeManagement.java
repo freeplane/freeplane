@@ -55,8 +55,7 @@ import org.freeplane.modes.mindmapmode.MModeController;
 /**
  * @author foltin
  */
-class TimeManagement implements PropertyChangeListener, ActionListener,
-        IMapViewChangeListener {
+class TimeManagement implements PropertyChangeListener, ActionListener, IMapViewChangeListener {
 	private class RemoveReminders implements ActionListener {
 		/**
 		 *
@@ -71,11 +70,10 @@ class TimeManagement implements PropertyChangeListener, ActionListener,
 		}
 
 		public void actionPerformed(final ActionEvent e) {
-			for (final Iterator i = timeManagement.getMindMapController()
-			    .getSelectedNodes().iterator(); i.hasNext();) {
+			for (final Iterator i = timeManagement.getMindMapController().getSelectedNodes()
+			    .iterator(); i.hasNext();) {
 				final NodeModel node = (NodeModel) i.next();
-				final ReminderExtension alreadyPresentHook = ReminderExtension
-				    .getExtension(node);
+				final ReminderExtension alreadyPresentHook = ReminderExtension.getExtension(node);
 				if (alreadyPresentHook != null) {
 					reminderHook.undoableToggleHook(node);
 				}
@@ -95,38 +93,33 @@ class TimeManagement implements PropertyChangeListener, ActionListener,
 	private final ReminderHook reminderHook;
 	private JPanel timePanel;
 
-	public TimeManagement(final MModeController modeController,
-	                      final ReminderHook reminderHook) {
+	public TimeManagement(final MModeController modeController, final ReminderHook reminderHook) {
 		this.modeController = modeController;
 		this.reminderHook = reminderHook;
 	}
 
 	public void actionPerformed(final ActionEvent arg0) {
 		final Date date = getCalendarDate();
-		for (final Iterator i = mController.getSelectedNodes().iterator(); i
-		    .hasNext();) {
+		for (final Iterator i = mController.getSelectedNodes().iterator(); i.hasNext();) {
 			final NodeModel node = (NodeModel) i.next();
-			final ReminderExtension alreadyPresentHook = ReminderExtension
-			    .getExtension(node);
+			final ReminderExtension alreadyPresentHook = ReminderExtension.getExtension(node);
 			if (alreadyPresentHook != null) {
-				final Object[] messageArguments = {
-				        new Date(alreadyPresentHook.getRemindUserAt()), date };
+				final Object[] messageArguments = { new Date(alreadyPresentHook.getRemindUserAt()),
+				        date };
 				final MessageFormat formatter = new MessageFormat(
 				    getResourceString("plugins/TimeManagement.xml_reminderNode_onlyOneDate"));
 				final String message = formatter.format(messageArguments);
-				final int result = JOptionPane.showConfirmDialog(Controller
-				    .getController().getViewController().getJFrame(), message,
-				    "FreeMind", JOptionPane.YES_NO_OPTION);
+				final int result = JOptionPane.showConfirmDialog(Controller.getController()
+				    .getViewController().getJFrame(), message, "FreeMind",
+				    JOptionPane.YES_NO_OPTION);
 				if (result == JOptionPane.NO_OPTION) {
 					return;
 				}
 				reminderHook.undoableToggleHook(node);
 			}
-			final ReminderExtension reminderExtension = new ReminderExtension(
-			    node);
+			final ReminderExtension reminderExtension = new ReminderExtension(node);
 			if (reminderExtension == null) {
-				throw new IllegalArgumentException(
-				    "hook not found although it is present!!");
+				throw new IllegalArgumentException("hook not found although it is present!!");
 			}
 			reminderExtension.setRemindUserAt(date.getTime());
 			reminderHook.undoableActivateHook(node, reminderExtension);
@@ -136,14 +129,11 @@ class TimeManagement implements PropertyChangeListener, ActionListener,
 	public void afterMapClose(final MapView oldMapView) {
 	}
 
-	public void afterMapViewChange(final MapView oldMapView,
-	                               final MapView newMapView) {
+	public void afterMapViewChange(final MapView oldMapView, final MapView newMapView) {
 	}
 
-	public void beforeMapViewChange(final MapView oldMapView,
-	                                final MapView newMapView) {
-		Controller.getController().getMapViewManager()
-		    .removeMapViewChangeListener(this);
+	public void beforeMapViewChange(final MapView oldMapView, final MapView newMapView) {
+		Controller.getController().getMapViewManager().removeMapViewChangeListener(this);
 		disposeDialog();
 	}
 
@@ -193,8 +183,8 @@ class TimeManagement implements PropertyChangeListener, ActionListener,
 				gb2.gridx = 0;
 				gb2.gridy = 0;
 				gb2.fill = GridBagConstraints.HORIZONTAL;
-				timePanel.add(new JLabel(
-				    getResourceString("plugins/TimeManagement.xml_hour")), gb2);
+				timePanel
+				    .add(new JLabel(getResourceString("plugins/TimeManagement.xml_hour")), gb2);
 			}
 			{
 				final GridBagConstraints gb2 = new GridBagConstraints();
@@ -202,8 +192,8 @@ class TimeManagement implements PropertyChangeListener, ActionListener,
 				gb2.gridy = 0;
 				gb2.fill = GridBagConstraints.HORIZONTAL;
 				hourField = new JTextField(2);
-				hourField.setText(new Integer(calendar.getCalendar().get(
-				    Calendar.HOUR_OF_DAY)).toString());
+				hourField.setText(new Integer(calendar.getCalendar().get(Calendar.HOUR_OF_DAY))
+				    .toString());
 				timePanel.add(hourField, gb2);
 			}
 			{
@@ -211,8 +201,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener,
 				gb2.gridx = 2;
 				gb2.gridy = 0;
 				gb2.fill = GridBagConstraints.HORIZONTAL;
-				timePanel.add(new JLabel(
-				    getResourceString("plugins/TimeManagement.xml_minute")),
+				timePanel.add(new JLabel(getResourceString("plugins/TimeManagement.xml_minute")),
 				    gb2);
 			}
 			{
@@ -221,8 +210,8 @@ class TimeManagement implements PropertyChangeListener, ActionListener,
 				gb2.gridy = 0;
 				gb2.fill = GridBagConstraints.HORIZONTAL;
 				minuteField = new JTextField(2);
-				String minuteString = new Integer(calendar.getCalendar().get(
-				    Calendar.MINUTE)).toString();
+				String minuteString = new Integer(calendar.getCalendar().get(Calendar.MINUTE))
+				    .toString();
 				if (minuteString.length() < 2) {
 					minuteString = "0" + minuteString;
 				}
@@ -233,8 +222,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener,
 		return timePanel;
 	}
 
-	public boolean isMapViewChangeAllowed(final MapView oldMapView,
-	                                      final MapView newMapView) {
+	public boolean isMapViewChangeAllowed(final MapView oldMapView, final MapView newMapView) {
 		return true;
 	}
 
@@ -245,20 +233,16 @@ class TimeManagement implements PropertyChangeListener, ActionListener,
 
 	public void startup() {
 		if (TimeManagement.sCurrentlyOpenTimeManagement != null) {
-			TimeManagement.sCurrentlyOpenTimeManagement.dialog.getContentPane()
-			    .setVisible(true);
+			TimeManagement.sCurrentlyOpenTimeManagement.dialog.getContentPane().setVisible(true);
 			return;
 		}
 		TimeManagement.sCurrentlyOpenTimeManagement = this;
 		mController = getMindMapController();
-		Controller.getController().getMapViewManager()
-		    .addMapViewChangeListener(this);
-		dialog = new JDialog(Controller.getController().getViewController()
-		    .getJFrame(), false /*
-																			 * not modal
-																			 */);
-		dialog
-		    .setTitle(getResourceString("plugins/TimeManagement.xml_WindowTitle"));
+		Controller.getController().getMapViewManager().addMapViewChangeListener(this);
+		dialog = new JDialog(Controller.getController().getViewController().getJFrame(), false /*
+																				 * not modal
+																				 */);
+		dialog.setTitle(getResourceString("plugins/TimeManagement.xml_WindowTitle"));
 		dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		dialog.addWindowListener(new WindowAdapter() {
 			@Override
@@ -299,16 +283,12 @@ class TimeManagement implements PropertyChangeListener, ActionListener,
 			    getResourceString("plugins/TimeManagement.xml_appendButton"));
 			appendButton.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent arg0) {
-					for (final Iterator i = mController.getSelectedNodes()
-					    .iterator(); i.hasNext();) {
+					for (final Iterator i = mController.getSelectedNodes().iterator(); i.hasNext();) {
 						final NodeModel element = (NodeModel) i.next();
-						final DateFormat df = DateFormat
-						    .getDateInstance(DateFormat.SHORT);
-						final String dateAsString = df
-						    .format(getCalendarDate());
-						((MTextController) mController.getTextController())
-						    .setNodeText(element,
-						        (element.getText() + " " + dateAsString));
+						final DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT);
+						final String dateAsString = df.format(getCalendarDate());
+						((MTextController) mController.getTextController()).setNodeText(element,
+						    (element.getText() + " " + dateAsString));
 					}
 				}
 			});

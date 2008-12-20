@@ -54,11 +54,9 @@ class RemoveArrowLinkAction extends FreeplaneAction {
 		final IUndoableActor actor = new IUndoableActor() {
 			public void act() {
 				final NodeModel source = arrowLink.getSource();
-				final NodeLinks nodeLinks = (NodeLinks) source
-				    .getExtension(NodeLinks.class);
+				final NodeLinks nodeLinks = (NodeLinks) source.getExtension(NodeLinks.class);
 				nodeLinks.removeArrowlink(arrowLink);
-				source.getModeController().getMapController().nodeChanged(
-				    source);
+				source.getModeController().getMapController().nodeChanged(source);
 			}
 
 			public String getDescription() {
@@ -67,15 +65,13 @@ class RemoveArrowLinkAction extends FreeplaneAction {
 
 			public void undo() {
 				final NodeModel source = arrowLink.getSource();
-				NodeLinks nodeLinks = (NodeLinks) source
-				    .getExtension(NodeLinks.class);
+				NodeLinks nodeLinks = (NodeLinks) source.getExtension(NodeLinks.class);
 				if (nodeLinks == null) {
 					nodeLinks = new NodeLinks();
 					source.addExtension(nodeLinks);
 				}
 				nodeLinks.addArrowlink(arrowLink);
-				source.getModeController().getMapController().nodeChanged(
-				    source);
+				source.getModeController().getMapController().nodeChanged(source);
 			}
 		};
 		getMModeController().execute(actor);

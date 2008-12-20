@@ -59,11 +59,9 @@ public class IconContainedCondition implements ICondition {
 		return -1;
 	}
 
-	private static boolean isStateIconContained(final NodeModel node,
-	                                            final String iconName) {
+	private static boolean isStateIconContained(final NodeModel node, final String iconName) {
 		final Set stateIcons = node.getStateIcons().keySet();
-		for (final Iterator stateIcon = stateIcons.iterator(); stateIcon
-		    .hasNext();) {
+		for (final Iterator stateIcon = stateIcons.iterator(); stateIcon.hasNext();) {
 			final String nextIcon = (String) stateIcon.next();
 			if (iconName.equals(nextIcon)) {
 				return true;
@@ -73,8 +71,7 @@ public class IconContainedCondition implements ICondition {
 	}
 
 	static ICondition load(final XMLElement element) {
-		return new IconContainedCondition(element.getAttribute(
-		    IconContainedCondition.ICON, null));
+		return new IconContainedCondition(element.getAttribute(IconContainedCondition.ICON, null));
 	}
 
 	final private String iconName;

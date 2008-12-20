@@ -39,12 +39,10 @@ class JZoomedHotEqn extends sHotEqn {
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
 		final JScrollPane editorScrollPane = new JScrollPane(textArea);
-		editorScrollPane
-		    .setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		editorScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		editorScrollPane.setPreferredSize(new Dimension(500, 160));
-		final JDialog edit = new JDialog(
-		    JOptionPane.getFrameForComponent(this), JZoomedHotEqn.editorTitle,
-		    true);
+		final JDialog edit = new JDialog(JOptionPane.getFrameForComponent(this),
+		    JZoomedHotEqn.editorTitle, true);
 		edit.getContentPane().add(editorScrollPane);
 		edit.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		edit.pack();
@@ -56,8 +54,7 @@ class JZoomedHotEqn extends sHotEqn {
 
 	@Override
 	public Dimension getPreferredSize() {
-		final Dimension dimension = isValid() ? super.getPreferredSize()
-		        : getSizeof(getEquation());
+		final Dimension dimension = isValid() ? super.getPreferredSize() : getSizeof(getEquation());
 		dimension.height *= JZoomedHotEqn.zoom;
 		dimension.width *= JZoomedHotEqn.zoom;
 		return dimension;
@@ -90,8 +87,7 @@ class JZoomedHotEqn extends sHotEqn {
 	@Override
 	public void setBounds(final int x, final int y, final int w, final int h) {
 		if (JZoomedHotEqn.zoom < 1f) {
-			super.setBounds(x, y, (int) (w / JZoomedHotEqn.zoom),
-			    (int) (h / JZoomedHotEqn.zoom));
+			super.setBounds(x, y, (int) (w / JZoomedHotEqn.zoom), (int) (h / JZoomedHotEqn.zoom));
 		}
 		else {
 			super.setBounds(x, y, (w), (h));

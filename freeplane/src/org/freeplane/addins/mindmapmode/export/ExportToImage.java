@@ -43,26 +43,22 @@ import org.freeplane.ui.MenuBuilder;
  */
 public class ExportToImage extends ExportAction {
 	public static void createActions(final ModeController modeController) {
-		final MenuBuilder menuBuilder = modeController
-		    .getUserInputListenerFactory().getMenuBuilder();
+		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory()
+		    .getMenuBuilder();
 		final ExportToImage pngExport = new ExportToImage(
-			"accessories/plugins/ExportToImage_PNG.properties_name", 
-			"png",
+		    "accessories/plugins/ExportToImage_PNG.properties_name", "png",
 		    "Portable Network Graphic (PNG)");
-		pngExport
-		    .setTooltip("accessories/plugins/ExportToImage_PNG.properties_documentation");
+		pngExport.setTooltip("accessories/plugins/ExportToImage_PNG.properties_documentation");
 		modeController.addAction("ExportToImage_PNG", pngExport);
-		menuBuilder.addAction("/menu_bar/file/export/export", pngExport,
-		    "ExportToImage_PNG", MenuBuilder.AS_CHILD);
+		menuBuilder.addAction("/menu_bar/file/export/export", pngExport, "ExportToImage_PNG",
+		    MenuBuilder.AS_CHILD);
 		final ExportToImage jpgExport = new ExportToImage(
-			"accessories/plugins/ExportToImage_JPEG.properties_name", 
-			"jpg",
+		    "accessories/plugins/ExportToImage_JPEG.properties_name", "jpg",
 		    "Compressed image (JPEG)");
-		pngExport
-		    .setTooltip("accessories/plugins/ExportToImage_JPEG.properties_documentation");
+		pngExport.setTooltip("accessories/plugins/ExportToImage_JPEG.properties_documentation");
 		modeController.addAction("ExportToImage_JPEG", jpgExport);
-		menuBuilder.addAction("/menu_bar/file/export/export", jpgExport,
-		    "ExportToImage_JPEG", MenuBuilder.AS_CHILD);
+		menuBuilder.addAction("/menu_bar/file/export/export", jpgExport, "ExportToImage_JPEG",
+		    MenuBuilder.AS_CHILD);
 	}
 
 	private final String imageDescripton;
@@ -90,8 +86,7 @@ public class ExportToImage extends ExportAction {
 			return false;
 		}
 		try {
-			Controller.getController().getViewController().setWaitingCursor(
-			    true);
+			Controller.getController().getViewController().setWaitingCursor(true);
 			final FileOutputStream out = new FileOutputStream(chosenFile);
 			ImageIO.write(image, imageType, out);
 			out.close();
@@ -108,14 +103,12 @@ public class ExportToImage extends ExportAction {
 		final Source xsltSource = new StreamSource(xsltStream);
 		final Result result = new StreamResult(resultFile);
 		try {
-			final TransformerFactory transFact = TransformerFactory
-			    .newInstance();
+			final TransformerFactory transFact = TransformerFactory.newInstance();
 			final Transformer trans = transFact.newTransformer(xsltSource);
-			trans.setParameter("destination_dir", resultFile.getName()
-			        + "_files/");
+			trans.setParameter("destination_dir", resultFile.getName() + "_files/");
 			trans.setParameter("area_code", areaCode);
-			trans.setParameter("folding_type", Controller
-			    .getResourceController().getProperty("html_export_folding"));
+			trans.setParameter("folding_type", Controller.getResourceController().getProperty(
+			    "html_export_folding"));
 			trans.transform(xmlSource, result);
 		}
 		catch (final Exception e) {
