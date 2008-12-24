@@ -28,6 +28,7 @@ import org.freeplane.controller.Controller;
 import org.freeplane.controller.filter.condition.ConditionFactory;
 import org.freeplane.controller.filter.condition.ICondition;
 import org.freeplane.controller.filter.condition.IElementaryConditionController;
+import org.freeplane.controller.filter.util.ExtendedComboBoxModel;
 import org.freeplane.controller.filter.util.IListModel;
 import org.freeplane.controller.resources.NamedObject;
 import org.freeplane.io.xml.n3.nanoxml.XMLElement;
@@ -37,6 +38,8 @@ import org.freeplane.io.xml.n3.nanoxml.XMLElement;
  * 21.12.2008
  */
 public class AttributeConditionController implements IElementaryConditionController {
+	private ExtendedComboBoxModel values = new ExtendedComboBoxModel();
+
 	public boolean canEditValues(final Object selectedItem, final NamedObject simpleCond) {
 		return true;
 	}
@@ -129,8 +132,9 @@ public class AttributeConditionController implements IElementaryConditionControl
 	}
 
 	public ComboBoxModel getValuesForProperty(final Object selectedItem) {
-		return Controller.getController().getModel().getRegistry().getAttributes().getElement(
-		    selectedItem.toString()).getValues();
+		values.setExtensionList(Controller.getController().getModel().getRegistry().getAttributes().getElement(
+		    selectedItem.toString()).getValues());
+		return values;
 	}
 
 	public boolean isCaseDependent(final Object selectedItem, final NamedObject simpleCond) {
