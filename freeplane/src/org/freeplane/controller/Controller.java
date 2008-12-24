@@ -27,6 +27,7 @@ import javax.swing.Action;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
+import org.freeplane.controller.filter.FilterController;
 import org.freeplane.controller.help.HelpController;
 import org.freeplane.controller.print.PrintController;
 import org.freeplane.controller.resources.ResourceController;
@@ -39,7 +40,6 @@ import org.freeplane.map.attribute.ModelessAttributeController;
 import org.freeplane.map.tree.MapModel;
 import org.freeplane.map.tree.view.MapView;
 import org.freeplane.modes.ModeController;
-import org.freeplane.service.filter.FilterController;
 
 /**
  * Provides the methods to edit/change a Node. Forwards all messages to
