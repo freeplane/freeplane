@@ -43,17 +43,12 @@ public class NamedObject {
 		this.name = name;
 	}
 
-	@Override
-	public boolean equals(final Object o) {
-		if (o instanceof NamedObject) {
-			final NamedObject ts = (NamedObject) o;
-			return object.equals(ts.object);
-		}
-		return object.equals(o);
-	}
-
 	public Object getObject() {
 		return object;
+	}
+
+	public boolean objectEquals(final Object o) {
+		return getObject().equals(o);
 	}
 
 	@Override

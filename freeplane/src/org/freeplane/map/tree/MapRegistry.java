@@ -24,12 +24,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.freeplane.controller.filter.util.SortedMapListModel;
 import org.freeplane.io.ITreeWriter;
 import org.freeplane.map.attribute.AttributeRegistry;
 import org.freeplane.map.attribute.NodeAttributeTableModel;
 import org.freeplane.map.icon.MindIcon;
 import org.freeplane.modes.ModeController;
-import org.freeplane.service.filter.util.SortedMapListModel;
 
 /**
  * @author Dimitry Polivaev

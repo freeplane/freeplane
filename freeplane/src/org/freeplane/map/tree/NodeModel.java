@@ -40,6 +40,8 @@ import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
+import org.freeplane.controller.filter.FilterInfo;
+import org.freeplane.controller.filter.IFilter;
 import org.freeplane.extension.ExtensionArray;
 import org.freeplane.extension.IExtension;
 import org.freeplane.extension.IExtensionCollection;
@@ -59,8 +61,6 @@ import org.freeplane.map.tree.view.INodeViewVisitor;
 import org.freeplane.map.tree.view.NodeView;
 import org.freeplane.modes.ModeController;
 import org.freeplane.modes.mindmapmode.EncryptionModel;
-import org.freeplane.service.filter.FilterInfo;
-import org.freeplane.service.filter.IFilter;
 
 /**
  * This class represents a single Node of a Tree. It contains direct handles to

@@ -22,7 +22,7 @@ package org.freeplane.map.attribute;
 import javax.swing.table.AbstractTableModel;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.service.filter.util.ISortedListModel;
+import org.freeplane.controller.filter.util.IListModel;
 
 /**
  * @author Dimitry Polivaev
@@ -87,7 +87,7 @@ public class AttributeRegistryTableModel extends AbstractTableModel {
 			case 2:
 				return Boolean.class;
 			case 3:
-				return ISortedListModel.class;
+				return IListModel.class;
 		}
 		return Object.class;
 	}

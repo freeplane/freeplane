@@ -44,12 +44,12 @@ import javax.swing.border.EmptyBorder;
 
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.FreeplaneAction;
+import org.freeplane.controller.filter.util.IListModel;
 import org.freeplane.controller.views.IMapViewChangeListener;
 import org.freeplane.main.Tools;
 import org.freeplane.map.attribute.AttributeRegistry;
 import org.freeplane.map.tree.MapRegistry;
 import org.freeplane.map.tree.view.MapView;
-import org.freeplane.service.filter.util.ISortedListModel;
 
 /**
  * @author Dimitry Polivaev
@@ -99,7 +99,7 @@ public class AttributeManagerDialog extends JDialog implements IMapViewChangeLis
 
 	class EditListAction extends AbstractAction {
 		private String labelText;
-		private ISortedListModel listBoxModel;
+		private IListModel listBoxModel;
 		private int row = 0;
 		private String title;
 
@@ -117,7 +117,7 @@ public class AttributeManagerDialog extends JDialog implements IMapViewChangeLis
 		}
 
 		public void setListBoxModel(final String title, final String labelText,
-		                            final ISortedListModel listBoxModel) {
+		                            final IListModel listBoxModel) {
 			this.title = title;
 			this.labelText = labelText;
 			this.listBoxModel = listBoxModel;

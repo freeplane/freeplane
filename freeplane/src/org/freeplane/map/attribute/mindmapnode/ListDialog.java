@@ -52,8 +52,8 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
 import org.freeplane.controller.Controller;
+import org.freeplane.controller.filter.util.IListModel;
 import org.freeplane.main.Tools;
-import org.freeplane.service.filter.util.ISortedListModel;
 import org.freeplane.ui.MenuBuilder;
 
 public class ListDialog extends JDialog {
@@ -162,7 +162,7 @@ public class ListDialog extends JDialog {
 
 	public static void showDialog(final Component frameComp, final Component locationComp,
 	                              final String labelText, final String title,
-	                              final ISortedListModel possibleValues, final String longValue) {
+	                              final IListModel possibleValues, final String longValue) {
 		final Frame frame = JOptionPane.getFrameForComponent(frameComp);
 		ListDialog.dialog = new ListDialog(frame, locationComp, labelText, title, possibleValues,
 		    longValue);
@@ -171,14 +171,14 @@ public class ListDialog extends JDialog {
 	}
 
 	final private JButton addButton;
-	private ISortedListModel data = null;
+	private IListModel data = null;
 	final private JButton deleteButton;
 	final private JList list;
 	final private JButton renameButton;
 	final private JTextField textField;
 
 	private ListDialog(final Frame frame, final Component locationComp, final String labelText,
-	                   final String title, final ISortedListModel data, final String longValue) {
+	                   final String title, final IListModel data, final String longValue) {
 		super(frame, title, true);
 		this.data = data;
 		final JButton closeButton = new JButton();

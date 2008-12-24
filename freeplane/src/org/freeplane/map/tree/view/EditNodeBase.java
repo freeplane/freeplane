@@ -109,8 +109,8 @@ public class EditNodeBase {
 		EditDialog(final EditNodeBase base) {
 			super(Controller.getController().getViewController().getJFrame(), base
 			    .getText("edit_long_node"), /*
-							    		    				    				    				    		    				    											 * modal=
-							    		    				    				    				    		    				    											 */
+									    		    				    				    				    		    				    											 * modal=
+									    		    				    				    				    		    				    											 */
 			true);
 			getContentPane().setLayout(new BorderLayout());
 			setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);

@@ -24,10 +24,10 @@ import javax.swing.ComboBoxModel;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 
-import org.freeplane.service.filter.util.ISortedListModel;
+import org.freeplane.controller.filter.util.IListModel;
 
 class AttributeRegistryComboBoxColumnModel extends AbstractListModel implements TableModelListener,
-        ComboBoxModel, ISortedListModel {
+        ComboBoxModel, IListModel {
 	final private AttributeRegistry model;
 	private Object selectedItem;
 

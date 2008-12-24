@@ -49,8 +49,8 @@ class ImportExplorerFavoritesAction extends FreeplaneAction {
 			final File folder = chooser.getSelectedFile();
 			Controller.getController().getViewController().out("Importing Favorites ...");
 			importExplorerFavorites(folder, getModeController().getSelectedNode(),/*
-																																																 * redisplay=
-																																																 */
+																																																			 * redisplay=
+																																																			 */
 			true);
 			Controller.getController().getViewController().out("Favorites imported.");
 		}

@@ -27,6 +27,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import org.freeplane.controller.Controller;
+import org.freeplane.controller.filter.FilterController;
 import org.freeplane.controller.help.HelpController;
 import org.freeplane.controller.print.PrintController;
 import org.freeplane.controller.resources.ApplicationResourceController;
@@ -39,7 +40,6 @@ import org.freeplane.modes.browsemode.BModeControllerFactory;
 import org.freeplane.modes.filemode.FModeControllerFactory;
 import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.modes.mindmapmode.MModeControllerFactory;
-import org.freeplane.service.filter.FilterController;
 
 public class FreemindStarter {
 	public static final String LOAD_LAST_MAP = "load_last_map";

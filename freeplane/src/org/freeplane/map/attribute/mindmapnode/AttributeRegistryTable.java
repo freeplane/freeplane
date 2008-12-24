@@ -37,7 +37,7 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.service.filter.util.ISortedListModel;
+import org.freeplane.controller.filter.util.IListModel;
 
 /**
  * @author Dimitry Polivaev
@@ -139,8 +139,8 @@ class AttributeRegistryTable extends JTable {
 		selectAllButtonRenderer = new ButtonRenderer(AttributeRegistryTable.checkBoxImage,
 		    Controller.getText("attributes_select_all_tooltip"));
 		selectAllButtonEditor = new ButtonEditor(new ToggleAllAction());
-		setDefaultEditor(ISortedListModel.class, new ButtonEditor(editListAction));
-		setDefaultRenderer(ISortedListModel.class, AttributeRegistryTable.editButtonRenderer);
+		setDefaultEditor(IListModel.class, new ButtonEditor(editListAction));
+		setDefaultRenderer(IListModel.class, AttributeRegistryTable.editButtonRenderer);
 		setRowHeight(20);
 		setRowSelectionAllowed(false);
 	}
@@ -192,7 +192,7 @@ class AttributeRegistryTable extends JTable {
 	@Override
 	public Component prepareEditor(final TableCellEditor editor, final int row, final int column) {
 		if (column == 3) {
-			final ISortedListModel list = (ISortedListModel) getModel().getValueAt(row, column);
+			final IListModel list = (IListModel) getModel().getValueAt(row, column);
 			final String title = getModel().getValueAt(row, 0).toString();
 			final String labelText = Controller.getText("attribute_list_box_label_text");
 			editListAction.setListBoxModel(title, labelText, list);

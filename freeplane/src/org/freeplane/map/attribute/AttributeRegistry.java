@@ -27,12 +27,12 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.EventListenerList;
 
+import org.freeplane.controller.filter.util.IListModel;
+import org.freeplane.controller.filter.util.SortedComboBoxModel;
+import org.freeplane.controller.filter.util.SortedMapVector;
 import org.freeplane.io.ITreeWriter;
 import org.freeplane.io.xml.n3.nanoxml.XMLElement;
 import org.freeplane.map.attribute.mindmapnode.IAttributesListener;
-import org.freeplane.service.filter.util.ISortedListModel;
-import org.freeplane.service.filter.util.SortedComboBoxModel;
-import org.freeplane.service.filter.util.SortedMapVector;
 
 /**
  * @author Dimitry Polivaev
@@ -204,7 +204,7 @@ public class AttributeRegistry {
 		return elements.getKey(index);
 	}
 
-	public ISortedListModel getListBoxModel() {
+	public IListModel getListBoxModel() {
 		return getCombinedModel();
 	}
 
@@ -225,7 +225,7 @@ public class AttributeRegistry {
 
 	/**
 	 */
-	public ISortedListModel getValues(final int row) {
+	public IListModel getValues(final int row) {
 		if (row == AttributeRegistry.GLOBAL) {
 			return getListBoxModel();
 		}
