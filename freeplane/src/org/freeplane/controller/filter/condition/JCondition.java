@@ -17,57 +17,20 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.service.filter;
+package org.freeplane.service.filter.condition;
+
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
 
 /**
  * @author Dimitry Polivaev
  */
-public class FilterInfo {
-	private int info = IFilter.FILTER_INITIAL_VALUE;
-
+public class JCondition extends JPanel {
 	/**
-	 *
 	 */
-	public FilterInfo() {
+	public JCondition() {
 		super();
-	}
-
-	void add(final int flag) {
-		if ((flag & (IFilter.FILTER_SHOW_MATCHED | IFilter.FILTER_SHOW_HIDDEN)) != 0) {
-			info &= ~IFilter.FILTER_INITIAL_VALUE;
-		}
-		info |= flag;
-	}
-
-	int get() {
-		return info;
-	}
-
-	/**
-	 */
-	public boolean isAncestor() {
-		return (info & IFilter.FILTER_SHOW_ANCESTOR) != 0;
-	}
-
-	/**
-	 */
-	public boolean isMatched() {
-		return (info & IFilter.FILTER_SHOW_MATCHED) != 0;
-	}
-
-	public void reset() {
-		info = IFilter.FILTER_INITIAL_VALUE;
-	}
-
-	public void setAncestor() {
-		add(IFilter.FILTER_SHOW_ANCESTOR);
-	}
-
-	public void setDescendant() {
-		add(IFilter.FILTER_SHOW_DESCENDANT);
-	}
-
-	public void setMatched() {
-		add(IFilter.FILTER_SHOW_MATCHED);
+		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+		setOpaque(false);
 	}
 }

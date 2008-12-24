@@ -17,34 +17,31 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.service.filter;
+package org.freeplane.service.filter.util;
 
-import org.freeplane.map.tree.NodeModel;
+import javax.swing.ComboBoxModel;
 
 /**
  * @author Dimitry Polivaev
  */
-public interface IFilter {
-	public static final int FILTER_INITIAL_VALUE = 1;
-	static final int FILTER_SHOW_ANCESTOR = 4;
-	static final int FILTER_SHOW_DESCENDANT = 8;
-	static final int FILTER_SHOW_ECLIPSED = 16;
-	static final int FILTER_SHOW_HIDDEN = 32;
-	static final int FILTER_SHOW_MATCHED = 2;
+public class SortedComboBoxModel extends SortedMapListModel implements
+        ISortedListModel, ComboBoxModel {
+	private Object selectedItem;
 
-	void applyFilter();
+	/*
+	 * (non-Javadoc)
+	 * @see javax.swing.ComboBoxModel#getSelectedItem()
+	 */
+	public Object getSelectedItem() {
+		return selectedItem;
+	}
 
-	boolean areAncestorsShown();
-
-	boolean areDescendantsShown();
-
-	boolean areEclipsedShown();
-
-	boolean areHiddenShown();
-
-	boolean areMatchedShown();
-
-	Object getCondition();
-
-	boolean isVisible(NodeModel node);
+	/*
+	 * (non-Javadoc)
+	 * @see javax.swing.ComboBoxModel#setSelectedItem(java.lang.Object)
+	 */
+	public void setSelectedItem(final Object o) {
+		selectedItem = o;
+		fireContentsChanged(this, -1, -1);
+	}
 }
