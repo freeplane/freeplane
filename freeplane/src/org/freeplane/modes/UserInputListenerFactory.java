@@ -86,6 +86,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		private IMapMouseReceiver mReceiver;
 
 		public DefaultMapMouseListener(final IMapMouseReceiver mReceiver) {
+			this.mReceiver = mReceiver;
 		}
 
 		private void handlePopup(final MouseEvent e) {
