@@ -103,11 +103,14 @@ class EdgeBuilder implements INodeCreator, INodeWriter<IExtension> {
 		if (style != null || color != null || width != EdgeController.DEFAULT_WIDTH) {
 			final XMLElement edge = new XMLElement();
 			edge.setName("edge");
+			boolean relevant = false;
 			if (style != null) {
 				edge.setAttribute("STYLE", style);
+				relevant = true;
 			}
 			if (color != null) {
 				edge.setAttribute("COLOR", Tools.colorToXml(color));
+				relevant = true;
 			}
 			if (width != EdgeModel.WIDTH_PARENT) {
 				if (width == EdgeModel.WIDTH_THIN) {
@@ -116,8 +119,11 @@ class EdgeBuilder implements INodeCreator, INodeWriter<IExtension> {
 				else {
 					edge.setAttribute("WIDTH", Integer.toString(width));
 				}
+				relevant = true;
 			}
-			writer.addNode(model, edge);
+			if(relevant){
+				writer.addNode(model, edge);
+			}
 		}
 	}
 }

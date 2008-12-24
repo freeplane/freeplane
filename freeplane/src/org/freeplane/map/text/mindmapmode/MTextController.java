@@ -37,11 +37,13 @@ import org.freeplane.main.ExampleFileFilter;
 import org.freeplane.main.FixedHTMLWriter;
 import org.freeplane.main.Tools;
 import org.freeplane.map.link.mindmapmode.MLinkController;
+import org.freeplane.map.nodestyle.mindmapmode.MNodeStyleController;
 import org.freeplane.map.text.TextController;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.mindmapmode.MMapController;
 import org.freeplane.map.tree.view.NodeView;
 import org.freeplane.map.url.mindmapmode.FileManager;
+import org.freeplane.modes.ModeController;
 import org.freeplane.modes.UserInputListenerFactory;
 import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.ui.IEditHandler;
@@ -218,10 +220,11 @@ public class MTextController extends TextController {
 		final String newLowerContent = strings[1];
 		setNodeText(node, newUpperContent);
 		final NodeModel parent = node.getParentNode();
-		final NodeModel lowerNode = ((MMapController) getModeController().getMapController())
+		final ModeController modeController = getModeController();
+		final NodeModel lowerNode = ((MMapController) modeController.getMapController())
 		    .addNewNode(parent, parent.getChildPosition(node) + 1, node.isLeft());
-		lowerNode.setColor(node.getColor());
-		lowerNode.setFont(node.getFont());
+		MNodeStyleController nodeStyleController = (MNodeStyleController)modeController.getNodeStyleController();
+		nodeStyleController.copyStyle(node, lowerNode);
 		setNodeText(lowerNode, newLowerContent);
 	}
 

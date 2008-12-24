@@ -17,7 +17,6 @@
  */
 package org.freeplane.addins.mindmapmode;
 
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.io.StringReader;
@@ -33,10 +32,10 @@ import javax.swing.text.html.HTMLEditorKit;
 import org.freeplane.controller.ActionDescriptor;
 import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.main.FixedHTMLWriter;
+import org.freeplane.map.nodestyle.mindmapmode.MNodeStyleController;
 import org.freeplane.map.text.mindmapmode.MTextController;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.mindmapmode.MMapController;
-import org.freeplane.map.tree.view.MapView;
 import org.freeplane.modes.ModeController;
 
 /**
@@ -100,21 +99,17 @@ public class SplitNode extends FreeplaneAction {
 		final NodeModel parent = node.getParentNode();
 		final int nodePosition = parent.getChildPosition(node) + 1;
 		for (int i = parts.length - 1; i > firstPartNumber; i--) {
-			final NodeModel lowerNode = ((MMapController) c.getMapController()).addNewNode(parent,
+			final MMapController mapController = (MMapController) c.getMapController();
+			final NodeModel lowerNode = mapController.addNewNode(parent,
 			    nodePosition, node.isLeft());
 			final String part = parts[i];
 			if (part == null) {
 				continue;
 			}
-			lowerNode.setColor(node.getColor());
-			lowerNode.setFont(node.getFont());
 			((MTextController) c.getTextController()).setNodeText(lowerNode, part);
-			EventQueue.invokeLater(new Runnable() {
-				public void run() {
-					final MapView mapView = c.getMapView();
-					mapView.toggleSelected(mapView.getNodeView(lowerNode));
-				}
-			});
+			MNodeStyleController nodeStyleController = (MNodeStyleController)c.getNodeStyleController();
+			nodeStyleController.copyStyle(node, lowerNode);
+			mapController.setFolded(lowerNode, ! lowerNode.isFolded());
 		}
 	}
 

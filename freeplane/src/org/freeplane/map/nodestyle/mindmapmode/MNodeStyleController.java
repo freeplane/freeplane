@@ -77,9 +77,9 @@ public class MNodeStyleController extends NodeStyleController {
 		modeController.addNodeSelectionListener(menuContributor);
 	}
 
-	private Font createOwnFont(final NodeModel node) {
+	private NodeStyleModel createOwnFont(final NodeModel node) {
 		{
-			final Font font = node.getFont();
+			final NodeStyleModel font = node.getNodeStyleModel();
 			if (font != null) {
 				return font;
 			}
@@ -87,9 +87,7 @@ public class MNodeStyleController extends NodeStyleController {
 		final MModeController modeController = (MModeController) node.getModeController();
 		final IUndoableActor actor = new IUndoableActor() {
 			public void act() {
-				final Font font = getFont(node);
-				final Font fontCopy = new Font(font.getFamily(), font.getStyle(), font.getSize());
-				node.setFont(fontCopy);
+				node.addExtension(new NodeStyleModel());
 			}
 
 			public String getDescription() {
@@ -97,11 +95,11 @@ public class MNodeStyleController extends NodeStyleController {
 			}
 
 			public void undo() {
-				node.setFont(null);
+				node.removeExtension(NodeStyleModel.class);
 			}
 		};
 		modeController.execute(actor);
-		return node.getFont();
+		return node.getNodeStyleModel();
 	}
 
 	/**
@@ -178,9 +176,8 @@ public class MNodeStyleController extends NodeStyleController {
 		final MModeController modeController = (MModeController) node.getModeController();
 		final IUndoableActor actor = new IUndoableActor() {
 			public void act() {
-				final Font font = node.getFont();
-				final Font newFont = new Font(fontFamily, font.getStyle(), font.getSize());
-				node.setFont(newFont);
+				final NodeStyleModel font = node.getNodeStyleModel();
+				font.setFontFamilyName(fontFamily);
 				node.getModeController().getMapController().nodeChanged(node);
 			}
 
@@ -189,9 +186,8 @@ public class MNodeStyleController extends NodeStyleController {
 			}
 
 			public void undo() {
-				final Font font = node.getFont();
-				final Font newFont = new Font(oldFontFamily, font.getStyle(), font.getSize());
-				node.setFont(newFont);
+				final NodeStyleModel font = node.getNodeStyleModel();
+				font.setFontFamilyName(oldFontFamily);
 				node.getModeController().getMapController().nodeChanged(node);
 			}
 		};
@@ -223,9 +219,8 @@ public class MNodeStyleController extends NodeStyleController {
 		final MModeController modeController = (MModeController) node.getModeController();
 		final IUndoableActor actor = new IUndoableActor() {
 			public void act() {
-				final Font font = node.getFont();
-				final Font newFont = new Font(font.getFamily(), font.getStyle(), fontSize);
-				node.setFont(newFont);
+				final NodeStyleModel font = node.getNodeStyleModel();
+				font.setFontSize(fontSize);
 				node.getModeController().getMapController().nodeChanged(node);
 			}
 
@@ -234,9 +229,8 @@ public class MNodeStyleController extends NodeStyleController {
 			}
 
 			public void undo() {
-				final Font font = node.getFont();
-				final Font newFont = new Font(font.getFamily(), font.getStyle(), oldFontSize);
-				node.setFont(newFont);
+				final NodeStyleModel font = node.getNodeStyleModel();
+				font.setFontSize(oldFontSize);
 				node.getModeController().getMapController().nodeChanged(node);
 			}
 		};
@@ -256,28 +250,30 @@ public class MNodeStyleController extends NodeStyleController {
 		final IUndoableActor actor = new IUndoableActor() {
 			public void act() {
 				node.setShape(shape);
-				nodeStyleChanged(node);
+				modeController.getMapController().nodeChanged(node);
+				nodeShapeRefresh(node);
 			}
 
 			public String getDescription() {
 				return "setShape";
 			}
 
-			private void nodeStyleChanged(final NodeModel node) {
-				modeController.getMapController().nodeChanged(node);
+			private void nodeShapeRefresh(final NodeModel node) {
 				final ListIterator childrenFolded = modeController.getMapController()
 				    .childrenFolded(node);
 				while (childrenFolded.hasNext()) {
 					final NodeModel child = (NodeModel) childrenFolded.next();
-					if (!(child.getShape() != null)) {
-						nodeStyleChanged(child);
+					if (child.getShape() == null) {
+						modeController.getMapController().nodeRefresh(child);
+						nodeShapeRefresh(child);
 					}
 				}
 			}
 
 			public void undo() {
 				node.setShape(oldShape);
-				nodeStyleChanged(node);
+				modeController.getMapController().nodeChanged(node);
+				nodeShapeRefresh(node);
 			}
 		};
 		modeController.execute(actor);
@@ -296,10 +292,9 @@ public class MNodeStyleController extends NodeStyleController {
 			}
 
 			private void toggleBold(final NodeModel node) {
-				final Font font = node.getFont();
-				final Font newFont = new Font(font.getFamily(), font.getStyle() ^ Font.BOLD, font
-				    .getSize());
-				node.setFont(newFont);
+				final Font font = getFont(node);
+				final NodeStyleModel style = node.getNodeStyleModel();
+				style.setBold(! font.isBold());
 				node.getModeController().getMapController().nodeChanged(node);
 			}
 
@@ -323,10 +318,9 @@ public class MNodeStyleController extends NodeStyleController {
 			}
 
 			private void toggleItalic(final NodeModel node) {
-				final Font font = node.getFont();
-				final Font newFont = new Font(font.getFamily(), font.getStyle() ^ Font.ITALIC, font
-				    .getSize());
-				node.setFont(newFont);
+				final Font font = getFont(node);
+				final NodeStyleModel style = node.getNodeStyleModel();
+				style.setItalic(! font.isItalic());
 				node.getModeController().getMapController().nodeChanged(node);
 			}
 
@@ -336,4 +330,17 @@ public class MNodeStyleController extends NodeStyleController {
 		};
 		modeController.execute(actor);
 	}
+
+	public void copyStyle(NodeModel source, NodeModel target) {
+		final NodeStyleModel sourceStyleModel = source.getNodeStyleModel();
+		if(sourceStyleModel != null){
+			setColor(target, sourceStyleModel.getColor());
+			setBackgroundColor(target, sourceStyleModel.getBackgroundColor());
+			setShape(target, sourceStyleModel.getShape());
+			setFontFamily(target, sourceStyleModel.getFontFamilyName());
+			setFontSize(target, sourceStyleModel.getFontSize());
+			setBold(target, sourceStyleModel.isBold());
+			setItalic(target, sourceStyleModel.isItalic());
+		}
+    }
 }

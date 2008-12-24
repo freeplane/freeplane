@@ -19,7 +19,6 @@
  */
 package org.freeplane.map.clipboard;
 
-import java.awt.Font;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Collection;
@@ -30,6 +29,7 @@ import org.freeplane.controller.Controller;
 import org.freeplane.main.HtmlTools;
 import org.freeplane.main.Tools;
 import org.freeplane.map.icon.MindIcon;
+import org.freeplane.map.nodestyle.NodeStyleModel;
 import org.freeplane.map.tree.NodeModel;
 
 class MindMapHTMLWriter {
@@ -128,21 +128,23 @@ class MindMapHTMLWriter {
 		if (model.getColor() != null) {
 			fontStyle += "color: " + Tools.colorToXml(model.getColor()) + ";";
 		}
-		final Font font = model.getFont();
+		final NodeStyleModel font = model.getNodeStyleModel();
 		if (font != null) {
-			if (font.getSize() != 0) {
+			if (font.getFontSize() != null) {
 				final int defaultFontSize = Integer.parseInt(getProperty("defaultfontsize"));
-				final int procentSize = (int) (font.getSize() * 100 / defaultFontSize);
+				final int procentSize = (int) (font.getFontSize() * 100 / defaultFontSize);
 				if (procentSize != 100) {
 					fontStyle += "font-size: " + procentSize + "%;";
 				}
 			}
-			final String fontFamily = font.getFamily();
-			fontStyle += "font-family: " + fontFamily + ", sans-serif; ";
-			if (font.isItalic()) {
+			final String fontFamily = font.getFontFamilyName();
+			if(fontFamily != null){
+			 fontStyle += "font-family: " + fontFamily + ", sans-serif; ";
+			}
+			if (Boolean.TRUE.equals(font.isItalic())) {
 				fontStyle += "font-style: italic; ";
 			}
-			if (font.isBold()) {
+			if (Boolean.TRUE.equals(font.isBold())){
 				fontStyle += "font-weight: bold; ";
 			}
 		}

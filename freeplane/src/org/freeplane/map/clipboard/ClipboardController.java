@@ -20,7 +20,6 @@
 package org.freeplane.map.clipboard;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.Transferable;
@@ -41,6 +40,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Vector;
 
+import org.freeplane.map.nodestyle.NodeStyleModel;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.view.MapView;
 import org.freeplane.map.tree.view.NodeView;
@@ -359,16 +359,16 @@ public class ClipboardController {
 		if (mindMapNodeModel.getColor() != null) {
 			pre += "\\cf" + ((Integer) colorTable.get(mindMapNodeModel.getColor())).intValue();
 		}
-		final Font font = mindMapNodeModel.getFont();
+		final NodeStyleModel font = mindMapNodeModel.getNodeStyleModel();
 		if (font != null) {
-			if (font.isItalic()) {
+			if (Boolean.TRUE.equals(font.isItalic())) {
 				pre += "\\i ";
 			}
-			if (font.isBold()) {
+			if (Boolean.TRUE.equals(font.isBold())) {
 				pre += "\\b ";
 			}
-			if (font.getSize() != 0) {
-				fontsize = "\\fs" + Math.round(1.5 * font.getSize());
+			if (font.getFontSize() != null) {
+				fontsize = "\\fs" + Math.round(1.5 * font.getFontSize());
 				pre += fontsize;
 			}
 		}

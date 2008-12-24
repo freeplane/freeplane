@@ -78,7 +78,7 @@ public class EdgeController {
 				if (node.isRoot()) {
 					return standardColor;
 				}
-				return getProperty(node.getParentNode());
+				return getColor(node.getParentNode());
 			}
 		});
 		addStyleGetter(PropertyChain.NODE, new IPropertyGetter<String, NodeModel>() {
@@ -92,7 +92,7 @@ public class EdgeController {
 				if (node.isRoot()) {
 					return standardStyle;
 				}
-				return getProperty(node.getParentNode());
+				return getStyle(node.getParentNode());
 			}
 		});
 		addWidthGetter(PropertyChain.NODE, new IPropertyGetter<Integer, NodeModel>() {
@@ -104,7 +104,7 @@ public class EdgeController {
 						width = EdgeModel.WIDTH_THIN;
 						return new Integer(width);
 					}
-					return getProperty(node.getParentNode());
+					return getWidth(node.getParentNode());
 				}
 				return width != DEFAULT_WIDTH ? new Integer(width) : null;
 			}

@@ -20,6 +20,7 @@
 package org.freeplane.map.edge.mindmapmode;
 
 import java.awt.Color;
+import java.util.ListIterator;
 
 import org.freeplane.map.edge.EdgeController;
 import org.freeplane.map.edge.EdgeModel;
@@ -86,6 +87,7 @@ public class MEdgeController extends EdgeController {
 			public void act() {
 				node.createEdge().setStyle(style);
 				modeController.getMapController().nodeChanged(node);
+				edgeStyleRefresh(node);
 			}
 
 			public String getDescription() {
@@ -95,6 +97,19 @@ public class MEdgeController extends EdgeController {
 			public void undo() {
 				node.createEdge().setStyle(oldStyle);
 				modeController.getMapController().nodeChanged(node);
+				edgeStyleRefresh(node);
+			}
+			private void edgeStyleRefresh(final NodeModel node) {
+				final ListIterator childrenFolded = modeController.getMapController()
+				    .childrenFolded(node);
+				while (childrenFolded.hasNext()) {
+					final NodeModel child = (NodeModel) childrenFolded.next();
+					final EdgeModel edge = child.getEdge();
+					if (edge == null || edge.getStyle() == null) {
+						modeController.getMapController().nodeRefresh(child);
+						edgeStyleRefresh(child);
+					}
+				}
 			}
 		};
 		modeController.execute(actor);
@@ -119,6 +134,18 @@ public class MEdgeController extends EdgeController {
 			public void undo() {
 				node.createEdge().setWidth(oldWidth);
 				modeController.getMapController().nodeChanged(node);
+			}
+			private void edgeWidthRefresh(final NodeModel node) {
+				final ListIterator childrenFolded = modeController.getMapController()
+				    .childrenFolded(node);
+				while (childrenFolded.hasNext()) {
+					final NodeModel child = (NodeModel) childrenFolded.next();
+					final EdgeModel edge = child.getEdge();
+					if (edge == null || edge.getWidth() == EdgeModel.WIDTH_PARENT) {
+						modeController.getMapController().nodeRefresh(child);
+						edgeWidthRefresh(child);
+					}
+				}
 			}
 		};
 		modeController.execute(actor);

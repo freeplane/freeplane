@@ -20,7 +20,6 @@
 package org.freeplane.map.pattern.mindmapnode;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -33,6 +32,7 @@ import org.freeplane.controller.Controller;
 import org.freeplane.main.Tools;
 import org.freeplane.map.edge.EdgeModel;
 import org.freeplane.map.icon.MindIcon;
+import org.freeplane.map.nodestyle.NodeStyleModel;
 import org.freeplane.map.tree.NodeModel;
 
 import deprecated.freemind.common.ITextTranslator;
@@ -84,7 +84,7 @@ public class StylePatternFactory {
 			subPattern.setValue(node.getShape());
 			pattern.setPatternNodeStyle(subPattern);
 		}
-		final Font font = node.getFont();
+		final NodeStyleModel font = node.getNodeStyleModel();
 		if (font != null) {
 			final PatternProperty nodeFontBold = new PatternProperty();
 			nodeFontBold.setValue(font.isBold() ? StylePatternFactory.TRUE_VALUE
@@ -95,10 +95,10 @@ public class StylePatternFactory {
 			        : StylePatternFactory.FALSE_VALUE);
 			pattern.setPatternNodeFontItalic(nodeFontItalic);
 			final PatternProperty nodeFontSize = new PatternProperty();
-			nodeFontSize.setValue("" + font.getSize());
+			nodeFontSize.setValue("" + font.getFontSize());
 			pattern.setPatternNodeFontSize(nodeFontSize);
 			final PatternProperty subPattern = new PatternProperty();
-			subPattern.setValue(font.getFontName());
+			subPattern.setValue(font.getFontFamilyName());
 			pattern.setPatternNodeFontName(subPattern);
 		}
 		if (node.getIcons().size() == 1) {

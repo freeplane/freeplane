@@ -20,7 +20,6 @@
 package org.freeplane.map.tree;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -324,9 +323,9 @@ public class NodeModel implements MutableTreeNode, IExtensionCollection {
 		return filterInfo;
 	}
 
-	public Font getFont() {
+	public NodeStyleModel getNodeStyleModel() {
 		final NodeStyleModel styleModel = (NodeStyleModel) getExtension(NodeStyleModel.class);
-		return styleModel == null ? null : styleModel.getFont();
+		return styleModel;
 	}
 
 	public HistoryInformationModel getHistoryInformation() {
@@ -661,11 +660,6 @@ public class NodeModel implements MutableTreeNode, IExtensionCollection {
 			return;
 		}
 		this.folded = folded;
-	}
-
-	public void setFont(final Font font) {
-		final NodeStyleModel styleModel = createNodeStyleModel(this);
-		styleModel.setFont(font);
 	}
 
 	public void setHistoryInformation(final HistoryInformationModel historyInformation) {

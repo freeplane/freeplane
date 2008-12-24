@@ -19,7 +19,6 @@
  */
 package org.freeplane.map.nodestyle;
 
-import java.awt.Font;
 import java.io.IOException;
 
 import org.freeplane.extension.IExtension;
@@ -41,8 +40,9 @@ public class NodeStyleBuilder implements INodeCreator, IAttributeHandler, INodeW
         IAttributeWriter<IExtension> {
 	static class FontProperties {
 		String fontName;
-		int fontSize = 0;
-		int fontStyle = 0;
+		Integer fontSize;
+		Boolean isBold;
+		Boolean isItalic;
 	}
 
 	public NodeStyleBuilder() {
@@ -53,8 +53,15 @@ public class NodeStyleBuilder implements INodeCreator, IAttributeHandler, INodeW
 			final NodeModel node = ((NodeObject) parent).node;
 			if (tag.equals("font")) {
 				final FontProperties fp = (FontProperties) userObject;
-				final Font font = new Font(fp.fontName, fp.fontStyle, fp.fontSize);
-				node.setFont(font);
+				NodeStyleModel nodeStyleModel = node.getNodeStyleModel();
+				if(nodeStyleModel == null){
+					nodeStyleModel = new NodeStyleModel();
+					node.addExtension(nodeStyleModel);
+				}
+				nodeStyleModel.setFontFamilyName(fp.fontName);
+				nodeStyleModel.setFontSize(fp.fontSize);
+				nodeStyleModel.setItalic(fp.isItalic);
+				nodeStyleModel.setBold(fp.isBold);
 				return;
 			}
 			return;
@@ -100,10 +107,18 @@ public class NodeStyleBuilder implements INodeCreator, IAttributeHandler, INodeW
 			}
 			else if (value.toString().equals("true")) {
 				if (name.equals("BOLD")) {
-					fp.fontStyle += Font.BOLD;
+					fp.isBold = true;
 				}
 				else if (name.equals("ITALIC")) {
-					fp.fontStyle += Font.ITALIC;
+					fp.isItalic = true;
+				}
+			}
+			else if (value.toString().equals("false")) {
+				if (name.equals("BOLD")) {
+					fp.isBold = false;
+				}
+				else if (name.equals("ITALIC")) {
+					fp.isItalic = false;
 				}
 			}
 			return true;
@@ -140,21 +155,29 @@ public class NodeStyleBuilder implements INodeCreator, IAttributeHandler, INodeW
 	public void writeContent(final ITreeWriter writer, final Object node, final IExtension extension)
 	        throws IOException {
 		final NodeStyleModel style = (NodeStyleModel) extension;
-		final Font font = style.getFont();
-		if (font != null) {
+		if (style != null) {
 			final XMLElement fontElement = new XMLElement();
 			fontElement.setName("font");
-			fontElement.setAttribute("NAME", font.getFamily());
-			if (font.getSize() != 0) {
-				fontElement.setAttribute("SIZE", Integer.toString(font.getSize()));
+			boolean isRelevant = false;
+			if (style.getFontFamilyName() != null) {
+				fontElement.setAttribute("NAME", style.getFontFamilyName());
+				isRelevant = true;
 			}
-			if (font.isBold()) {
-				fontElement.setAttribute("BOLD", "true");
+			if (style.getFontSize() != null) {
+				fontElement.setAttribute("SIZE", Integer.toString(style.getFontSize()));
+				isRelevant = true;
 			}
-			if (font.isItalic()) {
-				fontElement.setAttribute("ITALIC", "true");
+			if (style.isBold() != null) {
+				fontElement.setAttribute("BOLD", style.isBold() ? "true" : "false");
+				isRelevant = true;
 			}
-			writer.addNode(font, fontElement);
+			if (style.isItalic() != null) {
+				fontElement.setAttribute("ITALIC", style.isItalic() ? "true" : "false");
+				isRelevant = true;
+			}
+			if(isRelevant){
+				writer.addNode(style, fontElement);
+			}
 		}
 	}
 }
