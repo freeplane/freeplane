@@ -299,10 +299,8 @@ class MindMapHTMLWriter {
 			for (final ListIterator e = model.getModeController().getMapController()
 			    .childrenUnfolded(model); e.hasNext();) {
 				final NodeModel child = (NodeModel) e.next();
-				lastChildNumber = writeHTML(child, parentID, lastChildNumber,/*
-																																																																																			 * isRoot=
-																																																																																			 */
-				false, treatChildrenAsParagraph, depth + 1);
+				lastChildNumber = writeHTML(child, parentID, lastChildNumber,/*isRoot=*/false,
+				    treatChildrenAsParagraph, depth + 1);
 			}
 			return lastChildNumber;
 		}
@@ -311,10 +309,8 @@ class MindMapHTMLWriter {
 				for (final ListIterator e = model.getModeController().getMapController()
 				    .childrenUnfolded(model); e.hasNext();) {
 					final NodeModel child = (NodeModel) e.next();
-					lastChildNumber = writeHTML(child, parentID, lastChildNumber,/*
-																														    					    										    										    										    					    										    										 * isRoot=
-																														    					    										    										    										    					    										    										 */
-					false, treatChildrenAsParagraph, depth + 1);
+					lastChildNumber = writeHTML(child, parentID, lastChildNumber,
+					/*isRoot=*/false, treatChildrenAsParagraph, depth + 1);
 				}
 			}
 			else if (createFolding) {
@@ -327,10 +323,8 @@ class MindMapHTMLWriter {
 				for (final ListIterator e = model.getModeController().getMapController()
 				    .childrenUnfolded(model); e.hasNext();) {
 					final NodeModel child = (NodeModel) e.next();
-					localLastChildNumber = writeHTML(child, localParentID, localLastChildNumber,/*
-																														    					    										    										    										    					    										    											 * isRoot=
-																														    					    										    										    										    					    										    											 */
-					false, treatChildrenAsParagraph, depth + 1);
+					localLastChildNumber = writeHTML(child, localParentID, localLastChildNumber,
+					/* isRoot=*/false, treatChildrenAsParagraph, depth + 1);
 				}
 			}
 			else {
@@ -341,10 +335,8 @@ class MindMapHTMLWriter {
 				for (final ListIterator e = model.getModeController().getMapController()
 				    .childrenUnfolded(model); e.hasNext();) {
 					final NodeModel child = (NodeModel) e.next();
-					lastChildNumber = writeHTML(child, parentID, lastChildNumber,/*
-																														    					    										    										    										    					    										    										 * isRoot=
-																														    					    										    										    										    					    										    										 */
-					false, treatChildrenAsParagraph, depth + 1);
+					lastChildNumber = writeHTML(child, parentID, lastChildNumber,
+					/* isRoot= */false, treatChildrenAsParagraph, depth + 1);
 				}
 			}
 			if (treatChildrenAsParagraph) {

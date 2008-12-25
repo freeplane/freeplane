@@ -50,10 +50,7 @@ class PageAction extends AbstractPrintAction {
 			return;
 		}
 		final JDialog dialog = new JDialog(Controller.getController().getViewController()
-		    .getJFrame(), Controller.getText("printing_settings"), /*
-																																			 * modal=
-																																			 */
-		true);
+		    .getJFrame(), Controller.getText("printing_settings"), /* modal=*/ true);
 		final JCheckBox fitToPage = new JCheckBox(Controller.getText("fit_to_page"), Controller
 		    .getResourceController().getBoolProperty("fit_to_page"));
 		final JLabel userZoomL = new JLabel(Controller.getText("user_zoom"));
