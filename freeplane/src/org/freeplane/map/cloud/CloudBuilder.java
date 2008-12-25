@@ -35,7 +35,7 @@ import org.freeplane.main.Tools;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.NodeBuilder.NodeObject;
 
-public class CloudBuilder implements INodeCreator, IAttributeHandler, INodeWriter<IExtension> {
+public class CloudBuilder implements INodeCreator, INodeWriter<IExtension> {
 	public CloudBuilder() {
 	}
 
@@ -56,28 +56,32 @@ public class CloudBuilder implements INodeCreator, IAttributeHandler, INodeWrite
 		return null;
 	}
 
-	public boolean parseAttribute(final Object userObject, final String tag, final String name,
-	                              final String value) {
-		if (userObject instanceof CloudModel) {
-			final CloudModel cloud = (CloudModel) userObject;
-			if (name.equals("STYLE")) {
+	private void registerAttributeHandlers(final ReadManager reader) {
+		reader.addAttributeHandler("cloud", "STYLE", new IAttributeHandler() {
+			public void parseAttribute(final Object userObject, final String value) {
+				final CloudModel cloud = (CloudModel) userObject;
 				cloud.setStyle(value.toString());
 			}
-			else if (name.equals("COLOR")) {
+		});
+		reader.addAttributeHandler("cloud", "COLOR", new IAttributeHandler() {
+			public void parseAttribute(final Object userObject, final String value) {
+				final CloudModel cloud = (CloudModel) userObject;
 				cloud.setColor(Tools.xmlToColor(value.toString()));
 			}
-			else if (name.equals("WIDTH")) {
+		});
+		reader.addAttributeHandler("cloud", "WIDTH", new IAttributeHandler() {
+			public void parseAttribute(final Object userObject, final String value) {
+				final CloudModel cloud = (CloudModel) userObject;
 				cloud.setWidth(Integer.parseInt(value.toString()));
 			}
-			return true;
-		}
-		return false;
+		});
 	}
 
 	/**
 	 */
 	public void registerBy(final ReadManager reader, final WriteManager writer) {
 		reader.addNodeCreator("cloud", this);
+		registerAttributeHandlers(reader);
 		writer.addExtensionNodeWriter(CloudModel.class, this);
 	}
 

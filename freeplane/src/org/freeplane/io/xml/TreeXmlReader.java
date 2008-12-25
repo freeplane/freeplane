@@ -20,6 +20,7 @@
 package org.freeplane.io.xml;
 
 import java.io.Reader;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -53,16 +54,6 @@ public class TreeXmlReader implements IXMLBuilder, ITreeReader {
 		this.parseManager = parseManager;
 	}
 
-	private boolean addAttribute(final Iterator iterator, final String key, final String value) {
-		while (iterator.hasNext()) {
-			final IAttributeHandler al = (IAttributeHandler) iterator.next();
-			if (al.parseAttribute(userObject, tag, key, value)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * @see
@@ -73,12 +64,10 @@ public class TreeXmlReader implements IXMLBuilder, ITreeReader {
 	public void addAttribute(final String key, final String nsPrefix, final String nsURI,
 	                         final String value, final String type) throws Exception {
 		if (saveAsXmlUntil == null) {
-			final Iterator ncIter = getNodeCreators().iterator(tag);
-			if (addAttribute(ncIter, key, value)) {
-				return;
-			}
-			final Iterator alIter = getAttributeLoaders().iterator(tag);
-			if (addAttribute(alIter, key, value)) {
+			final Hashtable<String, IAttributeHandler> hashtable = getAttributeLoaders().get(tag);
+			if (hashtable != null) {
+				final IAttributeHandler attributeHandler = hashtable.get(key);
+				attributeHandler.parseAttribute(userObject, value);
 				return;
 			}
 		}
@@ -146,7 +135,7 @@ public class TreeXmlReader implements IXMLBuilder, ITreeReader {
 		nodeCreator = (INodeCreator) nodeCreatorStack.removeLast();
 	}
 
-	private ListHashTable getAttributeLoaders() {
+	private Hashtable<String, Hashtable<String, IAttributeHandler>> getAttributeLoaders() {
 		return parseManager.getAttributeHandlers();
 	}
 

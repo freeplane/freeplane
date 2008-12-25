@@ -20,57 +20,13 @@
 package org.freeplane.map.nodestyle;
 
 import java.awt.Color;
+
 import org.freeplane.extension.IExtension;
 
 /**
  * @author Dimitry Polivaev 20.11.2008
  */
 public class NodeStyleModel implements IExtension, Cloneable {
-	@Override
-    protected Object clone() throws CloneNotSupportedException {
-		final NodeStyleModel nodeStyleModel = new NodeStyleModel();
-		nodeStyleModel.setColor(color);
-		nodeStyleModel.setBackgroundColor(backgroundColor);
-		nodeStyleModel.setBold(isBold);
-		nodeStyleModel.setFontFamilyName(fontFamilyName);
-		nodeStyleModel.setFontSize(fontSize);
-		nodeStyleModel.setItalic(isItalic);
-		nodeStyleModel.setShape(shape);
-		return nodeStyleModel;
-    }
-
-	public Boolean isItalic() {
-    	return isItalic;
-    }
-
-	public void setItalic(Boolean isItalic) {
-    	this.isItalic = isItalic;
-    }
-
-	public Boolean isBold() {
-    	return isBold;
-    }
-
-	public void setBold(Boolean isBold) {
-    	this.isBold = isBold;
-    }
-
-	public void setFontSize(Integer fontSize) {
-    	this.fontSize = fontSize;
-    }
-
-	public Integer getFontSize() {
-    	return fontSize;
-    }
-
-	public String getFontFamilyName() {
-    	return fontFamilyName;
-    }
-
-	public void setFontFamilyName(String fontFamilyName) {
-    	this.fontFamilyName = fontFamilyName;
-    }
-
 	public static final String[] NODE_STYLES = new String[] { NodeStyleModel.STYLE_FORK,
 	        NodeStyleModel.STYLE_BUBBLE, NodeStyleModel.SHAPE_AS_PARENT,
 	        NodeStyleModel.SHAPE_COMBINED };
@@ -80,11 +36,24 @@ public class NodeStyleModel implements IExtension, Cloneable {
 	public static final String STYLE_FORK = "fork";
 	private Color backgroundColor;
 	private Color color;
-	private String shape;
-	private Boolean isItalic = null;
-	private Boolean isBold = null;
-	private Integer fontSize = null;
 	private String fontFamilyName = null;
+	private Integer fontSize = null;
+	private Boolean isBold = null;
+	private Boolean isItalic = null;
+	private String shape;
+
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		final NodeStyleModel nodeStyleModel = new NodeStyleModel();
+		nodeStyleModel.setColor(color);
+		nodeStyleModel.setBackgroundColor(backgroundColor);
+		nodeStyleModel.setBold(isBold);
+		nodeStyleModel.setFontFamilyName(fontFamilyName);
+		nodeStyleModel.setFontSize(fontSize);
+		nodeStyleModel.setItalic(isItalic);
+		nodeStyleModel.setShape(shape);
+		return nodeStyleModel;
+	}
 
 	public Color getBackgroundColor() {
 		return backgroundColor;
@@ -94,21 +63,51 @@ public class NodeStyleModel implements IExtension, Cloneable {
 		return color;
 	}
 
+	public String getFontFamilyName() {
+		return fontFamilyName;
+	}
+
+	public Integer getFontSize() {
+		return fontSize;
+	}
+
 	public String getShape() {
 		return shape;
+	}
+
+	public Boolean isBold() {
+		return isBold;
+	}
+
+	public Boolean isItalic() {
+		return isItalic;
 	}
 
 	public void setBackgroundColor(final Color color) {
 		backgroundColor = color;
 	}
 
+	public void setBold(final Boolean isBold) {
+		this.isBold = isBold;
+	}
+
 	public void setColor(final Color color) {
 		this.color = color;
+	}
+
+	public void setFontFamilyName(final String fontFamilyName) {
+		this.fontFamilyName = fontFamilyName;
+	}
+
+	public void setFontSize(final Integer fontSize) {
+		this.fontSize = fontSize;
+	}
+
+	public void setItalic(final Boolean isItalic) {
+		this.isItalic = isItalic;
 	};
 
 	public void setShape(final String shape) {
 		this.shape = shape;
 	}
-	
-	
 }

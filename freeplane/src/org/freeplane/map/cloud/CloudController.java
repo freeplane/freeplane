@@ -28,8 +28,8 @@ import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.io.ReadManager;
 import org.freeplane.io.WriteManager;
 import org.freeplane.main.Tools;
+import org.freeplane.map.ExclusivePropertyChain;
 import org.freeplane.map.IPropertyGetter;
-import org.freeplane.map.PropertyChain;
 import org.freeplane.map.tree.MapController;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.ModeController;
@@ -54,23 +54,23 @@ public class CloudController {
 	private static CloudAdapterListener listener = null;
 	public static final int NORMAL_WIDTH = 3;
 	private static Color standardColor = null;
-	final private PropertyChain<Color, NodeModel> colorHandlers;
+	final private ExclusivePropertyChain<Color, NodeModel> colorHandlers;
 
 	public CloudController(final ModeController modeController) {
-		colorHandlers = new PropertyChain<Color, NodeModel>();
+		colorHandlers = new ExclusivePropertyChain<Color, NodeModel>();
 		if (listener == null) {
 			listener = new CloudAdapterListener();
 			Controller.getResourceController().addPropertyChangeListener(listener);
 		}
 		updateStandards(modeController);
-		addColorGetter(PropertyChain.NODE, new IPropertyGetter<Color, NodeModel>() {
-			public Color getProperty(final NodeModel node) {
+		addColorGetter(ExclusivePropertyChain.NODE, new IPropertyGetter<Color, NodeModel>() {
+			public Color getProperty(final NodeModel node, final Color currentValue) {
 				final CloudModel cloud = node.getCloud();
 				return cloud != null ? cloud.getColor() : null;
 			}
 		});
-		addColorGetter(PropertyChain.DEFAULT, new IPropertyGetter<Color, NodeModel>() {
-			public Color getProperty(final NodeModel node) {
+		addColorGetter(ExclusivePropertyChain.DEFAULT, new IPropertyGetter<Color, NodeModel>() {
+			public Color getProperty(final NodeModel node, final Color currentValue) {
 				return standardColor;
 			}
 		});

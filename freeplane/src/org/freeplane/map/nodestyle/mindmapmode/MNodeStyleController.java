@@ -77,6 +77,19 @@ public class MNodeStyleController extends NodeStyleController {
 		modeController.addNodeSelectionListener(menuContributor);
 	}
 
+	public void copyStyle(final NodeModel source, final NodeModel target) {
+		final NodeStyleModel sourceStyleModel = source.getNodeStyleModel();
+		if (sourceStyleModel != null) {
+			setColor(target, sourceStyleModel.getColor());
+			setBackgroundColor(target, sourceStyleModel.getBackgroundColor());
+			setShape(target, sourceStyleModel.getShape());
+			setFontFamily(target, sourceStyleModel.getFontFamilyName());
+			setFontSize(target, sourceStyleModel.getFontSize());
+			setBold(target, sourceStyleModel.isBold());
+			setItalic(target, sourceStyleModel.isItalic());
+		}
+	}
+
 	private NodeStyleModel createOwnFont(final NodeModel node) {
 		{
 			final NodeStyleModel font = node.getNodeStyleModel();
@@ -294,7 +307,7 @@ public class MNodeStyleController extends NodeStyleController {
 			private void toggleBold(final NodeModel node) {
 				final Font font = getFont(node);
 				final NodeStyleModel style = node.getNodeStyleModel();
-				style.setBold(! font.isBold());
+				style.setBold(!font.isBold());
 				node.getModeController().getMapController().nodeChanged(node);
 			}
 
@@ -320,7 +333,7 @@ public class MNodeStyleController extends NodeStyleController {
 			private void toggleItalic(final NodeModel node) {
 				final Font font = getFont(node);
 				final NodeStyleModel style = node.getNodeStyleModel();
-				style.setItalic(! font.isItalic());
+				style.setItalic(!font.isItalic());
 				node.getModeController().getMapController().nodeChanged(node);
 			}
 
@@ -330,17 +343,4 @@ public class MNodeStyleController extends NodeStyleController {
 		};
 		modeController.execute(actor);
 	}
-
-	public void copyStyle(NodeModel source, NodeModel target) {
-		final NodeStyleModel sourceStyleModel = source.getNodeStyleModel();
-		if(sourceStyleModel != null){
-			setColor(target, sourceStyleModel.getColor());
-			setBackgroundColor(target, sourceStyleModel.getBackgroundColor());
-			setShape(target, sourceStyleModel.getShape());
-			setFontFamily(target, sourceStyleModel.getFontFamilyName());
-			setFontSize(target, sourceStyleModel.getFontSize());
-			setBold(target, sourceStyleModel.isBold());
-			setItalic(target, sourceStyleModel.isItalic());
-		}
-    }
 }

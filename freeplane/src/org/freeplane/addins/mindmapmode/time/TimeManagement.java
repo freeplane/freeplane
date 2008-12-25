@@ -240,8 +240,8 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapView
 		mController = getMindMapController();
 		Controller.getController().getMapViewManager().addMapViewChangeListener(this);
 		dialog = new JDialog(Controller.getController().getViewController().getJFrame(), false /*
-																						 * not modal
-																						 */);
+																							 * not modal
+																							 */);
 		dialog.setTitle(getResourceString("plugins/TimeManagement.xml_WindowTitle"));
 		dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		dialog.addWindowListener(new WindowAdapter() {

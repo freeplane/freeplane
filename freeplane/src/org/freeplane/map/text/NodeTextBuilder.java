@@ -27,29 +27,27 @@ import org.freeplane.map.tree.NodeBuilder;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.NodeBuilder.NodeObject;
 
-public class NodeTextBuilder implements INodeContentHandler, IAttributeHandler {
+public class NodeTextBuilder implements INodeContentHandler {
 	public static final String XML_NODE_TEXT = "TEXT";
 	public static final String XML_NODE_XHTML_CONTENT_TAG = "richcontent";
 	public static final String XML_NODE_XHTML_TYPE_NODE = "NODE";
 	public static final String XML_NODE_XHTML_TYPE_NOTE = "NOTE";
 	public static final String XML_NODE_XHTML_TYPE_TAG = "TYPE";
 
-	public boolean parseAttribute(final Object userObject, final String tag, final String name,
-	                              final String value) {
-		if (tag.equals(NodeBuilder.XML_NODE) && userObject instanceof NodeObject) {
-			final NodeModel node = ((NodeObject) userObject).node;
-			if (name.equals(NodeTextBuilder.XML_NODE_TEXT)) {
-				node.setText(value);
-				return true;
-			}
-		}
-		return false;
+	private void registerAttributeHandlers(final ReadManager reader) {
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, NodeTextBuilder.XML_NODE_TEXT,
+		    new IAttributeHandler() {
+			    public void parseAttribute(final Object userObject, final String value) {
+				    final NodeModel node = ((NodeObject) userObject).node;
+				    node.setText(value);
+			    }
+		    });
 	}
 
 	/**
 	 */
 	public void registerBy(final ReadManager reader) {
-		reader.addAttributeHandler("node", this);
+		registerAttributeHandlers(reader);
 		reader.addNodeContentHandler("richcontent", this);
 	}
 

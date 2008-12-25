@@ -26,7 +26,7 @@ import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.NodeBuilder.NodeObject;
 
-class IconBuilder implements INodeCreator, IAttributeHandler {
+class IconBuilder implements INodeCreator {
 	static class IconProperties {
 		String iconName;
 	}
@@ -47,23 +47,20 @@ class IconBuilder implements INodeCreator, IAttributeHandler {
 		return null;
 	}
 
-	public boolean parseAttribute(final Object userObject, final String tag, final String name,
-	                              final String value) {
-		/* icons */
-		if (tag.equals("icon")) {
-			final IconProperties ip = (IconProperties) userObject;
-			if (name.equals("BUILTIN")) {
+	private void registerAttributeHandlers(final ReadManager reader) {
+		reader.addAttributeHandler("icon", "BUILTIN", new IAttributeHandler() {
+			public void parseAttribute(final Object userObject, final String value) {
+				final IconProperties ip = (IconProperties) userObject;
 				ip.iconName = value.toString();
 			}
-			return true;
-		}
-		return false;
+		});
 	}
 
 	/**
 	 */
 	public void registerBy(final ReadManager reader) {
 		reader.addNodeCreator("icon", this);
+		registerAttributeHandlers(reader);
 	}
 
 	public void setAttributes(final String tag, final Object node, final IXMLElement attributes) {

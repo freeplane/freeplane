@@ -25,6 +25,7 @@ import org.freeplane.io.IAttributeWriter;
 import org.freeplane.io.ITreeWriter;
 import org.freeplane.io.ReadManager;
 import org.freeplane.io.WriteManager;
+import org.freeplane.map.tree.NodeBuilder;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.NodeBuilder.NodeObject;
 
@@ -32,27 +33,30 @@ import org.freeplane.map.tree.NodeBuilder.NodeObject;
  * @author Dimitry Polivaev
  * 06.12.2008
  */
-class LocationBuilder implements IAttributeHandler, IAttributeWriter<IExtension> {
-	public boolean parseAttribute(final Object userObject, final String tag, final String name,
-	                              final String value) {
-		final NodeModel node = ((NodeObject) userObject).node;
-		if (name.equals("VSHIFT")) {
-			node.createLocationModel().setShiftY(Integer.parseInt(value));
-			return true;
-		}
-		else if (name.equals("VGAP")) {
-			node.createLocationModel().setVGap(Integer.parseInt(value));
-			return true;
-		}
-		else if (name.equals("HGAP")) {
-			node.createLocationModel().setHGap(Integer.parseInt(value));
-			return true;
-		}
-		return false;
+class LocationBuilder implements IAttributeWriter<IExtension> {
+	private void registerAttributeHandlers(final ReadManager reader) {
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "VSHIFT", new IAttributeHandler() {
+			public void parseAttribute(final Object userObject, final String value) {
+				final NodeModel node = ((NodeObject) userObject).node;
+				node.createLocationModel().setShiftY(Integer.parseInt(value));
+			}
+		});
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "VGAP", new IAttributeHandler() {
+			public void parseAttribute(final Object userObject, final String value) {
+				final NodeModel node = ((NodeObject) userObject).node;
+				node.createLocationModel().setVGap(Integer.parseInt(value));
+			}
+		});
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "HGAP", new IAttributeHandler() {
+			public void parseAttribute(final Object userObject, final String value) {
+				final NodeModel node = ((NodeObject) userObject).node;
+				node.createLocationModel().setHGap(Integer.parseInt(value));
+			}
+		});
 	}
 
 	void registerBy(final ReadManager readManager, final WriteManager writeManager) {
-		readManager.addAttributeHandler("node", this);
+		registerAttributeHandlers(readManager);
 		writeManager.addExtensionAttributeWriter(LocationModel.class, this);
 	}
 

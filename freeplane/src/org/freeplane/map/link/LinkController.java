@@ -34,8 +34,8 @@ import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.io.ReadManager;
 import org.freeplane.io.WriteManager;
 import org.freeplane.main.Tools;
+import org.freeplane.map.ExclusivePropertyChain;
 import org.freeplane.map.IPropertyGetter;
-import org.freeplane.map.PropertyChain;
 import org.freeplane.map.tree.MapController;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.ModeController;
@@ -58,27 +58,28 @@ public class LinkController {
 	private static ArrowLinkListener listener = null;
 	public static final int STANDARD_WIDTH = 1;
 	static Color standardColor = null;
-	final private PropertyChain<Color, ArrowLinkModel> colorHandlers;
+	final private ExclusivePropertyChain<Color, ArrowLinkModel> colorHandlers;
 	final private ModeController modeController;
 
 	public LinkController(final ModeController modeController) {
 		this.modeController = modeController;
 		updateStandards(modeController);
-		colorHandlers = new PropertyChain<Color, ArrowLinkModel>();
+		colorHandlers = new ExclusivePropertyChain<Color, ArrowLinkModel>();
 		if (listener == null) {
 			listener = new ArrowLinkListener();
 			Controller.getResourceController().addPropertyChangeListener(listener);
 		}
-		addColorGetter(PropertyChain.NODE, new IPropertyGetter<Color, ArrowLinkModel>() {
-			public Color getProperty(final ArrowLinkModel model) {
+		addColorGetter(ExclusivePropertyChain.NODE, new IPropertyGetter<Color, ArrowLinkModel>() {
+			public Color getProperty(final ArrowLinkModel model, final Color currentValue) {
 				return model.getColor();
 			}
 		});
-		addColorGetter(PropertyChain.DEFAULT, new IPropertyGetter<Color, ArrowLinkModel>() {
-			public Color getProperty(final ArrowLinkModel model) {
-				return standardColor;
-			}
-		});
+		addColorGetter(ExclusivePropertyChain.DEFAULT,
+		    new IPropertyGetter<Color, ArrowLinkModel>() {
+			    public Color getProperty(final ArrowLinkModel model, final Color currentValue) {
+				    return standardColor;
+			    }
+		    });
 		createActions(modeController);
 		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();

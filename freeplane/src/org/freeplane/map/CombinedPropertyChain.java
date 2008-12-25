@@ -22,9 +22,9 @@ package org.freeplane.map;
 import java.util.Iterator;
 import java.util.TreeMap;
 
-public class PropertyChain<V, T> implements IPropertyGetter<V, T> {
-	static public Integer DEFAULT = new Integer(100);
-	static public Integer NODE = new Integer(10);
+public class CombinedPropertyChain<V, T> {
+	static public Integer DEFAULT = 10;
+	static public Integer NODE = 100;
 	final private TreeMap handlers = new TreeMap();
 
 	public IPropertyGetter addGetter(final Integer key, final IPropertyGetter getter) {
@@ -33,14 +33,12 @@ public class PropertyChain<V, T> implements IPropertyGetter<V, T> {
 
 	public V getProperty(final T node) {
 		final Iterator iterator = handlers.values().iterator();
+		V property = null;
 		while (iterator.hasNext()) {
 			final IPropertyGetter<V, T> getter = (IPropertyGetter) iterator.next();
-			final V property = getter.getProperty(node);
-			if (property != null) {
-				return property;
-			}
+			property = getter.getProperty(node, property);
 		}
-		return null;
+		return property;
 	}
 
 	public IPropertyGetter removeGetter(final Integer key) {

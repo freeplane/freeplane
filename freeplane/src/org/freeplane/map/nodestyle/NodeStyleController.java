@@ -26,8 +26,9 @@ import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.io.ReadManager;
 import org.freeplane.io.WriteManager;
+import org.freeplane.map.CombinedPropertyChain;
+import org.freeplane.map.ExclusivePropertyChain;
 import org.freeplane.map.IPropertyGetter;
-import org.freeplane.map.PropertyChain;
 import org.freeplane.map.tree.MapController;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.view.MapView;
@@ -37,76 +38,84 @@ import org.freeplane.modes.ModeController;
  * @author Dimitry Polivaev
  */
 public class NodeStyleController {
-	final private PropertyChain<Color, NodeModel> backgroundColorHandlers;
-	final private PropertyChain<String, NodeModel> fontFamilyHandlers;
-	final private PropertyChain<Integer, NodeModel> fontSizeHandlers;
-	final private PropertyChain<Boolean, NodeModel> fontItalicHandlers;
-	final private PropertyChain<Boolean, NodeModel> fontBoldHandlers;
+	final private ExclusivePropertyChain<Color, NodeModel> backgroundColorHandlers;
+	final private CombinedPropertyChain<Font, NodeModel> fontHandlers;
 	final private ModeController modeController;
-	final private PropertyChain<String, NodeModel> shapeHandlers;
-	final private PropertyChain<Color, NodeModel> textColorHandlers;
+	final private ExclusivePropertyChain<String, NodeModel> shapeHandlers;
+	final private ExclusivePropertyChain<Color, NodeModel> textColorHandlers;
 
 	public NodeStyleController(final ModeController modeController) {
 		this.modeController = modeController;
-		fontFamilyHandlers = new PropertyChain<String, NodeModel>();
-		fontSizeHandlers = new PropertyChain<Integer, NodeModel>();
-		fontItalicHandlers = new PropertyChain<Boolean, NodeModel>();
-		fontBoldHandlers = new PropertyChain<Boolean, NodeModel>();
-		textColorHandlers = new PropertyChain<Color, NodeModel>();
-		backgroundColorHandlers = new PropertyChain<Color, NodeModel>();
-		shapeHandlers = new PropertyChain<String, NodeModel>();
-		addFontFamilyGetter(PropertyChain.NODE, new IPropertyGetter<String, NodeModel>() {
-			public String getProperty(final NodeModel node) {
+		fontHandlers = new CombinedPropertyChain<Font, NodeModel>();
+		textColorHandlers = new ExclusivePropertyChain<Color, NodeModel>();
+		backgroundColorHandlers = new ExclusivePropertyChain<Color, NodeModel>();
+		shapeHandlers = new ExclusivePropertyChain<String, NodeModel>();
+		addFontGetter(CombinedPropertyChain.NODE, new IPropertyGetter<Font, NodeModel>() {
+			public Font getProperty(final NodeModel node, final Font font) {
 				final NodeStyleModel nodeStyleModel = node.getNodeStyleModel();
-				return nodeStyleModel == null ? null : nodeStyleModel.getFontFamilyName();
+				if (nodeStyleModel == null) {
+					return font;
+				}
+				String family = nodeStyleModel.getFontFamilyName();
+				Integer size = nodeStyleModel.getFontSize();
+				Boolean bold = nodeStyleModel.isBold();
+				Boolean italic = nodeStyleModel.isItalic();
+				if (family == null && size == null && bold == null && italic == null) {
+					return font;
+				}
+				if (family == null) {
+					family = font.getFamily();
+				}
+				if (size == null) {
+					size = font.getSize();
+				}
+				if (bold == null) {
+					bold = font.isBold();
+				}
+				if (italic == null) {
+					italic = font.isItalic();
+				}
+				int style = 0;
+				if (bold) {
+					style += Font.BOLD;
+				}
+				if (italic) {
+					style += Font.ITALIC;
+				}
+				return new Font(family, style, size);
 			}
 		});
-		addFontSizeGetter(PropertyChain.NODE, new IPropertyGetter<Integer, NodeModel>() {
-			public Integer getProperty(final NodeModel node) {
-				final NodeStyleModel nodeStyleModel = node.getNodeStyleModel();
-				return nodeStyleModel == null ? null : nodeStyleModel.getFontSize();
+		addFontGetter(CombinedPropertyChain.DEFAULT, new IPropertyGetter<Font, NodeModel>() {
+			public Font getProperty(final NodeModel node, final Font currentValue) {
+				return Controller.getResourceController().getDefaultFont();
 			}
 		});
-
-		addFontBoldGetter(PropertyChain.NODE, new IPropertyGetter<Boolean, NodeModel>() {
-			public Boolean getProperty(final NodeModel node) {
-				final NodeStyleModel nodeStyleModel = node.getNodeStyleModel();
-				return nodeStyleModel == null ? null : nodeStyleModel.isBold();
-			}
-		});
-
-		addFontItalicGetter(PropertyChain.NODE, new IPropertyGetter<Boolean, NodeModel>() {
-			public Boolean getProperty(final NodeModel node) {
-				final NodeStyleModel nodeStyleModel = node.getNodeStyleModel();
-				return nodeStyleModel == null ? null : nodeStyleModel.isItalic();
-			}
-		});
-
-		addColorGetter(PropertyChain.NODE, new IPropertyGetter<Color, NodeModel>() {
-			public Color getProperty(final NodeModel node) {
+		addColorGetter(ExclusivePropertyChain.NODE, new IPropertyGetter<Color, NodeModel>() {
+			public Color getProperty(final NodeModel node, final Color currentValue) {
 				return node.getColor();
 			}
 		});
-		addColorGetter(PropertyChain.DEFAULT, new IPropertyGetter<Color, NodeModel>() {
-			public Color getProperty(final NodeModel node) {
+		addColorGetter(ExclusivePropertyChain.DEFAULT, new IPropertyGetter<Color, NodeModel>() {
+			public Color getProperty(final NodeModel node, final Color currentValue) {
 				return MapView.standardNodeTextColor;
 			}
 		});
-		addBackgroundColorGetter(PropertyChain.NODE, new IPropertyGetter<Color, NodeModel>() {
-			public Color getProperty(final NodeModel node) {
-				return node.getBackgroundColor();
-			}
-		});
-		addShapeGetter(PropertyChain.NODE, new IPropertyGetter<String, NodeModel>() {
-			public String getProperty(final NodeModel node) {
+		addBackgroundColorGetter(ExclusivePropertyChain.NODE,
+		    new IPropertyGetter<Color, NodeModel>() {
+			    public Color getProperty(final NodeModel node, final Color currentValue) {
+				    return node.getBackgroundColor();
+			    }
+		    });
+		addShapeGetter(ExclusivePropertyChain.NODE, new IPropertyGetter<String, NodeModel>() {
+			public String getProperty(final NodeModel node, final String currentValue) {
 				return getShape(node);
 			}
 
 			private String getShape(final NodeModel node) {
 				String returnedString = node.getShape(); /*
-													    			    						    						    						    			    						    														 * Style string
-													    			    						    						    						    			    						    														 * returned
-													    			    						    						    						    			    						    														 */
+																    			    						    						    						    			    						    														 * Style string
+																    			    						    						    						    			    						    														 * returned
+																    			    						    						    						    			    						    														 */
 				if (node.getShape() == null) {
 					if (node.isRoot()) {
 						returnedString = Controller.getResourceController().getProperty(
@@ -160,28 +169,10 @@ public class NodeStyleController {
 		return textColorHandlers.addGetter(key, getter);
 	}
 
-	public IPropertyGetter<String, NodeModel> addFontFamilyGetter(
-		final Integer key,
-		final IPropertyGetter<String, NodeModel> getter) {
-		return fontFamilyHandlers.addGetter(key, getter);
-	}
-
-	public IPropertyGetter<Integer, NodeModel> addFontSizeGetter(
-		final Integer key,
-		final IPropertyGetter<Integer, NodeModel> getter) {
-		return fontSizeHandlers.addGetter(key, getter);
-	}
-
-	public IPropertyGetter<Boolean, NodeModel> addFontItalicGetter(
-		final Integer key,
-		final IPropertyGetter<Boolean, NodeModel> getter) {
-		return fontItalicHandlers.addGetter(key, getter);
-	}
-
-	public IPropertyGetter<Boolean, NodeModel> addFontBoldGetter(
-		final Integer key,
-		final IPropertyGetter<Boolean, NodeModel> getter) {
-		return fontBoldHandlers.addGetter(key, getter);
+	public IPropertyGetter<Font, NodeModel> addFontGetter(
+	                                                      final Integer key,
+	                                                      final IPropertyGetter<Font, NodeModel> getter) {
+		return fontHandlers.addGetter(key, getter);
 	}
 
 	public IPropertyGetter<String, NodeModel> addShapeGetter(
@@ -199,34 +190,7 @@ public class NodeStyleController {
 	}
 
 	public Font getFont(final NodeModel node) {
-		String family = fontFamilyHandlers.getProperty(node);
-		Integer size = fontSizeHandlers.getProperty(node);
-		Boolean bold = fontBoldHandlers.getProperty(node);
-		Boolean italic = fontItalicHandlers.getProperty(node);
-		Font font = Controller.getResourceController().getDefaultFont();
-		if(family == null && size == null && bold == null && italic == null){
-			return font;
-		}
-		if(family == null){
-			family = font.getFamily();
-		}
-		if(size == null){
-			size = font.getSize();
-		}
-		if(bold == null){
-			bold = font.isBold();
-		}
-		if(italic == null){
-			italic = font.isItalic();
-		}
-		int style = 0;
-		if(bold){
-			style += Font.BOLD;
-		}
-		if(italic){
-			style += Font.ITALIC;
-		}
-		return new Font(family, style, size);
+		return fontHandlers.getProperty(node);
 	}
 
 	public String getFontFamilyName(final NodeModel node) {
@@ -263,26 +227,9 @@ public class NodeStyleController {
 		return textColorHandlers.removeGetter(key);
 	}
 
-	public IPropertyGetter<String, NodeModel> removeFontFamilyGetter(
-		final Integer key) {
-		return fontFamilyHandlers.removeGetter(key);
+	public IPropertyGetter<Font, NodeModel> removeFontGetter(final Integer key) {
+		return fontHandlers.removeGetter(key);
 	}
-
-	public IPropertyGetter<Integer, NodeModel> removeFontSizeGetter(
-		final Integer key) {
-		return fontSizeHandlers.removeGetter(key);
-	}
-
-	public IPropertyGetter<Boolean, NodeModel> removeFontItalicGetter(
-		final Integer key) {
-		return fontItalicHandlers.removeGetter(key);
-	}
-
-	public IPropertyGetter<Boolean, NodeModel> removeFontBoldGetter(
-		final Integer key) {
-		return fontBoldHandlers.removeGetter(key);
-	}
-
 
 	public IPropertyGetter<String, NodeModel> removeShapeGetter(final Integer key) {
 		return shapeHandlers.removeGetter(key);

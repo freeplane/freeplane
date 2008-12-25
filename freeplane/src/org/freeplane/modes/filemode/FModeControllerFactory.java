@@ -58,7 +58,7 @@ public class FModeControllerFactory {
 		modeController.setLocationController(new LocationController(modeController));
 		modeController.getNodeStyleController().addShapeGetter(new Integer(0),
 		    new IPropertyGetter<String, NodeModel>() {
-			    public String getProperty(final NodeModel node) {
+			    public String getProperty(final NodeModel node, final String currentValue) {
 				    return "fork";
 			    }
 		    });

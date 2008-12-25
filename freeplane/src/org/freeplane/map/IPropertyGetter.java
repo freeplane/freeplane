@@ -20,5 +20,5 @@
 package org.freeplane.map;
 
 public interface IPropertyGetter<V, T> {
-	V getProperty(T model);
+	V getProperty(T model, V currentValue);
 }

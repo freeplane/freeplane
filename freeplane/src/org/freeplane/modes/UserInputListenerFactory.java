@@ -83,7 +83,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	 * The MouseListener which belongs to MapView
 	 */
 	public static class DefaultMapMouseListener implements IMouseListener {
-		private IMapMouseReceiver mReceiver;
+		private final IMapMouseReceiver mReceiver;
 
 		public DefaultMapMouseListener(final IMapMouseReceiver mReceiver) {
 			this.mReceiver = mReceiver;

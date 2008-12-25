@@ -29,11 +29,6 @@ public abstract class NodeCreatorAdapter implements INodeCreator {
 	public void completeNode(final Object parent, final String tag, final Object node) {
 	}
 
-	public boolean parseAttribute(final Object node, final String tag, final String name,
-	                              final String value) {
-		return false;
-	}
-
 	public void setAttributes(final String tag, final Object node, final IXMLElement attributes) {
 	}
 }

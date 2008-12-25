@@ -100,16 +100,17 @@ public class SplitNode extends FreeplaneAction {
 		final int nodePosition = parent.getChildPosition(node) + 1;
 		for (int i = parts.length - 1; i > firstPartNumber; i--) {
 			final MMapController mapController = (MMapController) c.getMapController();
-			final NodeModel lowerNode = mapController.addNewNode(parent,
-			    nodePosition, node.isLeft());
+			final NodeModel lowerNode = mapController.addNewNode(parent, nodePosition, node
+			    .isLeft());
 			final String part = parts[i];
 			if (part == null) {
 				continue;
 			}
 			((MTextController) c.getTextController()).setNodeText(lowerNode, part);
-			MNodeStyleController nodeStyleController = (MNodeStyleController)c.getNodeStyleController();
+			final MNodeStyleController nodeStyleController = (MNodeStyleController) c
+			    .getNodeStyleController();
 			nodeStyleController.copyStyle(node, lowerNode);
-			mapController.setFolded(lowerNode, ! lowerNode.isFolded());
+			mapController.setFolded(lowerNode, !lowerNode.isFolded());
 		}
 	}
 

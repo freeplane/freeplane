@@ -323,11 +323,6 @@ public class NodeModel implements MutableTreeNode, IExtensionCollection {
 		return filterInfo;
 	}
 
-	public NodeStyleModel getNodeStyleModel() {
-		final NodeStyleModel styleModel = (NodeStyleModel) getExtension(NodeStyleModel.class);
-		return styleModel;
-	}
-
 	public HistoryInformationModel getHistoryInformation() {
 		return historyInformation;
 	}
@@ -396,6 +391,11 @@ public class NodeModel implements MutableTreeNode, IExtensionCollection {
 			}
 		}
 		return level;
+	}
+
+	public NodeStyleModel getNodeStyleModel() {
+		final NodeStyleModel styleModel = (NodeStyleModel) getExtension(NodeStyleModel.class);
+		return styleModel;
 	}
 
 	public final String getNoteText() {

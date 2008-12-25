@@ -300,10 +300,11 @@ public class FilterComposerDialog extends JDialog {
 				final IElementaryConditionController conditionController = Controller
 				    .getController().getFilterController().getConditionFactory()
 				    .getConditionController(property);
-				final boolean canSelectValues = conditionController.canSelectValues(property, selectedItem);
+				final boolean canSelectValues = conditionController.canSelectValues(property,
+				    selectedItem);
 				values.setEnabled(canSelectValues);
-				caseInsensitive.setEnabled(canSelectValues && conditionController.isCaseDependent(property,
-				    selectedItem));
+				caseInsensitive.setEnabled(canSelectValues
+				        && conditionController.isCaseDependent(property, selectedItem));
 			}
 		}
 	}
@@ -329,8 +330,8 @@ public class FilterComposerDialog extends JDialog {
 				    .getSelectedItem();
 				values.setEditable(conditionController.canEditValues(selectedProperty,
 				    selectedCondition));
-				final boolean canSelectValues = conditionController.canSelectValues(selectedProperty,
-				    selectedCondition);
+				final boolean canSelectValues = conditionController.canSelectValues(
+				    selectedProperty, selectedCondition);
 				values.setEnabled(canSelectValues);
 				values.setModel(conditionController.getValuesForProperty(selectedProperty));
 				final ComboBoxEditor valueEditor = conditionController.getValueEditor();
@@ -341,8 +342,10 @@ public class FilterComposerDialog extends JDialog {
 				else {
 					values.setSelectedIndex(-1);
 				}
-				caseInsensitive.setEnabled(canSelectValues && conditionController.isCaseDependent(selectedProperty,
-				    selectedCondition));
+				caseInsensitive
+				    .setEnabled(canSelectValues
+				            && conditionController.isCaseDependent(selectedProperty,
+				                selectedCondition));
 				return;
 			}
 		}

@@ -38,9 +38,9 @@ import org.freeplane.io.xml.n3.nanoxml.XMLElement;
  * 21.12.2008
  */
 public class NodeConditionController implements IElementaryConditionController {
+	static final String FILTER_NODE = "filter_node";
 	private final ComboBoxEditor editor = new BasicComboBoxEditor();
 	private final ComboBoxModel values = new DefaultComboBoxModel();
-	static final String FILTER_NODE = "filter_node";
 
 	public boolean canEditValues(final Object selectedItem, final NamedObject simpleCond) {
 		return true;

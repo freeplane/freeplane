@@ -42,8 +42,8 @@ import org.freeplane.map.tree.NodeBuilder;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.NodeBuilder.NodeObject;
 
-class LinkBuilder implements INodeCreator, IAttributeHandler, IReadCompletionListener,
-        INodeWriter<IExtension>, IAttributeWriter<IExtension> {
+class LinkBuilder implements INodeCreator, IReadCompletionListener, INodeWriter<IExtension>,
+        IAttributeWriter<IExtension> {
 	final private HashSet<ArrowLinkModel> arrowLinks;
 
 	public LinkBuilder() {
@@ -72,50 +72,6 @@ class LinkBuilder implements INodeCreator, IAttributeHandler, IReadCompletionLis
 		return null;
 	}
 
-	public boolean parseAttribute(final Object userObject, final String tag, final String name,
-	                              final String value) {
-		if (tag.equals(NodeBuilder.XML_NODE) && userObject instanceof NodeObject) {
-			if (name.equals("LINK")) {
-				final NodeModel node = ((NodeObject) userObject).node;
-				(node.getModeController().getLinkController()).loadLink(node, value);
-				return true;
-			}
-		}
-		if (userObject instanceof ArrowLinkModel) {
-			final ArrowLinkModel arrowLink = (ArrowLinkModel) userObject;
-			if (name.equals("STYLE")) {
-				arrowLink.setStyle(value.toString());
-			}
-			else if (name.equals("COLOR")) {
-				arrowLink.setColor(Tools.xmlToColor(value.toString()));
-			}
-			else if (name.equals("DESTINATION")) {
-				arrowLink.setTargetID(value);
-				arrowLinks.add(arrowLink);
-			}
-			else if (name.equals("REFERENCETEXT")) {
-				arrowLink.setReferenceText((value.toString()));
-			}
-			else if (name.equals("STARTINCLINATION")) {
-				arrowLink.setStartInclination(Tools.xmlToPoint(value.toString()));
-			}
-			else if (name.equals("ENDINCLINATION")) {
-				arrowLink.setEndInclination(Tools.xmlToPoint(value.toString()));
-			}
-			else if (name.equals("STARTARROW")) {
-				arrowLink.setStartArrow(value.toString());
-			}
-			else if (name.equals("ENDARROW")) {
-				arrowLink.setEndArrow(value.toString());
-			}
-			else if (name.equals("WIDTH")) {
-				arrowLink.setWidth(Integer.parseInt(value.toString()));
-			}
-			return true;
-		}
-		return false;
-	}
-
 	/**
 	 * Completes the links within the getMap(). They are registered in the
 	 * registry.
@@ -138,11 +94,75 @@ class LinkBuilder implements INodeCreator, IAttributeHandler, IReadCompletionLis
 		arrowLinks.clear();
 	}
 
+	private void registerAttributeHandlers(final ReadManager reader) {
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "LINK", new IAttributeHandler() {
+			public void parseAttribute(final Object userObject, final String value) {
+				final NodeModel node = ((NodeObject) userObject).node;
+				(node.getModeController().getLinkController()).loadLink(node, value);
+			}
+		});
+		reader.addAttributeHandler("arrowlink", "STYLE", new IAttributeHandler() {
+			public void parseAttribute(final Object userObject, final String value) {
+				final ArrowLinkModel arrowLink = (ArrowLinkModel) userObject;
+				arrowLink.setStyle(value.toString());
+			}
+		});
+		reader.addAttributeHandler("arrowlink", "COLOR", new IAttributeHandler() {
+			public void parseAttribute(final Object userObject, final String value) {
+				final ArrowLinkModel arrowLink = (ArrowLinkModel) userObject;
+				arrowLink.setColor(Tools.xmlToColor(value.toString()));
+			}
+		});
+		reader.addAttributeHandler("arrowlink", "DESTINATION", new IAttributeHandler() {
+			public void parseAttribute(final Object userObject, final String value) {
+				final ArrowLinkModel arrowLink = (ArrowLinkModel) userObject;
+				arrowLink.setTargetID(value);
+				arrowLinks.add(arrowLink);
+			}
+		});
+		reader.addAttributeHandler("arrowlink", "REFERENCETEXT", new IAttributeHandler() {
+			public void parseAttribute(final Object userObject, final String value) {
+				final ArrowLinkModel arrowLink = (ArrowLinkModel) userObject;
+				arrowLink.setReferenceText((value.toString()));
+			}
+		});
+		reader.addAttributeHandler("arrowlink", "STARTINCLINATION", new IAttributeHandler() {
+			public void parseAttribute(final Object userObject, final String value) {
+				final ArrowLinkModel arrowLink = (ArrowLinkModel) userObject;
+				arrowLink.setStartInclination(Tools.xmlToPoint(value.toString()));
+			}
+		});
+		reader.addAttributeHandler("arrowlink", "ENDINCLINATION", new IAttributeHandler() {
+			public void parseAttribute(final Object userObject, final String value) {
+				final ArrowLinkModel arrowLink = (ArrowLinkModel) userObject;
+				arrowLink.setEndInclination(Tools.xmlToPoint(value.toString()));
+			}
+		});
+		reader.addAttributeHandler("arrowlink", "STARTARROW", new IAttributeHandler() {
+			public void parseAttribute(final Object userObject, final String value) {
+				final ArrowLinkModel arrowLink = (ArrowLinkModel) userObject;
+				arrowLink.setStartArrow(value.toString());
+			}
+		});
+		reader.addAttributeHandler("arrowlink", "ENDARROW", new IAttributeHandler() {
+			public void parseAttribute(final Object userObject, final String value) {
+				final ArrowLinkModel arrowLink = (ArrowLinkModel) userObject;
+				arrowLink.setEndArrow(value.toString());
+			}
+		});
+		reader.addAttributeHandler("arrowlink", "WIDTH", new IAttributeHandler() {
+			public void parseAttribute(final Object userObject, final String value) {
+				final ArrowLinkModel arrowLink = (ArrowLinkModel) userObject;
+				arrowLink.setWidth(Integer.parseInt(value.toString()));
+			}
+		});
+	}
+
 	/**
 	 */
 	public void registerBy(final ReadManager reader, final WriteManager writer) {
 		reader.addNodeCreator("arrowlink", this);
-		reader.addAttributeHandler("node", this);
+		registerAttributeHandlers(reader);
 		reader.addReadCompletionListener(this);
 		writer.addExtensionAttributeWriter(NodeLinks.class, this);
 		writer.addExtensionNodeWriter(NodeLinks.class, this);

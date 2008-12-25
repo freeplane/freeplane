@@ -26,8 +26,8 @@ import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.io.ReadManager;
 import org.freeplane.io.WriteManager;
 import org.freeplane.main.Tools;
+import org.freeplane.map.ExclusivePropertyChain;
 import org.freeplane.map.IPropertyGetter;
-import org.freeplane.map.PropertyChain;
 import org.freeplane.map.tree.MapController;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.ModeController;
@@ -54,49 +54,49 @@ public class EdgeController {
 	private static EdgePropertyListener listener = null;
 	private static Color standardColor = null;
 	private static String standardStyle = null;
-	final private PropertyChain<Color, NodeModel> colorHandlers;
-	final private PropertyChain<String, NodeModel> styleHandlers;
-	final private PropertyChain<Integer, NodeModel> widthHandlers;
+	final private ExclusivePropertyChain<Color, NodeModel> colorHandlers;
+	final private ExclusivePropertyChain<String, NodeModel> styleHandlers;
+	final private ExclusivePropertyChain<Integer, NodeModel> widthHandlers;
 
 	public EdgeController(final ModeController modeController) {
-		colorHandlers = new PropertyChain<Color, NodeModel>();
-		styleHandlers = new PropertyChain<String, NodeModel>();
-		widthHandlers = new PropertyChain<Integer, NodeModel>();
+		colorHandlers = new ExclusivePropertyChain<Color, NodeModel>();
+		styleHandlers = new ExclusivePropertyChain<String, NodeModel>();
+		widthHandlers = new ExclusivePropertyChain<Integer, NodeModel>();
 		updateStandards(modeController);
 		if (listener == null) {
 			listener = new EdgePropertyListener();
 			Controller.getResourceController().addPropertyChangeListener(listener);
 		}
-		addColorGetter(PropertyChain.NODE, new IPropertyGetter<Color, NodeModel>() {
-			public Color getProperty(final NodeModel node) {
+		addColorGetter(ExclusivePropertyChain.NODE, new IPropertyGetter<Color, NodeModel>() {
+			public Color getProperty(final NodeModel node, final Color currentValue) {
 				final EdgeModel edge = node.getEdge();
 				return edge == null ? null : edge.getColor();
 			}
 		});
-		addColorGetter(PropertyChain.DEFAULT, new IPropertyGetter<Color, NodeModel>() {
-			public Color getProperty(final NodeModel node) {
+		addColorGetter(ExclusivePropertyChain.DEFAULT, new IPropertyGetter<Color, NodeModel>() {
+			public Color getProperty(final NodeModel node, final Color currentValue) {
 				if (node.isRoot()) {
 					return standardColor;
 				}
 				return getColor(node.getParentNode());
 			}
 		});
-		addStyleGetter(PropertyChain.NODE, new IPropertyGetter<String, NodeModel>() {
-			public String getProperty(final NodeModel node) {
+		addStyleGetter(ExclusivePropertyChain.NODE, new IPropertyGetter<String, NodeModel>() {
+			public String getProperty(final NodeModel node, final String currentValue) {
 				final EdgeModel edge = node.getEdge();
 				return edge == null ? null : edge.getStyle();
 			}
 		});
-		addStyleGetter(PropertyChain.DEFAULT, new IPropertyGetter<String, NodeModel>() {
-			public String getProperty(final NodeModel node) {
+		addStyleGetter(ExclusivePropertyChain.DEFAULT, new IPropertyGetter<String, NodeModel>() {
+			public String getProperty(final NodeModel node, final String currentValue) {
 				if (node.isRoot()) {
 					return standardStyle;
 				}
 				return getStyle(node.getParentNode());
 			}
 		});
-		addWidthGetter(PropertyChain.NODE, new IPropertyGetter<Integer, NodeModel>() {
-			public Integer getProperty(final NodeModel node) {
+		addWidthGetter(ExclusivePropertyChain.NODE, new IPropertyGetter<Integer, NodeModel>() {
+			public Integer getProperty(final NodeModel node, final Integer currentValue) {
 				final EdgeModel edge = node.getEdge();
 				int width = edge == null ? DEFAULT_WIDTH : edge.getWidth();
 				if (width == EdgeModel.WIDTH_PARENT) {
@@ -109,8 +109,8 @@ public class EdgeController {
 				return width != DEFAULT_WIDTH ? new Integer(width) : null;
 			}
 		});
-		addWidthGetter(PropertyChain.DEFAULT, new IPropertyGetter<Integer, NodeModel>() {
-			public Integer getProperty(final NodeModel node) {
+		addWidthGetter(ExclusivePropertyChain.DEFAULT, new IPropertyGetter<Integer, NodeModel>() {
+			public Integer getProperty(final NodeModel node, final Integer currentValue) {
 				return new Integer(EdgeModel.WIDTH_THIN);
 			}
 		});

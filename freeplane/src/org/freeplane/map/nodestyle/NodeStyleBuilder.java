@@ -36,7 +36,7 @@ import org.freeplane.map.tree.NodeBuilder;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.NodeBuilder.NodeObject;
 
-public class NodeStyleBuilder implements INodeCreator, IAttributeHandler, INodeWriter<IExtension>,
+public class NodeStyleBuilder implements INodeCreator, INodeWriter<IExtension>,
         IAttributeWriter<IExtension> {
 	static class FontProperties {
 		String fontName;
@@ -54,7 +54,7 @@ public class NodeStyleBuilder implements INodeCreator, IAttributeHandler, INodeW
 			if (tag.equals("font")) {
 				final FontProperties fp = (FontProperties) userObject;
 				NodeStyleModel nodeStyleModel = node.getNodeStyleModel();
-				if(nodeStyleModel == null){
+				if (nodeStyleModel == null) {
 					nodeStyleModel = new NodeStyleModel();
 					node.addExtension(nodeStyleModel);
 				}
@@ -75,62 +75,61 @@ public class NodeStyleBuilder implements INodeCreator, IAttributeHandler, INodeW
 		return null;
 	}
 
-	public boolean parseAttribute(final Object userObject, final String tag, final String name,
-	                              final String value) {
-		if (tag.equals(NodeBuilder.XML_NODE) && userObject instanceof NodeObject) {
-			final NodeModel node = ((NodeObject) userObject).node;
-			if (name.equals("COLOR")) {
+	private void registerAttributeHandlers(final ReadManager reader) {
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "COLOR", new IAttributeHandler() {
+			public void parseAttribute(final Object userObject, final String value) {
 				if (value.length() == 7) {
+					final NodeModel node = ((NodeObject) userObject).node;
 					node.setColor(Tools.xmlToColor(value));
 				}
-				return true;
 			}
-			else if (name.equals("BACKGROUND_COLOR")) {
-				if (value.length() == 7) {
-					node.setBackgroundColor(Tools.xmlToColor(value));
-				}
-				return true;
-			}
-			else if (name.equals("STYLE")) {
+		});
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "BACKGROUND_COLOR",
+		    new IAttributeHandler() {
+			    public void parseAttribute(final Object userObject, final String value) {
+				    if (value.length() == 7) {
+					    final NodeModel node = ((NodeObject) userObject).node;
+					    node.setBackgroundColor(Tools.xmlToColor(value));
+				    }
+			    }
+		    });
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "STYLE", new IAttributeHandler() {
+			public void parseAttribute(final Object userObject, final String value) {
+				final NodeModel node = ((NodeObject) userObject).node;
 				node.setShape(value);
-				return true;
 			}
-			return false;
-		}
-		if (tag.equals("font")) {
-			final FontProperties fp = (FontProperties) userObject;
-			if (name.equals("SIZE")) {
+		});
+		reader.addAttributeHandler("font", "SIZE", new IAttributeHandler() {
+			public void parseAttribute(final Object userObject, final String value) {
+				final FontProperties fp = (FontProperties) userObject;
 				fp.fontSize = Integer.parseInt(value.toString());
 			}
-			else if (name.equals("NAME")) {
+		});
+		reader.addAttributeHandler("font", "NAME", new IAttributeHandler() {
+			public void parseAttribute(final Object userObject, final String value) {
+				final FontProperties fp = (FontProperties) userObject;
 				fp.fontName = value.toString();
 			}
-			else if (value.toString().equals("true")) {
-				if (name.equals("BOLD")) {
-					fp.isBold = true;
-				}
-				else if (name.equals("ITALIC")) {
-					fp.isItalic = true;
-				}
+		});
+		reader.addAttributeHandler("font", "BOLD", new IAttributeHandler() {
+			public void parseAttribute(final Object userObject, final String value) {
+				final FontProperties fp = (FontProperties) userObject;
+				fp.isBold = value.toString().equals("true");
 			}
-			else if (value.toString().equals("false")) {
-				if (name.equals("BOLD")) {
-					fp.isBold = false;
-				}
-				else if (name.equals("ITALIC")) {
-					fp.isItalic = false;
-				}
+		});
+		reader.addAttributeHandler("font", "ITALIC", new IAttributeHandler() {
+			public void parseAttribute(final Object userObject, final String value) {
+				final FontProperties fp = (FontProperties) userObject;
+				fp.isItalic = value.toString().equals("true");
 			}
-			return true;
-		}
-		return false;
+		});
 	}
 
 	/**
 	 */
 	public void registerBy(final ReadManager reader, final WriteManager writer) {
 		reader.addNodeCreator("font", this);
-		reader.addAttributeHandler("node", this);
+		registerAttributeHandlers(reader);
 		writer.addExtensionNodeWriter(NodeStyleModel.class, this);
 		writer.addExtensionAttributeWriter(NodeStyleModel.class, this);
 	}
@@ -175,7 +174,7 @@ public class NodeStyleBuilder implements INodeCreator, IAttributeHandler, INodeW
 				fontElement.setAttribute("ITALIC", style.isItalic() ? "true" : "false");
 				isRelevant = true;
 			}
-			if(isRelevant){
+			if (isRelevant) {
 				writer.addNode(style, fontElement);
 			}
 		}

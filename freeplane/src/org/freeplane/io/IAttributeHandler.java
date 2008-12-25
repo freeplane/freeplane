@@ -20,5 +20,5 @@
 package org.freeplane.io;
 
 public interface IAttributeHandler {
-	boolean parseAttribute(Object node, String tag, String name, String value);
+	void parseAttribute(Object node, String value);
 }

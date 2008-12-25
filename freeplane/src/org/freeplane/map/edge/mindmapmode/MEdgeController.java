@@ -90,15 +90,6 @@ public class MEdgeController extends EdgeController {
 				edgeStyleRefresh(node);
 			}
 
-			public String getDescription() {
-				return "setStyle";
-			}
-
-			public void undo() {
-				node.createEdge().setStyle(oldStyle);
-				modeController.getMapController().nodeChanged(node);
-				edgeStyleRefresh(node);
-			}
 			private void edgeStyleRefresh(final NodeModel node) {
 				final ListIterator childrenFolded = modeController.getMapController()
 				    .childrenFolded(node);
@@ -110,6 +101,16 @@ public class MEdgeController extends EdgeController {
 						edgeStyleRefresh(child);
 					}
 				}
+			}
+
+			public String getDescription() {
+				return "setStyle";
+			}
+
+			public void undo() {
+				node.createEdge().setStyle(oldStyle);
+				modeController.getMapController().nodeChanged(node);
+				edgeStyleRefresh(node);
 			}
 		};
 		modeController.execute(actor);
@@ -125,16 +126,9 @@ public class MEdgeController extends EdgeController {
 			public void act() {
 				node.createEdge().setWidth(width);
 				modeController.getMapController().nodeChanged(node);
+				edgeWidthRefresh(node);
 			}
 
-			public String getDescription() {
-				return "setWidth";
-			}
-
-			public void undo() {
-				node.createEdge().setWidth(oldWidth);
-				modeController.getMapController().nodeChanged(node);
-			}
 			private void edgeWidthRefresh(final NodeModel node) {
 				final ListIterator childrenFolded = modeController.getMapController()
 				    .childrenFolded(node);
@@ -146,6 +140,16 @@ public class MEdgeController extends EdgeController {
 						edgeWidthRefresh(child);
 					}
 				}
+			}
+
+			public String getDescription() {
+				return "setWidth";
+			}
+
+			public void undo() {
+				node.createEdge().setWidth(oldWidth);
+				modeController.getMapController().nodeChanged(node);
+				edgeWidthRefresh(node);
 			}
 		};
 		modeController.execute(actor);

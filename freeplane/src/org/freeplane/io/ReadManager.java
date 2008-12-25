@@ -21,13 +21,14 @@ package org.freeplane.io;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 
 import org.freeplane.map.tree.NodeModel;
 
 public class ReadManager {
-	final private ListHashTable<String, IAttributeHandler> attributeHandlers;
+	final private Hashtable<String, Hashtable<String, IAttributeHandler>> attributeHandlers;
 	final private ListHashTable<String, INodeContentHandler> nodeContentHandlers;
 	final private ListHashTable<String, INodeCreator> nodeCreators;
 	final private Collection<IReadCompletionListener> readCompletionListeners;
@@ -36,7 +37,7 @@ public class ReadManager {
 	public ReadManager() {
 		super();
 		nodeCreators = new ListHashTable();
-		attributeHandlers = new ListHashTable();
+		attributeHandlers = new Hashtable<String, Hashtable<String, IAttributeHandler>>();
 		nodeContentHandlers = new ListHashTable();
 		xmlHandlers = new ListHashTable();
 		readCompletionListeners = new LinkedList<IReadCompletionListener>();
@@ -47,8 +48,17 @@ public class ReadManager {
 	 * @see freeplane.persistence.Reader#addAttributeLoader(java.lang.String,
 	 * freeplane.persistence.AttributeLoader)
 	 */
-	public void addAttributeHandler(final String parentTag, final IAttributeHandler a) {
-		attributeHandlers.add(parentTag, a);
+	public void addAttributeHandler(final String parentTag, final String attributeName,
+	                                final IAttributeHandler a) {
+		Hashtable<String, IAttributeHandler> tagHandlers = attributeHandlers.get(parentTag);
+		if (tagHandlers == null) {
+			tagHandlers = new Hashtable<String, IAttributeHandler>();
+			attributeHandlers.put(parentTag, tagHandlers);
+		}
+		if (null != tagHandlers.put(attributeName, a)) {
+			throw new RuntimeException("attribute handler " + parentTag + ", " + attributeName
+			        + " already registered");
+		}
 	}
 
 	/*
@@ -77,7 +87,7 @@ public class ReadManager {
 		xmlHandlers.add(parentTag, x);
 	}
 
-	public ListHashTable getAttributeHandlers() {
+	public Hashtable<String, Hashtable<String, IAttributeHandler>> getAttributeHandlers() {
 		return attributeHandlers;
 	}
 
@@ -105,8 +115,10 @@ public class ReadManager {
 	 * @see freeplane.persistence.Reader#removeAttributeLoader(java.lang.String,
 	 * freeplane.persistence.AttributeLoader)
 	 */
-	public void removeAttributeHandler(final String parentTag, final IAttributeHandler a) {
-		attributeHandlers.remove(parentTag, a);
+	public void removeAttributeHandler(final String parentTag, final String attributeName,
+	                                   final IAttributeHandler a) {
+		final Hashtable<String, IAttributeHandler> hashtable = attributeHandlers.get(parentTag);
+		hashtable.remove(attributeName);
 	}
 
 	/*

@@ -23,6 +23,7 @@ import java.awt.Color;
 import java.io.IOException;
 
 import org.freeplane.extension.IExtension;
+import org.freeplane.io.IAttributeHandler;
 import org.freeplane.io.INodeCreator;
 import org.freeplane.io.INodeWriter;
 import org.freeplane.io.ITreeWriter;
@@ -61,17 +62,22 @@ class EdgeBuilder implements INodeCreator, INodeWriter<IExtension> {
 		return null;
 	}
 
-	public boolean parseAttribute(final Object userObject, final String tag, final String name,
-	                              final String value) {
-		if (userObject instanceof EdgeModel) {
-			final EdgeModel edge = (EdgeModel) userObject;
-			if (name.equals("STYLE")) {
+	private void registerAttributeHandlers(final ReadManager reader) {
+		reader.addAttributeHandler("edge", "STYLE", new IAttributeHandler() {
+			public void parseAttribute(final Object userObject, final String value) {
+				final EdgeModel edge = (EdgeModel) userObject;
 				edge.setStyle(value.toString());
 			}
-			else if (name.equals("COLOR")) {
+		});
+		reader.addAttributeHandler("edge", "COLOR", new IAttributeHandler() {
+			public void parseAttribute(final Object userObject, final String value) {
+				final EdgeModel edge = (EdgeModel) userObject;
 				edge.setColor(Tools.xmlToColor(value.toString()));
 			}
-			else if (name.equals("WIDTH")) {
+		});
+		reader.addAttributeHandler("edge", "WIDTH", new IAttributeHandler() {
+			public void parseAttribute(final Object userObject, final String value) {
+				final EdgeModel edge = (EdgeModel) userObject;
 				if (value.toString().equals(EdgeModel.EDGE_WIDTH_THIN_STRING)) {
 					edge.setWidth(EdgeModel.WIDTH_THIN);
 				}
@@ -79,15 +85,14 @@ class EdgeBuilder implements INodeCreator, INodeWriter<IExtension> {
 					edge.setWidth(Integer.parseInt(value.toString()));
 				}
 			}
-			return true;
-		}
-		return false;
+		});
 	}
 
 	/**
 	 */
 	public void registerBy(final ReadManager reader, final WriteManager writer) {
 		reader.addNodeCreator("edge", this);
+		registerAttributeHandlers(reader);
 		writer.addExtensionNodeWriter(EdgeModel.class, this);
 	}
 
@@ -121,7 +126,7 @@ class EdgeBuilder implements INodeCreator, INodeWriter<IExtension> {
 				}
 				relevant = true;
 			}
-			if(relevant){
+			if (relevant) {
 				writer.addNode(model, edge);
 			}
 		}
