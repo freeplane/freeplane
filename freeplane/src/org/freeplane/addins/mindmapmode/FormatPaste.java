@@ -87,10 +87,9 @@ public class FormatPaste extends MultipleNodeAction {
 		final Pattern pattern = FormatCopy.getPattern();
 		if (pattern == null) {
 			JOptionPane.showMessageDialog(Controller.getController().getViewController()
-			    .getContentPane(), Controller.getText("no_format_copy_before_format_paste"), "" /*
-													    		    				    				    				    		    				    				 * =Title
-													    		    				    				    				    		    				    				 */,
-			    JOptionPane.ERROR_MESSAGE);
+			    .getContentPane(), Controller.getText("no_format_copy_before_format_paste"),
+			    "" /*=Title*/,
+			     JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		((MModeController) getModeController()).getPatternController().applyPattern(node, pattern);

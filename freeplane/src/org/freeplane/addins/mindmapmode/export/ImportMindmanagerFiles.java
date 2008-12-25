@@ -59,8 +59,7 @@ public class ImportMindmanagerFiles extends FreeplaneAction {
 		final String type = "mmap";
 		final Container component = Controller.getController().getViewController().getContentPane();
 		final JFileChooser chooser = new JFileChooser();
-		chooser.addChoosableFileFilter(new ExportFilter(type, null /*
-																																		 */));
+		chooser.addChoosableFileFilter(new ExportFilter(type, null));
 		final File mmFile = Controller.getController().getMap().getFile();
 		if (mmFile != null && mmFile.getParentFile() != null) {
 			chooser.setSelectedFile(mmFile.getParentFile());

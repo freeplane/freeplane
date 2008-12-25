@@ -166,13 +166,8 @@ public class CloudView {
 			if (length > distanceBetweenPoints) {
 				for (int j = 0; j < length / distanceBetweenPoints - 1; ++j) {
 					if ((j + 2) * distanceBetweenPoints < length) {
-						x3 = x0 + (j + 1) * distanceBetweenPoints * dxn; /*
-																																																																																																		 * the
-																																																																																																		 * drawing
-																																																																																																		 * end
-																																																																																																		 * point
-																																																																																																		 * .
-																																																																																																		 */
+						x3 = x0 + (j + 1) * distanceBetweenPoints * dxn; 
+						/* the drawing end point.*/
 						y3 = y0 + (j + 1) * distanceBetweenPoints * dyn;
 					}
 					else {

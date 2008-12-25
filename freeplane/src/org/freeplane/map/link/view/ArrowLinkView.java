@@ -84,11 +84,7 @@ public class ArrowLinkView {
 		}
 		final Rectangle2D rec = getControlPoint(p);
 		final FlatteningPathIterator pi = new FlatteningPathIterator(arrowLinkCurve
-		    .getPathIterator(null), MAXIMAL_RECTANGLE_SIZE_FOR_COLLISION_DETECTION / 4, 10/*
-																																																 * =maximal 2 ^
-																																																 * 10 = 1024
-																																																 * points .
-																																																 */);
+		    .getPathIterator(null), MAXIMAL_RECTANGLE_SIZE_FOR_COLLISION_DETECTION / 4, 10/*=maximal 2 ^10 = 1024 points .*/);
 		double oldCoordinateX = 0, oldCoordinateY = 0;
 		while (pi.isDone() == false) {
 			final double[] coordinates = new double[6];
@@ -278,9 +274,8 @@ public class ArrowLinkView {
 		double dx, dy, dxn, dyn;
 		dx = p3.x - p1.x; /* direction of p1 -> p3 */
 		dy = p3.y - p1.y;
-		final double length = Math.sqrt(dx * dx + dy * dy) / (getZoom() * 10/*
-																																								 * =zoom factor for arrows
-																																								 */);
+		final double length = Math.sqrt(dx * dx + dy * dy)
+		        / (getZoom() * 10/*=zoom factor for arrows*/);
 		dxn = dx / length; /* normalized direction of p1 -> p3 */
 		dyn = dy / length;
 		final double width = .5f;
