@@ -41,7 +41,7 @@ import org.freeplane.extension.IExtension;
 import org.freeplane.extension.IExtensionCollection;
 import org.freeplane.modes.ModeController;
 
-public class MapModel extends DefaultTreeModel implements IExtensionCollection {
+public class MapModel extends DefaultTreeModel {
 	private static Random ran = new Random();
 	private static final int UNDEFINED_NODE_ID = 2000000000;
 	/**
@@ -243,6 +243,10 @@ public class MapModel extends DefaultTreeModel implements IExtensionCollection {
 
 	public IExtension getExtension(final Class clazz) {
 		return extensions.getExtension(clazz);
+	}
+
+	IExtensionCollection getExtensions() {
+		return extensions;
 	}
 
 	/**

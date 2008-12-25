@@ -113,26 +113,25 @@ class NodeWriter implements INodeWriter<String>, IAttributeWriter<String> {
 			iconElement.setAttribute("BUILTIN", ((MindIcon) node.getIcons().get(i)).getName());
 			xmlNode.addChild(iconElement);
 		}
+		writer.addExtensionAttributes(node.getExtensions());
 	}
 
-	private void writeContent(final ITreeWriter writer, final NodeModel nodeAdapter)
-	        throws IOException {
+	private void writeContent(final ITreeWriter writer, final NodeModel node) throws IOException {
+		writer.addExtensionNodes(node.getExtensions());
 		if (!isTextNode) {
 			final XMLElement htmlElement = new XMLElement();
 			htmlElement.setName(NodeTextBuilder.XML_NODE_XHTML_CONTENT_TAG);
 			htmlElement.setAttribute(NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG,
 			    NodeTextBuilder.XML_NODE_XHTML_TYPE_NODE);
-			final String content = nodeAdapter.getXmlText().replace('\0', ' ');
+			final String content = node.getXmlText().replace('\0', ' ');
 			writer.addNode(content, htmlElement);
 		}
 		for (int i = 0; i < xmlNode.getChildrenCount(); i++) {
 			writer.addNode(null, xmlNode.getChildAtIndex(i));
 		}
-		if (encryptionModel == null
-		        && writeChildren
-		        && nodeAdapter.getModeController().getMapController().childrenUnfolded(nodeAdapter)
-		            .hasNext()) {
-			saveChildren(writer, nodeAdapter);
+		if (encryptionModel == null && writeChildren
+		        && node.getModeController().getMapController().childrenUnfolded(node).hasNext()) {
+			saveChildren(writer, node);
 		}
 	}
 

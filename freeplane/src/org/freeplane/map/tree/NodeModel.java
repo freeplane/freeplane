@@ -65,7 +65,7 @@ import org.freeplane.modes.mindmapmode.EncryptionModel;
  * This class represents a single Node of a Tree. It contains direct handles to
  * its parent and children and to its view.
  */
-public class NodeModel implements MutableTreeNode, IExtensionCollection {
+public class NodeModel implements MutableTreeNode {
 	private static final boolean ALLOWSCHILDREN = true;
 	public final static int LEFT_POSITION = -1;
 	public static final String NODE_TEXT = "node_text";
@@ -240,11 +240,11 @@ public class NodeModel implements MutableTreeNode, IExtensionCollection {
 		if (toolTip == null) {
 			toolTip = new TreeMap();
 		}
-	};
+	}
 
 	public Iterator extensionIterator() {
 		return extensions.extensionIterator();
-	}
+	};
 
 	public Iterator extensionIterator(final Class clazz) {
 		return extensions.extensionIterator(clazz);
@@ -317,6 +317,10 @@ public class NodeModel implements MutableTreeNode, IExtensionCollection {
 
 	public IExtension getExtension(final Class clazz) {
 		return extensions.getExtension(clazz);
+	}
+
+	IExtensionCollection getExtensions() {
+		return extensions;
 	};
 
 	public FilterInfo getFilterInfo() {

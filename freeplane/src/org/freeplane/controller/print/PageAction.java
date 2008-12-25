@@ -51,8 +51,8 @@ class PageAction extends AbstractPrintAction {
 		}
 		final JDialog dialog = new JDialog(Controller.getController().getViewController()
 		    .getJFrame(), Controller.getText("printing_settings"), /*
-																																		 * modal=
-																																		 */
+																																			 * modal=
+																																			 */
 		true);
 		final JCheckBox fitToPage = new JCheckBox(Controller.getText("fit_to_page"), Controller
 		    .getResourceController().getBoolProperty("fit_to_page"));

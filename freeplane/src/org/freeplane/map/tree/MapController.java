@@ -121,6 +121,7 @@ public class MapController {
 		readManager = new ReadManager();
 		mapReader = new MapReader(readManager);
 		writeManager.addNodeWriter("map", mapWriter);
+		writeManager.addAttributeWriter("map", mapWriter);
 		createActions(modeController);
 		mapChangeListeners = new LinkedList<IMapChangeListener>();
 	}
@@ -632,7 +633,6 @@ public class MapController {
 	        throws IOException {
 		final TreeXmlWriter xmlWriter = new TreeXmlWriter(writeManager, fileout);
 		final IXMLElement xmlMap = new XMLElement("map");
-		xmlMap.setAttribute("version", Controller.XML_VERSION);
 		mapWriter.setSaveInvisible(saveInvisible);
 		xmlWriter.addNode(map, xmlMap);
 		fileout.close();

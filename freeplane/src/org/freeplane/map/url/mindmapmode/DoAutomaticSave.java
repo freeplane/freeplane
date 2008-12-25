@@ -94,8 +94,8 @@ public class DoAutomaticSave extends TimerTask {
 					try {
 						((FileManager) model.getModeController().getUrlManager())
 						    .saveInternal(model, tempFile, true /*
-						    					    					    										    					    																																																				 * =internal call
-						    					    					    										    					    																																																				 */);
+						    					    					    					    										    					    																																																				 * =internal call
+						    					    					    					    										    					    																																																				 */);
 						Controller.getController().getViewController().out(
 						    Controller.getResourceController().format("automatically_save_message",
 						        new Object[] { tempFile.toString() }));

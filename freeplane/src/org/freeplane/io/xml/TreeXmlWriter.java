@@ -86,6 +86,30 @@ public class TreeXmlWriter implements ITreeWriter {
 		xmlwriter.write(" -->\n");
 	}
 
+	public void addExtensionAttributes(final IExtensionCollection collection) {
+		final Iterator<IExtension> extensionIterator = collection.extensionIterator();
+		while (extensionIterator.hasNext()) {
+			final IExtension extension = extensionIterator.next();
+			final Iterator<IAttributeWriter<IExtension>> writerIterator = writeManager
+			    .getExtensionAttributeWriters().iterator(extension.getClass());
+			while (writerIterator.hasNext()) {
+				writerIterator.next().writeAttributes(this, collection, extension);
+			}
+		}
+	}
+
+	public void addExtensionNodes(final IExtensionCollection collection) throws IOException {
+		final Iterator<IExtension> extensionIterator = collection.extensionIterator();
+		while (extensionIterator.hasNext()) {
+			final IExtension extension = extensionIterator.next();
+			final Iterator<INodeWriter<IExtension>> writerIterator = writeManager
+			    .getExtensionNodeWriters().iterator(extension.getClass());
+			while (writerIterator.hasNext()) {
+				writerIterator.next().writeContent(this, collection, extension);
+			}
+		}
+	}
+
 	public void addNode(final Object userObject, final IXMLElement element) throws IOException {
 		if (elementStarted == false && xmlElement != null) {
 			xmlwriter.write(xmlElement, true, 0, true, false);
@@ -101,15 +125,7 @@ public class TreeXmlWriter implements ITreeWriter {
 			}
 			if (userObject instanceof IExtensionCollection) {
 				final IExtensionCollection collection = (IExtensionCollection) userObject;
-				final Iterator<IExtension> extensionIterator = collection.extensionIterator();
-				while (extensionIterator.hasNext()) {
-					final IExtension extension = extensionIterator.next();
-					final Iterator<IAttributeWriter<IExtension>> writerIterator = writeManager
-					    .getExtensionAttributeWriters().iterator(extension.getClass());
-					while (writerIterator.hasNext()) {
-						writerIterator.next().writeAttributes(this, userObject, extension);
-					}
-				}
+				addExtensionAttributes(collection);
 			}
 		}
 		if (userObject != null && userObject.getClass().equals(String.class)) {
@@ -123,15 +139,7 @@ public class TreeXmlWriter implements ITreeWriter {
 			}
 			if (userObject instanceof IExtensionCollection) {
 				final IExtensionCollection collection = (IExtensionCollection) userObject;
-				final Iterator<IExtension> extensionIterator = collection.extensionIterator();
-				while (extensionIterator.hasNext()) {
-					final IExtension extension = extensionIterator.next();
-					final Iterator<INodeWriter<IExtension>> writerIterator = writeManager
-					    .getExtensionNodeWriters().iterator(extension.getClass());
-					while (writerIterator.hasNext()) {
-						writerIterator.next().writeContent(this, userObject, extension);
-					}
-				}
+				addExtensionNodes(collection);
 			}
 		}
 		{

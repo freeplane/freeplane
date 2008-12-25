@@ -22,6 +22,8 @@ package org.freeplane.map.tree;
 import java.io.IOException;
 import java.io.Writer;
 
+import org.freeplane.controller.Controller;
+import org.freeplane.io.IAttributeWriter;
 import org.freeplane.io.INodeWriter;
 import org.freeplane.io.ITreeWriter;
 import org.freeplane.io.WriteManager;
@@ -31,7 +33,7 @@ import org.freeplane.io.xml.TreeXmlWriter;
  * @author Dimitry Polivaev
  * 07.12.2008
  */
-class MapWriter implements INodeWriter<String> {
+class MapWriter implements INodeWriter<String>, IAttributeWriter<String> {
 	private NodeWriter currentNodeWriter;
 	private boolean saveInvisible;
 	final private WriteManager writeManager;
@@ -46,6 +48,12 @@ class MapWriter implements INodeWriter<String> {
 
 	public void setSaveInvisible(final boolean saveInvisible) {
 		this.saveInvisible = saveInvisible;
+	}
+
+	public void writeAttributes(final ITreeWriter writer, final Object userObject, final String tag) {
+		final MapModel map = (MapModel) userObject;
+		writer.addAttribute("version", Controller.XML_VERSION);
+		writer.addExtensionAttributes(map.getExtensions());
 	}
 
 	public void writeContent(final ITreeWriter writer, final Object node, final String tag)

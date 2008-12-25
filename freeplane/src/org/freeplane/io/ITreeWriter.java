@@ -21,6 +21,7 @@ package org.freeplane.io;
 
 import java.io.IOException;
 
+import org.freeplane.extension.IExtensionCollection;
 import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
 
 public interface ITreeWriter {
@@ -31,6 +32,10 @@ public interface ITreeWriter {
 	void addAttribute(String name, String value);
 
 	void addComment(String string) throws IOException;
+
+	void addExtensionAttributes(final IExtensionCollection collection);
+
+	void addExtensionNodes(final IExtensionCollection collection) throws IOException;
 
 	void addNode(Object userObject, IXMLElement element) throws IOException;
 
