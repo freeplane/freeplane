@@ -20,8 +20,14 @@
 package org.freeplane.modes.mindmapmode;
 
 import java.awt.event.MouseEvent;
+import java.util.Vector;
 
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 import org.freeplane.controller.Controller;
+import org.freeplane.controller.resources.PropertyAction;
+import org.freeplane.controller.resources.ui.OptionPanelBuilder;
+import org.freeplane.controller.resources.ui.OptionString;
 import org.freeplane.map.attribute.IAttributeController;
 import org.freeplane.map.attribute.mindmapnode.MAttributeController;
 import org.freeplane.map.icon.mindmapnode.MIconController;
@@ -37,21 +43,58 @@ import org.freeplane.map.url.mindmapmode.FileManager;
 import org.freeplane.modes.ModeController;
 import org.freeplane.modes.UserInputListenerFactory;
 import org.freeplane.ui.FreemindMenuBar;
+import org.freeplane.ui.IndexedTree;
 import org.freeplane.ui.MenuBuilder;
 import org.freeplane.undo.IUndoHandler;
 import org.freeplane.undo.IUndoableActor;
 
 public class MModeController extends ModeController {
+	public OptionPanelBuilder getOptionPanelBuilder() {
+    	return optionPanelBuilder;
+    }
+
 	static public final String MODENAME = "MindMap";
 	static private RedoAction redo;
 	static private UndoAction undo;
 	private MAttributeController attributeController;
 	private MPatternController patternController;
+	private OptionPanelBuilder optionPanelBuilder;
 
 	MModeController() {
 		super();
 		createActions();
+		createOptionPanelControls();
 	}
+	private void createOptionPanelControls() {
+		optionPanelBuilder = new OptionPanelBuilder();
+		optionPanelBuilder.load(Controller.getResourceController().getResource(
+		    "org/freeplane/modes/mindmapmode/preferences.xml"));
+		final LookAndFeelInfo[] lafInfo = UIManager.getInstalledLookAndFeels();
+		final Vector<String> lafNames = new Vector(lafInfo.length + 5);
+		final Vector<String> translatedLafNames = new Vector(lafInfo.length + 5);
+		lafNames.add("default");
+		translatedLafNames.add(OptionString.getText("OptionPanel.default"));
+		lafNames.add("metal");
+		translatedLafNames.add(OptionString.getText("OptionPanel.metal"));
+		lafNames.add("windows");
+		translatedLafNames.add(OptionString.getText("OptionPanel.windows"));
+		lafNames.add("motif");
+		translatedLafNames.add(OptionString.getText("OptionPanel.motif"));
+		lafNames.add("gtk");
+		translatedLafNames.add(OptionString.getText("OptionPanel.gtk"));
+		lafNames.add("nothing");
+		translatedLafNames.add(OptionString.getText("OptionPanel.nothing"));
+		for (int i = 0; i < lafInfo.length; i++) {
+			final LookAndFeelInfo info = lafInfo[i];
+			final String className = info.getClassName();
+			lafNames.add(className);
+			translatedLafNames.add(info.getName());
+		}
+		optionPanelBuilder.addComboProperty("Appearance/look_and_feel/lookandfeel", "lookandfeel", lafNames,
+		    translatedLafNames, IndexedTree.AS_CHILD);
+		addAction("propertyAction", new PropertyAction(optionPanelBuilder.getRoot()));
+	}
+
 
 	private void addUndoableActor(final IUndoableActor actor) {
 		final MindMapMapModel map = (MindMapMapModel) Controller.getController().getMap();
@@ -83,16 +126,6 @@ public class MModeController extends ModeController {
 		        && e.getButton() == MouseEvent.BUTTON1 && (node.getLink() == null)) {
 			((MTextController) getTextController()).edit(null, false, false);
 		}
-	}
-
-	/**
-	 * Enabled/Disabled all actions that are dependent on whether there is a map
-	 * open or not.
-	 */
-	@Override
-	public void enableActions(final boolean enabled) {
-		super.enableActions(enabled);
-		((MIconController) getIconController()).enableActions(enabled);
 	}
 
 	@Override

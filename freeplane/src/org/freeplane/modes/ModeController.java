@@ -276,11 +276,6 @@ public class ModeController {
 	public void doubleClick(final MouseEvent e) {
 	}
 
-	public void enableActions(final boolean enabled) {
-		Controller.getController().enableActions(enabled);
-		actionController.enableActions(enabled);
-	}
-
 	public void execute(final IUndoableActor actor) {
 		actor.act();
 	}

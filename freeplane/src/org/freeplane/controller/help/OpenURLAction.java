@@ -27,10 +27,10 @@ import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.ui.AlwaysEnabledAction;
+
 import org.freeplane.ui.MenuBuilder;
 
-@AlwaysEnabledAction
+
 class OpenURLAction extends AbstractAction {
 	final private String url;
 

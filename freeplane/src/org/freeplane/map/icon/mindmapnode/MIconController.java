@@ -33,6 +33,11 @@ import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 
 import org.freeplane.controller.Controller;
+import org.freeplane.controller.resources.ui.IPropertyControl;
+import org.freeplane.controller.resources.ui.IPropertyControlCreator;
+import org.freeplane.controller.resources.ui.KeyProperty;
+import org.freeplane.controller.resources.ui.OptionPanelBuilder;
+import org.freeplane.map.icon.IIconInformation;
 import org.freeplane.map.icon.IconController;
 import org.freeplane.map.icon.MindIcon;
 import org.freeplane.map.tree.NodeModel;
@@ -41,6 +46,7 @@ import org.freeplane.modes.UserInputListenerFactory;
 import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.ui.FreeMindToolBar;
 import org.freeplane.ui.FreemindMenuBar;
+import org.freeplane.ui.IndexedTree;
 import org.freeplane.ui.MenuBuilder;
 import org.freeplane.undo.IUndoableActor;
 
@@ -62,7 +68,30 @@ public class MIconController extends IconController {
 		iconToolBar.setOrientation(SwingConstants.VERTICAL);
 		iconToolBar.setRollover(true);
 		createIconActions();
+		createPreferences();
 	}
+
+	private void createPreferences() {
+		final Vector actions = new Vector();
+		actions.addAll(iconActions);
+		final MModeController modeController = (MModeController)getModeController();
+		final OptionPanelBuilder optionPanelBuilder = modeController.getOptionPanelBuilder();
+		actions.add(modeController.getAction("removeLastIconAction"));
+		actions.add(modeController.getAction("removeAllIconsAction"));
+		final Iterator iterator = actions.iterator();
+		while (iterator.hasNext()) {
+			final IIconInformation info = (IIconInformation) iterator.next();
+			optionPanelBuilder.addCreator("Keystrokes/icons", new IPropertyControlCreator() {
+				public IPropertyControl createControl() {
+					final KeyProperty keyProperty = new KeyProperty(info.getKeystrokeResourceName());
+					keyProperty.setLabelText(info.getDescription());
+					keyProperty.setImageIcon(info.getIcon());
+					keyProperty.disableModifiers();
+					return keyProperty;
+				}
+			}, IndexedTree.AS_CHILD);
+		}
+    }
 
 	public void addIcon(final NodeModel node, final MindIcon icon, final int position) {
 		final IUndoableActor actor = new IUndoableActor() {

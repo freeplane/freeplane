@@ -206,13 +206,6 @@ public class OptionPanelBuilder {
 	}
 
 	private class StringOptionCreator extends PropertyCreator {
-		private IPropertyControlCreator createStringOptionCreator(final String name) {
-			return new IPropertyControlCreator() {
-				public IPropertyControl createControl() {
-					return new StringProperty(name);
-				}
-			};
-		}
 
 		@Override
 		public IPropertyControlCreator getCreator(final String name, final IXMLElement data) {
@@ -247,6 +240,10 @@ public class OptionPanelBuilder {
 
 	public void addBooleanProperty(final String path, final String name, final int position) {
 		tree.addElement(path, createBooleanOptionCreator(name), path + "/" + name, position);
+	}
+
+	public void addStringProperty(final String path, final String name, final int position) {
+		tree.addElement(path, createStringOptionCreator(name), path + "/" + name, position);
 	}
 
 	public void addColorProperty(final String path, final String name, final int position) {
@@ -292,14 +289,21 @@ public class OptionPanelBuilder {
 		tree.addElement(path, nextLineCreator, position);
 	}
 
-	public void addTab(final String path, final String name, final int position) {
-		addTab(path, name, null, position);
+	public void addTab(final String name) {
+		addTab(name, null, IndexedTree.AS_CHILD);
 	}
 
-	public void addTab(final String path, final String name, final String layout, final int position) {
-		tree.addElement(path, createTabCreator(name, layout), path + "/" + name, position);
+	public void addTab(final String name, final String layout, final int position) {
+		tree.addElement(tree , createTabCreator(name, layout), name, position);
 	}
 
+	private IPropertyControlCreator createStringOptionCreator(final String name) {
+		return new IPropertyControlCreator() {
+			public IPropertyControl createControl() {
+				return new StringProperty(name);
+			}
+		};
+	}
 	private IPropertyControlCreator createBooleanOptionCreator(final String name) {
 		return new IPropertyControlCreator() {
 			public IPropertyControl createControl() {
@@ -403,4 +407,8 @@ public class OptionPanelBuilder {
 			throw new RuntimeException(e);
 		}
 	}
+
+	public DefaultMutableTreeNode getRoot() {
+	    return getTree().getRoot();
+    }
 }

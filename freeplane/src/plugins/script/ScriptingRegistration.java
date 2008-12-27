@@ -22,18 +22,10 @@ package plugins.script;
 
 import java.io.PrintStream;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Vector;
-
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ResourceController;
-import org.freeplane.controller.resources.ui.BooleanProperty;
-import org.freeplane.controller.resources.ui.IFreemindPropertyContributor;
-import org.freeplane.controller.resources.ui.OptionPanel;
+import org.freeplane.controller.resources.ui.OptionPanelBuilder;
 import org.freeplane.controller.resources.ui.ScriptEditorProperty;
-import org.freeplane.controller.resources.ui.SeparatorProperty;
-import org.freeplane.controller.resources.ui.StringProperty;
-import org.freeplane.controller.resources.ui.TabProperty;
 import org.freeplane.main.HtmlTools;
 import org.freeplane.main.Tools;
 import org.freeplane.main.Tools.BooleanHolder;
@@ -42,6 +34,7 @@ import org.freeplane.map.pattern.mindmapnode.Pattern;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.ModeController;
 import org.freeplane.modes.mindmapmode.MModeController;
+import org.freeplane.ui.IndexedTree;
 import org.freeplane.ui.MenuBuilder;
 
 import plugins.script.ScriptEditorPanel.IScriptModel;
@@ -49,6 +42,10 @@ import plugins.script.ScriptEditorPanel.ScriptHolder;
 import plugins.script.ScriptingEngine.IErrorHandler;
 
 public class ScriptingRegistration implements IExternalPatternAction {
+	private static final String SEPARATOR = "OptionPanel.separator.plugins/scripting/separatorPropertyName";
+	private static final String TAB = "OptionPanel.plugins/scripting/tab_name";
+	private static final String GROUP = TAB + "/" +  SEPARATOR;
+
 	final private class PatternScriptModel implements IScriptModel {
 		final private String mOriginalScript;
 		private String mScript;
@@ -110,34 +107,31 @@ public class ScriptingRegistration implements IExternalPatternAction {
 		}
 	}
 
-	private static final class ScriptingPluginPropertyContributor implements
-	        IFreemindPropertyContributor {
-		public ScriptingPluginPropertyContributor(final MModeController modeController) {
+		private void addPropertiesToOptionPanel() {
+			OptionPanelBuilder controls = modeController.getOptionPanelBuilder();
+			controls.addTab(TAB);
+		controls.addSeparator(TAB, SEPARATOR, IndexedTree.AS_CHILD);
+		controls.addBooleanProperty(GROUP,
+		    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION,
+		    IndexedTree.AS_CHILD);
+		controls.addBooleanProperty(GROUP,
+		    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION,
+		    IndexedTree.AS_CHILD);
+		controls.addBooleanProperty(GROUP,
+		    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION,
+		    IndexedTree.AS_CHILD);
+		controls.addBooleanProperty(GROUP,
+		    ResourceController.RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED,
+		    IndexedTree.AS_CHILD);
+		controls.addStringProperty(GROUP,
+		    ResourceController.RESOURCES_SCRIPT_USER_KEY_NAME_FOR_SIGNING,
+		    IndexedTree.AS_CHILD);
 		}
 
-		public List getControls() {
-			final Vector controls = new Vector();
-			controls.add(new TabProperty("OptionPanel.plugins/scripting/tab_name"));
-			controls.add(new SeparatorProperty(
-			    "OptionPanel.separator.plugins/scripting/separatorPropertyName"));
-			controls.add(new BooleanProperty(
-			    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION));
-			controls.add(new BooleanProperty(
-			    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION));
-			controls.add(new BooleanProperty(
-			    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION));
-			controls
-			    .add(new BooleanProperty(ResourceController.RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED));
-			controls.add(new StringProperty(
-			    ResourceController.RESOURCES_SCRIPT_USER_KEY_NAME_FOR_SIGNING));
-			return controls;
-		}
-	}
 
 	final private MModeController modeController;
 	final private HashMap mScriptCookies = new HashMap();
 	private ScriptEditorProperty.IScriptEditorStarter mScriptEditorStarter;
-	private ScriptingPluginPropertyContributor mScriptingPluginPropertyContributor;
 
 	public ScriptingRegistration(final ModeController controller) {
 		modeController = (MModeController) controller;
@@ -172,8 +166,7 @@ public class ScriptingRegistration implements IExternalPatternAction {
 		};
 		modeController.addExtension(ScriptEditorProperty.IScriptEditorStarter.class,
 		    mScriptEditorStarter);
-		mScriptingPluginPropertyContributor = new ScriptingPluginPropertyContributor(modeController);
-		OptionPanel.addContributor(mScriptingPluginPropertyContributor);
+		addPropertiesToOptionPanel();
 		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory()
 		    .getMenuBuilder();
 		menuBuilder.addAnnotatedAction(new ScriptEditor(this));

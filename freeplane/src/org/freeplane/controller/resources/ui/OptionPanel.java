@@ -28,28 +28,18 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Properties;
-import java.util.Set;
 import java.util.Vector;
 
-import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.map.icon.IIconInformation;
-import org.freeplane.map.icon.mindmapnode.MIconController;
-import org.freeplane.modes.ModeController;
-import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.ui.IndexedTree;
 import org.freeplane.ui.MenuBuilder;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
@@ -109,16 +99,6 @@ public class OptionPanel {
 	public static Vector changeListeners = new Vector();
 	private static final Color MARKED_BUTTON_COLOR = Color.BLUE;
 	private static final String PREFERENCE_STORAGE_PROPERTY = "OptionPanel_Window_Properties";
-	private static Set sContributors = new HashSet();
-
-	public static void addContributor(final IFreemindPropertyContributor contributor) {
-		OptionPanel.sContributors.add(contributor);
-	}
-
-	public static void removeContributor(final IFreemindPropertyContributor contributor) {
-		OptionPanel.sContributors.remove(contributor);
-	}
-
 	private Vector<IPropertyControl> controls;
 	final private IOptionPanelFeedback feedback;
 	private String selectedPanel = null;
@@ -144,7 +124,7 @@ public class OptionPanel {
 		new OptionPanelBuilder();
 	}
 
-	public void buildPanel() {
+	public void buildPanel(final DefaultMutableTreeNode controlsTree) {
 		final FormLayout leftLayout = new FormLayout("80dlu", "");
 		final DefaultFormBuilder leftBuilder = new DefaultFormBuilder(leftLayout);
 		final CardLayout cardLayout = new VariableSizeCardLayout();
@@ -152,7 +132,6 @@ public class OptionPanel {
 		FormLayout rightLayout = null;
 		DefaultFormBuilder rightBuilder = null;
 		String lastTabName = null;
-		final DefaultMutableTreeNode controlsTree = getControls();
 		controls = new Vector();
 		for (final Enumeration<DefaultMutableTreeNode> i = controlsTree.preorderEnumeration(); i
 		    .hasMoreElements();) {
@@ -163,11 +142,6 @@ public class OptionPanel {
 			}
 			final IPropertyControl control = creator.createControl();
 			controls.add(control);
-		}
-		for (final Iterator iter = OptionPanel.sContributors.iterator(); iter.hasNext();) {
-			final IFreemindPropertyContributor contributor = (IFreemindPropertyContributor) iter
-			    .next();
-			controls.addAll(contributor.getControls());
 		}
 		final Iterator<IPropertyControl> iterator = controls.iterator();
 		while (iterator.hasNext()) {
@@ -229,57 +203,6 @@ public class OptionPanel {
 
 	private Collection getAllButtons() {
 		return tabButtonMap.values();
-	}
-
-	private DefaultMutableTreeNode getControls() {
-		final OptionPanelBuilder builder = new OptionPanelBuilder();
-		builder.load(Controller.getResourceController().getResource(
-		    "org/freeplane/controller/resources/ui/preferences.xml"));
-		final LookAndFeelInfo[] lafInfo = UIManager.getInstalledLookAndFeels();
-		final Vector<String> lafNames = new Vector(lafInfo.length + 5);
-		final Vector<String> translatedLafNames = new Vector(lafInfo.length + 5);
-		lafNames.add("default");
-		translatedLafNames.add(OptionString.getText("OptionPanel.default"));
-		lafNames.add("metal");
-		translatedLafNames.add(OptionString.getText("OptionPanel.metal"));
-		lafNames.add("windows");
-		translatedLafNames.add(OptionString.getText("OptionPanel.windows"));
-		lafNames.add("motif");
-		translatedLafNames.add(OptionString.getText("OptionPanel.motif"));
-		lafNames.add("gtk");
-		translatedLafNames.add(OptionString.getText("OptionPanel.gtk"));
-		lafNames.add("nothing");
-		translatedLafNames.add(OptionString.getText("OptionPanel.nothing"));
-		for (int i = 0; i < lafInfo.length; i++) {
-			final LookAndFeelInfo info = lafInfo[i];
-			final String className = info.getClassName();
-			lafNames.add(className);
-			translatedLafNames.add(info.getName());
-		}
-		builder.addComboProperty("Appearance/look_and_feel/lookandfeel", "lookandfeel", lafNames,
-		    translatedLafNames, IndexedTree.AS_CHILD);
-		final ModeController modeController = Controller.getModeController();
-		final MModeController controller = (MModeController) modeController;
-		final Collection<Action> iconActions = ((MIconController) controller.getIconController())
-		    .getIconActions();
-		final Vector actions = new Vector();
-		actions.addAll(iconActions);
-		actions.add(modeController.getAction("removeLastIconAction"));
-		actions.add(modeController.getAction("removeAllIconsAction"));
-		final Iterator iterator = actions.iterator();
-		while (iterator.hasNext()) {
-			final IIconInformation info = (IIconInformation) iterator.next();
-			builder.addCreator("Keystrokes/icons", new IPropertyControlCreator() {
-				public IPropertyControl createControl() {
-					final KeyProperty keyProperty = new KeyProperty(info.getKeystrokeResourceName());
-					keyProperty.setLabelText(info.getDescription());
-					keyProperty.setImageIcon(info.getIcon());
-					keyProperty.disableModifiers();
-					return keyProperty;
-				}
-			}, IndexedTree.AS_CHILD);
-		}
-		return builder.getTree().getRoot();
 	}
 
 	private Properties getOptionProperties() {

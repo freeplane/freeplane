@@ -38,7 +38,7 @@ import com.jgoodies.forms.layout.RowSpec;
  * @author Dimitry Polivaev
  * 27.12.2008
  */
-class KeyProperty extends PropertyBean implements IPropertyControl {
+public class KeyProperty extends PropertyBean implements IPropertyControl {
 	private static RowSpec rowSpec;
 	private ImageIcon icon;
 	private String labelText;

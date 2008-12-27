@@ -20,11 +20,7 @@
 package org.freeplane.controller;
 
 import java.util.HashMap;
-import java.util.Iterator;
-
 import javax.swing.Action;
-
-import org.freeplane.ui.AlwaysEnabledAction;
 
 /**
  * @author Dimitry Polivaev
@@ -42,16 +38,6 @@ public class ActionController {
 		assert value != null;
 		final Action oldAction = actions.put(key, value);
 		assert oldAction == null;
-	}
-
-	public void enableActions(final boolean enabled) {
-		final Iterator<Action> iterator = actions.values().iterator();
-		while (iterator.hasNext()) {
-			final Action action = iterator.next();
-			if (action.getClass().getAnnotation(AlwaysEnabledAction.class) == null) {
-				action.setEnabled(enabled);
-			}
-		}
 	}
 
 	public Action getAction(final String key) {

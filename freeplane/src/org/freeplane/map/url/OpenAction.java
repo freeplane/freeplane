@@ -24,9 +24,9 @@ import java.awt.event.ActionEvent;
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.map.url.mindmapmode.FileManager;
-import org.freeplane.ui.AlwaysEnabledAction;
 
-@AlwaysEnabledAction
+
+
 class OpenAction extends FreeplaneAction {
 	/**
 	 *

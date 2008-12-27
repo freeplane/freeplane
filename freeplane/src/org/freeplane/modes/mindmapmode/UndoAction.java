@@ -29,10 +29,10 @@ import org.freeplane.controller.views.IMapViewChangeListener;
 import org.freeplane.map.tree.MapModel;
 import org.freeplane.map.tree.mindmapmode.MindMapMapModel;
 import org.freeplane.map.tree.view.MapView;
-import org.freeplane.ui.AlwaysEnabledAction;
+
 import org.freeplane.undo.IUndoHandler;
 
-@AlwaysEnabledAction
+
 class UndoAction extends FreeplaneAction implements IMapViewChangeListener {
 	private Action redo;
 

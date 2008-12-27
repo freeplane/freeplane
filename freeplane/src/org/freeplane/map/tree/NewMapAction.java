@@ -22,9 +22,9 @@ package org.freeplane.map.tree;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.controller.FreeplaneAction;
-import org.freeplane.ui.AlwaysEnabledAction;
 
-@AlwaysEnabledAction
+
+
 class NewMapAction extends FreeplaneAction {
 	public NewMapAction() {
 		super("new", "images/filenew.png");

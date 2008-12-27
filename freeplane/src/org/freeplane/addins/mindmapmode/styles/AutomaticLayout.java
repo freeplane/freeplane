@@ -25,9 +25,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Vector;
-
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -41,14 +38,12 @@ import org.freeplane.addins.NodeHookDescriptor;
 import org.freeplane.addins.PersistentNodeHook;
 import org.freeplane.controller.ActionDescriptor;
 import org.freeplane.controller.Controller;
-import org.freeplane.controller.resources.ui.IFreemindPropertyContributor;
 import org.freeplane.controller.resources.ui.IFreemindPropertyListener;
 import org.freeplane.controller.resources.ui.IPropertyControl;
-import org.freeplane.controller.resources.ui.OptionPanel;
+import org.freeplane.controller.resources.ui.IPropertyControlCreator;
+import org.freeplane.controller.resources.ui.OptionPanelBuilder;
 import org.freeplane.controller.resources.ui.OptionString;
 import org.freeplane.controller.resources.ui.PropertyBean;
-import org.freeplane.controller.resources.ui.SeparatorProperty;
-import org.freeplane.controller.resources.ui.TabProperty;
 import org.freeplane.extension.IExtension;
 import org.freeplane.io.IReadCompletionListener;
 import org.freeplane.map.pattern.mindmapnode.Pattern;
@@ -59,6 +54,7 @@ import org.freeplane.map.tree.mindmapmode.IMapChangeListener;
 import org.freeplane.modes.INodeChangeListener;
 import org.freeplane.modes.NodeChangeEvent;
 import org.freeplane.modes.mindmapmode.MModeController;
+import org.freeplane.ui.IndexedTree;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
@@ -68,25 +64,23 @@ name = "accessories/plugins/AutomaticLayout.properties_name", //
 tooltip = "accessories/plugins/AutomaticLayout.properties_documentation")
 public class AutomaticLayout extends PersistentNodeHook implements IMapChangeListener,
         INodeChangeListener, IReadCompletionListener {
-	private static final class AutomaticLayoutPropertyContributor implements
-	        IFreemindPropertyContributor {
-		final private MModeController modeController;
+	private static final String TAB = "OptionPanel.accessories/plugins/AutomaticLayout.properties_PatternTabName";
 
-		public AutomaticLayoutPropertyContributor(final MModeController modeController) {
-			this.modeController = modeController;
-		}
+	private void addPropertiesToOptionPanel() {
+		final MModeController modeController = (MModeController) getModeController();
+		OptionPanelBuilder controls = modeController.getOptionPanelBuilder();
+		controls.addTab(
+		    TAB);
+		final String SEPARATOR = "OptionPanel.separator.accessories/plugins/AutomaticLayout.properties_PatternSeparatorName";
+		controls.addSeparator(
+		        TAB,
+		        SEPARATOR,
+		        IndexedTree.AS_CHILD);
+		controls.addCreator(TAB + "/" + SEPARATOR, new IPropertyControlCreator(){
 
-		public List getControls() {
-			final Vector controls = new Vector();
-			controls.add(new TabProperty(
-			    "OptionPanel.accessories/plugins/AutomaticLayout.properties_PatternTabName"));
-			controls
-			    .add(new SeparatorProperty(
-			        "OptionPanel.separator.accessories/plugins/AutomaticLayout.properties_PatternSeparatorName"));
-			controls.add(new StylePatternListProperty(AutomaticLayout.AUTOMATIC_FORMAT_LEVEL,
-			    modeController));
-			return controls;
-		}
+			public IPropertyControl createControl() {
+				return new StylePatternListProperty(AUTOMATIC_FORMAT_LEVEL, modeController);
+            }}, AUTOMATIC_FORMAT_LEVEL, IndexedTree.AS_CHILD);
 	}
 
 	/**
@@ -264,7 +258,6 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 
 	private static final String AUTOMATIC_FORMAT_LEVEL = "automaticFormat_level";
 	private static Patterns patterns = null;
-	private final AutomaticLayoutPropertyContributor mAutomaticLayoutPropertyContributor;
 
 	/**
 	 *
@@ -273,9 +266,7 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 		super(modeController);
 		final MyFreemindPropertyListener listener = new MyFreemindPropertyListener();
 		Controller.getResourceController().addPropertyChangeListener(listener);
-		mAutomaticLayoutPropertyContributor = new AutomaticLayoutPropertyContributor(
-		    ((MModeController) getModeController()));
-		OptionPanel.addContributor(mAutomaticLayoutPropertyContributor);
+		addPropertiesToOptionPanel();
 		modeController.getMapController().getReadManager().addReadCompletionListener(this);
 	}
 

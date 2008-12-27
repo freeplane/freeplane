@@ -26,10 +26,10 @@ import javax.swing.AbstractAction;
 
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ResourceController;
-import org.freeplane.ui.AlwaysEnabledAction;
+
 import org.freeplane.ui.MenuBuilder;
 
-@AlwaysEnabledAction
+
 class KeyDocumentationAction extends AbstractAction {
 	KeyDocumentationAction() {
 		MenuBuilder.setLabelAndMnemonic(this, Controller.getText("KeyDoc"));

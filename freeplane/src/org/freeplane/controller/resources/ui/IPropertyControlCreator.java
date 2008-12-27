@@ -24,6 +24,6 @@ package org.freeplane.controller.resources.ui;
  * @author Dimitry Polivaev
  * 26.12.2008
  */
-interface IPropertyControlCreator {
+public interface IPropertyControlCreator {
 	IPropertyControl createControl();
 }

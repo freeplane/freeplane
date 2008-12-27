@@ -26,10 +26,10 @@ import javax.swing.Action;
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.map.tree.mindmapmode.MindMapMapModel;
-import org.freeplane.ui.AlwaysEnabledAction;
+
 import org.freeplane.undo.IUndoHandler;
 
-@AlwaysEnabledAction
+
 class RedoAction extends FreeplaneAction {
 	private Action undo;
 

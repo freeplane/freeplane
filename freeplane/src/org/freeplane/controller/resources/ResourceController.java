@@ -351,7 +351,6 @@ public abstract class ResourceController {
 
 	public void init() {
 		final Controller controller = Controller.getController();
-		controller.addAction("propertyAction", new PropertyAction());
 		controller.addAction("optionHTMLExportFoldingAction", new OptionHTMLExportFoldingAction());
 		controller
 		    .addAction("optionSelectionMechanismAction", new OptionSelectionMechanismAction());

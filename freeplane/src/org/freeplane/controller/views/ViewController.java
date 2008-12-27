@@ -143,14 +143,10 @@ abstract public class ViewController implements IMapViewChangeListener {
 			if (newModeController != oldModeController) {
 				Controller.getController().selectMode(newModeController);
 			}
-			else if (oldMapView == null) {
-				newModeController.enableActions(true);
-			}
 			newModeController.setVisible(true);
 		}
 		else {
 			setViewportView(null);
-			oldModeController.enableActions(false);
 		}
 		setTitle();
 		viewNumberChanged(mapViewManager.getViewNumber());
@@ -363,7 +359,6 @@ abstract public class ViewController implements IMapViewChangeListener {
 			return;
 		}
 		if (oldModeController != null) {
-			oldModeController.enableActions(false);
 			final UserInputListenerFactory userInputListenerFactory = oldModeController
 			    .getUserInputListenerFactory();
 			final JToolBar modeToolBar = userInputListenerFactory.getMainToolBar();
@@ -375,7 +370,6 @@ abstract public class ViewController implements IMapViewChangeListener {
 				leftToolbarPanel.remove(leftToolBar);
 			}
 		}
-		newModeController.enableActions(true);
 		final JToolBar newToolBar = newModeController.getUserInputListenerFactory()
 		    .getMainToolBar();
 		if (newToolBar != null) {

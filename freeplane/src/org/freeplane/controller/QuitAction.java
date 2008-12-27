@@ -24,14 +24,14 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 
 import org.freeplane.controller.resources.ResourceController;
-import org.freeplane.ui.AlwaysEnabledAction;
+
 import org.freeplane.ui.MenuBuilder;
 
 /**
  * Manages the history of visited maps. Maybe explicitly closed maps should be
  * removed from History too?
  */
-@AlwaysEnabledAction
+
 class QuitAction extends AbstractAction {
 	/**
 	 * @param resourceController

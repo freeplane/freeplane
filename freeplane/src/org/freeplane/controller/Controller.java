@@ -126,10 +126,6 @@ public class Controller {
 		getMapViewManager().close(force);
 	}
 
-	public void enableActions(final boolean enabled) {
-		actionController.enableActions(enabled);
-	}
-
 	public void errorMessage(final Object message) {
 		String myMessage = "";
 		if (message != null) {

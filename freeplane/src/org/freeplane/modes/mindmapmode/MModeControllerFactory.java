@@ -20,7 +20,6 @@
 package org.freeplane.modes.mindmapmode;
 
 import javax.swing.JPopupMenu;
-
 import org.freeplane.addins.encrypt.EnterPassword;
 import org.freeplane.addins.encrypt.mindmapnode.EncryptedMap;
 import org.freeplane.addins.mindmapmode.ChangeNodeLevelAction;

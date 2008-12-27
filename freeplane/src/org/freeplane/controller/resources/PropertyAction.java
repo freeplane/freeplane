@@ -32,6 +32,7 @@ import javax.swing.Action;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.FreeplaneAction;
@@ -42,12 +43,16 @@ import org.freeplane.main.Tools;
 /**
  * @author foltin
  */
-class PropertyAction extends FreeplaneAction {
+public class PropertyAction extends FreeplaneAction {
+	private DefaultMutableTreeNode controls;
+
 	/**
+	 * @param controls 
 	 *
 	 */
-	public PropertyAction() {
+	public PropertyAction(DefaultMutableTreeNode controls) {
 		super("property_dialog");
+		this.controls = controls;
 	}
 
 	public void actionPerformed(final ActionEvent arg0) {
@@ -76,7 +81,7 @@ class PropertyAction extends FreeplaneAction {
 				}
 			}
 		});
-		options.buildPanel();
+		options.buildPanel(controls);
 		options.setProperties();
 		dialog.setTitle("Freemind Properties");
 		dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
