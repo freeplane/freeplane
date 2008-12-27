@@ -32,7 +32,7 @@ import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.mindmapmode.MMapController;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.ui.dialogs.OptionalDontShowMeAgainDialog;
+import org.freeplane.ui.components.OptionalDontShowMeAgainDialog;
 
 
 class CutAction extends FreeplaneAction {

@@ -40,7 +40,7 @@ import org.freeplane.map.tree.view.EditNodeWYSIWYG;
 import org.freeplane.map.tree.view.MapView;
 import org.freeplane.map.tree.view.NodeView;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.ui.dialogs.OptionalDontShowMeAgainDialog;
+import org.freeplane.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.undo.IUndoableActor;
 
 

@@ -29,7 +29,7 @@ import org.freeplane.map.tree.view.MapView;
 import org.freeplane.modes.ModeController;
 import org.freeplane.modes.mindmapmode.EncryptionModel;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.ui.dialogs.EnterPasswordDialog;
+import org.freeplane.ui.components.EnterPasswordDialog;
 
 @ActionDescriptor(tooltip = "accessories/plugins/EnterPassword.properties_documentation", //
 name = "accessories/plugins/EnterPassword.properties_name", //

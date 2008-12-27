@@ -27,7 +27,7 @@ import org.freeplane.map.tree.view.NodeView;
 import org.freeplane.modes.INodeSelectionListener;
 import org.freeplane.modes.ModeController;
 import org.freeplane.modes.mindmapmode.EncryptionModel;
-import org.freeplane.ui.dialogs.EnterPasswordDialog;
+import org.freeplane.ui.components.EnterPasswordDialog;
 
 @ActionDescriptor(name = "accessories/plugins/NewEncryptedMap.properties_name", //
 tooltip = "accessories/plugins/NewEncryptedMap.properties_documentation", //

@@ -31,7 +31,7 @@ import org.freeplane.map.icon.mindmapnode.MIconController;
 import org.freeplane.map.tree.view.MapView;
 import org.freeplane.map.tree.view.NodeView;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.ui.dialogs.IconSelectionPopupDialog;
+import org.freeplane.ui.components.IconSelectionPopupDialog;
 
 /**
  * @author adapted to the plugin mechanism by ganzer

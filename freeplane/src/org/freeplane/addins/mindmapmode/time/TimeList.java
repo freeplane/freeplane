@@ -78,7 +78,7 @@ import org.freeplane.map.tree.view.MultipleImage;
 import org.freeplane.modes.ModeController;
 import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.ui.UIBuilder;
-import org.freeplane.ui.dialogs.BlindIcon;
+import org.freeplane.ui.components.BlindIcon;
 
 import com.jgoodies.forms.factories.ButtonBarFactory;
 
