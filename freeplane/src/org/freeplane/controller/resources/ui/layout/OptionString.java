@@ -2,6 +2,8 @@
  *  Freeplane - mind map editor
  *  Copyright (C) 2008 Joerg Mueller, Daniel Polansky, Christian Foltin, Dimitry Polivaev
  *
+ *  This file is to be reworked.
+ *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 2 of the License, or
@@ -15,16 +17,15 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package deprecated.freemind.common;
+package org.freeplane.controller.resources.ui.layout;
 
-import com.jgoodies.forms.builder.DefaultFormBuilder;
+import org.freeplane.controller.Controller;
 
-public interface IPropertyControl {
-	String getDescription();
-
-	String getLabel();
-
-	void layout(DefaultFormBuilder builder);
-
-	void setEnabled(boolean pEnabled);
+/**
+ * @author Dimitry Polivaev Nov 21, 2008
+ */
+public class OptionString {
+	public static String getText(final String string) {
+		return string == null ? null : Controller.getText(string);
+	}
 }

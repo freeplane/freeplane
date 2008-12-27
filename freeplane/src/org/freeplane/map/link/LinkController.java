@@ -31,6 +31,7 @@ import javax.swing.JPopupMenu;
 
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ResourceController;
+import org.freeplane.controller.resources.ui.IFreemindPropertyListener;
 import org.freeplane.io.ReadManager;
 import org.freeplane.io.WriteManager;
 import org.freeplane.main.Tools;
@@ -39,8 +40,6 @@ import org.freeplane.map.IPropertyGetter;
 import org.freeplane.map.tree.MapController;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.ModeController;
-
-import deprecated.freemind.preferences.IFreemindPropertyListener;
 
 /**
  * @author Dimitry Polivaev

@@ -15,11 +15,11 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package deprecated.freemind.common;
+package org.freeplane.controller.resources.ui;
 
 public class DontShowNotificationProperty extends BooleanProperty {
-	public DontShowNotificationProperty(final String description, final String label) {
-		super(description, label);
+	public DontShowNotificationProperty(final String label) {
+		super(label);
 		mTrueValue = "true";
 		mFalseValue = "";
 	}

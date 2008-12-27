@@ -34,6 +34,7 @@ import javax.swing.JOptionPane;
 
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ResourceController;
+import org.freeplane.controller.resources.ui.IFreemindPropertyListener;
 import org.freeplane.io.xml.n3.nanoxml.XMLParseException;
 import org.freeplane.main.Tools;
 import org.freeplane.map.tree.MapController;
@@ -44,7 +45,6 @@ import org.freeplane.modes.mindmapmode.EncryptionModel;
 import org.freeplane.modes.mindmapmode.MModeController;
 
 import deprecated.freemind.common.OptionalDontShowMeAgainDialog;
-import deprecated.freemind.preferences.IFreemindPropertyListener;
 
 /**
  * @author Dimitry Polivaev

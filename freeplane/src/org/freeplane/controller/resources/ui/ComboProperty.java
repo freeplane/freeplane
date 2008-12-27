@@ -15,12 +15,9 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package deprecated.freemind.common;
+package org.freeplane.controller.resources.ui;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
@@ -28,51 +25,31 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
+import org.freeplane.controller.Controller;
+import org.freeplane.controller.resources.ui.layout.OptionString;
+
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
-import deprecated.freemind.preferences.layout.OptionString;
-
 public class ComboProperty extends PropertyBean implements IPropertyControl {
-	String description;
-	String label;
+	static public Vector translate(final String[] possibles) {
+		final Vector possibleTranslations = new Vector(possibles.length);
+		for (int i = 0; i < possibles.length; i++) {
+			possibleTranslations.add(Controller.getText("OptionPanel." + possibles[i]));
+		}
+		return possibleTranslations;
+	}
+
 	JComboBox mComboBox = new JComboBox();
 	private Vector possibleValues;
 
-	public ComboProperty(final String description, final String label, final List possibles,
-	                     final List possibleTranslations) {
-		this.description = description;
-		this.label = label;
+	public ComboProperty(final String name, final List possibles, final List possibleTranslations) {
+		super(name);
 		fillPossibleValues(possibles);
 		mComboBox.setModel(new DefaultComboBoxModel(new Vector(possibleTranslations)));
 	}
 
-	/**
-	 * @param pTranslator
-	 */
-	public ComboProperty(final String description, final String label, final String[] possibles) {
-		super();
-		this.description = description;
-		this.label = label;
-		fillPossibleValues(possibles);
-		final Vector possibleTranslations = new Vector();
-		for (final Iterator i = possibleValues.iterator(); i.hasNext();) {
-			final String key = (String) i.next();
-			possibleTranslations.add(OptionString.getText(key));
-		}
-		mComboBox.setModel(new DefaultComboBoxModel(possibleTranslations));
-		mComboBox.addActionListener(new ActionListener() {
-			public void actionPerformed(final ActionEvent pE) {
-				firePropertyChangeEvent();
-			}
-		});
-	}
-
-	public ComboProperty(final String description, final String label, final String[] possibles,
-	                     final List possibleTranslations) {
-		this.description = description;
-		this.label = label;
-		fillPossibleValues(possibles);
-		mComboBox.setModel(new DefaultComboBoxModel(new Vector(possibleTranslations)));
+	public ComboProperty(final String name, final String[] strings) {
+		this(name, Arrays.asList(strings), ComboProperty.translate(strings));
 	}
 
 	/**
@@ -80,21 +57,6 @@ public class ComboProperty extends PropertyBean implements IPropertyControl {
 	private void fillPossibleValues(final List possibles) {
 		possibleValues = new Vector();
 		possibleValues.addAll(possibles);
-	}
-
-	/**
-	 */
-	private void fillPossibleValues(final String[] possibles) {
-		fillPossibleValues(Arrays.asList(possibles));
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	@Override
-	public String getLabel() {
-		return label;
 	}
 
 	@Override
@@ -117,8 +79,8 @@ public class ComboProperty extends PropertyBean implements IPropertyControl {
 			mComboBox.setSelectedIndex(possibleValues.indexOf(value));
 		}
 		else {
-			System.err.println("Can't set the value:" + value + " into the combo box " + getLabel()
-			        + "/" + getDescription());
+			System.err.println("Can't set the value:" + value + " into the combo box " + getName()
+			        + "/" + getLabel());
 			if (mComboBox.getModel().getSize() > 0) {
 				mComboBox.setSelectedIndex(0);
 			}

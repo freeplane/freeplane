@@ -39,8 +39,6 @@ import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.main.Tools;
 import org.freeplane.ui.dialogs.EnterPasswordDialog;
 
-import deprecated.freemind.common.ITextTranslator;
-
 /**
  * @author foltin
  */
@@ -192,7 +190,7 @@ class SignedScriptHandler {
 		return false;
 	}
 
-	public String signScript(final String pScript, final ITextTranslator pTranslator) {
+	public String signScript(final String pScript) {
 		final ScriptContents content = new ScriptContents(pScript);
 		final EnterPasswordDialog pwdDialog = new EnterPasswordDialog(Controller.getController()
 		    .getViewController().getJFrame(), false);

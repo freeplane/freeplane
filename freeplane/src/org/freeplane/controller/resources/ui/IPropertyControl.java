@@ -15,27 +15,16 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package deprecated.freemind.common;
+package org.freeplane.controller.resources.ui;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
-public class NextLineProperty implements IPropertyControl {
-	public NextLineProperty() {
-		super();
-	}
+public interface IPropertyControl {
+	String getDescription();
 
-	public String getDescription() {
-		return null;
-	}
+	String getName();
 
-	public String getLabel() {
-		return null;
-	}
+	void layout(DefaultFormBuilder builder);
 
-	public void layout(final DefaultFormBuilder builder) {
-		builder.nextLine();
-	}
-
-	public void setEnabled(final boolean pEnabled) {
-	}
+	void setEnabled(boolean pEnabled);
 }

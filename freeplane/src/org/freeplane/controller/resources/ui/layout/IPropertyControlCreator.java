@@ -1,6 +1,8 @@
 /*
  *  Freeplane - mind map editor
- *  Copyright (C) 2008 Joerg Mueller, Daniel Polansky, Christian Foltin, Dimitry Polivaev
+ *  Copyright (C) 2008 Dimitry Polivaev
+ *
+ *  This file author is Dimitry Polivaev
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,8 +17,14 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package deprecated.freemind.common;
+package org.freeplane.controller.resources.ui.layout;
 
-public interface ITextTranslator {
-	String getText(String pKey);
+import org.freeplane.controller.resources.ui.IPropertyControl;
+
+/**
+ * @author Dimitry Polivaev
+ * 26.12.2008
+ */
+interface IPropertyControlCreator {
+	IPropertyControl createControl();
 }

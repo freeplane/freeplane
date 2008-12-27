@@ -66,8 +66,6 @@ import org.freeplane.ui.IMouseListener;
 import org.freeplane.ui.MenuBuilder;
 import org.freeplane.undo.IUndoableActor;
 
-import deprecated.freemind.common.ITextTranslator;
-
 /**
  * Derive from this class to implement the Controller for your mode. Overload
  * the methods you need for your data model, or use the defaults. There are some
@@ -449,14 +447,6 @@ public class ModeController {
 
 	public TextController getTextController() {
 		return textController;
-	}
-
-	public ITextTranslator getTextTranslator() {
-		return new ITextTranslator() {
-			public String getText(final String key) {
-				return Controller.getText(key);
-			}
-		};
 	}
 
 	public UrlManager getUrlManager() {

@@ -56,6 +56,7 @@ import javax.swing.JViewport;
 
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ResourceController;
+import org.freeplane.controller.resources.ui.IFreemindPropertyListener;
 import org.freeplane.main.Tools;
 import org.freeplane.map.link.ArrowLinkModel;
 import org.freeplane.map.link.LinkModel;
@@ -64,8 +65,6 @@ import org.freeplane.map.tree.MapModel;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.ModeController;
 import org.freeplane.ui.IUserInputListenerFactory;
-
-import deprecated.freemind.preferences.IFreemindPropertyListener;
 
 /**
  * This class represents the view of a whole MindMap (in analogy to class

@@ -35,10 +35,9 @@ import javax.swing.WindowConstants;
 
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.FreeplaneAction;
+import org.freeplane.controller.resources.ui.layout.OptionPanel;
+import org.freeplane.controller.resources.ui.layout.OptionPanel.IOptionPanelFeedback;
 import org.freeplane.main.Tools;
-
-import deprecated.freemind.preferences.layout.OptionPanel;
-import deprecated.freemind.preferences.layout.OptionPanel.IOptionPanelFeedback;
 
 /**
  * @author foltin

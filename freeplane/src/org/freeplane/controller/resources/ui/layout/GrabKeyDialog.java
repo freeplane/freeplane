@@ -12,7 +12,7 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA.
  */
-package deprecated.freemind.preferences.layout;
+package org.freeplane.controller.resources.ui.layout;
 
 import java.awt.AWTEvent;
 import java.awt.Dialog;
@@ -262,24 +262,6 @@ public class GrabKeyDialog extends JDialog {
 	private JButton ok;
 	private JButton remove;
 	private InputPane shortcut;
-
-	/**
-	 * Create and show a new modal dialog.
-	 * 
-	 * @param parent
-	 *            center dialog on this component.
-	 * @param binding
-	 *            the action/macro that should get a binding.
-	 * @param allBindings
-	 *            all other key bindings.
-	 * @param debugBuffer
-	 *            debug info will be dumped to this buffer (may be null)
-	 * @since jEdit 4.1pre7
-	 */
-	public GrabKeyDialog(final Dialog parent, final KeyBinding binding, final Vector allBindings,
-	                     final Buffer debugBuffer) {
-		this(parent, binding, allBindings, debugBuffer, 0);
-	}
 
 	public GrabKeyDialog(final Dialog parent, final KeyBinding binding, final Vector allBindings,
 	                     final Buffer debugBuffer, final int modifierMask) {

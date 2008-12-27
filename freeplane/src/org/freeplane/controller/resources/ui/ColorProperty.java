@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package deprecated.freemind.common;
+package org.freeplane.controller.resources.ui;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -28,18 +28,15 @@ import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
+import org.freeplane.controller.resources.ui.layout.OptionString;
 import org.freeplane.controller.views.ColorTracker;
 import org.freeplane.main.Tools;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
-import deprecated.freemind.preferences.layout.OptionString;
-
 public class ColorProperty extends PropertyBean implements IPropertyControl, ActionListener {
 	Color color;
 	final private String defaultColor;
-	String description;
-	String label;
 	JButton mButton;
 	final JPopupMenu menu = new JPopupMenu();
 
@@ -47,10 +44,8 @@ public class ColorProperty extends PropertyBean implements IPropertyControl, Act
 	 * @param defaultColor
 	 * @param pTranslator
 	 */
-	public ColorProperty(final String description, final String label, final String defaultColor) {
-		super();
-		this.description = description;
-		this.label = label;
+	public ColorProperty(final String name, final String defaultColor) {
+		super(name);
 		this.defaultColor = defaultColor;
 		mButton = new JButton();
 		mButton.addActionListener(this);
@@ -70,15 +65,6 @@ public class ColorProperty extends PropertyBean implements IPropertyControl, Act
 	 */
 	private Color getColorValue() {
 		return color;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	@Override
-	public String getLabel() {
-		return label;
 	}
 
 	@Override

@@ -248,10 +248,7 @@ public class MenuBuilder extends UIBuilder {
 			                          final IXMLElement attributes) {
 				final MenuPath menuPath = (MenuPath) node;
 				final String field = attributes.getAttribute("field", null);
-				String name = attributes.getAttribute("name", null);
-				if (name == null) {
-					name = field;
-				}
+				final String name = attributes.getAttribute("name", field);
 				menuPath.setName(name);
 				final String keystroke = attributes.getAttribute("key_ref", null);
 				try {

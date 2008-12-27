@@ -15,30 +15,37 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package deprecated.freemind.common;
+package org.freeplane.controller.resources.ui;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Iterator;
 import java.util.Vector;
 
-public abstract class PropertyBean {
+import deprecated.freemind.common.PropertyAdapter;
+
+public abstract class PropertyBean extends PropertyAdapter implements IPropertyControl {
 	final private Vector mPropertyChangeListeners = new Vector();
+
+	public PropertyBean(final String name) {
+		super(name);
+	}
+
+	public PropertyBean(final String name, final String label, final String description) {
+		super(name, label, description);
+	}
 
 	public void addPropertyChangeListener(final PropertyChangeListener listener) {
 		mPropertyChangeListeners.add(listener);
 	}
 
 	protected void firePropertyChangeEvent() {
-		final PropertyChangeEvent evt = new PropertyChangeEvent(this, getLabel(), null, getValue());
+		final PropertyChangeEvent evt = new PropertyChangeEvent(this, getName(), null, getValue());
 		for (final Iterator i = mPropertyChangeListeners.iterator(); i.hasNext();) {
 			final PropertyChangeListener listener = (PropertyChangeListener) i.next();
 			listener.propertyChange(evt);
 		}
 	}
-
-	/** The key of the property. */
-	public abstract String getLabel();
 
 	public abstract String getValue();
 

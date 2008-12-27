@@ -27,11 +27,10 @@ import java.util.Set;
 
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ResourceController;
+import org.freeplane.controller.resources.ui.IFreemindPropertyListener;
 import org.freeplane.map.tree.view.MapView;
 import org.freeplane.modes.ModeController;
 import org.freeplane.modes.mindmapmode.IMouseWheelEventHandler;
-
-import deprecated.freemind.preferences.IFreemindPropertyListener;
 
 /**
  * @author foltin

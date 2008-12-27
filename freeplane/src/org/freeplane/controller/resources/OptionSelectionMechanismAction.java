@@ -24,8 +24,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 
 import org.freeplane.controller.Controller;
-
-import deprecated.freemind.preferences.IFreemindPropertyListener;
+import org.freeplane.controller.resources.ui.IFreemindPropertyListener;
 
 class OptionSelectionMechanismAction extends AbstractAction implements IFreemindPropertyListener {
 	OptionSelectionMechanismAction() {

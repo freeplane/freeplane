@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package deprecated.freemind.common;
+package org.freeplane.controller.resources.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,9 +27,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
+import org.freeplane.controller.resources.ui.layout.OptionString;
+
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
-import deprecated.freemind.preferences.layout.OptionString;
+import deprecated.freemind.common.BlindIcon;
 
 public class ThreeCheckBoxProperty extends PropertyBean implements IPropertyControl {
 	public static final String DON_T_TOUCH_VALUE = "don_t_touch";
@@ -43,8 +45,6 @@ public class ThreeCheckBoxProperty extends PropertyBean implements IPropertyCont
 	    .getSystemResource("accessories/plugins/icons/edit_add.png"));
 	static public final String TRUE_VALUE = "true";
 	protected static final int TRUE_VALUE_INT = 0;
-	String description;
-	String label;
 	JButton mButton = new JButton();
 	protected String mDontTouchValue = "don_t_touch";
 	protected String mFalseValue = "false";
@@ -53,25 +53,14 @@ public class ThreeCheckBoxProperty extends PropertyBean implements IPropertyCont
 
 	/**
 	 */
-	public ThreeCheckBoxProperty(final String description, final String label) {
-		super();
-		this.description = description;
-		this.label = label;
+	public ThreeCheckBoxProperty(final String name) {
+		super(name);
 		mButton.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent e) {
 				setState((getState() + 1) % 3);
 				firePropertyChangeEvent();
 			}
 		});
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	@Override
-	public String getLabel() {
-		return label;
 	}
 
 	private int getState() {

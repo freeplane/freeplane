@@ -66,10 +66,8 @@ import org.freeplane.ui.MenuBuilder;
 
 import com.jgoodies.forms.factories.ButtonBarFactory;
 
-import deprecated.freemind.common.ITextTranslator;
-
 /** */
-class ManagePatternsPopupDialog extends JDialog implements ITextTranslator, KeyListener {
+class ManagePatternsPopupDialog extends JDialog implements KeyListener {
 	protected final class PatternListModel extends AbstractListModel {
 		final private List mPatternList;
 
@@ -278,7 +276,7 @@ class ManagePatternsPopupDialog extends JDialog implements ITextTranslator, KeyL
 					cancelPressed();
 				}
 			});
-			MenuBuilder.setLabelAndMnemonic(jCancelButton, getText("cancel"));
+			MenuBuilder.setLabelAndMnemonic(jCancelButton, Controller.getText("cancel"));
 		}
 		return jCancelButton;
 	}
@@ -446,10 +444,6 @@ class ManagePatternsPopupDialog extends JDialog implements ITextTranslator, KeyL
 	 */
 	public int getResult() {
 		return result;
-	}
-
-	public String getText(final String pKey) {
-		return mController.getText(pKey);
 	}
 
 	/**

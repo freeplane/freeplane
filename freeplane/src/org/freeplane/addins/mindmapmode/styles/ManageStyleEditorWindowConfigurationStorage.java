@@ -12,7 +12,7 @@ class ManageStyleEditorWindowConfigurationStorage extends WindowConfigurationSto
 		final ManageStyleEditorWindowConfigurationStorage storage = new ManageStyleEditorWindowConfigurationStorage();
 		final IXMLElement xml = storage.unmarschall(marshalled, dialog);
 		if (xml != null) {
-			storage.dividerPosition = Integer.parseInt(xml.getAttribute("divide_position", null));
+			storage.dividerPosition = Integer.parseInt(xml.getAttribute("divider_position", "100"));
 			return storage;
 		}
 		return null;
@@ -27,7 +27,7 @@ class ManageStyleEditorWindowConfigurationStorage extends WindowConfigurationSto
 	@Override
 	protected void marschallSpecificElements(final IXMLElement xml) {
 		xml.setName("manage_style_editor_window_configuration_storage");
-		xml.setAttribute("divide_position", Integer.toString(dividerPosition));
+		xml.setAttribute("divider_position", Integer.toString(dividerPosition));
 	}
 
 	public void setDividerPosition(final int dividerPosition) {

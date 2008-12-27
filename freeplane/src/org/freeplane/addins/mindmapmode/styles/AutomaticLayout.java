@@ -41,6 +41,14 @@ import org.freeplane.addins.NodeHookDescriptor;
 import org.freeplane.addins.PersistentNodeHook;
 import org.freeplane.controller.ActionDescriptor;
 import org.freeplane.controller.Controller;
+import org.freeplane.controller.resources.ui.IFreemindPropertyContributor;
+import org.freeplane.controller.resources.ui.IFreemindPropertyListener;
+import org.freeplane.controller.resources.ui.IPropertyControl;
+import org.freeplane.controller.resources.ui.PropertyBean;
+import org.freeplane.controller.resources.ui.SeparatorProperty;
+import org.freeplane.controller.resources.ui.layout.OptionPanel;
+import org.freeplane.controller.resources.ui.layout.OptionString;
+import org.freeplane.controller.resources.ui.layout.TabProperty;
 import org.freeplane.extension.IExtension;
 import org.freeplane.io.IReadCompletionListener;
 import org.freeplane.map.pattern.mindmapnode.Pattern;
@@ -53,15 +61,6 @@ import org.freeplane.modes.NodeChangeEvent;
 import org.freeplane.modes.mindmapmode.MModeController;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
-
-import deprecated.freemind.common.IPropertyControl;
-import deprecated.freemind.common.ITextTranslator;
-import deprecated.freemind.common.PropertyBean;
-import deprecated.freemind.common.SeparatorProperty;
-import deprecated.freemind.preferences.IFreemindPropertyContributor;
-import deprecated.freemind.preferences.IFreemindPropertyListener;
-import deprecated.freemind.preferences.layout.OptionPanel;
-import deprecated.freemind.preferences.layout.OptionString;
 
 @NodeHookDescriptor(hookName = "accessories/plugins/AutomaticLayout.properties")
 @ActionDescriptor(locations = "/menu_bar/extras/first/nodes/change", //
@@ -79,12 +78,13 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 
 		public List getControls() {
 			final Vector controls = new Vector();
-			controls.add(new OptionPanel.NewTabProperty(
-			    "accessories/plugins/AutomaticLayout.properties_PatternTabName"));
-			controls.add(new SeparatorProperty(
-			    "accessories/plugins/AutomaticLayout.properties_PatternSeparatorName"));
-			controls.add(new StylePatternListProperty("level",
-			    AutomaticLayout.AUTOMATIC_FORMAT_LEVEL, modeController));
+			controls.add(new TabProperty(
+			    "OptionPanel.accessories/plugins/AutomaticLayout.properties_PatternTabName"));
+			controls
+			    .add(new SeparatorProperty(
+			        "OptionPanel.separator.accessories/plugins/AutomaticLayout.properties_PatternSeparatorName"));
+			controls.add(new StylePatternListProperty(AutomaticLayout.AUTOMATIC_FORMAT_LEVEL,
+			    modeController));
 			return controls;
 		}
 	}
@@ -105,19 +105,14 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 
 	public static class StylePatternListProperty extends PropertyBean implements IPropertyControl,
 	        ListSelectionListener {
-		String description;
-		String label;
 		final private DefaultListModel mDefaultListModel;
 		boolean mDialogIsShown = false;
 		final private MModeController mindMapController;
 		JList mList;
 		String patterns;
 
-		public StylePatternListProperty(final String description, final String label,
-		                                final MModeController pController) {
-			super();
-			this.description = description;
-			this.label = label;
+		public StylePatternListProperty(final String name, final MModeController pController) {
+			super(name);
 			mindMapController = pController;
 			mList = new JList();
 			mList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -125,15 +120,6 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 			mList.setModel(mDefaultListModel);
 			mList.addListSelectionListener(this);
 			patterns = null;
-		}
-
-		public String getDescription() {
-			return description;
-		}
-
-		@Override
-		public String getLabel() {
-			return label;
 		}
 
 		private Patterns getPatternsFromString() {
@@ -163,12 +149,10 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 			final Patterns resultPatterns = getPatternsFromString();
 			mDefaultListModel.clear();
 			int j = 1;
-			final StylePropertyTranslator stylePropertyTranslator = new StylePropertyTranslator(
-			    mindMapController);
 			for (final Iterator i = resultPatterns.getListChoiceList().iterator(); i.hasNext();) {
 				final Pattern pattern = (Pattern) i.next();
-				mDefaultListModel.addElement(OptionString.getText("level" + j) + ": "
-				        + StylePatternFactory.toString(pattern, stylePropertyTranslator));
+				mDefaultListModel.addElement(OptionString.getText("OptionPanel.level" + j) + ": "
+				        + StylePatternFactory.toString(pattern));
 				j++;
 			}
 		}
@@ -213,18 +197,12 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 	 */
 	public static class StylePatternProperty extends PropertyBean implements IPropertyControl,
 	        ActionListener {
-		String description;
-		String label;
 		JButton mButton;
 		final private MModeController mindMapController;
 		String pattern;
 
-		public StylePatternProperty(final String description, final String label,
-		                            final ITextTranslator pTranslator,
-		                            final MModeController pController) {
-			super();
-			this.description = description;
-			this.label = label;
+		public StylePatternProperty(final String name, final MModeController pController) {
+			super(name);
 			mindMapController = pController;
 			mButton = new JButton();
 			mButton.addActionListener(this);
@@ -245,15 +223,6 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 				setValue(pattern);
 				firePropertyChangeEvent();
 			}
-		}
-
-		public String getDescription() {
-			return description;
-		}
-
-		@Override
-		public String getLabel() {
-			return label;
 		}
 
 		private Pattern getPatternFromString() {
@@ -278,8 +247,7 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 		public void setValue(final String value) {
 			pattern = value;
 			final Pattern resultPattern = getPatternFromString();
-			final String patternString = StylePatternFactory.toString(resultPattern,
-			    new StylePropertyTranslator(mindMapController));
+			final String patternString = StylePatternFactory.toString(resultPattern);
 			mButton.setText(patternString);
 			mButton.setToolTipText(patternString);
 		}
@@ -288,16 +256,9 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 	/**
 	 * Translates style pattern properties into strings.
 	 */
-	static class StylePropertyTranslator implements ITextTranslator {
-		final private MModeController controller;
-
-		StylePropertyTranslator(final MModeController controller) {
+	static class StylePropertyTranslator {
+		StylePropertyTranslator() {
 			super();
-			this.controller = controller;
-		}
-
-		public String getText(final String pKey) {
-			return controller.getText(pKey);
 		}
 	}
 

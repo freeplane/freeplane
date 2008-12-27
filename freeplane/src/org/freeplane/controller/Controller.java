@@ -68,7 +68,7 @@ public class Controller {
 	}
 
 	public static String getText(final String string) {
-		return resourceController.getText(string);
+		return string == null ? null : resourceController.getText(string);
 	}
 
 	private final ActionController actionController;

@@ -1,4 +1,4 @@
-package deprecated.freemind.preferences.layout;
+package org.freeplane.controller.resources.ui.layout;
 
 import javax.swing.JDialog;
 

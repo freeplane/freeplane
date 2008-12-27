@@ -2,8 +2,6 @@
  *  Freeplane - mind map editor
  *  Copyright (C) 2008 Joerg Mueller, Daniel Polansky, Christian Foltin, Dimitry Polivaev
  *
- *  This file is modified by Dimitry Polivaev in 2008.
- *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 2 of the License, or
@@ -17,23 +15,27 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.modes.mindmapmode;
+package org.freeplane.controller.resources.ui;
 
-import java.awt.event.ActionEvent;
+import com.jgoodies.forms.builder.DefaultFormBuilder;
 
-import org.freeplane.controller.FreeplaneAction;
-
-/** */
-class SelectBranchAction extends FreeplaneAction {
-	/**
-	 *
-	 */
-	public SelectBranchAction() {
-		super("select_branch", (String) null);
+public class NextLineProperty implements IPropertyControl {
+	public NextLineProperty() {
+		super();
 	}
 
-	public void actionPerformed(final ActionEvent e) {
-		getMModeController()
-		    .selectBranch(getMModeController().getSelectedView(), true /*= extend*/);
+	public String getDescription() {
+		return null;
+	}
+
+	public String getName() {
+		return null;
+	}
+
+	public void layout(final DefaultFormBuilder builder) {
+		builder.nextLine();
+	}
+
+	public void setEnabled(final boolean pEnabled) {
 	}
 }

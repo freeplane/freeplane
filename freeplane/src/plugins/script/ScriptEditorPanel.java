@@ -203,8 +203,7 @@ class ScriptEditorPanel extends JDialog {
 			if (!mScriptList.isSelectionEmpty()) {
 				final int selectedIndex = mScriptList.getSelectedIndex();
 				final ScriptHolder script = mScriptModel.getScript(selectedIndex);
-				final String signedScript = new SignedScriptHandler().signScript(script.mScript,
-				    Controller.getResourceController().getTextTranslator());
+				final String signedScript = new SignedScriptHandler().signScript(script.mScript);
 				script.setScript(signedScript);
 				mScriptModel.setScript(selectedIndex, script);
 				mScriptTextField.setText(signedScript);

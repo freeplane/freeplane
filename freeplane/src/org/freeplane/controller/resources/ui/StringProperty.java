@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package deprecated.freemind.common;
+package org.freeplane.controller.resources.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,35 +25,22 @@ import java.awt.event.ActionListener;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import org.freeplane.controller.resources.ui.layout.OptionString;
+
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
-import deprecated.freemind.preferences.layout.OptionString;
-
 public class StringProperty extends PropertyBean implements IPropertyControl {
-	String description;
-	String label;
 	JTextField mTextField = new JTextField();
 
 	/**
 	 */
-	public StringProperty(final String description, final String label) {
-		super();
-		this.description = description;
-		this.label = label;
+	public StringProperty(final String name) {
+		super(name);
 		mTextField.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent pE) {
 				firePropertyChangeEvent();
 			}
 		});
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	@Override
-	public String getLabel() {
-		return label;
 	}
 
 	@Override

@@ -35,8 +35,6 @@ import org.freeplane.map.icon.MindIcon;
 import org.freeplane.map.nodestyle.NodeStyleModel;
 import org.freeplane.map.tree.NodeModel;
 
-import deprecated.freemind.common.ITextTranslator;
-
 /**
  * This class constructs patterns from files or from nodes and saves them back.
  */
@@ -235,7 +233,7 @@ public class StylePatternFactory {
 		writer.close();
 	}
 
-	public static String toString(final Pattern pPattern, final ITextTranslator translator) {
+	public static String toString(final Pattern pPattern) {
 		String result = "";
 		if (pPattern.getPatternNodeColor() != null) {
 			result = StylePatternFactory.addSeparatorIfNecessary(result);

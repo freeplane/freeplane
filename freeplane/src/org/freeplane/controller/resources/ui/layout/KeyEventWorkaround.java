@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package deprecated.freemind.preferences.layout;
+package org.freeplane.controller.resources.ui.layout;
 
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;

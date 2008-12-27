@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package deprecated.freemind.preferences;
+package org.freeplane.controller.resources.ui;
 
 /**
  * Is issued by the OptionPanel when the user accepted a change of its

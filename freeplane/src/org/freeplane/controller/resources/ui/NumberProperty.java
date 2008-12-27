@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package deprecated.freemind.common;
+package org.freeplane.controller.resources.ui;
 
 import javax.swing.JLabel;
 import javax.swing.JSpinner;
@@ -23,13 +23,11 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.freeplane.controller.resources.ui.layout.OptionString;
+
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
-import deprecated.freemind.preferences.layout.OptionString;
-
 public class NumberProperty extends PropertyBean implements IPropertyControl {
-	String description;
-	String label;
 	final private int max;
 	final private int min;
 	final private JSpinner spinner;
@@ -37,28 +35,17 @@ public class NumberProperty extends PropertyBean implements IPropertyControl {
 
 	/**
 	 */
-	public NumberProperty(final String description, final String label, final int min,
-	                      final int max, final int step) {
+	public NumberProperty(final String name, final int min, final int max, final int step) {
+		super(name);
 		this.min = min;
 		this.max = max;
 		this.step = step;
 		spinner = new JSpinner(new SpinnerNumberModel(min, min, max, step));
-		this.description = description;
-		this.label = label;
 		spinner.addChangeListener(new ChangeListener() {
 			public void stateChanged(final ChangeEvent pE) {
 				firePropertyChangeEvent();
 			}
 		});
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	@Override
-	public String getLabel() {
-		return label;
 	}
 
 	@Override
@@ -82,7 +69,7 @@ public class NumberProperty extends PropertyBean implements IPropertyControl {
 			intValue = Integer.parseInt(value);
 			final int stepModul = (intValue - min) % step;
 			if (intValue < min || intValue > max || (stepModul != 0)) {
-				System.err.println("Actual value of property " + getLabel()
+				System.err.println("Actual value of property " + getName()
 				        + " is not in the allowed range: " + value);
 				intValue = min;
 			}

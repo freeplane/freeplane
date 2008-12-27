@@ -27,6 +27,13 @@ import java.util.Vector;
 
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ResourceController;
+import org.freeplane.controller.resources.ui.BooleanProperty;
+import org.freeplane.controller.resources.ui.IFreemindPropertyContributor;
+import org.freeplane.controller.resources.ui.ScriptEditorProperty;
+import org.freeplane.controller.resources.ui.SeparatorProperty;
+import org.freeplane.controller.resources.ui.StringProperty;
+import org.freeplane.controller.resources.ui.layout.OptionPanel;
+import org.freeplane.controller.resources.ui.layout.TabProperty;
 import org.freeplane.main.HtmlTools;
 import org.freeplane.main.Tools;
 import org.freeplane.main.Tools.BooleanHolder;
@@ -40,12 +47,6 @@ import org.freeplane.ui.MenuBuilder;
 import plugins.script.ScriptEditorPanel.IScriptModel;
 import plugins.script.ScriptEditorPanel.ScriptHolder;
 import plugins.script.ScriptingEngine.IErrorHandler;
-import deprecated.freemind.common.BooleanProperty;
-import deprecated.freemind.common.ScriptEditorProperty;
-import deprecated.freemind.common.SeparatorProperty;
-import deprecated.freemind.common.StringProperty;
-import deprecated.freemind.preferences.IFreemindPropertyContributor;
-import deprecated.freemind.preferences.layout.OptionPanel;
 
 public class ScriptingRegistration implements IExternalPatternAction {
 	final private class PatternScriptModel implements IScriptModel {
@@ -116,22 +117,18 @@ public class ScriptingRegistration implements IExternalPatternAction {
 
 		public List getControls() {
 			final Vector controls = new Vector();
-			controls.add(new OptionPanel.NewTabProperty("plugins/scripting/tab_name"));
-			controls.add(new SeparatorProperty("plugins/scripting/separatorPropertyName"));
+			controls.add(new TabProperty("OptionPanel.plugins/scripting/tab_name"));
+			controls.add(new SeparatorProperty(
+			    "OptionPanel.separator.plugins/scripting/separatorPropertyName"));
 			controls.add(new BooleanProperty(
-			    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION + ".tooltip",
 			    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION));
 			controls.add(new BooleanProperty(
-			    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION
-			            + ".tooltip",
 			    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION));
 			controls.add(new BooleanProperty(
-			    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION + ".tooltip",
 			    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION));
-			controls.add(new BooleanProperty(ResourceController.RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED
-			        + ".tooltip", ResourceController.RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED));
+			controls
+			    .add(new BooleanProperty(ResourceController.RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED));
 			controls.add(new StringProperty(
-			    ResourceController.RESOURCES_SCRIPT_USER_KEY_NAME_FOR_SIGNING + ".tooltip",
 			    ResourceController.RESOURCES_SCRIPT_USER_KEY_NAME_FOR_SIGNING));
 			return controls;
 		}

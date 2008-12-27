@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package deprecated.freemind.common;
+package org.freeplane.controller.resources.ui;
 
 import org.freeplane.controller.Controller;
 
@@ -23,8 +23,8 @@ import org.freeplane.controller.Controller;
  * @author foltin
  */
 public class RemindValueProperty extends ThreeCheckBoxProperty {
-	public RemindValueProperty(final String pDescription, final String pLabel) {
-		super(pDescription, pLabel);
+	public RemindValueProperty(final String pLabel) {
+		super(pLabel);
 		mDontTouchValue = "";
 	}
 

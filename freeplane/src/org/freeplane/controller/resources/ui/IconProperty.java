@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package deprecated.freemind.common;
+package org.freeplane.controller.resources.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,16 +26,13 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 
 import org.freeplane.controller.Controller;
+import org.freeplane.controller.resources.ui.layout.OptionString;
 import org.freeplane.map.icon.MindIcon;
 import org.freeplane.ui.dialogs.IconSelectionPopupDialog;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
-import deprecated.freemind.preferences.layout.OptionString;
-
 public class IconProperty extends PropertyBean implements IPropertyControl, ActionListener {
-	String description;
-	String label;
 	private MindIcon mActualIcon = null;
 	JButton mButton;
 	/**
@@ -43,10 +40,8 @@ public class IconProperty extends PropertyBean implements IPropertyControl, Acti
 	 */
 	final private Vector mIcons;
 
-	public IconProperty(final String description, final String label, final Vector icons) {
-		super();
-		this.description = description;
-		this.label = label;
+	public IconProperty(final String name, final Vector icons) {
+		super(name);
 		mIcons = icons;
 		mButton = new JButton();
 		mButton.addActionListener(this);
@@ -71,15 +66,6 @@ public class IconProperty extends PropertyBean implements IPropertyControl, Acti
 			setValue(icon.getName());
 			firePropertyChangeEvent();
 		}
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	@Override
-	public String getLabel() {
-		return label;
 	}
 
 	@Override

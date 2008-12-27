@@ -45,10 +45,8 @@ import org.freeplane.map.pattern.mindmapnode.StylePatternPanel.StylePatternPanel
 import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.ui.MenuBuilder;
 
-import deprecated.freemind.common.ITextTranslator;
-
 /** */
-class ChooseFormatPopupDialog extends JDialog implements ITextTranslator, KeyListener {
+class ChooseFormatPopupDialog extends JDialog implements KeyListener {
 	public static final int CANCEL = -1;
 	public static final int OK = 1;
 	private static final String WINDOW_PREFERENCE_STORAGE_PROPERTY = "accessories.plugins.dialogs.ChooseFormatPopupDialog.window_storage";
@@ -169,10 +167,6 @@ class ChooseFormatPopupDialog extends JDialog implements ITextTranslator, KeyLis
 			mStylePatternFrame.init();
 		}
 		return mStylePatternFrame;
-	}
-
-	public String getText(final String pKey) {
-		return mController.getText(pKey);
 	}
 
 	/**

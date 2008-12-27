@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package deprecated.freemind.common;
+package org.freeplane.controller.resources.ui;
 
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
@@ -26,23 +26,19 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
+import org.freeplane.controller.resources.ui.layout.OptionString;
+
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
-import deprecated.freemind.preferences.layout.OptionString;
-
 public class FontProperty extends PropertyBean implements IPropertyControl {
-	String description;
 	Font font = null;
-	String label;
 	final private String[] mAvailableFontFamilyNames;
 	JComboBox mFontComboBox = new JComboBox();
 
 	/**
 	 */
-	public FontProperty(final String description, final String label) {
-		super();
-		this.description = description;
-		this.label = label;
+	public FontProperty(final String name) {
+		super(name);
 		mAvailableFontFamilyNames = GraphicsEnvironment.getLocalGraphicsEnvironment()
 		    .getAvailableFontFamilyNames();
 		mFontComboBox.setModel(new DefaultComboBoxModel(mAvailableFontFamilyNames));
@@ -51,15 +47,6 @@ public class FontProperty extends PropertyBean implements IPropertyControl {
 				firePropertyChangeEvent();
 			}
 		});
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	@Override
-	public String getLabel() {
-		return label;
 	}
 
 	@Override

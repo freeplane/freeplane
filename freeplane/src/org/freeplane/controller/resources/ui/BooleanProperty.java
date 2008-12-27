@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package deprecated.freemind.common;
+package org.freeplane.controller.resources.ui;
 
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -23,39 +23,26 @@ import java.awt.event.ItemListener;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 
-import com.jgoodies.forms.builder.DefaultFormBuilder;
+import org.freeplane.controller.resources.ui.layout.OptionString;
 
-import deprecated.freemind.preferences.layout.OptionString;
+import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 public class BooleanProperty extends PropertyBean implements IPropertyControl {
 	static public final String FALSE_VALUE = "false";
 	static public final String TRUE_VALUE = "true";
-	String description;
-	String label;
 	JCheckBox mCheckBox = new JCheckBox();
 	protected String mFalseValue = BooleanProperty.FALSE_VALUE;
 	protected String mTrueValue = BooleanProperty.TRUE_VALUE;
 
 	/**
 	 */
-	public BooleanProperty(final String description, final String label) {
-		super();
-		this.description = description;
-		this.label = label;
+	public BooleanProperty(final String name) {
+		super(name);
 		mCheckBox.addItemListener(new ItemListener() {
 			public void itemStateChanged(final ItemEvent pE) {
 				firePropertyChangeEvent();
 			}
 		});
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	@Override
-	public String getLabel() {
-		return label;
 	}
 
 	@Override

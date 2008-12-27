@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package deprecated.freemind.common;
+package org.freeplane.controller.resources.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,21 +24,18 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 
+import org.freeplane.controller.resources.ui.layout.OptionString;
 import org.freeplane.extension.IExtension;
 import org.freeplane.main.HtmlTools;
 import org.freeplane.modes.mindmapmode.MModeController;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
-import deprecated.freemind.preferences.layout.OptionString;
-
 public class ScriptEditorProperty extends PropertyBean implements IPropertyControl, ActionListener {
 	public interface IScriptEditorStarter extends IExtension {
 		String startEditor(String scriptInput);
 	}
 
-	String description;
-	String label;
 	JButton mButton;
 	final JPopupMenu menu = new JPopupMenu();
 	final private MModeController mMindMapController;
@@ -46,11 +43,8 @@ public class ScriptEditorProperty extends PropertyBean implements IPropertyContr
 
 	/**
 	 */
-	public ScriptEditorProperty(final String description, final String label,
-	                            final MModeController pMindMapController) {
-		super();
-		this.description = description;
-		this.label = label;
+	public ScriptEditorProperty(final String name, final MModeController pMindMapController) {
+		super(name);
 		mMindMapController = pMindMapController;
 		mButton = new JButton();
 		mButton.addActionListener(this);
@@ -68,15 +62,6 @@ public class ScriptEditorProperty extends PropertyBean implements IPropertyContr
 				firePropertyChangeEvent();
 			}
 		}
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	@Override
-	public String getLabel() {
-		return label;
 	}
 
 	@Override

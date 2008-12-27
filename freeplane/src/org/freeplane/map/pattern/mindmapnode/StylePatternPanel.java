@@ -34,6 +34,18 @@ import javax.swing.JPanel;
 
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ResourceController;
+import org.freeplane.controller.resources.ui.BooleanProperty;
+import org.freeplane.controller.resources.ui.ColorProperty;
+import org.freeplane.controller.resources.ui.ComboProperty;
+import org.freeplane.controller.resources.ui.FontProperty;
+import org.freeplane.controller.resources.ui.IPropertyControl;
+import org.freeplane.controller.resources.ui.IconProperty;
+import org.freeplane.controller.resources.ui.NextLineProperty;
+import org.freeplane.controller.resources.ui.PropertyBean;
+import org.freeplane.controller.resources.ui.ScriptEditorProperty;
+import org.freeplane.controller.resources.ui.SeparatorProperty;
+import org.freeplane.controller.resources.ui.StringProperty;
+import org.freeplane.controller.resources.ui.ThreeCheckBoxProperty;
 import org.freeplane.map.edge.EdgeModel;
 import org.freeplane.map.icon.MindIcon;
 import org.freeplane.map.icon.mindmapnode.MIconController;
@@ -43,25 +55,10 @@ import org.freeplane.modes.mindmapmode.MModeController;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.FormLayout;
 
-import deprecated.freemind.common.BooleanProperty;
-import deprecated.freemind.common.ColorProperty;
-import deprecated.freemind.common.ComboProperty;
-import deprecated.freemind.common.FontProperty;
-import deprecated.freemind.common.IPropertyControl;
-import deprecated.freemind.common.ITextTranslator;
-import deprecated.freemind.common.IconProperty;
-import deprecated.freemind.common.NextLineProperty;
-import deprecated.freemind.common.PropertyBean;
-import deprecated.freemind.common.ScriptEditorProperty;
-import deprecated.freemind.common.SeparatorProperty;
-import deprecated.freemind.common.StringProperty;
-import deprecated.freemind.common.ThreeCheckBoxProperty;
-import deprecated.freemind.preferences.layout.OptionString;
-
 /**
  * @author foltin
  */
-public class StylePatternPanel extends JPanel implements ITextTranslator, PropertyChangeListener {
+public class StylePatternPanel extends JPanel implements PropertyChangeListener {
 	final private class EdgeWidthBackTransformer implements IValueTransformator {
 		public String transform(final String value) {
 			return transformStringToWidth(value);
@@ -202,126 +199,103 @@ public class StylePatternPanel extends JPanel implements ITextTranslator, Proper
 
 	private Vector getControls() {
 		final Vector controls = new Vector();
-		controls.add(new SeparatorProperty("General"));
-		mClearSetters = new ThreeCheckBoxProperty(StylePatternPanel.CLEAR_ALL_SETTERS + ".tooltip",
-		    StylePatternPanel.CLEAR_ALL_SETTERS);
+		controls.add(new SeparatorProperty("OptionPanel.separator.General"));
+		mClearSetters = new ThreeCheckBoxProperty(StylePatternPanel.CLEAR_ALL_SETTERS);
 		mClearSetters.setValue(ThreeCheckBoxProperty.TRUE_VALUE);
 		controls.add(mClearSetters);
 		if (StylePatternPanelType.WITH_NAME_AND_CHILDS.equals(mType)) {
-			mName = new StringProperty(StylePatternPanel.NODE_NAME + ".tooltip",
-			    StylePatternPanel.NODE_NAME);
+			mName = new StringProperty(StylePatternPanel.NODE_NAME);
 			controls.add(mName);
-			mSetChildPattern = new ThreeCheckBoxProperty(StylePatternPanel.SET_CHILD_PATTERN
-			        + ".tooltip", StylePatternPanel.SET_CHILD_PATTERN);
+			mSetChildPattern = new ThreeCheckBoxProperty(StylePatternPanel.SET_CHILD_PATTERN);
 			controls.add(mSetChildPattern);
 			final Vector childNames = new Vector();
-			mChildPattern = new ComboProperty(StylePatternPanel.CHILD_PATTERN + ".tooltip",
-			    StylePatternPanel.CHILD_PATTERN, childNames, childNames);
+			mChildPattern = new ComboProperty(StylePatternPanel.CHILD_PATTERN, childNames,
+			    childNames);
 			controls.add(mChildPattern);
 		}
 		controls.add(new NextLineProperty());
-		controls.add(new SeparatorProperty("NodeColors"));
-		mSetNodeColor = new ThreeCheckBoxProperty(StylePatternPanel.SET_NODE_COLOR + ".tooltip",
-		    StylePatternPanel.SET_NODE_COLOR);
+		controls.add(new SeparatorProperty("OptionPanel.separator.NodeColors"));
+		mSetNodeColor = new ThreeCheckBoxProperty(StylePatternPanel.SET_NODE_COLOR);
 		controls.add(mSetNodeColor);
-		mNodeColor = new ColorProperty(StylePatternPanel.NODE_COLOR + ".tooltip",
-		    StylePatternPanel.NODE_COLOR, Controller.getResourceController().getDefaultProperty(
+		mNodeColor = new ColorProperty(StylePatternPanel.NODE_COLOR, Controller
+		    .getResourceController().getDefaultProperty(
 		        ResourceController.RESOURCES_NODE_TEXT_COLOR));
 		controls.add(mNodeColor);
 		mSetNodeBackgroundColor = new ThreeCheckBoxProperty(
-		    StylePatternPanel.SET_NODE_BACKGROUND_COLOR + ".tooltip",
 		    StylePatternPanel.SET_NODE_BACKGROUND_COLOR);
 		controls.add(mSetNodeBackgroundColor);
-		mNodeBackgroundColor = new ColorProperty(StylePatternPanel.NODE_BACKGROUND_COLOR
-		        + ".tooltip", StylePatternPanel.NODE_BACKGROUND_COLOR, Controller
-		    .getResourceController().getDefaultProperty(
+		mNodeBackgroundColor = new ColorProperty(StylePatternPanel.NODE_BACKGROUND_COLOR,
+		    Controller.getResourceController().getDefaultProperty(
 		        ResourceController.RESOURCES_BACKGROUND_COLOR));
 		controls.add(mNodeBackgroundColor);
-		controls.add(new SeparatorProperty("NodeStyles"));
-		mSetNodeStyle = new ThreeCheckBoxProperty(StylePatternPanel.SET_NODE_STYLE + ".tooltip",
-		    StylePatternPanel.SET_NODE_STYLE);
+		controls.add(new SeparatorProperty("OptionPanel.separator.NodeStyles"));
+		mSetNodeStyle = new ThreeCheckBoxProperty(StylePatternPanel.SET_NODE_STYLE);
 		controls.add(mSetNodeStyle);
-		mNodeStyle = new ComboProperty(StylePatternPanel.NODE_STYLE + ".tooltip",
-		    StylePatternPanel.NODE_STYLE, NodeStyleModel.NODE_STYLES);
+		mNodeStyle = new ComboProperty(StylePatternPanel.NODE_STYLE + ".tooltip", new String[] {
+		        "fork", "bubble", "as_parent", "combined" });
 		controls.add(mNodeStyle);
 		mIconInformationVector = new Vector();
 		final MModeController controller = mMindMapController;
 		final Collection mindIcons = ((MIconController) controller.getIconController())
 		    .getMindIcons();
 		mIconInformationVector.addAll(mindIcons);
-		mSetIcon = new ThreeCheckBoxProperty(StylePatternPanel.SET_ICON + ".tooltip",
-		    StylePatternPanel.SET_ICON);
+		mSetIcon = new ThreeCheckBoxProperty(StylePatternPanel.SET_ICON);
 		controls.add(mSetIcon);
-		mIcon = new IconProperty(StylePatternPanel.ICON + ".tooltip", StylePatternPanel.ICON,
-		    mIconInformationVector);
+		mIcon = new IconProperty(StylePatternPanel.ICON, mIconInformationVector);
 		controls.add(mIcon);
 		controls.add(new NextLineProperty());
-		controls.add(new SeparatorProperty("NodeFont"));
-		mSetNodeFontName = new ThreeCheckBoxProperty(StylePatternPanel.SET_NODE_FONT_NAME
-		        + ".tooltip", StylePatternPanel.SET_NODE_FONT_NAME);
+		controls.add(new SeparatorProperty("OptionPanel.separator.NodeFont"));
+		mSetNodeFontName = new ThreeCheckBoxProperty(StylePatternPanel.SET_NODE_FONT_NAME);
 		controls.add(mSetNodeFontName);
-		mNodeFontName = new FontProperty(StylePatternPanel.NODE_FONT_NAME + ".tooltip",
-		    StylePatternPanel.NODE_FONT_NAME);
+		mNodeFontName = new FontProperty(StylePatternPanel.NODE_FONT_NAME);
 		controls.add(mNodeFontName);
-		mSetNodeFontSize = new ThreeCheckBoxProperty(StylePatternPanel.SET_NODE_FONT_SIZE
-		        + ".tooltip", StylePatternPanel.SET_NODE_FONT_SIZE);
+		mSetNodeFontSize = new ThreeCheckBoxProperty(StylePatternPanel.SET_NODE_FONT_SIZE);
 		controls.add(mSetNodeFontSize);
 		final Vector sizesVector = new Vector();
 		for (int i = 0; i < sizes.length; i++) {
 			sizesVector.add(sizes[i]);
 		}
-		mNodeFontSize = new ComboProperty(StylePatternPanel.NODE_FONT_SIZE + ".tooltip",
-		    StylePatternPanel.NODE_FONT_SIZE, sizes, sizesVector);
+		mNodeFontSize = new ComboProperty(StylePatternPanel.NODE_FONT_SIZE, sizesVector,
+		    sizesVector);
 		controls.add(mNodeFontSize);
-		mSetNodeFontBold = new ThreeCheckBoxProperty(StylePatternPanel.SET_NODE_FONT_BOLD
-		        + ".tooltip", StylePatternPanel.SET_NODE_FONT_BOLD);
+		mSetNodeFontBold = new ThreeCheckBoxProperty(StylePatternPanel.SET_NODE_FONT_BOLD);
 		controls.add(mSetNodeFontBold);
-		mNodeFontBold = new BooleanProperty(StylePatternPanel.NODE_FONT_BOLD + ".tooltip",
-		    StylePatternPanel.NODE_FONT_BOLD);
+		mNodeFontBold = new BooleanProperty(StylePatternPanel.NODE_FONT_BOLD);
 		controls.add(mNodeFontBold);
-		mSetNodeFontItalic = new ThreeCheckBoxProperty(StylePatternPanel.SET_NODE_FONT_ITALIC
-		        + ".tooltip", StylePatternPanel.SET_NODE_FONT_ITALIC);
+		mSetNodeFontItalic = new ThreeCheckBoxProperty(StylePatternPanel.SET_NODE_FONT_ITALIC);
 		controls.add(mSetNodeFontItalic);
-		mNodeFontItalic = new BooleanProperty(StylePatternPanel.NODE_FONT_ITALIC + ".tooltip",
-		    StylePatternPanel.NODE_FONT_ITALIC);
+		mNodeFontItalic = new BooleanProperty(StylePatternPanel.NODE_FONT_ITALIC);
 		controls.add(mNodeFontItalic);
 		/* **** */
-		mSetNodeText = new ThreeCheckBoxProperty(StylePatternPanel.SET_NODE_TEXT + ".tooltip",
-		    StylePatternPanel.SET_NODE_TEXT);
+		mSetNodeText = new ThreeCheckBoxProperty(StylePatternPanel.SET_NODE_TEXT);
 		controls.add(mSetNodeText);
-		mNodeText = new StringProperty(StylePatternPanel.NODE_TEXT + ".tooltip",
-		    StylePatternPanel.NODE_TEXT);
+		mNodeText = new StringProperty(StylePatternPanel.NODE_TEXT);
 		controls.add(mNodeText);
 		/* **** */
-		controls.add(new SeparatorProperty("EdgeControls"));
-		mSetEdgeWidth = new ThreeCheckBoxProperty(StylePatternPanel.SET_EDGE_WIDTH + ".tooltip",
-		    StylePatternPanel.SET_EDGE_WIDTH);
+		controls.add(new SeparatorProperty("OptionPanel.separator.EdgeControls"));
+		mSetEdgeWidth = new ThreeCheckBoxProperty(StylePatternPanel.SET_EDGE_WIDTH);
 		controls.add(mSetEdgeWidth);
-		mEdgeWidth = new ComboProperty(StylePatternPanel.EDGE_WIDTH + ".tooltip",
-		    StylePatternPanel.EDGE_WIDTH, StylePatternPanel.EDGE_WIDTHS);
+		mEdgeWidth = new ComboProperty(StylePatternPanel.EDGE_WIDTH + ".tooltip", new String[] {
+		        "EdgeWidth_parent", "EdgeWidth_thin", "EdgeWidth_1", "EdgeWidth_2", "EdgeWidth_4",
+		        "EdgeWidth_8" });
 		controls.add(mEdgeWidth);
 		/* **** */
-		mSetEdgeStyle = new ThreeCheckBoxProperty(StylePatternPanel.SET_EDGE_STYLE + ".tooltip",
-		    StylePatternPanel.SET_EDGE_STYLE);
+		mSetEdgeStyle = new ThreeCheckBoxProperty(StylePatternPanel.SET_EDGE_STYLE);
 		controls.add(mSetEdgeStyle);
-		mEdgeStyle = new ComboProperty(StylePatternPanel.EDGE_STYLE + ".tooltip",
-		    StylePatternPanel.EDGE_STYLE, StylePatternPanel.EDGE_STYLES);
+		mEdgeStyle = new ComboProperty(StylePatternPanel.EDGE_STYLE + ".tooltip", new String[] {
+		        "linear", "bezier", "sharp_linear", "sharp_bezier" });
 		controls.add(mEdgeStyle);
 		/* **** */
-		mSetEdgeColor = new ThreeCheckBoxProperty(StylePatternPanel.SET_EDGE_COLOR + ".tooltip",
-		    StylePatternPanel.SET_EDGE_COLOR);
+		mSetEdgeColor = new ThreeCheckBoxProperty(StylePatternPanel.SET_EDGE_COLOR);
 		controls.add(mSetEdgeColor);
-		mEdgeColor = new ColorProperty(StylePatternPanel.EDGE_COLOR + ".tooltip",
-		    StylePatternPanel.EDGE_COLOR, Controller.getResourceController().getDefaultProperty(
-		        ResourceController.RESOURCES_EDGE_COLOR));
+		mEdgeColor = new ColorProperty(StylePatternPanel.EDGE_COLOR, Controller
+		    .getResourceController().getDefaultProperty(ResourceController.RESOURCES_EDGE_COLOR));
 		controls.add(mEdgeColor);
 		/* **** */
-		controls.add(new SeparatorProperty("ScriptingControl"));
-		mSetScriptPattern = new ThreeCheckBoxProperty(StylePatternPanel.SET_SCRIPT + ".tooltip",
-		    StylePatternPanel.SET_SCRIPT);
+		controls.add(new SeparatorProperty("OptionPanel.separator.ScriptingControl"));
+		mSetScriptPattern = new ThreeCheckBoxProperty(StylePatternPanel.SET_SCRIPT);
 		controls.add(mSetScriptPattern);
-		mScriptPattern = new ScriptEditorProperty(StylePatternPanel.SCRIPT + ".tooltip",
-		    StylePatternPanel.SCRIPT, mMindMapController);
+		mScriptPattern = new ScriptEditorProperty(StylePatternPanel.SCRIPT, mMindMapController);
 		controls.add(mScriptPattern);
 		mPropertyChangePropagation.put(mSetNodeColor, mNodeColor);
 		mPropertyChangePropagation.put(mSetNodeBackgroundColor, mNodeBackgroundColor);
@@ -430,10 +404,6 @@ public class StylePatternPanel extends JPanel implements ITextTranslator, Proper
 		return pattern;
 	}
 
-	public String getText(final String pKey) {
-		return OptionString.getText("PatternDialog." + pKey);
-	}
-
 	/**
 	 * Creates all controls and adds them to the frame.
 	 */
@@ -501,7 +471,7 @@ public class StylePatternPanel extends JPanel implements ITextTranslator, Proper
 		}
 		for (final Iterator iter = mPropertyChangePropagation.keySet().iterator(); iter.hasNext();) {
 			final ThreeCheckBoxProperty prop = (ThreeCheckBoxProperty) iter.next();
-			propertyChange(new PropertyChangeEvent(prop, prop.getLabel(), null, prop.getValue()));
+			propertyChange(new PropertyChangeEvent(prop, prop.getName(), null, prop.getValue()));
 		}
 	}
 

@@ -230,7 +230,7 @@ public class TreeXmlReader implements IXMLBuilder, ITreeReader {
 			return;
 		}
 		final IXMLElement top = xmlBuilder.getParentElement();
-		if (top != null && top.hasChildren()) {
+		if (top != null && top.hasChildren() && getXmlLoaders().isEmpty(top.getName())) {
 			top.removeChildAtIndex(0);
 		}
 		xmlBuilder.startElement(name, nsPrefix, nsURI, systemID, lineNr);

@@ -17,15 +17,15 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package deprecated.freemind.preferences.layout;
+package org.freeplane.controller.resources.ui;
 
-import org.freeplane.controller.Controller;
+import java.util.List;
 
 /**
- * @author Dimitry Polivaev Nov 21, 2008
+ * Implement this interface to take part in the property dialog.
+ *
+ * @author foltin
  */
-public class OptionString {
-	public static String getText(final String string) {
-		return string == null ? null : Controller.getText("OptionPanel." + string);
-	}
+public interface IFreemindPropertyContributor {
+	public List getControls();
 }
