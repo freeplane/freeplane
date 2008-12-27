@@ -37,7 +37,7 @@ import java.util.regex.Pattern;
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.main.Tools;
-import org.freeplane.ui.dialogs.EnterPasswordDialog;
+import org.freeplane.ui.components.EnterPasswordDialog;
 
 /**
  * @author foltin
