@@ -35,8 +35,8 @@ import javax.swing.WindowConstants;
 
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.FreeplaneAction;
-import org.freeplane.controller.resources.ui.layout.OptionPanel;
-import org.freeplane.controller.resources.ui.layout.OptionPanel.IOptionPanelFeedback;
+import org.freeplane.controller.resources.ui.OptionPanel;
+import org.freeplane.controller.resources.ui.OptionPanel.IOptionPanelFeedback;
 import org.freeplane.main.Tools;
 
 /**

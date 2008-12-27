@@ -1,8 +1,8 @@
 /*
  *  Freeplane - mind map editor
- *  Copyright (C) 2008 Joerg Mueller, Daniel Polansky, Christian Foltin, Dimitry Polivaev
+ *  Copyright (C) 2008 Dimitry Polivaev
  *
- *  This file is modified by Dimitry Polivaev in 2008.
+ *  This file author is Dimitry Polivaev
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -19,19 +19,34 @@
  */
 package org.freeplane.controller.resources.ui;
 
+import org.freeplane.controller.Controller;
 
-import com.jgoodies.forms.builder.DefaultFormBuilder;
-
-public class SeparatorProperty implements IPropertyControl {
+/**
+ * @author Dimitry Polivaev
+ * 26.12.2008
+ */
+public class PropertyAdapter {
+	private String description;
 	private final String label;
+	private final String name;
 
-	public SeparatorProperty(final String label) {
+	public PropertyAdapter(final String name) {
+		this(name, "OptionPanel." + name, "OptionPanel." + name + ".tooltip");
+		if (Controller.getResourceController().getText(description, null) == null) {
+			description = null;
+		}
+	}
+
+	public PropertyAdapter(final String name, final String label, final String description) {
 		super();
+		assert name != null;
+		this.name = name;
 		this.label = label;
+		this.description = description;
 	}
 
 	public String getDescription() {
-		return null;
+		return description;
 	}
 
 	public String getLabel() {
@@ -39,13 +54,6 @@ public class SeparatorProperty implements IPropertyControl {
 	}
 
 	public String getName() {
-		return null;
-	}
-
-	public void layout(final DefaultFormBuilder builder) {
-		builder.appendSeparator(OptionString.getText(getLabel()));
-	}
-
-	public void setEnabled(final boolean pEnabled) {
+		return name;
 	}
 }

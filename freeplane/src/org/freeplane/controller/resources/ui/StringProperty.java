@@ -25,7 +25,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-import org.freeplane.controller.resources.ui.layout.OptionString;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 

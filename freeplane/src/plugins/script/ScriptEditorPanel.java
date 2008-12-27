@@ -56,9 +56,9 @@ import org.freeplane.controller.Controller;
 import org.freeplane.main.Tools;
 import org.freeplane.ui.MenuBuilder;
 import org.freeplane.ui.UIBuilder;
+import org.freeplane.ui.dialogs.BlindIcon;
 
 import plugins.script.ScriptingEngine.IErrorHandler;
-import deprecated.freemind.common.BlindIcon;
 
 /**
  */

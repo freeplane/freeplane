@@ -40,9 +40,9 @@ import org.freeplane.map.tree.view.EditNodeWYSIWYG;
 import org.freeplane.map.tree.view.MapView;
 import org.freeplane.map.tree.view.NodeView;
 import org.freeplane.modes.mindmapmode.MModeController;
+import org.freeplane.ui.dialogs.OptionalDontShowMeAgainDialog;
 import org.freeplane.undo.IUndoableActor;
 
-import deprecated.freemind.common.OptionalDontShowMeAgainDialog;
 
 class EditAction extends FreeplaneAction {
 	private static final Pattern HTML_HEAD = Pattern.compile("\\s*<head>.*</head>", Pattern.DOTALL);

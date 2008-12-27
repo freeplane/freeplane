@@ -43,8 +43,8 @@ import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.url.mindmapmode.FileManager;
 import org.freeplane.modes.mindmapmode.EncryptionModel;
 import org.freeplane.modes.mindmapmode.MModeController;
+import org.freeplane.ui.dialogs.OptionalDontShowMeAgainDialog;
 
-import deprecated.freemind.common.OptionalDontShowMeAgainDialog;
 
 /**
  * @author Dimitry Polivaev

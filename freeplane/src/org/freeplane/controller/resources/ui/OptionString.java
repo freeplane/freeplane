@@ -2,6 +2,8 @@
  *  Freeplane - mind map editor
  *  Copyright (C) 2008 Joerg Mueller, Daniel Polansky, Christian Foltin, Dimitry Polivaev
  *
+ *  This file is modified by Dimitry Polivaev in 2008.
+ *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 2 of the License, or
@@ -15,44 +17,15 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package deprecated.freemind.common;
+package org.freeplane.controller.resources.ui;
 
-import java.awt.Component;
-import java.awt.Graphics;
-
-import javax.swing.Icon;
+import org.freeplane.controller.Controller;
 
 /**
- * @author foltin
+ * @author Dimitry Polivaev Nov 21, 2008
  */
-public class BlindIcon implements Icon {
-	final private int length;
-
-	public BlindIcon(final int length) {
-		this.length = length;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see javax.swing.Icon#getIconHeight()
-	 */
-	public int getIconHeight() {
-		return length;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see javax.swing.Icon#getIconWidth()
-	 */
-	public int getIconWidth() {
-		return length;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see javax.swing.Icon#paintIcon(java.awt.Component, java.awt.Graphics,
-	 * int, int)
-	 */
-	public void paintIcon(final Component arg0, final Graphics arg1, final int arg2, final int arg3) {
+public class OptionString {
+	public static String getText(final String string) {
+		return string == null ? null : Controller.getText(string);
 	}
 }

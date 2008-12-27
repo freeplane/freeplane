@@ -29,9 +29,9 @@ import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.mindmapmode.MModeController;
+import org.freeplane.ui.dialogs.OptionalDontShowMeAgainDialog;
 import org.freeplane.undo.IUndoableActor;
 
-import deprecated.freemind.common.OptionalDontShowMeAgainDialog;
 
 class DeleteAction extends FreeplaneAction {
 	public DeleteAction() {

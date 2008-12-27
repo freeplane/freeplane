@@ -78,10 +78,10 @@ import org.freeplane.map.tree.view.MultipleImage;
 import org.freeplane.modes.ModeController;
 import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.ui.UIBuilder;
+import org.freeplane.ui.dialogs.BlindIcon;
 
 import com.jgoodies.forms.factories.ButtonBarFactory;
 
-import deprecated.freemind.common.BlindIcon;
 
 /**
  * @author foltin

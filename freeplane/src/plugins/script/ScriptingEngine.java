@@ -44,8 +44,8 @@ import org.freeplane.map.attribute.mindmapnode.MAttributeController;
 import org.freeplane.map.text.mindmapmode.MTextController;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.mindmapmode.MModeController;
+import org.freeplane.ui.dialogs.OptionalDontShowMeAgainDialog;
 
-import deprecated.freemind.common.OptionalDontShowMeAgainDialog;
 
 /**
  * @author foltin

@@ -2,6 +2,8 @@
  *  Freeplane - mind map editor
  *  Copyright (C) 2008 Joerg Mueller, Daniel Polansky, Christian Foltin, Dimitry Polivaev
  *
+ *  This file is modified by Dimitry Polivaev in 2008.
+ *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 2 of the License, or
@@ -24,7 +26,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 
-import org.freeplane.controller.resources.ui.layout.OptionString;
 import org.freeplane.extension.IExtension;
 import org.freeplane.main.HtmlTools;
 import org.freeplane.modes.mindmapmode.MModeController;
