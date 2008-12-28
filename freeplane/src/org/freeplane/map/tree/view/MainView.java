@@ -295,7 +295,6 @@ public abstract class MainView extends JLabel {
 	}
 
 	void paintFoldingMark(final Graphics2D g, final Point p) {
-		Tools.convertPointToAncestor(this, p, getNodeView());
 		final int zoomedFoldingSymbolHalfWidth = getZoomedFoldingSymbolHalfWidth();
 		p.translate(-zoomedFoldingSymbolHalfWidth, -zoomedFoldingSymbolHalfWidth);
 		final Color color = g.getColor();
