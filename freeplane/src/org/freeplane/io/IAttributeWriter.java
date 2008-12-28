@@ -19,6 +19,6 @@
  */
 package org.freeplane.io;
 
-public interface IAttributeWriter<T> {
-	void writeAttributes(ITreeWriter writer, Object userObject, T tag);
+public interface IAttributeWriter {
+	void writeAttributes(ITreeWriter writer, Object userObject, String tag);
 }

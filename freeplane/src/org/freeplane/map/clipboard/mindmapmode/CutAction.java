@@ -34,7 +34,6 @@ import org.freeplane.map.tree.mindmapmode.MMapController;
 import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.ui.components.OptionalDontShowMeAgainDialog;
 
-
 class CutAction extends FreeplaneAction {
 	public CutAction() {
 		super("cut", "images/editcut.png");

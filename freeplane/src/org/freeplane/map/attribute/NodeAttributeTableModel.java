@@ -294,7 +294,7 @@ public class NodeAttributeTableModel extends AbstractTableModel implements IAttr
 		final Attribute attr = (Attribute) attributes.get(i);
 		attributeElement.setAttribute("NAME", attr.getName());
 		attributeElement.setAttribute("VALUE", attr.getValue());
-		writer.addNode(attr, attributeElement);
+		writer.addElement(attr, attributeElement);
 	}
 
 	private void saveLayout(final ITreeWriter writer) throws IOException {
@@ -310,7 +310,7 @@ public class NodeAttributeTableModel extends AbstractTableModel implements IAttr
 				    .getColumnWidth(1)));
 			}
 			if (attributeElement != null) {
-				writer.addNode(layout, attributeElement);
+				writer.addElement(layout, attributeElement);
 			}
 		}
 	}

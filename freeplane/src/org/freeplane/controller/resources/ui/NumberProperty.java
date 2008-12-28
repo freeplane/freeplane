@@ -25,7 +25,6 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 public class NumberProperty extends PropertyBean implements IPropertyControl {

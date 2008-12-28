@@ -25,8 +25,6 @@ import org.freeplane.controller.Controller;
 import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.map.url.mindmapmode.FileManager;
 
-
-
 class OpenAction extends FreeplaneAction {
 	/**
 	 *

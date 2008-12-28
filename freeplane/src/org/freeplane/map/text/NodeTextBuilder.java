@@ -20,25 +20,44 @@
 package org.freeplane.map.text;
 
 import org.freeplane.io.IAttributeHandler;
-import org.freeplane.io.INodeContentHandler;
+import org.freeplane.io.IElementContentHandler;
 import org.freeplane.io.ReadManager;
 import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
 import org.freeplane.map.tree.NodeBuilder;
 import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.NodeBuilder.NodeObject;
 
-public class NodeTextBuilder implements INodeContentHandler {
+public class NodeTextBuilder implements IElementContentHandler {
 	public static final String XML_NODE_TEXT = "TEXT";
 	public static final String XML_NODE_XHTML_CONTENT_TAG = "richcontent";
 	public static final String XML_NODE_XHTML_TYPE_NODE = "NODE";
 	public static final String XML_NODE_XHTML_TYPE_NOTE = "NOTE";
 	public static final String XML_NODE_XHTML_TYPE_TAG = "TYPE";
 
+	public Object createElement(final Object parent, final String tag, final IXMLElement attributes) {
+		if (attributes == null) {
+			return null;
+		}
+		final Object typeAttribute = attributes.getAttribute(
+		    NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG, null);
+		if (typeAttribute != null
+		        && !NodeTextBuilder.XML_NODE_XHTML_TYPE_NODE.equals(typeAttribute)) {
+			return null;
+		}
+		return parent;
+	}
+
+	public void endElement(final Object parent, final String tag, final Object node,
+	                       final IXMLElement attributes, final String content) {
+		assert tag.equals("richcontent");
+		final String xmlText = content;
+		((NodeModel) node).setXmlText(xmlText);
+	}
+
 	private void registerAttributeHandlers(final ReadManager reader) {
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, NodeTextBuilder.XML_NODE_TEXT,
 		    new IAttributeHandler() {
-			    public void parseAttribute(final Object userObject, final String value) {
-				    final NodeModel node = ((NodeObject) userObject).node;
+			    public void setAttribute(final Object userObject, final String value) {
+				    final NodeModel node = ((NodeModel) userObject);
 				    node.setText(value);
 			    }
 		    });
@@ -48,21 +67,6 @@ public class NodeTextBuilder implements INodeContentHandler {
 	 */
 	public void registerBy(final ReadManager reader) {
 		registerAttributeHandlers(reader);
-		reader.addNodeContentHandler("richcontent", this);
-	}
-
-	public boolean setContent(final Object node, final String tag, final IXMLElement attributes,
-	                          final String content) {
-		if (tag.equals("richcontent")) {
-			final String xmlText = content;
-			final Object typeAttribute = attributes.getAttribute(
-			    NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG, null);
-			if (typeAttribute == null
-			        || NodeTextBuilder.XML_NODE_XHTML_TYPE_NODE.equals(typeAttribute)) {
-				((NodeObject) node).node.setXmlText(xmlText);
-				return true;
-			}
-		}
-		return false;
+		reader.addElementHandler("richcontent", this);
 	}
 }

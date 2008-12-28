@@ -82,7 +82,6 @@ import org.freeplane.ui.components.BlindIcon;
 
 import com.jgoodies.forms.factories.ButtonBarFactory;
 
-
 /**
  * @author foltin
  */

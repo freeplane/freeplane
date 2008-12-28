@@ -43,7 +43,6 @@ import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.undo.IUndoableActor;
 
-
 class EditAction extends FreeplaneAction {
 	private static final Pattern HTML_HEAD = Pattern.compile("\\s*<head>.*</head>", Pattern.DOTALL);
 	private EditNodeBase mCurrentEditDialog = null;

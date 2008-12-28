@@ -55,7 +55,7 @@ public class ListHashTable<K, V> {
 	}
 
 	public boolean isEmpty(final K tag) {
-		final List elementsForTag = table.get(tag);
+		final List elementsForTag = list(tag);
 		if (elementsForTag == null) {
 			return true;
 		}
@@ -63,15 +63,20 @@ public class ListHashTable<K, V> {
 	}
 
 	public Iterator<V> iterator(final K tag) {
-		final List elementsForTag = table.get(tag);
+		final List elementsForTag = list(tag);
 		if (elementsForTag == null) {
 			return new EmptyIterator();
 		}
 		return elementsForTag.listIterator();
 	}
 
-	public void remove(final K tag, final V element) {
+	public List<V> list(final K tag) {
 		final List elementsForTag = table.get(tag);
+		return elementsForTag;
+	}
+
+	public void remove(final K tag, final V element) {
+		final List elementsForTag = list(tag);
 		if (elementsForTag == null) {
 			return;
 		}

@@ -24,6 +24,7 @@ import java.util.Vector;
 
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
+
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.PropertyAction;
 import org.freeplane.controller.resources.ui.OptionPanelBuilder;
@@ -49,22 +50,38 @@ import org.freeplane.undo.IUndoHandler;
 import org.freeplane.undo.IUndoableActor;
 
 public class MModeController extends ModeController {
-	public OptionPanelBuilder getOptionPanelBuilder() {
-    	return optionPanelBuilder;
-    }
-
 	static public final String MODENAME = "MindMap";
 	static private RedoAction redo;
 	static private UndoAction undo;
 	private MAttributeController attributeController;
-	private MPatternController patternController;
 	private OptionPanelBuilder optionPanelBuilder;
+	private MPatternController patternController;
 
 	MModeController() {
 		super();
 		createActions();
 		createOptionPanelControls();
 	}
+
+	private void addUndoableActor(final IUndoableActor actor) {
+		final MindMapMapModel map = (MindMapMapModel) Controller.getController().getMap();
+		final IUndoHandler undoHandler = map.getUndoHandler();
+		undoHandler.addActor(actor);
+		undo.setEnabled(true);
+		redo.setEnabled(false);
+	}
+
+	private void createActions() {
+		undo = new UndoAction();
+		redo = new RedoAction();
+		undo.setRedo(redo);
+		redo.setUndo(undo);
+		addAction("undo", undo);
+		addAction("redo", redo);
+		addAction("selectBranchAction", new SelectBranchAction());
+		addAction("selectAllAction", new SelectAllAction());
+	}
+
 	private void createOptionPanelControls() {
 		optionPanelBuilder = new OptionPanelBuilder();
 		optionPanelBuilder.load(Controller.getResourceController().getResource(
@@ -90,29 +107,9 @@ public class MModeController extends ModeController {
 			lafNames.add(className);
 			translatedLafNames.add(info.getName());
 		}
-		optionPanelBuilder.addComboProperty("Appearance/look_and_feel/lookandfeel", "lookandfeel", lafNames,
-		    translatedLafNames, IndexedTree.AS_CHILD);
+		optionPanelBuilder.addComboProperty("Appearance/look_and_feel/lookandfeel", "lookandfeel",
+		    lafNames, translatedLafNames, IndexedTree.AS_CHILD);
 		addAction("propertyAction", new PropertyAction(optionPanelBuilder.getRoot()));
-	}
-
-
-	private void addUndoableActor(final IUndoableActor actor) {
-		final MindMapMapModel map = (MindMapMapModel) Controller.getController().getMap();
-		final IUndoHandler undoHandler = map.getUndoHandler();
-		undoHandler.addActor(actor);
-		undo.setEnabled(true);
-		redo.setEnabled(false);
-	}
-
-	private void createActions() {
-		undo = new UndoAction();
-		redo = new RedoAction();
-		undo.setRedo(redo);
-		redo.setUndo(undo);
-		addAction("undo", undo);
-		addAction("redo", redo);
-		addAction("selectBranchAction", new SelectBranchAction());
-		addAction("selectAllAction", new SelectAllAction());
 	}
 
 	@Override
@@ -142,6 +139,10 @@ public class MModeController extends ModeController {
 	@Override
 	public String getModeName() {
 		return MModeController.MODENAME;
+	}
+
+	public OptionPanelBuilder getOptionPanelBuilder() {
+		return optionPanelBuilder;
 	}
 
 	public MPatternController getPatternController() {

@@ -19,6 +19,8 @@
  */
 package org.freeplane.io;
 
-public interface ITreeReader {
-	void load(java.io.Reader reader);
+import org.freeplane.extension.IExtension;
+
+public interface IExtensionAttributeWriter {
+	void writeAttributes(ITreeWriter writer, Object userObject, IExtension extension);
 }

@@ -29,17 +29,13 @@ import org.freeplane.map.tree.NodeModel;
 
 public class ReadManager {
 	final private Hashtable<String, Hashtable<String, IAttributeHandler>> attributeHandlers;
-	final private ListHashTable<String, INodeContentHandler> nodeContentHandlers;
-	final private ListHashTable<String, INodeCreator> nodeCreators;
+	final private ListHashTable<String, IElementHandler> elementHandlers;
 	final private Collection<IReadCompletionListener> readCompletionListeners;
-	final private ListHashTable<String, IXMLElementHandler> xmlHandlers;
 
 	public ReadManager() {
 		super();
-		nodeCreators = new ListHashTable();
+		elementHandlers = new ListHashTable();
 		attributeHandlers = new Hashtable<String, Hashtable<String, IAttributeHandler>>();
-		nodeContentHandlers = new ListHashTable();
-		xmlHandlers = new ListHashTable();
 		readCompletionListeners = new LinkedList<IReadCompletionListener>();
 	}
 
@@ -63,44 +59,23 @@ public class ReadManager {
 
 	/*
 	 * (non-Javadoc)
-	 * @see freeplane.persistence.Reader#addNodeContentLoader(java.lang.String,
-	 * freeplane.persistence.NodeContentLoader)
-	 */
-	public void addNodeContentHandler(final String parentTag, final INodeContentHandler nc) {
-		nodeContentHandlers.add(parentTag, nc);
-	}
-
-	/*
-	 * (non-Javadoc)
 	 * @see freeplane.persistence.Reader#addNodeCreator(java.lang.String,
 	 * freeplane.persistence.NodeCreator)
 	 */
-	public void addNodeCreator(final String parentTag, final INodeCreator n) {
-		nodeCreators.add(parentTag, n);
+	public void addElementHandler(final String parentTag, final IElementHandler handler) {
+		elementHandlers.add(parentTag, handler);
 	}
 
 	public void addReadCompletionListener(final IReadCompletionListener listener) {
 		readCompletionListeners.add(listener);
 	}
 
-	public void addXMLElementHandler(final String parentTag, final IXMLElementHandler x) {
-		xmlHandlers.add(parentTag, x);
-	}
-
 	public Hashtable<String, Hashtable<String, IAttributeHandler>> getAttributeHandlers() {
 		return attributeHandlers;
 	}
 
-	public ListHashTable getNodeContentHandlers() {
-		return nodeContentHandlers;
-	}
-
-	public ListHashTable getNodeCreators() {
-		return nodeCreators;
-	}
-
-	public ListHashTable getXmlHandlers() {
-		return xmlHandlers;
+	public ListHashTable getElementHandlers() {
+		return elementHandlers;
 	}
 
 	public void readingCompleted(final NodeModel topNode, final HashMap<String, String> newIds) {
@@ -123,28 +98,14 @@ public class ReadManager {
 
 	/*
 	 * (non-Javadoc)
-	 * @see
-	 * freeplane.persistence.Reader#removeNodeContentLoader(java.lang.String,
-	 * freeplane.persistence.NodeContentLoader)
-	 */
-	public void removeNodeContentHandler(final String parentTag, final INodeContentHandler n) {
-		nodeContentHandlers.remove(parentTag, n);
-	}
-
-	/*
-	 * (non-Javadoc)
 	 * @see freeplane.persistence.Reader#removeNodeCreator(java.lang.String,
 	 * freeplane.persistence.NodeCreator)
 	 */
-	public void removeNodeCreator(final String parentTag, final INodeCreator nc) {
-		nodeCreators.remove(parentTag, nc);
+	public void removeElementHandler(final String parentTag, final IElementHandler handler) {
+		elementHandlers.remove(parentTag, handler);
 	}
 
 	public void removeReadCompletionListener(final IReadCompletionListener listener) {
 		readCompletionListeners.remove(listener);
-	}
-
-	public void removeXMLElementHandler(final String parentTag, final IXMLElementHandler x) {
-		xmlHandlers.remove(parentTag, x);
 	}
 }

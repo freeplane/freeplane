@@ -20,15 +20,16 @@
 package org.freeplane.io.xml;
 
 import java.io.Reader;
+import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.freeplane.io.IAttributeHandler;
-import org.freeplane.io.INodeContentHandler;
-import org.freeplane.io.INodeCreator;
-import org.freeplane.io.ITreeReader;
-import org.freeplane.io.IXMLElementHandler;
+import org.freeplane.io.IElementContentHandler;
+import org.freeplane.io.IElementDOMHandler;
+import org.freeplane.io.IElementHandler;
 import org.freeplane.io.ListHashTable;
 import org.freeplane.io.ReadManager;
 import org.freeplane.io.xml.n3.nanoxml.IXMLBuilder;
@@ -38,20 +39,32 @@ import org.freeplane.io.xml.n3.nanoxml.NonValidator;
 import org.freeplane.io.xml.n3.nanoxml.StdXMLReader;
 import org.freeplane.io.xml.n3.nanoxml.XMLException;
 
-public class TreeXmlReader implements IXMLBuilder, ITreeReader {
-	private INodeCreator nodeCreator;
+public class TreeXmlReader implements IXMLBuilder {
+	private Hashtable<String, IAttributeHandler> attributeHandlersForTag;
+	private Object currentElement;
+	private String elementContentAsString;
+	final private LinkedList elementStack = new LinkedList();
+	private IElementHandler nodeCreator;
 	final private LinkedList nodeCreatorStack = new LinkedList();
+	private Object parentElement;
 	final private ReadManager parseManager;
 	private XMLParser parser;
 	private IXMLElement saveAsXmlUntil;
 	private String tag;
-	private Object userObject;
-	final private LinkedList userObjectStack = new LinkedList();
 	private StdXMLBuilder xmlBuilder;
 
 	public TreeXmlReader(final ReadManager parseManager) {
 		super();
 		this.parseManager = parseManager;
+	}
+
+	private boolean addAttribute(final String key, final String value) {
+		if (attributeHandlersForTag != null) {
+			final IAttributeHandler attributeHandler = attributeHandlersForTag.get(key);
+			attributeHandler.setAttribute(currentElement, value);
+			return true;
+		}
+		return false;
 	}
 
 	/*
@@ -63,15 +76,9 @@ public class TreeXmlReader implements IXMLBuilder, ITreeReader {
 	 */
 	public void addAttribute(final String key, final String nsPrefix, final String nsURI,
 	                         final String value, final String type) throws Exception {
-		if (saveAsXmlUntil == null) {
-			final Hashtable<String, IAttributeHandler> hashtable = getAttributeLoaders().get(tag);
-			if (hashtable != null) {
-				final IAttributeHandler attributeHandler = hashtable.get(key);
-				attributeHandler.parseAttribute(userObject, value);
-				return;
-			}
+		if (saveAsXmlUntil == null && !addAttribute(key, value)) {
+			xmlBuilder.addAttribute(key, nsPrefix, nsURI, value, type);
 		}
-		xmlBuilder.addAttribute(key, nsPrefix, nsURI, value, type);
 	}
 
 	/*
@@ -94,9 +101,35 @@ public class TreeXmlReader implements IXMLBuilder, ITreeReader {
 	public void elementAttributesProcessed(final String name, final String nsPrefix,
 	                                       final String nsURI) throws Exception {
 		xmlBuilder.elementAttributesProcessed(name, nsPrefix, nsURI);
-		if (nodeCreator != null) {
-			final IXMLElement lastBuiltElement = xmlBuilder.getLastBuiltElement();
-			nodeCreator.setAttributes(tag, userObject, lastBuiltElement);
+		if (saveAsXmlUntil != null || nodeCreator != null) {
+			return;
+		}
+		final Iterator iterator = getElementHandlers().iterator(tag);
+		final IXMLElement lastBuiltElement = xmlBuilder.getLastBuiltElement();
+		while (iterator.hasNext() && currentElement == null) {
+			nodeCreator = (IElementHandler) iterator.next();
+			currentElement = nodeCreator.createElement(parentElement, name, lastBuiltElement);
+		}
+		if (currentElement != null) {
+			if (nodeCreator instanceof IElementContentHandler) {
+				parser.notParseNextElementContent();
+			}
+			attributeHandlersForTag = getAttributeLoaders().get(tag);
+			if (attributeHandlersForTag == null) {
+				return;
+			}
+			final Enumeration attributeNames = lastBuiltElement.enumerateAttributeNames();
+			while (attributeNames.hasMoreElements()) {
+				final String atName = (String) attributeNames.nextElement();
+				if (addAttribute(atName, lastBuiltElement.getAttribute(atName, null))) {
+					lastBuiltElement.removeAttribute(atName);
+				}
+			}
+		}
+		else {
+			currentElement = null;
+			nodeCreator = null;
+			saveAsXmlUntil = lastBuiltElement;
 		}
 	}
 
@@ -116,35 +149,35 @@ public class TreeXmlReader implements IXMLBuilder, ITreeReader {
 		if (saveAsXmlUntil != null) {
 			return;
 		}
-		final Iterator iterator = getXmlLoaders().iterator(name);
-		while (iterator.hasNext()) {
-			final IXMLElementHandler xl = (IXMLElementHandler) iterator.next();
-			if (xl.parse(userObject, tag, lastBuiltElement)) {
-				break;
-			}
-		}
 		tag = null;
-		if (0 == userObjectStack.size()) {
+		if (0 == elementStack.size()) {
 			return;
 		}
-		final Object node = userObject;
-		userObject = userObjectStack.removeLast();
-		if (nodeCreator != null) {
-			nodeCreator.completeNode(userObject, name, node);
+		final Object element = currentElement;
+		currentElement = elementStack.removeLast();
+		if (nodeCreator instanceof IElementDOMHandler) {
+			((IElementDOMHandler) nodeCreator).endElement(currentElement, name, element,
+			    lastBuiltElement);
 		}
-		nodeCreator = (INodeCreator) nodeCreatorStack.removeLast();
+		else if (nodeCreator instanceof IElementContentHandler) {
+			((IElementContentHandler) nodeCreator).endElement(currentElement, name, element,
+			    lastBuiltElement, elementContentAsString);
+		}
+		final IXMLElement top = lastBuiltElement.getParent();
+		if (nodeCreator != null && top != null && top.hasChildren()) {
+			final int lastChildIndex = top.getChildrenCount() - 1;
+			top.removeChildAtIndex(lastChildIndex);
+		}
+		nodeCreator = (IElementHandler) nodeCreatorStack.removeLast();
+		elementContentAsString = null;
 	}
 
 	private Hashtable<String, Hashtable<String, IAttributeHandler>> getAttributeLoaders() {
 		return parseManager.getAttributeHandlers();
 	}
 
-	private ListHashTable getNodeContentLoaders() {
-		return parseManager.getNodeContentHandlers();
-	}
-
-	private ListHashTable getNodeCreators() {
-		return parseManager.getNodeCreators();
+	private ListHashTable getElementHandlers() {
+		return parseManager.getElementHandlers();
 	}
 
 	/*
@@ -153,10 +186,6 @@ public class TreeXmlReader implements IXMLBuilder, ITreeReader {
 	 */
 	public Object getResult() throws Exception {
 		return null;
-	}
-
-	private ListHashTable getXmlLoaders() {
-		return parseManager.getXmlHandlers();
 	}
 
 	/*
@@ -188,21 +217,14 @@ public class TreeXmlReader implements IXMLBuilder, ITreeReader {
 	}
 
 	private void pushParentObjects() {
-		userObjectStack.addLast(userObject);
+		elementStack.addLast(currentElement);
 		nodeCreatorStack.addLast(nodeCreator);
 	}
 
 	/**
 	 */
 	public void setElementContent(final String content) {
-		final Iterator iterator = getNodeContentLoaders().iterator(tag);
-		final IXMLElement xmlElement = xmlBuilder.getLastBuiltElement();
-		while (iterator.hasNext() && userObject != null) {
-			final INodeContentHandler ncl = (INodeContentHandler) iterator.next();
-			if (ncl.setContent(userObject, tag, xmlElement, content)) {
-				return;
-			}
-		}
+		elementContentAsString = content;
 	}
 
 	/*
@@ -229,28 +251,26 @@ public class TreeXmlReader implements IXMLBuilder, ITreeReader {
 			xmlBuilder.startElement(name, nsPrefix, nsURI, systemID, lineNr);
 			return;
 		}
-		final IXMLElement top = xmlBuilder.getParentElement();
-		if (top != null && top.hasChildren() && getXmlLoaders().isEmpty(top.getName())) {
-			top.removeChildAtIndex(0);
-		}
 		xmlBuilder.startElement(name, nsPrefix, nsURI, systemID, lineNr);
 		tag = name;
 		pushParentObjects();
-		final Object parent = userObject;
-		userObject = null;
-		final Iterator iterator = getNodeCreators().iterator(tag);
-		while (iterator.hasNext() && userObject == null) {
-			nodeCreator = (INodeCreator) iterator.next();
-			userObject = nodeCreator.createNode(parent, name);
+		parentElement = currentElement;
+		currentElement = null;
+		final List<IElementHandler> handlers = getElementHandlers().list(tag);
+		if (handlers != null && handlers.size() == 1) {
+			nodeCreator = handlers.get(0);
+			currentElement = nodeCreator.createElement(parentElement, tag, null);
 		}
-		if (userObject != null) {
-			if (!getNodeContentLoaders().isEmpty(tag)) {
+		if (currentElement != null) {
+			attributeHandlersForTag = getAttributeLoaders().get(tag);
+			if (nodeCreator instanceof IElementContentHandler) {
 				parser.notParseNextElementContent();
 			}
 		}
 		else {
-			userObject = parent;
-			saveAsXmlUntil = xmlBuilder.getLastBuiltElement();
+			attributeHandlersForTag = null;
+			currentElement = null;
+			nodeCreator = null;
 		}
 	}
 }

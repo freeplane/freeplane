@@ -21,35 +21,34 @@ package org.freeplane.map.nodelocation;
 
 import org.freeplane.extension.IExtension;
 import org.freeplane.io.IAttributeHandler;
-import org.freeplane.io.IAttributeWriter;
+import org.freeplane.io.IExtensionAttributeWriter;
 import org.freeplane.io.ITreeWriter;
 import org.freeplane.io.ReadManager;
 import org.freeplane.io.WriteManager;
 import org.freeplane.map.tree.NodeBuilder;
 import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.NodeBuilder.NodeObject;
 
 /**
  * @author Dimitry Polivaev
  * 06.12.2008
  */
-class LocationBuilder implements IAttributeWriter<IExtension> {
+class LocationBuilder implements IExtensionAttributeWriter {
 	private void registerAttributeHandlers(final ReadManager reader) {
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "VSHIFT", new IAttributeHandler() {
-			public void parseAttribute(final Object userObject, final String value) {
-				final NodeModel node = ((NodeObject) userObject).node;
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = (NodeModel) userObject;
 				node.createLocationModel().setShiftY(Integer.parseInt(value));
 			}
 		});
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "VGAP", new IAttributeHandler() {
-			public void parseAttribute(final Object userObject, final String value) {
-				final NodeModel node = ((NodeObject) userObject).node;
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = (NodeModel) userObject;
 				node.createLocationModel().setVGap(Integer.parseInt(value));
 			}
 		});
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "HGAP", new IAttributeHandler() {
-			public void parseAttribute(final Object userObject, final String value) {
-				final NodeModel node = ((NodeObject) userObject).node;
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = (NodeModel) userObject;
 				node.createLocationModel().setHGap(Integer.parseInt(value));
 			}
 		});

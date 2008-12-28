@@ -20,6 +20,7 @@
 package org.freeplane.controller;
 
 import java.util.HashMap;
+
 import javax.swing.Action;
 
 /**

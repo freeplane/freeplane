@@ -28,7 +28,6 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
-
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 public class FontProperty extends PropertyBean implements IPropertyControl {

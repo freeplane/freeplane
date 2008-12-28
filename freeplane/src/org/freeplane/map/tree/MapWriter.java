@@ -24,7 +24,7 @@ import java.io.Writer;
 
 import org.freeplane.controller.Controller;
 import org.freeplane.io.IAttributeWriter;
-import org.freeplane.io.INodeWriter;
+import org.freeplane.io.IElementWriter;
 import org.freeplane.io.ITreeWriter;
 import org.freeplane.io.WriteManager;
 import org.freeplane.io.xml.TreeXmlWriter;
@@ -33,7 +33,7 @@ import org.freeplane.io.xml.TreeXmlWriter;
  * @author Dimitry Polivaev
  * 07.12.2008
  */
-class MapWriter implements INodeWriter<String>, IAttributeWriter<String> {
+class MapWriter implements IElementWriter, IAttributeWriter {
 	private NodeWriter currentNodeWriter;
 	private boolean saveInvisible;
 	final private WriteManager writeManager;
@@ -53,13 +53,13 @@ class MapWriter implements INodeWriter<String>, IAttributeWriter<String> {
 	public void writeAttributes(final ITreeWriter writer, final Object userObject, final String tag) {
 		final MapModel map = (MapModel) userObject;
 		writer.addAttribute("version", Controller.XML_VERSION);
-		writer.addExtensionAttributes(map.getExtensions());
+		writer.addExtensionAttributes(map, map.getExtensions());
 	}
 
 	public void writeContent(final ITreeWriter writer, final Object node, final String tag)
 	        throws IOException {
 		writer
-		    .addNodeContent("<!--To view this file, download free mind mapping software FreeMind from http://freemind.sourceforge.net -->\n");
+		    .addElementContent("<!--To view this file, download free mind mapping software FreeMind from http://freemind.sourceforge.net -->\n");
 		final MapModel map = (MapModel) node;
 		map.getRegistry().write(writer);
 		final NodeModel rootNode = map.getRootNode();
@@ -71,21 +71,21 @@ class MapWriter implements INodeWriter<String>, IAttributeWriter<String> {
 	        throws IOException {
 		final NodeWriter oldNodeWriter = currentNodeWriter;
 		if (oldNodeWriter != null) {
-			writeManager.removeNodeWriter(NodeBuilder.XML_NODE, oldNodeWriter);
+			writeManager.removeElementWriter(NodeBuilder.XML_NODE, oldNodeWriter);
 			writeManager.removeAttributeWriter(NodeBuilder.XML_NODE, oldNodeWriter);
 		}
 		currentNodeWriter = new NodeWriter(node.getModeController().getMapController(),
 		    writeChildren, writeInvisible, MapController.isSSaveOnlyIntrinsicallyNeededIds());
 		try {
-			writeManager.addNodeWriter(NodeBuilder.XML_NODE, currentNodeWriter);
+			writeManager.addElementWriter(NodeBuilder.XML_NODE, currentNodeWriter);
 			writeManager.addAttributeWriter(NodeBuilder.XML_NODE, currentNodeWriter);
-			xmlWriter.addNode(node, NodeBuilder.XML_NODE);
+			xmlWriter.addElement(node, NodeBuilder.XML_NODE);
 		}
 		finally {
-			writeManager.removeNodeWriter(NodeBuilder.XML_NODE, currentNodeWriter);
+			writeManager.removeElementWriter(NodeBuilder.XML_NODE, currentNodeWriter);
 			writeManager.removeAttributeWriter(NodeBuilder.XML_NODE, currentNodeWriter);
 			if (oldNodeWriter != null) {
-				writeManager.addNodeWriter(NodeBuilder.XML_NODE, oldNodeWriter);
+				writeManager.addElementWriter(NodeBuilder.XML_NODE, oldNodeWriter);
 				writeManager.addAttributeWriter(NodeBuilder.XML_NODE, oldNodeWriter);
 			}
 		}

@@ -27,8 +27,7 @@ import java.util.Vector;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.io.IXMLElementHandler;
-import org.freeplane.io.NodeCreatorAdapter;
+import org.freeplane.io.IElementDOMHandler;
 import org.freeplane.io.ReadManager;
 import org.freeplane.io.xml.TreeXmlReader;
 import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
@@ -133,48 +132,40 @@ public class OptionPanelBuilder {
 		}
 	}
 
-	protected abstract class PropertyCreator extends NodeCreatorAdapter implements
-	        IXMLElementHandler {
-		public Object createNode(final Object parent, final String tag) {
-			return new Path(parent == null ? null : parent.toString());
+	protected abstract class PropertyCreator implements IElementDOMHandler {
+		public Object createElement(final Object parent, final String tag,
+		                            final IXMLElement attributes) {
+			if (attributes == null) {
+				return null;
+			}
+			final String name = attributes.getAttribute("name", null);
+			if (name == null) {
+				return parent == null ? Path.emptyPath() : parent;
+			}
+			final Path path = new Path(parent == null ? null : parent.toString());
+			path.setName(name);
+			if (!tree.contains(path.path)) {
+				tree.addElement(path.parentPath == null ? tree : path.parentPath, this, path.path,
+				    IndexedTree.AS_CHILD);
+			}
+			return path;
 		}
 
-		abstract public IPropertyControlCreator getCreator(String name, IXMLElement data);
-
-		public boolean parse(final Object userObject, final String tag,
-		                     final IXMLElement lastBuiltElement) {
+		public void endElement(final Object parent, final String tag, final Object userObject,
+		                       final IXMLElement lastBuiltElement) {
 			final String name = lastBuiltElement.getAttribute("name", null);
 			final Path path = (Path) userObject;
 			if (path.path == null) {
-				return true;
+				return;
 			}
 			final DefaultMutableTreeNode treeNode = tree.get(path.path);
 			if (treeNode.getUserObject() == this) {
 				final IPropertyControlCreator creator = getCreator(name, lastBuiltElement);
 				treeNode.setUserObject(creator);
 			}
-			return true;
 		}
 
-		void registerFor(final String name) {
-			readManager.addNodeCreator(name, this);
-			readManager.addXMLElementHandler(name, this);
-		}
-
-		@Override
-		public void setAttributes(final String tag, final Object userObject,
-		                          final IXMLElement attributes) {
-			final String name = attributes.getAttribute("name", null);
-			if (name == null) {
-				return;
-			}
-			final Path path = (Path) userObject;
-			path.setName(name);
-			if (!tree.contains(path.path)) {
-				tree.addElement(path.parentPath == null ? tree : path.parentPath, this, path.path,
-				    IndexedTree.AS_CHILD);
-			}
-		}
+		abstract public IPropertyControlCreator getCreator(String name, IXMLElement data);
 	};
 
 	private class RemindValueCreator extends PropertyCreator {
@@ -186,27 +177,27 @@ public class OptionPanelBuilder {
 
 	private class SeparatorCreator extends PropertyCreator {
 		@Override
+		public void endElement(final Object parent, final String tag, final Object userObject,
+		                       final IXMLElement lastBuiltElement) {
+			final Path path = (Path) userObject;
+			final DefaultMutableTreeNode treeNode = tree.get(path.path);
+			if (treeNode.getUserObject() != this) {
+				return;
+			}
+			super.endElement(parent, tag, userObject, lastBuiltElement);
+			tree.addElement(path.parentPath == null ? tree : path.parentPath, nextLineCreator,
+			    IndexedTree.AS_CHILD);
+			return;
+		}
+
+		@Override
 		public IPropertyControlCreator getCreator(final String name, final IXMLElement data) {
 			final String label = "OptionPanel.separator." + name;
 			return createSeparatorCreator(label);
 		}
-
-		@Override
-		public boolean parse(final Object userObject, final String tag,
-		                     final IXMLElement lastBuiltElement) {
-			final Path path = (Path) userObject;
-			final DefaultMutableTreeNode treeNode = tree.get(path.path);
-			if (treeNode.getUserObject() != this) {
-				return true;
-			}
-			super.parse(userObject, tag, lastBuiltElement);
-			tree.addElement(path.parentPath, nextLineCreator, IndexedTree.AS_CHILD);
-			return true;
-		}
 	}
 
 	private class StringOptionCreator extends PropertyCreator {
-
 		@Override
 		public IPropertyControlCreator getCreator(final String name, final IXMLElement data) {
 			return createStringOptionCreator(name);
@@ -240,10 +231,6 @@ public class OptionPanelBuilder {
 
 	public void addBooleanProperty(final String path, final String name, final int position) {
 		tree.addElement(path, createBooleanOptionCreator(name), path + "/" + name, position);
-	}
-
-	public void addStringProperty(final String path, final String name, final int position) {
-		tree.addElement(path, createStringOptionCreator(name), path + "/" + name, position);
 	}
 
 	public void addColorProperty(final String path, final String name, final int position) {
@@ -289,21 +276,18 @@ public class OptionPanelBuilder {
 		tree.addElement(path, nextLineCreator, position);
 	}
 
+	public void addStringProperty(final String path, final String name, final int position) {
+		tree.addElement(path, createStringOptionCreator(name), path + "/" + name, position);
+	}
+
 	public void addTab(final String name) {
 		addTab(name, null, IndexedTree.AS_CHILD);
 	}
 
 	public void addTab(final String name, final String layout, final int position) {
-		tree.addElement(tree , createTabCreator(name, layout), name, position);
+		tree.addElement(tree, createTabCreator(name, layout), name, position);
 	}
 
-	private IPropertyControlCreator createStringOptionCreator(final String name) {
-		return new IPropertyControlCreator() {
-			public IPropertyControl createControl() {
-				return new StringProperty(name);
-			}
-		};
-	}
 	private IPropertyControlCreator createBooleanOptionCreator(final String name) {
 		return new IPropertyControlCreator() {
 			public IPropertyControl createControl() {
@@ -363,6 +347,14 @@ public class OptionPanelBuilder {
 		};
 	}
 
+	private IPropertyControlCreator createStringOptionCreator(final String name) {
+		return new IPropertyControlCreator() {
+			public IPropertyControl createControl() {
+				return new StringProperty(name);
+			}
+		};
+	}
+
 	private IPropertyControlCreator createTabCreator(final String label, final String layout) {
 		return new IPropertyControlCreator() {
 			public IPropertyControl createControl() {
@@ -378,24 +370,29 @@ public class OptionPanelBuilder {
 		return readManager;
 	}
 
+	public DefaultMutableTreeNode getRoot() {
+		return getTree().getRoot();
+	}
+
 	IndexedTree getTree() {
 		return tree;
 	}
 
 	private void initReadManager() {
-		new EmptyCreator().registerFor("preferences_structure");
-		new EmptyCreator().registerFor("tabbed_pane");
-		new EmptyCreator().registerFor("group");
-		new TabCreator().registerFor("tab");
-		new SeparatorCreator().registerFor("separator");
-		new StringOptionCreator().registerFor("string");
-		new BooleanOptionCreator().registerFor("boolean");
-		new NumberOptionCreator().registerFor("number");
-		new ColorOptionCreator().registerFor("color");
-		new ComboOptionCreator().registerFor("combo");
-		new KeyOptionCreator().registerFor("key");
-		new RemindValueCreator().registerFor("remind_value");
-		new DontShowNotificationPropertyCreator().registerFor("dont_show_notification_property");
+		readManager.addElementHandler("preferences_structure", new EmptyCreator());
+		readManager.addElementHandler("tabbed_pane", new EmptyCreator());
+		readManager.addElementHandler("group", new EmptyCreator());
+		readManager.addElementHandler("tab", new TabCreator());
+		readManager.addElementHandler("separator", new SeparatorCreator());
+		readManager.addElementHandler("string", new StringOptionCreator());
+		readManager.addElementHandler("boolean", new BooleanOptionCreator());
+		readManager.addElementHandler("number", new NumberOptionCreator());
+		readManager.addElementHandler("color", new ColorOptionCreator());
+		readManager.addElementHandler("combo", new ComboOptionCreator());
+		readManager.addElementHandler("key", new KeyOptionCreator());
+		readManager.addElementHandler("remind_value", new RemindValueCreator());
+		readManager.addElementHandler("dont_show_notification_property",
+		    new DontShowNotificationPropertyCreator());
 	}
 
 	public void load(final URL menu) {
@@ -407,8 +404,4 @@ public class OptionPanelBuilder {
 			throw new RuntimeException(e);
 		}
 	}
-
-	public DefaultMutableTreeNode getRoot() {
-	    return getTree().getRoot();
-    }
 }

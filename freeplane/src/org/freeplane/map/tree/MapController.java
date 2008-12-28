@@ -120,7 +120,7 @@ public class MapController {
 		mapWriter = new MapWriter(writeManager);
 		readManager = new ReadManager();
 		mapReader = new MapReader(readManager);
-		writeManager.addNodeWriter("map", mapWriter);
+		writeManager.addElementWriter("map", mapWriter);
 		writeManager.addAttributeWriter("map", mapWriter);
 		createActions(modeController);
 		mapChangeListeners = new LinkedList<IMapChangeListener>();
@@ -634,7 +634,7 @@ public class MapController {
 		final TreeXmlWriter xmlWriter = new TreeXmlWriter(writeManager, fileout);
 		final IXMLElement xmlMap = new XMLElement("map");
 		mapWriter.setSaveInvisible(saveInvisible);
-		xmlWriter.addNode(map, xmlMap);
+		xmlWriter.addElement(map, xmlMap);
 		fileout.close();
 	}
 

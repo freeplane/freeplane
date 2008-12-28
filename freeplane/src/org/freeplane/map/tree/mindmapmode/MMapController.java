@@ -45,7 +45,6 @@ import org.freeplane.modes.mindmapmode.EncryptionModel;
 import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.ui.components.OptionalDontShowMeAgainDialog;
 
-
 /**
  * @author Dimitry Polivaev
  */

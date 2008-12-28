@@ -33,13 +33,14 @@ public interface ITreeWriter {
 
 	void addComment(String string) throws IOException;
 
-	void addExtensionAttributes(final IExtensionCollection collection);
+	void addElement(Object userObject, IXMLElement element) throws IOException;
 
-	void addExtensionNodes(final IExtensionCollection collection) throws IOException;
+	void addElement(Object userObject, String name) throws IOException;
 
-	void addNode(Object userObject, IXMLElement element) throws IOException;
+	void addElementContent(String content) throws IOException;
 
-	void addNode(Object userObject, String name) throws IOException;
+	void addExtensionAttributes(Object userObject, final IExtensionCollection collection);
 
-	void addNodeContent(String content) throws IOException;
+	void addExtensionNodes(Object element, final IExtensionCollection collection)
+	        throws IOException;
 }

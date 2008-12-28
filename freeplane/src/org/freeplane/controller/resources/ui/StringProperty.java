@@ -25,7 +25,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 public class StringProperty extends PropertyBean implements IPropertyControl {

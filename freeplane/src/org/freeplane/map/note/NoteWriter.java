@@ -22,7 +22,7 @@ package org.freeplane.map.note;
 import java.io.IOException;
 
 import org.freeplane.extension.IExtension;
-import org.freeplane.io.INodeWriter;
+import org.freeplane.io.IExtensionElementWriter;
 import org.freeplane.io.ITreeWriter;
 import org.freeplane.io.xml.n3.nanoxml.XMLElement;
 import org.freeplane.map.text.NodeTextBuilder;
@@ -31,7 +31,7 @@ import org.freeplane.map.tree.NodeModel;
 /**
  * @author Dimitry Polivaev
  */
-public class NoteWriter implements INodeWriter<IExtension> {
+public class NoteWriter implements IExtensionElementWriter {
 	NoteController noteManager;
 
 	public NoteWriter(final NoteController noteManager) {
@@ -51,7 +51,7 @@ public class NoteWriter implements INodeWriter<IExtension> {
 			htmlElement.setAttribute(NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG,
 			    NodeTextBuilder.XML_NODE_XHTML_TYPE_NOTE);
 			final String content = note.getXmlNoteText().replace('\0', ' ');
-			writer.addNode(content, htmlElement);
+			writer.addElement(content, htmlElement);
 		}
 	}
 
@@ -60,9 +60,9 @@ public class NoteWriter implements INodeWriter<IExtension> {
 	 * @see freeplane.io.INodeWriter#saveContent(freeplane.io.ITreeWriter,
 	 * java.lang.Object, java.lang.String)
 	 */
-	public void writeContent(final ITreeWriter writer, final Object content, final IExtension note)
+	public void writeContent(final ITreeWriter writer, final Object element, final IExtension note)
 	        throws IOException {
-		final NodeModel node = (NodeModel) content;
+		final NodeModel node = (NodeModel) element;
 		noteManager.onWrite(node);
 		saveContent(writer, (NoteModel) note);
 		return;

@@ -28,9 +28,9 @@ import java.util.Iterator;
 
 import org.freeplane.extension.IExtension;
 import org.freeplane.io.IAttributeHandler;
-import org.freeplane.io.IAttributeWriter;
-import org.freeplane.io.INodeCreator;
-import org.freeplane.io.INodeWriter;
+import org.freeplane.io.IElementDOMHandler;
+import org.freeplane.io.IExtensionAttributeWriter;
+import org.freeplane.io.IExtensionElementWriter;
 import org.freeplane.io.IReadCompletionListener;
 import org.freeplane.io.ITreeWriter;
 import org.freeplane.io.ReadManager;
@@ -40,36 +40,36 @@ import org.freeplane.io.xml.n3.nanoxml.XMLElement;
 import org.freeplane.main.Tools;
 import org.freeplane.map.tree.NodeBuilder;
 import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.NodeBuilder.NodeObject;
 
-class LinkBuilder implements INodeCreator, IReadCompletionListener, INodeWriter<IExtension>,
-        IAttributeWriter<IExtension> {
+class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExtensionElementWriter,
+        IExtensionAttributeWriter {
 	final private HashSet<ArrowLinkModel> arrowLinks;
 
 	public LinkBuilder() {
 		arrowLinks = new HashSet<ArrowLinkModel>();
 	}
 
-	public void completeNode(final Object parent, final String tag, final Object userObject) {
-		if (parent instanceof NodeObject) {
-			final NodeModel node = ((NodeObject) parent).node;
+	protected ArrowLinkModel createArrowLink(final NodeModel source, final String targetID) {
+		return new ArrowLinkModel(source, targetID);
+	}
+
+	public Object createElement(final Object parent, final String tag, final IXMLElement attributes) {
+		if (tag.equals("arrowlink")) {
+			return createArrowLink(null, null);
+		}
+		return null;
+	}
+
+	public void endElement(final Object parent, final String tag, final Object userObject,
+	                       final IXMLElement dom) {
+		if (parent instanceof NodeModel) {
+			final NodeModel node = (NodeModel) parent;
 			if (userObject instanceof ArrowLinkModel) {
 				final ArrowLinkModel arrowLink = (ArrowLinkModel) userObject;
 				arrowLink.setSource(node);
 			}
 			return;
 		}
-	}
-
-	protected ArrowLinkModel createArrowLink(final NodeModel source, final String targetID) {
-		return new ArrowLinkModel(source, targetID);
-	}
-
-	public Object createNode(final Object parent, final String tag) {
-		if (tag.equals("arrowlink")) {
-			return createArrowLink(null, null);
-		}
-		return null;
 	}
 
 	/**
@@ -96,62 +96,62 @@ class LinkBuilder implements INodeCreator, IReadCompletionListener, INodeWriter<
 
 	private void registerAttributeHandlers(final ReadManager reader) {
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "LINK", new IAttributeHandler() {
-			public void parseAttribute(final Object userObject, final String value) {
-				final NodeModel node = ((NodeObject) userObject).node;
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = (NodeModel) userObject;
 				(node.getModeController().getLinkController()).loadLink(node, value);
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "STYLE", new IAttributeHandler() {
-			public void parseAttribute(final Object userObject, final String value) {
+			public void setAttribute(final Object userObject, final String value) {
 				final ArrowLinkModel arrowLink = (ArrowLinkModel) userObject;
 				arrowLink.setStyle(value.toString());
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "COLOR", new IAttributeHandler() {
-			public void parseAttribute(final Object userObject, final String value) {
+			public void setAttribute(final Object userObject, final String value) {
 				final ArrowLinkModel arrowLink = (ArrowLinkModel) userObject;
 				arrowLink.setColor(Tools.xmlToColor(value.toString()));
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "DESTINATION", new IAttributeHandler() {
-			public void parseAttribute(final Object userObject, final String value) {
+			public void setAttribute(final Object userObject, final String value) {
 				final ArrowLinkModel arrowLink = (ArrowLinkModel) userObject;
 				arrowLink.setTargetID(value);
 				arrowLinks.add(arrowLink);
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "REFERENCETEXT", new IAttributeHandler() {
-			public void parseAttribute(final Object userObject, final String value) {
+			public void setAttribute(final Object userObject, final String value) {
 				final ArrowLinkModel arrowLink = (ArrowLinkModel) userObject;
 				arrowLink.setReferenceText((value.toString()));
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "STARTINCLINATION", new IAttributeHandler() {
-			public void parseAttribute(final Object userObject, final String value) {
+			public void setAttribute(final Object userObject, final String value) {
 				final ArrowLinkModel arrowLink = (ArrowLinkModel) userObject;
 				arrowLink.setStartInclination(Tools.xmlToPoint(value.toString()));
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "ENDINCLINATION", new IAttributeHandler() {
-			public void parseAttribute(final Object userObject, final String value) {
+			public void setAttribute(final Object userObject, final String value) {
 				final ArrowLinkModel arrowLink = (ArrowLinkModel) userObject;
 				arrowLink.setEndInclination(Tools.xmlToPoint(value.toString()));
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "STARTARROW", new IAttributeHandler() {
-			public void parseAttribute(final Object userObject, final String value) {
+			public void setAttribute(final Object userObject, final String value) {
 				final ArrowLinkModel arrowLink = (ArrowLinkModel) userObject;
 				arrowLink.setStartArrow(value.toString());
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "ENDARROW", new IAttributeHandler() {
-			public void parseAttribute(final Object userObject, final String value) {
+			public void setAttribute(final Object userObject, final String value) {
 				final ArrowLinkModel arrowLink = (ArrowLinkModel) userObject;
 				arrowLink.setEndArrow(value.toString());
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "WIDTH", new IAttributeHandler() {
-			public void parseAttribute(final Object userObject, final String value) {
+			public void setAttribute(final Object userObject, final String value) {
 				final ArrowLinkModel arrowLink = (ArrowLinkModel) userObject;
 				arrowLink.setWidth(Integer.parseInt(value.toString()));
 			}
@@ -161,11 +161,11 @@ class LinkBuilder implements INodeCreator, IReadCompletionListener, INodeWriter<
 	/**
 	 */
 	public void registerBy(final ReadManager reader, final WriteManager writer) {
-		reader.addNodeCreator("arrowlink", this);
+		reader.addElementHandler("arrowlink", this);
 		registerAttributeHandlers(reader);
 		reader.addReadCompletionListener(this);
 		writer.addExtensionAttributeWriter(NodeLinks.class, this);
-		writer.addExtensionNodeWriter(NodeLinks.class, this);
+		writer.addExtensionElementWriter(NodeLinks.class, this);
 	}
 
 	public XMLElement save(final ArrowLinkModel model) {
@@ -227,7 +227,7 @@ class LinkBuilder implements INodeCreator, IReadCompletionListener, INodeWriter<
 			if (linkModel instanceof ArrowLinkModel) {
 				final ArrowLinkModel arrowLinkModel = (ArrowLinkModel) linkModel;
 				final XMLElement arrowLinkElement = save(arrowLinkModel);
-				writer.addNode(arrowLinkModel, arrowLinkElement);
+				writer.addElement(arrowLinkModel, arrowLinkElement);
 			}
 		}
 	}

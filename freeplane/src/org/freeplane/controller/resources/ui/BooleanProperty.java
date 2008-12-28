@@ -25,7 +25,6 @@ import java.awt.event.ItemListener;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 
-
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 public class BooleanProperty extends PropertyBean implements IPropertyControl {

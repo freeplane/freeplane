@@ -27,9 +27,7 @@ import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 
 import org.freeplane.controller.Controller;
-
 import org.freeplane.ui.MenuBuilder;
-
 
 class OpenURLAction extends AbstractAction {
 	final private String url;

@@ -34,7 +34,6 @@ import org.freeplane.modes.ModeController;
 import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.ui.components.OptionalDontShowMeAgainDialog;
 
-
 class RemoveNoteAction extends FreeplaneAction implements PopupMenuListener {
 	/**
 	 *

@@ -37,11 +37,11 @@ public class NoteController {
 	public NoteController(final ModeController modeController) {
 		super();
 		this.modeController = modeController;
-		modeController.getMapController().getReadManager().addNodeContentHandler("richcontent",
+		modeController.getMapController().getReadManager().addElementHandler("richcontent",
 		    new NoteBuilder(this));
 		final NoteWriter noteWriter = new NoteWriter(this);
-		modeController.getMapController().getWriteManager().addExtensionNodeWriter(NoteModel.class,
-		    noteWriter);
+		modeController.getMapController().getWriteManager().addExtensionElementWriter(
+		    NoteModel.class, noteWriter);
 	}
 
 	public ModeController getModeController() {

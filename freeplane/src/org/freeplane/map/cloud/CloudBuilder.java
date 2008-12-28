@@ -24,8 +24,8 @@ import java.io.IOException;
 
 import org.freeplane.extension.IExtension;
 import org.freeplane.io.IAttributeHandler;
-import org.freeplane.io.INodeCreator;
-import org.freeplane.io.INodeWriter;
+import org.freeplane.io.IElementDOMHandler;
+import org.freeplane.io.IExtensionElementWriter;
 import org.freeplane.io.ITreeWriter;
 import org.freeplane.io.ReadManager;
 import org.freeplane.io.WriteManager;
@@ -33,15 +33,22 @@ import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
 import org.freeplane.io.xml.n3.nanoxml.XMLElement;
 import org.freeplane.main.Tools;
 import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.NodeBuilder.NodeObject;
 
-public class CloudBuilder implements INodeCreator, INodeWriter<IExtension> {
+public class CloudBuilder implements IElementDOMHandler, IExtensionElementWriter {
 	public CloudBuilder() {
 	}
 
-	public void completeNode(final Object parent, final String tag, final Object userObject) {
-		if (parent instanceof NodeObject) {
-			final NodeModel node = ((NodeObject) parent).node;
+	public Object createElement(final Object parent, final String tag, final IXMLElement attributes) {
+		if (tag.equals("cloud")) {
+			return new CloudModel();
+		}
+		return null;
+	}
+
+	public void endElement(final Object parent, final String tag, final Object userObject,
+	                       final IXMLElement dom) {
+		if (parent instanceof NodeModel) {
+			final NodeModel node = (NodeModel) parent;
 			if (userObject instanceof CloudModel) {
 				final CloudModel cloud = (CloudModel) userObject;
 				node.setCloud(cloud);
@@ -49,28 +56,21 @@ public class CloudBuilder implements INodeCreator, INodeWriter<IExtension> {
 		}
 	}
 
-	public Object createNode(final Object parent, final String tag) {
-		if (tag.equals("cloud")) {
-			return new CloudModel();
-		}
-		return null;
-	}
-
 	private void registerAttributeHandlers(final ReadManager reader) {
 		reader.addAttributeHandler("cloud", "STYLE", new IAttributeHandler() {
-			public void parseAttribute(final Object userObject, final String value) {
+			public void setAttribute(final Object userObject, final String value) {
 				final CloudModel cloud = (CloudModel) userObject;
 				cloud.setStyle(value.toString());
 			}
 		});
 		reader.addAttributeHandler("cloud", "COLOR", new IAttributeHandler() {
-			public void parseAttribute(final Object userObject, final String value) {
+			public void setAttribute(final Object userObject, final String value) {
 				final CloudModel cloud = (CloudModel) userObject;
 				cloud.setColor(Tools.xmlToColor(value.toString()));
 			}
 		});
 		reader.addAttributeHandler("cloud", "WIDTH", new IAttributeHandler() {
-			public void parseAttribute(final Object userObject, final String value) {
+			public void setAttribute(final Object userObject, final String value) {
 				final CloudModel cloud = (CloudModel) userObject;
 				cloud.setWidth(Integer.parseInt(value.toString()));
 			}
@@ -80,9 +80,9 @@ public class CloudBuilder implements INodeCreator, INodeWriter<IExtension> {
 	/**
 	 */
 	public void registerBy(final ReadManager reader, final WriteManager writer) {
-		reader.addNodeCreator("cloud", this);
+		reader.addElementHandler("cloud", this);
 		registerAttributeHandlers(reader);
-		writer.addExtensionNodeWriter(CloudModel.class, this);
+		writer.addExtensionElementWriter(CloudModel.class, this);
 	}
 
 	public void setAttributes(final String tag, final Object node, final IXMLElement attributes) {
@@ -105,6 +105,6 @@ public class CloudBuilder implements INodeCreator, INodeWriter<IExtension> {
 		if (width != CloudController.DEFAULT_WIDTH) {
 			cloud.setAttribute("WIDTH", Integer.toString(width));
 		}
-		writer.addNode(model, cloud);
+		writer.addElement(model, cloud);
 	}
 }

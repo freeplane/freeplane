@@ -19,7 +19,6 @@
  */
 package org.freeplane.controller.resources.ui;
 
-
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 public class SeparatorProperty implements IPropertyControl {

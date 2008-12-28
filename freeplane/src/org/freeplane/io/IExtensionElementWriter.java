@@ -19,8 +19,10 @@
  */
 package org.freeplane.io;
 
-import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
+import java.io.IOException;
 
-public interface IXMLElementWriter {
-	void write(ITreeWriter writer, Object userObject, IXMLElement xmlElement);
+import org.freeplane.extension.IExtension;
+
+public interface IExtensionElementWriter {
+	void writeContent(ITreeWriter writer, Object element, IExtension extension) throws IOException;
 }

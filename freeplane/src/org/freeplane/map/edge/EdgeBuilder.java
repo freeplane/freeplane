@@ -24,8 +24,8 @@ import java.io.IOException;
 
 import org.freeplane.extension.IExtension;
 import org.freeplane.io.IAttributeHandler;
-import org.freeplane.io.INodeCreator;
-import org.freeplane.io.INodeWriter;
+import org.freeplane.io.IElementDOMHandler;
+import org.freeplane.io.IExtensionElementWriter;
 import org.freeplane.io.ITreeWriter;
 import org.freeplane.io.ReadManager;
 import org.freeplane.io.WriteManager;
@@ -33,16 +33,27 @@ import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
 import org.freeplane.io.xml.n3.nanoxml.XMLElement;
 import org.freeplane.main.Tools;
 import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.NodeBuilder.NodeObject;
 
-class EdgeBuilder implements INodeCreator, INodeWriter<IExtension> {
+class EdgeBuilder implements IElementDOMHandler, IExtensionElementWriter {
 	public EdgeBuilder() {
 	}
 
-	public void completeNode(final Object parent, final String tag, final Object userObject) {
+	protected EdgeModel createEdge(final NodeModel node) {
+		return new EdgeModel();
+	}
+
+	public Object createElement(final Object parent, final String tag, final IXMLElement attributes) {
+		if (tag.equals("edge")) {
+			return createEdge(null);
+		}
+		return null;
+	}
+
+	public void endElement(final Object parent, final String tag, final Object userObject,
+	                       final IXMLElement dom) {
 		/* attributes */
-		if (parent instanceof NodeObject) {
-			final NodeModel node = ((NodeObject) parent).node;
+		if (parent instanceof NodeModel) {
+			final NodeModel node = (NodeModel) parent;
 			if (userObject instanceof EdgeModel) {
 				final EdgeModel edge = (EdgeModel) userObject;
 				node.setEdge(edge);
@@ -51,32 +62,21 @@ class EdgeBuilder implements INodeCreator, INodeWriter<IExtension> {
 		}
 	}
 
-	protected EdgeModel createEdge(final NodeModel node) {
-		return new EdgeModel();
-	}
-
-	public Object createNode(final Object parent, final String tag) {
-		if (tag.equals("edge")) {
-			return createEdge(null);
-		}
-		return null;
-	}
-
 	private void registerAttributeHandlers(final ReadManager reader) {
 		reader.addAttributeHandler("edge", "STYLE", new IAttributeHandler() {
-			public void parseAttribute(final Object userObject, final String value) {
+			public void setAttribute(final Object userObject, final String value) {
 				final EdgeModel edge = (EdgeModel) userObject;
 				edge.setStyle(value.toString());
 			}
 		});
 		reader.addAttributeHandler("edge", "COLOR", new IAttributeHandler() {
-			public void parseAttribute(final Object userObject, final String value) {
+			public void setAttribute(final Object userObject, final String value) {
 				final EdgeModel edge = (EdgeModel) userObject;
 				edge.setColor(Tools.xmlToColor(value.toString()));
 			}
 		});
 		reader.addAttributeHandler("edge", "WIDTH", new IAttributeHandler() {
-			public void parseAttribute(final Object userObject, final String value) {
+			public void setAttribute(final Object userObject, final String value) {
 				final EdgeModel edge = (EdgeModel) userObject;
 				if (value.toString().equals(EdgeModel.EDGE_WIDTH_THIN_STRING)) {
 					edge.setWidth(EdgeModel.WIDTH_THIN);
@@ -91,9 +91,9 @@ class EdgeBuilder implements INodeCreator, INodeWriter<IExtension> {
 	/**
 	 */
 	public void registerBy(final ReadManager reader, final WriteManager writer) {
-		reader.addNodeCreator("edge", this);
+		reader.addElementHandler("edge", this);
 		registerAttributeHandlers(reader);
-		writer.addExtensionNodeWriter(EdgeModel.class, this);
+		writer.addExtensionElementWriter(EdgeModel.class, this);
 	}
 
 	public void setAttributes(final String tag, final Object node, final IXMLElement attributes) {
@@ -127,7 +127,7 @@ class EdgeBuilder implements INodeCreator, INodeWriter<IExtension> {
 				relevant = true;
 			}
 			if (relevant) {
-				writer.addNode(model, edge);
+				writer.addElement(model, edge);
 			}
 		}
 	}

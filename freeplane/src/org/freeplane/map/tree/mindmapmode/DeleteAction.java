@@ -32,7 +32,6 @@ import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.undo.IUndoableActor;
 
-
 class DeleteAction extends FreeplaneAction {
 	public DeleteAction() {
 		super("remove_node", "images/editdelete.png");

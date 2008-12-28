@@ -23,12 +23,8 @@ import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
 
 /**
  * @author Dimitry Polivaev
- * 20.12.2008
+ * 28.12.2008
  */
-public abstract class NodeCreatorAdapter implements INodeCreator {
-	public void completeNode(final Object parent, final String tag, final Object node) {
-	}
-
-	public void setAttributes(final String tag, final Object node, final IXMLElement attributes) {
-	}
+public interface IElementDOMHandler extends IElementHandler {
+	void endElement(Object parent, String tag, Object element, IXMLElement dom);
 }

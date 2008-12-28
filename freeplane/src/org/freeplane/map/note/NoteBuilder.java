@@ -19,20 +19,32 @@
  */
 package org.freeplane.map.note;
 
-import org.freeplane.io.INodeContentHandler;
+import org.freeplane.io.IElementContentHandler;
 import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
 import org.freeplane.map.text.NodeTextBuilder;
-import org.freeplane.map.tree.NodeBuilder.NodeObject;
+import org.freeplane.map.tree.NodeModel;
 
 /**
  * @author Dimitry Polivaev
  */
-public class NoteBuilder implements INodeContentHandler {
+public class NoteBuilder implements IElementContentHandler {
 	final private NoteController noteController;
 
 	public NoteBuilder(final NoteController noteController) {
 		super();
 		this.noteController = noteController;
+	}
+
+	public Object createElement(final Object parent, final String tag, final IXMLElement attributes) {
+		if (attributes == null) {
+			return null;
+		}
+		final Object typeAttribute = attributes.getAttribute(
+		    NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG, null);
+		if (typeAttribute == null || NodeTextBuilder.XML_NODE_XHTML_TYPE_NODE.equals(typeAttribute)) {
+			return null;
+		}
+		return parent;
 	}
 
 	/*
@@ -41,21 +53,14 @@ public class NoteBuilder implements INodeContentHandler {
 	 * java.lang.String, freeplane.io.xml.n3.nanoxml.IXMLElement,
 	 * java.lang.String)
 	 */
-	public boolean setContent(final Object node, final String tag, final IXMLElement attributes,
-	                          final String content) {
+	public void endElement(final Object parent, final String tag, final Object node,
+	                       final IXMLElement attributes, final String content) {
 		if (tag.equals("richcontent")) {
 			final String xmlText = content;
-			final Object typeAttribute = attributes.getAttribute(
-			    NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG, null);
-			if (typeAttribute != null
-			        && !NodeTextBuilder.XML_NODE_XHTML_TYPE_NODE.equals(typeAttribute)) {
-				final NoteModel note = new NoteModel();
-				note.setXmlNoteText(xmlText);
-				((NodeObject) node).node.addExtension(note);
-				noteController.setStateIcon(((NodeObject) node).node, true);
-				return true;
-			}
+			final NoteModel note = new NoteModel();
+			note.setXmlNoteText(xmlText);
+			((NodeModel) node).addExtension(note);
+			noteController.setStateIcon(((NodeModel) node), true);
 		}
-		return false;
 	}
 }

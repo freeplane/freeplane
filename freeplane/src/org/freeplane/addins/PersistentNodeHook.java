@@ -27,14 +27,13 @@ import java.util.List;
 import org.freeplane.controller.ActionDescriptor;
 import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.extension.IExtension;
-import org.freeplane.io.INodeWriter;
+import org.freeplane.io.IElementDOMHandler;
+import org.freeplane.io.IExtensionElementWriter;
 import org.freeplane.io.ITreeWriter;
-import org.freeplane.io.IXMLElementHandler;
 import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
 import org.freeplane.io.xml.n3.nanoxml.XMLElement;
 import org.freeplane.map.tree.MapController;
 import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.NodeBuilder.NodeObject;
 import org.freeplane.map.tree.view.NodeView;
 import org.freeplane.modes.ModeController;
 import org.freeplane.ui.SelectableAction;
@@ -101,34 +100,40 @@ public abstract class PersistentNodeHook implements IExtension {
 		}
 	}
 
-	protected class XmlReader implements IXMLElementHandler {
-		public boolean parse(final Object userObject, final String tag,
-		                     final IXMLElement lastBuiltElement) {
-			if (getHookName().equals(lastBuiltElement.getAttribute("NAME", null))) {
-				if (getHookAnnotation().onceForMap()) {
-					final IXMLElement parentNodeElement = lastBuiltElement.getParent().getParent();
-					if (parentNodeElement == null || parentNodeElement.getName().equals("node")) {
-						return true;
-					}
-				}
-				if (action != null) {
-					action.setEnabled(true);
-				}
-				final NodeObject nodeObject = (NodeObject) userObject;
-				final NodeModel node = nodeObject.node;
-				add(node, createExtension(node, lastBuiltElement));
-				return true;
+	protected class XmlReader implements IElementDOMHandler {
+		public Object createElement(final Object parent, final String tag,
+		                            final IXMLElement attributes) {
+			if (attributes == null) {
+				return null;
 			}
-			return false;
+			if (!getHookName().equals(attributes.getAttribute("NAME", null))) {
+				return null;
+			}
+			return parent;
+		}
+
+		public void endElement(final Object parent, final String tag, final Object userObject,
+		                       final IXMLElement lastBuiltElement) {
+			if (getHookAnnotation().onceForMap()) {
+				final IXMLElement parentNodeElement = lastBuiltElement.getParent().getParent();
+				if (parentNodeElement == null || parentNodeElement.getName().equals("node")) {
+					return;
+				}
+			}
+			if (action != null) {
+				action.setEnabled(true);
+			}
+			final NodeModel node = (NodeModel) userObject;
+			add(node, createExtension(node, lastBuiltElement));
 		}
 	}
 
-	protected class XmlWriter implements INodeWriter<IExtension> {
+	protected class XmlWriter implements IExtensionElementWriter {
 		public void writeContent(final ITreeWriter writer, final Object object,
 		                         final IExtension extension) throws IOException {
 			final XMLElement element = new XMLElement("hook");
 			saveExtension(extension, element);
-			writer.addNode(null, element);
+			writer.addElement(null, element);
 		}
 	}
 
@@ -149,8 +154,8 @@ public abstract class PersistentNodeHook implements IExtension {
 			action = null;
 		}
 		final MapController mapController = modeController.getMapController();
-		mapController.getReadManager().addXMLElementHandler("hook", createXmlReader());
-		mapController.getWriteManager().addExtensionNodeWriter(getExtensionClass(),
+		mapController.getReadManager().addElementHandler("hook", createXmlReader());
+		mapController.getWriteManager().addExtensionElementWriter(getExtensionClass(),
 		    createXmlWriter());
 	}
 

@@ -25,6 +25,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Iterator;
+
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -64,25 +65,6 @@ name = "accessories/plugins/AutomaticLayout.properties_name", //
 tooltip = "accessories/plugins/AutomaticLayout.properties_documentation")
 public class AutomaticLayout extends PersistentNodeHook implements IMapChangeListener,
         INodeChangeListener, IReadCompletionListener {
-	private static final String TAB = "OptionPanel.accessories/plugins/AutomaticLayout.properties_PatternTabName";
-
-	private void addPropertiesToOptionPanel() {
-		final MModeController modeController = (MModeController) getModeController();
-		OptionPanelBuilder controls = modeController.getOptionPanelBuilder();
-		controls.addTab(
-		    TAB);
-		final String SEPARATOR = "OptionPanel.separator.accessories/plugins/AutomaticLayout.properties_PatternSeparatorName";
-		controls.addSeparator(
-		        TAB,
-		        SEPARATOR,
-		        IndexedTree.AS_CHILD);
-		controls.addCreator(TAB + "/" + SEPARATOR, new IPropertyControlCreator(){
-
-			public IPropertyControl createControl() {
-				return new StylePatternListProperty(AUTOMATIC_FORMAT_LEVEL, modeController);
-            }}, AUTOMATIC_FORMAT_LEVEL, IndexedTree.AS_CHILD);
-	}
-
 	/**
 	 * Registers the property pages.
 	 *
@@ -258,6 +240,7 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 
 	private static final String AUTOMATIC_FORMAT_LEVEL = "automaticFormat_level";
 	private static Patterns patterns = null;
+	private static final String TAB = "OptionPanel.accessories/plugins/AutomaticLayout.properties_PatternTabName";
 
 	/**
 	 *
@@ -279,6 +262,19 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 		super.add(node, extension);
 		getModeController().getMapController().addMapChangeListener(this);
 		setStyleRecursive(node);
+	}
+
+	private void addPropertiesToOptionPanel() {
+		final MModeController modeController = (MModeController) getModeController();
+		final OptionPanelBuilder controls = modeController.getOptionPanelBuilder();
+		controls.addTab(TAB);
+		final String SEPARATOR = "OptionPanel.separator.accessories/plugins/AutomaticLayout.properties_PatternSeparatorName";
+		controls.addSeparator(TAB, SEPARATOR, IndexedTree.AS_CHILD);
+		controls.addCreator(TAB + "/" + SEPARATOR, new IPropertyControlCreator() {
+			public IPropertyControl createControl() {
+				return new StylePatternListProperty(AUTOMATIC_FORMAT_LEVEL, modeController);
+			}
+		}, AUTOMATIC_FORMAT_LEVEL, IndexedTree.AS_CHILD);
 	}
 
 	private int depth(final NodeModel node) {

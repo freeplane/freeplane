@@ -22,6 +22,7 @@ package plugins.script;
 
 import java.io.PrintStream;
 import java.util.HashMap;
+
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.controller.resources.ui.OptionPanelBuilder;
@@ -42,10 +43,6 @@ import plugins.script.ScriptEditorPanel.ScriptHolder;
 import plugins.script.ScriptingEngine.IErrorHandler;
 
 public class ScriptingRegistration implements IExternalPatternAction {
-	private static final String SEPARATOR = "OptionPanel.separator.plugins/scripting/separatorPropertyName";
-	private static final String TAB = "OptionPanel.plugins/scripting/tab_name";
-	private static final String GROUP = TAB + "/" +  SEPARATOR;
-
 	final private class PatternScriptModel implements IScriptModel {
 		final private String mOriginalScript;
 		private String mScript;
@@ -107,28 +104,8 @@ public class ScriptingRegistration implements IExternalPatternAction {
 		}
 	}
 
-		private void addPropertiesToOptionPanel() {
-			OptionPanelBuilder controls = modeController.getOptionPanelBuilder();
-			controls.addTab(TAB);
-		controls.addSeparator(TAB, SEPARATOR, IndexedTree.AS_CHILD);
-		controls.addBooleanProperty(GROUP,
-		    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION,
-		    IndexedTree.AS_CHILD);
-		controls.addBooleanProperty(GROUP,
-		    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION,
-		    IndexedTree.AS_CHILD);
-		controls.addBooleanProperty(GROUP,
-		    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION,
-		    IndexedTree.AS_CHILD);
-		controls.addBooleanProperty(GROUP,
-		    ResourceController.RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED,
-		    IndexedTree.AS_CHILD);
-		controls.addStringProperty(GROUP,
-		    ResourceController.RESOURCES_SCRIPT_USER_KEY_NAME_FOR_SIGNING,
-		    IndexedTree.AS_CHILD);
-		}
-
-
+	private static final String SEPARATOR = "OptionPanel.separator.plugins/scripting/separatorPropertyName";
+	private static final String TAB = "OptionPanel.plugins/scripting/tab_name";
 	final private MModeController modeController;
 	final private HashMap mScriptCookies = new HashMap();
 	private ScriptEditorProperty.IScriptEditorStarter mScriptEditorStarter;
@@ -147,6 +124,26 @@ public class ScriptingRegistration implements IExternalPatternAction {
 				    }
 			    }, System.out, getScriptCookies());
 		}
+	}
+
+	private void addPropertiesToOptionPanel() {
+		final OptionPanelBuilder controls = modeController.getOptionPanelBuilder();
+		controls.addTab(TAB);
+		controls.addSeparator(TAB, SEPARATOR, IndexedTree.AS_CHILD);
+		final String GROUP = TAB + "/" + SEPARATOR;
+		controls.addBooleanProperty(GROUP,
+		    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION,
+		    IndexedTree.AS_CHILD);
+		controls.addBooleanProperty(GROUP,
+		    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION,
+		    IndexedTree.AS_CHILD);
+		controls.addBooleanProperty(GROUP,
+		    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION,
+		    IndexedTree.AS_CHILD);
+		controls.addBooleanProperty(GROUP, ResourceController.RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED,
+		    IndexedTree.AS_CHILD);
+		controls.addStringProperty(GROUP,
+		    ResourceController.RESOURCES_SCRIPT_USER_KEY_NAME_FOR_SIGNING, IndexedTree.AS_CHILD);
 	}
 
 	public HashMap getScriptCookies() {

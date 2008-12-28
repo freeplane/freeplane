@@ -20,36 +20,36 @@
 package org.freeplane.map.icon;
 
 import org.freeplane.io.IAttributeHandler;
-import org.freeplane.io.INodeCreator;
+import org.freeplane.io.IElementDOMHandler;
 import org.freeplane.io.ReadManager;
 import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
 import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.NodeBuilder.NodeObject;
 
-class IconBuilder implements INodeCreator {
+class IconBuilder implements IElementDOMHandler {
 	static class IconProperties {
 		String iconName;
 	}
 
-	public void completeNode(final Object parent, final String tag, final Object userObject) {
-		if (parent instanceof NodeObject && tag.equals("icon")) {
-			final NodeModel node = ((NodeObject) parent).node;
-			final IconProperties ip = (IconProperties) userObject;
-			node.addIcon(MindIcon.factory(ip.iconName), MindIcon.LAST);
-			return;
-		}
-	}
-
-	public Object createNode(final Object parent, final String tag) {
+	public Object createElement(final Object parent, final String tag, final IXMLElement attributes) {
 		if (tag.equals("icon")) {
 			return new IconProperties();
 		}
 		return null;
 	}
 
+	public void endElement(final Object parent, final String tag, final Object userObject,
+	                       final IXMLElement dom) {
+		if (parent instanceof NodeModel && tag.equals("icon")) {
+			final NodeModel node = (NodeModel) parent;
+			final IconProperties ip = (IconProperties) userObject;
+			node.addIcon(MindIcon.factory(ip.iconName), MindIcon.LAST);
+			return;
+		}
+	}
+
 	private void registerAttributeHandlers(final ReadManager reader) {
 		reader.addAttributeHandler("icon", "BUILTIN", new IAttributeHandler() {
-			public void parseAttribute(final Object userObject, final String value) {
+			public void setAttribute(final Object userObject, final String value) {
 				final IconProperties ip = (IconProperties) userObject;
 				ip.iconName = value.toString();
 			}
@@ -59,7 +59,7 @@ class IconBuilder implements INodeCreator {
 	/**
 	 */
 	public void registerBy(final ReadManager reader) {
-		reader.addNodeCreator("icon", this);
+		reader.addElementHandler("icon", this);
 		registerAttributeHandlers(reader);
 	}
 

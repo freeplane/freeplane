@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.util.ListIterator;
 
 import org.freeplane.io.IAttributeWriter;
-import org.freeplane.io.INodeWriter;
+import org.freeplane.io.IElementWriter;
 import org.freeplane.io.ITreeWriter;
 import org.freeplane.io.xml.n3.nanoxml.XMLElement;
 import org.freeplane.main.HtmlTools;
@@ -32,7 +32,7 @@ import org.freeplane.map.icon.MindIcon;
 import org.freeplane.map.text.NodeTextBuilder;
 import org.freeplane.modes.mindmapmode.EncryptionModel;
 
-class NodeWriter implements INodeWriter<String>, IAttributeWriter<String> {
+class NodeWriter implements IElementWriter, IAttributeWriter {
 	private EncryptionModel encryptionModel;
 	private boolean isTextNode;
 	final private boolean saveOnlyIntrinsicallyNeededIds;
@@ -52,7 +52,7 @@ class NodeWriter implements INodeWriter<String>, IAttributeWriter<String> {
 		    node); e.hasNext();) {
 			final NodeModel child = (NodeModel) e.next();
 			if (writeInvisible || child.isVisible()) {
-				writer.addNode(child, NodeBuilder.XML_NODE);
+				writer.addElement(child, NodeBuilder.XML_NODE);
 			}
 			else {
 				saveChildren(writer, child);
@@ -113,21 +113,21 @@ class NodeWriter implements INodeWriter<String>, IAttributeWriter<String> {
 			iconElement.setAttribute("BUILTIN", ((MindIcon) node.getIcons().get(i)).getName());
 			xmlNode.addChild(iconElement);
 		}
-		writer.addExtensionAttributes(node.getExtensions());
+		writer.addExtensionAttributes(node, node.getExtensions());
 	}
 
 	private void writeContent(final ITreeWriter writer, final NodeModel node) throws IOException {
-		writer.addExtensionNodes(node.getExtensions());
+		writer.addExtensionNodes(node, node.getExtensions());
 		if (!isTextNode) {
 			final XMLElement htmlElement = new XMLElement();
 			htmlElement.setName(NodeTextBuilder.XML_NODE_XHTML_CONTENT_TAG);
 			htmlElement.setAttribute(NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG,
 			    NodeTextBuilder.XML_NODE_XHTML_TYPE_NODE);
 			final String content = node.getXmlText().replace('\0', ' ');
-			writer.addNode(content, htmlElement);
+			writer.addElement(content, htmlElement);
 		}
 		for (int i = 0; i < xmlNode.getChildrenCount(); i++) {
-			writer.addNode(null, xmlNode.getChildAtIndex(i));
+			writer.addElement(null, xmlNode.getChildAtIndex(i));
 		}
 		if (encryptionModel == null && writeChildren
 		        && node.getModeController().getMapController().childrenUnfolded(node).hasNext()) {
@@ -138,7 +138,7 @@ class NodeWriter implements INodeWriter<String>, IAttributeWriter<String> {
 	public void writeContent(final org.freeplane.io.ITreeWriter writer, final Object content,
 	                         final String tag) throws IOException {
 		if (tag.equals(NodeTextBuilder.XML_NODE_XHTML_CONTENT_TAG)) {
-			writer.addNodeContent((String) content);
+			writer.addElementContent((String) content);
 			return;
 		}
 		if (tag.equals(NodeBuilder.XML_NODE)) {

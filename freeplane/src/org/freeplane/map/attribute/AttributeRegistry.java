@@ -410,7 +410,7 @@ public class AttributeRegistry {
 		}
 		if (toBeSaved) {
 			attributeRegistry.setName(AttributeBuilder.XML_NODE_ATTRIBUTE_REGISTRY);
-			writer.addNode(this, attributeRegistry);
+			writer.addElement(this, attributeRegistry);
 		}
 	}
 }

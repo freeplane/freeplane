@@ -71,28 +71,6 @@ public class MIconController extends IconController {
 		createPreferences();
 	}
 
-	private void createPreferences() {
-		final Vector actions = new Vector();
-		actions.addAll(iconActions);
-		final MModeController modeController = (MModeController)getModeController();
-		final OptionPanelBuilder optionPanelBuilder = modeController.getOptionPanelBuilder();
-		actions.add(modeController.getAction("removeLastIconAction"));
-		actions.add(modeController.getAction("removeAllIconsAction"));
-		final Iterator iterator = actions.iterator();
-		while (iterator.hasNext()) {
-			final IIconInformation info = (IIconInformation) iterator.next();
-			optionPanelBuilder.addCreator("Keystrokes/icons", new IPropertyControlCreator() {
-				public IPropertyControl createControl() {
-					final KeyProperty keyProperty = new KeyProperty(info.getKeystrokeResourceName());
-					keyProperty.setLabelText(info.getDescription());
-					keyProperty.setImageIcon(info.getIcon());
-					keyProperty.disableModifiers();
-					return keyProperty;
-				}
-			}, IndexedTree.AS_CHILD);
-		}
-    }
-
 	public void addIcon(final NodeModel node, final MindIcon icon, final int position) {
 		final IUndoableActor actor = new IUndoableActor() {
 			public void act() {
@@ -154,6 +132,28 @@ public class MIconController extends IconController {
 			final MindIcon myIcon = MindIcon.factory(iconName);
 			final IconAction myAction = new IconAction(modeController, myIcon);
 			iconActions.add(myAction);
+		}
+	}
+
+	private void createPreferences() {
+		final Vector actions = new Vector();
+		actions.addAll(iconActions);
+		final MModeController modeController = (MModeController) getModeController();
+		final OptionPanelBuilder optionPanelBuilder = modeController.getOptionPanelBuilder();
+		actions.add(modeController.getAction("removeLastIconAction"));
+		actions.add(modeController.getAction("removeAllIconsAction"));
+		final Iterator iterator = actions.iterator();
+		while (iterator.hasNext()) {
+			final IIconInformation info = (IIconInformation) iterator.next();
+			optionPanelBuilder.addCreator("Keystrokes/icons", new IPropertyControlCreator() {
+				public IPropertyControl createControl() {
+					final KeyProperty keyProperty = new KeyProperty(info.getKeystrokeResourceName());
+					keyProperty.setLabelText(info.getDescription());
+					keyProperty.setImageIcon(info.getIcon());
+					keyProperty.disableModifiers();
+					return keyProperty;
+				}
+			}, IndexedTree.AS_CHILD);
 		}
 	}
 

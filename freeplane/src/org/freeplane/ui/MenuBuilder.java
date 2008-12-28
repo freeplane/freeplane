@@ -49,7 +49,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeplane.controller.ActionDescriptor;
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.FreeplaneAction;
-import org.freeplane.io.NodeCreatorAdapter;
+import org.freeplane.io.IElementHandler;
 import org.freeplane.io.ReadManager;
 import org.freeplane.io.xml.TreeXmlReader;
 import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
@@ -238,15 +238,13 @@ public class MenuBuilder extends UIBuilder {
 	}
 
 	private class MenuStructureReader {
-		private final class ActionCreator extends NodeCreatorAdapter {
-			public Object createNode(final Object parent, final String tag) {
-				return new MenuPath(parent.toString());
-			}
-
-			@Override
-			public void setAttributes(final String tag, final Object node,
-			                          final IXMLElement attributes) {
-				final MenuPath menuPath = (MenuPath) node;
+		private final class ActionCreator implements IElementHandler {
+			public Object createElement(final Object parent, final String tag,
+			                            final IXMLElement attributes) {
+				if (attributes == null) {
+					return null;
+				}
+				final MenuPath menuPath = new MenuPath(parent.toString());
 				final String field = attributes.getAttribute("field", null);
 				final String name = attributes.getAttribute("name", field);
 				menuPath.setName(name);
@@ -270,19 +268,18 @@ public class MenuBuilder extends UIBuilder {
 				catch (final Exception e1) {
 					org.freeplane.main.Tools.logException(e1);
 				}
+				return menuPath;
 			}
 		}
 
-		private final class CategoryCreator extends NodeCreatorAdapter {
-			public Object createNode(final Object parent, final String tag) {
+		private final class CategoryCreator implements IElementHandler {
+			public Object createElement(final Object parent, final String tag,
+			                            final IXMLElement attributes) {
+				if (attributes == null) {
+					return null;
+				}
 				buttonGroup = null;
-				return new MenuPath(parent.toString());
-			}
-
-			@Override
-			public void setAttributes(final String tag, final Object node,
-			                          final IXMLElement attributes) {
-				final MenuPath menuPath = (MenuPath) node;
+				final MenuPath menuPath = new MenuPath(parent.toString());
 				menuPath.setName(attributes.getAttribute("name", null));
 				if (!contains(menuPath.path)) {
 					if (tag.equals("menu_submenu")) {
@@ -299,18 +296,21 @@ public class MenuBuilder extends UIBuilder {
 						}
 					}
 				}
+				return menuPath;
 			}
 		}
 
-		private final class SeparatorCreator extends NodeCreatorAdapter {
-			public Object createNode(final Object parent, final String tag) {
+		private final class SeparatorCreator implements IElementHandler {
+			public Object createElement(final Object parent, final String tag,
+			                            final IXMLElement attributes) {
 				addSeparator(parent.toString(), MenuBuilder.AS_CHILD);
 				return parent;
 			}
 		}
 
-		private final class StructureCreator extends NodeCreatorAdapter {
-			public Object createNode(final Object parent, final String tag) {
+		private final class StructureCreator implements IElementHandler {
+			public Object createElement(final Object parent, final String tag,
+			                            final IXMLElement attributes) {
 				return MenuPath.emptyPath();
 			}
 		}
@@ -320,12 +320,12 @@ public class MenuBuilder extends UIBuilder {
 
 		MenuStructureReader() {
 			readManager = new ReadManager();
-			readManager.addNodeCreator("menu_structure", new StructureCreator());
-			readManager.addNodeCreator("menu_category", new CategoryCreator());
-			readManager.addNodeCreator("menu_submenu", new CategoryCreator());
-			readManager.addNodeCreator("menu_action", new ActionCreator());
-			readManager.addNodeCreator("menu_radio_action", new ActionCreator());
-			readManager.addNodeCreator("menu_separator", new SeparatorCreator());
+			readManager.addElementHandler("menu_structure", new StructureCreator());
+			readManager.addElementHandler("menu_category", new CategoryCreator());
+			readManager.addElementHandler("menu_submenu", new CategoryCreator());
+			readManager.addElementHandler("menu_action", new ActionCreator());
+			readManager.addElementHandler("menu_radio_action", new ActionCreator());
+			readManager.addElementHandler("menu_separator", new SeparatorCreator());
 		}
 
 		public void processMenu(final URL menu) {

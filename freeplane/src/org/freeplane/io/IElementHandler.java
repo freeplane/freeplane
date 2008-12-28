@@ -21,10 +21,6 @@ package org.freeplane.io;
 
 import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
 
-public interface INodeCreator {
-	void completeNode(Object parent, String tag, Object node);
-
-	Object createNode(Object parent, String tag);
-
-	void setAttributes(String tag, Object node, IXMLElement attributes);
+public interface IElementHandler {
+	Object createElement(Object parent, String tag, IXMLElement attributes);
 }

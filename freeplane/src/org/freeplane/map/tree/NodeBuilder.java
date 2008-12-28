@@ -22,24 +22,15 @@ package org.freeplane.map.tree;
 import java.util.HashMap;
 
 import org.freeplane.io.IAttributeHandler;
-import org.freeplane.io.INodeCreator;
+import org.freeplane.io.IElementDOMHandler;
 import org.freeplane.io.ReadManager;
 import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
 import org.freeplane.main.Tools;
 import org.freeplane.modes.mindmapmode.EncryptionModel;
 
-public class NodeBuilder implements INodeCreator {
+public class NodeBuilder implements IElementDOMHandler {
 	static class IconProperties {
 		String iconName;
-	}
-
-	public static class NodeObject {
-		public NodeModel node;
-
-		public NodeObject(final NodeModel node) {
-			super();
-			this.node = node;
-		}
 	}
 
 	public static final String XML_NODE = "node";
@@ -57,18 +48,18 @@ public class NodeBuilder implements INodeCreator {
 		newIds = new HashMap<String, String>();
 	}
 
-	public void completeNode(final Object parent, final String tag, final Object userObject) {
-		if (tag.equals("node") && parent instanceof MapModel) {
-			mapChild = ((NodeObject) userObject).node;
-			return;
+	public Object createElement(final Object parent, final String tag, final IXMLElement attributes) {
+		if (tag.equals("map") || tag.equals("attribute_registry")) {
+			return getMap();
 		}
-		if (parent instanceof NodeObject) {
-			final NodeModel node = ((NodeObject) parent).node;
-			if (tag.equals("node") && userObject instanceof NodeObject) {
-				node.insert(((NodeObject) userObject).node, -1);
+		if (tag.equals(NodeBuilder.XML_NODE)) {
+			final NodeModel userObject = createNode();
+			if (mapChild == null) {
+				mapChild = userObject;
 			}
-			return;
+			return userObject;
 		}
+		return null;
 	}
 
 	protected void createEncryptedNode(final NodeModel node, final String additionalInfo) {
@@ -80,18 +71,19 @@ public class NodeBuilder implements INodeCreator {
 		return new NodeModel(getMap());
 	}
 
-	public Object createNode(final Object parent, final String tag) {
-		if (tag.equals("map") || tag.equals("attribute_registry")) {
-			return getMap();
+	public void endElement(final Object parent, final String tag, final Object userObject,
+	                       final IXMLElement dom) {
+		if (tag.equals("node") && parent instanceof MapModel) {
+			mapChild = ((NodeModel) userObject);
+			return;
 		}
-		if (tag.equals(NodeBuilder.XML_NODE)) {
-			final NodeModel userObject = createNode();
-			if (mapChild == null) {
-				mapChild = userObject;
+		if (parent instanceof NodeModel) {
+			final NodeModel node = (NodeModel) parent;
+			if (tag.equals("node") && userObject instanceof NodeModel) {
+				node.insert((NodeModel) userObject, -1);
 			}
-			return new NodeObject(userObject);
+			return;
 		}
-		return null;
 	}
 
 	private MapModel getMap() {
@@ -110,15 +102,14 @@ public class NodeBuilder implements INodeCreator {
 	private void registerAttributeHandlers(final ReadManager reader) {
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, NodeBuilder.XML_NODE_ENCRYPTED_CONTENT,
 		    new IAttributeHandler() {
-			    public void parseAttribute(final Object userObject, final String value) {
-				    final NodeObject nodeObject = (NodeObject) userObject;
-				    createEncryptedNode(nodeObject.node, value);
+			    public void setAttribute(final Object userObject, final String value) {
+				    createEncryptedNode((NodeModel) userObject, value);
 			    }
 		    });
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, NodeBuilder.XML_NODE_HISTORY_CREATED_AT,
 		    new IAttributeHandler() {
-			    public void parseAttribute(final Object userObject, final String value) {
-				    final NodeModel node = ((NodeObject) userObject).node;
+			    public void setAttribute(final Object userObject, final String value) {
+				    final NodeModel node = (NodeModel) userObject;
 				    if (node.getHistoryInformation() == null) {
 					    node.setHistoryInformation(new HistoryInformationModel());
 				    }
@@ -127,8 +118,8 @@ public class NodeBuilder implements INodeCreator {
 		    });
 		reader.addAttributeHandler(NodeBuilder.XML_NODE,
 		    NodeBuilder.XML_NODE_HISTORY_LAST_MODIFIED_AT, new IAttributeHandler() {
-			    public void parseAttribute(final Object userObject, final String value) {
-				    final NodeModel node = ((NodeObject) userObject).node;
+			    public void setAttribute(final Object userObject, final String value) {
+				    final NodeModel node = (NodeModel) userObject;
 				    if (node.getHistoryInformation() == null) {
 					    node.setHistoryInformation(new HistoryInformationModel());
 				    }
@@ -136,22 +127,22 @@ public class NodeBuilder implements INodeCreator {
 			    }
 		    });
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "FOLDED", new IAttributeHandler() {
-			public void parseAttribute(final Object userObject, final String value) {
-				final NodeModel node = ((NodeObject) userObject).node;
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = (NodeModel) userObject;
 				if (value.equals("true")) {
 					node.setFolded(true);
 				}
 			}
 		});
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "POSITION", new IAttributeHandler() {
-			public void parseAttribute(final Object userObject, final String value) {
-				final NodeModel node = ((NodeObject) userObject).node;
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = (NodeModel) userObject;
 				node.setLeft(value.equals("left"));
 			}
 		});
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "ID", new IAttributeHandler() {
-			public void parseAttribute(final Object userObject, final String value) {
-				final NodeModel node = ((NodeObject) userObject).node;
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = (NodeModel) userObject;
 				final String realId = getMap().generateNodeID(value);
 				node.setID(realId);
 				if (!realId.equals(value)) {
@@ -164,9 +155,9 @@ public class NodeBuilder implements INodeCreator {
 	/**
 	 */
 	public void registerBy(final ReadManager reader) {
-		reader.addNodeCreator("map", this);
+		reader.addElementHandler("map", this);
 		registerAttributeHandlers(reader);
-		reader.addNodeCreator(NodeBuilder.XML_NODE, this);
+		reader.addElementHandler(NodeBuilder.XML_NODE, this);
 	}
 
 	public void reset() {

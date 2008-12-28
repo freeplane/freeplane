@@ -29,9 +29,7 @@ import javax.swing.JLabel;
 
 import org.freeplane.ui.components.BlindIcon;
 
-
 import com.jgoodies.forms.builder.DefaultFormBuilder;
-
 
 public class ThreeCheckBoxProperty extends PropertyBean implements IPropertyControl {
 	public static final String DON_T_TOUCH_VALUE = "don_t_touch";

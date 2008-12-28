@@ -21,6 +21,6 @@ package org.freeplane.io;
 
 import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
 
-public interface IXMLElementHandler {
-	boolean parse(Object userObject, String tag, IXMLElement lastBuiltElement);
+public interface IElementContentHandler extends IElementHandler {
+	void endElement(Object parent, String tag, Object node, IXMLElement attributes, String content);
 }

@@ -25,9 +25,7 @@ import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
 
 import org.freeplane.controller.Controller;
-
 import org.freeplane.ui.MenuBuilder;
-
 
 class LicenseAction extends AbstractAction {
 	LicenseAction() {

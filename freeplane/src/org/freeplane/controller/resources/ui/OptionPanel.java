@@ -46,26 +46,6 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.factories.ButtonBarFactory;
 import com.jgoodies.forms.layout.FormLayout;
 
-/**
- * refactoring of class OptionPanel from package freemind.preferences.layout .
- * This class builds tabs of the preferences dialog responsible for comfortable
- * editing of FreeMind (Freeplane) options. The bad thing about it is that
- * currently every control is programmed there. So for adding new options to the
- * program one have to extend implementation of this class. The good thing is
- * that this class is quite loosely coupled to the others and can be re-factored
- * independent from the rest. For me it was the absolutely last step in the
- * whole refactoring, but it would be a great help if you had enough time to do
- * this job. Currently I have some ideas about how to change it. Basically I
- * think it should build the dialog interpreting known Properties or other
- * Hashtable. I have already implemented some classes which could be helpful for
- * it. Use properties files Use many files for different purposes Use UIBuilder
- * like construct Also see MenuBuilder Position of new entry could be somehow
- * established not sure how yet Iterate over "sets" of properties at abstract
- * level MenuBuilder. public void processMenuCategory(final MenuStructure menu)
- * { this could be used many times to iterate over it
- */
-// candidates for singleton: MModeController
-// last 500 or so lines is just assigning values by hard coding
 public class OptionPanel {
 	final private class ChangeTabAction implements ActionListener {
 		final private CardLayout cardLayout;

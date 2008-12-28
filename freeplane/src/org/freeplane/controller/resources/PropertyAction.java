@@ -44,13 +44,13 @@ import org.freeplane.main.Tools;
  * @author foltin
  */
 public class PropertyAction extends FreeplaneAction {
-	private DefaultMutableTreeNode controls;
+	private final DefaultMutableTreeNode controls;
 
 	/**
 	 * @param controls 
 	 *
 	 */
-	public PropertyAction(DefaultMutableTreeNode controls) {
+	public PropertyAction(final DefaultMutableTreeNode controls) {
 		super("property_dialog");
 		this.controls = controls;
 	}

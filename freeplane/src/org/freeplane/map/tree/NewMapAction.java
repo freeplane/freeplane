@@ -23,8 +23,6 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.controller.FreeplaneAction;
 
-
-
 class NewMapAction extends FreeplaneAction {
 	public NewMapAction() {
 		super("new", "images/filenew.png");

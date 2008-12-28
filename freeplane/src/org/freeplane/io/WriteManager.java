@@ -22,11 +22,10 @@ package org.freeplane.io;
 import org.freeplane.extension.IExtension;
 
 public class WriteManager {
-	final private ListHashTable<String, IAttributeWriter<String>> attributeWriters = new ListHashTable();
-	final private ListHashTable<Class<? extends IExtension>, IAttributeWriter<IExtension>> extensionAttributeWriters = new ListHashTable();
-	final private ListHashTable<Class<? extends IExtension>, INodeWriter<IExtension>> extensionNodeWriters = new ListHashTable();;
-	final private ListHashTable<String, INodeWriter<String>> nodeWriters = new ListHashTable();
-	final private ListHashTable<String, IXMLElementWriter> xmlWriters = new ListHashTable();
+	final private ListHashTable<String, IAttributeWriter> attributeWriters = new ListHashTable();
+	final private ListHashTable<String, IElementWriter> elementWriters = new ListHashTable();
+	final private ListHashTable<Class<? extends IExtension>, IExtensionAttributeWriter> extensionAttributeWriters = new ListHashTable();;
+	final private ListHashTable<Class<? extends IExtension>, IExtensionElementWriter> extensionElementWriters = new ListHashTable();
 
 	/*
 	 * (non-Javadoc)
@@ -43,119 +42,51 @@ public class WriteManager {
 		attributeWriters.add(parentTag, aw);
 	}
 
+	public void addElementWriter(final String parentTag, final IElementWriter nw) {
+		elementWriters.add(parentTag, nw);
+	}
+
 	public void addExtensionAttributeWriter(final Class<? extends IExtension> clazz,
-	                                        final IAttributeWriter<IExtension> aw) {
+	                                        final IExtensionAttributeWriter aw) {
 		extensionAttributeWriters.add(clazz, aw);
 	}
 
-	public void addExtensionNodeWriter(final Class<? extends IExtension> clazz,
-	                                   final INodeWriter<IExtension> nw) {
-		extensionNodeWriters.add(clazz, nw);
+	public void addExtensionElementWriter(final Class<? extends IExtension> clazz,
+	                                      final IExtensionElementWriter nw) {
+		extensionElementWriters.add(clazz, nw);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.persistence.Writer#addNodeSaver(java.lang.String,
-	 * freeplane.persistence.NodeSaver)
-	 */
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.persistence.ISaverManager#addNodeSaver(java.lang.String,
-	 * freeplane.persistence.NodeSaver)
-	 */
-	public void addNodeWriter(final String parentTag, final INodeWriter nw) {
-		nodeWriters.add(parentTag, nw);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * freeplane.persistence.ISaverManager#addXMLElementSaver(java.lang.String,
-	 * freeplane.persistence.XMLElementSaver)
-	 */
-	public void addXMLElementWriter(final String parentTag, final IXMLElementWriter xw) {
-		xmlWriters.add(parentTag, xw);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.persistence.ISaverManager#getAttributeSavers()
-	 */
-	public ListHashTable<String, IAttributeWriter<String>> getAttributeWriters() {
+	public ListHashTable<String, IAttributeWriter> getAttributeWriters() {
 		return attributeWriters;
 	}
 
-	public ListHashTable<Class<? extends IExtension>, IAttributeWriter<IExtension>> getExtensionAttributeWriters() {
+	public ListHashTable<String, IElementWriter> getElementWriters() {
+		return elementWriters;
+	}
+
+	public ListHashTable<Class<? extends IExtension>, IExtensionAttributeWriter> getExtensionAttributeWriters() {
 		return extensionAttributeWriters;
 	}
 
-	public ListHashTable<Class<? extends IExtension>, INodeWriter<IExtension>> getExtensionNodeWriters() {
-		return extensionNodeWriters;
+	public ListHashTable<Class<? extends IExtension>, IExtensionElementWriter> getExtensionElementWriters() {
+		return extensionElementWriters;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.persistence.ISaverManager#getNodeSavers()
-	 */
-	public ListHashTable<String, INodeWriter<String>> getNodeWriters() {
-		return nodeWriters;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.persistence.ISaverManager#getXmlSavers()
-	 */
-	public ListHashTable<String, IXMLElementWriter> getXmlWriters() {
-		return xmlWriters;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.persistence.Writer#removeAttributeSaver(java.lang.String,
-	 * freeplane.persistence.AttributeSaver)
-	 */
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * freeplane.persistence.ISaverManager#removeAttributeSaver(java.lang.String
-	 * , freeplane.persistence.AttributeSaver)
-	 */
 	public void removeAttributeWriter(final String parentTag, final IAttributeWriter aw) {
 		attributeWriters.remove(parentTag, aw);
 	}
 
+	public void removeElementWriter(final String parentTag, final IElementWriter nw) {
+		elementWriters.remove(parentTag, nw);
+	}
+
 	public void removeExtensionAttributeWriter(final Class<? extends IExtension> clazz,
-	                                           final IAttributeWriter<IExtension> aw) {
+	                                           final IExtensionAttributeWriter aw) {
 		extensionAttributeWriters.remove(clazz, aw);
 	}
 
 	public void removeExtensionNodeWriter(final Class<? extends IExtension> clazz,
-	                                      final INodeWriter<IExtension> nw) {
-		extensionNodeWriters.remove(clazz, nw);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.persistence.Writer#removeNodeSaver(java.lang.String,
-	 * freeplane.persistence.NodeSaver)
-	 */
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * freeplane.persistence.ISaverManager#removeNodeSaver(java.lang.String,
-	 * freeplane.persistence.NodeSaver)
-	 */
-	public void removeNodeWriter(final String parentTag, final INodeWriter nw) {
-		nodeWriters.remove(parentTag, nw);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * freeplane.persistence.ISaverManager#removeXMLElementSaver(java.lang.String
-	 * , freeplane.persistence.XMLElementSaver)
-	 */
-	public void removeXMLElementWriter(final String parentTag, final IXMLElementWriter xw) {
-		xmlWriters.remove(parentTag, xw);
+	                                      final IExtensionElementWriter nw) {
+		extensionElementWriters.remove(clazz, nw);
 	}
 }
