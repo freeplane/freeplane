@@ -870,7 +870,6 @@ public class NodeView extends JComponent implements TreeModelListener {
 	public void paintFoldingMark(final Graphics2D g) {
 		if (model.getModeController().getMapController().isFolded(model)) {
 			final Point out = getMainViewOutPoint(null, null);
-			Tools.convertPointToAncestor(getMainView(), out, this);
 			mainView.paintFoldingMark(g, out);
 		}
 	}
