@@ -19,9 +19,9 @@
  */
 package org.freeplane.map.note;
 
+import org.freeplane.Tools;
 import org.freeplane.extension.IExtension;
 import org.freeplane.main.HtmlTools;
-import org.freeplane.main.Tools;
 
 /**
  * @author Dimitry Polivaev

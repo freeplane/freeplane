@@ -33,10 +33,10 @@ import java.util.ListIterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.freeplane.Tools;
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.main.HtmlTools;
-import org.freeplane.main.Tools;
 import org.freeplane.map.clipboard.MindMapNodesSelection;
 import org.freeplane.map.link.mindmapmode.MLinkController;
 import org.freeplane.map.tree.MapReader;
@@ -326,7 +326,7 @@ class PasteAction extends FreeplaneAction {
 					if (textPartIdx > 0) {
 						visibleText += " > ";
 					}
-					visibleText += textPartIdx == 0 ? textParts[textPartIdx] : Tools
+					visibleText += textPartIdx == 0 ? textParts[textPartIdx] : PasteAction
 					    .firstLetterCapitalized(textParts[textPartIdx].replaceAll("^~*", ""));
 				}
 			}
@@ -382,4 +382,11 @@ class PasteAction extends FreeplaneAction {
 		}
 		return pastedNode;
 	}
+
+	public static String firstLetterCapitalized(final String text) {
+    	if (text == null || text.length() == 0) {
+    		return text;
+    	}
+    	return text.substring(0, 1).toUpperCase() + text.substring(1, text.length());
+    }
 }

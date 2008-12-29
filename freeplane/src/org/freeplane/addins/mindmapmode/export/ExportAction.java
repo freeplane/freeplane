@@ -26,6 +26,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
@@ -35,10 +36,11 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import org.freeplane.Tools;
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.FreeplaneAction;
-import org.freeplane.main.Tools;
 import org.freeplane.map.tree.view.MapView;
+import org.freeplane.map.url.UrlManager;
 import org.freeplane.modes.ModeController;
 
 /**
@@ -80,7 +82,7 @@ abstract public class ExportAction extends FreeplaneAction {
 		}
 		File chosenFile = chooser.getSelectedFile();
 		mindMapController.getUrlManager().setLastCurrentDir(chosenFile.getParentFile());
-		final String ext = Tools.getExtension(chosenFile.getName());
+		final String ext = UrlManager.getExtension(chosenFile.getName());
 		if (!Tools.safeEqualsIgnoreCase(ext, type)) {
 			chosenFile = new File(chosenFile.getParent(), chosenFile.getName() + "." + type);
 		}
@@ -96,6 +98,16 @@ abstract public class ExportAction extends FreeplaneAction {
 		return chosenFile;
 	}
 
+	private void copyStream(final InputStream in, final OutputStream out) throws IOException {
+		final byte[] buf = new byte[1024];
+		int len;
+		while ((len = in.read(buf)) > 0) {
+			out.write(buf, 0, len);
+		}
+		in.close();
+		out.close();
+	}
+
 	/**
 	 */
 	protected void copyFromFile(final String dir, final String fileName,
@@ -108,7 +120,7 @@ abstract public class ExportAction extends FreeplaneAction {
 			}
 			final InputStream in = new FileInputStream(resource);
 			final OutputStream out = new FileOutputStream(destinationDirectory + "/" + fileName);
-			Tools.copyStream(in, out);
+			copyStream(in, out);
 		}
 		catch (final Exception e) {
 			Logger.global.severe("File not found or could not be copied. " + "Was earching for "
@@ -128,7 +140,7 @@ abstract public class ExportAction extends FreeplaneAction {
 			}
 			final InputStream in = resource.openStream();
 			final OutputStream out = new FileOutputStream(destinationDirectory + "/" + fileName);
-			Tools.copyStream(in, out);
+			copyStream(in, out);
 		}
 		catch (final Exception e) {
 			Logger.global.severe("File not found or could not be copied. " + "Was earching for "

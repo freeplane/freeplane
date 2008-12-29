@@ -17,39 +17,14 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.addins.mindmapmode.export;
-
-import java.io.File;
-
-import javax.swing.filechooser.FileFilter;
-
-import org.freeplane.Tools;
-import org.freeplane.map.url.UrlManager;
+package org.freeplane;
 
 /**
  * @author Dimitry Polivaev
- * 13.12.2008
+ * 29.12.2008
  */
-public class ExportFilter extends FileFilter {
-	final private String description;
-	final private String type;
-
-	public ExportFilter(final String type, final String description) {
-		this.type = type;
-		this.description = description;
-	}
-
-	@Override
-	public boolean accept(final File f) {
-		if (f.isDirectory()) {
-			return true;
-		}
-		final String extension = UrlManager.getExtension(f.getName());
-		return Tools.safeEqualsIgnoreCase(extension, type);
-	}
-
-	@Override
-	public String getDescription() {
-		return description == null ? type : description;
+public class SingleDesEncrypter extends DesEncrypter {
+	public SingleDesEncrypter(final StringBuffer pPassPhrase) {
+		super(pPassPhrase, "PBEWithMD5AndDES");
 	}
 }

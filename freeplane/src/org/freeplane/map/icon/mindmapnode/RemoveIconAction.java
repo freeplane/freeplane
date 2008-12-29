@@ -26,11 +26,11 @@ import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.main.Tools;
 import org.freeplane.map.icon.IIconInformation;
 import org.freeplane.map.icon.MindIcon;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.MultipleNodeAction;
+import org.freeplane.ui.components.UITools;
 import org.freeplane.undo.IUndoableActor;
 
 /**
@@ -64,7 +64,7 @@ class RemoveIconAction extends MultipleNodeAction implements IIconInformation {
 	}
 
 	public KeyStroke getKeyStroke() {
-		return Tools.getKeyStroke(Controller.getResourceController().getAdjustableProperty(
+		return UITools.getKeyStroke(Controller.getResourceController().getAdjustableProperty(
 		    getKeystrokeResourceName()));
 	}
 

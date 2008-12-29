@@ -96,10 +96,10 @@ public class ClipboardController {
 			    getAsHTML(selectedNodes), null, null);
 		}
 		catch (final UnsupportedFlavorException ex) {
-			org.freeplane.main.Tools.logException(ex);
+			org.freeplane.Tools.logException(ex);
 		}
 		catch (final IOException ex) {
-			org.freeplane.main.Tools.logException(ex);
+			org.freeplane.Tools.logException(ex);
 		}
 		return null;
 	}
@@ -167,7 +167,7 @@ public class ClipboardController {
 			return stringWriter.toString();
 		}
 		catch (final Exception e) {
-			org.freeplane.main.Tools.logException(e);
+			org.freeplane.Tools.logException(e);
 			return null;
 		}
 	}
@@ -183,7 +183,7 @@ public class ClipboardController {
 			return stringWriter.toString();
 		}
 		catch (final Exception e) {
-			org.freeplane.main.Tools.logException(e);
+			org.freeplane.Tools.logException(e);
 			return null;
 		}
 	}
@@ -197,7 +197,7 @@ public class ClipboardController {
 			return stringWriter.toString();
 		}
 		catch (final Exception e) {
-			org.freeplane.main.Tools.logException(e);
+			org.freeplane.Tools.logException(e);
 			return null;
 		}
 	}
@@ -256,7 +256,7 @@ public class ClipboardController {
 		}
 		catch (final Exception e) {
 			System.err.println("Error in MindMapMapModel.saveTXT(): ");
-			org.freeplane.main.Tools.logException(e);
+			org.freeplane.Tools.logException(e);
 			return false;
 		}
 	}
@@ -281,7 +281,7 @@ public class ClipboardController {
 			return copy;
 		}
 		catch (final Exception e) {
-			org.freeplane.main.Tools.logException(e);
+			org.freeplane.Tools.logException(e);
 			return null;
 		}
 	}
@@ -340,7 +340,7 @@ public class ClipboardController {
 			return true;
 		}
 		catch (final Exception e) {
-			org.freeplane.main.Tools.logException(e);
+			org.freeplane.Tools.logException(e);
 			return false;
 		}
 	}

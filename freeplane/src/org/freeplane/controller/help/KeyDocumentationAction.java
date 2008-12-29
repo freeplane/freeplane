@@ -47,7 +47,7 @@ class KeyDocumentationAction extends AbstractAction {
 			}
 		}
 		catch (final Exception e2) {
-			org.freeplane.main.Tools.logException(e2);
+			org.freeplane.Tools.logException(e2);
 			return;
 		}
 	}

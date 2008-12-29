@@ -26,8 +26,8 @@ import javax.swing.JLabel;
 
 import org.freeplane.controller.Controller;
 import org.freeplane.io.xml.n3.nanoxml.XMLElement;
-import org.freeplane.main.Tools;
 import org.freeplane.map.tree.NodeModel;
+import org.freeplane.ui.components.UITools;
 
 /**
  * @author Dimitry Polivaev
@@ -86,7 +86,7 @@ public class DisjunctConditions implements ICondition {
 		component.add(rendererComponent);
 		int i;
 		for (i = 1; i < conditions.length; i++) {
-			final String or = Tools.removeMnemonic(Controller.getText("filter_or"));
+			final String or = UITools.removeMnemonic(Controller.getText("filter_or"));
 			final String text = ' ' + or + ' ';
 			component.add(new JLabel(text));
 			cond = (ICondition) conditions[i];

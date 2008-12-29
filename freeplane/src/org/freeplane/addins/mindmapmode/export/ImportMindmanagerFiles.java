@@ -43,7 +43,7 @@ import org.freeplane.controller.ActionDescriptor;
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.io.xml.n3.nanoxml.XMLParseException;
-import org.freeplane.main.Tools;
+import org.freeplane.map.url.UrlManager;
 
 /**
  * Applies an XSLT to the Document.xml file of MindManager(c) files.
@@ -96,19 +96,19 @@ public class ImportMindmanagerFiles extends FreeplaneAction {
 					final FileWriter fw = new FileWriter(tempFile);
 					fw.write(xml);
 					fw.close();
-					getModeController().getMapController().newMap(Tools.fileToUrl(tempFile));
+					getModeController().getMapController().newMap(UrlManager.fileToUrl(tempFile));
 				}
 				break;
 			}
 		}
 		catch (final IOException e) {
-			org.freeplane.main.Tools.logException(e);
+			org.freeplane.Tools.logException(e);
 		}
 		catch (final XMLParseException e) {
-			org.freeplane.main.Tools.logException(e);
+			org.freeplane.Tools.logException(e);
 		}
 		catch (final URISyntaxException e) {
-			org.freeplane.main.Tools.logException(e);
+			org.freeplane.Tools.logException(e);
 		}
 	}
 
@@ -122,7 +122,7 @@ public class ImportMindmanagerFiles extends FreeplaneAction {
 			trans.transform(xmlSource, result);
 		}
 		catch (final Exception e) {
-			org.freeplane.main.Tools.logException(e);
+			org.freeplane.Tools.logException(e);
 			return null;
 		}
 		return writer.toString();

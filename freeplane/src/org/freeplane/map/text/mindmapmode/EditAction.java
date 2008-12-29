@@ -25,11 +25,11 @@ import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
+import org.freeplane.Tools;
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.main.HtmlTools;
-import org.freeplane.main.Tools;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.mindmapmode.MMapController;
 import org.freeplane.map.tree.view.EditNodeBase;

@@ -31,7 +31,7 @@ import javax.swing.JLabel;
 import javax.swing.KeyStroke;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.main.Tools;
+import org.freeplane.map.url.UrlManager;
 
 /**
  * This class represents a MindIcon than can be applied to a node or a whole
@@ -142,7 +142,7 @@ public class MindIcon implements Comparable, IIconInformation {
 					final File file = new File(Controller.getResourceController()
 					    .getFreemindUserDirectory(), "icons/" + getName() + ".png");
 					if (file.canRead()) {
-						imageURL = Tools.fileToUrl(file);
+						imageURL = UrlManager.fileToUrl(file);
 					}
 				}
 				catch (final Exception e) {

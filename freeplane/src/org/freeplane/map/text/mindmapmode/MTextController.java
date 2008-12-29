@@ -35,13 +35,13 @@ import javax.swing.text.html.HTMLEditorKit;
 import org.freeplane.controller.Controller;
 import org.freeplane.main.ExampleFileFilter;
 import org.freeplane.main.FixedHTMLWriter;
-import org.freeplane.main.Tools;
 import org.freeplane.map.link.mindmapmode.MLinkController;
 import org.freeplane.map.nodestyle.mindmapmode.MNodeStyleController;
 import org.freeplane.map.text.TextController;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.mindmapmode.MMapController;
 import org.freeplane.map.tree.view.NodeView;
+import org.freeplane.map.url.UrlManager;
 import org.freeplane.map.url.mindmapmode.FileManager;
 import org.freeplane.modes.ModeController;
 import org.freeplane.modes.UserInputListenerFactory;
@@ -128,10 +128,10 @@ public class MTextController extends TextController {
 				return strings;
 			}
 			catch (final IOException e) {
-				org.freeplane.main.Tools.logException(e);
+				org.freeplane.Tools.logException(e);
 			}
 			catch (final BadLocationException e) {
-				org.freeplane.main.Tools.logException(e);
+				org.freeplane.Tools.logException(e);
 			}
 		}
 		else {
@@ -178,7 +178,7 @@ public class MTextController extends TextController {
 					final NodeModel node = (NodeModel) e.next();
 					if (node.getLink() != null) {
 						final String possiblyRelative = node.getLink();
-						final String relative = Tools.isAbsolutePath(possiblyRelative) ? Tools
+						final String relative = UrlManager.isAbsolutePath(possiblyRelative) ? UrlManager
 						    .fileToUrl(new File(possiblyRelative)).toString() : possiblyRelative;
 						if (relative != null) {
 							final String strText = "<html><img src=\"" + relative + "\">";
@@ -199,7 +199,7 @@ public class MTextController extends TextController {
 			}
 		}
 		catch (final MalformedURLException e) {
-			org.freeplane.main.Tools.logException(e);
+			org.freeplane.Tools.logException(e);
 		}
 	}
 

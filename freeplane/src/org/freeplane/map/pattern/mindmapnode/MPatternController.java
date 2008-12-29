@@ -35,9 +35,9 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.main.Tools;
 import org.freeplane.map.icon.MindIcon;
 import org.freeplane.map.tree.NodeModel;
+import org.freeplane.map.url.UrlManager;
 import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.ui.MenuBuilder;
 
@@ -103,13 +103,13 @@ public class MPatternController {
 				// try xslt script:
 				boolean success = false;
 				try {
-					loadPatterns(Tools.getUpdateReader(patternsFile, "patterns_updater.xslt"));
+					loadPatterns(UrlManager.getUpdateReader(patternsFile, "patterns_updater.xslt"));
 					// save patterns directly:
 					StylePatternFactory.savePatterns(new FileWriter(patternsFile), mPatternsList);
 					success = true;
 				}
 				catch (final Exception e) {
-					org.freeplane.main.Tools.logException(e);
+					org.freeplane.Tools.logException(e);
 				}
 				if (success) {
 					JOptionPane.showMessageDialog(null, "Successfully repaired the pattern file.",

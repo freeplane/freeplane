@@ -24,8 +24,8 @@ import java.util.HashMap;
 import org.freeplane.io.IAttributeHandler;
 import org.freeplane.io.IElementDOMHandler;
 import org.freeplane.io.ReadManager;
+import org.freeplane.io.xml.TreeXmlReader;
 import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
-import org.freeplane.main.Tools;
 import org.freeplane.modes.mindmapmode.EncryptionModel;
 
 public class NodeBuilder implements IElementDOMHandler {
@@ -113,7 +113,7 @@ public class NodeBuilder implements IElementDOMHandler {
 				    if (node.getHistoryInformation() == null) {
 					    node.setHistoryInformation(new HistoryInformationModel());
 				    }
-				    node.getHistoryInformation().setCreatedAt(Tools.xmlToDate(value));
+				    node.getHistoryInformation().setCreatedAt(TreeXmlReader.xmlToDate(value));
 			    }
 		    });
 		reader.addAttributeHandler(NodeBuilder.XML_NODE,
@@ -123,7 +123,7 @@ public class NodeBuilder implements IElementDOMHandler {
 				    if (node.getHistoryInformation() == null) {
 					    node.setHistoryInformation(new HistoryInformationModel());
 				    }
-				    node.getHistoryInformation().setLastModifiedAt(Tools.xmlToDate(value));
+				    node.getHistoryInformation().setLastModifiedAt(TreeXmlReader.xmlToDate(value));
 			    }
 		    });
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "FOLDED", new IAttributeHandler() {

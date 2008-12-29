@@ -24,7 +24,6 @@ import java.util.Iterator;
 import java.util.ListIterator;
 
 import org.freeplane.controller.FreeplaneAction;
-import org.freeplane.main.Tools;
 
 /**
  * @author foltin
@@ -42,10 +41,17 @@ class CommonToggleFoldedAction extends FreeplaneAction {
 		toggleFolded(getModeController().getSelectedNodes().listIterator());
 	}
 
+	private ListIterator resetIterator(final ListIterator iterator) {
+		while (iterator.hasPrevious()) {
+			iterator.previous();
+		}
+		return iterator;
+	}
+
 	public void toggleFolded(final ListIterator listIterator) {
 		final boolean fold = getModeController().getMapController().getFoldingState(
-		    Tools.resetIterator(listIterator));
-		for (final Iterator i = Tools.resetIterator(listIterator); i.hasNext();) {
+		    resetIterator(listIterator));
+		for (final Iterator i = resetIterator(listIterator); i.hasNext();) {
 			final NodeModel node = (NodeModel) i.next();
 			getModeController().getMapController().setFolded(node, fold);
 		}

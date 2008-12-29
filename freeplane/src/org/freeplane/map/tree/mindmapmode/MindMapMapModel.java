@@ -23,8 +23,8 @@ import java.awt.EventQueue;
 import java.io.File;
 import java.util.Timer;
 
+import org.freeplane.Tools;
 import org.freeplane.controller.Controller;
-import org.freeplane.main.Tools;
 import org.freeplane.map.tree.MapModel;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.url.mindmapmode.DoAutomaticSave;

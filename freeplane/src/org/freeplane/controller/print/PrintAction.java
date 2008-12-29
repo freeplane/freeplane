@@ -49,7 +49,7 @@ class PrintAction extends AbstractPrintAction {
 				controller.getPrinterJob().print();
 			}
 			catch (final Exception ex) {
-				org.freeplane.main.Tools.logException(ex);
+				org.freeplane.Tools.logException(ex);
 			}
 		}
 	}

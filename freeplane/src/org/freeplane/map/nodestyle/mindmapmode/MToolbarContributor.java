@@ -19,6 +19,7 @@
  */
 package org.freeplane.map.nodestyle.mindmapmode;
 
+import java.awt.GraphicsEnvironment;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
@@ -26,7 +27,6 @@ import javax.swing.JComboBox;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.main.Tools;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.view.NodeView;
 import org.freeplane.modes.IMenuContributor;
@@ -46,7 +46,9 @@ class MToolbarContributor implements IMenuContributor, INodeSelectionListener, I
 
 	public MToolbarContributor(final MNodeStyleController styleController) {
 		this.styleController = styleController;
-		fonts = new JComboBox(Tools.getAvailableFontFamilyNamesAsVector());
+		final GraphicsEnvironment gEnv = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		final String[] envFonts = gEnv.getAvailableFontFamilyNames();
+		fonts = new JComboBox(envFonts);
 		size = new JComboBox(MToolbarContributor.sizes);
 		fontsListener = new ItemListener() {
 			public void itemStateChanged(final ItemEvent e) {

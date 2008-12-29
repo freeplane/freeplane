@@ -66,10 +66,10 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
+import org.freeplane.Tools;
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.WindowConfigurationStorage;
 import org.freeplane.main.HtmlTools;
-import org.freeplane.main.Tools;
 import org.freeplane.map.icon.MindIcon;
 import org.freeplane.map.text.mindmapmode.MTextController;
 import org.freeplane.map.tree.MapModel;
@@ -79,6 +79,7 @@ import org.freeplane.modes.ModeController;
 import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.ui.UIBuilder;
 import org.freeplane.ui.components.BlindIcon;
+import org.freeplane.ui.components.UITools;
 
 import com.jgoodies.forms.factories.ButtonBarFactory;
 
@@ -120,7 +121,7 @@ class TimeList {
 							mFlatNodeTableFilterModel.setFilter(text);
 						}
 						catch (final BadLocationException e) {
-							org.freeplane.main.Tools.logException(e);
+							org.freeplane.Tools.logException(e);
 							mFlatNodeTableFilterModel.resetFilter();
 						}
 					}
@@ -557,7 +558,7 @@ class TimeList {
 			mFilterTextSearchField.setText("");
 		}
 		catch (final BadLocationException e) {
-			org.freeplane.main.Tools.logException(e);
+			org.freeplane.Tools.logException(e);
 		}
 	}
 
@@ -600,7 +601,7 @@ class TimeList {
 				disposeDialog();
 			}
 		});
-		Tools.addEscapeActionToDialog(dialog, new AbstractAction() {
+		UITools.addEscapeActionToDialog(dialog, new AbstractAction() {
 			public void actionPerformed(final ActionEvent arg0) {
 				disposeDialog();
 			}

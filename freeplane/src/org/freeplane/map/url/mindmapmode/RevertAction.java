@@ -30,9 +30,9 @@ import javax.swing.JOptionPane;
 
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.FreeplaneAction;
-import org.freeplane.main.Tools;
 import org.freeplane.map.tree.MapController;
 import org.freeplane.map.tree.MapModel;
+import org.freeplane.map.url.UrlManager;
 import org.freeplane.modes.ModeController;
 
 /**
@@ -57,7 +57,7 @@ class RevertAction extends FreeplaneAction {
 			try {
 				Controller.getController().close(true);
 				if (this.getLocalFileName() != null) {
-					mapController.newMap(Tools.fileToUrl(new File(this.getLocalFileName())));
+					mapController.newMap(UrlManager.fileToUrl(new File(this.getLocalFileName())));
 				}
 				else {
 					String filePrefix = Controller.getText("freemind_reverted");
@@ -70,11 +70,11 @@ class RevertAction extends FreeplaneAction {
 					final FileWriter fw = new FileWriter(tempFile);
 					fw.write(this.getMap());
 					fw.close();
-					mapController.newMap(Tools.fileToUrl(tempFile));
+					mapController.newMap(UrlManager.fileToUrl(tempFile));
 				}
 			}
 			catch (final Exception e) {
-				org.freeplane.main.Tools.logException(e);
+				org.freeplane.Tools.logException(e);
 			}
 		}
 
@@ -127,7 +127,7 @@ class RevertAction extends FreeplaneAction {
 			doAction.act();
 		}
 		catch (final IOException e) {
-			org.freeplane.main.Tools.logException(e);
+			org.freeplane.Tools.logException(e);
 		}
 	}
 

@@ -28,11 +28,11 @@ import javax.swing.JFileChooser;
 
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.FreeplaneAction;
-import org.freeplane.main.Tools;
 import org.freeplane.map.link.mindmapmode.MLinkController;
 import org.freeplane.map.text.mindmapmode.MTextController;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.mindmapmode.MMapController;
+import org.freeplane.map.url.UrlManager;
 
 class ImportExplorerFavoritesAction extends FreeplaneAction {
 	public ImportExplorerFavoritesAction() {
@@ -83,10 +83,10 @@ class ImportExplorerFavoritesAction extends FreeplaneAction {
 				}
 			}
 			for (int i = 0; i < list.length; i++) {
-				if (!list[i].isDirectory() && Tools.getExtension(list[i]).equals("url")) {
+				if (!list[i].isDirectory() && UrlManager.getExtension(list[i]).equals("url")) {
 					favoritesFound = true;
 					try {
-						final NodeModel node = addNode(target, Tools.removeExtension(list[i]
+						final NodeModel node = addNode(target, UrlManager.removeExtension(list[i]
 						    .getName()));
 						final BufferedReader in = new BufferedReader(new FileReader(list[i]));
 						while (in.ready()) {
@@ -99,7 +99,7 @@ class ImportExplorerFavoritesAction extends FreeplaneAction {
 						}
 					}
 					catch (final Exception e) {
-						org.freeplane.main.Tools.logException(e);
+						org.freeplane.Tools.logException(e);
 					}
 				}
 			}

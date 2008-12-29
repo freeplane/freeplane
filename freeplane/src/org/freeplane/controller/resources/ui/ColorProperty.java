@@ -31,7 +31,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 import org.freeplane.controller.views.ColorTracker;
-import org.freeplane.main.Tools;
+import org.freeplane.io.xml.TreeXmlReader;
+import org.freeplane.io.xml.TreeXmlWriter;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
@@ -70,7 +71,7 @@ public class ColorProperty extends PropertyBean implements IPropertyControl, Act
 
 	@Override
 	public String getValue() {
-		return Tools.colorToXml(getColorValue());
+		return TreeXmlWriter.colorToXml(getColorValue());
 	}
 
 	public void layout(final DefaultFormBuilder builder) {
@@ -108,7 +109,7 @@ public class ColorProperty extends PropertyBean implements IPropertyControl, Act
 			result = Color.WHITE;
 		}
 		mButton.setBackground(result);
-		mButton.setText(Tools.colorToXml(result));
+		mButton.setText(TreeXmlWriter.colorToXml(result));
 	}
 
 	public void setEnabled(final boolean pEnabled) {
@@ -117,6 +118,6 @@ public class ColorProperty extends PropertyBean implements IPropertyControl, Act
 
 	@Override
 	public void setValue(final String value) {
-		setColorValue(Tools.xmlToColor(value));
+		setColorValue(TreeXmlReader.xmlToColor(value));
 	}
 }

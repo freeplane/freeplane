@@ -43,14 +43,13 @@ import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeNode;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.main.Tools;
 import org.freeplane.map.attribute.view.AttributeView;
 import org.freeplane.map.cloud.CloudModel;
 import org.freeplane.map.cloud.view.CloudView;
 import org.freeplane.map.edge.view.EdgeView;
-import org.freeplane.map.nodelocation.LocationModel;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.ui.IUserInputListenerFactory;
+import org.freeplane.ui.components.UITools;
 
 /**
  * This class represents a single Node of a MindMap (in analogy to
@@ -150,7 +149,7 @@ public class NodeView extends JComponent implements TreeModelListener {
 	}
 
 	protected void convertPointToMap(final Point p) {
-		Tools.convertPointToAncestor(this, p, getMap());
+		UITools.convertPointToAncestor(this, p, getMap());
 	}
 
 	public void createAttributeView() {
@@ -585,7 +584,7 @@ public class NodeView extends JComponent implements TreeModelListener {
 					}
 				}
 				final Point childPoint = new Point(0, childView.getMainView().getHeight() / 2);
-				Tools.convertPointToAncestor(childView.getMainView(), childPoint, baseComponent);
+				UITools.convertPointToAncestor(childView.getMainView(), childPoint, baseComponent);
 				final int gapToChild = Math.abs(childPoint.y - ownY);
 				if (gapToChild < yGap) {
 					newSelected = childView;
@@ -858,7 +857,7 @@ public class NodeView extends JComponent implements TreeModelListener {
 			final NodeView nodeView = (NodeView) component;
 			if (nodeView.isContentVisible()) {
 				final Point p = new Point();
-				Tools.convertPointToAncestor(nodeView, p, this);
+				UITools.convertPointToAncestor(nodeView, p, this);
 				g.translate(p.x, p.y);
 				nodeView.paintCloud(g);
 				g.translate(-p.x, -p.y);
@@ -874,7 +873,7 @@ public class NodeView extends JComponent implements TreeModelListener {
 	public void paintFoldingMark(final Graphics2D g) {
 		if (model.getModeController().getMapController().isFolded(model)) {
 			final Point out = getMainViewOutPoint(null, null);
-			Tools.convertPointToAncestor(getMainView(), out, this);
+			UITools.convertPointToAncestor(getMainView(), out, this);
 			mainView.paintFoldingMark(g, out);
 		}
 	}

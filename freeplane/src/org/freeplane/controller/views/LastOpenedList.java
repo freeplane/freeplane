@@ -33,8 +33,8 @@ import java.util.StringTokenizer;
 
 import org.freeplane.controller.Controller;
 import org.freeplane.io.xml.n3.nanoxml.XMLParseException;
-import org.freeplane.main.Tools;
 import org.freeplane.map.tree.view.MapView;
+import org.freeplane.map.url.UrlManager;
 
 /**
  * This class manages a list of the maps that were opened last. It aims to
@@ -108,7 +108,7 @@ public class LastOpenedList {
 					final String fileName = token.nextToken("").substring(1);
 					Controller.getController();
 					Controller.getModeController().getMapController().newMap(
-					    Tools.fileToUrl(new File(fileName)));
+					    UrlManager.fileToUrl(new File(fileName)));
 				}
 			}
 		}

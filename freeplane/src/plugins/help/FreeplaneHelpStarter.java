@@ -52,7 +52,7 @@ public class FreeplaneHelpStarter extends FreeplaneAction {
 			hb.setViewDisplayed(true);
 		}
 		catch (final Exception ee) {
-			org.freeplane.main.Tools.logException(ee);
+			org.freeplane.Tools.logException(ee);
 			Logger.global.warning("HelpSet " + ee.getMessage() + ee);
 			Logger.global.warning("HelpSet " + helpHS + " not found");
 			return;

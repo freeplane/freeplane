@@ -38,12 +38,12 @@ import javax.swing.WindowConstants;
 
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.WindowConfigurationStorage;
-import org.freeplane.main.Tools;
 import org.freeplane.map.pattern.mindmapnode.Pattern;
 import org.freeplane.map.pattern.mindmapnode.StylePatternPanel;
 import org.freeplane.map.pattern.mindmapnode.StylePatternPanel.StylePatternPanelType;
 import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.ui.MenuBuilder;
+import org.freeplane.ui.components.UITools;
 
 /** */
 class ChooseFormatPopupDialog extends JDialog implements KeyListener {
@@ -191,7 +191,7 @@ class ChooseFormatPopupDialog extends JDialog implements KeyListener {
 				cancelPressed();
 			}
 		};
-		Tools.addEscapeActionToDialog(this, action);
+		UITools.addEscapeActionToDialog(this, action);
 		pack();
 		final String marshalled = Controller.getResourceController().getProperty(
 		    ChooseFormatPopupDialog.WINDOW_PREFERENCE_STORAGE_PROPERTY);

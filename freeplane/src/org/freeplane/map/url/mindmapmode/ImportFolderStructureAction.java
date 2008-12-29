@@ -28,11 +28,11 @@ import javax.swing.JFileChooser;
 
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.FreeplaneAction;
-import org.freeplane.main.Tools;
 import org.freeplane.map.link.mindmapmode.MLinkController;
 import org.freeplane.map.text.mindmapmode.MTextController;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.mindmapmode.MMapController;
+import org.freeplane.map.url.UrlManager;
 
 class ImportFolderStructureAction extends FreeplaneAction {
 	public ImportFolderStructureAction() {
@@ -53,7 +53,7 @@ class ImportFolderStructureAction extends FreeplaneAction {
 				/*redisplay=*/true);
 			}
 			catch (final Exception ex) {
-				org.freeplane.main.Tools.logException(ex);
+				org.freeplane.Tools.logException(ex);
 			}
 			Controller.getController().getViewController().out("Folder structure imported.");
 		}
@@ -76,14 +76,14 @@ class ImportFolderStructureAction extends FreeplaneAction {
 			final File[] list = folder.listFiles();
 			for (int i = 0; i < list.length; i++) {
 				if (list[i].isDirectory()) {
-					final NodeModel node = addNode(target, list[i].getName(), Tools.fileToUrl(
+					final NodeModel node = addNode(target, list[i].getName(), UrlManager.fileToUrl(
 					    list[i]).toString());
 					importFolderStructure(list[i], node, false);
 				}
 			}
 			for (int i = 0; i < list.length; i++) {
 				if (!list[i].isDirectory()) {
-					addNode(target, list[i].getName(), Tools.fileToUrl(list[i]).toString());
+					addNode(target, list[i].getName(), UrlManager.fileToUrl(list[i]).toString());
 				}
 			}
 		}

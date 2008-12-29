@@ -57,7 +57,7 @@ import javax.swing.JViewport;
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.controller.resources.ui.IFreemindPropertyListener;
-import org.freeplane.main.Tools;
+import org.freeplane.io.xml.TreeXmlReader;
 import org.freeplane.map.link.ArrowLinkModel;
 import org.freeplane.map.link.LinkModel;
 import org.freeplane.map.link.view.ArrowLinkView;
@@ -65,6 +65,7 @@ import org.freeplane.map.tree.MapModel;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.ModeController;
 import org.freeplane.ui.IUserInputListenerFactory;
+import org.freeplane.ui.components.UITools;
 
 /**
  * This class represents the view of a whole MindMap (in analogy to class
@@ -198,7 +199,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 			try {
 				final String stdcolor = Controller.getResourceController().getProperty(
 				    ResourceController.RESOURCES_BACKGROUND_COLOR);
-				MapView.standardMapBackgroundColor = Tools.xmlToColor(stdcolor);
+				MapView.standardMapBackgroundColor = TreeXmlReader.xmlToColor(stdcolor);
 			}
 			catch (final Exception ex) {
 				MapView.standardMapBackgroundColor = Color.WHITE;
@@ -206,7 +207,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 			try {
 				final String stdcolor = Controller.getResourceController().getProperty(
 				    ResourceController.RESOURCES_NODE_TEXT_COLOR);
-				MapView.standardNodeTextColor = Tools.xmlToColor(stdcolor);
+				MapView.standardNodeTextColor = TreeXmlReader.xmlToColor(stdcolor);
 			}
 			catch (final Exception ex) {
 				MapView.standardSelectColor = Color.WHITE;
@@ -214,7 +215,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 			try {
 				final String stdcolor = Controller.getResourceController().getProperty(
 				    ResourceController.RESOURCES_SELECTED_NODE_COLOR);
-				MapView.standardSelectColor = Tools.xmlToColor(stdcolor);
+				MapView.standardSelectColor = TreeXmlReader.xmlToColor(stdcolor);
 			}
 			catch (final Exception ex) {
 				MapView.standardSelectColor = Color.BLUE.darker();
@@ -222,7 +223,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 			try {
 				final String stdtextcolor = Controller.getResourceController().getProperty(
 				    ResourceController.RESOURCES_SELECTED_NODE_RECTANGLE_COLOR);
-				MapView.standardSelectRectangleColor = Tools.xmlToColor(stdtextcolor);
+				MapView.standardSelectRectangleColor = TreeXmlReader.xmlToColor(stdtextcolor);
 			}
 			catch (final Exception ex) {
 				MapView.standardSelectRectangleColor = Color.WHITE;
@@ -230,7 +231,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 			try {
 				final String drawCircle = Controller.getResourceController().getProperty(
 				    ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION);
-				MapView.standardDrawRectangleForSelection = Tools.xmlToBoolean(drawCircle);
+				MapView.standardDrawRectangleForSelection = TreeXmlReader.xmlToBoolean(drawCircle);
 			}
 			catch (final Exception ex) {
 				MapView.standardDrawRectangleForSelection = false;
@@ -238,7 +239,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 			try {
 				final String printOnWhite = Controller.getResourceController().getProperty(
 				    "printonwhitebackground");
-				MapView.printOnWhiteBackground = Tools.xmlToBoolean(printOnWhite);
+				MapView.printOnWhiteBackground = TreeXmlReader.xmlToBoolean(printOnWhite);
 			}
 			catch (final Exception ex) {
 				MapView.standardDrawRectangleForSelection = false;
@@ -323,30 +324,30 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 			public void propertyChanged(final String propertyName, final String newValue,
 			                            final String oldValue) {
 				if (propertyName.equals(ResourceController.RESOURCES_NODE_TEXT_COLOR)) {
-					MapView.standardNodeTextColor = Tools.xmlToColor(newValue);
+					MapView.standardNodeTextColor = TreeXmlReader.xmlToColor(newValue);
 					Controller.getController().getMapView().getRoot().updateAll();
 				}
 				else if (propertyName.equals(ResourceController.RESOURCES_BACKGROUND_COLOR)) {
-					MapView.standardMapBackgroundColor = Tools.xmlToColor(newValue);
+					MapView.standardMapBackgroundColor = TreeXmlReader.xmlToColor(newValue);
 					Controller.getController().getMapView().setBackground(
 					    MapView.standardMapBackgroundColor);
 				}
 				else if (propertyName.equals(ResourceController.RESOURCES_SELECTED_NODE_COLOR)) {
-					MapView.standardSelectColor = Tools.xmlToColor(newValue);
+					MapView.standardSelectColor = TreeXmlReader.xmlToColor(newValue);
 					Controller.getController().getMapView().repaintSelecteds();
 				}
 				else if (propertyName
 				    .equals(ResourceController.RESOURCES_SELECTED_NODE_RECTANGLE_COLOR)) {
-					MapView.standardSelectRectangleColor = Tools.xmlToColor(newValue);
+					MapView.standardSelectRectangleColor = TreeXmlReader.xmlToColor(newValue);
 					Controller.getController().getMapView().repaintSelecteds();
 				}
 				else if (propertyName
 				    .equals(ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION)) {
-					MapView.standardDrawRectangleForSelection = Tools.xmlToBoolean(newValue);
+					MapView.standardDrawRectangleForSelection = TreeXmlReader.xmlToBoolean(newValue);
 					Controller.getController().getMapView().repaintSelecteds();
 				}
 				else if (propertyName.equals("printonwhitebackground")) {
-					MapView.printOnWhiteBackground = Tools.xmlToBoolean(newValue);
+					MapView.printOnWhiteBackground = TreeXmlReader.xmlToBoolean(newValue);
 				}
 			}
 		};
@@ -500,7 +501,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 
 	private int getMainViewY(final NodeView node) {
 		final Point newSelectedLocation = new Point();
-		Tools.convertPointToAncestor(node.getMainView(), newSelectedLocation, this);
+		UITools.convertPointToAncestor(node.getMainView(), newSelectedLocation, this);
 		final int newY = newSelectedLocation.y;
 		return newY;
 	}
@@ -529,7 +530,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 
 	public Point getNodeContentLocation(final NodeView nodeView) {
 		final Point contentXY = new Point(0, 0);
-		Tools.convertPointToAncestor(nodeView.getContent(), contentXY, this);
+		UITools.convertPointToAncestor(nodeView.getContent(), contentXY, this);
 		return contentXY;
 	}
 
@@ -599,7 +600,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 				}
 			}
 			view.getContent().getLocation(point);
-			Tools.convertPointToAncestor(view, point, this);
+			UITools.convertPointToAncestor(view, point, this);
 			final Integer pointY = new Integer(point.y);
 			LinkedList<NodeModel> nodeList = sortedNodes.get(pointY);
 			if (nodeList == null) {
@@ -787,7 +788,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 	public void paint(final Graphics g) {
 		if (isValid()) {
 			getRoot().getContent().getLocation(rootContentLocation);
-			Tools.convertPointToAncestor(getRoot(), rootContentLocation, getParent());
+			UITools.convertPointToAncestor(getRoot(), rootContentLocation, getParent());
 		}
 		final Graphics2D g2 = (Graphics2D) g;
 		final Object renderingHint = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
@@ -867,7 +868,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		final int arcWidth = 4;
 		final JComponent content = selected.getContent();
 		final Point contentLocation = new Point();
-		Tools.convertPointToAncestor(content, contentLocation, this);
+		UITools.convertPointToAncestor(content, contentLocation, this);
 		g.drawRoundRect(contentLocation.x - arcWidth, contentLocation.y - arcWidth, content
 		    .getWidth()
 		        + 2 * arcWidth, content.getHeight() + 2 * arcWidth, 15, 15);
@@ -1205,7 +1206,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		final Point oldRootContentLocation = rootContentLocation;
 		final NodeView root = getRoot();
 		final Point newRootContentLocation = root.getContent().getLocation();
-		Tools.convertPointToAncestor(getRoot(), newRootContentLocation, getParent());
+		UITools.convertPointToAncestor(getRoot(), newRootContentLocation, getParent());
 		final int deltaX = newRootContentLocation.x - oldRootContentLocation.x;
 		final int deltaY = newRootContentLocation.y - oldRootContentLocation.y;
 		if (deltaX != 0 || deltaY != 0) {

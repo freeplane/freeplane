@@ -51,7 +51,6 @@ import javax.swing.event.ListDataListener;
 
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.views.IMapViewChangeListener;
-import org.freeplane.main.Tools;
 import org.freeplane.map.attribute.Attribute;
 import org.freeplane.map.attribute.AttributeRegistry;
 import org.freeplane.map.attribute.AttributeRegistryElement;
@@ -61,6 +60,7 @@ import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.view.MapView;
 import org.freeplane.map.tree.view.NodeView;
 import org.freeplane.ui.MenuBuilder;
+import org.freeplane.ui.components.UITools;
 
 public class AssignAttributeDialog extends JDialog implements IAttributesListener,
         IMapViewChangeListener {
@@ -301,7 +301,7 @@ public class AssignAttributeDialog extends JDialog implements IAttributesListene
 	final private JRadioButton visibleBtn;
 
 	public AssignAttributeDialog(final MapView mapView) {
-		super(JOptionPane.getFrameForComponent(mapView), Tools.removeMnemonic(Controller
+		super(JOptionPane.getFrameForComponent(mapView), UITools.removeMnemonic(Controller
 		    .getText("attributes_assign_dialog")), false);
 		final Border actionBorder = new MatteBorder(2, 2, 2, 2, Color.BLACK);
 		final Border emptyBorder = new EmptyBorder(5, 5, 5, 5);
@@ -344,7 +344,7 @@ public class AssignAttributeDialog extends JDialog implements IAttributesListene
 		MenuBuilder.setLabelAndMnemonic(replaceBtn, Controller.getText("attribute_replace"));
 		replaceBtn.addActionListener(new ReplaceValueAction());
 		replaceBtn.setMaximumSize(AssignAttributeDialog.maxButtonDimension);
-		Tools.addEscapeActionToDialog(this);
+		UITools.addEscapeActionToDialog(this);
 		final String pattern = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
 		final JLabel patternLabel = new JLabel(pattern);
 		final Dimension comboBoxMaximumSize = patternLabel.getPreferredSize();

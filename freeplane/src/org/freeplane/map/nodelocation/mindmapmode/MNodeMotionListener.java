@@ -29,7 +29,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.main.Tools;
 import org.freeplane.map.nodelocation.LocationModel;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.view.MapView;
@@ -37,6 +36,7 @@ import org.freeplane.map.tree.view.NodeMotionListenerView;
 import org.freeplane.map.tree.view.NodeView;
 import org.freeplane.modes.UserInputListenerFactory;
 import org.freeplane.modes.mindmapmode.MModeController;
+import org.freeplane.ui.components.UITools;
 
 /**
  * The MouseMotionListener which belongs to every NodeView
@@ -129,7 +129,7 @@ class MNodeMotionListener extends UserInputListenerFactory.DefaultNodeMotionList
 			final NodeView nodeV = getNodeView(e);
 			final MapView mapView = nodeV.getMap();
 			final Point point = e.getPoint();
-			Tools.convertPointToAncestor(motionListenerView, point, JScrollPane.class);
+			UITools.convertPointToAncestor(motionListenerView, point, JScrollPane.class);
 			if (!isActive()) {
 				setDragStartingPoint(point, nodeV.getModel());
 			}
@@ -197,7 +197,7 @@ class MNodeMotionListener extends UserInputListenerFactory.DefaultNodeMotionList
 		}
 		final NodeView nodeV = getNodeView(e);
 		final Point point = e.getPoint();
-		Tools.convertPointToAncestor(nodeV, point, JScrollPane.class);
+		UITools.convertPointToAncestor(nodeV, point, JScrollPane.class);
 		final NodeModel node = nodeV.getModel();
 		final NodeModel parentNode = nodeV.getModel().getParentNode();
 		final int parentVGap = parentNode.getLocationModel().getVGap();

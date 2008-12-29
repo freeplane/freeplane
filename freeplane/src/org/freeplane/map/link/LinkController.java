@@ -34,7 +34,7 @@ import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.controller.resources.ui.IFreemindPropertyListener;
 import org.freeplane.io.ReadManager;
 import org.freeplane.io.WriteManager;
-import org.freeplane.main.Tools;
+import org.freeplane.io.xml.TreeXmlReader;
 import org.freeplane.map.ExclusivePropertyChain;
 import org.freeplane.map.IPropertyGetter;
 import org.freeplane.map.tree.MapController;
@@ -49,7 +49,7 @@ public class LinkController {
 		public void propertyChanged(final String propertyName, final String newValue,
 		                            final String oldValue) {
 			if (propertyName.equals(ResourceController.RESOURCES_LINK_COLOR)) {
-				standardColor = Tools.xmlToColor(newValue);
+				standardColor = TreeXmlReader.xmlToColor(newValue);
 			}
 		}
 	}
@@ -216,7 +216,7 @@ public class LinkController {
 			final String stdColor = Controller.getResourceController().getProperty(
 			    ResourceController.RESOURCES_LINK_COLOR);
 			if (stdColor != null && stdColor.length() == 7) {
-				standardColor = Tools.xmlToColor(stdColor);
+				standardColor = TreeXmlReader.xmlToColor(stdColor);
 			}
 			else {
 				standardColor = Color.RED;

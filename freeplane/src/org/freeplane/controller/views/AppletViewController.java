@@ -115,10 +115,10 @@ public class AppletViewController extends ViewController {
 				});
 			}
 			catch (final InterruptedException e) {
-				org.freeplane.main.Tools.logException(e);
+				org.freeplane.Tools.logException(e);
 			}
 			catch (final InvocationTargetException e) {
-				org.freeplane.main.Tools.logException(e);
+				org.freeplane.Tools.logException(e);
 			}
 		}
 		controller.selectMode(Controller.getResourceController().getProperty("initial_mode"));
@@ -146,7 +146,7 @@ public class AppletViewController extends ViewController {
 				    .newMap(mapUrl);
 			}
 			catch (final Exception e) {
-				org.freeplane.main.Tools.logException(e);
+				org.freeplane.Tools.logException(e);
 			}
 		}
 	}
@@ -215,7 +215,7 @@ public class AppletViewController extends ViewController {
 			}
 		}
 		catch (final Exception e) {
-			org.freeplane.main.Tools.logException(e);
+			org.freeplane.Tools.logException(e);
 		}
 	}
 }

@@ -24,8 +24,8 @@ import java.awt.geom.CubicCurve2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 
-import org.freeplane.main.Tools;
 import org.freeplane.map.tree.view.MainView;
+import org.freeplane.ui.components.UITools;
 
 /**
  * This class represents a sharp Edge of a MindMap.
@@ -69,7 +69,7 @@ public class SharpBezierEdgeView extends EdgeView {
 					deltaY = -deltaY;
 				}
 			}
-			Tools.convertPointToAncestor(mainView, start, source);
+			UITools.convertPointToAncestor(mainView, start, source);
 		}
 		else {
 			final int delta = getMap().getZoomed(getWidth() / 2 + 1);

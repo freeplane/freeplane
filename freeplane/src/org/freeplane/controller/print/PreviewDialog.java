@@ -31,9 +31,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 
-import org.freeplane.main.Tools;
 import org.freeplane.map.tree.view.MapView;
 import org.freeplane.ui.FreeMindToolBar;
+import org.freeplane.ui.components.UITools;
 
 public class PreviewDialog extends JDialog implements ActionListener {
 	final private static double DEFAULT_ZOOM_FACTOR_STEP = 0.1;
@@ -67,7 +67,7 @@ public class PreviewDialog extends JDialog implements ActionListener {
 		ok.addActionListener(this);
 		dialog.add(ok);
 		getContentPane().add(dialog, "South");
-		Tools.addEscapeActionToDialog(this);
+		UITools.addEscapeActionToDialog(this);
 	}
 
 	public void actionPerformed(final ActionEvent e) {

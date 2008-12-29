@@ -25,7 +25,7 @@ import java.awt.Point;
 import javax.swing.JComponent;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.main.Tools;
+import org.freeplane.ui.components.UITools;
 
 /**
  * @author Dimitry Polivaev
@@ -60,7 +60,7 @@ public class VerticalRootNodeViewLayout extends NodeViewLayoutAdapter {
 			}
 		}
 		final Point p = new Point(destinationPoint);
-		Tools.convertPointFromAncestor(view, p, mainView);
+		UITools.convertPointFromAncestor(view, p, mainView);
 		final double nWidth = mainView.getWidth() / 2f;
 		final double nHeight = mainView.getHeight() / 2f;
 		final Point centerPoint = new Point((int) nWidth, (int) nHeight);
@@ -113,7 +113,7 @@ public class VerticalRootNodeViewLayout extends NodeViewLayoutAdapter {
 		final JComponent content = movedView.getContent();
 		location.x = 0;
 		location.y = -LISTENER_VIEW_WIDTH;
-		Tools.convertPointToAncestor(content, location, view.getParent());
+		UITools.convertPointToAncestor(content, location, view.getParent());
 		view.setLocation(location);
 		view.setSize(content.getWidth(), LISTENER_VIEW_WIDTH);
 	}

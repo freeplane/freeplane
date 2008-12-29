@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
-import org.freeplane.main.Tools;
+import org.freeplane.Tools;
 import org.freeplane.map.tree.MapModel;
 import org.freeplane.map.tree.view.MapView;
 import org.freeplane.modes.ModeController;

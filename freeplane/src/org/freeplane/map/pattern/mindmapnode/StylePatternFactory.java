@@ -28,8 +28,9 @@ import java.io.Writer;
 import java.util.Iterator;
 import java.util.List;
 
+import org.freeplane.Tools;
 import org.freeplane.controller.Controller;
-import org.freeplane.main.Tools;
+import org.freeplane.io.xml.TreeXmlWriter;
 import org.freeplane.map.edge.EdgeModel;
 import org.freeplane.map.icon.MindIcon;
 import org.freeplane.map.nodestyle.NodeStyleModel;
@@ -69,12 +70,12 @@ public class StylePatternFactory {
 		final Pattern pattern = new Pattern();
 		if (node.getColor() != null) {
 			final PatternProperty subPattern = new PatternProperty();
-			subPattern.setValue(Tools.colorToXml(node.getColor()));
+			subPattern.setValue(TreeXmlWriter.colorToXml(node.getColor()));
 			pattern.setPatternNodeColor(subPattern);
 		}
 		if (node.getBackgroundColor() != null) {
 			final PatternProperty subPattern = new PatternProperty();
-			subPattern.setValue(Tools.colorToXml(node.getBackgroundColor()));
+			subPattern.setValue(TreeXmlWriter.colorToXml(node.getBackgroundColor()));
 			pattern.setPatternNodeBackgroundColor(subPattern);
 		}
 		if (node.getShape() != null) {
@@ -109,7 +110,7 @@ public class StylePatternFactory {
 			final Color edgeColor = edge.getColor();
 			if (edgeColor != null) {
 				final PatternProperty colorPattern = new PatternProperty();
-				colorPattern.setValue(Tools.colorToXml(edgeColor));
+				colorPattern.setValue(TreeXmlWriter.colorToXml(edgeColor));
 				pattern.setPatternEdgeColor(colorPattern);
 			}
 			final String edgeStyle = edge.getStyle();

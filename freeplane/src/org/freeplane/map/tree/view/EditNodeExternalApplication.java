@@ -25,7 +25,7 @@ import java.io.FileWriter;
 import java.text.MessageFormat;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.main.Tools;
+import org.freeplane.map.url.UrlManager;
 import org.freeplane.modes.ModeController;
 
 /**
@@ -62,14 +62,14 @@ public class EditNodeExternalApplication extends EditNodeBase {
 					final Process htmlEditorProcess = Runtime.getRuntime().exec(
 					    expandedHtmlEditingCommand);
 					htmlEditorProcess.waitFor();
-					final String content = Tools.getFile(temporaryFile);
+					final String content = UrlManager.getFile(temporaryFile);
 					if (content == null) {
 						getEditControl().cancel();
 					}
 					getEditControl().ok(content);
 				}
 				catch (final Exception e) {
-					org.freeplane.main.Tools.logException(e);
+					org.freeplane.Tools.logException(e);
 					try {
 						if (writer != null) {
 							writer.close();

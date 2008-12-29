@@ -46,13 +46,13 @@ import javax.swing.tree.TreeSelectionModel;
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.filter.util.SortedComboBoxModel;
 import org.freeplane.controller.views.MapViewManager;
-import org.freeplane.main.Tools;
 import org.freeplane.map.attribute.AttributeRegistry;
 import org.freeplane.map.attribute.AttributeRegistryElement;
 import org.freeplane.map.icon.MindIcon;
 import org.freeplane.map.tree.MapModel;
 import org.freeplane.map.tree.view.MapView;
 import org.freeplane.ui.MenuBuilder;
+import org.freeplane.ui.components.UITools;
 
 class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 	static private class AttributeTreeNodeInfo extends TreeNodeInfo {
@@ -174,7 +174,7 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 		buttons.add(cancelBtn);
 		buttons.add(Box.createHorizontalGlue());
 		getContentPane().add(buttons, BorderLayout.SOUTH);
-		Tools.addEscapeActionToDialog(this);
+		UITools.addEscapeActionToDialog(this);
 	}
 
 	private void createAttributeSubTrees(final DefaultMutableTreeNode mapInfo,

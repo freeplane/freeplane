@@ -35,9 +35,10 @@ import org.freeplane.io.IReadCompletionListener;
 import org.freeplane.io.ITreeWriter;
 import org.freeplane.io.ReadManager;
 import org.freeplane.io.WriteManager;
+import org.freeplane.io.xml.TreeXmlReader;
+import org.freeplane.io.xml.TreeXmlWriter;
 import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
 import org.freeplane.io.xml.n3.nanoxml.XMLElement;
-import org.freeplane.main.Tools;
 import org.freeplane.map.tree.NodeBuilder;
 import org.freeplane.map.tree.NodeModel;
 
@@ -110,7 +111,7 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 		reader.addAttributeHandler("arrowlink", "COLOR", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final ArrowLinkModel arrowLink = (ArrowLinkModel) userObject;
-				arrowLink.setColor(Tools.xmlToColor(value.toString()));
+				arrowLink.setColor(TreeXmlReader.xmlToColor(value.toString()));
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "DESTINATION", new IAttributeHandler() {
@@ -129,13 +130,13 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 		reader.addAttributeHandler("arrowlink", "STARTINCLINATION", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final ArrowLinkModel arrowLink = (ArrowLinkModel) userObject;
-				arrowLink.setStartInclination(Tools.xmlToPoint(value.toString()));
+				arrowLink.setStartInclination(TreeXmlReader.xmlToPoint(value.toString()));
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "ENDINCLINATION", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final ArrowLinkModel arrowLink = (ArrowLinkModel) userObject;
-				arrowLink.setEndInclination(Tools.xmlToPoint(value.toString()));
+				arrowLink.setEndInclination(TreeXmlReader.xmlToPoint(value.toString()));
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "STARTARROW", new IAttributeHandler() {
@@ -177,7 +178,7 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 		}
 		final Color color = model.getColor();
 		if (color != null) {
-			arrowLink.setAttribute("COLOR", Tools.colorToXml(color));
+			arrowLink.setAttribute("COLOR", TreeXmlWriter.colorToXml(color));
 		}
 		final String destinationLabel = model.getTarget().createID();
 		if (destinationLabel != null) {
@@ -189,11 +190,11 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 		}
 		final Point startInclination = model.getStartInclination();
 		if (startInclination != null) {
-			arrowLink.setAttribute("STARTINCLINATION", Tools.PointToXml(startInclination));
+			arrowLink.setAttribute("STARTINCLINATION", TreeXmlWriter.PointToXml(startInclination));
 		}
 		final Point endInclination = model.getEndInclination();
 		if (endInclination != null) {
-			arrowLink.setAttribute("ENDINCLINATION", Tools.PointToXml(endInclination));
+			arrowLink.setAttribute("ENDINCLINATION", TreeXmlWriter.PointToXml(endInclination));
 		}
 		final String startArrow = model.getStartArrow();
 		if (startArrow != null) {

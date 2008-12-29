@@ -47,7 +47,7 @@ public class XmlExporter {
 			trans.transform(xmlSource, result);
 		}
 		catch (final Exception e) {
-			org.freeplane.main.Tools.logException(e);
+			org.freeplane.Tools.logException(e);
 		};
 		return;
 	}

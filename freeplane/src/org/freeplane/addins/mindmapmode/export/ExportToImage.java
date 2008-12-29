@@ -92,7 +92,7 @@ public class ExportToImage extends ExportAction {
 			out.close();
 		}
 		catch (final IOException e1) {
-			org.freeplane.main.Tools.logException(e1);
+			org.freeplane.Tools.logException(e1);
 		}
 		Controller.getController().getViewController().setWaitingCursor(false);
 		return true;
@@ -112,7 +112,7 @@ public class ExportToImage extends ExportAction {
 			trans.transform(xmlSource, result);
 		}
 		catch (final Exception e) {
-			org.freeplane.main.Tools.logException(e);
+			org.freeplane.Tools.logException(e);
 		};
 		return;
 	}

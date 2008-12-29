@@ -44,16 +44,17 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import org.freeplane.Tools;
 import org.freeplane.controller.Controller;
 import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
 import org.freeplane.io.xml.n3.nanoxml.IXMLParser;
 import org.freeplane.io.xml.n3.nanoxml.IXMLReader;
 import org.freeplane.io.xml.n3.nanoxml.StdXMLReader;
 import org.freeplane.io.xml.n3.nanoxml.XMLParserFactory;
-import org.freeplane.main.Tools;
 import org.freeplane.map.icon.MindIcon;
 import org.freeplane.map.tree.MapModel;
 import org.freeplane.map.tree.NodeModel;
+import org.freeplane.map.url.UrlManager;
 import org.freeplane.modes.ModeController;
 import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.ui.MenuBuilder;
@@ -222,7 +223,7 @@ public class ExportWithXSLT extends ExportAction {
 			out.close();
 		}
 		catch (final IOException e1) {
-			org.freeplane.main.Tools.logException(e1);
+			org.freeplane.Tools.logException(e1);
 		}
 	}
 
@@ -313,11 +314,11 @@ public class ExportWithXSLT extends ExportAction {
 			}
 			if (Tools.safeEquals(getProperty("load_file"), "true")) {
 				Controller.getController().getViewController().openDocument(
-				    Tools.fileToUrl(saveFile));
+				    UrlManager.fileToUrl(saveFile));
 			}
 		}
 		catch (final Exception e) {
-			org.freeplane.main.Tools.logException(e);
+			org.freeplane.Tools.logException(e);
 			mTransformResultWithoutError = false;
 		}
 	}
@@ -336,7 +337,7 @@ public class ExportWithXSLT extends ExportAction {
 			trans.transform(xmlSource, result);
 		}
 		catch (final Exception e) {
-			org.freeplane.main.Tools.logException(e);
+			org.freeplane.Tools.logException(e);
 			return false;
 		};
 		return true;

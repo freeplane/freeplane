@@ -53,8 +53,8 @@ import org.freeplane.io.IElementHandler;
 import org.freeplane.io.ReadManager;
 import org.freeplane.io.xml.TreeXmlReader;
 import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
-import org.freeplane.main.Tools;
 import org.freeplane.modes.ModeController;
+import org.freeplane.ui.components.UITools;
 
 public class MenuBuilder extends UIBuilder {
 	private static class ActionHolder implements INameMnemonicHolder {
@@ -266,7 +266,7 @@ public class MenuBuilder extends UIBuilder {
 					}
 				}
 				catch (final Exception e1) {
-					org.freeplane.main.Tools.logException(e1);
+					org.freeplane.Tools.logException(e1);
 				}
 				return menuPath;
 			}
@@ -381,12 +381,12 @@ public class MenuBuilder extends UIBuilder {
 		if (rawLabel == null) {
 			return;
 		}
-		item.setText(Tools.removeMnemonic(rawLabel));
+		item.setText(UITools.removeMnemonic(rawLabel));
 		final int mnemoSignIndex = rawLabel.indexOf("&");
 		if (mnemoSignIndex >= 0 && mnemoSignIndex + 1 < rawLabel.length()) {
 			final char charAfterMnemoSign = rawLabel.charAt(mnemoSignIndex + 1);
 			if (charAfterMnemoSign != ' ') {
-				if (!Tools.isMacOsX()) {
+				if (!Controller.isMacOsX()) {
 					item.setMnemonic(charAfterMnemoSign);
 					item.setDisplayedMnemonicIndex(mnemoSignIndex);
 				}

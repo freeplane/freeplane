@@ -24,7 +24,7 @@ import java.awt.Point;
 
 import javax.swing.JComponent;
 
-import org.freeplane.main.Tools;
+import org.freeplane.ui.components.UITools;
 
 /**
  * @author Dimitry Polivaev
@@ -78,7 +78,7 @@ public class RightNodeViewLayout extends NodeViewLayoutAdapter {
 		final JComponent content = movedView.getContent();
 		location.x = -LISTENER_VIEW_WIDTH;
 		location.y = 0;
-		Tools.convertPointToAncestor(content, location, view.getParent());
+		UITools.convertPointToAncestor(content, location, view.getParent());
 		view.setLocation(location);
 		view.setSize(LISTENER_VIEW_WIDTH, content.getHeight());
 	}

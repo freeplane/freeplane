@@ -25,9 +25,9 @@ import java.util.ListIterator;
 import org.freeplane.io.IAttributeWriter;
 import org.freeplane.io.IElementWriter;
 import org.freeplane.io.ITreeWriter;
+import org.freeplane.io.xml.TreeXmlWriter;
 import org.freeplane.io.xml.n3.nanoxml.XMLElement;
 import org.freeplane.main.HtmlTools;
-import org.freeplane.main.Tools;
 import org.freeplane.map.icon.MindIcon;
 import org.freeplane.map.text.NodeTextBuilder;
 import org.freeplane.modes.mindmapmode.EncryptionModel;
@@ -102,9 +102,9 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 			}
 		}
 		if (node.getHistoryInformation() != null) {
-			writer.addAttribute(NodeBuilder.XML_NODE_HISTORY_CREATED_AT, Tools.dateToString(node
+			writer.addAttribute(NodeBuilder.XML_NODE_HISTORY_CREATED_AT, TreeXmlWriter.dateToString(node
 			    .getHistoryInformation().getCreatedAt()));
-			writer.addAttribute(NodeBuilder.XML_NODE_HISTORY_LAST_MODIFIED_AT, Tools
+			writer.addAttribute(NodeBuilder.XML_NODE_HISTORY_LAST_MODIFIED_AT, TreeXmlWriter
 			    .dateToString(node.getHistoryInformation().getLastModifiedAt()));
 		}
 		for (int i = 0; i < node.getIcons().size(); ++i) {

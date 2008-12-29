@@ -38,7 +38,7 @@ import org.freeplane.controller.Controller;
 import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.controller.resources.ui.OptionPanel;
 import org.freeplane.controller.resources.ui.OptionPanel.IOptionPanelFeedback;
-import org.freeplane.main.Tools;
+import org.freeplane.ui.components.UITools;
 
 /**
  * @author foltin
@@ -96,7 +96,7 @@ public class PropertyAction extends FreeplaneAction {
 				options.closeWindow();
 			}
 		};
-		Tools.addEscapeActionToDialog(dialog, action);
+		UITools.addEscapeActionToDialog(dialog, action);
 		dialog.setVisible(true);
 	}
 }

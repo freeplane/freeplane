@@ -87,7 +87,7 @@ public class DoAutomaticSave extends TimerTask {
 						catch (final Exception e) {
 							System.err.println("Error in automatic MindMapMapModel.save(): "
 							        + e.getMessage());
-							org.freeplane.main.Tools.logException(e);
+							org.freeplane.Tools.logException(e);
 							return;
 						}
 					}
@@ -101,17 +101,17 @@ public class DoAutomaticSave extends TimerTask {
 					catch (final Exception e) {
 						System.err.println("Error in automatic MindMapMapModel.save(): "
 						        + e.getMessage());
-						org.freeplane.main.Tools.logException(e);
+						org.freeplane.Tools.logException(e);
 					}
 					tempFileStack.add(tempFile);
 				}
 			});
 		}
 		catch (final InterruptedException e) {
-			org.freeplane.main.Tools.logException(e);
+			org.freeplane.Tools.logException(e);
 		}
 		catch (final InvocationTargetException e) {
-			org.freeplane.main.Tools.logException(e);
+			org.freeplane.Tools.logException(e);
 		}
 	}
 }

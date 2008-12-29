@@ -40,6 +40,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.freeplane.Tools;
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.views.MapViewManager;
 import org.freeplane.io.ReadManager;
@@ -48,11 +49,11 @@ import org.freeplane.io.xml.TreeXmlWriter;
 import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
 import org.freeplane.io.xml.n3.nanoxml.XMLElement;
 import org.freeplane.io.xml.n3.nanoxml.XMLParseException;
-import org.freeplane.main.Tools;
 import org.freeplane.map.tree.mindmapmode.IMapChangeListener;
 import org.freeplane.map.tree.view.MainView;
 import org.freeplane.map.tree.view.MapView;
 import org.freeplane.map.tree.view.NodeView;
+import org.freeplane.map.url.UrlManager;
 import org.freeplane.modes.ModeController;
 import org.freeplane.modes.mindmapmode.EncryptionModel;
 
@@ -413,8 +414,8 @@ public class MapController {
 	public void loadURL(final String relative) {
 		try {
 			URL absolute = null;
-			if (Tools.isAbsolutePath(relative)) {
-				absolute = Tools.fileToUrl(new File(relative));
+			if (UrlManager.isAbsolutePath(relative)) {
+				absolute = UrlManager.fileToUrl(new File(relative));
 			}
 			else if (relative.startsWith("#")) {
 				final String target = relative.substring(1);
@@ -423,9 +424,9 @@ public class MapController {
 					return;
 				}
 				catch (final Exception e) {
-					org.freeplane.main.Tools.logException(e);
+					org.freeplane.Tools.logException(e);
 					Controller.getController().getViewController().out(
-					    Tools.expandPlaceholders(getModeController().getText("link_not_found"),
+					    UrlManager.expandPlaceholders(getModeController().getText("link_not_found"),
 					        target));
 					return;
 				}
@@ -441,9 +442,9 @@ public class MapController {
 			final URL originalURL = absolute;
 			final String ref = absolute.getRef();
 			if (ref != null) {
-				absolute = Tools.getURLWithoutReference(absolute);
+				absolute = UrlManager.getURLWithoutReference(absolute);
 			}
-			final String extension = Tools.getExtension(absolute.toString());
+			final String extension = UrlManager.getExtension(absolute.toString());
 			if ((extension != null)
 			        && extension
 			            .equals(org.freeplane.map.url.mindmapmode.FileManager.FREEMIND_FILE_EXTENSION_WITHOUT_DOT)) {
@@ -470,9 +471,9 @@ public class MapController {
 						    .getNodeFromID(ref));
 					}
 					catch (final Exception e) {
-						org.freeplane.main.Tools.logException(e);
+						org.freeplane.Tools.logException(e);
 						Controller.getController().getViewController().out(
-						    Tools.expandPlaceholders(getModeController().getText("link_not_found"),
+						    UrlManager.expandPlaceholders(getModeController().getText("link_not_found"),
 						        ref));
 						return;
 					}
@@ -483,13 +484,13 @@ public class MapController {
 			}
 		}
 		catch (final MalformedURLException ex) {
-			org.freeplane.main.Tools.logException(ex);
+			org.freeplane.Tools.logException(ex);
 			Controller.getController().errorMessage(
 			    getModeController().getText("url_error") + "\n" + ex);
 			return;
 		}
 		catch (final Exception e) {
-			org.freeplane.main.Tools.logException(e);
+			org.freeplane.Tools.logException(e);
 		}
 		finally {
 			Controller.getController().getViewController().setWaitingCursor(false);

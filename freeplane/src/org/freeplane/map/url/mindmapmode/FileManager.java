@@ -34,8 +34,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
+import org.freeplane.Tools;
 import org.freeplane.controller.Controller;
-import org.freeplane.main.Tools;
 import org.freeplane.map.tree.MapModel;
 import org.freeplane.map.tree.mindmapmode.MMapController;
 import org.freeplane.map.tree.mindmapmode.MindMapMapModel;
@@ -53,7 +53,7 @@ public class FileManager extends UrlManager {
 			if (f.isDirectory()) {
 				return true;
 			}
-			final String extension = Tools.getExtension(f.getName());
+			final String extension = UrlManager.getExtension(f.getName());
 			if (extension != null) {
 				if (extension
 				    .equals(org.freeplane.map.url.mindmapmode.FileManager.FREEMIND_FILE_EXTENSION_WITHOUT_DOT)) {
@@ -161,7 +161,7 @@ public class FileManager extends UrlManager {
 			input = chooser.getSelectedFile();
 			setLastCurrentDir(input.getParentFile());
 			try {
-				link = Tools.fileToUrl(input);
+				link = UrlManager.fileToUrl(input);
 				relative = link.toString();
 			}
 			catch (final MalformedURLException ex) {
@@ -170,7 +170,7 @@ public class FileManager extends UrlManager {
 			}
 			if (Controller.getResourceController().getProperty("links").equals("relative")) {
 				try {
-					relative = Tools.toRelativeURL(Tools.fileToUrl(map.getFile()), link);
+					relative = UrlManager.toRelativeURL(UrlManager.fileToUrl(map.getFile()), link);
 				}
 				catch (final MalformedURLException ex) {
 					Controller.getController().errorMessage(
@@ -216,7 +216,7 @@ public class FileManager extends UrlManager {
 				final File theFile = selectedFiles[i];
 				try {
 					setLastCurrentDir(theFile.getParentFile());
-					getMModeController().getMapController().newMap(Tools.fileToUrl(theFile));
+					getMModeController().getMapController().newMap(UrlManager.fileToUrl(theFile));
 				}
 				catch (final Exception ex) {
 					handleLoadingException(ex);
@@ -248,14 +248,14 @@ public class FileManager extends UrlManager {
 			    .tryToLock(map, file);
 			if (lockingUser != null) {
 				Controller.getController().informationMessage(
-				    Tools.expandPlaceholders(getMModeController().getText("map_locked_by_save_as"),
+				    UrlManager.expandPlaceholders(getMModeController().getText("map_locked_by_save_as"),
 				        file.getName(), lockingUser));
 				return false;
 			}
 		}
 		catch (final Exception e) {
 			Controller.getController().informationMessage(
-			    Tools.expandPlaceholders(getMModeController().getText("locking_failed_by_save_as"),
+			    UrlManager.expandPlaceholders(getMModeController().getText("locking_failed_by_save_as"),
 			        file.getName()));
 			return false;
 		}
@@ -278,7 +278,7 @@ public class FileManager extends UrlManager {
 		}
 		File f = chooser.getSelectedFile();
 		setLastCurrentDir(f.getParentFile());
-		final String ext = Tools.getExtension(f.getName());
+		final String ext = UrlManager.getExtension(f.getName());
 		if (!ext
 		    .equals(org.freeplane.map.url.mindmapmode.FileManager.FREEMIND_FILE_EXTENSION_WITHOUT_DOT)) {
 			f = new File(f.getParent(), f.getName()
@@ -321,7 +321,7 @@ public class FileManager extends UrlManager {
 			return true;
 		}
 		catch (final FileNotFoundException e) {
-			final String message = Tools.expandPlaceholders(getMModeController().getText(
+			final String message = UrlManager.expandPlaceholders(getMModeController().getText(
 			    "save_failed"), file.getName());
 			if (!isInternal) {
 				Controller.getController().errorMessage(message);

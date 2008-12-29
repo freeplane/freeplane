@@ -460,10 +460,10 @@ public class HtmlTools {
 			return resultXml;
 		}
 		catch (final IOException e) {
-			org.freeplane.main.Tools.logException(e);
+			org.freeplane.Tools.logException(e);
 		}
 		catch (final BadLocationException e) {
-			org.freeplane.main.Tools.logException(e);
+			org.freeplane.Tools.logException(e);
 		}
 		htmlText = htmlText.replaceAll("<", "&gt;");
 		htmlText = htmlText.replaceAll(">", "&lt;");

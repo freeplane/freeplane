@@ -55,7 +55,7 @@ class DocumentationAction extends AbstractAction {
 				url = new URL(map);
 			}
 			catch (final MalformedURLException e2) {
-				org.freeplane.main.Tools.logException(e2);
+				org.freeplane.Tools.logException(e2);
 				return;
 			}
 			final URL endUrl = url;
@@ -69,7 +69,7 @@ class DocumentationAction extends AbstractAction {
 						}
 					}
 					catch (final Exception e1) {
-						org.freeplane.main.Tools.logException(e1);
+						org.freeplane.Tools.logException(e1);
 					}
 				}
 			});

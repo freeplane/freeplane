@@ -177,7 +177,7 @@ public class XHTMLWriter extends FixedHTMLWriter {
 			reader.close();
 		}
 		catch (final Exception e) {
-			org.freeplane.main.Tools.logException(e);
+			org.freeplane.Tools.logException(e);
 		}
 	}
 

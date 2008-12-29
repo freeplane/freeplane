@@ -53,10 +53,10 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.main.Tools;
 import org.freeplane.ui.MenuBuilder;
 import org.freeplane.ui.UIBuilder;
 import org.freeplane.ui.components.BlindIcon;
+import org.freeplane.ui.components.UITools;
 
 import plugins.script.ScriptingEngine.IErrorHandler;
 
@@ -240,7 +240,7 @@ class ScriptEditorPanel extends JDialog {
 				disposeDialog(true);
 			}
 		});
-		Tools.addEscapeActionToDialog(this, new AbstractAction() {
+		UITools.addEscapeActionToDialog(this, new AbstractAction() {
 			public void actionPerformed(final ActionEvent arg0) {
 				disposeDialog(true);
 			}
@@ -288,7 +288,7 @@ class ScriptEditorPanel extends JDialog {
 					                    - mScriptTextField.getLineStartOffset(lineOfOffset) + 1));
 				}
 				catch (final BadLocationException e) {
-					org.freeplane.main.Tools.logException(e);
+					org.freeplane.Tools.logException(e);
 				}
 			}
 		});

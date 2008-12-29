@@ -22,8 +22,9 @@ package org.freeplane.map.text.filter;
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.filter.condition.CompareConditionAdapter;
 import org.freeplane.controller.filter.condition.ICondition;
+import org.freeplane.io.xml.TreeXmlReader;
+import org.freeplane.io.xml.TreeXmlWriter;
 import org.freeplane.io.xml.n3.nanoxml.XMLElement;
-import org.freeplane.main.Tools;
 import org.freeplane.map.tree.NodeModel;
 
 class NodeCompareCondition extends CompareConditionAdapter {
@@ -34,9 +35,9 @@ class NodeCompareCondition extends CompareConditionAdapter {
 
 	static ICondition load(final XMLElement element) {
 		return new NodeCompareCondition(element.getAttribute(NodeCompareCondition.VALUE, null),
-		    Tools.xmlToBoolean(element.getAttribute(CompareConditionAdapter.IGNORE_CASE, null)),
+		    TreeXmlReader.xmlToBoolean(element.getAttribute(CompareConditionAdapter.IGNORE_CASE, null)),
 		    Integer.parseInt(element.getAttribute(NodeCompareCondition.COMPARATION_RESULT, null)),
-		    Tools.xmlToBoolean(element.getAttribute(NodeCompareCondition.SUCCEED, null)));
+		    TreeXmlReader.xmlToBoolean(element.getAttribute(NodeCompareCondition.SUCCEED, null)));
 	}
 
 	final private int comparationResult;
@@ -70,7 +71,7 @@ class NodeCompareCondition extends CompareConditionAdapter {
 		super.attributesToXml(child);
 		child.setAttribute(NodeCompareCondition.COMPARATION_RESULT, Integer
 		    .toString(comparationResult));
-		child.setAttribute(NodeCompareCondition.SUCCEED, Tools.BooleanToXml(succeed));
+		child.setAttribute(NodeCompareCondition.SUCCEED, TreeXmlWriter.BooleanToXml(succeed));
 		element.addChild(child);
 	}
 }

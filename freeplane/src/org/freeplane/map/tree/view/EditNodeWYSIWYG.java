@@ -35,10 +35,11 @@ import javax.swing.text.JTextComponent;
 import javax.swing.text.html.HTMLDocument;
 
 import org.freeplane.controller.Controller;
+import org.freeplane.io.xml.TreeXmlWriter;
 import org.freeplane.main.HtmlTools;
-import org.freeplane.main.Tools;
 import org.freeplane.modes.ModeController;
 import org.freeplane.ui.MenuBuilder;
+import org.freeplane.ui.components.UITools;
 
 import com.lightdev.app.shtm.SHTMLPanel;
 
@@ -53,7 +54,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 			super(base);
 			createEditorPanel();
 			getContentPane().add(htmlEditorPanel, BorderLayout.CENTER);
-			Tools.addEscapeActionToDialog(this, new CancelAction());
+			UITools.addEscapeActionToDialog(this, new CancelAction());
 			final JButton okButton = new JButton();
 			final JButton cancelButton = new JButton();
 			final JButton splitButton = new JButton();
@@ -75,7 +76,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 					split();
 				}
 			});
-			Tools.addKeyActionToDialog(this, new SubmitAction(), "alt ENTER", "submit");
+			UITools.addKeyActionToDialog(this, new SubmitAction(), "alt ENTER", "submit");
 			final JPanel buttonPane = new JPanel();
 			buttonPane.add(okButton);
 			buttonPane.add(cancelButton);
@@ -184,7 +185,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 				rule += "font-weight: bold; ";
 			}
 			final Color nodeTextColor = node.getTextColor();
-			rule += "color: " + Tools.colorToXml(nodeTextColor) + ";";
+			rule += "color: " + TreeXmlWriter.colorToXml(nodeTextColor) + ";";
 			rule += "}\n";
 			rule += "p {";
 			rule += "margin-top:0;";
@@ -209,7 +210,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 			htmlEditorPanel.setContentPanePreferredSize(new Dimension(preferredWidth,
 			    preferredHeight));
 			EditNodeWYSIWYG.htmlEditorWindow.pack();
-			Tools.setDialogLocationRelativeTo(EditNodeWYSIWYG.htmlEditorWindow, node);
+			UITools.setDialogLocationRelativeTo(EditNodeWYSIWYG.htmlEditorWindow, node);
 			String content = node.getModel().toString();
 			if (!HtmlTools.isHtmlNode(content)) {
 				content = HtmlTools.plainToHTML(content);
@@ -229,7 +230,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 			EditNodeWYSIWYG.htmlEditorWindow.show();
 		}
 		catch (final Exception ex) {
-			org.freeplane.main.Tools.logException(ex);
+			org.freeplane.Tools.logException(ex);
 			System.err
 			    .println("Loading of WYSIWYG HTML editor failed. Use the other editors instead.");
 		}

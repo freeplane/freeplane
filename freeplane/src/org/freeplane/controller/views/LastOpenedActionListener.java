@@ -39,7 +39,7 @@ class LastOpenedActionListener implements ActionListener {
 		catch (final Exception ex) {
 			Controller.getController().errorMessage(
 			    "An error occured on opening the file: " + restoreable + ".");
-			org.freeplane.main.Tools.logException(ex);
+			org.freeplane.Tools.logException(ex);
 		}
 	}
 }

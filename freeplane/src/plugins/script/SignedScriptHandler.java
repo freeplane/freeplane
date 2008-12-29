@@ -34,9 +34,10 @@ import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.freeplane.DesEncrypter;
+import org.freeplane.Tools;
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ResourceController;
-import org.freeplane.main.Tools;
 import org.freeplane.ui.components.EnterPasswordDialog;
 
 /**
@@ -173,7 +174,7 @@ class SignedScriptHandler {
 					    .getCertificate(content.mKeyName));
 				}
 				instanceVerify.update(content.mScript.getBytes());
-				final boolean verify = instanceVerify.verify(Tools.fromBase64(content.mSignature));
+				final boolean verify = instanceVerify.verify(DesEncrypter.fromBase64(content.mSignature));
 				return verify;
 			}
 			catch (final Exception e) {
@@ -216,7 +217,7 @@ class SignedScriptHandler {
 			instance.initSign((PrivateKey) SignedScriptHandler.mKeyStore.getKey(keyName, password));
 			instance.update(content.mScript.getBytes());
 			final byte[] signature = instance.sign();
-			content.mSignature = Tools.toBase64(signature);
+			content.mSignature = DesEncrypter.toBase64(signature);
 			return content.toString();
 		}
 		catch (final Exception e) {

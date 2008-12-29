@@ -35,14 +35,14 @@ import java.util.Stack;
  * StdXMLReader reads the data to be parsed.
  * 
  * @author Marc De Scheemaecker
- * @version $Name: RELEASE_2_2_1 $, $Revision: 1.4 $
+ * Modified by Dimitry Polivaev (2008)
  */
 public class StdXMLReader implements IXMLReader {
 	/**
 	 * A stacked reader.
 	 * 
 	 * @author Marc De Scheemaecker
-	 * @version $Name: RELEASE_2_2_1 $, $Revision: 1.4 $
+     * Modified by Dimitry Polivaev (2008)
 	 */
 	private class StackedReader {
 		LineNumberReader lineReader;

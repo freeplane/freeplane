@@ -53,8 +53,8 @@ import javax.swing.text.Document;
 
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.filter.util.IListModel;
-import org.freeplane.main.Tools;
 import org.freeplane.ui.MenuBuilder;
+import org.freeplane.ui.components.UITools;
 
 public class ListDialog extends JDialog {
 	private class AddAction implements ActionListener {
@@ -166,7 +166,7 @@ public class ListDialog extends JDialog {
 		final Frame frame = JOptionPane.getFrameForComponent(frameComp);
 		ListDialog.dialog = new ListDialog(frame, locationComp, labelText, title, possibleValues,
 		    longValue);
-		Tools.addEscapeActionToDialog(ListDialog.dialog);
+		UITools.addEscapeActionToDialog(ListDialog.dialog);
 		ListDialog.dialog.show();
 	}
 
@@ -277,7 +277,7 @@ public class ListDialog extends JDialog {
 			return text;
 		}
 		catch (final BadLocationException e) {
-			org.freeplane.main.Tools.logException(e);
+			org.freeplane.Tools.logException(e);
 			return "";
 		}
 	}

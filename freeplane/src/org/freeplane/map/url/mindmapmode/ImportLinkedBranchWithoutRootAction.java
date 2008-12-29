@@ -29,11 +29,11 @@ import javax.swing.JOptionPane;
 
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.FreeplaneAction;
-import org.freeplane.main.Tools;
 import org.freeplane.map.clipboard.mindmapmode.MClipboardController;
 import org.freeplane.map.tree.MapModel;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.mindmapmode.MMapController;
+import org.freeplane.map.url.UrlManager;
 
 /**
  * This is exactly the opposite of exportBranch.
@@ -54,8 +54,8 @@ class ImportLinkedBranchWithoutRootAction extends FreeplaneAction {
 		URL absolute = null;
 		try {
 			final String relative = selected.getLink();
-			absolute = Tools.isAbsolutePath(relative) ? Tools.fileToUrl(new File(relative))
-			        : new URL(Tools.fileToUrl(map.getFile()), relative);
+			absolute = UrlManager.isAbsolutePath(relative) ? UrlManager.fileToUrl(new File(relative))
+			        : new URL(UrlManager.fileToUrl(map.getFile()), relative);
 		}
 		catch (final MalformedURLException ex) {
 			JOptionPane.showMessageDialog(getModeController().getMapView(),

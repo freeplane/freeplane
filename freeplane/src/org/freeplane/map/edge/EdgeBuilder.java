@@ -29,9 +29,10 @@ import org.freeplane.io.IExtensionElementWriter;
 import org.freeplane.io.ITreeWriter;
 import org.freeplane.io.ReadManager;
 import org.freeplane.io.WriteManager;
+import org.freeplane.io.xml.TreeXmlReader;
+import org.freeplane.io.xml.TreeXmlWriter;
 import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
 import org.freeplane.io.xml.n3.nanoxml.XMLElement;
-import org.freeplane.main.Tools;
 import org.freeplane.map.tree.NodeModel;
 
 class EdgeBuilder implements IElementDOMHandler, IExtensionElementWriter {
@@ -72,7 +73,7 @@ class EdgeBuilder implements IElementDOMHandler, IExtensionElementWriter {
 		reader.addAttributeHandler("edge", "COLOR", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final EdgeModel edge = (EdgeModel) userObject;
-				edge.setColor(Tools.xmlToColor(value.toString()));
+				edge.setColor(TreeXmlReader.xmlToColor(value.toString()));
 			}
 		});
 		reader.addAttributeHandler("edge", "WIDTH", new IAttributeHandler() {
@@ -114,7 +115,7 @@ class EdgeBuilder implements IElementDOMHandler, IExtensionElementWriter {
 				relevant = true;
 			}
 			if (color != null) {
-				edge.setAttribute("COLOR", Tools.colorToXml(color));
+				edge.setAttribute("COLOR", TreeXmlWriter.colorToXml(color));
 				relevant = true;
 			}
 			if (width != EdgeModel.WIDTH_PARENT) {

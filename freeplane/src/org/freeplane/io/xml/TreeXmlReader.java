@@ -19,13 +19,18 @@
  */
 package org.freeplane.io.xml;
 
+import java.awt.Color;
+import java.awt.Point;
 import java.io.Reader;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 
+import org.freeplane.Tools;
 import org.freeplane.io.IAttributeHandler;
 import org.freeplane.io.IElementContentHandler;
 import org.freeplane.io.IElementDOMHandler;
@@ -273,4 +278,60 @@ public class TreeXmlReader implements IXMLBuilder {
 			nodeCreator = null;
 		}
 	}
+
+	public static Point xmlToPoint(String string) {
+    	if (string == null) {
+    		return null;
+    	}
+    	if (string.startsWith("java.awt.Point")) {
+    		string = string.replaceAll("java\\.awt\\.Point\\[x=([0-9]*),y=([0-9]*)\\]", "$1;$2");
+    	}
+    	final List l = Tools.stringToList(string);
+    	final ListIterator it = l.listIterator(0);
+    	if (l.size() != 2) {
+    		throw new IllegalArgumentException("A point must consist of two numbers (and not: '"
+    		        + string + "').");
+    	}
+    	final int x = Integer.parseInt((String) it.next());
+    	final int y = Integer.parseInt((String) it.next());
+    	return new Point(x, y);
+    }
+
+	/**
+     * Extracts a long from xml. Only useful for dates.
+     */
+    public static Date xmlToDate(final String xmlString) {
+    	try {
+    		return new Date(Long.valueOf(xmlString).longValue());
+    	}
+    	catch (final Exception e) {
+    		return new Date(System.currentTimeMillis());
+    	}
+    }
+
+	public static Color xmlToColor(String string) {
+    	if (string == null) {
+    		return null;
+    	}
+    	string = string.trim();
+    	if (string.length() == 7) {
+    		final int red = Integer.parseInt(string.substring(1, 3), 16);
+    		final int green = Integer.parseInt(string.substring(3, 5), 16);
+    		final int blue = Integer.parseInt(string.substring(5, 7), 16);
+    		return new Color(red, green, blue);
+    	}
+    	else {
+    		throw new IllegalArgumentException("No xml color given by '" + string + "'.");
+    	}
+    }
+
+	public static boolean xmlToBoolean(final String string) {
+    	if (string == null) {
+    		return false;
+    	}
+    	if (string.equals("true")) {
+    		return true;
+    	}
+    	return false;
+    }
 }

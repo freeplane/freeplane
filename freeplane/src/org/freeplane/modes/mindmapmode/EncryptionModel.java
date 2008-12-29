@@ -27,8 +27,8 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
+import org.freeplane.SingleDesEncrypter;
 import org.freeplane.extension.IExtension;
-import org.freeplane.main.Tools.SingleDesEncrypter;
 import org.freeplane.map.icon.MindIcon;
 import org.freeplane.map.tree.MapController;
 import org.freeplane.map.tree.NodeModel;
@@ -113,7 +113,7 @@ public class EncryptionModel implements IExtension {
 				isDecrypted = true;
 			}
 			catch (final Exception e) {
-				org.freeplane.main.Tools.logException(e);
+				org.freeplane.Tools.logException(e);
 				setAccessible(false);
 				return true;
 			}
@@ -139,7 +139,7 @@ public class EncryptionModel implements IExtension {
 			return encrypted;
 		}
 		catch (final Exception e) {
-			org.freeplane.main.Tools.logException(e);
+			org.freeplane.Tools.logException(e);
 		}
 		throw new IllegalArgumentException("Can't encrypt the node.");
 	}
@@ -183,7 +183,7 @@ public class EncryptionModel implements IExtension {
 				generateEncryptedContent();
 			}
 			catch (final Exception e) {
-				org.freeplane.main.Tools.logException(e);
+				org.freeplane.Tools.logException(e);
 			}
 		}
 		return encryptedContent;
@@ -228,7 +228,7 @@ public class EncryptionModel implements IExtension {
 			mapController.insertNodeIntoWithoutUndo(node, target, target.getChildCount());
 		}
 		catch (final Exception ee) {
-			org.freeplane.main.Tools.logException(ee);
+			org.freeplane.Tools.logException(ee);
 		}
 	}
 

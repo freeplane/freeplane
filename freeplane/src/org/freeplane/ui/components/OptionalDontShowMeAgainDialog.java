@@ -35,8 +35,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
+import org.freeplane.Tools;
 import org.freeplane.controller.Controller;
-import org.freeplane.main.Tools;
 import org.freeplane.ui.MenuBuilder;
 
 /**
@@ -151,7 +151,7 @@ public class OptionalDontShowMeAgainDialog {
 				close(JOptionPane.OK_OPTION);
 			}
 		};
-		Tools.addEscapeActionToDialog(mDialog, cancelAction);
+		UITools.addEscapeActionToDialog(mDialog, cancelAction);
 		mDialog.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(final WindowEvent pE) {
@@ -199,7 +199,7 @@ public class OptionalDontShowMeAgainDialog {
 		        GridBagConstraints.BOTH, new Insets(5, 5, 0, 0), 0, 0));
 		mDialog.getRootPane().setDefaultButton(okButton);
 		mDialog.pack();
-		Tools.setDialogLocationRelativeTo(mDialog, mComponent);
+		UITools.setDialogLocationRelativeTo(mDialog, mComponent);
 		mDialog.setVisible(true);
 		return this;
 	}

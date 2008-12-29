@@ -44,9 +44,9 @@ import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 
+import org.freeplane.Tools;
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ResourceController;
-import org.freeplane.main.Tools;
 import org.freeplane.ui.FreemindMenuBar;
 
 public class ApplicationViewController extends ViewController {

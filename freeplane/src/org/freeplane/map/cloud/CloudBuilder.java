@@ -29,9 +29,10 @@ import org.freeplane.io.IExtensionElementWriter;
 import org.freeplane.io.ITreeWriter;
 import org.freeplane.io.ReadManager;
 import org.freeplane.io.WriteManager;
+import org.freeplane.io.xml.TreeXmlReader;
+import org.freeplane.io.xml.TreeXmlWriter;
 import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
 import org.freeplane.io.xml.n3.nanoxml.XMLElement;
-import org.freeplane.main.Tools;
 import org.freeplane.map.tree.NodeModel;
 
 public class CloudBuilder implements IElementDOMHandler, IExtensionElementWriter {
@@ -66,7 +67,7 @@ public class CloudBuilder implements IElementDOMHandler, IExtensionElementWriter
 		reader.addAttributeHandler("cloud", "COLOR", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final CloudModel cloud = (CloudModel) userObject;
-				cloud.setColor(Tools.xmlToColor(value.toString()));
+				cloud.setColor(TreeXmlReader.xmlToColor(value.toString()));
 			}
 		});
 		reader.addAttributeHandler("cloud", "WIDTH", new IAttributeHandler() {
@@ -99,7 +100,7 @@ public class CloudBuilder implements IElementDOMHandler, IExtensionElementWriter
 		}
 		final Color color = model.getColor();
 		if (color != null) {
-			cloud.setAttribute("COLOR", Tools.colorToXml(color));
+			cloud.setAttribute("COLOR", TreeXmlWriter.colorToXml(color));
 		}
 		final int width = model.getWidth();
 		if (width != CloudController.DEFAULT_WIDTH) {

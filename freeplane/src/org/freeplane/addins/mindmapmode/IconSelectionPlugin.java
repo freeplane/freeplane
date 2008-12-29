@@ -26,12 +26,12 @@ import javax.swing.Action;
 import org.freeplane.controller.ActionDescriptor;
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.FreeplaneAction;
-import org.freeplane.main.Tools;
 import org.freeplane.map.icon.mindmapnode.MIconController;
 import org.freeplane.map.tree.view.MapView;
 import org.freeplane.map.tree.view.NodeView;
 import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.ui.components.IconSelectionPopupDialog;
+import org.freeplane.ui.components.UITools;
 
 /**
  * @author adapted to the plugin mechanism by ganzer
@@ -62,7 +62,7 @@ public class IconSelectionPlugin extends FreeplaneAction {
 		final MapView mapView = modeController.getMapView();
 		mapView.scrollNodeToVisible(focussed, 0);
 		selectionDialog.pack();
-		Tools.setDialogLocationRelativeTo(selectionDialog, focussed);
+		UITools.setDialogLocationRelativeTo(selectionDialog, focussed);
 		selectionDialog.setModal(true);
 		selectionDialog.show();
 		final int result = selectionDialog.getResult();

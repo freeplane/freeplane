@@ -37,9 +37,10 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import org.freeplane.main.Tools;
+import org.freeplane.Tools;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.ModeController;
+import org.freeplane.ui.components.UITools;
 
 /**
  * @author foltin
@@ -217,7 +218,7 @@ public class EditNodeTextField extends EditNodeBase {
 		textfield.addMouseListener(textFieldListener);
 		getView().scrollNodeToVisible(nodeView, xExtraWidth);
 		final Point textFieldLocation = new Point();
-		Tools.convertPointToAncestor(nodeView.getMainView(), textFieldLocation, mapView);
+		UITools.convertPointToAncestor(nodeView.getMainView(), textFieldLocation, mapView);
 		if (xExtraWidth < 0) {
 			textFieldLocation.x += xExtraWidth;
 		}

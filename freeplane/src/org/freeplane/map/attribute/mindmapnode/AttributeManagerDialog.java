@@ -46,10 +46,10 @@ import org.freeplane.controller.Controller;
 import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.controller.filter.util.IListModel;
 import org.freeplane.controller.views.IMapViewChangeListener;
-import org.freeplane.main.Tools;
 import org.freeplane.map.attribute.AttributeRegistry;
 import org.freeplane.map.tree.MapRegistry;
 import org.freeplane.map.tree.view.MapView;
+import org.freeplane.ui.components.UITools;
 
 /**
  * @author Dimitry Polivaev
@@ -210,7 +210,7 @@ public class AttributeManagerDialog extends JDialog implements IMapViewChangeLis
 		importBtn.setToolTipText(Controller.getText("attributes_import_tooltip"));
 		southButtons.add(importBtn);
 		southButtons.add(Box.createHorizontalGlue());
-		Tools.addEscapeActionToDialog(this);
+		UITools.addEscapeActionToDialog(this);
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new ClosingListener());
 		Controller.getController().getMapViewManager().addMapViewChangeListener(this);

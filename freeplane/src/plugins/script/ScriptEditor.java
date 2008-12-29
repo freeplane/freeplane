@@ -25,10 +25,10 @@ import java.io.PrintStream;
 import java.util.Iterator;
 import java.util.Vector;
 
+import org.freeplane.Tools.BooleanHolder;
 import org.freeplane.controller.ActionDescriptor;
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.FreeplaneAction;
-import org.freeplane.main.Tools.BooleanHolder;
 import org.freeplane.map.attribute.Attribute;
 import org.freeplane.map.attribute.mindmapnode.MAttributeController;
 import org.freeplane.map.tree.NodeModel;

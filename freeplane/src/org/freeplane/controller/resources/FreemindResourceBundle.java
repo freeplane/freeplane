@@ -66,7 +66,7 @@ class FreemindResourceBundle extends ResourceBundle {
 			defaultResources = getLanguageResources(DEFAULT_LANGUAGE);
 		}
 		catch (final Exception ex) {
-			org.freeplane.main.Tools.logException(ex);
+			org.freeplane.Tools.logException(ex);
 			Logger.global.severe("Error loading Resources");
 		}
 	}

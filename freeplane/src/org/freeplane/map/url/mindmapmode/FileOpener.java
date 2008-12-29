@@ -31,7 +31,7 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import org.freeplane.main.Tools;
+import org.freeplane.map.url.UrlManager;
 import org.freeplane.modes.ModeController;
 
 public class FileOpener implements DropTargetListener {
@@ -79,7 +79,7 @@ public class FileOpener implements DropTargetListener {
 			final Iterator iterator = ((List) data).iterator();
 			while (iterator.hasNext()) {
 				final File file = (File) iterator.next();
-				modeController.getMapController().newMap(Tools.fileToUrl(file));
+				modeController.getMapController().newMap(UrlManager.fileToUrl(file));
 			}
 		}
 		catch (final Exception e) {

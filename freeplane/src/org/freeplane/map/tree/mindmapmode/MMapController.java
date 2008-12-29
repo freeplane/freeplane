@@ -36,14 +36,15 @@ import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.controller.resources.ui.IFreemindPropertyListener;
 import org.freeplane.io.xml.n3.nanoxml.XMLParseException;
-import org.freeplane.main.Tools;
 import org.freeplane.map.tree.MapController;
 import org.freeplane.map.tree.MapModel;
 import org.freeplane.map.tree.NodeModel;
+import org.freeplane.map.url.UrlManager;
 import org.freeplane.map.url.mindmapmode.FileManager;
 import org.freeplane.modes.mindmapmode.EncryptionModel;
 import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.ui.components.OptionalDontShowMeAgainDialog;
+import org.freeplane.ui.components.UITools;
 
 /**
  * @author Dimitry Polivaev
@@ -94,7 +95,7 @@ public class MMapController extends MapController {
 		final MapModel map = Controller.getController().getMap();
 		if (!force && !map.isSaved()) {
 			final String text = getModeController().getText("save_unsaved") + "\n" + map.getTitle();
-			final String title = Tools.removeMnemonic(getModeController().getText("save"));
+			final String title = UITools.removeMnemonic(getModeController().getText("save"));
 			final int returnVal = JOptionPane.showOptionDialog(Controller.getController()
 			    .getViewController().getContentPane(), text, title,
 			    JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
@@ -163,9 +164,9 @@ public class MMapController extends MapController {
 	@Override
 	public void load(final MapModel map, final URL url) throws FileNotFoundException, IOException,
 	        XMLParseException, URISyntaxException {
-		final File file = Tools.urlToFile(url);
+		final File file = UrlManager.urlToFile(url);
 		if (!file.exists()) {
-			throw new FileNotFoundException(Tools.expandPlaceholders(getModeController().getText(
+			throw new FileNotFoundException(UrlManager.expandPlaceholders(getModeController().getText(
 			    "file_not_found"), file.getPath()));
 		}
 		if (!file.canWrite()) {
@@ -176,7 +177,7 @@ public class MMapController extends MapController {
 				final String lockingUser = tryToLock(map, file);
 				if (lockingUser != null) {
 					Controller.getController().informationMessage(
-					    Tools.expandPlaceholders(getModeController().getText("map_locked_by_open"),
+					    UrlManager.expandPlaceholders(getModeController().getText("map_locked_by_open"),
 					        file.getName(), lockingUser));
 					((MindMapMapModel) map).setReadOnly(true);
 				}
@@ -185,9 +186,9 @@ public class MMapController extends MapController {
 				}
 			}
 			catch (final Exception e) {
-				org.freeplane.main.Tools.logException(e);
+				org.freeplane.Tools.logException(e);
 				Controller.getController().informationMessage(
-				    Tools.expandPlaceholders(getModeController().getText("locking_failed_by_open"),
+				    UrlManager.expandPlaceholders(getModeController().getText("locking_failed_by_open"),
 				        file.getName()));
 				((MindMapMapModel) map).setReadOnly(true);
 			}
@@ -212,7 +213,7 @@ public class MMapController extends MapController {
 				mapStart = buffer.substring(0, versionInfoLength);
 			}
 			if (mapStart.startsWith(EXPECTED_START_STRINGS[i])) {
-				reader = Tools.getActualReader(file);
+				reader = UrlManager.getActualReader(file);
 				break;
 			}
 		}
@@ -224,10 +225,10 @@ public class MMapController extends MapController {
 			        ResourceController.RESOURCES_CONVERT_TO_CURRENT_VERSION),
 			    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED).show().getResult();
 			if (showResult != JOptionPane.OK_OPTION) {
-				reader = Tools.getActualReader(file);
+				reader = UrlManager.getActualReader(file);
 			}
 			else {
-				reader = Tools.getUpdateReader(file, FREEMIND_VERSION_UPDATER_XSLT);
+				reader = UrlManager.getUpdateReader(file, FREEMIND_VERSION_UPDATER_XSLT);
 			}
 		}
 		try {
@@ -236,7 +237,7 @@ public class MMapController extends MapController {
 		catch (final Exception ex) {
 			final String errorMessage = "Error while parsing file:" + ex;
 			System.err.println(errorMessage);
-			org.freeplane.main.Tools.logException(ex);
+			org.freeplane.Tools.logException(ex);
 			final NodeModel result = new NodeModel(map);
 			result.setText(errorMessage);
 			return result;
@@ -311,7 +312,7 @@ public class MMapController extends MapController {
 			in.close();
 		}
 		catch (final Exception e) {
-			org.freeplane.main.Tools.logException(e);
+			org.freeplane.Tools.logException(e);
 			return new StringBuffer();
 		}
 		return buffer;
@@ -355,7 +356,7 @@ public class MMapController extends MapController {
 		    .popLockingUserOfOldLock();
 		if (lockingUserOfOldLock != null) {
 			Controller.getController().informationMessage(
-			    Tools.expandPlaceholders(getModeController().getText("locking_old_lock_removed"),
+			    UrlManager.expandPlaceholders(getModeController().getText("locking_old_lock_removed"),
 			        file.getName(), lockingUserOfOldLock));
 		}
 		if (lockingUser == null) {

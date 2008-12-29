@@ -20,8 +20,8 @@
 package org.freeplane.controller.filter.condition;
 
 import org.freeplane.controller.Controller;
+import org.freeplane.io.xml.TreeXmlWriter;
 import org.freeplane.io.xml.n3.nanoxml.XMLElement;
-import org.freeplane.main.Tools;
 import org.freeplane.map.text.filter.NodeCondition;
 
 abstract public class CompareConditionAdapter extends NodeCondition {
@@ -40,7 +40,7 @@ abstract public class CompareConditionAdapter extends NodeCondition {
 	public void attributesToXml(final XMLElement child) {
 		super.attributesToXml(child);
 		child.setAttribute(CompareConditionAdapter.VALUE, conditionValue);
-		child.setAttribute(CompareConditionAdapter.IGNORE_CASE, Tools.BooleanToXml(ignoreCase));
+		child.setAttribute(CompareConditionAdapter.IGNORE_CASE, TreeXmlWriter.BooleanToXml(ignoreCase));
 	}
 
 	protected int compareTo(final String nodeValue) throws NumberFormatException {

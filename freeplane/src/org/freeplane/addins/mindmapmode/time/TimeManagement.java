@@ -46,11 +46,11 @@ import javax.swing.WindowConstants;
 
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.views.IMapViewChangeListener;
-import org.freeplane.main.Tools;
 import org.freeplane.map.text.mindmapmode.MTextController;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.view.MapView;
 import org.freeplane.modes.mindmapmode.MModeController;
+import org.freeplane.ui.components.UITools;
 
 /**
  * @author foltin
@@ -253,7 +253,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapView
 				disposeDialog();
 			}
 		};
-		Tools.addEscapeActionToDialog(dialog, action);
+		UITools.addEscapeActionToDialog(dialog, action);
 		calendar = new JTripleCalendar();
 		final Container contentPane = dialog.getContentPane();
 		contentPane.setLayout(new GridBagLayout());

@@ -23,13 +23,13 @@ package plugins.script;
 import java.io.PrintStream;
 import java.util.HashMap;
 
+import org.freeplane.Tools;
+import org.freeplane.Tools.BooleanHolder;
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.controller.resources.ui.OptionPanelBuilder;
 import org.freeplane.controller.resources.ui.ScriptEditorProperty;
 import org.freeplane.main.HtmlTools;
-import org.freeplane.main.Tools;
-import org.freeplane.main.Tools.BooleanHolder;
 import org.freeplane.map.pattern.mindmapnode.IExternalPatternAction;
 import org.freeplane.map.pattern.mindmapnode.Pattern;
 import org.freeplane.map.tree.NodeModel;

@@ -26,8 +26,8 @@ import java.util.Iterator;
 import java.util.ListIterator;
 
 import org.freeplane.controller.Controller;
+import org.freeplane.io.xml.TreeXmlWriter;
 import org.freeplane.main.HtmlTools;
-import org.freeplane.main.Tools;
 import org.freeplane.map.icon.MindIcon;
 import org.freeplane.map.nodestyle.NodeStyleModel;
 import org.freeplane.map.tree.NodeModel;
@@ -126,7 +126,7 @@ class MindMapHTMLWriter {
 	private String fontStyle(final NodeModel model) throws IOException {
 		String fontStyle = "";
 		if (model.getColor() != null) {
-			fontStyle += "color: " + Tools.colorToXml(model.getColor()) + ";";
+			fontStyle += "color: " + TreeXmlWriter.colorToXml(model.getColor()) + ";";
 		}
 		final NodeStyleModel font = model.getNodeStyleModel();
 		if (font != null) {

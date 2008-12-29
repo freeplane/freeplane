@@ -25,11 +25,11 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Stroke;
 
-import org.freeplane.main.Tools;
 import org.freeplane.map.edge.EdgeModel;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.view.MapView;
 import org.freeplane.map.tree.view.NodeView;
+import org.freeplane.ui.components.UITools;
 
 /**
  * This class represents a single Edge of a MindMap.
@@ -53,12 +53,12 @@ public abstract class EdgeView {
 
 	protected void createEnd() {
 		end = getTarget().getMainViewInPoint();
-		Tools.convertPointToAncestor(target.getMainView(), end, source);
+		UITools.convertPointToAncestor(target.getMainView(), end, source);
 	}
 
 	protected void createStart() {
 		start = source.getMainViewOutPoint(getTarget(), end);
-		Tools.convertPointToAncestor(source.getMainView(), start, source);
+		UITools.convertPointToAncestor(source.getMainView(), start, source);
 	}
 
 	public Color getColor() {

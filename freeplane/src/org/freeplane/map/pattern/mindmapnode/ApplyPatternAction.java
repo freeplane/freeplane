@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.main.Tools;
+import org.freeplane.io.xml.TreeXmlReader;
 import org.freeplane.map.edge.EdgeModel;
 import org.freeplane.map.edge.mindmapmode.MEdgeController;
 import org.freeplane.map.icon.MindIcon;
@@ -87,11 +87,11 @@ class ApplyPatternAction extends MultipleNodeAction {
 		}
 		if (pattern.getPatternNodeColor() != null) {
 			((MNodeStyleController) getMModeController().getNodeStyleController()).setColor(node,
-			    Tools.xmlToColor(pattern.getPatternNodeColor().getValue()));
+			    TreeXmlReader.xmlToColor(pattern.getPatternNodeColor().getValue()));
 		}
 		if (pattern.getPatternNodeBackgroundColor() != null) {
 			((MNodeStyleController) getMModeController().getNodeStyleController())
-			    .setBackgroundColor(node, Tools.xmlToColor(pattern.getPatternNodeBackgroundColor()
+			    .setBackgroundColor(node, TreeXmlReader.xmlToColor(pattern.getPatternNodeBackgroundColor()
 			        .getValue()));
 		}
 		if (pattern.getPatternNodeStyle() != null) {
@@ -146,7 +146,7 @@ class ApplyPatternAction extends MultipleNodeAction {
 			    "true".equals(pattern.getPatternNodeFontBold().getValue()));
 		}
 		if (pattern.getPatternEdgeColor() != null) {
-			((MEdgeController) getMModeController().getEdgeController()).setColor(node, Tools
+			((MEdgeController) getMModeController().getEdgeController()).setColor(node, TreeXmlReader
 			    .xmlToColor(pattern.getPatternEdgeColor().getValue()));
 		}
 		if (pattern.getPatternEdgeStyle() != null) {

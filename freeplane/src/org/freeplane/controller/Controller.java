@@ -296,4 +296,13 @@ public class Controller {
 	public void setViewController(final ViewController viewController) {
 		this.viewController = viewController;
 	}
+
+	public static boolean isMacOsX() {
+    	boolean underMac = false;
+    	final String osName = System.getProperty("os.name");
+    	if (osName.startsWith("Mac OS")) {
+    		underMac = true;
+    	}
+    	return underMac;
+    }
 }

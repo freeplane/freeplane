@@ -60,10 +60,10 @@ import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
+import org.freeplane.Tools;
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.views.MapViewManager;
 import org.freeplane.controller.views.ViewController;
-import org.freeplane.main.Tools;
 import org.freeplane.map.clipboard.MindMapNodesSelection;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.view.MainView;

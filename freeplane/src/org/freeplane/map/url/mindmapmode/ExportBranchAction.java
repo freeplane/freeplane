@@ -26,14 +26,15 @@ import java.net.MalformedURLException;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import org.freeplane.Tools;
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.FreeplaneAction;
-import org.freeplane.main.Tools;
 import org.freeplane.map.link.mindmapmode.MLinkController;
 import org.freeplane.map.text.mindmapmode.MTextController;
 import org.freeplane.map.tree.MapModel;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.mindmapmode.MMapController;
+import org.freeplane.map.url.UrlManager;
 
 /** */
 class ExportBranchAction extends FreeplaneAction {
@@ -67,14 +68,14 @@ class ExportBranchAction extends FreeplaneAction {
 		final int returnVal = chooser.showSaveDialog(getMModeController().getSelectedView());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File chosenFile = chooser.getSelectedFile();
-			final String ext = Tools.getExtension(chosenFile.getName());
+			final String ext = UrlManager.getExtension(chosenFile.getName());
 			if (!ext
 			    .equals(org.freeplane.map.url.mindmapmode.FileManager.FREEMIND_FILE_EXTENSION_WITHOUT_DOT)) {
 				chosenFile = new File(chosenFile.getParent(), chosenFile.getName()
 				        + org.freeplane.map.url.mindmapmode.FileManager.FREEMIND_FILE_EXTENSION);
 			}
 			try {
-				Tools.fileToUrl(chosenFile);
+				UrlManager.fileToUrl(chosenFile);
 			}
 			catch (final MalformedURLException ex) {
 				JOptionPane.showMessageDialog(getMModeController().getMapView(),
@@ -97,7 +98,7 @@ class ExportBranchAction extends FreeplaneAction {
 			 */
 			final NodeModel parent = node.getParentNode();
 			try {
-				final String linkToNewMapString = Tools.toRelativeURL(Tools.fileToUrl(chosenFile),
+				final String linkToNewMapString = UrlManager.toRelativeURL(UrlManager.fileToUrl(chosenFile),
 				    Controller.getController().getMap().getURL());
 				((MLinkController) getMModeController().getLinkController()).setLink(node,
 				    linkToNewMapString);
@@ -116,8 +117,8 @@ class ExportBranchAction extends FreeplaneAction {
 			((MTextController) getMModeController().getTextController()).setNodeText(newNode, node
 			    .getText());
 			try {
-				final String linkString = Tools.toRelativeURL(Controller.getController().getMap()
-				    .getURL(), Tools.fileToUrl(chosenFile));
+				final String linkString = UrlManager.toRelativeURL(Controller.getController().getMap()
+				    .getURL(), UrlManager.fileToUrl(chosenFile));
 				((MLinkController) getMModeController().getLinkController()).setLink(newNode,
 				    linkString);
 			}

@@ -63,11 +63,12 @@ import org.freeplane.controller.filter.condition.ICondition;
 import org.freeplane.controller.filter.condition.IElementaryConditionController;
 import org.freeplane.controller.filter.util.ExtendedComboBoxModel;
 import org.freeplane.controller.resources.NamedObject;
-import org.freeplane.main.Tools;
 import org.freeplane.map.tree.MapModel;
+import org.freeplane.map.url.UrlManager;
 import org.freeplane.modes.ModeController;
 import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.ui.MenuBuilder;
+import org.freeplane.ui.components.UITools;
 
 /**
  * @author Dimitry Polivaev
@@ -380,7 +381,7 @@ public class FilterComposerDialog extends JDialog {
 			if (f.isDirectory()) {
 				return true;
 			}
-			final String extension = Tools.getExtension(f.getName());
+			final String extension = UrlManager.getExtension(f.getName());
 			if (extension != null) {
 				if (extension.equals(FilterController.FREEMIND_FILTER_EXTENSION_WITHOUT_DOT)) {
 					return true;
@@ -565,7 +566,7 @@ public class FilterComposerDialog extends JDialog {
 		conditionScrollPane.setColumnHeaderView(conditionColumnHeader);
 		conditionScrollPane.setPreferredSize(new Dimension(500, 200));
 		getContentPane().add(conditionScrollPane, BorderLayout.CENTER);
-		Tools.addEscapeActionToDialog(this);
+		UITools.addEscapeActionToDialog(this);
 		mapChanged(Controller.getController().getMap());
 		pack();
 	}

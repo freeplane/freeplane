@@ -33,10 +33,11 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.Vector;
 
+import org.freeplane.Tools;
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ui.BooleanProperty;
 import org.freeplane.controller.resources.ui.IFreemindPropertyListener;
-import org.freeplane.main.Tools;
+import org.freeplane.map.url.UrlManager;
 
 /**
  * @author Dimitry Polivaev
@@ -294,10 +295,10 @@ public abstract class ResourceController {
 		final ClassLoader classLoader = this.getClass().getClassLoader();
 		try {
 			return new URLClassLoader(
-			    new URL[] { Tools.fileToUrl(new File(getFreemindBaseDir())) }, classLoader);
+			    new URL[] { UrlManager.fileToUrl(new File(getFreemindBaseDir())) }, classLoader);
 		}
 		catch (final MalformedURLException e) {
-			org.freeplane.main.Tools.logException(e);
+			org.freeplane.Tools.logException(e);
 			return classLoader;
 		}
 	}

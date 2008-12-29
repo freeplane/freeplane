@@ -19,10 +19,15 @@
  */
 package org.freeplane.io.xml;
 
+import java.awt.Color;
+import java.awt.Point;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Date;
 import java.util.Iterator;
+import java.util.Vector;
 
+import org.freeplane.Tools;
 import org.freeplane.extension.IExtension;
 import org.freeplane.extension.IExtensionCollection;
 import org.freeplane.io.IAttributeWriter;
@@ -184,4 +189,41 @@ public class TreeXmlWriter implements ITreeWriter {
 	private ListHashTable getNodeWriters() {
 		return writeManager.getElementWriters();
 	}
+
+	public static String PointToXml(final Point col) {
+    	if (col == null) {
+    		return null;
+    	}
+    	final Vector l = new Vector();
+    	l.add(Integer.toString(col.x));
+    	l.add(Integer.toString(col.y));
+    	return Tools.listToString(l);
+    }
+
+	public static String dateToString(final Date date) {
+    	return Long.toString(date.getTime());
+    }
+
+	public static String colorToXml(final Color col) {
+    	if (col == null) {
+    		return null;
+    	}
+    	String red = Integer.toHexString(col.getRed());
+    	if (col.getRed() < 16) {
+    		red = "0" + red;
+    	}
+    	String green = Integer.toHexString(col.getGreen());
+    	if (col.getGreen() < 16) {
+    		green = "0" + green;
+    	}
+    	String blue = Integer.toHexString(col.getBlue());
+    	if (col.getBlue() < 16) {
+    		blue = "0" + blue;
+    	}
+    	return "#" + red + green + blue;
+    }
+
+	public static String BooleanToXml(final boolean col) {
+    	return (col) ? "true" : "false";
+    }
 }

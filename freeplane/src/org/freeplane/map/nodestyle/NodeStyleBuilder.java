@@ -29,9 +29,10 @@ import org.freeplane.io.IExtensionElementWriter;
 import org.freeplane.io.ITreeWriter;
 import org.freeplane.io.ReadManager;
 import org.freeplane.io.WriteManager;
+import org.freeplane.io.xml.TreeXmlReader;
+import org.freeplane.io.xml.TreeXmlWriter;
 import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
 import org.freeplane.io.xml.n3.nanoxml.XMLElement;
-import org.freeplane.main.Tools;
 import org.freeplane.map.tree.NodeBuilder;
 import org.freeplane.map.tree.NodeModel;
 
@@ -80,7 +81,7 @@ public class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWr
 			public void setAttribute(final Object userObject, final String value) {
 				if (value.length() == 7) {
 					final NodeModel node = (NodeModel) userObject;
-					node.setColor(Tools.xmlToColor(value));
+					node.setColor(TreeXmlReader.xmlToColor(value));
 				}
 			}
 		});
@@ -89,7 +90,7 @@ public class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWr
 			    public void setAttribute(final Object userObject, final String value) {
 				    if (value.length() == 7) {
 					    final NodeModel node = (NodeModel) userObject;
-					    node.setBackgroundColor(Tools.xmlToColor(value));
+					    node.setBackgroundColor(TreeXmlReader.xmlToColor(value));
 				    }
 			    }
 		    });
@@ -141,10 +142,10 @@ public class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWr
 	                            final IExtension extension) {
 		final NodeStyleModel style = (NodeStyleModel) extension;
 		if (style.getColor() != null) {
-			writer.addAttribute("COLOR", Tools.colorToXml(style.getColor()));
+			writer.addAttribute("COLOR", TreeXmlWriter.colorToXml(style.getColor()));
 		}
 		if (style.getBackgroundColor() != null) {
-			writer.addAttribute("BACKGROUND_COLOR", Tools.colorToXml(style.getBackgroundColor()));
+			writer.addAttribute("BACKGROUND_COLOR", TreeXmlWriter.colorToXml(style.getBackgroundColor()));
 		}
 		if (style.getShape() != null) {
 			writer.addAttribute("STYLE", style.getShape());

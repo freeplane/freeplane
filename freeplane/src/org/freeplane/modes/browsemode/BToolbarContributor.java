@@ -52,7 +52,7 @@ public class BToolbarContributor implements IMenuContributor, IMapTitleChangeLis
 					modeController.getMapController().newMap(new URL(urlText));
 				}
 				catch (final Exception e1) {
-					org.freeplane.main.Tools.logException(e1);
+					org.freeplane.Tools.logException(e1);
 					Controller.getController().errorMessage(e1);
 				}
 			}

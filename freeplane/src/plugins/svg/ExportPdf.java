@@ -81,7 +81,7 @@ public class ExportPdf extends ExportVectorGraphic {
 			ostream.close();
 		}
 		catch (final Exception ex) {
-			org.freeplane.main.Tools.logException(ex);
+			org.freeplane.Tools.logException(ex);
 			JOptionPane.showMessageDialog(Controller.getController().getViewController()
 			    .getContentPane(), ex.getLocalizedMessage(), null, JOptionPane.ERROR_MESSAGE);
 		}

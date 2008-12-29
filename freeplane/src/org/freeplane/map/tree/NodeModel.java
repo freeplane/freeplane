@@ -39,13 +39,13 @@ import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
+import org.freeplane.Tools;
 import org.freeplane.controller.filter.FilterInfo;
 import org.freeplane.controller.filter.IFilter;
 import org.freeplane.extension.ExtensionArray;
 import org.freeplane.extension.IExtension;
 import org.freeplane.extension.IExtensionCollection;
 import org.freeplane.main.HtmlTools;
-import org.freeplane.main.Tools;
 import org.freeplane.map.attribute.Attribute;
 import org.freeplane.map.attribute.NodeAttributeTableModel;
 import org.freeplane.map.cloud.CloudModel;

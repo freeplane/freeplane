@@ -30,9 +30,12 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -44,10 +47,10 @@ import javax.swing.SwingUtilities;
 
 import org.freeplane.controller.Controller;
 import org.freeplane.main.HtmlTools;
-import org.freeplane.main.Tools;
 import org.freeplane.map.icon.MindIcon;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.ui.FreemindMenuBar;
+import org.freeplane.ui.components.UITools;
 
 /**
  * Base class for all node views.
@@ -69,11 +72,11 @@ public abstract class MainView extends JLabel {
 	}
 
 	protected void convertPointFromMap(final Point p) {
-		Tools.convertPointFromAncestor(getNodeView().getMap(), p, this);
+		UITools.convertPointFromAncestor(getNodeView().getMap(), p, this);
 	}
 
 	protected void convertPointToMap(final Point p) {
-		Tools.convertPointToAncestor(this, p, getNodeView().getMap());
+		UITools.convertPointToAncestor(this, p, getNodeView().getMap());
 	}
 
 	public boolean dropAsSibling(final double xCoord) {
@@ -368,6 +371,9 @@ public abstract class MainView extends JLabel {
 		setFont(font);
 	}
 
+	public static final Set executableExtensions = new HashSet(Arrays.asList(new String[] { "exe",
+	        "com", "vbs", "bat", "lnk" }));
+	
 	void updateIcons(final NodeModel node) {
 		setHorizontalTextPosition(node.isLeft() ? SwingConstants.LEADING : SwingConstants.TRAILING);
 		final MultipleImage iconImages = new MultipleImage(1.0f);
@@ -396,7 +402,7 @@ public abstract class MainView extends JLabel {
 			else if (link.startsWith("mailto:")) {
 				iconPath = "images/Mail.png";
 			}
-			else if (Tools.executableByExtension(link)) {
+			else if (executableExtensions.contains(link)) {
 				iconPath = "images/Executable.png";
 			}
 			final ImageIcon icon = new ImageIcon(Controller.getResourceController().getResource(

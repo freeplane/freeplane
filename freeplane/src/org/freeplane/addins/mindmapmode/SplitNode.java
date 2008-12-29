@@ -152,10 +152,10 @@ public class SplitNode extends FreeplaneAction {
 				}
 			}
 			catch (final IOException e) {
-				org.freeplane.main.Tools.logException(e);
+				org.freeplane.Tools.logException(e);
 			}
 			catch (final BadLocationException e) {
-				org.freeplane.main.Tools.logException(e);
+				org.freeplane.Tools.logException(e);
 			}
 			return parts;
 		}
