@@ -42,7 +42,7 @@ public class StdXMLReader implements IXMLReader {
 	 * A stacked reader.
 	 * 
 	 * @author Marc De Scheemaecker
-     * Modified by Dimitry Polivaev (2008)
+	 * Modified by Dimitry Polivaev (2008)
 	 */
 	private class StackedReader {
 		LineNumberReader lineReader;
@@ -82,6 +82,7 @@ public class StdXMLReader implements IXMLReader {
 		return new StdXMLReader(new StringReader(str));
 	}
 
+	private char charReadTooMuch;
 	/**
 	 * The current push-back reader.
 	 */
@@ -90,7 +91,6 @@ public class StdXMLReader implements IXMLReader {
 	 * The stack of readers.
 	 */
 	final private Stack readers;
-	private char charReadTooMuch;
 
 	/**
 	 * Initializes the XML reader.
@@ -109,7 +109,7 @@ public class StdXMLReader implements IXMLReader {
 		currentReader.lineReader = new LineNumberReader(reader);
 		currentReader.pbReader = currentReader.lineReader;
 		currentReader.publicId = "";
-		this.charReadTooMuch = '\0';
+		charReadTooMuch = '\0';
 		try {
 			currentReader.systemId = new URL("file:.");
 		}
@@ -130,7 +130,7 @@ public class StdXMLReader implements IXMLReader {
 		currentReader.lineReader = new LineNumberReader(reader);
 		currentReader.pbReader = currentReader.lineReader;
 		currentReader.publicId = "";
-		this.charReadTooMuch = '\0';
+		charReadTooMuch = '\0';
 		try {
 			currentReader.systemId = new URL("file:.");
 		}
@@ -155,7 +155,7 @@ public class StdXMLReader implements IXMLReader {
 	public StdXMLReader(final String publicID, String systemID) throws MalformedURLException,
 	        FileNotFoundException, IOException {
 		URL systemIDasURL = null;
-		this.charReadTooMuch = '\0';
+		charReadTooMuch = '\0';
 		try {
 			systemIDasURL = new URL(systemID);
 		}
@@ -194,7 +194,6 @@ public class StdXMLReader implements IXMLReader {
 		unread(ch);
 		return false;
 	}
-
 
 	/**
 	 * Returns true if the current stream has no more characters left to be
@@ -377,14 +376,14 @@ public class StdXMLReader implements IXMLReader {
 	}
 
 	private int readImpl() throws IOException {
-        if (this.charReadTooMuch != '\0') {
-            char ch = this.charReadTooMuch;
-            this.charReadTooMuch = '\0';
-            return ch;
-        }	    
-        int ch = currentReader.pbReader.read();
-	    return ch;
-    }
+		if (charReadTooMuch != '\0') {
+			final char ch = charReadTooMuch;
+			charReadTooMuch = '\0';
+			return ch;
+		}
+		final int ch = currentReader.pbReader.read();
+		return ch;
+	}
 
 	/**
 	 * Sets the public ID of the current stream.
@@ -498,6 +497,10 @@ public class StdXMLReader implements IXMLReader {
 		}
 	}
 
+	public void unread(final char ch) throws IOException {
+		charReadTooMuch = ch;
+	}
+
 	/**
 	 * Pushes the last character read back to the stream.
 	 * 
@@ -507,10 +510,6 @@ public class StdXMLReader implements IXMLReader {
 	 *             if an I/O error occurred
 	 */
 	public void unread(final int ch) throws IOException {
-		unread((char)ch);
+		unread((char) ch);
 	}
-
-	public void unread(char ch) throws IOException {
-		 this.charReadTooMuch = ch;
-    }
 }

@@ -166,8 +166,8 @@ public class MMapController extends MapController {
 	        XMLParseException, URISyntaxException {
 		final File file = UrlManager.urlToFile(url);
 		if (!file.exists()) {
-			throw new FileNotFoundException(UrlManager.expandPlaceholders(getModeController().getText(
-			    "file_not_found"), file.getPath()));
+			throw new FileNotFoundException(UrlManager.expandPlaceholders(getModeController()
+			    .getText("file_not_found"), file.getPath()));
 		}
 		if (!file.canWrite()) {
 			((MindMapMapModel) map).setReadOnly(true);
@@ -177,8 +177,8 @@ public class MMapController extends MapController {
 				final String lockingUser = tryToLock(map, file);
 				if (lockingUser != null) {
 					Controller.getController().informationMessage(
-					    UrlManager.expandPlaceholders(getModeController().getText("map_locked_by_open"),
-					        file.getName(), lockingUser));
+					    UrlManager.expandPlaceholders(getModeController().getText(
+					        "map_locked_by_open"), file.getName(), lockingUser));
 					((MindMapMapModel) map).setReadOnly(true);
 				}
 				else {
@@ -188,8 +188,8 @@ public class MMapController extends MapController {
 			catch (final Exception e) {
 				org.freeplane.Tools.logException(e);
 				Controller.getController().informationMessage(
-				    UrlManager.expandPlaceholders(getModeController().getText("locking_failed_by_open"),
-				        file.getName()));
+				    UrlManager.expandPlaceholders(getModeController().getText(
+				        "locking_failed_by_open"), file.getName()));
 				((MindMapMapModel) map).setReadOnly(true);
 			}
 		}
@@ -356,8 +356,8 @@ public class MMapController extends MapController {
 		    .popLockingUserOfOldLock();
 		if (lockingUserOfOldLock != null) {
 			Controller.getController().informationMessage(
-			    UrlManager.expandPlaceholders(getModeController().getText("locking_old_lock_removed"),
-			        file.getName(), lockingUserOfOldLock));
+			    UrlManager.expandPlaceholders(getModeController().getText(
+			        "locking_old_lock_removed"), file.getName(), lockingUserOfOldLock));
 		}
 		if (lockingUser == null) {
 			((MindMapMapModel) map).setReadOnly(false);

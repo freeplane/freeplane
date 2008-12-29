@@ -248,15 +248,15 @@ public class FileManager extends UrlManager {
 			    .tryToLock(map, file);
 			if (lockingUser != null) {
 				Controller.getController().informationMessage(
-				    UrlManager.expandPlaceholders(getMModeController().getText("map_locked_by_save_as"),
-				        file.getName(), lockingUser));
+				    UrlManager.expandPlaceholders(getMModeController().getText(
+				        "map_locked_by_save_as"), file.getName(), lockingUser));
 				return false;
 			}
 		}
 		catch (final Exception e) {
 			Controller.getController().informationMessage(
-			    UrlManager.expandPlaceholders(getMModeController().getText("locking_failed_by_save_as"),
-			        file.getName()));
+			    UrlManager.expandPlaceholders(getMModeController().getText(
+			        "locking_failed_by_save_as"), file.getName()));
 			return false;
 		}
 		return saveInternal((MindMapMapModel) map, file, false);

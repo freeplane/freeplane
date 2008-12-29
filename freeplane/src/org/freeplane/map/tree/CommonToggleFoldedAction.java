@@ -37,15 +37,15 @@ class CommonToggleFoldedAction extends FreeplaneAction {
 		toggleFolded();
 	}
 
-	public void toggleFolded() {
-		toggleFolded(getModeController().getSelectedNodes().listIterator());
-	}
-
 	private ListIterator resetIterator(final ListIterator iterator) {
 		while (iterator.hasPrevious()) {
 			iterator.previous();
 		}
 		return iterator;
+	}
+
+	public void toggleFolded() {
+		toggleFolded(getModeController().getSelectedNodes().listIterator());
 	}
 
 	public void toggleFolded(final ListIterator listIterator) {

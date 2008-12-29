@@ -21,6 +21,8 @@ package org.freeplane.controller.resources;
 
 import java.awt.Font;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -294,8 +296,8 @@ public abstract class ResourceController {
 	public ClassLoader getFreeMindClassLoader() {
 		final ClassLoader classLoader = this.getClass().getClassLoader();
 		try {
-			return new URLClassLoader(
-			    new URL[] { UrlManager.fileToUrl(new File(getFreemindBaseDir())) }, classLoader);
+			return new URLClassLoader(new URL[] { UrlManager.fileToUrl(new File(
+			    getFreemindBaseDir())) }, classLoader);
 		}
 		catch (final MalformedURLException e) {
 			org.freeplane.Tools.logException(e);
@@ -362,6 +364,10 @@ public abstract class ResourceController {
 		return getProperty(ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION)
 		    .equalsIgnoreCase(BooleanProperty.TRUE_VALUE);
 	}
+
+	abstract public void loadProperties(InputStream inStream) throws IOException;
+
+	abstract public void loadPropertiesFromXML(InputStream inStream) throws IOException;
 
 	public void removePropertyChangeListener(final IFreemindPropertyListener listener) {
 		propertyChangeListeners.remove(listener);

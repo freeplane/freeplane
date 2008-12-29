@@ -22,11 +22,13 @@ package org.freeplane.controller.resources;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.net.URL;
+import java.util.InvalidPropertiesFormatException;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.logging.ConsoleHandler;
@@ -156,6 +158,17 @@ public class ApplicationResourceController extends ResourceController {
 		final File autoPropertiesFile = new File(userPropertiesFolder, defaultPreferences
 		    .getProperty("autoproperties"));
 		return autoPropertiesFile;
+	}
+
+	@Override
+	public void loadProperties(final InputStream inStream) throws IOException {
+		defProps.load(inStream);
+	}
+
+	@Override
+	public void loadPropertiesFromXML(final InputStream in) throws IOException,
+	        InvalidPropertiesFormatException {
+		defProps.loadFromXML(in);
 	}
 
 	private Properties readDefaultPreferences() {

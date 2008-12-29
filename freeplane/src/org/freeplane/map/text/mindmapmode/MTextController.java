@@ -178,7 +178,8 @@ public class MTextController extends TextController {
 					if (node.getLink() != null) {
 						final String possiblyRelative = node.getLink();
 						final String relative = UrlManager.isAbsolutePath(possiblyRelative) ? UrlManager
-						    .fileToUrl(new File(possiblyRelative)).toString() : possiblyRelative;
+						    .fileToUrl(new File(possiblyRelative)).toString()
+						        : possiblyRelative;
 						if (relative != null) {
 							final String strText = "<html><img src=\"" + relative + "\">";
 							((MLinkController) getModeController().getLinkController()).setLink(

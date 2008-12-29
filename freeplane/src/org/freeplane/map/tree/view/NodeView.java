@@ -139,7 +139,7 @@ public class NodeView extends JComponent implements TreeModelListener {
 
 	@Override
 	public boolean contains(final int x, final int y) {
-		if(! isValid()){
+		if (!isValid()) {
 			return false;
 		}
 		final int space = getMap().getZoomed(NodeView.SPACE_AROUND) - 2

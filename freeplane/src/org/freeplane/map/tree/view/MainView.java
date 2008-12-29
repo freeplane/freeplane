@@ -56,6 +56,8 @@ import org.freeplane.ui.components.UITools;
  * Base class for all node views.
  */
 public abstract class MainView extends JLabel {
+	public static final Set executableExtensions = new HashSet(Arrays.asList(new String[] { "exe",
+	        "com", "vbs", "bat", "lnk" }));
 	static Dimension maximumSize = new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
 	private static final int MIN_HOR_NODE_SIZE = 10;
 	static Dimension minimumSize = new Dimension(0, 0);
@@ -371,9 +373,6 @@ public abstract class MainView extends JLabel {
 		setFont(font);
 	}
 
-	public static final Set executableExtensions = new HashSet(Arrays.asList(new String[] { "exe",
-	        "com", "vbs", "bat", "lnk" }));
-	
 	void updateIcons(final NodeModel node) {
 		setHorizontalTextPosition(node.isLeft() ? SwingConstants.LEADING : SwingConstants.TRAILING);
 		final MultipleImage iconImages = new MultipleImage(1.0f);

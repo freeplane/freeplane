@@ -174,7 +174,8 @@ class SignedScriptHandler {
 					    .getCertificate(content.mKeyName));
 				}
 				instanceVerify.update(content.mScript.getBytes());
-				final boolean verify = instanceVerify.verify(DesEncrypter.fromBase64(content.mSignature));
+				final boolean verify = instanceVerify.verify(DesEncrypter
+				    .fromBase64(content.mSignature));
 				return verify;
 			}
 			catch (final Exception e) {

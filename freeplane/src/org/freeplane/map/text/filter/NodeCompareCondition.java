@@ -35,9 +35,10 @@ class NodeCompareCondition extends CompareConditionAdapter {
 
 	static ICondition load(final XMLElement element) {
 		return new NodeCompareCondition(element.getAttribute(NodeCompareCondition.VALUE, null),
-		    TreeXmlReader.xmlToBoolean(element.getAttribute(CompareConditionAdapter.IGNORE_CASE, null)),
-		    Integer.parseInt(element.getAttribute(NodeCompareCondition.COMPARATION_RESULT, null)),
-		    TreeXmlReader.xmlToBoolean(element.getAttribute(NodeCompareCondition.SUCCEED, null)));
+		    TreeXmlReader.xmlToBoolean(element.getAttribute(CompareConditionAdapter.IGNORE_CASE,
+		        null)), Integer.parseInt(element.getAttribute(
+		        NodeCompareCondition.COMPARATION_RESULT, null)), TreeXmlReader.xmlToBoolean(element
+		        .getAttribute(NodeCompareCondition.SUCCEED, null)));
 	}
 
 	final private int comparationResult;

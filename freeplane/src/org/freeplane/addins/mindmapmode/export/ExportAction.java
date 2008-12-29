@@ -98,16 +98,6 @@ abstract public class ExportAction extends FreeplaneAction {
 		return chosenFile;
 	}
 
-	private void copyStream(final InputStream in, final OutputStream out) throws IOException {
-		final byte[] buf = new byte[1024];
-		int len;
-		while ((len = in.read(buf)) > 0) {
-			out.write(buf, 0, len);
-		}
-		in.close();
-		out.close();
-	}
-
 	/**
 	 */
 	protected void copyFromFile(final String dir, final String fileName,
@@ -146,6 +136,16 @@ abstract public class ExportAction extends FreeplaneAction {
 			Logger.global.severe("File not found or could not be copied. " + "Was earching for "
 			        + prefix + fileName + " and should go to " + destinationDirectory);
 		}
+	}
+
+	private void copyStream(final InputStream in, final OutputStream out) throws IOException {
+		final byte[] buf = new byte[1024];
+		int len;
+		while ((len = in.read(buf)) > 0) {
+			out.write(buf, 0, len);
+		}
+		in.close();
+		out.close();
 	}
 
 	public BufferedImage createBufferedImage() {

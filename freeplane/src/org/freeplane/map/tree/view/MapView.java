@@ -343,7 +343,8 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 				}
 				else if (propertyName
 				    .equals(ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION)) {
-					MapView.standardDrawRectangleForSelection = TreeXmlReader.xmlToBoolean(newValue);
+					MapView.standardDrawRectangleForSelection = TreeXmlReader
+					    .xmlToBoolean(newValue);
 					Controller.getController().getMapView().repaintSelecteds();
 				}
 				else if (propertyName.equals("printonwhitebackground")) {

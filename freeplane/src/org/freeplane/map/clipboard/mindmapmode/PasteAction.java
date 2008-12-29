@@ -159,6 +159,14 @@ class PasteAction extends FreeplaneAction {
 	private static final Pattern HREF_PATTERN = Pattern
 	    .compile("<html>\\s*<body>\\s*<a\\s+href=\"([^>]+)\">(.*)</a>\\s*</body>\\s*</html>");
 	static final Pattern nonLinkCharacter = Pattern.compile("[ \n()'\",;]");
+
+	public static String firstLetterCapitalized(final String text) {
+		if (text == null || text.length() == 0) {
+			return text;
+		}
+		return text.substring(0, 1).toUpperCase() + text.substring(1, text.length());
+	}
+
 	private List newNodes;
 
 	public PasteAction() {
@@ -382,11 +390,4 @@ class PasteAction extends FreeplaneAction {
 		}
 		return pastedNode;
 	}
-
-	public static String firstLetterCapitalized(final String text) {
-    	if (text == null || text.length() == 0) {
-    		return text;
-    	}
-    	return text.substring(0, 1).toUpperCase() + text.substring(1, text.length());
-    }
 }

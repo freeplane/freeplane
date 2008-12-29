@@ -40,7 +40,8 @@ abstract public class CompareConditionAdapter extends NodeCondition {
 	public void attributesToXml(final XMLElement child) {
 		super.attributesToXml(child);
 		child.setAttribute(CompareConditionAdapter.VALUE, conditionValue);
-		child.setAttribute(CompareConditionAdapter.IGNORE_CASE, TreeXmlWriter.BooleanToXml(ignoreCase));
+		child.setAttribute(CompareConditionAdapter.IGNORE_CASE, TreeXmlWriter
+		    .BooleanToXml(ignoreCase));
 	}
 
 	protected int compareTo(final String nodeValue) throws NumberFormatException {

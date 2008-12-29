@@ -426,8 +426,8 @@ public class MapController {
 				catch (final Exception e) {
 					org.freeplane.Tools.logException(e);
 					Controller.getController().getViewController().out(
-					    UrlManager.expandPlaceholders(getModeController().getText("link_not_found"),
-					        target));
+					    UrlManager.expandPlaceholders(
+					        getModeController().getText("link_not_found"), target));
 					return;
 				}
 			}
@@ -473,8 +473,8 @@ public class MapController {
 					catch (final Exception e) {
 						org.freeplane.Tools.logException(e);
 						Controller.getController().getViewController().out(
-						    UrlManager.expandPlaceholders(getModeController().getText("link_not_found"),
-						        ref));
+						    UrlManager.expandPlaceholders(getModeController().getText(
+						        "link_not_found"), ref));
 						return;
 					}
 				}

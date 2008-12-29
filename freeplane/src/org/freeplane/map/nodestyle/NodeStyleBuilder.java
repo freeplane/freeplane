@@ -145,7 +145,8 @@ public class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWr
 			writer.addAttribute("COLOR", TreeXmlWriter.colorToXml(style.getColor()));
 		}
 		if (style.getBackgroundColor() != null) {
-			writer.addAttribute("BACKGROUND_COLOR", TreeXmlWriter.colorToXml(style.getBackgroundColor()));
+			writer.addAttribute("BACKGROUND_COLOR", TreeXmlWriter.colorToXml(style
+			    .getBackgroundColor()));
 		}
 		if (style.getShape() != null) {
 			writer.addAttribute("STYLE", style.getShape());

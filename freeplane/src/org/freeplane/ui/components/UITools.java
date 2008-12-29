@@ -36,158 +36,155 @@ import javax.swing.SwingUtilities;
 
 import org.freeplane.map.tree.view.NodeView;
 
-
-
 /**
  * @author Dimitry Polivaev
  * 29.12.2008
  */
 public class UITools {
-
 	public static void addEscapeActionToDialog(final JDialog dialog) {
-    	class EscapeAction extends AbstractAction {
-    		public void actionPerformed(final ActionEvent e) {
-    			dialog.dispose();
-    		};
-    	}
-    	UITools.addEscapeActionToDialog(dialog, new EscapeAction());
-    }
+		class EscapeAction extends AbstractAction {
+			public void actionPerformed(final ActionEvent e) {
+				dialog.dispose();
+			};
+		}
+		UITools.addEscapeActionToDialog(dialog, new EscapeAction());
+	}
 
 	public static void addEscapeActionToDialog(final JDialog dialog, final Action action) {
-    	UITools.addKeyActionToDialog(dialog, action, "ESCAPE", "end_dialog");
-    }
+		UITools.addKeyActionToDialog(dialog, action, "ESCAPE", "end_dialog");
+	}
 
 	public static void addKeyActionToDialog(final JDialog dialog, final Action action,
-                                            final String keyStroke, final String actionId) {
-    	action.putValue(Action.NAME, actionId);
-    	dialog.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-    	    KeyStroke.getKeyStroke(keyStroke), action.getValue(Action.NAME));
-    	dialog.getRootPane().getActionMap().put(action.getValue(Action.NAME), action);
-    }
+	                                        final String keyStroke, final String actionId) {
+		action.putValue(Action.NAME, actionId);
+		dialog.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+		    KeyStroke.getKeyStroke(keyStroke), action.getValue(Action.NAME));
+		dialog.getRootPane().getActionMap().put(action.getValue(Action.NAME), action);
+	}
 
 	public static void convertPointFromAncestor(final Component source, final Point p, Component c) {
-    	int x, y;
-    	while (c != source) {
-    		x = c.getX();
-    		y = c.getY();
-    		p.x -= x;
-    		p.y -= y;
-    		c = c.getParent();
-    	};
-    }
+		int x, y;
+		while (c != source) {
+			x = c.getX();
+			y = c.getY();
+			p.x -= x;
+			p.y -= y;
+			c = c.getParent();
+		};
+	}
 
 	public static void convertPointToAncestor(final Component source, final Point point,
-                                              final Class ancestorClass) {
-    	final Component destination = SwingUtilities.getAncestorOfClass(ancestorClass, source);
-    	UITools.convertPointToAncestor(source, point, destination);
-    }
+	                                          final Class ancestorClass) {
+		final Component destination = SwingUtilities.getAncestorOfClass(ancestorClass, source);
+		UITools.convertPointToAncestor(source, point, destination);
+	}
 
 	public static void convertPointToAncestor(Component c, final Point p,
-                                              final Component destination) {
-    	int x, y;
-    	while (c != destination) {
-    		x = c.getX();
-    		y = c.getY();
-    		p.x += x;
-    		p.y += y;
-    		c = c.getParent();
-    	};
-    }
+	                                          final Component destination) {
+		int x, y;
+		while (c != destination) {
+			x = c.getX();
+			y = c.getY();
+			p.x += x;
+			p.y += y;
+			c = c.getParent();
+		};
+	}
 
 	public static KeyStroke getKeyStroke(final String keyStrokeDescription) {
-    	if (keyStrokeDescription == null) {
-    		return null;
-    	}
-    	final KeyStroke keyStroke = KeyStroke.getKeyStroke(keyStrokeDescription);
-    	if (keyStroke != null) {
-    		return keyStroke;
-    	}
-    	return KeyStroke.getKeyStroke("typed " + keyStrokeDescription);
-    }
+		if (keyStrokeDescription == null) {
+			return null;
+		}
+		final KeyStroke keyStroke = KeyStroke.getKeyStroke(keyStrokeDescription);
+		if (keyStroke != null) {
+			return keyStroke;
+		}
+		return KeyStroke.getKeyStroke("typed " + keyStrokeDescription);
+	}
 
 	public static String removeMnemonic(final String rawLabel) {
-    	return rawLabel.replaceFirst("&([^ ])", "$1");
-    }
+		return rawLabel.replaceFirst("&([^ ])", "$1");
+	}
 
 	public static void setDialogLocationRelativeTo(final JDialog dialog, Component c) {
-    	if (c == null) {
-    		return;
-    	}
-    	if (c instanceof NodeView) {
-    		final NodeView nodeView = (NodeView) c;
-    		nodeView.getMap().scrollNodeToVisible(nodeView);
-    		c = nodeView.getMainView();
-    	}
-    	final Point compLocation = c.getLocationOnScreen();
-    	final int cw = c.getWidth();
-    	final int ch = c.getHeight();
-    	final Container parent = dialog.getParent();
-    	final Point parentLocation = parent.getLocationOnScreen();
-    	final int pw = parent.getWidth();
-    	final int ph = parent.getHeight();
-    	final int dw = dialog.getWidth();
-    	final int dh = dialog.getHeight();
-    	final Toolkit defaultToolkit = Toolkit.getDefaultToolkit();
-    	final Insets screenInsets = defaultToolkit.getScreenInsets(dialog
-    	    .getGraphicsConfiguration());
-    	final Dimension screenSize = defaultToolkit.getScreenSize();
-    	final int minX = Math.max(parentLocation.x, screenInsets.left);
-    	final int minY = Math.max(parentLocation.y, screenInsets.top);
-    	final int maxX = Math.min(parentLocation.x + pw, screenSize.width - screenInsets.right);
-    	final int maxY = Math.min(parentLocation.y + ph, screenSize.height - screenInsets.bottom);
-    	int dx, dy;
-    	if (compLocation.x + cw < minX) {
-    		dx = minX;
-    	}
-    	else if (compLocation.x > maxX) {
-    		dx = maxX - dw;
-    	}
-    	else {
-    		final int leftSpace = compLocation.x - minX;
-    		final int rightSpace = maxX - (compLocation.x + cw);
-    		if (leftSpace > rightSpace) {
-    			if (leftSpace > dw) {
-    				dx = compLocation.x - dw;
-    			}
-    			else {
-    				dx = minX;
-    			}
-    		}
-    		else {
-    			if (rightSpace > dw) {
-    				dx = compLocation.x + cw;
-    			}
-    			else {
-    				dx = maxX - dw;
-    			}
-    		}
-    	}
-    	if (compLocation.y + ch < minY) {
-    		dy = minY;
-    	}
-    	else if (compLocation.y > maxY) {
-    		dy = maxY - dh;
-    	}
-    	else {
-    		final int topSpace = compLocation.y - minY;
-    		final int bottomSpace = maxY - (compLocation.y + ch);
-    		if (topSpace > bottomSpace) {
-    			if (topSpace > dh) {
-    				dy = compLocation.y - dh;
-    			}
-    			else {
-    				dy = minY;
-    			}
-    		}
-    		else {
-    			if (bottomSpace > dh) {
-    				dy = compLocation.y + ch;
-    			}
-    			else {
-    				dy = maxY - dh;
-    			}
-    		}
-    	}
-    	dialog.setLocation(dx, dy);
-    }
+		if (c == null) {
+			return;
+		}
+		if (c instanceof NodeView) {
+			final NodeView nodeView = (NodeView) c;
+			nodeView.getMap().scrollNodeToVisible(nodeView);
+			c = nodeView.getMainView();
+		}
+		final Point compLocation = c.getLocationOnScreen();
+		final int cw = c.getWidth();
+		final int ch = c.getHeight();
+		final Container parent = dialog.getParent();
+		final Point parentLocation = parent.getLocationOnScreen();
+		final int pw = parent.getWidth();
+		final int ph = parent.getHeight();
+		final int dw = dialog.getWidth();
+		final int dh = dialog.getHeight();
+		final Toolkit defaultToolkit = Toolkit.getDefaultToolkit();
+		final Insets screenInsets = defaultToolkit.getScreenInsets(dialog
+		    .getGraphicsConfiguration());
+		final Dimension screenSize = defaultToolkit.getScreenSize();
+		final int minX = Math.max(parentLocation.x, screenInsets.left);
+		final int minY = Math.max(parentLocation.y, screenInsets.top);
+		final int maxX = Math.min(parentLocation.x + pw, screenSize.width - screenInsets.right);
+		final int maxY = Math.min(parentLocation.y + ph, screenSize.height - screenInsets.bottom);
+		int dx, dy;
+		if (compLocation.x + cw < minX) {
+			dx = minX;
+		}
+		else if (compLocation.x > maxX) {
+			dx = maxX - dw;
+		}
+		else {
+			final int leftSpace = compLocation.x - minX;
+			final int rightSpace = maxX - (compLocation.x + cw);
+			if (leftSpace > rightSpace) {
+				if (leftSpace > dw) {
+					dx = compLocation.x - dw;
+				}
+				else {
+					dx = minX;
+				}
+			}
+			else {
+				if (rightSpace > dw) {
+					dx = compLocation.x + cw;
+				}
+				else {
+					dx = maxX - dw;
+				}
+			}
+		}
+		if (compLocation.y + ch < minY) {
+			dy = minY;
+		}
+		else if (compLocation.y > maxY) {
+			dy = maxY - dh;
+		}
+		else {
+			final int topSpace = compLocation.y - minY;
+			final int bottomSpace = maxY - (compLocation.y + ch);
+			if (topSpace > bottomSpace) {
+				if (topSpace > dh) {
+					dy = compLocation.y - dh;
+				}
+				else {
+					dy = minY;
+				}
+			}
+			else {
+				if (bottomSpace > dh) {
+					dy = compLocation.y + ch;
+				}
+				else {
+					dy = maxY - dh;
+				}
+			}
+		}
+		dialog.setLocation(dx, dy);
+	}
 }

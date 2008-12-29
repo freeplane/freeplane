@@ -31,7 +31,6 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 
-
 /**
  * @author Dimitry Polivaev
  * 29.12.2008
@@ -39,13 +38,27 @@ import javax.crypto.spec.PBEParameterSpec;
 public class DesEncrypter {
 	private static final int SALT_LENGTH = 8;
 	private static final String SALT_PRESENT_INDICATOR = " ";
+
+	/**
+	 * @throws IOException
+	 */
+	public static byte[] fromBase64(final String base64String) {
+		return Base64Coding.decode64(base64String);
+	}
+
+	/**
+	 */
+	public static String toBase64(final byte[] byteBuffer) {
+		return new String(Base64Coding.encode64(byteBuffer));
+	}
+
 	Cipher dcipher;
 	Cipher ecipher;
 	int iterationCount = 19;
 	final private String mAlgorithm;
 	final private char[] passPhrase;
-	byte[] salt = { (byte) 0xA9, (byte) 0x9B, (byte) 0xC8, (byte) 0x32, (byte) 0x56,
-	        (byte) 0x35, (byte) 0xE3, (byte) 0x03 };
+	byte[] salt = { (byte) 0xA9, (byte) 0x9B, (byte) 0xC8, (byte) 0x32, (byte) 0x56, (byte) 0x35,
+	        (byte) 0xE3, (byte) 0x03 };
 
 	public DesEncrypter(final StringBuffer pPassPhrase, final String pAlgorithm) {
 		passPhrase = new char[pPassPhrase.length()];
@@ -113,8 +126,7 @@ public class DesEncrypter {
 				    keySpec);
 				ecipher = Cipher.getInstance(mAlgorithm);
 				dcipher = Cipher.getInstance(mAlgorithm);
-				final AlgorithmParameterSpec paramSpec = new PBEParameterSpec(salt,
-				    iterationCount);
+				final AlgorithmParameterSpec paramSpec = new PBEParameterSpec(salt, iterationCount);
 				ecipher.init(Cipher.ENCRYPT_MODE, key, paramSpec);
 				dcipher.init(Cipher.DECRYPT_MODE, key, paramSpec);
 			}
@@ -130,17 +142,4 @@ public class DesEncrypter {
 			}
 		}
 	}
-
-	/**
-     */
-    public static String toBase64(final byte[] byteBuffer) {
-    	return new String(Base64Coding.encode64(byteBuffer));
-    }
-
-	/**
-     * @throws IOException
-     */
-    public static byte[] fromBase64(final String base64String) {
-    	return Base64Coding.decode64(base64String);
-    }
 }

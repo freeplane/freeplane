@@ -98,8 +98,8 @@ class ExportBranchAction extends FreeplaneAction {
 			 */
 			final NodeModel parent = node.getParentNode();
 			try {
-				final String linkToNewMapString = UrlManager.toRelativeURL(UrlManager.fileToUrl(chosenFile),
-				    Controller.getController().getMap().getURL());
+				final String linkToNewMapString = UrlManager.toRelativeURL(UrlManager
+				    .fileToUrl(chosenFile), Controller.getController().getMap().getURL());
 				((MLinkController) getMModeController().getLinkController()).setLink(node,
 				    linkToNewMapString);
 			}
@@ -117,8 +117,8 @@ class ExportBranchAction extends FreeplaneAction {
 			((MTextController) getMModeController().getTextController()).setNodeText(newNode, node
 			    .getText());
 			try {
-				final String linkString = UrlManager.toRelativeURL(Controller.getController().getMap()
-				    .getURL(), UrlManager.fileToUrl(chosenFile));
+				final String linkString = UrlManager.toRelativeURL(Controller.getController()
+				    .getMap().getURL(), UrlManager.fileToUrl(chosenFile));
 				((MLinkController) getMModeController().getLinkController()).setLink(newNode,
 				    linkString);
 			}

@@ -19,9 +19,11 @@
  */
 package org.freeplane.controller.resources;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Enumeration;
+import java.util.InvalidPropertiesFormatException;
 import java.util.Properties;
 
 import javax.swing.JApplet;
@@ -31,9 +33,7 @@ import javax.swing.JApplet;
  */
 public class AppletResourceController extends ResourceController {
 	final private JApplet applet;
-	public Properties defaultProps;
-	public URL defaultPropsURL;
-	public Properties userProps;
+	private Properties userProps;
 
 	/**
 	 * @param controller
@@ -42,13 +42,12 @@ public class AppletResourceController extends ResourceController {
 		super();
 		this.applet = applet;
 		// TODO Auto-generated constructor stub
-		defaultPropsURL = getResource("freemind.properties");
+		final URL defaultPropsURL = getResource("freemind.properties");
 		try {
-			defaultProps = new Properties();
+			userProps = new Properties();
 			final InputStream in = defaultPropsURL.openStream();
-			defaultProps.load(in);
+			userProps.load(in);
 			in.close();
-			userProps = defaultProps;
 		}
 		catch (final Exception ex) {
 			System.err.println("Could not load properties.");
@@ -73,7 +72,7 @@ public class AppletResourceController extends ResourceController {
 		catch (final NumberFormatException nfe) {
 			return defaultValue;
 		}
-	};
+	}
 
 	@Override
 	public Properties getProperties() {
@@ -83,7 +82,7 @@ public class AppletResourceController extends ResourceController {
 	@Override
 	public String getProperty(final String key) {
 		return userProps.getProperty(key);
-	}
+	};
 
 	@Override
 	public URL getResource(final String name) {
@@ -93,6 +92,17 @@ public class AppletResourceController extends ResourceController {
 			return null;
 		}
 		return resourceURL;
+	}
+
+	@Override
+	public void loadProperties(final InputStream inStream) throws IOException {
+		userProps.load(inStream);
+	}
+
+	@Override
+	public void loadPropertiesFromXML(final InputStream in) throws IOException,
+	        InvalidPropertiesFormatException {
+		userProps.loadFromXML(in);
 	}
 
 	@Override

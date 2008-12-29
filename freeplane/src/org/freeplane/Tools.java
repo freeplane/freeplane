@@ -21,13 +21,10 @@ package org.freeplane;
 
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 
 /**
  * @author foltin
@@ -70,6 +67,7 @@ public class Tools {
 			this.value = value;
 		}
 
+		@Override
 		public String toString() {
 			return new String("IntHolder(") + value + ")";
 		}

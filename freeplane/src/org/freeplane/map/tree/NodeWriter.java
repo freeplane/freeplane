@@ -102,8 +102,8 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 			}
 		}
 		if (node.getHistoryInformation() != null) {
-			writer.addAttribute(NodeBuilder.XML_NODE_HISTORY_CREATED_AT, TreeXmlWriter.dateToString(node
-			    .getHistoryInformation().getCreatedAt()));
+			writer.addAttribute(NodeBuilder.XML_NODE_HISTORY_CREATED_AT, TreeXmlWriter
+			    .dateToString(node.getHistoryInformation().getCreatedAt()));
 			writer.addAttribute(NodeBuilder.XML_NODE_HISTORY_LAST_MODIFIED_AT, TreeXmlWriter
 			    .dateToString(node.getHistoryInformation().getLastModifiedAt()));
 		}

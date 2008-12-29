@@ -91,8 +91,8 @@ class ApplyPatternAction extends MultipleNodeAction {
 		}
 		if (pattern.getPatternNodeBackgroundColor() != null) {
 			((MNodeStyleController) getMModeController().getNodeStyleController())
-			    .setBackgroundColor(node, TreeXmlReader.xmlToColor(pattern.getPatternNodeBackgroundColor()
-			        .getValue()));
+			    .setBackgroundColor(node, TreeXmlReader.xmlToColor(pattern
+			        .getPatternNodeBackgroundColor().getValue()));
 		}
 		if (pattern.getPatternNodeStyle() != null) {
 			((MNodeStyleController) getMModeController().getNodeStyleController()).setShape(node,
@@ -146,8 +146,8 @@ class ApplyPatternAction extends MultipleNodeAction {
 			    "true".equals(pattern.getPatternNodeFontBold().getValue()));
 		}
 		if (pattern.getPatternEdgeColor() != null) {
-			((MEdgeController) getMModeController().getEdgeController()).setColor(node, TreeXmlReader
-			    .xmlToColor(pattern.getPatternEdgeColor().getValue()));
+			((MEdgeController) getMModeController().getEdgeController()).setColor(node,
+			    TreeXmlReader.xmlToColor(pattern.getPatternEdgeColor().getValue()));
 		}
 		if (pattern.getPatternEdgeStyle() != null) {
 			((MEdgeController) getMModeController().getEdgeController()).setStyle(node, pattern

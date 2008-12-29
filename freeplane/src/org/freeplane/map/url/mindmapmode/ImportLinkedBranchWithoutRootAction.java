@@ -54,8 +54,9 @@ class ImportLinkedBranchWithoutRootAction extends FreeplaneAction {
 		URL absolute = null;
 		try {
 			final String relative = selected.getLink();
-			absolute = UrlManager.isAbsolutePath(relative) ? UrlManager.fileToUrl(new File(relative))
-			        : new URL(UrlManager.fileToUrl(map.getFile()), relative);
+			absolute = UrlManager.isAbsolutePath(relative) ? UrlManager
+			    .fileToUrl(new File(relative)) : new URL(UrlManager.fileToUrl(map.getFile()),
+			    relative);
 		}
 		catch (final MalformedURLException ex) {
 			JOptionPane.showMessageDialog(getModeController().getMapView(),

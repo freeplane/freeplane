@@ -41,8 +41,8 @@ public class AttributeCompareCondition extends CompareConditionAdapter {
 		    AttributeCompareCondition.ATTRIBUTE, null), element.getAttribute(
 		    CompareConditionAdapter.VALUE, null), TreeXmlReader.xmlToBoolean(element.getAttribute(
 		    CompareConditionAdapter.IGNORE_CASE, null)), Integer.parseInt(element.getAttribute(
-		    AttributeCompareCondition.COMPARATION_RESULT, null)), TreeXmlReader.xmlToBoolean(element
-		    .getAttribute(AttributeCompareCondition.SUCCEED, null)));
+		    AttributeCompareCondition.COMPARATION_RESULT, null)), TreeXmlReader
+		    .xmlToBoolean(element.getAttribute(AttributeCompareCondition.SUCCEED, null)));
 	}
 
 	final private String attribute;
