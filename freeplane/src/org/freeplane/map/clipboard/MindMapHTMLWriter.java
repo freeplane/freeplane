@@ -27,9 +27,9 @@ import java.util.ListIterator;
 
 import org.freeplane.controller.Controller;
 import org.freeplane.io.xml.TreeXmlWriter;
-import org.freeplane.main.HtmlTools;
 import org.freeplane.map.icon.MindIcon;
 import org.freeplane.map.nodestyle.NodeStyleModel;
+import org.freeplane.map.text.HtmlTools;
 import org.freeplane.map.tree.NodeModel;
 
 class MindMapHTMLWriter {

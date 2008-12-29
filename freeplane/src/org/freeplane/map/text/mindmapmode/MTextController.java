@@ -33,10 +33,9 @@ import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.main.ExampleFileFilter;
-import org.freeplane.main.FixedHTMLWriter;
 import org.freeplane.map.link.mindmapmode.MLinkController;
 import org.freeplane.map.nodestyle.mindmapmode.MNodeStyleController;
+import org.freeplane.map.text.FixedHTMLWriter;
 import org.freeplane.map.text.TextController;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.mindmapmode.MMapController;

@@ -34,8 +34,8 @@ import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.freeplane.DesEncrypter;
 import org.freeplane.Tools;
+import org.freeplane.addins.encrypt.DesEncrypter;
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.ui.components.EnterPasswordDialog;

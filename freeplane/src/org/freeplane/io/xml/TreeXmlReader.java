@@ -29,6 +29,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.StringTokenizer;
 
 import org.freeplane.Tools;
 import org.freeplane.io.IAttributeHandler;
@@ -286,14 +287,13 @@ public class TreeXmlReader implements IXMLBuilder {
     	if (string.startsWith("java.awt.Point")) {
     		string = string.replaceAll("java\\.awt\\.Point\\[x=([0-9]*),y=([0-9]*)\\]", "$1;$2");
     	}
-    	final List l = Tools.stringToList(string);
-    	final ListIterator it = l.listIterator(0);
-    	if (l.size() != 2) {
+		final StringTokenizer tok = new StringTokenizer(string, ";");
+    	if (tok.countTokens() != 2) {
     		throw new IllegalArgumentException("A point must consist of two numbers (and not: '"
     		        + string + "').");
     	}
-    	final int x = Integer.parseInt((String) it.next());
-    	final int y = Integer.parseInt((String) it.next());
+    	final int x = Integer.parseInt((String) tok.nextToken());
+    	final int y = Integer.parseInt((String) tok.nextToken());
     	return new Point(x, y);
     }
 

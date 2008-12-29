@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 
 import org.freeplane.controller.FreeplaneAction;
-import org.freeplane.main.HtmlTools;
+import org.freeplane.map.text.HtmlTools;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.mindmapmode.MMapController;
 import org.freeplane.map.tree.view.MapView;

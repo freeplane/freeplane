@@ -21,7 +21,7 @@ package org.freeplane.map.text.mindmapmode;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.main.HtmlTools;
+import org.freeplane.map.text.HtmlTools;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.MultipleNodeAction;
 

@@ -46,8 +46,8 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.main.HtmlTools;
 import org.freeplane.map.icon.MindIcon;
+import org.freeplane.map.text.HtmlTools;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.ui.FreemindMenuBar;
 import org.freeplane.ui.components.UITools;

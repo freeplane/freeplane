@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.main;
+package org.freeplane.map.text;
 
 import java.io.IOException;
 import java.io.StringReader;

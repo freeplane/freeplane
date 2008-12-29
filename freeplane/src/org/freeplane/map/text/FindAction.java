@@ -30,7 +30,6 @@ import javax.swing.JOptionPane;
 
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.FreeplaneAction;
-import org.freeplane.main.HtmlTools;
 import org.freeplane.map.tree.NodeModel;
 
 class FindAction extends FreeplaneAction {

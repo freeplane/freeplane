@@ -21,7 +21,7 @@ package org.freeplane.map.note;
 
 import org.freeplane.Tools;
 import org.freeplane.extension.IExtension;
-import org.freeplane.main.HtmlTools;
+import org.freeplane.map.text.HtmlTools;
 
 /**
  * @author Dimitry Polivaev

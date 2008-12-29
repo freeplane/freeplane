@@ -24,7 +24,6 @@ import java.util.Collection;
 
 import org.freeplane.controller.Controller;
 import org.freeplane.controller.FreeplaneAction;
-import org.freeplane.main.HtmlTools;
 import org.freeplane.modes.ModeController;
 import org.freeplane.ui.MenuBuilder;
 

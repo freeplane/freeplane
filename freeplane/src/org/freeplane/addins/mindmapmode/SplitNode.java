@@ -31,8 +31,8 @@ import javax.swing.text.html.HTMLEditorKit;
 
 import org.freeplane.controller.ActionDescriptor;
 import org.freeplane.controller.FreeplaneAction;
-import org.freeplane.main.FixedHTMLWriter;
 import org.freeplane.map.nodestyle.mindmapmode.MNodeStyleController;
+import org.freeplane.map.text.FixedHTMLWriter;
 import org.freeplane.map.text.mindmapmode.MTextController;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.tree.mindmapmode.MMapController;

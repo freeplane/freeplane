@@ -17,14 +17,14 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane;
+package org.freeplane.addins.encrypt;
 
 /**
  * @author Dimitry Polivaev
  * 29.12.2008
  */
-public class SingleDesEncrypter extends DesEncrypter {
-	public SingleDesEncrypter(final StringBuffer pPassPhrase) {
-		super(pPassPhrase, "PBEWithMD5AndDES");
+public class TripleDesEncrypter extends DesEncrypter {
+	public TripleDesEncrypter(final StringBuffer pPassPhrase) {
+		super(pPassPhrase, "PBEWithMD5AndTripleDES");
 	}
 }

@@ -27,7 +27,7 @@ import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 
 import org.freeplane.extension.IExtension;
-import org.freeplane.main.HtmlTools;
+import org.freeplane.map.text.HtmlTools;
 import org.freeplane.modes.mindmapmode.MModeController;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;

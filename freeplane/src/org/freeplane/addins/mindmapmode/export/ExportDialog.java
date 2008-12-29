@@ -34,7 +34,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.main.ExampleFileFilter;
+import org.freeplane.map.text.mindmapmode.ExampleFileFilter;
 
 public class ExportDialog extends JFrame {
 	class ExportListener implements ActionListener {

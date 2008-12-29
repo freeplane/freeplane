@@ -27,7 +27,7 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
-import org.freeplane.SingleDesEncrypter;
+import org.freeplane.addins.encrypt.SingleDesEncrypter;
 import org.freeplane.extension.IExtension;
 import org.freeplane.map.icon.MindIcon;
 import org.freeplane.map.tree.MapController;

@@ -27,8 +27,8 @@ import org.freeplane.io.IElementWriter;
 import org.freeplane.io.ITreeWriter;
 import org.freeplane.io.xml.TreeXmlWriter;
 import org.freeplane.io.xml.n3.nanoxml.XMLElement;
-import org.freeplane.main.HtmlTools;
 import org.freeplane.map.icon.MindIcon;
+import org.freeplane.map.text.HtmlTools;
 import org.freeplane.map.text.NodeTextBuilder;
 import org.freeplane.modes.mindmapmode.EncryptionModel;
 

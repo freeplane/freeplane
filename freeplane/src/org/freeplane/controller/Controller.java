@@ -35,7 +35,6 @@ import org.freeplane.controller.views.MapViewManager;
 import org.freeplane.controller.views.ViewController;
 import org.freeplane.extension.ExtensionHashMap;
 import org.freeplane.extension.IExtension;
-import org.freeplane.main.FreemindVersionInformation;
 import org.freeplane.map.attribute.ModelessAttributeController;
 import org.freeplane.map.tree.MapModel;
 import org.freeplane.map.tree.view.MapView;

@@ -133,17 +133,4 @@ public class Tools {
 		    string2.toLowerCase()))
 		        || (string1 == null && string2 == null);
 	}
-
-	/**
-	 * Converts a String in the format "value;value;value" to a List with the
-	 * values (as strings)
-	 */
-	public static List stringToList(final String string) {
-		final StringTokenizer tok = new StringTokenizer(string, ";");
-		final List list = new LinkedList();
-		while (tok.hasMoreTokens()) {
-			list.add(tok.nextToken());
-		}
-		return list;
-	}
 }

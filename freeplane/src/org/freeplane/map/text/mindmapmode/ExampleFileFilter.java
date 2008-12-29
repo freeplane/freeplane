@@ -43,7 +43,7 @@
 /*
  * @(#)ExampleFileFilter.java 1.14 03/01/23
  */
-package org.freeplane.main;
+package org.freeplane.map.text.mindmapmode;
 
 import java.io.File;
 import java.util.Enumeration;

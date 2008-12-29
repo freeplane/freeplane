@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane;
+package org.freeplane.addins.encrypt;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -31,7 +31,6 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 
-import org.freeplane.main.Base64Coding;
 
 /**
  * @author Dimitry Polivaev

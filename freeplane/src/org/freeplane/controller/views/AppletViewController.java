@@ -34,7 +34,7 @@ import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.controller.Controller;
-import org.freeplane.main.FreemindVersionInformation;
+import org.freeplane.controller.FreemindVersionInformation;
 import org.freeplane.modes.browsemode.BModeController;
 import org.freeplane.ui.FreemindMenuBar;
 
