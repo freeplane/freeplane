@@ -48,6 +48,7 @@ import org.freeplane.map.attribute.view.AttributeView;
 import org.freeplane.map.cloud.CloudModel;
 import org.freeplane.map.cloud.view.CloudView;
 import org.freeplane.map.edge.view.EdgeView;
+import org.freeplane.map.nodelocation.LocationModel;
 import org.freeplane.map.tree.NodeModel;
 import org.freeplane.ui.IUserInputListenerFactory;
 
@@ -139,6 +140,9 @@ public class NodeView extends JComponent implements TreeModelListener {
 
 	@Override
 	public boolean contains(final int x, final int y) {
+		if(! isValid()){
+			return false;
+		}
 		final int space = getMap().getZoomed(NodeView.SPACE_AROUND) - 2
 		        * getZoomedFoldingSymbolHalfWidth();
 		return (x >= space) && (x < getWidth() - space) && (y >= space)

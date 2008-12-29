@@ -46,7 +46,7 @@ public class StdXMLReader implements IXMLReader {
 	 */
 	private class StackedReader {
 		LineNumberReader lineReader;
-		PushbackReader pbReader;
+		Reader pbReader;
 		String publicId;
 		URL systemId;
 	}
@@ -90,6 +90,7 @@ public class StdXMLReader implements IXMLReader {
 	 * The stack of readers.
 	 */
 	final private Stack readers;
+	private char charReadTooMuch;
 
 	/**
 	 * Initializes the XML reader.
@@ -106,8 +107,9 @@ public class StdXMLReader implements IXMLReader {
 		currentReader = new StackedReader();
 		readers = new Stack();
 		currentReader.lineReader = new LineNumberReader(reader);
-		currentReader.pbReader = new PushbackReader(currentReader.lineReader, 2);
+		currentReader.pbReader = currentReader.lineReader;
 		currentReader.publicId = "";
+		this.charReadTooMuch = '\0';
 		try {
 			currentReader.systemId = new URL("file:.");
 		}
@@ -126,8 +128,9 @@ public class StdXMLReader implements IXMLReader {
 		currentReader = new StackedReader();
 		readers = new Stack();
 		currentReader.lineReader = new LineNumberReader(reader);
-		currentReader.pbReader = new PushbackReader(currentReader.lineReader, 2);
+		currentReader.pbReader = currentReader.lineReader;
 		currentReader.publicId = "";
+		this.charReadTooMuch = '\0';
 		try {
 			currentReader.systemId = new URL("file:.");
 		}
@@ -152,6 +155,7 @@ public class StdXMLReader implements IXMLReader {
 	public StdXMLReader(final String publicID, String systemID) throws MalformedURLException,
 	        FileNotFoundException, IOException {
 		URL systemIDasURL = null;
+		this.charReadTooMuch = '\0';
 		try {
 			systemIDasURL = new URL(systemID);
 		}
@@ -168,7 +172,7 @@ public class StdXMLReader implements IXMLReader {
 		readers = new Stack();
 		final Reader reader = this.openStream(publicID, systemIDasURL.toString());
 		currentReader.lineReader = new LineNumberReader(reader);
-		currentReader.pbReader = new PushbackReader(currentReader.lineReader, 2);
+		currentReader.pbReader = currentReader.lineReader;
 	}
 
 	/**
@@ -178,18 +182,19 @@ public class StdXMLReader implements IXMLReader {
 	 *             if an I/O error occurred
 	 */
 	public boolean atEOF() throws IOException {
-		int ch = currentReader.pbReader.read();
+		int ch = readImpl();
 		while (ch < 0) {
 			if (readers.empty()) {
 				return true;
 			}
 			currentReader.pbReader.close();
 			currentReader = (StackedReader) readers.pop();
-			ch = currentReader.pbReader.read();
+			ch = readImpl();
 		}
-		currentReader.pbReader.unread(ch);
+		unread(ch);
 		return false;
 	}
+
 
 	/**
 	 * Returns true if the current stream has no more characters left to be
@@ -199,12 +204,12 @@ public class StdXMLReader implements IXMLReader {
 	 *             if an I/O error occurred
 	 */
 	public boolean atEOFOfCurrentStream() throws IOException {
-		final int ch = currentReader.pbReader.read();
+		final int ch = readImpl();
 		if (ch < 0) {
 			return true;
 		}
 		else {
-			currentReader.pbReader.unread(ch);
+			unread(ch);
 			return false;
 		}
 	}
@@ -359,17 +364,27 @@ public class StdXMLReader implements IXMLReader {
 	 *             if no character could be read
 	 */
 	public char read() throws IOException {
-		int ch = currentReader.pbReader.read();
+		int ch = readImpl();
 		while (ch < 0) {
 			if (readers.empty()) {
 				throw new IOException("Unexpected EOF");
 			}
 			currentReader.pbReader.close();
 			currentReader = (StackedReader) readers.pop();
-			ch = currentReader.pbReader.read();
+			ch = readImpl();
 		}
 		return (char) ch;
 	}
+
+	private int readImpl() throws IOException {
+        if (this.charReadTooMuch != '\0') {
+            char ch = this.charReadTooMuch;
+            this.charReadTooMuch = '\0';
+            return ch;
+        }	    
+        int ch = currentReader.pbReader.read();
+	    return ch;
+    }
 
 	/**
 	 * Sets the public ID of the current stream.
@@ -421,7 +436,7 @@ public class StdXMLReader implements IXMLReader {
 		currentReader = new StackedReader();
 		if (isInternalEntity) {
 			currentReader.lineReader = null;
-			currentReader.pbReader = new PushbackReader(reader, 2);
+			currentReader.pbReader = reader;
 		}
 		else {
 			currentReader.lineReader = new LineNumberReader(reader);
@@ -491,7 +506,11 @@ public class StdXMLReader implements IXMLReader {
 	 * @throws java.io.IOException
 	 *             if an I/O error occurred
 	 */
-	public void unread(final char ch) throws IOException {
-		currentReader.pbReader.unread(ch);
+	public void unread(final int ch) throws IOException {
+		unread((char)ch);
 	}
+
+	public void unread(char ch) throws IOException {
+		 this.charReadTooMuch = ch;
+    }
 }
