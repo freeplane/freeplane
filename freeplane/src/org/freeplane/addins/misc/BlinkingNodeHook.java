@@ -29,11 +29,11 @@ import javax.swing.SwingUtilities;
 
 import org.freeplane.addins.NodeHookDescriptor;
 import org.freeplane.addins.PersistentNodeHook;
-import org.freeplane.core.controller.ActionDescriptor;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.io.xml.n3.nanoxml.IXMLElement;
 import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.modes.mindmapmode.MModeController;
+import org.freeplane.n3.nanoxml.IXMLElement;
 import org.freeplane.view.map.INodeViewVisitor;
 import org.freeplane.view.map.NodeView;
 

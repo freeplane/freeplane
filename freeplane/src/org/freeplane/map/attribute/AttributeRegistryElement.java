@@ -19,8 +19,8 @@
  */
 package org.freeplane.map.attribute;
 
-import org.freeplane.controller.filter.util.SortedComboBoxModel;
-import org.freeplane.core.io.xml.n3.nanoxml.XMLElement;
+import org.freeplane.core.filter.util.SortedComboBoxModel;
+import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
  * @author Dimitry Polivaev

@@ -24,11 +24,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
-import org.freeplane.core.controller.ActionDescriptor;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.FreeplaneAction;
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
-import org.freeplane.core.mode.ModeController;
+import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.map.clipboard.mindmapmode.MClipboardController;
 

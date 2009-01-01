@@ -48,8 +48,8 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.MapModel;
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
-import org.freeplane.core.mode.ModeController;
 
 /**
  * @author Dimitry Polivaev

@@ -21,7 +21,7 @@ package org.freeplane.core.map;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.core.controller.FreeplaneAction;
+import org.freeplane.core.ui.FreeplaneAction;
 
 class NewMapAction extends FreeplaneAction {
 	public NewMapAction() {

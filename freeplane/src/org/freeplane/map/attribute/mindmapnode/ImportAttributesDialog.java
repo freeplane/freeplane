@@ -43,9 +43,9 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
-import org.freeplane.controller.filter.util.SortedComboBoxModel;
 import org.freeplane.controller.views.MapViewManager;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.filter.util.SortedComboBoxModel;
 import org.freeplane.core.map.MapModel;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;

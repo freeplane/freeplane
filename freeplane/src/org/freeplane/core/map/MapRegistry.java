@@ -24,9 +24,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.freeplane.controller.filter.util.SortedMapListModel;
+import org.freeplane.core.filter.util.SortedMapListModel;
 import org.freeplane.core.io.ITreeWriter;
-import org.freeplane.core.mode.ModeController;
 import org.freeplane.map.attribute.AttributeRegistry;
 import org.freeplane.map.attribute.NodeAttributeTableModel;
 import org.freeplane.map.icon.MindIcon;

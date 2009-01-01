@@ -31,8 +31,8 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.JTableHeader;
 
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
-import org.freeplane.core.mode.ModeController;
 import org.freeplane.map.attribute.AttributeRegistry;
 import org.freeplane.map.attribute.AttributeTableLayoutModel;
 import org.freeplane.map.attribute.IAttributeTableModel;

@@ -19,8 +19,8 @@
  */
 package org.freeplane.map.link.filemode;
 
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
-import org.freeplane.core.mode.ModeController;
 import org.freeplane.map.link.LinkController;
 import org.freeplane.modes.filemode.FNodeModel;
 

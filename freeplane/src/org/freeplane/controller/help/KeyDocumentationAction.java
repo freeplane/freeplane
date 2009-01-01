@@ -24,8 +24,8 @@ import java.net.URL;
 
 import javax.swing.AbstractAction;
 
-import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 
 class KeyDocumentationAction extends AbstractAction {

@@ -25,12 +25,12 @@ import java.util.Vector;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
-import org.freeplane.controller.resources.PropertyAction;
-import org.freeplane.controller.resources.ui.OptionPanelBuilder;
-import org.freeplane.controller.resources.ui.OptionString;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
-import org.freeplane.core.mode.ModeController;
+import org.freeplane.core.resources.PropertyAction;
+import org.freeplane.core.resources.ui.OptionPanelBuilder;
+import org.freeplane.core.resources.ui.OptionString;
 import org.freeplane.core.ui.FreemindMenuBar;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.ui.MenuBuilder;

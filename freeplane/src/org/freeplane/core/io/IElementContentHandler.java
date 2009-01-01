@@ -19,7 +19,7 @@
  */
 package org.freeplane.core.io;
 
-import org.freeplane.core.io.xml.n3.nanoxml.IXMLElement;
+import org.freeplane.n3.nanoxml.IXMLElement;
 
 public interface IElementContentHandler extends IElementHandler {
 	void endElement(Object parent, String tag, Object node, IXMLElement attributes, String content);

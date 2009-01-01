@@ -28,7 +28,7 @@ import javax.swing.JLabel;
 import org.freeplane.controller.views.IMapTitleChangeListener;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.MapModel;
-import org.freeplane.core.mode.ModeController;
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.PersistentEditableComboBox;

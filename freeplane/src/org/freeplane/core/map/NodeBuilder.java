@@ -25,8 +25,8 @@ import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.IElementDOMHandler;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
-import org.freeplane.core.io.xml.n3.nanoxml.IXMLElement;
 import org.freeplane.modes.mindmapmode.EncryptionModel;
+import org.freeplane.n3.nanoxml.IXMLElement;
 
 public class NodeBuilder implements IElementDOMHandler {
 	static class IconProperties {

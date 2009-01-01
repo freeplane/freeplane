@@ -27,8 +27,8 @@ import java.util.logging.Logger;
 import javax.help.HelpBroker;
 import javax.help.HelpSet;
 
-import org.freeplane.core.controller.ActionDescriptor;
-import org.freeplane.core.controller.FreeplaneAction;
+import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.core.ui.FreeplaneAction;
 
 /**
  * @author foltin

@@ -42,8 +42,8 @@ import javax.swing.WindowConstants;
 import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.FreeplaneAction;
-import org.freeplane.core.mode.ModeController;
+import org.freeplane.core.map.ModeController;
+import org.freeplane.core.ui.FreeplaneAction;
 
 /**
  * @author foltin

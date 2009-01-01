@@ -30,8 +30,8 @@ import javax.swing.table.AbstractTableModel;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ITreeWriter;
-import org.freeplane.core.io.xml.n3.nanoxml.XMLElement;
 import org.freeplane.core.map.NodeModel;
+import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
  * @author Dimitry Polivaev

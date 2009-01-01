@@ -32,7 +32,7 @@ import java.util.Map;
 import java.util.Vector;
 
 import org.freeplane.core.map.MapModel;
-import org.freeplane.core.mode.ModeController;
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.util.Tools;
 import org.freeplane.view.map.MapView;
 

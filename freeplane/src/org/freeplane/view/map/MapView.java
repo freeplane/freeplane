@@ -54,13 +54,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
 
-import org.freeplane.controller.resources.ResourceController;
-import org.freeplane.controller.resources.ui.IFreemindPropertyListener;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.map.MapModel;
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
-import org.freeplane.core.mode.ModeController;
+import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.ui.IFreemindPropertyListener;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.map.link.ArrowLinkModel;

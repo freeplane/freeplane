@@ -25,7 +25,7 @@ import java.util.HashMap;
 
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
-import org.freeplane.core.io.xml.n3.nanoxml.XMLParseException;
+import org.freeplane.n3.nanoxml.XMLParseException;
 
 /**
  * @author Dimitry Polivaev

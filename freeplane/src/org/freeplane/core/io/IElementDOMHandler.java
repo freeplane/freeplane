@@ -19,7 +19,7 @@
  */
 package org.freeplane.core.io;
 
-import org.freeplane.core.io.xml.n3.nanoxml.IXMLElement;
+import org.freeplane.n3.nanoxml.IXMLElement;
 
 /**
  * @author Dimitry Polivaev

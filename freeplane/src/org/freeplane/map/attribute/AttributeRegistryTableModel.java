@@ -21,8 +21,8 @@ package org.freeplane.map.attribute;
 
 import javax.swing.table.AbstractTableModel;
 
-import org.freeplane.controller.filter.util.IListModel;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.filter.util.IListModel;
 
 /**
  * @author Dimitry Polivaev

@@ -24,8 +24,8 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Vector;
 
-import org.freeplane.core.controller.ActionDescriptor;
 import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.map.clipboard.mindmapmode.MClipboardController;
 

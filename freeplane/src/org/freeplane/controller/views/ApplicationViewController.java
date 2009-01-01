@@ -44,8 +44,8 @@ import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 
-import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.FreemindMenuBar;
 import org.freeplane.core.util.Tools;
 

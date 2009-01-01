@@ -21,8 +21,8 @@ package org.freeplane.map.link.mindmapmode;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.core.controller.FreeplaneAction;
 import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.map.link.ArrowLinkModel;
 import org.freeplane.map.link.NodeLinks;

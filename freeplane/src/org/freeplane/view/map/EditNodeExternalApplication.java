@@ -25,7 +25,7 @@ import java.io.FileWriter;
 import java.text.MessageFormat;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.mode.ModeController;
+import org.freeplane.core.map.ModeController;
 import org.freeplane.map.url.UrlManager;
 
 /**

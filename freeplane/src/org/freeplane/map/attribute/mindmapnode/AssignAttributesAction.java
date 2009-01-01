@@ -21,7 +21,7 @@ package org.freeplane.map.attribute.mindmapnode;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.core.controller.FreeplaneAction;
+import org.freeplane.core.ui.FreeplaneAction;
 
 class AssignAttributesAction extends FreeplaneAction {
 	protected AssignAttributeDialog assignAttributeDialog = null;

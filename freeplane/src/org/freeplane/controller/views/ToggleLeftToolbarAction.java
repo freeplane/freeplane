@@ -21,7 +21,7 @@ package org.freeplane.controller.views;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.core.controller.FreeplaneAction;
+import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 
 @SelectableAction(checkOnPopup = true)

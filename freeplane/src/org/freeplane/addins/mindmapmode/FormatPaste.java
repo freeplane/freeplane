@@ -21,10 +21,10 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JOptionPane;
 
-import org.freeplane.core.controller.ActionDescriptor;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.FreeplaneAction;
 import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.map.pattern.mindmapnode.Pattern;

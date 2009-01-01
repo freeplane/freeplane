@@ -22,10 +22,10 @@ import java.awt.event.ActionEvent;
 import java.util.Iterator;
 import java.util.List;
 
-import org.freeplane.core.controller.ActionDescriptor;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.FreeplaneAction;
 import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.map.clipboard.mindmapmode.MClipboardController;
 import org.freeplane.modes.mindmapmode.MMapController;
 import org.freeplane.view.map.MapView;

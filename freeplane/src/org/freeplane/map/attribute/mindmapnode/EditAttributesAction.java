@@ -25,8 +25,8 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.SwingUtilities;
 
-import org.freeplane.core.controller.FreeplaneAction;
-import org.freeplane.core.mode.ModeController;
+import org.freeplane.core.map.ModeController;
+import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.map.attribute.view.AttributeTable;
 import org.freeplane.map.attribute.view.AttributeView;
 

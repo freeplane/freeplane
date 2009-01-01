@@ -25,7 +25,7 @@ import java.io.File;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.FreeplaneAction;
+import org.freeplane.core.ui.FreeplaneAction;
 
 class OpenPathAction extends FreeplaneAction {
 	OpenPathAction() {

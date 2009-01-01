@@ -22,7 +22,7 @@ package org.freeplane.modes.mindmapmode;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.FreeplaneAction;
+import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
 
 class NodeDownAction extends FreeplaneAction {

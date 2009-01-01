@@ -24,9 +24,9 @@ import java.io.File;
 import java.io.IOException;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.FreeplaneAction;
 import org.freeplane.core.map.MapModel;
 import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.map.clipboard.ClipboardController;
 
 class ExportToHTMLAction extends FreeplaneAction {

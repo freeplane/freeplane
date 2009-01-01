@@ -27,8 +27,8 @@ import java.security.AccessControlException;
 import javax.swing.AbstractAction;
 import javax.swing.SwingUtilities;
 
-import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.modes.browsemode.BModeController;
 

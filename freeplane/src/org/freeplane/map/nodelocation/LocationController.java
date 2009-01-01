@@ -22,7 +22,7 @@ package org.freeplane.map.nodelocation;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.map.MapController;
-import org.freeplane.core.mode.ModeController;
+import org.freeplane.core.map.ModeController;
 
 /**
  * @author Dimitry Polivaev

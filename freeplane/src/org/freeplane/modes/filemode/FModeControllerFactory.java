@@ -22,9 +22,9 @@ package org.freeplane.modes.filemode;
 import javax.swing.JPopupMenu;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.IPropertyGetter;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.FreeMindToolBar;
-import org.freeplane.map.IPropertyGetter;
 import org.freeplane.map.clipboard.ClipboardController;
 import org.freeplane.map.edge.EdgeController;
 import org.freeplane.map.icon.IconController;

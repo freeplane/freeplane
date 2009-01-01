@@ -22,11 +22,11 @@ package org.freeplane.modes.mindmapmode;
 import java.awt.event.ActionEvent;
 import java.util.ListIterator;
 
-import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.FreeplaneAction;
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
-import org.freeplane.core.mode.ModeController;
+import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.core.util.Tools;
 

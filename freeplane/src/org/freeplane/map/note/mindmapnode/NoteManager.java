@@ -21,8 +21,8 @@ package org.freeplane.map.note.mindmapnode;
 
 import javax.swing.text.html.HTMLDocument;
 
+import org.freeplane.core.map.INodeSelectionListener;
 import org.freeplane.core.map.NodeModel;
-import org.freeplane.core.mode.INodeSelectionListener;
 import org.freeplane.map.note.mindmapnode.MNoteController.NoteDocumentListener;
 import org.freeplane.view.map.NodeView;
 

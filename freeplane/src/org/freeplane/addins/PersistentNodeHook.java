@@ -24,19 +24,19 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
-import org.freeplane.core.controller.ActionDescriptor;
-import org.freeplane.core.controller.FreeplaneAction;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IElementDOMHandler;
 import org.freeplane.core.io.IExtensionElementWriter;
 import org.freeplane.core.io.ITreeWriter;
-import org.freeplane.core.io.xml.n3.nanoxml.IXMLElement;
-import org.freeplane.core.io.xml.n3.nanoxml.XMLElement;
 import org.freeplane.core.map.MapController;
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
-import org.freeplane.core.mode.ModeController;
+import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.core.undo.IUndoableActor;
+import org.freeplane.n3.nanoxml.IXMLElement;
+import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.view.map.NodeView;
 
 public abstract class PersistentNodeHook implements IExtension {

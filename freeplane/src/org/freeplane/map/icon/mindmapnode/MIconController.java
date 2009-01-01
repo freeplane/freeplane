@@ -32,13 +32,13 @@ import javax.swing.JMenuItem;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 
-import org.freeplane.controller.resources.ui.IPropertyControl;
-import org.freeplane.controller.resources.ui.IPropertyControlCreator;
-import org.freeplane.controller.resources.ui.KeyProperty;
-import org.freeplane.controller.resources.ui.OptionPanelBuilder;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
-import org.freeplane.core.mode.ModeController;
+import org.freeplane.core.resources.ui.IPropertyControl;
+import org.freeplane.core.resources.ui.IPropertyControlCreator;
+import org.freeplane.core.resources.ui.KeyProperty;
+import org.freeplane.core.resources.ui.OptionPanelBuilder;
 import org.freeplane.core.ui.FreeMindToolBar;
 import org.freeplane.core.ui.FreemindMenuBar;
 import org.freeplane.core.ui.IndexedTree;

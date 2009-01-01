@@ -33,8 +33,8 @@ import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
-import org.freeplane.core.mode.ModeController;
 import org.freeplane.core.ui.IEditHandler;
 import org.freeplane.core.ui.UserInputListenerFactory;
 import org.freeplane.map.link.mindmapmode.MLinkController;

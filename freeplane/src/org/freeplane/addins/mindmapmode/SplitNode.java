@@ -29,10 +29,10 @@ import javax.swing.text.Element;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
-import org.freeplane.core.controller.ActionDescriptor;
-import org.freeplane.core.controller.FreeplaneAction;
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
-import org.freeplane.core.mode.ModeController;
+import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.map.nodestyle.mindmapmode.MNodeStyleController;
 import org.freeplane.map.text.FixedHTMLWriter;
 import org.freeplane.map.text.mindmapmode.MTextController;

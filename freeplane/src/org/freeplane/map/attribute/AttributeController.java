@@ -23,7 +23,7 @@ import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.map.MapController;
 import org.freeplane.core.map.MapReader;
-import org.freeplane.core.mode.ModeController;
+import org.freeplane.core.map.ModeController;
 
 /**
  * @author Dimitry Polivaev 22.11.2008

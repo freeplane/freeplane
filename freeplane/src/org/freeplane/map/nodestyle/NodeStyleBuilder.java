@@ -31,10 +31,10 @@ import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.io.xml.TreeXmlWriter;
-import org.freeplane.core.io.xml.n3.nanoxml.IXMLElement;
-import org.freeplane.core.io.xml.n3.nanoxml.XMLElement;
 import org.freeplane.core.map.NodeBuilder;
 import org.freeplane.core.map.NodeModel;
+import org.freeplane.n3.nanoxml.IXMLElement;
+import org.freeplane.n3.nanoxml.XMLElement;
 
 public class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter,
         IExtensionAttributeWriter {

@@ -27,9 +27,9 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.FreeplaneAction;
 import org.freeplane.core.map.MapModel;
 import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.util.Tools;
 import org.freeplane.map.link.mindmapmode.MLinkController;
 import org.freeplane.map.text.mindmapmode.MTextController;

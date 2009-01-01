@@ -26,10 +26,10 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.FreeplaneAction;
 import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.modes.mindmapmode.MMapController;
 import org.freeplane.modes.mindmapmode.MModeController;

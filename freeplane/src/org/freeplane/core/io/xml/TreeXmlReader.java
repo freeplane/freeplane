@@ -36,12 +36,12 @@ import org.freeplane.core.io.IElementDOMHandler;
 import org.freeplane.core.io.IElementHandler;
 import org.freeplane.core.io.ListHashTable;
 import org.freeplane.core.io.ReadManager;
-import org.freeplane.core.io.xml.n3.nanoxml.IXMLBuilder;
-import org.freeplane.core.io.xml.n3.nanoxml.IXMLElement;
-import org.freeplane.core.io.xml.n3.nanoxml.IXMLReader;
-import org.freeplane.core.io.xml.n3.nanoxml.NonValidator;
-import org.freeplane.core.io.xml.n3.nanoxml.StdXMLReader;
-import org.freeplane.core.io.xml.n3.nanoxml.XMLException;
+import org.freeplane.n3.nanoxml.IXMLBuilder;
+import org.freeplane.n3.nanoxml.IXMLElement;
+import org.freeplane.n3.nanoxml.IXMLReader;
+import org.freeplane.n3.nanoxml.NonValidator;
+import org.freeplane.n3.nanoxml.StdXMLReader;
+import org.freeplane.n3.nanoxml.XMLException;
 
 public class TreeXmlReader implements IXMLBuilder {
 	public static boolean xmlToBoolean(final String string) {

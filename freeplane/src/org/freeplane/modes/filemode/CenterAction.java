@@ -22,7 +22,7 @@ package org.freeplane.modes.filemode;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
-import org.freeplane.core.controller.FreeplaneAction;
+import org.freeplane.core.ui.FreeplaneAction;
 
 class CenterAction extends FreeplaneAction {
 	CenterAction() {

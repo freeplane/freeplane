@@ -23,8 +23,8 @@ import java.io.FileWriter;
 
 import javax.swing.JOptionPane;
 
-import org.freeplane.core.controller.ActionDescriptor;
-import org.freeplane.core.controller.FreeplaneAction;
+import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.UserInputListenerFactory;
 import org.freeplane.map.pattern.mindmapnode.MPatternController;
 import org.freeplane.map.pattern.mindmapnode.StylePatternFactory;

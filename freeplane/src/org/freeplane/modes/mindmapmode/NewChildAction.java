@@ -23,10 +23,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.FreeplaneAction;
 import org.freeplane.core.map.MapController;
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
-import org.freeplane.core.mode.ModeController;
+import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.map.text.mindmapmode.MTextController;
 import org.freeplane.view.map.NodeView;

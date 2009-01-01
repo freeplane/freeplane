@@ -22,12 +22,12 @@ import java.awt.event.InputEvent;
 import java.awt.event.MouseWheelEvent;
 import java.util.Iterator;
 
-import org.freeplane.core.controller.ActionDescriptor;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.FreeplaneAction;
 import org.freeplane.core.map.MapController;
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
-import org.freeplane.core.mode.ModeController;
+import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.modes.mindmapmode.IMouseWheelEventHandler;
 

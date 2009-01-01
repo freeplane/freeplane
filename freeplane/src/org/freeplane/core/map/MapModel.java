@@ -32,14 +32,13 @@ import javax.swing.event.TreeModelListener;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 
-import org.freeplane.controller.filter.DefaultFilter;
-import org.freeplane.controller.filter.IFilter;
-import org.freeplane.controller.filter.condition.NoFilteringCondition;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.ExtensionHashMap;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.extension.IExtensionCollection;
-import org.freeplane.core.mode.ModeController;
+import org.freeplane.core.filter.DefaultFilter;
+import org.freeplane.core.filter.IFilter;
+import org.freeplane.core.filter.condition.NoFilteringCondition;
 
 public class MapModel extends DefaultTreeModel {
 	private static Random ran = new Random();

@@ -41,7 +41,7 @@ import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.mode.ModeController;
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Tools;

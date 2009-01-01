@@ -36,8 +36,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
 
-import org.freeplane.controller.resources.WindowConfigurationStorage;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.resources.WindowConfigurationStorage;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.map.pattern.mindmapnode.Pattern;

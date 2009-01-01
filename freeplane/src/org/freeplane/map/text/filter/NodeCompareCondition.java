@@ -19,13 +19,13 @@
  */
 package org.freeplane.map.text.filter;
 
-import org.freeplane.controller.filter.condition.CompareConditionAdapter;
-import org.freeplane.controller.filter.condition.ICondition;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.filter.condition.CompareConditionAdapter;
+import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.io.xml.TreeXmlWriter;
-import org.freeplane.core.io.xml.n3.nanoxml.XMLElement;
 import org.freeplane.core.map.NodeModel;
+import org.freeplane.n3.nanoxml.XMLElement;
 
 class NodeCompareCondition extends CompareConditionAdapter {
 	static final String COMPARATION_RESULT = "comparation_result";

@@ -36,7 +36,7 @@ import javax.swing.text.html.HTMLDocument;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.io.xml.TreeXmlWriter;
-import org.freeplane.core.mode.ModeController;
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.map.text.HtmlTools;

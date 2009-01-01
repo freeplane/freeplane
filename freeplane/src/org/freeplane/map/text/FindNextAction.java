@@ -23,8 +23,8 @@ import java.awt.event.ActionEvent;
 import java.util.Collection;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.FreeplaneAction;
-import org.freeplane.core.mode.ModeController;
+import org.freeplane.core.map.ModeController;
+import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
 
 class FindNextAction extends FreeplaneAction {

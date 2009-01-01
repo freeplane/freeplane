@@ -22,10 +22,10 @@ package org.freeplane.core.io.xml;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.freeplane.core.io.xml.n3.nanoxml.IXMLParser;
-import org.freeplane.core.io.xml.n3.nanoxml.IXMLReader;
-import org.freeplane.core.io.xml.n3.nanoxml.StdXMLParser;
-import org.freeplane.core.io.xml.n3.nanoxml.XMLParseException;
+import org.freeplane.n3.nanoxml.IXMLParser;
+import org.freeplane.n3.nanoxml.IXMLReader;
+import org.freeplane.n3.nanoxml.StdXMLParser;
+import org.freeplane.n3.nanoxml.XMLParseException;
 
 public class XMLParser extends StdXMLParser implements IXMLParser {
 	private boolean skipNextElementContent = false;

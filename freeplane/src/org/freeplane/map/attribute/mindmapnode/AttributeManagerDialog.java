@@ -42,11 +42,11 @@ import javax.swing.ListSelectionModel;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
-import org.freeplane.controller.filter.util.IListModel;
 import org.freeplane.controller.views.IMapViewChangeListener;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.FreeplaneAction;
+import org.freeplane.core.filter.util.IListModel;
 import org.freeplane.core.map.MapRegistry;
+import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.map.attribute.AttributeRegistry;
 import org.freeplane.view.map.MapView;

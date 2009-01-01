@@ -29,8 +29,8 @@ import java.util.ListIterator;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.FreeplaneAction;
 import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.ui.FreeplaneAction;
 
 class FindAction extends FreeplaneAction {
 	private boolean findCaseSensitive;

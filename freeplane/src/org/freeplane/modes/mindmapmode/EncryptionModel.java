@@ -30,8 +30,8 @@ import javax.swing.ImageIcon;
 import org.freeplane.addins.encrypt.SingleDesEncrypter;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.map.MapController;
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
-import org.freeplane.core.mode.ModeController;
 import org.freeplane.map.icon.MindIcon;
 
 public class EncryptionModel implements IExtension {

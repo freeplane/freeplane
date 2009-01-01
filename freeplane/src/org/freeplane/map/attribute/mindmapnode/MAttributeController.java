@@ -22,8 +22,8 @@ package org.freeplane.map.attribute.mindmapnode;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
-import org.freeplane.controller.filter.util.SortedComboBoxModel;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.filter.util.SortedComboBoxModel;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.map.attribute.Attribute;

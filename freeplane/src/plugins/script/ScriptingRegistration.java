@@ -23,12 +23,12 @@ package plugins.script;
 import java.io.PrintStream;
 import java.util.HashMap;
 
-import org.freeplane.controller.resources.ResourceController;
-import org.freeplane.controller.resources.ui.OptionPanelBuilder;
-import org.freeplane.controller.resources.ui.ScriptEditorProperty;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
-import org.freeplane.core.mode.ModeController;
+import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.ui.OptionPanelBuilder;
+import org.freeplane.core.resources.ui.ScriptEditorProperty;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.Tools;

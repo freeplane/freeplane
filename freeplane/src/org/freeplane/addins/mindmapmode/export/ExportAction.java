@@ -37,8 +37,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.FreeplaneAction;
-import org.freeplane.core.mode.ModeController;
+import org.freeplane.core.map.ModeController;
+import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.util.Tools;
 import org.freeplane.map.url.UrlManager;
 import org.freeplane.view.map.MapView;

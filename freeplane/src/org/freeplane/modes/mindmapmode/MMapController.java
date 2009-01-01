@@ -32,17 +32,17 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import org.freeplane.controller.resources.ResourceController;
-import org.freeplane.controller.resources.ui.IFreemindPropertyListener;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.io.xml.n3.nanoxml.XMLParseException;
 import org.freeplane.core.map.MapController;
 import org.freeplane.core.map.MapModel;
 import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.ui.IFreemindPropertyListener;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.map.url.UrlManager;
 import org.freeplane.map.url.mindmapmode.FileManager;
+import org.freeplane.n3.nanoxml.XMLParseException;
 
 /**
  * @author Dimitry Polivaev

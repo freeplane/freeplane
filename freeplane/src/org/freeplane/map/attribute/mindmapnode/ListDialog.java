@@ -51,8 +51,8 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
-import org.freeplane.controller.filter.util.IListModel;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.filter.util.IListModel;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 

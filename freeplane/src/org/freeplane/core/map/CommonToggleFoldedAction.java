@@ -23,7 +23,7 @@ import java.awt.event.ActionEvent;
 import java.util.Iterator;
 import java.util.ListIterator;
 
-import org.freeplane.core.controller.FreeplaneAction;
+import org.freeplane.core.ui.FreeplaneAction;
 
 /**
  * @author foltin

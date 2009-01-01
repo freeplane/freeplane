@@ -32,8 +32,8 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.io.xml.n3.nanoxml.XMLParseException;
 import org.freeplane.map.url.UrlManager;
+import org.freeplane.n3.nanoxml.XMLParseException;
 import org.freeplane.view.map.MapView;
 
 /**

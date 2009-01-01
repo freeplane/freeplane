@@ -25,8 +25,8 @@ import javax.swing.Action;
 
 import org.freeplane.controller.views.IMapViewChangeListener;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.FreeplaneAction;
 import org.freeplane.core.map.MapModel;
+import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.view.map.MapView;
 

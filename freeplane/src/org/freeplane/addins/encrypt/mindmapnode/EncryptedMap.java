@@ -19,12 +19,12 @@ package org.freeplane.addins.encrypt.mindmapnode;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.core.controller.ActionDescriptor;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.FreeplaneAction;
+import org.freeplane.core.map.INodeSelectionListener;
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
-import org.freeplane.core.mode.INodeSelectionListener;
-import org.freeplane.core.mode.ModeController;
+import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.components.EnterPasswordDialog;
 import org.freeplane.modes.mindmapmode.EncryptionModel;
 import org.freeplane.view.map.NodeView;

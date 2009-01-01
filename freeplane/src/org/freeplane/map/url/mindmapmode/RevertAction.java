@@ -29,10 +29,10 @@ import java.io.StringWriter;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.FreeplaneAction;
 import org.freeplane.core.map.MapController;
 import org.freeplane.core.map.MapModel;
-import org.freeplane.core.mode.ModeController;
+import org.freeplane.core.map.ModeController;
+import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.map.url.UrlManager;
 
 /**

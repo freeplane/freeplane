@@ -24,7 +24,6 @@ import java.util.ListIterator;
 
 import javax.swing.ImageIcon;
 
-import org.freeplane.core.controller.FreeplaneAction;
 import org.freeplane.core.map.NodeModel;
 
 /**

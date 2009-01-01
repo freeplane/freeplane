@@ -43,7 +43,7 @@ import javax.swing.SwingUtilities;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.MapModel;
-import org.freeplane.core.mode.ModeController;
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.ui.FreemindMenuBar;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.UIBuilder;

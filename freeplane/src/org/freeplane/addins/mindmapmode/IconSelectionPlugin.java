@@ -23,9 +23,9 @@ import java.util.Vector;
 
 import javax.swing.Action;
 
-import org.freeplane.core.controller.ActionDescriptor;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.FreeplaneAction;
+import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.components.IconSelectionPopupDialog;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.map.icon.mindmapnode.MIconController;

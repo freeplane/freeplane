@@ -22,9 +22,9 @@ package org.freeplane.map.text;
 import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.IElementContentHandler;
 import org.freeplane.core.io.ReadManager;
-import org.freeplane.core.io.xml.n3.nanoxml.IXMLElement;
 import org.freeplane.core.map.NodeBuilder;
 import org.freeplane.core.map.NodeModel;
+import org.freeplane.n3.nanoxml.IXMLElement;
 
 public class NodeTextBuilder implements IElementContentHandler {
 	public static final String XML_NODE_TEXT = "TEXT";

@@ -29,8 +29,8 @@ import java.io.OutputStreamWriter;
 import javax.swing.JOptionPane;
 
 import org.apache.batik.svggen.SVGGraphics2D;
-import org.freeplane.core.controller.ActionDescriptor;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.view.map.MapView;
 
 @ActionDescriptor(name = "plugins/ExportSvg.xml_name", locations = { "/menu_bar/file/export/export" })
