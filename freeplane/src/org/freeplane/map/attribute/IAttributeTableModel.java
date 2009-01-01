@@ -21,7 +21,7 @@ package org.freeplane.map.attribute;
 
 import javax.swing.table.TableModel;
 
-import org.freeplane.map.tree.NodeModel;
+import org.freeplane.core.map.NodeModel;
 
 /**
  * @author Dimitry Polivaev

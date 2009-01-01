@@ -31,8 +31,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 import org.freeplane.controller.views.ColorTracker;
-import org.freeplane.io.xml.TreeXmlReader;
-import org.freeplane.io.xml.TreeXmlWriter;
+import org.freeplane.core.io.xml.TreeXmlReader;
+import org.freeplane.core.io.xml.TreeXmlWriter;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 

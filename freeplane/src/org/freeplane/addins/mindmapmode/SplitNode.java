@@ -29,14 +29,14 @@ import javax.swing.text.Element;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
-import org.freeplane.controller.ActionDescriptor;
-import org.freeplane.controller.FreeplaneAction;
+import org.freeplane.core.controller.ActionDescriptor;
+import org.freeplane.core.controller.FreeplaneAction;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.mode.ModeController;
 import org.freeplane.map.nodestyle.mindmapmode.MNodeStyleController;
 import org.freeplane.map.text.FixedHTMLWriter;
 import org.freeplane.map.text.mindmapmode.MTextController;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.mindmapmode.MMapController;
-import org.freeplane.modes.ModeController;
+import org.freeplane.modes.mindmapmode.MMapController;
 
 /**
  * @author Dimitry Polivaev
@@ -152,10 +152,10 @@ public class SplitNode extends FreeplaneAction {
 				}
 			}
 			catch (final IOException e) {
-				org.freeplane.Tools.logException(e);
+				org.freeplane.core.util.Tools.logException(e);
 			}
 			catch (final BadLocationException e) {
-				org.freeplane.Tools.logException(e);
+				org.freeplane.core.util.Tools.logException(e);
 			}
 			return parts;
 		}

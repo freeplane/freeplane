@@ -46,10 +46,10 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-import org.freeplane.controller.Controller;
-import org.freeplane.map.tree.MapModel;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.modes.ModeController;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.MapModel;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.mode.ModeController;
 
 /**
  * @author Dimitry Polivaev
@@ -132,13 +132,13 @@ public class UrlManager {
 			bufferedReader.close();
 		}
 		catch (final Exception e) {
-			org.freeplane.Tools.logException(e);
+			org.freeplane.core.util.Tools.logException(e);
 			if (bufferedReader != null) {
 				try {
 					bufferedReader.close();
 				}
 				catch (final Exception ex) {
-					org.freeplane.Tools.logException(ex);
+					org.freeplane.core.util.Tools.logException(ex);
 				}
 			}
 			return null;
@@ -183,7 +183,7 @@ public class UrlManager {
 						successful = true;
 					}
 					catch (final Exception ex) {
-						org.freeplane.Tools.logException(ex);
+						org.freeplane.core.util.Tools.logException(ex);
 					}
 				}
 			}
@@ -257,7 +257,7 @@ public class UrlManager {
 				}
 			}
 			catch (final Exception e) {
-				org.freeplane.Tools.logException(e);
+				org.freeplane.core.util.Tools.logException(e);
 			}
 		}
 	}
@@ -413,7 +413,7 @@ public class UrlManager {
 			Controller.getController().errorMessage(ex.getMessage());
 		}
 		else {
-			org.freeplane.Tools.logException(ex);
+			org.freeplane.core.util.Tools.logException(ex);
 			Controller.getController().errorMessage(ex);
 		}
 	}

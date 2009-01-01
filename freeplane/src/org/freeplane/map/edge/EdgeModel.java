@@ -21,7 +21,7 @@ package org.freeplane.map.edge;
 
 import java.awt.Color;
 
-import org.freeplane.extension.IExtension;
+import org.freeplane.core.extension.IExtension;
 
 public class EdgeModel implements IExtension {
 	public static final String EDGE_WIDTH_THIN_STRING = "thin";

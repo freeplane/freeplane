@@ -25,10 +25,10 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.freeplane.extension.IExtension;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.view.NodeView;
-import org.freeplane.undo.IUndoableActor;
+import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.undo.IUndoableActor;
+import org.freeplane.view.map.NodeView;
 
 /**
  * @author Dimitry Polivaev

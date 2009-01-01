@@ -21,15 +21,15 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JOptionPane;
 
-import org.freeplane.controller.ActionDescriptor;
-import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeplaneAction;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.view.MapView;
-import org.freeplane.modes.ModeController;
+import org.freeplane.core.controller.ActionDescriptor;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.FreeplaneAction;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.mode.ModeController;
+import org.freeplane.core.ui.components.EnterPasswordDialog;
 import org.freeplane.modes.mindmapmode.EncryptionModel;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.ui.components.EnterPasswordDialog;
+import org.freeplane.view.map.MapView;
 
 @ActionDescriptor(tooltip = "accessories/plugins/EnterPassword.properties_documentation", //
 name = "accessories/plugins/EnterPassword.properties_name", //

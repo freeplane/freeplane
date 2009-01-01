@@ -22,7 +22,7 @@ package org.freeplane.controller.views;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import org.freeplane.controller.Controller;
+import org.freeplane.core.controller.Controller;
 
 class LastOpenedActionListener implements ActionListener {
 	final private ViewController c;
@@ -39,7 +39,7 @@ class LastOpenedActionListener implements ActionListener {
 		catch (final Exception ex) {
 			Controller.getController().errorMessage(
 			    "An error occured on opening the file: " + restoreable + ".");
-			org.freeplane.Tools.logException(ex);
+			org.freeplane.core.util.Tools.logException(ex);
 		}
 	}
 }

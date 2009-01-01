@@ -23,8 +23,8 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
-import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ui.IFreemindPropertyListener;
+import org.freeplane.core.controller.Controller;
 
 class OptionAntialiasAction extends AbstractAction implements IFreemindPropertyListener {
 	OptionAntialiasAction() {

@@ -22,10 +22,10 @@ package org.freeplane.map.text;
 import java.awt.event.ActionEvent;
 import java.util.Collection;
 
-import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeplaneAction;
-import org.freeplane.modes.ModeController;
-import org.freeplane.ui.MenuBuilder;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.FreeplaneAction;
+import org.freeplane.core.mode.ModeController;
+import org.freeplane.core.ui.MenuBuilder;
 
 class FindNextAction extends FreeplaneAction {
 	final private FindAction find;

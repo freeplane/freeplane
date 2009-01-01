@@ -21,9 +21,9 @@ package org.freeplane.addins.mindmapmode.nodehistory;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.controller.ActionDescriptor;
-import org.freeplane.controller.FreeplaneAction;
-import org.freeplane.ui.EnabledAction;
+import org.freeplane.core.controller.ActionDescriptor;
+import org.freeplane.core.controller.FreeplaneAction;
+import org.freeplane.core.ui.EnabledAction;
 
 /**
  * @author Dimitry Polivaev

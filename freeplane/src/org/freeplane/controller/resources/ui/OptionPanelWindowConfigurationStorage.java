@@ -22,7 +22,7 @@ package org.freeplane.controller.resources.ui;
 import javax.swing.JDialog;
 
 import org.freeplane.controller.resources.WindowConfigurationStorage;
-import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
+import org.freeplane.core.io.xml.n3.nanoxml.IXMLElement;
 
 class OptionPanelWindowConfigurationStorage extends WindowConfigurationStorage {
 	public static OptionPanelWindowConfigurationStorage decorateDialog(final String marshalled,

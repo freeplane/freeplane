@@ -19,8 +19,8 @@
  */
 package org.freeplane.map.nodelocation;
 
-import org.freeplane.extension.IExtension;
-import org.freeplane.map.tree.NodeModel;
+import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.map.NodeModel;
 
 /**
  * @author Dimitry Polivaev

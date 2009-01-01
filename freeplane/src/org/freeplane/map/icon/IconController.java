@@ -19,9 +19,9 @@
  */
 package org.freeplane.map.icon;
 
-import org.freeplane.io.ReadManager;
-import org.freeplane.map.tree.MapController;
-import org.freeplane.modes.ModeController;
+import org.freeplane.core.io.ReadManager;
+import org.freeplane.core.map.MapController;
+import org.freeplane.core.mode.ModeController;
 
 /**
  * @author Dimitry Polivaev

@@ -31,14 +31,14 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import org.freeplane.controller.Controller;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.NodeModel;
 import org.freeplane.map.clipboard.MindMapNodesSelection;
 import org.freeplane.map.link.mindmapmode.MLinkController;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.mindmapmode.MMapController;
-import org.freeplane.map.tree.view.MainView;
-import org.freeplane.map.tree.view.NodeView;
+import org.freeplane.modes.mindmapmode.MMapController;
 import org.freeplane.modes.mindmapmode.MModeController;
+import org.freeplane.view.map.MainView;
+import org.freeplane.view.map.NodeView;
 
 public class MindMapNodeDropListener implements DropTargetListener {
 	final private MModeController mMindMapController;
@@ -175,7 +175,7 @@ public class MindMapNodeDropListener implements DropTargetListener {
 		}
 		catch (final Exception e) {
 			System.err.println("Drop exception:" + e);
-			org.freeplane.Tools.logException(e);
+			org.freeplane.core.util.Tools.logException(e);
 			dtde.dropComplete(false);
 			return;
 		}

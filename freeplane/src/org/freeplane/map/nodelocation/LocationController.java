@@ -19,10 +19,10 @@
  */
 package org.freeplane.map.nodelocation;
 
-import org.freeplane.io.ReadManager;
-import org.freeplane.io.WriteManager;
-import org.freeplane.map.tree.MapController;
-import org.freeplane.modes.ModeController;
+import org.freeplane.core.io.ReadManager;
+import org.freeplane.core.io.WriteManager;
+import org.freeplane.core.map.MapController;
+import org.freeplane.core.mode.ModeController;
 
 /**
  * @author Dimitry Polivaev

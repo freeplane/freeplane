@@ -19,7 +19,7 @@
  */
 package org.freeplane.controller.resources.ui;
 
-import org.freeplane.controller.Controller;
+import org.freeplane.core.controller.Controller;
 
 /**
  * @author Dimitry Polivaev

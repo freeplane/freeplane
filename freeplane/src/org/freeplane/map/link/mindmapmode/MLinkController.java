@@ -27,17 +27,17 @@ import java.util.Set;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 
+import org.freeplane.core.map.MapModel;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.ui.UserInputListenerFactory;
+import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.map.link.ArrowLinkModel;
 import org.freeplane.map.link.LinkController;
 import org.freeplane.map.link.LinkModel;
 import org.freeplane.map.link.MapLinks;
-import org.freeplane.map.tree.MapModel;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.mindmapmode.IMapChangeListener;
-import org.freeplane.map.tree.mindmapmode.MMapController;
-import org.freeplane.modes.UserInputListenerFactory;
+import org.freeplane.modes.mindmapmode.IMapChangeListener;
+import org.freeplane.modes.mindmapmode.MMapController;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.undo.IUndoableActor;
 
 /**
  * @author Dimitry Polivaev

@@ -19,11 +19,11 @@
  */
 package org.freeplane.map.icon;
 
-import org.freeplane.io.IAttributeHandler;
-import org.freeplane.io.IElementDOMHandler;
-import org.freeplane.io.ReadManager;
-import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
-import org.freeplane.map.tree.NodeModel;
+import org.freeplane.core.io.IAttributeHandler;
+import org.freeplane.core.io.IElementDOMHandler;
+import org.freeplane.core.io.ReadManager;
+import org.freeplane.core.io.xml.n3.nanoxml.IXMLElement;
+import org.freeplane.core.map.NodeModel;
 
 class IconBuilder implements IElementDOMHandler {
 	static class IconProperties {

@@ -19,7 +19,7 @@
  */
 package org.freeplane.controller.filter;
 
-import org.freeplane.map.tree.NodeModel;
+import org.freeplane.core.map.NodeModel;
 
 /**
  * @author Dimitry Polivaev

@@ -44,13 +44,13 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
-import org.freeplane.controller.Controller;
 import org.freeplane.controller.views.IMapViewChangeListener;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.map.text.mindmapmode.MTextController;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.view.MapView;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.ui.components.UITools;
+import org.freeplane.view.map.MapView;
 
 /**
  * @author foltin

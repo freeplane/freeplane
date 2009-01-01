@@ -32,20 +32,20 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
-import org.freeplane.controller.Controller;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.mode.ModeController;
+import org.freeplane.core.ui.IEditHandler;
+import org.freeplane.core.ui.UserInputListenerFactory;
 import org.freeplane.map.link.mindmapmode.MLinkController;
 import org.freeplane.map.nodestyle.mindmapmode.MNodeStyleController;
 import org.freeplane.map.text.FixedHTMLWriter;
 import org.freeplane.map.text.TextController;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.mindmapmode.MMapController;
-import org.freeplane.map.tree.view.NodeView;
 import org.freeplane.map.url.UrlManager;
 import org.freeplane.map.url.mindmapmode.FileManager;
-import org.freeplane.modes.ModeController;
-import org.freeplane.modes.UserInputListenerFactory;
+import org.freeplane.modes.mindmapmode.MMapController;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.ui.IEditHandler;
+import org.freeplane.view.map.NodeView;
 
 /**
  * @author Dimitry Polivaev
@@ -127,10 +127,10 @@ public class MTextController extends TextController {
 				return strings;
 			}
 			catch (final IOException e) {
-				org.freeplane.Tools.logException(e);
+				org.freeplane.core.util.Tools.logException(e);
 			}
 			catch (final BadLocationException e) {
-				org.freeplane.Tools.logException(e);
+				org.freeplane.core.util.Tools.logException(e);
 			}
 		}
 		else {
@@ -199,7 +199,7 @@ public class MTextController extends TextController {
 			}
 		}
 		catch (final MalformedURLException e) {
-			org.freeplane.Tools.logException(e);
+			org.freeplane.core.util.Tools.logException(e);
 		}
 	}
 

@@ -21,9 +21,9 @@ package org.freeplane.map.nodelocation.mindmapmode;
 
 import java.awt.event.ActionEvent;
 
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.map.nodelocation.LocationModel;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.modes.MultipleNodeAction;
 
 /**
  * @author Dimitry Polivaev

@@ -23,7 +23,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
 
-import org.freeplane.controller.Controller;
+import org.freeplane.core.controller.Controller;
 
 /**
  * @author Dimitry Polivaev

@@ -25,8 +25,8 @@ import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JToggleButton;
 
-import org.freeplane.controller.Controller;
-import org.freeplane.ui.SelectableAction;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.ui.SelectableAction;
 
 @SelectableAction
 class ShowFilterToolbarAction extends AbstractAction {

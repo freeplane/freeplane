@@ -31,10 +31,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
-import org.freeplane.Tools;
-import org.freeplane.map.tree.MapModel;
-import org.freeplane.map.tree.view.MapView;
-import org.freeplane.modes.ModeController;
+import org.freeplane.core.map.MapModel;
+import org.freeplane.core.mode.ModeController;
+import org.freeplane.core.util.Tools;
+import org.freeplane.view.map.MapView;
 
 /**
  * Manages the list of MapViews. As this task is very complex, I exported it

@@ -24,18 +24,18 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.freeplane.controller.Controller;
-import org.freeplane.io.xml.TreeXmlReader;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.io.xml.TreeXmlReader;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.map.edge.EdgeModel;
 import org.freeplane.map.edge.mindmapmode.MEdgeController;
 import org.freeplane.map.icon.MindIcon;
 import org.freeplane.map.icon.mindmapnode.MIconController;
 import org.freeplane.map.nodestyle.mindmapmode.MNodeStyleController;
 import org.freeplane.map.text.mindmapmode.MTextController;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.modes.MultipleNodeAction;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.ui.MenuBuilder;
 
 class ApplyPatternAction extends MultipleNodeAction {
 	/**

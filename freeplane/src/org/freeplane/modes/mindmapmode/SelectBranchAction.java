@@ -21,7 +21,7 @@ package org.freeplane.modes.mindmapmode;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.controller.FreeplaneAction;
+import org.freeplane.core.controller.FreeplaneAction;
 
 /** */
 class SelectBranchAction extends FreeplaneAction {

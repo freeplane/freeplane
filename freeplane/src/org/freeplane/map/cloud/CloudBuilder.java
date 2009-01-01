@@ -22,18 +22,18 @@ package org.freeplane.map.cloud;
 import java.awt.Color;
 import java.io.IOException;
 
-import org.freeplane.extension.IExtension;
-import org.freeplane.io.IAttributeHandler;
-import org.freeplane.io.IElementDOMHandler;
-import org.freeplane.io.IExtensionElementWriter;
-import org.freeplane.io.ITreeWriter;
-import org.freeplane.io.ReadManager;
-import org.freeplane.io.WriteManager;
-import org.freeplane.io.xml.TreeXmlReader;
-import org.freeplane.io.xml.TreeXmlWriter;
-import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
-import org.freeplane.io.xml.n3.nanoxml.XMLElement;
-import org.freeplane.map.tree.NodeModel;
+import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.io.IAttributeHandler;
+import org.freeplane.core.io.IElementDOMHandler;
+import org.freeplane.core.io.IExtensionElementWriter;
+import org.freeplane.core.io.ITreeWriter;
+import org.freeplane.core.io.ReadManager;
+import org.freeplane.core.io.WriteManager;
+import org.freeplane.core.io.xml.TreeXmlReader;
+import org.freeplane.core.io.xml.TreeXmlWriter;
+import org.freeplane.core.io.xml.n3.nanoxml.IXMLElement;
+import org.freeplane.core.io.xml.n3.nanoxml.XMLElement;
+import org.freeplane.core.map.NodeModel;
 
 public class CloudBuilder implements IElementDOMHandler, IExtensionElementWriter {
 	public CloudBuilder() {

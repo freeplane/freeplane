@@ -32,19 +32,19 @@ import javax.swing.JOptionPane;
 
 import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.ModuleNode;
-import org.freeplane.Tools;
-import org.freeplane.Tools.BooleanHolder;
-import org.freeplane.controller.ActionDescriptor;
-import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.controller.resources.ResourceController;
+import org.freeplane.core.controller.ActionDescriptor;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.FreeplaneAction;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
+import org.freeplane.core.util.Tools;
+import org.freeplane.core.util.Tools.BooleanHolder;
 import org.freeplane.main.FreeMindSecurityManager;
 import org.freeplane.map.attribute.NodeAttributeTableModel;
 import org.freeplane.map.attribute.mindmapnode.MAttributeController;
 import org.freeplane.map.text.mindmapmode.MTextController;
-import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.ui.components.OptionalDontShowMeAgainDialog;
 
 /**
  * @author foltin
@@ -195,7 +195,7 @@ class ScriptingEngine extends FreeplaneAction {
 			return false;
 		}
 		if (e2 != null) {
-			org.freeplane.Tools.logException(e2);
+			org.freeplane.core.util.Tools.logException(e2);
 			pOutStream.print(e2.getMessage());
 			final String cause = ((e2.getCause() != null) ? e2.getCause().getMessage() : "");
 			final String message = ((e2.getMessage() != null) ? e2.getMessage() : "");

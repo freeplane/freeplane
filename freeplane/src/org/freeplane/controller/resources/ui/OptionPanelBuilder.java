@@ -26,12 +26,12 @@ import java.util.Vector;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import org.freeplane.controller.Controller;
-import org.freeplane.io.IElementDOMHandler;
-import org.freeplane.io.ReadManager;
-import org.freeplane.io.xml.TreeXmlReader;
-import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
-import org.freeplane.ui.IndexedTree;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.io.IElementDOMHandler;
+import org.freeplane.core.io.ReadManager;
+import org.freeplane.core.io.xml.TreeXmlReader;
+import org.freeplane.core.io.xml.n3.nanoxml.IXMLElement;
+import org.freeplane.core.ui.IndexedTree;
 
 /**
  * @author Dimitry Polivaev

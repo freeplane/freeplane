@@ -41,14 +41,14 @@ import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
-import org.freeplane.controller.Controller;
-import org.freeplane.map.tree.MapModel;
-import org.freeplane.map.tree.view.MapView;
-import org.freeplane.modes.ModeController;
-import org.freeplane.modes.UserInputListenerFactory;
-import org.freeplane.ui.FreemindMenuBar;
-import org.freeplane.ui.MenuBuilder;
-import org.freeplane.ui.UIBuilder;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.MapModel;
+import org.freeplane.core.mode.ModeController;
+import org.freeplane.core.ui.FreemindMenuBar;
+import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.UIBuilder;
+import org.freeplane.core.ui.UserInputListenerFactory;
+import org.freeplane.view.map.MapView;
 
 /**
  * @author Dimitry Polivaev

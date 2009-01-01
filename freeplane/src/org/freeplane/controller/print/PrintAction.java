@@ -23,8 +23,8 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.ImageIcon;
 
-import org.freeplane.controller.Controller;
-import org.freeplane.ui.MenuBuilder;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.ui.MenuBuilder;
 
 class PrintAction extends AbstractPrintAction {
 	final private boolean isDlg;
@@ -49,7 +49,7 @@ class PrintAction extends AbstractPrintAction {
 				controller.getPrinterJob().print();
 			}
 			catch (final Exception ex) {
-				org.freeplane.Tools.logException(ex);
+				org.freeplane.core.util.Tools.logException(ex);
 			}
 		}
 	}

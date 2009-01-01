@@ -28,15 +28,15 @@ import java.awt.event.MouseEvent;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
-import org.freeplane.controller.Controller;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.ui.UserInputListenerFactory;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.map.nodelocation.LocationModel;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.view.MapView;
-import org.freeplane.map.tree.view.NodeMotionListenerView;
-import org.freeplane.map.tree.view.NodeView;
-import org.freeplane.modes.UserInputListenerFactory;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.ui.components.UITools;
+import org.freeplane.view.map.MapView;
+import org.freeplane.view.map.NodeMotionListenerView;
+import org.freeplane.view.map.NodeView;
 
 /**
  * The MouseMotionListener which belongs to every NodeView

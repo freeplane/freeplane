@@ -31,8 +31,8 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import org.freeplane.core.mode.ModeController;
 import org.freeplane.map.url.UrlManager;
-import org.freeplane.modes.ModeController;
 
 public class FileOpener implements DropTargetListener {
 	/**

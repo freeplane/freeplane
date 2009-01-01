@@ -25,10 +25,10 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.SwingUtilities;
 
-import org.freeplane.controller.FreeplaneAction;
+import org.freeplane.core.controller.FreeplaneAction;
+import org.freeplane.core.mode.ModeController;
 import org.freeplane.map.attribute.view.AttributeTable;
 import org.freeplane.map.attribute.view.AttributeView;
-import org.freeplane.modes.ModeController;
 
 class EditAttributesAction extends FreeplaneAction {
 	public EditAttributesAction() {

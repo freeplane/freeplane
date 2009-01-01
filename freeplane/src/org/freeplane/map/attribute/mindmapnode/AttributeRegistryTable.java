@@ -36,8 +36,8 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
-import org.freeplane.controller.Controller;
 import org.freeplane.controller.filter.util.IListModel;
+import org.freeplane.core.controller.Controller;
 
 /**
  * @author Dimitry Polivaev

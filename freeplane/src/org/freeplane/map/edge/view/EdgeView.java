@@ -25,11 +25,11 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Stroke;
 
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.map.edge.EdgeModel;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.view.MapView;
-import org.freeplane.map.tree.view.NodeView;
-import org.freeplane.ui.components.UITools;
+import org.freeplane.view.map.MapView;
+import org.freeplane.view.map.NodeView;
 
 /**
  * This class represents a single Edge of a MindMap.

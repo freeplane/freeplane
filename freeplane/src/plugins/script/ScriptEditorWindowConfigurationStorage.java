@@ -3,7 +3,7 @@ package plugins.script;
 import javax.swing.JDialog;
 
 import org.freeplane.controller.resources.WindowConfigurationStorage;
-import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
+import org.freeplane.core.io.xml.n3.nanoxml.IXMLElement;
 
 public class ScriptEditorWindowConfigurationStorage extends WindowConfigurationStorage {
 	public static ScriptEditorWindowConfigurationStorage decorateDialog(final String marshalled,

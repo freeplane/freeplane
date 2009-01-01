@@ -27,7 +27,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
-import org.freeplane.ui.components.BlindIcon;
+import org.freeplane.core.ui.components.BlindIcon;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 

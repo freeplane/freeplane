@@ -22,12 +22,12 @@ package org.freeplane.map.link.mindmapmode;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
-import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeplaneAction;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.FreeplaneAction;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.map.link.ArrowLinkModel;
 import org.freeplane.map.link.NodeLinks;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.undo.IUndoableActor;
 
 /**
  * @author foltin

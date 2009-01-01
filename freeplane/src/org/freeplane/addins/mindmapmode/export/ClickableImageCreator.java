@@ -25,11 +25,11 @@ import java.util.Vector;
 import javax.swing.JComponent;
 
 import org.apache.commons.lang.StringEscapeUtils;
-import org.freeplane.controller.Controller;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.view.MapView;
-import org.freeplane.map.tree.view.NodeView;
-import org.freeplane.modes.ModeController;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.mode.ModeController;
+import org.freeplane.view.map.MapView;
+import org.freeplane.view.map.NodeView;
 
 /** */
 class ClickableImageCreator {

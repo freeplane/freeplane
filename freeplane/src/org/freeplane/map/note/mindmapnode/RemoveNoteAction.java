@@ -26,13 +26,13 @@ import javax.swing.JOptionPane;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
-import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.controller.resources.ResourceController;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.modes.ModeController;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.FreeplaneAction;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.mode.ModeController;
+import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.ui.components.OptionalDontShowMeAgainDialog;
 
 class RemoveNoteAction extends FreeplaneAction implements PopupMenuListener {
 	/**

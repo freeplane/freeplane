@@ -13,7 +13,7 @@ import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.WindowConstants;
 
-import org.freeplane.controller.Controller;
+import org.freeplane.core.controller.Controller;
 
 import atp.sHotEqn;
 

@@ -23,13 +23,12 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
 
-import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.controller.views.IMapViewChangeListener;
-import org.freeplane.map.tree.MapModel;
-import org.freeplane.map.tree.mindmapmode.MindMapMapModel;
-import org.freeplane.map.tree.view.MapView;
-import org.freeplane.undo.IUndoHandler;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.FreeplaneAction;
+import org.freeplane.core.map.MapModel;
+import org.freeplane.core.undo.IUndoHandler;
+import org.freeplane.view.map.MapView;
 
 class UndoAction extends FreeplaneAction implements IMapViewChangeListener {
 	private Action redo;

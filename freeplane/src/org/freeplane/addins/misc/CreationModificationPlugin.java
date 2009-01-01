@@ -25,13 +25,13 @@ import java.util.Iterator;
 
 import org.freeplane.addins.NodeHookDescriptor;
 import org.freeplane.addins.PersistentNodeHook;
-import org.freeplane.controller.ActionDescriptor;
-import org.freeplane.controller.Controller;
-import org.freeplane.extension.IExtension;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.mindmapmode.MMapController;
-import org.freeplane.modes.INodeChangeListener;
-import org.freeplane.modes.NodeChangeEvent;
+import org.freeplane.core.controller.ActionDescriptor;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.mode.INodeChangeListener;
+import org.freeplane.core.mode.NodeChangeEvent;
+import org.freeplane.modes.mindmapmode.MMapController;
 import org.freeplane.modes.mindmapmode.MModeController;
 
 /**

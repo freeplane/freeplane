@@ -23,7 +23,7 @@ import javax.swing.JComponent;
 
 import org.freeplane.controller.filter.condition.ConditionFactory;
 import org.freeplane.controller.filter.condition.ICondition;
-import org.freeplane.io.xml.n3.nanoxml.XMLElement;
+import org.freeplane.core.io.xml.n3.nanoxml.XMLElement;
 
 /**
  * @author Dimitry Polivaev

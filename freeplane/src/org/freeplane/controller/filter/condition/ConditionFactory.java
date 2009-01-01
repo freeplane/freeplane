@@ -27,9 +27,9 @@ import java.util.TreeMap;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
-import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.NamedObject;
-import org.freeplane.io.xml.n3.nanoxml.XMLElement;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.io.xml.n3.nanoxml.XMLElement;
 import org.freeplane.map.attribute.filter.AttributeConditionController;
 import org.freeplane.map.icon.filter.IconConditionController;
 import org.freeplane.map.text.filter.NodeConditionController;

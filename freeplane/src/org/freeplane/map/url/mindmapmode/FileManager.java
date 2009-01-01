@@ -34,14 +34,14 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
-import org.freeplane.Tools;
-import org.freeplane.controller.Controller;
-import org.freeplane.map.tree.MapModel;
-import org.freeplane.map.tree.mindmapmode.MMapController;
-import org.freeplane.map.tree.mindmapmode.MindMapMapModel;
-import org.freeplane.map.tree.view.MapView;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.MapModel;
+import org.freeplane.core.util.Tools;
 import org.freeplane.map.url.UrlManager;
+import org.freeplane.modes.mindmapmode.MMapController;
 import org.freeplane.modes.mindmapmode.MModeController;
+import org.freeplane.modes.mindmapmode.MindMapMapModel;
+import org.freeplane.view.map.MapView;
 
 /**
  * @author Dimitry Polivaev

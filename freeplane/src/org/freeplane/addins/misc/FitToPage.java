@@ -24,10 +24,10 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JViewport;
 
-import org.freeplane.controller.ActionDescriptor;
-import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeplaneAction;
-import org.freeplane.map.tree.view.MapView;
+import org.freeplane.core.controller.ActionDescriptor;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.FreeplaneAction;
+import org.freeplane.view.map.MapView;
 
 /**
  * @author foltin

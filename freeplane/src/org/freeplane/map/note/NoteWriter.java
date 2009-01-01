@@ -21,12 +21,12 @@ package org.freeplane.map.note;
 
 import java.io.IOException;
 
-import org.freeplane.extension.IExtension;
-import org.freeplane.io.IExtensionElementWriter;
-import org.freeplane.io.ITreeWriter;
-import org.freeplane.io.xml.n3.nanoxml.XMLElement;
+import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.io.IExtensionElementWriter;
+import org.freeplane.core.io.ITreeWriter;
+import org.freeplane.core.io.xml.n3.nanoxml.XMLElement;
+import org.freeplane.core.map.NodeModel;
 import org.freeplane.map.text.NodeTextBuilder;
-import org.freeplane.map.tree.NodeModel;
 
 /**
  * @author Dimitry Polivaev

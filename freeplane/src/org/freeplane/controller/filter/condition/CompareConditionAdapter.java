@@ -19,9 +19,9 @@
  */
 package org.freeplane.controller.filter.condition;
 
-import org.freeplane.controller.Controller;
-import org.freeplane.io.xml.TreeXmlWriter;
-import org.freeplane.io.xml.n3.nanoxml.XMLElement;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.io.xml.TreeXmlWriter;
+import org.freeplane.core.io.xml.n3.nanoxml.XMLElement;
 import org.freeplane.map.text.filter.NodeCondition;
 
 abstract public class CompareConditionAdapter extends NodeCondition {

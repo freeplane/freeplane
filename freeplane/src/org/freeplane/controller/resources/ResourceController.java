@@ -35,10 +35,10 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.Vector;
 
-import org.freeplane.Tools;
-import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ui.BooleanProperty;
 import org.freeplane.controller.resources.ui.IFreemindPropertyListener;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.util.Tools;
 import org.freeplane.map.url.UrlManager;
 
 /**
@@ -300,7 +300,7 @@ public abstract class ResourceController {
 			    getFreemindBaseDir())) }, classLoader);
 		}
 		catch (final MalformedURLException e) {
-			org.freeplane.Tools.logException(e);
+			org.freeplane.core.util.Tools.logException(e);
 			return classLoader;
 		}
 	}

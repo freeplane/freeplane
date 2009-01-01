@@ -36,12 +36,12 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import org.freeplane.Tools;
-import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeplaneAction;
-import org.freeplane.map.tree.view.MapView;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.FreeplaneAction;
+import org.freeplane.core.mode.ModeController;
+import org.freeplane.core.util.Tools;
 import org.freeplane.map.url.UrlManager;
-import org.freeplane.modes.ModeController;
+import org.freeplane.view.map.MapView;
 
 /**
  * @author foltin

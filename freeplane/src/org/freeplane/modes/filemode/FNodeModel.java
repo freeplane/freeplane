@@ -23,8 +23,8 @@ import java.awt.Color;
 import java.io.File;
 import java.util.List;
 
-import org.freeplane.map.tree.MapModel;
-import org.freeplane.map.tree.NodeModel;
+import org.freeplane.core.map.MapModel;
+import org.freeplane.core.map.NodeModel;
 
 /**
  * This class represents a single Node of a Tree. It contains direct handles to

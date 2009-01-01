@@ -44,20 +44,20 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-import org.freeplane.Tools;
-import org.freeplane.controller.Controller;
-import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
-import org.freeplane.io.xml.n3.nanoxml.IXMLParser;
-import org.freeplane.io.xml.n3.nanoxml.IXMLReader;
-import org.freeplane.io.xml.n3.nanoxml.StdXMLReader;
-import org.freeplane.io.xml.n3.nanoxml.XMLParserFactory;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.io.xml.n3.nanoxml.IXMLElement;
+import org.freeplane.core.io.xml.n3.nanoxml.IXMLParser;
+import org.freeplane.core.io.xml.n3.nanoxml.IXMLReader;
+import org.freeplane.core.io.xml.n3.nanoxml.StdXMLReader;
+import org.freeplane.core.io.xml.n3.nanoxml.XMLParserFactory;
+import org.freeplane.core.map.MapModel;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.mode.ModeController;
+import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.util.Tools;
 import org.freeplane.map.icon.MindIcon;
-import org.freeplane.map.tree.MapModel;
-import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.url.UrlManager;
-import org.freeplane.modes.ModeController;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.ui.MenuBuilder;
 
 /**
  * @author foltin To change the template for this generated type comment go to
@@ -223,7 +223,7 @@ public class ExportWithXSLT extends ExportAction {
 			out.close();
 		}
 		catch (final IOException e1) {
-			org.freeplane.Tools.logException(e1);
+			org.freeplane.core.util.Tools.logException(e1);
 		}
 	}
 
@@ -318,7 +318,7 @@ public class ExportWithXSLT extends ExportAction {
 			}
 		}
 		catch (final Exception e) {
-			org.freeplane.Tools.logException(e);
+			org.freeplane.core.util.Tools.logException(e);
 			mTransformResultWithoutError = false;
 		}
 	}
@@ -337,7 +337,7 @@ public class ExportWithXSLT extends ExportAction {
 			trans.transform(xmlSource, result);
 		}
 		catch (final Exception e) {
-			org.freeplane.Tools.logException(e);
+			org.freeplane.core.util.Tools.logException(e);
 			return false;
 		};
 		return true;

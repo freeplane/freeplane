@@ -66,20 +66,20 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
-import org.freeplane.Tools;
-import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.WindowConfigurationStorage;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.MapModel;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.mode.ModeController;
+import org.freeplane.core.ui.UIBuilder;
+import org.freeplane.core.ui.components.BlindIcon;
+import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.Tools;
 import org.freeplane.map.icon.MindIcon;
 import org.freeplane.map.text.HtmlTools;
 import org.freeplane.map.text.mindmapmode.MTextController;
-import org.freeplane.map.tree.MapModel;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.view.MultipleImage;
-import org.freeplane.modes.ModeController;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.ui.UIBuilder;
-import org.freeplane.ui.components.BlindIcon;
-import org.freeplane.ui.components.UITools;
+import org.freeplane.view.map.MultipleImage;
 
 import com.jgoodies.forms.factories.ButtonBarFactory;
 
@@ -121,7 +121,7 @@ class TimeList {
 							mFlatNodeTableFilterModel.setFilter(text);
 						}
 						catch (final BadLocationException e) {
-							org.freeplane.Tools.logException(e);
+							org.freeplane.core.util.Tools.logException(e);
 							mFlatNodeTableFilterModel.resetFilter();
 						}
 					}
@@ -558,7 +558,7 @@ class TimeList {
 			mFilterTextSearchField.setText("");
 		}
 		catch (final BadLocationException e) {
-			org.freeplane.Tools.logException(e);
+			org.freeplane.core.util.Tools.logException(e);
 		}
 	}
 

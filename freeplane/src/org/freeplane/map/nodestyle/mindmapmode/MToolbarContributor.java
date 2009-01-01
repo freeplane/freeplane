@@ -26,14 +26,14 @@ import java.awt.event.ItemListener;
 import javax.swing.JComboBox;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 
-import org.freeplane.controller.Controller;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.view.NodeView;
-import org.freeplane.modes.IMenuContributor;
-import org.freeplane.modes.INodeChangeListener;
-import org.freeplane.modes.INodeSelectionListener;
-import org.freeplane.modes.NodeChangeEvent;
-import org.freeplane.ui.MenuBuilder;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.mode.INodeChangeListener;
+import org.freeplane.core.mode.INodeSelectionListener;
+import org.freeplane.core.mode.NodeChangeEvent;
+import org.freeplane.core.ui.IMenuContributor;
+import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.view.map.NodeView;
 
 class MToolbarContributor implements IMenuContributor, INodeSelectionListener, INodeChangeListener {
 	private static final String[] sizes = { "8", "10", "12", "14", "16", "18", "20", "24", "28" };

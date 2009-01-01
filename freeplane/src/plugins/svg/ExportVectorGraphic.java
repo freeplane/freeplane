@@ -40,8 +40,8 @@ import org.apache.batik.svggen.SVGGraphics2D;
 import org.apache.batik.svggen.SVGGeneratorContext.GraphicContextDefaults;
 import org.apache.batik.util.SVGConstants;
 import org.freeplane.addins.mindmapmode.export.ExportAction;
-import org.freeplane.controller.Controller;
-import org.freeplane.map.tree.view.MapView;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.view.map.MapView;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 
@@ -92,7 +92,7 @@ abstract class ExportVectorGraphic extends ExportAction {
 			trans.transform(xmlSource, result);
 		}
 		catch (final Exception e) {
-			org.freeplane.Tools.logException(e);
+			org.freeplane.core.util.Tools.logException(e);
 		};
 		return;
 	}

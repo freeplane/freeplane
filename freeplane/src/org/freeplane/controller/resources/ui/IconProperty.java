@@ -27,9 +27,9 @@ import java.util.Vector;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
-import org.freeplane.controller.Controller;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.ui.components.IconSelectionPopupDialog;
 import org.freeplane.map.icon.MindIcon;
-import org.freeplane.ui.components.IconSelectionPopupDialog;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 

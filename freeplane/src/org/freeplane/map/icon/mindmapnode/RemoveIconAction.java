@@ -25,13 +25,13 @@ import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 
-import org.freeplane.controller.Controller;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.ui.MultipleNodeAction;
+import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.map.icon.IIconInformation;
 import org.freeplane.map.icon.MindIcon;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.modes.MultipleNodeAction;
-import org.freeplane.ui.components.UITools;
-import org.freeplane.undo.IUndoableActor;
 
 /**
  * @author foltin

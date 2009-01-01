@@ -25,12 +25,12 @@ import java.awt.event.MouseWheelListener;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.controller.resources.ui.IFreemindPropertyListener;
-import org.freeplane.map.tree.view.MapView;
-import org.freeplane.modes.ModeController;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.mode.ModeController;
 import org.freeplane.modes.mindmapmode.IMouseWheelEventHandler;
+import org.freeplane.view.map.MapView;
 
 /**
  * @author foltin

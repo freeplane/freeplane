@@ -22,12 +22,12 @@ package org.freeplane.controller.filter;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.freeplane.controller.Controller;
 import org.freeplane.controller.filter.condition.ICondition;
-import org.freeplane.map.tree.MapModel;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.view.MapView;
-import org.freeplane.map.tree.view.NodeView;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.MapModel;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.view.map.MapView;
+import org.freeplane.view.map.NodeView;
 
 /**
  * @author Dimitry Polivaev

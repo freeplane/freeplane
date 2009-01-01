@@ -47,14 +47,14 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
+import org.freeplane.core.map.NodeModel;
 import org.freeplane.map.attribute.AttributeRegistry;
 import org.freeplane.map.attribute.AttributeTableLayoutModel;
 import org.freeplane.map.attribute.ColumnWidthChangeEvent;
 import org.freeplane.map.attribute.IAttributeTableModel;
 import org.freeplane.map.attribute.IColumnWidthChangeListener;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.view.MapView;
-import org.freeplane.map.tree.view.NodeView;
+import org.freeplane.view.map.MapView;
+import org.freeplane.view.map.NodeView;
 
 /**
  * @author Dimitry Polivaev

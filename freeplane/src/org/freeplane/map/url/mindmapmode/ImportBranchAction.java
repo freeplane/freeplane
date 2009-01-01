@@ -24,12 +24,12 @@ import java.awt.event.ActionEvent;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
-import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeplaneAction;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.FreeplaneAction;
+import org.freeplane.core.map.MapModel;
+import org.freeplane.core.map.NodeModel;
 import org.freeplane.map.clipboard.mindmapmode.MClipboardController;
-import org.freeplane.map.tree.MapModel;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.mindmapmode.MMapController;
+import org.freeplane.modes.mindmapmode.MMapController;
 
 class ImportBranchAction extends FreeplaneAction {
 	public ImportBranchAction() {

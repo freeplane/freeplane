@@ -21,7 +21,9 @@ package org.freeplane.modes.filemode;
 
 import javax.swing.JPopupMenu;
 
-import org.freeplane.controller.Controller;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.ui.FreeMindToolBar;
 import org.freeplane.map.IPropertyGetter;
 import org.freeplane.map.clipboard.ClipboardController;
 import org.freeplane.map.edge.EdgeController;
@@ -30,10 +32,7 @@ import org.freeplane.map.link.filemode.FLinkController;
 import org.freeplane.map.nodelocation.LocationController;
 import org.freeplane.map.nodestyle.NodeStyleController;
 import org.freeplane.map.text.TextController;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.filemode.FMapController;
 import org.freeplane.map.url.UrlManager;
-import org.freeplane.ui.FreeMindToolBar;
 
 /**
  * @author Dimitry Polivaev 24.11.2008

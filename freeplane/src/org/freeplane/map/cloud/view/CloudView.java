@@ -31,10 +31,10 @@ import java.awt.geom.QuadCurve2D;
 import java.util.LinkedList;
 import java.util.Vector;
 
+import org.freeplane.core.map.NodeModel;
 import org.freeplane.map.cloud.CloudModel;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.view.MapView;
-import org.freeplane.map.tree.view.NodeView;
+import org.freeplane.view.map.MapView;
+import org.freeplane.view.map.NodeView;
 
 /**
  * This class represents a Cloud around a node.

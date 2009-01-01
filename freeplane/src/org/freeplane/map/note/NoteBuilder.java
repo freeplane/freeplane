@@ -19,10 +19,10 @@
  */
 package org.freeplane.map.note;
 
-import org.freeplane.io.IElementContentHandler;
-import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
+import org.freeplane.core.io.IElementContentHandler;
+import org.freeplane.core.io.xml.n3.nanoxml.IXMLElement;
+import org.freeplane.core.map.NodeModel;
 import org.freeplane.map.text.NodeTextBuilder;
-import org.freeplane.map.tree.NodeModel;
 
 /**
  * @author Dimitry Polivaev

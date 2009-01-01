@@ -19,12 +19,12 @@
  */
 package org.freeplane.map.text;
 
-import org.freeplane.io.IAttributeHandler;
-import org.freeplane.io.IElementContentHandler;
-import org.freeplane.io.ReadManager;
-import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
-import org.freeplane.map.tree.NodeBuilder;
-import org.freeplane.map.tree.NodeModel;
+import org.freeplane.core.io.IAttributeHandler;
+import org.freeplane.core.io.IElementContentHandler;
+import org.freeplane.core.io.ReadManager;
+import org.freeplane.core.io.xml.n3.nanoxml.IXMLElement;
+import org.freeplane.core.map.NodeBuilder;
+import org.freeplane.core.map.NodeModel;
 
 public class NodeTextBuilder implements IElementContentHandler {
 	public static final String XML_NODE_TEXT = "TEXT";

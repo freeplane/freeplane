@@ -22,17 +22,17 @@ package org.freeplane.map.nodestyle;
 import java.awt.Color;
 import java.awt.Font;
 
-import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ResourceController;
-import org.freeplane.io.ReadManager;
-import org.freeplane.io.WriteManager;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.io.ReadManager;
+import org.freeplane.core.io.WriteManager;
+import org.freeplane.core.map.MapController;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.mode.ModeController;
 import org.freeplane.map.CombinedPropertyChain;
 import org.freeplane.map.ExclusivePropertyChain;
 import org.freeplane.map.IPropertyGetter;
-import org.freeplane.map.tree.MapController;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.view.MapView;
-import org.freeplane.modes.ModeController;
+import org.freeplane.view.map.MapView;
 
 /**
  * @author Dimitry Polivaev

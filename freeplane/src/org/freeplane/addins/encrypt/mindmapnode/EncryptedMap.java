@@ -19,15 +19,15 @@ package org.freeplane.addins.encrypt.mindmapnode;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.controller.ActionDescriptor;
-import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeplaneAction;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.view.NodeView;
-import org.freeplane.modes.INodeSelectionListener;
-import org.freeplane.modes.ModeController;
+import org.freeplane.core.controller.ActionDescriptor;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.FreeplaneAction;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.mode.INodeSelectionListener;
+import org.freeplane.core.mode.ModeController;
+import org.freeplane.core.ui.components.EnterPasswordDialog;
 import org.freeplane.modes.mindmapmode.EncryptionModel;
-import org.freeplane.ui.components.EnterPasswordDialog;
+import org.freeplane.view.map.NodeView;
 
 @ActionDescriptor(name = "accessories/plugins/NewEncryptedMap.properties_name", //
 tooltip = "accessories/plugins/NewEncryptedMap.properties_documentation", //

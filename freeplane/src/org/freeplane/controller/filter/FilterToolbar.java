@@ -38,14 +38,14 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
-import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.controller.filter.condition.ICondition;
 import org.freeplane.controller.filter.condition.NoFilteringCondition;
 import org.freeplane.controller.filter.condition.SelectedViewCondition;
-import org.freeplane.map.tree.MapModel;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.ui.FreeMindToolBar;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.FreeplaneAction;
+import org.freeplane.core.map.MapModel;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.ui.FreeMindToolBar;
 
 class FilterToolbar extends FreeMindToolBar {
 	private class EditFilterAction extends FreeplaneAction {

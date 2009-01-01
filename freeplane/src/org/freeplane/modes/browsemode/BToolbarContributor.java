@@ -25,14 +25,14 @@ import java.net.URL;
 
 import javax.swing.JLabel;
 
-import org.freeplane.controller.Controller;
 import org.freeplane.controller.views.IMapTitleChangeListener;
-import org.freeplane.map.tree.MapModel;
-import org.freeplane.map.tree.view.MapView;
-import org.freeplane.modes.IMenuContributor;
-import org.freeplane.modes.ModeController;
-import org.freeplane.ui.MenuBuilder;
-import org.freeplane.ui.components.PersistentEditableComboBox;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.MapModel;
+import org.freeplane.core.mode.ModeController;
+import org.freeplane.core.ui.IMenuContributor;
+import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.components.PersistentEditableComboBox;
+import org.freeplane.view.map.MapView;
 
 public class BToolbarContributor implements IMenuContributor, IMapTitleChangeListener {
 	private static final String BROWSE_URL_STORAGE_KEY = "browse_url_storage";
@@ -52,7 +52,7 @@ public class BToolbarContributor implements IMenuContributor, IMapTitleChangeLis
 					modeController.getMapController().newMap(new URL(urlText));
 				}
 				catch (final Exception e1) {
-					org.freeplane.Tools.logException(e1);
+					org.freeplane.core.util.Tools.logException(e1);
 					Controller.getController().errorMessage(e1);
 				}
 			}

@@ -24,9 +24,9 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 
-import org.freeplane.controller.Controller;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.map.attribute.mindmapnode.AttributeManagerDialog;
-import org.freeplane.ui.MenuBuilder;
 
 class ShowAttributeDialogAction extends AbstractAction {
 	private AttributeManagerDialog attributeDialog = null;

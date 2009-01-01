@@ -24,9 +24,9 @@ import java.awt.BorderLayout;
 import javax.swing.JApplet;
 import javax.swing.UIManager;
 
-import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.AppletResourceController;
 import org.freeplane.controller.views.AppletViewController;
+import org.freeplane.core.controller.Controller;
 import org.freeplane.modes.browsemode.BModeController;
 import org.freeplane.modes.browsemode.BModeControllerFactory;
 

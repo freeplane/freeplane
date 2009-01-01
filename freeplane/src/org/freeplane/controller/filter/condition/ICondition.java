@@ -21,8 +21,8 @@ package org.freeplane.controller.filter.condition;
 
 import javax.swing.JComponent;
 
-import org.freeplane.io.xml.n3.nanoxml.XMLElement;
-import org.freeplane.map.tree.NodeModel;
+import org.freeplane.core.io.xml.n3.nanoxml.XMLElement;
+import org.freeplane.core.map.NodeModel;
 
 public interface ICondition {
 	boolean checkNode(NodeModel node);

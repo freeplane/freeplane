@@ -43,16 +43,16 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
-import org.freeplane.controller.Controller;
 import org.freeplane.controller.filter.util.SortedComboBoxModel;
 import org.freeplane.controller.views.MapViewManager;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.MapModel;
+import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.map.attribute.AttributeRegistry;
 import org.freeplane.map.attribute.AttributeRegistryElement;
 import org.freeplane.map.icon.MindIcon;
-import org.freeplane.map.tree.MapModel;
-import org.freeplane.map.tree.view.MapView;
-import org.freeplane.ui.MenuBuilder;
-import org.freeplane.ui.components.UITools;
+import org.freeplane.view.map.MapView;
 
 class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 	static private class AttributeTreeNodeInfo extends TreeNodeInfo {

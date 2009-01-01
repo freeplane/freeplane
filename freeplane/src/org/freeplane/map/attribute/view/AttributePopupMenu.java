@@ -34,7 +34,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import javax.swing.table.JTableHeader;
 
-import org.freeplane.controller.Controller;
+import org.freeplane.core.controller.Controller;
 import org.freeplane.map.attribute.AttributeTableLayoutModel;
 import org.freeplane.map.attribute.IAttributeTableModel;
 

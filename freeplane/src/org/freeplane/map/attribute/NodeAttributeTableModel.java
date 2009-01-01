@@ -27,11 +27,11 @@ import java.util.Vector;
 import javax.swing.ImageIcon;
 import javax.swing.table.AbstractTableModel;
 
-import org.freeplane.controller.Controller;
-import org.freeplane.extension.IExtension;
-import org.freeplane.io.ITreeWriter;
-import org.freeplane.io.xml.n3.nanoxml.XMLElement;
-import org.freeplane.map.tree.NodeModel;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.io.ITreeWriter;
+import org.freeplane.core.io.xml.n3.nanoxml.XMLElement;
+import org.freeplane.core.map.NodeModel;
 
 /**
  * @author Dimitry Polivaev

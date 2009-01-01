@@ -23,9 +23,9 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
 
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.map.edge.EdgeModel;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.modes.MultipleNodeAction;
 import org.freeplane.modes.mindmapmode.MModeController;
 
 class EdgeWidthAction extends MultipleNodeAction {

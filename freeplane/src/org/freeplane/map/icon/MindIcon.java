@@ -30,7 +30,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.KeyStroke;
 
-import org.freeplane.controller.Controller;
+import org.freeplane.core.controller.Controller;
 import org.freeplane.map.url.UrlManager;
 
 /**

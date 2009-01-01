@@ -32,7 +32,6 @@ import java.util.Vector;
 
 import javax.swing.JPanel;
 
-import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.controller.resources.ui.BooleanProperty;
 import org.freeplane.controller.resources.ui.ColorProperty;
@@ -46,6 +45,7 @@ import org.freeplane.controller.resources.ui.ScriptEditorProperty;
 import org.freeplane.controller.resources.ui.SeparatorProperty;
 import org.freeplane.controller.resources.ui.StringProperty;
 import org.freeplane.controller.resources.ui.ThreeCheckBoxProperty;
+import org.freeplane.core.controller.Controller;
 import org.freeplane.map.edge.EdgeModel;
 import org.freeplane.map.icon.MindIcon;
 import org.freeplane.map.icon.mindmapnode.MIconController;

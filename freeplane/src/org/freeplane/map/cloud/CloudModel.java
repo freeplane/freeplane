@@ -21,8 +21,8 @@ package org.freeplane.map.cloud;
 
 import java.awt.Color;
 
-import org.freeplane.extension.IExtension;
-import org.freeplane.map.tree.NodeModel;
+import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.map.NodeModel;
 
 public class CloudModel implements IExtension {
 	private Color color;

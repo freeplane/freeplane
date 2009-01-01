@@ -31,10 +31,10 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import org.freeplane.controller.Controller;
-import org.freeplane.io.xml.n3.nanoxml.XMLParseException;
-import org.freeplane.map.tree.view.MapView;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.io.xml.n3.nanoxml.XMLParseException;
 import org.freeplane.map.url.UrlManager;
+import org.freeplane.view.map.MapView;
 
 /**
  * This class manages a list of the maps that were opened last. It aims to

@@ -24,8 +24,8 @@ import java.awt.print.PrinterJob;
 
 import javax.swing.Action;
 
-import org.freeplane.Tools;
-import org.freeplane.controller.Controller;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.util.Tools;
 
 /**
  * @author Dimitry Polivaev

@@ -25,23 +25,23 @@ import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
-import org.freeplane.Tools;
-import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.controller.resources.ResourceController;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.FreeplaneAction;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
+import org.freeplane.core.undo.IUndoableActor;
+import org.freeplane.core.util.Tools;
 import org.freeplane.map.text.HtmlTools;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.mindmapmode.MMapController;
-import org.freeplane.map.tree.view.EditNodeBase;
-import org.freeplane.map.tree.view.EditNodeDialog;
-import org.freeplane.map.tree.view.EditNodeExternalApplication;
-import org.freeplane.map.tree.view.EditNodeTextField;
-import org.freeplane.map.tree.view.EditNodeWYSIWYG;
-import org.freeplane.map.tree.view.MapView;
-import org.freeplane.map.tree.view.NodeView;
+import org.freeplane.modes.mindmapmode.MMapController;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.ui.components.OptionalDontShowMeAgainDialog;
-import org.freeplane.undo.IUndoableActor;
+import org.freeplane.view.map.EditNodeBase;
+import org.freeplane.view.map.EditNodeDialog;
+import org.freeplane.view.map.EditNodeExternalApplication;
+import org.freeplane.view.map.EditNodeTextField;
+import org.freeplane.view.map.EditNodeWYSIWYG;
+import org.freeplane.view.map.MapView;
+import org.freeplane.view.map.NodeView;
 
 class EditAction extends FreeplaneAction {
 	private static final Pattern HTML_HEAD = Pattern.compile("\\s*<head>.*</head>", Pattern.DOTALL);

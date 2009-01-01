@@ -32,9 +32,9 @@ import org.apache.batik.transcoder.SVGAbstractTranscoder;
 import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.fop.svg.PDFTranscoder;
-import org.freeplane.controller.ActionDescriptor;
-import org.freeplane.controller.Controller;
-import org.freeplane.map.tree.view.MapView;
+import org.freeplane.core.controller.ActionDescriptor;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.view.map.MapView;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -81,7 +81,7 @@ public class ExportPdf extends ExportVectorGraphic {
 			ostream.close();
 		}
 		catch (final Exception ex) {
-			org.freeplane.Tools.logException(ex);
+			org.freeplane.core.util.Tools.logException(ex);
 			JOptionPane.showMessageDialog(Controller.getController().getViewController()
 			    .getContentPane(), ex.getLocalizedMessage(), null, JOptionPane.ERROR_MESSAGE);
 		}

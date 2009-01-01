@@ -21,17 +21,17 @@ package org.freeplane.map.edge;
 
 import java.awt.Color;
 
-import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.controller.resources.ui.IFreemindPropertyListener;
-import org.freeplane.io.ReadManager;
-import org.freeplane.io.WriteManager;
-import org.freeplane.io.xml.TreeXmlReader;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.io.ReadManager;
+import org.freeplane.core.io.WriteManager;
+import org.freeplane.core.io.xml.TreeXmlReader;
+import org.freeplane.core.map.MapController;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.mode.ModeController;
 import org.freeplane.map.ExclusivePropertyChain;
 import org.freeplane.map.IPropertyGetter;
-import org.freeplane.map.tree.MapController;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.modes.ModeController;
 
 /**
  * @author Dimitry Polivaev

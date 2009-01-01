@@ -75,7 +75,7 @@ public class NumberProperty extends PropertyBean implements IPropertyControl {
 			}
 		}
 		catch (final NumberFormatException e) {
-			org.freeplane.Tools.logException(e);
+			org.freeplane.core.util.Tools.logException(e);
 		}
 		spinner.setValue(new Integer(intValue));
 	}

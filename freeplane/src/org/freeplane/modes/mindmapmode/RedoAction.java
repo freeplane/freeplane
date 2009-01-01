@@ -23,10 +23,9 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
 
-import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeplaneAction;
-import org.freeplane.map.tree.mindmapmode.MindMapMapModel;
-import org.freeplane.undo.IUndoHandler;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.FreeplaneAction;
+import org.freeplane.core.undo.IUndoHandler;
 
 class RedoAction extends FreeplaneAction {
 	private Action undo;

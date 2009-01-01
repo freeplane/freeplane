@@ -9,15 +9,15 @@ import java.io.StringWriter;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
-import org.freeplane.controller.Controller;
-import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
-import org.freeplane.io.xml.n3.nanoxml.IXMLParser;
-import org.freeplane.io.xml.n3.nanoxml.IXMLReader;
-import org.freeplane.io.xml.n3.nanoxml.StdXMLReader;
-import org.freeplane.io.xml.n3.nanoxml.XMLElement;
-import org.freeplane.io.xml.n3.nanoxml.XMLException;
-import org.freeplane.io.xml.n3.nanoxml.XMLParserFactory;
-import org.freeplane.io.xml.n3.nanoxml.XMLWriter;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.io.xml.n3.nanoxml.IXMLElement;
+import org.freeplane.core.io.xml.n3.nanoxml.IXMLParser;
+import org.freeplane.core.io.xml.n3.nanoxml.IXMLReader;
+import org.freeplane.core.io.xml.n3.nanoxml.StdXMLReader;
+import org.freeplane.core.io.xml.n3.nanoxml.XMLElement;
+import org.freeplane.core.io.xml.n3.nanoxml.XMLException;
+import org.freeplane.core.io.xml.n3.nanoxml.XMLParserFactory;
+import org.freeplane.core.io.xml.n3.nanoxml.XMLWriter;
 
 abstract public class WindowConfigurationStorage {
 	protected int height;

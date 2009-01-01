@@ -24,9 +24,9 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import org.freeplane.extension.IExtension;
-import org.freeplane.map.tree.MapModel;
-import org.freeplane.map.tree.NodeModel;
+import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.map.MapModel;
+import org.freeplane.core.map.NodeModel;
 
 /**
  * @author Dimitry Polivaev

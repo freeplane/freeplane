@@ -19,8 +19,8 @@
  */
 package org.freeplane.map.pattern.mindmapnode;
 
-import org.freeplane.extension.IExtension;
-import org.freeplane.map.tree.NodeModel;
+import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.map.NodeModel;
 
 public interface IExternalPatternAction extends IExtension {
 	public void act(NodeModel node, Pattern pattern);

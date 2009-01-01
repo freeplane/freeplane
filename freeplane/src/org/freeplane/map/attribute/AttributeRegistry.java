@@ -30,8 +30,8 @@ import javax.swing.event.EventListenerList;
 import org.freeplane.controller.filter.util.IListModel;
 import org.freeplane.controller.filter.util.SortedComboBoxModel;
 import org.freeplane.controller.filter.util.SortedMapVector;
-import org.freeplane.io.ITreeWriter;
-import org.freeplane.io.xml.n3.nanoxml.XMLElement;
+import org.freeplane.core.io.ITreeWriter;
+import org.freeplane.core.io.xml.n3.nanoxml.XMLElement;
 import org.freeplane.map.attribute.mindmapnode.IAttributesListener;
 
 /**

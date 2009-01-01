@@ -27,8 +27,8 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
 import org.freeplane.controller.views.ColorTracker;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.modes.MultipleNodeAction;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.modes.mindmapmode.MModeController;
 
 class CloudColorAction extends MultipleNodeAction implements PopupMenuListener {

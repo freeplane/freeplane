@@ -19,7 +19,7 @@
  */
 package org.freeplane.map.attribute;
 
-import org.freeplane.map.tree.NodeModel;
+import org.freeplane.core.map.NodeModel;
 
 public interface IAttributeController {
 	void performInsertRow(NodeAttributeTableModel model, int index, String name, String value);

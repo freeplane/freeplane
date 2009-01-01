@@ -19,8 +19,8 @@
  */
 package org.freeplane.map.note;
 
-import org.freeplane.Tools;
-import org.freeplane.extension.IExtension;
+import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.util.Tools;
 import org.freeplane.map.text.HtmlTools;
 
 /**

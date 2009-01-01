@@ -28,7 +28,7 @@ import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
-import org.freeplane.controller.Controller;
+import org.freeplane.core.controller.Controller;
 
 class FreemindResourceBundle extends ResourceBundle {
 	private static final String DEFAULT_LANGUAGE = "en";
@@ -66,7 +66,7 @@ class FreemindResourceBundle extends ResourceBundle {
 			defaultResources = getLanguageResources(DEFAULT_LANGUAGE);
 		}
 		catch (final Exception ex) {
-			org.freeplane.Tools.logException(ex);
+			org.freeplane.core.util.Tools.logException(ex);
 			Logger.global.severe("Error loading Resources");
 		}
 	}

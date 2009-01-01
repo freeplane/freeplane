@@ -49,18 +49,18 @@ import javax.swing.border.MatteBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListDataListener;
 
-import org.freeplane.controller.Controller;
 import org.freeplane.controller.views.IMapViewChangeListener;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.MapModel;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.map.attribute.Attribute;
 import org.freeplane.map.attribute.AttributeRegistry;
 import org.freeplane.map.attribute.AttributeRegistryElement;
 import org.freeplane.map.attribute.NodeAttributeTableModel;
-import org.freeplane.map.tree.MapModel;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.view.MapView;
-import org.freeplane.map.tree.view.NodeView;
-import org.freeplane.ui.MenuBuilder;
-import org.freeplane.ui.components.UITools;
+import org.freeplane.view.map.MapView;
+import org.freeplane.view.map.NodeView;
 
 public class AssignAttributeDialog extends JDialog implements IAttributesListener,
         IMapViewChangeListener {

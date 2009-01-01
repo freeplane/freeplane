@@ -26,18 +26,18 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import org.freeplane.Tools;
-import org.freeplane.controller.Controller;
 import org.freeplane.controller.filter.FilterController;
 import org.freeplane.controller.help.HelpController;
 import org.freeplane.controller.print.PrintController;
 import org.freeplane.controller.resources.ApplicationResourceController;
 import org.freeplane.controller.views.ApplicationViewController;
 import org.freeplane.controller.views.ViewController;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.mode.ModeController;
+import org.freeplane.core.util.Tools;
 import org.freeplane.map.attribute.ModelessAttributeController;
-import org.freeplane.map.tree.NodeModel;
 import org.freeplane.map.url.UrlManager;
-import org.freeplane.modes.ModeController;
 import org.freeplane.modes.browsemode.BModeControllerFactory;
 import org.freeplane.modes.filemode.FModeControllerFactory;
 import org.freeplane.modes.mindmapmode.MModeController;
@@ -127,7 +127,7 @@ public class FreemindStarter {
 					fileLoaded = true;
 				}
 				catch (final Exception e) {
-					org.freeplane.Tools.logException(e);
+					org.freeplane.core.util.Tools.logException(e);
 					Controller.getController().getViewController().out(
 					    "An error occured on opening the file: " + restoreable + ".");
 				}
@@ -184,7 +184,7 @@ public class FreemindStarter {
 				}
 			}
 			catch (final Exception e) {
-				org.freeplane.Tools.logException(e);
+				org.freeplane.core.util.Tools.logException(e);
 			}
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {

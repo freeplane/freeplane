@@ -28,12 +28,12 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
-import org.freeplane.controller.Controller;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.mode.INodeSelectionListener;
+import org.freeplane.core.mode.ModeController;
 import org.freeplane.map.note.NodeNoteBase;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.view.NodeView;
-import org.freeplane.modes.INodeSelectionListener;
-import org.freeplane.modes.ModeController;
+import org.freeplane.view.map.NodeView;
 
 /**
  * @author foltin

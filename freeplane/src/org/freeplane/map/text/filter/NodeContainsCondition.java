@@ -19,11 +19,11 @@
  */
 package org.freeplane.map.text.filter;
 
-import org.freeplane.controller.Controller;
 import org.freeplane.controller.filter.condition.ConditionFactory;
 import org.freeplane.controller.filter.condition.ICondition;
-import org.freeplane.io.xml.n3.nanoxml.XMLElement;
-import org.freeplane.map.tree.NodeModel;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.io.xml.n3.nanoxml.XMLElement;
+import org.freeplane.core.map.NodeModel;
 
 class NodeContainsCondition extends NodeCondition {
 	static final String NAME = "node_contains_condition";

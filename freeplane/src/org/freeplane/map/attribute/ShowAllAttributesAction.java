@@ -23,9 +23,9 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
-import org.freeplane.controller.Controller;
-import org.freeplane.map.tree.MapModel;
-import org.freeplane.ui.MenuBuilder;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.MapModel;
+import org.freeplane.core.ui.MenuBuilder;
 
 class ShowAllAttributesAction extends AbstractAction {
 	/**

@@ -32,9 +32,9 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-import org.freeplane.controller.Controller;
-import org.freeplane.modes.ModeController;
-import org.freeplane.ui.MenuBuilder;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.mode.ModeController;
+import org.freeplane.core.ui.MenuBuilder;
 
 /**
  * @author foltin
@@ -92,7 +92,7 @@ public class ExportToImage extends ExportAction {
 			out.close();
 		}
 		catch (final IOException e1) {
-			org.freeplane.Tools.logException(e1);
+			org.freeplane.core.util.Tools.logException(e1);
 		}
 		Controller.getController().getViewController().setWaitingCursor(false);
 		return true;
@@ -112,7 +112,7 @@ public class ExportToImage extends ExportAction {
 			trans.transform(xmlSource, result);
 		}
 		catch (final Exception e) {
-			org.freeplane.Tools.logException(e);
+			org.freeplane.core.util.Tools.logException(e);
 		};
 		return;
 	}

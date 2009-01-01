@@ -37,8 +37,8 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ui.IFreemindPropertyListener;
+import org.freeplane.core.controller.Controller;
 
 /**
  * @author Dimitry Polivaev

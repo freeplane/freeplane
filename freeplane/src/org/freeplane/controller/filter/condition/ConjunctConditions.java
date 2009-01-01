@@ -24,10 +24,10 @@ import java.util.Vector;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
-import org.freeplane.controller.Controller;
-import org.freeplane.io.xml.n3.nanoxml.XMLElement;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.ui.components.UITools;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.io.xml.n3.nanoxml.XMLElement;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.ui.components.UITools;
 
 /**
  * @author Dimitry Polivaev

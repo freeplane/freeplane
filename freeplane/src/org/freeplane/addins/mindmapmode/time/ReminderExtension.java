@@ -27,11 +27,11 @@ import java.util.TimerTask;
 import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 
-import org.freeplane.controller.Controller;
-import org.freeplane.extension.IExtension;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.map.NodeModel;
 import org.freeplane.map.icon.MindIcon;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.mindmapmode.MMapController;
+import org.freeplane.modes.mindmapmode.MMapController;
 
 /**
  * @author Dimitry Polivaev 30.11.2008

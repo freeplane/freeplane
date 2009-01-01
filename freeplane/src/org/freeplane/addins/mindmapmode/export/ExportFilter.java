@@ -23,7 +23,7 @@ import java.io.File;
 
 import javax.swing.filechooser.FileFilter;
 
-import org.freeplane.Tools;
+import org.freeplane.core.util.Tools;
 import org.freeplane.map.url.UrlManager;
 
 /**

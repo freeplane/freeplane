@@ -28,11 +28,11 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 
 import org.freeplane.addins.encrypt.SingleDesEncrypter;
-import org.freeplane.extension.IExtension;
+import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.map.MapController;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.mode.ModeController;
 import org.freeplane.map.icon.MindIcon;
-import org.freeplane.map.tree.MapController;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.modes.ModeController;
 
 public class EncryptionModel implements IExtension {
 	private static ImageIcon decryptedIcon;
@@ -113,7 +113,7 @@ public class EncryptionModel implements IExtension {
 				isDecrypted = true;
 			}
 			catch (final Exception e) {
-				org.freeplane.Tools.logException(e);
+				org.freeplane.core.util.Tools.logException(e);
 				setAccessible(false);
 				return true;
 			}
@@ -139,7 +139,7 @@ public class EncryptionModel implements IExtension {
 			return encrypted;
 		}
 		catch (final Exception e) {
-			org.freeplane.Tools.logException(e);
+			org.freeplane.core.util.Tools.logException(e);
 		}
 		throw new IllegalArgumentException("Can't encrypt the node.");
 	}
@@ -183,7 +183,7 @@ public class EncryptionModel implements IExtension {
 				generateEncryptedContent();
 			}
 			catch (final Exception e) {
-				org.freeplane.Tools.logException(e);
+				org.freeplane.core.util.Tools.logException(e);
 			}
 		}
 		return encryptedContent;
@@ -228,7 +228,7 @@ public class EncryptionModel implements IExtension {
 			mapController.insertNodeIntoWithoutUndo(node, target, target.getChildCount());
 		}
 		catch (final Exception ee) {
-			org.freeplane.Tools.logException(ee);
+			org.freeplane.core.util.Tools.logException(ee);
 		}
 	}
 

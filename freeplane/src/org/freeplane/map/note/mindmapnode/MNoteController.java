@@ -34,13 +34,13 @@ import javax.swing.KeyStroke;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ResourceController;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.map.note.NoteController;
 import org.freeplane.map.note.NoteModel;
-import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.undo.IUndoableActor;
 
 import com.lightdev.app.shtm.SHTMLPanel;
 import com.lightdev.app.shtm.TextResources;

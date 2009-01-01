@@ -33,18 +33,18 @@ import java.util.ListIterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.freeplane.Tools;
-import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeplaneAction;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.FreeplaneAction;
+import org.freeplane.core.map.MapReader;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.map.MapReader.NodeTreeCreator;
+import org.freeplane.core.mode.ModeController;
+import org.freeplane.core.undo.IUndoableActor;
+import org.freeplane.core.util.Tools;
 import org.freeplane.map.clipboard.MindMapNodesSelection;
 import org.freeplane.map.link.mindmapmode.MLinkController;
 import org.freeplane.map.text.HtmlTools;
-import org.freeplane.map.tree.MapReader;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.MapReader.NodeTreeCreator;
-import org.freeplane.map.tree.mindmapmode.MMapController;
-import org.freeplane.modes.ModeController;
-import org.freeplane.undo.IUndoableActor;
+import org.freeplane.modes.mindmapmode.MMapController;
 
 class PasteAction extends FreeplaneAction {
 	private interface DataFlavorHandler {

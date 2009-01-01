@@ -23,20 +23,20 @@ package plugins.script;
 import java.io.PrintStream;
 import java.util.HashMap;
 
-import org.freeplane.Tools;
-import org.freeplane.Tools.BooleanHolder;
-import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ResourceController;
 import org.freeplane.controller.resources.ui.OptionPanelBuilder;
 import org.freeplane.controller.resources.ui.ScriptEditorProperty;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.mode.ModeController;
+import org.freeplane.core.ui.IndexedTree;
+import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.util.Tools;
+import org.freeplane.core.util.Tools.BooleanHolder;
 import org.freeplane.map.pattern.mindmapnode.IExternalPatternAction;
 import org.freeplane.map.pattern.mindmapnode.Pattern;
 import org.freeplane.map.text.HtmlTools;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.modes.ModeController;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.ui.IndexedTree;
-import org.freeplane.ui.MenuBuilder;
 
 import plugins.script.ScriptEditorPanel.IScriptModel;
 import plugins.script.ScriptEditorPanel.ScriptHolder;

@@ -21,11 +21,11 @@ package org.freeplane.map.attribute.filter;
 
 import org.freeplane.controller.filter.condition.CompareConditionAdapter;
 import org.freeplane.controller.filter.condition.ICondition;
-import org.freeplane.io.xml.TreeXmlReader;
-import org.freeplane.io.xml.TreeXmlWriter;
-import org.freeplane.io.xml.n3.nanoxml.XMLElement;
+import org.freeplane.core.io.xml.TreeXmlReader;
+import org.freeplane.core.io.xml.TreeXmlWriter;
+import org.freeplane.core.io.xml.n3.nanoxml.XMLElement;
+import org.freeplane.core.map.NodeModel;
 import org.freeplane.map.attribute.IAttributeTableModel;
-import org.freeplane.map.tree.NodeModel;
 
 /**
  * @author Dimitry Polivaev

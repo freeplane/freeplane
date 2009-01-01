@@ -25,7 +25,7 @@ import java.net.InetAddress;
 import java.security.Permission;
 import java.util.HashSet;
 
-import org.freeplane.controller.Controller;
+import org.freeplane.core.controller.Controller;
 
 /**
  * @author foltin

@@ -26,17 +26,17 @@ import java.util.TreeSet;
 
 import org.freeplane.addins.NodeHookDescriptor;
 import org.freeplane.addins.PersistentNodeHook;
-import org.freeplane.controller.ActionDescriptor;
-import org.freeplane.extension.IExtension;
-import org.freeplane.io.IReadCompletionListener;
+import org.freeplane.core.controller.ActionDescriptor;
+import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.io.IReadCompletionListener;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.mode.INodeChangeListener;
+import org.freeplane.core.mode.ModeController;
+import org.freeplane.core.mode.NodeChangeEvent;
 import org.freeplane.map.icon.MindIcon;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.mindmapmode.IMapChangeListener;
-import org.freeplane.map.tree.view.MultipleImage;
-import org.freeplane.modes.INodeChangeListener;
-import org.freeplane.modes.ModeController;
-import org.freeplane.modes.NodeChangeEvent;
+import org.freeplane.modes.mindmapmode.IMapChangeListener;
 import org.freeplane.modes.mindmapmode.MModeController;
+import org.freeplane.view.map.MultipleImage;
 
 /**
  * @author Foltin

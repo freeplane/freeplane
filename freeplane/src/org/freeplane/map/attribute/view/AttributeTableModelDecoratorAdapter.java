@@ -24,10 +24,10 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 
+import org.freeplane.core.map.NodeModel;
 import org.freeplane.map.attribute.AttributeRegistry;
 import org.freeplane.map.attribute.IAttributeTableModel;
 import org.freeplane.map.attribute.NodeAttributeTableModel;
-import org.freeplane.map.tree.NodeModel;
 
 /**
  * @author Dimitry Polivaev

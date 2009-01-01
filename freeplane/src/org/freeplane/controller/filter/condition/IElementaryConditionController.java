@@ -24,7 +24,7 @@ import javax.swing.ComboBoxModel;
 
 import org.freeplane.controller.filter.util.IListModel;
 import org.freeplane.controller.resources.NamedObject;
-import org.freeplane.io.xml.n3.nanoxml.XMLElement;
+import org.freeplane.core.io.xml.n3.nanoxml.XMLElement;
 
 /**
  * @author Dimitry Polivaev

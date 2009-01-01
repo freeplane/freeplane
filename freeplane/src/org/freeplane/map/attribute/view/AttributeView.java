@@ -31,15 +31,15 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.JTableHeader;
 
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.mode.ModeController;
 import org.freeplane.map.attribute.AttributeRegistry;
 import org.freeplane.map.attribute.AttributeTableLayoutModel;
 import org.freeplane.map.attribute.IAttributeTableModel;
 import org.freeplane.map.attribute.NodeAttributeTableModel;
 import org.freeplane.map.attribute.mindmapnode.MAttributeController;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.view.MapView;
-import org.freeplane.map.tree.view.NodeView;
-import org.freeplane.modes.ModeController;
+import org.freeplane.view.map.MapView;
+import org.freeplane.view.map.NodeView;
 
 /**
  * This class represents a single Node of a MindMap (in analogy to

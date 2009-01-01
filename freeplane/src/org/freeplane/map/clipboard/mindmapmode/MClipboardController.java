@@ -22,9 +22,9 @@ package org.freeplane.map.clipboard.mindmapmode;
 import java.awt.datatransfer.Transferable;
 import java.util.List;
 
-import org.freeplane.controller.Controller;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.NodeModel;
 import org.freeplane.map.clipboard.ClipboardController;
-import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.mindmapmode.MModeController;
 
 /**

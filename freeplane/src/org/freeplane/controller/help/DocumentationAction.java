@@ -27,10 +27,10 @@ import java.security.AccessControlException;
 import javax.swing.AbstractAction;
 import javax.swing.SwingUtilities;
 
-import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ResourceController;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.modes.browsemode.BModeController;
-import org.freeplane.ui.MenuBuilder;
 
 class DocumentationAction extends AbstractAction {
 	DocumentationAction() {
@@ -55,7 +55,7 @@ class DocumentationAction extends AbstractAction {
 				url = new URL(map);
 			}
 			catch (final MalformedURLException e2) {
-				org.freeplane.Tools.logException(e2);
+				org.freeplane.core.util.Tools.logException(e2);
 				return;
 			}
 			final URL endUrl = url;
@@ -69,7 +69,7 @@ class DocumentationAction extends AbstractAction {
 						}
 					}
 					catch (final Exception e1) {
-						org.freeplane.Tools.logException(e1);
+						org.freeplane.core.util.Tools.logException(e1);
 					}
 				}
 			});

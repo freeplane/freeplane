@@ -39,10 +39,10 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-import org.freeplane.controller.ActionDescriptor;
-import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeplaneAction;
-import org.freeplane.io.xml.n3.nanoxml.XMLParseException;
+import org.freeplane.core.controller.ActionDescriptor;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.FreeplaneAction;
+import org.freeplane.core.io.xml.n3.nanoxml.XMLParseException;
 import org.freeplane.map.url.UrlManager;
 
 /**
@@ -102,13 +102,13 @@ public class ImportMindmanagerFiles extends FreeplaneAction {
 			}
 		}
 		catch (final IOException e) {
-			org.freeplane.Tools.logException(e);
+			org.freeplane.core.util.Tools.logException(e);
 		}
 		catch (final XMLParseException e) {
-			org.freeplane.Tools.logException(e);
+			org.freeplane.core.util.Tools.logException(e);
 		}
 		catch (final URISyntaxException e) {
-			org.freeplane.Tools.logException(e);
+			org.freeplane.core.util.Tools.logException(e);
 		}
 	}
 
@@ -122,7 +122,7 @@ public class ImportMindmanagerFiles extends FreeplaneAction {
 			trans.transform(xmlSource, result);
 		}
 		catch (final Exception e) {
-			org.freeplane.Tools.logException(e);
+			org.freeplane.core.util.Tools.logException(e);
 			return null;
 		}
 		return writer.toString();

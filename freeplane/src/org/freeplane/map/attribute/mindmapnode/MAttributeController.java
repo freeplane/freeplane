@@ -22,8 +22,10 @@ package org.freeplane.map.attribute.mindmapnode;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
-import org.freeplane.controller.Controller;
 import org.freeplane.controller.filter.util.SortedComboBoxModel;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.map.attribute.Attribute;
 import org.freeplane.map.attribute.AttributeController;
 import org.freeplane.map.attribute.AttributeRegistry;
@@ -31,9 +33,7 @@ import org.freeplane.map.attribute.AttributeRegistryElement;
 import org.freeplane.map.attribute.IAttributeController;
 import org.freeplane.map.attribute.NodeAttributeTableModel;
 import org.freeplane.map.attribute.view.AttributePopupMenu;
-import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.undo.IUndoableActor;
 
 public class MAttributeController extends AttributeController implements IAttributeController {
 	private class AttributeChanger implements IVisitor {

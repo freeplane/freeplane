@@ -54,8 +54,6 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 
-import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.controller.filter.condition.ConditionNotSatisfiedDecorator;
 import org.freeplane.controller.filter.condition.ConjunctConditions;
 import org.freeplane.controller.filter.condition.DisjunctConditions;
@@ -63,12 +61,14 @@ import org.freeplane.controller.filter.condition.ICondition;
 import org.freeplane.controller.filter.condition.IElementaryConditionController;
 import org.freeplane.controller.filter.util.ExtendedComboBoxModel;
 import org.freeplane.controller.resources.NamedObject;
-import org.freeplane.map.tree.MapModel;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.FreeplaneAction;
+import org.freeplane.core.map.MapModel;
+import org.freeplane.core.mode.ModeController;
+import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.map.url.UrlManager;
-import org.freeplane.modes.ModeController;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.ui.MenuBuilder;
-import org.freeplane.ui.components.UITools;
 
 /**
  * @author Dimitry Polivaev

@@ -23,15 +23,15 @@ import java.util.Vector;
 
 import javax.swing.Action;
 
-import org.freeplane.controller.ActionDescriptor;
-import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeplaneAction;
+import org.freeplane.core.controller.ActionDescriptor;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.FreeplaneAction;
+import org.freeplane.core.ui.components.IconSelectionPopupDialog;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.map.icon.mindmapnode.MIconController;
-import org.freeplane.map.tree.view.MapView;
-import org.freeplane.map.tree.view.NodeView;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.ui.components.IconSelectionPopupDialog;
-import org.freeplane.ui.components.UITools;
+import org.freeplane.view.map.MapView;
+import org.freeplane.view.map.NodeView;
 
 /**
  * @author adapted to the plugin mechanism by ganzer

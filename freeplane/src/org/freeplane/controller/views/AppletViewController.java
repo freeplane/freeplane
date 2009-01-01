@@ -33,10 +33,10 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 
-import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreemindVersionInformation;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.FreemindVersionInformation;
+import org.freeplane.core.ui.FreemindMenuBar;
 import org.freeplane.modes.browsemode.BModeController;
-import org.freeplane.ui.FreemindMenuBar;
 
 /**
  * @author Dimitry Polivaev
@@ -115,10 +115,10 @@ public class AppletViewController extends ViewController {
 				});
 			}
 			catch (final InterruptedException e) {
-				org.freeplane.Tools.logException(e);
+				org.freeplane.core.util.Tools.logException(e);
 			}
 			catch (final InvocationTargetException e) {
-				org.freeplane.Tools.logException(e);
+				org.freeplane.core.util.Tools.logException(e);
 			}
 		}
 		controller.selectMode(Controller.getResourceController().getProperty("initial_mode"));
@@ -146,7 +146,7 @@ public class AppletViewController extends ViewController {
 				    .newMap(mapUrl);
 			}
 			catch (final Exception e) {
-				org.freeplane.Tools.logException(e);
+				org.freeplane.core.util.Tools.logException(e);
 			}
 		}
 	}
@@ -215,7 +215,7 @@ public class AppletViewController extends ViewController {
 			}
 		}
 		catch (final Exception e) {
-			org.freeplane.Tools.logException(e);
+			org.freeplane.core.util.Tools.logException(e);
 		}
 	}
 }

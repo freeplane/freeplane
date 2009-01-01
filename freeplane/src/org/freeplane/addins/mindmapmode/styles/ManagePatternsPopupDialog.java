@@ -54,15 +54,15 @@ import javax.swing.WindowConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.freeplane.controller.Controller;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.map.pattern.mindmapnode.Pattern;
 import org.freeplane.map.pattern.mindmapnode.StylePatternFactory;
 import org.freeplane.map.pattern.mindmapnode.StylePatternPanel;
 import org.freeplane.map.pattern.mindmapnode.StylePatternPanel.StylePatternPanelType;
-import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.ui.MenuBuilder;
-import org.freeplane.ui.components.UITools;
 
 import com.jgoodies.forms.factories.ButtonBarFactory;
 
@@ -191,7 +191,7 @@ class ManagePatternsPopupDialog extends JDialog implements KeyListener {
 			    .getPatternReader());
 		}
 		catch (final Exception e) {
-			org.freeplane.Tools.logException(e);
+			org.freeplane.core.util.Tools.logException(e);
 			JOptionPane
 			    .showMessageDialog(this, getDialogTitle(), controller
 			        .getText("accessories/plugins/ManagePatterns.not_found"),

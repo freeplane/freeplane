@@ -21,11 +21,11 @@ package org.freeplane.map.note;
 
 import javax.swing.ImageIcon;
 
-import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ResourceController;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.mindmapmode.MMapController;
-import org.freeplane.modes.ModeController;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.mode.ModeController;
+import org.freeplane.modes.mindmapmode.MMapController;
 
 /**
  * @author Dimitry Polivaev

@@ -19,14 +19,14 @@
  */
 package org.freeplane.map.nodelocation;
 
-import org.freeplane.extension.IExtension;
-import org.freeplane.io.IAttributeHandler;
-import org.freeplane.io.IExtensionAttributeWriter;
-import org.freeplane.io.ITreeWriter;
-import org.freeplane.io.ReadManager;
-import org.freeplane.io.WriteManager;
-import org.freeplane.map.tree.NodeBuilder;
-import org.freeplane.map.tree.NodeModel;
+import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.io.IAttributeHandler;
+import org.freeplane.core.io.IExtensionAttributeWriter;
+import org.freeplane.core.io.ITreeWriter;
+import org.freeplane.core.io.ReadManager;
+import org.freeplane.core.io.WriteManager;
+import org.freeplane.core.map.NodeBuilder;
+import org.freeplane.core.map.NodeModel;
 
 /**
  * @author Dimitry Polivaev

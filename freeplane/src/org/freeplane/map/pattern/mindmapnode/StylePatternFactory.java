@@ -28,13 +28,13 @@ import java.io.Writer;
 import java.util.Iterator;
 import java.util.List;
 
-import org.freeplane.Tools;
-import org.freeplane.controller.Controller;
-import org.freeplane.io.xml.TreeXmlWriter;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.io.xml.TreeXmlWriter;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.util.Tools;
 import org.freeplane.map.edge.EdgeModel;
 import org.freeplane.map.icon.MindIcon;
 import org.freeplane.map.nodestyle.NodeStyleModel;
-import org.freeplane.map.tree.NodeModel;
 
 /**
  * This class constructs patterns from files or from nodes and saves them back.

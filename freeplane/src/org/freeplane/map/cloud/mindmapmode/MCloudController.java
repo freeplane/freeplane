@@ -21,11 +21,11 @@ package org.freeplane.map.cloud.mindmapmode;
 
 import java.awt.Color;
 
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.map.cloud.CloudController;
 import org.freeplane.map.cloud.CloudModel;
-import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.undo.IUndoableActor;
 
 /**
  * @author Dimitry Polivaev

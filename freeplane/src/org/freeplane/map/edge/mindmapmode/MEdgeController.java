@@ -22,11 +22,11 @@ package org.freeplane.map.edge.mindmapmode;
 import java.awt.Color;
 import java.util.ListIterator;
 
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.map.edge.EdgeController;
 import org.freeplane.map.edge.EdgeModel;
-import org.freeplane.map.tree.NodeModel;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.undo.IUndoableActor;
 
 /**
  * @author Dimitry Polivaev

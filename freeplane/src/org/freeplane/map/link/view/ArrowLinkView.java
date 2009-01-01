@@ -34,8 +34,8 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import org.freeplane.map.link.ArrowLinkModel;
-import org.freeplane.map.tree.view.MapView;
-import org.freeplane.map.tree.view.NodeView;
+import org.freeplane.view.map.MapView;
+import org.freeplane.view.map.NodeView;
 
 /**
  * This class represents a ArrowLink around a node.

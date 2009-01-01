@@ -27,12 +27,12 @@ import java.util.Set;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
-import org.freeplane.controller.Controller;
 import org.freeplane.controller.filter.condition.ICondition;
 import org.freeplane.controller.filter.condition.JCondition;
-import org.freeplane.io.xml.n3.nanoxml.XMLElement;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.io.xml.n3.nanoxml.XMLElement;
+import org.freeplane.core.map.NodeModel;
 import org.freeplane.map.icon.MindIcon;
-import org.freeplane.map.tree.NodeModel;
 
 public class IconContainedCondition implements ICondition {
 	static final String ICON = "icon";

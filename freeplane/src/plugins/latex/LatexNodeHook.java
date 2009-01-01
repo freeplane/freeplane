@@ -23,13 +23,13 @@ import java.util.Iterator;
 
 import org.freeplane.addins.NodeHookDescriptor;
 import org.freeplane.addins.PersistentNodeHook;
-import org.freeplane.controller.ActionDescriptor;
-import org.freeplane.extension.IExtension;
-import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.view.NodeView;
-import org.freeplane.modes.INodeViewLifeCycleListener;
-import org.freeplane.modes.ModeController;
+import org.freeplane.core.controller.ActionDescriptor;
+import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.io.xml.n3.nanoxml.IXMLElement;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.mode.INodeViewLifeCycleListener;
+import org.freeplane.core.mode.ModeController;
+import org.freeplane.view.map.NodeView;
 
 /**
  * @author Dimitry Polivaev

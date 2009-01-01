@@ -37,25 +37,25 @@ import javax.swing.event.ListSelectionListener;
 
 import org.freeplane.addins.NodeHookDescriptor;
 import org.freeplane.addins.PersistentNodeHook;
-import org.freeplane.controller.ActionDescriptor;
-import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ui.IFreemindPropertyListener;
 import org.freeplane.controller.resources.ui.IPropertyControl;
 import org.freeplane.controller.resources.ui.IPropertyControlCreator;
 import org.freeplane.controller.resources.ui.OptionPanelBuilder;
 import org.freeplane.controller.resources.ui.OptionString;
 import org.freeplane.controller.resources.ui.PropertyBean;
-import org.freeplane.extension.IExtension;
-import org.freeplane.io.IReadCompletionListener;
+import org.freeplane.core.controller.ActionDescriptor;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.io.IReadCompletionListener;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.mode.INodeChangeListener;
+import org.freeplane.core.mode.NodeChangeEvent;
+import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.map.pattern.mindmapnode.Pattern;
 import org.freeplane.map.pattern.mindmapnode.Patterns;
 import org.freeplane.map.pattern.mindmapnode.StylePatternFactory;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.mindmapmode.IMapChangeListener;
-import org.freeplane.modes.INodeChangeListener;
-import org.freeplane.modes.NodeChangeEvent;
+import org.freeplane.modes.mindmapmode.IMapChangeListener;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.ui.IndexedTree;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 

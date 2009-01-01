@@ -21,7 +21,7 @@ package org.freeplane.map.nodestyle;
 
 import java.awt.Color;
 
-import org.freeplane.extension.IExtension;
+import org.freeplane.core.extension.IExtension;
 
 /**
  * @author Dimitry Polivaev 20.11.2008

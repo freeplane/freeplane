@@ -37,7 +37,7 @@ import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
-import org.freeplane.controller.Controller;
+import org.freeplane.core.controller.Controller;
 
 /**
  * A dialog for getting shortcut keys.

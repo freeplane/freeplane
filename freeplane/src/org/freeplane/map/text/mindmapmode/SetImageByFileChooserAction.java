@@ -21,8 +21,8 @@ package org.freeplane.map.text.mindmapmode;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeplaneAction;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.FreeplaneAction;
 
 class SetImageByFileChooserAction extends FreeplaneAction {
 	public SetImageByFileChooserAction() {

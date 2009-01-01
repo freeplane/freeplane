@@ -24,14 +24,14 @@ import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 
-import org.freeplane.controller.Controller;
 import org.freeplane.controller.filter.condition.ConditionFactory;
 import org.freeplane.controller.filter.condition.ICondition;
 import org.freeplane.controller.filter.condition.IElementaryConditionController;
 import org.freeplane.controller.filter.util.IListModel;
 import org.freeplane.controller.filter.util.SortedMapListModel;
 import org.freeplane.controller.resources.NamedObject;
-import org.freeplane.io.xml.n3.nanoxml.XMLElement;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.io.xml.n3.nanoxml.XMLElement;
 
 /**
  * @author Dimitry Polivaev

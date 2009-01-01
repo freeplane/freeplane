@@ -26,13 +26,13 @@ import java.io.FileReader;
 
 import javax.swing.JFileChooser;
 
-import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeplaneAction;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.FreeplaneAction;
+import org.freeplane.core.map.NodeModel;
 import org.freeplane.map.link.mindmapmode.MLinkController;
 import org.freeplane.map.text.mindmapmode.MTextController;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.mindmapmode.MMapController;
 import org.freeplane.map.url.UrlManager;
+import org.freeplane.modes.mindmapmode.MMapController;
 
 class ImportExplorerFavoritesAction extends FreeplaneAction {
 	public ImportExplorerFavoritesAction() {
@@ -99,7 +99,7 @@ class ImportExplorerFavoritesAction extends FreeplaneAction {
 						}
 					}
 					catch (final Exception e) {
-						org.freeplane.Tools.logException(e);
+						org.freeplane.core.util.Tools.logException(e);
 					}
 				}
 			}

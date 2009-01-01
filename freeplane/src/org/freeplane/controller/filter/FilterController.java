@@ -28,23 +28,23 @@ import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 
-import org.freeplane.controller.Controller;
 import org.freeplane.controller.filter.condition.ConditionFactory;
 import org.freeplane.controller.filter.condition.DefaultConditionRenderer;
 import org.freeplane.controller.filter.condition.ICondition;
 import org.freeplane.controller.filter.condition.NoFilteringCondition;
 import org.freeplane.controller.views.IMapViewChangeListener;
-import org.freeplane.io.xml.n3.nanoxml.IXMLParser;
-import org.freeplane.io.xml.n3.nanoxml.IXMLReader;
-import org.freeplane.io.xml.n3.nanoxml.StdXMLReader;
-import org.freeplane.io.xml.n3.nanoxml.XMLElement;
-import org.freeplane.io.xml.n3.nanoxml.XMLException;
-import org.freeplane.io.xml.n3.nanoxml.XMLParserFactory;
-import org.freeplane.io.xml.n3.nanoxml.XMLWriter;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.io.xml.n3.nanoxml.IXMLParser;
+import org.freeplane.core.io.xml.n3.nanoxml.IXMLReader;
+import org.freeplane.core.io.xml.n3.nanoxml.StdXMLReader;
+import org.freeplane.core.io.xml.n3.nanoxml.XMLElement;
+import org.freeplane.core.io.xml.n3.nanoxml.XMLException;
+import org.freeplane.core.io.xml.n3.nanoxml.XMLParserFactory;
+import org.freeplane.core.io.xml.n3.nanoxml.XMLWriter;
+import org.freeplane.core.map.MapModel;
 import org.freeplane.map.icon.MindIcon;
 import org.freeplane.map.note.NodeNoteBase;
-import org.freeplane.map.tree.MapModel;
-import org.freeplane.map.tree.view.MapView;
+import org.freeplane.view.map.MapView;
 
 /**
  * @author Dimitry Polivaev

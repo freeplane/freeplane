@@ -19,11 +19,11 @@
  */
 package org.freeplane.map.attribute;
 
-import org.freeplane.io.ReadManager;
-import org.freeplane.io.WriteManager;
-import org.freeplane.map.tree.MapController;
-import org.freeplane.map.tree.MapReader;
-import org.freeplane.modes.ModeController;
+import org.freeplane.core.io.ReadManager;
+import org.freeplane.core.io.WriteManager;
+import org.freeplane.core.map.MapController;
+import org.freeplane.core.map.MapReader;
+import org.freeplane.core.mode.ModeController;
 
 /**
  * @author Dimitry Polivaev 22.11.2008

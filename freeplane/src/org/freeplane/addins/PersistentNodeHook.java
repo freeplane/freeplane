@@ -24,20 +24,20 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
-import org.freeplane.controller.ActionDescriptor;
-import org.freeplane.controller.FreeplaneAction;
-import org.freeplane.extension.IExtension;
-import org.freeplane.io.IElementDOMHandler;
-import org.freeplane.io.IExtensionElementWriter;
-import org.freeplane.io.ITreeWriter;
-import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
-import org.freeplane.io.xml.n3.nanoxml.XMLElement;
-import org.freeplane.map.tree.MapController;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.view.NodeView;
-import org.freeplane.modes.ModeController;
-import org.freeplane.ui.SelectableAction;
-import org.freeplane.undo.IUndoableActor;
+import org.freeplane.core.controller.ActionDescriptor;
+import org.freeplane.core.controller.FreeplaneAction;
+import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.io.IElementDOMHandler;
+import org.freeplane.core.io.IExtensionElementWriter;
+import org.freeplane.core.io.ITreeWriter;
+import org.freeplane.core.io.xml.n3.nanoxml.IXMLElement;
+import org.freeplane.core.io.xml.n3.nanoxml.XMLElement;
+import org.freeplane.core.map.MapController;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.mode.ModeController;
+import org.freeplane.core.ui.SelectableAction;
+import org.freeplane.core.undo.IUndoableActor;
+import org.freeplane.view.map.NodeView;
 
 public abstract class PersistentNodeHook implements IExtension {
 	public class HookAction extends FreeplaneAction {

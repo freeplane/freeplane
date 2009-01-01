@@ -21,10 +21,10 @@ package org.freeplane.map.note.mindmapnode;
 
 import javax.swing.text.html.HTMLDocument;
 
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.mode.INodeSelectionListener;
 import org.freeplane.map.note.mindmapnode.MNoteController.NoteDocumentListener;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.view.NodeView;
-import org.freeplane.modes.INodeSelectionListener;
+import org.freeplane.view.map.NodeView;
 
 final class NoteManager implements INodeSelectionListener {
 	public final static String EMPTY_EDITOR_STRING = "<html>\n  <head>\n\n  </head>\n  <body>\n    <p>\n      \n    </p>\n  </body>\n</html>\n";

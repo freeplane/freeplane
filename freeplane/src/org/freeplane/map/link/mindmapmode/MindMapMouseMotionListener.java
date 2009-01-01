@@ -22,10 +22,10 @@ package org.freeplane.map.link.mindmapmode;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 
+import org.freeplane.core.ui.IMapMouseReceiver;
 import org.freeplane.map.link.ArrowLinkModel;
-import org.freeplane.map.tree.view.MapView;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.ui.IMapMouseReceiver;
+import org.freeplane.view.map.MapView;
 
 /** */
 class MindMapMouseMotionListener implements IMapMouseReceiver {

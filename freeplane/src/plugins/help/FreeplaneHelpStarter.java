@@ -27,8 +27,8 @@ import java.util.logging.Logger;
 import javax.help.HelpBroker;
 import javax.help.HelpSet;
 
-import org.freeplane.controller.ActionDescriptor;
-import org.freeplane.controller.FreeplaneAction;
+import org.freeplane.core.controller.ActionDescriptor;
+import org.freeplane.core.controller.FreeplaneAction;
 
 /**
  * @author foltin
@@ -52,7 +52,7 @@ public class FreeplaneHelpStarter extends FreeplaneAction {
 			hb.setViewDisplayed(true);
 		}
 		catch (final Exception ee) {
-			org.freeplane.Tools.logException(ee);
+			org.freeplane.core.util.Tools.logException(ee);
 			Logger.global.warning("HelpSet " + ee.getMessage() + ee);
 			Logger.global.warning("HelpSet " + helpHS + " not found");
 			return;

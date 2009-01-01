@@ -21,8 +21,8 @@ package org.freeplane.controller.views;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.controller.FreeplaneAction;
-import org.freeplane.ui.SelectableAction;
+import org.freeplane.core.controller.FreeplaneAction;
+import org.freeplane.core.ui.SelectableAction;
 
 @SelectableAction(checkOnPopup = true)
 class ToggleMenubarAction extends FreeplaneAction {

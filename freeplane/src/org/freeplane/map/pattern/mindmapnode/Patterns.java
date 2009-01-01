@@ -6,12 +6,12 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
 
-import org.freeplane.io.xml.n3.nanoxml.IXMLElement;
-import org.freeplane.io.xml.n3.nanoxml.IXMLParser;
-import org.freeplane.io.xml.n3.nanoxml.IXMLReader;
-import org.freeplane.io.xml.n3.nanoxml.StdXMLReader;
-import org.freeplane.io.xml.n3.nanoxml.XMLException;
-import org.freeplane.io.xml.n3.nanoxml.XMLParserFactory;
+import org.freeplane.core.io.xml.n3.nanoxml.IXMLElement;
+import org.freeplane.core.io.xml.n3.nanoxml.IXMLParser;
+import org.freeplane.core.io.xml.n3.nanoxml.IXMLReader;
+import org.freeplane.core.io.xml.n3.nanoxml.StdXMLReader;
+import org.freeplane.core.io.xml.n3.nanoxml.XMLException;
+import org.freeplane.core.io.xml.n3.nanoxml.XMLParserFactory;
 
 public class Patterns {
 	public static Patterns unMarshall(final Reader reader) {

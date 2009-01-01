@@ -21,8 +21,8 @@ package org.freeplane.map.url;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeplaneAction;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.FreeplaneAction;
 
 class SaveAction extends FreeplaneAction {
 	public SaveAction() {

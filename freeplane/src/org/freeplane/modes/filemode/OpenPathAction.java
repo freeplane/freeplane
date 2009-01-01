@@ -24,9 +24,8 @@ import java.io.File;
 
 import javax.swing.JOptionPane;
 
-import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeplaneAction;
-import org.freeplane.map.tree.filemode.FMapController;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.FreeplaneAction;
 
 class OpenPathAction extends FreeplaneAction {
 	OpenPathAction() {

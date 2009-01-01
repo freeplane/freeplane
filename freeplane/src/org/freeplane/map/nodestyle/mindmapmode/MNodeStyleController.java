@@ -24,12 +24,12 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.util.ListIterator;
 
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.ui.MultipleNodeAction;
+import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.map.nodestyle.NodeStyleController;
 import org.freeplane.map.nodestyle.NodeStyleModel;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.modes.MultipleNodeAction;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.undo.IUndoableActor;
 
 /**
  * @author Dimitry Polivaev

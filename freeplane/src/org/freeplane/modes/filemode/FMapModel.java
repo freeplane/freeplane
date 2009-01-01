@@ -21,8 +21,8 @@ package org.freeplane.modes.filemode;
 
 import java.io.File;
 
-import org.freeplane.map.tree.MapModel;
-import org.freeplane.modes.ModeController;
+import org.freeplane.core.map.MapModel;
+import org.freeplane.core.mode.ModeController;
 
 public class FMapModel extends MapModel {
 	public FMapModel(final File root, final ModeController modeController) {

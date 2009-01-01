@@ -22,12 +22,11 @@ package org.freeplane.modes.filemode;
 import java.awt.event.MouseEvent;
 import java.io.File;
 
-import org.freeplane.controller.Controller;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.filemode.FMapController;
-import org.freeplane.map.tree.view.MainView;
-import org.freeplane.map.tree.view.NodeView;
-import org.freeplane.modes.ModeController;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.mode.ModeController;
+import org.freeplane.view.map.MainView;
+import org.freeplane.view.map.NodeView;
 
 public class FModeController extends ModeController {
 	static public final String MODENAME = "File";

@@ -32,23 +32,23 @@ import javax.swing.JMenuItem;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 
-import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ui.IPropertyControl;
 import org.freeplane.controller.resources.ui.IPropertyControlCreator;
 import org.freeplane.controller.resources.ui.KeyProperty;
 import org.freeplane.controller.resources.ui.OptionPanelBuilder;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.mode.ModeController;
+import org.freeplane.core.ui.FreeMindToolBar;
+import org.freeplane.core.ui.FreemindMenuBar;
+import org.freeplane.core.ui.IndexedTree;
+import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.UserInputListenerFactory;
+import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.map.icon.IIconInformation;
 import org.freeplane.map.icon.IconController;
 import org.freeplane.map.icon.MindIcon;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.modes.ModeController;
-import org.freeplane.modes.UserInputListenerFactory;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.ui.FreeMindToolBar;
-import org.freeplane.ui.FreemindMenuBar;
-import org.freeplane.ui.IndexedTree;
-import org.freeplane.ui.MenuBuilder;
-import org.freeplane.undo.IUndoableActor;
 
 /**
  * @author Dimitry Polivaev

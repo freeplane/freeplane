@@ -25,8 +25,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.TimerTask;
 import java.util.Vector;
 
-import org.freeplane.controller.Controller;
-import org.freeplane.map.tree.mindmapmode.MindMapMapModel;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.modes.mindmapmode.MindMapMapModel;
 
 public class DoAutomaticSave extends TimerTask {
 	/**
@@ -87,7 +87,7 @@ public class DoAutomaticSave extends TimerTask {
 						catch (final Exception e) {
 							System.err.println("Error in automatic MindMapMapModel.save(): "
 							        + e.getMessage());
-							org.freeplane.Tools.logException(e);
+							org.freeplane.core.util.Tools.logException(e);
 							return;
 						}
 					}
@@ -101,17 +101,17 @@ public class DoAutomaticSave extends TimerTask {
 					catch (final Exception e) {
 						System.err.println("Error in automatic MindMapMapModel.save(): "
 						        + e.getMessage());
-						org.freeplane.Tools.logException(e);
+						org.freeplane.core.util.Tools.logException(e);
 					}
 					tempFileStack.add(tempFile);
 				}
 			});
 		}
 		catch (final InterruptedException e) {
-			org.freeplane.Tools.logException(e);
+			org.freeplane.core.util.Tools.logException(e);
 		}
 		catch (final InvocationTargetException e) {
-			org.freeplane.Tools.logException(e);
+			org.freeplane.core.util.Tools.logException(e);
 		}
 	}
 }

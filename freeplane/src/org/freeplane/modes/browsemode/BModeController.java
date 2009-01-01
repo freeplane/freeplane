@@ -24,11 +24,11 @@ import java.util.ListIterator;
 
 import javax.swing.ImageIcon;
 
-import org.freeplane.controller.Controller;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.mode.ModeController;
 import org.freeplane.map.note.NodeNoteBase;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.view.MainView;
-import org.freeplane.modes.ModeController;
+import org.freeplane.view.map.MainView;
 
 public class BModeController extends ModeController {
 	static public final String MODENAME = "Browse";

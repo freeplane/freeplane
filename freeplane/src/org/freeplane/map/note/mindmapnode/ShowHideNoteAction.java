@@ -21,11 +21,11 @@ package org.freeplane.map.note.mindmapnode;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeplaneAction;
 import org.freeplane.controller.resources.ResourceController;
-import org.freeplane.modes.ModeController;
-import org.freeplane.ui.SelectableAction;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.FreeplaneAction;
+import org.freeplane.core.mode.ModeController;
+import org.freeplane.core.ui.SelectableAction;
 
 @SelectableAction(checkOnPopup = true)
 class ShowHideNoteAction extends FreeplaneAction {

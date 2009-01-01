@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.freeplane.extension.IExtension;
+import org.freeplane.core.extension.IExtension;
 
 /**
  * @author Dimitry Polivaev

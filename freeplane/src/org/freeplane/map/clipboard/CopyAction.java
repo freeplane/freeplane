@@ -22,9 +22,9 @@ package org.freeplane.map.clipboard;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 
-import org.freeplane.controller.FreeplaneAction;
-import org.freeplane.map.tree.view.MapView;
+import org.freeplane.core.controller.FreeplaneAction;
 import org.freeplane.modes.mindmapmode.MModeController;
+import org.freeplane.view.map.MapView;
 
 class CopyAction extends FreeplaneAction {
 	public CopyAction() {

@@ -36,14 +36,14 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
 
-import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.WindowConfigurationStorage;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.map.pattern.mindmapnode.Pattern;
 import org.freeplane.map.pattern.mindmapnode.StylePatternPanel;
 import org.freeplane.map.pattern.mindmapnode.StylePatternPanel.StylePatternPanelType;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.ui.MenuBuilder;
-import org.freeplane.ui.components.UITools;
 
 /** */
 class ChooseFormatPopupDialog extends JDialog implements KeyListener {

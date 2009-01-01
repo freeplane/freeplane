@@ -28,12 +28,12 @@ import java.io.StringWriter;
 
 import javax.swing.JOptionPane;
 
-import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeplaneAction;
-import org.freeplane.map.tree.MapController;
-import org.freeplane.map.tree.MapModel;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.FreeplaneAction;
+import org.freeplane.core.map.MapController;
+import org.freeplane.core.map.MapModel;
+import org.freeplane.core.mode.ModeController;
 import org.freeplane.map.url.UrlManager;
-import org.freeplane.modes.ModeController;
 
 /**
  * Reverts the map to the saved version. In Xml, the old map is stored as xml
@@ -74,7 +74,7 @@ class RevertAction extends FreeplaneAction {
 				}
 			}
 			catch (final Exception e) {
-				org.freeplane.Tools.logException(e);
+				org.freeplane.core.util.Tools.logException(e);
 			}
 		}
 
@@ -127,7 +127,7 @@ class RevertAction extends FreeplaneAction {
 			doAction.act();
 		}
 		catch (final IOException e) {
-			org.freeplane.Tools.logException(e);
+			org.freeplane.core.util.Tools.logException(e);
 		}
 	}
 

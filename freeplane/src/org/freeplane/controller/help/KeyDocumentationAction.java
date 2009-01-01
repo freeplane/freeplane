@@ -24,9 +24,9 @@ import java.net.URL;
 
 import javax.swing.AbstractAction;
 
-import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ResourceController;
-import org.freeplane.ui.MenuBuilder;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.ui.MenuBuilder;
 
 class KeyDocumentationAction extends AbstractAction {
 	KeyDocumentationAction() {
@@ -47,7 +47,7 @@ class KeyDocumentationAction extends AbstractAction {
 			}
 		}
 		catch (final Exception e2) {
-			org.freeplane.Tools.logException(e2);
+			org.freeplane.core.util.Tools.logException(e2);
 			return;
 		}
 	}

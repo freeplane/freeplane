@@ -35,9 +35,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.freeplane.Tools;
-import org.freeplane.controller.Controller;
-import org.freeplane.ui.MenuBuilder;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.util.Tools;
 
 class PageAction extends AbstractPrintAction {
 	PageAction(final PrintController controller) {

@@ -24,8 +24,8 @@ import java.awt.geom.CubicCurve2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 
-import org.freeplane.map.tree.view.MainView;
-import org.freeplane.ui.components.UITools;
+import org.freeplane.core.ui.components.UITools;
+import org.freeplane.view.map.MainView;
 
 /**
  * This class represents a sharp Edge of a MindMap.

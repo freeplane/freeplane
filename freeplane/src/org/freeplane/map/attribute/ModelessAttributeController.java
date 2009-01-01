@@ -21,8 +21,8 @@ package org.freeplane.map.attribute;
 
 import javax.swing.Action;
 
-import org.freeplane.controller.Controller;
-import org.freeplane.map.tree.MapModel;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.MapModel;
 
 /**
  * @author Dimitry Polivaev

@@ -44,10 +44,10 @@ import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 
-import org.freeplane.Tools;
-import org.freeplane.controller.Controller;
 import org.freeplane.controller.resources.ResourceController;
-import org.freeplane.ui.FreemindMenuBar;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.ui.FreemindMenuBar;
+import org.freeplane.core.util.Tools;
 
 public class ApplicationViewController extends ViewController {
 	private static final String SPLIT_PANE_LAST_POSITION = "split_pane_last_position";

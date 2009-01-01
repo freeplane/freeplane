@@ -22,9 +22,9 @@ package org.freeplane.controller.filter.condition;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
-import org.freeplane.controller.Controller;
-import org.freeplane.io.xml.n3.nanoxml.XMLElement;
-import org.freeplane.map.tree.NodeModel;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.io.xml.n3.nanoxml.XMLElement;
+import org.freeplane.core.map.NodeModel;
 
 public class NoFilteringCondition implements ICondition {
 	private static NoFilteringCondition condition;

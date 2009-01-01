@@ -27,7 +27,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
-import org.freeplane.controller.Controller;
+import org.freeplane.core.controller.Controller;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 

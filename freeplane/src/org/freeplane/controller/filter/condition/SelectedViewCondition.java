@@ -21,10 +21,10 @@ package org.freeplane.controller.filter.condition;
 
 import javax.swing.JComponent;
 
-import org.freeplane.controller.Controller;
-import org.freeplane.io.xml.n3.nanoxml.XMLElement;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.view.NodeView;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.io.xml.n3.nanoxml.XMLElement;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.view.map.NodeView;
 
 public class SelectedViewCondition implements ICondition {
 	private static ICondition condition;

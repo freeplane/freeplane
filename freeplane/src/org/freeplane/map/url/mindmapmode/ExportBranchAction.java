@@ -26,15 +26,15 @@ import java.net.MalformedURLException;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import org.freeplane.Tools;
-import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeplaneAction;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.FreeplaneAction;
+import org.freeplane.core.map.MapModel;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.util.Tools;
 import org.freeplane.map.link.mindmapmode.MLinkController;
 import org.freeplane.map.text.mindmapmode.MTextController;
-import org.freeplane.map.tree.MapModel;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.mindmapmode.MMapController;
 import org.freeplane.map.url.UrlManager;
+import org.freeplane.modes.mindmapmode.MMapController;
 
 /** */
 class ExportBranchAction extends FreeplaneAction {

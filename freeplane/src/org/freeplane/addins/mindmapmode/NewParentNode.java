@@ -22,13 +22,13 @@ import java.awt.event.ActionEvent;
 import java.util.Iterator;
 import java.util.List;
 
-import org.freeplane.controller.ActionDescriptor;
-import org.freeplane.controller.Controller;
-import org.freeplane.controller.FreeplaneAction;
+import org.freeplane.core.controller.ActionDescriptor;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.FreeplaneAction;
+import org.freeplane.core.map.NodeModel;
 import org.freeplane.map.clipboard.mindmapmode.MClipboardController;
-import org.freeplane.map.tree.NodeModel;
-import org.freeplane.map.tree.mindmapmode.MMapController;
-import org.freeplane.map.tree.view.MapView;
+import org.freeplane.modes.mindmapmode.MMapController;
+import org.freeplane.view.map.MapView;
 
 /**
  * @author foltin The original version was sent by Stephen Viles (sviles) https:
