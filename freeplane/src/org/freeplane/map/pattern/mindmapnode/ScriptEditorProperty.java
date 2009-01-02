@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.resources.ui;
+package org.freeplane.map.pattern.mindmapnode;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,6 +27,9 @@ import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.resources.ui.IPropertyControl;
+import org.freeplane.core.resources.ui.OptionString;
+import org.freeplane.core.resources.ui.PropertyBean;
 import org.freeplane.map.text.HtmlTools;
 import org.freeplane.modes.mindmapmode.MModeController;
 

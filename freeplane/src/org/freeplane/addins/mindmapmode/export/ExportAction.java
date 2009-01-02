@@ -149,7 +149,7 @@ abstract public class ExportAction extends FreeplaneAction {
 	}
 
 	public BufferedImage createBufferedImage() {
-		view = Controller.getController().getMapView();
+		view = (MapView) Controller.getController().getMapView();
 		if (view == null) {
 			return null;
 		}

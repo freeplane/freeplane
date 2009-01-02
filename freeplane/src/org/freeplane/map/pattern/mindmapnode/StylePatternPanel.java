@@ -43,7 +43,6 @@ import org.freeplane.core.resources.ui.IPropertyControl;
 import org.freeplane.core.resources.ui.IconProperty;
 import org.freeplane.core.resources.ui.NextLineProperty;
 import org.freeplane.core.resources.ui.PropertyBean;
-import org.freeplane.core.resources.ui.ScriptEditorProperty;
 import org.freeplane.core.resources.ui.SeparatorProperty;
 import org.freeplane.core.resources.ui.StringProperty;
 import org.freeplane.core.resources.ui.ThreeCheckBoxProperty;

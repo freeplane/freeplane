@@ -28,13 +28,13 @@ import org.freeplane.addins.NodeHookDescriptor;
 import org.freeplane.addins.PersistentNodeHook;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IReadCompletionListener;
+import org.freeplane.core.map.IMapChangeListener;
 import org.freeplane.core.map.INodeChangeListener;
 import org.freeplane.core.map.MindIcon;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeChangeEvent;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.ActionDescriptor;
-import org.freeplane.modes.mindmapmode.IMapChangeListener;
 import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.view.swing.map.MultipleImage;
 

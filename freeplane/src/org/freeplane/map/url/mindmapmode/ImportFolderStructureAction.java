@@ -35,6 +35,7 @@ import org.freeplane.map.text.TextController;
 import org.freeplane.map.text.mindmapmode.MTextController;
 import org.freeplane.map.url.UrlManager;
 import org.freeplane.modes.mindmapmode.MMapController;
+import org.freeplane.modes.mindmapmode.MModeController;
 
 class ImportFolderStructureAction extends FreeplaneAction {
 	public ImportFolderStructureAction() {
@@ -66,8 +67,8 @@ class ImportFolderStructureAction extends FreeplaneAction {
 	private NodeModel addNode(final NodeModel target, final String nodeContent, final String link) {
 		final NodeModel node = ((MMapController) getModeController().getMapController())
 		    .addNewNode(target, target.getChildCount(), target.isNewChildLeft());
-		((MTextController) TextController.getController(getMModeController())).setNodeText(node, nodeContent);
-		((MLinkController) LinkController.getController(getMModeController())).setLink(node, link);
+		((MTextController) TextController.getController(MModeController.getMModeController())).setNodeText(node, nodeContent);
+		((MLinkController) LinkController.getController(MModeController.getMModeController())).setLink(node, link);
 		return node;
 	}
 

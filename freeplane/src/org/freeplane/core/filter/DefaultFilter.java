@@ -26,6 +26,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.map.MapModel;
 import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.view.IMapView;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
@@ -48,7 +49,7 @@ public class DefaultFilter implements IFilter {
 		node.getFilterInfo().reset();
 	}
 
-	static public void selectVisibleNode(final MapView mapView) {
+	static public void selectVisibleNode(final IMapView mapView) {
 		final List<NodeView> selectedNodes = mapView.cloneSelection();
 		final int lastSelectedIndex = selectedNodes.size() - 1;
 		if (lastSelectedIndex == -1) {
@@ -99,7 +100,7 @@ public class DefaultFilter implements IFilter {
 				final Controller c = Controller.getController();
 				c.getViewController().setWaitingCursor(true);
 				final MapModel map = c.getModel();
-				final MapView mapView = c.getMapView();
+				final MapView mapView = (MapView) c.getMapView();
 				final NodeModel root = map.getRootNode();
 				DefaultFilter.resetFilter(root);
 				if (filterChildren(root, condition.checkNode(root), false)) {

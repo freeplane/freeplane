@@ -29,18 +29,18 @@ import javax.swing.JOptionPane;
 
 import org.freeplane.controller.help.HelpController;
 import org.freeplane.controller.print.PrintController;
-import org.freeplane.controller.views.MapViewManager;
-import org.freeplane.controller.views.ViewController;
 import org.freeplane.core.extension.ExtensionHashMap;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.filter.FilterController;
+import org.freeplane.core.frame.MapViewManager;
+import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.map.MapModel;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ActionController;
+import org.freeplane.core.view.IMapView;
 import org.freeplane.map.attribute.ModelessAttributeController;
 import org.freeplane.map.url.UrlManager;
-import org.freeplane.view.swing.map.MapView;
 
 /**
  * Provides the methods to edit/change a Node. Forwards all messages to
@@ -186,7 +186,7 @@ public class Controller {
 	/**
 	 * @return
 	 */
-	public MapView getMapView() {
+	public IMapView getMapView() {
 		return getViewController().getMapView();
 	}
 

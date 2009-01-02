@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.view.swing.map;
+package org.freeplane.map.text.mindmapmode;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -41,6 +41,9 @@ import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Tools;
+import org.freeplane.view.swing.map.MainView;
+import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.NodeView;
 
 /**
  * @author foltin

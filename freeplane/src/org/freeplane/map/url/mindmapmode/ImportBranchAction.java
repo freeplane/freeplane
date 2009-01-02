@@ -32,6 +32,7 @@ import org.freeplane.map.clipboard.ClipboardController;
 import org.freeplane.map.clipboard.mindmapmode.MClipboardController;
 import org.freeplane.map.url.UrlManager;
 import org.freeplane.modes.mindmapmode.MMapController;
+import org.freeplane.modes.mindmapmode.MModeController;
 
 class ImportBranchAction extends FreeplaneAction {
 	public ImportBranchAction() {
@@ -54,9 +55,9 @@ class ImportBranchAction extends FreeplaneAction {
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			try {
 				final MapModel map = parent.getMap();
-				final NodeModel node = ((MMapController) getMModeController().getMapController())
+				final NodeModel node = ((MMapController) MModeController.getMModeController().getMapController())
 				    .loadTree(map, chooser.getSelectedFile());
-				((MClipboardController) ClipboardController.getController(getMModeController())).paste(node,
+				((MClipboardController) ClipboardController.getController(MModeController.getMModeController())).paste(node,
 				    parent);
 			}
 			catch (final Exception ex) {

@@ -26,10 +26,10 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.view.IMapView;
 import org.freeplane.map.clipboard.ClipboardController;
 import org.freeplane.map.clipboard.mindmapmode.MClipboardController;
 import org.freeplane.modes.mindmapmode.MMapController;
-import org.freeplane.view.swing.map.MapView;
 
 /**
  * @author foltin The original version was sent by Stephen Viles (sviles) https:
@@ -65,7 +65,7 @@ public class NewParentNode extends FreeplaneAction {
 	 */
 	public void actionPerformed(final ActionEvent e) {
 		// TODO Auto-generated method stub
-		final MapView mapView = getModeController().getMapView();
+		final IMapView mapView = getModeController().getMapView();
 		final NodeModel focussed = getModeController().getSelectedNode();
 		final List selecteds = getModeController().getSelectedNodes();
 		final NodeModel selectedNode = focussed;

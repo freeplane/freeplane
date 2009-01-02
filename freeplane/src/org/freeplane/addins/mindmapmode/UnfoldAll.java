@@ -28,8 +28,8 @@ import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.ui.IMouseWheelEventHandler;
 import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.modes.mindmapmode.IMouseWheelEventHandler;
 
 /**
  * @author foltin

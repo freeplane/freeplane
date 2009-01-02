@@ -33,6 +33,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.EncryptionModel;
 import org.freeplane.core.map.MapController;
 import org.freeplane.core.map.MapModel;
 import org.freeplane.core.map.NodeModel;

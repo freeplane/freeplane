@@ -29,10 +29,11 @@ import javax.swing.JOptionPane;
 
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.view.IMapView;
 import org.freeplane.map.text.HtmlTools;
 import org.freeplane.map.text.TextController;
 import org.freeplane.modes.mindmapmode.MMapController;
-import org.freeplane.view.swing.map.MapView;
+import org.freeplane.modes.mindmapmode.MModeController;
 
 class JoinNodesAction extends FreeplaneAction {
 	final static Pattern BODY_END = Pattern.compile("</body>", Pattern.CASE_INSENSITIVE);
@@ -75,11 +76,11 @@ class JoinNodesAction extends FreeplaneAction {
 
 	public void joinNodes(final NodeModel selectedNode, final List selectedNodes) {
 		String newContent = "";
-		final MapView mapView = getModeController().getMapView();
+		final IMapView mapView = getModeController().getMapView();
 		for (final Iterator it = selectedNodes.iterator(); it.hasNext();) {
 			final NodeModel node = (NodeModel) it.next();
 			if (node.getModeController().getMapController().hasChildren(node)) {
-				JOptionPane.showMessageDialog(mapView, getModeController().getText(
+				JOptionPane.showMessageDialog(mapView.getComponent(), getModeController().getText(
 				    "cannot_join_nodes_with_children"), "FreeMind", JOptionPane.WARNING_MESSAGE);
 				return;
 			}
@@ -96,7 +97,7 @@ class JoinNodesAction extends FreeplaneAction {
 			isHtml = isHtml || isHtmlNode;
 		}
 		mapView.selectAsTheOnlyOneSelected(mapView.getNodeView(selectedNode));
-		((MTextController) TextController.getController(getMModeController())).setNodeText(selectedNode,
+		((MTextController) TextController.getController(MModeController.getMModeController())).setNodeText(selectedNode,
 		    newContent);
 	}
 }

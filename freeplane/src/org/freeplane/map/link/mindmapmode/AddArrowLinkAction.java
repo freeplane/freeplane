@@ -28,6 +28,7 @@ import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.map.link.ArrowLinkModel;
 import org.freeplane.map.link.NodeLinks;
+import org.freeplane.modes.mindmapmode.MModeController;
 
 /**
  * @author foltin
@@ -40,10 +41,10 @@ class AddArrowLinkAction extends FreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final List selecteds = getMModeController().getSelectedNodes();
+		final List selecteds = MModeController.getMModeController().getSelectedNodes();
 		if (selecteds.size() < 2) {
 			Controller.getController().errorMessage(
-			    getMModeController().getText("less_than_two_selected_nodes"));
+			    MModeController.getMModeController().getText("less_than_two_selected_nodes"));
 			return;
 		}
 		for (int i = 1; i < selecteds.size(); i++) {
@@ -77,6 +78,6 @@ class AddArrowLinkAction extends FreeplaneAction {
 				source.getModeController().getMapController().nodeChanged(source);
 			}
 		};
-		getMModeController().execute(actor);
+		MModeController.getMModeController().execute(actor);
 	}
 }

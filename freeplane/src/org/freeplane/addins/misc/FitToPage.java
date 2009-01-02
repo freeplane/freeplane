@@ -47,7 +47,7 @@ public class FitToPage extends FreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		view = Controller.getController().getMapView();
+		view = (MapView) Controller.getController().getMapView();
 		if (view == null) {
 			return;
 		}

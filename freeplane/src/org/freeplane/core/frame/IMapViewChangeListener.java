@@ -1,8 +1,8 @@
 /*
  *  Freeplane - mind map editor
- *  Copyright (C) 2008 Joerg Mueller, Daniel Polansky, Christian Foltin, Dimitry Polivaev
+ *  Copyright (C) 2008 Dimitry Polivaev
  *
- *  This file is modified by Dimitry Polivaev in 2008.
+ *  This file author is Dimitry Polivaev
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -17,14 +17,20 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.modes.mindmapmode;
+package org.freeplane.core.frame;
 
-import java.awt.event.MouseWheelEvent;
+import org.freeplane.core.view.IMapView;
 
-public interface IMouseWheelEventHandler {
+public interface IMapViewChangeListener {
+	void afterMapClose(IMapView oldMapView);
+
+	void afterMapViewChange(IMapView oldMapView, IMapView newMapView);
+
+	void beforeMapViewChange(IMapView oldMapView, IMapView newMapView);
+
 	/**
-	 * @return true if the event was sucessfully processed and false if the
-	 *         event did not apply.
+	 * The params may be null to indicate the there was no previous map, or that
+	 * the last map is closed now.
 	 */
-	boolean handleMouseWheelEvent(MouseWheelEvent e);
+	boolean isMapViewChangeAllowed(IMapView oldMapView, IMapView newMapView);
 }

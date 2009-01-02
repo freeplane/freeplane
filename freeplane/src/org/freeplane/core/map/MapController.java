@@ -40,21 +40,19 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.freeplane.controller.views.MapViewManager;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.frame.MapViewManager;
+import org.freeplane.core.io.IXMLElement;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
+import org.freeplane.core.io.XMLElement;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.util.Tools;
+import org.freeplane.core.view.IMapView;
 import org.freeplane.map.link.NodeLinks;
 import org.freeplane.map.url.UrlManager;
-import org.freeplane.modes.mindmapmode.EncryptionModel;
-import org.freeplane.modes.mindmapmode.IMapChangeListener;
-import org.freeplane.n3.nanoxml.IXMLElement;
-import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.n3.nanoxml.XMLParseException;
 import org.freeplane.view.swing.map.MainView;
-import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
 /**
@@ -333,7 +331,7 @@ public class MapController {
 		return mapReader;
 	}
 
-	public MapView getMapView() {
+	public IMapView getMapView() {
 		return getModeController().getMapView();
 	}
 

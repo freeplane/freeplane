@@ -37,6 +37,7 @@ import org.freeplane.map.text.TextController;
 import org.freeplane.map.text.mindmapmode.MTextController;
 import org.freeplane.map.url.UrlManager;
 import org.freeplane.modes.mindmapmode.MMapController;
+import org.freeplane.modes.mindmapmode.MModeController;
 
 /** */
 class ExportBranchAction extends FreeplaneAction {
@@ -45,7 +46,7 @@ class ExportBranchAction extends FreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final NodeModel node = getMModeController().getSelectedNode();
+		final NodeModel node = MModeController.getMModeController().getSelectedNode();
 		if (Controller.getController().getMap() == null || node == null || node.isRoot()) {
 			Controller.getController().getViewController().err("Could not export branch.");
 			return;
@@ -53,7 +54,7 @@ class ExportBranchAction extends FreeplaneAction {
 		if (Controller.getController().getMap().getFile() == null) {
 			Controller.getController().getViewController().out(
 			    "You must save the current map first!");
-			getMModeController().save();
+			MModeController.getMModeController().save();
 		}
 		JFileChooser chooser;
 		if (Controller.getController().getMap().getFile().getParentFile() != null) {
@@ -67,7 +68,7 @@ class ExportBranchAction extends FreeplaneAction {
 			chooser.addChoosableFileFilter(((FileManager) UrlManager.getController(getModeController()))
 			    .getFileFilter());
 		}
-		final int returnVal = chooser.showSaveDialog(getMModeController().getSelectedView());
+		final int returnVal = chooser.showSaveDialog(MModeController.getMModeController().getSelectedView());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File chosenFile = chooser.getSelectedFile();
 			final String ext = UrlManager.getExtension(chosenFile.getName());
@@ -80,13 +81,13 @@ class ExportBranchAction extends FreeplaneAction {
 				UrlManager.fileToUrl(chosenFile);
 			}
 			catch (final MalformedURLException ex) {
-				JOptionPane.showMessageDialog(getMModeController().getMapView(),
+				JOptionPane.showMessageDialog(MModeController.getMModeController().getMapView().getComponent(),
 				    "couldn't create valid URL!");
 				return;
 			}
 			if (chosenFile.exists()) {
-				final int overwriteMap = JOptionPane.showConfirmDialog(getMModeController()
-				    .getMapView(), getMModeController().getText("map_already_exists"), "FreeMind",
+				final int overwriteMap = JOptionPane.showConfirmDialog(MModeController.getMModeController()
+				    .getMapView().getComponent(), MModeController.getMModeController().getText("map_already_exists"), "FreeMind",
 				    JOptionPane.YES_NO_OPTION);
 				if (overwriteMap != JOptionPane.YES_OPTION) {
 					return;
@@ -102,7 +103,7 @@ class ExportBranchAction extends FreeplaneAction {
 			try {
 				final String linkToNewMapString = UrlManager.toRelativeURL(UrlManager
 				    .fileToUrl(chosenFile), Controller.getController().getMap().getURL());
-				((MLinkController) LinkController.getController(getMModeController())).setLink(node,
+				((MLinkController) LinkController.getController(MModeController.getMModeController())).setLink(node,
 				    linkToNewMapString);
 			}
 			catch (final MalformedURLException ex) {
@@ -112,16 +113,16 @@ class ExportBranchAction extends FreeplaneAction {
 			((MMapController) getModeController().getMapController()).deleteNode(node);
 			node.setParent(null);
 			node.setFolded(false);
-			final MapModel map = getMModeController().getMapController().newMap(node);
-			((FileManager) UrlManager.getController(getMModeController())).save(map, chosenFile);
+			final MapModel map = MModeController.getMModeController().getMapController().newMap(node);
+			((FileManager) UrlManager.getController(MModeController.getMModeController())).save(map, chosenFile);
 			final NodeModel newNode = ((MMapController) getModeController().getMapController())
 			    .addNewNode(parent, nodePosition, node.isLeft());
-			((MTextController) TextController.getController(getMModeController())).setNodeText(newNode, node
+			((MTextController) TextController.getController(MModeController.getMModeController())).setNodeText(newNode, node
 			    .getText());
 			try {
 				final String linkString = UrlManager.toRelativeURL(Controller.getController()
 				    .getMap().getURL(), UrlManager.fileToUrl(chosenFile));
-				((MLinkController) LinkController.getController(getMModeController())).setLink(newNode,
+				((MLinkController) LinkController.getController(MModeController.getMModeController())).setLink(newNode,
 				    linkString);
 			}
 			catch (final MalformedURLException ex) {

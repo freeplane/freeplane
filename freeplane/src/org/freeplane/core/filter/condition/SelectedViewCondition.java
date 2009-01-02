@@ -22,8 +22,8 @@ package org.freeplane.core.filter.condition;
 import javax.swing.JComponent;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.io.XMLElement;
 import org.freeplane.core.map.NodeModel;
-import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.view.swing.map.NodeView;
 
 public class SelectedViewCondition implements ICondition {

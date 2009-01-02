@@ -1,8 +1,8 @@
 /*
  *  Freeplane - mind map editor
- *  Copyright (C) 2008 Dimitry Polivaev
+ *  Copyright (C) 2008 Joerg Mueller, Daniel Polansky, Christian Foltin, Dimitry Polivaev
  *
- *  This file author is Dimitry Polivaev
+ *  This file is modified by Dimitry Polivaev in 2008.
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -17,19 +17,26 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.modes.mindmapmode;
+package org.freeplane.view.swing.map.edge;
 
-import org.freeplane.core.map.NodeModel;
+import java.awt.Graphics2D;
 
 /**
- * @author Dimitry Polivaev
+ * This class represents a sharp Edge of a MindMap.
  */
-public interface IMapChangeListener {
-	void onNodeDeleted(NodeModel parent, NodeModel child);
+public class SharpLinearEdgeView extends EdgeView {
+	public SharpLinearEdgeView() {
+		super();
+	}
 
-	void onNodeInserted(NodeModel parent, NodeModel child, int newIndex);
-
-	void onNodeMoved(NodeModel oldParent, NodeModel newParent, NodeModel child, int newIndex);
-
-	void onPreNodeDelete(NodeModel model);
+	@Override
+	protected void paint(final Graphics2D g) {
+		g.setColor(getColor());
+		g.setPaint(getColor());
+		g.setStroke(EdgeView.DEF_STROKE);
+		final int w = getMap().getZoomed(getWidth() / 2 + 1);
+		final int xs[] = { start.x, end.x, start.x };
+		final int ys[] = { start.y + w, end.y, start.y - w };
+		g.fillPolygon(xs, ys, 3);
+	}
 }

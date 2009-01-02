@@ -33,7 +33,7 @@ class LicenseAction extends AbstractAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		JOptionPane.showMessageDialog(Controller.getController().getMapView(), Controller
+		JOptionPane.showMessageDialog(Controller.getController().getMapView().getComponent(), Controller
 		    .getText("license_text"), Controller.getText("license"),
 		    JOptionPane.INFORMATION_MESSAGE);
 	}

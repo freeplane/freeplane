@@ -33,14 +33,14 @@ import org.freeplane.core.io.IExtensionAttributeWriter;
 import org.freeplane.core.io.IExtensionElementWriter;
 import org.freeplane.core.io.IReadCompletionListener;
 import org.freeplane.core.io.ITreeWriter;
+import org.freeplane.core.io.IXMLElement;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
+import org.freeplane.core.io.XMLElement;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.map.NodeBuilder;
 import org.freeplane.core.map.NodeModel;
-import org.freeplane.n3.nanoxml.IXMLElement;
-import org.freeplane.n3.nanoxml.XMLElement;
 
 class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExtensionElementWriter,
         IExtensionAttributeWriter {

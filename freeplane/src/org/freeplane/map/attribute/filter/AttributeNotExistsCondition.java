@@ -22,11 +22,11 @@ package org.freeplane.map.attribute.filter;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.condition.ConditionFactory;
 import org.freeplane.core.filter.condition.ICondition;
+import org.freeplane.core.filter.condition.NodeCondition;
+import org.freeplane.core.io.XMLElement;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.map.attribute.IAttributeTableModel;
 import org.freeplane.map.attribute.NodeAttributeTableModel;
-import org.freeplane.map.text.filter.NodeCondition;
-import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
  * @author Dimitry Polivaev

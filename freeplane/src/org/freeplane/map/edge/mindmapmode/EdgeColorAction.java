@@ -22,7 +22,7 @@ package org.freeplane.map.edge.mindmapmode;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 
-import org.freeplane.controller.views.ColorTracker;
+import org.freeplane.core.frame.ColorTracker;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.map.edge.EdgeController;
@@ -37,7 +37,7 @@ class EdgeColorAction extends MultipleNodeAction {
 
 	@Override
 	public void actionPerformed(final ActionEvent e) {
-		final MModeController controller = getMModeController();
+		final MModeController controller = MModeController.getMModeController();
 		final NodeModel model = controller.getSelectedNode();
 		final Color edgeColor = EdgeController.getController(model.getModeController()).getColor(model);
 		actionColor = ColorTracker.showCommonJColorChooserDialog(controller.getMapView()

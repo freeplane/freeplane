@@ -82,24 +82,24 @@ class ApplyPatternAction extends MultipleNodeAction {
 	public void applyPattern(final NodeModel node, final Pattern pattern) {
 		if (pattern.getPatternNodeText() != null) {
 			if (pattern.getPatternNodeText().getValue() != null) {
-				((MTextController) TextController.getController(getMModeController())).setNodeText(node,
+				((MTextController) TextController.getController(MModeController.getMModeController())).setNodeText(node,
 				    pattern.getPatternNodeText().getValue());
 			}
 			else {
-				((MTextController) TextController.getController(getMModeController())).setNodeText(node, "");
+				((MTextController) TextController.getController(MModeController.getMModeController())).setNodeText(node, "");
 			}
 		}
 		if (pattern.getPatternNodeColor() != null) {
-			((MNodeStyleController) NodeStyleController.getController(getMModeController())).setColor(node,
+			((MNodeStyleController) NodeStyleController.getController(MModeController.getMModeController())).setColor(node,
 			    TreeXmlReader.xmlToColor(pattern.getPatternNodeColor().getValue()));
 		}
 		if (pattern.getPatternNodeBackgroundColor() != null) {
-			((MNodeStyleController) NodeStyleController.getController(getMModeController()))
+			((MNodeStyleController) NodeStyleController.getController(MModeController.getMModeController()))
 			    .setBackgroundColor(node, TreeXmlReader.xmlToColor(pattern
 			        .getPatternNodeBackgroundColor().getValue()));
 		}
 		if (pattern.getPatternNodeStyle() != null) {
-			((MNodeStyleController) NodeStyleController.getController(getMModeController())).setShape(node,
+			((MNodeStyleController) NodeStyleController.getController(MModeController.getMModeController())).setShape(node,
 			    pattern.getPatternNodeStyle().getValue());
 		}
 		if (pattern.getPatternIcon() != null) {
@@ -120,7 +120,7 @@ class ApplyPatternAction extends MultipleNodeAction {
 					}
 				}
 				if (!found) {
-					((MIconController) IconController.getController(getMModeController())).addIcon(node,
+					((MIconController) IconController.getController(MModeController.getMModeController())).addIcon(node,
 					    MindIcon.factory(iconName), MindIcon.LAST);
 				}
 			}
@@ -130,7 +130,7 @@ class ApplyPatternAction extends MultipleNodeAction {
 			if (nodeFontFamily == null) {
 				nodeFontFamily = Controller.getResourceController().getDefaultFontFamilyName();
 			}
-			((MNodeStyleController) NodeStyleController.getController(getMModeController())).setFontFamily(
+			((MNodeStyleController) NodeStyleController.getController(MModeController.getMModeController())).setFontFamily(
 			    node, nodeFontFamily);
 		}
 		if (pattern.getPatternNodeFontSize() != null) {
@@ -138,23 +138,23 @@ class ApplyPatternAction extends MultipleNodeAction {
 			if (nodeFontSize == null) {
 				nodeFontSize = "" + Controller.getResourceController().getDefaultFontSize();
 			}
-			((MNodeStyleController) NodeStyleController.getController(getMModeController())).setFontSize(
+			((MNodeStyleController) NodeStyleController.getController(MModeController.getMModeController())).setFontSize(
 			    node, Integer.parseInt(nodeFontSize));
 		}
 		if (pattern.getPatternNodeFontItalic() != null) {
-			((MNodeStyleController) NodeStyleController.getController(getMModeController())).setItalic(node,
+			((MNodeStyleController) NodeStyleController.getController(MModeController.getMModeController())).setItalic(node,
 			    "true".equals(pattern.getPatternNodeFontItalic().getValue()));
 		}
 		if (pattern.getPatternNodeFontBold() != null) {
-			((MNodeStyleController) NodeStyleController.getController(getMModeController())).setBold(node,
+			((MNodeStyleController) NodeStyleController.getController(MModeController.getMModeController())).setBold(node,
 			    "true".equals(pattern.getPatternNodeFontBold().getValue()));
 		}
 		if (pattern.getPatternEdgeColor() != null) {
-			((MEdgeController) EdgeController.getController(getMModeController())).setColor(node,
+			((MEdgeController) EdgeController.getController(MModeController.getMModeController())).setColor(node,
 			    TreeXmlReader.xmlToColor(pattern.getPatternEdgeColor().getValue()));
 		}
 		if (pattern.getPatternEdgeStyle() != null) {
-			((MEdgeController) EdgeController.getController(getMModeController())).setStyle(node, pattern
+			((MEdgeController) EdgeController.getController(MModeController.getMModeController())).setStyle(node, pattern
 			    .getPatternEdgeStyle().getValue());
 		}
 		final PatternProperty patternEdgeWidth = pattern.getPatternEdgeWidth();
@@ -166,11 +166,11 @@ class ApplyPatternAction extends MultipleNodeAction {
 			else {
 				width = EdgeModel.WIDTH_PARENT;
 			}
-			((MEdgeController) EdgeController.getController(getMModeController())).setWidth(node, width);
+			((MEdgeController) EdgeController.getController(MModeController.getMModeController())).setWidth(node, width);
 		}
 		if (pattern.getPatternChild() != null && pattern.getPatternChild().getValue() != null) {
 			final String searchedPatternName = pattern.getPatternChild().getValue();
-			final ApplyPatternAction[] patterns = MPatternController.getController(getMModeController()).patterns;
+			final ApplyPatternAction[] patterns = MPatternController.getController(MModeController.getMModeController()).patterns;
 			for (int i = 0; i < patterns.length; i++) {
 				final ApplyPatternAction action = patterns[i];
 				if (action.getPattern().getName().equals(searchedPatternName)) {

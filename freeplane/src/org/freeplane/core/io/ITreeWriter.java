@@ -22,7 +22,6 @@ package org.freeplane.core.io;
 import java.io.IOException;
 
 import org.freeplane.core.extension.IExtensionCollection;
-import org.freeplane.n3.nanoxml.IXMLElement;
 
 public interface ITreeWriter {
 	void addAttribute(String name, double value);

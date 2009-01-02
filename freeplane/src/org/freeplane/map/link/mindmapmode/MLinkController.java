@@ -27,6 +27,7 @@ import java.util.Set;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 
+import org.freeplane.core.map.IMapChangeListener;
 import org.freeplane.core.map.MapModel;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.UserInputListenerFactory;
@@ -35,7 +36,6 @@ import org.freeplane.map.link.ArrowLinkModel;
 import org.freeplane.map.link.LinkController;
 import org.freeplane.map.link.LinkModel;
 import org.freeplane.map.link.MapLinks;
-import org.freeplane.modes.mindmapmode.IMapChangeListener;
 import org.freeplane.modes.mindmapmode.MMapController;
 import org.freeplane.modes.mindmapmode.MModeController;
 

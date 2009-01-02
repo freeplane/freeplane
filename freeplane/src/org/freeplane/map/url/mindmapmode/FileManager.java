@@ -37,11 +37,11 @@ import javax.swing.filechooser.FileFilter;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.MapModel;
 import org.freeplane.core.util.Tools;
+import org.freeplane.core.view.IMapView;
 import org.freeplane.map.url.UrlManager;
 import org.freeplane.modes.mindmapmode.MMapController;
 import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.modes.mindmapmode.MindMapMapModel;
-import org.freeplane.view.swing.map.MapView;
 
 /**
  * @author Dimitry Polivaev
@@ -203,7 +203,7 @@ public class FileManager extends UrlManager {
 
 	public void open() {
 		final JFileChooser chooser = getFileChooser();
-		final int returnVal = chooser.showOpenDialog(getMModeController().getMapView());
+		final int returnVal = chooser.showOpenDialog(getMModeController().getMapView().getComponent());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File[] selectedFiles;
 			if (chooser.isMultiSelectionEnabled()) {
@@ -272,7 +272,7 @@ public class FileManager extends UrlManager {
 			        + org.freeplane.map.url.mindmapmode.FileManager.FREEMIND_FILE_EXTENSION));
 		}
 		chooser.setDialogTitle(getMModeController().getText("save_as"));
-		final int returnVal = chooser.showSaveDialog(getMModeController().getMapView());
+		final int returnVal = chooser.showSaveDialog(getMModeController().getMapView().getComponent());
 		if (returnVal != JFileChooser.APPROVE_OPTION) {
 			return false;
 		}
@@ -286,7 +286,7 @@ public class FileManager extends UrlManager {
 		}
 		if (f.exists()) {
 			final int overwriteMap = JOptionPane.showConfirmDialog(getMModeController()
-			    .getMapView(), getMModeController().getText("map_already_exists"), "FreeMind",
+			    .getMapView().getComponent(), getMModeController().getText("map_already_exists"), "FreeMind",
 			    JOptionPane.YES_NO_OPTION);
 			if (overwriteMap != JOptionPane.YES_OPTION) {
 				return false;
@@ -341,10 +341,10 @@ public class FileManager extends UrlManager {
 	@Override
 	public void startup() {
 		final MModeController modeController = getMModeController();
-		final MapView mapView = modeController.getMapView();
+		final IMapView mapView = modeController.getMapView();
 		if (mapView != null) {
 			final FileOpener fileOpener = new FileOpener(modeController);
-			new DropTarget(mapView, fileOpener);
+			new DropTarget(mapView.getComponent(), fileOpener);
 		}
 	}
 }

@@ -28,13 +28,13 @@ import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.ui.OptionPanelBuilder;
-import org.freeplane.core.resources.ui.ScriptEditorProperty;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.Tools;
 import org.freeplane.core.util.Tools.BooleanHolder;
 import org.freeplane.map.pattern.mindmapnode.IExternalPatternAction;
 import org.freeplane.map.pattern.mindmapnode.Pattern;
+import org.freeplane.map.pattern.mindmapnode.ScriptEditorProperty;
 import org.freeplane.map.text.HtmlTools;
 import org.freeplane.modes.mindmapmode.MModeController;
 

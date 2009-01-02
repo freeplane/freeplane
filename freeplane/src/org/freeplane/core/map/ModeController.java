@@ -48,13 +48,13 @@ import org.freeplane.core.ui.ControllerPopupMenuListener;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.IMouseListener;
+import org.freeplane.core.ui.IMouseWheelEventHandler;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.UserInputListenerFactory;
 import org.freeplane.core.undo.IUndoableActor;
+import org.freeplane.core.view.IMapView;
 import org.freeplane.map.link.LinkController;
 import org.freeplane.map.url.UrlManager;
-import org.freeplane.modes.mindmapmode.IMouseWheelEventHandler;
-import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
 /**
@@ -292,7 +292,7 @@ public class ModeController {
 		return mapController;
 	}
 
-	public MapView getMapView() {
+	public IMapView getMapView() {
 		return Controller.getController().getMapView();
 	}
 
@@ -348,7 +348,7 @@ public class ModeController {
 	 * @return returns a list of MindMapNode s.
 	 */
 	public List getSelectedNodes() {
-		final MapView view = getMapView();
+		final IMapView view = getMapView();
 		if (view == null) {
 			return Collections.EMPTY_LIST;
 		}

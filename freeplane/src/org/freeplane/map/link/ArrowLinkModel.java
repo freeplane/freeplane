@@ -23,7 +23,7 @@ import java.awt.Color;
 import java.awt.Point;
 
 import org.freeplane.core.map.NodeModel;
-import org.freeplane.view.swing.map.MapView;
+import org.freeplane.core.view.IMapView;
 import org.freeplane.view.swing.map.NodeView;
 
 public class ArrowLinkModel extends LinkModel {
@@ -73,7 +73,7 @@ public class ArrowLinkModel extends LinkModel {
 	 * @see freemind.modes.MindMapArrowLink#changeInclination(int, int, int,
 	 * int)
 	 */
-	public void changeInclination(final MapView map, final int originX, final int originY,
+	public void changeInclination(final IMapView map, final int originX, final int originY,
 	                              final int deltaX, final int deltaY) {
 		double distSqToTarget = 0;
 		double distSqToSource = 0;

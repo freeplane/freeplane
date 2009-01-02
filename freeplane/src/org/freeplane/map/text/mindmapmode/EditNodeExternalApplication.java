@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.view.swing.map;
+package org.freeplane.map.text.mindmapmode;
 
 import java.awt.event.KeyEvent;
 import java.io.File;
@@ -27,6 +27,7 @@ import java.text.MessageFormat;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.map.url.UrlManager;
+import org.freeplane.view.swing.map.NodeView;
 
 /**
  * @author Daniel Polansky

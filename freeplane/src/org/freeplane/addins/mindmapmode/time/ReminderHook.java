@@ -24,13 +24,13 @@ import java.awt.event.ActionEvent;
 import org.freeplane.addins.NodeHookDescriptor;
 import org.freeplane.addins.PersistentNodeHook;
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.io.IXMLElement;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.VisibleAction;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.n3.nanoxml.IXMLElement;
 
 /**
  * @author foltin

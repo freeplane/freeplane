@@ -40,6 +40,7 @@ import org.freeplane.addins.PersistentNodeHook;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IReadCompletionListener;
+import org.freeplane.core.map.IMapChangeListener;
 import org.freeplane.core.map.INodeChangeListener;
 import org.freeplane.core.map.NodeChangeEvent;
 import org.freeplane.core.map.NodeModel;
@@ -55,7 +56,6 @@ import org.freeplane.map.pattern.mindmapnode.MPatternController;
 import org.freeplane.map.pattern.mindmapnode.Pattern;
 import org.freeplane.map.pattern.mindmapnode.Patterns;
 import org.freeplane.map.pattern.mindmapnode.StylePatternFactory;
-import org.freeplane.modes.mindmapmode.IMapChangeListener;
 import org.freeplane.modes.mindmapmode.MModeController;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;

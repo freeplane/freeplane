@@ -5,8 +5,8 @@ import java.util.Iterator;
 
 import javax.swing.JDialog;
 
+import org.freeplane.core.io.IXMLElement;
 import org.freeplane.core.resources.WindowConfigurationStorage;
-import org.freeplane.n3.nanoxml.IXMLElement;
 
 class TimeWindowConfigurationStorage extends WindowConfigurationStorage {
 	public static TimeWindowConfigurationStorage decorateDialog(final String marshalled,

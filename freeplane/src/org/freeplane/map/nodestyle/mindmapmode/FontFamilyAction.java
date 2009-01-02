@@ -39,7 +39,7 @@ class FontFamilyAction extends MultipleNodeAction {
 
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		((MNodeStyleController) NodeStyleController.getController(super.getMModeController())).setFontFamily(
+		((MNodeStyleController) NodeStyleController.getController(getModeController())).setFontFamily(
 		    node, actionFont);
 	}
 

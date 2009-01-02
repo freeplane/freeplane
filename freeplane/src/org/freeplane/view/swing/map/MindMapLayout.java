@@ -24,6 +24,8 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.LayoutManager;
 
+import org.freeplane.core.view.IMapView;
+
 /**
  * This class will Layout the Nodes and Edges of an MapView.
  */
@@ -68,7 +70,7 @@ public class MindMapLayout implements LayoutManager {
 	}
 
 	private NodeView getRoot(final Container c) {
-		return ((MapView) c).getRoot();
+		return ((IMapView) c).getRoot();
 	}
 
 	public void layoutContainer(final Container c) {

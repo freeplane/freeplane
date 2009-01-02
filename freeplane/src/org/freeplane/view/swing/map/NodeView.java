@@ -47,13 +47,13 @@ import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.map.attribute.NodeAttributeTableModel;
-import org.freeplane.map.attribute.view.AttributeView;
 import org.freeplane.map.cloud.CloudController;
 import org.freeplane.map.cloud.CloudModel;
-import org.freeplane.map.cloud.view.CloudView;
-import org.freeplane.map.edge.view.EdgeView;
 import org.freeplane.map.nodelocation.LocationModel;
 import org.freeplane.map.nodestyle.NodeStyleController;
+import org.freeplane.view.swing.map.attribute.AttributeView;
+import org.freeplane.view.swing.map.cloud.CloudView;
+import org.freeplane.view.swing.map.edge.EdgeView;
 
 /**
  * This class represents a single Node of a MindMap (in analogy to
@@ -942,7 +942,7 @@ public class NodeView extends JComponent implements TreeModelListener {
 			add(newMainView);
 		}
 		mainView = newMainView;
-		final IUserInputListenerFactory userInputListenerFactory = getMap().getModeController()
+		final IUserInputListenerFactory userInputListenerFactory = getMap().getModel().getModeController()
 		    .getUserInputListenerFactory();
 		mainView.addMouseListener(userInputListenerFactory.getNodeMouseMotionListener());
 		mainView.addMouseMotionListener(userInputListenerFactory.getNodeMouseMotionListener());

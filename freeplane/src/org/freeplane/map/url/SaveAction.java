@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.modes.mindmapmode.MModeController;
 
 class SaveAction extends FreeplaneAction {
 	public SaveAction() {
@@ -30,7 +31,7 @@ class SaveAction extends FreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final boolean success = getMModeController().save();
+		final boolean success = MModeController.getMModeController().save();
 		if (success) {
 			Controller.getController().getViewController().out(Controller.getText("saved"));
 		}

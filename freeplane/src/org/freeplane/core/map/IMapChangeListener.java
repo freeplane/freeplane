@@ -17,41 +17,18 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.map.text.filter;
+package org.freeplane.core.map;
 
-import javax.swing.JComponent;
-
-import org.freeplane.core.filter.condition.ConditionFactory;
-import org.freeplane.core.filter.condition.ICondition;
-import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
  * @author Dimitry Polivaev
  */
-public abstract class NodeCondition implements ICondition {
-	private String description;
-	private JComponent renderer;
+public interface IMapChangeListener {
+	void onNodeDeleted(NodeModel parent, NodeModel child);
 
-	protected NodeCondition() {
-	}
+	void onNodeInserted(NodeModel parent, NodeModel child, int newIndex);
 
-	public void attributesToXml(final XMLElement child) {
-	}
+	void onNodeMoved(NodeModel oldParent, NodeModel newParent, NodeModel child, int newIndex);
 
-	abstract protected String createDesctiption();
-
-	public JComponent getListCellRendererComponent() {
-		if (renderer == null) {
-			renderer = ConditionFactory.createCellRendererComponent(toString());
-		}
-		return renderer;
-	}
-
-	@Override
-	public String toString() {
-		if (description == null) {
-			description = createDesctiption();
-		}
-		return description;
-	}
+	void onPreNodeDelete(NodeModel model);
 }

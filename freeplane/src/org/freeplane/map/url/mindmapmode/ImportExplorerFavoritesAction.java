@@ -35,6 +35,7 @@ import org.freeplane.map.text.TextController;
 import org.freeplane.map.text.mindmapmode.MTextController;
 import org.freeplane.map.url.UrlManager;
 import org.freeplane.modes.mindmapmode.MMapController;
+import org.freeplane.modes.mindmapmode.MModeController;
 
 class ImportExplorerFavoritesAction extends FreeplaneAction {
 	public ImportExplorerFavoritesAction() {
@@ -61,7 +62,7 @@ class ImportExplorerFavoritesAction extends FreeplaneAction {
 	private NodeModel addNode(final NodeModel target, final String nodeContent) {
 		final NodeModel node = ((MMapController) getModeController().getMapController())
 		    .addNewNode(target, target.getChildCount(), target.isNewChildLeft());
-		((MTextController) TextController.getController(getMModeController())).setNodeText(node, nodeContent);
+		((MTextController) TextController.getController(MModeController.getMModeController())).setNodeText(node, nodeContent);
 		return node;
 	}
 

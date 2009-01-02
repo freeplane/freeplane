@@ -28,10 +28,10 @@ import javax.swing.UIManager;
 
 import org.freeplane.controller.help.HelpController;
 import org.freeplane.controller.print.PrintController;
-import org.freeplane.controller.views.ApplicationViewController;
-import org.freeplane.controller.views.ViewController;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.FilterController;
+import org.freeplane.core.frame.ApplicationViewController;
+import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.resources.ApplicationResourceController;

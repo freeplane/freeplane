@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.modes.mindmapmode;
+package org.freeplane.core.map;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -27,12 +27,7 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
-import org.freeplane.addins.encrypt.SingleDesEncrypter;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.map.MapController;
-import org.freeplane.core.map.MindIcon;
-import org.freeplane.core.map.ModeController;
-import org.freeplane.core.map.NodeModel;
 
 public class EncryptionModel implements IExtension {
 	private static ImageIcon decryptedIcon;
@@ -50,7 +45,7 @@ public class EncryptionModel implements IExtension {
 	 * or overwritten.
 	 */
 	final private NodeModel node;
-	private StringBuffer password = null;
+	IEncrypter mEncrypter;
 
 	public EncryptionModel(final NodeModel node) {
 		this.node = node;
@@ -73,35 +68,28 @@ public class EncryptionModel implements IExtension {
 
 	/**
 	 */
-	public boolean checkPassword(final StringBuffer givenPassword) {
-		if (password != null) {
-			if (!equals(givenPassword, password)) {
-				EncryptionModel.logger.warning("Wrong password supplied (cached!=given).");
-				return false;
-			}
-			return true;
-		}
-		final String decryptedNode = decryptXml(encryptedContent, givenPassword);
+	public boolean checkPassword(IEncrypter encrypter) {
+		final String decryptedNode = decryptXml(encryptedContent, encrypter);
 		if (decryptedNode == null || decryptedNode.equals("")
 		        || !decryptedNode.startsWith("<node ")) {
 			EncryptionModel.logger.warning("Wrong password supplied (stored!=given).");
 			return false;
 		}
-		password = givenPassword;
+		this.mEncrypter = encrypter;
 		return true;
 	}
 
 	/**
 	 * @return true, if the password was correct.
 	 */
-	public boolean decrypt(final StringBuffer givenPassword) {
-		if (!checkPassword(givenPassword)) {
+	public boolean decrypt(IEncrypter encrypter) {
+		if (!checkPassword(encrypter)) {
 			return false;
 		}
 		setAccessible(true);
 		if (!isDecrypted) {
 			try {
-				final String childXml = decryptXml(encryptedContent, password);
+				final String childXml = decryptXml(encryptedContent, encrypter);
 				final String[] childs = childXml.split(ModeController.NODESEPARATOR);
 				for (int i = childs.length - 1; i >= 0; i--) {
 					final String string = childs[i];
@@ -124,8 +112,7 @@ public class EncryptionModel implements IExtension {
 	/**
 	 * @return null if the password is wrong.
 	 */
-	private String decryptXml(final String encryptedString, final StringBuffer pwd) {
-		final SingleDesEncrypter encrypter = new SingleDesEncrypter(pwd);
+	private String decryptXml(final String encryptedString, final IEncrypter encrypter) {
 		final String decrypted = encrypter.decrypt(encryptedString);
 		return decrypted;
 	}
@@ -134,30 +121,13 @@ public class EncryptionModel implements IExtension {
 	 */
 	private String encryptXml(final StringBuffer childXml) {
 		try {
-			final SingleDesEncrypter encrypter = new SingleDesEncrypter(password);
-			final String encrypted = encrypter.encrypt(childXml.toString());
+			final String encrypted = mEncrypter.encrypt(childXml.toString());
 			return encrypted;
 		}
 		catch (final Exception e) {
 			org.freeplane.core.util.Tools.logException(e);
 		}
 		throw new IllegalArgumentException("Can't encrypt the node.");
-	}
-
-	/**
-	 */
-	private boolean equals(final StringBuffer givenPassword, final StringBuffer password2) {
-		if (givenPassword.length() != password.length()) {
-			return false;
-		}
-		for (int i = 0; i < password2.length(); i++) {
-			final char c1 = password2.charAt(i);
-			final char c2 = givenPassword.charAt(i);
-			if (c1 != c2) {
-				return false;
-			}
-		}
-		return true;
 	}
 
 	/**
@@ -241,8 +211,8 @@ public class EncryptionModel implements IExtension {
 		updateIcon();
 	}
 
-	public void setPassword(final StringBuffer password) {
-		this.password = password;
+	public void setEncrypter(final IEncrypter encrypter) {
+		this.mEncrypter = encrypter;
 	}
 
 	/*

@@ -31,8 +31,8 @@ import org.freeplane.map.attribute.AttributeController;
 import org.freeplane.map.attribute.AttributeRegistry;
 import org.freeplane.map.attribute.AttributeRegistryElement;
 import org.freeplane.map.attribute.NodeAttributeTableModel;
-import org.freeplane.map.attribute.view.AttributePopupMenu;
 import org.freeplane.modes.mindmapmode.MModeController;
+import org.freeplane.view.swing.map.attribute.AttributePopupMenu;
 
 public class MAttributeController extends AttributeController{
 	private class AttributeChanger implements IVisitor {

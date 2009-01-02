@@ -28,10 +28,10 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.io.IElementDOMHandler;
+import org.freeplane.core.io.IXMLElement;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.ui.IndexedTree;
-import org.freeplane.n3.nanoxml.IXMLElement;
 
 /**
  * @author Dimitry Polivaev

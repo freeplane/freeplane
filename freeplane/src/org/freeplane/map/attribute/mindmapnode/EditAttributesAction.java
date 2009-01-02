@@ -27,8 +27,8 @@ import javax.swing.SwingUtilities;
 
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.ui.FreeplaneAction;
-import org.freeplane.map.attribute.view.AttributeTable;
-import org.freeplane.map.attribute.view.AttributeView;
+import org.freeplane.view.swing.map.attribute.AttributeTable;
+import org.freeplane.view.swing.map.attribute.AttributeView;
 
 class EditAttributesAction extends FreeplaneAction {
 	public EditAttributesAction() {

@@ -49,7 +49,7 @@ public abstract class MultipleNodeAction extends FreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		for (final ListIterator it = getMModeController().getSelectedNodes().listIterator(); it
+		for (final ListIterator it = getModeController().getSelectedNodes().listIterator(); it
 		    .hasNext();) {
 			final NodeModel selected = (NodeModel) it.next();
 			actionPerformed(e, selected);

@@ -37,7 +37,7 @@ class DeleteAction extends FreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final MModeController modeController = getMModeController();
+		final MModeController modeController = MModeController.getMModeController();
 		for (final Iterator iterator = modeController.getSelectedNodes().iterator(); iterator
 		    .hasNext();) {
 			final NodeModel node = (NodeModel) iterator.next();
@@ -87,7 +87,7 @@ class DeleteAction extends FreeplaneAction {
 		final NodeModel parentNode = node.getParentNode();
 		final int index = parentNode.getIndex(node);
 		final IUndoableActor actor = createActor(index, parentNode, node);
-		getMModeController().execute(actor);
+		MModeController.getMModeController().execute(actor);
 	}
 
 	void deleteWithoutUndo(final NodeModel node) {

@@ -31,11 +31,13 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 
+import org.freeplane.core.map.IEncrypter;
+
 /**
  * @author Dimitry Polivaev
  * 29.12.2008
  */
-public class DesEncrypter {
+public class DesEncrypter implements IEncrypter {
 	private static final int SALT_LENGTH = 8;
 	private static final String SALT_PRESENT_INDICATOR = " ";
 

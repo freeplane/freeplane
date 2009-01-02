@@ -36,6 +36,7 @@ import org.freeplane.map.clipboard.mindmapmode.MClipboardController;
 import org.freeplane.map.link.NodeLinks;
 import org.freeplane.map.url.UrlManager;
 import org.freeplane.modes.mindmapmode.MMapController;
+import org.freeplane.modes.mindmapmode.MModeController;
 
 /**
  * This is exactly the opposite of exportBranch.
@@ -49,7 +50,7 @@ class ImportLinkedBranchWithoutRootAction extends FreeplaneAction {
 		final MapModel map = Controller.getController().getMap();
 		final NodeModel selected = getModeController().getSelectedNode();
 		if (selected == null || NodeLinks.getLink(selected) == null) {
-			JOptionPane.showMessageDialog(getModeController().getMapView(), getModeController()
+			JOptionPane.showMessageDialog(getModeController().getMapView().getComponent(), getModeController()
 			    .getText("import_linked_branch_no_link"));
 			return;
 		}
@@ -61,17 +62,17 @@ class ImportLinkedBranchWithoutRootAction extends FreeplaneAction {
 			    relative);
 		}
 		catch (final MalformedURLException ex) {
-			JOptionPane.showMessageDialog(getModeController().getMapView(),
+			JOptionPane.showMessageDialog(getModeController().getMapView().getComponent(),
 			    "Couldn't create valid URL.");
 			return;
 		}
 		try {
-			final NodeModel node = ((MMapController) getMModeController().getMapController())
+			final NodeModel node = ((MMapController) MModeController.getMModeController().getMapController())
 			    .loadTree(map, new File(absolute.getFile()));
 			for (final ListIterator i = node.getModeController().getMapController()
 			    .childrenUnfolded(node); i.hasNext();) {
 				final NodeModel importNode = (NodeModel) i.next();
-				((MClipboardController) ClipboardController.getController(getMModeController())).paste(
+				((MClipboardController) ClipboardController.getController(MModeController.getMModeController())).paste(
 				    importNode, selected);
 			}
 		}

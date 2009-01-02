@@ -23,10 +23,12 @@ import java.io.Writer;
 import java.util.Enumeration;
 import java.util.Vector;
 
+import org.freeplane.core.io.IXMLElement;
+
 /**
  * An XMLWriter writes XML data to a stream.
  * 
- * @see org.freeplane.n3.nanoxml.IXMLElement
+ * @see org.freeplane.core.io.IXMLElement
  * @see java.io.Writer
  * @author Marc De Scheemaecker
  * @version $Name: RELEASE_2_2_1 $, $Revision: 1.4 $

@@ -28,11 +28,11 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.io.XMLElement;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.map.attribute.filter.AttributeConditionController;
 import org.freeplane.map.icon.filter.IconConditionController;
 import org.freeplane.map.text.filter.NodeConditionController;
-import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
  * @author Dimitry Polivaev

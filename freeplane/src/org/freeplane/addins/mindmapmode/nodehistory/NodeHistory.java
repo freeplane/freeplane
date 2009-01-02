@@ -21,9 +21,9 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.logging.Logger;
 
-import org.freeplane.controller.views.MapViewManager;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.frame.MapViewManager;
 import org.freeplane.core.map.INodeSelectionListener;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.MenuBuilder;

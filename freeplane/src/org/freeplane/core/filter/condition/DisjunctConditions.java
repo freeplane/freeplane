@@ -25,9 +25,9 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.io.XMLElement;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
  * @author Dimitry Polivaev

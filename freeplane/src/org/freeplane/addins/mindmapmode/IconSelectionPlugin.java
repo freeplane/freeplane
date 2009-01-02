@@ -28,10 +28,10 @@ import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.components.IconSelectionPopupDialog;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.view.IMapView;
 import org.freeplane.map.icon.IconController;
 import org.freeplane.map.icon.mindmapnode.MIconController;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
 /**
@@ -59,7 +59,7 @@ public class IconSelectionPlugin extends FreeplaneAction {
 		actions.add(modeController.getAction("removeAllIconsAction"));
 		final IconSelectionPopupDialog selectionDialog = new IconSelectionPopupDialog(Controller
 		    .getController().getViewController().getJFrame(), actions);
-		final MapView mapView = modeController.getMapView();
+		final IMapView mapView = modeController.getMapView();
 		mapView.scrollNodeToVisible(focussed, 0);
 		selectionDialog.pack();
 		UITools.setDialogLocationRelativeTo(selectionDialog, focussed);

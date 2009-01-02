@@ -57,23 +57,23 @@ import javax.swing.JViewport;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.map.MapModel;
-import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.ui.IFreemindPropertyListener;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.view.IMapView;
 import org.freeplane.map.link.ArrowLinkModel;
 import org.freeplane.map.link.LinkController;
 import org.freeplane.map.link.LinkModel;
 import org.freeplane.map.link.NodeLinks;
-import org.freeplane.map.link.view.ArrowLinkView;
+import org.freeplane.view.swing.map.link.ArrowLinkView;
 
 /**
  * This class represents the view of a whole MindMap (in analogy to class
  * JTree).
  */
-public class MapView extends JPanel implements Printable, Autoscroll {
+public class MapView extends JPanel implements Printable, Autoscroll, IMapView {
 	static public class ScrollPane extends JScrollPane {
 		@Override
 		protected void validateTree() {
@@ -331,23 +331,23 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 				}
 				else if (propertyName.equals(ResourceController.RESOURCES_BACKGROUND_COLOR)) {
 					MapView.standardMapBackgroundColor = TreeXmlReader.xmlToColor(newValue);
-					Controller.getController().getMapView().setBackground(
+					((MapView)Controller.getController().getMapView()).setBackground(
 					    MapView.standardMapBackgroundColor);
 				}
 				else if (propertyName.equals(ResourceController.RESOURCES_SELECTED_NODE_COLOR)) {
 					MapView.standardSelectColor = TreeXmlReader.xmlToColor(newValue);
-					Controller.getController().getMapView().repaintSelecteds();
+					((MapView)Controller.getController().getMapView()).repaintSelecteds();
 				}
 				else if (propertyName
 				    .equals(ResourceController.RESOURCES_SELECTED_NODE_RECTANGLE_COLOR)) {
 					MapView.standardSelectRectangleColor = TreeXmlReader.xmlToColor(newValue);
-					Controller.getController().getMapView().repaintSelecteds();
+					((MapView)Controller.getController().getMapView()).repaintSelecteds();
 				}
 				else if (propertyName
 				    .equals(ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION)) {
 					MapView.standardDrawRectangleForSelection = TreeXmlReader
 					    .xmlToBoolean(newValue);
-					Controller.getController().getMapView().repaintSelecteds();
+					((MapView)Controller.getController().getMapView()).repaintSelecteds();
 				}
 				else if (propertyName.equals("printonwhitebackground")) {
 					MapView.printOnWhiteBackground = TreeXmlReader.xmlToBoolean(newValue);
@@ -521,10 +521,6 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 			}
 		}
 		return maxNodeWidth;
-	}
-
-	public ModeController getModeController() {
-		return getModel().getModeController();
 	}
 
 	public MapModel getModel() {
@@ -1300,4 +1296,8 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		super.validateTree();
 		setViewPositionAfterValidate();
 	}
+
+	public Component getComponent() {
+		return this;
+    }
 }

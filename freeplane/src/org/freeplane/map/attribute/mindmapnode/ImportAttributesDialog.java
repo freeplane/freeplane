@@ -43,16 +43,16 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
-import org.freeplane.controller.views.MapViewManager;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.util.SortedComboBoxModel;
+import org.freeplane.core.frame.MapViewManager;
 import org.freeplane.core.map.MapModel;
 import org.freeplane.core.map.MindIcon;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.view.IMapView;
 import org.freeplane.map.attribute.AttributeRegistry;
 import org.freeplane.map.attribute.AttributeRegistryElement;
-import org.freeplane.view.swing.map.MapView;
 
 class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 	static private class AttributeTreeNodeInfo extends TreeNodeInfo {
@@ -202,7 +202,7 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 		while (iterator.hasNext()) {
 			final Map.Entry entry = (Map.Entry) iterator.next();
 			final String nextmapName = entry.getKey().toString();
-			final MapView nextMapView = (MapView) entry.getValue();
+			final IMapView nextMapView = (IMapView) entry.getValue();
 			final MapModel nextMap = nextMapView.getModel();
 			if (nextMap == currentMap) {
 				continue;

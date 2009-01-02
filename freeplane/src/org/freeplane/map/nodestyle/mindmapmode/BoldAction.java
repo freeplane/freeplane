@@ -44,13 +44,13 @@ class BoldAction extends MultipleNodeAction {
 
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel selected) {
-		((MNodeStyleController) NodeStyleController.getController(super.getMModeController())).setBold(
+		((MNodeStyleController) NodeStyleController.getController(getModeController())).setBold(
 		    selected, bold);
 	}
 
 	boolean isBold() {
-		final NodeModel node = super.getMModeController().getSelectedNode();
-		return NodeStyleController.getController(super.getMModeController()).isBold(node);
+		final NodeModel node = getModeController().getSelectedNode();
+		return NodeStyleController.getController(getModeController()).isBold(node);
 	}
 
 	@Override

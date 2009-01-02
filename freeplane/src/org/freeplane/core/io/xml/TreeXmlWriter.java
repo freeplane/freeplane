@@ -34,11 +34,11 @@ import org.freeplane.core.io.IElementWriter;
 import org.freeplane.core.io.IExtensionAttributeWriter;
 import org.freeplane.core.io.IExtensionElementWriter;
 import org.freeplane.core.io.ITreeWriter;
+import org.freeplane.core.io.IXMLElement;
 import org.freeplane.core.io.ListHashTable;
 import org.freeplane.core.io.WriteManager;
+import org.freeplane.core.io.XMLElement;
 import org.freeplane.core.util.Tools;
-import org.freeplane.n3.nanoxml.IXMLElement;
-import org.freeplane.n3.nanoxml.XMLElement;
 
 public class TreeXmlWriter implements ITreeWriter {
 	public static String BooleanToXml(final boolean col) {

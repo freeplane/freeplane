@@ -25,7 +25,6 @@ import javax.swing.ImageIcon;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.ModeController;
-import org.freeplane.modes.mindmapmode.MModeController;
 
 /**
  * @author Dimitry Polivaev
@@ -121,11 +120,6 @@ public abstract class FreeplaneAction extends AbstractAction {
 			    iconPath));
 			putValue(Action.SMALL_ICON, icon);
 		}
-	}
-
-	public MModeController getMModeController() {
-		return (MModeController) Controller.getController().getModeController(
-		    MModeController.MODENAME);
 	}
 
 	public ModeController getModeController() {

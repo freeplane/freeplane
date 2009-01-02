@@ -25,12 +25,11 @@ import java.util.ListIterator;
 import org.freeplane.core.io.IAttributeWriter;
 import org.freeplane.core.io.IElementWriter;
 import org.freeplane.core.io.ITreeWriter;
+import org.freeplane.core.io.XMLElement;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.map.link.LinkController;
 import org.freeplane.map.text.HtmlTools;
 import org.freeplane.map.text.NodeTextBuilder;
-import org.freeplane.modes.mindmapmode.EncryptionModel;
-import org.freeplane.n3.nanoxml.XMLElement;
 
 class NodeWriter implements IElementWriter, IAttributeWriter {
 	private EncryptionModel encryptionModel;

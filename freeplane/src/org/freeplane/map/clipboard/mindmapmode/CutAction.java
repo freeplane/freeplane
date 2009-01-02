@@ -41,7 +41,7 @@ class CutAction extends FreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final MModeController mMindMapController = getMModeController();
+		final MModeController mMindMapController = MModeController.getMModeController();
 		if (mMindMapController.getMapView().getRoot().isSelected()) {
 			Controller.getController().errorMessage(Controller.getText("cannot_delete_root"));
 			return;

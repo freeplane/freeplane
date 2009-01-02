@@ -26,6 +26,7 @@ import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.map.cloud.CloudController;
 import org.freeplane.map.cloud.CloudModel;
+import org.freeplane.modes.mindmapmode.MModeController;
 
 /**
  * @author foltin
@@ -50,6 +51,6 @@ class CloudAction extends MultipleNodeAction {
 
 	@Override
 	public void setSelected() {
-		setSelected(CloudModel.getModel(getMModeController().getSelectedNode()) != null);
+		setSelected(CloudModel.getModel(MModeController.getMModeController().getSelectedNode()) != null);
 	}
 }

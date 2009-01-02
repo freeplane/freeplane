@@ -26,6 +26,7 @@ import java.util.Map;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.view.IMapView;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
@@ -56,7 +57,7 @@ class NodeHolder {
 		final MapView mapView = mMapView.get();
 		final Map mapViews = Controller.getController().getMapViewManager().getMapViews();
 		for (final Iterator iter = mapViews.values().iterator(); iter.hasNext();) {
-			final MapView m = (MapView) iter.next();
+			final IMapView m = (IMapView) iter.next();
 			if (m == mapView) {
 				return mapView;
 			}
@@ -68,14 +69,14 @@ class NodeHolder {
 		ModeController modeController = null;
 		final MapView mapView = getMapView();
 		if (mapView != null) {
-			modeController = mapView.getModeController();
+			modeController = mapView.getModel().getModeController();
 		}
 		return modeController;
 	}
 
 	/** @return null, if node not found. */
 	public NodeModel getNode() {
-		final MapView modeController = mMapView.get();
+		final IMapView modeController = mMapView.get();
 		if (modeController != null) {
 			return modeController.getModel().getNodeForID(mNodeId);
 		}
@@ -90,7 +91,7 @@ class NodeHolder {
 
 	public boolean isIdentical(final NodeView pNode) {
 		final String id = pNode.getModel().createID();
-		final MapView mapView = pNode.getMap();
+		final IMapView mapView = pNode.getMap();
 		return mapView == mMapView.get() && id.equals(mNodeId);
 	}
 }

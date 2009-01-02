@@ -44,14 +44,14 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
-import org.freeplane.controller.views.IMapViewChangeListener;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.frame.IMapViewChangeListener;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.view.IMapView;
 import org.freeplane.map.text.TextController;
 import org.freeplane.map.text.mindmapmode.MTextController;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.view.swing.map.MapView;
 
 /**
  * @author foltin
@@ -127,13 +127,13 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapView
 		}
 	}
 
-	public void afterMapClose(final MapView oldMapView) {
+	public void afterMapClose(final IMapView oldMapView) {
 	}
 
-	public void afterMapViewChange(final MapView oldMapView, final MapView newMapView) {
+	public void afterMapViewChange(final IMapView oldMapView, final IMapView newMapView) {
 	}
 
-	public void beforeMapViewChange(final MapView oldMapView, final MapView newMapView) {
+	public void beforeMapViewChange(final IMapView oldMapView, final IMapView newMapView) {
 		Controller.getController().getMapViewManager().removeMapViewChangeListener(this);
 		disposeDialog();
 	}
@@ -223,7 +223,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapView
 		return timePanel;
 	}
 
-	public boolean isMapViewChangeAllowed(final MapView oldMapView, final MapView newMapView) {
+	public boolean isMapViewChangeAllowed(final IMapView oldMapView, final IMapView newMapView) {
 		return true;
 	}
 

@@ -226,4 +226,8 @@ public class MModeController extends ModeController {
 	protected void updateMenus(final String resource) {
 		super.updateMenus(resource);
 	}
+
+	static public MModeController getMModeController() {
+    	return (MModeController) Controller.getModeController();
+    }
 }

@@ -30,7 +30,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-import org.freeplane.controller.views.ColorTracker;
+import org.freeplane.core.frame.ColorTracker;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 

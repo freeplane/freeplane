@@ -46,7 +46,6 @@ import org.freeplane.core.filter.IFilter;
 import org.freeplane.core.util.Tools;
 import org.freeplane.map.note.NoteModel;
 import org.freeplane.map.text.HtmlTools;
-import org.freeplane.modes.mindmapmode.EncryptionModel;
 import org.freeplane.view.swing.map.INodeViewVisitor;
 import org.freeplane.view.swing.map.NodeView;
 

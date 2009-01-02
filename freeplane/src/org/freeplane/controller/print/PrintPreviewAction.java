@@ -37,7 +37,7 @@ class PrintPreviewAction extends AbstractPrintAction {
 		if (!getPrintController().acquirePrinterJobAndPageFormat()) {
 			return;
 		}
-		final MapView mapView = Controller.getController().getMapView();
+		final MapView mapView = (MapView) Controller.getController().getMapView();
 		final PreviewDialog previewDialog = new PreviewDialog(Controller
 		    .getText("print_preview_title"), mapView);
 		previewDialog.pack();

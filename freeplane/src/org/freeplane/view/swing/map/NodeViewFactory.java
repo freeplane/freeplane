@@ -29,13 +29,13 @@ import javax.swing.JComponent;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.map.edge.EdgeController;
 import org.freeplane.map.edge.EdgeModel;
-import org.freeplane.map.edge.view.BezierEdgeView;
-import org.freeplane.map.edge.view.EdgeView;
-import org.freeplane.map.edge.view.LinearEdgeView;
-import org.freeplane.map.edge.view.SharpBezierEdgeView;
-import org.freeplane.map.edge.view.SharpLinearEdgeView;
 import org.freeplane.map.nodestyle.NodeStyleController;
 import org.freeplane.map.nodestyle.NodeStyleModel;
+import org.freeplane.view.swing.map.edge.BezierEdgeView;
+import org.freeplane.view.swing.map.edge.EdgeView;
+import org.freeplane.view.swing.map.edge.LinearEdgeView;
+import org.freeplane.view.swing.map.edge.SharpBezierEdgeView;
+import org.freeplane.view.swing.map.edge.SharpLinearEdgeView;
 
 class NodeViewFactory {
 	private static class ContentPane extends JComponent {

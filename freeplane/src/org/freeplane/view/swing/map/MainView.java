@@ -65,7 +65,7 @@ public abstract class MainView extends JLabel {
 	static Dimension maximumSize = new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
 	private static final int MIN_HOR_NODE_SIZE = 10;
 	static Dimension minimumSize = new Dimension(0, 0);
-	static final float ZOOM_CORRECTION_FACTOR = 0.97F;
+	public static final float ZOOM_CORRECTION_FACTOR = 0.97F;
 	protected int isDraggedOver = NodeView.DRAGGED_OVER_NO;
 	private boolean isLong = false;
 	private boolean isPainting;

@@ -45,6 +45,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.io.IXMLElement;
 import org.freeplane.core.map.MapModel;
 import org.freeplane.core.map.MindIcon;
 import org.freeplane.core.map.ModeController;
@@ -53,7 +54,6 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.Tools;
 import org.freeplane.map.url.UrlManager;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.n3.nanoxml.IXMLElement;
 import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;

@@ -42,14 +42,14 @@ import javax.swing.ListSelectionModel;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
-import org.freeplane.controller.views.IMapViewChangeListener;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.util.IListModel;
+import org.freeplane.core.frame.IMapViewChangeListener;
 import org.freeplane.core.map.MapRegistry;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.view.IMapView;
 import org.freeplane.map.attribute.AttributeRegistry;
-import org.freeplane.view.swing.map.MapView;
 
 /**
  * @author Dimitry Polivaev
@@ -222,10 +222,10 @@ public class AttributeManagerDialog extends JDialog implements IMapViewChangeLis
 		});
 	}
 
-	public void afterMapClose(final MapView pOldMapView) {
+	public void afterMapClose(final IMapView pOldMapView) {
 	}
 
-	public void afterMapViewChange(final MapView oldMapView, final MapView newMapView) {
+	public void afterMapViewChange(final IMapView oldMapView, final IMapView newMapView) {
 		if (newMapView != null) {
 			registry = newMapView.getModel().getRegistry();
 			model = registry.getAttributes();
@@ -240,10 +240,10 @@ public class AttributeManagerDialog extends JDialog implements IMapViewChangeLis
 		model.applyChanges();
 	}
 
-	public void beforeMapViewChange(final MapView oldMapView, final MapView newMapView) {
+	public void beforeMapViewChange(final IMapView oldMapView, final IMapView newMapView) {
 	}
 
-	public boolean isMapViewChangeAllowed(final MapView oldMapView, final MapView newMapView) {
+	public boolean isMapViewChangeAllowed(final IMapView oldMapView, final IMapView newMapView) {
 		return !isVisible();
 	}
 

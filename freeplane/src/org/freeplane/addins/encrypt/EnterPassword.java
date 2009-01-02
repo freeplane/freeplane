@@ -22,14 +22,14 @@ import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.EncryptionModel;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.components.EnterPasswordDialog;
-import org.freeplane.modes.mindmapmode.EncryptionModel;
+import org.freeplane.core.view.IMapView;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.view.swing.map.MapView;
 
 @ActionDescriptor(tooltip = "accessories/plugins/EnterPassword.properties_documentation", //
 name = "accessories/plugins/EnterPassword.properties_name", //
@@ -56,7 +56,8 @@ public class EnterPassword extends FreeplaneAction {
 			if (pwdDialog.getResult() == EnterPasswordDialog.CANCEL) {
 				return false;
 			}
-			if (!encNode.decrypt(pwdDialog.getPassword())) {
+			final StringBuffer password = pwdDialog.getPassword();
+			if (!encNode.decrypt(new SingleDesEncrypter(password))) {
 				JOptionPane.showMessageDialog(Controller.getController().getViewController()
 				    .getContentPane(), getModeController().getText(
 				    "accessories/plugins/EncryptNode.properties_wrong_password"), "Freemind",
@@ -77,7 +78,7 @@ public class EnterPassword extends FreeplaneAction {
 			return;
 		}
 		final EncryptionModel encryptedMindMapNode = new EncryptionModel(node);
-		encryptedMindMapNode.setPassword(password);
+		encryptedMindMapNode.setEncrypter(new SingleDesEncrypter(password));
 		node.addExtension(encryptedMindMapNode);
 	}
 
@@ -98,7 +99,7 @@ public class EnterPassword extends FreeplaneAction {
 	/**
 	 */
 	private void toggleCryptState(final NodeModel node) {
-		final MModeController mindMapController = getMModeController();
+		final MModeController mindMapController = MModeController.getMModeController();
 		final EncryptionModel encNode = EncryptionModel.getModel(node);
 		if (encNode != null) {
 			if (encNode.isAccessible()) {
@@ -112,7 +113,7 @@ public class EnterPassword extends FreeplaneAction {
 					mindMapController.getMapController().nodeStructureChanged(node);
 				}
 			}
-			final MapView mapView = mindMapController.getMapView();
+			final IMapView mapView = mindMapController.getMapView();
 			mapView.selectAsTheOnlyOneSelected(mapView.getNodeView(node));
 		}
 		else {

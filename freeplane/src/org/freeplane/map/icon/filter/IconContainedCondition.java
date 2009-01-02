@@ -30,9 +30,9 @@ import javax.swing.JLabel;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.filter.condition.JCondition;
+import org.freeplane.core.io.XMLElement;
 import org.freeplane.core.map.MindIcon;
 import org.freeplane.core.map.NodeModel;
-import org.freeplane.n3.nanoxml.XMLElement;
 
 public class IconContainedCondition implements ICondition {
 	static final String ICON = "icon";

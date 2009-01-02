@@ -60,12 +60,13 @@ import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
-import org.freeplane.controller.views.MapViewManager;
-import org.freeplane.controller.views.ViewController;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.frame.MapViewManager;
+import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.util.Tools;
+import org.freeplane.core.view.IMapView;
 import org.freeplane.map.clipboard.ClipboardController;
 import org.freeplane.map.clipboard.MindMapNodesSelection;
 import org.freeplane.map.link.LinkController;
@@ -155,7 +156,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 				mapView.scrollRectToVisible(r);
 			}
 			if (originX >= 0 && isEventPointVisible) {
-				((MapView) e.getComponent()).scrollBy(originX - e.getX(), originY - e.getY());
+				((IMapView) e.getComponent()).scrollBy(originX - e.getX(), originY - e.getY());
 			}
 		}
 
@@ -770,7 +771,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			group.add(newItem);
 			newItem.addActionListener(mapsMenuActionListener);
 			newItem.setMnemonic(displayName.charAt(0));
-			final MapView currentMapView = mapViewManager.getMapView();
+			final IMapView currentMapView = mapViewManager.getMapView();
 			if (currentMapView != null) {
 				if (mapView == currentMapView) {
 					newItem.setSelected(true);
