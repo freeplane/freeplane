@@ -48,6 +48,7 @@ class NewChildAction extends FreeplaneAction {
 		((MTextController) TextController.getController(modeController)).stopEditing();
 		final NodeModel targetNode = target;
 		NodeModel newNode = null;
+		final NodeView targetNodeView = modeController.getNodeView(target);
 		switch (newNodeMode) {
 			case MMapController.NEW_SIBLING_BEFORE:
 			case MMapController.NEW_SIBLING_BEHIND: {
@@ -61,7 +62,7 @@ class NewChildAction extends FreeplaneAction {
 					final NodeView nodeView = modeController.getNodeView(newNode);
 					modeController.select(nodeView);
 					((MTextController) TextController.getController(modeController)).edit(nodeView,
-					    modeController.getNodeView(target), e, true, false, false);
+					    targetNodeView, e, true, false, false);
 					break;
 				}
 				else {
@@ -83,7 +84,7 @@ class NewChildAction extends FreeplaneAction {
 					modeController.select(nodeView);
 				}
 				((MTextController) TextController.getController(modeController)).edit(nodeView,
-				    modeController.getNodeView(target), e, true, parentFolded, false);
+				    targetNodeView, e, true, parentFolded, false);
 				break;
 			}
 		}
@@ -91,8 +92,8 @@ class NewChildAction extends FreeplaneAction {
 	}
 
 	public NodeModel addNewNode(final NodeModel parent, final int index, final boolean newNodeIsLeft) {
-		final NodeModel newNode = MModeController.getMModeController().getMapController().newNode("",
-		    parent.getMap());
+		final NodeModel newNode = MModeController.getMModeController().getMapController().newNode(
+		    "", parent.getMap());
 		newNode.setLeft(newNodeIsLeft);
 		final IUndoableActor actor = new IUndoableActor() {
 			public void act() {

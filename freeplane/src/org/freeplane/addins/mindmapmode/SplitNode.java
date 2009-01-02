@@ -97,7 +97,8 @@ public class SplitNode extends FreeplaneAction {
 		while (parts[firstPartNumber] == null) {
 			firstPartNumber++;
 		}
-		((MTextController) TextController.getController(c)).setNodeText(node, parts[firstPartNumber]);
+		((MTextController) TextController.getController(c)).setNodeText(node,
+		    parts[firstPartNumber]);
 		final NodeModel parent = node.getParentNode();
 		final int nodePosition = parent.getChildPosition(node) + 1;
 		for (int i = parts.length - 1; i > firstPartNumber; i--) {
@@ -109,7 +110,8 @@ public class SplitNode extends FreeplaneAction {
 				continue;
 			}
 			((MTextController) TextController.getController(c)).setNodeText(lowerNode, part);
-			final MNodeStyleController nodeStyleController = (MNodeStyleController) NodeStyleController.getController(c);
+			final MNodeStyleController nodeStyleController = (MNodeStyleController) NodeStyleController
+			    .getController(c);
 			nodeStyleController.copyStyle(node, lowerNode);
 			mapController.setFolded(lowerNode, !lowerNode.isFolded());
 		}

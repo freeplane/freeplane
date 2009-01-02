@@ -30,7 +30,7 @@ import org.freeplane.core.map.ModeController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.ui.IFreemindPropertyListener;
 import org.freeplane.core.ui.IMouseWheelEventHandler;
-import org.freeplane.core.view.IMapView;
+import org.freeplane.view.swing.map.MapView;
 
 /**
  * @author foltin
@@ -66,7 +66,7 @@ public class MindMapMouseWheelEventHandler implements MouseWheelListener {
 	 * (java.awt.event.MouseWheelEvent)
 	 */
 	public void mouseWheelMoved(final MouseWheelEvent e) {
-		final IMapView mapView = (IMapView) e.getSource();
+		final MapView mapView = (MapView) e.getSource();
 		final ModeController mController = mapView.getModel().getModeController();
 		if (mController.isBlocked()) {
 			return;
@@ -84,7 +84,7 @@ public class MindMapMouseWheelEventHandler implements MouseWheelListener {
 			if (e.getWheelRotation() < 0) {
 				newZoomFactor = 1 / newZoomFactor;
 			}
-			final float oldZoom = ((IMapView) e.getComponent()).getZoom();
+			final float oldZoom = ((MapView) e.getComponent()).getZoom();
 			float newZoom = oldZoom / newZoomFactor;
 			newZoom = (float) Math.rint(newZoom * 1000f) / 1000f;
 			newZoom = Math.max(1f / 32f, newZoom);
@@ -94,11 +94,11 @@ public class MindMapMouseWheelEventHandler implements MouseWheelListener {
 			}
 		}
 		else if ((e.getModifiers() & MindMapMouseWheelEventHandler.HORIZONTAL_SCROLL_MASK) != 0) {
-			((IMapView) e.getComponent()).scrollBy(MindMapMouseWheelEventHandler.SCROLL_SKIPS
+			((MapView) e.getComponent()).scrollBy(MindMapMouseWheelEventHandler.SCROLL_SKIPS
 			        * e.getWheelRotation(), 0);
 		}
 		else {
-			((IMapView) e.getComponent()).scrollBy(0, MindMapMouseWheelEventHandler.SCROLL_SKIPS
+			((MapView) e.getComponent()).scrollBy(0, MindMapMouseWheelEventHandler.SCROLL_SKIPS
 			        * e.getWheelRotation());
 		}
 	}

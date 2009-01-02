@@ -44,7 +44,7 @@ import javax.swing.text.JTextComponent;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.ui.FreeplaneAction;
-import org.freeplane.core.view.IMapView;
+import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
 /**
@@ -265,7 +265,7 @@ public class EditNodeBase {
 	/**
 		 *
 		 */
-	protected IMapView getView() {
+	protected MapView getView() {
 		return Controller.getController().getMapView();
 	}
 

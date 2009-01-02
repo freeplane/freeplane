@@ -19,7 +19,6 @@
  */
 package org.freeplane.core.io;
 
-
 public interface IElementContentHandler extends IElementHandler {
 	void endElement(Object parent, String tag, Object node, IXMLElement attributes, String content);
 }

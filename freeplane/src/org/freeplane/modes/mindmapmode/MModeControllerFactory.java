@@ -48,6 +48,7 @@ import org.freeplane.addins.misc.HierarchicalIcons;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.FreeMindToolBar;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.url.UrlManager;
 import org.freeplane.map.attribute.AttributeController;
 import org.freeplane.map.attribute.mindmapnode.MAttributeController;
 import org.freeplane.map.clipboard.ClipboardController;
@@ -69,8 +70,7 @@ import org.freeplane.map.note.mindmapnode.MNoteController;
 import org.freeplane.map.pattern.mindmapnode.MPatternController;
 import org.freeplane.map.text.TextController;
 import org.freeplane.map.text.mindmapmode.MTextController;
-import org.freeplane.map.url.UrlManager;
-import org.freeplane.map.url.mindmapmode.FileManager;
+import org.freeplane.modes.mindmapmode.url.MFileManager;
 
 import plugins.help.FreeplaneHelpStarter;
 import plugins.latex.LatexNodeHook;
@@ -145,7 +145,7 @@ public class MModeControllerFactory {
 		modeController = new MModeController();
 		Controller.getController().addModeController(modeController);
 		modeController.setMapController(new MMapController(modeController));
-		UrlManager.install(modeController, new FileManager(modeController));
+		UrlManager.install(modeController, new MFileManager(modeController));
 		IconController.install(modeController, new MIconController(modeController));
 		NodeStyleController.install(modeController, new MNodeStyleController(modeController));
 		EdgeController.install(modeController, new MEdgeController(modeController));
@@ -162,7 +162,8 @@ public class MModeControllerFactory {
 		final FreeMindToolBar toolbar = new FreeMindToolBar();
 		modeController.getUserInputListenerFactory().setMainToolBar(toolbar);
 		modeController.getUserInputListenerFactory().setLeftToolBar(
-		    ((MIconController) IconController.getController(modeController)).getIconToolBarScrollPane());
+		    ((MIconController) IconController.getController(modeController))
+		        .getIconToolBarScrollPane());
 		new RevisionPlugin(modeController);
 		modeController.updateMenus("org/freeplane/modes/mindmapmode/menu.xml");
 	}

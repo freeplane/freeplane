@@ -85,6 +85,32 @@ public class NodeAttributeTableModel extends AbstractTableModel implements IAttr
 	private static boolean SHOW_ATTRIBUTE_ICON = Controller.getResourceController()
 	    .getBoolProperty("el__show_icon_for_attributes");
 	private static final String STATE_ICON = "AttributeExist";
+
+	public static NodeAttributeTableModel createAttributeTableModel(final NodeModel node) {
+		NodeAttributeTableModel attributeModel = (NodeAttributeTableModel) node
+		    .getExtension(NodeAttributeTableModel.class);
+		if (attributeModel != null) {
+			return attributeModel;
+		}
+		attributeModel = new NodeAttributeTableModel(node);
+		node.addExtension(attributeModel);
+		if (node.areViewsEmpty()) {
+			return attributeModel;
+		}
+		final Iterator iterator = node.getViewers().iterator();
+		while (iterator.hasNext()) {
+			final NodeView view = (NodeView) iterator.next();
+			view.createAttributeView();
+		}
+		return attributeModel;
+	}
+
+	public static NodeAttributeTableModel getModel(final NodeModel node) {
+		final NodeAttributeTableModel attributes = (NodeAttributeTableModel) node
+		    .getExtension(NodeAttributeTableModel.class);
+		return attributes != null ? attributes : NodeAttributeTableModel.EMTPY_ATTRIBUTES;
+	}
+
 	private Vector attributes = null;
 	private AttributeTableLayoutModel layout = null;
 	final private NodeModel node;
@@ -335,27 +361,4 @@ public class NodeAttributeTableModel extends AbstractTableModel implements IAttr
 	public void setValueAt(final Object o, final int row, final int col) {
 		getAttributeController().performSetValueAt(this, o, row, col);
 	}
-
-	public static NodeAttributeTableModel createAttributeTableModel(NodeModel node) {
-		NodeAttributeTableModel attributeModel = (NodeAttributeTableModel) node.getExtension(NodeAttributeTableModel.class);
-		if (attributeModel != null) {
-			return attributeModel;
-		}
-		attributeModel = new NodeAttributeTableModel(node);
-		node.addExtension(attributeModel);
-		if (node.areViewsEmpty()) {
-			return attributeModel;
-		}
-		final Iterator iterator = node.getViewers().iterator();
-		while (iterator.hasNext()) {
-			final NodeView view = (NodeView) iterator.next();
-			view.createAttributeView();
-		}
-		return attributeModel;
-	}
-
-	public static NodeAttributeTableModel getModel(NodeModel node) {
-		final NodeAttributeTableModel attributes = (NodeAttributeTableModel) node.getExtension(NodeAttributeTableModel.class);
-		return attributes != null ? attributes : NodeAttributeTableModel.EMTPY_ATTRIBUTES;
-    }
 }

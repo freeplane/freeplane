@@ -46,7 +46,7 @@ public class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCy
 	 */
 	public LatexNodeHook(final ModeController modeController) {
 		super(modeController);
-		modeController.addNodeViewLifeCycleListener(this);
+		modeController.addINodeViewLifeCycleListener(this);
 	}
 
 	@Override

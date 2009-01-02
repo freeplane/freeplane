@@ -50,11 +50,11 @@ import org.freeplane.core.map.MindIcon;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.FreemindMenuBar;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.HtmlTools;
 import org.freeplane.map.edge.EdgeController;
 import org.freeplane.map.link.NodeLinks;
 import org.freeplane.map.nodestyle.NodeStyleController;
 import org.freeplane.map.nodestyle.NodeStyleModel;
-import org.freeplane.map.text.HtmlTools;
 
 /**
  * Base class for all node views.
@@ -310,7 +310,8 @@ public abstract class MainView extends JLabel {
 		g.setColor(Color.WHITE);
 		g.fillOval(p.x, p.y, zoomedFoldingSymbolHalfWidth * 2, zoomedFoldingSymbolHalfWidth * 2);
 		final NodeModel model = getNodeView().getModel();
-		final Color edgeColor = EdgeController.getController(model.getModeController()).getColor(model);
+		final Color edgeColor = EdgeController.getController(model.getModeController()).getColor(
+		    model);
 		g.setColor(edgeColor);
 		g.drawOval(p.x, p.y, zoomedFoldingSymbolHalfWidth * 2, zoomedFoldingSymbolHalfWidth * 2);
 		g.setColor(color);
@@ -321,7 +322,8 @@ public abstract class MainView extends JLabel {
 			paintBackground(graphics, getNodeView().getSelectedColor());
 		}
 		else {
-			final Color backgroundColor = NodeStyleModel.getBackgroundColor(getNodeView().getModel());
+			final Color backgroundColor = NodeStyleModel.getBackgroundColor(getNodeView()
+			    .getModel());
 			if (backgroundColor != null) {
 				paintBackground(graphics, backgroundColor);
 			}
@@ -373,7 +375,8 @@ public abstract class MainView extends JLabel {
 	}
 
 	public void updateFont(final NodeModel model) {
-		final Font font = NodeStyleController.getController(model.getModeController()).getFont(model);
+		final Font font = NodeStyleController.getController(model.getModeController()).getFont(
+		    model);
 		setFont(font);
 	}
 
@@ -488,7 +491,8 @@ public abstract class MainView extends JLabel {
 	}
 
 	void updateTextColor(final NodeModel model) {
-		final Color color = NodeStyleController.getController(model.getModeController()).getColor(model);
+		final Color color = NodeStyleController.getController(model.getModeController()).getColor(
+		    model);
 		setForeground(color);
 	}
 }

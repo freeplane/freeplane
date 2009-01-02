@@ -30,7 +30,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ui.IPropertyControl;
 import org.freeplane.core.resources.ui.OptionString;
 import org.freeplane.core.resources.ui.PropertyBean;
-import org.freeplane.map.text.HtmlTools;
+import org.freeplane.core.util.HtmlTools;
 import org.freeplane.modes.mindmapmode.MModeController;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;

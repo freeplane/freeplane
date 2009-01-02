@@ -26,6 +26,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.util.HtmlTools;
 
 class FindNextAction extends FreeplaneAction {
 	final private FindAction find;

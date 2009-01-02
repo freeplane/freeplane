@@ -39,13 +39,22 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.map.MindIcon;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.map.url.UrlManager;
+import org.freeplane.core.url.UrlManager;
 import org.freeplane.modes.mindmapmode.MModeController;
 
 /**
  * @author Dimitry Polivaev
  */
 public class MPatternController implements IExtension {
+	public static MPatternController getController(final MModeController modeController) {
+		return (MPatternController) modeController.getExtension(MPatternController.class);
+	}
+
+	public static void install(final MModeController modeController,
+	                           final MPatternController patternController) {
+		modeController.addExtension(MPatternController.class, patternController);
+	}
+
 	final private MModeController modeController;
 	private List mPatternsList = new Vector();
 	public ApplyPatternAction patterns[] = new ApplyPatternAction[0];
@@ -182,12 +191,4 @@ public class MPatternController implements IExtension {
 	public void loadPatterns(final Reader reader) throws Exception {
 		createPatterns(StylePatternFactory.loadPatterns(reader));
 	}
-
-	public static MPatternController getController(MModeController modeController) {
-		return (MPatternController)modeController.getExtension(MPatternController.class);
-    }
-
-	public static void install(MModeController modeController, MPatternController patternController) {
-		modeController.addExtension(MPatternController.class, patternController);
-    }
 }

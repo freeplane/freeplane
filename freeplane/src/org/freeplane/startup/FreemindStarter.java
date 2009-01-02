@@ -35,9 +35,9 @@ import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.resources.ApplicationResourceController;
+import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Tools;
 import org.freeplane.map.attribute.ModelessAttributeController;
-import org.freeplane.map.url.UrlManager;
 import org.freeplane.modes.browsemode.BModeControllerFactory;
 import org.freeplane.modes.filemode.FModeControllerFactory;
 import org.freeplane.modes.mindmapmode.MModeController;
@@ -100,7 +100,7 @@ public class FreemindStarter {
 		for (int i = 0; i < args.length; i++) {
 			String fileArgument = args[i];
 			if (fileArgument.toLowerCase().endsWith(
-			    org.freeplane.map.url.mindmapmode.FileManager.FREEMIND_FILE_EXTENSION)) {
+			    org.freeplane.modes.mindmapmode.url.MFileManager.FREEMIND_FILE_EXTENSION)) {
 				if (!UrlManager.isAbsolutePath(fileArgument)) {
 					fileArgument = System.getProperty("user.dir")
 					        + System.getProperty("file.separator") + fileArgument;

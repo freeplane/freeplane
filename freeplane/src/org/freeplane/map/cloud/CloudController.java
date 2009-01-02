@@ -39,7 +39,7 @@ import org.freeplane.core.resources.ui.IFreemindPropertyListener;
 /**
  * @author Dimitry Polivaev
  */
-public class CloudController implements IExtension{
+public class CloudController implements IExtension {
 	protected static class CloudAdapterListener implements IFreemindPropertyListener {
 		public void propertyChanged(final String propertyName, final String newValue,
 		                            final String oldValue) {
@@ -54,6 +54,16 @@ public class CloudController implements IExtension{
 	private static CloudAdapterListener listener = null;
 	public static final int NORMAL_WIDTH = 3;
 	private static Color standardColor = null;
+
+	public static CloudController getController(final ModeController modeController) {
+		return (CloudController) modeController.getExtension(CloudController.class);
+	}
+
+	public static void install(final ModeController modeController,
+	                           final CloudController cloudController) {
+		modeController.addExtension(ModeController.class, cloudController);
+	}
+
 	final private ExclusivePropertyChain<Color, NodeModel> colorHandlers;
 
 	public CloudController(final ModeController modeController) {
@@ -110,12 +120,4 @@ public class CloudController implements IExtension{
 			standardColor = TreeXmlReader.xmlToColor(stdColor);
 		}
 	}
-
-	public static void install(ModeController modeController, CloudController cloudController) {
-		modeController.addExtension(ModeController.class, cloudController);
-    }
-
-	public static CloudController getController(ModeController modeController) {
-		return (CloudController)modeController.getExtension(CloudController.class);
-    }
 }

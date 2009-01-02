@@ -33,6 +33,16 @@ import org.freeplane.modes.mindmapmode.MMapController;
  */
 public class NoteController implements IExtension {
 	private static ImageIcon noteIcon = null;
+
+	public static NoteController getController(final ModeController modeController) {
+		return (NoteController) modeController.getExtension(NoteController.class);
+	}
+
+	public static void install(final ModeController modeController,
+	                           final NoteController noteController) {
+		modeController.addExtension(NoteController.class, noteController);
+	}
+
 	final private ModeController modeController;
 
 	public NoteController(final ModeController modeController) {
@@ -78,12 +88,4 @@ public class NoteController implements IExtension {
 		((MMapController) getModeController().getMapController()).setToolTip(node, "nodeNoteText",
 		    (enabled) ? NoteModel.getNoteText(node) : null);
 	}
-
-	public static void install(ModeController modeController, NoteController noteController) {
-		modeController.addExtension(NoteController.class, noteController);
-    }
-
-	public static NoteController getController(ModeController modeController) {
-		return (NoteController)modeController.getExtension(NoteController.class);
-    }
 }

@@ -19,18 +19,18 @@
  */
 package org.freeplane.core.frame;
 
-import org.freeplane.core.view.IMapView;
+import org.freeplane.view.swing.map.MapView;
 
 public interface IMapViewChangeListener {
-	void afterMapClose(IMapView oldMapView);
+	void afterMapClose(MapView oldMapView);
 
-	void afterMapViewChange(IMapView oldMapView, IMapView newMapView);
+	void afterMapViewChange(MapView oldMapView, MapView newMapView);
 
-	void beforeMapViewChange(IMapView oldMapView, IMapView newMapView);
+	void beforeMapViewChange(MapView oldMapView, MapView newMapView);
 
 	/**
 	 * The params may be null to indicate the there was no previous map, or that
 	 * the last map is closed now.
 	 */
-	boolean isMapViewChangeAllowed(IMapView oldMapView, IMapView newMapView);
+	boolean isMapViewChangeAllowed(MapView oldMapView, MapView newMapView);
 }

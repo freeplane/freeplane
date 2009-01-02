@@ -19,7 +19,6 @@
  */
 package org.freeplane.core.map;
 
-
 /**
  * @author Dimitry Polivaev
  */

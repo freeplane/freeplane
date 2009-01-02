@@ -27,7 +27,6 @@ import java.util.Vector;
 
 import javax.swing.ImageIcon;
 
-
 /**
  * @author Dimitry Polivaev 20.11.2008
  */

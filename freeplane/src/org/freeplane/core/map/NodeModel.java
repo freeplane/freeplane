@@ -43,9 +43,9 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.extension.IExtensionCollection;
 import org.freeplane.core.filter.FilterInfo;
 import org.freeplane.core.filter.IFilter;
+import org.freeplane.core.util.HtmlTools;
 import org.freeplane.core.util.Tools;
 import org.freeplane.map.note.NoteModel;
-import org.freeplane.map.text.HtmlTools;
 import org.freeplane.view.swing.map.INodeViewVisitor;
 import org.freeplane.view.swing.map.NodeView;
 
@@ -86,9 +86,6 @@ public class NodeModel implements MutableTreeNode {
 		this(null, map);
 	}
 
-	public boolean areViewsEmpty(){
-		return views == null || views.isEmpty();
-	}
 	public NodeModel(final Object userObject, final MapModel map) {
 		children = new LinkedList();
 		extensions = new ExtensionArray();
@@ -102,7 +99,7 @@ public class NodeModel implements MutableTreeNode {
 	 * (non-Javadoc)
 	 * @see
 	 * freemind.modes.MindMapNode#acceptViewVisitor(freemind.view.mindmapview
-	 * .NodeViewVisitor)
+	 * .INodeViewVisitor)
 	 */
 	public void acceptViewVisitor(final INodeViewVisitor visitor) {
 		final Iterator iterator = views.iterator();
@@ -141,6 +138,9 @@ public class NodeModel implements MutableTreeNode {
 		addTreeModelListener(viewer);
 	}
 
+	public boolean areViewsEmpty() {
+		return views == null || views.isEmpty();
+	}
 
 	public Enumeration children() {
 		final Iterator i = children.iterator();

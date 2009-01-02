@@ -19,7 +19,6 @@
  */
 package org.freeplane.core.io;
 
-
 public interface IElementHandler {
 	Object createElement(Object parent, String tag, IXMLElement attributes);
 }

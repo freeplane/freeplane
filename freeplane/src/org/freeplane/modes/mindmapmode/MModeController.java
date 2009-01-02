@@ -37,6 +37,7 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.UserInputListenerFactory;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.undo.IUndoableActor;
+import org.freeplane.core.url.UrlManager;
 import org.freeplane.map.icon.IconController;
 import org.freeplane.map.icon.mindmapnode.MIconController;
 import org.freeplane.map.link.LinkController;
@@ -48,14 +49,18 @@ import org.freeplane.map.note.mindmapnode.MNoteController;
 import org.freeplane.map.pattern.mindmapnode.MPatternController;
 import org.freeplane.map.text.TextController;
 import org.freeplane.map.text.mindmapmode.MTextController;
-import org.freeplane.map.url.UrlManager;
-import org.freeplane.map.url.mindmapmode.FileManager;
+import org.freeplane.modes.mindmapmode.url.MFileManager;
 import org.freeplane.view.swing.map.MainView;
 
 public class MModeController extends ModeController {
 	static public final String MODENAME = "MindMap";
 	static private RedoAction redo;
 	static private UndoAction undo;
+
+	static public MModeController getMModeController() {
+		return (MModeController) Controller.getModeController();
+	}
+
 	private OptionPanelBuilder optionPanelBuilder;
 
 	MModeController() {
@@ -132,7 +137,6 @@ public class MModeController extends ModeController {
 		addUndoableActor(actor);
 	}
 
-
 	@Override
 	public String getModeName() {
 		return MModeController.MODENAME;
@@ -153,7 +157,8 @@ public class MModeController extends ModeController {
 	 * @param i
 	 */
 	public void moveNodePosition(final NodeModel node, final int gap, final int hgap, final int i) {
-		((MLocationController) LocationController.getController(this)).moveNodePosition(node, gap, hgap, i);
+		((MLocationController) LocationController.getController(this)).moveNodePosition(node, gap,
+		    hgap, i);
 	}
 
 	@Override
@@ -186,9 +191,8 @@ public class MModeController extends ModeController {
 	 *
 	 */
 	public boolean save() {
-		return ((FileManager) UrlManager.getController(this)).save(getMapView().getModel());
+		return ((MFileManager) UrlManager.getController(this)).save(getMapView().getModel());
 	}
-
 
 	@Override
 	public void shutdown() {
@@ -217,7 +221,8 @@ public class MModeController extends ModeController {
 	public void updateMenus(final MenuBuilder builder) {
 		((MIconController) IconController.getController(this)).updateIconToolbar();
 		((MIconController) IconController.getController(this)).updateMenus(builder);
-		MPatternController.getController(this).createPatternSubMenu(builder, UserInputListenerFactory.NODE_POPUP);
+		MPatternController.getController(this).createPatternSubMenu(builder,
+		    UserInputListenerFactory.NODE_POPUP);
 		final String formatMenuString = FreemindMenuBar.FORMAT_MENU;
 		MPatternController.getController(this).createPatternSubMenu(builder, formatMenuString);
 	}
@@ -226,8 +231,4 @@ public class MModeController extends ModeController {
 	protected void updateMenus(final String resource) {
 		super.updateMenus(resource);
 	}
-
-	static public MModeController getMModeController() {
-    	return (MModeController) Controller.getModeController();
-    }
 }

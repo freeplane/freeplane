@@ -37,7 +37,6 @@ import org.freeplane.core.frame.IMapViewChangeListener;
 import org.freeplane.core.io.XMLElement;
 import org.freeplane.core.map.MapModel;
 import org.freeplane.core.map.MindIcon;
-import org.freeplane.core.view.IMapView;
 import org.freeplane.map.note.NodeNoteBase;
 import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
@@ -45,6 +44,7 @@ import org.freeplane.n3.nanoxml.StdXMLReader;
 import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.n3.nanoxml.XMLParserFactory;
 import org.freeplane.n3.nanoxml.XMLWriter;
+import org.freeplane.view.swing.map.MapView;
 
 /**
  * @author Dimitry Polivaev
@@ -59,15 +59,15 @@ public class FilterController implements IMapViewChangeListener {
 	private MapModel map;
 
 	public FilterController() {
-		Controller.getController().getMapViewManager().addMapViewChangeListener(this);
+		Controller.getController().getMapViewManager().addIMapViewChangeListener(this);
 		Controller.getController().addAction("showFilterToolbarAction",
 		    new ShowFilterToolbarAction());
 	}
 
-	public void afterMapClose(final IMapView pOldMapView) {
+	public void afterMapClose(final MapView pOldMapView) {
 	}
 
-	public void afterMapViewChange(final IMapView oldMapView, final IMapView newMapView) {
+	public void afterMapViewChange(final MapView oldMapView, final MapView newMapView) {
 		final MapModel newMap = newMapView != null ? newMapView.getModel() : null;
 		final FilterComposerDialog fd = getFilterToolbar().getFilterDialog();
 		if (fd != null) {
@@ -77,7 +77,7 @@ public class FilterController implements IMapViewChangeListener {
 		getFilterToolbar().mapChanged(newMap);
 	}
 
-	public void beforeMapViewChange(final IMapView oldMapView, final IMapView newMapView) {
+	public void beforeMapViewChange(final MapView oldMapView, final MapView newMapView) {
 	}
 
 	private IFilter createTransparentFilter() {
@@ -128,7 +128,7 @@ public class FilterController implements IMapViewChangeListener {
 		return map;
 	}
 
-	public boolean isMapViewChangeAllowed(final IMapView oldMapView, final IMapView newMapView) {
+	public boolean isMapViewChangeAllowed(final MapView oldMapView, final MapView newMapView) {
 		return true;
 	}
 

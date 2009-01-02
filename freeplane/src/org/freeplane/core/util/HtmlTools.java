@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.map.text;
+package org.freeplane.core.util;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -33,6 +33,7 @@ import java.util.regex.Pattern;
 import javax.swing.text.BadLocationException;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.freeplane.map.text.XHTMLWriter;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;

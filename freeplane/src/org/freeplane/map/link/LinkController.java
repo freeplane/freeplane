@@ -58,6 +58,16 @@ public class LinkController implements IExtension {
 	private static ArrowLinkListener listener = null;
 	public static final int STANDARD_WIDTH = 1;
 	static Color standardColor = null;
+
+	public static LinkController getController(final ModeController modeController) {
+		return (LinkController) modeController.getExtension(LinkController.class);
+	}
+
+	public static void install(final ModeController modeController,
+	                           final LinkController linkController) {
+		modeController.addExtension(LinkController.class, linkController);
+	}
+
 	final private ExclusivePropertyChain<Color, ArrowLinkModel> colorHandlers;
 	final private ModeController modeController;
 
@@ -219,12 +229,4 @@ public class LinkController implements IExtension {
 			}
 		}
 	}
-
-	public static void install(ModeController modeController, LinkController linkController) {
-		modeController.addExtension(LinkController.class, linkController);
-    }
-
-	public static LinkController getController(ModeController modeController) {
-		return (LinkController)modeController.getExtension(LinkController.class);
-    }
 }

@@ -31,6 +31,15 @@ import org.freeplane.core.map.NodeModel;
  * @author Dimitry Polivaev 22.11.2008
  */
 public class AttributeController implements IExtension {
+	public static AttributeController getController(final ModeController modeController) {
+		return (AttributeController) modeController.getExtension(AttributeController.class);
+	}
+
+	public static void install(final ModeController modeController,
+	                           final AttributeController attributeController) {
+		modeController.addExtension(AttributeController.class, attributeController);
+	}
+
 	final private ModeController modeController;
 
 	public AttributeController(final ModeController modeController) {
@@ -47,60 +56,54 @@ public class AttributeController implements IExtension {
 		return modeController;
 	}
 
-	public static void install(ModeController modeController,
-                               AttributeController attributeController) {
-		modeController.addExtension(AttributeController.class, attributeController);
-    }
-
-	public static AttributeController getController(ModeController modeController) {
-		return (AttributeController) modeController.getExtension(AttributeController.class);
-	}
-
-	public void performInsertRow(NodeAttributeTableModel model, int row, String name, String value) {
+	public void performInsertRow(final NodeAttributeTableModel model, final int row,
+	                             final String name, final String value) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void performRegistryAttribute(String name) {
+	public void performRegistryAttribute(final String name) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void performRegistryAttributeValue(String name, String value) {
+	public void performRegistryAttributeValue(final String name, final String value) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void performRegistrySubtreeAttributes(NodeModel model) {
+	public void performRegistrySubtreeAttributes(final NodeModel model) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void performRemoveAttribute(String name) {
+	public void performRemoveAttribute(final String name) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void performRemoveAttributeValue(String name, String value) {
+	public void performRemoveAttributeValue(final String name, final String value) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void performRemoveRow(NodeAttributeTableModel model, int row) {
+	public void performRemoveRow(final NodeAttributeTableModel model, final int row) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void performReplaceAtributeName(String oldName, String newName) {
+	public void performReplaceAtributeName(final String oldName, final String newName) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void performReplaceAttributeValue(String name, String oldValue, String newValue) {
+	public void performReplaceAttributeValue(final String name, final String oldValue,
+	                                         final String newValue) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void performSetColumnWidth(NodeAttributeTableModel model, int col, int width) {
+	public void performSetColumnWidth(final NodeAttributeTableModel model, final int col,
+	                                  final int width) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void performSetFontSize(AttributeRegistry registry, int size) {
+	public void performSetFontSize(final AttributeRegistry registry, final int size) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void performSetRestriction(int row, boolean restricted) {
+	public void performSetRestriction(final int row, final boolean restricted) {
 		throw new UnsupportedOperationException();
 	}
 

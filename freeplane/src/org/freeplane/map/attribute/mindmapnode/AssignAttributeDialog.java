@@ -55,11 +55,11 @@ import org.freeplane.core.map.MapModel;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.view.IMapView;
 import org.freeplane.map.attribute.Attribute;
 import org.freeplane.map.attribute.AttributeRegistry;
 import org.freeplane.map.attribute.AttributeRegistryElement;
 import org.freeplane.map.attribute.NodeAttributeTableModel;
+import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
 public class AssignAttributeDialog extends JDialog implements IAttributesListener,
@@ -293,16 +293,16 @@ public class AssignAttributeDialog extends JDialog implements IAttributesListene
 	private static final Dimension maxButtonDimension = new Dimension(1000, 1000);
 	final private JComboBox attributeNames;
 	final private JComboBox attributeValues;
-	private IMapView mapView;
+	private MapView mapView;
 	final private JComboBox replacingAttributeNames;
 	final private JComboBox replacingAttributeValues;
 	final private JRadioButton selectedBtn;
 	final private JCheckBox skipRootBtn;
 	final private JRadioButton visibleBtn;
 
-	public AssignAttributeDialog(final IMapView mapView) {
-		super(JOptionPane.getFrameForComponent(mapView.getComponent()), UITools.removeMnemonic(Controller
-		    .getText("attributes_assign_dialog")), false);
+	public AssignAttributeDialog(final MapView mapView) {
+		super(JOptionPane.getFrameForComponent(mapView.getComponent()), UITools
+		    .removeMnemonic(Controller.getText("attributes_assign_dialog")), false);
 		final Border actionBorder = new MatteBorder(2, 2, 2, 2, Color.BLACK);
 		final Border emptyBorder = new EmptyBorder(5, 5, 5, 5);
 		final Border btnBorder = new EmptyBorder(2, 2, 2, 2);
@@ -429,13 +429,13 @@ public class AssignAttributeDialog extends JDialog implements IAttributesListene
 		replacingAttributeNames.setMaximumSize(comboBoxMaximumSize);
 		replacingAttributeValues.setMaximumSize(comboBoxMaximumSize);
 		mapChanged(mapView);
-		Controller.getController().getMapViewManager().addMapViewChangeListener(this);
+		Controller.getController().getMapViewManager().addIMapViewChangeListener(this);
 	}
 
-	public void afterMapClose(final IMapView pOldMapView) {
+	public void afterMapClose(final MapView pOldMapView) {
 	}
 
-	public void afterMapViewChange(final IMapView oldMapView, final IMapView newMapView) {
+	public void afterMapViewChange(final MapView oldMapView, final MapView newMapView) {
 		if (newMapView != null) {
 			mapChanged(newMapView);
 		}
@@ -468,14 +468,14 @@ public class AssignAttributeDialog extends JDialog implements IAttributesListene
 		attributesChanged();
 	}
 
-	public void beforeMapViewChange(final IMapView oldMapView, final IMapView newMapView) {
+	public void beforeMapViewChange(final MapView oldMapView, final MapView newMapView) {
 	}
 
-	public boolean isMapViewChangeAllowed(final IMapView oldMapView, final IMapView newMapView) {
+	public boolean isMapViewChangeAllowed(final MapView oldMapView, final MapView newMapView) {
 		return !isVisible();
 	}
 
-	public void mapChanged(final IMapView currentMapView) {
+	public void mapChanged(final MapView currentMapView) {
 		if (mapView != null) {
 			mapView.getModel().getRegistry().getAttributes().removeAttributesListener(this);
 		}

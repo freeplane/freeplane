@@ -27,9 +27,9 @@ import java.awt.Stroke;
 
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.view.IMapView;
 import org.freeplane.map.edge.EdgeController;
 import org.freeplane.map.edge.EdgeModel;
+import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
 /**
@@ -64,11 +64,12 @@ public abstract class EdgeView {
 
 	public Color getColor() {
 		final NodeModel model = target.getModel();
-		final Color edgeColor = EdgeController.getController(model.getModeController()).getColor(model);
+		final Color edgeColor = EdgeController.getController(model.getModeController()).getColor(
+		    model);
 		return edgeColor;
 	}
 
-	protected IMapView getMap() {
+	protected MapView getMap() {
 		return getTarget().getMap();
 	}
 

@@ -188,8 +188,8 @@ class ManagePatternsPopupDialog extends JDialog implements KeyListener {
 		mController = controller;
 		List patternList = new Vector();
 		try {
-			patternList = StylePatternFactory.loadPatterns(MPatternController.getController(controller)
-			    .getPatternReader());
+			patternList = StylePatternFactory.loadPatterns(MPatternController.getController(
+			    controller).getPatternReader());
 		}
 		catch (final Exception e) {
 			org.freeplane.core.util.Tools.logException(e);

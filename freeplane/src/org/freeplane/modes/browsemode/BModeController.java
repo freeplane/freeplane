@@ -96,5 +96,4 @@ public class BModeController extends ModeController {
 	protected void updateMenus(final String resource) {
 		super.updateMenus(resource);
 	}
-
 }

@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.view.swing.map.attribute;
+package org.freeplane.map.attribute.view;
 
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -33,13 +33,13 @@ import javax.swing.table.JTableHeader;
 
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
-import org.freeplane.core.view.IMapView;
 import org.freeplane.map.attribute.AttributeController;
 import org.freeplane.map.attribute.AttributeRegistry;
 import org.freeplane.map.attribute.AttributeTableLayoutModel;
 import org.freeplane.map.attribute.IAttributeTableModel;
 import org.freeplane.map.attribute.NodeAttributeTableModel;
 import org.freeplane.map.attribute.mindmapnode.MAttributeController;
+import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
 /**
@@ -81,7 +81,8 @@ public class AttributeView implements ChangeListener, TableModelListener {
 		final ModeController modeController = getModeController();
 		if (attributeTable != null) {
 			if (AttributeView.tablePopupMenu == null) {
-				AttributeView.tablePopupMenu = ((MAttributeController) AttributeController.getController(modeController)).getAttributeTablePopupMenu();
+				AttributeView.tablePopupMenu = ((MAttributeController) AttributeController
+				    .getController(modeController)).getAttributeTablePopupMenu();
 			}
 			getAttributes().getLayout().addColumnWidthChangeListener(attributeTable);
 			attributeTable.addMouseListener(AttributeView.tablePopupMenu);
@@ -133,7 +134,7 @@ public class AttributeView implements ChangeListener, TableModelListener {
 
 	/**
 	 */
-	public IMapView getMapView() {
+	public MapView getMapView() {
 		return getNodeView().getMap();
 	}
 
@@ -261,7 +262,7 @@ public class AttributeView implements ChangeListener, TableModelListener {
 	}
 
 	public void tableChanged(final TableModelEvent e) {
-		final IMapView map = getNodeView().getMap();
+		final MapView map = getNodeView().getMap();
 		map.getModel().nodeChanged(getNode());
 	}
 

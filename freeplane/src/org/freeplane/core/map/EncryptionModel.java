@@ -33,6 +33,11 @@ public class EncryptionModel implements IExtension {
 	private static ImageIcon decryptedIcon;
 	private static ImageIcon encryptedIcon;
 	private static Logger logger;
+
+	public static EncryptionModel getModel(final NodeModel node) {
+		return (EncryptionModel) node.getExtension(EncryptionModel.class);
+	}
+
 	private String encryptedContent;
 	private boolean isAccessible = true;
 	/**
@@ -40,12 +45,12 @@ public class EncryptionModel implements IExtension {
 	 * it is decrypted once, this is always true.
 	 */
 	private boolean isDecrypted = true;
+	IEncrypter mEncrypter;
 	/**
 	 * password have to be stored in a StringBuffer as Strings cannot be deleted
 	 * or overwritten.
 	 */
 	final private NodeModel node;
-	IEncrypter mEncrypter;
 
 	public EncryptionModel(final NodeModel node) {
 		this.node = node;
@@ -68,21 +73,21 @@ public class EncryptionModel implements IExtension {
 
 	/**
 	 */
-	public boolean checkPassword(IEncrypter encrypter) {
+	public boolean checkPassword(final IEncrypter encrypter) {
 		final String decryptedNode = decryptXml(encryptedContent, encrypter);
 		if (decryptedNode == null || decryptedNode.equals("")
 		        || !decryptedNode.startsWith("<node ")) {
 			EncryptionModel.logger.warning("Wrong password supplied (stored!=given).");
 			return false;
 		}
-		this.mEncrypter = encrypter;
+		mEncrypter = encrypter;
 		return true;
 	}
 
 	/**
 	 * @return true, if the password was correct.
 	 */
-	public boolean decrypt(IEncrypter encrypter) {
+	public boolean decrypt(final IEncrypter encrypter) {
 		if (!checkPassword(encrypter)) {
 			return false;
 		}
@@ -212,7 +217,7 @@ public class EncryptionModel implements IExtension {
 	}
 
 	public void setEncrypter(final IEncrypter encrypter) {
-		this.mEncrypter = encrypter;
+		mEncrypter = encrypter;
 	}
 
 	/*
@@ -229,8 +234,4 @@ public class EncryptionModel implements IExtension {
 			node.setStateIcon("encrypted", EncryptionModel.encryptedIcon);
 		}
 	}
-
-	public static EncryptionModel getModel(NodeModel node) {
-		return (EncryptionModel) node.getExtension(EncryptionModel.class);
-    }
 }

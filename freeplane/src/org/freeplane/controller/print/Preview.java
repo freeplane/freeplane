@@ -33,7 +33,7 @@ class Preview extends JComponent {
 	private Graphics2D imageGraphics;
 	protected int index = 0;
 	private BufferedImage previewPageImage = null;
-	protected MapView view;
+	private final MapView view;
 	protected double zoom = 0.0;
 
 	public Preview(final MapView view, final double zoom) {

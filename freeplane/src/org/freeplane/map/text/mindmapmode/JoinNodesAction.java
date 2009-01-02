@@ -20,7 +20,6 @@
 package org.freeplane.map.text.mindmapmode;
 
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -29,11 +28,11 @@ import javax.swing.JOptionPane;
 
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.FreeplaneAction;
-import org.freeplane.core.view.IMapView;
-import org.freeplane.map.text.HtmlTools;
+import org.freeplane.core.util.HtmlTools;
 import org.freeplane.map.text.TextController;
 import org.freeplane.modes.mindmapmode.MMapController;
 import org.freeplane.modes.mindmapmode.MModeController;
+import org.freeplane.view.swing.map.MapView;
 
 class JoinNodesAction extends FreeplaneAction {
 	final static Pattern BODY_END = Pattern.compile("</body>", Pattern.CASE_INSENSITIVE);
@@ -45,8 +44,7 @@ class JoinNodesAction extends FreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final NodeModel selectedNode = getModeController().getMapView().getSelected().getModel();
-		final ArrayList selectedNodes = getModeController().getMapView()
-		    .getSelectedNodesSortedByY();
+		final List selectedNodes = getModeController().getMapView().getSelectedNodesSortedByY();
 		joinNodes(selectedNode, selectedNodes);
 	}
 
@@ -76,7 +74,7 @@ class JoinNodesAction extends FreeplaneAction {
 
 	public void joinNodes(final NodeModel selectedNode, final List selectedNodes) {
 		String newContent = "";
-		final IMapView mapView = getModeController().getMapView();
+		final MapView mapView = getModeController().getMapView();
 		for (final Iterator it = selectedNodes.iterator(); it.hasNext();) {
 			final NodeModel node = (NodeModel) it.next();
 			if (node.getModeController().getMapController().hasChildren(node)) {
@@ -97,7 +95,7 @@ class JoinNodesAction extends FreeplaneAction {
 			isHtml = isHtml || isHtmlNode;
 		}
 		mapView.selectAsTheOnlyOneSelected(mapView.getNodeView(selectedNode));
-		((MTextController) TextController.getController(MModeController.getMModeController())).setNodeText(selectedNode,
-		    newContent);
+		((MTextController) TextController.getController(MModeController.getMModeController()))
+		    .setNodeText(selectedNode, newContent);
 	}
 }

@@ -42,7 +42,7 @@ import javax.xml.transform.stream.StreamSource;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
-import org.freeplane.map.url.UrlManager;
+import org.freeplane.core.url.UrlManager;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
 /**
@@ -91,8 +91,8 @@ public class ImportMindmanagerFiles extends FreeplaneAction {
 				final String xml = transForm(new StreamSource(in), xsltFile);
 				if (xml != null) {
 					final File tempFile = File.createTempFile(file.getName(),
-					    org.freeplane.map.url.mindmapmode.FileManager.FREEMIND_FILE_EXTENSION, file
-					        .getParentFile());
+					    org.freeplane.modes.mindmapmode.url.MFileManager.FREEMIND_FILE_EXTENSION,
+					    file.getParentFile());
 					final FileWriter fw = new FileWriter(tempFile);
 					fw.write(xml);
 					fw.close();

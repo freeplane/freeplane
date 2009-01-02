@@ -34,7 +34,6 @@ import java.util.Vector;
 import org.freeplane.core.map.MapModel;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.util.Tools;
-import org.freeplane.core.view.IMapView;
 import org.freeplane.view.swing.map.MapView;
 
 /**
@@ -51,28 +50,28 @@ public class MapViewManager {
 			listeners.add(listener);
 		}
 
-		public void afterMapClose(final IMapView pOldMapView) {
+		public void afterMapClose(final MapView pOldMapView) {
 			for (final Iterator iter = new Vector(listeners).iterator(); iter.hasNext();) {
 				final IMapViewChangeListener observer = (IMapViewChangeListener) iter.next();
 				observer.afterMapClose(pOldMapView);
 			}
 		}
 
-		public void afterMapViewChange(final IMapView oldMapView, final IMapView newMapView) {
+		public void afterMapViewChange(final MapView oldMapView, final MapView newMapView) {
 			for (final Iterator iter = new Vector(listeners).iterator(); iter.hasNext();) {
 				final IMapViewChangeListener observer = (IMapViewChangeListener) iter.next();
 				observer.afterMapViewChange(oldMapView, newMapView);
 			}
 		}
 
-		public void beforeMapViewChange(final IMapView oldMapView, final IMapView newMapView) {
+		public void beforeMapViewChange(final MapView oldMapView, final MapView newMapView) {
 			for (final Iterator iter = new Vector(listeners).iterator(); iter.hasNext();) {
 				final IMapViewChangeListener observer = (IMapViewChangeListener) iter.next();
 				observer.beforeMapViewChange(oldMapView, newMapView);
 			}
 		}
 
-		public boolean isMapViewChangeAllowed(final IMapView oldMapView, final IMapView newMapView) {
+		public boolean isMapViewChangeAllowed(final MapView oldMapView, final MapView newMapView) {
 			boolean returnValue = true;
 			for (final Iterator iter = new Vector(listeners).iterator(); iter.hasNext();) {
 				final IMapViewChangeListener observer = (IMapViewChangeListener) iter.next();
@@ -105,7 +104,7 @@ public class MapViewManager {
 	MapViewManager() {
 	}
 
-	public void addMapViewChangeListener(final IMapViewChangeListener pListener) {
+	public void addIMapViewChangeListener(final IMapViewChangeListener pListener) {
 		listener.addListener(pListener);
 	}
 
@@ -129,7 +128,7 @@ public class MapViewManager {
 	 * @return true if the set command was sucessful.
 	 */
 	public boolean changeToMapView(final MapView newMapView) {
-		final IMapView oldMapView = mapView;
+		final MapView oldMapView = mapView;
 		if (!listener.isMapViewChangeAllowed(oldMapView, newMapView)) {
 			return false;
 		}
@@ -204,8 +203,8 @@ public class MapViewManager {
 	 */
 	public boolean close(final boolean force) {
 		final MapView mapView = getMapView();
-		final boolean closingNotCancelled = mapView.getModel().getModeController().getMapController().close(
-		    force);
+		final boolean closingNotCancelled = mapView.getModel().getModeController()
+		    .getMapController().close(force);
 		if (!closingNotCancelled) {
 			return false;
 		}
@@ -304,7 +303,7 @@ public class MapViewManager {
 		}
 	}
 
-	public void removeMapViewChangeListener(final IMapViewChangeListener pListener) {
+	public void removeIMapViewChangeListener(final IMapViewChangeListener pListener) {
 		listener.removeListener(pListener);
 	}
 

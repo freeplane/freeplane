@@ -36,7 +36,6 @@ import javax.swing.event.ChangeListener;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.MapModel;
-import org.freeplane.core.view.IMapView;
 import org.freeplane.view.swing.map.MapView;
 
 class MapViewTabs implements IMapViewChangeListener {
@@ -60,10 +59,10 @@ class MapViewTabs implements IMapViewChangeListener {
 				tabSelectionChanged();
 			}
 		});
-		Controller.getController().getMapViewManager().addMapViewChangeListener(this);
+		Controller.getController().getMapViewManager().addIMapViewChangeListener(this);
 		Controller.getController().getViewController().addMapTitleChangeListener(
 		    new IMapTitleChangeListener() {
-			    public void setMapTitle(final String pNewMapTitle, final IMapView pMapView,
+			    public void setMapTitle(final String pNewMapTitle, final MapView pMapView,
 			                            final MapModel pModel) {
 				    for (int i = 0; i < mTabbedPaneMapViews.size(); ++i) {
 					    if (mTabbedPaneMapViews.get(i) == pMapView) {
@@ -76,7 +75,7 @@ class MapViewTabs implements IMapViewChangeListener {
 		fm.getContentPane().add(mTabbedPane, BorderLayout.CENTER);
 	}
 
-	public void afterMapClose(final IMapView pOldMapView) {
+	public void afterMapClose(final MapView pOldMapView) {
 		for (int i = 0; i < mTabbedPaneMapViews.size(); ++i) {
 			if (mTabbedPaneMapViews.get(i) == pOldMapView) {
 				mTabbedPaneSelectionUpdate = false;
@@ -89,7 +88,7 @@ class MapViewTabs implements IMapViewChangeListener {
 		}
 	}
 
-	public void afterMapViewChange(final IMapView pOldMapView, final IMapView pNewMapView) {
+	public void afterMapViewChange(final MapView pOldMapView, final MapView pNewMapView) {
 		final int selectedIndex = mTabbedPane.getSelectedIndex();
 		if (pNewMapView == null) {
 			return;
@@ -109,10 +108,10 @@ class MapViewTabs implements IMapViewChangeListener {
 		mTabbedPane.setSelectedIndex(mTabbedPane.getTabCount() - 1);
 	}
 
-	public void beforeMapViewChange(final IMapView pOldMapView, final IMapView pNewMapView) {
+	public void beforeMapViewChange(final MapView pOldMapView, final MapView pNewMapView) {
 	}
 
-	public boolean isMapViewChangeAllowed(final IMapView pOldMapView, final IMapView pNewMapView) {
+	public boolean isMapViewChangeAllowed(final MapView pOldMapView, final MapView pNewMapView) {
 		return true;
 	}
 

@@ -33,9 +33,9 @@ import java.util.StringTokenizer;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.MapModel;
-import org.freeplane.core.view.IMapView;
-import org.freeplane.map.url.UrlManager;
+import org.freeplane.core.url.UrlManager;
 import org.freeplane.n3.nanoxml.XMLParseException;
+import org.freeplane.view.swing.map.MapView;
 
 /**
  * This class manages a list of the maps that were opened last. It aims to
@@ -75,10 +75,10 @@ public class LastOpenedList {
 		}
 	}
 
-	void mapClosed(final IMapView map) {
+	void mapClosed(final MapView map) {
 	}
 
-	void mapOpened(final IMapView mapView) {
+	void mapOpened(final MapView mapView) {
 		if (mapView == null) {
 			return;
 		}

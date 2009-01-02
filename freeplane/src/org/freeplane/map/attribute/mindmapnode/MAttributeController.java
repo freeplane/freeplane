@@ -31,10 +31,10 @@ import org.freeplane.map.attribute.AttributeController;
 import org.freeplane.map.attribute.AttributeRegistry;
 import org.freeplane.map.attribute.AttributeRegistryElement;
 import org.freeplane.map.attribute.NodeAttributeTableModel;
+import org.freeplane.map.attribute.view.AttributePopupMenu;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.view.swing.map.attribute.AttributePopupMenu;
 
-public class MAttributeController extends AttributeController{
+public class MAttributeController extends AttributeController {
 	private class AttributeChanger implements IVisitor {
 		final private Object name;
 		final private Object newValue;
@@ -544,6 +544,7 @@ public class MAttributeController extends AttributeController{
 		return new AttributePopupMenu();
 	}
 
+	@Override
 	public void performInsertRow(final NodeAttributeTableModel model, final int row,
 	                             final String name, String value) {
 		final AttributeRegistry attributes = getAttributeRegistry();
@@ -576,6 +577,7 @@ public class MAttributeController extends AttributeController{
 		getModeController().execute(actor);
 	}
 
+	@Override
 	public void performRegistryAttribute(final String name) {
 		if (name.equals("")) {
 			return;
@@ -591,6 +593,7 @@ public class MAttributeController extends AttributeController{
 		}
 	}
 
+	@Override
 	public void performRegistryAttributeValue(final String name, final String value) {
 		if (name.equals("")) {
 			return;
@@ -614,6 +617,7 @@ public class MAttributeController extends AttributeController{
 		}
 	}
 
+	@Override
 	public void performRegistrySubtreeAttributes(final NodeModel node) {
 		for (int i = 0; i < NodeAttributeTableModel.getModel(node).getRowCount(); i++) {
 			final String name = NodeAttributeTableModel.getModel(node).getValueAt(i, 0).toString();
@@ -627,6 +631,7 @@ public class MAttributeController extends AttributeController{
 		}
 	}
 
+	@Override
 	public void performRemoveAttribute(final String name) {
 		final IUndoableActor actor = new UnregistryAttributeActor(name, getAttributeRegistry());
 		getModeController().execute(actor);
@@ -636,6 +641,7 @@ public class MAttributeController extends AttributeController{
 		iterator.iterate(root);
 	}
 
+	@Override
 	public void performRemoveAttributeValue(final String name, final String value) {
 		final IUndoableActor unregistryActor = new UnregistryAttributeValueActor(
 		    getAttributeRegistry().getElement(name), value);
@@ -646,11 +652,13 @@ public class MAttributeController extends AttributeController{
 		iterator.iterate(root);
 	}
 
+	@Override
 	public void performRemoveRow(final NodeAttributeTableModel model, final int row) {
 		final IUndoableActor actor = new RemoveAttributeActor(model, row);
 		getModeController().execute(actor);
 	}
 
+	@Override
 	public void performReplaceAtributeName(final String oldName, final String newName) {
 		if (oldName.equals("") || newName.equals("") || oldName.equals(newName)) {
 			return;
@@ -675,6 +683,7 @@ public class MAttributeController extends AttributeController{
 		getModeController().execute(unregistryActor);
 	}
 
+	@Override
 	public void performReplaceAttributeValue(final String name, final String oldValue,
 	                                         final String newValue) {
 		final IUndoableActor actor = new ReplaceAttributeValueActor(getAttributeRegistry(), name,
@@ -686,6 +695,7 @@ public class MAttributeController extends AttributeController{
 		iterator.iterate(root);
 	}
 
+	@Override
 	public void performSetColumnWidth(final NodeAttributeTableModel model, final int col,
 	                                  final int width) {
 		final int oldWidth = model.getLayout().getColumnWidth(col);
@@ -696,6 +706,7 @@ public class MAttributeController extends AttributeController{
 		getModeController().execute(actor);
 	}
 
+	@Override
 	public void performSetFontSize(final AttributeRegistry registry, final int size) {
 		final int oldSize = registry.getFontSize();
 		if (size == oldSize) {
@@ -717,6 +728,7 @@ public class MAttributeController extends AttributeController{
 		getModeController().execute(actor);
 	}
 
+	@Override
 	public void performSetRestriction(final int index, final boolean isRestricted) {
 		boolean currentValue;
 		if (index == AttributeRegistry.GLOBAL) {
@@ -733,6 +745,7 @@ public class MAttributeController extends AttributeController{
 		getModeController().execute(actor);
 	}
 
+	@Override
 	public void performSetValueAt(final NodeAttributeTableModel model, final Object o,
 	                              final int row, final int col) {
 		final Attribute attribute = model.getAttribute(row);
@@ -783,6 +796,7 @@ public class MAttributeController extends AttributeController{
 		}
 	}
 
+	@Override
 	public void performSetVisibility(final int index, final boolean isVisible) {
 		final AttributeRegistry attributeRegistry = getAttributeRegistry();
 		if (attributeRegistry.getElement(index).isVisible() == isVisible) {

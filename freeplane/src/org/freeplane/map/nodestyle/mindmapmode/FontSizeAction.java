@@ -46,8 +46,8 @@ class FontSizeAction extends MultipleNodeAction {
 	 */
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		((MNodeStyleController) NodeStyleController.getController(getModeController())).setFontSize(
-		    node, actionSize);
+		((MNodeStyleController) NodeStyleController.getController(getModeController()))
+		    .setFontSize(node, actionSize);
 	}
 
 	public void actionPerformed(final String size) {

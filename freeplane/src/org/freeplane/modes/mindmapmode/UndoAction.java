@@ -28,14 +28,14 @@ import org.freeplane.core.frame.IMapViewChangeListener;
 import org.freeplane.core.map.MapModel;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.undo.IUndoHandler;
-import org.freeplane.core.view.IMapView;
+import org.freeplane.view.swing.map.MapView;
 
 class UndoAction extends FreeplaneAction implements IMapViewChangeListener {
 	private Action redo;
 
 	public UndoAction() {
 		super("undo", "images/undo.png");
-		Controller.getController().getMapViewManager().addMapViewChangeListener(this);
+		Controller.getController().getMapViewManager().addIMapViewChangeListener(this);
 		setEnabled(false);
 	}
 
@@ -47,10 +47,10 @@ class UndoAction extends FreeplaneAction implements IMapViewChangeListener {
 		redo.setEnabled(undoHandler.canRedo());
 	}
 
-	public void afterMapClose(final IMapView oldMapView) {
+	public void afterMapClose(final MapView oldMapView) {
 	}
 
-	public void afterMapViewChange(final IMapView oldMapView, final IMapView newMapView) {
+	public void afterMapViewChange(final MapView oldMapView, final MapView newMapView) {
 		if (newMapView == null) {
 			return;
 		}
@@ -62,10 +62,10 @@ class UndoAction extends FreeplaneAction implements IMapViewChangeListener {
 		}
 	}
 
-	public void beforeMapViewChange(final IMapView oldMapView, final IMapView newMapView) {
+	public void beforeMapViewChange(final MapView oldMapView, final MapView newMapView) {
 	}
 
-	public boolean isMapViewChangeAllowed(final IMapView oldMapView, final IMapView newMapView) {
+	public boolean isMapViewChangeAllowed(final MapView oldMapView, final MapView newMapView) {
 		return true;
 	}
 

@@ -28,7 +28,7 @@ import java.nio.channels.FileLock;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.freeplane.map.url.UrlManager;
+import org.freeplane.core.url.UrlManager;
 
 class LockManager extends TimerTask {
 	File lockedSemaphoreFile = null;

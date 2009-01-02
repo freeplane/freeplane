@@ -92,6 +92,7 @@ public class FormatPaste extends MultipleNodeAction {
 			    "" /*=Title*/, JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		MPatternController.getController(((MModeController) getModeController())).applyPattern(node, pattern);
+		MPatternController.getController(((MModeController) getModeController())).applyPattern(
+		    node, pattern);
 	}
 }

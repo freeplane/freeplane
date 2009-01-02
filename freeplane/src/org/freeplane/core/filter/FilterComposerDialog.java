@@ -67,7 +67,7 @@ import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.map.url.UrlManager;
+import org.freeplane.core.url.UrlManager;
 
 /**
  * @author Dimitry Polivaev
@@ -579,8 +579,8 @@ public class FilterComposerDialog extends JDialog {
 
 	protected JFileChooser getFileChooser() {
 		final ModeController modeController = fc.getMap().getModeController();
-		final JFileChooser chooser = UrlManager.getController(modeController)
-		    .getFileChooser(MindMapFilterFileFilter.filter);
+		final JFileChooser chooser = UrlManager.getController(modeController).getFileChooser(
+		    MindMapFilterFileFilter.filter);
 		return chooser;
 	}
 

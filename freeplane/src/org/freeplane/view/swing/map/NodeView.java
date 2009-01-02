@@ -47,11 +47,11 @@ import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.map.attribute.NodeAttributeTableModel;
+import org.freeplane.map.attribute.view.AttributeView;
 import org.freeplane.map.cloud.CloudController;
 import org.freeplane.map.cloud.CloudModel;
 import org.freeplane.map.nodelocation.LocationModel;
 import org.freeplane.map.nodestyle.NodeStyleController;
-import org.freeplane.view.swing.map.attribute.AttributeView;
 import org.freeplane.view.swing.map.cloud.CloudView;
 import org.freeplane.view.swing.map.edge.EdgeView;
 
@@ -708,8 +708,8 @@ public class NodeView extends JComponent implements TreeModelListener {
 	}
 
 	public Color getTextBackground() {
-		final Color modelBackgroundColor = NodeStyleController.getController(model.getModeController())
-		    .getBackgroundColor(model);
+		final Color modelBackgroundColor = NodeStyleController.getController(
+		    model.getModeController()).getBackgroundColor(model);
 		if (modelBackgroundColor != null) {
 			return modelBackgroundColor;
 		}
@@ -717,7 +717,8 @@ public class NodeView extends JComponent implements TreeModelListener {
 	}
 
 	public Color getTextColor() {
-		final Color color = NodeStyleController.getController(model.getModeController()).getColor(model);
+		final Color color = NodeStyleController.getController(model.getModeController()).getColor(
+		    model);
 		return color;
 	}
 
@@ -942,8 +943,8 @@ public class NodeView extends JComponent implements TreeModelListener {
 			add(newMainView);
 		}
 		mainView = newMainView;
-		final IUserInputListenerFactory userInputListenerFactory = getMap().getModel().getModeController()
-		    .getUserInputListenerFactory();
+		final IUserInputListenerFactory userInputListenerFactory = getMap().getModel()
+		    .getModeController().getUserInputListenerFactory();
 		mainView.addMouseListener(userInputListenerFactory.getNodeMouseMotionListener());
 		mainView.addMouseMotionListener(userInputListenerFactory.getNodeMouseMotionListener());
 		mainView.addKeyListener(userInputListenerFactory.getNodeKeyListener());
@@ -1116,7 +1117,7 @@ public class NodeView extends JComponent implements TreeModelListener {
 		revalidate();
 	}
 
-	void updateAll() {
+	public void updateAll() {
 		update();
 		invalidate();
 		for (final ListIterator e = getChildrenViews().listIterator(); e.hasNext();) {
@@ -1126,7 +1127,8 @@ public class NodeView extends JComponent implements TreeModelListener {
 	}
 
 	void updateStyle() {
-		final String shape = NodeStyleController.getController(model.getModeController()).getShape(model);
+		final String shape = NodeStyleController.getController(model.getModeController()).getShape(
+		    model);
 		if (mainView != null && (mainView.getStyle().equals(shape) || model.isRoot())) {
 			return;
 		}

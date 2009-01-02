@@ -60,11 +60,11 @@ class CutAction extends FreeplaneAction {
 		Controller.getController().getViewController().obtainFocusForSelected();
 	}
 
-	Transferable cut(final List nodeList) {
-		getModeController().getMapController().sortNodesByDepth(nodeList);
-		final Transferable totalCopy = ClipboardController.getController(getModeController()).copy(nodeList,
-		    true);
-		for (final Iterator i = nodeList.iterator(); i.hasNext();) {
+	Transferable cut(final List<NodeModel> collection) {
+		getModeController().getMapController().sortNodesByDepth(collection);
+		final Transferable totalCopy = ClipboardController.getController(getModeController()).copy(
+		    collection, true);
+		for (final Iterator i = collection.iterator(); i.hasNext();) {
 			final NodeModel node = (NodeModel) i.next();
 			if (node.getParentNode() != null) {
 				((MMapController) getModeController().getMapController()).deleteNode(node);

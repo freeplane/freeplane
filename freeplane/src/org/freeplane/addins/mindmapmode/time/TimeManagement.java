@@ -48,10 +48,10 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.IMapViewChangeListener;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.view.IMapView;
 import org.freeplane.map.text.TextController;
 import org.freeplane.map.text.mindmapmode.MTextController;
 import org.freeplane.modes.mindmapmode.MModeController;
+import org.freeplane.view.swing.map.MapView;
 
 /**
  * @author foltin
@@ -127,14 +127,14 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapView
 		}
 	}
 
-	public void afterMapClose(final IMapView oldMapView) {
+	public void afterMapClose(final MapView oldMapView) {
 	}
 
-	public void afterMapViewChange(final IMapView oldMapView, final IMapView newMapView) {
+	public void afterMapViewChange(final MapView oldMapView, final MapView newMapView) {
 	}
 
-	public void beforeMapViewChange(final IMapView oldMapView, final IMapView newMapView) {
-		Controller.getController().getMapViewManager().removeMapViewChangeListener(this);
+	public void beforeMapViewChange(final MapView oldMapView, final MapView newMapView) {
+		Controller.getController().getMapViewManager().removeIMapViewChangeListener(this);
 		disposeDialog();
 	}
 
@@ -223,7 +223,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapView
 		return timePanel;
 	}
 
-	public boolean isMapViewChangeAllowed(final IMapView oldMapView, final IMapView newMapView) {
+	public boolean isMapViewChangeAllowed(final MapView oldMapView, final MapView newMapView) {
 		return true;
 	}
 
@@ -239,7 +239,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapView
 		}
 		TimeManagement.sCurrentlyOpenTimeManagement = this;
 		mController = getMindMapController();
-		Controller.getController().getMapViewManager().addMapViewChangeListener(this);
+		Controller.getController().getMapViewManager().addIMapViewChangeListener(this);
 		dialog = new JDialog(Controller.getController().getViewController().getJFrame(), false /*not modal*/);
 		dialog.setTitle(getResourceString("plugins/TimeManagement.xml_WindowTitle"));
 		dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -286,8 +286,8 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapView
 						final NodeModel element = (NodeModel) i.next();
 						final DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT);
 						final String dateAsString = df.format(getCalendarDate());
-						((MTextController) TextController.getController(mController)).setNodeText(element,
-						    (element.getText() + " " + dateAsString));
+						((MTextController) TextController.getController(mController)).setNodeText(
+						    element, (element.getText() + " " + dateAsString));
 					}
 				}
 			});

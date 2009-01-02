@@ -35,6 +35,7 @@ import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.view.swing.map.INodeViewVisitor;
+import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.NodeView;
 
 /**
@@ -81,7 +82,8 @@ public class BlinkingNodeHook extends PersistentNodeHook {
 							if (!view.isVisible()) {
 								return;
 							}
-							final Color col = view.getMainView().getForeground();
+							final MainView mainView = view.getMainView();
+							final Color col = mainView.getForeground();
 							int index = -1;
 							if (col != null && BlinkingNodeHook.colors.contains(col)) {
 								index = BlinkingNodeHook.colors.indexOf(col);
@@ -90,8 +92,7 @@ public class BlinkingNodeHook extends PersistentNodeHook {
 							if (index >= BlinkingNodeHook.colors.size()) {
 								index = 0;
 							}
-							view.getMainView().setForeground(
-							    (Color) BlinkingNodeHook.colors.get(index));
+							mainView.setForeground((Color) BlinkingNodeHook.colors.get(index));
 						}
 					});
 				}

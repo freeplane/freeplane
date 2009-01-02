@@ -39,8 +39,8 @@ import javax.swing.JOptionPane;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Tools;
-import org.freeplane.map.url.UrlManager;
 import org.freeplane.view.swing.map.MapView;
 
 /**
@@ -149,16 +149,17 @@ abstract public class ExportAction extends FreeplaneAction {
 	}
 
 	public BufferedImage createBufferedImage() {
-		view = (MapView) Controller.getController().getMapView();
+		view = Controller.getController().getMapView();
 		if (view == null) {
 			return null;
 		}
-		view.preparePrinting();
-		final Rectangle innerBounds = view.getInnerBounds();
-		BufferedImage myImage = (BufferedImage) view.createImage(view.getWidth(), view.getHeight());
+		(view).preparePrinting();
+		final Rectangle innerBounds = (view).getInnerBounds();
+		BufferedImage myImage = (BufferedImage) (view).createImage(view.getComponent().getWidth(),
+		    view.getComponent().getHeight());
 		final Graphics g = myImage.getGraphics();
 		g.clipRect(innerBounds.x, innerBounds.y, innerBounds.width, innerBounds.height);
-		view.print(g);
+		(view).getComponent().print(g);
 		myImage = myImage.getSubimage(innerBounds.x, innerBounds.y, innerBounds.width,
 		    innerBounds.height);
 		return myImage;

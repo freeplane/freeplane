@@ -32,6 +32,24 @@ public class EdgeModel implements IExtension {
 	public final static String EDGESTYLE_SHARP_LINEAR = "sharp_linear";
 	public static final int WIDTH_PARENT = -1;
 	public static final int WIDTH_THIN = 0;
+
+	public static EdgeModel createEdge(final NodeModel node) {
+		EdgeModel edge = (EdgeModel) node.getExtension(EdgeModel.class);
+		if (edge == null) {
+			edge = new EdgeModel();
+			node.addExtension(edge);
+		}
+		return edge;
+	}
+
+	public static EdgeModel getModel(final NodeModel node) {
+		return (EdgeModel) node.getExtension(EdgeModel.class);
+	}
+
+	public static void setModel(final NodeModel node, final EdgeModel edge) {
+		node.setExtension(edge);
+	}
+
 	private Color color;
 	private String style;
 	private int width = EdgeController.DEFAULT_WIDTH;
@@ -62,21 +80,4 @@ public class EdgeModel implements IExtension {
 	public void setWidth(final int width) {
 		this.width = width;
 	}
-
-	public static EdgeModel createEdge(NodeModel node) {
-		EdgeModel edge = (EdgeModel) node.getExtension(EdgeModel.class);
-		if (edge == null) {
-			edge = new EdgeModel();
-			node.addExtension(edge);
-		}
-		return edge;
-    }
-
-	public static EdgeModel getModel(NodeModel node) {
-		return (EdgeModel) node.getExtension(EdgeModel.class);
-    }
-
-	public static void setModel(NodeModel node, EdgeModel edge) {
-		node.setExtension(edge);
-    }
 }

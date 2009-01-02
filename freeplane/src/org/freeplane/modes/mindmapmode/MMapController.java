@@ -41,8 +41,8 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.ui.IFreemindPropertyListener;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.map.url.UrlManager;
-import org.freeplane.map.url.mindmapmode.FileManager;
+import org.freeplane.core.url.UrlManager;
+import org.freeplane.modes.mindmapmode.url.MFileManager;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
 /**
@@ -99,7 +99,8 @@ public class MMapController extends MapController {
 			    .getViewController().getContentPane(), text, title,
 			    JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 			if (returnVal == JOptionPane.YES_OPTION) {
-				final boolean savingNotCancelled = ((FileManager) UrlManager.getController(getModeController())).save(map);
+				final boolean savingNotCancelled = ((MFileManager) UrlManager
+				    .getController(getModeController())).save(map);
 				if (!savingNotCancelled) {
 					return false;
 				}
@@ -253,7 +254,8 @@ public class MMapController extends MapController {
 		if (map.getFile() == null) {
 			Controller.getController().getViewController().out(
 			    "You must save the current map first!");
-			final boolean result = ((FileManager) UrlManager.getController(getModeController())).save(map);
+			final boolean result = ((MFileManager) UrlManager.getController(getModeController()))
+			    .save(map);
 			if (!result) {
 				return;
 			}

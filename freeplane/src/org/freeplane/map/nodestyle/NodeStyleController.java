@@ -26,6 +26,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
+import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.map.CombinedPropertyChain;
 import org.freeplane.core.map.ExclusivePropertyChain;
 import org.freeplane.core.map.IPropertyGetter;
@@ -33,12 +34,23 @@ import org.freeplane.core.map.MapController;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.view.swing.map.MapView;
+import org.freeplane.core.resources.ui.IFreemindPropertyListener;
 
 /**
  * @author Dimitry Polivaev
  */
 public class NodeStyleController implements IExtension {
+	public static Color standardNodeTextColor;
+
+	public static NodeStyleController getController(final ModeController modeController) {
+		return (NodeStyleController) modeController.getExtension(NodeStyleController.class);
+	}
+
+	public static void install(final ModeController modeController,
+	                           final NodeStyleController styleController) {
+		modeController.addExtension(NodeStyleController.class, styleController);
+	}
+
 	final private ExclusivePropertyChain<Color, NodeModel> backgroundColorHandlers;
 	final private CombinedPropertyChain<Font, NodeModel> fontHandlers;
 	final private ModeController modeController;
@@ -98,7 +110,7 @@ public class NodeStyleController implements IExtension {
 		});
 		addColorGetter(ExclusivePropertyChain.DEFAULT, new IPropertyGetter<Color, NodeModel>() {
 			public Color getProperty(final NodeModel node, final Color currentValue) {
-				return MapView.standardNodeTextColor;
+				return standardNodeTextColor;
 			}
 		});
 		addBackgroundColorGetter(ExclusivePropertyChain.NODE,
@@ -130,7 +142,8 @@ public class NodeStyleController implements IExtension {
 						}
 					}
 				}
-				else if (node.isRoot() && NodeStyleModel.getShape(node).equals(NodeStyleModel.SHAPE_AS_PARENT)) {
+				else if (node.isRoot()
+				        && NodeStyleModel.getShape(node).equals(NodeStyleModel.SHAPE_AS_PARENT)) {
 					returnedString = Controller.getResourceController().getProperty(
 					    ResourceController.RESOURCES_ROOT_NODE_SHAPE);
 				}
@@ -153,6 +166,12 @@ public class NodeStyleController implements IExtension {
 		final WriteManager writeManager = mapController.getWriteManager();
 		final NodeStyleBuilder styleBuilder = new NodeStyleBuilder();
 		styleBuilder.registerBy(readManager, writeManager);
+		if (standardNodeTextColor == null) {
+			final String stdcolor = Controller.getResourceController().getProperty(
+			    ResourceController.RESOURCES_NODE_TEXT_COLOR);
+			standardNodeTextColor = TreeXmlReader.xmlToColor(stdcolor);
+			createPropertyChangeListener();
+		}
 	}
 
 	public IPropertyGetter<Color, NodeModel> addBackgroundColorGetter(
@@ -177,6 +196,19 @@ public class NodeStyleController implements IExtension {
 	                                                         final Integer key,
 	                                                         final IPropertyGetter<String, NodeModel> getter) {
 		return shapeHandlers.addGetter(key, getter);
+	}
+
+	private void createPropertyChangeListener() {
+		final IFreemindPropertyListener propertyChangeListener = new IFreemindPropertyListener() {
+			public void propertyChanged(final String propertyName, final String newValue,
+			                            final String oldValue) {
+				if (propertyName.equals(ResourceController.RESOURCES_NODE_TEXT_COLOR)) {
+					standardNodeTextColor = TreeXmlReader.xmlToColor(newValue);
+					Controller.getController().getMapView().getRoot().updateAll();
+				}
+			}
+		};
+		Controller.getResourceController().addPropertyChangeListener(propertyChangeListener);
 	}
 
 	public Color getBackgroundColor(final NodeModel node) {
@@ -232,12 +264,4 @@ public class NodeStyleController implements IExtension {
 	public IPropertyGetter<String, NodeModel> removeShapeGetter(final Integer key) {
 		return shapeHandlers.removeGetter(key);
 	}
-
-	public static void install(ModeController modeController, NodeStyleController styleController) {
-		modeController.addExtension(NodeStyleController.class, styleController);
-    }
-
-	public static NodeStyleController getController(ModeController modeController) {
-		return (NodeStyleController)modeController.getExtension(NodeStyleController.class);
-    }
 }

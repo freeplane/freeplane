@@ -19,6 +19,7 @@
  */
 package org.freeplane.view.swing.map;
 
+
 public interface INodeViewVisitor {
 	void visit(NodeView view);
 }

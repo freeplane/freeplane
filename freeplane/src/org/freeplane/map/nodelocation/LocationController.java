@@ -29,6 +29,15 @@ import org.freeplane.core.map.ModeController;
  * @author Dimitry Polivaev
  */
 public class LocationController implements IExtension {
+	public static LocationController getController(final ModeController modeController) {
+		return (LocationController) modeController.getExtension(LocationController.class);
+	}
+
+	public static void install(final ModeController modeController,
+	                           final LocationController locationController) {
+		modeController.addExtension(LocationController.class, locationController);
+	}
+
 	final private ModeController modeController;
 
 	public LocationController(final ModeController modeController) {
@@ -44,12 +53,4 @@ public class LocationController implements IExtension {
 	public ModeController getModeController() {
 		return modeController;
 	}
-
-	public static void install(ModeController modeController, LocationController locationController) {
-		modeController.addExtension(LocationController.class, locationController);
-    }
-
-	public static LocationController getController(ModeController modeController) {
-		return (LocationController)modeController.getExtension(LocationController.class);
-    }
 }

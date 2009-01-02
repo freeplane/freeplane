@@ -27,7 +27,6 @@ import javax.swing.JOptionPane;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
-import org.freeplane.core.view.IMapView;
 import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.view.swing.map.MapView;
 
@@ -47,7 +46,7 @@ public class SaveAll extends FreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final Controller mainController = Controller.getController();
-		final IMapView initialMapView = mainController.getMapView();
+		final MapView initialMapView = mainController.getMapView();
 		final Map mapViews = getMapViews();
 		final Vector v = new Vector();
 		v.addAll(mapViews.values());

@@ -21,7 +21,6 @@ package org.freeplane.core.map;
 
 import java.awt.AWTEvent;
 
-
 /**
  * @author Dimitry Polivaev 27.11.2008
  */

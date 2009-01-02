@@ -53,7 +53,8 @@ public class EncryptedMap extends FreeplaneAction implements INodeSelectionListe
 			return false;
 		}
 		if (modeController.getSelectedNode() != null) {
-			final EncryptionModel enode = EncryptionModel.getModel(modeController.getSelectedNode());
+			final EncryptionModel enode = EncryptionModel
+			    .getModel(modeController.getSelectedNode());
 			if (enode != null) {
 				isEncryptedNode = true;
 				isOpened = enode.isAccessible();

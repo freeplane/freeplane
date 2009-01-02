@@ -19,6 +19,7 @@
  */
 package org.freeplane.map.clipboard.mindmapmode;
 
+import java.awt.Component;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DnDConstants;
@@ -67,8 +68,8 @@ public class MindMapNodeDropListener implements DropTargetListener {
 	}
 
 	public void dragExit(final DropTargetEvent e) {
-		final MainView draggedNode = (MainView) e.getDropTargetContext().getComponent();
-		draggedNode.setDraggedOver(NodeView.DRAGGED_OVER_NO);
+		final Component draggedNode = e.getDropTargetContext().getComponent();
+		((MainView) draggedNode).setDraggedOver(NodeView.DRAGGED_OVER_NO);
 		draggedNode.repaint();
 	}
 
@@ -114,9 +115,9 @@ public class MindMapNodeDropListener implements DropTargetListener {
 			}
 			dtde.acceptDrop(dtde.getDropAction());
 			if (!dtde.isLocalTransfer()) {
-				((MClipboardController) ClipboardController.getController(mMindMapController)).paste(t,
-				    targetNode, mainView.dropAsSibling(dtde.getLocation().getX()), mainView
-				        .dropPosition(dtde.getLocation().getX()));
+				((MClipboardController) ClipboardController.getController(mMindMapController))
+				    .paste(t, targetNode, mainView.dropAsSibling(dtde.getLocation().getX()),
+				        mainView.dropPosition(dtde.getLocation().getX()));
 				dtde.dropComplete(true);
 				return;
 			}
@@ -133,8 +134,8 @@ public class MindMapNodeDropListener implements DropTargetListener {
 					for (final Iterator<NodeView> it = mMindMapController.getMapView()
 					    .getSelection().iterator(); it.hasNext();) {
 						final NodeModel selectedNodeModel = (it.next()).getModel();
-						((MLinkController) LinkController.getController(mMindMapController)).addLink(
-						    selectedNodeModel, targetNodeModel);
+						((MLinkController) LinkController.getController(mMindMapController))
+						    .addLink(selectedNodeModel, targetNodeModel);
 					}
 				}
 			}
@@ -162,17 +163,18 @@ public class MindMapNodeDropListener implements DropTargetListener {
 						}
 						actualNode = (actualNode.isRoot()) ? null : actualNode.getParentNode();
 					} while (actualNode != null);
-					trans = ((MClipboardController) ClipboardController.getController(mMindMapController))
-					    .cut(mMindMapController.getMapView().getSelectedNodesSortedByY());
+					trans = ((MClipboardController) ClipboardController
+					    .getController(mMindMapController)).cut(mMindMapController.getMapView()
+					    .getSelectedNodesSortedByY());
 				}
 				else {
 					trans = ClipboardController.getController(mMindMapController).copy(
 					    mMindMapController.getMapView());
 				}
 				mMindMapController.getMapView().selectAsTheOnlyOneSelected(targetNodeView);
-				((MClipboardController) ClipboardController.getController(mMindMapController)).paste(trans,
-				    targetNode, mainView.dropAsSibling(dtde.getLocation().getX()), mainView
-				        .dropPosition(dtde.getLocation().getX()));
+				((MClipboardController) ClipboardController.getController(mMindMapController))
+				    .paste(trans, targetNode, mainView.dropAsSibling(dtde.getLocation().getX()),
+				        mainView.dropPosition(dtde.getLocation().getX()));
 			}
 		}
 		catch (final Exception e) {

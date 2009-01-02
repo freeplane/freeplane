@@ -29,9 +29,9 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.map.MindIcon;
 import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.util.HtmlTools;
 import org.freeplane.map.link.NodeLinks;
 import org.freeplane.map.nodestyle.NodeStyleModel;
-import org.freeplane.map.text.HtmlTools;
 
 class MindMapHTMLWriter {
 	private static String el = System.getProperty("line.separator");

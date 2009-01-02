@@ -209,12 +209,12 @@ class ScriptingEngine extends FreeplaneAction {
 		pOutStream.print(Controller.getText("plugins/ScriptEditor/window.Result") + value);
 		if (assignResult && value != null) {
 			if (assignTo == null) {
-				((MTextController) TextController.getController(pMindMapController)).setNodeText(node, value
-				    .toString());
+				((MTextController) TextController.getController(pMindMapController)).setNodeText(
+				    node, value.toString());
 			}
 			else {
-				((MAttributeController) AttributeController.getController(pMindMapController)).editAttribute(
-				    node, assignTo, value.toString());
+				((MAttributeController) AttributeController.getController(pMindMapController))
+				    .editAttribute(node, assignTo, value.toString());
 			}
 		}
 		return true;

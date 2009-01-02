@@ -66,7 +66,6 @@ import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.util.Tools;
-import org.freeplane.core.view.IMapView;
 import org.freeplane.map.clipboard.ClipboardController;
 import org.freeplane.map.clipboard.MindMapNodesSelection;
 import org.freeplane.map.link.LinkController;
@@ -156,7 +155,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 				mapView.scrollRectToVisible(r);
 			}
 			if (originX >= 0 && isEventPointVisible) {
-				((IMapView) e.getComponent()).scrollBy(originX - e.getX(), originY - e.getY());
+				((MapView) e.getComponent()).scrollBy(originX - e.getX(), originY - e.getY());
 			}
 		}
 
@@ -771,7 +770,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			group.add(newItem);
 			newItem.addActionListener(mapsMenuActionListener);
 			newItem.setMnemonic(displayName.charAt(0));
-			final IMapView currentMapView = mapViewManager.getMapView();
+			final MapView currentMapView = mapViewManager.getMapView();
 			if (currentMapView != null) {
 				if (mapView == currentMapView) {
 					newItem.setSelected(true);

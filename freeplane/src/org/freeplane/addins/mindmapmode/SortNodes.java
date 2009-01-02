@@ -69,7 +69,8 @@ public class SortNodes extends MultipleNodeAction {
 			final NodeModel child = (NodeModel) iter.next();
 			final Vector childList = new Vector();
 			childList.add(child);
-			final MClipboardController clipboardController = (MClipboardController) ClipboardController.getController(getModeController());
+			final MClipboardController clipboardController = (MClipboardController) ClipboardController
+			    .getController(getModeController());
 			final Transferable cut = clipboardController.cut(childList);
 			clipboardController.paste(cut, node);
 		}

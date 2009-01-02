@@ -31,7 +31,7 @@ import javax.swing.JLabel;
 import javax.swing.KeyStroke;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.map.url.UrlManager;
+import org.freeplane.core.url.UrlManager;
 
 /**
  * This class represents a MindIcon than can be applied to a node or a whole

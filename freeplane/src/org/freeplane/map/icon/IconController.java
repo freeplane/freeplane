@@ -28,6 +28,15 @@ import org.freeplane.core.map.ModeController;
  * @author Dimitry Polivaev
  */
 public class IconController implements IExtension {
+	public static IconController getController(final ModeController modeController) {
+		return (IconController) modeController.getExtension(IconController.class);
+	}
+
+	public static void install(final ModeController modeController,
+	                           final IconController iconController) {
+		modeController.addExtension(IconController.class, iconController);
+	}
+
 	final private ModeController modeController;
 
 	public IconController(final ModeController modeController) {
@@ -42,12 +51,4 @@ public class IconController implements IExtension {
 	public ModeController getModeController() {
 		return modeController;
 	}
-
-	public static void install(ModeController modeController, IconController iconController) {
-		modeController.addExtension(IconController.class, iconController);
-    }
-
-	public static IconController getController(ModeController modeController) {
-		return (IconController)modeController.getExtension(IconController.class);
-    }
 }

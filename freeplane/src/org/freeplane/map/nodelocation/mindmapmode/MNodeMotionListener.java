@@ -61,7 +61,8 @@ class MNodeMotionListener extends UserInputListenerFactory.DefaultNodeMotionList
 	private int getHGap(final Point dragNextPoint, final NodeModel node,
 	                    final Point dragStartingPoint) {
 		int oldHGap = LocationModel.getModel(node).getHGap();
-		int hGapChange = (int) ((dragNextPoint.x - dragStartingPoint.x) / c.getMapView().getZoom());
+		final MapView mapView = c.getMapView();
+		int hGapChange = (int) ((dragNextPoint.x - dragStartingPoint.x) / mapView.getZoom());
 		if (node.isLeft()) {
 			hGapChange = -hGapChange;
 		}
@@ -74,8 +75,8 @@ class MNodeMotionListener extends UserInputListenerFactory.DefaultNodeMotionList
 	private int getNodeShiftY(final Point dragNextPoint, final NodeModel node,
 	                          final Point dragStartingPoint) {
 		int shiftY = LocationModel.getModel(node).getShiftY();
-		final int shiftYChange = (int) ((dragNextPoint.y - dragStartingPoint.y) / c.getMapView()
-		    .getZoom());
+		final MapView mapView = c.getMapView();
+		final int shiftYChange = (int) ((dragNextPoint.y - dragStartingPoint.y) / mapView.getZoom());
 		shiftY += shiftYChange;
 		return shiftY;
 	}
@@ -91,8 +92,8 @@ class MNodeMotionListener extends UserInputListenerFactory.DefaultNodeMotionList
 	private int getVGap(final Point dragNextPoint, final NodeModel node,
 	                    final Point dragStartingPoint) {
 		int oldVGap = LocationModel.getModel(node).getVGap();
-		final int vGapChange = (int) ((dragNextPoint.y - dragStartingPoint.y) / c.getMapView()
-		    .getZoom());
+		final MapView mapView = c.getMapView();
+		final int vGapChange = (int) ((dragNextPoint.y - dragStartingPoint.y) / mapView.getZoom());
 		oldVGap = Math.max(0, oldVGap - vGapChange);
 		return oldVGap;
 	}
@@ -107,14 +108,16 @@ class MNodeMotionListener extends UserInputListenerFactory.DefaultNodeMotionList
 			if (e.getModifiersEx() == 0) {
 				final NodeView nodeV = getNodeView(e);
 				final NodeModel node = nodeV.getModel();
-				c.moveNodePosition(node, LocationModel.getModel(node).getVGap(), LocationModel.HGAP, 0);
+				c.moveNodePosition(node, LocationModel.getModel(node).getVGap(),
+				    LocationModel.HGAP, 0);
 				return;
 			}
 			if (e.getModifiersEx() == InputEvent.CTRL_DOWN_MASK) {
 				final NodeView nodeV = getNodeView(e);
 				final NodeModel node = nodeV.getModel();
-				c.moveNodePosition(node, LocationModel.VGAP, LocationModel.getModel(node).getHGap(),
-				    LocationModel.getModel(node).getShiftY());
+				c.moveNodePosition(node, LocationModel.VGAP,
+				    LocationModel.getModel(node).getHGap(), LocationModel.getModel(node)
+				        .getShiftY());
 				return;
 			}
 		}

@@ -38,8 +38,8 @@ import java.util.Vector;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ui.BooleanProperty;
 import org.freeplane.core.resources.ui.IFreemindPropertyListener;
+import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Tools;
-import org.freeplane.map.url.UrlManager;
 
 /**
  * @author Dimitry Polivaev

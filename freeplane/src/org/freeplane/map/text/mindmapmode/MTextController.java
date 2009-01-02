@@ -37,6 +37,7 @@ import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.IEditHandler;
 import org.freeplane.core.ui.UserInputListenerFactory;
+import org.freeplane.core.url.UrlManager;
 import org.freeplane.map.link.LinkController;
 import org.freeplane.map.link.NodeLinks;
 import org.freeplane.map.link.mindmapmode.MLinkController;
@@ -44,10 +45,9 @@ import org.freeplane.map.nodestyle.NodeStyleController;
 import org.freeplane.map.nodestyle.mindmapmode.MNodeStyleController;
 import org.freeplane.map.text.FixedHTMLWriter;
 import org.freeplane.map.text.TextController;
-import org.freeplane.map.url.UrlManager;
-import org.freeplane.map.url.mindmapmode.FileManager;
 import org.freeplane.modes.mindmapmode.MMapController;
 import org.freeplane.modes.mindmapmode.MModeController;
+import org.freeplane.modes.mindmapmode.url.MFileManager;
 import org.freeplane.view.swing.map.NodeView;
 
 /**
@@ -185,16 +185,17 @@ public class MTextController extends TextController {
 						        : possiblyRelative;
 						if (relative != null) {
 							final String strText = "<html><img src=\"" + relative + "\">";
-							((MLinkController) LinkController.getController(getModeController())).setLink(
-							    node, null);
+							((MLinkController) LinkController.getController(getModeController()))
+							    .setLink(node, null);
 							setNodeText(node, strText);
 						}
 					}
 				}
 			}
 			else {
-				final String relative = ((FileManager) UrlManager.getController(getModeController()))
-				    .getLinkByFileChooser(Controller.getController().getMap(), filter);
+				final String relative = ((MFileManager) UrlManager
+				    .getController(getModeController())).getLinkByFileChooser(Controller
+				    .getController().getMap(), filter);
 				if (relative != null) {
 					final String strText = "<html><img src=\"" + relative + "\">";
 					setNodeText(getModeController().getSelectedNode(), strText);
@@ -226,7 +227,8 @@ public class MTextController extends TextController {
 		final ModeController modeController = getModeController();
 		final NodeModel lowerNode = ((MMapController) modeController.getMapController())
 		    .addNewNode(parent, parent.getChildPosition(node) + 1, node.isLeft());
-		final MNodeStyleController nodeStyleController = (MNodeStyleController) NodeStyleController.getController(modeController);
+		final MNodeStyleController nodeStyleController = (MNodeStyleController) NodeStyleController
+		    .getController(modeController);
 		nodeStyleController.copyStyle(node, lowerNode);
 		setNodeText(lowerNode, newLowerContent);
 	}

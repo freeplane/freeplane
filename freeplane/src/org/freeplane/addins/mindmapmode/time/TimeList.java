@@ -75,10 +75,10 @@ import org.freeplane.core.resources.WindowConfigurationStorage;
 import org.freeplane.core.ui.UIBuilder;
 import org.freeplane.core.ui.components.BlindIcon;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.HtmlTools;
 import org.freeplane.core.util.Tools;
 import org.freeplane.map.clipboard.ClipboardController;
 import org.freeplane.map.note.NoteModel;
-import org.freeplane.map.text.HtmlTools;
 import org.freeplane.map.text.TextController;
 import org.freeplane.map.text.mindmapmode.MTextController;
 import org.freeplane.modes.mindmapmode.MModeController;
@@ -512,8 +512,8 @@ class TimeList {
 			final NodeModel node = (NodeModel) iter.next();
 			//
 			//
-			final NodeModel copy = ClipboardController.getController(node.getModeController()).shallowCopy(
-			    node);
+			final NodeModel copy = ClipboardController.getController(node.getModeController())
+			    .shallowCopy(node);
 			if (copy != null) {
 				newMindMapController.getMapController().insertNodeIntoWithoutUndo(copy,
 				    newMap.getRootNode());

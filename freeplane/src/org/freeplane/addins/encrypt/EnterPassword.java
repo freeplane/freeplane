@@ -28,8 +28,8 @@ import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.components.EnterPasswordDialog;
-import org.freeplane.core.view.IMapView;
 import org.freeplane.modes.mindmapmode.MModeController;
+import org.freeplane.view.swing.map.MapView;
 
 @ActionDescriptor(tooltip = "accessories/plugins/EnterPassword.properties_documentation", //
 name = "accessories/plugins/EnterPassword.properties_name", //
@@ -113,7 +113,7 @@ public class EnterPassword extends FreeplaneAction {
 					mindMapController.getMapController().nodeStructureChanged(node);
 				}
 			}
-			final IMapView mapView = mindMapController.getMapView();
+			final MapView mapView = mindMapController.getMapView();
 			mapView.selectAsTheOnlyOneSelected(mapView.getNodeView(node));
 		}
 		else {

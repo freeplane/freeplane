@@ -25,7 +25,6 @@ import java.util.Vector;
 
 import org.freeplane.core.io.IXMLElement;
 
-
 /**
  * An XMLWriter writes XML data to a stream.
  * 

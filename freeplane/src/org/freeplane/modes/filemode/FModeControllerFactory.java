@@ -25,6 +25,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.IPropertyGetter;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.FreeMindToolBar;
+import org.freeplane.core.url.UrlManager;
 import org.freeplane.map.clipboard.ClipboardController;
 import org.freeplane.map.edge.EdgeController;
 import org.freeplane.map.icon.IconController;
@@ -32,7 +33,6 @@ import org.freeplane.map.link.LinkController;
 import org.freeplane.map.nodelocation.LocationController;
 import org.freeplane.map.nodestyle.NodeStyleController;
 import org.freeplane.map.text.TextController;
-import org.freeplane.map.url.UrlManager;
 
 /**
  * @author Dimitry Polivaev 24.11.2008

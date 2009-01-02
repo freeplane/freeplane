@@ -47,7 +47,8 @@ public class MLocationController extends LocationController {
 			final LocationModel locationModel = LocationModel.getModel(node);
 			oldHgap = locationModel.getHGap();
 			oldShiftY = locationModel.getShiftY();
-			oldParentVgap = !node.isRoot() ? LocationModel.getModel(node.getParentNode()).getVGap() : 0;
+			oldParentVgap = !node.isRoot() ? LocationModel.getModel(node.getParentNode()).getVGap()
+			        : 0;
 		}
 
 		public void act() {

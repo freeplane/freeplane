@@ -66,7 +66,8 @@ class RemoveAllIconsAction extends MultipleNodeAction implements IIconInformatio
 
 	public void removeAllIcons(final NodeModel node) {
 		final int size = node.getIcons().size();
-		final MIconController iconController = (MIconController) IconController.getController(getModeController());
+		final MIconController iconController = (MIconController) IconController
+		    .getController(getModeController());
 		for (int i = 0; i < size; i++) {
 			iconController.removeIcon(node, 0);
 		}

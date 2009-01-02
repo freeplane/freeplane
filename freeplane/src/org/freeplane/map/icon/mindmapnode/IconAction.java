@@ -47,13 +47,15 @@ class IconAction extends MultipleNodeAction implements IIconInformation {
 	public void actionPerformed(final ActionEvent e, final NodeModel node) {
 		if (e.getID() == ActionEvent.ACTION_FIRST
 		        && (e.getModifiers() & ActionEvent.SHIFT_MASK & ~ActionEvent.CTRL_MASK & ~ActionEvent.ALT_MASK) != 0) {
-			((MIconController) IconController.getController(getModeController())).removeAllIcons(node);
-			((MIconController) IconController.getController(getModeController())).addIcon(node, icon, 0);
+			((MIconController) IconController.getController(getModeController()))
+			    .removeAllIcons(node);
+			((MIconController) IconController.getController(getModeController())).addIcon(node,
+			    icon, 0);
 			return;
 		}
 		if (e == null || (e.getModifiers() & (ActionEvent.CTRL_MASK | ActionEvent.ALT_MASK)) == 0) {
-			((MIconController) IconController.getController(getModeController())).addIcon(node, icon,
-			    MindIcon.LAST);
+			((MIconController) IconController.getController(getModeController())).addIcon(node,
+			    icon, MindIcon.LAST);
 			return;
 		}
 	}

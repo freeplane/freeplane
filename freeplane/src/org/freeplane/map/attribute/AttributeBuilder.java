@@ -139,7 +139,8 @@ class AttributeBuilder implements IElementDOMHandler, IExtensionElementWriter {
 			    public void setAttribute(final Object userObject, final String value) {
 				    final NodeModel node = (NodeModel) userObject;
 				    NodeAttributeTableModel.createAttributeTableModel(node);
-				    final AttributeTableLayoutModel layout = NodeAttributeTableModel.getModel(node).getLayout();
+				    final AttributeTableLayoutModel layout = NodeAttributeTableModel.getModel(node)
+				        .getLayout();
 				    layout.setColumnWidth(0, Integer.parseInt(value));;
 			    }
 		    });
@@ -148,7 +149,8 @@ class AttributeBuilder implements IElementDOMHandler, IExtensionElementWriter {
 			    public void setAttribute(final Object userObject, final String value) {
 				    final NodeModel node = (NodeModel) userObject;
 				    NodeAttributeTableModel.createAttributeTableModel(node);
-				    final AttributeTableLayoutModel layout = NodeAttributeTableModel.getModel(node).getLayout();
+				    final AttributeTableLayoutModel layout = NodeAttributeTableModel.getModel(node)
+				        .getLayout();
 				    layout.setColumnWidth(1, Integer.parseInt(value));;
 			    }
 		    });

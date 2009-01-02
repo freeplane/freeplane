@@ -32,13 +32,12 @@ import org.freeplane.map.nodestyle.NodeStyleController;
  * 02.01.2009
  */
 public class FNodeStyleController extends NodeStyleController {
-
-	public FNodeStyleController(ModeController modeController) {
-	    super(modeController);
-	    addColorGetter(ExclusivePropertyChain.DEFAULT - 1, new IPropertyGetter<Color, NodeModel>(){
-			public Color getProperty(NodeModel node, Color currentValue) {
+	public FNodeStyleController(final ModeController modeController) {
+		super(modeController);
+		addColorGetter(ExclusivePropertyChain.DEFAULT - 1, new IPropertyGetter<Color, NodeModel>() {
+			public Color getProperty(final NodeModel node, final Color currentValue) {
 				return node.isLeaf() ? Color.BLACK : Color.GRAY;
-            }});
-    }
-	
+			}
+		});
+	}
 }

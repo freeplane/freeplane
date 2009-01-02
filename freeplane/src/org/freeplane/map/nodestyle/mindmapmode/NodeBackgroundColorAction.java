@@ -37,10 +37,9 @@ class NodeBackgroundColorAction extends MultipleNodeAction {
 
 	@Override
 	public void actionPerformed(final ActionEvent e) {
-		actionBackgroundColor = ColorTracker
-		    .showCommonJColorChooserDialog(getModeController().getMapView().getSelected(),
-		        getModeController().getText("choose_node_color"), NodeStyleModel.getBackgroundColor(getModeController()
-                .getSelectedNode()));
+		actionBackgroundColor = ColorTracker.showCommonJColorChooserDialog(getModeController()
+		    .getMapView().getSelected(), getModeController().getText("choose_node_color"),
+		    NodeStyleModel.getBackgroundColor(getModeController().getSelectedNode()));
 		if (actionBackgroundColor == null) {
 			return;
 		}

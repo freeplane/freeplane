@@ -19,7 +19,6 @@
  */
 package org.freeplane.core.io;
 
-
 /**
  * @author Dimitry Polivaev
  * 28.12.2008

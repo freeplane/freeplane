@@ -47,7 +47,7 @@ public class FitToPage extends FreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		view = (MapView) Controller.getController().getMapView();
+		view = Controller.getController().getMapView();
 		if (view == null) {
 			return;
 		}
@@ -72,8 +72,8 @@ public class FitToPage extends FreeplaneAction {
 
 	private void zoom() {
 		final Rectangle rect = view.getInnerBounds();
-		final double oldZoom = Controller.getController().getMapView().getZoom();
-		final JViewport viewPort = (JViewport) view.getParent();
+		final double oldZoom = view.getZoom();
+		final JViewport viewPort = (JViewport) view.getComponent().getParent();
 		final Dimension viewer = viewPort.getExtentSize();
 		double newZoom = viewer.width * oldZoom / (rect.width + 0.0);
 		final double heightZoom = viewer.height * oldZoom / (rect.height + 0.0);

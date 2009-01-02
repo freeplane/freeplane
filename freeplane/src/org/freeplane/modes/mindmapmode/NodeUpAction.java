@@ -33,7 +33,7 @@ import org.freeplane.core.map.MapModel;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.undo.IUndoableActor;
-import org.freeplane.core.view.IMapView;
+import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
 class NodeUpAction extends FreeplaneAction {
@@ -75,7 +75,7 @@ class NodeUpAction extends FreeplaneAction {
 				final NodeModel node = (NodeModel) sortedChildren.get(position.intValue());
 				moveNodeTo(node, parent, direction);
 			}
-			final IMapView mapView = getModeController().getMapView();
+			final MapView mapView = getModeController().getMapView();
 			final NodeView selectedNodeView = mapView.getNodeView(selected);
 			mapView.selectAsTheOnlyOneSelected(selectedNodeView);
 			mapView.scrollNodeToVisible(selectedNodeView);

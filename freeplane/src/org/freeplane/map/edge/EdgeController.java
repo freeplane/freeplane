@@ -37,7 +37,7 @@ import org.freeplane.core.resources.ui.IFreemindPropertyListener;
 /**
  * @author Dimitry Polivaev
  */
-public class EdgeController implements IExtension{
+public class EdgeController implements IExtension {
 	protected static class EdgePropertyListener implements IFreemindPropertyListener {
 		public void propertyChanged(final String propertyName, final String newValue,
 		                            final String oldValue) {
@@ -54,6 +54,16 @@ public class EdgeController implements IExtension{
 	private static EdgePropertyListener listener = null;
 	private static Color standardColor = null;
 	private static String standardStyle = null;
+
+	public static EdgeController getController(final ModeController modeController) {
+		return (EdgeController) modeController.getExtension(EdgeController.class);
+	}
+
+	public static void install(final ModeController modeController,
+	                           final EdgeController edgeController) {
+		modeController.addExtension(EdgeController.class, edgeController);
+	}
+
 	final private ExclusivePropertyChain<Color, NodeModel> colorHandlers;
 	final private ExclusivePropertyChain<String, NodeModel> styleHandlers;
 	final private ExclusivePropertyChain<Integer, NodeModel> widthHandlers;
@@ -182,12 +192,4 @@ public class EdgeController implements IExtension{
 			}
 		}
 	}
-
-	public static void install(ModeController modeController, EdgeController edgeController) {
-		modeController.addExtension(EdgeController.class, edgeController);
-    }
-
-	public static EdgeController getController(ModeController modeController) {
-		return (EdgeController)modeController.getExtension(EdgeController.class);
-    }
 }

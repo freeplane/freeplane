@@ -30,12 +30,12 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.ui.OptionPanelBuilder;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.util.HtmlTools;
 import org.freeplane.core.util.Tools;
 import org.freeplane.core.util.Tools.BooleanHolder;
 import org.freeplane.map.pattern.mindmapnode.IExternalPatternAction;
 import org.freeplane.map.pattern.mindmapnode.Pattern;
 import org.freeplane.map.pattern.mindmapnode.ScriptEditorProperty;
-import org.freeplane.map.text.HtmlTools;
 import org.freeplane.modes.mindmapmode.MModeController;
 
 import plugins.script.ScriptEditorPanel.IScriptModel;

@@ -32,9 +32,9 @@ import java.util.LinkedList;
 import java.util.Vector;
 
 import org.freeplane.core.map.NodeModel;
-import org.freeplane.core.view.IMapView;
 import org.freeplane.map.cloud.CloudController;
 import org.freeplane.map.cloud.CloudModel;
+import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
 /**
@@ -80,7 +80,7 @@ public class CloudView {
 		return cloudModel.getIterativeLevel(source.getModel());
 	}
 
-	protected IMapView getMap() {
+	protected MapView getMap() {
 		return source.getMap();
 	}
 

@@ -123,7 +123,8 @@ class NodeViewFactory {
 
 	EdgeView getEdge(final NodeView newView) {
 		final NodeModel model = newView.getModel();
-		final String edgeStyle = EdgeController.getController(model.getModeController()).getStyle(model);
+		final String edgeStyle = EdgeController.getController(model.getModeController()).getStyle(
+		    model);
 		if (edgeStyle.equals(EdgeModel.EDGESTYLE_LINEAR)) {
 			return getLinearEdgeView();
 		}
@@ -171,7 +172,8 @@ class NodeViewFactory {
 		if (model.isRoot()) {
 			return new RootMainView();
 		}
-		final String shape = NodeStyleController.getController(model.getModeController()).getShape(model);
+		final String shape = NodeStyleController.getController(model.getModeController()).getShape(
+		    model);
 		if (shape.equals(NodeStyleModel.STYLE_FORK)) {
 			return new ForkMainView();
 		}

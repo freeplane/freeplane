@@ -23,7 +23,7 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.MultipleNodeAction;
-import org.freeplane.map.text.HtmlTools;
+import org.freeplane.core.util.HtmlTools;
 import org.freeplane.map.text.TextController;
 
 class UseRichFormattingAction extends MultipleNodeAction {
@@ -35,8 +35,8 @@ class UseRichFormattingAction extends MultipleNodeAction {
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
 		final String nodeText = node.getText();
 		if (!HtmlTools.isHtmlNode(nodeText)) {
-			((MTextController) TextController.getController(getModeController())).setNodeText(node, HtmlTools
-			    .plainToHTML(nodeText));
+			((MTextController) TextController.getController(getModeController())).setNodeText(node,
+			    HtmlTools.plainToHTML(nodeText));
 		}
 	}
 }

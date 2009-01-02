@@ -47,12 +47,12 @@ import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.XMLElement;
 import org.freeplane.core.io.xml.TreeXmlWriter;
+import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Tools;
-import org.freeplane.core.view.IMapView;
 import org.freeplane.map.link.NodeLinks;
-import org.freeplane.map.url.UrlManager;
 import org.freeplane.n3.nanoxml.XMLParseException;
 import org.freeplane.view.swing.map.MainView;
+import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
 /**
@@ -65,15 +65,13 @@ public class MapController {
 	 * fathers!!!. Moreover, it sorts nodes with the same depth according to
 	 * their position relative to each other.
 	 */
-	static private class NodesDepthComparator implements Comparator {
+	static private class NodesDepthComparator implements Comparator<NodeModel> {
 		public NodesDepthComparator() {
 		}
 
 		/* the < relation. */
-		public int compare(final Object p1, final Object p2) {
-			final NodeModel n1 = ((NodeModel) p1);
+		public int compare(final NodeModel n1, final NodeModel n2) {
 			final MapModel map = n1.getMap();
-			final NodeModel n2 = ((NodeModel) p2);
 			final Object[] path1 = map.getPathToRoot(n1);
 			final Object[] path2 = map.getPathToRoot(n2);
 			final int depth = path1.length - path2.length;
@@ -331,7 +329,7 @@ public class MapController {
 		return mapReader;
 	}
 
-	public IMapView getMapView() {
+	public MapView getMapView() {
 		return getModeController().getMapView();
 	}
 
@@ -445,7 +443,7 @@ public class MapController {
 			final String extension = UrlManager.getExtension(absolute.toString());
 			if ((extension != null)
 			        && extension
-			            .equals(org.freeplane.map.url.mindmapmode.FileManager.FREEMIND_FILE_EXTENSION_WITHOUT_DOT)) {
+			            .equals(org.freeplane.modes.mindmapmode.url.MFileManager.FREEMIND_FILE_EXTENSION_WITHOUT_DOT)) {
 				final MapViewManager mapViewManager = Controller.getController()
 				    .getMapViewManager();
 				/*
@@ -605,8 +603,8 @@ public class MapController {
 		_setFolded(node, folded);
 	}
 
-	public void sortNodesByDepth(final List inPlaceList) {
-		Collections.sort(inPlaceList, new NodesDepthComparator());
+	public void sortNodesByDepth(final List<NodeModel> collection) {
+		Collections.sort(collection, new NodesDepthComparator());
 	}
 
 	/**

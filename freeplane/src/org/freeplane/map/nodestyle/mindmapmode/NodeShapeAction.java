@@ -36,7 +36,7 @@ class NodeShapeAction extends MultipleNodeAction {
 
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		((MNodeStyleController) NodeStyleController.getController(getModeController())).setShape(node,
-		    actionShape);
+		((MNodeStyleController) NodeStyleController.getController(getModeController())).setShape(
+		    node, actionShape);
 	}
 }

@@ -19,7 +19,6 @@
  */
 package org.freeplane.core.ui;
 
-
 public interface IMenuContributor {
 	public void updateMenus(final MenuBuilder builder);
 }

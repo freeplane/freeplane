@@ -39,7 +39,7 @@ import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.map.text.HtmlTools;
+import org.freeplane.core.util.HtmlTools;
 import org.freeplane.view.swing.map.NodeView;
 
 import com.lightdev.app.shtm.SHTMLPanel;

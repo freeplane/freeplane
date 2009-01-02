@@ -63,7 +63,6 @@ public class FNodeModel extends NodeModel {
 		return children;
 	}
 
-
 	public File getFile() {
 		return file;
 	}

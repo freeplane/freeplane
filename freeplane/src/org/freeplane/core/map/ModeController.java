@@ -52,9 +52,9 @@ import org.freeplane.core.ui.IMouseWheelEventHandler;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.UserInputListenerFactory;
 import org.freeplane.core.undo.IUndoableActor;
-import org.freeplane.core.view.IMapView;
+import org.freeplane.core.url.UrlManager;
 import org.freeplane.map.link.LinkController;
-import org.freeplane.map.url.UrlManager;
+import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
 /**
@@ -212,6 +212,10 @@ public class ModeController {
 		return extensions.addExtension(extension);
 	}
 
+	public void addINodeViewLifeCycleListener(final INodeViewLifeCycleListener listener) {
+		nodeViewListeners.add(listener);
+	}
+
 	public void addMenuContributor(final IMenuContributor contributor) {
 		menuContributors.add(contributor);
 	}
@@ -226,10 +230,6 @@ public class ModeController {
 
 	public void addNodeSelectionListener(final INodeSelectionListener listener) {
 		nodeSelectionListeners.add(listener);
-	}
-
-	public void addNodeViewLifeCycleListener(final INodeViewLifeCycleListener listener) {
-		nodeViewListeners.add(listener);
 	}
 
 	public void centerNode(final NodeModel node) {
@@ -292,7 +292,7 @@ public class ModeController {
 		return mapController;
 	}
 
-	public IMapView getMapView() {
+	public MapView getMapView() {
 		return Controller.getController().getMapView();
 	}
 
@@ -303,7 +303,6 @@ public class ModeController {
 	public Set getMouseWheelEventHandlers() {
 		return Collections.unmodifiableSet(mRegisteredMouseWheelEventHandler);
 	}
-
 
 	public NodeView getNodeView(final NodeModel node) {
 		return getMapView().getNodeView(node);
@@ -348,7 +347,7 @@ public class ModeController {
 	 * @return returns a list of MindMapNode s.
 	 */
 	public List getSelectedNodes() {
-		final IMapView view = getMapView();
+		final MapView view = getMapView();
 		if (view == null) {
 			return Collections.EMPTY_LIST;
 		}
@@ -469,6 +468,10 @@ public class ModeController {
 		return extensions.removeExtension(extension);
 	}
 
+	public void removeINodeViewLifeCycleListener(final INodeViewLifeCycleListener listener) {
+		nodeViewListeners.remove(listener);
+	}
+
 	public void removeMouseWheelEventHandler(final IMouseWheelEventHandler handler) {
 		mRegisteredMouseWheelEventHandler.remove(handler);
 	}
@@ -505,10 +508,6 @@ public class ModeController {
 		nodeSelectionListeners.remove(listener);
 	}
 
-	public void removeNodeViewLifeCycleListener(final INodeViewLifeCycleListener listener) {
-		nodeViewListeners.remove(listener);
-	}
-
 	public void select(final NodeView node) {
 		getMapView().scrollNodeToVisible(node);
 		getMapView().selectAsTheOnlyOneSelected(node);
@@ -543,6 +542,10 @@ public class ModeController {
 
 	public void setBlocked(final boolean isBlocked) {
 		this.isBlocked = isBlocked;
+	}
+
+	public void setMapController(final MapController mapController) {
+		this.mapController = mapController;
 	}
 
 	public void setMapMouseMotionListener(final IMouseListener mapMouseMotionListener) {
@@ -603,8 +606,4 @@ public class ModeController {
 			iterator.next().updateMenus(menuBuilder);
 		}
 	}
-
-	public void setMapController(MapController mapController) {
-	    this.mapController = mapController;
-    }
 }

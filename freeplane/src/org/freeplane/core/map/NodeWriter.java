@@ -27,8 +27,8 @@ import org.freeplane.core.io.IElementWriter;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.XMLElement;
 import org.freeplane.core.io.xml.TreeXmlWriter;
+import org.freeplane.core.util.HtmlTools;
 import org.freeplane.map.link.LinkController;
-import org.freeplane.map.text.HtmlTools;
 import org.freeplane.map.text.NodeTextBuilder;
 
 class NodeWriter implements IElementWriter, IAttributeWriter {
@@ -94,7 +94,8 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 		}
 		final String id = node.createID();
 		final boolean saveID = saveOnlyIntrinsicallyNeededIds
-		        || !LinkController.getController(node.getModeController()).getLinksTo(node).isEmpty();
+		        || !LinkController.getController(node.getModeController()).getLinksTo(node)
+		            .isEmpty();
 		if (saveID) {
 			if (id != null) {
 				writer.addAttribute("ID", id);

@@ -33,16 +33,15 @@ import javax.swing.SwingConstants;
 
 import org.freeplane.core.ui.FreeMindToolBar;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.view.IMapView;
 import org.freeplane.view.swing.map.MapView;
 
 public class PreviewDialog extends JDialog implements ActionListener {
 	final private static double DEFAULT_ZOOM_FACTOR_STEP = 0.1;
 	final private JLabel pageNumber;
-	protected IMapView view;
+	protected MapView view;
 
 	public PreviewDialog(final String title, final MapView view) {
-		super(JOptionPane.getFrameForComponent(view), title, true);
+		super(JOptionPane.getFrameForComponent(view.getComponent()), title, true);
 		this.view = view;
 		final Preview preview = new Preview(view, 1);
 		final JScrollPane scrollPane = new JScrollPane(preview);

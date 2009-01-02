@@ -46,6 +46,11 @@ public class NodeLinks implements IExtension {
 		return linkExtension;
 	}
 
+	public static String getLink(final NodeModel node) {
+		final NodeLinks links = NodeLinks.getModel(node);
+		return links != null ? links.getLink() : null;
+	}
+
 	/**
 	 * @param node
 	 * @return
@@ -57,6 +62,11 @@ public class NodeLinks implements IExtension {
 	public static Collection<LinkModel> getLinks(final NodeModel node) {
 		final NodeLinks links = NodeLinks.getLinkExtension(node);
 		return links != null ? links.getLinks() : Collections.EMPTY_LIST;
+	}
+
+	public static NodeLinks getModel(final NodeModel node) {
+		final NodeLinks links = (NodeLinks) node.getExtension(NodeLinks.class);
+		return links;
 	}
 
 	private String link;
@@ -132,14 +142,4 @@ public class NodeLinks implements IExtension {
 			links.add(new HyperTextLinkModel(targetID));
 		}
 	}
-
-	public static String getLink(NodeModel node) {
-    	final NodeLinks links = getModel(node);
-    	return links != null ? links.getLink() : null;
-    }
-
-	public static NodeLinks getModel(NodeModel node) {
-        final NodeLinks links = (NodeLinks) node.getExtension(NodeLinks.class);
-        return links;
-    }
 }

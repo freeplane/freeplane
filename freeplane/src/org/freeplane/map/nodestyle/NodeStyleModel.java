@@ -35,6 +35,51 @@ public class NodeStyleModel implements IExtension, Cloneable {
 	public static final String SHAPE_COMBINED = "combined";
 	public static final String STYLE_BUBBLE = "bubble";
 	public static final String STYLE_FORK = "fork";
+
+	public static NodeStyleModel createNodeStyleModel(final NodeModel node) {
+		NodeStyleModel styleModel = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
+		if (styleModel == null) {
+			styleModel = new NodeStyleModel();
+			node.addExtension(styleModel);
+		}
+		return styleModel;
+	}
+
+	public static Color getBackgroundColor(final NodeModel node) {
+		final NodeStyleModel styleModel = NodeStyleModel.getModel(node);
+		return styleModel == null ? null : styleModel.getBackgroundColor();
+	}
+
+	public static Color getColor(final NodeModel node) {
+		final NodeStyleModel styleModel = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
+		return styleModel == null ? null : styleModel.getColor();
+	}
+
+	public static NodeStyleModel getModel(final NodeModel node) {
+		final NodeStyleModel styleModel = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
+		return styleModel;
+	}
+
+	public static String getShape(final NodeModel node) {
+		final NodeStyleModel styleModel = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
+		return styleModel == null ? null : styleModel.getShape();
+	}
+
+	public static void setBackgroundColor(final NodeModel node, final Color color) {
+		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
+		styleModel.setBackgroundColor(color);
+	}
+
+	public static void setColor(final NodeModel node, final Color color) {
+		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
+		styleModel.setColor(color);
+	}
+
+	public static void setShape(final NodeModel node, final String shape) {
+		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
+		styleModel.setShape(shape);
+	}
+
 	private Color backgroundColor;
 	private Color color;
 	private String fontFamilyName = null;
@@ -74,7 +119,7 @@ public class NodeStyleModel implements IExtension, Cloneable {
 
 	public String getShape() {
 		return shape;
-	}
+	};
 
 	public Boolean isBold() {
 		return isBold;
@@ -106,53 +151,9 @@ public class NodeStyleModel implements IExtension, Cloneable {
 
 	public void setItalic(final Boolean isItalic) {
 		this.isItalic = isItalic;
-	};
+	}
 
 	public void setShape(final String shape) {
 		this.shape = shape;
 	}
-
-	public static NodeStyleModel createNodeStyleModel(NodeModel node) {
-		NodeStyleModel styleModel = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
-		if (styleModel == null) {
-			styleModel = new NodeStyleModel();
-			node.addExtension(styleModel);
-		}
-		return styleModel;
-    }
-
-	public static Color getBackgroundColor(NodeModel node) {
-		final NodeStyleModel styleModel = getModel(node);
-		return styleModel == null ? null : styleModel.getBackgroundColor();
-    }
-
-	public static NodeStyleModel getModel(NodeModel node) {
-	    final NodeStyleModel styleModel = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
-	    return styleModel;
-    }
-
-	public static Color getColor(NodeModel node) {
-		final NodeStyleModel styleModel = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
-		return styleModel == null ? null : styleModel.getColor();
-    }
-
-	public static String getShape(NodeModel node) {
-		final NodeStyleModel styleModel = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
-		return styleModel == null ? null : styleModel.getShape();
-    }
-
-	public static void setBackgroundColor(NodeModel node, Color color) {
-		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
-		styleModel.setBackgroundColor(color);
-    }
-
-	public static void setColor(NodeModel node, Color color) {
-		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
-		styleModel.setColor(color);
-    }
-
-	public static void setShape(NodeModel node, String shape) {
-		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
-		styleModel.setShape(shape);
-    }
 }

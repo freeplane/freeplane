@@ -48,7 +48,6 @@ import org.freeplane.core.ui.FreemindMenuBar;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.UIBuilder;
 import org.freeplane.core.ui.UserInputListenerFactory;
-import org.freeplane.core.view.IMapView;
 import org.freeplane.view.swing.map.MapView;
 
 /**
@@ -86,7 +85,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 		lastOpened = new LastOpenedList(Controller.getResourceController()
 		    .getProperty("lastOpened"));
 		mapViewManager = new MapViewManager();
-		mapViewManager.addMapViewChangeListener(this);
+		mapViewManager.addIMapViewChangeListener(this);
 		controller.addAction("close", new CloseAction());
 		navigationPreviousMap = new NavigationPreviousMapAction();
 		controller.addAction("navigationPreviousMap", navigationPreviousMap);
@@ -125,10 +124,10 @@ abstract public class ViewController implements IMapViewChangeListener {
 		mMapTitleChangeListenerSet.add(pMapTitleChangeListener);
 	}
 
-	public void afterMapClose(final IMapView pOldMapView) {
+	public void afterMapClose(final MapView pOldMapView) {
 	}
 
-	public void afterMapViewChange(final IMapView oldMapView, final IMapView newMapView) {
+	public void afterMapViewChange(final MapView oldMapView, final MapView newMapView) {
 		Controller.getController();
 		final ModeController oldModeController = Controller.getModeController();
 		ModeController newModeController = oldModeController;
@@ -154,7 +153,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 		newModeController.getUserInputListenerFactory().updateMapList();
 	}
 
-	public void beforeMapViewChange(final IMapView oldMapView, final IMapView newMapView) {
+	public void beforeMapViewChange(final MapView oldMapView, final MapView newMapView) {
 		Controller.getController();
 		final ModeController modeController = Controller.getModeController();
 		if (oldMapView != null) {
@@ -221,7 +220,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 	/**
 	 */
 	public MapModel getMap() {
-		final IMapView mapView = getMapView();
+		final MapView mapView = getMapView();
 		return mapView != null ? mapView.getModel() : null;
 	}
 
@@ -278,7 +277,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 		return leftToolbarVisible;
 	}
 
-	public boolean isMapViewChangeAllowed(final IMapView oldMapView, final IMapView newMapView) {
+	public boolean isMapViewChangeAllowed(final MapView oldMapView, final MapView newMapView) {
 		return true;
 	}
 

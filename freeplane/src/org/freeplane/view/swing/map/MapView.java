@@ -62,7 +62,6 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.ui.IFreemindPropertyListener;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.view.IMapView;
 import org.freeplane.map.link.ArrowLinkModel;
 import org.freeplane.map.link.LinkController;
 import org.freeplane.map.link.LinkModel;
@@ -73,7 +72,7 @@ import org.freeplane.view.swing.map.link.ArrowLinkView;
  * This class represents the view of a whole MindMap (in analogy to class
  * JTree).
  */
-public class MapView extends JPanel implements Printable, Autoscroll, IMapView {
+public class MapView extends JPanel implements Printable, Autoscroll {
 	static public class ScrollPane extends JScrollPane {
 		@Override
 		protected void validateTree() {
@@ -169,7 +168,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapView {
 	static private IFreemindPropertyListener propertyChangeListener;
 	static boolean standardDrawRectangleForSelection;
 	static Color standardMapBackgroundColor;
-	public static Color standardNodeTextColor;
 	static Color standardSelectColor;
 	private static Stroke standardSelectionStroke;
 	static Color standardSelectRectangleColor;
@@ -197,55 +195,22 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapView {
 		super();
 		this.model = model;
 		rename();
-		if (MapView.standardNodeTextColor == null) {
-			try {
-				final String stdcolor = Controller.getResourceController().getProperty(
-				    ResourceController.RESOURCES_BACKGROUND_COLOR);
-				MapView.standardMapBackgroundColor = TreeXmlReader.xmlToColor(stdcolor);
-			}
-			catch (final Exception ex) {
-				MapView.standardMapBackgroundColor = Color.WHITE;
-			}
-			try {
-				final String stdcolor = Controller.getResourceController().getProperty(
-				    ResourceController.RESOURCES_NODE_TEXT_COLOR);
-				MapView.standardNodeTextColor = TreeXmlReader.xmlToColor(stdcolor);
-			}
-			catch (final Exception ex) {
-				MapView.standardSelectColor = Color.WHITE;
-			}
-			try {
-				final String stdcolor = Controller.getResourceController().getProperty(
-				    ResourceController.RESOURCES_SELECTED_NODE_COLOR);
-				MapView.standardSelectColor = TreeXmlReader.xmlToColor(stdcolor);
-			}
-			catch (final Exception ex) {
-				MapView.standardSelectColor = Color.BLUE.darker();
-			}
-			try {
-				final String stdtextcolor = Controller.getResourceController().getProperty(
-				    ResourceController.RESOURCES_SELECTED_NODE_RECTANGLE_COLOR);
-				MapView.standardSelectRectangleColor = TreeXmlReader.xmlToColor(stdtextcolor);
-			}
-			catch (final Exception ex) {
-				MapView.standardSelectRectangleColor = Color.WHITE;
-			}
-			try {
-				final String drawCircle = Controller.getResourceController().getProperty(
-				    ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION);
-				MapView.standardDrawRectangleForSelection = TreeXmlReader.xmlToBoolean(drawCircle);
-			}
-			catch (final Exception ex) {
-				MapView.standardDrawRectangleForSelection = false;
-			}
-			try {
-				final String printOnWhite = Controller.getResourceController().getProperty(
-				    "printonwhitebackground");
-				MapView.printOnWhiteBackground = TreeXmlReader.xmlToBoolean(printOnWhite);
-			}
-			catch (final Exception ex) {
-				MapView.standardDrawRectangleForSelection = false;
-			}
+		if (MapView.standardMapBackgroundColor == null) {
+			String stdcolor = Controller.getResourceController().getProperty(
+			    ResourceController.RESOURCES_BACKGROUND_COLOR);
+			MapView.standardMapBackgroundColor = TreeXmlReader.xmlToColor(stdcolor);
+			stdcolor = Controller.getResourceController().getProperty(
+			    ResourceController.RESOURCES_SELECTED_NODE_COLOR);
+			MapView.standardSelectColor = TreeXmlReader.xmlToColor(stdcolor);
+			final String stdtextcolor = Controller.getResourceController().getProperty(
+			    ResourceController.RESOURCES_SELECTED_NODE_RECTANGLE_COLOR);
+			MapView.standardSelectRectangleColor = TreeXmlReader.xmlToColor(stdtextcolor);
+			final String drawCircle = Controller.getResourceController().getProperty(
+			    ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION);
+			MapView.standardDrawRectangleForSelection = TreeXmlReader.xmlToBoolean(drawCircle);
+			final String printOnWhite = Controller.getResourceController().getProperty(
+			    "printonwhitebackground");
+			MapView.printOnWhiteBackground = TreeXmlReader.xmlToBoolean(printOnWhite);
 			createPropertyChangeListener();
 		}
 		this.setAutoscrolls(true);
@@ -325,29 +290,25 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapView {
 		MapView.propertyChangeListener = new IFreemindPropertyListener() {
 			public void propertyChanged(final String propertyName, final String newValue,
 			                            final String oldValue) {
-				if (propertyName.equals(ResourceController.RESOURCES_NODE_TEXT_COLOR)) {
-					MapView.standardNodeTextColor = TreeXmlReader.xmlToColor(newValue);
-					Controller.getController().getMapView().getRoot().updateAll();
-				}
-				else if (propertyName.equals(ResourceController.RESOURCES_BACKGROUND_COLOR)) {
+				if (propertyName.equals(ResourceController.RESOURCES_BACKGROUND_COLOR)) {
 					MapView.standardMapBackgroundColor = TreeXmlReader.xmlToColor(newValue);
-					((MapView)Controller.getController().getMapView()).setBackground(
-					    MapView.standardMapBackgroundColor);
+					(Controller.getController().getMapView())
+					    .setBackground(MapView.standardMapBackgroundColor);
 				}
 				else if (propertyName.equals(ResourceController.RESOURCES_SELECTED_NODE_COLOR)) {
 					MapView.standardSelectColor = TreeXmlReader.xmlToColor(newValue);
-					((MapView)Controller.getController().getMapView()).repaintSelecteds();
+					(Controller.getController().getMapView()).repaintSelecteds();
 				}
 				else if (propertyName
 				    .equals(ResourceController.RESOURCES_SELECTED_NODE_RECTANGLE_COLOR)) {
 					MapView.standardSelectRectangleColor = TreeXmlReader.xmlToColor(newValue);
-					((MapView)Controller.getController().getMapView()).repaintSelecteds();
+					(Controller.getController().getMapView()).repaintSelecteds();
 				}
 				else if (propertyName
 				    .equals(ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION)) {
 					MapView.standardDrawRectangleForSelection = TreeXmlReader
 					    .xmlToBoolean(newValue);
-					((MapView)Controller.getController().getMapView()).repaintSelecteds();
+					(Controller.getController().getMapView()).repaintSelecteds();
 				}
 				else if (propertyName.equals("printonwhitebackground")) {
 					MapView.printOnWhiteBackground = TreeXmlReader.xmlToBoolean(newValue);
@@ -475,6 +436,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapView {
 		return new Insets(inner.y - outer.y + MapView.margin, inner.x - outer.x + MapView.margin,
 		    outer.height - inner.height - inner.y + outer.y + MapView.margin, outer.width
 		            - inner.width - inner.x + outer.x + MapView.margin);
+	}
+
+	public JComponent getComponent() {
+		return this;
 	}
 
 	/**
@@ -854,8 +819,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapView {
 		final NodeModel node = source.getModel();
 		final Collection<LinkModel> outLinks = NodeLinks.getLinks(node);
 		paintLinks(outLinks, graphics, alreadyPaintedLinks);
-		final Collection<LinkModel> inLinks = LinkController.getController(node.getModeController())
-		    .getLinksTo(node);
+		final Collection<LinkModel> inLinks = LinkController
+		    .getController(node.getModeController()).getLinksTo(node);
 		paintLinks(inLinks, graphics, alreadyPaintedLinks);
 		for (final ListIterator e = source.getChildrenViews().listIterator(); e.hasNext();) {
 			final NodeView target = (NodeView) e.next();
@@ -973,12 +938,12 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapView {
 		print(graphics2D);
 		endPrinting();
 		return Printable.PAGE_EXISTS;
-	}
+	};
 
 	public void rename() {
 		final String name = getModel().getTitle();
 		setName(name);
-	};
+	}
 
 	private void repaintSelecteds() {
 		final Iterator iterator = getSelection().iterator();
@@ -1058,7 +1023,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapView {
 		selectAsTheOnlyOneSelected(newSelected, true);
 	}
 
-	public void selectAsTheOnlyOneSelected(final NodeView newSelected, final boolean requestFocus) {
+	public void selectAsTheOnlyOneSelected(final NodeView node, final boolean requestFocus) {
+		final NodeView newSelected = node;
 		final Collection oldSelecteds = cloneSelection();
 		selection.clear();
 		selection.add(newSelected);
@@ -1097,9 +1063,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapView {
 		}
 	}
 
-	public boolean selectContinuous(final NodeView newSelected) {
+	public boolean selectContinuous(final NodeView nodeView) {
 		/* fc, 25.1.2004: corrected due to completely inconsistent behaviour. */
 		NodeView oldSelected = null;
+		final NodeView newSelected = nodeView;
 		final Collection selList = cloneSelection();
 		final Iterator j = selList.iterator(/* selList.size() */);
 		while (j.hasNext()) {
@@ -1121,8 +1088,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapView {
 		/* find old starting point. */
 		ListIterator i = newSelected.getSiblingViews().listIterator();
 		while (i.hasNext()) {
-			final NodeView nodeView = (NodeView) i.next();
-			if (nodeView == oldSelected) {
+			final NodeView next = (NodeView) i.next();
+			if (next == oldSelected) {
 				break;
 			}
 		}
@@ -1132,10 +1099,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapView {
 		 */
 		final ListIterator i_backup = i;
 		while (i.hasNext()) {
-			final NodeView nodeView = (NodeView) i.next();
-			if ((nodeView.isLeft() == oldPositionLeft || nodeView.isLeft() == newPositionLeft)) {
-				if (isSelected(nodeView)) {
-					deselect(nodeView);
+			final NodeView next = (NodeView) i.next();
+			if ((next.isLeft() == oldPositionLeft || next.isLeft() == newPositionLeft)) {
+				if (isSelected(next)) {
+					deselect(next);
 				}
 				else {
 					break;
@@ -1147,10 +1114,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapView {
 		if (i.hasPrevious()) {
 			i.previous(); /* this is old selected! */
 			while (i.hasPrevious()) {
-				final NodeView nodeView = (NodeView) i.previous();
-				if (nodeView.isLeft() == oldPositionLeft || nodeView.isLeft() == newPositionLeft) {
-					if (isSelected(nodeView)) {
-						deselect(nodeView);
+				final NodeView previous = (NodeView) i.previous();
+				if (previous.isLeft() == oldPositionLeft || previous.isLeft() == newPositionLeft) {
+					if (isSelected(previous)) {
+						deselect(previous);
 					}
 					else {
 						break;
@@ -1163,22 +1130,22 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapView {
 		/* find starting point. */
 		i = newSelected.getSiblingViews().listIterator();
 		while (i.hasNext()) {
-			final NodeView nodeView = (NodeView) i.next();
-			if (nodeView == newSelected || nodeView == oldSelected) {
-				if (!isSelected(nodeView) && nodeView.isContentVisible()) {
-					toggleSelected(nodeView);
+			final NodeView next = (NodeView) i.next();
+			if (next == newSelected || next == oldSelected) {
+				if (!isSelected(next) && next.isContentVisible()) {
+					toggleSelected(next);
 				}
 				break;
 			}
 		}
 		/* select all up to the end point. */
 		while (i.hasNext()) {
-			final NodeView nodeView = (NodeView) i.next();
-			if ((nodeView.isLeft() == oldPositionLeft || nodeView.isLeft() == newPositionLeft)
-			        && !isSelected(nodeView) && nodeView.isContentVisible()) {
-				toggleSelected(nodeView);
+			final NodeView next = (NodeView) i.next();
+			if ((next.isLeft() == oldPositionLeft || next.isLeft() == newPositionLeft)
+			        && !isSelected(next) && next.isContentVisible()) {
+				toggleSelected(next);
 			}
-			if (nodeView == newSelected || nodeView == oldSelected) {
+			if (next == newSelected || next == oldSelected) {
 				break;
 			}
 		}
@@ -1239,7 +1206,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapView {
 	 * Add the node to the selection if it is not yet there, remove it
 	 * otherwise.
 	 */
-	public void toggleSelected(final NodeView newSelected) {
+	public void toggleSelected(final NodeView nodeView) {
+		final NodeView newSelected = nodeView;
 		NodeView oldSelected = getSelected();
 		if (isSelected(newSelected)) {
 			if (selection.size() > 1) {
@@ -1296,8 +1264,4 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapView {
 		super.validateTree();
 		setViewPositionAfterValidate();
 	}
-
-	public Component getComponent() {
-		return this;
-    }
 }

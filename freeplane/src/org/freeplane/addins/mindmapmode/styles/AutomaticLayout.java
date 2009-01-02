@@ -353,7 +353,8 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 			myIndex = depth;
 		}
 		final Pattern p = AutomaticLayout.patterns.getChoice(myIndex);
-		MPatternController.getController(((MModeController) getModeController())).applyPattern(node, p);
+		MPatternController.getController(((MModeController) getModeController())).applyPattern(
+		    node, p);
 	}
 
 	/**

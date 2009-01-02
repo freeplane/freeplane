@@ -43,15 +43,24 @@ import java.util.Vector;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
-import org.freeplane.core.view.IMapView;
 import org.freeplane.map.link.NodeLinks;
 import org.freeplane.map.nodestyle.NodeStyleModel;
+import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
 /**
  * @author Dimitry Polivaev
  */
-public class ClipboardController implements IExtension{
+public class ClipboardController implements IExtension {
+	public static ClipboardController getController(final ModeController modeController) {
+		return (ClipboardController) modeController.getExtension(ClipboardController.class);
+	}
+
+	public static void install(final ModeController modeController,
+	                           final ClipboardController clipboardController) {
+		modeController.addExtension(ClipboardController.class, clipboardController);
+	}
+
 	static public void saveHTML(final NodeModel rootNodeOfBranch, final File file)
 	        throws IOException {
 		final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(
@@ -106,7 +115,7 @@ public class ClipboardController implements IExtension{
 		return null;
 	}
 
-	public Transferable copy(final IMapView view) {
+	public Transferable copy(final MapView view) {
 		return copy(view.getSelectedNodesSortedByY(), false);
 	}
 
@@ -122,7 +131,7 @@ public class ClipboardController implements IExtension{
 		return new MindMapNodesSelection(stringWriter.toString(), null, null, null, null, null);
 	}
 
-	public Transferable copySingle(final IMapView mapView) {
+	public Transferable copySingle(final MapView mapView) {
 		final List source = mapView.getSelection();
 		final Collection target = new Vector(source.size());
 		final ListIterator<NodeView> iterator = source.listIterator(source.size());
@@ -359,7 +368,9 @@ public class ClipboardController implements IExtension{
 		}
 		String fontsize = "";
 		if (NodeStyleModel.getColor(mindMapNodeModel) != null) {
-			pre += "\\cf" + ((Integer) colorTable.get(NodeStyleModel.getColor(mindMapNodeModel))).intValue();
+			pre += "\\cf"
+			        + ((Integer) colorTable.get(NodeStyleModel.getColor(mindMapNodeModel)))
+			            .intValue();
 		}
 		final NodeStyleModel font = NodeStyleModel.getModel(mindMapNodeModel);
 		if (font != null) {
@@ -383,7 +394,8 @@ public class ClipboardController implements IExtension{
 			final String text = rtfEscapeUnicodeAndSpecialCharacters(mindMapNodeModel
 			    .getPlainTextContent());
 			if (NodeLinks.getLink(mindMapNodeModel) != null) {
-				final String link = rtfEscapeUnicodeAndSpecialCharacters(NodeLinks.getLink(mindMapNodeModel));
+				final String link = rtfEscapeUnicodeAndSpecialCharacters(NodeLinks
+				    .getLink(mindMapNodeModel));
 				if (link.equals(mindMapNodeModel.toString())) {
 					fileout.write(pre + "<{\\ul\\cf1 " + link + "}>" + "}");
 				}
@@ -424,13 +436,5 @@ public class ClipboardController implements IExtension{
 		}
 		fileout.write("\n");
 		writeChildrenText(mindMapNodeModel, fileout, depth);
-	}
-
-	public static void install(ModeController modeController, ClipboardController clipboardController) {
-		modeController.addExtension(ClipboardController.class, clipboardController);
-    }
-
-	public static ClipboardController getController(ModeController modeController) {
-		return (ClipboardController)modeController.getExtension(ClipboardController.class);
 	}
 }

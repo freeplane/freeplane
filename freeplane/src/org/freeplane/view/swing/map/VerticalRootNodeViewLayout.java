@@ -44,7 +44,7 @@ public class VerticalRootNodeViewLayout extends NodeViewLayoutAdapter {
 	}
 
 	public Point getMainViewInPoint(final NodeView view) {
-		final Point centerPoint = view.getMainView().getCenterPoint();
+		final Point centerPoint = (view.getMainView()).getCenterPoint();
 		return centerPoint;
 	}
 

@@ -31,8 +31,8 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.undo.IUndoableActor;
+import org.freeplane.core.util.HtmlTools;
 import org.freeplane.core.util.Tools;
-import org.freeplane.map.text.HtmlTools;
 import org.freeplane.map.text.TextController;
 import org.freeplane.modes.mindmapmode.MMapController;
 import org.freeplane.modes.mindmapmode.MModeController;
@@ -59,7 +59,8 @@ class EditAction extends FreeplaneAction {
 	}
 
 	public void edit(final KeyEvent e, final boolean addNew, final boolean editLong) {
-		final NodeView selectedNodeView = MModeController.getMModeController().getMapView().getSelected();
+		final NodeView selectedNodeView = MModeController.getMModeController().getMapView()
+		    .getSelected();
 		if (selectedNodeView != null) {
 			if (e == null || !addNew) {
 				edit(selectedNodeView, selectedNodeView, e, false, false, editLong);
@@ -80,8 +81,8 @@ class EditAction extends FreeplaneAction {
 			return;
 		}
 		final MapView map = node.getMap();
-		map.validate();
-		map.invalidate();
+		map.getComponent().validate();
+		map.getComponent().invalidate();
 		if (!node.focused()) {
 			node.requestFocus();
 		}
@@ -95,8 +96,8 @@ class EditAction extends FreeplaneAction {
 		String useRichTextInNewLongNodes = "true";
 		if (!isHtmlNode && editDefinitivelyLong) {
 			final int showResult = new OptionalDontShowMeAgainDialog(Controller.getController()
-			    .getViewController().getJFrame(), MModeController.getMModeController().getSelectedView(),
-			    "edit.edit_rich_text", "edit.decision",
+			    .getViewController().getJFrame(), MModeController.getMModeController()
+			    .getSelectedView(), "edit.edit_rich_text", "edit.decision",
 			    new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
 			        ResourceController.RESOURCES_REMIND_USE_RICH_TEXT_IN_NEW_LONG_NODES),
 			    OptionalDontShowMeAgainDialog.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED).show()
@@ -125,8 +126,8 @@ class EditAction extends FreeplaneAction {
 				    }
 
 				    public void split(final String newText, final int position) {
-					    ((MTextController) TextController.getController(MModeController.getMModeController())).splitNode(node
-					        .getModel(), position, newText);
+					    ((MTextController) TextController.getController(MModeController
+					        .getMModeController())).splitNode(node.getModel(), position, newText);
 					    Controller.getController().getViewController().obtainFocusForSelected();
 					    cancel();
 				    }
@@ -137,7 +138,8 @@ class EditAction extends FreeplaneAction {
 		}
 		if (editExternal) {
 			final EditNodeExternalApplication editNodeExternalApplication = new EditNodeExternalApplication(
-			    node, text, firstEvent, MModeController.getMModeController(), new EditNodeBase.IEditControl() {
+			    node, text, firstEvent, MModeController.getMModeController(),
+			    new EditNodeBase.IEditControl() {
 				    public void cancel() {
 					    MModeController.getMModeController().setBlocked(false);
 					    mCurrentEditDialog = null;
@@ -149,8 +151,8 @@ class EditAction extends FreeplaneAction {
 				    }
 
 				    public void split(final String newText, final int position) {
-					    ((MTextController) TextController.getController(MModeController.getMModeController())).splitNode(node
-					        .getModel(), position, newText);
+					    ((MTextController) TextController.getController(MModeController
+					        .getMModeController())).splitNode(node.getModel(), position, newText);
 					    Controller.getController().getViewController().obtainFocusForSelected();
 					    cancel();
 				    }
@@ -173,8 +175,8 @@ class EditAction extends FreeplaneAction {
 				    }
 
 				    public void split(final String newText, final int position) {
-					    ((MTextController) TextController.getController(MModeController.getMModeController())).splitNode(node
-					        .getModel(), position, newText);
+					    ((MTextController) TextController.getController(MModeController
+					        .getMModeController())).splitNode(node.getModel(), position, newText);
 					    Controller.getController().getViewController().obtainFocusForSelected();
 					    cancel();
 				    }
@@ -187,7 +189,8 @@ class EditAction extends FreeplaneAction {
 		    MModeController.getMModeController(), new EditNodeBase.IEditControl() {
 			    public void cancel() {
 				    if (isNewNode) {
-					    MModeController.getMModeController().getMapView().selectAsTheOnlyOneSelected(node);
+					    MModeController.getMModeController().getMapView()
+					        .selectAsTheOnlyOneSelected(node);
 					    (getMindMapController()).undo();
 					    MModeController.getMModeController().select(prevSelected);
 					    if (parentFolded) {
@@ -231,8 +234,8 @@ class EditAction extends FreeplaneAction {
 			public void act() {
 				if (!oldText.equals(newText)) {
 					node.setText(newText);
-					MModeController.getMModeController().getMapController().nodeChanged(node, NodeModel.NODE_TEXT,
-					    oldText, newText);
+					MModeController.getMModeController().getMapController().nodeChanged(node,
+					    NodeModel.NODE_TEXT, oldText, newText);
 				}
 			}
 
@@ -243,8 +246,8 @@ class EditAction extends FreeplaneAction {
 			public void undo() {
 				if (!oldText.equals(newText)) {
 					node.setText(oldText);
-					MModeController.getMModeController().getMapController().nodeChanged(node, NodeModel.NODE_TEXT,
-					    newText, oldText);
+					MModeController.getMModeController().getMapController().nodeChanged(node,
+					    NodeModel.NODE_TEXT, newText, oldText);
 				}
 			}
 		};

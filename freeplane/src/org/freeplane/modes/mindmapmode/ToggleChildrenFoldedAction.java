@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.FreeplaneAction;
-import org.freeplane.core.view.IMapView;
+import org.freeplane.view.swing.map.MapView;
 
 class ToggleChildrenFoldedAction extends FreeplaneAction {
 	public ToggleChildrenFoldedAction() {
@@ -36,7 +36,7 @@ class ToggleChildrenFoldedAction extends FreeplaneAction {
 		final NodeModel selected = modeController.getSelectedNode();
 		((ToggleFoldedAction) getModeController().getAction("toggleFolded")).toggleFolded(selected
 		    .getModeController().getMapController().childrenUnfolded(selected));
-		final IMapView mapView = modeController.getMapView();
+		final MapView mapView = modeController.getMapView();
 		mapView.selectAsTheOnlyOneSelected(mapView.getNodeView(selected));
 		Controller.getController().getViewController().obtainFocusForSelected();
 	}

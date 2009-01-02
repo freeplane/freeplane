@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.view.swing.map.attribute;
+package org.freeplane.map.attribute.view;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -48,12 +48,12 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
 import org.freeplane.core.map.NodeModel;
-import org.freeplane.core.view.IMapView;
 import org.freeplane.map.attribute.AttributeRegistry;
 import org.freeplane.map.attribute.AttributeTableLayoutModel;
 import org.freeplane.map.attribute.ColumnWidthChangeEvent;
 import org.freeplane.map.attribute.IAttributeTableModel;
 import org.freeplane.map.attribute.IColumnWidthChangeListener;
+import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
 /**
@@ -462,7 +462,7 @@ public class AttributeTable extends JTable implements IColumnWidthChangeListener
 		else {
 			updateRowHeights();
 		}
-		final IMapView map = getAttributeView().getNodeView().getMap();
+		final MapView map = getAttributeView().getNodeView().getMap();
 		getParent().getParent().invalidate();
 		map.getModel().nodeChanged(getAttributeView().getNode());
 	}
