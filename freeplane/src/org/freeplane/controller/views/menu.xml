@@ -1,8 +1,0 @@
-				<menu_action field="newMap" key_ref="keystroke_newMap" />
-				<menu_action field="open" key_ref="keystroke_open" />
-				<menu_action field="quit" key_ref="keystroke_quit" />
-				<menu_action field="documentation" />
-				<menu_action field="freemindUrl" />
-				<menu_action field="faq" />
-				<menu_action field="license" />
-				<menu_action field="about" />
