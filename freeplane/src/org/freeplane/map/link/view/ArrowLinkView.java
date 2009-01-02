@@ -34,8 +34,9 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import org.freeplane.map.link.ArrowLinkModel;
-import org.freeplane.view.map.MapView;
-import org.freeplane.view.map.NodeView;
+import org.freeplane.map.link.LinkController;
+import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.NodeView;
 
 /**
  * This class represents a ArrowLink around a node.
@@ -123,7 +124,7 @@ public class ArrowLinkView {
 
 	public Color getColor() {
 		final ArrowLinkModel model = getModel();
-		return model.getTarget().getModeController().getLinkController().getColor(model);
+		return LinkController.getController(model.getTarget().getModeController()).getColor(model);
 	}
 
 	protected Rectangle2D getControlPoint(final Point2D p) {
@@ -161,7 +162,7 @@ public class ArrowLinkView {
 
 	public int getWidth() {
 		final ArrowLinkModel model = getModel();
-		return model.getTarget().getModeController().getLinkController().getWidth(model);
+		return LinkController.getController(model.getTarget().getModeController()).getWidth(model);
 	}
 
 	protected double getZoom() {

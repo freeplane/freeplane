@@ -27,7 +27,6 @@ import java.util.Vector;
 
 import javax.swing.ImageIcon;
 
-import org.freeplane.map.icon.MindIcon;
 
 /**
  * @author Dimitry Polivaev 20.11.2008

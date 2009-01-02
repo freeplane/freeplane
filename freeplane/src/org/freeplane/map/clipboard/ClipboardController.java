@@ -40,16 +40,18 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Vector;
 
+import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
+import org.freeplane.map.link.NodeLinks;
 import org.freeplane.map.nodestyle.NodeStyleModel;
-import org.freeplane.view.map.MapView;
-import org.freeplane.view.map.NodeView;
+import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.NodeView;
 
 /**
  * @author Dimitry Polivaev
  */
-public class ClipboardController {
+public class ClipboardController implements IExtension{
 	static public void saveHTML(final NodeModel rootNodeOfBranch, final File file)
 	        throws IOException {
 		final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(
@@ -78,7 +80,7 @@ public class ClipboardController {
 	}
 
 	private void collectColors(final NodeModel node, final HashSet colors) {
-		final Color color = node.getColor();
+		final Color color = NodeStyleModel.getColor(node);
 		if (color != null) {
 			colors.add(color);
 		}
@@ -356,10 +358,10 @@ public class ClipboardController {
 			level = "";
 		}
 		String fontsize = "";
-		if (mindMapNodeModel.getColor() != null) {
-			pre += "\\cf" + ((Integer) colorTable.get(mindMapNodeModel.getColor())).intValue();
+		if (NodeStyleModel.getColor(mindMapNodeModel) != null) {
+			pre += "\\cf" + ((Integer) colorTable.get(NodeStyleModel.getColor(mindMapNodeModel))).intValue();
 		}
-		final NodeStyleModel font = mindMapNodeModel.getNodeStyleModel();
+		final NodeStyleModel font = NodeStyleModel.getModel(mindMapNodeModel);
 		if (font != null) {
 			if (Boolean.TRUE.equals(font.isItalic())) {
 				pre += "\\i ";
@@ -380,8 +382,8 @@ public class ClipboardController {
 		else {
 			final String text = rtfEscapeUnicodeAndSpecialCharacters(mindMapNodeModel
 			    .getPlainTextContent());
-			if (mindMapNodeModel.getLink() != null) {
-				final String link = rtfEscapeUnicodeAndSpecialCharacters(mindMapNodeModel.getLink());
+			if (NodeLinks.getLink(mindMapNodeModel) != null) {
+				final String link = rtfEscapeUnicodeAndSpecialCharacters(NodeLinks.getLink(mindMapNodeModel));
 				if (link.equals(mindMapNodeModel.toString())) {
 					fileout.write(pre + "<{\\ul\\cf1 " + link + "}>" + "}");
 				}
@@ -409,8 +411,8 @@ public class ClipboardController {
 			fileout.write("o");
 		}
 		else {
-			if (mindMapNodeModel.getLink() != null) {
-				final String link = mindMapNodeModel.getLink();
+			if (NodeLinks.getLink(mindMapNodeModel) != null) {
+				final String link = NodeLinks.getLink(mindMapNodeModel);
 				if (!link.equals(plainTextContent)) {
 					fileout.write(plainTextContent + " ");
 				}
@@ -422,5 +424,13 @@ public class ClipboardController {
 		}
 		fileout.write("\n");
 		writeChildrenText(mindMapNodeModel, fileout, depth);
+	}
+
+	public static void install(ModeController modeController, ClipboardController clipboardController) {
+		modeController.addExtension(ClipboardController.class, clipboardController);
+    }
+
+	public static ClipboardController getController(ModeController modeController) {
+		return (ClipboardController)modeController.getExtension(ClipboardController.class);
 	}
 }

@@ -50,8 +50,7 @@ public class ManagePatterns extends FreeplaneAction {
 		formatDialog.setVisible(true);
 		if (formatDialog.getResult() == ChooseFormatPopupDialog.OK) {
 			try {
-				final MPatternController patternController = mindMapController
-				    .getPatternController();
+				final MPatternController patternController = MPatternController.getController(mindMapController);
 				final File patternFile = patternController.getPatternsFile();
 				StylePatternFactory.savePatterns(new FileWriter(patternFile), formatDialog
 				    .getPatternList());

@@ -1,8 +1,8 @@
 /*
  *  Freeplane - mind map editor
- *  Copyright (C) 2008 Joerg Mueller, Daniel Polansky, Christian Foltin, Dimitry Polivaev
+ *  Copyright (C) 2008 Dimitry Polivaev
  *
- *  This file is created by Dimitry Polivaev in 2008.
+ *  This file author is Dimitry Polivaev
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -17,26 +17,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.map.link.filemode;
+package org.freeplane.view.swing.map;
 
-import org.freeplane.core.map.ModeController;
-import org.freeplane.core.map.NodeModel;
-import org.freeplane.map.link.LinkController;
-import org.freeplane.modes.filemode.FNodeModel;
-
-/**
- * @author Dimitry Polivaev
- */
-public class FLinkController extends LinkController {
-	/**
-	 * @param modeController
-	 */
-	public FLinkController(final ModeController modeController) {
-		super(modeController);
-	}
-
-	@Override
-	public String getLink(final NodeModel node) {
-		return ((FNodeModel) node).getFile().toString();
-	}
+public interface INodeViewVisitor {
+	void visit(NodeView view);
 }

@@ -25,6 +25,8 @@ import java.awt.event.ActionEvent;
 import org.freeplane.controller.views.ColorTracker;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.MultipleNodeAction;
+import org.freeplane.map.nodestyle.NodeStyleController;
+import org.freeplane.map.nodestyle.NodeStyleModel;
 
 class NodeBackgroundColorAction extends MultipleNodeAction {
 	private Color actionBackgroundColor;
@@ -37,8 +39,8 @@ class NodeBackgroundColorAction extends MultipleNodeAction {
 	public void actionPerformed(final ActionEvent e) {
 		actionBackgroundColor = ColorTracker
 		    .showCommonJColorChooserDialog(super.getMModeController().getMapView().getSelected(),
-		        super.getMModeController().getText("choose_node_color"), super.getMModeController()
-		            .getSelectedNode().getBackgroundColor());
+		        super.getMModeController().getText("choose_node_color"), NodeStyleModel.getBackgroundColor(super.getMModeController()
+                .getSelectedNode()));
 		if (actionBackgroundColor == null) {
 			return;
 		}
@@ -47,7 +49,7 @@ class NodeBackgroundColorAction extends MultipleNodeAction {
 
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		((MNodeStyleController) super.getMModeController().getNodeStyleController())
+		((MNodeStyleController) NodeStyleController.getController(super.getMModeController()))
 		    .setBackgroundColor(node, actionBackgroundColor);
 	}
 }

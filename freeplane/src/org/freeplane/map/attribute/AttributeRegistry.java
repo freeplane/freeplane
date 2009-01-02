@@ -40,7 +40,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
 public class AttributeRegistry {
 	static public final int GLOBAL = -1;
 	private static final int TABLE_FONT_SIZE = 12;
-	private IAttributeController attributeController;
+	private AttributeController attributeController;
 	private ChangeEvent attributesEvent;
 	private String attributeViewType;
 	private ChangeEvent changeEvent;
@@ -61,7 +61,7 @@ public class AttributeRegistry {
 		super();
 	}
 
-	public AttributeRegistry(final IAttributeController attributeController) {
+	public AttributeRegistry(final AttributeController attributeController) {
 		super();
 		listenerList = new EventListenerList();
 		isAttributeLayoutChanged = false;
@@ -148,7 +148,7 @@ public class AttributeRegistry {
 		}
 	}
 
-	public IAttributeController getAttributeController() {
+	public AttributeController getAttributeController() {
 		return attributeController;
 	}
 

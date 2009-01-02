@@ -41,7 +41,7 @@ import org.freeplane.core.map.ModeController;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.util.Tools;
 import org.freeplane.map.url.UrlManager;
-import org.freeplane.view.map.MapView;
+import org.freeplane.view.swing.map.MapView;
 
 /**
  * @author foltin
@@ -71,7 +71,7 @@ abstract public class ExportAction extends FreeplaneAction {
 			chooser.setSelectedFile(new File(proposedName));
 		}
 		final ModeController mindMapController = getModeController();
-		final File lastCurrentDir = mindMapController.getUrlManager().getLastCurrentDir();
+		final File lastCurrentDir = UrlManager.getController(mindMapController).getLastCurrentDir();
 		if (lastCurrentDir != null) {
 			chooser.setCurrentDirectory(lastCurrentDir);
 		}
@@ -81,7 +81,7 @@ abstract public class ExportAction extends FreeplaneAction {
 			return null;
 		}
 		File chosenFile = chooser.getSelectedFile();
-		mindMapController.getUrlManager().setLastCurrentDir(chosenFile.getParentFile());
+		UrlManager.getController(mindMapController).setLastCurrentDir(chosenFile.getParentFile());
 		final String ext = UrlManager.getExtension(chosenFile.getName());
 		if (!Tools.safeEqualsIgnoreCase(ext, type)) {
 			chosenFile = new File(chosenFile.getParent(), chosenFile.getName() + "." + type);

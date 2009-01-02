@@ -24,6 +24,8 @@ import java.awt.event.ActionEvent;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.core.ui.SelectableAction;
+import org.freeplane.map.cloud.CloudController;
+import org.freeplane.map.cloud.CloudModel;
 
 /**
  * @author foltin
@@ -42,13 +44,12 @@ class CloudAction extends MultipleNodeAction {
 	 */
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		final MCloudController cloudController = (MCloudController) node.getModeController()
-		    .getCloudController();
-		cloudController.setCloud(node, node.getCloud() == null);
+		final MCloudController cloudController = (MCloudController) CloudController.getController(node.getModeController());
+		cloudController.setCloud(node, CloudModel.getModel(node) == null);
 	}
 
 	@Override
 	public void setSelected() {
-		setSelected(getMModeController().getSelectedNode().getCloud() != null);
+		setSelected(CloudModel.getModel(getMModeController().getSelectedNode()) != null);
 	}
 }

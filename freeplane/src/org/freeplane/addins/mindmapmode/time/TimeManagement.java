@@ -48,9 +48,10 @@ import org.freeplane.controller.views.IMapViewChangeListener;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.map.text.TextController;
 import org.freeplane.map.text.mindmapmode.MTextController;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.view.map.MapView;
+import org.freeplane.view.swing.map.MapView;
 
 /**
  * @author foltin
@@ -285,7 +286,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapView
 						final NodeModel element = (NodeModel) i.next();
 						final DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT);
 						final String dateAsString = df.format(getCalendarDate());
-						((MTextController) mController.getTextController()).setNodeText(element,
+						((MTextController) TextController.getController(mController)).setNodeText(element,
 						    (element.getText() + " " + dateAsString));
 					}
 				}

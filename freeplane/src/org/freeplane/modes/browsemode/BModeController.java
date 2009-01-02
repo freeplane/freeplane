@@ -27,8 +27,11 @@ import javax.swing.ImageIcon;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
+import org.freeplane.map.link.LinkController;
+import org.freeplane.map.link.NodeLinks;
 import org.freeplane.map.note.NodeNoteBase;
-import org.freeplane.view.map.MainView;
+import org.freeplane.map.note.NoteModel;
+import org.freeplane.view.swing.map.MainView;
 
 public class BModeController extends ModeController {
 	static public final String MODENAME = "Browse";
@@ -40,11 +43,11 @@ public class BModeController extends ModeController {
 
 	public void doubleClick() {
 		/* If the link exists, follow the link; toggle folded otherwise */
-		if (getSelectedNode().getLink() == null) {
+		if (NodeLinks.getLink(getSelectedNode()) == null) {
 			getMapController().toggleFolded();
 		}
 		else {
-			getLinkController().loadURL();
+			LinkController.getController(this).loadURL();
 		}
 	}
 
@@ -61,7 +64,7 @@ public class BModeController extends ModeController {
 		}
 		final MainView component = (MainView) e.getComponent();
 		if (component.isInFollowLinkRegion(e.getX())) {
-			getLinkController().loadURL();
+			LinkController.getController(this).loadURL();
 		}
 		else {
 			final NodeModel node = (component).getNodeView().getModel();
@@ -74,7 +77,7 @@ public class BModeController extends ModeController {
 	}
 
 	public void setNoteIcon(final NodeModel node) {
-		final String noteText = node.getNoteText();
+		final String noteText = NoteModel.getNoteText(node);
 		if (noteText != null && !noteText.equals("")) {
 			if (noteIcon == null) {
 				noteIcon = new ImageIcon(Controller.getResourceController().getResource(
@@ -93,4 +96,5 @@ public class BModeController extends ModeController {
 	protected void updateMenus(final String resource) {
 		super.updateMenus(resource);
 	}
+
 }

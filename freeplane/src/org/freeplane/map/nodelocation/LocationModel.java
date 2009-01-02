@@ -89,4 +89,18 @@ public class LocationModel implements IExtension {
 	public void setVGap(final int gap) {
 		vGap = Math.max(gap, 0);
 	}
+
+	public static LocationModel createLocationModel(NodeModel node) {
+		LocationModel location = (LocationModel) node.getExtension(LocationModel.class);
+		if (location == null) {
+			location = new LocationModel();
+			node.addExtension(location);
+		}
+		return location;
+    }
+
+	public static LocationModel getModel(NodeModel node) {
+		final LocationModel location = (LocationModel) node.getExtension(LocationModel.class);
+		return location != null ? location : LocationModel.NULL_LOCATION;
+    }
 }

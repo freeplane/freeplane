@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.view.map;
+package org.freeplane.view.swing.map;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -46,10 +46,14 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.MindIcon;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.FreemindMenuBar;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.map.icon.MindIcon;
+import org.freeplane.map.edge.EdgeController;
+import org.freeplane.map.link.NodeLinks;
+import org.freeplane.map.nodestyle.NodeStyleController;
+import org.freeplane.map.nodestyle.NodeStyleModel;
 import org.freeplane.map.text.HtmlTools;
 
 /**
@@ -240,7 +244,7 @@ public abstract class MainView extends JLabel {
 
 	public boolean isInFollowLinkRegion(final double xCoord) {
 		final NodeModel model = getNodeView().getModel();
-		return model.getLink() != null
+		return NodeLinks.getLink(model) != null
 		        && (model.isRoot()
 		                || !model.getModeController().getMapController().hasChildren(model) || isInVerticalRegion(
 		            xCoord, 1. / 2));
@@ -306,7 +310,7 @@ public abstract class MainView extends JLabel {
 		g.setColor(Color.WHITE);
 		g.fillOval(p.x, p.y, zoomedFoldingSymbolHalfWidth * 2, zoomedFoldingSymbolHalfWidth * 2);
 		final NodeModel model = getNodeView().getModel();
-		final Color edgeColor = model.getModeController().getEdgeController().getColor(model);
+		final Color edgeColor = EdgeController.getController(model.getModeController()).getColor(model);
 		g.setColor(edgeColor);
 		g.drawOval(p.x, p.y, zoomedFoldingSymbolHalfWidth * 2, zoomedFoldingSymbolHalfWidth * 2);
 		g.setColor(color);
@@ -317,7 +321,7 @@ public abstract class MainView extends JLabel {
 			paintBackground(graphics, getNodeView().getSelectedColor());
 		}
 		else {
-			final Color backgroundColor = getNodeView().getModel().getBackgroundColor();
+			final Color backgroundColor = NodeStyleModel.getBackgroundColor(getNodeView().getModel());
 			if (backgroundColor != null) {
 				paintBackground(graphics, backgroundColor);
 			}
@@ -369,7 +373,7 @@ public abstract class MainView extends JLabel {
 	}
 
 	public void updateFont(final NodeModel model) {
-		final Font font = model.getModeController().getNodeStyleController().getFont(model);
+		final Font font = NodeStyleController.getController(model.getModeController()).getFont(model);
 		setFont(font);
 	}
 
@@ -391,7 +395,7 @@ public abstract class MainView extends JLabel {
 			iconPresent = true;
 			iconImages.addImage(myIcon.getIcon());
 		}
-		final String link = node.getLink();
+		final String link = NodeLinks.getLink(node);
 		if (link != null) {
 			iconPresent = true;
 			String iconPath = "images/Link.png";
@@ -484,7 +488,7 @@ public abstract class MainView extends JLabel {
 	}
 
 	void updateTextColor(final NodeModel model) {
-		final Color color = model.getModeController().getNodeStyleController().getColor(model);
+		final Color color = NodeStyleController.getController(model.getModeController()).getColor(model);
 		setForeground(color);
 	}
 }

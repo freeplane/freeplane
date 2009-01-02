@@ -23,8 +23,9 @@ import javax.swing.text.html.HTMLDocument;
 
 import org.freeplane.core.map.INodeSelectionListener;
 import org.freeplane.core.map.NodeModel;
+import org.freeplane.map.note.NoteModel;
 import org.freeplane.map.note.mindmapnode.MNoteController.NoteDocumentListener;
-import org.freeplane.view.map.NodeView;
+import org.freeplane.view.swing.map.NodeView;
 
 final class NoteManager implements INodeSelectionListener {
 	public final static String EMPTY_EDITOR_STRING = "<html>\n  <head>\n\n  </head>\n  <body>\n    <p>\n      \n    </p>\n  </body>\n</html>\n";
@@ -81,7 +82,7 @@ final class NoteManager implements INodeSelectionListener {
 		}
 		catch (final Exception e) {
 		}
-		final String note = node.getNoteText();
+		final String note = NoteModel.getNoteText(node);
 		if (note != null) {
 			noteController.getNoteViewerComponent().setCurrentDocumentContent(note);
 			noteController.setLastContentEmpty(false);

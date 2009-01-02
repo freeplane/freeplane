@@ -30,7 +30,9 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.MapModel;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.map.clipboard.ClipboardController;
 import org.freeplane.map.clipboard.mindmapmode.MClipboardController;
+import org.freeplane.map.link.NodeLinks;
 import org.freeplane.map.url.UrlManager;
 import org.freeplane.modes.mindmapmode.MMapController;
 
@@ -42,14 +44,14 @@ class ImportLinkedBranchAction extends FreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		final MapModel map = Controller.getController().getMap();
 		final NodeModel selected = getModeController().getSelectedNode();
-		if (selected == null || selected.getLink() == null) {
+		if (selected == null || NodeLinks.getLink(selected) == null) {
 			JOptionPane.showMessageDialog(getModeController().getMapView(), getModeController()
 			    .getText("import_linked_branch_no_link"));
 			return;
 		}
 		URL absolute = null;
 		try {
-			final String relative = selected.getLink();
+			final String relative = NodeLinks.getLink(selected);
 			absolute = UrlManager.isAbsolutePath(relative) ? UrlManager
 			    .fileToUrl(new File(relative)) : new URL(UrlManager.fileToUrl(map.getFile()),
 			    relative);
@@ -63,11 +65,11 @@ class ImportLinkedBranchAction extends FreeplaneAction {
 		try {
 			final NodeModel node = ((MMapController) getMModeController().getMapController())
 			    .loadTree(map, new File(absolute.getFile()));
-			((MClipboardController) getMModeController().getClipboardController()).paste(node,
+			((MClipboardController) ClipboardController.getController(getMModeController())).paste(node,
 			    selected);
 		}
 		catch (final Exception ex) {
-			getModeController().getUrlManager().handleLoadingException(ex);
+			UrlManager.getController(getModeController()).handleLoadingException(ex);
 		}
 	}
 }

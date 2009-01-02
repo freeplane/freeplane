@@ -35,7 +35,7 @@ import org.freeplane.core.filter.condition.DefaultConditionRenderer;
 import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.filter.condition.NoFilteringCondition;
 import org.freeplane.core.map.MapModel;
-import org.freeplane.map.icon.MindIcon;
+import org.freeplane.core.map.MindIcon;
 import org.freeplane.map.note.NodeNoteBase;
 import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
@@ -44,7 +44,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.n3.nanoxml.XMLParserFactory;
 import org.freeplane.n3.nanoxml.XMLWriter;
-import org.freeplane.view.map.MapView;
+import org.freeplane.view.swing.map.MapView;
 
 /**
  * @author Dimitry Polivaev

@@ -26,9 +26,9 @@ import java.util.ListIterator;
 
 import org.freeplane.core.filter.util.SortedMapListModel;
 import org.freeplane.core.io.ITreeWriter;
+import org.freeplane.map.attribute.AttributeController;
 import org.freeplane.map.attribute.AttributeRegistry;
 import org.freeplane.map.attribute.NodeAttributeTableModel;
-import org.freeplane.map.icon.MindIcon;
 
 /**
  * @author Dimitry Polivaev
@@ -43,7 +43,7 @@ public class MapRegistry {
 	public MapRegistry(final MapModel map, final ModeController modeController) {
 		super();
 		mapIcons = new SortedMapListModel();
-		attributes = new AttributeRegistry(modeController.getAttributeController());
+		attributes = new AttributeRegistry(AttributeController.getController(modeController));
 	}
 
 	public void addIcon(final MindIcon icon) {
@@ -61,7 +61,7 @@ public class MapRegistry {
 	}
 
 	private void registryAttributes(final NodeModel node) {
-		final NodeAttributeTableModel model = node.getAttributes();
+		final NodeAttributeTableModel model = NodeAttributeTableModel.getModel(node);
 		if (model == null) {
 			return;
 		}

@@ -24,6 +24,7 @@ import java.awt.event.ActionEvent;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.map.text.HtmlTools;
+import org.freeplane.map.text.TextController;
 
 class UsePlainTextAction extends MultipleNodeAction {
 	public UsePlainTextAction() {
@@ -34,7 +35,7 @@ class UsePlainTextAction extends MultipleNodeAction {
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
 		final String nodeText = node.getText();
 		if (HtmlTools.isHtmlNode(nodeText)) {
-			((MTextController) getMModeController().getTextController()).setNodeText(node,
+			((MTextController) TextController.getController(getMModeController())).setNodeText(node,
 			    HtmlTools.htmlToPlain(nodeText));
 		}
 	}

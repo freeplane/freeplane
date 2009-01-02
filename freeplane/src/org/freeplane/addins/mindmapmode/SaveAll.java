@@ -28,7 +28,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.view.map.MapView;
+import org.freeplane.view.swing.map.MapView;
 
 /**
  * @author foltin

@@ -32,6 +32,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
+import org.freeplane.view.swing.map.NodeView;
 
 /**
  * @author Dimitry Polivaev
@@ -137,8 +138,8 @@ public class NodeAttributeTableModel extends AbstractTableModel implements IAttr
 		return (Attribute) attributes.get(row);
 	}
 
-	public IAttributeController getAttributeController() {
-		return node.getMap().getModeController().getAttributeController();
+	public AttributeController getAttributeController() {
+		return AttributeController.getController(node.getMap().getModeController());
 	}
 
 	public List getAttributeKeyList() {
@@ -261,7 +262,6 @@ public class NodeAttributeTableModel extends AbstractTableModel implements IAttr
 	}
 
 	public void insertRow(final int index, final String name, final String value) {
-		getAttributeController().performInsertRow(this, index, name, value);
 	}
 
 	/*
@@ -335,4 +335,27 @@ public class NodeAttributeTableModel extends AbstractTableModel implements IAttr
 	public void setValueAt(final Object o, final int row, final int col) {
 		getAttributeController().performSetValueAt(this, o, row, col);
 	}
+
+	public static NodeAttributeTableModel createAttributeTableModel(NodeModel node) {
+		NodeAttributeTableModel attributeModel = (NodeAttributeTableModel) node.getExtension(NodeAttributeTableModel.class);
+		if (attributeModel != null) {
+			return attributeModel;
+		}
+		attributeModel = new NodeAttributeTableModel(node);
+		node.addExtension(attributeModel);
+		if (node.areViewsEmpty()) {
+			return attributeModel;
+		}
+		final Iterator iterator = node.getViewers().iterator();
+		while (iterator.hasNext()) {
+			final NodeView view = (NodeView) iterator.next();
+			view.createAttributeView();
+		}
+		return attributeModel;
+	}
+
+	public static NodeAttributeTableModel getModel(NodeModel node) {
+		final NodeAttributeTableModel attributes = (NodeAttributeTableModel) node.getExtension(NodeAttributeTableModel.class);
+		return attributes != null ? attributes : NodeAttributeTableModel.EMTPY_ATTRIBUTES;
+    }
 }

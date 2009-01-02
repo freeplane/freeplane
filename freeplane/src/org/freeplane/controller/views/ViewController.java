@@ -48,7 +48,7 @@ import org.freeplane.core.ui.FreemindMenuBar;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.UIBuilder;
 import org.freeplane.core.ui.UserInputListenerFactory;
-import org.freeplane.view.map.MapView;
+import org.freeplane.view.swing.map.MapView;
 
 /**
  * @author Dimitry Polivaev

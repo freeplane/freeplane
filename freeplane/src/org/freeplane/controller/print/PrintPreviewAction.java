@@ -25,7 +25,7 @@ import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.view.map.MapView;
+import org.freeplane.view.swing.map.MapView;
 
 class PrintPreviewAction extends AbstractPrintAction {
 	PrintPreviewAction(final PrintController controller) {

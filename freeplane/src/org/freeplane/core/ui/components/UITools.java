@@ -34,7 +34,7 @@ import javax.swing.JDialog;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
-import org.freeplane.view.map.NodeView;
+import org.freeplane.view.swing.map.NodeView;
 
 /**
  * @author Dimitry Polivaev

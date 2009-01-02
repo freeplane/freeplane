@@ -33,8 +33,8 @@ import org.freeplane.core.map.MapModel;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.undo.IUndoableActor;
-import org.freeplane.view.map.MapView;
-import org.freeplane.view.map.NodeView;
+import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.NodeView;
 
 class NodeUpAction extends FreeplaneAction {
 	public NodeUpAction() {

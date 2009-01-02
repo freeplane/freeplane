@@ -31,6 +31,7 @@ import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
+import org.freeplane.map.clipboard.ClipboardController;
 import org.freeplane.modes.mindmapmode.MMapController;
 import org.freeplane.modes.mindmapmode.MModeController;
 
@@ -55,13 +56,13 @@ class CutAction extends FreeplaneAction {
 			return;
 		}
 		final Transferable copy = cut(mMindMapController.getMapView().getSelectedNodesSortedByY());
-		mMindMapController.getClipboardController().setClipboardContents(copy);
+		ClipboardController.getController(mMindMapController).setClipboardContents(copy);
 		Controller.getController().getViewController().obtainFocusForSelected();
 	}
 
 	Transferable cut(final List nodeList) {
 		getModeController().getMapController().sortNodesByDepth(nodeList);
-		final Transferable totalCopy = getModeController().getClipboardController().copy(nodeList,
+		final Transferable totalCopy = ClipboardController.getController(getModeController()).copy(nodeList,
 		    true);
 		for (final Iterator i = nodeList.iterator(); i.hasNext();) {
 			final NodeModel node = (NodeModel) i.next();

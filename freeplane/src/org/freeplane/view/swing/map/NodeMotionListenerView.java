@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.view.map;
+package org.freeplane.view.swing.map;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -28,6 +28,7 @@ import javax.swing.JComponent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.IUserInputListenerFactory;
+import org.freeplane.map.nodelocation.LocationModel;
 
 /**
  * @author Dimitry Polivaev
@@ -62,7 +63,7 @@ public class NodeMotionListenerView extends JComponent {
 		if (isMouseEntered()) {
 			final Graphics2D g2 = (Graphics2D) g;
 			final Color color = g2.getColor();
-			if (movedView.getModel().getLocationModel().getHGap() <= 0) {
+			if (LocationModel.getModel(movedView.getModel()).getHGap() <= 0) {
 				g2.setColor(Color.RED);
 				g.fillOval(0, 0, getWidth() - 1, getHeight() - 1);
 			}

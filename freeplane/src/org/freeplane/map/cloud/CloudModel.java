@@ -20,6 +20,7 @@
 package org.freeplane.map.cloud;
 
 import java.awt.Color;
+import java.util.ListIterator;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.map.NodeModel;
@@ -43,7 +44,7 @@ public class CloudModel implements IExtension {
 		if (target != null) {
 			for (NodeModel parentNode = target.getParentNode(); parentNode != null; parentNode = parentNode
 			    .getParentNode()) {
-				final CloudModel cloud = parentNode.getCloud();
+				final CloudModel cloud = CloudModel.getModel(parentNode);
 				if (cloud != null) {
 					iterativeLevel = cloud.getIterativeLevel(target) + 1;
 					break;
@@ -89,5 +90,37 @@ public class CloudModel implements IExtension {
 
 	public void setWidth(final int width) {
 		this.width = width;
+	}
+
+	public static CloudModel getModel(NodeModel node) {
+		return (CloudModel) node.getExtension(CloudModel.class);
+    }
+
+	public static void setModel(NodeModel node, CloudModel cloud) {
+		final CloudModel oldCloud = CloudModel.getModel(node);
+		if (cloud != null && oldCloud == null) {
+			changeChildCloudIterativeLevels(node, 1);
+			node.addExtension(cloud);
+		}
+		else if (cloud == null && oldCloud != null) {
+			changeChildCloudIterativeLevels(node, -1);
+			node.removeExtension(CloudModel.class);
+		}
+    }
+
+	/**
+	 * Correct iterative level values of children
+	 * @param node 
+	 */
+	private static void changeChildCloudIterativeLevels(NodeModel node, final int deltaLevel) {
+		for (final ListIterator e = node.getModeController().getMapController().childrenUnfolded(node); e
+		    .hasNext();) {
+			final NodeModel childNode = (NodeModel) e.next();
+			final CloudModel childCloud = CloudModel.getModel(childNode);
+			if (childCloud != null) {
+				childCloud.changeIterativeLevel(deltaLevel);
+			}
+			changeChildCloudIterativeLevels(childNode, deltaLevel);
+		}
 	}
 }

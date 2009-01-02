@@ -41,7 +41,10 @@ import org.freeplane.core.map.MapReader.NodeTreeCreator;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.core.util.Tools;
+import org.freeplane.map.attribute.AttributeController;
+import org.freeplane.map.clipboard.ClipboardController;
 import org.freeplane.map.clipboard.MindMapNodesSelection;
+import org.freeplane.map.link.LinkController;
 import org.freeplane.map.link.mindmapmode.MLinkController;
 import org.freeplane.map.text.HtmlTools;
 import org.freeplane.modes.mindmapmode.MMapController;
@@ -84,7 +87,7 @@ class PasteAction extends FreeplaneAction {
 				final String body = m.group(2);
 				if (!body.matches(".*<\\s*a.*")) {
 					final String href = m.group(1);
-					((MLinkController) node.getModeController().getLinkController()).setLink(node,
+					((MLinkController) LinkController.getController(node.getModeController())).setLink(node,
 					    href);
 				}
 			}
@@ -106,7 +109,7 @@ class PasteAction extends FreeplaneAction {
 				final NodeModel node = getMModeController().getMapController().newNode(
 				    file.getName(), target.getMap());
 				node.setLeft(isLeft);
-				((MLinkController) node.getModeController().getLinkController()).setLink(node, file
+				((MLinkController) LinkController.getController(node.getModeController())).setLink(node, file
 				    .getAbsolutePath());
 				PasteAction.this.paste(node, target, asSibling, isLeft, false);
 				final NodeModel parentNode = node.getParentNode();
@@ -174,8 +177,7 @@ class PasteAction extends FreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final MClipboardController clipboardController = (MClipboardController) getModeController()
-		    .getClipboardController();
+		final MClipboardController clipboardController = (MClipboardController) ClipboardController.getController(getModeController());
 		clipboardController.paste(clipboardController.getClipboardContents(), getMModeController()
 		    .getMapView().getSelected().getModel());
 	}
@@ -274,7 +276,7 @@ class PasteAction extends FreeplaneAction {
 			}
 			for (final ListIterator e = newNodes.listIterator(); e.hasNext();) {
 				final NodeModel child = (NodeModel) e.next();
-				getMModeController().getAttributeController().performRegistrySubtreeAttributes(
+				AttributeController.getController(getMModeController()).performRegistrySubtreeAttributes(
 				    child);
 			}
 		}
@@ -345,7 +347,7 @@ class PasteAction extends FreeplaneAction {
 			}
 			final Matcher mailMatcher = mailPattern.matcher(visibleText);
 			if (mailMatcher.find()) {
-				((MLinkController) node.getModeController().getLinkController()).setLink(node,
+				((MLinkController) LinkController.getController(node.getModeController())).setLink(node,
 				    ("mailto:" + mailMatcher.group()));
 			}
 			for (int j = 0; j < linkPrefixes.length; j++) {
@@ -357,7 +359,7 @@ class PasteAction extends FreeplaneAction {
 					            text.substring(linkEnd, linkEnd + 1)).matches()) {
 						linkEnd++;
 					}
-					((MLinkController) node.getModeController().getLinkController()).setLink(node,
+					((MLinkController) LinkController.getController(node.getModeController())).setLink(node,
 					    text.substring(linkStart, linkEnd));
 				}
 			}

@@ -28,7 +28,7 @@ import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.map.icon.MindIcon;
+import org.freeplane.core.map.MindIcon;
 
 /**
  * @author Dimitry Polivaev

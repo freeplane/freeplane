@@ -26,6 +26,7 @@ import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.map.pattern.mindmapnode.MPatternController;
 import org.freeplane.map.pattern.mindmapnode.Pattern;
 import org.freeplane.map.pattern.mindmapnode.StylePatternFactory;
 import org.freeplane.modes.mindmapmode.MModeController;
@@ -56,7 +57,7 @@ public class ApplyFormatPlugin extends FreeplaneAction {
 			final Pattern pattern = formatDialog.getPattern();
 			for (final Iterator iter = selected.iterator(); iter.hasNext();) {
 				final NodeModel node = (NodeModel) iter.next();
-				getMModeController().getPatternController().applyPattern(node, pattern);
+				MPatternController.getController(getMModeController()).applyPattern(node, pattern);
 			}
 		}
 	}

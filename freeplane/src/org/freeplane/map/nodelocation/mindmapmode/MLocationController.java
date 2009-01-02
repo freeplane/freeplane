@@ -44,10 +44,10 @@ public class MLocationController extends LocationController {
 			this.gap = gap;
 			this.shiftY = shiftY;
 			this.parentVGap = parentVGap;
-			final LocationModel locationModel = node.getLocationModel();
+			final LocationModel locationModel = LocationModel.getModel(node);
 			oldHgap = locationModel.getHGap();
 			oldShiftY = locationModel.getShiftY();
-			oldParentVgap = !node.isRoot() ? node.getParentNode().getLocationModel().getVGap() : 0;
+			oldParentVgap = !node.isRoot() ? LocationModel.getModel(node.getParentNode()).getVGap() : 0;
 		}
 
 		public void act() {
@@ -60,11 +60,11 @@ public class MLocationController extends LocationController {
 
 		private void moveNodePosition(final NodeModel node, final int parentVGap, final int hGap,
 		                              final int shiftY) {
-			final LocationModel locationModel = node.createLocationModel();
+			final LocationModel locationModel = LocationModel.createLocationModel(node);
 			locationModel.setHGap(hGap);
 			locationModel.setShiftY(shiftY);
 			if (!node.isRoot()) {
-				node.getParentNode().createLocationModel().setVGap(parentVGap);
+				LocationModel.createLocationModel(node.getParentNode()).setVGap(parentVGap);
 			}
 			node.getModeController().getMapController().nodeChanged(node);
 		}

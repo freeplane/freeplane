@@ -580,7 +580,7 @@ public class FilterComposerDialog extends JDialog {
 
 	protected JFileChooser getFileChooser() {
 		final ModeController modeController = fc.getMap().getModeController();
-		final JFileChooser chooser = ((MModeController) modeController).getUrlManager()
+		final JFileChooser chooser = UrlManager.getController(((MModeController) modeController))
 		    .getFileChooser(MindMapFilterFileFilter.filter);
 		return chooser;
 	}

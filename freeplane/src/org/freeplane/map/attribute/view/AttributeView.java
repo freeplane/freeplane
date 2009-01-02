@@ -33,13 +33,14 @@ import javax.swing.table.JTableHeader;
 
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
+import org.freeplane.map.attribute.AttributeController;
 import org.freeplane.map.attribute.AttributeRegistry;
 import org.freeplane.map.attribute.AttributeTableLayoutModel;
 import org.freeplane.map.attribute.IAttributeTableModel;
 import org.freeplane.map.attribute.NodeAttributeTableModel;
 import org.freeplane.map.attribute.mindmapnode.MAttributeController;
-import org.freeplane.view.map.MapView;
-import org.freeplane.view.map.NodeView;
+import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.NodeView;
 
 /**
  * This class represents a single Node of a MindMap (in analogy to
@@ -80,8 +81,7 @@ public class AttributeView implements ChangeListener, TableModelListener {
 		final ModeController modeController = getModeController();
 		if (attributeTable != null) {
 			if (AttributeView.tablePopupMenu == null) {
-				AttributeView.tablePopupMenu = ((MAttributeController) modeController
-				    .getAttributeController()).getAttributeTablePopupMenu();
+				AttributeView.tablePopupMenu = ((MAttributeController) AttributeController.getController(modeController)).getAttributeTablePopupMenu();
 			}
 			getAttributes().getLayout().addColumnWidthChangeListener(attributeTable);
 			attributeTable.addMouseListener(AttributeView.tablePopupMenu);
@@ -114,7 +114,7 @@ public class AttributeView implements ChangeListener, TableModelListener {
 	}
 
 	public NodeAttributeTableModel getAttributes() {
-		return getNode().getAttributes();
+		return NodeAttributeTableModel.getModel(getNode());
 	}
 
 	public IAttributeTableModel getCurrentAttributeTableModel() {

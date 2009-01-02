@@ -33,15 +33,16 @@ import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.core.util.Tools;
 import org.freeplane.map.text.HtmlTools;
+import org.freeplane.map.text.TextController;
 import org.freeplane.modes.mindmapmode.MMapController;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.view.map.EditNodeBase;
-import org.freeplane.view.map.EditNodeDialog;
-import org.freeplane.view.map.EditNodeExternalApplication;
-import org.freeplane.view.map.EditNodeTextField;
-import org.freeplane.view.map.EditNodeWYSIWYG;
-import org.freeplane.view.map.MapView;
-import org.freeplane.view.map.NodeView;
+import org.freeplane.view.swing.map.EditNodeBase;
+import org.freeplane.view.swing.map.EditNodeDialog;
+import org.freeplane.view.swing.map.EditNodeExternalApplication;
+import org.freeplane.view.swing.map.EditNodeTextField;
+import org.freeplane.view.swing.map.EditNodeWYSIWYG;
+import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.NodeView;
 
 class EditAction extends FreeplaneAction {
 	private static final Pattern HTML_HEAD = Pattern.compile("\\s*<head>.*</head>", Pattern.DOTALL);
@@ -129,7 +130,7 @@ class EditAction extends FreeplaneAction {
 				    }
 
 				    public void split(final String newText, final int position) {
-					    ((MTextController) getMModeController().getTextController()).splitNode(node
+					    ((MTextController) TextController.getController(getMModeController())).splitNode(node
 					        .getModel(), position, newText);
 					    Controller.getController().getViewController().obtainFocusForSelected();
 					    cancel();
@@ -153,7 +154,7 @@ class EditAction extends FreeplaneAction {
 				    }
 
 				    public void split(final String newText, final int position) {
-					    ((MTextController) getMModeController().getTextController()).splitNode(node
+					    ((MTextController) TextController.getController(getMModeController())).splitNode(node
 					        .getModel(), position, newText);
 					    Controller.getController().getViewController().obtainFocusForSelected();
 					    cancel();
@@ -177,7 +178,7 @@ class EditAction extends FreeplaneAction {
 				    }
 
 				    public void split(final String newText, final int position) {
-					    ((MTextController) getMModeController().getTextController()).splitNode(node
+					    ((MTextController) TextController.getController(getMModeController())).splitNode(node
 					        .getModel(), position, newText);
 					    Controller.getController().getViewController().obtainFocusForSelected();
 					    cancel();

@@ -26,11 +26,12 @@ import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.IIconInformation;
+import org.freeplane.core.map.MindIcon;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.map.icon.IIconInformation;
-import org.freeplane.map.icon.MindIcon;
+import org.freeplane.map.icon.IconController;
 import org.freeplane.modes.mindmapmode.MModeController;
 
 class IconAction extends MultipleNodeAction implements IIconInformation {
@@ -46,12 +47,12 @@ class IconAction extends MultipleNodeAction implements IIconInformation {
 	public void actionPerformed(final ActionEvent e, final NodeModel node) {
 		if (e.getID() == ActionEvent.ACTION_FIRST
 		        && (e.getModifiers() & ActionEvent.SHIFT_MASK & ~ActionEvent.CTRL_MASK & ~ActionEvent.ALT_MASK) != 0) {
-			((MIconController) getModeController().getIconController()).removeAllIcons(node);
-			((MIconController) getModeController().getIconController()).addIcon(node, icon, 0);
+			((MIconController) IconController.getController(getModeController())).removeAllIcons(node);
+			((MIconController) IconController.getController(getModeController())).addIcon(node, icon, 0);
 			return;
 		}
 		if (e == null || (e.getModifiers() & (ActionEvent.CTRL_MASK | ActionEvent.ALT_MASK)) == 0) {
-			((MIconController) getModeController().getIconController()).addIcon(node, icon,
+			((MIconController) IconController.getController(getModeController())).addIcon(node, icon,
 			    MindIcon.LAST);
 			return;
 		}

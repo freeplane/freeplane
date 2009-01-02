@@ -28,7 +28,9 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.MapModel;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.map.clipboard.ClipboardController;
 import org.freeplane.map.clipboard.mindmapmode.MClipboardController;
+import org.freeplane.map.url.UrlManager;
 import org.freeplane.modes.mindmapmode.MMapController;
 
 class ImportBranchAction extends FreeplaneAction {
@@ -42,7 +44,7 @@ class ImportBranchAction extends FreeplaneAction {
 			return;
 		}
 		final JFileChooser chooser = new JFileChooser();
-		final FileFilter fileFilter = ((FileManager) getModeController().getUrlManager())
+		final FileFilter fileFilter = ((FileManager) UrlManager.getController(getModeController()))
 		    .getFileFilter();
 		if (fileFilter != null) {
 			chooser.addChoosableFileFilter(fileFilter);
@@ -54,11 +56,11 @@ class ImportBranchAction extends FreeplaneAction {
 				final MapModel map = parent.getMap();
 				final NodeModel node = ((MMapController) getMModeController().getMapController())
 				    .loadTree(map, chooser.getSelectedFile());
-				((MClipboardController) getMModeController().getClipboardController()).paste(node,
+				((MClipboardController) ClipboardController.getController(getMModeController())).paste(node,
 				    parent);
 			}
 			catch (final Exception ex) {
-				getModeController().getUrlManager().handleLoadingException(ex);
+				UrlManager.getController(getModeController()).handleLoadingException(ex);
 			}
 		}
 	}

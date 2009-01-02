@@ -19,7 +19,6 @@
  */
 package org.freeplane.core.map;
 
-import java.awt.Color;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -45,20 +44,11 @@ import org.freeplane.core.extension.IExtensionCollection;
 import org.freeplane.core.filter.FilterInfo;
 import org.freeplane.core.filter.IFilter;
 import org.freeplane.core.util.Tools;
-import org.freeplane.map.attribute.Attribute;
-import org.freeplane.map.attribute.NodeAttributeTableModel;
-import org.freeplane.map.cloud.CloudModel;
-import org.freeplane.map.edge.EdgeModel;
-import org.freeplane.map.icon.MindIcon;
-import org.freeplane.map.link.LinkModel;
-import org.freeplane.map.link.NodeLinks;
-import org.freeplane.map.nodelocation.LocationModel;
-import org.freeplane.map.nodestyle.NodeStyleModel;
 import org.freeplane.map.note.NoteModel;
 import org.freeplane.map.text.HtmlTools;
 import org.freeplane.modes.mindmapmode.EncryptionModel;
-import org.freeplane.view.map.INodeViewVisitor;
-import org.freeplane.view.map.NodeView;
+import org.freeplane.view.swing.map.INodeViewVisitor;
+import org.freeplane.view.swing.map.NodeView;
 
 /**
  * This class represents a single Node of a Tree. It contains direct handles to
@@ -81,7 +71,6 @@ public class NodeModel implements MutableTreeNode {
 	final private FilterInfo filterInfo = new FilterInfo();
 	protected boolean folded;
 	private HistoryInformationModel historyInformation = null;
-	private final List hooks;
 	final private NodeIconSetModel icons;
 	private String id;
 	private final EventListenerList listenerList = new EventListenerList();
@@ -98,11 +87,13 @@ public class NodeModel implements MutableTreeNode {
 		this(null, map);
 	}
 
+	public boolean areViewsEmpty(){
+		return views == null || views.isEmpty();
+	}
 	public NodeModel(final Object userObject, final MapModel map) {
 		children = new LinkedList();
 		extensions = new ExtensionArray();
 		setText((String) userObject);
-		hooks = null;
 		setHistoryInformation(new HistoryInformationModel());
 		this.map = map;
 		icons = new NodeIconSetModel();
@@ -151,20 +142,6 @@ public class NodeModel implements MutableTreeNode {
 		addTreeModelListener(viewer);
 	}
 
-	/**
-	 * Correct iterative level values of children
-	 */
-	private void changeChildCloudIterativeLevels(final int deltaLevel) {
-		for (final ListIterator e = getModeController().getMapController().childrenUnfolded(this); e
-		    .hasNext();) {
-			final NodeModel childNode = (NodeModel) e.next();
-			final CloudModel childCloud = childNode.getCloud();
-			if (childCloud != null) {
-				childCloud.changeIterativeLevel(deltaLevel);
-			}
-			childNode.changeChildCloudIterativeLevels(deltaLevel);
-		}
-	}
 
 	public Enumeration children() {
 		final Iterator i = children.iterator();
@@ -187,52 +164,11 @@ public class NodeModel implements MutableTreeNode {
 		return extensions.containsExtension(extension);
 	}
 
-	public void createAttributeTableModel() {
-		if (getExtension(NodeAttributeTableModel.class) == null) {
-			addExtension(new NodeAttributeTableModel(this));
-			if (views == null) {
-				return;
-			}
-			final Iterator iterator = views.iterator();
-			while (iterator.hasNext()) {
-				final NodeView view = (NodeView) iterator.next();
-				view.createAttributeView();
-			}
-		}
-	}
-
-	public EdgeModel createEdge() {
-		EdgeModel edge = (EdgeModel) getExtension(EdgeModel.class);
-		if (edge == null) {
-			edge = new EdgeModel();
-			addExtension(edge);
-		}
-		return edge;
-	}
-
 	public String createID() {
 		if (id == null) {
 			id = getMap().registryNode(this);
 		}
 		return id;
-	}
-
-	public LocationModel createLocationModel() {
-		LocationModel location = (LocationModel) getExtension(LocationModel.class);
-		if (location == null) {
-			location = new LocationModel();
-			addExtension(location);
-		}
-		return location;
-	}
-
-	private NodeStyleModel createNodeStyleModel(final NodeModel node) {
-		NodeStyleModel styleModel = (NodeStyleModel) getExtension(NodeStyleModel.class);
-		if (styleModel == null) {
-			styleModel = new NodeStyleModel();
-			addExtension(styleModel);
-		}
-		return styleModel;
 	}
 
 	private void createToolTip() {
@@ -253,24 +189,6 @@ public class NodeModel implements MutableTreeNode {
 		return NodeModel.ALLOWSCHILDREN;
 	}
 
-	public Attribute getAttribute(final int row) {
-		return getAttributes().getAttribute(row);
-	}
-
-	public NodeAttributeTableModel getAttributes() {
-		final NodeAttributeTableModel attributes = (NodeAttributeTableModel) getExtension(NodeAttributeTableModel.class);
-		return attributes != null ? attributes : NodeAttributeTableModel.EMTPY_ATTRIBUTES;
-	}
-
-	public int getAttributeTableLength() {
-		return getAttributes().getAttributeTableLength();
-	}
-
-	public Color getBackgroundColor() {
-		final NodeStyleModel styleModel = (NodeStyleModel) getExtension(NodeStyleModel.class);
-		return styleModel == null ? null : styleModel.getBackgroundColor();
-	}
-
 	public TreeNode getChildAt(final int childIndex) {
 		return children.get(childIndex);
 	}
@@ -279,7 +197,7 @@ public class NodeModel implements MutableTreeNode {
 		if (children == null) {
 			return 0;
 		}
-		final EncryptionModel encryptionModel = getEncryptionModel();
+		final EncryptionModel encryptionModel = EncryptionModel.getModel(this);
 		return encryptionModel == null || encryptionModel.isAccessible() ? children.size() : 0;
 	}
 
@@ -295,23 +213,6 @@ public class NodeModel implements MutableTreeNode {
 
 	public List<NodeModel> getChildren() {
 		return Collections.unmodifiableList((children != null) ? children : Collections.EMPTY_LIST);
-	}
-
-	public CloudModel getCloud() {
-		return (CloudModel) getExtension(CloudModel.class);
-	}
-
-	public Color getColor() {
-		final NodeStyleModel styleModel = (NodeStyleModel) getExtension(NodeStyleModel.class);
-		return styleModel == null ? null : styleModel.getColor();
-	}
-
-	public EdgeModel getEdge() {
-		return (EdgeModel) getExtension(EdgeModel.class);
-	}
-
-	public EncryptionModel getEncryptionModel() {
-		return (EncryptionModel) getExtension(EncryptionModel.class);
 	}
 
 	public IExtension getExtension(final Class clazz) {
@@ -330,17 +231,6 @@ public class NodeModel implements MutableTreeNode {
 		return historyInformation;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see freemind.modes.MindMapNode#getHooks()
-	 */
-	public List getHooks() {
-		if (hooks == null) {
-			return Collections.EMPTY_LIST;
-		}
-		return Collections.unmodifiableList(hooks);
-	}
-
 	public MindIcon getIcon(final int position) {
 		return icons.getIcon(position);
 	}
@@ -357,24 +247,8 @@ public class NodeModel implements MutableTreeNode {
 		return children.indexOf(node);
 	}
 
-	public String getLink() {
-		return getModeController().getLinkController().getLink(this);
-	}
-
-	/**
-	 * @return
-	 */
-	public Collection<LinkModel> getLinks() {
-		return NodeLinks.getLinks(this);
-	}
-
 	public EventListenerList getListeners() {
 		return listenerList;
-	}
-
-	public LocationModel getLocationModel() {
-		final LocationModel location = (LocationModel) getExtension(LocationModel.class);
-		return location != null ? location : LocationModel.NULL_LOCATION;
 	}
 
 	public MapModel getMap() {
@@ -396,16 +270,6 @@ public class NodeModel implements MutableTreeNode {
 		return level;
 	}
 
-	public NodeStyleModel getNodeStyleModel() {
-		final NodeStyleModel styleModel = (NodeStyleModel) getExtension(NodeStyleModel.class);
-		return styleModel;
-	}
-
-	public final String getNoteText() {
-		final NoteModel extension = (NoteModel) getExtension(NoteModel.class);
-		return extension != null ? extension.getNoteText() : null;
-	}
-
 	public TreeNode getParent() {
 		return parent;
 	}
@@ -425,11 +289,6 @@ public class NodeModel implements MutableTreeNode {
 
 	public String getPlainTextContent() {
 		return HtmlTools.htmlToPlain(getText());
-	}
-
-	public String getShape() {
-		final NodeStyleModel styleModel = (NodeStyleModel) getExtension(NodeStyleModel.class);
-		return styleModel == null ? null : styleModel.getShape();
 	}
 
 	public String getShortText(final ModeController controller) {
@@ -503,7 +362,7 @@ public class NodeModel implements MutableTreeNode {
 	}
 
 	public void insert(final MutableTreeNode child, int index) {
-		final EncryptionModel encryptionModel = getEncryptionModel();
+		final EncryptionModel encryptionModel = EncryptionModel.getModel(this);
 		if (encryptionModel != null && !encryptionModel.isAccessible()) {
 			throw new IllegalArgumentException("Trying to insert nodes into a ciphered node.");
 		}
@@ -622,32 +481,6 @@ public class NodeModel implements MutableTreeNode {
 		removeTreeModelListener(viewer);
 	}
 
-	public void setBackgroundColor(final Color color) {
-		final NodeStyleModel styleModel = createNodeStyleModel(this);
-		styleModel.setBackgroundColor(color);
-	}
-
-	public void setCloud(final CloudModel cloud) {
-		final CloudModel oldCloud = getCloud();
-		if (cloud != null && oldCloud == null) {
-			changeChildCloudIterativeLevels(1);
-			addExtension(cloud);
-		}
-		else if (cloud == null && oldCloud != null) {
-			changeChildCloudIterativeLevels(-1);
-			removeExtension(CloudModel.class);
-		}
-	}
-
-	public void setColor(final Color color) {
-		final NodeStyleModel styleModel = createNodeStyleModel(this);
-		styleModel.setColor(color);
-	}
-
-	public void setEdge(final EdgeModel edge) {
-		setExtension(edge);
-	}
-
 	public void setExtension(final Class clazz, final IExtension extension) {
 		extensions.setExtension(clazz, extension);
 	}
@@ -657,7 +490,7 @@ public class NodeModel implements MutableTreeNode {
 	}
 
 	public void setFolded(final boolean folded) {
-		final EncryptionModel encryptionModel = getEncryptionModel();
+		final EncryptionModel encryptionModel = EncryptionModel.getModel(this);
 		if (encryptionModel != null && !encryptionModel.isAccessible()) {
 			this.folded = true;
 			return;
@@ -697,11 +530,6 @@ public class NodeModel implements MutableTreeNode {
 
 	public void setParent(final NodeModel newParent) {
 		parent = newParent;
-	}
-
-	public void setShape(final String shape) {
-		final NodeStyleModel styleModel = createNodeStyleModel(this);
-		styleModel.setShape(shape);
 	}
 
 	public void setStateIcon(final String key, final ImageIcon icon) {

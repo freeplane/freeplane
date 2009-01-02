@@ -19,6 +19,7 @@
  */
 package org.freeplane.map.text;
 
+import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.map.MapController;
 import org.freeplane.core.map.ModeController;
@@ -26,7 +27,7 @@ import org.freeplane.core.map.ModeController;
 /**
  * @author Dimitry Polivaev
  */
-public class TextController {
+public class TextController implements IExtension {
 	final private ModeController modeController;
 
 	public TextController(final ModeController modeController) {
@@ -51,4 +52,12 @@ public class TextController {
 	public ModeController getModeController() {
 		return modeController;
 	}
+
+	public static void install(ModeController modeController, TextController textController) {
+		modeController.addExtension(TextController.class, textController);
+    }
+
+	public static TextController getController(ModeController modeController) {
+		return (TextController)modeController.getExtension(TextController.class);
+    }
 }

@@ -90,8 +90,8 @@ class AttributeBuilder implements IElementDOMHandler, IExtensionElementWriter {
 			if (tag.equals(AttributeBuilder.XML_NODE_ATTRIBUTE)) {
 				final AttributeProperties ap = (AttributeProperties) userObject;
 				final Attribute attribute = new Attribute(ap.attributeName, ap.attributeValue);
-				node.createAttributeTableModel();
-				node.getAttributes().addRowNoUndo(attribute);
+				NodeAttributeTableModel.createAttributeTableModel(node);
+				NodeAttributeTableModel.getModel(node).addRowNoUndo(attribute);
 				return;
 			}
 			return;
@@ -138,8 +138,8 @@ class AttributeBuilder implements IElementDOMHandler, IExtensionElementWriter {
 		    new IAttributeHandler() {
 			    public void setAttribute(final Object userObject, final String value) {
 				    final NodeModel node = (NodeModel) userObject;
-				    node.createAttributeTableModel();
-				    final AttributeTableLayoutModel layout = node.getAttributes().getLayout();
+				    NodeAttributeTableModel.createAttributeTableModel(node);
+				    final AttributeTableLayoutModel layout = NodeAttributeTableModel.getModel(node).getLayout();
 				    layout.setColumnWidth(0, Integer.parseInt(value));;
 			    }
 		    });
@@ -147,8 +147,8 @@ class AttributeBuilder implements IElementDOMHandler, IExtensionElementWriter {
 		    new IAttributeHandler() {
 			    public void setAttribute(final Object userObject, final String value) {
 				    final NodeModel node = (NodeModel) userObject;
-				    node.createAttributeTableModel();
-				    final AttributeTableLayoutModel layout = node.getAttributes().getLayout();
+				    NodeAttributeTableModel.createAttributeTableModel(node);
+				    final AttributeTableLayoutModel layout = NodeAttributeTableModel.getModel(node).getLayout();
 				    layout.setColumnWidth(1, Integer.parseInt(value));;
 			    }
 		    });

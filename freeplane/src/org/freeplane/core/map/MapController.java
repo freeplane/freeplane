@@ -46,15 +46,16 @@ import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.util.Tools;
+import org.freeplane.map.link.NodeLinks;
 import org.freeplane.map.url.UrlManager;
 import org.freeplane.modes.mindmapmode.EncryptionModel;
 import org.freeplane.modes.mindmapmode.IMapChangeListener;
 import org.freeplane.n3.nanoxml.IXMLElement;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.n3.nanoxml.XMLParseException;
-import org.freeplane.view.map.MainView;
-import org.freeplane.view.map.MapView;
-import org.freeplane.view.map.NodeView;
+import org.freeplane.view.swing.map.MainView;
+import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.NodeView;
 
 /**
  * @author Dimitry Polivaev
@@ -158,7 +159,7 @@ public class MapController {
 	}
 
 	public ListIterator<NodeModel> childrenUnfolded(final NodeModel node) {
-		final EncryptionModel encryptionModel = node.getEncryptionModel();
+		final EncryptionModel encryptionModel = EncryptionModel.getModel(node);
 		if (encryptionModel != null && !encryptionModel.isAccessible()) {
 			return Collections.EMPTY_LIST.listIterator();
 		}
@@ -238,7 +239,7 @@ public class MapController {
 		}
 		if (retValue) {
 			e.consume();
-			String link = newlySelectedNodeView.getModel().getLink();
+			String link = NodeLinks.getLink(newlySelectedNodeView.getModel());
 			link = (link != null ? link : " ");
 			Controller.getController().getViewController().out(link);
 		}
@@ -371,7 +372,7 @@ public class MapController {
 	}
 
 	public boolean hasChildren(final NodeModel node) {
-		final EncryptionModel encryptionModel = node.getEncryptionModel();
+		final EncryptionModel encryptionModel = EncryptionModel.getModel(node);
 		if (encryptionModel != null && !encryptionModel.isAccessible()) {
 			return false;
 		}
@@ -401,7 +402,7 @@ public class MapController {
 	public void load(final MapModel map, final URL url) throws IOException, XMLParseException,
 	        URISyntaxException {
 		map.setURL(url);
-		final NodeModel root = getModeController().getUrlManager().load(url, map);
+		final NodeModel root = UrlManager.getController(getModeController()).load(url, map);
 		if (root != null) {
 			map.setRoot(root);
 		}

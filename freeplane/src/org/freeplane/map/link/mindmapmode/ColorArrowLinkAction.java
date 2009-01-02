@@ -30,6 +30,7 @@ import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.map.link.ArrowLinkModel;
+import org.freeplane.map.link.LinkController;
 
 class ColorArrowLinkAction extends FreeplaneAction {
 	ArrowLinkModel arrowLink;
@@ -41,7 +42,7 @@ class ColorArrowLinkAction extends FreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final ModeController modeController = getModeController();
-		final Color selectedColor = modeController.getLinkController().getColor(arrowLink);
+		final Color selectedColor = LinkController.getController(modeController).getColor(arrowLink);
 		final Color color = ColorTracker.showCommonJColorChooserDialog(modeController.getMapView()
 		    .getSelected(), (String) this.getValue(Action.NAME), selectedColor);
 		if (color == null) {

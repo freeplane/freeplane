@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.MultipleNodeAction;
+import org.freeplane.map.edge.EdgeController;
 import org.freeplane.modes.mindmapmode.MModeController;
 
 class EdgeStyleAction extends MultipleNodeAction {
@@ -41,6 +42,6 @@ class EdgeStyleAction extends MultipleNodeAction {
 	 */
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		((MEdgeController) getMModeController().getEdgeController()).setStyle(node, mStyle);
+		((MEdgeController) EdgeController.getController(getMModeController())).setStyle(node, mStyle);
 	}
 }

@@ -17,28 +17,35 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.view.map;
+package org.freeplane.view.swing.map;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Stroke;
 
 import org.freeplane.core.map.NodeModel;
+import org.freeplane.map.edge.EdgeController;
 import org.freeplane.map.nodestyle.NodeStyleModel;
 
-class ForkMainView extends MainView {
+class BubbleMainView extends MainView {
+	final static Stroke DEF_STROKE = new BasicStroke();
+
 	/**
 	 * Returns the relative position of the Edge
 	 */
 	@Override
 	int getAlignment() {
-		return NodeView.ALIGN_BOTTOM;
+		return NodeView.ALIGN_CENTER;
 	}
 
 	@Override
 	Point getCenterPoint() {
-		final Point in = new Point(getWidth() / 2, getHeight() / 2);
+		final Point in = getLeftPoint();
+		in.x = getWidth() / 2;
 		return in;
 	}
 
@@ -46,50 +53,43 @@ class ForkMainView extends MainView {
 	public int getDeltaX() {
 		final NodeModel model = getNodeView().getModel();
 		if (model.getModeController().getMapController().isFolded(model) && getNodeView().isLeft()) {
-			return super.getDeltaX() + getZoomedFoldingSymbolHalfWidth() * 3;
+			return super.getDeltaX() + getZoomedFoldingSymbolHalfWidth() * 2;
 		}
 		return super.getDeltaX();
 	}
 
 	@Override
 	Point getLeftPoint() {
-		final NodeModel model = getNodeView().getModel();
-		int edgeWidth = model.getModeController().getEdgeController().getWidth(model);
-		if (edgeWidth == 0) {
-			edgeWidth = 1;
-		}
-		final Point in = new Point(0, getHeight() - edgeWidth / 2 - 1);
+		final Point in = new Point(0, getHeight() / 2);
 		return in;
-	}
-
-	@Override
-	protected int getMainViewHeightWithFoldingMark() {
-		int height = getHeight();
-		final NodeModel model = getNodeView().getModel();
-		if (model.getModeController().getMapController().isFolded(model)) {
-			height += getZoomedFoldingSymbolHalfWidth();
-		}
-		return height;
 	}
 
 	@Override
 	protected int getMainViewWidthWithFoldingMark() {
 		int width = getWidth();
+		final int dW = getZoomedFoldingSymbolHalfWidth() * 2;
 		final NodeModel model = getNodeView().getModel();
 		if (model.getModeController().getMapController().isFolded(model)) {
-			width += getZoomedFoldingSymbolHalfWidth() * 2 + getZoomedFoldingSymbolHalfWidth();
+			width += dW;
 		}
-		return width;
+		return width + dW;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see freemind.view.mindmapview.NodeView.MainView#getPreferredSize()
+	 */
+	@Override
+	public Dimension getPreferredSize() {
+		final Dimension prefSize = super.getPreferredSize();
+		prefSize.width += getNodeView().getMap().getZoomed(5);
+		return prefSize;
 	}
 
 	@Override
 	Point getRightPoint() {
-		final NodeModel model = getNodeView().getModel();
-		int edgeWidth = model.getModeController().getEdgeController().getWidth(model);
-		if (edgeWidth == 0) {
-			edgeWidth = 1;
-		}
-		final Point in = new Point(getWidth() - 1, getHeight() - edgeWidth / 2 - 1);
+		final Point in = getLeftPoint();
+		in.x = getWidth() - 1;
 		return in;
 	}
 
@@ -99,7 +99,25 @@ class ForkMainView extends MainView {
 	 */
 	@Override
 	String getStyle() {
-		return NodeStyleModel.STYLE_FORK;
+		return NodeStyleModel.STYLE_BUBBLE;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see freemind.view.mindmapview.NodeView#getTextWidth()
+	 */
+	@Override
+	public int getTextWidth() {
+		return super.getTextWidth() + getNodeView().getMap().getZoomed(5);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see freemind.view.mindmapview.NodeView#getTextX()
+	 */
+	@Override
+	public int getTextX() {
+		return super.getTextX() + getNodeView().getMap().getZoomed(2);
 	}
 
 	@Override
@@ -112,29 +130,25 @@ class ForkMainView extends MainView {
 		}
 		paintSelected(g);
 		paintDragOver(g);
-		int edgeWidth = model.getModeController().getEdgeController().getWidth(model);
-		if (edgeWidth == 0) {
-			edgeWidth = 1;
-		}
-		final Color oldColor = g.getColor();
-		g.setColor(model.getModeController().getEdgeController().getColor(model));
-		g.drawLine(0, getHeight() - edgeWidth / 2 - 1, getWidth(), getHeight() - edgeWidth / 2 - 1);
-		g.setColor(oldColor);
+		final Color edgeColor = EdgeController.getController(model.getModeController()).getColor(model);
+		g.setColor(edgeColor);
+		g.setStroke(BubbleMainView.DEF_STROKE);
+		g.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 10, 10);
 		super.paint(g);
 	}
 
 	@Override
-	void paintFoldingMark(final Graphics2D g, final Point p) {
-		final int zoomedFoldingSymbolHalfWidth = getZoomedFoldingSymbolHalfWidth();
-		if (p.x == getX()) {
-			p.x -= zoomedFoldingSymbolHalfWidth;
+	protected void paintBackground(final Graphics2D graphics, final Color color) {
+		graphics.setColor(color);
+		graphics.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 10, 10);
+	}
+
+	@Override
+	public void paintSelected(final Graphics2D graphics) {
+		super.paintSelected(graphics);
+		if (getNodeView().useSelectionColors()) {
+			graphics.setColor(MapView.standardSelectColor);
+			graphics.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 10, 10);
 		}
-		else if (p.x == getX() + getWidth() - 1) {
-			p.x += zoomedFoldingSymbolHalfWidth;
-		}
-		else {
-			System.err.println("unexpected folding mark location " + p);
-		}
-		super.paintFoldingMark(g, p);
 	}
 }

@@ -28,8 +28,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.MindIcon;
 import org.freeplane.core.ui.components.IconSelectionPopupDialog;
-import org.freeplane.map.icon.MindIcon;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 

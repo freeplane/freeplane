@@ -58,6 +58,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.map.pattern.mindmapnode.MPatternController;
 import org.freeplane.map.pattern.mindmapnode.Pattern;
 import org.freeplane.map.pattern.mindmapnode.StylePatternFactory;
 import org.freeplane.map.pattern.mindmapnode.StylePatternPanel;
@@ -187,7 +188,7 @@ class ManagePatternsPopupDialog extends JDialog implements KeyListener {
 		mController = controller;
 		List patternList = new Vector();
 		try {
-			patternList = StylePatternFactory.loadPatterns(controller.getPatternController()
+			patternList = StylePatternFactory.loadPatterns(MPatternController.getController(controller)
 			    .getPatternReader());
 		}
 		catch (final Exception e) {
@@ -224,7 +225,7 @@ class ManagePatternsPopupDialog extends JDialog implements KeyListener {
 		for (final Iterator iterator = mController.getSelectedNodes().iterator(); iterator
 		    .hasNext();) {
 			final NodeModel node = (NodeModel) iterator.next();
-			mController.getPatternController().applyPattern(node, pattern);
+			MPatternController.getController(mController).applyPattern(node, pattern);
 		}
 	}
 

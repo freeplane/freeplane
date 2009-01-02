@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.map.text.TextController;
 
 class SetImageByFileChooserAction extends FreeplaneAction {
 	public SetImageByFileChooserAction() {
@@ -30,7 +31,7 @@ class SetImageByFileChooserAction extends FreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		((MTextController) getModeController().getTextController()).setImageByFileChooser();
+		((MTextController) TextController.getController(getModeController())).setImageByFileChooser();
 		Controller.getController().getViewController().obtainFocusForSelected();
 	}
 }

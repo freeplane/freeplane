@@ -29,7 +29,7 @@ import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.n3.nanoxml.IXMLElement;
-import org.freeplane.view.map.NodeView;
+import org.freeplane.view.swing.map.NodeView;
 
 /**
  * @author Dimitry Polivaev

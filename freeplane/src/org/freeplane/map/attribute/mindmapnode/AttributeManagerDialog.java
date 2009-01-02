@@ -49,7 +49,7 @@ import org.freeplane.core.map.MapRegistry;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.map.attribute.AttributeRegistry;
-import org.freeplane.view.map.MapView;
+import org.freeplane.view.swing.map.MapView;
 
 /**
  * @author Dimitry Polivaev

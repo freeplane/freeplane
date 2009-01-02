@@ -32,6 +32,7 @@ import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
+import org.freeplane.map.note.NoteModel;
 import org.freeplane.modes.mindmapmode.MModeController;
 
 class RemoveNoteAction extends FreeplaneAction implements PopupMenuListener {
@@ -59,7 +60,7 @@ class RemoveNoteAction extends FreeplaneAction implements PopupMenuListener {
 		for (final Iterator iterator = ((MModeController) getModeController()).getSelectedNodes()
 		    .iterator(); iterator.hasNext();) {
 			final NodeModel node = (NodeModel) iterator.next();
-			if (node.getNoteText() != null) {
+			if (NoteModel.getNoteText(node) != null) {
 				removeNote(node);
 			}
 		}
@@ -111,7 +112,7 @@ class RemoveNoteAction extends FreeplaneAction implements PopupMenuListener {
 		for (final Iterator iterator = modeController.getSelectedNodes().iterator(); iterator
 		    .hasNext();) {
 			final NodeModel node = (NodeModel) iterator.next();
-			if (node.getNoteText() != null) {
+			if (NoteModel.getNoteText(node) != null) {
 				foundNote = true;
 				break;
 			}

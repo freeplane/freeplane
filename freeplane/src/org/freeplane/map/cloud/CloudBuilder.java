@@ -52,7 +52,7 @@ public class CloudBuilder implements IElementDOMHandler, IExtensionElementWriter
 			final NodeModel node = (NodeModel) parent;
 			if (userObject instanceof CloudModel) {
 				final CloudModel cloud = (CloudModel) userObject;
-				node.setCloud(cloud);
+				CloudModel.setModel(node, cloud);
 			}
 		}
 	}

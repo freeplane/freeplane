@@ -33,7 +33,7 @@ import org.freeplane.core.map.NodeChangeEvent;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.view.map.NodeView;
+import org.freeplane.view.swing.map.NodeView;
 
 class MToolbarContributor implements IMenuContributor, INodeSelectionListener, INodeChangeListener {
 	private static final String[] sizes = { "8", "10", "12", "14", "16", "18", "20", "24", "28" };

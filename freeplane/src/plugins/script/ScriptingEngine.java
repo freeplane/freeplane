@@ -40,8 +40,10 @@ import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.util.Tools;
 import org.freeplane.core.util.Tools.BooleanHolder;
+import org.freeplane.map.attribute.AttributeController;
 import org.freeplane.map.attribute.NodeAttributeTableModel;
 import org.freeplane.map.attribute.mindmapnode.MAttributeController;
+import org.freeplane.map.text.TextController;
 import org.freeplane.map.text.mindmapmode.MTextController;
 import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.startup.FreeMindSecurityManager;
@@ -207,11 +209,11 @@ class ScriptingEngine extends FreeplaneAction {
 		pOutStream.print(Controller.getText("plugins/ScriptEditor/window.Result") + value);
 		if (assignResult && value != null) {
 			if (assignTo == null) {
-				((MTextController) pMindMapController.getTextController()).setNodeText(node, value
+				((MTextController) TextController.getController(pMindMapController)).setNodeText(node, value
 				    .toString());
 			}
 			else {
-				((MAttributeController) pMindMapController.getAttributeController()).editAttribute(
+				((MAttributeController) AttributeController.getController(pMindMapController)).editAttribute(
 				    node, assignTo, value.toString());
 			}
 		}
@@ -249,7 +251,7 @@ class ScriptingEngine extends FreeplaneAction {
 			final NodeModel element = (NodeModel) iter.next();
 			performScriptOperation(element, pAlreadyAScriptExecuted);
 		}
-		final NodeAttributeTableModel attributes = node.getAttributes();
+		final NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(node);
 		if (attributes == null) {
 			return;
 		}

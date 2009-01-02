@@ -30,7 +30,7 @@ import org.freeplane.core.map.ModeController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.ui.IFreemindPropertyListener;
 import org.freeplane.modes.mindmapmode.IMouseWheelEventHandler;
-import org.freeplane.view.map.MapView;
+import org.freeplane.view.swing.map.MapView;
 
 /**
  * @author foltin

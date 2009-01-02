@@ -30,6 +30,7 @@ import java.util.Set;
 import javax.swing.JPopupMenu;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
@@ -44,7 +45,7 @@ import org.freeplane.core.resources.ui.IFreemindPropertyListener;
 /**
  * @author Dimitry Polivaev
  */
-public class LinkController {
+public class LinkController implements IExtension {
 	private static class ArrowLinkListener implements IFreemindPropertyListener {
 		public void propertyChanged(final String propertyName, final String newValue,
 		                            final String oldValue) {
@@ -108,8 +109,8 @@ public class LinkController {
 		NodeAlreadyVisited.add(link.getSource());
 		NodeAlreadyVisited.add(link.getTarget());
 		final Collection<LinkModel> links = new LinkedList<LinkModel>();;
-		links.addAll(link.getSource().getLinks());
-		links.addAll(link.getTarget().getLinks());
+		links.addAll(NodeLinks.getLinks(link.getSource()));
+		links.addAll(NodeLinks.getLinks(link.getTarget()));
 		final Iterator<LinkModel> iterator = links.iterator();
 		while (iterator.hasNext()) {
 			final ArrowLinkModel foreign_link = (ArrowLinkModel) iterator.next();
@@ -126,13 +127,8 @@ public class LinkController {
 		return colorHandlers.getProperty(model);
 	}
 
-	public String getLink(final NodeModel node) {
-		final NodeLinks links = (NodeLinks) node.getExtension(NodeLinks.class);
-		return links != null ? links.getLink() : null;
-	}
-
 	public String getLinkShortText(final NodeModel node) {
-		final String adaptedText = node.getLink();
+		final String adaptedText = NodeLinks.getLink(node);
 		if (adaptedText == null) {
 			return null;
 		}
@@ -198,7 +194,7 @@ public class LinkController {
 	}
 
 	public void loadURL() {
-		final String link = modeController.getSelectedNode().getLink();
+		final String link = NodeLinks.getLink(modeController.getSelectedNode());
 		if (link != null) {
 			modeController.getMapController().loadURL(link);
 		}
@@ -223,4 +219,12 @@ public class LinkController {
 			}
 		}
 	}
+
+	public static void install(ModeController modeController, LinkController linkController) {
+		modeController.addExtension(LinkController.class, linkController);
+    }
+
+	public static LinkController getController(ModeController modeController) {
+		return (LinkController)modeController.getExtension(LinkController.class);
+    }
 }

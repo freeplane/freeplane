@@ -37,7 +37,10 @@ import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.IEditHandler;
 import org.freeplane.core.ui.UserInputListenerFactory;
+import org.freeplane.map.link.LinkController;
+import org.freeplane.map.link.NodeLinks;
 import org.freeplane.map.link.mindmapmode.MLinkController;
+import org.freeplane.map.nodestyle.NodeStyleController;
 import org.freeplane.map.nodestyle.mindmapmode.MNodeStyleController;
 import org.freeplane.map.text.FixedHTMLWriter;
 import org.freeplane.map.text.TextController;
@@ -45,7 +48,7 @@ import org.freeplane.map.url.UrlManager;
 import org.freeplane.map.url.mindmapmode.FileManager;
 import org.freeplane.modes.mindmapmode.MMapController;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.view.map.NodeView;
+import org.freeplane.view.swing.map.NodeView;
 
 /**
  * @author Dimitry Polivaev
@@ -162,7 +165,7 @@ public class MTextController extends TextController {
 		boolean picturesAmongSelecteds = false;
 		for (final ListIterator e = getModeController().getSelectedNodes().listIterator(); e
 		    .hasNext();) {
-			final String link = ((NodeModel) e.next()).getLink();
+			final String link = NodeLinks.getLink(((NodeModel) e.next()));
 			if (link != null) {
 				if (filter.accept(new File(link))) {
 					picturesAmongSelecteds = true;
@@ -175,14 +178,14 @@ public class MTextController extends TextController {
 				for (final ListIterator e = getModeController().getSelectedNodes().listIterator(); e
 				    .hasNext();) {
 					final NodeModel node = (NodeModel) e.next();
-					if (node.getLink() != null) {
-						final String possiblyRelative = node.getLink();
+					if (NodeLinks.getLink(node) != null) {
+						final String possiblyRelative = NodeLinks.getLink(node);
 						final String relative = UrlManager.isAbsolutePath(possiblyRelative) ? UrlManager
 						    .fileToUrl(new File(possiblyRelative)).toString()
 						        : possiblyRelative;
 						if (relative != null) {
 							final String strText = "<html><img src=\"" + relative + "\">";
-							((MLinkController) getModeController().getLinkController()).setLink(
+							((MLinkController) LinkController.getController(getModeController())).setLink(
 							    node, null);
 							setNodeText(node, strText);
 						}
@@ -190,7 +193,7 @@ public class MTextController extends TextController {
 				}
 			}
 			else {
-				final String relative = ((FileManager) getModeController().getUrlManager())
+				final String relative = ((FileManager) UrlManager.getController(getModeController()))
 				    .getLinkByFileChooser(Controller.getController().getMap(), filter);
 				if (relative != null) {
 					final String strText = "<html><img src=\"" + relative + "\">";
@@ -223,8 +226,7 @@ public class MTextController extends TextController {
 		final ModeController modeController = getModeController();
 		final NodeModel lowerNode = ((MMapController) modeController.getMapController())
 		    .addNewNode(parent, parent.getChildPosition(node) + 1, node.isLeft());
-		final MNodeStyleController nodeStyleController = (MNodeStyleController) modeController
-		    .getNodeStyleController();
+		final MNodeStyleController nodeStyleController = (MNodeStyleController) NodeStyleController.getController(modeController);
 		nodeStyleController.copyStyle(node, lowerNode);
 		setNodeText(lowerNode, newLowerContent);
 	}

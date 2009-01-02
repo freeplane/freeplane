@@ -24,7 +24,9 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.MultipleNodeAction;
-import org.freeplane.view.map.MapView;
+import org.freeplane.map.nodestyle.NodeStyleController;
+import org.freeplane.map.nodestyle.NodeStyleModel;
+import org.freeplane.view.swing.map.MapView;
 
 /**
  * @author foltin
@@ -46,11 +48,11 @@ class NodeColorBlendAction extends MultipleNodeAction {
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
 		final Color mapColor = getMModeController().getMapView().getBackground();
-		Color nodeColor = node.getColor();
+		Color nodeColor = NodeStyleModel.getColor(node);
 		if (nodeColor == null) {
 			nodeColor = MapView.standardNodeTextColor;
 		}
-		((MNodeStyleController) getMModeController().getNodeStyleController()).setColor(node,
+		((MNodeStyleController) NodeStyleController.getController(getMModeController())).setColor(node,
 		    new Color((3 * mapColor.getRed() + nodeColor.getRed()) / 4,
 		        (3 * mapColor.getGreen() + nodeColor.getGreen()) / 4,
 		        (3 * mapColor.getBlue() + nodeColor.getBlue()) / 4));

@@ -30,12 +30,11 @@ import org.freeplane.map.attribute.Attribute;
 import org.freeplane.map.attribute.AttributeController;
 import org.freeplane.map.attribute.AttributeRegistry;
 import org.freeplane.map.attribute.AttributeRegistryElement;
-import org.freeplane.map.attribute.IAttributeController;
 import org.freeplane.map.attribute.NodeAttributeTableModel;
 import org.freeplane.map.attribute.view.AttributePopupMenu;
 import org.freeplane.modes.mindmapmode.MModeController;
 
-public class MAttributeController extends AttributeController implements IAttributeController {
+public class MAttributeController extends AttributeController{
 	private class AttributeChanger implements IVisitor {
 		final private Object name;
 		final private Object newValue;
@@ -189,7 +188,7 @@ public class MAttributeController extends AttributeController implements IAttrib
 		/**
 		 */
 		void iterate(final NodeModel node) {
-			visitor.visit(node.getAttributes());
+			visitor.visit(NodeAttributeTableModel.getModel(node));
 			final ListIterator iterator = node.getModeController().getMapController()
 			    .childrenUnfolded(node);
 			while (iterator.hasNext()) {
@@ -501,8 +500,8 @@ public class MAttributeController extends AttributeController implements IAttrib
 	}
 
 	public int addAttribute(final NodeModel node, final Attribute pAttribute) {
-		node.createAttributeTableModel();
-		final NodeAttributeTableModel attributes = node.getAttributes();
+		NodeAttributeTableModel.createAttributeTableModel(node);
+		final NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(node);
 		final int rowCount = attributes.getRowCount();
 		performInsertRow(attributes, rowCount, pAttribute.getName(), pAttribute.getValue());
 		return rowCount;
@@ -517,9 +516,9 @@ public class MAttributeController extends AttributeController implements IAttrib
 	}
 
 	public int editAttribute(final NodeModel pNode, final String pName, final String pNewValue) {
-		pNode.createAttributeTableModel();
+		NodeAttributeTableModel.createAttributeTableModel(pNode);
 		final Attribute newAttribute = new Attribute(pName, pNewValue);
-		final NodeAttributeTableModel attributes = pNode.getAttributes();
+		final NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(pNode);
 		for (int i = 0; i < attributes.getRowCount(); i++) {
 			if (pName.equals(attributes.getAttribute(i).getName())) {
 				if (pNewValue != null) {
@@ -616,9 +615,9 @@ public class MAttributeController extends AttributeController implements IAttrib
 	}
 
 	public void performRegistrySubtreeAttributes(final NodeModel node) {
-		for (int i = 0; i < node.getAttributes().getRowCount(); i++) {
-			final String name = node.getAttributes().getValueAt(i, 0).toString();
-			final String value = node.getAttributes().getValueAt(i, 1).toString();
+		for (int i = 0; i < NodeAttributeTableModel.getModel(node).getRowCount(); i++) {
+			final String name = NodeAttributeTableModel.getModel(node).getValueAt(i, 0).toString();
+			final String value = NodeAttributeTableModel.getModel(node).getValueAt(i, 1).toString();
 			performRegistryAttributeValue(name, value);
 		}
 		for (final ListIterator e = node.getModeController().getMapController().childrenUnfolded(
@@ -795,13 +794,13 @@ public class MAttributeController extends AttributeController implements IAttrib
 	}
 
 	public void removeAttribute(final NodeModel pNode, final int pPosition) {
-		pNode.createAttributeTableModel();
-		performRemoveRow(pNode.getAttributes(), pPosition);
+		NodeAttributeTableModel.createAttributeTableModel(pNode);
+		performRemoveRow(NodeAttributeTableModel.getModel(pNode), pPosition);
 	}
 
 	public void setAttribute(final NodeModel pNode, final int pPosition, final Attribute pAttribute) {
-		pNode.createAttributeTableModel();
-		pNode.getAttributes().setValueAt(pAttribute.getName(), pPosition, 0);
-		pNode.getAttributes().setValueAt(pAttribute.getValue(), pPosition, 1);
+		NodeAttributeTableModel.createAttributeTableModel(pNode);
+		NodeAttributeTableModel.getModel(pNode).setValueAt(pAttribute.getName(), pPosition, 0);
+		NodeAttributeTableModel.getModel(pNode).setValueAt(pAttribute.getValue(), pPosition, 1);
 	}
 }

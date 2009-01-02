@@ -22,6 +22,7 @@ package org.freeplane.map.icon;
 import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.IElementDOMHandler;
 import org.freeplane.core.io.ReadManager;
+import org.freeplane.core.map.MindIcon;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.n3.nanoxml.IXMLElement;
 

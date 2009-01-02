@@ -27,6 +27,7 @@ import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.MultipleNodeAction;
+import org.freeplane.map.pattern.mindmapnode.MPatternController;
 import org.freeplane.map.pattern.mindmapnode.Pattern;
 import org.freeplane.map.pattern.mindmapnode.StylePatternFactory;
 import org.freeplane.modes.mindmapmode.MModeController;
@@ -91,6 +92,6 @@ public class FormatPaste extends MultipleNodeAction {
 			    "" /*=Title*/, JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		((MModeController) getModeController()).getPatternController().applyPattern(node, pattern);
+		MPatternController.getController(((MModeController) getModeController())).applyPattern(node, pattern);
 	}
 }

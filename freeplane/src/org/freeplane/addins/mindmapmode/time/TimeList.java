@@ -68,6 +68,7 @@ import javax.swing.text.Document;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.MapModel;
+import org.freeplane.core.map.MindIcon;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.resources.WindowConfigurationStorage;
@@ -75,11 +76,13 @@ import org.freeplane.core.ui.UIBuilder;
 import org.freeplane.core.ui.components.BlindIcon;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Tools;
-import org.freeplane.map.icon.MindIcon;
+import org.freeplane.map.clipboard.ClipboardController;
+import org.freeplane.map.note.NoteModel;
 import org.freeplane.map.text.HtmlTools;
+import org.freeplane.map.text.TextController;
 import org.freeplane.map.text.mindmapmode.MTextController;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.view.map.MultipleImage;
+import org.freeplane.view.swing.map.MultipleImage;
 
 import com.jgoodies.forms.factories.ButtonBarFactory;
 
@@ -352,7 +355,7 @@ class TimeList {
 		}
 
 		public String getUntaggedNotesText() {
-			final String notesText = node.getNoteText();
+			final String notesText = NoteModel.getNoteText(node);
 			if (notesText == null) {
 				return "";
 			}
@@ -384,7 +387,7 @@ class TimeList {
 
 	private class ReplaceAllInfo implements IReplaceInputInformation {
 		public void changeString(final NodeHolder nodeHolder, final String newText) {
-			((MTextController) getMindMapController().getTextController()).setNodeText(
+			((MTextController) TextController.getController(getMindMapController())).setNodeText(
 			    nodeHolder.node, newText);
 		}
 
@@ -399,7 +402,7 @@ class TimeList {
 
 	private class ReplaceSelectedInfo implements IReplaceInputInformation {
 		public void changeString(final NodeHolder nodeHolder, final String newText) {
-			((MTextController) getMindMapController().getTextController()).setNodeText(
+			((MTextController) TextController.getController(getMindMapController())).setNodeText(
 			    nodeHolder.node, newText);
 		}
 
@@ -509,7 +512,7 @@ class TimeList {
 			final NodeModel node = (NodeModel) iter.next();
 			//
 			//
-			final NodeModel copy = node.getModeController().getClipboardController().shallowCopy(
+			final NodeModel copy = ClipboardController.getController(node.getModeController()).shallowCopy(
 			    node);
 			if (copy != null) {
 				newMindMapController.getMapController().insertNodeIntoWithoutUndo(copy,

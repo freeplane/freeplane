@@ -32,7 +32,7 @@ import org.freeplane.core.map.ModeController;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.PersistentEditableComboBox;
-import org.freeplane.view.map.MapView;
+import org.freeplane.view.swing.map.MapView;
 
 public class BToolbarContributor implements IMenuContributor, IMapTitleChangeListener {
 	private static final String BROWSE_URL_STORAGE_KEY = "browse_url_storage";

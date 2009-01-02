@@ -27,8 +27,9 @@ import java.util.ListIterator;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.io.xml.TreeXmlWriter;
+import org.freeplane.core.map.MindIcon;
 import org.freeplane.core.map.NodeModel;
-import org.freeplane.map.icon.MindIcon;
+import org.freeplane.map.link.NodeLinks;
 import org.freeplane.map.nodestyle.NodeStyleModel;
 import org.freeplane.map.text.HtmlTools;
 
@@ -125,10 +126,10 @@ class MindMapHTMLWriter {
 
 	private String fontStyle(final NodeModel model) throws IOException {
 		String fontStyle = "";
-		if (model.getColor() != null) {
-			fontStyle += "color: " + TreeXmlWriter.colorToXml(model.getColor()) + ";";
+		if (NodeStyleModel.getColor(model) != null) {
+			fontStyle += "color: " + TreeXmlWriter.colorToXml(NodeStyleModel.getColor(model)) + ";";
 		}
-		final NodeStyleModel font = model.getNodeStyleModel();
+		final NodeStyleModel font = NodeStyleModel.getModel(model);
 		if (font != null) {
 			if (font.getFontSize() != null) {
 				final int defaultFontSize = Integer.parseInt(getProperty("defaultfontsize"));
@@ -261,7 +262,7 @@ class MindMapHTMLWriter {
 			localParentID = parentID + "_" + lastChildNumber;
 			writeFoldingButtons(localParentID);
 		}
-		String link = model.getLink();
+		String link = NodeLinks.getLink(model);
 		if (link != null) {
 			if (link.endsWith(".mm")) {
 				link += ".html";

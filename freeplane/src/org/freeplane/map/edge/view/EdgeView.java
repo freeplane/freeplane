@@ -27,9 +27,10 @@ import java.awt.Stroke;
 
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.map.edge.EdgeController;
 import org.freeplane.map.edge.EdgeModel;
-import org.freeplane.view.map.MapView;
-import org.freeplane.view.map.NodeView;
+import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.NodeView;
 
 /**
  * This class represents a single Edge of a MindMap.
@@ -63,7 +64,7 @@ public abstract class EdgeView {
 
 	public Color getColor() {
 		final NodeModel model = target.getModel();
-		final Color edgeColor = model.getModeController().getEdgeController().getColor(model);
+		final Color edgeColor = EdgeController.getController(model.getModeController()).getColor(model);
 		return edgeColor;
 	}
 
@@ -96,7 +97,7 @@ public abstract class EdgeView {
 
 	public int getWidth() {
 		final NodeModel model = getTarget().getModel();
-		final int width = model.getModeController().getEdgeController().getWidth(model);
+		final int width = EdgeController.getController(model.getModeController()).getWidth(model);
 		return width;
 	}
 

@@ -30,8 +30,8 @@ import org.freeplane.core.filter.condition.IElementaryConditionController;
 import org.freeplane.core.filter.util.ExtendedComboBoxModel;
 import org.freeplane.core.filter.util.IListModel;
 import org.freeplane.core.filter.util.SortedMapListModel;
+import org.freeplane.core.map.MindIcon;
 import org.freeplane.core.resources.NamedObject;
-import org.freeplane.map.icon.MindIcon;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**

@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.MultipleNodeAction;
+import org.freeplane.map.nodestyle.NodeStyleController;
 import org.freeplane.modes.mindmapmode.MModeController;
 
 class NodeShapeAction extends MultipleNodeAction {
@@ -35,7 +36,7 @@ class NodeShapeAction extends MultipleNodeAction {
 
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		((MNodeStyleController) super.getMModeController().getNodeStyleController()).setShape(node,
+		((MNodeStyleController) NodeStyleController.getController(super.getMModeController())).setShape(node,
 		    actionShape);
 	}
 }

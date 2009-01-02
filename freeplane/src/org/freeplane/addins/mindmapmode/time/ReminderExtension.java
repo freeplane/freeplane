@@ -29,8 +29,8 @@ import javax.swing.SwingUtilities;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.map.MindIcon;
 import org.freeplane.core.map.NodeModel;
-import org.freeplane.map.icon.MindIcon;
 import org.freeplane.modes.mindmapmode.MMapController;
 
 /**

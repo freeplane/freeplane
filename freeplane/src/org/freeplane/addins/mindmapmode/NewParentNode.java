@@ -26,9 +26,10 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.map.clipboard.ClipboardController;
 import org.freeplane.map.clipboard.mindmapmode.MClipboardController;
 import org.freeplane.modes.mindmapmode.MMapController;
-import org.freeplane.view.map.MapView;
+import org.freeplane.view.swing.map.MapView;
 
 /**
  * @author foltin The original version was sent by Stephen Viles (sviles) https:
@@ -106,9 +107,8 @@ public class NewParentNode extends FreeplaneAction {
 				return null;
 			}
 		}
-		final Transferable copy = ((MClipboardController) getModeController()
-		    .getClipboardController()).cut(selectedNodes);
-		((MClipboardController) getModeController().getClipboardController()).paste(copy, newNode);
+		final Transferable copy = ((MClipboardController) ClipboardController.getController(getModeController())).cut(selectedNodes);
+		((MClipboardController) ClipboardController.getController(getModeController())).paste(copy, newNode);
 		getModeController().getMapController().nodeChanged(selectedParent);
 		return newNode;
 	}

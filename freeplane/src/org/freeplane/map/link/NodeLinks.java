@@ -132,4 +132,14 @@ public class NodeLinks implements IExtension {
 			links.add(new HyperTextLinkModel(targetID));
 		}
 	}
+
+	public static String getLink(NodeModel node) {
+    	final NodeLinks links = getModel(node);
+    	return links != null ? links.getLink() : null;
+    }
+
+	public static NodeLinks getModel(NodeModel node) {
+        final NodeLinks links = (NodeLinks) node.getExtension(NodeLinks.class);
+        return links;
+    }
 }

@@ -25,6 +25,7 @@ import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.map.attribute.IAttributeTableModel;
+import org.freeplane.map.attribute.NodeAttributeTableModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -67,7 +68,7 @@ public class AttributeCompareCondition extends CompareConditionAdapter {
 	 * .MindMapNode)
 	 */
 	public boolean checkNode(final NodeModel node) {
-		final IAttributeTableModel attributes = node.getAttributes();
+		final IAttributeTableModel attributes = NodeAttributeTableModel.getModel(node);
 		for (int i = 0; i < attributes.getRowCount(); i++) {
 			try {
 				if (attributes.getValueAt(i, 0).equals(attribute)

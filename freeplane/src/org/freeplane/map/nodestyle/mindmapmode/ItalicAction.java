@@ -24,6 +24,7 @@ import java.awt.event.ActionEvent;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.core.ui.SelectableAction;
+import org.freeplane.map.nodestyle.NodeStyleController;
 
 @SelectableAction(checkOnNodeChange = true)
 class ItalicAction extends MultipleNodeAction {
@@ -43,13 +44,13 @@ class ItalicAction extends MultipleNodeAction {
 
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel selected) {
-		((MNodeStyleController) super.getMModeController().getNodeStyleController()).setItalic(
+		((MNodeStyleController) NodeStyleController.getController(super.getMModeController())).setItalic(
 		    selected, italic);
 	}
 
 	boolean isItalic() {
 		final NodeModel node = super.getMModeController().getSelectedNode();
-		return super.getMModeController().getNodeStyleController().isItalic(node);
+		return NodeStyleController.getController(super.getMModeController()).isItalic(node);
 	}
 
 	@Override

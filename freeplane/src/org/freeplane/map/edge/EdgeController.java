@@ -22,6 +22,7 @@ package org.freeplane.map.edge;
 import java.awt.Color;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
@@ -36,7 +37,7 @@ import org.freeplane.core.resources.ui.IFreemindPropertyListener;
 /**
  * @author Dimitry Polivaev
  */
-public class EdgeController {
+public class EdgeController implements IExtension{
 	protected static class EdgePropertyListener implements IFreemindPropertyListener {
 		public void propertyChanged(final String propertyName, final String newValue,
 		                            final String oldValue) {
@@ -68,7 +69,7 @@ public class EdgeController {
 		}
 		addColorGetter(ExclusivePropertyChain.NODE, new IPropertyGetter<Color, NodeModel>() {
 			public Color getProperty(final NodeModel node, final Color currentValue) {
-				final EdgeModel edge = node.getEdge();
+				final EdgeModel edge = EdgeModel.getModel(node);
 				return edge == null ? null : edge.getColor();
 			}
 		});
@@ -82,7 +83,7 @@ public class EdgeController {
 		});
 		addStyleGetter(ExclusivePropertyChain.NODE, new IPropertyGetter<String, NodeModel>() {
 			public String getProperty(final NodeModel node, final String currentValue) {
-				final EdgeModel edge = node.getEdge();
+				final EdgeModel edge = EdgeModel.getModel(node);
 				return edge == null ? null : edge.getStyle();
 			}
 		});
@@ -96,7 +97,7 @@ public class EdgeController {
 		});
 		addWidthGetter(ExclusivePropertyChain.NODE, new IPropertyGetter<Integer, NodeModel>() {
 			public Integer getProperty(final NodeModel node, final Integer currentValue) {
-				final EdgeModel edge = node.getEdge();
+				final EdgeModel edge = EdgeModel.getModel(node);
 				int width = edge == null ? DEFAULT_WIDTH : edge.getWidth();
 				if (width == EdgeModel.WIDTH_PARENT) {
 					if (node.isRoot()) {
@@ -181,4 +182,12 @@ public class EdgeController {
 			}
 		}
 	}
+
+	public static void install(ModeController modeController, EdgeController edgeController) {
+		modeController.addExtension(EdgeController.class, edgeController);
+    }
+
+	public static EdgeController getController(ModeController modeController) {
+		return (EdgeController)modeController.getExtension(EdgeController.class);
+    }
 }

@@ -26,8 +26,8 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.map.MapModel;
 import org.freeplane.core.map.NodeModel;
-import org.freeplane.view.map.MapView;
-import org.freeplane.view.map.NodeView;
+import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.NodeView;
 
 /**
  * @author Dimitry Polivaev

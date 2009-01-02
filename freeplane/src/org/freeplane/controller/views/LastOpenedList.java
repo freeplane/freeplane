@@ -34,7 +34,7 @@ import java.util.StringTokenizer;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.map.url.UrlManager;
 import org.freeplane.n3.nanoxml.XMLParseException;
-import org.freeplane.view.map.MapView;
+import org.freeplane.view.swing.map.MapView;
 
 /**
  * This class manages a list of the maps that were opened last. It aims to
@@ -81,7 +81,7 @@ public class LastOpenedList {
 		if (mapView == null || mapView.getModel() == null) {
 			return;
 		}
-		final String restoreString = mapView.getModeController().getUrlManager().getRestoreable(
+		final String restoreString = UrlManager.getController(mapView.getModeController()).getRestoreable(
 		    mapView.getModel());
 		if (restoreString == null) {
 			return;

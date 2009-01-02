@@ -29,7 +29,9 @@ import javax.swing.JFileChooser;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.map.link.LinkController;
 import org.freeplane.map.link.mindmapmode.MLinkController;
+import org.freeplane.map.text.TextController;
 import org.freeplane.map.text.mindmapmode.MTextController;
 import org.freeplane.map.url.UrlManager;
 import org.freeplane.modes.mindmapmode.MMapController;
@@ -64,8 +66,8 @@ class ImportFolderStructureAction extends FreeplaneAction {
 	private NodeModel addNode(final NodeModel target, final String nodeContent, final String link) {
 		final NodeModel node = ((MMapController) getModeController().getMapController())
 		    .addNewNode(target, target.getChildCount(), target.isNewChildLeft());
-		((MTextController) getMModeController().getTextController()).setNodeText(node, nodeContent);
-		((MLinkController) getMModeController().getLinkController()).setLink(node, link);
+		((MTextController) TextController.getController(getMModeController())).setNodeText(node, nodeContent);
+		((MLinkController) LinkController.getController(getMModeController())).setLink(node, link);
 		return node;
 	}
 

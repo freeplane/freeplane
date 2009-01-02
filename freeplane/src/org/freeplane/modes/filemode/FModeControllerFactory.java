@@ -28,7 +28,7 @@ import org.freeplane.core.ui.FreeMindToolBar;
 import org.freeplane.map.clipboard.ClipboardController;
 import org.freeplane.map.edge.EdgeController;
 import org.freeplane.map.icon.IconController;
-import org.freeplane.map.link.filemode.FLinkController;
+import org.freeplane.map.link.LinkController;
 import org.freeplane.map.nodelocation.LocationController;
 import org.freeplane.map.nodestyle.NodeStyleController;
 import org.freeplane.map.text.TextController;
@@ -47,15 +47,15 @@ public class FModeControllerFactory {
 		modeController = new FModeController();
 		Controller.getController().addModeController(modeController);
 		modeController.setMapController(new FMapController(modeController));
-		modeController.setUrlManager(new UrlManager(modeController));
-		modeController.setIconController(new IconController(modeController));
-		modeController.setNodeStyleController(new NodeStyleController(modeController));
-		modeController.setEdgeController(new EdgeController(modeController));
-		modeController.setLinkController(new FLinkController(modeController));
-		modeController.setTextController(new TextController(modeController));
-		modeController.setClipboardController(new ClipboardController(modeController));
-		modeController.setLocationController(new LocationController(modeController));
-		modeController.getNodeStyleController().addShapeGetter(new Integer(0),
+		UrlManager.install(modeController, new UrlManager(modeController));
+		IconController.install(modeController, new IconController(modeController));
+		NodeStyleController.install(modeController, new NodeStyleController(modeController));
+		EdgeController.install(modeController, new EdgeController(modeController));
+		LinkController.install(modeController, new LinkController(modeController));
+		TextController.install(modeController, new TextController(modeController));
+		ClipboardController.install(modeController, new ClipboardController(modeController));
+		LocationController.install(modeController, new LocationController(modeController));
+		NodeStyleController.getController(modeController).addShapeGetter(new Integer(0),
 		    new IPropertyGetter<String, NodeModel>() {
 			    public String getProperty(final NodeModel node, final String currentValue) {
 				    return "fork";

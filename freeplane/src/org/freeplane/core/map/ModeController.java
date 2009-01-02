@@ -51,20 +51,11 @@ import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.UserInputListenerFactory;
 import org.freeplane.core.undo.IUndoableActor;
-import org.freeplane.map.attribute.IAttributeController;
-import org.freeplane.map.clipboard.ClipboardController;
-import org.freeplane.map.cloud.CloudController;
-import org.freeplane.map.edge.EdgeController;
-import org.freeplane.map.icon.IconController;
 import org.freeplane.map.link.LinkController;
-import org.freeplane.map.nodelocation.LocationController;
-import org.freeplane.map.nodestyle.NodeStyleController;
-import org.freeplane.map.note.NoteController;
-import org.freeplane.map.text.TextController;
 import org.freeplane.map.url.UrlManager;
 import org.freeplane.modes.mindmapmode.IMouseWheelEventHandler;
-import org.freeplane.view.map.MapView;
-import org.freeplane.view.map.NodeView;
+import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.NodeView;
 
 /**
  * Derive from this class to implement the Controller for your mode. Overload
@@ -154,13 +145,8 @@ public class ModeController {
 
 	public static final String NODESEPARATOR = "<nodeseparator>";
 	private final ActionController actionController;
-	private ClipboardController clipboardController;
-	private CloudController cloudController;
-	private EdgeController edgeController;
 	final private ExtensionHashMap extensions;
-	private IconController iconController;
 	private boolean isBlocked = false;
-	private LinkController linkController;
 	private MapController mapController;
 	final private LinkedList<IMenuContributor> menuContributors;
 	final private HashSet mRegisteredMouseWheelEventHandler = new HashSet();
@@ -170,17 +156,12 @@ public class ModeController {
 	 * The model, this controller belongs to. It may be null, if it is the
 	 * default controller that does not show a map.
 	 */
-	private NodeStyleController nodeStyleController;
 	final private LinkedList<INodeViewLifeCycleListener> nodeViewListeners;
-	private NoteController noteController;
 	final private ControllerPopupMenuListener popupListener = new ControllerPopupMenuListener(this);
 	/**
 	 * Take care! This listener is also used for modelpopups (as for graphical
 	 * links).
 	 */
-	LocationController positionController;
-	private TextController textController;
-	private UrlManager urlManager;
 	final private UserInputListenerFactory userInputListenerFactory;
 
 	/**
@@ -296,49 +277,12 @@ public class ModeController {
 		return Controller.getController().getAction(key);
 	}
 
-	public IAttributeController getAttributeController() {
-		return null;
-	}
-
-	public ClipboardController getClipboardController() {
-		return clipboardController;
-	}
-
-	/**
-	 * @return
-	 */
-	public CloudController getCloudController() {
-		return cloudController;
-	}
-
-	/**
-	 * @return
-	 */
-	public EdgeController getEdgeController() {
-		return edgeController;
-	}
-
 	public IExtension getExtension(final Class clazz) {
 		return extensions.getExtension(clazz);
 	}
 
 	public void getFilteredXml(final MapModel map, final Writer fileout) throws IOException {
 		getMapController().writeMapAsXml(map, fileout, false);
-	}
-
-	public IconController getIconController() {
-		return iconController;
-	}
-
-	/**
-	 *
-	 */
-	public LinkController getLinkController() {
-		return linkController;
-	}
-
-	public LocationController getLocationController() {
-		return positionController;
 	}
 
 	/**
@@ -360,12 +304,6 @@ public class ModeController {
 		return Collections.unmodifiableSet(mRegisteredMouseWheelEventHandler);
 	}
 
-	/**
-	 * @return
-	 */
-	public NodeStyleController getNodeStyleController() {
-		return nodeStyleController;
-	}
 
 	public NodeView getNodeView(final NodeModel node) {
 		return getMapView().getNodeView(node);
@@ -381,12 +319,8 @@ public class ModeController {
 		throw new ClassCastException();
 	}
 
-	public NoteController getNoteController() {
-		return noteController;
-	}
-
 	public JPopupMenu getPopupForModel(final java.lang.Object obj) {
-		final JPopupMenu popupForModel = getLinkController().getPopupForModel(obj);
+		final JPopupMenu popupForModel = LinkController.getController(this).getPopupForModel(obj);
 		if (popupForModel != null) {
 			popupForModel.addPopupMenuListener(popupListener);
 			return popupForModel;
@@ -438,14 +372,6 @@ public class ModeController {
 
 	public String getText(final String textId) {
 		return Controller.getText(textId);
-	}
-
-	public TextController getTextController() {
-		return textController;
-	}
-
-	public UrlManager getUrlManager() {
-		return urlManager;
 	}
 
 	public UserInputListenerFactory getUserInputListenerFactory() {
@@ -619,34 +545,6 @@ public class ModeController {
 		this.isBlocked = isBlocked;
 	}
 
-	public void setClipboardController(final ClipboardController clipboardController) {
-		this.clipboardController = clipboardController;
-	}
-
-	public void setCloudController(final CloudController cloudController) {
-		this.cloudController = cloudController;
-	}
-
-	public void setEdgeController(final EdgeController edgeController) {
-		this.edgeController = edgeController;
-	}
-
-	public void setIconController(final IconController iconController) {
-		this.iconController = iconController;
-	}
-
-	public void setLinkController(final LinkController linkController) {
-		this.linkController = linkController;
-	}
-
-	public void setLocationController(final LocationController positionController) {
-		this.positionController = positionController;
-	}
-
-	public void setMapController(final MapController mapController) {
-		this.mapController = mapController;
-	}
-
 	public void setMapMouseMotionListener(final IMouseListener mapMouseMotionListener) {
 		userInputListenerFactory.setMapMouseListener(mapMouseMotionListener);
 	}
@@ -661,22 +559,6 @@ public class ModeController {
 
 	public void setNodeMotionListener(final IMouseListener nodeMotionListener) {
 		userInputListenerFactory.setNodeMotionListener(nodeMotionListener);
-	}
-
-	public void setNodeStyleController(final NodeStyleController textStyleController) {
-		nodeStyleController = textStyleController;
-	}
-
-	public void setNoteController(final NoteController noteController) {
-		this.noteController = noteController;
-	}
-
-	public void setTextController(final TextController textController) {
-		this.textController = textController;
-	}
-
-	public void setUrlManager(final UrlManager urlManager) {
-		this.urlManager = urlManager;
 	}
 
 	/*
@@ -704,7 +586,7 @@ public class ModeController {
 	 * it to perform the actions that cannot be performed at creation time.
 	 */
 	public void startup() {
-		getUrlManager().startup();
+		UrlManager.getController(this).startup();
 	}
 
 	protected void updateMenus(final MenuBuilder builder) {
@@ -721,4 +603,8 @@ public class ModeController {
 			iterator.next().updateMenus(menuBuilder);
 		}
 	}
+
+	public void setMapController(MapController mapController) {
+	    this.mapController = mapController;
+    }
 }

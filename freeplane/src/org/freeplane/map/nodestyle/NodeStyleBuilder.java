@@ -61,7 +61,7 @@ public class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWr
 			final NodeModel node = (NodeModel) parent;
 			if (tag.equals("font")) {
 				final FontProperties fp = (FontProperties) userObject;
-				NodeStyleModel nodeStyleModel = node.getNodeStyleModel();
+				NodeStyleModel nodeStyleModel = NodeStyleModel.getModel(node);
 				if (nodeStyleModel == null) {
 					nodeStyleModel = new NodeStyleModel();
 					node.addExtension(nodeStyleModel);
@@ -81,7 +81,7 @@ public class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWr
 			public void setAttribute(final Object userObject, final String value) {
 				if (value.length() == 7) {
 					final NodeModel node = (NodeModel) userObject;
-					node.setColor(TreeXmlReader.xmlToColor(value));
+					NodeStyleModel.setColor(node, TreeXmlReader.xmlToColor(value));
 				}
 			}
 		});
@@ -90,14 +90,14 @@ public class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWr
 			    public void setAttribute(final Object userObject, final String value) {
 				    if (value.length() == 7) {
 					    final NodeModel node = (NodeModel) userObject;
-					    node.setBackgroundColor(TreeXmlReader.xmlToColor(value));
+					    NodeStyleModel.setBackgroundColor(node, TreeXmlReader.xmlToColor(value));
 				    }
 			    }
 		    });
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "STYLE", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
-				node.setShape(value);
+				NodeStyleModel.setShape(node, value);
 			}
 		});
 		reader.addAttributeHandler("font", "SIZE", new IAttributeHandler() {

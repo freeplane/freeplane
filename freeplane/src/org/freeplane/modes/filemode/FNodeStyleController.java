@@ -17,8 +17,28 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.view.map;
+package org.freeplane.modes.filemode;
 
-public interface INodeViewVisitor {
-	void visit(NodeView view);
+import java.awt.Color;
+
+import org.freeplane.core.map.ExclusivePropertyChain;
+import org.freeplane.core.map.IPropertyGetter;
+import org.freeplane.core.map.ModeController;
+import org.freeplane.core.map.NodeModel;
+import org.freeplane.map.nodestyle.NodeStyleController;
+
+/**
+ * @author Dimitry Polivaev
+ * 02.01.2009
+ */
+public class FNodeStyleController extends NodeStyleController {
+
+	public FNodeStyleController(ModeController modeController) {
+	    super(modeController);
+	    addColorGetter(ExclusivePropertyChain.DEFAULT - 1, new IPropertyGetter<Color, NodeModel>(){
+			public Color getProperty(NodeModel node, Color currentValue) {
+				return node.isLeaf() ? Color.BLACK : Color.GRAY;
+            }});
+    }
+	
 }

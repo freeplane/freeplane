@@ -24,7 +24,7 @@ import java.awt.Graphics2D;
 import java.awt.Stroke;
 import java.awt.geom.CubicCurve2D;
 
-import org.freeplane.view.map.VerticalRootNodeViewLayout;
+import org.freeplane.view.swing.map.VerticalRootNodeViewLayout;
 
 /**
  * This class represents a single Edge of a MindMap.

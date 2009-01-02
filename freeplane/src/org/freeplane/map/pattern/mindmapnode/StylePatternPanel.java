@@ -33,6 +33,7 @@ import java.util.Vector;
 import javax.swing.JPanel;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.MindIcon;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.ui.BooleanProperty;
 import org.freeplane.core.resources.ui.ColorProperty;
@@ -47,7 +48,7 @@ import org.freeplane.core.resources.ui.SeparatorProperty;
 import org.freeplane.core.resources.ui.StringProperty;
 import org.freeplane.core.resources.ui.ThreeCheckBoxProperty;
 import org.freeplane.map.edge.EdgeModel;
-import org.freeplane.map.icon.MindIcon;
+import org.freeplane.map.icon.IconController;
 import org.freeplane.map.icon.mindmapnode.MIconController;
 import org.freeplane.map.nodestyle.NodeStyleModel;
 import org.freeplane.modes.mindmapmode.MModeController;
@@ -236,7 +237,7 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 		controls.add(mNodeStyle);
 		mIconInformationVector = new Vector();
 		final MModeController controller = mMindMapController;
-		final Collection mindIcons = ((MIconController) controller.getIconController())
+		final Collection mindIcons = ((MIconController) IconController.getController(controller))
 		    .getMindIcons();
 		mIconInformationVector.addAll(mindIcons);
 		mSetIcon = new ThreeCheckBoxProperty(StylePatternPanel.SET_ICON);

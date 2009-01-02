@@ -38,7 +38,7 @@ public class MCloudController extends CloudController {
 	}
 
 	public void setCloud(final NodeModel node, final boolean enable) {
-		final CloudModel cloud = node.getCloud();
+		final CloudModel cloud = CloudModel.getModel(node);
 		if ((cloud != null) == enable) {
 			return;
 		}
@@ -55,14 +55,14 @@ public class MCloudController extends CloudController {
 			}
 
 			private void disable() {
-				node.setCloud(null);
+				CloudModel.setModel(node, null);
 				modeController.getMapController().nodeChanged(node);
 			}
 
 			private void enable() {
 				final CloudModel cloud = new CloudModel();
 				cloud.setColor(color);
-				node.setCloud(cloud);
+				CloudModel.setModel(node, cloud);
 				modeController.getMapController().nodeChanged(node);
 			}
 
@@ -85,13 +85,13 @@ public class MCloudController extends CloudController {
 	public void setColor(final NodeModel node, final Color color) {
 		setCloud(node, true);
 		final MModeController modeController = (MModeController) node.getModeController();
-		final Color oldColor = node.getCloud().getColor();
+		final Color oldColor = CloudModel.getModel(node).getColor();
 		if (color.equals(oldColor)) {
 			return;
 		}
 		final IUndoableActor actor = new IUndoableActor() {
 			public void act() {
-				node.getCloud().setColor(color);
+				CloudModel.getModel(node).setColor(color);
 				modeController.getMapController().nodeChanged(node);
 			}
 
@@ -100,7 +100,7 @@ public class MCloudController extends CloudController {
 			}
 
 			public void undo() {
-				node.getCloud().setColor(oldColor);
+				CloudModel.getModel(node).setColor(oldColor);
 				modeController.getMapController().nodeChanged(node);
 			}
 		};

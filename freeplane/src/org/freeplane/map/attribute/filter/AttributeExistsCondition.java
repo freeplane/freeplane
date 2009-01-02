@@ -24,6 +24,7 @@ import org.freeplane.core.filter.condition.ConditionFactory;
 import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.map.attribute.IAttributeTableModel;
+import org.freeplane.map.attribute.NodeAttributeTableModel;
 import org.freeplane.map.text.filter.NodeCondition;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -55,7 +56,7 @@ public class AttributeExistsCondition extends NodeCondition {
 	 * .MindMapNode)
 	 */
 	public boolean checkNode(final NodeModel node) {
-		final IAttributeTableModel attributes = node.getAttributes();
+		final IAttributeTableModel attributes = NodeAttributeTableModel.getModel(node);
 		for (int i = 0; i < attributes.getRowCount(); i++) {
 			if (attributes.getValueAt(i, 0).equals(attribute)) {
 				return true;

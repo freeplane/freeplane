@@ -53,8 +53,8 @@ import org.freeplane.map.attribute.AttributeTableLayoutModel;
 import org.freeplane.map.attribute.ColumnWidthChangeEvent;
 import org.freeplane.map.attribute.IAttributeTableModel;
 import org.freeplane.map.attribute.IColumnWidthChangeListener;
-import org.freeplane.view.map.MapView;
-import org.freeplane.view.map.NodeView;
+import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.NodeView;
 
 /**
  * @author Dimitry Polivaev

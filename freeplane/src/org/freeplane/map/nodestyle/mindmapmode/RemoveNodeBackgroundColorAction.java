@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.MultipleNodeAction;
+import org.freeplane.map.nodestyle.NodeStyleController;
 
 class RemoveNodeBackgroundColorAction extends MultipleNodeAction {
 	public RemoveNodeBackgroundColorAction() {
@@ -31,7 +32,7 @@ class RemoveNodeBackgroundColorAction extends MultipleNodeAction {
 
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		((MNodeStyleController) super.getMModeController().getNodeStyleController())
+		((MNodeStyleController) NodeStyleController.getController(super.getMModeController()))
 		    .setBackgroundColor(node, null);
 	}
 }

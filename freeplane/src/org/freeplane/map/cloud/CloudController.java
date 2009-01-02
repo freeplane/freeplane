@@ -24,6 +24,7 @@ import java.awt.Color;
 import java.awt.Stroke;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
@@ -38,7 +39,7 @@ import org.freeplane.core.resources.ui.IFreemindPropertyListener;
 /**
  * @author Dimitry Polivaev
  */
-public class CloudController {
+public class CloudController implements IExtension{
 	protected static class CloudAdapterListener implements IFreemindPropertyListener {
 		public void propertyChanged(final String propertyName, final String newValue,
 		                            final String oldValue) {
@@ -64,7 +65,7 @@ public class CloudController {
 		updateStandards(modeController);
 		addColorGetter(ExclusivePropertyChain.NODE, new IPropertyGetter<Color, NodeModel>() {
 			public Color getProperty(final NodeModel node, final Color currentValue) {
-				final CloudModel cloud = node.getCloud();
+				final CloudModel cloud = CloudModel.getModel(node);
 				return cloud != null ? cloud.getColor() : null;
 			}
 		});
@@ -109,4 +110,12 @@ public class CloudController {
 			standardColor = TreeXmlReader.xmlToColor(stdColor);
 		}
 	}
+
+	public static void install(ModeController modeController, CloudController cloudController) {
+		modeController.addExtension(ModeController.class, cloudController);
+    }
+
+	public static CloudController getController(ModeController modeController) {
+		return (CloudController)modeController.getExtension(CloudController.class);
+    }
 }

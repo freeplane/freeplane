@@ -34,8 +34,8 @@ import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.n3.nanoxml.IXMLElement;
-import org.freeplane.view.map.INodeViewVisitor;
-import org.freeplane.view.map.NodeView;
+import org.freeplane.view.swing.map.INodeViewVisitor;
+import org.freeplane.view.swing.map.NodeView;
 
 /**
  */

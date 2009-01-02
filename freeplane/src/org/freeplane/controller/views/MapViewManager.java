@@ -34,7 +34,7 @@ import java.util.Vector;
 import org.freeplane.core.map.MapModel;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.util.Tools;
-import org.freeplane.view.map.MapView;
+import org.freeplane.view.swing.map.MapView;
 
 /**
  * Manages the list of MapViews. As this task is very complex, I exported it

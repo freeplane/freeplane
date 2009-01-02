@@ -19,7 +19,6 @@
  */
 package org.freeplane.modes.filemode;
 
-import java.awt.Color;
 import java.io.File;
 import java.util.List;
 
@@ -31,7 +30,6 @@ import org.freeplane.core.map.NodeModel;
  * its parent and children and to its view.
  */
 public class FNodeModel extends NodeModel {
-	private Color color;
 	final private File file;
 
 	public FNodeModel(final File file, final MapModel map) {
@@ -65,16 +63,6 @@ public class FNodeModel extends NodeModel {
 		return children;
 	}
 
-	/**
-	 * This could be a nice feature. Improve it!
-	 */
-	@Override
-	public Color getColor() {
-		if (color == null) {
-			color = isLeaf() ? Color.BLACK : Color.GRAY;
-		}
-		return color;
-	}
 
 	public File getFile() {
 		return file;

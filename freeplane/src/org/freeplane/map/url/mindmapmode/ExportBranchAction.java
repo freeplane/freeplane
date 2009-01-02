@@ -31,7 +31,9 @@ import org.freeplane.core.map.MapModel;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.util.Tools;
+import org.freeplane.map.link.LinkController;
 import org.freeplane.map.link.mindmapmode.MLinkController;
+import org.freeplane.map.text.TextController;
 import org.freeplane.map.text.mindmapmode.MTextController;
 import org.freeplane.map.url.UrlManager;
 import org.freeplane.modes.mindmapmode.MMapController;
@@ -61,8 +63,8 @@ class ExportBranchAction extends FreeplaneAction {
 		else {
 			chooser = new JFileChooser();
 		}
-		if (((FileManager) getModeController().getUrlManager()).getFileFilter() != null) {
-			chooser.addChoosableFileFilter(((FileManager) getModeController().getUrlManager())
+		if (((FileManager) UrlManager.getController(getModeController())).getFileFilter() != null) {
+			chooser.addChoosableFileFilter(((FileManager) UrlManager.getController(getModeController()))
 			    .getFileFilter());
 		}
 		final int returnVal = chooser.showSaveDialog(getMModeController().getSelectedView());
@@ -100,7 +102,7 @@ class ExportBranchAction extends FreeplaneAction {
 			try {
 				final String linkToNewMapString = UrlManager.toRelativeURL(UrlManager
 				    .fileToUrl(chosenFile), Controller.getController().getMap().getURL());
-				((MLinkController) getMModeController().getLinkController()).setLink(node,
+				((MLinkController) LinkController.getController(getMModeController())).setLink(node,
 				    linkToNewMapString);
 			}
 			catch (final MalformedURLException ex) {
@@ -111,15 +113,15 @@ class ExportBranchAction extends FreeplaneAction {
 			node.setParent(null);
 			node.setFolded(false);
 			final MapModel map = getMModeController().getMapController().newMap(node);
-			((FileManager) getMModeController().getUrlManager()).save(map, chosenFile);
+			((FileManager) UrlManager.getController(getMModeController())).save(map, chosenFile);
 			final NodeModel newNode = ((MMapController) getModeController().getMapController())
 			    .addNewNode(parent, nodePosition, node.isLeft());
-			((MTextController) getMModeController().getTextController()).setNodeText(newNode, node
+			((MTextController) TextController.getController(getMModeController())).setNodeText(newNode, node
 			    .getText());
 			try {
 				final String linkString = UrlManager.toRelativeURL(Controller.getController()
 				    .getMap().getURL(), UrlManager.fileToUrl(chosenFile));
-				((MLinkController) getMModeController().getLinkController()).setLink(newNode,
+				((MLinkController) LinkController.getController(getMModeController())).setLink(newNode,
 				    linkString);
 			}
 			catch (final MalformedURLException ex) {

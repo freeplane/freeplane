@@ -22,6 +22,7 @@ package org.freeplane.map.note;
 import javax.swing.ImageIcon;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.resources.ResourceController;
@@ -30,7 +31,7 @@ import org.freeplane.modes.mindmapmode.MMapController;
 /**
  * @author Dimitry Polivaev
  */
-public class NoteController {
+public class NoteController implements IExtension {
 	private static ImageIcon noteIcon = null;
 	final private ModeController modeController;
 
@@ -75,6 +76,14 @@ public class NoteController {
 		}
 		node.setStateIcon(NodeNoteBase.NODE_NOTE_ICON, (showIcon) ? noteIcon : null);
 		((MMapController) getModeController().getMapController()).setToolTip(node, "nodeNoteText",
-		    (enabled) ? node.getNoteText() : null);
+		    (enabled) ? NoteModel.getNoteText(node) : null);
 	}
+
+	public static void install(ModeController modeController, NoteController noteController) {
+		modeController.addExtension(NoteController.class, noteController);
+    }
+
+	public static NoteController getController(ModeController modeController) {
+		return (NoteController)modeController.getExtension(NoteController.class);
+    }
 }

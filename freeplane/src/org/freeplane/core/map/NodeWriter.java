@@ -26,7 +26,7 @@ import org.freeplane.core.io.IAttributeWriter;
 import org.freeplane.core.io.IElementWriter;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.xml.TreeXmlWriter;
-import org.freeplane.map.icon.MindIcon;
+import org.freeplane.map.link.LinkController;
 import org.freeplane.map.text.HtmlTools;
 import org.freeplane.map.text.NodeTextBuilder;
 import org.freeplane.modes.mindmapmode.EncryptionModel;
@@ -82,7 +82,7 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 			writer.addAttribute(NodeTextBuilder.XML_NODE_TEXT, text);
 		}
 		xmlNode = new XMLElement();
-		encryptionModel = node.getEncryptionModel();
+		encryptionModel = EncryptionModel.getModel(node);
 		if (encryptionModel != null) {
 			final String additionalInfo = encryptionModel.getEncryptedContent();
 			writer.addAttribute(NodeBuilder.XML_NODE_ENCRYPTED_CONTENT, additionalInfo);
@@ -95,7 +95,7 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 		}
 		final String id = node.createID();
 		final boolean saveID = saveOnlyIntrinsicallyNeededIds
-		        || !node.getModeController().getLinkController().getLinksTo(node).isEmpty();
+		        || !LinkController.getController(node.getModeController()).getLinksTo(node).isEmpty();
 		if (saveID) {
 			if (id != null) {
 				writer.addAttribute("ID", id);

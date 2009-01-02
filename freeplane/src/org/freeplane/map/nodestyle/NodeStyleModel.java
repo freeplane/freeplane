@@ -22,6 +22,7 @@ package org.freeplane.map.nodestyle;
 import java.awt.Color;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.map.NodeModel;
 
 /**
  * @author Dimitry Polivaev 20.11.2008
@@ -110,4 +111,48 @@ public class NodeStyleModel implements IExtension, Cloneable {
 	public void setShape(final String shape) {
 		this.shape = shape;
 	}
+
+	public static NodeStyleModel createNodeStyleModel(NodeModel node) {
+		NodeStyleModel styleModel = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
+		if (styleModel == null) {
+			styleModel = new NodeStyleModel();
+			node.addExtension(styleModel);
+		}
+		return styleModel;
+    }
+
+	public static Color getBackgroundColor(NodeModel node) {
+		final NodeStyleModel styleModel = getModel(node);
+		return styleModel == null ? null : styleModel.getBackgroundColor();
+    }
+
+	public static NodeStyleModel getModel(NodeModel node) {
+	    final NodeStyleModel styleModel = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
+	    return styleModel;
+    }
+
+	public static Color getColor(NodeModel node) {
+		final NodeStyleModel styleModel = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
+		return styleModel == null ? null : styleModel.getColor();
+    }
+
+	public static String getShape(NodeModel node) {
+		final NodeStyleModel styleModel = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
+		return styleModel == null ? null : styleModel.getShape();
+    }
+
+	public static void setBackgroundColor(NodeModel node, Color color) {
+		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
+		styleModel.setBackgroundColor(color);
+    }
+
+	public static void setColor(NodeModel node, Color color) {
+		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
+		styleModel.setColor(color);
+    }
+
+	public static void setShape(NodeModel node, String shape) {
+		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
+		styleModel.setShape(shape);
+    }
 }

@@ -98,8 +98,7 @@ public class MMapController extends MapController {
 			    .getViewController().getContentPane(), text, title,
 			    JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 			if (returnVal == JOptionPane.YES_OPTION) {
-				final boolean savingNotCancelled = ((FileManager) getModeController()
-				    .getUrlManager()).save(map);
+				final boolean savingNotCancelled = ((FileManager) UrlManager.getController(getModeController())).save(map);
 				if (!savingNotCancelled) {
 					return false;
 				}
@@ -152,7 +151,7 @@ public class MMapController extends MapController {
 	}
 
 	public boolean isWriteable(final NodeModel targetNode) {
-		final EncryptionModel encryptionModel = targetNode.getEncryptionModel();
+		final EncryptionModel encryptionModel = EncryptionModel.getModel(targetNode);
 		if (encryptionModel != null) {
 			return encryptionModel.isAccessible();
 		}
@@ -253,7 +252,7 @@ public class MMapController extends MapController {
 		if (map.getFile() == null) {
 			Controller.getController().getViewController().out(
 			    "You must save the current map first!");
-			final boolean result = ((FileManager) getModeController().getUrlManager()).save(map);
+			final boolean result = ((FileManager) UrlManager.getController(getModeController())).save(map);
 			if (!result) {
 				return;
 			}

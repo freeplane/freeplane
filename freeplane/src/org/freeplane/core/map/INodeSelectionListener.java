@@ -19,7 +19,7 @@
  */
 package org.freeplane.core.map;
 
-import org.freeplane.view.map.NodeView;
+import org.freeplane.view.swing.map.NodeView;
 
 /** */
 public interface INodeSelectionListener {

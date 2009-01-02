@@ -28,8 +28,9 @@ import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.undo.IUndoableActor;
+import org.freeplane.map.text.TextController;
 import org.freeplane.map.text.mindmapmode.MTextController;
-import org.freeplane.view.map.NodeView;
+import org.freeplane.view.swing.map.NodeView;
 
 class NewChildAction extends FreeplaneAction {
 	public NewChildAction() {
@@ -44,7 +45,7 @@ class NewChildAction extends FreeplaneAction {
 	public NodeModel addNewNode(int newNodeMode, final KeyEvent e) {
 		final ModeController modeController = getModeController();
 		final NodeModel target = modeController.getSelectedNode();
-		((MTextController) modeController.getTextController()).stopEditing();
+		((MTextController) TextController.getController(modeController)).stopEditing();
 		final NodeModel targetNode = target;
 		NodeModel newNode = null;
 		switch (newNodeMode) {
@@ -59,7 +60,7 @@ class NewChildAction extends FreeplaneAction {
 					newNode = addNewNode(parent, childPosition, targetNode.isLeft());
 					final NodeView nodeView = modeController.getNodeView(newNode);
 					modeController.select(nodeView);
-					((MTextController) modeController.getTextController()).edit(nodeView,
+					((MTextController) TextController.getController(modeController)).edit(nodeView,
 					    modeController.getNodeView(target), e, true, false, false);
 					break;
 				}
@@ -81,7 +82,7 @@ class NewChildAction extends FreeplaneAction {
 				if (newNodeMode == MMapController.NEW_CHILD) {
 					modeController.select(nodeView);
 				}
-				((MTextController) modeController.getTextController()).edit(nodeView,
+				((MTextController) TextController.getController(modeController)).edit(nodeView,
 				    modeController.getNodeView(target), e, true, parentFolded, false);
 				break;
 			}

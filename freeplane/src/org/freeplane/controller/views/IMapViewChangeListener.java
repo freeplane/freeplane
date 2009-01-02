@@ -19,7 +19,7 @@
  */
 package org.freeplane.controller.views;
 
-import org.freeplane.view.map.MapView;
+import org.freeplane.view.swing.map.MapView;
 
 public interface IMapViewChangeListener {
 	void afterMapClose(MapView oldMapView);

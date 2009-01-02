@@ -25,7 +25,7 @@ import java.awt.print.Printable;
 import javax.swing.JComponent;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.view.map.MapView;
+import org.freeplane.view.swing.map.MapView;
 
 class Preview extends JComponent {
 	final private static int DEFAULT_PREVIEW_SIZE = 300;

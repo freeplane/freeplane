@@ -31,6 +31,8 @@ import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.util.Tools.BooleanHolder;
 import org.freeplane.map.attribute.Attribute;
+import org.freeplane.map.attribute.AttributeController;
+import org.freeplane.map.attribute.NodeAttributeTableModel;
 import org.freeplane.map.attribute.mindmapnode.MAttributeController;
 import org.freeplane.modes.mindmapmode.MModeController;
 
@@ -76,7 +78,7 @@ class ScriptEditor extends FreeplaneAction {
 			 * is in general different from index, as not all attributes need to
 			 * be scripts.
 			 */
-			final int attributeIndex = mNode.getAttributeTableLength();
+			final int attributeIndex = NodeAttributeTableModel.getModel(mNode).getAttributeTableLength();
 			final String scriptName = ScriptingEngine.SCRIPT_PREFIX;
 			int scriptNameSuffix = 1;
 			boolean found;
@@ -107,17 +109,16 @@ class ScriptEditor extends FreeplaneAction {
 
 		public void endDialog(final boolean pIsCanceled) {
 			if (!pIsCanceled) {
-				final int attributeTableLength = mNode.getAttributeTableLength();
+				final int attributeTableLength = NodeAttributeTableModel.getModel(mNode).getAttributeTableLength();
 				for (final Iterator iter = mScripts.iterator(); iter.hasNext();) {
 					final AttributeHolder holder = (AttributeHolder) iter.next();
 					final Attribute attribute = holder.mAttribute;
 					final int position = holder.mPosition;
-					final MAttributeController attributeController = (MAttributeController) mMindMapController
-					    .getAttributeController();
+					final MAttributeController attributeController = (MAttributeController) AttributeController.getController(mMindMapController);
 					if (attributeTableLength <= position) {
 						attributeController.addAttribute(mNode, attribute);
 					}
-					else if (mNode.getAttribute(position).getValue() != attribute.getValue()) {
+					else if (NodeAttributeTableModel.getModel(mNode).getAttribute(position).getValue() != attribute.getValue()) {
 						attributeController.setAttribute(mNode, position, attribute);
 					}
 				}
@@ -174,8 +175,8 @@ class ScriptEditor extends FreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		final NodeModel node = getModeController().getSelectedNode();
 		final Vector scripts = new Vector();
-		for (int position = 0; position < node.getAttributeTableLength(); position++) {
-			final Attribute attribute = node.getAttribute(position);
+		for (int position = 0; position < NodeAttributeTableModel.getModel(node).getAttributeTableLength(); position++) {
+			final Attribute attribute = NodeAttributeTableModel.getModel(node).getAttribute(position);
 			if (attribute.getName().startsWith(ScriptingEngine.SCRIPT_PREFIX)) {
 				scripts.add(new AttributeHolder(attribute, position));
 			}

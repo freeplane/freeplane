@@ -1,7 +1,7 @@
 package org.freeplane.controller.views;
 
 import org.freeplane.core.map.MapModel;
-import org.freeplane.view.map.MapView;
+import org.freeplane.view.swing.map.MapView;
 
 /**
  * You can register yourself to this listener at the main controller.

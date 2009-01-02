@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.view.map;
+package org.freeplane.view.swing.map;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -64,7 +64,9 @@ import org.freeplane.core.resources.ui.IFreemindPropertyListener;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.map.link.ArrowLinkModel;
+import org.freeplane.map.link.LinkController;
 import org.freeplane.map.link.LinkModel;
+import org.freeplane.map.link.NodeLinks;
 import org.freeplane.map.link.view.ArrowLinkView;
 
 /**
@@ -854,9 +856,9 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 	protected void paintLinks(final NodeView source, final Graphics2D graphics,
 	                          final HashSet alreadyPaintedLinks) {
 		final NodeModel node = source.getModel();
-		final Collection<LinkModel> outLinks = node.getLinks();
+		final Collection<LinkModel> outLinks = NodeLinks.getLinks(node);
 		paintLinks(outLinks, graphics, alreadyPaintedLinks);
-		final Collection<LinkModel> inLinks = node.getModeController().getLinkController()
+		final Collection<LinkModel> inLinks = LinkController.getController(node.getModeController())
 		    .getLinksTo(node);
 		paintLinks(inLinks, graphics, alreadyPaintedLinks);
 		for (final ListIterator e = source.getChildrenViews().listIterator(); e.hasNext();) {

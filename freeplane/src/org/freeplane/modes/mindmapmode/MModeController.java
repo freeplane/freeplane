@@ -37,23 +37,26 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.UserInputListenerFactory;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.undo.IUndoableActor;
-import org.freeplane.map.attribute.IAttributeController;
-import org.freeplane.map.attribute.mindmapnode.MAttributeController;
+import org.freeplane.map.icon.IconController;
 import org.freeplane.map.icon.mindmapnode.MIconController;
+import org.freeplane.map.link.LinkController;
+import org.freeplane.map.link.NodeLinks;
+import org.freeplane.map.nodelocation.LocationController;
 import org.freeplane.map.nodelocation.mindmapmode.MLocationController;
+import org.freeplane.map.note.NoteController;
 import org.freeplane.map.note.mindmapnode.MNoteController;
 import org.freeplane.map.pattern.mindmapnode.MPatternController;
+import org.freeplane.map.text.TextController;
 import org.freeplane.map.text.mindmapmode.MTextController;
+import org.freeplane.map.url.UrlManager;
 import org.freeplane.map.url.mindmapmode.FileManager;
-import org.freeplane.view.map.MainView;
+import org.freeplane.view.swing.map.MainView;
 
 public class MModeController extends ModeController {
 	static public final String MODENAME = "MindMap";
 	static private RedoAction redo;
 	static private UndoAction undo;
-	private MAttributeController attributeController;
 	private OptionPanelBuilder optionPanelBuilder;
-	private MPatternController patternController;
 
 	MModeController() {
 		super();
@@ -118,8 +121,8 @@ public class MModeController extends ModeController {
 		}
 		final NodeModel node = ((MainView) e.getComponent()).getNodeView().getModel();
 		if (!e.isAltDown() && !e.isControlDown() && !e.isShiftDown() && !e.isPopupTrigger()
-		        && e.getButton() == MouseEvent.BUTTON1 && (node.getLink() == null)) {
-			((MTextController) getTextController()).edit(null, false, false);
+		        && e.getButton() == MouseEvent.BUTTON1 && (NodeLinks.getLink(node) == null)) {
+			((MTextController) TextController.getController(this)).edit(null, false, false);
 		}
 	}
 
@@ -129,10 +132,6 @@ public class MModeController extends ModeController {
 		addUndoableActor(actor);
 	}
 
-	@Override
-	public IAttributeController getAttributeController() {
-		return attributeController;
-	}
 
 	@Override
 	public String getModeName() {
@@ -141,10 +140,6 @@ public class MModeController extends ModeController {
 
 	public OptionPanelBuilder getOptionPanelBuilder() {
 		return optionPanelBuilder;
-	}
-
-	public MPatternController getPatternController() {
-		return patternController;
 	}
 
 	public boolean isUndoAction() {
@@ -158,7 +153,7 @@ public class MModeController extends ModeController {
 	 * @param i
 	 */
 	public void moveNodePosition(final NodeModel node, final int gap, final int hgap, final int i) {
-		((MLocationController) getLocationController()).moveNodePosition(node, gap, hgap, i);
+		((MLocationController) LocationController.getController(this)).moveNodePosition(node, gap, hgap, i);
 	}
 
 	@Override
@@ -175,7 +170,7 @@ public class MModeController extends ModeController {
 		}
 		final MainView component = (MainView) e.getComponent();
 		if (component.isInFollowLinkRegion(e.getX())) {
-			getLinkController().loadURL();
+			LinkController.getController(this).loadURL();
 		}
 		else {
 			final NodeModel node = (component).getNodeView().getModel();
@@ -191,21 +186,14 @@ public class MModeController extends ModeController {
 	 *
 	 */
 	public boolean save() {
-		return ((FileManager) getUrlManager()).save(getMapView().getModel());
+		return ((FileManager) UrlManager.getController(this)).save(getMapView().getModel());
 	}
 
-	void setAttributeController(final MAttributeController attributeController) {
-		this.attributeController = attributeController;
-	}
-
-	void setPatternController(final MPatternController patternController) {
-		this.patternController = patternController;
-	}
 
 	@Override
 	public void shutdown() {
 		super.shutdown();
-		((MNoteController) getNoteController()).shutdownController();
+		((MNoteController) NoteController.getController(this)).shutdownController();
 	}
 
 	/**
@@ -215,7 +203,7 @@ public class MModeController extends ModeController {
 	@Override
 	public void startup() {
 		super.startup();
-		((MNoteController) getNoteController()).startupController();
+		((MNoteController) NoteController.getController(this)).startupController();
 	}
 
 	public void undo() {
@@ -227,11 +215,11 @@ public class MModeController extends ModeController {
 	 */
 	@Override
 	public void updateMenus(final MenuBuilder builder) {
-		((MIconController) getIconController()).updateIconToolbar();
-		((MIconController) getIconController()).updateMenus(builder);
-		getPatternController().createPatternSubMenu(builder, UserInputListenerFactory.NODE_POPUP);
+		((MIconController) IconController.getController(this)).updateIconToolbar();
+		((MIconController) IconController.getController(this)).updateMenus(builder);
+		MPatternController.getController(this).createPatternSubMenu(builder, UserInputListenerFactory.NODE_POPUP);
 		final String formatMenuString = FreemindMenuBar.FORMAT_MENU;
-		getPatternController().createPatternSubMenu(builder, formatMenuString);
+		MPatternController.getController(this).createPatternSubMenu(builder, formatMenuString);
 	}
 
 	@Override

@@ -41,7 +41,7 @@ import org.apache.batik.svggen.SVGGeneratorContext.GraphicContextDefaults;
 import org.apache.batik.util.SVGConstants;
 import org.freeplane.addins.mindmapmode.export.ExportAction;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.view.map.MapView;
+import org.freeplane.view.swing.map.MapView;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 

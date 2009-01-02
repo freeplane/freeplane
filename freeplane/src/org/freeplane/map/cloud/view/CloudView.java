@@ -32,9 +32,10 @@ import java.util.LinkedList;
 import java.util.Vector;
 
 import org.freeplane.core.map.NodeModel;
+import org.freeplane.map.cloud.CloudController;
 import org.freeplane.map.cloud.CloudModel;
-import org.freeplane.view.map.MapView;
-import org.freeplane.view.map.NodeView;
+import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.NodeView;
 
 /**
  * This class represents a Cloud around a node.
@@ -60,7 +61,7 @@ public class CloudView {
 
 	public Color getColor() {
 		final NodeModel model = source.getModel();
-		return model.getModeController().getCloudController().getColor(model);
+		return CloudController.getController(model.getModeController()).getColor(model);
 	}
 
 	private double getDistanceToConvexHull() {
@@ -105,7 +106,7 @@ public class CloudView {
 
 	public int getWidth() {
 		final NodeModel node = source.getModel();
-		return node.getModeController().getCloudController().getWidth(node);
+		return CloudController.getController(node.getModeController()).getWidth(node);
 	}
 
 	protected double getZoom() {

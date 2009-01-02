@@ -39,7 +39,8 @@ import org.freeplane.core.map.ModeController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ActionController;
 import org.freeplane.map.attribute.ModelessAttributeController;
-import org.freeplane.view.map.MapView;
+import org.freeplane.map.url.UrlManager;
+import org.freeplane.view.swing.map.MapView;
 
 /**
  * Provides the methods to edit/change a Node. Forwards all messages to
@@ -231,7 +232,7 @@ public class Controller {
 	}
 
 	void quit() {
-		final String currentMapRestorable = Controller.getModeController().getUrlManager()
+		final String currentMapRestorable = UrlManager.getController(Controller.getModeController())
 		    .getRestoreable(getMap());
 		if (!getViewController().quit()) {
 			return;

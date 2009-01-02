@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.view.map.MapView;
+import org.freeplane.view.swing.map.MapView;
 
 class CopyAction extends FreeplaneAction {
 	public CopyAction() {
@@ -35,9 +35,9 @@ class CopyAction extends FreeplaneAction {
 		final MModeController modeController = getMModeController();
 		final MapView mapView = modeController.getMapView();
 		if (mapView != null) {
-			final Transferable copy = modeController.getClipboardController().copy(mapView);
+			final Transferable copy = ClipboardController.getController(modeController).copy(mapView);
 			if (copy != null) {
-				modeController.getClipboardController().setClipboardContents(copy);
+				ClipboardController.getController(modeController).setClipboardContents(copy);
 			}
 		}
 	}

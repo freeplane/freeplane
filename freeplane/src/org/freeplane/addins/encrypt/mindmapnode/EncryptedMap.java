@@ -27,7 +27,7 @@ import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.components.EnterPasswordDialog;
 import org.freeplane.modes.mindmapmode.EncryptionModel;
-import org.freeplane.view.map.NodeView;
+import org.freeplane.view.swing.map.NodeView;
 
 @ActionDescriptor(name = "accessories/plugins/NewEncryptedMap.properties_name", //
 tooltip = "accessories/plugins/NewEncryptedMap.properties_documentation", //
@@ -51,7 +51,7 @@ public class EncryptedMap extends FreeplaneAction implements INodeSelectionListe
 			return false;
 		}
 		if (modeController.getSelectedNode() != null) {
-			final EncryptionModel enode = modeController.getSelectedNode().getEncryptionModel();
+			final EncryptionModel enode = EncryptionModel.getModel(modeController.getSelectedNode());
 			if (enode != null) {
 				isEncryptedNode = true;
 				isOpened = enode.isAccessible();

@@ -24,8 +24,9 @@ import java.awt.event.MouseEvent;
 
 import org.freeplane.core.ui.IMapMouseReceiver;
 import org.freeplane.map.link.ArrowLinkModel;
+import org.freeplane.map.link.LinkController;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.view.map.MapView;
+import org.freeplane.view.swing.map.MapView;
 
 /** */
 class MindMapMouseMotionListener implements IMapMouseReceiver {
@@ -85,7 +86,7 @@ class MindMapMouseMotionListener implements IMapMouseReceiver {
 			final Point draggedLinkNewEndPoint = draggedLink.getEndInclination();
 			draggedLink.setStartInclination(draggedLinkOldStartPoint);
 			draggedLink.setEndInclination(draggedLinkOldEndPoint);
-			((MLinkController) mController.getLinkController()).setArrowLinkEndPoints(draggedLink,
+			((MLinkController) LinkController.getController(mController)).setArrowLinkEndPoints(draggedLink,
 			    draggedLinkNewStartPoint, draggedLinkNewEndPoint);
 			mController.getMapView().repaint();
 			draggedLink = null;

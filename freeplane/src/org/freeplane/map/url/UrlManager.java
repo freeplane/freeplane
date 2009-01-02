@@ -47,6 +47,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.map.MapModel;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
@@ -54,7 +55,7 @@ import org.freeplane.core.map.NodeModel;
 /**
  * @author Dimitry Polivaev
  */
-public class UrlManager {
+public class UrlManager implements IExtension {
 	private static File lastCurrentDir = null;
 
 	/**
@@ -452,4 +453,12 @@ public class UrlManager {
 
 	public void startup() {
 	}
+
+	public static void install(ModeController modeController, UrlManager urlManager) {
+		modeController.addExtension(UrlManager.class, urlManager);
+    }
+
+	public static UrlManager getController(ModeController modeController) {
+		return (UrlManager)modeController.getExtension(UrlManager.class);
+    }
 }

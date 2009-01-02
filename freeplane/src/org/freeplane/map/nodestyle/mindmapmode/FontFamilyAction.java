@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.MultipleNodeAction;
+import org.freeplane.map.nodestyle.NodeStyleController;
 
 /**
  * @author foltin
@@ -38,7 +39,7 @@ class FontFamilyAction extends MultipleNodeAction {
 
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		((MNodeStyleController) super.getMModeController().getNodeStyleController()).setFontFamily(
+		((MNodeStyleController) NodeStyleController.getController(super.getMModeController())).setFontFamily(
 		    node, actionFont);
 	}
 

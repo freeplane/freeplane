@@ -34,7 +34,7 @@ class OpenAction extends FreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		((FileManager) getMModeController().getUrlManager()).open();
+		((FileManager) UrlManager.getController(getMModeController())).open();
 		Controller.getController().getViewController().setTitle();
 	}
 }

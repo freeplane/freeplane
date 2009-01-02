@@ -30,10 +30,10 @@ import java.util.List;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.io.xml.TreeXmlWriter;
+import org.freeplane.core.map.MindIcon;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.util.Tools;
 import org.freeplane.map.edge.EdgeModel;
-import org.freeplane.map.icon.MindIcon;
 import org.freeplane.map.nodestyle.NodeStyleModel;
 
 /**
@@ -68,22 +68,22 @@ public class StylePatternFactory {
 
 	public static Pattern createPatternFromNode(final NodeModel node) {
 		final Pattern pattern = new Pattern();
-		if (node.getColor() != null) {
+		if (NodeStyleModel.getColor(node) != null) {
 			final PatternProperty subPattern = new PatternProperty();
-			subPattern.setValue(TreeXmlWriter.colorToXml(node.getColor()));
+			subPattern.setValue(TreeXmlWriter.colorToXml(NodeStyleModel.getColor(node)));
 			pattern.setPatternNodeColor(subPattern);
 		}
-		if (node.getBackgroundColor() != null) {
+		if (NodeStyleModel.getBackgroundColor(node) != null) {
 			final PatternProperty subPattern = new PatternProperty();
-			subPattern.setValue(TreeXmlWriter.colorToXml(node.getBackgroundColor()));
+			subPattern.setValue(TreeXmlWriter.colorToXml(NodeStyleModel.getBackgroundColor(node)));
 			pattern.setPatternNodeBackgroundColor(subPattern);
 		}
-		if (node.getShape() != null) {
+		if (NodeStyleModel.getShape(node) != null) {
 			final PatternProperty subPattern = new PatternProperty();
-			subPattern.setValue(node.getShape());
+			subPattern.setValue(NodeStyleModel.getShape(node));
 			pattern.setPatternNodeStyle(subPattern);
 		}
-		final NodeStyleModel font = node.getNodeStyleModel();
+		final NodeStyleModel font = NodeStyleModel.getModel(node);
 		if (font != null) {
 			final PatternProperty nodeFontBold = new PatternProperty();
 			nodeFontBold.setValue(font.isBold() ? StylePatternFactory.TRUE_VALUE
@@ -105,7 +105,7 @@ public class StylePatternFactory {
 			iconPattern.setValue(((MindIcon) node.getIcons().get(0)).getName());
 			pattern.setPatternIcon(iconPattern);
 		}
-		final EdgeModel edge = node.getEdge();
+		final EdgeModel edge = EdgeModel.getModel(node);
 		if (edge != null) {
 			final Color edgeColor = edge.getColor();
 			if (edgeColor != null) {

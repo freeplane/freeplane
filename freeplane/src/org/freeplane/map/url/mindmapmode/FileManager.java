@@ -41,7 +41,7 @@ import org.freeplane.map.url.UrlManager;
 import org.freeplane.modes.mindmapmode.MMapController;
 import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.modes.mindmapmode.MindMapMapModel;
-import org.freeplane.view.map.MapView;
+import org.freeplane.view.swing.map.MapView;
 
 /**
  * @author Dimitry Polivaev

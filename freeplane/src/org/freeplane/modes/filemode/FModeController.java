@@ -25,8 +25,10 @@ import java.io.File;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
-import org.freeplane.view.map.MainView;
-import org.freeplane.view.map.NodeView;
+import org.freeplane.map.link.LinkController;
+import org.freeplane.map.link.NodeLinks;
+import org.freeplane.view.swing.map.MainView;
+import org.freeplane.view.swing.map.NodeView;
 
 public class FModeController extends ModeController {
 	static public final String MODENAME = "File";
@@ -64,7 +66,7 @@ public class FModeController extends ModeController {
 		}
 		if (retValue) {
 			e.consume();
-			String link = newlySelectedNodeView.getModel().getLink();
+			String link = NodeLinks.getLink(newlySelectedNodeView.getModel());
 			link = (link != null ? link : " ");
 			Controller.getController().getViewController().out(link);
 		}
@@ -84,7 +86,7 @@ public class FModeController extends ModeController {
 		}
 		final MainView component = (MainView) e.getComponent();
 		if (component.isInFollowLinkRegion(e.getX())) {
-			getLinkController().loadURL();
+			LinkController.getController(this).loadURL();
 		}
 		else {
 			final NodeModel node = (component).getNodeView().getModel();

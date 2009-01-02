@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.view.map;
+package org.freeplane.view.swing.map;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -46,10 +46,14 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.map.attribute.NodeAttributeTableModel;
 import org.freeplane.map.attribute.view.AttributeView;
+import org.freeplane.map.cloud.CloudController;
 import org.freeplane.map.cloud.CloudModel;
 import org.freeplane.map.cloud.view.CloudView;
 import org.freeplane.map.edge.view.EdgeView;
+import org.freeplane.map.nodelocation.LocationModel;
+import org.freeplane.map.nodestyle.NodeStyleController;
 
 /**
  * This class represents a single Node of a MindMap (in analogy to
@@ -153,7 +157,7 @@ public class NodeView extends JComponent implements TreeModelListener {
 	}
 
 	public void createAttributeView() {
-		if (attributeView == null && model.getAttributes().getNode() != null) {
+		if (attributeView == null && NodeAttributeTableModel.getModel(model).getNode() != null) {
 			attributeView = new AttributeView(this);
 		}
 	}
@@ -169,7 +173,7 @@ public class NodeView extends JComponent implements TreeModelListener {
 		if (!isContentVisible()) {
 			return 0;
 		}
-		final CloudModel cloud = getModel().getCloud();
+		final CloudModel cloud = CloudModel.getModel(getModel());
 		if (cloud != null) {
 			return CloudView.getAdditionalHeigth(cloud, this);
 		}
@@ -190,16 +194,16 @@ public class NodeView extends JComponent implements TreeModelListener {
 	 */
 	public AttributeView getAttributeView() {
 		if (attributeView == null) {
-			model.createAttributeTableModel();
+			NodeAttributeTableModel.createAttributeTableModel(model);
 			attributeView = new AttributeView(this);
 		}
 		return attributeView;
 	}
 
 	private Color getBackgroundColor() {
-		final CloudModel cloud = getModel().getCloud();
+		final CloudModel cloud = CloudModel.getModel(getModel());
 		if (cloud != null) {
-			return model.getModeController().getCloudController().getColor(model);
+			return CloudController.getController(model.getModeController()).getColor(model);
 		}
 		if (isRoot()) {
 			return getMap().getBackground();
@@ -252,7 +256,7 @@ public class NodeView extends JComponent implements TreeModelListener {
 			return;
 		}
 		if (isContentVisible()) {
-			final CloudModel cloud = getModel().getCloud();
+			final CloudModel cloud = CloudModel.getModel(getModel());
 			if (byChildren && cloud != null) {
 				additionalDistanceForConvexHull += CloudView.getAdditionalHeigth(cloud, this) / 5;
 			}
@@ -320,7 +324,7 @@ public class NodeView extends JComponent implements TreeModelListener {
 	}
 
 	public int getHGap() {
-		return map.getZoomed(model.getLocationModel().getHGap());
+		return map.getZoomed(LocationModel.getModel(model).getHGap());
 	}
 
 	Rectangle getInnerBounds() {
@@ -696,7 +700,7 @@ public class NodeView extends JComponent implements TreeModelListener {
 	 * @return Returns the sHIFT.
 	 */
 	public int getShift() {
-		return map.getZoomed(model.getLocationModel().calcShiftY(model.getParentNode()));
+		return map.getZoomed(LocationModel.getModel(model).calcShiftY(model.getParentNode()));
 	}
 
 	protected LinkedList getSiblingViews() {
@@ -704,7 +708,7 @@ public class NodeView extends JComponent implements TreeModelListener {
 	}
 
 	public Color getTextBackground() {
-		final Color modelBackgroundColor = model.getModeController().getNodeStyleController()
+		final Color modelBackgroundColor = NodeStyleController.getController(model.getModeController())
 		    .getBackgroundColor(model);
 		if (modelBackgroundColor != null) {
 			return modelBackgroundColor;
@@ -713,7 +717,7 @@ public class NodeView extends JComponent implements TreeModelListener {
 	}
 
 	public Color getTextColor() {
-		final Color color = model.getModeController().getNodeStyleController().getColor(model);
+		final Color color = NodeStyleController.getController(model.getModeController()).getColor(model);
 		return color;
 	}
 
@@ -725,7 +729,7 @@ public class NodeView extends JComponent implements TreeModelListener {
 	 * @return Returns the VGAP.
 	 */
 	public int getVGap() {
-		return map.getZoomed(model.getLocationModel().getVGap());
+		return map.getZoomed(LocationModel.getModel(model).getVGap());
 	}
 
 	public NodeView getVisibleParentView() {
@@ -842,8 +846,8 @@ public class NodeView extends JComponent implements TreeModelListener {
 	}
 
 	private void paintCloud(final Graphics g) {
-		if (isContentVisible() && model.getCloud() != null) {
-			final CloudView cloud = new CloudView(model.getCloud(), this);
+		if (isContentVisible() && CloudModel.getModel(model) != null) {
+			final CloudView cloud = new CloudView(CloudModel.getModel(model), this);
 			cloud.paint(g);
 		}
 	}
@@ -1122,7 +1126,7 @@ public class NodeView extends JComponent implements TreeModelListener {
 	}
 
 	void updateStyle() {
-		final String shape = model.getModeController().getNodeStyleController().getShape(model);
+		final String shape = NodeStyleController.getController(model.getModeController()).getShape(model);
 		if (mainView != null && (mainView.getStyle().equals(shape) || model.isRoot())) {
 			return;
 		}

@@ -28,7 +28,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.MapModel;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.undo.IUndoHandler;
-import org.freeplane.view.map.MapView;
+import org.freeplane.view.swing.map.MapView;
 
 class UndoAction extends FreeplaneAction implements IMapViewChangeListener {
 	private Action redo;

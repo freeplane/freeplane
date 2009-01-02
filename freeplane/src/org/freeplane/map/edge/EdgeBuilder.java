@@ -57,7 +57,7 @@ class EdgeBuilder implements IElementDOMHandler, IExtensionElementWriter {
 			final NodeModel node = (NodeModel) parent;
 			if (userObject instanceof EdgeModel) {
 				final EdgeModel edge = (EdgeModel) userObject;
-				node.setEdge(edge);
+				EdgeModel.setModel(node, edge);
 			}
 			return;
 		}

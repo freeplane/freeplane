@@ -35,16 +35,17 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.map.MindIcon;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.map.icon.MindIcon;
 import org.freeplane.map.url.UrlManager;
 import org.freeplane.modes.mindmapmode.MModeController;
 
 /**
  * @author Dimitry Polivaev
  */
-public class MPatternController {
+public class MPatternController implements IExtension {
 	final private MModeController modeController;
 	private List mPatternsList = new Vector();
 	public ApplyPatternAction patterns[] = new ApplyPatternAction[0];
@@ -181,4 +182,12 @@ public class MPatternController {
 	public void loadPatterns(final Reader reader) throws Exception {
 		createPatterns(StylePatternFactory.loadPatterns(reader));
 	}
+
+	public static MPatternController getController(MModeController modeController) {
+		return (MPatternController)modeController.getExtension(MPatternController.class);
+    }
+
+	public static void install(MModeController modeController, MPatternController patternController) {
+		modeController.addExtension(MPatternController.class, patternController);
+    }
 }

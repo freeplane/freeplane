@@ -25,6 +25,7 @@ import javax.swing.Action;
 
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.MultipleNodeAction;
+import org.freeplane.map.edge.EdgeController;
 import org.freeplane.map.edge.EdgeModel;
 import org.freeplane.modes.mindmapmode.MModeController;
 
@@ -59,6 +60,6 @@ class EdgeWidthAction extends MultipleNodeAction {
 	 */
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		((MEdgeController) getMModeController().getEdgeController()).setWidth(node, mWidth);
+		((MEdgeController) EdgeController.getController(getMModeController())).setWidth(node, mWidth);
 	}
 }

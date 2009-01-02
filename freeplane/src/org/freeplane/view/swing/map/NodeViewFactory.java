@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.view.map;
+package org.freeplane.view.swing.map;
 
 import java.awt.Component;
 import java.awt.Container;
@@ -27,12 +27,14 @@ import java.awt.LayoutManager;
 import javax.swing.JComponent;
 
 import org.freeplane.core.map.NodeModel;
+import org.freeplane.map.edge.EdgeController;
 import org.freeplane.map.edge.EdgeModel;
 import org.freeplane.map.edge.view.BezierEdgeView;
 import org.freeplane.map.edge.view.EdgeView;
 import org.freeplane.map.edge.view.LinearEdgeView;
 import org.freeplane.map.edge.view.SharpBezierEdgeView;
 import org.freeplane.map.edge.view.SharpLinearEdgeView;
+import org.freeplane.map.nodestyle.NodeStyleController;
 import org.freeplane.map.nodestyle.NodeStyleModel;
 
 class NodeViewFactory {
@@ -121,7 +123,7 @@ class NodeViewFactory {
 
 	EdgeView getEdge(final NodeView newView) {
 		final NodeModel model = newView.getModel();
-		final String edgeStyle = model.getModeController().getEdgeController().getStyle(model);
+		final String edgeStyle = EdgeController.getController(model.getModeController()).getStyle(model);
 		if (edgeStyle.equals(EdgeModel.EDGESTYLE_LINEAR)) {
 			return getLinearEdgeView();
 		}
@@ -169,7 +171,7 @@ class NodeViewFactory {
 		if (model.isRoot()) {
 			return new RootMainView();
 		}
-		final String shape = model.getModeController().getNodeStyleController().getShape(model);
+		final String shape = NodeStyleController.getController(model.getModeController()).getShape(model);
 		if (shape.equals(NodeStyleModel.STYLE_FORK)) {
 			return new ForkMainView();
 		}

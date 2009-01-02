@@ -33,8 +33,10 @@ import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.map.nodestyle.NodeStyleController;
 import org.freeplane.map.nodestyle.mindmapmode.MNodeStyleController;
 import org.freeplane.map.text.FixedHTMLWriter;
+import org.freeplane.map.text.TextController;
 import org.freeplane.map.text.mindmapmode.MTextController;
 import org.freeplane.modes.mindmapmode.MMapController;
 
@@ -95,7 +97,7 @@ public class SplitNode extends FreeplaneAction {
 		while (parts[firstPartNumber] == null) {
 			firstPartNumber++;
 		}
-		((MTextController) c.getTextController()).setNodeText(node, parts[firstPartNumber]);
+		((MTextController) TextController.getController(c)).setNodeText(node, parts[firstPartNumber]);
 		final NodeModel parent = node.getParentNode();
 		final int nodePosition = parent.getChildPosition(node) + 1;
 		for (int i = parts.length - 1; i > firstPartNumber; i--) {
@@ -106,9 +108,8 @@ public class SplitNode extends FreeplaneAction {
 			if (part == null) {
 				continue;
 			}
-			((MTextController) c.getTextController()).setNodeText(lowerNode, part);
-			final MNodeStyleController nodeStyleController = (MNodeStyleController) c
-			    .getNodeStyleController();
+			((MTextController) TextController.getController(c)).setNodeText(lowerNode, part);
+			final MNodeStyleController nodeStyleController = (MNodeStyleController) NodeStyleController.getController(c);
 			nodeStyleController.copyStyle(node, lowerNode);
 			mapController.setFolded(lowerNode, !lowerNode.isFolded());
 		}

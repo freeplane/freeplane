@@ -59,8 +59,8 @@ import org.freeplane.map.attribute.Attribute;
 import org.freeplane.map.attribute.AttributeRegistry;
 import org.freeplane.map.attribute.AttributeRegistryElement;
 import org.freeplane.map.attribute.NodeAttributeTableModel;
-import org.freeplane.view.map.MapView;
-import org.freeplane.view.map.NodeView;
+import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.NodeView;
 
 public class AssignAttributeDialog extends JDialog implements IAttributesListener,
         IMapViewChangeListener {
@@ -89,8 +89,8 @@ public class AssignAttributeDialog extends JDialog implements IAttributesListene
 
 		@Override
 		protected void performAction(final NodeModel model) {
-			model.createAttributeTableModel();
-			final NodeAttributeTableModel attributes = model.getAttributes();
+			NodeAttributeTableModel.createAttributeTableModel(model);
+			final NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(model);
 			attributes.getAttributeController().performInsertRow(attributes,
 			    attributes.getRowCount(), name, value);
 		}
@@ -155,7 +155,7 @@ public class AssignAttributeDialog extends JDialog implements IAttributesListene
 
 		@Override
 		protected void performAction(final NodeModel model) {
-			final NodeAttributeTableModel attributes = model.getAttributes();
+			final NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(model);
 			for (int i = attributes.getRowCount() - 1; i >= 0; i--) {
 				if (attributes.getAttribute(i).getName().equals(name)) {
 					attributes.getAttributeController().performRemoveRow(attributes, i);
@@ -186,7 +186,7 @@ public class AssignAttributeDialog extends JDialog implements IAttributesListene
 
 		@Override
 		protected void performAction(final NodeModel model) {
-			final NodeAttributeTableModel attributes = model.getAttributes();
+			final NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(model);
 			for (int i = attributes.getRowCount() - 1; i >= 0; i--) {
 				final Attribute attribute = attributes.getAttribute(i);
 				if (attribute.getName().equals(name) && attribute.getValue().equals(value)) {
@@ -279,7 +279,7 @@ public class AssignAttributeDialog extends JDialog implements IAttributesListene
 
 		@Override
 		protected void performAction(final NodeModel model) {
-			final NodeAttributeTableModel attributes = model.getAttributes();
+			final NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(model);
 			for (int i = attributes.getRowCount() - 1; i >= 0; i--) {
 				final Attribute attribute = attributes.getAttribute(i);
 				if (attribute.getName().equals(name) && attribute.getValue().equals(value)) {

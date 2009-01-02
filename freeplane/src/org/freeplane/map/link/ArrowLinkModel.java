@@ -23,8 +23,8 @@ import java.awt.Color;
 import java.awt.Point;
 
 import org.freeplane.core.map.NodeModel;
-import org.freeplane.view.map.MapView;
-import org.freeplane.view.map.NodeView;
+import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.NodeView;
 
 public class ArrowLinkModel extends LinkModel {
 	private Color color;

@@ -37,7 +37,7 @@ import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.n3.nanoxml.IXMLElement;
 import org.freeplane.n3.nanoxml.XMLElement;
-import org.freeplane.view.map.NodeView;
+import org.freeplane.view.swing.map.NodeView;
 
 public abstract class PersistentNodeHook implements IExtension {
 	public class HookAction extends FreeplaneAction {

@@ -31,7 +31,7 @@ import javax.swing.JOptionPane;
 import org.apache.batik.svggen.SVGGraphics2D;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.ActionDescriptor;
-import org.freeplane.view.map.MapView;
+import org.freeplane.view.swing.map.MapView;
 
 @ActionDescriptor(name = "plugins/ExportSvg.xml_name", locations = { "/menu_bar/file/export/export" })
 public class ExportSvg extends ExportVectorGraphic {

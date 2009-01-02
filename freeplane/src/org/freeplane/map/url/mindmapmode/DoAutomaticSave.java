@@ -26,6 +26,7 @@ import java.util.TimerTask;
 import java.util.Vector;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.map.url.UrlManager;
 import org.freeplane.modes.mindmapmode.MindMapMapModel;
 
 public class DoAutomaticSave extends TimerTask {
@@ -92,7 +93,7 @@ public class DoAutomaticSave extends TimerTask {
 						}
 					}
 					try {
-						((FileManager) model.getModeController().getUrlManager()).saveInternal(
+						((FileManager) UrlManager.getController(model.getModeController())).saveInternal(
 						    model, tempFile, true /*=internal call*/);
 						Controller.getController().getViewController().out(
 						    Controller.getResourceController().format("automatically_save_message",

@@ -22,6 +22,7 @@ package org.freeplane.map.edge;
 import java.awt.Color;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.map.NodeModel;
 
 public class EdgeModel implements IExtension {
 	public static final String EDGE_WIDTH_THIN_STRING = "thin";
@@ -61,4 +62,21 @@ public class EdgeModel implements IExtension {
 	public void setWidth(final int width) {
 		this.width = width;
 	}
+
+	public static EdgeModel createEdge(NodeModel node) {
+		EdgeModel edge = (EdgeModel) node.getExtension(EdgeModel.class);
+		if (edge == null) {
+			edge = new EdgeModel();
+			node.addExtension(edge);
+		}
+		return edge;
+    }
+
+	public static EdgeModel getModel(NodeModel node) {
+		return (EdgeModel) node.getExtension(EdgeModel.class);
+    }
+
+	public static void setModel(NodeModel node, EdgeModel edge) {
+		node.setExtension(edge);
+    }
 }

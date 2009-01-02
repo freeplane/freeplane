@@ -51,6 +51,7 @@ import org.freeplane.core.resources.ui.OptionString;
 import org.freeplane.core.resources.ui.PropertyBean;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.IndexedTree;
+import org.freeplane.map.pattern.mindmapnode.MPatternController;
 import org.freeplane.map.pattern.mindmapnode.Pattern;
 import org.freeplane.map.pattern.mindmapnode.Patterns;
 import org.freeplane.map.pattern.mindmapnode.StylePatternFactory;
@@ -352,7 +353,7 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 			myIndex = depth;
 		}
 		final Pattern p = AutomaticLayout.patterns.getChoice(myIndex);
-		((MModeController) getModeController()).getPatternController().applyPattern(node, p);
+		MPatternController.getController(((MModeController) getModeController())).applyPattern(node, p);
 	}
 
 	/**

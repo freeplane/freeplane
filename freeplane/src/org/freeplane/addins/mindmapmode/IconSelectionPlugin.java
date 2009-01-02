@@ -28,10 +28,11 @@ import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.components.IconSelectionPopupDialog;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.map.icon.IconController;
 import org.freeplane.map.icon.mindmapnode.MIconController;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.view.map.MapView;
-import org.freeplane.view.map.NodeView;
+import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.NodeView;
 
 /**
  * @author adapted to the plugin mechanism by ganzer
@@ -52,8 +53,7 @@ public class IconSelectionPlugin extends FreeplaneAction {
 		final MModeController modeController = (MModeController) getModeController();
 		final NodeView focussed = modeController.getSelectedView();
 		final Vector actions = new Vector();
-		final Collection<Action> iconActions = ((MIconController) modeController
-		    .getIconController()).getIconActions();
+		final Collection<Action> iconActions = ((MIconController) IconController.getController(modeController)).getIconActions();
 		actions.addAll(iconActions);
 		actions.add(modeController.getAction("removeLastIconAction"));
 		actions.add(modeController.getAction("removeAllIconsAction"));

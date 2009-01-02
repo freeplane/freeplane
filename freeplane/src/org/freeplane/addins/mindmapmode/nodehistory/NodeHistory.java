@@ -28,8 +28,8 @@ import org.freeplane.core.map.INodeSelectionListener;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.view.map.MapView;
-import org.freeplane.view.map.NodeView;
+import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.NodeView;
 
 /**
  * @author foltin

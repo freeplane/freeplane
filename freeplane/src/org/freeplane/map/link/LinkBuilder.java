@@ -99,7 +99,7 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "LINK", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
-				(node.getModeController().getLinkController()).loadLink(node, value);
+				(LinkController.getController(node.getModeController())).loadLink(node, value);
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "STYLE", new IAttributeHandler() {

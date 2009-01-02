@@ -66,10 +66,12 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.util.Tools;
+import org.freeplane.map.clipboard.ClipboardController;
 import org.freeplane.map.clipboard.MindMapNodesSelection;
-import org.freeplane.view.map.MainView;
-import org.freeplane.view.map.MapView;
-import org.freeplane.view.map.NodeView;
+import org.freeplane.map.link.LinkController;
+import org.freeplane.view.swing.map.MainView;
+import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.NodeView;
 
 public class UserInputListenerFactory implements IUserInputListenerFactory {
 	/**
@@ -206,7 +208,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			}
 			Controller.getController();
 			final ModeController modeController = Controller.getModeController();
-			final Transferable t = modeController.getClipboardController().copy(
+			final Transferable t = ClipboardController.getController(modeController).copy(
 			    modeController.getMapView());
 			((MindMapNodesSelection) t).setDropAction(dragAction);
 			e.startDrag(cursor, t, new DragSourceListener() {
@@ -482,7 +484,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			final boolean isLink = (node).updateCursor(e.getX());
 			if (isLink) {
 				Controller.getController().getViewController().out(
-				    UserInputListenerFactory.getModeController().getLinkController()
+				    LinkController.getController(UserInputListenerFactory.getModeController())
 				        .getLinkShortText(node.getNodeView().getModel()));
 			}
 			if (controlRegionForDelayedSelection != null

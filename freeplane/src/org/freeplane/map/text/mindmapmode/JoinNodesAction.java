@@ -30,8 +30,9 @@ import javax.swing.JOptionPane;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.map.text.HtmlTools;
+import org.freeplane.map.text.TextController;
 import org.freeplane.modes.mindmapmode.MMapController;
-import org.freeplane.view.map.MapView;
+import org.freeplane.view.swing.map.MapView;
 
 class JoinNodesAction extends FreeplaneAction {
 	final static Pattern BODY_END = Pattern.compile("</body>", Pattern.CASE_INSENSITIVE);
@@ -95,7 +96,7 @@ class JoinNodesAction extends FreeplaneAction {
 			isHtml = isHtml || isHtmlNode;
 		}
 		mapView.selectAsTheOnlyOneSelected(mapView.getNodeView(selectedNode));
-		((MTextController) getMModeController().getTextController()).setNodeText(selectedNode,
+		((MTextController) TextController.getController(getMModeController())).setNodeText(selectedNode,
 		    newContent);
 	}
 }
