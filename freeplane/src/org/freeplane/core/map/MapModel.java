@@ -53,15 +53,14 @@ public class MapModel extends DefaultTreeModel {
 	protected final ModeController mModeController;
 	final private HashMap<String, NodeModel> nodes;
 	private boolean readOnly = true;
-	final private MapRegistry registry;
 	private URL url;
+	final private IconRegistry iconRegistry;
 
 	public MapModel(final ModeController modeController, NodeModel root) {
 		super(root);
 		extensions = new ExtensionHashMap();
 		mModeController = modeController;
 		nodes = new HashMap<String, NodeModel>();
-		registry = new MapRegistry(this, modeController);
 		filter = new DefaultFilter(NoFilteringCondition.createCondition(), true, false);
 		if (root == null) {
 			root = new NodeModel(Controller.getText("new_mindmap"), this);
@@ -70,6 +69,7 @@ public class MapModel extends DefaultTreeModel {
 		else {
 			root.setMap(this);
 		}
+		iconRegistry = new IconRegistry(this);
 	}
 
 	public boolean addExtension(final Class clazz, final IExtension extension) {
@@ -275,9 +275,6 @@ public class MapModel extends DefaultTreeModel {
 		return changesPerformedSinceLastSave;
 	}
 
-	public MapRegistry getRegistry() {
-		return registry;
-	}
 
 	public NodeModel getRootNode() {
 		return (NodeModel) getRoot();
@@ -444,4 +441,8 @@ public class MapModel extends DefaultTreeModel {
 			unregistryNode(iterator.next());
 		}
 	}
+
+	public IconRegistry getIconRegistry() {
+	    return iconRegistry;
+    }
 }

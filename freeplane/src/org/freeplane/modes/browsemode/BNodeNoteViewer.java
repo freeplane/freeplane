@@ -30,7 +30,6 @@ import javax.swing.SwingConstants;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.INodeSelectionListener;
-import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.map.note.NodeNoteBase;
 import org.freeplane.map.note.NoteModel;
@@ -41,12 +40,10 @@ import org.freeplane.view.swing.map.NodeView;
  */
 public class BNodeNoteViewer extends NodeNoteBase implements INodeSelectionListener {
 	private static ImageIcon noteIcon = null;
-	final private ModeController mBrowseController;
 	private JComponent noteScrollPane;
 	private JLabel noteViewer;
 
-	public BNodeNoteViewer(final ModeController pBrowseController) {
-		mBrowseController = pBrowseController;
+	public BNodeNoteViewer() {
 	}
 
 	protected JComponent getNoteViewerComponent(final String text) {
@@ -81,8 +78,7 @@ public class BNodeNoteViewer extends NodeNoteBase implements INodeSelectionListe
 	/** Copied from NodeNoteRegistration. */
 	protected void setStateIcon(final NodeModel node, final boolean enabled) {
 		if (BNodeNoteViewer.noteIcon == null) {
-			BNodeNoteViewer.noteIcon = new ImageIcon(mBrowseController
-			    .getResource("images/knotes.png"));
+			BNodeNoteViewer.noteIcon = new ImageIcon(Controller.getResourceController().getResource("images/knotes.png"));
 		}
 		node.setStateIcon(NodeNoteBase.NODE_NOTE_ICON, (enabled) ? BNodeNoteViewer.noteIcon : null);
 	}

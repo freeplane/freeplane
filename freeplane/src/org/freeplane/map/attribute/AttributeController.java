@@ -22,7 +22,9 @@ package org.freeplane.map.attribute;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
+import org.freeplane.core.map.IMapLifeCycleListener;
 import org.freeplane.core.map.MapController;
+import org.freeplane.core.map.MapModel;
 import org.freeplane.core.map.MapReader;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
@@ -50,6 +52,14 @@ public class AttributeController implements IExtension {
 		final MapReader mapReader = mapController.getMapReader();
 		final AttributeBuilder attributeBuilder = new AttributeBuilder(mapReader);
 		attributeBuilder.registerBy(readManager, writeManager);
+		modeController.getMapController().addMapLifeCycleListener(new IMapLifeCycleListener(){
+
+			public void onCreate(MapModel map) {
+				AttributeRegistry.createRegistry(map);
+            }
+
+			public void onRemove(MapModel map) {
+            }});
 	}
 
 	protected ModeController getModeController() {

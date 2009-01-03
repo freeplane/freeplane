@@ -20,7 +20,9 @@
 package org.freeplane.map.text;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.io.ReadManager;
+import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.map.MapController;
 import org.freeplane.core.map.ModeController;
 
@@ -28,6 +30,8 @@ import org.freeplane.core.map.ModeController;
  * @author Dimitry Polivaev
  */
 public class TextController implements IExtension {
+	private static boolean firstRun = true;
+
 	public static TextController getController(final ModeController modeController) {
 		return (TextController) modeController.getExtension(TextController.class);
 	}
@@ -35,6 +39,10 @@ public class TextController implements IExtension {
 	public static void install(final ModeController modeController,
 	                           final TextController textController) {
 		modeController.addExtension(TextController.class, textController);
+		if(firstRun){
+			FilterController.getController().getConditionFactory().addConditionController(0, new NodeConditionController());
+			firstRun = false;
+		}
 	}
 
 	final private ModeController modeController;
@@ -45,8 +53,9 @@ public class TextController implements IExtension {
 		createActions(modeController);
 		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();
+		final WriteManager writeManager = mapController.getWriteManager();
 		final NodeTextBuilder textBuilder = new NodeTextBuilder();
-		textBuilder.registerBy(readManager);
+		textBuilder.registerBy(readManager, writeManager);
 	}
 
 	/**

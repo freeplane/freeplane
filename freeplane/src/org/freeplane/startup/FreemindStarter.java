@@ -84,7 +84,6 @@ public class FreemindStarter {
 	}
 
 	private ModeController createModeController(final String[] args) {
-		Controller.getController();
 		final ModeController ctrl = Controller.getModeController();
 		try {
 			final Class macClass = Class.forName("accessories.plugins.MacChanges");
@@ -160,10 +159,10 @@ public class FreemindStarter {
 			feedBack.increase("Freeplane.progress.createController");
 			System.setSecurityManager(new FreeMindSecurityManager());
 			final ApplicationViewController viewController = new ApplicationViewController();
-			controller.setFilterController(new FilterController());
-			controller.setPrintController(new PrintController());
-			controller.setAttributeController(new ModelessAttributeController());
-			controller.setHelpController(new HelpController());
+			FilterController.install();
+			PrintController.install();
+			ModelessAttributeController.install();
+			HelpController.install();
 			MModeControllerFactory.createModeController();
 			BModeControllerFactory.createModeController();
 			FModeControllerFactory.createModeController();

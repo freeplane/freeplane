@@ -28,6 +28,7 @@ import java.util.Iterator;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeHandler;
+import org.freeplane.core.io.IAttributeWriter;
 import org.freeplane.core.io.IElementDOMHandler;
 import org.freeplane.core.io.IExtensionAttributeWriter;
 import org.freeplane.core.io.IExtensionElementWriter;
@@ -39,11 +40,12 @@ import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.XMLElement;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.io.xml.TreeXmlWriter;
+import org.freeplane.core.map.MapController;
 import org.freeplane.core.map.NodeBuilder;
 import org.freeplane.core.map.NodeModel;
 
 class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExtensionElementWriter,
-        IExtensionAttributeWriter {
+        IExtensionAttributeWriter, IAttributeWriter {
 	final private HashSet<ArrowLinkModel> arrowLinks;
 
 	public LinkBuilder() {
@@ -167,6 +169,7 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 		reader.addReadCompletionListener(this);
 		writer.addExtensionAttributeWriter(NodeLinks.class, this);
 		writer.addExtensionElementWriter(NodeLinks.class, this);
+		writer.addAttributeWriter(NodeBuilder.XML_NODE, this);
 	}
 
 	public XMLElement save(final ArrowLinkModel model) {
@@ -230,6 +233,16 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 				final XMLElement arrowLinkElement = save(arrowLinkModel);
 				writer.addElement(arrowLinkModel, arrowLinkElement);
 			}
+		}
+	}
+
+	public void writeAttributes(ITreeWriter writer, Object userObject, String tag) {
+		NodeModel node = (NodeModel) userObject;
+		final boolean saveID = MapController.saveOnlyIntrinsicallyNeededIds()
+		&& !LinkController.getController(node.getModeController()).getLinksTo(node).isEmpty();
+		if (saveID) {
+			final String id = node.createID();
+			writer.addAttribute("ID", id);
 		}
 	}
 }

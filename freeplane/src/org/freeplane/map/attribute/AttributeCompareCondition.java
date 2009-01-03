@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.map.attribute.filter;
+package org.freeplane.map.attribute;
 
 import org.freeplane.core.filter.condition.CompareConditionAdapter;
 import org.freeplane.core.filter.condition.ICondition;
@@ -25,8 +25,6 @@ import org.freeplane.core.io.XMLElement;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.map.NodeModel;
-import org.freeplane.map.attribute.IAttributeTableModel;
-import org.freeplane.map.attribute.NodeAttributeTableModel;
 
 /**
  * @author Dimitry Polivaev

@@ -25,12 +25,13 @@ import java.awt.print.PrinterJob;
 import javax.swing.Action;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.Tools;
 
 /**
  * @author Dimitry Polivaev
  */
-public class PrintController {
+public class PrintController implements IExtension {
 	final private Action page;
 	private PageFormat pageFormat = null;
 	final private Action print;
@@ -103,5 +104,12 @@ public class PrintController {
 
 	void setPrinterJob(final PrinterJob printerJob) {
 		this.printerJob = printerJob;
+	}
+
+	public static PrintController getController() {
+		return (PrintController)Controller.getController().getExtension(PrintController.class);
+	}
+	public static void install() {
+		Controller.getController().addExtension(PrintController.class, new PrintController());
 	}
 }

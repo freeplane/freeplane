@@ -41,14 +41,14 @@ import org.freeplane.core.resources.ui.IPropertyControl;
 import org.freeplane.core.resources.ui.IPropertyControlCreator;
 import org.freeplane.core.resources.ui.KeyProperty;
 import org.freeplane.core.resources.ui.OptionPanelBuilder;
-import org.freeplane.core.ui.FreeMindToolBar;
-import org.freeplane.core.ui.FreemindMenuBar;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.core.ui.UserInputListenerFactory;
+import org.freeplane.core.ui.components.FreeMindToolBar;
+import org.freeplane.core.ui.components.FreemindMenuBar;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.map.icon.IconController;
 import org.freeplane.modes.mindmapmode.MModeController;
+import org.freeplane.modes.ui.UserInputListenerFactory;
 
 /**
  * @author Dimitry Polivaev

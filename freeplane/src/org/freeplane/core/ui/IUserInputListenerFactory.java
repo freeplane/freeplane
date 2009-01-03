@@ -25,8 +25,10 @@ import java.awt.dnd.DropTargetListener;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseWheelListener;
 
-import javax.swing.JMenuBar;
+import javax.swing.JPopupMenu;
 import javax.swing.JToolBar;
+
+import org.freeplane.core.ui.components.FreemindMenuBar;
 
 public interface IUserInputListenerFactory {
 	Component getLeftToolBar();
@@ -37,7 +39,7 @@ public interface IUserInputListenerFactory {
 
 	MouseWheelListener getMapMouseWheelListener();
 
-	JMenuBar getMenuBar();
+	FreemindMenuBar getMenuBar();
 
 	DragGestureListener getNodeDragListener();
 
@@ -48,4 +50,12 @@ public interface IUserInputListenerFactory {
 	IMouseListener getNodeMotionListener();
 
 	INodeMouseMotionListener getNodeMouseMotionListener();
+
+	MenuBuilder getMenuBuilder();
+
+	JPopupMenu getNodePopupMenu();
+
+	JPopupMenu getMapPopup();
+
+	void updateMapList();
 }

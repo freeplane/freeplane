@@ -35,12 +35,14 @@ import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.map.ExclusivePropertyChain;
+import org.freeplane.core.map.INodeSelectionListener;
 import org.freeplane.core.map.IPropertyGetter;
 import org.freeplane.core.map.MapController;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.ui.IFreemindPropertyListener;
+import org.freeplane.view.swing.map.NodeView;
 
 /**
  * @author Dimitry Polivaev
@@ -66,6 +68,15 @@ public class LinkController implements IExtension {
 	public static void install(final ModeController modeController,
 	                           final LinkController linkController) {
 		modeController.addExtension(LinkController.class, linkController);
+		modeController.addNodeSelectionListener(new INodeSelectionListener(){
+			public void onDeselect(NodeView node) {
+            }
+
+			public void onSelect(NodeView node) {
+				String link = NodeLinks.getLink(node.getModel());
+				link = (link != null ? link : " ");
+				Controller.getController().getViewController().out(link);
+            }});
 	}
 
 	final private ExclusivePropertyChain<Color, ArrowLinkModel> colorHandlers;

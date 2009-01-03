@@ -40,7 +40,6 @@ class OptionSelectionMechanismAction extends AbstractAction implements IFreemind
 	 */
 	private void changeSelection(final String command) {
 		Controller.getResourceController().setProperty("selection_method", command);
-		Controller.getController();
 		Controller.getModeController().getUserInputListenerFactory().getNodeMouseMotionListener()
 		    .updateSelectionMethod();
 		final String statusBarString = Controller.getText(command);

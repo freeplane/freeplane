@@ -23,6 +23,7 @@ import javax.swing.ImageIcon;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.map.MindIcon;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.resources.ResourceController;
@@ -33,6 +34,7 @@ import org.freeplane.modes.mindmapmode.MMapController;
  */
 public class NoteController implements IExtension {
 	private static ImageIcon noteIcon = null;
+	private static boolean firstRun = true;
 
 	public static NoteController getController(final ModeController modeController) {
 		return (NoteController) modeController.getExtension(NoteController.class);
@@ -41,6 +43,11 @@ public class NoteController implements IExtension {
 	public static void install(final ModeController modeController,
 	                           final NoteController noteController) {
 		modeController.addExtension(NoteController.class, noteController);
+		if(firstRun){
+			noteIcon = new ImageIcon(Controller.getResourceController().getResource("images/knotes.png"));
+			MindIcon.factory(NodeNoteBase.NODE_NOTE_ICON, noteIcon);
+			firstRun = false;
+		}
 	}
 
 	final private ModeController modeController;
@@ -76,9 +83,6 @@ public class NoteController implements IExtension {
 	}
 
 	protected void setStateIcon(final NodeModel node, final boolean enabled) {
-		if (noteIcon == null) {
-			noteIcon = new ImageIcon(getModeController().getResource("images/knotes.png"));
-		}
 		boolean showIcon = enabled;
 		if (Controller.getResourceController().getBoolProperty(
 		    ResourceController.RESOURCES_DON_T_SHOW_NOTE_ICONS)) {

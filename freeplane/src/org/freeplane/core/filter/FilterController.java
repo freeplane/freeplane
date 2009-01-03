@@ -29,6 +29,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.filter.condition.ConditionFactory;
 import org.freeplane.core.filter.condition.DefaultConditionRenderer;
 import org.freeplane.core.filter.condition.ICondition;
@@ -37,7 +38,6 @@ import org.freeplane.core.frame.IMapViewChangeListener;
 import org.freeplane.core.io.XMLElement;
 import org.freeplane.core.map.MapModel;
 import org.freeplane.core.map.MindIcon;
-import org.freeplane.map.note.NodeNoteBase;
 import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;
@@ -49,7 +49,7 @@ import org.freeplane.view.swing.map.MapView;
 /**
  * @author Dimitry Polivaev
  */
-public class FilterController implements IMapViewChangeListener {
+public class FilterController implements IMapViewChangeListener, IExtension {
 	static final String FREEMIND_FILTER_EXTENSION_WITHOUT_DOT = "mmfilter";
 	private ConditionFactory conditionFactory;
 	private DefaultConditionRenderer conditionRenderer = null;
@@ -113,8 +113,6 @@ public class FilterController implements IMapViewChangeListener {
 			filterConditionModel = (DefaultComboBoxModel) filterToolbar.getFilterConditionModel();
 			MindIcon.factory("AttributeExist", new ImageIcon(Controller.getResourceController()
 			    .getResource("images/showAttributes.gif")));
-			MindIcon.factory(NodeNoteBase.NODE_NOTE_ICON, new ImageIcon(Controller
-			    .getResourceController().getResource("images/knotes.png")));
 			MindIcon.factory("encrypted");
 			MindIcon.factory("decrypted");
 			filterToolbar.initConditions();
@@ -152,7 +150,6 @@ public class FilterController implements IMapViewChangeListener {
 	}
 
 	void refreshMap() {
-		Controller.getController();
 		Controller.getModeController().getMapController().refreshMap();
 	}
 
@@ -196,5 +193,12 @@ public class FilterController implements IMapViewChangeListener {
 			createTransparentFilter().applyFilter();
 		}
 		refreshMap();
+	}
+
+	public static FilterController getController() {
+		return (FilterController)Controller.getController().getExtension(FilterController.class);
+	}
+	public static void install() {
+		Controller.getController().addExtension(FilterController.class, new FilterController());
 	}
 }

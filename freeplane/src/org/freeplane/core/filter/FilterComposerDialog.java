@@ -93,7 +93,8 @@ public class FilterComposerDialog extends JDialog {
 			final NamedObject simpleCond = (NamedObject) elementaryConditions.getSelectedItem();
 			final boolean ignoreCase = caseInsensitive.isSelected();
 			final Object selectedItem = filteredPropertiesComponent.getSelectedItem();
-			newCond = Controller.getController().getFilterController().getConditionFactory()
+			
+			newCond = FilterController.getController().getConditionFactory()
 			    .createCondition(selectedItem, simpleCond, value, ignoreCase);
 			final DefaultComboBoxModel model = (DefaultComboBoxModel) elementaryConditionList
 			    .getModel();
@@ -297,8 +298,7 @@ public class FilterComposerDialog extends JDialog {
 				final Object property = filteredPropertiesModel.getSelectedItem();
 				final NamedObject selectedItem = (NamedObject) elementaryConditions
 				    .getSelectedItem();
-				final IElementaryConditionController conditionController = Controller
-				    .getController().getFilterController().getConditionFactory()
+				final IElementaryConditionController conditionController = FilterController.getController().getConditionFactory()
 				    .getConditionController(property);
 				final boolean canSelectValues = conditionController.canSelectValues(property,
 				    selectedItem);
@@ -319,8 +319,7 @@ public class FilterComposerDialog extends JDialog {
 		public void itemStateChanged(final ItemEvent e) {
 			if (e.getStateChange() == ItemEvent.SELECTED) {
 				final Object selectedProperty = filteredPropertiesComponent.getSelectedItem();
-				final IElementaryConditionController conditionController = Controller
-				    .getController().getFilterController().getConditionFactory()
+				final IElementaryConditionController conditionController = FilterController.getController().getConditionFactory()
 				    .getConditionController(selectedProperty);
 				final ComboBoxModel simpleConditionComboBoxModel = conditionController
 				    .getConditionsForProperty(selectedProperty);
@@ -459,7 +458,8 @@ public class FilterComposerDialog extends JDialog {
 	public FilterComposerDialog(final FilterToolbar ft) {
 		super(Controller.getController().getViewController().getJFrame(), Controller
 		    .getText("filter_dialog"));
-		fc = Controller.getController().getFilterController();
+		
+		fc = FilterController.getController();
 		final Box simpleConditionBox = Box.createHorizontalBox();
 		simpleConditionBox.setBorder(new EmptyBorder(5, 0, 5, 0));
 		getContentPane().add(simpleConditionBox, BorderLayout.NORTH);
@@ -615,8 +615,7 @@ public class FilterComposerDialog extends JDialog {
 	void mapChanged(final MapModel newMap) {
 		if (newMap != null) {
 			filteredPropertiesModel.removeAllElements();
-			final Iterator<IElementaryConditionController> conditionIterator = Controller
-			    .getController().getFilterController().getConditionFactory().conditionIterator();
+			final Iterator<IElementaryConditionController> conditionIterator = FilterController.getController().getConditionFactory().conditionIterator();
 			while (conditionIterator.hasNext()) {
 				final IElementaryConditionController next = conditionIterator.next();
 				filteredPropertiesModel.addExtensionList(next.getFilteredProperties());

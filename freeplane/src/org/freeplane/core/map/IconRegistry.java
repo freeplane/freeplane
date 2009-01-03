@@ -1,8 +1,8 @@
 /*
  *  Freeplane - mind map editor
- *  Copyright (C) 2008 Joerg Mueller, Daniel Polansky, Christian Foltin, Dimitry Polivaev
+ *  Copyright (C) 2008 Dimitry Polivaev
  *
- *  This file is modified by Dimitry Polivaev in 2008.
+ *  This file author is Dimitry Polivaev
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -19,63 +19,31 @@
  */
 package org.freeplane.core.map;
 
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.filter.util.SortedMapListModel;
-import org.freeplane.core.io.ITreeWriter;
-import org.freeplane.map.attribute.AttributeController;
-import org.freeplane.map.attribute.AttributeRegistry;
-import org.freeplane.map.attribute.NodeAttributeTableModel;
 
 /**
  * @author Dimitry Polivaev
+ * 03.01.2009
  */
-public class MapRegistry {
-	/**
-	 *
-	 */
-	final private AttributeRegistry attributes;
+public class IconRegistry implements IExtension {
 	final private SortedMapListModel mapIcons;
-
-	public MapRegistry(final MapModel map, final ModeController modeController) {
+	IconRegistry(MapModel map) {
 		super();
 		mapIcons = new SortedMapListModel();
-		attributes = new AttributeRegistry(AttributeController.getController(modeController));
+		registryNodeIcons(map.getRootNode());
 	}
-
-	public void addIcon(final MindIcon icon) {
+	void addIcon(final MindIcon icon) {
 		mapIcons.add(icon);
 	}
 
-	public AttributeRegistry getAttributes() {
-		return attributes;
-	}
-
-	/**
-	 */
 	public SortedMapListModel getIcons() {
 		return mapIcons;
 	}
-
-	private void registryAttributes(final NodeModel node) {
-		final NodeAttributeTableModel model = NodeAttributeTableModel.getModel(node);
-		if (model == null) {
-			return;
-		}
-		for (int i = 0; i < model.getRowCount(); i++) {
-			attributes.registry(model.getAttribute(i));
-		}
-		final ListIterator<NodeModel> iterator = node.getModeController().getMapController()
-		    .childrenUnfolded(node);
-		while (iterator.hasNext()) {
-			final NodeModel next = iterator.next();
-			registryAttributes(next);
-		}
-	}
-
 	private void registryNodeIcons(final NodeModel node) {
 		final List icons = node.getIcons();
 		final Iterator i = icons.iterator();
@@ -91,15 +59,4 @@ public class MapRegistry {
 		}
 	}
 
-	public void registrySubtree(final NodeModel root) {
-		registryNodeIcons(root);
-		registryAttributes(root);
-	}
-
-	/**
-	 * @throws IOException
-	 */
-	public void write(final ITreeWriter writer) throws IOException {
-		getAttributes().write(writer);
-	}
 }

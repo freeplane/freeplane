@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.map.attribute.filter;
+package org.freeplane.map.text;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.condition.ConditionFactory;
@@ -25,57 +25,38 @@ import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.filter.condition.NodeCondition;
 import org.freeplane.core.io.XMLElement;
 import org.freeplane.core.map.NodeModel;
-import org.freeplane.map.attribute.IAttributeTableModel;
-import org.freeplane.map.attribute.NodeAttributeTableModel;
 
-/**
- * @author Dimitry Polivaev
- */
-public class AttributeExistsCondition extends NodeCondition {
-	static final String ATTRIBUTE = "attribute";
-	static final String NAME = "attribute_exists_condition";
+class NodeContainsCondition extends NodeCondition {
+	static final String NAME = "node_contains_condition";
+	static final String VALUE = "value";
 
 	static ICondition load(final XMLElement element) {
-		return new AttributeExistsCondition(element.getAttribute(
-		    AttributeExistsCondition.ATTRIBUTE, null));
+		return new NodeContainsCondition(element.getAttribute(NodeContainsCondition.VALUE, null));
 	}
 
-	final private String attribute;
+	final private String value;
 
-	/**
-	 */
-	public AttributeExistsCondition(final String attribute) {
+	NodeContainsCondition(final String value) {
 		super();
-		this.attribute = attribute;
+		this.value = value;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * freemind.controller.filter.condition.Condition#checkNode(freemind.modes
-	 * .MindMapNode)
-	 */
 	public boolean checkNode(final NodeModel node) {
-		final IAttributeTableModel attributes = NodeAttributeTableModel.getModel(node);
-		for (int i = 0; i < attributes.getRowCount(); i++) {
-			if (attributes.getValueAt(i, 0).equals(attribute)) {
-				return true;
-			}
-		}
-		return false;
+		return node.getText().indexOf(value) > -1;
 	}
 
 	@Override
 	protected String createDesctiption() {
-		final String simpleCondition = Controller.getText(ConditionFactory.FILTER_EXIST);
-		return ConditionFactory.createDescription(attribute, simpleCondition, null, false);
+		final String nodeCondition = Controller.getText(NodeConditionController.FILTER_NODE);
+		final String simpleCondition = Controller.getText(ConditionFactory.FILTER_CONTAINS);
+		return ConditionFactory.createDescription(nodeCondition, simpleCondition, value, false);
 	}
 
 	public void toXml(final XMLElement element) {
 		final XMLElement child = new XMLElement();
-		child.setName(AttributeExistsCondition.NAME);
+		child.setName(NodeContainsCondition.NAME);
 		super.attributesToXml(child);
-		child.setAttribute(AttributeExistsCondition.ATTRIBUTE, attribute);
+		child.setAttribute(NodeContainsCondition.VALUE, value);
 		element.addChild(child);
 	}
 }

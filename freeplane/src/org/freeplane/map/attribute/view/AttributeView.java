@@ -111,7 +111,7 @@ public class AttributeView implements ChangeListener, TableModelListener {
 	}
 
 	AttributeRegistry getAttributeRegistry() {
-		return getNode().getMap().getRegistry().getAttributes();
+		return AttributeRegistry.getRegistry(getNode().getMap());
 	}
 
 	public NodeAttributeTableModel getAttributes() {

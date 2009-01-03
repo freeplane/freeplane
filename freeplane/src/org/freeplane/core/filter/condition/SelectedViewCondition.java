@@ -43,7 +43,6 @@ public class SelectedViewCondition implements ICondition {
 	}
 
 	public boolean checkNode(final NodeModel node) {
-		Controller.getController();
 		final NodeView viewer = Controller.getModeController().getNodeView(node);
 		return viewer != null && viewer.isSelected();
 	}

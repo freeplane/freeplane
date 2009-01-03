@@ -35,7 +35,7 @@ import javax.swing.SwingUtilities;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.FreemindVersionInformation;
-import org.freeplane.core.ui.FreemindMenuBar;
+import org.freeplane.core.ui.components.FreemindMenuBar;
 
 /**
  * @author Dimitry Polivaev
@@ -140,7 +140,6 @@ public class AppletViewController extends ViewController {
 		if (initialMapName != "") {
 			try {
 				final URL mapUrl = new URL(initialMapName);
-				Controller.getController();
 				Controller.getModeController().getMapController().newMap(mapUrl);
 			}
 			catch (final Exception e) {

@@ -25,6 +25,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.io.XMLElement;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.components.UITools;
@@ -39,7 +40,8 @@ public class DisjunctConditions implements ICondition {
 		final Vector children = element.getChildren();
 		final Object[] conditions = new Object[children.size()];
 		for (int i = 0; i < conditions.length; i++) {
-			final ICondition cond = Controller.getController().getFilterController()
+			
+			final ICondition cond = FilterController.getController()
 			    .getConditionFactory().loadCondition((XMLElement) children.get(i));
 			conditions[i] = cond;
 		}

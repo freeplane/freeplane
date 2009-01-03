@@ -123,7 +123,6 @@ public abstract class FreeplaneAction extends AbstractAction {
 	}
 
 	public ModeController getModeController() {
-		Controller.getController();
 		return Controller.getModeController();
 	}
 

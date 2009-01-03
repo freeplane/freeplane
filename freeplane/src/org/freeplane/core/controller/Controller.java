@@ -27,11 +27,8 @@ import javax.swing.Action;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
-import org.freeplane.controller.help.HelpController;
-import org.freeplane.controller.print.PrintController;
 import org.freeplane.core.extension.ExtensionHashMap;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.frame.MapViewManager;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.map.MapModel;
@@ -39,14 +36,17 @@ import org.freeplane.core.map.ModeController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ActionController;
 import org.freeplane.core.url.UrlManager;
-import org.freeplane.map.attribute.ModelessAttributeController;
 import org.freeplane.view.swing.map.MapView;
 
 /**
  * Provides the methods to edit/change a Node. Forwards all messages to
  * MapModel(editing) or MapView(navigation).
  */
-public class Controller {
+public class Controller{
+	public IExtension getExtension(Class clazz) {
+	    return extensions.getExtension(clazz);
+    }
+
 	private static Controller controllerInstance;
 	public static final String JAVA_VERSION = System.getProperty("java.version");
 	public static final String ON_START_IF_NOT_SPECIFIED = "on_start_if_not_specified";
@@ -82,19 +82,15 @@ public class Controller {
 	}
 
 	private final ActionController actionController;
-	private ModelessAttributeController attributeController;
 	final private ExtensionHashMap extensions;
-	private FilterController filterController;
-	private HelpController helpController;
 	/**
 	 * Converts from a local link to the real file URL of the documentation map.
 	 * (Used to change this behaviour under MacOSX).
 	 */
 	private ModeController modeController;
-	final private HashMap<String, ModeController> modeControllers;
-	private PrintController printController;
-	final private Action quit;
 	private ViewController viewController;
+	final private HashMap<String, ModeController> modeControllers;
+	final private Action quit;
 
 	public Controller(final ResourceController resourceController) {
 		if (Controller.controllerInstance != null) {
@@ -160,20 +156,8 @@ public class Controller {
 		return actionController.getAction(key);
 	}
 
-	public ModelessAttributeController getAttributeController() {
-		return attributeController;
-	}
-
-	public FilterController getFilterController() {
-		return filterController;
-	}
-
 	public FreemindVersionInformation getFreemindVersion() {
 		return Controller.VERSION;
-	}
-
-	public HelpController getHelpController() {
-		return helpController;
 	}
 
 	/**
@@ -198,20 +182,8 @@ public class Controller {
 		return modeControllers.get(modeName);
 	}
 
-	/** Returns the current model */
-	public MapModel getModel() {
-		if (getMapView() != null) {
-			return getMapView().getModel();
-		}
-		return null;
-	}
-
 	public Set getModes() {
 		return modeControllers.keySet();
-	}
-
-	public PrintController getPrintController() {
-		return printController;
 	}
 
 	/**
@@ -286,24 +258,9 @@ public class Controller {
 		selectMode(newModeController);
 		return getMapViewManager().changeToMode(modeName);
 	}
-
-	public void setAttributeController(final ModelessAttributeController attributeController) {
-		this.attributeController = attributeController;
-	}
-
-	public void setFilterController(final FilterController filterController) {
-		this.filterController = filterController;
-	}
-
-	public void setHelpController(final HelpController helpController) {
-		this.helpController = helpController;
-	}
-
-	public void setPrintController(final PrintController printController) {
-		this.printController = printController;
-	}
-
+	
 	public void setViewController(final ViewController viewController) {
 		this.viewController = viewController;
 	}
+
 }

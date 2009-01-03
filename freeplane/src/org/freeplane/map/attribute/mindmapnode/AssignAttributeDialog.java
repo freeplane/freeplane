@@ -442,7 +442,7 @@ public class AssignAttributeDialog extends JDialog implements IAttributesListene
 	}
 
 	private void attributesChanged() {
-		final AttributeRegistry attributes = mapView.getModel().getRegistry().getAttributes();
+		final AttributeRegistry attributes = AttributeRegistry.getRegistry(mapView.getModel());
 		final ComboBoxModel names = attributes.getComboBoxModel();
 		attributeNames.setModel(new ClonedComboBoxModel(names));
 		attributeNames.setEditable(!attributes.isRestricted());
@@ -477,17 +477,17 @@ public class AssignAttributeDialog extends JDialog implements IAttributesListene
 
 	public void mapChanged(final MapView currentMapView) {
 		if (mapView != null) {
-			mapView.getModel().getRegistry().getAttributes().removeAttributesListener(this);
+			AttributeRegistry.getRegistry(mapView.getModel()).removeAttributesListener(this);
 		}
 		mapView = currentMapView;
 		final MapModel map = currentMapView.getModel();
-		final AttributeRegistry attributes = map.getRegistry().getAttributes();
+		final AttributeRegistry attributes = AttributeRegistry.getRegistry(map);
 		attributes.addAttributesListener(this);
 		attributesChanged();
 	}
 
 	private void selectedAttributeChanged(final Object selectedAttributeName, final JComboBox values) {
-		final AttributeRegistry attributes = mapView.getModel().getRegistry().getAttributes();
+		final AttributeRegistry attributes = AttributeRegistry.getRegistry(mapView.getModel());
 		try {
 			final AttributeRegistryElement element = attributes.getElement(selectedAttributeName
 			    .toString());

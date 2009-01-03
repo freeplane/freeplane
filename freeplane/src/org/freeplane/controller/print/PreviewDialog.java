@@ -31,7 +31,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 
-import org.freeplane.core.ui.FreeMindToolBar;
+import org.freeplane.core.ui.components.FreeMindToolBar;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.view.swing.map.MapView;
 

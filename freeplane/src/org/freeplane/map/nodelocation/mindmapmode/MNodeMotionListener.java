@@ -30,10 +30,10 @@ import javax.swing.JScrollPane;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.NodeModel;
-import org.freeplane.core.ui.UserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.map.nodelocation.LocationModel;
 import org.freeplane.modes.mindmapmode.MModeController;
+import org.freeplane.modes.ui.UserInputListenerFactory;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeMotionListenerView;
 import org.freeplane.view.swing.map.NodeView;

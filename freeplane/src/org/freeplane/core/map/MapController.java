@@ -49,7 +49,6 @@ import org.freeplane.core.io.XMLElement;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Tools;
-import org.freeplane.map.link.NodeLinks;
 import org.freeplane.n3.nanoxml.XMLParseException;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
@@ -89,16 +88,16 @@ public class MapController {
 		}
 	}
 
-	private static boolean sSaveOnlyIntrinsicallyNeededIds = false;
+	private static boolean saveOnlyIntrinsicallyNeededIds = false;
 	static private CommonToggleFoldedAction toggleFolded;
 
-	public static boolean isSSaveOnlyIntrinsicallyNeededIds() {
-		return sSaveOnlyIntrinsicallyNeededIds;
+	public static boolean saveOnlyIntrinsicallyNeededIds() {
+		return saveOnlyIntrinsicallyNeededIds;
 	}
 
 	public static void setSaveOnlyIntrinsicallyNeededIds(
-	                                                     final boolean sSaveOnlyIntrinsicallyNeededIds) {
-		MapController.sSaveOnlyIntrinsicallyNeededIds = sSaveOnlyIntrinsicallyNeededIds;
+	                                                     final boolean saveOnlyIntrinsicallyNeededIds) {
+		MapController.saveOnlyIntrinsicallyNeededIds = saveOnlyIntrinsicallyNeededIds;
 	}
 
 	protected final Collection<IMapChangeListener> mapChangeListeners;
@@ -147,11 +146,11 @@ public class MapController {
 		mapLifeCycleListeners.add(listener);
 	}
 
-	public ListIterator<NodeModel> childrenFolded(final NodeModel nodeAdapter) {
-		if (nodeAdapter.isFolded()) {
+	public ListIterator<NodeModel> childrenFolded(final NodeModel node) {
+		if (node.isFolded()) {
 			return Collections.EMPTY_LIST.listIterator();
 		}
-		return childrenUnfolded(nodeAdapter);
+		return childrenUnfolded(node);
 	}
 
 	public ListIterator<NodeModel> childrenUnfolded(final NodeModel node) {
@@ -235,9 +234,6 @@ public class MapController {
 		}
 		if (retValue) {
 			e.consume();
-			String link = NodeLinks.getLink(newlySelectedNodeView.getModel());
-			link = (link != null ? link : " ");
-			Controller.getController().getViewController().out(link);
 		}
 		return retValue;
 	}
@@ -461,7 +457,6 @@ public class MapController {
 				}
 				if (ref != null) {
 					try {
-						Controller.getController();
 						final ModeController newModeController = Controller.getModeController();
 						newModeController.centerNode(newModeController.getMapController()
 						    .getNodeFromID(ref));

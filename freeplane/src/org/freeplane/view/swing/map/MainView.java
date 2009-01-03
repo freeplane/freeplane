@@ -48,7 +48,7 @@ import javax.swing.SwingUtilities;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.MindIcon;
 import org.freeplane.core.map.NodeModel;
-import org.freeplane.core.ui.FreemindMenuBar;
+import org.freeplane.core.ui.components.FreemindMenuBar;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.map.edge.EdgeController;

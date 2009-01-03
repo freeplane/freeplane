@@ -42,12 +42,13 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.map.MapModel;
 import org.freeplane.core.map.ModeController;
-import org.freeplane.core.ui.FreemindMenuBar;
+import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.UIBuilder;
-import org.freeplane.core.ui.UserInputListenerFactory;
+import org.freeplane.core.ui.components.FreemindMenuBar;
 import org.freeplane.view.swing.map.MapView;
 
 /**
@@ -128,7 +129,6 @@ abstract public class ViewController implements IMapViewChangeListener {
 	}
 
 	public void afterMapViewChange(final MapView oldMapView, final MapView newMapView) {
-		Controller.getController();
 		final ModeController oldModeController = Controller.getModeController();
 		ModeController newModeController = oldModeController;
 		if (newMapView != null) {
@@ -154,7 +154,6 @@ abstract public class ViewController implements IMapViewChangeListener {
 	}
 
 	public void beforeMapViewChange(final MapView oldMapView, final MapView newMapView) {
-		Controller.getController();
 		final ModeController modeController = Controller.getModeController();
 		if (oldMapView != null) {
 			modeController.setVisible(false);
@@ -260,7 +259,8 @@ abstract public class ViewController implements IMapViewChangeListener {
 	}
 
 	public void init() {
-		final JToolBar filterToolbar = Controller.getController().getFilterController()
+		
+		final JToolBar filterToolbar = FilterController.getController()
 		    .getFilterToolbar();
 		getContentPane().add(toolbarPanel, BorderLayout.NORTH);
 		getContentPane().add(leftToolbarPanel, BorderLayout.WEST);
@@ -359,7 +359,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 			return;
 		}
 		if (oldModeController != null) {
-			final UserInputListenerFactory userInputListenerFactory = oldModeController
+			final IUserInputListenerFactory userInputListenerFactory = oldModeController
 			    .getUserInputListenerFactory();
 			final JToolBar modeToolBar = userInputListenerFactory.getMainToolBar();
 			if (modeToolBar != null) {
@@ -430,7 +430,6 @@ abstract public class ViewController implements IMapViewChangeListener {
 	 * Set the Frame title with mode and file if exist
 	 */
 	public void setTitle() {
-		Controller.getController();
 		final ModeController modeController = Controller.getModeController();
 		if (modeController == null) {
 			setTitle("");

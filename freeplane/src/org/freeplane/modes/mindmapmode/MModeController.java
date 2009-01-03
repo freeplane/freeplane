@@ -19,6 +19,8 @@
  */
 package org.freeplane.modes.mindmapmode;
 
+import java.awt.dnd.DropTargetListener;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.util.Vector;
 
@@ -31,10 +33,10 @@ import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.resources.PropertyAction;
 import org.freeplane.core.resources.ui.OptionPanelBuilder;
 import org.freeplane.core.resources.ui.OptionString;
-import org.freeplane.core.ui.FreemindMenuBar;
+import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.core.ui.UserInputListenerFactory;
+import org.freeplane.core.ui.components.FreemindMenuBar;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.core.url.UrlManager;
@@ -50,6 +52,7 @@ import org.freeplane.map.pattern.mindmapnode.MPatternController;
 import org.freeplane.map.text.TextController;
 import org.freeplane.map.text.mindmapmode.MTextController;
 import org.freeplane.modes.mindmapmode.url.MFileManager;
+import org.freeplane.modes.ui.UserInputListenerFactory;
 import org.freeplane.view.swing.map.MainView;
 
 public class MModeController extends ModeController {
@@ -215,20 +218,35 @@ public class MModeController extends ModeController {
 		redo.reset();
 	}
 
-	/**
-	 */
-	@Override
-	public void updateMenus(final MenuBuilder builder) {
+
+	
+	protected void updateMenus(final String resource) {
+		final UserInputListenerFactory userInputListenerFactory = (UserInputListenerFactory) getUserInputListenerFactory();
+		userInputListenerFactory.setMenuStructure(resource);
+		userInputListenerFactory.updateMenus(this);
+		MenuBuilder builder = getUserInputListenerFactory().getMenuBuilder();
 		((MIconController) IconController.getController(this)).updateIconToolbar();
 		((MIconController) IconController.getController(this)).updateMenus(builder);
 		MPatternController.getController(this).createPatternSubMenu(builder,
 		    UserInputListenerFactory.NODE_POPUP);
 		final String formatMenuString = FreemindMenuBar.FORMAT_MENU;
 		MPatternController.getController(this).createPatternSubMenu(builder, formatMenuString);
+		super.updateMenus();
+	}
+	public void setMapMouseMotionListener(final IMouseListener mapMouseMotionListener) {
+		((UserInputListenerFactory) getUserInputListenerFactory()).setMapMouseListener(mapMouseMotionListener);
 	}
 
-	@Override
-	protected void updateMenus(final String resource) {
-		super.updateMenus(resource);
+	public void setNodeDropTargetListener(final DropTargetListener nodeDropTargetListener) {
+		((UserInputListenerFactory) getUserInputListenerFactory()).setNodeDropTargetListener(nodeDropTargetListener);
 	}
+
+	public void setNodeKeyListener(final KeyListener nodeKeyListener) {
+		((UserInputListenerFactory) getUserInputListenerFactory()).setNodeKeyListener(nodeKeyListener);
+	}
+
+	public void setNodeMotionListener(final IMouseListener nodeMotionListener) {
+		((UserInputListenerFactory) getUserInputListenerFactory()).setNodeMotionListener(nodeMotionListener);
+	}
+
 }

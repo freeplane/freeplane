@@ -27,6 +27,7 @@ import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.map.link.LinkController;
 import org.freeplane.map.link.NodeLinks;
+import org.freeplane.modes.ui.UserInputListenerFactory;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.NodeView;
 
@@ -104,8 +105,11 @@ public class FModeController extends ModeController {
 		super.startup();
 	}
 
-	@Override
+	
 	protected void updateMenus(final String resource) {
-		super.updateMenus(resource);
+		final UserInputListenerFactory userInputListenerFactory = (UserInputListenerFactory) getUserInputListenerFactory();
+		userInputListenerFactory.setMenuStructure(resource);
+		userInputListenerFactory.updateMenus(this);
+		super.updateMenus();
 	}
 }

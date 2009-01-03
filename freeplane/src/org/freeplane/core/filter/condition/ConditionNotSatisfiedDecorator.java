@@ -25,6 +25,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.io.XMLElement;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.components.UITools;
@@ -37,7 +38,8 @@ public class ConditionNotSatisfiedDecorator implements ICondition {
 
 	static ICondition load(final XMLElement element) {
 		final Vector children = element.getChildren();
-		final ICondition cond = Controller.getController().getFilterController()
+		
+		final ICondition cond = FilterController.getController()
 		    .getConditionFactory().loadCondition((XMLElement) children.get(0));
 		return new ConditionNotSatisfiedDecorator(cond);
 	}

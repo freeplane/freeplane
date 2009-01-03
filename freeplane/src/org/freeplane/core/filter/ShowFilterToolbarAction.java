@@ -41,10 +41,12 @@ class ShowFilterToolbarAction extends AbstractAction {
 	public void actionPerformed(final ActionEvent event) {
 		final JToggleButton btnFilter = (JToggleButton) event.getSource();
 		if (btnFilter.getModel().isSelected()) {
-			Controller.getController().getFilterController().showFilterToolbar(true);
+			
+			FilterController.getController().showFilterToolbar(true);
 		}
 		else {
-			Controller.getController().getFilterController().showFilterToolbar(false);
+			
+			FilterController.getController().showFilterToolbar(false);
 		}
 	}
 }

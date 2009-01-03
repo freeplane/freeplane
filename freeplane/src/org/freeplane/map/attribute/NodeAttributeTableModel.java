@@ -128,7 +128,7 @@ public class NodeAttributeTableModel extends AbstractTableModel implements IAttr
 	public void addRowNoUndo(final Attribute newAttribute) {
 		allocateAttributes(NodeAttributeTableModel.CAPACITY_INCREMENT);
 		final int index = getRowCount();
-		node.getMap().getRegistry().getAttributes().registry(newAttribute);
+		AttributeRegistry.getRegistry(node.getMap()).registry(newAttribute);
 		attributes.add(newAttribute);
 		enableStateIcon();
 		fireTableRowsInserted(index, index);
@@ -288,6 +288,7 @@ public class NodeAttributeTableModel extends AbstractTableModel implements IAttr
 	}
 
 	public void insertRow(final int index, final String name, final String value) {
+		getAttributeController().performInsertRow(this, index, name, value);
 	}
 
 	/*

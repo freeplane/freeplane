@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.map.text.filter;
+package org.freeplane.map.attribute;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.condition.ConditionFactory;
@@ -26,37 +26,54 @@ import org.freeplane.core.filter.condition.NodeCondition;
 import org.freeplane.core.io.XMLElement;
 import org.freeplane.core.map.NodeModel;
 
-class NodeContainsCondition extends NodeCondition {
-	static final String NAME = "node_contains_condition";
-	static final String VALUE = "value";
+/**
+ * @author Dimitry Polivaev
+ */
+public class AttributeNotExistsCondition extends NodeCondition {
+	static final String ATTRIBUTE = "attribute";
+	static final String NAME = "attribute_not_exists_condition";
 
 	static ICondition load(final XMLElement element) {
-		return new NodeContainsCondition(element.getAttribute(NodeContainsCondition.VALUE, null));
+		return new AttributeNotExistsCondition(element.getAttribute(
+		    AttributeNotExistsCondition.ATTRIBUTE, null));
 	}
 
-	final private String value;
+	final private String attribute;
 
-	NodeContainsCondition(final String value) {
+	/**
+	 */
+	public AttributeNotExistsCondition(final String attribute) {
 		super();
-		this.value = value;
+		this.attribute = attribute;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see
+	 * freemind.controller.filter.condition.Condition#checkNode(freemind.modes
+	 * .MindMapNode)
+	 */
 	public boolean checkNode(final NodeModel node) {
-		return node.getText().indexOf(value) > -1;
+		final IAttributeTableModel attributes = NodeAttributeTableModel.getModel(node);
+		for (int i = 0; i < attributes.getRowCount(); i++) {
+			if (attributes.getValueAt(i, 0).equals(attribute)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	@Override
 	protected String createDesctiption() {
-		final String nodeCondition = Controller.getText(NodeConditionController.FILTER_NODE);
-		final String simpleCondition = Controller.getText(ConditionFactory.FILTER_CONTAINS);
-		return ConditionFactory.createDescription(nodeCondition, simpleCondition, value, false);
+		final String simpleCondition = Controller.getText(ConditionFactory.FILTER_DOES_NOT_EXIST);
+		return ConditionFactory.createDescription(attribute, simpleCondition, null, false);
 	}
 
 	public void toXml(final XMLElement element) {
 		final XMLElement child = new XMLElement();
-		child.setName(NodeContainsCondition.NAME);
+		child.setName(AttributeNotExistsCondition.NAME);
 		super.attributesToXml(child);
-		child.setAttribute(NodeContainsCondition.VALUE, value);
+		child.setAttribute(AttributeNotExistsCondition.ATTRIBUTE, attribute);
 		element.addChild(child);
 	}
 }

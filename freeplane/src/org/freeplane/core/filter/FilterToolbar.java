@@ -44,8 +44,8 @@ import org.freeplane.core.filter.condition.NoFilteringCondition;
 import org.freeplane.core.filter.condition.SelectedViewCondition;
 import org.freeplane.core.map.MapModel;
 import org.freeplane.core.map.NodeModel;
-import org.freeplane.core.ui.FreeMindToolBar;
 import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.ui.components.FreeMindToolBar;
 
 class FilterToolbar extends FreeMindToolBar {
 	private class EditFilterAction extends FreeplaneAction {
@@ -136,7 +136,7 @@ class FilterToolbar extends FreeMindToolBar {
 
 		public void actionPerformed(final ActionEvent e) {
 			if (getSelectedCondition() != null) {
-				unfoldAncestors(Controller.getController().getModel().getRootNode());
+				unfoldAncestors(Controller.getController().getMap().getRootNode());
 			}
 		}
 
@@ -173,7 +173,8 @@ class FilterToolbar extends FreeMindToolBar {
 
 	FilterToolbar() {
 		super();
-		fc = Controller.getController().getFilterController();
+		
+		fc = FilterController.getController();
 		setVisible(false);
 		setFocusable(false);
 		filterChangeListener = new FilterChangeListener();

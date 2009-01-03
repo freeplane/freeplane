@@ -133,8 +133,7 @@ public class AttributeTable extends JTable implements IColumnWidthChangeListener
 				}
 				if (!focusedTable.attributeView.isPopupShown()) {
 					final AttributeView attributeView = focusedTable.getAttributeView();
-					final String currentAttributeViewType = attributeView.getNode().getMap()
-					    .getRegistry().getAttributes().getAttributeViewType();
+					final String currentAttributeViewType = AttributeRegistry.getRegistry(attributeView.getNode().getMap()).getAttributeViewType();
 					if (attributeView.getViewType() != currentAttributeViewType) {
 						attributeView.stateChanged(null);
 					}
@@ -257,8 +256,7 @@ public class AttributeTable extends JTable implements IColumnWidthChangeListener
 	}
 
 	private float getFontSize() {
-		return (attributeView.getNodeView().getModel().getMap().getRegistry().getAttributes()
-		    .getFontSize());
+		return AttributeRegistry.getRegistry(attributeView.getNode().getMap()).getFontSize();
 	}
 
 	@Override
@@ -330,7 +328,7 @@ public class AttributeTable extends JTable implements IColumnWidthChangeListener
 		ComboBoxModel model;
 		final JComboBox comboBox = (JComboBox) ((DefaultCellEditor) tce).getComponent();
 		final NodeModel node = getAttributeTableModel().getNode();
-		final AttributeRegistry attributes = node.getMap().getRegistry().getAttributes();
+		final AttributeRegistry attributes = AttributeRegistry.getRegistry(node.getMap());
 		switch (col) {
 			case 0:
 				model = attributes.getComboBoxModel();

@@ -41,7 +41,7 @@ class HideAllAttributesAction extends AbstractAction {
 	}
 
 	public void setAttributeViewType(final MapModel map) {
-		final AttributeRegistry attributes = map.getRegistry().getAttributes();
+		final AttributeRegistry attributes = AttributeRegistry.getRegistry(map);
 		if (attributes.getAttributeViewType() != AttributeTableLayoutModel.HIDE_ALL) {
 			attributes.setAttributeViewType(AttributeTableLayoutModel.HIDE_ALL);
 		}

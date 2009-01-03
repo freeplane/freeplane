@@ -23,7 +23,7 @@ import javax.swing.JPopupMenu;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.MapController;
-import org.freeplane.core.ui.FreeMindToolBar;
+import org.freeplane.core.ui.components.FreeMindToolBar;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.map.attribute.AttributeController;
 import org.freeplane.map.clipboard.ClipboardController;
@@ -35,6 +35,7 @@ import org.freeplane.map.nodelocation.LocationController;
 import org.freeplane.map.nodestyle.NodeStyleController;
 import org.freeplane.map.note.NoteController;
 import org.freeplane.map.text.TextController;
+import org.freeplane.modes.ui.UserInputListenerFactory;
 
 /**
  * @author Dimitry Polivaev 24.11.2008
@@ -47,6 +48,8 @@ public class BModeControllerFactory {
 			return modeController;
 		}
 		modeController = new BModeController();
+		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController);
+		modeController.setUserInputListenerFactory(userInputListenerFactory);
 		Controller.getController().addModeController(modeController);
 		modeController.setMapController(new MapController(modeController));
 		UrlManager.install(modeController, new UrlManager(modeController));
@@ -60,13 +63,13 @@ public class BModeControllerFactory {
 		TextController.install(modeController, new TextController(modeController));
 		ClipboardController.install(modeController, new ClipboardController(modeController));
 		LocationController.install(modeController, new LocationController(modeController));
-		modeController.addNodeSelectionListener(new BNodeNoteViewer(modeController));
+		modeController.addNodeSelectionListener(new BNodeNoteViewer());
 		final BToolbarContributor toolbarContributor = new BToolbarContributor(modeController);
 		modeController.addMenuContributor(toolbarContributor);
 		Controller.getController().getViewController()
 		    .addMapTitleChangeListener(toolbarContributor);
-		modeController.getUserInputListenerFactory().setNodePopupMenu(new JPopupMenu());
-		modeController.getUserInputListenerFactory().setMainToolBar(new FreeMindToolBar());
+		userInputListenerFactory.setNodePopupMenu(new JPopupMenu());
+		userInputListenerFactory.setMainToolBar(new FreeMindToolBar());
 		modeController.updateMenus("org/freeplane/modes/browsemode/menu.xml");
 		return modeController;
 	}

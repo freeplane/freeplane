@@ -24,6 +24,7 @@ import java.awt.Point;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -87,6 +88,7 @@ public class TreeXmlWriter implements ITreeWriter {
 		super();
 		this.writeManager = writeManager;
 		xmlwriter = new XMLWriter(writer);
+		hints = new HashMap<Object, Object>();
 	}
 
 	/*
@@ -226,4 +228,13 @@ public class TreeXmlWriter implements ITreeWriter {
 	private ListHashTable getNodeWriters() {
 		return writeManager.getElementWriters();
 	}
+
+	final private HashMap<Object, Object> hints;
+	public Object getHint(Object key) {
+		return hints.get(key);
+    }
+
+	public void setHint(Object key, Object value) {
+		hints.put(key, value);
+    }
 }

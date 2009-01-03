@@ -24,11 +24,12 @@ import java.awt.event.ActionEvent;
 import javax.swing.Action;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.extension.IExtension;
 
 /**
  * @author Dimitry Polivaev
  */
-public class HelpController {
+public class HelpController implements IExtension {
 	final private Action webDocu;
 
 	public HelpController() {
@@ -62,4 +63,14 @@ public class HelpController {
 	public void webDocu(final ActionEvent e) {
 		webDocu.actionPerformed(e);
 	}
+
+
+
+	public static HelpController getController() {		
+		return (HelpController)Controller.getController().getExtension(HelpController.class);
+	}
+	public static void install() {
+		Controller.getController().addExtension(HelpController.class, new HelpController());
+	}
+
 }

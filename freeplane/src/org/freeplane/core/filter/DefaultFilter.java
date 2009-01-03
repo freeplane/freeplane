@@ -98,7 +98,7 @@ public class DefaultFilter implements IFilter {
 			try {
 				final Controller c = Controller.getController();
 				c.getViewController().setWaitingCursor(true);
-				final MapModel map = c.getModel();
+				final MapModel map = c.getMap();
 				final MapView mapView = c.getMapView();
 				final NodeModel root = map.getRootNode();
 				DefaultFilter.resetFilter(root);

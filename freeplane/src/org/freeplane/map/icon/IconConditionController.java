@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.map.icon.filter;
+package org.freeplane.map.icon;
 
 import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
@@ -38,7 +38,7 @@ import org.freeplane.core.resources.NamedObject;
  * @author Dimitry Polivaev
  * 21.12.2008
  */
-public class IconConditionController implements IElementaryConditionController {
+class IconConditionController implements IElementaryConditionController {
 	static final String FILTER_ICON = "filter_icon";
 
 	public boolean canEditValues(final Object property, final NamedObject simpleCond) {
@@ -82,8 +82,7 @@ public class IconConditionController implements IElementaryConditionController {
 	}
 
 	public ComboBoxModel getValuesForProperty(final Object property) {
-		final SortedMapListModel icons = Controller.getController().getModel().getRegistry()
-		    .getIcons();
+		final SortedMapListModel icons = Controller.getController().getMap().getIconRegistry().getIcons();
 		final ExtendedComboBoxModel extendedComboBoxModel = new ExtendedComboBoxModel();
 		extendedComboBoxModel.setExtensionList(icons);
 		return extendedComboBoxModel;

@@ -27,23 +27,17 @@ import org.freeplane.core.io.IElementWriter;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.XMLElement;
 import org.freeplane.core.io.xml.TreeXmlWriter;
-import org.freeplane.core.util.HtmlTools;
-import org.freeplane.map.link.LinkController;
-import org.freeplane.map.text.NodeTextBuilder;
 
 class NodeWriter implements IElementWriter, IAttributeWriter {
 	private EncryptionModel encryptionModel;
-	private boolean isTextNode;
-	final private boolean saveOnlyIntrinsicallyNeededIds;
 	final private boolean writeChildren;
 	final private boolean writeInvisible;
 	private XMLElement xmlNode;
 
 	public NodeWriter(final MapController mapController, final boolean writeChildren,
-	                  final boolean writeInvisible, final boolean saveOnlyIntrinsicallyNeededIds) {
+	                  final boolean writeInvisible) {
 		this.writeChildren = writeChildren;
 		this.writeInvisible = writeInvisible;
-		this.saveOnlyIntrinsicallyNeededIds = saveOnlyIntrinsicallyNeededIds;
 	}
 
 	private void saveChildren(final ITreeWriter writer, final NodeModel node) throws IOException {
@@ -67,19 +61,14 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 	 */
 	public void writeAttributes(final ITreeWriter writer, final Object content, final String tag) {
 		if (tag.equals(NodeBuilder.XML_NODE)) {
-			final NodeModel nodeAdapter = (NodeModel) content;
-			writeAttributesGenerateContent(writer, nodeAdapter);
+			final NodeModel node = (NodeModel) content;
+			writeAttributesGenerateContent(writer, node);
 			return;
 		}
 	}
 
 	private void writeAttributesGenerateContent(final ITreeWriter writer, final NodeModel node) {
 		/** fc, 12.6.2005: XML must not contain any zero characters. */
-		final String text = node.toString().replace('\0', ' ');
-		isTextNode = !HtmlTools.isHtmlNode(text);
-		if (isTextNode) {
-			writer.addAttribute(NodeTextBuilder.XML_NODE_TEXT, text);
-		}
 		xmlNode = new XMLElement();
 		encryptionModel = EncryptionModel.getModel(node);
 		if (encryptionModel != null) {
@@ -92,14 +81,10 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 		if (!(node.isRoot()) && (node.getParentNode().isRoot())) {
 			writer.addAttribute("POSITION", node.isLeft() ? "left" : "right");
 		}
-		final String id = node.createID();
-		final boolean saveID = saveOnlyIntrinsicallyNeededIds
-		        || !LinkController.getController(node.getModeController()).getLinksTo(node)
-		            .isEmpty();
+		final boolean saveID = ! MapController.saveOnlyIntrinsicallyNeededIds();
 		if (saveID) {
-			if (id != null) {
-				writer.addAttribute("ID", id);
-			}
+			final String id = node.createID();
+			writer.addAttribute("ID", id);
 		}
 		if (node.getHistoryInformation() != null) {
 			writer.addAttribute(NodeBuilder.XML_NODE_HISTORY_CREATED_AT, TreeXmlWriter
@@ -116,35 +101,17 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 		writer.addExtensionAttributes(node, node.getExtensions());
 	}
 
-	private void writeContent(final ITreeWriter writer, final NodeModel node) throws IOException {
-		writer.addExtensionNodes(node, node.getExtensions());
-		if (!isTextNode) {
-			final XMLElement htmlElement = new XMLElement();
-			htmlElement.setName(NodeTextBuilder.XML_NODE_XHTML_CONTENT_TAG);
-			htmlElement.setAttribute(NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG,
-			    NodeTextBuilder.XML_NODE_XHTML_TYPE_NODE);
-			final String content = node.getXmlText().replace('\0', ' ');
-			writer.addElement(content, htmlElement);
-		}
-		for (int i = 0; i < xmlNode.getChildrenCount(); i++) {
-			writer.addElement(null, xmlNode.getChildAtIndex(i));
-		}
-		if (encryptionModel == null && writeChildren
-		        && node.getModeController().getMapController().childrenUnfolded(node).hasNext()) {
-			saveChildren(writer, node);
-		}
-	}
-
-	public void writeContent(final org.freeplane.core.io.ITreeWriter writer, final Object content,
+	public void writeContent(final ITreeWriter writer, final Object content,
 	                         final String tag) throws IOException {
-		if (tag.equals(NodeTextBuilder.XML_NODE_XHTML_CONTENT_TAG)) {
-			writer.addElementContent((String) content);
-			return;
-		}
-		if (tag.equals(NodeBuilder.XML_NODE)) {
-			final NodeModel nodeAdapter = (NodeModel) content;
-			writeContent(writer, nodeAdapter);
-			return;
-		}
+		final NodeModel node = (NodeModel) content;
+		writer.addExtensionNodes(node, node.getExtensions());
+        for (int i = 0; i < xmlNode.getChildrenCount(); i++) {
+        	writer.addElement(null, xmlNode.getChildAtIndex(i));
+        }
+        if (encryptionModel == null && writeChildren
+                && node.getModeController().getMapController().childrenUnfolded(node).hasNext()) {
+        	saveChildren(writer, node);
+        }
+		return;
 	}
 }

@@ -1,4 +1,4 @@
-package org.freeplane.map.text;
+package org.freeplane.core.util;
 
 /*
  * XHTMLWriter -- A simple XHTML document writer (C) 2004 Richard "Shred"

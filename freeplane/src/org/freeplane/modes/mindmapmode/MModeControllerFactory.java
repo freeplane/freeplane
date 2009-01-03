@@ -46,8 +46,8 @@ import org.freeplane.addins.misc.CreationModificationPlugin;
 import org.freeplane.addins.misc.FitToPage;
 import org.freeplane.addins.misc.HierarchicalIcons;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.ui.FreeMindToolBar;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.components.FreeMindToolBar;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.map.attribute.AttributeController;
 import org.freeplane.map.attribute.mindmapnode.MAttributeController;
@@ -71,6 +71,7 @@ import org.freeplane.map.pattern.mindmapnode.MPatternController;
 import org.freeplane.map.text.TextController;
 import org.freeplane.map.text.mindmapmode.MTextController;
 import org.freeplane.modes.mindmapmode.url.MFileManager;
+import org.freeplane.modes.ui.UserInputListenerFactory;
 
 import plugins.help.FreeplaneHelpStarter;
 import plugins.latex.LatexNodeHook;
@@ -143,6 +144,8 @@ public class MModeControllerFactory {
 
 	private void createStandardControllers() {
 		modeController = new MModeController();
+		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController);
+		modeController.setUserInputListenerFactory(userInputListenerFactory);
 		Controller.getController().addModeController(modeController);
 		modeController.setMapController(new MMapController(modeController));
 		UrlManager.install(modeController, new MFileManager(modeController));
@@ -158,10 +161,10 @@ public class MModeControllerFactory {
 		LocationController.install(modeController, new MLocationController(modeController));
 		AttributeController.install(modeController, new MAttributeController(modeController));
 		final JPopupMenu popupmenu = new JPopupMenu();
-		modeController.getUserInputListenerFactory().setNodePopupMenu(popupmenu);
+		userInputListenerFactory.setNodePopupMenu(popupmenu);
 		final FreeMindToolBar toolbar = new FreeMindToolBar();
-		modeController.getUserInputListenerFactory().setMainToolBar(toolbar);
-		modeController.getUserInputListenerFactory().setLeftToolBar(
+		userInputListenerFactory.setMainToolBar(toolbar);
+		userInputListenerFactory.setLeftToolBar(
 		    ((MIconController) IconController.getController(modeController))
 		        .getIconToolBarScrollPane());
 		new RevisionPlugin(modeController);

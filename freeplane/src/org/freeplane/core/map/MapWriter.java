@@ -61,7 +61,7 @@ class MapWriter implements IElementWriter, IAttributeWriter {
 		writer
 		    .addElementContent("<!--To view this file, download free mind mapping software FreeMind from http://freemind.sourceforge.net -->\n");
 		final MapModel map = (MapModel) node;
-		map.getRegistry().write(writer);
+		writer.addExtensionNodes(map, map.getExtensions());
 		final NodeModel rootNode = map.getRootNode();
 		writeNode(writer, rootNode, saveInvisible, true);
 	}
@@ -75,7 +75,7 @@ class MapWriter implements IElementWriter, IAttributeWriter {
 			writeManager.removeAttributeWriter(NodeBuilder.XML_NODE, oldNodeWriter);
 		}
 		currentNodeWriter = new NodeWriter(node.getModeController().getMapController(),
-		    writeChildren, writeInvisible, MapController.isSSaveOnlyIntrinsicallyNeededIds());
+		    writeChildren, writeInvisible);
 		try {
 			writeManager.addElementWriter(NodeBuilder.XML_NODE, currentNodeWriter);
 			writeManager.addAttributeWriter(NodeBuilder.XML_NODE, currentNodeWriter);

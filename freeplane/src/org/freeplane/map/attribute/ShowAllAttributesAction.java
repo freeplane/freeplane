@@ -41,7 +41,7 @@ class ShowAllAttributesAction extends AbstractAction {
 	}
 
 	public void setAttributeViewType(final MapModel map) {
-		final AttributeRegistry attributes = map.getRegistry().getAttributes();
+		final AttributeRegistry attributes = AttributeRegistry.getRegistry(map);
 		if (attributes.getAttributeViewType() != AttributeTableLayoutModel.SHOW_ALL) {
 			attributes.setAttributeViewType(AttributeTableLayoutModel.SHOW_ALL);
 		}

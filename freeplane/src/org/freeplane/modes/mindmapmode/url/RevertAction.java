@@ -52,7 +52,6 @@ class RevertAction extends FreeplaneAction {
 		private String map;
 
 		public void act() {
-			Controller.getController();
 			final MapController mapController = Controller.getModeController().getMapController();
 			try {
 				Controller.getController().close(true);

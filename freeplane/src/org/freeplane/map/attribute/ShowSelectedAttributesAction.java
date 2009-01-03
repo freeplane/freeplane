@@ -41,7 +41,7 @@ class ShowSelectedAttributesAction extends AbstractAction {
 	}
 
 	void setAttributeViewType(final MapModel map) {
-		final AttributeRegistry attributes = map.getRegistry().getAttributes();
+		final AttributeRegistry attributes = AttributeRegistry.getRegistry(map);
 		if (attributes.getAttributeViewType() != AttributeTableLayoutModel.SHOW_SELECTED) {
 			attributes.setAttributeViewType(AttributeTableLayoutModel.SHOW_SELECTED);
 		}

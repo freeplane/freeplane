@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.ui;
+package org.freeplane.modes.ui;
 
 import java.awt.Component;
 import java.awt.Cursor;
@@ -65,6 +65,15 @@ import org.freeplane.core.frame.MapViewManager;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.ui.ControllerPopupMenuListener;
+import org.freeplane.core.ui.IEditHandler;
+import org.freeplane.core.ui.IMapMouseReceiver;
+import org.freeplane.core.ui.IMouseListener;
+import org.freeplane.core.ui.INodeMouseMotionListener;
+import org.freeplane.core.ui.IUserInputListenerFactory;
+import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.UIBuilder;
+import org.freeplane.core.ui.components.FreemindMenuBar;
 import org.freeplane.core.util.Tools;
 import org.freeplane.map.clipboard.ClipboardController;
 import org.freeplane.map.clipboard.MindMapNodesSelection;
@@ -89,8 +98,16 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 				JPopupMenu popup = null;
 				final java.lang.Object obj = Controller.getController().getMapView()
 				    .detectCollision(e.getPoint());
-				Controller.getController();
-				popup = Controller.getModeController().getPopupForModel(obj);
+				final ModeController modeController = Controller.getModeController();
+				final JPopupMenu popupForModel = LinkController.getController(modeController).getPopupForModel(obj);
+				if (popupForModel != null) {
+					final ControllerPopupMenuListener popupListener = new ControllerPopupMenuListener(modeController);
+					popupForModel.addPopupMenuListener(popupListener);
+					popup =  popupForModel;
+				}
+				else{
+					popup =  modeController.getUserInputListenerFactory().getMapPopup();
+				}
 				popup.show(e.getComponent(), e.getX(), e.getY());
 				popup.setVisible(true);
 			}
@@ -206,10 +223,8 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 				cursor = DragSource.DefaultCopyDrop;
 				dragAction = "COPY";
 			}
-			Controller.getController();
 			final ModeController modeController = Controller.getModeController();
-			final Transferable t = ClipboardController.getController(modeController).copy(
-			    modeController.getMapView());
+			final Transferable t = ClipboardController.getController(modeController).copy(modeController.getMapView());
 			((MindMapNodesSelection) t).setDropAction(dragAction);
 			e.startDrag(cursor, t, new DragSourceListener() {
 				public void dragDropEnd(final DragSourceDropEvent dsde) {
@@ -563,11 +578,9 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	public static final String NODE_POPUP = "/node_popup";
 
 	static private ModeController getModeController() {
-		Controller.getController();
 		return Controller.getModeController();
 	}
 
-	final private Controller controller;
 	private Component leftToolBar;
 	private JToolBar mainToolBar;
 	private IMouseListener mapMouseListener;
@@ -585,7 +598,6 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	private JPopupMenu nodePopupMenu;
 
 	public UserInputListenerFactory(final ModeController modeController) {
-		controller = Controller.getController();
 		mapsMenuActionListener = new MapsMenuActionListener();
 		menuBuilder = new MenuBuilder(modeController);
 	}
@@ -756,7 +768,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	public void updateMapList() {
 		updateModeMenu();
 		menuBuilder.removeChildElements(FreemindMenuBar.MAP_POPUP_MENU + "/maps");
-		final MapViewManager mapViewManager = controller.getMapViewManager();
+		final MapViewManager mapViewManager = Controller.getController().getMapViewManager();
 		final List mapViewVector = mapViewManager.getMapViewVector();
 		if (mapViewVector == null) {
 			return;
@@ -792,7 +804,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		if (menuStructure != null) {
 			menuBuilder.processMenuCategory(menuStructure);
 		}
-		final ViewController viewController = controller.getViewController();
+		final ViewController viewController = Controller.getController().getViewController();
 		viewController.updateMenus(menuBuilder);
 		updateMapList();
 	}
@@ -801,7 +813,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		menuBuilder.removeChildElements(FreemindMenuBar.MODES_MENU);
 		final ButtonGroup group = new ButtonGroup();
 		final ActionListener modesMenuActionListener = new ModesMenuActionListener();
-		final List keys = new LinkedList(controller.getModes());
+		final List keys = new LinkedList(Controller.getController().getModes());
 		for (final ListIterator i = keys.listIterator(); i.hasNext();) {
 			final String key = (String) i.next();
 			final JRadioButtonMenuItem newItem = new JRadioButtonMenuItem(key);

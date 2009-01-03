@@ -36,18 +36,18 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.IEditHandler;
-import org.freeplane.core.ui.UserInputListenerFactory;
 import org.freeplane.core.url.UrlManager;
+import org.freeplane.core.util.FixedHTMLWriter;
 import org.freeplane.map.link.LinkController;
 import org.freeplane.map.link.NodeLinks;
 import org.freeplane.map.link.mindmapmode.MLinkController;
 import org.freeplane.map.nodestyle.NodeStyleController;
 import org.freeplane.map.nodestyle.mindmapmode.MNodeStyleController;
-import org.freeplane.map.text.FixedHTMLWriter;
 import org.freeplane.map.text.TextController;
 import org.freeplane.modes.mindmapmode.MMapController;
 import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.modes.mindmapmode.url.MFileManager;
+import org.freeplane.modes.ui.UserInputListenerFactory;
 import org.freeplane.view.swing.map.NodeView;
 
 /**

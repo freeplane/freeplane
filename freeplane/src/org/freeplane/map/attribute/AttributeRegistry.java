@@ -20,6 +20,7 @@
 package org.freeplane.map.attribute;
 
 import java.io.IOException;
+import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
 import javax.swing.ComboBoxModel;
@@ -27,17 +28,20 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.EventListenerList;
 
+import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.filter.util.IListModel;
 import org.freeplane.core.filter.util.SortedComboBoxModel;
 import org.freeplane.core.filter.util.SortedMapVector;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.XMLElement;
+import org.freeplane.core.map.MapModel;
+import org.freeplane.core.map.NodeModel;
 import org.freeplane.map.attribute.mindmapnode.IAttributesListener;
 
 /**
  * @author Dimitry Polivaev
  */
-public class AttributeRegistry {
+public class AttributeRegistry implements IExtension{
 	static public final int GLOBAL = -1;
 	private static final int TABLE_FONT_SIZE = 12;
 	private AttributeController attributeController;
@@ -411,6 +415,37 @@ public class AttributeRegistry {
 		if (toBeSaved) {
 			attributeRegistry.setName(AttributeBuilder.XML_NODE_ATTRIBUTE_REGISTRY);
 			writer.addElement(this, attributeRegistry);
+		}
+	}
+	
+	static AttributeRegistry createRegistry(MapModel map){
+		AttributeRegistry registry = getRegistry(map);
+		if(registry == null){
+			final AttributeController attributeController = AttributeController.getController(map.getModeController());
+			registry = new AttributeRegistry(attributeController);
+			map.addExtension(AttributeRegistry.class, registry);
+			registry.registryAttributes(map.getRootNode());
+		}
+		return registry;
+	}
+	public static AttributeRegistry getRegistry(MapModel map) {
+	    AttributeRegistry registry = (AttributeRegistry) map.getExtension(AttributeRegistry.class);
+	    return registry;
+    }
+
+	private void registryAttributes(final NodeModel node) {
+		final NodeAttributeTableModel model = NodeAttributeTableModel.getModel(node);
+		if (model == null) {
+			return;
+		}
+		for (int i = 0; i < model.getRowCount(); i++) {
+			registry(model.getAttribute(i));
+		}
+		final ListIterator<NodeModel> iterator = node.getModeController().getMapController()
+		    .childrenUnfolded(node);
+		while (iterator.hasNext()) {
+			final NodeModel next = iterator.next();
+			registryAttributes(next);
 		}
 	}
 }

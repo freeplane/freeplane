@@ -537,7 +537,7 @@ public class MAttributeController extends AttributeController {
 	}
 
 	private AttributeRegistry getAttributeRegistry() {
-		return Controller.getController().getMap().getRegistry().getAttributes();
+		return AttributeRegistry.getRegistry(Controller.getController().getMap());
 	}
 
 	public AttributePopupMenu getAttributeTablePopupMenu() {

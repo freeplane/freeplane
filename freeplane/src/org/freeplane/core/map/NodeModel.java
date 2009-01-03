@@ -45,7 +45,6 @@ import org.freeplane.core.filter.FilterInfo;
 import org.freeplane.core.filter.IFilter;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.core.util.Tools;
-import org.freeplane.map.note.NoteModel;
 import org.freeplane.view.swing.map.INodeViewVisitor;
 import org.freeplane.view.swing.map.NodeView;
 
@@ -118,7 +117,7 @@ public class NodeModel implements MutableTreeNode {
 
 	public void addIcon(final MindIcon _icon, final int position) {
 		icons.addIcon(_icon, position);
-		getMap().getRegistry().addIcon(_icon);
+		getMap().getIconRegistry().addIcon(_icon);
 	}
 
 	/** Recursive Method for getPath() */
@@ -326,11 +325,6 @@ public class NodeModel implements MutableTreeNode {
 		return views;
 	}
 
-	public final String getXmlNoteText() {
-		final NoteModel extension = (NoteModel) getExtension(NoteModel.class);
-		return extension != null ? extension.getXmlNoteText() : null;
-	}
-
 	public final String getXmlText() {
 		return xmlText;
 	}
@@ -520,7 +514,6 @@ public class NodeModel implements MutableTreeNode {
 	 */
 	public void setMap(final MapModel map) {
 		this.map = map;
-		map.getRegistry().registrySubtree(this);
 	}
 
 	public void setParent(final MutableTreeNode newParent) {
@@ -534,7 +527,7 @@ public class NodeModel implements MutableTreeNode {
 	public void setStateIcon(final String key, final ImageIcon icon) {
 		icons.setStateIcon(key, icon);
 		if (icon != null) {
-			getMap().getRegistry().addIcon(MindIcon.factory(key, icon));
+			getMap().getIconRegistry().addIcon(MindIcon.factory(key, icon));
 		}
 	}
 

@@ -1,4 +1,4 @@
-package org.freeplane.map.text;
+package org.freeplane.core.util;
 
 /*
  * XHTMLWriter -- A simple XHTML document writer (C) 2004 Richard "Shred"
@@ -17,6 +17,7 @@ import javax.swing.text.Document;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.Option;
+
 
 /**
  * Create a new XHTMLWriter which is able to write out a HTMLDocument as XHTML.

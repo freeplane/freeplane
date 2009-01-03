@@ -19,12 +19,9 @@
  */
 package org.freeplane.core.map;
 
-import java.awt.dnd.DropTargetListener;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.io.Writer;
-import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -37,23 +34,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.Action;
-import javax.swing.JPopupMenu;
-
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.ExtensionHashMap;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.ActionController;
 import org.freeplane.core.ui.ActionDescriptor;
-import org.freeplane.core.ui.ControllerPopupMenuListener;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.IMenuContributor;
-import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.IMouseWheelEventHandler;
+import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.core.ui.UserInputListenerFactory;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.core.url.UrlManager;
-import org.freeplane.map.link.LinkController;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
@@ -64,6 +56,10 @@ import org.freeplane.view.swing.map.NodeView;
  * MindMapController as a sample.
  */
 public class ModeController {
+	public void setUserInputListenerFactory(IUserInputListenerFactory userInputListenerFactory) {
+    	this.userInputListenerFactory = userInputListenerFactory;
+    }
+
 	private static class ActionDisplayerOnChange implements INodeChangeListener,
 	        INodeSelectionListener, IActionOnChange {
 		final FreeplaneAction action;
@@ -157,18 +153,16 @@ public class ModeController {
 	 * default controller that does not show a map.
 	 */
 	final private LinkedList<INodeViewLifeCycleListener> nodeViewListeners;
-	final private ControllerPopupMenuListener popupListener = new ControllerPopupMenuListener(this);
 	/**
 	 * Take care! This listener is also used for modelpopups (as for graphical
 	 * links).
 	 */
-	final private UserInputListenerFactory userInputListenerFactory;
+	private IUserInputListenerFactory userInputListenerFactory;
 
 	/**
 	 * Instantiation order: first me and then the model.
 	 */
 	public ModeController() {
-		userInputListenerFactory = new UserInputListenerFactory(this);
 		nodeSelectionListeners = new LinkedList();
 		nodeChangeListeners = new LinkedList();
 		menuContributors = new LinkedList();
@@ -318,18 +312,6 @@ public class ModeController {
 		throw new ClassCastException();
 	}
 
-	public JPopupMenu getPopupForModel(final java.lang.Object obj) {
-		final JPopupMenu popupForModel = LinkController.getController(this).getPopupForModel(obj);
-		if (popupForModel != null) {
-			popupForModel.addPopupMenuListener(popupListener);
-			return popupForModel;
-		}
-		return getUserInputListenerFactory().getMapPopup();
-	}
-
-	public URL getResource(final String name) {
-		return Controller.getResourceController().getResource(name);
-	}
 
 	public NodeModel getSelectedNode() {
 		final NodeView selectedView = getSelectedView();
@@ -373,7 +355,7 @@ public class ModeController {
 		return Controller.getText(textId);
 	}
 
-	public UserInputListenerFactory getUserInputListenerFactory() {
+	public IUserInputListenerFactory getUserInputListenerFactory() {
 		return userInputListenerFactory;
 	}
 
@@ -548,22 +530,6 @@ public class ModeController {
 		this.mapController = mapController;
 	}
 
-	public void setMapMouseMotionListener(final IMouseListener mapMouseMotionListener) {
-		userInputListenerFactory.setMapMouseListener(mapMouseMotionListener);
-	}
-
-	public void setNodeDropTargetListener(final DropTargetListener nodeDropTargetListener) {
-		userInputListenerFactory.setNodeDropTargetListener(nodeDropTargetListener);
-	}
-
-	public void setNodeKeyListener(final KeyListener nodeKeyListener) {
-		userInputListenerFactory.setNodeKeyListener(nodeKeyListener);
-	}
-
-	public void setNodeMotionListener(final IMouseListener nodeMotionListener) {
-		userInputListenerFactory.setNodeMotionListener(nodeMotionListener);
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * @see freemind.modes.ModeController#setVisible(boolean)
@@ -592,15 +558,9 @@ public class ModeController {
 		UrlManager.getController(this).startup();
 	}
 
-	protected void updateMenus(final MenuBuilder builder) {
-	}
-
-	protected void updateMenus(final String resource) {
-		final UserInputListenerFactory userInputListenerFactory = getUserInputListenerFactory();
-		userInputListenerFactory.setMenuStructure(resource);
-		userInputListenerFactory.updateMenus(this);
+	protected void updateMenus() {
+		final IUserInputListenerFactory userInputListenerFactory = getUserInputListenerFactory();
 		final MenuBuilder menuBuilder = userInputListenerFactory.getMenuBuilder();
-		updateMenus(menuBuilder);
 		final Iterator<IMenuContributor> iterator = menuContributors.iterator();
 		while (iterator.hasNext()) {
 			iterator.next().updateMenus(menuBuilder);

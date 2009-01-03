@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.map.attribute.filter;
+package org.freeplane.map.text;
 
 import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
@@ -28,8 +28,8 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.condition.ConditionFactory;
 import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.filter.condition.IElementaryConditionController;
-import org.freeplane.core.filter.util.ExtendedComboBoxModel;
 import org.freeplane.core.filter.util.IListModel;
+import org.freeplane.core.filter.util.SortedMapListModel;
 import org.freeplane.core.io.XMLElement;
 import org.freeplane.core.resources.NamedObject;
 
@@ -37,70 +37,84 @@ import org.freeplane.core.resources.NamedObject;
  * @author Dimitry Polivaev
  * 21.12.2008
  */
-public class AttributeConditionController implements IElementaryConditionController {
-	private final ExtendedComboBoxModel values = new ExtendedComboBoxModel();
+class NodeConditionController implements IElementaryConditionController {
+	static final String FILTER_NODE = "filter_node";
+	private final ComboBoxEditor editor = new BasicComboBoxEditor();
+	private final ComboBoxModel values = new DefaultComboBoxModel();
 
 	public boolean canEditValues(final Object selectedItem, final NamedObject simpleCond) {
 		return true;
 	}
 
 	public boolean canHandle(final Object selectedItem) {
-		return selectedItem.getClass().equals(String.class);
+		if (!(selectedItem instanceof NamedObject)) {
+			return false;
+		}
+		final NamedObject namedObject = (NamedObject) selectedItem;
+		return namedObject.objectEquals(NodeConditionController.FILTER_NODE);
 	}
 
 	public boolean canSelectValues(final Object selectedItem, final NamedObject simpleCond) {
-		return !simpleCond.objectEquals(ConditionFactory.FILTER_EXIST)
-		        && !simpleCond.objectEquals(ConditionFactory.FILTER_DOES_NOT_EXIST);
+		return true;
 	}
 
-	public ICondition createCondition(final Object selectedItem, final NamedObject simpleCondition,
-	                                  final Object v, final boolean ignoreCase) {
-		final String attribute = (String) selectedItem;
-		final String value = (String) v;
-		if (simpleCondition.objectEquals(ConditionFactory.FILTER_EXIST)) {
-			return new AttributeExistsCondition(attribute);
-		}
-		if (simpleCondition.objectEquals(ConditionFactory.FILTER_DOES_NOT_EXIST)) {
-			return new AttributeNotExistsCondition(attribute);
-		}
+	public ICondition createCondition(final Object selectedItem, final NamedObject simpleCond,
+	                                  final Object value, final boolean ignoreCase) {
+		return createNodeCondition(simpleCond, (String) value, ignoreCase);
+	}
+
+	protected ICondition createNodeCondition(final NamedObject simpleCondition, final String value,
+	                                         final boolean ignoreCase) {
 		if (ignoreCase) {
+			if (simpleCondition.objectEquals(ConditionFactory.FILTER_CONTAINS)) {
+				if (value.equals("")) {
+					return null;
+				}
+				return new IgnoreCaseNodeContainsCondition(value);
+			}
 			if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
-				return new AttributeCompareCondition(attribute, value, true, 0, true);
+				return new NodeCompareCondition(value, true, 0, true);
 			}
 			if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_NOT_EQUAL_TO)) {
-				return new AttributeCompareCondition(attribute, value, true, 0, false);
+				return new NodeCompareCondition(value, true, 0, false);
 			}
 			if (simpleCondition.objectEquals(ConditionFactory.FILTER_GT)) {
-				return new AttributeCompareCondition(attribute, value, true, 1, true);
+				return new NodeCompareCondition(value, true, 1, true);
 			}
 			if (simpleCondition.objectEquals(ConditionFactory.FILTER_GE)) {
-				return new AttributeCompareCondition(attribute, value, true, -1, false);
+				return new NodeCompareCondition(value, true, -1, false);
 			}
 			if (simpleCondition.objectEquals(ConditionFactory.FILTER_LT)) {
-				return new AttributeCompareCondition(attribute, value, true, -1, true);
+				return new NodeCompareCondition(value, true, -1, true);
 			}
 			if (simpleCondition.objectEquals(ConditionFactory.FILTER_LE)) {
-				return new AttributeCompareCondition(attribute, value, true, 1, false);
+				return new NodeCompareCondition(value, true, 1, false);
 			}
 		}
 		else {
+			if (simpleCondition.objectEquals(ConditionFactory.FILTER_CONTAINS)) {
+				if (value.equals("")) {
+					return null;
+				}
+				return new NodeContainsCondition(value);
+			}
 			if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
-				return new AttributeCompareCondition(attribute, value, false, 0, true);
+				return new NodeCompareCondition(value, false, 0, true);
 			}
 			if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_NOT_EQUAL_TO)) {
-				return new AttributeCompareCondition(attribute, value, false, 0, false);
+				return new NodeCompareCondition(value, false, 0, false);
 			}
 			if (simpleCondition.objectEquals(ConditionFactory.FILTER_GT)) {
-				return new AttributeCompareCondition(attribute, value, false, 1, true);
+				return new NodeCompareCondition(value, false, 1, true);
 			}
 			if (simpleCondition.objectEquals(ConditionFactory.FILTER_GE)) {
-				return new AttributeCompareCondition(attribute, value, false, -1, false);
+				return new NodeCompareCondition(value, false, -1, false);
 			}
 			if (simpleCondition.objectEquals(ConditionFactory.FILTER_LT)) {
-				return new AttributeCompareCondition(attribute, value, false, -1, true);
+				return new NodeCompareCondition(value, false, -1, true);
 			}
 			if (simpleCondition.objectEquals(ConditionFactory.FILTER_LE)) {
-				return new AttributeCompareCondition(attribute, value, false, 1, false);
+				return new NodeCompareCondition(value, false, 1, false);
 			}
 		}
 		return null;
@@ -109,9 +123,7 @@ public class AttributeConditionController implements IElementaryConditionControl
 	public ComboBoxModel getConditionsForProperty(final Object selectedItem) {
 		return new DefaultComboBoxModel(new NamedObject[] {
 		        Controller.getResourceController().createTranslatedString(
-		            ConditionFactory.FILTER_EXIST),
-		        Controller.getResourceController().createTranslatedString(
-		            ConditionFactory.FILTER_DOES_NOT_EXIST),
+		            ConditionFactory.FILTER_CONTAINS),
 		        Controller.getResourceController().createTranslatedString(
 		            ConditionFactory.FILTER_IS_EQUAL_TO),
 		        Controller.getResourceController().createTranslatedString(
@@ -119,21 +131,21 @@ public class AttributeConditionController implements IElementaryConditionControl
 		        NamedObject.literal(ConditionFactory.FILTER_GT),
 		        NamedObject.literal(ConditionFactory.FILTER_GE),
 		        NamedObject.literal(ConditionFactory.FILTER_LE),
-		        NamedObject.literal(ConditionFactory.FILTER_LT) });
+		        NamedObject.literal(ConditionFactory.FILTER_LT), });
 	}
 
 	public IListModel getFilteredProperties() {
-		return Controller.getController().getModel().getRegistry().getAttributes()
-		    .getListBoxModel();
+		final SortedMapListModel list = new SortedMapListModel();
+		list.add(Controller.getResourceController().createTranslatedString(
+		    NodeConditionController.FILTER_NODE));
+		return list;
 	}
 
 	public ComboBoxEditor getValueEditor() {
-		return new BasicComboBoxEditor();
+		return editor;
 	}
 
 	public ComboBoxModel getValuesForProperty(final Object selectedItem) {
-		values.setExtensionList(Controller.getController().getModel().getRegistry().getAttributes()
-		    .getElement(selectedItem.toString()).getValues());
 		return values;
 	}
 
@@ -142,14 +154,14 @@ public class AttributeConditionController implements IElementaryConditionControl
 	}
 
 	public ICondition loadCondition(final XMLElement element) {
-		if (element.getName().equalsIgnoreCase(AttributeCompareCondition.NAME)) {
-			return AttributeCompareCondition.load(element);
+		if (element.getName().equalsIgnoreCase(NodeContainsCondition.NAME)) {
+			return NodeContainsCondition.load(element);
 		}
-		if (element.getName().equalsIgnoreCase(AttributeExistsCondition.NAME)) {
-			return AttributeExistsCondition.load(element);
+		if (element.getName().equalsIgnoreCase(IgnoreCaseNodeContainsCondition.NAME)) {
+			return IgnoreCaseNodeContainsCondition.load(element);
 		}
-		if (element.getName().equalsIgnoreCase(AttributeNotExistsCondition.NAME)) {
-			return AttributeNotExistsCondition.load(element);
+		if (element.getName().equalsIgnoreCase(NodeCompareCondition.NAME)) {
+			return NodeCompareCondition.load(element);
 		}
 		return null;
 	}

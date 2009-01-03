@@ -197,7 +197,7 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 		topInfo.setSelected(TreeNodeInfo.NOT_SELECTED);
 		final MapViewManager mapViewManager = Controller.getController().getMapViewManager();
 		final MapModel currentMap = mapViewManager.getMapView().getModel();
-		currentAttributes = currentMap.getRegistry().getAttributes();
+		currentAttributes = AttributeRegistry.getRegistry(currentMap);
 		final Iterator iterator = mapViewManager.getMapViews().entrySet().iterator();
 		while (iterator.hasNext()) {
 			final Map.Entry entry = (Map.Entry) iterator.next();
@@ -209,7 +209,7 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 			}
 			final TreeNodeInfo treeNodeInfo = new TreeNodeInfo(nextmapName);
 			final DefaultMutableTreeNode mapInfo = new DefaultMutableTreeNode(treeNodeInfo);
-			createAttributeSubTrees(mapInfo, nextMap.getRegistry().getAttributes());
+			createAttributeSubTrees(mapInfo, AttributeRegistry.getRegistry(nextMap));
 			if (mapInfo.getChildCount() != 0) {
 				top.add(mapInfo);
 			}

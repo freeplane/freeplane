@@ -30,9 +30,6 @@ import javax.swing.JLabel;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.io.XMLElement;
 import org.freeplane.core.resources.NamedObject;
-import org.freeplane.map.attribute.filter.AttributeConditionController;
-import org.freeplane.map.icon.filter.IconConditionController;
-import org.freeplane.map.text.filter.NodeConditionController;
 
 /**
  * @author Dimitry Polivaev
@@ -74,9 +71,6 @@ public class ConditionFactory {
 	 */
 	public ConditionFactory() {
 		conditionControllers = new TreeMap<Integer, IElementaryConditionController>();
-		addConditionController(0, new NodeConditionController());
-		addConditionController(1, new IconConditionController());
-		addConditionController(2, new AttributeConditionController());
 	}
 
 	public void addConditionController(final int position,

@@ -19,19 +19,28 @@
  */
 package org.freeplane.map.text;
 
+import java.io.IOException;
+
 import org.freeplane.core.io.IAttributeHandler;
+import org.freeplane.core.io.IAttributeWriter;
 import org.freeplane.core.io.IElementContentHandler;
+import org.freeplane.core.io.IElementWriter;
+import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.IXMLElement;
 import org.freeplane.core.io.ReadManager;
+import org.freeplane.core.io.WriteManager;
+import org.freeplane.core.io.XMLElement;
 import org.freeplane.core.map.NodeBuilder;
 import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.util.HtmlTools;
 
-public class NodeTextBuilder implements IElementContentHandler {
+public class NodeTextBuilder implements IElementContentHandler, IElementWriter, IAttributeWriter {
 	public static final String XML_NODE_TEXT = "TEXT";
 	public static final String XML_NODE_XHTML_CONTENT_TAG = "richcontent";
 	public static final String XML_NODE_XHTML_TYPE_NODE = "NODE";
 	public static final String XML_NODE_XHTML_TYPE_NOTE = "NOTE";
 	public static final String XML_NODE_XHTML_TYPE_TAG = "TYPE";
+	private boolean isTextNode;
 
 	public Object createElement(final Object parent, final String tag, final IXMLElement attributes) {
 		if (attributes == null) {
@@ -64,9 +73,33 @@ public class NodeTextBuilder implements IElementContentHandler {
 	}
 
 	/**
+	 * @param writeManager 
 	 */
-	public void registerBy(final ReadManager reader) {
+	public void registerBy(final ReadManager reader, WriteManager writeManager) {
 		registerAttributeHandlers(reader);
 		reader.addElementHandler("richcontent", this);
+		writeManager.addElementWriter(NodeBuilder.XML_NODE, this);
+		writeManager.addAttributeWriter(NodeBuilder.XML_NODE, this);
 	}
+
+	public void writeContent(ITreeWriter writer, Object element, String tag) throws IOException {
+		if (!isTextNode) {
+			final XMLElement htmlElement = new XMLElement();
+			htmlElement.setName(NodeTextBuilder.XML_NODE_XHTML_CONTENT_TAG);
+			htmlElement.setAttribute(NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG,
+			    NodeTextBuilder.XML_NODE_XHTML_TYPE_NODE);
+			final NodeModel node = (NodeModel) element;
+			final String content = node.getXmlText().replace('\0', ' ');
+			writer.addElement(content, htmlElement);
+		}
+    }
+
+	public void writeAttributes(ITreeWriter writer, Object userObject, String tag) {
+		NodeModel node = (NodeModel) userObject;
+		final String text = node.toString().replace('\0', ' ');
+		isTextNode = !HtmlTools.isHtmlNode(text);
+		if (isTextNode) {
+			writer.addAttribute(NodeTextBuilder.XML_NODE_TEXT, text);
+		}
+    }
 }

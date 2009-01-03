@@ -45,7 +45,6 @@ import javax.swing.border.EmptyBorder;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.util.IListModel;
 import org.freeplane.core.frame.IMapViewChangeListener;
-import org.freeplane.core.map.MapRegistry;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.map.attribute.AttributeRegistry;
@@ -84,7 +83,7 @@ public class AttributeManagerDialog extends JDialog implements IMapViewChangeLis
 		 */
 		public void actionPerformed(final ActionEvent e) {
 			resetChanges();
-			setVisible(false);
+			AttributeManagerDialog.this.setVisible(false);
 		}
 	}
 
@@ -160,7 +159,7 @@ public class AttributeManagerDialog extends JDialog implements IMapViewChangeLis
 		 */
 		public void actionPerformed(final ActionEvent e) {
 			applyChanges();
-			setVisible(false);
+			AttributeManagerDialog.this.setVisible(false);
 		}
 	}
 
@@ -169,7 +168,6 @@ public class AttributeManagerDialog extends JDialog implements IMapViewChangeLis
 	private static final String[] fontSizes = { "6", "8", "10", "12", "14", "16", "18", "20", "24" };
 	private ImportAttributesDialog importDialog = null;
 	private AttributeRegistry model;
-	private MapRegistry registry;
 	final private JComboBox size;
 	final private JTable view;
 
@@ -177,8 +175,7 @@ public class AttributeManagerDialog extends JDialog implements IMapViewChangeLis
 		super(Controller.getController().getViewController().getJFrame(), Controller
 		    .getText("attributes_dialog_title"), true);
 		view = new AttributeRegistryTable(new EditListAction());
-		registry = Controller.getController().getMap().getRegistry();
-		model = registry.getAttributes();
+		model = AttributeRegistry.getRegistry(Controller.getController().getMap());
 		view.setModel(model.getTableModel());
 		view.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		view.getTableHeader().setReorderingAllowed(false);
@@ -227,9 +224,8 @@ public class AttributeManagerDialog extends JDialog implements IMapViewChangeLis
 
 	public void afterMapViewChange(final MapView oldMapView, final MapView newMapView) {
 		if (newMapView != null) {
-			registry = newMapView.getModel().getRegistry();
-			model = registry.getAttributes();
-			view.setModel(registry.getAttributes().getTableModel());
+			model = AttributeRegistry.getRegistry(newMapView.getModel());
+			view.setModel(model.getTableModel());
 		}
 	}
 

@@ -24,7 +24,7 @@ import javax.swing.JPopupMenu;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.IPropertyGetter;
 import org.freeplane.core.map.NodeModel;
-import org.freeplane.core.ui.FreeMindToolBar;
+import org.freeplane.core.ui.components.FreeMindToolBar;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.map.clipboard.ClipboardController;
 import org.freeplane.map.edge.EdgeController;
@@ -33,6 +33,7 @@ import org.freeplane.map.link.LinkController;
 import org.freeplane.map.nodelocation.LocationController;
 import org.freeplane.map.nodestyle.NodeStyleController;
 import org.freeplane.map.text.TextController;
+import org.freeplane.modes.ui.UserInputListenerFactory;
 
 /**
  * @author Dimitry Polivaev 24.11.2008
@@ -45,6 +46,8 @@ public class FModeControllerFactory {
 			return modeController;
 		}
 		modeController = new FModeController();
+		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController);
+		modeController.setUserInputListenerFactory(userInputListenerFactory);
 		Controller.getController().addModeController(modeController);
 		modeController.setMapController(new FMapController(modeController));
 		UrlManager.install(modeController, new UrlManager(modeController));
@@ -63,8 +66,8 @@ public class FModeControllerFactory {
 		    });
 		modeController.addAction("center", new CenterAction());
 		modeController.addAction("openPath", new OpenPathAction());
-		modeController.getUserInputListenerFactory().setNodePopupMenu(new JPopupMenu());
-		modeController.getUserInputListenerFactory().setMainToolBar(new FreeMindToolBar());
+		userInputListenerFactory.setNodePopupMenu(new JPopupMenu());
+		userInputListenerFactory.setMainToolBar(new FreeMindToolBar());
 		modeController.updateMenus("org/freeplane/modes/filemode/menu.xml");
 		return modeController;
 	}
