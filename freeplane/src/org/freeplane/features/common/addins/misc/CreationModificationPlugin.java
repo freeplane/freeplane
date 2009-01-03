@@ -23,8 +23,8 @@ package org.freeplane.features.common.addins.misc;
 import java.text.MessageFormat;
 import java.util.Iterator;
 
-import org.freeplane.addins.NodeHookDescriptor;
-import org.freeplane.addins.PersistentNodeHook;
+import org.freeplane.core.addins.NodeHookDescriptor;
+import org.freeplane.core.addins.PersistentNodeHook;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.map.INodeChangeListener;

@@ -35,8 +35,8 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.freeplane.addins.NodeHookDescriptor;
-import org.freeplane.addins.PersistentNodeHook;
+import org.freeplane.core.addins.NodeHookDescriptor;
+import org.freeplane.core.addins.PersistentNodeHook;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IReadCompletionListener;

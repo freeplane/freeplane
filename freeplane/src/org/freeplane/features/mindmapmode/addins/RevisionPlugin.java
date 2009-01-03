@@ -21,8 +21,8 @@ package org.freeplane.features.mindmapmode.addins;
 
 import java.awt.Color;
 
-import org.freeplane.addins.NodeHookDescriptor;
-import org.freeplane.addins.PersistentNodeHook;
+import org.freeplane.core.addins.NodeHookDescriptor;
+import org.freeplane.core.addins.PersistentNodeHook;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.map.INodeChangeListener;
 import org.freeplane.core.map.ModeController;

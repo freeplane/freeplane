@@ -21,8 +21,8 @@ package plugins.latex;
 
 import java.util.Iterator;
 
-import org.freeplane.addins.NodeHookDescriptor;
-import org.freeplane.addins.PersistentNodeHook;
+import org.freeplane.core.addins.NodeHookDescriptor;
+import org.freeplane.core.addins.PersistentNodeHook;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IXMLElement;
 import org.freeplane.core.map.INodeViewLifeCycleListener;
