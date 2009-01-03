@@ -28,16 +28,16 @@ import javax.swing.KeyStroke;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.IIconInformation;
 import org.freeplane.core.map.MindIcon;
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.map.icon.IconController;
-import org.freeplane.modes.mindmapmode.MModeController;
 
 class IconAction extends MultipleNodeAction implements IIconInformation {
 	final private MindIcon icon;
 
-	public IconAction(final MModeController controller, final MindIcon _icon) {
+	public IconAction(final ModeController controller, final MindIcon _icon) {
 		super("icon_" + _icon.getName(), _icon.getIcon());
 		putValue(Action.SHORT_DESCRIPTION, _icon.getDescription());
 		icon = _icon;

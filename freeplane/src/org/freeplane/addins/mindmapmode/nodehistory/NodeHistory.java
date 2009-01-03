@@ -25,9 +25,9 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.frame.MapViewManager;
 import org.freeplane.core.map.INodeSelectionListener;
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
@@ -36,11 +36,11 @@ import org.freeplane.view.swing.map.NodeView;
  */
 public class NodeHistory implements IExtension, INodeSelectionListener {
 	private NodeHolder currentNodeHolder;
-	final private MModeController modeController;
+	final private ModeController modeController;
 	private ListIterator<NodeHolder> nodeIterator;
 	private final LinkedList<NodeHolder> nodes;
 
-	public NodeHistory(final MModeController modeController) {
+	public NodeHistory(final ModeController modeController) {
 		this.modeController = modeController;
 		nodes = new LinkedList<NodeHolder>();
 		nodeIterator = nodes.listIterator();

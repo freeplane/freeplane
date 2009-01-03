@@ -30,9 +30,9 @@ import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.undo.UndoHandler;
 import org.freeplane.core.util.Tools;
-import org.freeplane.modes.mindmapmode.url.DoAutomaticSave;
+import org.freeplane.map.url.mindmapmode.DoAutomaticSave;
 
-public class MindMapMapModel extends MapModel {
+public class MMapModel extends MapModel {
 	private static int unnamedMapsNumber = 1;
 	private LockManager lockManager;
 	private Timer timerForAutomaticSaving;
@@ -43,7 +43,7 @@ public class MindMapMapModel extends MapModel {
 	 * The current version and all other version that don't need XML update for
 	 * sure.
 	 */
-	public MindMapMapModel(final NodeModel root, final ModeController modeController) {
+	public MMapModel(final NodeModel root, final ModeController modeController) {
 		super(modeController, root);
 		setReadOnly(false);
 		this.setLockManager(Controller.getResourceController().getBoolProperty(
@@ -86,7 +86,7 @@ public class MindMapMapModel extends MapModel {
 			return getFile().getName();
 		}
 		if (titleNumber == 0) {
-			titleNumber = MindMapMapModel.unnamedMapsNumber++;
+			titleNumber = MMapModel.unnamedMapsNumber++;
 		}
 		return Controller.getText("mindmap") + titleNumber;
 	}

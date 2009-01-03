@@ -37,13 +37,13 @@ import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.resources.WindowConfigurationStorage;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.map.pattern.mindmapnode.Pattern;
 import org.freeplane.map.pattern.mindmapnode.StylePatternPanel;
 import org.freeplane.map.pattern.mindmapnode.StylePatternPanel.StylePatternPanelType;
-import org.freeplane.modes.mindmapmode.MModeController;
 
 /** */
 class ChooseFormatPopupDialog extends JDialog implements KeyListener {
@@ -53,7 +53,7 @@ class ChooseFormatPopupDialog extends JDialog implements KeyListener {
 	private JButton jCancelButton;
 	private javax.swing.JPanel jContentPane = null;
 	private JButton jOKButton;
-	final private MModeController mController;
+	final private ModeController mController;
 	private StylePatternPanel mStylePatternFrame;
 	private int result = ChooseFormatPopupDialog.CANCEL;
 
@@ -61,7 +61,7 @@ class ChooseFormatPopupDialog extends JDialog implements KeyListener {
 	 * This constructor is used, if you need the user to enter a pattern
 	 * generally.
 	 */
-	public ChooseFormatPopupDialog(final JFrame caller, final MModeController controller,
+	public ChooseFormatPopupDialog(final JFrame caller, final ModeController controller,
 	                               final String dialogTitle, final Pattern pattern) {
 		super(caller);
 		mController = controller;

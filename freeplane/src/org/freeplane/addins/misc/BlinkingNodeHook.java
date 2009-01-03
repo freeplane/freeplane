@@ -32,9 +32,9 @@ import org.freeplane.addins.PersistentNodeHook;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IXMLElement;
 import org.freeplane.core.map.INodeViewVisitor;
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.ActionDescriptor;
-import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.NodeView;
 
@@ -104,7 +104,7 @@ public class BlinkingNodeHook extends PersistentNodeHook {
 
 	/**
 	 */
-	public BlinkingNodeHook(final MModeController modeController) {
+	public BlinkingNodeHook(final ModeController modeController) {
 		super(modeController);
 	}
 

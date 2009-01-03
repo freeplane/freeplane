@@ -30,7 +30,6 @@ import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.VisibleAction;
-import org.freeplane.modes.mindmapmode.MModeController;
 
 /**
  * @author foltin
@@ -61,7 +60,7 @@ public class ReminderHook extends PersistentNodeHook {
 
 		public NodeListAction() {
 			super(NodeListAction.class.getAnnotation(ActionDescriptor.class));
-			timeList = new TimeList((MModeController) getModeController(), true);
+			timeList = new TimeList(getModeController(), true);
 		}
 
 		public void actionPerformed(final ActionEvent e) {
@@ -77,7 +76,7 @@ public class ReminderHook extends PersistentNodeHook {
 
 		public TimeListAction() {
 			super(TimeListAction.class.getAnnotation(ActionDescriptor.class));
-			timeList = new TimeList((MModeController) getModeController(), false);
+			timeList = new TimeList(getModeController(), false);
 		}
 
 		public void actionPerformed(final ActionEvent e) {
@@ -92,7 +91,7 @@ public class ReminderHook extends PersistentNodeHook {
 	static private class TimeManagementAction extends FreeplaneAction {
 		private final TimeManagement timeManagement;
 
-		public TimeManagementAction(final MModeController modeController,
+		public TimeManagementAction(final ModeController modeController,
 		                            final ReminderHook reminderHook) {
 			super(TimeManagementAction.class.getAnnotation(ActionDescriptor.class));
 			timeManagement = new TimeManagement(modeController, reminderHook);
@@ -108,9 +107,9 @@ public class ReminderHook extends PersistentNodeHook {
 	 */
 	public ReminderHook(final ModeController modeController) {
 		super(modeController);
-		if (modeController instanceof MModeController) {
-			final FreeplaneAction timeManagementAction = new TimeManagementAction(
-			    (MModeController) modeController, this);
+		if (modeController instanceof ModeController) {
+			final FreeplaneAction timeManagementAction = new TimeManagementAction(modeController,
+			    this);
 			registerAction(timeManagementAction);
 			final FreeplaneAction timeListAction = new TimeListAction();
 			registerAction(timeListAction);
@@ -128,7 +127,7 @@ public class ReminderHook extends PersistentNodeHook {
 
 	@Override
 	protected FreeplaneAction createAction() {
-		return getModeController() instanceof MModeController ? new HideableAction() : null;
+		return getModeController() instanceof ModeController ? new HideableAction() : null;
 	}
 
 	@Override

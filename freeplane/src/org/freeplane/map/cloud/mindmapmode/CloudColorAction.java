@@ -78,8 +78,7 @@ class CloudColorAction extends MultipleNodeAction implements PopupMenuListener {
 	 *
 	 */
 	private boolean isCloudEnabled() {
-		final NodeModel selected = getModeController().getMapController()
-		    .getSelectedNode();
+		final NodeModel selected = getModeController().getMapController().getSelectedNode();
 		return selected != null && CloudModel.getModel(selected) != null;
 	}
 

@@ -31,7 +31,6 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.map.MindIcon;
 import org.freeplane.core.map.NodeModel;
-import org.freeplane.modes.mindmapmode.MMapController;
 
 /**
  * @author Dimitry Polivaev 30.11.2008
@@ -170,7 +169,6 @@ class ReminderExtension implements IExtension {
 	}
 
 	protected void setToolTip(final NodeModel node, final String value) {
-		((MMapController) node.getModeController().getMapController()).setToolTip(node, getClass()
-		    .getName(), value);
+		(node.getModeController().getMapController()).setToolTip(node, getClass().getName(), value);
 	}
 }

@@ -21,15 +21,15 @@ package org.freeplane.map.nodestyle.mindmapmode;
 
 import java.awt.event.ActionEvent;
 
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.map.nodestyle.NodeStyleController;
-import org.freeplane.modes.mindmapmode.MModeController;
 
 class NodeShapeAction extends MultipleNodeAction {
 	final private String actionShape;
 
-	public NodeShapeAction(final MModeController controller, final String shape) {
+	public NodeShapeAction(final ModeController controller, final String shape) {
 		super(shape);
 		actionShape = shape;
 	}

@@ -24,12 +24,12 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.util.ListIterator;
 
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.map.nodestyle.NodeStyleController;
 import org.freeplane.map.nodestyle.NodeStyleModel;
-import org.freeplane.modes.mindmapmode.MModeController;
 
 /**
  * @author Dimitry Polivaev
@@ -38,7 +38,7 @@ public class MNodeStyleController extends NodeStyleController {
 	FontFamilyAction fontFamilyAction;
 	FontSizeAction fontSizeAction;
 
-	public MNodeStyleController(final MModeController modeController) {
+	public MNodeStyleController(final ModeController modeController) {
 		super(modeController);
 		modeController.addAction("bold", new BoldAction());
 		modeController.addAction("italic", new ItalicAction());
@@ -97,7 +97,7 @@ public class MNodeStyleController extends NodeStyleController {
 				return font;
 			}
 		}
-		final MModeController modeController = (MModeController) node.getModeController();
+		final ModeController modeController = node.getModeController();
 		final IUndoableActor actor = new IUndoableActor() {
 			public void act() {
 				node.addExtension(new NodeStyleModel());
@@ -126,7 +126,7 @@ public class MNodeStyleController extends NodeStyleController {
 	}
 
 	public void setBackgroundColor(final NodeModel node, final Color color) {
-		final MModeController modeController = (MModeController) node.getModeController();
+		final ModeController modeController = node.getModeController();
 		final Color oldColor = NodeStyleModel.getBackgroundColor(node);
 		final IUndoableActor actor = new IUndoableActor() {
 			public void act() {
@@ -154,7 +154,7 @@ public class MNodeStyleController extends NodeStyleController {
 	}
 
 	public void setColor(final NodeModel node, final Color color) {
-		final MModeController modeController = (MModeController) node.getModeController();
+		final ModeController modeController = node.getModeController();
 		final Color oldColor = NodeStyleModel.getColor(node);
 		if (oldColor == color || oldColor != null && oldColor.equals(color)) {
 			return;
@@ -186,7 +186,7 @@ public class MNodeStyleController extends NodeStyleController {
 			return;
 		}
 		createOwnFont(node);
-		final MModeController modeController = (MModeController) node.getModeController();
+		final ModeController modeController = node.getModeController();
 		final IUndoableActor actor = new IUndoableActor() {
 			public void act() {
 				final NodeStyleModel font = NodeStyleModel.getModel(node);
@@ -229,7 +229,7 @@ public class MNodeStyleController extends NodeStyleController {
 			return;
 		}
 		createOwnFont(node);
-		final MModeController modeController = (MModeController) node.getModeController();
+		final ModeController modeController = node.getModeController();
 		final IUndoableActor actor = new IUndoableActor() {
 			public void act() {
 				final NodeStyleModel font = NodeStyleModel.getModel(node);
@@ -258,7 +258,7 @@ public class MNodeStyleController extends NodeStyleController {
 	}
 
 	public void setShape(final NodeModel node, final String shape) {
-		final MModeController modeController = (MModeController) node.getModeController();
+		final ModeController modeController = node.getModeController();
 		final String oldShape = NodeStyleModel.getShape(node);
 		final IUndoableActor actor = new IUndoableActor() {
 			public void act() {
@@ -294,7 +294,7 @@ public class MNodeStyleController extends NodeStyleController {
 
 	public void toggleBold(final NodeModel node) {
 		createOwnFont(node);
-		final MModeController modeController = (MModeController) node.getModeController();
+		final ModeController modeController = node.getModeController();
 		final IUndoableActor actor = new IUndoableActor() {
 			public void act() {
 				toggleBold(node);
@@ -320,7 +320,7 @@ public class MNodeStyleController extends NodeStyleController {
 
 	public void toggleItalic(final NodeModel node) {
 		createOwnFont(node);
-		final MModeController modeController = (MModeController) node.getModeController();
+		final ModeController modeController = node.getModeController();
 		final IUndoableActor actor = new IUndoableActor() {
 			public void act() {
 				toggleItalic(node);

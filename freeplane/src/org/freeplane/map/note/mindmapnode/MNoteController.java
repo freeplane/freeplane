@@ -35,12 +35,12 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.map.note.NoteController;
 import org.freeplane.map.note.NoteModel;
-import org.freeplane.modes.mindmapmode.MModeController;
 
 import com.lightdev.app.shtm.SHTMLPanel;
 import com.lightdev.app.shtm.TextResources;
@@ -111,7 +111,7 @@ public class MNoteController extends NoteController {
 	/**
 	 * @param modeController
 	 */
-	public MNoteController(final MModeController modeController) {
+	public MNoteController(final ModeController modeController) {
 		super(modeController);
 		modeController.addAction("selectNoteAction",
 		    new SelectNoteAction(this, getModeController()));
@@ -221,7 +221,7 @@ public class MNoteController extends NoteController {
 				setText(oldText);
 			}
 		};
-		((MModeController) getModeController()).execute(actor);
+		(getModeController()).execute(actor);
 	}
 
 	void setPositionToRecover(final Integer sPositionToRecover) {
@@ -252,7 +252,7 @@ public class MNoteController extends NoteController {
 	}
 
 	public void startupController() {
-		final MModeController modeController = (MModeController) getModeController();
+		final ModeController modeController = getModeController();
 		noteManager = new NoteManager(this);
 		noteViewerComponent = getHtmlEditorPanel();
 		final Action jumpToMapAction = new JumpToMapAction();

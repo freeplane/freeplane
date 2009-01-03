@@ -97,7 +97,7 @@ class JoinNodesAction extends FreeplaneAction {
 			isHtml = isHtml || isHtmlNode;
 		}
 		mapView.selectAsTheOnlyOneSelected(mapView.getNodeView(selectedNode));
-		((MTextController) TextController.getController(getModeController()))
-		    .setNodeText(selectedNode, newContent);
+		((MTextController) TextController.getController(getModeController())).setNodeText(
+		    selectedNode, newContent);
 	}
 }

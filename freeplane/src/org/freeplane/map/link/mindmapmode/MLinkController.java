@@ -29,13 +29,13 @@ import javax.swing.JRadioButtonMenuItem;
 
 import org.freeplane.core.map.IMapChangeListener;
 import org.freeplane.core.map.MapModel;
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.map.link.ArrowLinkModel;
 import org.freeplane.map.link.LinkController;
 import org.freeplane.map.link.LinkModel;
 import org.freeplane.map.link.MapLinks;
-import org.freeplane.modes.mindmapmode.MMapController;
 import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.modes.ui.UserInputListenerFactory;
 
@@ -85,7 +85,7 @@ public class MLinkController extends LinkController {
 					links.set(id, linkModels);
 				}
 			};
-			((MModeController) model.getModeController()).execute(actor);
+			(model.getModeController()).execute(actor);
 		}
 	}
 
@@ -99,8 +99,7 @@ public class MLinkController extends LinkController {
 		modeController
 		    .setMapMouseMotionListener(new UserInputListenerFactory.DefaultMapMouseListener(
 		        new MindMapMouseMotionListener(modeController)));
-		((MMapController) modeController.getMapController())
-		    .addMapChangeListener(new NodeDeletionListener());
+		(modeController.getMapController()).addMapChangeListener(new NodeDeletionListener());
 	}
 
 	public void addLink(final NodeModel source, final NodeModel target) {
@@ -118,7 +117,7 @@ public class MLinkController extends LinkController {
 	/**
 	 *
 	 */
-	private void createActions(final MModeController modeController) {
+	private void createActions(final ModeController modeController) {
 		setLinkByFileChooser = new SetLinkByFileChooserAction();
 		modeController.addAction("setLinkByFileChooser", setLinkByFileChooser);
 		final AddArrowLinkAction addArrowLinkAction = new AddArrowLinkAction();
@@ -170,10 +169,6 @@ public class MLinkController extends LinkController {
 		super.createArrowLinkPopup(link, arrowLinkPopup);
 	}
 
-	private MModeController getMModeController() {
-		return ((MModeController) getModeController());
-	}
-
 	public void setArrowLinkColor(final ArrowLinkModel arrowLink, final Color color) {
 		colorArrowLinkAction.setArrowLinkColor(arrowLink, color);
 	}
@@ -200,7 +195,7 @@ public class MLinkController extends LinkController {
 				getModeController().getMapController().nodeChanged(link.getSource());
 			}
 		};
-		getMModeController().execute(actor);
+		getModeController().execute(actor);
 	}
 
 	public void setLink(final NodeModel node, final String link) {

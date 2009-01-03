@@ -36,7 +36,7 @@ class RedoAction extends FreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final MindMapMapModel map = (MindMapMapModel) Controller.getController().getMap();
+		final MMapModel map = (MMapModel) Controller.getController().getMap();
 		final IUndoHandler undoHandler = map.getUndoHandler();
 		undoHandler.getRedoAction().actionPerformed(e);
 		undo.setEnabled(undoHandler.canUndo());
@@ -44,7 +44,7 @@ class RedoAction extends FreeplaneAction {
 	}
 
 	public void reset() {
-		final MindMapMapModel map = (MindMapMapModel) Controller.getController().getMap();
+		final MMapModel map = (MMapModel) Controller.getController().getMap();
 		final IUndoHandler undoHandler = map.getUndoHandler();
 		undoHandler.resetRedo();
 		setEnabled(false);

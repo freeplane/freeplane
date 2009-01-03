@@ -42,6 +42,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IReadCompletionListener;
 import org.freeplane.core.map.IMapChangeListener;
 import org.freeplane.core.map.INodeChangeListener;
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeChangeEvent;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.resources.ui.IFreemindPropertyListener;
@@ -84,11 +85,11 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 	        ListSelectionListener {
 		final private DefaultListModel mDefaultListModel;
 		boolean mDialogIsShown = false;
-		final private MModeController mindMapController;
+		final private ModeController mindMapController;
 		JList mList;
 		String patterns;
 
-		public StylePatternListProperty(final String name, final MModeController pController) {
+		public StylePatternListProperty(final String name, final ModeController pController) {
 			super(name);
 			mindMapController = pController;
 			mList = new JList();
@@ -175,10 +176,10 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 	public static class StylePatternProperty extends PropertyBean implements IPropertyControl,
 	        ActionListener {
 		JButton mButton;
-		final private MModeController mindMapController;
+		final private ModeController mindMapController;
 		String pattern;
 
-		public StylePatternProperty(final String name, final MModeController pController) {
+		public StylePatternProperty(final String name, final ModeController pController) {
 			super(name);
 			mindMapController = pController;
 			mButton = new JButton();
@@ -246,7 +247,7 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 	/**
 	 *
 	 */
-	public AutomaticLayout(final MModeController modeController) {
+	public AutomaticLayout(final ModeController modeController) {
 		super(modeController);
 		final MyFreemindPropertyListener listener = new MyFreemindPropertyListener();
 		Controller.getResourceController().addPropertyChangeListener(listener);
@@ -353,8 +354,7 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 			myIndex = depth;
 		}
 		final Pattern p = AutomaticLayout.patterns.getChoice(myIndex);
-		MPatternController.getController(((MModeController) getModeController())).applyPattern(
-		    node, p);
+		MPatternController.getController((getModeController())).applyPattern(node, p);
 	}
 
 	/**

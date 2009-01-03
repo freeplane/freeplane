@@ -29,7 +29,6 @@ import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.map.pattern.mindmapnode.MPatternController;
 import org.freeplane.map.pattern.mindmapnode.Pattern;
 import org.freeplane.map.pattern.mindmapnode.StylePatternFactory;
-import org.freeplane.modes.mindmapmode.MModeController;
 
 @ActionDescriptor(name = "accessories/plugins/ApplyFormatPlugin.properties_name", //
 locations = { "/menu_bar/format/change" }, //
@@ -49,7 +48,7 @@ public class ApplyFormatPlugin extends FreeplaneAction {
 		final Pattern nodePattern = StylePatternFactory.createPatternFromSelected(focussed,
 		    selected);
 		final ChooseFormatPopupDialog formatDialog = new ChooseFormatPopupDialog(Controller
-		    .getController().getViewController().getJFrame(), (MModeController) modeController,
+		    .getController().getViewController().getJFrame(), modeController,
 		    "accessories/plugins/ApplyFormatPlugin.dialog.title", nodePattern);
 		formatDialog.setModal(true);
 		formatDialog.setVisible(true);
@@ -57,8 +56,7 @@ public class ApplyFormatPlugin extends FreeplaneAction {
 			final Pattern pattern = formatDialog.getPattern();
 			for (final Iterator iter = selected.iterator(); iter.hasNext();) {
 				final NodeModel node = (NodeModel) iter.next();
-				MPatternController.getController((MModeController)getModeController())
-				    .applyPattern(node, pattern);
+				MPatternController.getController(getModeController()).applyPattern(node, pattern);
 			}
 		}
 	}

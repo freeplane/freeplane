@@ -95,8 +95,8 @@ class EditAction extends FreeplaneAction {
 		String useRichTextInNewLongNodes = "true";
 		if (!isHtmlNode && editDefinitivelyLong) {
 			final int showResult = new OptionalDontShowMeAgainDialog(Controller.getController()
-			    .getViewController().getJFrame(), getModeController()
-			    .getMapController().getSelectedView(), "edit.edit_rich_text", "edit.decision",
+			    .getViewController().getJFrame(), getModeController().getMapController()
+			    .getSelectedView(), "edit.edit_rich_text", "edit.decision",
 			    new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
 			        ResourceController.RESOURCES_REMIND_USE_RICH_TEXT_IN_NEW_LONG_NODES),
 			    OptionalDontShowMeAgainDialog.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED).show()
@@ -125,8 +125,8 @@ class EditAction extends FreeplaneAction {
 				    }
 
 				    public void split(final String newText, final int position) {
-					    ((MTextController) TextController.getController(MModeController
-					        .getMModeController())).splitNode(node.getModel(), position, newText);
+					    ((MTextController) TextController.getController(Controller
+					        .getModeController())).splitNode(node.getModel(), position, newText);
 					    Controller.getController().getViewController().obtainFocusForSelected();
 					    cancel();
 				    }
@@ -137,8 +137,7 @@ class EditAction extends FreeplaneAction {
 		}
 		if (editExternal) {
 			final EditNodeExternalApplication editNodeExternalApplication = new EditNodeExternalApplication(
-			    node, text, firstEvent, getModeController(),
-			    new EditNodeBase.IEditControl() {
+			    node, text, firstEvent, getModeController(), new EditNodeBase.IEditControl() {
 				    public void cancel() {
 					    getModeController().setBlocked(false);
 					    mCurrentEditDialog = null;
@@ -150,8 +149,8 @@ class EditAction extends FreeplaneAction {
 				    }
 
 				    public void split(final String newText, final int position) {
-					    ((MTextController) TextController.getController(MModeController
-					        .getMModeController())).splitNode(node.getModel(), position, newText);
+					    ((MTextController) TextController.getController(Controller
+					        .getModeController())).splitNode(node.getModel(), position, newText);
 					    Controller.getController().getViewController().obtainFocusForSelected();
 					    cancel();
 				    }
@@ -174,8 +173,8 @@ class EditAction extends FreeplaneAction {
 				    }
 
 				    public void split(final String newText, final int position) {
-					    ((MTextController) TextController.getController(MModeController
-					        .getMModeController())).splitNode(node.getModel(), position, newText);
+					    ((MTextController) TextController.getController(Controller
+					        .getModeController())).splitNode(node.getModel(), position, newText);
 					    Controller.getController().getViewController().obtainFocusForSelected();
 					    cancel();
 				    }
@@ -189,9 +188,8 @@ class EditAction extends FreeplaneAction {
 			    public void cancel() {
 				    if (isNewNode) {
 					    Controller.getController().getMapView().selectAsTheOnlyOneSelected(node);
-					    ((MModeController)getModeController()).undo();
-					    getModeController().getMapController()
-					        .select(prevSelected);
+					    ((MModeController) getModeController()).undo();
+					    getModeController().getMapController().select(prevSelected);
 					    if (parentFolded) {
 						    getModeController().getMapController().setFolded(
 						        prevSelected.getModel(), true);
@@ -229,8 +227,8 @@ class EditAction extends FreeplaneAction {
 			public void act() {
 				if (!oldText.equals(newText)) {
 					node.setText(newText);
-					getModeController().getMapController().nodeChanged(node,
-					    NodeModel.NODE_TEXT, oldText, newText);
+					getModeController().getMapController().nodeChanged(node, NodeModel.NODE_TEXT,
+					    oldText, newText);
 				}
 			}
 
@@ -241,8 +239,8 @@ class EditAction extends FreeplaneAction {
 			public void undo() {
 				if (!oldText.equals(newText)) {
 					node.setText(oldText);
-					getModeController().getMapController().nodeChanged(node,
-					    NodeModel.NODE_TEXT, newText, oldText);
+					getModeController().getMapController().nodeChanged(node, NodeModel.NODE_TEXT,
+					    newText, oldText);
 				}
 			}
 		};

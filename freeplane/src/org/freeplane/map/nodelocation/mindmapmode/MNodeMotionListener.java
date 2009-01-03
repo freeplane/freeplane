@@ -29,10 +29,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.map.nodelocation.LocationController;
 import org.freeplane.map.nodelocation.LocationModel;
-import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.modes.ui.UserInputListenerFactory;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeMotionListenerView;
@@ -42,13 +43,13 @@ import org.freeplane.view.swing.map.NodeView;
  * The MouseMotionListener which belongs to every NodeView
  */
 class MNodeMotionListener extends UserInputListenerFactory.DefaultNodeMotionListener {
-	final private MModeController c;
+	final private ModeController c;
 	private Point dragStartingPoint = null;
 	private int originalHGap;
 	private int originalParentVGap;
 	private int originalShiftY;
 
-	public MNodeMotionListener(final MModeController controller) {
+	public MNodeMotionListener(final ModeController controller) {
 		c = controller;
 	}
 
@@ -108,16 +109,16 @@ class MNodeMotionListener extends UserInputListenerFactory.DefaultNodeMotionList
 			if (e.getModifiersEx() == 0) {
 				final NodeView nodeV = getNodeView(e);
 				final NodeModel node = nodeV.getModel();
-				c.moveNodePosition(node, LocationModel.getModel(node).getVGap(),
-				    LocationModel.HGAP, 0);
+				((MLocationController) LocationController.getController(c)).moveNodePosition(node,
+				    LocationModel.getModel(node).getVGap(), LocationModel.HGAP, 0);
 				return;
 			}
 			if (e.getModifiersEx() == InputEvent.CTRL_DOWN_MASK) {
 				final NodeView nodeV = getNodeView(e);
 				final NodeModel node = nodeV.getModel();
-				c.moveNodePosition(node, LocationModel.VGAP,
-				    LocationModel.getModel(node).getHGap(), LocationModel.getModel(node)
-				        .getShiftY());
+				((MLocationController) LocationController.getController(c)).moveNodePosition(node,
+				    LocationModel.VGAP, LocationModel.getModel(node).getHGap(), LocationModel
+				        .getModel(node).getShiftY());
 				return;
 			}
 		}
@@ -207,7 +208,8 @@ class MNodeMotionListener extends UserInputListenerFactory.DefaultNodeMotionList
 		final int hgap = LocationModel.getModel(node).getHGap();
 		final int shiftY = LocationModel.getModel(node).getShiftY();
 		resetPositions(node);
-		c.moveNodePosition(node, parentVGap, hgap, shiftY);
+		((MLocationController) LocationController.getController(c)).moveNodePosition(node,
+		    parentVGap, hgap, shiftY);
 		stopDrag();
 	}
 

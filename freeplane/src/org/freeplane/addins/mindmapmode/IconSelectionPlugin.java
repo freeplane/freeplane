@@ -24,13 +24,13 @@ import java.util.Vector;
 import javax.swing.Action;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.components.IconSelectionPopupDialog;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.map.icon.IconController;
 import org.freeplane.map.icon.mindmapnode.MIconController;
-import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
@@ -50,7 +50,7 @@ public class IconSelectionPlugin extends FreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final MModeController modeController = (MModeController) getModeController();
+		final ModeController modeController = getModeController();
 		final NodeView focussed = modeController.getMapController().getSelectedView();
 		final Vector actions = new Vector();
 		final Collection<Action> iconActions = ((MIconController) IconController

@@ -23,6 +23,7 @@ import java.awt.datatransfer.Transferable;
 import java.util.List;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.map.clipboard.ClipboardController;
 import org.freeplane.modes.mindmapmode.MModeController;
@@ -45,9 +46,9 @@ public class MClipboardController extends ClipboardController {
 	}
 
 	/**
-	 * @param modeController 
+	 * @param modeController
 	 */
-	private void createActions(final MModeController modeController) {
+	private void createActions(final ModeController modeController) {
 		modeController.addAction("exportToHTML", new ExportToHTMLAction());
 		modeController.addAction("exportBranchToHTML", new ExportBranchToHTMLAction());
 		cut = new CutAction();
@@ -76,7 +77,7 @@ public class MClipboardController extends ClipboardController {
 	 **/
 	public void paste(final Transferable t, final NodeModel target, final boolean asSibling,
 	                  final boolean isLeft) {
-		final MModeController modeController = (MModeController) target.getModeController();
+		final ModeController modeController = target.getModeController();
 		if (!asSibling && modeController.getMapController().isFolded(target)
 		        && Controller.getResourceController().getBoolProperty(RESOURCE_UNFOLD_ON_PASTE)) {
 			modeController.getMapController().setFolded(target, false);

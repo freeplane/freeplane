@@ -81,7 +81,6 @@ import org.freeplane.map.clipboard.ClipboardController;
 import org.freeplane.map.note.NoteModel;
 import org.freeplane.map.text.TextController;
 import org.freeplane.map.text.mindmapmode.MTextController;
-import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.view.swing.map.MultipleImage;
 
 import com.jgoodies.forms.factories.ButtonBarFactory;
@@ -468,7 +467,7 @@ class TimeList {
 	private JTextField mFilterTextReplaceField;
 	private JTextField mFilterTextSearchField;
 	private FlatNodeTableFilterModel mFlatNodeTableFilterModel;
-	final private MModeController modeController;
+	final private ModeController modeController;
 	private JLabel mTreeLabel;
 	private NodeRenderer nodeRenderer;
 	private NotesRenderer notesRenderer;
@@ -477,7 +476,7 @@ class TimeList {
 	private JTable timeTable;
 	private DefaultTableModel timeTableModel;
 
-	public TimeList(final MModeController modeController, final boolean showAllNodes) {
+	public TimeList(final ModeController modeController, final boolean showAllNodes) {
 		this.modeController = modeController;
 		this.showAllNodes = showAllNodes;
 	}
@@ -507,7 +506,7 @@ class TimeList {
 		}
 		final MapModel newMap = getMindMapController().getMapController()
 		    .newMap(((NodeModel) null));;
-		final MModeController newMindMapController = (MModeController) newMap.getModeController();
+		final ModeController newMindMapController = newMap.getModeController();
 		for (final Iterator iter = selectedNodes.iterator(); iter.hasNext();) {
 			final NodeModel node = (NodeModel) iter.next();
 			//
@@ -522,7 +521,7 @@ class TimeList {
 		disposeDialog();
 	}
 
-	private MModeController getMindMapController() {
+	private ModeController getMindMapController() {
 		return modeController;
 	}
 

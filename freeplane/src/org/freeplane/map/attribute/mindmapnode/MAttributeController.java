@@ -24,6 +24,7 @@ import java.util.NoSuchElementException;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.util.SortedComboBoxModel;
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.map.attribute.Attribute;
@@ -32,7 +33,6 @@ import org.freeplane.map.attribute.AttributeRegistry;
 import org.freeplane.map.attribute.AttributeRegistryElement;
 import org.freeplane.map.attribute.NodeAttributeTableModel;
 import org.freeplane.map.attribute.view.AttributePopupMenu;
-import org.freeplane.modes.mindmapmode.MModeController;
 
 public class MAttributeController extends AttributeController {
 	private class AttributeChanger implements IVisitor {
@@ -491,9 +491,9 @@ public class MAttributeController extends AttributeController {
 	}
 
 	InsertAttributeActor insertAttributeActor;
-	final private MModeController modeController;
+	final private ModeController modeController;
 
-	public MAttributeController(final MModeController modeController) {
+	public MAttributeController(final ModeController modeController) {
 		super(modeController);
 		this.modeController = modeController;
 		createActions();

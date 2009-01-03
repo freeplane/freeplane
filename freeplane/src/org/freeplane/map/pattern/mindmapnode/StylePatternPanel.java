@@ -34,6 +34,7 @@ import javax.swing.JPanel;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.MindIcon;
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.ui.BooleanProperty;
 import org.freeplane.core.resources.ui.ColorProperty;
@@ -50,7 +51,6 @@ import org.freeplane.map.edge.EdgeModel;
 import org.freeplane.map.icon.IconController;
 import org.freeplane.map.icon.mindmapnode.MIconController;
 import org.freeplane.map.nodestyle.NodeStyleModel;
-import org.freeplane.modes.mindmapmode.MModeController;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.FormLayout;
@@ -133,7 +133,7 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 	private ComboProperty mEdgeWidth;
 	private IconProperty mIcon;
 	private Vector mIconInformationVector;
-	final private MModeController mMindMapController;
+	final private ModeController mMindMapController;
 	private StringProperty mName;
 	private ColorProperty mNodeBackgroundColor;
 	private ColorProperty mNodeColor;
@@ -171,7 +171,7 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 	/**
 	 * @throws HeadlessException
 	 */
-	public StylePatternPanel(final MModeController pMindMapController,
+	public StylePatternPanel(final ModeController pMindMapController,
 	                         final StylePatternPanelType pType) throws HeadlessException {
 		super();
 		mMindMapController = pMindMapController;
@@ -235,7 +235,7 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 		        "fork", "bubble", "as_parent", "combined" });
 		controls.add(mNodeStyle);
 		mIconInformationVector = new Vector();
-		final MModeController controller = mMindMapController;
+		final ModeController controller = mMindMapController;
 		final Collection mindIcons = ((MIconController) IconController.getController(controller))
 		    .getMindIcons();
 		mIconInformationVector.addAll(mindIcons);

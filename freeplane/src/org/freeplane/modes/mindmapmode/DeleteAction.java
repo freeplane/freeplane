@@ -74,8 +74,8 @@ class DeleteAction extends FreeplaneAction {
 			}
 
 			public void undo() {
-				((MMapController) getModeController().getMapController())
-				    .insertNodeIntoWithoutUndo(node, parentNode, index);
+				(getModeController().getMapController()).insertNodeIntoWithoutUndo(node,
+				    parentNode, index);
 			}
 		};
 		return actor;

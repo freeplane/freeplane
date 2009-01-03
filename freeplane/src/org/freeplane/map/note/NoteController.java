@@ -27,7 +27,6 @@ import org.freeplane.core.map.MindIcon;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.modes.mindmapmode.MMapController;
 
 /**
  * @author Dimitry Polivaev
@@ -90,7 +89,7 @@ public class NoteController implements IExtension {
 			showIcon = false;
 		}
 		node.setStateIcon(NodeNoteBase.NODE_NOTE_ICON, (showIcon) ? noteIcon : null);
-		((MMapController) getModeController().getMapController()).setToolTip(node, "nodeNoteText",
+		(getModeController().getMapController()).setToolTip(node, "nodeNoteText",
 		    (enabled) ? NoteModel.getNoteText(node) : null);
 	}
 }

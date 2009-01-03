@@ -28,11 +28,10 @@ import org.freeplane.addins.PersistentNodeHook;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.map.INodeChangeListener;
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeChangeEvent;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.ActionDescriptor;
-import org.freeplane.modes.mindmapmode.MMapController;
-import org.freeplane.modes.mindmapmode.MModeController;
 
 /**
  * @author foltin
@@ -48,7 +47,7 @@ public class CreationModificationPlugin extends PersistentNodeHook implements IN
 	/**
 	 *
 	 */
-	public CreationModificationPlugin(final MModeController modeControler) {
+	public CreationModificationPlugin(final ModeController modeControler) {
 		super(modeControler);
 	}
 
@@ -108,6 +107,6 @@ public class CreationModificationPlugin extends PersistentNodeHook implements IN
 	}
 
 	protected void setToolTip(final NodeModel node, final String key, final String value) {
-		((MMapController) getModeController().getMapController()).setToolTip(node, key, value);
+		(getModeController().getMapController()).setToolTip(node, key, value);
 	}
 }

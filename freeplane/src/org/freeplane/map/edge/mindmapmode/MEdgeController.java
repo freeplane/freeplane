@@ -22,17 +22,17 @@ package org.freeplane.map.edge.mindmapmode;
 import java.awt.Color;
 import java.util.ListIterator;
 
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.map.edge.EdgeController;
 import org.freeplane.map.edge.EdgeModel;
-import org.freeplane.modes.mindmapmode.MModeController;
 
 /**
  * @author Dimitry Polivaev
  */
 public class MEdgeController extends EdgeController {
-	public MEdgeController(final MModeController modeController) {
+	public MEdgeController(final ModeController modeController) {
 		super(modeController);
 		modeController.addAction("edgeColor", new EdgeColorAction());
 		modeController.addAction("EdgeWidth_WIDTH_PARENT", new EdgeWidthAction(modeController,
@@ -54,7 +54,7 @@ public class MEdgeController extends EdgeController {
 	}
 
 	public void setColor(final NodeModel node, final Color color) {
-		final MModeController modeController = (MModeController) node.getModeController();
+		final ModeController modeController = node.getModeController();
 		final Color oldColor = getColor(node);
 		if (color.equals(oldColor)) {
 			return;
@@ -78,7 +78,7 @@ public class MEdgeController extends EdgeController {
 	}
 
 	public void setStyle(final NodeModel node, final String style) {
-		final MModeController modeController = (MModeController) node.getModeController();
+		final ModeController modeController = node.getModeController();
 		final String oldStyle = getStyle(node);
 		if (style.equals(oldStyle)) {
 			return;
@@ -117,7 +117,7 @@ public class MEdgeController extends EdgeController {
 	}
 
 	public void setWidth(final NodeModel node, final int width) {
-		final MModeController modeController = (MModeController) node.getModeController();
+		final ModeController modeController = node.getModeController();
 		final int oldWidth = getWidth(node);
 		if (width == oldWidth) {
 			return;

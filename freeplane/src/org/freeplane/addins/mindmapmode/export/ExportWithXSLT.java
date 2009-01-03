@@ -251,7 +251,7 @@ public class ExportWithXSLT extends ExportAction {
 	 */
 	private String getMapXml() throws IOException {
 		final StringWriter writer = new StringWriter();
-		final MModeController controller = (MModeController) getModeController();
+		final ModeController controller = getModeController();
 		final MapModel map = Controller.getController().getMap();
 		controller.getMapController().getFilteredXml(map, writer);
 		return writer.getBuffer().toString();

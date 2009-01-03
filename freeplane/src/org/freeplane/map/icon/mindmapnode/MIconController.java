@@ -87,7 +87,7 @@ public class MIconController extends IconController {
 				getModeController().getMapController().nodeChanged(node, "icon", icon, null);
 			}
 		};
-		getMModeController().execute(actor);
+		getModeController().execute(actor);
 	}
 
 	public void addIconsToMenu(final MenuBuilder builder, final String iconMenuString) {
@@ -103,7 +103,7 @@ public class MIconController extends IconController {
 	}
 
 	private void createIconActions() {
-		final MModeController modeController = getMModeController();
+		final ModeController modeController = getModeController();
 		final RemoveIconAction removeLastIconAction = new RemoveIconAction();
 		modeController.addAction("removeLastIconAction", removeLastIconAction);
 		modeController.addAction("removeAllIconsAction", new RemoveAllIconsAction());
@@ -181,13 +181,6 @@ public class MIconController extends IconController {
 			iconInformationVector.add(info);
 		}
 		return iconInformationVector;
-	}
-
-	/**
-	 * @return
-	 */
-	private MModeController getMModeController() {
-		return (MModeController) getModeController();
 	}
 
 	public void removeAllIcons(final NodeModel node) {

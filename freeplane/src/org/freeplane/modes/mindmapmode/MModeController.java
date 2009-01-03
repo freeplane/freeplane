@@ -44,14 +44,12 @@ import org.freeplane.map.icon.IconController;
 import org.freeplane.map.icon.mindmapnode.MIconController;
 import org.freeplane.map.link.LinkController;
 import org.freeplane.map.link.NodeLinks;
-import org.freeplane.map.nodelocation.LocationController;
-import org.freeplane.map.nodelocation.mindmapmode.MLocationController;
 import org.freeplane.map.note.NoteController;
 import org.freeplane.map.note.mindmapnode.MNoteController;
 import org.freeplane.map.pattern.mindmapnode.MPatternController;
 import org.freeplane.map.text.TextController;
 import org.freeplane.map.text.mindmapmode.MTextController;
-import org.freeplane.modes.mindmapmode.url.MFileManager;
+import org.freeplane.map.url.mindmapmode.MFileManager;
 import org.freeplane.modes.ui.UserInputListenerFactory;
 import org.freeplane.view.swing.map.MainView;
 
@@ -73,7 +71,7 @@ public class MModeController extends ModeController {
 	}
 
 	private void addUndoableActor(final IUndoableActor actor) {
-		final MindMapMapModel map = (MindMapMapModel) Controller.getController().getMap();
+		final MMapModel map = (MMapModel) Controller.getController().getMap();
 		final IUndoHandler undoHandler = map.getUndoHandler();
 		undoHandler.addActor(actor);
 		undo.setEnabled(true);
@@ -150,19 +148,8 @@ public class MModeController extends ModeController {
 	}
 
 	public boolean isUndoAction() {
-		return ((MindMapMapModel) Controller.getController().getMapView().getModel())
-		    .getUndoHandler().isUndoActionRunning();
-	}
-
-	/**
-	 * @param node
-	 * @param gap
-	 * @param hgap
-	 * @param i
-	 */
-	public void moveNodePosition(final NodeModel node, final int gap, final int hgap, final int i) {
-		((MLocationController) LocationController.getController(this)).moveNodePosition(node, gap,
-		    hgap, i);
+		return ((MMapModel) Controller.getController().getMapView().getModel()).getUndoHandler()
+		    .isUndoActionRunning();
 	}
 
 	@Override
@@ -181,7 +168,7 @@ public class MModeController extends ModeController {
 				doubleClick(e);
 				return;
 			}
-			((MMapController) getMapController()).toggleFolded();
+			(getMapController()).toggleFolded();
 		}
 	}
 

@@ -21,15 +21,15 @@ package org.freeplane.map.edge.mindmapmode;
 
 import java.awt.event.ActionEvent;
 
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.map.edge.EdgeController;
-import org.freeplane.modes.mindmapmode.MModeController;
 
 class EdgeStyleAction extends MultipleNodeAction {
 	final private String mStyle;
 
-	public EdgeStyleAction(final MModeController controller, final String style) {
+	public EdgeStyleAction(final ModeController controller, final String style) {
 		super(style);
 		mStyle = style;
 	}

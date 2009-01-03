@@ -106,8 +106,8 @@ class PasteAction extends FreeplaneAction {
 			final List fileList = (List) TransferData;
 			for (final ListIterator it = fileList.listIterator(); it.hasNext();) {
 				final File file = (File) it.next();
-				final NodeModel node = getModeController().getMapController()
-				    .newNode(file.getName(), target.getMap());
+				final NodeModel node = getModeController().getMapController().newNode(
+				    file.getName(), target.getMap());
 				node.setLeft(isLeft);
 				((MLinkController) LinkController.getController(node.getModeController())).setLink(
 				    node, file.getAbsolutePath());
@@ -341,8 +341,8 @@ class PasteAction extends FreeplaneAction {
 					    .firstLetterCapitalized(textParts[textPartIdx].replaceAll("^~*", ""));
 				}
 			}
-			final NodeModel node = getModeController().getMapController().newNode(
-			    visibleText, parent.getMap());
+			final NodeModel node = getModeController().getMapController().newNode(visibleText,
+			    parent.getMap());
 			if (textLines.length == 1) {
 				pastedNode = node;
 			}

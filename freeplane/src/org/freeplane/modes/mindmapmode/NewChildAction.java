@@ -93,13 +93,13 @@ class NewChildAction extends FreeplaneAction {
 	}
 
 	public NodeModel addNewNode(final NodeModel parent, final int index, final boolean newNodeIsLeft) {
-		final NodeModel newNode = getModeController().getMapController().newNode(
-		    "", parent.getMap());
+		final NodeModel newNode = getModeController().getMapController().newNode("",
+		    parent.getMap());
 		newNode.setLeft(newNodeIsLeft);
 		final IUndoableActor actor = new IUndoableActor() {
 			public void act() {
-				((MMapController) getModeController().getMapController())
-				    .insertNodeIntoWithoutUndo(newNode, parent, index);
+				(getModeController().getMapController()).insertNodeIntoWithoutUndo(newNode, parent,
+				    index);
 			}
 
 			public String getDescription() {

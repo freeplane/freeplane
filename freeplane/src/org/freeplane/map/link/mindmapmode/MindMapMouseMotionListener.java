@@ -23,10 +23,10 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.ui.IMapMouseReceiver;
 import org.freeplane.map.link.ArrowLinkModel;
 import org.freeplane.map.link.LinkController;
-import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.view.swing.map.MapView;
 
 /** */
@@ -34,14 +34,14 @@ class MindMapMouseMotionListener implements IMapMouseReceiver {
 	ArrowLinkModel draggedLink = null;
 	private Point draggedLinkOldEndPoint;
 	private Point draggedLinkOldStartPoint;
-	final private MModeController mController;
+	final private ModeController mController;
 	int originX = -1;
 	int originY = -1;
 
 	/**
 	 *
 	 */
-	public MindMapMouseMotionListener(final MModeController controller) {
+	public MindMapMouseMotionListener(final ModeController controller) {
 		super();
 		mController = controller;
 	}

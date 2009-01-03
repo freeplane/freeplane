@@ -37,30 +37,30 @@ import javax.swing.KeyStroke;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.map.MindIcon;
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.url.UrlManager;
-import org.freeplane.modes.mindmapmode.MModeController;
 
 /**
  * @author Dimitry Polivaev
  */
 public class MPatternController implements IExtension {
-	public static MPatternController getController(final MModeController modeController) {
+	public static MPatternController getController(final ModeController modeController) {
 		return (MPatternController) modeController.getExtension(MPatternController.class);
 	}
 
-	public static void install(final MModeController modeController,
+	public static void install(final ModeController modeController,
 	                           final MPatternController patternController) {
 		modeController.addExtension(MPatternController.class, patternController);
 	}
 
-	final private MModeController modeController;
+	final private ModeController modeController;
 	private List mPatternsList = new Vector();
 	public ApplyPatternAction patterns[] = new ApplyPatternAction[0];
 	final private File patternsFile;
 
-	public MPatternController(final MModeController modeController) {
+	public MPatternController(final ModeController modeController) {
 		super();
 		this.modeController = modeController;
 		patternsFile = new File(Controller.getResourceController().getFreemindUserDirectory(),

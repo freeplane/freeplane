@@ -19,6 +19,7 @@
  */
 package org.freeplane.map.nodelocation.mindmapmode;
 
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.map.nodelocation.LocationController;
@@ -81,12 +82,13 @@ public class MLocationController extends LocationController {
 		createActions(modeController);
 	}
 
-	private void createActions(final MModeController modeController) {
+	private void createActions(final ModeController modeController) {
 		modeController.addAction("moveNodeAction", new ResetNodeLocationAction());
 	}
 
-	public MModeController getMModeController() {
-		return (MModeController) getModeController();
+	@Override
+	public ModeController getModeController() {
+		return getModeController();
 	}
 
 	public void moveNodePosition(final NodeModel node, final int parentVGap, final int hGap,

@@ -55,6 +55,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
@@ -63,7 +64,6 @@ import org.freeplane.map.pattern.mindmapnode.Pattern;
 import org.freeplane.map.pattern.mindmapnode.StylePatternFactory;
 import org.freeplane.map.pattern.mindmapnode.StylePatternPanel;
 import org.freeplane.map.pattern.mindmapnode.StylePatternPanel.StylePatternPanelType;
-import org.freeplane.modes.mindmapmode.MModeController;
 
 import com.jgoodies.forms.factories.ButtonBarFactory;
 
@@ -169,7 +169,7 @@ class ManagePatternsPopupDialog extends JDialog implements KeyListener {
 	private JButton jOKButton;
 	private org.freeplane.addins.mindmapmode.styles.ArrayListTransferHandler mArrayListHandler;
 	private CardLayout mCardLayout;
-	final private MModeController mController;
+	final private ModeController mController;
 	private boolean mIsDragging = false;
 	private Pattern mLastSelectedPattern = null;
 	private JList mList;
@@ -183,7 +183,7 @@ class ManagePatternsPopupDialog extends JDialog implements KeyListener {
 	/**
 	 * This is the default constructor
 	 */
-	public ManagePatternsPopupDialog(final MModeController controller) {
+	public ManagePatternsPopupDialog(final ModeController controller) {
 		super(Controller.getController().getViewController().getJFrame());
 		mController = controller;
 		List patternList = new Vector();

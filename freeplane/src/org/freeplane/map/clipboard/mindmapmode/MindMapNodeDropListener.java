@@ -33,20 +33,20 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.map.clipboard.ClipboardController;
 import org.freeplane.map.clipboard.MindMapNodesSelection;
 import org.freeplane.map.link.LinkController;
 import org.freeplane.map.link.mindmapmode.MLinkController;
 import org.freeplane.modes.mindmapmode.MMapController;
-import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.NodeView;
 
 public class MindMapNodeDropListener implements DropTargetListener {
-	final private MModeController mMindMapController;
+	final private ModeController mMindMapController;
 
-	public MindMapNodeDropListener(final MModeController controller) {
+	public MindMapNodeDropListener(final ModeController controller) {
 		mMindMapController = controller;
 	}
 

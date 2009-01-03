@@ -42,7 +42,7 @@ import org.freeplane.core.resources.ui.IFreemindPropertyListener;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.url.UrlManager;
-import org.freeplane.modes.mindmapmode.url.MFileManager;
+import org.freeplane.map.url.mindmapmode.MFileManager;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
 /**
@@ -169,7 +169,7 @@ public class MMapController extends MapController {
 			    .getText("file_not_found"), file.getPath()));
 		}
 		if (!file.canWrite()) {
-			((MindMapMapModel) map).setReadOnly(true);
+			((MMapModel) map).setReadOnly(true);
 		}
 		else {
 			try {
@@ -178,10 +178,10 @@ public class MMapController extends MapController {
 					Controller.getController().informationMessage(
 					    UrlManager.expandPlaceholders(getModeController().getText(
 					        "map_locked_by_open"), file.getName(), lockingUser));
-					((MindMapMapModel) map).setReadOnly(true);
+					((MMapModel) map).setReadOnly(true);
 				}
 				else {
-					((MindMapMapModel) map).setReadOnly(false);
+					((MMapModel) map).setReadOnly(false);
 				}
 			}
 			catch (final Exception e) {
@@ -189,14 +189,14 @@ public class MMapController extends MapController {
 				Controller.getController().informationMessage(
 				    UrlManager.expandPlaceholders(getModeController().getText(
 				        "locking_failed_by_open"), file.getName()));
-				((MindMapMapModel) map).setReadOnly(true);
+				((MMapModel) map).setReadOnly(true);
 			}
 		}
 		final NodeModel root = loadTree(map, file);
 		if (root != null) {
-			((MindMapMapModel) map).setRoot(root);
+			((MMapModel) map).setRoot(root);
 		}
-		((MindMapMapModel) map).setFile(file);
+		((MMapModel) map).setFile(file);
 	}
 
 	public NodeModel loadTree(final MapModel map, final File file) throws XMLParseException,
@@ -286,7 +286,7 @@ public class MMapController extends MapController {
 
 	@Override
 	public MapModel newModel(final NodeModel root) {
-		final MindMapMapModel mindMapMapModel = new MindMapMapModel(root, getModeController());
+		final MMapModel mindMapMapModel = new MMapModel(root, getModeController());
 		fireMapCreated(mindMapMapModel);
 		return mindMapMapModel;
 	}
@@ -328,14 +328,6 @@ public class MMapController extends MapController {
 		    node, folded);
 	}
 
-	/**
-	*
-	*/
-	public void setToolTip(final NodeModel node, final String key, final String value) {
-		node.setToolTip(key, value);
-		nodeRefresh(node);
-	}
-
 	@Override
 	public void toggleFolded() {
 		((ToggleFoldedAction) getModeController().getAction("undoableToggleFolded")).toggleFolded();
@@ -351,8 +343,8 @@ public class MMapController extends MapController {
 	 *             file is being edited.
 	 */
 	public String tryToLock(final MapModel map, final File file) throws Exception {
-		final String lockingUser = ((MindMapMapModel) map).getLockManager().tryToLock(file);
-		final String lockingUserOfOldLock = ((MindMapMapModel) map).getLockManager()
+		final String lockingUser = ((MMapModel) map).getLockManager().tryToLock(file);
+		final String lockingUserOfOldLock = ((MMapModel) map).getLockManager()
 		    .popLockingUserOfOldLock();
 		if (lockingUserOfOldLock != null) {
 			Controller.getController().informationMessage(
@@ -360,7 +352,7 @@ public class MMapController extends MapController {
 			        "locking_old_lock_removed"), file.getName(), lockingUserOfOldLock));
 		}
 		if (lockingUser == null) {
-			((MindMapMapModel) map).setReadOnly(false);
+			((MMapModel) map).setReadOnly(false);
 		}
 		return lockingUser;
 	}

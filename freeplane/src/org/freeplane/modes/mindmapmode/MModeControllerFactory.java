@@ -70,7 +70,7 @@ import org.freeplane.map.note.mindmapnode.MNoteController;
 import org.freeplane.map.pattern.mindmapnode.MPatternController;
 import org.freeplane.map.text.TextController;
 import org.freeplane.map.text.mindmapmode.MTextController;
-import org.freeplane.modes.mindmapmode.url.MFileManager;
+import org.freeplane.map.url.mindmapmode.MFileManager;
 import org.freeplane.modes.ui.UserInputListenerFactory;
 
 import plugins.help.FreeplaneHelpStarter;

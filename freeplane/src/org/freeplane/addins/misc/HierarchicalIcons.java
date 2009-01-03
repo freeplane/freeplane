@@ -35,7 +35,6 @@ import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeChangeEvent;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.ActionDescriptor;
-import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.view.swing.map.MultipleImage;
 
 /**
@@ -49,7 +48,7 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
         IMapChangeListener, IReadCompletionListener {
 	final private HashMap /* of MindMapNode to a TreeSet */nodeIconSets = new HashMap();
 
-	public HierarchicalIcons(final MModeController modeController) {
+	public HierarchicalIcons(final ModeController modeController) {
 		super(modeController);
 		modeController.getMapController().getReadManager().addReadCompletionListener(this);
 	}

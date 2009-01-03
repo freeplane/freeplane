@@ -529,7 +529,7 @@ public class MapController {
 			final String extension = UrlManager.getExtension(absolute.toString());
 			if ((extension != null)
 			        && extension
-			            .equals(org.freeplane.modes.mindmapmode.url.MFileManager.FREEMIND_FILE_EXTENSION_WITHOUT_DOT)) {
+			            .equals(org.freeplane.map.url.mindmapmode.MFileManager.FREEMIND_FILE_EXTENSION_WITHOUT_DOT)) {
 				final MapViewManager mapViewManager = Controller.getController()
 				    .getMapViewManager();
 				/*
@@ -781,6 +781,14 @@ public class MapController {
 
 	public void setFolded(final NodeModel node, final boolean folded) {
 		_setFolded(node, folded);
+	}
+
+	/**
+	*
+	*/
+	public void setToolTip(final NodeModel node, final String key, final String value) {
+		node.setToolTip(key, value);
+		nodeRefresh(node);
 	}
 
 	public void sortNodesByDepth(final List<NodeModel> collection) {

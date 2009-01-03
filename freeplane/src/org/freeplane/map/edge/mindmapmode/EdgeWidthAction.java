@@ -23,14 +23,14 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
 
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.map.edge.EdgeController;
 import org.freeplane.map.edge.EdgeModel;
-import org.freeplane.modes.mindmapmode.MModeController;
 
 class EdgeWidthAction extends MultipleNodeAction {
-	private static String getWidthTitle(final MModeController controller, final int width) {
+	private static String getWidthTitle(final ModeController controller, final int width) {
 		String returnValue;
 		if (width == EdgeModel.WIDTH_PARENT) {
 			returnValue = ("edge_width_parent");
@@ -46,7 +46,7 @@ class EdgeWidthAction extends MultipleNodeAction {
 
 	final private int mWidth;
 
-	public EdgeWidthAction(final MModeController controller, final int width) {
+	public EdgeWidthAction(final ModeController controller, final int width) {
 		super(null);
 		mWidth = width;
 		putValue(Action.NAME, EdgeWidthAction.getWidthTitle(controller, width));

@@ -33,7 +33,6 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.map.note.NoteModel;
-import org.freeplane.modes.mindmapmode.MModeController;
 
 class RemoveNoteAction extends FreeplaneAction implements PopupMenuListener {
 	/**
@@ -49,16 +48,16 @@ class RemoveNoteAction extends FreeplaneAction implements PopupMenuListener {
 
 	public void actionPerformed(final ActionEvent e) {
 		final int showResult = new OptionalDontShowMeAgainDialog(Controller.getController()
-		    .getViewController().getJFrame(), ((MModeController) getModeController())
-		    .getMapController().getSelectedView(), "really_remove_notes", "confirmation",
+		    .getViewController().getJFrame(), (getModeController()).getMapController()
+		    .getSelectedView(), "really_remove_notes", "confirmation",
 		    new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
 		        ResourceController.RESOURCES_REMOVE_NOTES_WITHOUT_QUESTION),
 		    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED).show().getResult();
 		if (showResult != JOptionPane.OK_OPTION) {
 			return;
 		}
-		for (final Iterator iterator = ((MModeController) getModeController()).getMapController()
-		    .getSelectedNodes().iterator(); iterator.hasNext();) {
+		for (final Iterator iterator = (getModeController()).getMapController().getSelectedNodes()
+		    .iterator(); iterator.hasNext();) {
 			final NodeModel node = (NodeModel) iterator.next();
 			if (NoteModel.getNoteText(node) != null) {
 				removeNote(node);
@@ -95,7 +94,7 @@ class RemoveNoteAction extends FreeplaneAction implements PopupMenuListener {
 	}
 
 	private void removeNote(final NodeModel node) {
-		if (((MModeController) getModeController()).getMapController().getSelectedNode() == node) {
+		if ((getModeController()).getMapController().getSelectedNode() == node) {
 			noteController.getHtmlEditorPanel().setCurrentDocumentContent("");
 		}
 		noteController.setNoteText(node, null);

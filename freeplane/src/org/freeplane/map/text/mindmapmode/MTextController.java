@@ -44,9 +44,9 @@ import org.freeplane.map.link.mindmapmode.MLinkController;
 import org.freeplane.map.nodestyle.NodeStyleController;
 import org.freeplane.map.nodestyle.mindmapmode.MNodeStyleController;
 import org.freeplane.map.text.TextController;
+import org.freeplane.map.url.mindmapmode.MFileManager;
 import org.freeplane.modes.mindmapmode.MMapController;
 import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.modes.mindmapmode.url.MFileManager;
 import org.freeplane.modes.ui.UserInputListenerFactory;
 import org.freeplane.view.swing.map.NodeView;
 
@@ -70,7 +70,7 @@ public class MTextController extends TextController {
 	/**
 	 *
 	 */
-	private void createActions(final MModeController modeController) {
+	private void createActions(final ModeController modeController) {
 		edit = new EditAction();
 		modeController.addAction("edit", edit);
 		modeController.addAction("useRichFormatting", new UseRichFormattingAction());
@@ -146,8 +146,9 @@ public class MTextController extends TextController {
 		return strings;
 	}
 
-	public MModeController getMModeController() {
-		return (MModeController) getModeController();
+	@Override
+	public ModeController getModeController() {
+		return getModeController();
 	}
 
 	public void joinNodes(final NodeModel selectedNode, final List selectedNodes) {

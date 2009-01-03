@@ -46,11 +46,11 @@ import javax.swing.WindowConstants;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.IMapViewChangeListener;
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.map.text.TextController;
 import org.freeplane.map.text.mindmapmode.MTextController;
-import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.view.swing.map.MapView;
 
 /**
@@ -88,13 +88,13 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapView
 	private JTripleCalendar calendar;
 	private JDialog dialog;
 	private JTextField hourField;
-	private MModeController mController;
+	private ModeController mController;
 	private JTextField minuteField;
-	final private MModeController modeController;
+	final private ModeController modeController;
 	private final ReminderHook reminderHook;
 	private JPanel timePanel;
 
-	public TimeManagement(final MModeController modeController, final ReminderHook reminderHook) {
+	public TimeManagement(final ModeController modeController, final ReminderHook reminderHook) {
 		this.modeController = modeController;
 		this.reminderHook = reminderHook;
 	}
@@ -166,7 +166,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapView
 		return cal.getTime();
 	}
 
-	private MModeController getMindMapController() {
+	private ModeController getMindMapController() {
 		return modeController;
 	}
 

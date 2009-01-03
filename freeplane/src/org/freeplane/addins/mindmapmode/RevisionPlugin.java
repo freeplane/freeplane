@@ -25,6 +25,7 @@ import org.freeplane.addins.NodeHookDescriptor;
 import org.freeplane.addins.PersistentNodeHook;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.map.INodeChangeListener;
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeChangeEvent;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.ActionDescriptor;
@@ -38,7 +39,7 @@ import org.freeplane.modes.mindmapmode.MModeController;
 @NodeHookDescriptor(hookName = "accessories/plugins/RevisionPlugin.properties")
 @ActionDescriptor(name = "accessories/plugins/RevisionPlugin.properties_name")
 public class RevisionPlugin extends PersistentNodeHook implements INodeChangeListener {
-	public RevisionPlugin(final MModeController modeController) {
+	public RevisionPlugin(final ModeController modeController) {
 		super(modeController);
 	}
 

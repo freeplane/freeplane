@@ -23,11 +23,11 @@ import java.io.FileWriter;
 
 import javax.swing.JOptionPane;
 
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.map.pattern.mindmapnode.MPatternController;
 import org.freeplane.map.pattern.mindmapnode.StylePatternFactory;
-import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.modes.ui.UserInputListenerFactory;
 
 @ActionDescriptor(tooltip = "accessories/plugins/ManagePatterns.properties_documentation", //
@@ -43,7 +43,7 @@ public class ManagePatterns extends FreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final MModeController mindMapController = (MModeController) getModeController();
+		final ModeController mindMapController = getModeController();
 		final ManagePatternsPopupDialog formatDialog = new ManagePatternsPopupDialog(
 		    mindMapController);
 		formatDialog.setModal(true);
