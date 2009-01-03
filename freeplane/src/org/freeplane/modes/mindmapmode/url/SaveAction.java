@@ -31,7 +31,7 @@ class SaveAction extends FreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final boolean success = MModeController.getMModeController().save();
+		final boolean success = ((MModeController)getModeController()).save();
 		if (success) {
 			Controller.getController().getViewController().out(Controller.getText("saved"));
 		}

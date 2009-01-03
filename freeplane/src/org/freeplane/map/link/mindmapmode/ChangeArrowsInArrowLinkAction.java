@@ -24,7 +24,6 @@ import java.awt.event.ActionEvent;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.map.link.ArrowLinkModel;
-import org.freeplane.modes.mindmapmode.MModeController;
 
 class ChangeArrowsInArrowLinkAction extends FreeplaneAction {
 	ArrowLinkModel arrowLink;
@@ -66,6 +65,6 @@ class ChangeArrowsInArrowLinkAction extends FreeplaneAction {
 				getModeController().getMapController().nodeChanged(link.getSource());
 			}
 		};
-		MModeController.getMModeController().execute(actor);
+		getModeController().execute(actor);
 	}
 }

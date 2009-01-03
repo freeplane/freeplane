@@ -27,13 +27,13 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.map.clipboard.ClipboardController;
 import org.freeplane.modes.mindmapmode.MMapController;
-import org.freeplane.modes.mindmapmode.MModeController;
 
 class CutAction extends FreeplaneAction {
 	public CutAction() {
@@ -41,7 +41,7 @@ class CutAction extends FreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final MModeController mMindMapController = MModeController.getMModeController();
+		final ModeController mMindMapController = getModeController();
 		if (Controller.getController().getMapView().getRoot().isSelected()) {
 			Controller.getController().errorMessage(Controller.getText("cannot_delete_root"));
 			return;

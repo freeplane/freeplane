@@ -32,7 +32,6 @@ import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.map.link.ArrowLinkModel;
 import org.freeplane.map.link.LinkController;
-import org.freeplane.modes.mindmapmode.MModeController;
 
 class ColorArrowLinkAction extends FreeplaneAction {
 	ArrowLinkModel arrowLink;
@@ -75,6 +74,6 @@ class ColorArrowLinkAction extends FreeplaneAction {
 				node.getModeController().getMapController().nodeChanged(node);
 			}
 		};
-		MModeController.getMModeController().execute(actor);
+		getModeController().execute(actor);
 	}
 }

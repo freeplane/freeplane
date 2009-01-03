@@ -23,10 +23,10 @@ import java.awt.event.ActionEvent;
 import java.util.List;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.map.link.LinkController;
-import org.freeplane.modes.mindmapmode.MModeController;
 
 /**
  * @author foltin
@@ -39,7 +39,7 @@ class AddLocalLinkAction extends FreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final MModeController modeController = MModeController.getMModeController();
+		final ModeController modeController = getModeController();
 		final List selecteds = modeController.getMapController().getSelectedNodes();
 		if (selecteds.size() < 2) {
 			Controller.getController().errorMessage(

@@ -64,7 +64,7 @@ class ImportLinkedBranchAction extends FreeplaneAction {
 			return;
 		}
 		try {
-			final NodeModel node = ((MMapController) MModeController.getMModeController()
+			final NodeModel node = ((MMapController) getModeController()
 			    .getMapController()).loadTree(map, new File(absolute.getFile()));
 			((MClipboardController) ClipboardController.getController(MModeController
 			    .getMModeController())).paste(node, selected);

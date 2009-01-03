@@ -32,7 +32,6 @@ import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IUndoableActor;
-import org.freeplane.modes.mindmapmode.MModeController;
 
 /**
  * @author foltin
@@ -91,7 +90,7 @@ class RemoveIconAction extends MultipleNodeAction implements IIconInformation {
 				getModeController().getMapController().nodeChanged(node, "icon", null, icon);
 			}
 		};
-		MModeController.getMModeController().execute(actor);
+		getModeController().execute(actor);
 		return node.getIcons().size();
 	}
 }

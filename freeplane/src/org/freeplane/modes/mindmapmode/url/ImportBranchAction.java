@@ -55,7 +55,7 @@ class ImportBranchAction extends FreeplaneAction {
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			try {
 				final MapModel map = parent.getMap();
-				final NodeModel node = ((MMapController) MModeController.getMModeController()
+				final NodeModel node = ((MMapController) getModeController()
 				    .getMapController()).loadTree(map, chooser.getSelectedFile());
 				((MClipboardController) ClipboardController.getController(MModeController
 				    .getMModeController())).paste(node, parent);

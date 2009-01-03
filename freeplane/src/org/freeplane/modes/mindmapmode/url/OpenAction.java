@@ -24,7 +24,6 @@ import java.awt.event.ActionEvent;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.url.UrlManager;
-import org.freeplane.modes.mindmapmode.MModeController;
 
 class OpenAction extends FreeplaneAction {
 	/**
@@ -35,7 +34,7 @@ class OpenAction extends FreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		((MFileManager) UrlManager.getController(MModeController.getMModeController())).open();
+		((MFileManager) UrlManager.getController(getModeController())).open();
 		Controller.getController().getViewController().setTitle();
 	}
 }

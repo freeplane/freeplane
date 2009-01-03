@@ -22,6 +22,7 @@ package org.freeplane.modes.mindmapmode;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.view.swing.map.MapView;
@@ -32,7 +33,7 @@ class ToggleChildrenFoldedAction extends FreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final MModeController modeController = MModeController.getMModeController();
+		final ModeController modeController = getModeController();
 		final NodeModel selected = modeController.getMapController().getSelectedNode();
 		((ToggleFoldedAction) getModeController().getAction("toggleFolded")).toggleFolded(selected
 		    .getModeController().getMapController().childrenUnfolded(selected));

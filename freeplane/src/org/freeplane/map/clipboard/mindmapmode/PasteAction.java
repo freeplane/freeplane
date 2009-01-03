@@ -48,7 +48,6 @@ import org.freeplane.map.clipboard.MindMapNodesSelection;
 import org.freeplane.map.link.LinkController;
 import org.freeplane.map.link.mindmapmode.MLinkController;
 import org.freeplane.modes.mindmapmode.MMapController;
-import org.freeplane.modes.mindmapmode.MModeController;
 
 class PasteAction extends FreeplaneAction {
 	private interface DataFlavorHandler {
@@ -81,7 +80,7 @@ class PasteAction extends FreeplaneAction {
 				textFromClipboard = textFromClipboard.replaceAll("(?i)(?s)<img[^>]*>", "");
 			}
 			textFromClipboard = HtmlTools.unescapeHTMLUnicodeEntity(textFromClipboard);
-			final NodeModel node = MModeController.getMModeController().getMapController().newNode(
+			final NodeModel node = getModeController().getMapController().newNode(
 			    textFromClipboard, Controller.getController().getMap());
 			final Matcher m = PasteAction.HREF_PATTERN.matcher(textFromClipboard);
 			if (m.matches()) {
@@ -107,7 +106,7 @@ class PasteAction extends FreeplaneAction {
 			final List fileList = (List) TransferData;
 			for (final ListIterator it = fileList.listIterator(); it.hasNext();) {
 				final File file = (File) it.next();
-				final NodeModel node = MModeController.getMModeController().getMapController()
+				final NodeModel node = getModeController().getMapController()
 				    .newNode(file.getName(), target.getMap());
 				node.setLeft(isLeft);
 				((MLinkController) LinkController.getController(node.getModeController())).setLink(
@@ -233,7 +232,7 @@ class PasteAction extends FreeplaneAction {
 				((MMapController) getModeController().getMapController()).deleteWithoutUndo(node);
 			}
 		};
-		MModeController.getMModeController().execute(actor);
+		getModeController().execute(actor);
 	}
 
 	/**
@@ -278,7 +277,7 @@ class PasteAction extends FreeplaneAction {
 			}
 			for (final ListIterator e = newNodes.listIterator(); e.hasNext();) {
 				final NodeModel child = (NodeModel) e.next();
-				AttributeController.getController(MModeController.getMModeController())
+				AttributeController.getController(getModeController())
 				    .performRegistrySubtreeAttributes(child);
 			}
 		}
@@ -342,7 +341,7 @@ class PasteAction extends FreeplaneAction {
 					    .firstLetterCapitalized(textParts[textPartIdx].replaceAll("^~*", ""));
 				}
 			}
-			final NodeModel node = MModeController.getMModeController().getMapController().newNode(
+			final NodeModel node = getModeController().getMapController().newNode(
 			    visibleText, parent.getMap());
 			if (textLines.length == 1) {
 				pastedNode = node;

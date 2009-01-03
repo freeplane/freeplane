@@ -46,7 +46,7 @@ class ExportBranchAction extends FreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final NodeModel node = MModeController.getMModeController().getMapController()
+		final NodeModel node = getModeController().getMapController()
 		    .getSelectedNode();
 		if (Controller.getController().getMap() == null || node == null || node.isRoot()) {
 			Controller.getController().getViewController().err("Could not export branch.");
@@ -55,7 +55,7 @@ class ExportBranchAction extends FreeplaneAction {
 		if (Controller.getController().getMap().getFile() == null) {
 			Controller.getController().getViewController().out(
 			    "You must save the current map first!");
-			MModeController.getMModeController().save();
+			((MModeController)getModeController()).save();
 		}
 		JFileChooser chooser;
 		if (Controller.getController().getMap().getFile().getParentFile() != null) {
@@ -69,7 +69,7 @@ class ExportBranchAction extends FreeplaneAction {
 			chooser.addChoosableFileFilter(((MFileManager) UrlManager
 			    .getController(getModeController())).getFileFilter());
 		}
-		final int returnVal = chooser.showSaveDialog(MModeController.getMModeController()
+		final int returnVal = chooser.showSaveDialog(getModeController()
 		    .getMapController().getSelectedView());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File chosenFile = chooser.getSelectedFile();
@@ -89,7 +89,7 @@ class ExportBranchAction extends FreeplaneAction {
 			}
 			if (chosenFile.exists()) {
 				final int overwriteMap = JOptionPane.showConfirmDialog(Controller.getController()
-				    .getMapView().getComponent(), MModeController.getMModeController().getText(
+				    .getMapView().getComponent(), getModeController().getText(
 				    "map_already_exists"), "FreeMind", JOptionPane.YES_NO_OPTION);
 				if (overwriteMap != JOptionPane.YES_OPTION) {
 					return;
@@ -115,13 +115,13 @@ class ExportBranchAction extends FreeplaneAction {
 			((MMapController) getModeController().getMapController()).deleteNode(node);
 			node.setParent(null);
 			node.setFolded(false);
-			final MapModel map = MModeController.getMModeController().getMapController().newMap(
+			final MapModel map = getModeController().getMapController().newMap(
 			    node);
-			((MFileManager) UrlManager.getController(MModeController.getMModeController())).save(
+			((MFileManager) UrlManager.getController(getModeController())).save(
 			    map, chosenFile);
 			final NodeModel newNode = ((MMapController) getModeController().getMapController())
 			    .addNewNode(parent, nodePosition, node.isLeft());
-			((MTextController) TextController.getController(MModeController.getMModeController()))
+			((MTextController) TextController.getController(getModeController()))
 			    .setNodeText(newNode, node.getText());
 			try {
 				final String linkString = UrlManager.toRelativeURL(Controller.getController()

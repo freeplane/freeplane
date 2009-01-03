@@ -29,7 +29,6 @@ import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.map.link.NodeLinks;
-import org.freeplane.modes.mindmapmode.MModeController;
 
 class SetLinkByTextFieldAction extends FreeplaneAction {
 	public SetLinkByTextFieldAction() {
@@ -81,6 +80,6 @@ class SetLinkByTextFieldAction extends FreeplaneAction {
 				getModeController().getMapController().nodeChanged(node);
 			}
 		};
-		MModeController.getMModeController().execute(actor);
+		getModeController().execute(actor);
 	}
 }

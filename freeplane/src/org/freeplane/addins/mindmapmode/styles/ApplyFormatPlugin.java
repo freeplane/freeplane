@@ -57,7 +57,7 @@ public class ApplyFormatPlugin extends FreeplaneAction {
 			final Pattern pattern = formatDialog.getPattern();
 			for (final Iterator iter = selected.iterator(); iter.hasNext();) {
 				final NodeModel node = (NodeModel) iter.next();
-				MPatternController.getController(MModeController.getMModeController())
+				MPatternController.getController((MModeController)getModeController())
 				    .applyPattern(node, pattern);
 			}
 		}

@@ -28,7 +28,6 @@ import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.components.EnterPasswordDialog;
-import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.view.swing.map.MapView;
 
 @ActionDescriptor(tooltip = "accessories/plugins/EnterPassword.properties_documentation", //
@@ -99,7 +98,7 @@ public class EnterPassword extends FreeplaneAction {
 	/**
 	 */
 	private void toggleCryptState(final NodeModel node) {
-		final MModeController mindMapController = MModeController.getMModeController();
+		final ModeController mindMapController = getModeController();
 		final EncryptionModel encNode = EncryptionModel.getModel(node);
 		if (encNode != null) {
 			if (encNode.isAccessible()) {

@@ -156,11 +156,11 @@ class ApplyPatternAction extends MultipleNodeAction {
 			    .getPatternNodeFontBold().getValue()));
 		}
 		if (pattern.getPatternEdgeColor() != null) {
-			((MEdgeController) EdgeController.getController(MModeController.getMModeController()))
+			((MEdgeController) EdgeController.getController(getModeController()))
 			    .setColor(node, TreeXmlReader.xmlToColor(pattern.getPatternEdgeColor().getValue()));
 		}
 		if (pattern.getPatternEdgeStyle() != null) {
-			((MEdgeController) EdgeController.getController(MModeController.getMModeController()))
+			((MEdgeController) EdgeController.getController(getModeController()))
 			    .setStyle(node, pattern.getPatternEdgeStyle().getValue());
 		}
 		final PatternProperty patternEdgeWidth = pattern.getPatternEdgeWidth();
@@ -172,7 +172,7 @@ class ApplyPatternAction extends MultipleNodeAction {
 			else {
 				width = EdgeModel.WIDTH_PARENT;
 			}
-			((MEdgeController) EdgeController.getController(MModeController.getMModeController()))
+			((MEdgeController) EdgeController.getController(getModeController()))
 			    .setWidth(node, width);
 		}
 		if (pattern.getPatternChild() != null && pattern.getPatternChild().getValue() != null) {

@@ -32,7 +32,6 @@ import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.map.text.TextController;
 import org.freeplane.modes.mindmapmode.MMapController;
-import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.view.swing.map.MapView;
 
 class JoinNodesAction extends FreeplaneAction {
@@ -98,7 +97,7 @@ class JoinNodesAction extends FreeplaneAction {
 			isHtml = isHtml || isHtmlNode;
 		}
 		mapView.selectAsTheOnlyOneSelected(mapView.getNodeView(selectedNode));
-		((MTextController) TextController.getController(MModeController.getMModeController()))
+		((MTextController) TextController.getController(getModeController()))
 		    .setNodeText(selectedNode, newContent);
 	}
 }

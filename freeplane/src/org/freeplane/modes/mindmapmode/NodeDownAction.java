@@ -22,6 +22,7 @@ package org.freeplane.modes.mindmapmode;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
 
@@ -32,7 +33,7 @@ class NodeDownAction extends FreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final MModeController modeController = MModeController.getMModeController();
+		final ModeController modeController = getModeController();
 		((MMapController) modeController.getMapController()).moveNodes(modeController
 		    .getMapController().getSelectedNode(), modeController.getMapController()
 		    .getSelectedNodes(), 1);

@@ -93,7 +93,7 @@ class NewChildAction extends FreeplaneAction {
 	}
 
 	public NodeModel addNewNode(final NodeModel parent, final int index, final boolean newNodeIsLeft) {
-		final NodeModel newNode = MModeController.getMModeController().getMapController().newNode(
+		final NodeModel newNode = getModeController().getMapController().newNode(
 		    "", parent.getMap());
 		newNode.setLeft(newNodeIsLeft);
 		final IUndoableActor actor = new IUndoableActor() {
@@ -111,7 +111,7 @@ class NewChildAction extends FreeplaneAction {
 				    .deleteWithoutUndo(newNode);
 			}
 		};
-		MModeController.getMModeController().execute(actor);
+		getModeController().execute(actor);
 		return newNode;
 	}
 }

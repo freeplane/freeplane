@@ -25,7 +25,6 @@ import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.map.text.TextController;
-import org.freeplane.modes.mindmapmode.MModeController;
 
 class UsePlainTextAction extends MultipleNodeAction {
 	public UsePlainTextAction() {
@@ -36,7 +35,7 @@ class UsePlainTextAction extends MultipleNodeAction {
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
 		final String nodeText = node.getText();
 		if (HtmlTools.isHtmlNode(nodeText)) {
-			((MTextController) TextController.getController(MModeController.getMModeController()))
+			((MTextController) TextController.getController(getModeController()))
 			    .setNodeText(node, HtmlTools.htmlToPlain(nodeText));
 		}
 	}

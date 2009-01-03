@@ -60,7 +60,7 @@ class EdgeWidthAction extends MultipleNodeAction {
 	 */
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		((MEdgeController) EdgeController.getController(MModeController.getMModeController()))
+		((MEdgeController) EdgeController.getController(getModeController()))
 		    .setWidth(node, mWidth);
 	}
 }

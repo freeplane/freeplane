@@ -67,7 +67,7 @@ class ImportLinkedBranchWithoutRootAction extends FreeplaneAction {
 			return;
 		}
 		try {
-			final NodeModel node = ((MMapController) MModeController.getMModeController()
+			final NodeModel node = ((MMapController) getModeController()
 			    .getMapController()).loadTree(map, new File(absolute.getFile()));
 			for (final ListIterator i = node.getModeController().getMapController()
 			    .childrenUnfolded(node); i.hasNext();) {

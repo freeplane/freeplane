@@ -25,6 +25,7 @@ import java.util.Iterator;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.FreeplaneAction;
@@ -37,7 +38,7 @@ class DeleteAction extends FreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final MModeController modeController = MModeController.getMModeController();
+		final ModeController modeController = getModeController();
 		for (final Iterator iterator = modeController.getMapController().getSelectedNodes()
 		    .iterator(); iterator.hasNext();) {
 			final NodeModel node = (NodeModel) iterator.next();
@@ -87,7 +88,7 @@ class DeleteAction extends FreeplaneAction {
 		final NodeModel parentNode = node.getParentNode();
 		final int index = parentNode.getIndex(node);
 		final IUndoableActor actor = createActor(index, parentNode, node);
-		MModeController.getMModeController().execute(actor);
+		getModeController().execute(actor);
 	}
 
 	void deleteWithoutUndo(final NodeModel node) {

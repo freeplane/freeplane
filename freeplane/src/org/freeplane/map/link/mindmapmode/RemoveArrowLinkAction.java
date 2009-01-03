@@ -26,7 +26,6 @@ import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.map.link.ArrowLinkModel;
 import org.freeplane.map.link.NodeLinks;
-import org.freeplane.modes.mindmapmode.MModeController;
 
 class RemoveArrowLinkAction extends FreeplaneAction {
 	private ArrowLinkModel mArrowLink;
@@ -75,7 +74,7 @@ class RemoveArrowLinkAction extends FreeplaneAction {
 				source.getModeController().getMapController().nodeChanged(source);
 			}
 		};
-		MModeController.getMModeController().execute(actor);
+		getModeController().execute(actor);
 	}
 
 	/**
