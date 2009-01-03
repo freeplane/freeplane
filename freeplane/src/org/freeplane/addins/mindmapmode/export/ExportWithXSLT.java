@@ -53,7 +53,7 @@ import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Tools;
-import org.freeplane.modes.mindmapmode.MModeController;
+import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;

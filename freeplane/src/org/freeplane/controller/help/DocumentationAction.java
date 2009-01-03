@@ -30,7 +30,7 @@ import javax.swing.SwingUtilities;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.modes.browsemode.BModeController;
+import org.freeplane.features.browsemode.BModeController;
 
 class DocumentationAction extends AbstractAction {
 	DocumentationAction() {

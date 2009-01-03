@@ -33,10 +33,10 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.core.util.Tools;
 import org.freeplane.core.util.Tools.BooleanHolder;
+import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.map.pattern.mindmapnode.IExternalPatternAction;
 import org.freeplane.map.pattern.mindmapnode.Pattern;
 import org.freeplane.map.pattern.mindmapnode.ScriptEditorProperty;
-import org.freeplane.modes.mindmapmode.MModeController;
 
 import plugins.script.ScriptEditorPanel.IScriptModel;
 import plugins.script.ScriptEditorPanel.ScriptHolder;

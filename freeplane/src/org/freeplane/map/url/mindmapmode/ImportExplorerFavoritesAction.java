@@ -30,11 +30,11 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.url.UrlManager;
+import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.map.link.LinkController;
 import org.freeplane.map.link.mindmapmode.MLinkController;
 import org.freeplane.map.text.TextController;
 import org.freeplane.map.text.mindmapmode.MTextController;
-import org.freeplane.modes.mindmapmode.MMapController;
 
 class ImportExplorerFavoritesAction extends FreeplaneAction {
 	public ImportExplorerFavoritesAction() {

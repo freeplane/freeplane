@@ -27,8 +27,8 @@ import javax.swing.UIManager;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.AppletViewController;
 import org.freeplane.core.resources.AppletResourceController;
-import org.freeplane.modes.browsemode.BModeController;
-import org.freeplane.modes.browsemode.BModeControllerFactory;
+import org.freeplane.features.browsemode.BModeController;
+import org.freeplane.features.browsemode.BModeControllerFactory;
 
 public class FreeMindApplet extends JApplet {
 	private AppletViewController appletViewController;

@@ -26,9 +26,9 @@ import javax.swing.JOptionPane;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.features.ui.UserInputListenerFactory;
 import org.freeplane.map.pattern.mindmapnode.MPatternController;
 import org.freeplane.map.pattern.mindmapnode.StylePatternFactory;
-import org.freeplane.modes.ui.UserInputListenerFactory;
 
 @ActionDescriptor(tooltip = "accessories/plugins/ManagePatterns.properties_documentation", //
 name = "accessories/plugins/ManagePatterns.properties_name", //

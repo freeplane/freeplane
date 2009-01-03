@@ -30,8 +30,8 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.util.HtmlTools;
+import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.map.text.TextController;
-import org.freeplane.modes.mindmapmode.MMapController;
 import org.freeplane.view.swing.map.MapView;
 
 class JoinNodesAction extends FreeplaneAction {

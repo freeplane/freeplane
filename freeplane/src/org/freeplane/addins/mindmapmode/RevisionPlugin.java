@@ -29,9 +29,9 @@ import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeChangeEvent;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.map.nodestyle.NodeStyleController;
 import org.freeplane.map.nodestyle.mindmapmode.MNodeStyleController;
-import org.freeplane.modes.mindmapmode.MModeController;
 
 /**
  * @author foltin

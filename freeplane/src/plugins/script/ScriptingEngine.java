@@ -40,12 +40,12 @@ import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.util.Tools;
 import org.freeplane.core.util.Tools.BooleanHolder;
+import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.map.attribute.AttributeController;
 import org.freeplane.map.attribute.NodeAttributeTableModel;
 import org.freeplane.map.attribute.mindmapnode.MAttributeController;
 import org.freeplane.map.text.TextController;
 import org.freeplane.map.text.mindmapmode.MTextController;
-import org.freeplane.modes.mindmapmode.MModeController;
 import org.freeplane.startup.FreeMindSecurityManager;
 
 /**

@@ -32,12 +32,12 @@ import org.freeplane.core.map.MapModel;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.undo.IUndoableActor;
+import org.freeplane.features.mindmapmode.MModeController;
+import org.freeplane.features.ui.UserInputListenerFactory;
 import org.freeplane.map.link.ArrowLinkModel;
 import org.freeplane.map.link.LinkController;
 import org.freeplane.map.link.LinkModel;
 import org.freeplane.map.link.MapLinks;
-import org.freeplane.modes.mindmapmode.MModeController;
-import org.freeplane.modes.ui.UserInputListenerFactory;
 
 /**
  * @author Dimitry Polivaev

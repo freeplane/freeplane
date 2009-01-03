@@ -35,11 +35,11 @@ import javax.swing.JOptionPane;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
+import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.map.clipboard.ClipboardController;
 import org.freeplane.map.clipboard.MindMapNodesSelection;
 import org.freeplane.map.link.LinkController;
 import org.freeplane.map.link.mindmapmode.MLinkController;
-import org.freeplane.modes.mindmapmode.MMapController;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.NodeView;
 

@@ -30,11 +30,11 @@ import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.util.Tools.BooleanHolder;
+import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.map.attribute.Attribute;
 import org.freeplane.map.attribute.AttributeController;
 import org.freeplane.map.attribute.NodeAttributeTableModel;
 import org.freeplane.map.attribute.mindmapnode.MAttributeController;
-import org.freeplane.modes.mindmapmode.MModeController;
 
 import plugins.script.ScriptEditorPanel.IScriptModel;
 import plugins.script.ScriptEditorPanel.ScriptHolder;

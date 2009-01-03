@@ -29,9 +29,9 @@ import org.freeplane.core.map.MapModel;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.url.UrlManager;
+import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.map.clipboard.ClipboardController;
 import org.freeplane.map.clipboard.mindmapmode.MClipboardController;
-import org.freeplane.modes.mindmapmode.MMapController;
 
 class ImportBranchAction extends FreeplaneAction {
 	public ImportBranchAction() {

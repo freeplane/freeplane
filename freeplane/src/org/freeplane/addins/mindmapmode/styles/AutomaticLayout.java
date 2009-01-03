@@ -53,11 +53,11 @@ import org.freeplane.core.resources.ui.OptionString;
 import org.freeplane.core.resources.ui.PropertyBean;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.IndexedTree;
+import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.map.pattern.mindmapnode.MPatternController;
 import org.freeplane.map.pattern.mindmapnode.Pattern;
 import org.freeplane.map.pattern.mindmapnode.Patterns;
 import org.freeplane.map.pattern.mindmapnode.StylePatternFactory;
-import org.freeplane.modes.mindmapmode.MModeController;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 

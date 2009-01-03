@@ -28,7 +28,7 @@ import java.util.Vector;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.MapModel;
 import org.freeplane.core.url.UrlManager;
-import org.freeplane.modes.mindmapmode.MMapModel;
+import org.freeplane.features.mindmapmode.MMapModel;
 
 public class DoAutomaticSave extends TimerTask {
 	/**

@@ -27,7 +27,7 @@ import javax.swing.JOptionPane;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
-import org.freeplane.modes.mindmapmode.MModeController;
+import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.view.swing.map.MapView;
 
 /**

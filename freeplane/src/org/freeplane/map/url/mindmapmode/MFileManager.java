@@ -39,8 +39,8 @@ import org.freeplane.core.map.MapModel;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Tools;
-import org.freeplane.modes.mindmapmode.MMapController;
-import org.freeplane.modes.mindmapmode.MMapModel;
+import org.freeplane.features.mindmapmode.MMapController;
+import org.freeplane.features.mindmapmode.MMapModel;
 import org.freeplane.view.swing.map.MapView;
 
 /**
