@@ -17,38 +17,24 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.controller.help;
+package org.freeplane.features.controller.help;
 
 import java.awt.event.ActionEvent;
-import java.net.URL;
 
 import javax.swing.AbstractAction;
+import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 
-class KeyDocumentationAction extends AbstractAction {
-	KeyDocumentationAction() {
-		MenuBuilder.setLabelAndMnemonic(this, Controller.getText("KeyDoc"));
+class LicenseAction extends AbstractAction {
+	LicenseAction() {
+		MenuBuilder.setLabelAndMnemonic(this, Controller.getText("license"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		String urlText = Controller.getText("pdfKeyDocLocation");
-		urlText = ResourceController.removeTranslateComment(urlText);
-		try {
-			if (urlText != null && urlText.startsWith(".")) {
-				urlText = HelpController.getController().convertLocalLink(urlText);
-			}
-			if (urlText != null && urlText != "") {
-				URL url = null;
-				url = new URL(urlText);
-				Controller.getController().getViewController().openDocument(url);
-			}
-		}
-		catch (final Exception e2) {
-			org.freeplane.core.util.Tools.logException(e2);
-			return;
-		}
+		JOptionPane.showMessageDialog(Controller.getController().getMapView().getComponent(),
+		    Controller.getText("license_text"), Controller.getText("license"),
+		    JOptionPane.INFORMATION_MESSAGE);
 	}
 }

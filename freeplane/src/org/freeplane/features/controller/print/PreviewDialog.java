@@ -12,7 +12,7 @@
  * program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave,
  * Cambridge, MA 02139, USA.
  */
-package org.freeplane.controller.print;
+package org.freeplane.features.controller.print;
 
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;

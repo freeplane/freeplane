@@ -12,7 +12,7 @@
  * to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139,
  * USA.
  */
-package org.freeplane.controller.print;
+package org.freeplane.features.controller.print;
 
 import java.awt.Color;
 import java.awt.Dimension;

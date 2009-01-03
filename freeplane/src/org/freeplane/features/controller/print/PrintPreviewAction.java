@@ -17,27 +17,32 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.controller.help;
+package org.freeplane.features.controller.print;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.view.swing.map.MapView;
 
-class AboutAction extends AbstractAction {
-	/**
-	 *
-	 */
-	AboutAction() {
-		MenuBuilder.setLabelAndMnemonic(this, Controller.getText("about"));
+class PrintPreviewAction extends AbstractPrintAction {
+	PrintPreviewAction(final PrintController controller) {
+		super(controller);
+		MenuBuilder.setLabelAndMnemonic(this, Controller.getText("print_preview"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		JOptionPane.showMessageDialog(Controller.getController().getViewController().getViewport(),
-		    Controller.getText("about_text") + Controller.getController().getFreemindVersion(),
-		    Controller.getText("about"), JOptionPane.INFORMATION_MESSAGE);
+		if (!getPrintController().acquirePrinterJobAndPageFormat()) {
+			return;
+		}
+		final MapView mapView = Controller.getController().getMapView();
+		final PreviewDialog previewDialog = new PreviewDialog(Controller
+		    .getText("print_preview_title"), mapView);
+		previewDialog.pack();
+		previewDialog.setLocationRelativeTo(JOptionPane
+		    .getFrameForComponent(mapView.getComponent()));
+		previewDialog.setVisible(true);
 	}
 }

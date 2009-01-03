@@ -17,24 +17,24 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.controller.help;
+package org.freeplane.features.controller.print;
 
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
-import javax.swing.JOptionPane;
 
-import org.freeplane.core.controller.Controller;
-import org.freeplane.core.ui.MenuBuilder;
+class ZoomAction extends AbstractAction {
+	protected Preview preview;
+	protected double zoomStep;
 
-class LicenseAction extends AbstractAction {
-	LicenseAction() {
-		MenuBuilder.setLabelAndMnemonic(this, Controller.getText("license"));
+	public ZoomAction(final Preview preview, final double zoomStep) {
+		super();
+		this.preview = preview;
+		this.zoomStep = zoomStep;
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		JOptionPane.showMessageDialog(Controller.getController().getMapView().getComponent(),
-		    Controller.getText("license_text"), Controller.getText("license"),
-		    JOptionPane.INFORMATION_MESSAGE);
+		preview.changeZoom(zoomStep);
+		preview.repaint();
 	}
 }

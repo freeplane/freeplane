@@ -26,8 +26,6 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import org.freeplane.controller.help.HelpController;
-import org.freeplane.controller.print.PrintController;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.frame.ApplicationViewController;
@@ -39,6 +37,8 @@ import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Tools;
 import org.freeplane.features.browsemode.BModeControllerFactory;
 import org.freeplane.features.common.attribute.ModelessAttributeController;
+import org.freeplane.features.controller.help.HelpController;
+import org.freeplane.features.controller.print.PrintController;
 import org.freeplane.features.filemode.FModeControllerFactory;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.MModeControllerFactory;
