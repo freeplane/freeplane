@@ -28,8 +28,8 @@ import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.core.undo.IUndoableActor;
-import org.freeplane.map.nodestyle.NodeStyleController;
-import org.freeplane.map.nodestyle.NodeStyleModel;
+import org.freeplane.features.common.nodestyle.NodeStyleController;
+import org.freeplane.features.common.nodestyle.NodeStyleModel;
 
 /**
  * @author Dimitry Polivaev

@@ -27,8 +27,8 @@ import java.util.Vector;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.MultipleNodeAction;
+import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.mindmapmode.clipboard.MClipboardController;
-import org.freeplane.map.clipboard.ClipboardController;
 
 /**
  * @author foltin

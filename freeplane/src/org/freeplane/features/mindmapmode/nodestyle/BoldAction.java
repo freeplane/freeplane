@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.core.ui.SelectableAction;
-import org.freeplane.map.nodestyle.NodeStyleController;
+import org.freeplane.features.common.nodestyle.NodeStyleController;
 
 @SelectableAction(checkOnNodeChange = true)
 class BoldAction extends MultipleNodeAction {

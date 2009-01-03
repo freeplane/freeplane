@@ -30,8 +30,8 @@ import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.mindmapmode.clipboard.MClipboardController;
-import org.freeplane.map.clipboard.ClipboardController;
 
 /**
  * @author foltin

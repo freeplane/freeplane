@@ -30,11 +30,11 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.url.UrlManager;
+import org.freeplane.features.common.link.LinkController;
+import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.features.mindmapmode.text.MTextController;
-import org.freeplane.map.link.LinkController;
-import org.freeplane.map.text.TextController;
 
 class ImportFolderStructureAction extends FreeplaneAction {
 	public ImportFolderStructureAction() {

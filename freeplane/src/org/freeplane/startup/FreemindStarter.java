@@ -38,10 +38,10 @@ import org.freeplane.core.resources.ApplicationResourceController;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Tools;
 import org.freeplane.features.browsemode.BModeControllerFactory;
+import org.freeplane.features.common.attribute.ModelessAttributeController;
 import org.freeplane.features.filemode.FModeControllerFactory;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.MModeControllerFactory;
-import org.freeplane.map.attribute.ModelessAttributeController;
 
 public class FreemindStarter {
 	public static final String LOAD_LAST_MAP = "load_last_map";

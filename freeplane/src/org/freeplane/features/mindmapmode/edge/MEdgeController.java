@@ -25,8 +25,8 @@ import java.util.ListIterator;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.undo.IUndoableActor;
-import org.freeplane.map.edge.EdgeController;
-import org.freeplane.map.edge.EdgeModel;
+import org.freeplane.features.common.edge.EdgeController;
+import org.freeplane.features.common.edge.EdgeModel;
 
 /**
  * @author Dimitry Polivaev

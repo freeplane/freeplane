@@ -62,10 +62,10 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.ui.IFreemindPropertyListener;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.map.link.ArrowLinkModel;
-import org.freeplane.map.link.LinkController;
-import org.freeplane.map.link.LinkModel;
-import org.freeplane.map.link.NodeLinks;
+import org.freeplane.features.common.link.ArrowLinkModel;
+import org.freeplane.features.common.link.LinkController;
+import org.freeplane.features.common.link.LinkModel;
+import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.view.swing.map.link.ArrowLinkView;
 
 /**

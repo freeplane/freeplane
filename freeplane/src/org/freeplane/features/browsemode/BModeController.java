@@ -27,11 +27,11 @@ import javax.swing.ImageIcon;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
+import org.freeplane.features.common.link.LinkController;
+import org.freeplane.features.common.link.NodeLinks;
+import org.freeplane.features.common.note.NodeNoteBase;
+import org.freeplane.features.common.note.NoteModel;
 import org.freeplane.features.ui.UserInputListenerFactory;
-import org.freeplane.map.link.LinkController;
-import org.freeplane.map.link.NodeLinks;
-import org.freeplane.map.note.NodeNoteBase;
-import org.freeplane.map.note.NoteModel;
 import org.freeplane.view.swing.map.MainView;
 
 public class BModeController extends ModeController {

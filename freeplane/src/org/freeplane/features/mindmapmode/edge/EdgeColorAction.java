@@ -27,7 +27,7 @@ import org.freeplane.core.frame.ColorTracker;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.MultipleNodeAction;
-import org.freeplane.map.edge.EdgeController;
+import org.freeplane.features.common.edge.EdgeController;
 
 class EdgeColorAction extends MultipleNodeAction {
 	private Color actionColor;

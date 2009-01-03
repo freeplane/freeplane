@@ -30,8 +30,8 @@ import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.undo.IUndoableActor;
-import org.freeplane.map.link.ArrowLinkModel;
-import org.freeplane.map.link.LinkController;
+import org.freeplane.features.common.link.ArrowLinkModel;
+import org.freeplane.features.common.link.LinkController;
 
 class ColorArrowLinkAction extends FreeplaneAction {
 	ArrowLinkModel arrowLink;

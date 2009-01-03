@@ -27,9 +27,9 @@ import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.MultipleNodeAction;
-import org.freeplane.map.pattern.mindmapnode.MPatternController;
-import org.freeplane.map.pattern.mindmapnode.Pattern;
-import org.freeplane.map.pattern.mindmapnode.StylePatternFactory;
+import org.freeplane.features.mindmapnode.pattern.MPatternController;
+import org.freeplane.features.mindmapnode.pattern.Pattern;
+import org.freeplane.features.mindmapnode.pattern.StylePatternFactory;
 
 /**
  * @author foltin

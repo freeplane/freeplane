@@ -42,12 +42,12 @@ import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.core.util.Tools;
+import org.freeplane.features.common.attribute.AttributeController;
+import org.freeplane.features.common.clipboard.ClipboardController;
+import org.freeplane.features.common.clipboard.MindMapNodesSelection;
+import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.features.mindmapmode.link.MLinkController;
-import org.freeplane.map.attribute.AttributeController;
-import org.freeplane.map.clipboard.ClipboardController;
-import org.freeplane.map.clipboard.MindMapNodesSelection;
-import org.freeplane.map.link.LinkController;
 
 class PasteAction extends FreeplaneAction {
 	private interface DataFlavorHandler {

@@ -46,12 +46,12 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.map.attribute.NodeAttributeTableModel;
-import org.freeplane.map.attribute.view.AttributeView;
-import org.freeplane.map.cloud.CloudController;
-import org.freeplane.map.cloud.CloudModel;
-import org.freeplane.map.nodelocation.LocationModel;
-import org.freeplane.map.nodestyle.NodeStyleController;
+import org.freeplane.features.common.attribute.NodeAttributeTableModel;
+import org.freeplane.features.common.attribute.view.AttributeView;
+import org.freeplane.features.common.cloud.CloudController;
+import org.freeplane.features.common.cloud.CloudModel;
+import org.freeplane.features.common.nodelocation.LocationModel;
+import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.view.swing.map.cloud.CloudView;
 import org.freeplane.view.swing.map.edge.EdgeView;
 

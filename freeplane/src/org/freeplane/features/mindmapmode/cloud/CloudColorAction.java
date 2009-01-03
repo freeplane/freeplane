@@ -31,8 +31,8 @@ import org.freeplane.core.frame.ColorTracker;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.MultipleNodeAction;
-import org.freeplane.map.cloud.CloudController;
-import org.freeplane.map.cloud.CloudModel;
+import org.freeplane.features.common.cloud.CloudController;
+import org.freeplane.features.common.cloud.CloudModel;
 
 class CloudColorAction extends MultipleNodeAction implements PopupMenuListener {
 	private Color actionColor;

@@ -51,10 +51,10 @@ import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.components.FreemindMenuBar;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlTools;
-import org.freeplane.map.edge.EdgeController;
-import org.freeplane.map.link.NodeLinks;
-import org.freeplane.map.nodestyle.NodeStyleController;
-import org.freeplane.map.nodestyle.NodeStyleModel;
+import org.freeplane.features.common.edge.EdgeController;
+import org.freeplane.features.common.link.NodeLinks;
+import org.freeplane.features.common.nodestyle.NodeStyleController;
+import org.freeplane.features.common.nodestyle.NodeStyleModel;
 
 /**
  * Base class for all node views.

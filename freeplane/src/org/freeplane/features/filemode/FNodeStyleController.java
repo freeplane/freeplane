@@ -25,7 +25,7 @@ import org.freeplane.core.map.ExclusivePropertyChain;
 import org.freeplane.core.map.IPropertyGetter;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
-import org.freeplane.map.nodestyle.NodeStyleController;
+import org.freeplane.features.common.nodestyle.NodeStyleController;
 
 /**
  * @author Dimitry Polivaev

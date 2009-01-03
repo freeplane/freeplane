@@ -41,9 +41,9 @@ import org.freeplane.core.map.ModeController;
 import org.freeplane.core.resources.WindowConfigurationStorage;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.map.pattern.mindmapnode.Pattern;
-import org.freeplane.map.pattern.mindmapnode.StylePatternPanel;
-import org.freeplane.map.pattern.mindmapnode.StylePatternPanel.StylePatternPanelType;
+import org.freeplane.features.mindmapnode.pattern.Pattern;
+import org.freeplane.features.mindmapnode.pattern.StylePatternPanel;
+import org.freeplane.features.mindmapnode.pattern.StylePatternPanel.StylePatternPanelType;
 
 /** */
 class ChooseFormatPopupDialog extends JDialog implements KeyListener {

@@ -32,8 +32,8 @@ import java.util.LinkedList;
 import java.util.Vector;
 
 import org.freeplane.core.map.NodeModel;
-import org.freeplane.map.cloud.CloudController;
-import org.freeplane.map.cloud.CloudModel;
+import org.freeplane.features.common.cloud.CloudController;
+import org.freeplane.features.common.cloud.CloudModel;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 

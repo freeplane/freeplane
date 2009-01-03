@@ -32,8 +32,8 @@ import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
+import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.mindmapmode.MMapController;
-import org.freeplane.map.clipboard.ClipboardController;
 
 class CutAction extends FreeplaneAction {
 	public CutAction() {

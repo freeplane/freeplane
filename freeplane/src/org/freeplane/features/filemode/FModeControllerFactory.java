@@ -26,14 +26,14 @@ import org.freeplane.core.map.IPropertyGetter;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.components.FreeMindToolBar;
 import org.freeplane.core.url.UrlManager;
+import org.freeplane.features.common.clipboard.ClipboardController;
+import org.freeplane.features.common.edge.EdgeController;
+import org.freeplane.features.common.icon.IconController;
+import org.freeplane.features.common.link.LinkController;
+import org.freeplane.features.common.nodelocation.LocationController;
+import org.freeplane.features.common.nodestyle.NodeStyleController;
+import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.ui.UserInputListenerFactory;
-import org.freeplane.map.clipboard.ClipboardController;
-import org.freeplane.map.edge.EdgeController;
-import org.freeplane.map.icon.IconController;
-import org.freeplane.map.link.LinkController;
-import org.freeplane.map.nodelocation.LocationController;
-import org.freeplane.map.nodestyle.NodeStyleController;
-import org.freeplane.map.text.TextController;
 
 /**
  * @author Dimitry Polivaev 24.11.2008

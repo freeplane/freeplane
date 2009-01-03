@@ -22,7 +22,7 @@ package org.freeplane.features.mindmapmode.text;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.FreeplaneAction;
-import org.freeplane.map.text.TextController;
+import org.freeplane.features.common.text.TextController;
 
 class EditLongAction extends FreeplaneAction {
 	/**

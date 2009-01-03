@@ -31,8 +31,8 @@ import javax.swing.SwingConstants;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.INodeSelectionListener;
 import org.freeplane.core.map.NodeModel;
-import org.freeplane.map.note.NodeNoteBase;
-import org.freeplane.map.note.NoteModel;
+import org.freeplane.features.common.note.NodeNoteBase;
+import org.freeplane.features.common.note.NoteModel;
 import org.freeplane.view.swing.map.NodeView;
 
 /**

@@ -25,9 +25,9 @@ import java.io.File;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
+import org.freeplane.features.common.link.LinkController;
+import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.ui.UserInputListenerFactory;
-import org.freeplane.map.link.LinkController;
-import org.freeplane.map.link.NodeLinks;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.NodeView;
 

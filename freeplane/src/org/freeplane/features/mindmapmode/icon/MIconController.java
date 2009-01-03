@@ -46,9 +46,9 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.FreeMindToolBar;
 import org.freeplane.core.ui.components.FreemindMenuBar;
 import org.freeplane.core.undo.IUndoableActor;
+import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.ui.UserInputListenerFactory;
-import org.freeplane.map.icon.IconController;
 
 /**
  * @author Dimitry Polivaev

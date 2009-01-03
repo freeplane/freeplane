@@ -23,8 +23,8 @@ import javax.swing.text.html.HTMLDocument;
 
 import org.freeplane.core.map.INodeSelectionListener;
 import org.freeplane.core.map.NodeModel;
+import org.freeplane.features.common.note.NoteModel;
 import org.freeplane.features.mindmapmode.note.MNoteController.NoteDocumentListener;
-import org.freeplane.map.note.NoteModel;
 import org.freeplane.view.swing.map.NodeView;
 
 final class NoteManager implements INodeSelectionListener {

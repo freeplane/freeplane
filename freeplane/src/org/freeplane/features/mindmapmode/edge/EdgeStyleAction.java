@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.MultipleNodeAction;
-import org.freeplane.map.edge.EdgeController;
+import org.freeplane.features.common.edge.EdgeController;
 
 class EdgeStyleAction extends MultipleNodeAction {
 	final private String mStyle;

@@ -59,11 +59,11 @@ import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.map.pattern.mindmapnode.MPatternController;
-import org.freeplane.map.pattern.mindmapnode.Pattern;
-import org.freeplane.map.pattern.mindmapnode.StylePatternFactory;
-import org.freeplane.map.pattern.mindmapnode.StylePatternPanel;
-import org.freeplane.map.pattern.mindmapnode.StylePatternPanel.StylePatternPanelType;
+import org.freeplane.features.mindmapnode.pattern.MPatternController;
+import org.freeplane.features.mindmapnode.pattern.Pattern;
+import org.freeplane.features.mindmapnode.pattern.StylePatternFactory;
+import org.freeplane.features.mindmapnode.pattern.StylePatternPanel;
+import org.freeplane.features.mindmapnode.pattern.StylePatternPanel.StylePatternPanelType;
 
 import com.jgoodies.forms.factories.ButtonBarFactory;
 

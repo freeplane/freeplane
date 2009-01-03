@@ -50,8 +50,8 @@ import org.freeplane.core.map.MapModel;
 import org.freeplane.core.map.MindIcon;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.map.attribute.AttributeRegistry;
-import org.freeplane.map.attribute.AttributeRegistryElement;
+import org.freeplane.features.common.attribute.AttributeRegistry;
+import org.freeplane.features.common.attribute.AttributeRegistryElement;
 import org.freeplane.view.swing.map.MapView;
 
 class ImportAttributesDialog extends JDialog implements TreeSelectionListener {

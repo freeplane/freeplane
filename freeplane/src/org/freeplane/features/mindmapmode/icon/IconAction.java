@@ -32,7 +32,7 @@ import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.map.icon.IconController;
+import org.freeplane.features.common.icon.IconController;
 
 class IconAction extends MultipleNodeAction implements IIconInformation {
 	final private MindIcon icon;

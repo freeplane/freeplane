@@ -27,10 +27,10 @@ import java.awt.LayoutManager;
 import javax.swing.JComponent;
 
 import org.freeplane.core.map.NodeModel;
-import org.freeplane.map.edge.EdgeController;
-import org.freeplane.map.edge.EdgeModel;
-import org.freeplane.map.nodestyle.NodeStyleController;
-import org.freeplane.map.nodestyle.NodeStyleModel;
+import org.freeplane.features.common.edge.EdgeController;
+import org.freeplane.features.common.edge.EdgeModel;
+import org.freeplane.features.common.nodestyle.NodeStyleController;
+import org.freeplane.features.common.nodestyle.NodeStyleModel;
 import org.freeplane.view.swing.map.edge.BezierEdgeView;
 import org.freeplane.view.swing.map.edge.EdgeView;
 import org.freeplane.view.swing.map.edge.LinearEdgeView;

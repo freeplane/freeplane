@@ -25,8 +25,8 @@ import java.awt.event.ActionEvent;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.MultipleNodeAction;
-import org.freeplane.map.nodestyle.NodeStyleController;
-import org.freeplane.map.nodestyle.NodeStyleModel;
+import org.freeplane.features.common.nodestyle.NodeStyleController;
+import org.freeplane.features.common.nodestyle.NodeStyleModel;
 import org.freeplane.view.swing.map.MapView;
 
 /**

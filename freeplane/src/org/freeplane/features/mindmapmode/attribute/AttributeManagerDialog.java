@@ -47,7 +47,7 @@ import org.freeplane.core.filter.util.IListModel;
 import org.freeplane.core.frame.IMapViewChangeListener;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.map.attribute.AttributeRegistry;
+import org.freeplane.features.common.attribute.AttributeRegistry;
 import org.freeplane.view.swing.map.MapView;
 
 /**

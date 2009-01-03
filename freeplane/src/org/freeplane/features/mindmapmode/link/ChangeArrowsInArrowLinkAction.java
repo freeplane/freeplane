@@ -23,7 +23,7 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.undo.IUndoableActor;
-import org.freeplane.map.link.ArrowLinkModel;
+import org.freeplane.features.common.link.ArrowLinkModel;
 
 class ChangeArrowsInArrowLinkAction extends FreeplaneAction {
 	ArrowLinkModel arrowLink;

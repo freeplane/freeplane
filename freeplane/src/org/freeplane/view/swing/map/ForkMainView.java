@@ -25,8 +25,8 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 
 import org.freeplane.core.map.NodeModel;
-import org.freeplane.map.edge.EdgeController;
-import org.freeplane.map.nodestyle.NodeStyleModel;
+import org.freeplane.features.common.edge.EdgeController;
+import org.freeplane.features.common.nodestyle.NodeStyleModel;
 
 class ForkMainView extends MainView {
 	/**

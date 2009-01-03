@@ -28,8 +28,8 @@ import java.awt.Point;
 import java.awt.Stroke;
 
 import org.freeplane.core.map.NodeModel;
-import org.freeplane.map.edge.EdgeController;
-import org.freeplane.map.nodestyle.NodeStyleModel;
+import org.freeplane.features.common.edge.EdgeController;
+import org.freeplane.features.common.nodestyle.NodeStyleModel;
 
 class BubbleMainView extends MainView {
 	final static Stroke DEF_STROKE = new BasicStroke();

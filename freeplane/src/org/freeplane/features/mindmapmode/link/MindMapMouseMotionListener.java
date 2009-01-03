@@ -25,8 +25,8 @@ import java.awt.event.MouseEvent;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.ui.IMapMouseReceiver;
-import org.freeplane.map.link.ArrowLinkModel;
-import org.freeplane.map.link.LinkController;
+import org.freeplane.features.common.link.ArrowLinkModel;
+import org.freeplane.features.common.link.LinkController;
 import org.freeplane.view.swing.map.MapView;
 
 /** */

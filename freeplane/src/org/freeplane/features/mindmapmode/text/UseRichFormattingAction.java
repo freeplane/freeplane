@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.core.util.HtmlTools;
-import org.freeplane.map.text.TextController;
+import org.freeplane.features.common.text.TextController;
 
 class UseRichFormattingAction extends MultipleNodeAction {
 	public UseRichFormattingAction() {

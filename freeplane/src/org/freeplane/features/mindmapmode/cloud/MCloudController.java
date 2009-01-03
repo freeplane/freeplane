@@ -24,8 +24,8 @@ import java.awt.Color;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.undo.IUndoableActor;
-import org.freeplane.map.cloud.CloudController;
-import org.freeplane.map.cloud.CloudModel;
+import org.freeplane.features.common.cloud.CloudController;
+import org.freeplane.features.common.cloud.CloudModel;
 
 /**
  * @author Dimitry Polivaev

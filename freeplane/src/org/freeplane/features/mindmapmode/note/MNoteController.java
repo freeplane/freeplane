@@ -39,8 +39,8 @@ import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IUndoableActor;
-import org.freeplane.map.note.NoteController;
-import org.freeplane.map.note.NoteModel;
+import org.freeplane.features.common.note.NoteController;
+import org.freeplane.features.common.note.NoteModel;
 
 import com.lightdev.app.shtm.SHTMLPanel;
 import com.lightdev.app.shtm.TextResources;

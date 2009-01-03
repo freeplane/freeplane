@@ -30,7 +30,7 @@ import org.freeplane.core.map.IIconInformation;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.map.icon.IconController;
+import org.freeplane.features.common.icon.IconController;
 
 /**
  * @author foltin

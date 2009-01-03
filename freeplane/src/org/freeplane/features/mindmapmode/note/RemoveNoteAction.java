@@ -32,7 +32,7 @@ import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
-import org.freeplane.map.note.NoteModel;
+import org.freeplane.features.common.note.NoteModel;
 
 class RemoveNoteAction extends FreeplaneAction implements PopupMenuListener {
 	/**

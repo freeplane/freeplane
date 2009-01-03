@@ -55,10 +55,10 @@ import org.freeplane.core.map.MapModel;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.map.attribute.Attribute;
-import org.freeplane.map.attribute.AttributeRegistry;
-import org.freeplane.map.attribute.AttributeRegistryElement;
-import org.freeplane.map.attribute.NodeAttributeTableModel;
+import org.freeplane.features.common.attribute.Attribute;
+import org.freeplane.features.common.attribute.AttributeRegistry;
+import org.freeplane.features.common.attribute.AttributeRegistryElement;
+import org.freeplane.features.common.attribute.NodeAttributeTableModel;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 

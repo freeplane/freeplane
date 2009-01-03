@@ -27,7 +27,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.MapModel;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.FreeplaneAction;
-import org.freeplane.map.clipboard.ClipboardController;
+import org.freeplane.features.common.clipboard.ClipboardController;
 
 class ExportToHTMLAction extends FreeplaneAction {
 	public ExportToHTMLAction() {

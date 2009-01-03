@@ -34,11 +34,11 @@ import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.util.FixedHTMLWriter;
+import org.freeplane.features.common.nodestyle.NodeStyleController;
+import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
 import org.freeplane.features.mindmapmode.text.MTextController;
-import org.freeplane.map.nodestyle.NodeStyleController;
-import org.freeplane.map.text.TextController;
 
 /**
  * @author Dimitry Polivaev

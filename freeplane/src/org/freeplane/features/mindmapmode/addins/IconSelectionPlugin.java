@@ -29,8 +29,8 @@ import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.components.IconSelectionPopupDialog;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.mindmapmode.icon.MIconController;
-import org.freeplane.map.icon.IconController;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 

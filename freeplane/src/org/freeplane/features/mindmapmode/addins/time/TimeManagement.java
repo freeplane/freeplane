@@ -49,8 +49,8 @@ import org.freeplane.core.frame.IMapViewChangeListener;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.text.MTextController;
-import org.freeplane.map.text.TextController;
 import org.freeplane.view.swing.map.MapView;
 
 /**

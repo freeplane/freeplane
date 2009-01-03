@@ -26,9 +26,9 @@ import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
-import org.freeplane.map.pattern.mindmapnode.MPatternController;
-import org.freeplane.map.pattern.mindmapnode.Pattern;
-import org.freeplane.map.pattern.mindmapnode.StylePatternFactory;
+import org.freeplane.features.mindmapnode.pattern.MPatternController;
+import org.freeplane.features.mindmapnode.pattern.Pattern;
+import org.freeplane.features.mindmapnode.pattern.StylePatternFactory;
 
 @ActionDescriptor(name = "accessories/plugins/ApplyFormatPlugin.properties_name", //
 locations = { "/menu_bar/format/change" }, //

@@ -26,8 +26,8 @@ import javax.swing.Action;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.MultipleNodeAction;
-import org.freeplane.map.edge.EdgeController;
-import org.freeplane.map.edge.EdgeModel;
+import org.freeplane.features.common.edge.EdgeController;
+import org.freeplane.features.common.edge.EdgeModel;
 
 class EdgeWidthAction extends MultipleNodeAction {
 	private static String getWidthTitle(final ModeController controller, final int width) {

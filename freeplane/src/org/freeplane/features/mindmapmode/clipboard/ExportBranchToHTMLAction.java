@@ -24,7 +24,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.freeplane.core.ui.FreeplaneAction;
-import org.freeplane.map.clipboard.ClipboardController;
+import org.freeplane.features.common.clipboard.ClipboardController;
 
 class ExportBranchToHTMLAction extends FreeplaneAction {
 	public ExportBranchToHTMLAction() {

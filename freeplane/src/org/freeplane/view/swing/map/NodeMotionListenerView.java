@@ -28,7 +28,7 @@ import javax.swing.JComponent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.IUserInputListenerFactory;
-import org.freeplane.map.nodelocation.LocationModel;
+import org.freeplane.features.common.nodelocation.LocationModel;
 
 /**
  * @author Dimitry Polivaev
