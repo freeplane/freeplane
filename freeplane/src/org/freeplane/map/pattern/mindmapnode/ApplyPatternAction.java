@@ -31,15 +31,15 @@ import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.MultipleNodeAction;
+import org.freeplane.features.mindmapmode.edge.MEdgeController;
+import org.freeplane.features.mindmapmode.icon.MIconController;
+import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
+import org.freeplane.features.mindmapmode.text.MTextController;
 import org.freeplane.map.edge.EdgeController;
 import org.freeplane.map.edge.EdgeModel;
-import org.freeplane.map.edge.mindmapmode.MEdgeController;
 import org.freeplane.map.icon.IconController;
-import org.freeplane.map.icon.mindmapnode.MIconController;
 import org.freeplane.map.nodestyle.NodeStyleController;
-import org.freeplane.map.nodestyle.mindmapmode.MNodeStyleController;
 import org.freeplane.map.text.TextController;
-import org.freeplane.map.text.mindmapmode.MTextController;
 
 class ApplyPatternAction extends MultipleNodeAction {
 	/**

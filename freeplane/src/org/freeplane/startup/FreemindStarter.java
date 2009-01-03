@@ -99,7 +99,7 @@ public class FreemindStarter {
 		for (int i = 0; i < args.length; i++) {
 			String fileArgument = args[i];
 			if (fileArgument.toLowerCase().endsWith(
-			    org.freeplane.map.url.mindmapmode.MFileManager.FREEMIND_FILE_EXTENSION)) {
+			    org.freeplane.features.mindmapmode.file.MFileManager.FREEMIND_FILE_EXTENSION)) {
 				if (!UrlManager.isAbsolutePath(fileArgument)) {
 					fileArgument = System.getProperty("user.dir")
 					        + System.getProperty("file.separator") + fileArgument;

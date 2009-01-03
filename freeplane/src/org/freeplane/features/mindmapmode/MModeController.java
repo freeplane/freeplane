@@ -40,17 +40,17 @@ import org.freeplane.core.ui.components.FreemindMenuBar;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.core.url.UrlManager;
+import org.freeplane.features.mindmapmode.file.MFileManager;
+import org.freeplane.features.mindmapmode.icon.MIconController;
+import org.freeplane.features.mindmapmode.note.MNoteController;
+import org.freeplane.features.mindmapmode.text.MTextController;
 import org.freeplane.features.ui.UserInputListenerFactory;
 import org.freeplane.map.icon.IconController;
-import org.freeplane.map.icon.mindmapnode.MIconController;
 import org.freeplane.map.link.LinkController;
 import org.freeplane.map.link.NodeLinks;
 import org.freeplane.map.note.NoteController;
-import org.freeplane.map.note.mindmapnode.MNoteController;
 import org.freeplane.map.pattern.mindmapnode.MPatternController;
 import org.freeplane.map.text.TextController;
-import org.freeplane.map.text.mindmapmode.MTextController;
-import org.freeplane.map.url.mindmapmode.MFileManager;
 import org.freeplane.view.swing.map.MainView;
 
 public class MModeController extends ModeController {

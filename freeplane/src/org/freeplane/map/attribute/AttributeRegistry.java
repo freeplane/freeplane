@@ -36,7 +36,7 @@ import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.XMLElement;
 import org.freeplane.core.map.MapModel;
 import org.freeplane.core.map.NodeModel;
-import org.freeplane.map.attribute.mindmapnode.IAttributesListener;
+import org.freeplane.features.mindmapmode.attribute.IAttributesListener;
 
 /**
  * @author Dimitry Polivaev

@@ -42,7 +42,7 @@ import org.freeplane.core.resources.ui.IFreemindPropertyListener;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.url.UrlManager;
-import org.freeplane.map.url.mindmapmode.MFileManager;
+import org.freeplane.features.mindmapmode.file.MFileManager;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
 /**

@@ -30,7 +30,7 @@ import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.undo.UndoHandler;
 import org.freeplane.core.util.Tools;
-import org.freeplane.map.url.mindmapmode.DoAutomaticSave;
+import org.freeplane.features.mindmapmode.file.DoAutomaticSave;
 
 public class MMapModel extends MapModel {
 	private static int unnamedMapsNumber = 1;

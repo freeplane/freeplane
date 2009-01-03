@@ -47,9 +47,9 @@ import org.freeplane.core.resources.ui.PropertyBean;
 import org.freeplane.core.resources.ui.SeparatorProperty;
 import org.freeplane.core.resources.ui.StringProperty;
 import org.freeplane.core.resources.ui.ThreeCheckBoxProperty;
+import org.freeplane.features.mindmapmode.icon.MIconController;
 import org.freeplane.map.edge.EdgeModel;
 import org.freeplane.map.icon.IconController;
-import org.freeplane.map.icon.mindmapnode.MIconController;
 import org.freeplane.map.nodestyle.NodeStyleModel;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;

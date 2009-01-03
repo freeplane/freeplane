@@ -33,12 +33,12 @@ import javax.swing.table.JTableHeader;
 
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
+import org.freeplane.features.mindmapmode.attribute.MAttributeController;
 import org.freeplane.map.attribute.AttributeController;
 import org.freeplane.map.attribute.AttributeRegistry;
 import org.freeplane.map.attribute.AttributeTableLayoutModel;
 import org.freeplane.map.attribute.IAttributeTableModel;
 import org.freeplane.map.attribute.NodeAttributeTableModel;
-import org.freeplane.map.attribute.mindmapnode.MAttributeController;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 

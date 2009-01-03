@@ -28,8 +28,8 @@ import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.undo.IUndoableActor;
+import org.freeplane.features.mindmapmode.text.MTextController;
 import org.freeplane.map.text.TextController;
-import org.freeplane.map.text.mindmapmode.MTextController;
 import org.freeplane.view.swing.map.NodeView;
 
 class NewChildAction extends FreeplaneAction {

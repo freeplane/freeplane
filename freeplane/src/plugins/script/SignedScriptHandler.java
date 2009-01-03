@@ -34,11 +34,11 @@ import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.freeplane.addins.encrypt.DesEncrypter;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.EnterPasswordDialog;
 import org.freeplane.core.util.Tools;
+import org.freeplane.features.common.addins.encrypt.DesEncrypter;
 
 /**
  * @author foltin
