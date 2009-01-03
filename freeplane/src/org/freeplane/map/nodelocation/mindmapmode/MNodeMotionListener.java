@@ -61,7 +61,7 @@ class MNodeMotionListener extends UserInputListenerFactory.DefaultNodeMotionList
 	private int getHGap(final Point dragNextPoint, final NodeModel node,
 	                    final Point dragStartingPoint) {
 		int oldHGap = LocationModel.getModel(node).getHGap();
-		final MapView mapView = c.getMapView();
+		final MapView mapView = Controller.getController().getMapView();
 		int hGapChange = (int) ((dragNextPoint.x - dragStartingPoint.x) / mapView.getZoom());
 		if (node.isLeft()) {
 			hGapChange = -hGapChange;
@@ -75,7 +75,7 @@ class MNodeMotionListener extends UserInputListenerFactory.DefaultNodeMotionList
 	private int getNodeShiftY(final Point dragNextPoint, final NodeModel node,
 	                          final Point dragStartingPoint) {
 		int shiftY = LocationModel.getModel(node).getShiftY();
-		final MapView mapView = c.getMapView();
+		final MapView mapView = Controller.getController().getMapView();
 		final int shiftYChange = (int) ((dragNextPoint.y - dragStartingPoint.y) / mapView.getZoom());
 		shiftY += shiftYChange;
 		return shiftY;
@@ -92,7 +92,7 @@ class MNodeMotionListener extends UserInputListenerFactory.DefaultNodeMotionList
 	private int getVGap(final Point dragNextPoint, final NodeModel node,
 	                    final Point dragStartingPoint) {
 		int oldVGap = LocationModel.getModel(node).getVGap();
-		final MapView mapView = c.getMapView();
+		final MapView mapView = Controller.getController().getMapView();
 		final int vGapChange = (int) ((dragNextPoint.y - dragStartingPoint.y) / mapView.getZoom());
 		oldVGap = Math.max(0, oldVGap - vGapChange);
 		return oldVGap;

@@ -38,8 +38,9 @@ public class IconController implements IExtension {
 	public static void install(final ModeController modeController,
 	                           final IconController iconController) {
 		modeController.addExtension(IconController.class, iconController);
-		if(firstRun){
-			FilterController.getController().getConditionFactory().addConditionController(1, new IconConditionController());
+		if (firstRun) {
+			FilterController.getController().getConditionFactory().addConditionController(1,
+			    new IconConditionController());
 			firstRun = false;
 		}
 	}
@@ -54,7 +55,7 @@ public class IconController implements IExtension {
 		final IconBuilder textBuilder = new IconBuilder();
 		textBuilder.registerBy(readManager);
 	}
-	
+
 	public ModeController getModeController() {
 		return modeController;
 	}

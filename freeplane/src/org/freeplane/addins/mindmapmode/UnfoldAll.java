@@ -39,7 +39,7 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 	        "/menu_bar/navigate/folding", "/main_toolbar/folding" })
 	private class FoldAllAction extends FreeplaneAction {
 		public void actionPerformed(final ActionEvent e) {
-			foldAll(getModeController().getSelectedNode());
+			foldAll(getModeController().getMapController().getSelectedNode());
 		}
 	}
 
@@ -47,7 +47,7 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 	        "/menu_bar/navigate/folding", "/main_toolbar/folding" })
 	private class FoldOneLevelAction extends FreeplaneAction {
 		public void actionPerformed(final ActionEvent e) {
-			foldOneStage(getModeController().getSelectedNode());
+			foldOneStage(getModeController().getMapController().getSelectedNode());
 		}
 	}
 
@@ -55,7 +55,7 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 	        "/menu_bar/navigate/folding", "/main_toolbar/folding" })
 	private class UnfoldAllAction extends FreeplaneAction {
 		public void actionPerformed(final ActionEvent e) {
-			unfoldAll(getModeController().getSelectedNode());
+			unfoldAll(getModeController().getMapController().getSelectedNode());
 		}
 	}
 
@@ -63,7 +63,7 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 	        "/menu_bar/navigate/folding", "/main_toolbar/folding" })
 	private class UnfoldOneLevelAction extends FreeplaneAction {
 		public void actionPerformed(final ActionEvent e) {
-			unfoldOneStage(getModeController().getSelectedNode());
+			unfoldOneStage(getModeController().getMapController().getSelectedNode());
 		}
 	}
 
@@ -72,7 +72,7 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 	 */
 	public UnfoldAll(final ModeController modeController) {
 		super();
-		modeController.addMouseWheelEventHandler(this);
+		modeController.getUserInputListenerFactory().addMouseWheelEventHandler(this);
 		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory()
 		    .getMenuBuilder();
 		menuBuilder.addAnnotatedAction(new UnfoldAllAction());
@@ -186,7 +186,8 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 			}
 			else {
 				final ModeController modeController = Controller.getModeController();
-				modeController.select(modeController.getMapView().getRoot());
+				modeController.getMapController().select(
+				    Controller.getController().getMapView().getRoot());
 				foldOneStage(rootNode);
 			}
 			return true;

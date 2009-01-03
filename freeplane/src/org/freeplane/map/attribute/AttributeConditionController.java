@@ -123,8 +123,7 @@ class AttributeConditionController implements IElementaryConditionController {
 	}
 
 	public IListModel getFilteredProperties() {
-		return AttributeRegistry.getRegistry(Controller.getController().getMap())
-		    .getListBoxModel();
+		return AttributeRegistry.getRegistry(Controller.getController().getMap()).getListBoxModel();
 	}
 
 	public ComboBoxEditor getValueEditor() {

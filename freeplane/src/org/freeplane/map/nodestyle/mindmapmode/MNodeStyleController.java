@@ -73,8 +73,8 @@ public class MNodeStyleController extends NodeStyleController {
 		    NodeStyleModel.STYLE_BUBBLE));
 		final MToolbarContributor menuContributor = new MToolbarContributor(this);
 		modeController.addMenuContributor(menuContributor);
-		modeController.addNodeChangeListener(menuContributor);
-		modeController.addNodeSelectionListener(menuContributor);
+		modeController.getMapController().addNodeChangeListener(menuContributor);
+		modeController.getMapController().addNodeSelectionListener(menuContributor);
 	}
 
 	public void copyStyle(final NodeModel source, final NodeModel target) {
@@ -208,16 +208,16 @@ public class MNodeStyleController extends NodeStyleController {
 	}
 
 	public void setFontFamily(final String fontFamily) {
-		for (final ListIterator it = getModeController().getSelectedNodes().listIterator(); it
-		    .hasNext();) {
+		for (final ListIterator it = getModeController().getMapController().getSelectedNodes()
+		    .listIterator(); it.hasNext();) {
 			final NodeModel selected = (NodeModel) it.next();
 			setFontFamily(selected, fontFamily);
 		}
 	}
 
 	public void setFontSize(final int size) {
-		for (final ListIterator it = getModeController().getSelectedNodes().listIterator(); it
-		    .hasNext();) {
+		for (final ListIterator it = getModeController().getMapController().getSelectedNodes()
+		    .listIterator(); it.hasNext();) {
 			final NodeModel selected = (NodeModel) it.next();
 			setFontSize(selected, size);
 		}

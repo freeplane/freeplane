@@ -132,9 +132,9 @@ class ScriptEditor extends FreeplaneAction {
 		public boolean executeScript(final int pIndex, final PrintStream pOutStream,
 		                             final IErrorHandler pErrorHandler) {
 			final String script = getScript(pIndex).getScript();
-			return ScriptingEngine.executeScript(mMindMapController.getSelectedNode(),
-			    new BooleanHolder(true), script, mMindMapController, pErrorHandler, pOutStream, reg
-			        .getScriptCookies());
+			return ScriptingEngine.executeScript(mMindMapController.getMapController()
+			    .getSelectedNode(), new BooleanHolder(true), script, mMindMapController,
+			    pErrorHandler, pOutStream, reg.getScriptCookies());
 		}
 
 		public int getAmountOfScripts() {
@@ -177,7 +177,7 @@ class ScriptEditor extends FreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final NodeModel node = getModeController().getSelectedNode();
+		final NodeModel node = getModeController().getMapController().getSelectedNode();
 		final Vector scripts = new Vector();
 		for (int position = 0; position < NodeAttributeTableModel.getModel(node)
 		    .getAttributeTableLength(); position++) {

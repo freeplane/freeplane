@@ -22,6 +22,7 @@ package org.freeplane.map.link.mindmapmode;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.IMapMouseReceiver;
 import org.freeplane.map.link.ArrowLinkModel;
 import org.freeplane.map.link.LinkController;
@@ -49,12 +50,14 @@ class MindMapMouseMotionListener implements IMapMouseReceiver {
 		final MapView mapView = (MapView) e.getComponent();
 		if (originX >= 0) {
 			if (draggedLink != null) {
-				final int deltaX = (int) ((e.getX() - originX) / mController.getMapView().getZoom());
-				final int deltaY = (int) ((e.getY() - originY) / mController.getMapView().getZoom());
+				final int deltaX = (int) ((e.getX() - originX) / Controller.getController()
+				    .getMapView().getZoom());
+				final int deltaY = (int) ((e.getY() - originY) / Controller.getController()
+				    .getMapView().getZoom());
 				draggedLink.changeInclination(mapView, originX, originY, deltaX, deltaY);
 				originX = e.getX();
 				originY = e.getY();
-				mController.getMapView().repaint();
+				Controller.getController().getMapView().repaint();
 			}
 			else {
 				mapView.scrollBy(originX - e.getX(), originY - e.getY());
@@ -64,15 +67,16 @@ class MindMapMouseMotionListener implements IMapMouseReceiver {
 
 	public void mousePressed(final MouseEvent e) {
 		if (!mController.isBlocked() && e.getButton() == MouseEvent.BUTTON1) {
-			mController.getMapView().setMoveCursor(true);
+			final MapView mapView = Controller.getController().getMapView();
+			mapView.setMoveCursor(true);
 			originX = e.getX();
 			originY = e.getY();
-			draggedLink = mController.getMapView().detectCollision(new Point(originX, originY));
+			draggedLink = mapView.detectCollision(new Point(originX, originY));
 			if (draggedLink != null) {
 				draggedLinkOldStartPoint = draggedLink.getStartInclination();
 				draggedLinkOldEndPoint = draggedLink.getEndInclination();
 				draggedLink.setShowControlPoints(true);
-				mController.getMapView().repaint();
+				mapView.repaint();
 			}
 		}
 	}
@@ -88,7 +92,7 @@ class MindMapMouseMotionListener implements IMapMouseReceiver {
 			draggedLink.setEndInclination(draggedLinkOldEndPoint);
 			((MLinkController) LinkController.getController(mController)).setArrowLinkEndPoints(
 			    draggedLink, draggedLinkNewStartPoint, draggedLinkNewEndPoint);
-			mController.getMapView().repaint();
+			Controller.getController().getMapView().repaint();
 			draggedLink = null;
 		}
 	}

@@ -80,6 +80,7 @@ public class TreeXmlWriter implements ITreeWriter {
 	}
 
 	private boolean elementStarted = false;
+	final private HashMap<Object, Object> hints;
 	final private WriteManager writeManager;
 	private IXMLElement xmlElement;
 	final private XMLWriter xmlwriter;
@@ -225,16 +226,15 @@ public class TreeXmlWriter implements ITreeWriter {
 		return writeManager.getAttributeWriters();
 	}
 
+	public Object getHint(final Object key) {
+		return hints.get(key);
+	}
+
 	private ListHashTable getNodeWriters() {
 		return writeManager.getElementWriters();
 	}
 
-	final private HashMap<Object, Object> hints;
-	public Object getHint(Object key) {
-		return hints.get(key);
-    }
-
-	public void setHint(Object key, Object value) {
+	public void setHint(final Object key, final Object value) {
 		hints.put(key, value);
-    }
+	}
 }

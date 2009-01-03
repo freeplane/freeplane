@@ -40,7 +40,7 @@ class AddLocalLinkAction extends FreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final MModeController modeController = MModeController.getMModeController();
-		final List selecteds = modeController.getSelectedNodes();
+		final List selecteds = modeController.getMapController().getSelectedNodes();
 		if (selecteds.size() < 2) {
 			Controller.getController().errorMessage(
 			    modeController.getText("less_than_two_selected_nodes"));

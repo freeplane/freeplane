@@ -30,6 +30,18 @@ import org.freeplane.core.map.MapModel;
  * @author Dimitry Polivaev
  */
 public class ModelessAttributeController implements IExtension {
+	public static ModelessAttributeController getController() {
+		return (ModelessAttributeController) Controller.getController().getExtension(
+		    ModelessAttributeController.class);
+	}
+
+	public static void install() {
+		Controller.getController().addExtension(ModelessAttributeController.class,
+		    new ModelessAttributeController());
+		FilterController.getController().getConditionFactory().addConditionController(2,
+		    new AttributeConditionController());
+	}
+
 	final private Action hideAllAttributes;
 	final private Action showAllAttributes;
 	final private Action showAttributeManagerAction;
@@ -59,13 +71,4 @@ public class ModelessAttributeController implements IExtension {
 			((ShowAllAttributesAction) showAllAttributes).setAttributeViewType(map);
 		}
 	}
-
-	public static void install() {
-		Controller.getController().addExtension(ModelessAttributeController.class, new ModelessAttributeController());		
-		FilterController.getController().getConditionFactory().addConditionController(2, new AttributeConditionController());
-    }
-	
-	public static ModelessAttributeController getController() {
-		return (ModelessAttributeController)Controller.getController().getExtension(ModelessAttributeController.class);
-    }
 }

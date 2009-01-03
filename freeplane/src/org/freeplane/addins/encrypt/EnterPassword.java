@@ -41,7 +41,7 @@ public class EnterPassword extends FreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final NodeModel node = getModeController().getSelectedNode();
+		final NodeModel node = getModeController().getMapController().getSelectedNode();
 		toggleCryptState(node);
 	}
 
@@ -113,7 +113,7 @@ public class EnterPassword extends FreeplaneAction {
 					mindMapController.getMapController().nodeStructureChanged(node);
 				}
 			}
-			final MapView mapView = mindMapController.getMapView();
+			final MapView mapView = Controller.getController().getMapView();
 			mapView.selectAsTheOnlyOneSelected(mapView.getNodeView(node));
 		}
 		else {

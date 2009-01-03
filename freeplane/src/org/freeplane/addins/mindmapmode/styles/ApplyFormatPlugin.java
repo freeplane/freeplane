@@ -44,8 +44,8 @@ public class ApplyFormatPlugin extends FreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final ModeController modeController = getModeController();
-		final NodeModel focussed = modeController.getSelectedNode();
-		final List selected = modeController.getSelectedNodes();
+		final NodeModel focussed = modeController.getMapController().getSelectedNode();
+		final List selected = modeController.getMapController().getSelectedNodes();
 		final Pattern nodePattern = StylePatternFactory.createPatternFromSelected(focussed,
 		    selected);
 		final ChooseFormatPopupDialog formatDialog = new ChooseFormatPopupDialog(Controller

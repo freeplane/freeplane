@@ -218,8 +218,8 @@ public class MMapController extends MapController {
 		}
 		if (reader == null) {
 			final int showResult = new OptionalDontShowMeAgainDialog(Controller.getController()
-			    .getViewController().getJFrame(), getModeController().getSelectedView(),
-			    "really_convert_to_current_version", "confirmation",
+			    .getViewController().getJFrame(), getModeController().getMapController()
+			    .getSelectedView(), "really_convert_to_current_version", "confirmation",
 			    new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
 			        ResourceController.RESOURCES_CONVERT_TO_CURRENT_VERSION),
 			    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED).show().getResult();
@@ -319,7 +319,7 @@ public class MMapController extends MapController {
 	}
 
 	public void repaintMap() {
-		getMapView().repaint();
+		Controller.getController().getMapView().repaint();
 	}
 
 	@Override

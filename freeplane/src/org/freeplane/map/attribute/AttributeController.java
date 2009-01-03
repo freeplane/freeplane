@@ -52,14 +52,14 @@ public class AttributeController implements IExtension {
 		final MapReader mapReader = mapController.getMapReader();
 		final AttributeBuilder attributeBuilder = new AttributeBuilder(mapReader);
 		attributeBuilder.registerBy(readManager, writeManager);
-		modeController.getMapController().addMapLifeCycleListener(new IMapLifeCycleListener(){
-
-			public void onCreate(MapModel map) {
+		modeController.getMapController().addMapLifeCycleListener(new IMapLifeCycleListener() {
+			public void onCreate(final MapModel map) {
 				AttributeRegistry.createRegistry(map);
-            }
+			}
 
-			public void onRemove(MapModel map) {
-            }});
+			public void onRemove(final MapModel map) {
+			}
+		});
 	}
 
 	protected ModeController getModeController() {

@@ -44,11 +44,11 @@ class NewChildAction extends FreeplaneAction {
 
 	public NodeModel addNewNode(int newNodeMode, final KeyEvent e) {
 		final ModeController modeController = getModeController();
-		final NodeModel target = modeController.getSelectedNode();
+		final NodeModel target = modeController.getMapController().getSelectedNode();
 		((MTextController) TextController.getController(modeController)).stopEditing();
 		final NodeModel targetNode = target;
 		NodeModel newNode = null;
-		final NodeView targetNodeView = modeController.getNodeView(target);
+		final NodeView targetNodeView = modeController.getMapController().getNodeView(target);
 		switch (newNodeMode) {
 			case MMapController.NEW_SIBLING_BEFORE:
 			case MMapController.NEW_SIBLING_BEHIND: {
@@ -59,8 +59,9 @@ class NewChildAction extends FreeplaneAction {
 						childPosition++;
 					}
 					newNode = addNewNode(parent, childPosition, targetNode.isLeft());
-					final NodeView nodeView = modeController.getNodeView(newNode);
-					modeController.select(nodeView);
+					final NodeView nodeView = modeController.getMapController()
+					    .getNodeView(newNode);
+					modeController.getMapController().select(nodeView);
 					((MTextController) TextController.getController(modeController)).edit(nodeView,
 					    targetNodeView, e, true, false, false);
 					break;
@@ -79,9 +80,9 @@ class NewChildAction extends FreeplaneAction {
 				final int position = Controller.getResourceController().getProperty(
 				    "placenewbranches").equals("last") ? targetNode.getChildCount() : 0;
 				newNode = addNewNode(targetNode, position, targetNode.isNewChildLeft());
-				final NodeView nodeView = modeController.getNodeView(newNode);
+				final NodeView nodeView = modeController.getMapController().getNodeView(newNode);
 				if (newNodeMode == MMapController.NEW_CHILD) {
-					modeController.select(nodeView);
+					modeController.getMapController().select(nodeView);
 				}
 				((MTextController) TextController.getController(modeController)).edit(nodeView,
 				    targetNodeView, e, true, parentFolded, false);

@@ -46,7 +46,8 @@ public class FModeControllerFactory {
 			return modeController;
 		}
 		modeController = new FModeController();
-		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController);
+		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(
+		    modeController);
 		modeController.setUserInputListenerFactory(userInputListenerFactory);
 		Controller.getController().addModeController(modeController);
 		modeController.setMapController(new FMapController(modeController));

@@ -59,7 +59,7 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 		gatherLeavesAndSetStyle(node);
 		gatherLeavesAndSetParentsStyle(node);
 		final ModeController modeController = getModeController();
-		modeController.addNodeChangeListener(this);
+		modeController.getMapController().addNodeChangeListener(this);
 		modeController.getMapController().addMapChangeListener(this);
 		super.add(node, extension);
 	}
@@ -157,7 +157,7 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 	@Override
 	protected void remove(final NodeModel node, final IExtension extension) {
 		final ModeController modeController = getModeController();
-		modeController.removeNodeChangeListener(this);
+		modeController.getMapController().removeNodeChangeListener(this);
 		modeController.getMapController().removeMapChangeListener(this);
 		nodeIconSets.clear();
 		removeIcons(node);

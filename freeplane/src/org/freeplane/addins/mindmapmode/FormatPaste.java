@@ -52,7 +52,7 @@ class FormatCopy extends FreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		copyFormat(getModeController().getSelectedNode());
+		copyFormat(getModeController().getMapController().getSelectedNode());
 	}
 
 	/**

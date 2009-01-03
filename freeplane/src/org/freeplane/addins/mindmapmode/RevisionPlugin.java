@@ -45,7 +45,7 @@ public class RevisionPlugin extends PersistentNodeHook implements INodeChangeLis
 	@Override
 	protected void add(final NodeModel node, final IExtension extension) {
 		super.add(node, extension);
-		getModeController().addNodeChangeListener(this);
+		getModeController().getMapController().addNodeChangeListener(this);
 	}
 
 	public void nodeChanged(final NodeChangeEvent event) {
@@ -59,7 +59,7 @@ public class RevisionPlugin extends PersistentNodeHook implements INodeChangeLis
 
 	@Override
 	protected void remove(final NodeModel node, final IExtension extension) {
-		getModeController().removeNodeChangeListener(this);
+		getModeController().getMapController().removeNodeChangeListener(this);
 		super.remove(node, extension);
 	}
 }

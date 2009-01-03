@@ -81,7 +81,7 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 		if (!(node.isRoot()) && (node.getParentNode().isRoot())) {
 			writer.addAttribute("POSITION", node.isLeft() ? "left" : "right");
 		}
-		final boolean saveID = ! MapController.saveOnlyIntrinsicallyNeededIds();
+		final boolean saveID = !MapController.saveOnlyIntrinsicallyNeededIds();
 		if (saveID) {
 			final String id = node.createID();
 			writer.addAttribute("ID", id);
@@ -101,17 +101,17 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 		writer.addExtensionAttributes(node, node.getExtensions());
 	}
 
-	public void writeContent(final ITreeWriter writer, final Object content,
-	                         final String tag) throws IOException {
+	public void writeContent(final ITreeWriter writer, final Object content, final String tag)
+	        throws IOException {
 		final NodeModel node = (NodeModel) content;
 		writer.addExtensionNodes(node, node.getExtensions());
-        for (int i = 0; i < xmlNode.getChildrenCount(); i++) {
-        	writer.addElement(null, xmlNode.getChildAtIndex(i));
-        }
-        if (encryptionModel == null && writeChildren
-                && node.getModeController().getMapController().childrenUnfolded(node).hasNext()) {
-        	saveChildren(writer, node);
-        }
+		for (int i = 0; i < xmlNode.getChildrenCount(); i++) {
+			writer.addElement(null, xmlNode.getChildAtIndex(i));
+		}
+		if (encryptionModel == null && writeChildren
+		        && node.getModeController().getMapController().childrenUnfolded(node).hasNext()) {
+			saveChildren(writer, node);
+		}
 		return;
 	}
 }

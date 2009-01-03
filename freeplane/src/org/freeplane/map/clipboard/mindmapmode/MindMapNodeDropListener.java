@@ -123,15 +123,15 @@ public class MindMapNodeDropListener implements DropTargetListener {
 			}
 			if (dropAction == DnDConstants.ACTION_LINK) {
 				int yesorno = JOptionPane.YES_OPTION;
-				if (mMindMapController.getMapView().getSelection().size() >= 5) {
+				if (Controller.getController().getMapView().getSelection().size() >= 5) {
 					yesorno = JOptionPane.showConfirmDialog(Controller.getController()
 					    .getViewController().getContentPane(), mMindMapController
-					    .getText("lots_of_links_warning"), Integer.toString(mMindMapController
-					    .getMapView().getSelection().size())
+					    .getText("lots_of_links_warning"), Integer.toString(Controller
+					    .getController().getMapView().getSelection().size())
 					        + " links to the same node", JOptionPane.YES_NO_OPTION);
 				}
 				if (yesorno == JOptionPane.YES_OPTION) {
-					for (final Iterator<NodeView> it = mMindMapController.getMapView()
+					for (final Iterator<NodeView> it = Controller.getController().getMapView()
 					    .getSelection().iterator(); it.hasNext();) {
 						final NodeModel selectedNodeModel = (it.next()).getModel();
 						((MLinkController) LinkController.getController(mMindMapController))
@@ -148,7 +148,7 @@ public class MindMapNodeDropListener implements DropTargetListener {
 					return;
 				}
 				Transferable trans = null;
-				final List selecteds = mMindMapController.getSelectedNodes();
+				final List selecteds = mMindMapController.getMapController().getSelectedNodes();
 				if (DnDConstants.ACTION_MOVE == dropAction) {
 					NodeModel actualNode = targetNode;
 					do {
@@ -164,14 +164,14 @@ public class MindMapNodeDropListener implements DropTargetListener {
 						actualNode = (actualNode.isRoot()) ? null : actualNode.getParentNode();
 					} while (actualNode != null);
 					trans = ((MClipboardController) ClipboardController
-					    .getController(mMindMapController)).cut(mMindMapController.getMapView()
-					    .getSelectedNodesSortedByY());
+					    .getController(mMindMapController)).cut(Controller.getController()
+					    .getMapView().getSelectedNodesSortedByY());
 				}
 				else {
 					trans = ClipboardController.getController(mMindMapController).copy(
-					    mMindMapController.getMapView());
+					    Controller.getController().getMapView());
 				}
-				mMindMapController.getMapView().selectAsTheOnlyOneSelected(targetNodeView);
+				Controller.getController().getMapView().selectAsTheOnlyOneSelected(targetNodeView);
 				((MClipboardController) ClipboardController.getController(mMindMapController))
 				    .paste(trans, targetNode, mainView.dropAsSibling(dtde.getLocation().getX()),
 				        mainView.dropPosition(dtde.getLocation().getX()));
@@ -202,7 +202,7 @@ public class MindMapNodeDropListener implements DropTargetListener {
 	private boolean isDropAcceptable(final DropTargetDropEvent event) {
 		final NodeModel node = ((MainView) event.getDropTargetContext().getComponent())
 		    .getNodeView().getModel();
-		final NodeModel selected = mMindMapController.getSelectedNode();
+		final NodeModel selected = mMindMapController.getMapController().getSelectedNode();
 		if (!((MMapController) mMindMapController.getMapController()).isWriteable(node)) {
 			return false;
 		}

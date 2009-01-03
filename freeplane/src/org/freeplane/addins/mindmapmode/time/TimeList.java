@@ -573,7 +573,8 @@ class TimeList {
 				final int row = selectedRows[i];
 				selectedNodes.add(getMindMapNode(row));
 			}
-			getMindMapController().selectMultipleNodes(focussedNode, selectedNodes);
+			getMindMapController().getMapController().selectMultipleNodes(focussedNode,
+			    selectedNodes);
 		}
 	}
 

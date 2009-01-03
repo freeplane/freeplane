@@ -124,7 +124,7 @@ public class MModeController extends ModeController {
 	@Override
 	public void doubleClick(final MouseEvent e) {
 		/* perform action only if one selected node. */
-		if (getSelectedNodes().size() != 1) {
+		if (getMapController().getSelectedNodes().size() != 1) {
 			return;
 		}
 		final NodeModel node = ((MainView) e.getComponent()).getNodeView().getModel();
@@ -150,7 +150,8 @@ public class MModeController extends ModeController {
 	}
 
 	public boolean isUndoAction() {
-		return ((MindMapMapModel) getMapView().getModel()).getUndoHandler().isUndoActionRunning();
+		return ((MindMapMapModel) Controller.getController().getMapView().getModel())
+		    .getUndoHandler().isUndoActionRunning();
 	}
 
 	/**
@@ -165,15 +166,9 @@ public class MModeController extends ModeController {
 	}
 
 	@Override
-	public void onUpdate(final NodeModel node, final Object property, final Object oldValue,
-	                     final Object newValue) {
-		super.onUpdate(node, property, oldValue, newValue);
-	}
-
-	@Override
 	public void plainClick(final MouseEvent e) {
 		/* perform action only if one selected node. */
-		if (getSelectedNodes().size() != 1) {
+		if (getMapController().getSelectedNodes().size() != 1) {
 			return;
 		}
 		final MainView component = (MainView) e.getComponent();
@@ -194,7 +189,28 @@ public class MModeController extends ModeController {
 	 *
 	 */
 	public boolean save() {
-		return ((MFileManager) UrlManager.getController(this)).save(getMapView().getModel());
+		return ((MFileManager) UrlManager.getController(this)).save(Controller.getController()
+		    .getMapView().getModel());
+	}
+
+	public void setMapMouseMotionListener(final IMouseListener mapMouseMotionListener) {
+		((UserInputListenerFactory) getUserInputListenerFactory())
+		    .setMapMouseListener(mapMouseMotionListener);
+	}
+
+	public void setNodeDropTargetListener(final DropTargetListener nodeDropTargetListener) {
+		((UserInputListenerFactory) getUserInputListenerFactory())
+		    .setNodeDropTargetListener(nodeDropTargetListener);
+	}
+
+	public void setNodeKeyListener(final KeyListener nodeKeyListener) {
+		((UserInputListenerFactory) getUserInputListenerFactory())
+		    .setNodeKeyListener(nodeKeyListener);
+	}
+
+	public void setNodeMotionListener(final IMouseListener nodeMotionListener) {
+		((UserInputListenerFactory) getUserInputListenerFactory())
+		    .setNodeMotionListener(nodeMotionListener);
 	}
 
 	@Override
@@ -218,13 +234,11 @@ public class MModeController extends ModeController {
 		redo.reset();
 	}
 
-
-	
 	protected void updateMenus(final String resource) {
 		final UserInputListenerFactory userInputListenerFactory = (UserInputListenerFactory) getUserInputListenerFactory();
 		userInputListenerFactory.setMenuStructure(resource);
 		userInputListenerFactory.updateMenus(this);
-		MenuBuilder builder = getUserInputListenerFactory().getMenuBuilder();
+		final MenuBuilder builder = getUserInputListenerFactory().getMenuBuilder();
 		((MIconController) IconController.getController(this)).updateIconToolbar();
 		((MIconController) IconController.getController(this)).updateMenus(builder);
 		MPatternController.getController(this).createPatternSubMenu(builder,
@@ -233,20 +247,4 @@ public class MModeController extends ModeController {
 		MPatternController.getController(this).createPatternSubMenu(builder, formatMenuString);
 		super.updateMenus();
 	}
-	public void setMapMouseMotionListener(final IMouseListener mapMouseMotionListener) {
-		((UserInputListenerFactory) getUserInputListenerFactory()).setMapMouseListener(mapMouseMotionListener);
-	}
-
-	public void setNodeDropTargetListener(final DropTargetListener nodeDropTargetListener) {
-		((UserInputListenerFactory) getUserInputListenerFactory()).setNodeDropTargetListener(nodeDropTargetListener);
-	}
-
-	public void setNodeKeyListener(final KeyListener nodeKeyListener) {
-		((UserInputListenerFactory) getUserInputListenerFactory()).setNodeKeyListener(nodeKeyListener);
-	}
-
-	public void setNodeMotionListener(final IMouseListener nodeMotionListener) {
-		((UserInputListenerFactory) getUserInputListenerFactory()).setNodeMotionListener(nodeMotionListener);
-	}
-
 }

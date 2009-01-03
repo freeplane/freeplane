@@ -48,7 +48,8 @@ public class BModeControllerFactory {
 			return modeController;
 		}
 		modeController = new BModeController();
-		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController);
+		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(
+		    modeController);
 		modeController.setUserInputListenerFactory(userInputListenerFactory);
 		Controller.getController().addModeController(modeController);
 		modeController.setMapController(new MapController(modeController));
@@ -63,7 +64,7 @@ public class BModeControllerFactory {
 		TextController.install(modeController, new TextController(modeController));
 		ClipboardController.install(modeController, new ClipboardController(modeController));
 		LocationController.install(modeController, new LocationController(modeController));
-		modeController.addNodeSelectionListener(new BNodeNoteViewer());
+		modeController.getMapController().addNodeSelectionListener(new BNodeNoteViewer());
 		final BToolbarContributor toolbarContributor = new BToolbarContributor(modeController);
 		modeController.addMenuContributor(toolbarContributor);
 		Controller.getController().getViewController()

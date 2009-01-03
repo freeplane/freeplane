@@ -47,21 +47,23 @@ public class FModeController extends ModeController {
 		 * windows alt, linux altgraph ....
 		 */
 		boolean retValue = false;
-		if (extend || range || branch || !getMapView().isSelected(newlySelectedNodeView)) {
+		if (extend || range || branch
+		        || !Controller.getController().getMapView().isSelected(newlySelectedNodeView)) {
 			if (!range) {
 				if (extend) {
-					getMapView().toggleSelected(newlySelectedNodeView);
+					Controller.getController().getMapView().toggleSelected(newlySelectedNodeView);
 				}
 				else {
-					select(newlySelectedNodeView);
+					getMapController().select(newlySelectedNodeView);
 				}
 				retValue = true;
 			}
 			else {
-				retValue = getMapView().selectContinuous(newlySelectedNodeView);
+				retValue = Controller.getController().getMapView().selectContinuous(
+				    newlySelectedNodeView);
 			}
 			if (branch) {
-				getMapView().selectBranch(newlySelectedNodeView, extend);
+				Controller.getController().getMapView().selectBranch(newlySelectedNodeView, extend);
 				retValue = true;
 			}
 		}
@@ -82,7 +84,7 @@ public class FModeController extends ModeController {
 	@Override
 	public void plainClick(final MouseEvent e) {
 		/* perform action only if one selected node. */
-		if (getSelectedNodes().size() != 1) {
+		if (getMapController().getSelectedNodes().size() != 1) {
 			return;
 		}
 		final MainView component = (MainView) e.getComponent();
@@ -105,7 +107,6 @@ public class FModeController extends ModeController {
 		super.startup();
 	}
 
-	
 	protected void updateMenus(final String resource) {
 		final UserInputListenerFactory userInputListenerFactory = (UserInputListenerFactory) getUserInputListenerFactory();
 		userInputListenerFactory.setMenuStructure(resource);

@@ -408,8 +408,8 @@ public class UrlManager implements IExtension {
 	public void handleLoadingException(final Exception ex) {
 		final String exceptionType = ex.getClass().getName();
 		if (exceptionType.equals("freemind.main.XMLParseException")) {
-			final int showDetail = JOptionPane.showConfirmDialog(modeController.getMapView()
-			    .getComponent(), modeController.getText("map_corrupted"), "FreeMind",
+			final int showDetail = JOptionPane.showConfirmDialog(Controller.getController()
+			    .getMapView().getComponent(), modeController.getText("map_corrupted"), "FreeMind",
 			    JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
 			if (showDetail == JOptionPane.YES_OPTION) {
 				Controller.getController().errorMessage(ex);

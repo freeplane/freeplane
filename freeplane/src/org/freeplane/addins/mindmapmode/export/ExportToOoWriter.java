@@ -126,7 +126,7 @@ public class ExportToOoWriter extends ExportAction {
 		final StringWriter writer = new StringWriter();
 		final ModeController controller = getModeController();
 		final MapModel map = Controller.getController().getMap();
-		controller.getFilteredXml(map, writer);
+		controller.getMapController().getFilteredXml(map, writer);
 		final Result result = new StreamResult(zipout);
 		ZipEntry entry = new ZipEntry("content.xml");
 		zipout.putNextEntry(entry);

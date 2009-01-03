@@ -173,7 +173,8 @@ public class MPatternController implements IExtension {
 		}
 		else {
 			System.out.println("User patterns file " + patternsFile + " not found.");
-			reader = new InputStreamReader(Controller.getResourceController().getResource("patterns.xml").openStream());
+			reader = new InputStreamReader(Controller.getResourceController().getResource(
+			    "patterns.xml").openStream());
 		}
 		return reader;
 	}

@@ -163,8 +163,8 @@ public class MTextController extends TextController {
 		filter.addExtension("gif");
 		filter.setDescription("JPG, PNG and GIF Images");
 		boolean picturesAmongSelecteds = false;
-		for (final ListIterator e = getModeController().getSelectedNodes().listIterator(); e
-		    .hasNext();) {
+		for (final ListIterator e = getModeController().getMapController().getSelectedNodes()
+		    .listIterator(); e.hasNext();) {
 			final String link = NodeLinks.getLink(((NodeModel) e.next()));
 			if (link != null) {
 				if (filter.accept(new File(link))) {
@@ -175,8 +175,8 @@ public class MTextController extends TextController {
 		}
 		try {
 			if (picturesAmongSelecteds) {
-				for (final ListIterator e = getModeController().getSelectedNodes().listIterator(); e
-				    .hasNext();) {
+				for (final ListIterator e = getModeController().getMapController()
+				    .getSelectedNodes().listIterator(); e.hasNext();) {
 					final NodeModel node = (NodeModel) e.next();
 					if (NodeLinks.getLink(node) != null) {
 						final String possiblyRelative = NodeLinks.getLink(node);
@@ -198,7 +198,7 @@ public class MTextController extends TextController {
 				    .getController().getMap(), filter);
 				if (relative != null) {
 					final String strText = "<html><img src=\"" + relative + "\">";
-					setNodeText(getModeController().getSelectedNode(), strText);
+					setNodeText(getModeController().getMapController().getSelectedNode(), strText);
 				}
 			}
 		}

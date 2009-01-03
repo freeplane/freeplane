@@ -45,10 +45,13 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.Point2D;
 import java.net.URL;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -69,6 +72,7 @@ import org.freeplane.core.ui.ControllerPopupMenuListener;
 import org.freeplane.core.ui.IEditHandler;
 import org.freeplane.core.ui.IMapMouseReceiver;
 import org.freeplane.core.ui.IMouseListener;
+import org.freeplane.core.ui.IMouseWheelEventHandler;
 import org.freeplane.core.ui.INodeMouseMotionListener;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.MenuBuilder;
@@ -99,14 +103,16 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 				final java.lang.Object obj = Controller.getController().getMapView()
 				    .detectCollision(e.getPoint());
 				final ModeController modeController = Controller.getModeController();
-				final JPopupMenu popupForModel = LinkController.getController(modeController).getPopupForModel(obj);
+				final JPopupMenu popupForModel = LinkController.getController(modeController)
+				    .getPopupForModel(obj);
 				if (popupForModel != null) {
-					final ControllerPopupMenuListener popupListener = new ControllerPopupMenuListener(modeController);
+					final ControllerPopupMenuListener popupListener = new ControllerPopupMenuListener(
+					    modeController);
 					popupForModel.addPopupMenuListener(popupListener);
-					popup =  popupForModel;
+					popup = popupForModel;
 				}
-				else{
-					popup =  modeController.getUserInputListenerFactory().getMapPopup();
+				else {
+					popup = modeController.getUserInputListenerFactory().getMapPopup();
 				}
 				popup.show(e.getComponent(), e.getX(), e.getY());
 				popup.setVisible(true);
@@ -224,7 +230,8 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 				dragAction = "COPY";
 			}
 			final ModeController modeController = Controller.getModeController();
-			final Transferable t = ClipboardController.getController(modeController).copy(modeController.getMapView());
+			final Transferable t = ClipboardController.getController(modeController).copy(
+			    Controller.getController().getMapView());
 			((MindMapNodesSelection) t).setDropAction(dragAction);
 			e.startDrag(cursor, t, new DragSourceListener() {
 				public void dragDropEnd(final DragSourceDropEvent dsde) {
@@ -590,6 +597,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	private FreemindMenuBar menuBar;
 	private final MenuBuilder menuBuilder;
 	private URL menuStructure;
+	final private HashSet mRegisteredMouseWheelEventHandler = new HashSet();
 	private DragGestureListener nodeDragListener;
 	private DropTargetListener nodeDropTargetListener;
 	private KeyListener nodeKeyListener;
@@ -600,6 +608,10 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	public UserInputListenerFactory(final ModeController modeController) {
 		mapsMenuActionListener = new MapsMenuActionListener();
 		menuBuilder = new MenuBuilder(modeController);
+	}
+
+	public void addMouseWheelEventHandler(final IMouseWheelEventHandler handler) {
+		mRegisteredMouseWheelEventHandler.add(handler);
 	}
 
 	public Component getLeftToolBar() {
@@ -643,6 +655,10 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		return menuStructure;
 	}
 
+	public Set getMouseWheelEventHandlers() {
+		return Collections.unmodifiableSet(mRegisteredMouseWheelEventHandler);
+	}
+
 	public DragGestureListener getNodeDragListener() {
 		if (nodeDragListener == null) {
 			nodeDragListener = new DefaultNodeDragListener();
@@ -680,6 +696,10 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 
 	public JPopupMenu getNodePopupMenu() {
 		return nodePopupMenu;
+	}
+
+	public void removeMouseWheelEventHandler(final IMouseWheelEventHandler handler) {
+		mRegisteredMouseWheelEventHandler.remove(handler);
 	}
 
 	public void setLeftToolBar(final Component leftToolBar) {

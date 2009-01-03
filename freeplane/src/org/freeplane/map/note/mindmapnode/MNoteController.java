@@ -61,7 +61,7 @@ public class MNoteController extends NoteController {
 				mSplitPane.setDividerLocation(getPositionToRecover().intValue());
 				setPositionToRecover(null);
 			}
-			getModeController().getMapView().getSelected().requestFocus();
+			Controller.getController().getMapView().getSelected().requestFocus();
 		}
 	}
 
@@ -243,7 +243,7 @@ public class MNoteController extends NoteController {
 	}
 
 	public void shutdownController() {
-		getModeController().removeNodeSelectionListener(noteManager);
+		getModeController().getMapController().removeNodeSelectionListener(noteManager);
 		noteViewerComponent.getActionMap().remove("jumpToMapAction");
 		if (noteViewerComponent != null && shouldUseSplitPane()) {
 			hideNotesPanel();
@@ -264,7 +264,7 @@ public class MNoteController extends NoteController {
 		if (shouldUseSplitPane()) {
 			showNotesPanel();
 		}
-		modeController.addNodeSelectionListener(noteManager);
+		modeController.getMapController().addNodeSelectionListener(noteManager);
 		noteManager.mNoteDocumentListener = new NoteDocumentListener();
 	}
 }

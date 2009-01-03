@@ -22,6 +22,7 @@ package org.freeplane.map.nodestyle.mindmapmode;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.map.nodestyle.NodeStyleController;
@@ -48,7 +49,7 @@ class NodeColorBlendAction extends MultipleNodeAction {
 	 */
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		final MapView mapView = MModeController.getMModeController().getMapView();
+		final MapView mapView = Controller.getController().getMapView();
 		final Color mapColor = mapView.getBackground();
 		Color nodeColor = NodeStyleModel.getColor(node);
 		if (nodeColor == null) {

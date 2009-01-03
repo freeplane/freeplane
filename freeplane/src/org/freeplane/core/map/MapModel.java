@@ -50,11 +50,11 @@ public class MapModel extends DefaultTreeModel {
 	protected int changesPerformedSinceLastSave = 0;
 	final private ExtensionHashMap extensions;
 	private IFilter filter = null;
+	final private IconRegistry iconRegistry;
 	protected final ModeController mModeController;
 	final private HashMap<String, NodeModel> nodes;
 	private boolean readOnly = true;
 	private URL url;
-	final private IconRegistry iconRegistry;
 
 	public MapModel(final ModeController modeController, NodeModel root) {
 		super(root);
@@ -259,6 +259,10 @@ public class MapModel extends DefaultTreeModel {
 		return filter;
 	}
 
+	public IconRegistry getIconRegistry() {
+		return iconRegistry;
+	}
+
 	public ModeController getModeController() {
 		return mModeController;
 	}
@@ -274,7 +278,6 @@ public class MapModel extends DefaultTreeModel {
 	public int getNumberOfChangesSinceLastSave() {
 		return changesPerformedSinceLastSave;
 	}
-
 
 	public NodeModel getRootNode() {
 		return (NodeModel) getRoot();
@@ -396,7 +399,7 @@ public class MapModel extends DefaultTreeModel {
 
 	public void setRoot(final NodeModel root) {
 		super.setRoot(root);
-	}
+	};
 
 	/**
 	 * Counts the amount of actions performed.
@@ -429,7 +432,7 @@ public class MapModel extends DefaultTreeModel {
 	 */
 	public void setURL(final URL v) {
 		url = v;
-	};
+	}
 
 	void unregistryNode(final NodeModel nodeModel) {
 		final String id = nodeModel.getID();
@@ -441,8 +444,4 @@ public class MapModel extends DefaultTreeModel {
 			unregistryNode(iterator.next());
 		}
 	}
-
-	public IconRegistry getIconRegistry() {
-	    return iconRegistry;
-    }
 }

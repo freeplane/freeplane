@@ -71,8 +71,8 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapView
 		}
 
 		public void actionPerformed(final ActionEvent e) {
-			for (final Iterator i = timeManagement.getMindMapController().getSelectedNodes()
-			    .iterator(); i.hasNext();) {
+			for (final Iterator i = timeManagement.getMindMapController().getMapController()
+			    .getSelectedNodes().iterator(); i.hasNext();) {
 				final NodeModel node = (NodeModel) i.next();
 				final ReminderExtension alreadyPresentHook = ReminderExtension.getExtension(node);
 				if (alreadyPresentHook != null) {
@@ -101,7 +101,8 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapView
 
 	public void actionPerformed(final ActionEvent arg0) {
 		final Date date = getCalendarDate();
-		for (final Iterator i = mController.getSelectedNodes().iterator(); i.hasNext();) {
+		for (final Iterator i = mController.getMapController().getSelectedNodes().iterator(); i
+		    .hasNext();) {
 			final NodeModel node = (NodeModel) i.next();
 			final ReminderExtension alreadyPresentHook = ReminderExtension.getExtension(node);
 			if (alreadyPresentHook != null) {
@@ -282,7 +283,8 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapView
 			    getResourceString("plugins/TimeManagement.xml_appendButton"));
 			appendButton.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent arg0) {
-					for (final Iterator i = mController.getSelectedNodes().iterator(); i.hasNext();) {
+					for (final Iterator i = mController.getMapController().getSelectedNodes()
+					    .iterator(); i.hasNext();) {
 						final NodeModel element = (NodeModel) i.next();
 						final DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT);
 						final String dateAsString = df.format(getCalendarDate());

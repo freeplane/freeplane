@@ -46,7 +46,8 @@ class ExportBranchAction extends FreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final NodeModel node = MModeController.getMModeController().getSelectedNode();
+		final NodeModel node = MModeController.getMModeController().getMapController()
+		    .getSelectedNode();
 		if (Controller.getController().getMap() == null || node == null || node.isRoot()) {
 			Controller.getController().getViewController().err("Could not export branch.");
 			return;
@@ -69,7 +70,7 @@ class ExportBranchAction extends FreeplaneAction {
 			    .getController(getModeController())).getFileFilter());
 		}
 		final int returnVal = chooser.showSaveDialog(MModeController.getMModeController()
-		    .getSelectedView());
+		    .getMapController().getSelectedView());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File chosenFile = chooser.getSelectedFile();
 			final String ext = UrlManager.getExtension(chosenFile.getName());
@@ -82,15 +83,14 @@ class ExportBranchAction extends FreeplaneAction {
 				UrlManager.fileToUrl(chosenFile);
 			}
 			catch (final MalformedURLException ex) {
-				JOptionPane.showMessageDialog(MModeController.getMModeController().getMapView()
+				JOptionPane.showMessageDialog(Controller.getController().getMapView()
 				    .getComponent(), "couldn't create valid URL!");
 				return;
 			}
 			if (chosenFile.exists()) {
-				final int overwriteMap = JOptionPane.showConfirmDialog(MModeController
-				    .getMModeController().getMapView().getComponent(), MModeController
-				    .getMModeController().getText("map_already_exists"), "FreeMind",
-				    JOptionPane.YES_NO_OPTION);
+				final int overwriteMap = JOptionPane.showConfirmDialog(Controller.getController()
+				    .getMapView().getComponent(), MModeController.getMModeController().getText(
+				    "map_already_exists"), "FreeMind", JOptionPane.YES_NO_OPTION);
 				if (overwriteMap != JOptionPane.YES_OPTION) {
 					return;
 				}

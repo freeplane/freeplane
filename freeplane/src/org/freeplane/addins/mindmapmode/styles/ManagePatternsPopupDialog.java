@@ -222,7 +222,7 @@ class ManagePatternsPopupDialog extends JDialog implements KeyListener {
 		writePatternBackToModel();
 		setLastSelectedPattern(null);
 		final Pattern pattern = mPatternListModel.getPatternAt(selectedIndex);
-		for (final Iterator iterator = mController.getSelectedNodes().iterator(); iterator
+		for (final Iterator iterator = mController.getMapController().getSelectedNodes().iterator(); iterator
 		    .hasNext();) {
 			final NodeModel node = (NodeModel) iterator.next();
 			MPatternController.getController(mController).applyPattern(node, pattern);
@@ -497,7 +497,8 @@ class ManagePatternsPopupDialog extends JDialog implements KeyListener {
 		writePatternBackToModel();
 		setLastSelectedPattern(null);
 		final Pattern newPattern = StylePatternFactory.createPatternFromSelected(mController
-		    .getSelectedNode(), mController.getSelectedNodes());
+		    .getMapController().getSelectedNode(), mController.getMapController()
+		    .getSelectedNodes());
 		newPattern.setName(searchForNameForNewPattern());
 		int selectedIndex = mList.getSelectedIndex();
 		if (selectedIndex < 0) {

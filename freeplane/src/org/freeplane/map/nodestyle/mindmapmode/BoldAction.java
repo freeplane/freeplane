@@ -49,7 +49,7 @@ class BoldAction extends MultipleNodeAction {
 	}
 
 	boolean isBold() {
-		final NodeModel node = getModeController().getSelectedNode();
+		final NodeModel node = getModeController().getMapController().getSelectedNode();
 		return NodeStyleController.getController(getModeController()).isBold(node);
 	}
 

@@ -33,8 +33,8 @@ import org.freeplane.modes.mindmapmode.MMapController;
  * @author Dimitry Polivaev
  */
 public class NoteController implements IExtension {
-	private static ImageIcon noteIcon = null;
 	private static boolean firstRun = true;
+	private static ImageIcon noteIcon = null;
 
 	public static NoteController getController(final ModeController modeController) {
 		return (NoteController) modeController.getExtension(NoteController.class);
@@ -43,8 +43,9 @@ public class NoteController implements IExtension {
 	public static void install(final ModeController modeController,
 	                           final NoteController noteController) {
 		modeController.addExtension(NoteController.class, noteController);
-		if(firstRun){
-			noteIcon = new ImageIcon(Controller.getResourceController().getResource("images/knotes.png"));
+		if (firstRun) {
+			noteIcon = new ImageIcon(Controller.getResourceController().getResource(
+			    "images/knotes.png"));
 			MindIcon.factory(NodeNoteBase.NODE_NOTE_ICON, noteIcon);
 			firstRun = false;
 		}

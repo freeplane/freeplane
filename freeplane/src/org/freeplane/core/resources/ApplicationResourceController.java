@@ -219,7 +219,6 @@ public class ApplicationResourceController extends ResourceController {
 		}
 		catch (final Exception ex) {
 		}
-		
 		FilterController.getController().saveConditions();
 	}
 

@@ -180,8 +180,8 @@ class PasteAction extends FreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		final MClipboardController clipboardController = (MClipboardController) ClipboardController
 		    .getController(getModeController());
-		clipboardController.paste(clipboardController.getClipboardContents(), MModeController
-		    .getMModeController().getMapView().getSelected().getModel());
+		clipboardController.paste(clipboardController.getClipboardContents(), Controller
+		    .getController().getMapView().getSelected().getModel());
 	}
 
 	/**

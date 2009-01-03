@@ -18,7 +18,6 @@ import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.Option;
 
-
 /**
  * Create a new XHTMLWriter which is able to write out a HTMLDocument as XHTML.
  * <p>

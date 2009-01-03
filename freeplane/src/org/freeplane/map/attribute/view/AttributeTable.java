@@ -133,7 +133,8 @@ public class AttributeTable extends JTable implements IColumnWidthChangeListener
 				}
 				if (!focusedTable.attributeView.isPopupShown()) {
 					final AttributeView attributeView = focusedTable.getAttributeView();
-					final String currentAttributeViewType = AttributeRegistry.getRegistry(attributeView.getNode().getMap()).getAttributeViewType();
+					final String currentAttributeViewType = AttributeRegistry.getRegistry(
+					    attributeView.getNode().getMap()).getAttributeViewType();
 					if (attributeView.getViewType() != currentAttributeViewType) {
 						attributeView.stateChanged(null);
 					}

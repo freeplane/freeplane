@@ -99,7 +99,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		}
 
 		private void addSelectionForHooks(final NodeView node) {
-			getModel().getModeController().onSelect(node);
+			getModel().getModeController().getMapController().onSelect(node);
 		}
 
 		public void clear() {
@@ -154,7 +154,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 			if (node.getModel() == null) {
 				return;
 			}
-			getModel().getModeController().onDeselect(node);
+			getModel().getModeController().getMapController().onDeselect(node);
 		}
 
 		public int size() {

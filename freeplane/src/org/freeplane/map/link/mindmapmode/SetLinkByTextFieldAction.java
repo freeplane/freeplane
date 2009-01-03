@@ -38,14 +38,14 @@ class SetLinkByTextFieldAction extends FreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final ModeController controller = getModeController();
-		String inputValue = JOptionPane.showInputDialog(controller.getMapView().getSelected(),
-		    Controller.getText("edit_link_manually"), NodeLinks.getLink(controller
-		        .getSelectedNode()));
+		String inputValue = JOptionPane.showInputDialog(Controller.getController().getMapView()
+		    .getSelected(), Controller.getText("edit_link_manually"), NodeLinks.getLink(controller
+		    .getMapController().getSelectedNode()));
 		if (inputValue != null) {
 			if (inputValue.equals("")) {
 				inputValue = null;
 			}
-			setLink(controller.getSelectedNode(), inputValue);
+			setLink(controller.getMapController().getSelectedNode(), inputValue);
 		}
 	}
 

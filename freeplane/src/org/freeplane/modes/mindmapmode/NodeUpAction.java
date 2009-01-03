@@ -75,7 +75,7 @@ class NodeUpAction extends FreeplaneAction {
 				final NodeModel node = (NodeModel) sortedChildren.get(position.intValue());
 				moveNodeTo(node, parent, direction);
 			}
-			final MapView mapView = getModeController().getMapView();
+			final MapView mapView = Controller.getController().getMapView();
 			final NodeView selectedNodeView = mapView.getNodeView(selected);
 			mapView.selectAsTheOnlyOneSelected(selectedNodeView);
 			mapView.scrollNodeToVisible(selectedNodeView);
@@ -90,7 +90,8 @@ class NodeUpAction extends FreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		moveNodes(getModeController().getSelectedNode(), getModeController().getSelectedNodes(), -1);
+		moveNodes(getModeController().getMapController().getSelectedNode(), getModeController()
+		    .getMapController().getSelectedNodes(), -1);
 	}
 
 	/**

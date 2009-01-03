@@ -48,9 +48,9 @@ class ImportLinkedBranchWithoutRootAction extends FreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final MapModel map = Controller.getController().getMap();
-		final NodeModel selected = getModeController().getSelectedNode();
+		final NodeModel selected = getModeController().getMapController().getSelectedNode();
 		if (selected == null || NodeLinks.getLink(selected) == null) {
-			JOptionPane.showMessageDialog(getModeController().getMapView().getComponent(),
+			JOptionPane.showMessageDialog(Controller.getController().getMapView().getComponent(),
 			    getModeController().getText("import_linked_branch_no_link"));
 			return;
 		}
@@ -62,7 +62,7 @@ class ImportLinkedBranchWithoutRootAction extends FreeplaneAction {
 			    relative);
 		}
 		catch (final MalformedURLException ex) {
-			JOptionPane.showMessageDialog(getModeController().getMapView().getComponent(),
+			JOptionPane.showMessageDialog(Controller.getController().getMapView().getComponent(),
 			    "Couldn't create valid URL.");
 			return;
 		}

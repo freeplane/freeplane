@@ -40,7 +40,7 @@ class ImportBranchAction extends FreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final NodeModel parent = getModeController().getSelectedNode();
+		final NodeModel parent = getModeController().getMapController().getSelectedNode();
 		if (parent == null) {
 			return;
 		}

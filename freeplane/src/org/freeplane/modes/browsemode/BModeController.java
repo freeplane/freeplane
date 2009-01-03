@@ -44,7 +44,7 @@ public class BModeController extends ModeController {
 
 	public void doubleClick() {
 		/* If the link exists, follow the link; toggle folded otherwise */
-		if (NodeLinks.getLink(getSelectedNode()) == null) {
+		if (NodeLinks.getLink(getMapController().getSelectedNode()) == null) {
 			getMapController().toggleFolded();
 		}
 		else {
@@ -60,7 +60,7 @@ public class BModeController extends ModeController {
 	@Override
 	public void plainClick(final MouseEvent e) {
 		/* perform action only if one selected node. */
-		if (getSelectedNodes().size() != 1) {
+		if (getMapController().getSelectedNodes().size() != 1) {
 			return;
 		}
 		final MainView component = (MainView) e.getComponent();
@@ -73,7 +73,7 @@ public class BModeController extends ModeController {
 				doubleClick(e);
 				return;
 			}
-			getMapController().toggleFolded(getSelectedNodes().listIterator());
+			getMapController().toggleFolded(getMapController().getSelectedNodes().listIterator());
 		}
 	}
 
@@ -93,7 +93,6 @@ public class BModeController extends ModeController {
 		}
 	}
 
-	
 	protected void updateMenus(final String resource) {
 		final UserInputListenerFactory userInputListenerFactory = (UserInputListenerFactory) getUserInputListenerFactory();
 		userInputListenerFactory.setMenuStructure(resource);

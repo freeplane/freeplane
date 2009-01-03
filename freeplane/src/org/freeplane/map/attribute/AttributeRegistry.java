@@ -41,9 +41,28 @@ import org.freeplane.map.attribute.mindmapnode.IAttributesListener;
 /**
  * @author Dimitry Polivaev
  */
-public class AttributeRegistry implements IExtension{
+public class AttributeRegistry implements IExtension {
 	static public final int GLOBAL = -1;
 	private static final int TABLE_FONT_SIZE = 12;
+
+	static AttributeRegistry createRegistry(final MapModel map) {
+		AttributeRegistry registry = AttributeRegistry.getRegistry(map);
+		if (registry == null) {
+			final AttributeController attributeController = AttributeController.getController(map
+			    .getModeController());
+			registry = new AttributeRegistry(attributeController);
+			map.addExtension(AttributeRegistry.class, registry);
+			registry.registryAttributes(map.getRootNode());
+		}
+		return registry;
+	}
+
+	public static AttributeRegistry getRegistry(final MapModel map) {
+		final AttributeRegistry registry = (AttributeRegistry) map
+		    .getExtension(AttributeRegistry.class);
+		return registry;
+	}
+
 	private AttributeController attributeController;
 	private ChangeEvent attributesEvent;
 	private String attributeViewType;
@@ -287,6 +306,22 @@ public class AttributeRegistry implements IExtension{
 		getTableModel().fireTableRowsInserted(index, index);
 	}
 
+	private void registryAttributes(final NodeModel node) {
+		final NodeAttributeTableModel model = NodeAttributeTableModel.getModel(node);
+		if (model == null) {
+			return;
+		}
+		for (int i = 0; i < model.getRowCount(); i++) {
+			registry(model.getAttribute(i));
+		}
+		final ListIterator<NodeModel> iterator = node.getModeController().getMapController()
+		    .childrenUnfolded(node);
+		while (iterator.hasNext()) {
+			final NodeModel next = iterator.next();
+			registryAttributes(next);
+		}
+	}
+
 	/**
 	 */
 	void removeAtribute(final Object o) {
@@ -415,37 +450,6 @@ public class AttributeRegistry implements IExtension{
 		if (toBeSaved) {
 			attributeRegistry.setName(AttributeBuilder.XML_NODE_ATTRIBUTE_REGISTRY);
 			writer.addElement(this, attributeRegistry);
-		}
-	}
-	
-	static AttributeRegistry createRegistry(MapModel map){
-		AttributeRegistry registry = getRegistry(map);
-		if(registry == null){
-			final AttributeController attributeController = AttributeController.getController(map.getModeController());
-			registry = new AttributeRegistry(attributeController);
-			map.addExtension(AttributeRegistry.class, registry);
-			registry.registryAttributes(map.getRootNode());
-		}
-		return registry;
-	}
-	public static AttributeRegistry getRegistry(MapModel map) {
-	    AttributeRegistry registry = (AttributeRegistry) map.getExtension(AttributeRegistry.class);
-	    return registry;
-    }
-
-	private void registryAttributes(final NodeModel node) {
-		final NodeAttributeTableModel model = NodeAttributeTableModel.getModel(node);
-		if (model == null) {
-			return;
-		}
-		for (int i = 0; i < model.getRowCount(); i++) {
-			registry(model.getAttribute(i));
-		}
-		final ListIterator<NodeModel> iterator = node.getModeController().getMapController()
-		    .childrenUnfolded(node);
-		while (iterator.hasNext()) {
-			final NodeModel next = iterator.next();
-			registryAttributes(next);
 		}
 	}
 }

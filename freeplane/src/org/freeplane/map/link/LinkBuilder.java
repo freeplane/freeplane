@@ -222,6 +222,17 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 		}
 	}
 
+	public void writeAttributes(final ITreeWriter writer, final Object userObject, final String tag) {
+		final NodeModel node = (NodeModel) userObject;
+		final boolean saveID = MapController.saveOnlyIntrinsicallyNeededIds()
+		        && !LinkController.getController(node.getModeController()).getLinksTo(node)
+		            .isEmpty();
+		if (saveID) {
+			final String id = node.createID();
+			writer.addAttribute("ID", id);
+		}
+	}
+
 	public void writeContent(final ITreeWriter writer, final Object node, final IExtension extension)
 	        throws IOException {
 		final NodeLinks links = (NodeLinks) extension;
@@ -233,16 +244,6 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 				final XMLElement arrowLinkElement = save(arrowLinkModel);
 				writer.addElement(arrowLinkModel, arrowLinkElement);
 			}
-		}
-	}
-
-	public void writeAttributes(ITreeWriter writer, Object userObject, String tag) {
-		NodeModel node = (NodeModel) userObject;
-		final boolean saveID = MapController.saveOnlyIntrinsicallyNeededIds()
-		&& !LinkController.getController(node.getModeController()).getLinksTo(node).isEmpty();
-		if (saveID) {
-			final String id = node.createID();
-			writer.addAttribute("ID", id);
 		}
 	}
 }

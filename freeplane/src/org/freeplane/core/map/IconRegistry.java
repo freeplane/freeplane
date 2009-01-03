@@ -32,11 +32,13 @@ import org.freeplane.core.filter.util.SortedMapListModel;
  */
 public class IconRegistry implements IExtension {
 	final private SortedMapListModel mapIcons;
-	IconRegistry(MapModel map) {
+
+	IconRegistry(final MapModel map) {
 		super();
 		mapIcons = new SortedMapListModel();
 		registryNodeIcons(map.getRootNode());
 	}
+
 	void addIcon(final MindIcon icon) {
 		mapIcons.add(icon);
 	}
@@ -44,6 +46,7 @@ public class IconRegistry implements IExtension {
 	public SortedMapListModel getIcons() {
 		return mapIcons;
 	}
+
 	private void registryNodeIcons(final NodeModel node) {
 		final List icons = node.getIcons();
 		final Iterator i = icons.iterator();
@@ -58,5 +61,4 @@ public class IconRegistry implements IExtension {
 			registryNodeIcons(next);
 		}
 	}
-
 }

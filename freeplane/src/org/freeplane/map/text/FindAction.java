@@ -46,7 +46,7 @@ class FindAction extends FreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final String what = JOptionPane.showInputDialog(getModeController().getMapView()
+		final String what = JOptionPane.showInputDialog(Controller.getController().getMapView()
 		    .getSelected(), getModeController().getText("find_what"), getModeController().getText(
 		    "find"), JOptionPane.QUESTION_MESSAGE);
 		if (what == null || what.equals("")) {
@@ -54,16 +54,17 @@ class FindAction extends FreeplaneAction {
 		}
 		final Collection subterms = breakSearchTermIntoSubterms(what);
 		searchTerm = what;
-		final boolean found = find(getModeController().getSelectedNode(), subterms,
-		/*caseSensitive=*/false);
-		getModeController().getMapView().repaint();
+		final boolean found = find(getModeController().getMapController().getSelectedNode(),
+		    subterms,
+		    /*caseSensitive=*/false);
+		Controller.getController().getMapView().repaint();
 		if (!found) {
 			final String messageText = getModeController().getText("no_found_from");
 			final String searchTerm = messageText.startsWith("<html>") ? HtmlTools
 			    .toXMLEscapedText(getSearchTerm()) : getSearchTerm();
 			Controller.getController().informationMessage(
 			    messageText.replaceAll("\\$1", searchTerm).replaceAll("\\$2", getFindFromText()),
-			    getModeController().getMapView().getSelected());
+			    Controller.getController().getMapView().getSelected());
 		}
 	}
 
@@ -103,7 +104,7 @@ class FindAction extends FreeplaneAction {
 	/**
 	 */
 	private void centerNode(final NodeModel node) {
-		getModeController().centerNode(node);
+		getModeController().getMapController().centerNode(node);
 	}
 
 	/**
@@ -189,7 +190,8 @@ class FindAction extends FreeplaneAction {
 	public boolean findNext() {
 		if (subterms != null) {
 			if (findNodeQueue.isEmpty()) {
-				return find(getModeController().getSelectedNode(), subterms, findCaseSensitive);
+				return find(getModeController().getMapController().getSelectedNode(), subterms,
+				    findCaseSensitive);
 			}
 			return find(findNodeQueue, subterms, findCaseSensitive);
 		}

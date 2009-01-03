@@ -42,11 +42,9 @@ class DocumentationAction extends AbstractAction {
 		map = ResourceController.removeTranslateComment(map);
 		if (map != null && map.startsWith(".")) {
 			try {
-				
 				map = HelpController.getController().convertLocalLink(map);
 			}
 			catch (final AccessControlException ex) {
-				
 				HelpController.getController().webDocu(e);
 				return;
 			}

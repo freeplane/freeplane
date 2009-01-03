@@ -38,7 +38,7 @@ locations = { "/menu_bar/file/open" })
 public class EncryptedMap extends FreeplaneAction implements INodeSelectionListener {
 	public EncryptedMap(final ModeController modeController) {
 		super();
-		modeController.addNodeSelectionListener(this);
+		modeController.getMapController().addNodeSelectionListener(this);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -52,9 +52,9 @@ public class EncryptedMap extends FreeplaneAction implements INodeSelectionListe
 		if (modeController == null) {
 			return false;
 		}
-		if (modeController.getSelectedNode() != null) {
-			final EncryptionModel enode = EncryptionModel
-			    .getModel(modeController.getSelectedNode());
+		if (modeController.getMapController().getSelectedNode() != null) {
+			final EncryptionModel enode = EncryptionModel.getModel(modeController
+			    .getMapController().getSelectedNode());
 			if (enode != null) {
 				isEncryptedNode = true;
 				isOpened = enode.isAccessible();

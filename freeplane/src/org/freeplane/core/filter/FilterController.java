@@ -51,6 +51,15 @@ import org.freeplane.view.swing.map.MapView;
  */
 public class FilterController implements IMapViewChangeListener, IExtension {
 	static final String FREEMIND_FILTER_EXTENSION_WITHOUT_DOT = "mmfilter";
+
+	public static FilterController getController() {
+		return (FilterController) Controller.getController().getExtension(FilterController.class);
+	}
+
+	public static void install() {
+		Controller.getController().addExtension(FilterController.class, new FilterController());
+	}
+
 	private ConditionFactory conditionFactory;
 	private DefaultConditionRenderer conditionRenderer = null;
 	private DefaultComboBoxModel filterConditionModel;
@@ -193,12 +202,5 @@ public class FilterController implements IMapViewChangeListener, IExtension {
 			createTransparentFilter().applyFilter();
 		}
 		refreshMap();
-	}
-
-	public static FilterController getController() {
-		return (FilterController)Controller.getController().getExtension(FilterController.class);
-	}
-	public static void install() {
-		Controller.getController().addExtension(FilterController.class, new FilterController());
 	}
 }

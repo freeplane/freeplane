@@ -38,15 +38,15 @@ class DeleteAction extends FreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final MModeController modeController = MModeController.getMModeController();
-		for (final Iterator iterator = modeController.getSelectedNodes().iterator(); iterator
-		    .hasNext();) {
+		for (final Iterator iterator = modeController.getMapController().getSelectedNodes()
+		    .iterator(); iterator.hasNext();) {
 			final NodeModel node = (NodeModel) iterator.next();
 			if (node.isRoot()) {
 				return;
 			}
 		}
 		final int showResult = new OptionalDontShowMeAgainDialog(Controller.getController()
-		    .getViewController().getJFrame(), modeController.getSelectedView(),
+		    .getViewController().getJFrame(), modeController.getMapController().getSelectedView(),
 		    "really_remove_node", "confirmation",
 		    new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
 		        ResourceController.RESOURCES_DELETE_NODES_WITHOUT_QUESTION),
@@ -54,7 +54,7 @@ class DeleteAction extends FreeplaneAction {
 		if (showResult != JOptionPane.OK_OPTION) {
 			return;
 		}
-		final Iterator<NodeModel> iterator = modeController.getMapView()
+		final Iterator<NodeModel> iterator = Controller.getController().getMapView()
 		    .getSelectedNodesSortedByY().iterator();
 		while (iterator.hasNext()) {
 			delete(iterator.next());

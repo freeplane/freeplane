@@ -26,6 +26,7 @@ import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.util.HtmlTools;
@@ -43,8 +44,10 @@ class JoinNodesAction extends FreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final NodeModel selectedNode = getModeController().getMapView().getSelected().getModel();
-		final List selectedNodes = getModeController().getMapView().getSelectedNodesSortedByY();
+		final NodeModel selectedNode = Controller.getController().getMapView().getSelected()
+		    .getModel();
+		final List selectedNodes = Controller.getController().getMapView()
+		    .getSelectedNodesSortedByY();
 		joinNodes(selectedNode, selectedNodes);
 	}
 
@@ -74,7 +77,7 @@ class JoinNodesAction extends FreeplaneAction {
 
 	public void joinNodes(final NodeModel selectedNode, final List selectedNodes) {
 		String newContent = "";
-		final MapView mapView = getModeController().getMapView();
+		final MapView mapView = Controller.getController().getMapView();
 		for (final Iterator it = selectedNodes.iterator(); it.hasNext();) {
 			final NodeModel node = (NodeModel) it.next();
 			if (node.getModeController().getMapController().hasChildren(node)) {

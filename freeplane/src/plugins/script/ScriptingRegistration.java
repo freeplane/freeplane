@@ -72,9 +72,9 @@ public class ScriptingRegistration implements IExternalPatternAction {
 
 		public boolean executeScript(final int pIndex, final PrintStream pOutStream,
 		                             final IErrorHandler pErrorHandler) {
-			return ScriptingEngine.executeScript(modeController.getSelectedNode(),
-			    new BooleanHolder(true), mScript, modeController, pErrorHandler, pOutStream,
-			    getScriptCookies());
+			return ScriptingEngine.executeScript(modeController.getMapController()
+			    .getSelectedNode(), new BooleanHolder(true), mScript, modeController,
+			    pErrorHandler, pOutStream, getScriptCookies());
 		}
 
 		public int getAmountOfScripts() {

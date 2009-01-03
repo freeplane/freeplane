@@ -259,9 +259,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 	}
 
 	public void init() {
-		
-		final JToolBar filterToolbar = FilterController.getController()
-		    .getFilterToolbar();
+		final JToolBar filterToolbar = FilterController.getController().getFilterToolbar();
 		getContentPane().add(toolbarPanel, BorderLayout.NORTH);
 		getContentPane().add(leftToolbarPanel, BorderLayout.WEST);
 		toolbarPanel.add(filterToolbar, BorderLayout.SOUTH);

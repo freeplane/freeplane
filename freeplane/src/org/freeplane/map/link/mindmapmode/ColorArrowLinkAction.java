@@ -24,6 +24,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ColorTracker;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
@@ -45,8 +46,8 @@ class ColorArrowLinkAction extends FreeplaneAction {
 		final ModeController modeController = getModeController();
 		final Color selectedColor = LinkController.getController(modeController)
 		    .getColor(arrowLink);
-		final Color color = ColorTracker.showCommonJColorChooserDialog(modeController.getMapView()
-		    .getSelected(), (String) this.getValue(Action.NAME), selectedColor);
+		final Color color = ColorTracker.showCommonJColorChooserDialog(Controller.getController()
+		    .getMapView().getSelected(), (String) this.getValue(Action.NAME), selectedColor);
 		if (color == null) {
 			return;
 		}

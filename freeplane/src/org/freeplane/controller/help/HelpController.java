@@ -30,6 +30,14 @@ import org.freeplane.core.extension.IExtension;
  * @author Dimitry Polivaev
  */
 public class HelpController implements IExtension {
+	public static HelpController getController() {
+		return (HelpController) Controller.getController().getExtension(HelpController.class);
+	}
+
+	public static void install() {
+		Controller.getController().addExtension(HelpController.class, new HelpController());
+	}
+
 	final private Action webDocu;
 
 	public HelpController() {
@@ -63,14 +71,4 @@ public class HelpController implements IExtension {
 	public void webDocu(final ActionEvent e) {
 		webDocu.actionPerformed(e);
 	}
-
-
-
-	public static HelpController getController() {		
-		return (HelpController)Controller.getController().getExtension(HelpController.class);
-	}
-	public static void install() {
-		Controller.getController().addExtension(HelpController.class, new HelpController());
-	}
-
 }

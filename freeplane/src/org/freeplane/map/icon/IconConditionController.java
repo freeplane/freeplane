@@ -82,7 +82,8 @@ class IconConditionController implements IElementaryConditionController {
 	}
 
 	public ComboBoxModel getValuesForProperty(final Object property) {
-		final SortedMapListModel icons = Controller.getController().getMap().getIconRegistry().getIcons();
+		final SortedMapListModel icons = Controller.getController().getMap().getIconRegistry()
+		    .getIcons();
 		final ExtendedComboBoxModel extendedComboBoxModel = new ExtendedComboBoxModel();
 		extendedComboBoxModel.setExtensionList(icons);
 		return extendedComboBoxModel;

@@ -38,7 +38,6 @@ class KeyDocumentationAction extends AbstractAction {
 		urlText = ResourceController.removeTranslateComment(urlText);
 		try {
 			if (urlText != null && urlText.startsWith(".")) {
-				
 				urlText = HelpController.getController().convertLocalLink(urlText);
 			}
 			if (urlText != null && urlText != "") {

@@ -49,7 +49,7 @@ class ItalicAction extends MultipleNodeAction {
 	}
 
 	boolean isItalic() {
-		final NodeModel node = getModeController().getSelectedNode();
+		final NodeModel node = getModeController().getMapController().getSelectedNode();
 		return NodeStyleController.getController(getModeController()).isItalic(node);
 	}
 

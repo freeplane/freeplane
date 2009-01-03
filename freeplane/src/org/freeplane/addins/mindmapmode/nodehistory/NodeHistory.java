@@ -44,7 +44,7 @@ public class NodeHistory implements IExtension, INodeSelectionListener {
 		this.modeController = modeController;
 		nodes = new LinkedList<NodeHolder>();
 		nodeIterator = nodes.listIterator();
-		modeController.addNodeSelectionListener(this);
+		modeController.getMapController().addNodeSelectionListener(this);
 		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory()
 		    .getMenuBuilder();
 		final BackAction backAction = new BackAction(this);
@@ -112,9 +112,9 @@ public class NodeHistory implements IExtension, INodeSelectionListener {
 		if (!toBeSelected.isRoot()) {
 			modeController.getMapController().setFolded(toBeSelected.getParentNode(), false);
 		}
-		final NodeView nodeView = modeController.getNodeView(toBeSelected);
+		final NodeView nodeView = modeController.getMapController().getNodeView(toBeSelected);
 		if (nodeView != null) {
-			modeController.select(nodeView);
+			modeController.getMapController().select(nodeView);
 		}
 	}
 
@@ -146,6 +146,6 @@ public class NodeHistory implements IExtension, INodeSelectionListener {
 	}
 
 	public void register() {
-		modeController.addNodeSelectionListener(this);
+		modeController.getMapController().addNodeSelectionListener(this);
 	}
 }

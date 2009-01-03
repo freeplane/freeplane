@@ -173,7 +173,6 @@ class FilterToolbar extends FreeMindToolBar {
 
 	FilterToolbar() {
 		super();
-		
 		fc = FilterController.getController();
 		setVisible(false);
 		setFocusable(false);

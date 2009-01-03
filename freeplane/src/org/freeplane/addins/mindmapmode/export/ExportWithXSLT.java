@@ -195,7 +195,7 @@ public class ExportWithXSLT extends ExportAction {
 		final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(
 		    new FileOutputStream(pDirectoryName + File.separator + "map.mm")));
 		final MapModel map = Controller.getController().getMap();
-		getModeController().getFilteredXml(map, fileout);
+		getModeController().getMapController().getFilteredXml(map, fileout);
 		return success;
 	}
 
@@ -253,7 +253,7 @@ public class ExportWithXSLT extends ExportAction {
 		final StringWriter writer = new StringWriter();
 		final MModeController controller = (MModeController) getModeController();
 		final MapModel map = Controller.getController().getMap();
-		controller.getFilteredXml(map, writer);
+		controller.getMapController().getFilteredXml(map, writer);
 		return writer.getBuffer().toString();
 	}
 

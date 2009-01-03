@@ -74,8 +74,8 @@ public class ChangeNodeLevelAction {
 		NodeModel selectedNode;
 		List selectedNodes;
 		{
-			final NodeModel focussed = modeController.getSelectedNode();
-			final List selecteds = modeController.getSelectedNodes();
+			final NodeModel focussed = modeController.getMapController().getSelectedNode();
+			final List selecteds = modeController.getMapController().getSelectedNodes();
 			selectedNode = focussed;
 			selectedNodes = selecteds;
 		}
@@ -169,6 +169,7 @@ public class ChangeNodeLevelAction {
 			final String nodeId = (String) iter.next();
 			newSelecteds.add(modeController.getMapController().getNodeFromID(nodeId));
 		}
-		modeController.selectMultipleNodes(newInstanceOfSelectedNode, newSelecteds);
+		modeController.getMapController().selectMultipleNodes(newInstanceOfSelectedNode,
+		    newSelecteds);
 	}
 }

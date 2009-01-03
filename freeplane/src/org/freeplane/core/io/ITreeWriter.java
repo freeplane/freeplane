@@ -42,7 +42,8 @@ public interface ITreeWriter {
 
 	void addExtensionNodes(Object element, final IExtensionCollection collection)
 	        throws IOException;
-	
-	void setHint(Object key, Object value);
+
 	Object getHint(Object key);
+
+	void setHint(Object key, Object value);
 }

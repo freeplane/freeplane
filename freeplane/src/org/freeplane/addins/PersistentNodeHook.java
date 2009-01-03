@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IElementDOMHandler;
 import org.freeplane.core.io.IExtensionElementWriter;
@@ -217,12 +218,12 @@ public abstract class PersistentNodeHook implements IExtension {
 
 	protected NodeModel[] getRootNode() {
 		final NodeModel[] nodes = new NodeModel[1];
-		nodes[0] = getModeController().getMapView().getModel().getRootNode();
+		nodes[0] = Controller.getController().getMapView().getModel().getRootNode();
 		return nodes;
 	}
 
 	protected NodeModel[] getSelectedNodes() {
-		final List<NodeView> selection = getModeController().getMapView().getSelection();
+		final List<NodeView> selection = Controller.getController().getMapView().getSelection();
 		final int size = selection.size();
 		final NodeModel[] nodes = new NodeModel[size];
 		final Iterator<NodeView> iterator = selection.iterator();

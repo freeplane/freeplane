@@ -206,7 +206,7 @@ public class MFileManager extends UrlManager {
 
 	public void open() {
 		final JFileChooser chooser = getFileChooser();
-		final int returnVal = chooser.showOpenDialog(getMModeController().getMapView()
+		final int returnVal = chooser.showOpenDialog(Controller.getController().getMapView()
 		    .getComponent());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File[] selectedFiles;
@@ -276,7 +276,7 @@ public class MFileManager extends UrlManager {
 			        + org.freeplane.modes.mindmapmode.url.MFileManager.FREEMIND_FILE_EXTENSION));
 		}
 		chooser.setDialogTitle(getMModeController().getText("save_as"));
-		final int returnVal = chooser.showSaveDialog(getMModeController().getMapView()
+		final int returnVal = chooser.showSaveDialog(Controller.getController().getMapView()
 		    .getComponent());
 		if (returnVal != JFileChooser.APPROVE_OPTION) {
 			return false;
@@ -290,7 +290,7 @@ public class MFileManager extends UrlManager {
 			        + org.freeplane.modes.mindmapmode.url.MFileManager.FREEMIND_FILE_EXTENSION);
 		}
 		if (f.exists()) {
-			final int overwriteMap = JOptionPane.showConfirmDialog(getMModeController()
+			final int overwriteMap = JOptionPane.showConfirmDialog(Controller.getController()
 			    .getMapView().getComponent(), getMModeController().getText("map_already_exists"),
 			    "FreeMind", JOptionPane.YES_NO_OPTION);
 			if (overwriteMap != JOptionPane.YES_OPTION) {
@@ -346,7 +346,7 @@ public class MFileManager extends UrlManager {
 	@Override
 	public void startup() {
 		final MModeController modeController = getMModeController();
-		final MapView mapView = modeController.getMapView();
+		final MapView mapView = Controller.getController().getMapView();
 		if (mapView != null) {
 			final FileOpener fileOpener = new FileOpener(modeController);
 			new DropTarget(mapView.getComponent(), fileOpener);

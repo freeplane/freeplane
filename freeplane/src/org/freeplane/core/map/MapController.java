@@ -35,10 +35,15 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.swing.Action;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.MapViewManager;
@@ -47,6 +52,7 @@ import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.XMLElement;
 import org.freeplane.core.io.xml.TreeXmlWriter;
+import org.freeplane.core.map.ModeController.IActionOnChange;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Tools;
 import org.freeplane.n3.nanoxml.XMLParseException;
@@ -105,6 +111,8 @@ public class MapController {
 	final private MapReader mapReader;
 	final private MapWriter mapWriter;
 	final private ModeController modeController;
+	final private LinkedList<INodeChangeListener> nodeChangeListeners;
+	final private LinkedList<INodeSelectionListener> nodeSelectionListeners;
 	final private ReadManager readManager;
 	private final WriteManager writeManager;
 
@@ -120,6 +128,8 @@ public class MapController {
 		writeManager.addAttributeWriter("map", mapWriter);
 		createActions(modeController);
 		mapChangeListeners = new LinkedList<IMapChangeListener>();
+		nodeSelectionListeners = new LinkedList();
+		nodeChangeListeners = new LinkedList();
 	}
 
 	/**
@@ -144,6 +154,32 @@ public class MapController {
 
 	public void addMapLifeCycleListener(final IMapLifeCycleListener listener) {
 		mapLifeCycleListeners.add(listener);
+	}
+
+	public void addNodeChangeListener(final INodeChangeListener listener) {
+		nodeChangeListeners.add(listener);
+	}
+
+	public void addNodeSelectionListener(final INodeSelectionListener listener) {
+		nodeSelectionListeners.add(listener);
+	}
+
+	public void centerNode(final NodeModel node) {
+		NodeView view = null;
+		if (node != null) {
+			view = Controller.getController().getMapView().getNodeView(node);
+		}
+		if (view == null) {
+			displayNode(node);
+			view = Controller.getController().getMapView().getNodeView(node);
+		}
+		centerNode(view);
+	}
+
+	private void centerNode(final NodeView node) {
+		Controller.getController().getMapView().centerNode(node);
+		Controller.getController().getMapView().selectAsTheOnlyOneSelected(node);
+		Controller.getController().getViewController().obtainFocusForSelected();
 	}
 
 	public ListIterator<NodeModel> childrenFolded(final NodeModel node) {
@@ -214,21 +250,23 @@ public class MapController {
 		final boolean branch = e.isAltGraphDown() || e.isAltDown();
 		/* windows alt, linux altgraph .... */
 		boolean retValue = false;
-		if (extend || range || branch || !getMapView().isSelected(newlySelectedNodeView)) {
+		if (extend || range || branch
+		        || !Controller.getController().getMapView().isSelected(newlySelectedNodeView)) {
 			if (!range) {
 				if (extend) {
-					getMapView().toggleSelected(newlySelectedNodeView);
+					Controller.getController().getMapView().toggleSelected(newlySelectedNodeView);
 				}
 				else {
-					getModeController().select(newlySelectedNodeView);
+					select(newlySelectedNodeView);
 				}
 				retValue = true;
 			}
 			else {
-				retValue = getMapView().selectContinuous(newlySelectedNodeView);
+				retValue = Controller.getController().getMapView().selectContinuous(
+				    newlySelectedNodeView);
 			}
 			if (branch) {
-				getMapView().selectBranch(newlySelectedNodeView, extend);
+				Controller.getController().getMapView().selectBranch(newlySelectedNodeView, extend);
 				retValue = true;
 			}
 		}
@@ -281,6 +319,10 @@ public class MapController {
 		}
 	}
 
+	public void getFilteredXml(final MapModel map, final Writer fileout) throws IOException {
+		writeMapAsXml(map, fileout, false);
+	}
+
 	/**
 	 * Determines whether the nodes should be folded or unfolded depending on
 	 * their states. If not all nodes have the same folding status, the result
@@ -325,10 +367,6 @@ public class MapController {
 		return mapReader;
 	}
 
-	public MapView getMapView() {
-		return getModeController().getMapView();
-	}
-
 	public ModeController getModeController() {
 		return modeController;
 	}
@@ -350,6 +388,20 @@ public class MapController {
 		return selected.createID();
 	}
 
+	public NodeView getNodeView(final NodeModel node) {
+		return Controller.getController().getMapView().getNodeView(node);
+	}
+
+	private NodeView getNodeView(final Object object) {
+		if (object instanceof NodeView) {
+			return (NodeView) object;
+		}
+		if (object instanceof NodeModel) {
+			return Controller.getController().getMapView().getNodeView((NodeModel) object);
+		}
+		throw new ClassCastException();
+	}
+
 	public ReadManager getReadManager() {
 		return readManager;
 	}
@@ -357,6 +409,44 @@ public class MapController {
 	public NodeModel getRootNode() {
 		final MapModel map = Controller.getController().getMap();
 		return (NodeModel) map.getRoot();
+	}
+
+	public NodeModel getSelectedNode() {
+		final NodeView selectedView = getSelectedView();
+		if (selectedView != null) {
+			return selectedView.getModel();
+		}
+		return null;
+	}
+
+	/**
+	 * fc, 24.1.2004: having two methods getSelecteds with different return
+	 * values (linkedlists of models resp. views) is asking for trouble. @see
+	 * MapView
+	 *
+	 * @return returns a list of MindMapNode s.
+	 */
+	public List getSelectedNodes() {
+		final MapView view = Controller.getController().getMapView();
+		if (view == null) {
+			return Collections.EMPTY_LIST;
+		}
+		final LinkedList selecteds = new LinkedList();
+		final Iterator it = view.getSelection().iterator();
+		if (it != null) {
+			while (it.hasNext()) {
+				final NodeView selected = (NodeView) it.next();
+				selecteds.add(selected.getModel());
+			}
+		}
+		return selecteds;
+	}
+
+	public NodeView getSelectedView() {
+		if (Controller.getController().getMapView() != null) {
+			return Controller.getController().getMapView().getSelected();
+		}
+		return null;
 	}
 
 	public WriteManager getWriteManager() {
@@ -412,7 +502,7 @@ public class MapController {
 			else if (relative.startsWith("#")) {
 				final String target = relative.substring(1);
 				try {
-					getModeController().centerNode(getNodeFromID(target));
+					centerNode(getNodeFromID(target));
 					return;
 				}
 				catch (final Exception e) {
@@ -458,8 +548,8 @@ public class MapController {
 				if (ref != null) {
 					try {
 						final ModeController newModeController = Controller.getModeController();
-						newModeController.centerNode(newModeController.getMapController()
-						    .getNodeFromID(ref));
+						final MapController newMapController = newModeController.getMapController();
+						newMapController.centerNode(newMapController.getNodeFromID(ref));
 					}
 					catch (final Exception e) {
 						org.freeplane.core.util.Tools.logException(e);
@@ -560,7 +650,7 @@ public class MapController {
 			if (node.getHistoryInformation() != null) {
 				node.getHistoryInformation().setLastModifiedAt(new Date());
 			}
-			getModeController().onUpdate(node, property, oldValue, newValue);
+			onUpdate(node, property, oldValue, newValue);
 		}
 		(node.getMap()).nodeChangedInternal(node);
 	}
@@ -569,6 +659,38 @@ public class MapController {
 	 */
 	public void nodeStructureChanged(final NodeModel node) {
 		node.getMap().nodeStructureChanged(node);
+	}
+
+	public void onDeselect(final NodeView node) {
+		try {
+			final HashSet copy = new HashSet(nodeSelectionListeners);
+			for (final Iterator iter = copy.iterator(); iter.hasNext();) {
+				final INodeSelectionListener listener = (INodeSelectionListener) iter.next();
+				listener.onDeselect(node);
+			}
+		}
+		catch (final RuntimeException e) {
+			Logger.global.log(Level.SEVERE, "Error in node selection listeners", e);
+		}
+	}
+
+	public void onSelect(final NodeView node) {
+		for (final Iterator iter = nodeSelectionListeners.iterator(); iter.hasNext();) {
+			final INodeSelectionListener listener = (INodeSelectionListener) iter.next();
+			listener.onSelect(node);
+		}
+	}
+
+	/**
+	 * @param isUpdate
+	 * @param node
+	 */
+	public void onUpdate(final NodeModel node, final Object property, final Object oldValue,
+	                     final Object newValue) {
+		final Iterator<INodeChangeListener> iterator = nodeChangeListeners.iterator();
+		while (iterator.hasNext()) {
+			iterator.next().nodeChanged(new NodeChangeEvent(node, property, oldValue, newValue));
+		}
 	}
 
 	public void refreshMap() {
@@ -592,6 +714,69 @@ public class MapController {
 
 	public void removeMapLifeCycleListener(final IMapLifeCycleListener listener) {
 		mapLifeCycleListeners.remove(listener);
+	}
+
+	void removeNodeChangeListener(final Class<? extends IActionOnChange> clazz, final Action action) {
+		final Iterator<INodeChangeListener> iterator = nodeChangeListeners.iterator();
+		while (iterator.hasNext()) {
+			final INodeChangeListener next = iterator.next();
+			if (next instanceof IActionOnChange && ((IActionOnChange) next).getAction() == action) {
+				iterator.remove();
+				return;
+			}
+		}
+	}
+
+	public void removeNodeChangeListener(final INodeChangeListener listener) {
+		nodeChangeListeners.remove(listener);
+	}
+
+	void removeNodeSelectionListener(final Class<? extends IActionOnChange> clazz,
+	                                 final Action action) {
+		final Iterator<INodeSelectionListener> iterator = nodeSelectionListeners.iterator();
+		while (iterator.hasNext()) {
+			final INodeSelectionListener next = iterator.next();
+			if (next instanceof IActionOnChange && ((IActionOnChange) next).getAction() == action) {
+				iterator.remove();
+				return;
+			}
+		}
+	}
+
+	public void removeNodeSelectionListener(final INodeSelectionListener listener) {
+		nodeSelectionListeners.remove(listener);
+	}
+
+	public void select(final NodeView node) {
+		Controller.getController().getMapView().scrollNodeToVisible(node);
+		Controller.getController().getMapView().selectAsTheOnlyOneSelected(node);
+		Controller.getController().getMapView().setSiblingMaxLevel(node.getModel().getNodeLevel());
+	}
+
+	public void selectBranch(final NodeView selected, final boolean extend) {
+		displayNode(selected.getModel());
+		Controller.getController().getMapView().selectBranch(selected, extend);
+	}
+
+	public void selectMultipleNodes(final NodeModel focussed, final Collection selecteds) {
+		selectMultipleNodesImpl(focussed, selecteds);
+	}
+
+	public void selectMultipleNodes(final NodeView focussed, final Collection selecteds) {
+		selectMultipleNodesImpl(focussed, selecteds);
+	}
+
+	private void selectMultipleNodesImpl(final Object focussed, final Collection selecteds) {
+		for (final Iterator i = selecteds.iterator(); i.hasNext();) {
+			final NodeModel node = (NodeModel) (i.next());
+			displayNode(node);
+		}
+		select(getNodeView(focussed));
+		for (final Iterator i = selecteds.iterator(); i.hasNext();) {
+			final NodeView node = getNodeView(i.next());
+			Controller.getController().getMapView().makeTheSelected(node);
+		}
+		Controller.getController().getViewController().obtainFocusForSelected();
 	}
 
 	public void setFolded(final NodeModel node, final boolean folded) {

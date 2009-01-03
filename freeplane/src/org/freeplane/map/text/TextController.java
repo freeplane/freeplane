@@ -39,8 +39,9 @@ public class TextController implements IExtension {
 	public static void install(final ModeController modeController,
 	                           final TextController textController) {
 		modeController.addExtension(TextController.class, textController);
-		if(firstRun){
-			FilterController.getController().getConditionFactory().addConditionController(0, new NodeConditionController());
+		if (firstRun) {
+			FilterController.getController().getConditionFactory().addConditionController(0,
+			    new NodeConditionController());
 			firstRun = false;
 		}
 	}

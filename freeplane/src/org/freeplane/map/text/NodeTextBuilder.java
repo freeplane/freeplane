@@ -75,14 +75,24 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 	/**
 	 * @param writeManager 
 	 */
-	public void registerBy(final ReadManager reader, WriteManager writeManager) {
+	public void registerBy(final ReadManager reader, final WriteManager writeManager) {
 		registerAttributeHandlers(reader);
 		reader.addElementHandler("richcontent", this);
 		writeManager.addElementWriter(NodeBuilder.XML_NODE, this);
 		writeManager.addAttributeWriter(NodeBuilder.XML_NODE, this);
 	}
 
-	public void writeContent(ITreeWriter writer, Object element, String tag) throws IOException {
+	public void writeAttributes(final ITreeWriter writer, final Object userObject, final String tag) {
+		final NodeModel node = (NodeModel) userObject;
+		final String text = node.toString().replace('\0', ' ');
+		isTextNode = !HtmlTools.isHtmlNode(text);
+		if (isTextNode) {
+			writer.addAttribute(NodeTextBuilder.XML_NODE_TEXT, text);
+		}
+	}
+
+	public void writeContent(final ITreeWriter writer, final Object element, final String tag)
+	        throws IOException {
 		if (!isTextNode) {
 			final XMLElement htmlElement = new XMLElement();
 			htmlElement.setName(NodeTextBuilder.XML_NODE_XHTML_CONTENT_TAG);
@@ -92,14 +102,5 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 			final String content = node.getXmlText().replace('\0', ' ');
 			writer.addElement(content, htmlElement);
 		}
-    }
-
-	public void writeAttributes(ITreeWriter writer, Object userObject, String tag) {
-		NodeModel node = (NodeModel) userObject;
-		final String text = node.toString().replace('\0', ' ');
-		isTextNode = !HtmlTools.isHtmlNode(text);
-		if (isTextNode) {
-			writer.addAttribute(NodeTextBuilder.XML_NODE_TEXT, text);
-		}
-    }
+	}
 }

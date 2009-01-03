@@ -26,6 +26,7 @@ import javax.swing.JMenuItem;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ColorTracker;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.ui.MultipleNodeAction;
@@ -46,14 +47,14 @@ class CloudColorAction extends MultipleNodeAction implements PopupMenuListener {
 		MModeController controller;
 		{
 			controller = MModeController.getMModeController();
-			final NodeModel selected = controller.getSelectedNode();
+			final NodeModel selected = controller.getMapController().getSelectedNode();
 			if (CloudModel.getModel(selected) != null) {
 				selectedColor = CloudController.getController(selected.getModeController())
 				    .getColor(selected);
 			}
 		}
-		actionColor = ColorTracker.showCommonJColorChooserDialog(controller.getMapView()
-		    .getSelected(), controller.getText("choose_cloud_color"), selectedColor);
+		actionColor = ColorTracker.showCommonJColorChooserDialog(Controller.getController()
+		    .getMapView().getSelected(), controller.getText("choose_cloud_color"), selectedColor);
 		if (actionColor == null) {
 			return;
 		}
@@ -77,7 +78,8 @@ class CloudColorAction extends MultipleNodeAction implements PopupMenuListener {
 	 *
 	 */
 	private boolean isCloudEnabled() {
-		final NodeModel selected = MModeController.getMModeController().getSelectedNode();
+		final NodeModel selected = MModeController.getMModeController().getMapController()
+		    .getSelectedNode();
 		return selected != null && CloudModel.getModel(selected) != null;
 	}
 

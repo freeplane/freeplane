@@ -61,7 +61,7 @@ final class NoteManager implements INodeSelectionListener {
 		final String documentText = noteController.getNoteViewerComponent().getDocumentText();
 		editorContentEmpty = documentText.equals(EMPTY_EDITOR_STRING)
 		        || documentText.equals(EMPTY_EDITOR_STRING_ALTERNATIVE);
-		noteController.getModeController().removeNodeSelectionListener(this);
+		noteController.getModeController().getMapController().removeNodeSelectionListener(this);
 		if (noteController.getNoteViewerComponent().needsSaving()) {
 			if (editorContentEmpty) {
 				noteController.setNoteText(node, null);
@@ -71,7 +71,7 @@ final class NoteManager implements INodeSelectionListener {
 			}
 			noteController.setLastContentEmpty(editorContentEmpty);
 		}
-		noteController.getModeController().addNodeSelectionListener(this);
+		noteController.getModeController().getMapController().addNodeSelectionListener(this);
 	}
 
 	void updateEditor() {

@@ -42,11 +42,7 @@ import org.freeplane.view.swing.map.MapView;
  * Provides the methods to edit/change a Node. Forwards all messages to
  * MapModel(editing) or MapView(navigation).
  */
-public class Controller{
-	public IExtension getExtension(Class clazz) {
-	    return extensions.getExtension(clazz);
-    }
-
+public class Controller {
 	private static Controller controllerInstance;
 	public static final String JAVA_VERSION = System.getProperty("java.version");
 	public static final String ON_START_IF_NOT_SPECIFIED = "on_start_if_not_specified";
@@ -88,9 +84,9 @@ public class Controller{
 	 * (Used to change this behaviour under MacOSX).
 	 */
 	private ModeController modeController;
-	private ViewController viewController;
 	final private HashMap<String, ModeController> modeControllers;
 	final private Action quit;
+	private ViewController viewController;
 
 	public Controller(final ResourceController resourceController) {
 		if (Controller.controllerInstance != null) {
@@ -154,6 +150,10 @@ public class Controller{
 
 	public Action getAction(final String key) {
 		return actionController.getAction(key);
+	}
+
+	public IExtension getExtension(final Class clazz) {
+		return extensions.getExtension(clazz);
 	}
 
 	public FreemindVersionInformation getFreemindVersion() {
@@ -258,9 +258,8 @@ public class Controller{
 		selectMode(newModeController);
 		return getMapViewManager().changeToMode(modeName);
 	}
-	
+
 	public void setViewController(final ViewController viewController) {
 		this.viewController = viewController;
 	}
-
 }

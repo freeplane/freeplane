@@ -33,6 +33,11 @@ public class NoteModel implements IExtension {
 		return extension != null ? extension.getNoteText() : null;
 	}
 
+	public static String getXmlNoteText(final NodeModel node) {
+		final NoteModel extension = (NoteModel) node.getExtension(NoteModel.class);
+		return extension != null ? extension.getXmlNoteText() : null;
+	}
+
 	private String noteText = null;
 	private String xmlNoteText = null;
 
@@ -63,9 +68,4 @@ public class NoteModel implements IExtension {
 		xmlNoteText = Tools.makeValidXml(pXmlNoteText);
 		noteText = HtmlTools.getInstance().toHtml(xmlNoteText);
 	}
-
-	public static String getXmlNoteText(NodeModel node) {
-		final NoteModel extension = (NoteModel) node.getExtension(NoteModel.class);
-		return extension != null ? extension.getXmlNoteText() : null;
-    }
 }

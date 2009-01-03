@@ -49,7 +49,7 @@ class ToggleFoldedAction extends FreeplaneAction {
 	}
 
 	public void toggleFolded() {
-		toggleFolded(getModeController().getSelectedNodes().listIterator());
+		toggleFolded(getModeController().getMapController().getSelectedNodes().listIterator());
 	}
 
 	public void toggleFolded(final ListIterator listIterator) {

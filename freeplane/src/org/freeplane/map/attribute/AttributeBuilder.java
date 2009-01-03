@@ -75,8 +75,8 @@ class AttributeBuilder implements IElementDOMHandler {
 		if (tag.equals(AttributeBuilder.XML_NODE_REGISTERED_ATTRIBUTE_NAME)) {
 			final RegisteredAttributeProperties rap = (RegisteredAttributeProperties) userObject;
 			if (rap.visible) {
-				AttributeRegistry.getRegistry(getMap()).getElement(rap.attributeName).setVisibility(
-				    true);
+				AttributeRegistry.getRegistry(getMap()).getElement(rap.attributeName)
+				    .setVisibility(true);
 			}
 			if (rap.restricted) {
 				AttributeRegistry.getRegistry(getMap()).getElement(rap.attributeName)
@@ -170,15 +170,14 @@ class AttributeBuilder implements IElementDOMHandler {
 		reader.addAttributeHandler(AttributeBuilder.XML_NODE_ATTRIBUTE_REGISTRY, "RESTRICTED",
 		    new IAttributeHandler() {
 			    public void setAttribute(final Object userObject, final String value) {
-			    	AttributeRegistry.getRegistry(getMap()).setRestricted(true);
+				    AttributeRegistry.getRegistry(getMap()).setRestricted(true);
 			    }
 		    });
 		reader.addAttributeHandler(AttributeBuilder.XML_NODE_ATTRIBUTE_REGISTRY, "SHOW_ATTRIBUTES",
 		    new IAttributeHandler() {
 			    public void setAttribute(final Object userObject, final String value) {
-				    
-					ModelessAttributeController.getController().setAttributeViewType(
-				        getMap(), value.toString());
+				    ModelessAttributeController.getController().setAttributeViewType(getMap(),
+				        value.toString());
 			    }
 		    });
 		reader.addAttributeHandler(AttributeBuilder.XML_NODE_ATTRIBUTE_REGISTRY, "FONT_SIZE",
@@ -209,18 +208,16 @@ class AttributeBuilder implements IElementDOMHandler {
 				    attributes.save(writer);
 			    }
 		    });
-		writer.addExtensionElementWriter(AttributeRegistry.class,
-		    new IExtensionElementWriter() {
-			    public void writeContent(final ITreeWriter writer, final Object node,
-			                             final IExtension extension) throws IOException {
-				    final AttributeRegistry attributes = (AttributeRegistry) extension;
-				    attributes.write(writer);
-			    }
-		    });
+		writer.addExtensionElementWriter(AttributeRegistry.class, new IExtensionElementWriter() {
+			public void writeContent(final ITreeWriter writer, final Object node,
+			                         final IExtension extension) throws IOException {
+				final AttributeRegistry attributes = (AttributeRegistry) extension;
+				attributes.write(writer);
+			}
+		});
 		registerAttributeHandlers(reader);
 	}
 
 	public void setAttributes(final String tag, final Object node, final IXMLElement attributes) {
 	}
-
 }

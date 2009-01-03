@@ -40,9 +40,8 @@ public class ConjunctConditions implements ICondition {
 		final Vector children = element.getChildren();
 		final Object[] conditions = new Object[children.size()];
 		for (int i = 0; i < conditions.length; i++) {
-			
-			final ICondition cond = FilterController.getController()
-			    .getConditionFactory().loadCondition((XMLElement) children.get(i));
+			final ICondition cond = FilterController.getController().getConditionFactory()
+			    .loadCondition((XMLElement) children.get(i));
 			conditions[i] = cond;
 		}
 		return new ConjunctConditions(conditions);

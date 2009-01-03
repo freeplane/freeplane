@@ -68,15 +68,17 @@ public class LinkController implements IExtension {
 	public static void install(final ModeController modeController,
 	                           final LinkController linkController) {
 		modeController.addExtension(LinkController.class, linkController);
-		modeController.addNodeSelectionListener(new INodeSelectionListener(){
-			public void onDeselect(NodeView node) {
-            }
+		final INodeSelectionListener listener = new INodeSelectionListener() {
+			public void onDeselect(final NodeView node) {
+			}
 
-			public void onSelect(NodeView node) {
+			public void onSelect(final NodeView node) {
 				String link = NodeLinks.getLink(node.getModel());
 				link = (link != null ? link : " ");
 				Controller.getController().getViewController().out(link);
-            }});
+			}
+		};
+		modeController.getMapController().addNodeSelectionListener(listener);
 	}
 
 	final private ExclusivePropertyChain<Color, ArrowLinkModel> colorHandlers;
@@ -215,7 +217,7 @@ public class LinkController implements IExtension {
 	}
 
 	public void loadURL() {
-		final String link = NodeLinks.getLink(modeController.getSelectedNode());
+		final String link = NodeLinks.getLink(modeController.getMapController().getSelectedNode());
 		if (link != null) {
 			modeController.getMapController().loadURL(link);
 		}

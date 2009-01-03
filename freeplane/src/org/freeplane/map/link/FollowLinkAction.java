@@ -35,8 +35,8 @@ class FollowLinkAction extends FreeplaneAction implements PopupMenuListener {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		for (final Iterator iterator = getModeController().getSelectedNodes().iterator(); iterator
-		    .hasNext();) {
+		for (final Iterator iterator = getModeController().getMapController().getSelectedNodes()
+		    .iterator(); iterator.hasNext();) {
 			final NodeModel selNode = (NodeModel) iterator.next();
 			if (NodeLinks.getLink(selNode) != null) {
 				getModeController().getMapController().loadURL(NodeLinks.getLink(selNode));
@@ -45,8 +45,8 @@ class FollowLinkAction extends FreeplaneAction implements PopupMenuListener {
 	}
 
 	private boolean isLinkEnabled() {
-		for (final Iterator iterator = getModeController().getSelectedNodes().iterator(); iterator
-		    .hasNext();) {
+		for (final Iterator iterator = getModeController().getMapController().getSelectedNodes()
+		    .iterator(); iterator.hasNext();) {
 			final NodeModel selNode = (NodeModel) iterator.next();
 			if (NodeLinks.getLink(selNode) != null) {
 				return true;

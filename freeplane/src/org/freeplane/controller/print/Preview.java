@@ -63,7 +63,6 @@ class Preview extends JComponent {
 	}
 
 	private PageFormat getPageFormat() {
-		
 		return PrintController.getController().getPageFormat();
 	}
 

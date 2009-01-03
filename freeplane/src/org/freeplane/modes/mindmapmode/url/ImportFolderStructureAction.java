@@ -52,7 +52,8 @@ class ImportFolderStructureAction extends FreeplaneAction {
 			final File folder = chooser.getSelectedFile();
 			Controller.getController().getViewController().out("Importing folder structure ...");
 			try {
-				importFolderStructure(folder, getModeController().getSelectedNode(),
+				importFolderStructure(folder, getModeController().getMapController()
+				    .getSelectedNode(),
 				/*redisplay=*/true);
 			}
 			catch (final Exception ex) {

@@ -144,7 +144,8 @@ public class MModeControllerFactory {
 
 	private void createStandardControllers() {
 		modeController = new MModeController();
-		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController);
+		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(
+		    modeController);
 		modeController.setUserInputListenerFactory(userInputListenerFactory);
 		Controller.getController().addModeController(modeController);
 		modeController.setMapController(new MMapController(modeController));
@@ -164,9 +165,8 @@ public class MModeControllerFactory {
 		userInputListenerFactory.setNodePopupMenu(popupmenu);
 		final FreeMindToolBar toolbar = new FreeMindToolBar();
 		userInputListenerFactory.setMainToolBar(toolbar);
-		userInputListenerFactory.setLeftToolBar(
-		    ((MIconController) IconController.getController(modeController))
-		        .getIconToolBarScrollPane());
+		userInputListenerFactory.setLeftToolBar(((MIconController) IconController
+		    .getController(modeController)).getIconToolBarScrollPane());
 		new RevisionPlugin(modeController);
 		modeController.updateMenus("org/freeplane/modes/mindmapmode/menu.xml");
 	}
