@@ -33,8 +33,8 @@ import java.util.Vector;
 import javax.swing.JPanel;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.map.MindIcon;
-import org.freeplane.core.map.ModeController;
+import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.ui.BooleanProperty;
 import org.freeplane.core.resources.ui.ColorProperty;

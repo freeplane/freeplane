@@ -21,7 +21,7 @@ package org.freeplane.features.mindmapmode.cloud;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.features.common.cloud.CloudController;

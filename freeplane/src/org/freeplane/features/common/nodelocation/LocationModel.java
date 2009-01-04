@@ -20,7 +20,7 @@
 package org.freeplane.features.common.nodelocation;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.model.NodeModel;
 
 /**
  * @author Dimitry Polivaev

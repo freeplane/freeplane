@@ -22,7 +22,7 @@ package org.freeplane.features.common.link;
 import java.awt.Color;
 import java.awt.Point;
 
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 

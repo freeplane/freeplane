@@ -22,8 +22,8 @@ package org.freeplane.features.mindmapmode;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.map.ModeController;
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.MultipleNodeAction;
 
 /** */

@@ -21,7 +21,7 @@ package org.freeplane.features.common.note;
 
 import org.freeplane.core.io.IElementContentHandler;
 import org.freeplane.core.io.IXMLElement;
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.features.common.text.NodeTextBuilder;
 
 /**

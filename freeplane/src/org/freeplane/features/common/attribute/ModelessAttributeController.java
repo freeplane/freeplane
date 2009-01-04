@@ -24,7 +24,7 @@ import javax.swing.Action;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.filter.FilterController;
-import org.freeplane.core.map.MapModel;
+import org.freeplane.core.model.MapModel;
 
 /**
  * @author Dimitry Polivaev

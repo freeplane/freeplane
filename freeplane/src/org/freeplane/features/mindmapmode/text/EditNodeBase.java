@@ -42,7 +42,7 @@ import javax.swing.WindowConstants;
 import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.map.ModeController;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;

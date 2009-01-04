@@ -41,8 +41,8 @@ import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.XMLElement;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.io.xml.TreeXmlWriter;
-import org.freeplane.core.map.MapController;
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.modecontroller.MapController;
+import org.freeplane.core.model.NodeModel;
 
 class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExtensionElementWriter,
         IExtensionAttributeWriter, IAttributeWriter {

@@ -24,8 +24,8 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.map.ModeController;
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 

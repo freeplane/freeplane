@@ -17,17 +17,15 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.map;
+package org.freeplane.core.modecontroller;
+
+import org.freeplane.core.model.MapModel;
 
 /**
  * @author Dimitry Polivaev
  */
-public interface IMapChangeListener {
-	void onNodeDeleted(NodeModel parent, NodeModel child);
+public interface IMapLifeCycleListener {
+	public void onCreate(MapModel map);
 
-	void onNodeInserted(NodeModel parent, NodeModel child, int newIndex);
-
-	void onNodeMoved(NodeModel oldParent, NodeModel newParent, NodeModel child, int newIndex);
-
-	void onPreNodeDelete(NodeModel model);
+	public void onRemove(MapModel map);
 }

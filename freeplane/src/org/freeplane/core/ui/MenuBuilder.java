@@ -51,7 +51,7 @@ import org.freeplane.core.io.IElementHandler;
 import org.freeplane.core.io.IXMLElement;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
-import org.freeplane.core.map.ModeController;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.ui.components.JAutoCheckBoxMenuItem;
 import org.freeplane.core.ui.components.JAutoToggleButton;
 import org.freeplane.core.ui.components.JAutoVisibleMenuItem;

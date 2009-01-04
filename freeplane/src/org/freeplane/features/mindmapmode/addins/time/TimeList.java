@@ -67,10 +67,10 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.map.MapModel;
-import org.freeplane.core.map.MindIcon;
-import org.freeplane.core.map.ModeController;
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.MapModel;
+import org.freeplane.core.model.MindIcon;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.WindowConfigurationStorage;
 import org.freeplane.core.ui.UIBuilder;
 import org.freeplane.core.ui.components.BlindIcon;

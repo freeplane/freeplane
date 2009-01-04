@@ -25,7 +25,7 @@ import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.io.XMLElement;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.io.xml.TreeXmlWriter;
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.model.NodeModel;
 
 class NodeCompareCondition extends CompareConditionAdapter {
 	static final String COMPARATION_RESULT = "comparation_result";

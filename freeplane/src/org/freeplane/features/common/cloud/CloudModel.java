@@ -23,7 +23,7 @@ import java.awt.Color;
 import java.util.ListIterator;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.model.NodeModel;
 
 public class CloudModel implements IExtension {
 	/**

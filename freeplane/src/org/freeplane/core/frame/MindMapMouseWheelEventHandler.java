@@ -26,7 +26,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.map.ModeController;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.ui.IFreemindPropertyListener;
 import org.freeplane.core.ui.IMouseWheelEventHandler;

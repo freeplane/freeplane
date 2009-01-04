@@ -42,8 +42,8 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.filter.condition.NoFilteringCondition;
 import org.freeplane.core.filter.condition.SelectedViewCondition;
-import org.freeplane.core.map.MapModel;
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.model.MapModel;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.components.FreeMindToolBar;
 

@@ -29,8 +29,8 @@ import javax.swing.text.Element;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
-import org.freeplane.core.map.ModeController;
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.util.FixedHTMLWriter;

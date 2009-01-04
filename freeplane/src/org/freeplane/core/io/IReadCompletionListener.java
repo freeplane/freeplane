@@ -21,7 +21,7 @@ package org.freeplane.core.io;
 
 import java.util.HashMap;
 
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.model.NodeModel;
 
 /**
  * @author Dimitry Polivaev 22.11.2008

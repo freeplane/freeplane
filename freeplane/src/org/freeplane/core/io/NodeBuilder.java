@@ -22,10 +22,10 @@ package org.freeplane.core.io;
 import java.util.HashMap;
 
 import org.freeplane.core.io.xml.TreeXmlReader;
-import org.freeplane.core.map.EncryptionModel;
-import org.freeplane.core.map.HistoryInformationModel;
-import org.freeplane.core.map.MapModel;
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.model.EncryptionModel;
+import org.freeplane.core.model.HistoryInformationModel;
+import org.freeplane.core.model.MapModel;
+import org.freeplane.core.model.NodeModel;
 
 public class NodeBuilder implements IElementDOMHandler {
 	static class IconProperties {

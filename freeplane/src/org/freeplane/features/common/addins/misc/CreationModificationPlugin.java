@@ -27,10 +27,10 @@ import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.addins.PersistentNodeHook;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.map.INodeChangeListener;
-import org.freeplane.core.map.ModeController;
-import org.freeplane.core.map.NodeChangeEvent;
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.modecontroller.INodeChangeListener;
+import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.modecontroller.NodeChangeEvent;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.ActionDescriptor;
 
 /**

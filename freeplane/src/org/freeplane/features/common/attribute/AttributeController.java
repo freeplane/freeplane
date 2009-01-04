@@ -23,11 +23,11 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.MapReader;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
-import org.freeplane.core.map.IMapLifeCycleListener;
-import org.freeplane.core.map.MapController;
-import org.freeplane.core.map.MapModel;
-import org.freeplane.core.map.ModeController;
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.modecontroller.IMapLifeCycleListener;
+import org.freeplane.core.modecontroller.MapController;
+import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.MapModel;
+import org.freeplane.core.model.NodeModel;
 
 /**
  * @author Dimitry Polivaev 22.11.2008

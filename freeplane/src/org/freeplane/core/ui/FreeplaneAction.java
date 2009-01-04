@@ -24,7 +24,7 @@ import javax.swing.Action;
 import javax.swing.ImageIcon;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.map.ModeController;
+import org.freeplane.core.modecontroller.ModeController;
 
 /**
  * @author Dimitry Polivaev

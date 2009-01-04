@@ -31,7 +31,7 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 
-import org.freeplane.core.map.IEncrypter;
+import org.freeplane.core.modecontroller.IEncrypter;
 
 /**
  * @author Dimitry Polivaev

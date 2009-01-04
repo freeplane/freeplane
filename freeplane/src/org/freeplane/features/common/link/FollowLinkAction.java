@@ -26,7 +26,7 @@ import javax.swing.JMenuItem;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.FreeplaneAction;
 
 class FollowLinkAction extends FreeplaneAction implements PopupMenuListener {

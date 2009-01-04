@@ -23,10 +23,10 @@ import java.io.IOException;
 import java.util.ListIterator;
 
 import org.freeplane.core.io.xml.TreeXmlWriter;
-import org.freeplane.core.map.EncryptionModel;
-import org.freeplane.core.map.MapController;
-import org.freeplane.core.map.MindIcon;
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.modecontroller.MapController;
+import org.freeplane.core.model.EncryptionModel;
+import org.freeplane.core.model.MindIcon;
+import org.freeplane.core.model.NodeModel;
 
 class NodeWriter implements IElementWriter, IAttributeWriter {
 	private EncryptionModel encryptionModel;

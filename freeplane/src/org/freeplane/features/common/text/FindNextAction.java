@@ -23,7 +23,7 @@ import java.awt.event.ActionEvent;
 import java.util.Collection;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.map.ModeController;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.HtmlTools;

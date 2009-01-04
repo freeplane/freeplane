@@ -17,19 +17,19 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.map;
+package org.freeplane.core.modecontroller;
 
-import org.freeplane.view.swing.map.NodeView;
+import org.freeplane.core.model.NodeModel;
 
-/** */
-public interface INodeSelectionListener {
-	/**
-	 * Is sent when a node is deselected.
-	 */
-	void onDeselect(NodeView node);
+/**
+ * @author Dimitry Polivaev
+ */
+public interface IMapChangeListener {
+	void onNodeDeleted(NodeModel parent, NodeModel child);
 
-	/**
-	 * Is sent when a node is selected.
-	 */
-	void onSelect(NodeView node);
+	void onNodeInserted(NodeModel parent, NodeModel child, int newIndex);
+
+	void onNodeMoved(NodeModel oldParent, NodeModel newParent, NodeModel child, int newIndex);
+
+	void onPreNodeDelete(NodeModel model);
 }

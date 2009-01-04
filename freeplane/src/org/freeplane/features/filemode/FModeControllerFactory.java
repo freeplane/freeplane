@@ -22,8 +22,8 @@ package org.freeplane.features.filemode;
 import javax.swing.JPopupMenu;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.map.IPropertyGetter;
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.modecontroller.IPropertyGetter;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.components.FreeMindToolBar;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.features.common.clipboard.ClipboardController;

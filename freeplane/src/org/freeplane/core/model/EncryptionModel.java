@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.map;
+package org.freeplane.core.model;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -28,6 +28,9 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.modecontroller.IEncrypter;
+import org.freeplane.core.modecontroller.MapController;
+import org.freeplane.core.modecontroller.ModeController;
 
 public class EncryptionModel implements IExtension {
 	private static ImageIcon decryptedIcon;

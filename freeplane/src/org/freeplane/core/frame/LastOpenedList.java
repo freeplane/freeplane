@@ -32,7 +32,7 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.map.MapModel;
+import org.freeplane.core.model.MapModel;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.n3.nanoxml.XMLParseException;
 import org.freeplane.view.swing.map.MapView;

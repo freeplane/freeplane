@@ -21,8 +21,8 @@ package org.freeplane.features.filemode;
 
 import java.io.File;
 
-import org.freeplane.core.map.MapModel;
-import org.freeplane.core.map.ModeController;
+import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.MapModel;
 
 public class FMapModel extends MapModel {
 	public FMapModel(final File root, final ModeController modeController) {
@@ -32,7 +32,7 @@ public class FMapModel extends MapModel {
 	}
 
 	@Override
-	protected void destroy() {
+	public void destroy() {
 	}
 
 	@Override

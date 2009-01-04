@@ -41,8 +41,8 @@ import java.util.ListIterator;
 import java.util.Vector;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.map.ModeController;
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
 import org.freeplane.view.swing.map.MapView;

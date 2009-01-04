@@ -37,8 +37,8 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import org.freeplane.core.map.ModeController;
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Tools;
 import org.freeplane.view.swing.map.MainView;

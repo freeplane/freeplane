@@ -22,7 +22,7 @@ package org.freeplane.features.browsemode;
 import javax.swing.JPopupMenu;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.map.MapController;
+import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.ui.components.FreeMindToolBar;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.features.common.attribute.AttributeController;

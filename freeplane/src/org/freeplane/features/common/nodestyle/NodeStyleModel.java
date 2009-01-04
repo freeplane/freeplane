@@ -22,7 +22,7 @@ package org.freeplane.features.common.nodestyle;
 import java.awt.Color;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.model.NodeModel;
 
 /**
  * @author Dimitry Polivaev 20.11.2008

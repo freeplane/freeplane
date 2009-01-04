@@ -43,7 +43,7 @@ import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeNode;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;

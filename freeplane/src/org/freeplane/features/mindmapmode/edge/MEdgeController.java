@@ -22,8 +22,8 @@ package org.freeplane.features.mindmapmode.edge;
 import java.awt.Color;
 import java.util.ListIterator;
 
-import org.freeplane.core.map.ModeController;
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.edge.EdgeModel;

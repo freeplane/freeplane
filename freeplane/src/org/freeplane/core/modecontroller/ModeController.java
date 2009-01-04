@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.map;
+package org.freeplane.core.modecontroller;
 
 import java.awt.event.MouseEvent;
 import java.util.Iterator;
@@ -29,6 +29,7 @@ import javax.swing.Action;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.ExtensionHashMap;
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.ActionController;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;

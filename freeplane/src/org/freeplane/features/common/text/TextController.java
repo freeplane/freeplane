@@ -23,8 +23,8 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
-import org.freeplane.core.map.MapController;
-import org.freeplane.core.map.ModeController;
+import org.freeplane.core.modecontroller.MapController;
+import org.freeplane.core.modecontroller.ModeController;
 
 /**
  * @author Dimitry Polivaev

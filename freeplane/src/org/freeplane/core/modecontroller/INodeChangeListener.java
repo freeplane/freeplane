@@ -17,12 +17,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.map;
+package org.freeplane.core.modecontroller;
 
-import org.freeplane.view.swing.map.NodeView;
-
-public interface INodeViewLifeCycleListener {
-	public void onViewCreated(NodeView nodeView);
-
-	public void onViewRemoved(NodeView nodeView);
+public interface INodeChangeListener {
+	public void nodeChanged(NodeChangeEvent event);
 }

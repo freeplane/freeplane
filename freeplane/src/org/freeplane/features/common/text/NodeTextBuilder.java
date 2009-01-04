@@ -31,7 +31,7 @@ import org.freeplane.core.io.NodeBuilder;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.XMLElement;
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.util.HtmlTools;
 
 public class NodeTextBuilder implements IElementContentHandler, IElementWriter, IAttributeWriter {

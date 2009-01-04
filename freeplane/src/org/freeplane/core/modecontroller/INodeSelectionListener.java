@@ -17,14 +17,19 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.map;
+package org.freeplane.core.modecontroller;
 
-/**
- * @author Dimitry Polivaev
- * 02.01.2009
- */
-public interface IEncrypter {
-	public String decrypt(String str);
+import org.freeplane.view.swing.map.NodeView;
 
-	public String encrypt(final String str);
+/** */
+public interface INodeSelectionListener {
+	/**
+	 * Is sent when a node is deselected.
+	 */
+	void onDeselect(NodeView node);
+
+	/**
+	 * Is sent when a node is selected.
+	 */
+	void onSelect(NodeView node);
 }

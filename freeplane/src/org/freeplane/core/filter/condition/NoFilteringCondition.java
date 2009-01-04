@@ -24,7 +24,7 @@ import javax.swing.JLabel;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.io.XMLElement;
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.model.NodeModel;
 
 public class NoFilteringCondition implements ICondition {
 	private static NoFilteringCondition condition;

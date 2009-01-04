@@ -29,8 +29,8 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.map.INodeSelectionListener;
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.modecontroller.INodeSelectionListener;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.features.common.note.NodeNoteBase;
 import org.freeplane.features.common.note.NoteModel;
 import org.freeplane.view.swing.map.NodeView;

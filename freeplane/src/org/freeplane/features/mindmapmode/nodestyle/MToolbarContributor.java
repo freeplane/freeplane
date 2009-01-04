@@ -27,10 +27,10 @@ import javax.swing.JComboBox;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.map.INodeChangeListener;
-import org.freeplane.core.map.INodeSelectionListener;
-import org.freeplane.core.map.NodeChangeEvent;
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.modecontroller.INodeChangeListener;
+import org.freeplane.core.modecontroller.INodeSelectionListener;
+import org.freeplane.core.modecontroller.NodeChangeEvent;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.view.swing.map.NodeView;

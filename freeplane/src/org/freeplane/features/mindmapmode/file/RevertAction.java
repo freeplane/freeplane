@@ -29,9 +29,9 @@ import java.io.StringWriter;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.map.MapController;
-import org.freeplane.core.map.MapModel;
-import org.freeplane.core.map.ModeController;
+import org.freeplane.core.modecontroller.MapController;
+import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.MapModel;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.url.UrlManager;
 

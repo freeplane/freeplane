@@ -30,8 +30,8 @@ import java.util.List;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.io.xml.TreeXmlWriter;
-import org.freeplane.core.map.MindIcon;
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.model.MindIcon;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.util.Tools;
 import org.freeplane.features.common.edge.EdgeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;

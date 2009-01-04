@@ -33,10 +33,10 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.map.EncryptionModel;
-import org.freeplane.core.map.MapController;
-import org.freeplane.core.map.MapModel;
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.modecontroller.MapController;
+import org.freeplane.core.model.EncryptionModel;
+import org.freeplane.core.model.MapModel;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.ui.IFreemindPropertyListener;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;

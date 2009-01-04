@@ -23,7 +23,7 @@ import java.io.FileWriter;
 
 import javax.swing.JOptionPane;
 
-import org.freeplane.core.map.ModeController;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.features.mindmapnode.pattern.MPatternController;

@@ -26,11 +26,11 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
-import org.freeplane.core.map.ExclusivePropertyChain;
-import org.freeplane.core.map.IPropertyGetter;
-import org.freeplane.core.map.MapController;
-import org.freeplane.core.map.ModeController;
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.modecontroller.ExclusivePropertyChain;
+import org.freeplane.core.modecontroller.IPropertyGetter;
+import org.freeplane.core.modecontroller.MapController;
+import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.ui.IFreemindPropertyListener;
 

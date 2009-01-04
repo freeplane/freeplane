@@ -33,10 +33,10 @@ import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.map.IIconInformation;
-import org.freeplane.core.map.MindIcon;
-import org.freeplane.core.map.ModeController;
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.IIconInformation;
+import org.freeplane.core.model.MindIcon;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ui.IPropertyControl;
 import org.freeplane.core.resources.ui.IPropertyControlCreator;
 import org.freeplane.core.resources.ui.KeyProperty;

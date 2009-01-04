@@ -24,7 +24,7 @@ import org.freeplane.core.filter.condition.ConditionFactory;
 import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.filter.condition.NodeCondition;
 import org.freeplane.core.io.XMLElement;
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.model.NodeModel;
 
 class IgnoreCaseNodeContainsCondition extends NodeCondition {
 	static final String NAME = "ignore_case_node_contains_condition";

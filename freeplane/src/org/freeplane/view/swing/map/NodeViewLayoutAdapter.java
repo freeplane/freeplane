@@ -26,7 +26,7 @@ import java.awt.Point;
 
 import javax.swing.JComponent;
 
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.model.NodeModel;
 
 abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 	private static Dimension minDimension;

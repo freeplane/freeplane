@@ -23,7 +23,7 @@ import java.awt.event.ActionEvent;
 import java.util.List;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.features.common.link.ArrowLinkModel;

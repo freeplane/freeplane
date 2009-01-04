@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.map;
+package org.freeplane.core.model;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -39,6 +39,7 @@ import org.freeplane.core.extension.IExtensionCollection;
 import org.freeplane.core.filter.DefaultFilter;
 import org.freeplane.core.filter.IFilter;
 import org.freeplane.core.filter.condition.NoFilteringCondition;
+import org.freeplane.core.modecontroller.ModeController;
 
 public class MapModel extends DefaultTreeModel {
 	private static Random ran = new Random();
@@ -84,7 +85,7 @@ public class MapModel extends DefaultTreeModel {
 		return extensions.containsExtension(clazz);
 	}
 
-	protected void destroy() {
+	public void destroy() {
 	}
 
 	public Iterator extensionIterator() {
@@ -321,7 +322,7 @@ public class MapModel extends DefaultTreeModel {
 	 * Invoke this method if you've totally changed the children of node and its
 	 * childrens children... This will post a treeStructureChanged event.
 	 */
-	void nodeChangedInternal(final TreeNode node) {
+	public void nodeChangedInternal(final TreeNode node) {
 		if (node != null) {
 			fireTreeNodesChanged(this, getPathToRoot(node), null, null);
 		}

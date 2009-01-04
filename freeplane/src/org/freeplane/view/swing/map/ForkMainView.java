@@ -24,7 +24,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
 

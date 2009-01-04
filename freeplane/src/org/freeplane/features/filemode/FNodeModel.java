@@ -22,8 +22,8 @@ package org.freeplane.features.filemode;
 import java.io.File;
 import java.util.List;
 
-import org.freeplane.core.map.MapModel;
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.model.MapModel;
+import org.freeplane.core.model.NodeModel;
 
 /**
  * This class represents a single Node of a Tree. It contains direct handles to

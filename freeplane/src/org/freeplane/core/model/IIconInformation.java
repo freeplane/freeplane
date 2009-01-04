@@ -17,8 +17,17 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.map;
+package org.freeplane.core.model;
 
-public interface IPropertyGetter<V, T> {
-	V getProperty(T model, V currentValue);
+import javax.swing.ImageIcon;
+import javax.swing.KeyStroke;
+
+public interface IIconInformation {
+	String getDescription();
+
+	ImageIcon getIcon();
+
+	KeyStroke getKeyStroke();
+
+	String getKeystrokeResourceName();
 }

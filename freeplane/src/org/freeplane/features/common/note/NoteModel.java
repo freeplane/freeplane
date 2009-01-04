@@ -20,7 +20,7 @@
 package org.freeplane.features.common.note;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.core.util.Tools;
 

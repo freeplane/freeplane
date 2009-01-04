@@ -48,9 +48,9 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.map.MapModel;
-import org.freeplane.core.map.ModeController;
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.MapModel;
+import org.freeplane.core.model.NodeModel;
 
 /**
  * @author Dimitry Polivaev

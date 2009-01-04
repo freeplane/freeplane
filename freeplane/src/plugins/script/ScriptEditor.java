@@ -26,7 +26,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.util.Tools.BooleanHolder;

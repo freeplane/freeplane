@@ -20,7 +20,7 @@
 package org.freeplane.features.mindmapnode.pattern;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.model.NodeModel;
 
 public interface IExternalPatternAction extends IExtension {
 	public void act(NodeModel node, Pattern pattern);

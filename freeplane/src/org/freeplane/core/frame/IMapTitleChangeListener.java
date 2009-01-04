@@ -1,6 +1,6 @@
 package org.freeplane.core.frame;
 
-import org.freeplane.core.map.MapModel;
+import org.freeplane.core.model.MapModel;
 import org.freeplane.view.swing.map.MapView;
 
 /**

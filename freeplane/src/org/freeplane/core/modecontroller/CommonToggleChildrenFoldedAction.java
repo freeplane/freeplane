@@ -17,43 +17,33 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.map;
+package org.freeplane.core.modecontroller;
 
 import java.awt.event.ActionEvent;
-import java.util.Iterator;
-import java.util.ListIterator;
 
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.view.swing.map.NodeView;
 
 /**
  * @author foltin
  */
-class CommonToggleFoldedAction extends FreeplaneAction {
-	public CommonToggleFoldedAction() {
-		super("toggle_folded");
+class CommonToggleChildrenFoldedAction extends FreeplaneAction {
+	final private MapController mapController;
+
+	public CommonToggleChildrenFoldedAction(final MapController mapController) {
+		super("toggle_children_folded");
+		this.mapController = mapController;
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		toggleFolded();
-	}
-
-	private ListIterator resetIterator(final ListIterator iterator) {
-		while (iterator.hasPrevious()) {
-			iterator.previous();
-		}
-		return iterator;
-	}
-
-	public void toggleFolded() {
-		toggleFolded(getModeController().getMapController().getSelectedNodes().listIterator());
-	}
-
-	public void toggleFolded(final ListIterator listIterator) {
-		final boolean fold = getModeController().getMapController().getFoldingState(
-		    resetIterator(listIterator));
-		for (final Iterator i = resetIterator(listIterator); i.hasNext();) {
-			final NodeModel node = (NodeModel) i.next();
-			getModeController().getMapController().setFolded(node, fold);
-		}
+		final ModeController modeController = getModeController();
+		final NodeView selected = modeController.getMapController().getSelectedView();
+		final NodeModel model = selected.getModel();
+		mapController.toggleFolded(model.getModeController().getMapController().childrenUnfolded(
+		    model));
+		Controller.getController().getMapView().selectAsTheOnlyOneSelected(selected);
+		Controller.getController().getViewController().obtainFocusForSelected();
 	}
 }

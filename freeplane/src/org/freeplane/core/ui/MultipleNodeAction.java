@@ -24,7 +24,7 @@ import java.util.ListIterator;
 
 import javax.swing.ImageIcon;
 
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.model.NodeModel;
 
 /**
  * @author Dimitry Polivaev

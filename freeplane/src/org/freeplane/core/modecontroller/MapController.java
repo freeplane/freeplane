@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.map;
+package org.freeplane.core.modecontroller;
 
 import java.awt.EventQueue;
 import java.awt.event.MouseEvent;
@@ -49,7 +49,10 @@ import org.freeplane.core.io.MapReader;
 import org.freeplane.core.io.MapWriter;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
-import org.freeplane.core.map.ModeController.IActionOnChange;
+import org.freeplane.core.modecontroller.ModeController.IActionOnChange;
+import org.freeplane.core.model.EncryptionModel;
+import org.freeplane.core.model.MapModel;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Tools;
 import org.freeplane.n3.nanoxml.XMLParseException;

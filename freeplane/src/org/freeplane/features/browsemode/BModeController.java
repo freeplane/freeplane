@@ -25,8 +25,8 @@ import java.util.ListIterator;
 import javax.swing.ImageIcon;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.map.ModeController;
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.note.NodeNoteBase;

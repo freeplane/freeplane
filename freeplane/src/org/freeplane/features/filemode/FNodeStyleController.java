@@ -21,10 +21,10 @@ package org.freeplane.features.filemode;
 
 import java.awt.Color;
 
-import org.freeplane.core.map.ExclusivePropertyChain;
-import org.freeplane.core.map.IPropertyGetter;
-import org.freeplane.core.map.ModeController;
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.modecontroller.ExclusivePropertyChain;
+import org.freeplane.core.modecontroller.IPropertyGetter;
+import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 
 /**

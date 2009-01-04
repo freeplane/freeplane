@@ -35,7 +35,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.map.MapModel;
+import org.freeplane.core.model.MapModel;
 import org.freeplane.view.swing.map.MapView;
 
 class MapViewTabs implements IMapViewChangeListener {

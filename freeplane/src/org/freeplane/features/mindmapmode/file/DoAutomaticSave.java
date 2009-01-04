@@ -26,7 +26,7 @@ import java.util.TimerTask;
 import java.util.Vector;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.map.MapModel;
+import org.freeplane.core.model.MapModel;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.features.mindmapmode.MMapModel;
 

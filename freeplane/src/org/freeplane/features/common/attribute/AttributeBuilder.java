@@ -30,8 +30,8 @@ import org.freeplane.core.io.IXMLElement;
 import org.freeplane.core.io.MapReader;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
-import org.freeplane.core.map.MapModel;
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.model.MapModel;
+import org.freeplane.core.model.NodeModel;
 
 class AttributeBuilder implements IElementDOMHandler {
 	static class AttributeProperties {

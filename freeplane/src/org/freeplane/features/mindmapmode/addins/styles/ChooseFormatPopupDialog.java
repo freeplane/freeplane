@@ -37,7 +37,7 @@ import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.map.ModeController;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.resources.WindowConfigurationStorage;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;

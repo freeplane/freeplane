@@ -21,7 +21,7 @@ package org.freeplane.features.common.attribute;
 
 import javax.swing.table.TableModel;
 
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.model.NodeModel;
 
 /**
  * @author Dimitry Polivaev

@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.map;
+package org.freeplane.core.model;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -43,6 +43,8 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.extension.IExtensionCollection;
 import org.freeplane.core.filter.FilterInfo;
 import org.freeplane.core.filter.IFilter;
+import org.freeplane.core.modecontroller.INodeViewVisitor;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.core.util.Tools;
 import org.freeplane.view.swing.map.NodeView;

@@ -27,7 +27,7 @@ import java.io.FileReader;
 import javax.swing.JFileChooser;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.features.common.link.LinkController;

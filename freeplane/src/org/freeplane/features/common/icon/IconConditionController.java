@@ -31,7 +31,7 @@ import org.freeplane.core.filter.util.ExtendedComboBoxModel;
 import org.freeplane.core.filter.util.IListModel;
 import org.freeplane.core.filter.util.SortedMapListModel;
 import org.freeplane.core.io.XMLElement;
-import org.freeplane.core.map.MindIcon;
+import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.resources.NamedObject;
 
 /**

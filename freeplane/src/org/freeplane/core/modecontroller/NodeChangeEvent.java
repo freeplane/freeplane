@@ -17,13 +17,41 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.map;
+package org.freeplane.core.modecontroller;
+
+import java.awt.AWTEvent;
+
+import org.freeplane.core.model.NodeModel;
 
 /**
- * @author Dimitry Polivaev
+ * @author Dimitry Polivaev 27.11.2008
  */
-public interface IMapLifeCycleListener {
-	public void onCreate(MapModel map);
+public class NodeChangeEvent extends AWTEvent {
+	final private Object newValue;
+	final private Object oldValue;
+	final private Object property;
 
-	public void onRemove(MapModel map);
+	public NodeChangeEvent(final NodeModel node, final Object property, final Object oldValue,
+	                       final Object newValue) {
+		super(node, 0);
+		this.oldValue = oldValue;
+		this.newValue = newValue;
+		this.property = property;
+	}
+
+	public Object getNewValue() {
+		return newValue;
+	}
+
+	public NodeModel getNode() {
+		return (NodeModel) getSource();
+	}
+
+	public Object getOldValue() {
+		return oldValue;
+	}
+
+	public Object getProperty() {
+		return property;
+	}
 }

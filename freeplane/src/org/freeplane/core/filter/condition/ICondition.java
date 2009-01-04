@@ -22,7 +22,7 @@ package org.freeplane.core.filter.condition;
 import javax.swing.JComponent;
 
 import org.freeplane.core.io.XMLElement;
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.model.NodeModel;
 
 public interface ICondition {
 	boolean checkNode(NodeModel node);

@@ -22,7 +22,7 @@ package org.freeplane.features.common.edge;
 import java.awt.Color;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.map.NodeModel;
+import org.freeplane.core.model.NodeModel;
 
 public class EdgeModel implements IExtension {
 	public static final String EDGE_WIDTH_THIN_STRING = "thin";
