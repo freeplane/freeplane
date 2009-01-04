@@ -220,7 +220,7 @@ public class MapModel extends DefaultTreeModel {
 		return e;
 	}
 
-	String generateNodeID(final String proposedID) {
+	public String generateNodeID(final String proposedID) {
 		String myProposedID = new String((proposedID != null) ? proposedID : "");
 		String returnValue;
 		do {
@@ -244,7 +244,7 @@ public class MapModel extends DefaultTreeModel {
 		return extensions.getExtension(clazz);
 	}
 
-	IExtensionCollection getExtensions() {
+	public IExtensionCollection getExtensions() {
 		return extensions;
 	}
 

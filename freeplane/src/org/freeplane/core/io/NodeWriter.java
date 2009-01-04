@@ -17,16 +17,16 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.map;
+package org.freeplane.core.io;
 
 import java.io.IOException;
 import java.util.ListIterator;
 
-import org.freeplane.core.io.IAttributeWriter;
-import org.freeplane.core.io.IElementWriter;
-import org.freeplane.core.io.ITreeWriter;
-import org.freeplane.core.io.XMLElement;
 import org.freeplane.core.io.xml.TreeXmlWriter;
+import org.freeplane.core.map.EncryptionModel;
+import org.freeplane.core.map.MapController;
+import org.freeplane.core.map.MindIcon;
+import org.freeplane.core.map.NodeModel;
 
 class NodeWriter implements IElementWriter, IAttributeWriter {
 	private EncryptionModel encryptionModel;

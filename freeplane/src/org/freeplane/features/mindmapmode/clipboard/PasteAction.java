@@ -34,10 +34,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.map.MapReader;
+import org.freeplane.core.io.MapReader;
+import org.freeplane.core.io.MapReader.NodeTreeCreator;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
-import org.freeplane.core.map.MapReader.NodeTreeCreator;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.core.util.HtmlTools;

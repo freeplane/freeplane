@@ -27,10 +27,10 @@ import org.freeplane.core.io.IElementContentHandler;
 import org.freeplane.core.io.IElementWriter;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.IXMLElement;
+import org.freeplane.core.io.NodeBuilder;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.XMLElement;
-import org.freeplane.core.map.NodeBuilder;
 import org.freeplane.core.map.NodeModel;
 import org.freeplane.core.util.HtmlTools;
 

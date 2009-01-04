@@ -20,12 +20,12 @@
 package org.freeplane.features.common.attribute;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.io.MapReader;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.map.IMapLifeCycleListener;
 import org.freeplane.core.map.MapController;
 import org.freeplane.core.map.MapModel;
-import org.freeplane.core.map.MapReader;
 import org.freeplane.core.map.ModeController;
 import org.freeplane.core.map.NodeModel;
 

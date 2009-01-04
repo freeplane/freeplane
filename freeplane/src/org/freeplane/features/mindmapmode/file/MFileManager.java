@@ -268,8 +268,10 @@ public class MFileManager extends UrlManager {
 	public boolean saveAs(final MapModel map) {
 		final JFileChooser chooser = getFileChooser();
 		if (getMapsParentFile() == null) {
-			chooser.setSelectedFile(new File(getFileNameProposal(map)
-			        + org.freeplane.features.mindmapmode.file.MFileManager.FREEMIND_FILE_EXTENSION));
+			chooser
+			    .setSelectedFile(new File(
+			        getFileNameProposal(map)
+			                + org.freeplane.features.mindmapmode.file.MFileManager.FREEMIND_FILE_EXTENSION));
 		}
 		chooser.setDialogTitle(getModeController().getText("save_as"));
 		final int returnVal = chooser.showSaveDialog(Controller.getController().getMapView()
@@ -313,7 +315,7 @@ public class MFileManager extends UrlManager {
 			}
 			final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(
 			    new FileOutputStream(file)));
-			getModeController().getMapController().writeMapAsXml(map, fileout, true);
+			getModeController().getMapController().getMapWriter().writeMapAsXml(map, fileout, true);
 			if (!isInternal) {
 				map.setFile(file);
 				map.setSaved(true);

@@ -17,14 +17,15 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.map;
+package org.freeplane.core.io;
 
 import java.io.IOException;
 import java.io.Reader;
 import java.util.HashMap;
 
-import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
+import org.freeplane.core.map.MapModel;
+import org.freeplane.core.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
 /**

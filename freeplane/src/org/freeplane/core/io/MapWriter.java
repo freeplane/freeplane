@@ -17,23 +17,21 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.map;
+package org.freeplane.core.io;
 
 import java.io.IOException;
 import java.io.Writer;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.io.IAttributeWriter;
-import org.freeplane.core.io.IElementWriter;
-import org.freeplane.core.io.ITreeWriter;
-import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.xml.TreeXmlWriter;
+import org.freeplane.core.map.MapModel;
+import org.freeplane.core.map.NodeModel;
 
 /**
  * @author Dimitry Polivaev
  * 07.12.2008
  */
-class MapWriter implements IElementWriter, IAttributeWriter {
+public class MapWriter implements IElementWriter, IAttributeWriter {
 	private NodeWriter currentNodeWriter;
 	private boolean saveInvisible;
 	final private WriteManager writeManager;
@@ -64,6 +62,15 @@ class MapWriter implements IElementWriter, IAttributeWriter {
 		writer.addExtensionNodes(map, map.getExtensions());
 		final NodeModel rootNode = map.getRootNode();
 		writeNode(writer, rootNode, saveInvisible, true);
+	}
+
+	public void writeMapAsXml(final MapModel map, final Writer fileout, final boolean saveInvisible2)
+	        throws IOException {
+		final TreeXmlWriter xmlWriter = new TreeXmlWriter(writeManager, fileout);
+		final IXMLElement xmlMap = new XMLElement("map");
+		setSaveInvisible(saveInvisible);
+		xmlWriter.addElement(map, xmlMap);
+		fileout.close();
 	}
 
 	private void writeNode(final ITreeWriter xmlWriter, final NodeModel node,

@@ -27,10 +27,10 @@ import org.freeplane.core.io.IElementDOMHandler;
 import org.freeplane.core.io.IExtensionElementWriter;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.IXMLElement;
+import org.freeplane.core.io.MapReader;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.map.MapModel;
-import org.freeplane.core.map.MapReader;
 import org.freeplane.core.map.NodeModel;
 
 class AttributeBuilder implements IElementDOMHandler {

@@ -231,7 +231,7 @@ public class MMapController extends MapController {
 			}
 		}
 		try {
-			return createNodeTreeFromXml(map, reader);
+			return getMapReader().createNodeTreeFromXml(map, reader);
 		}
 		catch (final Exception ex) {
 			final String errorMessage = "Error while parsing file:" + ex;

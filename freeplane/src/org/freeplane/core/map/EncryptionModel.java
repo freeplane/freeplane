@@ -143,7 +143,8 @@ public class EncryptionModel implements IExtension {
 		for (final Iterator i = node.getModeController().getMapController().childrenUnfolded(node); i
 		    .hasNext();) {
 			final NodeModel child = (NodeModel) i.next();
-			child.getModeController().getMapController().writeNodeAsXml(sWriter, child, true, true);
+			child.getModeController().getMapController().getMapWriter().writeNodeAsXml(sWriter,
+			    child, true, true);
 			if (i.hasNext()) {
 				sWriter.write(ModeController.NODESEPARATOR);
 			}
@@ -198,8 +199,8 @@ public class EncryptionModel implements IExtension {
 	private void pasteXML(final String pasted, final NodeModel target) {
 		try {
 			final MapController mapController = target.getModeController().getMapController();
-			final NodeModel node = mapController.createNodeTreeFromXml(target.getMap(),
-			    new StringReader(pasted));
+			final NodeModel node = mapController.getMapReader().createNodeTreeFromXml(
+			    target.getMap(), new StringReader(pasted));
 			mapController.insertNodeIntoWithoutUndo(node, target, target.getChildCount());
 		}
 		catch (final Exception ee) {

@@ -216,7 +216,7 @@ public class NodeModel implements MutableTreeNode {
 		return extensions.getExtension(clazz);
 	}
 
-	IExtensionCollection getExtensions() {
+	public IExtensionCollection getExtensions() {
 		return extensions;
 	};
 

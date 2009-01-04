@@ -63,9 +63,11 @@ class RevertAction extends FreeplaneAction {
 					if (this.getFilePrefix() != null) {
 						filePrefix = this.getFilePrefix();
 					}
-					final File tempFile = File.createTempFile(filePrefix,
-					    org.freeplane.features.mindmapmode.file.MFileManager.FREEMIND_FILE_EXTENSION,
-					    new File(Controller.getResourceController().getFreemindUserDirectory()));
+					final File tempFile = File
+					    .createTempFile(
+					        filePrefix,
+					        org.freeplane.features.mindmapmode.file.MFileManager.FREEMIND_FILE_EXTENSION,
+					        new File(Controller.getResourceController().getFreemindUserDirectory()));
 					final FileWriter fw = new FileWriter(tempFile);
 					fw.write(this.getMap());
 					fw.close();
@@ -145,7 +147,7 @@ class RevertAction extends FreeplaneAction {
 	public RevertActionInstance createRevertXmlAction(final MapModel map, final String fileName,
 	                                                  final String filePrefix) throws IOException {
 		final StringWriter writer = new StringWriter();
-		map.getModeController().getMapController().writeMapAsXml(map, writer, true);
+		map.getModeController().getMapController().getMapWriter().writeMapAsXml(map, writer, true);
 		return createRevertXmlAction(writer.getBuffer().toString(), fileName, filePrefix);
 	}
 

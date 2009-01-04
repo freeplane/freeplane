@@ -24,8 +24,6 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.Reader;
-import java.io.StringWriter;
 import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
@@ -47,11 +45,10 @@ import javax.swing.Action;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.MapViewManager;
-import org.freeplane.core.io.IXMLElement;
+import org.freeplane.core.io.MapReader;
+import org.freeplane.core.io.MapWriter;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
-import org.freeplane.core.io.XMLElement;
-import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.map.ModeController.IActionOnChange;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Tools;
@@ -217,11 +214,6 @@ public class MapController {
 		    .addAction("toggleChildrenFolded", new CommonToggleChildrenFoldedAction(this));
 	}
 
-	public NodeModel createNodeTreeFromXml(final MapModel map, final Reader reader)
-	        throws XMLParseException, IOException {
-		return mapReader.createNodeTreeFromXml(map, reader);
-	}
-
 	public void displayNode(final NodeModel node) {
 		displayNode(node, null);
 	}
@@ -320,7 +312,7 @@ public class MapController {
 	}
 
 	public void getFilteredXml(final MapModel map, final Writer fileout) throws IOException {
-		writeMapAsXml(map, fileout, false);
+		getMapWriter().writeMapAsXml(map, fileout, false);
 	}
 
 	/**
@@ -365,6 +357,10 @@ public class MapController {
 
 	public MapReader getMapReader() {
 		return mapReader;
+	}
+
+	public MapWriter getMapWriter() {
+		return mapWriter;
 	}
 
 	public ModeController getModeController() {
@@ -807,24 +803,5 @@ public class MapController {
 	 */
 	public void toggleFolded(final ListIterator listIterator) {
 		toggleFolded.toggleFolded(listIterator);
-	}
-
-	/**
-	 * writes the content of the map to a writer.
-	 *
-	 * @throws IOException
-	 */
-	public void writeMapAsXml(final MapModel map, final Writer fileout, final boolean saveInvisible)
-	        throws IOException {
-		final TreeXmlWriter xmlWriter = new TreeXmlWriter(writeManager, fileout);
-		final IXMLElement xmlMap = new XMLElement("map");
-		mapWriter.setSaveInvisible(saveInvisible);
-		xmlWriter.addElement(map, xmlMap);
-		fileout.close();
-	}
-
-	public void writeNodeAsXml(final StringWriter stringWriter, final NodeModel r,
-	                           final boolean saveInvisible, final boolean b) throws IOException {
-		mapWriter.writeNodeAsXml(stringWriter, r, saveInvisible, b);
 	}
 }

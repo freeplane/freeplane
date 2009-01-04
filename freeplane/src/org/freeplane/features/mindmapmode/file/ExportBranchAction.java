@@ -75,8 +75,10 @@ class ExportBranchAction extends FreeplaneAction {
 			final String ext = UrlManager.getExtension(chosenFile.getName());
 			if (!ext
 			    .equals(org.freeplane.features.mindmapmode.file.MFileManager.FREEMIND_FILE_EXTENSION_WITHOUT_DOT)) {
-				chosenFile = new File(chosenFile.getParent(), chosenFile.getName()
-				        + org.freeplane.features.mindmapmode.file.MFileManager.FREEMIND_FILE_EXTENSION);
+				chosenFile = new File(
+				    chosenFile.getParent(),
+				    chosenFile.getName()
+				            + org.freeplane.features.mindmapmode.file.MFileManager.FREEMIND_FILE_EXTENSION);
 			}
 			try {
 				UrlManager.fileToUrl(chosenFile);

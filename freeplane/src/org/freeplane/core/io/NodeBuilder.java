@@ -17,15 +17,15 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.map;
+package org.freeplane.core.io;
 
 import java.util.HashMap;
 
-import org.freeplane.core.io.IAttributeHandler;
-import org.freeplane.core.io.IElementDOMHandler;
-import org.freeplane.core.io.IXMLElement;
-import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
+import org.freeplane.core.map.EncryptionModel;
+import org.freeplane.core.map.HistoryInformationModel;
+import org.freeplane.core.map.MapModel;
+import org.freeplane.core.map.NodeModel;
 
 public class NodeBuilder implements IElementDOMHandler {
 	static class IconProperties {

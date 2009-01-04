@@ -123,8 +123,8 @@ public class ClipboardController implements IExtension {
 		final StringWriter stringWriter = new StringWriter();
 		try {
 			final NodeModel r = (node);
-			r.getModeController().getMapController().writeNodeAsXml(stringWriter, r, saveInvisible,
-			    true);
+			r.getModeController().getMapController().getMapWriter().writeNodeAsXml(stringWriter, r,
+			    saveInvisible, true);
 		}
 		catch (final IOException e) {
 		}
@@ -284,10 +284,11 @@ public class ClipboardController implements IExtension {
 	public NodeModel shallowCopy(final NodeModel source) {
 		try {
 			final StringWriter writer = new StringWriter();
-			modeController.getMapController().writeNodeAsXml(writer, source, true, false);
+			modeController.getMapController().getMapWriter().writeNodeAsXml(writer, source, true,
+			    false);
 			final String result = writer.toString();
-			final NodeModel copy = modeController.getMapController().createNodeTreeFromXml(
-			    source.getMap(), new StringReader(result));
+			final NodeModel copy = modeController.getMapController().getMapReader()
+			    .createNodeTreeFromXml(source.getMap(), new StringReader(result));
 			copy.setFolded(false);
 			return copy;
 		}
