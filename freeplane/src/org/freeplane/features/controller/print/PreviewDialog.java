@@ -41,7 +41,7 @@ public class PreviewDialog extends JDialog implements ActionListener {
 	protected MapView view;
 
 	public PreviewDialog(final String title, final MapView view) {
-		super(JOptionPane.getFrameForComponent(view.getComponent()), title, true);
+		super(JOptionPane.getFrameForComponent(view), title, true);
 		this.view = view;
 		final Preview preview = new Preview(view, 1);
 		final JScrollPane scrollPane = new JScrollPane(preview);

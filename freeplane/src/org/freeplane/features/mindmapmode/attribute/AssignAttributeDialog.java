@@ -301,7 +301,7 @@ public class AssignAttributeDialog extends JDialog implements IAttributesListene
 	final private JRadioButton visibleBtn;
 
 	public AssignAttributeDialog(final MapView mapView) {
-		super(JOptionPane.getFrameForComponent(mapView.getComponent()), UITools
+		super(JOptionPane.getFrameForComponent(mapView), UITools
 		    .removeMnemonic(Controller.getText("attributes_assign_dialog")), false);
 		final Border actionBorder = new MatteBorder(2, 2, 2, 2, Color.BLACK);
 		final Border emptyBorder = new EmptyBorder(5, 5, 5, 5);

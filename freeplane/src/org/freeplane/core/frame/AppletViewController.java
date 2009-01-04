@@ -36,6 +36,7 @@ import javax.swing.SwingUtilities;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.FreemindVersionInformation;
 import org.freeplane.core.ui.components.FreemindMenuBar;
+import org.freeplane.view.swing.map.MapView;
 
 /**
  * @author Dimitry Polivaev
@@ -204,8 +205,9 @@ public class AppletViewController extends ViewController {
 
 	public void start() {
 		try {
-			if (Controller.getController().getMapView() != null) {
-				Controller.getController().getMapView().moveToRoot();
+			final MapView mapView = Controller.getController().getMapView();
+			if (mapView != null) {
+				mapView.moveToRoot();
 			}
 			else {
 				System.err.println("View is null.");

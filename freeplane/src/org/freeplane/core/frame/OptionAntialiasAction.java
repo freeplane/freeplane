@@ -25,6 +25,7 @@ import javax.swing.AbstractAction;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ui.IFreemindPropertyListener;
+import org.freeplane.view.swing.map.MapView;
 
 class OptionAntialiasAction extends AbstractAction implements IFreemindPropertyListener {
 	OptionAntialiasAction() {
@@ -54,8 +55,9 @@ class OptionAntialiasAction extends AbstractAction implements IFreemindPropertyL
 			Controller.getController().getViewController().setAntialiasEdges(true);
 			Controller.getController().getViewController().setAntialiasAll(true);
 		}
-		if (Controller.getController().getMapView() != null) {
-			Controller.getController().getMapView().repaint();
+		final MapView mapView = Controller.getController().getMapView();
+		if (mapView != null) {
+			mapView.repaint();
 		}
 	}
 

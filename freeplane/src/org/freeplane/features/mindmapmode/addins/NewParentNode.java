@@ -80,7 +80,7 @@ public class NewParentNode extends FreeplaneAction {
 		if (newNode == null) {
 			return;
 		}
-		mapView.selectAsTheOnlyOneSelected(mapView.getNodeView(newNode));
+		Controller.getController().getSelection().selectAsTheOnlyOneSelected(newNode);
 		mapView.repaint();
 	}
 

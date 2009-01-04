@@ -43,10 +43,8 @@ class JoinNodesAction extends FreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final NodeModel selectedNode = Controller.getController().getMapView().getSelected()
-		    .getModel();
-		final List selectedNodes = Controller.getController().getMapView()
-		    .getSelectedNodesSortedByY();
+		final NodeModel selectedNode = Controller.getController().getSelection().getSelected();
+		final List selectedNodes = Controller.getController().getSelection().getSortedSelection();
 		joinNodes(selectedNode, selectedNodes);
 	}
 
@@ -76,11 +74,12 @@ class JoinNodesAction extends FreeplaneAction {
 
 	public void joinNodes(final NodeModel selectedNode, final List selectedNodes) {
 		String newContent = "";
-		final MapView mapView = Controller.getController().getMapView();
+		final Controller controller = Controller.getController();
+		final MapView mapView = controller.getMapView();
 		for (final Iterator it = selectedNodes.iterator(); it.hasNext();) {
 			final NodeModel node = (NodeModel) it.next();
 			if (node.getModeController().getMapController().hasChildren(node)) {
-				JOptionPane.showMessageDialog(mapView.getComponent(), getModeController().getText(
+				JOptionPane.showMessageDialog(mapView, getModeController().getText(
 				    "cannot_join_nodes_with_children"), "FreeMind", JOptionPane.WARNING_MESSAGE);
 				return;
 			}
@@ -96,7 +95,7 @@ class JoinNodesAction extends FreeplaneAction {
 			}
 			isHtml = isHtml || isHtmlNode;
 		}
-		mapView.selectAsTheOnlyOneSelected(mapView.getNodeView(selectedNode));
+		controller.getSelection().selectAsTheOnlyOneSelected(selectedNode);
 		((MTextController) TextController.getController(getModeController())).setNodeText(
 		    selectedNode, newContent);
 	}

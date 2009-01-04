@@ -42,7 +42,7 @@ class PrintPreviewAction extends AbstractPrintAction {
 		    .getText("print_preview_title"), mapView);
 		previewDialog.pack();
 		previewDialog.setLocationRelativeTo(JOptionPane
-		    .getFrameForComponent(mapView.getComponent()));
+		    .getFrameForComponent(mapView));
 		previewDialog.setVisible(true);
 	}
 }

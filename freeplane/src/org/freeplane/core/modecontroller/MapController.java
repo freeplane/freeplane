@@ -20,7 +20,6 @@
 package org.freeplane.core.modecontroller;
 
 import java.awt.EventQueue;
-import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -55,10 +54,8 @@ import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Tools;
+import org.freeplane.features.mindmapmode.MMapModel;
 import org.freeplane.n3.nanoxml.XMLParseException;
-import org.freeplane.view.swing.map.MainView;
-import org.freeplane.view.swing.map.MapView;
-import org.freeplane.view.swing.map.NodeView;
 
 /**
  * @author Dimitry Polivaev
@@ -165,21 +162,7 @@ public class MapController {
 	}
 
 	public void centerNode(final NodeModel node) {
-		NodeView view = null;
-		if (node != null) {
-			view = Controller.getController().getMapView().getNodeView(node);
-		}
-		if (view == null) {
-			displayNode(node);
-			view = Controller.getController().getMapView().getNodeView(node);
-		}
-		centerNode(view);
-	}
-
-	private void centerNode(final NodeView node) {
-		Controller.getController().getMapView().centerNode(node);
-		Controller.getController().getMapView().selectAsTheOnlyOneSelected(node);
-		Controller.getController().getViewController().obtainFocusForSelected();
+		Controller.getController().getSelection().centerNode(node);
 	}
 
 	public ListIterator<NodeModel> childrenFolded(final NodeModel node) {
@@ -236,39 +219,6 @@ public class MapController {
 				setFolded(nodeOnPath, false);
 			}
 		}
-	}
-
-	public boolean extendSelection(final MouseEvent e) {
-		final NodeView newlySelectedNodeView = ((MainView) e.getComponent()).getNodeView();
-		final boolean extend = e.isControlDown();
-		final boolean range = e.isShiftDown();
-		final boolean branch = e.isAltGraphDown() || e.isAltDown();
-		/* windows alt, linux altgraph .... */
-		boolean retValue = false;
-		if (extend || range || branch
-		        || !Controller.getController().getMapView().isSelected(newlySelectedNodeView)) {
-			if (!range) {
-				if (extend) {
-					Controller.getController().getMapView().toggleSelected(newlySelectedNodeView);
-				}
-				else {
-					select(newlySelectedNodeView);
-				}
-				retValue = true;
-			}
-			else {
-				retValue = Controller.getController().getMapView().selectContinuous(
-				    newlySelectedNodeView);
-			}
-			if (branch) {
-				Controller.getController().getMapView().selectBranch(newlySelectedNodeView, extend);
-				retValue = true;
-			}
-		}
-		if (retValue) {
-			e.consume();
-		}
-		return retValue;
 	}
 
 	protected void fireMapCreated(final MapModel map) {
@@ -387,20 +337,6 @@ public class MapController {
 		return selected.createID();
 	}
 
-	public NodeView getNodeView(final NodeModel node) {
-		return Controller.getController().getMapView().getNodeView(node);
-	}
-
-	private NodeView getNodeView(final Object object) {
-		if (object instanceof NodeView) {
-			return (NodeView) object;
-		}
-		if (object instanceof NodeModel) {
-			return Controller.getController().getMapView().getNodeView((NodeModel) object);
-		}
-		throw new ClassCastException();
-	}
-
 	public ReadManager getReadManager() {
 		return readManager;
 	}
@@ -411,11 +347,7 @@ public class MapController {
 	}
 
 	public NodeModel getSelectedNode() {
-		final NodeView selectedView = getSelectedView();
-		if (selectedView != null) {
-			return selectedView.getModel();
-		}
-		return null;
+		return Controller.getController().getSelection().getSelected();
 	}
 
 	/**
@@ -426,26 +358,11 @@ public class MapController {
 	 * @return returns a list of MindMapNode s.
 	 */
 	public List getSelectedNodes() {
-		final MapView view = Controller.getController().getMapView();
-		if (view == null) {
+		final IMapSelection selection = Controller.getController().getSelection();
+		if (selection == null) {
 			return Collections.EMPTY_LIST;
 		}
-		final LinkedList selecteds = new LinkedList();
-		final Iterator it = view.getSelection().iterator();
-		if (it != null) {
-			while (it.hasNext()) {
-				final NodeView selected = (NodeView) it.next();
-				selecteds.add(selected.getModel());
-			}
-		}
-		return selecteds;
-	}
-
-	public NodeView getSelectedView() {
-		if (Controller.getController().getMapView() != null) {
-			return Controller.getController().getMapView().getSelected();
-		}
-		return null;
+		return selection.getSelection();
 	}
 
 	public WriteManager getWriteManager() {
@@ -604,15 +521,10 @@ public class MapController {
 		mapModel.setSaved(false);
 	}
 
-	/**
-	 * You _must_ implement this if you use one of the following actions:
-	 * OpenAction, NewMapAction.
-	 *
-	 * @param root
-	 * @param modeController
-	 */
 	public MapModel newModel(final NodeModel root) {
-		throw new java.lang.UnsupportedOperationException();
+		final MapModel mindMapMapModel = new MapModel(getModeController(), root);
+		fireMapCreated(mindMapMapModel);
+		return mindMapMapModel;
 	}
 
 	public NodeModel newNode(final Object userObject, final MapModel map) {
@@ -660,7 +572,7 @@ public class MapController {
 		node.getMap().nodeStructureChanged(node);
 	}
 
-	public void onDeselect(final NodeView node) {
+	public void onDeselect(final NodeModel node) {
 		try {
 			final HashSet copy = new HashSet(nodeSelectionListeners);
 			for (final Iterator iter = copy.iterator(); iter.hasNext();) {
@@ -673,7 +585,7 @@ public class MapController {
 		}
 	}
 
-	public void onSelect(final NodeView node) {
+	public void onSelect(final NodeModel node) {
 		for (final Iterator iter = nodeSelectionListeners.iterator(); iter.hasNext();) {
 			final INodeSelectionListener listener = (INodeSelectionListener) iter.next();
 			listener.onSelect(node);
@@ -746,36 +658,26 @@ public class MapController {
 		nodeSelectionListeners.remove(listener);
 	}
 
-	public void select(final NodeView node) {
-		Controller.getController().getMapView().scrollNodeToVisible(node);
-		Controller.getController().getMapView().selectAsTheOnlyOneSelected(node);
-		Controller.getController().getMapView().setSiblingMaxLevel(node.getModel().getNodeLevel());
+	public void select(final NodeModel node) {
+		Controller.getController().getSelection().selectAsTheOnlyOneSelected(node);
 	}
 
-	public void selectBranch(final NodeView selected, final boolean extend) {
-		displayNode(selected.getModel());
-		Controller.getController().getMapView().selectBranch(selected, extend);
+	public void selectBranch(final NodeModel selected, final boolean extend) {
+		displayNode(selected);
+		Controller.getController().getSelection().selectBranch(selected, extend);
 	}
 
 	public void selectMultipleNodes(final NodeModel focussed, final Collection selecteds) {
-		selectMultipleNodesImpl(focussed, selecteds);
-	}
-
-	public void selectMultipleNodes(final NodeView focussed, final Collection selecteds) {
-		selectMultipleNodesImpl(focussed, selecteds);
-	}
-
-	private void selectMultipleNodesImpl(final Object focussed, final Collection selecteds) {
 		for (final Iterator i = selecteds.iterator(); i.hasNext();) {
-			final NodeModel node = (NodeModel) (i.next());
-			displayNode(node);
-		}
-		select(getNodeView(focussed));
-		for (final Iterator i = selecteds.iterator(); i.hasNext();) {
-			final NodeView node = getNodeView(i.next());
-			Controller.getController().getMapView().makeTheSelected(node);
-		}
-		Controller.getController().getViewController().obtainFocusForSelected();
+        	final NodeModel node = (NodeModel) (i.next());
+        	displayNode(node);
+        }
+        select(focussed);
+        for (final Iterator i = selecteds.iterator(); i.hasNext();) {
+        	final NodeModel node = (NodeModel)i.next();
+        	Controller.getController().getSelection().makeTheSelected(node);
+        }
+        Controller.getController().getViewController().obtainFocusForSelected();
 	}
 
 	public void setFolded(final NodeModel node, final boolean folded) {

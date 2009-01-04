@@ -28,7 +28,6 @@ import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.components.EnterPasswordDialog;
 import org.freeplane.features.common.addins.encrypt.SingleDesEncrypter;
-import org.freeplane.view.swing.map.NodeView;
 
 @ActionDescriptor(name = "accessories/plugins/NewEncryptedMap.properties_name", //
 tooltip = "accessories/plugins/NewEncryptedMap.properties_documentation", //
@@ -93,11 +92,11 @@ public class EncryptedMap extends FreeplaneAction implements INodeSelectionListe
 		newModeController.getMapController().newMap(node);
 	}
 
-	public void onDeselect(final NodeView node) {
+	public void onDeselect(final NodeModel node) {
 		setEnabled(false);
 	}
 
-	public void onSelect(final NodeView node) {
+	public void onSelect(final NodeModel node) {
 		setEnabled(canBeEnabled());
 	}
 }

@@ -64,10 +64,10 @@ public class ModeController {
 			action.setVisible();
 		}
 
-		public void onDeselect(final NodeView node) {
+		public void onDeselect(final NodeModel node) {
 		}
 
-		public void onSelect(final NodeView node) {
+		public void onSelect(final NodeModel node) {
 			action.setVisible();
 		}
 	}
@@ -89,10 +89,10 @@ public class ModeController {
 			action.setEnabled();
 		}
 
-		public void onDeselect(final NodeView node) {
+		public void onDeselect(final NodeModel node) {
 		}
 
-		public void onSelect(final NodeView node) {
+		public void onSelect(final NodeModel node) {
 			action.setEnabled();
 		}
 	}
@@ -114,10 +114,10 @@ public class ModeController {
 			action.setSelected();
 		}
 
-		public void onDeselect(final NodeView node) {
+		public void onDeselect(final NodeModel node) {
 		}
 
-		public void onSelect(final NodeView node) {
+		public void onSelect(final NodeModel node) {
 			action.setSelected();
 		}
 	}
@@ -326,12 +326,11 @@ public class ModeController {
 	 * @see freemind.modes.ModeController#setVisible(boolean)
 	 */
 	public void setVisible(final boolean visible) {
+		final NodeModel node = Controller.getController().getSelection().getSelected();
 		if (visible) {
-			final NodeView node = mapController.getSelectedView();
 			mapController.onSelect(node);
 		}
 		else {
-			final NodeView node = mapController.getSelectedView();
 			if (node != null) {
 				mapController.onDeselect(node);
 			}

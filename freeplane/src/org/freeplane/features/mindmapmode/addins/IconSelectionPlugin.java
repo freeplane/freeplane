@@ -51,7 +51,8 @@ public class IconSelectionPlugin extends FreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final ModeController modeController = getModeController();
-		final NodeView focussed = modeController.getMapController().getSelectedView();
+		final MapView mapView = Controller.getController().getMapView();
+		final NodeView focussed = mapView.getSelected();
 		final Vector actions = new Vector();
 		final Collection<Action> iconActions = ((MIconController) IconController
 		    .getController(modeController)).getIconActions();
@@ -60,7 +61,7 @@ public class IconSelectionPlugin extends FreeplaneAction {
 		actions.add(modeController.getAction("removeAllIconsAction"));
 		final IconSelectionPopupDialog selectionDialog = new IconSelectionPopupDialog(Controller
 		    .getController().getViewController().getJFrame(), actions);
-		final MapView mapView = Controller.getController().getMapView();
+
 		mapView.scrollNodeToVisible(focussed, 0);
 		selectionDialog.pack();
 		UITools.setDialogLocationRelativeTo(selectionDialog, focussed);

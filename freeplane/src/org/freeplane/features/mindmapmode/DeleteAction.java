@@ -25,6 +25,7 @@ import java.util.Iterator;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
@@ -46,8 +47,9 @@ class DeleteAction extends FreeplaneAction {
 				return;
 			}
 		}
-		final int showResult = new OptionalDontShowMeAgainDialog(Controller.getController()
-		    .getViewController().getJFrame(), modeController.getMapController().getSelectedView(),
+		final ViewController viewController = Controller.getController()
+		    .getViewController();
+		final int showResult = new OptionalDontShowMeAgainDialog(viewController.getJFrame(), viewController.getMapView().getSelected(),
 		    "really_remove_node", "confirmation",
 		    new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
 		        ResourceController.RESOURCES_DELETE_NODES_WITHOUT_QUESTION),
@@ -55,8 +57,8 @@ class DeleteAction extends FreeplaneAction {
 		if (showResult != JOptionPane.OK_OPTION) {
 			return;
 		}
-		final Iterator<NodeModel> iterator = Controller.getController().getMapView()
-		    .getSelectedNodesSortedByY().iterator();
+		final Iterator<NodeModel> iterator = Controller.getController().getSelection()
+		    .getSortedSelection().iterator();
 		while (iterator.hasNext()) {
 			delete(iterator.next());
 		}

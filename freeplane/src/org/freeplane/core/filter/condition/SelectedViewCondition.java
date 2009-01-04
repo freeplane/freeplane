@@ -24,7 +24,6 @@ import javax.swing.JComponent;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.io.XMLElement;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.view.swing.map.NodeView;
 
 public class SelectedViewCondition implements ICondition {
 	private static ICondition condition;
@@ -43,8 +42,7 @@ public class SelectedViewCondition implements ICondition {
 	}
 
 	public boolean checkNode(final NodeModel node) {
-		final NodeView viewer = Controller.getModeController().getMapController().getNodeView(node);
-		return viewer != null && viewer.isSelected();
+		return Controller.getController().getSelection().isSelected(node);
 	}
 
 	public JComponent getListCellRendererComponent() {

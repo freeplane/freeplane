@@ -31,6 +31,7 @@ import org.freeplane.core.extension.ExtensionHashMap;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.frame.MapViewManager;
 import org.freeplane.core.frame.ViewController;
+import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.resources.ResourceController;
@@ -172,6 +173,11 @@ public class Controller {
 	 */
 	public MapView getMapView() {
 		return getViewController().getMapView();
+	}
+	
+	public IMapSelection getSelection(){
+		final MapView mapView = getMapView();
+		return mapView == null ? null : mapView.getMapSelection();
 	}
 
 	public MapViewManager getMapViewManager() {

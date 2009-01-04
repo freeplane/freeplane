@@ -68,6 +68,8 @@ import org.freeplane.core.frame.MapViewManager;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.ui.IFreemindPropertyListener;
 import org.freeplane.core.ui.ControllerPopupMenuListener;
 import org.freeplane.core.ui.IEditHandler;
 import org.freeplane.core.ui.IMapMouseReceiver;
@@ -87,6 +89,78 @@ import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
 public class UserInputListenerFactory implements IUserInputListenerFactory {
+	/**
+	 * @author foltin
+	 */
+	public static class DefaultMouseWheelListener implements MouseWheelListener {
+		private static final int HORIZONTAL_SCROLL_MASK = InputEvent.SHIFT_MASK
+		        | InputEvent.BUTTON1_MASK | InputEvent.BUTTON2_MASK | InputEvent.BUTTON3_MASK;
+		private static int SCROLL_SKIPS = 8;
+		private static final int ZOOM_MASK = InputEvent.CTRL_MASK;
+
+		/**
+		 *
+		 */
+		public  DefaultMouseWheelListener() {
+			super();
+			Controller.getResourceController().addPropertyChangeListener(
+			    new IFreemindPropertyListener() {
+				    public void propertyChanged(final String propertyName, final String newValue,
+				                                final String oldValue) {
+					    if (propertyName.equals(ResourceController.RESOURCES_WHEEL_VELOCITY)) {
+						    DefaultMouseWheelListener.SCROLL_SKIPS = Integer.parseInt(newValue);
+					    }
+				    }
+			    });
+			DefaultMouseWheelListener.SCROLL_SKIPS = Controller.getResourceController()
+			    .getIntProperty(ResourceController.RESOURCES_WHEEL_VELOCITY, 8);
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * @see
+		 * freemind.modes.ModeController.MouseWheelEventHandler#handleMouseWheelEvent
+		 * (java.awt.event.MouseWheelEvent)
+		 */
+		public void mouseWheelMoved(final MouseWheelEvent e) {
+			final MapView mapView = (MapView) e.getSource();
+			final ModeController mController = mapView.getModel().getModeController();
+			if (mController.isBlocked()) {
+				return;
+			}
+			final Set registeredMouseWheelEventHandler = mController.getUserInputListenerFactory()
+			    .getMouseWheelEventHandlers();
+			for (final Iterator i = registeredMouseWheelEventHandler.iterator(); i.hasNext();) {
+				final IMouseWheelEventHandler handler = (IMouseWheelEventHandler) i.next();
+				final boolean result = handler.handleMouseWheelEvent(e);
+				if (result) {
+					return;
+				}
+			}
+			if ((e.getModifiers() & DefaultMouseWheelListener.ZOOM_MASK) != 0) {
+				float newZoomFactor = 1f + Math.abs((float) e.getWheelRotation()) / 10f;
+				if (e.getWheelRotation() < 0) {
+					newZoomFactor = 1 / newZoomFactor;
+				}
+				final float oldZoom = ((MapView) e.getComponent()).getZoom();
+				float newZoom = oldZoom / newZoomFactor;
+				newZoom = (float) Math.rint(newZoom * 1000f) / 1000f;
+				newZoom = Math.max(1f / 32f, newZoom);
+				newZoom = Math.min(32f, newZoom);
+				if (newZoom != oldZoom) {
+					Controller.getController().getViewController().setZoom(newZoom);
+				}
+			}
+			else if ((e.getModifiers() & DefaultMouseWheelListener.HORIZONTAL_SCROLL_MASK) != 0) {
+				((MapView) e.getComponent()).scrollBy(DefaultMouseWheelListener.SCROLL_SKIPS
+				        * e.getWheelRotation(), 0);
+			}
+			else {
+				((MapView) e.getComponent()).scrollBy(0, DefaultMouseWheelListener.SCROLL_SKIPS
+				        * e.getWheelRotation());
+			}
+		}
+	}
 	/**
 	 * The MouseListener which belongs to MapView
 	 */
@@ -196,13 +270,6 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		}
 	}
 
-	/**
-	 * The MouseListener which belongs to MapView
-	 */
-	static public class DefaultMouseWheelListener implements MouseWheelListener {
-		public void mouseWheelMoved(final MouseWheelEvent e) {
-		}
-	}
 
 	/**
 	 * The NodeDragListener which belongs to every NodeView
@@ -231,7 +298,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			}
 			final ModeController modeController = Controller.getModeController();
 			final Transferable t = ClipboardController.getController(modeController).copy(
-			    Controller.getController().getMapView());
+			    Controller.getController().getSelection());
 			((MindMapNodesSelection) t).setDropAction(dragAction);
 			e.startDrag(cursor, t, new DragSourceListener() {
 				public void dragDropEnd(final DragSourceDropEvent dsde) {
@@ -400,6 +467,40 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		}
 	}
 
+	public boolean extendSelection(final MouseEvent e) {
+		final NodeModel newlySelectedNodeView = ((MainView) e.getComponent()).getNodeView().getModel();
+		final boolean extend = e.isControlDown();
+		final boolean range = e.isShiftDown();
+		final boolean branch = e.isAltGraphDown() || e.isAltDown();
+		/* windows alt, linux altgraph .... */
+		boolean retValue = false;
+		if (extend || range || branch
+		        || !Controller.getController().getSelection().isSelected(newlySelectedNodeView)) {
+			if (!range) {
+				if (extend) {
+					Controller.getController().getSelection().toggleSelected(newlySelectedNodeView);
+				}
+				else {
+					Controller.getController().getSelection().selectAsTheOnlyOneSelected(newlySelectedNodeView);
+				}
+				retValue = true;
+			}
+			else {
+				Controller.getController().getSelection().selectContinuous(
+				    newlySelectedNodeView);
+				retValue = true;
+			}
+			if (branch) {
+				Controller.getController().getSelection().selectBranch(newlySelectedNodeView, extend);
+				retValue = true;
+			}
+		}
+		if (retValue) {
+			e.consume();
+		}
+		return retValue;
+	}
+
 	/**
 	 * The MouseMotionListener which belongs to every NodeView
 	 */
@@ -426,7 +527,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 						if (e.getModifiers() == 0
 						        && !c.isBlocked()
 						        && Controller.getController().getMapView().getSelection().size() <= 1) {
-							c.getMapController().extendSelection(e);
+							c.getUserInputListenerFactory().extendSelection(e);
 						}
 					}
 				});
@@ -443,7 +544,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		 */
 		private Rectangle controlRegionForDelayedSelection;
 		final private ControllerPopupMenuListener popupListener = new ControllerPopupMenuListener(
-		    UserInputListenerFactory.getModeController());
+		    Controller.getModeController());
 		private Timer timerForDelayedSelection;
 
 		public DefaultNodeMouseMotionListener() {
@@ -459,7 +560,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			timerForDelayedSelection = new Timer();
 			timerForDelayedSelection
 			    .schedule(
-			        new TimeDelayedSelection(UserInputListenerFactory.getModeController(), e),
+			        new TimeDelayedSelection(Controller.getModeController(), e),
 			        /*
 			         * if the new selection method is not enabled we put 0 to
 			         * get direct selection.
@@ -486,7 +587,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			stopTimerForDelayedSelection();
 			final NodeView nodeV = ((MainView) e.getComponent()).getNodeView();
 			if (!Controller.getController().getMapView().isSelected(nodeV)) {
-				UserInputListenerFactory.getModeController().getMapController().extendSelection(e);
+				Controller.getModeController().getUserInputListenerFactory().extendSelection(e);
 			}
 		}
 
@@ -506,7 +607,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			final boolean isLink = (node).updateCursor(e.getX());
 			if (isLink) {
 				Controller.getController().getViewController().out(
-				    LinkController.getController(UserInputListenerFactory.getModeController())
+				    LinkController.getController(Controller.getModeController())
 				        .getLinkShortText(node.getNodeView().getModel()));
 			}
 			if (controlRegionForDelayedSelection != null
@@ -523,20 +624,20 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 
 		public void mouseReleased(final MouseEvent e) {
 			stopTimerForDelayedSelection();
-			UserInputListenerFactory.getModeController().getMapController().extendSelection(e);
+			Controller.getModeController().getUserInputListenerFactory().extendSelection(e);
 			showPopupMenu(e);
 			if (e.isConsumed()) {
 				return;
 			}
 			if (e.getModifiers() == InputEvent.BUTTON1_MASK) {
-				UserInputListenerFactory.getModeController().plainClick(e);
+				Controller.getModeController().plainClick(e);
 				e.consume();
 			}
 		}
 
 		public void showPopupMenu(final MouseEvent e) {
 			if (e.isPopupTrigger()) {
-				final JPopupMenu popupmenu = UserInputListenerFactory.getModeController()
+				final JPopupMenu popupmenu = Controller.getModeController()
 				    .getUserInputListenerFactory().getNodePopupMenu();
 				if (popupmenu != null) {
 					popupmenu.addPopupMenuListener(popupListener);
@@ -583,10 +684,6 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	}
 
 	public static final String NODE_POPUP = "/node_popup";
-
-	static private ModeController getModeController() {
-		return Controller.getModeController();
-	}
 
 	private Component leftToolBar;
 	private JToolBar mainToolBar;

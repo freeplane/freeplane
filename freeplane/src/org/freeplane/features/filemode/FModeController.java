@@ -47,29 +47,30 @@ public class FModeController extends ModeController {
 		 * windows alt, linux altgraph ....
 		 */
 		boolean retValue = false;
+		final NodeModel model = newlySelectedNodeView.getModel();
 		if (extend || range || branch
-		        || !Controller.getController().getMapView().isSelected(newlySelectedNodeView)) {
+		        || !Controller.getController().getSelection().isSelected(model)) {
 			if (!range) {
 				if (extend) {
-					Controller.getController().getMapView().toggleSelected(newlySelectedNodeView);
+					Controller.getController().getSelection().toggleSelected(model);
 				}
 				else {
-					getMapController().select(newlySelectedNodeView);
+					getMapController().select(model);
 				}
 				retValue = true;
 			}
 			else {
-				retValue = Controller.getController().getMapView().selectContinuous(
-				    newlySelectedNodeView);
+				Controller.getController().getSelection().selectContinuous(model);
+				retValue = true;
 			}
 			if (branch) {
-				Controller.getController().getMapView().selectBranch(newlySelectedNodeView, extend);
+				Controller.getController().getSelection().selectBranch(model, extend);
 				retValue = true;
 			}
 		}
 		if (retValue) {
 			e.consume();
-			String link = NodeLinks.getLink(newlySelectedNodeView.getModel());
+			String link = NodeLinks.getLink(model);
 			link = (link != null ? link : " ");
 			Controller.getController().getViewController().out(link);
 		}
@@ -101,7 +102,7 @@ public class FModeController extends ModeController {
 	public void startup() {
 		final Controller controller = Controller.getController();
 		controller.getMapViewManager().changeToMode(MODENAME);
-		if (controller.getMapView() == null) {
+		if (controller.getMap() == null) {
 			((FMapController) getMapController()).newMap(new File(File.separator));
 		}
 		super.startup();

@@ -42,23 +42,24 @@ class CutAction extends FreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final ModeController mMindMapController = getModeController();
-		if (Controller.getController().getMapView().getRoot().isSelected()) {
-			Controller.getController().errorMessage(Controller.getText("cannot_delete_root"));
+		final Controller controller = Controller.getController();
+		final NodeModel root = controller.getMap().getRootNode();
+		if (controller.getSelection().isSelected(root)) {
+			controller.errorMessage(Controller.getText("cannot_delete_root"));
 			return;
 		}
-		final int showResult = new OptionalDontShowMeAgainDialog(Controller.getController()
-		    .getViewController().getJFrame(), mMindMapController.getMapController()
-		    .getSelectedView(), "really_cut_node", "confirmation",
+		final int showResult = new OptionalDontShowMeAgainDialog(controller
+		    .getViewController().getJFrame(), controller.getMapView().getSelected(), "really_cut_node", "confirmation",
 		    new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
 		        ResourceController.RESOURCES_CUT_NODES_WITHOUT_QUESTION),
 		    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED).show().getResult();
 		if (showResult != JOptionPane.OK_OPTION) {
 			return;
 		}
-		final Transferable copy = cut(Controller.getController().getMapView()
-		    .getSelectedNodesSortedByY());
+		final Transferable copy = cut(controller.getSelection()
+		    .getSortedSelection());
 		ClipboardController.getController(mMindMapController).setClipboardContents(copy);
-		Controller.getController().getViewController().obtainFocusForSelected();
+		controller.getViewController().obtainFocusForSelected();
 	}
 
 	Transferable cut(final List<NodeModel> collection) {

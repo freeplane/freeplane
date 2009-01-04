@@ -41,6 +41,7 @@ import java.util.ListIterator;
 import java.util.Vector;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.features.common.link.NodeLinks;
@@ -115,8 +116,8 @@ public class ClipboardController implements IExtension {
 		return null;
 	}
 
-	public Transferable copy(final MapView view) {
-		return copy(view.getSelectedNodesSortedByY(), false);
+	public Transferable copy(final IMapSelection selection) {
+		return copy(selection.getSortedSelection(), false);
 	}
 
 	public Transferable copy(final NodeModel node, final boolean saveInvisible) {

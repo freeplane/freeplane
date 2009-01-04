@@ -56,6 +56,7 @@ import javax.swing.JViewport;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.io.xml.TreeXmlReader;
+import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
@@ -83,6 +84,70 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 			super.validateTree();
 		}
 	}
+	
+	private class MapSelection implements IMapSelection{
+
+		public void centerNode(NodeModel node) {
+	       final NodeView nodeView = getNodeView(node);
+	       if(nodeView != null){
+	    	   MapView.this.centerNode(nodeView);
+	       }
+        }
+
+		public NodeModel getSelected() {
+			final NodeView selected = MapView.this.getSelected();
+			return selected == null ? null : selected.getModel();
+		}
+
+		public List<NodeModel> getSelection() {
+			return MapView.this.getSelectedNodes();
+        }
+
+		public List<NodeModel> getSortedSelection() {
+			return MapView.this.getSelectedNodesSortedByY();
+        }
+
+		public boolean isSelected(NodeModel node) {
+	        final NodeView nodeView = getNodeView(node);
+			return nodeView != null && MapView.this.isSelected(nodeView);
+        }
+
+		public void makeTheSelected(NodeModel node) {
+			final NodeView nodeView = getNodeView(node);
+			if(nodeView != null){
+				MapView.this.makeTheSelected(nodeView);
+			}
+        }
+
+		public void selectAsTheOnlyOneSelected(NodeModel node) {
+			final NodeView nodeView = getNodeView(node);
+			if(nodeView != null){
+				MapView.this.selectAsTheOnlyOneSelected(nodeView);
+			}
+        }
+
+		public void selectBranch(NodeModel node, boolean extend) {
+			MapView.this.selectBranch(getNodeView(node), extend);
+        }
+
+		public void selectContinuous(NodeModel node) {
+			MapView.this.selectContinuous(getNodeView(node));
+	        
+        }
+
+		public void toggleSelected(NodeModel node) {
+			MapView.this.toggleSelected(getNodeView(node));	        
+        }
+
+		public void setSiblingMaxLevel(int nodeLevel) {
+	        MapView.this.setSiblingMaxLevel(nodeLevel);
+	        
+        }
+
+		public int size() {
+			return getSelection().size();
+        }		
+	}
 
 	private class Selection {
 		final private Vector mySelected = new Vector();
@@ -99,7 +164,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		}
 
 		private void addSelectionForHooks(final NodeView node) {
-			getModel().getModeController().getMapController().onSelect(node);
+			getModel().getModeController().getMapController().onSelect(node.getModel());
 		}
 
 		public void clear() {
@@ -154,7 +219,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 			if (node.getModel() == null) {
 				return;
 			}
-			getModel().getModeController().getMapController().onDeselect(node);
+			getModel().getModeController().getMapController().onDeselect(node.getModel());
 		}
 
 		public int size() {
@@ -228,6 +293,15 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		disableMoveCursor = Controller.getResourceController().getBoolProperty(
 		    "disable_cursor_move_paper");
 	}
+
+	public List<NodeModel> getSelectedNodes() {
+		final int size = selection.size();
+		final ArrayList<NodeModel> selectedNodes = new ArrayList(size);
+		for (int i = 0; i < size; i++) {
+			selectedNodes.add(getSelected(i).getModel());
+		}
+		return selectedNodes;
+   }
 
 	/*
 	 * (non-Javadoc)
@@ -438,10 +512,6 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		            - inner.width - inner.x + outer.x + MapView.margin);
 	}
 
-	public JComponent getComponent() {
-		return this;
-	}
-
 	/**
 	 * Return the bounding box of all the descendants of the source view, that
 	 * without BORDER. Should that be implemented in LayoutManager as minimum
@@ -547,7 +617,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 	 * @return an ArrayList of MindMapNode objects. If both ancestor and
 	 *         descandant node are selected, only the ancestor ist returned
 	 */
-	public ArrayList<NodeModel> getSelectedNodesSortedByY() {
+	ArrayList<NodeModel> getSelectedNodesSortedByY() {
 		final HashSet selectedNodesSet = new HashSet();
 		for (int i = 0; i < selection.size(); i++) {
 			selectedNodesSet.add(getSelected(i).getModel());
@@ -714,7 +784,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 	 * Add the node to the selection if it is not yet there, making it the
 	 * focused selected node.
 	 */
-	public void makeTheSelected(final NodeView newSelected) {
+	void makeTheSelected(final NodeView newSelected) {
 		if (isSelected(newSelected)) {
 			selection.moveToFirst(newSelected);
 		}
@@ -1020,7 +1090,9 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 	 * Select the node, resulting in only that one being selected.
 	 */
 	public void selectAsTheOnlyOneSelected(final NodeView newSelected) {
+		scrollNodeToVisible(newSelected);
 		selectAsTheOnlyOneSelected(newSelected, true);
+		setSiblingMaxLevel(newSelected.getModel().getNodeLevel());
 	}
 
 	public void selectAsTheOnlyOneSelected(final NodeView node, final boolean requestFocus) {
@@ -1049,7 +1121,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 	 * previous selection. if extend is false, the past selection will be empty.
 	 * if yes, the selection will extended with this node and its children
 	 */
-	public void selectBranch(final NodeView newlySelectedNodeView, final boolean extend) {
+	void selectBranch(final NodeView newlySelectedNodeView, final boolean extend) {
 		if (!extend) {
 			selectAsTheOnlyOneSelected(newlySelectedNodeView);
 		}
@@ -1063,7 +1135,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		}
 	}
 
-	public boolean selectContinuous(final NodeView nodeView) {
+	boolean selectContinuous(final NodeView nodeView) {
 		/* fc, 25.1.2004: corrected due to completely inconsistent behaviour. */
 		NodeView oldSelected = null;
 		final NodeView newSelected = nodeView;
@@ -1162,7 +1234,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		}
 	}
 
-	public void setSiblingMaxLevel(final int level) {
+	void setSiblingMaxLevel(final int level) {
 		siblingMaxLevel = level;
 	}
 
@@ -1206,7 +1278,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 	 * Add the node to the selection if it is not yet there, remove it
 	 * otherwise.
 	 */
-	public void toggleSelected(final NodeView nodeView) {
+	void toggleSelected(final NodeView nodeView) {
 		final NodeView newSelected = nodeView;
 		NodeView oldSelected = getSelected();
 		if (isSelected(newSelected)) {
@@ -1263,5 +1335,9 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		validateSelecteds();
 		super.validateTree();
 		setViewPositionAfterValidate();
+	}
+	
+	public IMapSelection getMapSelection(){
+		return new MapSelection();
 	}
 }

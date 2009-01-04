@@ -29,7 +29,6 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.view.swing.map.MapView;
-import org.freeplane.view.swing.map.NodeView;
 
 /**
  * @author foltin
@@ -112,10 +111,7 @@ public class NodeHistory implements IExtension, INodeSelectionListener {
 		if (!toBeSelected.isRoot()) {
 			modeController.getMapController().setFolded(toBeSelected.getParentNode(), false);
 		}
-		final NodeView nodeView = modeController.getMapController().getNodeView(toBeSelected);
-		if (nodeView != null) {
-			modeController.getMapController().select(nodeView);
-		}
+		modeController.getMapController().select(toBeSelected);
 	}
 
 	public void goBack() {
@@ -126,11 +122,11 @@ public class NodeHistory implements IExtension, INodeSelectionListener {
 		go(false);
 	}
 
-	public void onDeselect(final NodeView pNode) {
+	public void onDeselect(final NodeModel pNode) {
 	}
 
-	public void onSelect(final NodeView pNode) {
-		if (currentNodeHolder != null && currentNodeHolder.isIdentical(pNode)) {
+	public void onSelect(final NodeModel pNode) {
+		if (currentNodeHolder != null && currentNodeHolder.isIdentical(Controller.getController().getMapView().getNodeView(pNode))) {
 			return;
 		}
 		while (canGoForward()) {
@@ -141,7 +137,7 @@ public class NodeHistory implements IExtension, INodeSelectionListener {
 			nodes.removeFirst();
 			nodeIterator = nodes.listIterator(nodes.size());
 		}
-		currentNodeHolder = new NodeHolder(pNode);
+		currentNodeHolder = new NodeHolder(Controller.getController().getMapView().getNodeView(pNode));
 		nodeIterator.add(currentNodeHolder);
 	}
 

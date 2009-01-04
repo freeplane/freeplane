@@ -33,7 +33,6 @@ import org.freeplane.core.modecontroller.INodeSelectionListener;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.features.common.note.NodeNoteBase;
 import org.freeplane.features.common.note.NoteModel;
-import org.freeplane.view.swing.map.NodeView;
 
 /**
  * @author foltin
@@ -58,12 +57,12 @@ public class BNodeNoteViewer extends NodeNoteBase implements INodeSelectionListe
 		return noteScrollPane;
 	}
 
-	public void onDeselect(final NodeView pNode) {
+	public void onDeselect(final NodeModel pNode) {
 		Controller.getController().getViewController().removeSplitPane();
 	}
 
-	public void onSelect(final NodeView pNode) {
-		final String noteText = NoteModel.getNoteText(pNode.getModel());
+	public void onSelect(final NodeModel pNode) {
+		final String noteText = NoteModel.getNoteText(pNode);
 		if (noteText != null && !noteText.equals("")) {
 			Controller.getController().getViewController().insertComponentIntoSplitPane(
 			    getNoteViewerComponent(noteText));

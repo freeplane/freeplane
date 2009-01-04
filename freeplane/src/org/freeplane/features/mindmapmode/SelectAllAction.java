@@ -39,6 +39,6 @@ class SelectAllAction extends MultipleNodeAction {
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
 		final ModeController modeController = getModeController();
 		modeController.getMapController().selectBranch(
-		    Controller.getController().getMapView().getRoot(), false);
+		    Controller.getController().getMap().getRootNode(), false);
 	}
 }

@@ -22,13 +22,13 @@ import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.EncryptionModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.components.EnterPasswordDialog;
-import org.freeplane.view.swing.map.MapView;
 
 @ActionDescriptor(tooltip = "accessories/plugins/EnterPassword.properties_documentation", //
 name = "accessories/plugins/EnterPassword.properties_name", //
@@ -112,8 +112,8 @@ public class EnterPassword extends FreeplaneAction {
 					mindMapController.getMapController().nodeStructureChanged(node);
 				}
 			}
-			final MapView mapView = Controller.getController().getMapView();
-			mapView.selectAsTheOnlyOneSelected(mapView.getNodeView(node));
+			final IMapSelection selection = Controller.getController().getSelection();
+			selection.selectAsTheOnlyOneSelected(node);
 		}
 		else {
 			encrypt(node);

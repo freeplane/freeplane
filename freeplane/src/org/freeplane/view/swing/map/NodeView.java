@@ -109,10 +109,10 @@ public class NodeView extends JComponent implements TreeModelListener {
 	private AttributeView attributeView;
 	private JComponent contentPane;
 	private MainView mainView;
-	protected MapView map;
+	private MapView map;
 	private int maxToolTipWidth;
-	protected NodeModel model;
-	protected NodeMotionListenerView motionListenerView;
+	private NodeModel model;
+	private NodeMotionListenerView motionListenerView;
 	private NodeView preferredChild;
 
 	protected NodeView(final NodeModel model, final int position, final MapView map,
@@ -808,7 +808,7 @@ public class NodeView extends JComponent implements TreeModelListener {
 		return getModel().isRoot();
 	}
 
-	public boolean isSelected() {
+	boolean isSelected() {
 		return (getMap().isSelected(this));
 	}
 

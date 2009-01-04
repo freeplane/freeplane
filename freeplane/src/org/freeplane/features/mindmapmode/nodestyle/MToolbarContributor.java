@@ -33,7 +33,6 @@ import org.freeplane.core.modecontroller.NodeChangeEvent;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.view.swing.map.NodeView;
 
 class MToolbarContributor implements IMenuContributor, INodeSelectionListener, INodeChangeListener {
 	private static final String[] sizes = { "8", "10", "12", "14", "16", "18", "20", "24", "28" };
@@ -95,12 +94,11 @@ class MToolbarContributor implements IMenuContributor, INodeSelectionListener, I
 		changeToolbar(event.getNode());
 	}
 
-	public void onDeselect(final NodeView node) {
+	public void onDeselect(final NodeModel node) {
 	}
 
-	public void onSelect(final NodeView node) {
-		final NodeModel model = node.getModel();
-		changeToolbar(model);
+	public void onSelect(final NodeModel node) {
+		changeToolbar(node);
 	}
 
 	private void selectFontName(final String fontName) {

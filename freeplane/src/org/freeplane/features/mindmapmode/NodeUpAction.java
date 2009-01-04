@@ -29,12 +29,11 @@ import java.util.Vector;
 import java.util.logging.Logger;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.undo.IUndoableActor;
-import org.freeplane.view.swing.map.MapView;
-import org.freeplane.view.swing.map.NodeView;
 
 class NodeUpAction extends FreeplaneAction {
 	public NodeUpAction() {
@@ -75,15 +74,12 @@ class NodeUpAction extends FreeplaneAction {
 				final NodeModel node = (NodeModel) sortedChildren.get(position.intValue());
 				moveNodeTo(node, parent, direction);
 			}
-			final MapView mapView = Controller.getController().getMapView();
-			final NodeView selectedNodeView = mapView.getNodeView(selected);
-			mapView.selectAsTheOnlyOneSelected(selectedNodeView);
-			mapView.scrollNodeToVisible(selectedNodeView);
+			final IMapSelection selection = Controller.getController().getSelection();
+			selection.selectAsTheOnlyOneSelected(selected);
 			for (final Iterator i = range.iterator(); i.hasNext();) {
 				final Integer position = (Integer) i.next();
 				final NodeModel node = (NodeModel) sortedChildren.get(position.intValue());
-				final NodeView nodeView = mapView.getNodeView(node);
-				mapView.makeTheSelected(nodeView);
+				selection.makeTheSelected(node);
 			}
 			Controller.getController().getViewController().obtainFocusForSelected();
 		}

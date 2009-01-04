@@ -221,15 +221,14 @@ public class EditNodeTextField extends EditNodeBase {
 		textfield.addMouseListener(textFieldListener);
 		getView().scrollNodeToVisible(nodeView, xExtraWidth);
 		final Point textFieldLocation = new Point();
-		UITools.convertPointToAncestor(nodeView.getMainView(), textFieldLocation, mapView
-		    .getComponent());
+		UITools.convertPointToAncestor(nodeView.getMainView(), textFieldLocation, mapView);
 		if (xExtraWidth < 0) {
 			textFieldLocation.x += xExtraWidth;
 		}
 		textFieldLocation.x += xOffset;
 		textFieldLocation.y += yOffset;
 		textfield.setLocation(textFieldLocation);
-		mapView.getComponent().add(textfield, 0);
+		mapView.add(textfield, 0);
 		textfield.repaint();
 		redispatchKeyEvents(textfield, firstEvent);
 		getNode().addComponentListener(textFieldListener);

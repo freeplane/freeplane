@@ -73,7 +73,7 @@ public class FitToPage extends FreeplaneAction {
 	private void zoom() {
 		final Rectangle rect = view.getInnerBounds();
 		final double oldZoom = view.getZoom();
-		final JViewport viewPort = (JViewport) view.getComponent().getParent();
+		final JViewport viewPort = (JViewport) view.getParent();
 		final Dimension viewer = viewPort.getExtentSize();
 		double newZoom = viewer.width * oldZoom / (rect.width + 0.0);
 		final double heightZoom = viewer.height * oldZoom / (rect.height + 0.0);

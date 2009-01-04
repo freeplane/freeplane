@@ -24,10 +24,9 @@ import java.util.ListIterator;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.condition.ICondition;
+import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.view.swing.map.MapView;
-import org.freeplane.view.swing.map.NodeView;
 
 /**
  * @author Dimitry Polivaev
@@ -37,36 +36,37 @@ public class DefaultFilter implements IFilter {
 		node.getFilterInfo().add(flag);
 	}
 
-	static private NodeView getNearestVisibleParent(final NodeView selectedNode) {
-		if (selectedNode.getModel().isVisible()) {
+	static private NodeModel getNearestVisibleParent(final NodeModel selectedNode) {
+		if (selectedNode.isVisible()) {
 			return selectedNode;
 		}
-		return DefaultFilter.getNearestVisibleParent(selectedNode.getParentView());
+		return DefaultFilter.getNearestVisibleParent(selectedNode.getParentNode());
 	}
 
 	static public void resetFilter(final NodeModel node) {
 		node.getFilterInfo().reset();
 	}
 
-	static public void selectVisibleNode(final MapView mapView) {
-		final List<NodeView> selectedNodes = mapView.cloneSelection();
+	static public void selectVisibleNode() {
+		final IMapSelection mapSelection = Controller.getController().getSelection();
+		final List<NodeModel> selectedNodes = mapSelection.getSelection();
 		final int lastSelectedIndex = selectedNodes.size() - 1;
 		if (lastSelectedIndex == -1) {
 			return;
 		}
-		final ListIterator<NodeView> iterator = selectedNodes.listIterator(lastSelectedIndex);
+		final ListIterator<NodeModel> iterator = selectedNodes.listIterator(lastSelectedIndex);
 		while (iterator.hasPrevious()) {
-			final NodeView previous = iterator.previous();
-			if (!previous.getModel().isVisible()) {
-				mapView.toggleSelected(previous);
+			final NodeModel previous = iterator.previous();
+			if (!previous.isVisible()) {
+				mapSelection.toggleSelected(previous);
 			}
 		}
-		NodeView selected = mapView.getSelected();
-		if (!selected.getModel().isVisible()) {
+		NodeModel selected = mapSelection.getSelected();
+		if (!selected.isVisible()) {
 			selected = DefaultFilter.getNearestVisibleParent(selected);
-			mapView.selectAsTheOnlyOneSelected(selected);
+			mapSelection.selectAsTheOnlyOneSelected(selected);
 		}
-		mapView.setSiblingMaxLevel(selected.getModel().getNodeLevel());
+		mapSelection.setSiblingMaxLevel(selected.getNodeLevel());
 	}
 
 	private ICondition condition = null;
@@ -99,13 +99,12 @@ public class DefaultFilter implements IFilter {
 				final Controller c = Controller.getController();
 				c.getViewController().setWaitingCursor(true);
 				final MapModel map = c.getMap();
-				final MapView mapView = c.getMapView();
 				final NodeModel root = map.getRootNode();
 				DefaultFilter.resetFilter(root);
 				if (filterChildren(root, condition.checkNode(root), false)) {
 					DefaultFilter.addFilterResult(root, IFilter.FILTER_SHOW_ANCESTOR);
 				}
-				DefaultFilter.selectVisibleNode(mapView);
+				DefaultFilter.selectVisibleNode();
 			}
 			finally {
 				Controller.getController().getViewController().setWaitingCursor(false);

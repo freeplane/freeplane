@@ -42,7 +42,6 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.ui.IFreemindPropertyListener;
-import org.freeplane.view.swing.map.NodeView;
 
 /**
  * @author Dimitry Polivaev
@@ -69,11 +68,11 @@ public class LinkController implements IExtension {
 	                           final LinkController linkController) {
 		modeController.addExtension(LinkController.class, linkController);
 		final INodeSelectionListener listener = new INodeSelectionListener() {
-			public void onDeselect(final NodeView node) {
+			public void onDeselect(final NodeModel node) {
 			}
 
-			public void onSelect(final NodeView node) {
-				String link = NodeLinks.getLink(node.getModel());
+			public void onSelect(final NodeModel node) {
+				String link = NodeLinks.getLink(node);
 				link = (link != null ? link : " ");
 				Controller.getController().getViewController().out(link);
 			}

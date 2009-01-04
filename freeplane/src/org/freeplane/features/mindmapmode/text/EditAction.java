@@ -80,8 +80,8 @@ class EditAction extends FreeplaneAction {
 			return;
 		}
 		final MapView map = node.getMap();
-		map.getComponent().validate();
-		map.getComponent().invalidate();
+		map.validate();
+		map.invalidate();
 		if (!node.focused()) {
 			node.requestFocus();
 		}
@@ -95,8 +95,7 @@ class EditAction extends FreeplaneAction {
 		String useRichTextInNewLongNodes = "true";
 		if (!isHtmlNode && editDefinitivelyLong) {
 			final int showResult = new OptionalDontShowMeAgainDialog(Controller.getController()
-			    .getViewController().getJFrame(), getModeController().getMapController()
-			    .getSelectedView(), "edit.edit_rich_text", "edit.decision",
+			    .getViewController().getJFrame(), Controller.getController().getMapView().getSelected(), "edit.edit_rich_text", "edit.decision",
 			    new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
 			        ResourceController.RESOURCES_REMIND_USE_RICH_TEXT_IN_NEW_LONG_NODES),
 			    OptionalDontShowMeAgainDialog.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED).show()
@@ -189,7 +188,7 @@ class EditAction extends FreeplaneAction {
 				    if (isNewNode) {
 					    Controller.getController().getMapView().selectAsTheOnlyOneSelected(node);
 					    ((MModeController) getModeController()).undo();
-					    getModeController().getMapController().select(prevSelected);
+					    getModeController().getMapController().select(prevSelected.getModel());
 					    if (parentFolded) {
 						    getModeController().getMapController().setFolded(
 						        prevSelected.getModel(), true);

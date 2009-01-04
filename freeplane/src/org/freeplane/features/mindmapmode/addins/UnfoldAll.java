@@ -187,7 +187,7 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 			else {
 				final ModeController modeController = Controller.getModeController();
 				modeController.getMapController().select(
-				    Controller.getController().getMapView().getRoot());
+				    Controller.getController().getMap().getRootNode());
 				foldOneStage(rootNode);
 			}
 			return true;

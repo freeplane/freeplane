@@ -38,7 +38,6 @@ import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.core.undo.IUndoableActor;
-import org.freeplane.view.swing.map.NodeView;
 
 public abstract class PersistentNodeHook implements IExtension {
 	public class HookAction extends FreeplaneAction {
@@ -218,18 +217,18 @@ public abstract class PersistentNodeHook implements IExtension {
 
 	protected NodeModel[] getRootNode() {
 		final NodeModel[] nodes = new NodeModel[1];
-		nodes[0] = Controller.getController().getMapView().getModel().getRootNode();
+		nodes[0] = Controller.getController().getMap().getRootNode();
 		return nodes;
 	}
 
 	protected NodeModel[] getSelectedNodes() {
-		final List<NodeView> selection = Controller.getController().getMapView().getSelection();
+		final List<NodeModel> selection = Controller.getController().getSelection().getSelection();
 		final int size = selection.size();
 		final NodeModel[] nodes = new NodeModel[size];
-		final Iterator<NodeView> iterator = selection.iterator();
+		final Iterator<NodeModel> iterator = selection.iterator();
 		int i = 0;
 		while (iterator.hasNext()) {
-			nodes[i++] = iterator.next().getModel();
+			nodes[i++] = iterator.next();
 		}
 		return nodes;
 	}

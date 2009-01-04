@@ -21,6 +21,8 @@ package org.freeplane.features.mindmapmode;
 
 import java.awt.event.ActionEvent;
 
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.ui.FreeplaneAction;
 
 /** */
@@ -33,7 +35,7 @@ class SelectBranchAction extends FreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		getModeController().getMapController().selectBranch(
-		    getModeController().getMapController().getSelectedView(), true);
+		final IMapSelection selection = Controller.getController().getSelection();
+		selection.selectBranch(selection.getSelected(), true);
 	}
 }

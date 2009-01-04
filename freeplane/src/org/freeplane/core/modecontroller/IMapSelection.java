@@ -19,17 +19,36 @@
  */
 package org.freeplane.core.modecontroller;
 
+import java.util.List;
+
 import org.freeplane.core.model.NodeModel;
 
-/** */
-public interface INodeSelectionListener {
-	/**
-	 * Is sent when a node is deselected.
-	 */
-	void onDeselect(NodeModel node);
+/**
+ * @author Dimitry Polivaev
+ * 04.01.2009
+ */
+public interface IMapSelection {
+	public void centerNode(final NodeModel node);
 
-	/**
-	 * Is sent when a node is selected.
-	 */
-	void onSelect(NodeModel node);
+	public NodeModel getSelected();
+
+	public List<NodeModel> getSelection();
+
+	public List<NodeModel> getSortedSelection();
+
+	public boolean isSelected(final NodeModel node);
+
+	public void makeTheSelected(final NodeModel node);
+
+	public void selectAsTheOnlyOneSelected(final NodeModel node);
+
+	public void selectBranch(final NodeModel node, final boolean extend);
+
+	public void selectContinuous(final NodeModel node);
+
+	public void toggleSelected(final NodeModel node);
+
+	public void setSiblingMaxLevel(int nodeLevel);
+
+	public int size();
 }

@@ -23,6 +23,7 @@ import java.awt.Component;
 import java.awt.dnd.DragGestureListener;
 import java.awt.dnd.DropTargetListener;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.Set;
 
@@ -65,4 +66,6 @@ public interface IUserInputListenerFactory {
 	public void removeMouseWheelEventHandler(final IMouseWheelEventHandler handler);
 
 	void updateMapList();
+
+	public boolean extendSelection(MouseEvent e);
 }

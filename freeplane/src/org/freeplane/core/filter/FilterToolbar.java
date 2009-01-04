@@ -91,7 +91,7 @@ class FilterToolbar extends FreeMindToolBar {
 			resetFilter();
 			setMapFilter();
 			refreshMap();
-			DefaultFilter.selectVisibleNode(Controller.getController().getMapView());
+			DefaultFilter.selectVisibleNode();
 		}
 
 		private void filterChanged() {
@@ -101,7 +101,7 @@ class FilterToolbar extends FreeMindToolBar {
 			if (map != null) {
 				activeFilter.applyFilter();
 				refreshMap();
-				DefaultFilter.selectVisibleNode(Controller.getController().getMapView());
+				DefaultFilter.selectVisibleNode();
 			}
 		}
 

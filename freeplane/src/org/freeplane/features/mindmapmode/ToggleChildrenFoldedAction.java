@@ -22,10 +22,10 @@ package org.freeplane.features.mindmapmode;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.FreeplaneAction;
-import org.freeplane.view.swing.map.MapView;
 
 class ToggleChildrenFoldedAction extends FreeplaneAction {
 	public ToggleChildrenFoldedAction() {
@@ -37,8 +37,8 @@ class ToggleChildrenFoldedAction extends FreeplaneAction {
 		final NodeModel selected = modeController.getMapController().getSelectedNode();
 		((ToggleFoldedAction) getModeController().getAction("toggleFolded")).toggleFolded(selected
 		    .getModeController().getMapController().childrenUnfolded(selected));
-		final MapView mapView = Controller.getController().getMapView();
-		mapView.selectAsTheOnlyOneSelected(mapView.getNodeView(selected));
+		final IMapSelection selection = Controller.getController().getSelection();
+		selection.selectAsTheOnlyOneSelected(selected);
 		Controller.getController().getViewController().obtainFocusForSelected();
 	}
 }

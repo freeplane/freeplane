@@ -25,7 +25,6 @@ import org.freeplane.core.modecontroller.INodeSelectionListener;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.features.common.note.NoteModel;
 import org.freeplane.features.mindmapmode.note.MNoteController.NoteDocumentListener;
-import org.freeplane.view.swing.map.NodeView;
 
 final class NoteManager implements INodeSelectionListener {
 	public final static String EMPTY_EDITOR_STRING = "<html>\n  <head>\n\n  </head>\n  <body>\n    <p>\n      \n    </p>\n  </body>\n</html>\n";
@@ -41,15 +40,15 @@ final class NoteManager implements INodeSelectionListener {
 		this.noteController = noteController;
 	}
 
-	public void onDeselect(final NodeView node) {
+	public void onDeselect(final NodeModel node) {
 		noteController.getNoteViewerComponent().getDocument().removeDocumentListener(
 		    mNoteDocumentListener);
-		onWrite(node.getModel());
+		onWrite(node);
 		this.node = null;
 	}
 
-	public void onSelect(final NodeView nodeView) {
-		node = nodeView.getModel();
+	public void onSelect(final NodeModel nodeView) {
+		node = nodeView;
 		updateEditor();
 	}
 

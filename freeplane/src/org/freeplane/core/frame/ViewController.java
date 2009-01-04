@@ -132,8 +132,8 @@ abstract public class ViewController implements IMapViewChangeListener {
 		final ModeController oldModeController = Controller.getModeController();
 		ModeController newModeController = oldModeController;
 		if (newMapView != null) {
-			setViewportView(newMapView.getComponent());
-			if (getMapView().getSelected() == null) {
+			setViewportView(newMapView);
+			if (getMapView().getMapSelection().getSelected() == null) {
 				moveToRoot();
 			}
 			lastOpened.mapOpened(newMapView);

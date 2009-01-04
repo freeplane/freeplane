@@ -33,6 +33,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.model.EncryptionModel;
 import org.freeplane.core.model.MapModel;
@@ -217,9 +218,10 @@ public class MMapController extends MapController {
 			}
 		}
 		if (reader == null) {
-			final int showResult = new OptionalDontShowMeAgainDialog(Controller.getController()
-			    .getViewController().getJFrame(), getModeController().getMapController()
-			    .getSelectedView(), "really_convert_to_current_version", "confirmation",
+			final ViewController viewController = Controller.getController()
+			    .getViewController();
+			final int showResult = new OptionalDontShowMeAgainDialog(viewController.getJFrame(), 
+				viewController.getMapView().getSelected(), "really_convert_to_current_version", "confirmation",
 			    new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
 			        ResourceController.RESOURCES_CONVERT_TO_CURRENT_VERSION),
 			    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED).show().getResult();

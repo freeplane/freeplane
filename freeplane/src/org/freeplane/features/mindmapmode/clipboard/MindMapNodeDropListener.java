@@ -123,17 +123,17 @@ public class MindMapNodeDropListener implements DropTargetListener {
 			}
 			if (dropAction == DnDConstants.ACTION_LINK) {
 				int yesorno = JOptionPane.YES_OPTION;
-				if (Controller.getController().getMapView().getSelection().size() >= 5) {
+				if (Controller.getController().getSelection().size() >= 5) {
 					yesorno = JOptionPane.showConfirmDialog(Controller.getController()
 					    .getViewController().getContentPane(), mMindMapController
 					    .getText("lots_of_links_warning"), Integer.toString(Controller
-					    .getController().getMapView().getSelection().size())
+					    .getController().getSelection().size())
 					        + " links to the same node", JOptionPane.YES_NO_OPTION);
 				}
 				if (yesorno == JOptionPane.YES_OPTION) {
-					for (final Iterator<NodeView> it = Controller.getController().getMapView()
+					for (final Iterator<NodeModel> it = Controller.getController().getSelection()
 					    .getSelection().iterator(); it.hasNext();) {
-						final NodeModel selectedNodeModel = (it.next()).getModel();
+						final NodeModel selectedNodeModel = (it.next());
 						((MLinkController) LinkController.getController(mMindMapController))
 						    .addLink(selectedNodeModel, targetNodeModel);
 					}
@@ -165,13 +165,13 @@ public class MindMapNodeDropListener implements DropTargetListener {
 					} while (actualNode != null);
 					trans = ((MClipboardController) ClipboardController
 					    .getController(mMindMapController)).cut(Controller.getController()
-					    .getMapView().getSelectedNodesSortedByY());
+					    .getSelection().getSortedSelection());
 				}
 				else {
 					trans = ClipboardController.getController(mMindMapController).copy(
-					    Controller.getController().getMapView());
+					    Controller.getController().getSelection());
 				}
-				Controller.getController().getMapView().selectAsTheOnlyOneSelected(targetNodeView);
+				Controller.getController().getSelection().selectAsTheOnlyOneSelected(targetNode);
 				((MClipboardController) ClipboardController.getController(mMindMapController))
 				    .paste(trans, targetNode, mainView.dropAsSibling(dtde.getLocation().getX()),
 				        mainView.dropPosition(dtde.getLocation().getX()));
