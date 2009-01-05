@@ -84,24 +84,6 @@ class DoubleListModel extends AbstractListModel implements IListModel {
 		return first.contains(o) || second.contains(o);
 	}
 
-	@Override
-	protected void fireContentsChanged(final Object source, final int index0, final int index1) {
-		// TODO Auto-generated method stub
-		super.fireContentsChanged(source, index0, index1);
-	}
-
-	@Override
-	protected void fireIntervalAdded(final Object source, final int index0, final int index1) {
-		// TODO Auto-generated method stub
-		super.fireIntervalAdded(source, index0, index1);
-	}
-
-	@Override
-	protected void fireIntervalRemoved(final Object source, final int index0, final int index1) {
-		// TODO Auto-generated method stub
-		super.fireIntervalRemoved(source, index0, index1);
-	}
-
 	public Object getElementAt(final int index) {
 		final int firstSize = first.getSize();
 		return index < firstSize ? first.getElementAt(index) : second.getElementAt(index

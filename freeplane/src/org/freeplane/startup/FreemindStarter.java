@@ -46,7 +46,7 @@ import org.freeplane.features.mindmapmode.MModeControllerFactory;
 public class FreemindStarter {
 	public static final String LOAD_LAST_MAP = "load_last_map";
 
-	static void checkJavaVersion() {
+	void checkJavaVersion() {
 		System.out.println("Checking Java Version...");
 		if (Controller.JAVA_VERSION.compareTo("1.5.0") < 0) {
 			final String message = "Warning: FreeMind requires version Java 1.5.0 or higher (your version: "
@@ -61,15 +61,18 @@ public class FreemindStarter {
 	}
 
 	static public void main(final String[] args) {
-		FreemindStarter.checkJavaVersion();
 		final FreemindStarter starter = new FreemindStarter();
 		starter.run(args);
 	}
 
 	private Controller controller;
+	private IFreeMindSplash splash;
+	private IFeedBack feedBack;
+	private ApplicationViewController viewController;
 
 	public FreemindStarter() {
 		super();
+		checkJavaVersion();
 		final StringBuffer info = new StringBuffer();
 		info.append("freemind_version = ");
 		info.append(Controller.VERSION);
@@ -146,61 +149,8 @@ public class FreemindStarter {
 	 */
 	public void run(final String[] args) {
 		try {
-			final ApplicationResourceController resourceController = new ApplicationResourceController();
-			controller = new Controller(resourceController);
-			final IFreeMindSplash splash = new FreeMindSplashModern();
-			splash.setVisible(true);
-			final IFeedBack feedBack = splash.getFeedBack();
-			feedBack.setMaximumValue(9);
-			/* This is only for apple but does not harm for the others. */
-			System.setProperty("apple.laf.useScreenMenuBar", "true");
-			feedBack.increase("Freeplane.progress.updateLookAndFeel");
-			updateLookAndFeel();
-			feedBack.increase("Freeplane.progress.createController");
-			System.setSecurityManager(new FreeMindSecurityManager());
-			final ApplicationViewController viewController = new ApplicationViewController();
-			FilterController.install();
-			PrintController.install();
-			ModelessAttributeController.install();
-			HelpController.install();
-			MModeControllerFactory.createModeController();
-			BModeControllerFactory.createModeController();
-			FModeControllerFactory.createModeController();
-			feedBack.increase("Freeplane.progress.settingPreferences");
-			controller.getViewController().changeAntialias(
-			    Controller.getResourceController().getProperty(ViewController.RESOURCE_ANTIALIAS));
-			feedBack.increase("Freeplane.progress.propagateLookAndFeel");
-			SwingUtilities.updateComponentTreeUI(Controller.getController().getViewController()
-			    .getJFrame());
-			feedBack.increase("Freeplane.progress.buildScreen");
-			viewController.init();
-			try {
-				if (!EventQueue.isDispatchThread()) {
-					EventQueue.invokeAndWait(new Runnable() {
-						public void run() {
-						};
-					});
-				}
-			}
-			catch (final Exception e) {
-				org.freeplane.core.util.Tools.logException(e);
-			}
-			EventQueue.invokeLater(new Runnable() {
-				public void run() {
-					feedBack.increase("Freeplane.progress.createInitialMode");
-					controller.selectMode(Controller.getResourceController().getProperty(
-					    "initial_mode"));
-					feedBack.increase("Freeplane.progress.startCreateController");
-					final ModeController ctrl = createModeController(args);
-					feedBack.increase("Freeplane.progress.loadMaps");
-					loadMaps(args, ctrl);
-					feedBack.increase("Freeplane.progress.endStartup");
-					if (splash != null) {
-						splash.setVisible(false);
-					}
-					Controller.getController().getViewController().getJFrame().setVisible(true);
-				}
-			});
+			createController();
+			createFrame(args);
 		}
 		catch (final Exception e) {
 			e.printStackTrace();
@@ -209,6 +159,67 @@ public class FreemindStarter {
 			System.exit(1);
 		}
 	}
+
+	public void createFrame(final String[] args) {
+	    feedBack.increase("Freeplane.progress.settingPreferences");
+	    controller.getViewController().changeAntialias(
+	        Controller.getResourceController().getProperty(ViewController.RESOURCE_ANTIALIAS));
+	    feedBack.increase("Freeplane.progress.propagateLookAndFeel");
+	    SwingUtilities.updateComponentTreeUI(Controller.getController().getViewController()
+	        .getJFrame());
+	    feedBack.increase("Freeplane.progress.buildScreen");
+	    viewController.init();
+	    try {
+	    	if (!EventQueue.isDispatchThread()) {
+	    		EventQueue.invokeAndWait(new Runnable() {
+	    			public void run() {
+	    			};
+	    		});
+	    	}
+	    }
+	    catch (final Exception e) {
+	    	org.freeplane.core.util.Tools.logException(e);
+	    }
+	    EventQueue.invokeLater(new Runnable() {
+	    	public void run() {
+	    		feedBack.increase("Freeplane.progress.createInitialMode");
+	    		controller.selectMode(Controller.getResourceController().getProperty(
+	    		    "initial_mode"));
+	    		feedBack.increase("Freeplane.progress.startCreateController");
+	    		final ModeController ctrl = createModeController(args);
+	    		feedBack.increase("Freeplane.progress.loadMaps");
+	    		loadMaps(args, ctrl);
+	    		feedBack.increase("Freeplane.progress.endStartup");
+	    		if (splash != null) {
+	    			splash.setVisible(false);
+	    		}
+	    		Controller.getController().getViewController().getJFrame().setVisible(true);
+	    	}
+	    });
+    }
+
+	public void createController() {
+	    final ApplicationResourceController resourceController = new ApplicationResourceController();
+	    controller = new Controller(resourceController);
+	    splash = new FreeMindSplashModern();
+	    splash.setVisible(true);
+	    feedBack = splash.getFeedBack();
+	    feedBack.setMaximumValue(9);
+	    /* This is only for apple but does not harm for the others. */
+	    System.setProperty("apple.laf.useScreenMenuBar", "true");
+	    feedBack.increase("Freeplane.progress.updateLookAndFeel");
+	    updateLookAndFeel();
+	    feedBack.increase("Freeplane.progress.createController");
+	    System.setSecurityManager(new FreeMindSecurityManager());
+	    viewController = new ApplicationViewController();
+	    FilterController.install();
+	    PrintController.install();
+	    ModelessAttributeController.install();
+	    HelpController.install();
+	    MModeControllerFactory.createModeController();
+	    BModeControllerFactory.createModeController();
+	    FModeControllerFactory.createModeController();
+    }
 
 	/**
 	 *

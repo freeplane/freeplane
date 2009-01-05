@@ -59,7 +59,7 @@ public class MModeController extends ModeController {
 	static private UndoAction undo;
 
 	static public MModeController getMModeController() {
-		return (MModeController) Controller.getModeController();
+		return (MModeController) Controller.getController().getModeController(MODENAME);
 	}
 
 	private OptionPanelBuilder optionPanelBuilder;

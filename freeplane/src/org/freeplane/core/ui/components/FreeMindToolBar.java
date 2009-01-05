@@ -20,7 +20,6 @@
 package org.freeplane.core.ui.components;
 
 import java.awt.Component;
-import java.awt.Graphics;
 import java.awt.Insets;
 
 import javax.swing.AbstractButton;
@@ -123,9 +122,4 @@ public class FreeMindToolBar extends JToolBar {
 		abstractButton.setContentAreaFilled(false);
 	}
 
-	@Override
-	public void paint(final Graphics g) {
-		// TODO Auto-generated method stub
-		super.paint(g);
-	}
 }

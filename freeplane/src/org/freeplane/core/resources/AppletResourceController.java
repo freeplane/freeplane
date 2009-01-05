@@ -41,7 +41,6 @@ public class AppletResourceController extends ResourceController {
 	public AppletResourceController(final JApplet applet) {
 		super();
 		this.applet = applet;
-		// TODO Auto-generated constructor stub
 		final URL defaultPropsURL = getResource("freemind.properties");
 		try {
 			userProps = new Properties();

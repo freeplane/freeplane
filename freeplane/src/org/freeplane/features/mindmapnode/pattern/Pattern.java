@@ -116,7 +116,7 @@ public class Pattern implements Cloneable {
 	}
 
 	private void marschall(final IXMLElement xml, final String string,
-	                       final PatternProperty patternNodeBackgroundColor2) {
+	                       final PatternProperty pattern) {
 		// TODO Auto-generated method stub
 	}
 

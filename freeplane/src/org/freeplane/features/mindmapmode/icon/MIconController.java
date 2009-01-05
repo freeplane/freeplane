@@ -157,10 +157,6 @@ public class MIconController extends IconController {
 		}
 	}
 
-	public void enableActions(final boolean enabled) {
-		// TODO Auto-generated method stub
-	}
-
 	public Collection<Action> getIconActions() {
 		return Collections.unmodifiableCollection(iconActions);
 	}

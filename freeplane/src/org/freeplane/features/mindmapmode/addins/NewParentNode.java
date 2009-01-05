@@ -64,7 +64,6 @@ public class NewParentNode extends FreeplaneAction {
 	 * java.util.List)
 	 */
 	public void actionPerformed(final ActionEvent e) {
-		// TODO Auto-generated method stub
 		final MapView mapView = Controller.getController().getMapView();
 		final NodeModel focussed = getModeController().getMapController().getSelectedNode();
 		final List selecteds = getModeController().getMapController().getSelectedNodes();

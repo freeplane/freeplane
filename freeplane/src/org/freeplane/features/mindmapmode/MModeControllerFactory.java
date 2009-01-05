@@ -72,13 +72,6 @@ import org.freeplane.features.mindmapmode.note.MNoteController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 import org.freeplane.features.mindmapnode.pattern.MPatternController;
 import org.freeplane.features.ui.UserInputListenerFactory;
-
-import plugins.help.FreeplaneHelpStarter;
-import plugins.latex.LatexNodeHook;
-import plugins.script.ScriptingRegistration;
-import plugins.svg.ExportPdf;
-import plugins.svg.ExportSvg;
-
 /**
  * @author Dimitry Polivaev 24.11.2008
  */
@@ -125,12 +118,11 @@ public class MModeControllerFactory {
 		new NodeHistory(modeController);
 		menuBuilder.addAnnotatedAction(new ExportToOoWriter());
 		menuBuilder.addAnnotatedAction(new ImportMindmanagerFiles());
-		/* ******************* Plugins ********************* */
-		new LatexNodeHook(modeController);
-		new ScriptingRegistration(modeController);
-		menuBuilder.addAnnotatedAction(new FreeplaneHelpStarter());
-		menuBuilder.addAnnotatedAction(new ExportPdf());
-		menuBuilder.addAnnotatedAction(new ExportSvg());
+//		new LatexNodeHook(modeController);
+//		new ScriptingRegistration(modeController);
+//		menuBuilder.addAnnotatedAction(new FreeplaneHelpStarter());
+//		menuBuilder.addAnnotatedAction(new ExportPdf());
+//		menuBuilder.addAnnotatedAction(new ExportSvg());
 	}
 
 	private MModeController createModeControllerImpl() {

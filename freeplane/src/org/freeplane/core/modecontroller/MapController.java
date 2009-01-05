@@ -54,7 +54,6 @@ import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Tools;
-import org.freeplane.features.mindmapmode.MMapModel;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
 /**

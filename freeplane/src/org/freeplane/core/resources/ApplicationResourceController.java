@@ -146,7 +146,7 @@ public class ApplicationResourceController extends ResourceController {
 
 	@Override
 	public URL getResource(final String name) {
-		return ClassLoader.getSystemResource(name);
+		return getClass().getResource("/" + name);
 	}
 
 	private File getUserPreferencesFile(final Properties defaultPreferences) {
@@ -173,8 +173,8 @@ public class ApplicationResourceController extends ResourceController {
 	}
 
 	private Properties readDefaultPreferences() {
-		final String propsLoc = "freemind.properties";
-		final URL defaultPropsURL = ClassLoader.getSystemResource(propsLoc);
+		final String propsLoc = "/freemind.properties";
+		final URL defaultPropsURL = getClass().getResource(propsLoc);
 		final Properties props = new Properties();
 		try {
 			InputStream in = null;
