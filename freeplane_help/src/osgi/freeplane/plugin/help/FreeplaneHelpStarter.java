@@ -41,7 +41,7 @@ public class FreeplaneHelpStarter extends FreeplaneAction {
 	 *
 	 */
 	public void actionPerformed(final ActionEvent e) {
-		final String helpHS = "plugins/help/doc/freemind.hs";
+		final String helpHS = "osgi/freeplane/plugin/help/doc/freemind.hs";
 		try {
 			final ClassLoader classLoader = this.getClass().getClassLoader();
 			final URL hsURL = HelpSet.findHelpSet(classLoader, helpHS);
