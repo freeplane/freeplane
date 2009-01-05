@@ -3,7 +3,7 @@
 
 <helpset version="1.0">
  <title>
-FreeMind Help
+Freeplane Help
  </title>
  <maps>
   <homeID>
@@ -23,7 +23,7 @@ TOC
 javax.help.TOCView
   </type>
   <data>
-FreemindTOC.xml
+FreeplaneTOC.xml
   </data>
  </view>
  <view>
@@ -37,7 +37,7 @@ Index
 javax.help.IndexView
   </type>
   <data>
-FreemindIndex.xml
+FreeplaneIndex.xml
   </data>
  </view>
  <view>
