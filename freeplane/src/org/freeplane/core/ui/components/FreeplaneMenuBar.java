@@ -25,24 +25,24 @@ import javax.swing.JMenuBar;
 import javax.swing.KeyStroke;
 
 /**
- * This is the menu bar for FreeMind. Actions are defined in MenuListener.
+ * This is the menu bar for Freeplane. Actions are defined in MenuListener.
  * Moreover, the StructuredMenuHolder of all menus are hold here.
  */
-public class FreemindMenuBar extends JMenuBar {
-	public static final String EDIT_MENU = FreemindMenuBar.MENU_BAR_PREFIX + "/edit";
-	public static final String EXTRAS_MENU = FreemindMenuBar.MENU_BAR_PREFIX + "/extras";
-	public static final String FILE_MENU = FreemindMenuBar.MENU_BAR_PREFIX + "/file";
-	public static final String FORMAT_MENU = FreemindMenuBar.MENU_BAR_PREFIX + "/format";
-	public static final String HELP_MENU = FreemindMenuBar.MENU_BAR_PREFIX + "/help";
-	public static final String INSERT_MENU = FreemindMenuBar.MENU_BAR_PREFIX + "/insert";
+public class FreeplaneMenuBar extends JMenuBar {
+	public static final String EDIT_MENU = FreeplaneMenuBar.MENU_BAR_PREFIX + "/edit";
+	public static final String EXTRAS_MENU = FreeplaneMenuBar.MENU_BAR_PREFIX + "/extras";
+	public static final String FILE_MENU = FreeplaneMenuBar.MENU_BAR_PREFIX + "/file";
+	public static final String FORMAT_MENU = FreeplaneMenuBar.MENU_BAR_PREFIX + "/format";
+	public static final String HELP_MENU = FreeplaneMenuBar.MENU_BAR_PREFIX + "/help";
+	public static final String INSERT_MENU = FreeplaneMenuBar.MENU_BAR_PREFIX + "/insert";
 	public static final String MAP_POPUP_MENU = "/map_popup";
 	public static final String MENU_BAR_PREFIX = "/menu_bar";
-	public static final String MINDMAP_MENU = FreemindMenuBar.MENU_BAR_PREFIX + "/mindmaps";
-	public static final String MODES_MENU = FreemindMenuBar.MINDMAP_MENU;
-	public static final String NAVIGATE_MENU = FreemindMenuBar.MENU_BAR_PREFIX + "/navigate";
-	public static final String VIEW_MENU = FreemindMenuBar.MENU_BAR_PREFIX + "/view";
+	public static final String MINDMAP_MENU = FreeplaneMenuBar.MENU_BAR_PREFIX + "/mindmaps";
+	public static final String MODES_MENU = FreeplaneMenuBar.MINDMAP_MENU;
+	public static final String NAVIGATE_MENU = FreeplaneMenuBar.MENU_BAR_PREFIX + "/navigate";
+	public static final String VIEW_MENU = FreeplaneMenuBar.MENU_BAR_PREFIX + "/view";
 
-	public FreemindMenuBar() {
+	public FreeplaneMenuBar() {
 	}
 
 	// make method public

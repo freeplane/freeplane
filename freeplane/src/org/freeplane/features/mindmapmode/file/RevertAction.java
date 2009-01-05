@@ -59,15 +59,15 @@ class RevertAction extends FreeplaneAction {
 					mapController.newMap(UrlManager.fileToUrl(new File(this.getLocalFileName())));
 				}
 				else {
-					String filePrefix = Controller.getText("freemind_reverted");
+					String filePrefix = Controller.getText("freeplane_reverted");
 					if (this.getFilePrefix() != null) {
 						filePrefix = this.getFilePrefix();
 					}
 					final File tempFile = File
 					    .createTempFile(
 					        filePrefix,
-					        org.freeplane.features.mindmapmode.file.MFileManager.FREEMIND_FILE_EXTENSION,
-					        new File(Controller.getResourceController().getFreemindUserDirectory()));
+					        org.freeplane.features.mindmapmode.file.MFileManager.FREEPLANE_FILE_EXTENSION,
+					        new File(Controller.getResourceController().getFreeplaneUserDirectory()));
 					final FileWriter fw = new FileWriter(tempFile);
 					fw.write(this.getMap());
 					fw.close();
@@ -120,7 +120,7 @@ class RevertAction extends FreeplaneAction {
 			final File file = Controller.getController().getMap().getFile();
 			if (file == null) {
 				final ModeController controller = getModeController();
-				JOptionPane.showMessageDialog(Controller.getController().getMapView(), controller.getText("map_not_saved"), "FreeMind",
+				JOptionPane.showMessageDialog(Controller.getController().getMapView(), controller.getText("map_not_saved"), "Freeplane",
 				    JOptionPane.ERROR_MESSAGE);
 				return;
 			}
@@ -166,7 +166,7 @@ class RevertAction extends FreeplaneAction {
 
 	/*
 	 * (non-Javadoc)
-	 * @see freemind.controller.actions.ActorXml#getDoActionClass()
+	 * @see freeplane.controller.actions.ActorXml#getDoActionClass()
 	 */
 	public void openXmlInsteadOfMap(final String xmlFileContent) {
 		final RevertActionInstance doAction = createRevertXmlAction(xmlFileContent, null, null);

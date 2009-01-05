@@ -60,7 +60,7 @@ public class NewParentNode extends FreeplaneAction {
 
 	/*
 	 * (non-Javadoc)
-	 * @see freemind.extensions.NodeHook#invoke(freemind.modes.MindMapNode,
+	 * @see freeplane.extensions.NodeHook#invoke(freeplane.modes.MindMapNode,
 	 * java.util.List)
 	 */
 	public void actionPerformed(final ActionEvent e) {

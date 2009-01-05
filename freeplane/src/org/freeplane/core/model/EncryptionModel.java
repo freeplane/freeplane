@@ -226,7 +226,7 @@ public class EncryptionModel implements IExtension {
 
 	/*
 	 * (non-Javadoc)
-	 * @see freemind.modes.MindMapNode#getIcons()
+	 * @see freeplane.modes.MindMapNode#getIcons()
 	 */
 	public void updateIcon() {
 		if (isAccessible()) {

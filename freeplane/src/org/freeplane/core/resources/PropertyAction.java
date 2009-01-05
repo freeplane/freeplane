@@ -83,7 +83,7 @@ public class PropertyAction extends FreeplaneAction {
 		});
 		options.buildPanel(controls);
 		options.setProperties();
-		dialog.setTitle("Freemind Properties");
+		dialog.setTitle("Freeplane Properties");
 		dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		dialog.addWindowListener(new WindowAdapter() {
 			@Override

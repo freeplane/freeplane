@@ -23,6 +23,6 @@ package org.freeplane.core.resources.ui;
  * Is issued by the OptionPanel when the user accepted a change of its
  * preferences.
  */
-public interface IFreemindPropertyListener {
+public interface IFreeplanePropertyListener {
 	void propertyChanged(String propertyName, String newValue, String oldValue);
 }

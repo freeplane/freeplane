@@ -95,7 +95,7 @@ class SignedScriptHandler {
 		}
 	}
 
-	public static final String FREEMIND_SCRIPT_KEY_NAME = "FreeMindScriptKey";
+	public static final String FREEPLANE_SCRIPT_KEY_NAME = "FreeplaneScriptKey";
 	private static KeyStore mKeyStore = null;
 	private static final String SIGN_PREFIX = "//SIGN:";
 	/** This is for / /SIGN(keyname):signature */
@@ -137,8 +137,8 @@ class SignedScriptHandler {
 				final Signature instanceVerify = Signature.getInstance("SHA1withDSA");
 				if (content.mKeyName == null) {
 					/**
-					 * This is the FreeMind public key. keytool -v -rfc
-					 * -exportcert -alias freemindscriptkey
+					 * This is the Freeplane public key. keytool -v -rfc
+					 * -exportcert -alias freeplanescriptkey
 					 */
 					final String cer = "-----BEGIN CERTIFICATE-----\n"
 					        + "MIIDKDCCAuWgAwIBAgIESAY2ADALBgcqhkjOOAQDBQAwdzELMAkGA1UEBhMCREUxCzAJBgNVBAgT"
@@ -205,7 +205,7 @@ class SignedScriptHandler {
 		initializeKeystore(password);
 		try {
 			final Signature instance = Signature.getInstance("SHA1withDSA");
-			String keyName = SignedScriptHandler.FREEMIND_SCRIPT_KEY_NAME;
+			String keyName = SignedScriptHandler.FREEPLANE_SCRIPT_KEY_NAME;
 			final String propertyKeyName = Controller.getResourceController().getProperty(
 			    ResourceController.RESOURCES_SCRIPT_USER_KEY_NAME_FOR_SIGNING);
 			if (content.mKeyName != null) {

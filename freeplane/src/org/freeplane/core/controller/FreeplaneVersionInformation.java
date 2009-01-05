@@ -21,14 +21,14 @@ package org.freeplane.core.controller;
 
 import java.util.StringTokenizer;
 
-public class FreemindVersionInformation {
+public class FreeplaneVersionInformation {
 	public int mMaj = 0;
 	public int mMid = 0;
 	public int mMin = 0;
 	public int mNum = 0;
 	public String mType = "";
 
-	public FreemindVersionInformation(final int pMaj, final int pMid, final int pMin,
+	public FreeplaneVersionInformation(final int pMaj, final int pMid, final int pMin,
 	                                  final String pType, final int pNum) {
 		super();
 		mMaj = pMaj;
@@ -38,7 +38,7 @@ public class FreemindVersionInformation {
 		mNum = pNum;
 	}
 
-	public FreemindVersionInformation(final String pString) {
+	public FreeplaneVersionInformation(final String pString) {
 		final StringTokenizer t = new StringTokenizer(pString, ". ", false);
 		final String[] info = new String[t.countTokens()];
 		int i = 0;
@@ -75,6 +75,18 @@ public class FreemindVersionInformation {
 			buf.append(' ');
 			buf.append(mNum);
 		}
+		return buf.toString();
+	}
+	
+	public String toVersionNumberString() {
+		final StringBuffer buf = new StringBuffer();
+		buf.append(mMaj);
+		buf.append('.');
+		buf.append(mMid);
+		buf.append('.');
+		buf.append(mMin);
+		buf.append(':');
+		buf.append(mNum);
 		return buf.toString();
 	}
 }

@@ -50,7 +50,7 @@ public class MAttributeController extends AttributeController {
 		/*
 		 * (non-Javadoc)
 		 * @see
-		 * freemind.modes.attributes.AttributeRegistry.Visitor#visit(freemind
+		 * freeplane.modes.attributes.AttributeRegistry.Visitor#visit(freeplane
 		 * .modes.attributes.ConcreteAttributeTableModel)
 		 */
 		public void visit(final NodeAttributeTableModel model) {
@@ -76,7 +76,7 @@ public class MAttributeController extends AttributeController {
 		/*
 		 * (non-Javadoc)
 		 * @see
-		 * freemind.modes.attributes.AttributeRegistry.Visitor#visit(freemind
+		 * freeplane.modes.attributes.AttributeRegistry.Visitor#visit(freeplane
 		 * .modes.attributes.ConcreteAttributeTableModel)
 		 */
 		public void visit(final NodeAttributeTableModel model) {
@@ -103,7 +103,7 @@ public class MAttributeController extends AttributeController {
 		/*
 		 * (non-Javadoc)
 		 * @see
-		 * freemind.modes.attributes.AttributeRegistry.Visitor#visit(freemind
+		 * freeplane.modes.attributes.AttributeRegistry.Visitor#visit(freeplane
 		 * .modes.attributes.ConcreteAttributeTableModel)
 		 */
 		public void visit(final NodeAttributeTableModel model) {
@@ -133,7 +133,7 @@ public class MAttributeController extends AttributeController {
 		/*
 		 * (non-Javadoc)
 		 * @see
-		 * freemind.modes.attributes.AttributeRegistry.Visitor#visit(freemind
+		 * freeplane.modes.attributes.AttributeRegistry.Visitor#visit(freeplane
 		 * .modes.attributes.ConcreteAttributeTableModel)
 		 */
 		public void visit(final NodeAttributeTableModel model) {

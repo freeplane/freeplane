@@ -379,7 +379,7 @@ public class MapController {
 	/*
 	 * (non-Javadoc)
 	 * @see
-	 * freemind.modes.MindMap#insertNodeInto(javax.swing.tree.MutableTreeNode,
+	 * freeplane.modes.MindMap#insertNodeInto(javax.swing.tree.MutableTreeNode,
 	 * javax.swing.tree.MutableTreeNode)
 	 */
 	public void insertNodeIntoWithoutUndo(final NodeModel newChild, final NodeModel parent) {
@@ -444,7 +444,7 @@ public class MapController {
 			final String extension = UrlManager.getExtension(absolute.toString());
 			if ((extension != null)
 			        && extension
-			            .equals(org.freeplane.features.mindmapmode.file.MFileManager.FREEMIND_FILE_EXTENSION_WITHOUT_DOT)) {
+			            .equals(org.freeplane.features.mindmapmode.file.MFileManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
 				final MapViewManager mapViewManager = Controller.getController()
 				    .getMapViewManager();
 				/*

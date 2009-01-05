@@ -31,7 +31,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 
-import org.freeplane.core.ui.components.FreeMindToolBar;
+import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.view.swing.map.MapView;
 
@@ -46,7 +46,7 @@ public class PreviewDialog extends JDialog implements ActionListener {
 		final Preview preview = new Preview(view, 1);
 		final JScrollPane scrollPane = new JScrollPane(preview);
 		getContentPane().add(scrollPane, "Center");
-		final JToolBar toolbar = new FreeMindToolBar();
+		final JToolBar toolbar = new FreeplaneToolBar();
 		getContentPane().add(toolbar, "North");
 		pageNumber = new JLabel("- 1 -");
 		final JButton button = getButton("Back24.gif", new BrowseAction(preview, pageNumber, -1));

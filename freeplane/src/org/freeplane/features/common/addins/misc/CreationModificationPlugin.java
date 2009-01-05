@@ -53,7 +53,7 @@ public class CreationModificationPlugin extends PersistentNodeHook implements IN
 
 	/*
 	 * (non-Javadoc)
-	 * @see freemind.extensions.NodeHook#invoke(freemind.modes.MindMapNode)
+	 * @see freeplane.extensions.NodeHook#invoke(freeplane.modes.MindMapNode)
 	 */
 	@Override
 	public void add(final NodeModel node, final IExtension extension) {

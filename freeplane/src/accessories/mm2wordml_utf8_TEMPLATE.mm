@@ -1,5 +1,5 @@
 <map version="0.9.0">
-<!-- To view this file, download free mind mapping software FreeMind from http://freemind.sourceforge.net -->
+<!-- To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
 <node CREATED="1216974513042" ID="ID_833600903" MODIFIED="1216991733257" TEXT="Example of map exportable to Word">
 <richcontent TYPE="NOTE"><html>
   <head>
@@ -90,7 +90,7 @@
 <node CREATED="1216809914482" ID="ID_1308741003" MODIFIED="1216991809773" POSITION="right" TEXT="Chapter 3 - how to export a mindmap to MS Word ?">
 <node CREATED="1216809917636" ID="ID_199484608" MODIFIED="1216991907919" TEXT="Chapter 3.1 - create a map following the notes and hints expressed in this example map"/>
 <node CREATED="1216809921221" ID="ID_1681718272" MODIFIED="1216991918173" TEXT="Chapter 3.2 - export the map using the File -&gt; Export -&gt; Using XSLT... menu">
-<node CREATED="1216826868748" ID="ID_1660904657" MODIFIED="1216991964598" TEXT="Chapter 3.2.1 - select the mm2wordml_utf8.xsl XSL file from the accessories directory in the FreeMind base directory."/>
+<node CREATED="1216826868748" ID="ID_1660904657" MODIFIED="1216991964598" TEXT="Chapter 3.2.1 - select the mm2wordml_utf8.xsl XSL file from the accessories directory in the Freeplane base directory."/>
 <node CREATED="1216826924521" ID="ID_1561412985" MODIFIED="1216991975934" TEXT="Chapter 3.2.2 - export to a file with a name ending in .doc (or .xml)"/>
 </node>
 <node CREATED="1216826940554" ID="ID_769680777" MODIFIED="1216991935017" TEXT="Chapter 3.3 - just double click in the Explorer on the newly created file and Microsoft Office Word should open the file properly.">

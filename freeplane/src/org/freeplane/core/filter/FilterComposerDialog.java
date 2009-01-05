@@ -380,7 +380,7 @@ public class FilterComposerDialog extends JDialog {
 			}
 			final String extension = UrlManager.getExtension(f.getName());
 			if (extension != null) {
-				if (extension.equals(FilterController.FREEMIND_FILTER_EXTENSION_WITHOUT_DOT)) {
+				if (extension.equals(FilterController.FREEPLANE_FILTER_EXTENSION_WITHOUT_DOT)) {
 					return true;
 				}
 				else {
@@ -407,7 +407,7 @@ public class FilterComposerDialog extends JDialog {
 			try {
 				final File f = chooser.getSelectedFile();
 				String canonicalPath = f.getCanonicalPath();
-				final String suffix = '.' + FilterController.FREEMIND_FILTER_EXTENSION_WITHOUT_DOT;
+				final String suffix = '.' + FilterController.FREEPLANE_FILTER_EXTENSION_WITHOUT_DOT;
 				if (!canonicalPath.endsWith(suffix)) {
 					canonicalPath = canonicalPath + suffix;
 				}

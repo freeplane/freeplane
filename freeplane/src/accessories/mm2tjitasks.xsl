@@ -15,7 +15,7 @@
         </xsl:variable>
         <xsl:choose>
             <xsl:when test="$depth=0">
-                <xsl:text># FreeMind map "</xsl:text><xsl:value-of select="@TEXT"/><xsl:text>"&#xA;</xsl:text>
+                <xsl:text># Freeplane map "</xsl:text><xsl:value-of select="@TEXT"/><xsl:text>"&#xA;</xsl:text>
                 <xsl:apply-templates select="node"/>
             </xsl:when>
             <xsl:otherwise>

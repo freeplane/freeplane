@@ -56,7 +56,7 @@ public class MFileManager extends UrlManager {
 			final String extension = UrlManager.getExtension(f.getName());
 			if (extension != null) {
 				if (extension
-				    .equals(org.freeplane.features.mindmapmode.file.MFileManager.FREEMIND_FILE_EXTENSION_WITHOUT_DOT)) {
+				    .equals(org.freeplane.features.mindmapmode.file.MFileManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
 					return true;
 				}
 				else {
@@ -72,9 +72,9 @@ public class MFileManager extends UrlManager {
 		}
 	}
 
-	public static final String FREEMIND_FILE_EXTENSION = "."
-	        + MFileManager.FREEMIND_FILE_EXTENSION_WITHOUT_DOT;
-	public static final String FREEMIND_FILE_EXTENSION_WITHOUT_DOT = "mm";
+	public static final String FREEPLANE_FILE_EXTENSION = "."
+	        + MFileManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT;
+	public static final String FREEPLANE_FILE_EXTENSION_WITHOUT_DOT = "mm";
 	FileFilter filefilter = new MindMapFilter();
 
 	/**
@@ -143,7 +143,7 @@ public class MFileManager extends UrlManager {
 		if (map.getFile() == null) {
 			JOptionPane.showMessageDialog(Controller.getController().getViewController()
 			    .getContentPane(), getModeController().getText("not_saved_for_link_error"),
-			    "FreeMind", JOptionPane.WARNING_MESSAGE);
+			    "Freeplane", JOptionPane.WARNING_MESSAGE);
 			return null;
 		}
 		if (getLastCurrentDir() != null) {
@@ -270,7 +270,7 @@ public class MFileManager extends UrlManager {
 			chooser
 			    .setSelectedFile(new File(
 			        getFileNameProposal(map)
-			                + org.freeplane.features.mindmapmode.file.MFileManager.FREEMIND_FILE_EXTENSION));
+			                + org.freeplane.features.mindmapmode.file.MFileManager.FREEPLANE_FILE_EXTENSION));
 		}
 		chooser.setDialogTitle(getModeController().getText("save_as"));
 		final int returnVal = chooser.showSaveDialog(Controller.getController().getMapView());
@@ -281,14 +281,14 @@ public class MFileManager extends UrlManager {
 		setLastCurrentDir(f.getParentFile());
 		final String ext = UrlManager.getExtension(f.getName());
 		if (!ext
-		    .equals(org.freeplane.features.mindmapmode.file.MFileManager.FREEMIND_FILE_EXTENSION_WITHOUT_DOT)) {
+		    .equals(org.freeplane.features.mindmapmode.file.MFileManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
 			f = new File(f.getParent(), f.getName()
-			        + org.freeplane.features.mindmapmode.file.MFileManager.FREEMIND_FILE_EXTENSION);
+			        + org.freeplane.features.mindmapmode.file.MFileManager.FREEPLANE_FILE_EXTENSION);
 		}
 		if (f.exists()) {
 			final int overwriteMap = JOptionPane.showConfirmDialog(Controller.getController()
             .getMapView(), getModeController().getText("map_already_exists"),
-			    "FreeMind", JOptionPane.YES_NO_OPTION);
+			    "Freeplane", JOptionPane.YES_NO_OPTION);
 			if (overwriteMap != JOptionPane.YES_OPTION) {
 				return false;
 			}

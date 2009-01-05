@@ -24,7 +24,7 @@ import javax.swing.JPopupMenu;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.IPropertyGetter;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.ui.components.FreeMindToolBar;
+import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.edge.EdgeController;
@@ -68,7 +68,7 @@ public class FModeControllerFactory {
 		modeController.addAction("center", new CenterAction());
 		modeController.addAction("openPath", new OpenPathAction());
 		userInputListenerFactory.setNodePopupMenu(new JPopupMenu());
-		userInputListenerFactory.setMainToolBar(new FreeMindToolBar());
+		userInputListenerFactory.setMainToolBar(new FreeplaneToolBar());
 		modeController.updateMenus("org/freeplane/features/filemode/menu.xml");
 		return modeController;
 	}

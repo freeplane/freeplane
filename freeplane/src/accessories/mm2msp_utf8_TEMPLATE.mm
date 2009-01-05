@@ -1,5 +1,5 @@
 <map version="0.9.0">
-<!-- To view this file, download free mind mapping software FreeMind from http://freemind.sourceforge.net -->
+<!-- To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
 <node CREATED="1216809870908" ID="ID_1507004962" MODIFIED="1216826585940" TEXT="Example of project plan ready for export&#xa;using XSLT export with mm2msp_utf8.xsl">
 <richcontent TYPE="NOTE"><html>
   <head>
@@ -757,7 +757,7 @@
 <node CREATED="1216809914482" ID="ID_1308741003" MODIFIED="1216826803952" POSITION="left" TEXT="task 2 - how to export a mindmap to MS Project ?">
 <node CREATED="1216809917636" ID="ID_199484608" MODIFIED="1216826829891" TEXT="task 2.1 - create a map following the notes and hints expressed in this example map"/>
 <node CREATED="1216809921221" ID="ID_1681718272" MODIFIED="1216826859865" TEXT="task 2.2 - export the map using the File -&gt; Export -&gt; Using XSLT... menu">
-<node CREATED="1216826868748" ID="ID_1660904657" MODIFIED="1216826921937" TEXT="task 2.2.1 - select the mm2msp_utf8.xsl XSL file from the accessories directory in the FreeMind base directory."/>
+<node CREATED="1216826868748" ID="ID_1660904657" MODIFIED="1216826921937" TEXT="task 2.2.1 - select the mm2msp_utf8.xsl XSL file from the accessories directory in the Freeplane base directory."/>
 <node CREATED="1216826924521" ID="ID_1561412985" MODIFIED="1216827030567" TEXT="task 2.2.2 - export to a file with a name ending in .xml"/>
 </node>
 <node CREATED="1216826940554" ID="ID_769680777" MODIFIED="1216827227358" TEXT="task 2.3 - open Microsoft Office Project">

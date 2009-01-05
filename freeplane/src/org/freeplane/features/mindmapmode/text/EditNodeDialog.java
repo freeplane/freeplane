@@ -202,7 +202,7 @@ public class EditNodeDialog extends EditNodeBase {
 
 		/*
 		 * (non-Javadoc)
-		 * @see freemind.view.mindmapview.EditNodeBase.Dialog#cancel()
+		 * @see freeplane.view.mindmapview.EditNodeBase.Dialog#cancel()
 		 */
 		@Override
 		protected void cancel() {
@@ -222,7 +222,7 @@ public class EditNodeDialog extends EditNodeBase {
 
 		/*
 		 * (non-Javadoc)
-		 * @see freemind.view.mindmapview.EditNodeBase.Dialog#isChanged()
+		 * @see freeplane.view.mindmapview.EditNodeBase.Dialog#isChanged()
 		 */
 		@Override
 		protected boolean isChanged() {
@@ -237,7 +237,7 @@ public class EditNodeDialog extends EditNodeBase {
 
 		/*
 		 * (non-Javadoc)
-		 * @see freemind.view.mindmapview.EditNodeBase.Dialog#split()
+		 * @see freeplane.view.mindmapview.EditNodeBase.Dialog#split()
 		 */
 		@Override
 		protected void split() {
@@ -247,7 +247,7 @@ public class EditNodeDialog extends EditNodeBase {
 
 		/*
 		 * (non-Javadoc)
-		 * @see freemind.view.mindmapview.EditNodeBase.Dialog#submit()
+		 * @see freeplane.view.mindmapview.EditNodeBase.Dialog#submit()
 		 */
 		@Override
 		protected void submit() {

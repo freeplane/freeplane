@@ -21,7 +21,7 @@ package org.freeplane.startup;
 
 import javax.swing.ImageIcon;
 
-public interface IFreeMindSplash {
+public interface IFreeplaneSplash {
 	public abstract void close();
 
 	public abstract IFeedBack getFeedBack();

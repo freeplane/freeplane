@@ -13,17 +13,17 @@
 	<property name="classpath" value="lib/commons-lang-2.0.jar:lib/forms-1.0.5.jar:lib/SimplyHTML/SimplyHTML.jar"/>
 
 	<target name="build">
-		<echo>FreeMind Version = ${ver}.</echo>
+		<echo>Freeplane Version = ${ver}.</echo>
 		<mkdir dir="${build}" />
 		<javac srcdir="${src}" destdir="${build}" classpath="${classpath}" debug="${debug}" 
 			source="${java_source_version}" target="${java_target_version}">
 			<exclude name="plugins/**" />
 		</javac>
 		<!-- Starter should work with java 1.1, too as it checks the java version.-->
-		<delete failonerror="false" file="${build}/org/freeplane/startup/FreemindStarter.class">
+		<delete failonerror="false" file="${build}/org/freeplane/startup/FreeplaneStarter.class">
 		</delete>
 		<javac verbose = "yes" srcdir="${src}" destdir="${build}" classpath="${classpath}" debug="${debug}" source="1.3" target="1.1">
-			<include name="org/freeplane/startup/FreemindStarter.java" />
+			<include name="org/freeplane/startup/FreeplaneStarter.java" />
 		</javac>
 	</target>
 
@@ -39,7 +39,7 @@
 			<fileset dir="${src}">
 				<include name="images/*"/>
 				<include name="images/icons/*.png"/>
-				<include name="freemind.properties"/>
+				<include name="freeplane.properties"/>
 				<include name="**/*.xml"/>
 				<include name="**/*.xslt"/>
 				<include name="Resources*"/>

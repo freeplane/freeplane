@@ -50,7 +50,7 @@ class EditAction extends FreeplaneAction {
 	/*
 	 * (non-Javadoc)
 	 * @see
-	 * freemind.controller.actions.ActorXml#act(freemind.controller.actions.
+	 * freeplane.controller.actions.ActorXml#act(freeplane.controller.actions.
 	 * generated.instance.XmlAction)
 	 */
 	public void actionPerformed(final ActionEvent arg0) {

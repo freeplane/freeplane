@@ -98,7 +98,7 @@ public class NodeModel implements MutableTreeNode {
 	/*
 	 * (non-Javadoc)
 	 * @see
-	 * freemind.modes.MindMapNode#acceptViewVisitor(freemind.view.mindmapview
+	 * freeplane.modes.MindMapNode#acceptViewVisitor(freeplane.view.mindmapview
 	 * .INodeViewVisitor)
 	 */
 	public void acceptViewVisitor(final INodeViewVisitor visitor) {

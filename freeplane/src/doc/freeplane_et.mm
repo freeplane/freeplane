@@ -1,5 +1,5 @@
 <map version="0.9.0">
-<!-- To view this file, download free mind mapping software FreeMind from http://freemind.sourceforge.net -->
+<!-- To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
 <node COLOR="#993300" CREATED="1124560950701" ID="ID_251547339" MODIFIED="1216187545281">
 <richcontent TYPE="NODE"><html>
   <head>
@@ -7,15 +7,15 @@
   </head>
   <body width="">
     <p align="center">
-      FreeMind<br /><small>- vabade m&#245;tete kaardistamise tarkvara -</small>&#160;
+      Freeplane<br /><small>- vabade m&#245;tete kaardistamise tarkvara -</small>&#160;
     </p>
   </body>
 </html></richcontent>
 <font BOLD="true" NAME="Dialog" SIZE="18"/>
-<node CREATED="1124560950701" ID="ID_228039332" LINK="http://freemind.sourceforge.net/" MODIFIED="1216250158741" POSITION="left" TEXT="FreeMind-i koduleht">
+<node CREATED="1124560950701" ID="ID_228039332" LINK="http://freeplane.sourceforge.net/" MODIFIED="1216250158741" POSITION="left" TEXT="Freeplane-i koduleht">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node COLOR="#006699" CREATED="1124560950701" FOLDED="true" ID="_Freemind_Link_1091417446" MODIFIED="1216258652672" POSITION="left" TEXT="Kiirklahvikombinatsioonid">
+<node COLOR="#006699" CREATED="1124560950701" FOLDED="true" ID="_Freeplane_Link_1091417446" MODIFIED="1216258652672" POSITION="left" TEXT="Kiirklahvikombinatsioonid">
 <font NAME="SansSerif" SIZE="12"/>
 <node CREATED="1124560950701" ID="ID_908986002" MODIFIED="1216258628092">
 <richcontent TYPE="NODE"><html>
@@ -262,60 +262,60 @@
 <font NAME="Courier New" SIZE="12"/>
 </node>
 </node>
-<node COLOR="#006633" CREATED="1124560950701" FOLDED="true" ID="_Freemind_Link_904501221" MODIFIED="1216201160402" POSITION="left" TEXT="Paigaldamine">
+<node COLOR="#006633" CREATED="1124560950701" FOLDED="true" ID="_Freeplane_Link_904501221" MODIFIED="1216201160402" POSITION="left" TEXT="Paigaldamine">
 <font NAME="SansSerif" SIZE="12"/>
-<node COLOR="#006699" CREATED="1124560950701" FOLDED="true" ID="_Freemind_Link_1911559485" MODIFIED="1216200835990" TEXT="Viited">
+<node COLOR="#006699" CREATED="1124560950701" FOLDED="true" ID="_Freeplane_Link_1911559485" MODIFIED="1216200835990" TEXT="Viited">
 <font NAME="SansSerif" SIZE="12"/>
 <node CREATED="1124560950701" ID="ID_568439776" LINK="http://java.sun.com/javase/downloads/index.jsp" MODIFIED="1216187545266" TEXT="Laadi alla Java Runtime Environment (v&#xe4;hemalt JRE1.4 v&#xf5;i uuem)">
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node CREATED="1124560950701" ID="_Freemind_Link_1612101865" LINK="http://freemind.sourceforge.net/wiki/index.php/Download#Download" MODIFIED="1216187545266" TEXT="Laadi alla programm FreeMind">
+<node CREATED="1124560950701" ID="_Freeplane_Link_1612101865" LINK="http://freeplane.sourceforge.net/wiki/index.php/Download#Download" MODIFIED="1216187545266" TEXT="Laadi alla programm Freeplane">
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node CREATED="1124560950701" ID="_Freemind_Link_139664576" MODIFIED="1216187545266">
+<node CREATED="1124560950701" ID="_Freeplane_Link_139664576" MODIFIED="1216187545266">
 <richcontent TYPE="NODE"><html>
   <head>
     
   </head>
   <body>
     <p>
-      FreeMind-i paigaldamiseks MS Windows-is paigalda esmalt Sun-i Java Runtime Environment (JRE) ning seej&#228;rel FreeMind kasutades &quot;installer&quot; versiooni.
+      Freeplane-i paigaldamiseks MS Windows-is paigalda esmalt Sun-i Java Runtime Environment (JRE) ning seej&#228;rel Freeplane kasutades &quot;installer&quot; versiooni.
     </p>
   </body>
 </html></richcontent>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node CREATED="1124560950701" ID="_Freemind_Link_1380352758" MODIFIED="1216187545266">
+<node CREATED="1124560950701" ID="_Freeplane_Link_1380352758" MODIFIED="1216187545266">
 <richcontent TYPE="NODE"><html>
   <head>
     
   </head>
   <body>
     <p>
-      FreeMind-i paigaldamiseks Linuxis, paigalda esmalt Sun-i Java Runtime Environment (JRE) ning siis peale lahtipakkimist k&#228;ivita FreeMind failist freemind.sh
+      Freeplane-i paigaldamiseks Linuxis, paigalda esmalt Sun-i Java Runtime Environment (JRE) ning siis peale lahtipakkimist k&#228;ivita Freeplane failist freeplane.sh
     </p>
   </body>
 </html></richcontent>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node CREATED="1124560950701" ID="_Freemind_Link_1808511462" MODIFIED="1216187545266">
+<node CREATED="1124560950701" ID="_Freeplane_Link_1808511462" MODIFIED="1216187545266">
 <richcontent TYPE="NODE"><html>
   <head>
     
   </head>
   <body>
     <p>
-      MS Windows-is ning Mac OS X-s v&#245;ib FreeMind-i k&#228;ivitamiseks teha ka topeltkl&#245;ps failil freemind.jar, mis asub kataloogis lib.
+      MS Windows-is ning Mac OS X-s v&#245;ib Freeplane-i k&#228;ivitamiseks teha ka topeltkl&#245;ps failil freeplane.jar, mis asub kataloogis lib.
     </p>
   </body>
 </html></richcontent>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node COLOR="#407000" CREATED="1124560950701" FOLDED="true" ID="_Freemind_Link_353522063" MODIFIED="1216201160403" POSITION="left" TEXT="Failide lehitsemine arvutist">
+<node COLOR="#407000" CREATED="1124560950701" FOLDED="true" ID="_Freeplane_Link_353522063" MODIFIED="1216201160403" POSITION="left" TEXT="Failide lehitsemine arvutist">
 <font NAME="SansSerif" SIZE="12"/>
 <node CREATED="1124560950701" ID="ID_649040499" MODIFIED="1216187545265" TEXT="Failide lehitsemiseks oma arvutist l&#xfc;litu &#xfc;mber failire&#x17e;iimile, valides rippmen&#xfc;&#xfc;st Kaardid &gt; Fail.">
 <font NAME="SansSerif" SIZE="12"/>
@@ -329,7 +329,7 @@
 <node CREATED="1124560950701" ID="ID_1505912742" MODIFIED="1216187545265" TEXT="Faili vaatamiseks, muutmiseks v&#xf5;i k&#xe4;ivitamiseks j&#xe4;rgi s&#xf5;lmes olevat viidet.">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node CREATED="1124560950701" ID="_Freemind_Link_279880616" MODIFIED="1216187545265">
+<node CREATED="1124560950701" ID="_Freeplane_Link_279880616" MODIFIED="1216187545265">
 <richcontent TYPE="NODE"><html>
   <head>
     
@@ -343,7 +343,7 @@
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node COLOR="#407000" CREATED="1124560950701" FOLDED="true" ID="_Freemind_Link_1530607683" MODIFIED="1216250753465" POSITION="left" TEXT="M&#xf5;ttekaartide lehitsemine">
+<node COLOR="#407000" CREATED="1124560950701" FOLDED="true" ID="_Freeplane_Link_1530607683" MODIFIED="1216250753465" POSITION="left" TEXT="M&#xf5;ttekaartide lehitsemine">
 <font NAME="SansSerif" SIZE="12"/>
 <node CREATED="1124560950701" ID="ID_904930134" MODIFIED="1216187545264">
 <richcontent TYPE="NODE"><html>
@@ -352,7 +352,7 @@
   </head>
   <body>
     <p>
-      M&#245;ttekaartide lehitsemiseks (mitte muutmiseks) l&#252;litu lehitsemise re&#382;iimi, valides rippmen&#252;&#252;st Kaardid &gt; Lehitse. Kuniks ei kasutata FreeMind-i appletit, on see funktsioon kasutu.
+      M&#245;ttekaartide lehitsemiseks (mitte muutmiseks) l&#252;litu lehitsemise re&#382;iimi, valides rippmen&#252;&#252;st Kaardid &gt; Lehitse. Kuniks ei kasutata Freeplane-i appletit, on see funktsioon kasutu.
     </p>
   </body>
 </html></richcontent>
@@ -365,49 +365,49 @@
   </head>
   <body>
     <p>
-      Eraldi lehitsemiste re&#382;iimide omamine on tehniline k&#252;simus. Lehitsemine on ainus asi, mida FreeMind-i appletis kodulehel teha saab. &#220;ldiselt ei kasutata lehitsemise re&#382;iimi FreeMind-is.
+      Eraldi lehitsemiste re&#382;iimide omamine on tehniline k&#252;simus. Lehitsemine on ainus asi, mida Freeplane-i appletis kodulehel teha saab. &#220;ldiselt ei kasutata lehitsemise re&#382;iimi Freeplane-is.
     </p>
   </body>
 </html></richcontent>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node COLOR="#407000" CREATED="1124560950701" FOLDED="true" ID="_Freemind_Link_1136088046" MODIFIED="1216201160404" POSITION="left" TEXT="Erinevad re&#x17e;iimid">
+<node COLOR="#407000" CREATED="1124560950701" FOLDED="true" ID="_Freeplane_Link_1136088046" MODIFIED="1216201160404" POSITION="left" TEXT="Erinevad re&#x17e;iimid">
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
-<node CREATED="1124560950701" ID="_Freemind_Link_1713057526" MODIFIED="1216187545264">
+<node CREATED="1124560950701" ID="_Freeplane_Link_1713057526" MODIFIED="1216187545264">
 <richcontent TYPE="NODE"><html>
   <head>
     
   </head>
   <body>
     <p>
-      Kuigi FreeMind on algselt m&#245;eldud m&#245;ttekaartide redigeerimiseks, on see siiski loodud ka arvestades teisi v&#245;imalikke andmeallikaid. Spetsiifilise andmeallika k&#228;ttesaadavaks tegemisel peab programmeerija tekitama niinimetatud re&#382;iimi selle konkreetse andmeallika jaoks. Faili re&#382;iim on &#252;heks selliseks n&#228;iteks. Me ei tea, et &#252;htki teist re&#382;iimi oleks v&#228;lja arendatud. Ei ole p&#228;ris selge, kas keegi seda &#252;ldse kasutab kuid ta on siin olemas uurimiseks kui keegi seda soovib.
+      Kuigi Freeplane on algselt m&#245;eldud m&#245;ttekaartide redigeerimiseks, on see siiski loodud ka arvestades teisi v&#245;imalikke andmeallikaid. Spetsiifilise andmeallika k&#228;ttesaadavaks tegemisel peab programmeerija tekitama niinimetatud re&#382;iimi selle konkreetse andmeallika jaoks. Faili re&#382;iim on &#252;heks selliseks n&#228;iteks. Me ei tea, et &#252;htki teist re&#382;iimi oleks v&#228;lja arendatud. Ei ole p&#228;ris selge, kas keegi seda &#252;ldse kasutab kuid ta on siin olemas uurimiseks kui keegi seda soovib.
     </p>
   </body>
 </html></richcontent>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node CREATED="1124560950701" ID="_Freemind_Link_700085988" MODIFIED="1216187545264">
+<node CREATED="1124560950701" ID="_Freeplane_Link_700085988" MODIFIED="1216187545264">
 <richcontent TYPE="NODE"><html>
   <head>
     
   </head>
   <body>
     <p>
-      On veel olemas skeemide kood, mis on peaaegu valmis ja v&#245;imaldab muuta programmide skeeme. J&#228;llegi - kasutuse vajalikkus on selgusetu. Vastupidiselt m&#245;ttekaardi re&#382;iimile on teised re&#382;iimid rohkem demonstratsiooniks, mida k&#245;ike on v&#245;imalik FreeMind-i abil teha.
+      On veel olemas skeemide kood, mis on peaaegu valmis ja v&#245;imaldab muuta programmide skeeme. J&#228;llegi - kasutuse vajalikkus on selgusetu. Vastupidiselt m&#245;ttekaardi re&#382;iimile on teised re&#382;iimid rohkem demonstratsiooniks, mida k&#245;ike on v&#245;imalik Freeplane-i abil teha.
     </p>
   </body>
 </html></richcontent>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node COLOR="#407000" CREATED="1124560950701" FOLDED="true" ID="_Freemind_Link_1525986009" MODIFIED="1216201160404" POSITION="left" TEXT="FreeMind-i appleti paigaldamine kodulehele">
+<node COLOR="#407000" CREATED="1124560950701" FOLDED="true" ID="_Freeplane_Link_1525986009" MODIFIED="1216201160404" POSITION="left" TEXT="Freeplane-i appleti paigaldamine kodulehele">
 <font NAME="SansSerif" SIZE="12"/>
 <node COLOR="#000000" CREATED="1124560950701" ID="ID_833832653" MODIFIED="1216187545263" TEXT="Sa v&#xf5;id paigaldada appleti oma veebilehele nii, et teised kasutajad saavad lehitseda Sinu m&#xf5;ttekaarte.">
 <font NAME="Dialog" SIZE="12"/>
 </node>
-<node COLOR="#338800" CREATED="1124560950701" ID="ID_506676757" LINK="http://sourceforge.net/project/showfiles.php?group_id=7118" MODIFIED="1216187545263" TEXT="Laadi applet alla - selle nimi on freemind-browser.">
+<node COLOR="#338800" CREATED="1124560950701" ID="ID_506676757" LINK="http://sourceforge.net/project/showfiles.php?group_id=7118" MODIFIED="1216187545263" TEXT="Laadi applet alla - selle nimi on freeplane-browser.">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 <node CREATED="1124560950701" ID="ID_19242684" MODIFIED="1216187545263">
@@ -417,7 +417,7 @@
   </head>
   <body>
     <p>
-      Allalaaditud arhiiv sisaldab faile freemindbrowser.jar ja freemindbrowser.html. Oma kodulehel loo viide failile freemindbrowser.html ja selle faili sees muuda vastav viide selliselt, et see viitaks Sinu m&#245;ttekaardi failile.
+      Allalaaditud arhiiv sisaldab faile freeplanebrowser.jar ja freeplanebrowser.html. Oma kodulehel loo viide failile freeplanebrowser.html ja selle faili sees muuda vastav viide selliselt, et see viitaks Sinu m&#245;ttekaardi failile.
     </p>
   </body>
 </html></richcontent>
@@ -430,54 +430,54 @@
   </head>
   <body>
     <p>
-      Appleti *.jar fail peab asuma samas serveris kus ka m&#245;ttekaart ise ja seda java turvalisuse p&#228;rast. Sa pead laadima nii FreeMind-i appleti *.jar faili kui ka oma m&#245;ttekaardi oma kodulehele.
+      Appleti *.jar fail peab asuma samas serveris kus ka m&#245;ttekaart ise ja seda java turvalisuse p&#228;rast. Sa pead laadima nii Freeplane-i appleti *.jar faili kui ka oma m&#245;ttekaardi oma kodulehele.
     </p>
   </body>
 </html></richcontent>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node COLOR="#407000" CREATED="1124560950701" FOLDED="true" ID="_Freemind_Link_1083756111" MODIFIED="1216201160404" POSITION="left" TEXT="FreeMind appleti kasutamine">
+<node COLOR="#407000" CREATED="1124560950701" FOLDED="true" ID="_Freeplane_Link_1083756111" MODIFIED="1216201160404" POSITION="left" TEXT="Freeplane appleti kasutamine">
 <font NAME="SansSerif" SIZE="12"/>
-<node CREATED="1124560950701" ID="_Freemind_Link_514864900" MODIFIED="1216187545262">
+<node CREATED="1124560950701" ID="_Freeplane_Link_514864900" MODIFIED="1216187545262">
 <richcontent TYPE="NODE"><html>
   <head>
     
   </head>
   <body>
     <p>
-      FreeMind-i appletis saad Sa kasutada vaid lehitsemise re&#382;iimi; Sa ei saa muuta serveris asuvaid m&#245;ttekaarte. Kl&#245;psa s&#245;lmel, et l&#252;litada &#252;mber voltimisre&#382;iimi v&#245;i j&#228;rgneda veebiviitele. Haara ja lohista tausta, et liigutada m&#245;ttekaarti. Otsimiseks kasuta m&#245;ttekaardi kiirmen&#252;&#252;d.
+      Freeplane-i appletis saad Sa kasutada vaid lehitsemise re&#382;iimi; Sa ei saa muuta serveris asuvaid m&#245;ttekaarte. Kl&#245;psa s&#245;lmel, et l&#252;litada &#252;mber voltimisre&#382;iimi v&#245;i j&#228;rgneda veebiviitele. Haara ja lohista tausta, et liigutada m&#245;ttekaarti. Otsimiseks kasuta m&#245;ttekaardi kiirmen&#252;&#252;d.
     </p>
   </body>
 </html></richcontent>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node COLOR="#407000" CREATED="1124560950701" FOLDED="true" ID="_Freemind_Link_1976458022" MODIFIED="1216201160405" POSITION="left" TEXT="Kasutajaliidese muudatused alates versioonist 0.6.5">
+<node COLOR="#407000" CREATED="1124560950701" FOLDED="true" ID="_Freeplane_Link_1976458022" MODIFIED="1216201160405" POSITION="left" TEXT="Kasutajaliidese muudatused alates versioonist 0.6.5">
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
-<node CREATED="1124560950701" ID="_Freemind_Link_717349033" MODIFIED="1216187545262">
+<node CREATED="1124560950701" ID="_Freeplane_Link_717349033" MODIFIED="1216187545262">
 <richcontent TYPE="NODE"><html>
   <head>
     
   </head>
   <body>
     <p>
-      M&#245;ned klaviatuuriseaded on uuesti m&#228;&#228;ratud, et oleks kasutusel ka mujal programmides levinud intuitiivsed klahvikombinatsioonid. M&#245;ned uued kiirklahvid p&#228;rinevad Microsofti toodetest. Uued kiirklahvid sisaldavad ka n&#228;iteks ENTER-i abil uue m&#245;tte lisamine peas&#245;lmele, INSERT-klahvi abil m&#245;tte lisamine olemasoleva m&#245;tte alla, F2 s&#245;lme sisu muutmiseks - siin ongi Microsofti m&#245;ju kuna tegelikult ei ole mingit p&#245;hjust omada F2 kiirklahvi s&#245;lme sisu muutmiseks. Kuid kui oled neid kiirklahve teistes programmides kasutanud, soovid neid ka FreeMind-i.
+      M&#245;ned klaviatuuriseaded on uuesti m&#228;&#228;ratud, et oleks kasutusel ka mujal programmides levinud intuitiivsed klahvikombinatsioonid. M&#245;ned uued kiirklahvid p&#228;rinevad Microsofti toodetest. Uued kiirklahvid sisaldavad ka n&#228;iteks ENTER-i abil uue m&#245;tte lisamine peas&#245;lmele, INSERT-klahvi abil m&#245;tte lisamine olemasoleva m&#245;tte alla, F2 s&#245;lme sisu muutmiseks - siin ongi Microsofti m&#245;ju kuna tegelikult ei ole mingit p&#245;hjust omada F2 kiirklahvi s&#245;lme sisu muutmiseks. Kuid kui oled neid kiirklahve teistes programmides kasutanud, soovid neid ka Freeplane-i.
     </p>
   </body>
 </html></richcontent>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node CREATED="1124560950701" ID="_Freemind_Link_1179893656" MODIFIED="1216187545262" TEXT="Klaviatuuri seadeid saab muuta rippmen&#xfc;&#xfc;st T&#xf6;&#xf6;riistad &gt; Eelistused.">
+<node CREATED="1124560950701" ID="_Freeplane_Link_1179893656" MODIFIED="1216187545262" TEXT="Klaviatuuri seadeid saab muuta rippmen&#xfc;&#xfc;st T&#xf6;&#xf6;riistad &gt; Eelistused.">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node COLOR="#006699" CREATED="1124560950701" FOLDED="true" ID="_Freemind_Link_784043927" MODIFIED="1216272432955" POSITION="left" TEXT="T&#xe4;nud">
+<node COLOR="#006699" CREATED="1124560950701" FOLDED="true" ID="_Freeplane_Link_784043927" MODIFIED="1216272432955" POSITION="left" TEXT="T&#xe4;nud">
 <font NAME="SansSerif" SIZE="12"/>
-<node COLOR="#006699" CREATED="1124560950701" ID="Freemind_Link_415458128" MODIFIED="1216272329963" TEXT="Autorid">
+<node COLOR="#006699" CREATED="1124560950701" ID="Freeplane_Link_415458128" MODIFIED="1216272329963" TEXT="Autorid">
 <font NAME="SansSerif" SIZE="12"/>
-<node COLOR="#996600" CREATED="1124560950701" FOLDED="true" ID="_Freemind_Link_1896457660" MODIFIED="1216187545261" TEXT="Joerg Mueller">
+<node COLOR="#996600" CREATED="1124560950701" FOLDED="true" ID="_Freeplane_Link_1896457660" MODIFIED="1216187545261" TEXT="Joerg Mueller">
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 <node COLOR="#558000" CREATED="1124560950701" ID="ID_1354886892" LINK="mailto:ponders@t-online.de" MODIFIED="1216187545261" TEXT="ponders@t-online.de">
@@ -487,27 +487,27 @@
 <font NAME="Dialog" SIZE="10"/>
 </node>
 </node>
-<node COLOR="#996600" CREATED="1124560950701" ID="_Freemind_Link_984984595" LINK="http://danpolansky.blogspot.com/" MODIFIED="1216272339951" TEXT="Daniel Polansky">
+<node COLOR="#996600" CREATED="1124560950701" ID="_Freeplane_Link_984984595" LINK="http://danpolansky.blogspot.com/" MODIFIED="1216272339951" TEXT="Daniel Polansky">
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node COLOR="#996600" CREATED="1124560950701" ID="_Freemind_Link_459203293" MODIFIED="1216187545261" TEXT="Petr Novak">
+<node COLOR="#996600" CREATED="1124560950701" ID="_Freeplane_Link_459203293" MODIFIED="1216187545261" TEXT="Petr Novak">
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node COLOR="#996600" CREATED="1124560950701" FOLDED="true" ID="_Freemind_Link_875814410" MODIFIED="1216272344134" TEXT="Christian Foltin">
+<node COLOR="#996600" CREATED="1124560950701" FOLDED="true" ID="_Freeplane_Link_875814410" MODIFIED="1216272344134" TEXT="Christian Foltin">
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 <node COLOR="#558000" CREATED="1124560950701" ID="ID_326360391" LINK="mailto:christian.foltin@gmx.de" MODIFIED="1216187545261" TEXT="christian.foltin@gmx.de">
 <font NAME="Dialog" SIZE="10"/>
 </node>
 </node>
-<node COLOR="#996600" CREATED="1124560950701" ID="_Freemind_Link_1415293905" MODIFIED="1216187545261" TEXT="Dimitri Polivaev">
+<node COLOR="#996600" CREATED="1124560950701" ID="_Freeplane_Link_1415293905" MODIFIED="1216187545261" TEXT="Dimitri Polivaev">
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node COLOR="#006699" CREATED="1124560950701" FOLDED="true" ID="Freemind_Link_816166020" MODIFIED="1216272427853" TEXT="V&#xe4;iksemad panustajad">
+<node COLOR="#006699" CREATED="1124560950701" FOLDED="true" ID="Freeplane_Link_816166020" MODIFIED="1216272427853" TEXT="V&#xe4;iksemad panustajad">
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 <node COLOR="#996600" CREATED="1124560950701" ID="ID_1613097663" MODIFIED="1216272349630" TEXT="Andrew Iggleden">
@@ -518,7 +518,7 @@
 <font NAME="Dialog" SIZE="10"/>
 </node>
 </node>
-<node COLOR="#996600" CREATED="1124560950701" ID="Freemind_Link_1096673251" MODIFIED="1216272351336" TEXT="Bob Alexander">
+<node COLOR="#996600" CREATED="1124560950701" ID="Freeplane_Link_1096673251" MODIFIED="1216272351336" TEXT="Bob Alexander">
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 <node COLOR="#999999" CREATED="1124560950701" ID="ID_617977736" MODIFIED="1216187545261" TEXT="Eclipse &#xf5;petus">
@@ -526,7 +526,7 @@
 <font NAME="Dialog" SIZE="10"/>
 </node>
 </node>
-<node COLOR="#996600" CREATED="1124560950701" ID="Freemind_Link_1024053399" MODIFIED="1216272352345" TEXT="David Butt">
+<node COLOR="#996600" CREATED="1124560950701" ID="Freeplane_Link_1024053399" MODIFIED="1216272352345" TEXT="David Butt">
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 <node COLOR="#999999" CREATED="1124560950701" ID="ID_49661074" MODIFIED="1216187545261" TEXT="Flash-i &#xf5;petus">
@@ -543,7 +543,7 @@
 </node>
 </node>
 </node>
-<node COLOR="#006699" CREATED="1124560950701" FOLDED="true" ID="Freemind_Link_360501151" LINK="http://freemind.sourceforge.net/wiki/index.php/Translation" MODIFIED="1216272426323" TEXT="T&#xf5;lkijad">
+<node COLOR="#006699" CREATED="1124560950701" FOLDED="true" ID="Freeplane_Link_360501151" LINK="http://freeplane.sourceforge.net/wiki/index.php/Translation" MODIFIED="1216272426323" TEXT="T&#xf5;lkijad">
 <font NAME="SansSerif" SIZE="12"/>
 <node COLOR="#996600" CREATED="1124561374999" ID="ID_180090574" MODIFIED="1216272357942" TEXT="Edmund Laugasson">
 <font NAME="SansSerif" SIZE="12"/>
@@ -551,7 +551,7 @@
 <font NAME="SansSerif" SIZE="10"/>
 </node>
 </node>
-<node COLOR="#996600" CREATED="1124560950701" ID="Freemind_Link_807977431" MODIFIED="1216272359692" TEXT="Bob Alexander">
+<node COLOR="#996600" CREATED="1124560950701" ID="Freeplane_Link_807977431" MODIFIED="1216272359692" TEXT="Bob Alexander">
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 <node COLOR="#999999" CREATED="1124560950701" ID="ID_1392047072" MODIFIED="1216187545260" TEXT="Itaalia keele t&#xf5;lge">
@@ -559,7 +559,7 @@
 <font NAME="Dialog" SIZE="10"/>
 </node>
 </node>
-<node COLOR="#996600" CREATED="1124560950701" ID="Freemind_Link_1853214917" MODIFIED="1216272361218" TEXT="Knud Riish&#xf8;jg&#xe5;rd">
+<node COLOR="#996600" CREATED="1124560950701" ID="Freeplane_Link_1853214917" MODIFIED="1216272361218" TEXT="Knud Riish&#xf8;jg&#xe5;rd">
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 <node COLOR="#999999" CREATED="1124560950701" ID="ID_572926838" MODIFIED="1216187545260" TEXT="Taani keele t&#xf5;lge">
@@ -567,7 +567,7 @@
 <font NAME="Dialog" SIZE="10"/>
 </node>
 </node>
-<node COLOR="#996600" CREATED="1124560950701" ID="Freemind_Link_1676529317" MODIFIED="1216272362282" TEXT="Takeshi Kakeda">
+<node COLOR="#996600" CREATED="1124560950701" ID="Freeplane_Link_1676529317" MODIFIED="1216272362282" TEXT="Takeshi Kakeda">
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 <node COLOR="#999999" CREATED="1124560950701" ID="ID_763739856" MODIFIED="1216187545260" TEXT="Jaapani keele t&#xf5;lge">
@@ -575,7 +575,7 @@
 <font NAME="Dialog" SIZE="10"/>
 </node>
 </node>
-<node COLOR="#996600" CREATED="1124562983644" ID="Freemind_Link_1172193026" MODIFIED="1216272363189" TEXT="Kohichi Aoki">
+<node COLOR="#996600" CREATED="1124562983644" ID="Freeplane_Link_1172193026" MODIFIED="1216272363189" TEXT="Kohichi Aoki">
 <font NAME="SansSerif" SIZE="12"/>
 <node COLOR="#999999" CREATED="1124560950701" ID="ID_919845662" MODIFIED="1216187545260" TEXT="Jaapani keele t&#xf5;lge">
 <edge WIDTH="thin"/>
@@ -590,68 +590,68 @@
 <font NAME="Dialog" SIZE="10"/>
 </node>
 </node>
-<node COLOR="#996600" CREATED="1124562998159" ID="Freemind_Link_757563697" MODIFIED="1216272364816" TEXT="Hugo Gayosso">
+<node COLOR="#996600" CREATED="1124562998159" ID="Freeplane_Link_757563697" MODIFIED="1216272364816" TEXT="Hugo Gayosso">
 <font NAME="SansSerif" SIZE="12"/>
-<node COLOR="#999999" CREATED="1124560950701" ID="Freemind_Link_1783275246" MODIFIED="1216187545260" TEXT="Hispaania keele t&#xf5;lge">
+<node COLOR="#999999" CREATED="1124560950701" ID="Freeplane_Link_1783275246" MODIFIED="1216187545260" TEXT="Hispaania keele t&#xf5;lge">
 <edge WIDTH="thin"/>
 <font NAME="Dialog" SIZE="10"/>
 </node>
 </node>
-<node COLOR="#996600" CREATED="1124560950701" ID="Freemind_Link_929540960" MODIFIED="1216272365516" TEXT="Sylvain Gamel">
+<node COLOR="#996600" CREATED="1124560950701" ID="Freeplane_Link_929540960" MODIFIED="1216272365516" TEXT="Sylvain Gamel">
 <font NAME="SansSerif" SIZE="12"/>
 <node COLOR="#999999" CREATED="1124560950701" ID="ID_665552197" MODIFIED="1216187545260" TEXT="Prantsuse keele t&#xf5;lge">
 <font NAME="Dialog" SIZE="10"/>
 </node>
 </node>
-<node COLOR="#996600" CREATED="1124561242082" ID="Freemind_Link_946171164" MODIFIED="1216272366270" TEXT="Koen Roggemans">
+<node COLOR="#996600" CREATED="1124561242082" ID="Freeplane_Link_946171164" MODIFIED="1216272366270" TEXT="Koen Roggemans">
 <font NAME="SansSerif" SIZE="12"/>
-<node COLOR="#999999" CREATED="1124561245957" ID="Freemind_Link_1819881845" MODIFIED="1216187545260" TEXT="Hollandi keele t&#xf5;lge">
+<node COLOR="#999999" CREATED="1124561245957" ID="Freeplane_Link_1819881845" MODIFIED="1216187545260" TEXT="Hollandi keele t&#xf5;lge">
 <font NAME="SansSerif" SIZE="10"/>
 </node>
 </node>
-<node COLOR="#996600" CREATED="1124561374999" ID="Freemind_Link_235962981" MODIFIED="1216272366953" TEXT="Rafal Kraik">
+<node COLOR="#996600" CREATED="1124561374999" ID="Freeplane_Link_235962981" MODIFIED="1216272366953" TEXT="Rafal Kraik">
 <font NAME="SansSerif" SIZE="12"/>
-<node COLOR="#999999" CREATED="1124561377702" ID="Freemind_Link_459079511" MODIFIED="1216187545260" TEXT="Poola keele t&#xf5;lge">
+<node COLOR="#999999" CREATED="1124561377702" ID="Freeplane_Link_459079511" MODIFIED="1216187545260" TEXT="Poola keele t&#xf5;lge">
 <font NAME="SansSerif" SIZE="10"/>
 </node>
 </node>
-<node COLOR="#996600" CREATED="1124561969717" ID="Freemind_Link_653284985" MODIFIED="1216272367703" TEXT="Goliath">
+<node COLOR="#996600" CREATED="1124561969717" ID="Freeplane_Link_653284985" MODIFIED="1216272367703" TEXT="Goliath">
 <font NAME="SansSerif" SIZE="12"/>
-<node COLOR="#999999" CREATED="1124561438294" ID="Freemind_Link_1387213811" MODIFIED="1216187545259" TEXT="Korea keele t&#xf5;lge">
+<node COLOR="#999999" CREATED="1124561438294" ID="Freeplane_Link_1387213811" MODIFIED="1216187545259" TEXT="Korea keele t&#xf5;lge">
 <font NAME="SansSerif" SIZE="10"/>
 </node>
 </node>
-<node COLOR="#996600" CREATED="1124561753254" ID="Freemind_Link_35211963" MODIFIED="1216272369174" TEXT="Martin Srebotnjak (h&#xfc;&#xfc;dnimi: Miles a.k.a. filmsi)">
+<node COLOR="#996600" CREATED="1124561753254" ID="Freeplane_Link_35211963" MODIFIED="1216272369174" TEXT="Martin Srebotnjak (h&#xfc;&#xfc;dnimi: Miles a.k.a. filmsi)">
 <font NAME="SansSerif" SIZE="12"/>
-<node COLOR="#999999" CREATED="1124561491886" ID="Freemind_Link_835144271" MODIFIED="1216187545258" TEXT="Sloveenia keele t&#xf5;lge">
+<node COLOR="#999999" CREATED="1124561491886" ID="Freeplane_Link_835144271" MODIFIED="1216187545258" TEXT="Sloveenia keele t&#xf5;lge">
 <font NAME="SansSerif" SIZE="10"/>
 </node>
 </node>
-<node COLOR="#996600" CREATED="1124561814721" ID="Freemind_Link_1008886206" MODIFIED="1216272380101" TEXT="William Chen">
+<node COLOR="#996600" CREATED="1124561814721" ID="Freeplane_Link_1008886206" MODIFIED="1216272380101" TEXT="William Chen">
 <font NAME="SansSerif" SIZE="12"/>
-<node COLOR="#999999" CREATED="1124561497308" ID="Freemind_Link_1960552629" MODIFIED="1216187545258" TEXT="Hiina keele t&#xf5;lge">
+<node COLOR="#999999" CREATED="1124561497308" ID="Freeplane_Link_1960552629" MODIFIED="1216187545258" TEXT="Hiina keele t&#xf5;lge">
 <font NAME="SansSerif" SIZE="10"/>
 </node>
 </node>
-<node COLOR="#996600" CREATED="1124561823877" ID="Freemind_Link_1650138043" MODIFIED="1216272379451" TEXT="Radek &#x160;varc">
+<node COLOR="#996600" CREATED="1124561823877" ID="Freeplane_Link_1650138043" MODIFIED="1216272379451" TEXT="Radek &#x160;varc">
 <font NAME="SansSerif" SIZE="12"/>
-<node COLOR="#999999" CREATED="1124561515761" ID="Freemind_Link_768227373" MODIFIED="1216187545257" TEXT="T&#x161;ehhi keele t&#xf5;lge">
+<node COLOR="#999999" CREATED="1124561515761" ID="Freeplane_Link_768227373" MODIFIED="1216187545257" TEXT="T&#x161;ehhi keele t&#xf5;lge">
 <font NAME="SansSerif" SIZE="10"/>
 </node>
 </node>
-<node COLOR="#996600" CREATED="1124562250475" ID="Freemind_Link_901975324" MODIFIED="1216272380882" TEXT="Bal&#xe1;zs M&#xe1;rton">
+<node COLOR="#996600" CREATED="1124562250475" ID="Freeplane_Link_901975324" MODIFIED="1216272380882" TEXT="Bal&#xe1;zs M&#xe1;rton">
 <font NAME="SansSerif" SIZE="12"/>
-<node COLOR="#999999" CREATED="1124562252585" ID="Freemind_Link_557911120" MODIFIED="1216187545257" TEXT="Ungari keele t&#xf5;lge">
+<node COLOR="#999999" CREATED="1124562252585" ID="Freeplane_Link_557911120" MODIFIED="1216187545257" TEXT="Ungari keele t&#xf5;lge">
 <font NAME="SansSerif" SIZE="10"/>
 </node>
 </node>
-<node COLOR="#996600" CREATED="1124562948942" ID="Freemind_Link_290351026" MODIFIED="1216272381633" TEXT="Luis Ferreira ">
+<node COLOR="#996600" CREATED="1124562948942" ID="Freeplane_Link_290351026" MODIFIED="1216272381633" TEXT="Luis Ferreira ">
 <font NAME="SansSerif" SIZE="12"/>
-<node COLOR="#999999" CREATED="1124562956332" ID="Freemind_Link_6081004" MODIFIED="1216187545257" TEXT="Portugali keele t&#xf5;lge">
+<node COLOR="#999999" CREATED="1124562956332" ID="Freeplane_Link_6081004" MODIFIED="1216187545257" TEXT="Portugali keele t&#xf5;lge">
 <font NAME="SansSerif" SIZE="10"/>
 </node>
 </node>
-<node COLOR="#999999" CREATED="1124563066204" ID="Freemind_Link_23652566" MODIFIED="1216187545257">
+<node COLOR="#999999" CREATED="1124563066204" ID="Freeplane_Link_23652566" MODIFIED="1216187545257">
 <richcontent TYPE="NODE"><html>
   <head>
     
@@ -682,7 +682,7 @@
 <node COLOR="#0033ff" CREATED="1124560950701" ID="ID_1243305843" MODIFIED="1216187545242" POSITION="right" TEXT="Vajuta parempoolset nooleklahvi, et avada (lahti voltida) tekstikast.">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node COLOR="#407000" CREATED="1124560950701" FOLDED="true" ID="_Freemind_Link_1596161299" MODIFIED="1216201160406" POSITION="right" TEXT="Tutvustus">
+<node COLOR="#407000" CREATED="1124560950701" FOLDED="true" ID="_Freeplane_Link_1596161299" MODIFIED="1216201160406" POSITION="right" TEXT="Tutvustus">
 <font NAME="SansSerif" SIZE="12"/>
 <node CREATED="1124560950701" ID="ID_1477669657" MODIFIED="1216187545242">
 <richcontent TYPE="NODE"><html>
@@ -691,7 +691,7 @@
   </head>
   <body>
     <p>
-      FreeMind v&#245;imaldab luua niinimetatud m&#245;ttekaarte. Samas kasutavad paljud inimesed seda kui m&#228;rkmikku v&#245;i lihtsalt isikliku info haldamiseks.
+      Freeplane v&#245;imaldab luua niinimetatud m&#245;ttekaarte. Samas kasutavad paljud inimesed seda kui m&#228;rkmikku v&#245;i lihtsalt isikliku info haldamiseks.
     </p>
   </body>
 </html></richcontent>
@@ -717,16 +717,16 @@
   </head>
   <body>
     <p>
-      See on FreeMind 0.9.0 dokumentatsioon. Kiirklahvid ja funktsioonide asukohad men&#252;&#252;des v&#245;ivad tulevikus muutuda.
+      See on Freeplane 0.9.0 dokumentatsioon. Kiirklahvid ja funktsioonide asukohad men&#252;&#252;des v&#245;ivad tulevikus muutuda.
     </p>
   </body>
 </html></richcontent>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node COLOR="#996600" CREATED="1124560950701" FOLDED="true" ID="_Freemind_Link_706084071" MODIFIED="1216201160408" POSITION="right" TEXT="M&#xf5;nede v&#xf5;imaluste demonstratsioon">
+<node COLOR="#996600" CREATED="1124560950701" FOLDED="true" ID="_Freeplane_Link_706084071" MODIFIED="1216201160408" POSITION="right" TEXT="M&#xf5;nede v&#xf5;imaluste demonstratsioon">
 <font NAME="SansSerif" SIZE="12"/>
-<node COLOR="#669900" CREATED="1124560950701" FOLDED="true" ID="_Freemind_Link_735193624" MODIFIED="1216200835993" TEXT="V&#xe4;limus">
+<node COLOR="#669900" CREATED="1124560950701" FOLDED="true" ID="_Freeplane_Link_735193624" MODIFIED="1216200835993" TEXT="V&#xe4;limus">
 <font NAME="SansSerif" SIZE="12"/>
 <node CREATED="1124560950701" FOLDED="true" ID="ID_887863172" MODIFIED="1216187545241" TEXT="S&#xf5;lmed v&#xf5;ivad olla erinevat v&#xe4;rvi.">
 <font NAME="SansSerif" SIZE="12"/>
@@ -742,8 +742,8 @@
 </node>
 <node CREATED="1124560950701" FOLDED="true" ID="_" MODIFIED="1216187545241" TEXT="S&#xf5;lmedel v&#xf5;ivad olla erinevad taustav&#xe4;rvid">
 <font NAME="SansSerif" SIZE="12"/>
-<node BACKGROUND_COLOR="#77a86f" CREATED="1124560950701" ID="_Freemind_Link_1358611533" MODIFIED="1216187545241" TEXT="N&#xe4;iteks selline"/>
-<node BACKGROUND_COLOR="#d3d9f4" CREATED="1124560950701" ID="_Freemind_Link_1317973766" MODIFIED="1216187545241" TEXT="Ja veel ka selline"/>
+<node BACKGROUND_COLOR="#77a86f" CREATED="1124560950701" ID="_Freeplane_Link_1358611533" MODIFIED="1216187545241" TEXT="N&#xe4;iteks selline"/>
+<node BACKGROUND_COLOR="#d3d9f4" CREATED="1124560950701" ID="_Freeplane_Link_1317973766" MODIFIED="1216187545241" TEXT="Ja veel ka selline"/>
 </node>
 <node CREATED="1124560950701" FOLDED="true" ID="ID_754589044" MODIFIED="1216187545241" TEXT="S&#xf5;lmedel v&#xf5;ivad olla erinevad fontide stiilid">
 <font NAME="SansSerif" SIZE="12"/>
@@ -780,34 +780,34 @@
 <node CREATED="1124560950701" ID="ID_1360641359" MODIFIED="1216187545240" TEXT="Selline">
 <font NAME="Times New Roman" SIZE="16"/>
 </node>
-<node CREATED="1124560950701" ID="_Freemind_Link_1568731425" MODIFIED="1216187545240" TEXT="V&#xf5;i see">
+<node CREATED="1124560950701" ID="_Freeplane_Link_1568731425" MODIFIED="1216187545240" TEXT="V&#xf5;i see">
 <font NAME="Verdana" SIZE="12"/>
 </node>
 <node CREATED="1124560950701" ID="ID_539001457" MODIFIED="1216187545240" TEXT="V&#xf5;i hoopis see">
 <font NAME="Dialog" SIZE="21"/>
 </node>
 </node>
-<node CREATED="1124560950701" FOLDED="true" ID="_Freemind_Link_1193071041" MODIFIED="1216187545240" TEXT="Erinevaid s&#xf5;lmede stiile saab kasutada">
+<node CREATED="1124560950701" FOLDED="true" ID="_Freeplane_Link_1193071041" MODIFIED="1216187545240" TEXT="Erinevaid s&#xf5;lmede stiile saab kasutada">
 <font NAME="SansSerif" SIZE="12"/>
-<node CREATED="1124560950701" FOLDED="true" ID="_Freemind_Link_1979277285" MODIFIED="1216187545240" TEXT="Kahvel">
-<node CREATED="1124560950701" ID="_Freemind_Link_89124429" MODIFIED="1216187545240" TEXT="Kahvel"/>
-<node CREATED="1124560950701" ID="_Freemind_Link_173850525" MODIFIED="1216187545240" TEXT="Kahvel"/>
+<node CREATED="1124560950701" FOLDED="true" ID="_Freeplane_Link_1979277285" MODIFIED="1216187545240" TEXT="Kahvel">
+<node CREATED="1124560950701" ID="_Freeplane_Link_89124429" MODIFIED="1216187545240" TEXT="Kahvel"/>
+<node CREATED="1124560950701" ID="_Freeplane_Link_173850525" MODIFIED="1216187545240" TEXT="Kahvel"/>
 </node>
-<node CREATED="1124560950701" FOLDED="true" ID="_Freemind_Link_1001811541" MODIFIED="1216187545240" STYLE="bubble" TEXT="Mullitatud">
-<node CREATED="1124560950701" ID="_Freemind_Link_1677737286" MODIFIED="1216187545240" STYLE="bubble" TEXT="Mullitatud"/>
-<node CREATED="1124560950701" ID="_Freemind_Link_978246353" MODIFIED="1216187545240" STYLE="bubble" TEXT="Mullitatud"/>
+<node CREATED="1124560950701" FOLDED="true" ID="_Freeplane_Link_1001811541" MODIFIED="1216187545240" STYLE="bubble" TEXT="Mullitatud">
+<node CREATED="1124560950701" ID="_Freeplane_Link_1677737286" MODIFIED="1216187545240" STYLE="bubble" TEXT="Mullitatud"/>
+<node CREATED="1124560950701" ID="_Freeplane_Link_978246353" MODIFIED="1216187545240" STYLE="bubble" TEXT="Mullitatud"/>
 </node>
 </node>
 </node>
 <node COLOR="#669900" CREATED="1124560950701" FOLDED="true" ID="ID_738265772" MODIFIED="1216200835993" TEXT="S&#xf5;lmi saab kokku/lahti voltida">
 <font NAME="SansSerif" SIZE="12"/>
-<node CREATED="1124560950701" FOLDED="true" ID="_Freemind_Link_307016912" MODIFIED="1216187545240" TEXT="S&#xf5;lm">
+<node CREATED="1124560950701" FOLDED="true" ID="_Freeplane_Link_307016912" MODIFIED="1216187545240" TEXT="S&#xf5;lm">
 <font NAME="SansSerif" SIZE="12"/>
 <node CREATED="1124560950701" ID="ID_295225504" MODIFIED="1216187545240" TEXT="Peidetud">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node CREATED="1124560950701" FOLDED="true" ID="_Freemind_Link_1488567837" MODIFIED="1216187545240" TEXT="Puu">
+<node CREATED="1124560950701" FOLDED="true" ID="_Freeplane_Link_1488567837" MODIFIED="1216187545240" TEXT="Puu">
 <font NAME="SansSerif" SIZE="12"/>
 <node CREATED="1124560950701" ID="ID_734334377" MODIFIED="1216187545240" TEXT="Tamm">
 <font NAME="SansSerif" SIZE="12"/>
@@ -829,7 +829,7 @@
 </node>
 <node CREATED="1124560950701" FOLDED="true" ID="ID_646857774" LINK="www.google.ee" MODIFIED="1216187545239" TEXT="www.google.ee">
 <font NAME="SansSerif" SIZE="12"/>
-<node COLOR="#999999" CREATED="1124560950701" ID="ID_1117649418" MODIFIED="1216187545239" TEXT="Freemind arvab, et see on k&#xe4;ivitatav fail :)">
+<node COLOR="#999999" CREATED="1124560950701" ID="ID_1117649418" MODIFIED="1216187545239" TEXT="Freeplane arvab, et see on k&#xe4;ivitatav fail :)">
 <font NAME="Dialog" SIZE="10"/>
 </node>
 </node>
@@ -856,22 +856,22 @@
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node COLOR="#669900" CREATED="1124560950717" FOLDED="true" ID="_Freemind_Link_839677176" MODIFIED="1216200835994" TEXT="Mitmerealised s&#xf5;lmed">
+<node COLOR="#669900" CREATED="1124560950717" FOLDED="true" ID="_Freeplane_Link_839677176" MODIFIED="1216200835994" TEXT="Mitmerealised s&#xf5;lmed">
 <font NAME="SansSerif" SIZE="12"/>
-<node CREATED="1124560950717" ID="_Freemind_Link_1423568963" MODIFIED="1216187545239">
+<node CREATED="1124560950717" ID="_Freeplane_Link_1423568963" MODIFIED="1216187545239">
 <richcontent TYPE="NODE"><html>
   <head>
     
   </head>
   <body>
     <p>
-      Sa v&#245;id n&#228;ha mitmerealisi s&#245;lmi eraldi tekstil&#245;iguna v&#245;i mitme tekstil&#245;iguna. Kui oled ehitamas teadmista baasi FreeMind-i abil, siis ilmselt ei saa l&#245;ikude kasutamist v&#228;ltida. Selle asemel, et omada lihtsalt tavalist tekstifaili m&#228;rkmetega, v&#245;id Sa hoopis omada s&#245;lmedest koosnevat jada, mis on omavahel &#252;hendatud ja saab j&#228;rk-j&#228;rgult lahti harutada.
+      Sa v&#245;id n&#228;ha mitmerealisi s&#245;lmi eraldi tekstil&#245;iguna v&#245;i mitme tekstil&#245;iguna. Kui oled ehitamas teadmista baasi Freeplane-i abil, siis ilmselt ei saa l&#245;ikude kasutamist v&#228;ltida. Selle asemel, et omada lihtsalt tavalist tekstifaili m&#228;rkmetega, v&#245;id Sa hoopis omada s&#245;lmedest koosnevat jada, mis on omavahel &#252;hendatud ja saab j&#228;rk-j&#228;rgult lahti harutada.
     </p>
   </body>
 </html></richcontent>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node CREATED="1124560950717" ID="_Freemind_Link_1686184172" MODIFIED="1216187545239">
+<node CREATED="1124560950717" ID="_Freeplane_Link_1686184172" MODIFIED="1216187545239">
 <richcontent TYPE="NODE"><html>
   <head>
     
@@ -887,7 +887,7 @@
 </node>
 <node COLOR="#669900" CREATED="1124560950717" FOLDED="true" ID="ID_1384103247" MODIFIED="1216200835994" TEXT="L&#xfc;hikeserealised s&#xf5;lmed koos uute ridadega">
 <font NAME="SansSerif" SIZE="12"/>
-<node CREATED="1124560950717" ID="_Freemind_Link_1957797574" MODIFIED="1216187545239">
+<node CREATED="1124560950717" ID="_Freeplane_Link_1957797574" MODIFIED="1216187545239">
 <richcontent TYPE="NODE"><html>
   <head>
     
@@ -960,7 +960,7 @@
 <icon BUILTIN="button_ok"/>
 <icon BUILTIN="back"/>
 </node>
-<node COLOR="#407000" CREATED="1124560950717" FOLDED="true" ID="_Freemind_Link_318937820" MODIFIED="1216200835996" TEXT="Sa v&#xf5;id teha pilvi">
+<node COLOR="#407000" CREATED="1124560950717" FOLDED="true" ID="_Freeplane_Link_318937820" MODIFIED="1216200835996" TEXT="Sa v&#xf5;id teha pilvi">
 <cloud/>
 <font NAME="SansSerif" SIZE="12"/>
 <node CREATED="1124560950717" ID="ID_1236643816" MODIFIED="1216187545238" TEXT="Endavalitud v&#xe4;rvidega">
@@ -968,35 +968,35 @@
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node COLOR="#407000" CREATED="1124560950717" FOLDED="true" ID="_Freemind_Link_1750585847" MODIFIED="1216200835996" TEXT="Sa v&#xf5;id teha graafilisi viiteid">
+<node COLOR="#407000" CREATED="1124560950717" FOLDED="true" ID="_Freeplane_Link_1750585847" MODIFIED="1216200835996" TEXT="Sa v&#xf5;id teha graafilisi viiteid">
 <font NAME="SansSerif" SIZE="12"/>
-<node CREATED="1124560950717" ID="_Freemind_Link_1212380407" MODIFIED="1216187545238" TEXT="&#xdc;hendada s&#xf5;lme">
-<arrowlink DESTINATION="_Freemind_Link_1249400461" ENDARROW="Default" ENDINCLINATION="41;0;" ID="Arrow_ID_790768865" STARTARROW="None" STARTINCLINATION="41;0;"/>
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-<node CREATED="1124560950717" ID="_Freemind_Link_1249400461" MODIFIED="1216187545238" TEXT="Teisega">
-<arrowlink COLOR="#6600ff" DESTINATION="_Freemind_Link_880551392" ENDARROW="Default" ENDINCLINATION="47;0;" ID="Freemind_Arrow_Link_85185909" STARTARROW="None" STARTINCLINATION="47;0;"/>
+<node CREATED="1124560950717" ID="_Freeplane_Link_1212380407" MODIFIED="1216187545238" TEXT="&#xdc;hendada s&#xf5;lme">
+<arrowlink DESTINATION="_Freeplane_Link_1249400461" ENDARROW="Default" ENDINCLINATION="41;0;" ID="Arrow_ID_790768865" STARTARROW="None" STARTINCLINATION="41;0;"/>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node CREATED="1124560950717" ID="_Freemind_Link_880551392" MODIFIED="1216187545238" TEXT="Erinevates v&#xe4;rvides">
-<arrowlink DESTINATION="_Freemind_Link_1789233193" ENDARROW="Default" ENDINCLINATION="82;44;" ID="Freemind_Arrow_Link_1672464612" STARTARROW="None" STARTINCLINATION="82;44;"/>
+<node CREATED="1124560950717" ID="_Freeplane_Link_1249400461" MODIFIED="1216187545238" TEXT="Teisega">
+<arrowlink COLOR="#6600ff" DESTINATION="_Freeplane_Link_880551392" ENDARROW="Default" ENDINCLINATION="47;0;" ID="Freeplane_Arrow_Link_85185909" STARTARROW="None" STARTINCLINATION="47;0;"/>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node CREATED="1124560950717" ID="_Freemind_Link_1789233193" MODIFIED="1216187545238" TEXT="Ja erineva kujuga">
+<node CREATED="1124560950717" ID="_Freeplane_Link_880551392" MODIFIED="1216187545238" TEXT="Erinevates v&#xe4;rvides">
+<arrowlink DESTINATION="_Freeplane_Link_1789233193" ENDARROW="Default" ENDINCLINATION="82;44;" ID="Freeplane_Arrow_Link_1672464612" STARTARROW="None" STARTINCLINATION="82;44;"/>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-</node>
-<node COLOR="#407000" CREATED="1124560950717" FOLDED="true" ID="_Freemind_Link_127668276" MODIFIED="1216200835996" TEXT="S&#xf5;lmi saab vabalt &#xfc;mber paigutada">
-<font NAME="SansSerif" SIZE="12"/>
-<node CREATED="1124560950717" ID="_Freemind_Link_894936766" MODIFIED="1216187545238" TEXT="&#xdc;ks">
-<font NAME="SansSerif" SIZE="12"/>
-</node>
-<node CREATED="1124560950717" ID="_Freemind_Link_1942481455" MODIFIED="1216187545237" TEXT="Teine">
+<node CREATED="1124560950717" ID="_Freeplane_Link_1789233193" MODIFIED="1216187545238" TEXT="Ja erineva kujuga">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
+<node COLOR="#407000" CREATED="1124560950717" FOLDED="true" ID="_Freeplane_Link_127668276" MODIFIED="1216200835996" TEXT="S&#xf5;lmi saab vabalt &#xfc;mber paigutada">
+<font NAME="SansSerif" SIZE="12"/>
+<node CREATED="1124560950717" ID="_Freeplane_Link_894936766" MODIFIED="1216187545238" TEXT="&#xdc;ks">
+<font NAME="SansSerif" SIZE="12"/>
 </node>
-<node COLOR="#407000" CREATED="1124560950717" FOLDED="true" ID="_Freemind_Link_1709752669" MODIFIED="1216201160409" POSITION="right" TEXT="S&#xf5;lmede loomine ja kustutamine">
+<node CREATED="1124560950717" ID="_Freeplane_Link_1942481455" MODIFIED="1216187545237" TEXT="Teine">
+<font NAME="SansSerif" SIZE="12"/>
+</node>
+</node>
+</node>
+<node COLOR="#407000" CREATED="1124560950717" FOLDED="true" ID="_Freeplane_Link_1709752669" MODIFIED="1216201160409" POSITION="right" TEXT="S&#xf5;lmede loomine ja kustutamine">
 <font NAME="SansSerif" SIZE="12"/>
 <node CREATED="1124560950717" ID="ID_1080456719" MODIFIED="1216187545237" TEXT="Alams&#xf5;lme tekitamiseks aktiivse s&#xf5;lme alla vajuta INSERT.">
 <font NAME="SansSerif" SIZE="12"/>
@@ -1070,9 +1070,9 @@
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node COLOR="#407000" CREATED="1124560950717" FOLDED="true" ID="Freemind_Link_1700974092" MODIFIED="1216201160410" POSITION="right" TEXT="S&#xf5;lme teksti muutmine">
+<node COLOR="#407000" CREATED="1124560950717" FOLDED="true" ID="Freeplane_Link_1700974092" MODIFIED="1216201160410" POSITION="right" TEXT="S&#xf5;lme teksti muutmine">
 <font NAME="SansSerif" SIZE="12"/>
-<node CREATED="1124560950717" ID="_Freemind_Link_519923426" MODIFIED="1216187545234">
+<node CREATED="1124560950717" ID="_Freeplane_Link_519923426" MODIFIED="1216187545234">
 <richcontent TYPE="NODE"><html>
   <head>
     
@@ -1083,7 +1083,7 @@
     </p>
   </body>
 </html></richcontent>
-<arrowlink DESTINATION="_Freemind_Link_519923426" ENDARROW="Default" ENDINCLINATION="0;0;" ID="Freemind_Arrow_Link_1179992477" STARTARROW="None" STARTINCLINATION="0;0;"/>
+<arrowlink DESTINATION="_Freeplane_Link_519923426" ENDARROW="Default" ENDINCLINATION="0;0;" ID="Freeplane_Arrow_Link_1179992477" STARTARROW="None" STARTINCLINATION="0;0;"/>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 <node CREATED="1124560950717" ID="ID_522935321" MODIFIED="1216187545233">
@@ -1136,7 +1136,7 @@
     </p>
   </body>
 </html></richcontent>
-<arrowlink DESTINATION="_Freemind_Link_1445647544" ENDARROW="Default" ENDINCLINATION="118;0;" ID="Freemind_Arrow_Link_1628309717" STARTARROW="None" STARTINCLINATION="118;0;"/>
+<arrowlink DESTINATION="_Freeplane_Link_1445647544" ENDARROW="Default" ENDINCLINATION="118;0;" ID="Freeplane_Arrow_Link_1628309717" STARTARROW="None" STARTINCLINATION="118;0;"/>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 <node CREATED="1124560950717" ID="ID_496995972" MODIFIED="1216187545233">
@@ -1159,20 +1159,20 @@
   </head>
   <body>
     <p>
-      Et lisada eris&#252;mboleid nagu n&#228;iteks &#169;, lisa see k&#245;igepealt oma lemmiktekstiredaktoris nagu n&#228;iteks OpenOffice.org Writer v&#245;i MS Word, ja siis kopeeri see FreeMind-i.
+      Et lisada eris&#252;mboleid nagu n&#228;iteks &#169;, lisa see k&#245;igepealt oma lemmiktekstiredaktoris nagu n&#228;iteks OpenOffice.org Writer v&#245;i MS Word, ja siis kopeeri see Freeplane-i.
     </p>
   </body>
 </html></richcontent>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node CREATED="1124560950717" ID="_Freemind_Link_1445647544" MODIFIED="1216187545233">
+<node CREATED="1124560950717" ID="_Freeplane_Link_1445647544" MODIFIED="1216187545233">
 <richcontent TYPE="NODE"><html>
   <head>
     
   </head>
   <body>
     <p>
-      Vaikimisi ENTER l&#245;petab s&#245;lme redigeerimise ja CTRL+ENTER lisab uue rea. M&#228;rkeruudu &quot;Enter kinnitab&quot; m&#228;rkimise eemaldamisega saad Sa muuta eeltoodud klahvikombinatsioonide m&#245;ju vastupidiseks, n&#228;iteks ENTER lisab uue rea ja CTRL+ENTER l&#245;petab redigeerimise. Sa v&#245;id muuta vaikimisi v&#228;&#228;rtust sellel m&#228;rkeruudul eelistustest. Veelgi enam - selle m&#228;rkeruudu v&#228;&#228;rtus salvestatakse ja hakkab kehtima ka siis kui FreeMind-i vahepeal ei sulge.
+      Vaikimisi ENTER l&#245;petab s&#245;lme redigeerimise ja CTRL+ENTER lisab uue rea. M&#228;rkeruudu &quot;Enter kinnitab&quot; m&#228;rkimise eemaldamisega saad Sa muuta eeltoodud klahvikombinatsioonide m&#245;ju vastupidiseks, n&#228;iteks ENTER lisab uue rea ja CTRL+ENTER l&#245;petab redigeerimise. Sa v&#245;id muuta vaikimisi v&#228;&#228;rtust sellel m&#228;rkeruudul eelistustest. Veelgi enam - selle m&#228;rkeruudu v&#228;&#228;rtus salvestatakse ja hakkab kehtima ka siis kui Freeplane-i vahepeal ei sulge.
     </p>
   </body>
 </html></richcontent>
@@ -1185,14 +1185,14 @@
   </head>
   <body>
     <p>
-      FreeMind toetab t&#228;ielikult unicode-i. Seet&#245;ttu v&#245;id kasutada skripte oma suva j&#228;rgi.
+      Freeplane toetab t&#228;ielikult unicode-i. Seet&#245;ttu v&#245;id kasutada skripte oma suva j&#228;rgi.
     </p>
   </body>
 </html></richcontent>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node COLOR="#407000" CREATED="1124560950717" FOLDED="true" ID="Freemind_Link_1660149394" MODIFIED="1216201160410" POSITION="right" TEXT="S&#xf5;lme kujundamine">
+<node COLOR="#407000" CREATED="1124560950717" FOLDED="true" ID="Freeplane_Link_1660149394" MODIFIED="1216201160410" POSITION="right" TEXT="S&#xf5;lme kujundamine">
 <font NAME="SansSerif" SIZE="12"/>
 <node CREATED="1124560950717" ID="ID_1886238915" MODIFIED="1216187545232" TEXT="S&#xf5;lme teksti rasvaseks muutmiseks vajuta CTRL + B.">
 <edge WIDTH="thin"/>
@@ -1277,7 +1277,7 @@
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node COLOR="#407000" CREATED="1124560950717" FOLDED="true" ID="Freemind_Link_526328879" MODIFIED="1216201160411" POSITION="right" TEXT="F&#xfc;&#xfc;siliste stiilide kasutamine">
+<node COLOR="#407000" CREATED="1124560950717" FOLDED="true" ID="Freeplane_Link_526328879" MODIFIED="1216201160411" POSITION="right" TEXT="F&#xfc;&#xfc;siliste stiilide kasutamine">
 <font NAME="SansSerif" SIZE="12"/>
 <node CREATED="1124560950717" ID="ID_529939824" MODIFIED="1216187545231">
 <richcontent TYPE="NODE"><html>
@@ -1299,27 +1299,27 @@
   </head>
   <body>
     <p>
-      Oma f&#252;&#252;silise stiili lisamine eeldab, et oled tehnilise p&#228;devusega kasutaja. Muuda neid faile &quot;patterns.xml&quot; failis, mis asub kataloogis &quot;.freemind&quot; Sinu kodukataloogis.
+      Oma f&#252;&#252;silise stiili lisamine eeldab, et oled tehnilise p&#228;devusega kasutaja. Muuda neid faile &quot;patterns.xml&quot; failis, mis asub kataloogis &quot;.freeplane&quot; Sinu kodukataloogis.
     </p>
   </body>
 </html></richcontent>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node CREATED="1124560950717" ID="Freemind_Link_1514218661" MODIFIED="1216187545231">
+<node CREATED="1124560950717" ID="Freeplane_Link_1514218661" MODIFIED="1216187545231">
 <richcontent TYPE="NODE"><html>
   <head>
     
   </head>
   <body>
     <p>
-      [See tekst on aegunud.] M&#228;rkused failist patterns.xml j&#228;rgnevad. F&#252;&#252;siline stiil kehtestub s&#245;lmedele kui seal on &lt;edge&gt; m&#228;rgend. &lt;node&gt; m&#228;rgend v&#245;ib omada alamm&#228;rgeneid. Uuri faili &quot;patterns.xml&quot;, mis on FreeMind-iga kaasa pandud.
+      [See tekst on aegunud.] M&#228;rkused failist patterns.xml j&#228;rgnevad. F&#252;&#252;siline stiil kehtestub s&#245;lmedele kui seal on &lt;edge&gt; m&#228;rgend. &lt;node&gt; m&#228;rgend v&#245;ib omada alamm&#228;rgeneid. Uuri faili &quot;patterns.xml&quot;, mis on Freeplane-iga kaasa pandud.
     </p>
   </body>
 </html></richcontent>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node COLOR="#407000" CREATED="1124560950717" FOLDED="true" ID="Freemind_Link_1697687428" MODIFIED="1216201160411" POSITION="right" TEXT="S&#xf5;lmede esilet&#xf5;stmine pilvedega">
+<node COLOR="#407000" CREATED="1124560950717" FOLDED="true" ID="Freeplane_Link_1697687428" MODIFIED="1216201160411" POSITION="right" TEXT="S&#xf5;lmede esilet&#xf5;stmine pilvedega">
 <font NAME="SansSerif" SIZE="12"/>
 <node CREATED="1124560950717" ID="ID_1187980137" MODIFIED="1216187545231">
 <richcontent TYPE="NODE"><html>
@@ -1379,7 +1379,7 @@
 </node>
 </node>
 </node>
-<node COLOR="#407000" CREATED="1124560950717" FOLDED="true" ID="Freemind_Link_203858515" MODIFIED="1216201160412" POSITION="right" TEXT="H&#xfc;perviidete lisamine">
+<node COLOR="#407000" CREATED="1124560950717" FOLDED="true" ID="Freeplane_Link_203858515" MODIFIED="1216201160412" POSITION="right" TEXT="H&#xfc;perviidete lisamine">
 <font NAME="SansSerif" SIZE="12"/>
 <node CREATED="1124560950717" ID="ID_1905021887" MODIFIED="1216187545230">
 <richcontent TYPE="NODE"><html>
@@ -1448,7 +1448,7 @@
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node COLOR="#407000" CREATED="1124560950717" FOLDED="true" ID="Freemind_Link_1044397139" MODIFIED="1216201160413" POSITION="right" TEXT="Ikoonide lisamine">
+<node COLOR="#407000" CREATED="1124560950717" FOLDED="true" ID="Freeplane_Link_1044397139" MODIFIED="1216201160413" POSITION="right" TEXT="Ikoonide lisamine">
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 <node CREATED="1124560950717" ID="ID_530415806" MODIFIED="1216187545227" TEXT=" S&#xf5;lmes v&#xf5;ib olla mitu ikooni. ">
@@ -1513,7 +1513,7 @@
   </head>
   <body>
     <p>
-      Oma ikoonide kasutamise v&#245;imalus puudub; Sa saad valida ikoone &#252;ksnes FreeMind-iga kaasatulevate ikoonide hulgast.
+      Oma ikoonide kasutamise v&#245;imalus puudub; Sa saad valida ikoone &#252;ksnes Freeplane-iga kaasatulevate ikoonide hulgast.
     </p>
   </body>
 </html></richcontent>
@@ -1572,7 +1572,7 @@
 <icon BUILTIN="licq"/>
 </node>
 </node>
-<node COLOR="#407000" CREATED="1124560950717" FOLDED="true" ID="_Freemind_Link_1996597932" MODIFIED="1216201160413" POSITION="right" TEXT="Graafiliste viidete lisamine">
+<node COLOR="#407000" CREATED="1124560950717" FOLDED="true" ID="_Freeplane_Link_1996597932" MODIFIED="1216201160413" POSITION="right" TEXT="Graafiliste viidete lisamine">
 <font NAME="SansSerif" SIZE="12"/>
 <node CREATED="1124560950717" ID="ID_706501552" MODIFIED="1216187545225">
 <richcontent TYPE="NODE"><html>
@@ -1585,7 +1585,7 @@
     </p>
   </body>
 </html></richcontent>
-<arrowlink COLOR="#b0b0b0" DESTINATION="_Freemind_Link_266716332" ENDARROW="Default" ENDINCLINATION="289;0;" ID="Freemind_Arrow_Link_1428344028" STARTARROW="None" STARTINCLINATION="250;-7;"/>
+<arrowlink COLOR="#b0b0b0" DESTINATION="_Freeplane_Link_266716332" ENDARROW="Default" ENDINCLINATION="289;0;" ID="Freeplane_Arrow_Link_1428344028" STARTARROW="None" STARTINCLINATION="250;-7;"/>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 <node CREATED="1124560950717" ID="ID_1666507871" MODIFIED="1216187545225">
@@ -1601,7 +1601,7 @@
 </html></richcontent>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node CREATED="1124560950717" ID="_Freemind_Link_208378337" MODIFIED="1216187545225">
+<node CREATED="1124560950717" ID="_Freeplane_Link_208378337" MODIFIED="1216187545225">
 <richcontent TYPE="NODE"><html>
   <head>
     
@@ -1614,7 +1614,7 @@
 </html></richcontent>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node CREATED="1124560950717" ID="_Freemind_Link_1484370636" MODIFIED="1216187545225">
+<node CREATED="1124560950717" ID="_Freeplane_Link_1484370636" MODIFIED="1216187545225">
 <richcontent TYPE="NODE"><html>
   <head>
     
@@ -1640,7 +1640,7 @@
 </html></richcontent>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node CREATED="1124560950717" ID="_Freemind_Link_266716332" MODIFIED="1216187545225">
+<node CREATED="1124560950717" ID="_Freeplane_Link_266716332" MODIFIED="1216187545225">
 <richcontent TYPE="NODE"><html>
   <head>
     
@@ -1653,7 +1653,7 @@
 </html></richcontent>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node CREATED="1124560950717" ID="_Freemind_Link_1015289745" MODIFIED="1216187545225">
+<node CREATED="1124560950717" ID="_Freeplane_Link_1015289745" MODIFIED="1216187545225">
 <richcontent TYPE="NODE"><html>
   <head>
     
@@ -1664,7 +1664,7 @@
     </p>
   </body>
 </html></richcontent>
-<arrowlink DESTINATION="_Freemind_Link_266716332" ENDARROW="Default" ENDINCLINATION="256;22;" ID="Freemind_Arrow_Link_1273596772" STARTARROW="None" STARTINCLINATION="244;32;"/>
+<arrowlink DESTINATION="_Freeplane_Link_266716332" ENDARROW="Default" ENDINCLINATION="256;22;" ID="Freeplane_Arrow_Link_1273596772" STARTARROW="None" STARTINCLINATION="244;32;"/>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 <node CREATED="1124560950717" ID="ID_315327090" MODIFIED="1216187545225" TEXT="Allj&#xe4;rgnevalt graafiliste viidete n&#xe4;ited.">
@@ -1672,8 +1672,8 @@
 </node>
 <node COLOR="#996600" CREATED="1124560950717" FOLDED="true" ID="ID_444873207" MODIFIED="1216200835997" TEXT="N&#xe4;idis">
 <font NAME="SansSerif" SIZE="12"/>
-<node COLOR="#996600" CREATED="1124560950717" ID="_Freemind_Link_1170112929" MODIFIED="1216187545225" TEXT="Viide teisele osale">
-<arrowlink COLOR="#9999ff" DESTINATION="_Freemind_Link_1492563156" ENDARROW="Default" ENDINCLINATION="154;-5;" ID="Freemind_Arrow_Link_33407992" STARTARROW="Default" STARTINCLINATION="154;-6;"/>
+<node COLOR="#996600" CREATED="1124560950717" ID="_Freeplane_Link_1170112929" MODIFIED="1216187545225" TEXT="Viide teisele osale">
+<arrowlink COLOR="#9999ff" DESTINATION="_Freeplane_Link_1492563156" ENDARROW="Default" ENDINCLINATION="154;-5;" ID="Freeplane_Arrow_Link_33407992" STARTARROW="Default" STARTINCLINATION="154;-6;"/>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 <node COLOR="#996600" CREATED="1124560950717" FOLDED="true" ID="ID_210427206" MODIFIED="1216187545225">
@@ -1688,15 +1688,15 @@
   </body>
 </html></richcontent>
 <font NAME="SansSerif" SIZE="12"/>
-<node CREATED="1124560950717" ID="_Freemind_Link_1492563156" MODIFIED="1216187545224" TEXT="Alams&#xf5;lm"/>
+<node CREATED="1124560950717" ID="_Freeplane_Link_1492563156" MODIFIED="1216187545224" TEXT="Alams&#xf5;lm"/>
 </node>
-<node COLOR="#996600" CREATED="1124560950717" ID="_Freemind_Link_1370577235" MODIFIED="1216187545224" TEXT="Teine viide">
-<arrowlink COLOR="#b0b0b0" DESTINATION="_Freemind_Link_1170112929" ENDARROW="Default" ENDINCLINATION="126;16;" ID="Freemind_Arrow_Link_1872050149" STARTARROW="None" STARTINCLINATION="28;1;"/>
+<node COLOR="#996600" CREATED="1124560950717" ID="_Freeplane_Link_1370577235" MODIFIED="1216187545224" TEXT="Teine viide">
+<arrowlink COLOR="#b0b0b0" DESTINATION="_Freeplane_Link_1170112929" ENDARROW="Default" ENDINCLINATION="126;16;" ID="Freeplane_Arrow_Link_1872050149" STARTARROW="None" STARTINCLINATION="28;1;"/>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
 </node>
-<node COLOR="#407000" CREATED="1124560950717" FOLDED="true" ID="Freemind_Link_423038022" MODIFIED="1216201160414" POSITION="right" TEXT="Otsimine">
+<node COLOR="#407000" CREATED="1124560950717" FOLDED="true" ID="Freeplane_Link_423038022" MODIFIED="1216201160414" POSITION="right" TEXT="Otsimine">
 <font NAME="SansSerif" SIZE="12"/>
 <node CREATED="1124560950717" ID="ID_729626319" MODIFIED="1216187545224">
 <richcontent TYPE="NODE"><html>
@@ -1764,7 +1764,7 @@
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node COLOR="#407000" CREATED="1124560950717" FOLDED="true" ID="Freemind_Link_653540280" MODIFIED="1216201160415" POSITION="right" TEXT="Mitme s&#xf5;lme valimine">
+<node COLOR="#407000" CREATED="1124560950717" FOLDED="true" ID="Freeplane_Link_653540280" MODIFIED="1216201160415" POSITION="right" TEXT="Mitme s&#xf5;lme valimine">
 <font NAME="SansSerif" SIZE="12"/>
 <node CREATED="1124560950717" ID="ID_1989692981" MODIFIED="1216187545217">
 <richcontent TYPE="NODE"><html>
@@ -1845,7 +1845,7 @@
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node COLOR="#407000" CREATED="1124560950717" FOLDED="true" ID="Freemind_Link_1024903226" MODIFIED="1216201160415" POSITION="right" TEXT="Haaramine ja lohistamine">
+<node COLOR="#407000" CREATED="1124560950717" FOLDED="true" ID="Freeplane_Link_1024903226" MODIFIED="1216201160415" POSITION="right" TEXT="Haaramine ja lohistamine">
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 <node CREATED="1124560950717" ID="ID_250792124" MODIFIED="1216189240840">
@@ -1887,7 +1887,7 @@
 </html></richcontent>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node CREATED="1124560950717" ID="_Freemind_Link_1994214827" MODIFIED="1216190054560">
+<node CREATED="1124560950717" ID="_Freeplane_Link_1994214827" MODIFIED="1216190054560">
 <richcontent TYPE="NODE"><html>
   <head>
     
@@ -1907,7 +1907,7 @@
   </head>
   <body>
     <p>
-      Olemasoleva kaardi muutmiseks, lohista ja kukuta see FreeMind-i taustale. See t&#246;&#246;tab v&#228;hemalt MS Windowsi operatsioonis&#252;steemis.
+      Olemasoleva kaardi muutmiseks, lohista ja kukuta see Freeplane-i taustale. See t&#246;&#246;tab v&#228;hemalt MS Windowsi operatsioonis&#252;steemis.
     </p>
   </body>
 </html></richcontent>
@@ -1953,7 +1953,7 @@
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node COLOR="#407000" CREATED="1124560950717" FOLDED="true" ID="Freemind_Link_958781924" MODIFIED="1216201212458" POSITION="right" TEXT="Kopeerimine ja asetamine">
+<node COLOR="#407000" CREATED="1124560950717" FOLDED="true" ID="Freeplane_Link_958781924" MODIFIED="1216201212458" POSITION="right" TEXT="Kopeerimine ja asetamine">
 <font NAME="SansSerif" SIZE="12"/>
 <node CREATED="1124560950717" ID="ID_577944755" MODIFIED="1216191126681">
 <richcontent TYPE="NODE"><html>
@@ -2057,7 +2057,7 @@
   </head>
   <body>
     <p>
-      Kui Sa kopeerid FreeMind-is s&#245;lmede haru ja asetad selle lihtsasse tekstiredaktorisse siis s&#245;lmede puu struktuuri n&#228;idatakse taanetega. H&#252;perviited paigutatakse &lt;&gt; sulgude vahele vahele. Allpool ka m&#245;ned n&#228;ited.
+      Kui Sa kopeerid Freeplane-is s&#245;lmede haru ja asetad selle lihtsasse tekstiredaktorisse siis s&#245;lmede puu struktuuri n&#228;idatakse taanetega. H&#252;perviited paigutatakse &lt;&gt; sulgude vahele vahele. Allpool ka m&#245;ned n&#228;ited.
     </p>
   </body>
 </html></richcontent>
@@ -2098,7 +2098,7 @@
   </head>
   <body>
     <p>
-      Kui FreeMind-is kopeerida s&#245;lmede haru ja asetada see redaktorisse, mis m&#245;istab rikkalikku teksti vormindust siis see vormindus koos teksti v&#228;rvi ja kirjakujuga asetatakse samuti. H&#252;perviited asetatakse &lt;&gt; sulgudesse kui tavaline tekst. Redaktorid, mis m&#245;istavad rikkalikku teksti vormindamist: MS Word, MS Wordpad or MS Outlook, v&#245;i m&#245;ned kaartidega tekstiredaktorid Linuxis.
+      Kui Freeplane-is kopeerida s&#245;lmede haru ja asetada see redaktorisse, mis m&#245;istab rikkalikku teksti vormindust siis see vormindus koos teksti v&#228;rvi ja kirjakujuga asetatakse samuti. H&#252;perviited asetatakse &lt;&gt; sulgudesse kui tavaline tekst. Redaktorid, mis m&#245;istavad rikkalikku teksti vormindamist: MS Word, MS Wordpad or MS Outlook, v&#245;i m&#245;ned kaartidega tekstiredaktorid Linuxis.
     </p>
   </body>
 </html></richcontent>
@@ -2118,7 +2118,7 @@
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node COLOR="#407000" CREATED="1124560950732" FOLDED="true" ID="_Freemind_Link_1540212684" MODIFIED="1216201160416" POSITION="right" TEXT="Liigutamine">
+<node COLOR="#407000" CREATED="1124560950732" FOLDED="true" ID="_Freeplane_Link_1540212684" MODIFIED="1216201160416" POSITION="right" TEXT="Liigutamine">
 <font NAME="SansSerif" SIZE="12"/>
 <node CREATED="1124560950732" ID="ID_1635291337" MODIFIED="1216200459000">
 <richcontent TYPE="NODE"><html>
@@ -2172,7 +2172,7 @@
 </html></richcontent>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node CREATED="1124560950732" ID="_Freemind_Link_97763226" MODIFIED="1216200695317">
+<node CREATED="1124560950732" ID="_Freeplane_Link_97763226" MODIFIED="1216200695317">
 <richcontent TYPE="NODE"><html>
   <head>
     
@@ -2186,7 +2186,7 @@
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node COLOR="#407000" CREATED="1124560950732" FOLDED="true" ID="Freemind_Link_4727471" MODIFIED="1216201537122" POSITION="right" TEXT="S&#xf5;lmede kokku- ja lahtivoltimine">
+<node COLOR="#407000" CREATED="1124560950732" FOLDED="true" ID="Freeplane_Link_4727471" MODIFIED="1216201537122" POSITION="right" TEXT="S&#xf5;lmede kokku- ja lahtivoltimine">
 <font NAME="SansSerif" SIZE="12"/>
 <node CREATED="1124560950732" ID="ID_993136713" MODIFIED="1216200802609">
 <richcontent TYPE="NODE"><html>
@@ -2267,7 +2267,7 @@
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node COLOR="#407000" CREATED="1124560950732" FOLDED="true" ID="Freemind_Link_467411537" MODIFIED="1216201656349" POSITION="right" TEXT="M&#xf5;ttekaartide kerimine">
+<node COLOR="#407000" CREATED="1124560950732" FOLDED="true" ID="Freeplane_Link_467411537" MODIFIED="1216201656349" POSITION="right" TEXT="M&#xf5;ttekaartide kerimine">
 <font NAME="SansSerif" SIZE="12"/>
 <node CREATED="1124560950732" ID="ID_109928081" MODIFIED="1216201653254">
 <richcontent TYPE="NODE"><html>
@@ -2284,7 +2284,7 @@
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node COLOR="#407000" CREATED="1124560950732" FOLDED="true" ID="Freemind_Link_913137192" MODIFIED="1216201877888" POSITION="right" TEXT="Suurendamine/v&#xe4;hendamine">
+<node COLOR="#407000" CREATED="1124560950732" FOLDED="true" ID="Freeplane_Link_913137192" MODIFIED="1216201877888" POSITION="right" TEXT="Suurendamine/v&#xe4;hendamine">
 <font NAME="SansSerif" SIZE="12"/>
 <node CREATED="1124560950732" ID="ID_385482752" MODIFIED="1216201869456">
 <richcontent TYPE="NODE"><html>
@@ -2300,7 +2300,7 @@
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node COLOR="#407000" CREATED="1124560950732" FOLDED="true" ID="Freemind_Link_1318678369" MODIFIED="1216202018927" POSITION="right" TEXT="Tegevuste tagasiv&#xf5;tmine ja taastamine">
+<node COLOR="#407000" CREATED="1124560950732" FOLDED="true" ID="Freeplane_Link_1318678369" MODIFIED="1216202018927" POSITION="right" TEXT="Tegevuste tagasiv&#xf5;tmine ja taastamine">
 <font NAME="SansSerif" SIZE="12"/>
 <node CREATED="1124560950732" ID="ID_45554617" MODIFIED="1216201918241">
 <richcontent TYPE="NODE"><html>
@@ -2342,7 +2342,7 @@
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node COLOR="#407000" CREATED="1124560950732" FOLDED="true" ID="Freemind_Link_22510332" MODIFIED="1216202445145" POSITION="right" TEXT="Eksportimine HTML-i">
+<node COLOR="#407000" CREATED="1124560950732" FOLDED="true" ID="Freeplane_Link_22510332" MODIFIED="1216202445145" POSITION="right" TEXT="Eksportimine HTML-i">
 <font NAME="SansSerif" SIZE="12"/>
 <node CREATED="1124560950732" ID="ID_1878904964" MODIFIED="1216202111782">
 <richcontent TYPE="NODE"><html>
@@ -2384,7 +2384,7 @@
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node COLOR="#407000" CREATED="1124560950732" FOLDED="true" ID="Freemind_Link_1908686168" MODIFIED="1216202912603" POSITION="right" TEXT="Eksportimine raster- v&#xf5;i vektorgraafiliseks pildiks">
+<node COLOR="#407000" CREATED="1124560950732" FOLDED="true" ID="Freeplane_Link_1908686168" MODIFIED="1216202912603" POSITION="right" TEXT="Eksportimine raster- v&#xf5;i vektorgraafiliseks pildiks">
 <font NAME="SansSerif" SIZE="12"/>
 <node CREATED="1124560950732" ID="ID_1072927157" MODIFIED="1216202492752">
 <richcontent TYPE="NODE"><html>
@@ -2419,7 +2419,7 @@
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node COLOR="#407000" CREATED="1124560950732" FOLDED="true" ID="Freemind_Link_329770204" MODIFIED="1216203705284" POSITION="right" TEXT="Teistesse XML-vormingutesse eksportimine">
+<node COLOR="#407000" CREATED="1124560950732" FOLDED="true" ID="Freeplane_Link_329770204" MODIFIED="1216203705284" POSITION="right" TEXT="Teistesse XML-vormingutesse eksportimine">
 <font NAME="SansSerif" SIZE="12"/>
 <node CREATED="1124560950732" ID="ID_1487291576" MODIFIED="1216203273703">
 <richcontent TYPE="NODE"><html>
@@ -2448,7 +2448,7 @@
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node COLOR="#407000" CREATED="1124560950732" FOLDED="true" ID="Freemind_Link_1841136119" MODIFIED="1216217093567" POSITION="right" TEXT="Kataloogi struktuuri importimine">
+<node COLOR="#407000" CREATED="1124560950732" FOLDED="true" ID="Freeplane_Link_1841136119" MODIFIED="1216217093567" POSITION="right" TEXT="Kataloogi struktuuri importimine">
 <font NAME="Dialog" SIZE="12"/>
 <node CREATED="1216211946553" ID="ID_1167782124" MODIFIED="1216217050308">
 <richcontent TYPE="NODE"><html>
@@ -2500,17 +2500,17 @@
 </node>
 </node>
 </node>
-<node COLOR="#407000" CREATED="1124560950732" FOLDED="true" ID="Freemind_Link_269203785" MODIFIED="1216217579976" POSITION="right" TEXT="MS Internet Explorer-i j&#xe4;rjehoidjate importimine">
+<node COLOR="#407000" CREATED="1124560950732" FOLDED="true" ID="Freeplane_Link_269203785" MODIFIED="1216217579976" POSITION="right" TEXT="MS Internet Explorer-i j&#xe4;rjehoidjate importimine">
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
-<node CREATED="1124560950732" ID="Freemind_Link_260446736" MODIFIED="1216217403619">
+<node CREATED="1124560950732" ID="Freeplane_Link_260446736" MODIFIED="1216217403619">
 <richcontent TYPE="NODE"><html>
   <head>
     
   </head>
   <body>
     <p>
-      MS Internet Explorer-i j&#228;rjehoidjate importimiseks FreeMind-i valida rippmen&#252;&#252;st Fail -&gt; Impordi -&gt; MS Internet Explorer-i j&#228;rjehoidjad. Siis k&#252;sitakse otsiteekonda, kuhu j&#228;rjehoidjad on salvestatud. Kataloog nimega &quot;J&#228;rjehoidjad&quot; (ingl.k. 'Favorites') asub inglisekeelse MS Windows 2000/XP puhul C:\Documents and Settings\&lt;kasutajanimi&gt;\Favorites
+      MS Internet Explorer-i j&#228;rjehoidjate importimiseks Freeplane-i valida rippmen&#252;&#252;st Fail -&gt; Impordi -&gt; MS Internet Explorer-i j&#228;rjehoidjad. Siis k&#252;sitakse otsiteekonda, kuhu j&#228;rjehoidjad on salvestatud. Kataloog nimega &quot;J&#228;rjehoidjad&quot; (ingl.k. 'Favorites') asub inglisekeelse MS Windows 2000/XP puhul C:\Documents and Settings\&lt;kasutajanimi&gt;\Favorites
     </p>
   </body>
 </html></richcontent>
@@ -2520,7 +2520,7 @@
 <font NAME="Dialog" SIZE="10"/>
 </node>
 </node>
-<node COLOR="#407000" CREATED="1124560950732" FOLDED="true" ID="Freemind_Link_1709974530" MODIFIED="1216217672715" POSITION="right" TEXT="MindManager X5 m&#xf5;ttekaardi importimine">
+<node COLOR="#407000" CREATED="1124560950732" FOLDED="true" ID="Freeplane_Link_1709974530" MODIFIED="1216217672715" POSITION="right" TEXT="MindManager X5 m&#xf5;ttekaardi importimine">
 <font NAME="SansSerif" SIZE="12"/>
 <node CREATED="1124560950732" ID="ID_1753949120" MODIFIED="1216217660535">
 <richcontent TYPE="NODE"><html>
@@ -2536,7 +2536,7 @@
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node COLOR="#407000" CREATED="1124560950732" FOLDED="true" ID="Freemind_Link_913645795" MODIFIED="1216218225233" POSITION="right" TEXT="MS Word-i v&#xf5;i MS Outlook-iga integreerimine">
+<node COLOR="#407000" CREATED="1124560950732" FOLDED="true" ID="Freeplane_Link_913645795" MODIFIED="1216218225233" POSITION="right" TEXT="MS Word-i v&#xf5;i MS Outlook-iga integreerimine">
 <font NAME="SansSerif" SIZE="12"/>
 <node CREATED="1124560950732" ID="ID_1037098567" MODIFIED="1216217849442">
 <richcontent TYPE="NODE"><html>
@@ -2581,7 +2581,7 @@
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node COLOR="#407000" CREATED="1124560950732" FOLDED="true" ID="Freemind_Link_1822195277" MODIFIED="1216220330553" POSITION="right" TEXT="Eelistuste seadistamine">
+<node COLOR="#407000" CREATED="1124560950732" FOLDED="true" ID="Freeplane_Link_1822195277" MODIFIED="1216220330553" POSITION="right" TEXT="Eelistuste seadistamine">
 <font NAME="SansSerif" SIZE="12"/>
 <node CREATED="1124560950732" ID="ID_1947073053" MODIFIED="1216218284690">
 <richcontent TYPE="NODE"><html>
@@ -2590,7 +2590,7 @@
   </head>
   <body>
     <p>
-      Eelistuste redigeerimiseks ava T&#246;&#246;riistad -&gt; Eelistused. Enamus eelistuste muudatused j&#245;ustuvad FreeMind-i uuestik&#228;ivitamisel.
+      Eelistuste redigeerimiseks ava T&#246;&#246;riistad -&gt; Eelistused. Enamus eelistuste muudatused j&#245;ustuvad Freeplane-i uuestik&#228;ivitamisel.
     </p>
   </body>
 </html></richcontent>
@@ -2613,7 +2613,7 @@
 <font NAME="Dialog" SIZE="10"/>
 </node>
 </node>
-<node COLOR="#407000" CREATED="1124560950732" FOLDED="true" ID="Freemind_Link_1528828442" MODIFIED="1216228616420" POSITION="right" TEXT="Printimine">
+<node COLOR="#407000" CREATED="1124560950732" FOLDED="true" ID="Freeplane_Link_1528828442" MODIFIED="1216228616420" POSITION="right" TEXT="Printimine">
 <font NAME="SansSerif" SIZE="12"/>
 <node CREATED="1124560950732" ID="ID_1240927179" MODIFIED="1216220425067">
 <richcontent TYPE="NODE"><html>
@@ -2668,7 +2668,7 @@
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node COLOR="#407000" CREATED="1124560950732" FOLDED="true" ID="Freemind_Link_841140408" MODIFIED="1216229413099" POSITION="right" TEXT="HTML-i kasutamine s&#xf5;lmede kujundamisel">
+<node COLOR="#407000" CREATED="1124560950732" FOLDED="true" ID="Freeplane_Link_841140408" MODIFIED="1216229413099" POSITION="right" TEXT="HTML-i kasutamine s&#xf5;lmede kujundamisel">
 <font NAME="SansSerif" SIZE="12"/>
 <node CREATED="1124560950732" ID="ID_166500306" MODIFIED="1216228737174">
 <richcontent TYPE="NODE"><html>
@@ -2746,14 +2746,14 @@
   </head>
   <body>
     <p>
-      HTML-i eksport tekstiks v&#245;i rikkalikuks tekstiks (MS Word, MS Wordpad, jne) ei toeta vorminduse v&#245;i piltide kaasapanemist. Samas on HTML-i eksport mugav veebis kasutamiseks kui on olemas FreeMind-i rakend veebilehitsejale.
+      HTML-i eksport tekstiks v&#245;i rikkalikuks tekstiks (MS Word, MS Wordpad, jne) ei toeta vorminduse v&#245;i piltide kaasapanemist. Samas on HTML-i eksport mugav veebis kasutamiseks kui on olemas Freeplane-i rakend veebilehitsejale.
     </p>
   </body>
 </html></richcontent>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node COLOR="#407000" CREATED="1124560950732" FOLDED="true" ID="Freemind_Link_271176250" MODIFIED="1216246952682" POSITION="right" TEXT="Piltide kasutamine s&#xf5;lmede illustreerimiseks">
+<node COLOR="#407000" CREATED="1124560950732" FOLDED="true" ID="Freeplane_Link_271176250" MODIFIED="1216246952682" POSITION="right" TEXT="Piltide kasutamine s&#xf5;lmede illustreerimiseks">
 <font NAME="SansSerif" SIZE="12"/>
 <node CREATED="1124560950732" ID="ID_1646926562" MODIFIED="1216230555707">
 <richcontent TYPE="NODE"><html>
@@ -2762,10 +2762,10 @@
   </head>
   <body>
     <p>
-      Pildi lisamiseks FreeMind-i vajuta ALT + K v&#245;i vali s&#245;lme kiirmen&#252;&#252;st Lisamine -&gt; Pilt
+      Pildi lisamiseks Freeplane-i vajuta ALT + K v&#245;i vali s&#245;lme kiirmen&#252;&#252;st Lisamine -&gt; Pilt
     </p>
     <p>
-      Pildi lisamisel kaob kogu s&#245;lmes olnud tekst. Selliselt lisatud pildid on viited kuna FreeMind-i *.mm fail on XML-ile sarnase struktuuriga ja peavad asuma ka hiljem samas kohas kus nad olid FreeMind-i lisamise hetkel. M&#245;eldud on siin suhtelist aadressi *.mm v&#245;i *.html faili suhtes, s&#245;ltuvalt sellest, milleks kaarti salvestatakse v&#245;i eksporditakse. Piltide suuruse muutmiseks on v&#245;imalik kasutada HTML-i. Piltide lisamine FreeMind-i on arendusj&#228;rgus olev v&#245;imalus ja ei ole veel l&#245;puni v&#228;lja arendatud.
+      Pildi lisamisel kaob kogu s&#245;lmes olnud tekst. Selliselt lisatud pildid on viited kuna Freeplane-i *.mm fail on XML-ile sarnase struktuuriga ja peavad asuma ka hiljem samas kohas kus nad olid Freeplane-i lisamise hetkel. M&#245;eldud on siin suhtelist aadressi *.mm v&#245;i *.html faili suhtes, s&#245;ltuvalt sellest, milleks kaarti salvestatakse v&#245;i eksporditakse. Piltide suuruse muutmiseks on v&#245;imalik kasutada HTML-i. Piltide lisamine Freeplane-i on arendusj&#228;rgus olev v&#245;imalus ja ei ole veel l&#245;puni v&#228;lja arendatud.
     </p>
   </body>
 </html></richcontent>
@@ -2791,7 +2791,7 @@
   </head>
   <body>
     <p>
-      Viidatud piltide n&#228;htavaks muutmiseks vajuta ALT + K. Sa v&#245;id haarata ja kukutada mitmeid pilte FreeMind-i, m&#228;rkida neid kui mitut erinevat s&#245;lme. See omadus peaks v&#228;hemalt MS Windowsis t&#246;&#246;tama.
+      Viidatud piltide n&#228;htavaks muutmiseks vajuta ALT + K. Sa v&#245;id haarata ja kukutada mitmeid pilte Freeplane-i, m&#228;rkida neid kui mitut erinevat s&#245;lme. See omadus peaks v&#228;hemalt MS Windowsis t&#246;&#246;tama.
     </p>
   </body>
 </html></richcontent>
@@ -2837,7 +2837,7 @@
 <edge WIDTH="thin"/>
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node COLOR="#996600" CREATED="1124560950732" FOLDED="true" ID="Freemind_Link_1825247742" MODIFIED="1216246934166">
+<node COLOR="#996600" CREATED="1124560950732" FOLDED="true" ID="Freeplane_Link_1825247742" MODIFIED="1216246934166">
 <richcontent TYPE="NODE"><html>
   <head>
     
@@ -3008,7 +3008,7 @@
   </head>
   <body>
     <p>
-      K&#228;esolev FreeMind-i versioon sisaldab katselist faililukustamise tuge, mis on vaikimisi v&#228;lja l&#252;litatud. Hetke seisuga ei ole k&#245;ik asjad t&#228;iuslikult veel lahendatud ent see peaks juba enamus olukordades t&#246;&#246;tama.
+      K&#228;esolev Freeplane-i versioon sisaldab katselist faililukustamise tuge, mis on vaikimisi v&#228;lja l&#252;litatud. Hetke seisuga ei ole k&#245;ik asjad t&#228;iuslikult veel lahendatud ent see peaks juba enamus olukordades t&#246;&#246;tama.
     </p>
   </body>
 </html></richcontent>
@@ -3041,7 +3041,7 @@
 <font NAME="SansSerif" SIZE="12"/>
 </node>
 </node>
-<node COLOR="#407000" CREATED="1124560950732" FOLDED="true" ID="Freemind_Link_516331171" MODIFIED="1216247849400" POSITION="right" TEXT="Liikumine avatud m&#xf5;ttekaartide vahel">
+<node COLOR="#407000" CREATED="1124560950732" FOLDED="true" ID="Freeplane_Link_516331171" MODIFIED="1216247849400" POSITION="right" TEXT="Liikumine avatud m&#xf5;ttekaartide vahel">
 <font NAME="SansSerif" SIZE="12"/>
 <node CREATED="1124560950732" ID="ID_1694364871" MODIFIED="1216247470550">
 <richcontent TYPE="NODE"><html>

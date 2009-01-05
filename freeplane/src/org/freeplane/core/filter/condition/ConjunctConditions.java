@@ -59,7 +59,7 @@ public class ConjunctConditions implements ICondition {
 	/*
 	 * (non-Javadoc)
 	 * @see
-	 * freemind.controller.filter.condition.Condition#checkNode(freemind.modes
+	 * freeplane.controller.filter.condition.Condition#checkNode(freeplane.modes
 	 * .MindMapNode)
 	 */
 	public boolean checkNode(final NodeModel node) {
@@ -75,7 +75,7 @@ public class ConjunctConditions implements ICondition {
 	/*
 	 * (non-Javadoc)
 	 * @see
-	 * freemind.controller.filter.condition.Condition#getListCellRendererComponent
+	 * freeplane.controller.filter.condition.Condition#getListCellRendererComponent
 	 * ()
 	 */
 	public JComponent getListCellRendererComponent() {

@@ -40,7 +40,7 @@ class AttributeRegistryComboBoxColumnModel extends AbstractListModel implements 
 	/*
 	 * (non-Javadoc)
 	 * @see
-	 * freemind.controller.filter.util.SortedListModel#add(java.lang.Object)
+	 * freeplane.controller.filter.util.SortedListModel#add(java.lang.Object)
 	 */
 	public void add(final Object o) {
 		final String s = o.toString();
@@ -51,7 +51,7 @@ class AttributeRegistryComboBoxColumnModel extends AbstractListModel implements 
 
 	/*
 	 * (non-Javadoc)
-	 * @see freemind.controller.filter.util.SortedListModel#clear()
+	 * @see freeplane.controller.filter.util.SortedListModel#clear()
 	 */
 	public void clear() {
 	}
@@ -59,7 +59,7 @@ class AttributeRegistryComboBoxColumnModel extends AbstractListModel implements 
 	/*
 	 * (non-Javadoc)
 	 * @see
-	 * freemind.controller.filter.util.SortedListModel#contains(java.lang.Object
+	 * freeplane.controller.filter.util.SortedListModel#contains(java.lang.Object
 	 * )
 	 */
 	public boolean contains(final Object o) {
@@ -77,7 +77,7 @@ class AttributeRegistryComboBoxColumnModel extends AbstractListModel implements 
 	/*
 	 * (non-Javadoc)
 	 * @see
-	 * freemind.controller.filter.util.SortedListModel#getIndexOf(java.lang.
+	 * freeplane.controller.filter.util.SortedListModel#getIndexOf(java.lang.
 	 * Object)
 	 */
 	public int getIndexOf(final Object o) {
@@ -99,7 +99,7 @@ class AttributeRegistryComboBoxColumnModel extends AbstractListModel implements 
 	/*
 	 * (non-Javadoc)
 	 * @see
-	 * freemind.controller.filter.util.SortedListModel#delete(java.lang.Object)
+	 * freeplane.controller.filter.util.SortedListModel#delete(java.lang.Object)
 	 */
 	public void remove(final Object o) {
 		model.removeAtribute(o);
@@ -108,7 +108,7 @@ class AttributeRegistryComboBoxColumnModel extends AbstractListModel implements 
 	/*
 	 * (non-Javadoc)
 	 * @see
-	 * freemind.controller.filter.util.SortedListModel#replace(java.lang.Object,
+	 * freeplane.controller.filter.util.SortedListModel#replace(java.lang.Object,
 	 * java.lang.Object)
 	 */
 	public void replace(final Object oldO, final Object newO) {

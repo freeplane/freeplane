@@ -32,13 +32,13 @@ import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.ui.IFreemindPropertyListener;
+import org.freeplane.core.resources.ui.IFreeplanePropertyListener;
 
 /**
  * @author Dimitry Polivaev
  */
 public class EdgeController implements IExtension {
-	protected static class EdgePropertyListener implements IFreemindPropertyListener {
+	protected static class EdgePropertyListener implements IFreeplanePropertyListener {
 		public void propertyChanged(final String propertyName, final String newValue,
 		                            final String oldValue) {
 			if (propertyName.equals(ResourceController.RESOURCES_EDGE_COLOR)) {

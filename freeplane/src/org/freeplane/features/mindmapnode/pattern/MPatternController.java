@@ -63,7 +63,7 @@ public class MPatternController implements IExtension {
 	public MPatternController(final ModeController modeController) {
 		super();
 		this.modeController = modeController;
-		patternsFile = new File(Controller.getResourceController().getFreemindUserDirectory(),
+		patternsFile = new File(Controller.getResourceController().getFreeplaneUserDirectory(),
 		    Controller.getResourceController().getProperty("patternsfile"));
 		createActions();
 	}

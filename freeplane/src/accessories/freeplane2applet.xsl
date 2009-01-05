@@ -3,7 +3,7 @@
                 version="1.0">
 
   <!--
-/*FreeMind - A Program for creating and viewing Mindmaps
+/*Freeplane - A Program for creating and viewing Mindmaps
  *Copyright (C) 2006  Christian Foltin <christianfoltin@users.sourceforge.net>
  *See COPYING for Details
  *
@@ -27,7 +27,7 @@
   <xsl:output method="xml" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" 
     doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"/>
  
-<!-- fc, 20.10.2004: The following parameter is set by freemind. -->
+<!-- fc, 20.10.2004: The following parameter is set by freeplane. -->
 <xsl:param name="destination_dir">./</xsl:param>
 <xsl:param name="area_code"></xsl:param>
 <xsl:param name="folding_type">html_export_no_folding</xsl:param>
@@ -51,7 +51,7 @@
             <title><xsl:value-of select="/map/node/@TEXT" /></title>
           </xsl:when>
           <xsl:otherwise>
-            <title>FreeMind2HTML Mindmap</title>
+            <title>Freeplane2HTML Mindmap</title>
           </xsl:otherwise>
         </xsl:choose>
           <style type="text/css">
@@ -63,13 +63,13 @@ html { height:100% }
       </head>
 		<body>
         <xsl:element name="applet">
-            <xsl:attribute name="code">freemind.main.FreeMindApplet.class</xsl:attribute>
-            <xsl:attribute name="archive">./<xsl:value-of select="$destination_dir"/>freemindbrowser.jar</xsl:attribute>
+            <xsl:attribute name="code">freeplane.main.FreeplaneApplet.class</xsl:attribute>
+            <xsl:attribute name="archive">./<xsl:value-of select="$destination_dir"/>freeplanebrowser.jar</xsl:attribute>
             <xsl:attribute name="width">100%</xsl:attribute>
             <xsl:attribute name="height">100%</xsl:attribute>
             <param name="type" value="application/x-java-applet;version=1.4"/>
             <param name="scriptable" value="false"/>
-            <param name="modes" value="freemind.modes.browsemode.BrowseMode"/>
+            <param name="modes" value="freeplane.modes.browsemode.BrowseMode"/>
             <xsl:element name="param">
                 <xsl:attribute name="name">browsemode_initial_map</xsl:attribute>
                 <xsl:attribute name="value">./<xsl:value-of select="$destination_dir"/>map.mm</xsl:attribute>

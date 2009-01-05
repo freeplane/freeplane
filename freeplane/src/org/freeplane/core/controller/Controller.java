@@ -48,7 +48,7 @@ public class Controller {
 	public static final String JAVA_VERSION = System.getProperty("java.version");
 	public static final String ON_START_IF_NOT_SPECIFIED = "on_start_if_not_specified";
 	private static ResourceController resourceController;
-	public static final FreemindVersionInformation VERSION = new FreemindVersionInformation(
+	public static final FreeplaneVersionInformation VERSION = new FreeplaneVersionInformation(
 	    "0.9.0 Freeplane 21");
 	public static final String XML_VERSION = "0.9.0";
 
@@ -141,11 +141,11 @@ public class Controller {
 			}
 		}
 		JOptionPane.showMessageDialog(Controller.getController().getViewController()
-		    .getContentPane(), myMessage, "FreeMind", JOptionPane.ERROR_MESSAGE);
+		    .getContentPane(), myMessage, "Freeplane", JOptionPane.ERROR_MESSAGE);
 	}
 
 	public void errorMessage(final Object message, final JComponent component) {
-		JOptionPane.showMessageDialog(component, message.toString(), "FreeMind",
+		JOptionPane.showMessageDialog(component, message.toString(), "Freeplane",
 		    JOptionPane.ERROR_MESSAGE);
 	}
 
@@ -157,7 +157,7 @@ public class Controller {
 		return extensions.getExtension(clazz);
 	}
 
-	public FreemindVersionInformation getFreemindVersion() {
+	public FreeplaneVersionInformation getFreeplaneVersion() {
 		return Controller.VERSION;
 	}
 
@@ -201,11 +201,11 @@ public class Controller {
 
 	public void informationMessage(final Object message) {
 		JOptionPane.showMessageDialog(Controller.getController().getViewController()
-		    .getContentPane(), message.toString(), "FreeMind", JOptionPane.INFORMATION_MESSAGE);
+		    .getContentPane(), message.toString(), "Freeplane", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	public void informationMessage(final Object message, final JComponent component) {
-		JOptionPane.showMessageDialog(component, message.toString(), "FreeMind",
+		JOptionPane.showMessageDialog(component, message.toString(), "Freeplane",
 		    JOptionPane.INFORMATION_MESSAGE);
 	}
 

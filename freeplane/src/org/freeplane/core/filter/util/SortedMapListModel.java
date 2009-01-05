@@ -95,7 +95,7 @@ public class SortedMapListModel extends AbstractListModel implements IListModel 
 	/*
 	 * (non-Javadoc)
 	 * @see
-	 * freemind.controller.filter.util.SortedListModel#delete(java.lang.Object)
+	 * freeplane.controller.filter.util.SortedListModel#delete(java.lang.Object)
 	 */
 	public void remove(final Object element) {
 		if (model.remove(element)) {
@@ -106,7 +106,7 @@ public class SortedMapListModel extends AbstractListModel implements IListModel 
 	/*
 	 * (non-Javadoc)
 	 * @see
-	 * freemind.controller.filter.util.SortedListModel#replace(java.lang.Object,
+	 * freeplane.controller.filter.util.SortedListModel#replace(java.lang.Object,
 	 * java.lang.Object)
 	 */
 	public void replace(final Object oldO, final Object newO) {

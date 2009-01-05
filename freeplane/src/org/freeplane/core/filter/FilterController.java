@@ -50,7 +50,7 @@ import org.freeplane.view.swing.map.MapView;
  * @author Dimitry Polivaev
  */
 public class FilterController implements IMapViewChangeListener, IExtension {
-	static final String FREEMIND_FILTER_EXTENSION_WITHOUT_DOT = "mmfilter";
+	static final String FREEPLANE_FILTER_EXTENSION_WITHOUT_DOT = "mmfilter";
 
 	public static FilterController getController() {
 		return (FilterController) Controller.getController().getExtension(FilterController.class);

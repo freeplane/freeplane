@@ -45,7 +45,7 @@ import org.freeplane.core.modecontroller.INodeChangeListener;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.modecontroller.NodeChangeEvent;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.ui.IFreemindPropertyListener;
+import org.freeplane.core.resources.ui.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ui.IPropertyControl;
 import org.freeplane.core.resources.ui.IPropertyControlCreator;
 import org.freeplane.core.resources.ui.OptionPanelBuilder;
@@ -72,7 +72,7 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 	 *
 	 * @author foltin
 	 */
-	static class MyFreemindPropertyListener implements IFreemindPropertyListener {
+	static class MyFreeplanePropertyListener implements IFreeplanePropertyListener {
 		public void propertyChanged(final String propertyName, final String newValue,
 		                            final String oldValue) {
 			if (propertyName.startsWith(AutomaticLayout.AUTOMATIC_FORMAT_LEVEL)) {
@@ -249,7 +249,7 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 	 */
 	public AutomaticLayout(final ModeController modeController) {
 		super(modeController);
-		final MyFreemindPropertyListener listener = new MyFreemindPropertyListener();
+		final MyFreeplanePropertyListener listener = new MyFreeplanePropertyListener();
 		Controller.getResourceController().addPropertyChangeListener(listener);
 		addPropertiesToOptionPanel();
 		modeController.getMapController().getReadManager().addReadCompletionListener(this);
@@ -257,7 +257,7 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 
 	/*
 	 * (non-Javadoc)
-	 * @see freemind.extensions.NodeHook#invoke(freemind.modes.MindMapNode)
+	 * @see freeplane.extensions.NodeHook#invoke(freeplane.modes.MindMapNode)
 	 */
 	@Override
 	protected void add(final NodeModel node, final IExtension extension) {
@@ -327,7 +327,7 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 
 	/*
 	 * (non-Javadoc)
-	 * @see freemind.extensions.NodeHook#invoke(freemind.modes.MindMapNode)
+	 * @see freeplane.extensions.NodeHook#invoke(freeplane.modes.MindMapNode)
 	 */
 	@Override
 	protected void remove(final NodeModel node, final IExtension extension) {

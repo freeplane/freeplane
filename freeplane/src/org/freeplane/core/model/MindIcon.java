@@ -140,7 +140,7 @@ public class MindIcon implements Comparable, IIconInformation {
 			if (imageURL == null) {
 				try {
 					final File file = new File(Controller.getResourceController()
-					    .getFreemindUserDirectory(), "icons/" + getName() + ".png");
+					    .getFreeplaneUserDirectory(), "icons/" + getName() + ".png");
 					if (file.canRead()) {
 						imageURL = UrlManager.fileToUrl(file);
 					}

@@ -88,7 +88,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 
 		/*
 		 * (non-Javadoc)
-		 * @see freemind.view.mindmapview.EditNodeBase.Dialog#close()
+		 * @see freeplane.view.mindmapview.EditNodeBase.Dialog#close()
 		 */
 		@Override
 		protected void cancel() {
@@ -128,7 +128,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 
 		/*
 		 * (non-Javadoc)
-		 * @see freemind.view.mindmapview.EditNodeBase.Dialog#split()
+		 * @see freeplane.view.mindmapview.EditNodeBase.Dialog#split()
 		 */
 		@Override
 		protected void split() {
@@ -141,7 +141,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 
 		/*
 		 * (non-Javadoc)
-		 * @see freemind.view.mindmapview.EditNodeBase.Dialog#close()
+		 * @see freeplane.view.mindmapview.EditNodeBase.Dialog#close()
 		 */
 		@Override
 		protected void submit() {

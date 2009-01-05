@@ -34,7 +34,7 @@ import org.freeplane.view.swing.map.NodeView;
 /**
  * @author Dimitry Polivaev
  * @file LatexNodeHook.java
- * @package freemind.modes.mindmapmode
+ * @package freeplane.modes.mindmapmode
  */
 @NodeHookDescriptor(hookName = "plugins/latex/LatexNodeHook.properties", //
 onceForMap = false)

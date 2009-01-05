@@ -23,9 +23,7 @@ import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLClassLoader;
 import java.net.URLDecoder;
 import java.text.MessageFormat;
 import java.util.Collection;
@@ -37,8 +35,7 @@ import java.util.Vector;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ui.BooleanProperty;
-import org.freeplane.core.resources.ui.IFreemindPropertyListener;
-import org.freeplane.core.url.UrlManager;
+import org.freeplane.core.resources.ui.IFreeplanePropertyListener;
 import org.freeplane.core.util.Tools;
 
 /**
@@ -82,22 +79,22 @@ public abstract class ResourceController {
 	 */
 	public static String removeTranslateComment(String inputString) {
 		if (inputString != null
-		        && inputString.endsWith(FreemindResourceBundle.POSTFIX_TRANSLATE_ME)) {
+		        && inputString.endsWith(FreeplaneResourceBundle.POSTFIX_TRANSLATE_ME)) {
 			inputString = inputString.substring(0, inputString.length()
-			        - FreemindResourceBundle.POSTFIX_TRANSLATE_ME.length());
+			        - FreeplaneResourceBundle.POSTFIX_TRANSLATE_ME.length());
 		}
 		return inputString;
 	}
 
 	private String baseDir;
 	final private Vector propertyChangeListeners = new Vector();
-	private FreemindResourceBundle resources;
+	private FreeplaneResourceBundle resources;
 
 	public ResourceController() {
 		super();
 	}
 
-	public void addPropertyChangeListener(final IFreemindPropertyListener listener) {
+	public void addPropertyChangeListener(final IFreeplanePropertyListener listener) {
 		propertyChangeListeners.add(listener);
 	}
 
@@ -107,7 +104,7 @@ public abstract class ResourceController {
 	 *            to the listener after registration. Here, the oldValue
 	 *            parameter is set to null.
 	 */
-	public void addPropertyChangeListenerAndPropagate(final IFreemindPropertyListener listener) {
+	public void addPropertyChangeListenerAndPropagate(final IFreeplanePropertyListener listener) {
 		addPropertyChangeListener(listener);
 		final Properties properties = getProperties();
 		for (final Iterator it = properties.keySet().iterator(); it.hasNext();) {
@@ -130,7 +127,7 @@ public abstract class ResourceController {
 		if (oldValue == null || !oldValue.equals(value)) {
 			setProperty(property, value);
 			for (final Iterator i = getPropertyChangeListeners().iterator(); i.hasNext();) {
-				final IFreemindPropertyListener listener = (IFreemindPropertyListener) i.next();
+				final IFreeplanePropertyListener listener = (IFreeplanePropertyListener) i.next();
 				listener.propertyChanged(property, value, oldValue);
 			}
 		}
@@ -148,7 +145,7 @@ public abstract class ResourceController {
 			return value;
 		}
 		if (value.startsWith("?") && !value.equals("?")) {
-			final String localValue = ((FreemindResourceBundle) getResources()).getResourceString(
+			final String localValue = ((FreeplaneResourceBundle) getResources()).getResourceString(
 			    ResourceController.LOCAL_PROPERTIES + label, null);
 			value = localValue == null ? value.substring(1).trim() : localValue;
 			setDefaultProperty(label, value);
@@ -198,18 +195,18 @@ public abstract class ResourceController {
 	}
 
 	/*
-	 * We define the base dir of FreeMind as the directory where accessories,
+	 * We define the base dir of Freeplane as the directory where accessories,
 	 * plugins and other things are to be found. We expect it to be either the
-	 * directory where the main jar file is (freemind.jar), or the root of the
+	 * directory where the main jar file is (freeplane.jar), or the root of the
 	 * class hierarchy (if no jar file is used), after any 'lib' directory is
 	 * removed. One can overwrite this definition by setting the
-	 * freemind.base.dir property.
+	 * freeplane.base.dir property.
 	 */
-	public String getFreemindBaseDir() {
+	public String getFreeplaneBaseDir() {
 		if (baseDir == null) {
 			try {
 				File file;
-				final String dir = System.getProperty("freemind.base.dir");
+				final String dir = System.getProperty("freeplane.base.dir");
 				if (dir == null) {
 					final String classname = this.getClass().getName();
 					final URL url = this.getClass().getResource(
@@ -224,8 +221,8 @@ public abstract class ResourceController {
 					}
 					/*
 					 * Now, we remove the lib directory: Example:
-					 * /home/foltin/freemindapp/lib/freemind.jar gives
-					 * /home/foltin/freemindapp
+					 * /home/foltin/freeplaneapp/lib/freeplane.jar gives
+					 * /home/foltin/freeplaneapp
 					 */
 					if (file.getName().equals("lib")) {
 						file = file.getParentFile();
@@ -235,80 +232,27 @@ public abstract class ResourceController {
 					file = new File(dir);
 				}
 				if (!file.exists()) {
-					throw new IllegalArgumentException("FreeMind base dir '" + file
+					throw new IllegalArgumentException("Freeplane base dir '" + file
 					        + "' does not exist.");
 				}
 				if (!file.isDirectory()) {
-					throw new IllegalArgumentException("FreeMind base dir (!) '" + file
+					throw new IllegalArgumentException("Freeplane base dir (!) '" + file
 					        + "' is not a directory.");
 				}
 				baseDir = file.getCanonicalPath();
 			}
 			catch (final Exception e) {
 				Tools.logException(e);
-				throw new IllegalArgumentException("FreeMind base dir can't be determined.");
+				throw new IllegalArgumentException("Freeplane base dir can't be determined.");
 			}
 		}
 		return baseDir;
-	}
-
-	/**
-	 * Old version using String manipulation out of the classpath to find the
-	 * base dir.
-	 */
-	public String getFreemindBaseDirOld() {
-		if (baseDir == null) {
-			final String classPath = System.getProperty("java.class.path");
-			final String mainJarFile = "freemind.jar";
-			int lastpos = classPath.indexOf(mainJarFile);
-			int firstpos = 0;
-			if (lastpos == -1) {
-				baseDir = System.getProperty("user.dir");
-				return baseDir;
-			}
-			/*
-			 * fc: Now, if freemind.jar is the first, firstpos == -1. This
-			 * results in bad results in the substring method, or not??
-			 */
-			firstpos = classPath.lastIndexOf(File.pathSeparator, lastpos) + 1;
-			lastpos -= 1;
-			if (lastpos > firstpos) {
-				baseDir = classPath.substring(firstpos, lastpos);
-			}
-			else {
-				baseDir = "";
-			}
-			final File basePath = new File(baseDir);
-			baseDir = basePath.getAbsolutePath();
-			/*
-			 * I suppose, that here, the freemind.jar is removed together with
-			 * the last path. Example: /home/foltin/freemindapp/lib/freemind.jar
-			 * gives /home/foltin/freemindapp
-			 */
-			lastpos = baseDir.lastIndexOf(File.separator);
-			if (lastpos > -1) {
-				baseDir = baseDir.substring(0, lastpos);
-			}
-		}
-		return baseDir;
-	}
-
-	public ClassLoader getFreeMindClassLoader() {
-		final ClassLoader classLoader = this.getClass().getClassLoader();
-		try {
-			return new URLClassLoader(new URL[] { UrlManager.fileToUrl(new File(
-			    getFreemindBaseDir())) }, classLoader);
-		}
-		catch (final MalformedURLException e) {
-			org.freeplane.core.util.Tools.logException(e);
-			return classLoader;
-		}
 	}
 
 	/**
 	 * @return
 	 */
-	abstract public String getFreemindUserDirectory();
+	abstract public String getFreeplaneUserDirectory();
 
 	public int getIntProperty(final String key, final int defaultValue) {
 		try {
@@ -339,17 +283,17 @@ public abstract class ResourceController {
 	/** Returns the ResourceBundle with the current language */
 	public ResourceBundle getResources() {
 		if (resources == null) {
-			resources = new FreemindResourceBundle(this);
+			resources = new FreeplaneResourceBundle(this);
 		}
 		return resources;
 	}
 
 	public String getText(final String key) {
-		return ((FreemindResourceBundle) getResources()).getResourceString(key);
+		return ((FreeplaneResourceBundle) getResources()).getResourceString(key);
 	}
 
 	public String getText(final String key, final String resource) {
-		return ((FreemindResourceBundle) getResources()).getResourceString(key, resource);
+		return ((FreeplaneResourceBundle) getResources()).getResourceString(key, resource);
 	}
 
 	public void init() {
@@ -369,7 +313,7 @@ public abstract class ResourceController {
 
 	abstract public void loadPropertiesFromXML(InputStream inStream) throws IOException;
 
-	public void removePropertyChangeListener(final IFreemindPropertyListener listener) {
+	public void removePropertyChangeListener(final IFreeplanePropertyListener listener) {
 		propertyChangeListeners.remove(listener);
 	}
 

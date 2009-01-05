@@ -41,13 +41,13 @@ import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.ui.IFreemindPropertyListener;
+import org.freeplane.core.resources.ui.IFreeplanePropertyListener;
 
 /**
  * @author Dimitry Polivaev
  */
 public class LinkController implements IExtension {
-	private static class ArrowLinkListener implements IFreemindPropertyListener {
+	private static class ArrowLinkListener implements IFreeplanePropertyListener {
 		public void propertyChanged(final String propertyName, final String newValue,
 		                            final String oldValue) {
 			if (propertyName.equals(ResourceController.RESOURCES_LINK_COLOR)) {

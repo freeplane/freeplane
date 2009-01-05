@@ -47,7 +47,7 @@ public class ExtensionArray implements IModifiableExtensionCollection {
 	/*
 	 * (non-Javadoc)
 	 * @see
-	 * freemind.extensions.Extensions#addExtension(freemind.extensions.Extension
+	 * freeplane.extensions.Extensions#addExtension(freeplane.extensions.Extension
 	 * )
 	 */
 	public boolean addExtension(final IExtension extension) {
@@ -93,7 +93,7 @@ public class ExtensionArray implements IModifiableExtensionCollection {
 
 	/*
 	 * (non-Javadoc)
-	 * @see freemind.extensions.Extensions#getExtension(java.lang.Class)
+	 * @see freeplane.extensions.Extensions#getExtension(java.lang.Class)
 	 */
 	public IExtension getExtension(final Class clazz) {
 		final int index = find(clazz);
@@ -115,7 +115,7 @@ public class ExtensionArray implements IModifiableExtensionCollection {
 
 	/*
 	 * (non-Javadoc)
-	 * @see freemind.extensions.Extensions#removeExtension(java.lang.Class)
+	 * @see freeplane.extensions.Extensions#removeExtension(java.lang.Class)
 	 */
 	public IExtension removeExtension(final Class clazz) {
 		for (int i = 0; i < collection.size(); i++) {
@@ -143,7 +143,7 @@ public class ExtensionArray implements IModifiableExtensionCollection {
 	/*
 	 * (non-Javadoc)
 	 * @see
-	 * freemind.extensions.Extensions#setExtension(freemind.extensions.Extension
+	 * freeplane.extensions.Extensions#setExtension(freeplane.extensions.Extension
 	 * )
 	 */
 	public void setExtension(final IExtension extension) {

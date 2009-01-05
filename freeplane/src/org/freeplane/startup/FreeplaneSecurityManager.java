@@ -33,10 +33,10 @@ import java.security.Permission;
  *
  * @author foltin
  */
-public final class FreeMindSecurityManager extends SecurityManager {
+public final class FreeplaneSecurityManager extends SecurityManager {
 	private SecurityManager mFinalSecurityManager = null;
 
-	public FreeMindSecurityManager() {
+	public FreeplaneSecurityManager() {
 	}
 
 	@Override

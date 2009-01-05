@@ -65,7 +65,7 @@ class RootMainView extends MainView {
 
 	/*
 	 * (non-Javadoc)
-	 * @see freemind.view.mindmapview.NodeView.MainView#getPreferredSize()
+	 * @see freeplane.view.mindmapview.NodeView.MainView#getPreferredSize()
 	 */
 	@Override
 	public Dimension getPreferredSize() {
@@ -84,7 +84,7 @@ class RootMainView extends MainView {
 
 	/*
 	 * (non-Javadoc)
-	 * @see freemind.view.mindmapview.NodeView#getStyle()
+	 * @see freeplane.view.mindmapview.NodeView#getStyle()
 	 */
 	@Override
 	String getStyle() {
@@ -99,7 +99,7 @@ class RootMainView extends MainView {
 
 	/*
 	 * (non-Javadoc)
-	 * @see freemind.view.mindmapview.NodeView#getTextX()
+	 * @see freeplane.view.mindmapview.NodeView#getTextX()
 	 */
 	@Override
 	public int getTextX() {

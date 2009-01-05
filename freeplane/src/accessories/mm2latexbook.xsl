@@ -6,12 +6,12 @@
     Document   : mm2latexarticl.xsl
     Created on : 01 February 2004, 17:17
     Author     : joerg feuerhake joerg.feuerhake@free-penguin.org
-    Description: transforms freemind mm format to latex scrartcl, handles crossrefs ignores the rest. feel free to customize it while leaving the ancient authors
+    Description: transforms freeplane mm format to latex scrartcl, handles crossrefs ignores the rest. feel free to customize it while leaving the ancient authors
                     mentioned. thank you
     Thanks to:  Tayeb.Lemlouma@inrialpes.fr for writing the LaTeX escape scripts and giving inspiration
     ChangeLog:
 
-    See: http://freemind.sourceforge.net/
+    See: http://freeplane.sourceforge.net/
 -->
 
 <xsl:stylesheet xmlns:xsl='http://www.w3.org/1999/XSL/Transform' version='1.0'>

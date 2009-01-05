@@ -38,7 +38,7 @@ class ExtendedAttributeTableModelDecorator extends AttributeTableModelDecoratorA
 	/*
 	 * (non-Javadoc)
 	 * @see
-	 * freemind.view.mindmapview.attributeview.AttributeTableModelDecoratorAdapter
+	 * freeplane.view.mindmapview.attributeview.AttributeTableModelDecoratorAdapter
 	 * #areAttributesVisible()
 	 */
 	@Override

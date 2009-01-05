@@ -39,7 +39,7 @@ import org.freeplane.core.model.EncryptionModel;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.ui.IFreemindPropertyListener;
+import org.freeplane.core.resources.ui.IFreeplanePropertyListener;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.url.UrlManager;
@@ -53,18 +53,18 @@ public class MMapController extends MapController {
 	static private DeleteAction delete;
 	private static final String EXPECTED_START_STRINGS[] = {
 	        "<map version=\"" + Controller.XML_VERSION + "\"", "<map version=\"0.7.1\"" };
-	private static final String FREEMIND_VERSION_UPDATER_XSLT = "freemind/modes/mindmapmode/freemind_version_updater.xslt";
+	private static final String FREEPLANE_VERSION_UPDATER_XSLT = "freeplane/modes/mindmapmode/freeplane_version_updater.xslt";
 	public static final int NEW_CHILD = 2;
 	public static final int NEW_CHILD_WITHOUT_FOCUS = 1;
 	public static final int NEW_SIBLING_BEFORE = 4;
 	public static final int NEW_SIBLING_BEHIND = 3;
 	static private NewChildAction newChild;
-	private static IFreemindPropertyListener sSaveIdPropertyChangeListener;
+	private static IFreeplanePropertyListener sSaveIdPropertyChangeListener;
 
 	public MMapController(final MModeController modeController) {
 		super(modeController);
 		if (sSaveIdPropertyChangeListener == null) {
-			sSaveIdPropertyChangeListener = new IFreemindPropertyListener() {
+			sSaveIdPropertyChangeListener = new IFreeplanePropertyListener() {
 				public void propertyChanged(final String propertyName, final String newValue,
 				                            final String oldValue) {
 					if (propertyName.equals("save_only_intrisically_needed_ids")) {
@@ -229,7 +229,7 @@ public class MMapController extends MapController {
 				reader = UrlManager.getActualReader(file);
 			}
 			else {
-				reader = UrlManager.getUpdateReader(file, FREEMIND_VERSION_UPDATER_XSLT);
+				reader = UrlManager.getUpdateReader(file, FREEPLANE_VERSION_UPDATER_XSLT);
 			}
 		}
 		try {

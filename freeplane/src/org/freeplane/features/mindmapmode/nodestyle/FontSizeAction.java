@@ -41,8 +41,8 @@ class FontSizeAction extends MultipleNodeAction {
 	/*
 	 * (non-Javadoc)
 	 * @see
-	 * freemind.modes.mindmapmode.actions.MultipleNodeAction#actionPerformed
-	 * (freemind.modes.MindMapNode)
+	 * freeplane.modes.mindmapmode.actions.MultipleNodeAction#actionPerformed
+	 * (freeplane.modes.MindMapNode)
 	 */
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {

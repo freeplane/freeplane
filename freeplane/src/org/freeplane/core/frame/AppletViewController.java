@@ -34,8 +34,8 @@ import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.FreemindVersionInformation;
-import org.freeplane.core.ui.components.FreemindMenuBar;
+import org.freeplane.core.controller.FreeplaneVersionInformation;
+import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.view.swing.map.MapView;
 
 /**
@@ -52,7 +52,7 @@ public class AppletViewController extends ViewController {
 
 	/*
 	 * (non-Javadoc)
-	 * @see freemind.main.FreeMindMain#exit()
+	 * @see freeplane.main.FreeplaneMain#exit()
 	 */
 	@Override
 	public void exit() {
@@ -61,7 +61,7 @@ public class AppletViewController extends ViewController {
 
 	/*
 	 * (non-Javadoc)
-	 * @see freemind.controller.views.ViewController#getContentPane()
+	 * @see freeplane.controller.views.ViewController#getContentPane()
 	 */
 	@Override
 	public Container getContentPane() {
@@ -69,17 +69,17 @@ public class AppletViewController extends ViewController {
 	}
 
 	@Override
-	public FreemindMenuBar getFreeMindMenuBar() {
-		return (FreemindMenuBar) applet.getJMenuBar();
+	public FreeplaneMenuBar getFreeplaneMenuBar() {
+		return (FreeplaneMenuBar) applet.getJMenuBar();
 	}
 
-	public FreemindVersionInformation getFreemindVersion() {
+	public FreeplaneVersionInformation getFreeplaneVersion() {
 		return Controller.VERSION;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see freemind.main.FreeMindMain#getJFrame()
+	 * @see freeplane.main.FreeplaneMain#getJFrame()
 	 */
 	@Override
 	public JFrame getJFrame() {
@@ -88,7 +88,7 @@ public class AppletViewController extends ViewController {
 
 	/*
 	 * (non-Javadoc)
-	 * @see freemind.main.FreeMindMain#getSouthPanel()
+	 * @see freeplane.main.FreeplaneMain#getSouthPanel()
 	 */
 	public JPanel getSouthPanel() {
 		return southPanel;
@@ -181,7 +181,7 @@ public class AppletViewController extends ViewController {
 	}
 
 	@Override
-	void setFreeMindMenuBar(final FreemindMenuBar menuBar) {
+	void setFreeplaneMenuBar(final FreeplaneMenuBar menuBar) {
 		applet.setJMenuBar(menuBar);
 	}
 

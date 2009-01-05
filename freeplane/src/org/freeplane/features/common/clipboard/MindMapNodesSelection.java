@@ -40,7 +40,7 @@ public class MindMapNodesSelection implements Transferable, ClipboardOwner {
 	static {
 		try {
 			MindMapNodesSelection.mindMapNodesFlavor = new DataFlavor(
-			    "text/freemind-nodes; class=java.lang.String");
+			    "text/freeplane-nodes; class=java.lang.String");
 			MindMapNodesSelection.rtfFlavor = new DataFlavor("text/rtf; class=java.io.InputStream");
 			MindMapNodesSelection.htmlFlavor = new DataFlavor("text/html; class=java.lang.String");
 			MindMapNodesSelection.fileListFlavor = new DataFlavor(

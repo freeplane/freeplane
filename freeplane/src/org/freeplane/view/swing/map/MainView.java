@@ -48,7 +48,7 @@ import javax.swing.SwingUtilities;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.ui.components.FreemindMenuBar;
+import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.features.common.edge.EdgeController;
@@ -346,10 +346,10 @@ public abstract class MainView extends JLabel {
 		if (super.processKeyBinding(ks, e, condition, pressed)) {
 			return true;
 		}
-		final FreemindMenuBar freeMindMenuBar = Controller.getController().getViewController()
-		    .getFreeMindMenuBar();
-		return !freeMindMenuBar.isVisible()
-		        && freeMindMenuBar.processKeyBinding(ks, e, JComponent.WHEN_IN_FOCUSED_WINDOW,
+		final FreeplaneMenuBar freeplaneMenuBar = Controller.getController().getViewController()
+		    .getFreeplaneMenuBar();
+		return !freeplaneMenuBar.isVisible()
+		        && freeplaneMenuBar.processKeyBinding(ks, e, JComponent.WHEN_IN_FOCUSED_WINDOW,
 		            pressed);
 	}
 

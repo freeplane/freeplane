@@ -137,7 +137,7 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 	/*
 	 * (non-Javadoc)
 	 * @see
-	 * freemind.extensions.PermanentNodeHook#onUpdateChildrenHook(freemind.modes
+	 * freeplane.extensions.PermanentNodeHook#onUpdateChildrenHook(freeplane.modes
 	 * .MindMapNode)
 	 */
 	private void onUpdateChildren(final NodeModel updatedNode) {

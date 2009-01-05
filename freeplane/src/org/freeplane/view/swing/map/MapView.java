@@ -60,7 +60,7 @@ import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.ui.IFreemindPropertyListener;
+import org.freeplane.core.resources.ui.IFreeplanePropertyListener;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.common.link.ArrowLinkModel;
@@ -230,7 +230,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 	private static final int margin = 20;
 	static boolean NEED_PREF_SIZE_BUG_FIX = Controller.JAVA_VERSION.compareTo("1.5.0") < 0;
 	static boolean printOnWhiteBackground;
-	static private IFreemindPropertyListener propertyChangeListener;
+	static private IFreeplanePropertyListener propertyChangeListener;
 	static boolean standardDrawRectangleForSelection;
 	static Color standardMapBackgroundColor;
 	static Color standardSelectColor;
@@ -361,7 +361,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 	}
 
 	private void createPropertyChangeListener() {
-		MapView.propertyChangeListener = new IFreemindPropertyListener() {
+		MapView.propertyChangeListener = new IFreeplanePropertyListener() {
 			public void propertyChanged(final String propertyName, final String newValue,
 			                            final String oldValue) {
 				if (propertyName.equals(ResourceController.RESOURCES_BACKGROUND_COLOR)) {

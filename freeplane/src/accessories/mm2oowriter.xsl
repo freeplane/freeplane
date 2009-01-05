@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-/*FreeMind - A Program for creating and viewing Mindmaps
+/*Freeplane - A Program for creating and viewing Mindmaps
  *Copyright (C) 2000-2008  Christian Foltin and others.
  *
  *See COPYING for Details

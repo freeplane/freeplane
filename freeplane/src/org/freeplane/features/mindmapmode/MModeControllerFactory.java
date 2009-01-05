@@ -23,7 +23,7 @@ import javax.swing.JPopupMenu;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.core.ui.components.FreeMindToolBar;
+import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.features.common.addins.encrypt.EnterPassword;
 import org.freeplane.features.common.addins.misc.BlinkingNodeHook;
@@ -155,7 +155,7 @@ public class MModeControllerFactory {
 		AttributeController.install(modeController, new MAttributeController(modeController));
 		final JPopupMenu popupmenu = new JPopupMenu();
 		userInputListenerFactory.setNodePopupMenu(popupmenu);
-		final FreeMindToolBar toolbar = new FreeMindToolBar();
+		final FreeplaneToolBar toolbar = new FreeplaneToolBar();
 		userInputListenerFactory.setMainToolBar(toolbar);
 		userInputListenerFactory.setLeftToolBar(((MIconController) IconController
 		    .getController(modeController)).getIconToolBarScrollPane());

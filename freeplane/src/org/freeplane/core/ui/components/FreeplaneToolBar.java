@@ -31,33 +31,33 @@ import javax.swing.SwingConstants;
 /**
  * @author Stefan Zechmeister
  */
-public class FreeMindToolBar extends JToolBar {
+public class FreeplaneToolBar extends JToolBar {
 	private static Insets nullInsets = new Insets(0, 0, 0, 0);
 
 	/**
 	 *
 	 */
-	public FreeMindToolBar() {
+	public FreeplaneToolBar() {
 		this("", SwingConstants.HORIZONTAL);
 	}
 
 	/**
 	 */
-	public FreeMindToolBar(final int arg0) {
+	public FreeplaneToolBar(final int arg0) {
 		this("", arg0);
 	}
 
 	/**
 	 */
-	public FreeMindToolBar(final String arg0) {
+	public FreeplaneToolBar(final String arg0) {
 		this(arg0, SwingConstants.HORIZONTAL);
 	}
 
 	/**
 	 */
-	public FreeMindToolBar(final String arg0, final int arg1) {
+	public FreeplaneToolBar(final String arg0, final int arg1) {
 		super(arg0, arg1);
-		this.setMargin(FreeMindToolBar.nullInsets);
+		this.setMargin(FreeplaneToolBar.nullInsets);
 		setFloatable(false);
 		setRollover(true);
 	}
@@ -115,7 +115,7 @@ public class FreeMindToolBar extends JToolBar {
 			return;
 		}
 		final AbstractButton abstractButton = (AbstractButton) comp;
-		abstractButton.setMargin(FreeMindToolBar.nullInsets);
+		abstractButton.setMargin(FreeplaneToolBar.nullInsets);
 		if (System.getProperty("os.name").startsWith("Mac OS")) {
 			abstractButton.setBorderPainted(false);
 		}

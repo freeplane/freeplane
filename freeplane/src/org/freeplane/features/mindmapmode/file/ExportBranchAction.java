@@ -73,11 +73,11 @@ class ExportBranchAction extends FreeplaneAction {
 			File chosenFile = chooser.getSelectedFile();
 			final String ext = UrlManager.getExtension(chosenFile.getName());
 			if (!ext
-			    .equals(org.freeplane.features.mindmapmode.file.MFileManager.FREEMIND_FILE_EXTENSION_WITHOUT_DOT)) {
+			    .equals(org.freeplane.features.mindmapmode.file.MFileManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
 				chosenFile = new File(
 				    chosenFile.getParent(),
 				    chosenFile.getName()
-				            + org.freeplane.features.mindmapmode.file.MFileManager.FREEMIND_FILE_EXTENSION);
+				            + org.freeplane.features.mindmapmode.file.MFileManager.FREEPLANE_FILE_EXTENSION);
 			}
 			try {
 				UrlManager.fileToUrl(chosenFile);
@@ -89,7 +89,7 @@ class ExportBranchAction extends FreeplaneAction {
 			if (chosenFile.exists()) {
 				final int overwriteMap = JOptionPane.showConfirmDialog(Controller.getController()
                 .getMapView(),
-				    getModeController().getText("map_already_exists"), "FreeMind",
+				    getModeController().getText("map_already_exists"), "Freeplane",
 				    JOptionPane.YES_NO_OPTION);
 				if (overwriteMap != JOptionPane.YES_OPTION) {
 					return;

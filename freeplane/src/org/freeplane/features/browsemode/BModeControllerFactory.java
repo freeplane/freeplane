@@ -23,7 +23,7 @@ import javax.swing.JPopupMenu;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.MapController;
-import org.freeplane.core.ui.components.FreeMindToolBar;
+import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.clipboard.ClipboardController;
@@ -70,7 +70,7 @@ public class BModeControllerFactory {
 		Controller.getController().getViewController()
 		    .addMapTitleChangeListener(toolbarContributor);
 		userInputListenerFactory.setNodePopupMenu(new JPopupMenu());
-		userInputListenerFactory.setMainToolBar(new FreeMindToolBar());
+		userInputListenerFactory.setMainToolBar(new FreeplaneToolBar());
 		modeController.updateMenus("org/freeplane/features/browsemode/menu.xml");
 		return modeController;
 	}

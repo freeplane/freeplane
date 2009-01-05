@@ -41,7 +41,7 @@ public class AppletResourceController extends ResourceController {
 	public AppletResourceController(final JApplet applet) {
 		super();
 		this.applet = applet;
-		final URL defaultPropsURL = getResource("freemind.properties");
+		final URL defaultPropsURL = getResource("freeplane.properties");
 		try {
 			userProps = new Properties();
 			final InputStream in = defaultPropsURL.openStream();
@@ -59,7 +59,7 @@ public class AppletResourceController extends ResourceController {
 	}
 
 	@Override
-	public String getFreemindUserDirectory() {
+	public String getFreeplaneUserDirectory() {
 		return null;
 	}
 
@@ -87,7 +87,7 @@ public class AppletResourceController extends ResourceController {
 	public URL getResource(final String name) {
 		final URL resourceURL = this.getClass().getResource("/" + name);
 		if (resourceURL == null || !resourceURL.getProtocol().equals("jar")
-		        && System.getProperty("freemind.debug", null) == null) {
+		        && System.getProperty("freeplane.debug", null) == null) {
 			return null;
 		}
 		return resourceURL;

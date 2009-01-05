@@ -120,7 +120,7 @@ public class BlinkingNodeHook extends PersistentNodeHook {
 
 	/*
 	 * (non-Javadoc)
-	 * @see freemind.extensions.MindMapHook#shutdownMapHook()
+	 * @see freeplane.extensions.MindMapHook#shutdownMapHook()
 	 */
 	@Override
 	public void remove(final NodeModel node, final IExtension extension) {

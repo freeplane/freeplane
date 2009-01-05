@@ -40,7 +40,7 @@ import org.freeplane.view.swing.map.MapView;
 /**
  * This class manages a list of the maps that were opened last. It aims to
  * provide persistence for the last recent maps. Maps should be shown in the
- * format:"mode\:key",ie."Mindmap\:/home/joerg/freemind.mm"
+ * format:"mode\:key",ie."Mindmap\:/home/joerg/freeplane.mm"
  */
 public class LastOpenedList {
 	/**

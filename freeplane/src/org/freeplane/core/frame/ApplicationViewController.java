@@ -46,7 +46,7 @@ import javax.swing.UIManager;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.components.FreemindMenuBar;
+import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.util.Tools;
 
 public class ApplicationViewController extends ViewController {
@@ -65,7 +65,7 @@ public class ApplicationViewController extends ViewController {
 
 	/*
 	 * (non-Javadoc)
-	 * @see freemind.main.FreeMindMain#exit()
+	 * @see freeplane.main.FreeplaneMain#exit()
 	 */
 	@Override
 	public void exit() {
@@ -87,7 +87,7 @@ public class ApplicationViewController extends ViewController {
 
 	/*
 	 * (non-Javadoc)
-	 * @see freemind.main.FreeMindMain#getContentPane()
+	 * @see freeplane.main.FreeplaneMain#getContentPane()
 	 */
 	@Override
 	public Container getContentPane() {
@@ -95,13 +95,13 @@ public class ApplicationViewController extends ViewController {
 	}
 
 	@Override
-	public FreemindMenuBar getFreeMindMenuBar() {
-		return (FreemindMenuBar) frame.getJMenuBar();
+	public FreeplaneMenuBar getFreeplaneMenuBar() {
+		return (FreeplaneMenuBar) frame.getJMenuBar();
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see freemind.main.FreeMindMain#getJFrame()
+	 * @see freeplane.main.FreeplaneMain#getJFrame()
 	 */
 	@Override
 	public JFrame getJFrame() {
@@ -110,7 +110,7 @@ public class ApplicationViewController extends ViewController {
 
 	/*
 	 * (non-Javadoc)
-	 * @see freemind.main.FreeMindMain#getLayeredPane()
+	 * @see freeplane.main.FreeplaneMain#getLayeredPane()
 	 */
 	public JLayeredPane getLayeredPane() {
 		return frame.getLayeredPane();
@@ -119,7 +119,7 @@ public class ApplicationViewController extends ViewController {
 	@Override
 	public void init() {
 		final ImageIcon mWindowIcon = new ImageIcon(resourceController
-		    .getResource("images/Freeplane_application_icon_blue.png"));
+		    .getResource("images/Freeplane_icon.png"));
 		getJFrame().setIconImage(mWindowIcon.getImage());
 		getContentPane().setLayout(new BorderLayout());
 		super.init();
@@ -266,7 +266,7 @@ public class ApplicationViewController extends ViewController {
 			}
 			catch (final IOException x) {
 				Controller.getController().errorMessage(
-				    "Could not invoke browser.\n\nFreemind excecuted the following statement on a command line:\n\""
+				    "Could not invoke browser.\n\nFreeplane excecuted the following statement on a command line:\n\""
 				            + command
 				            + "\".\n\nYou may look at the user or default property called '"
 				            + propertyString + "'.");
@@ -286,7 +286,7 @@ public class ApplicationViewController extends ViewController {
 				Controller
 				    .getController()
 				    .errorMessage(
-				        "Could not invoke browser.\n\nFreemind excecuted the following statement on a command line:\n\""
+				        "Could not invoke browser.\n\nFreeplane excecuted the following statement on a command line:\n\""
 				                + browser_command
 				                + "\".\n\nYou may look at the user or default property called 'default_browser_command_mac'.");
 				System.err.println("Caught: " + ex2);
@@ -305,7 +305,7 @@ public class ApplicationViewController extends ViewController {
 				Controller
 				    .getController()
 				    .errorMessage(
-				        "Could not invoke browser.\n\nFreemind excecuted the following statement on a command line:\n\""
+				        "Could not invoke browser.\n\nFreeplane excecuted the following statement on a command line:\n\""
 				                + browser_command
 				                + "\".\n\nYou may look at the user or default property called 'default_browser_command_other_os'.");
 				System.err.println("Caught: " + ex2);
@@ -348,13 +348,13 @@ public class ApplicationViewController extends ViewController {
 	}
 
 	@Override
-	void setFreeMindMenuBar(final FreemindMenuBar menuBar) {
+	void setFreeplaneMenuBar(final FreeplaneMenuBar menuBar) {
 		frame.setJMenuBar(menuBar);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see freemind.main.FreeMindMain#setTitle(java.lang.String)
+	 * @see freeplane.main.FreeplaneMain#setTitle(java.lang.String)
 	 */
 	@Override
 	public void setTitle(final String title) {

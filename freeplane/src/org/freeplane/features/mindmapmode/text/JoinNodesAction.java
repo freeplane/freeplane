@@ -80,7 +80,7 @@ class JoinNodesAction extends FreeplaneAction {
 			final NodeModel node = (NodeModel) it.next();
 			if (node.getModeController().getMapController().hasChildren(node)) {
 				JOptionPane.showMessageDialog(mapView, getModeController().getText(
-				    "cannot_join_nodes_with_children"), "FreeMind", JOptionPane.WARNING_MESSAGE);
+				    "cannot_join_nodes_with_children"), "Freeplane", JOptionPane.WARNING_MESSAGE);
 				return;
 			}
 		}

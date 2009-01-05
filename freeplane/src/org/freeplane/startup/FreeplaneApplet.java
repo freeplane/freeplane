@@ -30,7 +30,7 @@ import org.freeplane.core.resources.AppletResourceController;
 import org.freeplane.features.browsemode.BModeController;
 import org.freeplane.features.browsemode.BModeControllerFactory;
 
-public class FreeMindApplet extends JApplet {
+public class FreeplaneApplet extends JApplet {
 	private AppletViewController appletViewController;
 	private AppletResourceController resourceController;
 

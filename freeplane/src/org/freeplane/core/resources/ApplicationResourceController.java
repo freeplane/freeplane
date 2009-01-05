@@ -39,7 +39,7 @@ import java.util.logging.Logger;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.FilterController;
-import org.freeplane.core.resources.ui.IFreemindPropertyListener;
+import org.freeplane.core.resources.ui.IFreeplanePropertyListener;
 
 /**
  * @author Dimitry Polivaev
@@ -60,7 +60,7 @@ public class ApplicationResourceController extends ResourceController {
 		createLogger();
 		setDefaultLocale(props);
 		autoPropertiesFile = getUserPreferencesFile(defProps);
-		addPropertyChangeListener(new IFreemindPropertyListener() {
+		addPropertyChangeListener(new IFreeplanePropertyListener() {
 			public void propertyChanged(final String propertyName, final String newValue,
 			                            final String oldValue) {
 				if (propertyName.equals(ResourceController.RESOURCE_LANGUAGE)) {
@@ -82,7 +82,7 @@ public class ApplicationResourceController extends ResourceController {
 			}
 		}
 		try {
-			mFileHandler = new FileHandler(getFreemindUserDirectory() + File.separator + "log",
+			mFileHandler = new FileHandler(getFreeplaneUserDirectory() + File.separator + "log",
 			    1400000, 5, false);
 			mFileHandler.setFormatter(new StdFormatter());
 			mFileHandler.setLevel(Level.INFO);
@@ -106,7 +106,7 @@ public class ApplicationResourceController extends ResourceController {
 	}
 
 	private void createUserDirectory(final Properties pDefaultProperties) {
-		final File userPropertiesFolder = new File(getFreeMindUserDirectory(pDefaultProperties));
+		final File userPropertiesFolder = new File(getFreeplaneUserDirectory(pDefaultProperties));
 		try {
 			if (!userPropertiesFolder.exists()) {
 				userPropertiesFolder.mkdir();
@@ -125,11 +125,11 @@ public class ApplicationResourceController extends ResourceController {
 	}
 
 	@Override
-	public String getFreemindUserDirectory() {
+	public String getFreeplaneUserDirectory() {
 		return System.getProperty("user.home") + File.separator + getProperty("properties_folder");
 	}
 
-	private String getFreeMindUserDirectory(final Properties defaultPreferences) {
+	private String getFreeplaneUserDirectory(final Properties defaultPreferences) {
 		return System.getProperty("user.home") + File.separator
 		        + defaultPreferences.getProperty("properties_folder");
 	}
@@ -154,8 +154,8 @@ public class ApplicationResourceController extends ResourceController {
 			System.err.println("Panic! Error while loading default properties.");
 			System.exit(1);
 		}
-		final String freemindDirectory = getFreeMindUserDirectory(defaultPreferences);
-		final File userPropertiesFolder = new File(freemindDirectory);
+		final String freeplaneDirectory = getFreeplaneUserDirectory(defaultPreferences);
+		final File userPropertiesFolder = new File(freeplaneDirectory);
 		final File autoPropertiesFile = new File(userPropertiesFolder, defaultPreferences
 		    .getProperty("autoproperties"));
 		return autoPropertiesFile;
@@ -173,7 +173,7 @@ public class ApplicationResourceController extends ResourceController {
 	}
 
 	private Properties readDefaultPreferences() {
-		final String propsLoc = "/freemind.properties";
+		final String propsLoc = "/freeplane.properties";
 		final URL defaultPropsURL = getClass().getResource(propsLoc);
 		final Properties props = new Properties();
 		try {
@@ -210,7 +210,7 @@ public class ApplicationResourceController extends ResourceController {
 		try {
 			final OutputStream out = new FileOutputStream(autoPropertiesFile);
 			final OutputStreamWriter outputStreamWriter = new OutputStreamWriter(out, "8859_1");
-			outputStreamWriter.write("#FreeMind ");
+			outputStreamWriter.write("#Freeplane ");
 			outputStreamWriter.write(Controller.VERSION.toString());
 			outputStreamWriter.write('\n');
 			outputStreamWriter.flush();

@@ -96,7 +96,7 @@ class ForkMainView extends MainView {
 
 	/*
 	 * (non-Javadoc)
-	 * @see freemind.view.mindmapview.NodeView#getStyle()
+	 * @see freeplane.view.mindmapview.NodeView#getStyle()
 	 */
 	@Override
 	String getStyle() {

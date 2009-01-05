@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-	File:        freemind2html.xsl
+	File:        freeplane2html.xsl
 	Version:     0.8.1
 	Description: A XSLT stylesheet to transform mindmap files created with
-	FreeMind (http://freemind.sf.net) into HTML files. The
+	Freeplane (http://freeplane.sf.net) into HTML files. The
 	transformation will keep the structure of the files, clouds
 	(with it's colors), icons, internal and external links and the ability
 	to collapse whole subtrees of the document (with JavaScript enabled).
@@ -18,12 +18,12 @@
 	Other browsers were not tested, but you should have a good chance of
 	gettting things to work with them.
 	Usage:     Use any XSLT-Processor (development was done using xsltproc
-	under Linux) to apply this stylesheet to the FreeMind-file. Copy the
+	under Linux) to apply this stylesheet to the Freeplane-file. Copy the
 	result and all the PNG-Files inside the script directory
 	(including the icons-subdir) into a directory of it's own
 	(e.g. on a webserver).
 	Open the HTML-file with a webbrowser.
-	Author:   Markus Brueckner <freemind-xsl@slash-me.net>
+	Author:   Markus Brueckner <freeplane-xsl@slash-me.net>
 	License:  BSD license without advertising clause. (see
 	http://www.opensource.org/licenses/bsd-license.php for further details)
 	Bug fix (FC/ 25.04.2006): 
@@ -45,7 +45,7 @@
 	    omit-xml-declaration="no"
 	    />
 
-<!-- fc, 20.10.2004: The following parameter is set by freemind. -->
+<!-- fc, 20.10.2004: The following parameter is set by freeplane. -->
 <xsl:param name="destination_dir">./</xsl:param>
 <xsl:param name="area_code"></xsl:param>
 <xsl:param name="folding_type">html_export_no_folding</xsl:param>
@@ -56,7 +56,7 @@
 		html_export_based_on_headings: this means, that approx. five levels are given, more deeper nodes are folded.
 		As of the time being, this parameter is not used.
 		-->
-<!-- if false, does not show standard freemind icons
+<!-- if false, does not show standard freeplane icons
 (assumed to be in ./icons directory), default is true -->
 <xsl:param name="show_icons">true</xsl:param>
 <!-- if true, external links urls are shown, default is false. -->
@@ -69,7 +69,7 @@
 <!-- Thanks to gulpman: -->
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
-<xsl:comment>This file has been created with freemind2html.xsl</xsl:comment>
+<xsl:comment>This file has been created with freeplane2html.xsl</xsl:comment>
 <head>
 	<title><xsl:call-template name="output-title" /></title>
 	<!-- Stylesheet, generator and some JavaScript for the collapsing of
@@ -77,14 +77,14 @@
 	<xsl:element name="link">
 		<xsl:attribute name="rel">stylesheet</xsl:attribute>
 		<xsl:attribute name="href">
-			<xsl:value-of select="$destination_dir"/>freemind2html.css</xsl:attribute>
+			<xsl:value-of select="$destination_dir"/>freeplane2html.css</xsl:attribute>
 		<xsl:attribute name="type">text/css</xsl:attribute>
 	</xsl:element>
-        <meta name="generator" content="FreeMind-XSL Stylesheet (see: http://freemind-xsl.dev.slash-me.net/ for details)" />
+        <meta name="generator" content="Freeplane-XSL Stylesheet (see: http://freeplane-xsl.dev.slash-me.net/ for details)" />
 	<xsl:element name="script">
 		<xsl:attribute name="type">text/javascript</xsl:attribute>
 		<xsl:attribute name="src">
-			<xsl:value-of select="$destination_dir"/>freemind2html.js</xsl:attribute>&#160; 
+			<xsl:value-of select="$destination_dir"/>freeplane2html.js</xsl:attribute>&#160; 
 	</xsl:element>
 	<script type="text/javascript">
 		<xsl:comment>
@@ -192,7 +192,7 @@
 	<xsl:call-template name="output-icons" />
 	<!-- check if this node has an ID (for the document internal links) -->
 	<xsl:if test="@ID">
-		<!-- note: as FreeMind sometimes prepends the IDs with an
+		<!-- note: as Freeplane sometimes prepends the IDs with an
 			underscore which is not valid as the first character
 			in an HTML id, we surround the ID with FM<ID>FM -->
 		<a>
@@ -201,7 +201,7 @@
 	</xsl:if>
 	<xsl:call-template name="output-node" />
 	<!-- if there are arrowlinks inside this node (i.e. this node is
-		connected to another node in FreeMind using an arrow), then
+		connected to another node in Freeplane using an arrow), then
 		create a document internal link -->
 	<xsl:if test="child::arrowlink">
 		<xsl:call-template name="output-arrowlinks" />
@@ -228,7 +228,7 @@
 
 <!-- ### XHTML LIBRARY ### -->
 <!-- (this part could be extracted and 'import'ed from toxhtml.xsl and
-     freemindtohtml.xsl if there wouldn't be issues with the path -->
+     freeplanetohtml.xsl if there wouldn't be issues with the path -->
 
 <xsl:template match="font">
 	<xsl:if test="string-length(@SIZE) > 0">font-size:<xsl:value-of select="round((number(@SIZE) div 12)*100)" />%;</xsl:if><xsl:if test="@BOLD='true'">font-weight:bold;</xsl:if><xsl:if test="@ITALIC='true'">font-style:italic;</xsl:if>
@@ -329,7 +329,7 @@
 		<xsl:apply-templates select="/map/node/richcontent[@TYPE='NODE']/html/body" mode="strip-tags" />
 	</xsl:when>
 	<xsl:otherwise>
-		<xsl:text>FreeMind2HTML Mindmap</xsl:text>
+		<xsl:text>Freeplane2HTML Mindmap</xsl:text>
 	</xsl:otherwise>
 	</xsl:choose>
 </xsl:template>

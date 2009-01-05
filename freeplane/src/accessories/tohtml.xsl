@@ -15,8 +15,8 @@
  
  Miika Nurminen (minurmin@cc.jyu.fi) 13.7.2004.
 
-Transforms Freemind (0.6.7) mm file to HTML 4.0 transitional. 
-Output is valid (possibly apart HTML entered by user in Freemind).
+Transforms Freeplane (0.6.7) mm file to HTML 4.0 transitional. 
+Output is valid (possibly apart HTML entered by user in Freeplane).
 
 -->
 <xsl:stylesheet version="1.0"

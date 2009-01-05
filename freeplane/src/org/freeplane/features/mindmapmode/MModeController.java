@@ -36,7 +36,7 @@ import org.freeplane.core.resources.ui.OptionString;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.core.ui.components.FreemindMenuBar;
+import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.core.url.UrlManager;
@@ -230,7 +230,7 @@ public class MModeController extends ModeController {
 		((MIconController) IconController.getController(this)).updateMenus(builder);
 		MPatternController.getController(this).createPatternSubMenu(builder,
 		    UserInputListenerFactory.NODE_POPUP);
-		final String formatMenuString = FreemindMenuBar.FORMAT_MENU;
+		final String formatMenuString = FreeplaneMenuBar.FORMAT_MENU;
 		MPatternController.getController(this).createPatternSubMenu(builder, formatMenuString);
 		super.updateMenus();
 	}

@@ -158,7 +158,7 @@ public class NodeAttributeTableModel extends AbstractTableModel implements IAttr
 
 	/*
 	 * (non-Javadoc)
-	 * @see freemind.modes.attributes.AttributeTableModel#get(int)
+	 * @see freeplane.modes.attributes.AttributeTableModel#get(int)
 	 */
 	public Attribute getAttribute(final int row) {
 		return (Attribute) attributes.get(row);

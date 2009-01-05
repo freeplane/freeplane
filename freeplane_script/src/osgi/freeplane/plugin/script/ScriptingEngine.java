@@ -1,5 +1,5 @@
 /*
- * FreeMind - A Program for creating and viewing MindmapsCopyright (C) 2000-2006
+ * Freeplane - A Program for creating and viewing MindmapsCopyright (C) 2000-2006
  * Joerg Mueller, Daniel Polansky, Christian Foltin and others.See COPYING for
  * DetailsThis program is free software; you can redistribute it and/ormodify it
  * under the terms of the GNU General Public Licenseas published by the Free
@@ -46,7 +46,7 @@ import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.attribute.MAttributeController;
 import org.freeplane.features.mindmapmode.text.MTextController;
-import org.freeplane.startup.FreeMindSecurityManager;
+import org.freeplane.startup.FreeplaneSecurityManager;
 
 /**
  * @author foltin
@@ -140,7 +140,7 @@ class ScriptingEngine extends FreeplaneAction {
 		}
 		final ScriptingSecurityManager scriptingSecurityManager = new ScriptingSecurityManager(
 		    filePerm, networkPerm, execPerm);
-		final FreeMindSecurityManager securityManager = (FreeMindSecurityManager) System
+		final FreeplaneSecurityManager securityManager = (FreeplaneSecurityManager) System
 		    .getSecurityManager();
 		try {
 			System.setOut(pOutStream);

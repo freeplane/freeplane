@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <!--
     adapted from mm2oowriter.xsl by Ondrej Popp  
-/*FreeMind - A Program for creating and viewing Mindmaps
+/*Freeplane - A Program for creating and viewing Mindmaps
  *Copyright (C) 2000-2008  Christian Foltin and others.
  *
  *See COPYING for Details

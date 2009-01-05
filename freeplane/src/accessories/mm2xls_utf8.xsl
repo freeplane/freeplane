@@ -35,7 +35,7 @@
 	<Font ss:Bold="1"/>
 	</Style>
       </Styles>
-      <Worksheet ss:Name="FreeMind Sheet">
+      <Worksheet ss:Name="Freeplane Sheet">
         <Table>
 		<xsl:apply-templates select="node">
 			<xsl:with-param name="index" select="1" />

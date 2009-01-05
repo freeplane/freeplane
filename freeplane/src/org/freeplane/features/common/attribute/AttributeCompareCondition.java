@@ -62,7 +62,7 @@ public class AttributeCompareCondition extends CompareConditionAdapter {
 	/*
 	 * (non-Javadoc)
 	 * @see
-	 * freemind.controller.filter.condition.Condition#checkNode(freemind.modes
+	 * freeplane.controller.filter.condition.Condition#checkNode(freeplane.modes
 	 * .MindMapNode)
 	 */
 	public boolean checkNode(final NodeModel node) {

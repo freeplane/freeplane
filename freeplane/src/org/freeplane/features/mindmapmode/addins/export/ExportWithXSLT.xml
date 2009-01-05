@@ -32,9 +32,9 @@
         <properties
             file_type="html"
             file_description="accessories/plugins/ExportWithXSLT_Applet.properties_webpage"
-            xslt_file="accessories/freemind2html.xsl"
+            xslt_file="accessories/freeplane2html.xsl"
             create_dir="true"
-            files_to_copy="freemind2html.css,hide.png,leaf.png,show.png,ilink.png"
+            files_to_copy="freeplane2html.css,hide.png,leaf.png,show.png,ilink.png"
             file_prefix="accessories/"
             copy_icons="true"
             load_file="true"
@@ -49,9 +49,9 @@
         <properties
             file_type="html"
             file_description="accessories/plugins/ExportWithXSLT_Applet.properties_webpage"
-            xslt_file="accessories/freemind2applet.xsl"
+            xslt_file="accessories/freeplane2applet.xsl"
             create_dir="true"
-            files_to_copy="freemindbrowser.jar"
+            files_to_copy="freeplanebrowser.jar"
             file_prefix="browser/"
             copy_map="true"
             load_file="true" />
@@ -64,9 +64,9 @@
         <properties
             file_type="html"
             file_description="accessories/plugins/ExportWithXSLT_Applet.properties_webpage"
-            xslt_file="accessories/freemind2flash.xsl"
+            xslt_file="accessories/freeplane2flash.xsl"
             create_dir="true"
-            files_to_copy="visorFreemind.swf,flashobject.js"
+            files_to_copy="visorFreeplane.swf,flashobject.js"
             file_prefix="accessories/plugins/flash/"
             copy_map="true"
             load_file="true" />

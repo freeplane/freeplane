@@ -91,7 +91,7 @@ public class DefaultFilter implements IFilter {
 	/*
 	 * (non-Javadoc)
 	 * @see
-	 * freemind.controller.filter.Filter#applyFilter(freemind.modes.MindMap)
+	 * freeplane.controller.filter.Filter#applyFilter(freeplane.modes.MindMap)
 	 */
 	public void applyFilter() {
 		if (condition != null) {
@@ -139,7 +139,7 @@ public class DefaultFilter implements IFilter {
 
 	/*
 	 * (non-Javadoc)
-	 * @see freemind.controller.filter.Filter#areAncestorsShown()
+	 * @see freeplane.controller.filter.Filter#areAncestorsShown()
 	 */
 	public boolean areAncestorsShown() {
 		return 0 != (options & IFilter.FILTER_SHOW_ANCESTOR);
@@ -147,7 +147,7 @@ public class DefaultFilter implements IFilter {
 
 	/*
 	 * (non-Javadoc)
-	 * @see freemind.controller.filter.Filter#areDescendantsShown()
+	 * @see freeplane.controller.filter.Filter#areDescendantsShown()
 	 */
 	public boolean areDescendantsShown() {
 		return 0 != (options & IFilter.FILTER_SHOW_DESCENDANT);
@@ -155,7 +155,7 @@ public class DefaultFilter implements IFilter {
 
 	/*
 	 * (non-Javadoc)
-	 * @see freemind.controller.filter.Filter#areEclipsedShown()
+	 * @see freeplane.controller.filter.Filter#areEclipsedShown()
 	 */
 	public boolean areEclipsedShown() {
 		return true;
@@ -163,7 +163,7 @@ public class DefaultFilter implements IFilter {
 
 	/*
 	 * (non-Javadoc)
-	 * @see freemind.controller.filter.Filter#areHiddenShown()
+	 * @see freeplane.controller.filter.Filter#areHiddenShown()
 	 */
 	public boolean areHiddenShown() {
 		return false;
@@ -171,7 +171,7 @@ public class DefaultFilter implements IFilter {
 
 	/*
 	 * (non-Javadoc)
-	 * @see freemind.controller.filter.Filter#areMatchedShown()
+	 * @see freeplane.controller.filter.Filter#areMatchedShown()
 	 */
 	public boolean areMatchedShown() {
 		return true;
@@ -200,7 +200,7 @@ public class DefaultFilter implements IFilter {
 	/*
 	 * (non-Javadoc)
 	 * @see
-	 * freemind.controller.filter.Filter#isVisible(freemind.modes.MindMapNode)
+	 * freeplane.controller.filter.Filter#isVisible(freeplane.modes.MindMapNode)
 	 */
 	public boolean isVisible(final NodeModel node) {
 		if (condition == null) {

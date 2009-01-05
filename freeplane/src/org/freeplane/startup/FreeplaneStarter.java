@@ -43,40 +43,40 @@ import org.freeplane.features.filemode.FModeControllerFactory;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.MModeControllerFactory;
 
-public class FreemindStarter {
+public class FreeplaneStarter {
 	public static final String LOAD_LAST_MAP = "load_last_map";
 
 	void checkJavaVersion() {
 		System.out.println("Checking Java Version...");
 		if (Controller.JAVA_VERSION.compareTo("1.5.0") < 0) {
-			final String message = "Warning: FreeMind requires version Java 1.5.0 or higher (your version: "
+			final String message = "Warning: Freeplane requires version Java 1.5.0 or higher (your version: "
 			        + Controller.JAVA_VERSION
 			        + ", installed in "
 			        + System.getProperty("java.home")
 			        + ").";
 			System.err.println(message);
-			JOptionPane.showMessageDialog(null, message, "FreeMind", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null, message, "Freeplane", JOptionPane.WARNING_MESSAGE);
 			System.exit(1);
 		}
 	}
 
 	static public void main(final String[] args) {
-		final FreemindStarter starter = new FreemindStarter();
+		final FreeplaneStarter starter = new FreeplaneStarter();
 		starter.run(args);
 	}
 
 	private Controller controller;
-	private IFreeMindSplash splash;
+	private IFreeplaneSplash splash;
 	private IFeedBack feedBack;
 	private ApplicationViewController viewController;
 
-	public FreemindStarter() {
+	public FreeplaneStarter() {
 		super();
 		checkJavaVersion();
 		final StringBuffer info = new StringBuffer();
-		info.append("freemind_version = ");
+		info.append("freeplane_version = ");
 		info.append(Controller.VERSION);
-		info.append("; freemind_xml_version = ");
+		info.append("; freeplane_xml_version = ");
 		info.append(Controller.XML_VERSION);
 		info.append("\njava_version = ");
 		info.append(System.getProperty("java.version"));
@@ -102,7 +102,7 @@ public class FreemindStarter {
 		for (int i = 0; i < args.length; i++) {
 			String fileArgument = args[i];
 			if (fileArgument.toLowerCase().endsWith(
-			    org.freeplane.features.mindmapmode.file.MFileManager.FREEMIND_FILE_EXTENSION)) {
+			    org.freeplane.features.mindmapmode.file.MFileManager.FREEPLANE_FILE_EXTENSION)) {
 				if (!UrlManager.isAbsolutePath(fileArgument)) {
 					fileArgument = System.getProperty("user.dir")
 					        + System.getProperty("file.separator") + fileArgument;
@@ -121,7 +121,7 @@ public class FreemindStarter {
 			final String restoreable = Controller.getResourceController().getProperty(
 			    Controller.ON_START_IF_NOT_SPECIFIED);
 			if (Tools.isPreferenceTrue(Controller.getResourceController().getProperty(
-			    FreemindStarter.LOAD_LAST_MAP))
+			    FreeplaneStarter.LOAD_LAST_MAP))
 			        && restoreable != null && restoreable.length() > 0) {
 				try {
 					Controller.getController().getViewController().getLastOpenedList().open(
@@ -138,7 +138,7 @@ public class FreemindStarter {
 		if (!fileLoaded) {
 			/*
 			 * nothing loaded so far. Perhaps, we should display a new map...
-			 * According to Summary: On first start FreeMind should show new map
+			 * According to Summary: On first start Freeplane should show new map
 			 * to newbies https: &aid=1752516&group_id=7118
 			 */
 			pModeController.getMapController().newMap(((NodeModel) null));
@@ -154,7 +154,7 @@ public class FreemindStarter {
 		}
 		catch (final Exception e) {
 			e.printStackTrace();
-			JOptionPane.showMessageDialog(null, "freemind.main.FreeMind can't be started",
+			JOptionPane.showMessageDialog(null, "freeplane.main.Freeplane can't be started",
 			    "Startup problem", JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
 		}
@@ -201,7 +201,7 @@ public class FreemindStarter {
 	public void createController() {
 	    final ApplicationResourceController resourceController = new ApplicationResourceController();
 	    controller = new Controller(resourceController);
-	    splash = new FreeMindSplashModern();
+	    splash = new FreeplaneSplashModern();
 	    splash.setVisible(true);
 	    feedBack = splash.getFeedBack();
 	    feedBack.setMaximumValue(9);
@@ -210,7 +210,14 @@ public class FreemindStarter {
 	    feedBack.increase("Freeplane.progress.updateLookAndFeel");
 	    updateLookAndFeel();
 	    feedBack.increase("Freeplane.progress.createController");
-	    System.setSecurityManager(new FreeMindSecurityManager());
+//try {
+//	Thread.sleep(100000);
+//}
+//catch (InterruptedException e) {
+//	// TODO Auto-generated catch block
+//	e.printStackTrace();
+//}	    
+	    System.setSecurityManager(new FreeplaneSecurityManager());
 	    viewController = new ApplicationViewController();
 	    FilterController.install();
 	    PrintController.install();

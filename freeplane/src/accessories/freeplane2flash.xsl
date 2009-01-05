@@ -3,7 +3,7 @@
                 version="1.0">
 
   <!--
-/*FreeMind - A Program for creating and viewing Mindmaps
+/*Freeplane - A Program for creating and viewing Mindmaps
  *Copyright (C) 2006  Christian Foltin <christianfoltin@users.sourceforge.net>
  *See COPYING for Details
  *
@@ -27,7 +27,7 @@
   <xsl:output method="xml" doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" 
     doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"/>
  
-<!-- fc, 20.10.2004: The following parameter is set by freemind. -->
+<!-- fc, 20.10.2004: The following parameter is set by freeplane. -->
 <xsl:param name="destination_dir">./</xsl:param>
 <xsl:param name="area_code"></xsl:param>
 <xsl:param name="folding_type">html_export_no_folding</xsl:param>
@@ -80,7 +80,7 @@
 	</div>
 	
 	<script type="text/javascript">
-		var fo = new FlashObject("./<xsl:value-of select="$destination_dir"/>visorFreemind.swf", "visorFreeMind", "100%", "100%", 6, "#9999ff");
+		var fo = new FlashObject("./<xsl:value-of select="$destination_dir"/>visorFreeplane.swf", "visorFreeplane", "100%", "100%", 6, "#9999ff");
 		fo.addParam("quality", "high");
 		fo.addParam("bgcolor", "#ffffff");
 		fo.addVariable("openUrl", "_blank");
@@ -105,7 +105,7 @@
 		<xsl:apply-templates select="/map/node/richcontent[@TYPE='NODE']/html/body" mode="strip-tags" />
 	</xsl:when>
 	<xsl:otherwise>
-		<xsl:text>FreeMind2HTML Mindmap</xsl:text>
+		<xsl:text>Freeplane2HTML Mindmap</xsl:text>
 	</xsl:otherwise>
 	</xsl:choose>
 </xsl:template>

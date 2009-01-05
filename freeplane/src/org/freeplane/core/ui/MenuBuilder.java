@@ -68,7 +68,7 @@ public class MenuBuilder extends UIBuilder {
 
 		/*
 		 * (non-Javadoc)
-		 * @see freemind.main.Tools.IAbstractButton#getText()
+		 * @see freeplane.main.Tools.IAbstractButton#getText()
 		 */
 		public String getText() {
 			return (String) action.getValue(Action.NAME);
@@ -77,14 +77,14 @@ public class MenuBuilder extends UIBuilder {
 		/*
 		 * (non-Javadoc)
 		 * @see
-		 * freemind.main.Tools.IAbstractButton#setDisplayedMnemonicIndex(int)
+		 * freeplane.main.Tools.IAbstractButton#setDisplayedMnemonicIndex(int)
 		 */
 		public void setDisplayedMnemonicIndex(final int mnemoSignIndex) {
 		}
 
 		/*
 		 * (non-Javadoc)
-		 * @see freemind.main.Tools.IAbstractButton#setMnemonic(char)
+		 * @see freeplane.main.Tools.IAbstractButton#setMnemonic(char)
 		 */
 		public void setMnemonic(final char charAfterMnemoSign) {
 			int vk = charAfterMnemoSign;
@@ -96,7 +96,7 @@ public class MenuBuilder extends UIBuilder {
 
 		/*
 		 * (non-Javadoc)
-		 * @see freemind.main.Tools.IAbstractButton#setText(java.lang.String)
+		 * @see freeplane.main.Tools.IAbstractButton#setText(java.lang.String)
 		 */
 		public void setText(final String text) {
 			action.putValue(Action.NAME, text);
@@ -113,7 +113,7 @@ public class MenuBuilder extends UIBuilder {
 
 		/*
 		 * (non-Javadoc)
-		 * @see freemind.main.Tools.IAbstractButton#getText()
+		 * @see freeplane.main.Tools.IAbstractButton#getText()
 		 */
 		public String getText() {
 			return btn.getText();
@@ -122,7 +122,7 @@ public class MenuBuilder extends UIBuilder {
 		/*
 		 * (non-Javadoc)
 		 * @see
-		 * freemind.main.Tools.IAbstractButton#setDisplayedMnemonicIndex(int)
+		 * freeplane.main.Tools.IAbstractButton#setDisplayedMnemonicIndex(int)
 		 */
 		public void setDisplayedMnemonicIndex(final int mnemoSignIndex) {
 			btn.setDisplayedMnemonicIndex(mnemoSignIndex);
@@ -130,7 +130,7 @@ public class MenuBuilder extends UIBuilder {
 
 		/*
 		 * (non-Javadoc)
-		 * @see freemind.main.Tools.IAbstractButton#setMnemonic(char)
+		 * @see freeplane.main.Tools.IAbstractButton#setMnemonic(char)
 		 */
 		public void setMnemonic(final char charAfterMnemoSign) {
 			btn.setMnemonic(charAfterMnemoSign);
@@ -138,7 +138,7 @@ public class MenuBuilder extends UIBuilder {
 
 		/*
 		 * (non-Javadoc)
-		 * @see freemind.main.Tools.IAbstractButton#setText(java.lang.String)
+		 * @see freeplane.main.Tools.IAbstractButton#setText(java.lang.String)
 		 */
 		public void setText(final String text) {
 			btn.setText(text);

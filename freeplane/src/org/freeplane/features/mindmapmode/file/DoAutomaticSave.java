@@ -80,7 +80,7 @@ public class DoAutomaticSave extends TimerTask {
 							        "FM_"
 							                + ((model.toString() == null) ? "unnamed" : model
 							                    .toString()),
-							        org.freeplane.features.mindmapmode.file.MFileManager.FREEMIND_FILE_EXTENSION,
+							        org.freeplane.features.mindmapmode.file.MFileManager.FREEPLANE_FILE_EXTENSION,
 							        pathToStore);
 							if (filesShouldBeDeletedAfterShutdown) {
 								tempFile.deleteOnExit();

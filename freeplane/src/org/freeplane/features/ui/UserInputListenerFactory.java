@@ -69,7 +69,7 @@ import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.ui.IFreemindPropertyListener;
+import org.freeplane.core.resources.ui.IFreeplanePropertyListener;
 import org.freeplane.core.ui.ControllerPopupMenuListener;
 import org.freeplane.core.ui.IEditHandler;
 import org.freeplane.core.ui.IMapMouseReceiver;
@@ -79,7 +79,7 @@ import org.freeplane.core.ui.INodeMouseMotionListener;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.UIBuilder;
-import org.freeplane.core.ui.components.FreemindMenuBar;
+import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.util.Tools;
 import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.clipboard.MindMapNodesSelection;
@@ -104,7 +104,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		public  DefaultMouseWheelListener() {
 			super();
 			Controller.getResourceController().addPropertyChangeListener(
-			    new IFreemindPropertyListener() {
+			    new IFreeplanePropertyListener() {
 				    public void propertyChanged(final String propertyName, final String newValue,
 				                                final String oldValue) {
 					    if (propertyName.equals(ResourceController.RESOURCES_WHEEL_VELOCITY)) {
@@ -119,7 +119,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		/*
 		 * (non-Javadoc)
 		 * @see
-		 * freemind.modes.ModeController.MouseWheelEventHandler#handleMouseWheelEvent
+		 * freeplane.modes.ModeController.MouseWheelEventHandler#handleMouseWheelEvent
 		 * (java.awt.event.MouseWheelEvent)
 		 */
 		public void mouseWheelMoved(final MouseWheelEvent e) {
@@ -691,7 +691,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	private MouseWheelListener mapMouseWheelListener;
 	final private ActionListener mapsMenuActionListener;
 	private JPopupMenu mapsPopupMenu;
-	private FreemindMenuBar menuBar;
+	private FreeplaneMenuBar menuBar;
 	private final MenuBuilder menuBuilder;
 	private URL menuStructure;
 	final private HashSet mRegisteredMouseWheelEventHandler = new HashSet();
@@ -737,9 +737,9 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		return mapsPopupMenu;
 	}
 
-	public FreemindMenuBar getMenuBar() {
+	public FreeplaneMenuBar getMenuBar() {
 		if (menuBar == null) {
-			menuBar = new FreemindMenuBar();
+			menuBar = new FreeplaneMenuBar();
 		}
 		return menuBar;
 	}
@@ -827,7 +827,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		mapMouseWheelListener = mouseWheelListener;
 	}
 
-	public void setMenuBar(final FreemindMenuBar menuBar) {
+	public void setMenuBar(final FreeplaneMenuBar menuBar) {
 		if (mapMouseWheelListener != null) {
 			throw new RuntimeException("already set");
 		}
@@ -884,7 +884,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 
 	public void updateMapList() {
 		updateModeMenu();
-		menuBuilder.removeChildElements(FreemindMenuBar.MAP_POPUP_MENU + "/maps");
+		menuBuilder.removeChildElements(FreeplaneMenuBar.MAP_POPUP_MENU + "/maps");
 		final MapViewManager mapViewManager = Controller.getController().getMapViewManager();
 		final List mapViewVector = mapViewManager.getMapViewVector();
 		if (mapViewVector == null) {
@@ -905,16 +905,16 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 					newItem.setSelected(true);
 				}
 			}
-			menuBuilder.addMenuItem(FreemindMenuBar.MAP_POPUP_MENU + "/maps", newItem,
+			menuBuilder.addMenuItem(FreeplaneMenuBar.MAP_POPUP_MENU + "/maps", newItem,
 			    UIBuilder.AS_CHILD);
 		}
 	}
 
 	public void updateMenus(final ModeController modeController) {
-		final FreemindMenuBar menuBar = getMenuBar();
-		menuBuilder.addMenuBar(menuBar, FreemindMenuBar.MENU_BAR_PREFIX);
+		final FreeplaneMenuBar menuBar = getMenuBar();
+		menuBuilder.addMenuBar(menuBar, FreeplaneMenuBar.MENU_BAR_PREFIX);
 		mapsPopupMenu = new JPopupMenu();
-		menuBuilder.addPopupMenu(mapsPopupMenu, FreemindMenuBar.MAP_POPUP_MENU);
+		menuBuilder.addPopupMenu(mapsPopupMenu, FreeplaneMenuBar.MAP_POPUP_MENU);
 		menuBuilder.addPopupMenu(getNodePopupMenu(), UserInputListenerFactory.NODE_POPUP);
 		menuBuilder.addToolbar(getMainToolBar(), "/main_toolbar");
 		mapsPopupMenu.setName(Controller.getText("mindmaps"));
@@ -927,14 +927,14 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	}
 
 	private void updateModeMenu() {
-		menuBuilder.removeChildElements(FreemindMenuBar.MODES_MENU);
+		menuBuilder.removeChildElements(FreeplaneMenuBar.MODES_MENU);
 		final ButtonGroup group = new ButtonGroup();
 		final ActionListener modesMenuActionListener = new ModesMenuActionListener();
 		final List keys = new LinkedList(Controller.getController().getModes());
 		for (final ListIterator i = keys.listIterator(); i.hasNext();) {
 			final String key = (String) i.next();
 			final JRadioButtonMenuItem newItem = new JRadioButtonMenuItem(key);
-			menuBuilder.addMenuItem(FreemindMenuBar.MODES_MENU, newItem, MenuBuilder.AS_CHILD);
+			menuBuilder.addMenuItem(FreeplaneMenuBar.MODES_MENU, newItem, MenuBuilder.AS_CHILD);
 			group.add(newItem);
 			final ModeController modeController = Controller.getModeController();
 			if (modeController != null) {

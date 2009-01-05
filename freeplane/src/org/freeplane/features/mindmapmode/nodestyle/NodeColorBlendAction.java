@@ -43,8 +43,8 @@ class NodeColorBlendAction extends MultipleNodeAction {
 	/*
 	 * (non-Javadoc)
 	 * @see
-	 * freemind.modes.mindmapmode.actions.MultipleNodeAction#actionPerformed
-	 * (freemind.modes.NodeModel)
+	 * freeplane.modes.mindmapmode.actions.MultipleNodeAction#actionPerformed
+	 * (freeplane.modes.NodeModel)
 	 */
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {

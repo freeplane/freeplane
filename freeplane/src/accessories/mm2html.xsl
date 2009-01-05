@@ -6,12 +6,12 @@
     Document   : mindmap2html.xsl
     Created on : 01 February 2004, 17:17
     Author     : joerg feuerhake joerg.feuerhake@free-penguin.org
-    Description: transforms freemind mm format to html, handles crossrefs font declarations
+    Description: transforms freeplane mm format to html, handles crossrefs font declarations
                     and colors. feel free to customize it while leaving the ancient authors
                     mentioned. thank you
     ChangeLog:
     
-    See: http://freemind.sourceforge.net/
+    See: http://freeplane.sourceforge.net/
 -->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
@@ -22,7 +22,7 @@
 
         <html>&#xA;
             <head>&#xA;
-                <title><xsl:value-of select="map/node/@TEXT"/>//mm2html.xsl FreemindVersion:<xsl:value-of select="$mapversion"/></title>&#xA;
+                <title><xsl:value-of select="map/node/@TEXT"/>//mm2html.xsl FreeplaneVersion:<xsl:value-of select="$mapversion"/></title>&#xA;
                 <style>
                 body{
                 font-size:10pt;
@@ -45,7 +45,7 @@
             <xsl:apply-templates/>
             </p>
               <p class="info">
-            <xsl:value-of select="map/node/@TEXT"/>//mm2html.xsl FreemindVersion:<xsl:value-of select="$mapversion"/>
+            <xsl:value-of select="map/node/@TEXT"/>//mm2html.xsl FreeplaneVersion:<xsl:value-of select="$mapversion"/>
             &#xA;
             </p>
             </body>&#xA;

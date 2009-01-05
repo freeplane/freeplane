@@ -1,5 +1,5 @@
 /*
- * FreeMind - A Program for creating and viewing MindmapsCopyright (C) 2007
+ * Freeplane - A Program for creating and viewing MindmapsCopyright (C) 2007
  * Christian Foltin <christianfoltin@users.sourceforge.net>See COPYING for
  * DetailsThis program is free software; you can redistribute it and/ormodify it
  * under the terms of the GNU General Public Licenseas published by the Free

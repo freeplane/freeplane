@@ -81,7 +81,7 @@
 		<menu_submenu name="help" name_ref="help">
 			<menu_category name="doc">
 				<menu_action field="documentation" />
-				<menu_action field="freemindUrl" />
+				<menu_action field="freeplaneUrl" />
 				<menu_action field="faq" />
 				<menu_action field="license" />
 				<menu_action field="about" />

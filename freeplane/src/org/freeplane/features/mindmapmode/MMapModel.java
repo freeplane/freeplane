@@ -108,8 +108,8 @@ public class MMapModel extends MapModel {
 		if (Tools.safeEquals(path, "default")) {
 			path = null;
 		}
-		if (Tools.safeEquals(path, "freemind_home")) {
-			path = Controller.getResourceController().getFreemindUserDirectory();
+		if (Tools.safeEquals(path, "freeplane_home")) {
+			path = Controller.getResourceController().getFreeplaneUserDirectory();
 		}
 		int delay = Integer.parseInt(Controller.getResourceController().getProperty(
 		    "time_for_automatic_save"));

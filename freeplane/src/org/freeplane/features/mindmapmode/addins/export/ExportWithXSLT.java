@@ -173,7 +173,7 @@ public class ExportWithXSLT extends ExportAction {
 			copyFromResource(MindIcon.getIconsPath(), myIcon.getIconBaseFileName(), directoryName2);
 		}
 		final File iconDir = new File(
-		    Controller.getResourceController().getFreemindUserDirectory(), "icons");
+		    Controller.getResourceController().getFreeplaneUserDirectory(), "icons");
 		if (iconDir.exists()) {
 			final String[] userIconArray = iconDir.list(new FilenameFilter() {
 				public boolean accept(final File dir, final String name) {
@@ -286,7 +286,7 @@ public class ExportWithXSLT extends ExportAction {
 			boolean success = transformMapWithXslt(xsltFileName, saveFile, areaCode);
 			if (!success) {
 				JOptionPane.showMessageDialog(null, getProperty("error_applying_template"),
-				    "Freemind", JOptionPane.ERROR_MESSAGE);
+				    "Freeplane", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			if (success && Tools.safeEquals(getProperty("create_dir"), "true")) {
@@ -309,7 +309,7 @@ public class ExportWithXSLT extends ExportAction {
 			}
 			if (!success) {
 				JOptionPane.showMessageDialog(null, getProperty("error_creating_directory"),
-				    "Freemind", JOptionPane.ERROR_MESSAGE);
+				    "Freeplane", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			if (Tools.safeEquals(getProperty("load_file"), "true")) {

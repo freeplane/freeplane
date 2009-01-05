@@ -77,7 +77,7 @@ class BubbleMainView extends MainView {
 
 	/*
 	 * (non-Javadoc)
-	 * @see freemind.view.mindmapview.NodeView.MainView#getPreferredSize()
+	 * @see freeplane.view.mindmapview.NodeView.MainView#getPreferredSize()
 	 */
 	@Override
 	public Dimension getPreferredSize() {
@@ -95,7 +95,7 @@ class BubbleMainView extends MainView {
 
 	/*
 	 * (non-Javadoc)
-	 * @see freemind.view.mindmapview.NodeView#getStyle()
+	 * @see freeplane.view.mindmapview.NodeView#getStyle()
 	 */
 	@Override
 	String getStyle() {
@@ -104,7 +104,7 @@ class BubbleMainView extends MainView {
 
 	/*
 	 * (non-Javadoc)
-	 * @see freemind.view.mindmapview.NodeView#getTextWidth()
+	 * @see freeplane.view.mindmapview.NodeView#getTextWidth()
 	 */
 	@Override
 	public int getTextWidth() {
@@ -113,7 +113,7 @@ class BubbleMainView extends MainView {
 
 	/*
 	 * (non-Javadoc)
-	 * @see freemind.view.mindmapview.NodeView#getTextX()
+	 * @see freeplane.view.mindmapview.NodeView#getTextX()
 	 */
 	@Override
 	public int getTextX() {

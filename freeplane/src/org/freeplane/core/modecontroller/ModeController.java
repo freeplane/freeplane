@@ -323,7 +323,7 @@ public class ModeController {
 
 	/*
 	 * (non-Javadoc)
-	 * @see freemind.modes.ModeController#setVisible(boolean)
+	 * @see freeplane.modes.ModeController#setVisible(boolean)
 	 */
 	public void setVisible(final boolean visible) {
 		final NodeModel node = Controller.getController().getSelection().getSelected();

@@ -30,7 +30,7 @@ import java.util.logging.Logger;
 
 import org.freeplane.core.controller.Controller;
 
-class FreemindResourceBundle extends ResourceBundle {
+class FreeplaneResourceBundle extends ResourceBundle {
 	private static final String DEFAULT_LANGUAGE = "en";
 	public static final String POSTFIX_TRANSLATE_ME = "[translate me]";
 	/**
@@ -40,7 +40,7 @@ class FreemindResourceBundle extends ResourceBundle {
 	private PropertyResourceBundle defaultResources;
 	private PropertyResourceBundle languageResources;
 
-	FreemindResourceBundle(final ResourceController controller) {
+	FreeplaneResourceBundle(final ResourceController controller) {
 		this.controller = controller;
 		try {
 			String lang = this.controller.getProperty(ResourceController.RESOURCE_LANGUAGE);
@@ -110,7 +110,7 @@ class FreemindResourceBundle extends ResourceBundle {
 			}
 			catch (final Exception ex) {
 				return defaultResources.getString(key)
-				        + FreemindResourceBundle.POSTFIX_TRANSLATE_ME;
+				        + FreeplaneResourceBundle.POSTFIX_TRANSLATE_ME;
 			}
 		}
 		catch (final Exception e) {
@@ -125,7 +125,7 @@ class FreemindResourceBundle extends ResourceBundle {
 		}
 		catch (final Exception ex) {
 			Logger.global.severe("Warning - resource string not found:" + key);
-			return defaultResources.getString(key) + FreemindResourceBundle.POSTFIX_TRANSLATE_ME;
+			return defaultResources.getString(key) + FreeplaneResourceBundle.POSTFIX_TRANSLATE_ME;
 		}
 	}
 }

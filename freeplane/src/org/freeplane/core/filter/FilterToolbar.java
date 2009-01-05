@@ -45,9 +45,9 @@ import org.freeplane.core.filter.condition.SelectedViewCondition;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.FreeplaneAction;
-import org.freeplane.core.ui.components.FreeMindToolBar;
+import org.freeplane.core.ui.components.FreeplaneToolBar;
 
-class FilterToolbar extends FreeMindToolBar {
+class FilterToolbar extends FreeplaneToolBar {
 	private class EditFilterAction extends FreeplaneAction {
 		EditFilterAction() {
 			super("filter_edit_description", "images/Btn_edit.gif");
@@ -186,8 +186,8 @@ class FilterToolbar extends FreeMindToolBar {
 			}
 		};
 		activeFilterConditionComboBox.setFocusable(false);
-		pathToFilterFile = Controller.getResourceController().getFreemindUserDirectory()
-		        + File.separator + "auto." + FilterController.FREEMIND_FILTER_EXTENSION_WITHOUT_DOT;
+		pathToFilterFile = Controller.getResourceController().getFreeplaneUserDirectory()
+		        + File.separator + "auto." + FilterController.FREEPLANE_FILTER_EXTENSION_WITHOUT_DOT;
 		btnEdit = add(new EditFilterAction());
 		add(btnEdit);
 		btnUnfoldAncestors = add(new UnfoldAncestorsAction());

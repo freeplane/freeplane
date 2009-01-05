@@ -40,7 +40,7 @@ class ReducedAttributeTableModelDecorator extends AttributeTableModelDecoratorAd
 
 	/*
 	 * (non-Javadoc)
-	 * @seefreemind.modes.attributes.AttributeTableModel#addRow(freemind.modes.
+	 * @seefreeplane.modes.attributes.AttributeTableModel#addRow(freeplane.modes.
 	 * attributes.Attribute)
 	 */
 	public void addRow(final Attribute newAttribute) {
@@ -50,7 +50,7 @@ class ReducedAttributeTableModelDecorator extends AttributeTableModelDecoratorAd
 	/*
 	 * (non-Javadoc)
 	 * @see
-	 * freemind.view.mindmapview.attributeview.AttributeTableModelDecoratorAdapter
+	 * freeplane.view.mindmapview.attributeview.AttributeTableModelDecoratorAdapter
 	 * #areAttributesVisible()
 	 */
 	@Override
@@ -79,8 +79,8 @@ class ReducedAttributeTableModelDecorator extends AttributeTableModelDecoratorAd
 
 	/*
 	 * (non-Javadoc)
-	 * @see freemind.modes.attributes.AttributeTableModel#insertRow(int,
-	 * freemind.modes.attributes.Attribute)
+	 * @see freeplane.modes.attributes.AttributeTableModel#insertRow(int,
+	 * freeplane.modes.attributes.Attribute)
 	 */
 	public void insertRow(final int index, final Attribute newAttribute) {
 		throw new Error();
@@ -111,7 +111,7 @@ class ReducedAttributeTableModelDecorator extends AttributeTableModelDecoratorAd
 
 	/*
 	 * (non-Javadoc)
-	 * @see freemind.modes.attributes.AttributeTableModel#removeRow(int)
+	 * @see freeplane.modes.attributes.AttributeTableModel#removeRow(int)
 	 */
 	public Object removeRow(final int index) {
 		throw new Error();

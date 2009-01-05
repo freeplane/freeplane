@@ -144,7 +144,7 @@ public class MindMapNodeDropListener implements DropTargetListener {
 				    .isWriteable(targetNode)) {
 					final String message = mMindMapController.getText("node_is_write_protected");
 					JOptionPane.showMessageDialog(Controller.getController().getViewController()
-					    .getContentPane(), message, "Freemind", JOptionPane.ERROR_MESSAGE);
+					    .getContentPane(), message, "Freeplane", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				Transferable trans = null;
@@ -156,7 +156,7 @@ public class MindMapNodeDropListener implements DropTargetListener {
 							final String message = mMindMapController
 							    .getText("cannot_move_to_child");
 							JOptionPane.showMessageDialog(Controller.getController()
-							    .getViewController().getContentPane(), message, "Freemind",
+							    .getViewController().getContentPane(), message, "Freeplane",
 							    JOptionPane.WARNING_MESSAGE);
 							dtde.dropComplete(true);
 							return;

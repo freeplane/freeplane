@@ -1,6 +1,6 @@
 <?xml version="1.0" standalone="no" ?>
 <!--
-   : Convert from MindManager (c) to FreeMind ( ;) ).
+   : Convert from MindManager (c) to Freeplane ( ;) ).
    :
    : This code released under the GPL.
    : (http://www.gnu.org/copyleft/gpl.html)

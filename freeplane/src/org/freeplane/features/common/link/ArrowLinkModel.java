@@ -70,7 +70,7 @@ public class ArrowLinkModel extends LinkModel {
 
 	/*
 	 * (non-Javadoc)
-	 * @see freemind.modes.MindMapArrowLink#changeInclination(int, int, int,
+	 * @see freeplane.modes.MindMapArrowLink#changeInclination(int, int, int,
 	 * int)
 	 */
 	public void changeInclination(final MapView map, final int originX, final int originY,

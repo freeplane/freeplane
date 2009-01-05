@@ -53,7 +53,7 @@ import org.freeplane.core.model.MapModel;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.UIBuilder;
-import org.freeplane.core.ui.components.FreemindMenuBar;
+import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.view.swing.map.MapView;
 
 /**
@@ -206,7 +206,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 		return itemCount - 0.5f;
 	}
 
-	abstract public FreemindMenuBar getFreeMindMenuBar();
+	abstract public FreeplaneMenuBar getFreeplaneMenuBar();
 
 	public String getItemForZoom(final float f) {
 		return (int) (f * 100F) + "%";
@@ -310,7 +310,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 					getMapView().getSelected().requestFocus();
 				}
 				else {
-					getFreeMindMenuBar().requestFocus();
+					getFreeplaneMenuBar().requestFocus();
 				}
 			}
 		});
@@ -385,7 +385,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 		if (newLeftToolBar != null) {
 			leftToolbarPanel.add(newLeftToolBar, BorderLayout.WEST);
 		}
-		setFreeMindMenuBar(newModeController.getUserInputListenerFactory().getMenuBar());
+		setFreeplaneMenuBar(newModeController.getUserInputListenerFactory().getMenuBar());
 		newModeController.getUserInputListenerFactory().updateMapList();
 	}
 
@@ -406,7 +406,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 		}
 	}
 
-	abstract void setFreeMindMenuBar(FreemindMenuBar menuBar);
+	abstract void setFreeplaneMenuBar(FreeplaneMenuBar menuBar);
 
 	public void setLeftToolbarVisible(final boolean visible) {
 		leftToolbarVisible = visible;
@@ -415,7 +415,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 
 	public void setMenubarVisible(final boolean visible) {
 		menubarVisible = visible;
-		getFreeMindMenuBar().setVisible(menubarVisible);
+		getFreeplaneMenuBar().setVisible(menubarVisible);
 	}
 
 	public void setTextRenderingHint(final Graphics2D g) {
@@ -507,7 +507,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 	}
 
 	public void updateMenus(final MenuBuilder menuBuilder) {
-		menuBuilder.removeChildElements(FreemindMenuBar.FILE_MENU + "/last");
+		menuBuilder.removeChildElements(FreeplaneMenuBar.FILE_MENU + "/last");
 		boolean firstElement = true;
 		final LastOpenedList lst = getLastOpenedList();
 		for (final ListIterator it = lst.listIterator(); it.hasNext();) {
@@ -519,7 +519,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 				    .getAdjustableProperty("keystroke_open_first_in_history")));
 			}
 			item.addActionListener(lastOpenedActionListener);
-			menuBuilder.addMenuItem(FreemindMenuBar.FILE_MENU + "/last", item, UIBuilder.AS_CHILD);
+			menuBuilder.addMenuItem(FreeplaneMenuBar.FILE_MENU + "/last", item, UIBuilder.AS_CHILD);
 		}
 		if (menuBuilder.contains("/main_toolbar/zoom")) {
 			menuBuilder.addComponent("/main_toolbar/zoom", getZoomComboBox(), zoomIn,

@@ -19,7 +19,7 @@
  */
 package org.freeplane.osgi.startup;
 
-import org.freeplane.startup.FreemindStarter;
+import org.freeplane.startup.FreeplaneStarter;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -31,7 +31,7 @@ import org.osgi.framework.BundleContext;
 public class Activator implements BundleActivator {
 
 	public void start(BundleContext context) throws Exception {
-		FreemindStarter starter = new FreemindStarter();
+		FreeplaneStarter starter = new FreeplaneStarter();
 		starter.createController();
 		final Bundle[] bundles = context.getBundles();
 		for(int i = 0; i < bundles.length; i++){

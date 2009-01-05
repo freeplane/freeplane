@@ -1,4 +1,4 @@
-/*FreeMind - A Program for creating and viewing Mindmaps
+/*Freeplane - A Program for creating and viewing Mindmaps
  *Copyright (C) 2005   Christian Foltin.
  *
  *See COPYING for Details
@@ -20,7 +20,7 @@
  * Created on 12.06.2005
  */
 
-To build FreeMind from the sources you need ant from
+To build Freeplane from the sources you need ant from
 http://ant.apache.org/
 
 After having installed ant, try some of the instructions:
@@ -30,6 +30,6 @@ ant dist
 ant post
 	- to create a new delivery version
 ant run
-	- to start FreeMind from the sources.
+	- to start Freeplane from the sources.
 	
 	

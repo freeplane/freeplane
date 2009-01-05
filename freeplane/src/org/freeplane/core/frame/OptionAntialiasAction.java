@@ -24,10 +24,10 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.resources.ui.IFreemindPropertyListener;
+import org.freeplane.core.resources.ui.IFreeplanePropertyListener;
 import org.freeplane.view.swing.map.MapView;
 
-class OptionAntialiasAction extends AbstractAction implements IFreemindPropertyListener {
+class OptionAntialiasAction extends AbstractAction implements IFreeplanePropertyListener {
 	OptionAntialiasAction() {
 		Controller.getResourceController().addPropertyChangeListener(this);
 	}

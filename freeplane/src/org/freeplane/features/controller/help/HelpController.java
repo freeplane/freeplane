@@ -44,9 +44,9 @@ public class HelpController implements IExtension {
 		super();
 		final Controller controller = Controller.getController();
 		controller.addAction("about", new AboutAction());
-		controller.addAction("freemindUrl", new OpenURLAction(Controller.getResourceController()
+		controller.addAction("freeplaneUrl", new OpenURLAction(Controller.getResourceController()
 		    .getText("Freeplane"), Controller.getResourceController().getProperty(
-		    "webFreeMindLocation")));
+		    "webFreeplaneLocation")));
 		controller.addAction("faq", new OpenURLAction(Controller.getResourceController().getText(
 		    "FAQ"), Controller.getResourceController().getProperty("webFAQLocation")));
 		controller.addAction("keyDocumentation", new KeyDocumentationAction());
@@ -60,7 +60,7 @@ public class HelpController implements IExtension {
 	/** Used for MAC!!! */
 	public String convertLocalLink(final String map) {
 		/* new handling for relative urls. fc, 29.10.2003. */
-		final String applicationPath = Controller.getResourceController().getFreemindBaseDir();
+		final String applicationPath = Controller.getResourceController().getFreeplaneBaseDir();
 		return "file:" + applicationPath + map.substring(1);
 		/* end: new handling for relative urls. fc, 29.10.2003. */
 	}

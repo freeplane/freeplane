@@ -57,7 +57,7 @@ public class MapWriter implements IElementWriter, IAttributeWriter {
 	public void writeContent(final ITreeWriter writer, final Object node, final String tag)
 	        throws IOException {
 		writer
-		    .addElementContent("<!--To view this file, download free mind mapping software FreeMind from http://freemind.sourceforge.net -->\n");
+		    .addElementContent("<!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->\n");
 		final MapModel map = (MapModel) node;
 		writer.addExtensionNodes(map, map.getExtensions());
 		final NodeModel rootNode = map.getRootNode();

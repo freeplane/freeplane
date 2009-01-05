@@ -55,7 +55,7 @@ public class SaveAll extends FreeplaneAction {
 			mainController.getMapViewManager().changeToMapView(mapView.getName());
 			if (!((MModeController) mapView.getModel().getModeController()).save()) {
 				JOptionPane.showMessageDialog(Controller.getController().getViewController()
-				    .getContentPane(), "FreeMind", Controller
+				    .getContentPane(), "Freeplane", Controller
 				    .getText("accessories/plugins/SaveAll.properties_save_all_cancelled"),
 				    JOptionPane.ERROR_MESSAGE);
 				return;
