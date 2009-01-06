@@ -194,61 +194,6 @@ public abstract class ResourceController {
 		return null;
 	}
 
-	/*
-	 * We define the base dir of Freeplane as the directory where accessories,
-	 * plugins and other things are to be found. We expect it to be either the
-	 * directory where the main jar file is (freeplane.jar), or the root of the
-	 * class hierarchy (if no jar file is used), after any 'lib' directory is
-	 * removed. One can overwrite this definition by setting the
-	 * freeplane.base.dir property.
-	 */
-	public String getFreeplaneBaseDir() {
-		if (baseDir == null) {
-			try {
-				File file;
-				final String dir = System.getProperty("freeplane.base.dir");
-				if (dir == null) {
-					final String classname = this.getClass().getName();
-					final URL url = this.getClass().getResource(
-					    classname.replaceFirst("^" + this.getClass().getPackage().getName() + ".",
-					        "")
-					            + ".class");
-					file = new File(URLDecoder.decode(url.getPath().replaceFirst("^(file:|jar:)+",
-					    "").replaceFirst("!.*$", "").replaceFirst(
-					    classname.replace('.', '/') + ".class$", ""), "UTF-8"));
-					if (file.isFile()) {
-						file = file.getParentFile();
-					}
-					/*
-					 * Now, we remove the lib directory: Example:
-					 * /home/foltin/freeplaneapp/lib/freeplane.jar gives
-					 * /home/foltin/freeplaneapp
-					 */
-					if (file.getName().equals("lib")) {
-						file = file.getParentFile();
-					}
-				}
-				else {
-					file = new File(dir);
-				}
-				if (!file.exists()) {
-					throw new IllegalArgumentException("Freeplane base dir '" + file
-					        + "' does not exist.");
-				}
-				if (!file.isDirectory()) {
-					throw new IllegalArgumentException("Freeplane base dir (!) '" + file
-					        + "' is not a directory.");
-				}
-				baseDir = file.getCanonicalPath();
-			}
-			catch (final Exception e) {
-				Tools.logException(e);
-				throw new IllegalArgumentException("Freeplane base dir can't be determined.");
-			}
-		}
-		return baseDir;
-	}
-
 	/**
 	 * @return
 	 */

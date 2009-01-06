@@ -40,24 +40,9 @@ class DocumentationAction extends AbstractAction {
 	public void actionPerformed(final ActionEvent e) {
 		String map = Controller.getText("browsemode_initial_map");
 		map = ResourceController.removeTranslateComment(map);
-		if (map != null && map.startsWith(".")) {
-			try {
-				map = HelpController.getController().convertLocalLink(map);
-			}
-			catch (final AccessControlException ex) {
-				HelpController.getController().webDocu(e);
-				return;
-			}
-		}
 		if (map != null && map != "") {
 			URL url = null;
-			try {
-				url = new URL(map);
-			}
-			catch (final MalformedURLException e2) {
-				org.freeplane.core.util.Tools.logException(e2);
-				return;
-			}
+			url = Controller.getResourceController().getResource(map);
 			final URL endUrl = url;
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {

@@ -37,12 +37,9 @@ class KeyDocumentationAction extends AbstractAction {
 		String urlText = Controller.getText("pdfKeyDocLocation");
 		urlText = ResourceController.removeTranslateComment(urlText);
 		try {
-			if (urlText != null && urlText.startsWith(".")) {
-				urlText = HelpController.getController().convertLocalLink(urlText);
-			}
 			if (urlText != null && urlText != "") {
 				URL url = null;
-				url = new URL(urlText);
+				url = Controller.getResourceController().getResource(urlText);
 				Controller.getController().getViewController().openDocument(url);
 			}
 		}

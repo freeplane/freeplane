@@ -57,14 +57,6 @@ public class HelpController implements IExtension {
 		controller.addAction("license", new LicenseAction());
 	}
 
-	/** Used for MAC!!! */
-	public String convertLocalLink(final String map) {
-		/* new handling for relative urls. fc, 29.10.2003. */
-		final String applicationPath = Controller.getResourceController().getFreeplaneBaseDir();
-		return "file:" + applicationPath + map.substring(1);
-		/* end: new handling for relative urls. fc, 29.10.2003. */
-	}
-
 	/**
 	 * @param e
 	 */

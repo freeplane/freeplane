@@ -401,15 +401,15 @@ public abstract class MainView extends JLabel {
 		final String link = NodeLinks.getLink(node);
 		if (link != null) {
 			iconPresent = true;
-			String iconPath = "//images/Link.png";
+			String iconPath = "/images/Link.png";
 			if (link.startsWith("#")) {
-				iconPath = "//images/LinkLocal.png";
+				iconPath = "/images/LinkLocal.png";
 			}
 			else if (link.startsWith("mailto:")) {
-				iconPath = "//images/Mail.png";
+				iconPath = "/images/Mail.png";
 			}
 			else if (executableExtensions.contains(link)) {
-				iconPath = "//images/Executable.png";
+				iconPath = "/images/Executable.png";
 			}
 			final ImageIcon icon = new ImageIcon(Controller.getResourceController().getResource(iconPath));
 			iconImages.addImage(icon);
