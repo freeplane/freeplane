@@ -34,7 +34,7 @@ class OpenURLAction extends AbstractAction {
 
 	OpenURLAction(final String description, final String url) {
 		super(null,
-		    new ImageIcon(Controller.getResourceController().getResource("images/Link.png")));
+		    new ImageIcon(Controller.getResourceController().getResource("/images/Link.png")));
 		MenuBuilder.setLabelAndMnemonic(this, description);
 		this.url = url;
 	}

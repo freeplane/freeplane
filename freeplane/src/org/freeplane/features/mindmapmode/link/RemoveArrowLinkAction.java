@@ -35,7 +35,7 @@ class RemoveArrowLinkAction extends FreeplaneAction {
 	 */
 	public RemoveArrowLinkAction(final MLinkController linkController,
 	                             final ArrowLinkModel arrowLink) {
-		super("remove_arrow_link", "images/edittrash.png");
+		super("remove_arrow_link", "/images/edittrash.png");
 		setArrowLink(arrowLink);
 	}
 

@@ -37,7 +37,7 @@ import org.freeplane.features.mindmapmode.MMapController;
 
 class CutAction extends FreeplaneAction {
 	public CutAction() {
-		super("cut", "images/editcut.png");
+		super("cut", "/images/editcut.png");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

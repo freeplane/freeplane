@@ -80,7 +80,7 @@ public class ImportMindmanagerFiles extends FreeplaneAction {
 				if (!entry.getName().equals("Document.xml")) {
 					continue;
 				}
-				final String xsltFileName = "accessories/mindmanager2mm.xsl";
+				final String xsltFileName = "/accessories/mindmanager2mm.xsl";
 				final URL xsltUrl = Controller.getResourceController().getResource(xsltFileName);
 				if (xsltUrl == null) {
 					Logger.global.severe("Can't find " + xsltFileName + " as resource.");

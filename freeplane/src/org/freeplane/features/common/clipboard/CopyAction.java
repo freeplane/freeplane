@@ -29,7 +29,7 @@ import org.freeplane.core.ui.FreeplaneAction;
 
 class CopyAction extends FreeplaneAction {
 	public CopyAction() {
-		super("copy", "images/editcopy.png");
+		super("copy", "/images/editcopy.png");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

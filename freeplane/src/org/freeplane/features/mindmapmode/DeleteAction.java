@@ -35,7 +35,7 @@ import org.freeplane.core.undo.IUndoableActor;
 
 class DeleteAction extends FreeplaneAction {
 	public DeleteAction() {
-		super("remove_node", "images/editdelete.png");
+		super("remove_node", "/images/editdelete.png");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

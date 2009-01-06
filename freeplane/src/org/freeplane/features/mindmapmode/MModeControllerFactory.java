@@ -113,7 +113,7 @@ public class MModeControllerFactory {
 		new UnfoldAll(modeController);
 		new ChangeNodeLevelAction(menuBuilder);
 		ExportWithXSLT.createXSLTExportActions(modeController,
-		    "org/freeplane/features/mindmapmode/addins/export/ExportWithXSLT.xml");
+		    "/org/freeplane/features/mindmapmode/addins/export/ExportWithXSLT.xml");
 		ExportToImage.createActions(modeController);
 		new NodeHistory(modeController);
 		menuBuilder.addAnnotatedAction(new ExportToOoWriter());
@@ -160,6 +160,6 @@ public class MModeControllerFactory {
 		userInputListenerFactory.setLeftToolBar(((MIconController) IconController
 		    .getController(modeController)).getIconToolBarScrollPane());
 		new RevisionPlugin(modeController);
-		modeController.updateMenus("org/freeplane/features/mindmapmode/menu.xml");
+		modeController.updateMenus("/org/freeplane/features/mindmapmode/menu.xml");
 	}
 }

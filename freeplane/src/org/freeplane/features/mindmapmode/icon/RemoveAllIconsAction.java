@@ -39,7 +39,7 @@ class RemoveAllIconsAction extends MultipleNodeAction implements IIconInformatio
 	/**
 	 */
 	public RemoveAllIconsAction() {
-		super("remove_all_icons", "images/edittrash.png");
+		super("remove_all_icons", "/images/edittrash.png");
 	}
 
 	@Override

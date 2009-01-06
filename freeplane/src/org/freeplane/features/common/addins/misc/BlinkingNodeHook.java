@@ -42,7 +42,7 @@ import org.freeplane.view.swing.map.NodeView;
  */
 @NodeHookDescriptor(hookName = "accessories/plugins/BlinkingNodeHook.properties", onceForMap = false)
 @ActionDescriptor(name = "accessories/plugins/BlinkingNodeHook.properties_name", //
-iconPath = "accessories/plugins/icons/xeyes.png", //
+iconPath = "/accessories/plugins/icons/xeyes.png", //
 tooltip = "accessories/plugins/BlinkingNodeHook.properties_documentation", //
 locations = { "/menu_bar/format/nodes" })
 public class BlinkingNodeHook extends PersistentNodeHook {

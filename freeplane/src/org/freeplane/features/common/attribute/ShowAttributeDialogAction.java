@@ -35,8 +35,7 @@ class ShowAttributeDialogAction extends AbstractAction {
 	 *
 	 */
 	ShowAttributeDialogAction() {
-		super(null, new ImageIcon(Controller.getResourceController().getResource(
-		    "images/showAttributes.gif")));
+		super(null, new ImageIcon(Controller.getResourceController().getResource("/images/showAttributes.gif")));
 		MenuBuilder.setLabelAndMnemonic(this, Controller.getText("attributes_dialog"));
 	}
 

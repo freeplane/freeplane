@@ -34,8 +34,7 @@ class ShowFilterToolbarAction extends AbstractAction {
 	 *
 	 */
 	ShowFilterToolbarAction() {
-		super(null, new ImageIcon(Controller.getResourceController().getResource(
-		    "images/filter.gif")));
+		super(null, new ImageIcon(Controller.getResourceController().getResource("/images/filter.gif")));
 	}
 
 	public void actionPerformed(final ActionEvent event) {

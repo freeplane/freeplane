@@ -113,7 +113,7 @@ public class MPatternController implements IExtension {
 				// try xslt script:
 				boolean success = false;
 				try {
-					loadPatterns(UrlManager.getUpdateReader(patternsFile, "patterns_updater.xslt"));
+					loadPatterns(UrlManager.getUpdateReader(patternsFile, "/patterns_updater.xslt"));
 					// save patterns directly:
 					StylePatternFactory.savePatterns(new FileWriter(patternsFile), mPatternsList);
 					success = true;
@@ -173,8 +173,7 @@ public class MPatternController implements IExtension {
 		}
 		else {
 			System.out.println("User patterns file " + patternsFile + " not found.");
-			reader = new InputStreamReader(Controller.getResourceController().getResource(
-			    "patterns.xml").openStream());
+			reader = new InputStreamReader(Controller.getResourceController().getResource("/patterns.xml").openStream());
 		}
 		return reader;
 	}

@@ -33,7 +33,7 @@ class BoldAction extends MultipleNodeAction {
 	/**
 	 */
 	public BoldAction() {
-		super("bold", "images/Bold16.gif");
+		super("bold", "/images/Bold16.gif");
 	}
 
 	@Override

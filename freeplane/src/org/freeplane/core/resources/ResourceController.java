@@ -278,7 +278,9 @@ public abstract class ResourceController {
 		return Collections.unmodifiableCollection(propertyChangeListeners);
 	}
 
-	abstract public URL getResource(String string);
+	public URL getResource(String name) {
+	    return getClass().getResource(name);
+    }
 
 	/** Returns the ResourceBundle with the current language */
 	public ResourceBundle getResources() {

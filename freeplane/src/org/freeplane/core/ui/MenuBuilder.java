@@ -413,8 +413,7 @@ public class MenuBuilder extends UIBuilder {
 		MenuBuilder.setLabelAndMnemonic(action, Controller.getText(actionName));
 		final String iconPath = actionAnnotation.iconPath();
 		if (!iconPath.equals("")) {
-			final ImageIcon icon = new ImageIcon(Controller.getResourceController().getResource(
-			    iconPath));
+			final ImageIcon icon = new ImageIcon(Controller.getResourceController().getResource(iconPath));
 			action.putValue(Action.SMALL_ICON, icon);
 		}
 		final String[] actionLocations = actionAnnotation.locations();

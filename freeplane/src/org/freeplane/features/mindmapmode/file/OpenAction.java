@@ -30,7 +30,7 @@ class OpenAction extends FreeplaneAction {
 	 *
 	 */
 	public OpenAction() {
-		super("open", "images/fileopen.png");
+		super("open", "/images/fileopen.png");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

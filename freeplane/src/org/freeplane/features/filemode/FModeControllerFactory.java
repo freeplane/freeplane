@@ -69,7 +69,7 @@ public class FModeControllerFactory {
 		modeController.addAction("openPath", new OpenPathAction());
 		userInputListenerFactory.setNodePopupMenu(new JPopupMenu());
 		userInputListenerFactory.setMainToolBar(new FreeplaneToolBar());
-		modeController.updateMenus("org/freeplane/features/filemode/menu.xml");
+		modeController.updateMenus("/org/freeplane/features/filemode/menu.xml");
 		return modeController;
 	}
 }

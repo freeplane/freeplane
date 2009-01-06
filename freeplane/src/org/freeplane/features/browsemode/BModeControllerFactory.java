@@ -71,7 +71,7 @@ public class BModeControllerFactory {
 		    .addMapTitleChangeListener(toolbarContributor);
 		userInputListenerFactory.setNodePopupMenu(new JPopupMenu());
 		userInputListenerFactory.setMainToolBar(new FreeplaneToolBar());
-		modeController.updateMenus("org/freeplane/features/browsemode/menu.xml");
+		modeController.updateMenus("/org/freeplane/features/browsemode/menu.xml");
 		return modeController;
 	}
 }

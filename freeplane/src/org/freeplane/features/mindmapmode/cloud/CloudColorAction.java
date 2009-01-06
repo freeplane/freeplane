@@ -38,7 +38,7 @@ class CloudColorAction extends MultipleNodeAction implements PopupMenuListener {
 	private Color actionColor;
 
 	public CloudColorAction() {
-		super("cloud_color", "images/Colors24.gif");
+		super("cloud_color", "/images/Colors24.gif");
 	}
 
 	@Override

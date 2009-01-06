@@ -116,8 +116,7 @@ public abstract class FreeplaneAction extends AbstractAction {
 	public FreeplaneAction(final String title, final String iconPath) {
 		this(title);
 		if (iconPath != null && !iconPath.equals("")) {
-			final ImageIcon icon = new ImageIcon(Controller.getResourceController().getResource(
-			    iconPath));
+			final ImageIcon icon = new ImageIcon(Controller.getResourceController().getResource(iconPath));
 			putValue(Action.SMALL_ICON, icon);
 		}
 	}

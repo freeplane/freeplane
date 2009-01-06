@@ -142,25 +142,25 @@ public class MLinkController extends LinkController {
 		final boolean a = !link.getStartArrow().equals("None");
 		final boolean b = !link.getEndArrow().equals("None");
 		final JRadioButtonMenuItem itemnn = new JRadioButtonMenuItem(
-		    new ChangeArrowsInArrowLinkAction(this, "none", "images/arrow-mode-none.png", link,
+		    new ChangeArrowsInArrowLinkAction(this, "none", "/images/arrow-mode-none.png", link,
 		        false, false));
 		itemnn.setText(null);
 		arrowLinkPopup.add(itemnn);
 		itemnn.setSelected(!a && !b);
 		final JRadioButtonMenuItem itemnt = new JRadioButtonMenuItem(
-		    new ChangeArrowsInArrowLinkAction(this, "forward", "images/arrow-mode-forward.png",
+		    new ChangeArrowsInArrowLinkAction(this, "forward", "/images/arrow-mode-forward.png",
 		        link, false, true));
 		itemnt.setText(null);
 		arrowLinkPopup.add(itemnt);
 		itemnt.setSelected(!a && b);
 		final JRadioButtonMenuItem itemtn = new JRadioButtonMenuItem(
-		    new ChangeArrowsInArrowLinkAction(this, "backward", "images/arrow-mode-backward.png",
+		    new ChangeArrowsInArrowLinkAction(this, "backward", "/images/arrow-mode-backward.png",
 		        link, true, false));
 		itemtn.setText(null);
 		arrowLinkPopup.add(itemtn);
 		itemtn.setSelected(a && !b);
 		final JRadioButtonMenuItem itemtt = new JRadioButtonMenuItem(
-		    new ChangeArrowsInArrowLinkAction(this, "both", "images/arrow-mode-both.png", link,
+		    new ChangeArrowsInArrowLinkAction(this, "both", "/images/arrow-mode-both.png", link,
 		        true, true));
 		itemtt.setText(null);
 		arrowLinkPopup.add(itemtt);

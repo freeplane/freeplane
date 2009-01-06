@@ -80,8 +80,7 @@ class FreeplaneResourceBundle extends ResourceBundle {
 	 * @throws IOException
 	 */
 	private PropertyResourceBundle getLanguageResources(final String lang) throws IOException {
-		final URL systemResource = Controller.getResourceController().getResource(
-		    "Resources_" + lang + ".properties");
+		final URL systemResource = Controller.getResourceController().getResource("/Resources_" + lang + ".properties");
 		if (systemResource == null) {
 			return null;
 		}

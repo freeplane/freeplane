@@ -120,8 +120,7 @@ public class FilterController implements IMapViewChangeListener, IExtension {
 		if (filterToolbar == null) {
 			filterToolbar = new FilterToolbar();
 			filterConditionModel = (DefaultComboBoxModel) filterToolbar.getFilterConditionModel();
-			MindIcon.factory("AttributeExist", new ImageIcon(Controller.getResourceController()
-			    .getResource("images/showAttributes.gif")));
+			MindIcon.factory("AttributeExist", new ImageIcon(Controller.getResourceController().getResource("/images/showAttributes.gif")));
 			MindIcon.factory("encrypted");
 			MindIcon.factory("decrypted");
 			filterToolbar.initConditions();

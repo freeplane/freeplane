@@ -26,7 +26,7 @@ import org.freeplane.core.ui.FreeplaneAction;
 
 class NewMapAction extends FreeplaneAction {
 	public NewMapAction() {
-		super("new", "images/filenew.png");
+		super("new", "/images/filenew.png");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

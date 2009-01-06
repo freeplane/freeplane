@@ -42,7 +42,7 @@ class FindAction extends FreeplaneAction {
 	private Collection subterms;
 
 	public FindAction() {
-		super("find", "images/filefind.png");
+		super("find", "/images/filefind.png");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

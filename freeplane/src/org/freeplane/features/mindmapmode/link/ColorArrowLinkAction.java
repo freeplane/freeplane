@@ -37,7 +37,7 @@ class ColorArrowLinkAction extends FreeplaneAction {
 	ArrowLinkModel arrowLink;
 
 	public ColorArrowLinkAction(final MLinkController modeController, final ArrowLinkModel arrowLink) {
-		super("arrow_link_color", "images/Colors24.gif");
+		super("arrow_link_color", "/images/Colors24.gif");
 		this.arrowLink = arrowLink;
 	}
 

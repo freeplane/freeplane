@@ -50,7 +50,7 @@ import org.freeplane.core.ui.components.FreeplaneToolBar;
 class FilterToolbar extends FreeplaneToolBar {
 	private class EditFilterAction extends FreeplaneAction {
 		EditFilterAction() {
-			super("filter_edit_description", "images/Btn_edit.gif");
+			super("filter_edit_description", "/images/Btn_edit.gif");
 		}
 
 		public void actionPerformed(final ActionEvent arg0) {
@@ -130,8 +130,7 @@ class FilterToolbar extends FreeplaneToolBar {
 		 *
 		 */
 		UnfoldAncestorsAction() {
-			super(null, new ImageIcon(Controller.getResourceController().getResource(
-			    "images/unfold.png")));
+			super(null, new ImageIcon(Controller.getResourceController().getResource("/images/unfold.png")));
 		}
 
 		public void actionPerformed(final ActionEvent e) {

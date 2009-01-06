@@ -27,7 +27,7 @@ import org.freeplane.features.mindmapmode.MModeController;
 
 class SaveAction extends FreeplaneAction {
 	public SaveAction() {
-		super("save", "images/filesave.png");
+		super("save", "/images/filesave.png");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

@@ -33,7 +33,7 @@ class ItalicAction extends MultipleNodeAction {
 	/**
 	 */
 	public ItalicAction() {
-		super("italic", "images/Italic16.gif");
+		super("italic", "/images/Italic16.gif");
 	}
 
 	@Override

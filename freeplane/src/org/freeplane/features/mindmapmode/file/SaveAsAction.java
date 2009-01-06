@@ -27,7 +27,7 @@ import org.freeplane.core.url.UrlManager;
 
 class SaveAsAction extends FreeplaneAction {
 	public SaveAsAction() {
-		super("save_as", "images/filesaveas.png");
+		super("save_as", "/images/filesaveas.png");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

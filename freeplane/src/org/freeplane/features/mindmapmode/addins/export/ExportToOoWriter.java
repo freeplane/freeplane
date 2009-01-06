@@ -130,15 +130,15 @@ public class ExportToOoWriter extends ExportAction {
 		final Result result = new StreamResult(zipout);
 		ZipEntry entry = new ZipEntry("content.xml");
 		zipout.putNextEntry(entry);
-		resultValue &= applyXsltFile("accessories/mm2oowriter.xsl", writer, result);
+		resultValue &= applyXsltFile("/accessories/mm2oowriter.xsl", writer, result);
 		zipout.closeEntry();
 		entry = new ZipEntry("META-INF/manifest.xml");
 		zipout.putNextEntry(entry);
-		resultValue &= applyXsltFile("accessories/mm2oowriter.manifest.xsl", writer, result);
+		resultValue &= applyXsltFile("/accessories/mm2oowriter.manifest.xsl", writer, result);
 		zipout.closeEntry();
 		entry = new ZipEntry("styles.xml");
 		zipout.putNextEntry(entry);
-		resultValue &= copyFromResource("accessories/mm2oowriterStyles.xml", zipout);
+		resultValue &= copyFromResource("/accessories/mm2oowriterStyles.xml", zipout);
 		zipout.closeEntry();
 		zipout.close();
 		return resultValue;

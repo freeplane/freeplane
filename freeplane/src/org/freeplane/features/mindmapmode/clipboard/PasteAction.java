@@ -173,7 +173,7 @@ class PasteAction extends FreeplaneAction {
 	private List newNodes;
 
 	public PasteAction() {
-		super("paste", "images/editpaste.png");
+		super("paste", "/images/editpaste.png");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

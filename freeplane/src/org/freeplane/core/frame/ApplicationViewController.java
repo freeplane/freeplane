@@ -118,8 +118,7 @@ public class ApplicationViewController extends ViewController {
 
 	@Override
 	public void init() {
-		final ImageIcon mWindowIcon = new ImageIcon(resourceController
-		    .getResource("images/Freeplane_icon.png"));
+		final ImageIcon mWindowIcon = new ImageIcon(resourceController.getResource("/images/Freeplane_icon.png"));
 		getJFrame().setIconImage(mWindowIcon.getImage());
 		getContentPane().setLayout(new BorderLayout());
 		super.init();

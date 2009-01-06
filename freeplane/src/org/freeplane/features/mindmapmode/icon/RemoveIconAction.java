@@ -40,7 +40,7 @@ class RemoveIconAction extends MultipleNodeAction implements IIconInformation {
 	/**
 	 */
 	public RemoveIconAction() {
-		super("remove_last_icon", "images/remove.png");
+		super("remove_last_icon", "/images/remove.png");
 	}
 
 	@Override
@@ -49,7 +49,7 @@ class RemoveIconAction extends MultipleNodeAction implements IIconInformation {
 			removeIcon(node, MindIcon.LAST);
 			return;
 		}
-		if ((e.getModifiers() & ~ActionEvent.SHIFT_MASK & ActionEvent.CTRL_MASK & ~ActionEvent.ALT_MASK) != 0) {
+		if ((e.getModifiers() & ~ActionEvent.SHIFT_MASK & ~ActionEvent.CTRL_MASK & ~ActionEvent.ALT_MASK) != 0) {
 			removeIcon(node, 0);
 			return;
 		}

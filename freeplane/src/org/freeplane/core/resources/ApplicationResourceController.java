@@ -144,10 +144,6 @@ public class ApplicationResourceController extends ResourceController {
 		return props.getProperty(key);
 	}
 
-	@Override
-	public URL getResource(final String name) {
-		return getClass().getResource("/" + name);
-	}
 
 	private File getUserPreferencesFile(final Properties defaultPreferences) {
 		if (defaultPreferences == null) {

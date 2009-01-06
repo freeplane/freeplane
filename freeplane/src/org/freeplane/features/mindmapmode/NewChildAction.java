@@ -34,7 +34,7 @@ import org.freeplane.view.swing.map.NodeView;
 
 class NewChildAction extends FreeplaneAction {
 	public NewChildAction() {
-		super("new_child", "images/idea.png");
+		super("new_child", "/images/idea.png");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

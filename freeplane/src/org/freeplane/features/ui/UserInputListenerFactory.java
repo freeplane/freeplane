@@ -835,8 +835,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	}
 
 	public void setMenuStructure(final String menuStructureResource) {
-		final URL menuStructure = Controller.getResourceController().getResource(
-		    menuStructureResource);
+		final URL menuStructure = Controller.getResourceController().getResource(menuStructureResource);
 		setMenuStructure(menuStructure);
 	}
 

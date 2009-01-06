@@ -276,7 +276,7 @@ public class ExportWithXSLT extends ExportAction {
 	/**
 	 * @param saveFile
 	 */
-	public void transform(final File saveFile) {
+	protected void transform(final File saveFile) {
 		try {
 			mTransformResultWithoutError = true;
 			final boolean create_image = Tools.safeEquals(getProperty("create_html_linked_image"),

@@ -37,7 +37,7 @@ import org.freeplane.core.ui.FreeplaneAction;
 @ActionDescriptor(name = "accessories/plugins/NodeHistoryBack.properties_name", //
 tooltip = "accessories/plugins/NodeHistoryBack.properties_documentation", //
 keyStroke = "keystroke_accessories/plugins/NodeHistoryBack.keystroke.alt_BACK", //
-iconPath = "accessories/plugins/icons/back.png", //
+iconPath = "/accessories/plugins/icons/back.png", //
 locations = { "/menu_bar/navigate/folding", "/main_toolbar/folding" })
 class BackAction extends FreeplaneAction {
 	final private NodeHistory nodeHistory;

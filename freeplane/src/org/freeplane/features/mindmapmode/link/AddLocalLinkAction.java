@@ -35,7 +35,7 @@ class AddLocalLinkAction extends FreeplaneAction {
 	/**
 	 */
 	public AddLocalLinkAction() {
-		super("add_local_link", "images/LinkLocal.png");
+		super("add_local_link", "/images/LinkLocal.png");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

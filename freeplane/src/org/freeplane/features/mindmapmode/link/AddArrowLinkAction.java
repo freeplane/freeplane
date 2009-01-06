@@ -36,7 +36,7 @@ class AddArrowLinkAction extends FreeplaneAction {
 	/**
 	 */
 	public AddArrowLinkAction() {
-		super("add_link", "images/designer.png");
+		super("add_link", "/images/designer.png");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

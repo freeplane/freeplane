@@ -48,7 +48,7 @@ import org.freeplane.view.swing.map.MapView;
 @ActionDescriptor(tooltip = "accessories/plugins/NewParentNode.properties_documentation", //
 name = "accessories/plugins/NewParentNode.properties_name", //
 keyStroke = "keystroke_accessories/plugins/NewParentNode.properties_key", //
-iconPath = "accessories/plugins/icons/stock_text_indent.png", //
+iconPath = "/accessories/plugins/icons/stock_text_indent.png", //
 locations = { "/menu_bar/insert/nodes" })
 public class NewParentNode extends FreeplaneAction {
 	/**

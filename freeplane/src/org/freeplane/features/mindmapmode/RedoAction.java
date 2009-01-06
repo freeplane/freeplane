@@ -31,7 +31,7 @@ class RedoAction extends FreeplaneAction {
 	private Action undo;
 
 	public RedoAction() {
-		super("redo", "images/redo.png");
+		super("redo", "/images/redo.png");
 		setEnabled(false);
 	}
 

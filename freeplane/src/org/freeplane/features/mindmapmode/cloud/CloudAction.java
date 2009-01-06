@@ -33,7 +33,7 @@ import org.freeplane.features.common.cloud.CloudModel;
 @SelectableAction(checkOnNodeChange = true)
 class CloudAction extends MultipleNodeAction {
 	public CloudAction() {
-		super("cloud", "images/Cloud24.gif");
+		super("cloud", "/images/Cloud24.gif");
 	}
 
 	/*
