@@ -47,7 +47,7 @@ import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.file.MFileManager;
 import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
-import org.freeplane.features.ui.UserInputListenerFactory;
+import org.freeplane.features.ui.DefaultNodeKeyListener;
 import org.freeplane.view.swing.map.NodeView;
 
 /**
@@ -59,12 +59,11 @@ public class MTextController extends TextController {
 	public MTextController(final MModeController modeController) {
 		super(modeController);
 		createActions(modeController);
-		modeController.setNodeKeyListener(new UserInputListenerFactory.DefaultNodeKeyListener(
-		    new IEditHandler() {
-			    public void edit(final KeyEvent e, final boolean addNew, final boolean editLong) {
-				    MTextController.this.edit(e, addNew, editLong);
-			    }
-		    }));
+		modeController.setNodeKeyListener(new DefaultNodeKeyListener(new IEditHandler() {
+			public void edit(final KeyEvent e, final boolean addNew, final boolean editLong) {
+				MTextController.this.edit(e, addNew, editLong);
+			}
+		}));
 	}
 
 	/**
@@ -144,11 +143,6 @@ public class MTextController extends TextController {
 			strings[1] = text.substring(pos);
 		}
 		return strings;
-	}
-
-	@Override
-	public ModeController getModeController() {
-		return getModeController();
 	}
 
 	public void joinNodes(final NodeModel selectedNode, final List selectedNodes) {

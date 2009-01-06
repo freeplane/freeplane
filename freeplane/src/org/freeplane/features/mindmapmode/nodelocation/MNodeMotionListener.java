@@ -34,7 +34,7 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.common.nodelocation.LocationController;
 import org.freeplane.features.common.nodelocation.LocationModel;
-import org.freeplane.features.ui.UserInputListenerFactory;
+import org.freeplane.features.ui.DefaultNodeMotionListener;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeMotionListenerView;
 import org.freeplane.view.swing.map.NodeView;
@@ -42,7 +42,7 @@ import org.freeplane.view.swing.map.NodeView;
 /**
  * The MouseMotionListener which belongs to every NodeView
  */
-class MNodeMotionListener extends UserInputListenerFactory.DefaultNodeMotionListener {
+class MNodeMotionListener extends DefaultNodeMotionListener {
 	final private ModeController c;
 	private Point dragStartingPoint = null;
 	private int originalHGap;
