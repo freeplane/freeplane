@@ -218,11 +218,10 @@ public class MMapController extends MapController {
 			}
 		}
 		if (reader == null) {
-			final ViewController viewController = Controller.getController()
-			    .getViewController();
-			final int showResult = new OptionalDontShowMeAgainDialog(viewController.getJFrame(), 
-				viewController.getMapView().getSelected(), "really_convert_to_current_version", "confirmation",
-			    new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
+			final ViewController viewController = Controller.getController().getViewController();
+			final int showResult = new OptionalDontShowMeAgainDialog(viewController.getJFrame(),
+			    viewController.getMapView().getSelected(), "really_convert_to_current_version",
+			    "confirmation", new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
 			        ResourceController.RESOURCES_CONVERT_TO_CURRENT_VERSION),
 			    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED).show().getResult();
 			if (showResult != JOptionPane.OK_OPTION) {

@@ -20,9 +20,7 @@
 package org.freeplane.features.controller.help;
 
 import java.awt.event.ActionEvent;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.security.AccessControlException;
 
 import javax.swing.AbstractAction;
 import javax.swing.SwingUtilities;

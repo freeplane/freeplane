@@ -668,15 +668,15 @@ public class MapController {
 
 	public void selectMultipleNodes(final NodeModel focussed, final Collection selecteds) {
 		for (final Iterator i = selecteds.iterator(); i.hasNext();) {
-        	final NodeModel node = (NodeModel) (i.next());
-        	displayNode(node);
-        }
-        select(focussed);
-        for (final Iterator i = selecteds.iterator(); i.hasNext();) {
-        	final NodeModel node = (NodeModel)i.next();
-        	Controller.getController().getSelection().makeTheSelected(node);
-        }
-        Controller.getController().getViewController().obtainFocusForSelected();
+			final NodeModel node = (NodeModel) (i.next());
+			displayNode(node);
+		}
+		select(focussed);
+		for (final Iterator i = selecteds.iterator(); i.hasNext();) {
+			final NodeModel node = (NodeModel) i.next();
+			Controller.getController().getSelection().makeTheSelected(node);
+		}
+		Controller.getController().getViewController().obtainFocusForSelected();
 	}
 
 	public void setFolded(final NodeModel node, final boolean folded) {

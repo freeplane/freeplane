@@ -29,7 +29,7 @@ public class FreeplaneVersionInformation {
 	public String mType = "";
 
 	public FreeplaneVersionInformation(final int pMaj, final int pMid, final int pMin,
-	                                  final String pType, final int pNum) {
+	                                   final String pType, final int pNum) {
 		super();
 		mMaj = pMaj;
 		mMid = pMid;
@@ -77,7 +77,7 @@ public class FreeplaneVersionInformation {
 		}
 		return buf.toString();
 	}
-	
+
 	public String toVersionNumberString() {
 		final StringBuffer buf = new StringBuffer();
 		buf.append(mMaj);

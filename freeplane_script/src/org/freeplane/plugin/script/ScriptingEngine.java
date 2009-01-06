@@ -75,7 +75,8 @@ class ScriptingEngine extends FreeplaneAction {
 	                             final HashMap pScriptCookies) {
 		if (!pAlreadyAScriptExecuted.getValue()) {
 			final int showResult = new OptionalDontShowMeAgainDialog(Controller.getController()
-			    .getViewController().getJFrame(), Controller.getController().getMapView().getSelected(), "really_execute_script", "confirmation",
+			    .getViewController().getJFrame(), Controller.getController().getMapView()
+			    .getSelected(), "really_execute_script", "confirmation",
 			    new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
 			        ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING),
 			    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED).show().getResult();

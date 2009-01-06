@@ -155,8 +155,8 @@ abstract public class ExportAction extends FreeplaneAction {
 		}
 		(view).preparePrinting();
 		final Rectangle innerBounds = (view).getInnerBounds();
-		BufferedImage myImage = (BufferedImage) (view).createImage(view.getWidth(),
-		    view.getHeight());
+		BufferedImage myImage = (BufferedImage) (view).createImage(view.getWidth(), view
+		    .getHeight());
 		final Graphics g = myImage.getGraphics();
 		g.clipRect(innerBounds.x, innerBounds.y, innerBounds.width, innerBounds.height);
 		(view).print(g);

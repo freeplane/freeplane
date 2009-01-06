@@ -35,6 +35,8 @@ import org.freeplane.core.ui.components.FreeplaneMenuBar;
 public interface IUserInputListenerFactory {
 	public void addMouseWheelEventHandler(final IMouseWheelEventHandler handler);
 
+	public boolean extendSelection(MouseEvent e);
+
 	Component getLeftToolBar();
 
 	JToolBar getMainToolBar();
@@ -66,6 +68,4 @@ public interface IUserInputListenerFactory {
 	public void removeMouseWheelEventHandler(final IMouseWheelEventHandler handler);
 
 	void updateMapList();
-
-	public boolean extendSelection(MouseEvent e);
 }

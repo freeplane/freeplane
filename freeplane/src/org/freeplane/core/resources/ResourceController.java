@@ -20,11 +20,9 @@
 package org.freeplane.core.resources;
 
 import java.awt.Font;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.net.URLDecoder;
 import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Collections;
@@ -93,6 +91,10 @@ public abstract class ResourceController {
 		super();
 	}
 
+	public void addLanguageResources(final String language, final URL url) {
+		resources.addResources(language, url);
+	}
+
 	public void addPropertyChangeListener(final IFreeplanePropertyListener listener) {
 		propertyChangeListeners.add(listener);
 	}
@@ -113,7 +115,7 @@ public abstract class ResourceController {
 	}
 
 	public void clearLanguageResources() {
-		resources = null;
+		resources.reloadLanguage();
 	}
 
 	public NamedObject createTranslatedString(final String key) {
@@ -222,9 +224,9 @@ public abstract class ResourceController {
 		return Collections.unmodifiableCollection(propertyChangeListeners);
 	}
 
-	public URL getResource(String name) {
-	    return getClass().getResource(name);
-    }
+	public URL getResource(final String name) {
+		return getClass().getResource(name);
+	}
 
 	/** Returns the ResourceBundle with the current language */
 	public ResourceBundle getResources() {
@@ -278,8 +280,5 @@ public abstract class ResourceController {
 			setProperty(ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION,
 			    BooleanProperty.TRUE_VALUE);
 		}
-	}
-	public void shutdown(){
-		propertyChangeListeners.clear();
 	}
 }

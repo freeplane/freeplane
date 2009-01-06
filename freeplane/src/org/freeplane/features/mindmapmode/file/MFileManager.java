@@ -287,8 +287,8 @@ public class MFileManager extends UrlManager {
 		}
 		if (f.exists()) {
 			final int overwriteMap = JOptionPane.showConfirmDialog(Controller.getController()
-            .getMapView(), getModeController().getText("map_already_exists"),
-			    "Freeplane", JOptionPane.YES_NO_OPTION);
+			    .getMapView(), getModeController().getText("map_already_exists"), "Freeplane",
+			    JOptionPane.YES_NO_OPTION);
 			if (overwriteMap != JOptionPane.YES_OPTION) {
 				return false;
 			}

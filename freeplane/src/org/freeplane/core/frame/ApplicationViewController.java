@@ -63,24 +63,6 @@ public class ApplicationViewController extends ViewController {
 		frame = new JFrame("Freeplane");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.main.FreeplaneMain#exit()
-	 */
-	@Override
-	public void shutdown() {
-		final int winState = frame.getExtendedState();
-		if (JFrame.MAXIMIZED_BOTH != (winState & JFrame.MAXIMIZED_BOTH)) {
-			resourceController.setProperty("appwindow_x", String.valueOf(frame.getX()));
-			resourceController.setProperty("appwindow_y", String.valueOf(frame.getY()));
-			resourceController.setProperty("appwindow_width", String.valueOf(frame.getWidth()));
-			resourceController.setProperty("appwindow_height", String.valueOf(frame.getHeight()));
-		}
-		resourceController.setProperty("appwindow_state", String.valueOf(winState));
-		resourceController.saveProperties();
-		frame.dispose();
-	}
-
 	public String getAdjustableProperty(final String label) {
 		return resourceController.getAdjustableProperty(label);
 	}
@@ -118,7 +100,8 @@ public class ApplicationViewController extends ViewController {
 
 	@Override
 	public void init() {
-		final ImageIcon mWindowIcon = new ImageIcon(resourceController.getResource("/images/Freeplane_icon.png"));
+		final ImageIcon mWindowIcon = new ImageIcon(resourceController
+		    .getResource("/images/Freeplane_frame_icon.png"));
 		getJFrame().setIconImage(mWindowIcon.getImage());
 		getContentPane().setLayout(new BorderLayout());
 		super.init();
@@ -372,5 +355,23 @@ public class ApplicationViewController extends ViewController {
 			    Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 			frame.getRootPane().getGlassPane().setVisible(false);
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see freeplane.main.FreeplaneMain#exit()
+	 */
+	@Override
+	public void shutdown() {
+		final int winState = frame.getExtendedState();
+		if (JFrame.MAXIMIZED_BOTH != (winState & JFrame.MAXIMIZED_BOTH)) {
+			resourceController.setProperty("appwindow_x", String.valueOf(frame.getX()));
+			resourceController.setProperty("appwindow_y", String.valueOf(frame.getY()));
+			resourceController.setProperty("appwindow_width", String.valueOf(frame.getWidth()));
+			resourceController.setProperty("appwindow_height", String.valueOf(frame.getHeight()));
+		}
+		resourceController.setProperty("appwindow_state", String.valueOf(winState));
+		resourceController.saveProperties();
+		frame.dispose();
 	}
 }

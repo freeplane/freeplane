@@ -41,7 +41,6 @@ import org.freeplane.plugin.script.ScriptEditorPanel.IScriptModel;
 import org.freeplane.plugin.script.ScriptEditorPanel.ScriptHolder;
 import org.freeplane.plugin.script.ScriptingEngine.IErrorHandler;
 
-
 public class ScriptingRegistration implements IExternalPatternAction {
 	final private class PatternScriptModel implements IScriptModel {
 		final private String mOriginalScript;

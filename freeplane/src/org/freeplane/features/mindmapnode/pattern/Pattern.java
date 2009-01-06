@@ -115,8 +115,7 @@ public class Pattern implements Cloneable {
 		return patternScript;
 	}
 
-	private void marschall(final IXMLElement xml, final String string,
-	                       final PatternProperty pattern) {
+	private void marschall(final IXMLElement xml, final String string, final PatternProperty pattern) {
 		// TODO Auto-generated method stub
 	}
 

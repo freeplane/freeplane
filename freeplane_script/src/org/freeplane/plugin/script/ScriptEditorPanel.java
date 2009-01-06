@@ -59,7 +59,6 @@ import org.freeplane.core.ui.components.BlindIcon;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.plugin.script.ScriptingEngine.IErrorHandler;
 
-
 /**
  */
 class ScriptEditorPanel extends JDialog {

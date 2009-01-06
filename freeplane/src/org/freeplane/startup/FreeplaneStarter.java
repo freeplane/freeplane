@@ -21,7 +21,13 @@ package org.freeplane.startup;
 
 import java.awt.EventQueue;
 import java.io.File;
+import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -34,6 +40,7 @@ import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ApplicationResourceController;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Tools;
 import org.freeplane.features.browsemode.BModeControllerFactory;
@@ -46,20 +53,7 @@ import org.freeplane.features.mindmapmode.MModeControllerFactory;
 
 public class FreeplaneStarter {
 	public static final String LOAD_LAST_MAP = "load_last_map";
-
-	void checkJavaVersion() {
-		System.out.println("Checking Java Version...");
-		if (Controller.JAVA_VERSION.compareTo("1.5.0") < 0) {
-			final String message = "Warning: Freeplane requires version Java 1.5.0 or higher (your version: "
-			        + Controller.JAVA_VERSION
-			        + ", installed in "
-			        + System.getProperty("java.home")
-			        + ").";
-			System.err.println(message);
-			JOptionPane.showMessageDialog(null, message, "Freeplane", JOptionPane.WARNING_MESSAGE);
-			System.exit(1);
-		}
-	}
+	static private boolean loggerCreated = false;
 
 	static public void main(final String[] args) {
 		final FreeplaneStarter starter = new FreeplaneStarter();
@@ -67,8 +61,8 @@ public class FreeplaneStarter {
 	}
 
 	private Controller controller;
-	private IFreeplaneSplash splash;
 	private IFeedBack feedBack;
+	private IFreeplaneSplash splash;
 	private ApplicationViewController viewController;
 
 	public FreeplaneStarter() {
@@ -85,6 +79,128 @@ public class FreeplaneStarter {
 		info.append(System.getProperty("os.name"));
 		info.append("; os_version = ");
 		info.append(System.getProperty("os.version"));
+	}
+
+	void checkJavaVersion() {
+		System.out.println("Checking Java Version...");
+		if (Controller.JAVA_VERSION.compareTo("1.5.0") < 0) {
+			final String message = "Warning: Freeplane requires version Java 1.5.0 or higher (your version: "
+			        + Controller.JAVA_VERSION
+			        + ", installed in "
+			        + System.getProperty("java.home")
+			        + ").";
+			System.err.println(message);
+			JOptionPane.showMessageDialog(null, message, "Freeplane", JOptionPane.WARNING_MESSAGE);
+			System.exit(1);
+		}
+	}
+
+	public void createController() {
+		final ApplicationResourceController resourceController = new ApplicationResourceController();
+		controller = new Controller(resourceController);
+		createLogger();
+		splash = new FreeplaneSplashModern();
+		splash.setVisible(true);
+		feedBack = splash.getFeedBack();
+		feedBack.setMaximumValue(9);
+		/* This is only for apple but does not harm for the others. */
+		System.setProperty("apple.laf.useScreenMenuBar", "true");
+		feedBack.increase("Freeplane.progress.updateLookAndFeel");
+		updateLookAndFeel();
+		feedBack.increase("Freeplane.progress.createController");
+		//try {
+		//	Thread.sleep(100000);
+		//}
+		//catch (InterruptedException e) {
+		//	// TODO Auto-generated catch block
+		//	e.printStackTrace();
+		//}	    
+		System.setSecurityManager(new FreeplaneSecurityManager());
+		viewController = new ApplicationViewController();
+		FilterController.install();
+		PrintController.install();
+		ModelessAttributeController.install();
+		HelpController.install();
+		MModeControllerFactory.createModeController();
+		BModeControllerFactory.createModeController();
+		FModeControllerFactory.createModeController();
+	}
+
+	public void createFrame(final String[] args) {
+		feedBack.increase("Freeplane.progress.settingPreferences");
+		controller.getViewController().changeAntialias(
+		    Controller.getResourceController().getProperty(ViewController.RESOURCE_ANTIALIAS));
+		feedBack.increase("Freeplane.progress.propagateLookAndFeel");
+		SwingUtilities.updateComponentTreeUI(Controller.getController().getViewController()
+		    .getJFrame());
+		feedBack.increase("Freeplane.progress.buildScreen");
+		viewController.init();
+		try {
+			if (!EventQueue.isDispatchThread()) {
+				EventQueue.invokeAndWait(new Runnable() {
+					public void run() {
+					};
+				});
+			}
+		}
+		catch (final Exception e) {
+			org.freeplane.core.util.Tools.logException(e);
+		}
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				feedBack.increase("Freeplane.progress.createInitialMode");
+				controller.selectMode(Controller.getResourceController()
+				    .getProperty("initial_mode"));
+				feedBack.increase("Freeplane.progress.startCreateController");
+				final ModeController ctrl = createModeController(args);
+				feedBack.increase("Freeplane.progress.loadMaps");
+				loadMaps(args, ctrl);
+				feedBack.increase("Freeplane.progress.endStartup");
+				if (splash != null) {
+					splash.setVisible(false);
+				}
+				Controller.getController().getViewController().getJFrame().setVisible(true);
+			}
+		});
+	}
+
+	private void createLogger() {
+		if (loggerCreated) {
+			return;
+		}
+		loggerCreated = true;
+		final ResourceController resourceController = Controller.getResourceController();
+		FileHandler mFileHandler = null;
+		final Logger parentLogger = Logger.getAnonymousLogger().getParent();
+		final Handler[] handlers = parentLogger.getHandlers();
+		for (int i = 0; i < handlers.length; i++) {
+			final Handler handler = handlers[i];
+			if (handler instanceof ConsoleHandler) {
+				parentLogger.removeHandler(handler);
+			}
+		}
+		try {
+			mFileHandler = new FileHandler(resourceController.getFreeplaneUserDirectory()
+			        + File.separator + "log", 1400000, 5, false);
+			mFileHandler.setFormatter(new StdFormatter());
+			mFileHandler.setLevel(Level.INFO);
+			parentLogger.addHandler(mFileHandler);
+			final ConsoleHandler stdConsoleHandler = new ConsoleHandler();
+			stdConsoleHandler.setFormatter(new StdFormatter());
+			stdConsoleHandler.setLevel(Level.WARNING);
+			parentLogger.addHandler(stdConsoleHandler);
+			LoggingOutputStream los;
+			Logger logger = Logger.getLogger(StdFormatter.STDOUT.getName());
+			los = new LoggingOutputStream(logger, StdFormatter.STDOUT);
+			System.setOut(new PrintStream(los, true));
+			logger = Logger.getLogger(StdFormatter.STDERR.getName());
+			los = new LoggingOutputStream(logger, StdFormatter.STDERR);
+			System.setErr(new PrintStream(los, true));
+		}
+		catch (final Exception e) {
+			System.err.println("Error creating logging File Handler");
+			e.printStackTrace();
+		}
 	}
 
 	private ModeController createModeController(final String[] args) {
@@ -161,73 +277,27 @@ public class FreeplaneStarter {
 		}
 	}
 
-	public void createFrame(final String[] args) {
-	    feedBack.increase("Freeplane.progress.settingPreferences");
-	    controller.getViewController().changeAntialias(
-	        Controller.getResourceController().getProperty(ViewController.RESOURCE_ANTIALIAS));
-	    feedBack.increase("Freeplane.progress.propagateLookAndFeel");
-	    SwingUtilities.updateComponentTreeUI(Controller.getController().getViewController()
-	        .getJFrame());
-	    feedBack.increase("Freeplane.progress.buildScreen");
-	    viewController.init();
-	    try {
-	    	if (!EventQueue.isDispatchThread()) {
-	    		EventQueue.invokeAndWait(new Runnable() {
-	    			public void run() {
-	    			};
-	    		});
-	    	}
-	    }
-	    catch (final Exception e) {
-	    	org.freeplane.core.util.Tools.logException(e);
-	    }
-	    EventQueue.invokeLater(new Runnable() {
-	    	public void run() {
-	    		feedBack.increase("Freeplane.progress.createInitialMode");
-	    		controller.selectMode(Controller.getResourceController().getProperty(
-	    		    "initial_mode"));
-	    		feedBack.increase("Freeplane.progress.startCreateController");
-	    		final ModeController ctrl = createModeController(args);
-	    		feedBack.increase("Freeplane.progress.loadMaps");
-	    		loadMaps(args, ctrl);
-	    		feedBack.increase("Freeplane.progress.endStartup");
-	    		if (splash != null) {
-	    			splash.setVisible(false);
-	    		}
-	    		Controller.getController().getViewController().getJFrame().setVisible(true);
-	    	}
-	    });
-    }
-
-	public void createController() {
-	    final ApplicationResourceController resourceController = ApplicationResourceController.create();
-	    controller = new Controller(resourceController);
-	    splash = new FreeplaneSplashModern();
-	    splash.setVisible(true);
-	    feedBack = splash.getFeedBack();
-	    feedBack.setMaximumValue(9);
-	    /* This is only for apple but does not harm for the others. */
-	    System.setProperty("apple.laf.useScreenMenuBar", "true");
-	    feedBack.increase("Freeplane.progress.updateLookAndFeel");
-	    updateLookAndFeel();
-	    feedBack.increase("Freeplane.progress.createController");
-//try {
-//	Thread.sleep(100000);
-//}
-//catch (InterruptedException e) {
-//	// TODO Auto-generated catch block
-//	e.printStackTrace();
-//}	    
-	    System.setSecurityManager(new FreeplaneSecurityManager());
-	    viewController = new ApplicationViewController();
-	    FilterController.install();
-	    PrintController.install();
-	    ModelessAttributeController.install();
-	    HelpController.install();
-	    MModeControllerFactory.createModeController();
-	    BModeControllerFactory.createModeController();
-	    FModeControllerFactory.createModeController();
-    }
+	public void stop() {
+		try {
+			if (EventQueue.isDispatchThread()) {
+				Controller.getController().shutdown();
+				return;
+			}
+			EventQueue.invokeAndWait(new Runnable() {
+				public void run() {
+					Controller.getController().shutdown();
+				}
+			});
+		}
+		catch (final InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (final InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 *
@@ -264,28 +334,4 @@ public class FreeplaneStarter {
 			System.err.println("Unable to set Look & Feel.");
 		}
 	}
-
-	public void stop() {
-	    try {
-	    	if(EventQueue.isDispatchThread()){
-	    		Controller.getController().shutdown();
-	    		return;
-	    	}
-	        EventQueue.invokeAndWait(new Runnable(){
-
-	        	public void run() {
-		    		Controller.getController().shutdown();
-				}
-			});
-		}
-        catch (InterruptedException e) {
-	        // TODO Auto-generated catch block
-	        e.printStackTrace();
-        }
-        catch (InvocationTargetException e) {
-	        // TODO Auto-generated catch block
-	        e.printStackTrace();
-        }
-	    
-    }
 }

@@ -52,14 +52,6 @@ public class AppletViewController extends ViewController {
 
 	/*
 	 * (non-Javadoc)
-	 * @see freeplane.main.FreeplaneMain#exit()
-	 */
-	@Override
-	public void shutdown() {
-	}
-
-	/*
-	 * (non-Javadoc)
 	 * @see freeplane.controller.views.ViewController#getContentPane()
 	 */
 	@Override
@@ -200,6 +192,14 @@ public class AppletViewController extends ViewController {
 			    Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 			applet.getRootPane().getGlassPane().setVisible(false);
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see freeplane.main.FreeplaneMain#exit()
+	 */
+	@Override
+	public void shutdown() {
 	}
 
 	public void start() {

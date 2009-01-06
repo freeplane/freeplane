@@ -172,8 +172,8 @@ public class ExportWithXSLT extends ExportAction {
 			final MindIcon myIcon = MindIcon.factory(iconName);
 			copyFromResource(MindIcon.getIconsPath(), myIcon.getIconBaseFileName(), directoryName2);
 		}
-		final File iconDir = new File(
-		    Controller.getResourceController().getFreeplaneUserDirectory(), "icons");
+		final File iconDir = new File(Controller.getResourceController()
+		    .getFreeplaneUserDirectory(), "icons");
 		if (iconDir.exists()) {
 			final String[] userIconArray = iconDir.list(new FilenameFilter() {
 				public boolean accept(final File dir, final String name) {

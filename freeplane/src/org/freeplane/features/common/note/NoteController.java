@@ -43,7 +43,8 @@ public class NoteController implements IExtension {
 	                           final NoteController noteController) {
 		modeController.addExtension(NoteController.class, noteController);
 		if (firstRun) {
-			noteIcon = new ImageIcon(Controller.getResourceController().getResource("/images/knotes.png"));
+			noteIcon = new ImageIcon(Controller.getResourceController().getResource(
+			    "/images/knotes.png"));
 			MindIcon.factory(NodeNoteBase.NODE_NOTE_ICON, noteIcon);
 			firstRun = false;
 		}

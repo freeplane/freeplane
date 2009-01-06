@@ -26,16 +26,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.PrintStream;
 import java.net.URL;
 import java.util.InvalidPropertiesFormatException;
 import java.util.Locale;
 import java.util.Properties;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.FileHandler;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.FilterController;
@@ -48,17 +42,15 @@ public class ApplicationResourceController extends ResourceController {
 	final private File autoPropertiesFile;
 	final private Properties defProps;
 	final private Properties props;
-	private static ApplicationResourceController instance;
 
 	/**
 	 * @param controller
 	 */
-	private ApplicationResourceController() {
+	public ApplicationResourceController() {
 		super();
 		defProps = readDefaultPreferences();
 		props = readUsersPreferences(defProps);
 		createUserDirectory(defProps);
-		createLogger();
 		setDefaultLocale(props);
 		autoPropertiesFile = getUserPreferencesFile(defProps);
 		addPropertyChangeListener(new IFreeplanePropertyListener() {
@@ -66,44 +58,9 @@ public class ApplicationResourceController extends ResourceController {
 			                            final String oldValue) {
 				if (propertyName.equals(ResourceController.RESOURCE_LANGUAGE)) {
 					clearLanguageResources();
-					getResources();
 				}
 			}
 		});
-	}
-
-	private void createLogger() {
-		FileHandler mFileHandler = null;
-		final Logger parentLogger = Logger.getAnonymousLogger().getParent();
-		final Handler[] handlers = parentLogger.getHandlers();
-		for (int i = 0; i < handlers.length; i++) {
-			final Handler handler = handlers[i];
-			if (handler instanceof ConsoleHandler) {
-				parentLogger.removeHandler(handler);
-			}
-		}
-		try {
-			mFileHandler = new FileHandler(getFreeplaneUserDirectory() + File.separator + "log",
-			    1400000, 5, false);
-			mFileHandler.setFormatter(new StdFormatter());
-			mFileHandler.setLevel(Level.INFO);
-			parentLogger.addHandler(mFileHandler);
-			final ConsoleHandler stdConsoleHandler = new ConsoleHandler();
-			stdConsoleHandler.setFormatter(new StdFormatter());
-			stdConsoleHandler.setLevel(Level.WARNING);
-			parentLogger.addHandler(stdConsoleHandler);
-			LoggingOutputStream los;
-			Logger logger = Logger.getLogger(StdFormatter.STDOUT.getName());
-			los = new LoggingOutputStream(logger, StdFormatter.STDOUT);
-			System.setOut(new PrintStream(los, true));
-			logger = Logger.getLogger(StdFormatter.STDERR.getName());
-			los = new LoggingOutputStream(logger, StdFormatter.STDERR);
-			System.setErr(new PrintStream(los, true));
-		}
-		catch (final Exception e) {
-			System.err.println("Error creating logging File Handler");
-			e.printStackTrace();
-		}
 	}
 
 	private void createUserDirectory(final Properties pDefaultProperties) {
@@ -144,7 +101,6 @@ public class ApplicationResourceController extends ResourceController {
 	public String getProperty(final String key) {
 		return props.getProperty(key);
 	}
-
 
 	private File getUserPreferencesFile(final Properties defaultPreferences) {
 		if (defaultPreferences == null) {
@@ -252,11 +208,4 @@ public class ApplicationResourceController extends ResourceController {
 		props.setProperty(key, value);
 		firePropertyChanged(key, value, oldValue);
 	}
-
-	public static ApplicationResourceController create() {
-		if(instance == null){
-			instance = new ApplicationResourceController();
-		}
-		return instance;
-    }
 }

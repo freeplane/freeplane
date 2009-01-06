@@ -77,7 +77,8 @@ public class BNodeNoteViewer extends NodeNoteBase implements INodeSelectionListe
 	/** Copied from NodeNoteRegistration. */
 	protected void setStateIcon(final NodeModel node, final boolean enabled) {
 		if (BNodeNoteViewer.noteIcon == null) {
-			BNodeNoteViewer.noteIcon = new ImageIcon(Controller.getResourceController().getResource("/images/knotes.png"));
+			BNodeNoteViewer.noteIcon = new ImageIcon(Controller.getResourceController()
+			    .getResource("/images/knotes.png"));
 		}
 		node.setStateIcon(NodeNoteBase.NODE_NOTE_ICON, (enabled) ? BNodeNoteViewer.noteIcon : null);
 	}

@@ -30,7 +30,8 @@ class PrintAction extends AbstractPrintAction {
 	final private boolean isDlg;
 
 	PrintAction(final PrintController controller, final boolean isDlg) {
-		super(controller, null, new ImageIcon(Controller.getResourceController().getResource("/images/fileprint.png")));
+		super(controller, null, new ImageIcon(Controller.getResourceController().getResource(
+		    "/images/fileprint.png")));
 		MenuBuilder.setLabelAndMnemonic(this, isDlg ? Controller.getText("print_dialog")
 		        : Controller.getText("print"));
 		this.isDlg = isDlg;

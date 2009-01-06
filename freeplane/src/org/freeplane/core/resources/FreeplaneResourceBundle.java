@@ -23,12 +23,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Locale;
-import java.util.PropertyResourceBundle;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.util.MultipleValueMap;
 
 class FreeplaneResourceBundle extends ResourceBundle {
 	private static final String DEFAULT_LANGUAGE = "en";
@@ -37,32 +40,16 @@ class FreeplaneResourceBundle extends ResourceBundle {
 	 *
 	 */
 	final private ResourceController controller;
-	private PropertyResourceBundle defaultResources;
-	private PropertyResourceBundle languageResources;
+	private HashMap<String, String> defaultResources;
+	private final MultipleValueMap<String, URL> externalResources;
+	private String lang;
+	private HashMap<String, String> languageResources;
 
 	FreeplaneResourceBundle(final ResourceController controller) {
 		this.controller = controller;
+		externalResources = new MultipleValueMap<String, URL>();
 		try {
-			String lang = this.controller.getProperty(ResourceController.RESOURCE_LANGUAGE);
-			if (lang == null || lang.equals("automatic")) {
-				lang = Locale.getDefault().getLanguage() + "_" + Locale.getDefault().getCountry();
-				if (getLanguageResources(lang) == null) {
-					lang = Locale.getDefault().getLanguage();
-					if (getLanguageResources(lang) == null) {
-						lang = DEFAULT_LANGUAGE;
-					}
-				}
-			}
-			if ("no".equals(lang)) {
-				lang = "nb";
-			}
-			languageResources = getLanguageResources(lang);
-			/*
-			 * fc, 26.4.2008. the following line is a bug, as the
-			 * defaultResources are used, even, when a single string is missing
-			 * inside a bundle and not only, when the complete bundle is
-			 * missing.
-			 */
+			loadLocalLanguageResources();
 			defaultResources = getLanguageResources(DEFAULT_LANGUAGE);
 		}
 		catch (final Exception ex) {
@@ -71,26 +58,62 @@ class FreeplaneResourceBundle extends ResourceBundle {
 		}
 	}
 
+	public void addResources(final String language, final URL url) {
+		try {
+			if (language.equalsIgnoreCase(DEFAULT_LANGUAGE)) {
+				defaultResources.putAll(getLanguageResources(url));
+			}
+			else if (language.equalsIgnoreCase(lang)) {
+				languageResources.putAll(getLanguageResources(url));
+			}
+			externalResources.put(language, url);
+		}
+		catch (final IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	@Override
 	public Enumeration getKeys() {
-		return defaultResources.getKeys();
+		final Iterator<String> iterator = defaultResources.keySet().iterator();
+		return new Enumeration() {
+			public boolean hasMoreElements() {
+				return iterator.hasNext();
+			}
+
+			public Object nextElement() {
+				return iterator.next();
+			}
+		};
 	}
 
 	/**
 	 * @throws IOException
 	 */
-	private PropertyResourceBundle getLanguageResources(final String lang) throws IOException {
-		final URL systemResource = Controller.getResourceController().getResource("/Resources_" + lang + ".properties");
+	private HashMap<String, String> getLanguageResources(final String lang) throws IOException {
+		final URL systemResource = Controller.getResourceController().getResource(
+		    "/Resources" + "_" + lang + ".properties");
 		if (systemResource == null) {
 			return null;
 		}
+		final HashMap resources = getLanguageResources(systemResource);
+		final Iterator<URL> iterator = externalResources.get(lang).iterator();
+		while (iterator.hasNext()) {
+			resources.putAll(getLanguageResources(iterator.next()));
+		}
+		return resources;
+	}
+
+	private HashMap<String, String> getLanguageResources(final URL systemResource)
+	        throws IOException {
 		final InputStream in = systemResource.openStream();
 		if (in == null) {
 			return null;
 		}
-		final PropertyResourceBundle bundle = new PropertyResourceBundle(in);
+		final Properties bundle = new Properties();
+		bundle.load(in);
 		in.close();
-		return bundle;
+		return new HashMap(bundle);
 	}
 
 	String getResourceString(final String key) {
@@ -105,11 +128,10 @@ class FreeplaneResourceBundle extends ResourceBundle {
 	String getResourceString(final String key, final String resource) {
 		try {
 			try {
-				return languageResources.getString(key);
+				return languageResources.get(key);
 			}
 			catch (final Exception ex) {
-				return defaultResources.getString(key)
-				        + FreeplaneResourceBundle.POSTFIX_TRANSLATE_ME;
+				return defaultResources.get(key) + FreeplaneResourceBundle.POSTFIX_TRANSLATE_ME;
 			}
 		}
 		catch (final Exception e) {
@@ -120,11 +142,37 @@ class FreeplaneResourceBundle extends ResourceBundle {
 	@Override
 	protected Object handleGetObject(final String key) {
 		try {
-			return languageResources.getString(key);
+			return languageResources.get(key);
 		}
 		catch (final Exception ex) {
 			Logger.global.severe("Warning - resource string not found:" + key);
-			return defaultResources.getString(key) + FreeplaneResourceBundle.POSTFIX_TRANSLATE_ME;
+			return defaultResources.get(key) + FreeplaneResourceBundle.POSTFIX_TRANSLATE_ME;
+		}
+	}
+
+	private void loadLocalLanguageResources() throws IOException {
+		lang = controller.getProperty(ResourceController.RESOURCE_LANGUAGE);
+		if (lang == null || lang.equals("automatic")) {
+			lang = Locale.getDefault().getLanguage() + "_" + Locale.getDefault().getCountry();
+			if (getLanguageResources(lang) == null) {
+				lang = Locale.getDefault().getLanguage();
+				if (getLanguageResources(lang) == null) {
+					lang = DEFAULT_LANGUAGE;
+				}
+			}
+		}
+		if ("no".equals(lang)) {
+			lang = "nb";
+		}
+		languageResources = getLanguageResources(lang);
+	}
+
+	public void reloadLanguage() {
+		try {
+			loadLocalLanguageResources();
+		}
+		catch (final IOException e) {
+			e.printStackTrace();
 		}
 	}
 }

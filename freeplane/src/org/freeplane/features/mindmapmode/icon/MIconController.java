@@ -43,8 +43,8 @@ import org.freeplane.core.resources.ui.KeyProperty;
 import org.freeplane.core.resources.ui.OptionPanelBuilder;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
+import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.mindmapmode.MModeController;
@@ -108,8 +108,8 @@ public class MIconController extends IconController {
 		modeController.addAction("removeLastIconAction", removeLastIconAction);
 		modeController.addAction("removeAllIconsAction", new RemoveAllIconsAction());
 		final Vector iconNames = MindIcon.getAllIconNames();
-		final File iconDir = new File(
-		    Controller.getResourceController().getFreeplaneUserDirectory(), "icons");
+		final File iconDir = new File(Controller.getResourceController()
+		    .getFreeplaneUserDirectory(), "icons");
 		if (iconDir.exists()) {
 			final String[] userIconArray = iconDir.list(new FilenameFilter() {
 				public boolean accept(final File dir, final String name) {

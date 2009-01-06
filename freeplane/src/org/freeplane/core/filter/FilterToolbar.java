@@ -130,7 +130,8 @@ class FilterToolbar extends FreeplaneToolBar {
 		 *
 		 */
 		UnfoldAncestorsAction() {
-			super(null, new ImageIcon(Controller.getResourceController().getResource("/images/unfold.png")));
+			super(null, new ImageIcon(Controller.getResourceController().getResource(
+			    "/images/unfold.png")));
 		}
 
 		public void actionPerformed(final ActionEvent e) {
@@ -186,7 +187,8 @@ class FilterToolbar extends FreeplaneToolBar {
 		};
 		activeFilterConditionComboBox.setFocusable(false);
 		pathToFilterFile = Controller.getResourceController().getFreeplaneUserDirectory()
-		        + File.separator + "auto." + FilterController.FREEPLANE_FILTER_EXTENSION_WITHOUT_DOT;
+		        + File.separator + "auto."
+		        + FilterController.FREEPLANE_FILTER_EXTENSION_WITHOUT_DOT;
 		btnEdit = add(new EditFilterAction());
 		add(btnEdit);
 		btnUnfoldAncestors = add(new UnfoldAncestorsAction());

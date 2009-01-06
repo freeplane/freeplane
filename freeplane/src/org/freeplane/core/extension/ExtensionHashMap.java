@@ -57,6 +57,10 @@ public class ExtensionHashMap implements IModifiableExtensionCollection {
 		return addExtension(clazz, extension);
 	}
 
+	public void clear() {
+		collection.clear();
+	}
+
 	public boolean containsExtension(final Class clazz) {
 		final Iterator iterator = extensionIterator();
 		while (iterator.hasNext()) {
@@ -111,8 +115,4 @@ public class ExtensionHashMap implements IModifiableExtensionCollection {
 		final Class clazz = extension.getClass();
 		setExtension(clazz, extension);
 	}
-
-	public void clear() {
-	    collection.clear();
-    }
 }

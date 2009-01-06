@@ -149,7 +149,8 @@ public class NodeAttributeTableModel extends AbstractTableModel implements IAttr
 	public void enableStateIcon() {
 		if (NodeAttributeTableModel.SHOW_ATTRIBUTE_ICON && getRowCount() == 1) {
 			if (NodeAttributeTableModel.noteIcon == null) {
-				NodeAttributeTableModel.noteIcon = new ImageIcon(Controller.getResourceController().getResource("/images/showAttributes.gif"));
+				NodeAttributeTableModel.noteIcon = new ImageIcon(Controller.getResourceController()
+				    .getResource("/images/showAttributes.gif"));
 			}
 			node.setStateIcon(NodeAttributeTableModel.STATE_ICON, NodeAttributeTableModel.noteIcon);
 		}

@@ -121,5 +121,4 @@ public class FreeplaneToolBar extends JToolBar {
 		}
 		abstractButton.setContentAreaFilled(false);
 	}
-
 }

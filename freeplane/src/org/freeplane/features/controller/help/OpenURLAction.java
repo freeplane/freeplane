@@ -33,8 +33,8 @@ class OpenURLAction extends AbstractAction {
 	final private String url;
 
 	OpenURLAction(final String description, final String url) {
-		super(null,
-		    new ImageIcon(Controller.getResourceController().getResource("/images/Link.png")));
+		super(null, new ImageIcon(Controller.getResourceController()
+		    .getResource("/images/Link.png")));
 		MenuBuilder.setLabelAndMnemonic(this, description);
 		this.url = url;
 	}

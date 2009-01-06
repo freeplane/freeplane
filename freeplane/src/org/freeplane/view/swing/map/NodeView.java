@@ -109,7 +109,7 @@ public class NodeView extends JComponent implements TreeModelListener {
 	private AttributeView attributeView;
 	private JComponent contentPane;
 	private MainView mainView;
-	private MapView map;
+	private final MapView map;
 	private int maxToolTipWidth;
 	private NodeModel model;
 	private NodeMotionListenerView motionListenerView;

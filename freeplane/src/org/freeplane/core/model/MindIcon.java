@@ -129,7 +129,8 @@ public class MindIcon implements Comparable, IIconInformation {
 
 	public ImageIcon getIcon() {
 		if (MindIcon.iconNotFound == null) {
-			MindIcon.iconNotFound = new ImageIcon(Controller.getResourceController().getResource("/images/IconNotFound.png"));
+			MindIcon.iconNotFound = new ImageIcon(Controller.getResourceController().getResource(
+			    "/images/IconNotFound.png"));
 		}
 		if (associatedIcon != null) {
 			return associatedIcon;

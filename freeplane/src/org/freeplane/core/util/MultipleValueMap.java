@@ -17,38 +17,41 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.modecontroller;
+package org.freeplane.core.util;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
-
-import org.freeplane.core.model.NodeModel;
+import java.util.Map;
 
 /**
  * @author Dimitry Polivaev
- * 04.01.2009
+ * 06.01.2009
  */
-public interface IMapSelection {
-	public void centerNode(final NodeModel node);
+public class MultipleValueMap<K, V> {
+	final private Map<K, List<V>> map;
 
-	public NodeModel getSelected();
+	public MultipleValueMap() {
+		super();
+		this.map = new HashMap<K, List<V>>();
+	}
 
-	public List<NodeModel> getSelection();
+	public boolean containsKey(final Object key) {
+		return map.containsKey(key);
+	}
 
-	public List<NodeModel> getSortedSelection();
+	public List<V> get(final Object key) {
+		final List<V> list = map.get(key);
+		return list == null ? Collections.EMPTY_LIST : list;
+	}
 
-	public boolean isSelected(final NodeModel node);
-
-	public void makeTheSelected(final NodeModel node);
-
-	public void selectAsTheOnlyOneSelected(final NodeModel node);
-
-	public void selectBranch(final NodeModel node, final boolean extend);
-
-	public void selectContinuous(final NodeModel node);
-
-	public void setSiblingMaxLevel(int nodeLevel);
-
-	public int size();
-
-	public void toggleSelected(final NodeModel node);
+	public List<V> put(final K key, final V value) {
+		List<V> list = map.get(key);
+		if (list == null) {
+			list = new LinkedList<V>();
+			map.put(key, list);
+		}
+		return list;
+	}
 }

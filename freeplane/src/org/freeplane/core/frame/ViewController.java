@@ -176,8 +176,6 @@ abstract public class ViewController implements IMapViewChangeListener {
 		status.setText(msg);
 	}
 
-	abstract public void shutdown();
-
 	private boolean getAntialiasAll() {
 		return antialiasAll;
 	}
@@ -505,6 +503,8 @@ abstract public class ViewController implements IMapViewChangeListener {
 		}
 		zoom.setSelectedItem(userDefinedZoom);
 	}
+
+	abstract public void shutdown();
 
 	public void updateMenus(final MenuBuilder menuBuilder) {
 		menuBuilder.removeChildElements(FreeplaneMenuBar.FILE_MENU + "/last");

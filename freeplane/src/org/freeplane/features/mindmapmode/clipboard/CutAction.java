@@ -48,16 +48,15 @@ class CutAction extends FreeplaneAction {
 			controller.errorMessage(Controller.getText("cannot_delete_root"));
 			return;
 		}
-		final int showResult = new OptionalDontShowMeAgainDialog(controller
-		    .getViewController().getJFrame(), controller.getMapView().getSelected(), "really_cut_node", "confirmation",
+		final int showResult = new OptionalDontShowMeAgainDialog(controller.getViewController()
+		    .getJFrame(), controller.getMapView().getSelected(), "really_cut_node", "confirmation",
 		    new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
 		        ResourceController.RESOURCES_CUT_NODES_WITHOUT_QUESTION),
 		    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED).show().getResult();
 		if (showResult != JOptionPane.OK_OPTION) {
 			return;
 		}
-		final Transferable copy = cut(controller.getSelection()
-		    .getSortedSelection());
+		final Transferable copy = cut(controller.getSelection().getSortedSelection());
 		ClipboardController.getController(mMindMapController).setClipboardContents(copy);
 		controller.getViewController().obtainFocusForSelected();
 	}

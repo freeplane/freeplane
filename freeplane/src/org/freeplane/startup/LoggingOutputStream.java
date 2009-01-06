@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.resources;
+package org.freeplane.startup;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

@@ -124,7 +124,8 @@ class AttributeRegistryTable extends JTable {
 		}
 	}
 
-	static final private Icon checkBoxImage = new ImageIcon(Controller.getResourceController().getResource("/images/checkbox12.png"));
+	static final private Icon checkBoxImage = new ImageIcon(Controller.getResourceController()
+	    .getResource("/images/checkbox12.png"));
 	private static final ButtonRenderer editButtonRenderer = new ButtonRenderer(
 	    AttributeManagerDialog.editButtonImage, Controller.getText("attributes_edit_tooltip"));
 	final private AttributeManagerDialog.EditListAction editListAction;

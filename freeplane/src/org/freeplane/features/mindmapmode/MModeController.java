@@ -91,7 +91,8 @@ public class MModeController extends ModeController {
 
 	private void createOptionPanelControls() {
 		optionPanelBuilder = new OptionPanelBuilder();
-		optionPanelBuilder.load(Controller.getResourceController().getResource("/org/freeplane/features/mindmapmode/preferences.xml"));
+		optionPanelBuilder.load(Controller.getResourceController().getResource(
+		    "/org/freeplane/features/mindmapmode/preferences.xml"));
 		final LookAndFeelInfo[] lafInfo = UIManager.getInstalledLookAndFeels();
 		final Vector<String> lafNames = new Vector(lafInfo.length + 5);
 		final Vector<String> translatedLafNames = new Vector(lafInfo.length + 5);

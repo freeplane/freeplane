@@ -39,7 +39,6 @@ import org.freeplane.plugin.script.ScriptEditorPanel.IScriptModel;
 import org.freeplane.plugin.script.ScriptEditorPanel.ScriptHolder;
 import org.freeplane.plugin.script.ScriptingEngine.IErrorHandler;
 
-
 /**
  * @author foltin
  */

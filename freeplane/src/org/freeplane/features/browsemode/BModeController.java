@@ -81,7 +81,8 @@ public class BModeController extends ModeController {
 		final String noteText = NoteModel.getNoteText(node);
 		if (noteText != null && !noteText.equals("")) {
 			if (noteIcon == null) {
-				noteIcon = new ImageIcon(Controller.getResourceController().getResource("/images/knotes.png"));
+				noteIcon = new ImageIcon(Controller.getResourceController().getResource(
+				    "/images/knotes.png"));
 			}
 			node.setStateIcon(NodeNoteBase.NODE_NOTE_ICON, noteIcon);
 		}

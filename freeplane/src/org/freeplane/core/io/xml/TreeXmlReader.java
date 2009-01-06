@@ -120,7 +120,7 @@ public class TreeXmlReader implements IXMLBuilder {
 	private boolean addAttribute(final String key, final String value) {
 		if (attributeHandlersForTag != null) {
 			final IAttributeHandler attributeHandler = attributeHandlersForTag.get(key);
-			if(attributeHandler != null){
+			if (attributeHandler != null) {
 				attributeHandler.setAttribute(currentElement, value);
 				return true;
 			}

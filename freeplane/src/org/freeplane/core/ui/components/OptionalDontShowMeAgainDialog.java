@@ -163,7 +163,8 @@ public class OptionalDontShowMeAgainDialog {
 		    new JLabel(Controller.getText(mMessageId)),
 		    new GridBagConstraints(1, 0, 1, 1, 1.0, 1.0, GridBagConstraints.WEST,
 		        GridBagConstraints.BOTH, new Insets(5, 5, 0, 0), 0, 0));
-		final ImageIcon questionMark = new ImageIcon(Controller.getResourceController().getResource("/images/icons/help.png"));
+		final ImageIcon questionMark = new ImageIcon(Controller.getResourceController()
+		    .getResource("/images/icons/help.png"));
 		mDialog.getContentPane().add(
 		    new JLabel(questionMark),
 		    new GridBagConstraints(0, 0, 1, 2, 1.0, 2.0, GridBagConstraints.WEST,

@@ -59,7 +59,8 @@ class NewChildAction extends FreeplaneAction {
 						childPosition++;
 					}
 					newNode = addNewNode(parent, childPosition, targetNode.isLeft());
-					final NodeView nodeView = Controller.getController().getMapView().getNodeView(newNode);
+					final NodeView nodeView = Controller.getController().getMapView().getNodeView(
+					    newNode);
 					modeController.getMapController().select(newNode);
 					((MTextController) TextController.getController(modeController)).edit(nodeView,
 					    targetNodeView, e, true, false, false);
@@ -79,7 +80,8 @@ class NewChildAction extends FreeplaneAction {
 				final int position = Controller.getResourceController().getProperty(
 				    "placenewbranches").equals("last") ? targetNode.getChildCount() : 0;
 				newNode = addNewNode(targetNode, position, targetNode.isNewChildLeft());
-				final NodeView nodeView = Controller.getController().getMapView().getNodeView(newNode);
+				final NodeView nodeView = Controller.getController().getMapView().getNodeView(
+				    newNode);
 				if (newNodeMode == MMapController.NEW_CHILD) {
 					modeController.getMapController().select(nodeView.getModel());
 				}

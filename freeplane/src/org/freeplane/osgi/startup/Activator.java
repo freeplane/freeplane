@@ -29,40 +29,41 @@ import org.osgi.framework.BundleContext;
  * 05.01.2009
  */
 public class Activator implements BundleActivator {
-
 	private FreeplaneStarter starter;
 
-	public void start(BundleContext context) throws Exception {
+	public void start(final BundleContext context) throws Exception {
 		starter = new FreeplaneStarter();
 		starter.createController();
 		final Bundle[] bundles = context.getBundles();
-		for(int i = 0; i < bundles.length; i++){
-			Bundle bundle = bundles[i];
-			if(bundle.getState() < Bundle.STARTING && bundle.getSymbolicName().startsWith("org.freeplane.plugin.")){
+		for (int i = 0; i < bundles.length; i++) {
+			final Bundle bundle = bundles[i];
+			if (bundle.getState() < Bundle.STARTING
+			        && bundle.getSymbolicName().startsWith("org.freeplane.plugin.")) {
 				try {
-	                bundle.start();
-                }
-                catch (Exception e) {
-	                e.printStackTrace();
-                }
+					bundle.start();
+				}
+				catch (final Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		starter.createFrame(new String[] {});
-    }
+	}
 
-	public void stop(BundleContext context) throws Exception {
-	    starter.stop();
+	public void stop(final BundleContext context) throws Exception {
+		starter.stop();
 		final Bundle[] bundles = context.getBundles();
-		for(int i = 0; i < bundles.length; i++){
-			Bundle bundle = bundles[i];
-			if(bundle.getState() >= Bundle.ACTIVE && bundle.getSymbolicName().startsWith("org.freeplane.plugin.")){
+		for (int i = 0; i < bundles.length; i++) {
+			final Bundle bundle = bundles[i];
+			if (bundle.getState() >= Bundle.ACTIVE
+			        && bundle.getSymbolicName().startsWith("org.freeplane.plugin.")) {
 				try {
-	                bundle.stop();
-                }
-                catch (Exception e) {
-	                e.printStackTrace();
-                }
+					bundle.stop();
+				}
+				catch (final Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
-    }
+	}
 }

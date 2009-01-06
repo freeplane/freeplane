@@ -174,11 +174,6 @@ public class Controller {
 	public MapView getMapView() {
 		return getViewController().getMapView();
 	}
-	
-	public IMapSelection getSelection(){
-		final MapView mapView = getMapView();
-		return mapView == null ? null : mapView.getMapSelection();
-	}
 
 	public MapViewManager getMapViewManager() {
 		return getViewController().getMapViewManager();
@@ -190,6 +185,11 @@ public class Controller {
 
 	public Set getModes() {
 		return modeControllers.keySet();
+	}
+
+	public IMapSelection getSelection() {
+		final MapView mapView = getMapView();
+		return mapView == null ? null : mapView.getMapSelection();
 	}
 
 	/**
@@ -210,28 +210,9 @@ public class Controller {
 	}
 
 	public void quit() {
-		if(shutdown()){
+		if (shutdown()) {
 			System.exit(0);
 		}
-	}
-	public boolean shutdown() {
-		final String currentMapRestorable = UrlManager
-		    .getController(Controller.getModeController()).getRestoreable(getMap());
-		if (!getViewController().quit()) {
-			return false;
-		}
-		if (currentMapRestorable != null) {
-			Controller.getResourceController().setProperty(Controller.ON_START_IF_NOT_SPECIFIED,
-			    currentMapRestorable);
-		}
-		if (modeController != null) {
-			modeController.shutdown();
-		}
-		Controller.getController().getViewController().shutdown();
-		extensions.clear();
-		resourceController.shutdown();
-		Controller.controllerInstance = null;
-		return true;
 	}
 
 	/**
@@ -276,5 +257,24 @@ public class Controller {
 
 	public void setViewController(final ViewController viewController) {
 		this.viewController = viewController;
+	}
+
+	public boolean shutdown() {
+		final String currentMapRestorable = UrlManager
+		    .getController(Controller.getModeController()).getRestoreable(getMap());
+		if (!getViewController().quit()) {
+			return false;
+		}
+		if (currentMapRestorable != null) {
+			Controller.getResourceController().setProperty(Controller.ON_START_IF_NOT_SPECIFIED,
+			    currentMapRestorable);
+		}
+		if (modeController != null) {
+			modeController.shutdown();
+		}
+		Controller.getController().getViewController().shutdown();
+		extensions.clear();
+		Controller.controllerInstance = null;
+		return true;
 	}
 }

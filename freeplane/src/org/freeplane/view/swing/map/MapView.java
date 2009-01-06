@@ -74,6 +74,67 @@ import org.freeplane.view.swing.map.link.ArrowLinkView;
  * JTree).
  */
 public class MapView extends JPanel implements Printable, Autoscroll {
+	private class MapSelection implements IMapSelection {
+		public void centerNode(final NodeModel node) {
+			final NodeView nodeView = getNodeView(node);
+			if (nodeView != null) {
+				MapView.this.centerNode(nodeView);
+			}
+		}
+
+		public NodeModel getSelected() {
+			final NodeView selected = MapView.this.getSelected();
+			return selected == null ? null : selected.getModel();
+		}
+
+		public List<NodeModel> getSelection() {
+			return MapView.this.getSelectedNodes();
+		}
+
+		public List<NodeModel> getSortedSelection() {
+			return MapView.this.getSelectedNodesSortedByY();
+		}
+
+		public boolean isSelected(final NodeModel node) {
+			final NodeView nodeView = getNodeView(node);
+			return nodeView != null && MapView.this.isSelected(nodeView);
+		}
+
+		public void makeTheSelected(final NodeModel node) {
+			final NodeView nodeView = getNodeView(node);
+			if (nodeView != null) {
+				MapView.this.makeTheSelected(nodeView);
+			}
+		}
+
+		public void selectAsTheOnlyOneSelected(final NodeModel node) {
+			final NodeView nodeView = getNodeView(node);
+			if (nodeView != null) {
+				MapView.this.selectAsTheOnlyOneSelected(nodeView);
+			}
+		}
+
+		public void selectBranch(final NodeModel node, final boolean extend) {
+			MapView.this.selectBranch(getNodeView(node), extend);
+		}
+
+		public void selectContinuous(final NodeModel node) {
+			MapView.this.selectContinuous(getNodeView(node));
+		}
+
+		public void setSiblingMaxLevel(final int nodeLevel) {
+			MapView.this.setSiblingMaxLevel(nodeLevel);
+		}
+
+		public int size() {
+			return getSelection().size();
+		}
+
+		public void toggleSelected(final NodeModel node) {
+			MapView.this.toggleSelected(getNodeView(node));
+		}
+	}
+
 	static public class ScrollPane extends JScrollPane {
 		@Override
 		protected void validateTree() {
@@ -83,70 +144,6 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 			}
 			super.validateTree();
 		}
-	}
-	
-	private class MapSelection implements IMapSelection{
-
-		public void centerNode(NodeModel node) {
-	       final NodeView nodeView = getNodeView(node);
-	       if(nodeView != null){
-	    	   MapView.this.centerNode(nodeView);
-	       }
-        }
-
-		public NodeModel getSelected() {
-			final NodeView selected = MapView.this.getSelected();
-			return selected == null ? null : selected.getModel();
-		}
-
-		public List<NodeModel> getSelection() {
-			return MapView.this.getSelectedNodes();
-        }
-
-		public List<NodeModel> getSortedSelection() {
-			return MapView.this.getSelectedNodesSortedByY();
-        }
-
-		public boolean isSelected(NodeModel node) {
-	        final NodeView nodeView = getNodeView(node);
-			return nodeView != null && MapView.this.isSelected(nodeView);
-        }
-
-		public void makeTheSelected(NodeModel node) {
-			final NodeView nodeView = getNodeView(node);
-			if(nodeView != null){
-				MapView.this.makeTheSelected(nodeView);
-			}
-        }
-
-		public void selectAsTheOnlyOneSelected(NodeModel node) {
-			final NodeView nodeView = getNodeView(node);
-			if(nodeView != null){
-				MapView.this.selectAsTheOnlyOneSelected(nodeView);
-			}
-        }
-
-		public void selectBranch(NodeModel node, boolean extend) {
-			MapView.this.selectBranch(getNodeView(node), extend);
-        }
-
-		public void selectContinuous(NodeModel node) {
-			MapView.this.selectContinuous(getNodeView(node));
-	        
-        }
-
-		public void toggleSelected(NodeModel node) {
-			MapView.this.toggleSelected(getNodeView(node));	        
-        }
-
-		public void setSiblingMaxLevel(int nodeLevel) {
-	        MapView.this.setSiblingMaxLevel(nodeLevel);
-	        
-        }
-
-		public int size() {
-			return getSelection().size();
-        }		
 	}
 
 	private class Selection {
@@ -293,15 +290,6 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		disableMoveCursor = Controller.getResourceController().getBoolProperty(
 		    "disable_cursor_move_paper");
 	}
-
-	public List<NodeModel> getSelectedNodes() {
-		final int size = selection.size();
-		final ArrayList<NodeModel> selectedNodes = new ArrayList(size);
-		for (int i = 0; i < size; i++) {
-			selectedNodes.add(getSelected(i).getModel());
-		}
-		return selectedNodes;
-   }
 
 	/*
 	 * (non-Javadoc)
@@ -544,6 +532,10 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		return newY;
 	}
 
+	public IMapSelection getMapSelection() {
+		return new MapSelection();
+	}
+
 	public int getMaxNodeWidth() {
 		if (maxNodeWidth == 0) {
 			try {
@@ -611,6 +603,15 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 
 	private NodeView getSelected(final int i) {
 		return selection.get(i);
+	}
+
+	public List<NodeModel> getSelectedNodes() {
+		final int size = selection.size();
+		final ArrayList<NodeModel> selectedNodes = new ArrayList(size);
+		for (int i = 0; i < size; i++) {
+			selectedNodes.add(getSelected(i).getModel());
+		}
+		return selectedNodes;
 	}
 
 	/**
@@ -962,7 +963,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		finally {
 			endPrinting();
 		}
-	}
+	};
 
 	public int print(final Graphics graphics, final PageFormat pageFormat, final int pageIndex) {
 		double userZoomFactor = 1;
@@ -1008,7 +1009,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		print(graphics2D);
 		endPrinting();
 		return Printable.PAGE_EXISTS;
-	};
+	}
 
 	public void rename() {
 		final String name = getModel().getTitle();
@@ -1335,9 +1336,5 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		validateSelecteds();
 		super.validateTree();
 		setViewPositionAfterValidate();
-	}
-	
-	public IMapSelection getMapSelection(){
-		return new MapSelection();
 	}
 }

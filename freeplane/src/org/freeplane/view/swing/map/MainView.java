@@ -411,7 +411,8 @@ public abstract class MainView extends JLabel {
 			else if (executableExtensions.contains(link)) {
 				iconPath = "/images/Executable.png";
 			}
-			final ImageIcon icon = new ImageIcon(Controller.getResourceController().getResource(iconPath));
+			final ImageIcon icon = new ImageIcon(Controller.getResourceController().getResource(
+			    iconPath));
 			iconImages.addImage(icon);
 		}
 		setIcon((iconPresent ? iconImages : null));

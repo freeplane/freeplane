@@ -126,7 +126,9 @@ public class NodeHistory implements IExtension, INodeSelectionListener {
 	}
 
 	public void onSelect(final NodeModel pNode) {
-		if (currentNodeHolder != null && currentNodeHolder.isIdentical(Controller.getController().getMapView().getNodeView(pNode))) {
+		if (currentNodeHolder != null
+		        && currentNodeHolder.isIdentical(Controller.getController().getMapView()
+		            .getNodeView(pNode))) {
 			return;
 		}
 		while (canGoForward()) {
@@ -137,7 +139,8 @@ public class NodeHistory implements IExtension, INodeSelectionListener {
 			nodes.removeFirst();
 			nodeIterator = nodes.listIterator(nodes.size());
 		}
-		currentNodeHolder = new NodeHolder(Controller.getController().getMapView().getNodeView(pNode));
+		currentNodeHolder = new NodeHolder(Controller.getController().getMapView().getNodeView(
+		    pNode));
 		nodeIterator.add(currentNodeHolder);
 	}
 

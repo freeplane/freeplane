@@ -163,7 +163,8 @@ public class AttributeManagerDialog extends JDialog implements IMapViewChangeLis
 		}
 	}
 
-	static final Icon editButtonImage = new ImageIcon(Controller.getResourceController().getResource("/images/edit12.png"));
+	static final Icon editButtonImage = new ImageIcon(Controller.getResourceController()
+	    .getResource("/images/edit12.png"));
 	private static final String[] fontSizes = { "6", "8", "10", "12", "14", "16", "18", "20", "24" };
 	private ImportAttributesDialog importDialog = null;
 	private AttributeRegistry model;
