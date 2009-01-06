@@ -48,11 +48,12 @@ public class ApplicationResourceController extends ResourceController {
 	final private File autoPropertiesFile;
 	final private Properties defProps;
 	final private Properties props;
+	private static ApplicationResourceController instance;
 
 	/**
 	 * @param controller
 	 */
-	public ApplicationResourceController() {
+	private ApplicationResourceController() {
 		super();
 		defProps = readDefaultPreferences();
 		props = readUsersPreferences(defProps);
@@ -251,4 +252,11 @@ public class ApplicationResourceController extends ResourceController {
 		props.setProperty(key, value);
 		firePropertyChanged(key, value, oldValue);
 	}
+
+	public static ApplicationResourceController create() {
+		if(instance == null){
+			instance = new ApplicationResourceController();
+		}
+		return instance;
+    }
 }

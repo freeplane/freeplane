@@ -126,9 +126,6 @@ public class MModeControllerFactory {
 	}
 
 	private MModeController createModeControllerImpl() {
-		if (modeController != null) {
-			return modeController;
-		}
 		createStandardControllers();
 		createAddIns();
 		return modeController;

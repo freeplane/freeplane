@@ -55,8 +55,7 @@ public class AppletViewController extends ViewController {
 	 * @see freeplane.main.FreeplaneMain#exit()
 	 */
 	@Override
-	public void exit() {
-		System.exit(0);
+	public void shutdown() {
 	}
 
 	/*

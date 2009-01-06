@@ -42,9 +42,6 @@ public class FModeControllerFactory {
 	static private FModeController modeController;
 
 	static public FModeController createModeController() {
-		if (modeController != null) {
-			return modeController;
-		}
 		modeController = new FModeController();
 		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(
 		    modeController);

@@ -86,7 +86,6 @@ public abstract class ResourceController {
 		return inputString;
 	}
 
-	private String baseDir;
 	final private Vector propertyChangeListeners = new Vector();
 	private FreeplaneResourceBundle resources;
 
@@ -279,5 +278,8 @@ public abstract class ResourceController {
 			setProperty(ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION,
 			    BooleanProperty.TRUE_VALUE);
 		}
+	}
+	public void shutdown(){
+		propertyChangeListeners.clear();
 	}
 }

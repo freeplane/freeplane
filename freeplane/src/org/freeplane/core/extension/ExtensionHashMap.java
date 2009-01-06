@@ -111,4 +111,8 @@ public class ExtensionHashMap implements IModifiableExtensionCollection {
 		final Class clazz = extension.getClass();
 		setExtension(clazz, extension);
 	}
+
+	public void clear() {
+	    collection.clear();
+    }
 }

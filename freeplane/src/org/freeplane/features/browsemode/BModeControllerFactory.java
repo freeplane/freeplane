@@ -44,9 +44,6 @@ public class BModeControllerFactory {
 	private static BModeController modeController;
 
 	static public BModeController createModeController() {
-		if (modeController != null) {
-			return modeController;
-		}
 		modeController = new BModeController();
 		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(
 		    modeController);

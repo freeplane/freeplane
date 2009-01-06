@@ -209,11 +209,16 @@ public class Controller {
 		    JOptionPane.INFORMATION_MESSAGE);
 	}
 
-	void quit() {
+	public void quit() {
+		if(shutdown()){
+			System.exit(0);
+		}
+	}
+	public boolean shutdown() {
 		final String currentMapRestorable = UrlManager
 		    .getController(Controller.getModeController()).getRestoreable(getMap());
 		if (!getViewController().quit()) {
-			return;
+			return false;
 		}
 		if (currentMapRestorable != null) {
 			Controller.getResourceController().setProperty(Controller.ON_START_IF_NOT_SPECIFIED,
@@ -222,7 +227,11 @@ public class Controller {
 		if (modeController != null) {
 			modeController.shutdown();
 		}
-		Controller.getController().getViewController().exit();
+		Controller.getController().getViewController().shutdown();
+		extensions.clear();
+		resourceController.shutdown();
+		Controller.controllerInstance = null;
+		return true;
 	}
 
 	/**

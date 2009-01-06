@@ -21,6 +21,7 @@ package org.freeplane.startup;
 
 import java.awt.EventQueue;
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -199,7 +200,7 @@ public class FreeplaneStarter {
     }
 
 	public void createController() {
-	    final ApplicationResourceController resourceController = new ApplicationResourceController();
+	    final ApplicationResourceController resourceController = ApplicationResourceController.create();
 	    controller = new Controller(resourceController);
 	    splash = new FreeplaneSplashModern();
 	    splash.setVisible(true);
@@ -263,4 +264,28 @@ public class FreeplaneStarter {
 			System.err.println("Unable to set Look & Feel.");
 		}
 	}
+
+	public void stop() {
+	    try {
+	    	if(EventQueue.isDispatchThread()){
+	    		Controller.getController().shutdown();
+	    		return;
+	    	}
+	        EventQueue.invokeAndWait(new Runnable(){
+
+	        	public void run() {
+		    		Controller.getController().shutdown();
+				}
+			});
+		}
+        catch (InterruptedException e) {
+	        // TODO Auto-generated catch block
+	        e.printStackTrace();
+        }
+        catch (InvocationTargetException e) {
+	        // TODO Auto-generated catch block
+	        e.printStackTrace();
+        }
+	    
+    }
 }

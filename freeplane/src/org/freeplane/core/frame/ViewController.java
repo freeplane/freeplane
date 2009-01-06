@@ -176,7 +176,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 		status.setText(msg);
 	}
 
-	abstract public void exit();
+	abstract public void shutdown();
 
 	private boolean getAntialiasAll() {
 		return antialiasAll;

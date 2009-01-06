@@ -30,8 +30,10 @@ import org.osgi.framework.BundleContext;
  */
 public class Activator implements BundleActivator {
 
+	private FreeplaneStarter starter;
+
 	public void start(BundleContext context) throws Exception {
-		FreeplaneStarter starter = new FreeplaneStarter();
+		starter = new FreeplaneStarter();
 		starter.createController();
 		final Bundle[] bundles = context.getBundles();
 		for(int i = 0; i < bundles.length; i++){
@@ -49,7 +51,18 @@ public class Activator implements BundleActivator {
     }
 
 	public void stop(BundleContext context) throws Exception {
-	    // TODO Auto-generated method stub
-	    
+	    starter.stop();
+		final Bundle[] bundles = context.getBundles();
+		for(int i = 0; i < bundles.length; i++){
+			Bundle bundle = bundles[i];
+			if(bundle.getState() >= Bundle.ACTIVE && bundle.getSymbolicName().startsWith("org.freeplane.plugin.")){
+				try {
+	                bundle.stop();
+                }
+                catch (Exception e) {
+	                e.printStackTrace();
+                }
+			}
+		}
     }
 }
