@@ -75,11 +75,11 @@ public class ListHashTable<K, V> {
 		return elementsForTag;
 	}
 
-	public void remove(final K tag, final V element) {
+	public boolean remove(final K tag, final V element) {
 		final List elementsForTag = list(tag);
 		if (elementsForTag == null) {
-			return;
+			return false;
 		}
-		elementsForTag.remove(element);
+		return elementsForTag.remove(element);
 	}
 }

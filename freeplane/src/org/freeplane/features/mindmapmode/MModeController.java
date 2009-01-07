@@ -29,6 +29,7 @@ import javax.swing.UIManager.LookAndFeelInfo;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.PropertyAction;
 import org.freeplane.core.resources.ui.OptionPanelBuilder;
@@ -52,6 +53,7 @@ import org.freeplane.features.mindmapmode.text.MTextController;
 import org.freeplane.features.mindmapnode.pattern.MPatternController;
 import org.freeplane.features.ui.UserInputListenerFactory;
 import org.freeplane.view.swing.map.MainView;
+import org.freeplane.view.swing.map.MapView;
 
 public class MModeController extends ModeController {
 	static public final String MODENAME = "MindMap";
@@ -148,8 +150,15 @@ public class MModeController extends ModeController {
 	}
 
 	public boolean isUndoAction() {
-		return ((MMapModel) Controller.getController().getMapView().getModel()).getUndoHandler()
-		    .isUndoActionRunning();
+		MapView mapView = Controller.getController().getMapView();
+		if(mapView == null){
+			return false;
+		}
+		MapModel model = mapView.getModel();
+		if(! (model instanceof MMapModel)){
+			return false;
+		}
+		return ((MMapModel) model).getUndoHandler().isUndoActionRunning();
 	}
 
 	@Override

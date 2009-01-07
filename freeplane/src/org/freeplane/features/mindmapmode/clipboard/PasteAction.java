@@ -37,6 +37,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.io.MapReader;
 import org.freeplane.core.io.MapReader.NodeTreeCreator;
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.undo.IUndoableActor;
@@ -112,9 +113,6 @@ class PasteAction extends FreeplaneAction {
 				((MLinkController) LinkController.getController(node.getModeController())).setLink(
 				    node, file.getAbsolutePath());
 				PasteAction.this.paste(node, target, asSibling, isLeft, false);
-				final NodeModel parentNode = node.getParentNode();
-				final int index = parentNode.getIndex(node);
-				PasteAction.this.paste(node, parentNode, index);
 			}
 		}
 	}
@@ -171,6 +169,7 @@ class PasteAction extends FreeplaneAction {
 	}
 
 	private List newNodes;
+	static private Pattern mailPattern;
 
 	public PasteAction() {
 		super("paste", "/images/editpaste.png");
@@ -302,13 +301,16 @@ class PasteAction extends FreeplaneAction {
 	                                              final boolean asSibling, final boolean isLeft)
 	        throws UnsupportedFlavorException, IOException {
 		final String textFromClipboard = (String) t.getTransferData(DataFlavor.stringFlavor);
-		final Pattern mailPattern = Pattern.compile("([^@ <>\\*']+@[^@ <>\\*']+)");
+		if(mailPattern == null){
+			mailPattern = Pattern.compile("([^@ <>\\*']+@[^@ <>\\*']+)");
+		}
 		final String[] textLines = textFromClipboard.split("\n");
 		if (textLines.length > 1) {
 			Controller.getController().getViewController().setWaitingCursor(true);
 		}
+		MapModel map = parent.getMap();
 		if (asSibling) {
-			parent = new NodeModel(Controller.getController().getMap());
+			parent = new NodeModel(map);
 		}
 		final ArrayList parentNodes = new ArrayList();
 		final ArrayList parentNodesDepths = new ArrayList();
@@ -342,7 +344,7 @@ class PasteAction extends FreeplaneAction {
 				}
 			}
 			final NodeModel node = getModeController().getMapController().newNode(visibleText,
-			    parent.getMap());
+			    map);
 			if (textLines.length == 1) {
 				pastedNode = node;
 			}
@@ -387,7 +389,7 @@ class PasteAction extends FreeplaneAction {
 		}
 		for (int k = 0; k < parentNodes.size(); ++k) {
 			final NodeModel n = (NodeModel) parentNodes.get(k);
-			if (n.getParentNode() == null) {
+			if (map.getRootNode() != n && n.getParentNode() == null) {
 				paste(n, parent, parent.getChildCount());
 			}
 		}

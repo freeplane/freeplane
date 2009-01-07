@@ -86,11 +86,6 @@ public class MLocationController extends LocationController {
 		modeController.addAction("moveNodeAction", new ResetNodeLocationAction());
 	}
 
-	@Override
-	public ModeController getModeController() {
-		return getModeController();
-	}
-
 	public void moveNodePosition(final NodeModel node, final int parentVGap, final int hGap,
 	                             final int shiftY) {
 		final IUndoableActor actor = new ChangeNodePositionActor(node, hGap, shiftY, parentVGap);

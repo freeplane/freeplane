@@ -95,6 +95,7 @@ public class MapWriter implements IElementWriter, IAttributeWriter {
 				writeManager.addElementWriter(NodeBuilder.XML_NODE, oldNodeWriter);
 				writeManager.addAttributeWriter(NodeBuilder.XML_NODE, oldNodeWriter);
 			}
+			currentNodeWriter = oldNodeWriter;
 		}
 	}
 

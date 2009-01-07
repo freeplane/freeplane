@@ -102,10 +102,12 @@ public class ReadManager {
 	 * freeplane.persistence.NodeCreator)
 	 */
 	public void removeElementHandler(final String parentTag, final IElementHandler handler) {
-		elementHandlers.remove(parentTag, handler);
+		boolean removed = elementHandlers.remove(parentTag, handler);
+		assert removed;
 	}
 
 	public void removeReadCompletionListener(final IReadCompletionListener listener) {
-		readCompletionListeners.remove(listener);
+		boolean removed = readCompletionListeners.remove(listener);
+		assert removed;
 	}
 }

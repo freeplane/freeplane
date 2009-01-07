@@ -73,20 +73,24 @@ public class WriteManager {
 	}
 
 	public void removeAttributeWriter(final String parentTag, final IAttributeWriter aw) {
-		attributeWriters.remove(parentTag, aw);
+		boolean removed = attributeWriters.remove(parentTag, aw);
+		assert removed;
 	}
 
 	public void removeElementWriter(final String parentTag, final IElementWriter nw) {
-		elementWriters.remove(parentTag, nw);
+		boolean removed = elementWriters.remove(parentTag, nw);
+		assert removed;
 	}
 
 	public void removeExtensionAttributeWriter(final Class<? extends IExtension> clazz,
 	                                           final IExtensionAttributeWriter aw) {
-		extensionAttributeWriters.remove(clazz, aw);
+		boolean removed = extensionAttributeWriters.remove(clazz, aw);
+		assert removed;
 	}
 
 	public void removeExtensionNodeWriter(final Class<? extends IExtension> clazz,
 	                                      final IExtensionElementWriter nw) {
-		extensionElementWriters.remove(clazz, nw);
+		boolean removed = extensionElementWriters.remove(clazz, nw);
+		assert removed;
 	}
 }
