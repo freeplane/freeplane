@@ -1,4 +1,4 @@
-package org.freeplane.features.ui;
+package org.freeplane.view.swing.ui;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -7,6 +7,7 @@ import javax.swing.KeyStroke;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.IEditHandler;
+import org.freeplane.view.swing.map.MapView;
 
 /**
  * The KeyListener which belongs to the node and cares for Events like C-D
@@ -55,7 +56,7 @@ public class DefaultNodeKeyListener implements KeyListener {
 			case KeyEvent.VK_RIGHT:
 			case KeyEvent.VK_PAGE_UP:
 			case KeyEvent.VK_PAGE_DOWN:
-				Controller.getController().getMapView().move(e);
+				((MapView)Controller.getController().getViewController().getMapView()).move(e);
 				return;
 			case KeyEvent.VK_HOME:
 			case KeyEvent.VK_END:
@@ -91,7 +92,7 @@ public class DefaultNodeKeyListener implements KeyListener {
 			doMove = true;
 		}
 		if (doMove) {
-			Controller.getController().getMapView().move(e);
+			((MapView)Controller.getController().getViewController().getMapView()).move(e);
 			e.consume();
 			return;
 		}
@@ -99,7 +100,7 @@ public class DefaultNodeKeyListener implements KeyListener {
 
 	public void keyReleased(final KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
-			Controller.getController().getMapView().resetShiftSelectionOrigin();
+			((MapView)Controller.getController().getViewController().getMapView()).resetShiftSelectionOrigin();
 		}
 	}
 

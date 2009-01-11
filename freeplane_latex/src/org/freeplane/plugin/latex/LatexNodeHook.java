@@ -19,16 +19,17 @@
  */
 package org.freeplane.plugin.latex;
 
+import java.awt.Container;
 import java.util.Iterator;
 
 import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.addins.PersistentNodeHook;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.io.IXMLElement;
 import org.freeplane.core.modecontroller.INodeViewLifeCycleListener;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.n3.nanoxml.IXMLElement;
 import org.freeplane.view.swing.map.NodeView;
 
 /**
@@ -74,7 +75,8 @@ public class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCy
 		return LatexExtension.class;
 	}
 
-	public void onViewCreated(final NodeView nodeView) {
+	public void onViewCreated(final Container container) {
+		NodeView nodeView = (NodeView) container;
 		final LatexExtension latexExtension = (LatexExtension) nodeView.getModel().getExtension(
 		    LatexExtension.class);
 		if (latexExtension == null) {
@@ -83,7 +85,8 @@ public class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCy
 		latexExtension.createViewer(nodeView);
 	}
 
-	public void onViewRemoved(final NodeView nodeView) {
+	public void onViewRemoved(final Container container) {
+		NodeView nodeView = (NodeView) container;
 		final LatexExtension latexExtension = (LatexExtension) nodeView.getModel().getExtension(
 		    LatexExtension.class);
 		if (latexExtension == null) {

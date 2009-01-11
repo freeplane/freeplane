@@ -29,8 +29,6 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IElementDOMHandler;
 import org.freeplane.core.io.IExtensionElementWriter;
 import org.freeplane.core.io.ITreeWriter;
-import org.freeplane.core.io.IXMLElement;
-import org.freeplane.core.io.XMLElement;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
@@ -38,6 +36,8 @@ import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.core.undo.IUndoableActor;
+import org.freeplane.n3.nanoxml.IXMLElement;
+import org.freeplane.n3.nanoxml.XMLElement;
 
 public abstract class PersistentNodeHook implements IExtension {
 	public class HookAction extends FreeplaneAction {

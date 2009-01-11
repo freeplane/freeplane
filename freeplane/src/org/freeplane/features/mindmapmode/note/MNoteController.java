@@ -61,7 +61,8 @@ public class MNoteController extends NoteController {
 				mSplitPane.setDividerLocation(getPositionToRecover().intValue());
 				setPositionToRecover(null);
 			}
-			Controller.getController().getMapView().getSelected().requestFocus();
+			NodeModel node = Controller.getController().getSelection().getSelected();
+			Controller.getController().getViewController().getComponent(node).requestFocus();
 		}
 	}
 

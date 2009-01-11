@@ -19,6 +19,8 @@
  */
 package org.freeplane.core.io;
 
+import org.freeplane.n3.nanoxml.IXMLElement;
+
 /**
  * @author Dimitry Polivaev
  * 28.12.2008

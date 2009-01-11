@@ -17,33 +17,23 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.ui;
+package org.freeplane.view.swing.map;
 
-import java.awt.dnd.DropTargetDragEvent;
-import java.awt.dnd.DropTargetDropEvent;
-import java.awt.dnd.DropTargetEvent;
-import java.awt.dnd.DropTargetListener;
+import java.awt.Component;
+
+import javax.swing.JScrollPane;
 
 /**
  * @author Dimitry Polivaev
- * 06.01.2009
+ * 10.01.2009
  */
-public class DefaultNodeDropListener implements DropTargetListener {
-	public DefaultNodeDropListener() {
-	}
-
-	public void dragEnter(final DropTargetDragEvent dtde) {
-	}
-
-	public void dragExit(final DropTargetEvent dte) {
-	}
-
-	public void dragOver(final DropTargetDragEvent dtde) {
-	}
-
-	public void drop(final DropTargetDropEvent dtde) {
-	}
-
-	public void dropActionChanged(final DropTargetDragEvent dtde) {
+public class MapViewScrollPane extends JScrollPane {
+	@Override
+	protected void validateTree() {
+		final Component view = getViewport().getView();
+		if (view != null) {
+			view.validate();
+		}
+		super.validateTree();
 	}
 }

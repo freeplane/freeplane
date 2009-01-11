@@ -43,15 +43,16 @@ import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeNode;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.model.INodeView;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
-import org.freeplane.features.common.attribute.view.AttributeView;
 import org.freeplane.features.common.cloud.CloudController;
 import org.freeplane.features.common.cloud.CloudModel;
 import org.freeplane.features.common.nodelocation.LocationModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
+import org.freeplane.view.swing.map.attribute.AttributeView;
 import org.freeplane.view.swing.map.cloud.CloudView;
 import org.freeplane.view.swing.map.edge.EdgeView;
 
@@ -59,7 +60,7 @@ import org.freeplane.view.swing.map.edge.EdgeView;
  * This class represents a single Node of a MindMap (in analogy to
  * TreeCellRenderer).
  */
-public class NodeView extends JComponent implements TreeModelListener {
+public class NodeView extends JComponent implements TreeModelListener, INodeView {
 	final static int ALIGN_BOTTOM = -1;
 	final static int ALIGN_CENTER = 0;
 	final static int ALIGN_TOP = 1;
@@ -330,10 +331,6 @@ public class NodeView extends JComponent implements TreeModelListener {
 	Rectangle getInnerBounds() {
 		final int space = getMap().getZoomed(NodeView.SPACE_AROUND);
 		return new Rectangle(space, space, getWidth() - 2 * space, getHeight() - 2 * space);
-	}
-
-	public boolean getIsLong() {
-		return mainView.getIsLong();
 	}
 
 	private NodeView getLast(Component startBefore, final boolean leftOnly, final boolean rightOnly) {
@@ -1174,4 +1171,8 @@ public class NodeView extends JComponent implements TreeModelListener {
 		return isSelected() && !MapView.standardDrawRectangleForSelection
 		        && !map.isCurrentlyPrinting();
 	}
+
+	public Component getComponent() {
+	    return getMainView();
+    }
 }

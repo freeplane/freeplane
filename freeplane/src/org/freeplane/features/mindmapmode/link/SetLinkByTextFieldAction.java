@@ -21,12 +21,11 @@ package org.freeplane.features.mindmapmode.link;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.JOptionPane;
-
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.features.common.link.NodeLinks;
 
@@ -37,7 +36,7 @@ class SetLinkByTextFieldAction extends FreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final ModeController controller = getModeController();
-		String inputValue = JOptionPane.showInputDialog(Controller.getController().getMapView()
+		String inputValue = UITools.showInputDialog(Controller.getController().getSelection()
 		    .getSelected(), Controller.getText("edit_link_manually"), NodeLinks.getLink(controller
 		    .getMapController().getSelectedNode()));
 		if (inputValue != null) {

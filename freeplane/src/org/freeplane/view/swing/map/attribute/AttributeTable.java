@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.common.attribute.view;
+package org.freeplane.view.swing.map.attribute;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -55,6 +55,8 @@ import org.freeplane.features.common.attribute.IAttributeTableModel;
 import org.freeplane.features.common.attribute.IColumnWidthChangeListener;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
+
+
 
 /**
  * @author Dimitry Polivaev

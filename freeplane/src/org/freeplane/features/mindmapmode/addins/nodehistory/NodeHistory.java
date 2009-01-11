@@ -23,12 +23,13 @@ import java.util.logging.Logger;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.frame.MapViewManager;
+import org.freeplane.core.frame.MapViewController;
 import org.freeplane.core.modecontroller.INodeSelectionListener;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.view.swing.map.MapView;
+
 
 /**
  * @author foltin
@@ -101,7 +102,7 @@ public class NodeHistory implements IExtension, INodeSelectionListener {
 		final boolean fChangeModule = changeModule;
 		final MapView fNewModule = newModule;
 		if (fChangeModule) {
-			final MapViewManager mapViewManager = Controller.getController().getMapViewManager();
+			final MapViewController mapViewManager = Controller.getController().getMapViewManager();
 			final boolean res = mapViewManager.changeToMapView(fNewModule);
 			if (!res) {
 				Logger.global.warning("Can't change to map mapView " + fNewModule);
@@ -127,7 +128,7 @@ public class NodeHistory implements IExtension, INodeSelectionListener {
 
 	public void onSelect(final NodeModel pNode) {
 		if (currentNodeHolder != null
-		        && currentNodeHolder.isIdentical(Controller.getController().getMapView()
+		        && currentNodeHolder.isIdentical(((MapView)Controller.getController().getViewController().getMapView())
 		            .getNodeView(pNode))) {
 			return;
 		}
@@ -139,7 +140,7 @@ public class NodeHistory implements IExtension, INodeSelectionListener {
 			nodes.removeFirst();
 			nodeIterator = nodes.listIterator(nodes.size());
 		}
-		currentNodeHolder = new NodeHolder(Controller.getController().getMapView().getNodeView(
+		currentNodeHolder = new NodeHolder(((MapView)Controller.getController().getViewController().getMapView()).getNodeView(
 		    pNode));
 		nodeIterator.add(currentNodeHolder);
 	}

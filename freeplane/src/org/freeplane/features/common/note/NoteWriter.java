@@ -24,9 +24,9 @@ import java.io.IOException;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IExtensionElementWriter;
 import org.freeplane.core.io.ITreeWriter;
-import org.freeplane.core.io.XMLElement;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.features.common.text.NodeTextBuilder;
+import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
  * @author Dimitry Polivaev

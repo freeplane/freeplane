@@ -24,12 +24,12 @@ import java.awt.event.ActionEvent;
 import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.addins.PersistentNodeHook;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.io.IXMLElement;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.VisibleAction;
+import org.freeplane.n3.nanoxml.IXMLElement;
 
 /**
  * @author foltin

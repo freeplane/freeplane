@@ -43,9 +43,10 @@ import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.FreeplaneAction;
-import org.freeplane.view.swing.map.MapView;
-import org.freeplane.view.swing.map.NodeView;
+
+
 
 /**
  * @author foltin
@@ -193,11 +194,11 @@ public class EditNodeBase {
 	protected static final int BUTTON_SPLIT = 2;
 	final private ModeController controller;
 	final private IEditControl editControl;
-	protected NodeView node;
+	protected NodeModel node;
 	protected String text;
 	protected FocusListener textFieldListener = null;
 
-	EditNodeBase(final NodeView node, final String text, final ModeController controller,
+	EditNodeBase(final NodeModel node, final String text, final ModeController controller,
 	             final IEditControl editControl) {
 		this.controller = controller;
 		this.editControl = editControl;
@@ -240,7 +241,7 @@ public class EditNodeBase {
 
 	/**
 	 */
-	public NodeView getNode() {
+	public NodeModel getNode() {
 		return node;
 	}
 
@@ -260,13 +261,6 @@ public class EditNodeBase {
 	 */
 	public FocusListener getTextFieldListener() {
 		return textFieldListener;
-	}
-
-	/**
-		 *
-		 */
-	protected MapView getView() {
-		return Controller.getController().getMapView();
 	}
 
 	protected void redispatchKeyEvents(final JTextComponent textComponent,

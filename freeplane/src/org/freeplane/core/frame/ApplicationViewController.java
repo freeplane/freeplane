@@ -362,7 +362,7 @@ public class ApplicationViewController extends ViewController {
 	 * @see freeplane.main.FreeplaneMain#exit()
 	 */
 	@Override
-	public void shutdown() {
+	public void stop() {
 		final int winState = frame.getExtendedState();
 		if (JFrame.MAXIMIZED_BOTH != (winState & JFrame.MAXIMIZED_BOTH)) {
 			resourceController.setProperty("appwindow_x", String.valueOf(frame.getX()));

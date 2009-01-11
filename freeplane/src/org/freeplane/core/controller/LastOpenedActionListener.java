@@ -17,25 +17,22 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.ui;
+package org.freeplane.core.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.SwingUtilities;
-
-import org.freeplane.core.controller.Controller;
-
-class MapsMenuActionListener implements ActionListener {
-	public MapsMenuActionListener() {
-	}
+class LastOpenedActionListener implements ActionListener {
 
 	public void actionPerformed(final ActionEvent e) {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				Controller.getController().getMapViewManager()
-				    .changeToMapView(e.getActionCommand());
-			}
-		});
+		final String restoreable = e.getActionCommand();
+		try {
+			Controller.getController().getLastOpenedList().open(restoreable);
+		}
+		catch (final Exception ex) {
+			Controller.getController().errorMessage(
+			    "An error occured on opening the file: " + restoreable + ".");
+			org.freeplane.core.util.Tools.logException(ex);
+		}
 	}
 }

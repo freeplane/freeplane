@@ -26,6 +26,8 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.n3.nanoxml.IXMLElement;
+import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
  * @author Dimitry Polivaev

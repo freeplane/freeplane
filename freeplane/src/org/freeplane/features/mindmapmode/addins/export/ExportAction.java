@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.mindmapmode.addins.export;
 
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Graphics;
 import java.awt.Rectangle;
@@ -43,11 +44,12 @@ import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Tools;
 import org.freeplane.view.swing.map.MapView;
 
+
 /**
  * @author foltin
  */
 abstract public class ExportAction extends FreeplaneAction {
-	private MapView view;
+	private Component view;
 
 	public ExportAction() {
 	}
@@ -149,12 +151,12 @@ abstract public class ExportAction extends FreeplaneAction {
 	}
 
 	public BufferedImage createBufferedImage() {
-		view = Controller.getController().getMapView();
+		view = Controller.getController().getViewController().getMapView();
 		if (view == null) {
 			return null;
 		}
-		(view).preparePrinting();
-		final Rectangle innerBounds = (view).getInnerBounds();
+		((MapView)view).preparePrinting();
+		final Rectangle innerBounds = ((MapView)view).getInnerBounds();
 		BufferedImage myImage = (BufferedImage) (view).createImage(view.getWidth(), view
 		    .getHeight());
 		final Graphics g = myImage.getGraphics();

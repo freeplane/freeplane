@@ -17,7 +17,6 @@
  */
 package org.freeplane.core.ui.components;
 
-import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -36,6 +35,7 @@ import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.Tools;
 
@@ -78,7 +78,7 @@ public class OptionalDontShowMeAgainDialog {
 
 	public final static int BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED = 1;
 	public final static int ONLY_OK_SELECTION_IS_STORED = 0;
-	final private Component mComponent;
+	final private NodeModel mNode;
 	private JDialog mDialog;
 	private JCheckBox mDontShowAgainBox;
 	final private IDontShowPropertyHandler mDontShowPropertyHandler;
@@ -88,11 +88,11 @@ public class OptionalDontShowMeAgainDialog {
 	private int mResult = JOptionPane.CANCEL_OPTION;
 	final private String mTitleId;
 
-	public OptionalDontShowMeAgainDialog(final JFrame pFrame, final Component pComponent,
+	public OptionalDontShowMeAgainDialog(final JFrame pFrame, final NodeModel node,
 	                                     final String pMessageId, final String pTitleId,
 	                                     final IDontShowPropertyHandler pDontShowPropertyHandler,
 	                                     final int pMessageType) {
-		mComponent = pComponent;
+		mNode = node;
 		mParent = pFrame;
 		mMessageId = pMessageId;
 		mTitleId = pTitleId;
@@ -199,7 +199,7 @@ public class OptionalDontShowMeAgainDialog {
 		        GridBagConstraints.BOTH, new Insets(5, 5, 0, 0), 0, 0));
 		mDialog.getRootPane().setDefaultButton(okButton);
 		mDialog.pack();
-		UITools.setDialogLocationRelativeTo(mDialog, mComponent);
+		UITools.setDialogLocationRelativeTo(mDialog, mNode);
 		mDialog.setVisible(true);
 		return this;
 	}

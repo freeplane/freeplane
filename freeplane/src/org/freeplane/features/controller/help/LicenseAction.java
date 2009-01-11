@@ -22,10 +22,9 @@ package org.freeplane.features.controller.help;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
-import javax.swing.JOptionPane;
-
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.components.UITools;
 
 class LicenseAction extends AbstractAction {
 	LicenseAction() {
@@ -33,8 +32,6 @@ class LicenseAction extends AbstractAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		JOptionPane.showMessageDialog(Controller.getController().getMapView(), Controller
-		    .getText("license_text"), Controller.getText("license"),
-		    JOptionPane.INFORMATION_MESSAGE);
+		UITools.informationMessage(Controller.getText("license_text"), Controller.getText("license"));
 	}
 }

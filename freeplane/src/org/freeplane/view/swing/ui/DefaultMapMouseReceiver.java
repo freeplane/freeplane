@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.ui;
+package org.freeplane.view.swing.ui;
 
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
@@ -25,6 +25,7 @@ import java.awt.event.MouseEvent;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.IMapMouseReceiver;
 import org.freeplane.view.swing.map.MapView;
+
 
 /**
  * @author Dimitry Polivaev
@@ -55,7 +56,7 @@ public class DefaultMapMouseReceiver implements IMapMouseReceiver {
 
 	public void mousePressed(final MouseEvent e) {
 		if (e.getButton() == MouseEvent.BUTTON1) {
-			Controller.getController().getMapView().setMoveCursor(true);
+			((MapView)Controller.getController().getViewController().getMapView()).setMoveCursor(true);
 			originX = e.getX();
 			originY = e.getY();
 		}

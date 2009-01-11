@@ -34,6 +34,9 @@ import java.io.Serializable;
 import javax.swing.JColorChooser;
 import javax.swing.JDialog;
 
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.model.NodeModel;
+
 public class ColorTracker implements ActionListener, Serializable {
 	static class Closer extends WindowAdapter implements Serializable {
 		@Override
@@ -53,15 +56,21 @@ public class ColorTracker implements ActionListener, Serializable {
 
 	static JColorChooser colorChooser = new JColorChooser();
 
-	/** Static JColorChooser to have the recent colors feature. */
+	/** Static JColorChooser to have the recent color^^s feature. */
 	static public JColorChooser getCommonJColorChooser() {
 		return ColorTracker.colorChooser;
 	}
 
-	public static Color showCommonJColorChooserDialog(final Component component,
+	public static Color showCommonJColorChooserDialog(final NodeModel nodeModel,
 	                                                  final String title, final Color initialColor)
 	        throws HeadlessException {
-		final JColorChooser pane = ColorTracker.getCommonJColorChooser();
+		Component component = Controller.getController().getViewController().getComponent(nodeModel);
+		return showCommonJColorChooserDialog(component, title, initialColor);
+	}
+
+	public static Color showCommonJColorChooserDialog(Component component, final String title,
+                                                      final Color initialColor) {
+	    final JColorChooser pane = ColorTracker.getCommonJColorChooser();
 		pane.setColor(initialColor);
 		final ColorTracker ok = new ColorTracker(pane);
 		final JDialog dialog = JColorChooser.createDialog(component, title, true, pane, ok, null);
@@ -69,7 +78,7 @@ public class ColorTracker implements ActionListener, Serializable {
 		dialog.addComponentListener(new DisposeOnClose());
 		dialog.show();
 		return ok.getColor();
-	}
+    }
 
 	final private JColorChooser chooser;
 	private Color color;

@@ -241,7 +241,7 @@ public class FreeplaneStarter {
 			    FreeplaneStarter.LOAD_LAST_MAP))
 			        && restoreable != null && restoreable.length() > 0) {
 				try {
-					Controller.getController().getViewController().getLastOpenedList().open(
+					Controller.getController().getLastOpenedList().open(
 					    restoreable);
 					fileLoaded = true;
 				}

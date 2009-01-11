@@ -17,24 +17,16 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.ui;
+package org.freeplane.core.model;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Component;
 
-import javax.swing.SwingUtilities;
+import javax.swing.event.TreeModelListener;
 
-import org.freeplane.core.controller.Controller;
-
-class ModesMenuActionListener implements ActionListener {
-	public ModesMenuActionListener() {
-	}
-
-	public void actionPerformed(final ActionEvent e) {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				Controller.getController().selectMode(e.getActionCommand());
-			}
-		});
-	}
+/**
+ * @author Dimitry Polivaev
+ * 10.01.2009
+ */
+public interface INodeView extends TreeModelListener{
+	Component getComponent();
 }

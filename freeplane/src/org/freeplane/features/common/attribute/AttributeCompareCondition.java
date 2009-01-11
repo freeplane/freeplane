@@ -21,10 +21,10 @@ package org.freeplane.features.common.attribute;
 
 import org.freeplane.core.filter.condition.CompareConditionAdapter;
 import org.freeplane.core.filter.condition.ICondition;
-import org.freeplane.core.io.XMLElement;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
  * @author Dimitry Polivaev

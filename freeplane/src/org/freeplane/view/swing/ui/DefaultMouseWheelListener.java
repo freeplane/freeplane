@@ -1,4 +1,4 @@
-package org.freeplane.features.ui;
+package org.freeplane.view.swing.ui;
 
 import java.awt.event.InputEvent;
 import java.awt.event.MouseWheelEvent;
@@ -12,6 +12,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.ui.IFreeplanePropertyListener;
 import org.freeplane.core.ui.IMouseWheelEventHandler;
 import org.freeplane.view.swing.map.MapView;
+
 
 /**
  * @author foltin

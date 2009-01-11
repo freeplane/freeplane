@@ -29,10 +29,11 @@ import javax.swing.JOptionPane;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.MMapController;
-import org.freeplane.view.swing.map.MapView;
+
 
 class JoinNodesAction extends FreeplaneAction {
 	final static Pattern BODY_END = Pattern.compile("</body>", Pattern.CASE_INSENSITIVE);
@@ -75,11 +76,10 @@ class JoinNodesAction extends FreeplaneAction {
 	public void joinNodes(final NodeModel selectedNode, final List selectedNodes) {
 		String newContent = "";
 		final Controller controller = Controller.getController();
-		final MapView mapView = controller.getMapView();
 		for (final Iterator it = selectedNodes.iterator(); it.hasNext();) {
 			final NodeModel node = (NodeModel) it.next();
 			if (node.getModeController().getMapController().hasChildren(node)) {
-				JOptionPane.showMessageDialog(mapView, getModeController().getText(
+				UITools.informationMessage(getModeController().getText(
 				    "cannot_join_nodes_with_children"), "Freeplane", JOptionPane.WARNING_MESSAGE);
 				return;
 			}

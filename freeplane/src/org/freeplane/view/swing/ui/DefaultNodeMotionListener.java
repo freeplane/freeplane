@@ -1,4 +1,4 @@
-package org.freeplane.features.ui;
+package org.freeplane.view.swing.ui;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;

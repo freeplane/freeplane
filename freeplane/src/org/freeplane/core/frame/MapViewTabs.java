@@ -23,6 +23,8 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Vector;
 
 import javax.swing.InputMap;
@@ -35,13 +37,12 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.model.MapModel;
-import org.freeplane.view.swing.map.MapView;
+
 
 class MapViewTabs implements IMapViewChangeListener {
 	private Component mContentComponent;
 	private JTabbedPane mTabbedPane = null;
-	final private Vector mTabbedPaneMapViews;
+	final private Vector<Component> mTabbedPaneMapViews;
 	private boolean mTabbedPaneSelectionUpdate = true;
 
 	public MapViewTabs(final ApplicationViewController fm, final JComponent contentComponent) {
@@ -59,23 +60,11 @@ class MapViewTabs implements IMapViewChangeListener {
 				tabSelectionChanged();
 			}
 		});
-		Controller.getController().getMapViewManager().addIMapViewChangeListener(this);
-		Controller.getController().getViewController().addMapTitleChangeListener(
-		    new IMapTitleChangeListener() {
-			    public void setMapTitle(final String pNewMapTitle, final MapView pMapView,
-			                            final MapModel pModel) {
-				    for (int i = 0; i < mTabbedPaneMapViews.size(); ++i) {
-					    if (mTabbedPaneMapViews.get(i) == pMapView) {
-						    mTabbedPane.setTitleAt(i, pNewMapTitle
-						            + ((pModel.isSaved()) ? "" : "*"));
-					    }
-				    }
-			    }
-		    });
+		Controller.getController().getMapViewManager().addMapViewChangeListener(this);
 		fm.getContentPane().add(mTabbedPane, BorderLayout.CENTER);
 	}
 
-	public void afterMapClose(final MapView pOldMapView) {
+	public void afterViewClose(final Component pOldMapView) {
 		for (int i = 0; i < mTabbedPaneMapViews.size(); ++i) {
 			if (mTabbedPaneMapViews.get(i) == pOldMapView) {
 				mTabbedPaneSelectionUpdate = false;
@@ -88,31 +77,27 @@ class MapViewTabs implements IMapViewChangeListener {
 		}
 	}
 
-	public void afterMapViewChange(final MapView pOldMapView, final MapView pNewMapView) {
+	public void afterViewChange(final Component pOldMap, final Component pNewMap) {
 		final int selectedIndex = mTabbedPane.getSelectedIndex();
-		if (pNewMapView == null) {
+		if (pNewMap == null) {
 			return;
 		}
 		for (int i = 0; i < mTabbedPaneMapViews.size(); ++i) {
-			if (mTabbedPaneMapViews.get(i) == pNewMapView) {
+			if (mTabbedPaneMapViews.get(i) == pNewMap) {
 				if (selectedIndex != i) {
 					mTabbedPane.setSelectedIndex(i);
 				}
 				return;
 			}
 		}
-		mTabbedPaneMapViews.add(pNewMapView);
-		final String title1 = pNewMapView.getModel().getTitle();
+		mTabbedPaneMapViews.add(pNewMap);
+		final String title1 = pNewMap.getName();
 		final String title = title1;
 		mTabbedPane.addTab(title, new JPanel());
 		mTabbedPane.setSelectedIndex(mTabbedPane.getTabCount() - 1);
 	}
 
-	public void beforeMapViewChange(final MapView pOldMapView, final MapView pNewMapView) {
-	}
-
-	public boolean isMapViewChangeAllowed(final MapView pOldMapView, final MapView pNewMapView) {
-		return true;
+	public void beforeViewChange(final Component pOldMapView, final Component pNewMapView) {
 	}
 
 	public void removeContentComponent() {
@@ -142,8 +127,8 @@ class MapViewTabs implements IMapViewChangeListener {
 		if (selectedIndex < 0) {
 			return;
 		}
-		final MapView mapView = (MapView) mTabbedPaneMapViews.get(selectedIndex);
-		if (mapView != Controller.getController().getMapView()) {
+		final Component mapView = (Component) mTabbedPaneMapViews.get(selectedIndex);
+		if (mapView != Controller.getController().getViewController().getMapView()) {
 			Controller.getController().getMapViewManager().changeToMapView(mapView.getName());
 		}
 		if (mContentComponent != null) {
@@ -151,4 +136,18 @@ class MapViewTabs implements IMapViewChangeListener {
 			mTabbedPane.setComponentAt(selectedIndex, mContentComponent);
 		}
 	}
+
+	public void afterViewCreated(Component mapView) {
+		mapView.addPropertyChangeListener("name", 
+		    new PropertyChangeListener() {
+				public void propertyChange(PropertyChangeEvent evt) {
+					Component pMapView = (Component) evt.getSource();
+				    for (int i = 0; i < mTabbedPaneMapViews.size(); ++i) {
+					    if (mTabbedPaneMapViews.get(i) == pMapView) {
+						    mTabbedPane.setTitleAt(i, pMapView.getName());
+					    }
+				    }
+                }
+		    });
+    }
 }

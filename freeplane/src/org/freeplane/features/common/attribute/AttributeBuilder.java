@@ -26,12 +26,12 @@ import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.IElementDOMHandler;
 import org.freeplane.core.io.IExtensionElementWriter;
 import org.freeplane.core.io.ITreeWriter;
-import org.freeplane.core.io.IXMLElement;
 import org.freeplane.core.io.MapReader;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.n3.nanoxml.IXMLElement;
 
 class AttributeBuilder implements IElementDOMHandler {
 	static class AttributeProperties {

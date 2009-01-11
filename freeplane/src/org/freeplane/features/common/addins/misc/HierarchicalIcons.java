@@ -35,7 +35,8 @@ import org.freeplane.core.modecontroller.NodeChangeEvent;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.ActionDescriptor;
-import org.freeplane.view.swing.map.MultipleImage;
+import org.freeplane.core.ui.components.MultipleImage;
+
 
 /**
  * @author Foltin

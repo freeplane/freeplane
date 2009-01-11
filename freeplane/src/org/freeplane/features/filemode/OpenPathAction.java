@@ -22,10 +22,9 @@ package org.freeplane.features.filemode;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
-import javax.swing.JOptionPane;
-
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.ui.components.UITools;
 
 class OpenPathAction extends FreeplaneAction {
 	OpenPathAction() {
@@ -33,8 +32,8 @@ class OpenPathAction extends FreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final String inputValue = JOptionPane.showInputDialog(Controller.getController()
-		    .getMapView().getSelected(), getModeController().getText("open"), "");
+		final String inputValue = UITools.showInputDialog(Controller.getController()
+		    .getSelection().getSelected(), getModeController().getText("open"), "");
 		if (inputValue != null) {
 			final File newCenter = new File(inputValue);
 			if (newCenter.exists()) {

@@ -26,13 +26,13 @@ import org.freeplane.core.io.IAttributeWriter;
 import org.freeplane.core.io.IElementContentHandler;
 import org.freeplane.core.io.IElementWriter;
 import org.freeplane.core.io.ITreeWriter;
-import org.freeplane.core.io.IXMLElement;
 import org.freeplane.core.io.NodeBuilder;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
-import org.freeplane.core.io.XMLElement;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.util.HtmlTools;
+import org.freeplane.n3.nanoxml.IXMLElement;
+import org.freeplane.n3.nanoxml.XMLElement;
 
 public class NodeTextBuilder implements IElementContentHandler, IElementWriter, IAttributeWriter {
 	public static final String XML_NODE_TEXT = "TEXT";

@@ -21,10 +21,10 @@ package org.freeplane.features.common.icon;
 
 import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.IElementDOMHandler;
-import org.freeplane.core.io.IXMLElement;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.n3.nanoxml.IXMLElement;
 
 class IconBuilder implements IElementDOMHandler {
 	static class IconProperties {

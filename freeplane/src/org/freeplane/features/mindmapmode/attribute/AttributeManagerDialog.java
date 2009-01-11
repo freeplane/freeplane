@@ -44,16 +44,17 @@ import javax.swing.border.EmptyBorder;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.util.IListModel;
-import org.freeplane.core.frame.IMapViewChangeListener;
+import org.freeplane.core.frame.IMapChangeListener;
+import org.freeplane.core.model.MapModel;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.common.attribute.AttributeRegistry;
-import org.freeplane.view.swing.map.MapView;
+
 
 /**
  * @author Dimitry Polivaev
  */
-public class AttributeManagerDialog extends JDialog implements IMapViewChangeListener {
+public class AttributeManagerDialog extends JDialog implements IMapChangeListener {
 	private class ApplyAction extends FreeplaneAction {
 		ApplyAction() {
 			super("apply");
@@ -210,7 +211,7 @@ public class AttributeManagerDialog extends JDialog implements IMapViewChangeLis
 		UITools.addEscapeActionToDialog(this);
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new ClosingListener());
-		Controller.getController().getMapViewManager().addIMapViewChangeListener(this);
+		Controller.getController().getMapViewManager().addMapChangeListener(this);
 		addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentShown(final ComponentEvent e) {
@@ -219,12 +220,12 @@ public class AttributeManagerDialog extends JDialog implements IMapViewChangeLis
 		});
 	}
 
-	public void afterMapClose(final MapView pOldMapView) {
+	public void afterMapClose(final MapModel pOldMapView) {
 	}
 
-	public void afterMapViewChange(final MapView oldMapView, final MapView newMapView) {
-		if (newMapView != null) {
-			model = AttributeRegistry.getRegistry(newMapView.getModel());
+	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
+		if (newMap != null) {
+			model = AttributeRegistry.getRegistry(newMap);
 			view.setModel(model.getTableModel());
 		}
 	}
@@ -236,10 +237,10 @@ public class AttributeManagerDialog extends JDialog implements IMapViewChangeLis
 		model.applyChanges();
 	}
 
-	public void beforeMapViewChange(final MapView oldMapView, final MapView newMapView) {
+	public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
 	}
 
-	public boolean isMapViewChangeAllowed(final MapView oldMapView, final MapView newMapView) {
+	public boolean isMapChangeAllowed(final MapModel oldMap, final MapModel newMap) {
 		return !isVisible();
 	}
 

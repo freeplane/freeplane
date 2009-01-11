@@ -20,16 +20,16 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.Stack;
 
-import org.freeplane.core.io.IXMLElement;
-import org.freeplane.core.io.XMLElement;
 import org.freeplane.n3.nanoxml.IXMLBuilder;
+import org.freeplane.n3.nanoxml.IXMLElement;
+import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
 /**
  * StdXMLBuilder is a concrete implementation of IXMLBuilder which creates a
  * tree of IXMLElement from an XML data source.
  * 
- * @see org.freeplane.core.io.XMLElement
+ * @see org.freeplane.n3.nanoxml.XMLElement
  * @author Marc De Scheemaecker
  * @version $Name: RELEASE_2_2_1 $, $Revision: 1.3 $ Modified by Dimitry
  *          Polivaev: method getLastBuiltElement added

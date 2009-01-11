@@ -19,7 +19,6 @@
  */
 package org.freeplane.features.browsemode;
 
-import java.awt.event.MouseEvent;
 import java.util.ListIterator;
 
 import javax.swing.ImageIcon;
@@ -27,12 +26,10 @@ import javax.swing.ImageIcon;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.features.common.link.LinkController;
-import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.note.NodeNoteBase;
 import org.freeplane.features.common.note.NoteModel;
-import org.freeplane.features.ui.UserInputListenerFactory;
-import org.freeplane.view.swing.map.MainView;
+import org.freeplane.view.swing.ui.UserInputListenerFactory;
+
 
 public class BModeController extends ModeController {
 	static public final String MODENAME = "Browse";
@@ -42,40 +39,11 @@ public class BModeController extends ModeController {
 		super();
 	}
 
-	public void doubleClick() {
-		/* If the link exists, follow the link; toggle folded otherwise */
-		if (NodeLinks.getLink(getMapController().getSelectedNode()) == null) {
-			getMapController().toggleFolded();
-		}
-		else {
-			LinkController.getController(this).loadURL();
-		}
-	}
-
 	@Override
 	public String getModeName() {
 		return BModeController.MODENAME;
 	}
 
-	@Override
-	public void plainClick(final MouseEvent e) {
-		/* perform action only if one selected node. */
-		if (getMapController().getSelectedNodes().size() != 1) {
-			return;
-		}
-		final MainView component = (MainView) e.getComponent();
-		if (component.isInFollowLinkRegion(e.getX())) {
-			LinkController.getController(this).loadURL();
-		}
-		else {
-			final NodeModel node = (component).getNodeView().getModel();
-			if (!getMapController().hasChildren(node)) {
-				doubleClick(e);
-				return;
-			}
-			getMapController().toggleFolded(getMapController().getSelectedNodes().listIterator());
-		}
-	}
 
 	public void setNoteIcon(final NodeModel node) {
 		final String noteText = NoteModel.getNoteText(node);

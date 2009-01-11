@@ -37,7 +37,7 @@ import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.LinkModel;
 import org.freeplane.features.common.link.MapLinks;
 import org.freeplane.features.mindmapmode.MModeController;
-import org.freeplane.features.ui.DefaultMapMouseListener;
+import org.freeplane.view.swing.ui.DefaultMapMouseListener;
 
 /**
  * @author Dimitry Polivaev

@@ -21,11 +21,13 @@ package org.freeplane.features.common.clipboard;
 
 import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
+import java.util.List;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.FreeplaneAction;
-import org.freeplane.view.swing.map.MapView;
+
 
 class CopySingleAction extends FreeplaneAction {
 	public CopySingleAction() {
@@ -33,14 +35,11 @@ class CopySingleAction extends FreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
+		List<NodeModel> selection = Controller.getController().getSelection().getSelection();
 		final ModeController modeController = getModeController();
-		final MapView mapView = Controller.getController().getMapView();
-		if (mapView != null) {
-			final Transferable copy = ClipboardController.getController(modeController).copySingle(
-			    mapView);
-			if (copy != null) {
-				ClipboardController.getController(modeController).setClipboardContents(copy);
-			}
+		final Transferable copy = ClipboardController.getController(modeController).copySingle(selection);
+		if (copy != null) {
+			ClipboardController.getController(modeController).setClipboardContents(copy);
 		}
 	}
 }

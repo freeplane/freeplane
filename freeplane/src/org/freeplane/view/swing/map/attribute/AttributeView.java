@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.common.attribute.view;
+package org.freeplane.view.swing.map.attribute;
 
 import java.awt.Color;
 import java.awt.EventQueue;
@@ -41,6 +41,8 @@ import org.freeplane.features.common.attribute.NodeAttributeTableModel;
 import org.freeplane.features.mindmapmode.attribute.MAttributeController;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
+
+
 
 /**
  * This class represents a single Node of a MindMap (in analogy to

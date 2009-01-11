@@ -20,15 +20,16 @@ package org.freeplane.features.mindmapmode.addins;
 import java.awt.event.ActionEvent;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Vector;
+import java.util.Map.Entry;
 
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.model.MapModel;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.features.mindmapmode.MModeController;
-import org.freeplane.view.swing.map.MapView;
+
 
 /**
  * @author foltin
@@ -46,14 +47,14 @@ public class SaveAll extends FreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final Controller mainController = Controller.getController();
-		final MapView initialMapView = mainController.getMapView();
-		final Map mapViews = getMapViews();
-		final Vector v = new Vector();
-		v.addAll(mapViews.values());
-		for (final Iterator iter = v.iterator(); iter.hasNext();) {
-			final MapView mapView = (MapView) iter.next();
-			mainController.getMapViewManager().changeToMapView(mapView.getName());
-			if (!((MModeController) mapView.getModel().getModeController()).save()) {
+		final MapModel initialMapView = mainController.getMap();
+		final Map<String, MapModel> mapViews = getMapViews();
+		Iterator<Entry<String, MapModel>> iterator = mapViews.entrySet().iterator();
+		while (iterator.hasNext()) {
+			Entry<String, MapModel> entry = iterator.next();
+			final MapModel mapView = entry.getValue();
+			mainController.getMapViewManager().changeToMapView(entry.getKey());
+			if (!((MModeController) mapView.getModeController()).save()) {
 				JOptionPane.showMessageDialog(Controller.getController().getViewController()
 				    .getContentPane(), "Freeplane", Controller
 				    .getText("accessories/plugins/SaveAll.properties_save_all_cancelled"),
@@ -66,7 +67,7 @@ public class SaveAll extends FreeplaneAction {
 
 	/**
 	 */
-	private Map getMapViews() {
-		return Controller.getController().getMapViewManager().getMapViews();
+	private Map<String, MapModel> getMapViews() {
+		return Controller.getController().getMapViewManager().getMaps();
 	}
 }

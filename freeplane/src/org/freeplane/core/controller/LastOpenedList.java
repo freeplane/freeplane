@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.frame;
+package org.freeplane.core.controller;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -31,18 +31,18 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import org.freeplane.core.controller.Controller;
+import org.freeplane.core.frame.IMapChangeListener;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.n3.nanoxml.XMLParseException;
-import org.freeplane.view.swing.map.MapView;
+
 
 /**
  * This class manages a list of the maps that were opened last. It aims to
  * provide persistence for the last recent maps. Maps should be shown in the
  * format:"mode\:key",ie."Mindmap\:/home/joerg/freeplane.mm"
  */
-public class LastOpenedList {
+public class LastOpenedList implements IMapChangeListener{
 	/**
 	 * Contains Restore strings.
 	 */
@@ -75,19 +75,12 @@ public class LastOpenedList {
 		}
 	}
 
-	void mapClosed(final MapView map) {
-	}
-
-	void mapOpened(final MapView mapView) {
-		if (mapView == null) {
+	void mapOpened(final MapModel map) {
+		if (map == null) {
 			return;
 		}
-		final MapModel model = mapView.getModel();
-		if (model == null) {
-			return;
-		}
-		final String restoreString = UrlManager.getController(model.getModeController())
-		    .getRestoreable(model);
+		final String restoreString = UrlManager.getController(map.getModeController())
+		    .getRestoreable(map);
 		if (restoreString == null) {
 			return;
 		}
@@ -95,7 +88,7 @@ public class LastOpenedList {
 			lastOpenedList.remove(restoreString);
 		}
 		lastOpenedList.add(0, restoreString);
-		mRestorableToMapName.put(restoreString, mapView.getName());
+		mRestorableToMapName.put(restoreString, map.getTitle());
 		while (lastOpenedList.size() > maxEntries) {
 			lastOpenedList.remove(lastOpenedList.size() - 1);
 		}
@@ -127,4 +120,20 @@ public class LastOpenedList {
 		}
 		return str;
 	}
+
+	public void afterMapChange(MapModel oldMap, MapModel newMap) {
+		mapOpened(newMap);
+    }
+
+	public void afterMapClose(MapModel oldMap) {
+	    
+    }
+
+	public void beforeMapChange(MapModel oldMap, MapModel newMap) {
+	    
+    }
+
+	public boolean isMapChangeAllowed(MapModel oldMap, MapModel newMap) {
+	    return true;
+    }
 }

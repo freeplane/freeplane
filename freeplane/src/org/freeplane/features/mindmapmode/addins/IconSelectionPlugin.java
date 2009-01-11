@@ -24,15 +24,17 @@ import java.util.Vector;
 import javax.swing.Action;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.components.IconSelectionPopupDialog;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.mindmapmode.icon.MIconController;
-import org.freeplane.view.swing.map.MapView;
-import org.freeplane.view.swing.map.NodeView;
+
+
 
 /**
  * @author adapted to the plugin mechanism by ganzer
@@ -51,19 +53,19 @@ public class IconSelectionPlugin extends FreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final ModeController modeController = getModeController();
-		final MapView mapView = Controller.getController().getMapView();
-		final NodeView focussed = mapView.getSelected();
 		final Vector actions = new Vector();
 		final Collection<Action> iconActions = ((MIconController) IconController
 		    .getController(modeController)).getIconActions();
 		actions.addAll(iconActions);
 		actions.add(modeController.getAction("removeLastIconAction"));
 		actions.add(modeController.getAction("removeAllIconsAction"));
-		final IconSelectionPopupDialog selectionDialog = new IconSelectionPopupDialog(Controller
-		    .getController().getViewController().getJFrame(), actions);
-		mapView.scrollNodeToVisible(focussed, 0);
+		ViewController viewController = Controller
+		    .getController().getViewController();
+		final IconSelectionPopupDialog selectionDialog = new IconSelectionPopupDialog(viewController.getJFrame(), actions);
+		NodeModel selected = Controller.getController().getSelection().getSelected();
+		viewController.scrollNodeToVisible(selected);
 		selectionDialog.pack();
-		UITools.setDialogLocationRelativeTo(selectionDialog, focussed);
+		UITools.setDialogLocationRelativeTo(selectionDialog, selected);
 		selectionDialog.setModal(true);
 		selectionDialog.show();
 		final int result = selectionDialog.getResult();

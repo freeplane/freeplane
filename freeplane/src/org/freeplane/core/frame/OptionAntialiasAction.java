@@ -19,13 +19,14 @@
  */
 package org.freeplane.core.frame;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ui.IFreeplanePropertyListener;
-import org.freeplane.view.swing.map.MapView;
+
 
 class OptionAntialiasAction extends AbstractAction implements IFreeplanePropertyListener {
 	OptionAntialiasAction() {
@@ -55,7 +56,7 @@ class OptionAntialiasAction extends AbstractAction implements IFreeplaneProperty
 			Controller.getController().getViewController().setAntialiasEdges(true);
 			Controller.getController().getViewController().setAntialiasAll(true);
 		}
-		final MapView mapView = Controller.getController().getMapView();
+		final Component mapView = Controller.getController().getViewController().getMapView();
 		if (mapView != null) {
 			mapView.repaint();
 		}

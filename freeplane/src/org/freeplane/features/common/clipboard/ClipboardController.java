@@ -46,8 +46,8 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
-import org.freeplane.view.swing.map.MapView;
-import org.freeplane.view.swing.map.NodeView;
+
+
 
 /**
  * @author Dimitry Polivaev
@@ -132,12 +132,11 @@ public class ClipboardController implements IExtension {
 		return new MindMapNodesSelection(stringWriter.toString(), null, null, null, null, null);
 	}
 
-	public Transferable copySingle(final MapView mapView) {
-		final List source = mapView.getSelection();
+	public Transferable copySingle(List<NodeModel> source) {
 		final Collection target = new Vector(source.size());
-		final ListIterator<NodeView> iterator = source.listIterator(source.size());
+		final ListIterator<NodeModel> iterator = source.listIterator(source.size());
 		while (iterator.hasPrevious()) {
-			final NodeModel node = iterator.previous().getModel();
+			final NodeModel node = iterator.previous();
 			target.add(shallowCopy(node));
 		}
 		return copy(target, false);

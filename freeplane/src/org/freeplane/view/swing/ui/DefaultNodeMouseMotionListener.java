@@ -1,4 +1,4 @@
-package org.freeplane.features.ui;
+package org.freeplane.view.swing.ui;
 
 import java.awt.Rectangle;
 import java.awt.event.InputEvent;
@@ -12,13 +12,19 @@ import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.ControllerPopupMenuListener;
 import org.freeplane.core.ui.INodeMouseMotionListener;
 import org.freeplane.core.util.Tools;
 import org.freeplane.features.common.link.LinkController;
+import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.view.swing.map.MainView;
+import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
+
+
 
 /**
  * The MouseMotionListener which belongs to every NodeView
@@ -44,7 +50,7 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
 					if (e.getModifiers() == 0 && !c.isBlocked()
-					        && Controller.getController().getMapView().getSelection().size() <= 1) {
+					        && Controller.getController().getSelection().size() <= 1) {
 						c.getUserInputListenerFactory().extendSelection(e);
 					}
 				}
@@ -61,11 +67,11 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 	 * given time.
 	 */
 	private Rectangle controlRegionForDelayedSelection;
-	final private ControllerPopupMenuListener popupListener = new ControllerPopupMenuListener(
-	    Controller.getModeController());
+	final private ControllerPopupMenuListener popupListener;
 	private Timer timerForDelayedSelection;
 
-	public DefaultNodeMouseMotionListener() {
+	public DefaultNodeMouseMotionListener(ModeController modeController) {
+		popupListener = new ControllerPopupMenuListener(modeController);
 		if (DefaultNodeMouseMotionListener.delayedSelectionEnabled == null) {
 			updateSelectionMethod();
 		}
@@ -103,7 +109,7 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 	public void mouseDragged(final MouseEvent e) {
 		stopTimerForDelayedSelection();
 		final NodeView nodeV = ((MainView) e.getComponent()).getNodeView();
-		if (!Controller.getController().getMapView().isSelected(nodeV)) {
+		if (!((MapView)Controller.getController().getViewController().getMapView()).isSelected(nodeV)) {
 			Controller.getModeController().getUserInputListenerFactory().extendSelection(e);
 		}
 	}
@@ -141,13 +147,36 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 
 	public void mouseReleased(final MouseEvent e) {
 		stopTimerForDelayedSelection();
-		Controller.getModeController().getUserInputListenerFactory().extendSelection(e);
+		ModeController modeController = Controller.getModeController();
+		modeController.getUserInputListenerFactory().extendSelection(e);
 		showPopupMenu(e);
 		if (e.isConsumed()) {
 			return;
 		}
 		if (e.getModifiers() == InputEvent.BUTTON1_MASK) {
-			Controller.getModeController().plainClick(e);
+				/* perform action only if one selected node. */
+				MapController mapController = modeController.getMapController();
+				if (mapController.getSelectedNodes().size() != 1) {
+					return;
+				}
+				final MainView component = (MainView) e.getComponent();
+				if (component.isInFollowLinkRegion(e.getX())) {
+					LinkController.getController(modeController).loadURL();
+				}
+				else {
+					final NodeModel node = (component).getNodeView().getModel();
+					if (!mapController.hasChildren(node)) {
+						/* If the link exists, follow the link; toggle folded otherwise */
+						if (NodeLinks.getLink(mapController.getSelectedNode()) == null) {
+							mapController.toggleFolded();
+						}
+						else {
+							LinkController.getController(modeController).loadURL();
+						}
+						return;
+					}
+					mapController.toggleFolded(mapController.getSelectedNodes().listIterator());
+				}
 			e.consume();
 		}
 	}

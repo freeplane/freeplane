@@ -43,7 +43,7 @@ import java.util.logging.Logger;
 import javax.swing.Action;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.frame.MapViewManager;
+import org.freeplane.core.frame.MapViewController;
 import org.freeplane.core.io.MapReader;
 import org.freeplane.core.io.MapWriter;
 import org.freeplane.core.io.ReadManager;
@@ -445,7 +445,7 @@ public class MapController {
 			if ((extension != null)
 			        && extension
 			            .equals(org.freeplane.features.mindmapmode.file.MFileManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
-				final MapViewManager mapViewManager = Controller.getController()
+				final MapViewController mapViewManager = Controller.getController()
 				    .getMapViewManager();
 				/*
 				 * this can lead to confusion if the user handles multiple maps

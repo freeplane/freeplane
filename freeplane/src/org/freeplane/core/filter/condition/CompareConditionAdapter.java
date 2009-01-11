@@ -20,8 +20,8 @@
 package org.freeplane.core.filter.condition;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.io.XMLElement;
 import org.freeplane.core.io.xml.TreeXmlWriter;
+import org.freeplane.n3.nanoxml.XMLElement;
 
 abstract public class CompareConditionAdapter extends NodeCondition {
 	public static final String IGNORE_CASE = "ignore_case";

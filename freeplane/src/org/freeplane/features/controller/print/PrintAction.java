@@ -20,6 +20,7 @@
 package org.freeplane.features.controller.print;
 
 import java.awt.event.ActionEvent;
+import java.awt.print.Printable;
 
 import javax.swing.ImageIcon;
 
@@ -42,7 +43,7 @@ class PrintAction extends AbstractPrintAction {
 		if (!controller.acquirePrinterJobAndPageFormat()) {
 			return;
 		}
-		controller.getPrinterJob().setPrintable(Controller.getController().getMapView(),
+		controller.getPrinterJob().setPrintable((Printable) Controller.getController().getViewController().getMapView(),
 		    controller.getPageFormat());
 		if (!isDlg || controller.getPrinterJob().printDialog()) {
 			try {

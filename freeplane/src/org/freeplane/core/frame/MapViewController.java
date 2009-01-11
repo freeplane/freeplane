@@ -19,6 +19,9 @@
  */
 package org.freeplane.core.frame;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -31,10 +34,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import javax.swing.JScrollPane;
+
+import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.util.Tools;
 import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.MapViewScrollPane;
+import org.freeplane.view.swing.map.NodeView;
+
 
 /**
  * Manages the list of MapViews. As this task is very complex, I exported it
@@ -42,40 +52,61 @@ import org.freeplane.view.swing.map.MapView;
  * exchange between controller and this class is managed by observer pattern
  * (the controller observes changes to the map mapViews here).
  */
-public class MapViewManager {
-	static private class MapViewChangeObserverCompound implements IMapViewChangeListener {
-		final private HashSet listeners = new HashSet();
+public class MapViewController {
+	static private class MapViewChangeObserverCompound{
+		final private HashSet<IMapChangeListener> mapListeners = new HashSet();
+		final private HashSet<IMapViewChangeListener> viewListeners = new HashSet();
 
-		public void addListener(final IMapViewChangeListener listener) {
-			listeners.add(listener);
+		void addListener(final IMapChangeListener listener) {
+			mapListeners.add(listener);
 		}
 
-		public void afterMapClose(final MapView pOldMapView) {
-			for (final Iterator iter = new Vector(listeners).iterator(); iter.hasNext();) {
-				final IMapViewChangeListener observer = (IMapViewChangeListener) iter.next();
-				observer.afterMapClose(pOldMapView);
+		void addListener(final IMapViewChangeListener listener) {
+			viewListeners.add(listener);
+		}
+
+		void afterMapClose(final MapView pOldMap) {
+			for (final Iterator<IMapChangeListener> iter = mapListeners.iterator(); iter.hasNext();) {
+				final IMapChangeListener observer = (IMapChangeListener) iter.next();
+				observer.afterMapClose(getModel(pOldMap));
+			}
+			for (final Iterator<IMapViewChangeListener> iter = viewListeners.iterator(); iter.hasNext();) {
+				final IMapViewChangeListener observer = iter.next();
+				observer.afterViewClose(pOldMap);
 			}
 		}
 
-		public void afterMapViewChange(final MapView oldMapView, final MapView newMapView) {
-			for (final Iterator iter = new Vector(listeners).iterator(); iter.hasNext();) {
-				final IMapViewChangeListener observer = (IMapViewChangeListener) iter.next();
-				observer.afterMapViewChange(oldMapView, newMapView);
+		void afterMapChange(final MapView oldMap, final MapView newMap) {
+			for (final Iterator<IMapChangeListener> iter = mapListeners.iterator(); iter.hasNext();) {
+				final IMapChangeListener observer = (IMapChangeListener) iter.next();
+				observer.afterMapChange(getModel(oldMap), getModel(newMap));
+			}
+			for (final Iterator<IMapViewChangeListener> iter = viewListeners.iterator(); iter.hasNext();) {
+				final IMapViewChangeListener observer = iter.next();
+				observer.afterViewChange(oldMap, newMap);
 			}
 		}
 
-		public void beforeMapViewChange(final MapView oldMapView, final MapView newMapView) {
-			for (final Iterator iter = new Vector(listeners).iterator(); iter.hasNext();) {
-				final IMapViewChangeListener observer = (IMapViewChangeListener) iter.next();
-				observer.beforeMapViewChange(oldMapView, newMapView);
+		void beforeMapChange(final MapView oldMap, final MapView newMap) {
+			for (final Iterator<IMapChangeListener> iter = mapListeners.iterator(); iter.hasNext();) {
+				final IMapChangeListener observer = (IMapChangeListener) iter.next();
+				observer.beforeMapChange(getModel(oldMap), getModel(newMap));
+			}
+			for (final Iterator<IMapViewChangeListener> iter = viewListeners.iterator(); iter.hasNext();) {
+				final IMapViewChangeListener observer = iter.next();
+				observer.beforeViewChange(oldMap, newMap);
 			}
 		}
 
-		public boolean isMapViewChangeAllowed(final MapView oldMapView, final MapView newMapView) {
+		private MapModel getModel(final MapView view) {
+	        return view == null ? null : view.getModel();
+        }
+
+		boolean isMapChangeAllowed(final MapModel oldMap, final MapModel newMap) {
 			boolean returnValue = true;
-			for (final Iterator iter = new Vector(listeners).iterator(); iter.hasNext();) {
-				final IMapViewChangeListener observer = (IMapViewChangeListener) iter.next();
-				returnValue = observer.isMapViewChangeAllowed(oldMapView, newMapView);
+			for (final Iterator iter = new Vector(mapListeners).iterator(); iter.hasNext();) {
+				final IMapChangeListener observer = (IMapChangeListener) iter.next();
+				returnValue = observer.isMapChangeAllowed(oldMap, newMap);
 				if (!returnValue) {
 					break;
 				}
@@ -83,9 +114,19 @@ public class MapViewManager {
 			return returnValue;
 		}
 
-		public void removeListener(final IMapViewChangeListener listener) {
-			listeners.remove(listener);
+		void removeListener(final IMapChangeListener listener) {
+			mapListeners.remove(listener);
 		}
+		void removeListener(final IMapViewChangeListener listener) {
+			viewListeners.remove(listener);
+		}
+
+		void mapViewCreated(MapView mapView) {
+			for (final Iterator<IMapViewChangeListener> iter = viewListeners.iterator(); iter.hasNext();) {
+				final IMapViewChangeListener observer = iter.next();
+				observer.afterViewCreated(mapView);
+			}
+        }
 	}
 
 	private String lastModeName;
@@ -101,11 +142,19 @@ public class MapViewManager {
 	/**
 	 * Reference to the current mode as the mapView may be null.
 	 */
-	MapViewManager() {
+	MapViewController() {
 	}
 
-	public void addIMapViewChangeListener(final IMapViewChangeListener pListener) {
+	public void addMapChangeListener(final IMapChangeListener pListener) {
 		listener.addListener(pListener);
+	}
+
+	public void addMapViewChangeListener(final IMapViewChangeListener pListener) {
+		listener.addListener(pListener);
+	}
+
+	public void removeMapViewChangeListener(final IMapViewChangeListener pListener) {
+		listener.removeListener(pListener);
 	}
 
 	private void addToOrChangeInMapViews(final String key, final MapView newOrChangedMapView) {
@@ -129,17 +178,21 @@ public class MapViewManager {
 	 */
 	public boolean changeToMapView(final MapView newMapView) {
 		final MapView oldMapView = mapView;
-		if (!listener.isMapViewChangeAllowed(oldMapView, newMapView)) {
+		if (!listener.isMapChangeAllowed(getModel(oldMapView), getModel(newMapView))) {
 			return false;
 		}
-		listener.beforeMapViewChange(oldMapView, newMapView);
+		listener.beforeMapChange(oldMapView, newMapView);
 		mapView = newMapView;
-		listener.afterMapViewChange(oldMapView, newMapView);
 		if (mapView != null) {
 			lastModeName = mapView.getModel().getModeController().getModeName();
 		}
+		listener.afterMapChange(oldMapView, newMapView);
 		return true;
 	}
+
+	private MapModel getModel(final MapView mapView) {
+	    return mapView == null ? null : mapView.getModel();
+    }
 
 	public boolean changeToMapView(final String mapViewDisplayName) {
 		MapView mapViewCandidate = null;
@@ -163,7 +216,7 @@ public class MapViewManager {
 		MapView mapViewCandidate = null;
 		for (final Iterator iterator = mapViewVector.iterator(); iterator.hasNext();) {
 			final MapView mapMod = (MapView) iterator.next();
-			if (modeName.equals(mapMod.getModel().getModeController().getModeName())) {
+			if (modeName.equals(getModel(mapMod).getModeController().getModeName())) {
 				mapViewCandidate = mapMod;
 				break;
 			}
@@ -185,8 +238,8 @@ public class MapViewManager {
 	public String checkIfFileIsAlreadyOpened(final URL urlToCheck) throws MalformedURLException {
 		for (final Iterator iter = mapViewVector.iterator(); iter.hasNext();) {
 			final MapView mapView = (MapView) iter.next();
-			if (mapView.getModel() != null) {
-				final URL mapViewUrl = mapView.getModel().getURL();
+			if (getModel(mapView) != null) {
+				final URL mapViewUrl = getModel(mapView).getURL();
 				if (sameFile(urlToCheck, mapViewUrl)) {
 					return mapView.getName();
 				}
@@ -203,7 +256,7 @@ public class MapViewManager {
 	 */
 	public boolean close(final boolean force) {
 		final MapView mapView = getMapView();
-		final boolean closingNotCancelled = mapView.getModel().getModeController()
+		final boolean closingNotCancelled = getModel(mapView).getModeController()
 		    .getMapController().close(force);
 		if (!closingNotCancelled) {
 			return false;
@@ -244,11 +297,11 @@ public class MapViewManager {
 	 *             MapView.getDisplayName().
 	 */
 	@Deprecated
-	public Map getMapViews() {
-		final HashMap returnValue = new HashMap();
+	public Map<String, MapModel> getMaps() {
+		final HashMap<String, MapModel> returnValue = new HashMap();
 		for (final Iterator iterator = mapViewVector.iterator(); iterator.hasNext();) {
 			final MapView mapView = (MapView) iterator.next();
-			returnValue.put(mapView.getName(), mapView);
+			returnValue.put(mapView.getName(), getModel(mapView));
 		}
 		return Collections.unmodifiableMap(returnValue);
 	}
@@ -264,6 +317,7 @@ public class MapViewManager {
 	public void newMapView(final MapModel map, final ModeController modeController) {
 		final MapView mapView = new MapView(map);
 		addToOrChangeInMapViews(mapView.getName(), mapView);
+		listener.mapViewCreated(mapView);
 		changeToMapView(mapView);
 	}
 
@@ -303,7 +357,7 @@ public class MapViewManager {
 		}
 	}
 
-	public void removeIMapViewChangeListener(final IMapViewChangeListener pListener) {
+	public void removeIMapViewChangeListener(final IMapChangeListener pListener) {
 		listener.removeListener(pListener);
 	}
 
@@ -337,4 +391,83 @@ public class MapViewManager {
 		addToOrChangeInMapViews(getMapView().getName(), getMapView());
 		changeToMapView(getMapView());
 	}
+
+	JScrollPane createScrollPane() {
+	    return new MapViewScrollPane();
+    }
+
+	IMapSelection getMapSelection() {
+		final MapView mapView = getMapView();
+		return mapView == null ? null : mapView.getMapSelection();
+    }
+
+	float getZoom() {
+	    return getMapView().getZoom();
+    }
+
+	MapModel getModel() {
+		final MapView mapView = getMapView();
+		return mapView == null ? null : getModel(mapView);
+    }
+
+	void setZoom(float zoom) {
+		getMapView().setZoom(zoom);
+    }
+
+	public Component getSelectedComponent() {
+		final MapView mapView = getMapView();
+		return mapView == null ? null : mapView.getSelected();
+    }
+
+	public Color getTextColor(NodeModel node) {
+		final MapView mapView = getMapView();
+		if(mapView == null){
+			return null;
+		}
+		final NodeView nodeView = mapView.getNodeView(node);
+		if(nodeView == null){
+			return null;
+		}
+		return nodeView.getTextColor();
+    }
+
+	public Color getBackgroundColor(NodeModel node) {
+		final MapView mapView = getMapView();
+		if(mapView == null){
+			return null;
+		}
+		final NodeView nodeView = mapView.getNodeView(node);
+		if(nodeView == null){
+			return null;
+		}
+		return nodeView.getTextBackground();
+    }
+
+	public Font getFont(NodeModel node) {
+		final MapView mapView = getMapView();
+		if(mapView == null){
+			return null;
+		}
+		final NodeView nodeView = mapView.getNodeView(node);
+		if(nodeView == null){
+			return null;
+		}
+		return nodeView.getMainView().getFont();
+    }
+
+	public void scrollNodeToVisible(NodeModel node) {
+	    NodeView nodeView = mapView.getNodeView(node);
+	    if(nodeView != null){
+		    mapView.scrollNodeToVisible(nodeView);
+	    }
+    }
+
+	public Component getComponent(NodeModel node) {
+	    return mapView.getNodeView(node).getMainView();
+    }
+
+	public void updateMapView() {
+	    mapView.getRoot().updateAll();
+	    
+    }
 }

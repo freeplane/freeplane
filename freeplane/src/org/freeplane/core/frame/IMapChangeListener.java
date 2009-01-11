@@ -17,14 +17,22 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.modecontroller;
+package org.freeplane.core.frame;
 
-import java.awt.Container;
+import org.freeplane.core.model.MapModel;
 
 
 
-public interface INodeViewLifeCycleListener {
-	public void onViewCreated(Container nodeView);
+public interface IMapChangeListener {
+	void afterMapClose(MapModel oldMap);
 
-	public void onViewRemoved(Container nodeView);
+	void afterMapChange(MapModel oldMap, MapModel newMap);
+
+	void beforeMapChange(MapModel oldMap, MapModel newMap);
+
+	/**
+	 * The params may be null to indicate the there was no previous map, or that
+	 * the last map is closed now.
+	 */
+	boolean isMapChangeAllowed(MapModel oldMap, MapModel newMap);
 }

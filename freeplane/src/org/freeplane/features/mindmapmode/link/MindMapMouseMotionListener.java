@@ -22,12 +22,14 @@ package org.freeplane.features.mindmapmode.link;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.IMapMouseReceiver;
 import org.freeplane.features.common.link.ArrowLinkModel;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.NodeView;
+
 
 /** */
 class MindMapMouseMotionListener implements IMapMouseReceiver {
@@ -50,14 +52,32 @@ class MindMapMouseMotionListener implements IMapMouseReceiver {
 		final MapView mapView = (MapView) e.getComponent();
 		if (originX >= 0) {
 			if (draggedLink != null) {
-				final int deltaX = (int) ((e.getX() - originX) / Controller.getController()
-				    .getMapView().getZoom());
-				final int deltaY = (int) ((e.getY() - originY) / Controller.getController()
-				    .getMapView().getZoom());
-				draggedLink.changeInclination(mapView, originX, originY, deltaX, deltaY);
+				final int deltaX = (int) ((e.getX() - originX) / mapView.getZoom());
+				final int deltaY = (int) ((e.getY() - originY) / mapView.getZoom());
+				double distSqToTarget = 0;
+                double distSqToSource = 0;
+                NodeModel target = draggedLink.getTarget();
+                final NodeView targetView = mapView.getNodeView(target);
+                final NodeView sourceView = mapView.getNodeView(draggedLink.getSource());
+                if (targetView != null && sourceView != null) {
+                	final Point targetLinkPoint = targetView.getLinkPoint(draggedLink.getEndInclination());
+                	final Point sourceLinkPoint = sourceView.getLinkPoint(draggedLink.getStartInclination());
+                	distSqToTarget = targetLinkPoint.distanceSq(originX, originY);
+                	distSqToSource = sourceLinkPoint.distanceSq(originX, originY);
+                }
+                if ((targetView == null || sourceView != null) && distSqToSource < distSqToTarget * 2.25) {
+                	final Point changedInclination = draggedLink.getStartInclination();
+                	draggedLink.changeInclination(deltaX, deltaY, draggedLink.getSource(), changedInclination);
+                	draggedLink.setStartInclination(changedInclination);
+                }
+                if ((sourceView == null || targetView != null) && distSqToTarget < distSqToSource * 2.25) {
+                	final Point changedInclination = draggedLink.getEndInclination();
+                	draggedLink.changeInclination(deltaX, deltaY, target, changedInclination);
+                	draggedLink.setEndInclination(changedInclination);
+                }
 				originX = e.getX();
 				originY = e.getY();
-				Controller.getController().getMapView().repaint();
+				mapView.repaint();
 			}
 			else {
 				mapView.scrollBy(originX - e.getX(), originY - e.getY());
@@ -67,7 +87,7 @@ class MindMapMouseMotionListener implements IMapMouseReceiver {
 
 	public void mousePressed(final MouseEvent e) {
 		if (!mController.isBlocked() && e.getButton() == MouseEvent.BUTTON1) {
-			final MapView mapView = Controller.getController().getMapView();
+			final MapView mapView = (MapView) e.getComponent();
 			mapView.setMoveCursor(true);
 			originX = e.getX();
 			originY = e.getY();
@@ -85,6 +105,7 @@ class MindMapMouseMotionListener implements IMapMouseReceiver {
 		originX = -1;
 		originY = -1;
 		if (draggedLink != null) {
+			final MapView mapView = (MapView) e.getComponent();
 			draggedLink.setShowControlPoints(false);
 			final Point draggedLinkNewStartPoint = draggedLink.getStartInclination();
 			final Point draggedLinkNewEndPoint = draggedLink.getEndInclination();
@@ -92,7 +113,7 @@ class MindMapMouseMotionListener implements IMapMouseReceiver {
 			draggedLink.setEndInclination(draggedLinkOldEndPoint);
 			((MLinkController) LinkController.getController(mController)).setArrowLinkEndPoints(
 			    draggedLink, draggedLinkNewStartPoint, draggedLinkNewEndPoint);
-			Controller.getController().getMapView().repaint();
+			mapView.repaint();
 			draggedLink = null;
 		}
 	}

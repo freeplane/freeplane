@@ -34,22 +34,22 @@ import org.freeplane.core.filter.condition.ConditionFactory;
 import org.freeplane.core.filter.condition.DefaultConditionRenderer;
 import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.filter.condition.NoFilteringCondition;
-import org.freeplane.core.frame.IMapViewChangeListener;
-import org.freeplane.core.io.XMLElement;
+import org.freeplane.core.frame.IMapChangeListener;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;
+import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.n3.nanoxml.XMLParserFactory;
 import org.freeplane.n3.nanoxml.XMLWriter;
-import org.freeplane.view.swing.map.MapView;
+
 
 /**
  * @author Dimitry Polivaev
  */
-public class FilterController implements IMapViewChangeListener, IExtension {
+public class FilterController implements IMapChangeListener, IExtension {
 	static final String FREEPLANE_FILTER_EXTENSION_WITHOUT_DOT = "mmfilter";
 
 	public static FilterController getController() {
@@ -68,16 +68,15 @@ public class FilterController implements IMapViewChangeListener, IExtension {
 	private MapModel map;
 
 	public FilterController() {
-		Controller.getController().getMapViewManager().addIMapViewChangeListener(this);
+		Controller.getController().getMapViewManager().addMapChangeListener(this);
 		Controller.getController().addAction("showFilterToolbarAction",
 		    new ShowFilterToolbarAction());
 	}
 
-	public void afterMapClose(final MapView pOldMapView) {
+	public void afterMapClose(final MapModel pOldMapView) {
 	}
 
-	public void afterMapViewChange(final MapView oldMapView, final MapView newMapView) {
-		final MapModel newMap = newMapView != null ? newMapView.getModel() : null;
+	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
 		final FilterComposerDialog fd = getFilterToolbar().getFilterDialog();
 		if (fd != null) {
 			fd.mapChanged(newMap);
@@ -86,7 +85,7 @@ public class FilterController implements IMapViewChangeListener, IExtension {
 		getFilterToolbar().mapChanged(newMap);
 	}
 
-	public void beforeMapViewChange(final MapView oldMapView, final MapView newMapView) {
+	public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
 	}
 
 	private IFilter createTransparentFilter() {
@@ -135,7 +134,7 @@ public class FilterController implements IMapViewChangeListener, IExtension {
 		return map;
 	}
 
-	public boolean isMapViewChangeAllowed(final MapView oldMapView, final MapView newMapView) {
+	public boolean isMapChangeAllowed(final MapModel oldMap, final MapModel newMap) {
 		return true;
 	}
 

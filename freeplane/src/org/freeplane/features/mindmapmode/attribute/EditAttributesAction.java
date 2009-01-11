@@ -27,8 +27,9 @@ import javax.swing.SwingUtilities;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.FreeplaneAction;
-import org.freeplane.features.common.attribute.view.AttributeTable;
-import org.freeplane.features.common.attribute.view.AttributeView;
+import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.attribute.AttributeTable;
+import org.freeplane.view.swing.map.attribute.AttributeView;
 
 class EditAttributesAction extends FreeplaneAction {
 	public EditAttributesAction() {
@@ -38,8 +39,7 @@ class EditAttributesAction extends FreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		final Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager()
 		    .getFocusOwner();
-		final AttributeView attributeView = (Controller.getController().getMapView().getSelected())
-		    .getAttributeView();
+		final AttributeView attributeView = (((MapView)Controller.getController().getViewController().getMapView()).getSelected()).getAttributeView();
 		final boolean attributesClosed = null == SwingUtilities.getAncestorOfClass(
 		    AttributeTable.class, focusOwner);
 		if (attributesClosed) {

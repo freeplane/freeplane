@@ -20,7 +20,7 @@
 package org.freeplane.features.common.attribute;
 
 import org.freeplane.core.filter.util.SortedComboBoxModel;
-import org.freeplane.core.io.XMLElement;
+import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
  * @author Dimitry Polivaev

@@ -19,8 +19,10 @@
  */
 package org.freeplane.core.modecontroller;
 
-import org.freeplane.view.swing.map.NodeView;
+import org.freeplane.core.model.INodeView;
+
+
 
 public interface INodeViewVisitor {
-	void visit(NodeView view);
+	void visit(INodeView view);
 }

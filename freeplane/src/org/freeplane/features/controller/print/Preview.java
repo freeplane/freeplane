@@ -21,10 +21,11 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
+import java.awt.print.PrinterException;
 
 import javax.swing.JComponent;
 
-import org.freeplane.view.swing.map.MapView;
+
 
 class Preview extends JComponent {
 	final private static int DEFAULT_PREVIEW_SIZE = 300;
@@ -32,10 +33,10 @@ class Preview extends JComponent {
 	private Graphics2D imageGraphics;
 	protected int index = 0;
 	private BufferedImage previewPageImage = null;
-	private final MapView view;
+	private final Printable view;
 	protected double zoom = 0.0;
 
-	public Preview(final MapView view, final double zoom) {
+	public Preview(final Printable view, final double zoom) {
 		this.view = view;
 		final PageFormat format = getPageFormat();
 		if (zoom == 0.0) {
@@ -88,6 +89,7 @@ class Preview extends JComponent {
 
 	@Override
 	public void paint(final Graphics g) {
+		try {
 		final Graphics2D g2d = (Graphics2D) g;
 		final PageFormat format = getPageFormat();
 		paintPaper(g, format);
@@ -96,11 +98,16 @@ class Preview extends JComponent {
 			    getPageHeight(format) - 1);
 			imageGraphics = previewPageImage.createGraphics();
 			imageGraphics.scale(zoom, zoom);
-			while (Printable.NO_SUCH_PAGE == view.print(imageGraphics, format, index) && index > 0) {
-				index -= 1;
-			}
+	            while (Printable.NO_SUCH_PAGE == view.print(imageGraphics, format, index) && index > 0) {
+	            	index -= 1;
+	            }
 		}
 		g2d.drawImage(previewPageImage, 0, 0, this);
+        }
+        catch (PrinterException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 	}
 
 	protected void paintPaper(final Graphics g, final PageFormat format) {

@@ -48,7 +48,7 @@ import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.mindmapmode.MModeController;
-import org.freeplane.features.ui.UserInputListenerFactory;
+import org.freeplane.view.swing.ui.UserInputListenerFactory;
 
 /**
  * @author Dimitry Polivaev

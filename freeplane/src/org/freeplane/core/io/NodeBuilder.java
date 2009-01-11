@@ -26,6 +26,7 @@ import org.freeplane.core.model.EncryptionModel;
 import org.freeplane.core.model.HistoryInformationModel;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.n3.nanoxml.IXMLElement;
 
 public class NodeBuilder implements IElementDOMHandler {
 	static class IconProperties {

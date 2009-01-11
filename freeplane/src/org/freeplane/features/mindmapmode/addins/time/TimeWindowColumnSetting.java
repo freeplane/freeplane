@@ -1,7 +1,7 @@
 package org.freeplane.features.mindmapmode.addins.time;
 
-import org.freeplane.core.io.IXMLElement;
-import org.freeplane.core.io.XMLElement;
+import org.freeplane.n3.nanoxml.IXMLElement;
+import org.freeplane.n3.nanoxml.XMLElement;
 
 class TimeWindowColumnSetting {
 	static TimeWindowColumnSetting create(final IXMLElement xml) {

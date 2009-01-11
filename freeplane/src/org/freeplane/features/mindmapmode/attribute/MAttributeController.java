@@ -32,7 +32,7 @@ import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.attribute.AttributeRegistry;
 import org.freeplane.features.common.attribute.AttributeRegistryElement;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
-import org.freeplane.features.common.attribute.view.AttributePopupMenu;
+import org.freeplane.view.swing.map.attribute.AttributePopupMenu;
 
 public class MAttributeController extends AttributeController {
 	private class AttributeChanger implements IVisitor {

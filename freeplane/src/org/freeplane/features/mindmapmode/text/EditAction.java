@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.mindmapmode.text;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.regex.Pattern;
@@ -36,8 +37,9 @@ import org.freeplane.core.util.Tools;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.features.mindmapmode.MModeController;
-import org.freeplane.view.swing.map.MapView;
-import org.freeplane.view.swing.map.NodeView;
+import org.freeplane.view.swing.map.MainView;
+
+
 
 class EditAction extends FreeplaneAction {
 	private static final Pattern HTML_HEAD = Pattern.compile("\\s*<head>.*</head>", Pattern.DOTALL);
@@ -59,10 +61,10 @@ class EditAction extends FreeplaneAction {
 	}
 
 	public void edit(final KeyEvent e, final boolean addNew, final boolean editLong) {
-		final NodeView selectedNodeView = Controller.getController().getMapView().getSelected();
-		if (selectedNodeView != null) {
+		final NodeModel selectedNode = Controller.getController().getSelection().getSelected();
+		if (selectedNode != null) {
 			if (e == null || !addNew) {
-				edit(selectedNodeView, selectedNodeView, e, false, false, editLong);
+				edit(selectedNode, selectedNode, e, false, false, editLong);
 			}
 			else if (!getModeController().isBlocked()) {
 				((MMapController) getModeController().getMapController()).addNewNode(
@@ -74,29 +76,24 @@ class EditAction extends FreeplaneAction {
 		}
 	}
 
-	public void edit(final NodeView node, final NodeView prevSelected, final KeyEvent firstEvent,
+	public void edit(final NodeModel nodeModel, final NodeModel prevSelectedModel, final KeyEvent firstEvent,
 	                 final boolean isNewNode, final boolean parentFolded, final boolean editLong) {
-		if (node == null) {
+		if (nodeModel == null) {
 			return;
 		}
-		final MapView map = node.getMap();
-		map.validate();
-		map.invalidate();
-		if (!node.focused()) {
-			node.requestFocus();
-		}
+		Component node =  Controller.getController().getViewController().getComponent(nodeModel);
+		node.requestFocus();
 		stopEditing();
 		getModeController().setBlocked(true);
-		String text = node.getModel().toString();
+		String text = nodeModel.toString();
 		final String htmlEditingOption = Controller.getResourceController().getProperty(
 		    "html_editing_option");
-		final boolean editDefinitivelyLong = node.getIsLong() || editLong;
+		final boolean editDefinitivelyLong = ((MainView)node).getIsLong() || editLong;
 		final boolean isHtmlNode = HtmlTools.isHtmlNode(text);
 		String useRichTextInNewLongNodes = "true";
 		if (!isHtmlNode && editDefinitivelyLong) {
 			final int showResult = new OptionalDontShowMeAgainDialog(Controller.getController()
-			    .getViewController().getJFrame(), Controller.getController().getMapView()
-			    .getSelected(), "edit.edit_rich_text", "edit.decision",
+			    .getViewController().getJFrame(), nodeModel, "edit.edit_rich_text", "edit.decision",
 			    new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
 			        ResourceController.RESOURCES_REMIND_USE_RICH_TEXT_IN_NEW_LONG_NODES),
 			    OptionalDontShowMeAgainDialog.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED).show()
@@ -112,7 +109,7 @@ class EditAction extends FreeplaneAction {
 			text = HtmlTools.plainToHTML(text);
 		}
 		if (editInternalWysiwyg) {
-			final EditNodeWYSIWYG editNodeWYSIWYG = new EditNodeWYSIWYG(node, text, firstEvent,
+			final EditNodeWYSIWYG editNodeWYSIWYG = new EditNodeWYSIWYG(nodeModel, text, firstEvent,
 			    getModeController(), new EditNodeBase.IEditControl() {
 				    public void cancel() {
 					    getModeController().setBlocked(false);
@@ -120,13 +117,13 @@ class EditAction extends FreeplaneAction {
 				    }
 
 				    public void ok(final String newText) {
-					    setHtmlText(node, newText);
+					    setHtmlText(nodeModel, newText);
 					    cancel();
 				    }
 
 				    public void split(final String newText, final int position) {
 					    ((MTextController) TextController.getController(Controller
-					        .getModeController())).splitNode(node.getModel(), position, newText);
+					        .getModeController())).splitNode(nodeModel, position, newText);
 					    Controller.getController().getViewController().obtainFocusForSelected();
 					    cancel();
 				    }
@@ -137,20 +134,20 @@ class EditAction extends FreeplaneAction {
 		}
 		if (editExternal) {
 			final EditNodeExternalApplication editNodeExternalApplication = new EditNodeExternalApplication(
-			    node, text, firstEvent, getModeController(), new EditNodeBase.IEditControl() {
+				nodeModel, text, firstEvent, getModeController(), new EditNodeBase.IEditControl() {
 				    public void cancel() {
 					    getModeController().setBlocked(false);
 					    mCurrentEditDialog = null;
 				    }
 
 				    public void ok(final String newText) {
-					    setHtmlText(node, newText);
+					    setHtmlText(nodeModel, newText);
 					    cancel();
 				    }
 
 				    public void split(final String newText, final int position) {
 					    ((MTextController) TextController.getController(Controller
-					        .getModeController())).splitNode(node.getModel(), position, newText);
+					        .getModeController())).splitNode(nodeModel, position, newText);
 					    Controller.getController().getViewController().obtainFocusForSelected();
 					    cancel();
 				    }
@@ -160,7 +157,7 @@ class EditAction extends FreeplaneAction {
 			return;
 		}
 		if (editDefinitivelyLong) {
-			final EditNodeDialog nodeEditDialog = new EditNodeDialog(node, text, firstEvent,
+			final EditNodeDialog nodeEditDialog = new EditNodeDialog(nodeModel, text, firstEvent,
 			    getModeController(), new EditNodeBase.IEditControl() {
 				    public void cancel() {
 					    getModeController().setBlocked(false);
@@ -168,13 +165,13 @@ class EditAction extends FreeplaneAction {
 				    }
 
 				    public void ok(final String newText) {
-					    setNodeText(node.getModel(), newText);
+					    setNodeText(nodeModel, newText);
 					    cancel();
 				    }
 
 				    public void split(final String newText, final int position) {
 					    ((MTextController) TextController.getController(Controller
-					        .getModeController())).splitNode(node.getModel(), position, newText);
+					        .getModeController())).splitNode(nodeModel, position, newText);
 					    Controller.getController().getViewController().obtainFocusForSelected();
 					    cancel();
 				    }
@@ -183,16 +180,16 @@ class EditAction extends FreeplaneAction {
 			nodeEditDialog.show();
 			return;
 		}
-		final EditNodeTextField textfield = new EditNodeTextField(node, text, firstEvent,
+		final EditNodeTextField textfield = new EditNodeTextField(nodeModel, text, firstEvent,
 		    getModeController(), new EditNodeBase.IEditControl() {
 			    public void cancel() {
 				    if (isNewNode) {
-					    Controller.getController().getMapView().selectAsTheOnlyOneSelected(node);
+					    Controller.getController().getSelection().selectAsTheOnlyOneSelected(nodeModel);
 					    ((MModeController) getModeController()).undo();
-					    getModeController().getMapController().select(prevSelected.getModel());
+					    getModeController().getMapController().select(prevSelectedModel);
 					    if (parentFolded) {
 						    getModeController().getMapController().setFolded(
-						        prevSelected.getModel(), true);
+						        prevSelectedModel, true);
 					    }
 				    }
 				    endEdit();
@@ -205,7 +202,7 @@ class EditAction extends FreeplaneAction {
 			    }
 
 			    public void ok(final String newText) {
-				    setNodeText(node.getModel(), newText);
+				    setNodeText(nodeModel, newText);
 				    endEdit();
 			    }
 
@@ -216,9 +213,9 @@ class EditAction extends FreeplaneAction {
 		textfield.show();
 	}
 
-	private void setHtmlText(final NodeView node, final String newText) {
+	private void setHtmlText(final NodeModel node, final String newText) {
 		final String body = EditAction.HTML_HEAD.matcher(newText).replaceFirst("");
-		setNodeText(node.getModel(), body);
+		setNodeText(node, body);
 	}
 
 	public void setNodeText(final NodeModel node, final String newText) {

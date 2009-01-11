@@ -20,9 +20,9 @@
 package org.freeplane.features.common.note;
 
 import org.freeplane.core.io.IElementContentHandler;
-import org.freeplane.core.io.IXMLElement;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.features.common.text.NodeTextBuilder;
+import org.freeplane.n3.nanoxml.IXMLElement;
 
 /**
  * @author Dimitry Polivaev

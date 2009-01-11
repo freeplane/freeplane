@@ -20,24 +20,31 @@
 package org.freeplane.core.controller;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.HashMap;
+import java.util.ListIterator;
 import java.util.Set;
 
 import javax.swing.Action;
 import javax.swing.JComponent;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 
 import org.freeplane.core.extension.ExtensionHashMap;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.frame.MapViewManager;
+import org.freeplane.core.frame.MapViewController;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ActionController;
+import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.UIBuilder;
+import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.url.UrlManager;
-import org.freeplane.view.swing.map.MapView;
+
 
 /**
  * Provides the methods to edit/change a Node. Forwards all messages to
@@ -88,6 +95,11 @@ public class Controller {
 	final private HashMap<String, ModeController> modeControllers;
 	final private Action quit;
 	private ViewController viewController;
+	final private LastOpenedList lastOpened;
+	public LastOpenedList getLastOpenedList() {
+		return lastOpened;
+	}
+
 
 	public Controller(final ResourceController resourceController) {
 		if (Controller.controllerInstance != null) {
@@ -101,6 +113,9 @@ public class Controller {
 		quit = new QuitAction(resourceController);
 		addAction("quit", quit);
 		resourceController.init();
+		lastOpened = new LastOpenedList(Controller.getResourceController()
+		    .getProperty("lastOpened"));
+
 	}
 
 	public void addAction(final Object key, final Action value) {
@@ -168,14 +183,8 @@ public class Controller {
 		return getViewController().getMap();
 	}
 
-	/**
-	 * @return
-	 */
-	public MapView getMapView() {
-		return getViewController().getMapView();
-	}
 
-	public MapViewManager getMapViewManager() {
+	public MapViewController getMapViewManager() {
 		return getViewController().getMapViewManager();
 	}
 
@@ -188,8 +197,7 @@ public class Controller {
 	}
 
 	public IMapSelection getSelection() {
-		final MapView mapView = getMapView();
-		return mapView == null ? null : mapView.getMapSelection();
+		return getViewController().getSelection();
 	}
 
 	/**
@@ -197,16 +205,6 @@ public class Controller {
 	 */
 	public ViewController getViewController() {
 		return viewController;
-	}
-
-	public void informationMessage(final Object message) {
-		JOptionPane.showMessageDialog(Controller.getController().getViewController()
-		    .getContentPane(), message.toString(), "Freeplane", JOptionPane.INFORMATION_MESSAGE);
-	}
-
-	public void informationMessage(final Object message, final JComponent component) {
-		JOptionPane.showMessageDialog(component, message.toString(), "Freeplane",
-		    JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	public void quit() {
@@ -272,9 +270,30 @@ public class Controller {
 		if (modeController != null) {
 			modeController.shutdown();
 		}
-		Controller.getController().getViewController().shutdown();
+		Controller.getController().getViewController().stop();
+		final String lastOpenedString = lastOpened.save();
+		Controller.getResourceController().setProperty("lastOpened", lastOpenedString);
 		extensions.clear();
 		Controller.controllerInstance = null;
 		return true;
 	}
+	
+	public void updateMenus(final MenuBuilder menuBuilder) {
+		menuBuilder.removeChildElements(FreeplaneMenuBar.FILE_MENU + "/last");
+		boolean firstElement = true;
+		final LastOpenedList lst = getLastOpenedList();
+		for (final ListIterator it = lst.listIterator(); it.hasNext();) {
+			final String key = (String) it.next();
+			final JMenuItem item = new JMenuItem(key);
+			if (firstElement) {
+				firstElement = false;
+				item.setAccelerator(KeyStroke.getKeyStroke(Controller.getResourceController()
+				    .getAdjustableProperty("keystroke_open_first_in_history")));
+			}
+			final ActionListener lastOpenedActionListener = new LastOpenedActionListener();
+			item.addActionListener(lastOpenedActionListener);
+			menuBuilder.addMenuItem(FreeplaneMenuBar.FILE_MENU + "/last", item, UIBuilder.AS_CHILD);
+		}
+	}
+
 }

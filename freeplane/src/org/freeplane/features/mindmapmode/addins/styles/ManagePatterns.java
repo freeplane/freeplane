@@ -28,7 +28,7 @@ import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.features.mindmapnode.pattern.MPatternController;
 import org.freeplane.features.mindmapnode.pattern.StylePatternFactory;
-import org.freeplane.features.ui.UserInputListenerFactory;
+import org.freeplane.view.swing.ui.UserInputListenerFactory;
 
 @ActionDescriptor(tooltip = "accessories/plugins/ManagePatterns.properties_documentation", //
 name = "accessories/plugins/ManagePatterns.properties_name", //

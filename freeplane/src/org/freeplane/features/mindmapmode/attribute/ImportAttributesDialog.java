@@ -25,7 +25,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Iterator;
-import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.swing.Box;
 import javax.swing.Icon;
@@ -45,14 +45,14 @@ import javax.swing.tree.TreeSelectionModel;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.util.SortedComboBoxModel;
-import org.freeplane.core.frame.MapViewManager;
+import org.freeplane.core.frame.MapViewController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.common.attribute.AttributeRegistry;
 import org.freeplane.features.common.attribute.AttributeRegistryElement;
-import org.freeplane.view.swing.map.MapView;
+
 
 class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 	static private class AttributeTreeNodeInfo extends TreeNodeInfo {
@@ -195,15 +195,14 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 		top.removeAllChildren();
 		final TreeNodeInfo topInfo = (TreeNodeInfo) top.getUserObject();
 		topInfo.setSelected(TreeNodeInfo.NOT_SELECTED);
-		final MapViewManager mapViewManager = Controller.getController().getMapViewManager();
+		final MapViewController mapViewManager = Controller.getController().getMapViewManager();
 		final MapModel currentMap = mapViewManager.getMapView().getModel();
 		currentAttributes = AttributeRegistry.getRegistry(currentMap);
-		final Iterator iterator = mapViewManager.getMapViews().entrySet().iterator();
+		Iterator<Entry<String, MapModel>> iterator = mapViewManager.getMaps().entrySet().iterator();
 		while (iterator.hasNext()) {
-			final Map.Entry entry = (Map.Entry) iterator.next();
-			final String nextmapName = entry.getKey().toString();
-			final MapView nextMapView = (MapView) entry.getValue();
-			final MapModel nextMap = nextMapView.getModel();
+			Entry<String, MapModel> entry = iterator.next();
+			final String nextmapName = entry.getKey();
+			final MapModel nextMap = entry.getValue();
 			if (nextMap == currentMap) {
 				continue;
 			}

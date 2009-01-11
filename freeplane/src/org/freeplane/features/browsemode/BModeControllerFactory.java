@@ -35,7 +35,7 @@ import org.freeplane.features.common.nodelocation.LocationController;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.note.NoteController;
 import org.freeplane.features.common.text.TextController;
-import org.freeplane.features.ui.UserInputListenerFactory;
+import org.freeplane.view.swing.ui.UserInputListenerFactory;
 
 /**
  * @author Dimitry Polivaev 24.11.2008

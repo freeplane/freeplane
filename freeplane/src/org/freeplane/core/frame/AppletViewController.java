@@ -35,8 +35,9 @@ import javax.swing.SwingUtilities;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.FreeplaneVersionInformation;
+import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
-import org.freeplane.view.swing.map.MapView;
+
 
 /**
  * @author Dimitry Polivaev
@@ -199,14 +200,15 @@ public class AppletViewController extends ViewController {
 	 * @see freeplane.main.FreeplaneMain#exit()
 	 */
 	@Override
-	public void shutdown() {
+	public void stop() {
 	}
 
 	public void start() {
 		try {
-			final MapView mapView = Controller.getController().getMapView();
-			if (mapView != null) {
-				mapView.moveToRoot();
+			IMapSelection selection = Controller.getController().getSelection();
+			
+			if (selection != null) {
+				selection.selectRoot();
 			}
 			else {
 				System.err.println("View is null.");

@@ -29,6 +29,8 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
+
+
 /**
  * @author Dimitry Polivaev
  * 13.12.2008
@@ -54,7 +56,7 @@ class NodeHolder {
 
 	MapView getMapView() {
 		final MapView mapView = mMapView.get();
-		final Map mapViews = Controller.getController().getMapViewManager().getMapViews();
+		final Map mapViews = Controller.getController().getMapViewManager().getMaps();
 		for (final Iterator iter = mapViews.values().iterator(); iter.hasNext();) {
 			final MapView m = (MapView) iter.next();
 			if (m == mapView) {

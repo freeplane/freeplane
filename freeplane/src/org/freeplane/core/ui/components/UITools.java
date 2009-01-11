@@ -31,10 +31,15 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
-import org.freeplane.view.swing.map.NodeView;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.frame.ViewController;
+import org.freeplane.core.model.NodeModel;
+
+
 
 /**
  * @author Dimitry Polivaev
@@ -106,14 +111,18 @@ public class UITools {
 		return rawLabel.replaceFirst("&([^ ])", "$1");
 	}
 
+	public static void setDialogLocationRelativeTo(JDialog dialog, NodeModel node) {
+		if (node == null) {
+			return;
+		}
+		ViewController viewController = Controller.getController().getViewController();
+		viewController.scrollNodeToVisible(node);
+		Component c=viewController.getComponent(node);
+		setDialogLocationRelativeTo(dialog, c);
+    }
 	public static void setDialogLocationRelativeTo(final JDialog dialog, Component c) {
 		if (c == null) {
 			return;
-		}
-		if (c instanceof NodeView) {
-			final NodeView nodeView = (NodeView) c;
-			nodeView.getMap().scrollNodeToVisible(nodeView);
-			c = nodeView.getMainView();
 		}
 		final Point compLocation = c.getLocationOnScreen();
 		final int cw = c.getWidth();
@@ -187,4 +196,39 @@ public class UITools {
 		}
 		dialog.setLocation(dx, dy);
 	}
+
+	public static String showInputDialog(NodeModel node, String text, String title,int type) {
+		if (node == null) {
+			return null;
+		}
+		ViewController viewController = Controller.getController().getViewController();
+		viewController.scrollNodeToVisible(node);
+		Component parentComponent=viewController.getComponent(node);
+		return JOptionPane.showInputDialog(parentComponent, text, title, type);
+    }
+
+	static public void informationMessage(final String message, final String title) {
+    	JOptionPane.showMessageDialog(Controller.getController().getViewController()
+    	    .getContentPane(), message, title, JOptionPane.INFORMATION_MESSAGE);
+    }
+
+	static public void informationMessage(final String message) {
+		informationMessage(message, "Freeplane");
+    }
+
+	public static String showInputDialog(NodeModel node, String text, String string) {
+		if (node == null) {
+			return null;
+		}
+		ViewController viewController = Controller.getController().getViewController();
+		viewController.scrollNodeToVisible(node);
+		Component parentComponent=viewController.getComponent(node);
+		return JOptionPane.showInputDialog(parentComponent, text, string);
+    }
+
+	public static void informationMessage(String text, String string, int type) {
+    	JOptionPane.showMessageDialog(Controller.getController().getViewController()
+    	    .getContentPane(), text, string, type);
+    }
+
 }

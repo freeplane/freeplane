@@ -204,7 +204,7 @@ public class NodeStyleController implements IExtension {
 			                            final String oldValue) {
 				if (propertyName.equals(ResourceController.RESOURCES_NODE_TEXT_COLOR)) {
 					standardNodeTextColor = TreeXmlReader.xmlToColor(newValue);
-					Controller.getController().getMapView().getRoot().updateAll();
+					Controller.getController().getViewController().updateView();
 				}
 			}
 		};

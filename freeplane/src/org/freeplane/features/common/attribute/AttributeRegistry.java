@@ -33,10 +33,10 @@ import org.freeplane.core.filter.util.IListModel;
 import org.freeplane.core.filter.util.SortedComboBoxModel;
 import org.freeplane.core.filter.util.SortedMapVector;
 import org.freeplane.core.io.ITreeWriter;
-import org.freeplane.core.io.XMLElement;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.features.mindmapmode.attribute.IAttributesListener;
+import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
  * @author Dimitry Polivaev

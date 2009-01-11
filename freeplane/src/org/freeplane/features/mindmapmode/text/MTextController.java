@@ -47,8 +47,8 @@ import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.file.MFileManager;
 import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
-import org.freeplane.features.ui.DefaultNodeKeyListener;
-import org.freeplane.view.swing.map.NodeView;
+import org.freeplane.view.swing.ui.DefaultNodeKeyListener;
+
 
 /**
  * @author Dimitry Polivaev
@@ -83,7 +83,7 @@ public class MTextController extends TextController {
 		((EditAction) getModeController().getAction("edit")).edit(e, addNew, editLong);
 	}
 
-	public void edit(final NodeView node, final NodeView prevSelected, final KeyEvent firstEvent,
+	public void edit(final NodeModel node, final NodeModel prevSelected, final KeyEvent firstEvent,
 	                 final boolean isNewNode, final boolean parentFolded, final boolean editLong) {
 		edit.edit(node, prevSelected, firstEvent, isNewNode, parentFolded, editLong);
 	}

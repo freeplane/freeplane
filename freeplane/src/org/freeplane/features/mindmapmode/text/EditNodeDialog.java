@@ -41,11 +41,13 @@ import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Tools;
-import org.freeplane.view.swing.map.NodeView;
+
 
 /**
  * @author foltin
@@ -56,18 +58,19 @@ public class EditNodeDialog extends EditNodeBase {
 
 		LongNodeDialog() {
 			super(EditNodeDialog.this);
+			ViewController viewController = Controller.getController().getViewController();
 			textArea = new JTextArea(getText());
 			textArea.setLineWrap(true);
 			textArea.setWrapStyleWord(true);
 			final JScrollPane editorScrollPane = new JScrollPane(textArea);
 			editorScrollPane
 			    .setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-			int preferredHeight = getNode().getHeight();
+			int preferredHeight = viewController.getComponent(getNode()).getHeight();
 			preferredHeight = Math.max(preferredHeight, Integer.parseInt(Controller
 			    .getResourceController().getProperty("el__min_default_window_height")));
 			preferredHeight = Math.min(preferredHeight, Integer.parseInt(Controller
 			    .getResourceController().getProperty("el__max_default_window_height")));
-			int preferredWidth = getNode().getWidth();
+			int preferredWidth = viewController.getComponent(getNode()).getWidth();
 			preferredWidth = Math.max(preferredWidth, Integer.parseInt(Controller
 			    .getResourceController().getProperty("el__min_default_window_width")));
 			preferredWidth = Math.min(preferredWidth, Integer.parseInt(Controller
@@ -168,11 +171,11 @@ public class EditNodeDialog extends EditNodeBase {
 					conditionallyShowPopup(e);
 				}
 			});
-			final Font nodeFont = getNode().getTextFont();
+			final Font nodeFont = viewController.getFont(getNode());
 			textArea.setFont(nodeFont);
-			final Color nodeTextColor = getNode().getTextColor();
+			final Color nodeTextColor = viewController.getTextColor(getNode());
 			textArea.setForeground(nodeTextColor);
-			final Color nodeTextBackground = getNode().getTextBackground();
+			final Color nodeTextBackground = viewController.getBackgroundColor(getNode());
 			textArea.setBackground(nodeTextBackground);
 			textArea.setCaretColor(nodeTextColor);
 			final JPanel buttonPane = new JPanel();
@@ -260,7 +263,7 @@ public class EditNodeDialog extends EditNodeBase {
 	private static Tools.BooleanHolder booleanHolderForConfirmState;
 	final private KeyEvent firstEvent;
 
-	public EditNodeDialog(final NodeView node, final String text, final KeyEvent firstEvent,
+	public EditNodeDialog(final NodeModel node, final String text, final KeyEvent firstEvent,
 	                      final ModeController controller, final IEditControl editControl) {
 		super(node, text, controller, editControl);
 		this.firstEvent = firstEvent;
@@ -269,7 +272,7 @@ public class EditNodeDialog extends EditNodeBase {
 	public void show() {
 		final EditDialog dialog = new LongNodeDialog();
 		dialog.pack();
-		getView().scrollNodeToVisible(getNode(), 0);
+		Controller.getController().getViewController().scrollNodeToVisible(node);
 		UITools.setDialogLocationRelativeTo(dialog, getNode());
 		dialog.show();
 	}

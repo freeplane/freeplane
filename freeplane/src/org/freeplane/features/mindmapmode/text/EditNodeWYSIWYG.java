@@ -35,12 +35,14 @@ import javax.swing.text.JTextComponent;
 import javax.swing.text.html.HTMLDocument;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlTools;
-import org.freeplane.view.swing.map.NodeView;
+
 
 import com.lightdev.app.shtm.SHTMLPanel;
 
@@ -160,7 +162,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 	private static HTMLDialog htmlEditorWindow;
 	final private KeyEvent firstEvent;
 
-	public EditNodeWYSIWYG(final NodeView node, final String text, final KeyEvent firstEvent,
+	public EditNodeWYSIWYG(final NodeModel node, final String text, final KeyEvent firstEvent,
 	                       final ModeController controller, final IEditControl editControl) {
 		super(node, text, controller, editControl);
 		this.firstEvent = firstEvent;
@@ -175,8 +177,9 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 			final SHTMLPanel htmlEditorPanel = (EditNodeWYSIWYG.htmlEditorWindow)
 			    .getHtmlEditorPanel();
 			String rule = "BODY {";
-			final Font font = node.getTextFont();
-			final Color nodeTextBackground = node.getTextBackground();
+			ViewController viewController = Controller.getController().getViewController();
+			final Font font = viewController.getFont(node);
+			final Color nodeTextBackground = viewController.getBackgroundColor(node);
 			rule += "font-family: " + font.getFamily() + ";";
 			rule += "font-size: " + font.getSize() + "pt;";
 			if (font.isItalic()) {
@@ -185,7 +188,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 			if (font.isBold()) {
 				rule += "font-weight: bold; ";
 			}
-			final Color nodeTextColor = node.getTextColor();
+			final Color nodeTextColor = viewController.getTextColor(node);
 			rule += "color: " + TreeXmlWriter.colorToXml(nodeTextColor) + ";";
 			rule += "}\n";
 			rule += "p {";
@@ -197,13 +200,13 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 			editorPane.setBackground(nodeTextBackground);
 			editorPane.setCaretColor(nodeTextColor);
 			document.getStyleSheet().addRule(rule);
-			document.setBase(node.getMap().getModel().getURL());
-			int preferredHeight = (int) (node.getMainView().getHeight() * 1.2);
+			document.setBase(node.getMap().getURL());
+			int preferredHeight = (int) (viewController.getComponent(node).getHeight() * 1.2);
 			preferredHeight = Math.max(preferredHeight, Integer.parseInt(Controller
 			    .getResourceController().getProperty("el__min_default_window_height")));
 			preferredHeight = Math.min(preferredHeight, Integer.parseInt(Controller
 			    .getResourceController().getProperty("el__max_default_window_height")));
-			int preferredWidth = (int) (node.getMainView().getWidth() * 1.2);
+			int preferredWidth = (int) (viewController.getComponent(node).getWidth() * 1.2);
 			preferredWidth = Math.max(preferredWidth, Integer.parseInt(Controller
 			    .getResourceController().getProperty("el__min_default_window_width")));
 			preferredWidth = Math.min(preferredWidth, Integer.parseInt(Controller
@@ -212,7 +215,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 			    preferredHeight));
 			EditNodeWYSIWYG.htmlEditorWindow.pack();
 			UITools.setDialogLocationRelativeTo(EditNodeWYSIWYG.htmlEditorWindow, node);
-			String content = node.getModel().toString();
+			String content = node.toString();
 			if (!HtmlTools.isHtmlNode(content)) {
 				content = HtmlTools.plainToHTML(content);
 			}

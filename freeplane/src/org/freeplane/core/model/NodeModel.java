@@ -47,7 +47,7 @@ import org.freeplane.core.modecontroller.INodeViewVisitor;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.core.util.Tools;
-import org.freeplane.view.swing.map.NodeView;
+
 
 /**
  * This class represents a single Node of a Tree. It contains direct handles to
@@ -79,7 +79,7 @@ public class NodeModel implements MutableTreeNode {
 	private NodeModel preferredChild;
 	private String text = "no text";
 	private TreeMap toolTip = null;
-	private Collection views = null;
+	private Collection<INodeView> views = null;
 	private String xmlText = "no text";
 
 	public NodeModel(final MapModel map) {
@@ -102,9 +102,9 @@ public class NodeModel implements MutableTreeNode {
 	 * .INodeViewVisitor)
 	 */
 	public void acceptViewVisitor(final INodeViewVisitor visitor) {
-		final Iterator iterator = views.iterator();
+		final Iterator<INodeView> iterator = views.iterator();
 		while (iterator.hasNext()) {
-			visitor.visit((NodeView) iterator.next());
+			visitor.visit(iterator.next());
 		}
 	}
 
@@ -133,7 +133,7 @@ public class NodeModel implements MutableTreeNode {
 		listenerList.add(TreeModelListener.class, l);
 	}
 
-	public void addViewer(final NodeView viewer) {
+	public void addViewer(final INodeView viewer) {
 		getViewers().add(viewer);
 		addTreeModelListener(viewer);
 	}
@@ -319,7 +319,7 @@ public class NodeModel implements MutableTreeNode {
 		return Collections.unmodifiableSortedMap(toolTip);
 	}
 
-	public Collection getViewers() {
+	public Collection<INodeView> getViewers() {
 		if (views == null) {
 			views = new LinkedList();
 		}
@@ -470,7 +470,7 @@ public class NodeModel implements MutableTreeNode {
 		listenerList.remove(TreeModelListener.class, l);
 	}
 
-	public void removeViewer(final NodeView viewer) {
+	public void removeViewer(final INodeView viewer) {
 		getViewers().remove(viewer);
 		removeTreeModelListener(viewer);
 	}

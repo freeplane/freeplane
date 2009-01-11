@@ -74,6 +74,7 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.WindowConfigurationStorage;
 import org.freeplane.core.ui.UIBuilder;
 import org.freeplane.core.ui.components.BlindIcon;
+import org.freeplane.core.ui.components.MultipleImage;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.core.util.Tools;
@@ -81,7 +82,7 @@ import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.note.NoteModel;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.text.MTextController;
-import org.freeplane.view.swing.map.MultipleImage;
+
 
 import com.jgoodies.forms.factories.ButtonBarFactory;
 

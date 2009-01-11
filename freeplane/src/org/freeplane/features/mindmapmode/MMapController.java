@@ -176,7 +176,7 @@ public class MMapController extends MapController {
 			try {
 				final String lockingUser = tryToLock(map, file);
 				if (lockingUser != null) {
-					Controller.getController().informationMessage(
+					UITools.informationMessage(
 					    UrlManager.expandPlaceholders(getModeController().getText(
 					        "map_locked_by_open"), file.getName(), lockingUser));
 					((MMapModel) map).setReadOnly(true);
@@ -187,7 +187,7 @@ public class MMapController extends MapController {
 			}
 			catch (final Exception e) {
 				org.freeplane.core.util.Tools.logException(e);
-				Controller.getController().informationMessage(
+				UITools.informationMessage(
 				    UrlManager.expandPlaceholders(getModeController().getText(
 				        "locking_failed_by_open"), file.getName()));
 				((MMapModel) map).setReadOnly(true);
@@ -218,9 +218,10 @@ public class MMapController extends MapController {
 			}
 		}
 		if (reader == null) {
-			final ViewController viewController = Controller.getController().getViewController();
+			Controller controller = Controller.getController();
+			final ViewController viewController = controller.getViewController();
 			final int showResult = new OptionalDontShowMeAgainDialog(viewController.getJFrame(),
-			    viewController.getMapView().getSelected(), "really_convert_to_current_version",
+				controller.getSelection().getSelected(), "really_convert_to_current_version",
 			    "confirmation", new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
 			        ResourceController.RESOURCES_CONVERT_TO_CURRENT_VERSION),
 			    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED).show().getResult();
@@ -319,10 +320,6 @@ public class MMapController extends MapController {
 		return buffer;
 	}
 
-	public void repaintMap() {
-		Controller.getController().getMapView().repaint();
-	}
-
 	@Override
 	public void setFolded(final NodeModel node, final boolean folded) {
 		((ToggleFoldedAction) getModeController().getAction("undoableToggleFolded")).setFolded(
@@ -348,7 +345,7 @@ public class MMapController extends MapController {
 		final String lockingUserOfOldLock = ((MMapModel) map).getLockManager()
 		    .popLockingUserOfOldLock();
 		if (lockingUserOfOldLock != null) {
-			Controller.getController().informationMessage(
+			UITools.informationMessage(
 			    UrlManager.expandPlaceholders(getModeController().getText(
 			        "locking_old_lock_removed"), file.getName(), lockingUserOfOldLock));
 		}

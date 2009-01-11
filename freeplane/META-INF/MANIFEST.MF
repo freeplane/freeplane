@@ -53,7 +53,6 @@ Export-Package: accessories,
  org.freeplane.features.common.addins.encrypt,
  org.freeplane.features.common.addins.misc,
  org.freeplane.features.common.attribute,
- org.freeplane.features.common.attribute.view,
  org.freeplane.features.common.clipboard,
  org.freeplane.features.common.cloud,
  org.freeplane.features.common.edge,
@@ -85,12 +84,13 @@ Export-Package: accessories,
  org.freeplane.features.mindmapmode.note,
  org.freeplane.features.mindmapmode.text,
  org.freeplane.features.mindmapnode.pattern,
- org.freeplane.features.ui,
  org.freeplane.n3.nanoxml,
  org.freeplane.startup,
  org.freeplane.view.swing.map,
+ org.freeplane.view.swing.map.attribute,
  org.freeplane.view.swing.map.cloud,
  org.freeplane.view.swing.map.edge,
- org.freeplane.view.swing.map.link
+ org.freeplane.view.swing.map.link,
+ org.freeplane.view.swing.ui
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
  

@@ -14,7 +14,7 @@
  * misrepresented as being the original software. 3. This notice may not be
  * removed or altered from any source distribution.
  */
-package org.freeplane.core.io;
+package org.freeplane.n3.nanoxml;
 
 import java.io.Serializable;
 import java.util.Enumeration;

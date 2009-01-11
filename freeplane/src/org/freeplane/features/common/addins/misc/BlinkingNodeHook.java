@@ -21,6 +21,7 @@
 package org.freeplane.features.common.addins.misc;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
@@ -30,13 +31,14 @@ import javax.swing.SwingUtilities;
 import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.addins.PersistentNodeHook;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.io.IXMLElement;
 import org.freeplane.core.modecontroller.INodeViewVisitor;
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.INodeView;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.ActionDescriptor;
-import org.freeplane.view.swing.map.MainView;
-import org.freeplane.view.swing.map.NodeView;
+import org.freeplane.n3.nanoxml.IXMLElement;
+
+
 
 /**
  */
@@ -78,12 +80,12 @@ public class BlinkingNodeHook extends PersistentNodeHook {
 						return;
 					}
 					getNode().acceptViewVisitor(new INodeViewVisitor() {
-						public void visit(final NodeView view) {
-							if (!view.isVisible()) {
+						public void visit(final INodeView nodeView) {
+							Component container = nodeView.getComponent();
+							if (!container.isVisible()) {
 								return;
 							}
-							final MainView mainView = view.getMainView();
-							final Color col = mainView.getForeground();
+							final Color col = container.getForeground();
 							int index = -1;
 							if (col != null && BlinkingNodeHook.colors.contains(col)) {
 								index = BlinkingNodeHook.colors.indexOf(col);
@@ -92,7 +94,7 @@ public class BlinkingNodeHook extends PersistentNodeHook {
 							if (index >= BlinkingNodeHook.colors.size()) {
 								index = 0;
 							}
-							mainView.setForeground((Color) BlinkingNodeHook.colors.get(index));
+							container.setForeground((Color) BlinkingNodeHook.colors.get(index));
 						}
 					});
 				}

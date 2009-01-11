@@ -23,8 +23,8 @@ import java.awt.Color;
 import java.awt.Point;
 
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.view.swing.map.MapView;
-import org.freeplane.view.swing.map.NodeView;
+
+
 
 public class ArrowLinkModel extends LinkModel {
 	private Color color;
@@ -46,7 +46,7 @@ public class ArrowLinkModel extends LinkModel {
 		endArrow = "Default";
 	}
 
-	private void changeInclination(int deltaX, final int deltaY, final NodeView linkedNodeView,
+	public void changeInclination(int deltaX, final int deltaY, final NodeModel linkedNodeView,
 	                               final Point changedInclination) {
 		if (linkedNodeView.isLeft()) {
 			deltaX = -deltaX;
@@ -65,35 +65,6 @@ public class ArrowLinkModel extends LinkModel {
 			else {
 				changedInclination.x = 10;
 			}
-		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.modes.MindMapArrowLink#changeInclination(int, int, int,
-	 * int)
-	 */
-	public void changeInclination(final MapView map, final int originX, final int originY,
-	                              final int deltaX, final int deltaY) {
-		double distSqToTarget = 0;
-		double distSqToSource = 0;
-		final NodeView targetView = map.getNodeView(getTarget());
-		final NodeView sourceView = map.getNodeView(getSource());
-		if (targetView != null && sourceView != null) {
-			final Point targetLinkPoint = targetView.getLinkPoint(getEndInclination());
-			final Point sourceLinkPoint = sourceView.getLinkPoint(getStartInclination());
-			distSqToTarget = targetLinkPoint.distanceSq(originX, originY);
-			distSqToSource = sourceLinkPoint.distanceSq(originX, originY);
-		}
-		if ((targetView == null || sourceView != null) && distSqToSource < distSqToTarget * 2.25) {
-			final Point changedInclination = getStartInclination();
-			changeInclination(deltaX, deltaY, sourceView, changedInclination);
-			setStartInclination(changedInclination);
-		}
-		if ((sourceView == null || targetView != null) && distSqToTarget < distSqToSource * 2.25) {
-			final Point changedInclination = getEndInclination();
-			changeInclination(deltaX, deltaY, targetView, changedInclination);
-			setEndInclination(changedInclination);
 		}
 	}
 

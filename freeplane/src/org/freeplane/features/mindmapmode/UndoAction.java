@@ -24,18 +24,18 @@ import java.awt.event.ActionEvent;
 import javax.swing.Action;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.frame.IMapViewChangeListener;
+import org.freeplane.core.frame.IMapChangeListener;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.undo.IUndoHandler;
-import org.freeplane.view.swing.map.MapView;
 
-class UndoAction extends FreeplaneAction implements IMapViewChangeListener {
+
+class UndoAction extends FreeplaneAction implements IMapChangeListener {
 	private Action redo;
 
 	public UndoAction() {
 		super("undo", "/images/undo.png");
-		Controller.getController().getMapViewManager().addIMapViewChangeListener(this);
+		Controller.getController().getMapViewManager().addMapChangeListener(this);
 		setEnabled(false);
 	}
 
@@ -47,25 +47,24 @@ class UndoAction extends FreeplaneAction implements IMapViewChangeListener {
 		redo.setEnabled(undoHandler.canRedo());
 	}
 
-	public void afterMapClose(final MapView oldMapView) {
+	public void afterMapClose(final MapModel oldMap) {
 	}
 
-	public void afterMapViewChange(final MapView oldMapView, final MapView newMapView) {
-		if (newMapView == null) {
+	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
+		if (newMap == null) {
 			return;
 		}
-		final MapModel map = newMapView.getModel();
-		if (map instanceof MMapModel) {
-			final IUndoHandler undoHandler = ((MMapModel) map).getUndoHandler();
+		if (newMap instanceof MMapModel) {
+			final IUndoHandler undoHandler = ((MMapModel) newMap).getUndoHandler();
 			setEnabled(undoHandler.canUndo());
 			redo.setEnabled(undoHandler.canRedo());
 		}
 	}
 
-	public void beforeMapViewChange(final MapView oldMapView, final MapView newMapView) {
+	public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
 	}
 
-	public boolean isMapViewChangeAllowed(final MapView oldMapView, final MapView newMapView) {
+	public boolean isMapChangeAllowed(final MapModel oldMap, final MapModel newMap) {
 		return true;
 	}
 

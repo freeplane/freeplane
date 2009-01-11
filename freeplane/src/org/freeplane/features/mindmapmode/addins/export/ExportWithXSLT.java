@@ -45,7 +45,6 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.io.IXMLElement;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.MindIcon;
@@ -54,6 +53,7 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Tools;
 import org.freeplane.features.mindmapmode.MModeController;
+import org.freeplane.n3.nanoxml.IXMLElement;
 import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;
@@ -212,7 +212,7 @@ public class ExportWithXSLT extends ExportAction {
 	/**
 	 */
 	private void createImageFromMap(final String directoryName) {
-		if (Controller.getController().getMapView() == null) {
+		if (Controller.getController().getViewController().getMapView() == null) {
 			return;
 		}
 		final BufferedImage image = createBufferedImage();

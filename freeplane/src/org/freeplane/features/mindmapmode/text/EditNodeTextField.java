@@ -20,6 +20,7 @@
 package org.freeplane.features.mindmapmode.text;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -36,7 +37,9 @@ import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.components.UITools;
@@ -45,6 +48,9 @@ import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
+
+
+
 /**
  * @author foltin
  */
@@ -52,7 +58,7 @@ public class EditNodeTextField extends EditNodeBase {
 	final private KeyEvent firstEvent;
 	private JTextField textfield;
 
-	public EditNodeTextField(final NodeView node, final String text, final KeyEvent firstEvent,
+	public EditNodeTextField(final NodeModel node, final String text, final KeyEvent firstEvent,
 	                         final ModeController controller, final IEditControl editControl) {
 		super(node, text, controller, editControl);
 		this.firstEvent = firstEvent;
@@ -64,7 +70,8 @@ public class EditNodeTextField extends EditNodeBase {
 		textfield.removeFocusListener(textFieldListener);
 		textfield.removeKeyListener((KeyListener) textFieldListener);
 		textfield.removeMouseListener((MouseListener) textFieldListener);
-		getNode().removeComponentListener((ComponentListener) textFieldListener);
+		Component component = Controller.getController().getViewController().getComponent(getNode());
+		component.removeComponentListener((ComponentListener) textFieldListener);
 		parent.remove(0);
 		parent.revalidate();
 		parent.repaint(bounds);
@@ -81,7 +88,8 @@ public class EditNodeTextField extends EditNodeBase {
 		final int heightAddition = 2;
 		final int MINIMAL_LEAF_WIDTH = 150;
 		final int MINIMAL_WIDTH = 50;
-		final NodeView nodeView = getNode();
+		Component component = Controller.getController().getViewController().getComponent(getNode());
+		final NodeView nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class,  component);
 		final NodeModel model = nodeView.getModel();
 		int xSize = nodeView.getMainView().getTextWidth() + widthAddition;
 		xOffset += nodeView.getMainView().getTextX();
@@ -106,8 +114,7 @@ public class EditNodeTextField extends EditNodeBase {
 		}
 		textfield.setSize(xSize, nodeView.getMainView().getHeight() + heightAddition);
 		Font font = nodeView.getTextFont();
-		final MapView mapView = nodeView.getMap();
-		final float zoom = mapView.getZoom();
+		final float zoom = Controller.getController().getViewController().getZoom();
 		if (zoom != 1F) {
 			font = font.deriveFont(font.getSize() * zoom * MainView.ZOOM_CORRECTION_FACTOR);
 		}
@@ -219,7 +226,8 @@ public class EditNodeTextField extends EditNodeBase {
 		textfield.addFocusListener(textFieldListener);
 		textfield.addKeyListener(textFieldListener);
 		textfield.addMouseListener(textFieldListener);
-		getView().scrollNodeToVisible(nodeView, xExtraWidth);
+		MapView mapView = (MapView) Controller.getController().getViewController().getMapView();
+		mapView.scrollNodeToVisible(nodeView, xExtraWidth);
 		final Point textFieldLocation = new Point();
 		UITools.convertPointToAncestor(nodeView.getMainView(), textFieldLocation, mapView);
 		if (xExtraWidth < 0) {
@@ -231,7 +239,7 @@ public class EditNodeTextField extends EditNodeBase {
 		mapView.add(textfield, 0);
 		textfield.repaint();
 		redispatchKeyEvents(textfield, firstEvent);
-		getNode().addComponentListener(textFieldListener);
+		component.addComponentListener(textFieldListener);
 		textfield.requestFocus();
 	}
 }

@@ -19,7 +19,7 @@
  */
 package org.freeplane.core.modecontroller;
 
-import java.awt.event.MouseEvent;
+import java.awt.Container;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.ListIterator;
@@ -38,8 +38,6 @@ import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.core.url.UrlManager;
-import org.freeplane.view.swing.map.NodeView;
-
 /**
  * Derive from this class to implement the Controller for your mode. Overload
  * the methods you need for your data model, or use the defaults. There are some
@@ -200,9 +198,6 @@ public class ModeController {
 		return extensions.containsExtension(clazz);
 	}
 
-	public void doubleClick(final MouseEvent e) {
-	}
-
 	public void execute(final IUndoableActor actor) {
 		actor.act();
 	}
@@ -263,22 +258,20 @@ public class ModeController {
 		return isBlocked;
 	}
 
-	public void onViewCreated(final NodeView node) {
+	public void onViewCreated(final Container node) {
 		for (final Iterator i = nodeViewListeners.iterator(); i.hasNext();) {
 			final INodeViewLifeCycleListener hook = (INodeViewLifeCycleListener) i.next();
 			hook.onViewCreated(node);
 		}
 	}
 
-	public void onViewRemoved(final NodeView node) {
+	public void onViewRemoved(final Container node) {
 		for (final Iterator i = nodeViewListeners.iterator(); i.hasNext();) {
 			final INodeViewLifeCycleListener hook = (INodeViewLifeCycleListener) i.next();
 			hook.onViewRemoved(node);
 		}
 	}
 
-	public void plainClick(final MouseEvent e) {
-	}
 
 	public Action removeAction(final String key) {
 		final Action action = actionController.removeAction(key);

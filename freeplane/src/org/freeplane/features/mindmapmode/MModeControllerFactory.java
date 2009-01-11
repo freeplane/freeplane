@@ -19,9 +19,15 @@
  */
 package org.freeplane.features.mindmapmode;
 
+import java.awt.event.InputEvent;
+import java.awt.event.MouseEvent;
+
 import javax.swing.JPopupMenu;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.modecontroller.MapController;
+import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.url.UrlManager;
@@ -36,6 +42,7 @@ import org.freeplane.features.common.cloud.CloudController;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.common.link.LinkController;
+import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.nodelocation.LocationController;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.note.NoteController;
@@ -71,7 +78,9 @@ import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
 import org.freeplane.features.mindmapmode.note.MNoteController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 import org.freeplane.features.mindmapnode.pattern.MPatternController;
-import org.freeplane.features.ui.UserInputListenerFactory;
+import org.freeplane.view.swing.map.MainView;
+import org.freeplane.view.swing.ui.DefaultNodeMouseMotionListener;
+import org.freeplane.view.swing.ui.UserInputListenerFactory;
 
 /**
  * @author Dimitry Polivaev 24.11.2008
@@ -136,6 +145,51 @@ public class MModeControllerFactory {
 		modeController = new MModeController();
 		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(
 		    modeController);
+		userInputListenerFactory.setNodeMouseMotionListener(new DefaultNodeMouseMotionListener(modeController){
+
+			@Override
+            public void mouseReleased(MouseEvent e) {
+				stopTimerForDelayedSelection();
+				ModeController modeController = Controller.getModeController();
+				modeController.getUserInputListenerFactory().extendSelection(e);
+				showPopupMenu(e);
+				if (e.isConsumed()) {
+					return;
+				}
+				if (e.getModifiers() == InputEvent.BUTTON1_MASK) {
+						/* perform action only if one selected node. */
+						MapController mapController = modeController.getMapController();
+						if (mapController.getSelectedNodes().size() != 1) {
+							return;
+						}
+						final MainView component = (MainView) e.getComponent();
+						if (component.isInFollowLinkRegion(e.getX())) {
+							LinkController.getController(modeController).loadURL();
+						}
+						else {
+							final NodeModel node = (component).getNodeView().getModel();
+							if (!mapController.hasChildren(node)) {
+								/* If the link exists, follow the link; toggle folded otherwise */
+								if (!e.isAltDown() && !e.isControlDown() && !e.isShiftDown() && !e.isPopupTrigger()
+								        && e.getButton() == MouseEvent.BUTTON1 && (NodeLinks.getLink(node) == null)) {
+									((MTextController) TextController.getController(modeController)).edit(null, false, false);
+									return;
+								}
+								if (NodeLinks.getLink(mapController.getSelectedNode()) == null) {
+									mapController.toggleFolded();
+								}
+								else {
+									LinkController.getController(modeController).loadURL();
+								}
+								return;
+							}
+							mapController.toggleFolded(mapController.getSelectedNodes().listIterator());
+						}
+					e.consume();
+				}
+            }
+			
+		});
 		modeController.setUserInputListenerFactory(userInputListenerFactory);
 		Controller.getController().addModeController(modeController);
 		modeController.setMapController(new MMapController(modeController));

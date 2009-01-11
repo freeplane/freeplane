@@ -32,6 +32,6 @@ class MoveToRootAction extends AbstractAction {
 	}
 
 	public void actionPerformed(final ActionEvent event) {
-		Controller.getController().getViewController().moveToRoot();
+		Controller.getController().getSelection().selectRoot();
 	}
 }

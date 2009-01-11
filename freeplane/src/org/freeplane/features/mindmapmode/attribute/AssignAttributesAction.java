@@ -21,7 +21,6 @@ package org.freeplane.features.mindmapmode.attribute;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.FreeplaneAction;
 
 class AssignAttributesAction extends FreeplaneAction {
@@ -33,8 +32,7 @@ class AssignAttributesAction extends FreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		if (assignAttributeDialog == null) {
-			assignAttributeDialog = new AssignAttributeDialog(Controller.getController()
-			    .getMapView());
+			assignAttributeDialog = new AssignAttributeDialog();
 		}
 		assignAttributeDialog.show();
 	}

@@ -26,8 +26,9 @@ import java.text.MessageFormat;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.url.UrlManager;
-import org.freeplane.view.swing.map.NodeView;
+
 
 /**
  * @author Daniel Polansky
@@ -35,7 +36,7 @@ import org.freeplane.view.swing.map.NodeView;
 public class EditNodeExternalApplication extends EditNodeBase {
 	final private KeyEvent firstEvent;
 
-	public EditNodeExternalApplication(final NodeView node, final String text,
+	public EditNodeExternalApplication(final NodeModel node, final String text,
 	                                   final KeyEvent firstEvent, final ModeController controller,
 	                                   final IEditControl editControl) {
 		super(node, text, controller, editControl);

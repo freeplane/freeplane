@@ -87,8 +87,7 @@ class MToolbarContributor implements IMenuContributor, INodeSelectionListener, I
 	}
 
 	public void nodeChanged(final NodeChangeEvent event) {
-		if (event.getNode() != Controller.getController().getViewController().getMapView()
-		    .getSelected().getModel()) {
+		if (event.getNode() != Controller.getController().getSelection().getSelected()) {
 			return;
 		}
 		changeToolbar(event.getNode());

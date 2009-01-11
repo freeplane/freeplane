@@ -29,6 +29,7 @@ import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.view.swing.map.MapView;
 
+
 /**
  * @author foltin
  * @author Dimitry Polivaev
@@ -47,7 +48,7 @@ public class FitToPage extends FreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		view = Controller.getController().getMapView();
+		view = (MapView) Controller.getController().getViewController().getMapView();
 		if (view == null) {
 			return;
 		}

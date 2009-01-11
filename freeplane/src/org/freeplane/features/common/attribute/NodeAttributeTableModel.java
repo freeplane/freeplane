@@ -30,9 +30,9 @@ import javax.swing.table.AbstractTableModel;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ITreeWriter;
-import org.freeplane.core.io.XMLElement;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.view.swing.map.NodeView;
+import org.freeplane.n3.nanoxml.XMLElement;
+
 
 /**
  * @author Dimitry Polivaev
@@ -97,11 +97,7 @@ public class NodeAttributeTableModel extends AbstractTableModel implements IAttr
 		if (node.areViewsEmpty()) {
 			return attributeModel;
 		}
-		final Iterator iterator = node.getViewers().iterator();
-		while (iterator.hasNext()) {
-			final NodeView view = (NodeView) iterator.next();
-			view.createAttributeView();
-		}
+		node.getModeController().getMapController().nodeRefresh(node);
 		return attributeModel;
 	}
 

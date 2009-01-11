@@ -33,7 +33,7 @@ import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.nodelocation.LocationController;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.text.TextController;
-import org.freeplane.features.ui.UserInputListenerFactory;
+import org.freeplane.view.swing.ui.UserInputListenerFactory;
 
 /**
  * @author Dimitry Polivaev 24.11.2008

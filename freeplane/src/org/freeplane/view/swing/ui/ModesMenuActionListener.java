@@ -17,14 +17,24 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.modecontroller;
+package org.freeplane.view.swing.ui;
 
-import java.awt.Container;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.SwingUtilities;
 
+import org.freeplane.core.controller.Controller;
 
-public interface INodeViewLifeCycleListener {
-	public void onViewCreated(Container nodeView);
+class ModesMenuActionListener implements ActionListener {
+	public ModesMenuActionListener() {
+	}
 
-	public void onViewRemoved(Container nodeView);
+	public void actionPerformed(final ActionEvent e) {
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				Controller.getController().selectMode(e.getActionCommand());
+			}
+		});
+	}
 }

@@ -14,12 +14,12 @@
  * misrepresented as being the original software. 3. This notice may not be
  * removed or altered from any source distribution.
  */
-package org.freeplane.core.io;
+package org.freeplane.n3.nanoxml;
 
 /**
  * An attribute in an XML element. This is an internal class.
  * 
- * @see org.freeplane.core.io.XMLElement
+ * @see org.freeplane.n3.nanoxml.XMLElement
  * @author Marc De Scheemaecker
  * @version $Name: RELEASE_2_2_1 $, $Revision: 1.4 $
  */

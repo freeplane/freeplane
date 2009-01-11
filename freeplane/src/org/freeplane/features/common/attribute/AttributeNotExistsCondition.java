@@ -23,8 +23,8 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.condition.ConditionFactory;
 import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.filter.condition.NodeCondition;
-import org.freeplane.core.io.XMLElement;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
  * @author Dimitry Polivaev

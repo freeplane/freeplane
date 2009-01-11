@@ -31,6 +31,8 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
+
+
 /** */
 class ClickableImageCreator {
 	public static class AreaHolder {
@@ -58,7 +60,7 @@ class ClickableImageCreator {
 		super();
 		this.root = root;
 		this.regExpLinkReplacement = regExpLinkReplacement;
-		mapView = Controller.getController().getMapView();
+		mapView = ((MapView)Controller.getController().getViewController().getMapView());
 		if (mapView != null) {
 			innerBounds = mapView.getInnerBounds();
 		}

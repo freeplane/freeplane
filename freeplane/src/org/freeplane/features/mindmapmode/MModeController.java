@@ -21,7 +21,6 @@ package org.freeplane.features.mindmapmode;
 
 import java.awt.dnd.DropTargetListener;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
 import java.util.Vector;
 
 import javax.swing.UIManager;
@@ -30,7 +29,6 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.PropertyAction;
 import org.freeplane.core.resources.ui.OptionPanelBuilder;
 import org.freeplane.core.resources.ui.OptionString;
@@ -42,18 +40,14 @@ import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.features.common.icon.IconController;
-import org.freeplane.features.common.link.LinkController;
-import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.note.NoteController;
-import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.file.MFileManager;
 import org.freeplane.features.mindmapmode.icon.MIconController;
 import org.freeplane.features.mindmapmode.note.MNoteController;
-import org.freeplane.features.mindmapmode.text.MTextController;
 import org.freeplane.features.mindmapnode.pattern.MPatternController;
-import org.freeplane.features.ui.UserInputListenerFactory;
-import org.freeplane.view.swing.map.MainView;
-import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.ui.UserInputListenerFactory;
+
+
 
 public class MModeController extends ModeController {
 	static public final String MODENAME = "MindMap";
@@ -121,18 +115,6 @@ public class MModeController extends ModeController {
 		addAction("propertyAction", new PropertyAction(optionPanelBuilder.getRoot()));
 	}
 
-	@Override
-	public void doubleClick(final MouseEvent e) {
-		/* perform action only if one selected node. */
-		if (getMapController().getSelectedNodes().size() != 1) {
-			return;
-		}
-		final NodeModel node = ((MainView) e.getComponent()).getNodeView().getModel();
-		if (!e.isAltDown() && !e.isControlDown() && !e.isShiftDown() && !e.isPopupTrigger()
-		        && e.getButton() == MouseEvent.BUTTON1 && (NodeLinks.getLink(node) == null)) {
-			((MTextController) TextController.getController(this)).edit(null, false, false);
-		}
-	}
 
 	@Override
 	public void execute(final IUndoableActor actor) {
@@ -150,35 +132,11 @@ public class MModeController extends ModeController {
 	}
 
 	public boolean isUndoAction() {
-		MapView mapView = Controller.getController().getMapView();
-		if(mapView == null){
-			return false;
-		}
-		MapModel model = mapView.getModel();
+		MapModel model = Controller.getController().getMap();
 		if(! (model instanceof MMapModel)){
 			return false;
 		}
 		return ((MMapModel) model).getUndoHandler().isUndoActionRunning();
-	}
-
-	@Override
-	public void plainClick(final MouseEvent e) {
-		/* perform action only if one selected node. */
-		if (getMapController().getSelectedNodes().size() != 1) {
-			return;
-		}
-		final MainView component = (MainView) e.getComponent();
-		if (component.isInFollowLinkRegion(e.getX())) {
-			LinkController.getController(this).loadURL();
-		}
-		else {
-			final NodeModel node = (component).getNodeView().getModel();
-			if (!node.getModeController().getMapController().hasChildren(node)) {
-				doubleClick(e);
-				return;
-			}
-			(getMapController()).toggleFolded();
-		}
 	}
 
 	/**
@@ -186,7 +144,7 @@ public class MModeController extends ModeController {
 	 */
 	public boolean save() {
 		return ((MFileManager) UrlManager.getController(this)).save(Controller.getController()
-		    .getMapView().getModel());
+		    .getMap());
 	}
 
 	public void setMapMouseMotionListener(final IMouseListener mapMouseMotionListener) {

@@ -49,7 +49,7 @@ class CutAction extends FreeplaneAction {
 			return;
 		}
 		final int showResult = new OptionalDontShowMeAgainDialog(controller.getViewController()
-		    .getJFrame(), controller.getMapView().getSelected(), "really_cut_node", "confirmation",
+		    .getJFrame(), controller.getSelection().getSelected(), "really_cut_node", "confirmation",
 		    new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
 		        ResourceController.RESOURCES_CUT_NODES_WITHOUT_QUESTION),
 		    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED).show().getResult();

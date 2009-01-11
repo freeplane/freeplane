@@ -17,14 +17,35 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.modecontroller;
+package org.freeplane.view.swing.map.attribute;
 
-import java.awt.Container;
+import java.awt.Component;
+import java.awt.Dimension;
 
+import javax.swing.JScrollPane;
 
+class AttributeViewScrollPane extends JScrollPane {
+	/**
+	 */
+	AttributeViewScrollPane(final AttributeTable attributeTable) {
+		super(attributeTable);
+		setAlignmentX(Component.CENTER_ALIGNMENT);
+	}
 
-public interface INodeViewLifeCycleListener {
-	public void onViewCreated(Container nodeView);
+	@Override
+	public Dimension getMaximumSize() {
+		validate();
+		return super.getPreferredSize();
+	}
 
-	public void onViewRemoved(Container nodeView);
+	@Override
+	public Dimension getPreferredSize() {
+		validate();
+		return super.getPreferredSize();
+	}
+
+	@Override
+	public boolean isVisible() {
+		return getViewport().getView().isVisible();
+	}
 }

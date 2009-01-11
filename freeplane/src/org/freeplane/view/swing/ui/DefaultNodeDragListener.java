@@ -1,4 +1,4 @@
-package org.freeplane.features.ui;
+package org.freeplane.view.swing.ui;
 
 import java.awt.Cursor;
 import java.awt.datatransfer.Transferable;
@@ -18,6 +18,7 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.clipboard.MindMapNodesSelection;
 import org.freeplane.view.swing.map.MainView;
+
 
 /**
  * The NodeDragListener which belongs to every NodeView

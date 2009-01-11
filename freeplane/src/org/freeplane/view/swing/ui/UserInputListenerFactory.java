@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.ui;
+package org.freeplane.view.swing.ui;
 
 import java.awt.Component;
 import java.awt.dnd.DragGestureListener;
@@ -42,7 +42,7 @@ import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.frame.MapViewManager;
+import org.freeplane.core.frame.MapViewController;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
@@ -55,6 +55,8 @@ import org.freeplane.core.ui.UIBuilder;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
+
+
 
 public class UserInputListenerFactory implements IUserInputListenerFactory {
 	public static final String NODE_POPUP = "/node_popup";
@@ -195,7 +197,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 
 	public INodeMouseMotionListener getNodeMouseMotionListener() {
 		if (nodeMouseMotionListener == null) {
-			nodeMouseMotionListener = new DefaultNodeMouseMotionListener();
+			nodeMouseMotionListener = new DefaultNodeMouseMotionListener(Controller.getModeController());
 		}
 		return nodeMouseMotionListener;
 	}
@@ -294,7 +296,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	public void updateMapList() {
 		updateModeMenu();
 		menuBuilder.removeChildElements(FreeplaneMenuBar.MAP_POPUP_MENU + "/maps");
-		final MapViewManager mapViewManager = Controller.getController().getMapViewManager();
+		final MapViewController mapViewManager = Controller.getController().getMapViewManager();
 		final List mapViewVector = mapViewManager.getMapViewVector();
 		if (mapViewVector == null) {
 			return;
@@ -331,6 +333,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			menuBuilder.processMenuCategory(menuStructure);
 		}
 		final ViewController viewController = Controller.getController().getViewController();
+		
 		viewController.updateMenus(menuBuilder);
 		updateMapList();
 	}

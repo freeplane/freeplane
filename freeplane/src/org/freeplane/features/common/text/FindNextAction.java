@@ -22,10 +22,10 @@ package org.freeplane.features.common.text;
 import java.awt.event.ActionEvent;
 import java.util.Collection;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlTools;
 
 class FindNextAction extends FreeplaneAction {
@@ -40,20 +40,16 @@ class FindNextAction extends FreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		final Collection subterms = find.getSubterms();
 		if (subterms == null) {
-			Controller.getController().informationMessage(
-			    getModeController().getText("no_previous_find"),
-			    Controller.getController().getMapView().getSelected());
+			UITools.informationMessage(
+			    getModeController().getText("no_previous_find"));
 			return;
 		}
 		final boolean found = find.findNext();
-		Controller.getController().getMapView().repaint();
 		if (!found) {
 			final String messageText = getModeController().getText("no_more_found_from");
 			final String searchTerm = messageText.startsWith("<html>") ? HtmlTools
 			    .toXMLEscapedText(find.getSearchTerm()) : find.getSearchTerm();
-			Controller.getController().informationMessage(
-			    messageText.replaceAll("\\$1", searchTerm).replaceAll("\\$2",
-			        find.getFindFromText()), Controller.getController().getMapView().getSelected());
+			UITools.informationMessage(messageText.replaceAll("\\$1", searchTerm).replaceAll("\\$2",find.getFindFromText()));
 		}
 	}
 }

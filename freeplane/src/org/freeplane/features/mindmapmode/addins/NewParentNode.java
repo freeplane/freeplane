@@ -29,7 +29,7 @@ import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.features.mindmapmode.clipboard.MClipboardController;
-import org.freeplane.view.swing.map.MapView;
+
 
 /**
  * @author foltin The original version was sent by Stephen Viles (sviles) https:
@@ -64,7 +64,6 @@ public class NewParentNode extends FreeplaneAction {
 	 * java.util.List)
 	 */
 	public void actionPerformed(final ActionEvent e) {
-		final MapView mapView = Controller.getController().getMapView();
 		final NodeModel focussed = getModeController().getMapController().getSelectedNode();
 		final List selecteds = getModeController().getMapController().getSelectedNodes();
 		final NodeModel selectedNode = focussed;
@@ -80,7 +79,6 @@ public class NewParentNode extends FreeplaneAction {
 			return;
 		}
 		Controller.getController().getSelection().selectAsTheOnlyOneSelected(newNode);
-		mapView.repaint();
 	}
 
 	private NodeModel moveToNewParent(final NodeModel selectedNode, final List selectedNodes) {

@@ -2,8 +2,8 @@ package org.freeplane.features.mindmapmode.addins.styles;
 
 import javax.swing.JDialog;
 
-import org.freeplane.core.io.IXMLElement;
 import org.freeplane.core.resources.WindowConfigurationStorage;
+import org.freeplane.n3.nanoxml.IXMLElement;
 
 class NormalWindowConfigurationStorage extends WindowConfigurationStorage {
 	public static void decorateDialog(final String marshalled, final JDialog dialog) {

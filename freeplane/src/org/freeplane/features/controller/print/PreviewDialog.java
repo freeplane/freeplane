@@ -14,9 +14,11 @@
  */
 package org.freeplane.features.controller.print;
 
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.print.Printable;
 import java.net.URL;
 
 import javax.swing.AbstractAction;
@@ -33,16 +35,16 @@ import javax.swing.SwingConstants;
 
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.view.swing.map.MapView;
+
 
 public class PreviewDialog extends JDialog implements ActionListener {
 	final private static double DEFAULT_ZOOM_FACTOR_STEP = 0.1;
 	final private JLabel pageNumber;
-	protected MapView view;
+	protected Printable view;
 
-	public PreviewDialog(final String title, final MapView view) {
-		super(JOptionPane.getFrameForComponent(view), title, true);
-		this.view = view;
+	public PreviewDialog(final String title, final Component c) {
+		super(JOptionPane.getFrameForComponent(c), title, true);		
+		this.view = (Printable)c;
 		final Preview preview = new Preview(view, 1);
 		final JScrollPane scrollPane = new JScrollPane(preview);
 		getContentPane().add(scrollPane, "Center");

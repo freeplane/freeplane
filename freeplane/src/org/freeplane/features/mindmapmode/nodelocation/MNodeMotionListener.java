@@ -34,10 +34,13 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.common.nodelocation.LocationController;
 import org.freeplane.features.common.nodelocation.LocationModel;
-import org.freeplane.features.ui.DefaultNodeMotionListener;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeMotionListenerView;
 import org.freeplane.view.swing.map.NodeView;
+import org.freeplane.view.swing.ui.DefaultNodeMotionListener;
+
+
+
 
 /**
  * The MouseMotionListener which belongs to every NodeView
@@ -62,7 +65,7 @@ class MNodeMotionListener extends DefaultNodeMotionListener {
 	private int getHGap(final Point dragNextPoint, final NodeModel node,
 	                    final Point dragStartingPoint) {
 		int oldHGap = LocationModel.getModel(node).getHGap();
-		final MapView mapView = Controller.getController().getMapView();
+		final MapView mapView = ((MapView)Controller.getController().getViewController().getMapView());
 		int hGapChange = (int) ((dragNextPoint.x - dragStartingPoint.x) / mapView.getZoom());
 		if (node.isLeft()) {
 			hGapChange = -hGapChange;
@@ -76,7 +79,7 @@ class MNodeMotionListener extends DefaultNodeMotionListener {
 	private int getNodeShiftY(final Point dragNextPoint, final NodeModel node,
 	                          final Point dragStartingPoint) {
 		int shiftY = LocationModel.getModel(node).getShiftY();
-		final MapView mapView = Controller.getController().getMapView();
+		final MapView mapView = ((MapView)Controller.getController().getViewController().getMapView());
 		final int shiftYChange = (int) ((dragNextPoint.y - dragStartingPoint.y) / mapView.getZoom());
 		shiftY += shiftYChange;
 		return shiftY;
@@ -93,7 +96,7 @@ class MNodeMotionListener extends DefaultNodeMotionListener {
 	private int getVGap(final Point dragNextPoint, final NodeModel node,
 	                    final Point dragStartingPoint) {
 		int oldVGap = LocationModel.getModel(node).getVGap();
-		final MapView mapView = Controller.getController().getMapView();
+		final MapView mapView = ((MapView)Controller.getController().getViewController().getMapView());
 		final int vGapChange = (int) ((dragNextPoint.y - dragStartingPoint.y) / mapView.getZoom());
 		oldVGap = Math.max(0, oldVGap - vGapChange);
 		return oldVGap;

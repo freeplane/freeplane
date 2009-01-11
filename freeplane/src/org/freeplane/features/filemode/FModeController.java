@@ -19,17 +19,11 @@
  */
 package org.freeplane.features.filemode;
 
-import java.awt.event.MouseEvent;
 import java.io.File;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
-import org.freeplane.core.model.NodeModel;
-import org.freeplane.features.common.link.LinkController;
-import org.freeplane.features.common.link.NodeLinks;
-import org.freeplane.features.ui.UserInputListenerFactory;
-import org.freeplane.view.swing.map.MainView;
-import org.freeplane.view.swing.map.NodeView;
+import org.freeplane.view.swing.ui.UserInputListenerFactory;
 
 public class FModeController extends ModeController {
 	static public final String MODENAME = "File";
@@ -38,65 +32,12 @@ public class FModeController extends ModeController {
 		super();
 	}
 
-	public boolean extendSelection(final MouseEvent e) {
-		final NodeView newlySelectedNodeView = ((MainView) e.getComponent()).getNodeView();
-		final boolean extend = e.isControlDown();
-		final boolean range = e.isShiftDown();
-		final boolean branch = e.isAltGraphDown() || e.isAltDown();
-		/*
-		 * windows alt, linux altgraph ....
-		 */
-		boolean retValue = false;
-		final NodeModel model = newlySelectedNodeView.getModel();
-		if (extend || range || branch
-		        || !Controller.getController().getSelection().isSelected(model)) {
-			if (!range) {
-				if (extend) {
-					Controller.getController().getSelection().toggleSelected(model);
-				}
-				else {
-					getMapController().select(model);
-				}
-				retValue = true;
-			}
-			else {
-				Controller.getController().getSelection().selectContinuous(model);
-				retValue = true;
-			}
-			if (branch) {
-				Controller.getController().getSelection().selectBranch(model, extend);
-				retValue = true;
-			}
-		}
-		if (retValue) {
-			e.consume();
-			String link = NodeLinks.getLink(model);
-			link = (link != null ? link : " ");
-			Controller.getController().getViewController().out(link);
-		}
-		return retValue;
-	}
 
 	@Override
 	public String getModeName() {
 		return FModeController.MODENAME;
 	}
 
-	@Override
-	public void plainClick(final MouseEvent e) {
-		/* perform action only if one selected node. */
-		if (getMapController().getSelectedNodes().size() != 1) {
-			return;
-		}
-		final MainView component = (MainView) e.getComponent();
-		if (component.isInFollowLinkRegion(e.getX())) {
-			LinkController.getController(this).loadURL();
-		}
-		else {
-			final NodeModel node = (component).getNodeView().getModel();
-			((FMapController) getMapController()).toggleFolded(node);
-		}
-	}
 
 	@Override
 	public void startup() {

@@ -32,7 +32,7 @@ import org.freeplane.core.model.MapModel;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.PersistentEditableComboBox;
-import org.freeplane.view.swing.map.MapView;
+
 
 public class BToolbarContributor implements IMenuContributor, IMapTitleChangeListener {
 	private static final String BROWSE_URL_STORAGE_KEY = "browse_url_storage";
@@ -59,7 +59,7 @@ public class BToolbarContributor implements IMenuContributor, IMapTitleChangeLis
 		});
 	}
 
-	public void setMapTitle(final String newMapTitle, final MapView mapView, final MapModel model) {
+	public void setMapTitle(final MapModel model, final String newMapTitle) {
 		if (model == null) {
 			return;
 		}

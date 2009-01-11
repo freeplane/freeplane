@@ -17,35 +17,33 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.common.attribute.view;
+package org.freeplane.view.swing.ui;
 
-import java.awt.Component;
-import java.awt.Dimension;
+import java.awt.dnd.DropTargetDragEvent;
+import java.awt.dnd.DropTargetDropEvent;
+import java.awt.dnd.DropTargetEvent;
+import java.awt.dnd.DropTargetListener;
 
-import javax.swing.JScrollPane;
-
-class AttributeViewScrollPane extends JScrollPane {
-	/**
-	 */
-	AttributeViewScrollPane(final AttributeTable attributeTable) {
-		super(attributeTable);
-		setAlignmentX(Component.CENTER_ALIGNMENT);
+/**
+ * @author Dimitry Polivaev
+ * 06.01.2009
+ */
+public class DefaultNodeDropListener implements DropTargetListener {
+	public DefaultNodeDropListener() {
 	}
 
-	@Override
-	public Dimension getMaximumSize() {
-		validate();
-		return super.getPreferredSize();
+	public void dragEnter(final DropTargetDragEvent dtde) {
 	}
 
-	@Override
-	public Dimension getPreferredSize() {
-		validate();
-		return super.getPreferredSize();
+	public void dragExit(final DropTargetEvent dte) {
 	}
 
-	@Override
-	public boolean isVisible() {
-		return getViewport().getView().isVisible();
+	public void dragOver(final DropTargetDragEvent dtde) {
+	}
+
+	public void drop(final DropTargetDropEvent dtde) {
+	}
+
+	public void dropActionChanged(final DropTargetDragEvent dtde) {
 	}
 }
