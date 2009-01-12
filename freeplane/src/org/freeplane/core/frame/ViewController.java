@@ -78,13 +78,13 @@ abstract public class ViewController implements IMapViewChangeListener {
 	final private JComboBox zoom;
 	final private Action zoomIn;
 	final private Action zoomOut;
-	private MapViewController mapViewManager;
+	private IMapViewManager mapViewManager;
 
-	public ViewController() {
+	public ViewController(IMapViewManager mapViewManager) {
 		super();
 		final Controller controller = Controller.getController();
 		controller.setViewController(this);
-		mapViewManager = new MapViewController();
+		this.mapViewManager = mapViewManager;
 		mapViewManager.addMapViewChangeListener(this);
 		controller.addAction("close", new CloseAction());
 		navigationPreviousMap = new NavigationPreviousMapAction();
@@ -118,7 +118,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 		toolbarPanel = new JPanel(new BorderLayout());
 		leftToolbarPanel = new JPanel();
 		status = new JLabel("!");
-		scrollPane = mapViewManager.createScrollPane();
+		scrollPane = new MapViewScrollPane();
 	}
 
 	public void addMapTitleChangeListener(final IMapTitleChangeListener pMapTitleChangeListener) {
@@ -223,10 +223,10 @@ abstract public class ViewController implements IMapViewChangeListener {
 	}
 
 	public Component getMapView() {
-		return getMapViewManager().getMapView();
+		return getMapViewManager().getMapViewComponent();
 	}
 
-	public MapViewController getMapViewManager() {
+	public IMapViewManager getMapViewManager() {
 		return mapViewManager;
 	}
 

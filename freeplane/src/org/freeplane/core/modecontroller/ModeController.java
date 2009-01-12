@@ -341,7 +341,7 @@ public class ModeController {
 		UrlManager.getController(this).startup();
 	}
 
-	protected void updateMenus() {
+	public void updateMenus() {
 		final IUserInputListenerFactory userInputListenerFactory = getUserInputListenerFactory();
 		final MenuBuilder menuBuilder = userInputListenerFactory.getMenuBuilder();
 		final Iterator<IMenuContributor> iterator = menuContributors.iterator();

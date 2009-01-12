@@ -17,58 +17,62 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.browsemode;
+package org.freeplane.startup.filemode;
 
 import javax.swing.JPopupMenu;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.modecontroller.MapController;
+import org.freeplane.core.modecontroller.IPropertyGetter;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.url.UrlManager;
-import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.clipboard.ClipboardController;
-import org.freeplane.features.common.cloud.CloudController;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.nodelocation.LocationController;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
-import org.freeplane.features.common.note.NoteController;
 import org.freeplane.features.common.text.TextController;
+import org.freeplane.features.filemode.CenterAction;
+import org.freeplane.features.filemode.FMapController;
+import org.freeplane.features.filemode.FModeController;
+import org.freeplane.features.filemode.OpenPathAction;
 import org.freeplane.view.swing.ui.UserInputListenerFactory;
 
 /**
  * @author Dimitry Polivaev 24.11.2008
  */
-public class BModeControllerFactory {
-	private static BModeController modeController;
+public class FModeControllerFactory {
+	static private FModeController modeController;
 
-	static public BModeController createModeController() {
-		modeController = new BModeController();
+	static public FModeController createModeController() {
+		modeController = new FModeController();
 		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(
 		    modeController);
 		modeController.setUserInputListenerFactory(userInputListenerFactory);
 		Controller.getController().addModeController(modeController);
-		modeController.setMapController(new MapController(modeController));
+		modeController.setMapController(new FMapController(modeController));
 		UrlManager.install(modeController, new UrlManager(modeController));
-		AttributeController.install(modeController, new AttributeController(modeController));
-		LinkController.install(modeController, new LinkController(modeController));
 		IconController.install(modeController, new IconController(modeController));
 		NodeStyleController.install(modeController, new NodeStyleController(modeController));
 		EdgeController.install(modeController, new EdgeController(modeController));
-		CloudController.install(modeController, new CloudController(modeController));
-		NoteController.install(modeController, new NoteController(modeController));
+		LinkController.install(modeController, new LinkController(modeController));
 		TextController.install(modeController, new TextController(modeController));
 		ClipboardController.install(modeController, new ClipboardController(modeController));
 		LocationController.install(modeController, new LocationController(modeController));
-		modeController.getMapController().addNodeSelectionListener(new BNodeNoteViewer());
-		final BToolbarContributor toolbarContributor = new BToolbarContributor(modeController);
-		modeController.addMenuContributor(toolbarContributor);
-		Controller.getController().getViewController()
-		    .addMapTitleChangeListener(toolbarContributor);
+		NodeStyleController.getController(modeController).addShapeGetter(new Integer(0),
+		    new IPropertyGetter<String, NodeModel>() {
+			    public String getProperty(final NodeModel node, final String currentValue) {
+				    return "fork";
+			    }
+		    });
+		modeController.addAction("center", new CenterAction());
+		modeController.addAction("openPath", new OpenPathAction());
 		userInputListenerFactory.setNodePopupMenu(new JPopupMenu());
 		userInputListenerFactory.setMainToolBar(new FreeplaneToolBar());
-		modeController.updateMenus("/org/freeplane/features/browsemode/menu.xml");
+		userInputListenerFactory.setMenuStructure("/org/freeplane/startup/filemode/menu.xml");
+		userInputListenerFactory.updateMenus(modeController);
+        modeController.updateMenus();
 		return modeController;
 	}
 }

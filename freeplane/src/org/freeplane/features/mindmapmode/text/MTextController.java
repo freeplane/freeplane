@@ -35,7 +35,6 @@ import javax.swing.text.html.HTMLEditorKit;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.ui.IEditHandler;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.FixedHTMLWriter;
 import org.freeplane.features.common.link.LinkController;
@@ -47,7 +46,6 @@ import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.file.MFileManager;
 import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
-import org.freeplane.view.swing.ui.DefaultNodeKeyListener;
 
 
 /**
@@ -58,12 +56,7 @@ public class MTextController extends TextController {
 
 	public MTextController(final MModeController modeController) {
 		super(modeController);
-		createActions(modeController);
-		modeController.setNodeKeyListener(new DefaultNodeKeyListener(new IEditHandler() {
-			public void edit(final KeyEvent e, final boolean addNew, final boolean editLong) {
-				MTextController.this.edit(e, addNew, editLong);
-			}
-		}));
+		createActions(modeController);		
 	}
 
 	/**

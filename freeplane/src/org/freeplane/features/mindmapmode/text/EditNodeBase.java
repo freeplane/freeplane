@@ -175,7 +175,7 @@ public class EditNodeBase {
 		}
 	}
 
-	protected class EditPopupMenu extends JPopupMenu {
+	public class EditPopupMenu extends JPopupMenu {
 		public EditPopupMenu(final JTextComponent textComponent) {
 			this.add(new EditCopyAction(textComponent));
 		}
@@ -198,7 +198,7 @@ public class EditNodeBase {
 	protected String text;
 	protected FocusListener textFieldListener = null;
 
-	EditNodeBase(final NodeModel node, final String text, final ModeController controller,
+	protected EditNodeBase(final NodeModel node, final String text, final ModeController controller,
 	             final IEditControl editControl) {
 		this.controller = controller;
 		this.editControl = editControl;

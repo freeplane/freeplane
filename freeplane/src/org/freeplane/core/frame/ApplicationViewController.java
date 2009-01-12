@@ -58,7 +58,8 @@ public class ApplicationViewController extends ViewController {
 	private JSplitPane mSplitPane;
 	final private ResourceController resourceController;
 
-	public ApplicationViewController() {
+	public ApplicationViewController(IMapViewManager mapViewController) {
+		super(mapViewController);
 		resourceController = Controller.getResourceController();
 		frame = new JFrame("Freeplane");
 	}

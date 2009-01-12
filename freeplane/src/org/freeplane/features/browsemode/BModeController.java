@@ -28,14 +28,13 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.features.common.note.NodeNoteBase;
 import org.freeplane.features.common.note.NoteModel;
-import org.freeplane.view.swing.ui.UserInputListenerFactory;
 
 
 public class BModeController extends ModeController {
 	static public final String MODENAME = "Browse";
 	private ImageIcon noteIcon;
 
-	BModeController() {
+	public BModeController() {
 		super();
 	}
 
@@ -59,12 +58,5 @@ public class BModeController extends ModeController {
 		while (children.hasNext()) {
 			setNoteIcon((NodeModel) children.next());
 		}
-	}
-
-	protected void updateMenus(final String resource) {
-		final UserInputListenerFactory userInputListenerFactory = (UserInputListenerFactory) getUserInputListenerFactory();
-		userInputListenerFactory.setMenuStructure(resource);
-		userInputListenerFactory.updateMenus(this);
-		super.updateMenus();
 	}
 }

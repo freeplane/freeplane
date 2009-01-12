@@ -37,6 +37,7 @@ import org.freeplane.core.util.Tools;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.features.mindmapmode.MModeController;
+import org.freeplane.view.swing.map.EditNodeTextField;
 import org.freeplane.view.swing.map.MainView;
 
 

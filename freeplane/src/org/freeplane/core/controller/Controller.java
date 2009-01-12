@@ -33,7 +33,7 @@ import javax.swing.KeyStroke;
 
 import org.freeplane.core.extension.ExtensionHashMap;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.frame.MapViewController;
+import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.modecontroller.ModeController;
@@ -184,7 +184,7 @@ public class Controller {
 	}
 
 
-	public MapViewController getMapViewManager() {
+	public IMapViewManager getMapViewManager() {
 		return getViewController().getMapViewManager();
 	}
 

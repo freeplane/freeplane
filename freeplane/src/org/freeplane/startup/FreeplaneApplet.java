@@ -28,7 +28,8 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.AppletViewController;
 import org.freeplane.core.resources.AppletResourceController;
 import org.freeplane.features.browsemode.BModeController;
-import org.freeplane.features.browsemode.BModeControllerFactory;
+import org.freeplane.startup.browsemode.BModeControllerFactory;
+import org.freeplane.view.swing.map.MapViewController;
 
 public class FreeplaneApplet extends JApplet {
 	private AppletViewController appletViewController;
@@ -41,7 +42,7 @@ public class FreeplaneApplet extends JApplet {
 		getContentPane().setLayout(new BorderLayout());
 		resourceController = new AppletResourceController(this);
 		final Controller controller = new Controller(resourceController);
-		appletViewController = new AppletViewController(this);
+		appletViewController = new AppletViewController(this, new MapViewController());
 		appletViewController.init();
 		final BModeController browseController = BModeControllerFactory.createModeController();
 		controller.selectMode(browseController);

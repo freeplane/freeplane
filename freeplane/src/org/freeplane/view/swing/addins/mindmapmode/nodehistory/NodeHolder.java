@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.mindmapmode.addins.nodehistory;
+package org.freeplane.view.swing.addins.mindmapmode.nodehistory;
 
 import java.lang.ref.WeakReference;
 import java.util.Iterator;

@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.mindmapmode.addins.nodehistory;
+package org.freeplane.view.swing.addins.mindmapmode.nodehistory;
 
 import java.util.LinkedList;
 import java.util.ListIterator;
@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.frame.MapViewController;
+import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.modecontroller.INodeSelectionListener;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
@@ -102,7 +102,7 @@ public class NodeHistory implements IExtension, INodeSelectionListener {
 		final boolean fChangeModule = changeModule;
 		final MapView fNewModule = newModule;
 		if (fChangeModule) {
-			final MapViewController mapViewManager = Controller.getController().getMapViewManager();
+			final IMapViewManager mapViewManager = Controller.getController().getMapViewManager();
 			final boolean res = mapViewManager.changeToMapView(fNewModule);
 			if (!res) {
 				Logger.global.warning("Can't change to map mapView " + fNewModule);

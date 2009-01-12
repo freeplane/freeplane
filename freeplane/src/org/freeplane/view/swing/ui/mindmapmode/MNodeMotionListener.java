@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.mindmapmode.nodelocation;
+package org.freeplane.view.swing.ui.mindmapmode;
 
 import java.awt.EventQueue;
 import java.awt.Point;
@@ -34,6 +34,7 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.common.nodelocation.LocationController;
 import org.freeplane.features.common.nodelocation.LocationModel;
+import org.freeplane.features.mindmapmode.nodelocation.MLocationController;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeMotionListenerView;
 import org.freeplane.view.swing.map.NodeView;
@@ -45,7 +46,7 @@ import org.freeplane.view.swing.ui.DefaultNodeMotionListener;
 /**
  * The MouseMotionListener which belongs to every NodeView
  */
-class MNodeMotionListener extends DefaultNodeMotionListener {
+public class MNodeMotionListener extends DefaultNodeMotionListener {
 	final private ModeController c;
 	private Point dragStartingPoint = null;
 	private int originalHGap;

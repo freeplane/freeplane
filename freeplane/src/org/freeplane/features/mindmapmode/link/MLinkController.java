@@ -37,7 +37,6 @@ import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.LinkModel;
 import org.freeplane.features.common.link.MapLinks;
 import org.freeplane.features.mindmapmode.MModeController;
-import org.freeplane.view.swing.ui.DefaultMapMouseListener;
 
 /**
  * @author Dimitry Polivaev
@@ -96,8 +95,6 @@ public class MLinkController extends LinkController {
 	public MLinkController(final MModeController modeController) {
 		super(modeController);
 		createActions(modeController);
-		modeController.setMapMouseMotionListener(new DefaultMapMouseListener(
-		    new MindMapMouseMotionListener(modeController)));
 		(modeController.getMapController()).addMapChangeListener(new NodeDeletionListener());
 	}
 

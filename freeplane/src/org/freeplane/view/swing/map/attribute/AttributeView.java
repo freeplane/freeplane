@@ -33,12 +33,10 @@ import javax.swing.table.JTableHeader;
 
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.attribute.AttributeRegistry;
 import org.freeplane.features.common.attribute.AttributeTableLayoutModel;
 import org.freeplane.features.common.attribute.IAttributeTableModel;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
-import org.freeplane.features.mindmapmode.attribute.MAttributeController;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
@@ -80,11 +78,9 @@ public class AttributeView implements ChangeListener, TableModelListener {
 		if (getNodeView().getModel().getMap().isReadOnly()) {
 			return;
 		}
-		final ModeController modeController = getModeController();
 		if (attributeTable != null) {
 			if (AttributeView.tablePopupMenu == null) {
-				AttributeView.tablePopupMenu = ((MAttributeController) AttributeController
-				    .getController(modeController)).getAttributeTablePopupMenu();
+				AttributeView.tablePopupMenu = new AttributePopupMenu();
 			}
 			getAttributes().getLayout().addColumnWidthChangeListener(attributeTable);
 			attributeTable.addMouseListener(AttributeView.tablePopupMenu);

@@ -24,8 +24,8 @@ import java.io.File;
 
 import org.freeplane.core.ui.FreeplaneAction;
 
-class CenterAction extends FreeplaneAction {
-	CenterAction() {
+public class CenterAction extends FreeplaneAction {
+	public CenterAction() {
 		super("center");
 	}
 

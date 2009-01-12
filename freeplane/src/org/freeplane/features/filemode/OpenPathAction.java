@@ -26,8 +26,8 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 
-class OpenPathAction extends FreeplaneAction {
-	OpenPathAction() {
+public class OpenPathAction extends FreeplaneAction {
+	public OpenPathAction() {
 		super("open");
 	}
 

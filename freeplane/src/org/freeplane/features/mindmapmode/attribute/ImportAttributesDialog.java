@@ -45,7 +45,7 @@ import javax.swing.tree.TreeSelectionModel;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.util.SortedComboBoxModel;
-import org.freeplane.core.frame.MapViewController;
+import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.ui.MenuBuilder;
@@ -195,8 +195,8 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 		top.removeAllChildren();
 		final TreeNodeInfo topInfo = (TreeNodeInfo) top.getUserObject();
 		topInfo.setSelected(TreeNodeInfo.NOT_SELECTED);
-		final MapViewController mapViewManager = Controller.getController().getMapViewManager();
-		final MapModel currentMap = mapViewManager.getMapView().getModel();
+		final IMapViewManager mapViewManager = Controller.getController().getMapViewManager();
+		final MapModel currentMap = Controller.getController().getMap();
 		currentAttributes = AttributeRegistry.getRegistry(currentMap);
 		Iterator<Entry<String, MapModel>> iterator = mapViewManager.getMaps().entrySet().iterator();
 		while (iterator.hasNext()) {

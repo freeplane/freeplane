@@ -17,9 +17,10 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.mindmapmode;
+package org.freeplane.startup.mindmapmode;
 
 import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JPopupMenu;
@@ -28,13 +29,14 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.ui.IEditHandler;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.features.common.addins.encrypt.EnterPassword;
 import org.freeplane.features.common.addins.misc.BlinkingNodeHook;
 import org.freeplane.features.common.addins.misc.CreationModificationPlugin;
-import org.freeplane.features.common.addins.misc.FitToPage;
 import org.freeplane.features.common.addins.misc.HierarchicalIcons;
 import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.clipboard.ClipboardController;
@@ -47,6 +49,8 @@ import org.freeplane.features.common.nodelocation.LocationController;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.note.NoteController;
 import org.freeplane.features.common.text.TextController;
+import org.freeplane.features.mindmapmode.MMapController;
+import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.addins.ChangeNodeLevelAction;
 import org.freeplane.features.mindmapmode.addins.FormatPaste;
 import org.freeplane.features.mindmapmode.addins.IconSelectionPlugin;
@@ -61,7 +65,6 @@ import org.freeplane.features.mindmapmode.addins.export.ExportToImage;
 import org.freeplane.features.mindmapmode.addins.export.ExportToOoWriter;
 import org.freeplane.features.mindmapmode.addins.export.ExportWithXSLT;
 import org.freeplane.features.mindmapmode.addins.export.ImportMindmanagerFiles;
-import org.freeplane.features.mindmapmode.addins.nodehistory.NodeHistory;
 import org.freeplane.features.mindmapmode.addins.styles.ApplyFormatPlugin;
 import org.freeplane.features.mindmapmode.addins.styles.AutomaticLayout;
 import org.freeplane.features.mindmapmode.addins.styles.ManagePatterns;
@@ -78,9 +81,16 @@ import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
 import org.freeplane.features.mindmapmode.note.MNoteController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 import org.freeplane.features.mindmapnode.pattern.MPatternController;
+import org.freeplane.view.swing.addins.FitToPage;
+import org.freeplane.view.swing.addins.mindmapmode.nodehistory.NodeHistory;
 import org.freeplane.view.swing.map.MainView;
+import org.freeplane.view.swing.ui.DefaultMapMouseListener;
+import org.freeplane.view.swing.ui.DefaultNodeKeyListener;
 import org.freeplane.view.swing.ui.DefaultNodeMouseMotionListener;
 import org.freeplane.view.swing.ui.UserInputListenerFactory;
+import org.freeplane.view.swing.ui.mindmapmode.MMouseMotionListener;
+import org.freeplane.view.swing.ui.mindmapmode.MNodeDropListener;
+import org.freeplane.view.swing.ui.mindmapmode.MNodeMotionListener;
 
 /**
  * @author Dimitry Polivaev 24.11.2008
@@ -200,10 +210,21 @@ public class MModeControllerFactory {
 		CloudController.install(modeController, new MCloudController(modeController));
 		NoteController.install(modeController, new MNoteController(modeController));
 		LinkController.install(modeController, new MLinkController(modeController));
+		userInputListenerFactory.setMapMouseListener(new DefaultMapMouseListener(
+		    new MMouseMotionListener(modeController)));
+
 		MPatternController.install(modeController, new MPatternController(modeController));
-		TextController.install(modeController, new MTextController(modeController));
+		final MTextController textController = new MTextController(modeController);
+		TextController.install(modeController, textController);
+		userInputListenerFactory.setNodeKeyListener(new DefaultNodeKeyListener(new IEditHandler() {
+        			public void edit(final KeyEvent e, final boolean addNew, final boolean editLong) {
+        				textController.edit(e, addNew, editLong);
+        			}
+        		}));
 		ClipboardController.install(modeController, new MClipboardController(modeController));
+		userInputListenerFactory.setNodeDropTargetListener(new MNodeDropListener(modeController));
 		LocationController.install(modeController, new MLocationController(modeController));
+		userInputListenerFactory.setNodeMotionListener(new MNodeMotionListener(modeController));
 		AttributeController.install(modeController, new MAttributeController(modeController));
 		final JPopupMenu popupmenu = new JPopupMenu();
 		userInputListenerFactory.setNodePopupMenu(popupmenu);
@@ -212,6 +233,15 @@ public class MModeControllerFactory {
 		userInputListenerFactory.setLeftToolBar(((MIconController) IconController
 		    .getController(modeController)).getIconToolBarScrollPane());
 		new RevisionPlugin(modeController);
-		modeController.updateMenus("/org/freeplane/features/mindmapmode/menu.xml");
+        userInputListenerFactory.setMenuStructure("/org/freeplane/startup/mindmapmode/menu.xml");
+        userInputListenerFactory.updateMenus(modeController);
+        final MenuBuilder builder = modeController.getUserInputListenerFactory().getMenuBuilder();
+        ((MIconController) IconController.getController(modeController)).updateIconToolbar();
+        ((MIconController) IconController.getController(modeController)).updateMenus(builder);
+        MPatternController.getController(modeController).createPatternSubMenu(builder,
+            UserInputListenerFactory.NODE_POPUP);
+        final String formatMenuString = FreeplaneMenuBar.FORMAT_MENU;
+        MPatternController.getController(modeController).createPatternSubMenu(builder, formatMenuString);
+        modeController.updateMenus();
 	}
 }

@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.mindmapmode.link;
+package org.freeplane.view.swing.ui.mindmapmode;
 
 import java.awt.Point;
 import java.awt.event.MouseEvent;
@@ -27,12 +27,13 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.IMapMouseReceiver;
 import org.freeplane.features.common.link.ArrowLinkModel;
 import org.freeplane.features.common.link.LinkController;
+import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
 
 /** */
-class MindMapMouseMotionListener implements IMapMouseReceiver {
+public class MMouseMotionListener implements IMapMouseReceiver {
 	ArrowLinkModel draggedLink = null;
 	private Point draggedLinkOldEndPoint;
 	private Point draggedLinkOldStartPoint;
@@ -43,7 +44,7 @@ class MindMapMouseMotionListener implements IMapMouseReceiver {
 	/**
 	 *
 	 */
-	public MindMapMouseMotionListener(final ModeController controller) {
+	public MMouseMotionListener(final ModeController controller) {
 		super();
 		mController = controller;
 	}

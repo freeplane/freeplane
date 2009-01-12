@@ -19,12 +19,9 @@
  */
 package org.freeplane.view.swing.ui;
 
-import java.awt.Component;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JPopupMenu;
-import javax.swing.SwingUtilities;
-
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.modecontroller.ModeController;
@@ -33,7 +30,6 @@ import org.freeplane.core.ui.IMapMouseReceiver;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.view.swing.map.MapView;
-import org.freeplane.view.swing.map.NodeView;
 
 /**
  * @author Dimitry Polivaev

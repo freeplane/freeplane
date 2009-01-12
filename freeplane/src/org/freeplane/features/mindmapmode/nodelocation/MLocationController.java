@@ -78,7 +78,6 @@ public class MLocationController extends LocationController {
 
 	public MLocationController(final MModeController modeController) {
 		super(modeController);
-		modeController.setNodeMotionListener(new MNodeMotionListener(modeController));
 		createActions(modeController);
 	}
 

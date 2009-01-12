@@ -41,8 +41,7 @@ public class MClipboardController extends ClipboardController {
 	 */
 	public MClipboardController(final MModeController modeController) {
 		super(modeController);
-		createActions(modeController);
-		modeController.setNodeDropTargetListener(new MindMapNodeDropListener(modeController));
+		createActions(modeController);		
 	}
 
 	/**

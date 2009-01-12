@@ -42,7 +42,7 @@ import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.frame.MapViewController;
+import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
@@ -296,7 +296,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	public void updateMapList() {
 		updateModeMenu();
 		menuBuilder.removeChildElements(FreeplaneMenuBar.MAP_POPUP_MENU + "/maps");
-		final MapViewController mapViewManager = Controller.getController().getMapViewManager();
+		final IMapViewManager mapViewManager = Controller.getController().getMapViewManager();
 		final List mapViewVector = mapViewManager.getMapViewVector();
 		if (mapViewVector == null) {
 			return;
@@ -310,7 +310,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			group.add(newItem);
 			newItem.addActionListener(mapsMenuActionListener);
 			newItem.setMnemonic(displayName.charAt(0));
-			final MapView currentMapView = mapViewManager.getMapView();
+			final MapView currentMapView = (MapView)mapViewManager.getMapViewComponent();
 			if (currentMapView != null) {
 				if (mapView == currentMapView) {
 					newItem.setSelected(true);

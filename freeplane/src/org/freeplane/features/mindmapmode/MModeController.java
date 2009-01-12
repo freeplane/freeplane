@@ -19,8 +19,6 @@
  */
 package org.freeplane.features.mindmapmode;
 
-import java.awt.dnd.DropTargetListener;
-import java.awt.event.KeyListener;
 import java.util.Vector;
 
 import javax.swing.UIManager;
@@ -32,20 +30,13 @@ import org.freeplane.core.model.MapModel;
 import org.freeplane.core.resources.PropertyAction;
 import org.freeplane.core.resources.ui.OptionPanelBuilder;
 import org.freeplane.core.resources.ui.OptionString;
-import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.IndexedTree;
-import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.core.url.UrlManager;
-import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.common.note.NoteController;
 import org.freeplane.features.mindmapmode.file.MFileManager;
-import org.freeplane.features.mindmapmode.icon.MIconController;
 import org.freeplane.features.mindmapmode.note.MNoteController;
-import org.freeplane.features.mindmapnode.pattern.MPatternController;
-import org.freeplane.view.swing.ui.UserInputListenerFactory;
 
 
 
@@ -60,7 +51,7 @@ public class MModeController extends ModeController {
 
 	private OptionPanelBuilder optionPanelBuilder;
 
-	MModeController() {
+	public MModeController() {
 		super();
 		createActions();
 		createOptionPanelControls();
@@ -147,26 +138,6 @@ public class MModeController extends ModeController {
 		    .getMap());
 	}
 
-	public void setMapMouseMotionListener(final IMouseListener mapMouseMotionListener) {
-		((UserInputListenerFactory) getUserInputListenerFactory())
-		    .setMapMouseListener(mapMouseMotionListener);
-	}
-
-	public void setNodeDropTargetListener(final DropTargetListener nodeDropTargetListener) {
-		((UserInputListenerFactory) getUserInputListenerFactory())
-		    .setNodeDropTargetListener(nodeDropTargetListener);
-	}
-
-	public void setNodeKeyListener(final KeyListener nodeKeyListener) {
-		((UserInputListenerFactory) getUserInputListenerFactory())
-		    .setNodeKeyListener(nodeKeyListener);
-	}
-
-	public void setNodeMotionListener(final IMouseListener nodeMotionListener) {
-		((UserInputListenerFactory) getUserInputListenerFactory())
-		    .setNodeMotionListener(nodeMotionListener);
-	}
-
 	@Override
 	public void shutdown() {
 		super.shutdown();
@@ -186,19 +157,5 @@ public class MModeController extends ModeController {
 	public void undo() {
 		undo.actionPerformed(null);
 		redo.reset();
-	}
-
-	protected void updateMenus(final String resource) {
-		final UserInputListenerFactory userInputListenerFactory = (UserInputListenerFactory) getUserInputListenerFactory();
-		userInputListenerFactory.setMenuStructure(resource);
-		userInputListenerFactory.updateMenus(this);
-		final MenuBuilder builder = getUserInputListenerFactory().getMenuBuilder();
-		((MIconController) IconController.getController(this)).updateIconToolbar();
-		((MIconController) IconController.getController(this)).updateMenus(builder);
-		MPatternController.getController(this).createPatternSubMenu(builder,
-		    UserInputListenerFactory.NODE_POPUP);
-		final String formatMenuString = FreeplaneMenuBar.FORMAT_MENU;
-		MPatternController.getController(this).createPatternSubMenu(builder, formatMenuString);
-		super.updateMenus();
 	}
 }

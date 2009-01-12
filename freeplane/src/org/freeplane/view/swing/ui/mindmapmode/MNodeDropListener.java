@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.mindmapmode.clipboard;
+package org.freeplane.view.swing.ui.mindmapmode;
 
 import java.awt.Component;
 import java.awt.datatransfer.DataFlavor;
@@ -39,16 +39,17 @@ import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.clipboard.MindMapNodesSelection;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.mindmapmode.MMapController;
+import org.freeplane.features.mindmapmode.clipboard.MClipboardController;
 import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.NodeView;
 
 
 
-public class MindMapNodeDropListener implements DropTargetListener {
+public class MNodeDropListener implements DropTargetListener {
 	final private ModeController mMindMapController;
 
-	public MindMapNodeDropListener(final ModeController controller) {
+	public MNodeDropListener(final ModeController controller) {
 		mMindMapController = controller;
 	}
 

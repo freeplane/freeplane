@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.frame;
+package org.freeplane.view.swing.map;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -34,16 +34,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
-import javax.swing.JScrollPane;
-
+import org.freeplane.core.frame.IMapChangeListener;
+import org.freeplane.core.frame.IMapViewChangeListener;
+import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.util.Tools;
-import org.freeplane.view.swing.map.MapView;
-import org.freeplane.view.swing.map.MapViewScrollPane;
-import org.freeplane.view.swing.map.NodeView;
 
 
 /**
@@ -52,7 +50,7 @@ import org.freeplane.view.swing.map.NodeView;
  * exchange between controller and this class is managed by observer pattern
  * (the controller observes changes to the map mapViews here).
  */
-public class MapViewController {
+public class MapViewController implements IMapViewManager {
 	static private class MapViewChangeObserverCompound{
 		final private HashSet<IMapChangeListener> mapListeners = new HashSet();
 		final private HashSet<IMapViewChangeListener> viewListeners = new HashSet();
@@ -142,17 +140,26 @@ public class MapViewController {
 	/**
 	 * Reference to the current mode as the mapView may be null.
 	 */
-	MapViewController() {
+	public MapViewController() {
 	}
 
+	/* (non-Javadoc)
+     * @see org.freeplane.core.frame.IMapViewController#addMapChangeListener(org.freeplane.core.frame.IMapChangeListener)
+     */
 	public void addMapChangeListener(final IMapChangeListener pListener) {
 		listener.addListener(pListener);
 	}
 
+	/* (non-Javadoc)
+     * @see org.freeplane.core.frame.IMapViewController#addMapViewChangeListener(org.freeplane.core.frame.IMapViewChangeListener)
+     */
 	public void addMapViewChangeListener(final IMapViewChangeListener pListener) {
 		listener.addListener(pListener);
 	}
 
+	/* (non-Javadoc)
+     * @see org.freeplane.core.frame.IMapViewController#removeMapViewChangeListener(org.freeplane.core.frame.IMapViewChangeListener)
+     */
 	public void removeMapViewChangeListener(final IMapViewChangeListener pListener) {
 		listener.removeListener(pListener);
 	}
@@ -171,12 +178,11 @@ public class MapViewController {
 		}
 	}
 
-	/**
-	 * is null if the old mode should be closed.
-	 *
-	 * @return true if the set command was sucessful.
-	 */
-	public boolean changeToMapView(final MapView newMapView) {
+	/* (non-Javadoc)
+     * @see org.freeplane.core.frame.IMapViewController#changeToMapView(org.freeplane.view.swing.map.MapView)
+     */
+	public boolean changeToMapView(final Component newMapViewComponent) {
+		MapView newMapView = (MapView) newMapViewComponent;
 		final MapView oldMapView = mapView;
 		if (!listener.isMapChangeAllowed(getModel(oldMapView), getModel(newMapView))) {
 			return false;
@@ -194,6 +200,9 @@ public class MapViewController {
 	    return mapView == null ? null : mapView.getModel();
     }
 
+	/* (non-Javadoc)
+     * @see org.freeplane.core.frame.IMapViewController#changeToMapView(java.lang.String)
+     */
 	public boolean changeToMapView(final String mapViewDisplayName) {
 		MapView mapViewCandidate = null;
 		for (final Iterator iterator = mapViewVector.iterator(); iterator.hasNext();) {
@@ -209,6 +218,9 @@ public class MapViewController {
 		return changeToMapView(mapViewCandidate);
 	}
 
+	/* (non-Javadoc)
+     * @see org.freeplane.core.frame.IMapViewController#changeToMode(java.lang.String)
+     */
 	public boolean changeToMode(final String modeName) {
 		if (modeName.equals(lastModeName)) {
 			return true;
@@ -228,13 +240,9 @@ public class MapViewController {
 		return changed;
 	}
 
-	/**
-	 * Checks, whether or not a given url is already opened. Unlike
-	 * tryToChangeToMapView, it does not consider the map+extension identifiers
-	 * nor switches to the mapView.
-	 *
-	 * @return null, if not found, the map+extension identifier otherwise.
-	 */
+	/* (non-Javadoc)
+     * @see org.freeplane.core.frame.IMapViewController#checkIfFileIsAlreadyOpened(java.net.URL)
+     */
 	public String checkIfFileIsAlreadyOpened(final URL urlToCheck) throws MalformedURLException {
 		for (final Iterator iter = mapViewVector.iterator(); iter.hasNext();) {
 			final MapView mapView = (MapView) iter.next();
@@ -248,12 +256,9 @@ public class MapViewController {
 		return null;
 	}
 
-	/**
-	 * Close the currently active map, return false if closing canceled.
-	 *
-	 * @param force
-	 *            forces the closing without any save actions.
-	 */
+	/* (non-Javadoc)
+     * @see org.freeplane.core.frame.IMapViewController#close(boolean)
+     */
 	public boolean close(final boolean force) {
 		final MapView mapView = getMapView();
 		final boolean closingNotCancelled = getModel(mapView).getModeController()
@@ -277,7 +282,9 @@ public class MapViewController {
 		return true;
 	}
 
-	/** @return an unmodifiable set of all display names of current opened maps. */
+	/* (non-Javadoc)
+     * @see org.freeplane.core.frame.IMapViewController#getMapKeys()
+     */
 	public List getMapKeys() {
 		final LinkedList returnValue = new LinkedList();
 		for (final Iterator iterator = mapViewVector.iterator(); iterator.hasNext();) {
@@ -291,11 +298,9 @@ public class MapViewController {
 		return mapView;
 	}
 
-	/**
-	 * @return a map of String to MapView elements.
-	 * @deprecated use getMapViewVector instead (and get the displayname as
-	 *             MapView.getDisplayName().
-	 */
+	/* (non-Javadoc)
+     * @see org.freeplane.core.frame.IMapViewController#getMaps()
+     */
 	@Deprecated
 	public Map<String, MapModel> getMaps() {
 		final HashMap<String, MapModel> returnValue = new HashMap();
@@ -306,14 +311,23 @@ public class MapViewController {
 		return Collections.unmodifiableMap(returnValue);
 	}
 
+	/* (non-Javadoc)
+     * @see org.freeplane.core.frame.IMapViewController#getMapViewVector()
+     */
 	public List getMapViewVector() {
 		return Collections.unmodifiableList(mapViewVector);
 	}
 
+	/* (non-Javadoc)
+     * @see org.freeplane.core.frame.IMapViewController#getViewNumber()
+     */
 	public int getViewNumber() {
 		return mapViewVector.size();
 	}
 
+	/* (non-Javadoc)
+     * @see org.freeplane.core.frame.IMapViewController#newMapView(org.freeplane.core.model.MapModel, org.freeplane.core.modecontroller.ModeController)
+     */
 	public void newMapView(final MapModel map, final ModeController modeController) {
 		final MapView mapView = new MapView(map);
 		addToOrChangeInMapViews(mapView.getName(), mapView);
@@ -321,7 +335,10 @@ public class MapViewController {
 		changeToMapView(mapView);
 	}
 
-	void nextMapView() {
+	/* (non-Javadoc)
+     * @see org.freeplane.core.frame.IMapViewController#nextMapView()
+     */
+	public void nextMapView() {
 		int index;
 		final int size = mapViewVector.size();
 		if (getMapView() != null) {
@@ -338,7 +355,10 @@ public class MapViewController {
 		}
 	}
 
-	void previousMapView() {
+	/* (non-Javadoc)
+     * @see org.freeplane.core.frame.IMapViewController#previousMapView()
+     */
+	public void previousMapView() {
 		int index;
 		final int size = mapViewVector.size();
 		if (getMapView() != null) {
@@ -357,6 +377,9 @@ public class MapViewController {
 		}
 	}
 
+	/* (non-Javadoc)
+     * @see org.freeplane.core.frame.IMapViewController#removeIMapViewChangeListener(org.freeplane.core.frame.IMapChangeListener)
+     */
 	public void removeIMapViewChangeListener(final IMapChangeListener pListener) {
 		listener.removeListener(pListener);
 	}
@@ -371,11 +394,9 @@ public class MapViewController {
 		return urlToCheck.sameFile(mapViewUrl);
 	}
 
-	/**
-	 * This is the question whether the map is already opened. If this is the
-	 * case, the map is automatically opened + returns true. Otherwise does
-	 * nothing + returns false.
-	 */
+	/* (non-Javadoc)
+     * @see org.freeplane.core.frame.IMapViewController#tryToChangeToMapView(java.lang.String)
+     */
 	public boolean tryToChangeToMapView(final String mapView) {
 		if (mapView != null && getMapKeys().contains(mapView)) {
 			changeToMapView(mapView);
@@ -386,39 +407,56 @@ public class MapViewController {
 		}
 	}
 
+	/* (non-Javadoc)
+     * @see org.freeplane.core.frame.IMapViewController#updateMapViewName()
+     */
 	public void updateMapViewName() {
 		getMapView().rename();
 		addToOrChangeInMapViews(getMapView().getName(), getMapView());
 		changeToMapView(getMapView());
 	}
 
-	JScrollPane createScrollPane() {
-	    return new MapViewScrollPane();
-    }
-
-	IMapSelection getMapSelection() {
+	/* (non-Javadoc)
+     * @see org.freeplane.core.frame.IMapViewController#getMapSelection()
+     */
+	public IMapSelection getMapSelection() {
 		final MapView mapView = getMapView();
 		return mapView == null ? null : mapView.getMapSelection();
     }
 
-	float getZoom() {
+	/* (non-Javadoc)
+     * @see org.freeplane.core.frame.IMapViewController#getZoom()
+     */
+	public float getZoom() {
 	    return getMapView().getZoom();
     }
 
-	MapModel getModel() {
+	/* (non-Javadoc)
+     * @see org.freeplane.core.frame.IMapViewController#getModel()
+     */
+	public MapModel getModel() {
 		final MapView mapView = getMapView();
 		return mapView == null ? null : getModel(mapView);
     }
 
-	void setZoom(float zoom) {
+	/* (non-Javadoc)
+     * @see org.freeplane.core.frame.IMapViewController#setZoom(float)
+     */
+	public void setZoom(float zoom) {
 		getMapView().setZoom(zoom);
     }
 
+	/* (non-Javadoc)
+     * @see org.freeplane.core.frame.IMapViewController#getSelectedComponent()
+     */
 	public Component getSelectedComponent() {
 		final MapView mapView = getMapView();
 		return mapView == null ? null : mapView.getSelected();
     }
 
+	/* (non-Javadoc)
+     * @see org.freeplane.core.frame.IMapViewController#getTextColor(org.freeplane.core.model.NodeModel)
+     */
 	public Color getTextColor(NodeModel node) {
 		final MapView mapView = getMapView();
 		if(mapView == null){
@@ -431,6 +469,9 @@ public class MapViewController {
 		return nodeView.getTextColor();
     }
 
+	/* (non-Javadoc)
+     * @see org.freeplane.core.frame.IMapViewController#getBackgroundColor(org.freeplane.core.model.NodeModel)
+     */
 	public Color getBackgroundColor(NodeModel node) {
 		final MapView mapView = getMapView();
 		if(mapView == null){
@@ -443,6 +484,9 @@ public class MapViewController {
 		return nodeView.getTextBackground();
     }
 
+	/* (non-Javadoc)
+     * @see org.freeplane.core.frame.IMapViewController#getFont(org.freeplane.core.model.NodeModel)
+     */
 	public Font getFont(NodeModel node) {
 		final MapView mapView = getMapView();
 		if(mapView == null){
@@ -455,6 +499,9 @@ public class MapViewController {
 		return nodeView.getMainView().getFont();
     }
 
+	/* (non-Javadoc)
+     * @see org.freeplane.core.frame.IMapViewController#scrollNodeToVisible(org.freeplane.core.model.NodeModel)
+     */
 	public void scrollNodeToVisible(NodeModel node) {
 	    NodeView nodeView = mapView.getNodeView(node);
 	    if(nodeView != null){
@@ -462,12 +509,25 @@ public class MapViewController {
 	    }
     }
 
+	/* (non-Javadoc)
+     * @see org.freeplane.core.frame.IMapViewController#getComponent(org.freeplane.core.model.NodeModel)
+     */
 	public Component getComponent(NodeModel node) {
 	    return mapView.getNodeView(node).getMainView();
     }
 
+	/* (non-Javadoc)
+     * @see org.freeplane.core.frame.IMapViewController#updateMapView()
+     */
 	public void updateMapView() {
 	    mapView.getRoot().updateAll();
 	    
+    }
+
+	/* (non-Javadoc)
+     * @see org.freeplane.core.frame.IMapViewController#getMapViewComponent()
+     */
+	public Component getMapViewComponent() {
+	    return getMapView();
     }
 }

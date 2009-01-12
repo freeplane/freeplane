@@ -23,12 +23,11 @@ import java.io.File;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
-import org.freeplane.view.swing.ui.UserInputListenerFactory;
 
 public class FModeController extends ModeController {
 	static public final String MODENAME = "File";
 
-	FModeController() {
+	public FModeController() {
 		super();
 	}
 
@@ -47,12 +46,5 @@ public class FModeController extends ModeController {
 			((FMapController) getMapController()).newMap(new File(File.separator));
 		}
 		super.startup();
-	}
-
-	protected void updateMenus(final String resource) {
-		final UserInputListenerFactory userInputListenerFactory = (UserInputListenerFactory) getUserInputListenerFactory();
-		userInputListenerFactory.setMenuStructure(resource);
-		userInputListenerFactory.updateMenus(this);
-		super.updateMenus();
 	}
 }
