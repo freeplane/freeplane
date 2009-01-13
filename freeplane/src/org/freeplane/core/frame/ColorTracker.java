@@ -61,16 +61,9 @@ public class ColorTracker implements ActionListener, Serializable {
 		return ColorTracker.colorChooser;
 	}
 
-	public static Color showCommonJColorChooserDialog(final NodeModel nodeModel,
-	                                                  final String title, final Color initialColor)
-	        throws HeadlessException {
-		Component component = Controller.getController().getViewController().getComponent(nodeModel);
-		return showCommonJColorChooserDialog(component, title, initialColor);
-	}
-
-	public static Color showCommonJColorChooserDialog(Component component, final String title,
-                                                      final Color initialColor) {
-	    final JColorChooser pane = ColorTracker.getCommonJColorChooser();
+	public static Color showCommonJColorChooserDialog(final Component component,
+	                                                  final String title, final Color initialColor) {
+		final JColorChooser pane = ColorTracker.getCommonJColorChooser();
 		pane.setColor(initialColor);
 		final ColorTracker ok = new ColorTracker(pane);
 		final JDialog dialog = JColorChooser.createDialog(component, title, true, pane, ok, null);
@@ -78,7 +71,15 @@ public class ColorTracker implements ActionListener, Serializable {
 		dialog.addComponentListener(new DisposeOnClose());
 		dialog.show();
 		return ok.getColor();
-    }
+	}
+
+	public static Color showCommonJColorChooserDialog(final NodeModel nodeModel,
+	                                                  final String title, final Color initialColor)
+	        throws HeadlessException {
+		final Component component = Controller.getController().getViewController().getComponent(
+		    nodeModel);
+		return ColorTracker.showCommonJColorChooserDialog(component, title, initialColor);
+	}
 
 	final private JColorChooser chooser;
 	private Color color;

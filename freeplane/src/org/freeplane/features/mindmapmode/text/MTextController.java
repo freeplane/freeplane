@@ -47,7 +47,6 @@ import org.freeplane.features.mindmapmode.file.MFileManager;
 import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
 
-
 /**
  * @author Dimitry Polivaev
  */
@@ -56,7 +55,7 @@ public class MTextController extends TextController {
 
 	public MTextController(final MModeController modeController) {
 		super(modeController);
-		createActions(modeController);		
+		createActions(modeController);
 	}
 
 	/**

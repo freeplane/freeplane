@@ -176,9 +176,8 @@ public class MMapController extends MapController {
 			try {
 				final String lockingUser = tryToLock(map, file);
 				if (lockingUser != null) {
-					UITools.informationMessage(
-					    UrlManager.expandPlaceholders(getModeController().getText(
-					        "map_locked_by_open"), file.getName(), lockingUser));
+					UITools.informationMessage(UrlManager.expandPlaceholders(getModeController()
+					    .getText("map_locked_by_open"), file.getName(), lockingUser));
 					((MMapModel) map).setReadOnly(true);
 				}
 				else {
@@ -187,9 +186,8 @@ public class MMapController extends MapController {
 			}
 			catch (final Exception e) {
 				org.freeplane.core.util.Tools.logException(e);
-				UITools.informationMessage(
-				    UrlManager.expandPlaceholders(getModeController().getText(
-				        "locking_failed_by_open"), file.getName()));
+				UITools.informationMessage(UrlManager.expandPlaceholders(getModeController()
+				    .getText("locking_failed_by_open"), file.getName()));
 				((MMapModel) map).setReadOnly(true);
 			}
 		}
@@ -218,10 +216,10 @@ public class MMapController extends MapController {
 			}
 		}
 		if (reader == null) {
-			Controller controller = Controller.getController();
+			final Controller controller = Controller.getController();
 			final ViewController viewController = controller.getViewController();
 			final int showResult = new OptionalDontShowMeAgainDialog(viewController.getJFrame(),
-				controller.getSelection().getSelected(), "really_convert_to_current_version",
+			    controller.getSelection().getSelected(), "really_convert_to_current_version",
 			    "confirmation", new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
 			        ResourceController.RESOURCES_CONVERT_TO_CURRENT_VERSION),
 			    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED).show().getResult();
@@ -279,7 +277,7 @@ public class MMapController extends MapController {
 	 */
 	int moveNodeToWithoutUndo(final NodeModel child, final NodeModel newParent, final int newIndex) {
 		final NodeModel oldParent = child.getParentNode();
-		int oldIndex = oldParent.getIndex(child);
+		final int oldIndex = oldParent.getIndex(child);
 		oldParent.remove(child);
 		newParent.insert(child, newIndex);
 		fireNodeMoved(oldParent, oldIndex, newParent, child, newIndex);
@@ -345,9 +343,8 @@ public class MMapController extends MapController {
 		final String lockingUserOfOldLock = ((MMapModel) map).getLockManager()
 		    .popLockingUserOfOldLock();
 		if (lockingUserOfOldLock != null) {
-			UITools.informationMessage(
-			    UrlManager.expandPlaceholders(getModeController().getText(
-			        "locking_old_lock_removed"), file.getName(), lockingUserOfOldLock));
+			UITools.informationMessage(UrlManager.expandPlaceholders(getModeController().getText(
+			    "locking_old_lock_removed"), file.getName(), lockingUserOfOldLock));
 		}
 		if (lockingUser == null) {
 			((MMapModel) map).setReadOnly(false);

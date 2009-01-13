@@ -28,16 +28,16 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.FreeplaneAction;
 
-
 class CopySingleAction extends FreeplaneAction {
 	public CopySingleAction() {
 		super("copy_single");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		List<NodeModel> selection = Controller.getController().getSelection().getSelection();
+		final List<NodeModel> selection = Controller.getController().getSelection().getSelection();
 		final ModeController modeController = getModeController();
-		final Transferable copy = ClipboardController.getController(modeController).copySingle(selection);
+		final Transferable copy = ClipboardController.getController(modeController).copySingle(
+		    selection);
 		if (copy != null) {
 			ClipboardController.getController(modeController).setClipboardContents(copy);
 		}

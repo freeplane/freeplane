@@ -46,8 +46,6 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.FreeplaneAction;
 
-
-
 /**
  * @author foltin
  */
@@ -198,8 +196,8 @@ public class EditNodeBase {
 	protected String text;
 	protected FocusListener textFieldListener = null;
 
-	protected EditNodeBase(final NodeModel node, final String text, final ModeController controller,
-	             final IEditControl editControl) {
+	protected EditNodeBase(final NodeModel node, final String text,
+	                       final ModeController controller, final IEditControl editControl) {
 		this.controller = controller;
 		this.editControl = editControl;
 		this.node = node;

@@ -510,7 +510,6 @@ public class MAttributeController extends AttributeController {
 	 *
 	 */
 	private void createActions() {
-		modeController.addAction("editAttributes", new EditAttributesAction());
 		modeController.addAction("assignAttributes", new AssignAttributesAction());
 	}
 

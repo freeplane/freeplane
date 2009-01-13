@@ -23,7 +23,6 @@ import java.io.Writer;
 import java.util.Enumeration;
 import java.util.Vector;
 
-
 /**
  * An XMLWriter writes XML data to a stream.
  * 

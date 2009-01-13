@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.mindmapmode.attribute;
+package org.freeplane.view.swing.map.attribute;
 
 import java.awt.Component;
 import java.awt.KeyboardFocusManager;
@@ -28,10 +28,8 @@ import javax.swing.SwingUtilities;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.view.swing.map.MapView;
-import org.freeplane.view.swing.map.attribute.AttributeTable;
-import org.freeplane.view.swing.map.attribute.AttributeView;
 
-class EditAttributesAction extends FreeplaneAction {
+public class EditAttributesAction extends FreeplaneAction {
 	public EditAttributesAction() {
 		super("attributes_edit_in_place");
 	};
@@ -39,7 +37,8 @@ class EditAttributesAction extends FreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		final Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager()
 		    .getFocusOwner();
-		final AttributeView attributeView = (((MapView)Controller.getController().getViewController().getMapView()).getSelected()).getAttributeView();
+		final AttributeView attributeView = (((MapView) Controller.getController()
+		    .getViewController().getMapView()).getSelected()).getAttributeView();
 		final boolean attributesClosed = null == SwingUtilities.getAncestorOfClass(
 		    AttributeTable.class, focusOwner);
 		if (attributesClosed) {

@@ -23,7 +23,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 class LastOpenedActionListener implements ActionListener {
-
 	public void actionPerformed(final ActionEvent e) {
 		final String restoreable = e.getActionCommand();
 		try {

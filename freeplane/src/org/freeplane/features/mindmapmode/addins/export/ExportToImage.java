@@ -18,7 +18,7 @@
 package org.freeplane.features.mindmapmode.addins.export;
 
 import java.awt.event.ActionEvent;
-import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -71,7 +71,7 @@ public class ExportToImage extends ExportAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final BufferedImage image = createBufferedImage();
+		final RenderedImage image = createBufferedImage();
 		if (image != null) {
 			exportToImage(image);
 		}
@@ -80,7 +80,7 @@ public class ExportToImage extends ExportAction {
 	/**
 	 * Export image.
 	 */
-	public boolean exportToImage(final BufferedImage image) {
+	public boolean exportToImage(final RenderedImage image) {
 		final File chosenFile = chooseFile(imageType, imageDescripton, null);
 		if (chosenFile == null) {
 			return false;

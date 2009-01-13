@@ -26,7 +26,6 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.IMapMouseReceiver;
 import org.freeplane.view.swing.map.MapView;
 
-
 /**
  * @author Dimitry Polivaev
  * 06.01.2009
@@ -56,7 +55,8 @@ public class DefaultMapMouseReceiver implements IMapMouseReceiver {
 
 	public void mousePressed(final MouseEvent e) {
 		if (e.getButton() == MouseEvent.BUTTON1) {
-			((MapView)Controller.getController().getViewController().getMapView()).setMoveCursor(true);
+			((MapView) Controller.getController().getViewController().getMapView())
+			    .setMoveCursor(true);
 			originX = e.getX();
 			originY = e.getY();
 		}

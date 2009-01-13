@@ -36,13 +36,12 @@ import org.freeplane.core.model.MapModel;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
-
 /**
  * This class manages a list of the maps that were opened last. It aims to
  * provide persistence for the last recent maps. Maps should be shown in the
  * format:"mode\:key",ie."Mindmap\:/home/joerg/freeplane.mm"
  */
-public class LastOpenedList implements IMapSelectionListener{
+public class LastOpenedList implements IMapSelectionListener {
 	/**
 	 * Contains Restore strings.
 	 */
@@ -57,6 +56,20 @@ public class LastOpenedList implements IMapSelectionListener{
 		maxEntries = new Integer(Controller.getResourceController().getProperty(
 		    "last_opened_list_length")).intValue();
 		load(restored);
+	}
+
+	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
+		mapOpened(newMap);
+	}
+
+	public void afterMapClose(final MapModel oldMap) {
+	}
+
+	public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
+	}
+
+	public boolean isMapChangeAllowed(final MapModel oldMap, final MapModel newMap) {
+		return true;
 	}
 
 	ListIterator listIterator() {
@@ -120,20 +133,4 @@ public class LastOpenedList implements IMapSelectionListener{
 		}
 		return str;
 	}
-
-	public void afterMapChange(MapModel oldMap, MapModel newMap) {
-		mapOpened(newMap);
-    }
-
-	public void afterMapClose(MapModel oldMap) {
-	    
-    }
-
-	public void beforeMapChange(MapModel oldMap, MapModel newMap) {
-	    
-    }
-
-	public boolean isMapChangeAllowed(MapModel oldMap, MapModel newMap) {
-	    return true;
-    }
 }

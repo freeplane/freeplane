@@ -38,8 +38,7 @@
             file_prefix="/accessories/"
             copy_icons="true"
             load_file="true"
-            create_html_linked_image="true"
-            link_replacement_regexp="FM$1FM" />
+            create_html_linked_image="true"/>
     </action>
     <action
         tooltip="accessories/plugins/ExportWithXSLT_Applet.properties_documentation"

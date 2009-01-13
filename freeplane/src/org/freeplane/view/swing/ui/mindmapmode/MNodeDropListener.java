@@ -44,8 +44,6 @@ import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.NodeView;
 
-
-
 public class MNodeDropListener implements DropTargetListener {
 	final private ModeController mMindMapController;
 

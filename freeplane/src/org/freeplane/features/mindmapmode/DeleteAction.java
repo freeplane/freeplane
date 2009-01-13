@@ -47,18 +47,18 @@ class DeleteAction extends FreeplaneAction {
 				return;
 			}
 		}
-		Controller controller = Controller.getController();
+		final Controller controller = Controller.getController();
 		final ViewController viewController = controller.getViewController();
 		final int showResult = new OptionalDontShowMeAgainDialog(viewController.getJFrame(),
-			controller.getSelection().getSelected(), "really_remove_node", "confirmation",
+		    controller.getSelection().getSelected(), "really_remove_node", "confirmation",
 		    new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
 		        ResourceController.RESOURCES_DELETE_NODES_WITHOUT_QUESTION),
 		    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED).show().getResult();
 		if (showResult != JOptionPane.OK_OPTION) {
 			return;
 		}
-		final Iterator<NodeModel> iterator = controller.getSelection()
-		    .getSortedSelection().iterator();
+		final Iterator<NodeModel> iterator = controller.getSelection().getSortedSelection()
+		    .iterator();
 		while (iterator.hasNext()) {
 			delete(iterator.next());
 		}

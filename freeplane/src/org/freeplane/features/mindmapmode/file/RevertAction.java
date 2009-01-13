@@ -120,8 +120,9 @@ class RevertAction extends FreeplaneAction {
 			final File file = Controller.getController().getMap().getFile();
 			if (file == null) {
 				final ModeController controller = getModeController();
-				JOptionPane.showMessageDialog(Controller.getController().getViewController().getMapView(), controller
-				    .getText("map_not_saved"), "Freeplane", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(Controller.getController().getViewController()
+				    .getMapView(), controller.getText("map_not_saved"), "Freeplane",
+				    JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			final RevertActionInstance doAction = createRevertXmlAction(file);

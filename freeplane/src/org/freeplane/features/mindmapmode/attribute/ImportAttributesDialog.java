@@ -53,7 +53,6 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.common.attribute.AttributeRegistry;
 import org.freeplane.features.common.attribute.AttributeRegistryElement;
 
-
 class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 	static private class AttributeTreeNodeInfo extends TreeNodeInfo {
 		final private boolean restricted;
@@ -198,9 +197,10 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 		final IMapViewManager mapViewManager = Controller.getController().getMapViewManager();
 		final MapModel currentMap = Controller.getController().getMap();
 		currentAttributes = AttributeRegistry.getRegistry(currentMap);
-		Iterator<Entry<String, MapModel>> iterator = mapViewManager.getMaps().entrySet().iterator();
+		final Iterator<Entry<String, MapModel>> iterator = mapViewManager.getMaps().entrySet()
+		    .iterator();
 		while (iterator.hasNext()) {
-			Entry<String, MapModel> entry = iterator.next();
+			final Entry<String, MapModel> entry = iterator.next();
 			final String nextmapName = entry.getKey();
 			final MapModel nextMap = entry.getValue();
 			if (nextMap == currentMap) {

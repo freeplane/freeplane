@@ -30,7 +30,6 @@ import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.features.mindmapmode.MModeController;
 
-
 /**
  * @author foltin
  */
@@ -49,9 +48,9 @@ public class SaveAll extends FreeplaneAction {
 		final Controller mainController = Controller.getController();
 		final MapModel initialMapView = mainController.getMap();
 		final Map<String, MapModel> mapViews = getMapViews();
-		Iterator<Entry<String, MapModel>> iterator = mapViews.entrySet().iterator();
+		final Iterator<Entry<String, MapModel>> iterator = mapViews.entrySet().iterator();
 		while (iterator.hasNext()) {
-			Entry<String, MapModel> entry = iterator.next();
+			final Entry<String, MapModel> entry = iterator.next();
 			final MapModel mapView = entry.getValue();
 			mainController.getMapViewManager().changeToMapView(entry.getKey());
 			if (!((MModeController) mapView.getModeController()).save()) {

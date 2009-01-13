@@ -68,7 +68,8 @@ class ExportBranchAction extends FreeplaneAction {
 			chooser.addChoosableFileFilter(((MFileManager) UrlManager
 			    .getController(getModeController())).getFileFilter());
 		}
-		final int returnVal = chooser.showSaveDialog(Controller.getController().getViewController().getContentPane());
+		final int returnVal = chooser.showSaveDialog(Controller.getController().getViewController()
+		    .getContentPane());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File chosenFile = chooser.getSelectedFile();
 			final String ext = UrlManager.getExtension(chosenFile.getName());
@@ -83,14 +84,14 @@ class ExportBranchAction extends FreeplaneAction {
 				UrlManager.fileToUrl(chosenFile);
 			}
 			catch (final MalformedURLException ex) {
-				JOptionPane.showMessageDialog(Controller.getController().getViewController().getMapView(),
-				    "couldn't create valid URL!");
+				JOptionPane.showMessageDialog(Controller.getController().getViewController()
+				    .getMapView(), "couldn't create valid URL!");
 				return;
 			}
 			if (chosenFile.exists()) {
-				final int overwriteMap = JOptionPane.showConfirmDialog(Controller.getController().getViewController().getMapView(),
-					getModeController().getText("map_already_exists"), "Freeplane",
-				    JOptionPane.YES_NO_OPTION);
+				final int overwriteMap = JOptionPane.showConfirmDialog(Controller.getController()
+				    .getViewController().getMapView(), getModeController().getText(
+				    "map_already_exists"), "Freeplane", JOptionPane.YES_NO_OPTION);
 				if (overwriteMap != JOptionPane.YES_OPTION) {
 					return;
 				}

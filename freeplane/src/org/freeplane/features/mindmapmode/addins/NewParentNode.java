@@ -30,7 +30,6 @@ import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.features.mindmapmode.clipboard.MClipboardController;
 
-
 /**
  * @author foltin The original version was sent by Stephen Viles (sviles) https:
  *         group_id=7118 Initial Comment: The "New Parent Node" action creates a

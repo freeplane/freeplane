@@ -24,8 +24,6 @@ import java.awt.Point;
 
 import org.freeplane.core.model.NodeModel;
 
-
-
 public class ArrowLinkModel extends LinkModel {
 	private Color color;
 	private String endArrow;
@@ -47,7 +45,7 @@ public class ArrowLinkModel extends LinkModel {
 	}
 
 	public void changeInclination(int deltaX, final int deltaY, final NodeModel linkedNodeView,
-	                               final Point changedInclination) {
+	                              final Point changedInclination) {
 		if (linkedNodeView.isLeft()) {
 			deltaX = -deltaX;
 		}

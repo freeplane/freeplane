@@ -22,6 +22,7 @@ package org.freeplane.view.swing.ui;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JPopupMenu;
+
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.modecontroller.ModeController;
@@ -48,9 +49,9 @@ public class DefaultMapMouseListener implements IMouseListener {
 	private void handlePopup(final MouseEvent e) {
 		if (e.isPopupTrigger()) {
 			JPopupMenu popup = null;
-			MapView mapView = (MapView) Controller.getController().getViewController().getMapView();
-			final java.lang.Object obj = mapView.detectCollision(
-			    e.getPoint());
+			final MapView mapView = (MapView) Controller.getController().getViewController()
+			    .getMapView();
+			final java.lang.Object obj = mapView.detectCollision(e.getPoint());
 			final ModeController modeController = Controller.getModeController();
 			final JPopupMenu popupForModel = LinkController.getController(modeController)
 			    .getPopupForModel(obj);
@@ -69,7 +70,7 @@ public class DefaultMapMouseListener implements IMouseListener {
 	}
 
 	public void mouseClicked(final MouseEvent e) {
-		IMapSelection selection = Controller.getController().getSelection();
+		final IMapSelection selection = Controller.getController().getSelection();
 		selection.selectAsTheOnlyOneSelected(selection.getSelected());
 	}
 
@@ -104,6 +105,7 @@ public class DefaultMapMouseListener implements IMouseListener {
 		}
 		handlePopup(e);
 		e.consume();
-		((MapView)Controller.getController().getViewController().getMapView()).setMoveCursor(false);
+		((MapView) Controller.getController().getViewController().getMapView())
+		    .setMoveCursor(false);
 	}
 }

@@ -29,7 +29,6 @@ import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
 
-
 /**
  * @author foltin
  */

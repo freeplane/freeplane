@@ -43,7 +43,6 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlTools;
 
-
 import com.lightdev.app.shtm.SHTMLPanel;
 
 /**
@@ -177,7 +176,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 			final SHTMLPanel htmlEditorPanel = (EditNodeWYSIWYG.htmlEditorWindow)
 			    .getHtmlEditorPanel();
 			String rule = "BODY {";
-			ViewController viewController = Controller.getController().getViewController();
+			final ViewController viewController = Controller.getController().getViewController();
 			final Font font = viewController.getFont(node);
 			final Color nodeTextBackground = viewController.getBackgroundColor(node);
 			rule += "font-family: " + font.getFamily() + ";";

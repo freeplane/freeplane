@@ -46,17 +46,18 @@ public class MLinkController extends LinkController {
 	 * @author Dimitry Polivaev
 	 */
 	private static final class NodeDeletionListener implements IMapChangeListener {
-		public void onNodeDeleted(final NodeModel parent, final NodeModel child, int index) {
+		public void onNodeDeleted(final NodeModel parent, final NodeModel child, final int index) {
 		}
 
 		public void onNodeInserted(final NodeModel parent, final NodeModel child, final int newIndex) {
 		}
 
-		public void onNodeMoved(final NodeModel oldParent, int oldIndex, final NodeModel newParent,
-		                        final NodeModel child, final int newIndex) {
+		public void onNodeMoved(final NodeModel oldParent, final int oldIndex,
+		                        final NodeModel newParent, final NodeModel child, final int newIndex) {
 		}
 
-		public void onPreNodeDelete(final NodeModel oldParent, final NodeModel model, int oldIndex) {
+		public void onPreNodeDelete(final NodeModel oldParent, final NodeModel model,
+		                            final int oldIndex) {
 			final MapModel map = model.getMap();
 			final MModeController modeController = (MModeController) map.getModeController();
 			if (modeController.isUndoAction()) {

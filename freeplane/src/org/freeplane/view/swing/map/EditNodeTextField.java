@@ -44,15 +44,12 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Tools;
-import org.freeplane.features.mindmapmode.text.EditNodeBase;
-
-
-
+import org.freeplane.features.mindmapmode.text.AbstractEditNodeTextField;
 
 /**
  * @author foltin
  */
-public class EditNodeTextField extends EditNodeBase {
+public class EditNodeTextField extends AbstractEditNodeTextField {
 	final private KeyEvent firstEvent;
 	private JTextField textfield;
 
@@ -68,7 +65,8 @@ public class EditNodeTextField extends EditNodeBase {
 		textfield.removeFocusListener(textFieldListener);
 		textfield.removeKeyListener((KeyListener) textFieldListener);
 		textfield.removeMouseListener((MouseListener) textFieldListener);
-		Component component = Controller.getController().getViewController().getComponent(getNode());
+		final Component component = Controller.getController().getViewController().getComponent(
+		    getNode());
 		component.removeComponentListener((ComponentListener) textFieldListener);
 		parent.remove(0);
 		parent.revalidate();
@@ -76,6 +74,10 @@ public class EditNodeTextField extends EditNodeBase {
 		textFieldListener = null;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.freeplane.view.swing.map.INodeTextField#show()
+	 */
+	@Override
 	public void show() {
 		textfield = (getText().length() < 8) ? new JTextField(getText(), 8) : new JTextField(
 		    getText());
@@ -86,8 +88,10 @@ public class EditNodeTextField extends EditNodeBase {
 		final int heightAddition = 2;
 		final int MINIMAL_LEAF_WIDTH = 150;
 		final int MINIMAL_WIDTH = 50;
-		Component component = Controller.getController().getViewController().getComponent(getNode());
-		final NodeView nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class,  component);
+		final Component component = Controller.getController().getViewController().getComponent(
+		    getNode());
+		final NodeView nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class,
+		    component);
 		final NodeModel model = nodeView.getModel();
 		int xSize = nodeView.getMainView().getTextWidth() + widthAddition;
 		xOffset += nodeView.getMainView().getTextX();
@@ -224,7 +228,8 @@ public class EditNodeTextField extends EditNodeBase {
 		textfield.addFocusListener(textFieldListener);
 		textfield.addKeyListener(textFieldListener);
 		textfield.addMouseListener(textFieldListener);
-		MapView mapView = (MapView) Controller.getController().getViewController().getMapView();
+		final MapView mapView = (MapView) Controller.getController().getViewController()
+		    .getMapView();
 		mapView.scrollNodeToVisible(nodeView, xExtraWidth);
 		final Point textFieldLocation = new Point();
 		UITools.convertPointToAncestor(nodeView.getMainView(), textFieldLocation, mapView);

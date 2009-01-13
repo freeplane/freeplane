@@ -78,12 +78,12 @@ public class OptionalDontShowMeAgainDialog {
 
 	public final static int BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED = 1;
 	public final static int ONLY_OK_SELECTION_IS_STORED = 0;
-	final private NodeModel mNode;
 	private JDialog mDialog;
 	private JCheckBox mDontShowAgainBox;
 	final private IDontShowPropertyHandler mDontShowPropertyHandler;
 	final private String mMessageId;
 	final private int mMessageType;
+	final private NodeModel mNode;
 	final private JFrame mParent;
 	private int mResult = JOptionPane.CANCEL_OPTION;
 	final private String mTitleId;

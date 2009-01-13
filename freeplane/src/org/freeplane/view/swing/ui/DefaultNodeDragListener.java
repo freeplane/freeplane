@@ -19,7 +19,6 @@ import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.clipboard.MindMapNodesSelection;
 import org.freeplane.view.swing.map.MainView;
 
-
 /**
  * The NodeDragListener which belongs to every NodeView
  */

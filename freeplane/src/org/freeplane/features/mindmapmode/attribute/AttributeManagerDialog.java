@@ -50,7 +50,6 @@ import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.common.attribute.AttributeRegistry;
 
-
 /**
  * @author Dimitry Polivaev
  */
@@ -220,14 +219,14 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 		});
 	}
 
-	public void afterMapClose(final MapModel pOldMapView) {
-	}
-
 	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
 		if (newMap != null) {
 			model = AttributeRegistry.getRegistry(newMap);
 			view.setModel(model.getTableModel());
 		}
+	}
+
+	public void afterMapClose(final MapModel pOldMapView) {
 	}
 
 	private void applyChanges() {

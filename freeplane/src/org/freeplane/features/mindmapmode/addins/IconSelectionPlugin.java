@@ -34,8 +34,6 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.mindmapmode.icon.MIconController;
 
-
-
 /**
  * @author adapted to the plugin mechanism by ganzer
  */
@@ -59,10 +57,10 @@ public class IconSelectionPlugin extends FreeplaneAction {
 		actions.addAll(iconActions);
 		actions.add(modeController.getAction("removeLastIconAction"));
 		actions.add(modeController.getAction("removeAllIconsAction"));
-		ViewController viewController = Controller
-		    .getController().getViewController();
-		final IconSelectionPopupDialog selectionDialog = new IconSelectionPopupDialog(viewController.getJFrame(), actions);
-		NodeModel selected = Controller.getController().getSelection().getSelected();
+		final ViewController viewController = Controller.getController().getViewController();
+		final IconSelectionPopupDialog selectionDialog = new IconSelectionPopupDialog(
+		    viewController.getJFrame(), actions);
+		final NodeModel selected = Controller.getController().getSelection().getSelected();
 		viewController.scrollNodeToVisible(selected);
 		selectionDialog.pack();
 		UITools.setDialogLocationRelativeTo(selectionDialog, selected);

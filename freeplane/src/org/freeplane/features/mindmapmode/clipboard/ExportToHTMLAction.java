@@ -25,7 +25,6 @@ import java.io.IOException;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.MapModel;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.features.common.clipboard.ClipboardController;
 
@@ -38,7 +37,7 @@ class ExportToHTMLAction extends FreeplaneAction {
 		final MapModel map = Controller.getController().getMap();
 		try {
 			final File file = new File(map.getFile() + ".html");
-			ClipboardController.saveHTML((NodeModel) map.getRootNode(), file);
+			ClipboardController.saveHTML(map.getRootNode(), file);
 			getModeController().getMapController().loadURL(file.toString());
 		}
 		catch (final IOException ex) {

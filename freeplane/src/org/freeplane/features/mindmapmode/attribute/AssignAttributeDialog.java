@@ -60,8 +60,6 @@ import org.freeplane.features.common.attribute.AttributeRegistry;
 import org.freeplane.features.common.attribute.AttributeRegistryElement;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
 
-
-
 public class AssignAttributeDialog extends JDialog implements IAttributesListener,
         IMapSelectionListener {
 	private class AddAction extends IteratingAction {
@@ -221,16 +219,16 @@ public class AssignAttributeDialog extends JDialog implements IAttributesListene
 					performAction(node);
 				}
 			}
-			if(node.isFolded()){
+			if (node.isFolded()) {
 				return;
 			}
-			Iterator<NodeModel> iterator = node.getChildren().iterator();
-			while(iterator.hasNext())
+			final Iterator<NodeModel> iterator = node.getChildren().iterator();
+			while (iterator.hasNext()) {
 				iterate(iterator.next());
+			}
 		}
 
 		abstract protected void performAction(NodeModel model);
-
 
 		protected void showEmptyStringErrorMessage() {
 			JOptionPane.showMessageDialog(AssignAttributeDialog.this, Controller
@@ -426,11 +424,8 @@ public class AssignAttributeDialog extends JDialog implements IAttributesListene
 		attributeValues.setMaximumSize(comboBoxMaximumSize);
 		replacingAttributeNames.setMaximumSize(comboBoxMaximumSize);
 		replacingAttributeValues.setMaximumSize(comboBoxMaximumSize);
-		afterMapChange(null,Controller.getController().getMap());
+		afterMapChange(null, Controller.getController().getMap());
 		Controller.getController().getMapViewManager().addMapChangeListener(this);
-	}
-
-	public void afterMapClose(final MapModel pOldMapView) {
 	}
 
 	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
@@ -446,8 +441,11 @@ public class AssignAttributeDialog extends JDialog implements IAttributesListene
 		attributesChanged();
 	}
 
+	public void afterMapClose(final MapModel pOldMapView) {
+	}
+
 	private void attributesChanged() {
-		MapModel map = Controller.getController().getMap();
+		final MapModel map = Controller.getController().getMap();
 		final AttributeRegistry attributes = AttributeRegistry.getRegistry(map);
 		final ComboBoxModel names = attributes.getComboBoxModel();
 		attributeNames.setModel(new ClonedComboBoxModel(names));
@@ -482,7 +480,7 @@ public class AssignAttributeDialog extends JDialog implements IAttributesListene
 	}
 
 	private void selectedAttributeChanged(final Object selectedAttributeName, final JComboBox values) {
-		MapModel map = Controller.getController().getMap();
+		final MapModel map = Controller.getController().getMap();
 		final AttributeRegistry attributes = AttributeRegistry.getRegistry(map);
 		try {
 			final AttributeRegistryElement element = attributes.getElement(selectedAttributeName

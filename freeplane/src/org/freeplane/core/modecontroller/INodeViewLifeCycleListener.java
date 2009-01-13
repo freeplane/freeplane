@@ -21,8 +21,6 @@ package org.freeplane.core.modecontroller;
 
 import java.awt.Container;
 
-
-
 public interface INodeViewLifeCycleListener {
 	public void onViewCreated(Container nodeView);
 

@@ -35,7 +35,7 @@ import org.freeplane.core.filter.IFilter;
 import org.freeplane.core.filter.condition.NoFilteringCondition;
 import org.freeplane.core.modecontroller.ModeController;
 
-public class MapModel{
+public class MapModel {
 	private static Random ran = new Random();
 	private static final int UNDEFINED_NODE_ID = 2000000000;
 	/**
@@ -49,8 +49,8 @@ public class MapModel{
 	protected final ModeController mModeController;
 	final private HashMap<String, NodeModel> nodes;
 	private boolean readOnly = true;
-	private URL url;
 	private NodeModel root;
+	private URL url;
 
 	public MapModel(final ModeController modeController, NodeModel root) {
 		this.root = root;

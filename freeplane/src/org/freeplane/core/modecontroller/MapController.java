@@ -73,7 +73,6 @@ public class MapController {
 
 		/* the < relation. */
 		public int compare(final NodeModel n1, final NodeModel n2) {
-			final MapModel map = n1.getMap();
 			final NodeModel[] path1 = n1.getPathToRoot();
 			final NodeModel[] path2 = n2.getPathToRoot();
 			final int depth = path1.length - path2.length;
@@ -210,7 +209,7 @@ public class MapController {
 	public void displayNode(final NodeModel node, final ArrayList nodesUnfoldedByDisplay) {
 		final NodeModel[] path = node.getPathToRoot();
 		for (int i = 0; i < path.length - 1; i++) {
-			final NodeModel nodeOnPath = (NodeModel) path[i];
+			final NodeModel nodeOnPath = path[i];
 			if (nodeOnPath.getModeController().getMapController().isFolded(nodeOnPath)) {
 				if (nodesUnfoldedByDisplay != null) {
 					nodesUnfoldedByDisplay.add(nodeOnPath);
@@ -234,7 +233,15 @@ public class MapController {
 		}
 	}
 
-	protected void fireNodeDeleted(final NodeModel parent, final NodeModel child, int index) {
+	private void fireNodeChanged(final NodeModel node, final NodeChangeEvent nodeChangeEvent) {
+		final Iterator<INodeChangeListener> iterator = nodeChangeListeners.iterator();
+		while (iterator.hasNext()) {
+			iterator.next().nodeChanged(nodeChangeEvent);
+		}
+		node.fireNodeChanged(nodeChangeEvent);
+	}
+
+	protected void fireNodeDeleted(final NodeModel parent, final NodeModel child, final int index) {
 		final Iterator<IMapChangeListener> iterator = mapChangeListeners.iterator();
 		while (iterator.hasNext()) {
 			iterator.next().onNodeDeleted(parent, child, index);
@@ -248,15 +255,17 @@ public class MapController {
 		}
 	}
 
-	protected void fireNodeMoved(final NodeModel oldParent, int oldIndex, final NodeModel newParent,
-	                             final NodeModel child, final int newIndex) {
+	protected void fireNodeMoved(final NodeModel oldParent, final int oldIndex,
+	                             final NodeModel newParent, final NodeModel child,
+	                             final int newIndex) {
 		final Iterator<IMapChangeListener> iterator = mapChangeListeners.iterator();
 		while (iterator.hasNext()) {
 			iterator.next().onNodeMoved(oldParent, oldIndex, newParent, child, newIndex);
 		}
 	}
 
-	protected void firePreNodeDelete(final NodeModel parent, NodeModel selectedNode, int index) {
+	protected void firePreNodeDelete(final NodeModel parent, final NodeModel selectedNode,
+	                                 final int index) {
 		final Iterator<IMapChangeListener> iterator = mapChangeListeners.iterator();
 		while (iterator.hasNext()) {
 			iterator.next().onPreNodeDelete(parent, selectedNode, index);
@@ -342,7 +351,7 @@ public class MapController {
 
 	public NodeModel getRootNode() {
 		final MapModel map = Controller.getController().getMap();
-		return (NodeModel) map.getRootNode();
+		return map.getRootNode();
 	}
 
 	public NodeModel getSelectedNode() {
@@ -561,10 +570,10 @@ public class MapController {
 				node.getHistoryInformation().setLastModifiedAt(new Date());
 			}
 		}
-		NodeChangeEvent nodeChangeEvent = new NodeChangeEvent(node, property, oldValue, newValue);
-        fireNodeChanged(node, nodeChangeEvent);
+		final NodeChangeEvent nodeChangeEvent = new NodeChangeEvent(node, property, oldValue,
+		    newValue);
+		fireNodeChanged(node, nodeChangeEvent);
 	}
-
 
 	public void onDeselect(final NodeModel node) {
 		try {
@@ -586,33 +595,25 @@ public class MapController {
 		}
 	}
 
-	private void fireNodeChanged(final NodeModel node, NodeChangeEvent nodeChangeEvent) {
-	    final Iterator<INodeChangeListener> iterator = nodeChangeListeners.iterator();
-		while (iterator.hasNext()) {
-			iterator.next().nodeChanged(nodeChangeEvent);
-		}
-		node.fireNodeChanged(nodeChangeEvent);
-    }
-
 	public void refreshMap() {
 		final MapModel map = Controller.getController().getMap();
 		final NodeModel root = map.getRootNode();
 		refreshMapFrom(root);
 	}
 
-	public void refreshMapFrom(final NodeModel node) {
-		NodeChangeEvent event= new NodeChangeEvent(node, NodeChangeType.REFRESH, null, null);
-		refreshMap(node, event);
-	}
-
-	private void refreshMap(final NodeModel node, NodeChangeEvent event) {
-	    final Iterator iterator = node.getChildren().iterator();
+	private void refreshMap(final NodeModel node, final NodeChangeEvent event) {
+		final Iterator iterator = node.getChildren().iterator();
 		while (iterator.hasNext()) {
 			final NodeModel child = (NodeModel) iterator.next();
 			refreshMap(child, event);
 		}
 		fireNodeChanged(node, event);
-    }
+	}
+
+	public void refreshMapFrom(final NodeModel node) {
+		final NodeChangeEvent event = new NodeChangeEvent(node, NodeChangeType.REFRESH, null, null);
+		refreshMap(node, event);
+	}
 
 	public void removeMapChangeListener(final IMapChangeListener listener) {
 		mapChangeListeners.remove(listener);

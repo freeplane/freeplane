@@ -121,6 +121,12 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 			MapView.this.selectContinuous(getNodeView(node));
 		}
 
+		public void selectRoot() {
+			final NodeModel rootNode = getModel().getRootNode();
+			selectAsTheOnlyOneSelected(rootNode);
+			centerNode(rootNode);
+		}
+
 		public void setSiblingMaxLevel(final int nodeLevel) {
 			MapView.this.setSiblingMaxLevel(nodeLevel);
 		}
@@ -132,12 +138,6 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		public void toggleSelected(final NodeModel node) {
 			MapView.this.toggleSelected(getNodeView(node));
 		}
-
-		public void selectRoot() {
-	        NodeModel rootNode = getModel().getRootNode();
-			selectAsTheOnlyOneSelected(rootNode);
-			centerNode(rootNode);
-        }
 	}
 
 	private class Selection {
@@ -346,8 +346,9 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		MapView.propertyChangeListener = new IFreeplanePropertyListener() {
 			public void propertyChanged(final String propertyName, final String newValue,
 			                            final String oldValue) {
-				Component mapView = Controller.getController().getViewController().getMapView();
-				if(!(mapView instanceof MapView)){
+				final Component mapView = Controller.getController().getViewController()
+				    .getMapView();
+				if (!(mapView instanceof MapView)) {
 					return;
 				}
 				if (propertyName.equals(ResourceController.RESOURCES_BACKGROUND_COLOR)) {
@@ -356,18 +357,18 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 				}
 				else if (propertyName.equals(ResourceController.RESOURCES_SELECTED_NODE_COLOR)) {
 					MapView.standardSelectColor = TreeXmlReader.xmlToColor(newValue);
-					((MapView)mapView).repaintSelecteds();
+					((MapView) mapView).repaintSelecteds();
 				}
 				else if (propertyName
 				    .equals(ResourceController.RESOURCES_SELECTED_NODE_RECTANGLE_COLOR)) {
 					MapView.standardSelectRectangleColor = TreeXmlReader.xmlToColor(newValue);
-					((MapView)mapView).repaintSelecteds();
+					((MapView) mapView).repaintSelecteds();
 				}
 				else if (propertyName
 				    .equals(ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION)) {
 					MapView.standardDrawRectangleForSelection = TreeXmlReader
 					    .xmlToBoolean(newValue);
-					((MapView)mapView).repaintSelecteds();
+					((MapView) mapView).repaintSelecteds();
 				}
 				else if (propertyName.equals("printonwhitebackground")) {
 					MapView.printOnWhiteBackground = TreeXmlReader.xmlToBoolean(newValue);

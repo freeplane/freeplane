@@ -38,6 +38,7 @@ import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.core.url.UrlManager;
+
 /**
  * Derive from this class to implement the Controller for your mode. Overload
  * the methods you need for your data model, or use the defaults. There are some
@@ -271,7 +272,6 @@ public class ModeController {
 			hook.onViewRemoved(node);
 		}
 	}
-
 
 	public Action removeAction(final String key) {
 		final Action action = actionController.removeAction(key);

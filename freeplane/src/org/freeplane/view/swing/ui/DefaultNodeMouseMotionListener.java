@@ -24,8 +24,6 @@ import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
-
-
 /**
  * The MouseMotionListener which belongs to every NodeView
  */
@@ -70,7 +68,7 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 	final private ControllerPopupMenuListener popupListener;
 	private Timer timerForDelayedSelection;
 
-	public DefaultNodeMouseMotionListener(ModeController modeController) {
+	public DefaultNodeMouseMotionListener(final ModeController modeController) {
 		popupListener = new ControllerPopupMenuListener(modeController);
 		if (DefaultNodeMouseMotionListener.delayedSelectionEnabled == null) {
 			updateSelectionMethod();
@@ -109,7 +107,8 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 	public void mouseDragged(final MouseEvent e) {
 		stopTimerForDelayedSelection();
 		final NodeView nodeV = ((MainView) e.getComponent()).getNodeView();
-		if (!((MapView)Controller.getController().getViewController().getMapView()).isSelected(nodeV)) {
+		if (!((MapView) Controller.getController().getViewController().getMapView())
+		    .isSelected(nodeV)) {
 			Controller.getModeController().getUserInputListenerFactory().extendSelection(e);
 		}
 	}
@@ -147,36 +146,36 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 
 	public void mouseReleased(final MouseEvent e) {
 		stopTimerForDelayedSelection();
-		ModeController modeController = Controller.getModeController();
+		final ModeController modeController = Controller.getModeController();
 		modeController.getUserInputListenerFactory().extendSelection(e);
 		showPopupMenu(e);
 		if (e.isConsumed()) {
 			return;
 		}
 		if (e.getModifiers() == InputEvent.BUTTON1_MASK) {
-				/* perform action only if one selected node. */
-				MapController mapController = modeController.getMapController();
-				if (mapController.getSelectedNodes().size() != 1) {
+			/* perform action only if one selected node. */
+			final MapController mapController = modeController.getMapController();
+			if (mapController.getSelectedNodes().size() != 1) {
+				return;
+			}
+			final MainView component = (MainView) e.getComponent();
+			if (component.isInFollowLinkRegion(e.getX())) {
+				LinkController.getController(modeController).loadURL();
+			}
+			else {
+				final NodeModel node = (component).getNodeView().getModel();
+				if (!mapController.hasChildren(node)) {
+					/* If the link exists, follow the link; toggle folded otherwise */
+					if (NodeLinks.getLink(mapController.getSelectedNode()) == null) {
+						mapController.toggleFolded();
+					}
+					else {
+						LinkController.getController(modeController).loadURL();
+					}
 					return;
 				}
-				final MainView component = (MainView) e.getComponent();
-				if (component.isInFollowLinkRegion(e.getX())) {
-					LinkController.getController(modeController).loadURL();
-				}
-				else {
-					final NodeModel node = (component).getNodeView().getModel();
-					if (!mapController.hasChildren(node)) {
-						/* If the link exists, follow the link; toggle folded otherwise */
-						if (NodeLinks.getLink(mapController.getSelectedNode()) == null) {
-							mapController.toggleFolded();
-						}
-						else {
-							LinkController.getController(modeController).loadURL();
-						}
-						return;
-					}
-					mapController.toggleFolded(mapController.getSelectedNodes().listIterator());
-				}
+				mapController.toggleFolded(mapController.getSelectedNodes().listIterator());
+			}
 			e.consume();
 		}
 	}

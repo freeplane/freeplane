@@ -25,8 +25,6 @@ import java.awt.print.PrinterException;
 
 import javax.swing.JComponent;
 
-
-
 class Preview extends JComponent {
 	final private static int DEFAULT_PREVIEW_SIZE = 300;
 	final private static double MINIMUM_ZOOM_FACTOR = 0.1;
@@ -90,24 +88,25 @@ class Preview extends JComponent {
 	@Override
 	public void paint(final Graphics g) {
 		try {
-		final Graphics2D g2d = (Graphics2D) g;
-		final PageFormat format = getPageFormat();
-		paintPaper(g, format);
-		if (previewPageImage == null) {
-			previewPageImage = (BufferedImage) createImage(getPageWidth(format) - 1,
-			    getPageHeight(format) - 1);
-			imageGraphics = previewPageImage.createGraphics();
-			imageGraphics.scale(zoom, zoom);
-	            while (Printable.NO_SUCH_PAGE == view.print(imageGraphics, format, index) && index > 0) {
-	            	index -= 1;
-	            }
+			final Graphics2D g2d = (Graphics2D) g;
+			final PageFormat format = getPageFormat();
+			paintPaper(g, format);
+			if (previewPageImage == null) {
+				previewPageImage = (BufferedImage) createImage(getPageWidth(format) - 1,
+				    getPageHeight(format) - 1);
+				imageGraphics = previewPageImage.createGraphics();
+				imageGraphics.scale(zoom, zoom);
+				while (Printable.NO_SUCH_PAGE == view.print(imageGraphics, format, index)
+				        && index > 0) {
+					index -= 1;
+				}
+			}
+			g2d.drawImage(previewPageImage, 0, 0, this);
 		}
-		g2d.drawImage(previewPageImage, 0, 0, this);
-        }
-        catch (PrinterException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+		catch (final PrinterException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	protected void paintPaper(final Graphics g, final PageFormat format) {

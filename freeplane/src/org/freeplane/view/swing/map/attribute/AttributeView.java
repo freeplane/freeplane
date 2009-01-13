@@ -31,7 +31,6 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.JTableHeader;
 
-import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.features.common.attribute.AttributeRegistry;
 import org.freeplane.features.common.attribute.AttributeTableLayoutModel;
@@ -39,8 +38,6 @@ import org.freeplane.features.common.attribute.IAttributeTableModel;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
-
-
 
 /**
  * This class represents a single Node of a MindMap (in analogy to
@@ -134,10 +131,6 @@ public class AttributeView implements ChangeListener, TableModelListener {
 	 */
 	public MapView getMapView() {
 		return getNodeView().getMap();
-	}
-
-	private ModeController getModeController() {
-		return nodeView.getModel().getMap().getModeController();
 	}
 
 	/**
@@ -260,7 +253,7 @@ public class AttributeView implements ChangeListener, TableModelListener {
 	}
 
 	public void tableChanged(final TableModelEvent e) {
-		NodeModel node = getNode();
+		final NodeModel node = getNode();
 		node.getModeController().getMapController().nodeChanged(node);
 	}
 

@@ -21,11 +21,11 @@ package org.freeplane.features.controller.print;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.MenuBuilder;
-
 
 class PrintPreviewAction extends AbstractPrintAction {
 	PrintPreviewAction(final PrintController controller) {
@@ -37,8 +37,7 @@ class PrintPreviewAction extends AbstractPrintAction {
 		if (!getPrintController().acquirePrinterJobAndPageFormat()) {
 			return;
 		}
-		final Component mapView =  Controller.getController().getViewController()
-		    .getMapView();
+		final Component mapView = Controller.getController().getViewController().getMapView();
 		final PreviewDialog previewDialog = new PreviewDialog(Controller
 		    .getText("print_preview_title"), mapView);
 		previewDialog.pack();

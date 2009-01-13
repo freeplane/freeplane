@@ -38,8 +38,6 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.n3.nanoxml.IXMLElement;
 
-
-
 /**
  */
 @NodeHookDescriptor(hookName = "accessories/plugins/BlinkingNodeHook.properties", onceForMap = false)
@@ -81,7 +79,7 @@ public class BlinkingNodeHook extends PersistentNodeHook {
 					}
 					getNode().acceptViewVisitor(new INodeViewVisitor() {
 						public void visit(final INodeView nodeView) {
-							Component container = nodeView.getComponent();
+							final Component container = nodeView.getComponent();
 							if (!container.isVisible()) {
 								return;
 							}

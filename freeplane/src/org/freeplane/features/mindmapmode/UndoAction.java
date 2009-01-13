@@ -29,7 +29,6 @@ import org.freeplane.core.model.MapModel;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.undo.IUndoHandler;
 
-
 class UndoAction extends FreeplaneAction implements IMapSelectionListener {
 	private Action redo;
 
@@ -47,9 +46,6 @@ class UndoAction extends FreeplaneAction implements IMapSelectionListener {
 		redo.setEnabled(undoHandler.canRedo());
 	}
 
-	public void afterMapClose(final MapModel oldMap) {
-	}
-
 	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
 		if (newMap == null) {
 			return;
@@ -59,6 +55,9 @@ class UndoAction extends FreeplaneAction implements IMapSelectionListener {
 			setEnabled(undoHandler.canUndo());
 			redo.setEnabled(undoHandler.canRedo());
 		}
+	}
+
+	public void afterMapClose(final MapModel oldMap) {
 	}
 
 	public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {

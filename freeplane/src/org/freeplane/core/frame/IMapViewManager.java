@@ -22,6 +22,7 @@ package org.freeplane.core.frame;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.image.RenderedImage;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -37,22 +38,20 @@ import org.freeplane.core.model.NodeModel;
  * 12.01.2009
  */
 public interface IMapViewManager {
-	public abstract void addMapChangeListener(final IMapSelectionListener pListener);
+	public void addMapChangeListener(final IMapSelectionListener pListener);
 
-	public abstract void addMapViewChangeListener(final IMapViewChangeListener pListener);
-
-	public abstract void removeMapViewChangeListener(final IMapViewChangeListener pListener);
+	public void addMapViewChangeListener(final IMapViewChangeListener pListener);
 
 	/**
 	 * is null if the old mode should be closed.
 	 *
 	 * @return true if the set command was sucessful.
 	 */
-	public abstract boolean changeToMapView(final Component newMapView);
+	public boolean changeToMapView(final Component newMapView);
 
-	public abstract boolean changeToMapView(final String mapViewDisplayName);
+	public boolean changeToMapView(final String mapViewDisplayName);
 
-	public abstract boolean changeToMode(final String modeName);
+	public boolean changeToMode(final String modeName);
 
 	/**
 	 * Checks, whether or not a given url is already opened. Unlike
@@ -61,8 +60,7 @@ public interface IMapViewManager {
 	 *
 	 * @return null, if not found, the map+extension identifier otherwise.
 	 */
-	public abstract String checkIfFileIsAlreadyOpened(final URL urlToCheck)
-	        throws MalformedURLException;
+	public String checkIfFileIsAlreadyOpened(final URL urlToCheck) throws MalformedURLException;
 
 	/**
 	 * Close the currently active map, return false if closing canceled.
@@ -70,10 +68,20 @@ public interface IMapViewManager {
 	 * @param force
 	 *            forces the closing without any save actions.
 	 */
-	public abstract boolean close(final boolean force);
+	public boolean close(final boolean force);
+
+	public String createHtmlMap();
+
+	public RenderedImage createImage();
+
+	public Color getBackgroundColor(NodeModel node);
+
+	public Component getComponent(NodeModel node);
+
+	public Font getFont(NodeModel node);
 
 	/** @return an unmodifiable set of all display names of current opened maps. */
-	public abstract List getMapKeys();
+	public List getMapKeys();
 
 	/**
 	 * @return a map of String to MapView elements.
@@ -81,50 +89,46 @@ public interface IMapViewManager {
 	 *             MapView.getDisplayName().
 	 */
 	@Deprecated
-	public abstract Map<String, MapModel> getMaps();
+	public Map<String, MapModel> getMaps();
 
-	public abstract List getMapViewVector();
+	public IMapSelection getMapSelection();
 
-	public abstract int getViewNumber();
+	public Component getMapViewComponent();
 
-	public abstract void newMapView(final MapModel map, final ModeController modeController);
+	public List getMapViewVector();
 
-	public abstract void nextMapView();
+	public MapModel getModel();
 
-	public abstract void previousMapView();
+	public Component getSelectedComponent();
 
-	public abstract void removeIMapViewChangeListener(final IMapSelectionListener pListener);
+	public Color getTextColor(NodeModel node);
+
+	public int getViewNumber();
+
+	public float getZoom();
+
+	public void newMapView(final MapModel map, final ModeController modeController);
+
+	public void nextMapView();
+
+	public void previousMapView();
+
+	public void removeIMapViewChangeListener(final IMapSelectionListener pListener);
+
+	public void removeMapViewChangeListener(final IMapViewChangeListener pListener);
+
+	public void scrollNodeToVisible(NodeModel node);
+
+	public void setZoom(float zoom);
 
 	/**
 	 * This is the question whether the map is already opened. If this is the
 	 * case, the map is automatically opened + returns true. Otherwise does
 	 * nothing + returns false.
 	 */
-	public abstract boolean tryToChangeToMapView(final String mapView);
+	public boolean tryToChangeToMapView(final String mapView);
 
-	public abstract void updateMapViewName();
+	public void updateMapView();
 
-	public abstract IMapSelection getMapSelection();
-
-	public abstract float getZoom();
-
-	public abstract MapModel getModel();
-
-	public abstract void setZoom(float zoom);
-
-	public abstract Component getSelectedComponent();
-
-	public abstract Color getTextColor(NodeModel node);
-
-	public abstract Color getBackgroundColor(NodeModel node);
-
-	public abstract Font getFont(NodeModel node);
-
-	public abstract void scrollNodeToVisible(NodeModel node);
-
-	public abstract Component getComponent(NodeModel node);
-
-	public abstract void updateMapView();
-
-	public abstract Component getMapViewComponent();
+	public void updateMapViewName();
 }

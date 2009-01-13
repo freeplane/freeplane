@@ -13,7 +13,6 @@ import org.freeplane.core.resources.ui.IFreeplanePropertyListener;
 import org.freeplane.core.ui.IMouseWheelEventHandler;
 import org.freeplane.view.swing.map.MapView;
 
-
 /**
  * @author foltin
  */

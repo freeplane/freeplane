@@ -33,7 +33,6 @@ import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-
 /**
  * @author Dimitry Polivaev
  */

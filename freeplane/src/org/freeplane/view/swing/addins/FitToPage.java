@@ -29,7 +29,6 @@ import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.view.swing.map.MapView;
 
-
 /**
  * @author foltin
  * @author Dimitry Polivaev

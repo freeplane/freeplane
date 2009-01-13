@@ -41,9 +41,6 @@ import org.freeplane.view.swing.map.NodeMotionListenerView;
 import org.freeplane.view.swing.map.NodeView;
 import org.freeplane.view.swing.ui.DefaultNodeMotionListener;
 
-
-
-
 /**
  * The MouseMotionListener which belongs to every NodeView
  */
@@ -67,7 +64,8 @@ public class MNodeMotionListener extends DefaultNodeMotionListener {
 	private int getHGap(final Point dragNextPoint, final NodeModel node,
 	                    final Point dragStartingPoint) {
 		int oldHGap = LocationModel.getModel(node).getHGap();
-		final MapView mapView = ((MapView)Controller.getController().getViewController().getMapView());
+		final MapView mapView = ((MapView) Controller.getController().getViewController()
+		    .getMapView());
 		int hGapChange = (int) ((dragNextPoint.x - dragStartingPoint.x) / mapView.getZoom());
 		if (node.isLeft()) {
 			hGapChange = -hGapChange;
@@ -81,7 +79,8 @@ public class MNodeMotionListener extends DefaultNodeMotionListener {
 	private int getNodeShiftY(final Point dragNextPoint, final NodeModel node,
 	                          final Point dragStartingPoint) {
 		int shiftY = LocationModel.getModel(node).getShiftY();
-		final MapView mapView = ((MapView)Controller.getController().getViewController().getMapView());
+		final MapView mapView = ((MapView) Controller.getController().getViewController()
+		    .getMapView());
 		final int shiftYChange = (int) ((dragNextPoint.y - dragStartingPoint.y) / mapView.getZoom());
 		shiftY += shiftYChange;
 		return shiftY;
@@ -98,7 +97,8 @@ public class MNodeMotionListener extends DefaultNodeMotionListener {
 	private int getVGap(final Point dragNextPoint, final NodeModel node,
 	                    final Point dragStartingPoint) {
 		int oldVGap = LocationModel.getModel(node).getVGap();
-		final MapView mapView = ((MapView)Controller.getController().getViewController().getMapView());
+		final MapView mapView = ((MapView) Controller.getController().getViewController()
+		    .getMapView());
 		final int vGapChange = (int) ((dragNextPoint.y - dragStartingPoint.y) / mapView.getZoom());
 		oldVGap = Math.max(0, oldVGap - vGapChange);
 		return oldVGap;
@@ -155,7 +155,8 @@ public class MNodeMotionListener extends DefaultNodeMotionListener {
 					final NodeModel parentNode = nodeV.getVisibleParentView().getModel();
 					LocationModel.createLocationModel(parentNode).setVGap(
 					    getVGap(dragNextPoint, parentNode, dragStartingPoint));
-					MapController mapController = parentNode.getModeController().getMapController();
+					final MapController mapController = parentNode.getModeController()
+					    .getMapController();
 					mapController.nodeRefresh(parentNode);
 					mapController.nodeRefresh(nodeV.getModel());
 				}

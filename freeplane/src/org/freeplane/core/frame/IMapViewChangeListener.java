@@ -21,13 +21,12 @@ package org.freeplane.core.frame;
 
 import java.awt.Component;
 
-
 public interface IMapViewChangeListener {
-	void afterViewClose(Component oldView);
-
 	void afterViewChange(Component oldView, Component newView);
 
-	void beforeViewChange(Component oldView, Component newView);
+	void afterViewClose(Component oldView);
 
 	void afterViewCreated(Component mapView);
+
+	void beforeViewChange(Component oldView, Component newView);
 }

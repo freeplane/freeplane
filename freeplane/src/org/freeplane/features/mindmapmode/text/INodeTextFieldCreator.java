@@ -17,20 +17,21 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.frame;
+package org.freeplane.features.mindmapmode.text;
 
-import org.freeplane.core.model.MapModel;
+import java.awt.event.KeyEvent;
 
-public interface IMapSelectionListener {
-	void afterMapChange(MapModel oldMap, MapModel newMap);
+import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.NodeModel;
+import org.freeplane.features.mindmapmode.text.EditNodeBase.IEditControl;
 
-	void afterMapClose(MapModel oldMap);
-
-	void beforeMapChange(MapModel oldMap, MapModel newMap);
-
-	/**
-	 * The params may be null to indicate the there was no previous map, or that
-	 * the last map is closed now.
-	 */
-	boolean isMapChangeAllowed(MapModel oldMap, MapModel newMap);
+/**
+ * @author Dimitry Polivaev
+ * 13.01.2009
+ */
+public interface INodeTextFieldCreator {
+	public AbstractEditNodeTextField createNodeTextField(final NodeModel node, final String text,
+	                                                     final KeyEvent firstEvent,
+	                                                     final ModeController controller,
+	                                                     final IEditControl editControl);
 }

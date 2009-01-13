@@ -32,6 +32,7 @@ import java.net.URL;
 import java.text.MessageFormat;
 import java.util.HashSet;
 import java.util.Iterator;
+
 import javax.swing.Action;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -53,7 +54,6 @@ import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 
-
 /**
  * @author Dimitry Polivaev
  */
@@ -65,6 +65,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 	private boolean antialiasEdges = false;
 	final private JPanel leftToolbarPanel;
 	private boolean leftToolbarVisible;
+	private final IMapViewManager mapViewManager;
 	private boolean menubarVisible;
 	final private HashSet mMapTitleChangeListenerSet = new HashSet();
 	final private Action navigationNextMap;
@@ -78,9 +79,8 @@ abstract public class ViewController implements IMapViewChangeListener {
 	final private JComboBox zoom;
 	final private Action zoomIn;
 	final private Action zoomOut;
-	private IMapViewManager mapViewManager;
 
-	public ViewController(IMapViewManager mapViewManager) {
+	public ViewController(final IMapViewManager mapViewManager) {
 		super();
 		final Controller controller = Controller.getController();
 		controller.setViewController(this);
@@ -128,18 +128,12 @@ abstract public class ViewController implements IMapViewChangeListener {
 	public void afterMapClose(final MapModel pOldMapView) {
 	}
 
-	public void afterViewClose(Component oldView) {
-    }
-
-	public void afterViewCreated(Component mapView) {
-    }
-
 	public void afterViewChange(final Component oldMap, final Component pNewMap) {
 		final ModeController oldModeController = Controller.getModeController();
 		ModeController newModeController = oldModeController;
 		if (pNewMap != null) {
 			setViewportView(pNewMap);
-			IMapSelection mapSelection = mapViewManager.getMapSelection();
+			final IMapSelection mapSelection = mapViewManager.getMapSelection();
 			if (mapSelection.getSelected() == null) {
 				mapSelection.selectRoot();
 			}
@@ -157,6 +151,12 @@ abstract public class ViewController implements IMapViewChangeListener {
 		setTitle();
 		viewNumberChanged(mapViewManager.getViewNumber());
 		newModeController.getUserInputListenerFactory().updateMapList();
+	}
+
+	public void afterViewClose(final Component oldView) {
+	}
+
+	public void afterViewCreated(final Component mapView) {
 	}
 
 	public void beforeViewChange(final Component oldMap, final Component newMap) {
@@ -185,6 +185,14 @@ abstract public class ViewController implements IMapViewChangeListener {
 		return antialiasEdges;
 	}
 
+	public Color getBackgroundColor(final NodeModel node) {
+		return mapViewManager.getBackgroundColor(node);
+	}
+
+	public Component getComponent(final NodeModel node) {
+		return mapViewManager.getComponent(node);
+	}
+
 	/**
 	 * @return
 	 */
@@ -203,6 +211,10 @@ abstract public class ViewController implements IMapViewChangeListener {
 			}
 		}
 		return itemCount - 0.5f;
+	}
+
+	public Font getFont(final NodeModel node) {
+		return mapViewManager.getFont(node);
 	}
 
 	abstract public FreeplaneMenuBar getFreeplaneMenuBar();
@@ -234,12 +246,28 @@ abstract public class ViewController implements IMapViewChangeListener {
 		return scrollPane;
 	}
 
+	public Component getSelectedComponent() {
+		return mapViewManager.getSelectedComponent();
+	}
+
+	public IMapSelection getSelection() {
+		return mapViewManager.getMapSelection();
+	}
+
 	public JLabel getStatusLabel() {
 		return status;
 	}
 
+	public Color getTextColor(final NodeModel node) {
+		return mapViewManager.getTextColor(node);
+	}
+
 	public Container getViewport() {
 		return scrollPane.getViewport();
+	}
+
+	public float getZoom() {
+		return mapViewManager.getZoom();
 	}
 
 	public JComboBox getZoomComboBox() {
@@ -332,6 +360,10 @@ abstract public class ViewController implements IMapViewChangeListener {
 	 * 
 	 */
 	abstract public void removeSplitPane();
+
+	public void scrollNodeToVisible(final NodeModel node) {
+		mapViewManager.scrollNodeToVisible(node);
+	}
 
 	public void selectMode(final ModeController oldModeController,
 	                       final ModeController newModeController) {
@@ -490,6 +522,10 @@ abstract public class ViewController implements IMapViewChangeListener {
 		}
 	}
 
+	public void updateView() {
+		mapViewManager.updateMapView();
+	}
+
 	private void viewNumberChanged(final int number) {
 		navigationPreviousMap.setEnabled(number > 0);
 		navigationNextMap.setEnabled(number > 0);
@@ -508,39 +544,4 @@ abstract public class ViewController implements IMapViewChangeListener {
 			setZoomByItem(zoom.getItemAt((int) (currentZoomIndex - 0.5f)));
 		}
 	}
-	
-	public Component getSelectedComponent(){
-		return mapViewManager.getSelectedComponent();
-	}
-	public Color getTextColor(NodeModel node){
-		return mapViewManager.getTextColor(node);
-	}
-	public Color getBackgroundColor(NodeModel node){
-		return mapViewManager.getBackgroundColor(node);
-	}
-
-	public Font getFont(NodeModel node){
-		return mapViewManager.getFont(node);
-	}
-
-	public IMapSelection getSelection() {
-		return mapViewManager.getMapSelection();
-    }
-
-	public void scrollNodeToVisible(NodeModel node) {
-		mapViewManager.scrollNodeToVisible(node);
-    }
-
-	public Component getComponent(NodeModel node) {
-	    return mapViewManager.getComponent(node);
-    }
-
-	public void updateView() {
-	    mapViewManager.updateMapView();	    
-    }
-
-	public float getZoom() {
-		return mapViewManager.getZoom();
-    }
-
 }

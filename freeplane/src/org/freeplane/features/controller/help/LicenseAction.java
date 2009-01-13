@@ -22,6 +22,7 @@ package org.freeplane.features.controller.help;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
+
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
@@ -32,6 +33,7 @@ class LicenseAction extends AbstractAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		UITools.informationMessage(Controller.getText("license_text"), Controller.getText("license"));
+		UITools.informationMessage(Controller.getText("license_text"), Controller
+		    .getText("license"));
 	}
 }

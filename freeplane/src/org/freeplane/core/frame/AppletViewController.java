@@ -38,7 +38,6 @@ import org.freeplane.core.controller.FreeplaneVersionInformation;
 import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 
-
 /**
  * @author Dimitry Polivaev
  */
@@ -47,7 +46,7 @@ public class AppletViewController extends ViewController {
 	private JComponent mComponentInSplitPane;
 	private JPanel southPanel;
 
-	public AppletViewController(final JApplet applet, IMapViewManager mapViewController) {
+	public AppletViewController(final JApplet applet, final IMapViewManager mapViewController) {
 		super(mapViewController);
 		this.applet = applet;
 	}
@@ -196,18 +195,9 @@ public class AppletViewController extends ViewController {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.main.FreeplaneMain#exit()
-	 */
-	@Override
-	public void stop() {
-	}
-
 	public void start() {
 		try {
-			IMapSelection selection = Controller.getController().getSelection();
-			
+			final IMapSelection selection = Controller.getController().getSelection();
 			if (selection != null) {
 				selection.selectRoot();
 			}
@@ -218,5 +208,13 @@ public class AppletViewController extends ViewController {
 		catch (final Exception e) {
 			org.freeplane.core.util.Tools.logException(e);
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see freeplane.main.FreeplaneMain#exit()
+	 */
+	@Override
+	public void stop() {
 	}
 }

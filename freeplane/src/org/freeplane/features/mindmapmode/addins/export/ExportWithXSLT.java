@@ -18,7 +18,7 @@
 package org.freeplane.features.mindmapmode.addins.export;
 
 import java.awt.event.ActionEvent;
-import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -48,7 +48,6 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.MindIcon;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Tools;
@@ -215,7 +214,7 @@ public class ExportWithXSLT extends ExportAction {
 		if (Controller.getController().getViewController().getMapView() == null) {
 			return;
 		}
-		final BufferedImage image = createBufferedImage();
+		final RenderedImage image = createBufferedImage();
 		try {
 			final FileOutputStream out = new FileOutputStream(directoryName + File.separator
 			        + "image.png");
@@ -238,10 +237,7 @@ public class ExportWithXSLT extends ExportAction {
 	private String getAreaCode(final boolean create_image) {
 		String areaCode = "";
 		if (create_image) {
-			final NodeModel root = Controller.getController().getMap().getRootNode();
-			final ClickableImageCreator creator = new ClickableImageCreator(root,
-			    getModeController(), getProperty("link_replacement_regexp"));
-			areaCode = creator.generateHtml();
+			areaCode = Controller.getController().getMapViewManager().createHtmlMap();
 		}
 		return areaCode;
 	}

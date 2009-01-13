@@ -21,9 +21,7 @@ package org.freeplane.features.mindmapmode.addins.export;
 
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.Graphics;
-import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -42,8 +40,6 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Tools;
-import org.freeplane.view.swing.map.MapView;
-
 
 /**
  * @author foltin
@@ -150,20 +146,7 @@ abstract public class ExportAction extends FreeplaneAction {
 		out.close();
 	}
 
-	public BufferedImage createBufferedImage() {
-		view = Controller.getController().getViewController().getMapView();
-		if (view == null) {
-			return null;
-		}
-		((MapView)view).preparePrinting();
-		final Rectangle innerBounds = ((MapView)view).getInnerBounds();
-		BufferedImage myImage = (BufferedImage) (view).createImage(view.getWidth(), view
-		    .getHeight());
-		final Graphics g = myImage.getGraphics();
-		g.clipRect(innerBounds.x, innerBounds.y, innerBounds.width, innerBounds.height);
-		(view).print(g);
-		myImage = myImage.getSubimage(innerBounds.x, innerBounds.y, innerBounds.width,
-		    innerBounds.height);
-		return myImage;
+	public RenderedImage createBufferedImage() {
+		return Controller.getController().getMapViewManager().createImage();
 	}
 }

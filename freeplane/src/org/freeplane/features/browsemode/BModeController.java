@@ -29,7 +29,6 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.features.common.note.NodeNoteBase;
 import org.freeplane.features.common.note.NoteModel;
 
-
 public class BModeController extends ModeController {
 	static public final String MODENAME = "Browse";
 	private ImageIcon noteIcon;
@@ -42,7 +41,6 @@ public class BModeController extends ModeController {
 	public String getModeName() {
 		return BModeController.MODENAME;
 	}
-
 
 	public void setNoteIcon(final NodeModel node) {
 		final String noteText = NoteModel.getNoteText(node);

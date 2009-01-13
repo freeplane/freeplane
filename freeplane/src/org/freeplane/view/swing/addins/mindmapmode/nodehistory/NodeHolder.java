@@ -29,8 +29,6 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
-
-
 /**
  * @author Dimitry Polivaev
  * 13.12.2008

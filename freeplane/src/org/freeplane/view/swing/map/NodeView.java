@@ -38,7 +38,6 @@ import java.util.ListIterator;
 import java.util.Map;
 
 import javax.swing.JComponent;
-import javax.swing.event.TreeModelEvent;
 import javax.swing.tree.TreeNode;
 
 import org.freeplane.core.controller.Controller;
@@ -227,6 +226,10 @@ public class NodeView extends JComponent implements INodeView {
 			childrenViews.add(view);
 		}
 		return childrenViews;
+	}
+
+	public Component getComponent() {
+		return getMainView();
 	}
 
 	public JComponent getContent() {
@@ -815,6 +818,77 @@ public class NodeView extends JComponent implements INodeView {
 		return getParentView() == myNodeView.getParentView();
 	}
 
+	public void nodeChanged(final NodeChangeEvent event) {
+		if (event.getProperty() == NodeChangeType.FOLDING) {
+			treeStructureChanged();
+			return;
+		}
+		update();
+	}
+
+	public void onNodeDeleted(final NodeModel parent, final NodeModel child, final int index) {
+		getMap().resetShiftSelectionOrigin();
+		if (model.getModeController().getMapController().isFolded(model)) {
+			return;
+		}
+		final boolean preferredChildIsLeft = preferredChild != null && preferredChild.isLeft();
+		final NodeView node = (NodeView) getComponent(index);
+		if (node == preferredChild) {
+			preferredChild = null;
+			for (int j = index + 1; j < getComponentCount(); j++) {
+				final Component c = getComponent(j);
+				if (!(c instanceof NodeView)) {
+					break;
+				}
+				final NodeView candidate = (NodeView) c;
+				if (candidate.isVisible() && node.isLeft() == candidate.isLeft()) {
+					preferredChild = candidate;
+					break;
+				}
+			}
+			if (preferredChild == null) {
+				for (int j = index - 1; j >= 0; j--) {
+					final Component c = getComponent(j);
+					if (!(c instanceof NodeView)) {
+						break;
+					}
+					final NodeView candidate = (NodeView) c;
+					if (candidate.isVisible() && node.isLeft() == candidate.isLeft()) {
+						preferredChild = candidate;
+						break;
+					}
+				}
+			}
+		}
+		(node).remove();
+		final NodeView preferred = getPreferredVisibleChild(preferredChildIsLeft);
+		if (preferred != null) {
+			getMap().selectAsTheOnlyOneSelected(preferred);
+		}
+		else {
+			getMap().selectAsTheOnlyOneSelected(this);
+		}
+		revalidate();
+	}
+
+	public void onNodeInserted(final NodeModel parent, final NodeModel child, final int index) {
+		assert parent == model;
+		if (model.getModeController().getMapController().isFolded(model)) {
+			return;
+		}
+		insert(child, index);
+		revalidate();
+	}
+
+	public void onNodeMoved(final NodeModel oldParent, final int oldIndex,
+	                        final NodeModel newParent, final NodeModel child, final int newIndex) {
+		onNodeDeleted(oldParent, child, oldIndex);
+		onNodeInserted(newParent, child, newIndex);
+	}
+
+	public void onPreNodeDelete(final NodeModel oldParent, final NodeModel child, final int oldIndex) {
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see javax.swing.JComponent#paint(java.awt.Graphics)
@@ -994,7 +1068,6 @@ public class NodeView extends JComponent implements INodeView {
 		return getModel().toString() + ", " + super.toString();
 	}
 
-
 	/*
 	 * (non-Javadoc)
 	 * @see
@@ -1090,79 +1163,4 @@ public class NodeView extends JComponent implements INodeView {
 		return isSelected() && !MapView.standardDrawRectangleForSelection
 		        && !map.isCurrentlyPrinting();
 	}
-
-	public Component getComponent() {
-	    return getMainView();
-    }
-
-	public void nodeChanged(NodeChangeEvent event) {
-		if(event.getProperty() == NodeChangeType.FOLDING){
-			treeStructureChanged();
-			return;
-		}
-		update();
-    }
-
-	public void onNodeDeleted(NodeModel parent, NodeModel child, int index) {
-		getMap().resetShiftSelectionOrigin();
-		if (model.getModeController().getMapController().isFolded(model)) {
-			return;
-		}
-		final boolean preferredChildIsLeft = preferredChild != null && preferredChild.isLeft();
-			final NodeView node = (NodeView) getComponent(index);
-			if (node == preferredChild) {
-				preferredChild = null;
-				for (int j = index + 1; j < getComponentCount(); j++) {
-					final Component c = getComponent(j);
-					if (!(c instanceof NodeView)) {
-						break;
-					}
-					final NodeView candidate = (NodeView) c;
-					if (candidate.isVisible() && node.isLeft() == candidate.isLeft()) {
-						preferredChild = candidate;
-						break;
-					}
-				}
-				if (preferredChild == null) {
-					for (int j = index - 1; j >= 0; j--) {
-						final Component c = getComponent(j);
-						if (!(c instanceof NodeView)) {
-							break;
-						}
-						final NodeView candidate = (NodeView) c;
-						if (candidate.isVisible() && node.isLeft() == candidate.isLeft()) {
-							preferredChild = candidate;
-							break;
-						}
-					}
-				}
-			}
-			(node).remove();
-
-		final NodeView preferred = getPreferredVisibleChild(preferredChildIsLeft);
-		if (preferred != null) {
-			getMap().selectAsTheOnlyOneSelected(preferred);
-		}
-		else {
-			getMap().selectAsTheOnlyOneSelected(this);
-		}
-		revalidate();
-    }
-
-	public void onNodeInserted(NodeModel parent, NodeModel child, int index) {
-		assert parent == model;
-		if (model.getModeController().getMapController().isFolded(model)) {
-			return;
-		}
-		insert(child, index);
-		revalidate();
-    }
-
-	public void onNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
-		onNodeDeleted(oldParent, child, oldIndex);
-		onNodeInserted(newParent, child, newIndex);
-    }
-
-	public void onPreNodeDelete(NodeModel oldParent, NodeModel child, int oldIndex) {
-    }
 }

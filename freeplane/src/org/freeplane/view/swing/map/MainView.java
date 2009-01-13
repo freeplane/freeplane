@@ -56,11 +56,12 @@ import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
+import org.freeplane.features.mindmapmode.text.IMainView;
 
 /**
  * Base class for all node views.
  */
-public abstract class MainView extends JLabel {
+public abstract class MainView extends JLabel implements IMainView {
 	public static final Set executableExtensions = new HashSet(Arrays.asList(new String[] { "exe",
 	        "com", "vbs", "bat", "lnk" }));
 	static Dimension maximumSize = new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
@@ -135,10 +136,6 @@ public abstract class MainView extends JLabel {
 			return 0;
 		}
 		return getNodeView().getMap().getZoomed(icon.getIconWidth());
-	}
-
-	public boolean getIsLong() {
-		return isLong;
 	}
 
 	abstract Point getLeftPoint();
@@ -259,6 +256,10 @@ public abstract class MainView extends JLabel {
 	public boolean isInVerticalRegion(final double xCoord, final double p) {
 		return getNodeView().isLeft() ? xCoord > getSize().width * (1.0 - p)
 		        : xCoord < getSize().width * p;
+	}
+
+	public boolean isLong() {
+		return isLong;
 	}
 
 	@Override

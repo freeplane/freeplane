@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.mindmapmode.addins.export;
+package org.freeplane.view.swing.map;
 
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -28,10 +28,6 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.view.swing.map.MapView;
-import org.freeplane.view.swing.map.NodeView;
-
-
 
 /** */
 class ClickableImageCreator {
@@ -55,12 +51,12 @@ class ClickableImageCreator {
 	 *            if for example the link abc must be replaced with FMabcFM,
 	 *            then this string has to be FM$1FM.
 	 */
-	public ClickableImageCreator(final NodeModel root, final ModeController modeController,
-	                             final String regExpLinkReplacement) {
+	ClickableImageCreator(final NodeModel root, final ModeController modeController,
+	                      final String regExpLinkReplacement) {
 		super();
 		this.root = root;
 		this.regExpLinkReplacement = regExpLinkReplacement;
-		mapView = ((MapView)Controller.getController().getViewController().getMapView());
+		mapView = ((MapView) Controller.getController().getViewController().getMapView());
 		if (mapView != null) {
 			innerBounds = mapView.getInnerBounds();
 		}

@@ -30,7 +30,6 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.view.swing.map.MapView;
 
-
 /**
  * @author foltin
  */
@@ -128,8 +127,8 @@ public class NodeHistory implements IExtension, INodeSelectionListener {
 
 	public void onSelect(final NodeModel pNode) {
 		if (currentNodeHolder != null
-		        && currentNodeHolder.isIdentical(((MapView)Controller.getController().getViewController().getMapView())
-		            .getNodeView(pNode))) {
+		        && currentNodeHolder.isIdentical(((MapView) Controller.getController()
+		            .getViewController().getMapView()).getNodeView(pNode))) {
 			return;
 		}
 		while (canGoForward()) {
@@ -140,8 +139,8 @@ public class NodeHistory implements IExtension, INodeSelectionListener {
 			nodes.removeFirst();
 			nodeIterator = nodes.listIterator(nodes.size());
 		}
-		currentNodeHolder = new NodeHolder(((MapView)Controller.getController().getViewController().getMapView()).getNodeView(
-		    pNode));
+		currentNodeHolder = new NodeHolder(((MapView) Controller.getController()
+		    .getViewController().getMapView()).getNodeView(pNode));
 		nodeIterator.add(currentNodeHolder);
 	}
 

@@ -31,12 +31,10 @@ public class FModeController extends ModeController {
 		super();
 	}
 
-
 	@Override
 	public String getModeName() {
 		return FModeController.MODENAME;
 	}
-
 
 	@Override
 	public void startup() {

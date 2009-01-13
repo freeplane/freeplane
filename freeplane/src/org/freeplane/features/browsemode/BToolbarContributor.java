@@ -33,7 +33,6 @@ import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.PersistentEditableComboBox;
 
-
 public class BToolbarContributor implements IMenuContributor, IMapTitleChangeListener {
 	private static final String BROWSE_URL_STORAGE_KEY = "browse_url_storage";
 	final private ModeController modeController;

@@ -44,7 +44,6 @@ import org.freeplane.core.util.Tools;
 import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.features.mindmapmode.MMapModel;
 
-
 /**
  * @author Dimitry Polivaev
  */
@@ -204,7 +203,8 @@ public class MFileManager extends UrlManager {
 
 	public void open() {
 		final JFileChooser chooser = getFileChooser();
-		final int returnVal = chooser.showOpenDialog(Controller.getController().getViewController().getMapView());
+		final int returnVal = chooser.showOpenDialog(Controller.getController().getViewController()
+		    .getMapView());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File[] selectedFiles;
 			if (chooser.isMultiSelectionEnabled()) {
@@ -248,16 +248,14 @@ public class MFileManager extends UrlManager {
 			final String lockingUser = ((MMapController) getModeController().getMapController())
 			    .tryToLock(map, file);
 			if (lockingUser != null) {
-				UITools.informationMessage(
-				    UrlManager.expandPlaceholders(getModeController().getText(
-				        "map_locked_by_save_as"), file.getName(), lockingUser));
+				UITools.informationMessage(UrlManager.expandPlaceholders(getModeController()
+				    .getText("map_locked_by_save_as"), file.getName(), lockingUser));
 				return false;
 			}
 		}
 		catch (final Exception e) {
-			UITools.informationMessage(
-			    UrlManager.expandPlaceholders(getModeController().getText(
-			        "locking_failed_by_save_as"), file.getName()));
+			UITools.informationMessage(UrlManager.expandPlaceholders(getModeController().getText(
+			    "locking_failed_by_save_as"), file.getName()));
 			return false;
 		}
 		return saveInternal((MMapModel) map, file, false);
@@ -275,7 +273,8 @@ public class MFileManager extends UrlManager {
 			                + org.freeplane.features.mindmapmode.file.MFileManager.FREEPLANE_FILE_EXTENSION));
 		}
 		chooser.setDialogTitle(getModeController().getText("save_as"));
-		final int returnVal = chooser.showSaveDialog(Controller.getController().getViewController().getMapView());
+		final int returnVal = chooser.showSaveDialog(Controller.getController().getViewController()
+		    .getMapView());
 		if (returnVal != JFileChooser.APPROVE_OPTION) {
 			return false;
 		}
@@ -289,8 +288,8 @@ public class MFileManager extends UrlManager {
 		}
 		if (f.exists()) {
 			final int overwriteMap = JOptionPane.showConfirmDialog(Controller.getController()
-			    .getViewController().getMapView(), getModeController().getText("map_already_exists"), "Freeplane",
-			    JOptionPane.YES_NO_OPTION);
+			    .getViewController().getMapView(), getModeController()
+			    .getText("map_already_exists"), "Freeplane", JOptionPane.YES_NO_OPTION);
 			if (overwriteMap != JOptionPane.YES_OPTION) {
 				return false;
 			}

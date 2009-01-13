@@ -21,8 +21,6 @@ package org.freeplane.core.modecontroller;
 
 import org.freeplane.core.model.INodeView;
 
-
-
 public interface INodeViewVisitor {
 	void visit(INodeView view);
 }

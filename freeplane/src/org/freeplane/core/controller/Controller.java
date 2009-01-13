@@ -45,7 +45,6 @@ import org.freeplane.core.ui.UIBuilder;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.url.UrlManager;
 
-
 /**
  * Provides the methods to edit/change a Node. Forwards all messages to
  * MapModel(editing) or MapView(navigation).
@@ -87,6 +86,7 @@ public class Controller {
 
 	private final ActionController actionController;
 	final private ExtensionHashMap extensions;
+	final private LastOpenedList lastOpened;
 	/**
 	 * Converts from a local link to the real file URL of the documentation map.
 	 * (Used to change this behaviour under MacOSX).
@@ -95,11 +95,6 @@ public class Controller {
 	final private HashMap<String, ModeController> modeControllers;
 	final private Action quit;
 	private ViewController viewController;
-	final private LastOpenedList lastOpened;
-	public LastOpenedList getLastOpenedList() {
-		return lastOpened;
-	}
-
 
 	public Controller(final ResourceController resourceController) {
 		if (Controller.controllerInstance != null) {
@@ -115,7 +110,6 @@ public class Controller {
 		resourceController.init();
 		lastOpened = new LastOpenedList(Controller.getResourceController()
 		    .getProperty("lastOpened"));
-
 	}
 
 	public void addAction(final Object key, final Action value) {
@@ -176,13 +170,16 @@ public class Controller {
 		return Controller.VERSION;
 	}
 
+	public LastOpenedList getLastOpenedList() {
+		return lastOpened;
+	}
+
 	/**
 	 * @return
 	 */
 	public MapModel getMap() {
 		return getViewController().getMap();
 	}
-
 
 	public IMapViewManager getMapViewManager() {
 		return getViewController().getMapViewManager();
@@ -277,7 +274,7 @@ public class Controller {
 		Controller.controllerInstance = null;
 		return true;
 	}
-	
+
 	public void updateMenus(final MenuBuilder menuBuilder) {
 		menuBuilder.removeChildElements(FreeplaneMenuBar.FILE_MENU + "/last");
 		boolean firstElement = true;
@@ -295,5 +292,4 @@ public class Controller {
 			menuBuilder.addMenuItem(FreeplaneMenuBar.FILE_MENU + "/last", item, UIBuilder.AS_CHILD);
 		}
 	}
-
 }

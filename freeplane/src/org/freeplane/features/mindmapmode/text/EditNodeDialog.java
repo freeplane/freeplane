@@ -48,7 +48,6 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Tools;
 
-
 /**
  * @author foltin
  */
@@ -58,7 +57,7 @@ public class EditNodeDialog extends EditNodeBase {
 
 		LongNodeDialog() {
 			super(EditNodeDialog.this);
-			ViewController viewController = Controller.getController().getViewController();
+			final ViewController viewController = Controller.getController().getViewController();
 			textArea = new JTextArea(getText());
 			textArea.setLineWrap(true);
 			textArea.setWrapStyleWord(true);

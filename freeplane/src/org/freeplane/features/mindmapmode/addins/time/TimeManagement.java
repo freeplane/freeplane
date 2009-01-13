@@ -53,7 +53,6 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 
-
 /**
  * @author foltin
  */
@@ -129,10 +128,10 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 		}
 	}
 
-	public void afterMapClose(final MapModel oldMap) {
+	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
 	}
 
-	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
+	public void afterMapClose(final MapModel oldMap) {
 	}
 
 	public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {

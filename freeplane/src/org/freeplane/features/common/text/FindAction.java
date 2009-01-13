@@ -47,7 +47,7 @@ class FindAction extends FreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		NodeModel selected = Controller.getController().getSelection().getSelected();
+		final NodeModel selected = Controller.getController().getSelection().getSelected();
 		final String what = UITools.showInputDialog(selected, getModeController().getText(
 		    "find_what"), getModeController().getText("find"), JOptionPane.QUESTION_MESSAGE);
 		if (what == null || what.equals("")) {
@@ -113,7 +113,7 @@ class FindAction extends FreeplaneAction {
 	public void displayNode(final NodeModel node, final ArrayList nodesUnfoldedByDisplay) {
 		final NodeModel[] path = node.getPathToRoot();
 		for (int i = 0; i < path.length - 1; i++) {
-			final NodeModel nodeOnPath = (NodeModel) path[i];
+			final NodeModel nodeOnPath = path[i];
 			if (nodeOnPath.getModeController().getMapController().isFolded(nodeOnPath)) {
 				if (nodesUnfoldedByDisplay != null) {
 					nodesUnfoldedByDisplay.add(nodeOnPath);

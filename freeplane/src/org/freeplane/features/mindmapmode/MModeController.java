@@ -38,8 +38,6 @@ import org.freeplane.features.common.note.NoteController;
 import org.freeplane.features.mindmapmode.file.MFileManager;
 import org.freeplane.features.mindmapmode.note.MNoteController;
 
-
-
 public class MModeController extends ModeController {
 	static public final String MODENAME = "MindMap";
 	static private RedoAction redo;
@@ -106,7 +104,6 @@ public class MModeController extends ModeController {
 		addAction("propertyAction", new PropertyAction(optionPanelBuilder.getRoot()));
 	}
 
-
 	@Override
 	public void execute(final IUndoableActor actor) {
 		actor.act();
@@ -123,8 +120,8 @@ public class MModeController extends ModeController {
 	}
 
 	public boolean isUndoAction() {
-		MapModel model = Controller.getController().getMap();
-		if(! (model instanceof MMapModel)){
+		final MapModel model = Controller.getController().getMap();
+		if (!(model instanceof MMapModel)) {
 			return false;
 		}
 		return ((MMapModel) model).getUndoHandler().isUndoActionRunning();

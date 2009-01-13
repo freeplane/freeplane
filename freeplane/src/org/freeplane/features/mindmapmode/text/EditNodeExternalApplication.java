@@ -29,7 +29,6 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.url.UrlManager;
 
-
 /**
  * @author Daniel Polansky
  */

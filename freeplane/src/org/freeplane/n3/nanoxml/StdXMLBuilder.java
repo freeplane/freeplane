@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.Stack;
 
-
 /**
  * StdXMLBuilder is a concrete implementation of IXMLBuilder which creates a
  * tree of IXMLElement from an XML data source.

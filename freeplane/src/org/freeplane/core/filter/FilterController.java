@@ -45,7 +45,6 @@ import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.n3.nanoxml.XMLParserFactory;
 import org.freeplane.n3.nanoxml.XMLWriter;
 
-
 /**
  * @author Dimitry Polivaev
  */
@@ -73,9 +72,6 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		    new ShowFilterToolbarAction());
 	}
 
-	public void afterMapClose(final MapModel pOldMapView) {
-	}
-
 	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
 		final FilterComposerDialog fd = getFilterToolbar().getFilterDialog();
 		if (fd != null) {
@@ -83,6 +79,9 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		}
 		map = newMap;
 		getFilterToolbar().mapChanged(newMap);
+	}
+
+	public void afterMapClose(final MapModel pOldMapView) {
 	}
 
 	public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {

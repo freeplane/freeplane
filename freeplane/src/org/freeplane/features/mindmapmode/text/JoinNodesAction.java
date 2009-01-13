@@ -34,7 +34,6 @@ import org.freeplane.core.util.HtmlTools;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.MMapController;
 
-
 class JoinNodesAction extends FreeplaneAction {
 	final static Pattern BODY_END = Pattern.compile("</body>", Pattern.CASE_INSENSITIVE);
 	final static Pattern BODY_START = Pattern.compile("<body>", Pattern.CASE_INSENSITIVE);

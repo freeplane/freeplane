@@ -56,8 +56,6 @@ import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
 
-
-
 public class UserInputListenerFactory implements IUserInputListenerFactory {
 	public static final String NODE_POPUP = "/node_popup";
 	private Component leftToolBar;
@@ -197,7 +195,8 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 
 	public INodeMouseMotionListener getNodeMouseMotionListener() {
 		if (nodeMouseMotionListener == null) {
-			nodeMouseMotionListener = new DefaultNodeMouseMotionListener(Controller.getModeController());
+			nodeMouseMotionListener = new DefaultNodeMouseMotionListener(Controller
+			    .getModeController());
 		}
 		return nodeMouseMotionListener;
 	}
@@ -310,7 +309,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			group.add(newItem);
 			newItem.addActionListener(mapsMenuActionListener);
 			newItem.setMnemonic(displayName.charAt(0));
-			final MapView currentMapView = (MapView)mapViewManager.getMapViewComponent();
+			final MapView currentMapView = (MapView) mapViewManager.getMapViewComponent();
 			if (currentMapView != null) {
 				if (mapView == currentMapView) {
 					newItem.setSelected(true);
@@ -333,7 +332,6 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			menuBuilder.processMenuCategory(menuStructure);
 		}
 		final ViewController viewController = Controller.getController().getViewController();
-		
 		viewController.updateMenus(menuBuilder);
 		updateMapList();
 	}

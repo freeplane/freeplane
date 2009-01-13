@@ -31,7 +31,6 @@ import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 
-
 class NewChildAction extends FreeplaneAction {
 	public NewChildAction() {
 		super("new_child", "/images/idea.png");
@@ -60,7 +59,7 @@ class NewChildAction extends FreeplaneAction {
 					newNode = addNewNode(parent, childPosition, targetNode.isLeft());
 					modeController.getMapController().select(newNode);
 					((MTextController) TextController.getController(modeController)).edit(newNode,
-						targetNode, e, true, false, false);
+					    targetNode, e, true, false, false);
 					break;
 				}
 				else {
@@ -81,7 +80,7 @@ class NewChildAction extends FreeplaneAction {
 					modeController.getMapController().select(newNode);
 				}
 				((MTextController) TextController.getController(modeController)).edit(newNode,
-					targetNode, e, true, parentFolded, false);
+				    targetNode, e, true, parentFolded, false);
 				break;
 			}
 		}

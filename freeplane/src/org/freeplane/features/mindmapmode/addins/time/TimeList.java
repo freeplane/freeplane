@@ -83,7 +83,6 @@ import org.freeplane.features.common.note.NoteModel;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 
-
 import com.jgoodies.forms.factories.ButtonBarFactory;
 
 /**

@@ -84,8 +84,8 @@ public class FileOpener implements DropTargetListener {
 			}
 		}
 		catch (final Exception e) {
-			JOptionPane.showMessageDialog(Controller.getController().getViewController().getMapView(),
-			    "Couldn't open dropped file(s). Reason: " + e.getMessage());
+			JOptionPane.showMessageDialog(Controller.getController().getViewController()
+			    .getMapView(), "Couldn't open dropped file(s). Reason: " + e.getMessage());
 			dtde.dropComplete(false);
 			return;
 		}

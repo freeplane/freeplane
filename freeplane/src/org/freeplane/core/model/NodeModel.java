@@ -29,11 +29,11 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
+
 import org.freeplane.core.extension.ExtensionArray;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.extension.IExtensionCollection;
@@ -45,12 +45,15 @@ import org.freeplane.core.modecontroller.NodeChangeEvent;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.core.util.Tools;
 
-
 /**
  * This class represents a single Node of a Tree. It contains direct handles to
  * its parent and children and to its view.
  */
 public class NodeModel implements MutableTreeNode {
+	public enum NodeChangeType {
+		FOLDING, REFRESH
+	}
+
 	private static final boolean ALLOWSCHILDREN = true;
 	public final static int LEFT_POSITION = -1;
 	public static final String NODE_TEXT = "node_text";
@@ -117,14 +120,6 @@ public class NodeModel implements MutableTreeNode {
 		getMap().getIconRegistry().addIcon(_icon);
 	}
 
-	/** Recursive Method for getPath() */
-	private void addToPathVector(final Vector pathVector) {
-		pathVector.add(0, this);
-		if (parent != null) {
-			(parent).addToPathVector(pathVector);
-		}
-	}
-
 	public void addViewer(final INodeView viewer) {
 		getViewers().add(viewer);
 	}
@@ -165,14 +160,44 @@ public class NodeModel implements MutableTreeNode {
 		if (toolTip == null) {
 			toolTip = new TreeMap();
 		}
-	}
+	};
 
 	public Iterator extensionIterator() {
 		return extensions.extensionIterator();
-	};
+	}
 
 	public Iterator extensionIterator(final Class clazz) {
 		return extensions.extensionIterator(clazz);
+	}
+
+	public void fireNodeChanged(final NodeChangeEvent nodeChangeEvent) {
+		if (views == null) {
+			return;
+		}
+		final Iterator<INodeView> iterator = views.iterator();
+		while (iterator.hasNext()) {
+			iterator.next().nodeChanged(nodeChangeEvent);
+		}
+	}
+
+	private void fireNodeInserted(final NodeModel child, final int index) {
+		if (views == null) {
+			return;
+		}
+		final Iterator<INodeView> iterator = views.iterator();
+		while (iterator.hasNext()) {
+			iterator.next().onNodeInserted(this, child, index);
+		}
+	}
+
+	private void fireNodeRemoved(final NodeModel child, final int index) {
+		if (views == null) {
+			return;
+		}
+		final Iterator<INodeView> iterator = views.iterator();
+		while (iterator.hasNext()) {
+			iterator.next().onNodeDeleted(this, child, index);
+		}
 	}
 
 	public boolean getAllowsChildren() {
@@ -189,7 +214,7 @@ public class NodeModel implements MutableTreeNode {
 		}
 		final EncryptionModel encryptionModel = EncryptionModel.getModel(this);
 		return encryptionModel == null || encryptionModel.isAccessible() ? children.size() : 0;
-	}
+	};
 
 	public int getChildPosition(final NodeModel childNode) {
 		int position = 0;
@@ -211,7 +236,7 @@ public class NodeModel implements MutableTreeNode {
 
 	public IExtensionCollection getExtensions() {
 		return extensions;
-	};
+	}
 
 	public FilterInfo getFilterInfo() {
 		return filterInfo;
@@ -245,7 +270,7 @@ public class NodeModel implements MutableTreeNode {
 		return map.getModeController();
 	}
 
-	public int getNodeLevel(boolean countHidden) {
+	public int getNodeLevel(final boolean countHidden) {
 		int level = 0;
 		NodeModel parent;
 		for (parent = this; !parent.isRoot(); parent = parent.getParentNode()) {
@@ -262,6 +287,17 @@ public class NodeModel implements MutableTreeNode {
 
 	public NodeModel getParentNode() {
 		return parent;
+	}
+
+	public NodeModel[] getPathToRoot() {
+		int i = getNodeLevel(true);
+		final NodeModel[] path = new NodeModel[i + 1];
+		NodeModel node = this;
+		while (i >= 0) {
+			path[i--] = node;
+			node = node.getParentNode();
+		}
+		return path;
 	}
 
 	public String getPlainTextContent() {
@@ -351,26 +387,6 @@ public class NodeModel implements MutableTreeNode {
 		fireNodeInserted(childNode, getIndex(child));
 	}
 
-	private void fireNodeInserted(NodeModel child, int index) {
-		if(views == null){
-			return;
-		}
-	    Iterator<INodeView> iterator = views.iterator();
-	    while(iterator.hasNext()){
-	    	iterator.next().onNodeInserted(this, child, index);
-	    }
-	    
-    }
-	private void fireNodeRemoved(NodeModel child, int index) {
-		if(views == null){
-			return;
-		}
-	    Iterator<INodeView> iterator = views.iterator();
-	    while(iterator.hasNext()){
-	    	iterator.next().onNodeDeleted(this, child, index);
-	    }
-	}
-
 	/**
 	 * Returns whether the argument is parent or parent of one of the grandpa's
 	 * of this node. (transitive)
@@ -445,11 +461,10 @@ public class NodeModel implements MutableTreeNode {
 				preferredChild = (index > 0) ? (NodeModel) (children.get(index - 1)) : null;
 			}
 		}
-		int index = getIndex(node);
+		final int index = getIndex(node);
 		node.setParent(null);
 		children.remove(node);
 		fireNodeRemoved((NodeModel) node, index);
-
 	}
 
 	public IExtension removeExtension(final Class clazz) {
@@ -481,7 +496,7 @@ public class NodeModel implements MutableTreeNode {
 	}
 
 	public void setFolded(final boolean folded) {
-		if(this.folded == folded){
+		if (this.folded == folded) {
 			return;
 		}
 		final EncryptionModel encryptionModel = EncryptionModel.getModel(this);
@@ -490,8 +505,8 @@ public class NodeModel implements MutableTreeNode {
 			return;
 		}
 		this.folded = folded;
-		fireNodeChanged(new NodeChangeEvent(this, NodeChangeType.FOLDING, 
-			Boolean.valueOf(!folded), Boolean.valueOf(folded)));
+		fireNodeChanged(new NodeChangeEvent(this, NodeChangeType.FOLDING, Boolean.valueOf(!folded),
+		    Boolean.valueOf(folded)));
 	}
 
 	public void setHistoryInformation(final HistoryInformationModel historyInformation) {
@@ -577,28 +592,5 @@ public class NodeModel implements MutableTreeNode {
 	@Override
 	public String toString() {
 		return getText();
-	}
-
-	public NodeModel[] getPathToRoot() {
-		int i = getNodeLevel(true);
-		NodeModel[] path = new NodeModel[i+1];
-		NodeModel node = this;
-		while(i>=0){
-			path[i--] = node;
-			node = node.getParentNode();
-		}
-		return path;
-    }
-
-	public void fireNodeChanged(NodeChangeEvent nodeChangeEvent) {
-		if(views == null){
-			return;
-		}
-		Iterator<INodeView> iterator = views.iterator();
-		while(iterator.hasNext()){
-			iterator.next().nodeChanged(nodeChangeEvent);
-		}
-    }
-	
-	public enum NodeChangeType {FOLDING, REFRESH};
+	};
 }

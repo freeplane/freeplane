@@ -84,6 +84,7 @@ import org.freeplane.features.mindmapnode.pattern.MPatternController;
 import org.freeplane.view.swing.addins.FitToPage;
 import org.freeplane.view.swing.addins.mindmapmode.nodehistory.NodeHistory;
 import org.freeplane.view.swing.map.MainView;
+import org.freeplane.view.swing.map.attribute.EditAttributesAction;
 import org.freeplane.view.swing.ui.DefaultMapMouseListener;
 import org.freeplane.view.swing.ui.DefaultNodeKeyListener;
 import org.freeplane.view.swing.ui.DefaultNodeMouseMotionListener;
@@ -155,50 +156,51 @@ public class MModeControllerFactory {
 		modeController = new MModeController();
 		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(
 		    modeController);
-		userInputListenerFactory.setNodeMouseMotionListener(new DefaultNodeMouseMotionListener(modeController){
-
+		userInputListenerFactory.setNodeMouseMotionListener(new DefaultNodeMouseMotionListener(
+		    modeController) {
 			@Override
-            public void mouseReleased(MouseEvent e) {
+			public void mouseReleased(final MouseEvent e) {
 				stopTimerForDelayedSelection();
-				ModeController modeController = Controller.getModeController();
+				final ModeController modeController = Controller.getModeController();
 				modeController.getUserInputListenerFactory().extendSelection(e);
 				showPopupMenu(e);
 				if (e.isConsumed()) {
 					return;
 				}
 				if (e.getModifiers() == InputEvent.BUTTON1_MASK) {
-						/* perform action only if one selected node. */
-						MapController mapController = modeController.getMapController();
-						if (mapController.getSelectedNodes().size() != 1) {
-							return;
-						}
-						final MainView component = (MainView) e.getComponent();
-						if (component.isInFollowLinkRegion(e.getX())) {
-							LinkController.getController(modeController).loadURL();
-						}
-						else {
-							final NodeModel node = (component).getNodeView().getModel();
-							if (!mapController.hasChildren(node)) {
-								/* If the link exists, follow the link; toggle folded otherwise */
-								if (!e.isAltDown() && !e.isControlDown() && !e.isShiftDown() && !e.isPopupTrigger()
-								        && e.getButton() == MouseEvent.BUTTON1 && (NodeLinks.getLink(node) == null)) {
-									((MTextController) TextController.getController(modeController)).edit(null, false, false);
-									return;
-								}
-								if (NodeLinks.getLink(mapController.getSelectedNode()) == null) {
-									mapController.toggleFolded();
-								}
-								else {
-									LinkController.getController(modeController).loadURL();
-								}
+					/* perform action only if one selected node. */
+					final MapController mapController = modeController.getMapController();
+					if (mapController.getSelectedNodes().size() != 1) {
+						return;
+					}
+					final MainView component = (MainView) e.getComponent();
+					if (component.isInFollowLinkRegion(e.getX())) {
+						LinkController.getController(modeController).loadURL();
+					}
+					else {
+						final NodeModel node = (component).getNodeView().getModel();
+						if (!mapController.hasChildren(node)) {
+							/* If the link exists, follow the link; toggle folded otherwise */
+							if (!e.isAltDown() && !e.isControlDown() && !e.isShiftDown()
+							        && !e.isPopupTrigger() && e.getButton() == MouseEvent.BUTTON1
+							        && (NodeLinks.getLink(node) == null)) {
+								((MTextController) TextController.getController(modeController))
+								    .edit(null, false, false);
 								return;
 							}
-							mapController.toggleFolded(mapController.getSelectedNodes().listIterator());
+							if (NodeLinks.getLink(mapController.getSelectedNode()) == null) {
+								mapController.toggleFolded();
+							}
+							else {
+								LinkController.getController(modeController).loadURL();
+							}
+							return;
 						}
+						mapController.toggleFolded(mapController.getSelectedNodes().listIterator());
+					}
 					e.consume();
 				}
-            }
-			
+			}
 		});
 		modeController.setUserInputListenerFactory(userInputListenerFactory);
 		Controller.getController().addModeController(modeController);
@@ -212,20 +214,20 @@ public class MModeControllerFactory {
 		LinkController.install(modeController, new MLinkController(modeController));
 		userInputListenerFactory.setMapMouseListener(new DefaultMapMouseListener(
 		    new MMouseMotionListener(modeController)));
-
 		MPatternController.install(modeController, new MPatternController(modeController));
 		final MTextController textController = new MTextController(modeController);
 		TextController.install(modeController, textController);
 		userInputListenerFactory.setNodeKeyListener(new DefaultNodeKeyListener(new IEditHandler() {
-        			public void edit(final KeyEvent e, final boolean addNew, final boolean editLong) {
-        				textController.edit(e, addNew, editLong);
-        			}
-        		}));
+			public void edit(final KeyEvent e, final boolean addNew, final boolean editLong) {
+				textController.edit(e, addNew, editLong);
+			}
+		}));
 		ClipboardController.install(modeController, new MClipboardController(modeController));
 		userInputListenerFactory.setNodeDropTargetListener(new MNodeDropListener(modeController));
 		LocationController.install(modeController, new MLocationController(modeController));
 		userInputListenerFactory.setNodeMotionListener(new MNodeMotionListener(modeController));
 		AttributeController.install(modeController, new MAttributeController(modeController));
+		modeController.addAction("editAttributes", new EditAttributesAction());
 		final JPopupMenu popupmenu = new JPopupMenu();
 		userInputListenerFactory.setNodePopupMenu(popupmenu);
 		final FreeplaneToolBar toolbar = new FreeplaneToolBar();
@@ -233,15 +235,16 @@ public class MModeControllerFactory {
 		userInputListenerFactory.setLeftToolBar(((MIconController) IconController
 		    .getController(modeController)).getIconToolBarScrollPane());
 		new RevisionPlugin(modeController);
-        userInputListenerFactory.setMenuStructure("/org/freeplane/startup/mindmapmode/menu.xml");
-        userInputListenerFactory.updateMenus(modeController);
-        final MenuBuilder builder = modeController.getUserInputListenerFactory().getMenuBuilder();
-        ((MIconController) IconController.getController(modeController)).updateIconToolbar();
-        ((MIconController) IconController.getController(modeController)).updateMenus(builder);
-        MPatternController.getController(modeController).createPatternSubMenu(builder,
-            UserInputListenerFactory.NODE_POPUP);
-        final String formatMenuString = FreeplaneMenuBar.FORMAT_MENU;
-        MPatternController.getController(modeController).createPatternSubMenu(builder, formatMenuString);
-        modeController.updateMenus();
+		userInputListenerFactory.setMenuStructure("/org/freeplane/startup/mindmapmode/menu.xml");
+		userInputListenerFactory.updateMenus(modeController);
+		final MenuBuilder builder = modeController.getUserInputListenerFactory().getMenuBuilder();
+		((MIconController) IconController.getController(modeController)).updateIconToolbar();
+		((MIconController) IconController.getController(modeController)).updateMenus(builder);
+		MPatternController.getController(modeController).createPatternSubMenu(builder,
+		    UserInputListenerFactory.NODE_POPUP);
+		final String formatMenuString = FreeplaneMenuBar.FORMAT_MENU;
+		MPatternController.getController(modeController).createPatternSubMenu(builder,
+		    formatMenuString);
+		modeController.updateMenus();
 	}
 }

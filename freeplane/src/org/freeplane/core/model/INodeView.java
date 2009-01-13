@@ -28,6 +28,6 @@ import org.freeplane.core.modecontroller.INodeChangeListener;
  * @author Dimitry Polivaev
  * 10.01.2009
  */
-public interface INodeView extends INodeChangeListener, IMapChangeListener{
+public interface INodeView extends INodeChangeListener, IMapChangeListener {
 	Component getComponent();
 }

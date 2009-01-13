@@ -37,7 +37,6 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.components.MultipleImage;
 
-
 /**
  * @author Foltin
  */
@@ -118,7 +117,7 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 		onUpdateChildren(event.getNode());
 	}
 
-	public void onNodeDeleted(final NodeModel parent, final NodeModel child, int index) {
+	public void onNodeDeleted(final NodeModel parent, final NodeModel child, final int index) {
 		setStyleRecursive(parent);
 	}
 
@@ -126,13 +125,13 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 		setStyleRecursive(child);
 	}
 
-	public void onNodeMoved(final NodeModel oldParent, int oldIndex, final NodeModel newParent,
-	                        final NodeModel child, final int newIndex) {
+	public void onNodeMoved(final NodeModel oldParent, final int oldIndex,
+	                        final NodeModel newParent, final NodeModel child, final int newIndex) {
 		setStyleRecursive(oldParent);
 		setStyleRecursive(child);
 	}
 
-	public void onPreNodeDelete(final NodeModel parent, final NodeModel child, int index) {
+	public void onPreNodeDelete(final NodeModel parent, final NodeModel child, final int index) {
 	}
 
 	/*

@@ -56,7 +56,7 @@ public class DefaultNodeKeyListener implements KeyListener {
 			case KeyEvent.VK_RIGHT:
 			case KeyEvent.VK_PAGE_UP:
 			case KeyEvent.VK_PAGE_DOWN:
-				((MapView)Controller.getController().getViewController().getMapView()).move(e);
+				((MapView) Controller.getController().getViewController().getMapView()).move(e);
 				return;
 			case KeyEvent.VK_HOME:
 			case KeyEvent.VK_END:
@@ -92,7 +92,7 @@ public class DefaultNodeKeyListener implements KeyListener {
 			doMove = true;
 		}
 		if (doMove) {
-			((MapView)Controller.getController().getViewController().getMapView()).move(e);
+			((MapView) Controller.getController().getViewController().getMapView()).move(e);
 			e.consume();
 			return;
 		}
@@ -100,7 +100,8 @@ public class DefaultNodeKeyListener implements KeyListener {
 
 	public void keyReleased(final KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
-			((MapView)Controller.getController().getViewController().getMapView()).resetShiftSelectionOrigin();
+			((MapView) Controller.getController().getViewController().getMapView())
+			    .resetShiftSelectionOrigin();
 		}
 	}
 

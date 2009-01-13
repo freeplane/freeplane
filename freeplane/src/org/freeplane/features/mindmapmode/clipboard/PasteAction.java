@@ -159,6 +159,7 @@ class PasteAction extends FreeplaneAction {
 
 	private static final Pattern HREF_PATTERN = Pattern
 	    .compile("<html>\\s*<body>\\s*<a\\s+href=\"([^>]+)\">(.*)</a>\\s*</body>\\s*</html>");
+	static private Pattern mailPattern;
 	static final Pattern nonLinkCharacter = Pattern.compile("[ \n()'\",;]");
 
 	public static String firstLetterCapitalized(final String text) {
@@ -169,7 +170,6 @@ class PasteAction extends FreeplaneAction {
 	}
 
 	private List newNodes;
-	static private Pattern mailPattern;
 
 	public PasteAction() {
 		super("paste", "/images/editpaste.png");
@@ -301,14 +301,14 @@ class PasteAction extends FreeplaneAction {
 	                                              final boolean asSibling, final boolean isLeft)
 	        throws UnsupportedFlavorException, IOException {
 		final String textFromClipboard = (String) t.getTransferData(DataFlavor.stringFlavor);
-		if(mailPattern == null){
+		if (mailPattern == null) {
 			mailPattern = Pattern.compile("([^@ <>\\*']+@[^@ <>\\*']+)");
 		}
 		final String[] textLines = textFromClipboard.split("\n");
 		if (textLines.length > 1) {
 			Controller.getController().getViewController().setWaitingCursor(true);
 		}
-		MapModel map = parent.getMap();
+		final MapModel map = parent.getMap();
 		if (asSibling) {
 			parent = new NodeModel(map);
 		}
@@ -343,8 +343,7 @@ class PasteAction extends FreeplaneAction {
 					    .firstLetterCapitalized(textParts[textPartIdx].replaceAll("^~*", ""));
 				}
 			}
-			final NodeModel node = getModeController().getMapController().newNode(visibleText,
-			    map);
+			final NodeModel node = getModeController().getMapController().newNode(visibleText, map);
 			if (textLines.length == 1) {
 				pastedNode = node;
 			}
