@@ -32,12 +32,8 @@ import java.util.TreeMap;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
-import javax.swing.event.EventListenerList;
-import javax.swing.event.TreeModelListener;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
-import javax.swing.tree.TreePath;
-
 import org.freeplane.core.extension.ExtensionArray;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.extension.IExtensionCollection;
@@ -45,6 +41,7 @@ import org.freeplane.core.filter.FilterInfo;
 import org.freeplane.core.filter.IFilter;
 import org.freeplane.core.modecontroller.INodeViewVisitor;
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.modecontroller.NodeChangeEvent;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.core.util.Tools;
 
@@ -72,7 +69,6 @@ public class NodeModel implements MutableTreeNode {
 	private HistoryInformationModel historyInformation = null;
 	final private NodeIconSetModel icons;
 	private String id;
-	private final EventListenerList listenerList = new EventListenerList();
 	private MapModel map = null;
 	private NodeModel parent;
 	private int position = NodeModel.UNKNOWN_POSITION;
@@ -129,13 +125,8 @@ public class NodeModel implements MutableTreeNode {
 		}
 	}
 
-	public void addTreeModelListener(final TreeModelListener l) {
-		listenerList.add(TreeModelListener.class, l);
-	}
-
 	public void addViewer(final INodeView viewer) {
 		getViewers().add(viewer);
-		addTreeModelListener(viewer);
 	}
 
 	public boolean areViewsEmpty() {
@@ -246,10 +237,6 @@ public class NodeModel implements MutableTreeNode {
 		return children.indexOf(node);
 	}
 
-	public EventListenerList getListeners() {
-		return listenerList;
-	}
-
 	public MapModel getMap() {
 		return map;
 	}
@@ -258,11 +245,11 @@ public class NodeModel implements MutableTreeNode {
 		return map.getModeController();
 	}
 
-	public int getNodeLevel() {
+	public int getNodeLevel(boolean countHidden) {
 		int level = 0;
 		NodeModel parent;
 		for (parent = this; !parent.isRoot(); parent = parent.getParentNode()) {
-			if (parent.isVisible()) {
+			if (countHidden || parent.isVisible()) {
 				level++;
 			}
 		}
@@ -275,15 +262,6 @@ public class NodeModel implements MutableTreeNode {
 
 	public NodeModel getParentNode() {
 		return parent;
-	}
-
-	/** Creates the TreePath recursively */
-	public TreePath getPath() {
-		final Vector pathVector = new Vector();
-		TreePath treePath;
-		this.addToPathVector(pathVector);
-		treePath = new TreePath(pathVector.toArray());
-		return treePath;
 	}
 
 	public String getPlainTextContent() {
@@ -370,6 +348,27 @@ public class NodeModel implements MutableTreeNode {
 			preferredChild = childNode;
 		}
 		child.setParent(this);
+		fireNodeInserted(childNode, getIndex(child));
+	}
+
+	private void fireNodeInserted(NodeModel child, int index) {
+		if(views == null){
+			return;
+		}
+	    Iterator<INodeView> iterator = views.iterator();
+	    while(iterator.hasNext()){
+	    	iterator.next().onNodeInserted(this, child, index);
+	    }
+	    
+    }
+	private void fireNodeRemoved(NodeModel child, int index) {
+		if(views == null){
+			return;
+		}
+	    Iterator<INodeView> iterator = views.iterator();
+	    while(iterator.hasNext()){
+	    	iterator.next().onNodeDeleted(this, child, index);
+	    }
 	}
 
 	/**
@@ -446,8 +445,11 @@ public class NodeModel implements MutableTreeNode {
 				preferredChild = (index > 0) ? (NodeModel) (children.get(index - 1)) : null;
 			}
 		}
+		int index = getIndex(node);
 		node.setParent(null);
 		children.remove(node);
+		fireNodeRemoved((NodeModel) node, index);
+
 	}
 
 	public IExtension removeExtension(final Class clazz) {
@@ -466,13 +468,8 @@ public class NodeModel implements MutableTreeNode {
 		return icons.removeIcon(position);
 	}
 
-	public void removeTreeModelListener(final TreeModelListener l) {
-		listenerList.remove(TreeModelListener.class, l);
-	}
-
 	public void removeViewer(final INodeView viewer) {
 		getViewers().remove(viewer);
-		removeTreeModelListener(viewer);
 	}
 
 	public void setExtension(final Class clazz, final IExtension extension) {
@@ -484,12 +481,17 @@ public class NodeModel implements MutableTreeNode {
 	}
 
 	public void setFolded(final boolean folded) {
+		if(this.folded == folded){
+			return;
+		}
 		final EncryptionModel encryptionModel = EncryptionModel.getModel(this);
 		if (encryptionModel != null && !encryptionModel.isAccessible()) {
 			this.folded = true;
 			return;
 		}
 		this.folded = folded;
+		fireNodeChanged(new NodeChangeEvent(this, NodeChangeType.FOLDING, 
+			Boolean.valueOf(!folded), Boolean.valueOf(folded)));
 	}
 
 	public void setHistoryInformation(final HistoryInformationModel historyInformation) {
@@ -576,4 +578,27 @@ public class NodeModel implements MutableTreeNode {
 	public String toString() {
 		return getText();
 	}
+
+	public NodeModel[] getPathToRoot() {
+		int i = getNodeLevel(true);
+		NodeModel[] path = new NodeModel[i+1];
+		NodeModel node = this;
+		while(i>=0){
+			path[i--] = node;
+			node = node.getParentNode();
+		}
+		return path;
+    }
+
+	public void fireNodeChanged(NodeChangeEvent nodeChangeEvent) {
+		if(views == null){
+			return;
+		}
+		Iterator<INodeView> iterator = views.iterator();
+		while(iterator.hasNext()){
+			iterator.next().nodeChanged(nodeChangeEvent);
+		}
+    }
+	
+	public enum NodeChangeType {FOLDING, REFRESH};
 }

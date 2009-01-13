@@ -118,7 +118,7 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 		onUpdateChildren(event.getNode());
 	}
 
-	public void onNodeDeleted(final NodeModel parent, final NodeModel child) {
+	public void onNodeDeleted(final NodeModel parent, final NodeModel child, int index) {
 		setStyleRecursive(parent);
 	}
 
@@ -126,13 +126,13 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 		setStyleRecursive(child);
 	}
 
-	public void onNodeMoved(final NodeModel oldParent, final NodeModel newParent,
+	public void onNodeMoved(final NodeModel oldParent, int oldIndex, final NodeModel newParent,
 	                        final NodeModel child, final int newIndex) {
 		setStyleRecursive(oldParent);
 		setStyleRecursive(child);
 	}
 
-	public void onPreNodeDelete(final NodeModel model) {
+	public void onPreNodeDelete(final NodeModel parent, final NodeModel child, int index) {
 	}
 
 	/*

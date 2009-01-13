@@ -111,7 +111,7 @@ class FindAction extends FreeplaneAction {
 	 * link actions).
 	 */
 	public void displayNode(final NodeModel node, final ArrayList nodesUnfoldedByDisplay) {
-		final Object[] path = Controller.getController().getMap().getPathToRoot(node);
+		final NodeModel[] path = node.getPathToRoot();
 		for (int i = 0; i < path.length - 1; i++) {
 			final NodeModel nodeOnPath = (NodeModel) path[i];
 			if (nodeOnPath.getModeController().getMapController().isFolded(nodeOnPath)) {

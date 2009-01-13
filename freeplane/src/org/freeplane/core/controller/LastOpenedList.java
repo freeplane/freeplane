@@ -31,7 +31,7 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import org.freeplane.core.frame.IMapChangeListener;
+import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.n3.nanoxml.XMLParseException;
@@ -42,7 +42,7 @@ import org.freeplane.n3.nanoxml.XMLParseException;
  * provide persistence for the last recent maps. Maps should be shown in the
  * format:"mode\:key",ie."Mindmap\:/home/joerg/freeplane.mm"
  */
-public class LastOpenedList implements IMapChangeListener{
+public class LastOpenedList implements IMapSelectionListener{
 	/**
 	 * Contains Restore strings.
 	 */

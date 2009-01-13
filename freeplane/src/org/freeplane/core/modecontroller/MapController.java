@@ -52,6 +52,7 @@ import org.freeplane.core.modecontroller.ModeController.IActionOnChange;
 import org.freeplane.core.model.EncryptionModel;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.model.NodeModel.NodeChangeType;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Tools;
 import org.freeplane.n3.nanoxml.XMLParseException;
@@ -73,8 +74,8 @@ public class MapController {
 		/* the < relation. */
 		public int compare(final NodeModel n1, final NodeModel n2) {
 			final MapModel map = n1.getMap();
-			final Object[] path1 = map.getPathToRoot(n1);
-			final Object[] path2 = map.getPathToRoot(n2);
+			final NodeModel[] path1 = n1.getPathToRoot();
+			final NodeModel[] path2 = n2.getPathToRoot();
 			final int depth = path1.length - path2.length;
 			if (depth > 0) {
 				return -1;
@@ -140,7 +141,6 @@ public class MapController {
 		}
 		if (node.getModeController().getMapController().isFolded(node) != folded) {
 			node.setFolded(folded);
-			nodeStructureChanged(node);
 		}
 	}
 
@@ -208,7 +208,7 @@ public class MapController {
 	 * link actions).
 	 */
 	public void displayNode(final NodeModel node, final ArrayList nodesUnfoldedByDisplay) {
-		final Object[] path = node.getMap().getPathToRoot(node);
+		final NodeModel[] path = node.getPathToRoot();
 		for (int i = 0; i < path.length - 1; i++) {
 			final NodeModel nodeOnPath = (NodeModel) path[i];
 			if (nodeOnPath.getModeController().getMapController().isFolded(nodeOnPath)) {
@@ -234,10 +234,10 @@ public class MapController {
 		}
 	}
 
-	protected void fireNodeDeleted(final NodeModel parent, final NodeModel child) {
+	protected void fireNodeDeleted(final NodeModel parent, final NodeModel child, int index) {
 		final Iterator<IMapChangeListener> iterator = mapChangeListeners.iterator();
 		while (iterator.hasNext()) {
-			iterator.next().onNodeDeleted(parent, child);
+			iterator.next().onNodeDeleted(parent, child, index);
 		}
 	}
 
@@ -248,18 +248,18 @@ public class MapController {
 		}
 	}
 
-	protected void fireNodeMoved(final NodeModel oldParent, final NodeModel newParent,
+	protected void fireNodeMoved(final NodeModel oldParent, int oldIndex, final NodeModel newParent,
 	                             final NodeModel child, final int newIndex) {
 		final Iterator<IMapChangeListener> iterator = mapChangeListeners.iterator();
 		while (iterator.hasNext()) {
-			iterator.next().onNodeMoved(oldParent, newParent, child, newIndex);
+			iterator.next().onNodeMoved(oldParent, oldIndex, newParent, child, newIndex);
 		}
 	}
 
-	protected void firePreNodeDelete(final NodeModel node) {
+	protected void firePreNodeDelete(final NodeModel parent, NodeModel selectedNode, int index) {
 		final Iterator<IMapChangeListener> iterator = mapChangeListeners.iterator();
 		while (iterator.hasNext()) {
-			iterator.next().onPreNodeDelete(node);
+			iterator.next().onPreNodeDelete(parent, selectedNode, index);
 		}
 	}
 
@@ -342,7 +342,7 @@ public class MapController {
 
 	public NodeModel getRootNode() {
 		final MapModel map = Controller.getController().getMap();
-		return (NodeModel) map.getRoot();
+		return (NodeModel) map.getRootNode();
 	}
 
 	public NodeModel getSelectedNode() {
@@ -388,7 +388,7 @@ public class MapController {
 
 	public void insertNodeIntoWithoutUndo(final NodeModel newNode, final NodeModel parent,
 	                                      final int index) {
-		parent.getMap().insertNodeInto(newNode, parent, index);
+		parent.insert(newNode, index);
 		fireNodeInserted(parent, newNode, index);
 	}
 
@@ -560,16 +560,11 @@ public class MapController {
 			if (node.getHistoryInformation() != null) {
 				node.getHistoryInformation().setLastModifiedAt(new Date());
 			}
-			onUpdate(node, property, oldValue, newValue);
 		}
-		(node.getMap()).nodeChangedInternal(node);
+		NodeChangeEvent nodeChangeEvent = new NodeChangeEvent(node, property, oldValue, newValue);
+        fireNodeChanged(node, nodeChangeEvent);
 	}
 
-	/**
-	 */
-	public void nodeStructureChanged(final NodeModel node) {
-		node.getMap().nodeStructureChanged(node);
-	}
 
 	public void onDeselect(final NodeModel node) {
 		try {
@@ -591,17 +586,13 @@ public class MapController {
 		}
 	}
 
-	/**
-	 * @param isUpdate
-	 * @param node
-	 */
-	public void onUpdate(final NodeModel node, final Object property, final Object oldValue,
-	                     final Object newValue) {
-		final Iterator<INodeChangeListener> iterator = nodeChangeListeners.iterator();
+	private void fireNodeChanged(final NodeModel node, NodeChangeEvent nodeChangeEvent) {
+	    final Iterator<INodeChangeListener> iterator = nodeChangeListeners.iterator();
 		while (iterator.hasNext()) {
-			iterator.next().nodeChanged(new NodeChangeEvent(node, property, oldValue, newValue));
+			iterator.next().nodeChanged(nodeChangeEvent);
 		}
-	}
+		node.fireNodeChanged(nodeChangeEvent);
+    }
 
 	public void refreshMap() {
 		final MapModel map = Controller.getController().getMap();
@@ -610,13 +601,18 @@ public class MapController {
 	}
 
 	public void refreshMapFrom(final NodeModel node) {
-		final Iterator iterator = node.getChildren().iterator();
+		NodeChangeEvent event= new NodeChangeEvent(node, NodeChangeType.REFRESH, null, null);
+		refreshMap(node, event);
+	}
+
+	private void refreshMap(final NodeModel node, NodeChangeEvent event) {
+	    final Iterator iterator = node.getChildren().iterator();
 		while (iterator.hasNext()) {
 			final NodeModel child = (NodeModel) iterator.next();
-			refreshMapFrom(child);
+			refreshMap(child, event);
 		}
-		(node.getMap()).nodeChangedInternal(node);
-	}
+		fireNodeChanged(node, event);
+    }
 
 	public void removeMapChangeListener(final IMapChangeListener listener) {
 		mapChangeListeners.remove(listener);

@@ -37,7 +37,7 @@ import org.freeplane.core.model.NodeModel;
  * 12.01.2009
  */
 public interface IMapViewManager {
-	public abstract void addMapChangeListener(final IMapChangeListener pListener);
+	public abstract void addMapChangeListener(final IMapSelectionListener pListener);
 
 	public abstract void addMapViewChangeListener(final IMapViewChangeListener pListener);
 
@@ -93,7 +93,7 @@ public interface IMapViewManager {
 
 	public abstract void previousMapView();
 
-	public abstract void removeIMapViewChangeListener(final IMapChangeListener pListener);
+	public abstract void removeIMapViewChangeListener(final IMapSelectionListener pListener);
 
 	/**
 	 * This is the question whether the map is already opened. If this is the

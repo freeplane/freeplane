@@ -23,7 +23,7 @@ import org.freeplane.core.model.MapModel;
 
 
 
-public interface IMapChangeListener {
+public interface IMapSelectionListener {
 	void afterMapClose(MapModel oldMap);
 
 	void afterMapChange(MapModel oldMap, MapModel newMap);

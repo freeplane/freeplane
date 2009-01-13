@@ -44,7 +44,7 @@ import javax.swing.border.EmptyBorder;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.util.IListModel;
-import org.freeplane.core.frame.IMapChangeListener;
+import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
@@ -54,7 +54,7 @@ import org.freeplane.features.common.attribute.AttributeRegistry;
 /**
  * @author Dimitry Polivaev
  */
-public class AttributeManagerDialog extends JDialog implements IMapChangeListener {
+public class AttributeManagerDialog extends JDialog implements IMapSelectionListener {
 	private class ApplyAction extends FreeplaneAction {
 		ApplyAction() {
 			super("apply");

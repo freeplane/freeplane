@@ -49,7 +49,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListDataListener;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.frame.IMapChangeListener;
+import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
@@ -63,7 +63,7 @@ import org.freeplane.features.common.attribute.NodeAttributeTableModel;
 
 
 public class AssignAttributeDialog extends JDialog implements IAttributesListener,
-        IMapChangeListener {
+        IMapSelectionListener {
 	private class AddAction extends IteratingAction {
 		private String name;
 		private String value;

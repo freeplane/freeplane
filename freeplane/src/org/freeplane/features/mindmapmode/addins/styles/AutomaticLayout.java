@@ -290,19 +290,19 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 		setStyle(event.getNode());
 	}
 
-	public void onNodeDeleted(final NodeModel parent, final NodeModel child) {
+	public void onNodeDeleted(final NodeModel parent, final NodeModel child, int index) {
 	}
 
 	public void onNodeInserted(final NodeModel parent, final NodeModel child, final int newIndex) {
 		setStyleRecursive(child);
 	}
 
-	public void onNodeMoved(final NodeModel oldParent, final NodeModel newParent,
+	public void onNodeMoved(final NodeModel oldParent, int oldIndex, final NodeModel newParent,
 	                        final NodeModel child, final int newIndex) {
 		setStyleRecursive(child);
 	}
 
-	public void onPreNodeDelete(final NodeModel model) {
+	public void onPreNodeDelete(final NodeModel parent, final NodeModel child, int index) {
 	}
 
 	public void readingCompleted(final NodeModel topNode, final HashMap<String, String> newIds) {

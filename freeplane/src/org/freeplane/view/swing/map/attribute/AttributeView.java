@@ -260,8 +260,8 @@ public class AttributeView implements ChangeListener, TableModelListener {
 	}
 
 	public void tableChanged(final TableModelEvent e) {
-		final MapView map = getNodeView().getMap();
-		map.getModel().nodeChanged(getNode());
+		NodeModel node = getNode();
+		node.getModeController().getMapController().nodeChanged(node);
 	}
 
 	/**

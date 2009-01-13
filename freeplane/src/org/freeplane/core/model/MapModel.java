@@ -26,12 +26,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Random;
 
-import javax.swing.event.EventListenerList;
-import javax.swing.event.TreeModelEvent;
-import javax.swing.event.TreeModelListener;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeNode;
-
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.ExtensionHashMap;
 import org.freeplane.core.extension.IExtension;
@@ -41,7 +35,7 @@ import org.freeplane.core.filter.IFilter;
 import org.freeplane.core.filter.condition.NoFilteringCondition;
 import org.freeplane.core.modecontroller.ModeController;
 
-public class MapModel extends DefaultTreeModel {
+public class MapModel{
 	private static Random ran = new Random();
 	private static final int UNDEFINED_NODE_ID = 2000000000;
 	/**
@@ -56,9 +50,10 @@ public class MapModel extends DefaultTreeModel {
 	final private HashMap<String, NodeModel> nodes;
 	private boolean readOnly = true;
 	private URL url;
+	private NodeModel root;
 
 	public MapModel(final ModeController modeController, NodeModel root) {
-		super(root);
+		this.root = root;
 		extensions = new ExtensionHashMap();
 		mModeController = modeController;
 		nodes = new HashMap<String, NodeModel>();
@@ -94,131 +89,6 @@ public class MapModel extends DefaultTreeModel {
 
 	public Iterator extensionIterator(final Class clazz) {
 		return extensions.extensionIterator(clazz);
-	}
-
-	@Override
-	protected void fireTreeNodesChanged(final Object source, final Object[] path,
-	                                    final int[] childIndices, final Object[] children) {
-		final Object[] listeners = listenerList.getListenerList();
-		TreeModelEvent e = null;
-		e = fireTreeNodesChanged(source, path, childIndices, children, listeners, e);
-		final NodeModel node = (NodeModel) path[path.length - 1];
-		fireTreeNodesChanged(source, path, childIndices, children, node.getListeners()
-		    .getListenerList(), e);
-	}
-
-	protected TreeModelEvent fireTreeNodesChanged(final Object source, final Object[] path,
-	                                              final int[] childIndices,
-	                                              final Object[] children,
-	                                              final Object[] listeners, TreeModelEvent e) {
-		for (int i = listeners.length - 2; i >= 0; i -= 2) {
-			if (listeners[i] == TreeModelListener.class) {
-				if (e == null) {
-					e = new TreeModelEvent(source, path, childIndices, children);
-				}
-				((TreeModelListener) listeners[i + 1]).treeNodesChanged(e);
-			}
-		}
-		return e;
-	}
-
-	/**
-	 * Notifies all listeners that have registered interest for notification on
-	 * this event type. The event instance is lazily created using the
-	 * parameters passed into the fire method.
-	 *
-	 * @param source
-	 *            the node being changed
-	 * @param path
-	 *            the path to the root node
-	 * @param childIndices
-	 *            the indices of the changed elements
-	 * @param children
-	 *            the changed elements
-	 * @see EventListenerList
-	 */
-	@Override
-	protected void fireTreeNodesInserted(final Object source, final Object[] path,
-	                                     final int[] childIndices, final Object[] children) {
-		for (int i = 0; i < children.length; i++) {
-			registryNodeRecursive((NodeModel) children[i]);
-		}
-		final Object[] listeners = listenerList.getListenerList();
-		TreeModelEvent e = null;
-		e = fireTreeNodesInserted(source, path, childIndices, children, listeners, e);
-		final NodeModel node = (NodeModel) path[path.length - 1];
-		fireTreeNodesInserted(source, path, childIndices, children, node.getListeners()
-		    .getListenerList(), e);
-	}
-
-	protected TreeModelEvent fireTreeNodesInserted(final Object source, final Object[] path,
-	                                               final int[] childIndices,
-	                                               final Object[] children,
-	                                               final Object[] listeners, TreeModelEvent e) {
-		for (int i = listeners.length - 2; i >= 0; i -= 2) {
-			if (listeners[i] == TreeModelListener.class) {
-				if (e == null) {
-					e = new TreeModelEvent(source, path, childIndices, children);
-				}
-				((TreeModelListener) listeners[i + 1]).treeNodesInserted(e);
-			}
-		}
-		return e;
-	}
-
-	@Override
-	protected void fireTreeNodesRemoved(final Object source, final Object[] path,
-	                                    final int[] childIndices, final Object[] children) {
-		for (int i = 0; i < children.length; i++) {
-			unregistryNode((NodeModel) children[i]);
-		}
-		final Object[] listeners = listenerList.getListenerList();
-		TreeModelEvent e = null;
-		e = fireTreeNodesRemoved(source, path, childIndices, children, listeners, e);
-		final NodeModel node = (NodeModel) path[path.length - 1];
-		fireTreeNodesRemoved(source, path, childIndices, children, node.getListeners()
-		    .getListenerList(), e);
-	}
-
-	protected TreeModelEvent fireTreeNodesRemoved(final Object source, final Object[] path,
-	                                              final int[] childIndices,
-	                                              final Object[] children,
-	                                              final Object[] listeners, TreeModelEvent e) {
-		for (int i = listeners.length - 2; i >= 0; i -= 2) {
-			if (listeners[i] == TreeModelListener.class) {
-				if (e == null) {
-					e = new TreeModelEvent(source, path, childIndices, children);
-				}
-				((TreeModelListener) listeners[i + 1]).treeNodesRemoved(e);
-			}
-		}
-		return e;
-	}
-
-	@Override
-	protected void fireTreeStructureChanged(final Object source, final Object[] path,
-	                                        final int[] childIndices, final Object[] children) {
-		final Object[] listeners = listenerList.getListenerList();
-		TreeModelEvent e = null;
-		e = fireTreeStructureChanged(source, path, childIndices, children, listeners, e);
-		final NodeModel node = (NodeModel) path[path.length - 1];
-		fireTreeStructureChanged(source, path, childIndices, children, node.getListeners()
-		    .getListenerList(), e);
-	}
-
-	protected TreeModelEvent fireTreeStructureChanged(final Object source, final Object[] path,
-	                                                  final int[] childIndices,
-	                                                  final Object[] children,
-	                                                  final Object[] listeners, TreeModelEvent e) {
-		for (int i = listeners.length - 2; i >= 0; i -= 2) {
-			if (listeners[i] == TreeModelListener.class) {
-				if (e == null) {
-					e = new TreeModelEvent(source, path, childIndices, children);
-				}
-				((TreeModelListener) listeners[i + 1]).treeStructureChanged(e);
-			}
-		}
-		return e;
 	}
 
 	public String generateNodeID(final String proposedID) {
@@ -281,7 +151,7 @@ public class MapModel extends DefaultTreeModel {
 	}
 
 	public NodeModel getRootNode() {
-		return (NodeModel) getRoot();
+		return root;
 	}
 
 	public String getTitle() {
@@ -308,28 +178,6 @@ public class MapModel extends DefaultTreeModel {
 
 	public boolean isSaved() {
 		return (changesPerformedSinceLastSave == 0);
-	}
-
-	/**
-	 * This method should not be called directly!
-	 */
-	@Override
-	public void nodeChanged(final TreeNode node) {
-		getModeController().getMapController().nodeChanged(((NodeModel) node));
-	}
-
-	/**
-	 * Invoke this method if you've totally changed the children of node and its
-	 * childrens children... This will post a treeStructureChanged event.
-	 */
-	public void nodeChangedInternal(final TreeNode node) {
-		if (node != null) {
-			fireTreeNodesChanged(this, getPathToRoot(node), null, null);
-		}
-	}
-
-	public void nodeRefresh(final TreeNode node) {
-		getModeController().getMapController().nodeRefresh((NodeModel) node);
 	}
 
 	/**
@@ -399,7 +247,7 @@ public class MapModel extends DefaultTreeModel {
 	}
 
 	public void setRoot(final NodeModel root) {
-		super.setRoot(root);
+		this.root = root;
 	};
 
 	/**
@@ -433,16 +281,5 @@ public class MapModel extends DefaultTreeModel {
 	 */
 	public void setURL(final URL v) {
 		url = v;
-	}
-
-	void unregistryNode(final NodeModel nodeModel) {
-		final String id = nodeModel.getID();
-		if (id != null) {
-			nodes.put(id, null);
-		}
-		final Iterator<NodeModel> iterator = nodeModel.getChildren().iterator();
-		while (iterator.hasNext()) {
-			unregistryNode(iterator.next());
-		}
 	}
 }

@@ -21,12 +21,13 @@ package org.freeplane.core.model;
 
 import java.awt.Component;
 
-import javax.swing.event.TreeModelListener;
+import org.freeplane.core.modecontroller.IMapChangeListener;
+import org.freeplane.core.modecontroller.INodeChangeListener;
 
 /**
  * @author Dimitry Polivaev
  * 10.01.2009
  */
-public interface INodeView extends TreeModelListener{
+public interface INodeView extends INodeChangeListener, IMapChangeListener{
 	Component getComponent();
 }

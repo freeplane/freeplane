@@ -45,7 +45,7 @@ import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.frame.IMapChangeListener;
+import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
@@ -57,7 +57,7 @@ import org.freeplane.features.mindmapmode.text.MTextController;
 /**
  * @author foltin
  */
-class TimeManagement implements PropertyChangeListener, ActionListener, IMapChangeListener {
+class TimeManagement implements PropertyChangeListener, ActionListener, IMapSelectionListener {
 	private class RemoveReminders implements ActionListener {
 		/**
 		 *

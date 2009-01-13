@@ -34,7 +34,7 @@ import org.freeplane.core.filter.condition.ConditionFactory;
 import org.freeplane.core.filter.condition.DefaultConditionRenderer;
 import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.filter.condition.NoFilteringCondition;
-import org.freeplane.core.frame.IMapChangeListener;
+import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.n3.nanoxml.IXMLParser;
@@ -49,7 +49,7 @@ import org.freeplane.n3.nanoxml.XMLWriter;
 /**
  * @author Dimitry Polivaev
  */
-public class FilterController implements IMapChangeListener, IExtension {
+public class FilterController implements IMapSelectionListener, IExtension {
 	static final String FREEPLANE_FILTER_EXTENSION_WITHOUT_DOT = "mmfilter";
 
 	public static FilterController getController() {

@@ -102,14 +102,12 @@ public class EnterPassword extends FreeplaneAction {
 		final EncryptionModel encNode = EncryptionModel.getModel(node);
 		if (encNode != null) {
 			if (encNode.isAccessible()) {
-				node.setFolded(true);
 				encNode.setAccessible(false);
-				mindMapController.getMapController().nodeStructureChanged(node);
+				node.setFolded(true);
 			}
 			else {
 				if (doPasswordCheckAndDecryptNode(encNode)) {
 					node.setFolded(false);
-					mindMapController.getMapController().nodeStructureChanged(node);
 				}
 			}
 			final IMapSelection selection = Controller.getController().getSelection();

@@ -66,7 +66,7 @@ public class DefaultFilter implements IFilter {
 			selected = DefaultFilter.getNearestVisibleParent(selected);
 			mapSelection.selectAsTheOnlyOneSelected(selected);
 		}
-		mapSelection.setSiblingMaxLevel(selected.getNodeLevel());
+		mapSelection.setSiblingMaxLevel(selected.getNodeLevel(false));
 	}
 
 	private ICondition condition = null;

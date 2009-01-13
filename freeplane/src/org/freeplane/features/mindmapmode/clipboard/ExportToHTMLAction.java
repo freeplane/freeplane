@@ -38,7 +38,7 @@ class ExportToHTMLAction extends FreeplaneAction {
 		final MapModel map = Controller.getController().getMap();
 		try {
 			final File file = new File(map.getFile() + ".html");
-			ClipboardController.saveHTML((NodeModel) map.getRoot(), file);
+			ClipboardController.saveHTML((NodeModel) map.getRootNode(), file);
 			getModeController().getMapController().loadURL(file.toString());
 		}
 		catch (final IOException ex) {

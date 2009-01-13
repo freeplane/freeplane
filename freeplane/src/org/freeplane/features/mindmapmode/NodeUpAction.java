@@ -138,7 +138,7 @@ class NodeUpAction extends FreeplaneAction {
 
 	private int moveNodeTo(final NodeModel child, final NodeModel newParent, final int direction) {
 		final MapModel map = Controller.getController().getMap();
-		final int index = map.getIndexOfChild(newParent, child);
+		final int index = newParent.getIndex(child);
 		int newIndex = index;
 		final int maxIndex = newParent.getChildCount();
 		final Vector sortedNodesIndices = getSortedSiblings(newParent);
@@ -150,7 +150,7 @@ class NodeUpAction extends FreeplaneAction {
 			newPositionInVector = 0;
 		}
 		final NodeModel destinationNode = (NodeModel) sortedNodesIndices.get(newPositionInVector);
-		newIndex = map.getIndexOfChild(newParent, destinationNode);
+		newIndex = newParent.getIndex(destinationNode);
 		((MMapController) map.getModeController().getMapController()).moveNodeToWithoutUndo(child,
 		    newParent, newIndex);
 		return newIndex;

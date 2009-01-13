@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
-import org.freeplane.core.frame.IMapChangeListener;
+import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.frame.IMapViewChangeListener;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.modecontroller.IMapSelection;
@@ -52,10 +52,10 @@ import org.freeplane.core.util.Tools;
  */
 public class MapViewController implements IMapViewManager {
 	static private class MapViewChangeObserverCompound{
-		final private HashSet<IMapChangeListener> mapListeners = new HashSet();
+		final private HashSet<IMapSelectionListener> mapListeners = new HashSet();
 		final private HashSet<IMapViewChangeListener> viewListeners = new HashSet();
 
-		void addListener(final IMapChangeListener listener) {
+		void addListener(final IMapSelectionListener listener) {
 			mapListeners.add(listener);
 		}
 
@@ -64,8 +64,8 @@ public class MapViewController implements IMapViewManager {
 		}
 
 		void afterMapClose(final MapView pOldMap) {
-			for (final Iterator<IMapChangeListener> iter = mapListeners.iterator(); iter.hasNext();) {
-				final IMapChangeListener observer = (IMapChangeListener) iter.next();
+			for (final Iterator<IMapSelectionListener> iter = mapListeners.iterator(); iter.hasNext();) {
+				final IMapSelectionListener observer = (IMapSelectionListener) iter.next();
 				observer.afterMapClose(getModel(pOldMap));
 			}
 			for (final Iterator<IMapViewChangeListener> iter = viewListeners.iterator(); iter.hasNext();) {
@@ -75,8 +75,8 @@ public class MapViewController implements IMapViewManager {
 		}
 
 		void afterMapChange(final MapView oldMap, final MapView newMap) {
-			for (final Iterator<IMapChangeListener> iter = mapListeners.iterator(); iter.hasNext();) {
-				final IMapChangeListener observer = (IMapChangeListener) iter.next();
+			for (final Iterator<IMapSelectionListener> iter = mapListeners.iterator(); iter.hasNext();) {
+				final IMapSelectionListener observer = (IMapSelectionListener) iter.next();
 				observer.afterMapChange(getModel(oldMap), getModel(newMap));
 			}
 			for (final Iterator<IMapViewChangeListener> iter = viewListeners.iterator(); iter.hasNext();) {
@@ -86,8 +86,8 @@ public class MapViewController implements IMapViewManager {
 		}
 
 		void beforeMapChange(final MapView oldMap, final MapView newMap) {
-			for (final Iterator<IMapChangeListener> iter = mapListeners.iterator(); iter.hasNext();) {
-				final IMapChangeListener observer = (IMapChangeListener) iter.next();
+			for (final Iterator<IMapSelectionListener> iter = mapListeners.iterator(); iter.hasNext();) {
+				final IMapSelectionListener observer = (IMapSelectionListener) iter.next();
 				observer.beforeMapChange(getModel(oldMap), getModel(newMap));
 			}
 			for (final Iterator<IMapViewChangeListener> iter = viewListeners.iterator(); iter.hasNext();) {
@@ -103,7 +103,7 @@ public class MapViewController implements IMapViewManager {
 		boolean isMapChangeAllowed(final MapModel oldMap, final MapModel newMap) {
 			boolean returnValue = true;
 			for (final Iterator iter = new Vector(mapListeners).iterator(); iter.hasNext();) {
-				final IMapChangeListener observer = (IMapChangeListener) iter.next();
+				final IMapSelectionListener observer = (IMapSelectionListener) iter.next();
 				returnValue = observer.isMapChangeAllowed(oldMap, newMap);
 				if (!returnValue) {
 					break;
@@ -112,7 +112,7 @@ public class MapViewController implements IMapViewManager {
 			return returnValue;
 		}
 
-		void removeListener(final IMapChangeListener listener) {
+		void removeListener(final IMapSelectionListener listener) {
 			mapListeners.remove(listener);
 		}
 		void removeListener(final IMapViewChangeListener listener) {
@@ -146,7 +146,7 @@ public class MapViewController implements IMapViewManager {
 	/* (non-Javadoc)
      * @see org.freeplane.core.frame.IMapViewController#addMapChangeListener(org.freeplane.core.frame.IMapChangeListener)
      */
-	public void addMapChangeListener(final IMapChangeListener pListener) {
+	public void addMapChangeListener(final IMapSelectionListener pListener) {
 		listener.addListener(pListener);
 	}
 
@@ -380,7 +380,7 @@ public class MapViewController implements IMapViewManager {
 	/* (non-Javadoc)
      * @see org.freeplane.core.frame.IMapViewController#removeIMapViewChangeListener(org.freeplane.core.frame.IMapChangeListener)
      */
-	public void removeIMapViewChangeListener(final IMapChangeListener pListener) {
+	public void removeIMapViewChangeListener(final IMapSelectionListener pListener) {
 		listener.removeListener(pListener);
 	}
 

@@ -700,13 +700,13 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 			case KeyEvent.VK_LEFT:
 				newSelected = getVisibleLeft(oldSelected);
 				if (newSelected != null) {
-					setSiblingMaxLevel(newSelected.getModel().getNodeLevel());
+					setSiblingMaxLevel(newSelected.getModel().getNodeLevel(false));
 				}
 				return newSelected;
 			case KeyEvent.VK_RIGHT:
 				newSelected = getVisibleRight(oldSelected);
 				if (newSelected != null) {
-					setSiblingMaxLevel(newSelected.getModel().getNodeLevel());
+					setSiblingMaxLevel(newSelected.getModel().getNodeLevel(false));
 				}
 				return newSelected;
 			case KeyEvent.VK_UP:
@@ -1090,7 +1090,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 	public void selectAsTheOnlyOneSelected(final NodeView newSelected) {
 		scrollNodeToVisible(newSelected);
 		selectAsTheOnlyOneSelected(newSelected, true);
-		setSiblingMaxLevel(newSelected.getModel().getNodeLevel());
+		setSiblingMaxLevel(newSelected.getModel().getNodeLevel(false));
 	}
 
 	public void selectAsTheOnlyOneSelected(final NodeView node, final boolean requestFocus) {

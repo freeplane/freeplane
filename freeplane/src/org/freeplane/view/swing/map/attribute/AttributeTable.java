@@ -53,7 +53,6 @@ import org.freeplane.features.common.attribute.AttributeTableLayoutModel;
 import org.freeplane.features.common.attribute.ColumnWidthChangeEvent;
 import org.freeplane.features.common.attribute.IAttributeTableModel;
 import org.freeplane.features.common.attribute.IColumnWidthChangeListener;
-import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
 
@@ -222,7 +221,8 @@ public class AttributeTable extends JTable implements IColumnWidthChangeListener
 		final AttributeTableLayoutModel layoutModel = (AttributeTableLayoutModel) event.getSource();
 		final int width = layoutModel.getColumnWidth(col);
 		getColumnModel().getColumn(col).setPreferredWidth((int) (width * zoom));
-		getAttributeView().getNode().getMap().nodeChanged(getAttributeView().getNode());
+		NodeModel node = getAttributeView().getNode();
+		node.getModeController().getMapController().nodeChanged(node);
 	}
 
 	/**
@@ -463,9 +463,9 @@ public class AttributeTable extends JTable implements IColumnWidthChangeListener
 		else {
 			updateRowHeights();
 		}
-		final MapView map = getAttributeView().getNodeView().getMap();
 		getParent().getParent().invalidate();
-		map.getModel().nodeChanged(getAttributeView().getNode());
+		NodeModel node = getAttributeView().getNode();
+		node.getModeController().getMapController().nodeChanged(node);
 	}
 
 	/**

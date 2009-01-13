@@ -135,11 +135,11 @@ public class MMapController extends MapController {
 	 */
 	public void deleteWithoutUndo(final NodeModel selectedNode) {
 		final NodeModel oldParent = selectedNode.getParentNode();
-		firePreNodeDelete(selectedNode);
+		firePreNodeDelete(oldParent, selectedNode, oldParent.getIndex(selectedNode));
 		final MapModel map = selectedNode.getMap();
 		map.setSaved(false);
-		map.removeNodeFromParent(selectedNode);
-		fireNodeDeleted(oldParent, selectedNode);
+		oldParent.remove(selectedNode);
+		fireNodeDeleted(oldParent, selectedNode, oldParent.getIndex(selectedNode));
 	}
 
 	public MModeController getMModeController() {
@@ -278,11 +278,11 @@ public class MMapController extends MapController {
 	 * @return returns the new index.
 	 */
 	int moveNodeToWithoutUndo(final NodeModel child, final NodeModel newParent, final int newIndex) {
-		final MapModel map = child.getMap();
 		final NodeModel oldParent = child.getParentNode();
-		map.removeNodeFromParent(child);
-		map.insertNodeInto(child, newParent, newIndex);
-		fireNodeMoved(oldParent, newParent, child, newIndex);
+		int oldIndex = oldParent.getIndex(child);
+		oldParent.remove(child);
+		newParent.insert(child, newIndex);
+		fireNodeMoved(oldParent, oldIndex, newParent, child, newIndex);
 		return newIndex;
 	}
 
