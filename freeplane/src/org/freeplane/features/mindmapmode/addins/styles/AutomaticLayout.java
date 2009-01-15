@@ -287,7 +287,11 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 	}
 
 	public void nodeChanged(final NodeChangeEvent event) {
-		setStyle(event.getNode());
+		NodeModel node = event.getNode();
+		if(!isActive(node)){
+			return;
+		}
+		setStyle(node);
 	}
 
 	public void onNodeDeleted(final NodeModel parent, final NodeModel child, final int index) {

@@ -111,10 +111,15 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 	}
 
 	public void nodeChanged(final NodeChangeEvent event) {
+		NodeModel node = event.getNode();
+		if(!isActive(node)){
+			return;
+		}
+		setStyle(node);
 		if (!event.getProperty().equals("icon")) {
 			return;
 		}
-		onUpdateChildren(event.getNode());
+		onUpdateChildren(node);
 	}
 
 	public void onNodeDeleted(final NodeModel parent, final NodeModel child, final int index) {

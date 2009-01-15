@@ -27,6 +27,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.components.BlindIcon;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
@@ -36,11 +37,11 @@ public class ThreeCheckBoxProperty extends PropertyBean implements IPropertyCont
 	protected static final int DON_T_TOUCH_VALUE_INT = 2;
 	static public final String FALSE_VALUE = "false";
 	protected static final int FALSE_VALUE_INT = 1;
-	private static final ImageIcon MINUS_IMAGE = new ImageIcon(ClassLoader
-	    .getSystemResource("accessories/plugins/icons/edit_remove.png"));
+	private static final ImageIcon MINUS_IMAGE = new ImageIcon(Controller.getResourceController()
+	    .getResource("/accessories/plugins/icons/edit_remove.png"));
 	private static final Icon NO_IMAGE = new BlindIcon(15);
-	private static final ImageIcon PLUS_IMAGE = new ImageIcon(ClassLoader
-	    .getSystemResource("accessories/plugins/icons/edit_add.png"));
+	private static final ImageIcon PLUS_IMAGE = new ImageIcon(Controller.getResourceController()
+	    .getResource("/accessories/plugins/icons/edit_add.png"));
 	static public final String TRUE_VALUE = "true";
 	protected static final int TRUE_VALUE_INT = 0;
 	JButton mButton = new JButton();

@@ -236,12 +236,20 @@ public abstract class PersistentNodeHook implements IExtension {
 	protected boolean isActiveForSelection() {
 		final NodeModel[] nodes = getNodes();
 		for (int i = 0; i < nodes.length; i++) {
-			if (nodes[i].containsExtension(getExtensionClass())) {
+			NodeModel nodeModel = nodes[i];
+			if (nodeModel.containsExtension(getExtensionClass())) {
 				return true;
 			}
 		}
 		return false;
 	}
+
+	protected boolean isActive(NodeModel nodeModel) {
+		if (!nodeModel.isRoot() && getHookAnnotation().onceForMap()) {
+			return isActive(nodeModel.getMap().getRootNode());
+		}
+	    return nodeModel.containsExtension(getExtensionClass());
+    }
 
 	protected void registerAction(final FreeplaneAction action) {
 		registerAction(action, action.getClass().getAnnotation(ActionDescriptor.class));

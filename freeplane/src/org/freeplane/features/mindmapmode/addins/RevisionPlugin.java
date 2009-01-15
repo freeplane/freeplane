@@ -50,6 +50,10 @@ public class RevisionPlugin extends PersistentNodeHook implements INodeChangeLis
 	}
 
 	public void nodeChanged(final NodeChangeEvent event) {
+		NodeModel node = event.getNode();
+		if(!isActive(node)){
+			return;
+		}
 		if (event.getProperty().equals(NodeModel.NODE_TEXT)
 		        && !((MModeController) getModeController()).isUndoAction()) {
 			final MNodeStyleController nodeStyleController = (MNodeStyleController) NodeStyleController

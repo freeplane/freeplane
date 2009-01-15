@@ -62,7 +62,11 @@ public class CreationModificationPlugin extends PersistentNodeHook implements IN
 	}
 
 	public void nodeChanged(final NodeChangeEvent event) {
-		setStyle(event.getNode());
+		NodeModel node = event.getNode();
+		if(!isActive(node)){
+			return;
+		}
+		setStyle(node);
 	}
 
 	@Override
