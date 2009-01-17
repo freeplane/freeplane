@@ -287,8 +287,8 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 	}
 
 	public void nodeChanged(final NodeChangeEvent event) {
-		NodeModel node = event.getNode();
-		if(!isActive(node)){
+		final NodeModel node = event.getNode();
+		if (!isActive(node)) {
 			return;
 		}
 		setStyle(node);
@@ -298,7 +298,7 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 	}
 
 	public void onNodeInserted(final NodeModel parent, final NodeModel child, final int newIndex) {
-		if(!isActive(parent)){
+		if (!isActive(parent)) {
 			return;
 		}
 		setStyleRecursive(child);
@@ -306,7 +306,7 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 
 	public void onNodeMoved(final NodeModel oldParent, final int oldIndex,
 	                        final NodeModel newParent, final NodeModel child, final int newIndex) {
-		if(!isActive(newParent)){
+		if (!isActive(newParent)) {
 			return;
 		}
 		setStyleRecursive(child);
