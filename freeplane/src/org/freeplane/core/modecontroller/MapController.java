@@ -44,9 +44,12 @@ import javax.swing.Action;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.IMapViewManager;
+import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.MapReader;
 import org.freeplane.core.io.MapWriter;
 import org.freeplane.core.io.ReadManager;
+import org.freeplane.core.io.UnknownElementWriter;
+import org.freeplane.core.io.UnknownElements;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.modecontroller.ModeController.IActionOnChange;
 import org.freeplane.core.model.EncryptionModel;
@@ -120,8 +123,16 @@ public class MapController {
 		mapWriter = new MapWriter(writeManager);
 		readManager = new ReadManager();
 		mapReader = new MapReader(readManager);
+		readManager.addElementHandler("map", mapReader);
+		readManager.addAttributeHandler("map", "version", new IAttributeHandler() {
+			public void setAttribute(final Object node, final String value) {
+			}
+		});
 		writeManager.addElementWriter("map", mapWriter);
 		writeManager.addAttributeWriter("map", mapWriter);
+		final UnknownElementWriter unknownElementWriter = new UnknownElementWriter();
+		writeManager.addExtensionAttributeWriter(UnknownElements.class, unknownElementWriter);
+		writeManager.addExtensionElementWriter(UnknownElements.class, unknownElementWriter);
 		createActions(modeController);
 		mapChangeListeners = new LinkedList<IMapChangeListener>();
 		nodeSelectionListeners = new LinkedList();

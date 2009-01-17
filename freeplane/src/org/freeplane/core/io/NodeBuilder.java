@@ -49,9 +49,6 @@ public class NodeBuilder implements IElementDOMHandler {
 	}
 
 	public Object createElement(final Object parent, final String tag, final IXMLElement attributes) {
-		if (tag.equals("map") || tag.equals("attribute_registry")) {
-			return getMap();
-		}
 		if (tag.equals(NodeBuilder.XML_NODE)) {
 			final NodeModel userObject = createNode();
 			if (mapChild == null) {
@@ -71,16 +68,20 @@ public class NodeBuilder implements IElementDOMHandler {
 		return new NodeModel(getMap());
 	}
 
-	public void endElement(final Object parent, final String tag, final Object userObject,
+	public void endElement(final Object parentObject, final String tag, final Object userObject,
 	                       final IXMLElement dom) {
-		if (tag.equals("node") && parent instanceof MapModel) {
-			mapChild = ((NodeModel) userObject);
+		final NodeModel node = (NodeModel) userObject;
+		if (dom.getAttributeCount() != 0 || dom.hasChildren()) {
+			node.addExtension(new UnknownElements(dom));
+		}
+		if (tag.equals("node") && parentObject instanceof MapModel) {
+			mapChild = node;
 			return;
 		}
-		if (parent instanceof NodeModel) {
-			final NodeModel node = (NodeModel) parent;
+		if (parentObject instanceof NodeModel) {
+			final NodeModel parentNode = (NodeModel) parentObject;
 			if (tag.equals("node") && userObject instanceof NodeModel) {
-				node.insert((NodeModel) userObject, -1);
+				parentNode.insert(node, -1);
 			}
 			return;
 		}
@@ -155,7 +156,6 @@ public class NodeBuilder implements IElementDOMHandler {
 	/**
 	 */
 	public void registerBy(final ReadManager reader) {
-		reader.addElementHandler("map", this);
 		registerAttributeHandlers(reader);
 		reader.addElementHandler(NodeBuilder.XML_NODE, this);
 	}

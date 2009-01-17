@@ -592,5 +592,5 @@ public class NodeModel implements MutableTreeNode {
 	@Override
 	public String toString() {
 		return getText();
-	};
+	}
 }

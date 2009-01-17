@@ -26,13 +26,14 @@ import java.util.HashMap;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.n3.nanoxml.IXMLElement;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
 /**
  * @author Dimitry Polivaev
  * 20.12.2008
  */
-public class MapReader {
+public class MapReader implements IElementDOMHandler {
 	public class NodeTreeCreator {
 		public NodeModel create(final Reader pReader) {
 			final TreeXmlReader reader = new TreeXmlReader(readManager);
@@ -73,6 +74,10 @@ public class MapReader {
 		nodeBuilder.registerBy(readManager);
 	}
 
+	public Object createElement(final Object parent, final String tag, final IXMLElement attributes) {
+		return getCreatedMap();
+	}
+
 	public NodeModel createNodeTreeFromXml(final MapModel map, final Reader pReader)
 	        throws XMLParseException, IOException {
 		try {
@@ -83,6 +88,14 @@ public class MapReader {
 		}
 		finally {
 			mapLoadingInProcess = false;
+		}
+	}
+
+	public void endElement(final Object parent, final String tag, final Object element,
+	                       final IXMLElement dom) {
+		final MapModel map = (MapModel) element;
+		if (dom.getAttributeCount() != 0 || dom.hasChildren()) {
+			map.addExtension(new UnknownElements(dom));
 		}
 	}
 
