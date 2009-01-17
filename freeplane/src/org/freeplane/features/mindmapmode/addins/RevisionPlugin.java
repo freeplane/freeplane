@@ -41,12 +41,12 @@ import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
 public class RevisionPlugin extends PersistentNodeHook implements INodeChangeListener {
 	public RevisionPlugin(final ModeController modeController) {
 		super(modeController);
+		getModeController().getMapController().addNodeChangeListener(this);
 	}
 
 	@Override
 	protected void add(final NodeModel node, final IExtension extension) {
 		super.add(node, extension);
-		getModeController().getMapController().addNodeChangeListener(this);
 	}
 
 	public void nodeChanged(final NodeChangeEvent event) {
@@ -64,7 +64,6 @@ public class RevisionPlugin extends PersistentNodeHook implements INodeChangeLis
 
 	@Override
 	protected void remove(final NodeModel node, final IExtension extension) {
-		getModeController().getMapController().removeNodeChangeListener(this);
 		super.remove(node, extension);
 	}
 }

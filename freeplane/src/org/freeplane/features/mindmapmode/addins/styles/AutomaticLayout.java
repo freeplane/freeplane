@@ -253,6 +253,7 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 		Controller.getResourceController().addPropertyChangeListener(listener);
 		addPropertiesToOptionPanel();
 		modeController.getMapController().getReadManager().addReadCompletionListener(this);
+		getModeController().getMapController().addMapChangeListener(this);
 	}
 
 	/*
@@ -262,7 +263,6 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 	@Override
 	protected void add(final NodeModel node, final IExtension extension) {
 		super.add(node, extension);
-		getModeController().getMapController().addMapChangeListener(this);
 		setStyleRecursive(node);
 	}
 
@@ -298,11 +298,17 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 	}
 
 	public void onNodeInserted(final NodeModel parent, final NodeModel child, final int newIndex) {
+		if(!isActive(parent)){
+			return;
+		}
 		setStyleRecursive(child);
 	}
 
 	public void onNodeMoved(final NodeModel oldParent, final int oldIndex,
 	                        final NodeModel newParent, final NodeModel child, final int newIndex) {
+		if(!isActive(newParent)){
+			return;
+		}
 		setStyleRecursive(child);
 	}
 
@@ -335,7 +341,6 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 	 */
 	@Override
 	protected void remove(final NodeModel node, final IExtension extension) {
-		getModeController().getMapController().removeMapChangeListener(this);
 		super.remove(node, extension);
 	}
 

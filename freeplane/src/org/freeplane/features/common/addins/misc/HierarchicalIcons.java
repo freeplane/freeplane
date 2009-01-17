@@ -51,15 +51,14 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 	public HierarchicalIcons(final ModeController modeController) {
 		super(modeController);
 		modeController.getMapController().getReadManager().addReadCompletionListener(this);
+		modeController.getMapController().addNodeChangeListener(this);
+		modeController.getMapController().addMapChangeListener(this);
 	}
 
 	@Override
 	protected void add(final NodeModel node, final IExtension extension) {
 		gatherLeavesAndSetStyle(node);
 		gatherLeavesAndSetParentsStyle(node);
-		final ModeController modeController = getModeController();
-		modeController.getMapController().addNodeChangeListener(this);
-		modeController.getMapController().addMapChangeListener(this);
 		super.add(node, extension);
 	}
 
@@ -123,15 +122,24 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 	}
 
 	public void onNodeDeleted(final NodeModel parent, final NodeModel child, final int index) {
+		if(!isActive(parent)){
+			return;
+		}
 		setStyleRecursive(parent);
 	}
 
 	public void onNodeInserted(final NodeModel parent, final NodeModel child, final int newIndex) {
+		if(!isActive(parent)){
+			return;
+		}
 		setStyleRecursive(child);
 	}
 
 	public void onNodeMoved(final NodeModel oldParent, final int oldIndex,
 	                        final NodeModel newParent, final NodeModel child, final int newIndex) {
+		if(!isActive(newParent)){
+			return;
+		}
 		setStyleRecursive(oldParent);
 		setStyleRecursive(child);
 	}
@@ -160,9 +168,6 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 
 	@Override
 	protected void remove(final NodeModel node, final IExtension extension) {
-		final ModeController modeController = getModeController();
-		modeController.getMapController().removeNodeChangeListener(this);
-		modeController.getMapController().removeMapChangeListener(this);
 		nodeIconSets.clear();
 		removeIcons(node);
 		super.remove(node, extension);
