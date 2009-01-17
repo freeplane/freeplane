@@ -27,6 +27,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
+import java.util.logging.Logger;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.extension.IExtensionCollection;
@@ -97,10 +98,7 @@ public class TreeXmlWriter implements ITreeWriter {
 	 * @see freeplane.persistence.Writer#addAttribute(java.lang.String, double)
 	 */
 	public void addAttribute(final String key, final double value) {
-		if (elementStarted) {
-			throw new RuntimeException();
-		}
-		xmlElement.setAttribute(key, Double.toString(value));
+		addAttribute(key, Double.toString(value));
 	}
 
 	/*
@@ -108,10 +106,7 @@ public class TreeXmlWriter implements ITreeWriter {
 	 * @see freeplane.persistence.Writer#addAttribute(java.lang.String, int)
 	 */
 	public void addAttribute(final String key, final int value) {
-		if (elementStarted) {
-			throw new RuntimeException();
-		}
-		xmlElement.setAttribute(key, Integer.toString(value));
+		addAttribute(key, Integer.toString(value));
 	}
 
 	/*
@@ -122,6 +117,10 @@ public class TreeXmlWriter implements ITreeWriter {
 	public void addAttribute(final String key, final String value) {
 		if (elementStarted) {
 			throw new RuntimeException("elementStarted");
+		}
+		if(null != xmlElement.getAttribute(key, null)){
+			Logger.global.warning("attribute \"" +key + "\" already exist with value \"" + value);
+			return;
 		}
 		xmlElement.setAttribute(key, value);
 	}
