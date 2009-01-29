@@ -4,6 +4,7 @@
     <tab name="Environment">
         <separator name="language">
        	    <combo name = "language">
+                <choice value="automatic"/>
                 <choice value="ar"/>
                 <choice value="cs"/>
                 <choice value="de"/>

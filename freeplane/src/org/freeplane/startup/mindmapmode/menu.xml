@@ -249,7 +249,6 @@
 				<menu_separator />
 				<menu_category name="scripting">
 				</menu_category>
-				<menu_separator />
 				<menu_category name="collaboration">
 				</menu_category>
 				<menu_separator />
@@ -321,11 +320,12 @@
 				key_ref="keystroke_add_sibling_before" />
 		</menu_category>
 		<menu_separator />
-		<!--
-			<menu_category name="navigate_nodes"> <menu_action field="nodeUp"
-			key_ref="keystroke_node_up"/> <menu_action field="nodeDown"
-			key_ref="keystroke_node_down"/> </menu_category>
-		-->
+
+	<menu_category name="navigate_nodes">
+		<menu_action field="nodeUp" key_ref="keystroke_node_up" />
+		<menu_action field="nodeDown" key_ref="keystroke_node_down" />
+	</menu_category>
+		
 		<menu_separator />
 		<menu_category name="folding">
 			<menu_action field="toggleFolded" key_ref="keystroke_toggle_folded" />
