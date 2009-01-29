@@ -27,6 +27,7 @@ import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.FreeplaneAction;
@@ -73,13 +74,17 @@ class EditAction extends FreeplaneAction {
 		}
 	}
 
-	public void edit(final NodeModel nodeModel, final NodeModel prevSelectedModel,
+	void edit(final NodeModel nodeModel, final NodeModel prevSelectedModel,
 	                 final KeyEvent firstEvent, final boolean isNewNode,
 	                 final boolean parentFolded, final boolean editLong) {
 		if (nodeModel == null) {
 			return;
 		}
-		final Component node = Controller.getController().getViewController().getComponent(
+		final ViewController viewController = Controller.getController().getViewController();
+		final Component map = viewController.getMapView();
+		map.validate();
+		map.invalidate();
+		final Component node = viewController.getComponent(
 		    nodeModel);
 		node.requestFocus();
 		stopEditing();
@@ -91,8 +96,7 @@ class EditAction extends FreeplaneAction {
 		final boolean isHtmlNode = HtmlTools.isHtmlNode(text);
 		String useRichTextInNewLongNodes = "true";
 		if (!isHtmlNode && editDefinitivelyLong) {
-			final int showResult = new OptionalDontShowMeAgainDialog(Controller.getController()
-			    .getViewController().getJFrame(), nodeModel, "edit.edit_rich_text",
+			final int showResult = new OptionalDontShowMeAgainDialog(viewController.getJFrame(), nodeModel, "edit.edit_rich_text",
 			    "edit.decision", new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
 			        ResourceController.RESOURCES_REMIND_USE_RICH_TEXT_IN_NEW_LONG_NODES),
 			    OptionalDontShowMeAgainDialog.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED).show()
@@ -123,7 +127,7 @@ class EditAction extends FreeplaneAction {
 				    public void split(final String newText, final int position) {
 					    ((MTextController) TextController.getController(Controller
 					        .getModeController())).splitNode(nodeModel, position, newText);
-					    Controller.getController().getViewController().obtainFocusForSelected();
+					    viewController.obtainFocusForSelected();
 					    cancel();
 				    }
 			    });
@@ -147,7 +151,7 @@ class EditAction extends FreeplaneAction {
 				    public void split(final String newText, final int position) {
 					    ((MTextController) TextController.getController(Controller
 					        .getModeController())).splitNode(nodeModel, position, newText);
-					    Controller.getController().getViewController().obtainFocusForSelected();
+					    viewController.obtainFocusForSelected();
 					    cancel();
 				    }
 			    });
@@ -171,7 +175,7 @@ class EditAction extends FreeplaneAction {
 				    public void split(final String newText, final int position) {
 					    ((MTextController) TextController.getController(Controller
 					        .getModeController())).splitNode(nodeModel, position, newText);
-					    Controller.getController().getViewController().obtainFocusForSelected();
+					    viewController.obtainFocusForSelected();
 					    cancel();
 				    }
 			    });
@@ -198,7 +202,7 @@ class EditAction extends FreeplaneAction {
 			    }
 
 			    private void endEdit() {
-				    Controller.getController().getViewController().obtainFocusForSelected();
+				    viewController.obtainFocusForSelected();
 				    getModeController().setBlocked(false);
 				    mCurrentEditDialog = null;
 			    }
@@ -222,6 +226,9 @@ class EditAction extends FreeplaneAction {
 
 	public void setNodeText(final NodeModel node, final String newText) {
 		final String oldText = node.toString();
+		if (oldText.equals(newText)){
+			return;
+		}
 		final IUndoableActor actor = new IUndoableActor() {
 			public void act() {
 				if (!oldText.equals(newText)) {

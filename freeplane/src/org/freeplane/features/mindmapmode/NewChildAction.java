@@ -98,7 +98,7 @@ class NewChildAction extends FreeplaneAction {
 			}
 
 			public String getDescription() {
-				return "paste";
+				return "addNewNode";
 			}
 
 			public void undo() {
