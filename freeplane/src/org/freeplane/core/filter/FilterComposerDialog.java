@@ -455,7 +455,7 @@ public class FilterComposerDialog extends JDialog {
 	final private JComboBox values;
 
 	public FilterComposerDialog(final FilterToolbar ft) {
-		super(Controller.getController().getViewController().getJFrame(), Controller
+		super(Controller.getController().getViewController().getFrame(), Controller
 		    .getText("filter_dialog"));
 		fc = FilterController.getController();
 		final Box simpleConditionBox = Box.createHorizontalBox();

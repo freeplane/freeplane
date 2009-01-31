@@ -33,7 +33,6 @@ import java.util.Properties;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.FilterController;
-import org.freeplane.core.resources.ui.IFreeplanePropertyListener;
 
 /**
  * @author Dimitry Polivaev

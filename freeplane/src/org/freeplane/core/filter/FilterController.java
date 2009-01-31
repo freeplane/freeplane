@@ -20,6 +20,7 @@
 package org.freeplane.core.filter;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
@@ -150,6 +151,8 @@ public class FilterController implements IMapSelectionListener, IExtension {
 				filterConditionModel.addElement(getConditionFactory().loadCondition(
 				    (XMLElement) conditions.get(i)));
 			}
+		}
+		catch (final FileNotFoundException e) {
 		}
 		catch (final XMLException e) {
 			e.printStackTrace();

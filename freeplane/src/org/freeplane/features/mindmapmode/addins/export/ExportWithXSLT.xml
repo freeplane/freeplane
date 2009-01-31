@@ -50,8 +50,8 @@
             file_description="accessories/plugins/ExportWithXSLT_Applet.properties_webpage"
             xslt_file="/accessories/freeplane2applet.xsl"
             create_dir="true"
-            files_to_copy="freeplanebrowser.jar"
-            file_prefix="/browser/"
+            files_to_copy="freeplaneviewer.jar"
+            file_prefix="/lib/"
             copy_map="true"
             load_file="true" />
     </action>

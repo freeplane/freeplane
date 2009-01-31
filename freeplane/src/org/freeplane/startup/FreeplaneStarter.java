@@ -50,6 +50,7 @@ import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.startup.browsemode.BModeControllerFactory;
 import org.freeplane.startup.filemode.FModeControllerFactory;
 import org.freeplane.startup.mindmapmode.MModeControllerFactory;
+import org.freeplane.view.swing.map.MMapViewController;
 import org.freeplane.view.swing.map.MapViewController;
 
 public class FreeplaneStarter {
@@ -117,7 +118,7 @@ public class FreeplaneStarter {
 		//	e.printStackTrace();
 		//}	    
 		System.setSecurityManager(new FreeplaneSecurityManager());
-		viewController = new ApplicationViewController(new MapViewController());
+		viewController = new ApplicationViewController(new MMapViewController());
 		FilterController.install();
 		PrintController.install();
 		ModelessAttributeController.install();

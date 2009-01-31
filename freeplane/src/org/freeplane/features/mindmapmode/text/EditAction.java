@@ -35,6 +35,7 @@ import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.core.util.Tools;
+import org.freeplane.features.common.text.IMainView;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.features.mindmapmode.MModeController;

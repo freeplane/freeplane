@@ -57,7 +57,7 @@ import org.freeplane.features.mindmapmode.text.EditNodeBase.IEditControl;
  * exchange between controller and this class is managed by observer pattern
  * (the controller observes changes to the map mapViews here).
  */
-public class MapViewController implements IMapViewManager, INodeTextFieldCreator {
+public class MapViewController implements IMapViewManager {
 	static private class MapViewChangeObserverCompound {
 		final private HashSet<IMapSelectionListener> mapListeners = new HashSet();
 		final private HashSet<IMapViewChangeListener> viewListeners = new HashSet();
@@ -307,13 +307,6 @@ public class MapViewController implements IMapViewManager, INodeTextFieldCreator
 		myImage = myImage.getSubimage(innerBounds.x, innerBounds.y, innerBounds.width,
 		    innerBounds.height);
 		return myImage;
-	}
-
-	public AbstractEditNodeTextField createNodeTextField(final NodeModel node, final String text,
-	                                                     final KeyEvent firstEvent,
-	                                                     final ModeController controller,
-	                                                     final IEditControl editControl) {
-		return new EditNodeTextField(node, text, firstEvent, controller, editControl);
 	}
 
 	/* (non-Javadoc)

@@ -24,6 +24,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.ItemEvent;
@@ -38,6 +39,7 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -68,8 +70,6 @@ abstract public class ViewController implements IMapViewChangeListener {
 	private final IMapViewManager mapViewManager;
 	private boolean menubarVisible;
 	final private HashSet mMapTitleChangeListenerSet = new HashSet();
-	final private Action navigationNextMap;
-	final private Action navigationPreviousMap;
 	final private OptionAntialiasAction optionAntialiasAction;
 	final private JScrollPane scrollPane;
 	final private JLabel status;
@@ -87,10 +87,6 @@ abstract public class ViewController implements IMapViewChangeListener {
 		this.mapViewManager = mapViewManager;
 		mapViewManager.addMapViewChangeListener(this);
 		controller.addAction("close", new CloseAction());
-		navigationPreviousMap = new NavigationPreviousMapAction();
-		controller.addAction("navigationPreviousMap", navigationPreviousMap);
-		navigationNextMap = new NavigationNextMapAction();
-		controller.addAction("navigationNextMap", navigationNextMap);
 		controller.addAction("moveToRoot", new MoveToRootAction());
 		zoomIn = new ZoomInAction(this);
 		controller.addAction("zoomIn", zoomIn);
@@ -526,9 +522,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 		mapViewManager.updateMapView();
 	}
 
-	private void viewNumberChanged(final int number) {
-		navigationPreviousMap.setEnabled(number > 0);
-		navigationNextMap.setEnabled(number > 0);
+	protected void viewNumberChanged(final int number) {
 	}
 
 	public void zoomIn() {
@@ -544,4 +538,8 @@ abstract public class ViewController implements IMapViewChangeListener {
 			setZoomByItem(zoom.getItemAt((int) (currentZoomIndex - 0.5f)));
 		}
 	}
+
+	public Frame getFrame() {
+	    return JOptionPane.getFrameForComponent(getContentPane());
+    }
 }

@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.MessageFormat;
 
+import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
@@ -57,9 +58,16 @@ public class ApplicationViewController extends ViewController {
 	private JComponent mContentComponent = null;
 	private JSplitPane mSplitPane;
 	final private ResourceController resourceController;
+	final private Action navigationNextMap;
+	final private Action navigationPreviousMap;
 
 	public ApplicationViewController(final IMapViewManager mapViewController) {
 		super(mapViewController);
+		final Controller controller = Controller.getController();
+		navigationPreviousMap = new NavigationPreviousMapAction();
+		controller.addAction("navigationPreviousMap", navigationPreviousMap);
+		navigationNextMap = new NavigationNextMapAction();
+		controller.addAction("navigationNextMap", navigationNextMap);
 		resourceController = Controller.getResourceController();
 		frame = new JFrame("Freeplane");
 	}
@@ -374,5 +382,9 @@ public class ApplicationViewController extends ViewController {
 		resourceController.setProperty("appwindow_state", String.valueOf(winState));
 		resourceController.saveProperties();
 		frame.dispose();
+	}
+	protected void viewNumberChanged(final int number) {
+		navigationPreviousMap.setEnabled(number > 0);
+		navigationNextMap.setEnabled(number > 0);
 	}
 }

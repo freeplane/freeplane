@@ -91,8 +91,6 @@ public class AppletViewController extends ViewController {
 		final Controller controller = Controller.getController();
 		controller.getViewController().changeAntialias(
 		    Controller.getResourceController().getProperty(ViewController.RESOURCE_ANTIALIAS));
-		controller.getViewController().setToolbarVisible(false);
-		controller.getViewController().setMenubarVisible(false);
 		getContentPane().add(getScrollPane(), BorderLayout.CENTER);
 		southPanel = new JPanel(new BorderLayout());
 		southPanel.add(getStatusLabel(), BorderLayout.SOUTH);

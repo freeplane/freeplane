@@ -45,7 +45,7 @@ import org.freeplane.core.modecontroller.INodeChangeListener;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.modecontroller.NodeChangeEvent;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.ui.IFreeplanePropertyListener;
+import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ui.IPropertyControl;
 import org.freeplane.core.resources.ui.IPropertyControlCreator;
 import org.freeplane.core.resources.ui.OptionPanelBuilder;

@@ -56,7 +56,7 @@ import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
-import org.freeplane.features.mindmapmode.text.IMainView;
+import org.freeplane.features.common.text.IMainView;
 
 /**
  * Base class for all node views.

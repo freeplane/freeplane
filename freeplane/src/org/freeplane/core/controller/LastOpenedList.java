@@ -54,7 +54,7 @@ public class LastOpenedList implements IMapSelectionListener {
 
 	LastOpenedList(final String restored) {
 		maxEntries = new Integer(Controller.getResourceController().getProperty(
-		    "last_opened_list_length")).intValue();
+		    "last_opened_list_length", "0")).intValue();
 		load(restored);
 	}
 

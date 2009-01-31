@@ -19,6 +19,9 @@
  */
 package org.freeplane.startup.browsemode;
 
+import java.security.AccessControlException;
+import java.util.logging.Logger;
+
 import javax.swing.JPopupMenu;
 
 import org.freeplane.core.controller.Controller;
@@ -62,7 +65,12 @@ public class BModeControllerFactory {
 		CloudController.install(modeController, new CloudController(modeController));
 		NoteController.install(modeController, new NoteController(modeController));
 		TextController.install(modeController, new TextController(modeController));
-		ClipboardController.install(modeController, new ClipboardController(modeController));
+		try {
+	        ClipboardController.install(modeController, new ClipboardController(modeController));
+        }
+        catch (AccessControlException e) {
+	        Logger.global.severe("can not access system clipboard, clipboard controller disabled");
+        }
 		LocationController.install(modeController, new LocationController(modeController));
 		modeController.getMapController().addNodeSelectionListener(new BNodeNoteViewer());
 		final BToolbarContributor toolbarContributor = new BToolbarContributor(modeController);

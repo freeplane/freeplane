@@ -33,7 +33,6 @@ import java.util.Vector;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ui.BooleanProperty;
-import org.freeplane.core.resources.ui.IFreeplanePropertyListener;
 import org.freeplane.core.util.Tools;
 
 /**

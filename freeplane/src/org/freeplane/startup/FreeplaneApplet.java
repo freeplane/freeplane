@@ -20,14 +20,20 @@
 package org.freeplane.startup;
 
 import java.awt.BorderLayout;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 
 import javax.swing.JApplet;
 import javax.swing.UIManager;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.frame.AppletViewController;
 import org.freeplane.core.resources.AppletResourceController;
 import org.freeplane.features.browsemode.BModeController;
+import org.freeplane.features.common.attribute.ModelessAttributeController;
+import org.freeplane.features.controller.help.HelpController;
+import org.freeplane.features.controller.print.PrintController;
 import org.freeplane.startup.browsemode.BModeControllerFactory;
 import org.freeplane.view.swing.map.MapViewController;
 
@@ -43,15 +49,31 @@ public class FreeplaneApplet extends JApplet {
 		resourceController = new AppletResourceController(this);
 		final Controller controller = new Controller(resourceController);
 		appletViewController = new AppletViewController(this, new MapViewController());
-		appletViewController.init();
+		FilterController.install();
+		PrintController.install();
+		HelpController.install();
+		ModelessAttributeController.install();
 		final BModeController browseController = BModeControllerFactory.createModeController();
 		controller.selectMode(browseController);
+		appletViewController.init();
+		controller.getViewController().setToolbarVisible(true);
+		controller.getViewController().setMenubarVisible(false);
 	}
 
 	@Override
 	public void start() {
 		appletViewController.start();
 	}
+
+	@Override
+    public void destroy() {
+	    Controller.getController().shutdown();
+    }
+
+	@Override
+    public void stop() {
+	    super.stop();
+    }
 
 	private void updateLookAndFeel() {
 		String lookAndFeel = "";
