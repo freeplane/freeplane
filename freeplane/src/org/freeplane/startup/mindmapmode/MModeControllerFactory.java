@@ -110,6 +110,10 @@ public class MModeControllerFactory {
 		return instance;
 	}
 
+	public static MModeController getModeController() {
+		return MModeControllerFactory.getInstance().modeController;
+	}
+
 	private Controller controller;
 	private MModeController modeController;
 

@@ -27,6 +27,7 @@ import java.util.logging.Logger;
 import javax.help.HelpBroker;
 import javax.help.HelpSet;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
 
@@ -37,6 +38,10 @@ import org.freeplane.core.ui.FreeplaneAction;
 tooltip = "plugins/FreeplaneHelp.xml_documentation", //
 locations = { "/menu_bar/help/doc" })
 public class FreeplaneHelpStarter extends FreeplaneAction {
+	public FreeplaneHelpStarter(final Controller controller) {
+		super(controller);
+	}
+
 	/**
 	 *
 	 */

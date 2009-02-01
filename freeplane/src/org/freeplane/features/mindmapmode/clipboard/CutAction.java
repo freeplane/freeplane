@@ -48,8 +48,8 @@ class CutAction extends FreeplaneAction {
 			controller.errorMessage(Controller.getText("cannot_delete_root"));
 			return;
 		}
-		final int showResult = new OptionalDontShowMeAgainDialog(controller.getViewController().getFrame(), controller.getSelection()
-		    .getSelected(), "really_cut_node", "confirmation",
+		final int showResult = new OptionalDontShowMeAgainDialog(controller.getViewController().getFrame(), controller
+		    .getSelection().getSelected(), "really_cut_node", "confirmation",
 		    new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
 		        ResourceController.RESOURCES_CUT_NODES_WITHOUT_QUESTION),
 		    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED).show().getResult();

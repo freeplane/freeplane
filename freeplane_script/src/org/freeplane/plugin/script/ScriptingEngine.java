@@ -69,15 +69,13 @@ class ScriptingEngine extends FreeplaneAction {
 	 * @return true, if further scripts can be executed, false, if the user
 	 *         canceled or an error occurred.
 	 */
-	static boolean executeScript(final NodeModel node, final BooleanHolder pAlreadyAScriptExecuted,
-	                             String script, final MModeController pMindMapController,
-	                             final IErrorHandler pErrorHandler, final PrintStream pOutStream,
-	                             final HashMap pScriptCookies) {
+	static boolean executeScript(final NodeModel node, final BooleanHolder pAlreadyAScriptExecuted, String script,
+	                             final MModeController pMindMapController, final IErrorHandler pErrorHandler,
+	                             final PrintStream pOutStream, final HashMap pScriptCookies) {
 		if (!pAlreadyAScriptExecuted.getValue()) {
-			final int showResult = new OptionalDontShowMeAgainDialog(Controller.getController()
-			    .getViewController().getJFrame(), Controller.getController().getSelection()
-			    .getSelected(), "really_execute_script", "confirmation",
-			    new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
+			final int showResult = new OptionalDontShowMeAgainDialog(pMindMapController.getController()
+			    .getViewController().getJFrame(), pMindMapController.getController().getSelection().getSelected(),
+			    "really_execute_script", "confirmation", new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
 			        ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING),
 			    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED).show().getResult();
 			if (showResult != JOptionPane.OK_OPTION) {
@@ -113,14 +111,14 @@ class ScriptingEngine extends FreeplaneAction {
 		 */
 		final String executeWithoutAsking = Controller.getResourceController().getProperty(
 		    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING);
-		final String executeWithoutFileRestriction = Controller.getResourceController()
-		    .getProperty(ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION);
-		final String executeWithoutNetworkRestriction = Controller.getResourceController()
-		    .getProperty(ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION);
-		final String executeWithoutExecRestriction = Controller.getResourceController()
-		    .getProperty(ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION);
-		final String signedScriptsWithoutRestriction = Controller.getResourceController()
-		    .getProperty(ResourceController.RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED);
+		final String executeWithoutFileRestriction = Controller.getResourceController().getProperty(
+		    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION);
+		final String executeWithoutNetworkRestriction = Controller.getResourceController().getProperty(
+		    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION);
+		final String executeWithoutExecRestriction = Controller.getResourceController().getProperty(
+		    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION);
+		final String signedScriptsWithoutRestriction = Controller.getResourceController().getProperty(
+		    ResourceController.RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED);
 		/* *************** */
 		/* Signature */
 		/* *************** */
@@ -139,10 +137,9 @@ class ScriptingEngine extends FreeplaneAction {
 				execPerm = true;
 			}
 		}
-		final ScriptingSecurityManager scriptingSecurityManager = new ScriptingSecurityManager(
-		    filePerm, networkPerm, execPerm);
-		final FreeplaneSecurityManager securityManager = (FreeplaneSecurityManager) System
-		    .getSecurityManager();
+		final ScriptingSecurityManager scriptingSecurityManager = new ScriptingSecurityManager(filePerm, networkPerm,
+		    execPerm);
+		final FreeplaneSecurityManager securityManager = (FreeplaneSecurityManager) System.getSecurityManager();
 		try {
 			System.setOut(pOutStream);
 			securityManager.setFinalSecurityManager(scriptingSecurityManager);
@@ -158,19 +155,16 @@ class ScriptingEngine extends FreeplaneAction {
 			securityManager.setFinalSecurityManager(scriptingSecurityManager);
 			System.setOut(oldOut);
 			/* restore preferences (and assure that the values are unchanged!). */
+			Controller.getResourceController().setProperty(ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
+			    executeWithoutAsking);
 			Controller.getResourceController().setProperty(
-			    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING, executeWithoutAsking);
-			Controller.getResourceController().setProperty(
-			    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION,
-			    executeWithoutFileRestriction);
+			    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION, executeWithoutFileRestriction);
 			Controller.getResourceController().setProperty(
 			    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION,
 			    executeWithoutNetworkRestriction);
 			Controller.getResourceController().setProperty(
-			    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION,
-			    executeWithoutExecRestriction);
-			Controller.getResourceController().setProperty(
-			    ResourceController.RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED,
+			    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION, executeWithoutExecRestriction);
+			Controller.getResourceController().setProperty(ResourceController.RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED,
 			    signedScriptsWithoutRestriction);
 		}
 		/*
@@ -201,28 +195,28 @@ class ScriptingEngine extends FreeplaneAction {
 			pOutStream.print(e2.getMessage());
 			final String cause = ((e2.getCause() != null) ? e2.getCause().getMessage() : "");
 			final String message = ((e2.getMessage() != null) ? e2.getMessage() : "");
-			Controller.getController().errorMessage(
-			    e2.getClass().getName() + ": " + cause
-			            + ((cause.length() != 0 && message.length() != 0) ? ", " : "") + message);
+			pMindMapController.getController().errorMessage(
+			    e2.getClass().getName() + ": " + cause + ((cause.length() != 0 && message.length() != 0) ? ", " : "")
+			            + message);
 			return false;
 		}
 		pOutStream.print(Controller.getText("plugins/ScriptEditor/window.Result") + value);
 		if (assignResult && value != null) {
 			if (assignTo == null) {
-				((MTextController) TextController.getController(pMindMapController)).setNodeText(
-				    node, value.toString());
+				((MTextController) TextController.getController(pMindMapController))
+				    .setNodeText(node, value.toString());
 			}
 			else {
-				((MAttributeController) AttributeController.getController(pMindMapController))
-				    .editAttribute(node, assignTo, value.toString());
+				((MAttributeController) AttributeController.getController(pMindMapController)).editAttribute(node,
+				    assignTo, value.toString());
 			}
 		}
 		return true;
 	}
 
 	public static int findLineNumberInString(final String resultString, int lineNumber) {
-		final java.util.regex.Pattern pattern = java.util.regex.Pattern.compile(
-		    ".*@ line ([0-9]+).*", java.util.regex.Pattern.DOTALL);
+		final java.util.regex.Pattern pattern = java.util.regex.Pattern.compile(".*@ line ([0-9]+).*",
+		    java.util.regex.Pattern.DOTALL);
 		final Matcher matcher = pattern.matcher(resultString);
 		if (matcher.matches()) {
 			lineNumber = Integer.parseInt(matcher.group(1));
@@ -232,22 +226,20 @@ class ScriptingEngine extends FreeplaneAction {
 
 	final private ScriptingRegistration reg;
 
-	public ScriptingEngine(final ScriptingRegistration reg) {
-		super();
+	public ScriptingEngine(final Controller controller, final ScriptingRegistration reg) {
+		super(controller);
 		this.reg = reg;
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final NodeModel node = Controller.getController().getMap().getRootNode();
+		final NodeModel node = getController().getMap().getRootNode();
 		final BooleanHolder booleanHolder = new BooleanHolder(false);
 		performScriptOperation(node, booleanHolder);
 	}
 
-	private void performScriptOperation(final NodeModel node,
-	                                    final BooleanHolder pAlreadyAScriptExecuted) {
-		Controller.getController().getViewController().setWaitingCursor(true);
-		for (final Iterator iter = node.getModeController().getMapController().childrenUnfolded(
-		    node); iter.hasNext();) {
+	private void performScriptOperation(final NodeModel node, final BooleanHolder pAlreadyAScriptExecuted) {
+		getController().getViewController().setWaitingCursor(true);
+		for (final Iterator iter = node.getModeController().getMapController().childrenUnfolded(node); iter.hasNext();) {
 			final NodeModel element = (NodeModel) iter.next();
 			performScriptOperation(element, pAlreadyAScriptExecuted);
 		}
@@ -259,8 +251,8 @@ class ScriptingEngine extends FreeplaneAction {
 			final String attrKey = (String) attributes.getName(row);
 			final String script = (String) attributes.getValue(row);
 			if (attrKey.startsWith(ScriptingEngine.SCRIPT_PREFIX)) {
-				final boolean result = ScriptingEngine.executeScript(node, pAlreadyAScriptExecuted,
-				    script, (MModeController) getModeController(), new IErrorHandler() {
+				final boolean result = ScriptingEngine.executeScript(node, pAlreadyAScriptExecuted, script,
+				    (MModeController) getModeController(), new IErrorHandler() {
 					    public void gotoLine(final int pLineNumber) {
 					    }
 				    }, System.out, reg.getScriptCookies());
@@ -269,6 +261,6 @@ class ScriptingEngine extends FreeplaneAction {
 				}
 			}
 		}
-		Controller.getController().getViewController().setWaitingCursor(false);
+		getController().getViewController().setWaitingCursor(false);
 	}
 }

@@ -293,7 +293,7 @@ public class AssignAttributeDialog extends JDialog implements IAttributesListene
 	final private JCheckBox skipRootBtn;
 	final private JRadioButton visibleBtn;
 
-	public AssignAttributeDialog(final Controller controller, Frame frame) {
+	public AssignAttributeDialog(final Controller controller, final Frame frame) {
 		super(frame, UITools.removeMnemonic(Controller.getText("attributes_assign_dialog")), false);
 		this.controller = controller;
 		mapSelection = controller.getSelection();

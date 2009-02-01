@@ -172,7 +172,7 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 	final private JComboBox size;
 	final private JTable view;
 
-	public AttributeManagerDialog(final Controller controller, Frame frame) {
+	public AttributeManagerDialog(final Controller controller, final Frame frame) {
 		super(frame, Controller.getText("attributes_dialog_title"), true);
 		this.controller = controller;
 		view = new AttributeRegistryTable(new EditListAction());

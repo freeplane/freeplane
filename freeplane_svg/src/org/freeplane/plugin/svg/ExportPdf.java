@@ -43,8 +43,8 @@ import org.w3c.dom.Element;
  */
 @ActionDescriptor(name = "plugins/ExportPdf.xml_name", locations = { "/menu_bar/file/export/export" })
 public class ExportPdf extends ExportVectorGraphic {
-	public ExportPdf() {
-		super();
+	public ExportPdf(final Controller controller) {
+		super(controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -53,11 +53,11 @@ public class ExportPdf extends ExportVectorGraphic {
 			return;
 		}
 		try {
-			final MapView view = (MapView)Controller.getController().getViewController().getMapView();
+			final MapView view = (MapView) getController().getViewController().getMapView();
 			if (view == null) {
 				return;
 			}
-			Controller.getController().getViewController().setWaitingCursor(true);
+			getController().getViewController().setWaitingCursor(true);
 			final SVGGraphics2D g2d = fillSVGGraphics2D(view);
 			final PDFTranscoder pdfTranscoder = new PDFTranscoder();
 			/*
@@ -65,8 +65,7 @@ public class ExportPdf extends ExportVectorGraphic {
 			 * Frank Spangenberg (f_spangenberg) Summary: Large mind maps
 			 * produce invalid PDF
 			 */
-			pdfTranscoder
-			    .addTranscodingHint(SVGAbstractTranscoder.KEY_MAX_HEIGHT, new Float(19200));
+			pdfTranscoder.addTranscodingHint(SVGAbstractTranscoder.KEY_MAX_HEIGHT, new Float(19200));
 			pdfTranscoder.addTranscodingHint(SVGAbstractTranscoder.KEY_MAX_WIDTH, new Float(19200));
 			/* end patch */
 			final Document doc = g2d.getDOMFactory();
@@ -82,9 +81,9 @@ public class ExportPdf extends ExportVectorGraphic {
 		}
 		catch (final Exception ex) {
 			org.freeplane.core.util.Tools.logException(ex);
-			JOptionPane.showMessageDialog(Controller.getController().getViewController()
-			    .getContentPane(), ex.getLocalizedMessage(), null, JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(getController().getViewController().getContentPane(), ex
+			    .getLocalizedMessage(), null, JOptionPane.ERROR_MESSAGE);
 		}
-		Controller.getController().getViewController().setWaitingCursor(false);
+		getController().getViewController().setWaitingCursor(false);
 	}
 }

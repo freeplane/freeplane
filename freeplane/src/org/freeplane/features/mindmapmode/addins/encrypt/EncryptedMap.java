@@ -64,7 +64,8 @@ public class EncryptedMap extends FreeplaneAction implements INodeSelectionListe
 	 * @param e 
 	 */
 	private StringBuffer getUsersPassword() {
-		final EnterPasswordDialog pwdDialog = new EnterPasswordDialog(getController().getViewController().getFrame(), true);
+		final EnterPasswordDialog pwdDialog = new EnterPasswordDialog(getController().getViewController().getFrame(),
+		    true);
 		pwdDialog.setModal(true);
 		pwdDialog.show();
 		if (pwdDialog.getResult() == EnterPasswordDialog.CANCEL) {

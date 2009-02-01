@@ -56,7 +56,7 @@ public class EditNodeDialog extends EditNodeBase {
 	class LongNodeDialog extends EditDialog {
 		final private JTextArea textArea;
 
-		LongNodeDialog(Frame frame) {
+		LongNodeDialog(final Frame frame) {
 			super(EditNodeDialog.this, frame);
 			final ViewController viewController = getModeController().getController().getViewController();
 			textArea = new JTextArea(getText());
@@ -263,7 +263,7 @@ public class EditNodeDialog extends EditNodeBase {
 		this.firstEvent = firstEvent;
 	}
 
-	public void show(Frame frame) {
+	public void show(final Frame frame) {
 		final EditDialog dialog = new LongNodeDialog(frame);
 		dialog.pack();
 		getModeController().getController().getViewController().scrollNodeToVisible(node);

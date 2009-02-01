@@ -178,7 +178,7 @@ class EditAction extends FreeplaneAction {
 				    }
 			    });
 			mCurrentEditDialog = nodeEditDialog;
-			nodeEditDialog.show(JOptionPane.getFrameForComponent((Component) map));
+			nodeEditDialog.show(JOptionPane.getFrameForComponent(map));
 			return;
 		}
 		final INodeTextFieldCreator textFieldCreator = (INodeTextFieldCreator) controller.getMapViewManager();

@@ -40,8 +40,8 @@ class FindNextAction extends FreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		final Collection subterms = find.getSubterms();
 		if (subterms == null) {
-			UITools.informationMessage(getController().getViewController().getFrame(),
-				getModeController().getText("no_previous_find"));
+			UITools.informationMessage(getController().getViewController().getFrame(), getModeController().getText(
+			    "no_previous_find"));
 			return;
 		}
 		final boolean found = find.findNext();
@@ -49,9 +49,8 @@ class FindNextAction extends FreeplaneAction {
 			final String messageText = getModeController().getText("no_more_found_from");
 			final String searchTerm = messageText.startsWith("<html>") ? HtmlTools.toXMLEscapedText(find
 			    .getSearchTerm()) : find.getSearchTerm();
-			UITools.informationMessage(getController().getViewController().getFrame(),
-				messageText.replaceAll("\\$1", searchTerm).replaceAll("\\$2",
-			    find.getFindFromText()));
+			UITools.informationMessage(getController().getViewController().getFrame(), messageText.replaceAll("\\$1",
+			    searchTerm).replaceAll("\\$2", find.getFindFromText()));
 		}
 	}
 }

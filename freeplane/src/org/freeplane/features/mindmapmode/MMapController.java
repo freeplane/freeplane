@@ -171,9 +171,9 @@ public class MMapController extends MapController {
 			try {
 				final String lockingUser = tryToLock(map, file);
 				if (lockingUser != null) {
-					UITools.informationMessage(getController().getViewController().getFrame(),
-						UrlManager.expandPlaceholders(getModeController().getText(
-					    "map_locked_by_open"), file.getName(), lockingUser));
+					UITools.informationMessage(getController().getViewController().getFrame(), UrlManager
+					    .expandPlaceholders(getModeController().getText("map_locked_by_open"), file.getName(),
+					        lockingUser));
 					((MMapModel) map).setReadOnly(true);
 				}
 				else {
@@ -182,9 +182,8 @@ public class MMapController extends MapController {
 			}
 			catch (final Exception e) {
 				org.freeplane.core.util.Tools.logException(e);
-				UITools.informationMessage(getController().getViewController().getFrame(),
-					UrlManager.expandPlaceholders(getModeController().getText(
-				    "locking_failed_by_open"), file.getName()));
+				UITools.informationMessage(getController().getViewController().getFrame(), UrlManager
+				    .expandPlaceholders(getModeController().getText("locking_failed_by_open"), file.getName()));
 				((MMapModel) map).setReadOnly(true);
 			}
 		}
@@ -334,9 +333,8 @@ public class MMapController extends MapController {
 		final String lockingUser = ((MMapModel) map).getLockManager().tryToLock(file);
 		final String lockingUserOfOldLock = ((MMapModel) map).getLockManager().popLockingUserOfOldLock();
 		if (lockingUserOfOldLock != null) {
-			UITools.informationMessage(getController().getViewController().getFrame(),
-				UrlManager.expandPlaceholders(getModeController().getText(
-			    "locking_old_lock_removed"), file.getName(), lockingUserOfOldLock));
+			UITools.informationMessage(getController().getViewController().getFrame(), UrlManager.expandPlaceholders(
+			    getModeController().getText("locking_old_lock_removed"), file.getName(), lockingUserOfOldLock));
 		}
 		if (lockingUser == null) {
 			((MMapModel) map).setReadOnly(false);

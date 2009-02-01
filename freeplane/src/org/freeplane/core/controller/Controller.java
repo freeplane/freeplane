@@ -19,8 +19,6 @@
  */
 package org.freeplane.core.controller;
 
-import java.awt.Component;
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;

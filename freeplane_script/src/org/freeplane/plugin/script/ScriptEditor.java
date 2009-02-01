@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
@@ -64,8 +65,7 @@ class ScriptEditor extends FreeplaneAction {
 		 */
 		final private Vector mScripts;
 
-		private NodeScriptModel(final Vector pScripts, final NodeModel node,
-		                        final MModeController pMindMapController) {
+		private NodeScriptModel(final Vector pScripts, final NodeModel node, final MModeController pMindMapController) {
 			mScripts = pScripts;
 			mNode = node;
 			mMindMapController = pMindMapController;
@@ -77,8 +77,7 @@ class ScriptEditor extends FreeplaneAction {
 			 * is in general different from index, as not all attributes need to
 			 * be scripts.
 			 */
-			final int attributeIndex = NodeAttributeTableModel.getModel(mNode)
-			    .getAttributeTableLength();
+			final int attributeIndex = NodeAttributeTableModel.getModel(mNode).getAttributeTableLength();
 			final String scriptName = ScriptingEngine.SCRIPT_PREFIX;
 			int scriptNameSuffix = 1;
 			boolean found;
@@ -93,14 +92,12 @@ class ScriptEditor extends FreeplaneAction {
 					}
 				}
 			} while (found);
-			mScripts.add(new AttributeHolder(new Attribute(scriptName + scriptNameSuffix, ""),
-			    attributeIndex));
+			mScripts.add(new AttributeHolder(new Attribute(scriptName + scriptNameSuffix, ""), attributeIndex));
 			isDirty = true;
 			return index;
 		}
 
-		public ScriptEditorWindowConfigurationStorage decorateDialog(
-		                                                             final ScriptEditorPanel pPanel,
+		public ScriptEditorWindowConfigurationStorage decorateDialog(final ScriptEditorPanel pPanel,
 		                                                             final String pWindow_preference_storage_property) {
 			final String marshalled = Controller.getResourceController().getProperty(
 			    pWindow_preference_storage_property);
@@ -109,8 +106,7 @@ class ScriptEditor extends FreeplaneAction {
 
 		public void endDialog(final boolean pIsCanceled) {
 			if (!pIsCanceled) {
-				final int attributeTableLength = NodeAttributeTableModel.getModel(mNode)
-				    .getAttributeTableLength();
+				final int attributeTableLength = NodeAttributeTableModel.getModel(mNode).getAttributeTableLength();
 				for (final Iterator iter = mScripts.iterator(); iter.hasNext();) {
 					final AttributeHolder holder = (AttributeHolder) iter.next();
 					final Attribute attribute = holder.mAttribute;
@@ -120,20 +116,18 @@ class ScriptEditor extends FreeplaneAction {
 					if (attributeTableLength <= position) {
 						attributeController.addAttribute(mNode, attribute);
 					}
-					else if (NodeAttributeTableModel.getModel(mNode).getAttribute(position)
-					    .getValue() != attribute.getValue()) {
+					else if (NodeAttributeTableModel.getModel(mNode).getAttribute(position).getValue() != attribute
+					    .getValue()) {
 						attributeController.setAttribute(mNode, position, attribute);
 					}
 				}
 			}
 		}
 
-		public boolean executeScript(final int pIndex, final PrintStream pOutStream,
-		                             final IErrorHandler pErrorHandler) {
+		public boolean executeScript(final int pIndex, final PrintStream pOutStream, final IErrorHandler pErrorHandler) {
 			final String script = getScript(pIndex).getScript();
-			return ScriptingEngine.executeScript(mMindMapController.getMapController()
-			    .getSelectedNode(), new BooleanHolder(true), script, mMindMapController,
-			    pErrorHandler, pOutStream, reg.getScriptCookies());
+			return ScriptingEngine.executeScript(mMindMapController.getMapController().getSelectedNode(),
+			    new BooleanHolder(true), script, mMindMapController, pErrorHandler, pOutStream, reg.getScriptCookies());
 		}
 
 		public int getAmountOfScripts() {
@@ -170,25 +164,24 @@ class ScriptEditor extends FreeplaneAction {
 
 	final private ScriptingRegistration reg;
 
-	public ScriptEditor(final ScriptingRegistration reg) {
-		super();
+	public ScriptEditor(final Controller controller, final ScriptingRegistration reg) {
+		super(controller);
 		this.reg = reg;
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final NodeModel node = getModeController().getMapController().getSelectedNode();
+		final ModeController modeController = getModeController();
+		final NodeModel node = modeController.getMapController().getSelectedNode();
 		final Vector scripts = new Vector();
-		for (int position = 0; position < NodeAttributeTableModel.getModel(node)
-		    .getAttributeTableLength(); position++) {
-			final Attribute attribute = NodeAttributeTableModel.getModel(node).getAttribute(
-			    position);
+		for (int position = 0; position < NodeAttributeTableModel.getModel(node).getAttributeTableLength(); position++) {
+			final Attribute attribute = NodeAttributeTableModel.getModel(node).getAttribute(position);
 			if (attribute.getName().startsWith(ScriptingEngine.SCRIPT_PREFIX)) {
 				scripts.add(new AttributeHolder(attribute, position));
 			}
 		}
-		final NodeScriptModel nodeScriptModel = new NodeScriptModel(scripts, node,
-		    (MModeController) getModeController());
-		final ScriptEditorPanel scriptEditorPanel = new ScriptEditorPanel(nodeScriptModel, true);
+		final NodeScriptModel nodeScriptModel = new NodeScriptModel(scripts, node, (MModeController) modeController);
+		final ScriptEditorPanel scriptEditorPanel = new ScriptEditorPanel(modeController.getController(),
+		    nodeScriptModel, true);
 		scriptEditorPanel.setVisible(true);
 	}
 }

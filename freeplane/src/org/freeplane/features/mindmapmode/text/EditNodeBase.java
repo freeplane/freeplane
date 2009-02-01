@@ -108,7 +108,7 @@ public class EditNodeBase {
 
 		private EditNodeBase base;
 
-		EditDialog(final EditNodeBase base, Frame frame) {
+		EditDialog(final EditNodeBase base, final Frame frame) {
 			super(frame, base.getText("edit_long_node"), /*modal=*/true);
 			getContentPane().setLayout(new BorderLayout());
 			setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);

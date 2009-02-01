@@ -49,7 +49,8 @@ public class EnterPassword extends FreeplaneAction {
 	 */
 	private boolean doPasswordCheckAndDecryptNode(final EncryptionModel encNode) {
 		while (true) {
-			final EnterPasswordDialog pwdDialog = new EnterPasswordDialog(getController().getViewController().getFrame(), false);
+			final EnterPasswordDialog pwdDialog = new EnterPasswordDialog(getController().getViewController()
+			    .getFrame(), false);
 			pwdDialog.setModal(true);
 			pwdDialog.setVisible(true);
 			if (pwdDialog.getResult() == EnterPasswordDialog.CANCEL) {
@@ -84,7 +85,8 @@ public class EnterPassword extends FreeplaneAction {
 	/**
 	 */
 	private StringBuffer getUsersPassword() {
-		final EnterPasswordDialog pwdDialog = new EnterPasswordDialog(getController().getViewController().getFrame(), true);
+		final EnterPasswordDialog pwdDialog = new EnterPasswordDialog(getController().getViewController().getFrame(),
+		    true);
 		pwdDialog.setModal(true);
 		pwdDialog.show();
 		if (pwdDialog.getResult() == EnterPasswordDialog.CANCEL) {
@@ -106,7 +108,7 @@ public class EnterPassword extends FreeplaneAction {
 				node.setFolded(true);
 			}
 			else {
-				if (doPasswordCheckAndDecryptNode( encNode)) {
+				if (doPasswordCheckAndDecryptNode(encNode)) {
 					node.setFolded(false);
 				}
 			}

@@ -49,8 +49,8 @@ import org.w3c.dom.Document;
  * @author foltin
  */
 abstract class ExportVectorGraphic extends ExportAction {
-	public ExportVectorGraphic() {
-		super();
+	public ExportVectorGraphic(final Controller controller) {
+		super(controller);
 	}
 
 	/**
@@ -66,10 +66,8 @@ abstract class ExportVectorGraphic extends ExportAction {
 		ctx.setGraphicContextDefaults(defaults);
 		ctx.setPrecision(12);
 		final SVGGraphics2D g2d = new SVGGraphics2D(ctx, false);
-		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-		    RenderingHints.VALUE_TEXT_ANTIALIAS_DEFAULT);
-		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-		    RenderingHints.VALUE_ANTIALIAS_DEFAULT);
+		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_DEFAULT);
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_DEFAULT);
 		view.preparePrinting();
 		final Rectangle innerBounds = view.getInnerBounds();
 		g2d.setSVGCanvasSize(new Dimension(innerBounds.width, innerBounds.height));
@@ -78,8 +76,8 @@ abstract class ExportVectorGraphic extends ExportAction {
 		return g2d;
 	}
 
-	public void transForm(final Source xmlSource, final InputStream xsltStream,
-	                      final File resultFile, final String areaCode) {
+	public void transForm(final Source xmlSource, final InputStream xsltStream, final File resultFile,
+	                      final String areaCode) {
 		final Source xsltSource = new StreamSource(xsltStream);
 		final Result result = new StreamResult(resultFile);
 		try {
@@ -87,8 +85,7 @@ abstract class ExportVectorGraphic extends ExportAction {
 			final Transformer trans = transFact.newTransformer(xsltSource);
 			trans.setParameter("destination_dir", resultFile.getName() + "_files/");
 			trans.setParameter("area_code", areaCode);
-			trans.setParameter("folding_type", Controller.getResourceController().getProperty(
-			    "html_export_folding"));
+			trans.setParameter("folding_type", Controller.getResourceController().getProperty("html_export_folding"));
 			trans.transform(xmlSource, result);
 		}
 		catch (final Exception e) {

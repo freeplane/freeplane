@@ -61,9 +61,8 @@ class FindAction extends FreeplaneAction {
 			final String messageText = getModeController().getText("no_found_from");
 			final String searchTerm = messageText.startsWith("<html>") ? HtmlTools.toXMLEscapedText(getSearchTerm())
 			        : getSearchTerm();
-			UITools
-			    .informationMessage(getController().getViewController().getFrame(),
-			    	messageText.replaceAll("\\$1", searchTerm).replaceAll("\\$2", getFindFromText()));
+			UITools.informationMessage(getController().getViewController().getFrame(), messageText.replaceAll("\\$1",
+			    searchTerm).replaceAll("\\$2", getFindFromText()));
 		}
 	}
 

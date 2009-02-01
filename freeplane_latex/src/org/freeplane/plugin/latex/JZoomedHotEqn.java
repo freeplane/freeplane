@@ -29,8 +29,7 @@ class JZoomedHotEqn extends sHotEqn {
 		model = latexExtension;
 		setEquation(latexExtension.getEquation());
 		if (JZoomedHotEqn.editorTitle == null) {
-			JZoomedHotEqn.editorTitle = Controller
-			    .getText("plugins/latex/LatexNodeHook.editorTitle");
+			JZoomedHotEqn.editorTitle = Controller.getText("plugins/latex/LatexNodeHook.editorTitle");
 		}
 	}
 
@@ -41,8 +40,7 @@ class JZoomedHotEqn extends sHotEqn {
 		final JScrollPane editorScrollPane = new JScrollPane(textArea);
 		editorScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		editorScrollPane.setPreferredSize(new Dimension(500, 160));
-		final JDialog edit = new JDialog(JOptionPane.getFrameForComponent(this),
-		    JZoomedHotEqn.editorTitle, true);
+		final JDialog edit = new JDialog(JOptionPane.getFrameForComponent(this), JZoomedHotEqn.editorTitle, true);
 		edit.getContentPane().add(editorScrollPane);
 		edit.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		edit.pack();

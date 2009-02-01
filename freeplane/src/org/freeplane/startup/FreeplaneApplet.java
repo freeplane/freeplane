@@ -23,7 +23,6 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 
 import javax.swing.JApplet;
-import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 import org.freeplane.core.controller.Controller;

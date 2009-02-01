@@ -35,8 +35,8 @@ import org.freeplane.view.swing.map.MapView;
 
 @ActionDescriptor(name = "plugins/ExportSvg.xml_name", locations = { "/menu_bar/file/export/export" })
 public class ExportSvg extends ExportVectorGraphic {
-	public ExportSvg() {
-		super();
+	public ExportSvg(final Controller controller) {
+		super(controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -45,11 +45,11 @@ public class ExportSvg extends ExportVectorGraphic {
 			return;
 		}
 		try {
-			final MapView view = (MapView)Controller.getController().getViewController().getMapView();
+			final MapView view = (MapView) getController().getViewController().getMapView();
 			if (view == null) {
 				return;
 			}
-			Controller.getController().getViewController().setWaitingCursor(true);
+			getController().getViewController().setWaitingCursor(true);
 			final SVGGraphics2D g2d = fillSVGGraphics2D(view);
 			final FileOutputStream bos = new FileOutputStream(chosenFile);
 			final BufferedOutputStream bufStream = new BufferedOutputStream(bos);
@@ -61,9 +61,9 @@ public class ExportSvg extends ExportVectorGraphic {
 		}
 		catch (final Exception ex) {
 			org.freeplane.core.util.Tools.logException(ex);
-			JOptionPane.showMessageDialog(Controller.getController().getViewController()
-			    .getContentPane(), ex.getLocalizedMessage(), null, JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(getController().getViewController().getContentPane(), ex
+			    .getLocalizedMessage(), null, JOptionPane.ERROR_MESSAGE);
 		}
-		Controller.getController().getViewController().setWaitingCursor(false);
+		getController().getViewController().setWaitingCursor(false);
 	}
 }

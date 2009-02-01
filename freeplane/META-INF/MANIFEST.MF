@@ -86,13 +86,19 @@ Export-Package: accessories,
  org.freeplane.features.mindmapmode.text,
  org.freeplane.features.mindmapnode.pattern,
  org.freeplane.n3.nanoxml,
+ org.freeplane.osgi.startup,
  org.freeplane.startup,
+ org.freeplane.startup.browsemode,
+ org.freeplane.startup.filemode,
+ org.freeplane.startup.mindmapmode,
+ org.freeplane.view.swing.addins,
  org.freeplane.view.swing.addins.mindmapmode.nodehistory,
  org.freeplane.view.swing.map,
  org.freeplane.view.swing.map.attribute,
  org.freeplane.view.swing.map.cloud,
  org.freeplane.view.swing.map.edge,
  org.freeplane.view.swing.map.link,
- org.freeplane.view.swing.ui
+ org.freeplane.view.swing.ui,
+ org.freeplane.view.swing.ui.mindmapmode
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
  

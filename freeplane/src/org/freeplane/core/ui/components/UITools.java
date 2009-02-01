@@ -104,15 +104,15 @@ public class UITools {
 		return KeyStroke.getKeyStroke("typed " + keyStrokeDescription);
 	}
 
-	static public void informationMessage(Frame frame, final String message) {
+	static public void informationMessage(final Frame frame, final String message) {
 		UITools.informationMessage(frame, message, "Freeplane");
 	}
 
-	static public void informationMessage(Frame frame, final String message, final String title) {
+	static public void informationMessage(final Frame frame, final String message, final String title) {
 		JOptionPane.showMessageDialog(frame, message, title, JOptionPane.INFORMATION_MESSAGE);
 	}
 
-	public static void informationMessage(Frame frame, final String text, final String string, final int type) {
+	public static void informationMessage(final Frame frame, final String text, final String string, final int type) {
 		JOptionPane.showMessageDialog(frame, text, string, type);
 	}
 

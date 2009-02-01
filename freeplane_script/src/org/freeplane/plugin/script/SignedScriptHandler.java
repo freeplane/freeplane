@@ -52,16 +52,14 @@ class SignedScriptHandler {
 
 		public ScriptContents() {
 			if (ScriptContents.sSignWithKeyPattern == null) {
-				ScriptContents.sSignWithKeyPattern = Pattern
-				    .compile(SignedScriptHandler.SIGN_PREFIX_REGEXP);
+				ScriptContents.sSignWithKeyPattern = Pattern.compile(SignedScriptHandler.SIGN_PREFIX_REGEXP);
 			}
 		}
 
 		public ScriptContents(final String pScript) {
 			this();
 			final int indexOfSignaturePrefix = pScript.lastIndexOf(SignedScriptHandler.SIGN_PREFIX);
-			final int indexOfSignature = indexOfSignaturePrefix
-			        + SignedScriptHandler.SIGN_PREFIX.length();
+			final int indexOfSignature = indexOfSignaturePrefix + SignedScriptHandler.SIGN_PREFIX.length();
 			if (indexOfSignaturePrefix > 0 && pScript.length() > indexOfSignature) {
 				mSignature = pScript.substring(indexOfSignature);
 				mScript = pScript.substring(0, indexOfSignaturePrefix);
@@ -111,8 +109,7 @@ class SignedScriptHandler {
 		java.io.FileInputStream fis = null;
 		try {
 			SignedScriptHandler.mKeyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-			fis = new java.io.FileInputStream(System.getProperty("user.home") + File.separator
-			        + ".keystore");
+			fis = new java.io.FileInputStream(System.getProperty("user.home") + File.separator + ".keystore");
 			SignedScriptHandler.mKeyStore.load(fis, pPassword);
 		}
 		catch (final Exception e) {
@@ -157,8 +154,7 @@ class SignedScriptHandler {
 					        + "Pnhu6Y6b1uAwCwYHKoZIzjgEAwUAAzAAMC0CFQCFHGwe+HHOvY0MmKYHbiq7fRxMGwIUC0voAGYU"
 					        + "u6vgVFqdLI5F96JLTqk=" + "\n-----END CERTIFICATE-----\n";
 					final CertificateFactory cf = CertificateFactory.getInstance("X.509");
-					final Collection c = cf.generateCertificates(new ByteArrayInputStream(cer
-					    .getBytes()));
+					final Collection c = cf.generateCertificates(new ByteArrayInputStream(cer.getBytes()));
 					final Iterator i = c.iterator();
 					if (i.hasNext()) {
 						final Certificate cert = (Certificate) i.next();
@@ -170,12 +166,10 @@ class SignedScriptHandler {
 				}
 				else {
 					initializeKeystore(null);
-					instanceVerify.initVerify(SignedScriptHandler.mKeyStore
-					    .getCertificate(content.mKeyName));
+					instanceVerify.initVerify(SignedScriptHandler.mKeyStore.getCertificate(content.mKeyName));
 				}
 				instanceVerify.update(content.mScript.getBytes());
-				final boolean verify = instanceVerify.verify(DesEncrypter
-				    .fromBase64(content.mSignature));
+				final boolean verify = instanceVerify.verify(DesEncrypter.fromBase64(content.mSignature));
 				return verify;
 			}
 			catch (final Exception e) {
@@ -192,10 +186,9 @@ class SignedScriptHandler {
 		return false;
 	}
 
-	public String signScript(final String pScript) {
+	public String signScript(final Controller controller, final String pScript) {
 		final ScriptContents content = new ScriptContents(pScript);
-		final EnterPasswordDialog pwdDialog = new EnterPasswordDialog(Controller.getController()
-		    .getViewController().getJFrame(), false);
+		final EnterPasswordDialog pwdDialog = new EnterPasswordDialog(controller.getViewController().getJFrame(), false);
 		pwdDialog.setModal(true);
 		pwdDialog.setVisible(true);
 		if (pwdDialog.getResult() == EnterPasswordDialog.CANCEL) {
@@ -223,7 +216,7 @@ class SignedScriptHandler {
 		}
 		catch (final Exception e) {
 			Tools.logException(e);
-			Controller.getController().errorMessage(e.getLocalizedMessage());
+			controller.errorMessage(e.getLocalizedMessage());
 		}
 		return content.mScript;
 	}

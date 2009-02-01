@@ -6,8 +6,7 @@ import org.freeplane.core.resources.WindowConfigurationStorage;
 import org.freeplane.n3.nanoxml.IXMLElement;
 
 public class ScriptEditorWindowConfigurationStorage extends WindowConfigurationStorage {
-	public static ScriptEditorWindowConfigurationStorage decorateDialog(final String marshalled,
-	                                                                    final JDialog dialog) {
+	public static ScriptEditorWindowConfigurationStorage decorateDialog(final String marshalled, final JDialog dialog) {
 		final ScriptEditorWindowConfigurationStorage storage = new ScriptEditorWindowConfigurationStorage();
 		final IXMLElement xml = storage.unmarschall(marshalled, dialog);
 		if (xml != null) {

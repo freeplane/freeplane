@@ -17,7 +17,6 @@
  */
 package org.freeplane.features.mindmapmode.addins.styles;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.util.Iterator;
 import java.util.List;
@@ -47,8 +46,8 @@ public class ApplyFormatPlugin extends FreeplaneAction {
 		final NodeModel focussed = modeController.getMapController().getSelectedNode();
 		final List selected = modeController.getMapController().getSelectedNodes();
 		final Pattern nodePattern = StylePatternFactory.createPatternFromSelected(focussed, selected);
-		final ChooseFormatPopupDialog formatDialog = new ChooseFormatPopupDialog(getController().getViewController().getFrame(), modeController,
-		    "accessories/plugins/ApplyFormatPlugin.dialog.title", nodePattern);
+		final ChooseFormatPopupDialog formatDialog = new ChooseFormatPopupDialog(getController().getViewController()
+		    .getFrame(), modeController, "accessories/plugins/ApplyFormatPlugin.dialog.title", nodePattern);
 		formatDialog.setModal(true);
 		formatDialog.setVisible(true);
 		if (formatDialog.getResult() == ChooseFormatPopupDialog.OK) {

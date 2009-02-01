@@ -55,8 +55,7 @@ public class ScriptingRegistration implements IExternalPatternAction {
 			return 0;
 		}
 
-		public ScriptEditorWindowConfigurationStorage decorateDialog(
-		                                                             final ScriptEditorPanel pPanel,
+		public ScriptEditorWindowConfigurationStorage decorateDialog(final ScriptEditorPanel pPanel,
 		                                                             final String pWindow_preference_storage_property) {
 			final String marshalled = Controller.getResourceController().getProperty(
 			    pWindow_preference_storage_property);
@@ -69,11 +68,9 @@ public class ScriptingRegistration implements IExternalPatternAction {
 			}
 		}
 
-		public boolean executeScript(final int pIndex, final PrintStream pOutStream,
-		                             final IErrorHandler pErrorHandler) {
-			return ScriptingEngine.executeScript(modeController.getMapController()
-			    .getSelectedNode(), new BooleanHolder(true), mScript, modeController,
-			    pErrorHandler, pOutStream, getScriptCookies());
+		public boolean executeScript(final int pIndex, final PrintStream pOutStream, final IErrorHandler pErrorHandler) {
+			return ScriptingEngine.executeScript(modeController.getMapController().getSelectedNode(),
+			    new BooleanHolder(true), mScript, modeController, pErrorHandler, pOutStream, getScriptCookies());
 		}
 
 		public int getAmountOfScripts() {
@@ -116,12 +113,11 @@ public class ScriptingRegistration implements IExternalPatternAction {
 
 	public void act(final NodeModel node, final Pattern pattern) {
 		if (pattern.getPatternScript() != null && pattern.getPatternScript().getValue() != null) {
-			ScriptingEngine.executeScript(node, new BooleanHolder(false), HtmlTools
-			    .unescapeHTMLUnicodeEntity(pattern.getPatternScript().getValue()), modeController,
-			    new IErrorHandler() {
-				    public void gotoLine(final int pLineNumber) {
-				    }
-			    }, System.out, getScriptCookies());
+			ScriptingEngine.executeScript(node, new BooleanHolder(false), HtmlTools.unescapeHTMLUnicodeEntity(pattern
+			    .getPatternScript().getValue()), modeController, new IErrorHandler() {
+				public void gotoLine(final int pLineNumber) {
+				}
+			}, System.out, getScriptCookies());
 		}
 	}
 
@@ -130,19 +126,16 @@ public class ScriptingRegistration implements IExternalPatternAction {
 		controls.addTab(TAB);
 		controls.addSeparator(TAB, SEPARATOR, IndexedTree.AS_CHILD);
 		final String GROUP = TAB + "/" + SEPARATOR;
-		controls.addBooleanProperty(GROUP,
-		    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION,
+		controls.addBooleanProperty(GROUP, ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION,
 		    IndexedTree.AS_CHILD);
-		controls.addBooleanProperty(GROUP,
-		    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION,
+		controls.addBooleanProperty(GROUP, ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION,
 		    IndexedTree.AS_CHILD);
-		controls.addBooleanProperty(GROUP,
-		    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION,
+		controls.addBooleanProperty(GROUP, ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION,
 		    IndexedTree.AS_CHILD);
-		controls.addBooleanProperty(GROUP, ResourceController.RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED,
+		controls
+		    .addBooleanProperty(GROUP, ResourceController.RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED, IndexedTree.AS_CHILD);
+		controls.addStringProperty(GROUP, ResourceController.RESOURCES_SCRIPT_USER_KEY_NAME_FOR_SIGNING,
 		    IndexedTree.AS_CHILD);
-		controls.addStringProperty(GROUP,
-		    ResourceController.RESOURCES_SCRIPT_USER_KEY_NAME_FOR_SIGNING, IndexedTree.AS_CHILD);
 	}
 
 	public HashMap getScriptCookies() {
@@ -154,18 +147,16 @@ public class ScriptingRegistration implements IExternalPatternAction {
 		mScriptEditorStarter = new ScriptEditorProperty.IScriptEditorStarter() {
 			public String startEditor(final String pScriptInput) {
 				final PatternScriptModel patternScriptModel = new PatternScriptModel(pScriptInput);
-				final ScriptEditorPanel scriptEditorPanel = new ScriptEditorPanel(
+				final ScriptEditorPanel scriptEditorPanel = new ScriptEditorPanel(modeController.getController(),
 				    patternScriptModel, false);
 				scriptEditorPanel.setVisible(true);
 				return patternScriptModel.getScript();
 			}
 		};
-		modeController.addExtension(ScriptEditorProperty.IScriptEditorStarter.class,
-		    mScriptEditorStarter);
+		modeController.addExtension(ScriptEditorProperty.IScriptEditorStarter.class, mScriptEditorStarter);
 		addPropertiesToOptionPanel();
-		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory()
-		    .getMenuBuilder();
-		menuBuilder.addAnnotatedAction(new ScriptEditor(this));
-		menuBuilder.addAnnotatedAction(new ScriptingEngine(this));
+		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
+		menuBuilder.addAnnotatedAction(new ScriptEditor(modeController.getController(), this));
+		menuBuilder.addAnnotatedAction(new ScriptingEngine(modeController.getController(), this));
 	}
 }

@@ -23,7 +23,6 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.addins.PersistentNodeHook;
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;

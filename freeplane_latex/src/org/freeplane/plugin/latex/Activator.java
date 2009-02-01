@@ -1,6 +1,7 @@
 package org.freeplane.plugin.latex;
 
 import org.freeplane.features.mindmapmode.MModeController;
+import org.freeplane.startup.mindmapmode.MModeControllerFactory;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
@@ -10,7 +11,7 @@ public class Activator implements BundleActivator {
 	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(final BundleContext context) throws Exception {
-		final MModeController modeController = MModeController.getMModeController();
+		final MModeController modeController = MModeControllerFactory.getModeController();
 		new LatexNodeHook(modeController);
 	}
 

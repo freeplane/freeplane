@@ -20,7 +20,6 @@
  */
 package org.freeplane.features.mindmapmode.addins.styles;
 
-import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -143,8 +142,9 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 				return;
 			}
 			final Pattern choice = pat.getChoice(source.getSelectedIndex());
-			final ChooseFormatPopupDialog formatDialog = new ChooseFormatPopupDialog(JOptionPane.getFrameForComponent((Component) source),
-			    mindMapController, "accessories/plugins/AutomaticLayout.properties_StyleDialogTitle", choice);
+			final ChooseFormatPopupDialog formatDialog = new ChooseFormatPopupDialog(JOptionPane
+			    .getFrameForComponent(source), mindMapController,
+			    "accessories/plugins/AutomaticLayout.properties_StyleDialogTitle", choice);
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					if (mDialogIsShown) {
@@ -188,8 +188,9 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 
 		public void actionPerformed(final ActionEvent e) {
 			final Pattern pat = getPatternFromString();
-			final ChooseFormatPopupDialog formatDialog = new ChooseFormatPopupDialog(mindMapController.getController().getViewController().getFrame(),
-			    mindMapController, "accessories/plugins/AutomaticLayout.properties_StyleDialogTitle", pat);
+			final ChooseFormatPopupDialog formatDialog = new ChooseFormatPopupDialog(mindMapController.getController()
+			    .getViewController().getFrame(), mindMapController,
+			    "accessories/plugins/AutomaticLayout.properties_StyleDialogTitle", pat);
 			formatDialog.setModal(true);
 			formatDialog.setVisible(true);
 			if (formatDialog.getResult() == ChooseFormatPopupDialog.OK) {

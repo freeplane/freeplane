@@ -48,8 +48,7 @@ class ScriptingSecurityManager extends SecurityManager {
 	final private boolean mWithoutFileRestriction;
 	final private boolean mWithoutNetworkRestriction;
 
-	public ScriptingSecurityManager(final boolean pWithoutFileRestriction,
-	                                final boolean pWithoutNetworkRestriction,
+	public ScriptingSecurityManager(final boolean pWithoutFileRestriction, final boolean pWithoutNetworkRestriction,
 	                                final boolean pWithoutExecRestriction) {
 		mWithoutFileRestriction = pWithoutFileRestriction;
 		mWithoutNetworkRestriction = pWithoutNetworkRestriction;
@@ -61,8 +60,7 @@ class ScriptingSecurityManager extends SecurityManager {
 		if (mWithoutNetworkRestriction) {
 			return;
 		}
-		throw getException(ScriptingSecurityManager.PERM_GROUP_NETWORK,
-		    ScriptingSecurityManager.PERM_Accept);
+		throw getException(ScriptingSecurityManager.PERM_GROUP_NETWORK, ScriptingSecurityManager.PERM_Accept);
 	}
 
 	@Override
@@ -82,8 +80,7 @@ class ScriptingSecurityManager extends SecurityManager {
 		if (mWithoutNetworkRestriction) {
 			return;
 		}
-		throw getException(ScriptingSecurityManager.PERM_GROUP_NETWORK,
-		    ScriptingSecurityManager.PERM_Connect);
+		throw getException(ScriptingSecurityManager.PERM_GROUP_NETWORK, ScriptingSecurityManager.PERM_Connect);
 	}
 
 	@Override
@@ -91,8 +88,7 @@ class ScriptingSecurityManager extends SecurityManager {
 		if (mWithoutNetworkRestriction) {
 			return;
 		}
-		throw getException(ScriptingSecurityManager.PERM_GROUP_NETWORK,
-		    ScriptingSecurityManager.PERM_Connect);
+		throw getException(ScriptingSecurityManager.PERM_GROUP_NETWORK, ScriptingSecurityManager.PERM_Connect);
 	}
 
 	@Override
@@ -104,8 +100,7 @@ class ScriptingSecurityManager extends SecurityManager {
 		if (mWithoutFileRestriction) {
 			return;
 		}
-		throw getException(ScriptingSecurityManager.PERM_GROUP_FILE,
-		    ScriptingSecurityManager.PERM_Delete);
+		throw getException(ScriptingSecurityManager.PERM_GROUP_FILE, ScriptingSecurityManager.PERM_Delete);
 	}
 
 	@Override
@@ -113,8 +108,7 @@ class ScriptingSecurityManager extends SecurityManager {
 		if (mWithoutExecRestriction) {
 			return;
 		}
-		throw getException(ScriptingSecurityManager.PERM_GROUP_EXEC,
-		    ScriptingSecurityManager.PERM_Exec);
+		throw getException(ScriptingSecurityManager.PERM_GROUP_EXEC, ScriptingSecurityManager.PERM_Exec);
 	}
 
 	@Override
@@ -134,8 +128,7 @@ class ScriptingSecurityManager extends SecurityManager {
 		if (mWithoutExecRestriction || set.contains(pLib)) {
 			return;
 		}
-		throw getException(ScriptingSecurityManager.PERM_GROUP_EXEC,
-		    ScriptingSecurityManager.PERM_Link);
+		throw getException(ScriptingSecurityManager.PERM_GROUP_EXEC, ScriptingSecurityManager.PERM_Link);
 	}
 
 	@Override
@@ -143,8 +136,7 @@ class ScriptingSecurityManager extends SecurityManager {
 		if (mWithoutNetworkRestriction) {
 			return;
 		}
-		throw getException(ScriptingSecurityManager.PERM_GROUP_NETWORK,
-		    ScriptingSecurityManager.PERM_Listen);
+		throw getException(ScriptingSecurityManager.PERM_GROUP_NETWORK, ScriptingSecurityManager.PERM_Listen);
 	}
 
 	@Override
@@ -156,8 +148,7 @@ class ScriptingSecurityManager extends SecurityManager {
 		if (mWithoutNetworkRestriction) {
 			return;
 		}
-		throw getException(ScriptingSecurityManager.PERM_GROUP_NETWORK,
-		    ScriptingSecurityManager.PERM_Multicast);
+		throw getException(ScriptingSecurityManager.PERM_GROUP_NETWORK, ScriptingSecurityManager.PERM_Multicast);
 	}
 
 	@Override
@@ -165,8 +156,7 @@ class ScriptingSecurityManager extends SecurityManager {
 		if (mWithoutNetworkRestriction) {
 			return;
 		}
-		throw getException(ScriptingSecurityManager.PERM_GROUP_NETWORK,
-		    ScriptingSecurityManager.PERM_Multicast);
+		throw getException(ScriptingSecurityManager.PERM_GROUP_NETWORK, ScriptingSecurityManager.PERM_Multicast);
 	}
 
 	@Override
@@ -202,8 +192,7 @@ class ScriptingSecurityManager extends SecurityManager {
 		if (mWithoutFileRestriction) {
 			return;
 		}
-		throw getException(ScriptingSecurityManager.PERM_GROUP_FILE,
-		    ScriptingSecurityManager.PERM_Read);
+		throw getException(ScriptingSecurityManager.PERM_GROUP_FILE, ScriptingSecurityManager.PERM_Read);
 	}
 
 	@Override
@@ -211,8 +200,7 @@ class ScriptingSecurityManager extends SecurityManager {
 		if (mWithoutFileRestriction) {
 			return;
 		}
-		throw getException(ScriptingSecurityManager.PERM_GROUP_FILE,
-		    ScriptingSecurityManager.PERM_Read);
+		throw getException(ScriptingSecurityManager.PERM_GROUP_FILE, ScriptingSecurityManager.PERM_Read);
 	}
 
 	@Override
@@ -220,8 +208,7 @@ class ScriptingSecurityManager extends SecurityManager {
 		if (mWithoutFileRestriction) {
 			return;
 		}
-		throw getException(ScriptingSecurityManager.PERM_GROUP_FILE,
-		    ScriptingSecurityManager.PERM_Read);
+		throw getException(ScriptingSecurityManager.PERM_GROUP_FILE, ScriptingSecurityManager.PERM_Read);
 	}
 
 	@Override
@@ -233,8 +220,7 @@ class ScriptingSecurityManager extends SecurityManager {
 		if (mWithoutNetworkRestriction) {
 			return;
 		}
-		throw getException(ScriptingSecurityManager.PERM_GROUP_NETWORK,
-		    ScriptingSecurityManager.PERM_SetFactory);
+		throw getException(ScriptingSecurityManager.PERM_GROUP_NETWORK, ScriptingSecurityManager.PERM_SetFactory);
 	}
 
 	@Override
@@ -251,8 +237,7 @@ class ScriptingSecurityManager extends SecurityManager {
 		if (mWithoutFileRestriction) {
 			return;
 		}
-		throw getException(ScriptingSecurityManager.PERM_GROUP_FILE,
-		    ScriptingSecurityManager.PERM_Write);
+		throw getException(ScriptingSecurityManager.PERM_GROUP_FILE, ScriptingSecurityManager.PERM_Write);
 	}
 
 	@Override
@@ -260,13 +245,11 @@ class ScriptingSecurityManager extends SecurityManager {
 		if (mWithoutFileRestriction) {
 			return;
 		}
-		throw getException(ScriptingSecurityManager.PERM_GROUP_FILE,
-		    ScriptingSecurityManager.PERM_Write);
+		throw getException(ScriptingSecurityManager.PERM_GROUP_FILE, ScriptingSecurityManager.PERM_Write);
 	}
 
 	private SecurityException getException(final int pPermissionGroup, final int pPermission) {
-		return new SecurityException(Controller.getResourceController().format(
-		    "plugins/ScriptEditor.FORBIDDEN_ACTION",
+		return new SecurityException(Controller.getResourceController().format("plugins/ScriptEditor.FORBIDDEN_ACTION",
 		    new Integer[] { new Integer(pPermissionGroup), new Integer(pPermission) }));
 	}
 }

@@ -111,8 +111,8 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 				final MessageFormat formatter = new MessageFormat(
 				    getResourceString("plugins/TimeManagement.xml_reminderNode_onlyOneDate"));
 				final String message = formatter.format(messageArguments);
-				final int result = JOptionPane.showConfirmDialog(controller.getViewController().getFrame(), message, "Freeplane",
-				    JOptionPane.YES_NO_OPTION);
+				final int result = JOptionPane.showConfirmDialog(controller.getViewController().getFrame(), message,
+				    "Freeplane", JOptionPane.YES_NO_OPTION);
 				if (result == JOptionPane.NO_OPTION) {
 					return;
 				}

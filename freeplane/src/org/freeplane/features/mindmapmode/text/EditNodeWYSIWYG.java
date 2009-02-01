@@ -53,7 +53,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 	private static class HTMLDialog extends EditDialog {
 		private SHTMLPanel htmlEditorPanel;
 
-		HTMLDialog(final EditNodeBase base, Frame frame) throws Exception {
+		HTMLDialog(final EditNodeBase base, final Frame frame) throws Exception {
 			super(base, frame);
 			createEditorPanel();
 			getContentPane().add(htmlEditorPanel, BorderLayout.CENTER);
@@ -166,7 +166,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 		this.firstEvent = firstEvent;
 	}
 
-	public void show(Frame frame) {
+	public void show(final Frame frame) {
 		try {
 			if (EditNodeWYSIWYG.htmlEditorWindow == null) {
 				EditNodeWYSIWYG.htmlEditorWindow = new HTMLDialog(this, frame);

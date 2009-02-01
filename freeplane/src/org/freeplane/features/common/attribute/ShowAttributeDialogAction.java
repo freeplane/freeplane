@@ -44,7 +44,7 @@ class ShowAttributeDialogAction extends AbstractAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		if(frame == null){
+		if (frame == null) {
 			frame = controller.getViewController().getFrame();
 		}
 		if (getAttributeDialog().isVisible() == false && controller.getMap() != null) {

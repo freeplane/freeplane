@@ -242,16 +242,15 @@ public class MFileManager extends UrlManager {
 		try {
 			final String lockingUser = ((MMapController) getModeController().getMapController()).tryToLock(map, file);
 			if (lockingUser != null) {
-				UITools.informationMessage(getController().getViewController().getFrame(),
-					UrlManager.expandPlaceholders(getModeController().getText(
-				    "map_locked_by_save_as"), file.getName(), lockingUser));
+				UITools.informationMessage(getController().getViewController().getFrame(), UrlManager
+				    .expandPlaceholders(getModeController().getText("map_locked_by_save_as"), file.getName(),
+				        lockingUser));
 				return false;
 			}
 		}
 		catch (final Exception e) {
-			UITools.informationMessage(getController().getViewController().getFrame(),
-				UrlManager.expandPlaceholders(getModeController().getText(
-			    "locking_failed_by_save_as"), file.getName()));
+			UITools.informationMessage(getController().getViewController().getFrame(), UrlManager.expandPlaceholders(
+			    getModeController().getText("locking_failed_by_save_as"), file.getName()));
 			return false;
 		}
 		return saveInternal((MMapModel) map, file, false);
