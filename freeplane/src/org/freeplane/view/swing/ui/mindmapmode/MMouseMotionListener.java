@@ -60,22 +60,17 @@ public class MMouseMotionListener implements IMapMouseReceiver {
 				final NodeView targetView = mapView.getNodeView(target);
 				final NodeView sourceView = mapView.getNodeView(draggedLink.getSource());
 				if (targetView != null && sourceView != null) {
-					final Point targetLinkPoint = targetView.getLinkPoint(draggedLink
-					    .getEndInclination());
-					final Point sourceLinkPoint = sourceView.getLinkPoint(draggedLink
-					    .getStartInclination());
+					final Point targetLinkPoint = targetView.getLinkPoint(draggedLink.getEndInclination());
+					final Point sourceLinkPoint = sourceView.getLinkPoint(draggedLink.getStartInclination());
 					distSqToTarget = targetLinkPoint.distanceSq(originX, originY);
 					distSqToSource = sourceLinkPoint.distanceSq(originX, originY);
 				}
-				if ((targetView == null || sourceView != null)
-				        && distSqToSource < distSqToTarget * 2.25) {
+				if ((targetView == null || sourceView != null) && distSqToSource < distSqToTarget * 2.25) {
 					final Point changedInclination = draggedLink.getStartInclination();
-					draggedLink.changeInclination(deltaX, deltaY, draggedLink.getSource(),
-					    changedInclination);
+					draggedLink.changeInclination(deltaX, deltaY, draggedLink.getSource(), changedInclination);
 					draggedLink.setStartInclination(changedInclination);
 				}
-				if ((sourceView == null || targetView != null)
-				        && distSqToTarget < distSqToSource * 2.25) {
+				if ((sourceView == null || targetView != null) && distSqToTarget < distSqToSource * 2.25) {
 					final Point changedInclination = draggedLink.getEndInclination();
 					draggedLink.changeInclination(deltaX, deltaY, target, changedInclination);
 					draggedLink.setEndInclination(changedInclination);
@@ -116,8 +111,8 @@ public class MMouseMotionListener implements IMapMouseReceiver {
 			final Point draggedLinkNewEndPoint = draggedLink.getEndInclination();
 			draggedLink.setStartInclination(draggedLinkOldStartPoint);
 			draggedLink.setEndInclination(draggedLinkOldEndPoint);
-			((MLinkController) LinkController.getController(mController)).setArrowLinkEndPoints(
-			    draggedLink, draggedLinkNewStartPoint, draggedLinkNewEndPoint);
+			((MLinkController) LinkController.getController(mController)).setArrowLinkEndPoints(draggedLink,
+			    draggedLinkNewStartPoint, draggedLinkNewEndPoint);
 			mapView.repaint();
 			draggedLink = null;
 		}

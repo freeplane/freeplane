@@ -310,11 +310,9 @@ class TimeList {
 
 		public String getUntaggedNodeText() {
 			final String nodeText = node.getText();
-			if (untaggedNodeText == null
-			        || (originalNodeText != null && !originalNodeText.equals(nodeText))) {
+			if (untaggedNodeText == null || (originalNodeText != null && !originalNodeText.equals(nodeText))) {
 				originalNodeText = nodeText;
-				untaggedNodeText = HtmlTools.removeHtmlTagsFromString(nodeText).replaceAll("\\s+",
-				    " ");
+				untaggedNodeText = HtmlTools.removeHtmlTagsFromString(nodeText).replaceAll("\\s+", " ");
 			}
 			return untaggedNodeText;
 		}
@@ -358,11 +356,9 @@ class TimeList {
 			if (notesText == null) {
 				return "";
 			}
-			if (untaggedNotesText == null
-			        || (originalNotesText != null && !originalNotesText.equals(notesText))) {
+			if (untaggedNotesText == null || (originalNotesText != null && !originalNotesText.equals(notesText))) {
 				originalNotesText = notesText;
-				untaggedNotesText = HtmlTools.removeHtmlTagsFromString(notesText).replaceAll(
-				    "\\s+", " ");
+				untaggedNotesText = HtmlTools.removeHtmlTagsFromString(notesText).replaceAll("\\s+", " ");
 			}
 			return untaggedNotesText;
 		}
@@ -386,8 +382,8 @@ class TimeList {
 
 	private class ReplaceAllInfo implements IReplaceInputInformation {
 		public void changeString(final NodeHolder nodeHolder, final String newText) {
-			((MTextController) TextController.getController(getMindMapController())).setNodeText(
-			    nodeHolder.node, newText);
+			((MTextController) TextController.getController(getMindMapController())).setNodeText(nodeHolder.node,
+			    newText);
 		}
 
 		public int getLength() {
@@ -401,8 +397,8 @@ class TimeList {
 
 	private class ReplaceSelectedInfo implements IReplaceInputInformation {
 		public void changeString(final NodeHolder nodeHolder, final String newText) {
-			((MTextController) TextController.getController(getMindMapController())).setNodeText(
-			    nodeHolder.node, newText);
+			((MTextController) TextController.getController(getMindMapController())).setNodeText(nodeHolder.node,
+			    newText);
 		}
 
 		public int getLength() {
@@ -410,8 +406,7 @@ class TimeList {
 		}
 
 		public NodeHolder getNodeHolderAt(final int i) {
-			return (NodeHolder) sorter.getValueAt(timeTable.getSelectedRows()[i],
-			    TimeList.NODE_TEXT_COLUMN);
+			return (NodeHolder) sorter.getValueAt(timeTable.getSelectedRows()[i], TimeList.NODE_TEXT_COLUMN);
 		}
 	}
 
@@ -428,8 +423,7 @@ class TimeList {
 	protected static final int NODE_NOTES_COLUMN = 5;
 	public static final int NODE_TEXT_COLUMN = 1;
 	private static final int TYPE_DELAY_TIME = 500;
-	private static final String WINDOW_PREFERENCE_STORAGE_PROPERTY = TimeList.class.getName()
-	        + "_properties";
+	private static final String WINDOW_PREFERENCE_STORAGE_PROPERTY = TimeList.class.getName() + "_properties";
 
 	/**
 	 */
@@ -453,14 +447,14 @@ class TimeList {
 		for (int i = 0; i < length; i++) {
 			final NodeHolder nodeHolder = info.getNodeHolderAt(i);
 			final String text = nodeHolder.node.getText();
-			final String replaceResult = HtmlTools.getInstance().getReplaceResult(p, replacement,
-			    text);
+			final String replaceResult = HtmlTools.getInstance().getReplaceResult(p, replacement, text);
 			if (!Tools.safeEquals(text, replaceResult)) {
 				info.changeString(nodeHolder, replaceResult);
 			}
 		}
 	}
 
+	final private Controller controller;
 	private DateRenderer dateRenderer;
 	private JDialog dialog;
 	private IconsRenderer iconsRenderer;
@@ -478,6 +472,7 @@ class TimeList {
 
 	public TimeList(final ModeController modeController, final boolean showAllNodes) {
 		this.modeController = modeController;
+		controller = modeController.getController();
 		this.showAllNodes = showAllNodes;
 	}
 
@@ -504,18 +499,15 @@ class TimeList {
 			final int row = selectedRows[i];
 			selectedNodes.add(getMindMapNode(row));
 		}
-		final MapModel newMap = getMindMapController().getMapController()
-		    .newMap(((NodeModel) null));;
+		final MapModel newMap = getMindMapController().getMapController().newMap(((NodeModel) null));;
 		final ModeController newMindMapController = newMap.getModeController();
 		for (final Iterator iter = selectedNodes.iterator(); iter.hasNext();) {
 			final NodeModel node = (NodeModel) iter.next();
 			//
 			//
-			final NodeModel copy = ClipboardController.getController(node.getModeController())
-			    .shallowCopy(node);
+			final NodeModel copy = ClipboardController.getController(node.getModeController()).shallowCopy(node);
 			if (copy != null) {
-				newMindMapController.getMapController().insertNodeIntoWithoutUndo(copy,
-				    newMap.getRootNode());
+				newMindMapController.getMapController().insertNodeIntoWithoutUndo(copy, newMap.getRootNode());
 			}
 		}
 		disposeDialog();
@@ -572,8 +564,7 @@ class TimeList {
 				final int row = selectedRows[i];
 				selectedNodes.add(getMindMapNode(row));
 			}
-			getMindMapController().getMapController().selectMultipleNodes(focussedNode,
-			    selectedNodes);
+			getMindMapController().getMapController().selectMultipleNodes(focussedNode, selectedNodes);
 		}
 	}
 
@@ -588,7 +579,7 @@ class TimeList {
 		TimeList.COLUMN_TEXT = getResourceString("plugins/TimeList.xml_Text");
 		TimeList.COLUMN_DATE = getResourceString("plugins/TimeList.xml_Date");
 		TimeList.COLUMN_NOTES = getResourceString("plugins/TimeList.xml_Notes");
-		dialog = new JDialog(Controller.getController().getViewController().getJFrame(), true /* modal */);
+		dialog = new JDialog(modeController.getController().getViewController().getFrame(), true /* modal */);
 		String windowTitle;
 		if (showAllNodes) {
 			windowTitle = "plugins/TimeManagement.xml_WindowTitle_All_Nodes";
@@ -614,9 +605,8 @@ class TimeList {
 		gbl.columnWeights = new double[] { 1.0f };
 		gbl.rowWeights = new double[] { 1.0f };
 		contentPane.setLayout(gbl);
-		contentPane.add(new JLabel(getResourceString("plugins/TimeManagement.xml_Find")),
-		    new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0, GridBagConstraints.WEST,
-		        GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
+		contentPane.add(new JLabel(getResourceString("plugins/TimeManagement.xml_Find")), new GridBagConstraints(0, 0,
+		    1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
 		mFilterTextSearchField = new JTextField();
 		mFilterTextSearchField.getDocument().addDocumentListener(new FilterTextDocumentListener());
 		mFilterTextSearchField.addKeyListener(new KeyAdapter() {
@@ -627,16 +617,13 @@ class TimeList {
 				}
 			}
 		});
-		contentPane.add(/* new JScrollPane */(mFilterTextSearchField), new GridBagConstraints(0,
-		    1, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(
-		        0, 0, 0, 0), 0, 0));
-		contentPane.add(new JLabel(getResourceString("plugins/TimeManagement.xml_Replace")),
-		    new GridBagConstraints(0, 2, 1, 1, 1.0, 0.0, GridBagConstraints.WEST,
-		        GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
+		contentPane.add(/* new JScrollPane */(mFilterTextSearchField), new GridBagConstraints(0, 1, 1, 1, 1.0, 0.0,
+		    GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
+		contentPane.add(new JLabel(getResourceString("plugins/TimeManagement.xml_Replace")), new GridBagConstraints(0,
+		    2, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
 		mFilterTextReplaceField = new JTextField();
-		contentPane.add(/* new JScrollPane */(mFilterTextReplaceField), new GridBagConstraints(0,
-		    3, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(
-		        0, 0, 0, 0), 0, 0));
+		contentPane.add(/* new JScrollPane */(mFilterTextReplaceField), new GridBagConstraints(0, 3, 1, 1, 1.0, 0.0,
+		    GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
 		mFilterTextReplaceField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(final KeyEvent pEvent) {
@@ -657,8 +644,7 @@ class TimeList {
 		timeTable.addMouseListener(new FlatNodeTableMouseAdapter());
 		timeTable.getTableHeader().setReorderingAllowed(false);
 		timeTableModel = updateModel();
-		mFlatNodeTableFilterModel = new FlatNodeTableFilterModel(timeTableModel,
-		    TimeList.NODE_TEXT_COLUMN);
+		mFlatNodeTableFilterModel = new FlatNodeTableFilterModel(timeTableModel, TimeList.NODE_TEXT_COLUMN);
 		sorter = new TableSorter(mFlatNodeTableFilterModel);
 		timeTable.setModel(sorter);
 		sorter.setTableHeader(timeTable.getTableHeader());
@@ -667,20 +653,18 @@ class TimeList {
 		sorter.setColumnComparator(IconsHolder.class, TableSorter.COMPARABLE_COMAPRATOR);
 		sorter.setSortingStatus(TimeList.DATE_COLUMN, TableSorter.ASCENDING);
 		final JScrollPane pane = new JScrollPane(timeTable);
-		contentPane.add(pane, new GridBagConstraints(0, 4, 1, 1, 1.0, 10.0,
-		    GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
+		contentPane.add(pane, new GridBagConstraints(0, 4, 1, 1, 1.0, 10.0, GridBagConstraints.WEST,
+		    GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
 		mTreeLabel = new JLabel();
 		contentPane.add(new JScrollPane(mTreeLabel), new GridBagConstraints(0, 5, 1, 1, 1.0, 1.0,
 		    GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
-		final AbstractAction selectAction = new AbstractAction(
-		    getResourceString("plugins/TimeManagement.xml_Select")) {
+		final AbstractAction selectAction = new AbstractAction(getResourceString("plugins/TimeManagement.xml_Select")) {
 			public void actionPerformed(final ActionEvent arg0) {
 				selectSelectedRows();
 			}
 		};
 		final JButton selectButton = new JButton(selectAction);
-		final AbstractAction exportAction = new AbstractAction(
-		    getResourceString("plugins/TimeManagement.xml_Export")) {
+		final AbstractAction exportAction = new AbstractAction(getResourceString("plugins/TimeManagement.xml_Export")) {
 			public void actionPerformed(final ActionEvent arg0) {
 				exportSelectedRowsAndClose();
 			}
@@ -700,16 +684,14 @@ class TimeList {
 			}
 		};
 		final JButton replaceSelectedButton = new JButton(replaceSelectedAction);
-		final AbstractAction gotoAction = new AbstractAction(
-		    getResourceString("plugins/TimeManagement.xml_Goto")) {
+		final AbstractAction gotoAction = new AbstractAction(getResourceString("plugins/TimeManagement.xml_Goto")) {
 			public void actionPerformed(final ActionEvent arg0) {
 				selectSelectedRows();
 				disposeDialog();
 			}
 		};
 		final JButton gotoButton = new JButton(gotoAction);
-		final AbstractAction disposeAction = new AbstractAction(
-		    getResourceString("plugins/TimeManagement.xml_Cancel")) {
+		final AbstractAction disposeAction = new AbstractAction(getResourceString("plugins/TimeManagement.xml_Cancel")) {
 			public void actionPerformed(final ActionEvent arg0) {
 				disposeDialog();
 			}
@@ -720,14 +702,14 @@ class TimeList {
 		gotoAction.setEnabled(false);
 		exportAction.setEnabled(false);
 		replaceSelectedAction.setEnabled(false);
-		final JPanel bar = ButtonBarFactory.buildGrowingBar(new JButton[] { cancelButton,
-		        exportButton, replaceAllButton, replaceSelectedButton, gotoButton, selectButton, });
+		final JPanel bar = ButtonBarFactory.buildGrowingBar(new JButton[] { cancelButton, exportButton,
+		        replaceAllButton, replaceSelectedButton, gotoButton, selectButton, });
 		contentPane.add(/* new JScrollPane */(bar), new GridBagConstraints(0, 6, 1, 1, 1.0, 1.0,
 		    GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
 		final JMenuBar menuBar = new JMenuBar();
 		final JMenu menu = new JMenu(getResourceString("plugins/TimeManagement.xml_menu_actions"));
-		final AbstractAction[] actionList = new AbstractAction[] { selectAction, gotoAction,
-		        replaceSelectedAction, replaceAllAction, exportAction, disposeAction };
+		final AbstractAction[] actionList = new AbstractAction[] { selectAction, gotoAction, replaceSelectedAction,
+		        replaceAllAction, exportAction, disposeAction };
 		for (int i = 0; i < actionList.length; i++) {
 			final AbstractAction action = actionList[i];
 			final JMenuItem item = menu.add(action);
@@ -771,17 +753,15 @@ class TimeList {
 		});
 		final String marshalled = Controller.getResourceController().getProperty(
 		    TimeList.WINDOW_PREFERENCE_STORAGE_PROPERTY);
-		final WindowConfigurationStorage result = TimeWindowConfigurationStorage.decorateDialog(
-		    marshalled, dialog);
+		final WindowConfigurationStorage result = TimeWindowConfigurationStorage.decorateDialog(marshalled, dialog);
 		final WindowConfigurationStorage storage = result;
 		if (storage != null) {
 			timeTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 			int column = 0;
-			for (final Iterator i = ((TimeWindowConfigurationStorage) storage)
-			    .getListTimeWindowColumnSettingList().iterator(); i.hasNext();) {
+			for (final Iterator i = ((TimeWindowConfigurationStorage) storage).getListTimeWindowColumnSettingList()
+			    .iterator(); i.hasNext();) {
 				final TimeWindowColumnSetting setting = (TimeWindowColumnSetting) i.next();
-				timeTable.getColumnModel().getColumn(column).setPreferredWidth(
-				    setting.getColumnWidth());
+				timeTable.getColumnModel().getColumn(column).setPreferredWidth(setting.getColumnWidth());
 				sorter.setSortingStatus(column, setting.getColumnSorting());
 				column++;
 			}
@@ -793,7 +773,7 @@ class TimeList {
 	 * Creates a table model for the new table and returns it.
 	 */
 	private DefaultTableModel updateModel() {
-		final NodeModel node = Controller.getController().getMap().getRootNode();
+		final NodeModel node = controller.getMap().getRootNode();
 		final DefaultTableModel model = new DefaultTableModel() {
 			/*
 			 * (non-Javadoc)
@@ -835,11 +815,10 @@ class TimeList {
 		}
 		if (showAllNodes || hook != null) {
 			model.addRow(new Object[] { date, new NodeHolder(node), new IconsHolder(node),
-			        node.getHistoryInformation().getCreatedAt(),
-			        node.getHistoryInformation().getLastModifiedAt(), new NotesHolder(node) });
+			        node.getHistoryInformation().getCreatedAt(), node.getHistoryInformation().getLastModifiedAt(),
+			        new NotesHolder(node) });
 		}
-		for (final Iterator i = node.getModeController().getMapController().childrenUnfolded(node); i
-		    .hasNext();) {
+		for (final Iterator i = node.getModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
 			final NodeModel child = (NodeModel) i.next();
 			updateModel(model, child);
 		}

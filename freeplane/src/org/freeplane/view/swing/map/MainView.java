@@ -62,8 +62,8 @@ import org.freeplane.features.common.text.IMainView;
  * Base class for all node views.
  */
 public abstract class MainView extends JLabel implements IMainView {
-	public static final Set executableExtensions = new HashSet(Arrays.asList(new String[] { "exe",
-	        "com", "vbs", "bat", "lnk" }));
+	public static final Set executableExtensions = new HashSet(Arrays.asList(new String[] { "exe", "com", "vbs", "bat",
+	        "lnk" }));
 	static Dimension maximumSize = new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
 	private static final int MIN_HOR_NODE_SIZE = 10;
 	static Dimension minimumSize = new Dimension(0, 0);
@@ -171,8 +171,8 @@ public abstract class MainView extends JLabel implements IMainView {
 	@Override
 	public Dimension getPreferredSize() {
 		final String text = getText();
-		final boolean isEmpty = text.length() == 0 || HtmlTools.isHtmlNode(text)
-		        && text.indexOf("<img") < 0 && HtmlTools.htmlToPlain(text).length() == 0;
+		final boolean isEmpty = text.length() == 0 || HtmlTools.isHtmlNode(text) && text.indexOf("<img") < 0
+		        && HtmlTools.htmlToPlain(text).length() == 0;
 		if (isEmpty) {
 			setText("!");
 		}
@@ -185,8 +185,7 @@ public abstract class MainView extends JLabel implements IMainView {
 		if (isCurrentlyPrinting() && MapView.NEED_PREF_SIZE_BUG_FIX) {
 			prefSize.width += getNodeView().getMap().getZoomed(10);
 		}
-		prefSize.width = Math.max(getNodeView().getMap().getZoomed(MainView.MIN_HOR_NODE_SIZE),
-		    prefSize.width);
+		prefSize.width = Math.max(getNodeView().getMap().getZoomed(MainView.MIN_HOR_NODE_SIZE), prefSize.width);
 		if (isEmpty) {
 			setText("");
 		}
@@ -243,8 +242,7 @@ public abstract class MainView extends JLabel implements IMainView {
 	public boolean isInFollowLinkRegion(final double xCoord) {
 		final NodeModel model = getNodeView().getModel();
 		return NodeLinks.getLink(model) != null
-		        && (model.isRoot()
-		                || !model.getModeController().getMapController().hasChildren(model) || isInVerticalRegion(
+		        && (model.isRoot() || !model.getModeController().getMapController().hasChildren(model) || isInVerticalRegion(
 		            xCoord, 1. / 2));
 	}
 
@@ -254,8 +252,7 @@ public abstract class MainView extends JLabel implements IMainView {
 	 * the total width.
 	 */
 	public boolean isInVerticalRegion(final double xCoord, final double p) {
-		return getNodeView().isLeft() ? xCoord > getSize().width * (1.0 - p)
-		        : xCoord < getSize().width * p;
+		return getNodeView().isLeft() ? xCoord > getSize().width * (1.0 - p) : xCoord < getSize().width * p;
 	}
 
 	public boolean isLong() {
@@ -288,19 +285,19 @@ public abstract class MainView extends JLabel implements IMainView {
 	public void paintDragOver(final Graphics2D graphics) {
 		if (isDraggedOver == NodeView.DRAGGED_OVER_SON) {
 			if (getNodeView().isLeft()) {
-				graphics.setPaint(new GradientPaint(getWidth() * 3 / 4, 0, getNodeView().getMap()
-				    .getBackground(), getWidth() / 4, 0, NodeView.dragColor));
+				graphics.setPaint(new GradientPaint(getWidth() * 3 / 4, 0, getNodeView().getMap().getBackground(),
+				    getWidth() / 4, 0, NodeView.dragColor));
 				graphics.fillRect(0, 0, getWidth() * 3 / 4, getHeight() - 1);
 			}
 			else {
-				graphics.setPaint(new GradientPaint(getWidth() / 4, 0, getNodeView().getMap()
-				    .getBackground(), getWidth() * 3 / 4, 0, NodeView.dragColor));
+				graphics.setPaint(new GradientPaint(getWidth() / 4, 0, getNodeView().getMap().getBackground(),
+				    getWidth() * 3 / 4, 0, NodeView.dragColor));
 				graphics.fillRect(getWidth() / 4, 0, getWidth() - 1, getHeight() - 1);
 			}
 		}
 		if (isDraggedOver == NodeView.DRAGGED_OVER_SIBLING) {
-			graphics.setPaint(new GradientPaint(0, getHeight() * 3 / 5, getNodeView().getMap()
-			    .getBackground(), 0, getHeight() / 5, NodeView.dragColor));
+			graphics.setPaint(new GradientPaint(0, getHeight() * 3 / 5, getNodeView().getMap().getBackground(), 0,
+			    getHeight() / 5, NodeView.dragColor));
 			graphics.fillRect(0, 0, getWidth() - 1, getHeight() - 1);
 		}
 	}
@@ -312,8 +309,7 @@ public abstract class MainView extends JLabel implements IMainView {
 		g.setColor(Color.WHITE);
 		g.fillOval(p.x, p.y, zoomedFoldingSymbolHalfWidth * 2, zoomedFoldingSymbolHalfWidth * 2);
 		final NodeModel model = getNodeView().getModel();
-		final Color edgeColor = EdgeController.getController(model.getModeController()).getColor(
-		    model);
+		final Color edgeColor = EdgeController.getController(model.getModeController()).getColor(model);
 		g.setColor(edgeColor);
 		g.drawOval(p.x, p.y, zoomedFoldingSymbolHalfWidth * 2, zoomedFoldingSymbolHalfWidth * 2);
 		g.setColor(color);
@@ -324,8 +320,7 @@ public abstract class MainView extends JLabel implements IMainView {
 			paintBackground(graphics, getNodeView().getSelectedColor());
 		}
 		else {
-			final Color backgroundColor = NodeStyleModel.getBackgroundColor(getNodeView()
-			    .getModel());
+			final Color backgroundColor = NodeStyleModel.getBackgroundColor(getNodeView().getModel());
 			if (backgroundColor != null) {
 				paintBackground(graphics, backgroundColor);
 			}
@@ -343,16 +338,15 @@ public abstract class MainView extends JLabel implements IMainView {
 	 * java.awt.event.KeyEvent, int, boolean)
 	 */
 	@Override
-	protected boolean processKeyBinding(final KeyStroke ks, final KeyEvent e, final int condition,
-	                                    final boolean pressed) {
+	protected boolean processKeyBinding(final KeyStroke ks, final KeyEvent e, final int condition, final boolean pressed) {
 		if (super.processKeyBinding(ks, e, condition, pressed)) {
 			return true;
 		}
-		final FreeplaneMenuBar freeplaneMenuBar = Controller.getController().getViewController()
-		    .getFreeplaneMenuBar();
+		final MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, this);
+		final FreeplaneMenuBar freeplaneMenuBar = mapView.getModel().getModeController().getController()
+		    .getViewController().getFreeplaneMenuBar();
 		return !freeplaneMenuBar.isVisible()
-		        && freeplaneMenuBar.processKeyBinding(ks, e, JComponent.WHEN_IN_FOCUSED_WINDOW,
-		            pressed);
+		        && freeplaneMenuBar.processKeyBinding(ks, e, JComponent.WHEN_IN_FOCUSED_WINDOW, pressed);
 	}
 
 	public void setDraggedOver(final int draggedOver) {
@@ -360,8 +354,7 @@ public abstract class MainView extends JLabel implements IMainView {
 	}
 
 	public void setDraggedOver(final Point p) {
-		setDraggedOver((dropAsSibling(p.getX())) ? NodeView.DRAGGED_OVER_SIBLING
-		        : NodeView.DRAGGED_OVER_SON);
+		setDraggedOver((dropAsSibling(p.getX())) ? NodeView.DRAGGED_OVER_SIBLING : NodeView.DRAGGED_OVER_SON);
 	}
 
 	/**
@@ -377,8 +370,7 @@ public abstract class MainView extends JLabel implements IMainView {
 	}
 
 	public void updateFont(final NodeModel model) {
-		final Font font = NodeStyleController.getController(model.getModeController()).getFont(
-		    model);
+		final Font font = NodeStyleController.getController(model.getModeController()).getFont(model);
 		setFont(font);
 	}
 
@@ -413,8 +405,7 @@ public abstract class MainView extends JLabel implements IMainView {
 			else if (executableExtensions.contains(link)) {
 				iconPath = "/images/Executable.png";
 			}
-			final ImageIcon icon = new ImageIcon(Controller.getResourceController().getResource(
-			    iconPath));
+			final ImageIcon icon = new ImageIcon(Controller.getResourceController().getResource(iconPath));
 			iconImages.addImage(icon);
 		}
 		setIcon((iconPresent ? iconImages : null));
@@ -427,8 +418,7 @@ public abstract class MainView extends JLabel implements IMainView {
 			final String[] lines = nodeText.split("\n");
 			for (int line = 0; line < lines.length; line++) {
 				setText(lines[line]);
-				widthMustBeRestricted = getPreferredSize().width > map.getZoomed(map
-				    .getMaxNodeWidth())
+				widthMustBeRestricted = getPreferredSize().width > map.getZoomed(map.getMaxNodeWidth())
 				        + getIconWidth();
 				if (widthMustBeRestricted) {
 					break;
@@ -438,33 +428,27 @@ public abstract class MainView extends JLabel implements IMainView {
 		}
 		if (isHtml) {
 			if (nodeText.indexOf("<img") >= 0 && nodeText.indexOf("<base ") < 0) {
-				nodeText = "<html><base href=\"" + map.getModel().getURL() + "\">"
-				        + nodeText.substring(6);
+				nodeText = "<html><base href=\"" + map.getModel().getURL() + "\">" + nodeText.substring(6);
 			}
-			final String htmlLongNodeHead = Controller.getResourceController().getProperty(
-			    "html_long_node_head");
+			final String htmlLongNodeHead = Controller.getResourceController().getProperty("html_long_node_head");
 			if (htmlLongNodeHead != null && !htmlLongNodeHead.equals("")) {
 				if (nodeText.matches("(?ims).*<head>.*")) {
-					nodeText = nodeText.replaceFirst("(?ims).*<head>.*", "<head>"
-					        + htmlLongNodeHead);
+					nodeText = nodeText.replaceFirst("(?ims).*<head>.*", "<head>" + htmlLongNodeHead);
 				}
 				else {
-					nodeText = nodeText.replaceFirst("(?ims)<html>", "<html><head>"
-					        + htmlLongNodeHead + "</head>");
+					nodeText = nodeText.replaceFirst("(?ims)<html>", "<html><head>" + htmlLongNodeHead + "</head>");
 				}
 			}
 			if (nodeText.length() < 30000) {
 				setText(nodeText);
-				widthMustBeRestricted = getPreferredSize().width > map.getZoomed(map
-				    .getMaxNodeWidth())
+				widthMustBeRestricted = getPreferredSize().width > map.getZoomed(map.getMaxNodeWidth())
 				        + getIconWidth();
 			}
 			else {
 				widthMustBeRestricted = true;
 			}
 			if (widthMustBeRestricted) {
-				nodeText = nodeText.replaceFirst("(?i)<body>", "<body width=\""
-				        + map.getMaxNodeWidth() + "\">");
+				nodeText = nodeText.replaceFirst("(?i)<body>", "<body width=\"" + map.getMaxNodeWidth() + "\">");
 			}
 			setText(nodeText);
 		}
@@ -475,8 +459,8 @@ public abstract class MainView extends JLabel implements IMainView {
 			String text = "<html><table border=1 style=\"border-color: white\">";
 			for (int line = startingLine; line < lines.length; line++) {
 				text += "<tr><td style=\"border-color: white;\">"
-				        + HtmlTools.toXMLEscapedText(lines[line]).replaceAll("\t",
-				            "<td style=\"border-color: white\">");
+				        + HtmlTools.toXMLEscapedText(lines[line])
+				            .replaceAll("\t", "<td style=\"border-color: white\">");
 			}
 			setText(text);
 		}
@@ -493,8 +477,7 @@ public abstract class MainView extends JLabel implements IMainView {
 	}
 
 	void updateTextColor(final NodeModel model) {
-		final Color color = NodeStyleController.getController(model.getModeController()).getColor(
-		    model);
+		final Color color = NodeStyleController.getController(model.getModeController()).getColor(model);
 		setForeground(color);
 	}
 }

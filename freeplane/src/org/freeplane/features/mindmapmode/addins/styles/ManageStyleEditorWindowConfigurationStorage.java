@@ -6,8 +6,7 @@ import org.freeplane.core.resources.WindowConfigurationStorage;
 import org.freeplane.n3.nanoxml.IXMLElement;
 
 class ManageStyleEditorWindowConfigurationStorage extends WindowConfigurationStorage {
-	public static ManageStyleEditorWindowConfigurationStorage decorateDialog(
-	                                                                         final String marshalled,
+	public static ManageStyleEditorWindowConfigurationStorage decorateDialog(final String marshalled,
 	                                                                         final JDialog dialog) {
 		final ManageStyleEditorWindowConfigurationStorage storage = new ManageStyleEditorWindowConfigurationStorage();
 		final IXMLElement xml = storage.unmarschall(marshalled, dialog);

@@ -33,11 +33,8 @@ import org.freeplane.features.mindmapmode.text.EditNodeBase.IEditControl;
  */
 public class MMapViewController extends MapViewController implements INodeTextFieldCreator {
 	public AbstractEditNodeTextField createNodeTextField(final NodeModel node, final String text,
-	                                                     final KeyEvent firstEvent,
-	                                                     final ModeController controller,
+	                                                     final KeyEvent firstEvent, final ModeController controller,
 	                                                     final IEditControl editControl) {
 		return new EditNodeTextField(node, text, firstEvent, controller, editControl);
 	}
-
-
 }

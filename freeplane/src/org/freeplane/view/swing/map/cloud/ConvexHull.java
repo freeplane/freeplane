@@ -129,8 +129,7 @@ public class ConvexHull {
 			}
 		}
 		for (i = 0; i < p.size(); ++i) {
-			if ((((Point) p.get(i)).y == ((Point) p.get(min)).y)
-			        && (((Point) p.get(i)).x > ((Point) p.get(min)).x)) {
+			if ((((Point) p.get(i)).y == ((Point) p.get(min)).y) && (((Point) p.get(i)).x > ((Point) p.get(min)).x)) {
 				min = i;
 			}
 		}

@@ -34,9 +34,8 @@ class ShowHideNoteAction extends FreeplaneAction {
 	 */
 	final private MNoteController noteController;
 
-	public ShowHideNoteAction(final MNoteController noteController,
-	                          final ModeController modeController) {
-		super("accessories/plugins/NodeNote_hide_show.properties_name");
+	public ShowHideNoteAction(final MNoteController noteController, final ModeController modeController) {
+		super(modeController.getController(), "accessories/plugins/NodeNote_hide_show.properties_name");
 		this.noteController = noteController;
 	}
 
@@ -46,8 +45,7 @@ class ShowHideNoteAction extends FreeplaneAction {
 		}
 		else {
 			(noteController).hideNotesPanel();
-			Controller.getResourceController().setProperty(
-			    ResourceController.RESOURCES_USE_SPLIT_PANE, "false");
+			Controller.getResourceController().setProperty(ResourceController.RESOURCES_USE_SPLIT_PANE, "false");
 		}
 	}
 

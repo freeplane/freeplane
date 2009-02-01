@@ -21,6 +21,7 @@ package org.freeplane.view.swing.addins.mindmapmode.nodehistory;
 
 import java.awt.event.ActionEvent;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.core.ui.FreeplaneAction;
@@ -42,8 +43,8 @@ locations = { "/menu_bar/navigate/folding", "/main_toolbar/folding" })
 class BackAction extends FreeplaneAction {
 	final private NodeHistory nodeHistory;
 
-	public BackAction(final NodeHistory nodeHistory) {
-		super();
+	public BackAction(final Controller controller, final NodeHistory nodeHistory) {
+		super(controller);
 		this.nodeHistory = nodeHistory;
 	}
 

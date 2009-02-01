@@ -35,9 +35,8 @@ import org.freeplane.core.url.UrlManager;
 public class EditNodeExternalApplication extends EditNodeBase {
 	final private KeyEvent firstEvent;
 
-	public EditNodeExternalApplication(final NodeModel node, final String text,
-	                                   final KeyEvent firstEvent, final ModeController controller,
-	                                   final IEditControl editControl) {
+	public EditNodeExternalApplication(final NodeModel node, final String text, final KeyEvent firstEvent,
+	                                   final ModeController controller, final IEditControl editControl) {
 		super(node, text, controller, editControl);
 		this.firstEvent = firstEvent;
 	}
@@ -56,12 +55,11 @@ public class EditNodeExternalApplication extends EditNodeBase {
 					writer = new FileWriter(temporaryFile);
 					writer.write(EditNodeExternalApplication.this.text);
 					writer.close();
-					final String htmlEditingCommand = Controller.getResourceController()
-					    .getProperty("html_editing_command");
+					final String htmlEditingCommand = Controller.getResourceController().getProperty(
+					    "html_editing_command");
 					final String expandedHtmlEditingCommand = new MessageFormat(htmlEditingCommand)
 					    .format(new String[] { temporaryFile.toString() });
-					final Process htmlEditorProcess = Runtime.getRuntime().exec(
-					    expandedHtmlEditingCommand);
+					final Process htmlEditorProcess = Runtime.getRuntime().exec(expandedHtmlEditingCommand);
 					htmlEditorProcess.waitFor();
 					final String content = UrlManager.getFile(temporaryFile);
 					if (content == null) {

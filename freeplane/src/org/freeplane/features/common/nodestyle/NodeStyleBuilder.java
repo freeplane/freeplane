@@ -36,8 +36,7 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.n3.nanoxml.IXMLElement;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-public class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter,
-        IExtensionAttributeWriter {
+public class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, IExtensionAttributeWriter {
 	static class FontProperties {
 		String fontName;
 		Integer fontSize;
@@ -55,8 +54,7 @@ public class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWr
 		return null;
 	}
 
-	public void endElement(final Object parent, final String tag, final Object userObject,
-	                       final IXMLElement dom) {
+	public void endElement(final Object parent, final String tag, final Object userObject, final IXMLElement dom) {
 		if (parent instanceof NodeModel) {
 			final NodeModel node = (NodeModel) parent;
 			if (tag.equals("font")) {
@@ -85,15 +83,14 @@ public class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWr
 				}
 			}
 		});
-		reader.addAttributeHandler(NodeBuilder.XML_NODE, "BACKGROUND_COLOR",
-		    new IAttributeHandler() {
-			    public void setAttribute(final Object userObject, final String value) {
-				    if (value.length() == 7) {
-					    final NodeModel node = (NodeModel) userObject;
-					    NodeStyleModel.setBackgroundColor(node, TreeXmlReader.xmlToColor(value));
-				    }
-			    }
-		    });
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "BACKGROUND_COLOR", new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				if (value.length() == 7) {
+					final NodeModel node = (NodeModel) userObject;
+					NodeStyleModel.setBackgroundColor(node, TreeXmlReader.xmlToColor(value));
+				}
+			}
+		});
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "STYLE", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
@@ -138,15 +135,13 @@ public class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWr
 	public void setAttributes(final String tag, final Object node, final IXMLElement attributes) {
 	}
 
-	public void writeAttributes(final ITreeWriter writer, final Object userObject,
-	                            final IExtension extension) {
+	public void writeAttributes(final ITreeWriter writer, final Object userObject, final IExtension extension) {
 		final NodeStyleModel style = (NodeStyleModel) extension;
 		if (style.getColor() != null) {
 			writer.addAttribute("COLOR", TreeXmlWriter.colorToXml(style.getColor()));
 		}
 		if (style.getBackgroundColor() != null) {
-			writer.addAttribute("BACKGROUND_COLOR", TreeXmlWriter.colorToXml(style
-			    .getBackgroundColor()));
+			writer.addAttribute("BACKGROUND_COLOR", TreeXmlWriter.colorToXml(style.getBackgroundColor()));
 		}
 		if (style.getShape() != null) {
 			writer.addAttribute("STYLE", style.getShape());

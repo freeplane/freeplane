@@ -39,8 +39,7 @@ public class NoteBuilder implements IElementContentHandler {
 		if (attributes == null) {
 			return null;
 		}
-		final Object typeAttribute = attributes.getAttribute(
-		    NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG, null);
+		final Object typeAttribute = attributes.getAttribute(NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG, null);
 		if (typeAttribute == null || NodeTextBuilder.XML_NODE_XHTML_TYPE_NODE.equals(typeAttribute)) {
 			return null;
 		}
@@ -53,8 +52,8 @@ public class NoteBuilder implements IElementContentHandler {
 	 * java.lang.String, freeplane.io.xml.n3.nanoxml.IXMLElement,
 	 * java.lang.String)
 	 */
-	public void endElement(final Object parent, final String tag, final Object node,
-	                       final IXMLElement attributes, final String content) {
+	public void endElement(final Object parent, final String tag, final Object node, final IXMLElement attributes,
+	                       final String content) {
 		if (tag.equals("richcontent")) {
 			final String xmlText = content;
 			final NoteModel note = new NoteModel();

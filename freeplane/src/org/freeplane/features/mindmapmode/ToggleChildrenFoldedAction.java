@@ -28,17 +28,17 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.FreeplaneAction;
 
 class ToggleChildrenFoldedAction extends FreeplaneAction {
-	public ToggleChildrenFoldedAction() {
-		super("toggle_children_folded");
+	public ToggleChildrenFoldedAction(final Controller controller) {
+		super(controller, "toggle_children_folded");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final ModeController modeController = getModeController();
 		final NodeModel selected = modeController.getMapController().getSelectedNode();
-		((ToggleFoldedAction) getModeController().getAction("toggleFolded")).toggleFolded(selected
-		    .getModeController().getMapController().childrenUnfolded(selected));
-		final IMapSelection selection = Controller.getController().getSelection();
+		((ToggleFoldedAction) getModeController().getAction("toggleFolded")).toggleFolded(selected.getModeController()
+		    .getMapController().childrenUnfolded(selected));
+		final IMapSelection selection = getController().getSelection();
 		selection.selectAsTheOnlyOneSelected(selected);
-		Controller.getController().getViewController().obtainFocusForSelected();
+		getController().getViewController().obtainFocusForSelected();
 	}
 }

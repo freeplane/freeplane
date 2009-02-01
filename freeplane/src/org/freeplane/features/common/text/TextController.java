@@ -36,12 +36,11 @@ public class TextController implements IExtension {
 		return (TextController) modeController.getExtension(TextController.class);
 	}
 
-	public static void install(final ModeController modeController,
-	                           final TextController textController) {
+	public static void install(final ModeController modeController, final TextController textController) {
 		modeController.addExtension(TextController.class, textController);
 		if (firstRun) {
-			FilterController.getController().getConditionFactory().addConditionController(0,
-			    new NodeConditionController());
+			FilterController.getController(modeController.getController()).getConditionFactory()
+			    .addConditionController(0, new NodeConditionController());
 			firstRun = false;
 		}
 	}
@@ -63,7 +62,7 @@ public class TextController implements IExtension {
 	 * @param modeController
 	 */
 	private void createActions(final ModeController modeController) {
-		final FindAction find = new FindAction();
+		final FindAction find = new FindAction(modeController.getController());
 		modeController.addAction("find", find);
 		modeController.addAction("findNext", new FindNextAction(modeController, find));
 	}

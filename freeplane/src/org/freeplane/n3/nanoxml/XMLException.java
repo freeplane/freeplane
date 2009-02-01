@@ -42,8 +42,8 @@ public class XMLException extends Exception {
 	 *            true if the systemID, lineNr and e params need to be appended
 	 *            to the message
 	 */
-	private static String buildMessage(final String systemID, final int lineNr, final Exception e,
-	                                   final String msg, final boolean reportParams) {
+	private static String buildMessage(final String systemID, final int lineNr, final Exception e, final String msg,
+	                                   final boolean reportParams) {
 		String str = msg;
 		if (reportParams) {
 			if (systemID != null) {
@@ -125,8 +125,8 @@ public class XMLException extends Exception {
 	 *            true if the systemID, lineNr and e params need to be appended
 	 *            to the message
 	 */
-	public XMLException(final String systemID, final int lineNr, final Exception e,
-	                    final String msg, final boolean reportParams) {
+	public XMLException(final String systemID, final int lineNr, final Exception e, final String msg,
+	                    final boolean reportParams) {
 		super(XMLException.buildMessage(systemID, lineNr, e, msg, reportParams));
 		this.systemID = systemID;
 		this.lineNr = lineNr;

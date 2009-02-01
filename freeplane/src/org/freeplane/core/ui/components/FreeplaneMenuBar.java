@@ -47,8 +47,7 @@ public class FreeplaneMenuBar extends JMenuBar {
 
 	// make method public
 	@Override
-	public boolean processKeyBinding(final KeyStroke ks, final KeyEvent e, final int condition,
-	                                 final boolean pressed) {
+	public boolean processKeyBinding(final KeyStroke ks, final KeyEvent e, final int condition, final boolean pressed) {
 		return super.processKeyBinding(ks, e, condition, pressed);
 	}
 }

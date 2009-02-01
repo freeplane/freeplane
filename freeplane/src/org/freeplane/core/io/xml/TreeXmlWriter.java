@@ -118,8 +118,8 @@ public class TreeXmlWriter implements ITreeWriter {
 		if (elementStarted) {
 			throw new RuntimeException("elementStarted");
 		}
-		if(null != xmlElement.getAttribute(key, null)){
-			Logger.global.warning("attribute \"" +key + "\" already exist with value \"" + value);
+		if (null != xmlElement.getAttribute(key, null)) {
+			Logger.global.warning("attribute \"" + key + "\" already exist with value \"" + value);
 			return;
 		}
 		xmlElement.setAttribute(key, value);
@@ -200,21 +200,20 @@ public class TreeXmlWriter implements ITreeWriter {
 		final Iterator<IExtension> extensionIterator = collection.extensionIterator();
 		while (extensionIterator.hasNext()) {
 			final IExtension extension = extensionIterator.next();
-			final Iterator<IExtensionAttributeWriter> writerIterator = writeManager
-			    .getExtensionAttributeWriters().iterator(extension.getClass());
+			final Iterator<IExtensionAttributeWriter> writerIterator = writeManager.getExtensionAttributeWriters()
+			    .iterator(extension.getClass());
 			while (writerIterator.hasNext()) {
 				writerIterator.next().writeAttributes(this, element, extension);
 			}
 		}
 	}
 
-	public void addExtensionNodes(final Object element, final IExtensionCollection collection)
-	        throws IOException {
+	public void addExtensionNodes(final Object element, final IExtensionCollection collection) throws IOException {
 		final Iterator<IExtension> extensionIterator = collection.extensionIterator();
 		while (extensionIterator.hasNext()) {
 			final IExtension extension = extensionIterator.next();
-			final Iterator<IExtensionElementWriter> writerIterator = writeManager
-			    .getExtensionElementWriters().iterator(extension.getClass());
+			final Iterator<IExtensionElementWriter> writerIterator = writeManager.getExtensionElementWriters()
+			    .iterator(extension.getClass());
 			while (writerIterator.hasNext()) {
 				writerIterator.next().writeContent(this, element, extension);
 			}

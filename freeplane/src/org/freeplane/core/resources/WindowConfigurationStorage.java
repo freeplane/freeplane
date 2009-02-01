@@ -78,15 +78,13 @@ abstract public class WindowConfigurationStorage {
 		this.y = y;
 	}
 
-	public void storeDialogPositions(final JDialog dialog,
-	                                 final String window_preference_storage_property) {
+	public void storeDialogPositions(final JDialog dialog, final String window_preference_storage_property) {
 		setX((dialog.getX()));
 		setY((dialog.getY()));
 		setWidth((dialog.getWidth()));
 		setHeight((dialog.getHeight()));
 		final String marshalled = marshall();
-		Controller.getResourceController().setProperty(window_preference_storage_property,
-		    marshalled);
+		Controller.getResourceController().setProperty(window_preference_storage_property, marshalled);
 	}
 
 	protected IXMLElement unmarschall(final String marshalled, final JDialog dialog) {

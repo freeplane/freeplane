@@ -32,51 +32,16 @@ import org.freeplane.core.model.NodeModel;
  * @author Dimitry Polivaev
  */
 public class DefaultFilter implements IFilter {
-	static void addFilterResult(final NodeModel node, final int flag) {
-		node.getFilterInfo().add(flag);
-	}
-
-	static private NodeModel getNearestVisibleParent(final NodeModel selectedNode) {
-		if (selectedNode.isVisible()) {
-			return selectedNode;
-		}
-		return DefaultFilter.getNearestVisibleParent(selectedNode.getParentNode());
-	}
-
-	static public void resetFilter(final NodeModel node) {
-		node.getFilterInfo().reset();
-	}
-
-	static public void selectVisibleNode() {
-		final IMapSelection mapSelection = Controller.getController().getSelection();
-		final List<NodeModel> selectedNodes = mapSelection.getSelection();
-		final int lastSelectedIndex = selectedNodes.size() - 1;
-		if (lastSelectedIndex == -1) {
-			return;
-		}
-		final ListIterator<NodeModel> iterator = selectedNodes.listIterator(lastSelectedIndex);
-		while (iterator.hasPrevious()) {
-			final NodeModel previous = iterator.previous();
-			if (!previous.isVisible()) {
-				mapSelection.toggleSelected(previous);
-			}
-		}
-		NodeModel selected = mapSelection.getSelected();
-		if (!selected.isVisible()) {
-			selected = DefaultFilter.getNearestVisibleParent(selected);
-			mapSelection.selectAsTheOnlyOneSelected(selected);
-		}
-		mapSelection.setSiblingMaxLevel(selected.getNodeLevel(false));
-	}
-
 	private ICondition condition = null;
+	final private Controller controller;
 	private int options = 0;
 
 	/**
 	 */
-	public DefaultFilter(final ICondition condition, final boolean areAnchestorsShown,
+	public DefaultFilter(final Controller controller, final ICondition condition, final boolean areAnchestorsShown,
 	                     final boolean areDescendantsShown) {
 		super();
+		this.controller = controller;
 		this.condition = condition;
 		options = IFilter.FILTER_INITIAL_VALUE | IFilter.FILTER_SHOW_MATCHED;
 		if (areAnchestorsShown) {
@@ -88,6 +53,10 @@ public class DefaultFilter implements IFilter {
 		}
 	}
 
+	void addFilterResult(final NodeModel node, final int flag) {
+		node.getFilterInfo().add(flag);
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see
@@ -96,42 +65,40 @@ public class DefaultFilter implements IFilter {
 	public void applyFilter() {
 		if (condition != null) {
 			try {
-				final Controller c = Controller.getController();
-				c.getViewController().setWaitingCursor(true);
-				final MapModel map = c.getMap();
+				controller.getViewController().setWaitingCursor(true);
+				final MapModel map = controller.getMap();
 				final NodeModel root = map.getRootNode();
-				DefaultFilter.resetFilter(root);
+				resetFilter(root);
 				if (filterChildren(root, condition.checkNode(root), false)) {
-					DefaultFilter.addFilterResult(root, IFilter.FILTER_SHOW_ANCESTOR);
+					addFilterResult(root, IFilter.FILTER_SHOW_ANCESTOR);
 				}
-				DefaultFilter.selectVisibleNode();
+				selectVisibleNode();
 			}
 			finally {
-				Controller.getController().getViewController().setWaitingCursor(false);
+				controller.getViewController().setWaitingCursor(false);
 			}
 		}
 	}
 
 	private boolean applyFilter(final NodeModel node, final boolean isAncestorSelected,
 	                            final boolean isAncestorEclipsed, boolean isDescendantSelected) {
-		DefaultFilter.resetFilter(node);
+		resetFilter(node);
 		if (isAncestorSelected) {
-			DefaultFilter.addFilterResult(node, IFilter.FILTER_SHOW_DESCENDANT);
+			addFilterResult(node, IFilter.FILTER_SHOW_DESCENDANT);
 		}
 		final boolean conditionSatisfied = condition.checkNode(node);
 		if (conditionSatisfied) {
 			isDescendantSelected = true;
-			DefaultFilter.addFilterResult(node, IFilter.FILTER_SHOW_MATCHED);
+			addFilterResult(node, IFilter.FILTER_SHOW_MATCHED);
 		}
 		else {
-			DefaultFilter.addFilterResult(node, IFilter.FILTER_SHOW_HIDDEN);
+			addFilterResult(node, IFilter.FILTER_SHOW_HIDDEN);
 		}
 		if (isAncestorEclipsed) {
-			DefaultFilter.addFilterResult(node, IFilter.FILTER_SHOW_ECLIPSED);
+			addFilterResult(node, IFilter.FILTER_SHOW_ECLIPSED);
 		}
-		if (filterChildren(node, conditionSatisfied || isAncestorSelected, !conditionSatisfied
-		        || isAncestorEclipsed)) {
-			DefaultFilter.addFilterResult(node, IFilter.FILTER_SHOW_ANCESTOR);
+		if (filterChildren(node, conditionSatisfied || isAncestorSelected, !conditionSatisfied || isAncestorEclipsed)) {
+			addFilterResult(node, IFilter.FILTER_SHOW_ANCESTOR);
 			isDescendantSelected = true;
 		}
 		return isDescendantSelected;
@@ -182,19 +149,24 @@ public class DefaultFilter implements IFilter {
 	 */
 	private boolean filterChildren(final NodeModel parent, final boolean isAncestorSelected,
 	                               final boolean isAncestorEclipsed) {
-		final ListIterator iterator = parent.getModeController().getMapController()
-		    .childrenUnfolded(parent);
+		final ListIterator iterator = parent.getModeController().getMapController().childrenUnfolded(parent);
 		boolean isDescendantSelected = false;
 		while (iterator.hasNext()) {
 			final NodeModel node = (NodeModel) iterator.next();
-			isDescendantSelected = applyFilter(node, isAncestorSelected, isAncestorEclipsed,
-			    isDescendantSelected);
+			isDescendantSelected = applyFilter(node, isAncestorSelected, isAncestorEclipsed, isDescendantSelected);
 		}
 		return isDescendantSelected;
 	}
 
 	public Object getCondition() {
 		return condition;
+	}
+
+	private NodeModel getNearestVisibleParent(final NodeModel selectedNode) {
+		if (selectedNode.isVisible()) {
+			return selectedNode;
+		}
+		return getNearestVisibleParent(selectedNode.getParentNode());
 	}
 
 	/*
@@ -209,5 +181,31 @@ public class DefaultFilter implements IFilter {
 		final int filterResult = node.getFilterInfo().get();
 		return ((options & IFilter.FILTER_SHOW_ANCESTOR) != 0 || (options & IFilter.FILTER_SHOW_ECLIPSED) >= (filterResult & IFilter.FILTER_SHOW_ECLIPSED))
 		        && ((options & filterResult & ~IFilter.FILTER_SHOW_ECLIPSED) != 0);
+	}
+
+	public void resetFilter(final NodeModel node) {
+		node.getFilterInfo().reset();
+	}
+
+	public void selectVisibleNode() {
+		final IMapSelection mapSelection = controller.getSelection();
+		final List<NodeModel> selectedNodes = mapSelection.getSelection();
+		final int lastSelectedIndex = selectedNodes.size() - 1;
+		if (lastSelectedIndex == -1) {
+			return;
+		}
+		final ListIterator<NodeModel> iterator = selectedNodes.listIterator(lastSelectedIndex);
+		while (iterator.hasPrevious()) {
+			final NodeModel previous = iterator.previous();
+			if (!previous.isVisible()) {
+				mapSelection.toggleSelected(previous);
+			}
+		}
+		NodeModel selected = mapSelection.getSelected();
+		if (!selected.isVisible()) {
+			selected = getNearestVisibleParent(selected);
+			mapSelection.selectAsTheOnlyOneSelected(selected);
+		}
+		mapSelection.setSiblingMaxLevel(selected.getNodeLevel(false));
 	}
 }

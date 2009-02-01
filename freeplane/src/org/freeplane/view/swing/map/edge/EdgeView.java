@@ -42,8 +42,8 @@ public abstract class EdgeView {
 	protected static Stroke getEclipsedStroke() {
 		if (EdgeView.ECLIPSED_STROKE == null) {
 			final float dash[] = { 3.0f, 9.0f };
-			EdgeView.ECLIPSED_STROKE = new BasicStroke(3.0f, BasicStroke.CAP_BUTT,
-			    BasicStroke.JOIN_MITER, 12.0f, dash, 0.0f);
+			EdgeView.ECLIPSED_STROKE = new BasicStroke(3.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 12.0f, dash,
+			    0.0f);
 		}
 		return EdgeView.ECLIPSED_STROKE;
 	}
@@ -64,8 +64,7 @@ public abstract class EdgeView {
 
 	public Color getColor() {
 		final NodeModel model = target.getModel();
-		final Color edgeColor = EdgeController.getController(model.getModeController()).getColor(
-		    model);
+		final Color edgeColor = EdgeController.getController(model.getModeController()).getColor(model);
 		return edgeColor;
 	}
 
@@ -85,8 +84,7 @@ public abstract class EdgeView {
 		if (width == EdgeModel.WIDTH_THIN) {
 			return EdgeView.DEF_STROKE;
 		}
-		return new BasicStroke(width * getMap().getZoom(), BasicStroke.CAP_BUTT,
-		    BasicStroke.JOIN_MITER);
+		return new BasicStroke(width * getMap().getZoom(), BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER);
 	}
 
 	/**

@@ -34,8 +34,8 @@ import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.features.mindmapmode.clipboard.MClipboardController;
 
 class ImportBranchAction extends FreeplaneAction {
-	public ImportBranchAction() {
-		super("import_branch");
+	public ImportBranchAction(final Controller controller) {
+		super(controller, "import_branch");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -44,20 +44,18 @@ class ImportBranchAction extends FreeplaneAction {
 			return;
 		}
 		final JFileChooser chooser = new JFileChooser();
-		final FileFilter fileFilter = ((MFileManager) UrlManager.getController(getModeController()))
-		    .getFileFilter();
+		final FileFilter fileFilter = ((MFileManager) UrlManager.getController(getModeController())).getFileFilter();
 		if (fileFilter != null) {
 			chooser.addChoosableFileFilter(fileFilter);
 		}
-		final int returnVal = chooser.showOpenDialog(Controller.getController().getViewController()
-		    .getContentPane());
+		final int returnVal = chooser.showOpenDialog(getController().getViewController().getContentPane());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			try {
 				final MapModel map = parent.getMap();
-				final NodeModel node = ((MMapController) getModeController().getMapController())
-				    .loadTree(map, chooser.getSelectedFile());
-				((MClipboardController) ClipboardController.getController(Controller
-				    .getModeController())).paste(node, parent);
+				final NodeModel node = ((MMapController) getModeController().getMapController()).loadTree(map, chooser
+				    .getSelectedFile());
+				((MClipboardController) ClipboardController.getController(getController().getModeController())).paste(
+				    node, parent);
 			}
 			catch (final Exception ex) {
 				UrlManager.getController(getModeController()).handleLoadingException(ex);

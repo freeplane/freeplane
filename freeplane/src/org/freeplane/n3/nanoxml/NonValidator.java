@@ -66,8 +66,7 @@ public class NonValidator implements IXMLValidator {
 	 * @param lineNr
 	 *            the line number in the XML data of the element.
 	 */
-	public void attributeAdded(final String key, final String value, final String systemId,
-	                           final int lineNr) {
+	public void attributeAdded(final String key, final String value, final String systemId, final int lineNr) {
 		final Properties props = (Properties) currentElements.peek();
 		if (props.containsKey(key)) {
 			props.remove(key);
@@ -88,8 +87,8 @@ public class NonValidator implements IXMLValidator {
 	 * @param lineNr
 	 *            the line number in the XML data of the element.
 	 */
-	public void elementAttributesProcessed(final String name, final Properties extraAttributes,
-	                                       final String systemId, final int lineNr) {
+	public void elementAttributesProcessed(final String name, final Properties extraAttributes, final String systemId,
+	                                       final int lineNr) {
 		final Properties props = (Properties) currentElements.pop();
 		final Enumeration enumeration = props.keys();
 		while (enumeration.hasMoreElements()) {
@@ -169,9 +168,8 @@ public class NonValidator implements IXMLValidator {
 	 * @throws java.lang.Exception
 	 *             If something went wrong.
 	 */
-	public void parseDTD(final String publicID, final IXMLReader reader,
-	                     final IXMLEntityResolver entityResolver, final boolean external)
-	        throws Exception {
+	public void parseDTD(final String publicID, final IXMLReader reader, final IXMLEntityResolver entityResolver,
+	                     final boolean external) throws Exception {
 		XMLUtil.skipWhitespace(reader, null);
 		final int origLevel = reader.getStreamLevel();
 		for (;;) {
@@ -222,8 +220,7 @@ public class NonValidator implements IXMLValidator {
 	 * @throws java.lang.Exception
 	 *             If something went wrong.
 	 */
-	protected void processAttList(final IXMLReader reader, final IXMLEntityResolver entityResolver)
-	        throws Exception {
+	protected void processAttList(final IXMLReader reader, final IXMLEntityResolver entityResolver) throws Exception {
 		if (!XMLUtil.checkLiteral(reader, "TTLIST")) {
 			XMLUtil.skipTag(reader);
 			return;
@@ -325,8 +322,7 @@ public class NonValidator implements IXMLValidator {
 	 * @throws java.lang.Exception
 	 *             If something went wrong.
 	 */
-	protected void processConditionalSection(final IXMLReader reader,
-	                                         final IXMLEntityResolver entityResolver)
+	protected void processConditionalSection(final IXMLReader reader, final IXMLEntityResolver entityResolver)
 	        throws Exception {
 		XMLUtil.skipWhitespace(reader, null);
 		String str = XMLUtil.read(reader, '%');
@@ -381,8 +377,7 @@ public class NonValidator implements IXMLValidator {
 	 * @throws java.lang.Exception
 	 *             If something went wrong.
 	 */
-	protected void processElement(final IXMLReader reader, final IXMLEntityResolver entityResolver)
-	        throws Exception {
+	protected void processElement(final IXMLReader reader, final IXMLEntityResolver entityResolver) throws Exception {
 		String str = XMLUtil.read(reader, '%');
 		char ch = str.charAt(0);
 		if (ch != '!') {
@@ -419,8 +414,7 @@ public class NonValidator implements IXMLValidator {
 	 * @throws java.lang.Exception
 	 *             If something went wrong.
 	 */
-	protected void processEntity(final IXMLReader reader, IXMLEntityResolver entityResolver)
-	        throws Exception {
+	protected void processEntity(final IXMLReader reader, IXMLEntityResolver entityResolver) throws Exception {
 		if (!XMLUtil.checkLiteral(reader, "NTITY")) {
 			XMLUtil.skipTag(reader);
 			return;
@@ -488,8 +482,8 @@ public class NonValidator implements IXMLValidator {
 	 * @throws java.lang.Exception
 	 *             If something went wrong.
 	 */
-	protected void processIgnoreSection(final IXMLReader reader,
-	                                    final IXMLEntityResolver entityResolver) throws Exception {
+	protected void processIgnoreSection(final IXMLReader reader, final IXMLEntityResolver entityResolver)
+	        throws Exception {
 		if (!XMLUtil.checkLiteral(reader, "NORE")) {
 			XMLUtil.skipTag(reader);
 			return;

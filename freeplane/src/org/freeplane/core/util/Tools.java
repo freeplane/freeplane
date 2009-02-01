@@ -122,13 +122,11 @@ public class Tools {
 	}
 
 	public static boolean safeEquals(final String string1, final String string2) {
-		return (string1 != null && string2 != null && string1.equals(string2))
-		        || (string1 == null && string2 == null);
+		return (string1 != null && string2 != null && string1.equals(string2)) || (string1 == null && string2 == null);
 	}
 
 	public static boolean safeEqualsIgnoreCase(final String string1, final String string2) {
-		return (string1 != null && string2 != null && string1.toLowerCase().equals(
-		    string2.toLowerCase()))
+		return (string1 != null && string2 != null && string1.toLowerCase().equals(string2.toLowerCase()))
 		        || (string1 == null && string2 == null);
 	}
 }

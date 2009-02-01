@@ -105,26 +105,22 @@ public class AttributeRegistryTableModel extends AbstractTableModel {
 		switch (column) {
 			case 0:
 				if (AttributeRegistryTableModel.attributeColumnName == null) {
-					AttributeRegistryTableModel.attributeColumnName = Controller
-					    .getText("attributes_attribute");
+					AttributeRegistryTableModel.attributeColumnName = Controller.getText("attributes_attribute");
 				}
 				return AttributeRegistryTableModel.attributeColumnName;
 			case 1:
 				if (AttributeRegistryTableModel.visibilityColumnName == null) {
-					AttributeRegistryTableModel.visibilityColumnName = Controller
-					    .getText("attributes_visible");
+					AttributeRegistryTableModel.visibilityColumnName = Controller.getText("attributes_visible");
 				}
 				return AttributeRegistryTableModel.visibilityColumnName;
 			case 2:
 				if (AttributeRegistryTableModel.restrictionColumnName == null) {
-					AttributeRegistryTableModel.restrictionColumnName = Controller
-					    .getText("attributes_restriction");
+					AttributeRegistryTableModel.restrictionColumnName = Controller.getText("attributes_restriction");
 				}
 				return AttributeRegistryTableModel.restrictionColumnName;
 			case 3:
 				if (AttributeRegistryTableModel.editorColumnName == null) {
-					AttributeRegistryTableModel.editorColumnName = Controller
-					    .getText("attributes_edit");
+					AttributeRegistryTableModel.editorColumnName = Controller.getText("attributes_edit");
 				}
 				return AttributeRegistryTableModel.editorColumnName;
 		}

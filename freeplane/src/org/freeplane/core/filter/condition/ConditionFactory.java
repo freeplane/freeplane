@@ -53,14 +53,10 @@ public class ConditionFactory {
 		return component;
 	}
 
-	public static String createDescription(final String attribute, final String simpleCondition,
-	                                       final String value, final boolean ignoreCase) {
-		final String description = attribute
-		        + " "
-		        + simpleCondition
-		        + (value != null ? " \"" + value + "\"" : "")
-		        + (ignoreCase && value != null ? ", "
-		                + Controller.getText(ConditionFactory.FILTER_IGNORE_CASE) : "");
+	public static String createDescription(final String attribute, final String simpleCondition, final String value,
+	                                       final boolean ignoreCase) {
+		final String description = attribute + " " + simpleCondition + (value != null ? " \"" + value + "\"" : "")
+		        + (ignoreCase && value != null ? ", " + Controller.getText(ConditionFactory.FILTER_IGNORE_CASE) : "");
 		return description;
 	}
 
@@ -73,23 +69,19 @@ public class ConditionFactory {
 		conditionControllers = new TreeMap<Integer, IElementaryConditionController>();
 	}
 
-	public void addConditionController(final int position,
-	                                   final IElementaryConditionController controller) {
-		final IElementaryConditionController old = conditionControllers.put(new Integer(position),
-		    controller);
+	public void addConditionController(final int position, final IElementaryConditionController controller) {
+		final IElementaryConditionController old = conditionControllers.put(new Integer(position), controller);
 		assert old == null;
 	}
 
 	public Iterator<IElementaryConditionController> conditionIterator() {
-		final Iterator<IElementaryConditionController> iterator = conditionControllers.values()
-		    .iterator();
+		final Iterator<IElementaryConditionController> iterator = conditionControllers.values().iterator();
 		return iterator;
 	}
 
-	public ICondition createCondition(final Object selectedItem, final NamedObject simpleCond,
-	                                  final Object value, final boolean ignoreCase) {
-		return getConditionController(selectedItem).createCondition(selectedItem, simpleCond,
-		    value, ignoreCase);
+	public ICondition createCondition(final Object selectedItem, final NamedObject simpleCond, final Object value,
+	                                  final boolean ignoreCase) {
+		return getConditionController(selectedItem).createCondition(selectedItem, simpleCond, value, ignoreCase);
 	}
 
 	public IElementaryConditionController getConditionController(final Object item) {
@@ -123,11 +115,9 @@ public class ConditionFactory {
 		return null;
 	}
 
-	public IElementaryConditionController removeConditionController(
-	                                                                final int position,
+	public IElementaryConditionController removeConditionController(final int position,
 	                                                                final IElementaryConditionController controller) {
-		final IElementaryConditionController old = conditionControllers
-		    .remove(new Integer(position));
+		final IElementaryConditionController old = conditionControllers.remove(new Integer(position));
 		return old;
 	}
 }

@@ -21,22 +21,23 @@ package org.freeplane.features.mindmapmode.text;
 
 import java.awt.event.ActionEvent;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.features.common.text.TextController;
 
 class UseRichFormattingAction extends MultipleNodeAction {
-	public UseRichFormattingAction() {
-		super("use_rich_formatting");
+	public UseRichFormattingAction(final Controller controller) {
+		super(controller, "use_rich_formatting");
 	}
 
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
 		final String nodeText = node.getText();
 		if (!HtmlTools.isHtmlNode(nodeText)) {
-			((MTextController) TextController.getController(getModeController())).setNodeText(node,
-			    HtmlTools.plainToHTML(nodeText));
+			((MTextController) TextController.getController(getModeController())).setNodeText(node, HtmlTools
+			    .plainToHTML(nodeText));
 		}
 	}
 }

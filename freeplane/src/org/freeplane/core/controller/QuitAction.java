@@ -23,7 +23,6 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 
 /**
@@ -31,14 +30,17 @@ import org.freeplane.core.ui.MenuBuilder;
  * removed from History too?
  */
 class QuitAction extends AbstractAction {
+	final private Controller controller;
+
 	/**
 	 * @param resourceController
 	 */
-	QuitAction(final ResourceController resourceController) {
-		MenuBuilder.setLabelAndMnemonic(this, resourceController.getText("quit"));
+	QuitAction(final Controller controller) {
+		this.controller = controller;
+		MenuBuilder.setLabelAndMnemonic(this, Controller.getResourceController().getText("quit"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		Controller.getController().quit();
+		controller.quit();
 	}
 }

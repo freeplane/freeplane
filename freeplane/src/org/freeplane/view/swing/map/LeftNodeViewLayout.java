@@ -44,8 +44,7 @@ public class LeftNodeViewLayout extends NodeViewLayoutAdapter {
 		return mainView.getRightPoint();
 	}
 
-	public Point getMainViewOutPoint(final NodeView view, final NodeView targetView,
-	                                 final Point destinationPoint) {
+	public Point getMainViewOutPoint(final NodeView view, final NodeView targetView, final Point destinationPoint) {
 		final MainView mainView = view.getMainView();
 		return mainView.getLeftPoint();
 	}

@@ -39,8 +39,7 @@ import org.freeplane.core.resources.ResourceController;
  */
 public class EdgeController implements IExtension {
 	protected static class EdgePropertyListener implements IFreeplanePropertyListener {
-		public void propertyChanged(final String propertyName, final String newValue,
-		                            final String oldValue) {
+		public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
 			if (propertyName.equals(ResourceController.RESOURCES_EDGE_COLOR)) {
 				standardColor = TreeXmlReader.xmlToColor(newValue);
 			}
@@ -59,8 +58,7 @@ public class EdgeController implements IExtension {
 		return (EdgeController) modeController.getExtension(EdgeController.class);
 	}
 
-	public static void install(final ModeController modeController,
-	                           final EdgeController edgeController) {
+	public static void install(final ModeController modeController, final EdgeController edgeController) {
 		modeController.addExtension(EdgeController.class, edgeController);
 	}
 
@@ -131,20 +129,17 @@ public class EdgeController implements IExtension {
 		edgeBuilder.registerBy(readManager, writeManager);
 	}
 
-	public IPropertyGetter<Color, NodeModel> addColorGetter(
-	                                                        final Integer key,
+	public IPropertyGetter<Color, NodeModel> addColorGetter(final Integer key,
 	                                                        final IPropertyGetter<Color, NodeModel> getter) {
 		return colorHandlers.addGetter(key, getter);
 	}
 
-	public IPropertyGetter<String, NodeModel> addStyleGetter(
-	                                                         final Integer key,
+	public IPropertyGetter<String, NodeModel> addStyleGetter(final Integer key,
 	                                                         final IPropertyGetter<String, NodeModel> getter) {
 		return styleHandlers.addGetter(key, getter);
 	}
 
-	public IPropertyGetter<Integer, NodeModel> addWidthGetter(
-	                                                          final Integer key,
+	public IPropertyGetter<Integer, NodeModel> addWidthGetter(final Integer key,
 	                                                          final IPropertyGetter<Integer, NodeModel> getter) {
 		return widthHandlers.addGetter(key, getter);
 	}

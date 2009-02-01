@@ -31,7 +31,6 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.url.UrlManager;
 
@@ -71,8 +70,7 @@ public class FileOpener implements DropTargetListener {
 		}
 		dtde.acceptDrop(DnDConstants.ACTION_COPY);
 		try {
-			final Object data = dtde.getTransferable().getTransferData(
-			    DataFlavor.javaFileListFlavor);
+			final Object data = dtde.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
 			if (data == null) {
 				dtde.dropComplete(false);
 				return;
@@ -84,8 +82,8 @@ public class FileOpener implements DropTargetListener {
 			}
 		}
 		catch (final Exception e) {
-			JOptionPane.showMessageDialog(Controller.getController().getViewController()
-			    .getMapView(), "Couldn't open dropped file(s). Reason: " + e.getMessage());
+			JOptionPane.showMessageDialog(modeController.getController().getViewController().getMapView(),
+			    "Couldn't open dropped file(s). Reason: " + e.getMessage());
 			dtde.dropComplete(false);
 			return;
 		}

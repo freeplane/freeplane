@@ -42,6 +42,7 @@ import org.freeplane.n3.nanoxml.XMLParseException;
  * format:"mode\:key",ie."Mindmap\:/home/joerg/freeplane.mm"
  */
 public class LastOpenedList implements IMapSelectionListener {
+	final private Controller controller;
 	/**
 	 * Contains Restore strings.
 	 */
@@ -52,9 +53,10 @@ public class LastOpenedList implements IMapSelectionListener {
 	 */
 	final private Map mRestorableToMapName = new HashMap();
 
-	LastOpenedList(final String restored) {
-		maxEntries = new Integer(Controller.getResourceController().getProperty(
-		    "last_opened_list_length", "0")).intValue();
+	LastOpenedList(final Controller controller, final String restored) {
+		this.controller = controller;
+		maxEntries = new Integer(Controller.getResourceController().getProperty("last_opened_list_length", "0"))
+		    .intValue();
 		load(restored);
 	}
 
@@ -92,8 +94,7 @@ public class LastOpenedList implements IMapSelectionListener {
 		if (map == null) {
 			return;
 		}
-		final String restoreString = UrlManager.getController(map.getModeController())
-		    .getRestoreable(map);
+		final String restoreString = UrlManager.getController(map.getModeController()).getRestoreable(map);
 		if (restoreString == null) {
 			return;
 		}
@@ -107,19 +108,17 @@ public class LastOpenedList implements IMapSelectionListener {
 		}
 	}
 
-	public void open(final String restoreable) throws FileNotFoundException, XMLParseException,
-	        MalformedURLException, IOException, URISyntaxException {
-		final boolean changedToMapView = Controller.getController().getMapViewManager()
-		    .tryToChangeToMapView((String) mRestorableToMapName.get(restoreable));
+	public void open(final String restoreable) throws FileNotFoundException, XMLParseException, MalformedURLException,
+	        IOException, URISyntaxException {
+		final boolean changedToMapView = controller.getMapViewManager().tryToChangeToMapView(
+		    (String) mRestorableToMapName.get(restoreable));
 		if ((restoreable != null) && !(changedToMapView)) {
 			final StringTokenizer token = new StringTokenizer(restoreable, ":");
 			if (token.hasMoreTokens()) {
 				final String mode = token.nextToken();
-				if (Controller.getController().selectMode(mode)) {
+				if (controller.selectMode(mode)) {
 					final String fileName = token.nextToken("").substring(1);
-					Controller.getController();
-					Controller.getModeController().getMapController().newMap(
-					    UrlManager.fileToUrl(new File(fileName)));
+					controller.getModeController().getMapController().newMap(UrlManager.fileToUrl(new File(fileName)));
 				}
 			}
 		}

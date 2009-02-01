@@ -28,14 +28,16 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.MenuBuilder;
 
 class NavigationPreviousMapAction extends AbstractAction {
-	NavigationPreviousMapAction() {
-		super(null, new ImageIcon(Controller.getResourceController().getResource(
-		    "/images/1leftarrow.png")));
+	final private Controller controller;
+
+	NavigationPreviousMapAction(final Controller controller) {
+		super(null, new ImageIcon(Controller.getResourceController().getResource("/images/1leftarrow.png")));
+		this.controller = controller;
 		MenuBuilder.setLabelAndMnemonic(this, Controller.getText("previous_map"));
 		setEnabled(false);
 	}
 
 	public void actionPerformed(final ActionEvent event) {
-		Controller.getController().getMapViewManager().previousMapView();
+		controller.getMapViewManager().previousMapView();
 	}
 }

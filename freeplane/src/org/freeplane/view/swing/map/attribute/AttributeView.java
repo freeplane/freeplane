@@ -146,8 +146,8 @@ public class AttributeView implements ChangeListener, TableModelListener {
 	}
 
 	public String getViewType() {
-		return currentAttributeTableModel == reducedAttributeTableModel ? getAttributeRegistry()
-		    .getAttributeViewType() : AttributeTableLayoutModel.SHOW_ALL;
+		return currentAttributeTableModel == reducedAttributeTableModel ? getAttributeRegistry().getAttributeViewType()
+		        : AttributeTableLayoutModel.SHOW_ALL;
 	}
 
 	boolean isPopupShown() {

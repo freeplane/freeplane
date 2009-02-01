@@ -104,8 +104,7 @@ class FreeplaneResourceBundle extends ResourceBundle {
 		return resources;
 	}
 
-	private HashMap<String, String> getLanguageResources(final URL systemResource)
-	        throws IOException {
+	private HashMap<String, String> getLanguageResources(final URL systemResource) throws IOException {
 		final InputStream in = systemResource.openStream();
 		if (in == null) {
 			return null;

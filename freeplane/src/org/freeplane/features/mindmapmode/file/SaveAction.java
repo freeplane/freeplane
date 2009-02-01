@@ -26,18 +26,19 @@ import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.features.mindmapmode.MModeController;
 
 class SaveAction extends FreeplaneAction {
-	public SaveAction() {
-		super("save", "/images/filesave.png");
+	public SaveAction(final Controller controller) {
+		super(controller, "save", "/images/filesave.png");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final boolean success = ((MModeController) getModeController()).save();
+		final Controller controller = getController();
 		if (success) {
-			Controller.getController().getViewController().out(Controller.getText("saved"));
+			controller.getViewController().out(Controller.getText("saved"));
 		}
 		else {
-			Controller.getController().errorMessage("Saving failed.");
+			controller.errorMessage("Saving failed.");
 		}
-		Controller.getController().getViewController().setTitle();
+		controller.getViewController().setTitle();
 	}
 }

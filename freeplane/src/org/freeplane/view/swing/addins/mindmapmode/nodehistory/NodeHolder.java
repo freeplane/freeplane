@@ -54,7 +54,8 @@ class NodeHolder {
 
 	MapView getMapView() {
 		final MapView mapView = mMapView.get();
-		final Map mapViews = Controller.getController().getMapViewManager().getMaps();
+		final Controller controller = mapView.getModel().getModeController().getController();
+		final Map mapViews = controller.getMapViewManager().getMaps();
 		for (final Iterator iter = mapViews.values().iterator(); iter.hasNext();) {
 			final MapView m = (MapView) iter.next();
 			if (m == mapView) {

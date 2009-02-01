@@ -27,8 +27,8 @@ import org.freeplane.core.modecontroller.ModeController;
 public class FModeController extends ModeController {
 	static public final String MODENAME = "File";
 
-	public FModeController() {
-		super();
+	public FModeController(final Controller controller) {
+		super(controller);
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class FModeController extends ModeController {
 
 	@Override
 	public void startup() {
-		final Controller controller = Controller.getController();
+		final Controller controller = getController();
 		controller.getMapViewManager().changeToMode(MODENAME);
 		if (controller.getMap() == null) {
 			((FMapController) getMapController()).newMap(new File(File.separator));

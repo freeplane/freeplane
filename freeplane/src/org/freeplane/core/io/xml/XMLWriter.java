@@ -112,8 +112,7 @@ public class XMLWriter {
 	 * @param endElement
 	 */
 	protected void write(final IXMLElement xml, final boolean prettyPrint, final int indent,
-	                     final boolean collapseEmptyElements, final boolean endElement)
-	        throws IOException {
+	                     final boolean collapseEmptyElements, final boolean endElement) throws IOException {
 		if (prettyPrint) {
 			for (int i = 0; i < indent; i++) {
 				writer.print(' ');

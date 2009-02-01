@@ -26,7 +26,10 @@ import javax.swing.AbstractAction;
 import org.freeplane.core.controller.Controller;
 
 class OptionSelectionMechanismAction extends AbstractAction implements IFreeplanePropertyListener {
-	OptionSelectionMechanismAction() {
+	final private Controller controller;
+
+	OptionSelectionMechanismAction(final Controller controller) {
+		this.controller = controller;
 		Controller.getResourceController().addPropertyChangeListener(this);
 	}
 
@@ -39,16 +42,15 @@ class OptionSelectionMechanismAction extends AbstractAction implements IFreeplan
 	 */
 	private void changeSelection(final String command) {
 		Controller.getResourceController().setProperty("selection_method", command);
-		Controller.getModeController().getUserInputListenerFactory().getNodeMouseMotionListener()
+		controller.getModeController().getUserInputListenerFactory().getNodeMouseMotionListener()
 		    .updateSelectionMethod();
 		final String statusBarString = Controller.getText(command);
 		if (statusBarString != null) {
-			Controller.getController().getViewController().out(statusBarString);
+			controller.getViewController().out(statusBarString);
 		}
 	}
 
-	public void propertyChanged(final String propertyName, final String newValue,
-	                            final String oldValue) {
+	public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
 		if (propertyName.equals(ResourceController.RESOURCES_SELECTION_METHOD)) {
 			changeSelection(newValue);
 		}

@@ -160,12 +160,10 @@ public class ListDialog extends JDialog {
 
 	private static ListDialog dialog;
 
-	public static void showDialog(final Component frameComp, final Component locationComp,
-	                              final String labelText, final String title,
-	                              final IListModel possibleValues, final String longValue) {
+	public static void showDialog(final Component frameComp, final Component locationComp, final String labelText,
+	                              final String title, final IListModel possibleValues, final String longValue) {
 		final Frame frame = JOptionPane.getFrameForComponent(frameComp);
-		ListDialog.dialog = new ListDialog(frame, locationComp, labelText, title, possibleValues,
-		    longValue);
+		ListDialog.dialog = new ListDialog(frame, locationComp, labelText, title, possibleValues, longValue);
 		UITools.addEscapeActionToDialog(ListDialog.dialog);
 		ListDialog.dialog.show();
 	}
@@ -177,8 +175,8 @@ public class ListDialog extends JDialog {
 	final private JButton renameButton;
 	final private JTextField textField;
 
-	private ListDialog(final Frame frame, final Component locationComp, final String labelText,
-	                   final String title, final IListModel data, final String longValue) {
+	private ListDialog(final Frame frame, final Component locationComp, final String labelText, final String title,
+	                   final IListModel data, final String longValue) {
 		super(frame, title, true);
 		this.data = data;
 		final JButton closeButton = new JButton();
@@ -199,11 +197,10 @@ public class ListDialog extends JDialog {
 		textField.getDocument().addDocumentListener(new TextChangeListener());
 		list = new JList(data) {
 			@Override
-			public int getScrollableUnitIncrement(final Rectangle visibleRect,
-			                                      final int orientation, final int direction) {
+			public int getScrollableUnitIncrement(final Rectangle visibleRect, final int orientation,
+			                                      final int direction) {
 				int row;
-				if (orientation == SwingConstants.VERTICAL && direction < 0
-				        && (row = getFirstVisibleIndex()) != -1) {
+				if (orientation == SwingConstants.VERTICAL && direction < 0 && (row = getFirstVisibleIndex()) != -1) {
 					final Rectangle r = getCellBounds(row, row);
 					if ((r.y == visibleRect.y) && (row != 0)) {
 						final Point loc = r.getLocation();

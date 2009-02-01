@@ -46,30 +46,27 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 		if (attributes == null) {
 			return null;
 		}
-		final Object typeAttribute = attributes.getAttribute(
-		    NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG, null);
-		if (typeAttribute != null
-		        && !NodeTextBuilder.XML_NODE_XHTML_TYPE_NODE.equals(typeAttribute)) {
+		final Object typeAttribute = attributes.getAttribute(NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG, null);
+		if (typeAttribute != null && !NodeTextBuilder.XML_NODE_XHTML_TYPE_NODE.equals(typeAttribute)) {
 			return null;
 		}
 		return parent;
 	}
 
-	public void endElement(final Object parent, final String tag, final Object node,
-	                       final IXMLElement attributes, final String content) {
+	public void endElement(final Object parent, final String tag, final Object node, final IXMLElement attributes,
+	                       final String content) {
 		assert tag.equals("richcontent");
 		final String xmlText = content;
 		((NodeModel) node).setXmlText(xmlText);
 	}
 
 	private void registerAttributeHandlers(final ReadManager reader) {
-		reader.addAttributeHandler(NodeBuilder.XML_NODE, NodeTextBuilder.XML_NODE_TEXT,
-		    new IAttributeHandler() {
-			    public void setAttribute(final Object userObject, final String value) {
-				    final NodeModel node = ((NodeModel) userObject);
-				    node.setText(value);
-			    }
-		    });
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, NodeTextBuilder.XML_NODE_TEXT, new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = ((NodeModel) userObject);
+				node.setText(value);
+			}
+		});
 	}
 
 	/**
@@ -91,13 +88,11 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 		}
 	}
 
-	public void writeContent(final ITreeWriter writer, final Object element, final String tag)
-	        throws IOException {
+	public void writeContent(final ITreeWriter writer, final Object element, final String tag) throws IOException {
 		if (!isTextNode) {
 			final XMLElement htmlElement = new XMLElement();
 			htmlElement.setName(NodeTextBuilder.XML_NODE_XHTML_CONTENT_TAG);
-			htmlElement.setAttribute(NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG,
-			    NodeTextBuilder.XML_NODE_XHTML_TYPE_NODE);
+			htmlElement.setAttribute(NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG, NodeTextBuilder.XML_NODE_XHTML_TYPE_NODE);
 			final NodeModel node = (NodeModel) element;
 			final String content = node.getXmlText().replace('\0', ' ');
 			writer.addElement(content, htmlElement);

@@ -46,13 +46,11 @@ public class WriteManager {
 		elementWriters.add(parentTag, nw);
 	}
 
-	public void addExtensionAttributeWriter(final Class<? extends IExtension> clazz,
-	                                        final IExtensionAttributeWriter aw) {
+	public void addExtensionAttributeWriter(final Class<? extends IExtension> clazz, final IExtensionAttributeWriter aw) {
 		extensionAttributeWriters.add(clazz, aw);
 	}
 
-	public void addExtensionElementWriter(final Class<? extends IExtension> clazz,
-	                                      final IExtensionElementWriter nw) {
+	public void addExtensionElementWriter(final Class<? extends IExtension> clazz, final IExtensionElementWriter nw) {
 		extensionElementWriters.add(clazz, nw);
 	}
 
@@ -88,8 +86,7 @@ public class WriteManager {
 		assert removed;
 	}
 
-	public void removeExtensionNodeWriter(final Class<? extends IExtension> clazz,
-	                                      final IExtensionElementWriter nw) {
+	public void removeExtensionNodeWriter(final Class<? extends IExtension> clazz, final IExtensionElementWriter nw) {
 		final boolean removed = extensionElementWriters.remove(clazz, nw);
 		assert removed;
 	}

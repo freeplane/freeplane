@@ -49,8 +49,8 @@ import org.freeplane.core.ui.ActionDescriptor;
 tooltip = "accessories/plugins/ExportToOoWriter.properties_documentation", // 
 locations = { "/menu_bar/file/export/export" })
 public class ExportToOoWriter extends ExportAction {
-	public ExportToOoWriter() {
-		super();
+	public ExportToOoWriter(final Controller controller) {
+		super(controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -58,21 +58,21 @@ public class ExportToOoWriter extends ExportAction {
 		if (chosenFile == null) {
 			return;
 		}
-		Controller.getController().getViewController().setWaitingCursor(true);
+		getController().getViewController().setWaitingCursor(true);
 		try {
 			exportToOoWriter(chosenFile);
 		}
 		catch (final IOException ex) {
 			org.freeplane.core.util.Tools.logException(ex);
 		}
-		Controller.getController().getViewController().setWaitingCursor(false);
+		getController().getViewController().setWaitingCursor(false);
 	}
 
 	/**
 	 * @return true, if successful.
 	 */
-	private boolean applyXsltFile(final String xsltFileName, final StringWriter writer,
-	                              final Result result) throws IOException {
+	private boolean applyXsltFile(final String xsltFileName, final StringWriter writer, final Result result)
+	        throws IOException {
 		final URL xsltUrl = Controller.getResourceController().getResource(xsltFileName);
 		if (xsltUrl == null) {
 			Logger.global.severe("Can't find " + xsltFileName + " as resource.");
@@ -113,8 +113,8 @@ public class ExportToOoWriter extends ExportAction {
 			return true;
 		}
 		catch (final Exception e) {
-			Logger.global.severe("File not found or could not be copied. " + "Was earching for "
-			        + fileName + " and should go to " + out);
+			Logger.global.severe("File not found or could not be copied. " + "Was earching for " + fileName
+			        + " and should go to " + out);
 			org.freeplane.core.util.Tools.logException(e);
 			return false;
 		}
@@ -125,7 +125,7 @@ public class ExportToOoWriter extends ExportAction {
 		final ZipOutputStream zipout = new ZipOutputStream(new FileOutputStream(file));
 		final StringWriter writer = new StringWriter();
 		final ModeController controller = getModeController();
-		final MapModel map = Controller.getController().getMap();
+		final MapModel map = controller.getController().getMap();
 		controller.getMapController().getFilteredXml(map, writer);
 		final Result result = new StreamResult(zipout);
 		ZipEntry entry = new ZipEntry("content.xml");
@@ -144,8 +144,8 @@ public class ExportToOoWriter extends ExportAction {
 		return resultValue;
 	}
 
-	public void transForm(final Source xmlSource, final InputStream xsltStream,
-	                      final File resultFile, final String areaCode) {
+	public void transForm(final Source xmlSource, final InputStream xsltStream, final File resultFile,
+	                      final String areaCode) {
 		final Source xsltSource = new StreamSource(xsltStream);
 		final Result result = new StreamResult(resultFile);
 		try {
@@ -153,8 +153,7 @@ public class ExportToOoWriter extends ExportAction {
 			final Transformer trans = transFact.newTransformer(xsltSource);
 			trans.setParameter("destination_dir", resultFile.getName() + "_files/");
 			trans.setParameter("area_code", areaCode);
-			trans.setParameter("folding_type", Controller.getResourceController().getProperty(
-			    "html_export_folding"));
+			trans.setParameter("folding_type", Controller.getResourceController().getProperty("html_export_folding"));
 			trans.transform(xmlSource, result);
 		}
 		catch (final Exception e) {

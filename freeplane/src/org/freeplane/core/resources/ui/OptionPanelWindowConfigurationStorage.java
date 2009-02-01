@@ -25,8 +25,7 @@ import org.freeplane.core.resources.WindowConfigurationStorage;
 import org.freeplane.n3.nanoxml.IXMLElement;
 
 class OptionPanelWindowConfigurationStorage extends WindowConfigurationStorage {
-	public static OptionPanelWindowConfigurationStorage decorateDialog(final String marshalled,
-	                                                                   final JDialog dialog) {
+	public static OptionPanelWindowConfigurationStorage decorateDialog(final String marshalled, final JDialog dialog) {
 		final OptionPanelWindowConfigurationStorage storage = new OptionPanelWindowConfigurationStorage();
 		final IXMLElement xml = storage.unmarschall(marshalled, dialog);
 		if (xml != null) {

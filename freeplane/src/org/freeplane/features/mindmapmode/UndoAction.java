@@ -32,14 +32,14 @@ import org.freeplane.core.undo.IUndoHandler;
 class UndoAction extends FreeplaneAction implements IMapSelectionListener {
 	private Action redo;
 
-	public UndoAction() {
-		super("undo", "/images/undo.png");
-		Controller.getController().getMapViewManager().addMapChangeListener(this);
+	public UndoAction(final Controller controller) {
+		super(controller, "undo", "/images/undo.png");
+		getController().getMapViewManager().addMapChangeListener(this);
 		setEnabled(false);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final MMapModel map = (MMapModel) Controller.getController().getMap();
+		final MMapModel map = (MMapModel) getController().getMap();
 		final IUndoHandler undoHandler = map.getUndoHandler();
 		undoHandler.getUndoAction().actionPerformed(e);
 		setEnabled(undoHandler.canUndo());

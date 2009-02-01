@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Vector;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.modecontroller.ModeController;
@@ -55,21 +56,17 @@ public class ClipboardController implements IExtension {
 		return (ClipboardController) modeController.getExtension(ClipboardController.class);
 	}
 
-	public static void install(final ModeController modeController,
-	                           final ClipboardController clipboardController) {
+	public static void install(final ModeController modeController, final ClipboardController clipboardController) {
 		modeController.addExtension(ClipboardController.class, clipboardController);
 	}
 
-	static public void saveHTML(final NodeModel rootNodeOfBranch, final File file)
-	        throws IOException {
-		final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(
-		    new FileOutputStream(file)));
+	static public void saveHTML(final NodeModel rootNodeOfBranch, final File file) throws IOException {
+		final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
 		final MindMapHTMLWriter htmlWriter = new MindMapHTMLWriter(fileout);
 		htmlWriter.writeHTML(rootNodeOfBranch);
 	}
 
-	static public void writeHTML(final Collection<NodeModel> selectedNodes, final Writer fileout)
-	        throws IOException {
+	static public void writeHTML(final Collection<NodeModel> selectedNodes, final Writer fileout) throws IOException {
 		final MindMapHTMLWriter htmlWriter = new MindMapHTMLWriter(fileout);
 		htmlWriter.writeHTML(selectedNodes);
 	}
@@ -92,8 +89,7 @@ public class ClipboardController implements IExtension {
 		if (color != null) {
 			colors.add(color);
 		}
-		for (final ListIterator e = getModeController().getMapController().childrenUnfolded(node); e
-		    .hasNext();) {
+		for (final ListIterator e = getModeController().getMapController().childrenUnfolded(node); e.hasNext();) {
 			collectColors((NodeModel) e.next(), colors);
 		}
 	}
@@ -122,8 +118,8 @@ public class ClipboardController implements IExtension {
 		final StringWriter stringWriter = new StringWriter();
 		try {
 			final NodeModel r = (node);
-			r.getModeController().getMapController().getMapWriter().writeNodeAsXml(stringWriter, r,
-			    saveInvisible, true);
+			r.getModeController().getMapController().getMapWriter()
+			    .writeNodeAsXml(stringWriter, r, saveInvisible, true);
 		}
 		catch (final IOException e) {
 		}
@@ -144,12 +140,12 @@ public class ClipboardController implements IExtension {
 	 *
 	 */
 	private void createActions() {
-		modeController.addAction("copy", new CopyAction());
-		modeController.addAction("copySingle", new CopySingleAction());
+		final Controller controller = modeController.getController();
+		modeController.addAction("copy", new CopyAction(controller));
+		modeController.addAction("copySingle", new CopySingleAction(controller));
 	}
 
-	public String createForNodesFlavor(final Collection<NodeModel> selectedNodes,
-	                                   final boolean copyInvisible)
+	public String createForNodesFlavor(final Collection<NodeModel> selectedNodes, final boolean copyInvisible)
 	        throws UnsupportedFlavorException, IOException {
 		String forNodesFlavor = "";
 		boolean firstLoop = true;
@@ -161,8 +157,7 @@ public class ClipboardController implements IExtension {
 			else {
 				forNodesFlavor += "<nodeseparator>";
 			}
-			forNodesFlavor += copy(tmpNode, copyInvisible).getTransferData(
-			    MindMapNodesSelection.mindMapNodesFlavor);
+			forNodesFlavor += copy(tmpNode, copyInvisible).getTransferData(MindMapNodesSelection.mindMapNodesFlavor);
 		}
 		return forNodesFlavor;
 	}
@@ -256,8 +251,7 @@ public class ClipboardController implements IExtension {
 
 	public boolean saveTXT(final NodeModel rootNodeOfBranch, final File file) {
 		try {
-			final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(
-			    new FileOutputStream(file)));
+			final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
 			writeTXT(rootNodeOfBranch, fileout,/* depth= */
 			0);
 			fileout.close();
@@ -282,11 +276,10 @@ public class ClipboardController implements IExtension {
 	public NodeModel shallowCopy(final NodeModel source) {
 		try {
 			final StringWriter writer = new StringWriter();
-			modeController.getMapController().getMapWriter().writeNodeAsXml(writer, source, true,
-			    false);
+			modeController.getMapController().getMapWriter().writeNodeAsXml(writer, source, true, false);
 			final String result = writer.toString();
-			final NodeModel copy = modeController.getMapController().getMapReader()
-			    .createNodeTreeFromXml(source.getMap(), new StringReader(result));
+			final NodeModel copy = modeController.getMapController().getMapReader().createNodeTreeFromXml(
+			    source.getMap(), new StringReader(result));
 			copy.setFolded(false);
 			return copy;
 		}
@@ -296,10 +289,10 @@ public class ClipboardController implements IExtension {
 		}
 	}
 
-	private void writeChildrenRTF(final NodeModel mindMapNodeModel, final Writer fileout,
-	                              final int depth, final HashMap colorTable) throws IOException {
-		for (final ListIterator e = getModeController().getMapController().childrenUnfolded(
-		    mindMapNodeModel); e.hasNext();) {
+	private void writeChildrenRTF(final NodeModel mindMapNodeModel, final Writer fileout, final int depth,
+	                              final HashMap colorTable) throws IOException {
+		for (final ListIterator e = getModeController().getMapController().childrenUnfolded(mindMapNodeModel); e
+		    .hasNext();) {
 			final NodeModel child = (NodeModel) e.next();
 			if (child.isVisible()) {
 				writeRTF(child, fileout, depth + 1, colorTable);
@@ -310,10 +303,10 @@ public class ClipboardController implements IExtension {
 		}
 	}
 
-	private void writeChildrenText(final NodeModel mindMapNodeModel, final Writer fileout,
-	                               final int depth) throws IOException {
-		for (final ListIterator e = getModeController().getMapController().childrenUnfolded(
-		    mindMapNodeModel); e.hasNext();) {
+	private void writeChildrenText(final NodeModel mindMapNodeModel, final Writer fileout, final int depth)
+	        throws IOException {
+		for (final ListIterator e = getModeController().getMapController().childrenUnfolded(mindMapNodeModel); e
+		    .hasNext();) {
 			final NodeModel child = (NodeModel) e.next();
 			if (child.isVisible()) {
 				writeTXT(child, fileout, depth + 1);
@@ -335,14 +328,13 @@ public class ClipboardController implements IExtension {
 			int colorPosition = 2;
 			for (final Iterator it = colors.iterator(); it.hasNext(); ++colorPosition) {
 				final Color color = (Color) it.next();
-				colorTableString += "\\red" + color.getRed() + "\\green" + color.getGreen()
-				        + "\\blue" + color.getBlue() + ";";
+				colorTableString += "\\red" + color.getRed() + "\\green" + color.getGreen() + "\\blue"
+				        + color.getBlue() + ";";
 				colorTable.put(color, new Integer(colorPosition));
 			}
 			colorTableString += "}";
-			fileout
-			    .write("{\\rtf1\\ansi\\ansicpg1252\\deff0\\deflang1033{\\fonttbl{\\f0\\fswiss\\fcharset0 Arial;}"
-			            + colorTableString + "}" + "\\viewkind4\\uc1\\pard\\f0\\fs20{}");
+			fileout.write("{\\rtf1\\ansi\\ansicpg1252\\deff0\\deflang1033{\\fonttbl{\\f0\\fswiss\\fcharset0 Arial;}"
+			        + colorTableString + "}" + "\\viewkind4\\uc1\\pard\\f0\\fs20{}");
 			for (final Iterator it = selectedNodes.iterator(); it.hasNext();) {
 				writeRTF(((NodeModel) it.next()), fileout,/* depth= */0, colorTable);
 			}
@@ -367,9 +359,7 @@ public class ClipboardController implements IExtension {
 		}
 		String fontsize = "";
 		if (NodeStyleModel.getColor(mindMapNodeModel) != null) {
-			pre += "\\cf"
-			        + ((Integer) colorTable.get(NodeStyleModel.getColor(mindMapNodeModel)))
-			            .intValue();
+			pre += "\\cf" + ((Integer) colorTable.get(NodeStyleModel.getColor(mindMapNodeModel))).intValue();
 		}
 		final NodeStyleModel font = NodeStyleModel.getModel(mindMapNodeModel);
 		if (font != null) {
@@ -390,11 +380,9 @@ public class ClipboardController implements IExtension {
 			fileout.write("o");
 		}
 		else {
-			final String text = rtfEscapeUnicodeAndSpecialCharacters(mindMapNodeModel
-			    .getPlainTextContent());
+			final String text = rtfEscapeUnicodeAndSpecialCharacters(mindMapNodeModel.getPlainTextContent());
 			if (NodeLinks.getLink(mindMapNodeModel) != null) {
-				final String link = rtfEscapeUnicodeAndSpecialCharacters(NodeLinks
-				    .getLink(mindMapNodeModel));
+				final String link = rtfEscapeUnicodeAndSpecialCharacters(NodeLinks.getLink(mindMapNodeModel));
 				if (link.equals(mindMapNodeModel.toString())) {
 					fileout.write(pre + "<{\\ul\\cf1 " + link + "}>" + "}");
 				}
@@ -412,8 +400,7 @@ public class ClipboardController implements IExtension {
 		writeChildrenRTF(mindMapNodeModel, fileout, depth, colorTable);
 	}
 
-	public void writeTXT(final NodeModel mindMapNodeModel, final Writer fileout, final int depth)
-	        throws IOException {
+	public void writeTXT(final NodeModel mindMapNodeModel, final Writer fileout, final int depth) throws IOException {
 		final String plainTextContent = mindMapNodeModel.getPlainTextContent();
 		for (int i = 0; i < depth; ++i) {
 			fileout.write("    ");

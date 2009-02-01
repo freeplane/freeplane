@@ -25,7 +25,6 @@ import java.net.URL;
 
 import javax.swing.JLabel;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.IMapTitleChangeListener;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
@@ -52,7 +51,7 @@ public class BToolbarContributor implements IMenuContributor, IMapTitleChangeLis
 				}
 				catch (final Exception e1) {
 					org.freeplane.core.util.Tools.logException(e1);
-					Controller.getController().errorMessage(e1);
+					controller.getController().errorMessage(e1);
 				}
 			}
 		});

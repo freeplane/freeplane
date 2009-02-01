@@ -97,19 +97,19 @@ public class MIconController extends IconController {
 		    "removeAllIconsAction")), MenuBuilder.AS_CHILD);
 		builder.addSeparator(iconMenuString + "/icons", MenuBuilder.AS_CHILD);
 		for (int i = 0; i < iconActions.size(); ++i) {
-			builder.addMenuItem(iconMenuString + "/icons", new JMenuItem((Action) iconActions
-			    .get(i)), MenuBuilder.AS_CHILD);
+			builder.addMenuItem(iconMenuString + "/icons", new JMenuItem((Action) iconActions.get(i)),
+			    MenuBuilder.AS_CHILD);
 		}
 	}
 
 	private void createIconActions() {
 		final ModeController modeController = getModeController();
-		final RemoveIconAction removeLastIconAction = new RemoveIconAction();
+		final Controller controller = modeController.getController();
+		final RemoveIconAction removeLastIconAction = new RemoveIconAction(controller);
 		modeController.addAction("removeLastIconAction", removeLastIconAction);
-		modeController.addAction("removeAllIconsAction", new RemoveAllIconsAction());
+		modeController.addAction("removeAllIconsAction", new RemoveAllIconsAction(controller));
 		final Vector iconNames = MindIcon.getAllIconNames();
-		final File iconDir = new File(Controller.getResourceController()
-		    .getFreeplaneUserDirectory(), "icons");
+		final File iconDir = new File(Controller.getResourceController().getFreeplaneUserDirectory(), "icons");
 		if (iconDir.exists()) {
 			final String[] userIconArray = iconDir.list(new FilenameFilter() {
 				public boolean accept(final File dir, final String name) {
@@ -180,13 +180,11 @@ public class MIconController extends IconController {
 	}
 
 	public void removeAllIcons(final NodeModel node) {
-		((RemoveAllIconsAction) getModeController().getAction("removeAllIconsAction"))
-		    .removeAllIcons(node);
+		((RemoveAllIconsAction) getModeController().getAction("removeAllIconsAction")).removeAllIcons(node);
 	}
 
 	public int removeIcon(final NodeModel node, final int position) {
-		return ((RemoveIconAction) getModeController().getAction("removeLastIconAction"))
-		    .removeIcon(node, position);
+		return ((RemoveIconAction) getModeController().getAction("removeLastIconAction")).removeIcon(node, position);
 	}
 
 	public void updateIconToolbar() {

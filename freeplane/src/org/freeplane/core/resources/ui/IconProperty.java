@@ -19,6 +19,7 @@
  */
 package org.freeplane.core.resources.ui;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Iterator;
@@ -26,6 +27,7 @@ import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.MindIcon;
@@ -48,7 +50,7 @@ public class IconProperty extends PropertyBean implements IPropertyControl, Acti
 		mButton.addActionListener(this);
 	}
 
-	public void actionPerformed(final ActionEvent arg0) {
+	public void actionPerformed(final ActionEvent e) {
 		final Vector icons = new Vector();
 		final Vector descriptions = new Vector();
 		for (final Iterator iter = mIcons.iterator(); iter.hasNext();) {
@@ -56,9 +58,8 @@ public class IconProperty extends PropertyBean implements IPropertyControl, Acti
 			icons.add(icon);
 			descriptions.add(icon.getDescription());
 		}
-		final IconSelectionPopupDialog dialog = new IconSelectionPopupDialog(Controller
-		    .getController().getViewController().getJFrame(), icons);
-		dialog.setLocationRelativeTo(Controller.getController().getViewController().getJFrame());
+		final IconSelectionPopupDialog dialog = new IconSelectionPopupDialog(JOptionPane.getFrameForComponent((Component) e.getSource()), icons);
+		dialog.setLocationRelativeTo(JOptionPane.getFrameForComponent((Component) e.getSource()));
 		dialog.setModal(true);
 		dialog.setVisible(true);
 		final int result = dialog.getResult();

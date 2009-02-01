@@ -41,8 +41,7 @@ public class AttributeRegistryElement {
 
 		@Override
 		public void add(final Object element) {
-			registry.getAttributeController().performRegistryAttributeValue(getKey(),
-			    element.toString());
+			registry.getAttributeController().performRegistryAttributeValue(getKey(), element.toString());
 		}
 
 		public String getKey() {
@@ -55,14 +54,12 @@ public class AttributeRegistryElement {
 
 		@Override
 		public void remove(final Object element) {
-			registry.getAttributeController().performRemoveAttributeValue(getKey(),
-			    element.toString());
+			registry.getAttributeController().performRemoveAttributeValue(getKey(), element.toString());
 		}
 
 		@Override
 		public void replace(final Object oldO, final Object newO) {
-			registry.getAttributeController().performReplaceAttributeValue(getKey(),
-			    oldO.toString(), newO.toString());
+			registry.getAttributeController().performReplaceAttributeValue(getKey(), oldO.toString(), newO.toString());
 		}
 	}
 

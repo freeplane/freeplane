@@ -32,8 +32,8 @@ import org.freeplane.features.common.attribute.NodeAttributeTableModel;
 /**
  * @author Dimitry Polivaev
  */
-abstract class AttributeTableModelDecoratorAdapter extends AbstractTableModel implements
-        IAttributeTableModel, TableModelListener, ChangeListener {
+abstract class AttributeTableModelDecoratorAdapter extends AbstractTableModel implements IAttributeTableModel,
+        TableModelListener, ChangeListener {
 	protected AttributeRegistry attributeRegistry;
 	protected NodeAttributeTableModel nodeAttributeModel;
 

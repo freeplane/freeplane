@@ -56,8 +56,9 @@ public class MapModel {
 		this.root = root;
 		extensions = new ExtensionHashMap();
 		mModeController = modeController;
+		final Controller controller = modeController.getController();
 		nodes = new HashMap<String, NodeModel>();
-		filter = new DefaultFilter(NoFilteringCondition.createCondition(), true, false);
+		filter = new DefaultFilter(controller, NoFilteringCondition.createCondition(), true, false);
 		if (root == null) {
 			root = new NodeModel(Controller.getText("new_mindmap"), this);
 			setRoot(root);
@@ -269,7 +270,7 @@ public class MapModel {
 			++changesPerformedSinceLastSave;
 		}
 		if (setTitle) {
-			Controller.getController().getViewController().setTitle();
+			getModeController().getController().getViewController().setTitle();
 		}
 	};
 

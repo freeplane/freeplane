@@ -65,8 +65,7 @@ import org.freeplane.n3.nanoxml.XMLParserFactory;
 public class ExportWithXSLT extends ExportAction {
 	private static final String NAME_EXTENSION_PROPERTY = "name_extension";
 
-	public static void createXSLTExportActions(final ModeController modeController,
-	                                           final String xmlDescriptorFile) {
+	public static void createXSLTExportActions(final ModeController modeController, final String xmlDescriptorFile) {
 		try {
 			final IXMLParser parser = XMLParserFactory.createDefaultXMLParser();
 			final URL resource = Controller.getResourceController().getResource(xmlDescriptorFile);
@@ -81,10 +80,11 @@ public class ExportWithXSLT extends ExportAction {
 				final String location = descriptor.getAttribute("location", null);
 				final IXMLElement xmlProperties = descriptor.getFirstChildNamed("properties");
 				final Properties properties = xmlProperties.getAttributes();
-				final ExportWithXSLT action = new ExportWithXSLT(name, tooltip, properties);
+				final ExportWithXSLT action = new ExportWithXSLT(modeController.getController(), name, tooltip,
+				    properties);
 				modeController.addAction(name, action);
-				modeController.getUserInputListenerFactory().getMenuBuilder().addAction(location,
-				    action, location + "/" + name, MenuBuilder.AS_CHILD);
+				modeController.getUserInputListenerFactory().getMenuBuilder().addAction(location, action,
+				    location + "/" + name, MenuBuilder.AS_CHILD);
 			}
 		}
 		catch (final Exception e) {
@@ -98,15 +98,16 @@ public class ExportWithXSLT extends ExportAction {
 	private boolean mTransformResultWithoutError = false;
 	final private Properties properties;
 
-	public ExportWithXSLT(final String name, final String tooltip, final Properties properties) {
-		super(name);
+	public ExportWithXSLT(final Controller controller, final String name, final String tooltip,
+	                      final Properties properties) {
+		super(controller, name);
 		this.properties = properties;
 		setTooltip(tooltip);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final ModeController mc = getModeController();
-		final MapModel model = Controller.getController().getMap();
+		final MapModel model = getController().getMap();
 		if (Tools.safeEquals(getProperty("file_type"), "user")) {
 			if (model == null) {
 				return;
@@ -135,8 +136,7 @@ public class ExportWithXSLT extends ExportAction {
 
 	protected File chooseFile() {
 		final String nameExtension = getProperty(ExportWithXSLT.NAME_EXTENSION_PROPERTY);
-		return chooseFile(getProperty("file_type"),
-		    getTranslatableResourceString("file_description"), nameExtension);
+		return chooseFile(getProperty("file_type"), getTranslatableResourceString("file_description"), nameExtension);
 	}
 
 	/**
@@ -171,8 +171,7 @@ public class ExportWithXSLT extends ExportAction {
 			final MindIcon myIcon = MindIcon.factory(iconName);
 			copyFromResource(MindIcon.getIconsPath(), myIcon.getIconBaseFileName(), directoryName2);
 		}
-		final File iconDir = new File(Controller.getResourceController()
-		    .getFreeplaneUserDirectory(), "icons");
+		final File iconDir = new File(Controller.getResourceController().getFreeplaneUserDirectory(), "icons");
 		if (iconDir.exists()) {
 			final String[] userIconArray = iconDir.list(new FilenameFilter() {
 				public boolean accept(final File dir, final String name) {
@@ -191,9 +190,9 @@ public class ExportWithXSLT extends ExportAction {
 
 	private boolean copyMap(final String pDirectoryName) throws IOException {
 		final boolean success = true;
-		final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(
-		    new FileOutputStream(pDirectoryName + File.separator + "map.mm")));
-		final MapModel map = Controller.getController().getMap();
+		final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(pDirectoryName
+		        + File.separator + "map.mm")));
+		final MapModel map = getController().getMap();
 		getModeController().getMapController().getFilteredXml(map, fileout);
 		return success;
 	}
@@ -211,13 +210,12 @@ public class ExportWithXSLT extends ExportAction {
 	/**
 	 */
 	private void createImageFromMap(final String directoryName) {
-		if (Controller.getController().getViewController().getMapView() == null) {
+		if (getController().getViewController().getMapView() == null) {
 			return;
 		}
 		final RenderedImage image = createBufferedImage();
 		try {
-			final FileOutputStream out = new FileOutputStream(directoryName + File.separator
-			        + "image.png");
+			final FileOutputStream out = new FileOutputStream(directoryName + File.separator + "image.png");
 			ImageIO.write(image, "png", out);
 			out.close();
 		}
@@ -237,7 +235,7 @@ public class ExportWithXSLT extends ExportAction {
 	private String getAreaCode(final boolean create_image) {
 		String areaCode = "";
 		if (create_image) {
-			areaCode = Controller.getController().getMapViewManager().createHtmlMap();
+			areaCode = getController().getMapViewManager().createHtmlMap();
 		}
 		return areaCode;
 	}
@@ -247,9 +245,10 @@ public class ExportWithXSLT extends ExportAction {
 	 */
 	private String getMapXml() throws IOException {
 		final StringWriter writer = new StringWriter();
-		final ModeController controller = getModeController();
-		final MapModel map = Controller.getController().getMap();
-		controller.getMapController().getFilteredXml(map, writer);
+		final ModeController modeController = getModeController();
+		final Controller controller = modeController.getController();
+		final MapModel map = controller.getMap();
+		modeController.getMapController().getFilteredXml(map, writer);
 		return writer.getBuffer().toString();
 	}
 
@@ -275,14 +274,13 @@ public class ExportWithXSLT extends ExportAction {
 	protected void transform(final File saveFile) {
 		try {
 			mTransformResultWithoutError = true;
-			final boolean create_image = Tools.safeEquals(getProperty("create_html_linked_image"),
-			    "true");
+			final boolean create_image = Tools.safeEquals(getProperty("create_html_linked_image"), "true");
 			final String areaCode = getAreaCode(create_image);
 			final String xsltFileName = getProperty("xslt_file");
 			boolean success = transformMapWithXslt(xsltFileName, saveFile, areaCode);
 			if (!success) {
-				JOptionPane.showMessageDialog(null, getProperty("error_applying_template"),
-				    "Freeplane", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, getProperty("error_applying_template"), "Freeplane",
+				    JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			if (success && Tools.safeEquals(getProperty("create_dir"), "true")) {
@@ -304,13 +302,12 @@ public class ExportWithXSLT extends ExportAction {
 				}
 			}
 			if (!success) {
-				JOptionPane.showMessageDialog(null, getProperty("error_creating_directory"),
-				    "Freeplane", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, getProperty("error_creating_directory"), "Freeplane",
+				    JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			if (Tools.safeEquals(getProperty("load_file"), "true")) {
-				Controller.getController().getViewController().openDocument(
-				    UrlManager.fileToUrl(saveFile));
+				getController().getViewController().openDocument(UrlManager.fileToUrl(saveFile));
 			}
 		}
 		catch (final Exception e) {
@@ -319,8 +316,8 @@ public class ExportWithXSLT extends ExportAction {
 		}
 	}
 
-	public boolean transform(final Source xmlSource, final InputStream xsltStream,
-	                         final File resultFile, final String areaCode) {
+	public boolean transform(final Source xmlSource, final InputStream xsltStream, final File resultFile,
+	                         final String areaCode) {
 		final Source xsltSource = new StreamSource(xsltStream);
 		final Result result = new StreamResult(resultFile);
 		try {
@@ -328,8 +325,7 @@ public class ExportWithXSLT extends ExportAction {
 			final Transformer trans = transFact.newTransformer(xsltSource);
 			trans.setParameter("destination_dir", resultFile.getName() + "_files/");
 			trans.setParameter("area_code", areaCode);
-			trans.setParameter("folding_type", Controller.getResourceController().getProperty(
-			    "html_export_folding"));
+			trans.setParameter("folding_type", Controller.getResourceController().getProperty("html_export_folding"));
 			trans.transform(xmlSource, result);
 		}
 		catch (final Exception e) {
@@ -342,8 +338,8 @@ public class ExportWithXSLT extends ExportAction {
 	/**
 	 * @throws IOException
 	 */
-	private boolean transformMapWithXslt(final String xsltFileName, final File saveFile,
-	                                     final String areaCode) throws IOException {
+	private boolean transformMapWithXslt(final String xsltFileName, final File saveFile, final String areaCode)
+	        throws IOException {
 		final String map = getMapXml();
 		final StringReader reader = new StringReader(map);
 		final URL xsltUrl = Controller.getResourceController().getResource(xsltFileName);

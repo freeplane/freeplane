@@ -51,16 +51,16 @@ import org.freeplane.n3.nanoxml.XMLParseException;
 @ActionDescriptor(name = "accessories/plugins/ImportMindmanagerFiles.properties_name", //
 locations = { "/menu_bar/file/import/import" })
 public class ImportMindmanagerFiles extends FreeplaneAction {
-	public ImportMindmanagerFiles() {
-		super();
+	public ImportMindmanagerFiles(final Controller controller) {
+		super(controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final String type = "mmap";
-		final Container component = Controller.getController().getViewController().getContentPane();
+		final Container component = getController().getViewController().getContentPane();
 		final JFileChooser chooser = new JFileChooser();
 		chooser.addChoosableFileFilter(new ExportFilter(type, null));
-		final File mmFile = Controller.getController().getMap().getFile();
+		final File mmFile = getController().getMap().getFile();
 		if (mmFile != null && mmFile.getParentFile() != null) {
 			chooser.setSelectedFile(mmFile.getParentFile());
 		}
@@ -84,17 +84,14 @@ public class ImportMindmanagerFiles extends FreeplaneAction {
 				final URL xsltUrl = Controller.getResourceController().getResource(xsltFileName);
 				if (xsltUrl == null) {
 					Logger.global.severe("Can't find " + xsltFileName + " as resource.");
-					throw new IllegalArgumentException("Can't find " + xsltFileName
-					        + " as resource.");
+					throw new IllegalArgumentException("Can't find " + xsltFileName + " as resource.");
 				}
 				final InputStream xsltFile = xsltUrl.openStream();
 				final String xml = transForm(new StreamSource(in), xsltFile);
 				if (xml != null) {
-					final File tempFile = File
-					    .createTempFile(
-					        file.getName(),
-					        org.freeplane.features.mindmapmode.file.MFileManager.FREEPLANE_FILE_EXTENSION,
-					        file.getParentFile());
+					final File tempFile = File.createTempFile(file.getName(),
+					    org.freeplane.features.mindmapmode.file.MFileManager.FREEPLANE_FILE_EXTENSION, file
+					        .getParentFile());
 					final FileWriter fw = new FileWriter(tempFile);
 					fw.write(xml);
 					fw.close();

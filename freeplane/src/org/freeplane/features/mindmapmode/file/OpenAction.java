@@ -29,12 +29,12 @@ class OpenAction extends FreeplaneAction {
 	/**
 	 *
 	 */
-	public OpenAction() {
-		super("open", "/images/fileopen.png");
+	public OpenAction(final Controller controller) {
+		super(controller, "open", "/images/fileopen.png");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		((MFileManager) UrlManager.getController(getModeController())).open();
-		Controller.getController().getViewController().setTitle();
+		getController().getViewController().setTitle();
 	}
 }

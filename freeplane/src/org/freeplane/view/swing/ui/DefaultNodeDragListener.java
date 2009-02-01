@@ -23,7 +23,10 @@ import org.freeplane.view.swing.map.MainView;
  * The NodeDragListener which belongs to every NodeView
  */
 class DefaultNodeDragListener implements DragGestureListener {
-	public DefaultNodeDragListener() {
+	final private Controller controller;
+
+	public DefaultNodeDragListener(final Controller controller) {
+		this.controller = controller;
 	}
 
 	public void dragGestureRecognized(final DragGestureEvent e) {
@@ -44,9 +47,8 @@ class DefaultNodeDragListener implements DragGestureListener {
 			cursor = DragSource.DefaultCopyDrop;
 			dragAction = "COPY";
 		}
-		final ModeController modeController = Controller.getModeController();
-		final Transferable t = ClipboardController.getController(modeController).copy(
-		    Controller.getController().getSelection());
+		final ModeController modeController = controller.getModeController();
+		final Transferable t = ClipboardController.getController(modeController).copy(controller.getSelection());
 		((MindMapNodesSelection) t).setDropAction(dragAction);
 		e.startDrag(cursor, t, new DragSourceListener() {
 			public void dragDropEnd(final DragSourceDropEvent dsde) {

@@ -63,8 +63,7 @@ class NodeViewFactory {
 					}
 					else {
 						final int x = (int) (component.getAlignmentX() * (width - preferredCompSize.width));
-						component
-						    .setBounds(x, y, preferredCompSize.width, preferredCompSize.height);
+						component.setBounds(x, y, preferredCompSize.width, preferredCompSize.height);
 					}
 					y += preferredCompSize.height;
 				}
@@ -123,8 +122,7 @@ class NodeViewFactory {
 
 	EdgeView getEdge(final NodeView newView) {
 		final NodeModel model = newView.getModel();
-		final String edgeStyle = EdgeController.getController(model.getModeController()).getStyle(
-		    model);
+		final String edgeStyle = EdgeController.getController(model.getModeController()).getStyle(model);
 		if (edgeStyle.equals(EdgeModel.EDGESTYLE_LINEAR)) {
 			return getLinearEdgeView();
 		}
@@ -172,8 +170,7 @@ class NodeViewFactory {
 		if (model.isRoot()) {
 			return new RootMainView();
 		}
-		final String shape = NodeStyleController.getController(model.getModeController()).getShape(
-		    model);
+		final String shape = NodeStyleController.getController(model.getModeController()).getShape(model);
 		if (shape.equals(NodeStyleModel.STYLE_FORK)) {
 			return new ForkMainView();
 		}
@@ -189,8 +186,7 @@ class NodeViewFactory {
 	/**
 	 * Factory method which creates the right NodeView for the model.
 	 */
-	NodeView newNodeView(final NodeModel model, final int position, final MapView map,
-	                     final Container parent) {
+	NodeView newNodeView(final NodeModel model, final int position, final MapView map, final Container parent) {
 		final NodeView newView = new NodeView(model, position, map, parent);
 		if (model.isRoot()) {
 			final MainView mainView = new RootMainView();

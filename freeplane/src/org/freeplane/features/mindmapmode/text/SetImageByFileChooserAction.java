@@ -26,13 +26,12 @@ import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.features.common.text.TextController;
 
 class SetImageByFileChooserAction extends FreeplaneAction {
-	public SetImageByFileChooserAction() {
-		super("set_image_by_filechooser");
+	public SetImageByFileChooserAction(final Controller controller) {
+		super(controller, "set_image_by_filechooser");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		((MTextController) TextController.getController(getModeController()))
-		    .setImageByFileChooser();
-		Controller.getController().getViewController().obtainFocusForSelected();
+		((MTextController) TextController.getController(getModeController())).setImageByFileChooser();
+		getController().getViewController().obtainFocusForSelected();
 	}
 }

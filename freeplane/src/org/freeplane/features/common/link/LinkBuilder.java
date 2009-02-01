@@ -63,8 +63,7 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 		return null;
 	}
 
-	public void endElement(final Object parent, final String tag, final Object userObject,
-	                       final IXMLElement dom) {
+	public void endElement(final Object parent, final String tag, final Object userObject, final IXMLElement dom) {
 		if (parent instanceof NodeModel) {
 			final NodeModel node = (NodeModel) parent;
 			if (userObject instanceof ArrowLinkModel) {
@@ -213,8 +212,7 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 	public void setAttributes(final String tag, final Object node, final IXMLElement attributes) {
 	}
 
-	public void writeAttributes(final ITreeWriter writer, final Object userObject,
-	                            final IExtension extension) {
+	public void writeAttributes(final ITreeWriter writer, final Object userObject, final IExtension extension) {
 		final NodeLinks links = (NodeLinks) extension;
 		final String link = links.getLink();
 		if (link != null) {
@@ -225,8 +223,7 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 	public void writeAttributes(final ITreeWriter writer, final Object userObject, final String tag) {
 		final NodeModel node = (NodeModel) userObject;
 		final boolean saveID = MapController.saveOnlyIntrinsicallyNeededIds()
-		        && !LinkController.getController(node.getModeController()).getLinksTo(node)
-		            .isEmpty();
+		        && !LinkController.getController(node.getModeController()).getLinksTo(node).isEmpty();
 		if (saveID) {
 			final String id = node.createID();
 			writer.addAttribute("ID", id);

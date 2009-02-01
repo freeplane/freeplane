@@ -21,6 +21,7 @@ package org.freeplane.features.mindmapmode.cloud;
 
 import java.awt.event.ActionEvent;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.core.ui.SelectableAction;
@@ -32,8 +33,8 @@ import org.freeplane.features.common.cloud.CloudModel;
  */
 @SelectableAction(checkOnNodeChange = true)
 class CloudAction extends MultipleNodeAction {
-	public CloudAction() {
-		super("cloud", "/images/Cloud24.gif");
+	public CloudAction(final Controller controller) {
+		super(controller, "cloud", "/images/Cloud24.gif");
 	}
 
 	/*
@@ -44,8 +45,8 @@ class CloudAction extends MultipleNodeAction {
 	 */
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		final MCloudController cloudController = (MCloudController) CloudController
-		    .getController(node.getModeController());
+		final MCloudController cloudController = (MCloudController) CloudController.getController(node
+		    .getModeController());
 		cloudController.setCloud(node, CloudModel.getModel(node) == null);
 	}
 

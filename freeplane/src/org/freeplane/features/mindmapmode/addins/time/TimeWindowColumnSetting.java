@@ -6,10 +6,8 @@ import org.freeplane.n3.nanoxml.XMLElement;
 class TimeWindowColumnSetting {
 	static TimeWindowColumnSetting create(final IXMLElement xml) {
 		final TimeWindowColumnSetting timeWindowColumnSetting = new TimeWindowColumnSetting();
-		timeWindowColumnSetting.columnSorting = Integer.parseInt(xml.getAttribute("column_sorting",
-		    null));
-		timeWindowColumnSetting.columnWidth = Integer.parseInt(xml.getAttribute("column_width",
-		    null));
+		timeWindowColumnSetting.columnSorting = Integer.parseInt(xml.getAttribute("column_sorting", null));
+		timeWindowColumnSetting.columnWidth = Integer.parseInt(xml.getAttribute("column_width", null));
 		return timeWindowColumnSetting;
 	}
 

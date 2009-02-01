@@ -59,8 +59,7 @@ class LocationBuilder implements IExtensionAttributeWriter {
 		writeManager.addExtensionAttributeWriter(LocationModel.class, this);
 	}
 
-	public void writeAttributes(final ITreeWriter writer, final Object userObject,
-	                            final IExtension extension) {
+	public void writeAttributes(final ITreeWriter writer, final Object userObject, final IExtension extension) {
 		final LocationModel locationModel = (LocationModel) extension;
 		final int vGap = locationModel.getVGap();
 		if (vGap != LocationModel.VGAP) {

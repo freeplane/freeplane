@@ -33,8 +33,8 @@ public class BModeController extends ModeController {
 	static public final String MODENAME = "Browse";
 	private ImageIcon noteIcon;
 
-	public BModeController() {
-		super();
+	public BModeController(final Controller controller) {
+		super(controller);
 	}
 
 	@Override
@@ -46,13 +46,11 @@ public class BModeController extends ModeController {
 		final String noteText = NoteModel.getNoteText(node);
 		if (noteText != null && !noteText.equals("")) {
 			if (noteIcon == null) {
-				noteIcon = new ImageIcon(Controller.getResourceController().getResource(
-				    "/images/knotes.png"));
+				noteIcon = new ImageIcon(Controller.getResourceController().getResource("/images/knotes.png"));
 			}
 			node.setStateIcon(NodeNoteBase.NODE_NOTE_ICON, noteIcon);
 		}
-		final ListIterator children = node.getModeController().getMapController().childrenUnfolded(
-		    node);
+		final ListIterator children = node.getModeController().getMapController().childrenUnfolded(node);
 		while (children.hasNext()) {
 			setNoteIcon((NodeModel) children.next());
 		}

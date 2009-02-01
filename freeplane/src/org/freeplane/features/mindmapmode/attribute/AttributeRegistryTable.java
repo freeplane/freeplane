@@ -71,9 +71,8 @@ class AttributeRegistryTable extends JTable {
 		 * javax.swing.table.TableCellEditor#getTableCellEditorComponent(javax
 		 * .swing.JTable, java.lang.Object, boolean, int, int)
 		 */
-		public Component getTableCellEditorComponent(final JTable table, final Object value,
-		                                             final boolean isSelected, final int row,
-		                                             final int column) {
+		public Component getTableCellEditorComponent(final JTable table, final Object value, final boolean isSelected,
+		                                             final int row, final int column) {
 			this.value = value;
 			return editButton;
 		}
@@ -99,8 +98,7 @@ class AttributeRegistryTable extends JTable {
 		 * (javax.swing.JTable, java.lang.Object, boolean, boolean, int, int)
 		 */
 		public Component getTableCellRendererComponent(final JTable table, final Object value,
-		                                               final boolean isSelected,
-		                                               final boolean hasFocus, final int row,
+		                                               final boolean isSelected, final boolean hasFocus, final int row,
 		                                               final int column) {
 			return renderingEditButton;
 		}
@@ -124,10 +122,10 @@ class AttributeRegistryTable extends JTable {
 		}
 	}
 
-	static final private Icon checkBoxImage = new ImageIcon(Controller.getResourceController()
-	    .getResource("/images/checkbox12.png"));
-	private static final ButtonRenderer editButtonRenderer = new ButtonRenderer(
-	    AttributeManagerDialog.editButtonImage, Controller.getText("attributes_edit_tooltip"));
+	static final private Icon checkBoxImage = new ImageIcon(Controller.getResourceController().getResource(
+	    "/images/checkbox12.png"));
+	private static final ButtonRenderer editButtonRenderer = new ButtonRenderer(AttributeManagerDialog.editButtonImage,
+	    Controller.getText("attributes_edit_tooltip"));
 	final private AttributeManagerDialog.EditListAction editListAction;
 	final private ButtonEditor selectAllButtonEditor;
 	final private ButtonRenderer selectAllButtonRenderer;
@@ -136,8 +134,8 @@ class AttributeRegistryTable extends JTable {
 		super();
 		this.editListAction = editListAction;
 		getTableHeader().setReorderingAllowed(false);
-		selectAllButtonRenderer = new ButtonRenderer(AttributeRegistryTable.checkBoxImage,
-		    Controller.getText("attributes_select_all_tooltip"));
+		selectAllButtonRenderer = new ButtonRenderer(AttributeRegistryTable.checkBoxImage, Controller
+		    .getText("attributes_select_all_tooltip"));
 		selectAllButtonEditor = new ButtonEditor(new ToggleAllAction());
 		setDefaultEditor(IListModel.class, new ButtonEditor(editListAction));
 		setDefaultRenderer(IListModel.class, AttributeRegistryTable.editButtonRenderer);
@@ -176,12 +174,10 @@ class AttributeRegistryTable extends JTable {
 					break;
 				case 2:
 					if (row == 0) {
-						label.setToolTipText(Controller
-						    .getText("attributes_restricted_attributes_tooltip"));
+						label.setToolTipText(Controller.getText("attributes_restricted_attributes_tooltip"));
 					}
 					else {
-						label.setToolTipText(Controller
-						    .getText("attributes_restricted_values_tooltip"));
+						label.setToolTipText(Controller.getText("attributes_restricted_values_tooltip"));
 					}
 					break;
 			}
@@ -206,9 +202,8 @@ class AttributeRegistryTable extends JTable {
 		if (dataModel.getColumnCount() >= 1) {
 			for (int i = 1; i < getColumnCount(); i++) {
 				getColumnModel().getColumn(i).setMinWidth(20);
-				final int prefWidth = getTableHeader().getDefaultRenderer()
-				    .getTableCellRendererComponent(this, getColumnName(i), false, false, -1, i)
-				    .getPreferredSize().width;
+				final int prefWidth = getTableHeader().getDefaultRenderer().getTableCellRendererComponent(this,
+				    getColumnName(i), false, false, -1, i).getPreferredSize().width;
 				getColumnModel().getColumn(i).setPreferredWidth(prefWidth);
 			}
 		}

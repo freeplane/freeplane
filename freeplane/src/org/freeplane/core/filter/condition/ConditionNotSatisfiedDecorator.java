@@ -38,8 +38,7 @@ public class ConditionNotSatisfiedDecorator implements ICondition {
 
 	static ICondition load(final XMLElement element) {
 		final Vector children = element.getChildren();
-		final ICondition cond = FilterController.getController().getConditionFactory()
-		    .loadCondition((XMLElement) children.get(0));
+		final ICondition cond = FilterController.getConditionFactory().loadCondition((XMLElement) children.get(0));
 		return new ConditionNotSatisfiedDecorator(cond);
 	}
 

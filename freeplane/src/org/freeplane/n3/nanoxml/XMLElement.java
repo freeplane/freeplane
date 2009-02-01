@@ -130,8 +130,7 @@ public class XMLElement implements IXMLElement, Serializable {
 	 * @param lineNr
 	 *            the line in the XML data where the element starts.
 	 */
-	public XMLElement(final String fullName, final String namespace, final String systemID,
-	                  final int lineNr) {
+	public XMLElement(final String fullName, final String namespace, final String systemID, final int lineNr) {
 		attributes = new Vector();
 		children = new Vector(8);
 		this.fullName = fullName;
@@ -223,8 +222,8 @@ public class XMLElement implements IXMLElement, Serializable {
 	 * @param lineNr
 	 *            the line in the XML data where the element starts.
 	 */
-	public IXMLElement createElement(final String fullName, final String namespace,
-	                                 final String systemID, final int lineNr) {
+	public IXMLElement createElement(final String fullName, final String namespace, final String systemID,
+	                                 final int lineNr) {
 		return new XMLElement(fullName, namespace, systemID, lineNr);
 	}
 

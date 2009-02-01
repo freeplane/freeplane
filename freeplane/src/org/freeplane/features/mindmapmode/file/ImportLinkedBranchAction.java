@@ -27,6 +27,8 @@ import java.net.URL;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.frame.ViewController;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.FreeplaneAction;
@@ -37,39 +39,39 @@ import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.features.mindmapmode.clipboard.MClipboardController;
 
 class ImportLinkedBranchAction extends FreeplaneAction {
-	public ImportLinkedBranchAction() {
-		super("import_linked_branch");
+	public ImportLinkedBranchAction(final Controller controller) {
+		super(controller, "import_linked_branch");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final MapModel map = Controller.getController().getMap();
-		final NodeModel selected = getModeController().getMapController().getSelectedNode();
+		final MapModel map = getController().getMap();
+		final ModeController modeController = getModeController();
+		final NodeModel selected = modeController.getMapController().getSelectedNode();
+		final ViewController viewController = getController().getViewController();
 		if (selected == null || NodeLinks.getLink(selected) == null) {
-			JOptionPane.showMessageDialog((Controller.getController().getViewController()
-			    .getMapView()), getModeController().getText("import_linked_branch_no_link"));
+			JOptionPane.showMessageDialog((viewController.getMapView()), modeController
+			    .getText("import_linked_branch_no_link"));
 			return;
 		}
 		URL absolute = null;
 		try {
 			final String relative = NodeLinks.getLink(selected);
-			absolute = UrlManager.isAbsolutePath(relative) ? UrlManager
-			    .fileToUrl(new File(relative)) : new URL(UrlManager.fileToUrl(map.getFile()),
-			    relative);
+			absolute = UrlManager.isAbsolutePath(relative) ? UrlManager.fileToUrl(new File(relative)) : new URL(
+			    UrlManager.fileToUrl(map.getFile()), relative);
 		}
 		catch (final MalformedURLException ex) {
-			JOptionPane.showMessageDialog(Controller.getController().getViewController()
-			    .getMapView(), "Couldn't create valid URL for:" + map.getFile());
+			JOptionPane
+			    .showMessageDialog(viewController.getMapView(), "Couldn't create valid URL for:" + map.getFile());
 			org.freeplane.core.util.Tools.logException(ex);
 			return;
 		}
 		try {
-			final NodeModel node = ((MMapController) getModeController().getMapController())
-			    .loadTree(map, new File(absolute.getFile()));
-			((MClipboardController) ClipboardController.getController(Controller
-			    .getModeController())).paste(node, selected);
+			final NodeModel node = ((MMapController) modeController.getMapController()).loadTree(map, new File(absolute
+			    .getFile()));
+			((MClipboardController) ClipboardController.getController(modeController)).paste(node, selected);
 		}
 		catch (final Exception ex) {
-			UrlManager.getController(getModeController()).handleLoadingException(ex);
+			UrlManager.getController(modeController).handleLoadingException(ex);
 		}
 	}
 }

@@ -30,13 +30,13 @@ import org.freeplane.core.undo.IUndoHandler;
 class RedoAction extends FreeplaneAction {
 	private Action undo;
 
-	public RedoAction() {
-		super("redo", "/images/redo.png");
+	public RedoAction(final Controller controller) {
+		super(controller, "redo", "/images/redo.png");
 		setEnabled(false);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final MMapModel map = (MMapModel) Controller.getController().getMap();
+		final MMapModel map = (MMapModel) getController().getMap();
 		final IUndoHandler undoHandler = map.getUndoHandler();
 		undoHandler.getRedoAction().actionPerformed(e);
 		undo.setEnabled(undoHandler.canUndo());
@@ -44,7 +44,7 @@ class RedoAction extends FreeplaneAction {
 	}
 
 	public void reset() {
-		final MMapModel map = (MMapModel) Controller.getController().getMap();
+		final MMapModel map = (MMapModel) getController().getMap();
 		final IUndoHandler undoHandler = map.getUndoHandler();
 		undoHandler.resetRedo();
 		setEnabled(false);

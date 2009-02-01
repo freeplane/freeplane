@@ -28,8 +28,8 @@ public class FreeplaneVersionInformation {
 	public int mNum = 0;
 	public String mType = "";
 
-	public FreeplaneVersionInformation(final int pMaj, final int pMid, final int pMin,
-	                                   final String pType, final int pNum) {
+	public FreeplaneVersionInformation(final int pMaj, final int pMid, final int pMin, final String pType,
+	                                   final int pNum) {
 		super();
 		mMaj = pMaj;
 		mMid = pMid;
@@ -46,8 +46,7 @@ public class FreeplaneVersionInformation {
 			info[i++] = t.nextToken();
 		}
 		if (info.length != 3 && info.length != 5) {
-			throw new IllegalArgumentException("Wrong number of tokens for version information: "
-			        + pString);
+			throw new IllegalArgumentException("Wrong number of tokens for version information: " + pString);
 		}
 		mMaj = Integer.parseInt(info[0]);
 		mMid = Integer.parseInt(info[1]);

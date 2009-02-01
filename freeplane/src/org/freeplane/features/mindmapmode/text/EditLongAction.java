@@ -21,6 +21,7 @@ package org.freeplane.features.mindmapmode.text;
 
 import java.awt.event.ActionEvent;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.features.common.text.TextController;
 
@@ -28,12 +29,11 @@ class EditLongAction extends FreeplaneAction {
 	/**
 	 *
 	 */
-	public EditLongAction() {
-		super("edit_long_node");
+	public EditLongAction(final Controller controller) {
+		super(controller, "edit_long_node");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		((MTextController) TextController.getController(getModeController())).edit(null, false,
-		    true);
+		((MTextController) TextController.getController(getModeController())).edit(null, false, true);
 	}
 }

@@ -27,15 +27,14 @@ import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
 
 class NodeDownAction extends FreeplaneAction {
-	public NodeDownAction() {
-		super("new_sibling_behind");
+	public NodeDownAction(final Controller controller) {
+		super(controller, "new_sibling_behind");
 		MenuBuilder.setLabelAndMnemonic(this, Controller.getText("node_down"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final ModeController modeController = getModeController();
-		((MMapController) modeController.getMapController()).moveNodes(modeController
-		    .getMapController().getSelectedNode(), modeController.getMapController()
-		    .getSelectedNodes(), 1);
+		((MMapController) modeController.getMapController()).moveNodes(modeController.getMapController()
+		    .getSelectedNode(), modeController.getMapController().getSelectedNodes(), 1);
 	}
 }

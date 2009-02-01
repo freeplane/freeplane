@@ -26,13 +26,12 @@ import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.url.UrlManager;
 
 class SaveAsAction extends FreeplaneAction {
-	public SaveAsAction() {
-		super("save_as", "/images/filesaveas.png");
+	public SaveAsAction(final Controller controller) {
+		super(controller, "save_as", "/images/filesaveas.png");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		((MFileManager) UrlManager.getController(getModeController())).saveAs(Controller
-		    .getController().getMap());
-		Controller.getController().getViewController().setTitle();
+		((MFileManager) UrlManager.getController(getModeController())).saveAs(getController().getMap());
+		getController().getViewController().setTitle();
 	}
 }

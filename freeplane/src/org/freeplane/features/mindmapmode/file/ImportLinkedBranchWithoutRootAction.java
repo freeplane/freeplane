@@ -41,38 +41,36 @@ import org.freeplane.features.mindmapmode.clipboard.MClipboardController;
  * This is exactly the opposite of exportBranch.
  */
 class ImportLinkedBranchWithoutRootAction extends FreeplaneAction {
-	public ImportLinkedBranchWithoutRootAction() {
-		super("import_linked_branch_without_root");
+	public ImportLinkedBranchWithoutRootAction(final Controller controller) {
+		super(controller, "import_linked_branch_without_root");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final MapModel map = Controller.getController().getMap();
+		final MapModel map = getController().getMap();
 		final NodeModel selected = getModeController().getMapController().getSelectedNode();
 		if (selected == null || NodeLinks.getLink(selected) == null) {
-			JOptionPane.showMessageDialog(Controller.getController().getViewController()
-			    .getMapView(), getModeController().getText("import_linked_branch_no_link"));
+			JOptionPane.showMessageDialog(getController().getViewController().getMapView(), getModeController()
+			    .getText("import_linked_branch_no_link"));
 			return;
 		}
 		URL absolute = null;
 		try {
 			final String relative = NodeLinks.getLink(selected);
-			absolute = UrlManager.isAbsolutePath(relative) ? UrlManager
-			    .fileToUrl(new File(relative)) : new URL(UrlManager.fileToUrl(map.getFile()),
-			    relative);
+			absolute = UrlManager.isAbsolutePath(relative) ? UrlManager.fileToUrl(new File(relative)) : new URL(
+			    UrlManager.fileToUrl(map.getFile()), relative);
 		}
 		catch (final MalformedURLException ex) {
-			JOptionPane.showMessageDialog(Controller.getController().getViewController()
-			    .getMapView(), "Couldn't create valid URL.");
+			JOptionPane.showMessageDialog(getController().getViewController().getMapView(),
+			    "Couldn't create valid URL.");
 			return;
 		}
 		try {
-			final NodeModel node = ((MMapController) getModeController().getMapController())
-			    .loadTree(map, new File(absolute.getFile()));
-			for (final ListIterator i = node.getModeController().getMapController()
-			    .childrenUnfolded(node); i.hasNext();) {
+			final NodeModel node = ((MMapController) getModeController().getMapController()).loadTree(map, new File(
+			    absolute.getFile()));
+			for (final ListIterator i = node.getModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
 				final NodeModel importNode = (NodeModel) i.next();
-				((MClipboardController) ClipboardController.getController(Controller
-				    .getModeController())).paste(importNode, selected);
+				((MClipboardController) ClipboardController.getController(getController().getModeController())).paste(
+				    importNode, selected);
 			}
 		}
 		catch (final Exception ex) {

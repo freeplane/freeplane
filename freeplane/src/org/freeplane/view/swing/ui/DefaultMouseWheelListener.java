@@ -17,25 +17,25 @@ import org.freeplane.view.swing.map.MapView;
  * @author foltin
  */
 public class DefaultMouseWheelListener implements MouseWheelListener {
-	private static final int HORIZONTAL_SCROLL_MASK = InputEvent.SHIFT_MASK
-	        | InputEvent.BUTTON1_MASK | InputEvent.BUTTON2_MASK | InputEvent.BUTTON3_MASK;
+	private static final int HORIZONTAL_SCROLL_MASK = InputEvent.SHIFT_MASK | InputEvent.BUTTON1_MASK
+	        | InputEvent.BUTTON2_MASK | InputEvent.BUTTON3_MASK;
 	private static int SCROLL_SKIPS = 8;
 	private static final int ZOOM_MASK = InputEvent.CTRL_MASK;
+	final private Controller controller;
 
 	/**
 	 *
 	 */
-	public DefaultMouseWheelListener() {
+	public DefaultMouseWheelListener(final Controller controller) {
 		super();
-		Controller.getResourceController().addPropertyChangeListener(
-		    new IFreeplanePropertyListener() {
-			    public void propertyChanged(final String propertyName, final String newValue,
-			                                final String oldValue) {
-				    if (propertyName.equals(ResourceController.RESOURCES_WHEEL_VELOCITY)) {
-					    DefaultMouseWheelListener.SCROLL_SKIPS = Integer.parseInt(newValue);
-				    }
-			    }
-		    });
+		this.controller = controller;
+		Controller.getResourceController().addPropertyChangeListener(new IFreeplanePropertyListener() {
+			public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
+				if (propertyName.equals(ResourceController.RESOURCES_WHEEL_VELOCITY)) {
+					DefaultMouseWheelListener.SCROLL_SKIPS = Integer.parseInt(newValue);
+				}
+			}
+		});
 		DefaultMouseWheelListener.SCROLL_SKIPS = Controller.getResourceController().getIntProperty(
 		    ResourceController.RESOURCES_WHEEL_VELOCITY, 8);
 	}
@@ -72,16 +72,14 @@ public class DefaultMouseWheelListener implements MouseWheelListener {
 			newZoom = Math.max(1f / 32f, newZoom);
 			newZoom = Math.min(32f, newZoom);
 			if (newZoom != oldZoom) {
-				Controller.getController().getViewController().setZoom(newZoom);
+				controller.getViewController().setZoom(newZoom);
 			}
 		}
 		else if ((e.getModifiers() & DefaultMouseWheelListener.HORIZONTAL_SCROLL_MASK) != 0) {
-			((MapView) e.getComponent()).scrollBy(DefaultMouseWheelListener.SCROLL_SKIPS
-			        * e.getWheelRotation(), 0);
+			((MapView) e.getComponent()).scrollBy(DefaultMouseWheelListener.SCROLL_SKIPS * e.getWheelRotation(), 0);
 		}
 		else {
-			((MapView) e.getComponent()).scrollBy(0, DefaultMouseWheelListener.SCROLL_SKIPS
-			        * e.getWheelRotation());
+			((MapView) e.getComponent()).scrollBy(0, DefaultMouseWheelListener.SCROLL_SKIPS * e.getWheelRotation());
 		}
 	}
 }

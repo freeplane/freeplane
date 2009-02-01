@@ -34,7 +34,6 @@ import java.io.Serializable;
 import javax.swing.JColorChooser;
 import javax.swing.JDialog;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
 
 public class ColorTracker implements ActionListener, Serializable {
@@ -61,8 +60,8 @@ public class ColorTracker implements ActionListener, Serializable {
 		return ColorTracker.colorChooser;
 	}
 
-	public static Color showCommonJColorChooserDialog(final Component component,
-	                                                  final String title, final Color initialColor) {
+	public static Color showCommonJColorChooserDialog(final Component component, final String title,
+	                                                  final Color initialColor) {
 		final JColorChooser pane = ColorTracker.getCommonJColorChooser();
 		pane.setColor(initialColor);
 		final ColorTracker ok = new ColorTracker(pane);
@@ -73,10 +72,9 @@ public class ColorTracker implements ActionListener, Serializable {
 		return ok.getColor();
 	}
 
-	public static Color showCommonJColorChooserDialog(final NodeModel nodeModel,
-	                                                  final String title, final Color initialColor)
-	        throws HeadlessException {
-		final Component component = Controller.getController().getViewController().getComponent(
+	public static Color showCommonJColorChooserDialog(final NodeModel nodeModel, final String title,
+	                                                  final Color initialColor) throws HeadlessException {
+		final Component component = nodeModel.getModeController().getController().getViewController().getComponent(
 		    nodeModel);
 		return ColorTracker.showCommonJColorChooserDialog(component, title, initialColor);
 	}

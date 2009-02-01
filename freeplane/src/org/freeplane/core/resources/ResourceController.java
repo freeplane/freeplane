@@ -75,8 +75,7 @@ public abstract class ResourceController {
 	 * Removes the "TranslateMe" sign from the end of not translated texts.
 	 */
 	public static String removeTranslateComment(String inputString) {
-		if (inputString != null
-		        && inputString.endsWith(FreeplaneResourceBundle.POSTFIX_TRANSLATE_ME)) {
+		if (inputString != null && inputString.endsWith(FreeplaneResourceBundle.POSTFIX_TRANSLATE_ME)) {
 			inputString = inputString.substring(0, inputString.length()
 			        - FreeplaneResourceBundle.POSTFIX_TRANSLATE_ME.length());
 		}
@@ -122,8 +121,7 @@ public abstract class ResourceController {
 		return new NamedObject(key, fs);
 	}
 
-	protected void firePropertyChanged(final String property, final String value,
-	                                   final String oldValue) {
+	protected void firePropertyChanged(final String property, final String value, final String oldValue) {
 		if (oldValue == null || !oldValue.equals(value)) {
 			setProperty(property, value);
 			for (final Iterator i = getPropertyChangeListeners().iterator(); i.hasNext();) {
@@ -243,17 +241,15 @@ public abstract class ResourceController {
 		return ((FreeplaneResourceBundle) getResources()).getResourceString(key, resource);
 	}
 
-	public void init() {
-		final Controller controller = Controller.getController();
+	public void init(final Controller controller) {
 		controller.addAction("optionHTMLExportFoldingAction", new OptionHTMLExportFoldingAction());
-		controller
-		    .addAction("optionSelectionMechanismAction", new OptionSelectionMechanismAction());
-		controller.addAction("showSelectionAsRectangle", new ShowSelectionAsRectangleAction());
+		controller.addAction("optionSelectionMechanismAction", new OptionSelectionMechanismAction(controller));
+		controller.addAction("showSelectionAsRectangle", new ShowSelectionAsRectangleAction(controller));
 	}
 
 	boolean isSelectionAsRectangle() {
-		return getProperty(ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION)
-		    .equalsIgnoreCase(BooleanProperty.TRUE_VALUE);
+		return getProperty(ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION).equalsIgnoreCase(
+		    BooleanProperty.TRUE_VALUE);
 	}
 
 	abstract public void loadProperties(InputStream inStream) throws IOException;
@@ -264,7 +260,7 @@ public abstract class ResourceController {
 		propertyChangeListeners.remove(listener);
 	}
 
-	abstract public void saveProperties();
+	abstract public void saveProperties(Controller controller);
 
 	abstract void setDefaultProperty(final String key, final String value);
 
@@ -272,12 +268,10 @@ public abstract class ResourceController {
 
 	public void toggleSelectionAsRectangle() {
 		if (isSelectionAsRectangle()) {
-			setProperty(ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION,
-			    BooleanProperty.FALSE_VALUE);
+			setProperty(ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION, BooleanProperty.FALSE_VALUE);
 		}
 		else {
-			setProperty(ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION,
-			    BooleanProperty.TRUE_VALUE);
+			setProperty(ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION, BooleanProperty.TRUE_VALUE);
 		}
 	}
 }

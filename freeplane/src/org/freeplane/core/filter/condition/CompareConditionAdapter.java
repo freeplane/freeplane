@@ -39,8 +39,7 @@ abstract public class CompareConditionAdapter extends NodeCondition {
 	public void attributesToXml(final XMLElement child) {
 		super.attributesToXml(child);
 		child.setAttribute(CompareConditionAdapter.VALUE, conditionValue);
-		child.setAttribute(CompareConditionAdapter.IGNORE_CASE, TreeXmlWriter
-		    .BooleanToXml(ignoreCase));
+		child.setAttribute(CompareConditionAdapter.IGNORE_CASE, TreeXmlWriter.BooleanToXml(ignoreCase));
 	}
 
 	protected int compareTo(final String nodeValue) throws NumberFormatException {
@@ -56,15 +55,13 @@ abstract public class CompareConditionAdapter extends NodeCondition {
 			d2 = Double.parseDouble(conditionValue);
 		}
 		catch (final NumberFormatException fne) {
-			return ignoreCase ? nodeValue.compareToIgnoreCase(conditionValue) : nodeValue
-			    .compareTo(conditionValue);
+			return ignoreCase ? nodeValue.compareToIgnoreCase(conditionValue) : nodeValue.compareTo(conditionValue);
 		};
 		final double d1 = Double.parseDouble(nodeValue);
 		return Double.compare(d1, d2);
 	}
 
-	public String createDescription(final String attribute, final int comparationResult,
-	                                final boolean succeed) {
+	public String createDescription(final String attribute, final int comparationResult, final boolean succeed) {
 		String simpleCondition;
 		switch (comparationResult) {
 			case -1:
@@ -80,7 +77,6 @@ abstract public class CompareConditionAdapter extends NodeCondition {
 			default:
 				throw new IllegalArgumentException();
 		}
-		return ConditionFactory.createDescription(attribute, simpleCondition, conditionValue,
-		    ignoreCase);
+		return ConditionFactory.createDescription(attribute, simpleCondition, conditionValue, ignoreCase);
 	}
 }

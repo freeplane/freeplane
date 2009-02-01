@@ -99,8 +99,8 @@ import org.freeplane.view.swing.ui.mindmapmode.MNodeMotionListener;
 public class MModeControllerFactory {
 	private static MModeControllerFactory instance;
 
-	public static MModeController createModeController() {
-		return MModeControllerFactory.getInstance().createModeControllerImpl();
+	public static MModeController createModeController(final Controller controller) {
+		return MModeControllerFactory.getInstance().createModeControllerImpl(controller);
 	}
 
 	private static MModeControllerFactory getInstance() {
@@ -110,6 +110,7 @@ public class MModeControllerFactory {
 		return instance;
 	}
 
+	private Controller controller;
 	private MModeController modeController;
 
 	private void createAddIns() {
@@ -118,27 +119,26 @@ public class MModeControllerFactory {
 		new BlinkingNodeHook(modeController);
 		new CreationModificationPlugin(modeController);
 		new ReminderHook(modeController);
-		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory()
-		    .getMenuBuilder();
-		menuBuilder.addAnnotatedAction(new ApplyFormatPlugin());
-		new FormatPaste(menuBuilder);
-		menuBuilder.addAnnotatedAction(new FitToPage());
+		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
+		menuBuilder.addAnnotatedAction(new ApplyFormatPlugin(controller));
+		new FormatPaste(controller, menuBuilder);
+		menuBuilder.addAnnotatedAction(new FitToPage(controller));
 		menuBuilder.addAnnotatedAction(new EncryptedMap(modeController));
 		menuBuilder.addAnnotatedAction(new EnterPassword(modeController));
-		menuBuilder.addAnnotatedAction(new IconSelectionPlugin());
-		menuBuilder.addAnnotatedAction(new ManagePatterns());
-		menuBuilder.addAnnotatedAction(new NewParentNode());
-		menuBuilder.addAnnotatedAction(new SaveAll());
-		menuBuilder.addAnnotatedAction(new SortNodes());
-		menuBuilder.addAnnotatedAction(new SplitNode());
+		menuBuilder.addAnnotatedAction(new IconSelectionPlugin(controller));
+		menuBuilder.addAnnotatedAction(new ManagePatterns(controller));
+		menuBuilder.addAnnotatedAction(new NewParentNode(controller));
+		menuBuilder.addAnnotatedAction(new SaveAll(controller));
+		menuBuilder.addAnnotatedAction(new SortNodes(controller));
+		menuBuilder.addAnnotatedAction(new SplitNode(controller));
 		new UnfoldAll(modeController);
-		new ChangeNodeLevelAction(menuBuilder);
+		new ChangeNodeLevelAction(modeController.getController(), menuBuilder);
 		ExportWithXSLT.createXSLTExportActions(modeController,
 		    "/org/freeplane/features/mindmapmode/addins/export/ExportWithXSLT.xml");
 		ExportToImage.createActions(modeController);
 		new NodeHistory(modeController);
-		menuBuilder.addAnnotatedAction(new ExportToOoWriter());
-		menuBuilder.addAnnotatedAction(new ImportMindmanagerFiles());
+		menuBuilder.addAnnotatedAction(new ExportToOoWriter(controller));
+		menuBuilder.addAnnotatedAction(new ImportMindmanagerFiles(controller));
 		//		new LatexNodeHook(modeController);
 		//		new ScriptingRegistration(modeController);
 		//		menuBuilder.addAnnotatedAction(new FreeplaneHelpStarter());
@@ -146,22 +146,21 @@ public class MModeControllerFactory {
 		//		menuBuilder.addAnnotatedAction(new ExportSvg());
 	}
 
-	private MModeController createModeControllerImpl() {
+	private MModeController createModeControllerImpl(final Controller controller) {
+		this.controller = controller;
 		createStandardControllers();
 		createAddIns();
 		return modeController;
 	}
 
 	private void createStandardControllers() {
-		modeController = new MModeController();
-		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(
-		    modeController);
-		userInputListenerFactory.setNodeMouseMotionListener(new DefaultNodeMouseMotionListener(
-		    modeController) {
+		modeController = new MModeController(controller);
+		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController);
+		userInputListenerFactory.setNodeMouseMotionListener(new DefaultNodeMouseMotionListener(modeController) {
 			@Override
 			public void mouseReleased(final MouseEvent e) {
 				stopTimerForDelayedSelection();
-				final ModeController modeController = Controller.getModeController();
+				final ModeController modeController = controller.getModeController();
 				modeController.getUserInputListenerFactory().extendSelection(e);
 				showPopupMenu(e);
 				if (e.isConsumed()) {
@@ -181,11 +180,10 @@ public class MModeControllerFactory {
 						final NodeModel node = (component).getNodeView().getModel();
 						if (!mapController.hasChildren(node)) {
 							/* If the link exists, follow the link; toggle folded otherwise */
-							if (!e.isAltDown() && !e.isControlDown() && !e.isShiftDown()
-							        && !e.isPopupTrigger() && e.getButton() == MouseEvent.BUTTON1
-							        && (NodeLinks.getLink(node) == null)) {
-								((MTextController) TextController.getController(modeController))
-								    .edit(null, false, false);
+							if (!e.isAltDown() && !e.isControlDown() && !e.isShiftDown() && !e.isPopupTrigger()
+							        && e.getButton() == MouseEvent.BUTTON1 && (NodeLinks.getLink(node) == null)) {
+								((MTextController) TextController.getController(modeController)).edit(null, false,
+								    false);
 								return;
 							}
 							if (NodeLinks.getLink(mapController.getSelectedNode()) == null) {
@@ -203,7 +201,7 @@ public class MModeControllerFactory {
 			}
 		});
 		modeController.setUserInputListenerFactory(userInputListenerFactory);
-		Controller.getController().addModeController(modeController);
+		controller.addModeController(modeController);
 		modeController.setMapController(new MMapController(modeController));
 		UrlManager.install(modeController, new MFileManager(modeController));
 		IconController.install(modeController, new MIconController(modeController));
@@ -212,12 +210,12 @@ public class MModeControllerFactory {
 		CloudController.install(modeController, new MCloudController(modeController));
 		NoteController.install(modeController, new MNoteController(modeController));
 		LinkController.install(modeController, new MLinkController(modeController));
-		userInputListenerFactory.setMapMouseListener(new DefaultMapMouseListener(
-		    new MMouseMotionListener(modeController)));
+		userInputListenerFactory.setMapMouseListener(new DefaultMapMouseListener(controller, new MMouseMotionListener(
+		    modeController)));
 		MPatternController.install(modeController, new MPatternController(modeController));
 		final MTextController textController = new MTextController(modeController);
 		TextController.install(modeController, textController);
-		userInputListenerFactory.setNodeKeyListener(new DefaultNodeKeyListener(new IEditHandler() {
+		userInputListenerFactory.setNodeKeyListener(new DefaultNodeKeyListener(controller, new IEditHandler() {
 			public void edit(final KeyEvent e, final boolean addNew, final boolean editLong) {
 				textController.edit(e, addNew, editLong);
 			}
@@ -227,13 +225,13 @@ public class MModeControllerFactory {
 		LocationController.install(modeController, new MLocationController(modeController));
 		userInputListenerFactory.setNodeMotionListener(new MNodeMotionListener(modeController));
 		AttributeController.install(modeController, new MAttributeController(modeController));
-		modeController.addAction("editAttributes", new EditAttributesAction());
+		modeController.addAction("editAttributes", new EditAttributesAction(controller));
 		final JPopupMenu popupmenu = new JPopupMenu();
 		userInputListenerFactory.setNodePopupMenu(popupmenu);
 		final FreeplaneToolBar toolbar = new FreeplaneToolBar();
 		userInputListenerFactory.setMainToolBar(toolbar);
-		userInputListenerFactory.setLeftToolBar(((MIconController) IconController
-		    .getController(modeController)).getIconToolBarScrollPane());
+		userInputListenerFactory.setLeftToolBar(((MIconController) IconController.getController(modeController))
+		    .getIconToolBarScrollPane());
 		new RevisionPlugin(modeController);
 		userInputListenerFactory.setMenuStructure("/org/freeplane/startup/mindmapmode/menu.xml");
 		userInputListenerFactory.updateMenus(modeController);
@@ -243,8 +241,7 @@ public class MModeControllerFactory {
 		MPatternController.getController(modeController).createPatternSubMenu(builder,
 		    UserInputListenerFactory.NODE_POPUP);
 		final String formatMenuString = FreeplaneMenuBar.FORMAT_MENU;
-		MPatternController.getController(modeController).createPatternSubMenu(builder,
-		    formatMenuString);
+		MPatternController.getController(modeController).createPatternSubMenu(builder, formatMenuString);
 		modeController.updateMenus();
 	}
 }

@@ -42,28 +42,28 @@ class FindAction extends FreeplaneAction {
 	private String searchTerm;
 	private Collection subterms;
 
-	public FindAction() {
-		super("find", "/images/filefind.png");
+	public FindAction(final Controller controller) {
+		super(controller, "find", "/images/filefind.png");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final NodeModel selected = Controller.getController().getSelection().getSelected();
-		final String what = UITools.showInputDialog(selected, getModeController().getText(
-		    "find_what"), getModeController().getText("find"), JOptionPane.QUESTION_MESSAGE);
+		final NodeModel selected = getController().getSelection().getSelected();
+		final String what = UITools.showInputDialog(selected, getModeController().getText("find_what"),
+		    getModeController().getText("find"), JOptionPane.QUESTION_MESSAGE);
 		if (what == null || what.equals("")) {
 			return;
 		}
 		final Collection subterms = breakSearchTermIntoSubterms(what);
 		searchTerm = what;
-		final boolean found = find(getModeController().getMapController().getSelectedNode(),
-		    subterms,
-		    /*caseSensitive=*/false);
+		final boolean found = find(getModeController().getMapController().getSelectedNode(), subterms,
+		/*caseSensitive=*/false);
 		if (!found) {
 			final String messageText = getModeController().getText("no_found_from");
-			final String searchTerm = messageText.startsWith("<html>") ? HtmlTools
-			    .toXMLEscapedText(getSearchTerm()) : getSearchTerm();
-			UITools.informationMessage(messageText.replaceAll("\\$1", searchTerm).replaceAll(
-			    "\\$2", getFindFromText()));
+			final String searchTerm = messageText.startsWith("<html>") ? HtmlTools.toXMLEscapedText(getSearchTerm())
+			        : getSearchTerm();
+			UITools
+			    .informationMessage(getController().getViewController().getFrame(),
+			    	messageText.replaceAll("\\$1", searchTerm).replaceAll("\\$2", getFindFromText()));
 		}
 	}
 
@@ -123,11 +123,10 @@ class FindAction extends FreeplaneAction {
 		}
 	}
 
-	private boolean find(final LinkedList /* queue of MindMapNode */nodes,
-	                     final Collection subterms, final boolean caseSensitive) {
+	private boolean find(final LinkedList /* queue of MindMapNode */nodes, final Collection subterms,
+	                     final boolean caseSensitive) {
 		if (!findNodesUnfoldedByLastFind.isEmpty()) {
-			final ListIterator i = findNodesUnfoldedByLastFind
-			    .listIterator(findNodesUnfoldedByLastFind.size());
+			final ListIterator i = findNodesUnfoldedByLastFind.listIterator(findNodesUnfoldedByLastFind.size());
 			while (i.hasPrevious()) {
 				final NodeModel node = (NodeModel) i.previous();
 				try {
@@ -140,8 +139,7 @@ class FindAction extends FreeplaneAction {
 		}
 		while (!nodes.isEmpty()) {
 			final NodeModel node = (NodeModel) nodes.removeFirst();
-			for (final ListIterator i = node.getModeController().getMapController()
-			    .childrenUnfolded(node); i.hasNext();) {
+			for (final ListIterator i = node.getModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
 				nodes.addLast(i.next());
 			}
 			if (!node.isVisible()) {
@@ -189,8 +187,7 @@ class FindAction extends FreeplaneAction {
 	public boolean findNext() {
 		if (subterms != null) {
 			if (findNodeQueue.isEmpty()) {
-				return find(getModeController().getMapController().getSelectedNode(), subterms,
-				    findCaseSensitive);
+				return find(getModeController().getMapController().getSelectedNode(), subterms, findCaseSensitive);
 			}
 			return find(findNodeQueue, subterms, findCaseSensitive);
 		}
@@ -198,10 +195,8 @@ class FindAction extends FreeplaneAction {
 	}
 
 	public String getFindFromText() {
-		final String plainNodeText = HtmlTools.htmlToPlain(findFromNode.toString()).replaceAll(
-		    "\n", " ");
-		return plainNodeText.length() <= 30 ? plainNodeText : plainNodeText.substring(0, 30)
-		        + "...";
+		final String plainNodeText = HtmlTools.htmlToPlain(findFromNode.toString()).replaceAll("\n", " ");
+		return plainNodeText.length() <= 30 ? plainNodeText : plainNodeText.substring(0, 30) + "...";
 	}
 
 	public String getSearchTerm() {

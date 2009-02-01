@@ -42,7 +42,7 @@ public class SelectedViewCondition implements ICondition {
 	}
 
 	public boolean checkNode(final NodeModel node) {
-		return Controller.getController().getSelection().isSelected(node);
+		return node.getModeController().getController().getSelection().isSelected(node);
 	}
 
 	public JComponent getListCellRendererComponent() {

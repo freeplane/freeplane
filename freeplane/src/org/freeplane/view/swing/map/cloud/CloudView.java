@@ -192,9 +192,8 @@ public class CloudView {
 		g.dispose();
 	}
 
-	private void paintClouds(final Graphics2D g, final Graphics2D gstroke, final double x0,
-	                         final double y0, final double x1, final double y1,
-	                         final double distanceToConvexHull) {
+	private void paintClouds(final Graphics2D g, final Graphics2D gstroke, final double x0, final double y0,
+	                         final double x1, final double y1, final double distanceToConvexHull) {
 		double x2, y2, dx, dy;
 		dx = x1 - x0;
 		dy = y1 - y0;

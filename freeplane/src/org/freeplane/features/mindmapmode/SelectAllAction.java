@@ -31,14 +31,13 @@ class SelectAllAction extends MultipleNodeAction {
 	/**
 	 *
 	 */
-	public SelectAllAction() {
-		super("select_all");
+	public SelectAllAction(final Controller controller) {
+		super(controller, "select_all");
 	}
 
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
 		final ModeController modeController = getModeController();
-		modeController.getMapController().selectBranch(
-		    Controller.getController().getMap().getRootNode(), false);
+		modeController.getMapController().selectBranch(getController().getMap().getRootNode(), false);
 	}
 }

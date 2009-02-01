@@ -47,8 +47,7 @@ public class XMLParserFactory {
 	 */
 	public static IXMLParser createDefaultXMLParser() {
 		try {
-			return XMLParserFactory.createXMLParser(StdXMLParser.class.getName(),
-			    new StdXMLBuilder());
+			return XMLParserFactory.createXMLParser(StdXMLParser.class.getName(), new StdXMLBuilder());
 		}
 		catch (final ClassNotFoundException e) {
 			e.printStackTrace();
@@ -77,10 +76,9 @@ public class XMLParserFactory {
 	 * @throws java.lang.IllegalAccessException
 	 *             if the parser could not be created
 	 */
-	public static IXMLParser createDefaultXMLParser(final IXMLBuilder builder)
-	        throws ClassNotFoundException, InstantiationException, IllegalAccessException {
-		final String className = System.getProperty(XMLParserFactory.CLASS_KEY,
-		    XMLParserFactory.DEFAULT_CLASS);
+	public static IXMLParser createDefaultXMLParser(final IXMLBuilder builder) throws ClassNotFoundException,
+	        InstantiationException, IllegalAccessException {
+		final String className = System.getProperty(XMLParserFactory.CLASS_KEY, XMLParserFactory.DEFAULT_CLASS);
 		return XMLParserFactory.createXMLParser(className, builder);
 	}
 

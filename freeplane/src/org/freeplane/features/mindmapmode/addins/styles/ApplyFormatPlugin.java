@@ -17,6 +17,7 @@
  */
 package org.freeplane.features.mindmapmode.addins.styles;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.util.Iterator;
 import java.util.List;
@@ -37,18 +38,16 @@ tooltip = "accessories/plugins/ApplyFormatPlugin.properties_documentation" //
 public class ApplyFormatPlugin extends FreeplaneAction {
 	/**
 	 */
-	public ApplyFormatPlugin() {
-		super();
+	public ApplyFormatPlugin(final Controller controller) {
+		super(controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final ModeController modeController = getModeController();
 		final NodeModel focussed = modeController.getMapController().getSelectedNode();
 		final List selected = modeController.getMapController().getSelectedNodes();
-		final Pattern nodePattern = StylePatternFactory.createPatternFromSelected(focussed,
-		    selected);
-		final ChooseFormatPopupDialog formatDialog = new ChooseFormatPopupDialog(Controller
-		    .getController().getViewController().getJFrame(), modeController,
+		final Pattern nodePattern = StylePatternFactory.createPatternFromSelected(focussed, selected);
+		final ChooseFormatPopupDialog formatDialog = new ChooseFormatPopupDialog(getController().getViewController().getFrame(), modeController,
 		    "accessories/plugins/ApplyFormatPlugin.dialog.title", nodePattern);
 		formatDialog.setModal(true);
 		formatDialog.setVisible(true);

@@ -39,8 +39,7 @@ public abstract class UIBuilder extends IndexedTree {
 		super(root);
 	}
 
-	protected void addComponent(final Container container, final Component component,
-	                            final int index) {
+	protected void addComponent(final Container container, final Component component, final int index) {
 		container.add(component, index);
 	}
 
@@ -76,8 +75,8 @@ public abstract class UIBuilder extends IndexedTree {
 	}
 
 	@Override
-	protected void addNode(final DefaultMutableTreeNode relativeNode,
-	                       final DefaultMutableTreeNode node, final int position) {
+	protected void addNode(final DefaultMutableTreeNode relativeNode, final DefaultMutableTreeNode node,
+	                       final int position) {
 		super.addNode(relativeNode, node, position);
 		if (node.getUserObject() instanceof Component) {
 			addComponent(node, position);
@@ -144,8 +143,7 @@ public abstract class UIBuilder extends IndexedTree {
 	/**
 	 * @param parentComponent
 	 */
-	protected void removeChildComponents(final Container parentComponent,
-	                                     final DefaultMutableTreeNode node) {
+	protected void removeChildComponents(final Container parentComponent, final DefaultMutableTreeNode node) {
 		{
 			final Object userObject = node.getUserObject();
 			if (userObject instanceof Component) {

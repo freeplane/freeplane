@@ -36,12 +36,11 @@ public class AttributeCompareCondition extends CompareConditionAdapter {
 	static final String SUCCEED = "succeed";
 
 	static ICondition load(final XMLElement element) {
-		return new AttributeCompareCondition(element.getAttribute(
-		    AttributeCompareCondition.ATTRIBUTE, null), element.getAttribute(
-		    CompareConditionAdapter.VALUE, null), TreeXmlReader.xmlToBoolean(element.getAttribute(
+		return new AttributeCompareCondition(element.getAttribute(AttributeCompareCondition.ATTRIBUTE, null), element
+		    .getAttribute(CompareConditionAdapter.VALUE, null), TreeXmlReader.xmlToBoolean(element.getAttribute(
 		    CompareConditionAdapter.IGNORE_CASE, null)), Integer.parseInt(element.getAttribute(
-		    AttributeCompareCondition.COMPARATION_RESULT, null)), TreeXmlReader
-		    .xmlToBoolean(element.getAttribute(AttributeCompareCondition.SUCCEED, null)));
+		    AttributeCompareCondition.COMPARATION_RESULT, null)), TreeXmlReader.xmlToBoolean(element.getAttribute(
+		    AttributeCompareCondition.SUCCEED, null)));
 	}
 
 	final private String attribute;
@@ -50,9 +49,8 @@ public class AttributeCompareCondition extends CompareConditionAdapter {
 
 	/**
 	 */
-	public AttributeCompareCondition(final String attribute, final String value,
-	                                 final boolean ignoreCase, final int comparationResult,
-	                                 final boolean succeed) {
+	public AttributeCompareCondition(final String attribute, final String value, final boolean ignoreCase,
+	                                 final int comparationResult, final boolean succeed) {
 		super(value, ignoreCase);
 		this.attribute = attribute;
 		this.comparationResult = comparationResult;
@@ -90,8 +88,7 @@ public class AttributeCompareCondition extends CompareConditionAdapter {
 		child.setName(AttributeCompareCondition.NAME);
 		super.attributesToXml(child);
 		child.setAttribute(AttributeCompareCondition.ATTRIBUTE, attribute);
-		child.setAttribute(AttributeCompareCondition.COMPARATION_RESULT, Integer
-		    .toString(comparationResult));
+		child.setAttribute(AttributeCompareCondition.COMPARATION_RESULT, Integer.toString(comparationResult));
 		child.setAttribute(AttributeCompareCondition.SUCCEED, TreeXmlWriter.BooleanToXml(succeed));
 		element.addChild(child);
 	}

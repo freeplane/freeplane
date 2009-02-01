@@ -21,6 +21,7 @@ package org.freeplane.core.frame;
 
 import java.awt.event.ActionEvent;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 
@@ -31,9 +32,9 @@ class ToggleToolbarAction extends FreeplaneAction {
 	 */
 	final private ViewController controller;
 
-	ToggleToolbarAction(final ViewController controller) {
-		super("toggle_toolbar");
-		this.controller = controller;
+	ToggleToolbarAction(final Controller controller, final ViewController viewController) {
+		super(controller, "toggle_toolbar");
+		this.controller = viewController;
 	}
 
 	public void actionPerformed(final ActionEvent event) {

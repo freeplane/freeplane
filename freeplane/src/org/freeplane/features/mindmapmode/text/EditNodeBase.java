@@ -20,6 +20,7 @@
 package org.freeplane.features.mindmapmode.text;
 
 import java.awt.BorderLayout;
+import java.awt.Frame;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.Toolkit;
@@ -53,8 +54,8 @@ public class EditNodeBase {
 	protected class EditCopyAction extends FreeplaneAction {
 		final private JTextComponent textComponent;
 
-		public EditCopyAction(final JTextComponent textComponent) {
-			super("copy");
+		public EditCopyAction(final Controller controller, final JTextComponent textComponent) {
+			super(controller, "copy");
 			this.textComponent = textComponent;
 		}
 
@@ -107,9 +108,8 @@ public class EditNodeBase {
 
 		private EditNodeBase base;
 
-		EditDialog(final EditNodeBase base) {
-			super(Controller.getController().getViewController().getJFrame(), base
-			    .getText("edit_long_node"), /*modal=*/true);
+		EditDialog(final EditNodeBase base, Frame frame) {
+			super(frame, base.getText("edit_long_node"), /*modal=*/true);
 			getContentPane().setLayout(new BorderLayout());
 			setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 			final DialogWindowListener dfl = new DialogWindowListener();
@@ -123,8 +123,8 @@ public class EditNodeBase {
 
 		protected void confirmedCancel() {
 			if (isChanged()) {
-				final int action = JOptionPane.showConfirmDialog(this, base
-				    .getText("long_node_changed_cancel"), "", JOptionPane.OK_CANCEL_OPTION);
+				final int action = JOptionPane.showConfirmDialog(this, base.getText("long_node_changed_cancel"), "",
+				    JOptionPane.OK_CANCEL_OPTION);
 				if (action == JOptionPane.CANCEL_OPTION) {
 					return;
 				}
@@ -134,8 +134,8 @@ public class EditNodeBase {
 
 		protected void confirmedSubmit() {
 			if (isChanged()) {
-				final int action = JOptionPane.showConfirmDialog(this, base
-				    .getText("long_node_changed_submit"), "", JOptionPane.YES_NO_CANCEL_OPTION);
+				final int action = JOptionPane.showConfirmDialog(this, base.getText("long_node_changed_submit"), "",
+				    JOptionPane.YES_NO_CANCEL_OPTION);
 				if (action == JOptionPane.CANCEL_OPTION) {
 					return;
 				}
@@ -175,7 +175,7 @@ public class EditNodeBase {
 
 	public class EditPopupMenu extends JPopupMenu {
 		public EditPopupMenu(final JTextComponent textComponent) {
-			this.add(new EditCopyAction(textComponent));
+			this.add(new EditCopyAction(getController(), textComponent));
 		}
 	}
 
@@ -190,15 +190,15 @@ public class EditNodeBase {
 	protected static final int BUTTON_CANCEL = 1;
 	protected static final int BUTTON_OK = 0;
 	protected static final int BUTTON_SPLIT = 2;
-	final private ModeController controller;
 	final private IEditControl editControl;
+	final private ModeController modeController;
 	protected NodeModel node;
 	protected String text;
 	protected FocusListener textFieldListener = null;
 
-	protected EditNodeBase(final NodeModel node, final String text,
-	                       final ModeController controller, final IEditControl editControl) {
-		this.controller = controller;
+	protected EditNodeBase(final NodeModel node, final String text, final ModeController modeController,
+	                       final IEditControl editControl) {
+		this.modeController = modeController;
 		this.editControl = editControl;
 		this.node = node;
 		this.text = text;
@@ -224,7 +224,7 @@ public class EditNodeBase {
 		 *
 		 */
 	protected Controller getController() {
-		return Controller.getController();
+		return modeController.getController();
 	}
 
 	/**
@@ -234,7 +234,7 @@ public class EditNodeBase {
 	}
 
 	protected ModeController getModeController() {
-		return controller;
+		return modeController;
 	}
 
 	/**
@@ -261,13 +261,11 @@ public class EditNodeBase {
 		return textFieldListener;
 	}
 
-	protected void redispatchKeyEvents(final JTextComponent textComponent,
-	                                   final KeyEvent firstKeyEvent) {
+	protected void redispatchKeyEvents(final JTextComponent textComponent, final KeyEvent firstKeyEvent) {
 		if (textComponent.hasFocus()) {
 			return;
 		}
-		final KeyboardFocusManager currentKeyboardFocusManager = KeyboardFocusManager
-		    .getCurrentKeyboardFocusManager();
+		final KeyboardFocusManager currentKeyboardFocusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
 		class KeyEventQueue implements KeyEventDispatcher, FocusListener {
 			LinkedList events = new LinkedList();
 

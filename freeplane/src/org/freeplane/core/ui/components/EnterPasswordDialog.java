@@ -19,6 +19,7 @@
  */
 package org.freeplane.core.ui.components;
 
+import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -28,7 +29,6 @@ import java.awt.event.WindowEvent;
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
@@ -62,8 +62,8 @@ public class EnterPasswordDialog extends JDialog {
 	/**
 	 * This is the default constructor
 	 */
-	public EnterPasswordDialog(final JFrame caller, final boolean enterTwoPasswords) {
-		super(caller, "", true /* =modal */);
+	public EnterPasswordDialog(final Frame frame, final boolean enterTwoPasswords) {
+		super(frame, "", true /* =modal */);
 		this.enterTwoPasswords = enterTwoPasswords;
 		initialize();
 	}
@@ -112,8 +112,7 @@ public class EnterPasswordDialog extends JDialog {
 					cancelPressed();
 				}
 			});
-			jCancelButton.setText(Controller
-			    .getText("accessories/plugins/EncryptNode.properties_7"));
+			jCancelButton.setText(Controller.getText("accessories/plugins/EncryptNode.properties_7"));
 		}
 		return jCancelButton;
 	}
@@ -160,8 +159,7 @@ public class EnterPasswordDialog extends JDialog {
 			gridBagConstraints5.anchor = java.awt.GridBagConstraints.CENTER;
 			gridBagConstraints5.insets = new java.awt.Insets(0, 0, 20, 0);
 			jLabel2.setText(Controller.getText("accessories/plugins/EncryptNode.properties_4"));
-			jLabel2.setToolTipText(Controller
-			    .getText("accessories/plugins/EncryptNode.properties_5"));
+			jLabel2.setToolTipText(Controller.getText("accessories/plugins/EncryptNode.properties_5"));
 			gridBagConstraints6.gridx = 0;
 			gridBagConstraints6.gridy = 3;
 			gridBagConstraints6.insets = new java.awt.Insets(20, 0, 0, 0);
@@ -258,8 +256,7 @@ public class EnterPasswordDialog extends JDialog {
 
 	private void okPressed() {
 		if (!checkEqualAndMinimumSize()) {
-			JOptionPane.showMessageDialog(this, Controller
-			    .getText("accessories/plugins/EncryptNode.properties_1"));
+			JOptionPane.showMessageDialog(this, Controller.getText("accessories/plugins/EncryptNode.properties_1"));
 			return;
 		}
 		password = new StringBuffer();

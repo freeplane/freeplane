@@ -39,14 +39,11 @@ public class MindMapNodesSelection implements Transferable, ClipboardOwner {
 	public static DataFlavor rtfFlavor = null;
 	static {
 		try {
-			MindMapNodesSelection.mindMapNodesFlavor = new DataFlavor(
-			    "text/freeplane-nodes; class=java.lang.String");
+			MindMapNodesSelection.mindMapNodesFlavor = new DataFlavor("text/freeplane-nodes; class=java.lang.String");
 			MindMapNodesSelection.rtfFlavor = new DataFlavor("text/rtf; class=java.io.InputStream");
 			MindMapNodesSelection.htmlFlavor = new DataFlavor("text/html; class=java.lang.String");
-			MindMapNodesSelection.fileListFlavor = new DataFlavor(
-			    "application/x-java-file-list; class=java.util.List");
-			MindMapNodesSelection.dropActionFlavor = new DataFlavor(
-			    "text/drop-action; class=java.lang.String");
+			MindMapNodesSelection.fileListFlavor = new DataFlavor("application/x-java-file-list; class=java.util.List");
+			MindMapNodesSelection.dropActionFlavor = new DataFlavor("text/drop-action; class=java.lang.String");
 		}
 		catch (final Exception e) {
 			System.err.println(e);
@@ -59,9 +56,8 @@ public class MindMapNodesSelection implements Transferable, ClipboardOwner {
 	final private String rtfContent;
 	final private String stringContent;
 
-	public MindMapNodesSelection(final String nodesContent, final String stringContent,
-	                             final String rtfContent, final String htmlContent,
-	                             final String dropActionContent, final List fileList) {
+	public MindMapNodesSelection(final String nodesContent, final String stringContent, final String rtfContent,
+	                             final String htmlContent, final String dropActionContent, final List fileList) {
 		this.nodesContent = nodesContent;
 		this.rtfContent = rtfContent;
 		this.stringContent = stringContent;
@@ -94,9 +90,9 @@ public class MindMapNodesSelection implements Transferable, ClipboardOwner {
 	}
 
 	public DataFlavor[] getTransferDataFlavors() {
-		return new DataFlavor[] { DataFlavor.stringFlavor,
-		        MindMapNodesSelection.mindMapNodesFlavor, MindMapNodesSelection.rtfFlavor,
-		        MindMapNodesSelection.htmlFlavor, MindMapNodesSelection.dropActionFlavor };
+		return new DataFlavor[] { DataFlavor.stringFlavor, MindMapNodesSelection.mindMapNodesFlavor,
+		        MindMapNodesSelection.rtfFlavor, MindMapNodesSelection.htmlFlavor,
+		        MindMapNodesSelection.dropActionFlavor };
 	}
 
 	public boolean isDataFlavorSupported(final DataFlavor flavor) {
@@ -115,8 +111,7 @@ public class MindMapNodesSelection implements Transferable, ClipboardOwner {
 		if (flavor.equals(MindMapNodesSelection.htmlFlavor) && htmlContent != null) {
 			return true;
 		}
-		if (flavor.equals(MindMapNodesSelection.fileListFlavor) && (fileList != null)
-		        && fileList.size() > 0) {
+		if (flavor.equals(MindMapNodesSelection.fileListFlavor) && (fileList != null) && fileList.size() > 0) {
 			return true;
 		}
 		return false;

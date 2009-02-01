@@ -36,21 +36,21 @@ import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.mindmapmode.MMapController;
 
 class CutAction extends FreeplaneAction {
-	public CutAction() {
-		super("cut", "/images/editcut.png");
+	public CutAction(final Controller controller) {
+		super(controller, "cut", "/images/editcut.png");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final ModeController mMindMapController = getModeController();
-		final Controller controller = Controller.getController();
+		final Controller controller = getController();
 		final NodeModel root = controller.getMap().getRootNode();
 		if (controller.getSelection().isSelected(root)) {
 			controller.errorMessage(Controller.getText("cannot_delete_root"));
 			return;
 		}
-		final int showResult = new OptionalDontShowMeAgainDialog(controller.getViewController()
-		    .getJFrame(), controller.getSelection().getSelected(), "really_cut_node",
-		    "confirmation", new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
+		final int showResult = new OptionalDontShowMeAgainDialog(controller.getViewController().getFrame(), controller.getSelection()
+		    .getSelected(), "really_cut_node", "confirmation",
+		    new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
 		        ResourceController.RESOURCES_CUT_NODES_WITHOUT_QUESTION),
 		    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED).show().getResult();
 		if (showResult != JOptionPane.OK_OPTION) {
@@ -63,8 +63,7 @@ class CutAction extends FreeplaneAction {
 
 	Transferable cut(final List<NodeModel> collection) {
 		getModeController().getMapController().sortNodesByDepth(collection);
-		final Transferable totalCopy = ClipboardController.getController(getModeController()).copy(
-		    collection, true);
+		final Transferable totalCopy = ClipboardController.getController(getModeController()).copy(collection, true);
 		for (final Iterator i = collection.iterator(); i.hasNext();) {
 			final NodeModel node = (NodeModel) i.next();
 			if (node.getParentNode() != null) {

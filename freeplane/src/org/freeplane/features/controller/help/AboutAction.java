@@ -28,16 +28,18 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.MenuBuilder;
 
 class AboutAction extends AbstractAction {
+	final private Controller controller;
+
 	/**
 	 *
 	 */
-	AboutAction() {
+	AboutAction(final Controller controller) {
+		this.controller = controller;
 		MenuBuilder.setLabelAndMnemonic(this, Controller.getText("about"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		JOptionPane.showMessageDialog(Controller.getController().getViewController().getViewport(),
-		    Controller.getText("about_text") + Controller.getController().getFreeplaneVersion(),
-		    Controller.getText("about"), JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(controller.getViewController().getViewport(), Controller.getText("about_text")
+		        + controller.getFreeplaneVersion(), Controller.getText("about"), JOptionPane.INFORMATION_MESSAGE);
 	}
 }

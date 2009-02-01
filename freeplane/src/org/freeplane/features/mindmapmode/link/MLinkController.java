@@ -27,6 +27,7 @@ import java.util.Set;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.IMapChangeListener;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
@@ -52,12 +53,11 @@ public class MLinkController extends LinkController {
 		public void onNodeInserted(final NodeModel parent, final NodeModel child, final int newIndex) {
 		}
 
-		public void onNodeMoved(final NodeModel oldParent, final int oldIndex,
-		                        final NodeModel newParent, final NodeModel child, final int newIndex) {
+		public void onNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
+		                        final NodeModel child, final int newIndex) {
 		}
 
-		public void onPreNodeDelete(final NodeModel oldParent, final NodeModel model,
-		                            final int oldIndex) {
+		public void onPreNodeDelete(final NodeModel oldParent, final NodeModel model, final int oldIndex) {
 			final MapModel map = model.getMap();
 			final MModeController modeController = (MModeController) map.getModeController();
 			if (modeController.isUndoAction()) {
@@ -100,65 +100,59 @@ public class MLinkController extends LinkController {
 	}
 
 	public void addLink(final NodeModel source, final NodeModel target) {
-		((AddArrowLinkAction) getModeController().getAction("addArrowLinkAction")).addLink(source,
-		    target);
+		((AddArrowLinkAction) getModeController().getAction("addArrowLinkAction")).addLink(source, target);
 	}
 
-	public void changeArrowsOfArrowLink(final ArrowLinkModel arrowLink,
-	                                    final boolean hasStartArrow, final boolean hasEndArrow) {
-		((ChangeArrowsInArrowLinkAction) getModeController().getAction(
-		    "changeArrowsInArrowLinkAction")).changeArrowsOfArrowLink(arrowLink, hasStartArrow,
-		    hasEndArrow);
+	public void changeArrowsOfArrowLink(final ArrowLinkModel arrowLink, final boolean hasStartArrow,
+	                                    final boolean hasEndArrow) {
+		((ChangeArrowsInArrowLinkAction) getModeController().getAction("changeArrowsInArrowLinkAction"))
+		    .changeArrowsOfArrowLink(arrowLink, hasStartArrow, hasEndArrow);
 	}
 
 	/**
 	 *
 	 */
 	private void createActions(final ModeController modeController) {
-		setLinkByFileChooser = new SetLinkByFileChooserAction();
+		final Controller controller = modeController.getController();
+		setLinkByFileChooser = new SetLinkByFileChooserAction(controller);
 		modeController.addAction("setLinkByFileChooser", setLinkByFileChooser);
-		final AddArrowLinkAction addArrowLinkAction = new AddArrowLinkAction();
+		final AddArrowLinkAction addArrowLinkAction = new AddArrowLinkAction(controller);
 		modeController.addAction("addArrowLinkAction", addArrowLinkAction);
 		modeController.addAction("removeArrowLinkAction", new RemoveArrowLinkAction(this, null));
 		colorArrowLinkAction = new ColorArrowLinkAction(this, null);
 		modeController.addAction("colorArrowLinkAction", colorArrowLinkAction);
-		modeController.addAction("changeArrowsInArrowLinkAction",
-		    new ChangeArrowsInArrowLinkAction(this, "none", null, null, true, true));
-		setLinkByTextField = new SetLinkByTextFieldAction();
+		modeController.addAction("changeArrowsInArrowLinkAction", new ChangeArrowsInArrowLinkAction(this, "none", null,
+		    null, true, true));
+		setLinkByTextField = new SetLinkByTextFieldAction(controller);
 		modeController.addAction("setLinkByTextField", setLinkByTextField);
-		modeController.addAction("addLocalLinkAction", new AddLocalLinkAction());
+		modeController.addAction("addLocalLinkAction", new AddLocalLinkAction(controller));
 	}
 
 	@Override
 	protected void createArrowLinkPopup(final ArrowLinkModel link, final JPopupMenu arrowLinkPopup) {
-		((RemoveArrowLinkAction) getModeController().getAction("removeArrowLinkAction"))
-		    .setArrowLink(link);
+		((RemoveArrowLinkAction) getModeController().getAction("removeArrowLinkAction")).setArrowLink(link);
 		arrowLinkPopup.add(new RemoveArrowLinkAction(this, link));
 		arrowLinkPopup.add(new ColorArrowLinkAction(this, link));
 		arrowLinkPopup.addSeparator();
 		final boolean a = !link.getStartArrow().equals("None");
 		final boolean b = !link.getEndArrow().equals("None");
-		final JRadioButtonMenuItem itemnn = new JRadioButtonMenuItem(
-		    new ChangeArrowsInArrowLinkAction(this, "none", "/images/arrow-mode-none.png", link,
-		        false, false));
+		final JRadioButtonMenuItem itemnn = new JRadioButtonMenuItem(new ChangeArrowsInArrowLinkAction(this, "none",
+		    "/images/arrow-mode-none.png", link, false, false));
 		itemnn.setText(null);
 		arrowLinkPopup.add(itemnn);
 		itemnn.setSelected(!a && !b);
-		final JRadioButtonMenuItem itemnt = new JRadioButtonMenuItem(
-		    new ChangeArrowsInArrowLinkAction(this, "forward", "/images/arrow-mode-forward.png",
-		        link, false, true));
+		final JRadioButtonMenuItem itemnt = new JRadioButtonMenuItem(new ChangeArrowsInArrowLinkAction(this, "forward",
+		    "/images/arrow-mode-forward.png", link, false, true));
 		itemnt.setText(null);
 		arrowLinkPopup.add(itemnt);
 		itemnt.setSelected(!a && b);
-		final JRadioButtonMenuItem itemtn = new JRadioButtonMenuItem(
-		    new ChangeArrowsInArrowLinkAction(this, "backward", "/images/arrow-mode-backward.png",
-		        link, true, false));
+		final JRadioButtonMenuItem itemtn = new JRadioButtonMenuItem(new ChangeArrowsInArrowLinkAction(this,
+		    "backward", "/images/arrow-mode-backward.png", link, true, false));
 		itemtn.setText(null);
 		arrowLinkPopup.add(itemtn);
 		itemtn.setSelected(a && !b);
-		final JRadioButtonMenuItem itemtt = new JRadioButtonMenuItem(
-		    new ChangeArrowsInArrowLinkAction(this, "both", "/images/arrow-mode-both.png", link,
-		        true, true));
+		final JRadioButtonMenuItem itemtt = new JRadioButtonMenuItem(new ChangeArrowsInArrowLinkAction(this, "both",
+		    "/images/arrow-mode-both.png", link, true, true));
 		itemtt.setText(null);
 		arrowLinkPopup.add(itemtt);
 		itemtt.setSelected(a && b);
@@ -170,8 +164,7 @@ public class MLinkController extends LinkController {
 		colorArrowLinkAction.setArrowLinkColor(arrowLink, color);
 	}
 
-	public void setArrowLinkEndPoints(final ArrowLinkModel link, final Point startPoint,
-	                                  final Point endPoint) {
+	public void setArrowLinkEndPoints(final ArrowLinkModel link, final Point startPoint, final Point endPoint) {
 		final IUndoableActor actor = new IUndoableActor() {
 			final private Point oldEndPoint = link.getEndInclination();
 			final private Point oldStartPoint = link.getStartInclination();

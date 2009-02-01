@@ -51,20 +51,17 @@ class DoubleListModel extends AbstractListModel implements IListModel {
 		second.addListDataListener(new ListDataListener() {
 			public void contentsChanged(final ListDataEvent e) {
 				final int firstSize = first.getSize();
-				fireContentsChanged(e.getSource(), firstSize + e.getIndex0(), firstSize
-				        + e.getIndex1());
+				fireContentsChanged(e.getSource(), firstSize + e.getIndex0(), firstSize + e.getIndex1());
 			}
 
 			public void intervalAdded(final ListDataEvent e) {
 				final int firstSize = first.getSize();
-				fireIntervalAdded(e.getSource(), firstSize + e.getIndex0(), firstSize
-				        + e.getIndex1());
+				fireIntervalAdded(e.getSource(), firstSize + e.getIndex0(), firstSize + e.getIndex1());
 			}
 
 			public void intervalRemoved(final ListDataEvent e) {
 				final int firstSize = first.getSize();
-				fireIntervalRemoved(e.getSource(), firstSize + e.getIndex0(), firstSize
-				        + e.getIndex1());
+				fireIntervalRemoved(e.getSource(), firstSize + e.getIndex0(), firstSize + e.getIndex1());
 			}
 		});
 	}
@@ -86,8 +83,7 @@ class DoubleListModel extends AbstractListModel implements IListModel {
 
 	public Object getElementAt(final int index) {
 		final int firstSize = first.getSize();
-		return index < firstSize ? first.getElementAt(index) : second.getElementAt(index
-		        - firstSize);
+		return index < firstSize ? first.getElementAt(index) : second.getElementAt(index - firstSize);
 	}
 
 	public int getIndexOf(final Object o) {

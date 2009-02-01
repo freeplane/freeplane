@@ -28,11 +28,14 @@ import org.freeplane.core.ui.MenuBuilder;
 
 /** This closes only the current map */
 class CloseAction extends AbstractAction {
-	CloseAction() {
+	final private Controller controller;
+
+	CloseAction(final Controller controller) {
+		this.controller = controller;
 		MenuBuilder.setLabelAndMnemonic(this, Controller.getText("close"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		Controller.getController().close(false);
+		controller.close(false);
 	}
 }

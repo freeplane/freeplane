@@ -28,16 +28,16 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.ui.FreeplaneAction;
 
 class CopyAction extends FreeplaneAction {
-	public CopyAction() {
-		super("copy", "/images/editcopy.png");
+	public CopyAction(final Controller controller) {
+		super(controller, "copy", "/images/editcopy.png");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
+		final Controller controller = getController();
 		final ModeController modeController = getModeController();
-		final IMapSelection selection = Controller.getController().getSelection();
+		final IMapSelection selection = controller.getSelection();
 		if (selection != null) {
-			final Transferable copy = ClipboardController.getController(modeController).copy(
-			    selection);
+			final Transferable copy = ClipboardController.getController(modeController).copy(selection);
 			if (copy != null) {
 				ClipboardController.getController(modeController).setClipboardContents(copy);
 			}

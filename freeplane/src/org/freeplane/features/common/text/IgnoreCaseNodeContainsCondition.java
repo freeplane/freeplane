@@ -31,8 +31,7 @@ class IgnoreCaseNodeContainsCondition extends NodeCondition {
 	static final String VALUE = "value";
 
 	static ICondition load(final XMLElement element) {
-		return new IgnoreCaseNodeContainsCondition(element.getAttribute(
-		    IgnoreCaseNodeContainsCondition.VALUE, null));
+		return new IgnoreCaseNodeContainsCondition(element.getAttribute(IgnoreCaseNodeContainsCondition.VALUE, null));
 	}
 
 	final private String value;

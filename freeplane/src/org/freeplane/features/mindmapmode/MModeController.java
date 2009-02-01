@@ -43,20 +43,20 @@ public class MModeController extends ModeController {
 	static private RedoAction redo;
 	static private UndoAction undo;
 
-	static public MModeController getMModeController() {
-		return (MModeController) Controller.getController().getModeController(MODENAME);
+	static public MModeController getMModeController(final Controller controller) {
+		return (MModeController) controller.getModeController(MODENAME);
 	}
 
 	private OptionPanelBuilder optionPanelBuilder;
 
-	public MModeController() {
-		super();
+	public MModeController(final Controller controller) {
+		super(controller);
 		createActions();
 		createOptionPanelControls();
 	}
 
 	private void addUndoableActor(final IUndoableActor actor) {
-		final MMapModel map = (MMapModel) Controller.getController().getMap();
+		final MMapModel map = (MMapModel) getController().getMap();
 		final IUndoHandler undoHandler = map.getUndoHandler();
 		undoHandler.addActor(actor);
 		undo.setEnabled(true);
@@ -64,14 +64,15 @@ public class MModeController extends ModeController {
 	}
 
 	private void createActions() {
-		undo = new UndoAction();
-		redo = new RedoAction();
+		final Controller controller = getController();
+		undo = new UndoAction(controller);
+		redo = new RedoAction(controller);
 		undo.setRedo(redo);
 		redo.setUndo(undo);
 		addAction("undo", undo);
 		addAction("redo", redo);
-		addAction("selectBranchAction", new SelectBranchAction());
-		addAction("selectAllAction", new SelectAllAction());
+		addAction("selectBranchAction", new SelectBranchAction(controller));
+		addAction("selectAllAction", new SelectAllAction(controller));
 	}
 
 	private void createOptionPanelControls() {
@@ -99,9 +100,9 @@ public class MModeController extends ModeController {
 			lafNames.add(className);
 			translatedLafNames.add(info.getName());
 		}
-		optionPanelBuilder.addComboProperty("Appearance/look_and_feel/lookandfeel", "lookandfeel",
-		    lafNames, translatedLafNames, IndexedTree.AS_CHILD);
-		addAction("propertyAction", new PropertyAction(optionPanelBuilder.getRoot()));
+		optionPanelBuilder.addComboProperty("Appearance/look_and_feel/lookandfeel", "lookandfeel", lafNames,
+		    translatedLafNames, IndexedTree.AS_CHILD);
+		addAction("propertyAction", new PropertyAction(getController(), optionPanelBuilder.getRoot()));
 	}
 
 	@Override
@@ -120,7 +121,7 @@ public class MModeController extends ModeController {
 	}
 
 	public boolean isUndoAction() {
-		final MapModel model = Controller.getController().getMap();
+		final MapModel model = getController().getMap();
 		if (!(model instanceof MMapModel)) {
 			return false;
 		}
@@ -131,8 +132,7 @@ public class MModeController extends ModeController {
 	 *
 	 */
 	public boolean save() {
-		return ((MFileManager) UrlManager.getController(this)).save(Controller.getController()
-		    .getMap());
+		return ((MFileManager) UrlManager.getController(this)).save(getController().getMap());
 	}
 
 	@Override

@@ -21,18 +21,18 @@ package org.freeplane.features.mindmapmode.nodestyle;
 
 import java.awt.event.ActionEvent;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 
 class RemoveNodeBackgroundColorAction extends MultipleNodeAction {
-	public RemoveNodeBackgroundColorAction() {
-		super("remove_node_background_color");
+	public RemoveNodeBackgroundColorAction(final Controller controller) {
+		super(controller, "remove_node_background_color");
 	}
 
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		((MNodeStyleController) NodeStyleController.getController(getModeController()))
-		    .setBackgroundColor(node, null);
+		((MNodeStyleController) NodeStyleController.getController(getModeController())).setBackgroundColor(node, null);
 	}
 }

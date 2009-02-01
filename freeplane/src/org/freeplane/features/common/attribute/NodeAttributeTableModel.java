@@ -36,8 +36,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
 /**
  * @author Dimitry Polivaev
  */
-public class NodeAttributeTableModel extends AbstractTableModel implements IAttributeTableModel,
-        IExtension {
+public class NodeAttributeTableModel extends AbstractTableModel implements IAttributeTableModel, IExtension {
 	private static final int CAPACITY_INCREMENT = 10;
 	public static final NodeAttributeTableModel EMTPY_ATTRIBUTES = new NodeAttributeTableModel(null) {
 		@Override
@@ -81,8 +80,8 @@ public class NodeAttributeTableModel extends AbstractTableModel implements IAttr
 		}
 	};
 	static private ImageIcon noteIcon = null;
-	private static boolean SHOW_ATTRIBUTE_ICON = Controller.getResourceController()
-	    .getBoolProperty("el__show_icon_for_attributes");
+	private static boolean SHOW_ATTRIBUTE_ICON = Controller.getResourceController().getBoolProperty(
+	    "el__show_icon_for_attributes");
 	private static final String STATE_ICON = "AttributeExist";
 
 	public static NodeAttributeTableModel createAttributeTableModel(final NodeModel node) {
@@ -144,8 +143,8 @@ public class NodeAttributeTableModel extends AbstractTableModel implements IAttr
 	public void enableStateIcon() {
 		if (NodeAttributeTableModel.SHOW_ATTRIBUTE_ICON && getRowCount() == 1) {
 			if (NodeAttributeTableModel.noteIcon == null) {
-				NodeAttributeTableModel.noteIcon = new ImageIcon(Controller.getResourceController()
-				    .getResource("/images/showAttributes.gif"));
+				NodeAttributeTableModel.noteIcon = new ImageIcon(Controller.getResourceController().getResource(
+				    "/images/showAttributes.gif"));
 			}
 			node.setStateIcon(NodeAttributeTableModel.STATE_ICON, NodeAttributeTableModel.noteIcon);
 		}
@@ -328,8 +327,7 @@ public class NodeAttributeTableModel extends AbstractTableModel implements IAttr
 			}
 			if (layout.getColumnWidth(1) != AttributeTableLayoutModel.DEFAULT_COLUMN_WIDTH) {
 				attributeElement = initializeNodeAttributeLayoutXMLElement(attributeElement);
-				attributeElement.setAttribute("VALUE_WIDTH", Integer.toString(layout
-				    .getColumnWidth(1)));
+				attributeElement.setAttribute("VALUE_WIDTH", Integer.toString(layout.getColumnWidth(1)));
 			}
 			if (attributeElement != null) {
 				writer.addElement(layout, attributeElement);

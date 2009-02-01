@@ -39,8 +39,7 @@ public interface IXMLValidator {
 	 * @throws java.lang.Exception
 	 *             If the attribute could not be validated.
 	 */
-	public void attributeAdded(String key, String value, String systemId, int lineNr)
-	        throws Exception;
+	public void attributeAdded(String key, String value, String systemId, int lineNr) throws Exception;
 
 	/**
 	 * This method is called when the attributes of an XML element have been
@@ -58,8 +57,8 @@ public interface IXMLValidator {
 	 * @throws java.lang.Exception
 	 *             if the element could not be validated.
 	 */
-	public void elementAttributesProcessed(String name, Properties extraAttributes,
-	                                       String systemId, int lineNr) throws Exception;
+	public void elementAttributesProcessed(String name, Properties extraAttributes, String systemId, int lineNr)
+	        throws Exception;
 
 	/**
 	 * Indicates that the current element has ended.
@@ -111,8 +110,8 @@ public interface IXMLValidator {
 	 * @throws java.lang.Exception
 	 *             If something went wrong.
 	 */
-	public void parseDTD(String publicID, IXMLReader reader, IXMLEntityResolver entityResolver,
-	                     boolean external) throws Exception;
+	public void parseDTD(String publicID, IXMLReader reader, IXMLEntityResolver entityResolver, boolean external)
+	        throws Exception;
 
 	/**
 	 * Indicates that a new #PCDATA element has been encountered.

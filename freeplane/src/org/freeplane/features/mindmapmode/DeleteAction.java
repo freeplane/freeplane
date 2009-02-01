@@ -34,38 +34,36 @@ import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.undo.IUndoableActor;
 
 class DeleteAction extends FreeplaneAction {
-	public DeleteAction() {
-		super("remove_node", "/images/editdelete.png");
+	public DeleteAction(final Controller controller) {
+		super(controller, "remove_node", "/images/editdelete.png");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final ModeController modeController = getModeController();
-		for (final Iterator iterator = modeController.getMapController().getSelectedNodes()
-		    .iterator(); iterator.hasNext();) {
+		for (final Iterator iterator = modeController.getMapController().getSelectedNodes().iterator(); iterator
+		    .hasNext();) {
 			final NodeModel node = (NodeModel) iterator.next();
 			if (node.isRoot()) {
 				return;
 			}
 		}
-		final Controller controller = Controller.getController();
+		final Controller controller = getController();
 		final ViewController viewController = controller.getViewController();
-		final int showResult = new OptionalDontShowMeAgainDialog(viewController.getJFrame(),
-		    controller.getSelection().getSelected(), "really_remove_node", "confirmation",
+		final int showResult = new OptionalDontShowMeAgainDialog(viewController.getJFrame(), controller.getSelection()
+		    .getSelected(), "really_remove_node", "confirmation",
 		    new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
 		        ResourceController.RESOURCES_DELETE_NODES_WITHOUT_QUESTION),
 		    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED).show().getResult();
 		if (showResult != JOptionPane.OK_OPTION) {
 			return;
 		}
-		final Iterator<NodeModel> iterator = controller.getSelection().getSortedSelection()
-		    .iterator();
+		final Iterator<NodeModel> iterator = controller.getSelection().getSortedSelection().iterator();
 		while (iterator.hasNext()) {
 			delete(iterator.next());
 		}
 	}
 
-	public IUndoableActor createActor(final int index, final NodeModel parentNode,
-	                                  final NodeModel node) {
+	public IUndoableActor createActor(final int index, final NodeModel parentNode, final NodeModel node) {
 		final IUndoableActor actor = new IUndoableActor() {
 			public void act() {
 				deleteWithoutUndo(node);
@@ -76,8 +74,7 @@ class DeleteAction extends FreeplaneAction {
 			}
 
 			public void undo() {
-				(getModeController().getMapController()).insertNodeIntoWithoutUndo(node,
-				    parentNode, index);
+				(getModeController().getMapController()).insertNodeIntoWithoutUndo(node, parentNode, index);
 			}
 		};
 		return actor;

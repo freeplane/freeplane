@@ -40,8 +40,7 @@ public class ExtensionArray implements IModifiableExtensionCollection {
 			collection.add(extension);
 			return true;
 		}
-		throw new IllegalArgumentException("element with class " + clazz.getName()
-		        + " already exist");
+		throw new IllegalArgumentException("element with class " + clazz.getName() + " already exist");
 	}
 
 	/*

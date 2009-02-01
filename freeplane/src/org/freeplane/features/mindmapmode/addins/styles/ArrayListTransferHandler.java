@@ -64,8 +64,7 @@ class ArrayListTransferHandler extends TransferHandler {
 	int addIndex = -1;
 	int[] indices = null;
 	DataFlavor localArrayListFlavor;
-	String localArrayListType = DataFlavor.javaJVMLocalObjectMimeType
-	        + ";class=java.util.ArrayList";
+	String localArrayListType = DataFlavor.javaJVMLocalObjectMimeType + ";class=java.util.ArrayList";
 	JList source = null;
 
 	public ArrayListTransferHandler() {

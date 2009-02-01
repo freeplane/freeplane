@@ -24,8 +24,7 @@ public class ActorPair implements IUndoableActor {
 	final private IActor performingActor;
 	final private IActor undoingActor;
 
-	public ActorPair(final IActor performingActor, final IActor undoingActor,
-	                 final String description) {
+	public ActorPair(final IActor performingActor, final IActor undoingActor, final String description) {
 		super();
 		this.performingActor = performingActor;
 		this.undoingActor = undoingActor;

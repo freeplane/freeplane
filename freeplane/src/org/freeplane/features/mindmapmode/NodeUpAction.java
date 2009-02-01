@@ -36,8 +36,8 @@ import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.undo.IUndoableActor;
 
 class NodeUpAction extends FreeplaneAction {
-	public NodeUpAction() {
-		super("node_up");
+	public NodeUpAction(final Controller controller) {
+		super(controller, "node_up");
 	}
 
 	public void _moveNodes(final NodeModel selected, final List selecteds, final int direction) {
@@ -74,20 +74,20 @@ class NodeUpAction extends FreeplaneAction {
 				final NodeModel node = (NodeModel) sortedChildren.get(position.intValue());
 				moveNodeTo(node, parent, direction);
 			}
-			final IMapSelection selection = Controller.getController().getSelection();
+			final IMapSelection selection = getController().getSelection();
 			selection.selectAsTheOnlyOneSelected(selected);
 			for (final Iterator i = range.iterator(); i.hasNext();) {
 				final Integer position = (Integer) i.next();
 				final NodeModel node = (NodeModel) sortedChildren.get(position.intValue());
 				selection.makeTheSelected(node);
 			}
-			Controller.getController().getViewController().obtainFocusForSelected();
+			getController().getViewController().obtainFocusForSelected();
 		}
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		moveNodes(getModeController().getMapController().getSelectedNode(), getModeController()
-		    .getMapController().getSelectedNodes(), -1);
+		moveNodes(getModeController().getMapController().getSelectedNode(), getModeController().getMapController()
+		    .getSelectedNodes(), -1);
 	}
 
 	/**
@@ -95,8 +95,7 @@ class NodeUpAction extends FreeplaneAction {
 	 */
 	private Vector getSortedSiblings(final NodeModel node) {
 		final Vector nodes = new Vector();
-		for (final Iterator i = node.getModeController().getMapController().childrenUnfolded(node); i
-		    .hasNext();) {
+		for (final Iterator i = node.getModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
 			nodes.add(i.next());
 		}
 		Collections.sort(nodes, new Comparator() {
@@ -110,8 +109,7 @@ class NodeUpAction extends FreeplaneAction {
 						return b1 - b2;
 					}
 				}
-				throw new IllegalArgumentException(
-				    "Elements in LeftRightComparator are not comparable.");
+				throw new IllegalArgumentException("Elements in LeftRightComparator are not comparable.");
 			}
 		});
 		return nodes;
@@ -137,7 +135,7 @@ class NodeUpAction extends FreeplaneAction {
 	}
 
 	private int moveNodeTo(final NodeModel child, final NodeModel newParent, final int direction) {
-		final MapModel map = Controller.getController().getMap();
+		final MapModel map = getController().getMap();
 		final int index = newParent.getIndex(child);
 		int newIndex = index;
 		final int maxIndex = newParent.getChildCount();
@@ -151,8 +149,7 @@ class NodeUpAction extends FreeplaneAction {
 		}
 		final NodeModel destinationNode = (NodeModel) sortedNodesIndices.get(newPositionInVector);
 		newIndex = newParent.getIndex(destinationNode);
-		((MMapController) map.getModeController().getMapController()).moveNodeToWithoutUndo(child,
-		    newParent, newIndex);
+		((MMapController) map.getModeController().getMapController()).moveNodeToWithoutUndo(child, newParent, newIndex);
 		return newIndex;
 	}
 }

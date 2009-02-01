@@ -31,10 +31,12 @@ class Preview extends JComponent {
 	private Graphics2D imageGraphics;
 	protected int index = 0;
 	private BufferedImage previewPageImage = null;
+	private final PrintController printController;
 	private final Printable view;
 	protected double zoom = 0.0;
 
-	public Preview(final Printable view, final double zoom) {
+	public Preview(final PrintController printController, final Printable view, final double zoom) {
+		this.printController = printController;
 		this.view = view;
 		final PageFormat format = getPageFormat();
 		if (zoom == 0.0) {
@@ -62,7 +64,7 @@ class Preview extends JComponent {
 	}
 
 	private PageFormat getPageFormat() {
-		return PrintController.getController().getPageFormat();
+		return printController.getPageFormat();
 	}
 
 	private int getPageHeight(final PageFormat format) {
@@ -92,12 +94,10 @@ class Preview extends JComponent {
 			final PageFormat format = getPageFormat();
 			paintPaper(g, format);
 			if (previewPageImage == null) {
-				previewPageImage = (BufferedImage) createImage(getPageWidth(format) - 1,
-				    getPageHeight(format) - 1);
+				previewPageImage = (BufferedImage) createImage(getPageWidth(format) - 1, getPageHeight(format) - 1);
 				imageGraphics = previewPageImage.createGraphics();
 				imageGraphics.scale(zoom, zoom);
-				while (Printable.NO_SUCH_PAGE == view.print(imageGraphics, format, index)
-				        && index > 0) {
+				while (Printable.NO_SUCH_PAGE == view.print(imageGraphics, format, index) && index > 0) {
 					index -= 1;
 				}
 			}
@@ -117,9 +117,7 @@ class Preview extends JComponent {
 	}
 
 	public void resize() {
-		final int size = (int) Math.max(getPageFormat().getWidth() * zoom, getPageFormat()
-		    .getHeight()
-		        * zoom);
+		final int size = (int) Math.max(getPageFormat().getWidth() * zoom, getPageFormat().getHeight() * zoom);
 		setPreferredSize(new Dimension(size, size));
 		previewPageImage = null;
 		revalidate();

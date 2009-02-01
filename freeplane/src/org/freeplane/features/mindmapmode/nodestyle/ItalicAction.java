@@ -21,6 +21,7 @@ package org.freeplane.features.mindmapmode.nodestyle;
 
 import java.awt.event.ActionEvent;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.core.ui.SelectableAction;
@@ -32,8 +33,8 @@ class ItalicAction extends MultipleNodeAction {
 
 	/**
 	 */
-	public ItalicAction() {
-		super("italic", "/images/Italic16.gif");
+	public ItalicAction(final Controller controller) {
+		super(controller, "italic", "/images/Italic16.gif");
 	}
 
 	@Override
@@ -44,8 +45,7 @@ class ItalicAction extends MultipleNodeAction {
 
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel selected) {
-		((MNodeStyleController) NodeStyleController.getController(getModeController())).setItalic(
-		    selected, italic);
+		((MNodeStyleController) NodeStyleController.getController(getModeController())).setItalic(selected, italic);
 	}
 
 	boolean isItalic() {

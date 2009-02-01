@@ -35,15 +35,13 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 	final private boolean writeInvisible;
 	private XMLElement xmlNode;
 
-	public NodeWriter(final MapController mapController, final boolean writeChildren,
-	                  final boolean writeInvisible) {
+	public NodeWriter(final MapController mapController, final boolean writeChildren, final boolean writeInvisible) {
 		this.writeChildren = writeChildren;
 		this.writeInvisible = writeInvisible;
 	}
 
 	private void saveChildren(final ITreeWriter writer, final NodeModel node) throws IOException {
-		for (final ListIterator e = node.getModeController().getMapController().childrenUnfolded(
-		    node); e.hasNext();) {
+		for (final ListIterator e = node.getModeController().getMapController().childrenUnfolded(node); e.hasNext();) {
 			final NodeModel child = (NodeModel) e.next();
 			if (writeInvisible || child.isVisible()) {
 				writer.addElement(child, NodeBuilder.XML_NODE);
@@ -88,10 +86,10 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 			writer.addAttribute("ID", id);
 		}
 		if (node.getHistoryInformation() != null) {
-			writer.addAttribute(NodeBuilder.XML_NODE_HISTORY_CREATED_AT, TreeXmlWriter
-			    .dateToString(node.getHistoryInformation().getCreatedAt()));
-			writer.addAttribute(NodeBuilder.XML_NODE_HISTORY_LAST_MODIFIED_AT, TreeXmlWriter
-			    .dateToString(node.getHistoryInformation().getLastModifiedAt()));
+			writer.addAttribute(NodeBuilder.XML_NODE_HISTORY_CREATED_AT, TreeXmlWriter.dateToString(node
+			    .getHistoryInformation().getCreatedAt()));
+			writer.addAttribute(NodeBuilder.XML_NODE_HISTORY_LAST_MODIFIED_AT, TreeXmlWriter.dateToString(node
+			    .getHistoryInformation().getLastModifiedAt()));
 		}
 		for (int i = 0; i < node.getIcons().size(); ++i) {
 			final XMLElement iconElement = new XMLElement();
@@ -102,8 +100,7 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 		writer.addExtensionAttributes(node, node.getExtensions());
 	}
 
-	public void writeContent(final ITreeWriter writer, final Object content, final String tag)
-	        throws IOException {
+	public void writeContent(final ITreeWriter writer, final Object content, final String tag) throws IOException {
 		final NodeModel node = (NodeModel) content;
 		writer.addExtensionNodes(node, node.getExtensions());
 		for (int i = 0; i < xmlNode.getChildrenCount(); i++) {

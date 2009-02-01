@@ -40,33 +40,31 @@ public class SaveAll extends FreeplaneAction {
 	/**
 	 *
 	 */
-	public SaveAll() {
-		super();
+	public SaveAll(final Controller controller) {
+		super(controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final Controller mainController = Controller.getController();
-		final MapModel initialMapView = mainController.getMap();
+		final Controller controller = getController();
+		final MapModel initialMapView = controller.getMap();
 		final Map<String, MapModel> mapViews = getMapViews();
 		final Iterator<Entry<String, MapModel>> iterator = mapViews.entrySet().iterator();
 		while (iterator.hasNext()) {
 			final Entry<String, MapModel> entry = iterator.next();
 			final MapModel mapView = entry.getValue();
-			mainController.getMapViewManager().changeToMapView(entry.getKey());
+			controller.getMapViewManager().changeToMapView(entry.getKey());
 			if (!((MModeController) mapView.getModeController()).save()) {
-				JOptionPane.showMessageDialog(Controller.getController().getViewController()
-				    .getContentPane(), "Freeplane", Controller
-				    .getText("accessories/plugins/SaveAll.properties_save_all_cancelled"),
-				    JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(controller.getViewController().getContentPane(), "Freeplane", Controller
+				    .getText("accessories/plugins/SaveAll.properties_save_all_cancelled"), JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 		}
-		mainController.getMapViewManager().changeToMapView(initialMapView.toString());
+		controller.getMapViewManager().changeToMapView(initialMapView.toString());
 	}
 
 	/**
 	 */
 	private Map<String, MapModel> getMapViews() {
-		return Controller.getController().getMapViewManager().getMaps();
+		return getController().getMapViewManager().getMaps();
 	}
 }

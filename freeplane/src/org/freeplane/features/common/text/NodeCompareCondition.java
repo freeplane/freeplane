@@ -34,11 +34,10 @@ class NodeCompareCondition extends CompareConditionAdapter {
 	static final String VALUE = "value";
 
 	static ICondition load(final XMLElement element) {
-		return new NodeCompareCondition(element.getAttribute(NodeCompareCondition.VALUE, null),
-		    TreeXmlReader.xmlToBoolean(element.getAttribute(CompareConditionAdapter.IGNORE_CASE,
-		        null)), Integer.parseInt(element.getAttribute(
-		        NodeCompareCondition.COMPARATION_RESULT, null)), TreeXmlReader.xmlToBoolean(element
-		        .getAttribute(NodeCompareCondition.SUCCEED, null)));
+		return new NodeCompareCondition(element.getAttribute(NodeCompareCondition.VALUE, null), TreeXmlReader
+		    .xmlToBoolean(element.getAttribute(CompareConditionAdapter.IGNORE_CASE, null)), Integer.parseInt(element
+		    .getAttribute(NodeCompareCondition.COMPARATION_RESULT, null)), TreeXmlReader.xmlToBoolean(element
+		    .getAttribute(NodeCompareCondition.SUCCEED, null)));
 	}
 
 	final private int comparationResult;
@@ -70,8 +69,7 @@ class NodeCompareCondition extends CompareConditionAdapter {
 		final XMLElement child = new XMLElement();
 		child.setName(NodeCompareCondition.NAME);
 		super.attributesToXml(child);
-		child.setAttribute(NodeCompareCondition.COMPARATION_RESULT, Integer
-		    .toString(comparationResult));
+		child.setAttribute(NodeCompareCondition.COMPARATION_RESULT, Integer.toString(comparationResult));
 		child.setAttribute(NodeCompareCondition.SUCCEED, TreeXmlWriter.BooleanToXml(succeed));
 		element.addChild(child);
 	}

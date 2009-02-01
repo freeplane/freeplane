@@ -30,20 +30,19 @@ import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.features.common.link.NodeLinks;
 
 class SetLinkByTextFieldAction extends FreeplaneAction {
-	public SetLinkByTextFieldAction() {
-		super("set_link_by_textfield", (String) null);
+	public SetLinkByTextFieldAction(final Controller controller) {
+		super(controller, "set_link_by_textfield", (String) null);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final ModeController controller = getModeController();
-		String inputValue = UITools.showInputDialog(Controller.getController().getSelection()
-		    .getSelected(), Controller.getText("edit_link_manually"), NodeLinks.getLink(controller
-		    .getMapController().getSelectedNode()));
+		final ModeController modeController = getModeController();
+		String inputValue = UITools.showInputDialog(getController().getSelection().getSelected(), Controller
+		    .getText("edit_link_manually"), NodeLinks.getLink(modeController.getMapController().getSelectedNode()));
 		if (inputValue != null) {
 			if (inputValue.equals("")) {
 				inputValue = null;
 			}
-			setLink(controller.getMapController().getSelectedNode(), inputValue);
+			setLink(modeController.getMapController().getSelectedNode(), inputValue);
 		}
 	}
 

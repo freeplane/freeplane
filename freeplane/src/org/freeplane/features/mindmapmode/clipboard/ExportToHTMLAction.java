@@ -29,12 +29,12 @@ import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.features.common.clipboard.ClipboardController;
 
 class ExportToHTMLAction extends FreeplaneAction {
-	public ExportToHTMLAction() {
-		super("export_to_html");
+	public ExportToHTMLAction(final Controller controller) {
+		super(controller, "export_to_html");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final MapModel map = Controller.getController().getMap();
+		final MapModel map = getController().getMap();
 		try {
 			final File file = new File(map.getFile() + ".html");
 			ClipboardController.saveHTML(map.getRootNode(), file);

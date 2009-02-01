@@ -45,12 +45,11 @@ import org.freeplane.view.swing.ui.UserInputListenerFactory;
 public class FModeControllerFactory {
 	static private FModeController modeController;
 
-	static public FModeController createModeController() {
-		modeController = new FModeController();
-		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(
-		    modeController);
+	static public FModeController createModeController(final Controller controller) {
+		modeController = new FModeController(controller);
+		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController);
 		modeController.setUserInputListenerFactory(userInputListenerFactory);
-		Controller.getController().addModeController(modeController);
+		controller.addModeController(modeController);
 		modeController.setMapController(new FMapController(modeController));
 		UrlManager.install(modeController, new UrlManager(modeController));
 		IconController.install(modeController, new IconController(modeController));
@@ -66,8 +65,8 @@ public class FModeControllerFactory {
 				    return "fork";
 			    }
 		    });
-		modeController.addAction("center", new CenterAction());
-		modeController.addAction("openPath", new OpenPathAction());
+		modeController.addAction("center", new CenterAction(controller));
+		modeController.addAction("openPath", new OpenPathAction(controller));
 		userInputListenerFactory.setNodePopupMenu(new JPopupMenu());
 		userInputListenerFactory.setMainToolBar(new FreeplaneToolBar());
 		userInputListenerFactory.setMenuStructure("/org/freeplane/startup/filemode/menu.xml");

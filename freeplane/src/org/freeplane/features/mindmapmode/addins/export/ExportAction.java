@@ -47,22 +47,23 @@ import org.freeplane.core.util.Tools;
 abstract public class ExportAction extends FreeplaneAction {
 	private Component view;
 
-	public ExportAction() {
+	public ExportAction(final Controller controller) {
+		super(controller);
 	}
 
-	public ExportAction(final String title) {
-		super(title);
+	public ExportAction(final Controller controller, final String title) {
+		super(controller, title);
 	}
 
 	/**
 	 * @param nameExtension
 	 */
-	protected File chooseFile(final String type, final String description,
-	                          final String nameExtension) {
-		final Container component = Controller.getController().getViewController().getContentPane();
+	protected File chooseFile(final String type, final String description, final String nameExtension) {
+		final Controller controller = getController();
+		final Container component = controller.getViewController().getContentPane();
 		JFileChooser chooser = null;
 		chooser = new JFileChooser();
-		final File mmFile = Controller.getController().getMap().getFile();
+		final File mmFile = controller.getMap().getFile();
 		if (mmFile != null) {
 			final String proposedName = mmFile.getAbsolutePath().replaceFirst("\\.[^.]*?$", "")
 			        + ((nameExtension != null) ? nameExtension : "") + "." + type;
@@ -85,10 +86,10 @@ abstract public class ExportAction extends FreeplaneAction {
 			chosenFile = new File(chosenFile.getParent(), chosenFile.getName() + "." + type);
 		}
 		if (chosenFile.exists()) {
-			final String overwriteText = MessageFormat.format(Controller
-			    .getText("file_already_exists"), new Object[] { chosenFile.toString() });
-			final int overwriteMap = JOptionPane.showConfirmDialog(component, overwriteText,
-			    overwriteText, JOptionPane.YES_NO_OPTION);
+			final String overwriteText = MessageFormat.format(Controller.getText("file_already_exists"),
+			    new Object[] { chosenFile.toString() });
+			final int overwriteMap = JOptionPane.showConfirmDialog(component, overwriteText, overwriteText,
+			    JOptionPane.YES_NO_OPTION);
 			if (overwriteMap != JOptionPane.YES_OPTION) {
 				return null;
 			}
@@ -98,8 +99,7 @@ abstract public class ExportAction extends FreeplaneAction {
 
 	/**
 	 */
-	protected void copyFromFile(final String dir, final String fileName,
-	                            final String destinationDirectory) {
+	protected void copyFromFile(final String dir, final String fileName, final String destinationDirectory) {
 		try {
 			final File resource = new File(dir, fileName);
 			if (resource == null) {
@@ -111,15 +111,14 @@ abstract public class ExportAction extends FreeplaneAction {
 			copyStream(in, out);
 		}
 		catch (final Exception e) {
-			Logger.global.severe("File not found or could not be copied. " + "Was earching for "
-			        + dir + fileName + " and should go to " + destinationDirectory);
+			Logger.global.severe("File not found or could not be copied. " + "Was earching for " + dir + fileName
+			        + " and should go to " + destinationDirectory);
 		}
 	}
 
 	/**
 	 */
-	protected void copyFromResource(final String prefix, final String fileName,
-	                                final String destinationDirectory) {
+	protected void copyFromResource(final String prefix, final String fileName, final String destinationDirectory) {
 		try {
 			final URL resource = Controller.getResourceController().getResource(prefix + fileName);
 			if (resource == null) {
@@ -131,8 +130,8 @@ abstract public class ExportAction extends FreeplaneAction {
 			copyStream(in, out);
 		}
 		catch (final Exception e) {
-			Logger.global.severe("File not found or could not be copied. " + "Was earching for "
-			        + prefix + fileName + " and should go to " + destinationDirectory);
+			Logger.global.severe("File not found or could not be copied. " + "Was earching for " + prefix + fileName
+			        + " and should go to " + destinationDirectory);
 		}
 	}
 
@@ -147,6 +146,6 @@ abstract public class ExportAction extends FreeplaneAction {
 	}
 
 	public RenderedImage createBufferedImage() {
-		return Controller.getController().getMapViewManager().createImage();
+		return getController().getMapViewManager().createImage();
 	}
 }

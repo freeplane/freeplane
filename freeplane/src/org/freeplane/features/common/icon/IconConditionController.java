@@ -40,6 +40,12 @@ import org.freeplane.n3.nanoxml.XMLElement;
  */
 class IconConditionController implements IElementaryConditionController {
 	static final String FILTER_ICON = "filter_icon";
+	final private Controller controller;
+
+	public IconConditionController(final Controller controller) {
+		super();
+		this.controller = controller;
+	}
 
 	public boolean canEditValues(final Object property, final NamedObject simpleCond) {
 		return false;
@@ -57,8 +63,8 @@ class IconConditionController implements IElementaryConditionController {
 		return true;
 	}
 
-	public ICondition createCondition(final Object selectedItem, final NamedObject simpleCond,
-	                                  final Object value, final boolean ignoreCase) {
+	public ICondition createCondition(final Object selectedItem, final NamedObject simpleCond, final Object value,
+	                                  final boolean ignoreCase) {
 		return new IconContainedCondition(((MindIcon) value).getName());
 	}
 
@@ -82,8 +88,7 @@ class IconConditionController implements IElementaryConditionController {
 	}
 
 	public ComboBoxModel getValuesForProperty(final Object property) {
-		final SortedMapListModel icons = Controller.getController().getMap().getIconRegistry()
-		    .getIcons();
+		final SortedMapListModel icons = controller.getMap().getIconRegistry().getIcons();
 		final ExtendedComboBoxModel extendedComboBoxModel = new ExtendedComboBoxModel();
 		extendedComboBoxModel.setExtensionList(icons);
 		return extendedComboBoxModel;

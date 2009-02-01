@@ -35,15 +35,15 @@ import org.freeplane.features.common.link.NodeLinks;
 class AddArrowLinkAction extends FreeplaneAction {
 	/**
 	 */
-	public AddArrowLinkAction() {
-		super("add_link", "/images/designer.png");
+	public AddArrowLinkAction(final Controller controller) {
+		super(controller, "add_link", "/images/designer.png");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final List selecteds = getModeController().getMapController().getSelectedNodes();
 		if (selecteds.size() < 2) {
-			Controller.getController().errorMessage(
-			    getModeController().getText("less_than_two_selected_nodes"));
+			final Controller controller = getController();
+			controller.errorMessage(getModeController().getText("less_than_two_selected_nodes"));
 			return;
 		}
 		for (int i = 1; i < selecteds.size(); i++) {

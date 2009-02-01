@@ -24,33 +24,35 @@ import java.util.ListIterator;
 
 import javax.swing.ImageIcon;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
 
 /**
  * @author Dimitry Polivaev
  */
 public abstract class MultipleNodeAction extends FreeplaneAction {
-	public MultipleNodeAction() {
+	public MultipleNodeAction(final Controller controller) {
+		super(controller);
 	}
 
-	public MultipleNodeAction(final String name) {
-		super(name);
+	public MultipleNodeAction(final Controller controller, final String name) {
+		super(controller, name);
 	}
 
 	/**
 	 *
 	 */
-	public MultipleNodeAction(final String name, final ImageIcon imageIcon) {
-		super(name, imageIcon);
+	public MultipleNodeAction(final Controller controller, final String name, final ImageIcon imageIcon) {
+		super(controller, name, imageIcon);
 	}
 
-	public MultipleNodeAction(final String name, final String imageIcon) {
-		super(name, imageIcon);
+	public MultipleNodeAction(final Controller controller, final String name, final String imageIcon) {
+		super(controller, name, imageIcon);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		for (final ListIterator it = getModeController().getMapController().getSelectedNodes()
-		    .listIterator(); it.hasNext();) {
+		for (final ListIterator it = getModeController().getMapController().getSelectedNodes().listIterator(); it
+		    .hasNext();) {
 			final NodeModel selected = (NodeModel) it.next();
 			actionPerformed(e, selected);
 		}

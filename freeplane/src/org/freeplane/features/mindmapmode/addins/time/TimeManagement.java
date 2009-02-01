@@ -71,8 +71,8 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 		}
 
 		public void actionPerformed(final ActionEvent e) {
-			for (final Iterator i = timeManagement.getMindMapController().getMapController()
-			    .getSelectedNodes().iterator(); i.hasNext();) {
+			for (final Iterator i = timeManagement.getMindMapController().getMapController().getSelectedNodes()
+			    .iterator(); i.hasNext();) {
 				final NodeModel node = (NodeModel) i.next();
 				final ReminderExtension alreadyPresentHook = ReminderExtension.getExtension(node);
 				if (alreadyPresentHook != null) {
@@ -86,6 +86,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 	public final static String REMINDER_HOOK_NAME = "plugins/TimeManagementReminder.xml";
 	private static TimeManagement sCurrentlyOpenTimeManagement = null;
 	private JTripleCalendar calendar;
+	final private Controller controller;
 	private JDialog dialog;
 	private JTextField hourField;
 	private ModeController mController;
@@ -96,23 +97,21 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 
 	public TimeManagement(final ModeController modeController, final ReminderHook reminderHook) {
 		this.modeController = modeController;
+		controller = modeController.getController();
 		this.reminderHook = reminderHook;
 	}
 
 	public void actionPerformed(final ActionEvent arg0) {
 		final Date date = getCalendarDate();
-		for (final Iterator i = mController.getMapController().getSelectedNodes().iterator(); i
-		    .hasNext();) {
+		for (final Iterator i = mController.getMapController().getSelectedNodes().iterator(); i.hasNext();) {
 			final NodeModel node = (NodeModel) i.next();
 			final ReminderExtension alreadyPresentHook = ReminderExtension.getExtension(node);
 			if (alreadyPresentHook != null) {
-				final Object[] messageArguments = { new Date(alreadyPresentHook.getRemindUserAt()),
-				        date };
+				final Object[] messageArguments = { new Date(alreadyPresentHook.getRemindUserAt()), date };
 				final MessageFormat formatter = new MessageFormat(
 				    getResourceString("plugins/TimeManagement.xml_reminderNode_onlyOneDate"));
 				final String message = formatter.format(messageArguments);
-				final int result = JOptionPane.showConfirmDialog(Controller.getController()
-				    .getViewController().getJFrame(), message, "Freeplane",
+				final int result = JOptionPane.showConfirmDialog(controller.getViewController().getFrame(), message, "Freeplane",
 				    JOptionPane.YES_NO_OPTION);
 				if (result == JOptionPane.NO_OPTION) {
 					return;
@@ -135,7 +134,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 	}
 
 	public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
-		Controller.getController().getMapViewManager().removeIMapViewChangeListener(this);
+		controller.getMapViewManager().removeIMapViewChangeListener(this);
 		disposeDialog();
 	}
 
@@ -185,8 +184,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 				gb2.gridx = 0;
 				gb2.gridy = 0;
 				gb2.fill = GridBagConstraints.HORIZONTAL;
-				timePanel
-				    .add(new JLabel(getResourceString("plugins/TimeManagement.xml_hour")), gb2);
+				timePanel.add(new JLabel(getResourceString("plugins/TimeManagement.xml_hour")), gb2);
 			}
 			{
 				final GridBagConstraints gb2 = new GridBagConstraints();
@@ -194,8 +192,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 				gb2.gridy = 0;
 				gb2.fill = GridBagConstraints.HORIZONTAL;
 				hourField = new JTextField(2);
-				hourField.setText(new Integer(calendar.getCalendar().get(Calendar.HOUR_OF_DAY))
-				    .toString());
+				hourField.setText(new Integer(calendar.getCalendar().get(Calendar.HOUR_OF_DAY)).toString());
 				timePanel.add(hourField, gb2);
 			}
 			{
@@ -203,8 +200,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 				gb2.gridx = 2;
 				gb2.gridy = 0;
 				gb2.fill = GridBagConstraints.HORIZONTAL;
-				timePanel.add(new JLabel(getResourceString("plugins/TimeManagement.xml_minute")),
-				    gb2);
+				timePanel.add(new JLabel(getResourceString("plugins/TimeManagement.xml_minute")), gb2);
 			}
 			{
 				final GridBagConstraints gb2 = new GridBagConstraints();
@@ -212,8 +208,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 				gb2.gridy = 0;
 				gb2.fill = GridBagConstraints.HORIZONTAL;
 				minuteField = new JTextField(2);
-				String minuteString = new Integer(calendar.getCalendar().get(Calendar.MINUTE))
-				    .toString();
+				String minuteString = new Integer(calendar.getCalendar().get(Calendar.MINUTE)).toString();
 				if (minuteString.length() < 2) {
 					minuteString = "0" + minuteString;
 				}
@@ -240,8 +235,8 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 		}
 		TimeManagement.sCurrentlyOpenTimeManagement = this;
 		mController = getMindMapController();
-		Controller.getController().getMapViewManager().addMapChangeListener(this);
-		dialog = new JDialog(Controller.getController().getViewController().getJFrame(), false /*not modal*/);
+		controller.getMapViewManager().addMapChangeListener(this);
+		dialog = new JDialog(controller.getViewController().getFrame(), false /*not modal*/);
 		dialog.setTitle(getResourceString("plugins/TimeManagement.xml_WindowTitle"));
 		dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		dialog.addWindowListener(new WindowAdapter() {
@@ -279,17 +274,16 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 			gb2.gridx = 0;
 			gb2.gridy = 2;
 			gb2.fill = GridBagConstraints.HORIZONTAL;
-			final JButton appendButton = new JButton(
-			    getResourceString("plugins/TimeManagement.xml_appendButton"));
+			final JButton appendButton = new JButton(getResourceString("plugins/TimeManagement.xml_appendButton"));
 			appendButton.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent arg0) {
-					for (final Iterator i = mController.getMapController().getSelectedNodes()
-					    .iterator(); i.hasNext();) {
+					for (final Iterator i = mController.getMapController().getSelectedNodes().iterator(); i.hasNext();) {
 						final NodeModel element = (NodeModel) i.next();
 						final DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT);
 						final String dateAsString = df.format(getCalendarDate());
-						((MTextController) TextController.getController(mController)).setNodeText(
-						    element, (element.getText() + " " + dateAsString));
+						((MTextController) TextController.getController(mController)).setNodeText(element, (element
+						    .getText()
+						        + " " + dateAsString));
 					}
 				}
 			});
@@ -300,10 +294,8 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 			gb2.gridx = 1;
 			gb2.gridy = 2;
 			gb2.fill = GridBagConstraints.HORIZONTAL;
-			final JButton reminderButton = new JButton(
-			    getResourceString("plugins/TimeManagement.xml_reminderButton"));
-			reminderButton
-			    .setToolTipText(getResourceString("plugins/TimeManagement.xml_reminderButton_tooltip"));
+			final JButton reminderButton = new JButton(getResourceString("plugins/TimeManagement.xml_reminderButton"));
+			reminderButton.setToolTipText(getResourceString("plugins/TimeManagement.xml_reminderButton_tooltip"));
 			reminderButton.addActionListener(this);
 			contentPane.add(reminderButton, gb2);
 		}
@@ -314,8 +306,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 			gb2.fill = GridBagConstraints.HORIZONTAL;
 			final JButton reminderButton = new JButton(
 			    getResourceString("plugins/TimeManagement.xml_removeReminderButton"));
-			reminderButton
-			    .setToolTipText(getResourceString("plugins/TimeManagement.xml_removeReminderButton_tooltip"));
+			reminderButton.setToolTipText(getResourceString("plugins/TimeManagement.xml_removeReminderButton_tooltip"));
 			reminderButton.addActionListener(new RemoveReminders(this));
 			contentPane.add(reminderButton, gb2);
 		}
@@ -324,8 +315,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 			gb2.gridx = 3;
 			gb2.gridy = 2;
 			gb2.fill = GridBagConstraints.HORIZONTAL;
-			final JButton todayButton = new JButton(
-			    getResourceString("plugins/TimeManagement.xml_todayButton"));
+			final JButton todayButton = new JButton(getResourceString("plugins/TimeManagement.xml_todayButton"));
 			todayButton.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent arg0) {
 					calendar.setCalendar(Calendar.getInstance());
@@ -338,8 +328,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 			gb2.gridx = 4;
 			gb2.gridy = 2;
 			gb2.fill = GridBagConstraints.HORIZONTAL;
-			final JButton cancelButton = new JButton(
-			    getResourceString("plugins/TimeManagement.xml_closeButton"));
+			final JButton cancelButton = new JButton(getResourceString("plugins/TimeManagement.xml_closeButton"));
 			cancelButton.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent arg0) {
 					disposeDialog();

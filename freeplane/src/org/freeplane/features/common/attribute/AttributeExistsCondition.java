@@ -34,8 +34,7 @@ public class AttributeExistsCondition extends NodeCondition {
 	static final String NAME = "attribute_exists_condition";
 
 	static ICondition load(final XMLElement element) {
-		return new AttributeExistsCondition(element.getAttribute(
-		    AttributeExistsCondition.ATTRIBUTE, null));
+		return new AttributeExistsCondition(element.getAttribute(AttributeExistsCondition.ATTRIBUTE, null));
 	}
 
 	final private String attribute;

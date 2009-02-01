@@ -73,8 +73,7 @@ public class MFileManager extends UrlManager {
 		}
 	}
 
-	public static final String FREEPLANE_FILE_EXTENSION = "."
-	        + MFileManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT;
+	public static final String FREEPLANE_FILE_EXTENSION = "." + MFileManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT;
 	public static final String FREEPLANE_FILE_EXTENSION_WITHOUT_DOT = "mm";
 	FileFilter filefilter = new MindMapFilter();
 
@@ -90,17 +89,17 @@ public class MFileManager extends UrlManager {
 	 *
 	 */
 	private void createActions(final ModeController modeController) {
-		Controller.getController().addAction("open", new OpenAction());
-		modeController.addAction("save", new SaveAction());
-		modeController.addAction("saveAs", new SaveAsAction());
-		modeController.addAction("exportBranch", new ExportBranchAction());
-		modeController.addAction("importBranch", new ImportBranchAction());
-		modeController.addAction("importLinkedBranch", new ImportLinkedBranchAction());
-		modeController.addAction("importLinkedBranchWithoutRoot",
-		    new ImportLinkedBranchWithoutRootAction());
-		modeController.addAction("importExplorerFavorites", new ImportExplorerFavoritesAction());
-		modeController.addAction("importFolderStructure", new ImportFolderStructureAction());
-		modeController.addAction("revertAction", new RevertAction());
+		final Controller controller = modeController.getController();
+		getController().addAction("open", new OpenAction(controller));
+		modeController.addAction("save", new SaveAction(controller));
+		modeController.addAction("saveAs", new SaveAsAction(controller));
+		modeController.addAction("exportBranch", new ExportBranchAction(controller));
+		modeController.addAction("importBranch", new ImportBranchAction(controller));
+		modeController.addAction("importLinkedBranch", new ImportLinkedBranchAction(controller));
+		modeController.addAction("importLinkedBranchWithoutRoot", new ImportLinkedBranchWithoutRootAction(controller));
+		modeController.addAction("importExplorerFavorites", new ImportExplorerFavoritesAction(controller));
+		modeController.addAction("importFolderStructure", new ImportFolderStructureAction(controller));
+		modeController.addAction("revertAction", new RevertAction(controller));
 	}
 
 	protected JFileChooser getFileChooser() {
@@ -142,9 +141,8 @@ public class MFileManager extends UrlManager {
 		File input;
 		JFileChooser chooser = null;
 		if (map.getFile() == null) {
-			JOptionPane.showMessageDialog(Controller.getController().getViewController()
-			    .getContentPane(), getModeController().getText("not_saved_for_link_error"),
-			    "Freeplane", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(getController().getViewController().getContentPane(), getModeController()
+			    .getText("not_saved_for_link_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
 			return null;
 		}
 		if (getLastCurrentDir() != null) {
@@ -159,8 +157,7 @@ public class MFileManager extends UrlManager {
 		else {
 			chooser.setFileFilter(chooser.getAcceptAllFileFilter());
 		}
-		final int returnVal = chooser.showOpenDialog(Controller.getController().getViewController()
-		    .getContentPane());
+		final int returnVal = chooser.showOpenDialog(getController().getViewController().getContentPane());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			input = chooser.getSelectedFile();
 			setLastCurrentDir(input.getParentFile());
@@ -169,7 +166,7 @@ public class MFileManager extends UrlManager {
 				relative = link.toString();
 			}
 			catch (final MalformedURLException ex) {
-				Controller.getController().errorMessage(getModeController().getText("url_error"));
+				getController().errorMessage(getModeController().getText("url_error"));
 				return null;
 			}
 			if (Controller.getResourceController().getProperty("links").equals("relative")) {
@@ -177,8 +174,7 @@ public class MFileManager extends UrlManager {
 					relative = UrlManager.toRelativeURL(UrlManager.fileToUrl(map.getFile()), link);
 				}
 				catch (final MalformedURLException ex) {
-					Controller.getController().errorMessage(
-					    getModeController().getText("url_error"));
+					getController().errorMessage(getModeController().getText("url_error"));
 					return null;
 				}
 			}
@@ -203,8 +199,7 @@ public class MFileManager extends UrlManager {
 
 	public void open() {
 		final JFileChooser chooser = getFileChooser();
-		final int returnVal = chooser.showOpenDialog(Controller.getController().getViewController()
-		    .getMapView());
+		final int returnVal = chooser.showOpenDialog(getController().getViewController().getMapView());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File[] selectedFiles;
 			if (chooser.isMultiSelectionEnabled()) {
@@ -225,7 +220,7 @@ public class MFileManager extends UrlManager {
 				}
 			}
 		}
-		Controller.getController().getViewController().setTitle();
+		getController().getViewController().setTitle();
 	}
 
 	public boolean save(final MapModel map) {
@@ -245,16 +240,17 @@ public class MFileManager extends UrlManager {
 	 */
 	public boolean save(final MapModel map, final File file) {
 		try {
-			final String lockingUser = ((MMapController) getModeController().getMapController())
-			    .tryToLock(map, file);
+			final String lockingUser = ((MMapController) getModeController().getMapController()).tryToLock(map, file);
 			if (lockingUser != null) {
-				UITools.informationMessage(UrlManager.expandPlaceholders(getModeController()
-				    .getText("map_locked_by_save_as"), file.getName(), lockingUser));
+				UITools.informationMessage(getController().getViewController().getFrame(),
+					UrlManager.expandPlaceholders(getModeController().getText(
+				    "map_locked_by_save_as"), file.getName(), lockingUser));
 				return false;
 			}
 		}
 		catch (final Exception e) {
-			UITools.informationMessage(UrlManager.expandPlaceholders(getModeController().getText(
+			UITools.informationMessage(getController().getViewController().getFrame(),
+				UrlManager.expandPlaceholders(getModeController().getText(
 			    "locking_failed_by_save_as"), file.getName()));
 			return false;
 		}
@@ -267,35 +263,30 @@ public class MFileManager extends UrlManager {
 	public boolean saveAs(final MapModel map) {
 		final JFileChooser chooser = getFileChooser();
 		if (getMapsParentFile() == null) {
-			chooser
-			    .setSelectedFile(new File(
-			        getFileNameProposal(map)
-			                + org.freeplane.features.mindmapmode.file.MFileManager.FREEPLANE_FILE_EXTENSION));
+			chooser.setSelectedFile(new File(getFileNameProposal(map)
+			        + org.freeplane.features.mindmapmode.file.MFileManager.FREEPLANE_FILE_EXTENSION));
 		}
 		chooser.setDialogTitle(getModeController().getText("save_as"));
-		final int returnVal = chooser.showSaveDialog(Controller.getController().getViewController()
-		    .getMapView());
+		final int returnVal = chooser.showSaveDialog(getController().getViewController().getMapView());
 		if (returnVal != JFileChooser.APPROVE_OPTION) {
 			return false;
 		}
 		File f = chooser.getSelectedFile();
 		setLastCurrentDir(f.getParentFile());
 		final String ext = UrlManager.getExtension(f.getName());
-		if (!ext
-		    .equals(org.freeplane.features.mindmapmode.file.MFileManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
+		if (!ext.equals(org.freeplane.features.mindmapmode.file.MFileManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
 			f = new File(f.getParent(), f.getName()
 			        + org.freeplane.features.mindmapmode.file.MFileManager.FREEPLANE_FILE_EXTENSION);
 		}
 		if (f.exists()) {
-			final int overwriteMap = JOptionPane.showConfirmDialog(Controller.getController()
-			    .getViewController().getMapView(), getModeController()
-			    .getText("map_already_exists"), "Freeplane", JOptionPane.YES_NO_OPTION);
+			final int overwriteMap = JOptionPane.showConfirmDialog(getController().getViewController().getMapView(),
+			    getModeController().getText("map_already_exists"), "Freeplane", JOptionPane.YES_NO_OPTION);
 			if (overwriteMap != JOptionPane.YES_OPTION) {
 				return false;
 			}
 		}
 		save(map, f);
-		Controller.getController().getMapViewManager().updateMapViewName();
+		getController().getMapViewManager().updateMapViewName();
 		return true;
 	}
 
@@ -312,8 +303,7 @@ public class MFileManager extends UrlManager {
 			if (map.getTimerForAutomaticSaving() != null) {
 				map.getTimerForAutomaticSaving().cancel();
 			}
-			final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(
-			    new FileOutputStream(file)));
+			final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
 			getModeController().getMapController().getMapWriter().writeMapAsXml(map, fileout, true);
 			if (!isInternal) {
 				map.setFile(file);
@@ -323,13 +313,13 @@ public class MFileManager extends UrlManager {
 			return true;
 		}
 		catch (final FileNotFoundException e) {
-			final String message = UrlManager.expandPlaceholders(getModeController().getText(
-			    "save_failed"), file.getName());
+			final String message = UrlManager.expandPlaceholders(getModeController().getText("save_failed"), file
+			    .getName());
 			if (!isInternal) {
-				Controller.getController().errorMessage(message);
+				getController().errorMessage(message);
 			}
 			else {
-				Controller.getController().getViewController().out(message);
+				getController().getViewController().out(message);
 			}
 		}
 		catch (final Exception e) {
@@ -343,7 +333,7 @@ public class MFileManager extends UrlManager {
 	@Override
 	public void startup() {
 		final ModeController modeController = getModeController();
-		final Component mapView = Controller.getController().getViewController().getMapView();
+		final Component mapView = getController().getViewController().getMapView();
 		if (mapView != null) {
 			final FileOpener fileOpener = new FileOpener(modeController);
 			new DropTarget(mapView, fileOpener);

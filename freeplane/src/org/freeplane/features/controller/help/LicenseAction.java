@@ -28,12 +28,15 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 
 class LicenseAction extends AbstractAction {
-	LicenseAction() {
+	final private Controller controller;
+
+	LicenseAction(Controller controller) {
+		this.controller = controller;
 		MenuBuilder.setLabelAndMnemonic(this, Controller.getText("license"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		UITools.informationMessage(Controller.getText("license_text"), Controller
-		    .getText("license"));
+		UITools.informationMessage(controller.getViewController().getFrame(),
+			Controller.getText("license_text"), Controller.getText("license"));
 	}
 }

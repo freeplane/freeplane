@@ -64,8 +64,8 @@ public class VariableSizeCardLayout extends CardLayout {
 					}
 				}
 			}
-			return new Dimension(insets.left + insets.right + w + getHgap() * 2, insets.top
-			        + insets.bottom + h + getVgap() * 2);
+			return new Dimension(insets.left + insets.right + w + getHgap() * 2, insets.top + insets.bottom + h
+			        + getVgap() * 2);
 		}
 	}
 }

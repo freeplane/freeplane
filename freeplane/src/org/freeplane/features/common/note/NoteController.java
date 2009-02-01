@@ -39,12 +39,10 @@ public class NoteController implements IExtension {
 		return (NoteController) modeController.getExtension(NoteController.class);
 	}
 
-	public static void install(final ModeController modeController,
-	                           final NoteController noteController) {
+	public static void install(final ModeController modeController, final NoteController noteController) {
 		modeController.addExtension(NoteController.class, noteController);
 		if (firstRun) {
-			noteIcon = new ImageIcon(Controller.getResourceController().getResource(
-			    "/images/knotes.png"));
+			noteIcon = new ImageIcon(Controller.getResourceController().getResource("/images/knotes.png"));
 			MindIcon.factory(NodeNoteBase.NODE_NOTE_ICON, noteIcon);
 			firstRun = false;
 		}
@@ -55,11 +53,9 @@ public class NoteController implements IExtension {
 	public NoteController(final ModeController modeController) {
 		super();
 		this.modeController = modeController;
-		modeController.getMapController().getReadManager().addElementHandler("richcontent",
-		    new NoteBuilder(this));
+		modeController.getMapController().getReadManager().addElementHandler("richcontent", new NoteBuilder(this));
 		final NoteWriter noteWriter = new NoteWriter(this);
-		modeController.getMapController().getWriteManager().addExtensionElementWriter(
-		    NoteModel.class, noteWriter);
+		modeController.getMapController().getWriteManager().addExtensionElementWriter(NoteModel.class, noteWriter);
 	}
 
 	public ModeController getModeController() {
@@ -84,12 +80,11 @@ public class NoteController implements IExtension {
 
 	protected void setStateIcon(final NodeModel node, final boolean enabled) {
 		boolean showIcon = enabled;
-		if (Controller.getResourceController().getBoolProperty(
-		    ResourceController.RESOURCES_DON_T_SHOW_NOTE_ICONS)) {
+		if (Controller.getResourceController().getBoolProperty(ResourceController.RESOURCES_DON_T_SHOW_NOTE_ICONS)) {
 			showIcon = false;
 		}
 		node.setStateIcon(NodeNoteBase.NODE_NOTE_ICON, (showIcon) ? noteIcon : null);
-		(getModeController().getMapController()).setToolTip(node, "nodeNoteText",
-		    (enabled) ? NoteModel.getNoteText(node) : null);
+		(getModeController().getMapController()).setToolTip(node, "nodeNoteText", (enabled) ? NoteModel
+		    .getNoteText(node) : null);
 	}
 }

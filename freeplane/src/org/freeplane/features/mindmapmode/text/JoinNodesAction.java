@@ -38,18 +38,17 @@ class JoinNodesAction extends FreeplaneAction {
 	final static Pattern BODY_END = Pattern.compile("</body>", Pattern.CASE_INSENSITIVE);
 	final static Pattern BODY_START = Pattern.compile("<body>", Pattern.CASE_INSENSITIVE);
 
-	public JoinNodesAction() {
-		super("join_nodes");
+	public JoinNodesAction(final Controller controller) {
+		super(controller, "join_nodes");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final NodeModel selectedNode = Controller.getController().getSelection().getSelected();
-		final List selectedNodes = Controller.getController().getSelection().getSortedSelection();
+		final NodeModel selectedNode = getController().getSelection().getSelected();
+		final List selectedNodes = getController().getSelection().getSortedSelection();
 		joinNodes(selectedNode, selectedNodes);
 	}
 
-	private String addContent(String content, final boolean isHtml, String nodeContent,
-	                          final boolean isHtmlNode) {
+	private String addContent(String content, final boolean isHtml, String nodeContent, final boolean isHtmlNode) {
 		if (isHtml) {
 			final String start[] = JoinNodesAction.BODY_END.split(content, -2);
 			content = start[0];
@@ -74,12 +73,13 @@ class JoinNodesAction extends FreeplaneAction {
 
 	public void joinNodes(final NodeModel selectedNode, final List selectedNodes) {
 		String newContent = "";
-		final Controller controller = Controller.getController();
+		final Controller controller = getController();
 		for (final Iterator it = selectedNodes.iterator(); it.hasNext();) {
 			final NodeModel node = (NodeModel) it.next();
 			if (node.getModeController().getMapController().hasChildren(node)) {
-				UITools.informationMessage(getModeController().getText(
-				    "cannot_join_nodes_with_children"), "Freeplane", JOptionPane.WARNING_MESSAGE);
+				UITools.informationMessage(controller.getViewController().getFrame(),
+					getModeController().getText("cannot_join_nodes_with_children"), "Freeplane",
+				    JOptionPane.WARNING_MESSAGE);
 				return;
 			}
 		}
@@ -95,7 +95,6 @@ class JoinNodesAction extends FreeplaneAction {
 			isHtml = isHtml || isHtmlNode;
 		}
 		controller.getSelection().selectAsTheOnlyOneSelected(selectedNode);
-		((MTextController) TextController.getController(getModeController())).setNodeText(
-		    selectedNode, newContent);
+		((MTextController) TextController.getController(getModeController())).setNodeText(selectedNode, newContent);
 	}
 }

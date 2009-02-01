@@ -28,7 +28,10 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 
 class OptionAntialiasAction extends AbstractAction implements IFreeplanePropertyListener {
-	OptionAntialiasAction() {
+	final private Controller controller;
+
+	OptionAntialiasAction(final Controller controller) {
+		this.controller = controller;
 		Controller.getResourceController().addPropertyChangeListener(this);
 	}
 
@@ -44,25 +47,24 @@ class OptionAntialiasAction extends AbstractAction implements IFreeplaneProperty
 			return;
 		}
 		if (command.equals("antialias_none")) {
-			Controller.getController().getViewController().setAntialiasEdges(false);
-			Controller.getController().getViewController().setAntialiasAll(false);
+			controller.getViewController().setAntialiasEdges(false);
+			controller.getViewController().setAntialiasAll(false);
 		}
 		if (command.equals("antialias_edges")) {
-			Controller.getController().getViewController().setAntialiasEdges(true);
-			Controller.getController().getViewController().setAntialiasAll(false);
+			controller.getViewController().setAntialiasEdges(true);
+			controller.getViewController().setAntialiasAll(false);
 		}
 		if (command.equals("antialias_all")) {
-			Controller.getController().getViewController().setAntialiasEdges(true);
-			Controller.getController().getViewController().setAntialiasAll(true);
+			controller.getViewController().setAntialiasEdges(true);
+			controller.getViewController().setAntialiasAll(true);
 		}
-		final Component mapView = Controller.getController().getViewController().getMapView();
+		final Component mapView = controller.getViewController().getMapView();
 		if (mapView != null) {
 			mapView.repaint();
 		}
 	}
 
-	public void propertyChanged(final String propertyName, final String newValue,
-	                            final String oldValue) {
+	public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
 		if (propertyName.equals(ViewController.RESOURCE_ANTIALIAS)) {
 			changeAntialias(newValue);
 		}

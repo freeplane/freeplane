@@ -30,31 +30,29 @@ import org.freeplane.core.extension.IExtension;
  * @author Dimitry Polivaev
  */
 public class HelpController implements IExtension {
-	public static HelpController getController() {
-		return (HelpController) Controller.getController().getExtension(HelpController.class);
+	public static HelpController getController(final Controller controller) {
+		return (HelpController) controller.getExtension(HelpController.class);
 	}
 
-	public static void install() {
-		Controller.getController().addExtension(HelpController.class, new HelpController());
+	public static void install(final Controller controller) {
+		controller.addExtension(HelpController.class, new HelpController(controller));
 	}
 
 	final private Action webDocu;
 
-	public HelpController() {
+	public HelpController(final Controller controller) {
 		super();
-		final Controller controller = Controller.getController();
-		controller.addAction("about", new AboutAction());
-		controller.addAction("freeplaneUrl", new OpenURLAction(Controller.getResourceController()
-		    .getText("Freeplane"), Controller.getResourceController().getProperty(
-		    "webFreeplaneLocation")));
-		controller.addAction("faq", new OpenURLAction(Controller.getResourceController().getText(
-		    "FAQ"), Controller.getResourceController().getProperty("webFAQLocation")));
-		controller.addAction("keyDocumentation", new KeyDocumentationAction());
-		webDocu = new OpenURLAction(Controller.getResourceController().getText("webDocu"),
-		    Controller.getResourceController().getProperty("webDocuLocation"));
+		controller.addAction("about", new AboutAction(controller));
+		controller.addAction("freeplaneUrl", new OpenURLAction(controller, Controller.getResourceController().getText(
+		    "Freeplane"), Controller.getResourceController().getProperty("webFreeplaneLocation")));
+		controller.addAction("faq", new OpenURLAction(controller, Controller.getResourceController().getText("FAQ"),
+		    Controller.getResourceController().getProperty("webFAQLocation")));
+		controller.addAction("keyDocumentation", new KeyDocumentationAction(controller));
+		webDocu = new OpenURLAction(controller, Controller.getResourceController().getText("webDocu"), Controller
+		    .getResourceController().getProperty("webDocuLocation"));
 		controller.addAction("webDocu", webDocu);
-		controller.addAction("documentation", new DocumentationAction());
-		controller.addAction("license", new LicenseAction());
+		controller.addAction("documentation", new DocumentationAction(controller));
+		controller.addAction("license", new LicenseAction(controller));
 	}
 
 	/**

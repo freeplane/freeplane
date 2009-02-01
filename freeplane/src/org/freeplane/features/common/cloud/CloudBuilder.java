@@ -46,8 +46,7 @@ public class CloudBuilder implements IElementDOMHandler, IExtensionElementWriter
 		return null;
 	}
 
-	public void endElement(final Object parent, final String tag, final Object userObject,
-	                       final IXMLElement dom) {
+	public void endElement(final Object parent, final String tag, final Object userObject, final IXMLElement dom) {
 		if (parent instanceof NodeModel) {
 			final NodeModel node = (NodeModel) parent;
 			if (userObject instanceof CloudModel) {

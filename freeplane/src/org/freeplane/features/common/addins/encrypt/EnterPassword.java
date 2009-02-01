@@ -36,7 +36,7 @@ iconPath = "/accessories/plugins/icons/unlock.png", //
 locations = { "/menu_bar/extras/first/nodes/crypto" })
 public class EnterPassword extends FreeplaneAction {
 	public EnterPassword(final ModeController modeController) {
-		super();
+		super(modeController.getController());
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -45,11 +45,11 @@ public class EnterPassword extends FreeplaneAction {
 	}
 
 	/**
+	 * @param e 
 	 */
 	private boolean doPasswordCheckAndDecryptNode(final EncryptionModel encNode) {
 		while (true) {
-			final EnterPasswordDialog pwdDialog = new EnterPasswordDialog(Controller
-			    .getController().getViewController().getJFrame(), false);
+			final EnterPasswordDialog pwdDialog = new EnterPasswordDialog(getController().getViewController().getFrame(), false);
 			pwdDialog.setModal(true);
 			pwdDialog.setVisible(true);
 			if (pwdDialog.getResult() == EnterPasswordDialog.CANCEL) {
@@ -57,9 +57,9 @@ public class EnterPassword extends FreeplaneAction {
 			}
 			final StringBuffer password = pwdDialog.getPassword();
 			if (!encNode.decrypt(new SingleDesEncrypter(password))) {
-				JOptionPane.showMessageDialog(Controller.getController().getViewController()
-				    .getContentPane(), getModeController().getText(
-				    "accessories/plugins/EncryptNode.properties_wrong_password"), "Freeplane",
+				final Controller controller = getController();
+				JOptionPane.showMessageDialog(controller.getViewController().getContentPane(), getModeController()
+				    .getText("accessories/plugins/EncryptNode.properties_wrong_password"), "Freeplane",
 				    JOptionPane.ERROR_MESSAGE);
 				return false;
 			}
@@ -84,8 +84,7 @@ public class EnterPassword extends FreeplaneAction {
 	/**
 	 */
 	private StringBuffer getUsersPassword() {
-		final EnterPasswordDialog pwdDialog = new EnterPasswordDialog(Controller.getController()
-		    .getViewController().getJFrame(), true);
+		final EnterPasswordDialog pwdDialog = new EnterPasswordDialog(getController().getViewController().getFrame(), true);
 		pwdDialog.setModal(true);
 		pwdDialog.show();
 		if (pwdDialog.getResult() == EnterPasswordDialog.CANCEL) {
@@ -96,6 +95,7 @@ public class EnterPassword extends FreeplaneAction {
 	}
 
 	/**
+	 * @param e 
 	 */
 	private void toggleCryptState(final NodeModel node) {
 		final ModeController mindMapController = getModeController();
@@ -106,11 +106,12 @@ public class EnterPassword extends FreeplaneAction {
 				node.setFolded(true);
 			}
 			else {
-				if (doPasswordCheckAndDecryptNode(encNode)) {
+				if (doPasswordCheckAndDecryptNode( encNode)) {
 					node.setFolded(false);
 				}
 			}
-			final IMapSelection selection = Controller.getController().getSelection();
+			final Controller controller = getController();
+			final IMapSelection selection = controller.getSelection();
 			selection.selectAsTheOnlyOneSelected(node);
 		}
 		else {

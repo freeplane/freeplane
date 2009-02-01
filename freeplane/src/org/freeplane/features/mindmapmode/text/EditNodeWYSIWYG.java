@@ -24,6 +24,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -52,8 +53,8 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 	private static class HTMLDialog extends EditDialog {
 		private SHTMLPanel htmlEditorPanel;
 
-		HTMLDialog(final EditNodeBase base) throws Exception {
-			super(base);
+		HTMLDialog(final EditNodeBase base, Frame frame) throws Exception {
+			super(base, frame);
 			createEditorPanel();
 			getContentPane().add(htmlEditorPanel, BorderLayout.CENTER);
 			UITools.addEscapeActionToDialog(this, new CancelAction());
@@ -134,8 +135,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 		@Override
 		protected void split() {
 			htmlEditorPanel.getDocument().getStyleSheet().removeStyle("body");
-			getBase().getEditControl().split(
-			    HtmlTools.unescapeHTMLUnicodeEntity(htmlEditorPanel.getDocumentText()),
+			getBase().getEditControl().split(HtmlTools.unescapeHTMLUnicodeEntity(htmlEditorPanel.getDocumentText()),
 			    htmlEditorPanel.getCaretPosition());
 			super.split();
 		}
@@ -148,8 +148,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 		protected void submit() {
 			htmlEditorPanel.getDocument().getStyleSheet().removeStyle("body");
 			if (htmlEditorPanel.needsSaving()) {
-				getBase().getEditControl().ok(
-				    HtmlTools.unescapeHTMLUnicodeEntity(htmlEditorPanel.getDocumentText()));
+				getBase().getEditControl().ok(HtmlTools.unescapeHTMLUnicodeEntity(htmlEditorPanel.getDocumentText()));
 			}
 			else {
 				getBase().getEditControl().cancel();
@@ -162,21 +161,20 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 	final private KeyEvent firstEvent;
 
 	public EditNodeWYSIWYG(final NodeModel node, final String text, final KeyEvent firstEvent,
-	                       final ModeController controller, final IEditControl editControl) {
-		super(node, text, controller, editControl);
+	                       final ModeController modeController, final IEditControl editControl) {
+		super(node, text, modeController, editControl);
 		this.firstEvent = firstEvent;
 	}
 
-	public void show() {
+	public void show(Frame frame) {
 		try {
 			if (EditNodeWYSIWYG.htmlEditorWindow == null) {
-				EditNodeWYSIWYG.htmlEditorWindow = new HTMLDialog(this);
+				EditNodeWYSIWYG.htmlEditorWindow = new HTMLDialog(this, frame);
 			}
 			EditNodeWYSIWYG.htmlEditorWindow.setBase(this);
-			final SHTMLPanel htmlEditorPanel = (EditNodeWYSIWYG.htmlEditorWindow)
-			    .getHtmlEditorPanel();
+			final SHTMLPanel htmlEditorPanel = (EditNodeWYSIWYG.htmlEditorWindow).getHtmlEditorPanel();
 			String rule = "BODY {";
-			final ViewController viewController = Controller.getController().getViewController();
+			final ViewController viewController = getModeController().getController().getViewController();
 			final Font font = viewController.getFont(node);
 			final Color nodeTextBackground = viewController.getBackgroundColor(node);
 			rule += "font-family: " + font.getFamily() + ";";
@@ -201,17 +199,16 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 			document.getStyleSheet().addRule(rule);
 			document.setBase(node.getMap().getURL());
 			int preferredHeight = (int) (viewController.getComponent(node).getHeight() * 1.2);
-			preferredHeight = Math.max(preferredHeight, Integer.parseInt(Controller
-			    .getResourceController().getProperty("el__min_default_window_height")));
-			preferredHeight = Math.min(preferredHeight, Integer.parseInt(Controller
-			    .getResourceController().getProperty("el__max_default_window_height")));
+			preferredHeight = Math.max(preferredHeight, Integer.parseInt(Controller.getResourceController()
+			    .getProperty("el__min_default_window_height")));
+			preferredHeight = Math.min(preferredHeight, Integer.parseInt(Controller.getResourceController()
+			    .getProperty("el__max_default_window_height")));
 			int preferredWidth = (int) (viewController.getComponent(node).getWidth() * 1.2);
-			preferredWidth = Math.max(preferredWidth, Integer.parseInt(Controller
-			    .getResourceController().getProperty("el__min_default_window_width")));
-			preferredWidth = Math.min(preferredWidth, Integer.parseInt(Controller
-			    .getResourceController().getProperty("el__max_default_window_width")));
-			htmlEditorPanel.setContentPanePreferredSize(new Dimension(preferredWidth,
-			    preferredHeight));
+			preferredWidth = Math.max(preferredWidth, Integer.parseInt(Controller.getResourceController().getProperty(
+			    "el__min_default_window_width")));
+			preferredWidth = Math.min(preferredWidth, Integer.parseInt(Controller.getResourceController().getProperty(
+			    "el__max_default_window_width")));
+			htmlEditorPanel.setContentPanePreferredSize(new Dimension(preferredWidth, preferredHeight));
 			EditNodeWYSIWYG.htmlEditorWindow.pack();
 			UITools.setDialogLocationRelativeTo(EditNodeWYSIWYG.htmlEditorWindow, node);
 			String content = node.toString();
@@ -234,8 +231,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 		}
 		catch (final Exception ex) {
 			org.freeplane.core.util.Tools.logException(ex);
-			System.err
-			    .println("Loading of WYSIWYG HTML editor failed. Use the other editors instead.");
+			System.err.println("Loading of WYSIWYG HTML editor failed. Use the other editors instead.");
 		}
 	}
 }

@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 import java.util.Iterator;
 import java.util.ListIterator;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.FreeplaneAction;
 
@@ -30,8 +31,8 @@ import org.freeplane.core.ui.FreeplaneAction;
  * @author foltin
  */
 class CommonToggleFoldedAction extends FreeplaneAction {
-	public CommonToggleFoldedAction() {
-		super("toggle_folded");
+	public CommonToggleFoldedAction(final Controller controller) {
+		super(controller, "toggle_folded");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -50,8 +51,7 @@ class CommonToggleFoldedAction extends FreeplaneAction {
 	}
 
 	public void toggleFolded(final ListIterator listIterator) {
-		final boolean fold = getModeController().getMapController().getFoldingState(
-		    resetIterator(listIterator));
+		final boolean fold = getModeController().getMapController().getFoldingState(resetIterator(listIterator));
 		for (final Iterator i = resetIterator(listIterator); i.hasNext();) {
 			final NodeModel node = (NodeModel) i.next();
 			getModeController().getMapController().setFolded(node, fold);

@@ -19,6 +19,8 @@
  */
 package org.freeplane.core.controller;
 
+import java.awt.Component;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
@@ -50,21 +52,14 @@ import org.freeplane.core.url.UrlManager;
  * MapModel(editing) or MapView(navigation).
  */
 public class Controller {
-	private static Controller controllerInstance;
 	public static final String JAVA_VERSION = System.getProperty("java.version");
 	public static final String ON_START_IF_NOT_SPECIFIED = "on_start_if_not_specified";
 	private static ResourceController resourceController;
-	public static final FreeplaneVersionInformation VERSION = new FreeplaneVersionInformation(
-	    "0.9.0 Freeplane 21");
+	public static final FreeplaneVersionInformation VERSION = new FreeplaneVersionInformation("0.9.0 Freeplane 21");
 	public static final String XML_VERSION = "0.9.0";
 
-	public static Controller getController() {
-		return controllerInstance;
-	}
-
-	/** @return the current modeController. */
-	public static ModeController getModeController() {
-		return controllerInstance.modeController;
+	public static FreeplaneVersionInformation getFreeplaneVersion() {
+		return Controller.VERSION;
 	}
 
 	static public ResourceController getResourceController() {
@@ -84,6 +79,10 @@ public class Controller {
 		return underMac;
 	}
 
+	static public void setResourceController(final ResourceController resourceController) {
+		Controller.resourceController = resourceController;
+	}
+
 	private final ActionController actionController;
 	final private ExtensionHashMap extensions;
 	final private LastOpenedList lastOpened;
@@ -96,20 +95,13 @@ public class Controller {
 	final private Action quit;
 	private ViewController viewController;
 
-	public Controller(final ResourceController resourceController) {
-		if (Controller.controllerInstance != null) {
-			throw new RuntimeException("Controller already created");
-		}
-		Controller.resourceController = resourceController;
-		Controller.controllerInstance = this;
+	public Controller() {
 		extensions = new ExtensionHashMap();
 		actionController = new ActionController();
 		modeControllers = new HashMap();
-		quit = new QuitAction(resourceController);
+		quit = new QuitAction(this);
 		addAction("quit", quit);
-		resourceController.init();
-		lastOpened = new LastOpenedList(Controller.getResourceController()
-		    .getProperty("lastOpened"));
+		lastOpened = new LastOpenedList(this, Controller.getResourceController().getProperty("lastOpened"));
 	}
 
 	public void addAction(final Object key, final Action value) {
@@ -149,13 +141,12 @@ public class Controller {
 				myMessage = "Undefined error";
 			}
 		}
-		JOptionPane.showMessageDialog(Controller.getController().getViewController()
-		    .getContentPane(), myMessage, "Freeplane", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(getViewController().getContentPane(), myMessage, "Freeplane",
+		    JOptionPane.ERROR_MESSAGE);
 	}
 
 	public void errorMessage(final Object message, final JComponent component) {
-		JOptionPane.showMessageDialog(component, message.toString(), "Freeplane",
-		    JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(component, message.toString(), "Freeplane", JOptionPane.ERROR_MESSAGE);
 	}
 
 	public Action getAction(final String key) {
@@ -164,10 +155,6 @@ public class Controller {
 
 	public IExtension getExtension(final Class clazz) {
 		return extensions.getExtension(clazz);
-	}
-
-	public FreeplaneVersionInformation getFreeplaneVersion() {
-		return Controller.VERSION;
 	}
 
 	public LastOpenedList getLastOpenedList() {
@@ -183,6 +170,11 @@ public class Controller {
 
 	public IMapViewManager getMapViewManager() {
 		return getViewController().getMapViewManager();
+	}
+
+	/** @return the current modeController. */
+	public ModeController getModeController() {
+		return modeController;
 	}
 
 	public ModeController getModeController(final String modeName) {
@@ -255,23 +247,20 @@ public class Controller {
 	}
 
 	public boolean shutdown() {
-		final String currentMapRestorable = UrlManager
-		    .getController(Controller.getModeController()).getRestoreable(getMap());
+		final String currentMapRestorable = UrlManager.getController(getModeController()).getRestoreable(getMap());
 		if (!getViewController().quit()) {
 			return false;
 		}
 		if (currentMapRestorable != null) {
-			Controller.getResourceController().setProperty(Controller.ON_START_IF_NOT_SPECIFIED,
-			    currentMapRestorable);
+			Controller.getResourceController().setProperty(Controller.ON_START_IF_NOT_SPECIFIED, currentMapRestorable);
 		}
 		if (modeController != null) {
 			modeController.shutdown();
 		}
-		Controller.getController().getViewController().stop();
+		getViewController().stop();
 		final String lastOpenedString = lastOpened.save();
 		Controller.getResourceController().setProperty("lastOpened", lastOpenedString);
 		extensions.clear();
-		Controller.controllerInstance = null;
 		return true;
 	}
 
@@ -284,10 +273,10 @@ public class Controller {
 			final JMenuItem item = new JMenuItem(key);
 			if (firstElement) {
 				firstElement = false;
-				item.setAccelerator(KeyStroke.getKeyStroke(Controller.getResourceController()
-				    .getAdjustableProperty("keystroke_open_first_in_history")));
+				item.setAccelerator(KeyStroke.getKeyStroke(Controller.getResourceController().getAdjustableProperty(
+				    "keystroke_open_first_in_history")));
 			}
-			final ActionListener lastOpenedActionListener = new LastOpenedActionListener();
+			final ActionListener lastOpenedActionListener = new LastOpenedActionListener(this);
 			item.addActionListener(lastOpenedActionListener);
 			menuBuilder.addMenuItem(FreeplaneMenuBar.FILE_MENU + "/last", item, UIBuilder.AS_CHILD);
 		}

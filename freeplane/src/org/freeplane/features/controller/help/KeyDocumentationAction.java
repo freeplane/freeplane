@@ -29,7 +29,11 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 
 class KeyDocumentationAction extends AbstractAction {
-	KeyDocumentationAction() {
+	final private Controller controller;
+
+	public KeyDocumentationAction(final Controller controller) {
+		super();
+		this.controller = controller;
 		MenuBuilder.setLabelAndMnemonic(this, Controller.getText("KeyDoc"));
 	}
 
@@ -40,7 +44,7 @@ class KeyDocumentationAction extends AbstractAction {
 			if (urlText != null && urlText != "") {
 				URL url = null;
 				url = Controller.getResourceController().getResource(urlText);
-				Controller.getController().getViewController().openDocument(url);
+				controller.getViewController().openDocument(url);
 			}
 		}
 		catch (final Exception e2) {

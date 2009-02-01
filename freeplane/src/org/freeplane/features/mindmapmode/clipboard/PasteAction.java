@@ -54,8 +54,8 @@ class PasteAction extends FreeplaneAction {
 	private interface DataFlavorHandler {
 		DataFlavor getDataFlavor();
 
-		void paste(Object TransferData, NodeModel target, boolean asSibling, boolean isLeft,
-		           Transferable t) throws UnsupportedFlavorException, IOException;
+		void paste(Object TransferData, NodeModel target, boolean asSibling, boolean isLeft, Transferable t)
+		        throws UnsupportedFlavorException, IOException;
 	}
 
 	private class DirectHtmlFlavorHandler implements DataFlavorHandler {
@@ -63,37 +63,34 @@ class PasteAction extends FreeplaneAction {
 			return MindMapNodesSelection.htmlFlavor;
 		}
 
-		public void paste(final Object transferData, final NodeModel target,
-		                  final boolean asSibling, final boolean isLeft, final Transferable t)
-		        throws UnsupportedFlavorException, IOException {
+		public void paste(final Object transferData, final NodeModel target, final boolean asSibling,
+		                  final boolean isLeft, final Transferable t) throws UnsupportedFlavorException, IOException {
 			String textFromClipboard = (String) transferData;
 			if (textFromClipboard.charAt(0) == 65533) {
 				throw new UnsupportedFlavorException(MindMapNodesSelection.htmlFlavor);
 			}
-			Controller.getController().getViewController().setWaitingCursor(true);
-			textFromClipboard = textFromClipboard.replaceFirst("(?i)(?s)<head>.*</head>", "")
-			    .replaceFirst("(?i)(?s)^.*<html[^>]*>", "<html>").replaceFirst(
-			        "(?i)(?s)<body [^>]*>", "<body>").replaceAll("(?i)(?s)<script.*?>.*?</script>",
-			        "").replaceAll("(?i)(?s)</?tbody.*?>", "").replaceAll("(?i)(?s)<!--.*?-->", "")
-			    .replaceAll("(?i)(?s)</?o[^>]*>", "");
-			if (Tools.safeEquals(Controller.getResourceController().getProperty(
-			    "cut_out_pictures_when_pasting_html"), "true")) {
+			getController().getViewController().setWaitingCursor(true);
+			textFromClipboard = textFromClipboard.replaceFirst("(?i)(?s)<head>.*</head>", "").replaceFirst(
+			    "(?i)(?s)^.*<html[^>]*>", "<html>").replaceFirst("(?i)(?s)<body [^>]*>", "<body>").replaceAll(
+			    "(?i)(?s)<script.*?>.*?</script>", "").replaceAll("(?i)(?s)</?tbody.*?>", "").replaceAll(
+			    "(?i)(?s)<!--.*?-->", "").replaceAll("(?i)(?s)</?o[^>]*>", "");
+			if (Tools.safeEquals(Controller.getResourceController().getProperty("cut_out_pictures_when_pasting_html"),
+			    "true")) {
 				textFromClipboard = textFromClipboard.replaceAll("(?i)(?s)<img[^>]*>", "");
 			}
 			textFromClipboard = HtmlTools.unescapeHTMLUnicodeEntity(textFromClipboard);
-			final NodeModel node = getModeController().getMapController().newNode(
-			    textFromClipboard, Controller.getController().getMap());
+			final NodeModel node = getModeController().getMapController().newNode(textFromClipboard,
+			    getController().getMap());
 			final Matcher m = PasteAction.HREF_PATTERN.matcher(textFromClipboard);
 			if (m.matches()) {
 				final String body = m.group(2);
 				if (!body.matches(".*<\\s*a.*")) {
 					final String href = m.group(1);
-					((MLinkController) LinkController.getController(node.getModeController()))
-					    .setLink(node, href);
+					((MLinkController) LinkController.getController(node.getModeController())).setLink(node, href);
 				}
 			}
 			PasteAction.this.paste(node, target, target.getChildCount());
-			Controller.getController().getViewController().setWaitingCursor(false);
+			getController().getViewController().setWaitingCursor(false);
 		}
 	}
 
@@ -102,16 +99,15 @@ class PasteAction extends FreeplaneAction {
 			return MindMapNodesSelection.fileListFlavor;
 		}
 
-		public void paste(final Object TransferData, final NodeModel target,
-		                  final boolean asSibling, final boolean isLeft, final Transferable t) {
+		public void paste(final Object TransferData, final NodeModel target, final boolean asSibling,
+		                  final boolean isLeft, final Transferable t) {
 			final List fileList = (List) TransferData;
 			for (final ListIterator it = fileList.listIterator(); it.hasNext();) {
 				final File file = (File) it.next();
-				final NodeModel node = getModeController().getMapController().newNode(
-				    file.getName(), target.getMap());
+				final NodeModel node = getModeController().getMapController().newNode(file.getName(), target.getMap());
 				node.setLeft(isLeft);
-				((MLinkController) LinkController.getController(node.getModeController())).setLink(
-				    node, file.getAbsolutePath());
+				((MLinkController) LinkController.getController(node.getModeController())).setLink(node, file
+				    .getAbsolutePath());
 				PasteAction.this.paste(node, target, asSibling, isLeft, false);
 			}
 		}
@@ -122,21 +118,18 @@ class PasteAction extends FreeplaneAction {
 			return MindMapNodesSelection.mindMapNodesFlavor;
 		}
 
-		public void paste(final Object TransferData, final NodeModel target,
-		                  final boolean asSibling, final boolean isLeft, final Transferable t) {
+		public void paste(final Object TransferData, final NodeModel target, final boolean asSibling,
+		                  final boolean isLeft, final Transferable t) {
 			final String textFromClipboard = (String) TransferData;
 			if (textFromClipboard != null) {
 				final String[] textLines = textFromClipboard.split(ModeController.NODESEPARATOR);
 				if (textLines.length > 1) {
-					Controller.getController().getViewController().setWaitingCursor(true);
+					getController().getViewController().setWaitingCursor(true);
 				}
-				final MapReader mapController = getModeController().getMapController()
-				    .getMapReader();
-				final NodeTreeCreator nodeTreeCreator = mapController.nodeTreeCreator(target
-				    .getMap());
+				final MapReader mapController = getModeController().getMapController().getMapReader();
+				final NodeTreeCreator nodeTreeCreator = mapController.nodeTreeCreator(target.getMap());
 				for (int i = 0; i < textLines.length; ++i) {
-					final NodeModel newModel = nodeTreeCreator
-					    .create(new StringReader(textLines[i]));
+					final NodeModel newModel = nodeTreeCreator.create(new StringReader(textLines[i]));
 					newModel.setLeft(isLeft);
 					PasteAction.this.paste(newModel, target, target.getChildCount());
 				}
@@ -150,9 +143,8 @@ class PasteAction extends FreeplaneAction {
 			return DataFlavor.stringFlavor;
 		}
 
-		public void paste(final Object TransferData, final NodeModel target,
-		                  final boolean asSibling, final boolean isLeft, final Transferable t)
-		        throws UnsupportedFlavorException, IOException {
+		public void paste(final Object TransferData, final NodeModel target, final boolean asSibling,
+		                  final boolean isLeft, final Transferable t) throws UnsupportedFlavorException, IOException {
 			pasteStringWithoutRedisplay(t, target, asSibling, isLeft);
 		}
 	}
@@ -171,23 +163,22 @@ class PasteAction extends FreeplaneAction {
 
 	private List newNodes;
 
-	public PasteAction() {
-		super("paste", "/images/editpaste.png");
+	public PasteAction(final Controller controller) {
+		super(controller, "paste", "/images/editpaste.png");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final MClipboardController clipboardController = (MClipboardController) ClipboardController
 		    .getController(getModeController());
-		clipboardController.paste(clipboardController.getClipboardContents(), Controller
-		    .getController().getSelection().getSelected());
+		clipboardController.paste(clipboardController.getClipboardContents(), getController().getSelection()
+		    .getSelected());
 	}
 
 	/**
 	 */
 	private DataFlavorHandler[] getFlavorHandlers() {
-		final DataFlavorHandler[] dataFlavorHandlerList = new DataFlavorHandler[] {
-		        new FileListFlavorHandler(), new MindMapNodesFlavorHandler(),
-		        new DirectHtmlFlavorHandler(), new StringFlavorHandler() };
+		final DataFlavorHandler[] dataFlavorHandlerList = new DataFlavorHandler[] { new FileListFlavorHandler(),
+		        new MindMapNodesFlavorHandler(), new DirectHtmlFlavorHandler(), new StringFlavorHandler() };
 		return dataFlavorHandlerList;
 	}
 
@@ -195,8 +186,8 @@ class PasteAction extends FreeplaneAction {
 		paste(node, parent, parent.getChildCount());
 	}
 
-	private void paste(final NodeModel node, final NodeModel target, final boolean asSibling,
-	                   final boolean isLeft, final boolean changeSide) {
+	private void paste(final NodeModel node, final NodeModel target, final boolean asSibling, final boolean isLeft,
+	                   final boolean changeSide) {
 		NodeModel parent;
 		if (asSibling) {
 			parent = target.getParentNode();
@@ -219,8 +210,7 @@ class PasteAction extends FreeplaneAction {
 	public void paste(final NodeModel node, final NodeModel parentNode, final int index) {
 		final IUndoableActor actor = new IUndoableActor() {
 			public void act() {
-				(getModeController().getMapController()).insertNodeIntoWithoutUndo(node,
-				    parentNode, index);
+				(getModeController().getMapController()).insertNodeIntoWithoutUndo(node, parentNode, index);
 			}
 
 			public String getDescription() {
@@ -247,8 +237,7 @@ class PasteAction extends FreeplaneAction {
 	 *            decided on which side of root
 	 * @return true, if successfully executed.
 	 */
-	public void paste(final Transferable t, final NodeModel target, final boolean asSibling,
-	                  final boolean isLeft) {
+	public void paste(final Transferable t, final NodeModel target, final boolean asSibling, final boolean isLeft) {
 		if (t == null) {
 			return;
 		}
@@ -276,15 +265,14 @@ class PasteAction extends FreeplaneAction {
 			}
 			for (final ListIterator e = newNodes.listIterator(); e.hasNext();) {
 				final NodeModel child = (NodeModel) e.next();
-				AttributeController.getController(getModeController())
-				    .performRegistrySubtreeAttributes(child);
+				AttributeController.getController(getModeController()).performRegistrySubtreeAttributes(child);
 			}
 		}
 		catch (final IOException e) {
 			Tools.logException(e);
 		}
 		finally {
-			Controller.getController().getViewController().setWaitingCursor(false);
+			getController().getViewController().setWaitingCursor(false);
 		}
 	}
 
@@ -297,16 +285,15 @@ class PasteAction extends FreeplaneAction {
 	 *
 	 * @param isLeft
 	 */
-	private NodeModel pasteStringWithoutRedisplay(final Transferable t, NodeModel parent,
-	                                              final boolean asSibling, final boolean isLeft)
-	        throws UnsupportedFlavorException, IOException {
+	private NodeModel pasteStringWithoutRedisplay(final Transferable t, NodeModel parent, final boolean asSibling,
+	                                              final boolean isLeft) throws UnsupportedFlavorException, IOException {
 		final String textFromClipboard = (String) t.getTransferData(DataFlavor.stringFlavor);
 		if (mailPattern == null) {
 			mailPattern = Pattern.compile("([^@ <>\\*']+@[^@ <>\\*']+)");
 		}
 		final String[] textLines = textFromClipboard.split("\n");
 		if (textLines.length > 1) {
-			Controller.getController().getViewController().setWaitingCursor(true);
+			getController().getViewController().setWaitingCursor(true);
 		}
 		final MapModel map = parent.getMap();
 		if (asSibling) {
@@ -330,9 +317,8 @@ class PasteAction extends FreeplaneAction {
 			}
 			String visibleText = text.trim();
 			if (visibleText.matches("^http://(www\\.)?[^ ]*$")) {
-				visibleText = visibleText.replaceAll("^http://(www\\.)?", "").replaceAll(
-				    "(/|\\.[^\\./\\?]*)$", "").replaceAll("((\\.[^\\./]*\\?)|\\?)[^/]*$", " ? ...")
-				    .replaceAll("_|%20", " ");
+				visibleText = visibleText.replaceAll("^http://(www\\.)?", "").replaceAll("(/|\\.[^\\./\\?]*)$", "")
+				    .replaceAll("((\\.[^\\./]*\\?)|\\?)[^/]*$", " ? ...").replaceAll("_|%20", " ");
 				final String[] textParts = visibleText.split("/");
 				visibleText = "";
 				for (int textPartIdx = 0; textPartIdx < textParts.length; textPartIdx++) {
@@ -349,20 +335,19 @@ class PasteAction extends FreeplaneAction {
 			}
 			final Matcher mailMatcher = mailPattern.matcher(visibleText);
 			if (mailMatcher.find()) {
-				((MLinkController) LinkController.getController(node.getModeController())).setLink(
-				    node, ("mailto:" + mailMatcher.group()));
+				((MLinkController) LinkController.getController(node.getModeController())).setLink(node,
+				    ("mailto:" + mailMatcher.group()));
 			}
 			for (int j = 0; j < linkPrefixes.length; j++) {
 				final int linkStart = text.indexOf(linkPrefixes[j]);
 				if (linkStart != -1) {
 					int linkEnd = linkStart;
 					while (linkEnd < text.length()
-					        && !PasteAction.nonLinkCharacter.matcher(
-					            text.substring(linkEnd, linkEnd + 1)).matches()) {
+					        && !PasteAction.nonLinkCharacter.matcher(text.substring(linkEnd, linkEnd + 1)).matches()) {
 						linkEnd++;
 					}
-					((MLinkController) LinkController.getController(node.getModeController()))
-					    .setLink(node, text.substring(linkStart, linkEnd));
+					((MLinkController) LinkController.getController(node.getModeController())).setLink(node, text
+					    .substring(linkStart, linkEnd));
 				}
 			}
 			for (int j = parentNodes.size() - 1; j >= 0; --j) {

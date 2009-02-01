@@ -78,32 +78,34 @@ public abstract class FreeplaneAction extends AbstractAction {
 		return annotation.checkOnPopup();
 	}
 
+	final private Controller controller;
 	private boolean selected;
 	private boolean visible;
 
-	public FreeplaneAction() {
+	public FreeplaneAction(final Controller controller) {
 		super();
 		selected = false;
 		visible = true;
+		this.controller = controller;
 	}
 
-	public FreeplaneAction(final ActionDescriptor descriptor) {
-		this(descriptor.name(), descriptor.iconPath());
+	public FreeplaneAction(final Controller controller, final ActionDescriptor descriptor) {
+		this(controller, descriptor.name(), descriptor.iconPath());
 	}
 
 	/**
 	 * @param controller
 	 * @param string
 	 */
-	public FreeplaneAction(final String title) {
-		this();
+	public FreeplaneAction(final Controller controller, final String title) {
+		this(controller);
 		if (title != null && !title.equals("")) {
 			MenuBuilder.setLabelAndMnemonic(this, Controller.getText(title));
 		}
 	}
 
-	public FreeplaneAction(final String title, final ImageIcon icon) {
-		this(title);
+	public FreeplaneAction(final Controller controller, final String title, final ImageIcon icon) {
+		this(controller, title);
 		putValue(SMALL_ICON, icon);
 	}
 
@@ -113,17 +115,20 @@ public abstract class FreeplaneAction extends AbstractAction {
 	 * @param iconPath
 	 *            is a path to an icon.
 	 */
-	public FreeplaneAction(final String title, final String iconPath) {
-		this(title);
+	public FreeplaneAction(final Controller controller, final String title, final String iconPath) {
+		this(controller, title);
 		if (iconPath != null && !iconPath.equals("")) {
-			final ImageIcon icon = new ImageIcon(Controller.getResourceController().getResource(
-			    iconPath));
+			final ImageIcon icon = new ImageIcon(Controller.getResourceController().getResource(iconPath));
 			putValue(Action.SMALL_ICON, icon);
 		}
 	}
 
+	public Controller getController() {
+		return controller;
+	}
+
 	public ModeController getModeController() {
-		return Controller.getModeController();
+		return controller.getModeController();
 	}
 
 	public boolean isSelected() {

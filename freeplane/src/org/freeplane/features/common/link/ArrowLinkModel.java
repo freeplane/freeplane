@@ -50,8 +50,7 @@ public class ArrowLinkModel extends LinkModel {
 			deltaX = -deltaX;
 		}
 		changedInclination.translate(deltaX, deltaY);
-		if (changedInclination.x != 0
-		        && Math.abs((double) changedInclination.y / changedInclination.x) < 0.015) {
+		if (changedInclination.x != 0 && Math.abs((double) changedInclination.y / changedInclination.x) < 0.015) {
 			changedInclination.y = 0;
 		}
 		final double k = changedInclination.distance(0, 0);

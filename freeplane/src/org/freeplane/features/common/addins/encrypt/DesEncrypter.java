@@ -59,8 +59,8 @@ public class DesEncrypter implements IEncrypter {
 	int iterationCount = 19;
 	final private String mAlgorithm;
 	final private char[] passPhrase;
-	byte[] salt = { (byte) 0xA9, (byte) 0x9B, (byte) 0xC8, (byte) 0x32, (byte) 0x56, (byte) 0x35,
-	        (byte) 0xE3, (byte) 0x03 };
+	byte[] salt = { (byte) 0xA9, (byte) 0x9B, (byte) 0xC8, (byte) 0x32, (byte) 0x56, (byte) 0x35, (byte) 0xE3,
+	        (byte) 0x03 };
 
 	public DesEncrypter(final StringBuffer pPassPhrase, final String pAlgorithm) {
 		passPhrase = new char[pPassPhrase.length()];
@@ -103,8 +103,7 @@ public class DesEncrypter implements IEncrypter {
 			}
 			init(newSalt);
 			final byte[] enc = ecipher.doFinal(utf8);
-			return DesEncrypter.toBase64(newSalt) + DesEncrypter.SALT_PRESENT_INDICATOR
-			        + DesEncrypter.toBase64(enc);
+			return DesEncrypter.toBase64(newSalt) + DesEncrypter.SALT_PRESENT_INDICATOR + DesEncrypter.toBase64(enc);
 		}
 		catch (final javax.crypto.BadPaddingException e) {
 		}
@@ -124,8 +123,7 @@ public class DesEncrypter implements IEncrypter {
 		if (ecipher == null) {
 			try {
 				final KeySpec keySpec = new PBEKeySpec(passPhrase, salt, iterationCount);
-				final SecretKey key = SecretKeyFactory.getInstance(mAlgorithm).generateSecret(
-				    keySpec);
+				final SecretKey key = SecretKeyFactory.getInstance(mAlgorithm).generateSecret(keySpec);
 				ecipher = Cipher.getInstance(mAlgorithm);
 				dcipher = Cipher.getInstance(mAlgorithm);
 				final AlgorithmParameterSpec paramSpec = new PBEParameterSpec(salt, iterationCount);

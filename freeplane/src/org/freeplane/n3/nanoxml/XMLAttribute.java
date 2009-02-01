@@ -59,8 +59,7 @@ class XMLAttribute {
 	 * @param type
 	 *            the type of the attribute
 	 */
-	XMLAttribute(final String fullName, final String name, final String namespace,
-	             final String value, final String type) {
+	XMLAttribute(final String fullName, final String name, final String namespace, final String value, final String type) {
 		this.fullName = fullName;
 		this.name = name;
 		this.namespace = namespace;

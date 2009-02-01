@@ -32,15 +32,15 @@ import org.freeplane.features.common.nodestyle.NodeStyleModel;
 class NodeColorAction extends MultipleNodeAction {
 	private Color actionColor;
 
-	public NodeColorAction() {
-		super("node_color");
+	public NodeColorAction(final Controller controller) {
+		super(controller, "node_color");
 	}
 
 	@Override
 	public void actionPerformed(final ActionEvent e) {
-		actionColor = ColorTracker.showCommonJColorChooserDialog(Controller.getController()
-		    .getSelection().getSelected(), getModeController().getText("choose_node_color"),
-		    NodeStyleModel.getColor(getModeController().getMapController().getSelectedNode()));
+		actionColor = ColorTracker.showCommonJColorChooserDialog(getController().getSelection().getSelected(),
+		    getModeController().getText("choose_node_color"), NodeStyleModel.getColor(getModeController()
+		        .getMapController().getSelectedNode()));
 		if (actionColor == null) {
 			return;
 		}
@@ -49,7 +49,6 @@ class NodeColorAction extends MultipleNodeAction {
 
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		((MNodeStyleController) NodeStyleController.getController(getModeController())).setColor(
-		    node, actionColor);
+		((MNodeStyleController) NodeStyleController.getController(getModeController())).setColor(node, actionColor);
 	}
 }

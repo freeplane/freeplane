@@ -43,8 +43,8 @@ public class MapReader implements IElementDOMHandler {
 			return node;
 		}
 
-		public NodeModel createNodeTreeFromXml(final MapModel map, final Reader pReader)
-		        throws XMLParseException, IOException {
+		public NodeModel createNodeTreeFromXml(final MapModel map, final Reader pReader) throws XMLParseException,
+		        IOException {
 			start(map);
 			final NodeModel node = create(pReader);
 			finish(node);
@@ -78,8 +78,8 @@ public class MapReader implements IElementDOMHandler {
 		return getCreatedMap();
 	}
 
-	public NodeModel createNodeTreeFromXml(final MapModel map, final Reader pReader)
-	        throws XMLParseException, IOException {
+	public NodeModel createNodeTreeFromXml(final MapModel map, final Reader pReader) throws XMLParseException,
+	        IOException {
 		try {
 			mapLoadingInProcess = true;
 			final NodeModel topNode = new NodeTreeCreator().createNodeTreeFromXml(map, pReader);
@@ -91,8 +91,7 @@ public class MapReader implements IElementDOMHandler {
 		}
 	}
 
-	public void endElement(final Object parent, final String tag, final Object element,
-	                       final IXMLElement dom) {
+	public void endElement(final Object parent, final String tag, final Object element, final IXMLElement dom) {
 		final MapModel map = (MapModel) element;
 		if (dom.getAttributeCount() != 0 || dom.hasChildren()) {
 			map.addExtension(new UnknownElements(dom));

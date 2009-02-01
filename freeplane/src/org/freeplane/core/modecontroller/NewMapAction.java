@@ -21,12 +21,13 @@ package org.freeplane.core.modecontroller;
 
 import java.awt.event.ActionEvent;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.FreeplaneAction;
 
 class NewMapAction extends FreeplaneAction {
-	public NewMapAction() {
-		super("new", "/images/filenew.png");
+	public NewMapAction(final Controller controller) {
+		super(controller, "new", "/images/filenew.png");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

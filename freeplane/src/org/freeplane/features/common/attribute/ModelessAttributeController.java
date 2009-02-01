@@ -30,34 +30,32 @@ import org.freeplane.core.model.MapModel;
  * @author Dimitry Polivaev
  */
 public class ModelessAttributeController implements IExtension {
-	public static ModelessAttributeController getController() {
-		return (ModelessAttributeController) Controller.getController().getExtension(
-		    ModelessAttributeController.class);
+	public static ModelessAttributeController getController(final Controller controller) {
+		return (ModelessAttributeController) controller.getExtension(ModelessAttributeController.class);
 	}
 
-	public static void install() {
-		Controller.getController().addExtension(ModelessAttributeController.class,
-		    new ModelessAttributeController());
-		FilterController.getController().getConditionFactory().addConditionController(2,
-		    new AttributeConditionController());
+	public static void install(final Controller controller) {
+		controller.addExtension(ModelessAttributeController.class, new ModelessAttributeController(controller));
+		FilterController.getConditionFactory().addConditionController(2, new AttributeConditionController(controller));
 	}
 
+	final private Controller controller;
 	final private Action hideAllAttributes;
 	final private Action showAllAttributes;
 	final private Action showAttributeManagerAction;
 	final private Action showSelectedAttributes;
 
-	public ModelessAttributeController() {
+	public ModelessAttributeController(final Controller controller) {
 		super();
-		showAttributeManagerAction = new ShowAttributeDialogAction();
-		showAllAttributes = new ShowAllAttributesAction();
-		showSelectedAttributes = new ShowSelectedAttributesAction();
-		hideAllAttributes = new HideAllAttributesAction();
-		Controller.getController().addAction("showAttributeManagerAction",
-		    showAttributeManagerAction);
-		Controller.getController().addAction("showAllAttributes", showAllAttributes);
-		Controller.getController().addAction("showSelectedAttributes", showSelectedAttributes);
-		Controller.getController().addAction("hideAllAttributes", hideAllAttributes);
+		this.controller = controller;
+		showAttributeManagerAction = new ShowAttributeDialogAction(controller);
+		showAllAttributes = new ShowAllAttributesAction(controller);
+		showSelectedAttributes = new ShowSelectedAttributesAction(controller);
+		hideAllAttributes = new HideAllAttributesAction(controller);
+		controller.addAction("showAttributeManagerAction", showAttributeManagerAction);
+		controller.addAction("showAllAttributes", showAllAttributes);
+		controller.addAction("showSelectedAttributes", showSelectedAttributes);
+		controller.addAction("hideAllAttributes", hideAllAttributes);
 	}
 
 	public void setAttributeViewType(final MapModel map, final String value) {

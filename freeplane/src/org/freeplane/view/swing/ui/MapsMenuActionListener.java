@@ -27,14 +27,16 @@ import javax.swing.SwingUtilities;
 import org.freeplane.core.controller.Controller;
 
 class MapsMenuActionListener implements ActionListener {
-	public MapsMenuActionListener() {
+	final private Controller controller;
+
+	public MapsMenuActionListener(final Controller controller) {
+		this.controller = controller;
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				Controller.getController().getMapViewManager()
-				    .changeToMapView(e.getActionCommand());
+				controller.getMapViewManager().changeToMapView(e.getActionCommand());
 			}
 		});
 	}

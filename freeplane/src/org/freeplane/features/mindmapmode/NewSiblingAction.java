@@ -21,15 +21,15 @@ package org.freeplane.features.mindmapmode;
 
 import java.awt.event.ActionEvent;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.FreeplaneAction;
 
 class NewSiblingAction extends FreeplaneAction {
-	public NewSiblingAction() {
-		super("new_sibling_behind");
+	public NewSiblingAction(final Controller controller) {
+		super(controller, "new_sibling_behind");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		((MMapController) getModeController().getMapController()).addNewNode(
-		    MMapController.NEW_SIBLING_BEHIND, null);
+		((MMapController) getModeController().getMapController()).addNewNode(MMapController.NEW_SIBLING_BEHIND, null);
 	}
 }

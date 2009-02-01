@@ -62,13 +62,14 @@ public class MTextController extends TextController {
 	 *
 	 */
 	private void createActions(final ModeController modeController) {
-		edit = new EditAction();
+		final Controller controller = modeController.getController();
+		edit = new EditAction(controller);
 		modeController.addAction("edit", edit);
-		modeController.addAction("useRichFormatting", new UseRichFormattingAction());
-		modeController.addAction("usePlainText", new UsePlainTextAction());
-		modeController.addAction("joinNodes", new JoinNodesAction());
-		modeController.addAction("editLong", new EditLongAction());
-		modeController.addAction("setImageByFileChooser", new SetImageByFileChooserAction());
+		modeController.addAction("useRichFormatting", new UseRichFormattingAction(controller));
+		modeController.addAction("usePlainText", new UsePlainTextAction(controller));
+		modeController.addAction("joinNodes", new JoinNodesAction(controller));
+		modeController.addAction("editLong", new EditLongAction(controller));
+		modeController.addAction("setImageByFileChooser", new SetImageByFileChooserAction(controller));
 	}
 
 	public void edit(final KeyEvent e, final boolean addNew, final boolean editLong) {
@@ -138,8 +139,7 @@ public class MTextController extends TextController {
 	}
 
 	public void joinNodes(final NodeModel selectedNode, final List selectedNodes) {
-		((JoinNodesAction) getModeController().getAction("joinNodes")).joinNodes(selectedNode,
-		    selectedNodes);
+		((JoinNodesAction) getModeController().getAction("joinNodes")).joinNodes(selectedNode, selectedNodes);
 	}
 
 	public void setImageByFileChooser() {
@@ -150,8 +150,8 @@ public class MTextController extends TextController {
 		filter.addExtension("gif");
 		filter.setDescription("JPG, PNG and GIF Images");
 		boolean picturesAmongSelecteds = false;
-		for (final ListIterator e = getModeController().getMapController().getSelectedNodes()
-		    .listIterator(); e.hasNext();) {
+		for (final ListIterator e = getModeController().getMapController().getSelectedNodes().listIterator(); e
+		    .hasNext();) {
 			final String link = NodeLinks.getLink(((NodeModel) e.next()));
 			if (link != null) {
 				if (filter.accept(new File(link))) {
@@ -162,27 +162,24 @@ public class MTextController extends TextController {
 		}
 		try {
 			if (picturesAmongSelecteds) {
-				for (final ListIterator e = getModeController().getMapController()
-				    .getSelectedNodes().listIterator(); e.hasNext();) {
+				for (final ListIterator e = getModeController().getMapController().getSelectedNodes().listIterator(); e
+				    .hasNext();) {
 					final NodeModel node = (NodeModel) e.next();
 					if (NodeLinks.getLink(node) != null) {
 						final String possiblyRelative = NodeLinks.getLink(node);
-						final String relative = UrlManager.isAbsolutePath(possiblyRelative) ? UrlManager
-						    .fileToUrl(new File(possiblyRelative)).toString()
-						        : possiblyRelative;
+						final String relative = UrlManager.isAbsolutePath(possiblyRelative) ? UrlManager.fileToUrl(
+						    new File(possiblyRelative)).toString() : possiblyRelative;
 						if (relative != null) {
 							final String strText = "<html><img src=\"" + relative + "\">";
-							((MLinkController) LinkController.getController(getModeController()))
-							    .setLink(node, null);
+							((MLinkController) LinkController.getController(getModeController())).setLink(node, null);
 							setNodeText(node, strText);
 						}
 					}
 				}
 			}
 			else {
-				final String relative = ((MFileManager) UrlManager
-				    .getController(getModeController())).getLinkByFileChooser(Controller
-				    .getController().getMap(), filter);
+				final String relative = ((MFileManager) UrlManager.getController(getModeController()))
+				    .getLinkByFileChooser(getModeController().getController().getMap(), filter);
 				if (relative != null) {
 					final String strText = "<html><img src=\"" + relative + "\">";
 					setNodeText(getModeController().getMapController().getSelectedNode(), strText);
@@ -212,8 +209,8 @@ public class MTextController extends TextController {
 		setNodeText(node, newUpperContent);
 		final NodeModel parent = node.getParentNode();
 		final ModeController modeController = getModeController();
-		final NodeModel lowerNode = ((MMapController) modeController.getMapController())
-		    .addNewNode(parent, parent.getChildPosition(node) + 1, node.isLeft());
+		final NodeModel lowerNode = ((MMapController) modeController.getMapController()).addNewNode(parent, parent
+		    .getChildPosition(node) + 1, node.isLeft());
 		final MNodeStyleController nodeStyleController = (MNodeStyleController) NodeStyleController
 		    .getController(modeController);
 		nodeStyleController.copyStyle(node, lowerNode);

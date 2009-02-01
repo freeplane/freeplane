@@ -83,8 +83,8 @@ public class FilterComposerDialog extends JDialog {
 		 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent
 		 * )
 		 */
-		AddElementaryConditionAction() {
-			super("filter_add");
+		AddElementaryConditionAction(final Controller controller) {
+			super(controller, "filter_add");
 		}
 
 		public void actionPerformed(final ActionEvent e) {
@@ -93,10 +93,9 @@ public class FilterComposerDialog extends JDialog {
 			final NamedObject simpleCond = (NamedObject) elementaryConditions.getSelectedItem();
 			final boolean ignoreCase = caseInsensitive.isSelected();
 			final Object selectedItem = filteredPropertiesComponent.getSelectedItem();
-			newCond = FilterController.getController().getConditionFactory().createCondition(
-			    selectedItem, simpleCond, value, ignoreCase);
-			final DefaultComboBoxModel model = (DefaultComboBoxModel) elementaryConditionList
-			    .getModel();
+			newCond = filterController.getConditionFactory().createCondition(selectedItem, simpleCond, value,
+			    ignoreCase);
+			final DefaultComboBoxModel model = (DefaultComboBoxModel) elementaryConditionList.getModel();
 			if (newCond != null) {
 				model.addElement(newCond);
 			}
@@ -170,8 +169,7 @@ public class FilterComposerDialog extends JDialog {
 				btnDelete.setEnabled(false);
 				return;
 			}
-			else if (elementaryConditionList.getMinSelectionIndex() == elementaryConditionList
-			    .getMaxSelectionIndex()) {
+			else if (elementaryConditionList.getMinSelectionIndex() == elementaryConditionList.getMaxSelectionIndex()) {
 				btnNot.setEnabled(true);
 				btnAnd.setEnabled(false);
 				btnOr.setEnabled(false);
@@ -195,7 +193,7 @@ public class FilterComposerDialog extends JDialog {
 		 * )
 		 */
 		CreateConjunctConditionAction() {
-			super("filter_and");
+			super(controller, "filter_and");
 		}
 
 		public void actionPerformed(final ActionEvent e) {
@@ -204,8 +202,7 @@ public class FilterComposerDialog extends JDialog {
 				return;
 			}
 			final ICondition newCond = new ConjunctConditions(selectedValues);
-			final DefaultComboBoxModel model = (DefaultComboBoxModel) elementaryConditionList
-			    .getModel();
+			final DefaultComboBoxModel model = (DefaultComboBoxModel) elementaryConditionList.getModel();
 			model.addElement(newCond);
 			validate();
 		}
@@ -219,7 +216,7 @@ public class FilterComposerDialog extends JDialog {
 		 * )
 		 */
 		CreateDisjunctConditionAction() {
-			super("filter_or");
+			super(controller, "filter_or");
 		}
 
 		public void actionPerformed(final ActionEvent e) {
@@ -228,8 +225,7 @@ public class FilterComposerDialog extends JDialog {
 				return;
 			}
 			final ICondition newCond = new DisjunctConditions(selectedValues);
-			final DefaultComboBoxModel model = (DefaultComboBoxModel) elementaryConditionList
-			    .getModel();
+			final DefaultComboBoxModel model = (DefaultComboBoxModel) elementaryConditionList.getModel();
 			model.addElement(newCond);
 			validate();
 		}
@@ -243,7 +239,7 @@ public class FilterComposerDialog extends JDialog {
 		 * )
 		 */
 		CreateNotSatisfiedConditionAction() {
-			super("filter_not");
+			super(controller, "filter_not");
 		}
 
 		public void actionPerformed(final ActionEvent e) {
@@ -251,11 +247,9 @@ public class FilterComposerDialog extends JDialog {
 			if (min >= 0) {
 				final int max = elementaryConditionList.getMinSelectionIndex();
 				if (min == max) {
-					final ICondition oldCond = (ICondition) elementaryConditionList
-					    .getSelectedValue();
+					final ICondition oldCond = (ICondition) elementaryConditionList.getSelectedValue();
 					final ICondition newCond = new ConditionNotSatisfiedDecorator(oldCond);
-					final DefaultComboBoxModel model = (DefaultComboBoxModel) elementaryConditionList
-					    .getModel();
+					final DefaultComboBoxModel model = (DefaultComboBoxModel) elementaryConditionList.getModel();
 					model.addElement(newCond);
 					validate();
 				}
@@ -271,12 +265,11 @@ public class FilterComposerDialog extends JDialog {
 		 * )
 		 */
 		DeleteConditionAction() {
-			super("filter_delete");
+			super(controller, "filter_delete");
 		}
 
 		public void actionPerformed(final ActionEvent e) {
-			final DefaultComboBoxModel model = (DefaultComboBoxModel) elementaryConditionList
-			    .getModel();
+			final DefaultComboBoxModel model = (DefaultComboBoxModel) elementaryConditionList.getModel();
 			final int minSelectionIndex = elementaryConditionList.getMinSelectionIndex();
 			int selectedIndex;
 			while (0 <= (selectedIndex = elementaryConditionList.getSelectedIndex())) {
@@ -284,8 +277,7 @@ public class FilterComposerDialog extends JDialog {
 			}
 			final int size = elementaryConditionList.getModel().getSize();
 			if (size > 0) {
-				elementaryConditionList
-				    .setSelectedIndex(minSelectionIndex < size ? minSelectionIndex : size - 1);
+				elementaryConditionList.setSelectedIndex(minSelectionIndex < size ? minSelectionIndex : size - 1);
 			}
 			validate();
 		}
@@ -295,12 +287,10 @@ public class FilterComposerDialog extends JDialog {
 		public void itemStateChanged(final ItemEvent e) {
 			if (e.getStateChange() == ItemEvent.SELECTED) {
 				final Object property = filteredPropertiesModel.getSelectedItem();
-				final NamedObject selectedItem = (NamedObject) elementaryConditions
-				    .getSelectedItem();
-				final IElementaryConditionController conditionController = FilterController
-				    .getController().getConditionFactory().getConditionController(property);
-				final boolean canSelectValues = conditionController.canSelectValues(property,
-				    selectedItem);
+				final NamedObject selectedItem = (NamedObject) elementaryConditions.getSelectedItem();
+				final IElementaryConditionController conditionController = filterController.getConditionFactory()
+				    .getConditionController(property);
+				final boolean canSelectValues = conditionController.canSelectValues(property, selectedItem);
 				values.setEnabled(canSelectValues);
 				caseInsensitive.setEnabled(canSelectValues
 				        && conditionController.isCaseDependent(property, selectedItem));
@@ -318,18 +308,16 @@ public class FilterComposerDialog extends JDialog {
 		public void itemStateChanged(final ItemEvent e) {
 			if (e.getStateChange() == ItemEvent.SELECTED) {
 				final Object selectedProperty = filteredPropertiesComponent.getSelectedItem();
-				final IElementaryConditionController conditionController = FilterController
-				    .getController().getConditionFactory().getConditionController(selectedProperty);
+				final IElementaryConditionController conditionController = filterController.getConditionFactory()
+				    .getConditionController(selectedProperty);
 				final ComboBoxModel simpleConditionComboBoxModel = conditionController
 				    .getConditionsForProperty(selectedProperty);
 				elementaryConditions.setModel(simpleConditionComboBoxModel);
 				elementaryConditions.setEnabled(simpleConditionComboBoxModel.getSize() > 0);
-				final NamedObject selectedCondition = (NamedObject) simpleConditionComboBoxModel
-				    .getSelectedItem();
-				values.setEditable(conditionController.canEditValues(selectedProperty,
-				    selectedCondition));
-				final boolean canSelectValues = conditionController.canSelectValues(
-				    selectedProperty, selectedCondition);
+				final NamedObject selectedCondition = (NamedObject) simpleConditionComboBoxModel.getSelectedItem();
+				values.setEditable(conditionController.canEditValues(selectedProperty, selectedCondition));
+				final boolean canSelectValues = conditionController
+				    .canSelectValues(selectedProperty, selectedCondition);
 				values.setEnabled(canSelectValues);
 				values.setModel(conditionController.getValuesForProperty(selectedProperty));
 				final ComboBoxEditor valueEditor = conditionController.getValueEditor();
@@ -340,10 +328,8 @@ public class FilterComposerDialog extends JDialog {
 				else {
 					values.setSelectedIndex(-1);
 				}
-				caseInsensitive
-				    .setEnabled(canSelectValues
-				            && conditionController.isCaseDependent(selectedProperty,
-				                selectedCondition));
+				caseInsensitive.setEnabled(canSelectValues
+				        && conditionController.isCaseDependent(selectedProperty, selectedCondition));
 				return;
 			}
 		}
@@ -356,7 +342,7 @@ public class FilterComposerDialog extends JDialog {
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				try {
 					final File theFile = chooser.getSelectedFile();
-					fc.loadConditions(internalConditionsModel, theFile.getCanonicalPath());
+					filterController.loadConditions(internalConditionsModel, theFile.getCanonicalPath());
 				}
 				catch (final Exception ex) {
 					handleLoadingException(ex);
@@ -411,7 +397,7 @@ public class FilterComposerDialog extends JDialog {
 				if (!canonicalPath.endsWith(suffix)) {
 					canonicalPath = canonicalPath + suffix;
 				}
-				fc.saveConditions(internalConditionsModel, canonicalPath);
+				filterController.saveConditions(internalConditionsModel, canonicalPath);
 			}
 			catch (final Exception ex) {
 				handleSavingException(ex);
@@ -435,10 +421,11 @@ public class FilterComposerDialog extends JDialog {
 	private JButton btnSave;
 	final private JCheckBox caseInsensitive;
 	final private ConditionListSelectionListener conditionListListener;
+	final private Controller controller;
 	final private JList elementaryConditionList;
 	final private JComboBox elementaryConditions;
 	private ComboBoxModel externalConditionsModel;
-	final private FilterController fc;
+	final private FilterController filterController;
 	final private JComboBox filteredPropertiesComponent;
 	final private ExtendedComboBoxModel filteredPropertiesModel;
 	private DefaultComboBoxModel internalConditionsModel;
@@ -454,10 +441,10 @@ public class FilterComposerDialog extends JDialog {
 	//	final private DefaultComboBoxModel simpleNodeConditionComboBoxModel;
 	final private JComboBox values;
 
-	public FilterComposerDialog(final FilterToolbar ft) {
-		super(Controller.getController().getViewController().getFrame(), Controller
-		    .getText("filter_dialog"));
-		fc = FilterController.getController();
+	public FilterComposerDialog(final FilterToolbar ft, final Controller controller) {
+		super(controller.getViewController().getFrame(), Controller.getText("filter_dialog"));
+		filterController = FilterController.getController(controller);
+		this.controller = controller;
 		final Box simpleConditionBox = Box.createHorizontalBox();
 		simpleConditionBox.setBorder(new EmptyBorder(5, 0, 5, 0));
 		getContentPane().add(simpleConditionBox, BorderLayout.NORTH);
@@ -467,16 +454,16 @@ public class FilterComposerDialog extends JDialog {
 		filteredPropertiesComponent.addItemListener(new FilteredPropertyChangeListener());
 		simpleConditionBox.add(Box.createHorizontalGlue());
 		simpleConditionBox.add(filteredPropertiesComponent);
-		filteredPropertiesComponent.setRenderer(fc.getConditionRenderer());
+		filteredPropertiesComponent.setRenderer(filterController.getConditionRenderer());
 		elementaryConditions = new JComboBox();
 		elementaryConditions.addItemListener(new ElementaryConditionChangeListener());
 		simpleConditionBox.add(Box.createHorizontalGlue());
 		simpleConditionBox.add(elementaryConditions);
-		elementaryConditions.setRenderer(fc.getConditionRenderer());
+		elementaryConditions.setRenderer(filterController.getConditionRenderer());
 		values = new JComboBox();
 		simpleConditionBox.add(Box.createHorizontalGlue());
 		simpleConditionBox.add(values);
-		values.setRenderer(fc.getConditionRenderer());
+		values.setRenderer(filterController.getConditionRenderer());
 		values.setEditable(true);
 		caseInsensitive = new JCheckBox();
 		simpleConditionBox.add(Box.createHorizontalGlue());
@@ -485,7 +472,7 @@ public class FilterComposerDialog extends JDialog {
 		final Box conditionButtonBox = Box.createVerticalBox();
 		conditionButtonBox.setBorder(new EmptyBorder(0, 10, 0, 10));
 		getContentPane().add(conditionButtonBox, BorderLayout.EAST);
-		btnAdd = new JButton(new AddElementaryConditionAction());
+		btnAdd = new JButton(new AddElementaryConditionAction(controller));
 		btnAdd.setMaximumSize(FilterComposerDialog.maxButtonDimension);
 		conditionButtonBox.add(Box.createVerticalGlue());
 		conditionButtonBox.add(btnAdd);
@@ -533,7 +520,7 @@ public class FilterComposerDialog extends JDialog {
 		controllerBox.add(Box.createHorizontalGlue());
 		controllerBox.add(btnCancel);
 		controllerBox.add(Box.createHorizontalGlue());
-		if (!Controller.getController().getViewController().isApplet()) {
+		if (!controller.getViewController().isApplet()) {
 			final ActionListener saveAction = new SaveAction();
 			btnSave = new JButton();
 			MenuBuilder.setLabelAndMnemonic(btnSave, Controller.getText("save"));
@@ -551,7 +538,7 @@ public class FilterComposerDialog extends JDialog {
 		}
 		elementaryConditionList = new JList();
 		elementaryConditionList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		elementaryConditionList.setCellRenderer(fc.getConditionRenderer());
+		elementaryConditionList.setCellRenderer(filterController.getConditionRenderer());
 		elementaryConditionList.setLayoutOrientation(JList.VERTICAL);
 		elementaryConditionList.setAlignmentX(Component.LEFT_ALIGNMENT);
 		conditionListListener = new ConditionListSelectionListener();
@@ -564,26 +551,26 @@ public class FilterComposerDialog extends JDialog {
 		conditionScrollPane.setPreferredSize(new Dimension(500, 200));
 		getContentPane().add(conditionScrollPane, BorderLayout.CENTER);
 		UITools.addEscapeActionToDialog(this);
-		mapChanged(Controller.getController().getMap());
+		mapChanged(controller.getMap());
 		pack();
 	}
 
 	private void applyChanges() {
 		internalConditionsModel.setSelectedItem(elementaryConditionList.getSelectedValue());
 		internalConditionsModel.removeListDataListener(conditionListListener);
-		fc.setFilterConditionModel(internalConditionsModel);
+		filterController.setFilterConditionModel(internalConditionsModel);
 		internalConditionsModel = null;
 	}
 
 	protected JFileChooser getFileChooser() {
-		final ModeController modeController = fc.getMap().getModeController();
+		final ModeController modeController = filterController.getMap().getModeController();
 		final JFileChooser chooser = UrlManager.getController(modeController).getFileChooser(
 		    MindMapFilterFileFilter.filter);
 		return chooser;
 	}
 
 	private void initInternalConditionModel() {
-		externalConditionsModel = fc.getFilterConditionModel();
+		externalConditionsModel = filterController.getFilterConditionModel();
 		if (internalConditionsModel == null) {
 			internalConditionsModel = new DefaultComboBoxModel();
 			internalConditionsModel.addListDataListener(conditionListListener);
@@ -613,8 +600,8 @@ public class FilterComposerDialog extends JDialog {
 	void mapChanged(final MapModel newMap) {
 		if (newMap != null) {
 			filteredPropertiesModel.removeAllElements();
-			final Iterator<IElementaryConditionController> conditionIterator = FilterController
-			    .getController().getConditionFactory().conditionIterator();
+			final Iterator<IElementaryConditionController> conditionIterator = filterController.getConditionFactory()
+			    .conditionIterator();
 			while (conditionIterator.hasNext()) {
 				final IElementaryConditionController next = conditionIterator.next();
 				filteredPropertiesModel.addExtensionList(next.getFilteredProperties());

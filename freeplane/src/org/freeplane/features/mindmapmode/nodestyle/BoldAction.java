@@ -21,6 +21,7 @@ package org.freeplane.features.mindmapmode.nodestyle;
 
 import java.awt.event.ActionEvent;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.core.ui.SelectableAction;
@@ -32,8 +33,8 @@ class BoldAction extends MultipleNodeAction {
 
 	/**
 	 */
-	public BoldAction() {
-		super("bold", "/images/Bold16.gif");
+	public BoldAction(final Controller controller) {
+		super(controller, "bold", "/images/Bold16.gif");
 	}
 
 	@Override
@@ -44,8 +45,7 @@ class BoldAction extends MultipleNodeAction {
 
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel selected) {
-		((MNodeStyleController) NodeStyleController.getController(getModeController())).setBold(
-		    selected, bold);
+		((MNodeStyleController) NodeStyleController.getController(getModeController())).setBold(selected, bold);
 	}
 
 	boolean isBold() {

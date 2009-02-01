@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.common.attribute;
 
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
@@ -30,19 +31,23 @@ import org.freeplane.features.mindmapmode.attribute.AttributeManagerDialog;
 
 class ShowAttributeDialogAction extends AbstractAction {
 	private AttributeManagerDialog attributeDialog = null;
+	final private Controller controller;
+	private Frame frame;
 
 	/**
 	 *
 	 */
-	ShowAttributeDialogAction() {
-		super(null, new ImageIcon(Controller.getResourceController().getResource(
-		    "/images/showAttributes.gif")));
+	ShowAttributeDialogAction(final Controller controller) {
+		super(null, new ImageIcon(Controller.getResourceController().getResource("/images/showAttributes.gif")));
+		this.controller = controller;
 		MenuBuilder.setLabelAndMnemonic(this, Controller.getText("attributes_dialog"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		if (getAttributeDialog().isVisible() == false
-		        && Controller.getController().getMap() != null) {
+		if(frame == null){
+			frame = controller.getViewController().getFrame();
+		}
+		if (getAttributeDialog().isVisible() == false && controller.getMap() != null) {
 			getAttributeDialog().pack();
 			getAttributeDialog().show();
 		}
@@ -50,7 +55,7 @@ class ShowAttributeDialogAction extends AbstractAction {
 
 	private AttributeManagerDialog getAttributeDialog() {
 		if (attributeDialog == null) {
-			attributeDialog = new AttributeManagerDialog();
+			attributeDialog = new AttributeManagerDialog(controller, frame);
 		}
 		return attributeDialog;
 	}

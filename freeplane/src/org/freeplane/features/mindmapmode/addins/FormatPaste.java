@@ -46,8 +46,8 @@ class FormatCopy extends FreeplaneAction {
 		return pattern;
 	}
 
-	public FormatCopy() {
-		super();
+	public FormatCopy(final Controller controller) {
+		super(controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -70,9 +70,9 @@ keyStroke = "keystroke_accessories/plugins/FormatPaste.properties.properties_key
 iconPath = "/accessories/plugins/icons/color_fill.png", //
 locations = { "/menu_bar/edit/paste" })
 public class FormatPaste extends MultipleNodeAction {
-	public FormatPaste(final MenuBuilder menuBuilder) {
-		super();
-		menuBuilder.addAnnotatedAction(new FormatCopy());
+	public FormatPaste(final Controller controller, final MenuBuilder menuBuilder) {
+		super(controller);
+		menuBuilder.addAnnotatedAction(new FormatCopy(controller));
 		menuBuilder.addAnnotatedAction(this);
 	}
 
@@ -86,9 +86,8 @@ public class FormatPaste extends MultipleNodeAction {
 	private void pasteFormat(final NodeModel node) {
 		final Pattern pattern = FormatCopy.getPattern();
 		if (pattern == null) {
-			JOptionPane.showMessageDialog(Controller.getController().getViewController()
-			    .getContentPane(), Controller.getText("no_format_copy_before_format_paste"),
-			    "" /*=Title*/, JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(getController().getViewController().getContentPane(), Controller
+			    .getText("no_format_copy_before_format_paste"), "" /*=Title*/, JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		MPatternController.getController((getModeController())).applyPattern(node, pattern);

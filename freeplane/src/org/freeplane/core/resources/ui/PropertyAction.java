@@ -49,14 +49,13 @@ public class PropertyAction extends FreeplaneAction {
 	 * @param controls 
 	 *
 	 */
-	public PropertyAction(final DefaultMutableTreeNode controls) {
-		super("property_dialog");
+	public PropertyAction(final Controller controller, final DefaultMutableTreeNode controls) {
+		super(controller, "property_dialog");
 		this.controls = controls;
 	}
 
 	public void actionPerformed(final ActionEvent arg0) {
-		final JDialog dialog = new JDialog(Controller.getController().getViewController()
-		    .getJFrame(), true /* modal */);
+		final JDialog dialog = new JDialog(getController().getViewController().getFrame(), true /* modal */);
 		dialog.setResizable(true);
 		dialog.setUndecorated(false);
 		final OptionPanel options = new OptionPanel(dialog, new IOptionPanelFeedback() {
@@ -69,14 +68,12 @@ public class PropertyAction extends FreeplaneAction {
 					final String key = (String) i.next();
 					final String newProperty = props.getProperty(key);
 					propertiesChanged = propertiesChanged
-					        || !newProperty.equals(Controller.getResourceController().getProperty(
-					            key));
+					        || !newProperty.equals(Controller.getResourceController().getProperty(key));
 					Controller.getResourceController().setProperty(key, newProperty);
 				}
 				if (propertiesChanged) {
-					JOptionPane.showMessageDialog(null, Controller
-					    .getText("option_changes_may_require_restart"));
-					Controller.getResourceController().saveProperties();
+					JOptionPane.showMessageDialog(null, Controller.getText("option_changes_may_require_restart"));
+					Controller.getResourceController().saveProperties(getController());
 				}
 			}
 		});

@@ -37,16 +37,16 @@ class ColorArrowLinkAction extends FreeplaneAction {
 	ArrowLinkModel arrowLink;
 
 	public ColorArrowLinkAction(final MLinkController modeController, final ArrowLinkModel arrowLink) {
-		super("arrow_link_color", "/images/Colors24.gif");
+		super(modeController.getModeController().getController(), "arrow_link_color", "/images/Colors24.gif");
 		this.arrowLink = arrowLink;
 	}
 
 	public void actionPerformed(final ActionEvent e) {
+		final Controller controller = getController();
 		final ModeController modeController = getModeController();
-		final Color selectedColor = LinkController.getController(modeController)
-		    .getColor(arrowLink);
-		final Color color = ColorTracker.showCommonJColorChooserDialog(Controller.getController()
-		    .getSelection().getSelected(), (String) this.getValue(Action.NAME), selectedColor);
+		final Color selectedColor = LinkController.getController(modeController).getColor(arrowLink);
+		final Color color = ColorTracker.showCommonJColorChooserDialog(controller.getSelection().getSelected(),
+		    (String) this.getValue(Action.NAME), selectedColor);
 		if (color == null) {
 			return;
 		}

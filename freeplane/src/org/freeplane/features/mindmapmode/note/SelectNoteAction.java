@@ -34,9 +34,8 @@ class SelectNoteAction extends FreeplaneAction {
 	 */
 	final private MNoteController noteController;
 
-	public SelectNoteAction(final MNoteController noteController,
-	                        final ModeController modeController) {
-		super("accessories/plugins/NodeNote_jumpto.properties_name");
+	public SelectNoteAction(final MNoteController noteController, final ModeController modeController) {
+		super(modeController.getController(), "accessories/plugins/NodeNote_jumpto.properties_name");
 		this.noteController = noteController;
 	}
 

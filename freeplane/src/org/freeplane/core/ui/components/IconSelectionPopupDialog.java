@@ -22,6 +22,7 @@ package org.freeplane.core.ui.components;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
@@ -35,7 +36,6 @@ import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
@@ -86,8 +86,8 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 	final private int xDimension;
 	private int yDimension;
 
-	public IconSelectionPopupDialog(final JFrame caller, final Vector icons) {
-		super(caller, Controller.getText("select_icon"));
+	public IconSelectionPopupDialog(final Frame frame, final Vector icons) {
+		super(frame, Controller.getText("select_icon"));
 		getContentPane().setLayout(new BorderLayout());
 		this.icons = icons;
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -117,8 +117,7 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 			iconLabels[i].addMouseListener(this);
 		}
 		final int perIconSize = 27;
-		iconPanel
-		    .setPreferredSize(new Dimension(xDimension * perIconSize, yDimension * perIconSize));
+		iconPanel.setPreferredSize(new Dimension(xDimension * perIconSize, yDimension * perIconSize));
 		iconPanel.setMinimumSize(new Dimension(xDimension * perIconSize, yDimension * perIconSize));
 		iconPanel.setMaximumSize(new Dimension(xDimension * perIconSize, yDimension * perIconSize));
 		iconPanel.setSize(new Dimension(xDimension * perIconSize, yDimension * perIconSize));
@@ -153,32 +152,28 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 	}
 
 	private void cursorDown() {
-		final Position newPosition = new Position(getSelectedPosition().getX(),
-		    getSelectedPosition().getY() + 1);
+		final Position newPosition = new Position(getSelectedPosition().getX(), getSelectedPosition().getY() + 1);
 		if (canSelect(newPosition)) {
 			select(newPosition);
 		}
 	}
 
 	private void cursorLeft() {
-		final Position newPosition = new Position(getSelectedPosition().getX() - 1,
-		    getSelectedPosition().getY());
+		final Position newPosition = new Position(getSelectedPosition().getX() - 1, getSelectedPosition().getY());
 		if (canSelect(newPosition)) {
 			select(newPosition);
 		}
 	}
 
 	private void cursorRight() {
-		final Position newPosition = new Position(getSelectedPosition().getX() + 1,
-		    getSelectedPosition().getY());
+		final Position newPosition = new Position(getSelectedPosition().getX() + 1, getSelectedPosition().getY());
 		if (canSelect(newPosition)) {
 			select(newPosition);
 		}
 	}
 
 	private void cursorUp() {
-		final Position newPosition = new Position(getSelectedPosition().getX(),
-		    getSelectedPosition().getY() - 1);
+		final Position newPosition = new Position(getSelectedPosition().getX(), getSelectedPosition().getY() - 1);
 		if (canSelect(newPosition)) {
 			select(newPosition);
 		}
@@ -191,9 +186,8 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 			if (iconKeyStroke != null
 			        && (keyEvent.getKeyCode() == iconKeyStroke.getKeyCode()
 			                && keyEvent.getKeyCode() != 0
-			                && (iconKeyStroke.getModifiers() & InputEvent.SHIFT_MASK) == (keyEvent
-			                    .getModifiers() & InputEvent.SHIFT_MASK) || keyEvent.getKeyChar() == iconKeyStroke
-			            .getKeyChar()) && keyEvent.getKeyChar() != 0
+			                && (iconKeyStroke.getModifiers() & InputEvent.SHIFT_MASK) == (keyEvent.getModifiers() & InputEvent.SHIFT_MASK) || keyEvent
+			            .getKeyChar() == iconKeyStroke.getKeyChar()) && keyEvent.getKeyChar() != 0
 			        && keyEvent.getKeyChar() != KeyEvent.CHAR_UNDEFINED) {
 				return i;
 			}
@@ -238,8 +232,7 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 	}
 
 	private void highlight(final Position position) {
-		iconLabels[calculateIndex(position)].setBorder(BorderFactory
-		    .createBevelBorder(BevelBorder.LOWERED));
+		iconLabels[calculateIndex(position)].setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 	}
 
 	/*
@@ -357,7 +350,6 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 	}
 
 	private void unhighlight(final Position position) {
-		iconLabels[calculateIndex(position)].setBorder(BorderFactory
-		    .createBevelBorder(BevelBorder.RAISED));
+		iconLabels[calculateIndex(position)].setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 	}
 }

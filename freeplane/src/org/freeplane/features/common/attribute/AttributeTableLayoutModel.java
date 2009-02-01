@@ -51,8 +51,7 @@ public class AttributeTableLayoutModel {
 				if (layoutChangeEvent[col] == null) {
 					layoutChangeEvent[col] = new ColumnWidthChangeEvent(this, col);
 				}
-				((IColumnWidthChangeListener) listeners[i + 1])
-				    .columnWidthChanged(layoutChangeEvent[col]);
+				((IColumnWidthChangeListener) listeners[i + 1]).columnWidthChanged(layoutChangeEvent[col]);
 			}
 		}
 	}

@@ -31,8 +31,7 @@ public class CloudModel implements IExtension {
 	 * @param node 
 	 */
 	private static void changeChildCloudIterativeLevels(final NodeModel node, final int deltaLevel) {
-		for (final ListIterator e = node.getModeController().getMapController().childrenUnfolded(
-		    node); e.hasNext();) {
+		for (final ListIterator e = node.getModeController().getMapController().childrenUnfolded(node); e.hasNext();) {
 			final NodeModel childNode = (NodeModel) e.next();
 			final CloudModel childCloud = CloudModel.getModel(childNode);
 			if (childCloud != null) {

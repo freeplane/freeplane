@@ -33,8 +33,7 @@ abstract class AbstractPrintAction extends AbstractAction {
 		printController = controller;
 	}
 
-	public AbstractPrintAction(final PrintController controller, final String name,
-	                           final ImageIcon imageIcon) {
+	public AbstractPrintAction(final PrintController controller, final String name, final ImageIcon imageIcon) {
 		super(name, imageIcon);
 		printController = controller;
 	}

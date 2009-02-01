@@ -30,24 +30,25 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.MenuBuilder;
 
 class OpenURLAction extends AbstractAction {
+	final private Controller controller;
 	final private String url;
 
-	OpenURLAction(final String description, final String url) {
-		super(null, new ImageIcon(Controller.getResourceController()
-		    .getResource("/images/Link.png")));
+	OpenURLAction(final Controller controller, final String description, final String url) {
+		super(null, new ImageIcon(Controller.getResourceController().getResource("/images/Link.png")));
 		MenuBuilder.setLabelAndMnemonic(this, description);
 		this.url = url;
+		this.controller = controller;
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		try {
-			Controller.getController().getViewController().openDocument(new URL(url));
+			controller.getViewController().openDocument(new URL(url));
 		}
 		catch (final MalformedURLException ex) {
-			Controller.getController().errorMessage(Controller.getText("url_error") + "\n" + ex);
+			controller.errorMessage(Controller.getText("url_error") + "\n" + ex);
 		}
 		catch (final Exception ex) {
-			Controller.getController().errorMessage(ex);
+			controller.errorMessage(ex);
 		}
 	}
 }

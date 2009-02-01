@@ -55,8 +55,8 @@ public class ColorProperty extends PropertyBean implements IPropertyControl, Act
 	}
 
 	public void actionPerformed(final ActionEvent arg0) {
-		final Color result = ColorTracker.showCommonJColorChooserDialog(mButton.getRootPane(),
-		    OptionString.getText(getLabel()), getColorValue());
+		final Color result = ColorTracker.showCommonJColorChooserDialog(mButton.getRootPane(), OptionString
+		    .getText(getLabel()), getColorValue());
 		if (result != null) {
 			setColorValue(result);
 			firePropertyChangeEvent();

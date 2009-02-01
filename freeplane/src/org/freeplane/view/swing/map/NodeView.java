@@ -116,8 +116,7 @@ public class NodeView extends JComponent implements INodeView {
 	private NodeMotionListenerView motionListenerView;
 	private NodeView preferredChild;
 
-	protected NodeView(final NodeModel model, final int position, final MapView map,
-	                   final Container parent) {
+	protected NodeView(final NodeModel model, final int position, final MapView map, final Container parent) {
 		setFocusCycleRoot(true);
 		this.model = model;
 		this.map = map;
@@ -147,10 +146,8 @@ public class NodeView extends JComponent implements INodeView {
 		if (!isValid()) {
 			return false;
 		}
-		final int space = getMap().getZoomed(NodeView.SPACE_AROUND) - 2
-		        * getZoomedFoldingSymbolHalfWidth();
-		return (x >= space) && (x < getWidth() - space) && (y >= space)
-		        && (y < getHeight() - space);
+		final int space = getMap().getZoomed(NodeView.SPACE_AROUND) - 2 * getZoomedFoldingSymbolHalfWidth();
+		return (x >= space) && (x < getWidth() - space) && (y >= space) && (y < getHeight() - space);
 	}
 
 	protected void convertPointToMap(final Point p) {
@@ -255,8 +252,8 @@ public class NodeView extends JComponent implements INodeView {
 		getCoordinates(inList, 0, false, 0, 0);
 	}
 
-	private void getCoordinates(final LinkedList inList, int additionalDistanceForConvexHull,
-	                            final boolean byChildren, final int transX, final int transY) {
+	private void getCoordinates(final LinkedList inList, int additionalDistanceForConvexHull, final boolean byChildren,
+	                            final int transX, final int transY) {
 		if (!isVisible()) {
 			return;
 		}
@@ -270,21 +267,20 @@ public class NodeView extends JComponent implements INodeView {
 			final int width = mainView.getMainViewWidthWithFoldingMark();
 			final int heightWithFoldingMark = mainView.getMainViewHeightWithFoldingMark();
 			final int height = Math.max(heightWithFoldingMark, getContent().getHeight());
-			inList.addLast(new Point(-additionalDistanceForConvexHull + x,
-			    -additionalDistanceForConvexHull + y));
-			inList.addLast(new Point(-additionalDistanceForConvexHull + x,
-			    additionalDistanceForConvexHull + y + height));
-			inList.addLast(new Point(additionalDistanceForConvexHull + x + width,
-			    additionalDistanceForConvexHull + y + height));
-			inList.addLast(new Point(additionalDistanceForConvexHull + x + width,
-			    -additionalDistanceForConvexHull + y));
+			inList.addLast(new Point(-additionalDistanceForConvexHull + x, -additionalDistanceForConvexHull + y));
+			inList
+			    .addLast(new Point(-additionalDistanceForConvexHull + x, additionalDistanceForConvexHull + y + height));
+			inList.addLast(new Point(additionalDistanceForConvexHull + x + width, additionalDistanceForConvexHull + y
+			        + height));
+			inList
+			    .addLast(new Point(additionalDistanceForConvexHull + x + width, -additionalDistanceForConvexHull + y));
 		}
 		final LinkedList childrenViews = getChildrenViews();
 		final ListIterator children_it = childrenViews.listIterator();
 		while (children_it.hasNext()) {
 			final NodeView child = (NodeView) children_it.next();
-			child.getCoordinates(inList, additionalDistanceForConvexHull, true, transX
-			        + child.getX(), transY + child.getY());
+			child.getCoordinates(inList, additionalDistanceForConvexHull, true, transX + child.getX(), transY
+			        + child.getY());
 		}
 	}
 
@@ -397,8 +393,7 @@ public class NodeView extends JComponent implements INodeView {
 			x = -x;
 		}
 		if (y != 0) {
-			final double ctgRect = Math.abs((double) getContent().getWidth()
-			        / getContent().getHeight());
+			final double ctgRect = Math.abs((double) getContent().getWidth() / getContent().getHeight());
 			final double ctgLine = Math.abs((double) x / y);
 			int absLinkX, absLinkY;
 			if (ctgRect > ctgLine) {
@@ -409,12 +404,12 @@ public class NodeView extends JComponent implements INodeView {
 				absLinkX = getContent().getWidth() / 2;
 				absLinkY = Math.abs(y * getContent().getWidth() / (2 * x));
 			}
-			linkPoint = new Point(getContent().getWidth() / 2 + (x > 0 ? absLinkX : -absLinkX),
-			    getContent().getHeight() / 2 + (y > 0 ? absLinkY : -absLinkY));
+			linkPoint = new Point(getContent().getWidth() / 2 + (x > 0 ? absLinkX : -absLinkX), getContent()
+			    .getHeight()
+			        / 2 + (y > 0 ? absLinkY : -absLinkY));
 		}
 		else {
-			linkPoint = new Point((x > 0 ? getContent().getWidth() : 0),
-			    (getContent().getHeight() / 2));
+			linkPoint = new Point((x > 0 ? getContent().getWidth() : 0), (getContent().getHeight() / 2));
 		}
 		linkPoint.translate(getContent().getX(), getContent().getY());
 		convertPointToMap(linkPoint);
@@ -453,8 +448,7 @@ public class NodeView extends JComponent implements INodeView {
 	public int getMaxToolTipWidth() {
 		if (maxToolTipWidth == 0) {
 			try {
-				maxToolTipWidth = Controller.getResourceController().getIntProperty(
-				    "max_tooltip_width", 600);
+				maxToolTipWidth = Controller.getResourceController().getIntProperty("max_tooltip_width", 600);
 			}
 			catch (final NumberFormatException e) {
 				maxToolTipWidth = 600;
@@ -527,8 +521,8 @@ public class NodeView extends JComponent implements INodeView {
 			}
 		}
 		while (sibling.getModel().getNodeLevel(false) < getMap().getSiblingMaxLevel()) {
-			final NodeView first = sibling.getFirst(sibling.isRoot() ? lastSibling : null, this
-			    .isLeft(), !this.isLeft());
+			final NodeView first = sibling.getFirst(sibling.isRoot() ? lastSibling : null, this.isLeft(), !this
+			    .isLeft());
 			if (first == null) {
 				break;
 			}
@@ -549,8 +543,7 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	public NodeView getPreferredVisibleChild(final boolean left) {
-		if (preferredChild != null && (left == preferredChild.isLeft())
-		        && preferredChild.getParent() == this) {
+		if (preferredChild != null && (left == preferredChild.isLeft()) && preferredChild.getParent() == this) {
 			if (preferredChild.isContentVisible()) {
 				return preferredChild;
 			}
@@ -570,8 +563,7 @@ public class NodeView extends JComponent implements INodeView {
 			else {
 				baseComponent = getVisibleParentView();
 			}
-			final int ownY = baseComponent.getMainView().getY()
-			        + baseComponent.getMainView().getHeight() / 2;
+			final int ownY = baseComponent.getMainView().getY() + baseComponent.getMainView().getHeight() / 2;
 			NodeView newSelected = null;
 			for (int i = 0; i < getComponentCount(); i++) {
 				final Component c = getComponent(i);
@@ -614,8 +606,7 @@ public class NodeView extends JComponent implements INodeView {
 			return this;
 		}
 		NodeView previousSibling = sibling.getPreviousVisibleSibling();
-		while (previousSibling != sibling
-		        && sibling.getParentView() == previousSibling.getParentView()) {
+		while (previousSibling != sibling && sibling.getParentView() == previousSibling.getParentView()) {
 			sibling = previousSibling;
 			previousSibling = previousSibling.getPreviousVisibleSibling();
 		}
@@ -662,8 +653,8 @@ public class NodeView extends JComponent implements INodeView {
 			}
 		}
 		while (sibling.getModel().getNodeLevel(false) < getMap().getSiblingMaxLevel()) {
-			final NodeView last = sibling.getLast(sibling.isRoot() ? previousSibling : null, this
-			    .isLeft(), !this.isLeft());
+			final NodeView last = sibling.getLast(sibling.isRoot() ? previousSibling : null, this.isLeft(), !this
+			    .isLeft());
 			if (last == null) {
 				break;
 			}
@@ -709,8 +700,8 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	public Color getTextBackground() {
-		final Color modelBackgroundColor = NodeStyleController.getController(
-		    model.getModeController()).getBackgroundColor(model);
+		final Color modelBackgroundColor = NodeStyleController.getController(model.getModeController())
+		    .getBackgroundColor(model);
 		if (modelBackgroundColor != null) {
 			return modelBackgroundColor;
 		}
@@ -718,8 +709,7 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	public Color getTextColor() {
-		final Color color = NodeStyleController.getController(model.getModeController()).getColor(
-		    model);
+		final Color color = NodeStyleController.getController(model.getModeController()).getColor(model);
 		return color;
 	}
 
@@ -748,17 +738,14 @@ public class NodeView extends JComponent implements INodeView {
 
 	public int getZoomedFoldingSymbolHalfWidth() {
 		if (NodeView.FOLDING_SYMBOL_WIDTH == -1) {
-			NodeView.FOLDING_SYMBOL_WIDTH = Controller.getResourceController().getIntProperty(
-			    "foldingsymbolwidth", 8);
+			NodeView.FOLDING_SYMBOL_WIDTH = Controller.getResourceController().getIntProperty("foldingsymbolwidth", 8);
 		}
-		final int preferredFoldingSymbolHalfWidth = (int) ((NodeView.FOLDING_SYMBOL_WIDTH * map
-		    .getZoom()) / 2);
+		final int preferredFoldingSymbolHalfWidth = (int) ((NodeView.FOLDING_SYMBOL_WIDTH * map.getZoom()) / 2);
 		return Math.min(preferredFoldingSymbolHalfWidth, getHeight() / 2);
 	}
 
 	void insert() {
-		final ListIterator it = getModel().getModeController().getMapController().childrenFolded(
-		    getModel());
+		final ListIterator it = getModel().getModeController().getMapController().childrenFolded(getModel());
 		while (it.hasNext()) {
 			insert((NodeModel) it.next(), 0);
 		}
@@ -769,8 +756,7 @@ public class NodeView extends JComponent implements INodeView {
 	 * attribute according to this view.
 	 */
 	NodeView insert(final NodeModel newNode, final int position) {
-		final NodeView newView = NodeViewFactory.getInstance().newNodeView(newNode, position,
-		    getMap(), this);
+		final NodeView newView = NodeViewFactory.getInstance().newNodeView(newNode, position, getMap(), this);
 		newView.insert();
 		return newView;
 	}
@@ -880,8 +866,8 @@ public class NodeView extends JComponent implements INodeView {
 		revalidate();
 	}
 
-	public void onNodeMoved(final NodeModel oldParent, final int oldIndex,
-	                        final NodeModel newParent, final NodeModel child, final int newIndex) {
+	public void onNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
+	                        final NodeModel child, final int newIndex) {
 		onNodeDeleted(oldParent, child, oldIndex);
 		onNodeInserted(newParent, child, newIndex);
 	}
@@ -1015,8 +1001,8 @@ public class NodeView extends JComponent implements INodeView {
 			add(newMainView);
 		}
 		mainView = newMainView;
-		final IUserInputListenerFactory userInputListenerFactory = getMap().getModel()
-		    .getModeController().getUserInputListenerFactory();
+		final IUserInputListenerFactory userInputListenerFactory = getMap().getModel().getModeController()
+		    .getUserInputListenerFactory();
 		mainView.addMouseListener(userInputListenerFactory.getNodeMouseMotionListener());
 		mainView.addMouseMotionListener(userInputListenerFactory.getNodeMouseMotionListener());
 		mainView.addKeyListener(userInputListenerFactory.getNodeKeyListener());
@@ -1116,8 +1102,7 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	void updateStyle() {
-		final String shape = NodeStyleController.getController(model.getModeController()).getShape(
-		    model);
+		final String shape = NodeStyleController.getController(model.getModeController()).getShape(model);
 		if (mainView != null && (mainView.getStyle().equals(shape) || model.isRoot())) {
 			return;
 		}
@@ -1144,8 +1129,7 @@ public class NodeView extends JComponent implements INodeView {
 			mainView.setToolTipText(null);
 		}
 		else {
-			final StringBuffer text = new StringBuffer("<html><table width=\""
-			        + getMaxToolTipWidth() + "\">");
+			final StringBuffer text = new StringBuffer("<html><table width=\"" + getMaxToolTipWidth() + "\">");
 			for (final Iterator i = tooltips.keySet().iterator(); i.hasNext();) {
 				final String key = (String) i.next();
 				String value = (String) tooltips.get(key);
@@ -1160,7 +1144,6 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	boolean useSelectionColors() {
-		return isSelected() && !MapView.standardDrawRectangleForSelection
-		        && !map.isCurrentlyPrinting();
+		return isSelected() && !MapView.standardDrawRectangleForSelection && !map.isCurrentlyPrinting();
 	}
 }

@@ -47,8 +47,7 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 			 */
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
-					if (e.getModifiers() == 0 && !c.isBlocked()
-					        && Controller.getController().getSelection().size() <= 1) {
+					if (e.getModifiers() == 0 && !c.isBlocked() && c.getController().getSelection().size() <= 1) {
 						c.getUserInputListenerFactory().extendSelection(e);
 					}
 				}
@@ -65,10 +64,12 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 	 * given time.
 	 */
 	private Rectangle controlRegionForDelayedSelection;
+	final private ModeController mc;
 	final private ControllerPopupMenuListener popupListener;
 	private Timer timerForDelayedSelection;
 
 	public DefaultNodeMouseMotionListener(final ModeController modeController) {
+		mc = modeController;
 		popupListener = new ControllerPopupMenuListener(modeController);
 		if (DefaultNodeMouseMotionListener.delayedSelectionEnabled == null) {
 			updateSelectionMethod();
@@ -82,7 +83,7 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 		timerForDelayedSelection = new Timer();
 		timerForDelayedSelection
 		    .schedule(
-		        new TimeDelayedSelection(Controller.getModeController(), e),
+		        new TimeDelayedSelection(mc, e),
 		        /*
 		         * if the new selection method is not enabled we put 0 to
 		         * get direct selection.
@@ -107,9 +108,8 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 	public void mouseDragged(final MouseEvent e) {
 		stopTimerForDelayedSelection();
 		final NodeView nodeV = ((MainView) e.getComponent()).getNodeView();
-		if (!((MapView) Controller.getController().getViewController().getMapView())
-		    .isSelected(nodeV)) {
-			Controller.getModeController().getUserInputListenerFactory().extendSelection(e);
+		if (!((MapView) mc.getController().getViewController().getMapView()).isSelected(nodeV)) {
+			mc.getUserInputListenerFactory().extendSelection(e);
 		}
 	}
 
@@ -128,9 +128,8 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 		final MainView node = ((MainView) e.getComponent());
 		final boolean isLink = (node).updateCursor(e.getX());
 		if (isLink) {
-			Controller.getController().getViewController().out(
-			    LinkController.getController(Controller.getModeController()).getLinkShortText(
-			        node.getNodeView().getModel()));
+			mc.getController().getViewController().out(
+			    LinkController.getController(mc).getLinkShortText(node.getNodeView().getModel()));
 		}
 		if (controlRegionForDelayedSelection != null
 		        && DefaultNodeMouseMotionListener.delayedSelectionEnabled.getValue()) {
@@ -146,21 +145,20 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 
 	public void mouseReleased(final MouseEvent e) {
 		stopTimerForDelayedSelection();
-		final ModeController modeController = Controller.getModeController();
-		modeController.getUserInputListenerFactory().extendSelection(e);
+		mc.getUserInputListenerFactory().extendSelection(e);
 		showPopupMenu(e);
 		if (e.isConsumed()) {
 			return;
 		}
 		if (e.getModifiers() == InputEvent.BUTTON1_MASK) {
 			/* perform action only if one selected node. */
-			final MapController mapController = modeController.getMapController();
+			final MapController mapController = mc.getMapController();
 			if (mapController.getSelectedNodes().size() != 1) {
 				return;
 			}
 			final MainView component = (MainView) e.getComponent();
 			if (component.isInFollowLinkRegion(e.getX())) {
-				LinkController.getController(modeController).loadURL();
+				LinkController.getController(mc).loadURL();
 			}
 			else {
 				final NodeModel node = (component).getNodeView().getModel();
@@ -170,7 +168,7 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 						mapController.toggleFolded();
 					}
 					else {
-						LinkController.getController(modeController).loadURL();
+						LinkController.getController(mc).loadURL();
 					}
 					return;
 				}
@@ -182,8 +180,7 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 
 	public void showPopupMenu(final MouseEvent e) {
 		if (e.isPopupTrigger()) {
-			final JPopupMenu popupmenu = Controller.getModeController()
-			    .getUserInputListenerFactory().getNodePopupMenu();
+			final JPopupMenu popupmenu = mc.getUserInputListenerFactory().getNodePopupMenu();
 			if (popupmenu != null) {
 				popupmenu.addPopupMenuListener(popupListener);
 				popupmenu.show(e.getComponent(), e.getX(), e.getY());
@@ -209,21 +206,18 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 			DefaultNodeMouseMotionListener.timeForDelayedSelection = new Tools.IntHolder();
 		}
 		DefaultNodeMouseMotionListener.delayedSelectionEnabled = new Tools.BooleanHolder();
-		DefaultNodeMouseMotionListener.delayedSelectionEnabled.setValue(Controller
-		    .getResourceController().getProperty("selection_method").equals(
-		        "selection_method_direct") ? false : true);
+		DefaultNodeMouseMotionListener.delayedSelectionEnabled.setValue(Controller.getResourceController().getProperty(
+		    "selection_method").equals("selection_method_direct") ? false : true);
 		/*
 		 * set time for delay to infinity, if selection_method equals
 		 * selection_method_by_click.
 		 */
-		if (Controller.getResourceController().getProperty("selection_method").equals(
-		    "selection_method_by_click")) {
+		if (Controller.getResourceController().getProperty("selection_method").equals("selection_method_by_click")) {
 			DefaultNodeMouseMotionListener.timeForDelayedSelection.setValue(Integer.MAX_VALUE);
 		}
 		else {
-			DefaultNodeMouseMotionListener.timeForDelayedSelection.setValue(Integer
-			    .parseInt(Controller.getResourceController().getProperty(
-			        "time_for_delayed_selection")));
+			DefaultNodeMouseMotionListener.timeForDelayedSelection.setValue(Integer.parseInt(Controller
+			    .getResourceController().getProperty("time_for_delayed_selection")));
 		}
 	}
 }

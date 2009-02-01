@@ -18,6 +18,7 @@
 package org.freeplane.features.mindmapmode.addins.styles;
 
 import java.awt.Component;
+import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -31,7 +32,6 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
@@ -61,9 +61,9 @@ class ChooseFormatPopupDialog extends JDialog implements KeyListener {
 	 * This constructor is used, if you need the user to enter a pattern
 	 * generally.
 	 */
-	public ChooseFormatPopupDialog(final JFrame caller, final ModeController controller,
-	                               final String dialogTitle, final Pattern pattern) {
-		super(caller);
+	public ChooseFormatPopupDialog(final Frame frame, final ModeController controller, final String dialogTitle,
+	                               final Pattern pattern) {
+		super(frame);
 		mController = controller;
 		initialize(dialogTitle);
 		mStylePatternFrame.setPattern(pattern);
@@ -77,8 +77,7 @@ class ChooseFormatPopupDialog extends JDialog implements KeyListener {
 
 	private void close() {
 		final WindowConfigurationStorage storage = new NormalWindowConfigurationStorage();
-		storage.storeDialogPositions(this,
-		    ChooseFormatPopupDialog.WINDOW_PREFERENCE_STORAGE_PROPERTY);
+		storage.storeDialogPositions(this, ChooseFormatPopupDialog.WINDOW_PREFERENCE_STORAGE_PROPERTY);
 		setVisible(false);
 		this.dispose();
 	}
@@ -115,13 +114,12 @@ class ChooseFormatPopupDialog extends JDialog implements KeyListener {
 			 * int gridheight, double weightx, double weighty, int anchor, int
 			 * fill, Insets insets, int ipadx, int ipady)
 			 */
-			jContentPane.add(new JScrollPane(getStylePatternFrame()), new GridBagConstraints(0, 0,
-			    2, 1, 2.0, 8.0, GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(0, 0,
-			        0, 0), 0, 0));
-			jContentPane.add(getJOKButton(), new GridBagConstraints(0, 1, 1, 1, 1.0, 0.0,
-			    GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-			jContentPane.add(getJCancelButton(), new GridBagConstraints(1, 1, 1, 1, 1.0, 0.0,
-			    GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+			jContentPane.add(new JScrollPane(getStylePatternFrame()), new GridBagConstraints(0, 0, 2, 1, 2.0, 8.0,
+			    GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
+			jContentPane.add(getJOKButton(), new GridBagConstraints(0, 1, 1, 1, 1.0, 0.0, GridBagConstraints.EAST,
+			    GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+			jContentPane.add(getJCancelButton(), new GridBagConstraints(1, 1, 1, 1, 1.0, 0.0, GridBagConstraints.EAST,
+			    GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 			getRootPane().setDefaultButton(getJOKButton());
 		}
 		return jContentPane;
@@ -162,8 +160,7 @@ class ChooseFormatPopupDialog extends JDialog implements KeyListener {
 
 	private Component getStylePatternFrame() {
 		if (mStylePatternFrame == null) {
-			mStylePatternFrame = new StylePatternPanel(mController,
-			    StylePatternPanelType.WITHOUT_NAME_AND_CHILDS);
+			mStylePatternFrame = new StylePatternPanel(mController, StylePatternPanelType.WITHOUT_NAME_AND_CHILDS);
 			mStylePatternFrame.init();
 		}
 		return mStylePatternFrame;

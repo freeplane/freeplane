@@ -48,8 +48,7 @@ public class AttributeRegistry implements IExtension {
 	static AttributeRegistry createRegistry(final MapModel map) {
 		AttributeRegistry registry = AttributeRegistry.getRegistry(map);
 		if (registry == null) {
-			final AttributeController attributeController = AttributeController.getController(map
-			    .getModeController());
+			final AttributeController attributeController = AttributeController.getController(map.getModeController());
 			registry = new AttributeRegistry(attributeController);
 			map.addExtension(AttributeRegistry.class, registry);
 			registry.registryAttributes(map.getRootNode());
@@ -58,8 +57,7 @@ public class AttributeRegistry implements IExtension {
 	}
 
 	public static AttributeRegistry getRegistry(final MapModel map) {
-		final AttributeRegistry registry = (AttributeRegistry) map
-		    .getExtension(AttributeRegistry.class);
+		final AttributeRegistry registry = (AttributeRegistry) map.getExtension(AttributeRegistry.class);
 		return registry;
 	}
 
@@ -109,14 +107,11 @@ public class AttributeRegistry implements IExtension {
 		if (isAttributeLayoutChanged == false) {
 			return;
 		}
-		getAttributeController().performSetRestriction(AttributeRegistry.GLOBAL,
-		    restrictionModel.booleanValue());
+		getAttributeController().performSetRestriction(AttributeRegistry.GLOBAL, restrictionModel.booleanValue());
 		for (int i = 0; i < elements.size(); i++) {
 			final AttributeRegistryElement element = getElement(i);
-			getAttributeController().performSetVisibility(i,
-			    element.getVisibilityModel().booleanValue());
-			getAttributeController().performSetRestriction(i,
-			    element.getRestriction().booleanValue());
+			getAttributeController().performSetVisibility(i, element.getVisibilityModel().booleanValue());
+			getAttributeController().performSetRestriction(i, element.getRestriction().booleanValue());
 		}
 		isAttributeLayoutChanged = false;
 	}
@@ -203,8 +198,7 @@ public class AttributeRegistry implements IExtension {
 	}
 
 	public AttributeRegistryElement getElement(final Comparable attrName) {
-		final AttributeRegistryElement elem = (AttributeRegistryElement) elements
-		    .getValue(attrName);
+		final AttributeRegistryElement elem = (AttributeRegistryElement) elements.getValue(attrName);
 		return elem;
 	}
 
@@ -290,8 +284,7 @@ public class AttributeRegistry implements IExtension {
 			elem.addValue(value);
 		}
 		catch (final NoSuchElementException ex) {
-			final AttributeRegistryElement attributeRegistryElement = new AttributeRegistryElement(
-			    this, name);
+			final AttributeRegistryElement attributeRegistryElement = new AttributeRegistryElement(this, name);
 			attributeRegistryElement.addValue(value);
 			final int index = getElements().add(name, attributeRegistryElement);
 			getTableModel().fireTableRowsInserted(index, index);
@@ -300,8 +293,7 @@ public class AttributeRegistry implements IExtension {
 	}
 
 	public void registry(final String name) {
-		final AttributeRegistryElement attributeRegistryElement = new AttributeRegistryElement(
-		    this, name);
+		final AttributeRegistryElement attributeRegistryElement = new AttributeRegistryElement(this, name);
 		final int index = getElements().add(name, attributeRegistryElement);
 		getTableModel().fireTableRowsInserted(index, index);
 	}
@@ -314,8 +306,7 @@ public class AttributeRegistry implements IExtension {
 		for (int i = 0; i < model.getRowCount(); i++) {
 			registry(model.getAttribute(i));
 		}
-		final ListIterator<NodeModel> iterator = node.getModeController().getMapController()
-		    .childrenUnfolded(node);
+		final ListIterator<NodeModel> iterator = node.getModeController().getMapController().childrenUnfolded(node);
 		while (iterator.hasNext()) {
 			final NodeModel next = iterator.next();
 			registryAttributes(next);

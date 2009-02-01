@@ -23,19 +23,19 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.features.common.clipboard.ClipboardController;
 
 class ExportBranchToHTMLAction extends FreeplaneAction {
-	public ExportBranchToHTMLAction() {
-		super("export_branch_to_html");
+	public ExportBranchToHTMLAction(final Controller controller) {
+		super(controller, "export_branch_to_html");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		try {
 			final File file = File.createTempFile("tmm", ".html");
-			ClipboardController.saveHTML(getModeController().getMapController().getSelectedNode(),
-			    file);
+			ClipboardController.saveHTML(getModeController().getMapController().getSelectedNode(), file);
 			getModeController().getMapController().loadURL(file.toString());
 		}
 		catch (final IOException ex) {

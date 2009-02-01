@@ -137,8 +137,7 @@ public class KeyEventWorkaround {
 						return evt;
 				}
 			case KeyEvent.KEY_TYPED:
-				if ((ch < 0x20 || ch == 0x7f || ch == 0xff) && ch != '\b' && ch != '\t'
-				        && ch != '\n') {
+				if ((ch < 0x20 || ch == 0x7f || ch == 0xff) && ch != '\b' && ch != '\t' && ch != '\n') {
 					return null;
 				}
 				if (evt.getWhen() - KeyEventWorkaround.lastKeyTime < 750) {
@@ -150,8 +149,7 @@ public class KeyEventWorkaround {
 					}
 					if (KeyEventWorkaround.last == KeyEventWorkaround.LAST_NUMKEYPAD) {
 						KeyEventWorkaround.last = KeyEventWorkaround.LAST_NOTHING;
-						if ((ch >= '0' && ch <= '9') || ch == '.' || ch == '/' || ch == '*'
-						        || ch == '-' || ch == '+') {
+						if ((ch >= '0' && ch <= '9') || ch == '.' || ch == '/' || ch == '*' || ch == '-' || ch == '+') {
 							return null;
 						}
 					}

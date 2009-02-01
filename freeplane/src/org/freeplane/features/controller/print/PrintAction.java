@@ -28,27 +28,27 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.MenuBuilder;
 
 class PrintAction extends AbstractPrintAction {
+	final private Controller controller;
 	final private boolean isDlg;
 
-	PrintAction(final PrintController controller, final boolean isDlg) {
-		super(controller, null, new ImageIcon(Controller.getResourceController().getResource(
+	PrintAction(final Controller controller, final PrintController printController, final boolean isDlg) {
+		super(printController, null, new ImageIcon(Controller.getResourceController().getResource(
 		    "/images/fileprint.png")));
-		MenuBuilder.setLabelAndMnemonic(this, isDlg ? Controller.getText("print_dialog")
-		        : Controller.getText("print"));
+		this.controller = controller;
+		MenuBuilder.setLabelAndMnemonic(this, isDlg ? Controller.getText("print_dialog") : Controller.getText("print"));
 		this.isDlg = isDlg;
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final PrintController controller = getPrintController();
-		if (!controller.acquirePrinterJobAndPageFormat()) {
+		final PrintController printController = getPrintController();
+		if (!printController.acquirePrinterJobAndPageFormat()) {
 			return;
 		}
-		controller.getPrinterJob().setPrintable(
-		    (Printable) Controller.getController().getViewController().getMapView(),
-		    controller.getPageFormat());
-		if (!isDlg || controller.getPrinterJob().printDialog()) {
+		printController.getPrinterJob().setPrintable((Printable) controller.getViewController().getMapView(),
+		    printController.getPageFormat());
+		if (!isDlg || printController.getPrinterJob().printDialog()) {
 			try {
-				controller.getPrinterJob().print();
+				printController.getPrinterJob().print();
 			}
 			catch (final Exception ex) {
 				org.freeplane.core.util.Tools.logException(ex);

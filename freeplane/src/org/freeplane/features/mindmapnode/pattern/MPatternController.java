@@ -50,8 +50,7 @@ public class MPatternController implements IExtension {
 		return (MPatternController) modeController.getExtension(MPatternController.class);
 	}
 
-	public static void install(final ModeController modeController,
-	                           final MPatternController patternController) {
+	public static void install(final ModeController modeController, final MPatternController patternController) {
 		modeController.addExtension(MPatternController.class, patternController);
 	}
 
@@ -63,8 +62,8 @@ public class MPatternController implements IExtension {
 	public MPatternController(final ModeController modeController) {
 		super();
 		this.modeController = modeController;
-		patternsFile = new File(Controller.getResourceController().getFreeplaneUserDirectory(),
-		    Controller.getResourceController().getProperty("patternsfile"));
+		patternsFile = new File(Controller.getResourceController().getFreeplaneUserDirectory(), Controller
+		    .getResourceController().getProperty("patternsfile"));
 		createActions();
 	}
 
@@ -101,14 +100,12 @@ public class MPatternController implements IExtension {
 			// repair old patterns:
 			final String repairTitle = "Repair patterns";
 			final File patternsFile = getPatternsFile();
-			final int result = JOptionPane.showConfirmDialog(null,
-			    "<html>The pattern file format has changed, <br>"
-			            + "and it seems, that your pattern file<br>" + "'"
-			            + patternsFile.getAbsolutePath()
-			            + "'<br> is formatted in the old way. <br>"
-			            + "Should I try to repair the pattern file <br>"
+			final int result = JOptionPane
+			    .showConfirmDialog(null, "<html>The pattern file format has changed, <br>"
+			            + "and it seems, that your pattern file<br>" + "'" + patternsFile.getAbsolutePath()
+			            + "'<br> is formatted in the old way. <br>" + "Should I try to repair the pattern file <br>"
 			            + "(otherwise, you should update it by hand or delete it)?", repairTitle,
-			    JOptionPane.YES_NO_OPTION);
+			        JOptionPane.YES_NO_OPTION);
 			if (result == JOptionPane.YES_OPTION) {
 				// try xslt script:
 				boolean success = false;
@@ -122,12 +119,11 @@ public class MPatternController implements IExtension {
 					org.freeplane.core.util.Tools.logException(e);
 				}
 				if (success) {
-					JOptionPane.showMessageDialog(null, "Successfully repaired the pattern file.",
-					    repairTitle, JOptionPane.PLAIN_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Successfully repaired the pattern file.", repairTitle,
+					    JOptionPane.PLAIN_MESSAGE);
 				}
 				else {
-					JOptionPane.showMessageDialog(null,
-					    "An error occured repairing the pattern file.", repairTitle,
+					JOptionPane.showMessageDialog(null, "An error occured repairing the pattern file.", repairTitle,
 					    JOptionPane.WARNING_MESSAGE);
 				}
 			}
@@ -142,8 +138,7 @@ public class MPatternController implements IExtension {
 			patterns[i] = new ApplyPatternAction(modeController, actualPattern);
 			final PatternProperty patternIcon = actualPattern.getPatternIcon();
 			if (patternIcon != null && patternIcon.getValue() != null) {
-				patterns[i].putValue(Action.SMALL_ICON, MindIcon.factory(patternIcon.getValue())
-				    .getIcon());
+				patterns[i].putValue(Action.SMALL_ICON, MindIcon.factory(patternIcon.getValue()).getIcon());
 			}
 		}
 	}
@@ -156,8 +151,8 @@ public class MPatternController implements IExtension {
 		for (int i = 0; i < patterns.length; ++i) {
 			final JMenuItem item = new JMenuItem(patterns[i]);
 			builder.addMenuItem(group, item, MenuBuilder.AS_CHILD);
-			item.setAccelerator(KeyStroke.getKeyStroke(Controller.getResourceController()
-			    .getAdjustableProperty("keystroke_apply_pattern_" + (i + 1))));
+			item.setAccelerator(KeyStroke.getKeyStroke(Controller.getResourceController().getAdjustableProperty(
+			    "keystroke_apply_pattern_" + (i + 1))));
 		}
 	}
 
@@ -173,8 +168,7 @@ public class MPatternController implements IExtension {
 		}
 		else {
 			System.out.println("User patterns file " + patternsFile + " not found.");
-			reader = new InputStreamReader(Controller.getResourceController().getResource(
-			    "/patterns.xml").openStream());
+			reader = new InputStreamReader(Controller.getResourceController().getResource("/patterns.xml").openStream());
 		}
 		return reader;
 	}

@@ -27,6 +27,7 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.url.UrlManager;
@@ -37,51 +38,48 @@ import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 
 class ImportFolderStructureAction extends FreeplaneAction {
-	public ImportFolderStructureAction() {
-		super("import_folder_structure");
+	public ImportFolderStructureAction(final Controller controller) {
+		super(controller, "import_folder_structure");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final JFileChooser chooser = new JFileChooser();
 		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		chooser.setDialogTitle(getModeController().getText("select_folder_for_importing"));
-		final int returnVal = chooser.showOpenDialog(Controller.getController().getViewController()
-		    .getContentPane());
+		final ViewController viewController = getController().getViewController();
+		final int returnVal = chooser.showOpenDialog(viewController.getContentPane());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			final File folder = chooser.getSelectedFile();
-			Controller.getController().getViewController().out("Importing folder structure ...");
+			viewController.out("Importing folder structure ...");
 			try {
-				importFolderStructure(folder, getModeController().getMapController()
-				    .getSelectedNode(),
+				importFolderStructure(folder, getModeController().getMapController().getSelectedNode(),
 				/*redisplay=*/true);
 			}
 			catch (final Exception ex) {
 				org.freeplane.core.util.Tools.logException(ex);
 			}
-			Controller.getController().getViewController().out("Folder structure imported.");
+			viewController.out("Folder structure imported.");
 		}
 	}
 
 	/**
 	 */
 	private NodeModel addNode(final NodeModel target, final String nodeContent, final String link) {
-		final NodeModel node = ((MMapController) getModeController().getMapController())
-		    .addNewNode(target, target.getChildCount(), target.isNewChildLeft());
-		((MTextController) TextController.getController(getModeController())).setNodeText(node,
-		    nodeContent);
+		final NodeModel node = ((MMapController) getModeController().getMapController()).addNewNode(target, target
+		    .getChildCount(), target.isNewChildLeft());
+		((MTextController) TextController.getController(getModeController())).setNodeText(node, nodeContent);
 		((MLinkController) LinkController.getController(getModeController())).setLink(node, link);
 		return node;
 	}
 
-	public void importFolderStructure(final File folder, final NodeModel target,
-	                                  final boolean redisplay) throws MalformedURLException {
+	public void importFolderStructure(final File folder, final NodeModel target, final boolean redisplay)
+	        throws MalformedURLException {
 		Logger.global.warning("Entering folder: " + folder);
 		if (folder.isDirectory()) {
 			final File[] list = folder.listFiles();
 			for (int i = 0; i < list.length; i++) {
 				if (list[i].isDirectory()) {
-					final NodeModel node = addNode(target, list[i].getName(), UrlManager.fileToUrl(
-					    list[i]).toString());
+					final NodeModel node = addNode(target, list[i].getName(), UrlManager.fileToUrl(list[i]).toString());
 					importFolderStructure(list[i], node, false);
 				}
 			}

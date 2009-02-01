@@ -40,15 +40,13 @@ class RemoveNoteAction extends FreeplaneAction implements PopupMenuListener {
 	 */
 	final private MNoteController noteController;
 
-	public RemoveNoteAction(final MNoteController noteController,
-	                        final ModeController modeController) {
-		super("accessories/plugins/RemoveNote.properties_name");
+	public RemoveNoteAction(final MNoteController noteController, final ModeController modeController) {
+		super(modeController.getController(), "accessories/plugins/RemoveNote.properties_name");
 		this.noteController = noteController;
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final int showResult = new OptionalDontShowMeAgainDialog(Controller.getController()
-		    .getViewController().getJFrame(), Controller.getController().getSelection()
+		final int showResult = new OptionalDontShowMeAgainDialog(getController().getViewController().getFrame(), getController().getSelection()
 		    .getSelected(), "really_remove_notes", "confirmation",
 		    new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
 		        ResourceController.RESOURCES_REMOVE_NOTES_WITHOUT_QUESTION),
@@ -56,8 +54,8 @@ class RemoveNoteAction extends FreeplaneAction implements PopupMenuListener {
 		if (showResult != JOptionPane.OK_OPTION) {
 			return;
 		}
-		for (final Iterator iterator = (getModeController()).getMapController().getSelectedNodes()
-		    .iterator(); iterator.hasNext();) {
+		for (final Iterator iterator = (getModeController()).getMapController().getSelectedNodes().iterator(); iterator
+		    .hasNext();) {
 			final NodeModel node = (NodeModel) iterator.next();
 			if (NoteModel.getNoteText(node) != null) {
 				removeNote(node);
@@ -108,8 +106,8 @@ class RemoveNoteAction extends FreeplaneAction implements PopupMenuListener {
 			setEnabled(false);
 			return;
 		}
-		for (final Iterator iterator = modeController.getMapController().getSelectedNodes()
-		    .iterator(); iterator.hasNext();) {
+		for (final Iterator iterator = modeController.getMapController().getSelectedNodes().iterator(); iterator
+		    .hasNext();) {
 			final NodeModel node = (NodeModel) iterator.next();
 			if (NoteModel.getNoteText(node) != null) {
 				foundNote = true;

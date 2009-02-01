@@ -48,8 +48,7 @@ public class NoteWriter implements IExtensionElementWriter {
 		if (note.getXmlNoteText() != null) {
 			final XMLElement htmlElement = new XMLElement();
 			htmlElement.setName(NodeTextBuilder.XML_NODE_XHTML_CONTENT_TAG);
-			htmlElement.setAttribute(NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG,
-			    NodeTextBuilder.XML_NODE_XHTML_TYPE_NOTE);
+			htmlElement.setAttribute(NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG, NodeTextBuilder.XML_NODE_XHTML_TYPE_NOTE);
 			final String content = note.getXmlNoteText().replace('\0', ' ');
 			writer.addElement(content, htmlElement);
 		}
@@ -60,8 +59,7 @@ public class NoteWriter implements IExtensionElementWriter {
 	 * @see freeplane.io.INodeWriter#saveContent(freeplane.io.ITreeWriter,
 	 * java.lang.Object, java.lang.String)
 	 */
-	public void writeContent(final ITreeWriter writer, final Object element, final IExtension note)
-	        throws IOException {
+	public void writeContent(final ITreeWriter writer, final Object element, final IExtension note) throws IOException {
 		final NodeModel node = (NodeModel) element;
 		noteManager.onWrite(node);
 		saveContent(writer, (NoteModel) note);

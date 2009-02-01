@@ -107,8 +107,7 @@ public class FixedHTMLWriter extends HTMLWriter {
 		final Enumeration names = convAttr.getAttributeNames();
 		while (names.hasMoreElements()) {
 			final Object name = names.nextElement();
-			if (name instanceof HTML.Tag || name instanceof StyleConstants
-			        || name == HTML.Attribute.ENDTAG) {
+			if (name instanceof HTML.Tag || name instanceof StyleConstants || name == HTML.Attribute.ENDTAG) {
 				continue;
 			}
 			write(" " + name + "=\"" + convAttr.getAttribute(name) + "\"");

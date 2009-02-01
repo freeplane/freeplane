@@ -30,17 +30,16 @@ import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.view.swing.map.MapView;
 
 public class EditAttributesAction extends FreeplaneAction {
-	public EditAttributesAction() {
-		super("attributes_edit_in_place");
+	public EditAttributesAction(final Controller controller) {
+		super(controller, "attributes_edit_in_place");
 	};
 
 	public void actionPerformed(final ActionEvent e) {
-		final Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager()
-		    .getFocusOwner();
-		final AttributeView attributeView = (((MapView) Controller.getController()
-		    .getViewController().getMapView()).getSelected()).getAttributeView();
-		final boolean attributesClosed = null == SwingUtilities.getAncestorOfClass(
-		    AttributeTable.class, focusOwner);
+		final Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
+		final Controller controller = getController();
+		final AttributeView attributeView = (((MapView) controller.getViewController().getMapView()).getSelected())
+		    .getAttributeView();
+		final boolean attributesClosed = null == SwingUtilities.getAncestorOfClass(AttributeTable.class, focusOwner);
 		if (attributesClosed) {
 			attributeView.startEditing();
 		}

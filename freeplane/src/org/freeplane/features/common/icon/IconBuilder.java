@@ -38,8 +38,7 @@ class IconBuilder implements IElementDOMHandler {
 		return null;
 	}
 
-	public void endElement(final Object parent, final String tag, final Object userObject,
-	                       final IXMLElement dom) {
+	public void endElement(final Object parent, final String tag, final Object userObject, final IXMLElement dom) {
 		if (parent instanceof NodeModel && tag.equals("icon")) {
 			final NodeModel node = (NodeModel) parent;
 			final IconProperties ip = (IconProperties) userObject;

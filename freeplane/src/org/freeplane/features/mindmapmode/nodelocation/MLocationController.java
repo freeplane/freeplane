@@ -39,8 +39,7 @@ public class MLocationController extends LocationController {
 		private final int parentVGap;
 		private final int shiftY;
 
-		private ChangeNodePositionActor(final NodeModel node, final int gap, final int shiftY,
-		                                final int parentVGap) {
+		private ChangeNodePositionActor(final NodeModel node, final int gap, final int shiftY, final int parentVGap) {
 			this.node = node;
 			this.gap = gap;
 			this.shiftY = shiftY;
@@ -48,8 +47,7 @@ public class MLocationController extends LocationController {
 			final LocationModel locationModel = LocationModel.getModel(node);
 			oldHgap = locationModel.getHGap();
 			oldShiftY = locationModel.getShiftY();
-			oldParentVgap = !node.isRoot() ? LocationModel.getModel(node.getParentNode()).getVGap()
-			        : 0;
+			oldParentVgap = !node.isRoot() ? LocationModel.getModel(node.getParentNode()).getVGap() : 0;
 		}
 
 		public void act() {
@@ -60,8 +58,7 @@ public class MLocationController extends LocationController {
 			return "moveNodePosition";
 		}
 
-		private void moveNodePosition(final NodeModel node, final int parentVGap, final int hGap,
-		                              final int shiftY) {
+		private void moveNodePosition(final NodeModel node, final int parentVGap, final int hGap, final int shiftY) {
 			final LocationModel locationModel = LocationModel.createLocationModel(node);
 			locationModel.setHGap(hGap);
 			locationModel.setShiftY(shiftY);
@@ -82,11 +79,10 @@ public class MLocationController extends LocationController {
 	}
 
 	private void createActions(final ModeController modeController) {
-		modeController.addAction("moveNodeAction", new ResetNodeLocationAction());
+		modeController.addAction("moveNodeAction", new ResetNodeLocationAction(modeController.getController()));
 	}
 
-	public void moveNodePosition(final NodeModel node, final int parentVGap, final int hGap,
-	                             final int shiftY) {
+	public void moveNodePosition(final NodeModel node, final int parentVGap, final int hGap, final int shiftY) {
 		final IUndoableActor actor = new ChangeNodePositionActor(node, hGap, shiftY, parentVGap);
 		getModeController().execute(actor);
 	}

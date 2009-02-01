@@ -83,8 +83,7 @@ public class MultipleImage extends ImageIcon {
 		for (final Iterator i = mImages.iterator(); i.hasNext();) {
 			final ImageIcon currentIcon = (ImageIcon) i.next();
 			final double pwidth = (currentIcon.getIconWidth() * zoomFactor);
-			final AffineTransform inttrans = AffineTransform.getScaleInstance(zoomFactor,
-			    zoomFactor);
+			final AffineTransform inttrans = AffineTransform.getScaleInstance(zoomFactor, zoomFactor);
 			g.drawImage(currentIcon.getImage(), inttrans, null);
 			g.translate(pwidth, 0);
 			myX += pwidth;

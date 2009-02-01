@@ -32,7 +32,7 @@ class FindNextAction extends FreeplaneAction {
 	final private FindAction find;
 
 	public FindNextAction(final ModeController controller, final FindAction find) {
-		super("find_next");
+		super(controller.getController(), "find_next");
 		MenuBuilder.setLabelAndMnemonic(this, controller.getText("find_next"));
 		this.find = find;
 	}
@@ -40,16 +40,18 @@ class FindNextAction extends FreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		final Collection subterms = find.getSubterms();
 		if (subterms == null) {
-			UITools.informationMessage(getModeController().getText("no_previous_find"));
+			UITools.informationMessage(getController().getViewController().getFrame(),
+				getModeController().getText("no_previous_find"));
 			return;
 		}
 		final boolean found = find.findNext();
 		if (!found) {
 			final String messageText = getModeController().getText("no_more_found_from");
-			final String searchTerm = messageText.startsWith("<html>") ? HtmlTools
-			    .toXMLEscapedText(find.getSearchTerm()) : find.getSearchTerm();
-			UITools.informationMessage(messageText.replaceAll("\\$1", searchTerm).replaceAll(
-			    "\\$2", find.getFindFromText()));
+			final String searchTerm = messageText.startsWith("<html>") ? HtmlTools.toXMLEscapedText(find
+			    .getSearchTerm()) : find.getSearchTerm();
+			UITools.informationMessage(getController().getViewController().getFrame(),
+				messageText.replaceAll("\\$1", searchTerm).replaceAll("\\$2",
+			    find.getFindFromText()));
 		}
 	}
 }

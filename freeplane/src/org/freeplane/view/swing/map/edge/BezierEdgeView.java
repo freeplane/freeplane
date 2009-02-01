@@ -63,7 +63,6 @@ public class BezierEdgeView extends EdgeView {
 		}
 		final int xctrl = getMap().getZoomed(sourceSign * sign * BezierEdgeView.XCTRL);
 		final int childXctrl = getMap().getZoomed(-1 * sign * BezierEdgeView.CHILD_XCTRL);
-		graph.setCurve(start.x, start.y, start.x + xctrl, start.y, end.x + childXctrl, end.y,
-		    end.x, end.y);
+		graph.setCurve(start.x, start.y, start.x + xctrl, start.y, end.x + childXctrl, end.y, end.x, end.y);
 	}
 }

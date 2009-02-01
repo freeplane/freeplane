@@ -32,13 +32,12 @@ import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 
 class NewChildAction extends FreeplaneAction {
-	public NewChildAction() {
-		super("new_child", "/images/idea.png");
+	public NewChildAction(final Controller controller) {
+		super(controller, "new_child", "/images/idea.png");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		((MMapController) getModeController().getMapController()).addNewNode(
-		    MMapController.NEW_CHILD, null);
+		((MMapController) getModeController().getMapController()).addNewNode(MMapController.NEW_CHILD, null);
 	}
 
 	public NodeModel addNewNode(int newNodeMode, final KeyEvent e) {
@@ -58,8 +57,8 @@ class NewChildAction extends FreeplaneAction {
 					}
 					newNode = addNewNode(parent, childPosition, targetNode.isLeft());
 					modeController.getMapController().select(newNode);
-					((MTextController) TextController.getController(modeController)).edit(newNode,
-					    targetNode, e, true, false, false);
+					((MTextController) TextController.getController(modeController)).edit(newNode, targetNode, e, true,
+					    false, false);
 					break;
 				}
 				else {
@@ -73,14 +72,15 @@ class NewChildAction extends FreeplaneAction {
 				if (parentFolded) {
 					mapController.setFolded(targetNode, false);
 				}
-				final int position = Controller.getResourceController().getProperty(
-				    "placenewbranches").equals("last") ? targetNode.getChildCount() : 0;
+				final int position = Controller.getResourceController().getProperty("placenewbranches").equals("last") ? targetNode
+				    .getChildCount()
+				        : 0;
 				newNode = addNewNode(targetNode, position, targetNode.isNewChildLeft());
 				if (newNodeMode == MMapController.NEW_CHILD) {
 					modeController.getMapController().select(newNode);
 				}
-				((MTextController) TextController.getController(modeController)).edit(newNode,
-				    targetNode, e, true, parentFolded, false);
+				((MTextController) TextController.getController(modeController)).edit(newNode, targetNode, e, true,
+				    parentFolded, false);
 				break;
 			}
 		}
@@ -88,13 +88,11 @@ class NewChildAction extends FreeplaneAction {
 	}
 
 	public NodeModel addNewNode(final NodeModel parent, final int index, final boolean newNodeIsLeft) {
-		final NodeModel newNode = getModeController().getMapController().newNode("",
-		    parent.getMap());
+		final NodeModel newNode = getModeController().getMapController().newNode("", parent.getMap());
 		newNode.setLeft(newNodeIsLeft);
 		final IUndoableActor actor = new IUndoableActor() {
 			public void act() {
-				(getModeController().getMapController()).insertNodeIntoWithoutUndo(newNode, parent,
-				    index);
+				(getModeController().getMapController()).insertNodeIntoWithoutUndo(newNode, parent, index);
 			}
 
 			public String getDescription() {
@@ -102,8 +100,7 @@ class NewChildAction extends FreeplaneAction {
 			}
 
 			public void undo() {
-				((MMapController) getModeController().getMapController())
-				    .deleteWithoutUndo(newNode);
+				((MMapController) getModeController().getMapController()).deleteWithoutUndo(newNode);
 			}
 		};
 		getModeController().execute(actor);

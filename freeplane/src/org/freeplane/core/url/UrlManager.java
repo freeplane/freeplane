@@ -157,8 +157,7 @@ public class UrlManager implements IExtension {
 	 *
 	 * @throws IOException
 	 */
-	public static Reader getUpdateReader(final File file, final String xsltScript)
-	        throws IOException {
+	public static Reader getUpdateReader(final File file, final String xsltScript) throws IOException {
 		StringWriter writer = null;
 		InputStream inputStream = null;
 		boolean successful = false;
@@ -234,8 +233,7 @@ public class UrlManager implements IExtension {
 		final String osNameStart = System.getProperty("os.name").substring(0, 3);
 		final String fileSeparator = System.getProperty("file.separator");
 		if (osNameStart.equals("Win")) {
-			return ((path.length() > 1) && path.substring(1, 2).equals(":"))
-			        || path.startsWith(fileSeparator);
+			return ((path.length() > 1) && path.substring(1, 2).equals(":")) || path.startsWith(fileSeparator);
 		}
 		else if (osNameStart.equals("Mac")) {
 			return path.startsWith(fileSeparator);
@@ -254,8 +252,7 @@ public class UrlManager implements IExtension {
 		final String osNameStart = System.getProperty("os.name").substring(0, 3);
 		if (osNameStart.equals("Win")) {
 			try {
-				Runtime.getRuntime().exec(
-				    "attrib " + (hidden ? "+" : "-") + "H \"" + file.getAbsolutePath() + "\"");
+				Runtime.getRuntime().exec("attrib " + (hidden ? "+" : "-") + "H \"" + file.getAbsolutePath() + "\"");
 				if (!synchronously) {
 					return;
 				}
@@ -279,8 +276,7 @@ public class UrlManager implements IExtension {
 	 * absolute url with "new URL(URL context, URL relative)".
 	 */
 	public static String toRelativeURL(final URL base, final URL target) {
-		if ((base.getProtocol().equals(target.getProtocol()))
-		        && (base.getHost().equals(target.getHost()))) {
+		if ((base.getProtocol().equals(target.getProtocol())) && (base.getHost().equals(target.getHost()))) {
 			String baseString = base.getFile();
 			String targetString = target.getFile();
 			String result = "";
@@ -308,8 +304,7 @@ public class UrlManager implements IExtension {
 						nextTargetToken = targetTokens.nextToken();
 					}
 					final String temp = target.getFile();
-					result = result
-					    .concat(temp.substring(temp.lastIndexOf("/") + 1, temp.length()));
+					result = result.concat(temp.substring(temp.lastIndexOf("/") + 1, temp.length()));
 					return result;
 				}
 			}
@@ -353,11 +348,13 @@ public class UrlManager implements IExtension {
 		return new File(new URI(pUrl.toString()));
 	}
 
+	final private Controller controller;
 	final private ModeController modeController;
 
 	public UrlManager(final ModeController modeController) {
 		super();
 		this.modeController = modeController;
+		controller = modeController.getController();
 		createActions();
 	}
 
@@ -365,6 +362,10 @@ public class UrlManager implements IExtension {
 	 *
 	 */
 	private void createActions() {
+	}
+
+	public Controller getController() {
+		return controller;
 	}
 
 	/**
@@ -390,7 +391,7 @@ public class UrlManager implements IExtension {
 	}
 
 	protected File getMapsParentFile() {
-		final MapModel map = Controller.getController().getMap();
+		final MapModel map = getController().getMap();
 		if ((map != null) && (map.getFile() != null) && (map.getFile().getParentFile() != null)) {
 			return map.getFile().getParentFile();
 		}
@@ -408,19 +409,19 @@ public class UrlManager implements IExtension {
 	public void handleLoadingException(final Exception ex) {
 		final String exceptionType = ex.getClass().getName();
 		if (exceptionType.equals("freeplane.main.XMLParseException")) {
-			final int showDetail = JOptionPane.showConfirmDialog(Controller.getController()
-			    .getViewController().getMapView(), modeController.getText("map_corrupted"),
-			    "Freeplane", JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
+			final int showDetail = JOptionPane.showConfirmDialog(getController().getViewController().getMapView(),
+			    modeController.getText("map_corrupted"), "Freeplane", JOptionPane.YES_NO_OPTION,
+			    JOptionPane.ERROR_MESSAGE);
 			if (showDetail == JOptionPane.YES_OPTION) {
-				Controller.getController().errorMessage(ex);
+				getController().errorMessage(ex);
 			}
 		}
 		else if (exceptionType.equals("java.io.FileNotFoundException")) {
-			Controller.getController().errorMessage(ex.getMessage());
+			getController().errorMessage(ex.getMessage());
 		}
 		else {
 			org.freeplane.core.util.Tools.logException(ex);
-			Controller.getController().errorMessage(ex);
+			getController().errorMessage(ex);
 		}
 	}
 
@@ -431,19 +432,17 @@ public class UrlManager implements IExtension {
 			urlStreamReader = new InputStreamReader(url.openStream());
 		}
 		catch (final AccessControlException ex) {
-			Controller.getController().errorMessage(
-			    "Could not open URL " + url.toString() + ". Access Denied.");
+			getController().errorMessage("Could not open URL " + url.toString() + ". Access Denied.");
 			System.err.println(ex);
 			return null;
 		}
 		catch (final Exception ex) {
-			Controller.getController().errorMessage("Could not open URL " + url.toString() + ".");
+			getController().errorMessage("Could not open URL " + url.toString() + ".");
 			System.err.println(ex);
 			return null;
 		}
 		try {
-			root = modeController.getMapController().getMapReader().createNodeTreeFromXml(map,
-			    urlStreamReader);
+			root = modeController.getMapController().getMapReader().createNodeTreeFromXml(map, urlStreamReader);
 			urlStreamReader.close();
 			return root;
 		}

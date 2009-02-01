@@ -22,17 +22,17 @@ package org.freeplane.features.filemode;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.FreeplaneAction;
 
 public class CenterAction extends FreeplaneAction {
-	public CenterAction() {
-		super("center");
+	public CenterAction(final Controller controller) {
+		super(controller, "center");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		if (getModeController().getMapController().getSelectedNode() != null) {
-			final File file = ((FNodeModel) getModeController().getMapController()
-			    .getSelectedNode()).getFile();
+			final File file = ((FNodeModel) getModeController().getMapController().getSelectedNode()).getFile();
 			((FMapController) getModeController().getMapController()).newMap(file);
 		}
 	}

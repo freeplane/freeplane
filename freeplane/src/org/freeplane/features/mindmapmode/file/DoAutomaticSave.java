@@ -26,6 +26,7 @@ import java.util.TimerTask;
 import java.util.Vector;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.features.mindmapmode.MMapModel;
@@ -75,28 +76,25 @@ public class DoAutomaticSave extends TimerTask {
 					}
 					else {
 						try {
-							tempFile = File
-							    .createTempFile(
-							        "FM_"
-							                + ((model.toString() == null) ? "unnamed" : model
-							                    .toString()),
-							        org.freeplane.features.mindmapmode.file.MFileManager.FREEPLANE_FILE_EXTENSION,
-							        pathToStore);
+							tempFile = File.createTempFile("FM_"
+							        + ((model.toString() == null) ? "unnamed" : model.toString()),
+							    org.freeplane.features.mindmapmode.file.MFileManager.FREEPLANE_FILE_EXTENSION,
+							    pathToStore);
 							if (filesShouldBeDeletedAfterShutdown) {
 								tempFile.deleteOnExit();
 							}
 						}
 						catch (final Exception e) {
-							System.err.println("Error in automatic MapModel.save(): "
-							        + e.getMessage());
+							System.err.println("Error in automatic MapModel.save(): " + e.getMessage());
 							org.freeplane.core.util.Tools.logException(e);
 							return;
 						}
 					}
 					try {
-						((MFileManager) UrlManager.getController(model.getModeController()))
-						    .saveInternal((MMapModel) model, tempFile, true /*=internal call*/);
-						Controller.getController().getViewController().out(
+						final ModeController modeController = model.getModeController();
+						((MFileManager) UrlManager.getController(modeController)).saveInternal((MMapModel) model,
+						    tempFile, true /*=internal call*/);
+						modeController.getController().getViewController().out(
 						    Controller.getResourceController().format("automatically_save_message",
 						        new Object[] { tempFile.toString() }));
 					}

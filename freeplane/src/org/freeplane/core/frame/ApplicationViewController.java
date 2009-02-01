@@ -53,20 +53,21 @@ import org.freeplane.core.util.Tools;
 public class ApplicationViewController extends ViewController {
 	private static final String SPLIT_PANE_LAST_POSITION = "split_pane_last_position";
 	private static final String SPLIT_PANE_POSITION = "split_pane_position";
+	final private Controller controller;
 	final private JFrame frame;
 	private MapViewTabs mapViewManager;
 	private JComponent mContentComponent = null;
 	private JSplitPane mSplitPane;
-	final private ResourceController resourceController;
 	final private Action navigationNextMap;
 	final private Action navigationPreviousMap;
+	final private ResourceController resourceController;
 
-	public ApplicationViewController(final IMapViewManager mapViewController) {
-		super(mapViewController);
-		final Controller controller = Controller.getController();
-		navigationPreviousMap = new NavigationPreviousMapAction();
+	public ApplicationViewController(final Controller controller, final IMapViewManager mapViewController) {
+		super(controller, mapViewController);
+		this.controller = controller;
+		navigationPreviousMap = new NavigationPreviousMapAction(controller);
 		controller.addAction("navigationPreviousMap", navigationPreviousMap);
-		navigationNextMap = new NavigationNextMapAction();
+		navigationNextMap = new NavigationNextMapAction(controller);
 		controller.addAction("navigationNextMap", navigationNextMap);
 		resourceController = Controller.getResourceController();
 		frame = new JFrame("Freeplane");
@@ -109,8 +110,7 @@ public class ApplicationViewController extends ViewController {
 
 	@Override
 	public void init() {
-		final ImageIcon mWindowIcon = new ImageIcon(resourceController
-		    .getResource("/images/Freeplane_frame_icon.png"));
+		final ImageIcon mWindowIcon = new ImageIcon(resourceController.getResource("/images/Freeplane_frame_icon.png"));
 		getJFrame().setIconImage(mWindowIcon.getImage());
 		getContentPane().setLayout(new BorderLayout());
 		super.init();
@@ -126,7 +126,7 @@ public class ApplicationViewController extends ViewController {
 		final boolean shouldUseTabbedPane = Controller.getResourceController().getBoolProperty(
 		    ResourceController.RESOURCES_USE_TABBED_PANE);
 		if (shouldUseTabbedPane) {
-			mapViewManager = new MapViewTabs(this, mContentComponent);
+			mapViewManager = new MapViewTabs(controller, this, mContentComponent);
 		}
 		else {
 			getContentPane().add(mContentComponent, BorderLayout.CENTER);
@@ -136,20 +136,18 @@ public class ApplicationViewController extends ViewController {
 		frame.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(final WindowEvent e) {
-				Controller.getController().quit(new ActionEvent(this, 0, "quit"));
+				controller.quit(new ActionEvent(this, 0, "quit"));
 			}
 			/*
 			 * fc, 14.3.2008: Completely removed, as it damaged the focus if for
 			 * example the note window was active.
 			 */
 		});
-		if (Tools.safeEquals(Controller.getResourceController().getProperty("toolbarVisible"),
-		    "false")) {
-			Controller.getController().getViewController().setToolbarVisible(false);
+		if (Tools.safeEquals(Controller.getResourceController().getProperty("toolbarVisible"), "false")) {
+			controller.getViewController().setToolbarVisible(false);
 		}
-		if (Tools.safeEquals(Controller.getResourceController().getProperty("leftToolbarVisible"),
-		    "false")) {
-			Controller.getController().getViewController().setLeftToolbarVisible(false);
+		if (Tools.safeEquals(Controller.getResourceController().getProperty("leftToolbarVisible"), "false")) {
+			controller.getViewController().setLeftToolbarVisible(false);
 		}
 		frame.setFocusTraversalKeysEnabled(false);
 		frame.pack();
@@ -160,8 +158,7 @@ public class ApplicationViewController extends ViewController {
 		win_width = (win_width > 0) ? win_width : 640;
 		win_height = (win_height > 0) ? win_height : 440;
 		final Toolkit defaultToolkit = Toolkit.getDefaultToolkit();
-		final Insets screenInsets = defaultToolkit
-		    .getScreenInsets(frame.getGraphicsConfiguration());
+		final Insets screenInsets = defaultToolkit.getScreenInsets(frame.getGraphicsConfiguration());
 		final Dimension screenSize = defaultToolkit.getScreenSize();
 		final int screenWidth = screenSize.width - screenInsets.left - screenInsets.right;
 		win_width = Math.min(win_width, screenWidth);
@@ -172,8 +169,7 @@ public class ApplicationViewController extends ViewController {
 		win_y = Math.max(screenInsets.top, win_y);
 		win_y = Math.min(screenWidth + screenInsets.top - win_height, win_y);
 		frame.setBounds(win_x, win_y, win_width, win_height);
-		int win_state = Integer.parseInt(Controller.getResourceController().getProperty(
-		    "appwindow_state", "0"));
+		int win_state = Integer.parseInt(Controller.getResourceController().getProperty("appwindow_state", "0"));
 		win_state = ((win_state & Frame.ICONIFIED) != 0) ? Frame.NORMAL : win_state;
 		frame.setExtendedState(win_state);
 	}
@@ -238,8 +234,8 @@ public class ApplicationViewController extends ViewController {
 			String command = new String();
 			try {
 				final Object[] messageArguments = { url.toString() };
-				final MessageFormat formatter = new MessageFormat(Controller
-				    .getResourceController().getProperty(propertyString));
+				final MessageFormat formatter = new MessageFormat(Controller.getResourceController().getProperty(
+				    propertyString));
 				browser_command = formatter.format(messageArguments);
 				if (url.getProtocol().equals("file")) {
 					command = "rundll32 url.dll,FileProtocolHandler " + url.toString();
@@ -256,11 +252,12 @@ public class ApplicationViewController extends ViewController {
 				Runtime.getRuntime().exec(command);
 			}
 			catch (final IOException x) {
-				Controller.getController().errorMessage(
-				    "Could not invoke browser.\n\nFreeplane excecuted the following statement on a command line:\n\""
+				controller
+				    .errorMessage("Could not invoke browser.\n\nFreeplane excecuted the following statement on a command line:\n\""
 				            + command
 				            + "\".\n\nYou may look at the user or default property called '"
-				            + propertyString + "'.");
+				            + propertyString
+				            + "'.");
 				System.err.println("Caught: " + x);
 			}
 		}
@@ -268,18 +265,16 @@ public class ApplicationViewController extends ViewController {
 			String browser_command = new String();
 			try {
 				final Object[] messageArguments = { correctedUrl, url.toString() };
-				final MessageFormat formatter = new MessageFormat(Controller
-				    .getResourceController().getProperty("default_browser_command_mac"));
+				final MessageFormat formatter = new MessageFormat(Controller.getResourceController().getProperty(
+				    "default_browser_command_mac"));
 				browser_command = formatter.format(messageArguments);
 				Runtime.getRuntime().exec(browser_command);
 			}
 			catch (final IOException ex2) {
-				Controller
-				    .getController()
-				    .errorMessage(
-				        "Could not invoke browser.\n\nFreeplane excecuted the following statement on a command line:\n\""
-				                + browser_command
-				                + "\".\n\nYou may look at the user or default property called 'default_browser_command_mac'.");
+				controller
+				    .errorMessage("Could not invoke browser.\n\nFreeplane excecuted the following statement on a command line:\n\""
+				            + browser_command
+				            + "\".\n\nYou may look at the user or default property called 'default_browser_command_mac'.");
 				System.err.println("Caught: " + ex2);
 			}
 		}
@@ -287,18 +282,16 @@ public class ApplicationViewController extends ViewController {
 			String browser_command = new String();
 			try {
 				final Object[] messageArguments = { correctedUrl, url.toString() };
-				final MessageFormat formatter = new MessageFormat(Controller
-				    .getResourceController().getProperty("default_browser_command_other_os"));
+				final MessageFormat formatter = new MessageFormat(Controller.getResourceController().getProperty(
+				    "default_browser_command_other_os"));
 				browser_command = formatter.format(messageArguments);
 				Runtime.getRuntime().exec(browser_command);
 			}
 			catch (final IOException ex2) {
-				Controller
-				    .getController()
-				    .errorMessage(
-				        "Could not invoke browser.\n\nFreeplane excecuted the following statement on a command line:\n\""
-				                + browser_command
-				                + "\".\n\nYou may look at the user or default property called 'default_browser_command_other_os'.");
+				controller
+				    .errorMessage("Could not invoke browser.\n\nFreeplane excecuted the following statement on a command line:\n\""
+				            + browser_command
+				            + "\".\n\nYou may look at the user or default property called 'default_browser_command_other_os'.");
 				System.err.println("Caught: " + ex2);
 			}
 		}
@@ -355,13 +348,11 @@ public class ApplicationViewController extends ViewController {
 	@Override
 	public void setWaitingCursor(final boolean waiting) {
 		if (waiting) {
-			frame.getRootPane().getGlassPane().setCursor(
-			    Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+			frame.getRootPane().getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 			frame.getRootPane().getGlassPane().setVisible(true);
 		}
 		else {
-			frame.getRootPane().getGlassPane().setCursor(
-			    Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+			frame.getRootPane().getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 			frame.getRootPane().getGlassPane().setVisible(false);
 		}
 	}
@@ -380,9 +371,11 @@ public class ApplicationViewController extends ViewController {
 			resourceController.setProperty("appwindow_height", String.valueOf(frame.getHeight()));
 		}
 		resourceController.setProperty("appwindow_state", String.valueOf(winState));
-		resourceController.saveProperties();
+		resourceController.saveProperties(controller);
 		frame.dispose();
 	}
+
+	@Override
 	protected void viewNumberChanged(final int number) {
 		navigationPreviousMap.setEnabled(number > 0);
 		navigationNextMap.setEnabled(number > 0);

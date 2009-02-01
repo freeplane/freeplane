@@ -37,8 +37,7 @@ public class Activator implements BundleActivator {
 		final Bundle[] bundles = context.getBundles();
 		for (int i = 0; i < bundles.length; i++) {
 			final Bundle bundle = bundles[i];
-			if (bundle.getState() < Bundle.STARTING
-			        && bundle.getSymbolicName().startsWith("org.freeplane.plugin.")) {
+			if (bundle.getState() < Bundle.STARTING && bundle.getSymbolicName().startsWith("org.freeplane.plugin.")) {
 				try {
 					bundle.start();
 				}
@@ -55,8 +54,7 @@ public class Activator implements BundleActivator {
 		final Bundle[] bundles = context.getBundles();
 		for (int i = 0; i < bundles.length; i++) {
 			final Bundle bundle = bundles[i];
-			if (bundle.getState() >= Bundle.ACTIVE
-			        && bundle.getSymbolicName().startsWith("org.freeplane.plugin.")) {
+			if (bundle.getState() >= Bundle.ACTIVE && bundle.getSymbolicName().startsWith("org.freeplane.plugin.")) {
 				try {
 					bundle.stop();
 				}

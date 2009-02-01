@@ -49,12 +49,11 @@ import org.freeplane.view.swing.ui.UserInputListenerFactory;
 public class BModeControllerFactory {
 	private static BModeController modeController;
 
-	static public BModeController createModeController() {
-		modeController = new BModeController();
-		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(
-		    modeController);
+	static public BModeController createModeController(final Controller controller) {
+		modeController = new BModeController(controller);
+		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController);
 		modeController.setUserInputListenerFactory(userInputListenerFactory);
-		Controller.getController().addModeController(modeController);
+		controller.addModeController(modeController);
 		modeController.setMapController(new MapController(modeController));
 		UrlManager.install(modeController, new UrlManager(modeController));
 		AttributeController.install(modeController, new AttributeController(modeController));
@@ -66,17 +65,16 @@ public class BModeControllerFactory {
 		NoteController.install(modeController, new NoteController(modeController));
 		TextController.install(modeController, new TextController(modeController));
 		try {
-	        ClipboardController.install(modeController, new ClipboardController(modeController));
-        }
-        catch (AccessControlException e) {
-	        Logger.global.severe("can not access system clipboard, clipboard controller disabled");
-        }
+			ClipboardController.install(modeController, new ClipboardController(modeController));
+		}
+		catch (final AccessControlException e) {
+			Logger.global.severe("can not access system clipboard, clipboard controller disabled");
+		}
 		LocationController.install(modeController, new LocationController(modeController));
-		modeController.getMapController().addNodeSelectionListener(new BNodeNoteViewer());
+		modeController.getMapController().addNodeSelectionListener(new BNodeNoteViewer(modeController.getController()));
 		final BToolbarContributor toolbarContributor = new BToolbarContributor(modeController);
 		modeController.addMenuContributor(toolbarContributor);
-		Controller.getController().getViewController()
-		    .addMapTitleChangeListener(toolbarContributor);
+		controller.getViewController().addMapTitleChangeListener(toolbarContributor);
 		userInputListenerFactory.setNodePopupMenu(new JPopupMenu());
 		userInputListenerFactory.setMainToolBar(new FreeplaneToolBar());
 		userInputListenerFactory.setMenuStructure("/org/freeplane/startup/browsemode/menu.xml");

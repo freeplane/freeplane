@@ -42,7 +42,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
 public abstract class PersistentNodeHook implements IExtension {
 	public class HookAction extends FreeplaneAction {
 		public HookAction() {
-			super();
+			super(controller);
 		}
 
 		public void actionPerformed(final ActionEvent e) {
@@ -101,8 +101,7 @@ public abstract class PersistentNodeHook implements IExtension {
 	}
 
 	protected class XmlReader implements IElementDOMHandler {
-		public Object createElement(final Object parent, final String tag,
-		                            final IXMLElement attributes) {
+		public Object createElement(final Object parent, final String tag, final IXMLElement attributes) {
 			if (attributes == null) {
 				return null;
 			}
@@ -129,8 +128,8 @@ public abstract class PersistentNodeHook implements IExtension {
 	}
 
 	protected class XmlWriter implements IExtensionElementWriter {
-		public void writeContent(final ITreeWriter writer, final Object object,
-		                         final IExtension extension) throws IOException {
+		public void writeContent(final ITreeWriter writer, final Object object, final IExtension extension)
+		        throws IOException {
 			final XMLElement element = new XMLElement("hook");
 			saveExtension(extension, element);
 			writer.addElement(null, element);
@@ -138,11 +137,13 @@ public abstract class PersistentNodeHook implements IExtension {
 	}
 
 	private final FreeplaneAction action;
+	final private Controller controller;
 	private final ModeController modeController;
 
 	public PersistentNodeHook(final ModeController modeController) {
 		super();
 		this.modeController = modeController;
+		controller = modeController.getController();
 		final ActionDescriptor actionAnnotation = getActionAnnotation();
 		if (actionAnnotation != null) {
 			action = createAction();
@@ -155,8 +156,7 @@ public abstract class PersistentNodeHook implements IExtension {
 		}
 		final MapController mapController = modeController.getMapController();
 		mapController.getReadManager().addElementHandler("hook", createXmlReader());
-		mapController.getWriteManager().addExtensionElementWriter(getExtensionClass(),
-		    createXmlWriter());
+		mapController.getWriteManager().addExtensionElementWriter(getExtensionClass(), createXmlWriter());
 	}
 
 	protected void add(final NodeModel node, final IExtension extension) {
@@ -217,12 +217,12 @@ public abstract class PersistentNodeHook implements IExtension {
 
 	protected NodeModel[] getRootNode() {
 		final NodeModel[] nodes = new NodeModel[1];
-		nodes[0] = Controller.getController().getMap().getRootNode();
+		nodes[0] = controller.getMap().getRootNode();
 		return nodes;
 	}
 
 	protected NodeModel[] getSelectedNodes() {
-		final List<NodeModel> selection = Controller.getController().getSelection().getSelection();
+		final List<NodeModel> selection = controller.getSelection().getSelection();
 		final int size = selection.size();
 		final NodeModel[] nodes = new NodeModel[size];
 		final Iterator<NodeModel> iterator = selection.iterator();
@@ -255,11 +255,9 @@ public abstract class PersistentNodeHook implements IExtension {
 		registerAction(action, action.getClass().getAnnotation(ActionDescriptor.class));
 	}
 
-	protected void registerAction(final FreeplaneAction action,
-	                              final ActionDescriptor actionAnnotation) {
+	protected void registerAction(final FreeplaneAction action, final ActionDescriptor actionAnnotation) {
 		modeController.addAction(actionAnnotation.name(), action);
-		getModeController().getUserInputListenerFactory().getMenuBuilder().addAction(action,
-		    actionAnnotation);
+		getModeController().getUserInputListenerFactory().getMenuBuilder().addAction(action, actionAnnotation);
 	}
 
 	protected void remove(final NodeModel node, final IExtension extension) {

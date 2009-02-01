@@ -22,6 +22,7 @@ package org.freeplane.core.ui.components;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Toolkit;
@@ -57,11 +58,11 @@ public class UITools {
 		UITools.addKeyActionToDialog(dialog, action, "ESCAPE", "end_dialog");
 	}
 
-	public static void addKeyActionToDialog(final JDialog dialog, final Action action,
-	                                        final String keyStroke, final String actionId) {
+	public static void addKeyActionToDialog(final JDialog dialog, final Action action, final String keyStroke,
+	                                        final String actionId) {
 		action.putValue(Action.NAME, actionId);
-		dialog.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-		    KeyStroke.getKeyStroke(keyStroke), action.getValue(Action.NAME));
+		dialog.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(keyStroke),
+		    action.getValue(Action.NAME));
 		dialog.getRootPane().getActionMap().put(action.getValue(Action.NAME), action);
 	}
 
@@ -76,14 +77,12 @@ public class UITools {
 		};
 	}
 
-	public static void convertPointToAncestor(final Component source, final Point point,
-	                                          final Class ancestorClass) {
+	public static void convertPointToAncestor(final Component source, final Point point, final Class ancestorClass) {
 		final Component destination = SwingUtilities.getAncestorOfClass(ancestorClass, source);
 		UITools.convertPointToAncestor(source, point, destination);
 	}
 
-	public static void convertPointToAncestor(Component c, final Point p,
-	                                          final Component destination) {
+	public static void convertPointToAncestor(Component c, final Point p, final Component destination) {
 		int x, y;
 		while (c != destination) {
 			x = c.getX();
@@ -105,18 +104,16 @@ public class UITools {
 		return KeyStroke.getKeyStroke("typed " + keyStrokeDescription);
 	}
 
-	static public void informationMessage(final String message) {
-		UITools.informationMessage(message, "Freeplane");
+	static public void informationMessage(Frame frame, final String message) {
+		UITools.informationMessage(frame, message, "Freeplane");
 	}
 
-	static public void informationMessage(final String message, final String title) {
-		JOptionPane.showMessageDialog(Controller.getController().getViewController()
-		    .getContentPane(), message, title, JOptionPane.INFORMATION_MESSAGE);
+	static public void informationMessage(Frame frame, final String message, final String title) {
+		JOptionPane.showMessageDialog(frame, message, title, JOptionPane.INFORMATION_MESSAGE);
 	}
 
-	public static void informationMessage(final String text, final String string, final int type) {
-		JOptionPane.showMessageDialog(Controller.getController().getViewController()
-		    .getContentPane(), text, string, type);
+	public static void informationMessage(Frame frame, final String text, final String string, final int type) {
+		JOptionPane.showMessageDialog(frame, text, string, type);
 	}
 
 	public static String removeMnemonic(final String rawLabel) {
@@ -137,8 +134,7 @@ public class UITools {
 		final int dw = dialog.getWidth();
 		final int dh = dialog.getHeight();
 		final Toolkit defaultToolkit = Toolkit.getDefaultToolkit();
-		final Insets screenInsets = defaultToolkit.getScreenInsets(dialog
-		    .getGraphicsConfiguration());
+		final Insets screenInsets = defaultToolkit.getScreenInsets(dialog.getGraphicsConfiguration());
 		final Dimension screenSize = defaultToolkit.getScreenSize();
 		final int minX = Math.max(parentLocation.x, screenInsets.left);
 		final int minY = Math.max(parentLocation.y, screenInsets.top);
@@ -204,29 +200,30 @@ public class UITools {
 		if (node == null) {
 			return;
 		}
-		final ViewController viewController = Controller.getController().getViewController();
+		final Controller controller = node.getModeController().getController();
+		final ViewController viewController = controller.getViewController();
 		viewController.scrollNodeToVisible(node);
 		final Component c = viewController.getComponent(node);
 		UITools.setDialogLocationRelativeTo(dialog, c);
 	}
 
-	public static String showInputDialog(final NodeModel node, final String text,
-	                                     final String string) {
+	public static String showInputDialog(final NodeModel node, final String text, final String string) {
 		if (node == null) {
 			return null;
 		}
-		final ViewController viewController = Controller.getController().getViewController();
+		final Controller controller = node.getModeController().getController();
+		final ViewController viewController = controller.getViewController();
 		viewController.scrollNodeToVisible(node);
 		final Component parentComponent = viewController.getComponent(node);
 		return JOptionPane.showInputDialog(parentComponent, text, string);
 	}
 
-	public static String showInputDialog(final NodeModel node, final String text,
-	                                     final String title, final int type) {
+	public static String showInputDialog(final NodeModel node, final String text, final String title, final int type) {
 		if (node == null) {
 			return null;
 		}
-		final ViewController viewController = Controller.getController().getViewController();
+		final Controller controller = node.getModeController().getController();
+		final ViewController viewController = controller.getViewController();
 		viewController.scrollNodeToVisible(node);
 		final Component parentComponent = viewController.getComponent(node);
 		return JOptionPane.showInputDialog(parentComponent, text, title, type);

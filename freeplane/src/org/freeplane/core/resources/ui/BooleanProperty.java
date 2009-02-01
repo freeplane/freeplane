@@ -61,9 +61,7 @@ public class BooleanProperty extends PropertyBean implements IPropertyControl {
 
 	@Override
 	public void setValue(final String value) {
-		if (value == null
-		        || !(value.toLowerCase().equals(mTrueValue) || value.toLowerCase().equals(
-		            mFalseValue))) {
+		if (value == null || !(value.toLowerCase().equals(mTrueValue) || value.toLowerCase().equals(mFalseValue))) {
 			throw new IllegalArgumentException("Cannot set a boolean to " + value);
 		}
 		mCheckBox.setSelected(value.toLowerCase().equals(mTrueValue));

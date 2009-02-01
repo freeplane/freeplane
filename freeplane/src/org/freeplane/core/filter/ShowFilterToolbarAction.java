@@ -30,21 +30,23 @@ import org.freeplane.core.ui.SelectableAction;
 
 @SelectableAction
 class ShowFilterToolbarAction extends AbstractAction {
+	final private FilterController filterController;
+
 	/**
 	 *
 	 */
-	ShowFilterToolbarAction() {
-		super(null, new ImageIcon(Controller.getResourceController().getResource(
-		    "/images/filter.gif")));
+	ShowFilterToolbarAction(final FilterController filterController) {
+		super(null, new ImageIcon(Controller.getResourceController().getResource("/images/filter.gif")));
+		this.filterController = filterController;
 	}
 
 	public void actionPerformed(final ActionEvent event) {
 		final JToggleButton btnFilter = (JToggleButton) event.getSource();
 		if (btnFilter.getModel().isSelected()) {
-			FilterController.getController().showFilterToolbar(true);
+			filterController.showFilterToolbar(true);
 		}
 		else {
-			FilterController.getController().showFilterToolbar(false);
+			filterController.showFilterToolbar(false);
 		}
 	}
 }

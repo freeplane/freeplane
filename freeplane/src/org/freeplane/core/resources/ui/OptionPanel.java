@@ -52,8 +52,7 @@ public class OptionPanel {
 		final private JPanel centralPanel;
 		final private String tabName;
 
-		private ChangeTabAction(final CardLayout cardLayout, final JPanel centralPanel,
-		                        final String tabName) {
+		private ChangeTabAction(final CardLayout cardLayout, final JPanel centralPanel, final String tabName) {
 			super();
 			this.cardLayout = cardLayout;
 			this.centralPanel = centralPanel;
@@ -95,8 +94,8 @@ public class OptionPanel {
 		this.feedback = feedback;
 		final String marshalled = Controller.getResourceController().getProperty(
 		    OptionPanel.PREFERENCE_STORAGE_PROPERTY);
-		final OptionPanelWindowConfigurationStorage storage = OptionPanelWindowConfigurationStorage
-		    .decorateDialog(marshalled, d);
+		final OptionPanelWindowConfigurationStorage storage = OptionPanelWindowConfigurationStorage.decorateDialog(
+		    marshalled, d);
 		if (storage != null) {
 			final OptionPanelWindowConfigurationStorage oWindowSettings = storage;
 			selectedPanel = oWindowSettings.getPanel();
@@ -113,10 +112,8 @@ public class OptionPanel {
 		DefaultFormBuilder rightBuilder = null;
 		String lastTabName = null;
 		controls = new Vector();
-		for (final Enumeration<DefaultMutableTreeNode> i = controlsTree.preorderEnumeration(); i
-		    .hasMoreElements();) {
-			final IPropertyControlCreator creator = (IPropertyControlCreator) i.nextElement()
-			    .getUserObject();
+		for (final Enumeration<DefaultMutableTreeNode> i = controlsTree.preorderEnumeration(); i.hasMoreElements();) {
+			final IPropertyControlCreator creator = (IPropertyControlCreator) i.nextElement().getUserObject();
 			if (creator == null) {
 				continue;
 			}
@@ -136,8 +133,7 @@ public class OptionPanel {
 				rightBuilder.setDefaultDialogBorder();
 				lastTabName = newTab.getLabel();
 				final JButton tabButton = new JButton(OptionString.getText(lastTabName));
-				final ChangeTabAction changeTabAction = new ChangeTabAction(cardLayout, rightStack,
-				    lastTabName);
+				final ChangeTabAction changeTabAction = new ChangeTabAction(cardLayout, rightStack, lastTabName);
 				tabButton.addActionListener(changeTabAction);
 				registerTabButton(tabButton, lastTabName, changeTabAction);
 				leftBuilder.append(tabButton);
@@ -150,8 +146,8 @@ public class OptionPanel {
 		if (selectedPanel != null && tabActionMap.containsKey(selectedPanel)) {
 			((ChangeTabAction) tabActionMap.get(selectedPanel)).actionPerformed(null);
 		}
-		final JSplitPane centralPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftBuilder
-		    .getPanel(), new JScrollPane(rightStack));
+		final JSplitPane centralPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftBuilder.getPanel(),
+		    new JScrollPane(rightStack));
 		topDialog.getContentPane().add(centralPanel, BorderLayout.CENTER);
 		final JButton cancelButton = new JButton();
 		MenuBuilder.setLabelAndMnemonic(cancelButton, "cancel");
@@ -169,8 +165,7 @@ public class OptionPanel {
 			}
 		});
 		topDialog.getRootPane().setDefaultButton(okButton);
-		topDialog.getContentPane().add(ButtonBarFactory.buildOKCancelBar(cancelButton, okButton),
-		    BorderLayout.SOUTH);
+		topDialog.getContentPane().add(ButtonBarFactory.buildOKCancelBar(cancelButton, okButton), BorderLayout.SOUTH);
 	}
 
 	public void closeWindow() {
@@ -204,8 +199,7 @@ public class OptionPanel {
 		return (JButton) tabButtonMap.get(name);
 	}
 
-	private void registerTabButton(final JButton tabButton, final String name,
-	                               final ChangeTabAction changeTabAction) {
+	private void registerTabButton(final JButton tabButton, final String name, final ChangeTabAction changeTabAction) {
 		tabButtonMap.put(name, tabButton);
 		tabActionMap.put(name, changeTabAction);
 		if (selectedPanel == null) {

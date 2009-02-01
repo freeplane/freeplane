@@ -53,8 +53,7 @@ public class ApplicationResourceController extends ResourceController {
 		setDefaultLocale(props);
 		autoPropertiesFile = getUserPreferencesFile(defProps);
 		addPropertyChangeListener(new IFreeplanePropertyListener() {
-			public void propertyChanged(final String propertyName, final String newValue,
-			                            final String oldValue) {
+			public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
 				if (propertyName.equals(ResourceController.RESOURCE_LANGUAGE)) {
 					clearLanguageResources();
 				}
@@ -87,8 +86,7 @@ public class ApplicationResourceController extends ResourceController {
 	}
 
 	private String getFreeplaneUserDirectory(final Properties defaultPreferences) {
-		return System.getProperty("user.home") + File.separator
-		        + defaultPreferences.getProperty("properties_folder");
+		return System.getProperty("user.home") + File.separator + defaultPreferences.getProperty("properties_folder");
 	}
 
 	@Override
@@ -108,8 +106,7 @@ public class ApplicationResourceController extends ResourceController {
 		}
 		final String freeplaneDirectory = getFreeplaneUserDirectory(defaultPreferences);
 		final File userPropertiesFolder = new File(freeplaneDirectory);
-		final File autoPropertiesFile = new File(userPropertiesFolder, defaultPreferences
-		    .getProperty("autoproperties"));
+		final File autoPropertiesFile = new File(userPropertiesFolder, defaultPreferences.getProperty("autoproperties"));
 		return autoPropertiesFile;
 	}
 
@@ -119,8 +116,7 @@ public class ApplicationResourceController extends ResourceController {
 	}
 
 	@Override
-	public void loadPropertiesFromXML(final InputStream in) throws IOException,
-	        InvalidPropertiesFormatException {
+	public void loadPropertiesFromXML(final InputStream in) throws IOException, InvalidPropertiesFormatException {
 		defProps.loadFromXML(in);
 	}
 
@@ -158,7 +154,7 @@ public class ApplicationResourceController extends ResourceController {
 	}
 
 	@Override
-	public void saveProperties() {
+	public void saveProperties(final Controller controller) {
 		try {
 			final OutputStream out = new FileOutputStream(autoPropertiesFile);
 			final OutputStreamWriter outputStreamWriter = new OutputStreamWriter(out, "8859_1");
@@ -171,7 +167,7 @@ public class ApplicationResourceController extends ResourceController {
 		}
 		catch (final Exception ex) {
 		}
-		FilterController.getController().saveConditions();
+		FilterController.getController(controller).saveConditions();
 	}
 
 	/**

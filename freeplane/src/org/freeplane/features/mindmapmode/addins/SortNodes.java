@@ -24,6 +24,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Vector;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.MultipleNodeAction;
@@ -54,10 +55,11 @@ public class SortNodes extends MultipleNodeAction {
 	}
 
 	/**
+	 * @param controller 
 	 *
 	 */
-	public SortNodes() {
-		super();
+	public SortNodes(final Controller controller) {
+		super(controller);
 	}
 
 	@Override

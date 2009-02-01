@@ -39,10 +39,12 @@ import org.freeplane.features.common.note.NoteModel;
  */
 public class BNodeNoteViewer extends NodeNoteBase implements INodeSelectionListener {
 	private static ImageIcon noteIcon = null;
+	final private Controller controller;
 	private JComponent noteScrollPane;
 	private JLabel noteViewer;
 
-	public BNodeNoteViewer() {
+	public BNodeNoteViewer(final Controller controller) {
+		this.controller = controller;
 	}
 
 	protected JComponent getNoteViewerComponent(final String text) {
@@ -58,14 +60,13 @@ public class BNodeNoteViewer extends NodeNoteBase implements INodeSelectionListe
 	}
 
 	public void onDeselect(final NodeModel pNode) {
-		Controller.getController().getViewController().removeSplitPane();
+		controller.getViewController().removeSplitPane();
 	}
 
 	public void onSelect(final NodeModel pNode) {
 		final String noteText = NoteModel.getNoteText(pNode);
 		if (noteText != null && !noteText.equals("")) {
-			Controller.getController().getViewController().insertComponentIntoSplitPane(
-			    getNoteViewerComponent(noteText));
+			controller.getViewController().insertComponentIntoSplitPane(getNoteViewerComponent(noteText));
 			noteViewer.setText(noteText != null ? noteText : "");
 		}
 	}
@@ -77,8 +78,8 @@ public class BNodeNoteViewer extends NodeNoteBase implements INodeSelectionListe
 	/** Copied from NodeNoteRegistration. */
 	protected void setStateIcon(final NodeModel node, final boolean enabled) {
 		if (BNodeNoteViewer.noteIcon == null) {
-			BNodeNoteViewer.noteIcon = new ImageIcon(Controller.getResourceController()
-			    .getResource("/images/knotes.png"));
+			BNodeNoteViewer.noteIcon = new ImageIcon(Controller.getResourceController().getResource(
+			    "/images/knotes.png"));
 		}
 		node.setStateIcon(NodeNoteBase.NODE_NOTE_ICON, (enabled) ? BNodeNoteViewer.noteIcon : null);
 	}

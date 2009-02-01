@@ -51,7 +51,6 @@ import org.freeplane.startup.browsemode.BModeControllerFactory;
 import org.freeplane.startup.filemode.FModeControllerFactory;
 import org.freeplane.startup.mindmapmode.MModeControllerFactory;
 import org.freeplane.view.swing.map.MMapViewController;
-import org.freeplane.view.swing.map.MapViewController;
 
 public class FreeplaneStarter {
 	public static final String LOAD_LAST_MAP = "load_last_map";
@@ -87,10 +86,7 @@ public class FreeplaneStarter {
 		System.out.println("Checking Java Version...");
 		if (Controller.JAVA_VERSION.compareTo("1.5.0") < 0) {
 			final String message = "Warning: Freeplane requires version Java 1.5.0 or higher (your version: "
-			        + Controller.JAVA_VERSION
-			        + ", installed in "
-			        + System.getProperty("java.home")
-			        + ").";
+			        + Controller.JAVA_VERSION + ", installed in " + System.getProperty("java.home") + ").";
 			System.err.println(message);
 			JOptionPane.showMessageDialog(null, message, "Freeplane", JOptionPane.WARNING_MESSAGE);
 			System.exit(1);
@@ -99,7 +95,9 @@ public class FreeplaneStarter {
 
 	public void createController() {
 		final ApplicationResourceController resourceController = new ApplicationResourceController();
-		controller = new Controller(resourceController);
+		Controller.setResourceController(resourceController);
+		controller = new Controller();
+		resourceController.init(controller);
 		createLogger();
 		splash = new FreeplaneSplashModern();
 		splash.setVisible(true);
@@ -118,14 +116,14 @@ public class FreeplaneStarter {
 		//	e.printStackTrace();
 		//}	    
 		System.setSecurityManager(new FreeplaneSecurityManager());
-		viewController = new ApplicationViewController(new MMapViewController());
-		FilterController.install();
-		PrintController.install();
-		ModelessAttributeController.install();
-		HelpController.install();
-		MModeControllerFactory.createModeController();
-		BModeControllerFactory.createModeController();
-		FModeControllerFactory.createModeController();
+		viewController = new ApplicationViewController(controller, new MMapViewController());
+		FilterController.install(controller);
+		PrintController.install(controller);
+		ModelessAttributeController.install(controller);
+		HelpController.install(controller);
+		MModeControllerFactory.createModeController(controller);
+		BModeControllerFactory.createModeController(controller);
+		FModeControllerFactory.createModeController(controller);
 	}
 
 	public void createFrame(final String[] args) {
@@ -133,8 +131,7 @@ public class FreeplaneStarter {
 		controller.getViewController().changeAntialias(
 		    Controller.getResourceController().getProperty(ViewController.RESOURCE_ANTIALIAS));
 		feedBack.increase("Freeplane.progress.propagateLookAndFeel");
-		SwingUtilities.updateComponentTreeUI(Controller.getController().getViewController()
-		    .getJFrame());
+		SwingUtilities.updateComponentTreeUI(controller.getViewController().getFrame());
 		feedBack.increase("Freeplane.progress.buildScreen");
 		viewController.init();
 		try {
@@ -151,8 +148,7 @@ public class FreeplaneStarter {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				feedBack.increase("Freeplane.progress.createInitialMode");
-				controller.selectMode(Controller.getResourceController()
-				    .getProperty("initial_mode"));
+				controller.selectMode(Controller.getResourceController().getProperty("initial_mode"));
 				feedBack.increase("Freeplane.progress.startCreateController");
 				final ModeController ctrl = createModeController(args);
 				feedBack.increase("Freeplane.progress.loadMaps");
@@ -161,7 +157,7 @@ public class FreeplaneStarter {
 				if (splash != null) {
 					splash.setVisible(false);
 				}
-				Controller.getController().getViewController().getJFrame().setVisible(true);
+				controller.getViewController().getFrame().setVisible(true);
 			}
 		});
 	}
@@ -182,8 +178,8 @@ public class FreeplaneStarter {
 			}
 		}
 		try {
-			mFileHandler = new FileHandler(resourceController.getFreeplaneUserDirectory()
-			        + File.separator + "log", 1400000, 5, false);
+			mFileHandler = new FileHandler(resourceController.getFreeplaneUserDirectory() + File.separator + "log",
+			    1400000, 5, false);
 			mFileHandler.setFormatter(new StdFormatter());
 			mFileHandler.setLevel(Level.INFO);
 			parentLogger.addHandler(mFileHandler);
@@ -206,7 +202,7 @@ public class FreeplaneStarter {
 	}
 
 	private ModeController createModeController(final String[] args) {
-		final ModeController ctrl = Controller.getModeController();
+		final ModeController ctrl = controller.getModeController();
 		try {
 			final Class macClass = Class.forName("accessories.plugins.MacChanges");
 			macClass.getConstructors()[0].newInstance(new Object[] { this });
@@ -223,8 +219,7 @@ public class FreeplaneStarter {
 			if (fileArgument.toLowerCase().endsWith(
 			    org.freeplane.features.mindmapmode.file.MFileManager.FREEPLANE_FILE_EXTENSION)) {
 				if (!UrlManager.isAbsolutePath(fileArgument)) {
-					fileArgument = System.getProperty("user.dir")
-					        + System.getProperty("file.separator") + fileArgument;
+					fileArgument = System.getProperty("user.dir") + System.getProperty("file.separator") + fileArgument;
 				}
 				try {
 					((MModeController) pModeController).getMapController().newMap(
@@ -239,17 +234,15 @@ public class FreeplaneStarter {
 		if (!fileLoaded) {
 			final String restoreable = Controller.getResourceController().getProperty(
 			    Controller.ON_START_IF_NOT_SPECIFIED);
-			if (Tools.isPreferenceTrue(Controller.getResourceController().getProperty(
-			    FreeplaneStarter.LOAD_LAST_MAP))
+			if (Tools.isPreferenceTrue(Controller.getResourceController().getProperty(FreeplaneStarter.LOAD_LAST_MAP))
 			        && restoreable != null && restoreable.length() > 0) {
 				try {
-					Controller.getController().getLastOpenedList().open(restoreable);
+					controller.getLastOpenedList().open(restoreable);
 					fileLoaded = true;
 				}
 				catch (final Exception e) {
 					org.freeplane.core.util.Tools.logException(e);
-					Controller.getController().getViewController().out(
-					    "An error occured on opening the file: " + restoreable + ".");
+					controller.getViewController().out("An error occured on opening the file: " + restoreable + ".");
 				}
 			}
 		}
@@ -272,8 +265,8 @@ public class FreeplaneStarter {
 		}
 		catch (final Exception e) {
 			e.printStackTrace();
-			JOptionPane.showMessageDialog(null, "freeplane.main.Freeplane can't be started",
-			    "Startup problem", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "freeplane.main.Freeplane can't be started", "Startup problem",
+			    JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
 		}
 	}
@@ -281,12 +274,12 @@ public class FreeplaneStarter {
 	public void stop() {
 		try {
 			if (EventQueue.isDispatchThread()) {
-				Controller.getController().shutdown();
+				controller.shutdown();
 				return;
 			}
 			EventQueue.invokeAndWait(new Runnable() {
 				public void run() {
-					Controller.getController().shutdown();
+					controller.shutdown();
 				}
 			});
 		}
@@ -305,8 +298,7 @@ public class FreeplaneStarter {
 	 */
 	private void updateLookAndFeel() {
 		try {
-			final String lookAndFeel = Controller.getResourceController()
-			    .getProperty("lookandfeel");
+			final String lookAndFeel = Controller.getResourceController().getProperty("lookandfeel");
 			if (lookAndFeel.equals("windows")) {
 				UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 			}

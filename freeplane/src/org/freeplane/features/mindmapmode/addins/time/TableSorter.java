@@ -203,11 +203,10 @@ class TableSorter extends AbstractTableModel {
 		}
 
 		public Component getTableCellRendererComponent(final JTable table, final Object value,
-		                                               final boolean isSelected,
-		                                               final boolean hasFocus, final int row,
+		                                               final boolean isSelected, final boolean hasFocus, final int row,
 		                                               final int column) {
-			final Component c = tableCellRenderer.getTableCellRendererComponent(table, value,
-			    isSelected, hasFocus, row, column);
+			final Component c = tableCellRenderer.getTableCellRendererComponent(table, value, isSelected, hasFocus,
+			    row, column);
 			if (c instanceof JLabel) {
 				final JLabel l = (JLabel) c;
 				l.setHorizontalTextPosition(SwingConstants.LEFT);
@@ -234,8 +233,7 @@ class TableSorter extends AbstractTableModel {
 			if (e.getFirstRow() == e.getLastRow() && column != TableModelEvent.ALL_COLUMNS
 			        && getSortingStatus(column) == TableSorter.NOT_SORTED && modelToView != null) {
 				final int viewIndex = getModelToView()[e.getFirstRow()];
-				fireTableChanged(new TableModelEvent(TableSorter.this, viewIndex, viewIndex,
-				    column, e.getType()));
+				fireTableChanged(new TableModelEvent(TableSorter.this, viewIndex, viewIndex, column, e.getType()));
 				return;
 			}
 			clearSortingState();
@@ -334,8 +332,7 @@ class TableSorter extends AbstractTableModel {
 		if (directive == TableSorter.EMPTY_DIRECTIVE) {
 			return null;
 		}
-		return new Arrow(directive.direction == TableSorter.DESCENDING, size, sortingColumns
-		    .indexOf(directive));
+		return new Arrow(directive.direction == TableSorter.DESCENDING, size, sortingColumns.indexOf(directive));
 	}
 
 	private int[] getModelToView() {
@@ -421,15 +418,13 @@ class TableSorter extends AbstractTableModel {
 			this.tableHeader.removeMouseListener(mouseListener);
 			final TableCellRenderer defaultRenderer = this.tableHeader.getDefaultRenderer();
 			if (defaultRenderer instanceof SortableHeaderRenderer) {
-				this.tableHeader
-				    .setDefaultRenderer(((SortableHeaderRenderer) defaultRenderer).tableCellRenderer);
+				this.tableHeader.setDefaultRenderer(((SortableHeaderRenderer) defaultRenderer).tableCellRenderer);
 			}
 		}
 		this.tableHeader = tableHeader;
 		if (this.tableHeader != null) {
 			this.tableHeader.addMouseListener(mouseListener);
-			this.tableHeader.setDefaultRenderer(new SortableHeaderRenderer(this.tableHeader
-			    .getDefaultRenderer()));
+			this.tableHeader.setDefaultRenderer(new SortableHeaderRenderer(this.tableHeader.getDefaultRenderer()));
 		}
 	}
 

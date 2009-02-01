@@ -59,8 +59,8 @@ public class AttributePopupMenu extends JPopupMenu implements MouseListener {
 			public void run() {
 				final KeyboardFocusManager focusManager = java.awt.KeyboardFocusManager
 				    .getCurrentKeyboardFocusManager();
-				final Component focusOwner = SwingUtilities.getAncestorOfClass(
-				    AttributeTable.class, focusManager.getFocusOwner());
+				final Component focusOwner = SwingUtilities.getAncestorOfClass(AttributeTable.class, focusManager
+				    .getFocusOwner());
 				if (table != focusOwner && focusOwner instanceof JComponent) {
 					table.requestFocus(true);
 					((JComponent) focusOwner).requestFocus();

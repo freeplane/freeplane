@@ -138,8 +138,8 @@ public class StdXMLParser implements IXMLParser {
 	 * @throws java.lang.Exception
 	 *             if something went wrong
 	 */
-	protected void processAttribute(final Vector attrNames, final Vector attrValues,
-	                                final Vector attrTypes) throws Exception {
+	protected void processAttribute(final Vector attrNames, final Vector attrValues, final Vector attrTypes)
+	        throws Exception {
 		final String key = XMLUtil.scanIdentifier(reader);
 		XMLUtil.skipWhitespace(reader, null);
 		if (!XMLUtil.read(reader, '&').equals("=")) {
@@ -223,8 +223,7 @@ public class StdXMLParser implements IXMLParser {
 	 * @throws java.lang.Exception
 	 *             if something went wrong
 	 */
-	protected void processElement(String defaultNamespace, final Properties namespaces)
-	        throws Exception {
+	protected void processElement(String defaultNamespace, final Properties namespaces) throws Exception {
 		final String fullName = XMLUtil.scanIdentifier(reader);
 		String name = fullName;
 		XMLUtil.skipWhitespace(reader, null);
@@ -249,8 +248,7 @@ public class StdXMLParser implements IXMLParser {
 			XMLUtil.skipWhitespace(reader, null);
 		}
 		final Properties extraAttributes = new Properties();
-		validator.elementAttributesProcessed(fullName, extraAttributes, reader.getSystemID(),
-		    reader.getLineNr());
+		validator.elementAttributesProcessed(fullName, extraAttributes, reader.getSystemID(), reader.getLineNr());
 		final Enumeration enumeration = extraAttributes.keys();
 		while (enumeration.hasMoreElements()) {
 			final String key = (String) enumeration.nextElement();
@@ -270,12 +268,11 @@ public class StdXMLParser implements IXMLParser {
 			}
 		}
 		if (prefix == null) {
-			builder.startElement(name, prefix, defaultNamespace, reader.getSystemID(), reader
-			    .getLineNr());
+			builder.startElement(name, prefix, defaultNamespace, reader.getSystemID(), reader.getLineNr());
 		}
 		else {
-			builder.startElement(name, prefix, namespaces.getProperty(prefix),
-			    reader.getSystemID(), reader.getLineNr());
+			builder
+			    .startElement(name, prefix, namespaces.getProperty(prefix), reader.getSystemID(), reader.getLineNr());
 		}
 		for (int i = 0; i < attrNames.size(); i++) {
 			String key = (String) attrNames.elementAt(i);
@@ -288,8 +285,7 @@ public class StdXMLParser implements IXMLParser {
 			if (colonIndex > 0) {
 				final String attPrefix = key.substring(0, colonIndex);
 				key = key.substring(colonIndex + 1);
-				builder
-				    .addAttribute(key, attPrefix, namespaces.getProperty(attPrefix), value, type);
+				builder.addAttribute(key, attPrefix, namespaces.getProperty(attPrefix), value, type);
 			}
 			else {
 				builder.addAttribute(key, null, null, value, type);
@@ -333,9 +329,8 @@ public class StdXMLParser implements IXMLParser {
 		}
 	}
 
-	protected void processElementContent(final String defaultNamespace,
-	                                     final Properties namespaces, final String fullName,
-	                                     final String name, final String prefix)
+	protected void processElementContent(final String defaultNamespace, final Properties namespaces,
+	                                     final String fullName, final String name, final String prefix)
 	        throws IOException, XMLParseException, Exception {
 		char ch;
 		final StringBuffer buffer = new StringBuffer(16);
@@ -451,8 +446,8 @@ public class StdXMLParser implements IXMLParser {
 				case '\n':
 					break;
 				default:
-					XMLUtil.errorInvalidInput(reader.getSystemID(), reader.getLineNr(), "`" + ch
-					        + "' (0x" + Integer.toHexString(ch) + ')');
+					XMLUtil.errorInvalidInput(reader.getSystemID(), reader.getLineNr(), "`" + ch + "' (0x"
+					        + Integer.toHexString(ch) + ')');
 			}
 		}
 	}
@@ -469,8 +464,8 @@ public class StdXMLParser implements IXMLParser {
 	 * @throws java.lang.Exception
 	 *             if something went wrong
 	 */
-	protected void scanSomeTag(final boolean allowCDATA, final String defaultNamespace,
-	                           final Properties namespaces) throws Exception {
+	protected void scanSomeTag(final boolean allowCDATA, final String defaultNamespace, final Properties namespaces)
+	        throws Exception {
 		final String str = XMLUtil.read(reader, '&');
 		final char ch = str.charAt(0);
 		if (ch == '&') {

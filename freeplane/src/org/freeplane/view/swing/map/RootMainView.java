@@ -88,8 +88,7 @@ class RootMainView extends MainView {
 	 */
 	@Override
 	String getStyle() {
-		return Controller.getResourceController().getProperty(
-		    ResourceController.RESOURCES_ROOT_NODE_SHAPE);
+		return Controller.getResourceController().getProperty(ResourceController.RESOURCES_ROOT_NODE_SHAPE);
 	}
 
 	@Override
@@ -130,13 +129,13 @@ class RootMainView extends MainView {
 	public void paintDragOver(final Graphics2D graphics) {
 		final int draggedOver = getDraggedOver();
 		if (draggedOver == NodeView.DRAGGED_OVER_SON) {
-			graphics.setPaint(new GradientPaint(getWidth() / 4, 0, getNodeView().getMap()
-			    .getBackground(), getWidth() * 3 / 4, 0, NodeView.dragColor));
+			graphics.setPaint(new GradientPaint(getWidth() / 4, 0, getNodeView().getMap().getBackground(),
+			    getWidth() * 3 / 4, 0, NodeView.dragColor));
 			graphics.fillRect(getWidth() / 4, 0, getWidth() - 1, getHeight() - 1);
 		}
 		else if (draggedOver == NodeView.DRAGGED_OVER_SON_LEFT) {
-			graphics.setPaint(new GradientPaint(getWidth() * 3 / 4, 0, getNodeView().getMap()
-			    .getBackground(), getWidth() / 4, 0, NodeView.dragColor));
+			graphics.setPaint(new GradientPaint(getWidth() * 3 / 4, 0, getNodeView().getMap().getBackground(),
+			    getWidth() / 4, 0, NodeView.dragColor));
 			graphics.fillRect(0, 0, getWidth() * 3 / 4, getHeight() - 1);
 		}
 	}
@@ -153,7 +152,6 @@ class RootMainView extends MainView {
 
 	@Override
 	public void setDraggedOver(final Point p) {
-		setDraggedOver((dropPosition(p.getX())) ? NodeView.DRAGGED_OVER_SON_LEFT
-		        : NodeView.DRAGGED_OVER_SON);
+		setDraggedOver((dropPosition(p.getX())) ? NodeView.DRAGGED_OVER_SON_LEFT : NodeView.DRAGGED_OVER_SON);
 	}
 }

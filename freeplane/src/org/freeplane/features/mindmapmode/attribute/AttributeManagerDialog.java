@@ -21,6 +21,7 @@ package org.freeplane.features.mindmapmode.attribute;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -56,7 +57,7 @@ import org.freeplane.features.common.attribute.AttributeRegistry;
 public class AttributeManagerDialog extends JDialog implements IMapSelectionListener {
 	private class ApplyAction extends FreeplaneAction {
 		ApplyAction() {
-			super("apply");
+			super(controller, "apply");
 		}
 
 		/*
@@ -72,7 +73,7 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 
 	private class CancelAction extends FreeplaneAction {
 		CancelAction() {
-			super("cancel");
+			super(controller, "cancel");
 		}
 
 		/*
@@ -107,16 +108,15 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 		}
 
 		public void actionPerformed(final ActionEvent e) {
-			ListDialog.showDialog((Component) e.getSource(), AttributeManagerDialog.this,
-			    labelText, title, listBoxModel, "xxxxxxxxxxxxxxxxxxxxx");
+			ListDialog.showDialog((Component) e.getSource(), AttributeManagerDialog.this, labelText, title,
+			    listBoxModel, "xxxxxxxxxxxxxxxxxxxxx");
 		}
 
 		public int getRow() {
 			return row;
 		}
 
-		public void setListBoxModel(final String title, final String labelText,
-		                            final IListModel listBoxModel) {
+		public void setListBoxModel(final String title, final String labelText, final IListModel listBoxModel) {
 			this.title = title;
 			this.labelText = labelText;
 			this.listBoxModel = listBoxModel;
@@ -129,7 +129,7 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 
 	private class ImportAction extends FreeplaneAction {
 		ImportAction() {
-			super("attributes_import");
+			super(controller, "attributes_import");
 		}
 
 		/*
@@ -140,7 +140,7 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 		 */
 		public void actionPerformed(final ActionEvent e) {
 			if (importDialog == null) {
-				importDialog = new ImportAttributesDialog(AttributeManagerDialog.this);
+				importDialog = new ImportAttributesDialog(controller, AttributeManagerDialog.this);
 			}
 			importDialog.show();
 		}
@@ -148,7 +148,7 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 
 	private class OKAction extends FreeplaneAction {
 		OKAction() {
-			super("ok");
+			super(controller, "ok");
 		}
 
 		/*
@@ -163,19 +163,20 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 		}
 	}
 
-	static final Icon editButtonImage = new ImageIcon(Controller.getResourceController()
-	    .getResource("/images/edit12.png"));
+	static final Icon editButtonImage = new ImageIcon(Controller.getResourceController().getResource(
+	    "/images/edit12.png"));
 	private static final String[] fontSizes = { "6", "8", "10", "12", "14", "16", "18", "20", "24" };
+	final private Controller controller;
 	private ImportAttributesDialog importDialog = null;
 	private AttributeRegistry model;
 	final private JComboBox size;
 	final private JTable view;
 
-	public AttributeManagerDialog() {
-		super(Controller.getController().getViewController().getJFrame(), Controller
-		    .getText("attributes_dialog_title"), true);
+	public AttributeManagerDialog(final Controller controller, Frame frame) {
+		super(frame, Controller.getText("attributes_dialog_title"), true);
+		this.controller = controller;
 		view = new AttributeRegistryTable(new EditListAction());
-		model = AttributeRegistry.getRegistry(Controller.getController().getMap());
+		model = AttributeRegistry.getRegistry(controller.getMap());
 		view.setModel(model.getTableModel());
 		view.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		view.getTableHeader().setReorderingAllowed(false);
@@ -210,7 +211,7 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 		UITools.addEscapeActionToDialog(this);
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new ClosingListener());
-		Controller.getController().getMapViewManager().addMapChangeListener(this);
+		controller.getMapViewManager().addMapChangeListener(this);
 		addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentShown(final ComponentEvent e) {

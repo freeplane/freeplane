@@ -59,8 +59,7 @@ public class IndexedTree {
 		string2Element.put(this, rootNode);
 	}
 
-	public DefaultMutableTreeNode addElement(final Object relativeKey, final Object element,
-	                                         final int position) {
+	public DefaultMutableTreeNode addElement(final Object relativeKey, final Object element, final int position) {
 		final DefaultMutableTreeNode relativeNode = getNode(relativeKey);
 		final DefaultMutableTreeNode node = new Node(element);
 		if (relativeNode == null) {
@@ -70,8 +69,7 @@ public class IndexedTree {
 		return node;
 	}
 
-	public void addElement(final Object relativeKey, final Object element, final Object key,
-	                       final int position) {
+	public void addElement(final Object relativeKey, final Object element, final Object key, final int position) {
 		final DefaultMutableTreeNode existingNode = get(key);
 		if (existingNode != null) {
 			throw new RuntimeException(key.toString() + " added twice");
@@ -85,15 +83,14 @@ public class IndexedTree {
 		string2Element.put(key, node);
 	}
 
-	protected void addNode(final DefaultMutableTreeNode relativeNode,
-	                       final DefaultMutableTreeNode node, final int position) {
+	protected void addNode(final DefaultMutableTreeNode relativeNode, final DefaultMutableTreeNode node,
+	                       final int position) {
 		switch (position) {
 			case AS_CHILD:
 				relativeNode.add(node);
 				break;
 			case BEFORE: {
-				final DefaultMutableTreeNode parent = (DefaultMutableTreeNode) relativeNode
-				    .getParent();
+				final DefaultMutableTreeNode parent = (DefaultMutableTreeNode) relativeNode.getParent();
 				if (parent == null) {
 					throw new RuntimeException("relative node has no parent element");
 				}
@@ -102,8 +99,7 @@ public class IndexedTree {
 				break;
 			}
 			case AFTER:
-				final DefaultMutableTreeNode parent = (DefaultMutableTreeNode) relativeNode
-				    .getParent();
+				final DefaultMutableTreeNode parent = (DefaultMutableTreeNode) relativeNode.getParent();
 				if (parent == null) {
 					throw new RuntimeException("relative node has no parent element");
 				}

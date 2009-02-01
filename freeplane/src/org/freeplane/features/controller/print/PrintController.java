@@ -32,12 +32,12 @@ import org.freeplane.core.util.Tools;
  * @author Dimitry Polivaev
  */
 public class PrintController implements IExtension {
-	public static PrintController getController() {
-		return (PrintController) Controller.getController().getExtension(PrintController.class);
+	public static PrintController getController(final Controller controller) {
+		return (PrintController) controller.getExtension(PrintController.class);
 	}
 
-	public static void install() {
-		Controller.getController().addExtension(PrintController.class, new PrintController());
+	public static void install(final Controller controller) {
+		controller.addExtension(PrintController.class, new PrintController(controller));
 	}
 
 	final private Action page;
@@ -47,14 +47,15 @@ public class PrintController implements IExtension {
 	private PrinterJob printerJob = null;
 	private boolean printingAllowed;
 	final private Action printPreview;
+	final private Controller controller;
 
-	public PrintController() {
+	public PrintController(final Controller controller) {
 		super();
-		print = new PrintAction(this, true);
-		printDirect = new PrintAction(this, false);
-		printPreview = new PrintPreviewAction(this);
+		this.controller = controller;
+		print = new PrintAction(controller, this, true);
+		printDirect = new PrintAction(controller, this, false);
+		printPreview = new PrintPreviewAction(controller, this);
 		page = new PageAction(this);
-		final Controller controller = Controller.getController();
 		controller.addAction("print", print);
 		controller.addAction("printDirect", printDirect);
 		controller.addAction("printPreview", printPreview);
@@ -78,16 +79,14 @@ public class PrintController implements IExtension {
 		}
 		if (pageFormat == null) {
 			pageFormat = printerJob.defaultPage();
-			if (Tools.safeEquals(
-			    Controller.getResourceController().getProperty("page_orientation"), "landscape")) {
+			if (Tools.safeEquals(Controller.getResourceController().getProperty("page_orientation"), "landscape")) {
 				pageFormat.setOrientation(PageFormat.LANDSCAPE);
 			}
-			else if (Tools.safeEquals(Controller.getResourceController().getProperty(
-			    "page_orientation"), "portrait")) {
+			else if (Tools.safeEquals(Controller.getResourceController().getProperty("page_orientation"), "portrait")) {
 				pageFormat.setOrientation(PageFormat.PORTRAIT);
 			}
-			else if (Tools.safeEquals(Controller.getResourceController().getProperty(
-			    "page_orientation"), "reverse_landscape")) {
+			else if (Tools.safeEquals(Controller.getResourceController().getProperty("page_orientation"),
+			    "reverse_landscape")) {
 				pageFormat.setOrientation(PageFormat.REVERSE_LANDSCAPE);
 			}
 		}
@@ -113,4 +112,8 @@ public class PrintController implements IExtension {
 	void setPrinterJob(final PrinterJob printerJob) {
 		this.printerJob = printerJob;
 	}
+
+	public Controller getController() {
+	    return controller;
+    }
 }

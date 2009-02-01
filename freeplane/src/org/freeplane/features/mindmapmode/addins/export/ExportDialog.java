@@ -55,15 +55,13 @@ public class ExportDialog extends JFrame {
 		public void actionPerformed(final ActionEvent e) {
 			if (!cancel) {
 				xe = new XmlExporter();
-				xe.transForm(parent.xmlFile, new File(parent.fieldXsltFileName.getText()),
-				    new File(parent.fieldTargetFileName.getText()));
+				xe.transForm(parent.xmlFile, new File(parent.fieldXsltFileName.getText()), new File(
+				    parent.fieldTargetFileName.getText()));
 			}
 			Controller.getResourceController().setProperty(
-			    ExportDialog.ACCESSORIES_PLUGINS_UTIL_XSLT_EXPORT_DIALOG_STORE_XSLT,
-			    fieldXsltFileName.getText());
+			    ExportDialog.ACCESSORIES_PLUGINS_UTIL_XSLT_EXPORT_DIALOG_STORE_XSLT, fieldXsltFileName.getText());
 			Controller.getResourceController().setProperty(
-			    ExportDialog.ACCESSORIES_PLUGINS_UTIL_XSLT_EXPORT_DIALOG_STORE_TARGET,
-			    fieldTargetFileName.getText());
+			    ExportDialog.ACCESSORIES_PLUGINS_UTIL_XSLT_EXPORT_DIALOG_STORE_TARGET, fieldTargetFileName.getText());
 			parent.setVisible(false);
 			parent.dispose();
 			/*
@@ -125,14 +123,12 @@ public class ExportDialog extends JFrame {
 		gbc = makegbc(2, 0, 1, 1);
 		gbc.fill = GridBagConstraints.NONE;
 		gbl.setConstraints(xslbutton, gbc);
-		xslbutton
-		    .addActionListener(new FileChooseListener(0, fieldXsltFileName, xslbutton, xmlFile));
+		xslbutton.addActionListener(new FileChooseListener(0, fieldXsltFileName, xslbutton, xmlFile));
 		getContentPane().add(xslbutton);
 		final JButton exportbutton = new JButton("Browse");
 		gbc = makegbc(2, 1, 1, 1);
 		gbc.fill = GridBagConstraints.NONE;
-		exportbutton.addActionListener(new FileChooseListener(1, fieldTargetFileName, exportbutton,
-		    xmlFile));
+		exportbutton.addActionListener(new FileChooseListener(1, fieldTargetFileName, exportbutton, xmlFile));
 		gbl.setConstraints(exportbutton, gbc);
 		getContentPane().add(exportbutton);
 		final JButton button = new JButton("Export");
@@ -172,8 +168,7 @@ class FileChooseListener implements ActionListener {
 	private File xf = null;
 	final private String xslch = "Choose XSL Template";
 
-	public FileChooseListener(final int wit, final JTextField jt, final Component c,
-	                          final File mmFile) {
+	public FileChooseListener(final int wit, final JTextField jt, final Component c, final File mmFile) {
 		parent = c;
 		jtf = jt;
 		kind = wit;
@@ -218,8 +213,8 @@ class FileChooseListener implements ActionListener {
 						jtf.setText(chooser.getSelectedFile().getAbsolutePath());
 					}
 					else {
-						final int i = JOptionPane.showConfirmDialog(null,
-						    "File exists. Do You want to overwrite?", "Warning, File exists", 2);
+						final int i = JOptionPane.showConfirmDialog(null, "File exists. Do You want to overwrite?",
+						    "Warning, File exists", 2);
 						if (i == JOptionPane.YES_OPTION) {
 							jtf.setText(chooser.getSelectedFile().getAbsolutePath());
 						}

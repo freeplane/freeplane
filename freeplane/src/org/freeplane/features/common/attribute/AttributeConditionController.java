@@ -38,7 +38,13 @@ import org.freeplane.n3.nanoxml.XMLElement;
  * 21.12.2008
  */
 class AttributeConditionController implements IElementaryConditionController {
+	final private Controller controller;
 	private final ExtendedComboBoxModel values = new ExtendedComboBoxModel();
+
+	public AttributeConditionController(final Controller controller) {
+		super();
+		this.controller = controller;
+	}
 
 	public boolean canEditValues(final Object selectedItem, final NamedObject simpleCond) {
 		return true;
@@ -53,8 +59,8 @@ class AttributeConditionController implements IElementaryConditionController {
 		        && !simpleCond.objectEquals(ConditionFactory.FILTER_DOES_NOT_EXIST);
 	}
 
-	public ICondition createCondition(final Object selectedItem, final NamedObject simpleCondition,
-	                                  final Object v, final boolean ignoreCase) {
+	public ICondition createCondition(final Object selectedItem, final NamedObject simpleCondition, final Object v,
+	                                  final boolean ignoreCase) {
 		final String attribute = (String) selectedItem;
 		final String value = (String) v;
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_EXIST)) {
@@ -108,22 +114,16 @@ class AttributeConditionController implements IElementaryConditionController {
 
 	public ComboBoxModel getConditionsForProperty(final Object selectedItem) {
 		return new DefaultComboBoxModel(new NamedObject[] {
-		        Controller.getResourceController().createTranslatedString(
-		            ConditionFactory.FILTER_EXIST),
-		        Controller.getResourceController().createTranslatedString(
-		            ConditionFactory.FILTER_DOES_NOT_EXIST),
-		        Controller.getResourceController().createTranslatedString(
-		            ConditionFactory.FILTER_IS_EQUAL_TO),
-		        Controller.getResourceController().createTranslatedString(
-		            ConditionFactory.FILTER_IS_NOT_EQUAL_TO),
-		        NamedObject.literal(ConditionFactory.FILTER_GT),
-		        NamedObject.literal(ConditionFactory.FILTER_GE),
-		        NamedObject.literal(ConditionFactory.FILTER_LE),
-		        NamedObject.literal(ConditionFactory.FILTER_LT) });
+		        Controller.getResourceController().createTranslatedString(ConditionFactory.FILTER_EXIST),
+		        Controller.getResourceController().createTranslatedString(ConditionFactory.FILTER_DOES_NOT_EXIST),
+		        Controller.getResourceController().createTranslatedString(ConditionFactory.FILTER_IS_EQUAL_TO),
+		        Controller.getResourceController().createTranslatedString(ConditionFactory.FILTER_IS_NOT_EQUAL_TO),
+		        NamedObject.literal(ConditionFactory.FILTER_GT), NamedObject.literal(ConditionFactory.FILTER_GE),
+		        NamedObject.literal(ConditionFactory.FILTER_LE), NamedObject.literal(ConditionFactory.FILTER_LT) });
 	}
 
 	public IListModel getFilteredProperties() {
-		return AttributeRegistry.getRegistry(Controller.getController().getMap()).getListBoxModel();
+		return AttributeRegistry.getRegistry(controller.getMap()).getListBoxModel();
 	}
 
 	public ComboBoxEditor getValueEditor() {
@@ -131,8 +131,8 @@ class AttributeConditionController implements IElementaryConditionController {
 	}
 
 	public ComboBoxModel getValuesForProperty(final Object selectedItem) {
-		values.setExtensionList(AttributeRegistry.getRegistry(Controller.getController().getMap())
-		    .getElement(selectedItem.toString()).getValues());
+		values.setExtensionList(AttributeRegistry.getRegistry(controller.getMap()).getElement(selectedItem.toString())
+		    .getValues());
 		return values;
 	}
 

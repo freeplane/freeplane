@@ -14,6 +14,7 @@ import org.freeplane.view.swing.map.MapView;
  * (Delete Node). It forwards the requests to NodeController.
  */
 public class DefaultNodeKeyListener implements KeyListener {
+	final private Controller controller;
 	private boolean disabledKeyType = true;
 	final private IEditHandler editHandler;
 	final private KeyStroke keyStrokeDown;
@@ -23,7 +24,8 @@ public class DefaultNodeKeyListener implements KeyListener {
 	private boolean keyTypeAddsNew = false;
 	final private String up, down, left, right;
 
-	public DefaultNodeKeyListener(final IEditHandler editHandler) {
+	public DefaultNodeKeyListener(final Controller controller, final IEditHandler editHandler) {
+		this.controller = controller;
 		this.editHandler = editHandler;
 		up = Controller.getResourceController().getAdjustableProperty("keystroke_move_up");
 		down = Controller.getResourceController().getAdjustableProperty("keystroke_move_down");
@@ -56,7 +58,7 @@ public class DefaultNodeKeyListener implements KeyListener {
 			case KeyEvent.VK_RIGHT:
 			case KeyEvent.VK_PAGE_UP:
 			case KeyEvent.VK_PAGE_DOWN:
-				((MapView) Controller.getController().getViewController().getMapView()).move(e);
+				((MapView) controller.getViewController().getMapView()).move(e);
 				return;
 			case KeyEvent.VK_HOME:
 			case KeyEvent.VK_END:
@@ -92,7 +94,7 @@ public class DefaultNodeKeyListener implements KeyListener {
 			doMove = true;
 		}
 		if (doMove) {
-			((MapView) Controller.getController().getViewController().getMapView()).move(e);
+			((MapView) controller.getViewController().getMapView()).move(e);
 			e.consume();
 			return;
 		}
@@ -100,8 +102,7 @@ public class DefaultNodeKeyListener implements KeyListener {
 
 	public void keyReleased(final KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_SHIFT) {
-			((MapView) Controller.getController().getViewController().getMapView())
-			    .resetShiftSelectionOrigin();
+			((MapView) controller.getViewController().getMapView()).resetShiftSelectionOrigin();
 		}
 	}
 

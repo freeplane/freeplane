@@ -33,8 +33,7 @@ class JAutoScrollBarPane extends JScrollPane {
 	/**
 	 */
 	public JAutoScrollBarPane(final Component view) {
-		super(view, ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER,
-		    ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		super(view, ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 	}
 
 	@Override
@@ -49,13 +48,11 @@ class JAutoScrollBarPane extends JScrollPane {
 		}
 		final boolean isVsbNeeded = height < prefSize.height;
 		boolean layoutAgain = false;
-		if (isVsbNeeded
-		        && getVerticalScrollBarPolicy() == ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER) {
+		if (isVsbNeeded && getVerticalScrollBarPolicy() == ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER) {
 			setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 			layoutAgain = true;
 		}
-		else if (!isVsbNeeded
-		        && getVerticalScrollBarPolicy() == ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS) {
+		else if (!isVsbNeeded && getVerticalScrollBarPolicy() == ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS) {
 			setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 			layoutAgain = true;
 		}

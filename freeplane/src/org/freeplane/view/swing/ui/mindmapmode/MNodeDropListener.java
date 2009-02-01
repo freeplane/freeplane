@@ -95,11 +95,9 @@ public class MNodeDropListener implements DropTargetListener {
 			final MainView mainView = (MainView) dtde.getDropTargetContext().getComponent();
 			final NodeView targetNodeView = mainView.getNodeView();
 			final NodeModel targetNode = targetNodeView.getModel();
-			final NodeModel targetNodeModel = targetNode;
-			if (dtde.isLocalTransfer()
-			        && t.isDataFlavorSupported(MindMapNodesSelection.dropActionFlavor)) {
-				final String sourceAction = (String) t
-				    .getTransferData(MindMapNodesSelection.dropActionFlavor);
+			final Controller controller = targetNode.getModeController().getController();
+			if (dtde.isLocalTransfer() && t.isDataFlavorSupported(MindMapNodesSelection.dropActionFlavor)) {
+				final String sourceAction = (String) t.getTransferData(MindMapNodesSelection.dropActionFlavor);
 				if (sourceAction.equals("LINK")) {
 					dropAction = DnDConstants.ACTION_LINK;
 				}
@@ -109,43 +107,40 @@ public class MNodeDropListener implements DropTargetListener {
 			}
 			mainView.setDraggedOver(NodeView.DRAGGED_OVER_NO);
 			mainView.repaint();
-			if (dtde.isLocalTransfer() && (dropAction == DnDConstants.ACTION_MOVE)
-			        && !isDropAcceptable(dtde)) {
+			if (dtde.isLocalTransfer() && (dropAction == DnDConstants.ACTION_MOVE) && !isDropAcceptable(dtde)) {
 				dtde.rejectDrop();
 				return;
 			}
 			dtde.acceptDrop(dtde.getDropAction());
 			if (!dtde.isLocalTransfer()) {
 				((MClipboardController) ClipboardController.getController(mMindMapController))
-				    .paste(t, targetNode, mainView.dropAsSibling(dtde.getLocation().getX()),
-				        mainView.dropPosition(dtde.getLocation().getX()));
+				    .paste(t, targetNode, mainView.dropAsSibling(dtde.getLocation().getX()), mainView.dropPosition(dtde
+				        .getLocation().getX()));
 				dtde.dropComplete(true);
 				return;
 			}
 			if (dropAction == DnDConstants.ACTION_LINK) {
 				int yesorno = JOptionPane.YES_OPTION;
-				if (Controller.getController().getSelection().size() >= 5) {
-					yesorno = JOptionPane.showConfirmDialog(Controller.getController()
-					    .getViewController().getContentPane(), mMindMapController
-					    .getText("lots_of_links_warning"), Integer.toString(Controller
-					    .getController().getSelection().size())
-					        + " links to the same node", JOptionPane.YES_NO_OPTION);
+				if (controller.getSelection().size() >= 5) {
+					yesorno = JOptionPane.showConfirmDialog(controller.getViewController().getContentPane(),
+					    mMindMapController.getText("lots_of_links_warning"), Integer.toString(controller.getSelection()
+					        .size())
+					            + " links to the same node", JOptionPane.YES_NO_OPTION);
 				}
 				if (yesorno == JOptionPane.YES_OPTION) {
-					for (final Iterator<NodeModel> it = Controller.getController().getSelection()
-					    .getSelection().iterator(); it.hasNext();) {
+					for (final Iterator<NodeModel> it = controller.getSelection().getSelection().iterator(); it
+					    .hasNext();) {
 						final NodeModel selectedNodeModel = (it.next());
-						((MLinkController) LinkController.getController(mMindMapController))
-						    .addLink(selectedNodeModel, targetNodeModel);
+						((MLinkController) LinkController.getController(mMindMapController)).addLink(selectedNodeModel,
+						    targetNode);
 					}
 				}
 			}
 			else {
-				if (!((MMapController) mMindMapController.getMapController())
-				    .isWriteable(targetNode)) {
+				if (!((MMapController) mMindMapController.getMapController()).isWriteable(targetNode)) {
 					final String message = mMindMapController.getText("node_is_write_protected");
-					JOptionPane.showMessageDialog(Controller.getController().getViewController()
-					    .getContentPane(), message, "Freeplane", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(controller.getViewController().getContentPane(), message,
+					    "Freeplane", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				Transferable trans = null;
@@ -154,28 +149,24 @@ public class MNodeDropListener implements DropTargetListener {
 					NodeModel actualNode = targetNode;
 					do {
 						if (selecteds.contains(actualNode)) {
-							final String message = mMindMapController
-							    .getText("cannot_move_to_child");
-							JOptionPane.showMessageDialog(Controller.getController()
-							    .getViewController().getContentPane(), message, "Freeplane",
-							    JOptionPane.WARNING_MESSAGE);
+							final String message = mMindMapController.getText("cannot_move_to_child");
+							JOptionPane.showMessageDialog(controller.getViewController().getContentPane(), message,
+							    "Freeplane", JOptionPane.WARNING_MESSAGE);
 							dtde.dropComplete(true);
 							return;
 						}
 						actualNode = (actualNode.isRoot()) ? null : actualNode.getParentNode();
 					} while (actualNode != null);
-					trans = ((MClipboardController) ClipboardController
-					    .getController(mMindMapController)).cut(Controller.getController()
-					    .getSelection().getSortedSelection());
+					trans = ((MClipboardController) ClipboardController.getController(mMindMapController))
+					    .cut(controller.getSelection().getSortedSelection());
 				}
 				else {
-					trans = ClipboardController.getController(mMindMapController).copy(
-					    Controller.getController().getSelection());
+					trans = ClipboardController.getController(mMindMapController).copy(controller.getSelection());
 				}
-				Controller.getController().getSelection().selectAsTheOnlyOneSelected(targetNode);
+				controller.getSelection().selectAsTheOnlyOneSelected(targetNode);
 				((MClipboardController) ClipboardController.getController(mMindMapController))
-				    .paste(trans, targetNode, mainView.dropAsSibling(dtde.getLocation().getX()),
-				        mainView.dropPosition(dtde.getLocation().getX()));
+				    .paste(trans, targetNode, mainView.dropAsSibling(dtde.getLocation().getX()), mainView
+				        .dropPosition(dtde.getLocation().getX()));
 			}
 		}
 		catch (final Exception e) {
@@ -201,8 +192,7 @@ public class MNodeDropListener implements DropTargetListener {
 	}
 
 	private boolean isDropAcceptable(final DropTargetDropEvent event) {
-		final NodeModel node = ((MainView) event.getDropTargetContext().getComponent())
-		    .getNodeView().getModel();
+		final NodeModel node = ((MainView) event.getDropTargetContext().getComponent()).getNodeView().getModel();
 		final NodeModel selected = mMindMapController.getMapController().getSelectedNode();
 		if (!((MMapController) mMindMapController.getMapController()).isWriteable(node)) {
 			return false;

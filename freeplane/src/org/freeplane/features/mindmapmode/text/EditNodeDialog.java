@@ -23,6 +23,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
@@ -55,32 +56,30 @@ public class EditNodeDialog extends EditNodeBase {
 	class LongNodeDialog extends EditDialog {
 		final private JTextArea textArea;
 
-		LongNodeDialog() {
-			super(EditNodeDialog.this);
-			final ViewController viewController = Controller.getController().getViewController();
+		LongNodeDialog(Frame frame) {
+			super(EditNodeDialog.this, frame);
+			final ViewController viewController = getModeController().getController().getViewController();
 			textArea = new JTextArea(getText());
 			textArea.setLineWrap(true);
 			textArea.setWrapStyleWord(true);
 			final JScrollPane editorScrollPane = new JScrollPane(textArea);
-			editorScrollPane
-			    .setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+			editorScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 			int preferredHeight = viewController.getComponent(getNode()).getHeight();
-			preferredHeight = Math.max(preferredHeight, Integer.parseInt(Controller
-			    .getResourceController().getProperty("el__min_default_window_height")));
-			preferredHeight = Math.min(preferredHeight, Integer.parseInt(Controller
-			    .getResourceController().getProperty("el__max_default_window_height")));
+			preferredHeight = Math.max(preferredHeight, Integer.parseInt(Controller.getResourceController()
+			    .getProperty("el__min_default_window_height")));
+			preferredHeight = Math.min(preferredHeight, Integer.parseInt(Controller.getResourceController()
+			    .getProperty("el__max_default_window_height")));
 			int preferredWidth = viewController.getComponent(getNode()).getWidth();
-			preferredWidth = Math.max(preferredWidth, Integer.parseInt(Controller
-			    .getResourceController().getProperty("el__min_default_window_width")));
-			preferredWidth = Math.min(preferredWidth, Integer.parseInt(Controller
-			    .getResourceController().getProperty("el__max_default_window_width")));
+			preferredWidth = Math.max(preferredWidth, Integer.parseInt(Controller.getResourceController().getProperty(
+			    "el__min_default_window_width")));
+			preferredWidth = Math.min(preferredWidth, Integer.parseInt(Controller.getResourceController().getProperty(
+			    "el__max_default_window_width")));
 			editorScrollPane.setPreferredSize(new Dimension(preferredWidth, preferredHeight));
 			final JPanel panel = new JPanel();
 			final JButton okButton = new JButton();
 			final JButton cancelButton = new JButton();
 			final JButton splitButton = new JButton();
-			final JCheckBox enterConfirms = new JCheckBox("",
-			    binOptionIsTrue("el__enter_confirms_by_default"));
+			final JCheckBox enterConfirms = new JCheckBox("", binOptionIsTrue("el__enter_confirms_by_default"));
 			MenuBuilder.setLabelAndMnemonic(okButton, getText("ok"));
 			MenuBuilder.setLabelAndMnemonic(cancelButton, getText("cancel"));
 			MenuBuilder.setLabelAndMnemonic(splitButton, getText("split"));
@@ -110,8 +109,7 @@ public class EditNodeDialog extends EditNodeBase {
 			enterConfirms.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent e) {
 					textArea.requestFocus();
-					EditNodeDialog.booleanHolderForConfirmState
-					    .setValue(enterConfirms.isSelected());
+					EditNodeDialog.booleanHolderForConfirmState.setValue(enterConfirms.isSelected());
 				}
 			});
 			textArea.addKeyListener(new KeyListener() {
@@ -121,13 +119,11 @@ public class EditNodeDialog extends EditNodeBase {
 						confirmedCancel();
 					}
 					else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-						if (enterConfirms.isSelected()
-						        && (e.getModifiers() & InputEvent.SHIFT_MASK) != 0) {
+						if (enterConfirms.isSelected() && (e.getModifiers() & InputEvent.SHIFT_MASK) != 0) {
 							e.consume();
 							textArea.insert("\n", textArea.getCaretPosition());
 						}
-						else if (enterConfirms.isSelected()
-						        || ((e.getModifiers() & InputEvent.ALT_MASK) != 0)) {
+						else if (enterConfirms.isSelected() || ((e.getModifiers() & InputEvent.ALT_MASK) != 0)) {
 							e.consume();
 							submit();
 						}
@@ -183,8 +179,7 @@ public class EditNodeDialog extends EditNodeBase {
 			buttonPane.add(cancelButton);
 			buttonPane.add(splitButton);
 			buttonPane.setMaximumSize(new Dimension(1000, 20));
-			if (Controller.getResourceController().getProperty("el__buttons_position").equals(
-			    "above")) {
+			if (Controller.getResourceController().getProperty("el__buttons_position").equals("above")) {
 				panel.add(buttonPane);
 				panel.add(editorScrollPane);
 			}
@@ -268,10 +263,10 @@ public class EditNodeDialog extends EditNodeBase {
 		this.firstEvent = firstEvent;
 	}
 
-	public void show() {
-		final EditDialog dialog = new LongNodeDialog();
+	public void show(Frame frame) {
+		final EditDialog dialog = new LongNodeDialog(frame);
 		dialog.pack();
-		Controller.getController().getViewController().scrollNodeToVisible(node);
+		getModeController().getController().getViewController().scrollNodeToVisible(node);
 		UITools.setDialogLocationRelativeTo(dialog, getNode());
 		dialog.show();
 	}

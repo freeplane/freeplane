@@ -48,8 +48,7 @@ import org.freeplane.core.resources.ResourceController;
  */
 public class LinkController implements IExtension {
 	private static class ArrowLinkListener implements IFreeplanePropertyListener {
-		public void propertyChanged(final String propertyName, final String newValue,
-		                            final String oldValue) {
+		public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
 			if (propertyName.equals(ResourceController.RESOURCES_LINK_COLOR)) {
 				standardColor = TreeXmlReader.xmlToColor(newValue);
 			}
@@ -64,8 +63,7 @@ public class LinkController implements IExtension {
 		return (LinkController) modeController.getExtension(LinkController.class);
 	}
 
-	public static void install(final ModeController modeController,
-	                           final LinkController linkController) {
+	public static void install(final ModeController modeController, final LinkController linkController) {
 		modeController.addExtension(LinkController.class, linkController);
 		final INodeSelectionListener listener = new INodeSelectionListener() {
 			public void onDeselect(final NodeModel node) {
@@ -74,7 +72,7 @@ public class LinkController implements IExtension {
 			public void onSelect(final NodeModel node) {
 				String link = NodeLinks.getLink(node);
 				link = (link != null ? link : " ");
-				Controller.getController().getViewController().out(link);
+				node.getModeController().getController().getViewController().out(link);
 			}
 		};
 		modeController.getMapController().addNodeSelectionListener(listener);
@@ -96,12 +94,11 @@ public class LinkController implements IExtension {
 				return model.getColor();
 			}
 		});
-		addColorGetter(ExclusivePropertyChain.DEFAULT,
-		    new IPropertyGetter<Color, ArrowLinkModel>() {
-			    public Color getProperty(final ArrowLinkModel model, final Color currentValue) {
-				    return standardColor;
-			    }
-		    });
+		addColorGetter(ExclusivePropertyChain.DEFAULT, new IPropertyGetter<Color, ArrowLinkModel>() {
+			public Color getProperty(final ArrowLinkModel model, final Color currentValue) {
+				return standardColor;
+			}
+		});
 		createActions(modeController);
 		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();
@@ -109,8 +106,7 @@ public class LinkController implements IExtension {
 		new LinkBuilder().registerBy(readManager, writeManager);
 	}
 
-	public IPropertyGetter<Color, ArrowLinkModel> addColorGetter(
-	                                                             final Integer key,
+	public IPropertyGetter<Color, ArrowLinkModel> addColorGetter(final Integer key,
 	                                                             final IPropertyGetter<Color, ArrowLinkModel> getter) {
 		return colorHandlers.addGetter(key, getter);
 	}
@@ -119,7 +115,7 @@ public class LinkController implements IExtension {
 	 *
 	 */
 	private void createActions(final ModeController modeController) {
-		modeController.addAction("followLink", new FollowLinkAction());
+		modeController.addAction("followLink", new FollowLinkAction(modeController.getController()));
 		modeController.addAction("gotoLinkNodeAction", new GotoLinkNodeAction(this, null));
 	}
 
@@ -156,8 +152,7 @@ public class LinkController implements IExtension {
 		}
 		if (adaptedText.startsWith("#")) {
 			try {
-				final NodeModel dest = modeController.getMapController().getNodeFromID(
-				    adaptedText.substring(1));
+				final NodeModel dest = modeController.getMapController().getNodeFromID(adaptedText.substring(1));
 				return dest.getShortText(modeController);
 			}
 			catch (final Exception e) {

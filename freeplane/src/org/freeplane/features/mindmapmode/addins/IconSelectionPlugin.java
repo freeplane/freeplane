@@ -45,22 +45,22 @@ locations = { "/menu_bar/insert/icons" })
 public class IconSelectionPlugin extends FreeplaneAction {
 	/**
 	 */
-	public IconSelectionPlugin() {
-		super();
+	public IconSelectionPlugin(final Controller controller) {
+		super(controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final ModeController modeController = getModeController();
 		final Vector actions = new Vector();
-		final Collection<Action> iconActions = ((MIconController) IconController
-		    .getController(modeController)).getIconActions();
+		final Collection<Action> iconActions = ((MIconController) IconController.getController(modeController))
+		    .getIconActions();
 		actions.addAll(iconActions);
 		actions.add(modeController.getAction("removeLastIconAction"));
 		actions.add(modeController.getAction("removeAllIconsAction"));
-		final ViewController viewController = Controller.getController().getViewController();
-		final IconSelectionPopupDialog selectionDialog = new IconSelectionPopupDialog(
-		    viewController.getJFrame(), actions);
-		final NodeModel selected = Controller.getController().getSelection().getSelected();
+		final ViewController viewController = getController().getViewController();
+		final IconSelectionPopupDialog selectionDialog = new IconSelectionPopupDialog(viewController.getJFrame(),
+		    actions);
+		final NodeModel selected = getController().getSelection().getSelected();
 		viewController.scrollNodeToVisible(selected);
 		selectionDialog.pack();
 		UITools.setDialogLocationRelativeTo(selectionDialog, selected);
@@ -69,8 +69,7 @@ public class IconSelectionPlugin extends FreeplaneAction {
 		final int result = selectionDialog.getResult();
 		if (result >= 0) {
 			final Action action = (Action) actions.get(result);
-			action.actionPerformed(new ActionEvent(action, 0, "icon", selectionDialog
-			    .getModifiers()));
+			action.actionPerformed(new ActionEvent(action, 0, "icon", selectionDialog.getModifiers()));
 		}
 	}
 }

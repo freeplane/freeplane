@@ -34,24 +34,23 @@ import org.freeplane.features.common.link.LinkController;
 class AddLocalLinkAction extends FreeplaneAction {
 	/**
 	 */
-	public AddLocalLinkAction() {
-		super("add_local_link", "/images/LinkLocal.png");
+	public AddLocalLinkAction(final Controller controller) {
+		super(controller, "add_local_link", "/images/LinkLocal.png");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final ModeController modeController = getModeController();
 		final List selecteds = modeController.getMapController().getSelectedNodes();
 		if (selecteds.size() < 2) {
-			Controller.getController().errorMessage(
-			    modeController.getText("less_than_two_selected_nodes"));
+			final Controller controller = getController();
+			controller.errorMessage(modeController.getText("less_than_two_selected_nodes"));
 			return;
 		}
 		final NodeModel target = (NodeModel) selecteds.get(0);
 		final String targetId = (target).createID();
 		for (int i = 1; i < selecteds.size(); i++) {
 			final NodeModel source = (NodeModel) selecteds.get(i);
-			((MLinkController) LinkController.getController(modeController)).setLink(source,
-			    ("#" + targetId));
+			((MLinkController) LinkController.getController(modeController)).setLink(source, ("#" + targetId));
 		}
 	}
 }

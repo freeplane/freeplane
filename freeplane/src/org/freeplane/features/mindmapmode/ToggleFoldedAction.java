@@ -31,8 +31,8 @@ import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.core.util.Tools;
 
 class ToggleFoldedAction extends FreeplaneAction {
-	public ToggleFoldedAction() {
-		super("toggle_folded");
+	public ToggleFoldedAction(final Controller controller) {
+		super(controller, "toggle_folded");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -60,16 +60,14 @@ class ToggleFoldedAction extends FreeplaneAction {
 
 	private void toggleFolded(final NodeModel node) {
 		if (!node.getModeController().getMapController().hasChildren(node)
-		        && !Tools.safeEquals(Controller.getResourceController().getProperty(
-		            "enable_leaves_folding"), "true")) {
+		        && !Tools.safeEquals(Controller.getResourceController().getProperty("enable_leaves_folding"), "true")) {
 			return;
 		}
 		final ModeController modeController = getModeController();
 		final IUndoableActor actor = new IUndoableActor() {
 			public void act() {
 				modeController.getMapController()._setFolded(node, !node.isFolded());
-				if (Controller.getResourceController().getBoolProperty(
-				    ResourceController.RESOURCES_SAVE_FOLDING_STATE)) {
+				if (Controller.getResourceController().getBoolProperty(ResourceController.RESOURCES_SAVE_FOLDING_STATE)) {
 					modeController.getMapController().nodeChanged(node);
 				}
 			}

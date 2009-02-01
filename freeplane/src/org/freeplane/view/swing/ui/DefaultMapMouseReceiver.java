@@ -31,14 +31,16 @@ import org.freeplane.view.swing.map.MapView;
  * 06.01.2009
  */
 public class DefaultMapMouseReceiver implements IMapMouseReceiver {
+	final private Controller controller;
 	int originX = -1;
 	int originY = -1;
 
 	/**
 	 *
 	 */
-	public DefaultMapMouseReceiver() {
+	public DefaultMapMouseReceiver(final Controller controller) {
 		super();
+		this.controller = controller;
 	}
 
 	public void mouseDragged(final MouseEvent e) {
@@ -55,8 +57,7 @@ public class DefaultMapMouseReceiver implements IMapMouseReceiver {
 
 	public void mousePressed(final MouseEvent e) {
 		if (e.getButton() == MouseEvent.BUTTON1) {
-			((MapView) Controller.getController().getViewController().getMapView())
-			    .setMoveCursor(true);
+			((MapView) controller.getViewController().getMapView()).setMoveCursor(true);
 			originX = e.getX();
 			originY = e.getY();
 		}

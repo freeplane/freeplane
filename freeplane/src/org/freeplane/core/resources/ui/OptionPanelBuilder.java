@@ -89,8 +89,7 @@ public class OptionPanelBuilder {
 	}
 
 	private class NumberOptionCreator extends PropertyCreator {
-		private IPropertyControlCreator createNumberPropertyCreator(final String name,
-		                                                            final int min, final int step,
+		private IPropertyControlCreator createNumberPropertyCreator(final String name, final int min, final int step,
 		                                                            final int max) {
 			return new IPropertyControlCreator() {
 				public IPropertyControl createControl() {
@@ -133,8 +132,7 @@ public class OptionPanelBuilder {
 	}
 
 	protected abstract class PropertyCreator implements IElementDOMHandler {
-		public Object createElement(final Object parent, final String tag,
-		                            final IXMLElement attributes) {
+		public Object createElement(final Object parent, final String tag, final IXMLElement attributes) {
 			if (attributes == null) {
 				return null;
 			}
@@ -145,8 +143,8 @@ public class OptionPanelBuilder {
 			final Path path = new Path(parent == null ? null : parent.toString());
 			path.setName(name);
 			if (!tree.contains(path.path)) {
-				tree.addElement(path.parentPath == null ? tree : path.parentPath, this, path.path,
-				    IndexedTree.AS_CHILD);
+				tree
+				    .addElement(path.parentPath == null ? tree : path.parentPath, this, path.path, IndexedTree.AS_CHILD);
 			}
 			return path;
 		}
@@ -185,8 +183,7 @@ public class OptionPanelBuilder {
 				return;
 			}
 			super.endElement(parent, tag, userObject, lastBuiltElement);
-			tree.addElement(path.parentPath == null ? tree : path.parentPath, nextLineCreator,
-			    IndexedTree.AS_CHILD);
+			tree.addElement(path.parentPath == null ? tree : path.parentPath, nextLineCreator, IndexedTree.AS_CHILD);
 			return;
 		}
 
@@ -237,27 +234,22 @@ public class OptionPanelBuilder {
 		tree.addElement(path, createColorOptionCreator(name), path + "/" + name, position);
 	}
 
-	public void addComboProperty(final String path, final String name,
-	                             final Vector<String> choices, final Vector<String> translations,
-	                             final int position) {
-		tree.addElement(path, createComboProperty(name, choices, translations), path + "/" + name,
-		    position);
+	public void addComboProperty(final String path, final String name, final Vector<String> choices,
+	                             final Vector<String> translations, final int position) {
+		tree.addElement(path, createComboProperty(name, choices, translations), path + "/" + name, position);
 	}
 
-	public void addCreator(final String path, final IPropertyControlCreator creator,
-	                       final int position) {
+	public void addCreator(final String path, final IPropertyControlCreator creator, final int position) {
 		tree.addElement(path, creator, position);
 	}
 
-	public void addCreator(final String path, final IPropertyControlCreator creator,
-	                       final String name, final int position) {
+	public void addCreator(final String path, final IPropertyControlCreator creator, final String name,
+	                       final int position) {
 		tree.addElement(path, creator, path + "/" + name, position);
 	}
 
-	public void addDontShowNotificationProperty(final String path, final String name,
-	                                            final int position) {
-		tree
-		    .addElement(path, createDontShowNotificationProperty(name), path + "/" + name, position);
+	public void addDontShowNotificationProperty(final String path, final String name, final int position) {
+		tree.addElement(path, createDontShowNotificationProperty(name), path + "/" + name, position);
 	}
 
 	public void addKeyProperty(final String path, final String name, final int position) {
@@ -299,14 +291,12 @@ public class OptionPanelBuilder {
 	private IPropertyControlCreator createColorOptionCreator(final String name) {
 		return new IPropertyControlCreator() {
 			public IPropertyControl createControl() {
-				return new ColorProperty(name, Controller.getResourceController()
-				    .getDefaultProperty(name));
+				return new ColorProperty(name, Controller.getResourceController().getDefaultProperty(name));
 			}
 		};
 	}
 
-	private IPropertyControlCreator createComboProperty(final String name,
-	                                                    final Vector<String> choices,
+	private IPropertyControlCreator createComboProperty(final String name, final Vector<String> choices,
 	                                                    final Vector<String> translations) {
 		return new IPropertyControlCreator() {
 			public IPropertyControl createControl() {
@@ -391,8 +381,7 @@ public class OptionPanelBuilder {
 		readManager.addElementHandler("combo", new ComboOptionCreator());
 		readManager.addElementHandler("key", new KeyOptionCreator());
 		readManager.addElementHandler("remind_value", new RemindValueCreator());
-		readManager.addElementHandler("dont_show_notification_property",
-		    new DontShowNotificationPropertyCreator());
+		readManager.addElementHandler("dont_show_notification_property", new DontShowNotificationPropertyCreator());
 	}
 
 	public void load(final URL menu) {

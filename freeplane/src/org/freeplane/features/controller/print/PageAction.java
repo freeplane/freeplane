@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.controller.print;
 
+import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -49,13 +50,13 @@ class PageAction extends AbstractPrintAction {
 		if (!getPrintController().acquirePrinterJobAndPageFormat()) {
 			return;
 		}
-		final JDialog dialog = new JDialog(Controller.getController().getViewController()
-		    .getJFrame(), Controller.getText("printing_settings"), /* modal=*/true);
-		final JCheckBox fitToPage = new JCheckBox(Controller.getText("fit_to_page"), Controller
-		    .getResourceController().getBoolProperty("fit_to_page"));
+		final Frame frame = getPrintController().getController().getViewController().getFrame();
+		final JDialog dialog = new JDialog(frame, Controller.getText("printing_settings"), /* modal=*/
+		    true);
+		final JCheckBox fitToPage = new JCheckBox(Controller.getText("fit_to_page"), Controller.getResourceController()
+		    .getBoolProperty("fit_to_page"));
 		final JLabel userZoomL = new JLabel(Controller.getText("user_zoom"));
-		final JTextField userZoom = new JTextField(Controller.getResourceController().getProperty(
-		    "user_zoom"), 3);
+		final JTextField userZoom = new JTextField(Controller.getResourceController().getProperty("user_zoom"), 3);
 		userZoom.setEditable(!fitToPage.isSelected());
 		final JButton okButton = new JButton();
 		MenuBuilder.setLabelAndMnemonic(okButton, Controller.getText("ok"));
@@ -97,21 +98,19 @@ class PageAction extends AbstractPrintAction {
 		panel.setLayout(gridbag);
 		dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		dialog.setContentPane(panel);
-		dialog.setLocationRelativeTo(Controller.getController().getViewController().getJFrame());
+		dialog.setLocationRelativeTo(frame);
 		dialog.getRootPane().setDefaultButton(okButton);
 		dialog.pack();
 		dialog.setVisible(true);
 		if (eventSource.getValue() == 1) {
 			Controller.getResourceController().setProperty("user_zoom", userZoom.getText());
-			Controller.getResourceController().setProperty("fit_to_page",
-			    (fitToPage.isSelected() ? "true" : "false"));
+			Controller.getResourceController().setProperty("fit_to_page", (fitToPage.isSelected() ? "true" : "false"));
 		}
 		else {
 			return;
 		}
 		final PrintController printController = getPrintController();
-		printController.setPageFormat(printController.getPrinterJob().pageDialog(
-		    printController.getPageFormat()));
+		printController.setPageFormat(printController.getPrinterJob().pageDialog(printController.getPageFormat()));
 		if (printController.getPageFormat().getOrientation() == PageFormat.LANDSCAPE) {
 			Controller.getResourceController().setProperty("page_orientation", "landscape");
 		}

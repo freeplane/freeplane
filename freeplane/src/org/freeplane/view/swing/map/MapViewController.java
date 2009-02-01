@@ -24,7 +24,6 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.File;
@@ -47,9 +46,6 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.util.Tools;
-import org.freeplane.features.mindmapmode.text.AbstractEditNodeTextField;
-import org.freeplane.features.mindmapmode.text.INodeTextFieldCreator;
-import org.freeplane.features.mindmapmode.text.EditNodeBase.IEditControl;
 
 /**
  * Manages the list of MapViews. As this task is very complex, I exported it
@@ -71,39 +67,33 @@ public class MapViewController implements IMapViewManager {
 		}
 
 		void afterMapChange(final MapView oldMap, final MapView newMap) {
-			for (final Iterator<IMapSelectionListener> iter = mapListeners.iterator(); iter
-			    .hasNext();) {
+			for (final Iterator<IMapSelectionListener> iter = mapListeners.iterator(); iter.hasNext();) {
 				final IMapSelectionListener observer = iter.next();
 				observer.afterMapChange(getModel(oldMap), getModel(newMap));
 			}
-			for (final Iterator<IMapViewChangeListener> iter = viewListeners.iterator(); iter
-			    .hasNext();) {
+			for (final Iterator<IMapViewChangeListener> iter = viewListeners.iterator(); iter.hasNext();) {
 				final IMapViewChangeListener observer = iter.next();
 				observer.afterViewChange(oldMap, newMap);
 			}
 		}
 
 		void afterMapClose(final MapView pOldMap) {
-			for (final Iterator<IMapSelectionListener> iter = mapListeners.iterator(); iter
-			    .hasNext();) {
+			for (final Iterator<IMapSelectionListener> iter = mapListeners.iterator(); iter.hasNext();) {
 				final IMapSelectionListener observer = iter.next();
 				observer.afterMapClose(getModel(pOldMap));
 			}
-			for (final Iterator<IMapViewChangeListener> iter = viewListeners.iterator(); iter
-			    .hasNext();) {
+			for (final Iterator<IMapViewChangeListener> iter = viewListeners.iterator(); iter.hasNext();) {
 				final IMapViewChangeListener observer = iter.next();
 				observer.afterViewClose(pOldMap);
 			}
 		}
 
 		void beforeMapChange(final MapView oldMap, final MapView newMap) {
-			for (final Iterator<IMapSelectionListener> iter = mapListeners.iterator(); iter
-			    .hasNext();) {
+			for (final Iterator<IMapSelectionListener> iter = mapListeners.iterator(); iter.hasNext();) {
 				final IMapSelectionListener observer = iter.next();
 				observer.beforeMapChange(getModel(oldMap), getModel(newMap));
 			}
-			for (final Iterator<IMapViewChangeListener> iter = viewListeners.iterator(); iter
-			    .hasNext();) {
+			for (final Iterator<IMapViewChangeListener> iter = viewListeners.iterator(); iter.hasNext();) {
 				final IMapViewChangeListener observer = iter.next();
 				observer.beforeViewChange(oldMap, newMap);
 			}
@@ -126,8 +116,7 @@ public class MapViewController implements IMapViewManager {
 		}
 
 		void mapViewCreated(final MapView mapView) {
-			for (final Iterator<IMapViewChangeListener> iter = viewListeners.iterator(); iter
-			    .hasNext();) {
+			for (final Iterator<IMapViewChangeListener> iter = viewListeners.iterator(); iter.hasNext();) {
 				final IMapViewChangeListener observer = iter.next();
 				observer.afterViewCreated(mapView);
 			}
@@ -265,8 +254,7 @@ public class MapViewController implements IMapViewManager {
 	 */
 	public boolean close(final boolean force) {
 		final MapView mapView = getMapView();
-		final boolean closingNotCancelled = getModel(mapView).getModeController()
-		    .getMapController().close(force);
+		final boolean closingNotCancelled = getModel(mapView).getModeController().getMapController().close(force);
 		if (!closingNotCancelled) {
 			return false;
 		}
@@ -287,8 +275,8 @@ public class MapViewController implements IMapViewManager {
 	}
 
 	public String createHtmlMap() {
-		final ClickableImageCreator creator = new ClickableImageCreator(getModel().getRootNode(),
-		    getModel().getModeController(), "FM$1FM");
+		final ClickableImageCreator creator = new ClickableImageCreator(getModel().getRootNode(), getModel()
+		    .getModeController(), "FM$1FM");
 		return creator.generateHtml();
 	}
 
@@ -299,13 +287,11 @@ public class MapViewController implements IMapViewManager {
 		}
 		(view).preparePrinting();
 		final Rectangle innerBounds = (view).getInnerBounds();
-		BufferedImage myImage = (BufferedImage) (view).createImage(view.getWidth(), view
-		    .getHeight());
+		BufferedImage myImage = (BufferedImage) (view).createImage(view.getWidth(), view.getHeight());
 		final Graphics g = myImage.getGraphics();
 		g.clipRect(innerBounds.x, innerBounds.y, innerBounds.width, innerBounds.height);
 		(view).print(g);
-		myImage = myImage.getSubimage(innerBounds.x, innerBounds.y, innerBounds.width,
-		    innerBounds.height);
+		myImage = myImage.getSubimage(innerBounds.x, innerBounds.y, innerBounds.width, innerBounds.height);
 		return myImage;
 	}
 

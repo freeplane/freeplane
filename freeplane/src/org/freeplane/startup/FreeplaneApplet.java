@@ -20,10 +20,10 @@
 package org.freeplane.startup;
 
 import java.awt.BorderLayout;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
+import java.awt.Container;
 
 import javax.swing.JApplet;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 import org.freeplane.core.controller.Controller;
@@ -39,21 +39,30 @@ import org.freeplane.view.swing.map.MapViewController;
 
 public class FreeplaneApplet extends JApplet {
 	private AppletViewController appletViewController;
+	private Controller controller;
 	private AppletResourceController resourceController;
+
+	@Override
+	public void destroy() {
+		controller.shutdown();
+	}
 
 	@Override
 	public void init() {
 		createRootPane();
 		updateLookAndFeel();
-		getContentPane().setLayout(new BorderLayout());
+		final Container contentPane = getContentPane();
+		contentPane.setLayout(new BorderLayout());
 		resourceController = new AppletResourceController(this);
-		final Controller controller = new Controller(resourceController);
-		appletViewController = new AppletViewController(this, new MapViewController());
-		FilterController.install();
-		PrintController.install();
-		HelpController.install();
-		ModelessAttributeController.install();
-		final BModeController browseController = BModeControllerFactory.createModeController();
+		Controller.setResourceController(resourceController);
+		controller = new Controller();
+		resourceController.init(controller);
+		appletViewController = new AppletViewController(controller, this, new MapViewController());
+		FilterController.install(controller);
+		PrintController.install(controller);
+		HelpController.install(controller);
+		ModelessAttributeController.install(controller);
+		final BModeController browseController = BModeControllerFactory.createModeController(controller);
 		controller.selectMode(browseController);
 		appletViewController.init();
 		controller.getViewController().setToolbarVisible(true);
@@ -66,14 +75,9 @@ public class FreeplaneApplet extends JApplet {
 	}
 
 	@Override
-    public void destroy() {
-	    Controller.getController().shutdown();
-    }
-
-	@Override
-    public void stop() {
-	    super.stop();
-    }
+	public void stop() {
+		super.stop();
+	}
 
 	private void updateLookAndFeel() {
 		String lookAndFeel = "";

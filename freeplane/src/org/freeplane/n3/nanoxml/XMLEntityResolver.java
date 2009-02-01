@@ -129,15 +129,15 @@ public class XMLEntityResolver implements IXMLEntityResolver {
 	 *            the system ID
 	 * @return the reader, or null if the reader could not be created/opened
 	 */
-	protected Reader openExternalEntity(final IXMLReader xmlReader, final String publicID,
-	                                    final String systemID) throws XMLParseException {
+	protected Reader openExternalEntity(final IXMLReader xmlReader, final String publicID, final String systemID)
+	        throws XMLParseException {
 		final String parentSystemID = xmlReader.getSystemID();
 		try {
 			return xmlReader.openStream(publicID, systemID);
 		}
 		catch (final Exception e) {
-			throw new XMLParseException(parentSystemID, xmlReader.getLineNr(),
-			    "Could not open external entity " + "at system ID: " + systemID);
+			throw new XMLParseException(parentSystemID, xmlReader.getLineNr(), "Could not open external entity "
+			        + "at system ID: " + systemID);
 		}
 	}
 }

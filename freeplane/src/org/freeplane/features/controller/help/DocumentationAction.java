@@ -31,7 +31,10 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.features.browsemode.BModeController;
 
 class DocumentationAction extends AbstractAction {
-	DocumentationAction() {
+	final private Controller controller;
+
+	DocumentationAction(final Controller controller) {
+		this.controller = controller;
 		MenuBuilder.setLabelAndMnemonic(this, Controller.getText("documentation"));
 	}
 
@@ -45,9 +48,8 @@ class DocumentationAction extends AbstractAction {
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
 					try {
-						if (Controller.getController().selectMode(BModeController.MODENAME)) {
-							((BModeController) Controller.getModeController()).getMapController()
-							    .newMap(endUrl);
+						if (controller.selectMode(BModeController.MODENAME)) {
+							((BModeController) controller.getModeController()).getMapController().newMap(endUrl);
 						}
 					}
 					catch (final Exception e1) {

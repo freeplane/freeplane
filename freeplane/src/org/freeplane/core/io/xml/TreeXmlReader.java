@@ -91,8 +91,7 @@ public class TreeXmlReader implements IXMLBuilder {
 		}
 		final StringTokenizer tok = new StringTokenizer(string, ";");
 		if (tok.countTokens() != 2) {
-			throw new IllegalArgumentException("A point must consist of two numbers (and not: '"
-			        + string + "').");
+			throw new IllegalArgumentException("A point must consist of two numbers (and not: '" + string + "').");
 		}
 		final int x = Integer.parseInt(tok.nextToken());
 		final int y = Integer.parseInt(tok.nextToken());
@@ -135,8 +134,8 @@ public class TreeXmlReader implements IXMLBuilder {
 	 * .String, java.lang.String, java.lang.String, java.lang.String,
 	 * java.lang.String)
 	 */
-	public void addAttribute(final String key, final String nsPrefix, final String nsURI,
-	                         final String value, final String type) throws Exception {
+	public void addAttribute(final String key, final String nsPrefix, final String nsURI, final String value,
+	                         final String type) throws Exception {
 		if (saveAsXmlUntil == null && !addAttribute(key, value)) {
 			xmlBuilder.addAttribute(key, nsPrefix, nsURI, value, type);
 		}
@@ -148,8 +147,7 @@ public class TreeXmlReader implements IXMLBuilder {
 	 * freeplane.persistence.xml.n3.nanoxml.IXMLBuilder#addPCData(java.io.Reader
 	 * , java.lang.String, int)
 	 */
-	public void addPCData(final Reader reader, final String systemID, final int lineNr)
-	        throws Exception {
+	public void addPCData(final Reader reader, final String systemID, final int lineNr) throws Exception {
 		xmlBuilder.addPCData(reader, systemID, lineNr);
 	}
 
@@ -159,8 +157,8 @@ public class TreeXmlReader implements IXMLBuilder {
 	 * freeplane.persistence.xml.n3.nanoxml.IXMLBuilder#elementAttributesProcessed
 	 * (java.lang.String, java.lang.String, java.lang.String)
 	 */
-	public void elementAttributesProcessed(final String name, final String nsPrefix,
-	                                       final String nsURI) throws Exception {
+	public void elementAttributesProcessed(final String name, final String nsPrefix, final String nsURI)
+	        throws Exception {
 		xmlBuilder.elementAttributesProcessed(name, nsPrefix, nsURI);
 		if (saveAsXmlUntil != null || nodeCreator != null) {
 			return;
@@ -200,8 +198,7 @@ public class TreeXmlReader implements IXMLBuilder {
 	 * freeplane.persistence.xml.n3.nanoxml.IXMLBuilder#endElement(java.lang
 	 * .String, java.lang.String, java.lang.String)
 	 */
-	public void endElement(final String name, final String nsPrefix, final String nsURI)
-	        throws Exception {
+	public void endElement(final String name, final String nsPrefix, final String nsURI) throws Exception {
 		final IXMLElement lastBuiltElement = xmlBuilder.getParentElement();
 		xmlBuilder.endElement(name, nsPrefix, nsURI);
 		if (saveAsXmlUntil == lastBuiltElement) {
@@ -217,12 +214,11 @@ public class TreeXmlReader implements IXMLBuilder {
 		final Object element = currentElement;
 		currentElement = elementStack.removeLast();
 		if (nodeCreator instanceof IElementDOMHandler) {
-			((IElementDOMHandler) nodeCreator).endElement(currentElement, name, element,
-			    lastBuiltElement);
+			((IElementDOMHandler) nodeCreator).endElement(currentElement, name, element, lastBuiltElement);
 		}
 		else if (nodeCreator instanceof IElementContentHandler) {
-			((IElementContentHandler) nodeCreator).endElement(currentElement, name, element,
-			    lastBuiltElement, elementContentAsString);
+			((IElementContentHandler) nodeCreator).endElement(currentElement, name, element, lastBuiltElement,
+			    elementContentAsString);
 		}
 		final IXMLElement top = lastBuiltElement.getParent();
 		if (nodeCreator != null && top != null && top.hasChildren()) {
@@ -306,8 +302,8 @@ public class TreeXmlReader implements IXMLBuilder {
 	 * freeplane.persistence.xml.n3.nanoxml.IXMLBuilder#startElement(java.lang
 	 * .String, java.lang.String, java.lang.String, java.lang.String, int)
 	 */
-	public void startElement(final String name, final String nsPrefix, final String nsURI,
-	                         final String systemID, final int lineNr) throws Exception {
+	public void startElement(final String name, final String nsPrefix, final String nsURI, final String systemID,
+	                         final int lineNr) throws Exception {
 		if (saveAsXmlUntil != null) {
 			xmlBuilder.startElement(name, nsPrefix, nsURI, systemID, lineNr);
 			return;

@@ -27,11 +27,14 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.MenuBuilder;
 
 class MoveToRootAction extends AbstractAction {
-	MoveToRootAction() {
+	final private Controller controller;
+
+	MoveToRootAction(final Controller controller) {
+		this.controller = controller;
 		MenuBuilder.setLabelAndMnemonic(this, Controller.getText("move_to_root"));
 	}
 
 	public void actionPerformed(final ActionEvent event) {
-		Controller.getController().getSelection().selectRoot();
+		controller.getSelection().selectRoot();
 	}
 }

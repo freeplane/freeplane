@@ -37,38 +37,34 @@ import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 
 class ImportExplorerFavoritesAction extends FreeplaneAction {
-	public ImportExplorerFavoritesAction() {
-		super("import_explorer_favorites");
+	public ImportExplorerFavoritesAction(final Controller controller) {
+		super(controller, "import_explorer_favorites");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final JFileChooser chooser = new JFileChooser();
 		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		chooser.setDialogTitle(getModeController().getText("select_favorites_folder"));
-		final int returnVal = chooser.showOpenDialog(Controller.getController().getViewController()
-		    .getContentPane());
+		final int returnVal = chooser.showOpenDialog(getController().getViewController().getContentPane());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			final File folder = chooser.getSelectedFile();
-			Controller.getController().getViewController().out("Importing Favorites ...");
-			importExplorerFavorites(folder, getModeController().getMapController()
-			    .getSelectedNode(),
+			getController().getViewController().out("Importing Favorites ...");
+			importExplorerFavorites(folder, getModeController().getMapController().getSelectedNode(),
 			/*redisplay=*/true);
-			Controller.getController().getViewController().out("Favorites imported.");
+			getController().getViewController().out("Favorites imported.");
 		}
 	}
 
 	/**
 	 */
 	private NodeModel addNode(final NodeModel target, final String nodeContent) {
-		final NodeModel node = ((MMapController) getModeController().getMapController())
-		    .addNewNode(target, target.getChildCount(), target.isNewChildLeft());
-		((MTextController) TextController.getController(getModeController())).setNodeText(node,
-		    nodeContent);
+		final NodeModel node = ((MMapController) getModeController().getMapController()).addNewNode(target, target
+		    .getChildCount(), target.isNewChildLeft());
+		((MTextController) TextController.getController(getModeController())).setNodeText(node, nodeContent);
 		return node;
 	}
 
-	public boolean importExplorerFavorites(final File folder, final NodeModel target,
-	                                       final boolean redisplay) {
+	public boolean importExplorerFavorites(final File folder, final NodeModel target, final boolean redisplay) {
 		boolean favoritesFound = false;
 		if (folder.isDirectory()) {
 			final File[] list = folder.listFiles();
@@ -76,8 +72,7 @@ class ImportExplorerFavoritesAction extends FreeplaneAction {
 				if (list[i].isDirectory()) {
 					final String nodeContent = list[i].getName();
 					final NodeModel node = addNode(target, nodeContent);
-					final boolean favoritesFoundInSubfolder = importExplorerFavorites(list[i],
-					    node, false);
+					final boolean favoritesFoundInSubfolder = importExplorerFavorites(list[i], node, false);
 					if (favoritesFoundInSubfolder) {
 						favoritesFound = true;
 					}
@@ -90,14 +85,13 @@ class ImportExplorerFavoritesAction extends FreeplaneAction {
 				if (!list[i].isDirectory() && UrlManager.getExtension(list[i]).equals("url")) {
 					favoritesFound = true;
 					try {
-						final NodeModel node = addNode(target, UrlManager.removeExtension(list[i]
-						    .getName()));
+						final NodeModel node = addNode(target, UrlManager.removeExtension(list[i].getName()));
 						final BufferedReader in = new BufferedReader(new FileReader(list[i]));
 						while (in.ready()) {
 							final String line = in.readLine();
 							if (line.startsWith("URL=")) {
-								((MLinkController) LinkController.getController(node
-								    .getModeController())).setLink(node, line.substring(4));
+								((MLinkController) LinkController.getController(node.getModeController())).setLink(
+								    node, line.substring(4));
 								break;
 							}
 						}

@@ -231,6 +231,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 	private Vector/* of ArrowLinkViews */arrowLinkViews;
 	private Color background = null;
 	private Rectangle boundingRectangle = null;
+	final private Controller controller;
 	private boolean disableMoveCursor = true;
 	private int extraWidth;
 	private boolean fitToPage = true;
@@ -250,13 +251,13 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 	public MapView(final MapModel model) {
 		super();
 		this.model = model;
+		controller = model.getModeController().getController();
 		rename();
 		if (MapView.standardMapBackgroundColor == null) {
 			String stdcolor = Controller.getResourceController().getProperty(
 			    ResourceController.RESOURCES_BACKGROUND_COLOR);
 			MapView.standardMapBackgroundColor = TreeXmlReader.xmlToColor(stdcolor);
-			stdcolor = Controller.getResourceController().getProperty(
-			    ResourceController.RESOURCES_SELECTED_NODE_COLOR);
+			stdcolor = Controller.getResourceController().getProperty(ResourceController.RESOURCES_SELECTED_NODE_COLOR);
 			MapView.standardSelectColor = TreeXmlReader.xmlToColor(stdcolor);
 			final String stdtextcolor = Controller.getResourceController().getProperty(
 			    ResourceController.RESOURCES_SELECTED_NODE_RECTANGLE_COLOR);
@@ -264,8 +265,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 			final String drawCircle = Controller.getResourceController().getProperty(
 			    ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION);
 			MapView.standardDrawRectangleForSelection = TreeXmlReader.xmlToBoolean(drawCircle);
-			final String printOnWhite = Controller.getResourceController().getProperty(
-			    "printonwhitebackground");
+			final String printOnWhite = Controller.getResourceController().getProperty("printonwhitebackground");
 			MapView.printOnWhiteBackground = TreeXmlReader.xmlToBoolean(printOnWhite);
 			createPropertyChangeListener();
 		}
@@ -281,8 +281,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, Collections.EMPTY_SET);
 		setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, Collections.EMPTY_SET);
 		setFocusTraversalKeys(KeyboardFocusManager.UP_CYCLE_TRAVERSAL_KEYS, Collections.EMPTY_SET);
-		disableMoveCursor = Controller.getResourceController().getBoolProperty(
-		    "disable_cursor_move_paper");
+		disableMoveCursor = Controller.getResourceController().getBoolProperty("disable_cursor_move_paper");
 	}
 
 	/*
@@ -290,9 +289,8 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 	 * @see java.awt.dnd.Autoscroll#autoscroll(java.awt.Point)
 	 */
 	public void autoscroll(final Point cursorLocn) {
-		final Rectangle r = new Rectangle((int) cursorLocn.getX() - MapView.margin,
-		    (int) cursorLocn.getY() - MapView.margin, 1 + 2 * MapView.margin,
-		    1 + 2 * MapView.margin);
+		final Rectangle r = new Rectangle((int) cursorLocn.getX() - MapView.margin, (int) cursorLocn.getY()
+		        - MapView.margin, 1 + 2 * MapView.margin, 1 + 2 * MapView.margin);
 		scrollRectToVisible(r);
 	}
 
@@ -327,9 +325,8 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		}
 		final Dimension d = viewPort.getExtentSize();
 		final JComponent content = node.getContent();
-		final Rectangle rect = new Rectangle(content.getWidth() / 2 - d.width / 2, content
-		    .getHeight()
-		        / 2 - d.height / 2, d.width, d.height);
+		final Rectangle rect = new Rectangle(content.getWidth() / 2 - d.width / 2, content.getHeight() / 2 - d.height
+		        / 2, d.width, d.height);
 		content.scrollRectToVisible(rect);
 	}
 
@@ -344,10 +341,8 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 
 	private void createPropertyChangeListener() {
 		MapView.propertyChangeListener = new IFreeplanePropertyListener() {
-			public void propertyChanged(final String propertyName, final String newValue,
-			                            final String oldValue) {
-				final Component mapView = Controller.getController().getViewController()
-				    .getMapView();
+			public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
+				final Component mapView = controller.getViewController().getMapView();
 				if (!(mapView instanceof MapView)) {
 					return;
 				}
@@ -359,15 +354,12 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 					MapView.standardSelectColor = TreeXmlReader.xmlToColor(newValue);
 					((MapView) mapView).repaintSelecteds();
 				}
-				else if (propertyName
-				    .equals(ResourceController.RESOURCES_SELECTED_NODE_RECTANGLE_COLOR)) {
+				else if (propertyName.equals(ResourceController.RESOURCES_SELECTED_NODE_RECTANGLE_COLOR)) {
 					MapView.standardSelectRectangleColor = TreeXmlReader.xmlToColor(newValue);
 					((MapView) mapView).repaintSelecteds();
 				}
-				else if (propertyName
-				    .equals(ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION)) {
-					MapView.standardDrawRectangleForSelection = TreeXmlReader
-					    .xmlToBoolean(newValue);
+				else if (propertyName.equals(ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION)) {
+					MapView.standardDrawRectangleForSelection = TreeXmlReader.xmlToBoolean(newValue);
 					((MapView) mapView).repaintSelecteds();
 				}
 				else if (propertyName.equals("printonwhitebackground")) {
@@ -375,8 +367,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 				}
 			}
 		};
-		Controller.getResourceController()
-		    .addPropertyChangeListener(MapView.propertyChangeListener);
+		Controller.getResourceController().addPropertyChangeListener(MapView.propertyChangeListener);
 	}
 
 	public void deselect(final NodeView newSelected) {
@@ -470,8 +461,8 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 				}
 				return;
 			}
-			final boolean enlargingMove = (deltaY > 0) && (e.getKeyCode() == KeyEvent.VK_DOWN)
-			        || (deltaY < 0) && (e.getKeyCode() == KeyEvent.VK_UP);
+			final boolean enlargingMove = (deltaY > 0) && (e.getKeyCode() == KeyEvent.VK_DOWN) || (deltaY < 0)
+			        && (e.getKeyCode() == KeyEvent.VK_UP);
 			if (enlargingMove) {
 				toggleSelected(newlySelectedNodeView);
 			}
@@ -493,9 +484,9 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 	public Insets getAutoscrollInsets() {
 		final Rectangle outer = getBounds();
 		final Rectangle inner = getParent().getBounds();
-		return new Insets(inner.y - outer.y + MapView.margin, inner.x - outer.x + MapView.margin,
-		    outer.height - inner.height - inner.y + outer.y + MapView.margin, outer.width
-		            - inner.width - inner.x + outer.x + MapView.margin);
+		return new Insets(inner.y - outer.y + MapView.margin, inner.x - outer.x + MapView.margin, outer.height
+		        - inner.height - inner.y + outer.y + MapView.margin, outer.width - inner.width - inner.x + outer.x
+		        + MapView.margin);
 	}
 
 	/**
@@ -537,8 +528,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 	public int getMaxNodeWidth() {
 		if (maxNodeWidth == 0) {
 			try {
-				maxNodeWidth = Integer.parseInt(Controller.getResourceController().getProperty(
-				    "max_node_width"));
+				maxNodeWidth = Integer.parseInt(Controller.getResourceController().getProperty("max_node_width"));
 			}
 			catch (final NumberFormatException e) {
 				maxNodeWidth = Integer.parseInt(Controller.getResourceController().getProperty(
@@ -626,8 +616,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		iteration: for (int i = 0; i < selection.size(); i++) {
 			final NodeView view = getSelected(i);
 			final NodeModel node = view.getModel();
-			for (NodeModel parent = node.getParentNode(); parent != null; parent = parent
-			    .getParentNode()) {
+			for (NodeModel parent = node.getParentNode(); parent != null; parent = parent.getParentNode()) {
 				if (selectedNodesSet.contains(parent)) {
 					continue iteration;
 				}
@@ -643,8 +632,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 			nodeList.add(node);
 		}
 		final ArrayList<NodeModel> selectedNodes = new ArrayList();
-		for (final Iterator<LinkedList<NodeModel>> it = sortedNodes.values().iterator(); it
-		    .hasNext();) {
+		for (final Iterator<LinkedList<NodeModel>> it = sortedNodes.values().iterator(); it.hasNext();) {
 			final LinkedList<NodeModel> nodeList = it.next();
 			for (final Iterator<NodeModel> itn = nodeList.iterator(); itn.hasNext();) {
 				selectedNodes.add(itn.next());
@@ -758,8 +746,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 
 	public void initRoot() {
 		rootContentLocation = new Point();
-		rootView = NodeViewFactory.getInstance().newNodeView(getModel().getRootNode(), 0, this,
-		    this);
+		rootView = NodeViewFactory.getInstance().newNodeView(getModel().getRootNode(), 0, this, this);
 		rootView.insert();
 		revalidate();
 	}
@@ -826,8 +813,8 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		final Graphics2D g2 = (Graphics2D) g;
 		final Object renderingHint = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
 		final Object textRenderingHint = g2.getRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING);
-		Controller.getController().getViewController().setEdgesRenderingHint(g2);
-		Controller.getController().getViewController().setTextRenderingHint(g2);
+		controller.getViewController().setEdgesRenderingHint(g2);
+		controller.getViewController().setTextRenderingHint(g2);
 		final Object oldRenderingHintFM = g2.getRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS);
 		final Object newRenderingHintFM = getZoom() != 1F ? RenderingHints.VALUE_FRACTIONALMETRICS_ON
 		        : RenderingHints.VALUE_FRACTIONALMETRICS_OFF;
@@ -869,8 +856,8 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 					if (target == null) {
 						continue;
 					}
-					final ArrowLinkView arrowLink = new ArrowLinkView(ref, getNodeView(ref
-					    .getSource()), getNodeView(target));
+					final ArrowLinkView arrowLink = new ArrowLinkView(ref, getNodeView(ref.getSource()),
+					    getNodeView(target));
 					arrowLink.paint(graphics);
 					arrowLinkViews.add(arrowLink);
 				}
@@ -883,13 +870,11 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		paintLinks(rootView, (Graphics2D) graphics, new HashSet());
 	}
 
-	protected void paintLinks(final NodeView source, final Graphics2D graphics,
-	                          final HashSet alreadyPaintedLinks) {
+	protected void paintLinks(final NodeView source, final Graphics2D graphics, final HashSet alreadyPaintedLinks) {
 		final NodeModel node = source.getModel();
 		final Collection<LinkModel> outLinks = NodeLinks.getLinks(node);
 		paintLinks(outLinks, graphics, alreadyPaintedLinks);
-		final Collection<LinkModel> inLinks = LinkController
-		    .getController(node.getModeController()).getLinksTo(node);
+		final Collection<LinkModel> inLinks = LinkController.getController(node.getModeController()).getLinksTo(node);
 		paintLinks(inLinks, graphics, alreadyPaintedLinks);
 		for (final ListIterator e = source.getChildrenViews().listIterator(); e.hasNext();) {
 			final NodeView target = (NodeView) e.next();
@@ -902,9 +887,8 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		final JComponent content = selected.getContent();
 		final Point contentLocation = new Point();
 		UITools.convertPointToAncestor(content, contentLocation, this);
-		g.drawRoundRect(contentLocation.x - arcWidth, contentLocation.y - arcWidth, content
-		    .getWidth()
-		        + 2 * arcWidth, content.getHeight() + 2 * arcWidth, 15, 15);
+		g.drawRoundRect(contentLocation.x - arcWidth, contentLocation.y - arcWidth, content.getWidth() + 2 * arcWidth,
+		    content.getHeight() + 2 * arcWidth, 15, 15);
 	}
 
 	private void paintSelecteds(final Graphics2D g) {
@@ -966,8 +950,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 	public int print(final Graphics graphics, final PageFormat pageFormat, final int pageIndex) {
 		double userZoomFactor = 1;
 		try {
-			userZoomFactor = Double.parseDouble(Controller.getResourceController().getProperty(
-			    "user_zoom"));
+			userZoomFactor = Double.parseDouble(Controller.getResourceController().getProperty("user_zoom"));
 		}
 		catch (final Exception e) {
 		}
@@ -980,10 +963,8 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		preparePrinting();
 		double zoomFactor = 1;
 		if (fitToPage) {
-			final double zoomFactorX = pageFormat.getImageableWidth()
-			        / boundingRectangle.getWidth();
-			final double zoomFactorY = pageFormat.getImageableHeight()
-			        / boundingRectangle.getHeight();
+			final double zoomFactorX = pageFormat.getImageableWidth() / boundingRectangle.getWidth();
+			final double zoomFactorY = pageFormat.getImageableHeight() / boundingRectangle.getHeight();
 			zoomFactor = Math.min(zoomFactorX, zoomFactorY);
 		}
 		else {
@@ -997,8 +978,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 			}
 			final int yPageCoord = (int) Math.floor(pageIndex / nrPagesInWidth);
 			final int xPageCoord = pageIndex - yPageCoord * nrPagesInWidth;
-			graphics2D.translate(-pageFormat.getImageableWidth() * xPageCoord, -pageFormat
-			    .getImageableHeight()
+			graphics2D.translate(-pageFormat.getImageableWidth() * xPageCoord, -pageFormat.getImageableHeight()
 			        * yPageCoord);
 		}
 		graphics2D.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
@@ -1075,13 +1055,14 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		int width = nodeContent.getWidth();
 		if (extraWidth < 0) {
 			width -= extraWidth;
-			nodeContent.scrollRectToVisible(new Rectangle(-HORIZ_SPACE + extraWidth, -VERT_SPACE,
-			    width + HORIZ_SPACE2, nodeContent.getHeight() + VERT_SPACE2));
+			nodeContent.scrollRectToVisible(new Rectangle(-HORIZ_SPACE + extraWidth, -VERT_SPACE, width + HORIZ_SPACE2,
+			    nodeContent.getHeight() + VERT_SPACE2));
 		}
 		else {
 			width += extraWidth;
-			nodeContent.scrollRectToVisible(new Rectangle(-HORIZ_SPACE, -VERT_SPACE, width
-			        + HORIZ_SPACE2, nodeContent.getHeight() + VERT_SPACE2));
+			nodeContent.scrollRectToVisible(new Rectangle(-HORIZ_SPACE, -VERT_SPACE, width + HORIZ_SPACE2, nodeContent
+			    .getHeight()
+			        + VERT_SPACE2));
 		}
 	}
 
@@ -1127,8 +1108,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		else if (!isSelected(newlySelectedNodeView) && newlySelectedNodeView.isContentVisible()) {
 			toggleSelected(newlySelectedNodeView);
 		}
-		for (final ListIterator e = newlySelectedNodeView.getChildrenViews().listIterator(); e
-		    .hasNext();) {
+		for (final ListIterator e = newlySelectedNodeView.getChildrenViews().listIterator(); e.hasNext();) {
 			final NodeView target = (NodeView) e.next();
 			selectBranch(target, true);
 		}
@@ -1212,8 +1192,8 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		/* select all up to the end point. */
 		while (i.hasNext()) {
 			final NodeView next = (NodeView) i.next();
-			if ((next.isLeft() == oldPositionLeft || next.isLeft() == newPositionLeft)
-			        && !isSelected(next) && next.isContentVisible()) {
+			if ((next.isLeft() == oldPositionLeft || next.isLeft() == newPositionLeft) && !isSelected(next)
+			        && next.isContentVisible()) {
 				toggleSelected(next);
 			}
 			if (next == newSelected || next == oldSelected) {
@@ -1226,8 +1206,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 	}
 
 	public void setMoveCursor(final boolean isHand) {
-		final int requiredCursor = (isHand && !disableMoveCursor) ? Cursor.MOVE_CURSOR
-		        : Cursor.DEFAULT_CURSOR;
+		final int requiredCursor = (isHand && !disableMoveCursor) ? Cursor.MOVE_CURSOR : Cursor.DEFAULT_CURSOR;
 		if (getCursor().getType() != requiredCursor) {
 			setCursor(requiredCursor != Cursor.DEFAULT_CURSOR ? new Cursor(requiredCursor) : null);
 		}

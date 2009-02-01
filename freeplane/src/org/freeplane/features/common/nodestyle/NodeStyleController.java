@@ -46,12 +46,12 @@ public class NodeStyleController implements IExtension {
 		return (NodeStyleController) modeController.getExtension(NodeStyleController.class);
 	}
 
-	public static void install(final ModeController modeController,
-	                           final NodeStyleController styleController) {
+	public static void install(final ModeController modeController, final NodeStyleController styleController) {
 		modeController.addExtension(NodeStyleController.class, styleController);
 	}
 
 	final private ExclusivePropertyChain<Color, NodeModel> backgroundColorHandlers;
+	final private Controller controller;
 	final private CombinedPropertyChain<Font, NodeModel> fontHandlers;
 	final private ModeController modeController;
 	final private ExclusivePropertyChain<String, NodeModel> shapeHandlers;
@@ -59,6 +59,7 @@ public class NodeStyleController implements IExtension {
 
 	public NodeStyleController(final ModeController modeController) {
 		this.modeController = modeController;
+		controller = modeController.getController();
 		fontHandlers = new CombinedPropertyChain<Font, NodeModel>();
 		textColorHandlers = new ExclusivePropertyChain<Color, NodeModel>();
 		backgroundColorHandlers = new ExclusivePropertyChain<Color, NodeModel>();
@@ -113,12 +114,11 @@ public class NodeStyleController implements IExtension {
 				return standardNodeTextColor;
 			}
 		});
-		addBackgroundColorGetter(ExclusivePropertyChain.NODE,
-		    new IPropertyGetter<Color, NodeModel>() {
-			    public Color getProperty(final NodeModel node, final Color currentValue) {
-				    return NodeStyleModel.getBackgroundColor(node);
-			    }
-		    });
+		addBackgroundColorGetter(ExclusivePropertyChain.NODE, new IPropertyGetter<Color, NodeModel>() {
+			public Color getProperty(final NodeModel node, final Color currentValue) {
+				return NodeStyleModel.getBackgroundColor(node);
+			}
+		});
 		addShapeGetter(ExclusivePropertyChain.NODE, new IPropertyGetter<String, NodeModel>() {
 			public String getProperty(final NodeModel node, final String currentValue) {
 				return getShape(node);
@@ -142,8 +142,7 @@ public class NodeStyleController implements IExtension {
 						}
 					}
 				}
-				else if (node.isRoot()
-				        && NodeStyleModel.getShape(node).equals(NodeStyleModel.SHAPE_AS_PARENT)) {
+				else if (node.isRoot() && NodeStyleModel.getShape(node).equals(NodeStyleModel.SHAPE_AS_PARENT)) {
 					returnedString = Controller.getResourceController().getProperty(
 					    ResourceController.RESOURCES_ROOT_NODE_SHAPE);
 				}
@@ -174,37 +173,32 @@ public class NodeStyleController implements IExtension {
 		}
 	}
 
-	public IPropertyGetter<Color, NodeModel> addBackgroundColorGetter(
-	                                                                  final Integer key,
+	public IPropertyGetter<Color, NodeModel> addBackgroundColorGetter(final Integer key,
 	                                                                  final IPropertyGetter<Color, NodeModel> getter) {
 		return backgroundColorHandlers.addGetter(key, getter);
 	}
 
-	public IPropertyGetter<Color, NodeModel> addColorGetter(
-	                                                        final Integer key,
+	public IPropertyGetter<Color, NodeModel> addColorGetter(final Integer key,
 	                                                        final IPropertyGetter<Color, NodeModel> getter) {
 		return textColorHandlers.addGetter(key, getter);
 	}
 
-	public IPropertyGetter<Font, NodeModel> addFontGetter(
-	                                                      final Integer key,
+	public IPropertyGetter<Font, NodeModel> addFontGetter(final Integer key,
 	                                                      final IPropertyGetter<Font, NodeModel> getter) {
 		return fontHandlers.addGetter(key, getter);
 	}
 
-	public IPropertyGetter<String, NodeModel> addShapeGetter(
-	                                                         final Integer key,
+	public IPropertyGetter<String, NodeModel> addShapeGetter(final Integer key,
 	                                                         final IPropertyGetter<String, NodeModel> getter) {
 		return shapeHandlers.addGetter(key, getter);
 	}
 
 	private void createPropertyChangeListener() {
 		final IFreeplanePropertyListener propertyChangeListener = new IFreeplanePropertyListener() {
-			public void propertyChanged(final String propertyName, final String newValue,
-			                            final String oldValue) {
+			public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
 				if (propertyName.equals(ResourceController.RESOURCES_NODE_TEXT_COLOR)) {
 					standardNodeTextColor = TreeXmlReader.xmlToColor(newValue);
-					Controller.getController().getViewController().updateView();
+					controller.getViewController().updateView();
 				}
 			}
 		};

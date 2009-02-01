@@ -76,9 +76,8 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 		}
 
 		@Override
-		public Component getTreeCellRendererComponent(final JTree tree, final Object value,
-		                                              final boolean sel, final boolean expanded,
-		                                              final boolean leaf, final int row,
+		public Component getTreeCellRendererComponent(final JTree tree, final Object value, final boolean sel,
+		                                              final boolean expanded, final boolean leaf, final int row,
 		                                              final boolean hasFocus) {
 			super.getTreeCellRendererComponent(tree, value, false, expanded, leaf, row, false);
 			final DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
@@ -128,6 +127,7 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 		}
 	}
 
+	final private Controller controller;
 	private AttributeRegistry currentAttributes;
 	final private Component parentComponent;
 	MyRenderer renderer = null;
@@ -136,9 +136,9 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 	final private JTree tree;
 	final private DefaultTreeModel treeModel;
 
-	public ImportAttributesDialog(final Component parentComponent) {
-		super(Controller.getController().getViewController().getJFrame(), Controller
-		    .getText("attributes_import"), true);
+	public ImportAttributesDialog(final Controller controller, final Component parentComponent) {
+		super(controller.getViewController().getFrame(), Controller.getText("attributes_import"), true);
+		this.controller = controller;
 		this.parentComponent = parentComponent;
 		final TreeNodeInfo nodeInfo = new TreeNodeInfo(Controller.getText("attribute_top"));
 		topNode = new DefaultMutableTreeNode(nodeInfo);
@@ -176,12 +176,11 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 		UITools.addEscapeActionToDialog(this);
 	}
 
-	private void createAttributeSubTrees(final DefaultMutableTreeNode mapInfo,
-	                                     final AttributeRegistry attributes) {
+	private void createAttributeSubTrees(final DefaultMutableTreeNode mapInfo, final AttributeRegistry attributes) {
 		for (int i = 0; i < attributes.size(); i++) {
 			final AttributeRegistryElement element = attributes.getElement(i);
-			final TreeNodeInfo treeNodeInfo = new AttributeTreeNodeInfo(
-			    element.getKey().toString(), element.isRestricted());
+			final TreeNodeInfo treeNodeInfo = new AttributeTreeNodeInfo(element.getKey().toString(), element
+			    .isRestricted());
 			final DefaultMutableTreeNode attributeInfo = new DefaultMutableTreeNode(treeNodeInfo);
 			createValueSubTrees(attributeInfo, element, currentAttributes);
 			if (attributeInfo.getChildCount() != 0) {
@@ -194,11 +193,10 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 		top.removeAllChildren();
 		final TreeNodeInfo topInfo = (TreeNodeInfo) top.getUserObject();
 		topInfo.setSelected(TreeNodeInfo.NOT_SELECTED);
-		final IMapViewManager mapViewManager = Controller.getController().getMapViewManager();
-		final MapModel currentMap = Controller.getController().getMap();
+		final IMapViewManager mapViewManager = controller.getMapViewManager();
+		final MapModel currentMap = controller.getMap();
 		currentAttributes = AttributeRegistry.getRegistry(currentMap);
-		final Iterator<Entry<String, MapModel>> iterator = mapViewManager.getMaps().entrySet()
-		    .iterator();
+		final Iterator<Entry<String, MapModel>> iterator = mapViewManager.getMaps().entrySet().iterator();
 		while (iterator.hasNext()) {
 			final Entry<String, MapModel> entry = iterator.next();
 			final String nextmapName = entry.getKey();
@@ -216,8 +214,7 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 	}
 
 	private void createValueSubTrees(final DefaultMutableTreeNode attributeInfo,
-	                                 final AttributeRegistryElement element,
-	                                 final AttributeRegistry currentAttributes) {
+	                                 final AttributeRegistryElement element, final AttributeRegistry currentAttributes) {
 		final String attributeName = element.getKey().toString();
 		final SortedComboBoxModel values = element.getValues();
 		for (int i = 0; i < values.getSize(); i++) {
@@ -252,8 +249,7 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 				final TreeNodeInfo childInfo = (TreeNodeInfo) childNode.getUserObject();
 				if (childInfo.getSelected() == TreeNodeInfo.FULL_SELECTED) {
 					final String value = childInfo.getInfo();
-					currentAttributes.getAttributeController().performRegistryAttributeValue(name,
-					    value);
+					currentAttributes.getAttributeController().performRegistryAttributeValue(name, value);
 				}
 			}
 			else {
@@ -262,8 +258,7 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 		}
 	}
 
-	private void setParentSelectionType(final DefaultMutableTreeNode selectedNode,
-	                                    final int newSelectionType) {
+	private void setParentSelectionType(final DefaultMutableTreeNode selectedNode, final int newSelectionType) {
 		final TreeNode parentNode = selectedNode.getParent();
 		if (parentNode == null) {
 			return;
@@ -298,8 +293,7 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 	}
 
 	private void setSelectionType(final TreeNode selectedNode, final int newSelectionType) {
-		final TreeNodeInfo info = (TreeNodeInfo) ((DefaultMutableTreeNode) selectedNode)
-		    .getUserObject();
+		final TreeNodeInfo info = (TreeNodeInfo) ((DefaultMutableTreeNode) selectedNode).getUserObject();
 		if (info.getSelected() != newSelectionType) {
 			info.setSelected(newSelectionType);
 			treeModel.nodeChanged(selectedNode);
@@ -313,9 +307,8 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 	public void show() {
 		createMapSubTrees(topNode);
 		if (topNode.getChildCount() == 0) {
-			JOptionPane.showMessageDialog(parentComponent, Controller
-			    .getText("attributes_no_import_candidates_found"), getTitle(),
-			    JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(parentComponent, Controller.getText("attributes_no_import_candidates_found"),
+			    getTitle(), JOptionPane.INFORMATION_MESSAGE);
 			return;
 		}
 		treeModel.reload();
@@ -329,8 +322,7 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 	}
 
 	public void valueChanged(final TreeSelectionEvent e) {
-		final DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree
-		    .getLastSelectedPathComponent();
+		final DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
 		if (selectedNode == null) {
 			return;
 		}

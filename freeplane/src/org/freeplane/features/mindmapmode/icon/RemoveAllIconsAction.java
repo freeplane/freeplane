@@ -38,8 +38,8 @@ import org.freeplane.features.common.icon.IconController;
 class RemoveAllIconsAction extends MultipleNodeAction implements IIconInformation {
 	/**
 	 */
-	public RemoveAllIconsAction() {
-		super("remove_all_icons", "/images/edittrash.png");
+	public RemoveAllIconsAction(final Controller controller) {
+		super(controller, "remove_all_icons", "/images/edittrash.png");
 	}
 
 	@Override
@@ -56,8 +56,8 @@ class RemoveAllIconsAction extends MultipleNodeAction implements IIconInformatio
 	}
 
 	public KeyStroke getKeyStroke() {
-		return UITools.getKeyStroke(Controller.getResourceController().getAdjustableProperty(
-		    getKeystrokeResourceName()));
+		return UITools.getKeyStroke(Controller.getResourceController()
+		    .getAdjustableProperty(getKeystrokeResourceName()));
 	}
 
 	public String getKeystrokeResourceName() {
@@ -66,8 +66,7 @@ class RemoveAllIconsAction extends MultipleNodeAction implements IIconInformatio
 
 	public void removeAllIcons(final NodeModel node) {
 		final int size = node.getIcons().size();
-		final MIconController iconController = (MIconController) IconController
-		    .getController(getModeController());
+		final MIconController iconController = (MIconController) IconController.getController(getModeController());
 		for (int i = 0; i < size; i++) {
 			iconController.removeIcon(node, 0);
 		}

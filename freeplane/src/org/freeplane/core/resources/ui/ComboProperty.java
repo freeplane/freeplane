@@ -80,8 +80,7 @@ public class ComboProperty extends PropertyBean implements IPropertyControl {
 			mComboBox.setSelectedIndex(possibleValues.indexOf(value));
 		}
 		else {
-			System.err.println("Can't set the value:" + value + " into the combo box " + getName()
-			        + "/" + getLabel());
+			System.err.println("Can't set the value:" + value + " into the combo box " + getName() + "/" + getLabel());
 			if (mComboBox.getModel().getSize() > 0) {
 				mComboBox.setSelectedIndex(0);
 			}

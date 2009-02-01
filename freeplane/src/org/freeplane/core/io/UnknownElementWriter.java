@@ -30,8 +30,7 @@ import org.freeplane.n3.nanoxml.IXMLElement;
  * 17.01.2009
  */
 public class UnknownElementWriter implements IExtensionAttributeWriter, IExtensionElementWriter {
-	public void writeAttributes(final ITreeWriter writer, final Object userObject,
-	                            final IExtension extension) {
+	public void writeAttributes(final ITreeWriter writer, final Object userObject, final IExtension extension) {
 		final UnknownElements elements = (UnknownElements) extension;
 		final IXMLElement unknownElements = elements.getUnknownElements();
 		if (unknownElements != null) {
@@ -44,8 +43,8 @@ public class UnknownElementWriter implements IExtensionAttributeWriter, IExtensi
 		}
 	}
 
-	public void writeContent(final ITreeWriter writer, final Object element,
-	                         final IExtension extension) throws IOException {
+	public void writeContent(final ITreeWriter writer, final Object element, final IExtension extension)
+	        throws IOException {
 		final UnknownElements elements = (UnknownElements) extension;
 		final IXMLElement unknownElements = elements.getUnknownElements();
 		if (unknownElements != null) {

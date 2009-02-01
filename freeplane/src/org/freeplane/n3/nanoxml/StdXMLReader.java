@@ -61,8 +61,7 @@ public class StdXMLReader implements IXMLReader {
 	 * @throws java.io.IOException
 	 *             if an I/O error occurred
 	 */
-	public static IXMLReader fileReader(final String filename) throws FileNotFoundException,
-	        IOException {
+	public static IXMLReader fileReader(final String filename) throws FileNotFoundException, IOException {
 		final StdXMLReader r = new StdXMLReader(new FileInputStream(filename));
 		r.setSystemID(filename);
 		for (int i = 0; i < r.readers.size(); i++) {
@@ -152,8 +151,8 @@ public class StdXMLReader implements IXMLReader {
 	 * @throws IOException
 	 *             if an error occurred opening the stream
 	 */
-	public StdXMLReader(final String publicID, String systemID) throws MalformedURLException,
-	        FileNotFoundException, IOException {
+	public StdXMLReader(final String publicID, String systemID) throws MalformedURLException, FileNotFoundException,
+	        IOException {
 		URL systemIDasURL = null;
 		charReadTooMuch = '\0';
 		try {
@@ -244,8 +243,7 @@ public class StdXMLReader implements IXMLReader {
 			while ((index < str.length()) && (str.charAt(index) <= ' ')) {
 				index++;
 			}
-			while ((index < str.length()) && (str.charAt(index) >= 'a')
-			        && (str.charAt(index) <= 'z')) {
+			while ((index < str.length()) && (str.charAt(index) >= 'a') && (str.charAt(index) <= 'z')) {
 				key.append(str.charAt(index));
 				index++;
 			}
@@ -255,8 +253,7 @@ public class StdXMLReader implements IXMLReader {
 			if ((index >= str.length()) || (str.charAt(index) != '=')) {
 				break;
 			}
-			while ((index < str.length()) && (str.charAt(index) != '\'')
-			        && (str.charAt(index) != '"')) {
+			while ((index < str.length()) && (str.charAt(index) != '\'') && (str.charAt(index) != '"')) {
 				index++;
 			}
 			if (index >= str.length()) {
@@ -327,8 +324,8 @@ public class StdXMLReader implements IXMLReader {
 	 * @throws java.io.IOException
 	 *             if an error occurred opening the stream
 	 */
-	public Reader openStream(final String publicID, final String systemID)
-	        throws MalformedURLException, FileNotFoundException, IOException {
+	public Reader openStream(final String publicID, final String systemID) throws MalformedURLException,
+	        FileNotFoundException, IOException {
 		URL url = new URL(currentReader.systemId, systemID);
 		if (url.getRef() != null) {
 			final String ref = url.getRef();
@@ -455,8 +452,7 @@ public class StdXMLReader implements IXMLReader {
 	 * @throws java.io.IOException
 	 *             if an I/O error occurred
 	 */
-	protected Reader stream2reader(final InputStream stream, final StringBuffer charsRead)
-	        throws IOException {
+	protected Reader stream2reader(final InputStream stream, final StringBuffer charsRead) throws IOException {
 		final PushbackInputStream pbstream = new PushbackInputStream(stream);
 		int b = pbstream.read();
 		switch (b) {

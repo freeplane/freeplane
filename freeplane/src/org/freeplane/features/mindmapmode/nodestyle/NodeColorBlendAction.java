@@ -36,8 +36,8 @@ class NodeColorBlendAction extends MultipleNodeAction {
 	/**
 	 *
 	 */
-	public NodeColorBlendAction() {
-		super("blend_color");
+	public NodeColorBlendAction(final Controller controller) {
+		super(controller, "blend_color");
 	}
 
 	/*
@@ -48,14 +48,14 @@ class NodeColorBlendAction extends MultipleNodeAction {
 	 */
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		final Component mapView = Controller.getController().getViewController().getMapView();
+		final Component mapView = getController().getViewController().getMapView();
 		final Color mapColor = mapView.getBackground();
 		Color nodeColor = NodeStyleModel.getColor(node);
 		if (nodeColor == null) {
 			nodeColor = NodeStyleController.standardNodeTextColor;
 		}
-		((MNodeStyleController) NodeStyleController.getController(Controller.getModeController()))
-		    .setColor(node, new Color((3 * mapColor.getRed() + nodeColor.getRed()) / 4,
+		((MNodeStyleController) NodeStyleController.getController(getController().getModeController())).setColor(node,
+		    new Color((3 * mapColor.getRed() + nodeColor.getRed()) / 4,
 		        (3 * mapColor.getGreen() + nodeColor.getGreen()) / 4,
 		        (3 * mapColor.getBlue() + nodeColor.getBlue()) / 4));
 	}

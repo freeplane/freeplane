@@ -41,8 +41,7 @@ import org.freeplane.core.resources.ResourceController;
  */
 public class CloudController implements IExtension {
 	protected static class CloudAdapterListener implements IFreeplanePropertyListener {
-		public void propertyChanged(final String propertyName, final String newValue,
-		                            final String oldValue) {
+		public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
 			if (propertyName.equals(ResourceController.RESOURCES_CLOUD_COLOR)) {
 				standardColor = TreeXmlReader.xmlToColor(newValue);
 			}
@@ -59,8 +58,7 @@ public class CloudController implements IExtension {
 		return (CloudController) modeController.getExtension(CloudController.class);
 	}
 
-	public static void install(final ModeController modeController,
-	                           final CloudController cloudController) {
+	public static void install(final ModeController modeController, final CloudController cloudController) {
 		modeController.addExtension(ModeController.class, cloudController);
 	}
 
@@ -91,8 +89,7 @@ public class CloudController implements IExtension {
 		cloudBuilder.registerBy(readManager, writeManager);
 	}
 
-	public IPropertyGetter<Color, NodeModel> addColorGetter(
-	                                                        final Integer key,
+	public IPropertyGetter<Color, NodeModel> addColorGetter(final Integer key,
 	                                                        final IPropertyGetter<Color, NodeModel> getter) {
 		return colorHandlers.addGetter(key, getter);
 	}

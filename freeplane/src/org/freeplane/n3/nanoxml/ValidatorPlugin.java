@@ -54,8 +54,8 @@ public class ValidatorPlugin implements IXMLValidator {
 	 * @throws java.lang.Exception
 	 *             if the element could not be validated.
 	 */
-	public void attributeAdded(final String key, final String value, final String systemId,
-	                           final int lineNr) throws Exception {
+	public void attributeAdded(final String key, final String value, final String systemId, final int lineNr)
+	        throws Exception {
 		delegate.attributeAdded(key, value, systemId, lineNr);
 	}
 
@@ -73,9 +73,8 @@ public class ValidatorPlugin implements IXMLValidator {
 	 * @throws java.lang.Exception
 	 *             if the attribute could not be validated.
 	 */
-	public void elementAttributesProcessed(final String name, final Properties extraAttributes,
-	                                       final String systemId, final int lineNr)
-	        throws Exception {
+	public void elementAttributesProcessed(final String name, final Properties extraAttributes, final String systemId,
+	                                       final int lineNr) throws Exception {
 		delegate.elementAttributesProcessed(name, extraAttributes, systemId, lineNr);
 	}
 
@@ -91,8 +90,7 @@ public class ValidatorPlugin implements IXMLValidator {
 	 * @throws java.lang.Exception
 	 *             if the element could not be validated.
 	 */
-	public void elementEnded(final String name, final String systemId, final int lineNr)
-	        throws Exception {
+	public void elementEnded(final String name, final String systemId, final int lineNr) throws Exception {
 		delegate.elementEnded(name, systemId, lineNr);
 	}
 
@@ -108,8 +106,7 @@ public class ValidatorPlugin implements IXMLValidator {
 	 * @throws java.lang.Exception
 	 *             if the element could not be validated.
 	 */
-	public void elementStarted(final String name, final String systemId, final int lineNr)
-	        throws Exception {
+	public void elementStarted(final String name, final String systemId, final int lineNr) throws Exception {
 		delegate.elementStarted(name, systemId, lineNr);
 	}
 
@@ -155,11 +152,10 @@ public class ValidatorPlugin implements IXMLValidator {
 	 * @throws org.freeplane.n3.nanoxml.XMLValidationException
 	 *             of course :-)
 	 */
-	public void invalidAttributeValue(final String systemID, final int lineNr,
-	                                  final String elementName, final String attributeName,
-	                                  final String attributeValue) throws XMLValidationException {
-		XMLUtil.errorInvalidAttributeValue(systemID, lineNr, elementName, attributeName,
-		    attributeValue);
+	public void invalidAttributeValue(final String systemID, final int lineNr, final String elementName,
+	                                  final String attributeName, final String attributeValue)
+	        throws XMLValidationException {
+		XMLUtil.errorInvalidAttributeValue(systemID, lineNr, elementName, attributeName, attributeValue);
 	}
 
 	/**
@@ -196,9 +192,8 @@ public class ValidatorPlugin implements IXMLValidator {
 	 * @throws org.freeplane.n3.nanoxml.XMLValidationException
 	 *             of course :-)
 	 */
-	public void missingElement(final String systemID, final int lineNr,
-	                           final String parentElementName, final String missingElementName)
-	        throws XMLValidationException {
+	public void missingElement(final String systemID, final int lineNr, final String parentElementName,
+	                           final String missingElementName) throws XMLValidationException {
 		XMLUtil.errorMissingElement(systemID, lineNr, parentElementName, missingElementName);
 	}
 
@@ -215,8 +210,8 @@ public class ValidatorPlugin implements IXMLValidator {
 	 * @throws org.freeplane.n3.nanoxml.XMLValidationException
 	 *             of course :-)
 	 */
-	public void missingPCData(final String systemID, final int lineNr,
-	                          final String parentElementName) throws XMLValidationException {
+	public void missingPCData(final String systemID, final int lineNr, final String parentElementName)
+	        throws XMLValidationException {
 		XMLUtil.errorMissingPCData(systemID, lineNr, parentElementName);
 	}
 
@@ -235,9 +230,8 @@ public class ValidatorPlugin implements IXMLValidator {
 	 * @throws java.lang.Exception
 	 *             if something went wrong.
 	 */
-	public void parseDTD(final String publicID, final IXMLReader reader,
-	                     final IXMLEntityResolver entityResolver, final boolean external)
-	        throws Exception {
+	public void parseDTD(final String publicID, final IXMLReader reader, final IXMLEntityResolver entityResolver,
+	                     final boolean external) throws Exception {
 		delegate.parseDTD(publicID, reader, entityResolver, external);
 	}
 
@@ -290,9 +284,8 @@ public class ValidatorPlugin implements IXMLValidator {
 	 * @throws org.freeplane.n3.nanoxml.XMLValidationException
 	 *             of course :-)
 	 */
-	public void unexpectedAttribute(final String systemID, final int lineNr,
-	                                final String elementName, final String attributeName)
-	        throws XMLValidationException {
+	public void unexpectedAttribute(final String systemID, final int lineNr, final String elementName,
+	                                final String attributeName) throws XMLValidationException {
 		XMLUtil.errorUnexpectedAttribute(systemID, lineNr, elementName, attributeName);
 	}
 
@@ -311,9 +304,8 @@ public class ValidatorPlugin implements IXMLValidator {
 	 * @throws org.freeplane.n3.nanoxml.XMLValidationException
 	 *             of course :-)
 	 */
-	public void unexpectedElement(final String systemID, final int lineNr,
-	                              final String parentElementName, final String unexpectedElementName)
-	        throws XMLValidationException {
+	public void unexpectedElement(final String systemID, final int lineNr, final String parentElementName,
+	                              final String unexpectedElementName) throws XMLValidationException {
 		XMLUtil.errorUnexpectedElement(systemID, lineNr, parentElementName, unexpectedElementName);
 	}
 
@@ -330,8 +322,8 @@ public class ValidatorPlugin implements IXMLValidator {
 	 * @throws org.freeplane.n3.nanoxml.XMLValidationException
 	 *             of course :-)
 	 */
-	public void unexpectedPCData(final String systemID, final int lineNr,
-	                             final String parentElementName) throws XMLValidationException {
+	public void unexpectedPCData(final String systemID, final int lineNr, final String parentElementName)
+	        throws XMLValidationException {
 		XMLUtil.errorUnexpectedPCData(systemID, lineNr, parentElementName);
 	}
 
@@ -354,9 +346,8 @@ public class ValidatorPlugin implements IXMLValidator {
 	 *             of course :-)
 	 */
 	public void validationError(final String systemID, final int lineNr, final String message,
-	                            final String elementName, final String attributeName,
-	                            final String attributeValue) throws XMLValidationException {
-		XMLUtil.validationError(systemID, lineNr, message, elementName, attributeName,
-		    attributeValue);
+	                            final String elementName, final String attributeName, final String attributeValue)
+	        throws XMLValidationException {
+		XMLUtil.validationError(systemID, lineNr, message, elementName, attributeName, attributeValue);
 	}
 }

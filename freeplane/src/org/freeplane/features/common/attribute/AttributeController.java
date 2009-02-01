@@ -37,8 +37,7 @@ public class AttributeController implements IExtension {
 		return (AttributeController) modeController.getExtension(AttributeController.class);
 	}
 
-	public static void install(final ModeController modeController,
-	                           final AttributeController attributeController) {
+	public static void install(final ModeController modeController, final AttributeController attributeController) {
 		modeController.addExtension(AttributeController.class, attributeController);
 	}
 
@@ -50,7 +49,7 @@ public class AttributeController implements IExtension {
 		final ReadManager readManager = mapController.getReadManager();
 		final WriteManager writeManager = mapController.getWriteManager();
 		final MapReader mapReader = mapController.getMapReader();
-		final AttributeBuilder attributeBuilder = new AttributeBuilder(mapReader);
+		final AttributeBuilder attributeBuilder = new AttributeBuilder(modeController.getController(), mapReader);
 		attributeBuilder.registerBy(readManager, writeManager);
 		modeController.getMapController().addMapLifeCycleListener(new IMapLifeCycleListener() {
 			public void onCreate(final MapModel map) {
@@ -66,8 +65,8 @@ public class AttributeController implements IExtension {
 		return modeController;
 	}
 
-	public void performInsertRow(final NodeAttributeTableModel model, final int row,
-	                             final String name, final String value) {
+	public void performInsertRow(final NodeAttributeTableModel model, final int row, final String name,
+	                             final String value) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -99,13 +98,11 @@ public class AttributeController implements IExtension {
 		throw new UnsupportedOperationException();
 	}
 
-	public void performReplaceAttributeValue(final String name, final String oldValue,
-	                                         final String newValue) {
+	public void performReplaceAttributeValue(final String name, final String oldValue, final String newValue) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void performSetColumnWidth(final NodeAttributeTableModel model, final int col,
-	                                  final int width) {
+	public void performSetColumnWidth(final NodeAttributeTableModel model, final int col, final int width) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -117,8 +114,7 @@ public class AttributeController implements IExtension {
 		throw new UnsupportedOperationException();
 	}
 
-	public void performSetValueAt(final NodeAttributeTableModel model, final Object o,
-	                              final int row, final int col) {
+	public void performSetValueAt(final NodeAttributeTableModel model, final Object o, final int row, final int col) {
 		throw new UnsupportedOperationException();
 	}
 

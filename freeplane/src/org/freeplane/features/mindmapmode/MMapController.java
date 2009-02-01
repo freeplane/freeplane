@@ -51,8 +51,8 @@ import org.freeplane.n3.nanoxml.XMLParseException;
  */
 public class MMapController extends MapController {
 	static private DeleteAction delete;
-	private static final String EXPECTED_START_STRINGS[] = {
-	        "<map version=\"" + Controller.XML_VERSION + "\"", "<map version=\"0.7.1\"" };
+	private static final String EXPECTED_START_STRINGS[] = { "<map version=\"" + Controller.XML_VERSION + "\"",
+	        "<map version=\"0.7.1\"" };
 	private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/freeplane/modes/mindmapmode/freeplane_version_updater.xslt";
 	public static final int NEW_CHILD = 2;
 	public static final int NEW_CHILD_WITHOUT_FOCUS = 1;
@@ -65,16 +65,13 @@ public class MMapController extends MapController {
 		super(modeController);
 		if (sSaveIdPropertyChangeListener == null) {
 			sSaveIdPropertyChangeListener = new IFreeplanePropertyListener() {
-				public void propertyChanged(final String propertyName, final String newValue,
-				                            final String oldValue) {
+				public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
 					if (propertyName.equals("save_only_intrisically_needed_ids")) {
-						MapController.setSaveOnlyIntrinsicallyNeededIds(Boolean.valueOf(newValue)
-						    .booleanValue());
+						MapController.setSaveOnlyIntrinsicallyNeededIds(Boolean.valueOf(newValue).booleanValue());
 					}
 				}
 			};
-			Controller.getResourceController().addPropertyChangeListenerAndPropagate(
-			    sSaveIdPropertyChangeListener);
+			Controller.getResourceController().addPropertyChangeListenerAndPropagate(sSaveIdPropertyChangeListener);
 		}
 		createActions(modeController);
 	}
@@ -92,22 +89,20 @@ public class MMapController extends MapController {
 	 */
 	@Override
 	public boolean close(final boolean force) {
-		final MapModel map = Controller.getController().getMap();
+		final MapModel map = getController().getMap();
 		if (!force && !map.isSaved()) {
 			final String text = getModeController().getText("save_unsaved") + "\n" + map.getTitle();
 			final String title = UITools.removeMnemonic(getModeController().getText("save"));
-			final int returnVal = JOptionPane.showOptionDialog(Controller.getController()
-			    .getViewController().getContentPane(), text, title,
-			    JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+			final int returnVal = JOptionPane.showOptionDialog(getController().getViewController().getContentPane(),
+			    text, title, JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 			if (returnVal == JOptionPane.YES_OPTION) {
-				final boolean savingNotCancelled = ((MFileManager) UrlManager
-				    .getController(getModeController())).save(map);
+				final boolean savingNotCancelled = ((MFileManager) UrlManager.getController(getModeController()))
+				    .save(map);
 				if (!savingNotCancelled) {
 					return false;
 				}
 			}
-			else if ((returnVal == JOptionPane.CANCEL_OPTION)
-			        || (returnVal == JOptionPane.CLOSED_OPTION)) {
+			else if ((returnVal == JOptionPane.CANCEL_OPTION) || (returnVal == JOptionPane.CLOSED_OPTION)) {
 				return false;
 			}
 		}
@@ -115,16 +110,17 @@ public class MMapController extends MapController {
 	}
 
 	private void createActions(final MModeController modeController) {
-		modeController.addAction("newSibling", new NewSiblingAction());
-		modeController.addAction("newPreviousSibling", new NewPreviousSiblingAction());
-		newChild = new NewChildAction();
+		final Controller controller = modeController.getController();
+		modeController.addAction("newSibling", new NewSiblingAction(controller));
+		modeController.addAction("newPreviousSibling", new NewPreviousSiblingAction(controller));
+		newChild = new NewChildAction(controller);
 		modeController.addAction("newChild", newChild);
-		delete = new DeleteAction();
+		delete = new DeleteAction(controller);
 		modeController.addAction("deleteChild", delete);
-		modeController.addAction("undoableToggleFolded", new ToggleFoldedAction());
-		modeController.addAction("undoableToggleChildrenFolded", new ToggleChildrenFoldedAction());
-		modeController.addAction("nodeUp", new NodeUpAction());
-		modeController.addAction("nodeDown", new NodeDownAction());
+		modeController.addAction("undoableToggleFolded", new ToggleFoldedAction(controller));
+		modeController.addAction("undoableToggleChildrenFolded", new ToggleChildrenFoldedAction(controller));
+		modeController.addAction("nodeUp", new NodeUpAction(controller));
+		modeController.addAction("nodeDown", new NodeDownAction(controller));
 	}
 
 	public void deleteNode(final NodeModel node) {
@@ -147,8 +143,7 @@ public class MMapController extends MapController {
 	}
 
 	@Override
-	public void insertNodeIntoWithoutUndo(final NodeModel newNode, final NodeModel parent,
-	                                      final int index) {
+	public void insertNodeIntoWithoutUndo(final NodeModel newNode, final NodeModel parent, final int index) {
 		parent.getMap().setSaved(false);
 		super.insertNodeIntoWithoutUndo(newNode, parent, index);
 	}
@@ -162,12 +157,12 @@ public class MMapController extends MapController {
 	}
 
 	@Override
-	public void load(final MapModel map, final URL url) throws FileNotFoundException, IOException,
-	        XMLParseException, URISyntaxException {
+	public void load(final MapModel map, final URL url) throws FileNotFoundException, IOException, XMLParseException,
+	        URISyntaxException {
 		final File file = UrlManager.urlToFile(url);
 		if (!file.exists()) {
-			throw new FileNotFoundException(UrlManager.expandPlaceholders(getModeController()
-			    .getText("file_not_found"), file.getPath()));
+			throw new FileNotFoundException(UrlManager.expandPlaceholders(
+			    getModeController().getText("file_not_found"), file.getPath()));
 		}
 		if (!file.canWrite()) {
 			((MMapModel) map).setReadOnly(true);
@@ -176,8 +171,9 @@ public class MMapController extends MapController {
 			try {
 				final String lockingUser = tryToLock(map, file);
 				if (lockingUser != null) {
-					UITools.informationMessage(UrlManager.expandPlaceholders(getModeController()
-					    .getText("map_locked_by_open"), file.getName(), lockingUser));
+					UITools.informationMessage(getController().getViewController().getFrame(),
+						UrlManager.expandPlaceholders(getModeController().getText(
+					    "map_locked_by_open"), file.getName(), lockingUser));
 					((MMapModel) map).setReadOnly(true);
 				}
 				else {
@@ -186,8 +182,9 @@ public class MMapController extends MapController {
 			}
 			catch (final Exception e) {
 				org.freeplane.core.util.Tools.logException(e);
-				UITools.informationMessage(UrlManager.expandPlaceholders(getModeController()
-				    .getText("locking_failed_by_open"), file.getName()));
+				UITools.informationMessage(getController().getViewController().getFrame(),
+					UrlManager.expandPlaceholders(getModeController().getText(
+				    "locking_failed_by_open"), file.getName()));
 				((MMapModel) map).setReadOnly(true);
 			}
 		}
@@ -198,8 +195,7 @@ public class MMapController extends MapController {
 		((MMapModel) map).setFile(file);
 	}
 
-	public NodeModel loadTree(final MapModel map, final File file) throws XMLParseException,
-	        IOException {
+	public NodeModel loadTree(final MapModel map, final File file) throws XMLParseException, IOException {
 		int versionInfoLength;
 		versionInfoLength = EXPECTED_START_STRINGS[0].length();
 		final StringBuffer buffer = readFileStart(file, versionInfoLength);
@@ -216,11 +212,11 @@ public class MMapController extends MapController {
 			}
 		}
 		if (reader == null) {
-			final Controller controller = Controller.getController();
+			final Controller controller = getController();
 			final ViewController viewController = controller.getViewController();
-			final int showResult = new OptionalDontShowMeAgainDialog(viewController.getJFrame(),
-			    controller.getSelection().getSelected(), "really_convert_to_current_version",
-			    "confirmation", new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
+			final int showResult = new OptionalDontShowMeAgainDialog(viewController.getJFrame(), controller
+			    .getSelection().getSelected(), "really_convert_to_current_version", "confirmation",
+			    new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
 			        ResourceController.RESOURCES_CONVERT_TO_CURRENT_VERSION),
 			    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED).show().getResult();
 			if (showResult != JOptionPane.OK_OPTION) {
@@ -250,12 +246,10 @@ public class MMapController extends MapController {
 
 	@Override
 	public void loadURL(final String relative) {
-		final MapModel map = Controller.getController().getMap();
+		final MapModel map = getController().getMap();
 		if (map.getFile() == null) {
-			Controller.getController().getViewController().out(
-			    "You must save the current map first!");
-			final boolean result = ((MFileManager) UrlManager.getController(getModeController()))
-			    .save(map);
+			getController().getViewController().out("You must save the current map first!");
+			final boolean result = ((MFileManager) UrlManager.getController(getModeController())).save(map);
 			if (!result) {
 				return;
 			}
@@ -264,8 +258,7 @@ public class MMapController extends MapController {
 	}
 
 	public void moveNodes(final NodeModel selected, final List selecteds, final int direction) {
-		((NodeUpAction) getModeController().getAction("nodeUp")).moveNodes(selected, selecteds,
-		    direction);
+		((NodeUpAction) getModeController().getAction("nodeUp")).moveNodes(selected, selecteds, direction);
 	}
 
 	/**
@@ -320,8 +313,7 @@ public class MMapController extends MapController {
 
 	@Override
 	public void setFolded(final NodeModel node, final boolean folded) {
-		((ToggleFoldedAction) getModeController().getAction("undoableToggleFolded")).setFolded(
-		    node, folded);
+		((ToggleFoldedAction) getModeController().getAction("undoableToggleFolded")).setFolded(node, folded);
 	}
 
 	@Override
@@ -340,10 +332,10 @@ public class MMapController extends MapController {
 	 */
 	public String tryToLock(final MapModel map, final File file) throws Exception {
 		final String lockingUser = ((MMapModel) map).getLockManager().tryToLock(file);
-		final String lockingUserOfOldLock = ((MMapModel) map).getLockManager()
-		    .popLockingUserOfOldLock();
+		final String lockingUserOfOldLock = ((MMapModel) map).getLockManager().popLockingUserOfOldLock();
 		if (lockingUserOfOldLock != null) {
-			UITools.informationMessage(UrlManager.expandPlaceholders(getModeController().getText(
+			UITools.informationMessage(getController().getViewController().getFrame(),
+				UrlManager.expandPlaceholders(getModeController().getText(
 			    "locking_old_lock_removed"), file.getName(), lockingUserOfOldLock));
 		}
 		if (lockingUser == null) {

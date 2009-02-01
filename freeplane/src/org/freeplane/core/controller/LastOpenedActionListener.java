@@ -23,14 +23,20 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 class LastOpenedActionListener implements ActionListener {
+	final private Controller controller;
+
+	public LastOpenedActionListener(final Controller controller) {
+		super();
+		this.controller = controller;
+	}
+
 	public void actionPerformed(final ActionEvent e) {
 		final String restoreable = e.getActionCommand();
 		try {
-			Controller.getController().getLastOpenedList().open(restoreable);
+			controller.getLastOpenedList().open(restoreable);
 		}
 		catch (final Exception ex) {
-			Controller.getController().errorMessage(
-			    "An error occured on opening the file: " + restoreable + ".");
+			controller.errorMessage("An error occured on opening the file: " + restoreable + ".");
 			org.freeplane.core.util.Tools.logException(ex);
 		}
 	}

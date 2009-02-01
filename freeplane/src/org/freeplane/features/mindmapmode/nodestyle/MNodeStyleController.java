@@ -24,6 +24,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.util.ListIterator;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.MultipleNodeAction;
@@ -40,37 +41,33 @@ public class MNodeStyleController extends NodeStyleController {
 
 	public MNodeStyleController(final ModeController modeController) {
 		super(modeController);
-		modeController.addAction("bold", new BoldAction());
-		modeController.addAction("italic", new ItalicAction());
-		fontSizeAction = new FontSizeAction();
+		final Controller controller = modeController.getController();
+		modeController.addAction("bold", new BoldAction(controller));
+		modeController.addAction("italic", new ItalicAction(controller));
+		fontSizeAction = new FontSizeAction(controller);
 		modeController.addAction("fontSize", fontSizeAction);
-		final MultipleNodeAction increaseNodeFont = new MultipleNodeAction(
-		    "increase_node_font_size") {
+		final MultipleNodeAction increaseNodeFont = new MultipleNodeAction(controller, "increase_node_font_size") {
 			@Override
 			protected void actionPerformed(final ActionEvent e, final NodeModel node) {
 				increaseFontSize(node, 1);
 			}
 		};
 		modeController.addAction("increaseNodeFont", increaseNodeFont);
-		final MultipleNodeAction decreaseNodeFont = new MultipleNodeAction(
-		    "decrease_node_font_size") {
+		final MultipleNodeAction decreaseNodeFont = new MultipleNodeAction(controller, "decrease_node_font_size") {
 			@Override
 			protected void actionPerformed(final ActionEvent e, final NodeModel node) {
 				increaseFontSize(node, -1);
 			}
 		};
 		modeController.addAction("decreaseNodeFont", decreaseNodeFont);
-		fontFamilyAction = new FontFamilyAction();
+		fontFamilyAction = new FontFamilyAction(controller);
 		modeController.addAction("fontFamily", fontFamilyAction);
-		modeController.addAction("nodeColor", new NodeColorAction());
-		modeController.addAction("nodeColorBlend", new NodeColorBlendAction());
-		modeController.addAction("nodeBackgroundColor", new NodeBackgroundColorAction());
-		modeController
-		    .addAction("removeNodeBackgroundColor", new RemoveNodeBackgroundColorAction());
-		modeController.addAction("fork", new NodeShapeAction(modeController,
-		    NodeStyleModel.STYLE_FORK));
-		modeController.addAction("bubble", new NodeShapeAction(modeController,
-		    NodeStyleModel.STYLE_BUBBLE));
+		modeController.addAction("nodeColor", new NodeColorAction(controller));
+		modeController.addAction("nodeColorBlend", new NodeColorBlendAction(controller));
+		modeController.addAction("nodeBackgroundColor", new NodeBackgroundColorAction(controller));
+		modeController.addAction("removeNodeBackgroundColor", new RemoveNodeBackgroundColorAction(controller));
+		modeController.addAction("fork", new NodeShapeAction(modeController, NodeStyleModel.STYLE_FORK));
+		modeController.addAction("bubble", new NodeShapeAction(modeController, NodeStyleModel.STYLE_BUBBLE));
 		final MToolbarContributor menuContributor = new MToolbarContributor(this);
 		modeController.addMenuContributor(menuContributor);
 		modeController.getMapController().addNodeChangeListener(menuContributor);
@@ -208,16 +205,16 @@ public class MNodeStyleController extends NodeStyleController {
 	}
 
 	public void setFontFamily(final String fontFamily) {
-		for (final ListIterator it = getModeController().getMapController().getSelectedNodes()
-		    .listIterator(); it.hasNext();) {
+		for (final ListIterator it = getModeController().getMapController().getSelectedNodes().listIterator(); it
+		    .hasNext();) {
 			final NodeModel selected = (NodeModel) it.next();
 			setFontFamily(selected, fontFamily);
 		}
 	}
 
 	public void setFontSize(final int size) {
-		for (final ListIterator it = getModeController().getMapController().getSelectedNodes()
-		    .listIterator(); it.hasNext();) {
+		for (final ListIterator it = getModeController().getMapController().getSelectedNodes().listIterator(); it
+		    .hasNext();) {
 			final NodeModel selected = (NodeModel) it.next();
 			setFontSize(selected, size);
 		}
@@ -272,8 +269,7 @@ public class MNodeStyleController extends NodeStyleController {
 			}
 
 			private void nodeShapeRefresh(final NodeModel node) {
-				final ListIterator childrenFolded = modeController.getMapController()
-				    .childrenFolded(node);
+				final ListIterator childrenFolded = modeController.getMapController().childrenFolded(node);
 				while (childrenFolded.hasNext()) {
 					final NodeModel child = (NodeModel) childrenFolded.next();
 					if (NodeStyleModel.getShape(child) == null) {

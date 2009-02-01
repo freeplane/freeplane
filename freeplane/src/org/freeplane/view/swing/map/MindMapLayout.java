@@ -40,8 +40,7 @@ public class MindMapLayout implements LayoutManager {
 	private int calcXBorderSize(final MapView map) {
 		int xBorderSize;
 		final Dimension visibleSize = map.getViewportSize();
-		final int minBorderWidth = map.getZoomed(MindMapLayout.BORDER
-		        + MindMapLayout.MINIMAL_LEAF_WIDTH);
+		final int minBorderWidth = map.getZoomed(MindMapLayout.BORDER + MindMapLayout.MINIMAL_LEAF_WIDTH);
 		if (visibleSize != null) {
 			xBorderSize = Math.max(visibleSize.width, minBorderWidth);
 		}
@@ -87,8 +86,7 @@ public class MindMapLayout implements LayoutManager {
 			}
 			if (component instanceof NodeMotionListenerView) {
 				final NodeMotionListenerView nodeMotionListenerView = (NodeMotionListenerView) component;
-				final INodeViewLayout layout = (INodeViewLayout) nodeMotionListenerView
-				    .getMovedView().getLayout();
+				final INodeViewLayout layout = (INodeViewLayout) nodeMotionListenerView.getMovedView().getLayout();
 				layout.layoutNodeMotionListenerView(nodeMotionListenerView);
 			}
 		}
@@ -101,8 +99,8 @@ public class MindMapLayout implements LayoutManager {
 	public Dimension preferredLayoutSize(final Container c) {
 		final MapView mapView = (MapView) c;
 		final Dimension preferredSize = mapView.getRoot().getPreferredSize();
-		return new Dimension(2 * calcXBorderSize(mapView) + preferredSize.width, 2
-		        * calcYBorderSize(mapView) + preferredSize.height);
+		return new Dimension(2 * calcXBorderSize(mapView) + preferredSize.width, 2 * calcYBorderSize(mapView)
+		        + preferredSize.height);
 	}
 
 	public void removeLayoutComponent(final Component comp) {

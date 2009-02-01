@@ -27,8 +27,7 @@ import org.freeplane.core.model.NodeModel;
  * 13.01.2009
  */
 public abstract class AbstractEditNodeTextField extends EditNodeBase {
-	protected AbstractEditNodeTextField(final NodeModel node, final String text,
-	                                    final ModeController controller,
+	protected AbstractEditNodeTextField(final NodeModel node, final String text, final ModeController controller,
 	                                    final IEditControl editControl) {
 		super(node, text, controller, editControl);
 	}

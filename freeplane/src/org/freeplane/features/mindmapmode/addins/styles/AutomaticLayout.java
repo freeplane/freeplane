@@ -20,6 +20,7 @@
  */
 package org.freeplane.features.mindmapmode.addins.styles;
 
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,6 +31,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
@@ -65,16 +67,15 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
 @ActionDescriptor(locations = "/menu_bar/extras/first/nodes/change", //
 name = "accessories/plugins/AutomaticLayout.properties_name", //
 tooltip = "accessories/plugins/AutomaticLayout.properties_documentation")
-public class AutomaticLayout extends PersistentNodeHook implements IMapChangeListener,
-        INodeChangeListener, IReadCompletionListener {
+public class AutomaticLayout extends PersistentNodeHook implements IMapChangeListener, INodeChangeListener,
+        IReadCompletionListener {
 	/**
 	 * Registers the property pages.
 	 *
 	 * @author foltin
 	 */
 	static class MyFreeplanePropertyListener implements IFreeplanePropertyListener {
-		public void propertyChanged(final String propertyName, final String newValue,
-		                            final String oldValue) {
+		public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
 			if (propertyName.startsWith(AutomaticLayout.AUTOMATIC_FORMAT_LEVEL)) {
 				AutomaticLayout.patterns = null;
 			}
@@ -142,9 +143,8 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 				return;
 			}
 			final Pattern choice = pat.getChoice(source.getSelectedIndex());
-			final ChooseFormatPopupDialog formatDialog = new ChooseFormatPopupDialog(Controller
-			    .getController().getViewController().getJFrame(), mindMapController,
-			    "accessories/plugins/AutomaticLayout.properties_StyleDialogTitle", choice);
+			final ChooseFormatPopupDialog formatDialog = new ChooseFormatPopupDialog(JOptionPane.getFrameForComponent((Component) source),
+			    mindMapController, "accessories/plugins/AutomaticLayout.properties_StyleDialogTitle", choice);
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					if (mDialogIsShown) {
@@ -173,8 +173,7 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 	 * Currently not used. Is useful if you want to make single patterns
 	 * changeable.
 	 */
-	public static class StylePatternProperty extends PropertyBean implements IPropertyControl,
-	        ActionListener {
+	public static class StylePatternProperty extends PropertyBean implements IPropertyControl, ActionListener {
 		JButton mButton;
 		final private ModeController mindMapController;
 		String pattern;
@@ -187,11 +186,10 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 			pattern = null;
 		}
 
-		public void actionPerformed(final ActionEvent arg0) {
+		public void actionPerformed(final ActionEvent e) {
 			final Pattern pat = getPatternFromString();
-			final ChooseFormatPopupDialog formatDialog = new ChooseFormatPopupDialog(Controller
-			    .getController().getViewController().getJFrame(), mindMapController,
-			    "accessories/plugins/AutomaticLayout.properties_StyleDialogTitle", pat);
+			final ChooseFormatPopupDialog formatDialog = new ChooseFormatPopupDialog(mindMapController.getController().getViewController().getFrame(),
+			    mindMapController, "accessories/plugins/AutomaticLayout.properties_StyleDialogTitle", pat);
 			formatDialog.setModal(true);
 			formatDialog.setVisible(true);
 			if (formatDialog.getResult() == ChooseFormatPopupDialog.OK) {
@@ -304,8 +302,8 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 		setStyleRecursive(child);
 	}
 
-	public void onNodeMoved(final NodeModel oldParent, final int oldIndex,
-	                        final NodeModel newParent, final NodeModel child, final int newIndex) {
+	public void onNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
+	                        final NodeModel child, final int newIndex) {
 		if (!isActive(newParent)) {
 			return;
 		}
@@ -379,8 +377,7 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 			return;
 		}
 		setStyleImpl(node);
-		for (final Iterator i = node.getModeController().getMapController().childrenUnfolded(node); i
-		    .hasNext();) {
+		for (final Iterator i = node.getModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
 			final NodeModel child = (NodeModel) i.next();
 			setStyleRecursiveImpl(child);
 		}

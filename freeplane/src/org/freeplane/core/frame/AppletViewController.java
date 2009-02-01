@@ -46,8 +46,9 @@ public class AppletViewController extends ViewController {
 	private JComponent mComponentInSplitPane;
 	private JPanel southPanel;
 
-	public AppletViewController(final JApplet applet, final IMapViewManager mapViewController) {
-		super(mapViewController);
+	public AppletViewController(final Controller controller, final JApplet applet,
+	                            final IMapViewManager mapViewController) {
+		super(controller, mapViewController);
 		this.applet = applet;
 	}
 
@@ -88,8 +89,7 @@ public class AppletViewController extends ViewController {
 
 	@Override
 	public void init() {
-		final Controller controller = Controller.getController();
-		controller.getViewController().changeAntialias(
+		getController().getViewController().changeAntialias(
 		    Controller.getResourceController().getProperty(ViewController.RESOURCE_ANTIALIAS));
 		getContentPane().add(getScrollPane(), BorderLayout.CENTER);
 		southPanel = new JPanel(new BorderLayout());
@@ -111,9 +111,8 @@ public class AppletViewController extends ViewController {
 				org.freeplane.core.util.Tools.logException(e);
 			}
 		}
-		controller.selectMode(Controller.getResourceController().getProperty("initial_mode"));
-		String initialMapName = Controller.getResourceController().getProperty(
-		    "browsemode_initial_map");
+		getController().selectMode(Controller.getResourceController().getProperty("initial_mode"));
+		String initialMapName = Controller.getResourceController().getProperty("browsemode_initial_map");
 		if (initialMapName != null && initialMapName.startsWith(".")) {
 			/* new handling for relative urls. fc, 29.10.2003. */
 			try {
@@ -121,8 +120,7 @@ public class AppletViewController extends ViewController {
 				initialMapName = documentBaseUrl.toString();
 			}
 			catch (final java.net.MalformedURLException e) {
-				Controller.getController().errorMessage(
-				    "Could not open relative URL " + initialMapName + ". It is malformed.");
+				getController().errorMessage("Could not open relative URL " + initialMapName + ". It is malformed.");
 				System.err.println(e);
 				return;
 			}
@@ -131,7 +129,7 @@ public class AppletViewController extends ViewController {
 		if (initialMapName != "") {
 			try {
 				final URL mapUrl = new URL(initialMapName);
-				Controller.getModeController().getMapController().newMap(mapUrl);
+				getController().getModeController().getMapController().newMap(mapUrl);
 			}
 			catch (final Exception e) {
 				org.freeplane.core.util.Tools.logException(e);
@@ -182,20 +180,18 @@ public class AppletViewController extends ViewController {
 	@Override
 	public void setWaitingCursor(final boolean waiting) {
 		if (waiting) {
-			applet.getRootPane().getGlassPane().setCursor(
-			    Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+			applet.getRootPane().getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 			applet.getRootPane().getGlassPane().setVisible(true);
 		}
 		else {
-			applet.getRootPane().getGlassPane().setCursor(
-			    Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+			applet.getRootPane().getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 			applet.getRootPane().getGlassPane().setVisible(false);
 		}
 	}
 
 	public void start() {
 		try {
-			final IMapSelection selection = Controller.getController().getSelection();
+			final IMapSelection selection = getController().getSelection();
 			if (selection != null) {
 				selection.selectRoot();
 			}

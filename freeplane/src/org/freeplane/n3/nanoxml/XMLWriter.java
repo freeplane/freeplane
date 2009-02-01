@@ -103,8 +103,7 @@ public class XMLWriter {
 	 * @param indent
 	 *            how many spaces to indent the element.
 	 */
-	public void write(final IXMLElement xml, final boolean prettyPrint, final int indent)
-	        throws IOException {
+	public void write(final IXMLElement xml, final boolean prettyPrint, final int indent) throws IOException {
 		this.write(xml, prettyPrint, indent, true);
 	}
 

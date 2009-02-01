@@ -28,8 +28,8 @@ import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.mindmapmode.file.MFileManager;
 
 class SetLinkByFileChooserAction extends FreeplaneAction {
-	public SetLinkByFileChooserAction() {
-		super("set_link_by_filechooser");
+	public SetLinkByFileChooserAction(final Controller controller) {
+		super(controller, "set_link_by_filechooser");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -38,10 +38,10 @@ class SetLinkByFileChooserAction extends FreeplaneAction {
 
 	public void setLinkByFileChooser() {
 		final String relative = ((MFileManager) UrlManager.getController(getModeController()))
-		    .getLinkByFileChooser(Controller.getController().getMap());
+		    .getLinkByFileChooser(getController().getMap());
 		if (relative != null) {
-			((MLinkController) LinkController.getController(getModeController())).setLink(
-			    getModeController().getMapController().getSelectedNode(), relative);
+			((MLinkController) LinkController.getController(getModeController())).setLink(getModeController()
+			    .getMapController().getSelectedNode(), relative);
 		}
 	}
 }

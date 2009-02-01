@@ -32,18 +32,17 @@ import org.freeplane.features.common.edge.EdgeController;
 class EdgeColorAction extends MultipleNodeAction {
 	private Color actionColor;
 
-	public EdgeColorAction() {
-		super("edge_color");
+	public EdgeColorAction(final Controller controller) {
+		super(controller, "edge_color");
 	}
 
 	@Override
 	public void actionPerformed(final ActionEvent e) {
 		final ModeController controller = getModeController();
 		final NodeModel model = controller.getMapController().getSelectedNode();
-		final Color edgeColor = EdgeController.getController(model.getModeController()).getColor(
-		    model);
-		actionColor = ColorTracker.showCommonJColorChooserDialog(Controller.getController()
-		    .getSelection().getSelected(), controller.getText("choose_edge_color"), edgeColor);
+		final Color edgeColor = EdgeController.getController(model.getModeController()).getColor(model);
+		actionColor = ColorTracker.showCommonJColorChooserDialog(controller.getController().getSelection()
+		    .getSelected(), controller.getText("choose_edge_color"), edgeColor);
 		if (actionColor == null) {
 			return;
 		}
@@ -58,8 +57,7 @@ class EdgeColorAction extends MultipleNodeAction {
 	 */
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		final MEdgeController edgeController = (MEdgeController) EdgeController.getController(node
-		    .getModeController());
+		final MEdgeController edgeController = (MEdgeController) EdgeController.getController(node.getModeController());
 		edgeController.setColor(node, actionColor);
 	}
 }

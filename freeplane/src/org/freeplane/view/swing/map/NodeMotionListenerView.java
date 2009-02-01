@@ -40,8 +40,8 @@ public class NodeMotionListenerView extends JComponent {
 	public NodeMotionListenerView(final NodeView view) {
 		super();
 		movedView = view;
-		final IUserInputListenerFactory userInputListenerFactory = view.getMap().getModel()
-		    .getModeController().getUserInputListenerFactory();
+		final IUserInputListenerFactory userInputListenerFactory = view.getMap().getModel().getModeController()
+		    .getUserInputListenerFactory();
 		addMouseListener(userInputListenerFactory.getNodeMotionListener());
 		addMouseMotionListener(userInputListenerFactory.getNodeMotionListener());
 		this.setCursor(new Cursor(Cursor.MOVE_CURSOR));

@@ -50,27 +50,37 @@ import org.freeplane.n3.nanoxml.XMLWriter;
  * @author Dimitry Polivaev
  */
 public class FilterController implements IMapSelectionListener, IExtension {
+	private static ConditionFactory conditionFactory;
 	static final String FREEPLANE_FILTER_EXTENSION_WITHOUT_DOT = "mmfilter";
 
-	public static FilterController getController() {
-		return (FilterController) Controller.getController().getExtension(FilterController.class);
+	public static ConditionFactory getConditionFactory() {
+		if (conditionFactory == null) {
+			conditionFactory = new ConditionFactory();
+		}
+		return conditionFactory;
 	}
 
-	public static void install() {
-		Controller.getController().addExtension(FilterController.class, new FilterController());
+	public static FilterController getController(final Controller controller) {
+		return (FilterController) controller.getExtension(FilterController.class);
 	}
 
-	private ConditionFactory conditionFactory;
+	public static void install(final Controller controller) {
+		controller.addExtension(FilterController.class, new FilterController(controller));
+	}
+
 	private DefaultConditionRenderer conditionRenderer = null;
+	final private Controller controller;
+	private final DefaultFilter defaultFilter;
 	private DefaultComboBoxModel filterConditionModel;
 	private FilterToolbar filterToolbar;
 	private IFilter inactiveFilter;
 	private MapModel map;
 
-	public FilterController() {
-		Controller.getController().getMapViewManager().addMapChangeListener(this);
-		Controller.getController().addAction("showFilterToolbarAction",
-		    new ShowFilterToolbarAction());
+	public FilterController(final Controller controller) {
+		this.controller = controller;
+		defaultFilter = new DefaultFilter(controller, null, false, false);
+		controller.getMapViewManager().addMapChangeListener(this);
+		controller.addAction("showFilterToolbarAction", new ShowFilterToolbarAction(this));
 	}
 
 	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
@@ -90,16 +100,9 @@ public class FilterController implements IMapSelectionListener, IExtension {
 
 	private IFilter createTransparentFilter() {
 		if (inactiveFilter == null) {
-			inactiveFilter = new DefaultFilter(NoFilteringCondition.createCondition(), true, false);
+			inactiveFilter = new DefaultFilter(controller, NoFilteringCondition.createCondition(), true, false);
 		}
 		return inactiveFilter;
-	}
-
-	public ConditionFactory getConditionFactory() {
-		if (conditionFactory == null) {
-			conditionFactory = new ConditionFactory();
-		}
-		return conditionFactory;
 	}
 
 	DefaultConditionRenderer getConditionRenderer() {
@@ -107,6 +110,10 @@ public class FilterController implements IMapSelectionListener, IExtension {
 			conditionRenderer = new DefaultConditionRenderer();
 		}
 		return conditionRenderer;
+	}
+
+	public DefaultFilter getDefaultFilter() {
+		return defaultFilter;
 	}
 
 	public DefaultComboBoxModel getFilterConditionModel() {
@@ -117,10 +124,10 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	 */
 	public FilterToolbar getFilterToolbar() {
 		if (filterToolbar == null) {
-			filterToolbar = new FilterToolbar();
+			filterToolbar = new FilterToolbar(controller, this);
 			filterConditionModel = (DefaultComboBoxModel) filterToolbar.getFilterConditionModel();
-			MindIcon.factory("AttributeExist", new ImageIcon(Controller.getResourceController()
-			    .getResource("/images/showAttributes.gif")));
+			MindIcon.factory("AttributeExist", new ImageIcon(Controller.getResourceController().getResource(
+			    "/images/showAttributes.gif")));
 			MindIcon.factory("encrypted");
 			MindIcon.factory("decrypted");
 			filterToolbar.initConditions();
@@ -138,8 +145,8 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		return true;
 	}
 
-	void loadConditions(final DefaultComboBoxModel filterConditionModel,
-	                    final String pathToFilterFile) throws IOException {
+	void loadConditions(final DefaultComboBoxModel filterConditionModel, final String pathToFilterFile)
+	        throws IOException {
 		filterConditionModel.removeAllElements();
 		try {
 			final IXMLParser parser = XMLParserFactory.createDefaultXMLParser();
@@ -148,7 +155,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 			final XMLElement loader = (XMLElement) parser.parse();
 			final Vector conditions = loader.getChildren();
 			for (int i = 0; i < conditions.size(); i++) {
-				filterConditionModel.addElement(getConditionFactory().loadCondition(
+				filterConditionModel.addElement(FilterController.getConditionFactory().loadCondition(
 				    (XMLElement) conditions.get(i)));
 			}
 		}
@@ -160,7 +167,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	}
 
 	void refreshMap() {
-		Controller.getModeController().getMapController().refreshMap();
+		controller.getModeController().getMapController().refreshMap();
 	}
 
 	public void saveConditions() {
@@ -169,8 +176,8 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		}
 	}
 
-	void saveConditions(final DefaultComboBoxModel filterConditionModel,
-	                    final String pathToFilterFile) throws IOException {
+	void saveConditions(final DefaultComboBoxModel filterConditionModel, final String pathToFilterFile)
+	        throws IOException {
 		final XMLElement saver = new XMLElement();
 		saver.setName("filter_conditions");
 		final Writer writer = new FileWriter(pathToFilterFile);

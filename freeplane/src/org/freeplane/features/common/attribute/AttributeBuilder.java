@@ -21,6 +21,7 @@ package org.freeplane.features.common.attribute;
 
 import java.io.IOException;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.IElementDOMHandler;
@@ -50,9 +51,11 @@ class AttributeBuilder implements IElementDOMHandler {
 	public static final String XML_NODE_ATTRIBUTE_REGISTRY = "attribute_registry";
 	public static final String XML_NODE_REGISTERED_ATTRIBUTE_NAME = "attribute_name";
 	public static final String XML_NODE_REGISTERED_ATTRIBUTE_VALUE = "attribute_value";
+	final private Controller controller;
 	final private MapReader mapReader;
 
-	public AttributeBuilder(final MapReader mapReader) {
+	public AttributeBuilder(final Controller controller, final MapReader mapReader) {
+		this.controller = controller;
 		this.mapReader = mapReader;
 	}
 
@@ -69,18 +72,15 @@ class AttributeBuilder implements IElementDOMHandler {
 		return null;
 	}
 
-	public void endElement(final Object parent, final String tag, final Object userObject,
-	                       final IXMLElement dom) {
+	public void endElement(final Object parent, final String tag, final Object userObject, final IXMLElement dom) {
 		/* attributes */
 		if (tag.equals(AttributeBuilder.XML_NODE_REGISTERED_ATTRIBUTE_NAME)) {
 			final RegisteredAttributeProperties rap = (RegisteredAttributeProperties) userObject;
 			if (rap.visible) {
-				AttributeRegistry.getRegistry(getMap()).getElement(rap.attributeName)
-				    .setVisibility(true);
+				AttributeRegistry.getRegistry(getMap()).getElement(rap.attributeName).setVisibility(true);
 			}
 			if (rap.restricted) {
-				AttributeRegistry.getRegistry(getMap()).getElement(rap.attributeName)
-				    .setRestriction(true);
+				AttributeRegistry.getRegistry(getMap()).getElement(rap.attributeName).setRestriction(true);
 			}
 			return;
 		}
@@ -117,8 +117,8 @@ class AttributeBuilder implements IElementDOMHandler {
 				    rap.visible = true;
 			    }
 		    });
-		reader.addAttributeHandler(AttributeBuilder.XML_NODE_REGISTERED_ATTRIBUTE_NAME,
-		    "RESTRICTED", new IAttributeHandler() {
+		reader.addAttributeHandler(AttributeBuilder.XML_NODE_REGISTERED_ATTRIBUTE_NAME, "RESTRICTED",
+		    new IAttributeHandler() {
 			    public void setAttribute(final Object userObject, final String value) {
 				    final RegisteredAttributeProperties rap = (RegisteredAttributeProperties) userObject;
 				    rap.restricted = true;
@@ -133,64 +133,56 @@ class AttributeBuilder implements IElementDOMHandler {
 				    r.registry(attribute);
 			    }
 		    });
-		reader.addAttributeHandler(AttributeBuilder.XML_NODE_ATTRIBUTE_LAYOUT, "NAME_WIDTH",
-		    new IAttributeHandler() {
-			    public void setAttribute(final Object userObject, final String value) {
-				    final NodeModel node = (NodeModel) userObject;
-				    NodeAttributeTableModel.createAttributeTableModel(node);
-				    final AttributeTableLayoutModel layout = NodeAttributeTableModel.getModel(node)
-				        .getLayout();
-				    layout.setColumnWidth(0, Integer.parseInt(value));;
-			    }
-		    });
-		reader.addAttributeHandler(AttributeBuilder.XML_NODE_ATTRIBUTE_LAYOUT, "VALUE_WIDTH",
-		    new IAttributeHandler() {
-			    public void setAttribute(final Object userObject, final String value) {
-				    final NodeModel node = (NodeModel) userObject;
-				    NodeAttributeTableModel.createAttributeTableModel(node);
-				    final AttributeTableLayoutModel layout = NodeAttributeTableModel.getModel(node)
-				        .getLayout();
-				    layout.setColumnWidth(1, Integer.parseInt(value));;
-			    }
-		    });
-		reader.addAttributeHandler(AttributeBuilder.XML_NODE_ATTRIBUTE, "NAME",
-		    new IAttributeHandler() {
-			    public void setAttribute(final Object userObject, final String value) {
-				    final AttributeProperties ap = (AttributeProperties) userObject;
-				    ap.attributeName = value.toString();
-			    }
-		    });
-		reader.addAttributeHandler(AttributeBuilder.XML_NODE_ATTRIBUTE, "VALUE",
-		    new IAttributeHandler() {
-			    public void setAttribute(final Object userObject, final String value) {
-				    final AttributeProperties ap = (AttributeProperties) userObject;
-				    ap.attributeValue = value.toString();
-			    }
-		    });
-		reader.addAttributeHandler(AttributeBuilder.XML_NODE_ATTRIBUTE_REGISTRY, "RESTRICTED",
-		    new IAttributeHandler() {
-			    public void setAttribute(final Object userObject, final String value) {
-				    AttributeRegistry.getRegistry(getMap()).setRestricted(true);
-			    }
-		    });
+		reader.addAttributeHandler(AttributeBuilder.XML_NODE_ATTRIBUTE_LAYOUT, "NAME_WIDTH", new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = (NodeModel) userObject;
+				NodeAttributeTableModel.createAttributeTableModel(node);
+				final AttributeTableLayoutModel layout = NodeAttributeTableModel.getModel(node).getLayout();
+				layout.setColumnWidth(0, Integer.parseInt(value));;
+			}
+		});
+		reader.addAttributeHandler(AttributeBuilder.XML_NODE_ATTRIBUTE_LAYOUT, "VALUE_WIDTH", new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = (NodeModel) userObject;
+				NodeAttributeTableModel.createAttributeTableModel(node);
+				final AttributeTableLayoutModel layout = NodeAttributeTableModel.getModel(node).getLayout();
+				layout.setColumnWidth(1, Integer.parseInt(value));;
+			}
+		});
+		reader.addAttributeHandler(AttributeBuilder.XML_NODE_ATTRIBUTE, "NAME", new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final AttributeProperties ap = (AttributeProperties) userObject;
+				ap.attributeName = value.toString();
+			}
+		});
+		reader.addAttributeHandler(AttributeBuilder.XML_NODE_ATTRIBUTE, "VALUE", new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final AttributeProperties ap = (AttributeProperties) userObject;
+				ap.attributeValue = value.toString();
+			}
+		});
+		reader.addAttributeHandler(AttributeBuilder.XML_NODE_ATTRIBUTE_REGISTRY, "RESTRICTED", new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				AttributeRegistry.getRegistry(getMap()).setRestricted(true);
+			}
+		});
 		reader.addAttributeHandler(AttributeBuilder.XML_NODE_ATTRIBUTE_REGISTRY, "SHOW_ATTRIBUTES",
 		    new IAttributeHandler() {
 			    public void setAttribute(final Object userObject, final String value) {
-				    ModelessAttributeController.getController().setAttributeViewType(getMap(),
+				    ModelessAttributeController.getController(controller).setAttributeViewType(getMap(),
 				        value.toString());
 			    }
 		    });
-		reader.addAttributeHandler(AttributeBuilder.XML_NODE_ATTRIBUTE_REGISTRY, "FONT_SIZE",
-		    new IAttributeHandler() {
-			    public void setAttribute(final Object userObject, final String value) {
-				    try {
-					    final int size = Integer.parseInt(value.toString());
-					    AttributeRegistry.getRegistry(getMap()).setFontSize(size);
-				    }
-				    catch (final NumberFormatException ex) {
-				    }
-			    }
-		    });
+		reader.addAttributeHandler(AttributeBuilder.XML_NODE_ATTRIBUTE_REGISTRY, "FONT_SIZE", new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				try {
+					final int size = Integer.parseInt(value.toString());
+					AttributeRegistry.getRegistry(getMap()).setFontSize(size);
+				}
+				catch (final NumberFormatException ex) {
+				}
+			}
+		});
 	}
 
 	/**
@@ -200,17 +192,16 @@ class AttributeBuilder implements IElementDOMHandler {
 		reader.addElementHandler(AttributeBuilder.XML_NODE_ATTRIBUTE, this);
 		reader.addElementHandler(AttributeBuilder.XML_NODE_REGISTERED_ATTRIBUTE_NAME, this);
 		reader.addElementHandler(AttributeBuilder.XML_NODE_REGISTERED_ATTRIBUTE_VALUE, this);
-		writer.addExtensionElementWriter(NodeAttributeTableModel.class,
-		    new IExtensionElementWriter() {
-			    public void writeContent(final ITreeWriter writer, final Object node,
-			                             final IExtension extension) throws IOException {
-				    final NodeAttributeTableModel attributes = (NodeAttributeTableModel) extension;
-				    attributes.save(writer);
-			    }
-		    });
+		writer.addExtensionElementWriter(NodeAttributeTableModel.class, new IExtensionElementWriter() {
+			public void writeContent(final ITreeWriter writer, final Object node, final IExtension extension)
+			        throws IOException {
+				final NodeAttributeTableModel attributes = (NodeAttributeTableModel) extension;
+				attributes.save(writer);
+			}
+		});
 		writer.addExtensionElementWriter(AttributeRegistry.class, new IExtensionElementWriter() {
-			public void writeContent(final ITreeWriter writer, final Object node,
-			                         final IExtension extension) throws IOException {
+			public void writeContent(final ITreeWriter writer, final Object node, final IExtension extension)
+			        throws IOException {
 				final AttributeRegistry attributes = (AttributeRegistry) extension;
 				attributes.write(writer);
 			}

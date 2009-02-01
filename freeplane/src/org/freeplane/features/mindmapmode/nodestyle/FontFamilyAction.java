@@ -21,6 +21,7 @@ package org.freeplane.features.mindmapmode.nodestyle;
 
 import java.awt.event.ActionEvent;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
@@ -33,14 +34,13 @@ class FontFamilyAction extends MultipleNodeAction {
 
 	/**
 	 */
-	public FontFamilyAction() {
-		super("font_family");
+	public FontFamilyAction(final Controller controller) {
+		super(controller, "font_family");
 	}
 
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		((MNodeStyleController) NodeStyleController.getController(getModeController()))
-		    .setFontFamily(node, actionFont);
+		((MNodeStyleController) NodeStyleController.getController(getModeController())).setFontFamily(node, actionFont);
 	}
 
 	public void actionPerformed(final String font) {

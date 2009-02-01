@@ -42,12 +42,12 @@ public class FitToPage extends FreeplaneAction {
 	/**
 	 *
 	 */
-	public FitToPage() {
-		super();
+	public FitToPage(final Controller controller) {
+		super(controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		view = (MapView) Controller.getController().getViewController().getMapView();
+		view = (MapView) getController().getViewController().getMapView();
 		if (view == null) {
 			return;
 		}
@@ -62,8 +62,8 @@ public class FitToPage extends FreeplaneAction {
 	private void scroll() {
 		final Rectangle rect = view.getInnerBounds();
 		final Rectangle viewer = view.getVisibleRect();
-		view.scrollBy(shift(rect.x, rect.width, viewer.x, viewer.width), shift(rect.y, rect.height,
-		    viewer.y, viewer.height));
+		view.scrollBy(shift(rect.x, rect.width, viewer.x, viewer.width), shift(rect.y, rect.height, viewer.y,
+		    viewer.height));
 	}
 
 	private int shift(final int coord1, final int size1, final int coord2, final int size2) {
@@ -80,6 +80,6 @@ public class FitToPage extends FreeplaneAction {
 		if (heightZoom < newZoom) {
 			newZoom = heightZoom;
 		}
-		Controller.getController().getViewController().setZoom((float) (newZoom));
+		getController().getViewController().setZoom((float) (newZoom));
 	}
 }

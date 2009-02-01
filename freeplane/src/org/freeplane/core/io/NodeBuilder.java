@@ -68,8 +68,7 @@ public class NodeBuilder implements IElementDOMHandler {
 		return new NodeModel(getMap());
 	}
 
-	public void endElement(final Object parentObject, final String tag, final Object userObject,
-	                       final IXMLElement dom) {
+	public void endElement(final Object parentObject, final String tag, final Object userObject, final IXMLElement dom) {
 		final NodeModel node = (NodeModel) userObject;
 		if (dom.getAttributeCount() != 0 || dom.hasChildren()) {
 			node.addExtension(new UnknownElements(dom));
@@ -117,8 +116,8 @@ public class NodeBuilder implements IElementDOMHandler {
 				    node.getHistoryInformation().setCreatedAt(TreeXmlReader.xmlToDate(value));
 			    }
 		    });
-		reader.addAttributeHandler(NodeBuilder.XML_NODE,
-		    NodeBuilder.XML_NODE_HISTORY_LAST_MODIFIED_AT, new IAttributeHandler() {
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, NodeBuilder.XML_NODE_HISTORY_LAST_MODIFIED_AT,
+		    new IAttributeHandler() {
 			    public void setAttribute(final Object userObject, final String value) {
 				    final NodeModel node = (NodeModel) userObject;
 				    if (node.getHistoryInformation() == null) {

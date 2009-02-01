@@ -72,9 +72,7 @@ public class LocationModel implements IExtension {
 
 	public int calcShiftY(final NodeModel parent) {
 		try {
-			return shiftY
-			        + (parent.getModeController().hasOneVisibleChild(parent) ? LocationModel.SHIFT
-			                : 0);
+			return shiftY + (parent.getModeController().hasOneVisibleChild(parent) ? LocationModel.SHIFT : 0);
 		}
 		catch (final NullPointerException e) {
 			return 0;

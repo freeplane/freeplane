@@ -23,6 +23,7 @@ import java.io.FileWriter;
 
 import javax.swing.JOptionPane;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
@@ -38,26 +39,23 @@ public class ManagePatterns extends FreeplaneAction {
 	/**
 	 *
 	 */
-	public ManagePatterns() {
-		super();
+	public ManagePatterns(final Controller controller) {
+		super(controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final ModeController mindMapController = getModeController();
-		final ManagePatternsPopupDialog formatDialog = new ManagePatternsPopupDialog(
-		    mindMapController);
+		final ManagePatternsPopupDialog formatDialog = new ManagePatternsPopupDialog(mindMapController);
 		formatDialog.setModal(true);
 		formatDialog.setVisible(true);
 		if (formatDialog.getResult() == ChooseFormatPopupDialog.OK) {
 			try {
-				final MPatternController patternController = MPatternController
-				    .getController(mindMapController);
+				final MPatternController patternController = MPatternController.getController(mindMapController);
 				final File patternFile = patternController.getPatternsFile();
-				StylePatternFactory.savePatterns(new FileWriter(patternFile), formatDialog
-				    .getPatternList());
+				StylePatternFactory.savePatterns(new FileWriter(patternFile), formatDialog.getPatternList());
 				patternController.loadPatterns(patternController.getPatternReader());
-				patternController.createPatternSubMenu(mindMapController
-				    .getUserInputListenerFactory().getMenuBuilder(),
+				patternController.createPatternSubMenu(
+				    mindMapController.getUserInputListenerFactory().getMenuBuilder(),
 				    UserInputListenerFactory.NODE_POPUP);
 			}
 			catch (final Exception ex) {

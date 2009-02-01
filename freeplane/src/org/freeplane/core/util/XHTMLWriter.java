@@ -108,10 +108,10 @@ public class XHTMLWriter extends FixedHTMLWriter {
 					insideValue = true;
 				}
 				else if (c == '>') {
-					if (tag.equals("img") || tag.equals("br") || tag.equals("hr")
-					        || tag.equals("input") || tag.equals("meta") || tag.equals("link")
-					        || tag.equals("area") || tag.equals("base") || tag.equals("basefont")
-					        || tag.equals("frame") || tag.equals("iframe") || tag.equals("col")) {
+					if (tag.equals("img") || tag.equals("br") || tag.equals("hr") || tag.equals("input")
+					        || tag.equals("meta") || tag.equals("link") || tag.equals("area") || tag.equals("base")
+					        || tag.equals("basefont") || tag.equals("frame") || tag.equals("iframe")
+					        || tag.equals("col")) {
 						super.write(" /");
 					}
 					insideTag = false;
@@ -151,8 +151,7 @@ public class XHTMLWriter extends FixedHTMLWriter {
 	 * @param writer
 	 *            XHTML target
 	 */
-	public static void html2xhtml(final Reader reader, final Writer writer) throws IOException,
-	        BadLocationException {
+	public static void html2xhtml(final Reader reader, final Writer writer) throws IOException, BadLocationException {
 		final HTMLEditorKit kit = new HTMLEditorKit();
 		final Document doc = kit.createDefaultDocument();
 		kit.read(reader, doc, doc.getLength());

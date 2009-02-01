@@ -70,9 +70,8 @@ public class GrabKeyDialog extends JDialog {
 		private boolean canClose() {
 			final String shortcutString = shortcut.getText();
 			if (shortcutString.length() == 0 && binding.isAssigned()) {
-				final int answer = JOptionPane.showConfirmDialog(GrabKeyDialog.this,
-				    getText("grab-key.remove-ask"), null, JOptionPane.YES_NO_OPTION,
-				    JOptionPane.QUESTION_MESSAGE);
+				final int answer = JOptionPane.showConfirmDialog(GrabKeyDialog.this, getText("grab-key.remove-ask"),
+				    null, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 				if (answer == JOptionPane.YES_OPTION) {
 					shortcut.setText(null);
 					isOK = true;
@@ -87,18 +86,15 @@ public class GrabKeyDialog extends JDialog {
 				return true;
 			}
 			if (other.name == binding.name) {
-				JOptionPane.showMessageDialog(GrabKeyDialog.this,
-				    getText("grab-key.duplicate-alt-shortcut"));
+				JOptionPane.showMessageDialog(GrabKeyDialog.this, getText("grab-key.duplicate-alt-shortcut"));
 				return false;
 			}
 			if (other.isPrefix) {
-				JOptionPane.showMessageDialog(GrabKeyDialog.this,
-				    getText("grab-key.prefix-shortcut"));
+				JOptionPane.showMessageDialog(GrabKeyDialog.this, getText("grab-key.prefix-shortcut"));
 				return false;
 			}
-			final int answer = JOptionPane.showConfirmDialog(GrabKeyDialog.this,
-			    getText("grab-key.duplicate-shortcut") + new Object[] { other.label }, null,
-			    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+			final int answer = JOptionPane.showConfirmDialog(GrabKeyDialog.this, getText("grab-key.duplicate-shortcut")
+			        + new Object[] { other.label }, null, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 			if (answer == JOptionPane.YES_OPTION) {
 				if (other.shortcut != null && shortcutString.startsWith(other.shortcut)) {
 					other.shortcut = null;
@@ -139,9 +135,8 @@ public class GrabKeyDialog extends JDialog {
 		@Override
 		protected void processKeyEvent(final KeyEvent _evt) {
 			if ((getModifierMask() & _evt.getModifiers()) != 0) {
-				final KeyEvent evt = new KeyEvent(_evt.getComponent(), _evt.getID(),
-				    _evt.getWhen(), ~getModifierMask() & _evt.getModifiers(), _evt.getKeyCode(),
-				    _evt.getKeyChar(), _evt.getKeyLocation());
+				final KeyEvent evt = new KeyEvent(_evt.getComponent(), _evt.getID(), _evt.getWhen(), ~getModifierMask()
+				        & _evt.getModifiers(), _evt.getKeyCode(), _evt.getKeyChar(), _evt.getKeyLocation());
 				processKeyEvent(evt);
 				if (evt.isConsumed()) {
 					_evt.consume();
@@ -212,8 +207,7 @@ public class GrabKeyDialog extends JDialog {
 		public String name;
 		public String shortcut;
 
-		public KeyBinding(final String name, final String label, final String shortcut,
-		                  final boolean isPrefix) {
+		public KeyBinding(final String name, final String label, final String shortcut, final boolean isPrefix) {
 			this.name = name;
 			this.label = label;
 			this.shortcut = shortcut;
@@ -250,8 +244,7 @@ public class GrabKeyDialog extends JDialog {
 				break;
 		}
 		return id + ",keyCode=0x" + Integer.toString(evt.getKeyCode(), 16) + ",keyChar=0x"
-		        + Integer.toString(evt.getKeyChar(), 16) + ",modifiers=0x"
-		        + Integer.toString(evt.getModifiers(), 16);
+		        + Integer.toString(evt.getKeyChar(), 16) + ",modifiers=0x" + Integer.toString(evt.getModifiers(), 16);
 	}
 
 	private Vector allBindings;

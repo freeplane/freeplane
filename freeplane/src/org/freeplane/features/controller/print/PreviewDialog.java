@@ -41,10 +41,10 @@ public class PreviewDialog extends JDialog implements ActionListener {
 	final private JLabel pageNumber;
 	protected Printable view;
 
-	public PreviewDialog(final String title, final Component c) {
+	public PreviewDialog(final PrintController printController, final String title, final Component c) {
 		super(JOptionPane.getFrameForComponent(c), title, true);
 		view = (Printable) c;
-		final Preview preview = new Preview(view, 1);
+		final Preview preview = new Preview(printController, view, 1);
 		final JScrollPane scrollPane = new JScrollPane(preview);
 		getContentPane().add(scrollPane, "Center");
 		final JToolBar toolbar = new FreeplaneToolBar();
@@ -57,10 +57,8 @@ public class PreviewDialog extends JDialog implements ActionListener {
 		toolbar.add(pageNumber);
 		toolbar.add(getButton("Forward24.gif", new BrowseAction(preview, pageNumber, 1)));
 		toolbar.add(new JToolBar.Separator());
-		toolbar.add(getButton("ZoomIn24.gif", new ZoomAction(preview,
-		    PreviewDialog.DEFAULT_ZOOM_FACTOR_STEP)));
-		toolbar.add(getButton("ZoomOut24.gif", new ZoomAction(preview,
-		    -PreviewDialog.DEFAULT_ZOOM_FACTOR_STEP)));
+		toolbar.add(getButton("ZoomIn24.gif", new ZoomAction(preview, PreviewDialog.DEFAULT_ZOOM_FACTOR_STEP)));
+		toolbar.add(getButton("ZoomOut24.gif", new ZoomAction(preview, -PreviewDialog.DEFAULT_ZOOM_FACTOR_STEP)));
 		toolbar.add(new JToolBar.Separator());
 		final JPanel dialog = new JPanel();
 		dialog.setLayout(new FlowLayout(FlowLayout.RIGHT));

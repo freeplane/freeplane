@@ -58,8 +58,8 @@ class NodeConditionController implements IElementaryConditionController {
 		return true;
 	}
 
-	public ICondition createCondition(final Object selectedItem, final NamedObject simpleCond,
-	                                  final Object value, final boolean ignoreCase) {
+	public ICondition createCondition(final Object selectedItem, final NamedObject simpleCond, final Object value,
+	                                  final boolean ignoreCase) {
 		return createNodeCondition(simpleCond, (String) value, ignoreCase);
 	}
 
@@ -122,22 +122,16 @@ class NodeConditionController implements IElementaryConditionController {
 
 	public ComboBoxModel getConditionsForProperty(final Object selectedItem) {
 		return new DefaultComboBoxModel(new NamedObject[] {
-		        Controller.getResourceController().createTranslatedString(
-		            ConditionFactory.FILTER_CONTAINS),
-		        Controller.getResourceController().createTranslatedString(
-		            ConditionFactory.FILTER_IS_EQUAL_TO),
-		        Controller.getResourceController().createTranslatedString(
-		            ConditionFactory.FILTER_IS_NOT_EQUAL_TO),
-		        NamedObject.literal(ConditionFactory.FILTER_GT),
-		        NamedObject.literal(ConditionFactory.FILTER_GE),
-		        NamedObject.literal(ConditionFactory.FILTER_LE),
-		        NamedObject.literal(ConditionFactory.FILTER_LT), });
+		        Controller.getResourceController().createTranslatedString(ConditionFactory.FILTER_CONTAINS),
+		        Controller.getResourceController().createTranslatedString(ConditionFactory.FILTER_IS_EQUAL_TO),
+		        Controller.getResourceController().createTranslatedString(ConditionFactory.FILTER_IS_NOT_EQUAL_TO),
+		        NamedObject.literal(ConditionFactory.FILTER_GT), NamedObject.literal(ConditionFactory.FILTER_GE),
+		        NamedObject.literal(ConditionFactory.FILTER_LE), NamedObject.literal(ConditionFactory.FILTER_LT), });
 	}
 
 	public IListModel getFilteredProperties() {
 		final SortedMapListModel list = new SortedMapListModel();
-		list.add(Controller.getResourceController().createTranslatedString(
-		    NodeConditionController.FILTER_NODE));
+		list.add(Controller.getResourceController().createTranslatedString(NodeConditionController.FILTER_NODE));
 		return list;
 	}
 

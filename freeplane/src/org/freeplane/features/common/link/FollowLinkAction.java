@@ -26,17 +26,18 @@ import javax.swing.JMenuItem;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.FreeplaneAction;
 
 class FollowLinkAction extends FreeplaneAction implements PopupMenuListener {
-	public FollowLinkAction() {
-		super("follow_link");
+	public FollowLinkAction(final Controller controller) {
+		super(controller, "follow_link");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		for (final Iterator iterator = getModeController().getMapController().getSelectedNodes()
-		    .iterator(); iterator.hasNext();) {
+		for (final Iterator iterator = getModeController().getMapController().getSelectedNodes().iterator(); iterator
+		    .hasNext();) {
 			final NodeModel selNode = (NodeModel) iterator.next();
 			if (NodeLinks.getLink(selNode) != null) {
 				getModeController().getMapController().loadURL(NodeLinks.getLink(selNode));
@@ -45,8 +46,8 @@ class FollowLinkAction extends FreeplaneAction implements PopupMenuListener {
 	}
 
 	private boolean isLinkEnabled() {
-		for (final Iterator iterator = getModeController().getMapController().getSelectedNodes()
-		    .iterator(); iterator.hasNext();) {
+		for (final Iterator iterator = getModeController().getMapController().getSelectedNodes().iterator(); iterator
+		    .hasNext();) {
 			final NodeModel selNode = (NodeModel) iterator.next();
 			if (NodeLinks.getLink(selNode) != null) {
 				return true;

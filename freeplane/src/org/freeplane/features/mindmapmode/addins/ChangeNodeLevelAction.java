@@ -42,25 +42,36 @@ public class ChangeNodeLevelAction {
 	keyStroke = "keystroke_accessories/plugins/ChangeNodeLevelAction_right.properties_key", //
 	locations = { "/menu_bar/navigate/nodes" })
 	private class ChangeNodeLevelDownwardsAction extends FreeplaneAction {
+		public ChangeNodeLevelDownwardsAction() {
+			super(controller);
+		}
+
 		public void actionPerformed(final ActionEvent e) {
 			ChangeNodeLevelAction.this.actionPerformed(getModeController(), false);
 		}
-	};
+	}
 
 	@ActionDescriptor(tooltip = "accessories/plugins/ChangeNodeLevelAction_left.properties_documentation", //
 	name = "accessories/plugins/ChangeNodeLevelAction_left.properties_name", //
 	keyStroke = "keystroke_accessories/plugins/ChangeNodeLevelAction_left.properties_key", //
 	locations = { "/menu_bar/navigate/nodes" })
 	private class ChangeNodeLevelUpwardsAction extends FreeplaneAction {
+		public ChangeNodeLevelUpwardsAction() {
+			super(controller);
+		}
+
 		public void actionPerformed(final ActionEvent e) {
 			ChangeNodeLevelAction.this.actionPerformed(getModeController(), true);
 		}
 	};
 
+	final private Controller controller;;
+
 	/**
 	 *
 	 */
-	public ChangeNodeLevelAction(final MenuBuilder menuBuilder) {
+	public ChangeNodeLevelAction(final Controller controller, final MenuBuilder menuBuilder) {
+		this.controller = controller;
 		menuBuilder.addAnnotatedAction(new ChangeNodeLevelUpwardsAction());
 		menuBuilder.addAnnotatedAction(new ChangeNodeLevelDownwardsAction());
 	}
@@ -80,22 +91,20 @@ public class ChangeNodeLevelAction {
 			selectedNodes = selecteds;
 		}
 		modeController.getMapController().sortNodesByDepth(selectedNodes);
+		final Controller controller = modeController.getController();
 		if (selectedNode.isRoot()) {
-			Controller.getController()
-			    .errorMessage(Controller.getText("cannot_add_parent_to_root"));
+			controller.errorMessage(Controller.getText("cannot_add_parent_to_root"));
 			return;
 		}
 		final NodeModel selectedParent = selectedNode.getParentNode();
 		for (final Iterator it = selectedNodes.iterator(); it.hasNext();) {
 			final NodeModel node = (NodeModel) it.next();
 			if (node.getParentNode() != selectedParent) {
-				Controller.getController().errorMessage(
-				    Controller.getText("cannot_add_parent_diff_parents"));
+				controller.errorMessage(Controller.getText("cannot_add_parent_diff_parents"));
 				return;
 			}
 			if (node.isRoot()) {
-				Controller.getController().errorMessage(
-				    Controller.getText("cannot_add_parent_to_root"));
+				controller.errorMessage(Controller.getText("cannot_add_parent_to_root"));
 				return;
 			}
 		}
@@ -111,8 +120,8 @@ public class ChangeNodeLevelAction {
 			if (selectedParent.isRoot()) {
 				final boolean isLeft = selectedNode.isLeft();
 				final Transferable copy = clipboardController.cut(selectedNodes);
-				((MClipboardController) ClipboardController.getController(modeController)).paste(
-				    copy, selectedParent, false, (!isLeft));
+				((MClipboardController) ClipboardController.getController(modeController)).paste(copy, selectedParent,
+				    false, (!isLeft));
 				select(modeController, selectedNodeId, selectedNodesId);
 				return;
 			}
@@ -121,12 +130,12 @@ public class ChangeNodeLevelAction {
 			final boolean isLeft = selectedParent.isLeft();
 			final Transferable copy = clipboardController.cut(selectedNodes);
 			if (parentPosition == grandParent.getChildCount() - 1) {
-				((MClipboardController) ClipboardController.getController(modeController)).paste(
-				    copy, grandParent, false, isLeft);
+				((MClipboardController) ClipboardController.getController(modeController)).paste(copy, grandParent,
+				    false, isLeft);
 			}
 			else {
-				((MClipboardController) ClipboardController.getController(modeController)).paste(
-				    copy, ((NodeModel) grandParent.getChildAt(parentPosition + 1)), true, isLeft);
+				((MClipboardController) ClipboardController.getController(modeController)).paste(copy,
+				    ((NodeModel) grandParent.getChildAt(parentPosition + 1)), true, isLeft);
 			}
 			select(modeController, selectedNodeId, selectedNodesId);
 		}
@@ -143,8 +152,7 @@ public class ChangeNodeLevelAction {
 			if (directSibling == null) {
 				for (int i = ownPosition + 1; i < selectedParent.getChildCount(); ++i) {
 					final NodeModel sibling = (NodeModel) selectedParent.getChildAt(i);
-					if ((!selectedNodes.contains(sibling))
-					        && selectedNode.isLeft() == sibling.isLeft()) {
+					if ((!selectedNodes.contains(sibling)) && selectedNode.isLeft() == sibling.isLeft()) {
 						directSibling = sibling;
 						break;
 					}
@@ -152,24 +160,21 @@ public class ChangeNodeLevelAction {
 			}
 			if (directSibling != null) {
 				final Transferable copy = clipboardController.cut(selectedNodes);
-				((MClipboardController) ClipboardController.getController(modeController)).paste(
-				    copy, directSibling, false, directSibling.isLeft());
+				((MClipboardController) ClipboardController.getController(modeController)).paste(copy, directSibling,
+				    false, directSibling.isLeft());
 				select(modeController, selectedNodeId, selectedNodesId);
 				return;
 			}
 		}
 	}
 
-	private void select(final ModeController modeController, final String selectedNodeId,
-	                    final List selectedNodesIds) {
-		final NodeModel newInstanceOfSelectedNode = modeController.getMapController()
-		    .getNodeFromID(selectedNodeId);
+	private void select(final ModeController modeController, final String selectedNodeId, final List selectedNodesIds) {
+		final NodeModel newInstanceOfSelectedNode = modeController.getMapController().getNodeFromID(selectedNodeId);
 		final List newSelecteds = new LinkedList();
 		for (final Iterator iter = selectedNodesIds.iterator(); iter.hasNext();) {
 			final String nodeId = (String) iter.next();
 			newSelecteds.add(modeController.getMapController().getNodeFromID(nodeId));
 		}
-		modeController.getMapController().selectMultipleNodes(newInstanceOfSelectedNode,
-		    newSelecteds);
+		modeController.getMapController().selectMultipleNodes(newInstanceOfSelectedNode, newSelecteds);
 	}
 }

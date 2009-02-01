@@ -211,8 +211,7 @@ public class Pattern implements Cloneable {
 	private void unMarshallImpl(final IXMLElement xmlPattern) {
 		name = xmlPattern.getAttribute("name", null);
 		{
-			final IXMLElement xmlProperty = xmlPattern
-			    .getFirstChildNamed("pattern_node_background_color");
+			final IXMLElement xmlProperty = xmlPattern.getFirstChildNamed("pattern_node_background_color");
 			if (xmlProperty != null) {
 				patternNodeBackgroundColor = new PatternProperty();
 				patternNodeBackgroundColor.value = xmlProperty.getAttribute("value", null);

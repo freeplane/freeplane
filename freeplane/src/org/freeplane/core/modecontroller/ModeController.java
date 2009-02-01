@@ -46,8 +46,8 @@ import org.freeplane.core.url.UrlManager;
  * MindMapController as a sample.
  */
 public class ModeController {
-	private static class ActionDisplayerOnChange implements INodeChangeListener,
-	        INodeSelectionListener, IActionOnChange {
+	private static class ActionDisplayerOnChange implements INodeChangeListener, INodeSelectionListener,
+	        IActionOnChange {
 		final FreeplaneAction action;
 
 		public ActionDisplayerOnChange(final FreeplaneAction action) {
@@ -71,8 +71,7 @@ public class ModeController {
 		}
 	}
 
-	private static class ActionEnablerOnChange implements INodeChangeListener,
-	        INodeSelectionListener, IActionOnChange {
+	private static class ActionEnablerOnChange implements INodeChangeListener, INodeSelectionListener, IActionOnChange {
 		final FreeplaneAction action;
 
 		public ActionEnablerOnChange(final FreeplaneAction action) {
@@ -96,8 +95,7 @@ public class ModeController {
 		}
 	}
 
-	private static class ActionSelectorOnChange implements INodeChangeListener,
-	        INodeSelectionListener, IActionOnChange {
+	private static class ActionSelectorOnChange implements INodeChangeListener, INodeSelectionListener, IActionOnChange {
 		final FreeplaneAction action;
 
 		public ActionSelectorOnChange(final FreeplaneAction action) {
@@ -127,6 +125,7 @@ public class ModeController {
 
 	public static final String NODESEPARATOR = "<nodeseparator>";
 	private final ActionController actionController;
+	final private Controller controller;
 	final private ExtensionHashMap extensions;
 	private boolean isBlocked = false;
 	private MapController mapController;
@@ -145,7 +144,8 @@ public class ModeController {
 	/**
 	 * Instantiation order: first me and then the model.
 	 */
-	public ModeController() {
+	public ModeController(final Controller controller) {
+		this.controller = controller;
 		menuContributors = new LinkedList();
 		nodeViewListeners = new LinkedList();
 		actionController = new ActionController();
@@ -155,20 +155,17 @@ public class ModeController {
 	public void addAction(final Object key, final Action action) {
 		actionController.addAction(key, action);
 		if (FreeplaneAction.checkEnabledOnChange(action)) {
-			final ActionEnablerOnChange listener = new ActionEnablerOnChange(
-			    (FreeplaneAction) action);
+			final ActionEnablerOnChange listener = new ActionEnablerOnChange((FreeplaneAction) action);
 			mapController.addNodeSelectionListener(listener);
 			mapController.addNodeChangeListener(listener);
 		}
 		if (FreeplaneAction.checkSelectionOnChange(action)) {
-			final ActionSelectorOnChange listener = new ActionSelectorOnChange(
-			    (FreeplaneAction) action);
+			final ActionSelectorOnChange listener = new ActionSelectorOnChange((FreeplaneAction) action);
 			mapController.addNodeSelectionListener(listener);
 			mapController.addNodeChangeListener(listener);
 		}
 		if (FreeplaneAction.checkVisibilityOnChange(action)) {
-			final ActionDisplayerOnChange listener = new ActionDisplayerOnChange(
-			    (FreeplaneAction) action);
+			final ActionDisplayerOnChange listener = new ActionDisplayerOnChange((FreeplaneAction) action);
 			mapController.addNodeSelectionListener(listener);
 			mapController.addNodeChangeListener(listener);
 		}
@@ -216,7 +213,11 @@ public class ModeController {
 		if (action != null) {
 			return action;
 		}
-		return Controller.getController().getAction(key);
+		return controller.getAction(key);
+	}
+
+	public Controller getController() {
+		return controller;
 	}
 
 	public IExtension getExtension(final Class clazz) {
@@ -319,7 +320,7 @@ public class ModeController {
 	 * @see freeplane.modes.ModeController#setVisible(boolean)
 	 */
 	public void setVisible(final boolean visible) {
-		final NodeModel node = Controller.getController().getSelection().getSelected();
+		final NodeModel node = controller.getSelection().getSelected();
 		if (visible) {
 			mapController.onSelect(node);
 		}

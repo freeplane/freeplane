@@ -75,8 +75,7 @@ public class MindIcon implements Comparable, IIconInformation {
 			return MindIcon.mAllIconNames;
 		}
 		final Vector mAllIconNames = new Vector();
-		final String icons = Controller.getResourceController().getProperty(
-		    MindIcon.PROPERTY_STRING_ICONS_LIST);
+		final String icons = Controller.getResourceController().getProperty(MindIcon.PROPERTY_STRING_ICONS_LIST);
 		final StringTokenizer tokenizer = new StringTokenizer(icons, ";");
 		while (tokenizer.hasMoreTokens()) {
 			mAllIconNames.add(tokenizer.nextToken());
@@ -139,8 +138,8 @@ public class MindIcon implements Comparable, IIconInformation {
 			URL imageURL = Controller.getResourceController().getResource(getIconFileName());
 			if (imageURL == null) {
 				try {
-					final File file = new File(Controller.getResourceController()
-					    .getFreeplaneUserDirectory(), "icons/" + getName() + ".png");
+					final File file = new File(Controller.getResourceController().getFreeplaneUserDirectory(), "icons/"
+					        + getName() + ".png");
 					if (file.canRead()) {
 						imageURL = UrlManager.fileToUrl(file);
 					}
@@ -148,8 +147,7 @@ public class MindIcon implements Comparable, IIconInformation {
 				catch (final Exception e) {
 				}
 			}
-			final ImageIcon icon = imageURL == null ? MindIcon.iconNotFound : new ImageIcon(
-			    imageURL);
+			final ImageIcon icon = imageURL == null ? MindIcon.iconNotFound : new ImageIcon(imageURL);
 			setIcon(icon);
 			return icon;
 		}

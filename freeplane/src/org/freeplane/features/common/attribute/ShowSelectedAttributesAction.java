@@ -28,15 +28,18 @@ import org.freeplane.core.model.MapModel;
 import org.freeplane.core.ui.MenuBuilder;
 
 class ShowSelectedAttributesAction extends AbstractAction {
+	final private Controller controller;
+
 	/**
 	 *
 	 */
-	public ShowSelectedAttributesAction() {
+	public ShowSelectedAttributesAction(final Controller controller) {
+		this.controller = controller;
 		MenuBuilder.setLabelAndMnemonic(this, Controller.getText("attributes_show_selected"));
 	};
 
 	public void actionPerformed(final ActionEvent e) {
-		final MapModel map = Controller.getController().getMap();
+		final MapModel map = controller.getMap();
 		setAttributeViewType(map);
 	}
 

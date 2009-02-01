@@ -44,16 +44,14 @@ public class ReadManager {
 	 * @see freeplane.persistence.Reader#addAttributeLoader(java.lang.String,
 	 * freeplane.persistence.AttributeLoader)
 	 */
-	public void addAttributeHandler(final String parentTag, final String attributeName,
-	                                final IAttributeHandler a) {
+	public void addAttributeHandler(final String parentTag, final String attributeName, final IAttributeHandler a) {
 		Hashtable<String, IAttributeHandler> tagHandlers = attributeHandlers.get(parentTag);
 		if (tagHandlers == null) {
 			tagHandlers = new Hashtable<String, IAttributeHandler>();
 			attributeHandlers.put(parentTag, tagHandlers);
 		}
 		if (null != tagHandlers.put(attributeName, a)) {
-			throw new RuntimeException("attribute handler " + parentTag + ", " + attributeName
-			        + " already registered");
+			throw new RuntimeException("attribute handler " + parentTag + ", " + attributeName + " already registered");
 		}
 	}
 
@@ -90,8 +88,7 @@ public class ReadManager {
 	 * @see freeplane.persistence.Reader#removeAttributeLoader(java.lang.String,
 	 * freeplane.persistence.AttributeLoader)
 	 */
-	public void removeAttributeHandler(final String parentTag, final String attributeName,
-	                                   final IAttributeHandler a) {
+	public void removeAttributeHandler(final String parentTag, final String attributeName, final IAttributeHandler a) {
 		final Hashtable<String, IAttributeHandler> hashtable = attributeHandlers.get(parentTag);
 		hashtable.remove(attributeName);
 	}

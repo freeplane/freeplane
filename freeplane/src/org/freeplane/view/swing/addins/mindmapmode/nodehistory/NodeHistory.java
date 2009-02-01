@@ -39,17 +39,16 @@ public class NodeHistory implements IExtension, INodeSelectionListener {
 	private ListIterator<NodeHolder> nodeIterator;
 	private final LinkedList<NodeHolder> nodes;
 
-	public NodeHistory(final ModeController modeController) {
-		this.modeController = modeController;
+	public NodeHistory(final ModeController c) {
+		modeController = c;
 		nodes = new LinkedList<NodeHolder>();
 		nodeIterator = nodes.listIterator();
 		modeController.getMapController().addNodeSelectionListener(this);
-		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory()
-		    .getMenuBuilder();
-		final BackAction backAction = new BackAction(this);
+		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
+		final BackAction backAction = new BackAction(modeController.getController(), this);
 		menuBuilder.addAnnotatedAction(backAction);
 		modeController.addAnnotatedAction(backAction);
-		final ForwardAction forwardAction = new ForwardAction(this);
+		final ForwardAction forwardAction = new ForwardAction(modeController.getController(), this);
 		menuBuilder.addAnnotatedAction(forwardAction);
 		modeController.addAnnotatedAction(forwardAction);
 	}
@@ -101,7 +100,8 @@ public class NodeHistory implements IExtension, INodeSelectionListener {
 		final boolean fChangeModule = changeModule;
 		final MapView fNewModule = newModule;
 		if (fChangeModule) {
-			final IMapViewManager mapViewManager = Controller.getController().getMapViewManager();
+			final Controller controller = fNewModule.getModel().getModeController().getController();
+			final IMapViewManager mapViewManager = controller.getMapViewManager();
 			final boolean res = mapViewManager.changeToMapView(fNewModule);
 			if (!res) {
 				Logger.global.warning("Can't change to map mapView " + fNewModule);
@@ -126,9 +126,10 @@ public class NodeHistory implements IExtension, INodeSelectionListener {
 	}
 
 	public void onSelect(final NodeModel pNode) {
+		final Controller controller = pNode.getModeController().getController();
 		if (currentNodeHolder != null
-		        && currentNodeHolder.isIdentical(((MapView) Controller.getController()
-		            .getViewController().getMapView()).getNodeView(pNode))) {
+		        && currentNodeHolder.isIdentical(((MapView) controller.getViewController().getMapView())
+		            .getNodeView(pNode))) {
 			return;
 		}
 		while (canGoForward()) {
@@ -139,8 +140,7 @@ public class NodeHistory implements IExtension, INodeSelectionListener {
 			nodes.removeFirst();
 			nodeIterator = nodes.listIterator(nodes.size());
 		}
-		currentNodeHolder = new NodeHolder(((MapView) Controller.getController()
-		    .getViewController().getMapView()).getNodeView(pNode));
+		currentNodeHolder = new NodeHolder(((MapView) controller.getViewController().getMapView()).getNodeView(pNode));
 		nodeIterator.add(currentNodeHolder);
 	}
 

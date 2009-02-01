@@ -38,8 +38,7 @@ class LockManager extends TimerTask {
 	final long lockUpdatePeriod = 4 * 60 * 1000;
 
 	private File getSemaphoreFile(final File mapFile) {
-		return new File(mapFile.getParent() + System.getProperty("file.separator") + "$~"
-		        + mapFile.getName() + "~");
+		return new File(mapFile.getParent() + System.getProperty("file.separator") + "$~" + mapFile.getName() + "~");
 	}
 
 	public synchronized String popLockingUserOfOldLock() {

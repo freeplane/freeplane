@@ -53,8 +53,8 @@ public class NewParentNode extends FreeplaneAction {
 	/**
 	 *
 	 */
-	public NewParentNode() {
-		super();
+	public NewParentNode(final Controller controller) {
+		super(controller);
 	}
 
 	/*
@@ -69,44 +69,39 @@ public class NewParentNode extends FreeplaneAction {
 		final List selectedNodes = selecteds;
 		getModeController().getMapController().sortNodesByDepth(selectedNodes);
 		if (focussed.isRoot()) {
-			Controller.getController()
-			    .errorMessage(Controller.getText("cannot_add_parent_to_root"));
+			getController().errorMessage(Controller.getText("cannot_add_parent_to_root"));
 			return;
 		}
 		final NodeModel newNode = moveToNewParent(selectedNode, selectedNodes);
 		if (newNode == null) {
 			return;
 		}
-		Controller.getController().getSelection().selectAsTheOnlyOneSelected(newNode);
+		getController().getSelection().selectAsTheOnlyOneSelected(newNode);
 	}
 
 	private NodeModel moveToNewParent(final NodeModel selectedNode, final List selectedNodes) {
 		final NodeModel selectedParent = selectedNode.getParentNode();
 		final int childPosition = selectedParent.getChildPosition(selectedNode);
-		final NodeModel newNode = ((MMapController) getModeController().getMapController())
-		    .addNewNode(selectedParent, childPosition, selectedNode.isLeft());
+		final NodeModel newNode = ((MMapController) getModeController().getMapController()).addNewNode(selectedParent,
+		    childPosition, selectedNode.isLeft());
 		return moveToOtherNode(selectedNodes, selectedParent, newNode);
 	}
 
-	private NodeModel moveToOtherNode(final List selectedNodes, final NodeModel selectedParent,
-	                                  final NodeModel newNode) {
+	private NodeModel moveToOtherNode(final List selectedNodes, final NodeModel selectedParent, final NodeModel newNode) {
 		for (final Iterator it = selectedNodes.iterator(); it.hasNext();) {
 			final NodeModel node = (NodeModel) it.next();
 			if (node.getParentNode() != selectedParent) {
-				Controller.getController().errorMessage(
-				    Controller.getText("cannot_add_parent_diff_parents"));
+				getController().errorMessage(Controller.getText("cannot_add_parent_diff_parents"));
 				return null;
 			}
 			if (node.isRoot()) {
-				Controller.getController().errorMessage(
-				    Controller.getText("cannot_add_parent_to_root"));
+				getController().errorMessage(Controller.getText("cannot_add_parent_to_root"));
 				return null;
 			}
 		}
-		final Transferable copy = ((MClipboardController) ClipboardController
-		    .getController(getModeController())).cut(selectedNodes);
-		((MClipboardController) ClipboardController.getController(getModeController())).paste(copy,
-		    newNode);
+		final Transferable copy = ((MClipboardController) ClipboardController.getController(getModeController()))
+		    .cut(selectedNodes);
+		((MClipboardController) ClipboardController.getController(getModeController())).paste(copy, newNode);
 		getModeController().getMapController().nodeChanged(selectedParent);
 		return newNode;
 	}

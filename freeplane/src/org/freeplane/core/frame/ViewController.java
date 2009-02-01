@@ -61,10 +61,10 @@ import org.freeplane.core.ui.components.FreeplaneMenuBar;
  */
 abstract public class ViewController implements IMapViewChangeListener {
 	public static final String RESOURCE_ANTIALIAS = "antialias";
-	private static final String[] zooms = { "25%", "50%", "75%", "100%", "150%", "200%", "300%",
-	        "400%" };
+	private static final String[] zooms = { "25%", "50%", "75%", "100%", "150%", "200%", "300%", "400%" };
 	private boolean antialiasAll = false;
 	private boolean antialiasEdges = false;
+	final private Controller controller;
 	final private JPanel leftToolbarPanel;
 	private boolean leftToolbarVisible;
 	private final IMapViewManager mapViewManager;
@@ -80,19 +80,19 @@ abstract public class ViewController implements IMapViewChangeListener {
 	final private Action zoomIn;
 	final private Action zoomOut;
 
-	public ViewController(final IMapViewManager mapViewManager) {
+	public ViewController(final Controller controller, final IMapViewManager mapViewManager) {
 		super();
-		final Controller controller = Controller.getController();
+		this.controller = controller;
 		controller.setViewController(this);
 		this.mapViewManager = mapViewManager;
 		mapViewManager.addMapViewChangeListener(this);
-		controller.addAction("close", new CloseAction());
-		controller.addAction("moveToRoot", new MoveToRootAction());
+		controller.addAction("close", new CloseAction(controller));
+		controller.addAction("moveToRoot", new MoveToRootAction(controller));
 		zoomIn = new ZoomInAction(this);
 		controller.addAction("zoomIn", zoomIn);
 		zoomOut = new ZoomOutAction(this);
 		controller.addAction("zoomOut", zoomOut);
-		optionAntialiasAction = new OptionAntialiasAction();
+		optionAntialiasAction = new OptionAntialiasAction(controller);
 		controller.addAction("optionAntialiasAction", optionAntialiasAction);
 		userDefinedZoom = Controller.getResourceController().getText("user_defined_zoom");
 		zoom = new JComboBox(getZooms());
@@ -105,9 +105,9 @@ abstract public class ViewController implements IMapViewChangeListener {
 				}
 			}
 		});
-		controller.addAction("toggleMenubar", new ToggleMenubarAction(this));
-		controller.addAction("toggleToolbar", new ToggleToolbarAction(this));
-		controller.addAction("toggleLeftToolbar", new ToggleLeftToolbarAction(this));
+		controller.addAction("toggleMenubar", new ToggleMenubarAction(controller, this));
+		controller.addAction("toggleToolbar", new ToggleToolbarAction(controller, this));
+		controller.addAction("toggleLeftToolbar", new ToggleLeftToolbarAction(controller, this));
 		toolbarVisible = true;
 		leftToolbarVisible = true;
 		menubarVisible = true;
@@ -125,7 +125,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 	}
 
 	public void afterViewChange(final Component oldMap, final Component pNewMap) {
-		final ModeController oldModeController = Controller.getModeController();
+		final ModeController oldModeController = controller.getModeController();
 		ModeController newModeController = oldModeController;
 		if (pNewMap != null) {
 			setViewportView(pNewMap);
@@ -137,7 +137,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 			obtainFocusForSelected();
 			newModeController = mapViewManager.getModel().getModeController();
 			if (newModeController != oldModeController) {
-				Controller.getController().selectMode(newModeController);
+				controller.selectMode(newModeController);
 			}
 			newModeController.setVisible(true);
 		}
@@ -156,7 +156,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 	}
 
 	public void beforeViewChange(final Component oldMap, final Component newMap) {
-		final ModeController modeController = Controller.getModeController();
+		final ModeController modeController = controller.getModeController();
 		if (oldMap != null) {
 			modeController.setVisible(false);
 		}
@@ -194,6 +194,10 @@ abstract public class ViewController implements IMapViewChangeListener {
 	 */
 	abstract public Container getContentPane();
 
+	protected Controller getController() {
+		return controller;
+	}
+
 	private float getCurrentZoomIndex() {
 		final int selectedIndex = zoom.getSelectedIndex();
 		final int itemCount = zoom.getItemCount();
@@ -211,6 +215,10 @@ abstract public class ViewController implements IMapViewChangeListener {
 
 	public Font getFont(final NodeModel node) {
 		return mapViewManager.getFont(node);
+	}
+
+	public Frame getFrame() {
+		return JOptionPane.getFrameForComponent(getContentPane());
 	}
 
 	abstract public FreeplaneMenuBar getFreeplaneMenuBar();
@@ -282,7 +290,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 	}
 
 	public void init() {
-		final JToolBar filterToolbar = FilterController.getController().getFilterToolbar();
+		final JToolBar filterToolbar = FilterController.getController(controller).getFilterToolbar();
 		getContentPane().add(toolbarPanel, BorderLayout.NORTH);
 		getContentPane().add(leftToolbarPanel, BorderLayout.WEST);
 		toolbarPanel.add(filterToolbar, BorderLayout.SOUTH);
@@ -337,14 +345,10 @@ abstract public class ViewController implements IMapViewChangeListener {
 				getMapViewManager().nextMapView();
 			}
 		}
-		Controller.getResourceController().setProperty("antialiasEdges",
-		    (antialiasEdges ? "true" : "false"));
-		Controller.getResourceController().setProperty("antialiasAll",
-		    (antialiasAll ? "true" : "false"));
-		Controller.getResourceController().setProperty("toolbarVisible",
-		    (toolbarVisible ? "true" : "false"));
-		Controller.getResourceController().setProperty("leftToolbarVisible",
-		    (leftToolbarVisible ? "true" : "false"));
+		Controller.getResourceController().setProperty("antialiasEdges", (antialiasEdges ? "true" : "false"));
+		Controller.getResourceController().setProperty("antialiasAll", (antialiasAll ? "true" : "false"));
+		Controller.getResourceController().setProperty("toolbarVisible", (toolbarVisible ? "true" : "false"));
+		Controller.getResourceController().setProperty("leftToolbarVisible", (leftToolbarVisible ? "true" : "false"));
 		return true;
 	}
 
@@ -361,14 +365,12 @@ abstract public class ViewController implements IMapViewChangeListener {
 		mapViewManager.scrollNodeToVisible(node);
 	}
 
-	public void selectMode(final ModeController oldModeController,
-	                       final ModeController newModeController) {
+	public void selectMode(final ModeController oldModeController, final ModeController newModeController) {
 		if (oldModeController == newModeController) {
 			return;
 		}
 		if (oldModeController != null) {
-			final IUserInputListenerFactory userInputListenerFactory = oldModeController
-			    .getUserInputListenerFactory();
+			final IUserInputListenerFactory userInputListenerFactory = oldModeController.getUserInputListenerFactory();
 			final JToolBar modeToolBar = userInputListenerFactory.getMainToolBar();
 			if (modeToolBar != null) {
 				toolbarPanel.remove(modeToolBar);
@@ -378,15 +380,13 @@ abstract public class ViewController implements IMapViewChangeListener {
 				leftToolbarPanel.remove(leftToolBar);
 			}
 		}
-		final JToolBar newToolBar = newModeController.getUserInputListenerFactory()
-		    .getMainToolBar();
+		final JToolBar newToolBar = newModeController.getUserInputListenerFactory().getMainToolBar();
 		if (newToolBar != null) {
 			toolbarPanel.add(newToolBar, BorderLayout.NORTH);
 			newToolBar.repaint();
 		}
 		/* new left toolbar. */
-		final Component newLeftToolBar = newModeController.getUserInputListenerFactory()
-		    .getLeftToolBar();
+		final Component newLeftToolBar = newModeController.getUserInputListenerFactory().getLeftToolBar();
 		if (newLeftToolBar != null) {
 			leftToolbarPanel.add(newLeftToolBar, BorderLayout.WEST);
 		}
@@ -425,12 +425,10 @@ abstract public class ViewController implements IMapViewChangeListener {
 
 	public void setTextRenderingHint(final Graphics2D g) {
 		if (getAntialiasAll()) {
-			g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-			    RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+			g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		}
 		else {
-			g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-			    RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
+			g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
 		}
 	}
 
@@ -438,13 +436,12 @@ abstract public class ViewController implements IMapViewChangeListener {
 	 * Set the Frame title with mode and file if exist
 	 */
 	public void setTitle() {
-		final ModeController modeController = Controller.getModeController();
+		final ModeController modeController = controller.getModeController();
 		if (modeController == null) {
 			setTitle("");
 			return;
 		}
-		final Object[] messageArguments = { Controller.getText(("mode_" + modeController
-		    .getModeName())) };
+		final Object[] messageArguments = { Controller.getText(("mode_" + modeController.getModeName())) };
 		final MessageFormat formatter = new MessageFormat(Controller.getText("mode_title"));
 		String title = formatter.format(messageArguments);
 		String rawTitle = "";
@@ -485,8 +482,8 @@ abstract public class ViewController implements IMapViewChangeListener {
 		mapViewManager.setZoom(zoom);
 		setZoomComboBox(zoom);
 		final Object[] messageArguments = { String.valueOf(zoom * 100f) };
-		final String stringResult = Controller.getResourceController().format(
-		    "user_defined_zoom_status_bar", messageArguments);
+		final String stringResult = Controller.getResourceController().format("user_defined_zoom_status_bar",
+		    messageArguments);
 		out(stringResult);
 	}
 
@@ -513,8 +510,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 
 	public void updateMenus(final MenuBuilder menuBuilder) {
 		if (menuBuilder.contains("/main_toolbar/zoom")) {
-			menuBuilder.addComponent("/main_toolbar/zoom", getZoomComboBox(), zoomIn,
-			    MenuBuilder.AS_CHILD);
+			menuBuilder.addComponent("/main_toolbar/zoom", getZoomComboBox(), zoomIn, MenuBuilder.AS_CHILD);
 		}
 	}
 
@@ -538,8 +534,4 @@ abstract public class ViewController implements IMapViewChangeListener {
 			setZoomByItem(zoom.getItemAt((int) (currentZoomIndex - 0.5f)));
 		}
 	}
-
-	public Frame getFrame() {
-	    return JOptionPane.getFrameForComponent(getContentPane());
-    }
 }

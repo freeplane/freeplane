@@ -22,6 +22,7 @@ package org.freeplane.features.mindmapmode.edge;
 import java.awt.Color;
 import java.util.ListIterator;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.undo.IUndoableActor;
@@ -34,19 +35,16 @@ import org.freeplane.features.common.edge.EdgeModel;
 public class MEdgeController extends EdgeController {
 	public MEdgeController(final ModeController modeController) {
 		super(modeController);
-		modeController.addAction("edgeColor", new EdgeColorAction());
-		modeController.addAction("EdgeWidth_WIDTH_PARENT", new EdgeWidthAction(modeController,
-		    EdgeModel.WIDTH_PARENT));
-		modeController.addAction("EdgeWidth_WIDTH_THIN", new EdgeWidthAction(modeController,
-		    EdgeModel.WIDTH_THIN));
+		final Controller controller = modeController.getController();
+		modeController.addAction("edgeColor", new EdgeColorAction(controller));
+		modeController.addAction("EdgeWidth_WIDTH_PARENT", new EdgeWidthAction(modeController, EdgeModel.WIDTH_PARENT));
+		modeController.addAction("EdgeWidth_WIDTH_THIN", new EdgeWidthAction(modeController, EdgeModel.WIDTH_THIN));
 		modeController.addAction("EdgeWidth_1", new EdgeWidthAction(modeController, 1));
 		modeController.addAction("EdgeWidth_2", new EdgeWidthAction(modeController, 2));
 		modeController.addAction("EdgeWidth_4", new EdgeWidthAction(modeController, 4));
 		modeController.addAction("EdgeWidth_8", new EdgeWidthAction(modeController, 8));
-		modeController.addAction("EdgeStyle_linear", new EdgeStyleAction(modeController,
-		    EdgeModel.EDGESTYLE_LINEAR));
-		modeController.addAction("EdgeStyle_bezier", new EdgeStyleAction(modeController,
-		    EdgeModel.EDGESTYLE_BEZIER));
+		modeController.addAction("EdgeStyle_linear", new EdgeStyleAction(modeController, EdgeModel.EDGESTYLE_LINEAR));
+		modeController.addAction("EdgeStyle_bezier", new EdgeStyleAction(modeController, EdgeModel.EDGESTYLE_BEZIER));
 		modeController.addAction("EdgeStyle_sharp_linear", new EdgeStyleAction(modeController,
 		    EdgeModel.EDGESTYLE_SHARP_LINEAR));
 		modeController.addAction("EdgeStyle_sharp_bezier", new EdgeStyleAction(modeController,
@@ -91,8 +89,7 @@ public class MEdgeController extends EdgeController {
 			}
 
 			private void edgeStyleRefresh(final NodeModel node) {
-				final ListIterator childrenFolded = modeController.getMapController()
-				    .childrenFolded(node);
+				final ListIterator childrenFolded = modeController.getMapController().childrenFolded(node);
 				while (childrenFolded.hasNext()) {
 					final NodeModel child = (NodeModel) childrenFolded.next();
 					final EdgeModel edge = EdgeModel.getModel(child);
@@ -130,8 +127,7 @@ public class MEdgeController extends EdgeController {
 			}
 
 			private void edgeWidthRefresh(final NodeModel node) {
-				final ListIterator childrenFolded = modeController.getMapController()
-				    .childrenFolded(node);
+				final ListIterator childrenFolded = modeController.getMapController().childrenFolded(node);
 				while (childrenFolded.hasNext()) {
 					final NodeModel child = (NodeModel) childrenFolded.next();
 					final EdgeModel edge = EdgeModel.getModel(child);

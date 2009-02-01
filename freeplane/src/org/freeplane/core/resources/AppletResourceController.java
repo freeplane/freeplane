@@ -28,6 +28,8 @@ import java.util.Properties;
 
 import javax.swing.JApplet;
 
+import org.freeplane.core.controller.Controller;
+
 /**
  * @author Dimitry Polivaev
  */
@@ -99,13 +101,12 @@ public class AppletResourceController extends ResourceController {
 	}
 
 	@Override
-	public void loadPropertiesFromXML(final InputStream in) throws IOException,
-	        InvalidPropertiesFormatException {
+	public void loadPropertiesFromXML(final InputStream in) throws IOException, InvalidPropertiesFormatException {
 		userProps.loadFromXML(in);
 	}
 
 	@Override
-	public void saveProperties() {
+	public void saveProperties(final Controller controller) {
 	}
 
 	@Override

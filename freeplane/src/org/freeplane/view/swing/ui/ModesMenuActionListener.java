@@ -27,13 +27,16 @@ import javax.swing.SwingUtilities;
 import org.freeplane.core.controller.Controller;
 
 class ModesMenuActionListener implements ActionListener {
-	public ModesMenuActionListener() {
+	final private Controller controller;
+
+	public ModesMenuActionListener(final Controller controller) {
+		this.controller = controller;
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				Controller.getController().selectMode(e.getActionCommand());
+				controller.selectMode(e.getActionCommand());
 			}
 		});
 	}

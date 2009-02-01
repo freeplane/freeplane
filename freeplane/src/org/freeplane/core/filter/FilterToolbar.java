@@ -50,7 +50,7 @@ import org.freeplane.core.ui.components.FreeplaneToolBar;
 class FilterToolbar extends FreeplaneToolBar {
 	private class EditFilterAction extends FreeplaneAction {
 		EditFilterAction() {
-			super("filter_edit_description", "/images/Btn_edit.gif");
+			super(controller, "filter_edit_description", "/images/Btn_edit.gif");
 		}
 
 		public void actionPerformed(final ActionEvent arg0) {
@@ -69,15 +69,14 @@ class FilterToolbar extends FreeplaneToolBar {
 		 */
 		private FilterComposerDialog getFilterDialog() {
 			if (filterDialog == null) {
-				filterDialog = new FilterComposerDialog(FilterToolbar.this);
+				filterDialog = new FilterComposerDialog(FilterToolbar.this, controller);
 				getFilterDialog().setLocationRelativeTo(FilterToolbar.this);
 			}
 			return filterDialog;
 		}
 	}
 
-	private class FilterChangeListener extends AbstractAction implements ItemListener,
-	        PropertyChangeListener {
+	private class FilterChangeListener extends AbstractAction implements ItemListener, PropertyChangeListener {
 		/*
 		 * (non-Javadoc)
 		 * @see
@@ -91,7 +90,7 @@ class FilterToolbar extends FreeplaneToolBar {
 			resetFilter();
 			setMapFilter();
 			refreshMap();
-			DefaultFilter.selectVisibleNode();
+			fc.getDefaultFilter().selectVisibleNode();
 		}
 
 		private void filterChanged() {
@@ -101,7 +100,7 @@ class FilterToolbar extends FreeplaneToolBar {
 			if (map != null) {
 				activeFilter.applyFilter();
 				refreshMap();
-				DefaultFilter.selectVisibleNode();
+				fc.getDefaultFilter().selectVisibleNode();
 			}
 		}
 
@@ -130,27 +129,24 @@ class FilterToolbar extends FreeplaneToolBar {
 		 *
 		 */
 		UnfoldAncestorsAction() {
-			super(null, new ImageIcon(Controller.getResourceController().getResource(
-			    "/images/unfold.png")));
+			super(null, new ImageIcon(Controller.getResourceController().getResource("/images/unfold.png")));
 		}
 
 		public void actionPerformed(final ActionEvent e) {
 			if (getSelectedCondition() != null) {
-				unfoldAncestors(Controller.getController().getMap().getRootNode());
+				unfoldAncestors(controller.getMap().getRootNode());
 			}
 		}
 
 		private void setFolded(final NodeModel node, final boolean state) {
 			if (node.getModeController().getMapController().hasChildren(node)
 			        && (node.getModeController().getMapController().isFolded(node) != state)) {
-				Controller.getController();
-				Controller.getModeController().getMapController().setFolded(node, state);
+				controller.getModeController().getMapController().setFolded(node, state);
 			}
 		}
 
 		private void unfoldAncestors(final NodeModel parent) {
-			for (final Iterator i = parent.getModeController().getMapController().childrenUnfolded(
-			    parent); i.hasNext();) {
+			for (final Iterator i = parent.getModeController().getMapController().childrenUnfolded(parent); i.hasNext();) {
 				final NodeModel node = (NodeModel) i.next();
 				if (showDescendants.isSelected() || node.getFilterInfo().isAncestor()) {
 					setFolded(node, false);
@@ -164,6 +160,7 @@ class FilterToolbar extends FreeplaneToolBar {
 	final private JComboBox activeFilterConditionComboBox;
 	final private JButton btnEdit;
 	final private JButton btnUnfoldAncestors;
+	final private Controller controller;
 	final private FilterController fc;
 	final private FilterChangeListener filterChangeListener;
 	private FilterComposerDialog filterDialog = null;
@@ -171,9 +168,10 @@ class FilterToolbar extends FreeplaneToolBar {
 	final private JCheckBox showAncestors;
 	final private JCheckBox showDescendants;
 
-	FilterToolbar() {
+	FilterToolbar(final Controller controller, final FilterController filterController) {
 		super();
-		fc = FilterController.getController();
+		this.controller = controller;
+		fc = filterController;
 		setVisible(false);
 		setFocusable(false);
 		filterChangeListener = new FilterChangeListener();
@@ -186,8 +184,7 @@ class FilterToolbar extends FreeplaneToolBar {
 			}
 		};
 		activeFilterConditionComboBox.setFocusable(false);
-		pathToFilterFile = Controller.getResourceController().getFreeplaneUserDirectory()
-		        + File.separator + "auto."
+		pathToFilterFile = Controller.getResourceController().getFreeplaneUserDirectory() + File.separator + "auto."
 		        + FilterController.FREEPLANE_FILTER_EXTENSION_WITHOUT_DOT;
 		btnEdit = add(new EditFilterAction());
 		add(btnEdit);
@@ -289,8 +286,8 @@ class FilterToolbar extends FreeplaneToolBar {
 
 	void setMapFilter() {
 		if (activeFilter == null) {
-			activeFilter = new DefaultFilter(getSelectedCondition(), showAncestors.getModel()
-			    .isSelected(), showDescendants.getModel().isSelected());
+			activeFilter = new DefaultFilter(controller, getSelectedCondition(), showAncestors.getModel().isSelected(),
+			    showDescendants.getModel().isSelected());
 		}
 		final MapModel map = fc.getMap();
 		if (map != null) {

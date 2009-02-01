@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.addins.PersistentNodeHook;
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
@@ -58,9 +59,9 @@ public class ReminderHook extends PersistentNodeHook {
 	static private class NodeListAction extends FreeplaneAction {
 		private final TimeList timeList;
 
-		public NodeListAction() {
-			super(NodeListAction.class.getAnnotation(ActionDescriptor.class));
-			timeList = new TimeList(getModeController(), true);
+		public NodeListAction(final ModeController modeController) {
+			super(modeController.getController(), NodeListAction.class.getAnnotation(ActionDescriptor.class));
+			timeList = new TimeList(modeController, true);
 		}
 
 		public void actionPerformed(final ActionEvent e) {
@@ -74,9 +75,9 @@ public class ReminderHook extends PersistentNodeHook {
 	static private class TimeListAction extends FreeplaneAction {
 		private final TimeList timeList;
 
-		public TimeListAction() {
-			super(TimeListAction.class.getAnnotation(ActionDescriptor.class));
-			timeList = new TimeList(getModeController(), false);
+		public TimeListAction(final ModeController modeController) {
+			super(modeController.getController(), TimeListAction.class.getAnnotation(ActionDescriptor.class));
+			timeList = new TimeList(modeController, false);
 		}
 
 		public void actionPerformed(final ActionEvent e) {
@@ -91,9 +92,8 @@ public class ReminderHook extends PersistentNodeHook {
 	static private class TimeManagementAction extends FreeplaneAction {
 		private final TimeManagement timeManagement;
 
-		public TimeManagementAction(final ModeController modeController,
-		                            final ReminderHook reminderHook) {
-			super(TimeManagementAction.class.getAnnotation(ActionDescriptor.class));
+		public TimeManagementAction(final ModeController modeController, final ReminderHook reminderHook) {
+			super(modeController.getController(), TimeManagementAction.class.getAnnotation(ActionDescriptor.class));
 			timeManagement = new TimeManagement(modeController, reminderHook);
 		}
 
@@ -108,12 +108,11 @@ public class ReminderHook extends PersistentNodeHook {
 	public ReminderHook(final ModeController modeController) {
 		super(modeController);
 		if (modeController instanceof ModeController) {
-			final FreeplaneAction timeManagementAction = new TimeManagementAction(modeController,
-			    this);
+			final FreeplaneAction timeManagementAction = new TimeManagementAction(modeController, this);
 			registerAction(timeManagementAction);
-			final FreeplaneAction timeListAction = new TimeListAction();
+			final FreeplaneAction timeListAction = new TimeListAction(modeController);
 			registerAction(timeListAction);
-			final FreeplaneAction nodeListAction = new NodeListAction();
+			final FreeplaneAction nodeListAction = new NodeListAction(modeController);
 			registerAction(nodeListAction);
 		}
 	}
@@ -133,8 +132,8 @@ public class ReminderHook extends PersistentNodeHook {
 	@Override
 	protected IExtension createExtension(final NodeModel node, final IXMLElement element) {
 		final ReminderExtension reminderExtension = new ReminderExtension(node);
-		final String attribute = element.getFirstChildNamed("Parameters").getAttribute(
-		    ReminderExtension.REMINDUSERAT, "0");
+		final String attribute = element.getFirstChildNamed("Parameters").getAttribute(ReminderExtension.REMINDUSERAT,
+		    "0");
 		reminderExtension.setRemindUserAt(Long.parseLong(attribute));
 		return reminderExtension;
 	}
@@ -156,8 +155,7 @@ public class ReminderHook extends PersistentNodeHook {
 		super.saveExtension(extension, element);
 		final ReminderExtension reminderExtension = (ReminderExtension) extension;
 		final IXMLElement parameters = element.createElement("Parameters");
-		parameters.setAttribute(ReminderExtension.REMINDUSERAT, Long.toString(reminderExtension
-		    .getRemindUserAt()));
+		parameters.setAttribute(ReminderExtension.REMINDUSERAT, Long.toString(reminderExtension.getRemindUserAt()));
 		element.addChild(parameters);
 	}
 }

@@ -28,9 +28,8 @@ import org.freeplane.core.model.NodeModel;
  * @author Dimitry Polivaev 20.11.2008
  */
 public class NodeStyleModel implements IExtension, Cloneable {
-	public static final String[] NODE_STYLES = new String[] { NodeStyleModel.STYLE_FORK,
-	        NodeStyleModel.STYLE_BUBBLE, NodeStyleModel.SHAPE_AS_PARENT,
-	        NodeStyleModel.SHAPE_COMBINED };
+	public static final String[] NODE_STYLES = new String[] { NodeStyleModel.STYLE_FORK, NodeStyleModel.STYLE_BUBBLE,
+	        NodeStyleModel.SHAPE_AS_PARENT, NodeStyleModel.SHAPE_COMBINED };
 	public static final String SHAPE_AS_PARENT = "as_parent";
 	public static final String SHAPE_COMBINED = "combined";
 	public static final String STYLE_BUBBLE = "bubble";

@@ -354,11 +354,9 @@ public class NodeModel implements MutableTreeNode {
 	 * sufficient to return true.
 	 */
 	public boolean hasFoldedStrictDescendant() {
-		for (final ListIterator e = getModeController().getMapController().childrenUnfolded(this); e
-		    .hasNext();) {
+		for (final ListIterator e = getModeController().getMapController().childrenUnfolded(this); e.hasNext();) {
 			final NodeModel child = (NodeModel) e.next();
-			if (child.getModeController().getMapController().isFolded(child)
-			        || child.hasFoldedStrictDescendant()) {
+			if (child.getModeController().getMapController().isFolded(child) || child.hasFoldedStrictDescendant()) {
 				return true;
 			}
 		}
@@ -505,8 +503,8 @@ public class NodeModel implements MutableTreeNode {
 			return;
 		}
 		this.folded = folded;
-		fireNodeChanged(new NodeChangeEvent(this, NodeChangeType.FOLDING, Boolean.valueOf(!folded),
-		    Boolean.valueOf(folded)));
+		fireNodeChanged(new NodeChangeEvent(this, NodeChangeType.FOLDING, Boolean.valueOf(!folded), Boolean
+		    .valueOf(folded)));
 	}
 
 	public void setHistoryInformation(final HistoryInformationModel historyInformation) {

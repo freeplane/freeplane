@@ -22,6 +22,7 @@ package org.freeplane.features.mindmapmode.attribute;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -60,8 +61,7 @@ import org.freeplane.features.common.attribute.AttributeRegistry;
 import org.freeplane.features.common.attribute.AttributeRegistryElement;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
 
-public class AssignAttributeDialog extends JDialog implements IAttributesListener,
-        IMapSelectionListener {
+public class AssignAttributeDialog extends JDialog implements IAttributesListener, IMapSelectionListener {
 	private class AddAction extends IteratingAction {
 		private String name;
 		private String value;
@@ -89,8 +89,7 @@ public class AssignAttributeDialog extends JDialog implements IAttributesListene
 		protected void performAction(final NodeModel model) {
 			NodeAttributeTableModel.createAttributeTableModel(model);
 			final NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(model);
-			attributes.getAttributeController().performInsertRow(attributes,
-			    attributes.getRowCount(), name, value);
+			attributes.getAttributeController().performInsertRow(attributes, attributes.getRowCount(), name, value);
 		}
 	}
 
@@ -206,7 +205,7 @@ public class AssignAttributeDialog extends JDialog implements IAttributesListene
 					}
 					return;
 				}
-				final NodeModel nodeView = Controller.getController().getMap().getRootNode();
+				final NodeModel nodeView = controller.getMap().getRootNode();
 				iterate(nodeView);
 			}
 			catch (final NullPointerException ex) {
@@ -266,8 +265,7 @@ public class AssignAttributeDialog extends JDialog implements IAttributesListene
 			final Object valueSelectedItem = attributeValues.getSelectedItem();
 			value = valueSelectedItem != null ? valueSelectedItem.toString() : "";
 			final Object replacingValueSelectedItem = replacingAttributeValues.getSelectedItem();
-			replacingValue = replacingValueSelectedItem != null ? replacingValueSelectedItem
-			    .toString() : "";
+			replacingValue = replacingValueSelectedItem != null ? replacingValueSelectedItem.toString() : "";
 			super.actionPerformed(e);
 		}
 
@@ -287,6 +285,7 @@ public class AssignAttributeDialog extends JDialog implements IAttributesListene
 	private static final Dimension maxButtonDimension = new Dimension(1000, 1000);
 	final private JComboBox attributeNames;
 	final private JComboBox attributeValues;
+	final private Controller controller;
 	private IMapSelection mapSelection;
 	final private JComboBox replacingAttributeNames;
 	final private JComboBox replacingAttributeValues;
@@ -294,11 +293,10 @@ public class AssignAttributeDialog extends JDialog implements IAttributesListene
 	final private JCheckBox skipRootBtn;
 	final private JRadioButton visibleBtn;
 
-	public AssignAttributeDialog() {
-		super(JOptionPane.getFrameForComponent(Controller.getController().getViewController()
-		    .getMapView()), UITools.removeMnemonic(Controller.getText("attributes_assign_dialog")),
-		    false);
-		mapSelection = Controller.getController().getSelection();
+	public AssignAttributeDialog(final Controller controller, Frame frame) {
+		super(frame, UITools.removeMnemonic(Controller.getText("attributes_assign_dialog")), false);
+		this.controller = controller;
+		mapSelection = controller.getSelection();
 		final Border actionBorder = new MatteBorder(2, 2, 2, 2, Color.BLACK);
 		final Border emptyBorder = new EmptyBorder(5, 5, 5, 5);
 		final Border btnBorder = new EmptyBorder(2, 2, 2, 2);
@@ -332,8 +330,7 @@ public class AssignAttributeDialog extends JDialog implements IAttributesListene
 		deleteAttributeBtn.addActionListener(new DeleteAttributeAction());
 		deleteAttributeBtn.setMaximumSize(AssignAttributeDialog.maxButtonDimension);
 		final JButton deleteAttributeValueBtn = new JButton();
-		MenuBuilder.setLabelAndMnemonic(deleteAttributeValueBtn, Controller
-		    .getText("attribute_delete_value"));
+		MenuBuilder.setLabelAndMnemonic(deleteAttributeValueBtn, Controller.getText("attribute_delete_value"));
 		deleteAttributeValueBtn.addActionListener(new DeleteValueAction());
 		deleteAttributeValueBtn.setMaximumSize(AssignAttributeDialog.maxButtonDimension);
 		final JButton replaceBtn = new JButton();
@@ -424,8 +421,8 @@ public class AssignAttributeDialog extends JDialog implements IAttributesListene
 		attributeValues.setMaximumSize(comboBoxMaximumSize);
 		replacingAttributeNames.setMaximumSize(comboBoxMaximumSize);
 		replacingAttributeValues.setMaximumSize(comboBoxMaximumSize);
-		afterMapChange(null, Controller.getController().getMap());
-		Controller.getController().getMapViewManager().addMapChangeListener(this);
+		afterMapChange(null, controller.getMap());
+		controller.getMapViewManager().addMapChangeListener(this);
 	}
 
 	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
@@ -435,7 +432,7 @@ public class AssignAttributeDialog extends JDialog implements IAttributesListene
 		if (oldMap != null) {
 			AttributeRegistry.getRegistry(oldMap).removeAttributesListener(this);
 		}
-		mapSelection = Controller.getController().getSelection();
+		mapSelection = controller.getSelection();
 		final AttributeRegistry attributes = AttributeRegistry.getRegistry(newMap);
 		attributes.addAttributesListener(this);
 		attributesChanged();
@@ -445,7 +442,7 @@ public class AssignAttributeDialog extends JDialog implements IAttributesListene
 	}
 
 	private void attributesChanged() {
-		final MapModel map = Controller.getController().getMap();
+		final MapModel map = controller.getMap();
 		final AttributeRegistry attributes = AttributeRegistry.getRegistry(map);
 		final ComboBoxModel names = attributes.getComboBoxModel();
 		attributeNames.setModel(new ClonedComboBoxModel(names));
@@ -457,8 +454,7 @@ public class AssignAttributeDialog extends JDialog implements IAttributesListene
 			attributeNames.setSelectedItem(first);
 			replacingAttributeNames.setSelectedItem(first);
 			selectedAttributeChanged(attributeNames.getSelectedItem(), attributeValues);
-			selectedAttributeChanged(replacingAttributeNames.getSelectedItem(),
-			    replacingAttributeValues);
+			selectedAttributeChanged(replacingAttributeNames.getSelectedItem(), replacingAttributeValues);
 		}
 		else {
 			attributeValues.setModel(new DefaultComboBoxModel());
@@ -480,11 +476,10 @@ public class AssignAttributeDialog extends JDialog implements IAttributesListene
 	}
 
 	private void selectedAttributeChanged(final Object selectedAttributeName, final JComboBox values) {
-		final MapModel map = Controller.getController().getMap();
+		final MapModel map = controller.getMap();
 		final AttributeRegistry attributes = AttributeRegistry.getRegistry(map);
 		try {
-			final AttributeRegistryElement element = attributes.getElement(selectedAttributeName
-			    .toString());
+			final AttributeRegistryElement element = attributes.getElement(selectedAttributeName.toString());
 			final ComboBoxModel selectedValues = element.getValues();
 			values.setModel(new ClonedComboBoxModel(selectedValues));
 			try {

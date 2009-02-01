@@ -56,8 +56,7 @@ public class MapWriter implements IElementWriter, IAttributeWriter {
 		writer.addExtensionAttributes(map, map.getExtensions());
 	}
 
-	public void writeContent(final ITreeWriter writer, final Object node, final String tag)
-	        throws IOException {
+	public void writeContent(final ITreeWriter writer, final Object node, final String tag) throws IOException {
 		writer
 		    .addElementContent("<!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->\n");
 		final MapModel map = (MapModel) node;
@@ -75,16 +74,14 @@ public class MapWriter implements IElementWriter, IAttributeWriter {
 		fileout.close();
 	}
 
-	private void writeNode(final ITreeWriter xmlWriter, final NodeModel node,
-	                       final boolean writeInvisible, final boolean writeChildren)
-	        throws IOException {
+	private void writeNode(final ITreeWriter xmlWriter, final NodeModel node, final boolean writeInvisible,
+	                       final boolean writeChildren) throws IOException {
 		final NodeWriter oldNodeWriter = currentNodeWriter;
 		if (oldNodeWriter != null) {
 			writeManager.removeElementWriter(NodeBuilder.XML_NODE, oldNodeWriter);
 			writeManager.removeAttributeWriter(NodeBuilder.XML_NODE, oldNodeWriter);
 		}
-		currentNodeWriter = new NodeWriter(node.getModeController().getMapController(),
-		    writeChildren, writeInvisible);
+		currentNodeWriter = new NodeWriter(node.getModeController().getMapController(), writeChildren, writeInvisible);
 		try {
 			writeManager.addElementWriter(NodeBuilder.XML_NODE, currentNodeWriter);
 			writeManager.addAttributeWriter(NodeBuilder.XML_NODE, currentNodeWriter);
@@ -101,9 +98,8 @@ public class MapWriter implements IElementWriter, IAttributeWriter {
 		}
 	}
 
-	public void writeNodeAsXml(final Writer writer, final NodeModel node,
-	                           final boolean writeInvisible, final boolean writeChildren)
-	        throws IOException {
+	public void writeNodeAsXml(final Writer writer, final NodeModel node, final boolean writeInvisible,
+	                           final boolean writeChildren) throws IOException {
 		final TreeXmlWriter xmlWriter = new TreeXmlWriter(writeManager, writer);
 		writeNode(xmlWriter, node, writeInvisible, writeChildren);
 	}

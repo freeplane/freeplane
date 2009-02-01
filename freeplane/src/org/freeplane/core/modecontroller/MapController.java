@@ -88,8 +88,7 @@ public class MapController {
 			if (n1.isRoot()) {
 				return 0;
 			}
-			return n1.getParentNode().getChildPosition(n1)
-			        - n2.getParentNode().getChildPosition(n2);
+			return n1.getParentNode().getChildPosition(n1) - n2.getParentNode().getChildPosition(n2);
 		}
 	}
 
@@ -100,11 +99,11 @@ public class MapController {
 		return saveOnlyIntrinsicallyNeededIds;
 	}
 
-	public static void setSaveOnlyIntrinsicallyNeededIds(
-	                                                     final boolean saveOnlyIntrinsicallyNeededIds) {
+	public static void setSaveOnlyIntrinsicallyNeededIds(final boolean saveOnlyIntrinsicallyNeededIds) {
 		MapController.saveOnlyIntrinsicallyNeededIds = saveOnlyIntrinsicallyNeededIds;
 	}
 
+	final private Controller controller;
 	protected final Collection<IMapChangeListener> mapChangeListeners;
 	final private Collection<IMapLifeCycleListener> mapLifeCycleListeners;
 	final private MapReader mapReader;
@@ -118,6 +117,7 @@ public class MapController {
 	public MapController(final ModeController modeController) {
 		super();
 		this.modeController = modeController;
+		controller = modeController.getController();
 		mapLifeCycleListeners = new LinkedList<IMapLifeCycleListener>();
 		writeManager = new WriteManager();
 		mapWriter = new MapWriter(writeManager);
@@ -171,7 +171,7 @@ public class MapController {
 	}
 
 	public void centerNode(final NodeModel node) {
-		Controller.getController().getSelection().centerNode(node);
+		getController().getSelection().centerNode(node);
 	}
 
 	public ListIterator<NodeModel> childrenFolded(final NodeModel node) {
@@ -193,7 +193,7 @@ public class MapController {
 	 * Return false if user has canceled.
 	 */
 	public boolean close(final boolean force) {
-		final MapModel map = Controller.getController().getMap();
+		final MapModel map = getController().getMap();
 		map.destroy();
 		return true;
 	}
@@ -202,11 +202,10 @@ public class MapController {
 	 *
 	 */
 	private void createActions(final ModeController modeController) {
-		modeController.addAction("newMap", new NewMapAction());
-		toggleFolded = new CommonToggleFoldedAction();
+		modeController.addAction("newMap", new NewMapAction(controller));
+		toggleFolded = new CommonToggleFoldedAction(controller);
 		modeController.addAction("toggleFolded", toggleFolded);
-		modeController
-		    .addAction("toggleChildrenFolded", new CommonToggleChildrenFoldedAction(this));
+		modeController.addAction("toggleChildrenFolded", new CommonToggleChildrenFoldedAction(this));
 	}
 
 	public void displayNode(final NodeModel node) {
@@ -266,21 +265,23 @@ public class MapController {
 		}
 	}
 
-	protected void fireNodeMoved(final NodeModel oldParent, final int oldIndex,
-	                             final NodeModel newParent, final NodeModel child,
-	                             final int newIndex) {
+	protected void fireNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
+	                             final NodeModel child, final int newIndex) {
 		final Iterator<IMapChangeListener> iterator = mapChangeListeners.iterator();
 		while (iterator.hasNext()) {
 			iterator.next().onNodeMoved(oldParent, oldIndex, newParent, child, newIndex);
 		}
 	}
 
-	protected void firePreNodeDelete(final NodeModel parent, final NodeModel selectedNode,
-	                                 final int index) {
+	protected void firePreNodeDelete(final NodeModel parent, final NodeModel selectedNode, final int index) {
 		final Iterator<IMapChangeListener> iterator = mapChangeListeners.iterator();
 		while (iterator.hasNext()) {
 			iterator.next().onPreNodeDelete(parent, selectedNode, index);
 		}
+	}
+
+	public Controller getController() {
+		return controller;
 	}
 
 	public void getFilteredXml(final MapModel map, final Writer fileout) throws IOException {
@@ -343,11 +344,10 @@ public class MapController {
 	 * Helper methods
 	 */
 	public NodeModel getNodeFromID(final String nodeID) {
-		final MapModel map = Controller.getController().getMap();
+		final MapModel map = getController().getMap();
 		final NodeModel node = map.getNodeForID(nodeID);
 		if (node == null) {
-			throw new IllegalArgumentException("Node belonging to the node id " + nodeID
-			        + " not found.");
+			throw new IllegalArgumentException("Node belonging to the node id " + nodeID + " not found.");
 		}
 		return node;
 	}
@@ -361,12 +361,12 @@ public class MapController {
 	}
 
 	public NodeModel getRootNode() {
-		final MapModel map = Controller.getController().getMap();
+		final MapModel map = getController().getMap();
 		return map.getRootNode();
 	}
 
 	public NodeModel getSelectedNode() {
-		return Controller.getController().getSelection().getSelected();
+		return getController().getSelection().getSelected();
 	}
 
 	/**
@@ -377,7 +377,7 @@ public class MapController {
 	 * @return returns a list of MindMapNode s.
 	 */
 	public List getSelectedNodes() {
-		final IMapSelection selection = Controller.getController().getSelection();
+		final IMapSelection selection = getController().getSelection();
 		if (selection == null) {
 			return Collections.EMPTY_LIST;
 		}
@@ -406,8 +406,7 @@ public class MapController {
 		insertNodeIntoWithoutUndo(newChild, parent, parent.getChildCount());
 	}
 
-	public void insertNodeIntoWithoutUndo(final NodeModel newNode, final NodeModel parent,
-	                                      final int index) {
+	public void insertNodeIntoWithoutUndo(final NodeModel newNode, final NodeModel parent, final int index) {
 		parent.insert(newNode, index);
 		fireNodeInserted(parent, newNode, index);
 	}
@@ -416,8 +415,7 @@ public class MapController {
 		return node.isFolded();
 	}
 
-	public void load(final MapModel map, final URL url) throws IOException, XMLParseException,
-	        URISyntaxException {
+	public void load(final MapModel map, final URL url) throws IOException, XMLParseException, URISyntaxException {
 		map.setURL(url);
 		final NodeModel root = UrlManager.getController(getModeController()).load(url, map);
 		if (root != null) {
@@ -442,9 +440,8 @@ public class MapController {
 				}
 				catch (final Exception e) {
 					org.freeplane.core.util.Tools.logException(e);
-					Controller.getController().getViewController().out(
-					    UrlManager.expandPlaceholders(
-					        getModeController().getText("link_not_found"), target));
+					getController().getViewController().out(
+					    UrlManager.expandPlaceholders(getModeController().getText("link_not_found"), target));
 					return;
 				}
 			}
@@ -453,7 +450,7 @@ public class MapController {
 				 * Remark: getMap().getURL() returns URLs like file:/C:/... It
 				 * seems, that it does not cause any problems.
 				 */
-				final MapModel map = Controller.getController().getMap();
+				final MapModel map = getController().getMap();
 				absolute = new URL(map.getURL(), relative);
 			}
 			final URL originalURL = absolute;
@@ -465,8 +462,7 @@ public class MapController {
 			if ((extension != null)
 			        && extension
 			            .equals(org.freeplane.features.mindmapmode.file.MFileManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
-				final IMapViewManager mapViewManager = Controller.getController()
-				    .getMapViewManager();
+				final IMapViewManager mapViewManager = getController().getMapViewManager();
 				/*
 				 * this can lead to confusion if the user handles multiple maps
 				 * with the same name. Obviously, this is wrong. Get a better
@@ -474,7 +470,7 @@ public class MapController {
 				 */
 				final String mapExtensionKey = mapViewManager.checkIfFileIsAlreadyOpened(absolute);
 				if (mapExtensionKey == null) {
-					Controller.getController().getViewController().setWaitingCursor(true);
+					getController().getViewController().setWaitingCursor(true);
 					newMap(absolute);
 				}
 				else {
@@ -482,34 +478,32 @@ public class MapController {
 				}
 				if (ref != null) {
 					try {
-						final ModeController newModeController = Controller.getModeController();
+						final ModeController newModeController = getController().getModeController();
 						final MapController newMapController = newModeController.getMapController();
 						newMapController.centerNode(newMapController.getNodeFromID(ref));
 					}
 					catch (final Exception e) {
 						org.freeplane.core.util.Tools.logException(e);
-						Controller.getController().getViewController().out(
-						    UrlManager.expandPlaceholders(getModeController().getText(
-						        "link_not_found"), ref));
+						getController().getViewController().out(
+						    UrlManager.expandPlaceholders(getModeController().getText("link_not_found"), ref));
 						return;
 					}
 				}
 			}
 			else {
-				Controller.getController().getViewController().openDocument(originalURL);
+				getController().getViewController().openDocument(originalURL);
 			}
 		}
 		catch (final MalformedURLException ex) {
 			org.freeplane.core.util.Tools.logException(ex);
-			Controller.getController().errorMessage(
-			    getModeController().getText("url_error") + "\n" + ex);
+			getController().errorMessage(getModeController().getText("url_error") + "\n" + ex);
 			return;
 		}
 		catch (final Exception e) {
 			org.freeplane.core.util.Tools.logException(e);
 		}
 		finally {
-			Controller.getController().getViewController().setWaitingCursor(false);
+			getController().getViewController().setWaitingCursor(false);
 		}
 	}
 
@@ -520,8 +514,8 @@ public class MapController {
 		return newModel;
 	}
 
-	public MapModel newMap(final URL file) throws FileNotFoundException, XMLParseException,
-	        IOException, URISyntaxException {
+	public MapModel newMap(final URL file) throws FileNotFoundException, XMLParseException, IOException,
+	        URISyntaxException {
 		final MapModel newModel = newModel(null);
 		load(newModel, file);
 		newMapView(newModel);
@@ -535,8 +529,7 @@ public class MapController {
 	}
 
 	protected void newMapView(final MapModel mapModel) {
-		Controller.getController().getMapViewManager().newMapView(mapModel,
-		    mapModel.getModeController());
+		getController().getMapViewManager().newMapView(mapModel, mapModel.getModeController());
 		mapModel.setSaved(false);
 	}
 
@@ -555,8 +548,7 @@ public class MapController {
 		nodeChanged(node, NodeModel.UNKNOWN_PROPERTY, null, null);
 	}
 
-	public void nodeChanged(final NodeModel node, final Object property, final Object oldValue,
-	                        final Object newValue) {
+	public void nodeChanged(final NodeModel node, final Object property, final Object oldValue, final Object newValue) {
 		node.getMap().setSaved(false);
 		nodeRefresh(node, property, oldValue, newValue, true);
 	}
@@ -566,13 +558,12 @@ public class MapController {
 		nodeRefresh(node, NodeModel.UNKNOWN_PROPERTY, null, null);
 	}
 
-	public void nodeRefresh(final NodeModel node, final Object property, final Object oldValue,
-	                        final Object newValue) {
+	public void nodeRefresh(final NodeModel node, final Object property, final Object oldValue, final Object newValue) {
 		nodeRefresh(node, property, oldValue, newValue, false);
 	}
 
-	private void nodeRefresh(final NodeModel node, final Object property, final Object oldValue,
-	                         final Object newValue, final boolean isUpdate) {
+	private void nodeRefresh(final NodeModel node, final Object property, final Object oldValue, final Object newValue,
+	                         final boolean isUpdate) {
 		if (mapReader.isMapLoadingInProcess()) {
 			return;
 		}
@@ -581,8 +572,7 @@ public class MapController {
 				node.getHistoryInformation().setLastModifiedAt(new Date());
 			}
 		}
-		final NodeChangeEvent nodeChangeEvent = new NodeChangeEvent(node, property, oldValue,
-		    newValue);
+		final NodeChangeEvent nodeChangeEvent = new NodeChangeEvent(node, property, oldValue, newValue);
 		fireNodeChanged(node, nodeChangeEvent);
 	}
 
@@ -607,7 +597,7 @@ public class MapController {
 	}
 
 	public void refreshMap() {
-		final MapModel map = Controller.getController().getMap();
+		final MapModel map = getController().getMap();
 		final NodeModel root = map.getRootNode();
 		refreshMapFrom(root);
 	}
@@ -649,8 +639,7 @@ public class MapController {
 		nodeChangeListeners.remove(listener);
 	}
 
-	void removeNodeSelectionListener(final Class<? extends IActionOnChange> clazz,
-	                                 final Action action) {
+	void removeNodeSelectionListener(final Class<? extends IActionOnChange> clazz, final Action action) {
 		final Iterator<INodeSelectionListener> iterator = nodeSelectionListeners.iterator();
 		while (iterator.hasNext()) {
 			final INodeSelectionListener next = iterator.next();
@@ -666,12 +655,12 @@ public class MapController {
 	}
 
 	public void select(final NodeModel node) {
-		Controller.getController().getSelection().selectAsTheOnlyOneSelected(node);
+		getController().getSelection().selectAsTheOnlyOneSelected(node);
 	}
 
 	public void selectBranch(final NodeModel selected, final boolean extend) {
 		displayNode(selected);
-		Controller.getController().getSelection().selectBranch(selected, extend);
+		getController().getSelection().selectBranch(selected, extend);
 	}
 
 	public void selectMultipleNodes(final NodeModel focussed, final Collection selecteds) {
@@ -682,9 +671,9 @@ public class MapController {
 		select(focussed);
 		for (final Iterator i = selecteds.iterator(); i.hasNext();) {
 			final NodeModel node = (NodeModel) i.next();
-			Controller.getController().getSelection().makeTheSelected(node);
+			getController().getSelection().makeTheSelected(node);
 		}
-		Controller.getController().getViewController().obtainFocusForSelected();
+		getController().getViewController().obtainFocusForSelected();
 	}
 
 	public void setFolded(final NodeModel node, final boolean folded) {

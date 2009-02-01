@@ -36,6 +36,7 @@ import org.freeplane.core.ui.MenuBuilder;
 
 class MToolbarContributor implements IMenuContributor, INodeSelectionListener, INodeChangeListener {
 	private static final String[] sizes = { "8", "10", "12", "14", "16", "18", "20", "24", "28" };
+	final private Controller controller;
 	private boolean fontFamily_IgnoreChangeEvent = false;
 	final private JComboBox fonts, size;
 	private boolean fontSize_IgnoreChangeEvent = false;
@@ -45,6 +46,7 @@ class MToolbarContributor implements IMenuContributor, INodeSelectionListener, I
 
 	public MToolbarContributor(final MNodeStyleController styleController) {
 		this.styleController = styleController;
+		controller = styleController.getModeController().getController();
 		final GraphicsEnvironment gEnv = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		final String[] envFonts = gEnv.getAvailableFontFamilyNames();
 		fonts = new JComboBox(envFonts);
@@ -87,7 +89,7 @@ class MToolbarContributor implements IMenuContributor, INodeSelectionListener, I
 	}
 
 	public void nodeChanged(final NodeChangeEvent event) {
-		if (event.getNode() != Controller.getController().getSelection().getSelected()) {
+		if (event.getNode() != controller.getSelection().getSelected()) {
 			return;
 		}
 		changeToolbar(event.getNode());
@@ -118,9 +120,7 @@ class MToolbarContributor implements IMenuContributor, INodeSelectionListener, I
 	}
 
 	public void updateMenus(final MenuBuilder builder) {
-		builder.addComponent("/main_toolbar/font", fonts, styleController.fontFamilyAction,
-		    MenuBuilder.AS_CHILD);
-		builder.addComponent("/main_toolbar/font", size, styleController.fontSizeAction,
-		    MenuBuilder.AS_CHILD);
+		builder.addComponent("/main_toolbar/font", fonts, styleController.fontFamilyAction, MenuBuilder.AS_CHILD);
+		builder.addComponent("/main_toolbar/font", size, styleController.fontSizeAction, MenuBuilder.AS_CHILD);
 	}
 }

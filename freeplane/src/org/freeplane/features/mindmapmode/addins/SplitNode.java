@@ -29,6 +29,7 @@ import javax.swing.text.Element;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.ActionDescriptor;
@@ -52,8 +53,8 @@ public class SplitNode extends FreeplaneAction {
 	/**
 	 *
 	 */
-	public SplitNode() {
-		super();
+	public SplitNode(final Controller controller) {
+		super(controller);
 	}
 
 	/*
@@ -78,8 +79,7 @@ public class SplitNode extends FreeplaneAction {
 				return parentCandidate;
 			}
 			parentCandidate = parentCandidate.getElement(0);
-		} while (!(parentCandidate.isLeaf() || parentCandidate.getName().equalsIgnoreCase(
-		    "p-implied")));
+		} while (!(parentCandidate.isLeaf() || parentCandidate.getName().equalsIgnoreCase("p-implied")));
 		return null;
 	}
 
@@ -97,14 +97,12 @@ public class SplitNode extends FreeplaneAction {
 		while (parts[firstPartNumber] == null) {
 			firstPartNumber++;
 		}
-		((MTextController) TextController.getController(c)).setNodeText(node,
-		    parts[firstPartNumber]);
+		((MTextController) TextController.getController(c)).setNodeText(node, parts[firstPartNumber]);
 		final NodeModel parent = node.getParentNode();
 		final int nodePosition = parent.getChildPosition(node) + 1;
 		for (int i = parts.length - 1; i > firstPartNumber; i--) {
 			final MMapController mapController = (MMapController) c.getMapController();
-			final NodeModel lowerNode = mapController.addNewNode(parent, nodePosition, node
-			    .isLeft());
+			final NodeModel lowerNode = mapController.addNewNode(parent, nodePosition, node.isLeft());
 			final String part = parts[i];
 			if (part == null) {
 				continue;

@@ -37,8 +37,8 @@ import org.freeplane.features.common.cloud.CloudModel;
 class CloudColorAction extends MultipleNodeAction implements PopupMenuListener {
 	private Color actionColor;
 
-	public CloudColorAction() {
-		super("cloud_color", "/images/Colors24.gif");
+	public CloudColorAction(final Controller controller) {
+		super(controller, "cloud_color", "/images/Colors24.gif");
 	}
 
 	@Override
@@ -49,12 +49,11 @@ class CloudColorAction extends MultipleNodeAction implements PopupMenuListener {
 			controller = getModeController();
 			final NodeModel selected = controller.getMapController().getSelectedNode();
 			if (CloudModel.getModel(selected) != null) {
-				selectedColor = CloudController.getController(selected.getModeController())
-				    .getColor(selected);
+				selectedColor = CloudController.getController(selected.getModeController()).getColor(selected);
 			}
 		}
-		actionColor = ColorTracker.showCommonJColorChooserDialog(Controller.getController()
-		    .getSelection().getSelected(), controller.getText("choose_cloud_color"), selectedColor);
+		actionColor = ColorTracker.showCommonJColorChooserDialog(controller.getController().getSelection()
+		    .getSelected(), controller.getText("choose_cloud_color"), selectedColor);
 		if (actionColor == null) {
 			return;
 		}
@@ -69,8 +68,8 @@ class CloudColorAction extends MultipleNodeAction implements PopupMenuListener {
 	 */
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		final MCloudController cloudController = (MCloudController) CloudController
-		    .getController(node.getModeController());
+		final MCloudController cloudController = (MCloudController) CloudController.getController(node
+		    .getModeController());
 		cloudController.setColor(node, actionColor);
 	}
 
