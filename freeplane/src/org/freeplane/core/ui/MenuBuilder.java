@@ -506,6 +506,7 @@ public class MenuBuilder extends UIBuilder {
 
 	private void addButton(final String category, final Action action, final int position) {
 		final AbstractButton button;
+		assert action != null;
 		if (action.getClass().getAnnotation(SelectableAction.class) != null) {
 			button = new JAutoToggleButton(action);
 		}

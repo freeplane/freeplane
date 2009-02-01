@@ -61,7 +61,7 @@ public class FreeplaneApplet extends JApplet {
 		PrintController.install(controller);
 		HelpController.install(controller);
 		ModelessAttributeController.install(controller);
-		final BModeController browseController = BModeControllerFactory.createModeController(controller);
+		final BModeController browseController = BModeControllerFactory.createModeController(controller, "/org/freeplane/startup/browsemode/appletMenu.xml");
 		controller.selectMode(browseController);
 		appletViewController.init();
 		controller.getViewController().setToolbarVisible(true);

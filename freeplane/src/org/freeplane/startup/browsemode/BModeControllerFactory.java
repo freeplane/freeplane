@@ -49,7 +49,7 @@ import org.freeplane.view.swing.ui.UserInputListenerFactory;
 public class BModeControllerFactory {
 	private static BModeController modeController;
 
-	static public BModeController createModeController(final Controller controller) {
+	static public BModeController createModeController(final Controller controller, String menuStructure) {
 		modeController = new BModeController(controller);
 		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController);
 		modeController.setUserInputListenerFactory(userInputListenerFactory);
@@ -77,7 +77,7 @@ public class BModeControllerFactory {
 		controller.getViewController().addMapTitleChangeListener(toolbarContributor);
 		userInputListenerFactory.setNodePopupMenu(new JPopupMenu());
 		userInputListenerFactory.setMainToolBar(new FreeplaneToolBar());
-		userInputListenerFactory.setMenuStructure("/org/freeplane/startup/browsemode/menu.xml");
+		userInputListenerFactory.setMenuStructure(menuStructure);
 		userInputListenerFactory.updateMenus(modeController);
 		modeController.updateMenus();
 		Controller.getResourceController().updateMenus(modeController);

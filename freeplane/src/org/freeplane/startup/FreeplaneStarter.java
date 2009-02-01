@@ -125,7 +125,7 @@ public class FreeplaneStarter {
 		ModelessAttributeController.install(controller);
 		HelpController.install(controller);
 		MModeControllerFactory.createModeController(controller);
-		BModeControllerFactory.createModeController(controller);
+		BModeControllerFactory.createModeController(controller, "/org/freeplane/startup/browsemode/menu.xml");
 		FModeControllerFactory.createModeController(controller);
 	}
 
