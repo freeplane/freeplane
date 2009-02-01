@@ -17,23 +17,27 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.controller;
+package org.freeplane.core.resources;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import org.freeplane.core.controller.Controller;
+
 class LastOpenedActionListener implements ActionListener {
 	final private Controller controller;
+	final private LastOpenedList list;
 
-	public LastOpenedActionListener(final Controller controller) {
+	public LastOpenedActionListener(final Controller controller, final LastOpenedList list) {
 		super();
 		this.controller = controller;
+		this.list = list;
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final String restoreable = e.getActionCommand();
 		try {
-			controller.getLastOpenedList().open(restoreable);
+			list.open(controller, restoreable);
 		}
 		catch (final Exception ex) {
 			controller.errorMessage("An error occured on opening the file: " + restoreable + ".");

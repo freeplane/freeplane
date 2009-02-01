@@ -65,6 +65,7 @@ public class FreeplaneStarter {
 	private IFeedBack feedBack;
 	private IFreeplaneSplash splash;
 	private ApplicationViewController viewController;
+	private ApplicationResourceController resourceController;
 
 	public FreeplaneStarter() {
 		super();
@@ -94,7 +95,7 @@ public class FreeplaneStarter {
 	}
 
 	public void createController() {
-		final ApplicationResourceController resourceController = new ApplicationResourceController();
+		resourceController = new ApplicationResourceController();
 		Controller.setResourceController(resourceController);
 		controller = new Controller();
 		resourceController.init(controller);
@@ -116,7 +117,9 @@ public class FreeplaneStarter {
 		//	e.printStackTrace();
 		//}	    
 		System.setSecurityManager(new FreeplaneSecurityManager());
-		viewController = new ApplicationViewController(controller, new MMapViewController());
+		final MMapViewController mapViewController = new MMapViewController();
+		mapViewController.addMapChangeListener(resourceController.getLastOpenedList());
+		viewController = new ApplicationViewController(controller, mapViewController);
 		FilterController.install(controller);
 		PrintController.install(controller);
 		ModelessAttributeController.install(controller);
@@ -237,7 +240,7 @@ public class FreeplaneStarter {
 			if (Tools.isPreferenceTrue(Controller.getResourceController().getProperty(FreeplaneStarter.LOAD_LAST_MAP))
 			        && restoreable != null && restoreable.length() > 0) {
 				try {
-					controller.getLastOpenedList().open(restoreable);
+					resourceController.getLastOpenedList().open(controller, restoreable);
 					fileLoaded = true;
 				}
 				catch (final Exception e) {

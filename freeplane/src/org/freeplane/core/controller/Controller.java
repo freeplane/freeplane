@@ -83,7 +83,6 @@ public class Controller {
 
 	private final ActionController actionController;
 	final private ExtensionHashMap extensions;
-	final private LastOpenedList lastOpened;
 	/**
 	 * Converts from a local link to the real file URL of the documentation map.
 	 * (Used to change this behaviour under MacOSX).
@@ -99,7 +98,6 @@ public class Controller {
 		modeControllers = new HashMap();
 		quit = new QuitAction(this);
 		addAction("quit", quit);
-		lastOpened = new LastOpenedList(this, Controller.getResourceController().getProperty("lastOpened"));
 	}
 
 	public void addAction(final Object key, final Action value) {
@@ -153,10 +151,6 @@ public class Controller {
 
 	public IExtension getExtension(final Class clazz) {
 		return extensions.getExtension(clazz);
-	}
-
-	public LastOpenedList getLastOpenedList() {
-		return lastOpened;
 	}
 
 	/**
@@ -256,27 +250,8 @@ public class Controller {
 			modeController.shutdown();
 		}
 		getViewController().stop();
-		final String lastOpenedString = lastOpened.save();
-		Controller.getResourceController().setProperty("lastOpened", lastOpenedString);
 		extensions.clear();
 		return true;
 	}
 
-	public void updateMenus(final MenuBuilder menuBuilder) {
-		menuBuilder.removeChildElements(FreeplaneMenuBar.FILE_MENU + "/last");
-		boolean firstElement = true;
-		final LastOpenedList lst = getLastOpenedList();
-		for (final ListIterator it = lst.listIterator(); it.hasNext();) {
-			final String key = (String) it.next();
-			final JMenuItem item = new JMenuItem(key);
-			if (firstElement) {
-				firstElement = false;
-				item.setAccelerator(KeyStroke.getKeyStroke(Controller.getResourceController().getAdjustableProperty(
-				    "keystroke_open_first_in_history")));
-			}
-			final ActionListener lastOpenedActionListener = new LastOpenedActionListener(this);
-			item.addActionListener(lastOpenedActionListener);
-			menuBuilder.addMenuItem(FreeplaneMenuBar.FILE_MENU + "/last", item, UIBuilder.AS_CHILD);
-		}
-	}
 }

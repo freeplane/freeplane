@@ -72,6 +72,7 @@ public class FModeControllerFactory {
 		userInputListenerFactory.setMenuStructure("/org/freeplane/startup/filemode/menu.xml");
 		userInputListenerFactory.updateMenus(modeController);
 		modeController.updateMenus();
+		Controller.getResourceController().updateMenus(modeController);
 		return modeController;
 	}
 }

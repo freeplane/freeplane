@@ -31,8 +31,14 @@ import java.util.InvalidPropertiesFormatException;
 import java.util.Locale;
 import java.util.Properties;
 
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
+
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.FilterController;
+import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.components.FreeplaneMenuBar;
 
 /**
  * @author Dimitry Polivaev
@@ -41,6 +47,7 @@ public class ApplicationResourceController extends ResourceController {
 	final private File autoPropertiesFile;
 	final private Properties defProps;
 	final private Properties props;
+	private final LastOpenedList lastOpened;
 
 	/**
 	 * @param controller
@@ -59,6 +66,10 @@ public class ApplicationResourceController extends ResourceController {
 				}
 			}
 		});
+		int maxEntries = new Integer(getProperty("last_opened_list_length", "25"))
+	    .intValue();
+		lastOpened = new LastOpenedList(getProperty("lastOpened"), maxEntries);
+
 	}
 
 	private void createUserDirectory(final Properties pDefaultProperties) {
@@ -155,6 +166,8 @@ public class ApplicationResourceController extends ResourceController {
 
 	@Override
 	public void saveProperties(final Controller controller) {
+		final String lastOpenedString = lastOpened.save();
+		setProperty("lastOpened", lastOpenedString);
 		try {
 			final OutputStream out = new FileOutputStream(autoPropertiesFile);
 			final OutputStreamWriter outputStreamWriter = new OutputStreamWriter(out, "8859_1");
@@ -203,4 +216,29 @@ public class ApplicationResourceController extends ResourceController {
 		props.setProperty(key, value);
 		firePropertyChanged(key, value, oldValue);
 	}
+
+	public LastOpenedList getLastOpenedList() {
+	    return lastOpened;
+    }
+
+	@Override
+    public void updateMenus(final ModeController modeController) {
+	    super.updateMenus(modeController);
+	    final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
+		menuBuilder.addPopupMenuListener(FreeplaneMenuBar.FILE_MENU, new PopupMenuListener(){
+
+			public void popupMenuCanceled(PopupMenuEvent e) {
+            }
+
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+            }
+
+			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+				lastOpened.updateMenus(modeController.getController(), menuBuilder);
+            }
+	    	
+	    });
+    }
+	
+	
 }

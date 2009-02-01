@@ -40,7 +40,7 @@ class NodeHolder {
 	public NodeHolder(final NodeView pNode) {
 		mNodeId = pNode.getModel().createID();
 		final MapView mapView = pNode.getMap();
-		mMapView = new WeakReference(mapView);
+		mMapView = new WeakReference<MapView>(mapView);
 	}
 
 	@Override

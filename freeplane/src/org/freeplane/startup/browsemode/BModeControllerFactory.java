@@ -80,6 +80,7 @@ public class BModeControllerFactory {
 		userInputListenerFactory.setMenuStructure("/org/freeplane/startup/browsemode/menu.xml");
 		userInputListenerFactory.updateMenus(modeController);
 		modeController.updateMenus();
+		Controller.getResourceController().updateMenus(modeController);
 		return modeController;
 	}
 }

@@ -17,8 +17,9 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.controller;
+package org.freeplane.core.resources;
 
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -31,8 +32,15 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import javax.swing.JMenuItem;
+import javax.swing.KeyStroke;
+
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.model.MapModel;
+import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.UIBuilder;
+import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
@@ -42,21 +50,18 @@ import org.freeplane.n3.nanoxml.XMLParseException;
  * format:"mode\:key",ie."Mindmap\:/home/joerg/freeplane.mm"
  */
 public class LastOpenedList implements IMapSelectionListener {
-	final private Controller controller;
 	/**
 	 * Contains Restore strings.
 	 */
 	final private List lastOpenedList = new LinkedList();
-	private int maxEntries = 25;
+	final private int maxEntries;
 	/**
 	 * Contains Restore string => map name (map.toString()).
 	 */
 	final private Map mRestorableToMapName = new HashMap();
 
-	LastOpenedList(final Controller controller, final String restored) {
-		this.controller = controller;
-		maxEntries = new Integer(Controller.getResourceController().getProperty("last_opened_list_length", "0"))
-		    .intValue();
+	LastOpenedList(final String restored, int maxEntries) {
+		this.maxEntries = maxEntries;
 		load(restored);
 	}
 
@@ -108,7 +113,7 @@ public class LastOpenedList implements IMapSelectionListener {
 		}
 	}
 
-	public void open(final String restoreable) throws FileNotFoundException, XMLParseException, MalformedURLException,
+	public void open(Controller controller, final String restoreable) throws FileNotFoundException, XMLParseException, MalformedURLException,
 	        IOException, URISyntaxException {
 		final boolean changedToMapView = controller.getMapViewManager().tryToChangeToMapView(
 		    (String) mRestorableToMapName.get(restoreable));
@@ -131,5 +136,21 @@ public class LastOpenedList implements IMapSelectionListener {
 			str = str.concat((String) it.next() + ";");
 		}
 		return str;
+	}
+	public void updateMenus(Controller controller, final MenuBuilder menuBuilder) {
+		menuBuilder.removeChildElements(FreeplaneMenuBar.FILE_MENU + "/last");
+		boolean firstElement = true;
+		for (final ListIterator it = listIterator(); it.hasNext();) {
+			final String key = (String) it.next();
+			final JMenuItem item = new JMenuItem(key);
+			if (firstElement) {
+				firstElement = false;
+				item.setAccelerator(KeyStroke.getKeyStroke(Controller.getResourceController().getAdjustableProperty(
+				    "keystroke_open_first_in_history")));
+			}
+			final ActionListener lastOpenedActionListener = new LastOpenedActionListener(controller, this);
+			item.addActionListener(lastOpenedActionListener);
+			menuBuilder.addMenuItem(FreeplaneMenuBar.FILE_MENU + "/last", item, UIBuilder.AS_CHILD);
+		}
 	}
 }

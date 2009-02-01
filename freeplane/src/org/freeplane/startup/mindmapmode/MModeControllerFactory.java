@@ -154,6 +154,7 @@ public class MModeControllerFactory {
 		this.controller = controller;
 		createStandardControllers();
 		createAddIns();
+		Controller.getResourceController().updateMenus(modeController);
 		return modeController;
 	}
 

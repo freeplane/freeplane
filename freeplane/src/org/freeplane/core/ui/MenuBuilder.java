@@ -575,7 +575,10 @@ public class MenuBuilder extends UIBuilder {
 		final DefaultMutableTreeNode node = get(key);
 		assert (node != null);
 		final JPopupMenu popup;
-		if (node.getUserObject() instanceof JPopupMenu) {
+		if (node.getUserObject() instanceof JMenu) {
+			popup = ((JMenu) node.getUserObject()).getPopupMenu();
+		}
+		else if (node.getUserObject() instanceof JPopupMenu) {
 			popup = (JPopupMenu) node.getUserObject();
 		}
 		else {

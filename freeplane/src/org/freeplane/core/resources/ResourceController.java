@@ -32,8 +32,10 @@ import java.util.ResourceBundle;
 import java.util.Vector;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.resources.ui.BooleanProperty;
 import org.freeplane.core.util.Tools;
+import org.freeplane.features.filemode.FModeController;
 
 /**
  * @author Dimitry Polivaev
@@ -274,4 +276,7 @@ public abstract class ResourceController {
 			setProperty(ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION, BooleanProperty.TRUE_VALUE);
 		}
 	}
+
+	public void updateMenus(ModeController modeController) {
+    }
 }
