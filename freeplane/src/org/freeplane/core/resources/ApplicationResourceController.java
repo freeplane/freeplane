@@ -46,8 +46,8 @@ import org.freeplane.core.ui.components.FreeplaneMenuBar;
 public class ApplicationResourceController extends ResourceController {
 	final private File autoPropertiesFile;
 	final private Properties defProps;
-	final private Properties props;
 	private final LastOpenedList lastOpened;
+	final private Properties props;
 
 	/**
 	 * @param controller
@@ -66,10 +66,8 @@ public class ApplicationResourceController extends ResourceController {
 				}
 			}
 		});
-		int maxEntries = new Integer(getProperty("last_opened_list_length", "25"))
-	    .intValue();
+		final int maxEntries = new Integer(getProperty("last_opened_list_length", "25")).intValue();
 		lastOpened = new LastOpenedList(getProperty("lastOpened"), maxEntries);
-
 	}
 
 	private void createUserDirectory(final Properties pDefaultProperties) {
@@ -98,6 +96,10 @@ public class ApplicationResourceController extends ResourceController {
 
 	private String getFreeplaneUserDirectory(final Properties defaultPreferences) {
 		return System.getProperty("user.home") + File.separator + defaultPreferences.getProperty("properties_folder");
+	}
+
+	public LastOpenedList getLastOpenedList() {
+		return lastOpened;
 	}
 
 	@Override
@@ -217,28 +219,20 @@ public class ApplicationResourceController extends ResourceController {
 		firePropertyChanged(key, value, oldValue);
 	}
 
-	public LastOpenedList getLastOpenedList() {
-	    return lastOpened;
-    }
-
 	@Override
-    public void updateMenus(final ModeController modeController) {
-	    super.updateMenus(modeController);
-	    final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
-		menuBuilder.addPopupMenuListener(FreeplaneMenuBar.FILE_MENU, new PopupMenuListener(){
+	public void updateMenus(final ModeController modeController) {
+		super.updateMenus(modeController);
+		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
+		menuBuilder.addPopupMenuListener(FreeplaneMenuBar.FILE_MENU, new PopupMenuListener() {
+			public void popupMenuCanceled(final PopupMenuEvent e) {
+			}
 
-			public void popupMenuCanceled(PopupMenuEvent e) {
-            }
+			public void popupMenuWillBecomeInvisible(final PopupMenuEvent e) {
+			}
 
-			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-            }
-
-			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+			public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
 				lastOpened.updateMenus(modeController.getController(), menuBuilder);
-            }
-	    	
-	    });
-    }
-	
-	
+			}
+		});
+	}
 }

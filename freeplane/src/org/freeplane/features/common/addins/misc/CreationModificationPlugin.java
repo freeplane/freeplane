@@ -39,7 +39,7 @@ import org.freeplane.core.ui.ActionDescriptor;
 @NodeHookDescriptor(hookName = "accessories/plugins/CreationModificationPlugin.properties")
 @ActionDescriptor(locations = { "/menu_bar/extras/first/nodes/change" }, //
 name = "accessories/plugins/CreationModificationPlugin.properties_name", //
-iconPath = "/accessories/plugins/icons/kword.png", //
+iconPath = "/images/kword.png", //
 tooltip = "accessories/plugins/CreationModificationPlugin.properties_documentation")
 public class CreationModificationPlugin extends PersistentNodeHook implements INodeChangeListener {
 	private String tooltipFormat = "<html>Created:  {0,date} {0,time}<br>Modified: {1,date} {1,time}</html>";

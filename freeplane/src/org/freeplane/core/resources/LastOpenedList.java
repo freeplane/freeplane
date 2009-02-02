@@ -60,7 +60,7 @@ public class LastOpenedList implements IMapSelectionListener {
 	 */
 	final private Map mRestorableToMapName = new HashMap();
 
-	LastOpenedList(final String restored, int maxEntries) {
+	LastOpenedList(final String restored, final int maxEntries) {
 		this.maxEntries = maxEntries;
 		load(restored);
 	}
@@ -113,8 +113,8 @@ public class LastOpenedList implements IMapSelectionListener {
 		}
 	}
 
-	public void open(Controller controller, final String restoreable) throws FileNotFoundException, XMLParseException, MalformedURLException,
-	        IOException, URISyntaxException {
+	public void open(final Controller controller, final String restoreable) throws FileNotFoundException,
+	        XMLParseException, MalformedURLException, IOException, URISyntaxException {
 		final boolean changedToMapView = controller.getMapViewManager().tryToChangeToMapView(
 		    (String) mRestorableToMapName.get(restoreable));
 		if ((restoreable != null) && !(changedToMapView)) {
@@ -137,7 +137,8 @@ public class LastOpenedList implements IMapSelectionListener {
 		}
 		return str;
 	}
-	public void updateMenus(Controller controller, final MenuBuilder menuBuilder) {
+
+	public void updateMenus(final Controller controller, final MenuBuilder menuBuilder) {
 		menuBuilder.removeChildElements(FreeplaneMenuBar.FILE_MENU + "/last");
 		boolean firstElement = true;
 		for (final ListIterator it = listIterator(); it.hasNext();) {

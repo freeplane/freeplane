@@ -20,16 +20,12 @@
 package org.freeplane.core.controller;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.HashMap;
-import java.util.ListIterator;
 import java.util.Set;
 
 import javax.swing.Action;
 import javax.swing.JComponent;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.KeyStroke;
 
 import org.freeplane.core.extension.ExtensionHashMap;
 import org.freeplane.core.extension.IExtension;
@@ -40,9 +36,6 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ActionController;
-import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.core.ui.UIBuilder;
-import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.url.UrlManager;
 
 /**
@@ -253,5 +246,4 @@ public class Controller {
 		extensions.clear();
 		return true;
 	}
-
 }

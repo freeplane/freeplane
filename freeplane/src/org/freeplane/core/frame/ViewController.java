@@ -411,7 +411,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 		}
 	}
 
-	abstract void setFreeplaneMenuBar(FreeplaneMenuBar menuBar);
+	abstract protected void setFreeplaneMenuBar(FreeplaneMenuBar menuBar);
 
 	public void setLeftToolbarVisible(final boolean visible) {
 		leftToolbarVisible = visible;

@@ -92,7 +92,7 @@ class FreeplaneResourceBundle extends ResourceBundle {
 	 */
 	private HashMap<String, String> getLanguageResources(final String lang) throws IOException {
 		final URL systemResource = Controller.getResourceController().getResource(
-		    "/Resources" + "_" + lang + ".properties");
+		    "/translations/Resources" + "_" + lang + ".properties");
 		if (systemResource == null) {
 			return null;
 		}

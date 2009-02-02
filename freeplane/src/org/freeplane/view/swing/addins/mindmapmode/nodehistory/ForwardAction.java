@@ -34,7 +34,7 @@ import org.freeplane.core.ui.FreeplaneAction;
 @ActionDescriptor(name = "accessories/plugins/NodeHistoryForward.properties_name", //
 tooltip = "accessories/plugins/NodeHistoryForward.properties_documentation", //
 keyStroke = "keystroke_accessories/plugins/NodeHistoryForward.keystroke.alt_FORWARD", //
-iconPath = "/accessories/plugins/icons/forward.png", //
+iconPath = "/images/forward.png", //
 locations = { "/menu_bar/navigate/folding", "/main_toolbar/folding" })
 class ForwardAction extends FreeplaneAction {
 	final private NodeHistory nodeHistory;

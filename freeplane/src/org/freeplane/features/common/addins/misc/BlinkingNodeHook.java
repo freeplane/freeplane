@@ -42,7 +42,7 @@ import org.freeplane.n3.nanoxml.IXMLElement;
  */
 @NodeHookDescriptor(hookName = "accessories/plugins/BlinkingNodeHook.properties", onceForMap = false)
 @ActionDescriptor(name = "accessories/plugins/BlinkingNodeHook.properties_name", //
-iconPath = "/accessories/plugins/icons/xeyes.png", //
+iconPath = "/images/xeyes.png", //
 tooltip = "accessories/plugins/BlinkingNodeHook.properties_documentation", //
 locations = { "/menu_bar/format/nodes" })
 public class BlinkingNodeHook extends PersistentNodeHook {

@@ -32,7 +32,7 @@ import org.freeplane.core.ui.components.EnterPasswordDialog;
 
 @ActionDescriptor(tooltip = "accessories/plugins/EnterPassword.properties_documentation", //
 name = "accessories/plugins/EnterPassword.properties_name", //
-iconPath = "/accessories/plugins/icons/unlock.png", //
+iconPath = "/images/unlock.png", //
 locations = { "/menu_bar/extras/first/nodes/crypto" })
 public class EnterPassword extends FreeplaneAction {
 	public EnterPassword(final ModeController modeController) {

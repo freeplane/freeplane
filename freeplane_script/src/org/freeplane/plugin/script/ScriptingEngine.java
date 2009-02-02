@@ -46,7 +46,7 @@ import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.attribute.MAttributeController;
 import org.freeplane.features.mindmapmode.text.MTextController;
-import org.freeplane.startup.FreeplaneSecurityManager;
+import org.freeplane.main.application.FreeplaneSecurityManager;
 
 /**
  * @author foltin

@@ -40,7 +40,7 @@ import org.freeplane.features.mindmapmode.icon.MIconController;
 @ActionDescriptor(tooltip = "accessories/plugins/IconSelectionPlugin.properties_documentation", //
 name = "accessories/plugins/IconSelectionPlugin.properties_name", //
 keyStroke = "keystroke_accessories/plugins/IconSelectionPlugin.properties.properties_key", //
-iconPath = "/accessories/plugins/icons/kalzium.png", //
+iconPath = "/images/kalzium.png", //
 locations = { "/menu_bar/insert/icons" })
 public class IconSelectionPlugin extends FreeplaneAction {
 	/**

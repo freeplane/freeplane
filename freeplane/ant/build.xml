@@ -2,6 +2,7 @@
 	<property name="ver" value="0.9.0:21" />
 	<property name="src" value="../src" />
 	<property name="resources" value="../resources" />
+	<property name="viewer-resources" value="../viewer-resources" />
 	<property name = "root" value = ".."/>
 	<property name="manifest" value="${root}/META-INF/OLD_MANIFEST.MF" />	
 	<property name="lib" value="${root}/lib" />
@@ -23,7 +24,7 @@
 		<mkdir dir="${build}" />
 		<javac srcdir="${src}" destdir="${build}" classpath="${classpath}" debug="${debug}" 
 			source="${java_source_version}" target="${java_target_version}">
-			<exclude name="org/freeplane/osgi/**" />
+			<exclude name="org/freeplane/main/osgi/**" />
 		</javac>
 		<!-- Starter should work with java 1.1, too as it checks the java version.-->
 		<delete failonerror="false" file="${build}/org/freeplane/startup/FreeplaneStarter.class">
@@ -39,35 +40,25 @@
 		<jar jarfile="${freeplaneviewer.jar}">
 			<fileset dir="${build}">
 				<exclude name="**/*.jar"/>
+				<exclude name="**/application/**"/>
+				<exclude name="**/osgi/**"/>
 				<exclude name="**/mindmapmode/**"/>
 				<exclude name="**/filemode/**"/>
 				<exclude name="**/core/resources/ui/**"/>
 			</fileset>
-			<fileset dir="${resources}">
-				<include name="images/*"/>
-				<include name="images/icons/*.png"/>
-				<include name="freeplane.properties"/>
-				<include name="**/*.xml"/>
-				<exclude name="**/mindmapmode/**"/>
-				<exclude name="**/filemode/**"/>
-				<include name="Resources_en.properties"/>
-			</fileset>
+			<fileset dir="${viewer-resources}"/>
 		</jar>
 		<jar jarfile="${freeplaneeditor.jar}"
 			 manifest="${manifest}">
 			<fileset dir="${build}">
+				<include name="**/application/**"/>
+				<include name="**/osgi/**"/>
 				<include name="**/mindmapmode/**"/>
 				<include name="**/filemode/**"/>
 				<include name="**/core/resources/ui/**"/>
 				<exclude name="**/*.jar"/>
 			</fileset>
-			<fileset dir="${resources}">
-				<include name="doc/**"/>
-				<include name="**/*.xsl"/>
-				<include name="**/*.xml"/>
-				<include name="accessories/**"/>
-				<include name="Resources*"/>
-			</fileset>
+			<fileset dir="${resources}"/>
 		</jar>
 		<delete dir="${build}"  quiet="true"/>
 	</target>

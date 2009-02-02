@@ -53,7 +53,7 @@ public class MMapController extends MapController {
 	static private DeleteAction delete;
 	private static final String EXPECTED_START_STRINGS[] = { "<map version=\"" + Controller.XML_VERSION + "\"",
 	        "<map version=\"0.7.1\"" };
-	private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/freeplane/modes/mindmapmode/freeplane_version_updater.xslt";
+	private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_version_updater.xslt";
 	public static final int NEW_CHILD = 2;
 	public static final int NEW_CHILD_WITHOUT_FOCUS = 1;
 	public static final int NEW_SIBLING_BEFORE = 4;
@@ -111,6 +111,7 @@ public class MMapController extends MapController {
 
 	private void createActions(final MModeController modeController) {
 		final Controller controller = modeController.getController();
+		modeController.addAction("newMap", new NewMapAction(controller));
 		modeController.addAction("newSibling", new NewSiblingAction(controller));
 		modeController.addAction("newPreviousSibling", new NewPreviousSiblingAction(controller));
 		newChild = new NewChildAction(controller);

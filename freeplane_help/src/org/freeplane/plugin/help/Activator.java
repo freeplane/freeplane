@@ -2,7 +2,7 @@ package org.freeplane.plugin.help;
 
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.startup.mindmapmode.MModeControllerFactory;
+import org.freeplane.main.mindmapmode.MModeControllerFactory;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 

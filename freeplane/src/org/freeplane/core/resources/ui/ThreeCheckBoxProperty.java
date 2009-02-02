@@ -38,10 +38,10 @@ public class ThreeCheckBoxProperty extends PropertyBean implements IPropertyCont
 	static public final String FALSE_VALUE = "false";
 	protected static final int FALSE_VALUE_INT = 1;
 	private static final ImageIcon MINUS_IMAGE = new ImageIcon(Controller.getResourceController().getResource(
-	    "/accessories/plugins/icons/edit_remove.png"));
+	    "/images/edit_remove.png"));
 	private static final Icon NO_IMAGE = new BlindIcon(15);
 	private static final ImageIcon PLUS_IMAGE = new ImageIcon(Controller.getResourceController().getResource(
-	    "/accessories/plugins/icons/edit_add.png"));
+	    "/images/edit_add.png"));
 	static public final String TRUE_VALUE = "true";
 	protected static final int TRUE_VALUE_INT = 0;
 	JButton mButton = new JButton();

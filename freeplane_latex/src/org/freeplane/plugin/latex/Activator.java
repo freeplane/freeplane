@@ -1,7 +1,7 @@
 package org.freeplane.plugin.latex;
 
 import org.freeplane.features.mindmapmode.MModeController;
-import org.freeplane.startup.mindmapmode.MModeControllerFactory;
+import org.freeplane.main.mindmapmode.MModeControllerFactory;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 

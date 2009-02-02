@@ -47,7 +47,7 @@ import org.freeplane.features.mindmapmode.text.MTextController;
 @ActionDescriptor(tooltip = "accessories/plugins/SplitNode.properties_documentation", //
 name = "accessories/plugins/SplitNode.properties_name", //
 keyStroke = "%keystroke_accessories/plugins/SplitNode.properties_key", //
-iconPath = "/accessories/plugins/icons/stock_text_indent.png", //
+iconPath = "/images/stock_text_indent.png", //
 locations = { "/menu_bar/extras/first/join" })
 public class SplitNode extends FreeplaneAction {
 	/**

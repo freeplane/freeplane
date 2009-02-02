@@ -36,7 +36,7 @@ import org.freeplane.features.mindmapnode.pattern.StylePatternFactory;
  */
 @ActionDescriptor(tooltip = "accessories/plugins/FormatCopy.properties_documentation", //
 name = "accessories/plugins/FormatCopy.properties_name", //,
-iconPath = "/accessories/plugins/icons/colorpicker.png", //
+iconPath = "/images/colorpicker.png", //
 keyStroke = "keystroke_accessories/plugins/FormatCopy.properties.properties_key", //
 locations = { "/menu_bar/edit/paste" })
 class FormatCopy extends FreeplaneAction {
@@ -67,7 +67,7 @@ class FormatCopy extends FreeplaneAction {
 @ActionDescriptor(tooltip = "accessories/plugins/FormatPaste.properties_documentation", //
 name = "accessories/plugins/FormatPaste.properties_name", //
 keyStroke = "keystroke_accessories/plugins/FormatPaste.properties.properties_key", //
-iconPath = "/accessories/plugins/icons/color_fill.png", //
+iconPath = "/images/color_fill.png", //
 locations = { "/menu_bar/edit/paste" })
 public class FormatPaste extends MultipleNodeAction {
 	public FormatPaste(final Controller controller, final MenuBuilder menuBuilder) {
