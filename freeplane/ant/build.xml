@@ -1,6 +1,7 @@
 <project name="freeplane" default="dist" basedir=".">
 	<property name="ver" value="0.9.0:21" />
 	<property name="src" value="../src" />
+	<property name="resources" value="../resources" />
 	<property name = "root" value = ".."/>
 	<property name="manifest" value="${root}/META-INF/OLD_MANIFEST.MF" />	
 	<property name="lib" value="${root}/lib" />
@@ -42,7 +43,7 @@
 				<exclude name="**/filemode/**"/>
 				<exclude name="**/core/resources/ui/**"/>
 			</fileset>
-			<fileset dir="${src}">
+			<fileset dir="${resources}">
 				<include name="images/*"/>
 				<include name="images/icons/*.png"/>
 				<include name="freeplane.properties"/>
@@ -60,7 +61,7 @@
 				<include name="**/core/resources/ui/**"/>
 				<exclude name="**/*.jar"/>
 			</fileset>
-			<fileset dir="${src}">
+			<fileset dir="${resources}">
 				<include name="doc/**"/>
 				<include name="**/*.xsl"/>
 				<include name="**/*.xml"/>
