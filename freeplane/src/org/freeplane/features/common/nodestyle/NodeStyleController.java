@@ -101,7 +101,7 @@ public class NodeStyleController implements IExtension {
 		});
 		addFontGetter(CombinedPropertyChain.DEFAULT, new IPropertyGetter<Font, NodeModel>() {
 			public Font getProperty(final NodeModel node, final Font currentValue) {
-				return Controller.getResourceController().getDefaultFont();
+				return ResourceController.getResourceController().getDefaultFont();
 			}
 		});
 		addColorGetter(ExclusivePropertyChain.NODE, new IPropertyGetter<Color, NodeModel>() {
@@ -128,11 +128,11 @@ public class NodeStyleController implements IExtension {
 				String returnedString = NodeStyleModel.getShape(node);
 				if (NodeStyleModel.getShape(node) == null) {
 					if (node.isRoot()) {
-						returnedString = Controller.getResourceController().getProperty(
+						returnedString = ResourceController.getResourceController().getProperty(
 						    ResourceController.RESOURCES_ROOT_NODE_SHAPE);
 					}
 					else {
-						final String stdstyle = Controller.getResourceController().getProperty(
+						final String stdstyle = ResourceController.getResourceController().getProperty(
 						    ResourceController.RESOURCES_NODE_SHAPE);
 						if (stdstyle.equals(NodeStyleModel.SHAPE_AS_PARENT)) {
 							returnedString = getShape(node.getParentNode());
@@ -143,7 +143,7 @@ public class NodeStyleController implements IExtension {
 					}
 				}
 				else if (node.isRoot() && NodeStyleModel.getShape(node).equals(NodeStyleModel.SHAPE_AS_PARENT)) {
-					returnedString = Controller.getResourceController().getProperty(
+					returnedString = ResourceController.getResourceController().getProperty(
 					    ResourceController.RESOURCES_ROOT_NODE_SHAPE);
 				}
 				else if (NodeStyleModel.getShape(node).equals(NodeStyleModel.SHAPE_AS_PARENT)) {
@@ -166,7 +166,7 @@ public class NodeStyleController implements IExtension {
 		final NodeStyleBuilder styleBuilder = new NodeStyleBuilder();
 		styleBuilder.registerBy(readManager, writeManager);
 		if (standardNodeTextColor == null) {
-			final String stdcolor = Controller.getResourceController().getProperty(
+			final String stdcolor = ResourceController.getResourceController().getProperty(
 			    ResourceController.RESOURCES_NODE_TEXT_COLOR);
 			standardNodeTextColor = TreeXmlReader.xmlToColor(stdcolor);
 			createPropertyChangeListener();
@@ -202,7 +202,7 @@ public class NodeStyleController implements IExtension {
 				}
 			}
 		};
-		Controller.getResourceController().addPropertyChangeListener(propertyChangeListener);
+		ResourceController.getResourceController().addPropertyChangeListener(propertyChangeListener);
 	}
 
 	public Color getBackgroundColor(final NodeModel node) {

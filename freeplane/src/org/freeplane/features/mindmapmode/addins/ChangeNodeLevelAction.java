@@ -27,6 +27,7 @@ import java.util.Vector;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
@@ -93,18 +94,18 @@ public class ChangeNodeLevelAction {
 		modeController.getMapController().sortNodesByDepth(selectedNodes);
 		final Controller controller = modeController.getController();
 		if (selectedNode.isRoot()) {
-			controller.errorMessage(Controller.getText("cannot_add_parent_to_root"));
+			controller.errorMessage(ResourceController.getText("cannot_add_parent_to_root"));
 			return;
 		}
 		final NodeModel selectedParent = selectedNode.getParentNode();
 		for (final Iterator it = selectedNodes.iterator(); it.hasNext();) {
 			final NodeModel node = (NodeModel) it.next();
 			if (node.getParentNode() != selectedParent) {
-				controller.errorMessage(Controller.getText("cannot_add_parent_diff_parents"));
+				controller.errorMessage(ResourceController.getText("cannot_add_parent_diff_parents"));
 				return;
 			}
 			if (node.isRoot()) {
-				controller.errorMessage(Controller.getText("cannot_add_parent_to_root"));
+				controller.errorMessage(ResourceController.getText("cannot_add_parent_to_root"));
 				return;
 			}
 		}

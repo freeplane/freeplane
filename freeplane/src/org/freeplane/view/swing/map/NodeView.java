@@ -40,11 +40,11 @@ import java.util.Map;
 import javax.swing.JComponent;
 import javax.swing.tree.TreeNode;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.NodeChangeEvent;
 import org.freeplane.core.model.INodeView;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.model.NodeModel.NodeChangeType;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
@@ -448,7 +448,7 @@ public class NodeView extends JComponent implements INodeView {
 	public int getMaxToolTipWidth() {
 		if (maxToolTipWidth == 0) {
 			try {
-				maxToolTipWidth = Controller.getResourceController().getIntProperty("max_tooltip_width", 600);
+				maxToolTipWidth = ResourceController.getResourceController().getIntProperty("max_tooltip_width", 600);
 			}
 			catch (final NumberFormatException e) {
 				maxToolTipWidth = 600;
@@ -738,7 +738,7 @@ public class NodeView extends JComponent implements INodeView {
 
 	public int getZoomedFoldingSymbolHalfWidth() {
 		if (NodeView.FOLDING_SYMBOL_WIDTH == -1) {
-			NodeView.FOLDING_SYMBOL_WIDTH = Controller.getResourceController().getIntProperty("foldingsymbolwidth", 8);
+			NodeView.FOLDING_SYMBOL_WIDTH = ResourceController.getResourceController().getIntProperty("foldingsymbolwidth", 8);
 		}
 		final int preferredFoldingSymbolHalfWidth = (int) ((NodeView.FOLDING_SYMBOL_WIDTH * map.getZoom()) / 2);
 		return Math.min(preferredFoldingSymbolHalfWidth, getHeight() / 2);

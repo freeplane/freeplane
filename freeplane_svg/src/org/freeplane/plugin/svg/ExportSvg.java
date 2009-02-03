@@ -30,6 +30,7 @@ import javax.swing.JOptionPane;
 
 import org.apache.batik.svggen.SVGGraphics2D;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.view.swing.map.MapView;
 
@@ -40,7 +41,7 @@ public class ExportSvg extends ExportVectorGraphic {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final File chosenFile = chooseFile("svg", Controller.getText("export_svg_text"), null);
+		final File chosenFile = chooseFile("svg", ResourceController.getText("export_svg_text"), null);
 		if (chosenFile == null) {
 			return;
 		}

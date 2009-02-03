@@ -71,6 +71,7 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.WindowConfigurationStorage;
 import org.freeplane.core.ui.UIBuilder;
 import org.freeplane.core.ui.components.BlindIcon;
@@ -526,7 +527,7 @@ class TimeList {
 	}
 
 	private String getResourceString(final String string) {
-		return Controller.getText(string);
+		return ResourceController.getText(string);
 	}
 
 	/**
@@ -751,7 +752,7 @@ class TimeList {
 				mTreeLabel.setText(getNodeText(mindMapNode));
 			}
 		});
-		final String marshalled = Controller.getResourceController().getProperty(
+		final String marshalled = ResourceController.getResourceController().getProperty(
 		    TimeList.WINDOW_PREFERENCE_STORAGE_PROPERTY);
 		final WindowConfigurationStorage result = TimeWindowConfigurationStorage.decorateDialog(marshalled, dialog);
 		final WindowConfigurationStorage storage = result;

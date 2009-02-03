@@ -40,6 +40,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.url.UrlManager;
@@ -81,7 +82,7 @@ public class ImportMindmanagerFiles extends FreeplaneAction {
 					continue;
 				}
 				final String xsltFileName = "/xslt/mindmanager2mm.xsl";
-				final URL xsltUrl = Controller.getResourceController().getResource(xsltFileName);
+				final URL xsltUrl = ResourceController.getResourceController().getResource(xsltFileName);
 				if (xsltUrl == null) {
 					Logger.global.severe("Can't find " + xsltFileName + " as resource.");
 					throw new IllegalArgumentException("Can't find " + xsltFileName + " as resource.");

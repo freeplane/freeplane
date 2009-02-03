@@ -24,9 +24,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.text.MessageFormat;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.url.UrlManager;
 
 /**
@@ -55,7 +55,7 @@ public class EditNodeExternalApplication extends EditNodeBase {
 					writer = new FileWriter(temporaryFile);
 					writer.write(EditNodeExternalApplication.this.text);
 					writer.close();
-					final String htmlEditingCommand = Controller.getResourceController().getProperty(
+					final String htmlEditingCommand = ResourceController.getResourceController().getProperty(
 					    "html_editing_command");
 					final String expandedHtmlEditingCommand = new MessageFormat(htmlEditingCommand)
 					    .format(new String[] { temporaryFile.toString() });

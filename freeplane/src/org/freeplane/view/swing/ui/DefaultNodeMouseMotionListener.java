@@ -11,10 +11,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ControllerPopupMenuListener;
 import org.freeplane.core.ui.INodeMouseMotionListener;
 import org.freeplane.core.util.Tools;
@@ -206,17 +206,17 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 			DefaultNodeMouseMotionListener.timeForDelayedSelection = new Tools.IntHolder();
 		}
 		DefaultNodeMouseMotionListener.delayedSelectionEnabled = new Tools.BooleanHolder();
-		DefaultNodeMouseMotionListener.delayedSelectionEnabled.setValue(Controller.getResourceController().getProperty(
+		DefaultNodeMouseMotionListener.delayedSelectionEnabled.setValue(ResourceController.getResourceController().getProperty(
 		    "selection_method").equals("selection_method_direct") ? false : true);
 		/*
 		 * set time for delay to infinity, if selection_method equals
 		 * selection_method_by_click.
 		 */
-		if (Controller.getResourceController().getProperty("selection_method").equals("selection_method_by_click")) {
+		if (ResourceController.getResourceController().getProperty("selection_method").equals("selection_method_by_click")) {
 			DefaultNodeMouseMotionListener.timeForDelayedSelection.setValue(Integer.MAX_VALUE);
 		}
 		else {
-			DefaultNodeMouseMotionListener.timeForDelayedSelection.setValue(Integer.parseInt(Controller
+			DefaultNodeMouseMotionListener.timeForDelayedSelection.setValue(Integer.parseInt(ResourceController
 			    .getResourceController().getProperty("time_for_delayed_selection")));
 		}
 	}

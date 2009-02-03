@@ -37,6 +37,7 @@ import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Tools;
@@ -86,7 +87,7 @@ abstract public class ExportAction extends FreeplaneAction {
 			chosenFile = new File(chosenFile.getParent(), chosenFile.getName() + "." + type);
 		}
 		if (chosenFile.exists()) {
-			final String overwriteText = MessageFormat.format(Controller.getText("file_already_exists"),
+			final String overwriteText = MessageFormat.format(ResourceController.getText("file_already_exists"),
 			    new Object[] { chosenFile.toString() });
 			final int overwriteMap = JOptionPane.showConfirmDialog(component, overwriteText, overwriteText,
 			    JOptionPane.YES_NO_OPTION);
@@ -120,7 +121,7 @@ abstract public class ExportAction extends FreeplaneAction {
 	 */
 	protected void copyFromResource(final String prefix, final String fileName, final String destinationDirectory) {
 		try {
-			final URL resource = Controller.getResourceController().getResource(prefix + fileName);
+			final URL resource = ResourceController.getResourceController().getResource(prefix + fileName);
 			if (resource == null) {
 				Logger.global.severe("Cannot find resource: " + prefix + fileName);
 				return;

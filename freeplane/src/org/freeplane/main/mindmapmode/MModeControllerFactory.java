@@ -29,6 +29,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IEditHandler;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
@@ -153,7 +154,7 @@ public class MModeControllerFactory {
 		this.controller = controller;
 		createStandardControllers();
 		createAddIns();
-		Controller.getResourceController().updateMenus(modeController);
+		ResourceController.getResourceController().updateMenus(modeController);
 		return modeController;
 	}
 

@@ -26,6 +26,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.features.common.text.TextController;
@@ -72,7 +73,7 @@ class NewChildAction extends FreeplaneAction {
 				if (parentFolded) {
 					mapController.setFolded(targetNode, false);
 				}
-				final int position = Controller.getResourceController().getProperty("placenewbranches").equals("last") ? targetNode
+				final int position = ResourceController.getResourceController().getProperty("placenewbranches").equals("last") ? targetNode
 				    .getChildCount()
 				        : 0;
 				newNode = addNewNode(targetNode, position, targetNode.isNewChildLeft());

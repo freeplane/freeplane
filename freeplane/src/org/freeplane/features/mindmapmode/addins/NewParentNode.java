@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.features.common.clipboard.ClipboardController;
@@ -69,7 +70,7 @@ public class NewParentNode extends FreeplaneAction {
 		final List selectedNodes = selecteds;
 		getModeController().getMapController().sortNodesByDepth(selectedNodes);
 		if (focussed.isRoot()) {
-			getController().errorMessage(Controller.getText("cannot_add_parent_to_root"));
+			getController().errorMessage(ResourceController.getText("cannot_add_parent_to_root"));
 			return;
 		}
 		final NodeModel newNode = moveToNewParent(selectedNode, selectedNodes);
@@ -91,11 +92,11 @@ public class NewParentNode extends FreeplaneAction {
 		for (final Iterator it = selectedNodes.iterator(); it.hasNext();) {
 			final NodeModel node = (NodeModel) it.next();
 			if (node.getParentNode() != selectedParent) {
-				getController().errorMessage(Controller.getText("cannot_add_parent_diff_parents"));
+				getController().errorMessage(ResourceController.getText("cannot_add_parent_diff_parents"));
 				return null;
 			}
 			if (node.isRoot()) {
-				getController().errorMessage(Controller.getText("cannot_add_parent_to_root"));
+				getController().errorMessage(ResourceController.getText("cannot_add_parent_to_root"));
 				return null;
 			}
 		}

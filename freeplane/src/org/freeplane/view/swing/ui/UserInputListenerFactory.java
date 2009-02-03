@@ -46,6 +46,7 @@ import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.IMouseWheelEventHandler;
 import org.freeplane.core.ui.INodeMouseMotionListener;
@@ -242,7 +243,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	}
 
 	public void setMenuStructure(final String menuStructureResource) {
-		final URL menuStructure = Controller.getResourceController().getResource(menuStructureResource);
+		final URL menuStructure = ResourceController.getResourceController().getResource(menuStructureResource);
 		setMenuStructure(menuStructure);
 	}
 
@@ -322,7 +323,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		menuBuilder.addPopupMenu(mapsPopupMenu, FreeplaneMenuBar.MAP_POPUP_MENU);
 		menuBuilder.addPopupMenu(getNodePopupMenu(), UserInputListenerFactory.NODE_POPUP);
 		menuBuilder.addToolbar(getMainToolBar(), "/main_toolbar");
-		mapsPopupMenu.setName(Controller.getText("mindmaps"));
+		mapsPopupMenu.setName(ResourceController.getText("mindmaps"));
 		if (menuStructure != null) {
 			menuBuilder.processMenuCategory(menuStructure);
 		}
@@ -348,7 +349,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			else {
 				newItem.setSelected(false);
 			}
-			final String keystroke = Controller.getResourceController().getAdjustableProperty("keystroke_mode_" + key);
+			final String keystroke = ResourceController.getResourceController().getAdjustableProperty("keystroke_mode_" + key);
 			if (keystroke != null) {
 				newItem.setAccelerator(KeyStroke.getKeyStroke(keystroke));
 			}

@@ -28,6 +28,7 @@ import java.util.Vector;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.util.Tools.BooleanHolder;
@@ -99,7 +100,7 @@ class ScriptEditor extends FreeplaneAction {
 
 		public ScriptEditorWindowConfigurationStorage decorateDialog(final ScriptEditorPanel pPanel,
 		                                                             final String pWindow_preference_storage_property) {
-			final String marshalled = Controller.getResourceController().getProperty(
+			final String marshalled = ResourceController.getResourceController().getProperty(
 			    pWindow_preference_storage_property);
 			return ScriptEditorWindowConfigurationStorage.decorateDialog(marshalled, pPanel);
 		}

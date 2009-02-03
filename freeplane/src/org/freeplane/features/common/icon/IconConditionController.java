@@ -32,6 +32,7 @@ import org.freeplane.core.filter.util.IListModel;
 import org.freeplane.core.filter.util.SortedMapListModel;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.resources.NamedObject;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -74,12 +75,12 @@ class IconConditionController implements IElementaryConditionController {
 
 	public IListModel getFilteredProperties() {
 		final SortedMapListModel list = new SortedMapListModel();
-		list.add(Controller.getResourceController().createTranslatedString(FILTER_ICON));
+		list.add(ResourceController.getResourceController().createTranslatedString(FILTER_ICON));
 		return list;
 	}
 
 	public Object[] getIconConditionNames() {
-		return new NamedObject[] { Controller.getResourceController().createTranslatedString(
+		return new NamedObject[] { ResourceController.getResourceController().createTranslatedString(
 		    ConditionFactory.FILTER_CONTAINS), };
 	}
 

@@ -19,11 +19,11 @@ package org.freeplane.features.mindmapmode.addins.encrypt;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.INodeSelectionListener;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.EncryptionModel;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.components.EnterPasswordDialog;
@@ -86,7 +86,7 @@ public class EncryptedMap extends FreeplaneAction implements INodeSelectionListe
 		}
 		final ModeController newModeController = getModeController();
 		final NodeModel node = new NodeModel(
-		    Controller.getText("accessories/plugins/EncryptNode.properties_select_me"), null);
+		    ResourceController.getText("accessories/plugins/EncryptNode.properties_select_me"), null);
 		final EncryptionModel encryptedMindMapNode = new EncryptionModel(node);
 		encryptedMindMapNode.setEncrypter(new SingleDesEncrypter(password));
 		node.addExtension(encryptedMindMapNode);

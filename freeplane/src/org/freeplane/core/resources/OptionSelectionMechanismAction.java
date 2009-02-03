@@ -30,7 +30,7 @@ class OptionSelectionMechanismAction extends AbstractAction implements IFreeplan
 
 	OptionSelectionMechanismAction(final Controller controller) {
 		this.controller = controller;
-		Controller.getResourceController().addPropertyChangeListener(this);
+		ResourceController.getResourceController().addPropertyChangeListener(this);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -41,10 +41,10 @@ class OptionSelectionMechanismAction extends AbstractAction implements IFreeplan
 	/**
 	 */
 	private void changeSelection(final String command) {
-		Controller.getResourceController().setProperty("selection_method", command);
+		ResourceController.getResourceController().setProperty("selection_method", command);
 		controller.getModeController().getUserInputListenerFactory().getNodeMouseMotionListener()
 		    .updateSelectionMethod();
-		final String statusBarString = Controller.getText(command);
+		final String statusBarString = ResourceController.getText(command);
 		if (statusBarString != null) {
 			controller.getViewController().out(statusBarString);
 		}

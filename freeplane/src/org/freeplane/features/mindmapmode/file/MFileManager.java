@@ -38,6 +38,7 @@ import javax.swing.filechooser.FileFilter;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Tools;
@@ -169,7 +170,7 @@ public class MFileManager extends UrlManager {
 				getController().errorMessage(getModeController().getText("url_error"));
 				return null;
 			}
-			if (Controller.getResourceController().getProperty("links").equals("relative")) {
+			if (ResourceController.getResourceController().getProperty("links").equals("relative")) {
 				try {
 					relative = UrlManager.toRelativeURL(UrlManager.fileToUrl(map.getFile()), link);
 				}

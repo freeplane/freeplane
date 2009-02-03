@@ -24,6 +24,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 
@@ -32,11 +33,11 @@ class LicenseAction extends AbstractAction {
 
 	LicenseAction(final Controller controller) {
 		this.controller = controller;
-		MenuBuilder.setLabelAndMnemonic(this, Controller.getText("license"));
+		MenuBuilder.setLabelAndMnemonic(this, ResourceController.getText("license"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		UITools.informationMessage(controller.getViewController().getFrame(), Controller.getText("license_text"),
-		    Controller.getText("license"));
+		UITools.informationMessage(controller.getViewController().getFrame(), ResourceController.getText("license_text"),
+		    ResourceController.getText("license"));
 	}
 }

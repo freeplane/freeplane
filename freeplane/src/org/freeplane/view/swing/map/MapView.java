@@ -252,20 +252,21 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		super();
 		this.model = model;
 		controller = model.getModeController().getController();
-		rename();
+		final String name = getModel().getTitle();
+        setName(name);
 		if (MapView.standardMapBackgroundColor == null) {
-			String stdcolor = Controller.getResourceController().getProperty(
+			String stdcolor = ResourceController.getResourceController().getProperty(
 			    ResourceController.RESOURCES_BACKGROUND_COLOR);
 			MapView.standardMapBackgroundColor = TreeXmlReader.xmlToColor(stdcolor);
-			stdcolor = Controller.getResourceController().getProperty(ResourceController.RESOURCES_SELECTED_NODE_COLOR);
+			stdcolor = ResourceController.getResourceController().getProperty(ResourceController.RESOURCES_SELECTED_NODE_COLOR);
 			MapView.standardSelectColor = TreeXmlReader.xmlToColor(stdcolor);
-			final String stdtextcolor = Controller.getResourceController().getProperty(
+			final String stdtextcolor = ResourceController.getResourceController().getProperty(
 			    ResourceController.RESOURCES_SELECTED_NODE_RECTANGLE_COLOR);
 			MapView.standardSelectRectangleColor = TreeXmlReader.xmlToColor(stdtextcolor);
-			final String drawCircle = Controller.getResourceController().getProperty(
+			final String drawCircle = ResourceController.getResourceController().getProperty(
 			    ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION);
 			MapView.standardDrawRectangleForSelection = TreeXmlReader.xmlToBoolean(drawCircle);
-			final String printOnWhite = Controller.getResourceController().getProperty("printonwhitebackground");
+			final String printOnWhite = ResourceController.getResourceController().getProperty("printonwhitebackground");
 			MapView.printOnWhiteBackground = TreeXmlReader.xmlToBoolean(printOnWhite);
 			createPropertyChangeListener();
 		}
@@ -281,7 +282,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, Collections.EMPTY_SET);
 		setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, Collections.EMPTY_SET);
 		setFocusTraversalKeys(KeyboardFocusManager.UP_CYCLE_TRAVERSAL_KEYS, Collections.EMPTY_SET);
-		disableMoveCursor = Controller.getResourceController().getBoolProperty("disable_cursor_move_paper");
+		disableMoveCursor = ResourceController.getResourceController().getBoolProperty("disable_cursor_move_paper");
 	}
 
 	/*
@@ -367,7 +368,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 				}
 			}
 		};
-		Controller.getResourceController().addPropertyChangeListener(MapView.propertyChangeListener);
+		ResourceController.getResourceController().addPropertyChangeListener(MapView.propertyChangeListener);
 	}
 
 	public void deselect(final NodeView newSelected) {
@@ -528,10 +529,10 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 	public int getMaxNodeWidth() {
 		if (maxNodeWidth == 0) {
 			try {
-				maxNodeWidth = Integer.parseInt(Controller.getResourceController().getProperty("max_node_width"));
+				maxNodeWidth = Integer.parseInt(ResourceController.getResourceController().getProperty("max_node_width"));
 			}
 			catch (final NumberFormatException e) {
-				maxNodeWidth = Integer.parseInt(Controller.getResourceController().getProperty(
+				maxNodeWidth = Integer.parseInt(ResourceController.getResourceController().getProperty(
 				    "el__max_default_window_width"));
 			}
 		}
@@ -931,7 +932,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 				setBackground(Color.WHITE);
 			}
 			boundingRectangle = getInnerBounds();
-			fitToPage = Controller.getResourceController().getBoolProperty("fit_to_page");
+			fitToPage = ResourceController.getResourceController().getBoolProperty("fit_to_page");
 			isPreparedForPrinting = true;
 		}
 	}
@@ -950,7 +951,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 	public int print(final Graphics graphics, final PageFormat pageFormat, final int pageIndex) {
 		double userZoomFactor = 1;
 		try {
-			userZoomFactor = Double.parseDouble(Controller.getResourceController().getProperty("user_zoom"));
+			userZoomFactor = Double.parseDouble(ResourceController.getResourceController().getProperty("user_zoom"));
 		}
 		catch (final Exception e) {
 		}
@@ -987,11 +988,6 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		print(graphics2D);
 		endPrinting();
 		return Printable.PAGE_EXISTS;
-	}
-
-	public void rename() {
-		final String name = getModel().getTitle();
-		setName(name);
 	}
 
 	private void repaintSelecteds() {

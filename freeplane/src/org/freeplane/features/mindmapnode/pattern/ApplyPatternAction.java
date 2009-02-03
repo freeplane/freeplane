@@ -29,6 +29,7 @@ import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.features.common.edge.EdgeController;
@@ -128,7 +129,7 @@ class ApplyPatternAction extends MultipleNodeAction {
 		if (pattern.getPatternNodeFontName() != null) {
 			String nodeFontFamily = pattern.getPatternNodeFontName().getValue();
 			if (nodeFontFamily == null) {
-				nodeFontFamily = Controller.getResourceController().getDefaultFontFamilyName();
+				nodeFontFamily = ResourceController.getResourceController().getDefaultFontFamilyName();
 			}
 			((MNodeStyleController) NodeStyleController.getController(controller.getModeController())).setFontFamily(
 			    node, nodeFontFamily);
@@ -136,7 +137,7 @@ class ApplyPatternAction extends MultipleNodeAction {
 		if (pattern.getPatternNodeFontSize() != null) {
 			String nodeFontSize = pattern.getPatternNodeFontSize().getValue();
 			if (nodeFontSize == null) {
-				nodeFontSize = "" + Controller.getResourceController().getDefaultFontSize();
+				nodeFontSize = "" + ResourceController.getResourceController().getDefaultFontSize();
 			}
 			((MNodeStyleController) NodeStyleController.getController(controller.getModeController())).setFontSize(
 			    node, Integer.parseInt(nodeFontSize));

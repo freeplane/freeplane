@@ -27,8 +27,8 @@ import java.util.TreeMap;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.NamedObject;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -56,7 +56,7 @@ public class ConditionFactory {
 	public static String createDescription(final String attribute, final String simpleCondition, final String value,
 	                                       final boolean ignoreCase) {
 		final String description = attribute + " " + simpleCondition + (value != null ? " \"" + value + "\"" : "")
-		        + (ignoreCase && value != null ? ", " + Controller.getText(ConditionFactory.FILTER_IGNORE_CASE) : "");
+		        + (ignoreCase && value != null ? ", " + ResourceController.getText(ConditionFactory.FILTER_IGNORE_CASE) : "");
 		return description;
 	}
 

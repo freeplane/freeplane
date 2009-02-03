@@ -21,8 +21,8 @@ package org.freeplane.features.common.attribute;
 
 import javax.swing.table.AbstractTableModel;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.util.IListModel;
+import org.freeplane.core.resources.ResourceController;
 
 /**
  * @author Dimitry Polivaev
@@ -32,7 +32,7 @@ public class AttributeRegistryTableModel extends AbstractTableModel {
 	static private String editorColumnName = null;
 	static private String restrictionColumnName = null;
 	static private String visibilityColumnName = null;
-	final private String allAttributes = Controller.getText("attributes_all");
+	final private String allAttributes = ResourceController.getText("attributes_all");
 	final private AttributeRegistry attributeRegistry;
 
 	AttributeRegistryTableModel(final AttributeRegistry registry) {
@@ -105,22 +105,22 @@ public class AttributeRegistryTableModel extends AbstractTableModel {
 		switch (column) {
 			case 0:
 				if (AttributeRegistryTableModel.attributeColumnName == null) {
-					AttributeRegistryTableModel.attributeColumnName = Controller.getText("attributes_attribute");
+					AttributeRegistryTableModel.attributeColumnName = ResourceController.getText("attributes_attribute");
 				}
 				return AttributeRegistryTableModel.attributeColumnName;
 			case 1:
 				if (AttributeRegistryTableModel.visibilityColumnName == null) {
-					AttributeRegistryTableModel.visibilityColumnName = Controller.getText("attributes_visible");
+					AttributeRegistryTableModel.visibilityColumnName = ResourceController.getText("attributes_visible");
 				}
 				return AttributeRegistryTableModel.visibilityColumnName;
 			case 2:
 				if (AttributeRegistryTableModel.restrictionColumnName == null) {
-					AttributeRegistryTableModel.restrictionColumnName = Controller.getText("attributes_restriction");
+					AttributeRegistryTableModel.restrictionColumnName = ResourceController.getText("attributes_restriction");
 				}
 				return AttributeRegistryTableModel.restrictionColumnName;
 			case 3:
 				if (AttributeRegistryTableModel.editorColumnName == null) {
-					AttributeRegistryTableModel.editorColumnName = Controller.getText("attributes_edit");
+					AttributeRegistryTableModel.editorColumnName = ResourceController.getText("attributes_edit");
 				}
 				return AttributeRegistryTableModel.editorColumnName;
 		}

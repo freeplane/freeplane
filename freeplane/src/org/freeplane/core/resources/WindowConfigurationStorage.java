@@ -9,7 +9,6 @@ import java.io.StringWriter;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.n3.nanoxml.IXMLElement;
 import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
@@ -84,7 +83,7 @@ abstract public class WindowConfigurationStorage {
 		setWidth((dialog.getWidth()));
 		setHeight((dialog.getHeight()));
 		final String marshalled = marshall();
-		Controller.getResourceController().setProperty(window_preference_storage_property, marshalled);
+		ResourceController.getResourceController().setProperty(window_preference_storage_property, marshalled);
 	}
 
 	protected IXMLElement unmarschall(final String marshalled, final JDialog dialog) {

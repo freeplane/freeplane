@@ -24,6 +24,7 @@ import javax.swing.JPopupMenu;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.IPropertyGetter;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.features.common.clipboard.ClipboardController;
@@ -72,7 +73,7 @@ public class FModeControllerFactory {
 		userInputListenerFactory.setMenuStructure("/xml/filemodemenu.xml");
 		userInputListenerFactory.updateMenus(modeController);
 		modeController.updateMenus();
-		Controller.getResourceController().updateMenus(modeController);
+		ResourceController.getResourceController().updateMenus(modeController);
 		return modeController;
 	}
 }

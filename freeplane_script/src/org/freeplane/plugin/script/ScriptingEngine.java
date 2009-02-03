@@ -109,15 +109,15 @@ class ScriptingEngine extends FreeplaneAction {
 		 * get preferences (and store them again after the script execution,
 		 * such that the scripts are not able to change them).
 		 */
-		final String executeWithoutAsking = Controller.getResourceController().getProperty(
+		final String executeWithoutAsking = ResourceController.getResourceController().getProperty(
 		    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING);
-		final String executeWithoutFileRestriction = Controller.getResourceController().getProperty(
+		final String executeWithoutFileRestriction = ResourceController.getResourceController().getProperty(
 		    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION);
-		final String executeWithoutNetworkRestriction = Controller.getResourceController().getProperty(
+		final String executeWithoutNetworkRestriction = ResourceController.getResourceController().getProperty(
 		    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION);
-		final String executeWithoutExecRestriction = Controller.getResourceController().getProperty(
+		final String executeWithoutExecRestriction = ResourceController.getResourceController().getProperty(
 		    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION);
-		final String signedScriptsWithoutRestriction = Controller.getResourceController().getProperty(
+		final String signedScriptsWithoutRestriction = ResourceController.getResourceController().getProperty(
 		    ResourceController.RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED);
 		/* *************** */
 		/* Signature */
@@ -155,16 +155,16 @@ class ScriptingEngine extends FreeplaneAction {
 			securityManager.setFinalSecurityManager(scriptingSecurityManager);
 			System.setOut(oldOut);
 			/* restore preferences (and assure that the values are unchanged!). */
-			Controller.getResourceController().setProperty(ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
+			ResourceController.getResourceController().setProperty(ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
 			    executeWithoutAsking);
-			Controller.getResourceController().setProperty(
+			ResourceController.getResourceController().setProperty(
 			    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION, executeWithoutFileRestriction);
-			Controller.getResourceController().setProperty(
+			ResourceController.getResourceController().setProperty(
 			    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION,
 			    executeWithoutNetworkRestriction);
-			Controller.getResourceController().setProperty(
+			ResourceController.getResourceController().setProperty(
 			    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION, executeWithoutExecRestriction);
-			Controller.getResourceController().setProperty(ResourceController.RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED,
+			ResourceController.getResourceController().setProperty(ResourceController.RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED,
 			    signedScriptsWithoutRestriction);
 		}
 		/*
@@ -200,7 +200,7 @@ class ScriptingEngine extends FreeplaneAction {
 			            + message);
 			return false;
 		}
-		pOutStream.print(Controller.getText("plugins/ScriptEditor/window.Result") + value);
+		pOutStream.print(ResourceController.getText("plugins/ScriptEditor/window.Result") + value);
 		if (assignResult && value != null) {
 			if (assignTo == null) {
 				((MTextController) TextController.getController(pMindMapController))

@@ -34,16 +34,16 @@ class KeyDocumentationAction extends AbstractAction {
 	public KeyDocumentationAction(final Controller controller) {
 		super();
 		this.controller = controller;
-		MenuBuilder.setLabelAndMnemonic(this, Controller.getText("KeyDoc"));
+		MenuBuilder.setLabelAndMnemonic(this, ResourceController.getText("KeyDoc"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		String urlText = Controller.getText("pdfKeyDocLocation");
+		String urlText = ResourceController.getText("pdfKeyDocLocation");
 		urlText = ResourceController.removeTranslateComment(urlText);
 		try {
 			if (urlText != null && urlText != "") {
 				URL url = null;
-				url = Controller.getResourceController().getResource(urlText);
+				url = ResourceController.getResourceController().getResource(urlText);
 				controller.getViewController().openDocument(url);
 			}
 		}

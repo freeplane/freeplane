@@ -45,6 +45,7 @@ import javax.swing.text.JTextComponent;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.FreeplaneAction;
 
 /**
@@ -205,7 +206,7 @@ public class EditNodeBase {
 	}
 
 	protected boolean binOptionIsTrue(final String option) {
-		return Controller.getResourceController().getBoolProperty(option);
+		return ResourceController.getResourceController().getBoolProperty(option);
 	}
 
 	public void closeEdit() {
@@ -252,7 +253,7 @@ public class EditNodeBase {
 	/**
 		 */
 	protected String getText(final String string) {
-		return Controller.getText(string);
+		return ResourceController.getText(string);
 	}
 
 	/**

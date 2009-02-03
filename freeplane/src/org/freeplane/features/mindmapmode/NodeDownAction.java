@@ -23,13 +23,14 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
 
 class NodeDownAction extends FreeplaneAction {
 	public NodeDownAction(final Controller controller) {
 		super(controller, "new_sibling_behind");
-		MenuBuilder.setLabelAndMnemonic(this, Controller.getText("node_down"));
+		MenuBuilder.setLabelAndMnemonic(this, ResourceController.getText("node_down"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {

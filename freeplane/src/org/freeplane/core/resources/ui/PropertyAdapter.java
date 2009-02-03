@@ -19,7 +19,7 @@
  */
 package org.freeplane.core.resources.ui;
 
-import org.freeplane.core.controller.Controller;
+import org.freeplane.core.resources.ResourceController;
 
 /**
  * @author Dimitry Polivaev
@@ -32,7 +32,7 @@ public class PropertyAdapter {
 
 	public PropertyAdapter(final String name) {
 		this(name, "OptionPanel." + name, "OptionPanel." + name + ".tooltip");
-		if (Controller.getResourceController().getText(description, null) == null) {
+		if (ResourceController.getResourceController().getText(description, null) == null) {
 			description = null;
 		}
 	}

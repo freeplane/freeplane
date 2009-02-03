@@ -27,10 +27,10 @@ import java.util.Vector;
 import javax.swing.ImageIcon;
 import javax.swing.table.AbstractTableModel;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -80,7 +80,7 @@ public class NodeAttributeTableModel extends AbstractTableModel implements IAttr
 		}
 	};
 	static private ImageIcon noteIcon = null;
-	private static boolean SHOW_ATTRIBUTE_ICON = Controller.getResourceController().getBoolProperty(
+	private static boolean SHOW_ATTRIBUTE_ICON = ResourceController.getResourceController().getBoolProperty(
 	    "el__show_icon_for_attributes");
 	private static final String STATE_ICON = "AttributeExist";
 
@@ -143,7 +143,7 @@ public class NodeAttributeTableModel extends AbstractTableModel implements IAttr
 	public void enableStateIcon() {
 		if (NodeAttributeTableModel.SHOW_ATTRIBUTE_ICON && getRowCount() == 1) {
 			if (NodeAttributeTableModel.noteIcon == null) {
-				NodeAttributeTableModel.noteIcon = new ImageIcon(Controller.getResourceController().getResource(
+				NodeAttributeTableModel.noteIcon = new ImageIcon(ResourceController.getResourceController().getResource(
 				    "/images/showAttributes.gif"));
 			}
 			node.setStateIcon(NodeAttributeTableModel.STATE_ICON, NodeAttributeTableModel.noteIcon);

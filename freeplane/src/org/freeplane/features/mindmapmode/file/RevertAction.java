@@ -31,6 +31,7 @@ import javax.swing.JOptionPane;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.model.MapModel;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.url.UrlManager;
 
@@ -64,13 +65,13 @@ class RevertAction extends FreeplaneAction {
 					mapController.newMap(UrlManager.fileToUrl(new File(this.getLocalFileName())));
 				}
 				else {
-					String filePrefix = Controller.getText("freeplane_reverted");
+					String filePrefix = ResourceController.getText("freeplane_reverted");
 					if (this.getFilePrefix() != null) {
 						filePrefix = this.getFilePrefix();
 					}
 					final File tempFile = File.createTempFile(filePrefix,
 					    org.freeplane.features.mindmapmode.file.MFileManager.FREEPLANE_FILE_EXTENSION, new File(
-					        Controller.getResourceController().getFreeplaneUserDirectory()));
+					        ResourceController.getResourceController().getFreeplaneUserDirectory()));
 					final FileWriter fw = new FileWriter(tempFile);
 					fw.write(this.getMap());
 					fw.close();

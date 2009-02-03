@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.resources;
+package org.freeplane.main.application;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -37,6 +37,8 @@ import javax.swing.event.PopupMenuListener;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.resources.IFreeplanePropertyListener;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 
@@ -208,7 +210,7 @@ public class ApplicationResourceController extends ResourceController {
 	}
 
 	@Override
-	public void setDefaultProperty(final String key, final String value) {
+	protected void setDefaultProperty(final String key, final String value) {
 		defProps.setProperty(key, value);
 	}
 

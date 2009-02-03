@@ -49,6 +49,7 @@ import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.text.MTextController;
@@ -170,7 +171,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 	}
 
 	private String getResourceString(final String string) {
-		return Controller.getText(string);
+		return ResourceController.getText(string);
 	}
 
 	/**

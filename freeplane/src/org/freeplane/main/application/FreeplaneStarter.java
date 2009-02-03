@@ -38,7 +38,6 @@ import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.ApplicationResourceController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Tools;
@@ -95,7 +94,7 @@ public class FreeplaneStarter {
 
 	public void createController() {
 		resourceController = new ApplicationResourceController();
-		Controller.setResourceController(resourceController);
+		ResourceController.setResourceController(resourceController);
 		controller = new Controller();
 		resourceController.init(controller);
 		createLogger();
@@ -131,7 +130,7 @@ public class FreeplaneStarter {
 	public void createFrame(final String[] args) {
 		feedBack.increase("Freeplane.progress.settingPreferences");
 		controller.getViewController().changeAntialias(
-		    Controller.getResourceController().getProperty(ViewController.RESOURCE_ANTIALIAS));
+		    ResourceController.getResourceController().getProperty(ViewController.RESOURCE_ANTIALIAS));
 		feedBack.increase("Freeplane.progress.propagateLookAndFeel");
 		SwingUtilities.updateComponentTreeUI(controller.getViewController().getFrame());
 		feedBack.increase("Freeplane.progress.buildScreen");
@@ -150,7 +149,7 @@ public class FreeplaneStarter {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				feedBack.increase("Freeplane.progress.createInitialMode");
-				controller.selectMode(Controller.getResourceController().getProperty("initial_mode"));
+				controller.selectMode(ResourceController.getResourceController().getProperty("initial_mode"));
 				feedBack.increase("Freeplane.progress.startCreateController");
 				final ModeController ctrl = createModeController(args);
 				feedBack.increase("Freeplane.progress.loadMaps");
@@ -169,7 +168,7 @@ public class FreeplaneStarter {
 			return;
 		}
 		loggerCreated = true;
-		final ResourceController resourceController = Controller.getResourceController();
+		final ResourceController resourceController = ResourceController.getResourceController();
 		FileHandler mFileHandler = null;
 		final Logger parentLogger = Logger.getAnonymousLogger().getParent();
 		final Handler[] handlers = parentLogger.getHandlers();
@@ -234,9 +233,9 @@ public class FreeplaneStarter {
 			}
 		}
 		if (!fileLoaded) {
-			final String restoreable = Controller.getResourceController().getProperty(
+			final String restoreable = ResourceController.getResourceController().getProperty(
 			    Controller.ON_START_IF_NOT_SPECIFIED);
-			if (Tools.isPreferenceTrue(Controller.getResourceController().getProperty(FreeplaneStarter.LOAD_LAST_MAP))
+			if (Tools.isPreferenceTrue(ResourceController.getResourceController().getProperty(FreeplaneStarter.LOAD_LAST_MAP))
 			        && restoreable != null && restoreable.length() > 0) {
 				try {
 					resourceController.getLastOpenedList().open(controller, restoreable);
@@ -300,7 +299,7 @@ public class FreeplaneStarter {
 	 */
 	private void updateLookAndFeel() {
 		try {
-			final String lookAndFeel = Controller.getResourceController().getProperty("lookandfeel");
+			final String lookAndFeel = ResourceController.getResourceController().getProperty("lookandfeel");
 			if (lookAndFeel.equals("windows")) {
 				UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 			}

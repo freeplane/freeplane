@@ -6,6 +6,7 @@ import java.awt.event.KeyListener;
 import javax.swing.KeyStroke;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IEditHandler;
 import org.freeplane.view.swing.map.MapView;
 
@@ -27,12 +28,12 @@ public class DefaultNodeKeyListener implements KeyListener {
 	public DefaultNodeKeyListener(final Controller controller, final IEditHandler editHandler) {
 		this.controller = controller;
 		this.editHandler = editHandler;
-		up = Controller.getResourceController().getAdjustableProperty("keystroke_move_up");
-		down = Controller.getResourceController().getAdjustableProperty("keystroke_move_down");
-		left = Controller.getResourceController().getAdjustableProperty("keystroke_move_left");
-		right = Controller.getResourceController().getAdjustableProperty("keystroke_move_right");
-		disabledKeyType = Controller.getResourceController().getBoolProperty("disable_key_type");
-		keyTypeAddsNew = Controller.getResourceController().getBoolProperty("key_type_adds_new");
+		up = ResourceController.getResourceController().getAdjustableProperty("keystroke_move_up");
+		down = ResourceController.getResourceController().getAdjustableProperty("keystroke_move_down");
+		left = ResourceController.getResourceController().getAdjustableProperty("keystroke_move_left");
+		right = ResourceController.getResourceController().getAdjustableProperty("keystroke_move_right");
+		disabledKeyType = ResourceController.getResourceController().getBoolProperty("disable_key_type");
+		keyTypeAddsNew = ResourceController.getResourceController().getBoolProperty("key_type_adds_new");
 		keyStrokeUp = KeyStroke.getKeyStroke(up);
 		keyStrokeDown = KeyStroke.getKeyStroke(down);
 		keyStrokeLeft = KeyStroke.getKeyStroke(left);

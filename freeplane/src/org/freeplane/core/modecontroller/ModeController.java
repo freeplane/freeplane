@@ -30,6 +30,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.ExtensionHashMap;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ActionController;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
@@ -236,7 +237,7 @@ public class ModeController {
 	}
 
 	public String getText(final String textId) {
-		return Controller.getText(textId);
+		return ResourceController.getText(textId);
 	}
 
 	public IUserInputListenerFactory getUserInputListenerFactory() {

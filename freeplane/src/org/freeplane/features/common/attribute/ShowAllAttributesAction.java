@@ -25,6 +25,7 @@ import javax.swing.AbstractAction;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.MapModel;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 
 class ShowAllAttributesAction extends AbstractAction {
@@ -35,7 +36,7 @@ class ShowAllAttributesAction extends AbstractAction {
 	 */
 	public ShowAllAttributesAction(final Controller controller) {
 		this.controller = controller;
-		MenuBuilder.setLabelAndMnemonic(this, Controller.getText("attributes_show_all"));
+		MenuBuilder.setLabelAndMnemonic(this, ResourceController.getText("attributes_show_all"));
 	};
 
 	public void actionPerformed(final ActionEvent e) {

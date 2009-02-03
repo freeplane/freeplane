@@ -54,9 +54,9 @@ import javax.swing.WindowConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.mindmapnode.pattern.MPatternController;
@@ -272,7 +272,7 @@ class ManagePatternsPopupDialog extends JDialog implements KeyListener {
 					cancelPressed();
 				}
 			});
-			MenuBuilder.setLabelAndMnemonic(jCancelButton, Controller.getText("cancel"));
+			MenuBuilder.setLabelAndMnemonic(jCancelButton, ResourceController.getText("cancel"));
 		}
 		return jCancelButton;
 	}
@@ -468,7 +468,7 @@ class ManagePatternsPopupDialog extends JDialog implements KeyListener {
 			}
 		}
 		this.pack();
-		final String marshalled = Controller.getResourceController().getProperty(
+		final String marshalled = ResourceController.getResourceController().getProperty(
 		    ManagePatternsPopupDialog.WINDOW_PREFERENCE_STORAGE_PROPERTY);
 		final ManageStyleEditorWindowConfigurationStorage decorateDialog = ManageStyleEditorWindowConfigurationStorage
 		    .decorateDialog(marshalled, this);

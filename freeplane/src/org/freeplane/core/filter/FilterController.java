@@ -38,6 +38,7 @@ import org.freeplane.core.filter.condition.NoFilteringCondition;
 import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.MindIcon;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;
@@ -126,7 +127,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		if (filterToolbar == null) {
 			filterToolbar = new FilterToolbar(controller, this);
 			filterConditionModel = (DefaultComboBoxModel) filterToolbar.getFilterConditionModel();
-			MindIcon.factory("AttributeExist", new ImageIcon(Controller.getResourceController().getResource(
+			MindIcon.factory("AttributeExist", new ImageIcon(ResourceController.getResourceController().getResource(
 			    "/images/showAttributes.gif")));
 			MindIcon.factory("encrypted");
 			MindIcon.factory("decrypted");

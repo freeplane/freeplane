@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.resources;
+package org.freeplane.main.applet;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,6 +29,7 @@ import java.util.Properties;
 import javax.swing.JApplet;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.resources.ResourceController;
 
 /**
  * @author Dimitry Polivaev
@@ -110,7 +111,7 @@ public class AppletResourceController extends ResourceController {
 	}
 
 	@Override
-	public void setDefaultProperty(final String key, final String value) {
+	protected void setDefaultProperty(final String key, final String value) {
 		userProps.setProperty(key, value);
 	}
 

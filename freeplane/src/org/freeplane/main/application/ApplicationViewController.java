@@ -71,7 +71,7 @@ public class ApplicationViewController extends ViewController {
 		controller.addAction("navigationPreviousMap", navigationPreviousMap);
 		navigationNextMap = new NavigationNextMapAction(controller);
 		controller.addAction("navigationNextMap", navigationNextMap);
-		resourceController = Controller.getResourceController();
+		resourceController = ResourceController.getResourceController();
 		frame = new JFrame("Freeplane");
 	}
 
@@ -116,7 +116,7 @@ public class ApplicationViewController extends ViewController {
 		getJFrame().setIconImage(mWindowIcon.getImage());
 		getContentPane().setLayout(new BorderLayout());
 		super.init();
-		if (Controller.getResourceController().getBoolProperty("no_scrollbar")) {
+		if (ResourceController.getResourceController().getBoolProperty("no_scrollbar")) {
 			getScrollPane().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 			getScrollPane().setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		}
@@ -125,7 +125,7 @@ public class ApplicationViewController extends ViewController {
 			getScrollPane().setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		}
 		mContentComponent = getScrollPane();
-		final boolean shouldUseTabbedPane = Controller.getResourceController().getBoolProperty(
+		final boolean shouldUseTabbedPane = ResourceController.getResourceController().getBoolProperty(
 		    ResourceController.RESOURCES_USE_TABBED_PANE);
 		if (shouldUseTabbedPane) {
 			mapViewManager = new MapViewTabs(controller, this, mContentComponent);
@@ -145,18 +145,18 @@ public class ApplicationViewController extends ViewController {
 			 * example the note window was active.
 			 */
 		});
-		if (Tools.safeEquals(Controller.getResourceController().getProperty("toolbarVisible"), "false")) {
+		if (Tools.safeEquals(ResourceController.getResourceController().getProperty("toolbarVisible"), "false")) {
 			controller.getViewController().setToolbarVisible(false);
 		}
-		if (Tools.safeEquals(Controller.getResourceController().getProperty("leftToolbarVisible"), "false")) {
+		if (Tools.safeEquals(ResourceController.getResourceController().getProperty("leftToolbarVisible"), "false")) {
 			controller.getViewController().setLeftToolbarVisible(false);
 		}
 		frame.setFocusTraversalKeysEnabled(false);
 		frame.pack();
-		int win_width = Controller.getResourceController().getIntProperty("appwindow_width", 0);
-		int win_height = Controller.getResourceController().getIntProperty("appwindow_height", 0);
-		int win_x = Controller.getResourceController().getIntProperty("appwindow_x", 0);
-		int win_y = Controller.getResourceController().getIntProperty("appwindow_y", 0);
+		int win_width = ResourceController.getResourceController().getIntProperty("appwindow_width", 0);
+		int win_height = ResourceController.getResourceController().getIntProperty("appwindow_height", 0);
+		int win_x = ResourceController.getResourceController().getIntProperty("appwindow_x", 0);
+		int win_y = ResourceController.getResourceController().getIntProperty("appwindow_y", 0);
 		win_width = (win_width > 0) ? win_width : 640;
 		win_height = (win_height > 0) ? win_height : 440;
 		final Toolkit defaultToolkit = Toolkit.getDefaultToolkit();
@@ -171,7 +171,7 @@ public class ApplicationViewController extends ViewController {
 		win_y = Math.max(screenInsets.top, win_y);
 		win_y = Math.min(screenWidth + screenInsets.top - win_height, win_y);
 		frame.setBounds(win_x, win_y, win_width, win_height);
-		int win_state = Integer.parseInt(Controller.getResourceController().getProperty("appwindow_state", "0"));
+		int win_state = Integer.parseInt(ResourceController.getResourceController().getProperty("appwindow_state", "0"));
 		win_state = ((win_state & Frame.ICONIFIED) != 0) ? Frame.NORMAL : win_state;
 		frame.setExtendedState(win_state);
 	}
@@ -197,9 +197,9 @@ public class ApplicationViewController extends ViewController {
 		map.remove(keyStrokeF8);
 		mContentComponent = mSplitPane;
 		setContentComponent();
-		final int splitPanePosition = Controller.getResourceController().getIntProperty(
+		final int splitPanePosition = ResourceController.getResourceController().getIntProperty(
 		    ApplicationViewController.SPLIT_PANE_POSITION, -1);
-		final int lastSplitPanePosition = Controller.getResourceController().getIntProperty(
+		final int lastSplitPanePosition = ResourceController.getResourceController().getIntProperty(
 		    ApplicationViewController.SPLIT_PANE_LAST_POSITION, -1);
 		if (splitPanePosition != -1 && lastSplitPanePosition != -1) {
 			mSplitPane.setDividerLocation(splitPanePosition);
@@ -236,7 +236,7 @@ public class ApplicationViewController extends ViewController {
 			String command = new String();
 			try {
 				final Object[] messageArguments = { url.toString() };
-				final MessageFormat formatter = new MessageFormat(Controller.getResourceController().getProperty(
+				final MessageFormat formatter = new MessageFormat(ResourceController.getResourceController().getProperty(
 				    propertyString));
 				browser_command = formatter.format(messageArguments);
 				if (url.getProtocol().equals("file")) {
@@ -267,7 +267,7 @@ public class ApplicationViewController extends ViewController {
 			String browser_command = new String();
 			try {
 				final Object[] messageArguments = { correctedUrl, url.toString() };
-				final MessageFormat formatter = new MessageFormat(Controller.getResourceController().getProperty(
+				final MessageFormat formatter = new MessageFormat(ResourceController.getResourceController().getProperty(
 				    "default_browser_command_mac"));
 				browser_command = formatter.format(messageArguments);
 				Runtime.getRuntime().exec(browser_command);
@@ -284,7 +284,7 @@ public class ApplicationViewController extends ViewController {
 			String browser_command = new String();
 			try {
 				final Object[] messageArguments = { correctedUrl, url.toString() };
-				final MessageFormat formatter = new MessageFormat(Controller.getResourceController().getProperty(
+				final MessageFormat formatter = new MessageFormat(ResourceController.getResourceController().getProperty(
 				    "default_browser_command_other_os"));
 				browser_command = formatter.format(messageArguments);
 				Runtime.getRuntime().exec(browser_command);

@@ -25,7 +25,7 @@ import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JToggleButton;
 
-import org.freeplane.core.controller.Controller;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.SelectableAction;
 
 @SelectableAction
@@ -36,7 +36,7 @@ class ShowFilterToolbarAction extends AbstractAction {
 	 *
 	 */
 	ShowFilterToolbarAction(final FilterController filterController) {
-		super(null, new ImageIcon(Controller.getResourceController().getResource("/images/filter.gif")));
+		super(null, new ImageIcon(ResourceController.getResourceController().getResource("/images/filter.gif")));
 		this.filterController = filterController;
 	}
 

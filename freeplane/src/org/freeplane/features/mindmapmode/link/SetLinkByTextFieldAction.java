@@ -24,6 +24,7 @@ import java.awt.event.ActionEvent;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IUndoableActor;
@@ -36,7 +37,7 @@ class SetLinkByTextFieldAction extends FreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final ModeController modeController = getModeController();
-		String inputValue = UITools.showInputDialog(getController().getSelection().getSelected(), Controller
+		String inputValue = UITools.showInputDialog(getController().getSelection().getSelected(), ResourceController
 		    .getText("edit_link_manually"), NodeLinks.getLink(modeController.getMapController().getSelectedNode()));
 		if (inputValue != null) {
 			if (inputValue.equals("")) {

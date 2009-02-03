@@ -30,7 +30,6 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.util.MultipleValueMap;
 
 class FreeplaneResourceBundle extends ResourceBundle {
@@ -91,7 +90,7 @@ class FreeplaneResourceBundle extends ResourceBundle {
 	 * @throws IOException
 	 */
 	private HashMap<String, String> getLanguageResources(final String lang) throws IOException {
-		final URL systemResource = Controller.getResourceController().getResource(
+		final URL systemResource = ResourceController.getResourceController().getResource(
 		    "/translations/Resources" + "_" + lang + ".properties");
 		if (systemResource == null) {
 			return null;

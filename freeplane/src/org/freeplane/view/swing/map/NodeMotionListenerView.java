@@ -26,7 +26,7 @@ import java.awt.Graphics2D;
 
 import javax.swing.JComponent;
 
-import org.freeplane.core.controller.Controller;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.features.common.nodelocation.LocationModel;
 
@@ -45,7 +45,7 @@ public class NodeMotionListenerView extends JComponent {
 		addMouseListener(userInputListenerFactory.getNodeMotionListener());
 		addMouseMotionListener(userInputListenerFactory.getNodeMotionListener());
 		this.setCursor(new Cursor(Cursor.MOVE_CURSOR));
-		final String helpMsg = Controller.getText("node_location_help");
+		final String helpMsg = ResourceController.getText("node_location_help");
 		this.setToolTipText(helpMsg);
 	}
 

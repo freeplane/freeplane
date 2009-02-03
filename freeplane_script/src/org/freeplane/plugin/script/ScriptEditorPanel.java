@@ -53,6 +53,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.UIBuilder;
 import org.freeplane.core.ui.components.BlindIcon;
@@ -231,7 +232,7 @@ class ScriptEditorPanel extends JDialog {
 	                         final boolean pHasNewScriptFunctionality) {
 		super(controller.getViewController().getJFrame(), true /* modal */);
 		mScriptModel = pScriptModel;
-		this.setTitle(Controller.getText("plugins/ScriptEditor/window.title"));
+		this.setTitle(ResourceController.getText("plugins/ScriptEditor/window.title"));
 		this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		this.addWindowListener(new WindowAdapter() {
 			@Override
@@ -290,19 +291,19 @@ class ScriptEditorPanel extends JDialog {
 		mScriptTextField.repaint();
 		final JMenuBar menuBar = new JMenuBar();
 		final JMenu menu = new JMenu();
-		MenuBuilder.setLabelAndMnemonic(menu, Controller.getText("plugins/ScriptEditor.menu_actions"));
+		MenuBuilder.setLabelAndMnemonic(menu, ResourceController.getText("plugins/ScriptEditor.menu_actions"));
 		if (pHasNewScriptFunctionality) {
-			addAction(menu, new NewScriptAction(Controller.getText("plugins/ScriptEditor.new_script")));
+			addAction(menu, new NewScriptAction(ResourceController.getText("plugins/ScriptEditor.new_script")));
 		}
-		mRunAction = new RunAction(Controller.getText("plugins/ScriptEditor.run"));
+		mRunAction = new RunAction(ResourceController.getText("plugins/ScriptEditor.run"));
 		mRunAction.setEnabled(false);
 		addAction(menu, mRunAction);
-		mSignAction = new SignAction(controller, Controller.getText("plugins/ScriptEditor.sign"));
+		mSignAction = new SignAction(controller, ResourceController.getText("plugins/ScriptEditor.sign"));
 		mSignAction.setEnabled(false);
 		addAction(menu, mSignAction);
-		final AbstractAction cancelAction = new CancelAction(Controller.getText("plugins/ScriptEditor.cancel"));
+		final AbstractAction cancelAction = new CancelAction(ResourceController.getText("plugins/ScriptEditor.cancel"));
 		addAction(menu, cancelAction);
-		final AbstractAction exitAction = new ExitAction(Controller.getText("plugins/ScriptEditor.exit"));
+		final AbstractAction exitAction = new ExitAction(ResourceController.getText("plugins/ScriptEditor.exit"));
 		addAction(menu, exitAction);
 		menuBar.add(menu);
 		this.setJMenuBar(menuBar);
@@ -332,7 +333,7 @@ class ScriptEditorPanel extends JDialog {
 			select(mScriptList.getSelectedIndex());
 		}
 		if (pIsCanceled && mScriptModel.isDirty()) {
-			final int action = JOptionPane.showConfirmDialog(this, Controller
+			final int action = JOptionPane.showConfirmDialog(this, ResourceController
 			    .getText("ScriptEditorPanel.changed_cancel"), "Freeplane", JOptionPane.OK_CANCEL_OPTION);
 			if (action == JOptionPane.CANCEL_OPTION) {
 				return;

@@ -41,10 +41,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Tools;
@@ -65,14 +65,14 @@ public class EditNodeDialog extends EditNodeBase {
 			final JScrollPane editorScrollPane = new JScrollPane(textArea);
 			editorScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 			int preferredHeight = viewController.getComponent(getNode()).getHeight();
-			preferredHeight = Math.max(preferredHeight, Integer.parseInt(Controller.getResourceController()
+			preferredHeight = Math.max(preferredHeight, Integer.parseInt(ResourceController.getResourceController()
 			    .getProperty("el__min_default_window_height")));
-			preferredHeight = Math.min(preferredHeight, Integer.parseInt(Controller.getResourceController()
+			preferredHeight = Math.min(preferredHeight, Integer.parseInt(ResourceController.getResourceController()
 			    .getProperty("el__max_default_window_height")));
 			int preferredWidth = viewController.getComponent(getNode()).getWidth();
-			preferredWidth = Math.max(preferredWidth, Integer.parseInt(Controller.getResourceController().getProperty(
+			preferredWidth = Math.max(preferredWidth, Integer.parseInt(ResourceController.getResourceController().getProperty(
 			    "el__min_default_window_width")));
-			preferredWidth = Math.min(preferredWidth, Integer.parseInt(Controller.getResourceController().getProperty(
+			preferredWidth = Math.min(preferredWidth, Integer.parseInt(ResourceController.getResourceController().getProperty(
 			    "el__max_default_window_width")));
 			editorScrollPane.setPreferredSize(new Dimension(preferredWidth, preferredHeight));
 			final JPanel panel = new JPanel();
@@ -179,7 +179,7 @@ public class EditNodeDialog extends EditNodeBase {
 			buttonPane.add(cancelButton);
 			buttonPane.add(splitButton);
 			buttonPane.setMaximumSize(new Dimension(1000, 20));
-			if (Controller.getResourceController().getProperty("el__buttons_position").equals("above")) {
+			if (ResourceController.getResourceController().getProperty("el__buttons_position").equals("above")) {
 				panel.add(buttonPane);
 				panel.add(editorScrollPane);
 			}

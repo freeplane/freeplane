@@ -29,7 +29,6 @@ import java.util.Set;
 
 import javax.swing.JPopupMenu;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
@@ -87,7 +86,7 @@ public class LinkController implements IExtension {
 		colorHandlers = new ExclusivePropertyChain<Color, ArrowLinkModel>();
 		if (listener == null) {
 			listener = new ArrowLinkListener();
-			Controller.getResourceController().addPropertyChangeListener(listener);
+			ResourceController.getResourceController().addPropertyChangeListener(listener);
 		}
 		addColorGetter(ExclusivePropertyChain.NODE, new IPropertyGetter<Color, ArrowLinkModel>() {
 			public Color getProperty(final ArrowLinkModel model, final Color currentValue) {
@@ -226,7 +225,7 @@ public class LinkController implements IExtension {
 	 */
 	private void updateStandards(final ModeController modeController) {
 		if (standardColor == null) {
-			final String stdColor = Controller.getResourceController().getProperty(
+			final String stdColor = ResourceController.getResourceController().getProperty(
 			    ResourceController.RESOURCES_LINK_COLOR);
 			if (stdColor != null && stdColor.length() == 7) {
 				standardColor = TreeXmlReader.xmlToColor(stdColor);

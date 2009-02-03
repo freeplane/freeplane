@@ -47,6 +47,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.util.IListModel;
 import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.model.MapModel;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.common.attribute.AttributeRegistry;
@@ -163,7 +164,7 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 		}
 	}
 
-	static final Icon editButtonImage = new ImageIcon(Controller.getResourceController().getResource(
+	static final Icon editButtonImage = new ImageIcon(ResourceController.getResourceController().getResource(
 	    "/images/edit12.png"));
 	private static final String[] fontSizes = { "6", "8", "10", "12", "14", "16", "18", "20", "24" };
 	final private Controller controller;
@@ -173,7 +174,7 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 	final private JTable view;
 
 	public AttributeManagerDialog(final Controller controller, final Frame frame) {
-		super(frame, Controller.getText("attributes_dialog_title"), true);
+		super(frame, ResourceController.getText("attributes_dialog_title"), true);
 		this.controller = controller;
 		view = new AttributeRegistryTable(new EditListAction());
 		model = AttributeRegistry.getRegistry(controller.getMap());
@@ -201,11 +202,11 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 				model.setAttributeLayoutChanged();
 			}
 		});
-		size.setToolTipText(Controller.getText("attribute_font_size_tooltip"));
+		size.setToolTipText(ResourceController.getText("attribute_font_size_tooltip"));
 		southButtons.add(size);
 		southButtons.add(Box.createHorizontalGlue());
 		final JButton importBtn = new JButton(new ImportAction());
-		importBtn.setToolTipText(Controller.getText("attributes_import_tooltip"));
+		importBtn.setToolTipText(ResourceController.getText("attributes_import_tooltip"));
 		southButtons.add(importBtn);
 		southButtons.add(Box.createHorizontalGlue());
 		UITools.addEscapeActionToDialog(this);

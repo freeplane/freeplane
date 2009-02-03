@@ -33,7 +33,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-import org.freeplane.core.controller.Controller;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.mindmapmode.text.ExampleFileFilter;
 
 public class ExportDialog extends JFrame {
@@ -58,9 +58,9 @@ public class ExportDialog extends JFrame {
 				xe.transForm(parent.xmlFile, new File(parent.fieldXsltFileName.getText()), new File(
 				    parent.fieldTargetFileName.getText()));
 			}
-			Controller.getResourceController().setProperty(
+			ResourceController.getResourceController().setProperty(
 			    ExportDialog.ACCESSORIES_PLUGINS_UTIL_XSLT_EXPORT_DIALOG_STORE_XSLT, fieldXsltFileName.getText());
-			Controller.getResourceController().setProperty(
+			ResourceController.getResourceController().setProperty(
 			    ExportDialog.ACCESSORIES_PLUGINS_UTIL_XSLT_EXPORT_DIALOG_STORE_TARGET, fieldTargetFileName.getText());
 			parent.setVisible(false);
 			parent.dispose();
@@ -91,9 +91,9 @@ public class ExportDialog extends JFrame {
 		 * GridBagConstraints.BOTH; gbl.setConstraints(list, gbc);
 		 * getContentPane().add(list);
 		 */
-		final String lastXsltFileName = Controller.getResourceController().getProperty(
+		final String lastXsltFileName = ResourceController.getResourceController().getProperty(
 		    ExportDialog.ACCESSORIES_PLUGINS_UTIL_XSLT_EXPORT_DIALOG_STORE_XSLT);
-		final String lastTargetFileName = Controller.getResourceController().getProperty(
+		final String lastTargetFileName = ResourceController.getResourceController().getProperty(
 		    ExportDialog.ACCESSORIES_PLUGINS_UTIL_XSLT_EXPORT_DIALOG_STORE_TARGET);
 		gbc = makegbc(0, 0, 1, 1);
 		gbc.fill = GridBagConstraints.NONE;

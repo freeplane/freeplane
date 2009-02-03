@@ -19,13 +19,13 @@
  */
 package org.freeplane.core.resources.ui;
 
-import org.freeplane.core.controller.Controller;
+import org.freeplane.core.resources.ResourceController;
 
 /**
  * @author Dimitry Polivaev Nov 21, 2008
  */
 public class OptionString {
 	public static String getText(final String string) {
-		return string == null ? null : Controller.getText(string);
+		return string == null ? null : ResourceController.getText(string);
 	}
 }

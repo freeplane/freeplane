@@ -30,7 +30,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.KeyStroke;
 
-import org.freeplane.core.controller.Controller;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.url.UrlManager;
 
 /**
@@ -75,7 +75,7 @@ public class MindIcon implements Comparable, IIconInformation {
 			return MindIcon.mAllIconNames;
 		}
 		final Vector mAllIconNames = new Vector();
-		final String icons = Controller.getResourceController().getProperty(MindIcon.PROPERTY_STRING_ICONS_LIST);
+		final String icons = ResourceController.getResourceController().getProperty(MindIcon.PROPERTY_STRING_ICONS_LIST);
 		final StringTokenizer tokenizer = new StringTokenizer(icons, ";");
 		while (tokenizer.hasMoreTokens()) {
 			mAllIconNames.add(tokenizer.nextToken());
@@ -123,22 +123,22 @@ public class MindIcon implements Comparable, IIconInformation {
 
 	public String getDescription() {
 		final String resource = new String("icon_" + getName());
-		return Controller.getResourceController().getText(resource, resource);
+		return ResourceController.getResourceController().getText(resource, resource);
 	}
 
 	public ImageIcon getIcon() {
 		if (MindIcon.iconNotFound == null) {
-			MindIcon.iconNotFound = new ImageIcon(Controller.getResourceController().getResource(
+			MindIcon.iconNotFound = new ImageIcon(ResourceController.getResourceController().getResource(
 			    "/images/IconNotFound.png"));
 		}
 		if (associatedIcon != null) {
 			return associatedIcon;
 		}
 		if (name != null) {
-			URL imageURL = Controller.getResourceController().getResource(getIconFileName());
+			URL imageURL = ResourceController.getResourceController().getResource(getIconFileName());
 			if (imageURL == null) {
 				try {
-					final File file = new File(Controller.getResourceController().getFreeplaneUserDirectory(), "icons/"
+					final File file = new File(ResourceController.getResourceController().getFreeplaneUserDirectory(), "icons/"
 					        + getName() + ".png");
 					if (file.canRead()) {
 						imageURL = UrlManager.fileToUrl(file);

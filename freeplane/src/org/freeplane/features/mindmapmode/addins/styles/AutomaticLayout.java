@@ -38,7 +38,6 @@ import javax.swing.event.ListSelectionListener;
 
 import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.addins.PersistentNodeHook;
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IReadCompletionListener;
 import org.freeplane.core.modecontroller.IMapChangeListener;
@@ -47,6 +46,7 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.modecontroller.NodeChangeEvent;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.ui.IPropertyControl;
 import org.freeplane.core.resources.ui.IPropertyControlCreator;
 import org.freeplane.core.resources.ui.OptionPanelBuilder;
@@ -249,7 +249,7 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 	public AutomaticLayout(final ModeController modeController) {
 		super(modeController);
 		final MyFreeplanePropertyListener listener = new MyFreeplanePropertyListener();
-		Controller.getResourceController().addPropertyChangeListener(listener);
+		ResourceController.getResourceController().addPropertyChangeListener(listener);
 		addPropertiesToOptionPanel();
 		modeController.getMapController().getReadManager().addReadCompletionListener(this);
 		getModeController().getMapController().addMapChangeListener(this);
@@ -328,7 +328,7 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 	/** get styles from preferences: */
 	private void reloadPatterns() {
 		if (AutomaticLayout.patterns == null) {
-			final String property = Controller.getResourceController().getProperty(
+			final String property = ResourceController.getResourceController().getProperty(
 			    AutomaticLayout.AUTOMATIC_FORMAT_LEVEL);
 			AutomaticLayout.patterns = StylePatternFactory.getPatternsFromString(property);
 		}

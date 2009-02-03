@@ -40,6 +40,7 @@ import javax.xml.transform.stream.StreamSource;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ActionDescriptor;
 
 /**
@@ -73,7 +74,7 @@ public class ExportToOoWriter extends ExportAction {
 	 */
 	private boolean applyXsltFile(final String xsltFileName, final StringWriter writer, final Result result)
 	        throws IOException {
-		final URL xsltUrl = Controller.getResourceController().getResource(xsltFileName);
+		final URL xsltUrl = ResourceController.getResourceController().getResource(xsltFileName);
 		if (xsltUrl == null) {
 			Logger.global.severe("Can't find " + xsltFileName + " as resource.");
 			throw new IllegalArgumentException("Can't find " + xsltFileName + " as resource.");
@@ -98,7 +99,7 @@ public class ExportToOoWriter extends ExportAction {
 	 */
 	private boolean copyFromResource(final String fileName, final OutputStream out) {
 		try {
-			final URL resource = Controller.getResourceController().getResource(fileName);
+			final URL resource = ResourceController.getResourceController().getResource(fileName);
 			if (resource == null) {
 				Logger.global.severe("Cannot find resource: " + fileName);
 				return false;
@@ -153,7 +154,7 @@ public class ExportToOoWriter extends ExportAction {
 			final Transformer trans = transFact.newTransformer(xsltSource);
 			trans.setParameter("destination_dir", resultFile.getName() + "_files/");
 			trans.setParameter("area_code", areaCode);
-			trans.setParameter("folding_type", Controller.getResourceController().getProperty("html_export_folding"));
+			trans.setParameter("folding_type", ResourceController.getResourceController().getProperty("html_export_folding"));
 			trans.transform(xmlSource, result);
 		}
 		catch (final Exception e) {

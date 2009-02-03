@@ -26,6 +26,7 @@ import javax.swing.JPopupMenu;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.MapController;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.features.browsemode.BModeController;
@@ -80,7 +81,7 @@ public class BModeControllerFactory {
 		userInputListenerFactory.setMenuStructure(menuStructure);
 		userInputListenerFactory.updateMenus(modeController);
 		modeController.updateMenus();
-		Controller.getResourceController().updateMenus(modeController);
+		ResourceController.getResourceController().updateMenus(modeController);
 		return modeController;
 	}
 }

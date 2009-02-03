@@ -549,7 +549,9 @@ public class MapViewController implements IMapViewManager {
 	 * @see org.freeplane.core.frame.IMapViewController#updateMapViewName()
 	 */
 	public void updateMapViewName() {
-		getMapView().rename();
+		MapView r = getMapView();
+		final String name = r.getModel().getTitle();
+        r.setName(name);
 		addToOrChangeInMapViews(getMapView().getName(), getMapView());
 		changeToMapView(getMapView());
 	}

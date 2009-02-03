@@ -29,14 +29,14 @@ public class DefaultMouseWheelListener implements MouseWheelListener {
 	public DefaultMouseWheelListener(final Controller controller) {
 		super();
 		this.controller = controller;
-		Controller.getResourceController().addPropertyChangeListener(new IFreeplanePropertyListener() {
+		ResourceController.getResourceController().addPropertyChangeListener(new IFreeplanePropertyListener() {
 			public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
 				if (propertyName.equals(ResourceController.RESOURCES_WHEEL_VELOCITY)) {
 					DefaultMouseWheelListener.SCROLL_SKIPS = Integer.parseInt(newValue);
 				}
 			}
 		});
-		DefaultMouseWheelListener.SCROLL_SKIPS = Controller.getResourceController().getIntProperty(
+		DefaultMouseWheelListener.SCROLL_SKIPS = ResourceController.getResourceController().getIntProperty(
 		    ResourceController.RESOURCES_WHEEL_VELOCITY, 8);
 	}
 

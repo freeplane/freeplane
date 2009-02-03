@@ -23,7 +23,6 @@ package org.freeplane.plugin.script;
 import java.io.PrintStream;
 import java.util.HashMap;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
@@ -57,7 +56,7 @@ public class ScriptingRegistration implements IExternalPatternAction {
 
 		public ScriptEditorWindowConfigurationStorage decorateDialog(final ScriptEditorPanel pPanel,
 		                                                             final String pWindow_preference_storage_property) {
-			final String marshalled = Controller.getResourceController().getProperty(
+			final String marshalled = ResourceController.getResourceController().getProperty(
 			    pWindow_preference_storage_property);
 			return ScriptEditorWindowConfigurationStorage.decorateDialog(marshalled, pPanel);
 		}

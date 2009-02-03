@@ -19,11 +19,11 @@
  */
 package org.freeplane.features.common.text;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.condition.ConditionFactory;
 import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.filter.condition.NodeCondition;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 class IgnoreCaseNodeContainsCondition extends NodeCondition {
@@ -47,8 +47,8 @@ class IgnoreCaseNodeContainsCondition extends NodeCondition {
 
 	@Override
 	protected String createDesctiption() {
-		final String nodeCondition = Controller.getText(NodeConditionController.FILTER_NODE);
-		final String simpleCondition = Controller.getText(ConditionFactory.FILTER_CONTAINS);
+		final String nodeCondition = ResourceController.getText(NodeConditionController.FILTER_NODE);
+		final String simpleCondition = ResourceController.getText(ConditionFactory.FILTER_CONTAINS);
 		return ConditionFactory.createDescription(nodeCondition, simpleCondition, value, true);
 	}
 

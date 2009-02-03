@@ -21,7 +21,6 @@ package org.freeplane.features.mindmapmode.note;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.FreeplaneAction;
@@ -45,7 +44,7 @@ class ShowHideNoteAction extends FreeplaneAction {
 		}
 		else {
 			(noteController).hideNotesPanel();
-			Controller.getResourceController().setProperty(ResourceController.RESOURCES_USE_SPLIT_PANE, "false");
+			ResourceController.getResourceController().setProperty(ResourceController.RESOURCES_USE_SPLIT_PANE, "false");
 		}
 	}
 

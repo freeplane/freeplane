@@ -24,6 +24,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 
 /** This closes only the current map */
@@ -32,7 +33,7 @@ class CloseAction extends AbstractAction {
 
 	CloseAction(final Controller controller) {
 		this.controller = controller;
-		MenuBuilder.setLabelAndMnemonic(this, Controller.getText("close"));
+		MenuBuilder.setLabelAndMnemonic(this, ResourceController.getText("close"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {

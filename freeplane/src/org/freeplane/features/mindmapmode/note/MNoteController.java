@@ -125,9 +125,9 @@ public class MNoteController extends NoteController {
 			SHTMLPanel.setResources(new TextResources() {
 				public String getString(String pKey) {
 					pKey = "simplyhtml." + pKey;
-					String resourceString = Controller.getResourceController().getText(pKey, null);
+					String resourceString = ResourceController.getResourceController().getText(pKey, null);
 					if (resourceString == null) {
-						resourceString = Controller.getResourceController().getProperty(pKey);
+						resourceString = ResourceController.getResourceController().getProperty(pKey);
 					}
 					return resourceString;
 				}
@@ -156,7 +156,7 @@ public class MNoteController extends NoteController {
 		if (splitPane == null) {
 			showNotesPanel();
 			splitPane = getSplitPane();
-			Controller.getResourceController().setProperty(ResourceController.RESOURCES_USE_SPLIT_PANE, "true");
+			ResourceController.getResourceController().setProperty(ResourceController.RESOURCES_USE_SPLIT_PANE, "true");
 		}
 		return splitPane;
 	}
@@ -227,7 +227,7 @@ public class MNoteController extends NoteController {
 	}
 
 	private boolean shouldUseSplitPane() {
-		return "true".equals(Controller.getResourceController()
+		return "true".equals(ResourceController.getResourceController()
 		    .getProperty(ResourceController.RESOURCES_USE_SPLIT_PANE));
 	}
 
@@ -253,7 +253,7 @@ public class MNoteController extends NoteController {
 		noteManager = new NoteManager(modeController.getController(), this);
 		noteViewerComponent = getHtmlEditorPanel();
 		final Action jumpToMapAction = new JumpToMapAction();
-		final String keystroke = Controller.getResourceController().getAdjustableProperty(
+		final String keystroke = ResourceController.getResourceController().getAdjustableProperty(
 		    "keystroke_accessories/plugins/NodeNote_jumpto.keystroke.alt_N");
 		noteViewerComponent.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
 		    KeyStroke.getKeyStroke(keystroke), "jumpToMapAction");

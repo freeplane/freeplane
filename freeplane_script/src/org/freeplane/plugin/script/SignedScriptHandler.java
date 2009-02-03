@@ -199,7 +199,7 @@ class SignedScriptHandler {
 		try {
 			final Signature instance = Signature.getInstance("SHA1withDSA");
 			String keyName = SignedScriptHandler.FREEPLANE_SCRIPT_KEY_NAME;
-			final String propertyKeyName = Controller.getResourceController().getProperty(
+			final String propertyKeyName = ResourceController.getResourceController().getProperty(
 			    ResourceController.RESOURCES_SCRIPT_USER_KEY_NAME_FOR_SIGNING);
 			if (content.mKeyName != null) {
 				keyName = content.mKeyName;

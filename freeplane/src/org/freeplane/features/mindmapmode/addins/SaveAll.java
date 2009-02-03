@@ -26,6 +26,7 @@ import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.MapModel;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.features.mindmapmode.MModeController;
@@ -54,7 +55,7 @@ public class SaveAll extends FreeplaneAction {
 			final MapModel mapView = entry.getValue();
 			controller.getMapViewManager().changeToMapView(entry.getKey());
 			if (!((MModeController) mapView.getModeController()).save()) {
-				JOptionPane.showMessageDialog(controller.getViewController().getContentPane(), "Freeplane", Controller
+				JOptionPane.showMessageDialog(controller.getViewController().getContentPane(), "Freeplane", ResourceController
 				    .getText("accessories/plugins/SaveAll.properties_save_all_cancelled"), JOptionPane.ERROR_MESSAGE);
 				return;
 			}

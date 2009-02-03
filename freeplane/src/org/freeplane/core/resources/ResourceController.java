@@ -85,6 +85,7 @@ public abstract class ResourceController {
 
 	final private Vector propertyChangeListeners = new Vector();
 	private FreeplaneResourceBundle resources;
+	private static ResourceController resourceController;
 
 	public ResourceController() {
 		super();
@@ -234,10 +235,6 @@ public abstract class ResourceController {
 		return resources;
 	}
 
-	public String getText(final String key) {
-		return ((FreeplaneResourceBundle) getResources()).getResourceString(key);
-	}
-
 	public String getText(final String key, final String resource) {
 		return ((FreeplaneResourceBundle) getResources()).getResourceString(key, resource);
 	}
@@ -263,7 +260,7 @@ public abstract class ResourceController {
 
 	abstract public void saveProperties(Controller controller);
 
-	abstract void setDefaultProperty(final String key, final String value);
+	abstract protected void setDefaultProperty(final String key, final String value);
 
 	abstract public void setProperty(final String property, final String value);
 
@@ -278,4 +275,16 @@ public abstract class ResourceController {
 
 	public void updateMenus(final ModeController modeController) {
 	}
+
+	public static String getText(final String key) {
+    	return key == null ? null : ((FreeplaneResourceBundle) getResourceController().getResources()).getResourceString(key);
+    }
+
+	static public void setResourceController(final ResourceController resourceController) {
+		ResourceController.resourceController = resourceController;
+    }
+
+	static public ResourceController getResourceController() {
+    	return resourceController;
+    }
 }

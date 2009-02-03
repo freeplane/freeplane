@@ -23,10 +23,10 @@ import java.awt.EventQueue;
 import java.io.File;
 import java.util.Timer;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.undo.UndoHandler;
 import org.freeplane.core.util.Tools;
@@ -47,7 +47,7 @@ public class MMapModel extends MapModel {
 		super(modeController, root);
 		setReadOnly(false);
 		this
-		    .setLockManager(Controller.getResourceController().getBoolProperty("experimental_file_locking_on") ? new LockManager()
+		    .setLockManager(ResourceController.getResourceController().getBoolProperty("experimental_file_locking_on") ? new LockManager()
 		            : new DummyLockManager());
 		undoHandler = new UndoHandler();
 		EventQueue.invokeLater(new Runnable() {
@@ -89,7 +89,7 @@ public class MMapModel extends MapModel {
 		if (titleNumber == 0) {
 			titleNumber = MMapModel.unnamedMapsNumber++;
 		}
-		return Controller.getText("mindmap") + titleNumber;
+		return ResourceController.getText("mindmap") + titleNumber;
 	}
 
 	public IUndoHandler getUndoHandler() {
@@ -97,22 +97,22 @@ public class MMapModel extends MapModel {
 	}
 
 	public void scheduleTimerForAutomaticSaving() {
-		final int numberOfTempFiles = Integer.parseInt(Controller.getResourceController().getProperty(
+		final int numberOfTempFiles = Integer.parseInt(ResourceController.getResourceController().getProperty(
 		    "number_of_different_files_for_automatic_save"));
 		if (numberOfTempFiles == 0) {
 			return;
 		}
-		final boolean filesShouldBeDeletedAfterShutdown = Controller.getResourceController().getBoolProperty(
+		final boolean filesShouldBeDeletedAfterShutdown = ResourceController.getResourceController().getBoolProperty(
 		    "delete_automatic_saves_at_exit");
-		String path = Controller.getResourceController().getProperty("path_to_automatic_saves");
+		String path = ResourceController.getResourceController().getProperty("path_to_automatic_saves");
 		/* two standard values: */
 		if (Tools.safeEquals(path, "default")) {
 			path = null;
 		}
 		if (Tools.safeEquals(path, "freeplane_home")) {
-			path = Controller.getResourceController().getFreeplaneUserDirectory();
+			path = ResourceController.getResourceController().getFreeplaneUserDirectory();
 		}
-		int delay = Integer.parseInt(Controller.getResourceController().getProperty("time_for_automatic_save"));
+		int delay = Integer.parseInt(ResourceController.getResourceController().getProperty("time_for_automatic_save"));
 		if (delay == 0) {
 			return;
 		}

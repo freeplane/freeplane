@@ -51,6 +51,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceController;
 
 /**
  * @author Dimitry Polivaev
@@ -163,7 +164,7 @@ public class UrlManager implements IExtension {
 		boolean successful = false;
 		try {
 			URL updaterUrl = null;
-			updaterUrl = Controller.getResourceController().getResource(xsltScript);
+			updaterUrl = ResourceController.getResourceController().getResource(xsltScript);
 			if (updaterUrl == null) {
 				throw new IllegalArgumentException(xsltScript + " not found.");
 			}

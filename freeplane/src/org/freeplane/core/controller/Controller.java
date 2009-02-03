@@ -45,20 +45,11 @@ import org.freeplane.core.url.UrlManager;
 public class Controller {
 	public static final String JAVA_VERSION = System.getProperty("java.version");
 	public static final String ON_START_IF_NOT_SPECIFIED = "on_start_if_not_specified";
-	private static ResourceController resourceController;
 	public static final FreeplaneVersionInformation VERSION = new FreeplaneVersionInformation("0.9.0 Freeplane 21");
 	public static final String XML_VERSION = "0.9.0";
 
 	public static FreeplaneVersionInformation getFreeplaneVersion() {
 		return Controller.VERSION;
-	}
-
-	static public ResourceController getResourceController() {
-		return resourceController;
-	}
-
-	public static String getText(final String string) {
-		return string == null ? null : resourceController.getText(string);
 	}
 
 	public static boolean isMacOsX() {
@@ -68,10 +59,6 @@ public class Controller {
 			underMac = true;
 		}
 		return underMac;
-	}
-
-	static public void setResourceController(final ResourceController resourceController) {
-		Controller.resourceController = resourceController;
 	}
 
 	private final ActionController actionController;
@@ -125,7 +112,7 @@ public class Controller {
 			myMessage = message.toString();
 		}
 		else {
-			myMessage = Controller.getText("undefined_error");
+			myMessage = ResourceController.getText("undefined_error");
 			if (myMessage == null) {
 				myMessage = "Undefined error";
 			}
@@ -237,7 +224,7 @@ public class Controller {
 			return false;
 		}
 		if (currentMapRestorable != null) {
-			Controller.getResourceController().setProperty(Controller.ON_START_IF_NOT_SPECIFIED, currentMapRestorable);
+			ResourceController.getResourceController().setProperty(Controller.ON_START_IF_NOT_SPECIFIED, currentMapRestorable);
 		}
 		if (modeController != null) {
 			modeController.shutdown();

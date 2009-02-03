@@ -34,11 +34,11 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.url.UrlManager;
 
@@ -62,7 +62,7 @@ public class MPatternController implements IExtension {
 	public MPatternController(final ModeController modeController) {
 		super();
 		this.modeController = modeController;
-		patternsFile = new File(Controller.getResourceController().getFreeplaneUserDirectory(), Controller
+		patternsFile = new File(ResourceController.getResourceController().getFreeplaneUserDirectory(), ResourceController
 		    .getResourceController().getProperty("patternsfile"));
 		createActions();
 	}
@@ -151,7 +151,7 @@ public class MPatternController implements IExtension {
 		for (int i = 0; i < patterns.length; ++i) {
 			final JMenuItem item = new JMenuItem(patterns[i]);
 			builder.addMenuItem(group, item, MenuBuilder.AS_CHILD);
-			item.setAccelerator(KeyStroke.getKeyStroke(Controller.getResourceController().getAdjustableProperty(
+			item.setAccelerator(KeyStroke.getKeyStroke(ResourceController.getResourceController().getAdjustableProperty(
 			    "keystroke_apply_pattern_" + (i + 1))));
 		}
 	}
@@ -168,7 +168,7 @@ public class MPatternController implements IExtension {
 		}
 		else {
 			System.out.println("User patterns file " + patternsFile + " not found.");
-			reader = new InputStreamReader(Controller.getResourceController().getResource("/xml/patterns.xml")
+			reader = new InputStreamReader(ResourceController.getResourceController().getResource("/xml/patterns.xml")
 			    .openStream());
 		}
 		return reader;

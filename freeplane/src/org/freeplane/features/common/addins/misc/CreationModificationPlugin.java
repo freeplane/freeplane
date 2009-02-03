@@ -25,12 +25,12 @@ import java.util.Iterator;
 
 import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.addins.PersistentNodeHook;
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.modecontroller.INodeChangeListener;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.modecontroller.NodeChangeEvent;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ActionDescriptor;
 
 /**
@@ -91,7 +91,7 @@ public class CreationModificationPlugin extends PersistentNodeHook implements IN
 		        node.getHistoryInformation().getLastModifiedAt() };
 		if (tooltipFormat == null) {
 			// TODO
-			tooltipFormat = Controller.getText("CreationModificationPlugin.tooltip_format");
+			tooltipFormat = ResourceController.getText("CreationModificationPlugin.tooltip_format");
 		}
 		final MessageFormat formatter = new MessageFormat(tooltipFormat);
 		final String message = formatter.format(messageArguments);

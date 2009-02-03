@@ -39,7 +39,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import org.freeplane.core.controller.Controller;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
@@ -92,7 +92,7 @@ public class OptionPanel {
 		super();
 		topDialog = d;
 		this.feedback = feedback;
-		final String marshalled = Controller.getResourceController().getProperty(
+		final String marshalled = ResourceController.getResourceController().getProperty(
 		    OptionPanel.PREFERENCE_STORAGE_PROPERTY);
 		final OptionPanelWindowConfigurationStorage storage = OptionPanelWindowConfigurationStorage.decorateDialog(
 		    marshalled, d);
@@ -213,7 +213,7 @@ public class OptionPanel {
 			if (control instanceof PropertyBean) {
 				final PropertyBean bean = (PropertyBean) control;
 				final String name = bean.getName();
-				final String value = Controller.getResourceController().getAdjustableProperty(name);
+				final String value = ResourceController.getResourceController().getAdjustableProperty(name);
 				bean.setValue(value);
 			}
 		}

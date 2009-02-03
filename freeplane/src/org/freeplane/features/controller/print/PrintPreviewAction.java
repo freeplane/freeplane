@@ -25,6 +25,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 
 class PrintPreviewAction extends AbstractPrintAction {
@@ -33,7 +34,7 @@ class PrintPreviewAction extends AbstractPrintAction {
 	PrintPreviewAction(final Controller controller, final PrintController printController) {
 		super(printController);
 		this.controller = controller;
-		MenuBuilder.setLabelAndMnemonic(this, Controller.getText("print_preview"));
+		MenuBuilder.setLabelAndMnemonic(this, ResourceController.getText("print_preview"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -41,7 +42,7 @@ class PrintPreviewAction extends AbstractPrintAction {
 			return;
 		}
 		final Component mapView = controller.getViewController().getMapView();
-		final PreviewDialog previewDialog = new PreviewDialog(getPrintController(), Controller
+		final PreviewDialog previewDialog = new PreviewDialog(getPrintController(), ResourceController
 		    .getText("print_preview_title"), mapView);
 		previewDialog.pack();
 		previewDialog.setLocationRelativeTo(JOptionPane.getFrameForComponent(mapView));

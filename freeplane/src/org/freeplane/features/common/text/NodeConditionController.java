@@ -24,13 +24,13 @@ import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.condition.ConditionFactory;
 import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.filter.condition.IElementaryConditionController;
 import org.freeplane.core.filter.util.IListModel;
 import org.freeplane.core.filter.util.SortedMapListModel;
 import org.freeplane.core.resources.NamedObject;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -122,16 +122,16 @@ class NodeConditionController implements IElementaryConditionController {
 
 	public ComboBoxModel getConditionsForProperty(final Object selectedItem) {
 		return new DefaultComboBoxModel(new NamedObject[] {
-		        Controller.getResourceController().createTranslatedString(ConditionFactory.FILTER_CONTAINS),
-		        Controller.getResourceController().createTranslatedString(ConditionFactory.FILTER_IS_EQUAL_TO),
-		        Controller.getResourceController().createTranslatedString(ConditionFactory.FILTER_IS_NOT_EQUAL_TO),
+		        ResourceController.getResourceController().createTranslatedString(ConditionFactory.FILTER_CONTAINS),
+		        ResourceController.getResourceController().createTranslatedString(ConditionFactory.FILTER_IS_EQUAL_TO),
+		        ResourceController.getResourceController().createTranslatedString(ConditionFactory.FILTER_IS_NOT_EQUAL_TO),
 		        NamedObject.literal(ConditionFactory.FILTER_GT), NamedObject.literal(ConditionFactory.FILTER_GE),
 		        NamedObject.literal(ConditionFactory.FILTER_LE), NamedObject.literal(ConditionFactory.FILTER_LT), });
 	}
 
 	public IListModel getFilteredProperties() {
 		final SortedMapListModel list = new SortedMapListModel();
-		list.add(Controller.getResourceController().createTranslatedString(NodeConditionController.FILTER_NODE));
+		list.add(ResourceController.getResourceController().createTranslatedString(NodeConditionController.FILTER_NODE));
 		return list;
 	}
 

@@ -39,6 +39,7 @@ import org.freeplane.core.io.MapReader.NodeTreeCreator;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.core.util.HtmlTools;
@@ -74,7 +75,7 @@ class PasteAction extends FreeplaneAction {
 			    "(?i)(?s)^.*<html[^>]*>", "<html>").replaceFirst("(?i)(?s)<body [^>]*>", "<body>").replaceAll(
 			    "(?i)(?s)<script.*?>.*?</script>", "").replaceAll("(?i)(?s)</?tbody.*?>", "").replaceAll(
 			    "(?i)(?s)<!--.*?-->", "").replaceAll("(?i)(?s)</?o[^>]*>", "");
-			if (Tools.safeEquals(Controller.getResourceController().getProperty("cut_out_pictures_when_pasting_html"),
+			if (Tools.safeEquals(ResourceController.getResourceController().getProperty("cut_out_pictures_when_pasting_html"),
 			    "true")) {
 				textFromClipboard = textFromClipboard.replaceAll("(?i)(?s)<img[^>]*>", "");
 			}

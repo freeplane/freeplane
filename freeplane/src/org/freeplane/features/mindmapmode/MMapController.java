@@ -71,7 +71,7 @@ public class MMapController extends MapController {
 					}
 				}
 			};
-			Controller.getResourceController().addPropertyChangeListenerAndPropagate(sSaveIdPropertyChangeListener);
+			ResourceController.getResourceController().addPropertyChangeListenerAndPropagate(sSaveIdPropertyChangeListener);
 		}
 		createActions(modeController);
 	}

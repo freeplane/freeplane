@@ -35,11 +35,11 @@ class ShowSelectionAsRectangleAction extends FreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		Controller.getResourceController().toggleSelectionAsRectangle();
+		ResourceController.getResourceController().toggleSelectionAsRectangle();
 	}
 
 	@Override
 	public void setSelected() {
-		setSelected(Controller.getResourceController().isSelectionAsRectangle());
+		setSelected(ResourceController.getResourceController().isSelectionAsRectangle());
 	}
 }

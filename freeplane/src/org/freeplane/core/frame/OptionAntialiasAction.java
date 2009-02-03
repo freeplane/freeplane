@@ -26,13 +26,14 @@ import javax.swing.AbstractAction;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
+import org.freeplane.core.resources.ResourceController;
 
 class OptionAntialiasAction extends AbstractAction implements IFreeplanePropertyListener {
 	final private Controller controller;
 
 	OptionAntialiasAction(final Controller controller) {
 		this.controller = controller;
-		Controller.getResourceController().addPropertyChangeListener(this);
+		ResourceController.getResourceController().addPropertyChangeListener(this);
 	}
 
 	public void actionPerformed(final ActionEvent e) {

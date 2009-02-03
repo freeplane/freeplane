@@ -48,6 +48,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.MindIcon;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Tools;
@@ -68,7 +69,7 @@ public class ExportWithXSLT extends ExportAction {
 	public static void createXSLTExportActions(final ModeController modeController, final String xmlDescriptorFile) {
 		try {
 			final IXMLParser parser = XMLParserFactory.createDefaultXMLParser();
-			final URL resource = Controller.getResourceController().getResource(xmlDescriptorFile);
+			final URL resource = ResourceController.getResourceController().getResource(xmlDescriptorFile);
 			final IXMLReader reader = new StdXMLReader(resource.openStream());
 			parser.setReader(reader);
 			final IXMLElement xml = (IXMLElement) parser.parse();
@@ -171,7 +172,7 @@ public class ExportWithXSLT extends ExportAction {
 			final MindIcon myIcon = MindIcon.factory(iconName);
 			copyFromResource(MindIcon.getIconsPath(), myIcon.getIconBaseFileName(), directoryName2);
 		}
-		final File iconDir = new File(Controller.getResourceController().getFreeplaneUserDirectory(), "icons");
+		final File iconDir = new File(ResourceController.getResourceController().getFreeplaneUserDirectory(), "icons");
 		if (iconDir.exists()) {
 			final String[] userIconArray = iconDir.list(new FilenameFilter() {
 				public boolean accept(final File dir, final String name) {
@@ -259,7 +260,7 @@ public class ExportWithXSLT extends ExportAction {
 	private String getTranslatableResourceString(final String resourceName) {
 		final String returnValue = getProperty(resourceName);
 		if (returnValue != null && returnValue.startsWith("%")) {
-			return Controller.getText(returnValue.substring(1));
+			return ResourceController.getText(returnValue.substring(1));
 		}
 		return returnValue;
 	}
@@ -325,7 +326,7 @@ public class ExportWithXSLT extends ExportAction {
 			final Transformer trans = transFact.newTransformer(xsltSource);
 			trans.setParameter("destination_dir", resultFile.getName() + "_files/");
 			trans.setParameter("area_code", areaCode);
-			trans.setParameter("folding_type", Controller.getResourceController().getProperty("html_export_folding"));
+			trans.setParameter("folding_type", ResourceController.getResourceController().getProperty("html_export_folding"));
 			trans.transform(xmlSource, result);
 		}
 		catch (final Exception e) {
@@ -342,7 +343,7 @@ public class ExportWithXSLT extends ExportAction {
 	        throws IOException {
 		final String map = getMapXml();
 		final StringReader reader = new StringReader(map);
-		final URL xsltUrl = Controller.getResourceController().getResource(xsltFileName);
+		final URL xsltUrl = ResourceController.getResourceController().getResource(xsltFileName);
 		if (xsltUrl == null) {
 			Logger.global.severe("Can't find " + xsltFileName + " as resource.");
 			throw new IllegalArgumentException("Can't find " + xsltFileName + " as resource.");

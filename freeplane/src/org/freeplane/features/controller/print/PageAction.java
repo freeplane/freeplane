@@ -36,14 +36,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.freeplane.core.controller.Controller;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.Tools;
 
 class PageAction extends AbstractPrintAction {
 	PageAction(final PrintController controller) {
 		super(controller);
-		MenuBuilder.setLabelAndMnemonic(this, Controller.getText("page"));
+		MenuBuilder.setLabelAndMnemonic(this, ResourceController.getText("page"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -51,15 +51,15 @@ class PageAction extends AbstractPrintAction {
 			return;
 		}
 		final Frame frame = getPrintController().getController().getViewController().getFrame();
-		final JDialog dialog = new JDialog(frame, Controller.getText("printing_settings"), /* modal=*/
+		final JDialog dialog = new JDialog(frame, ResourceController.getText("printing_settings"), /* modal=*/
 		true);
-		final JCheckBox fitToPage = new JCheckBox(Controller.getText("fit_to_page"), Controller.getResourceController()
+		final JCheckBox fitToPage = new JCheckBox(ResourceController.getText("fit_to_page"), ResourceController.getResourceController()
 		    .getBoolProperty("fit_to_page"));
-		final JLabel userZoomL = new JLabel(Controller.getText("user_zoom"));
-		final JTextField userZoom = new JTextField(Controller.getResourceController().getProperty("user_zoom"), 3);
+		final JLabel userZoomL = new JLabel(ResourceController.getText("user_zoom"));
+		final JTextField userZoom = new JTextField(ResourceController.getResourceController().getProperty("user_zoom"), 3);
 		userZoom.setEditable(!fitToPage.isSelected());
 		final JButton okButton = new JButton();
-		MenuBuilder.setLabelAndMnemonic(okButton, Controller.getText("ok"));
+		MenuBuilder.setLabelAndMnemonic(okButton, ResourceController.getText("ok"));
 		final Tools.IntHolder eventSource = new Tools.IntHolder();
 		final JPanel panel = new JPanel();
 		final GridBagLayout gridbag = new GridBagLayout();
@@ -103,8 +103,8 @@ class PageAction extends AbstractPrintAction {
 		dialog.pack();
 		dialog.setVisible(true);
 		if (eventSource.getValue() == 1) {
-			Controller.getResourceController().setProperty("user_zoom", userZoom.getText());
-			Controller.getResourceController().setProperty("fit_to_page", (fitToPage.isSelected() ? "true" : "false"));
+			ResourceController.getResourceController().setProperty("user_zoom", userZoom.getText());
+			ResourceController.getResourceController().setProperty("fit_to_page", (fitToPage.isSelected() ? "true" : "false"));
 		}
 		else {
 			return;
@@ -112,13 +112,13 @@ class PageAction extends AbstractPrintAction {
 		final PrintController printController = getPrintController();
 		printController.setPageFormat(printController.getPrinterJob().pageDialog(printController.getPageFormat()));
 		if (printController.getPageFormat().getOrientation() == PageFormat.LANDSCAPE) {
-			Controller.getResourceController().setProperty("page_orientation", "landscape");
+			ResourceController.getResourceController().setProperty("page_orientation", "landscape");
 		}
 		else if (printController.getPageFormat().getOrientation() == PageFormat.PORTRAIT) {
-			Controller.getResourceController().setProperty("page_orientation", "portrait");
+			ResourceController.getResourceController().setProperty("page_orientation", "portrait");
 		}
 		else if (printController.getPageFormat().getOrientation() == PageFormat.REVERSE_LANDSCAPE) {
-			Controller.getResourceController().setProperty("page_orientation", "reverse_landscape");
+			ResourceController.getResourceController().setProperty("page_orientation", "reverse_landscape");
 		}
 	}
 }

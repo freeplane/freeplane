@@ -25,6 +25,7 @@ import javax.swing.Action;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.resources.ResourceController;
 
 /**
  * @author Dimitry Polivaev
@@ -43,12 +44,12 @@ public class HelpController implements IExtension {
 	public HelpController(final Controller controller) {
 		super();
 		controller.addAction("about", new AboutAction(controller));
-		controller.addAction("freeplaneUrl", new OpenURLAction(controller, Controller.getResourceController().getText(
-		    "Freeplane"), Controller.getResourceController().getProperty("webFreeplaneLocation")));
-		controller.addAction("faq", new OpenURLAction(controller, Controller.getResourceController().getText("FAQ"),
-		    Controller.getResourceController().getProperty("webFAQLocation")));
+		controller.addAction("freeplaneUrl", new OpenURLAction(controller, ResourceController.getResourceController().getText(
+		    "Freeplane"), ResourceController.getResourceController().getProperty("webFreeplaneLocation")));
+		controller.addAction("faq", new OpenURLAction(controller, ResourceController.getResourceController().getText("FAQ"),
+		    ResourceController.getResourceController().getProperty("webFAQLocation")));
 		controller.addAction("keyDocumentation", new KeyDocumentationAction(controller));
-		webDocu = new OpenURLAction(controller, Controller.getResourceController().getText("webDocu"), Controller
+		webDocu = new OpenURLAction(controller, ResourceController.getResourceController().getText("webDocu"), ResourceController
 		    .getResourceController().getProperty("webDocuLocation"));
 		controller.addAction("webDocu", webDocu);
 		controller.addAction("documentation", new DocumentationAction(controller));

@@ -23,7 +23,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
-import org.freeplane.core.controller.Controller;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 
 class ZoomOutAction extends AbstractAction {
@@ -34,7 +34,7 @@ class ZoomOutAction extends AbstractAction {
 
 	public ZoomOutAction(final ViewController viewController) {
 		this.viewController = viewController;
-		MenuBuilder.setLabelAndMnemonic(this, Controller.getText("zoom_out"));
+		MenuBuilder.setLabelAndMnemonic(this, ResourceController.getText("zoom_out"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {

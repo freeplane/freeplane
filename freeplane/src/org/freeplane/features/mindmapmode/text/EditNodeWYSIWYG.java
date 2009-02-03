@@ -35,11 +35,11 @@ import javax.swing.JPanel;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.html.HTMLDocument;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlTools;
@@ -199,14 +199,14 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 			document.getStyleSheet().addRule(rule);
 			document.setBase(node.getMap().getURL());
 			int preferredHeight = (int) (viewController.getComponent(node).getHeight() * 1.2);
-			preferredHeight = Math.max(preferredHeight, Integer.parseInt(Controller.getResourceController()
+			preferredHeight = Math.max(preferredHeight, Integer.parseInt(ResourceController.getResourceController()
 			    .getProperty("el__min_default_window_height")));
-			preferredHeight = Math.min(preferredHeight, Integer.parseInt(Controller.getResourceController()
+			preferredHeight = Math.min(preferredHeight, Integer.parseInt(ResourceController.getResourceController()
 			    .getProperty("el__max_default_window_height")));
 			int preferredWidth = (int) (viewController.getComponent(node).getWidth() * 1.2);
-			preferredWidth = Math.max(preferredWidth, Integer.parseInt(Controller.getResourceController().getProperty(
+			preferredWidth = Math.max(preferredWidth, Integer.parseInt(ResourceController.getResourceController().getProperty(
 			    "el__min_default_window_width")));
-			preferredWidth = Math.min(preferredWidth, Integer.parseInt(Controller.getResourceController().getProperty(
+			preferredWidth = Math.min(preferredWidth, Integer.parseInt(ResourceController.getResourceController().getProperty(
 			    "el__max_default_window_width")));
 			htmlEditorPanel.setContentPanePreferredSize(new Dimension(preferredWidth, preferredHeight));
 			EditNodeWYSIWYG.htmlEditorWindow.pack();

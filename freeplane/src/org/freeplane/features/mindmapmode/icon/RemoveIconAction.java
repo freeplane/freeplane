@@ -29,6 +29,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.IIconInformation;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IUndoableActor;
@@ -64,7 +65,7 @@ class RemoveIconAction extends MultipleNodeAction implements IIconInformation {
 	}
 
 	public KeyStroke getKeyStroke() {
-		return UITools.getKeyStroke(Controller.getResourceController()
+		return UITools.getKeyStroke(ResourceController.getResourceController()
 		    .getAdjustableProperty(getKeystrokeResourceName()));
 	}
 

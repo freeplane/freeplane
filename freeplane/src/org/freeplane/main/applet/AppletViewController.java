@@ -38,6 +38,7 @@ import org.freeplane.core.controller.FreeplaneVersionInformation;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.IMapSelection;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 
 /**
@@ -92,7 +93,7 @@ public class AppletViewController extends ViewController {
 	@Override
 	public void init() {
 		getController().getViewController().changeAntialias(
-		    Controller.getResourceController().getProperty(ViewController.RESOURCE_ANTIALIAS));
+		    ResourceController.getResourceController().getProperty(ViewController.RESOURCE_ANTIALIAS));
 		getContentPane().add(getScrollPane(), BorderLayout.CENTER);
 		southPanel = new JPanel(new BorderLayout());
 		southPanel.add(getStatusLabel(), BorderLayout.SOUTH);
@@ -113,8 +114,8 @@ public class AppletViewController extends ViewController {
 				org.freeplane.core.util.Tools.logException(e);
 			}
 		}
-		getController().selectMode(Controller.getResourceController().getProperty("initial_mode"));
-		String initialMapName = Controller.getResourceController().getProperty("browsemode_initial_map");
+		getController().selectMode(ResourceController.getResourceController().getProperty("initial_mode"));
+		String initialMapName = ResourceController.getResourceController().getProperty("browsemode_initial_map");
 		if (initialMapName != null && initialMapName.startsWith(".")) {
 			/* new handling for relative urls. fc, 29.10.2003. */
 			try {

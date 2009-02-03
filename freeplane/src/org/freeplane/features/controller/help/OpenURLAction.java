@@ -27,6 +27,7 @@ import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 
 class OpenURLAction extends AbstractAction {
@@ -34,7 +35,7 @@ class OpenURLAction extends AbstractAction {
 	final private String url;
 
 	OpenURLAction(final Controller controller, final String description, final String url) {
-		super(null, new ImageIcon(Controller.getResourceController().getResource("/images/Link.png")));
+		super(null, new ImageIcon(ResourceController.getResourceController().getResource("/images/Link.png")));
 		MenuBuilder.setLabelAndMnemonic(this, description);
 		this.url = url;
 		this.controller = controller;
@@ -45,7 +46,7 @@ class OpenURLAction extends AbstractAction {
 			controller.getViewController().openDocument(new URL(url));
 		}
 		catch (final MalformedURLException ex) {
-			controller.errorMessage(Controller.getText("url_error") + "\n" + ex);
+			controller.errorMessage(ResourceController.getText("url_error") + "\n" + ex);
 		}
 		catch (final Exception ex) {
 			controller.errorMessage(ex);

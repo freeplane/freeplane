@@ -27,7 +27,7 @@ import javax.swing.UIManager;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.FilterController;
-import org.freeplane.core.resources.AppletResourceController;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.browsemode.BModeController;
 import org.freeplane.features.common.attribute.ModelessAttributeController;
 import org.freeplane.features.controller.help.HelpController;
@@ -52,7 +52,7 @@ public class FreeplaneApplet extends JApplet {
 		final Container contentPane = getContentPane();
 		contentPane.setLayout(new BorderLayout());
 		resourceController = new AppletResourceController(this);
-		Controller.setResourceController(resourceController);
+		ResourceController.setResourceController(resourceController);
 		controller = new Controller();
 		resourceController.init(controller);
 		appletViewController = new AppletViewController(controller, this, new MapViewController());

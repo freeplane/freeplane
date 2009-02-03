@@ -37,6 +37,7 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.IIconInformation;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.ui.IPropertyControl;
 import org.freeplane.core.resources.ui.IPropertyControlCreator;
 import org.freeplane.core.resources.ui.KeyProperty;
@@ -109,7 +110,7 @@ public class MIconController extends IconController {
 		modeController.addAction("removeLastIconAction", removeLastIconAction);
 		modeController.addAction("removeAllIconsAction", new RemoveAllIconsAction(controller));
 		final Vector iconNames = MindIcon.getAllIconNames();
-		final File iconDir = new File(Controller.getResourceController().getFreeplaneUserDirectory(), "icons");
+		final File iconDir = new File(ResourceController.getResourceController().getFreeplaneUserDirectory(), "icons");
 		if (iconDir.exists()) {
 			final String[] userIconArray = iconDir.list(new FilenameFilter() {
 				public boolean accept(final File dir, final String name) {

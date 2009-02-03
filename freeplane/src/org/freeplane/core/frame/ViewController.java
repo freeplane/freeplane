@@ -29,6 +29,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.File;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.HashSet;
@@ -52,6 +53,7 @@ import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
@@ -94,7 +96,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 		controller.addAction("zoomOut", zoomOut);
 		optionAntialiasAction = new OptionAntialiasAction(controller);
 		controller.addAction("optionAntialiasAction", optionAntialiasAction);
-		userDefinedZoom = Controller.getResourceController().getText("user_defined_zoom");
+		userDefinedZoom = ResourceController.getResourceController().getText("user_defined_zoom");
 		zoom = new JComboBox(getZooms());
 		zoom.setSelectedItem("100%");
 		zoom.addItem(userDefinedZoom);
@@ -345,10 +347,10 @@ abstract public class ViewController implements IMapViewChangeListener {
 				getMapViewManager().nextMapView();
 			}
 		}
-		Controller.getResourceController().setProperty("antialiasEdges", (antialiasEdges ? "true" : "false"));
-		Controller.getResourceController().setProperty("antialiasAll", (antialiasAll ? "true" : "false"));
-		Controller.getResourceController().setProperty("toolbarVisible", (toolbarVisible ? "true" : "false"));
-		Controller.getResourceController().setProperty("leftToolbarVisible", (leftToolbarVisible ? "true" : "false"));
+		ResourceController.getResourceController().setProperty("antialiasEdges", (antialiasEdges ? "true" : "false"));
+		ResourceController.getResourceController().setProperty("antialiasAll", (antialiasAll ? "true" : "false"));
+		ResourceController.getResourceController().setProperty("toolbarVisible", (toolbarVisible ? "true" : "false"));
+		ResourceController.getResourceController().setProperty("leftToolbarVisible", (leftToolbarVisible ? "true" : "false"));
 		return true;
 	}
 
@@ -441,19 +443,19 @@ abstract public class ViewController implements IMapViewChangeListener {
 			setTitle("");
 			return;
 		}
-		final Object[] messageArguments = { Controller.getText(("mode_" + modeController.getModeName())) };
-		final MessageFormat formatter = new MessageFormat(Controller.getText("mode_title"));
+		final Object[] messageArguments = { ResourceController.getText(("mode_" + modeController.getModeName())) };
+		final MessageFormat formatter = new MessageFormat(ResourceController.getText("mode_title"));
 		String title = formatter.format(messageArguments);
 		String rawTitle = "";
 		final MapModel model = mapViewManager.getModel();
 		if (model != null) {
-			rawTitle = getSelectedComponent().getName();
+			rawTitle = mapViewManager.getMapViewComponent().getName();
 			title = rawTitle + (model.isSaved() ? "" : "*") + " - " + title
-			        + (model.isReadOnly() ? " (" + Controller.getText("read_only") + ")" : "");
-			final String modelTitle = model.getTitle();
-			if (modelTitle != null) {
-				title += ' ' + modelTitle;
-			}
+			        + (model.isReadOnly() ? " (" + ResourceController.getText("read_only") + ")" : "");
+			File file = model.getFile();
+            if (file != null) {
+                title += " " + file.getAbsolutePath();
+            }
 		}
 		setTitle(title);
 		for (final Iterator iterator = mMapTitleChangeListenerSet.iterator(); iterator.hasNext();) {
@@ -482,7 +484,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 		mapViewManager.setZoom(zoom);
 		setZoomComboBox(zoom);
 		final Object[] messageArguments = { String.valueOf(zoom * 100f) };
-		final String stringResult = Controller.getResourceController().format("user_defined_zoom_status_bar",
+		final String stringResult = ResourceController.getResourceController().format("user_defined_zoom_status_bar",
 		    messageArguments);
 		out(stringResult);
 	}

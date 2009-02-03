@@ -35,15 +35,15 @@ class DocumentationAction extends AbstractAction {
 
 	DocumentationAction(final Controller controller) {
 		this.controller = controller;
-		MenuBuilder.setLabelAndMnemonic(this, Controller.getText("documentation"));
+		MenuBuilder.setLabelAndMnemonic(this, ResourceController.getText("documentation"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		String map = Controller.getText("browsemode_initial_map");
+		String map = ResourceController.getText("browsemode_initial_map");
 		map = ResourceController.removeTranslateComment(map);
 		if (map != null && map != "") {
 			URL url = null;
-			url = Controller.getResourceController().getResource(map);
+			url = ResourceController.getResourceController().getResource(map);
 			final URL endUrl = url;
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {

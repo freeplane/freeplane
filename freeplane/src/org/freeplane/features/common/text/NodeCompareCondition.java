@@ -19,12 +19,12 @@
  */
 package org.freeplane.features.common.text;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.condition.CompareConditionAdapter;
 import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 class NodeCompareCondition extends CompareConditionAdapter {
@@ -61,7 +61,7 @@ class NodeCompareCondition extends CompareConditionAdapter {
 
 	@Override
 	protected String createDesctiption() {
-		final String nodeCondition = Controller.getText(NodeConditionController.FILTER_NODE);
+		final String nodeCondition = ResourceController.getText(NodeConditionController.FILTER_NODE);
 		return super.createDescription(nodeCondition, comparationResult, succeed);
 	}
 

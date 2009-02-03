@@ -51,6 +51,7 @@ import org.freeplane.core.io.IElementHandler;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.JAutoCheckBoxMenuItem;
 import org.freeplane.core.ui.components.JAutoToggleButton;
 import org.freeplane.core.ui.components.JAutoVisibleMenuItem;
@@ -281,7 +282,7 @@ public class MenuBuilder extends UIBuilder {
 				if (!contains(menuPath.path)) {
 					if (tag.equals("menu_submenu")) {
 						final JMenu menuItem = new JMenu();
-						MenuBuilder.setLabelAndMnemonic(menuItem, Controller.getText(attributes.getAttribute(
+						MenuBuilder.setLabelAndMnemonic(menuItem, ResourceController.getText(attributes.getAttribute(
 						    "name_ref", null)));
 						addMenuItem(menuPath.parentPath, menuItem, menuPath.path, MenuBuilder.AS_CHILD);
 					}
@@ -336,14 +337,14 @@ public class MenuBuilder extends UIBuilder {
 
 	static public JMenu createMenu(final String name) {
 		final JMenu menu = new JMenu();
-		final String text = Controller.getText(name);
+		final String text = ResourceController.getText(name);
 		MenuBuilder.setLabelAndMnemonic(menu, text);
 		return menu;
 	}
 
 	static public JMenuItem createMenuItem(final String name) {
 		final JMenuItem menu = new JMenuItem();
-		final String text = Controller.getText(name);
+		final String text = ResourceController.getText(name);
 		MenuBuilder.setLabelAndMnemonic(menu, text);
 		return menu;
 	}
@@ -402,10 +403,10 @@ public class MenuBuilder extends UIBuilder {
 			action.setTooltip(docu);
 		}
 		final String actionName = actionAnnotation.name();
-		MenuBuilder.setLabelAndMnemonic(action, Controller.getText(actionName));
+		MenuBuilder.setLabelAndMnemonic(action, ResourceController.getText(actionName));
 		final String iconPath = actionAnnotation.iconPath();
 		if (!iconPath.equals("")) {
-			final ImageIcon icon = new ImageIcon(Controller.getResourceController().getResource(iconPath));
+			final ImageIcon icon = new ImageIcon(ResourceController.getResourceController().getResource(iconPath));
 			action.putValue(Action.SMALL_ICON, icon);
 		}
 		final String[] actionLocations = actionAnnotation.locations();
@@ -494,7 +495,7 @@ public class MenuBuilder extends UIBuilder {
 			});
 		}
 		if (keystroke != null) {
-			final String keyProperty = Controller.getResourceController().getAdjustableProperty(keystroke);
+			final String keyProperty = ResourceController.getResourceController().getAdjustableProperty(keystroke);
 			item.setAccelerator(KeyStroke.getKeyStroke(keyProperty));
 		}
 		return;
@@ -603,7 +604,7 @@ public class MenuBuilder extends UIBuilder {
 		final JRadioButtonMenuItem item = new JRadioButtonMenuItem(action);
 		addMenuItem(category, item, MenuBuilder.AS_CHILD);
 		if (keystroke != null) {
-			item.setAccelerator(KeyStroke.getKeyStroke(Controller.getResourceController().getAdjustableProperty(
+			item.setAccelerator(KeyStroke.getKeyStroke(ResourceController.getResourceController().getAdjustableProperty(
 			    keystroke)));
 		}
 		item.setSelected(isSelected);
