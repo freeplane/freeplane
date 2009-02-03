@@ -5,18 +5,22 @@
 	<property name="viewer-resources" value="../viewer-resources" />
 	<property name = "root" value = ".."/>
 	<property name="manifest" value="${root}/META-INF/OLD_MANIFEST.MF" />	
+	<property name="osgimanifest" value="${root}/META-INF/MANIFEST.MF" />	
 	<property name="lib" value="${root}/lib" />
 	<property name="src_base_for_post" value="${root}/../" />
 	<property name="build" value="${root}/build" />
 	<property name="dist" value="${root}/bin/dist" />
 	<property name="dist.lib" value="${dist}/lib" />
+	<property name="dist.osgi" value="${dist}/osgi" />
 	<property name="freeplaneeditor.jar" value="${dist.lib}/freeplaneeditor.jar"/>
 	<property name="freeplaneviewer.jar" value="${dist.lib}/freeplaneviewer.jar"/>
+	<property name="freeplaneosgi.jar" value="${dist.lib}/freeplaneosgi.jar"/>
+	<property name="freeplaneplugin.jar" value="${dist.osgi}/org.freeplane.core.jar"/>
 	<property name="debug" value="on" />
 	<property name="java_source_version" value="1.5" />
 	<property name="java_target_version" value="1.5" />
 	<property name="build.compiler" value="modern" />
-	<property name="classpath" value="${lib}/commons-lang-2.0.jar:${lib}/forms-1.0.5.jar:${lib}/SimplyHTML/SimplyHTML.jar"/>
+	<property name="classpath" value="${lib}/commons-lang-2.0.jar:${lib}/forms-1.0.5.jar:${lib}/SimplyHTML/SimplyHTML.jar:${lib}/knopflerfish/framework.jar"/>
 
 	<target name="build">
 		<echo>Freeplane Version = ${ver}.</echo>
@@ -24,7 +28,6 @@
 		<mkdir dir="${build}" />
 		<javac srcdir="${src}" destdir="${build}" classpath="${classpath}" debug="${debug}" 
 			source="${java_source_version}" target="${java_target_version}">
-			<exclude name="org/freeplane/main/osgi/**" />
 		</javac>
 		<!-- Starter should work with java 1.1, too as it checks the java version.-->
 		<delete failonerror="false" file="${build}/org/freeplane/startup/FreeplaneStarter.class">
@@ -52,11 +55,16 @@
 			 manifest="${manifest}">
 			<fileset dir="${build}">
 				<include name="**/application/**"/>
-				<include name="**/osgi/**"/>
 				<include name="**/mindmapmode/**"/>
 				<include name="**/filemode/**"/>
 				<include name="**/core/resources/ui/**"/>
 				<exclude name="**/*.jar"/>
+			</fileset>
+			<fileset dir="${resources}"/>
+		</jar>
+		<jar jarfile="${freeplaneosgi.jar}">
+			<fileset dir="${build}">
+				<include name="**/osgi/**"/>
 			</fileset>
 			<fileset dir="${resources}"/>
 		</jar>
@@ -74,6 +82,13 @@
 				<include name="SimplyHTML/SimplyHTML.jar"/>
 			</fileset>
 		</copy>
+		<mkdir dir="${dist.osgi}" />
+		<jar jarfile="${freeplaneplugin.jar}"
+			 manifest="${osgimanifest}">
+			<fileset dir="${dist}">
+				<include name="lib/**"/>
+			</fileset>
+		</jar>
 	</target>
 
 	<target name="clean">
