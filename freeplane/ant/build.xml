@@ -67,7 +67,6 @@
 			<fileset dir="${build}">
 				<include name="**/osgi/**"/>
 			</fileset>
-			<fileset dir="${resources}"/>
 		</jar>
 		<delete dir="${build}"  quiet="true"/>
 	</target>
