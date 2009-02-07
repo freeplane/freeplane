@@ -9,3 +9,4 @@ Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Require-Bundle: org.freeplane.core;bundle-version="1.0.0"
 Bundle-ClassPath: .,
  lib/jhall.jar
+Export-Package: org.freeplane.plugin.help;uses:="org.freeplane.core.ui,org.freeplane.core.controller,org.osgi.framework"
