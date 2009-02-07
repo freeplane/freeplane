@@ -1,9 +1,9 @@
-<project name="freeplane" default="dist" basedir=".">
+<project name="freeplane" default="dist" basedir="..">
 	<property name="ver" value="0.9.0:21" />
-	<property name="src" value="../src" />
-	<property name="resources" value="../resources" />
-	<property name="viewer-resources" value="../viewer-resources" />
-	<property name = "root" value = ".."/>
+	<property name="src" value="src" />
+	<property name="resources" value="resources" />
+	<property name="viewer-resources" value="viewer-resources" />
+	<property name = "root" value = "."/>
 	<property name="manifest" value="${root}/META-INF/OLD_MANIFEST.MF" />	
 	<property name="osgimanifest" value="${root}/META-INF/MANIFEST.MF" />	
 	<property name="lib" value="${root}/lib" />
