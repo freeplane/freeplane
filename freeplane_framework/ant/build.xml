@@ -1,0 +1,34 @@
+<project name="freeplane" default="dist" basedir="..">
+	<property name = "root" value = "."/>
+	<property name = "workspace" value = ".."/>
+	<property name="framework.jar" value="lib/knopflerfish/framework.jar" />
+	<property name="dist" value="${root}/dist" />
+	<property name="dist.jars" value="${dist}/jars" />
+	<property name="script" value="${root}/script" />
+	<target name="dist" depends="clean">
+		<ant antfile="ant/build.xml" dir="${workspace}/freeplane" inheritall="false"/>
+		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_help" inheritall="false"/>
+		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_svg" inheritall="false"/>
+		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_latex" inheritall="false"/>
+		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_script" inheritall="false"/>
+		<mkdir dir="${dist}" />
+		<copy todir="${dist}">
+			<fileset dir="${script}"/>
+			<fileset file="${framework.jar}"/>
+		</copy>
+		<mkdir dir="${dist.jars}" />
+		<copy todir="${dist.jars}">
+			<fileset dir="${workspace}/freeplane/bin/dist/osgi"/>
+			<fileset dir="${workspace}/freeplane_help/bin/dist/osgi"/>
+			<fileset dir="${workspace}/freeplane_latex/bin/dist/osgi"/>
+			<fileset dir="${workspace}/freeplane_script/bin/dist/osgi"/>
+			<fileset dir="${workspace}/freeplane_svg/bin/dist/osgi"/>
+		</copy>
+	</target>
+
+	<target name="clean">
+		<delete dir="${dist}"  quiet="true"/>
+	</target>
+	
+</project>
+

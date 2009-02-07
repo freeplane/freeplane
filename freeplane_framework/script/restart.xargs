@@ -1,0 +1,4 @@
+# load common properties
+-xargs props.xargs
+
+-launch 0

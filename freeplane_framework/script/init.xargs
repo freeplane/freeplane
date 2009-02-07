@@ -1,0 +1,25 @@
+# load common properties
+-xargs props.xargs
+
+# Prefix for searching for bundle URLs from console or command line
+-Dorg.knopflerfish.gosg.jars=file:jars/
+
+-init
+
+## Basic KF bundles
+-initlevel 1
+-install org.freeplane.core.jar
+-install org.freeplane.plugin.help.jar
+-install org.freeplane.plugin.svg.jar
+-install org.freeplane.plugin.latex.jar
+-install org.freeplane.plugin.script.jar
+
+
+-startlevel 1
+
+
+# Start of these bundles are delayed since this makes start
+# order dependencies much easier
+
+-start org.freeplane.core.jar
+

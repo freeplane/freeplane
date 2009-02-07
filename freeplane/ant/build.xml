@@ -7,6 +7,7 @@
 	<property name="manifest" value="${root}/META-INF/OLD_MANIFEST.MF" />	
 	<property name="osgimanifest" value="${root}/META-INF/MANIFEST.MF" />	
 	<property name="lib" value="${root}/lib" />
+	<property name="framework.jar" value="${root}/../freeplane_framework/lib/knopflerfish/framework.jar" />
 	<property name="src_base_for_post" value="${root}/../" />
 	<property name="build" value="${root}/build" />
 	<property name="dist" value="${root}/bin/dist" />
@@ -20,7 +21,7 @@
 	<property name="java_source_version" value="1.5" />
 	<property name="java_target_version" value="1.5" />
 	<property name="build.compiler" value="modern" />
-	<property name="classpath" value="${lib}/commons-lang-2.0.jar:${lib}/forms-1.0.5.jar:${lib}/SimplyHTML/SimplyHTML.jar:${lib}/knopflerfish/framework.jar"/>
+	<property name="classpath" value="${lib}/commons-lang-2.0.jar:${lib}/forms-1.0.5.jar:${lib}/SimplyHTML/SimplyHTML.jar:${framework.jar}"/>
 
 	<target name="build">
 		<echo>Freeplane Version = ${ver}.</echo>
