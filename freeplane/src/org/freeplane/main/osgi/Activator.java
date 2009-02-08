@@ -19,6 +19,8 @@
  */
 package org.freeplane.main.osgi;
 
+import java.io.File;
+
 import org.freeplane.main.application.FreeplaneStarter;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;

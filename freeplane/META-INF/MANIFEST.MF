@@ -3,8 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: org.freeplane.core
 Bundle-SymbolicName: org.freeplane.core
 Bundle-Version: 1.0.0
-Bundle-ClassPath: .,
- lib/freeplaneviewer.jar,
+Bundle-ClassPath: lib/freeplaneviewer.jar,
  lib/freeplaneeditor.jar,
  lib/freeplaneosgi.jar,
  lib/commons-lang-2.0.jar,

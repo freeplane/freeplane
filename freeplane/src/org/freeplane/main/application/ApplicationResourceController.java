@@ -26,10 +26,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.InvalidPropertiesFormatException;
 import java.util.Locale;
 import java.util.Properties;
+import java.util.ResourceBundle;
 
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
@@ -50,12 +53,27 @@ public class ApplicationResourceController extends ResourceController {
 	final private Properties defProps;
 	private final LastOpenedList lastOpened;
 	final private Properties props;
+	private ClassLoader urlResourceLoader;
 
 	/**
 	 * @param controller
 	 */
 	public ApplicationResourceController() {
 		super();
+		urlResourceLoader = null;
+		String globalResourceLocation = System.getProperty("org.freeplane.globalresourcedir", "resources");
+		if(globalResourceLocation != null){
+			try {
+				final File resourceDir = new File(globalResourceLocation);
+				if(resourceDir.exists()){
+					final URL globalResourceUrl =resourceDir.toURL();
+					urlResourceLoader = new URLClassLoader(new URL[]{globalResourceUrl}, null);
+				}
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		defProps = readDefaultPreferences();
 		props = readUsersPreferences(defProps);
 		createUserDirectory(defProps);
@@ -135,9 +153,28 @@ public class ApplicationResourceController extends ResourceController {
 		defProps.loadFromXML(in);
 	}
 
+	@Override
+    public URL getResource(String name) {
+		if(urlResourceLoader == null){
+			return super.getResource(name);
+		}
+		final String relName;
+		if(name.startsWith("/")) {
+			relName = name.substring(1);
+		}
+		else {
+			 relName = name;
+		}
+		final URL resource = urlResourceLoader.getResource(relName);
+		if (resource != null) {
+			return resource;
+		}
+		return super.getResource(name);
+    }
+
 	private Properties readDefaultPreferences() {
 		final String propsLoc = "/freeplane.properties";
-		final URL defaultPropsURL = getClass().getResource(propsLoc);
+		final URL defaultPropsURL = getResource(propsLoc);
 		final Properties props = new Properties();
 		try {
 			InputStream in = null;

@@ -115,26 +115,19 @@ class FreeplaneResourceBundle extends ResourceBundle {
 	}
 
 	String getResourceString(final String key) {
-		try {
-			return getString(key);
-		}
-		catch (final Exception ex) {
-			return key;
-		}
+		return getResourceString(key, key);
 	}
 
 	String getResourceString(final String key, final String resource) {
-		try {
-			try {
-				return languageResources.get(key);
-			}
-			catch (final Exception ex) {
-				return defaultResources.get(key) + FreeplaneResourceBundle.POSTFIX_TRANSLATE_ME;
-			}
+		String value = languageResources.get(key);
+		if(value != null){
+			return value;
 		}
-		catch (final Exception e) {
-			return resource;
+		value =  defaultResources.get(key);
+		if(value != null){
+			return value + FreeplaneResourceBundle.POSTFIX_TRANSLATE_ME;
 		}
+		return resource;
 	}
 
 	@Override

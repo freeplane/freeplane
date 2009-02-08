@@ -4,6 +4,7 @@
 	<property name="framework.jar" value="lib/knopflerfish/framework.jar" />
 	<property name="dist" value="${root}/dist" />
 	<property name="dist.jars" value="${dist}/jars" />
+	<property name="dist.resources" value="${dist}/resources" />
 	<property name="script" value="${root}/script" />
 	<target name="dist" depends="clean">
 		<ant antfile="ant/build.xml" dir="${workspace}/freeplane" inheritall="false"/>
@@ -24,10 +25,13 @@
 			<fileset dir="${workspace}/freeplane_script/bin/dist/osgi"/>
 			<fileset dir="${workspace}/freeplane_svg/bin/dist/osgi"/>
 		</copy>
+		<mkdir dir="${dist.resources}" />		
 	</target>
 
 	<target name="clean">
-		<delete dir="${dist}"  quiet="true"/>
+		 <delete quiet="true" includeemptydirs="true">
+		    <fileset dir="${dist}" excludes="resources/**"/>
+		  </delete>
 	</target>
 	
 </project>
