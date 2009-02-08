@@ -43,7 +43,10 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlTools;
+import org.freeplane.ortho.SpellCheckerController;
 
+import com.inet.jortho.SpellChecker;
+import com.lightdev.app.shtm.SHTMLEditorPane;
 import com.lightdev.app.shtm.SHTMLPanel;
 
 /**
@@ -102,6 +105,11 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 		private SHTMLPanel createEditorPanel() throws Exception {
 			if (htmlEditorPanel == null) {
 				htmlEditorPanel = SHTMLPanel.createSHTMLPanel();
+				final SHTMLEditorPane editorPane = (SHTMLEditorPane)htmlEditorPanel.getEditorPane();
+				SpellCheckerController.getController().enableAutoSpell(editorPane);
+				SpellCheckerController.getController().addSpellCheckerMenu(editorPane.getPopup());
+				SpellCheckerController.getController().enableShortKey(editorPane);
+				
 			}
 			return htmlEditorPanel;
 		}

@@ -49,6 +49,8 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Tools;
 
+import com.inet.jortho.SpellChecker;
+
 /**
  * @author foltin
  */
@@ -173,6 +175,7 @@ public class EditNodeDialog extends EditNodeBase {
 			final Color nodeTextBackground = viewController.getBackgroundColor(getNode());
 			textArea.setBackground(nodeTextBackground);
 			textArea.setCaretColor(nodeTextColor);
+			SpellChecker.enableAutoSpell(textArea, true);
 			final JPanel buttonPane = new JPanel();
 			buttonPane.add(enterConfirms);
 			buttonPane.add(okButton);

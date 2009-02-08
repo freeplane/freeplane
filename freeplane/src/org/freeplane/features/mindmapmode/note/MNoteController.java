@@ -41,7 +41,9 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.features.common.note.NoteController;
 import org.freeplane.features.common.note.NoteModel;
+import org.freeplane.ortho.SpellCheckerController;
 
+import com.lightdev.app.shtm.SHTMLEditorPane;
 import com.lightdev.app.shtm.SHTMLPanel;
 import com.lightdev.app.shtm.TextResources;
 
@@ -134,6 +136,10 @@ public class MNoteController extends NoteController {
 			});
 			htmlEditorPanel = SHTMLPanel.createSHTMLPanel();
 			htmlEditorPanel.setMinimumSize(new Dimension(100, 100));
+			final SHTMLEditorPane editorPane = (SHTMLEditorPane)htmlEditorPanel.getEditorPane();
+			SpellCheckerController.getController().enableAutoSpell(editorPane);
+			SpellCheckerController.getController().addSpellCheckerMenu(editorPane.getPopup());
+			SpellCheckerController.getController().enableShortKey(editorPane);
 		}
 		return htmlEditorPanel;
 	}

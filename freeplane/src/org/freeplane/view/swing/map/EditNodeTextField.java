@@ -45,6 +45,9 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Tools;
 import org.freeplane.features.mindmapmode.text.AbstractEditNodeTextField;
+import org.freeplane.ortho.SpellCheckerController;
+
+import com.inet.jortho.SpellChecker;
 
 /**
  * @author foltin
@@ -223,6 +226,7 @@ public class EditNodeTextField extends AbstractEditNodeTextField {
 		textfield.addFocusListener(textFieldListener);
 		textfield.addKeyListener(textFieldListener);
 		textfield.addMouseListener(textFieldListener);
+		SpellCheckerController.getController().enableAutoSpell(textfield);
 		final MapView mapView = (MapView) viewController.getMapView();
 		mapView.scrollNodeToVisible(nodeView, xExtraWidth);
 		final Point textFieldLocation = new Point();

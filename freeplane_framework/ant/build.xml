@@ -17,6 +17,7 @@
 			<fileset dir="${script}"/>
 			<fileset file="${framework.jar}"/>
 		</copy>
+		<chmod file="${dist}/freeplane.sh" perm="ugo+rx"/>
 		<mkdir dir="${dist.jars}" />
 		<copy todir="${dist.jars}">
 			<fileset dir="${workspace}/freeplane/bin/dist/osgi"/>

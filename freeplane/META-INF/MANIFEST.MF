@@ -8,8 +8,9 @@ Bundle-ClassPath: lib/freeplaneviewer.jar,
  lib/freeplaneosgi.jar,
  lib/commons-lang-2.0.jar,
  lib/forms-1.0.5.jar,
- lib/SimplyHTML/gnu-regexp-1.1.4.jar,
- lib/SimplyHTML/SimplyHTML.jar
+ lib/gnu-regexp-1.1.4.jar,
+ lib/SimplyHTML.jar,
+ lib/jortho.jar
 Bundle-Activator: org.freeplane.main.osgi.Activator
 Import-Package: org.osgi.framework
 Export-Package: com.jgoodies.forms.builder,
@@ -19,7 +20,6 @@ Export-Package: com.jgoodies.forms.builder,
  com.jgoodies.forms.util,
  com.lightdev.app.shtm,
  com.lightdev.app.shtm.resources,
- com.lightdev.app.shtm.resources.backups,
  com.sun.demo,
  de.calcom.cclib.text,
  gnu.regexp,

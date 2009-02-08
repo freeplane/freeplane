@@ -21,7 +21,7 @@
 	<property name="java_source_version" value="1.5" />
 	<property name="java_target_version" value="1.5" />
 	<property name="build.compiler" value="modern" />
-	<property name="classpath" value="${lib}/commons-lang-2.0.jar:${lib}/forms-1.0.5.jar:${lib}/SimplyHTML/SimplyHTML.jar:${framework.jar}"/>
+	<property name="classpath" value="${lib}/commons-lang-2.0.jar:${lib}/forms-1.0.5.jar:${lib}/SimplyHTML.jar:${lib}/jortho.jar:${framework.jar}"/>
 
 	<target name="build">
 		<echo>Freeplane Version = ${ver}.</echo>
@@ -48,6 +48,7 @@
 				<exclude name="**/osgi/**"/>
 				<exclude name="**/mindmapmode/**"/>
 				<exclude name="**/filemode/**"/>
+				<exclude name="**/ortho/**"/>
 				<exclude name="**/core/resources/ui/**"/>
 			</fileset>
 			<fileset dir="${viewer-resources}"/>
@@ -57,6 +58,7 @@
 			<fileset dir="${build}">
 				<include name="**/application/**"/>
 				<include name="**/mindmapmode/**"/>
+				<include name="**/ortho/**"/>
 				<include name="**/filemode/**"/>
 				<include name="**/core/resources/ui/**"/>
 				<exclude name="**/*.jar"/>
@@ -76,10 +78,7 @@
 		<mkdir dir="${dist.lib}" />
 		<copy todir="${dist.lib}">
 			<fileset dir="${lib}">
-				<include name="commons-lang-2.0.jar"/>
-				<include name="forms-1.0.5.jar"/>
-				<include name="SimplyHTML/gnu-regexp-1.1.4.jar"/>
-				<include name="SimplyHTML/SimplyHTML.jar"/>
+				<include name="*.jar"/>
 			</fileset>
 		</copy>
 		<mkdir dir="${dist.osgi}" />

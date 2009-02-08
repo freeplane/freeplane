@@ -54,6 +54,7 @@ public class ApplicationResourceController extends ResourceController {
 	private final LastOpenedList lastOpened;
 	final private Properties props;
 	private ClassLoader urlResourceLoader;
+	private final String resourceBaseDir;
 
 	/**
 	 * @param controller
@@ -61,10 +62,10 @@ public class ApplicationResourceController extends ResourceController {
 	public ApplicationResourceController() {
 		super();
 		urlResourceLoader = null;
-		String globalResourceLocation = System.getProperty("org.freeplane.globalresourcedir", "resources");
-		if(globalResourceLocation != null){
+		resourceBaseDir = System.getProperty("org.freeplane.globalresourcedir", "resources");
+		if(resourceBaseDir != null){
 			try {
-				final File resourceDir = new File(globalResourceLocation);
+				final File resourceDir = new File(resourceBaseDir);
 				if(resourceDir.exists()){
 					final URL globalResourceUrl =resourceDir.toURL();
 					urlResourceLoader = new URLClassLoader(new URL[]{globalResourceUrl}, null);
@@ -274,4 +275,8 @@ public class ApplicationResourceController extends ResourceController {
 			}
 		});
 	}
+
+	public String getResourceBaseDir() {
+		return resourceBaseDir;
+    }
 }

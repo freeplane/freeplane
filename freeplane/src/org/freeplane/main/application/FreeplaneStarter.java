@@ -21,8 +21,11 @@ package org.freeplane.main.application;
 
 import java.awt.EventQueue;
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
+import java.util.Locale;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
@@ -48,7 +51,12 @@ import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.main.browsemode.BModeControllerFactory;
 import org.freeplane.main.filemode.FModeControllerFactory;
 import org.freeplane.main.mindmapmode.MModeControllerFactory;
+import org.freeplane.ortho.SpellCheckerController;
 import org.freeplane.view.swing.map.MMapViewController;
+
+import com.inet.jortho.FileUserDictionary;
+import com.inet.jortho.SpellChecker;
+import com.inet.jortho.SpellCheckerOptions;
 
 public class FreeplaneStarter {
 	public static final String LOAD_LAST_MAP = "load_last_map";
@@ -125,7 +133,9 @@ public class FreeplaneStarter {
 		MModeControllerFactory.createModeController(controller);
 		BModeControllerFactory.createModeController(controller, "/xml/browsemodemenu.xml");
 		FModeControllerFactory.createModeController(controller);
+		SpellCheckerController.getController().init();
 	}
+
 
 	public void createFrame(final String[] args) {
 		feedBack.increase("Freeplane.progress.settingPreferences");
