@@ -91,6 +91,7 @@ public class SpellCheckerController {
 			return;
 		}
 		popupMenu.add(SpellChecker.createCheckerMenu());
+		popupMenu.add(SpellChecker.createLanguagesMenu());
     }
 	public void enableAutoSpell(JTextComponent editorPane) {
 		if(! isSpellCheckerActive()){
