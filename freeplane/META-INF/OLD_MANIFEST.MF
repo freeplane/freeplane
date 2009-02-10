@@ -5,5 +5,6 @@ Class-Path: ../
   freeplaneviewer.jar
   commons-lang-2.0.jar
   forms-1.0.5.jar
+  jortho.jar
   gnu-regexp-1.1.4.jar
   SimplyHTML.jar
