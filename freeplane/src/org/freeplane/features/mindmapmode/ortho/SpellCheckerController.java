@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.ortho;
+package org.freeplane.features.mindmapmode.ortho;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -26,7 +26,10 @@ import java.net.MalformedURLException;
 import javax.swing.JPopupMenu;
 import javax.swing.text.JTextComponent;
 
+import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.text.EditNodeBase.EditPopupMenu;
 import org.freeplane.main.application.ApplicationResourceController;
 
@@ -38,26 +41,22 @@ import com.lightdev.app.shtm.SHTMLEditorPane;
  * @author Dimitry Polivaev
  * Feb 8, 2009
  */
-public class SpellCheckerController {
-	static private SpellCheckerController spellCheckerController = null;
-	
+public class SpellCheckerController implements IExtension{
 	private SpellCheckerController() {
-	    super();
+	    init();
     }
-	public static SpellCheckerController getController() {
-		if(spellCheckerController == null){
-			spellCheckerController = new SpellCheckerController();
-		}
-    	return spellCheckerController;
+	public static SpellCheckerController getController(ModeController modeController) {
+    	return (SpellCheckerController) modeController.getExtension(SpellCheckerController.class);
     }
 	private boolean spellCheckerInitialized = false;
+	private boolean spellCheckerEnabled = false;
 	public  boolean isSpellCheckerActive() {
-    	return spellCheckerInitialized;
+    	return spellCheckerEnabled;
     }
-	public void init() {
+	private void init() {
 		if(spellCheckerInitialized == false){
 			spellCheckerInitialized = true;
-			final ApplicationResourceController resourceController = (ApplicationResourceController)ResourceController.getResourceController();
+			final ResourceController resourceController = ResourceController.getResourceController();
 			File orthoDir = new File(resourceController.getResourceBaseDir() + File.separatorChar + "ortho");
 			if(! orthoDir.exists()){
 				return;
@@ -79,6 +78,7 @@ public class SpellCheckerController {
 			}
 			try {
 	            SpellChecker.registerDictionaries(orthoDir.toURL(), availableLocales.toString(), null, ".ortho");
+	            spellCheckerEnabled = true;
             }
             catch (MalformedURLException e) {
 	            e.printStackTrace();
@@ -105,5 +105,8 @@ public class SpellCheckerController {
 			return;
 		}
 		SpellChecker.enableShortKey(editorPane, true);
+    }
+	public static void install(MModeController modeController) {
+	    modeController.addExtension(SpellCheckerController.class, new SpellCheckerController());
     }
 }

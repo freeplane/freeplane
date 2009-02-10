@@ -44,8 +44,8 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Tools;
+import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;
 import org.freeplane.features.mindmapmode.text.AbstractEditNodeTextField;
-import org.freeplane.ortho.SpellCheckerController;
 
 import com.inet.jortho.SpellChecker;
 
@@ -131,6 +131,8 @@ public class EditNodeTextField extends AbstractEditNodeTextField {
 		final Tools.IntHolder eventSource = new Tools.IntHolder();
 		eventSource.setValue(EDIT);
 		class TextFieldListener implements KeyListener, FocusListener, MouseListener, ComponentListener {
+			private boolean popupShown;
+
 			public void componentHidden(final ComponentEvent e) {
 				focusLost(null);
 			}
@@ -150,16 +152,18 @@ public class EditNodeTextField extends AbstractEditNodeTextField {
 			private void conditionallyShowPopup(final MouseEvent e) {
 				if (e.isPopupTrigger()) {
 					final JPopupMenu popupMenu = new EditPopupMenu(textfield);
+					popupShown = true;
 					popupMenu.show(e.getComponent(), e.getX(), e.getY());
 					e.consume();
 				}
 			}
 
 			public void focusGained(final FocusEvent e) {
+				popupShown = false;
 			}
 
 			public void focusLost(final FocusEvent e) {
-				if (!textfield.isVisible() || eventSource.getValue() == CANCEL) {
+				if (!textfield.isVisible() || eventSource.getValue() == CANCEL || popupShown) {
 					return;
 				}
 				if (e == null) {
@@ -226,7 +230,7 @@ public class EditNodeTextField extends AbstractEditNodeTextField {
 		textfield.addFocusListener(textFieldListener);
 		textfield.addKeyListener(textFieldListener);
 		textfield.addMouseListener(textFieldListener);
-		SpellCheckerController.getController().enableAutoSpell(textfield);
+		SpellCheckerController.getController(getModeController()).enableAutoSpell(textfield);
 		final MapView mapView = (MapView) viewController.getMapView();
 		mapView.scrollNodeToVisible(nodeView, xExtraWidth);
 		final Point textFieldLocation = new Point();

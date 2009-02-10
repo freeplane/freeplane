@@ -47,7 +47,7 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.FreeplaneAction;
-import org.freeplane.ortho.SpellCheckerController;
+import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;
 
 import com.inet.jortho.SpellChecker;
 
@@ -180,7 +180,7 @@ public class EditNodeBase {
 	public class EditPopupMenu extends JPopupMenu {
 		public EditPopupMenu(final JTextComponent textComponent) {
 			this.add(new EditCopyAction(getController(), textComponent));
-			SpellCheckerController.getController().addSpellCheckerMenu(this);
+			SpellCheckerController.getController(modeController).addSpellCheckerMenu(this);
 		}
 	}
 

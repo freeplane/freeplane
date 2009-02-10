@@ -48,10 +48,10 @@ import org.freeplane.features.common.attribute.ModelessAttributeController;
 import org.freeplane.features.controller.help.HelpController;
 import org.freeplane.features.controller.print.PrintController;
 import org.freeplane.features.mindmapmode.MModeController;
+import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;
 import org.freeplane.main.browsemode.BModeControllerFactory;
 import org.freeplane.main.filemode.FModeControllerFactory;
 import org.freeplane.main.mindmapmode.MModeControllerFactory;
-import org.freeplane.ortho.SpellCheckerController;
 import org.freeplane.view.swing.map.MMapViewController;
 
 import com.inet.jortho.FileUserDictionary;
@@ -133,7 +133,6 @@ public class FreeplaneStarter {
 		MModeControllerFactory.createModeController(controller);
 		BModeControllerFactory.createModeController(controller, "/xml/browsemodemenu.xml");
 		FModeControllerFactory.createModeController(controller);
-		SpellCheckerController.getController().init();
 	}
 
 

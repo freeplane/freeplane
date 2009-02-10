@@ -287,4 +287,8 @@ public abstract class ResourceController {
 	static public ResourceController getResourceController() {
     	return resourceController;
     }
+
+	public String getResourceBaseDir(){
+		return null;
+	}
 }
