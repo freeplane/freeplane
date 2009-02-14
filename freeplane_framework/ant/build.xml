@@ -8,6 +8,8 @@
 		<property name = "workspace" value = ".."/>
 		<property name="framework.jar" value="lib/knopflerfish/framework.jar" />
 		<property name="freeplane.exe" value="windows-launcher/freeplane.exe" />
+		<property name="license" value="license.txt" />
+		<property name="readme_src" value="readme.txt" />
 		<property name="bin.jars" value="${bin}/jars" />
 		<property name="bin.resources" value="${bin}/resources" />
 		<property name="bin.ortho" value="${bin}/resources/ortho" />
@@ -41,6 +43,9 @@
 		<mkdir dir="${dist}" />		
 		<zip destfile="${dist}/freeplane_bin.zip" compress="false">
 			<fileset dir="${bin}"/>
+			<fileset dir="${root}">
+				<include name="${license}"/>
+			</fileset>
 		</zip>
 		<tar destfile="${dist}/freeplane_src.tar.gz" compression="gzip">
 			<tarfileset dir="${workspace}" mode="777" username="ant" group="ant">
@@ -50,6 +55,10 @@
 				<exclude name="dist/**"/>
 				<exclude name="*/bin/**"/>
 				<exclude name="*/dist/**"/>
+			</tarfileset>
+			<tarfileset dir="${root}" mode="777" username="ant" group="ant">
+				<include name="${license}"/>
+				<include name="${readme_src}"/>
 			</tarfileset>
 		</tar>
 
