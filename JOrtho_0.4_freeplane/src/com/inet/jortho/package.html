@@ -1,0 +1,38 @@
+<html>
+<head>
+<meta http-equiv="Content-Language" content="en">
+</head>
+<body>
+<p>This package implements the spell checker JOrtho. With JOrtho is it possible 
+very simple to check the orthography from any text in a JTextComponent. The
+<a title="Spell Checker main class" href="SpellChecker.html">
+SpellChecker</a> class is the major class of the Spell Checker JOrtho (Java Orthography Checker). 
+In the most cases this is the only class that you need to add spelling feature to your application.
+If you want support for a user dictionary that a user can add its own words then 
+you must implements a <a href="UserDictionaryProvider.html">
+UserDictionaryProvider</a>. This UserDictionaryProvider must be register at first:</p>
+<blockquote>
+	<p><code>SpellChecker.setUserDictionaryProvider( new MyUserDictionaryProvider() );</code></p>
+</blockquote>
+<p>After it you need to register your dictionaries one times. In standalone application 
+if your dictionaries are in the working directory then this can look like: 
+<code> </p>
+<blockquote>
+SpellChecker.registerDictionaries( new URL("file", null, ""), "en,de", "de" );
+</code>
+</blockquote>
+<p>
+and in a applet like:</p>
+<blockquote>
+	<p><code>SpellChecker.registerDictionaries( getCodeBase(), "en,de", "en" );
+	</code></p>
+</blockquote>
+<p>After this you can register your text component that should have all spell checker feature (Highlighter. context menu, spelling dialog). 
+This look like:</p>
+<blockquote>
+	<p><code>JTextPane text = new JTextPane();
+<br>
+	SpellChecker.register( text ); </code></p>
+</blockquote>
+</body>
+</html>
