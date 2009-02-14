@@ -76,7 +76,7 @@ class ChooseFormatPopupDialog extends JDialog implements KeyListener {
 	}
 
 	private void close() {
-		final WindowConfigurationStorage storage = new NormalWindowConfigurationStorage();
+		final WindowConfigurationStorage storage = new NormalWindowCfgStorage();
 		storage.storeDialogPositions(this, ChooseFormatPopupDialog.WINDOW_PREFERENCE_STORAGE_PROPERTY);
 		setVisible(false);
 		this.dispose();
@@ -192,7 +192,7 @@ class ChooseFormatPopupDialog extends JDialog implements KeyListener {
 		pack();
 		final String marshalled = ResourceController.getResourceController().getProperty(
 		    ChooseFormatPopupDialog.WINDOW_PREFERENCE_STORAGE_PROPERTY);
-		NormalWindowConfigurationStorage.decorateDialog(marshalled, this);
+		NormalWindowCfgStorage.decorateDialog(marshalled, this);
 	}
 
 	/*

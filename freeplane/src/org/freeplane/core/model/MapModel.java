@@ -47,7 +47,7 @@ public class MapModel {
 	final private ExtensionHashMap extensions;
 	private IFilter filter = null;
 	final private IconRegistry iconRegistry;
-	protected final ModeController mModeController;
+	final private ModeController mModeController;
 	final private HashMap<String, NodeModel> nodes;
 	private boolean readOnly = true;
 	private NodeModel root;

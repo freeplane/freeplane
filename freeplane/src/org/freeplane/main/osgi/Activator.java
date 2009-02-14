@@ -20,6 +20,9 @@
 package org.freeplane.main.osgi;
 
 import java.io.File;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.StringTokenizer;
 
 import org.freeplane.main.application.FreeplaneStarter;
 import org.osgi.framework.Bundle;
@@ -48,8 +51,27 @@ public class Activator implements BundleActivator {
 				}
 			}
 		}
-		starter.createFrame(new String[] {});
+		starter.createFrame(getCallParameters());
 	}
+
+	private String[] getCallParameters() {
+		int i = 1;
+		String param;
+		LinkedList<String> parameters = new LinkedList<String>();
+		for(;;) {
+			param = System.getProperty("org.freeplane.param" + i++, null);
+			if(param == null){
+				break;
+			}
+			if(param.equals("")){
+				continue;
+			}
+			parameters.add(param);
+		}
+		
+	    final String[] array = parameters.toArray(new String[parameters.size()]);
+		return array;
+    }
 
 	public void stop(final BundleContext context) throws Exception {
 		starter.stop();

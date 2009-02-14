@@ -1,37 +1,64 @@
 <project name="freeplane" default="dist" basedir="..">
 	<property name = "root" value = "."/>
-	<property name = "workspace" value = ".."/>
-	<property name="framework.jar" value="lib/knopflerfish/framework.jar" />
+	<property name="bin" value="${root}/bin" />
 	<property name="dist" value="${root}/dist" />
-	<property name="dist.jars" value="${dist}/jars" />
-	<property name="dist.resources" value="${dist}/resources" />
-	<property name="script" value="${root}/script" />
+	
 	<target name="dist" depends="clean">
+		<property name = "root" value = "."/>
+		<property name = "workspace" value = ".."/>
+		<property name="framework.jar" value="lib/knopflerfish/framework.jar" />
+		<property name="freeplane.exe" value="windows-launcher/freeplane.exe" />
+		<property name="bin.jars" value="${bin}/jars" />
+		<property name="bin.resources" value="${bin}/resources" />
+		<property name="bin.ortho" value="${bin}/resources/ortho" />
+		<property name="script" value="${root}/script" />
+
 		<ant antfile="ant/build.xml" dir="${workspace}/freeplane" inheritall="false"/>
 		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_help" inheritall="false"/>
 		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_svg" inheritall="false"/>
 		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_latex" inheritall="false"/>
 		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_script" inheritall="false"/>
-		<mkdir dir="${dist}" />
-		<copy todir="${dist}">
+		<mkdir dir="${bin}" />
+		<copy todir="${bin}">
 			<fileset dir="${script}"/>
 			<fileset file="${framework.jar}"/>
+			<fileset file="${freeplane.exe}"/>
 		</copy>
-		<chmod file="${dist}/freeplane.sh" perm="ugo+rx"/>
-		<mkdir dir="${dist.jars}" />
-		<copy todir="${dist.jars}">
+		<chmod file="${bin}/freeplane.sh" perm="ugo+rx"/>
+		<mkdir dir="${bin.jars}" />
+		<copy todir="${bin.jars}">
 			<fileset dir="${workspace}/freeplane/bin/dist/osgi"/>
 			<fileset dir="${workspace}/freeplane_help/bin/dist/osgi"/>
 			<fileset dir="${workspace}/freeplane_latex/bin/dist/osgi"/>
 			<fileset dir="${workspace}/freeplane_script/bin/dist/osgi"/>
 			<fileset dir="${workspace}/freeplane_svg/bin/dist/osgi"/>
 		</copy>
-		<mkdir dir="${dist.resources}" />		
+		<mkdir dir="${bin.resources}" />		
+		<mkdir dir="${bin.ortho}" />		
+		<copy todir="${bin.ortho}">
+			<fileset dir="${workspace}/freeplane/ortho"/>
+		</copy>
+		<mkdir dir="${dist}" />		
+		<zip destfile="${dist}/freeplane_bin.zip" level="0">
+			<fileset dir="${bin}"/>
+		</zip>
+		<tar destfile="${dist}/freeplane_src.tar.gz" compression="gzip">
+			<tarfileset dir="${workspace}" mode="777" username="ant" group="ant">
+				<include name="*freeplane*/**"/>
+				<exclude name=".*/**"/>
+				<exclude name="bin/**"/>
+				<exclude name="dist/**"/>
+				<exclude name="*/bin/**"/>
+				<exclude name="*/dist/**"/>
+			</tarfileset>
+		</tar>
+
 	</target>
 
 	<target name="clean">
 		 <delete quiet="true" includeemptydirs="true">
-		    <fileset dir="${dist}" excludes="resources/**"/>
+		    <fileset dir="${bin}"/>
+		    <fileset dir="${dist}"/>
 		  </delete>
 	</target>
 	

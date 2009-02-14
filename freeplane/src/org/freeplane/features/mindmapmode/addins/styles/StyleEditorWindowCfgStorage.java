@@ -5,10 +5,10 @@ import javax.swing.JDialog;
 import org.freeplane.core.resources.WindowConfigurationStorage;
 import org.freeplane.n3.nanoxml.IXMLElement;
 
-class ManageStyleEditorWindowConfigurationStorage extends WindowConfigurationStorage {
-	public static ManageStyleEditorWindowConfigurationStorage decorateDialog(final String marshalled,
+class StyleEditorWindowCfgStorage extends WindowConfigurationStorage {
+	public static StyleEditorWindowCfgStorage decorateDialog(final String marshalled,
 	                                                                         final JDialog dialog) {
-		final ManageStyleEditorWindowConfigurationStorage storage = new ManageStyleEditorWindowConfigurationStorage();
+		final StyleEditorWindowCfgStorage storage = new StyleEditorWindowCfgStorage();
 		final IXMLElement xml = storage.unmarschall(marshalled, dialog);
 		if (xml != null) {
 			storage.dividerPosition = Integer.parseInt(xml.getAttribute("divider_position", "100"));

@@ -231,7 +231,7 @@ class ManagePatternsPopupDialog extends JDialog implements KeyListener {
 	}
 
 	private void close() {
-		final ManageStyleEditorWindowConfigurationStorage storage = new ManageStyleEditorWindowConfigurationStorage();
+		final StyleEditorWindowCfgStorage storage = new StyleEditorWindowCfgStorage();
 		storage.setDividerPosition(mSplitPane.getDividerLocation());
 		storage.storeDialogPositions(this, ManagePatternsPopupDialog.WINDOW_PREFERENCE_STORAGE_PROPERTY);
 		this.dispose();
@@ -470,7 +470,7 @@ class ManagePatternsPopupDialog extends JDialog implements KeyListener {
 		this.pack();
 		final String marshalled = ResourceController.getResourceController().getProperty(
 		    ManagePatternsPopupDialog.WINDOW_PREFERENCE_STORAGE_PROPERTY);
-		final ManageStyleEditorWindowConfigurationStorage decorateDialog = ManageStyleEditorWindowConfigurationStorage
+		final StyleEditorWindowCfgStorage decorateDialog = StyleEditorWindowCfgStorage
 		    .decorateDialog(marshalled, this);
 		if (decorateDialog != null) {
 			mSplitPane.setDividerLocation(decorateDialog.getDividerPosition());
