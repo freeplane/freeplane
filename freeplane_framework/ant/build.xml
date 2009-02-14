@@ -39,7 +39,7 @@
 			<fileset dir="${workspace}/freeplane/ortho"/>
 		</copy>
 		<mkdir dir="${dist}" />		
-		<zip destfile="${dist}/freeplane_bin.zip" level="0">
+		<zip destfile="${dist}/freeplane_bin.zip" compress="false">
 			<fileset dir="${bin}"/>
 		</zip>
 		<tar destfile="${dist}/freeplane_src.tar.gz" compression="gzip">
