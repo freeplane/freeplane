@@ -23,9 +23,18 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
+import org.freeplane.core.actions.IFreeplaneAction;
 
-class OptionHTMLExportFoldingAction extends AbstractAction {
+
+class OptionHTMLExportFoldingAction extends AbstractAction implements IFreeplaneAction{
+	private static final long serialVersionUID = 602116895676184299L;
+	static final String NAME = "optionHTMLExportFoldingAction";
+
 	public void actionPerformed(final ActionEvent e) {
 		ResourceController.getResourceController().setProperty("html_export_folding", e.getActionCommand());
+	}
+
+	public String getName() {
+		return NAME;
 	}
 }

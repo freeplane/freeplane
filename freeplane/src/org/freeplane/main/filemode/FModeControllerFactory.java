@@ -66,8 +66,8 @@ public class FModeControllerFactory {
 				    return "fork";
 			    }
 		    });
-		modeController.addAction("center", new CenterAction(controller));
-		modeController.addAction("openPath", new OpenPathAction(controller));
+		modeController.putAction("center", new CenterAction(controller));
+		modeController.putAction("openPath", new OpenPathAction(controller));
 		userInputListenerFactory.setNodePopupMenu(new JPopupMenu());
 		userInputListenerFactory.setMainToolBar(new FreeplaneToolBar());
 		userInputListenerFactory.setMenuStructure("/xml/filemodemenu.xml");

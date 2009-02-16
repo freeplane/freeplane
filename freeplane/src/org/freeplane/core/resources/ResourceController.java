@@ -27,54 +27,28 @@ import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.Vector;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.resources.ui.BooleanProperty;
-import org.freeplane.core.util.Tools;
 
 /**
  * @author Dimitry Polivaev
  */
 public abstract class ResourceController {
-	public static final String LOCAL_PROPERTIES = "LocalProperties.";
-	public static final String RESOURCE_DRAW_RECTANGLE_FOR_SELECTION = "standarddrawrectangleforselection";
-	public static final String RESOURCE_LANGUAGE = "language";
-	public static final String RESOURCE_PRINT_ON_WHITE_BACKGROUND = "printonwhitebackground";
-	public static final String RESOURCES_BACKGROUND_COLOR = "standardbackgroundcolor";
-	public static final String RESOURCES_CLOUD_COLOR = "standardcloudcolor";
-	public static final String RESOURCES_CONVERT_TO_CURRENT_VERSION = "convert_to_current_version";
-	public static final String RESOURCES_CUT_NODES_WITHOUT_QUESTION = "cut_nodes_without_question";
-	public static final String RESOURCES_DELETE_NODES_WITHOUT_QUESTION = "delete_nodes_without_question";
-	public static final String RESOURCES_DON_T_SHOW_NOTE_ICONS = "don_t_show_note_icons";
-	public static final String RESOURCES_EDGE_COLOR = "standardedgecolor";
-	public static final String RESOURCES_EDGE_STYLE = "standardedgestyle";
-	public static final String RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING = "execute_scripts_without_asking";
-	public static final String RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION = "execute_scripts_without_exec_restriction";
-	public static final String RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION = "execute_scripts_without_file_restriction";
-	public static final String RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION = "execute_scripts_without_network_restriction";
-	public static final String RESOURCES_LINK_COLOR = "standardlinkcolor";
-	public static final String RESOURCES_NODE_SHAPE = "standardnodeshape";
-	public static final String RESOURCES_NODE_TEXT_COLOR = "standardnodetextcolor";
-	public static final String RESOURCES_REMIND_USE_RICH_TEXT_IN_NEW_LONG_NODES = "remind_use_rich_text_in_new_long_nodes";
-	public static final String RESOURCES_REMOVE_NOTES_WITHOUT_QUESTION = "remove_notes_without_question";
-	public static final String RESOURCES_ROOT_NODE_SHAPE = "standardrootnodeshape";
-	public static final String RESOURCES_SAVE_FOLDING_STATE = "save_folding_state";
-	public static final String RESOURCES_SCRIPT_USER_KEY_NAME_FOR_SIGNING = "script_user_key_name_for_signing";
-	public static final String RESOURCES_SELECTED_NODE_COLOR = "standardselectednodecolor";
-	public static final String RESOURCES_SELECTED_NODE_RECTANGLE_COLOR = "standardselectednoderectanglecolor";
-	public static final String RESOURCES_SELECTION_METHOD = "selection_method";
-	public static final String RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED = "signed_script_are_trusted";
-	public static final String RESOURCES_USE_SPLIT_PANE = "use_split_pane";
-	public static final String RESOURCES_USE_TABBED_PANE = "use_tabbed_pane";
-	public static final String RESOURCES_WHEEL_VELOCITY = "wheel_velocity";
+	// TODO rladstaetter 15.02.2009 remove static
+	private static ResourceController resourceController;
 
 	/**
 	 * Removes the "TranslateMe" sign from the end of not translated texts.
 	 */
+	// TODO rladstaetter 15.02.2009 method should have no need for existance! the build process should filter out resources not fit for production.
+	@Deprecated
 	public static String removeTranslateComment(String inputString) {
 		if (inputString != null && inputString.endsWith(FreeplaneResourceBundle.POSTFIX_TRANSLATE_ME)) {
 			inputString = inputString.substring(0, inputString.length()
@@ -83,9 +57,8 @@ public abstract class ResourceController {
 		return inputString;
 	}
 
-	final private Vector propertyChangeListeners = new Vector();
+	final private List<IFreeplanePropertyListener> propertyChangeListeners = new Vector<IFreeplanePropertyListener>();
 	private FreeplaneResourceBundle resources;
-	private static ResourceController resourceController;
 
 	public ResourceController() {
 		super();
@@ -146,7 +119,7 @@ public abstract class ResourceController {
 		}
 		if (value.startsWith("?") && !value.equals("?")) {
 			final String localValue = ((FreeplaneResourceBundle) getResources()).getResourceString(
-			    ResourceController.LOCAL_PROPERTIES + label, null);
+			    ResourceControllerProperties.LOCAL_PROPERTIES + label, null);
 			value = localValue == null ? value.substring(1).trim() : localValue;
 			setDefaultProperty(label, value);
 		}
@@ -154,8 +127,7 @@ public abstract class ResourceController {
 	}
 
 	public boolean getBoolProperty(final String key) {
-		final String boolProperty = getProperty(key);
-		return Tools.safeEquals("true", boolProperty);
+		return Boolean.parseBoolean(getProperty(key));
 	}
 
 	public Font getDefaultFont() {
@@ -175,6 +147,8 @@ public abstract class ResourceController {
 	/**
 	 */
 	public int getDefaultFontSize() {
+		// TODO rladstaetter 15.02.2009 final local variables will be garbage collected, thus the final keyword here is irrelevant
+		// it may work, however, since the whole controller follows a singleton pattern (but this should be addressed, too)
 		final int fontSize = Integer.parseInt(getProperty("defaultfontsize"));
 		return fontSize;
 	}
@@ -182,6 +156,8 @@ public abstract class ResourceController {
 	/**
 	 */
 	public int getDefaultFontStyle() {
+		// TODO rladstaetter 15.02.2009 final local variables will be garbage collected, thus the final keyword here is irrelevant
+		// it may work, however, since the whole controller follows a singleton pattern (but this should be addressed, too)
 		final int fontStyle = Integer.parseInt(getProperty("defaultfontstyle"));
 		return fontStyle;
 	}
@@ -219,7 +195,7 @@ public abstract class ResourceController {
 		return getProperties().getProperty(key, value);
 	}
 
-	public Collection getPropertyChangeListeners() {
+	public Collection<IFreeplanePropertyListener> getPropertyChangeListeners() {
 		return Collections.unmodifiableCollection(propertyChangeListeners);
 	}
 
@@ -240,14 +216,13 @@ public abstract class ResourceController {
 	}
 
 	public void init(final Controller controller) {
-		controller.addAction("optionHTMLExportFoldingAction", new OptionHTMLExportFoldingAction());
-		controller.addAction("optionSelectionMechanismAction", new OptionSelectionMechanismAction(controller));
-		controller.addAction("showSelectionAsRectangle", new ShowSelectionAsRectangleAction(controller));
+		controller.putAction(new OptionHTMLExportFoldingAction());
+		controller.putAction(new OptionSelectionMechanismAction(controller));
+		controller.putAction(new ShowSelectionAsRectangleAction(controller));
 	}
 
 	boolean isSelectionAsRectangle() {
-		return getProperty(ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION).equalsIgnoreCase(
-		    BooleanProperty.TRUE_VALUE);
+		return Boolean.parseBoolean(getProperty(ResourceControllerProperties.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION));
 	}
 
 	abstract public void loadProperties(InputStream inStream) throws IOException;
@@ -266,10 +241,10 @@ public abstract class ResourceController {
 
 	public void toggleSelectionAsRectangle() {
 		if (isSelectionAsRectangle()) {
-			setProperty(ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION, BooleanProperty.FALSE_VALUE);
+			setProperty(ResourceControllerProperties.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION, BooleanProperty.FALSE_VALUE);
 		}
 		else {
-			setProperty(ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION, BooleanProperty.TRUE_VALUE);
+			setProperty(ResourceControllerProperties.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION, BooleanProperty.TRUE_VALUE);
 		}
 	}
 
@@ -285,9 +260,10 @@ public abstract class ResourceController {
     }
 
 	static public ResourceController getResourceController() {
-    	return resourceController;
-    }
-
+    	return ResourceController.resourceController;
+	}
+	
+	// TODO rladstaetter 15.02.2009 ?
 	public String getResourceBaseDir(){
 		return null;
 	}

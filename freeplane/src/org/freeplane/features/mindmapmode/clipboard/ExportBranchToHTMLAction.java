@@ -24,10 +24,10 @@ import java.io.File;
 import java.io.IOException;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.common.clipboard.ClipboardController;
 
-class ExportBranchToHTMLAction extends FreeplaneAction {
+class ExportBranchToHTMLAction extends AFreeplaneAction {
 	public ExportBranchToHTMLAction(final Controller controller) {
 		super(controller, "export_branch_to_html");
 	}

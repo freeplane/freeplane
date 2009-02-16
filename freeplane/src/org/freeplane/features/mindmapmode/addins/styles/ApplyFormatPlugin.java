@@ -24,8 +24,8 @@ import java.util.List;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionDescriptor;
-import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.features.mindmapnode.pattern.MPatternController;
 import org.freeplane.features.mindmapnode.pattern.Pattern;
 import org.freeplane.features.mindmapnode.pattern.StylePatternFactory;
@@ -34,7 +34,7 @@ import org.freeplane.features.mindmapnode.pattern.StylePatternFactory;
 locations = { "/menu_bar/format/change" }, //
 tooltip = "accessories/plugins/ApplyFormatPlugin.properties_documentation" //
 )
-public class ApplyFormatPlugin extends FreeplaneAction {
+public class ApplyFormatPlugin extends AFreeplaneAction {
 	/**
 	 */
 	public ApplyFormatPlugin(final Controller controller) {

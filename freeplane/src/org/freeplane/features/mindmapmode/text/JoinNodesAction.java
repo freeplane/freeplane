@@ -28,13 +28,13 @@ import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.MMapController;
 
-class JoinNodesAction extends FreeplaneAction {
+class JoinNodesAction extends AFreeplaneAction {
 	final static Pattern BODY_END = Pattern.compile("</body>", Pattern.CASE_INSENSITIVE);
 	final static Pattern BODY_START = Pattern.compile("<body>", Pattern.CASE_INSENSITIVE);
 

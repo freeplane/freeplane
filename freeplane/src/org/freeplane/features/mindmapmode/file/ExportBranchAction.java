@@ -26,10 +26,11 @@ import java.net.MalformedURLException;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Tools;
 import org.freeplane.features.common.link.LinkController;
@@ -40,7 +41,7 @@ import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 
 /** */
-class ExportBranchAction extends FreeplaneAction {
+class ExportBranchAction extends AFreeplaneAction {
 	public ExportBranchAction(final Controller controller) {
 		super(controller, "export_branch_new");
 	}
@@ -71,12 +72,12 @@ class ExportBranchAction extends FreeplaneAction {
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File chosenFile = chooser.getSelectedFile();
 			final String ext = UrlManager.getExtension(chosenFile.getName());
-			if (!ext.equals(org.freeplane.features.mindmapmode.file.MFileManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
+			if (!ext.equals(org.freeplane.core.enums.ResourceControllerProperties.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
 				chosenFile = new File(chosenFile.getParent(), chosenFile.getName()
-				        + org.freeplane.features.mindmapmode.file.MFileManager.FREEPLANE_FILE_EXTENSION);
+				        + org.freeplane.core.enums.ResourceControllerProperties.FREEPLANE_FILE_EXTENSION);
 			}
 			try {
-				UrlManager.fileToUrl(chosenFile);
+				Compat.fileToUrl(chosenFile);
 			}
 			catch (final MalformedURLException ex) {
 				JOptionPane
@@ -98,7 +99,7 @@ class ExportBranchAction extends FreeplaneAction {
 			 */
 			final NodeModel parent = node.getParentNode();
 			try {
-				final String linkToNewMapString = UrlManager.toRelativeURL(UrlManager.fileToUrl(chosenFile), controller
+				final String linkToNewMapString = UrlManager.toRelativeURL(Compat.fileToUrl(chosenFile), controller
 				    .getMap().getURL());
 				((MLinkController) LinkController.getController(controller.getModeController())).setLink(node,
 				    linkToNewMapString);
@@ -116,7 +117,7 @@ class ExportBranchAction extends FreeplaneAction {
 			    nodePosition, node.isLeft());
 			((MTextController) TextController.getController(getModeController())).setNodeText(newNode, node.getText());
 			try {
-				final String linkString = UrlManager.toRelativeURL(controller.getMap().getURL(), UrlManager
+				final String linkString = UrlManager.toRelativeURL(controller.getMap().getURL(), Compat
 				    .fileToUrl(chosenFile));
 				((MLinkController) LinkController.getController(controller.getModeController())).setLink(newNode,
 				    linkString);

@@ -22,12 +22,12 @@ package org.freeplane.features.mindmapmode.link;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.mindmapmode.file.MFileManager;
 
-class SetLinkByFileChooserAction extends FreeplaneAction {
+class SetLinkByFileChooserAction extends AFreeplaneAction {
 	public SetLinkByFileChooserAction(final Controller controller) {
 		super(controller, "set_link_by_filechooser");
 	}

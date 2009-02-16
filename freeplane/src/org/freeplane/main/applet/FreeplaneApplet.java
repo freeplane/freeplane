@@ -38,7 +38,7 @@ import org.freeplane.view.swing.map.MapViewController;
 public class FreeplaneApplet extends JApplet {
 	private AppletViewController appletViewController;
 	private Controller controller;
-	private AppletResourceController resourceController;
+	private AppletResourceController appletResourceController;
 
 	@Override
 	public void destroy() {
@@ -51,10 +51,10 @@ public class FreeplaneApplet extends JApplet {
 		updateLookAndFeel();
 		final Container contentPane = getContentPane();
 		contentPane.setLayout(new BorderLayout());
-		resourceController = new AppletResourceController(this);
-		ResourceController.setResourceController(resourceController);
+		appletResourceController = new AppletResourceController(this);
+		ResourceController.setResourceController(appletResourceController);
 		controller = new Controller();
-		resourceController.init(controller);
+		appletResourceController.init(controller);
 		appletViewController = new AppletViewController(controller, this, new MapViewController());
 		FilterController.install(controller);
 		PrintController.install(controller);
@@ -81,8 +81,8 @@ public class FreeplaneApplet extends JApplet {
 	private void updateLookAndFeel() {
 		String lookAndFeel = "";
 		try {
-			resourceController.setPropertyByParameter("lookandfeel");
-			lookAndFeel = resourceController.getProperty("lookandfeel");
+			appletResourceController.setPropertyByParameter("lookandfeel");
+			lookAndFeel = appletResourceController.getProperty("lookandfeel");
 			if (lookAndFeel.equals("windows")) {
 				UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 			}

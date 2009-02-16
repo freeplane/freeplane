@@ -27,15 +27,16 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.mindmapmode.MMapController;
 
-class CutAction extends FreeplaneAction {
+class CutAction extends AFreeplaneAction {
 	public CutAction(final Controller controller) {
 		super(controller, "cut", "/images/editcut.png");
 	}
@@ -51,7 +52,7 @@ class CutAction extends FreeplaneAction {
 		final int showResult = new OptionalDontShowMeAgainDialog(controller.getViewController().getFrame(), controller
 		    .getSelection().getSelected(), "really_cut_node", "confirmation",
 		    new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
-		        ResourceController.RESOURCES_CUT_NODES_WITHOUT_QUESTION),
+		        ResourceControllerProperties.RESOURCES_CUT_NODES_WITHOUT_QUESTION),
 		    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED).show().getResult();
 		if (showResult != JOptionPane.OK_OPTION) {
 			return;

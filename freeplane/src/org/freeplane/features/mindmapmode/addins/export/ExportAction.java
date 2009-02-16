@@ -38,14 +38,14 @@ import javax.swing.JOptionPane;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Tools;
 
 /**
  * @author foltin
  */
-abstract public class ExportAction extends FreeplaneAction {
+abstract public class ExportAction extends AFreeplaneAction {
 	private Component view;
 
 	public ExportAction(final Controller controller) {

@@ -32,10 +32,10 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IUndoableActor;
 
-class NodeUpAction extends FreeplaneAction {
+class NodeUpAction extends AFreeplaneAction {
 	public NodeUpAction(final Controller controller) {
 		super(controller, "node_up");
 	}

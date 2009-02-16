@@ -23,14 +23,14 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
+import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 
-class ZoomOutAction extends AbstractAction {
-	/**
-	 *
-	 */
+class ZoomOutAction extends AbstractAction implements IFreeplaneAction{
+	private static final long serialVersionUID = 1L;
 	final private ViewController viewController;
+	static final String NAME = "zoomOut";
 
 	public ZoomOutAction(final ViewController viewController) {
 		this.viewController = viewController;
@@ -39,5 +39,9 @@ class ZoomOutAction extends AbstractAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		viewController.zoomOut();
+	}
+
+	public String getName() {
+		return NAME;
 	}
 }

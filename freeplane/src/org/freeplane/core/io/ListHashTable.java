@@ -23,8 +23,11 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
+// TODO rladstaetter 15.02.2009 replace with Map<K,List<V>>
+@Deprecated
 public class ListHashTable<K, V> {
 	/**
 	 * @author Dimitry Polivaev
@@ -43,19 +46,19 @@ public class ListHashTable<K, V> {
 		}
 	}
 
-	final private Hashtable<K, List<V>> table = new Hashtable();
+	final private Map<K, List<V>> table = new Hashtable<K,List<V>>();
 
 	public void add(final K tag, final V element) {
 		List<V> elementsForTag = table.get(tag);
 		if (elementsForTag == null) {
-			elementsForTag = new LinkedList();
+			elementsForTag = new LinkedList<V>();
 			table.put(tag, elementsForTag);
 		}
 		elementsForTag.add(element);
 	}
 
 	public boolean isEmpty(final K tag) {
-		final List elementsForTag = list(tag);
+		final List<V> elementsForTag = list(tag);
 		if (elementsForTag == null) {
 			return true;
 		}
@@ -63,20 +66,19 @@ public class ListHashTable<K, V> {
 	}
 
 	public Iterator<V> iterator(final K tag) {
-		final List elementsForTag = list(tag);
+		final List<V> elementsForTag = list(tag);
 		if (elementsForTag == null) {
-			return new EmptyIterator();
+			return new EmptyIterator<V>();
 		}
 		return elementsForTag.listIterator();
 	}
 
 	public List<V> list(final K tag) {
-		final List elementsForTag = table.get(tag);
-		return elementsForTag;
+		return table.get(tag);
 	}
 
 	public boolean remove(final K tag, final V element) {
-		final List elementsForTag = list(tag);
+		final List<V> elementsForTag = list(tag);
 		if (elementsForTag == null) {
 			return false;
 		}

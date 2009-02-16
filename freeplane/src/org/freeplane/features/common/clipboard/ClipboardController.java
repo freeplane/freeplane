@@ -45,6 +45,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.util.Tools;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
 
@@ -102,10 +103,10 @@ public class ClipboardController implements IExtension {
 			    getAsHTML(selectedNodes), null, null);
 		}
 		catch (final UnsupportedFlavorException ex) {
-			org.freeplane.core.util.Tools.logException(ex);
+			Tools.logException(ex);
 		}
 		catch (final IOException ex) {
-			org.freeplane.core.util.Tools.logException(ex);
+			Tools.logException(ex);
 		}
 		return null;
 	}
@@ -141,8 +142,8 @@ public class ClipboardController implements IExtension {
 	 */
 	private void createActions() {
 		final Controller controller = modeController.getController();
-		modeController.addAction("copy", new CopyAction(controller));
-		modeController.addAction("copySingle", new CopySingleAction(controller));
+		modeController.putAction("copy", new CopyAction(controller));
+		modeController.putAction("copySingle", new CopySingleAction(controller));
 	}
 
 	public String createForNodesFlavor(final Collection<NodeModel> selectedNodes, final boolean copyInvisible)
@@ -171,7 +172,7 @@ public class ClipboardController implements IExtension {
 			return stringWriter.toString();
 		}
 		catch (final Exception e) {
-			org.freeplane.core.util.Tools.logException(e);
+			Tools.logException(e);
 			return null;
 		}
 	}
@@ -187,7 +188,7 @@ public class ClipboardController implements IExtension {
 			return stringWriter.toString();
 		}
 		catch (final Exception e) {
-			org.freeplane.core.util.Tools.logException(e);
+			Tools.logException(e);
 			return null;
 		}
 	}
@@ -201,7 +202,7 @@ public class ClipboardController implements IExtension {
 			return stringWriter.toString();
 		}
 		catch (final Exception e) {
-			org.freeplane.core.util.Tools.logException(e);
+			Tools.logException(e);
 			return null;
 		}
 	}
@@ -259,7 +260,7 @@ public class ClipboardController implements IExtension {
 		}
 		catch (final Exception e) {
 			System.err.println("Error in MindMapMapModel.saveTXT(): ");
-			org.freeplane.core.util.Tools.logException(e);
+			Tools.logException(e);
 			return false;
 		}
 	}
@@ -284,7 +285,7 @@ public class ClipboardController implements IExtension {
 			return copy;
 		}
 		catch (final Exception e) {
-			org.freeplane.core.util.Tools.logException(e);
+			Tools.logException(e);
 			return null;
 		}
 	}
@@ -342,7 +343,7 @@ public class ClipboardController implements IExtension {
 			return true;
 		}
 		catch (final Exception e) {
-			org.freeplane.core.util.Tools.logException(e);
+			Tools.logException(e);
 			return false;
 		}
 	}

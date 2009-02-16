@@ -51,6 +51,7 @@ import org.freeplane.n3.nanoxml.XMLWriter;
  * @author Dimitry Polivaev
  */
 public class FilterController implements IMapSelectionListener, IExtension {
+	// TODO rladstaetter 15.02.2009 why static??
 	private static ConditionFactory conditionFactory;
 	static final String FREEPLANE_FILTER_EXTENSION_WITHOUT_DOT = "mmfilter";
 
@@ -81,7 +82,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		this.controller = controller;
 		defaultFilter = new DefaultFilter(controller, null, false, false);
 		controller.getMapViewManager().addMapChangeListener(this);
-		controller.addAction("showFilterToolbarAction", new ShowFilterToolbarAction(this));
+		controller.putAction("showFilterToolbarAction", new ShowFilterToolbarAction(this));
 	}
 
 	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {

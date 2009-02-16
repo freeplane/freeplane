@@ -21,13 +21,14 @@ package org.freeplane.features.mindmapmode.note;
 
 import java.awt.event.ActionEvent;
 
+import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 
 @SelectableAction(checkOnPopup = true)
-class ShowHideNoteAction extends FreeplaneAction {
+class ShowHideNoteAction extends AFreeplaneAction {
 	/**
 	 *
 	 */
@@ -44,7 +45,7 @@ class ShowHideNoteAction extends FreeplaneAction {
 		}
 		else {
 			(noteController).hideNotesPanel();
-			ResourceController.getResourceController().setProperty(ResourceController.RESOURCES_USE_SPLIT_PANE, "false");
+			ResourceController.getResourceController().setProperty(ResourceControllerProperties.RESOURCES_USE_SPLIT_PANE, "false");
 		}
 	}
 

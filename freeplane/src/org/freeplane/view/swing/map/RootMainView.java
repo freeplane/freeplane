@@ -27,6 +27,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
+import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.resources.ResourceController;
 
 class RootMainView extends MainView {
@@ -87,7 +88,7 @@ class RootMainView extends MainView {
 	 */
 	@Override
 	String getStyle() {
-		return ResourceController.getResourceController().getProperty(ResourceController.RESOURCES_ROOT_NODE_SHAPE);
+		return ResourceController.getResourceController().getProperty(ResourceControllerProperties.RESOURCES_ROOT_NODE_SHAPE);
 	}
 
 	@Override

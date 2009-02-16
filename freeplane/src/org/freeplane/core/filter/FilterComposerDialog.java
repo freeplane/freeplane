@@ -65,7 +65,7 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.url.UrlManager;
@@ -77,7 +77,9 @@ public class FilterComposerDialog extends JDialog {
 	/**
 	 * @author Dimitry Polivaev
 	 */
-	private class AddElementaryConditionAction extends FreeplaneAction {
+	private class AddElementaryConditionAction extends AFreeplaneAction {
+		private static final long serialVersionUID = 6750527357555878788L;
+
 		/*
 		 * (non-Javadoc)
 		 * @see
@@ -112,6 +114,10 @@ public class FilterComposerDialog extends JDialog {
 				}
 			}
 			validate();
+		}
+
+		public String getName() {
+			return this.getClass().getSimpleName();
 		}
 	}
 
@@ -186,7 +192,12 @@ public class FilterComposerDialog extends JDialog {
 		}
 	}
 
-	private class CreateConjunctConditionAction extends FreeplaneAction {
+	private class CreateConjunctConditionAction extends AFreeplaneAction {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 5016454533709313766L;
+
 		/*
 		 * (non-Javadoc)
 		 * @see
@@ -207,9 +218,21 @@ public class FilterComposerDialog extends JDialog {
 			model.addElement(newCond);
 			validate();
 		}
+
+		public String getName() {
+			return getClass().getSimpleName();
+		}
 	}
 
-	private class CreateDisjunctConditionAction extends FreeplaneAction {
+	private class CreateDisjunctConditionAction extends AFreeplaneAction {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -8191519725717206315L;
+
+		public String getName() {
+			return getClass().getSimpleName();
+		}
 		/*
 		 * (non-Javadoc)
 		 * @see
@@ -232,7 +255,16 @@ public class FilterComposerDialog extends JDialog {
 		}
 	}
 
-	private class CreateNotSatisfiedConditionAction extends FreeplaneAction {
+	private class CreateNotSatisfiedConditionAction extends AFreeplaneAction {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -2133453353200102893L;
+
+		public String getName() {
+			return getClass().getSimpleName();
+		}
+
 		/*
 		 * (non-Javadoc)
 		 * @see
@@ -258,13 +290,12 @@ public class FilterComposerDialog extends JDialog {
 		}
 	}
 
-	private class DeleteConditionAction extends FreeplaneAction {
-		/*
-		 * (non-Javadoc)
-		 * @see
-		 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent
-		 * )
-		 */
+	private class DeleteConditionAction extends AFreeplaneAction {
+		private static final long serialVersionUID = -5082978222163959862L;
+
+		public String getName() {
+			return getClass().getSimpleName();
+		}
 		DeleteConditionAction() {
 			super(controller, "filter_delete");
 		}

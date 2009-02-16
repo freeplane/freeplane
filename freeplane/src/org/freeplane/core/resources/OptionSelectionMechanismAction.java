@@ -23,10 +23,14 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
+import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.enums.ResourceControllerProperties;
 
-class OptionSelectionMechanismAction extends AbstractAction implements IFreeplanePropertyListener {
+class OptionSelectionMechanismAction extends AbstractAction implements IFreeplanePropertyListener, IFreeplaneAction {
+	private static final long serialVersionUID = -5573280308177905728L;
 	final private Controller controller;
+	static final String NAME = "optionSelectionMechanismAction";
 
 	OptionSelectionMechanismAction(final Controller controller) {
 		this.controller = controller;
@@ -51,8 +55,12 @@ class OptionSelectionMechanismAction extends AbstractAction implements IFreeplan
 	}
 
 	public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
-		if (propertyName.equals(ResourceController.RESOURCES_SELECTION_METHOD)) {
+		if (propertyName.equals(ResourceControllerProperties.RESOURCES_SELECTION_METHOD)) {
 			changeSelection(newValue);
 		}
+	}
+
+	public String getName() {
+		return NAME;
 	}
 }

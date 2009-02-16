@@ -27,10 +27,11 @@ import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.core.util.HtmlTools;
@@ -40,7 +41,7 @@ import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.features.mindmapmode.MModeController;
 
-class EditAction extends FreeplaneAction {
+class EditAction extends AFreeplaneAction {
 	private static final Pattern HTML_HEAD = Pattern.compile("\\s*<head>.*</head>", Pattern.DOTALL);
 	private EditNodeBase mCurrentEditDialog = null;
 
@@ -98,7 +99,7 @@ class EditAction extends FreeplaneAction {
 		if (!isHtmlNode && editDefinitivelyLong) {
 			final int showResult = new OptionalDontShowMeAgainDialog(viewController.getJFrame(), nodeModel,
 			    "edit.edit_rich_text", "edit.decision", new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
-			        ResourceController.RESOURCES_REMIND_USE_RICH_TEXT_IN_NEW_LONG_NODES),
+			        ResourceControllerProperties.RESOURCES_REMIND_USE_RICH_TEXT_IN_NEW_LONG_NODES),
 			    OptionalDontShowMeAgainDialog.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED).show().getResult();
 			useRichTextInNewLongNodes = (showResult == JOptionPane.OK_OPTION) ? "true" : "false";
 		}

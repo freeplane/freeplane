@@ -35,7 +35,9 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
+import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.resources.ResourceController;
@@ -58,7 +60,7 @@ public class MFileManager extends UrlManager {
 			final String extension = UrlManager.getExtension(f.getName());
 			if (extension != null) {
 				if (extension
-				    .equals(org.freeplane.features.mindmapmode.file.MFileManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
+				    .equals(ResourceControllerProperties.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
 					return true;
 				}
 				else {
@@ -73,9 +75,6 @@ public class MFileManager extends UrlManager {
 			return getModeController().getText("mindmaps_desc");
 		}
 	}
-
-	public static final String FREEPLANE_FILE_EXTENSION = "." + MFileManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT;
-	public static final String FREEPLANE_FILE_EXTENSION_WITHOUT_DOT = "mm";
 	FileFilter filefilter = new MindMapFilter();
 
 	/**
@@ -91,16 +90,16 @@ public class MFileManager extends UrlManager {
 	 */
 	private void createActions(final ModeController modeController) {
 		final Controller controller = modeController.getController();
-		getController().addAction("open", new OpenAction(controller));
-		modeController.addAction("save", new SaveAction(controller));
-		modeController.addAction("saveAs", new SaveAsAction(controller));
-		modeController.addAction("exportBranch", new ExportBranchAction(controller));
-		modeController.addAction("importBranch", new ImportBranchAction(controller));
-		modeController.addAction("importLinkedBranch", new ImportLinkedBranchAction(controller));
-		modeController.addAction("importLinkedBranchWithoutRoot", new ImportLinkedBranchWithoutRootAction(controller));
-		modeController.addAction("importExplorerFavorites", new ImportExplorerFavoritesAction(controller));
-		modeController.addAction("importFolderStructure", new ImportFolderStructureAction(controller));
-		modeController.addAction("revertAction", new RevertAction(controller));
+		getController().putAction("open", new OpenAction(controller));
+		modeController.putAction("save", new SaveAction(controller));
+		modeController.putAction("saveAs", new SaveAsAction(controller));
+		modeController.putAction("exportBranch", new ExportBranchAction(controller));
+		modeController.putAction("importBranch", new ImportBranchAction(controller));
+		modeController.putAction("importLinkedBranch", new ImportLinkedBranchAction(controller));
+		modeController.putAction("importLinkedBranchWithoutRoot", new ImportLinkedBranchWithoutRootAction(controller));
+		modeController.putAction("importExplorerFavorites", new ImportExplorerFavoritesAction(controller));
+		modeController.putAction("importFolderStructure", new ImportFolderStructureAction(controller));
+		modeController.putAction("revertAction", new RevertAction(controller));
 	}
 
 	protected JFileChooser getFileChooser() {
@@ -163,7 +162,7 @@ public class MFileManager extends UrlManager {
 			input = chooser.getSelectedFile();
 			setLastCurrentDir(input.getParentFile());
 			try {
-				link = UrlManager.fileToUrl(input);
+				link = Compat.fileToUrl(input);
 				relative = link.toString();
 			}
 			catch (final MalformedURLException ex) {
@@ -172,7 +171,7 @@ public class MFileManager extends UrlManager {
 			}
 			if (ResourceController.getResourceController().getProperty("links").equals("relative")) {
 				try {
-					relative = UrlManager.toRelativeURL(UrlManager.fileToUrl(map.getFile()), link);
+					relative = UrlManager.toRelativeURL(Compat.fileToUrl(map.getFile()), link);
 				}
 				catch (final MalformedURLException ex) {
 					getController().errorMessage(getModeController().getText("url_error"));
@@ -213,7 +212,7 @@ public class MFileManager extends UrlManager {
 				final File theFile = selectedFiles[i];
 				try {
 					setLastCurrentDir(theFile.getParentFile());
-					getModeController().getMapController().newMap(UrlManager.fileToUrl(theFile));
+					getModeController().getMapController().newMap(Compat.fileToUrl(theFile));
 				}
 				catch (final Exception ex) {
 					handleLoadingException(ex);
@@ -264,7 +263,7 @@ public class MFileManager extends UrlManager {
 		final JFileChooser chooser = getFileChooser();
 		if (getMapsParentFile() == null) {
 			chooser.setSelectedFile(new File(getFileNameProposal(map)
-			        + org.freeplane.features.mindmapmode.file.MFileManager.FREEPLANE_FILE_EXTENSION));
+			        + org.freeplane.core.enums.ResourceControllerProperties.FREEPLANE_FILE_EXTENSION));
 		}
 		chooser.setDialogTitle(getModeController().getText("save_as"));
 		final int returnVal = chooser.showSaveDialog(getController().getViewController().getMapView());
@@ -274,9 +273,9 @@ public class MFileManager extends UrlManager {
 		File f = chooser.getSelectedFile();
 		setLastCurrentDir(f.getParentFile());
 		final String ext = UrlManager.getExtension(f.getName());
-		if (!ext.equals(org.freeplane.features.mindmapmode.file.MFileManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
+		if (!ext.equals(org.freeplane.core.enums.ResourceControllerProperties.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
 			f = new File(f.getParent(), f.getName()
-			        + org.freeplane.features.mindmapmode.file.MFileManager.FREEPLANE_FILE_EXTENSION);
+			        + org.freeplane.core.enums.ResourceControllerProperties.FREEPLANE_FILE_EXTENSION);
 		}
 		if (f.exists()) {
 			final int overwriteMap = JOptionPane.showConfirmDialog(getController().getViewController().getMapView(),

@@ -28,9 +28,9 @@ import javax.swing.event.PopupMenuListener;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 
-class FollowLinkAction extends FreeplaneAction implements PopupMenuListener {
+class FollowLinkAction extends AFreeplaneAction implements PopupMenuListener {
 	public FollowLinkAction(final Controller controller) {
 		super(controller, "follow_link");
 	}

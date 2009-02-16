@@ -35,8 +35,8 @@ import org.codehaus.groovy.ast.ModuleNode;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionDescriptor;
-import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.util.Tools;
 import org.freeplane.core.util.Tools.BooleanHolder;
@@ -47,12 +47,12 @@ import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.attribute.MAttributeController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 import org.freeplane.main.application.FreeplaneSecurityManager;
-
+import org.freeplane.core.enums.*;
 /**
  * @author foltin
  */
 @ActionDescriptor(name = "plugins/ScriptingEngine.xml_name", keyStroke = "keystroke_plugins/ScriptingEngine.keystroke.evaluate", locations = { "/menu_bar/extras/first/scripting" })
-class ScriptingEngine extends FreeplaneAction {
+class ScriptingEngine extends AFreeplaneAction {
 	public interface IErrorHandler {
 		void gotoLine(int pLineNumber);
 	}
@@ -76,7 +76,7 @@ class ScriptingEngine extends FreeplaneAction {
 			final int showResult = new OptionalDontShowMeAgainDialog(pMindMapController.getController()
 			    .getViewController().getJFrame(), pMindMapController.getController().getSelection().getSelected(),
 			    "really_execute_script", "confirmation", new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
-			        ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING),
+			        ResourceControllerProperties.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING),
 			    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED).show().getResult();
 			if (showResult != JOptionPane.OK_OPTION) {
 				return false;
@@ -110,15 +110,15 @@ class ScriptingEngine extends FreeplaneAction {
 		 * such that the scripts are not able to change them).
 		 */
 		final String executeWithoutAsking = ResourceController.getResourceController().getProperty(
-		    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING);
+		    ResourceControllerProperties.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING);
 		final String executeWithoutFileRestriction = ResourceController.getResourceController().getProperty(
-		    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION);
+		    ResourceControllerProperties.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION);
 		final String executeWithoutNetworkRestriction = ResourceController.getResourceController().getProperty(
-		    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION);
+		    ResourceControllerProperties.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION);
 		final String executeWithoutExecRestriction = ResourceController.getResourceController().getProperty(
-		    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION);
+		    ResourceControllerProperties.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION);
 		final String signedScriptsWithoutRestriction = ResourceController.getResourceController().getProperty(
-		    ResourceController.RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED);
+		    ResourceControllerProperties.RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED);
 		/* *************** */
 		/* Signature */
 		/* *************** */
@@ -155,16 +155,16 @@ class ScriptingEngine extends FreeplaneAction {
 			securityManager.setFinalSecurityManager(scriptingSecurityManager);
 			System.setOut(oldOut);
 			/* restore preferences (and assure that the values are unchanged!). */
-			ResourceController.getResourceController().setProperty(ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
+			ResourceController.getResourceController().setProperty(ResourceControllerProperties.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
 			    executeWithoutAsking);
 			ResourceController.getResourceController().setProperty(
-			    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION, executeWithoutFileRestriction);
+			    ResourceControllerProperties.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION, executeWithoutFileRestriction);
 			ResourceController.getResourceController().setProperty(
-			    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION,
+			    ResourceControllerProperties.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION,
 			    executeWithoutNetworkRestriction);
 			ResourceController.getResourceController().setProperty(
-			    ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION, executeWithoutExecRestriction);
-			ResourceController.getResourceController().setProperty(ResourceController.RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED,
+			    ResourceControllerProperties.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION, executeWithoutExecRestriction);
+			ResourceController.getResourceController().setProperty(ResourceControllerProperties.RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED,
 			    signedScriptsWithoutRestriction);
 		}
 		/*

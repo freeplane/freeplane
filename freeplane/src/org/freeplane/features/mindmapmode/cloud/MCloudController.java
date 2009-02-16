@@ -35,8 +35,8 @@ public class MCloudController extends CloudController {
 	public MCloudController(final ModeController modeController) {
 		super(modeController);
 		final Controller controller = modeController.getController();
-		modeController.addAction("cloud", new CloudAction(controller));
-		modeController.addAction("cloudColor", new CloudColorAction(controller));
+		modeController.putAction("cloud", new CloudAction(controller));
+		modeController.putAction("cloudColor", new CloudColorAction(controller));
 	}
 
 	public void setCloud(final NodeModel node, final boolean enable) {

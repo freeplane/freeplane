@@ -23,12 +23,15 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
+import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 
-class MoveToRootAction extends AbstractAction {
+class MoveToRootAction extends AbstractAction implements IFreeplaneAction{
+	private static final long serialVersionUID = 1633978434705890609L;
 	final private Controller controller;
+	static final String NAME = "moveToRoot";
 
 	MoveToRootAction(final Controller controller) {
 		this.controller = controller;
@@ -37,5 +40,9 @@ class MoveToRootAction extends AbstractAction {
 
 	public void actionPerformed(final ActionEvent event) {
 		controller.getSelection().selectRoot();
+	}
+
+	public String getName() {
+		return NAME;
 	}
 }

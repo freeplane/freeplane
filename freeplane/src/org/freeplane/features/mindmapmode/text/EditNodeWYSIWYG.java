@@ -43,9 +43,9 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlTools;
+import org.freeplane.core.util.Tools;
 import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;
 
-import com.inet.jortho.SpellChecker;
 import com.lightdev.app.shtm.SHTMLEditorPane;
 import com.lightdev.app.shtm.SHTMLPanel;
 
@@ -239,7 +239,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 			EditNodeWYSIWYG.htmlEditorWindow.show();
 		}
 		catch (final Exception ex) {
-			org.freeplane.core.util.Tools.logException(ex);
+			Tools.logException(ex);
 			System.err.println("Loading of WYSIWYG HTML editor failed. Use the other editors instead.");
 		}
 	}

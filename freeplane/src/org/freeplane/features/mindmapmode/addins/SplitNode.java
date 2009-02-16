@@ -32,9 +32,10 @@ import javax.swing.text.html.HTMLEditorKit;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionDescriptor;
-import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.util.FixedHTMLWriter;
+import org.freeplane.core.util.Tools;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.MMapController;
@@ -49,7 +50,7 @@ name = "accessories/plugins/SplitNode.properties_name", //
 keyStroke = "%keystroke_accessories/plugins/SplitNode.properties_key", //
 iconPath = "/images/stock_text_indent.png", //
 locations = { "/menu_bar/extras/first/join" })
-public class SplitNode extends FreeplaneAction {
+public class SplitNode extends AFreeplaneAction {
 	/**
 	 *
 	 */
@@ -153,10 +154,10 @@ public class SplitNode extends FreeplaneAction {
 				}
 			}
 			catch (final IOException e) {
-				org.freeplane.core.util.Tools.logException(e);
+				Tools.logException(e);
 			}
 			catch (final BadLocationException e) {
-				org.freeplane.core.util.Tools.logException(e);
+				Tools.logException(e);
 			}
 			return parts;
 		}

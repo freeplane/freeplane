@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
@@ -31,13 +32,13 @@ public class DefaultMouseWheelListener implements MouseWheelListener {
 		this.controller = controller;
 		ResourceController.getResourceController().addPropertyChangeListener(new IFreeplanePropertyListener() {
 			public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
-				if (propertyName.equals(ResourceController.RESOURCES_WHEEL_VELOCITY)) {
+				if (propertyName.equals(ResourceControllerProperties.RESOURCES_WHEEL_VELOCITY)) {
 					DefaultMouseWheelListener.SCROLL_SKIPS = Integer.parseInt(newValue);
 				}
 			}
 		});
 		DefaultMouseWheelListener.SCROLL_SKIPS = ResourceController.getResourceController().getIntProperty(
-		    ResourceController.RESOURCES_WHEEL_VELOCITY, 8);
+		    ResourceControllerProperties.RESOURCES_WHEEL_VELOCITY, 8);
 	}
 
 	/*

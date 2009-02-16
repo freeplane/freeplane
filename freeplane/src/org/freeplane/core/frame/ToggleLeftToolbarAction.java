@@ -21,16 +21,22 @@ package org.freeplane.core.frame;
 
 import java.awt.event.ActionEvent;
 
+import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 
 @SelectableAction(checkOnPopup = true)
-class ToggleLeftToolbarAction extends FreeplaneAction {
+class ToggleLeftToolbarAction extends AFreeplaneAction implements IFreeplaneAction{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5980310709675916011L;
 	/**
 	 *
 	 */
 	final private ViewController controller;
+	static final String NAME = "toggleLeftToolbar";
 
 	ToggleLeftToolbarAction(final Controller controller, final ViewController viewController) {
 		super(controller, "toggle_left_toolbar");
@@ -45,5 +51,9 @@ class ToggleLeftToolbarAction extends FreeplaneAction {
 	@Override
 	public void setSelected() {
 		setSelected(controller.isLeftToolbarVisible());
+	}
+
+	public String getName() {
+		return NAME;
 	}
 }

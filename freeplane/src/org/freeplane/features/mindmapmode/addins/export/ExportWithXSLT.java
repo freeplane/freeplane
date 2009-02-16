@@ -44,13 +44,13 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Tools;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.n3.nanoxml.IXMLElement;
@@ -83,7 +83,7 @@ public class ExportWithXSLT extends ExportAction {
 				final Properties properties = xmlProperties.getAttributes();
 				final ExportWithXSLT action = new ExportWithXSLT(modeController.getController(), name, tooltip,
 				    properties);
-				modeController.addAction(name, action);
+				modeController.putAction(name, action);
 				modeController.getUserInputListenerFactory().getMenuBuilder().addAction(location, action,
 				    location + "/" + name, MenuBuilder.AS_CHILD);
 			}
@@ -221,7 +221,7 @@ public class ExportWithXSLT extends ExportAction {
 			out.close();
 		}
 		catch (final IOException e1) {
-			org.freeplane.core.util.Tools.logException(e1);
+			Tools.logException(e1);
 		}
 	}
 
@@ -308,11 +308,11 @@ public class ExportWithXSLT extends ExportAction {
 				return;
 			}
 			if (Tools.safeEquals(getProperty("load_file"), "true")) {
-				getController().getViewController().openDocument(UrlManager.fileToUrl(saveFile));
+				getController().getViewController().openDocument(Compat.fileToUrl(saveFile));
 			}
 		}
 		catch (final Exception e) {
-			org.freeplane.core.util.Tools.logException(e);
+			Tools.logException(e);
 			mTransformResultWithoutError = false;
 		}
 	}
@@ -330,7 +330,7 @@ public class ExportWithXSLT extends ExportAction {
 			trans.transform(xmlSource, result);
 		}
 		catch (final Exception e) {
-			org.freeplane.core.util.Tools.logException(e);
+			Tools.logException(e);
 			return false;
 		};
 		return true;

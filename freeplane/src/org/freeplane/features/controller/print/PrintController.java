@@ -22,8 +22,6 @@ package org.freeplane.features.controller.print;
 import java.awt.print.PageFormat;
 import java.awt.print.PrinterJob;
 
-import javax.swing.Action;
-
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
@@ -41,26 +39,26 @@ public class PrintController implements IExtension {
 		controller.addExtension(PrintController.class, new PrintController(controller));
 	}
 
-	final private Controller controller;
-	final private Action page;
 	private PageFormat pageFormat = null;
-	final private Action print;
-	final private Action printDirect;
+	final private Controller controller;
+	final private PageAction pageAction;
+	final private PrintAction printAction;
+	final private PrintDirectAction printDirectAction;
+	final private PrintPreviewAction printPreviewAction;
 	private PrinterJob printerJob = null;
 	private boolean printingAllowed;
-	final private Action printPreview;
 
 	public PrintController(final Controller controller) {
 		super();
 		this.controller = controller;
-		print = new PrintAction(controller, this, true);
-		printDirect = new PrintAction(controller, this, false);
-		printPreview = new PrintPreviewAction(controller, this);
-		page = new PageAction(this);
-		controller.addAction("print", print);
-		controller.addAction("printDirect", printDirect);
-		controller.addAction("printPreview", printPreview);
-		controller.addAction("page", page);
+		printAction = new PrintAction(controller, this, true);
+		printDirectAction = new PrintDirectAction(controller, this);
+		printPreviewAction = new PrintPreviewAction(controller, this);
+		pageAction = new PageAction(this);
+		controller.putAction(printAction);
+		controller.putAction(printDirectAction);
+		controller.putAction(printPreviewAction);
+		controller.putAction(pageAction);
 		printingAllowed = true;
 	}
 
@@ -70,10 +68,10 @@ public class PrintController implements IExtension {
 				printerJob = PrinterJob.getPrinterJob();
 			}
 			catch (final SecurityException ex) {
-				print.setEnabled(false);
-				printDirect.setEnabled(false);
-				printPreview.setEnabled(false);
-				page.setEnabled(false);
+				printAction.setEnabled(false);
+				printDirectAction.setEnabled(false);
+				printPreviewAction.setEnabled(false);
+				pageAction.setEnabled(false);
 				printingAllowed = false;
 				return false;
 			}

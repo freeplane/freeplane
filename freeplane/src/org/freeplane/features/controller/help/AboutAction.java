@@ -25,6 +25,7 @@ import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.FreeplaneVersion;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 
@@ -41,6 +42,6 @@ class AboutAction extends AbstractAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		JOptionPane.showMessageDialog(controller.getViewController().getViewport(), ResourceController.getText("about_text")
-		        + controller.getFreeplaneVersion(), ResourceController.getText("about"), JOptionPane.INFORMATION_MESSAGE);
+		        + FreeplaneVersion.getVersion(), ResourceController.getText("about"), JOptionPane.INFORMATION_MESSAGE);
 	}
 }

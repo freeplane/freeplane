@@ -45,6 +45,7 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
+import org.freeplane.core.Compat;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
@@ -182,7 +183,7 @@ public abstract class MainView extends JLabel implements IMainView {
 			prefSize.width = (int) (0.99 + prefSize.width * zoom);
 			prefSize.height = (int) (0.99 + prefSize.height * zoom);
 		}
-		if (isCurrentlyPrinting() && MapView.NEED_PREF_SIZE_BUG_FIX) {
+		if (isCurrentlyPrinting() && Compat.NEED_PREF_SIZE_BUG_FIX) {
 			prefSize.width += getNodeView().getMap().getZoomed(10);
 		}
 		prefSize.width = Math.max(getNodeView().getMap().getZoomed(MainView.MIN_HOR_NODE_SIZE), prefSize.width);

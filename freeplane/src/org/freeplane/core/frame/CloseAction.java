@@ -23,13 +23,16 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
+import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 
 /** This closes only the current map */
-class CloseAction extends AbstractAction {
+class CloseAction extends AbstractAction implements IFreeplaneAction{
+	private static final long serialVersionUID = -1585226261004948225L;
 	final private Controller controller;
+	static final String NAME = "close";
 
 	CloseAction(final Controller controller) {
 		this.controller = controller;
@@ -38,5 +41,9 @@ class CloseAction extends AbstractAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		controller.close(false);
+	}
+
+	public String getName() {
+		return NAME;
 	}
 }

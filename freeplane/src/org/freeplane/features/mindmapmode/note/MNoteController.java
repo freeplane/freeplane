@@ -35,6 +35,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
@@ -117,9 +118,9 @@ public class MNoteController extends NoteController {
 	 */
 	public MNoteController(final ModeController modeController) {
 		super(modeController);
-		modeController.addAction("selectNoteAction", new SelectNoteAction(this, getModeController()));
-		modeController.addAction("showHideNoteAction", new ShowHideNoteAction(this, getModeController()));
-		modeController.addAction("removeNoteAction", new RemoveNoteAction(this, getModeController()));
+		modeController.putAction("selectNoteAction", new SelectNoteAction(this, getModeController()));
+		modeController.putAction("showHideNoteAction", new ShowHideNoteAction(this, getModeController()));
+		modeController.putAction("removeNoteAction", new RemoveNoteAction(this, getModeController()));
 	}
 
 	SHTMLPanel getHtmlEditorPanel() {
@@ -163,7 +164,7 @@ public class MNoteController extends NoteController {
 		if (splitPane == null) {
 			showNotesPanel();
 			splitPane = getSplitPane();
-			ResourceController.getResourceController().setProperty(ResourceController.RESOURCES_USE_SPLIT_PANE, "true");
+			ResourceController.getResourceController().setProperty(ResourceControllerProperties.RESOURCES_USE_SPLIT_PANE, "true");
 		}
 		return splitPane;
 	}
@@ -235,7 +236,7 @@ public class MNoteController extends NoteController {
 
 	private boolean shouldUseSplitPane() {
 		return "true".equals(ResourceController.getResourceController()
-		    .getProperty(ResourceController.RESOURCES_USE_SPLIT_PANE));
+		    .getProperty(ResourceControllerProperties.RESOURCES_USE_SPLIT_PANE));
 	}
 
 	public void showNotesPanel() {

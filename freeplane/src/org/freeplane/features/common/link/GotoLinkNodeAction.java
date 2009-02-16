@@ -24,10 +24,10 @@ import java.awt.event.ActionEvent;
 import javax.swing.Action;
 
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 
 /** Follow a graphical link (AKA connector) action. */
-class GotoLinkNodeAction extends FreeplaneAction {
+class GotoLinkNodeAction extends AFreeplaneAction {
 	NodeModel source;
 
 	public GotoLinkNodeAction(final LinkController linkController, final NodeModel source) {

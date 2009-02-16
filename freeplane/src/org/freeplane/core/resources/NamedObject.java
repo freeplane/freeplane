@@ -24,6 +24,7 @@ package org.freeplane.core.resources;
  *
  * @author Dimitry Polivaev
  */
+// TODO rladstaetter 15.02.2009 don't understand what this clas is good for
 public class NamedObject {
 	static public NamedObject literal(final String literal) {
 		final NamedObject result = new NamedObject();

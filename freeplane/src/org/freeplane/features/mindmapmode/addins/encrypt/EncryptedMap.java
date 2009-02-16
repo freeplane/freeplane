@@ -24,8 +24,8 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.EncryptionModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionDescriptor;
-import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.components.EnterPasswordDialog;
 import org.freeplane.features.common.addins.encrypt.SingleDesEncrypter;
 
@@ -33,7 +33,7 @@ import org.freeplane.features.common.addins.encrypt.SingleDesEncrypter;
 tooltip = "accessories/plugins/NewEncryptedMap.properties_documentation", //
 iconPath = "/images/lock.png", //
 locations = { "/menu_bar/file/open" })
-public class EncryptedMap extends FreeplaneAction implements INodeSelectionListener {
+public class EncryptedMap extends AFreeplaneAction implements INodeSelectionListener {
 	public EncryptedMap(final ModeController modeController) {
 		super(modeController.getController());
 		modeController.getMapController().addNodeSelectionListener(this);

@@ -26,9 +26,9 @@ import java.awt.event.ActionEvent;
 import javax.swing.JSplitPane;
 
 import org.freeplane.core.modecontroller.ModeController;
-import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 
-class SelectNoteAction extends FreeplaneAction {
+class SelectNoteAction extends AFreeplaneAction {
 	/**
 	 *
 	 */

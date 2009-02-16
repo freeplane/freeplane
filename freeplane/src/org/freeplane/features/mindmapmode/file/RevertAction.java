@@ -28,12 +28,13 @@ import java.io.StringWriter;
 
 import javax.swing.JOptionPane;
 
+import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.FreeplaneAction;
-import org.freeplane.core.url.UrlManager;
+import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.util.Tools;
 
 /**
  * Reverts the map to the saved version. In Xml, the old map is stored as xml
@@ -45,7 +46,7 @@ import org.freeplane.core.url.UrlManager;
  *
  * @author foltin
  */
-class RevertAction extends FreeplaneAction {
+class RevertAction extends AFreeplaneAction {
 	private static class RevertActionInstance {
 		final private Controller controller;
 		private String filePrefix;
@@ -62,7 +63,7 @@ class RevertAction extends FreeplaneAction {
 			try {
 				controller.close(true);
 				if (this.getLocalFileName() != null) {
-					mapController.newMap(UrlManager.fileToUrl(new File(this.getLocalFileName())));
+					mapController.newMap(Compat.fileToUrl(new File(this.getLocalFileName())));
 				}
 				else {
 					String filePrefix = ResourceController.getText("freeplane_reverted");
@@ -70,16 +71,16 @@ class RevertAction extends FreeplaneAction {
 						filePrefix = this.getFilePrefix();
 					}
 					final File tempFile = File.createTempFile(filePrefix,
-					    org.freeplane.features.mindmapmode.file.MFileManager.FREEPLANE_FILE_EXTENSION, new File(
+					    org.freeplane.core.enums.ResourceControllerProperties.FREEPLANE_FILE_EXTENSION, new File(
 					        ResourceController.getResourceController().getFreeplaneUserDirectory()));
 					final FileWriter fw = new FileWriter(tempFile);
 					fw.write(this.getMap());
 					fw.close();
-					mapController.newMap(UrlManager.fileToUrl(tempFile));
+					mapController.newMap(Compat.fileToUrl(tempFile));
 				}
 			}
 			catch (final Exception e) {
-				org.freeplane.core.util.Tools.logException(e);
+				Tools.logException(e);
 			}
 		}
 
@@ -131,7 +132,7 @@ class RevertAction extends FreeplaneAction {
 			doAction.act();
 		}
 		catch (final IOException e) {
-			org.freeplane.core.util.Tools.logException(e);
+			Tools.logException(e);
 		}
 	}
 

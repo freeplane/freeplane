@@ -30,8 +30,6 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.security.AccessControlException;
 import java.util.StringTokenizer;
@@ -52,6 +50,7 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.Tools;
 
 /**
  * @author Dimitry Polivaev
@@ -80,13 +79,6 @@ public class UrlManager implements IExtension {
 			result = result.replaceAll("\\$2", s2);
 		}
 		return result;
-	}
-
-	public static URL fileToUrl(final File pFile) throws MalformedURLException {
-		if (Controller.JAVA_VERSION.compareTo("1.6.0") < 0) {
-			return pFile.toURL();
-		}
-		return pFile.toURI().toURL();
 	}
 
 	/**
@@ -138,13 +130,13 @@ public class UrlManager implements IExtension {
 			bufferedReader.close();
 		}
 		catch (final Exception e) {
-			org.freeplane.core.util.Tools.logException(e);
+			Tools.logException(e);
 			if (bufferedReader != null) {
 				try {
 					bufferedReader.close();
 				}
 				catch (final Exception ex) {
-					org.freeplane.core.util.Tools.logException(ex);
+					Tools.logException(ex);
 				}
 			}
 			return null;
@@ -188,7 +180,7 @@ public class UrlManager implements IExtension {
 						successful = true;
 					}
 					catch (final Exception ex) {
-						org.freeplane.core.util.Tools.logException(ex);
+						Tools.logException(ex);
 					}
 				}
 			}
@@ -264,7 +256,7 @@ public class UrlManager implements IExtension {
 				}
 			}
 			catch (final Exception e) {
-				org.freeplane.core.util.Tools.logException(e);
+				Tools.logException(e);
 			}
 		}
 	}
@@ -342,13 +334,6 @@ public class UrlManager implements IExtension {
 		}
 	}
 
-	public static File urlToFile(final URL pUrl) throws URISyntaxException {
-		if (Controller.JAVA_VERSION.compareTo("1.6.0") < 0) {
-			return new File(UrlManager.urlGetFile(pUrl));
-		}
-		return new File(new URI(pUrl.toString()));
-	}
-
 	final private Controller controller;
 	final private ModeController modeController;
 
@@ -421,7 +406,7 @@ public class UrlManager implements IExtension {
 			getController().errorMessage(ex.getMessage());
 		}
 		else {
-			org.freeplane.core.util.Tools.logException(ex);
+			Tools.logException(ex);
 			getController().errorMessage(ex);
 		}
 	}

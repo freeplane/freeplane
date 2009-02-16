@@ -45,11 +45,13 @@ import org.freeplane.core.filter.condition.SelectedViewCondition;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 
 class FilterToolbar extends FreeplaneToolBar {
-	private class EditFilterAction extends FreeplaneAction {
+	private class EditFilterAction extends AFreeplaneAction {
+		private static final long serialVersionUID = 6280668187345048213L;
+
 		EditFilterAction() {
 			super(controller, "filter_edit_description", "/images/Btn_edit.gif");
 		}
@@ -74,6 +76,10 @@ class FilterToolbar extends FreeplaneToolBar {
 				getFilterDialog().setLocationRelativeTo(FilterToolbar.this);
 			}
 			return filterDialog;
+		}
+
+		public String getName() {
+			return getClass().getSimpleName();
 		}
 	}
 

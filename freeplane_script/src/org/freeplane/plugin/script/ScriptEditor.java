@@ -29,8 +29,8 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionDescriptor;
-import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.util.Tools.BooleanHolder;
 import org.freeplane.features.common.attribute.Attribute;
 import org.freeplane.features.common.attribute.AttributeController;
@@ -45,7 +45,7 @@ import org.freeplane.plugin.script.ScriptingEngine.IErrorHandler;
  * @author foltin
  */
 @ActionDescriptor(name = "plugins/ScriptEditor.xml_name", tooltip = "plugins/ScriptEditor.xml_documentation", locations = { "/menu_bar/extras/first/scripting" })
-class ScriptEditor extends FreeplaneAction {
+class ScriptEditor extends AFreeplaneAction {
 	final private class AttributeHolder {
 		Attribute mAttribute;
 		int mPosition;

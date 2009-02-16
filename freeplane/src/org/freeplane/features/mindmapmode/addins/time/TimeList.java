@@ -124,7 +124,7 @@ class TimeList {
 							mFlatNodeTableFilterModel.setFilter(text);
 						}
 						catch (final BadLocationException e) {
-							org.freeplane.core.util.Tools.logException(e);
+							Tools.logException(e);
 							mFlatNodeTableFilterModel.resetFilter();
 						}
 					}
@@ -553,7 +553,7 @@ class TimeList {
 			mFilterTextSearchField.setText("");
 		}
 		catch (final BadLocationException e) {
-			org.freeplane.core.util.Tools.logException(e);
+			Tools.logException(e);
 		}
 	}
 

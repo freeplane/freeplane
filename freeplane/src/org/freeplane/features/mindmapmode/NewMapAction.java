@@ -23,9 +23,9 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 
-class NewMapAction extends FreeplaneAction {
+class NewMapAction extends AFreeplaneAction {
 	public NewMapAction(final Controller controller) {
 		super(controller, "new", "/images/filenew.png");
 	}

@@ -35,6 +35,7 @@ import java.util.StringTokenizer;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
+import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.model.MapModel;
@@ -124,7 +125,7 @@ public class LastOpenedList implements IMapSelectionListener {
 				final String mode = token.nextToken();
 				if (controller.selectMode(mode)) {
 					final String fileName = token.nextToken("").substring(1);
-					controller.getModeController().getMapController().newMap(UrlManager.fileToUrl(new File(fileName)));
+					controller.getModeController().getMapController().newMap(Compat.fileToUrl(new File(fileName)));
 				}
 			}
 		}

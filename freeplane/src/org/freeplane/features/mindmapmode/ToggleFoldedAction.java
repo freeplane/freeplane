@@ -23,14 +23,15 @@ import java.awt.event.ActionEvent;
 import java.util.ListIterator;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.core.util.Tools;
 
-class ToggleFoldedAction extends FreeplaneAction {
+class ToggleFoldedAction extends AFreeplaneAction {
 	public ToggleFoldedAction(final Controller controller) {
 		super(controller, "toggle_folded");
 	}
@@ -67,7 +68,7 @@ class ToggleFoldedAction extends FreeplaneAction {
 		final IUndoableActor actor = new IUndoableActor() {
 			public void act() {
 				modeController.getMapController()._setFolded(node, !node.isFolded());
-				if (ResourceController.getResourceController().getBoolProperty(ResourceController.RESOURCES_SAVE_FOLDING_STATE)) {
+				if (ResourceController.getResourceController().getBoolProperty(ResourceControllerProperties.RESOURCES_SAVE_FOLDING_STATE)) {
 					modeController.getMapController().nodeChanged(node);
 				}
 			}

@@ -28,6 +28,7 @@ import javax.swing.SwingUtilities;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.util.Tools;
 import org.freeplane.features.browsemode.BModeController;
 
 class DocumentationAction extends AbstractAction {
@@ -53,7 +54,7 @@ class DocumentationAction extends AbstractAction {
 						}
 					}
 					catch (final Exception e1) {
-						org.freeplane.core.util.Tools.logException(e1);
+						Tools.logException(e1);
 					}
 				}
 			});

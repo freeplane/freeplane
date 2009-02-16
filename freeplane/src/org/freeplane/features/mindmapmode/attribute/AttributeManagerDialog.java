@@ -48,7 +48,7 @@ import org.freeplane.core.filter.util.IListModel;
 import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.common.attribute.AttributeRegistry;
 
@@ -56,7 +56,7 @@ import org.freeplane.features.common.attribute.AttributeRegistry;
  * @author Dimitry Polivaev
  */
 public class AttributeManagerDialog extends JDialog implements IMapSelectionListener {
-	private class ApplyAction extends FreeplaneAction {
+	private class ApplyAction extends AFreeplaneAction {
 		ApplyAction() {
 			super(controller, "apply");
 		}
@@ -72,7 +72,7 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 		}
 	}
 
-	private class CancelAction extends FreeplaneAction {
+	private class CancelAction extends AFreeplaneAction {
 		CancelAction() {
 			super(controller, "cancel");
 		}
@@ -128,7 +128,7 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 		}
 	}
 
-	private class ImportAction extends FreeplaneAction {
+	private class ImportAction extends AFreeplaneAction {
 		ImportAction() {
 			super(controller, "attributes_import");
 		}
@@ -147,7 +147,7 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 		}
 	}
 
-	private class OKAction extends FreeplaneAction {
+	private class OKAction extends AFreeplaneAction {
 		OKAction() {
 			super(controller, "ok");
 		}

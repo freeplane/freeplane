@@ -22,9 +22,9 @@ package org.freeplane.view.swing.addins.mindmapmode.nodehistory;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.EnabledAction;
-import org.freeplane.core.ui.FreeplaneAction;
 
 /**
  * @author Dimitry Polivaev
@@ -36,7 +36,7 @@ tooltip = "accessories/plugins/NodeHistoryForward.properties_documentation", //
 keyStroke = "keystroke_accessories/plugins/NodeHistoryForward.keystroke.alt_FORWARD", //
 iconPath = "/images/forward.png", //
 locations = { "/menu_bar/navigate/folding", "/main_toolbar/folding" })
-class ForwardAction extends FreeplaneAction {
+class ForwardAction extends AFreeplaneAction {
 	final private NodeHistory nodeHistory;
 
 	public ForwardAction(final Controller controller, final NodeHistory nodeHistory) {

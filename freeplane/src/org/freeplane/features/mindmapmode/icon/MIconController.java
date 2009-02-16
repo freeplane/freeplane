@@ -107,8 +107,8 @@ public class MIconController extends IconController {
 		final ModeController modeController = getModeController();
 		final Controller controller = modeController.getController();
 		final RemoveIconAction removeLastIconAction = new RemoveIconAction(controller);
-		modeController.addAction("removeLastIconAction", removeLastIconAction);
-		modeController.addAction("removeAllIconsAction", new RemoveAllIconsAction(controller));
+		modeController.putAction("removeLastIconAction", removeLastIconAction);
+		modeController.putAction("removeAllIconsAction", new RemoveAllIconsAction(controller));
 		final Vector iconNames = MindIcon.getAllIconNames();
 		final File iconDir = new File(ResourceController.getResourceController().getFreeplaneUserDirectory(), "icons");
 		if (iconDir.exists()) {

@@ -47,8 +47,6 @@ import org.freeplane.core.util.Tools;
 import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;
 import org.freeplane.features.mindmapmode.text.AbstractEditNodeTextField;
 
-import com.inet.jortho.SpellChecker;
-
 /**
  * @author foltin
  */

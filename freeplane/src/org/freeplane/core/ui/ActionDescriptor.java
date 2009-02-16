@@ -33,6 +33,8 @@ public @interface ActionDescriptor {
 
 	String[] locations() default {};
 
+	// TODO rladstaetter 15.02.2009 internal action names don't have to be configurable.
+	@Deprecated
 	String name();
 
 	String tooltip() default "";;

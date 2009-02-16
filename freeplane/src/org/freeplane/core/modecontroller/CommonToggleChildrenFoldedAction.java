@@ -21,15 +21,18 @@ package org.freeplane.core.modecontroller;
 
 import java.awt.event.ActionEvent;
 
+import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 
 /**
  * @author foltin
  */
-class CommonToggleChildrenFoldedAction extends FreeplaneAction {
+class CommonToggleChildrenFoldedAction extends AFreeplaneAction implements IFreeplaneAction{
+	private static final long serialVersionUID = -7415016489982986544L;
 	final private MapController mapController;
+	static final String NAME = "toggleChildrenFolded";
 
 	public CommonToggleChildrenFoldedAction(final MapController mapController) {
 		super(mapController.getModeController().getController(), "toggle_children_folded");
@@ -43,5 +46,9 @@ class CommonToggleChildrenFoldedAction extends FreeplaneAction {
 		mapController.toggleFolded(model.getModeController().getMapController().childrenUnfolded(model));
 		mapSelection.selectAsTheOnlyOneSelected(model);
 		controller.getViewController().obtainFocusForSelected();
+	}
+
+	public String getName() {
+		return NAME;
 	}
 }

@@ -23,10 +23,10 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.mindmapmode.MModeController;
 
-class SaveAction extends FreeplaneAction {
+class SaveAction extends AFreeplaneAction {
 	public SaveAction(final Controller controller) {
 		super(controller, "save", "/images/filesave.png");
 	}

@@ -27,6 +27,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import org.freeplane.core.util.Tools;
+
 /**
  * @author joerg
  */
@@ -47,7 +49,7 @@ public class XmlExporter {
 			trans.transform(xmlSource, result);
 		}
 		catch (final Exception e) {
-			org.freeplane.core.util.Tools.logException(e);
+			Tools.logException(e);
 		};
 		return;
 	}

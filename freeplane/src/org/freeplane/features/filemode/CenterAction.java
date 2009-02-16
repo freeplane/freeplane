@@ -23,9 +23,9 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 
-public class CenterAction extends FreeplaneAction {
+public class CenterAction extends AFreeplaneAction {
 	public CenterAction(final Controller controller) {
 		super(controller, "center");
 	}

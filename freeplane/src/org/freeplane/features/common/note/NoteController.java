@@ -21,6 +21,7 @@ package org.freeplane.features.common.note;
 
 import javax.swing.ImageIcon;
 
+import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MindIcon;
@@ -79,7 +80,7 @@ public class NoteController implements IExtension {
 
 	protected void setStateIcon(final NodeModel node, final boolean enabled) {
 		boolean showIcon = enabled;
-		if (ResourceController.getResourceController().getBoolProperty(ResourceController.RESOURCES_DON_T_SHOW_NOTE_ICONS)) {
+		if (ResourceController.getResourceController().getBoolProperty(ResourceControllerProperties.RESOURCES_DON_T_SHOW_NOTE_ICONS)) {
 			showIcon = false;
 		}
 		node.setStateIcon(NodeNoteBase.NODE_NOTE_ICON, (showIcon) ? noteIcon : null);

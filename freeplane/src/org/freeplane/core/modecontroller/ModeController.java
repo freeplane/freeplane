@@ -26,14 +26,14 @@ import java.util.ListIterator;
 
 import javax.swing.Action;
 
+import org.freeplane.core.controller.AController;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.ExtensionHashMap;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.ActionController;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionDescriptor;
-import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.MenuBuilder;
@@ -46,12 +46,12 @@ import org.freeplane.core.url.UrlManager;
  * default Actions you may want to use for easy editing of your model. Take
  * MindMapController as a sample.
  */
-public class ModeController {
+public class ModeController extends AController {
 	private static class ActionDisplayerOnChange implements INodeChangeListener, INodeSelectionListener,
 	        IActionOnChange {
-		final FreeplaneAction action;
+		final AFreeplaneAction action;
 
-		public ActionDisplayerOnChange(final FreeplaneAction action) {
+		public ActionDisplayerOnChange(final AFreeplaneAction action) {
 			super();
 			this.action = action;
 		}
@@ -73,9 +73,9 @@ public class ModeController {
 	}
 
 	private static class ActionEnablerOnChange implements INodeChangeListener, INodeSelectionListener, IActionOnChange {
-		final FreeplaneAction action;
+		final AFreeplaneAction action;
 
-		public ActionEnablerOnChange(final FreeplaneAction action) {
+		public ActionEnablerOnChange(final AFreeplaneAction action) {
 			super();
 			this.action = action;
 		}
@@ -97,9 +97,9 @@ public class ModeController {
 	}
 
 	private static class ActionSelectorOnChange implements INodeChangeListener, INodeSelectionListener, IActionOnChange {
-		final FreeplaneAction action;
+		final AFreeplaneAction action;
 
-		public ActionSelectorOnChange(final FreeplaneAction action) {
+		public ActionSelectorOnChange(final AFreeplaneAction action) {
 			super();
 			this.action = action;
 		}
@@ -124,18 +124,16 @@ public class ModeController {
 		Action getAction();
 	}
 
-	public static final String NODESEPARATOR = "<nodeseparator>";
-	private final ActionController actionController;
 	final private Controller controller;
-	final private ExtensionHashMap extensions;
+	final private ExtensionHashMap extensions = new ExtensionHashMap();
 	private boolean isBlocked = false;
 	private MapController mapController;
-	final private LinkedList<IMenuContributor> menuContributors;
+	final private LinkedList<IMenuContributor> menuContributors = new LinkedList<IMenuContributor>();
 	/**
 	 * The model, this controller belongs to. It may be null, if it is the
 	 * default controller that does not show a map.
 	 */
-	final private LinkedList<INodeViewLifeCycleListener> nodeViewListeners;
+	final private LinkedList<INodeViewLifeCycleListener> nodeViewListeners = new LinkedList<INodeViewLifeCycleListener>();
 	/**
 	 * Take care! This listener is also used for modelpopups (as for graphical
 	 * links).
@@ -147,26 +145,22 @@ public class ModeController {
 	 */
 	public ModeController(final Controller controller) {
 		this.controller = controller;
-		menuContributors = new LinkedList();
-		nodeViewListeners = new LinkedList();
-		actionController = new ActionController();
-		extensions = new ExtensionHashMap();
 	}
 
-	public void addAction(final Object key, final Action action) {
-		actionController.addAction(key, action);
-		if (FreeplaneAction.checkEnabledOnChange(action)) {
-			final ActionEnablerOnChange listener = new ActionEnablerOnChange((FreeplaneAction) action);
+	public void putAction(final String key, final Action action) {
+		super.putAction(key, action);
+		if (AFreeplaneAction.checkEnabledOnChange(action)) {
+			final ActionEnablerOnChange listener = new ActionEnablerOnChange((AFreeplaneAction) action);
 			mapController.addNodeSelectionListener(listener);
 			mapController.addNodeChangeListener(listener);
 		}
-		if (FreeplaneAction.checkSelectionOnChange(action)) {
-			final ActionSelectorOnChange listener = new ActionSelectorOnChange((FreeplaneAction) action);
+		if (AFreeplaneAction.checkSelectionOnChange(action)) {
+			final ActionSelectorOnChange listener = new ActionSelectorOnChange((AFreeplaneAction) action);
 			mapController.addNodeSelectionListener(listener);
 			mapController.addNodeChangeListener(listener);
 		}
-		if (FreeplaneAction.checkVisibilityOnChange(action)) {
-			final ActionDisplayerOnChange listener = new ActionDisplayerOnChange((FreeplaneAction) action);
+		if (AFreeplaneAction.checkVisibilityOnChange(action)) {
+			final ActionDisplayerOnChange listener = new ActionDisplayerOnChange((AFreeplaneAction) action);
 			mapController.addNodeSelectionListener(listener);
 			mapController.addNodeChangeListener(listener);
 		}
@@ -174,7 +168,7 @@ public class ModeController {
 
 	public void addAnnotatedAction(final Action action) {
 		final String name = action.getClass().getAnnotation(ActionDescriptor.class).name();
-		addAction(name, action);
+		putAction(name, action);
 	}
 
 	public boolean addExtension(final Class clazz, final IExtension extension) {
@@ -193,6 +187,7 @@ public class ModeController {
 		menuContributors.add(contributor);
 	}
 
+	// TODO rladstaetter 15.02.2009 not referenced anywhere?
 	public boolean containsExtension(final Class clazz) {
 		return extensions.containsExtension(clazz);
 	}
@@ -210,7 +205,7 @@ public class ModeController {
 	}
 
 	public Action getAction(final String key) {
-		final Action action = actionController.getAction(key);
+		final Action action = super.getAction(key);
 		if (action != null) {
 			return action;
 		}
@@ -276,16 +271,16 @@ public class ModeController {
 	}
 
 	public Action removeAction(final String key) {
-		final Action action = actionController.removeAction(key);
-		if (FreeplaneAction.checkEnabledOnChange(action)) {
+		final Action action = actionMap.remove(key);
+		if (AFreeplaneAction.checkEnabledOnChange(action)) {
 			mapController.removeNodeSelectionListener(ActionEnablerOnChange.class, action);
 			mapController.removeNodeChangeListener(ActionEnablerOnChange.class, action);
 		}
-		if (FreeplaneAction.checkSelectionOnChange(action)) {
+		if (AFreeplaneAction.checkSelectionOnChange(action)) {
 			mapController.removeNodeSelectionListener(ActionSelectorOnChange.class, action);
 			mapController.removeNodeChangeListener(ActionSelectorOnChange.class, action);
 		}
-		if (FreeplaneAction.checkVisibilityOnChange(action)) {
+		if (AFreeplaneAction.checkVisibilityOnChange(action)) {
 			mapController.removeNodeSelectionListener(ActionDisplayerOnChange.class, action);
 			mapController.removeNodeChangeListener(ActionDisplayerOnChange.class, action);
 		}

@@ -29,6 +29,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import org.freeplane.core.url.UrlManager;
+import org.freeplane.core.util.Tools;
 
 class LockManager extends TimerTask {
 	File lockedSemaphoreFile = null;
@@ -72,7 +73,7 @@ class LockManager extends TimerTask {
 			writeSemaphoreFile(lockedSemaphoreFile);
 		}
 		catch (final Exception e) {
-			org.freeplane.core.util.Tools.logException(e);
+			Tools.logException(e);
 		}
 	}
 

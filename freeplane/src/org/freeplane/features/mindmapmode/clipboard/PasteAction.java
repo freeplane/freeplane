@@ -34,13 +34,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.io.MapReader;
 import org.freeplane.core.io.MapReader.NodeTreeCreator;
-import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.core.util.Tools;
@@ -51,7 +51,7 @@ import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.features.mindmapmode.link.MLinkController;
 
-class PasteAction extends FreeplaneAction {
+class PasteAction extends AFreeplaneAction {
 	private interface DataFlavorHandler {
 		DataFlavor getDataFlavor();
 
@@ -123,7 +123,7 @@ class PasteAction extends FreeplaneAction {
 		                  final boolean isLeft, final Transferable t) {
 			final String textFromClipboard = (String) TransferData;
 			if (textFromClipboard != null) {
-				final String[] textLines = textFromClipboard.split(ModeController.NODESEPARATOR);
+				final String[] textLines = textFromClipboard.split(ResourceControllerProperties.NODESEPARATOR);
 				if (textLines.length > 1) {
 					getController().getViewController().setWaitingCursor(true);
 				}

@@ -27,6 +27,7 @@ import javax.swing.AbstractAction;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.util.Tools;
 
 class KeyDocumentationAction extends AbstractAction {
 	final private Controller controller;
@@ -48,7 +49,7 @@ class KeyDocumentationAction extends AbstractAction {
 			}
 		}
 		catch (final Exception e2) {
-			org.freeplane.core.util.Tools.logException(e2);
+			Tools.logException(e2);
 			return;
 		}
 	}

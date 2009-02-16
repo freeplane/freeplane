@@ -42,6 +42,8 @@ import java.util.logging.Logger;
 
 import javax.swing.Action;
 
+import org.freeplane.core.Compat;
+import org.freeplane.core.controller.AController;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.io.IAttributeHandler;
@@ -201,10 +203,10 @@ public class MapController {
 	/**
 	 *
 	 */
-	private void createActions(final ModeController modeController) {
+	private void createActions(final AController modeController) {
 		toggleFolded = new CommonToggleFoldedAction(controller);
-		modeController.addAction("toggleFolded", toggleFolded);
-		modeController.addAction("toggleChildrenFolded", new CommonToggleChildrenFoldedAction(this));
+		modeController.putAction(toggleFolded);
+		modeController.putAction(new CommonToggleChildrenFoldedAction(this));
 	}
 
 	public void displayNode(final NodeModel node) {
@@ -429,7 +431,7 @@ public class MapController {
 		try {
 			URL absolute = null;
 			if (UrlManager.isAbsolutePath(relative)) {
-				absolute = UrlManager.fileToUrl(new File(relative));
+				absolute = Compat.fileToUrl(new File(relative));
 			}
 			else if (relative.startsWith("#")) {
 				final String target = relative.substring(1);
@@ -438,7 +440,7 @@ public class MapController {
 					return;
 				}
 				catch (final Exception e) {
-					org.freeplane.core.util.Tools.logException(e);
+					Tools.logException(e);
 					getController().getViewController().out(
 					    UrlManager.expandPlaceholders(getModeController().getText("link_not_found"), target));
 					return;
@@ -460,7 +462,7 @@ public class MapController {
 			final String extension = UrlManager.getExtension(absolute.toString());
 			if ((extension != null)
 			        && extension
-			            .equals(org.freeplane.features.mindmapmode.file.MFileManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
+			            .equals(org.freeplane.core.enums.ResourceControllerProperties.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
 				final IMapViewManager mapViewManager = getController().getMapViewManager();
 				/*
 				 * this can lead to confusion if the user handles multiple maps
@@ -482,7 +484,7 @@ public class MapController {
 						newMapController.centerNode(newMapController.getNodeFromID(ref));
 					}
 					catch (final Exception e) {
-						org.freeplane.core.util.Tools.logException(e);
+						Tools.logException(e);
 						getController().getViewController().out(
 						    UrlManager.expandPlaceholders(getModeController().getText("link_not_found"), ref));
 						return;
@@ -494,12 +496,12 @@ public class MapController {
 			}
 		}
 		catch (final MalformedURLException ex) {
-			org.freeplane.core.util.Tools.logException(ex);
+			Tools.logException(ex);
 			getController().errorMessage(getModeController().getText("url_error") + "\n" + ex);
 			return;
 		}
 		catch (final Exception e) {
-			org.freeplane.core.util.Tools.logException(e);
+			Tools.logException(e);
 		}
 		finally {
 			getController().getViewController().setWaitingCursor(false);

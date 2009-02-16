@@ -24,10 +24,10 @@ import java.awt.event.ActionEvent;
 import javax.swing.Action;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IUndoHandler;
 
-class RedoAction extends FreeplaneAction {
+class RedoAction extends AFreeplaneAction {
 	private Action undo;
 
 	public RedoAction(final Controller controller) {

@@ -29,6 +29,8 @@ import java.util.Map;
  * @author Dimitry Polivaev
  * 06.01.2009
  */
+// TODO rladstaetter 15.02.2009 stick to interfaces and classes provided by standard collection package
+@Deprecated
 public class MultipleValueMap<K, V> {
 	final private Map<K, List<V>> map;
 

@@ -21,11 +21,8 @@ package org.freeplane.main.application;
 
 import java.awt.EventQueue;
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
-import java.net.MalformedURLException;
-import java.util.Locale;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
@@ -36,7 +33,9 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.ModeController;
@@ -48,18 +47,12 @@ import org.freeplane.features.common.attribute.ModelessAttributeController;
 import org.freeplane.features.controller.help.HelpController;
 import org.freeplane.features.controller.print.PrintController;
 import org.freeplane.features.mindmapmode.MModeController;
-import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;
 import org.freeplane.main.browsemode.BModeControllerFactory;
 import org.freeplane.main.filemode.FModeControllerFactory;
 import org.freeplane.main.mindmapmode.MModeControllerFactory;
 import org.freeplane.view.swing.map.MMapViewController;
 
-import com.inet.jortho.FileUserDictionary;
-import com.inet.jortho.SpellChecker;
-import com.inet.jortho.SpellCheckerOptions;
-
 public class FreeplaneStarter {
-	public static final String LOAD_LAST_MAP = "load_last_map";
 	static private boolean loggerCreated = false;
 
 	static public void main(final String[] args) {
@@ -69,52 +62,31 @@ public class FreeplaneStarter {
 
 	private Controller controller;
 	private IFeedBack feedBack;
-	private ApplicationResourceController resourceController;
+	private ApplicationResourceController applicationResourceController;
 	private IFreeplaneSplash splash;
 	private ApplicationViewController viewController;
 
 	public FreeplaneStarter() {
 		super();
-		checkJavaVersion();
-		final StringBuffer info = new StringBuffer();
-		info.append("freeplane_version = ");
-		info.append(Controller.VERSION);
-		info.append("; freeplane_xml_version = ");
-		info.append(Controller.XML_VERSION);
-		info.append("\njava_version = ");
-		info.append(System.getProperty("java.version"));
-		info.append("; os_name = ");
-		info.append(System.getProperty("os.name"));
-		info.append("; os_version = ");
-		info.append(System.getProperty("os.version"));
-	}
-
-	void checkJavaVersion() {
-		System.out.println("Checking Java Version...");
-		if (Controller.JAVA_VERSION.compareTo("1.5.0") < 0) {
-			final String message = "Warning: Freeplane requires version Java 1.5.0 or higher (your version: "
-			        + Controller.JAVA_VERSION + ", installed in " + System.getProperty("java.home") + ").";
-			System.err.println(message);
-			JOptionPane.showMessageDialog(null, message, "Freeplane", JOptionPane.WARNING_MESSAGE);
-			System.exit(1);
-		}
+		Compat.checkJavaVersion();
+		Compat.showSysInfo();
 	}
 
 	public void createController() {
-		resourceController = new ApplicationResourceController();
-		ResourceController.setResourceController(resourceController);
+		
+		applicationResourceController = new ApplicationResourceController();
+		ResourceController.setResourceController(applicationResourceController);
 		controller = new Controller();
-		resourceController.init(controller);
+		applicationResourceController.init(controller);
 		createLogger();
 		splash = new FreeplaneSplashModern();
 		splash.setVisible(true);
 		feedBack = splash.getFeedBack();
 		feedBack.setMaximumValue(9);
-		/* This is only for apple but does not harm for the others. */
-		System.setProperty("apple.laf.useScreenMenuBar", "true");
-		feedBack.increase("Freeplane.progress.updateLookAndFeel");
+		Compat.useScreenMenuBar();
+		feedBack.increase(FreeplaneSplashModern.FREEPLANE_PROGRESS_UPDATE_LOOK_AND_FEEL);
 		updateLookAndFeel();
-		feedBack.increase("Freeplane.progress.createController");
+		feedBack.increase(FreeplaneSplashModern.FREEPLANE_PROGRESS_CREATE_CONTROLLER);
 		//try {
 		//	Thread.sleep(100000);
 		//}
@@ -124,7 +96,7 @@ public class FreeplaneStarter {
 		//}	    
 		System.setSecurityManager(new FreeplaneSecurityManager());
 		final MMapViewController mapViewController = new MMapViewController();
-		mapViewController.addMapChangeListener(resourceController.getLastOpenedList());
+		mapViewController.addMapChangeListener(applicationResourceController.getLastOpenedList());
 		viewController = new ApplicationViewController(controller, mapViewController);
 		FilterController.install(controller);
 		PrintController.install(controller);
@@ -134,7 +106,6 @@ public class FreeplaneStarter {
 		BModeControllerFactory.createModeController(controller, "/xml/browsemodemenu.xml");
 		FModeControllerFactory.createModeController(controller);
 	}
-
 
 	public void createFrame(final String[] args) {
 		feedBack.increase("Freeplane.progress.settingPreferences");
@@ -153,7 +124,7 @@ public class FreeplaneStarter {
 			}
 		}
 		catch (final Exception e) {
-			org.freeplane.core.util.Tools.logException(e);
+			Tools.logException(e);
 		}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -227,13 +198,13 @@ public class FreeplaneStarter {
 		for (int i = 0; i < args.length; i++) {
 			String fileArgument = args[i];
 			if (fileArgument.toLowerCase().endsWith(
-			    org.freeplane.features.mindmapmode.file.MFileManager.FREEPLANE_FILE_EXTENSION)) {
+			    org.freeplane.core.enums.ResourceControllerProperties.FREEPLANE_FILE_EXTENSION)) {
 				if (!UrlManager.isAbsolutePath(fileArgument)) {
 					fileArgument = System.getProperty("user.dir") + System.getProperty("file.separator") + fileArgument;
 				}
 				try {
 					((MModeController) pModeController).getMapController().newMap(
-					    UrlManager.fileToUrl(new File(fileArgument)));
+					    Compat.fileToUrl(new File(fileArgument)));
 					fileLoaded = true;
 				}
 				catch (final Exception ex) {
@@ -243,15 +214,15 @@ public class FreeplaneStarter {
 		}
 		if (!fileLoaded) {
 			final String restoreable = ResourceController.getResourceController().getProperty(
-			    Controller.ON_START_IF_NOT_SPECIFIED);
-			if (Tools.isPreferenceTrue(ResourceController.getResourceController().getProperty(FreeplaneStarter.LOAD_LAST_MAP))
+			    ResourceControllerProperties.ON_START_IF_NOT_SPECIFIED);
+			if (Boolean.parseBoolean(ResourceController.getResourceController().getProperty(ResourceControllerProperties.LOAD_LAST_MAP))
 			        && restoreable != null && restoreable.length() > 0) {
 				try {
-					resourceController.getLastOpenedList().open(controller, restoreable);
+					applicationResourceController.getLastOpenedList().open(controller, restoreable);
 					fileLoaded = true;
 				}
 				catch (final Exception e) {
-					org.freeplane.core.util.Tools.logException(e);
+					Tools.logException(e);
 					controller.getViewController().out("An error occured on opening the file: " + restoreable + ".");
 				}
 			}

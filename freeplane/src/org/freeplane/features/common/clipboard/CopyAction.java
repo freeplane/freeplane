@@ -25,9 +25,9 @@ import java.awt.event.ActionEvent;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.modecontroller.ModeController;
-import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 
-class CopyAction extends FreeplaneAction {
+class CopyAction extends AFreeplaneAction {
 	public CopyAction(final Controller controller) {
 		super(controller, "copy", "/images/editcopy.png");
 	}

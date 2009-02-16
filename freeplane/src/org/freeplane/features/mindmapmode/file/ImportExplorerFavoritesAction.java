@@ -28,15 +28,16 @@ import javax.swing.JFileChooser;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.url.UrlManager;
+import org.freeplane.core.util.Tools;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 
-class ImportExplorerFavoritesAction extends FreeplaneAction {
+class ImportExplorerFavoritesAction extends AFreeplaneAction {
 	public ImportExplorerFavoritesAction(final Controller controller) {
 		super(controller, "import_explorer_favorites");
 	}
@@ -97,7 +98,7 @@ class ImportExplorerFavoritesAction extends FreeplaneAction {
 						}
 					}
 					catch (final Exception e) {
-						org.freeplane.core.util.Tools.logException(e);
+						Tools.logException(e);
 					}
 				}
 			}

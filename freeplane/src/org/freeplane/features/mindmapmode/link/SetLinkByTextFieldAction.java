@@ -25,12 +25,12 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.features.common.link.NodeLinks;
 
-class SetLinkByTextFieldAction extends FreeplaneAction {
+class SetLinkByTextFieldAction extends AFreeplaneAction {
 	public SetLinkByTextFieldAction(final Controller controller) {
 		super(controller, "set_link_by_textfield", (String) null);
 	}

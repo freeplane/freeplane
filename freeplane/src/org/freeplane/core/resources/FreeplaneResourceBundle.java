@@ -26,11 +26,14 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
+import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.util.MultipleValueMap;
+import org.freeplane.core.util.Tools;
 
 class FreeplaneResourceBundle extends ResourceBundle {
 	private static final String DEFAULT_LANGUAGE = "en";
@@ -39,10 +42,10 @@ class FreeplaneResourceBundle extends ResourceBundle {
 	 *
 	 */
 	final private ResourceController controller;
-	private HashMap<String, String> defaultResources;
+	private Map<String, String> defaultResources;
 	private final MultipleValueMap<String, URL> externalResources;
 	private String lang;
-	private HashMap<String, String> languageResources;
+	private Map<String, String> languageResources;
 
 	FreeplaneResourceBundle(final ResourceController controller) {
 		this.controller = controller;
@@ -52,7 +55,7 @@ class FreeplaneResourceBundle extends ResourceBundle {
 			defaultResources = getLanguageResources(DEFAULT_LANGUAGE);
 		}
 		catch (final Exception ex) {
-			org.freeplane.core.util.Tools.logException(ex);
+			Tools.logException(ex);
 			Logger.global.severe("Error loading Resources");
 		}
 	}
@@ -89,13 +92,13 @@ class FreeplaneResourceBundle extends ResourceBundle {
 	/**
 	 * @throws IOException
 	 */
-	private HashMap<String, String> getLanguageResources(final String lang) throws IOException {
+	private Map<String, String> getLanguageResources(final String lang) throws IOException {
 		final URL systemResource = ResourceController.getResourceController().getResource(
 		    "/translations/Resources" + "_" + lang + ".properties");
 		if (systemResource == null) {
 			return null;
 		}
-		final HashMap resources = getLanguageResources(systemResource);
+		final Map<String, String> resources = getLanguageResources(systemResource);
 		final Iterator<URL> iterator = externalResources.get(lang).iterator();
 		while (iterator.hasNext()) {
 			resources.putAll(getLanguageResources(iterator.next()));
@@ -103,7 +106,7 @@ class FreeplaneResourceBundle extends ResourceBundle {
 		return resources;
 	}
 
-	private HashMap<String, String> getLanguageResources(final URL systemResource) throws IOException {
+	private Map<String, String> getLanguageResources(final URL systemResource) throws IOException {
 		final InputStream in = systemResource.openStream();
 		if (in == null) {
 			return null;
@@ -142,7 +145,7 @@ class FreeplaneResourceBundle extends ResourceBundle {
 	}
 
 	private void loadLocalLanguageResources() throws IOException {
-		lang = controller.getProperty(ResourceController.RESOURCE_LANGUAGE);
+		lang = controller.getProperty(ResourceControllerProperties.RESOURCE_LANGUAGE);
 		if (lang == null || lang.equals("automatic")) {
 			lang = Locale.getDefault().getLanguage() + "_" + Locale.getDefault().getCountry();
 			if (getLanguageResources(lang) == null) {

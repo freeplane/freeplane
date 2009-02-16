@@ -46,6 +46,7 @@ import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.ResourceController;
@@ -68,9 +69,9 @@ public class ApplicationViewController extends ViewController {
 		super(controller, mapViewController);
 		this.controller = controller;
 		navigationPreviousMap = new NavigationPreviousMapAction(controller);
-		controller.addAction("navigationPreviousMap", navigationPreviousMap);
+		controller.putAction("navigationPreviousMap", navigationPreviousMap);
 		navigationNextMap = new NavigationNextMapAction(controller);
-		controller.addAction("navigationNextMap", navigationNextMap);
+		controller.putAction("navigationNextMap", navigationNextMap);
 		resourceController = ResourceController.getResourceController();
 		frame = new JFrame("Freeplane");
 	}
@@ -126,7 +127,7 @@ public class ApplicationViewController extends ViewController {
 		}
 		mContentComponent = getScrollPane();
 		final boolean shouldUseTabbedPane = ResourceController.getResourceController().getBoolProperty(
-		    ResourceController.RESOURCES_USE_TABBED_PANE);
+		    ResourceControllerProperties.RESOURCES_USE_TABBED_PANE);
 		if (shouldUseTabbedPane) {
 			mapViewManager = new MapViewTabs(controller, this, mContentComponent);
 		}

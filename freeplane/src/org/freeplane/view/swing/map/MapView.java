@@ -53,7 +53,9 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JViewport;
 
+import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.model.MapModel;
@@ -219,7 +221,6 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 	}
 
 	private static final int margin = 20;
-	static boolean NEED_PREF_SIZE_BUG_FIX = Controller.JAVA_VERSION.compareTo("1.5.0") < 0;
 	static boolean printOnWhiteBackground;
 	static private IFreeplanePropertyListener propertyChangeListener;
 	static boolean standardDrawRectangleForSelection;
@@ -256,15 +257,15 @@ public class MapView extends JPanel implements Printable, Autoscroll {
         setName(name);
 		if (MapView.standardMapBackgroundColor == null) {
 			String stdcolor = ResourceController.getResourceController().getProperty(
-			    ResourceController.RESOURCES_BACKGROUND_COLOR);
+			    ResourceControllerProperties.RESOURCES_BACKGROUND_COLOR);
 			MapView.standardMapBackgroundColor = TreeXmlReader.xmlToColor(stdcolor);
-			stdcolor = ResourceController.getResourceController().getProperty(ResourceController.RESOURCES_SELECTED_NODE_COLOR);
+			stdcolor = ResourceController.getResourceController().getProperty(ResourceControllerProperties.RESOURCES_SELECTED_NODE_COLOR);
 			MapView.standardSelectColor = TreeXmlReader.xmlToColor(stdcolor);
 			final String stdtextcolor = ResourceController.getResourceController().getProperty(
-			    ResourceController.RESOURCES_SELECTED_NODE_RECTANGLE_COLOR);
+			    ResourceControllerProperties.RESOURCES_SELECTED_NODE_RECTANGLE_COLOR);
 			MapView.standardSelectRectangleColor = TreeXmlReader.xmlToColor(stdtextcolor);
 			final String drawCircle = ResourceController.getResourceController().getProperty(
-			    ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION);
+			    ResourceControllerProperties.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION);
 			MapView.standardDrawRectangleForSelection = TreeXmlReader.xmlToBoolean(drawCircle);
 			final String printOnWhite = ResourceController.getResourceController().getProperty("printonwhitebackground");
 			MapView.printOnWhiteBackground = TreeXmlReader.xmlToBoolean(printOnWhite);
@@ -347,19 +348,19 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 				if (!(mapView instanceof MapView)) {
 					return;
 				}
-				if (propertyName.equals(ResourceController.RESOURCES_BACKGROUND_COLOR)) {
+				if (propertyName.equals(ResourceControllerProperties.RESOURCES_BACKGROUND_COLOR)) {
 					MapView.standardMapBackgroundColor = TreeXmlReader.xmlToColor(newValue);
 					mapView.setBackground(MapView.standardMapBackgroundColor);
 				}
-				else if (propertyName.equals(ResourceController.RESOURCES_SELECTED_NODE_COLOR)) {
+				else if (propertyName.equals(ResourceControllerProperties.RESOURCES_SELECTED_NODE_COLOR)) {
 					MapView.standardSelectColor = TreeXmlReader.xmlToColor(newValue);
 					((MapView) mapView).repaintSelecteds();
 				}
-				else if (propertyName.equals(ResourceController.RESOURCES_SELECTED_NODE_RECTANGLE_COLOR)) {
+				else if (propertyName.equals(ResourceControllerProperties.RESOURCES_SELECTED_NODE_RECTANGLE_COLOR)) {
 					MapView.standardSelectRectangleColor = TreeXmlReader.xmlToColor(newValue);
 					((MapView) mapView).repaintSelecteds();
 				}
-				else if (propertyName.equals(ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION)) {
+				else if (propertyName.equals(ResourceControllerProperties.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION)) {
 					MapView.standardDrawRectangleForSelection = TreeXmlReader.xmlToBoolean(newValue);
 					((MapView) mapView).repaintSelecteds();
 				}
@@ -402,7 +403,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 				setBackground(background);
 			}
 			/* repaint for end printing: */
-			if (MapView.NEED_PREF_SIZE_BUG_FIX) {
+			if (Compat.NEED_PREF_SIZE_BUG_FIX) {
 				getRoot().updateAll();
 				validate();
 			}
@@ -920,7 +921,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		if (isPreparedForPrinting == false) {
 			isPrinting = true;
 			/* repaint for printing: */
-			if (MapView.NEED_PREF_SIZE_BUG_FIX) {
+			if (Compat.NEED_PREF_SIZE_BUG_FIX) {
 				getRoot().updateAll();
 				validate();
 			}

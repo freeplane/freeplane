@@ -41,6 +41,7 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.url.UrlManager;
+import org.freeplane.core.util.Tools;
 
 /**
  * @author Dimitry Polivaev
@@ -116,7 +117,7 @@ public class MPatternController implements IExtension {
 					success = true;
 				}
 				catch (final Exception e) {
-					org.freeplane.core.util.Tools.logException(e);
+					Tools.logException(e);
 				}
 				if (success) {
 					JOptionPane.showMessageDialog(null, "Successfully repaired the pattern file.", repairTitle,

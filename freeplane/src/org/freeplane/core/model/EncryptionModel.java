@@ -27,10 +27,11 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
+import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.modecontroller.IEncrypter;
 import org.freeplane.core.modecontroller.MapController;
-import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.util.Tools;
 
 public class EncryptionModel implements IExtension {
 	private static ImageIcon decryptedIcon;
@@ -97,7 +98,7 @@ public class EncryptionModel implements IExtension {
 		if (!isDecrypted) {
 			try {
 				final String childXml = decryptXml(encryptedContent, encrypter);
-				final String[] childs = childXml.split(ModeController.NODESEPARATOR);
+				final String[] childs = childXml.split(ResourceControllerProperties.NODESEPARATOR);
 				for (int i = childs.length - 1; i >= 0; i--) {
 					final String string = childs[i];
 					if (string.length() == 0) {
@@ -108,7 +109,7 @@ public class EncryptionModel implements IExtension {
 				isDecrypted = true;
 			}
 			catch (final Exception e) {
-				org.freeplane.core.util.Tools.logException(e);
+				Tools.logException(e);
 				setAccessible(false);
 				return true;
 			}
@@ -132,7 +133,7 @@ public class EncryptionModel implements IExtension {
 			return encrypted;
 		}
 		catch (final Exception e) {
-			org.freeplane.core.util.Tools.logException(e);
+			Tools.logException(e);
 		}
 		throw new IllegalArgumentException("Can't encrypt the node.");
 	}
@@ -146,7 +147,7 @@ public class EncryptionModel implements IExtension {
 			final NodeModel child = (NodeModel) i.next();
 			child.getModeController().getMapController().getMapWriter().writeNodeAsXml(sWriter, child, true, true);
 			if (i.hasNext()) {
-				sWriter.write(ModeController.NODESEPARATOR);
+				sWriter.write(ResourceControllerProperties.NODESEPARATOR);
 			}
 		}
 		final StringBuffer childXml = sWriter.getBuffer();
@@ -159,7 +160,7 @@ public class EncryptionModel implements IExtension {
 				generateEncryptedContent();
 			}
 			catch (final Exception e) {
-				org.freeplane.core.util.Tools.logException(e);
+				Tools.logException(e);
 			}
 		}
 		return encryptedContent;
@@ -204,7 +205,7 @@ public class EncryptionModel implements IExtension {
 			mapController.insertNodeIntoWithoutUndo(node, target, target.getChildCount());
 		}
 		catch (final Exception ee) {
-			org.freeplane.core.util.Tools.logException(ee);
+			Tools.logException(ee);
 		}
 	}
 

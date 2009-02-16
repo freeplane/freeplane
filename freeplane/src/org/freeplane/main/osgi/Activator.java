@@ -19,10 +19,7 @@
  */
 package org.freeplane.main.osgi;
 
-import java.io.File;
-import java.util.Collections;
 import java.util.LinkedList;
-import java.util.StringTokenizer;
 
 import org.freeplane.main.application.FreeplaneStarter;
 import org.osgi.framework.Bundle;

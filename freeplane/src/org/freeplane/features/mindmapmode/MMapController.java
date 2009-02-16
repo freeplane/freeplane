@@ -32,7 +32,9 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.model.EncryptionModel;
@@ -43,6 +45,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.url.UrlManager;
+import org.freeplane.core.util.Tools;
 import org.freeplane.features.mindmapmode.file.MFileManager;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
@@ -111,17 +114,17 @@ public class MMapController extends MapController {
 
 	private void createActions(final MModeController modeController) {
 		final Controller controller = modeController.getController();
-		modeController.addAction("newMap", new NewMapAction(controller));
-		modeController.addAction("newSibling", new NewSiblingAction(controller));
-		modeController.addAction("newPreviousSibling", new NewPreviousSiblingAction(controller));
+		modeController.putAction("newMap", new NewMapAction(controller));
+		modeController.putAction("newSibling", new NewSiblingAction(controller));
+		modeController.putAction("newPreviousSibling", new NewPreviousSiblingAction(controller));
 		newChild = new NewChildAction(controller);
-		modeController.addAction("newChild", newChild);
+		modeController.putAction("newChild", newChild);
 		delete = new DeleteAction(controller);
-		modeController.addAction("deleteChild", delete);
-		modeController.addAction("undoableToggleFolded", new ToggleFoldedAction(controller));
-		modeController.addAction("undoableToggleChildrenFolded", new ToggleChildrenFoldedAction(controller));
-		modeController.addAction("nodeUp", new NodeUpAction(controller));
-		modeController.addAction("nodeDown", new NodeDownAction(controller));
+		modeController.putAction("deleteChild", delete);
+		modeController.putAction("undoableToggleFolded", new ToggleFoldedAction(controller));
+		modeController.putAction("undoableToggleChildrenFolded", new ToggleChildrenFoldedAction(controller));
+		modeController.putAction("nodeUp", new NodeUpAction(controller));
+		modeController.putAction("nodeDown", new NodeDownAction(controller));
 	}
 
 	public void deleteNode(final NodeModel node) {
@@ -160,7 +163,7 @@ public class MMapController extends MapController {
 	@Override
 	public void load(final MapModel map, final URL url) throws FileNotFoundException, IOException, XMLParseException,
 	        URISyntaxException {
-		final File file = UrlManager.urlToFile(url);
+		final File file = Compat.urlToFile(url);
 		if (!file.exists()) {
 			throw new FileNotFoundException(UrlManager.expandPlaceholders(
 			    getModeController().getText("file_not_found"), file.getPath()));
@@ -182,7 +185,7 @@ public class MMapController extends MapController {
 				}
 			}
 			catch (final Exception e) {
-				org.freeplane.core.util.Tools.logException(e);
+				Tools.logException(e);
 				UITools.informationMessage(getController().getViewController().getFrame(), UrlManager
 				    .expandPlaceholders(getModeController().getText("locking_failed_by_open"), file.getName()));
 				((MMapModel) map).setReadOnly(true);
@@ -217,7 +220,7 @@ public class MMapController extends MapController {
 			final int showResult = new OptionalDontShowMeAgainDialog(viewController.getJFrame(), controller
 			    .getSelection().getSelected(), "really_convert_to_current_version", "confirmation",
 			    new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
-			        ResourceController.RESOURCES_CONVERT_TO_CURRENT_VERSION),
+			        ResourceControllerProperties.RESOURCES_CONVERT_TO_CURRENT_VERSION),
 			    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED).show().getResult();
 			if (showResult != JOptionPane.OK_OPTION) {
 				reader = UrlManager.getActualReader(file);
@@ -232,7 +235,7 @@ public class MMapController extends MapController {
 		catch (final Exception ex) {
 			final String errorMessage = "Error while parsing file:" + ex;
 			System.err.println(errorMessage);
-			org.freeplane.core.util.Tools.logException(ex);
+			Tools.logException(ex);
 			final NodeModel result = new NodeModel(map);
 			result.setText(errorMessage);
 			return result;
@@ -305,7 +308,7 @@ public class MMapController extends MapController {
 			in.close();
 		}
 		catch (final Exception e) {
-			org.freeplane.core.util.Tools.logException(e);
+			Tools.logException(e);
 			return new StringBuffer();
 		}
 		return buffer;

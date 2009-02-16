@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
+import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 
@@ -30,8 +31,13 @@ import org.freeplane.core.ui.MenuBuilder;
  * Manages the history of visited maps. Maybe explicitly closed maps should be
  * removed from History too?
  */
-class QuitAction extends AbstractAction {
+class QuitAction extends AbstractAction implements IFreeplaneAction {
+
+	private static final long serialVersionUID = -5577659571225676781L;
+
 	final private Controller controller;
+	// TODO rladstaetter 15.02.2009 just replace the name with getClass().getSimpleName() ?
+	static final String NAME = "quit";
 
 	/**
 	 * @param resourceController
@@ -43,5 +49,9 @@ class QuitAction extends AbstractAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		controller.quit();
+	}
+
+	public String getName() {
+		return NAME;
 	}
 }

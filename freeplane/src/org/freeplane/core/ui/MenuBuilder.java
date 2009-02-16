@@ -46,7 +46,7 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import org.freeplane.core.controller.Controller;
+import org.freeplane.core.Compat;
 import org.freeplane.core.io.IElementHandler;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
@@ -56,6 +56,7 @@ import org.freeplane.core.ui.components.JAutoCheckBoxMenuItem;
 import org.freeplane.core.ui.components.JAutoToggleButton;
 import org.freeplane.core.ui.components.JAutoVisibleMenuItem;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.Tools;
 import org.freeplane.n3.nanoxml.IXMLElement;
 
 public class MenuBuilder extends UIBuilder {
@@ -265,7 +266,7 @@ public class MenuBuilder extends UIBuilder {
 					}
 				}
 				catch (final Exception e1) {
-					org.freeplane.core.util.Tools.logException(e1);
+					Tools.logException(e1);
 				}
 				return menuPath;
 			}
@@ -380,7 +381,7 @@ public class MenuBuilder extends UIBuilder {
 		if (mnemoSignIndex >= 0 && mnemoSignIndex + 1 < rawLabel.length()) {
 			final char charAfterMnemoSign = rawLabel.charAt(mnemoSignIndex + 1);
 			if (charAfterMnemoSign != ' ') {
-				if (!Controller.isMacOsX()) {
+				if (!Compat.isMacOsX()) {
 					item.setMnemonic(charAfterMnemoSign);
 					item.setDisplayedMnemonicIndex(mnemoSignIndex);
 				}
@@ -397,7 +398,7 @@ public class MenuBuilder extends UIBuilder {
 		reader = new MenuStructureReader();
 	}
 
-	public void addAction(final FreeplaneAction action, final ActionDescriptor actionAnnotation) {
+	public void addAction(final AFreeplaneAction action, final ActionDescriptor actionAnnotation) {
 		final String docu = actionAnnotation.tooltip();
 		if (!docu.equals("")) {
 			action.setTooltip(docu);
@@ -455,7 +456,7 @@ public class MenuBuilder extends UIBuilder {
 		if (action instanceof PopupMenuListener) {
 			addPopupMenuListener(key, (PopupMenuListener) action);
 		}
-		if (FreeplaneAction.checkSelectionOnPopup(action)) {
+		if (AFreeplaneAction.checkSelectionOnPopup(action)) {
 			addPopupMenuListener(key, new PopupMenuListener() {
 				public void popupMenuCanceled(final PopupMenuEvent e) {
 				}
@@ -464,11 +465,11 @@ public class MenuBuilder extends UIBuilder {
 				}
 
 				public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
-					((FreeplaneAction) action).setSelected();
+					((AFreeplaneAction) action).setSelected();
 				}
 			});
 		}
-		if (FreeplaneAction.checkVisibilityOnPopup(action)) {
+		if (AFreeplaneAction.checkVisibilityOnPopup(action)) {
 			addPopupMenuListener(key, new PopupMenuListener() {
 				public void popupMenuCanceled(final PopupMenuEvent e) {
 				}
@@ -477,11 +478,11 @@ public class MenuBuilder extends UIBuilder {
 				}
 
 				public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
-					((FreeplaneAction) action).setVisible();
+					((AFreeplaneAction) action).setVisible();
 				}
 			});
 		}
-		if (FreeplaneAction.checkEnabledOnPopup(action)) {
+		if (AFreeplaneAction.checkEnabledOnPopup(action)) {
 			addPopupMenuListener(key, new PopupMenuListener() {
 				public void popupMenuCanceled(final PopupMenuEvent e) {
 				}
@@ -490,7 +491,7 @@ public class MenuBuilder extends UIBuilder {
 				}
 
 				public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
-					((FreeplaneAction) action).setEnabled();
+					((AFreeplaneAction) action).setEnabled();
 				}
 			});
 		}
@@ -501,7 +502,7 @@ public class MenuBuilder extends UIBuilder {
 		return;
 	}
 
-	public void addAnnotatedAction(final FreeplaneAction action) {
+	public void addAnnotatedAction(final AFreeplaneAction action) {
 		addAction(action, action.getClass().getAnnotation(ActionDescriptor.class));
 	}
 

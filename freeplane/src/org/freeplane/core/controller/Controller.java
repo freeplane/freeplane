@@ -21,12 +21,13 @@ package org.freeplane.core.controller;
 
 import java.awt.event.ActionEvent;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
-import javax.swing.Action;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
+import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.extension.ExtensionHashMap;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.frame.IMapViewManager;
@@ -35,53 +36,29 @@ import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.ActionController;
 import org.freeplane.core.url.UrlManager;
 
 /**
  * Provides the methods to edit/change a Node. Forwards all messages to
  * MapModel(editing) or MapView(navigation).
  */
-public class Controller {
-	public static final String JAVA_VERSION = System.getProperty("java.version");
-	public static final String ON_START_IF_NOT_SPECIFIED = "on_start_if_not_specified";
-	public static final FreeplaneVersionInformation VERSION = new FreeplaneVersionInformation("0.9.0 Freeplane 21");
+public class Controller extends AController {
 	public static final String XML_VERSION = "0.9.0";
 
-	public static FreeplaneVersionInformation getFreeplaneVersion() {
-		return Controller.VERSION;
-	}
-
-	public static boolean isMacOsX() {
-		boolean underMac = false;
-		final String osName = System.getProperty("os.name");
-		if (osName.startsWith("Mac OS")) {
-			underMac = true;
-		}
-		return underMac;
-	}
-
-	private final ActionController actionController;
-	final private ExtensionHashMap extensions;
+	final private ExtensionHashMap extensions = new ExtensionHashMap();
 	/**
 	 * Converts from a local link to the real file URL of the documentation map.
 	 * (Used to change this behaviour under MacOSX).
 	 */
 	private ModeController modeController;
-	final private HashMap<String, ModeController> modeControllers;
-	final private Action quit;
+	final private Map<String, ModeController> modeControllers = new HashMap<String, ModeController>();
+
+	// final private Action quit;
 	private ViewController viewController;
 
 	public Controller() {
-		extensions = new ExtensionHashMap();
-		actionController = new ActionController();
-		modeControllers = new HashMap();
-		quit = new QuitAction(this);
-		addAction("quit", quit);
-	}
-
-	public void addAction(final Object key, final Action value) {
-		actionController.addAction(key, value);
+		super();
+		putAction(new QuitAction(this)); 
 	}
 
 	public boolean addExtension(final Class clazz, final IExtension extension) {
@@ -98,7 +75,7 @@ public class Controller {
 
 	/**
 	 * Closes the actual map.
-	 *
+	 * 
 	 * @param force
 	 *            true= without save.
 	 */
@@ -110,23 +87,19 @@ public class Controller {
 		String myMessage = "";
 		if (message != null) {
 			myMessage = message.toString();
-		}
-		else {
+		} else {
 			myMessage = ResourceController.getText("undefined_error");
 			if (myMessage == null) {
 				myMessage = "Undefined error";
 			}
 		}
-		JOptionPane.showMessageDialog(getViewController().getContentPane(), myMessage, "Freeplane",
-		    JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(getViewController().getContentPane(),
+				myMessage, "Freeplane", JOptionPane.ERROR_MESSAGE);
 	}
 
 	public void errorMessage(final Object message, final JComponent component) {
-		JOptionPane.showMessageDialog(component, message.toString(), "Freeplane", JOptionPane.ERROR_MESSAGE);
-	}
-
-	public Action getAction(final String key) {
-		return actionController.getAction(key);
+		JOptionPane.showMessageDialog(component, message.toString(),
+				"Freeplane", JOptionPane.ERROR_MESSAGE);
 	}
 
 	public IExtension getExtension(final Class clazz) {
@@ -153,7 +126,7 @@ public class Controller {
 		return modeControllers.get(modeName);
 	}
 
-	public Set getModes() {
+	public Set<String> getModes() {
 		return modeControllers.keySet();
 	}
 
@@ -178,11 +151,7 @@ public class Controller {
 	 * @param actionEvent
 	 */
 	public void quit(final ActionEvent actionEvent) {
-		quit.actionPerformed(actionEvent);
-	}
-
-	public Action removeAction(final String key) {
-		return actionController.removeAction(key);
+		actionMap.get(QuitAction.NAME).actionPerformed(actionEvent);
 	}
 
 	public IExtension removeExtension(final Class clazz) {
@@ -219,12 +188,15 @@ public class Controller {
 	}
 
 	public boolean shutdown() {
-		final String currentMapRestorable = UrlManager.getController(getModeController()).getRestoreable(getMap());
+		final String currentMapRestorable = UrlManager.getController(
+				getModeController()).getRestoreable(getMap());
 		if (!getViewController().quit()) {
 			return false;
 		}
 		if (currentMapRestorable != null) {
-			ResourceController.getResourceController().setProperty(Controller.ON_START_IF_NOT_SPECIFIED, currentMapRestorable);
+			ResourceController.getResourceController().setProperty(
+					ResourceControllerProperties.ON_START_IF_NOT_SPECIFIED,
+					currentMapRestorable);
 		}
 		if (modeController != null) {
 			modeController.shutdown();

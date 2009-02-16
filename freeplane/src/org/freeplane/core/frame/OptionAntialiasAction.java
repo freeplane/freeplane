@@ -24,12 +24,15 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
+import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 
-class OptionAntialiasAction extends AbstractAction implements IFreeplanePropertyListener {
+class OptionAntialiasAction extends AbstractAction implements IFreeplanePropertyListener, IFreeplaneAction {
+	private static final long serialVersionUID = -3806222986205044097L;
 	final private Controller controller;
+	static final String NAME = "optionAntialiasAction";
 
 	OptionAntialiasAction(final Controller controller) {
 		this.controller = controller;
@@ -69,5 +72,9 @@ class OptionAntialiasAction extends AbstractAction implements IFreeplaneProperty
 		if (propertyName.equals(ViewController.RESOURCE_ANTIALIAS)) {
 			changeAntialias(newValue);
 		}
+	}
+
+	public String getName() {
+		return NAME;
 	}
 }

@@ -42,32 +42,32 @@ public class MNodeStyleController extends NodeStyleController {
 	public MNodeStyleController(final ModeController modeController) {
 		super(modeController);
 		final Controller controller = modeController.getController();
-		modeController.addAction("bold", new BoldAction(controller));
-		modeController.addAction("italic", new ItalicAction(controller));
+		modeController.putAction("bold", new BoldAction(controller));
+		modeController.putAction("italic", new ItalicAction(controller));
 		fontSizeAction = new FontSizeAction(controller);
-		modeController.addAction("fontSize", fontSizeAction);
+		modeController.putAction("fontSize", fontSizeAction);
 		final MultipleNodeAction increaseNodeFont = new MultipleNodeAction(controller, "increase_node_font_size") {
 			@Override
 			protected void actionPerformed(final ActionEvent e, final NodeModel node) {
 				increaseFontSize(node, 1);
 			}
 		};
-		modeController.addAction("increaseNodeFont", increaseNodeFont);
+		modeController.putAction("increaseNodeFont", increaseNodeFont);
 		final MultipleNodeAction decreaseNodeFont = new MultipleNodeAction(controller, "decrease_node_font_size") {
 			@Override
 			protected void actionPerformed(final ActionEvent e, final NodeModel node) {
 				increaseFontSize(node, -1);
 			}
 		};
-		modeController.addAction("decreaseNodeFont", decreaseNodeFont);
+		modeController.putAction("decreaseNodeFont", decreaseNodeFont);
 		fontFamilyAction = new FontFamilyAction(controller);
-		modeController.addAction("fontFamily", fontFamilyAction);
-		modeController.addAction("nodeColor", new NodeColorAction(controller));
-		modeController.addAction("nodeColorBlend", new NodeColorBlendAction(controller));
-		modeController.addAction("nodeBackgroundColor", new NodeBackgroundColorAction(controller));
-		modeController.addAction("removeNodeBackgroundColor", new RemoveNodeBackgroundColorAction(controller));
-		modeController.addAction("fork", new NodeShapeAction(modeController, NodeStyleModel.STYLE_FORK));
-		modeController.addAction("bubble", new NodeShapeAction(modeController, NodeStyleModel.STYLE_BUBBLE));
+		modeController.putAction("fontFamily", fontFamilyAction);
+		modeController.putAction("nodeColor", new NodeColorAction(controller));
+		modeController.putAction("nodeColorBlend", new NodeColorBlendAction(controller));
+		modeController.putAction("nodeBackgroundColor", new NodeBackgroundColorAction(controller));
+		modeController.putAction("removeNodeBackgroundColor", new RemoveNodeBackgroundColorAction(controller));
+		modeController.putAction("fork", new NodeShapeAction(modeController, NodeStyleModel.STYLE_FORK));
+		modeController.putAction("bubble", new NodeShapeAction(modeController, NodeStyleModel.STYLE_BUBBLE));
 		final MToolbarContributor menuContributor = new MToolbarContributor(this);
 		modeController.addMenuContributor(menuContributor);
 		modeController.getMapController().addNodeChangeListener(menuContributor);

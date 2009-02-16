@@ -22,12 +22,12 @@ package org.freeplane.features.mindmapmode.link;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.features.common.link.ArrowLinkModel;
 import org.freeplane.features.common.link.NodeLinks;
 
-class RemoveArrowLinkAction extends FreeplaneAction {
+class RemoveArrowLinkAction extends AFreeplaneAction {
 	private ArrowLinkModel mArrowLink;
 
 	/**

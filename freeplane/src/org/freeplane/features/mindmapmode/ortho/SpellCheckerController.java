@@ -30,12 +30,9 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.mindmapmode.MModeController;
-import org.freeplane.features.mindmapmode.text.EditNodeBase.EditPopupMenu;
-import org.freeplane.main.application.ApplicationResourceController;
 
 import com.inet.jortho.FileUserDictionary;
 import com.inet.jortho.SpellChecker;
-import com.lightdev.app.shtm.SHTMLEditorPane;
 
 /**
  * @author Dimitry Polivaev

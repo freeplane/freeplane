@@ -26,10 +26,15 @@ import java.util.ListIterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * @author foltin
  */
+// TODO rladstaetter 15.02.2009 use standard logging facilty like log4j or commons logging
+@Deprecated
 public class Tools {
+	// TODO rladstaetter 15.02.2009 ?????
 	public static class BooleanHolder {
 		private boolean value;
 
@@ -49,6 +54,7 @@ public class Tools {
 		}
 	}
 
+	// TODO rladstaetter 15.02.2009 ???????????????????????????????????????
 	static public class IntHolder {
 		private int value;
 
@@ -78,8 +84,10 @@ public class Tools {
 	 *
 	 * @return true, iff the String is "true".
 	 */
+	// TODO rladstaetter 15.02.2009 use Boolean.parseBoolean directly
+	@Deprecated
 	public static boolean isPreferenceTrue(final String option) {
-		return Tools.safeEquals(option, "true");
+		return Boolean.parseBoolean(option);
 	}
 
 	public static String listToString(final List list) {
@@ -121,12 +129,15 @@ public class Tools {
 		return pXmlNoteText.replace('\0', ' ');
 	}
 
+	// TODO rladstaetter 15.02.2009 use Stringutils directly
+	@Deprecated
 	public static boolean safeEquals(final String string1, final String string2) {
-		return (string1 != null && string2 != null && string1.equals(string2)) || (string1 == null && string2 == null);
+		return StringUtils.equals(string1, string2);
 	}
 
+	// TODO rladstaetter 15.02.2009 use Stringutils directly
+	@Deprecated
 	public static boolean safeEqualsIgnoreCase(final String string1, final String string2) {
-		return (string1 != null && string2 != null && string1.toLowerCase().equals(string2.toLowerCase()))
-		        || (string1 == null && string2 == null);
+		return StringUtils.equalsIgnoreCase(string1,string2);
 	}
 }

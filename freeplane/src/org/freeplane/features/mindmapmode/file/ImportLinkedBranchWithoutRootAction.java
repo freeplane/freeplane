@@ -27,10 +27,11 @@ import java.util.ListIterator;
 
 import javax.swing.JOptionPane;
 
+import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.link.NodeLinks;
@@ -40,7 +41,7 @@ import org.freeplane.features.mindmapmode.clipboard.MClipboardController;
 /**
  * This is exactly the opposite of exportBranch.
  */
-class ImportLinkedBranchWithoutRootAction extends FreeplaneAction {
+class ImportLinkedBranchWithoutRootAction extends AFreeplaneAction {
 	public ImportLinkedBranchWithoutRootAction(final Controller controller) {
 		super(controller, "import_linked_branch_without_root");
 	}
@@ -56,8 +57,8 @@ class ImportLinkedBranchWithoutRootAction extends FreeplaneAction {
 		URL absolute = null;
 		try {
 			final String relative = NodeLinks.getLink(selected);
-			absolute = UrlManager.isAbsolutePath(relative) ? UrlManager.fileToUrl(new File(relative)) : new URL(
-			    UrlManager.fileToUrl(map.getFile()), relative);
+			absolute = UrlManager.isAbsolutePath(relative) ? Compat.fileToUrl(new File(relative)) : new URL(
+			    Compat.fileToUrl(map.getFile()), relative);
 		}
 		catch (final MalformedURLException ex) {
 			JOptionPane.showMessageDialog(getController().getViewController().getMapView(),

@@ -27,8 +27,8 @@ import javax.swing.JOptionPane;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionDescriptor;
-import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.features.mindmapmode.MModeController;
 
 /**
@@ -37,7 +37,7 @@ import org.freeplane.features.mindmapmode.MModeController;
 @ActionDescriptor(tooltip = "accessories/plugins/SaveAll.properties_documentation", //
 name = "accessories/plugins/SaveAll.properties_name", //
 locations = { "/menu_bar/file/open" })
-public class SaveAll extends FreeplaneAction {
+public class SaveAll extends AFreeplaneAction {
 	/**
 	 *
 	 */

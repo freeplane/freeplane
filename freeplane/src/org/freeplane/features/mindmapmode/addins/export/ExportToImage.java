@@ -36,6 +36,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.util.Tools;
 
 /**
  * @author foltin
@@ -48,12 +49,12 @@ public class ExportToImage extends ExportAction {
 		final ExportToImage pngExport = new ExportToImage(modeController.getController(),
 		    "accessories/plugins/ExportToImage_PNG.properties_name", "png", "Portable Network Graphic (PNG)");
 		pngExport.setTooltip("accessories/plugins/ExportToImage_PNG.properties_documentation");
-		modeController.addAction("ExportToImage_PNG", pngExport);
+		modeController.putAction("ExportToImage_PNG", pngExport);
 		menuBuilder.addAction("/menu_bar/file/export/export", pngExport, "ExportToImage_PNG", MenuBuilder.AS_CHILD);
 		final ExportToImage jpgExport = new ExportToImage(modeController.getController(),
 		    "accessories/plugins/ExportToImage_JPEG.properties_name", "jpg", "Compressed image (JPEG)");
 		pngExport.setTooltip("accessories/plugins/ExportToImage_JPEG.properties_documentation");
-		modeController.addAction("ExportToImage_JPEG", jpgExport);
+		modeController.putAction("ExportToImage_JPEG", jpgExport);
 		menuBuilder.addAction("/menu_bar/file/export/export", jpgExport, "ExportToImage_JPEG", MenuBuilder.AS_CHILD);
 	}
 
@@ -88,7 +89,7 @@ public class ExportToImage extends ExportAction {
 			out.close();
 		}
 		catch (final IOException e1) {
-			org.freeplane.core.util.Tools.logException(e1);
+			Tools.logException(e1);
 		}
 		getController().getViewController().setWaitingCursor(false);
 		return true;
@@ -107,7 +108,7 @@ public class ExportToImage extends ExportAction {
 			trans.transform(xmlSource, result);
 		}
 		catch (final Exception e) {
-			org.freeplane.core.util.Tools.logException(e);
+			Tools.logException(e);
 		};
 		return;
 	}

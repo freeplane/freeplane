@@ -29,7 +29,9 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 
 class PrintPreviewAction extends AbstractPrintAction {
+	private static final long serialVersionUID = 5804287711073546422L;
 	final private Controller controller;
+	static final String NAME = "printPreview";
 
 	PrintPreviewAction(final Controller controller, final PrintController printController) {
 		super(printController);
@@ -47,5 +49,9 @@ class PrintPreviewAction extends AbstractPrintAction {
 		previewDialog.pack();
 		previewDialog.setLocationRelativeTo(JOptionPane.getFrameForComponent(mapView));
 		previewDialog.setVisible(true);
+	}
+
+	public String getName() {
+		return NAME;
 	}
 }

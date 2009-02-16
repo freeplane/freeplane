@@ -26,9 +26,9 @@ import java.util.List;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 
-class CopySingleAction extends FreeplaneAction {
+class CopySingleAction extends AFreeplaneAction {
 	public CopySingleAction(final Controller controller) {
 		super(controller, "copy_single");
 	}

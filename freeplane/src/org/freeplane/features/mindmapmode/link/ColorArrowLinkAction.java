@@ -28,12 +28,12 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ColorTracker;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.features.common.link.ArrowLinkModel;
 import org.freeplane.features.common.link.LinkController;
 
-class ColorArrowLinkAction extends FreeplaneAction {
+class ColorArrowLinkAction extends AFreeplaneAction {
 	ArrowLinkModel arrowLink;
 
 	public ColorArrowLinkAction(final MLinkController modeController, final ArrowLinkModel arrowLink) {

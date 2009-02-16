@@ -29,6 +29,7 @@ import java.util.Set;
 
 import javax.swing.JPopupMenu;
 
+import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
@@ -48,7 +49,7 @@ import org.freeplane.core.resources.ResourceController;
 public class LinkController implements IExtension {
 	private static class ArrowLinkListener implements IFreeplanePropertyListener {
 		public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
-			if (propertyName.equals(ResourceController.RESOURCES_LINK_COLOR)) {
+			if (propertyName.equals(ResourceControllerProperties.RESOURCES_LINK_COLOR)) {
 				standardColor = TreeXmlReader.xmlToColor(newValue);
 			}
 		}
@@ -114,8 +115,8 @@ public class LinkController implements IExtension {
 	 *
 	 */
 	private void createActions(final ModeController modeController) {
-		modeController.addAction("followLink", new FollowLinkAction(modeController.getController()));
-		modeController.addAction("gotoLinkNodeAction", new GotoLinkNodeAction(this, null));
+		modeController.putAction("followLink", new FollowLinkAction(modeController.getController()));
+		modeController.putAction("gotoLinkNodeAction", new GotoLinkNodeAction(this, null));
 	}
 
 	protected void createArrowLinkPopup(final ArrowLinkModel link, final JPopupMenu arrowLinkPopup) {
@@ -226,7 +227,7 @@ public class LinkController implements IExtension {
 	private void updateStandards(final ModeController modeController) {
 		if (standardColor == null) {
 			final String stdColor = ResourceController.getResourceController().getProperty(
-			    ResourceController.RESOURCES_LINK_COLOR);
+			    ResourceControllerProperties.RESOURCES_LINK_COLOR);
 			if (stdColor != null && stdColor.length() == 7) {
 				standardColor = TreeXmlReader.xmlToColor(stdColor);
 			}

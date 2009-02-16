@@ -28,6 +28,7 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.url.UrlManager;
+import org.freeplane.core.util.Tools;
 
 /**
  * @author Daniel Polansky
@@ -68,7 +69,7 @@ public class EditNodeExternalApplication extends EditNodeBase {
 					getEditControl().ok(content);
 				}
 				catch (final Exception e) {
-					org.freeplane.core.util.Tools.logException(e);
+					Tools.logException(e);
 					try {
 						if (writer != null) {
 							writer.close();

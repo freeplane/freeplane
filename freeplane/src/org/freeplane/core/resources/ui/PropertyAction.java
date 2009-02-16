@@ -37,13 +37,13 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.ui.OptionPanel.IOptionPanelFeedback;
-import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 
 /**
  * @author foltin
  */
-public class PropertyAction extends FreeplaneAction {
+public class PropertyAction extends AFreeplaneAction {
 	private final DefaultMutableTreeNode controls;
 
 	/**

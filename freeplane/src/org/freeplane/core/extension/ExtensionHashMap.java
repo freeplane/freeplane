@@ -21,20 +21,23 @@ package org.freeplane.core.extension;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
+// TODO rladstaetter 15.02.2009 replace with Map<Class<? extends IExtension>,IExtension>
+@Deprecated
 public class ExtensionHashMap implements IModifiableExtensionCollection {
-	final private HashMap<Class, IExtension> collection;
+	final private Map<Class, IExtension> extensions;
 
 	public ExtensionHashMap() {
-		collection = new HashMap();
+		extensions = new HashMap<Class,IExtension>();
 	}
 
 	public ExtensionHashMap(final int initialCapacity) {
-		collection = new HashMap(initialCapacity);
+		extensions = new HashMap<Class,IExtension>(initialCapacity);
 	}
 
 	public ExtensionHashMap(final int initialCapacity, final float loadFactor) {
-		collection = new HashMap(initialCapacity, loadFactor);
+		extensions = new HashMap(initialCapacity, loadFactor);
 	}
 
 	public boolean addExtension(final Class clazz, final IExtension extension) {
@@ -57,7 +60,7 @@ public class ExtensionHashMap implements IModifiableExtensionCollection {
 	}
 
 	public void clear() {
-		collection.clear();
+		extensions.clear();
 	}
 
 	public boolean containsExtension(final Class clazz) {
@@ -72,11 +75,11 @@ public class ExtensionHashMap implements IModifiableExtensionCollection {
 	}
 
 	public Iterator extensionIterator() {
-		return collection.values().iterator();
+		return extensions.values().iterator();
 	}
 
 	public Iterator extensionIterator(final Class clazz) {
-		return new SubsetIterator(collection.values(), clazz);
+		return new SubsetIterator(extensions.values(), clazz);
 	}
 
 	/*
@@ -84,7 +87,7 @@ public class ExtensionHashMap implements IModifiableExtensionCollection {
 	 * @see freeplane.extensions.Extensions#getExtension(java.lang.Class)
 	 */
 	public IExtension getExtension(final Class clazz) {
-		return collection.get(clazz);
+		return extensions.get(clazz);
 	}
 
 	/*
@@ -92,7 +95,7 @@ public class ExtensionHashMap implements IModifiableExtensionCollection {
 	 * @see freeplane.extensions.Extensions#removeExtension(java.lang.Class)
 	 */
 	public IExtension removeExtension(final Class clazz) {
-		return collection.remove(clazz);
+		return extensions.remove(clazz);
 	}
 
 	public boolean removeExtension(final IExtension extension) {
@@ -101,7 +104,7 @@ public class ExtensionHashMap implements IModifiableExtensionCollection {
 	}
 
 	public void setExtension(final Class clazz, final IExtension extension) {
-		collection.put(clazz, extension);
+		extensions.put(clazz, extension);
 	}
 
 	/*

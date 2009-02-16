@@ -24,7 +24,7 @@ import java.util.List;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.features.common.link.ArrowLinkModel;
 import org.freeplane.features.common.link.NodeLinks;
@@ -32,7 +32,7 @@ import org.freeplane.features.common.link.NodeLinks;
 /**
  * @author foltin
  */
-class AddArrowLinkAction extends FreeplaneAction {
+class AddArrowLinkAction extends AFreeplaneAction {
 	/**
 	 */
 	public AddArrowLinkAction(final Controller controller) {

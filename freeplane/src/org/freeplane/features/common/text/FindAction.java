@@ -30,11 +30,11 @@ import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlTools;
 
-class FindAction extends FreeplaneAction {
+class FindAction extends AFreeplaneAction {
 	private boolean findCaseSensitive;
 	private NodeModel findFromNode;
 	private LinkedList findNodeQueue;

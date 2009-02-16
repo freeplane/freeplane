@@ -27,10 +27,13 @@ import javax.swing.ImageIcon;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.util.Tools;
 
 class PrintAction extends AbstractPrintAction {
+	private static final long serialVersionUID = 5725878249752379602L;
 	final private Controller controller;
 	final private boolean isDlg;
+	static final String NAME = "print";
 
 	PrintAction(final Controller controller, final PrintController printController, final boolean isDlg) {
 		super(printController, null, new ImageIcon(ResourceController.getResourceController().getResource(
@@ -52,8 +55,12 @@ class PrintAction extends AbstractPrintAction {
 				printController.getPrinterJob().print();
 			}
 			catch (final Exception ex) {
-				org.freeplane.core.util.Tools.logException(ex);
+				Tools.logException(ex);
 			}
 		}
+	}
+
+	public String getName() {
+		return NAME;
 	}
 }

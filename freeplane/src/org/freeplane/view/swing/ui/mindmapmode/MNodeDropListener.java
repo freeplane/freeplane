@@ -35,6 +35,7 @@ import javax.swing.JOptionPane;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.util.Tools;
 import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.clipboard.MindMapNodesSelection;
 import org.freeplane.features.common.link.LinkController;
@@ -171,7 +172,7 @@ public class MNodeDropListener implements DropTargetListener {
 		}
 		catch (final Exception e) {
 			System.err.println("Drop exception:" + e);
-			org.freeplane.core.util.Tools.logException(e);
+			Tools.logException(e);
 			dtde.dropComplete(false);
 			return;
 		}

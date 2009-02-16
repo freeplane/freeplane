@@ -46,16 +46,14 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;
-
-import com.inet.jortho.SpellChecker;
 
 /**
  * @author foltin
  */
 public class EditNodeBase {
-	protected class EditCopyAction extends FreeplaneAction {
+	protected class EditCopyAction extends AFreeplaneAction {
 		final private JTextComponent textComponent;
 
 		public EditCopyAction(final Controller controller, final JTextComponent textComponent) {

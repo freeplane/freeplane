@@ -41,6 +41,9 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.Tools;
 
 class PageAction extends AbstractPrintAction {
+	private static final long serialVersionUID = 2736613545540923942L;
+	static final String NAME = "page";
+
 	PageAction(final PrintController controller) {
 		super(controller);
 		MenuBuilder.setLabelAndMnemonic(this, ResourceController.getText("page"));
@@ -120,5 +123,9 @@ class PageAction extends AbstractPrintAction {
 		else if (printController.getPageFormat().getOrientation() == PageFormat.REVERSE_LANDSCAPE) {
 			ResourceController.getResourceController().setProperty("page_orientation", "reverse_landscape");
 		}
+	}
+
+	public String getName() {
+		return NAME;
 	}
 }

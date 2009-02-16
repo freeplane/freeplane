@@ -115,17 +115,17 @@ public class MLinkController extends LinkController {
 	private void createActions(final ModeController modeController) {
 		final Controller controller = modeController.getController();
 		setLinkByFileChooser = new SetLinkByFileChooserAction(controller);
-		modeController.addAction("setLinkByFileChooser", setLinkByFileChooser);
+		modeController.putAction("setLinkByFileChooser", setLinkByFileChooser);
 		final AddArrowLinkAction addArrowLinkAction = new AddArrowLinkAction(controller);
-		modeController.addAction("addArrowLinkAction", addArrowLinkAction);
-		modeController.addAction("removeArrowLinkAction", new RemoveArrowLinkAction(this, null));
+		modeController.putAction("addArrowLinkAction", addArrowLinkAction);
+		modeController.putAction("removeArrowLinkAction", new RemoveArrowLinkAction(this, null));
 		colorArrowLinkAction = new ColorArrowLinkAction(this, null);
-		modeController.addAction("colorArrowLinkAction", colorArrowLinkAction);
-		modeController.addAction("changeArrowsInArrowLinkAction", new ChangeArrowsInArrowLinkAction(this, "none", null,
+		modeController.putAction("colorArrowLinkAction", colorArrowLinkAction);
+		modeController.putAction("changeArrowsInArrowLinkAction", new ChangeArrowsInArrowLinkAction(this, "none", null,
 		    null, true, true));
 		setLinkByTextField = new SetLinkByTextFieldAction(controller);
-		modeController.addAction("setLinkByTextField", setLinkByTextField);
-		modeController.addAction("addLocalLinkAction", new AddLocalLinkAction(controller));
+		modeController.putAction("setLinkByTextField", setLinkByTextField);
+		modeController.putAction("addLocalLinkAction", new AddLocalLinkAction(controller));
 	}
 
 	@Override

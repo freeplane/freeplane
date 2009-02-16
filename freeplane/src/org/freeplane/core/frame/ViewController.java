@@ -35,7 +35,6 @@ import java.text.MessageFormat;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import javax.swing.Action;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -79,8 +78,8 @@ abstract public class ViewController implements IMapViewChangeListener {
 	private boolean toolbarVisible;
 	final private String userDefinedZoom;
 	final private JComboBox zoom;
-	final private Action zoomIn;
-	final private Action zoomOut;
+	final private ZoomInAction zoomIn;
+	final private ZoomOutAction zoomOut;
 
 	public ViewController(final Controller controller, final IMapViewManager mapViewManager) {
 		super();
@@ -88,14 +87,14 @@ abstract public class ViewController implements IMapViewChangeListener {
 		controller.setViewController(this);
 		this.mapViewManager = mapViewManager;
 		mapViewManager.addMapViewChangeListener(this);
-		controller.addAction("close", new CloseAction(controller));
-		controller.addAction("moveToRoot", new MoveToRootAction(controller));
+		controller.putAction(new CloseAction(controller));
+		controller.putAction(new MoveToRootAction(controller));
 		zoomIn = new ZoomInAction(this);
-		controller.addAction("zoomIn", zoomIn);
+		controller.putAction(zoomIn);
 		zoomOut = new ZoomOutAction(this);
-		controller.addAction("zoomOut", zoomOut);
+		controller.putAction(zoomOut);
 		optionAntialiasAction = new OptionAntialiasAction(controller);
-		controller.addAction("optionAntialiasAction", optionAntialiasAction);
+		controller.putAction(optionAntialiasAction);
 		userDefinedZoom = ResourceController.getResourceController().getText("user_defined_zoom");
 		zoom = new JComboBox(getZooms());
 		zoom.setSelectedItem("100%");
@@ -107,9 +106,9 @@ abstract public class ViewController implements IMapViewChangeListener {
 				}
 			}
 		});
-		controller.addAction("toggleMenubar", new ToggleMenubarAction(controller, this));
-		controller.addAction("toggleToolbar", new ToggleToolbarAction(controller, this));
-		controller.addAction("toggleLeftToolbar", new ToggleLeftToolbarAction(controller, this));
+		controller.putAction(new ToggleMenubarAction(controller, this));
+		controller.putAction(new ToggleToolbarAction(controller, this));
+		controller.putAction(new ToggleLeftToolbarAction(controller, this));
 		toolbarVisible = true;
 		leftToolbarVisible = true;
 		menubarVisible = true;

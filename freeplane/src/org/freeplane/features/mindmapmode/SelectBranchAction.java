@@ -23,10 +23,10 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.IMapSelection;
-import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 
 /** */
-class SelectBranchAction extends FreeplaneAction {
+class SelectBranchAction extends AFreeplaneAction {
 	/**
 	 *
 	 */

@@ -28,8 +28,8 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionDescriptor;
-import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.mindmapmode.clipboard.MClipboardController;
@@ -42,7 +42,7 @@ public class ChangeNodeLevelAction {
 	name = "accessories/plugins/ChangeNodeLevelAction_right.properties_name", //
 	keyStroke = "keystroke_accessories/plugins/ChangeNodeLevelAction_right.properties_key", //
 	locations = { "/menu_bar/navigate/nodes" })
-	private class ChangeNodeLevelDownwardsAction extends FreeplaneAction {
+	private class ChangeNodeLevelDownwardsAction extends AFreeplaneAction {
 		public ChangeNodeLevelDownwardsAction() {
 			super(controller);
 		}
@@ -56,7 +56,7 @@ public class ChangeNodeLevelAction {
 	name = "accessories/plugins/ChangeNodeLevelAction_left.properties_name", //
 	keyStroke = "keystroke_accessories/plugins/ChangeNodeLevelAction_left.properties_key", //
 	locations = { "/menu_bar/navigate/nodes" })
-	private class ChangeNodeLevelUpwardsAction extends FreeplaneAction {
+	private class ChangeNodeLevelUpwardsAction extends AFreeplaneAction {
 		public ChangeNodeLevelUpwardsAction() {
 			super(controller);
 		}

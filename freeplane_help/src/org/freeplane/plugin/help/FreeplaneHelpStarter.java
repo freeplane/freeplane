@@ -28,8 +28,8 @@ import javax.help.HelpBroker;
 import javax.help.HelpSet;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionDescriptor;
-import org.freeplane.core.ui.FreeplaneAction;
 
 /**
  * @author foltin
@@ -37,7 +37,7 @@ import org.freeplane.core.ui.FreeplaneAction;
 @ActionDescriptor(name = "plugins/FreeplaneHelp.xml_name", //
 tooltip = "plugins/FreeplaneHelp.xml_documentation", //
 locations = { "/menu_bar/help/doc" })
-public class FreeplaneHelpStarter extends FreeplaneAction {
+public class FreeplaneHelpStarter extends AFreeplaneAction {
 	public FreeplaneHelpStarter(final Controller controller) {
 		super(controller);
 	}

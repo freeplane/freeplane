@@ -26,18 +26,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.InvalidPropertiesFormatException;
 import java.util.Locale;
 import java.util.Properties;
-import java.util.ResourceBundle;
 
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.FreeplaneVersion;
+import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
@@ -53,6 +53,7 @@ public class ApplicationResourceController extends ResourceController {
 	final private Properties defProps;
 	private final LastOpenedList lastOpened;
 	final private Properties props;
+	// TODO rladstaetter 15.02.2009 ?? why do you need a classloader here?
 	private ClassLoader urlResourceLoader;
 	private final String resourceBaseDir;
 
@@ -62,7 +63,7 @@ public class ApplicationResourceController extends ResourceController {
 	public ApplicationResourceController() {
 		super();
 		urlResourceLoader = null;
-		resourceBaseDir = System.getProperty("org.freeplane.globalresourcedir", "resources");
+		resourceBaseDir = System.getProperty(FreeplaneProperties.ORG_FREEPLANE_GLOBALRESOURCEDIR, FreeplaneProperties.DEFAULT_ORG_FREEPLANE_GLOBALRESOURCEDIR);
 		if(resourceBaseDir != null){
 			try {
 				final File resourceDir = new File(resourceBaseDir);
@@ -82,7 +83,7 @@ public class ApplicationResourceController extends ResourceController {
 		autoPropertiesFile = getUserPreferencesFile(defProps);
 		addPropertyChangeListener(new IFreeplanePropertyListener() {
 			public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
-				if (propertyName.equals(ResourceController.RESOURCE_LANGUAGE)) {
+				if (propertyName.equals(ResourceControllerProperties.RESOURCE_LANGUAGE)) {
 					clearLanguageResources();
 				}
 			}
@@ -214,7 +215,7 @@ public class ApplicationResourceController extends ResourceController {
 			final OutputStream out = new FileOutputStream(autoPropertiesFile);
 			final OutputStreamWriter outputStreamWriter = new OutputStreamWriter(out, "8859_1");
 			outputStreamWriter.write("#Freeplane ");
-			outputStreamWriter.write(Controller.VERSION.toString());
+			outputStreamWriter.write(FreeplaneVersion.getVersion().toString());
 			outputStreamWriter.write('\n');
 			outputStreamWriter.flush();
 			props.store(out, null);
@@ -229,7 +230,7 @@ public class ApplicationResourceController extends ResourceController {
 	 * @param pProperties
 	 */
 	private void setDefaultLocale(final Properties pProperties) {
-		final String lang = pProperties.getProperty(ResourceController.RESOURCE_LANGUAGE);
+		final String lang = pProperties.getProperty(ResourceControllerProperties.RESOURCE_LANGUAGE);
 		if (lang == null) {
 			return;
 		}

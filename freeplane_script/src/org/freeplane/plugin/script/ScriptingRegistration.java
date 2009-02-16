@@ -23,6 +23,7 @@ package org.freeplane.plugin.script;
 import java.io.PrintStream;
 import java.util.HashMap;
 
+import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
@@ -125,15 +126,15 @@ public class ScriptingRegistration implements IExternalPatternAction {
 		controls.addTab(TAB);
 		controls.addSeparator(TAB, SEPARATOR, IndexedTree.AS_CHILD);
 		final String GROUP = TAB + "/" + SEPARATOR;
-		controls.addBooleanProperty(GROUP, ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION,
+		controls.addBooleanProperty(GROUP, ResourceControllerProperties.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION,
 		    IndexedTree.AS_CHILD);
-		controls.addBooleanProperty(GROUP, ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION,
+		controls.addBooleanProperty(GROUP, ResourceControllerProperties.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION,
 		    IndexedTree.AS_CHILD);
-		controls.addBooleanProperty(GROUP, ResourceController.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION,
+		controls.addBooleanProperty(GROUP, ResourceControllerProperties.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION,
 		    IndexedTree.AS_CHILD);
 		controls
-		    .addBooleanProperty(GROUP, ResourceController.RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED, IndexedTree.AS_CHILD);
-		controls.addStringProperty(GROUP, ResourceController.RESOURCES_SCRIPT_USER_KEY_NAME_FOR_SIGNING,
+		    .addBooleanProperty(GROUP, ResourceControllerProperties.RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED, IndexedTree.AS_CHILD);
+		controls.addStringProperty(GROUP, ResourceControllerProperties.RESOURCES_SCRIPT_USER_KEY_NAME_FOR_SIGNING,
 		    IndexedTree.AS_CHILD);
 	}
 

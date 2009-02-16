@@ -24,8 +24,8 @@ import javax.swing.JOptionPane;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionDescriptor;
-import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.features.mindmapnode.pattern.MPatternController;
@@ -40,7 +40,7 @@ name = "accessories/plugins/FormatCopy.properties_name", //,
 iconPath = "/images/colorpicker.png", //
 keyStroke = "keystroke_accessories/plugins/FormatCopy.properties.properties_key", //
 locations = { "/menu_bar/edit/paste" })
-class FormatCopy extends FreeplaneAction {
+class FormatCopy extends AFreeplaneAction {
 	private static Pattern pattern = null;
 
 	public static Pattern getPattern() {

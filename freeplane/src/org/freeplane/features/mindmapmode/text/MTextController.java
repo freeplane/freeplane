@@ -32,11 +32,13 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
+import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.FixedHTMLWriter;
+import org.freeplane.core.util.Tools;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
@@ -64,12 +66,12 @@ public class MTextController extends TextController {
 	private void createActions(final ModeController modeController) {
 		final Controller controller = modeController.getController();
 		edit = new EditAction(controller);
-		modeController.addAction("edit", edit);
-		modeController.addAction("useRichFormatting", new UseRichFormattingAction(controller));
-		modeController.addAction("usePlainText", new UsePlainTextAction(controller));
-		modeController.addAction("joinNodes", new JoinNodesAction(controller));
-		modeController.addAction("editLong", new EditLongAction(controller));
-		modeController.addAction("setImageByFileChooser", new SetImageByFileChooserAction(controller));
+		modeController.putAction("edit", edit);
+		modeController.putAction("useRichFormatting", new UseRichFormattingAction(controller));
+		modeController.putAction("usePlainText", new UsePlainTextAction(controller));
+		modeController.putAction("joinNodes", new JoinNodesAction(controller));
+		modeController.putAction("editLong", new EditLongAction(controller));
+		modeController.putAction("setImageByFileChooser", new SetImageByFileChooserAction(controller));
 	}
 
 	public void edit(final KeyEvent e, final boolean addNew, final boolean editLong) {
@@ -122,10 +124,10 @@ public class MTextController extends TextController {
 				return strings;
 			}
 			catch (final IOException e) {
-				org.freeplane.core.util.Tools.logException(e);
+				Tools.logException(e);
 			}
 			catch (final BadLocationException e) {
-				org.freeplane.core.util.Tools.logException(e);
+				Tools.logException(e);
 			}
 		}
 		else {
@@ -167,7 +169,7 @@ public class MTextController extends TextController {
 					final NodeModel node = (NodeModel) e.next();
 					if (NodeLinks.getLink(node) != null) {
 						final String possiblyRelative = NodeLinks.getLink(node);
-						final String relative = UrlManager.isAbsolutePath(possiblyRelative) ? UrlManager.fileToUrl(
+						final String relative = UrlManager.isAbsolutePath(possiblyRelative) ? Compat.fileToUrl(
 						    new File(possiblyRelative)).toString() : possiblyRelative;
 						if (relative != null) {
 							final String strText = "<html><img src=\"" + relative + "\">";
@@ -187,7 +189,7 @@ public class MTextController extends TextController {
 			}
 		}
 		catch (final MalformedURLException e) {
-			org.freeplane.core.util.Tools.logException(e);
+			Tools.logException(e);
 		}
 	}
 

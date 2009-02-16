@@ -23,6 +23,7 @@ import java.awt.Color;
 import java.awt.Font;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
@@ -129,11 +130,11 @@ public class NodeStyleController implements IExtension {
 				if (NodeStyleModel.getShape(node) == null) {
 					if (node.isRoot()) {
 						returnedString = ResourceController.getResourceController().getProperty(
-						    ResourceController.RESOURCES_ROOT_NODE_SHAPE);
+						    ResourceControllerProperties.RESOURCES_ROOT_NODE_SHAPE);
 					}
 					else {
 						final String stdstyle = ResourceController.getResourceController().getProperty(
-						    ResourceController.RESOURCES_NODE_SHAPE);
+						    ResourceControllerProperties.RESOURCES_NODE_SHAPE);
 						if (stdstyle.equals(NodeStyleModel.SHAPE_AS_PARENT)) {
 							returnedString = getShape(node.getParentNode());
 						}
@@ -144,7 +145,7 @@ public class NodeStyleController implements IExtension {
 				}
 				else if (node.isRoot() && NodeStyleModel.getShape(node).equals(NodeStyleModel.SHAPE_AS_PARENT)) {
 					returnedString = ResourceController.getResourceController().getProperty(
-					    ResourceController.RESOURCES_ROOT_NODE_SHAPE);
+					    ResourceControllerProperties.RESOURCES_ROOT_NODE_SHAPE);
 				}
 				else if (NodeStyleModel.getShape(node).equals(NodeStyleModel.SHAPE_AS_PARENT)) {
 					returnedString = getShape(node.getParentNode());
@@ -167,7 +168,7 @@ public class NodeStyleController implements IExtension {
 		styleBuilder.registerBy(readManager, writeManager);
 		if (standardNodeTextColor == null) {
 			final String stdcolor = ResourceController.getResourceController().getProperty(
-			    ResourceController.RESOURCES_NODE_TEXT_COLOR);
+			    ResourceControllerProperties.RESOURCES_NODE_TEXT_COLOR);
 			standardNodeTextColor = TreeXmlReader.xmlToColor(stdcolor);
 			createPropertyChangeListener();
 		}
@@ -196,7 +197,7 @@ public class NodeStyleController implements IExtension {
 	private void createPropertyChangeListener() {
 		final IFreeplanePropertyListener propertyChangeListener = new IFreeplanePropertyListener() {
 			public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
-				if (propertyName.equals(ResourceController.RESOURCES_NODE_TEXT_COLOR)) {
+				if (propertyName.equals(ResourceControllerProperties.RESOURCES_NODE_TEXT_COLOR)) {
 					standardNodeTextColor = TreeXmlReader.xmlToColor(newValue);
 					controller.getViewController().updateView();
 				}

@@ -231,7 +231,7 @@ public class MModeControllerFactory {
 		LocationController.install(modeController, new MLocationController(modeController));
 		userInputListenerFactory.setNodeMotionListener(new MNodeMotionListener(modeController));
 		AttributeController.install(modeController, new MAttributeController(modeController));
-		modeController.addAction("editAttributes", new EditAttributesAction(controller));
+		modeController.putAction("editAttributes", new EditAttributesAction(controller));
 		SpellCheckerController.install(modeController);
 		final JPopupMenu popupmenu = new JPopupMenu();
 		userInputListenerFactory.setNodePopupMenu(popupmenu);

@@ -21,6 +21,7 @@ package org.freeplane.features.common.edge;
 
 import java.awt.Color;
 
+import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
@@ -39,10 +40,10 @@ import org.freeplane.core.resources.ResourceController;
 public class EdgeController implements IExtension {
 	protected static class EdgePropertyListener implements IFreeplanePropertyListener {
 		public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
-			if (propertyName.equals(ResourceController.RESOURCES_EDGE_COLOR)) {
+			if (propertyName.equals(ResourceControllerProperties.RESOURCES_EDGE_COLOR)) {
 				standardColor = TreeXmlReader.xmlToColor(newValue);
 			}
-			if (propertyName.equals(ResourceController.RESOURCES_EDGE_STYLE)) {
+			if (propertyName.equals(ResourceControllerProperties.RESOURCES_EDGE_STYLE)) {
 				standardStyle = newValue;
 			}
 		}
@@ -170,7 +171,7 @@ public class EdgeController implements IExtension {
 	private void updateStandards(final ModeController controller) {
 		if (standardColor == null) {
 			final String stdColor = ResourceController.getResourceController().getProperty(
-			    ResourceController.RESOURCES_EDGE_COLOR);
+			    ResourceControllerProperties.RESOURCES_EDGE_COLOR);
 			if (stdColor != null && stdColor.length() == 7) {
 				standardColor = TreeXmlReader.xmlToColor(stdColor);
 			}
@@ -180,7 +181,7 @@ public class EdgeController implements IExtension {
 		}
 		if (standardStyle == null) {
 			final String stdStyle = ResourceController.getResourceController().getProperty(
-			    ResourceController.RESOURCES_EDGE_STYLE);
+			    ResourceControllerProperties.RESOURCES_EDGE_STYLE);
 			if (stdStyle != null) {
 				standardStyle = stdStyle;
 			}

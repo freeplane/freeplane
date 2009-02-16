@@ -25,13 +25,13 @@ import java.util.List;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.common.link.LinkController;
 
 /**
  * @author foltin
  */
-class AddLocalLinkAction extends FreeplaneAction {
+class AddLocalLinkAction extends AFreeplaneAction {
 	/**
 	 */
 	public AddLocalLinkAction(final Controller controller) {

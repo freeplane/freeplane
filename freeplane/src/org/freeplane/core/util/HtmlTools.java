@@ -447,10 +447,10 @@ public class HtmlTools {
 			return resultXml;
 		}
 		catch (final IOException e) {
-			org.freeplane.core.util.Tools.logException(e);
+			Tools.logException(e);
 		}
 		catch (final BadLocationException e) {
-			org.freeplane.core.util.Tools.logException(e);
+			Tools.logException(e);
 		}
 		htmlText = htmlText.replaceAll("<", "&gt;");
 		htmlText = htmlText.replaceAll(">", "&lt;");

@@ -34,12 +34,13 @@ import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.controller.FreeplaneVersionInformation;
+import org.freeplane.core.controller.FreeplaneVersion;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
+import org.freeplane.core.util.Tools;
 
 /**
  * @author Dimitry Polivaev
@@ -69,8 +70,8 @@ public class AppletViewController extends ViewController {
 		return (FreeplaneMenuBar) applet.getJMenuBar();
 	}
 
-	public FreeplaneVersionInformation getFreeplaneVersion() {
-		return Controller.VERSION;
+	public FreeplaneVersion getFreeplaneVersion() {
+		return FreeplaneVersion.getVersion();
 	}
 
 	/*
@@ -108,10 +109,10 @@ public class AppletViewController extends ViewController {
 				});
 			}
 			catch (final InterruptedException e) {
-				org.freeplane.core.util.Tools.logException(e);
+				Tools.logException(e);
 			}
 			catch (final InvocationTargetException e) {
-				org.freeplane.core.util.Tools.logException(e);
+				Tools.logException(e);
 			}
 		}
 		getController().selectMode(ResourceController.getResourceController().getProperty("initial_mode"));
@@ -135,7 +136,7 @@ public class AppletViewController extends ViewController {
 				getController().getModeController().getMapController().newMap(mapUrl);
 			}
 			catch (final Exception e) {
-				org.freeplane.core.util.Tools.logException(e);
+				Tools.logException(e);
 			}
 		}
 	}
@@ -203,7 +204,7 @@ public class AppletViewController extends ViewController {
 			}
 		}
 		catch (final Exception e) {
-			org.freeplane.core.util.Tools.logException(e);
+			Tools.logException(e);
 		}
 	}
 

@@ -25,8 +25,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.JViewport;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionDescriptor;
-import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.view.swing.map.MapView;
 
 /**
@@ -36,7 +36,7 @@ import org.freeplane.view.swing.map.MapView;
 @ActionDescriptor(tooltip = "accessories/plugins/FitToPage.properties_documentation", //
 name = "accessories/plugins/FitToPage.properties_name", //
 locations = { "/menu_bar/view/zoom" })
-public class FitToPage extends FreeplaneAction {
+public class FitToPage extends AFreeplaneAction {
 	private MapView view;
 
 	/**

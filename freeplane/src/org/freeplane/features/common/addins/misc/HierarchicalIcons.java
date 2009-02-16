@@ -22,6 +22,7 @@ package org.freeplane.features.common.addins.misc;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.TreeSet;
 
 import org.freeplane.core.addins.NodeHookDescriptor;
@@ -46,7 +47,7 @@ name = "accessories/plugins/HierarchicalIcons.properties_name", //
 tooltip = "accessories/plugins/HierarchicalIcons.properties_documentation")
 public class HierarchicalIcons extends PersistentNodeHook implements INodeChangeListener, IMapChangeListener,
         IReadCompletionListener {
-	final private HashMap /* of MindMapNode to a TreeSet */nodeIconSets = new HashMap();
+	final private Map<NodeModel,TreeSet> nodeIconSets = new HashMap<NodeModel,TreeSet>();
 
 	public HierarchicalIcons(final ModeController modeController) {
 		super(modeController);

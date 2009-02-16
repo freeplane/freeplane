@@ -21,12 +21,16 @@ package org.freeplane.core.resources;
 
 import java.awt.event.ActionEvent;
 
+import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 
 @SelectableAction(checkOnPopup = true)
-class ShowSelectionAsRectangleAction extends FreeplaneAction {
+class ShowSelectionAsRectangleAction extends AFreeplaneAction implements IFreeplaneAction{
+	private static final long serialVersionUID = -8742240225318545598L;
+	static final String NAME = "showSelectionAsRectangle";
+
 	/**
 	 *
 	 */
@@ -41,5 +45,9 @@ class ShowSelectionAsRectangleAction extends FreeplaneAction {
 	@Override
 	public void setSelected() {
 		setSelected(ResourceController.getResourceController().isSelectionAsRectangle());
+	}
+
+	public String getName() {
+		return NAME;
 	}
 }

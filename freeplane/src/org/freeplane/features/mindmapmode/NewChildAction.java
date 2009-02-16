@@ -27,12 +27,12 @@ import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 
-class NewChildAction extends FreeplaneAction {
+class NewChildAction extends AFreeplaneAction {
 	public NewChildAction(final Controller controller) {
 		super(controller, "new_child", "/images/idea.png");
 	}

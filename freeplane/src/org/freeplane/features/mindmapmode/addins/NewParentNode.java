@@ -25,8 +25,8 @@ import java.util.List;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionDescriptor;
-import org.freeplane.core.ui.FreeplaneAction;
 import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.features.mindmapmode.clipboard.MClipboardController;
@@ -50,7 +50,7 @@ name = "accessories/plugins/NewParentNode.properties_name", //
 keyStroke = "keystroke_accessories/plugins/NewParentNode.properties_key", //
 iconPath = "/images/stock_text_indent.png", //
 locations = { "/menu_bar/insert/nodes" })
-public class NewParentNode extends FreeplaneAction {
+public class NewParentNode extends AFreeplaneAction {
 	/**
 	 *
 	 */

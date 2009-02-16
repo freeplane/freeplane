@@ -26,10 +26,10 @@ import java.awt.event.ActionEvent;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.view.swing.map.MapView;
 
-public class EditAttributesAction extends FreeplaneAction {
+public class EditAttributesAction extends AFreeplaneAction {
 	public EditAttributesAction(final Controller controller) {
 		super(controller, "attributes_edit_in_place");
 	};

@@ -39,11 +39,12 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionDescriptor;
-import org.freeplane.core.ui.FreeplaneAction;
-import org.freeplane.core.url.UrlManager;
+import org.freeplane.core.util.Tools;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
 /**
@@ -51,7 +52,7 @@ import org.freeplane.n3.nanoxml.XMLParseException;
  */
 @ActionDescriptor(name = "accessories/plugins/ImportMindmanagerFiles.properties_name", //
 locations = { "/menu_bar/file/import/import" })
-public class ImportMindmanagerFiles extends FreeplaneAction {
+public class ImportMindmanagerFiles extends AFreeplaneAction {
 	public ImportMindmanagerFiles(final Controller controller) {
 		super(controller);
 	}
@@ -91,24 +92,24 @@ public class ImportMindmanagerFiles extends FreeplaneAction {
 				final String xml = transForm(new StreamSource(in), xsltFile);
 				if (xml != null) {
 					final File tempFile = File.createTempFile(file.getName(),
-					    org.freeplane.features.mindmapmode.file.MFileManager.FREEPLANE_FILE_EXTENSION, file
+					    org.freeplane.core.enums.ResourceControllerProperties.FREEPLANE_FILE_EXTENSION, file
 					        .getParentFile());
 					final FileWriter fw = new FileWriter(tempFile);
 					fw.write(xml);
 					fw.close();
-					getModeController().getMapController().newMap(UrlManager.fileToUrl(tempFile));
+					getModeController().getMapController().newMap(Compat.fileToUrl(tempFile));
 				}
 				break;
 			}
 		}
 		catch (final IOException e) {
-			org.freeplane.core.util.Tools.logException(e);
+			Tools.logException(e);
 		}
 		catch (final XMLParseException e) {
-			org.freeplane.core.util.Tools.logException(e);
+			Tools.logException(e);
 		}
 		catch (final URISyntaxException e) {
-			org.freeplane.core.util.Tools.logException(e);
+			Tools.logException(e);
 		}
 	}
 
@@ -122,7 +123,7 @@ public class ImportMindmanagerFiles extends FreeplaneAction {
 			trans.transform(xmlSource, result);
 		}
 		catch (final Exception e) {
-			org.freeplane.core.util.Tools.logException(e);
+			Tools.logException(e);
 			return null;
 		}
 		return writer.toString();

@@ -23,10 +23,10 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 
-public class OpenPathAction extends FreeplaneAction {
+public class OpenPathAction extends AFreeplaneAction {
 	public OpenPathAction(final Controller controller) {
 		super(controller, "open");
 	}

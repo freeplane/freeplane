@@ -23,14 +23,18 @@ import java.awt.event.ActionEvent;
 import java.util.Iterator;
 import java.util.ListIterator;
 
+import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 
 /**
  * @author foltin
  */
-class CommonToggleFoldedAction extends FreeplaneAction {
+class CommonToggleFoldedAction extends AFreeplaneAction implements IFreeplaneAction{
+	private static final long serialVersionUID = -910412788559039263L;
+	static final String NAME = "toggleFolded";
+
 	public CommonToggleFoldedAction(final Controller controller) {
 		super(controller, "toggle_folded");
 	}
@@ -56,5 +60,9 @@ class CommonToggleFoldedAction extends FreeplaneAction {
 			final NodeModel node = (NodeModel) i.next();
 			getModeController().getMapController().setFolded(node, fold);
 		}
+	}
+
+	public String getName() {
+		return NAME;
 	}
 }

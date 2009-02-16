@@ -22,9 +22,9 @@ package org.freeplane.features.mindmapmode.attribute;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.ui.FreeplaneAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 
-class AssignAttributesAction extends FreeplaneAction {
+class AssignAttributesAction extends AFreeplaneAction {
 	protected AssignAttributeDialog assignAttributeDialog = null;
 
 	public AssignAttributesAction(final Controller controller) {

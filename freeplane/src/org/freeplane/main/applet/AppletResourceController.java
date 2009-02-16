@@ -29,6 +29,7 @@ import java.util.Properties;
 import javax.swing.JApplet;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.resources.ResourceController;
 
 /**
@@ -44,7 +45,7 @@ public class AppletResourceController extends ResourceController {
 	public AppletResourceController(final JApplet applet) {
 		super();
 		this.applet = applet;
-		final URL defaultPropsURL = getResource("/freeplane.properties");
+		final URL defaultPropsURL = getResource(ResourceControllerProperties.FREEPLANE_PROPERTIES);
 		try {
 			userProps = new Properties();
 			final InputStream in = defaultPropsURL.openStream();
@@ -59,6 +60,7 @@ public class AppletResourceController extends ResourceController {
 			final String key = (String) allKeys.nextElement();
 			setPropertyByParameter(key);
 		}
+
 	}
 
 	@Override

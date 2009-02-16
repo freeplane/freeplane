@@ -88,7 +88,7 @@ public class ConditionFactory {
 		final Iterator<IElementaryConditionController> iterator = conditionIterator();
 		while (iterator.hasNext()) {
 			final IElementaryConditionController next = iterator.next();
-			if (next.canHandle(item)) {
+			if (next.canHandle(item)) { // TODO rladstaetter 15.02.2009 rework with instanceof
 				return next;
 			}
 		}
