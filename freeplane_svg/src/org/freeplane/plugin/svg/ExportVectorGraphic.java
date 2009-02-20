@@ -41,6 +41,7 @@ import org.apache.batik.svggen.SVGGeneratorContext.GraphicContextDefaults;
 import org.apache.batik.util.SVGConstants;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.LogTool;
 import org.freeplane.features.mindmapmode.addins.export.ExportAction;
 import org.freeplane.view.swing.map.MapView;
 import org.w3c.dom.DOMImplementation;
@@ -90,7 +91,7 @@ abstract class ExportVectorGraphic extends ExportAction {
 			trans.transform(xmlSource, result);
 		}
 		catch (final Exception e) {
-			org.freeplane.core.util.Tools.logException(e);
+			LogTool.logException(e);
 		};
 		return;
 	}

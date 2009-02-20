@@ -61,7 +61,7 @@ public class ExportSvg extends ExportVectorGraphic {
 			bos.close();
 		}
 		catch (final Exception ex) {
-			org.freeplane.core.util.Tools.logException(ex);
+			org.freeplane.core.util.LogTool.logException(ex);
 			JOptionPane.showMessageDialog(getController().getViewController().getContentPane(), ex
 			    .getLocalizedMessage(), null, JOptionPane.ERROR_MESSAGE);
 		}
