@@ -53,7 +53,6 @@ public class ApplicationResourceController extends ResourceController {
 	final private Properties defProps;
 	private final LastOpenedList lastOpened;
 	final private Properties props;
-	// TODO rladstaetter 15.02.2009 ?? why do you need a classloader here?
 	private ClassLoader urlResourceLoader;
 	private final String resourceBaseDir;
 
@@ -63,7 +62,7 @@ public class ApplicationResourceController extends ResourceController {
 	public ApplicationResourceController() {
 		super();
 		urlResourceLoader = null;
-		resourceBaseDir = System.getProperty(FreeplaneProperties.ORG_FREEPLANE_GLOBALRESOURCEDIR, FreeplaneProperties.DEFAULT_ORG_FREEPLANE_GLOBALRESOURCEDIR);
+		resourceBaseDir = System.getProperty(ResourceControllerProperties.ORG_FREEPLANE_GLOBALRESOURCEDIR, ResourceControllerProperties.DEFAULT_ORG_FREEPLANE_GLOBALRESOURCEDIR);
 		if(resourceBaseDir != null){
 			try {
 				final File resourceDir = new File(resourceBaseDir);
@@ -175,7 +174,7 @@ public class ApplicationResourceController extends ResourceController {
     }
 
 	private Properties readDefaultPreferences() {
-		final String propsLoc = "/freeplane.properties";
+		final String propsLoc = ResourceControllerProperties.FREEPLANE_PROPERTIES;
 		final URL defaultPropsURL = getResource(propsLoc);
 		final Properties props = new Properties();
 		try {
@@ -209,7 +208,7 @@ public class ApplicationResourceController extends ResourceController {
 
 	@Override
 	public void saveProperties(final Controller controller) {
-		final String lastOpenedString = lastOpened.save();
+		final String lastOpenedString = lastOpened.getStringRep();
 		setProperty("lastOpened", lastOpenedString);
 		try {
 			final OutputStream out = new FileOutputStream(autoPropertiesFile);

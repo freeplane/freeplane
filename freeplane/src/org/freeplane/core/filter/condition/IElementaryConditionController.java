@@ -30,7 +30,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
  * @author Dimitry Polivaev
  * 21.12.2008
  */
-// TODO rladstaetter 15.02.2009 extend this interface with another one, move deprecated methods there
+// TODO rladstaetter 15.02.2009 extend this interface with another one, move methods referring to swing.* there
 public interface IElementaryConditionController {
 	boolean canEditValues(final Object property, final NamedObject simpleCond);
 
@@ -41,18 +41,12 @@ public interface IElementaryConditionController {
 	public ICondition createCondition(final Object selectedItem, final NamedObject simpleCond, final Object value,
 	                                  final boolean ignoreCase);
 
-	// TODO rladstaetter 15.02.2009 remove ComboBoxModel
-	@Deprecated
 	ComboBoxModel getConditionsForProperty(final Object property);
 
 	IListModel getFilteredProperties();
 
-	// TODO rladstaetter 15.02.2009 remove ComboBoxEditor
-	@Deprecated
 	ComboBoxEditor getValueEditor();
 
-	// TODO rladstaetter 15.02.2009 remove ComboBoxModel
-	@Deprecated
 	ComboBoxModel getValuesForProperty(final Object property);
 
 	boolean isCaseDependent(final Object property, final NamedObject simpleCond);

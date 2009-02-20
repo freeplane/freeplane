@@ -21,8 +21,6 @@ package org.freeplane.features.controller.help;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.Action;
-
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
@@ -36,24 +34,24 @@ public class HelpController implements IExtension {
 	}
 
 	public static void install(final Controller controller) {
-		controller.addExtension(HelpController.class, new HelpController(controller));
+		controller.putExtension(HelpController.class, new HelpController(controller));
 	}
 
-	final private Action webDocu;
+	final private WebDocuAction webDocu;
 
 	public HelpController(final Controller controller) {
 		super();
-		controller.putAction("about", new AboutAction(controller));
-		controller.putAction("freeplaneUrl", new OpenURLAction(controller, ResourceController.getResourceController().getText(
+		controller.putAction(new AboutAction(controller));
+		controller.putAction(new OpenURLAction(controller, ResourceController.getResourceController().getText(
 		    "Freeplane"), ResourceController.getResourceController().getProperty("webFreeplaneLocation")));
-		controller.putAction("faq", new OpenURLAction(controller, ResourceController.getResourceController().getText("FAQ"),
+		controller.putAction(new FaqOpenURLAction(controller, ResourceController.getResourceController().getText("FAQ"),
 		    ResourceController.getResourceController().getProperty("webFAQLocation")));
-		controller.putAction("keyDocumentation", new KeyDocumentationAction(controller));
-		webDocu = new OpenURLAction(controller, ResourceController.getResourceController().getText("webDocu"), ResourceController
+		controller.putAction(new KeyDocumentationAction(controller));
+		webDocu = new WebDocuAction(controller, ResourceController.getResourceController().getText("webDocu"), ResourceController
 		    .getResourceController().getProperty("webDocuLocation"));
-		controller.putAction("webDocu", webDocu);
-		controller.putAction("documentation", new DocumentationAction(controller));
-		controller.putAction("license", new LicenseAction(controller));
+		controller.putAction(webDocu);
+		controller.putAction(new DocumentationAction(controller));
+		controller.putAction(new LicenseAction(controller));
 	}
 
 	/**

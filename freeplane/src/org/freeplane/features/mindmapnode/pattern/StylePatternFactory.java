@@ -28,11 +28,11 @@ import java.io.Writer;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.util.Tools;
 import org.freeplane.features.common.edge.EdgeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
 
@@ -205,7 +205,7 @@ public class StylePatternFactory {
 		if (prop1 == null || prop2 == null) {
 			return null;
 		}
-		if (Tools.safeEquals(prop1.getValue(), prop2.getValue())) {
+		if (StringUtils.equals(prop1.getValue(), prop2.getValue())) {
 			destination.setValue(prop1.getValue());
 			return destination;
 		}

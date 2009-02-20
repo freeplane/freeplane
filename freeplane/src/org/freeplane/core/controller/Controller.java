@@ -27,9 +27,8 @@ import java.util.Set;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
+import org.freeplane.core.actions.QuitAction;
 import org.freeplane.core.enums.ResourceControllerProperties;
-import org.freeplane.core.extension.ExtensionHashMap;
-import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.IMapSelection;
@@ -43,17 +42,13 @@ import org.freeplane.core.url.UrlManager;
  * MapModel(editing) or MapView(navigation).
  */
 public class Controller extends AController {
-	public static final String XML_VERSION = "0.9.0";
-
-	final private ExtensionHashMap extensions = new ExtensionHashMap();
 	/**
 	 * Converts from a local link to the real file URL of the documentation map.
-	 * (Used to change this behaviour under MacOSX).
+	 * (Used to change this behavior under MacOSX).
 	 */
 	private ModeController modeController;
 	final private Map<String, ModeController> modeControllers = new HashMap<String, ModeController>();
 
-	// final private Action quit;
 	private ViewController viewController;
 
 	public Controller() {
@@ -61,13 +56,7 @@ public class Controller extends AController {
 		putAction(new QuitAction(this)); 
 	}
 
-	public boolean addExtension(final Class clazz, final IExtension extension) {
-		return extensions.addExtension(clazz, extension);
-	}
 
-	public boolean addExtension(final IExtension extension) {
-		return extensions.addExtension(extension);
-	}
 
 	public void addModeController(final ModeController modeController) {
 		modeControllers.put(modeController.getModeName(), modeController);
@@ -102,9 +91,6 @@ public class Controller extends AController {
 				"Freeplane", JOptionPane.ERROR_MESSAGE);
 	}
 
-	public IExtension getExtension(final Class clazz) {
-		return extensions.getExtension(clazz);
-	}
 
 	/**
 	 * @return
@@ -151,16 +137,9 @@ public class Controller extends AController {
 	 * @param actionEvent
 	 */
 	public void quit(final ActionEvent actionEvent) {
-		actionMap.get(QuitAction.NAME).actionPerformed(actionEvent);
+		getActions().get(QuitAction.NAME).actionPerformed(actionEvent);
 	}
 
-	public IExtension removeExtension(final Class clazz) {
-		return extensions.removeExtension(clazz);
-	}
-
-	public boolean removeExtension(final IExtension extension) {
-		return extensions.removeExtension(extension);
-	}
 
 	public void selectMode(final ModeController newModeController) {
 		if (modeController == newModeController) {
@@ -202,7 +181,7 @@ public class Controller extends AController {
 			modeController.shutdown();
 		}
 		getViewController().stop();
-		extensions.clear();
+		getExtensions().clear();
 		return true;
 	}
 }

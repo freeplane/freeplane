@@ -47,7 +47,6 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.Tools;
 
 import com.inet.jortho.SpellChecker;
 
@@ -87,11 +86,10 @@ public class EditNodeDialog extends EditNodeBase {
 			MenuBuilder.setLabelAndMnemonic(splitButton, getText("split"));
 			MenuBuilder.setLabelAndMnemonic(enterConfirms, getText("enter_confirms"));
 			if (EditNodeDialog.booleanHolderForConfirmState == null) {
-				EditNodeDialog.booleanHolderForConfirmState = new Tools.BooleanHolder();
-				EditNodeDialog.booleanHolderForConfirmState.setValue(enterConfirms.isSelected());
+				EditNodeDialog.booleanHolderForConfirmState = enterConfirms.isSelected();
 			}
 			else {
-				enterConfirms.setSelected(EditNodeDialog.booleanHolderForConfirmState.getValue());
+				enterConfirms.setSelected(EditNodeDialog.booleanHolderForConfirmState);
 			}
 			okButton.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent e) {
@@ -111,7 +109,7 @@ public class EditNodeDialog extends EditNodeBase {
 			enterConfirms.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent e) {
 					textArea.requestFocus();
-					EditNodeDialog.booleanHolderForConfirmState.setValue(enterConfirms.isSelected());
+					EditNodeDialog.booleanHolderForConfirmState = enterConfirms.isSelected();
 				}
 			});
 			textArea.addKeyListener(new KeyListener() {
@@ -257,7 +255,7 @@ public class EditNodeDialog extends EditNodeBase {
 	}
 
 	/** Private variable to hold the last value of the "Enter confirms" state. */
-	private static Tools.BooleanHolder booleanHolderForConfirmState;
+	private static Boolean booleanHolderForConfirmState;
 	final private KeyEvent firstEvent;
 
 	public EditNodeDialog(final NodeModel node, final String text, final KeyEvent firstEvent,

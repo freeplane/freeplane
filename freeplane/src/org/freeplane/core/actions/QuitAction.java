@@ -17,13 +17,13 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.controller;
+package org.freeplane.core.actions;
 
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
-import org.freeplane.core.actions.IFreeplaneAction;
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 
@@ -31,18 +31,18 @@ import org.freeplane.core.ui.MenuBuilder;
  * Manages the history of visited maps. Maybe explicitly closed maps should be
  * removed from History too?
  */
-class QuitAction extends AbstractAction implements IFreeplaneAction {
+public class QuitAction extends AbstractAction implements IFreeplaneAction {
 
 	private static final long serialVersionUID = -5577659571225676781L;
 
 	final private Controller controller;
 	// TODO rladstaetter 15.02.2009 just replace the name with getClass().getSimpleName() ?
-	static final String NAME = "quit";
+	public static final String NAME = "quit";
 
 	/**
 	 * @param resourceController
 	 */
-	QuitAction(final Controller controller) {
+	public QuitAction(final Controller controller) {
 		this.controller = controller;
 		MenuBuilder.setLabelAndMnemonic(this, ResourceController.getResourceController().getText("quit"));
 	}

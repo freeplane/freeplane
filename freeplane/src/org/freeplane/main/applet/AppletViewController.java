@@ -40,7 +40,7 @@ import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
-import org.freeplane.core.util.Tools;
+import org.freeplane.core.util.LogTool;
 
 /**
  * @author Dimitry Polivaev
@@ -109,10 +109,10 @@ public class AppletViewController extends ViewController {
 				});
 			}
 			catch (final InterruptedException e) {
-				Tools.logException(e);
+				LogTool.logException(e);
 			}
 			catch (final InvocationTargetException e) {
-				Tools.logException(e);
+				LogTool.logException(e);
 			}
 		}
 		getController().selectMode(ResourceController.getResourceController().getProperty("initial_mode"));
@@ -136,7 +136,7 @@ public class AppletViewController extends ViewController {
 				getController().getModeController().getMapController().newMap(mapUrl);
 			}
 			catch (final Exception e) {
-				Tools.logException(e);
+				LogTool.logException(e);
 			}
 		}
 	}
@@ -204,7 +204,7 @@ public class AppletViewController extends ViewController {
 			}
 		}
 		catch (final Exception e) {
-			Tools.logException(e);
+			LogTool.logException(e);
 		}
 	}
 

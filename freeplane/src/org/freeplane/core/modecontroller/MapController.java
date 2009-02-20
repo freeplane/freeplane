@@ -59,7 +59,7 @@ import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.model.NodeModel.NodeChangeType;
 import org.freeplane.core.url.UrlManager;
-import org.freeplane.core.util.Tools;
+import org.freeplane.core.util.LogTool;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
 /**
@@ -303,7 +303,7 @@ public class MapController {
 		 * Retrieve the information whether or not all nodes have the same
 		 * folding state.
 		 */
-		Tools.BooleanHolder state = null;
+		Boolean state = null;
 		boolean allNodeHaveSameFoldedStatus = true;
 		for (final ListIterator it = iterator; it.hasNext();) {
 			final NodeModel node = (NodeModel) it.next();
@@ -311,11 +311,10 @@ public class MapController {
 				continue;
 			}
 			if (state == null) {
-				state = new Tools.BooleanHolder();
-				state.setValue(node.getModeController().getMapController().isFolded(node));
+				state = node.getModeController().getMapController().isFolded(node);
 			}
 			else {
-				if (node.getModeController().getMapController().isFolded(node) != state.getValue()) {
+				if (node.getModeController().getMapController().isFolded(node) != state) {
 					allNodeHaveSameFoldedStatus = false;
 					break;
 				}
@@ -324,7 +323,7 @@ public class MapController {
 		/* if the folding state is ambiguous, the nodes are folded. */
 		boolean fold = true;
 		if (allNodeHaveSameFoldedStatus && state != null) {
-			fold = !state.getValue();
+			fold = !state;
 		}
 		return fold;
 	}
@@ -440,7 +439,7 @@ public class MapController {
 					return;
 				}
 				catch (final Exception e) {
-					Tools.logException(e);
+					LogTool.logException(e);
 					getController().getViewController().out(
 					    UrlManager.expandPlaceholders(getModeController().getText("link_not_found"), target));
 					return;
@@ -484,7 +483,7 @@ public class MapController {
 						newMapController.centerNode(newMapController.getNodeFromID(ref));
 					}
 					catch (final Exception e) {
-						Tools.logException(e);
+						LogTool.logException(e);
 						getController().getViewController().out(
 						    UrlManager.expandPlaceholders(getModeController().getText("link_not_found"), ref));
 						return;
@@ -496,12 +495,12 @@ public class MapController {
 			}
 		}
 		catch (final MalformedURLException ex) {
-			Tools.logException(ex);
+			LogTool.logException(ex);
 			getController().errorMessage(getModeController().getText("url_error") + "\n" + ex);
 			return;
 		}
 		catch (final Exception e) {
-			Tools.logException(e);
+			LogTool.logException(e);
 		}
 		finally {
 			getController().getViewController().setWaitingCursor(false);

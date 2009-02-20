@@ -22,6 +22,7 @@ package org.freeplane.features.mindmapmode;
 import java.awt.event.ActionEvent;
 import java.util.ListIterator;
 
+import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.modecontroller.ModeController;
@@ -29,7 +30,6 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IUndoableActor;
-import org.freeplane.core.util.Tools;
 
 class ToggleFoldedAction extends AFreeplaneAction {
 	public ToggleFoldedAction(final Controller controller) {
@@ -61,14 +61,14 @@ class ToggleFoldedAction extends AFreeplaneAction {
 
 	private void toggleFolded(final NodeModel node) {
 		if (!node.getModeController().getMapController().hasChildren(node)
-		        && !Tools.safeEquals(ResourceController.getResourceController().getProperty("enable_leaves_folding"), "true")) {
+		        && !StringUtils.equals(ResourceController.getResourceController().getProperty("enable_leaves_folding"), "true")) {
 			return;
 		}
 		final ModeController modeController = getModeController();
 		final IUndoableActor actor = new IUndoableActor() {
 			public void act() {
 				modeController.getMapController()._setFolded(node, !node.isFolded());
-				if (ResourceController.getResourceController().getBoolProperty(ResourceControllerProperties.RESOURCES_SAVE_FOLDING_STATE)) {
+				if (ResourceController.getResourceController().getBooleanProperty(ResourceControllerProperties.RESOURCES_SAVE_FOLDING_STATE)) {
 					modeController.getMapController().nodeChanged(node);
 				}
 			}

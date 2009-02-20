@@ -28,7 +28,8 @@ import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.enums.ResourceControllerProperties;
-import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.extension.ControllerUtil;
+import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -42,7 +43,7 @@ class CutAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final ModeController mMindMapController = getModeController();
+		final ExtensionContainer mMindMapController = getModeController();
 		final Controller controller = getController();
 		final NodeModel root = controller.getMap().getRootNode();
 		if (controller.getSelection().isSelected(root)) {
@@ -58,13 +59,13 @@ class CutAction extends AFreeplaneAction {
 			return;
 		}
 		final Transferable copy = cut(controller.getSelection().getSortedSelection());
-		ClipboardController.getController(mMindMapController).setClipboardContents(copy);
+		((ClipboardController)mMindMapController.getExtension(ClipboardController.class)).setClipboardContents(copy);
 		controller.getViewController().obtainFocusForSelected();
 	}
 
 	Transferable cut(final List<NodeModel> collection) {
 		getModeController().getMapController().sortNodesByDepth(collection);
-		final Transferable totalCopy = ClipboardController.getController(getModeController()).copy(collection, true);
+		final Transferable totalCopy = ((ClipboardController)getModeController().getExtension(ClipboardController.class)).copy(collection, true);
 		for (final Iterator i = collection.iterator(); i.hasNext();) {
 			final NodeModel node = (NodeModel) i.next();
 			if (node.getParentNode() != null) {

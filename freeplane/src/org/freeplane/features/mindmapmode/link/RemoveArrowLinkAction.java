@@ -67,7 +67,7 @@ class RemoveArrowLinkAction extends AFreeplaneAction {
 				NodeLinks nodeLinks = (NodeLinks) source.getExtension(NodeLinks.class);
 				if (nodeLinks == null) {
 					nodeLinks = new NodeLinks();
-					source.addExtension(nodeLinks);
+					source.putExtension(nodeLinks);
 				}
 				nodeLinks.addArrowlink(arrowLink);
 				source.getModeController().getMapController().nodeChanged(source);

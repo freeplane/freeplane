@@ -31,7 +31,7 @@ import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.modecontroller.IEncrypter;
 import org.freeplane.core.modecontroller.MapController;
-import org.freeplane.core.util.Tools;
+import org.freeplane.core.util.LogTool;
 
 public class EncryptionModel implements IExtension {
 	private static ImageIcon decryptedIcon;
@@ -109,7 +109,7 @@ public class EncryptionModel implements IExtension {
 				isDecrypted = true;
 			}
 			catch (final Exception e) {
-				Tools.logException(e);
+				LogTool.logException(e);
 				setAccessible(false);
 				return true;
 			}
@@ -133,7 +133,7 @@ public class EncryptionModel implements IExtension {
 			return encrypted;
 		}
 		catch (final Exception e) {
-			Tools.logException(e);
+			LogTool.logException(e);
 		}
 		throw new IllegalArgumentException("Can't encrypt the node.");
 	}
@@ -160,7 +160,7 @@ public class EncryptionModel implements IExtension {
 				generateEncryptedContent();
 			}
 			catch (final Exception e) {
-				Tools.logException(e);
+				LogTool.logException(e);
 			}
 		}
 		return encryptedContent;
@@ -205,7 +205,7 @@ public class EncryptionModel implements IExtension {
 			mapController.insertNodeIntoWithoutUndo(node, target, target.getChildCount());
 		}
 		catch (final Exception ee) {
-			Tools.logException(ee);
+			LogTool.logException(ee);
 		}
 	}
 

@@ -38,7 +38,7 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.FixedHTMLWriter;
-import org.freeplane.core.util.Tools;
+import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
@@ -124,10 +124,10 @@ public class MTextController extends TextController {
 				return strings;
 			}
 			catch (final IOException e) {
-				Tools.logException(e);
+				LogTool.logException(e);
 			}
 			catch (final BadLocationException e) {
-				Tools.logException(e);
+				LogTool.logException(e);
 			}
 		}
 		else {
@@ -189,7 +189,7 @@ public class MTextController extends TextController {
 			}
 		}
 		catch (final MalformedURLException e) {
-			Tools.logException(e);
+			LogTool.logException(e);
 		}
 	}
 

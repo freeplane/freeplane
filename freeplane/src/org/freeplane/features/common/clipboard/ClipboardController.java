@@ -41,11 +41,12 @@ import java.util.ListIterator;
 import java.util.Vector;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.util.Tools;
+import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
 
@@ -53,12 +54,8 @@ import org.freeplane.features.common.nodestyle.NodeStyleModel;
  * @author Dimitry Polivaev
  */
 public class ClipboardController implements IExtension {
-	public static ClipboardController getController(final ModeController modeController) {
-		return (ClipboardController) modeController.getExtension(ClipboardController.class);
-	}
-
-	public static void install(final ModeController modeController, final ClipboardController clipboardController) {
-		modeController.addExtension(ClipboardController.class, clipboardController);
+	public static void install(final ExtensionContainer modeController, final ClipboardController clipboardController) {
+		modeController.putExtension(ClipboardController.class, clipboardController);
 	}
 
 	static public void saveHTML(final NodeModel rootNodeOfBranch, final File file) throws IOException {
@@ -103,10 +100,10 @@ public class ClipboardController implements IExtension {
 			    getAsHTML(selectedNodes), null, null);
 		}
 		catch (final UnsupportedFlavorException ex) {
-			Tools.logException(ex);
+			LogTool.logException(ex);
 		}
 		catch (final IOException ex) {
-			Tools.logException(ex);
+			LogTool.logException(ex);
 		}
 		return null;
 	}
@@ -142,8 +139,8 @@ public class ClipboardController implements IExtension {
 	 */
 	private void createActions() {
 		final Controller controller = modeController.getController();
-		modeController.putAction("copy", new CopyAction(controller));
-		modeController.putAction("copySingle", new CopySingleAction(controller));
+		modeController.putAction(new CopyAction(controller));
+		modeController.putAction(new CopySingleAction(controller));
 	}
 
 	public String createForNodesFlavor(final Collection<NodeModel> selectedNodes, final boolean copyInvisible)
@@ -172,7 +169,7 @@ public class ClipboardController implements IExtension {
 			return stringWriter.toString();
 		}
 		catch (final Exception e) {
-			Tools.logException(e);
+			LogTool.logException(e);
 			return null;
 		}
 	}
@@ -188,7 +185,7 @@ public class ClipboardController implements IExtension {
 			return stringWriter.toString();
 		}
 		catch (final Exception e) {
-			Tools.logException(e);
+			LogTool.logException(e);
 			return null;
 		}
 	}
@@ -202,7 +199,7 @@ public class ClipboardController implements IExtension {
 			return stringWriter.toString();
 		}
 		catch (final Exception e) {
-			Tools.logException(e);
+			LogTool.logException(e);
 			return null;
 		}
 	}
@@ -260,7 +257,7 @@ public class ClipboardController implements IExtension {
 		}
 		catch (final Exception e) {
 			System.err.println("Error in MindMapMapModel.saveTXT(): ");
-			Tools.logException(e);
+			LogTool.logException(e);
 			return false;
 		}
 	}
@@ -285,7 +282,7 @@ public class ClipboardController implements IExtension {
 			return copy;
 		}
 		catch (final Exception e) {
-			Tools.logException(e);
+			LogTool.logException(e);
 			return null;
 		}
 	}
@@ -343,7 +340,7 @@ public class ClipboardController implements IExtension {
 			return true;
 		}
 		catch (final Exception e) {
-			Tools.logException(e);
+			LogTool.logException(e);
 			return false;
 		}
 	}

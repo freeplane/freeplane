@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.extension.ControllerUtil;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -100,9 +101,9 @@ public class NewParentNode extends AFreeplaneAction {
 				return null;
 			}
 		}
-		final Transferable copy = ((MClipboardController) ClipboardController.getController(getModeController()))
+		final Transferable copy = ((MClipboardController) getModeController().getClipboardController())
 		    .cut(selectedNodes);
-		((MClipboardController) ClipboardController.getController(getModeController())).paste(copy, newNode);
+		((MClipboardController) getModeController().getClipboardController()).paste(copy, newNode);
 		getModeController().getMapController().nodeChanged(selectedParent);
 		return newNode;
 	}

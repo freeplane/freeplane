@@ -27,7 +27,7 @@ import javax.swing.ImageIcon;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.core.util.Tools;
+import org.freeplane.core.util.LogTool;
 
 class PrintAction extends AbstractPrintAction {
 	private static final long serialVersionUID = 5725878249752379602L;
@@ -55,7 +55,7 @@ class PrintAction extends AbstractPrintAction {
 				printController.getPrinterJob().print();
 			}
 			catch (final Exception ex) {
-				Tools.logException(ex);
+				LogTool.logException(ex);
 			}
 		}
 	}

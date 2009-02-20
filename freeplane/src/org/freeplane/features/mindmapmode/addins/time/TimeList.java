@@ -66,7 +66,9 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
+import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.extension.ControllerUtil;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.MindIcon;
@@ -78,7 +80,7 @@ import org.freeplane.core.ui.components.BlindIcon;
 import org.freeplane.core.ui.components.MultipleImage;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlTools;
-import org.freeplane.core.util.Tools;
+import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.note.NoteModel;
 import org.freeplane.features.common.text.TextController;
@@ -124,7 +126,7 @@ class TimeList {
 							mFlatNodeTableFilterModel.setFilter(text);
 						}
 						catch (final BadLocationException e) {
-							Tools.logException(e);
+							LogTool.logException(e);
 							mFlatNodeTableFilterModel.resetFilter();
 						}
 					}
@@ -449,7 +451,7 @@ class TimeList {
 			final NodeHolder nodeHolder = info.getNodeHolderAt(i);
 			final String text = nodeHolder.node.getText();
 			final String replaceResult = HtmlTools.getInstance().getReplaceResult(p, replacement, text);
-			if (!Tools.safeEquals(text, replaceResult)) {
+			if (!StringUtils.equals(text, replaceResult)) {
 				info.changeString(nodeHolder, replaceResult);
 			}
 		}
@@ -506,7 +508,7 @@ class TimeList {
 			final NodeModel node = (NodeModel) iter.next();
 			//
 			//
-			final NodeModel copy = ClipboardController.getController(node.getModeController()).shallowCopy(node);
+			final NodeModel copy = node.getModeController().getClipboardController().shallowCopy(node);
 			if (copy != null) {
 				newMindMapController.getMapController().insertNodeIntoWithoutUndo(copy, newMap.getRootNode());
 			}
@@ -553,7 +555,7 @@ class TimeList {
 			mFilterTextSearchField.setText("");
 		}
 		catch (final BadLocationException e) {
-			Tools.logException(e);
+			LogTool.logException(e);
 		}
 	}
 

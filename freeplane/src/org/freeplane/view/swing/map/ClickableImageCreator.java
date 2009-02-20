@@ -25,6 +25,7 @@ import java.util.Vector;
 import javax.swing.JComponent;
 
 import org.apache.commons.lang.StringEscapeUtils;
+import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 
@@ -41,7 +42,7 @@ class ClickableImageCreator {
 	Vector area = new Vector();
 	private Rectangle innerBounds;
 	final private MapView mapView;
-	final private ModeController modeController;
+	final private ExtensionContainer modeController;
 	final private String regExpLinkReplacement;
 	final private NodeModel root;
 

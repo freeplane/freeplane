@@ -22,6 +22,7 @@ package org.freeplane.features.common.note;
 import javax.swing.ImageIcon;
 
 import org.freeplane.core.enums.ResourceControllerProperties;
+import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MindIcon;
@@ -35,12 +36,12 @@ public class NoteController implements IExtension {
 	private static boolean firstRun = true;
 	private static ImageIcon noteIcon = null;
 
-	public static NoteController getController(final ModeController modeController) {
+	public static NoteController getController(final ExtensionContainer modeController) {
 		return (NoteController) modeController.getExtension(NoteController.class);
 	}
 
-	public static void install(final ModeController modeController, final NoteController noteController) {
-		modeController.addExtension(NoteController.class, noteController);
+	public static void install(final ExtensionContainer modeController, final NoteController noteController) {
+		modeController.putExtension(NoteController.class, noteController);
 		if (firstRun) {
 			noteIcon = new ImageIcon(ResourceController.getResourceController().getResource("/images/knotes.png"));
 			MindIcon.factory(NodeNoteBase.NODE_NOTE_ICON, noteIcon);
@@ -80,7 +81,7 @@ public class NoteController implements IExtension {
 
 	protected void setStateIcon(final NodeModel node, final boolean enabled) {
 		boolean showIcon = enabled;
-		if (ResourceController.getResourceController().getBoolProperty(ResourceControllerProperties.RESOURCES_DON_T_SHOW_NOTE_ICONS)) {
+		if (ResourceController.getResourceController().getBooleanProperty(ResourceControllerProperties.RESOURCES_DON_T_SHOW_NOTE_ICONS)) {
 			showIcon = false;
 		}
 		node.setStateIcon(NodeNoteBase.NODE_NOTE_ICON, (showIcon) ? noteIcon : null);

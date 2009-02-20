@@ -30,7 +30,7 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.url.UrlManager;
-import org.freeplane.core.util.Tools;
+import org.freeplane.core.util.LogTool;
 import org.freeplane.features.mindmapmode.MMapModel;
 
 public class DoAutomaticSave extends TimerTask {
@@ -88,7 +88,7 @@ public class DoAutomaticSave extends TimerTask {
 						}
 						catch (final Exception e) {
 							System.err.println("Error in automatic MapModel.save(): " + e.getMessage());
-							Tools.logException(e);
+							LogTool.logException(e);
 							return;
 						}
 					}
@@ -102,17 +102,17 @@ public class DoAutomaticSave extends TimerTask {
 					}
 					catch (final Exception e) {
 						System.err.println("Error in automatic MapModel.save(): " + e.getMessage());
-						Tools.logException(e);
+						LogTool.logException(e);
 					}
 					tempFileStack.add(tempFile);
 				}
 			});
 		}
 		catch (final InterruptedException e) {
-			Tools.logException(e);
+			LogTool.logException(e);
 		}
 		catch (final InvocationTargetException e) {
-			Tools.logException(e);
+			LogTool.logException(e);
 		}
 	}
 }

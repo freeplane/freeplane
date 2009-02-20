@@ -23,12 +23,16 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
+import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 
-class ShowSelectedAttributesAction extends AbstractAction {
+class ShowSelectedAttributesAction extends AbstractAction implements IFreeplaneAction{
+	
+    private static final String NAME = "showSelectedAttributes";
+	private static final long serialVersionUID = -5910402741456371862L;
 	final private Controller controller;
 
 	/**
@@ -50,4 +54,8 @@ class ShowSelectedAttributesAction extends AbstractAction {
 			attributes.setAttributeViewType(AttributeTableLayoutModel.SHOW_SELECTED);
 		}
 	}
+
+	public String getName() {
+	    return NAME;
+    }
 }

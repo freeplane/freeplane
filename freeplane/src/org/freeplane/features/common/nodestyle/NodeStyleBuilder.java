@@ -62,7 +62,7 @@ public class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWr
 				NodeStyleModel nodeStyleModel = NodeStyleModel.getModel(node);
 				if (nodeStyleModel == null) {
 					nodeStyleModel = new NodeStyleModel();
-					node.addExtension(nodeStyleModel);
+					node.putExtension(nodeStyleModel);
 				}
 				nodeStyleModel.setFontFamilyName(fp.fontName);
 				nodeStyleModel.setFontSize(fp.fontSize);

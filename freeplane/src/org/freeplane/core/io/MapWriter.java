@@ -21,8 +21,10 @@ package org.freeplane.core.io;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Arrays;
 
-import org.freeplane.core.controller.Controller;
+import org.freeplane.core.enums.ResourceControllerProperties;
+import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
@@ -52,15 +54,15 @@ public class MapWriter implements IElementWriter, IAttributeWriter {
 
 	public void writeAttributes(final ITreeWriter writer, final Object userObject, final String tag) {
 		final MapModel map = (MapModel) userObject;
-		writer.addAttribute("version", Controller.XML_VERSION);
-		writer.addExtensionAttributes(map, map.getExtensions());
+		writer.addAttribute("version", ResourceControllerProperties.XML_VERSION);
+		writer.addExtensionAttributes(map, Arrays.asList(map.getExtensions().values().toArray(new IExtension[]{})));
 	}
 
 	public void writeContent(final ITreeWriter writer, final Object node, final String tag) throws IOException {
 		writer
 		    .addElementContent("<!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->\n");
 		final MapModel map = (MapModel) node;
-		writer.addExtensionNodes(map, map.getExtensions());
+		writer.addExtensionNodes(map, Arrays.asList(map.getExtensions().values().toArray(new IExtension[]{})));
 		final NodeModel rootNode = map.getRootNode();
 		writeNode(writer, rootNode, saveInvisible, true);
 	}

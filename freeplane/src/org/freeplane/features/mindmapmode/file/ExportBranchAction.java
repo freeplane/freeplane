@@ -27,12 +27,13 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.Compat;
+import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.url.UrlManager;
-import org.freeplane.core.util.Tools;
+import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.MMapController;
@@ -40,8 +41,10 @@ import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 
-/** */
-class ExportBranchAction extends AFreeplaneAction {
+class ExportBranchAction extends AFreeplaneAction implements IFreeplaneAction {
+    private static final String NAME = "exportBranch";
+	private static final long serialVersionUID = 8805695439736505873L;
+
 	public ExportBranchAction(final Controller controller) {
 		super(controller, "export_branch_new");
 	}
@@ -105,7 +108,7 @@ class ExportBranchAction extends AFreeplaneAction {
 				    linkToNewMapString);
 			}
 			catch (final MalformedURLException ex) {
-				Tools.logException(ex);
+				LogTool.logException(ex);
 			}
 			final int nodePosition = parent.getChildPosition(node);
 			((MMapController) getModeController().getMapController()).deleteNode(node);
@@ -123,8 +126,12 @@ class ExportBranchAction extends AFreeplaneAction {
 				    linkString);
 			}
 			catch (final MalformedURLException ex) {
-				Tools.logException(ex);
+				LogTool.logException(ex);
 			}
 		}
 	}
+
+	public String getName() {
+	    return NAME;
+    }
 }

@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.common.attribute;
 
+import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.MapReader;
 import org.freeplane.core.io.ReadManager;
@@ -33,12 +34,13 @@ import org.freeplane.core.model.NodeModel;
  * @author Dimitry Polivaev 22.11.2008
  */
 public class AttributeController implements IExtension {
-	public static AttributeController getController(final ModeController modeController) {
+
+	public static AttributeController getController(final ExtensionContainer modeController) {
 		return (AttributeController) modeController.getExtension(AttributeController.class);
 	}
 
-	public static void install(final ModeController modeController, final AttributeController attributeController) {
-		modeController.addExtension(AttributeController.class, attributeController);
+	public static void install(final ExtensionContainer modeController, final AttributeController attributeController) {
+		modeController.putExtension(AttributeController.class, attributeController);
 	}
 
 	final private ModeController modeController;

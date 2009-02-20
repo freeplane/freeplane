@@ -23,14 +23,16 @@ import java.awt.Color;
 import java.awt.Point;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.Vector;
 import java.util.logging.Logger;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.extension.IExtensionCollection;
 import org.freeplane.core.io.IAttributeWriter;
 import org.freeplane.core.io.IElementWriter;
 import org.freeplane.core.io.IExtensionAttributeWriter;
@@ -38,7 +40,6 @@ import org.freeplane.core.io.IExtensionElementWriter;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.ListHashTable;
 import org.freeplane.core.io.WriteManager;
-import org.freeplane.core.util.Tools;
 import org.freeplane.n3.nanoxml.IXMLElement;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -77,9 +78,19 @@ public class TreeXmlWriter implements ITreeWriter {
 		final Vector l = new Vector();
 		l.add(Integer.toString(col.x));
 		l.add(Integer.toString(col.y));
-		return Tools.listToString(l);
+		return listToString(l);
 	}
 
+	public static String listToString(final List list) {
+		final ListIterator it = list.listIterator(0);
+		String str = new String();
+		while (it.hasNext()) {
+			str += it.next().toString() + ";";
+		}
+		return str;
+	}
+	
+	
 	private boolean elementStarted = false;
 	final private HashMap<Object, Object> hints;
 	final private WriteManager writeManager;
@@ -93,27 +104,14 @@ public class TreeXmlWriter implements ITreeWriter {
 		hints = new HashMap<Object, Object>();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.persistence.Writer#addAttribute(java.lang.String, double)
-	 */
 	public void addAttribute(final String key, final double value) {
 		addAttribute(key, Double.toString(value));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.persistence.Writer#addAttribute(java.lang.String, int)
-	 */
 	public void addAttribute(final String key, final int value) {
 		addAttribute(key, Integer.toString(value));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.persistence.Writer#addAttribute(java.lang.String,
-	 * java.lang.String)
-	 */
 	public void addAttribute(final String key, final String value) {
 		if (elementStarted) {
 			throw new RuntimeException("elementStarted");
@@ -144,9 +142,8 @@ public class TreeXmlWriter implements ITreeWriter {
 				final IAttributeWriter as = (IAttributeWriter) iterator.next();
 				as.writeAttributes(this, userObject, name);
 			}
-			if (userObject instanceof IExtensionCollection) {
-				final IExtensionCollection collection = (IExtensionCollection) userObject;
-				addExtensionAttributes(userObject, collection);
+			if (userObject instanceof List) {
+				addExtensionAttributes(userObject, (List<IExtension>)userObject);
 			}
 		}
 		if (userObject != null && userObject.getClass().equals(String.class)) {
@@ -158,9 +155,8 @@ public class TreeXmlWriter implements ITreeWriter {
 				final IElementWriter nw = (IElementWriter) iterator.next();
 				nw.writeContent(this, userObject, name);
 			}
-			if (userObject instanceof IExtensionCollection) {
-				final IExtensionCollection collection = (IExtensionCollection) userObject;
-				addExtensionNodes(userObject, collection);
+			if (userObject instanceof List) {
+				addExtensionNodes(userObject, (List<IExtension>)userObject);
 			}
 		}
 		if (elementStarted == false) {
@@ -172,19 +168,11 @@ public class TreeXmlWriter implements ITreeWriter {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.persistence.Writer#addNode(java.lang.String)
-	 */
 	public void addElement(final Object userObject, final String name) throws IOException {
 		final XMLElement element = new XMLElement(name);
 		addElement(userObject, element);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.persistence.Writer#addNodeContent(java.lang.String)
-	 */
 	public void addElementContent(final String content) throws IOException {
 		if (content.equals("")) {
 			return;
@@ -196,29 +184,29 @@ public class TreeXmlWriter implements ITreeWriter {
 		xmlwriter.write(content);
 	}
 
-	public void addExtensionAttributes(final Object element, final IExtensionCollection collection) {
-		final Iterator<IExtension> extensionIterator = collection.extensionIterator();
+	public void addExtensionAttributes(Object map, Collection<IExtension> extensions) {
+		final Iterator<IExtension> extensionIterator = extensions.iterator();
 		while (extensionIterator.hasNext()) {
 			final IExtension extension = extensionIterator.next();
 			final Iterator<IExtensionAttributeWriter> writerIterator = writeManager.getExtensionAttributeWriters()
 			    .iterator(extension.getClass());
 			while (writerIterator.hasNext()) {
-				writerIterator.next().writeAttributes(this, element, extension);
+				writerIterator.next().writeAttributes(this, map, extension);
 			}
 		}
-	}
+    }
 
-	public void addExtensionNodes(final Object element, final IExtensionCollection collection) throws IOException {
-		final Iterator<IExtension> extensionIterator = collection.extensionIterator();
+	public void addExtensionNodes(Object map, Collection<IExtension> extensions) throws IOException {
+		final Iterator<IExtension> extensionIterator = extensions.iterator();
 		while (extensionIterator.hasNext()) {
 			final IExtension extension = extensionIterator.next();
 			final Iterator<IExtensionElementWriter> writerIterator = writeManager.getExtensionElementWriters()
 			    .iterator(extension.getClass());
 			while (writerIterator.hasNext()) {
-				writerIterator.next().writeContent(this, element, extension);
+				writerIterator.next().writeContent(this, map, extension);
 			}
 		}
-	}
+    }
 
 	private ListHashTable getAttributeWriters() {
 		return writeManager.getAttributeWriters();
@@ -235,4 +223,6 @@ public class TreeXmlWriter implements ITreeWriter {
 	public void setHint(final Object key, final Object value) {
 		hints.put(key, value);
 	}
+
+
 }

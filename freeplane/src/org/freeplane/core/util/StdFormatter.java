@@ -17,13 +17,13 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.main.application;
+package org.freeplane.core.util;
 
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.SimpleFormatter;
 
-class StdFormatter extends SimpleFormatter {
+public class StdFormatter extends SimpleFormatter {
 	private static class StdOutErrLevel extends Level {
 		public StdOutErrLevel(final String name, final int value) {
 			super(name, value);
@@ -33,11 +33,11 @@ class StdFormatter extends SimpleFormatter {
 	/**
 	 * Level for STDERR activity
 	 */
-	final static Level STDERR = new StdOutErrLevel("STDERR", Level.SEVERE.intValue() + 53);
+	public final static Level STDERR = new StdOutErrLevel("STDERR", Level.SEVERE.intValue() + 53);
 	/**
 	 * Level for STDOUT activity.
 	 */
-	final static Level STDOUT = new StdOutErrLevel("STDOUT", Level.WARNING.intValue() + 53);
+	public final static Level STDOUT = new StdOutErrLevel("STDOUT", Level.WARNING.intValue() + 53);
 	final private String lineSeparator = System.getProperty("line.separator");
 
 	/**

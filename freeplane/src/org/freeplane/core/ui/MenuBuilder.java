@@ -47,16 +47,16 @@ import javax.swing.event.PopupMenuListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.core.Compat;
+import org.freeplane.core.controller.AController;
 import org.freeplane.core.io.IElementHandler;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
-import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.JAutoCheckBoxMenuItem;
 import org.freeplane.core.ui.components.JAutoToggleButton;
 import org.freeplane.core.ui.components.JAutoVisibleMenuItem;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.Tools;
+import org.freeplane.core.util.LogTool;
 import org.freeplane.n3.nanoxml.IXMLElement;
 
 public class MenuBuilder extends UIBuilder {
@@ -266,7 +266,7 @@ public class MenuBuilder extends UIBuilder {
 					}
 				}
 				catch (final Exception e1) {
-					Tools.logException(e1);
+					LogTool.logException(e1);
 				}
 				return menuPath;
 			}
@@ -389,10 +389,10 @@ public class MenuBuilder extends UIBuilder {
 		}
 	}
 
-	final private ModeController modeController;
+	final private AController modeController;
 	final MenuStructureReader reader;
 
-	public MenuBuilder(final ModeController modeController) {
+	public MenuBuilder(final AController modeController) {
 		super(null);
 		this.modeController = modeController;
 		reader = new MenuStructureReader();

@@ -283,7 +283,7 @@ class ScriptEditorPanel extends JDialog {
 					        + (caretPosition - mScriptTextField.getLineStartOffset(lineOfOffset) + 1));
 				}
 				catch (final BadLocationException e) {
-					org.freeplane.core.util.Tools.logException(e);
+					org.freeplane.core.util.LogTool.logException(e);
 				}
 			}
 		});

@@ -79,7 +79,7 @@ public class EnterPassword extends AFreeplaneAction {
 		}
 		final EncryptionModel encryptedMindMapNode = new EncryptionModel(node);
 		encryptedMindMapNode.setEncrypter(new SingleDesEncrypter(password));
-		node.addExtension(encryptedMindMapNode);
+		node.putExtension(encryptedMindMapNode);
 	}
 
 	/**

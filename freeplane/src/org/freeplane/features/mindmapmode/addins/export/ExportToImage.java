@@ -36,7 +36,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.core.util.Tools;
+import org.freeplane.core.util.LogTool;
 
 /**
  * @author foltin
@@ -89,7 +89,7 @@ public class ExportToImage extends ExportAction {
 			out.close();
 		}
 		catch (final IOException e1) {
-			Tools.logException(e1);
+			LogTool.logException(e1);
 		}
 		getController().getViewController().setWaitingCursor(false);
 		return true;
@@ -108,7 +108,7 @@ public class ExportToImage extends ExportAction {
 			trans.transform(xmlSource, result);
 		}
 		catch (final Exception e) {
-			Tools.logException(e);
+			LogTool.logException(e);
 		};
 		return;
 	}

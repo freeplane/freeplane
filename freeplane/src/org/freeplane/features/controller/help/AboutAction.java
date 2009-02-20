@@ -24,12 +24,15 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
 
+import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.FreeplaneVersion;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 
-class AboutAction extends AbstractAction {
+class AboutAction extends AbstractAction implements IFreeplaneAction{
+
+	private static final long serialVersionUID = -5711560831676141530L;
 	final private Controller controller;
 
 	/**
@@ -44,4 +47,8 @@ class AboutAction extends AbstractAction {
 		JOptionPane.showMessageDialog(controller.getViewController().getViewport(), ResourceController.getText("about_text")
 		        + FreeplaneVersion.getVersion(), ResourceController.getText("about"), JOptionPane.INFORMATION_MESSAGE);
 	}
+
+	public String getName() {
+	    return "about";
+    }
 }

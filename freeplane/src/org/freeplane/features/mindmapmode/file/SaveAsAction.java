@@ -21,11 +21,15 @@ package org.freeplane.features.mindmapmode.file;
 
 import java.awt.event.ActionEvent;
 
+import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.url.UrlManager;
 
-class SaveAsAction extends AFreeplaneAction {
+class SaveAsAction extends AFreeplaneAction implements IFreeplaneAction {
+    private static final String NAME = "saveAs";
+	private static final long serialVersionUID = 2159332245929439677L;
+
 	public SaveAsAction(final Controller controller) {
 		super(controller, "save_as", "/images/filesaveas.png");
 	}
@@ -34,4 +38,8 @@ class SaveAsAction extends AFreeplaneAction {
 		((MFileManager) UrlManager.getController(getModeController())).saveAs(getController().getMap());
 		getController().getViewController().setTitle();
 	}
+
+	public String getName() {
+	    return NAME;
+    }
 }

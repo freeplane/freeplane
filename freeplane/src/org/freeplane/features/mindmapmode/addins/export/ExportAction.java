@@ -35,12 +35,12 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.url.UrlManager;
-import org.freeplane.core.util.Tools;
 
 /**
  * @author foltin
@@ -70,7 +70,7 @@ abstract public class ExportAction extends AFreeplaneAction {
 			        + ((nameExtension != null) ? nameExtension : "") + "." + type;
 			chooser.setSelectedFile(new File(proposedName));
 		}
-		final ModeController mindMapController = getModeController();
+		final ExtensionContainer mindMapController = getModeController();
 		final File lastCurrentDir = UrlManager.getController(mindMapController).getLastCurrentDir();
 		if (lastCurrentDir != null) {
 			chooser.setCurrentDirectory(lastCurrentDir);
@@ -83,7 +83,7 @@ abstract public class ExportAction extends AFreeplaneAction {
 		File chosenFile = chooser.getSelectedFile();
 		UrlManager.getController(mindMapController).setLastCurrentDir(chosenFile.getParentFile());
 		final String ext = UrlManager.getExtension(chosenFile.getName());
-		if (!Tools.safeEqualsIgnoreCase(ext, type)) {
+		if (!StringUtils.equalsIgnoreCase(ext, type)) {
 			chosenFile = new File(chosenFile.getParent(), chosenFile.getName() + "." + type);
 		}
 		if (chosenFile.exists()) {

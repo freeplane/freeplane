@@ -22,14 +22,13 @@ package org.freeplane.core.modecontroller;
 import java.awt.Container;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.ListIterator;
 
 import javax.swing.Action;
 
 import org.freeplane.core.controller.AController;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.extension.ExtensionHashMap;
-import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -125,15 +124,14 @@ public class ModeController extends AController {
 	}
 
 	final private Controller controller;
-	final private ExtensionHashMap extensions = new ExtensionHashMap();
 	private boolean isBlocked = false;
 	private MapController mapController;
-	final private LinkedList<IMenuContributor> menuContributors = new LinkedList<IMenuContributor>();
+	final private List<IMenuContributor> menuContributors = new LinkedList<IMenuContributor>();
 	/**
 	 * The model, this controller belongs to. It may be null, if it is the
 	 * default controller that does not show a map.
 	 */
-	final private LinkedList<INodeViewLifeCycleListener> nodeViewListeners = new LinkedList<INodeViewLifeCycleListener>();
+	final private List<INodeViewLifeCycleListener> nodeViewListeners = new LinkedList<INodeViewLifeCycleListener>();
 	/**
 	 * Take care! This listener is also used for modelpopups (as for graphical
 	 * links).
@@ -171,13 +169,6 @@ public class ModeController extends AController {
 		putAction(name, action);
 	}
 
-	public boolean addExtension(final Class clazz, final IExtension extension) {
-		return extensions.addExtension(clazz, extension);
-	}
-
-	public boolean addExtension(final IExtension extension) {
-		return extensions.addExtension(extension);
-	}
 
 	public void addINodeViewLifeCycleListener(final INodeViewLifeCycleListener listener) {
 		nodeViewListeners.add(listener);
@@ -187,21 +178,8 @@ public class ModeController extends AController {
 		menuContributors.add(contributor);
 	}
 
-	// TODO rladstaetter 15.02.2009 not referenced anywhere?
-	public boolean containsExtension(final Class clazz) {
-		return extensions.containsExtension(clazz);
-	}
-
 	public void execute(final IUndoableActor actor) {
 		actor.act();
-	}
-
-	public Iterator<IExtension> extensionIterator() {
-		return extensions.extensionIterator();
-	}
-
-	public Iterator<IExtension> extensionIterator(final Class clazz) {
-		return extensions.extensionIterator(clazz);
 	}
 
 	public Action getAction(final String key) {
@@ -214,10 +192,6 @@ public class ModeController extends AController {
 
 	public Controller getController() {
 		return controller;
-	}
-
-	public IExtension getExtension(final Class clazz) {
-		return extensions.getExtension(clazz);
 	}
 
 	/**
@@ -271,7 +245,7 @@ public class ModeController extends AController {
 	}
 
 	public Action removeAction(final String key) {
-		final Action action = actionMap.remove(key);
+		final Action action = getActions().remove(key);
 		if (AFreeplaneAction.checkEnabledOnChange(action)) {
 			mapController.removeNodeSelectionListener(ActionEnablerOnChange.class, action);
 			mapController.removeNodeChangeListener(ActionEnablerOnChange.class, action);
@@ -285,14 +259,6 @@ public class ModeController extends AController {
 			mapController.removeNodeChangeListener(ActionDisplayerOnChange.class, action);
 		}
 		return action;
-	}
-
-	public IExtension removeExtension(final Class clazz) {
-		return extensions.removeExtension(clazz);
-	}
-
-	public boolean removeExtension(final IExtension extension) {
-		return extensions.removeExtension(extension);
 	}
 
 	public void removeINodeViewLifeCycleListener(final INodeViewLifeCycleListener listener) {

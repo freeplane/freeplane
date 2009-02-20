@@ -67,7 +67,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	}
 
 	public static void install(final Controller controller) {
-		controller.addExtension(FilterController.class, new FilterController(controller));
+		controller.putExtension(FilterController.class, new FilterController(controller));
 	}
 
 	private DefaultConditionRenderer conditionRenderer = null;
@@ -82,7 +82,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		this.controller = controller;
 		defaultFilter = new DefaultFilter(controller, null, false, false);
 		controller.getMapViewManager().addMapChangeListener(this);
-		controller.putAction("showFilterToolbarAction", new ShowFilterToolbarAction(this));
+		controller.putAction(new ShowFilterToolbarAction(this));
 	}
 
 	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {

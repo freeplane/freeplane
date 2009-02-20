@@ -42,7 +42,7 @@ public class NodeLinks implements IExtension {
 			return linkExtension;
 		}
 		linkExtension = new NodeLinks();
-		node.addExtension(linkExtension);
+		node.putExtension(linkExtension);
 		return linkExtension;
 	}
 
@@ -90,7 +90,7 @@ public class NodeLinks implements IExtension {
 		MapLinks mapLinks = (MapLinks) map.getExtension(MapLinks.class);
 		if (mapLinks == null) {
 			mapLinks = new MapLinks();
-			map.addExtension(mapLinks);
+			map.putExtension(mapLinks);
 		}
 		mapLinks.add(newLink);
 	}

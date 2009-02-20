@@ -25,18 +25,21 @@ import java.net.URL;
 import javax.swing.AbstractAction;
 import javax.swing.SwingUtilities;
 
+import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.core.util.Tools;
+import org.freeplane.core.util.LogTool;
 import org.freeplane.features.browsemode.BModeController;
 
-class DocumentationAction extends AbstractAction {
+class DocumentationAction extends AbstractAction implements IFreeplaneAction{
+    private static final String NAME = "documentation";
+	private static final long serialVersionUID = 1631839376411875744L;
 	final private Controller controller;
 
 	DocumentationAction(final Controller controller) {
 		this.controller = controller;
-		MenuBuilder.setLabelAndMnemonic(this, ResourceController.getText("documentation"));
+		MenuBuilder.setLabelAndMnemonic(this, ResourceController.getText(NAME));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -54,10 +57,14 @@ class DocumentationAction extends AbstractAction {
 						}
 					}
 					catch (final Exception e1) {
-						Tools.logException(e1);
+						LogTool.logException(e1);
 					}
 				}
 			});
 		}
 	}
+
+	public String getName() {
+	    return NAME;
+    }
 }

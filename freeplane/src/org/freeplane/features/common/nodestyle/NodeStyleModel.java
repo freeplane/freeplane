@@ -39,7 +39,7 @@ public class NodeStyleModel implements IExtension, Cloneable {
 		NodeStyleModel styleModel = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
 		if (styleModel == null) {
 			styleModel = new NodeStyleModel();
-			node.addExtension(styleModel);
+			node.putExtension(styleModel);
 		}
 		return styleModel;
 	}

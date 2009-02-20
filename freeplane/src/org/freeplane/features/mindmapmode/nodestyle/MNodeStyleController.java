@@ -97,7 +97,7 @@ public class MNodeStyleController extends NodeStyleController {
 		final ModeController modeController = node.getModeController();
 		final IUndoableActor actor = new IUndoableActor() {
 			public void act() {
-				node.addExtension(new NodeStyleModel());
+				node.putExtension(new NodeStyleModel());
 			}
 
 			public String getDescription() {

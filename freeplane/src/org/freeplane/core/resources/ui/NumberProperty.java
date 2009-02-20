@@ -25,7 +25,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.freeplane.core.util.Tools;
+import org.freeplane.core.util.LogTool;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
@@ -76,7 +76,7 @@ public class NumberProperty extends PropertyBean implements IPropertyControl {
 			}
 		}
 		catch (final NumberFormatException e) {
-			Tools.logException(e);
+			LogTool.logException(e);
 		}
 		spinner.setValue(new Integer(intValue));
 	}

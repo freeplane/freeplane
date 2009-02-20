@@ -22,10 +22,10 @@ package org.freeplane.features.controller.print;
 import java.awt.print.PageFormat;
 import java.awt.print.PrinterJob;
 
+import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.util.Tools;
 
 /**
  * @author Dimitry Polivaev
@@ -36,7 +36,7 @@ public class PrintController implements IExtension {
 	}
 
 	public static void install(final Controller controller) {
-		controller.addExtension(PrintController.class, new PrintController(controller));
+		controller.putExtension(PrintController.class, new PrintController(controller));
 	}
 
 	private PageFormat pageFormat = null;
@@ -78,13 +78,13 @@ public class PrintController implements IExtension {
 		}
 		if (pageFormat == null) {
 			pageFormat = printerJob.defaultPage();
-			if (Tools.safeEquals(ResourceController.getResourceController().getProperty("page_orientation"), "landscape")) {
+			if (StringUtils.equals(ResourceController.getResourceController().getProperty("page_orientation"), "landscape")) {
 				pageFormat.setOrientation(PageFormat.LANDSCAPE);
 			}
-			else if (Tools.safeEquals(ResourceController.getResourceController().getProperty("page_orientation"), "portrait")) {
+			else if (StringUtils.equals(ResourceController.getResourceController().getProperty("page_orientation"), "portrait")) {
 				pageFormat.setOrientation(PageFormat.PORTRAIT);
 			}
-			else if (Tools.safeEquals(ResourceController.getResourceController().getProperty("page_orientation"),
+			else if (StringUtils.equals(ResourceController.getResourceController().getProperty("page_orientation"),
 			    "reverse_landscape")) {
 				pageFormat.setOrientation(PageFormat.REVERSE_LANDSCAPE);
 			}

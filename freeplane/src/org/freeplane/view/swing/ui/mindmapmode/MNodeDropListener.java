@@ -33,9 +33,10 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.extension.ControllerUtil;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.util.Tools;
+import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.clipboard.MindMapNodesSelection;
 import org.freeplane.features.common.link.LinkController;
@@ -114,7 +115,7 @@ public class MNodeDropListener implements DropTargetListener {
 			}
 			dtde.acceptDrop(dtde.getDropAction());
 			if (!dtde.isLocalTransfer()) {
-				((MClipboardController) ClipboardController.getController(mMindMapController))
+				((MClipboardController) mMindMapController.getClipboardController())
 				    .paste(t, targetNode, mainView.dropAsSibling(dtde.getLocation().getX()), mainView.dropPosition(dtde
 				        .getLocation().getX()));
 				dtde.dropComplete(true);
@@ -158,21 +159,21 @@ public class MNodeDropListener implements DropTargetListener {
 						}
 						actualNode = (actualNode.isRoot()) ? null : actualNode.getParentNode();
 					} while (actualNode != null);
-					trans = ((MClipboardController) ClipboardController.getController(mMindMapController))
-					    .cut(controller.getSelection().getSortedSelection());
+					trans = ((MClipboardController) mMindMapController.getClipboardController()).cut(controller
+					    .getSelection().getSortedSelection());
 				}
 				else {
-					trans = ClipboardController.getController(mMindMapController).copy(controller.getSelection());
+					trans = mMindMapController.getClipboardController().copy(controller.getSelection());
 				}
 				controller.getSelection().selectAsTheOnlyOneSelected(targetNode);
-				((MClipboardController) ClipboardController.getController(mMindMapController))
+				((MClipboardController) mMindMapController.getClipboardController())
 				    .paste(trans, targetNode, mainView.dropAsSibling(dtde.getLocation().getX()), mainView
 				        .dropPosition(dtde.getLocation().getX()));
 			}
 		}
 		catch (final Exception e) {
 			System.err.println("Drop exception:" + e);
-			Tools.logException(e);
+			LogTool.logException(e);
 			dtde.dropComplete(false);
 			return;
 		}

@@ -90,7 +90,7 @@ public abstract class PersistentNodeHook implements IExtension {
 		}
 
 		public void act() {
-			if (extension != null && node.containsExtension(extension)) {
+			if (extension != null && node.containsExtension(extension.getClass())) {
 				remove(node, extension);
 			}
 			else {
@@ -171,7 +171,7 @@ public abstract class PersistentNodeHook implements IExtension {
 
 	protected void add(final NodeModel node, final IExtension extension) {
 		assert (getExtensionClass().equals(extension.getClass()));
-		node.addExtension(extension);
+		node.putExtension(extension);
 		getModeController().getMapController().nodeChanged(node);
 	}
 

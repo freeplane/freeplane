@@ -31,7 +31,6 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionDescriptor;
-import org.freeplane.core.util.Tools.BooleanHolder;
 import org.freeplane.features.common.attribute.Attribute;
 import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
@@ -127,8 +126,8 @@ class ScriptEditor extends AFreeplaneAction {
 
 		public boolean executeScript(final int pIndex, final PrintStream pOutStream, final IErrorHandler pErrorHandler) {
 			final String script = getScript(pIndex).getScript();
-			return ScriptingEngine.executeScript(mMindMapController.getMapController().getSelectedNode(),
-			    new BooleanHolder(true), script, mMindMapController, pErrorHandler, pOutStream, reg.getScriptCookies());
+			return ScriptingEngine.executeScript(mMindMapController.getMapController().getSelectedNode(), Boolean.TRUE,
+			    script, mMindMapController, pErrorHandler, pOutStream, reg.getScriptCookies());
 		}
 
 		public int getAmountOfScripts() {

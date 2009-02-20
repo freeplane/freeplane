@@ -34,7 +34,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.MessageFormat;
 
-import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
@@ -45,13 +44,13 @@ import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 
+import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
-import org.freeplane.core.util.Tools;
 
 public class ApplicationViewController extends ViewController {
 	private static final String SPLIT_PANE_LAST_POSITION = "split_pane_last_position";
@@ -61,17 +60,17 @@ public class ApplicationViewController extends ViewController {
 	private MapViewTabs mapViewManager;
 	private JComponent mContentComponent = null;
 	private JSplitPane mSplitPane;
-	final private Action navigationNextMap;
-	final private Action navigationPreviousMap;
+	final private NavigationNextMapAction navigationNextMap;
+	final private NavigationPreviousMapAction navigationPreviousMap;
 	final private ResourceController resourceController;
 
 	public ApplicationViewController(final Controller controller, final IMapViewManager mapViewController) {
 		super(controller, mapViewController);
 		this.controller = controller;
 		navigationPreviousMap = new NavigationPreviousMapAction(controller);
-		controller.putAction("navigationPreviousMap", navigationPreviousMap);
+		controller.putAction(navigationPreviousMap);
 		navigationNextMap = new NavigationNextMapAction(controller);
-		controller.putAction("navigationNextMap", navigationNextMap);
+		controller.putAction(navigationNextMap);
 		resourceController = ResourceController.getResourceController();
 		frame = new JFrame("Freeplane");
 	}
@@ -117,7 +116,7 @@ public class ApplicationViewController extends ViewController {
 		getJFrame().setIconImage(mWindowIcon.getImage());
 		getContentPane().setLayout(new BorderLayout());
 		super.init();
-		if (ResourceController.getResourceController().getBoolProperty("no_scrollbar")) {
+		if (ResourceController.getResourceController().getBooleanProperty("no_scrollbar")) {
 			getScrollPane().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 			getScrollPane().setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		}
@@ -126,7 +125,7 @@ public class ApplicationViewController extends ViewController {
 			getScrollPane().setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		}
 		mContentComponent = getScrollPane();
-		final boolean shouldUseTabbedPane = ResourceController.getResourceController().getBoolProperty(
+		final boolean shouldUseTabbedPane = ResourceController.getResourceController().getBooleanProperty(
 		    ResourceControllerProperties.RESOURCES_USE_TABBED_PANE);
 		if (shouldUseTabbedPane) {
 			mapViewManager = new MapViewTabs(controller, this, mContentComponent);
@@ -146,10 +145,10 @@ public class ApplicationViewController extends ViewController {
 			 * example the note window was active.
 			 */
 		});
-		if (Tools.safeEquals(ResourceController.getResourceController().getProperty("toolbarVisible"), "false")) {
+		if (StringUtils.equals(ResourceController.getResourceController().getProperty("toolbarVisible"), "false")) {
 			controller.getViewController().setToolbarVisible(false);
 		}
-		if (Tools.safeEquals(ResourceController.getResourceController().getProperty("leftToolbarVisible"), "false")) {
+		if (StringUtils.equals(ResourceController.getResourceController().getProperty("leftToolbarVisible"), "false")) {
 			controller.getViewController().setLeftToolbarVisible(false);
 		}
 		frame.setFocusTraversalKeysEnabled(false);

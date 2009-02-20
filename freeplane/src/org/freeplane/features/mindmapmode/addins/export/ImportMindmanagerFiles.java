@@ -44,7 +44,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionDescriptor;
-import org.freeplane.core.util.Tools;
+import org.freeplane.core.util.LogTool;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
 /**
@@ -103,13 +103,13 @@ public class ImportMindmanagerFiles extends AFreeplaneAction {
 			}
 		}
 		catch (final IOException e) {
-			Tools.logException(e);
+			LogTool.logException(e);
 		}
 		catch (final XMLParseException e) {
-			Tools.logException(e);
+			LogTool.logException(e);
 		}
 		catch (final URISyntaxException e) {
-			Tools.logException(e);
+			LogTool.logException(e);
 		}
 	}
 
@@ -123,7 +123,7 @@ public class ImportMindmanagerFiles extends AFreeplaneAction {
 			trans.transform(xmlSource, result);
 		}
 		catch (final Exception e) {
-			Tools.logException(e);
+			LogTool.logException(e);
 			return null;
 		}
 		return writer.toString();

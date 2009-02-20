@@ -44,6 +44,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
@@ -51,7 +52,7 @@ import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.core.util.Tools;
+import org.freeplane.core.util.LogTool;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.n3.nanoxml.IXMLElement;
 import org.freeplane.n3.nanoxml.IXMLParser;
@@ -109,7 +110,7 @@ public class ExportWithXSLT extends ExportAction {
 	public void actionPerformed(final ActionEvent e) {
 		final ModeController mc = getModeController();
 		final MapModel model = getController().getMap();
-		if (Tools.safeEquals(getProperty("file_type"), "user")) {
+		if (StringUtils.equals(getProperty("file_type"), "user")) {
 			if (model == null) {
 				return;
 			}
@@ -221,7 +222,7 @@ public class ExportWithXSLT extends ExportAction {
 			out.close();
 		}
 		catch (final IOException e1) {
-			Tools.logException(e1);
+			LogTool.logException(e1);
 		}
 	}
 
@@ -275,7 +276,7 @@ public class ExportWithXSLT extends ExportAction {
 	protected void transform(final File saveFile) {
 		try {
 			mTransformResultWithoutError = true;
-			final boolean create_image = Tools.safeEquals(getProperty("create_html_linked_image"), "true");
+			final boolean create_image = StringUtils.equals(getProperty("create_html_linked_image"), "true");
 			final String areaCode = getAreaCode(create_image);
 			final String xsltFileName = getProperty("xslt_file");
 			boolean success = transformMapWithXslt(xsltFileName, saveFile, areaCode);
@@ -284,7 +285,7 @@ public class ExportWithXSLT extends ExportAction {
 				    JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			if (success && Tools.safeEquals(getProperty("create_dir"), "true")) {
+			if (success && StringUtils.equals(getProperty("create_dir"), "true")) {
 				final String directoryName = saveFile.getAbsolutePath() + "_files";
 				success = createDirectory(directoryName);
 				if (success) {
@@ -292,10 +293,10 @@ public class ExportWithXSLT extends ExportAction {
 					final String filePrefix = getProperty("file_prefix");
 					copyFilesFromResourcesToDirectory(directoryName, files, filePrefix);
 				}
-				if (success && Tools.safeEquals(getProperty("copy_icons"), "true")) {
+				if (success && StringUtils.equals(getProperty("copy_icons"), "true")) {
 					success = copyIcons(directoryName);
 				}
-				if (success && Tools.safeEquals(getProperty("copy_map"), "true")) {
+				if (success && StringUtils.equals(getProperty("copy_map"), "true")) {
 					success = copyMap(directoryName);
 				}
 				if (success && create_image) {
@@ -307,12 +308,12 @@ public class ExportWithXSLT extends ExportAction {
 				    JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			if (Tools.safeEquals(getProperty("load_file"), "true")) {
+			if (StringUtils.equals(getProperty("load_file"), "true")) {
 				getController().getViewController().openDocument(Compat.fileToUrl(saveFile));
 			}
 		}
 		catch (final Exception e) {
-			Tools.logException(e);
+			LogTool.logException(e);
 			mTransformResultWithoutError = false;
 		}
 	}
@@ -330,7 +331,7 @@ public class ExportWithXSLT extends ExportAction {
 			trans.transform(xmlSource, result);
 		}
 		catch (final Exception e) {
-			Tools.logException(e);
+			LogTool.logException(e);
 			return false;
 		};
 		return true;

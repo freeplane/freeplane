@@ -28,8 +28,8 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
+import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.modecontroller.IMapSelection;
-import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 
@@ -107,7 +107,7 @@ public interface IMapViewManager {
 
 	public float getZoom();
 
-	public void newMapView(final MapModel map, final ModeController modeController);
+	public void newMapView(final MapModel map, final ExtensionContainer modeController);
 
 	public void nextMapView();
 

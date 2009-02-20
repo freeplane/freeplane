@@ -42,6 +42,7 @@ import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.ModeController;
@@ -316,7 +317,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		}
 	}
 
-	public void updateMenus(final ModeController modeController) {
+	public void updateMenus(final ExtensionContainer modeController) {
 		final FreeplaneMenuBar menuBar = getMenuBar();
 		menuBuilder.addMenuBar(menuBar, FreeplaneMenuBar.MENU_BAR_PREFIX);
 		mapsPopupMenu = new JPopupMenu();

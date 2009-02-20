@@ -19,6 +19,7 @@
  */
 package org.freeplane.core.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -34,22 +35,20 @@ import javax.swing.ImageIcon;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
 
-import org.freeplane.core.extension.ExtensionArray;
-import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.extension.IExtensionCollection;
+import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.filter.FilterInfo;
 import org.freeplane.core.filter.IFilter;
 import org.freeplane.core.modecontroller.INodeViewVisitor;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.modecontroller.NodeChangeEvent;
 import org.freeplane.core.util.HtmlTools;
-import org.freeplane.core.util.Tools;
+import org.freeplane.core.util.XmlTool;
 
 /**
  * This class represents a single Node of a Tree. It contains direct handles to
  * its parent and children and to its view.
  */
-public class NodeModel implements MutableTreeNode {
+public class NodeModel extends ExtensionContainer implements MutableTreeNode {
 	public enum NodeChangeType {
 		FOLDING, REFRESH
 	}
@@ -60,13 +59,8 @@ public class NodeModel implements MutableTreeNode {
 	public final static int RIGHT_POSITION = 1;
 	public final static int UNKNOWN_POSITION = 0;
 	static public final Object UNKNOWN_PROPERTY = new Object();
-	private final List<NodeModel> children;
-	/**
-	 * the edge which leads to this node, only root has none In future it has to
-	 * hold more than one view, maybe with a Vector in which the index specifies
-	 * the MapView which contains the NodeViews
-	 */
-	final private ExtensionArray extensions;
+	private final List<NodeModel> children = new ArrayList<NodeModel>();
+
 	final private FilterInfo filterInfo = new FilterInfo();
 	protected boolean folded;
 	private HistoryInformationModel historyInformation = null;
@@ -86,20 +80,12 @@ public class NodeModel implements MutableTreeNode {
 	}
 
 	public NodeModel(final Object userObject, final MapModel map) {
-		children = new LinkedList();
-		extensions = new ExtensionArray();
 		setText((String) userObject);
 		setHistoryInformation(new HistoryInformationModel());
 		this.map = map;
 		icons = new NodeIconSetModel();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * freeplane.modes.MindMapNode#acceptViewVisitor(freeplane.view.mindmapview
-	 * .INodeViewVisitor)
-	 */
 	public void acceptViewVisitor(final INodeViewVisitor visitor) {
 		final Iterator<INodeView> iterator = views.iterator();
 		while (iterator.hasNext()) {
@@ -107,13 +93,6 @@ public class NodeModel implements MutableTreeNode {
 		}
 	}
 
-	public boolean addExtension(final Class clazz, final IExtension extension) {
-		return extensions.addExtension(clazz, extension);
-	}
-
-	public boolean addExtension(final IExtension extension) {
-		return extensions.addExtension(extension);
-	}
 
 	public void addIcon(final MindIcon _icon, final int position) {
 		icons.addIcon(_icon, position);
@@ -141,13 +120,6 @@ public class NodeModel implements MutableTreeNode {
 		};
 	}
 
-	public boolean containsExtension(final Class clazz) {
-		return extensions.containsExtension(clazz);
-	}
-
-	public boolean containsExtension(final IExtension extension) {
-		return extensions.containsExtension(extension);
-	}
 
 	public String createID() {
 		if (id == null) {
@@ -162,13 +134,6 @@ public class NodeModel implements MutableTreeNode {
 		}
 	};
 
-	public Iterator extensionIterator() {
-		return extensions.extensionIterator();
-	}
-
-	public Iterator extensionIterator(final Class clazz) {
-		return extensions.extensionIterator(clazz);
-	}
 
 	public void fireNodeChanged(final NodeChangeEvent nodeChangeEvent) {
 		if (views == null) {
@@ -230,13 +195,6 @@ public class NodeModel implements MutableTreeNode {
 		return Collections.unmodifiableList((children != null) ? children : Collections.EMPTY_LIST);
 	}
 
-	public IExtension getExtension(final Class clazz) {
-		return extensions.getExtension(clazz);
-	}
-
-	public IExtensionCollection getExtensions() {
-		return extensions;
-	}
 
 	public FilterInfo getFilterInfo() {
 		return filterInfo;
@@ -304,7 +262,7 @@ public class NodeModel implements MutableTreeNode {
 		return HtmlTools.htmlToPlain(getText());
 	}
 
-	public String getShortText(final ModeController controller) {
+	public String getShortText(final ExtensionContainer controller) {
 		String adaptedText = getPlainTextContent();
 		if (adaptedText.length() > 40) {
 			adaptedText = adaptedText.substring(0, 40) + " ...";
@@ -465,14 +423,6 @@ public class NodeModel implements MutableTreeNode {
 		fireNodeRemoved((NodeModel) node, index);
 	}
 
-	public IExtension removeExtension(final Class clazz) {
-		return extensions.removeExtension(clazz);
-	}
-
-	public boolean removeExtension(final IExtension extension) {
-		return extensions.removeExtension(extension);
-	}
-
 	public void removeFromParent() {
 		parent.remove(this);
 	}
@@ -483,14 +433,6 @@ public class NodeModel implements MutableTreeNode {
 
 	public void removeViewer(final INodeView viewer) {
 		getViewers().remove(viewer);
-	}
-
-	public void setExtension(final Class clazz, final IExtension extension) {
-		extensions.setExtension(clazz, extension);
-	}
-
-	public void setExtension(final IExtension extension) {
-		extensions.setExtension(extension);
 	}
 
 	public void setFolded(final boolean folded) {
@@ -557,7 +499,7 @@ public class NodeModel implements MutableTreeNode {
 			xmlText = null;
 			return;
 		}
-		this.text = Tools.makeValidXml(text);
+		this.text = XmlTool.makeValidXml(text);
 		xmlText = HtmlTools.getInstance().toXhtml(text);
 	}
 
@@ -583,7 +525,7 @@ public class NodeModel implements MutableTreeNode {
 	}
 
 	public final void setXmlText(final String pXmlText) {
-		xmlText = Tools.makeValidXml(pXmlText);
+		xmlText = XmlTool.makeValidXml(pXmlText);
 		text = HtmlTools.getInstance().toHtml(xmlText);
 	}
 

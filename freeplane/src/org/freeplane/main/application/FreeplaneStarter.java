@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.main.application;
+ package org.freeplane.main.application;
 
 import java.awt.EventQueue;
 import java.io.File;
@@ -42,7 +42,7 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.url.UrlManager;
-import org.freeplane.core.util.Tools;
+import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.attribute.ModelessAttributeController;
 import org.freeplane.features.controller.help.HelpController;
 import org.freeplane.features.controller.print.PrintController;
@@ -53,7 +53,6 @@ import org.freeplane.main.mindmapmode.MModeControllerFactory;
 import org.freeplane.view.swing.map.MMapViewController;
 
 public class FreeplaneStarter {
-	static private boolean loggerCreated = false;
 
 	static public void main(final String[] args) {
 		final FreeplaneStarter starter = new FreeplaneStarter();
@@ -73,12 +72,11 @@ public class FreeplaneStarter {
 	}
 
 	public void createController() {
-		
 		applicationResourceController = new ApplicationResourceController();
 		ResourceController.setResourceController(applicationResourceController);
 		controller = new Controller();
 		applicationResourceController.init(controller);
-		createLogger();
+		LogTool.createLogger();
 		splash = new FreeplaneSplashModern();
 		splash.setVisible(true);
 		feedBack = splash.getFeedBack();
@@ -87,13 +85,6 @@ public class FreeplaneStarter {
 		feedBack.increase(FreeplaneSplashModern.FREEPLANE_PROGRESS_UPDATE_LOOK_AND_FEEL);
 		updateLookAndFeel();
 		feedBack.increase(FreeplaneSplashModern.FREEPLANE_PROGRESS_CREATE_CONTROLLER);
-		//try {
-		//	Thread.sleep(100000);
-		//}
-		//catch (InterruptedException e) {
-		//	// TODO Auto-generated catch block
-		//	e.printStackTrace();
-		//}	    
 		System.setSecurityManager(new FreeplaneSecurityManager());
 		final MMapViewController mapViewController = new MMapViewController();
 		mapViewController.addMapChangeListener(applicationResourceController.getLastOpenedList());
@@ -124,7 +115,7 @@ public class FreeplaneStarter {
 			}
 		}
 		catch (final Exception e) {
-			Tools.logException(e);
+			LogTool.logException(e);
 		}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -143,44 +134,6 @@ public class FreeplaneStarter {
 		});
 	}
 
-	private void createLogger() {
-		if (loggerCreated) {
-			return;
-		}
-		loggerCreated = true;
-		final ResourceController resourceController = ResourceController.getResourceController();
-		FileHandler mFileHandler = null;
-		final Logger parentLogger = Logger.getAnonymousLogger().getParent();
-		final Handler[] handlers = parentLogger.getHandlers();
-		for (int i = 0; i < handlers.length; i++) {
-			final Handler handler = handlers[i];
-			if (handler instanceof ConsoleHandler) {
-				parentLogger.removeHandler(handler);
-			}
-		}
-		try {
-			mFileHandler = new FileHandler(resourceController.getFreeplaneUserDirectory() + File.separator + "log",
-			    1400000, 5, false);
-			mFileHandler.setFormatter(new StdFormatter());
-			mFileHandler.setLevel(Level.INFO);
-			parentLogger.addHandler(mFileHandler);
-			final ConsoleHandler stdConsoleHandler = new ConsoleHandler();
-			stdConsoleHandler.setFormatter(new StdFormatter());
-			stdConsoleHandler.setLevel(Level.WARNING);
-			parentLogger.addHandler(stdConsoleHandler);
-			LoggingOutputStream los;
-			Logger logger = Logger.getLogger(StdFormatter.STDOUT.getName());
-			los = new LoggingOutputStream(logger, StdFormatter.STDOUT);
-			System.setOut(new PrintStream(los, true));
-			logger = Logger.getLogger(StdFormatter.STDERR.getName());
-			los = new LoggingOutputStream(logger, StdFormatter.STDERR);
-			System.setErr(new PrintStream(los, true));
-		}
-		catch (final Exception e) {
-			System.err.println("Error creating logging File Handler");
-			e.printStackTrace();
-		}
-	}
 
 	private ModeController createModeController(final String[] args) {
 		final ModeController ctrl = controller.getModeController();
@@ -215,14 +168,15 @@ public class FreeplaneStarter {
 		if (!fileLoaded) {
 			final String restoreable = ResourceController.getResourceController().getProperty(
 			    ResourceControllerProperties.ON_START_IF_NOT_SPECIFIED);
-			if (Boolean.parseBoolean(ResourceController.getResourceController().getProperty(ResourceControllerProperties.LOAD_LAST_MAP))
+			if (Boolean.parseBoolean(ResourceController.getResourceController().getProperty(
+			    ResourceControllerProperties.LOAD_LAST_MAP))
 			        && restoreable != null && restoreable.length() > 0) {
 				try {
 					applicationResourceController.getLastOpenedList().open(controller, restoreable);
 					fileLoaded = true;
 				}
 				catch (final Exception e) {
-					Tools.logException(e);
+					LogTool.logException(e);
 					controller.getViewController().out("An error occured on opening the file: " + restoreable + ".");
 				}
 			}
@@ -265,11 +219,9 @@ public class FreeplaneStarter {
 			});
 		}
 		catch (final InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		catch (final InvocationTargetException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

@@ -23,21 +23,28 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
+import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 
-class LicenseAction extends AbstractAction {
+class LicenseAction extends AbstractAction implements IFreeplaneAction{
+    private static final String NAME = "license";
+	private static final long serialVersionUID = -8521642658301662402L;
 	final private Controller controller;
 
 	LicenseAction(final Controller controller) {
 		this.controller = controller;
-		MenuBuilder.setLabelAndMnemonic(this, ResourceController.getText("license"));
+		MenuBuilder.setLabelAndMnemonic(this, ResourceController.getText(NAME));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		UITools.informationMessage(controller.getViewController().getFrame(), ResourceController.getText("license_text"),
-		    ResourceController.getText("license"));
+		    ResourceController.getText(NAME));
 	}
+
+	public String getName() {
+	    return NAME;
+    }
 }

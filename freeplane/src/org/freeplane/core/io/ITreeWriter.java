@@ -20,8 +20,9 @@
 package org.freeplane.core.io;
 
 import java.io.IOException;
+import java.util.Collection;
 
-import org.freeplane.core.extension.IExtensionCollection;
+import org.freeplane.core.extension.IExtension;
 import org.freeplane.n3.nanoxml.IXMLElement;
 
 public interface ITreeWriter {
@@ -39,11 +40,13 @@ public interface ITreeWriter {
 
 	void addElementContent(String content) throws IOException;
 
-	void addExtensionAttributes(Object userObject, final IExtensionCollection collection);
+	void addExtensionAttributes(Object o, Collection<IExtension> extensions);
 
-	void addExtensionNodes(Object element, final IExtensionCollection collection) throws IOException;
+	void addExtensionNodes(Object o, Collection<IExtension> extensions) throws IOException;
 
 	Object getHint(Object key);
 
 	void setHint(Object key, Object value);
+
+
 }

@@ -43,7 +43,7 @@ import org.freeplane.core.model.MapModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.url.UrlManager;
-import org.freeplane.core.util.Tools;
+import org.freeplane.core.util.LogTool;
 import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.features.mindmapmode.MMapModel;
 
@@ -90,16 +90,16 @@ public class MFileManager extends UrlManager {
 	 */
 	private void createActions(final ModeController modeController) {
 		final Controller controller = modeController.getController();
-		getController().putAction("open", new OpenAction(controller));
-		modeController.putAction("save", new SaveAction(controller));
-		modeController.putAction("saveAs", new SaveAsAction(controller));
-		modeController.putAction("exportBranch", new ExportBranchAction(controller));
-		modeController.putAction("importBranch", new ImportBranchAction(controller));
-		modeController.putAction("importLinkedBranch", new ImportLinkedBranchAction(controller));
-		modeController.putAction("importLinkedBranchWithoutRoot", new ImportLinkedBranchWithoutRootAction(controller));
-		modeController.putAction("importExplorerFavorites", new ImportExplorerFavoritesAction(controller));
-		modeController.putAction("importFolderStructure", new ImportFolderStructureAction(controller));
-		modeController.putAction("revertAction", new RevertAction(controller));
+		getController().putAction(new OpenAction(controller));
+		modeController.putAction(new SaveAction(controller));
+		modeController.putAction(new SaveAsAction(controller));
+		modeController.putAction(new ExportBranchAction(controller));
+		modeController.putAction(new ImportBranchAction(controller));
+		modeController.putAction(new ImportLinkedBranchAction(controller));
+		modeController.putAction(new ImportLinkedBranchWithoutRootAction(controller));
+		modeController.putAction(new ImportExplorerFavoritesAction(controller));
+		modeController.putAction(new ImportFolderStructureAction(controller));
+		modeController.putAction(new RevertAction(controller));
 	}
 
 	protected JFileChooser getFileChooser() {
@@ -323,7 +323,7 @@ public class MFileManager extends UrlManager {
 		}
 		catch (final Exception e) {
 			Logger.global.log(Level.SEVERE, "Error in MapModel.save(): ");
-			Tools.logException(e);
+			LogTool.logException(e);
 		}
 		map.scheduleTimerForAutomaticSaving();
 		return false;

@@ -283,7 +283,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, Collections.EMPTY_SET);
 		setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, Collections.EMPTY_SET);
 		setFocusTraversalKeys(KeyboardFocusManager.UP_CYCLE_TRAVERSAL_KEYS, Collections.EMPTY_SET);
-		disableMoveCursor = ResourceController.getResourceController().getBoolProperty("disable_cursor_move_paper");
+		disableMoveCursor = ResourceController.getResourceController().getBooleanProperty("disable_cursor_move_paper");
 	}
 
 	/*
@@ -933,7 +933,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 				setBackground(Color.WHITE);
 			}
 			boundingRectangle = getInnerBounds();
-			fitToPage = ResourceController.getResourceController().getBoolProperty("fit_to_page");
+			fitToPage = ResourceController.getResourceController().getBooleanProperty("fit_to_page");
 			isPreparedForPrinting = true;
 		}
 	}

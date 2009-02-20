@@ -25,6 +25,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.extension.ControllerUtil;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.MultipleNodeAction;
@@ -71,8 +72,7 @@ public class SortNodes extends MultipleNodeAction {
 			final NodeModel child = (NodeModel) iter.next();
 			final Vector childList = new Vector();
 			childList.add(child);
-			final MClipboardController clipboardController = (MClipboardController) ClipboardController
-			    .getController(getModeController());
+			final MClipboardController clipboardController = (MClipboardController) getModeController().getClipboardController();
 			final Transferable cut = clipboardController.cut(childList);
 			clipboardController.paste(cut, node);
 		}

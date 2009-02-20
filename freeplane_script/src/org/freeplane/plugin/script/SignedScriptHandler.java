@@ -38,7 +38,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.EnterPasswordDialog;
-import org.freeplane.core.util.Tools;
+import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.addins.encrypt.DesEncrypter;
 
 /**
@@ -114,7 +114,7 @@ class SignedScriptHandler {
 			SignedScriptHandler.mKeyStore.load(fis, pPassword);
 		}
 		catch (final Exception e) {
-			Tools.logException(e);
+			LogTool.logException(e);
 		}
 		finally {
 			if (fis != null) {
@@ -122,7 +122,7 @@ class SignedScriptHandler {
 					fis.close();
 				}
 				catch (final IOException e) {
-					Tools.logException(e);
+					LogTool.logException(e);
 				}
 			}
 		}
@@ -174,13 +174,13 @@ class SignedScriptHandler {
 				return verify;
 			}
 			catch (final Exception e) {
-				Tools.logException(e);
+				LogTool.logException(e);
 				try {
 					pOutStream.write(e.toString().getBytes());
 					pOutStream.write("\n".getBytes());
 				}
 				catch (final Exception e1) {
-					Tools.logException(e1);
+					LogTool.logException(e1);
 				}
 			}
 		}
@@ -216,7 +216,7 @@ class SignedScriptHandler {
 			return content.toString();
 		}
 		catch (final Exception e) {
-			Tools.logException(e);
+			LogTool.logException(e);
 			controller.errorMessage(e.getLocalizedMessage());
 		}
 		return content.mScript;

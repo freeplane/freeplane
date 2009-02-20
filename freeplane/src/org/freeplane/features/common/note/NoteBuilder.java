@@ -46,19 +46,13 @@ public class NoteBuilder implements IElementContentHandler {
 		return parent;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.io.INodeContentHandler#setContent(java.lang.Object,
-	 * java.lang.String, freeplane.io.xml.n3.nanoxml.IXMLElement,
-	 * java.lang.String)
-	 */
 	public void endElement(final Object parent, final String tag, final Object node, final IXMLElement attributes,
 	                       final String content) {
 		if (tag.equals("richcontent")) {
 			final String xmlText = content;
 			final NoteModel note = new NoteModel();
 			note.setXmlNoteText(xmlText);
-			((NodeModel) node).addExtension(note);
+			((NodeModel) node).putExtension(note);
 			noteController.setStateIcon(((NodeModel) node), true);
 		}
 	}

@@ -59,7 +59,7 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.Tools;
+import org.freeplane.core.util.LogTool;
 import org.freeplane.features.mindmapnode.pattern.MPatternController;
 import org.freeplane.features.mindmapnode.pattern.Pattern;
 import org.freeplane.features.mindmapnode.pattern.StylePatternFactory;
@@ -192,7 +192,7 @@ class ManagePatternsPopupDialog extends JDialog implements KeyListener {
 			    .getPatternReader());
 		}
 		catch (final Exception e) {
-			Tools.logException(e);
+			LogTool.logException(e);
 			JOptionPane.showMessageDialog(this, getDialogTitle(), controller
 			    .getText("accessories/plugins/ManagePatterns.not_found"), JOptionPane.ERROR_MESSAGE);
 		}

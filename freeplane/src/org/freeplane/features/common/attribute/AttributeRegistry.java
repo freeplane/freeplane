@@ -50,7 +50,7 @@ public class AttributeRegistry implements IExtension {
 		if (registry == null) {
 			final AttributeController attributeController = AttributeController.getController(map.getModeController());
 			registry = new AttributeRegistry(attributeController);
-			map.addExtension(AttributeRegistry.class, registry);
+			map.putExtension(AttributeRegistry.class, registry);
 			registry.registryAttributes(map.getRootNode());
 		}
 		return registry;

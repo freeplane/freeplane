@@ -33,8 +33,10 @@ import java.util.ListIterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.enums.ResourceControllerProperties;
+import org.freeplane.core.extension.ControllerUtil;
 import org.freeplane.core.io.MapReader;
 import org.freeplane.core.io.MapReader.NodeTreeCreator;
 import org.freeplane.core.model.MapModel;
@@ -43,7 +45,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.core.util.HtmlTools;
-import org.freeplane.core.util.Tools;
+import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.clipboard.MindMapNodesSelection;
@@ -75,7 +77,7 @@ class PasteAction extends AFreeplaneAction {
 			    "(?i)(?s)^.*<html[^>]*>", "<html>").replaceFirst("(?i)(?s)<body [^>]*>", "<body>").replaceAll(
 			    "(?i)(?s)<script.*?>.*?</script>", "").replaceAll("(?i)(?s)</?tbody.*?>", "").replaceAll(
 			    "(?i)(?s)<!--.*?-->", "").replaceAll("(?i)(?s)</?o[^>]*>", "");
-			if (Tools.safeEquals(ResourceController.getResourceController().getProperty("cut_out_pictures_when_pasting_html"),
+			if (StringUtils.equals(ResourceController.getResourceController().getProperty("cut_out_pictures_when_pasting_html"),
 			    "true")) {
 				textFromClipboard = textFromClipboard.replaceAll("(?i)(?s)<img[^>]*>", "");
 			}
@@ -169,8 +171,10 @@ class PasteAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final MClipboardController clipboardController = (MClipboardController) ClipboardController
-		    .getController(getModeController());
+//		final MClipboardController clipboardController = (MClipboardController) ControllerUtil
+//	    .getController(getModeController(),ClipboardController.class);
+		final MClipboardController clipboardController = (MClipboardController)getModeController().getExtension(ClipboardController.class);
+
 		clipboardController.paste(clipboardController.getClipboardContents(), getController().getSelection()
 		    .getSelected());
 	}
@@ -270,7 +274,7 @@ class PasteAction extends AFreeplaneAction {
 			}
 		}
 		catch (final IOException e) {
-			Tools.logException(e);
+			LogTool.logException(e);
 		}
 		finally {
 			getController().getViewController().setWaitingCursor(false);

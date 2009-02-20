@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.main.application;
+package org.freeplane.core.util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -26,7 +26,7 @@ import java.util.logging.Logger;
  * An OutputStream that writes contents to a Logger upon each call to flush()
  * See http://blogs.sun.com/nickstephen/entry/java_redirecting_system_out_and
  */
-class LoggingOutputStream extends ByteArrayOutputStream {
+public class LoggingOutputStream extends ByteArrayOutputStream {
 	final private Level level;
 	final private String lineSeparator;
 	final private Logger logger;

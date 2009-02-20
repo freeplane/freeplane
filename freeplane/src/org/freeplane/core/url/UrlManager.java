@@ -45,12 +45,13 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.util.Tools;
+import org.freeplane.core.util.LogTool;
 
 /**
  * @author Dimitry Polivaev
@@ -90,7 +91,7 @@ public class UrlManager implements IExtension {
 		return new BufferedReader(new FileReader(file));
 	}
 
-	public static UrlManager getController(final ModeController modeController) {
+	public static <T extends ExtensionContainer> UrlManager getController(final T modeController) {
 		return (UrlManager) modeController.getExtension(UrlManager.class);
 	}
 
@@ -130,13 +131,13 @@ public class UrlManager implements IExtension {
 			bufferedReader.close();
 		}
 		catch (final Exception e) {
-			Tools.logException(e);
+			LogTool.logException(e);
 			if (bufferedReader != null) {
 				try {
 					bufferedReader.close();
 				}
 				catch (final Exception ex) {
-					Tools.logException(ex);
+					LogTool.logException(ex);
 				}
 			}
 			return null;
@@ -180,7 +181,7 @@ public class UrlManager implements IExtension {
 						successful = true;
 					}
 					catch (final Exception ex) {
-						Tools.logException(ex);
+						LogTool.logException(ex);
 					}
 				}
 			}
@@ -218,8 +219,8 @@ public class UrlManager implements IExtension {
 		return new URL(input.toString().replaceFirst("#.*", ""));
 	}
 
-	public static void install(final ModeController modeController, final UrlManager urlManager) {
-		modeController.addExtension(UrlManager.class, urlManager);
+	public static void install(final ExtensionContainer modeController, final UrlManager urlManager) {
+		modeController.putExtension(UrlManager.class, urlManager);
 	}
 
 	public static boolean isAbsolutePath(final String path) {
@@ -256,7 +257,7 @@ public class UrlManager implements IExtension {
 				}
 			}
 			catch (final Exception e) {
-				Tools.logException(e);
+				LogTool.logException(e);
 			}
 		}
 	}
@@ -406,7 +407,7 @@ public class UrlManager implements IExtension {
 			getController().errorMessage(ex.getMessage());
 		}
 		else {
-			Tools.logException(ex);
+			LogTool.logException(ex);
 			getController().errorMessage(ex);
 		}
 	}

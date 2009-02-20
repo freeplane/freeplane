@@ -26,8 +26,8 @@ import java.net.MalformedURLException;
 import javax.swing.JPopupMenu;
 import javax.swing.text.JTextComponent;
 
+import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.mindmapmode.MModeController;
 
@@ -42,7 +42,8 @@ public class SpellCheckerController implements IExtension{
 	private SpellCheckerController() {
 	    init();
     }
-	public static SpellCheckerController getController(ModeController modeController) {
+
+	public static <T extends ExtensionContainer> SpellCheckerController getController(final T modeController) {
     	return (SpellCheckerController) modeController.getExtension(SpellCheckerController.class);
     }
 	private boolean spellCheckerInitialized = false;
@@ -104,6 +105,6 @@ public class SpellCheckerController implements IExtension{
 		SpellChecker.enableShortKey(editorPane, true);
     }
 	public static void install(MModeController modeController) {
-	    modeController.addExtension(SpellCheckerController.class, new SpellCheckerController());
+	    modeController.putExtension(SpellCheckerController.class, new SpellCheckerController());
     }
 }

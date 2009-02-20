@@ -24,19 +24,19 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Random;
 
+import org.freeplane.core.controller.AController;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.extension.ExtensionHashMap;
-import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.extension.IExtensionCollection;
+import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.filter.DefaultFilter;
 import org.freeplane.core.filter.IFilter;
 import org.freeplane.core.filter.condition.NoFilteringCondition;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.resources.ResourceController;
 
-public class MapModel {
+public class MapModel extends ExtensionContainer {
 	private static Random ran = new Random();
 	private static final int UNDEFINED_NODE_ID = 2000000000;
 	/**
@@ -44,18 +44,17 @@ public class MapModel {
 	 * zero, such that new models are not to be saved.
 	 */
 	protected int changesPerformedSinceLastSave = 0;
-	final private ExtensionHashMap extensions;
 	private IFilter filter = null;
 	final private IconRegistry iconRegistry;
 	final private ModeController mModeController;
-	final private HashMap<String, NodeModel> nodes;
+	final private Map<String, NodeModel> nodes;
 	private boolean readOnly = true;
 	private NodeModel root;
 	private URL url;
 
 	public MapModel(final ModeController modeController, NodeModel root) {
+		super();
 		this.root = root;
-		extensions = new ExtensionHashMap();
 		mModeController = modeController;
 		final Controller controller = modeController.getController();
 		nodes = new HashMap<String, NodeModel>();
@@ -70,28 +69,10 @@ public class MapModel {
 		iconRegistry = new IconRegistry(this);
 	}
 
-	public boolean addExtension(final Class clazz, final IExtension extension) {
-		return extensions.addExtension(clazz, extension);
-	}
-
-	public boolean addExtension(final IExtension extension) {
-		return extensions.addExtension(extension);
-	}
-
-	public boolean containsExtension(final Class clazz) {
-		return extensions.containsExtension(clazz);
-	}
 
 	public void destroy() {
 	}
 
-	public Iterator extensionIterator() {
-		return extensions.extensionIterator();
-	}
-
-	public Iterator extensionIterator(final Class clazz) {
-		return extensions.extensionIterator(clazz);
-	}
 
 	public String generateNodeID(final String proposedID) {
 		String myProposedID = new String((proposedID != null) ? proposedID : "");
@@ -113,13 +94,6 @@ public class MapModel {
 		return returnValue;
 	}
 
-	public IExtension getExtension(final Class clazz) {
-		return extensions.getExtension(clazz);
-	}
-
-	public IExtensionCollection getExtensions() {
-		return extensions;
-	}
 
 	/**
 	 * Change this to always return null if your model doesn't support files.
@@ -215,21 +189,6 @@ public class MapModel {
 		}
 	}
 
-	public IExtension removeExtension(final Class clazz) {
-		return extensions.removeExtension(clazz);
-	}
-
-	public boolean removeExtension(final IExtension extension) {
-		return extensions.removeExtension(extension);
-	}
-
-	public void setExtension(final Class clazz, final IExtension extension) {
-		extensions.setExtension(clazz, extension);
-	}
-
-	public void setExtension(final IExtension extension) {
-		extensions.setExtension(extension);
-	}
 
 	public void setFile(final File file) {
 		try {

@@ -1,7 +1,7 @@
 package org.freeplane.core.enums;
 
 public class ResourceControllerProperties {
-	// TODO rladstaetter 15.02.2009 introduce namespaces where feasible
+	// TODO ARCH rladstaetter 15.02.2009 introduce namespaces where feasible
 	public static final String ON_START_IF_NOT_SPECIFIED = "on_start_if_not_specified";
 	public static final String RESOURCE_DRAW_RECTANGLE_FOR_SELECTION = "standarddrawrectangleforselection";
 	public static final String RESOURCE_LANGUAGE = "language";
@@ -39,5 +39,9 @@ public class ResourceControllerProperties {
 	public static final String FREEPLANE_FILE_EXTENSION_WITHOUT_DOT = "mm";
 	public static final String FREEPLANE_FILE_EXTENSION = "." + FREEPLANE_FILE_EXTENSION_WITHOUT_DOT;
 	public static final String NODESEPARATOR = "<nodeseparator>";
+	public static final String ORG_FREEPLANE_GLOBALRESOURCEDIR = "org.freeplane.globalresourcedir";
+	public static final String DEFAULT_ORG_FREEPLANE_GLOBALRESOURCEDIR = "resources";
+	public static final String XML_PATTERNS_XML = "/xml/patterns.xml";
+	public static final String XML_VERSION = "0.9.0";
 
 }

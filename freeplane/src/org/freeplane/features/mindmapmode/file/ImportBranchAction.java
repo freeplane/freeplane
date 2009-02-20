@@ -24,7 +24,9 @@ import java.awt.event.ActionEvent;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
+import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.extension.ControllerUtil;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -33,7 +35,10 @@ import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.features.mindmapmode.clipboard.MClipboardController;
 
-class ImportBranchAction extends AFreeplaneAction {
+class ImportBranchAction extends AFreeplaneAction implements IFreeplaneAction {
+    private static final String NAME = "importBranch";
+	private static final long serialVersionUID = 7546992261152336279L;
+
 	public ImportBranchAction(final Controller controller) {
 		super(controller, "import_branch");
 	}
@@ -54,7 +59,7 @@ class ImportBranchAction extends AFreeplaneAction {
 				final MapModel map = parent.getMap();
 				final NodeModel node = ((MMapController) getModeController().getMapController()).loadTree(map, chooser
 				    .getSelectedFile());
-				((MClipboardController) ClipboardController.getController(getController().getModeController())).paste(
+				((MClipboardController) getController().getModeController().getClipboardController()).paste(
 				    node, parent);
 			}
 			catch (final Exception ex) {
@@ -62,4 +67,8 @@ class ImportBranchAction extends AFreeplaneAction {
 			}
 		}
 	}
+
+	public String getName() {
+	    return NAME;
+    }
 }

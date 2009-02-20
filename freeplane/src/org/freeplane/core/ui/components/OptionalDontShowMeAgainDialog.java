@@ -34,10 +34,10 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
+import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.core.util.Tools;
 
 /**
  * Dialog with a decision that can be disabled.
@@ -127,11 +127,11 @@ public class OptionalDontShowMeAgainDialog {
 
 	public OptionalDontShowMeAgainDialog show() {
 		final String property = mDontShowPropertyHandler.getProperty();
-		if (Tools.safeEquals(property, "true")) {
+		if (StringUtils.equals(property, "true")) {
 			mResult = JOptionPane.OK_OPTION;
 			return this;
 		}
-		if (Tools.safeEquals(property, "false")) {
+		if (StringUtils.equals(property, "false")) {
 			mResult = JOptionPane.CANCEL_OPTION;
 			return this;
 		}

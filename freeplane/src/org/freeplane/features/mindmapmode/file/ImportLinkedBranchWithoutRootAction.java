@@ -28,7 +28,9 @@ import java.util.ListIterator;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.Compat;
+import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.extension.ControllerUtil;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -41,7 +43,11 @@ import org.freeplane.features.mindmapmode.clipboard.MClipboardController;
 /**
  * This is exactly the opposite of exportBranch.
  */
-class ImportLinkedBranchWithoutRootAction extends AFreeplaneAction {
+class ImportLinkedBranchWithoutRootAction extends AFreeplaneAction implements IFreeplaneAction{
+
+	private static final String NAME = "importLinkedBranchWithoutRoot";
+	private static final long serialVersionUID = -6244651836308760718L;
+
 	public ImportLinkedBranchWithoutRootAction(final Controller controller) {
 		super(controller, "import_linked_branch_without_root");
 	}
@@ -70,7 +76,7 @@ class ImportLinkedBranchWithoutRootAction extends AFreeplaneAction {
 			    absolute.getFile()));
 			for (final ListIterator i = node.getModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
 				final NodeModel importNode = (NodeModel) i.next();
-				((MClipboardController) ClipboardController.getController(getController().getModeController())).paste(
+				((MClipboardController) getController().getModeController().getClipboardController()).paste(
 				    importNode, selected);
 			}
 		}
@@ -78,4 +84,8 @@ class ImportLinkedBranchWithoutRootAction extends AFreeplaneAction {
 			UrlManager.getController(getModeController()).handleLoadingException(ex);
 		}
 	}
+
+	public String getName() {
+	    return NAME;
+    }
 }

@@ -30,6 +30,7 @@ import java.util.Set;
 import javax.swing.JPopupMenu;
 
 import org.freeplane.core.enums.ResourceControllerProperties;
+import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
@@ -59,12 +60,12 @@ public class LinkController implements IExtension {
 	public static final int STANDARD_WIDTH = 1;
 	static Color standardColor = null;
 
-	public static LinkController getController(final ModeController modeController) {
+	public static <T extends ExtensionContainer> LinkController getController(final T modeController) {
 		return (LinkController) modeController.getExtension(LinkController.class);
 	}
 
 	public static void install(final ModeController modeController, final LinkController linkController) {
-		modeController.addExtension(LinkController.class, linkController);
+		modeController.putExtension(LinkController.class, linkController);
 		final INodeSelectionListener listener = new INodeSelectionListener() {
 			public void onDeselect(final NodeModel node) {
 			}
@@ -224,7 +225,7 @@ public class LinkController implements IExtension {
 	/**
 	 * @param modeController
 	 */
-	private void updateStandards(final ModeController modeController) {
+	private void updateStandards(final ExtensionContainer modeController) {
 		if (standardColor == null) {
 			final String stdColor = ResourceController.getResourceController().getProperty(
 			    ResourceControllerProperties.RESOURCES_LINK_COLOR);

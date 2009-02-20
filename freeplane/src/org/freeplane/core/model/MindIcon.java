@@ -22,6 +22,7 @@ package org.freeplane.core.model;
 import java.io.File;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
@@ -41,7 +42,7 @@ public class MindIcon implements Comparable, IIconInformation {
 	/**
 	 * Set of all created icons. Name -> MindIcon
 	 */
-	private static HashMap createdIcons = new HashMap();
+	private static Map<String,MindIcon> createdIcons = new HashMap<String,MindIcon>();
 	private static ImageIcon iconNotFound;
 	public static final int LAST = MindIcon.UNKNOWN;
 	private static Vector mAllIconNames;

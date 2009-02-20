@@ -23,7 +23,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.util.Tools;
+import org.freeplane.core.util.LogTool;
 
 class LastOpenedActionListener implements ActionListener {
 	final private Controller controller;
@@ -42,7 +42,7 @@ class LastOpenedActionListener implements ActionListener {
 		}
 		catch (final Exception ex) {
 			controller.errorMessage("An error occured on opening the file: " + restoreable + ".");
-			Tools.logException(ex);
+			LogTool.logException(ex);
 		}
 	}
 }

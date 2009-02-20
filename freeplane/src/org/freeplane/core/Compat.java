@@ -8,8 +8,8 @@ import java.net.URL;
 
 import javax.swing.JOptionPane;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.FreeplaneVersion;
+import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.url.UrlManager;
 
 /**
@@ -61,7 +61,7 @@ public class Compat {
 		info.append("freeplane_version = ");
 		info.append(FreeplaneVersion.getVersion());
 		info.append("; freeplane_xml_version = ");
-		info.append(Controller.XML_VERSION);
+		info.append(ResourceControllerProperties.XML_VERSION);
 		info.append("\njava_version = ");
 		info.append(System.getProperty("java.version"));
 		info.append("; os_name = ");

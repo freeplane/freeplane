@@ -21,14 +21,14 @@ package org.freeplane.features.mindmapmode.file;
 
 import java.awt.event.ActionEvent;
 
+import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.url.UrlManager;
 
-class OpenAction extends AFreeplaneAction {
-	/**
-	 *
-	 */
+class OpenAction extends AFreeplaneAction implements IFreeplaneAction{
+   private static final long serialVersionUID = 6555358381496003986L;
+
 	public OpenAction(final Controller controller) {
 		super(controller, "open", "/images/fileopen.png");
 	}
@@ -37,4 +37,8 @@ class OpenAction extends AFreeplaneAction {
 		((MFileManager) UrlManager.getController(getModeController())).open();
 		getController().getViewController().setTitle();
 	}
+
+	public String getName() {
+	    return "open";
+    }
 }

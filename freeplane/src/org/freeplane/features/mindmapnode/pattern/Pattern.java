@@ -13,6 +13,7 @@ import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.n3.nanoxml.XMLParserFactory;
 import org.freeplane.n3.nanoxml.XMLWriter;
 
+// TODO ARCH rladstaetter 18.02.2009 
 public class Pattern implements Cloneable {
 	public static Pattern unMarshall(final IXMLElement xmlPattern) {
 		final Pattern pattern = new Pattern();
@@ -35,6 +36,7 @@ public class Pattern implements Cloneable {
 	}
 
 	private String name;
+	//// TODO rladstaetter 18.02.2009 make following attributes typesafe
 	private PatternProperty patternChild;
 	private PatternProperty patternEdgeColor;
 	private PatternProperty patternEdgeStyle;
@@ -115,27 +117,28 @@ public class Pattern implements Cloneable {
 		return patternScript;
 	}
 
-	private void marschall(final IXMLElement xml, final String string, final PatternProperty pattern) {
-		// TODO Auto-generated method stub
+	private void marshall(final IXMLElement xml, final String string, final PatternProperty pattern) {
+		// FIXME rladstaetter method not implemented
+		//		throw new UnsupportedOperationException();
 	}
 
 	public String marshall() {
 		final IXMLElement xml = new XMLElement("pattern");
 		xml.setAttribute("name", name);
-		marschall(xml, "pattern_node_background_color", patternNodeBackgroundColor);
-		marschall(xml, "pattern_node_color", patternNodeColor);
-		marschall(xml, "pattern_node_style", patternNodeStyle);
-		marschall(xml, "pattern_node_text", patternNodeText);
-		marschall(xml, "pattern_node_font_name", patternNodeFontName);
-		marschall(xml, "pattern_node_font_bold", patternNodeFontBold);
-		marschall(xml, "pattern_node_font_italic", patternNodeFontItalic);
-		marschall(xml, "pattern_node_font_size", patternNodeFontSize);
-		marschall(xml, "pattern_node_icon", patternIcon);
-		marschall(xml, "pattern_node_edge_color", patternEdgeColor);
-		marschall(xml, "pattern_node_edge_style", patternEdgeStyle);
-		marschall(xml, "pattern_node_wdge_width", patternEdgeWidth);
-		marschall(xml, "pattern_node_child", patternChild);
-		marschall(xml, "pattern_node_script", patternScript);
+		marshall(xml, "pattern_node_background_color", patternNodeBackgroundColor);
+		marshall(xml, "pattern_node_color", patternNodeColor);
+		marshall(xml, "pattern_node_style", patternNodeStyle);
+		marshall(xml, "pattern_node_text", patternNodeText);
+		marshall(xml, "pattern_node_font_name", patternNodeFontName);
+		marshall(xml, "pattern_node_font_bold", patternNodeFontBold);
+		marshall(xml, "pattern_node_font_italic", patternNodeFontItalic);
+		marshall(xml, "pattern_node_font_size", patternNodeFontSize);
+		marshall(xml, "pattern_node_icon", patternIcon);
+		marshall(xml, "pattern_node_edge_color", patternEdgeColor);
+		marshall(xml, "pattern_node_edge_style", patternEdgeStyle);
+		marshall(xml, "pattern_node_wdge_width", patternEdgeWidth);
+		marshall(xml, "pattern_node_child", patternChild);
+		marshall(xml, "pattern_node_script", patternScript);
 		final StringWriter string = new StringWriter();
 		final XMLWriter writer = new XMLWriter(string);
 		try {

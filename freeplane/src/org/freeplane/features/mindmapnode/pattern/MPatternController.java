@@ -34,6 +34,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
+import org.freeplane.core.enums.ResourceControllerProperties;
+import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MindIcon;
@@ -41,18 +43,18 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.url.UrlManager;
-import org.freeplane.core.util.Tools;
+import org.freeplane.core.util.LogTool;
 
 /**
  * @author Dimitry Polivaev
  */
 public class MPatternController implements IExtension {
-	public static MPatternController getController(final ModeController modeController) {
+	public static <T extends ExtensionContainer> MPatternController getController(final T modeController) {
 		return (MPatternController) modeController.getExtension(MPatternController.class);
 	}
 
-	public static void install(final ModeController modeController, final MPatternController patternController) {
-		modeController.addExtension(MPatternController.class, patternController);
+	public static void install(final ExtensionContainer modeController, final MPatternController patternController) {
+		modeController.putExtension(MPatternController.class, patternController);
 	}
 
 	final private ModeController modeController;
@@ -117,7 +119,7 @@ public class MPatternController implements IExtension {
 					success = true;
 				}
 				catch (final Exception e) {
-					Tools.logException(e);
+					LogTool.logException(e);
 				}
 				if (success) {
 					JOptionPane.showMessageDialog(null, "Successfully repaired the pattern file.", repairTitle,
@@ -169,7 +171,7 @@ public class MPatternController implements IExtension {
 		}
 		else {
 			System.out.println("User patterns file " + patternsFile + " not found.");
-			reader = new InputStreamReader(ResourceController.getResourceController().getResource("/xml/patterns.xml")
+			reader = new InputStreamReader(ResourceController.getResourceController().getResource(ResourceControllerProperties.XML_PATTERNS_XML)
 			    .openStream());
 		}
 		return reader;

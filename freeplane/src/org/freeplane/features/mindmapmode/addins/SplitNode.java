@@ -35,7 +35,7 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.util.FixedHTMLWriter;
-import org.freeplane.core.util.Tools;
+import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.MMapController;
@@ -154,10 +154,10 @@ public class SplitNode extends AFreeplaneAction {
 				}
 			}
 			catch (final IOException e) {
-				Tools.logException(e);
+				LogTool.logException(e);
 			}
 			catch (final BadLocationException e) {
-				Tools.logException(e);
+				LogTool.logException(e);
 			}
 			return parts;
 		}

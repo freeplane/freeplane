@@ -33,13 +33,13 @@ import javax.swing.JOptionPane;
 import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.ModuleNode;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
-import org.freeplane.core.util.Tools;
-import org.freeplane.core.util.Tools.BooleanHolder;
+import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
 import org.freeplane.features.common.text.TextController;
@@ -47,7 +47,6 @@ import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.attribute.MAttributeController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 import org.freeplane.main.application.FreeplaneSecurityManager;
-import org.freeplane.core.enums.*;
 /**
  * @author foltin
  */
@@ -69,10 +68,10 @@ class ScriptingEngine extends AFreeplaneAction {
 	 * @return true, if further scripts can be executed, false, if the user
 	 *         canceled or an error occurred.
 	 */
-	static boolean executeScript(final NodeModel node, final BooleanHolder pAlreadyAScriptExecuted, String script,
+	static boolean executeScript(final NodeModel node,  Boolean pAlreadyAScriptExecuted, String script,
 	                             final MModeController pMindMapController, final IErrorHandler pErrorHandler,
 	                             final PrintStream pOutStream, final HashMap pScriptCookies) {
-		if (!pAlreadyAScriptExecuted.getValue()) {
+		if (!pAlreadyAScriptExecuted) {
 			final int showResult = new OptionalDontShowMeAgainDialog(pMindMapController.getController()
 			    .getViewController().getJFrame(), pMindMapController.getController().getSelection().getSelected(),
 			    "really_execute_script", "confirmation", new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
@@ -82,7 +81,7 @@ class ScriptingEngine extends AFreeplaneAction {
 				return false;
 			}
 		}
-		pAlreadyAScriptExecuted.setValue(true);
+		pAlreadyAScriptExecuted = Boolean.TRUE;
 		final Binding binding = new Binding();
 		binding.setVariable("c", pMindMapController);
 		binding.setVariable("node", node);
@@ -126,10 +125,10 @@ class ScriptingEngine extends AFreeplaneAction {
 		Object value = null;
 		GroovyRuntimeException e1 = null;
 		Throwable e2 = null;
-		boolean filePerm = Tools.isPreferenceTrue(executeWithoutFileRestriction);
-		boolean networkPerm = Tools.isPreferenceTrue(executeWithoutNetworkRestriction);
-		boolean execPerm = Tools.isPreferenceTrue(executeWithoutExecRestriction);
-		if (Tools.isPreferenceTrue(signedScriptsWithoutRestriction)) {
+		boolean filePerm = Boolean.parseBoolean(executeWithoutFileRestriction);
+		boolean networkPerm = Boolean.parseBoolean(executeWithoutNetworkRestriction);
+		boolean execPerm = Boolean.parseBoolean(executeWithoutExecRestriction);
+		if (Boolean.parseBoolean(signedScriptsWithoutRestriction)) {
 			final boolean isSigned = new SignedScriptHandler().isScriptSigned(script, pOutStream);
 			if (isSigned) {
 				filePerm = true;
@@ -191,7 +190,7 @@ class ScriptingEngine extends AFreeplaneAction {
 			return false;
 		}
 		if (e2 != null) {
-			org.freeplane.core.util.Tools.logException(e2);
+			org.freeplane.core.util.LogTool.logException(e2);
 			pOutStream.print(e2.getMessage());
 			final String cause = ((e2.getCause() != null) ? e2.getCause().getMessage() : "");
 			final String message = ((e2.getMessage() != null) ? e2.getMessage() : "");
@@ -233,11 +232,11 @@ class ScriptingEngine extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final NodeModel node = getController().getMap().getRootNode();
-		final BooleanHolder booleanHolder = new BooleanHolder(false);
+		final Boolean booleanHolder = Boolean.FALSE;
 		performScriptOperation(node, booleanHolder);
 	}
 
-	private void performScriptOperation(final NodeModel node, final BooleanHolder pAlreadyAScriptExecuted) {
+	private void performScriptOperation(final NodeModel node, final Boolean pAlreadyAScriptExecuted) {
 		getController().getViewController().setWaitingCursor(true);
 		for (final Iterator iter = node.getModeController().getMapController().childrenUnfolded(node); iter.hasNext();) {
 			final NodeModel element = (NodeModel) iter.next();

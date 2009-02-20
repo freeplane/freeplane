@@ -55,7 +55,7 @@ import org.freeplane.core.filter.util.IListModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.Tools;
+import org.freeplane.core.util.LogTool;
 
 public class ListDialog extends JDialog {
 	private class AddAction implements ActionListener {
@@ -275,7 +275,7 @@ public class ListDialog extends JDialog {
 			return text;
 		}
 		catch (final BadLocationException e) {
-			Tools.logException(e);
+			LogTool.logException(e);
 			return "";
 		}
 	}

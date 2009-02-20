@@ -43,7 +43,6 @@ import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.Tools;
 import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;
 import org.freeplane.features.mindmapmode.text.AbstractEditNodeTextField;
 
@@ -124,106 +123,7 @@ public class EditNodeTextField extends AbstractEditNodeTextField {
 		final Color nodeTextBackground = nodeView.getTextBackground();
 		textfield.setBackground(nodeTextBackground);
 		textfield.setCaretColor(nodeTextColor);
-		final int EDIT = 1;
-		final int CANCEL = 2;
-		final Tools.IntHolder eventSource = new Tools.IntHolder();
-		eventSource.setValue(EDIT);
-		class TextFieldListener implements KeyListener, FocusListener, MouseListener, ComponentListener {
-			private boolean popupShown;
-
-			public void componentHidden(final ComponentEvent e) {
-				focusLost(null);
-			}
-
-			public void componentMoved(final ComponentEvent e) {
-				focusLost(null);
-			}
-
-			public void componentResized(final ComponentEvent e) {
-				focusLost(null);
-			}
-
-			public void componentShown(final ComponentEvent e) {
-				focusLost(null);
-			}
-
-			private void conditionallyShowPopup(final MouseEvent e) {
-				if (e.isPopupTrigger()) {
-					final JPopupMenu popupMenu = new EditPopupMenu(textfield);
-					popupShown = true;
-					popupMenu.show(e.getComponent(), e.getX(), e.getY());
-					e.consume();
-				}
-			}
-
-			public void focusGained(final FocusEvent e) {
-				popupShown = false;
-			}
-
-			public void focusLost(final FocusEvent e) {
-				if (!textfield.isVisible() || eventSource.getValue() == CANCEL || popupShown) {
-					return;
-				}
-				if (e == null) {
-					getEditControl().ok(textfield.getText());
-					hideMe();
-					eventSource.setValue(CANCEL);
-				}
-				else {
-					getEditControl().ok(textfield.getText());
-					hideMe();
-				}
-			}
-
-			public void keyPressed(final KeyEvent e) {
-				if (e.isAltDown() || e.isControlDown() || e.isMetaDown() || eventSource.getValue() == CANCEL) {
-					return;
-				}
-				boolean commit = true;
-				switch (e.getKeyCode()) {
-					case KeyEvent.VK_ESCAPE:
-						commit = false;
-					case KeyEvent.VK_ENTER:
-						e.consume();
-						eventSource.setValue(CANCEL);
-						if (commit) {
-							getEditControl().ok(textfield.getText());
-						}
-						else {
-							getEditControl().cancel();
-						}
-						hideMe();
-						nodeView.requestFocus();
-						break;
-					case KeyEvent.VK_SPACE:
-						e.consume();
-				}
-			}
-
-			public void keyReleased(final KeyEvent e) {
-			}
-
-			public void keyTyped(final KeyEvent e) {
-			}
-
-			public void mouseClicked(final MouseEvent e) {
-			}
-
-			public void mouseEntered(final MouseEvent e) {
-			}
-
-			public void mouseExited(final MouseEvent e) {
-			}
-
-			public void mousePressed(final MouseEvent e) {
-				conditionallyShowPopup(e);
-			}
-
-			public void mouseReleased(final MouseEvent e) {
-				conditionallyShowPopup(e);
-			}
-		}
-		final TextFieldListener textFieldListener = new TextFieldListener();
+		final TextFieldListener textFieldListener = new TextFieldListener(nodeView);
 		this.textFieldListener = textFieldListener;
 		textfield.addFocusListener(textFieldListener);
 		textfield.addKeyListener(textFieldListener);
@@ -244,5 +144,110 @@ public class EditNodeTextField extends AbstractEditNodeTextField {
 		redispatchKeyEvents(textfield, firstEvent);
 		component.addComponentListener(textFieldListener);
 		textfield.requestFocus();
+	}
+
+	class TextFieldListener implements KeyListener, FocusListener, MouseListener, ComponentListener {
+		private boolean popupShown;
+		final int EDIT = 1;
+		final int CANCEL = 2;
+		// TODO rladstaetter 18.02.2009 eventSource should be an enum
+		Integer eventSource = EDIT;
+		private NodeView nodeView;
+
+		public TextFieldListener(NodeView nodeView) {
+			this.nodeView = nodeView; 
+		}
+
+		public void componentHidden(final ComponentEvent e) {
+			focusLost(null);
+		}
+
+		public void componentMoved(final ComponentEvent e) {
+			focusLost(null);
+		}
+
+		public void componentResized(final ComponentEvent e) {
+			focusLost(null);
+		}
+
+		public void componentShown(final ComponentEvent e) {
+			focusLost(null);
+		}
+
+		private void conditionallyShowPopup(final MouseEvent e) {
+			if (e.isPopupTrigger()) {
+				final JPopupMenu popupMenu = new EditPopupMenu(textfield);
+				popupShown = true;
+				popupMenu.show(e.getComponent(), e.getX(), e.getY());
+				e.consume();
+			}
+		}
+
+		public void focusGained(final FocusEvent e) {
+			popupShown = false;
+		}
+
+		public void focusLost(final FocusEvent e) {
+			if (!textfield.isVisible() || eventSource == CANCEL || popupShown) {
+				return;
+			}
+			if (e == null) {
+				getEditControl().ok(textfield.getText());
+				hideMe();
+				eventSource = CANCEL;
+			}
+			else {
+				getEditControl().ok(textfield.getText());
+				hideMe();
+			}
+		}
+
+		public void keyPressed(final KeyEvent e) {
+			if (e.isAltDown() || e.isControlDown() || e.isMetaDown() || eventSource == CANCEL) {
+				return;
+			}
+			boolean commit = true;
+			switch (e.getKeyCode()) {
+				case KeyEvent.VK_ESCAPE:
+					commit = false;
+				case KeyEvent.VK_ENTER:
+					e.consume();
+					eventSource = CANCEL;
+					if (commit) {
+						getEditControl().ok(textfield.getText());
+					}
+					else {
+						getEditControl().cancel();
+					}
+					hideMe();
+					nodeView.requestFocus();
+					break;
+				case KeyEvent.VK_SPACE:
+					e.consume();
+			}
+		}
+
+		public void keyReleased(final KeyEvent e) {
+		}
+
+		public void keyTyped(final KeyEvent e) {
+		}
+
+		public void mouseClicked(final MouseEvent e) {
+		}
+
+		public void mouseEntered(final MouseEvent e) {
+		}
+
+		public void mouseExited(final MouseEvent e) {
+		}
+
+		public void mousePressed(final MouseEvent e) {
+			conditionallyShowPopup(e);
+		}
+
+		public void mouseReleased(final MouseEvent e) {
+			conditionallyShowPopup(e);
+		}
 	}
 }

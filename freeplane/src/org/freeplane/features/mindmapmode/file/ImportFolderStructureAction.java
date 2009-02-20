@@ -27,18 +27,24 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 
 import org.freeplane.core.Compat;
+import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.util.Tools;
+import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 
-class ImportFolderStructureAction extends AFreeplaneAction {
+class ImportFolderStructureAction extends AFreeplaneAction implements IFreeplaneAction{
+	
+	private static final String NAME = "importFolderStructure";
+
+	private static final long serialVersionUID = 2655627952066324326L;
+
 	public ImportFolderStructureAction(final Controller controller) {
 		super(controller, "import_folder_structure");
 	}
@@ -57,7 +63,7 @@ class ImportFolderStructureAction extends AFreeplaneAction {
 				/*redisplay=*/true);
 			}
 			catch (final Exception ex) {
-				Tools.logException(ex);
+				LogTool.logException(ex);
 			}
 			viewController.out("Folder structure imported.");
 		}
@@ -92,4 +98,8 @@ class ImportFolderStructureAction extends AFreeplaneAction {
 		}
 		getModeController().getMapController().setFolded(target, true);
 	}
+
+	public String getName() {
+	    return NAME;
+    }
 }

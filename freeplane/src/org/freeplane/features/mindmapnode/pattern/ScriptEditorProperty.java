@@ -26,8 +26,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 
+import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.resources.ui.IPropertyControl;
 import org.freeplane.core.resources.ui.OptionString;
 import org.freeplane.core.resources.ui.PropertyBean;
@@ -42,12 +42,12 @@ public class ScriptEditorProperty extends PropertyBean implements IPropertyContr
 
 	JButton mButton;
 	final JPopupMenu menu = new JPopupMenu();
-	final private ModeController mMindMapController;
+	final private ExtensionContainer mMindMapController;
 	String script;
 
 	/**
 	 */
-	public ScriptEditorProperty(final String name, final ModeController pMindMapController) {
+	public ScriptEditorProperty(final String name, final ExtensionContainer pMindMapController) {
 		super(name);
 		mMindMapController = pMindMapController;
 		mButton = new JButton();

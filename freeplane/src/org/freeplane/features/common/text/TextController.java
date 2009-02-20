@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.common.text;
 
+import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.io.ReadManager;
@@ -32,12 +33,12 @@ import org.freeplane.core.modecontroller.ModeController;
 public class TextController implements IExtension {
 	private static boolean firstRun = true;
 
-	public static TextController getController(final ModeController modeController) {
+	public static <T extends ExtensionContainer> TextController getController(final T modeController) {
 		return (TextController) modeController.getExtension(TextController.class);
 	}
 
 	public static void install(final ModeController modeController, final TextController textController) {
-		modeController.addExtension(TextController.class, textController);
+		modeController.putExtension(TextController.class, textController);
 		if (firstRun) {
 			FilterController.getController(modeController.getController()).getConditionFactory()
 			    .addConditionController(0, new NodeConditionController());

@@ -17,7 +17,6 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ControllerPopupMenuListener;
 import org.freeplane.core.ui.INodeMouseMotionListener;
-import org.freeplane.core.util.Tools;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.view.swing.map.MainView;
@@ -56,9 +55,9 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 	}
 
 	/** overwritten by property delayed_selection_enabled */
-	private static Tools.BooleanHolder delayedSelectionEnabled;
+	private static Boolean delayedSelectionEnabled;
 	/** time in ms, overwritten by property time_for_delayed_selection */
-	private static Tools.IntHolder timeForDelayedSelection;
+	private static Integer timeForDelayedSelection;
 	/**
 	 * The mouse has to stay in this region to enable the selection after a
 	 * given time.
@@ -88,8 +87,7 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 		         * if the new selection method is not enabled we put 0 to
 		         * get direct selection.
 		         */
-		        (DefaultNodeMouseMotionListener.delayedSelectionEnabled.getValue()) ? DefaultNodeMouseMotionListener.timeForDelayedSelection
-		            .getValue()
+		        (DefaultNodeMouseMotionListener.delayedSelectionEnabled) ? DefaultNodeMouseMotionListener.timeForDelayedSelection
 		                : 0);
 	}
 
@@ -131,8 +129,7 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 			mc.getController().getViewController().out(
 			    LinkController.getController(mc).getLinkShortText(node.getNodeView().getModel()));
 		}
-		if (controlRegionForDelayedSelection != null
-		        && DefaultNodeMouseMotionListener.delayedSelectionEnabled.getValue()) {
+		if (controlRegionForDelayedSelection != null && DefaultNodeMouseMotionListener.delayedSelectionEnabled) {
 			if (!controlRegionForDelayedSelection.contains(e.getPoint())) {
 				createTimer(e);
 			}
@@ -202,22 +199,19 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 	 * selection method is changed via the option menu.
 	 */
 	public void updateSelectionMethod() {
-		if (DefaultNodeMouseMotionListener.timeForDelayedSelection == null) {
-			DefaultNodeMouseMotionListener.timeForDelayedSelection = new Tools.IntHolder();
-		}
-		DefaultNodeMouseMotionListener.delayedSelectionEnabled = new Tools.BooleanHolder();
-		DefaultNodeMouseMotionListener.delayedSelectionEnabled.setValue(ResourceController.getResourceController().getProperty(
-		    "selection_method").equals("selection_method_direct") ? false : true);
+		DefaultNodeMouseMotionListener.delayedSelectionEnabled = (ResourceController.getResourceController()
+		    .getProperty("selection_method").equals("selection_method_direct") ? false : true);
 		/*
 		 * set time for delay to infinity, if selection_method equals
 		 * selection_method_by_click.
 		 */
-		if (ResourceController.getResourceController().getProperty("selection_method").equals("selection_method_by_click")) {
-			DefaultNodeMouseMotionListener.timeForDelayedSelection.setValue(Integer.MAX_VALUE);
+		if (ResourceController.getResourceController().getProperty("selection_method").equals(
+		    "selection_method_by_click")) {
+			DefaultNodeMouseMotionListener.timeForDelayedSelection = Integer.MAX_VALUE;
 		}
 		else {
-			DefaultNodeMouseMotionListener.timeForDelayedSelection.setValue(Integer.parseInt(ResourceController
-			    .getResourceController().getProperty("time_for_delayed_selection")));
+			DefaultNodeMouseMotionListener.timeForDelayedSelection = Integer.parseInt(ResourceController
+			    .getResourceController().getProperty("time_for_delayed_selection"));
 		}
 	}
 }

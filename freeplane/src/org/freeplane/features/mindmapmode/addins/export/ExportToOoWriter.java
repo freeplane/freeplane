@@ -42,7 +42,7 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ActionDescriptor;
-import org.freeplane.core.util.Tools;
+import org.freeplane.core.util.LogTool;
 
 /**
  * @author foltin
@@ -65,7 +65,7 @@ public class ExportToOoWriter extends ExportAction {
 			exportToOoWriter(chosenFile);
 		}
 		catch (final IOException ex) {
-			Tools.logException(ex);
+			LogTool.logException(ex);
 		}
 		getController().getViewController().setWaitingCursor(false);
 	}
@@ -90,7 +90,7 @@ public class ExportToOoWriter extends ExportAction {
 			return true;
 		}
 		catch (final Exception e) {
-			Tools.logException(e);
+			LogTool.logException(e);
 			return false;
 		}
 	}
@@ -117,7 +117,7 @@ public class ExportToOoWriter extends ExportAction {
 		catch (final Exception e) {
 			Logger.global.severe("File not found or could not be copied. " + "Was earching for " + fileName
 			        + " and should go to " + out);
-			Tools.logException(e);
+			LogTool.logException(e);
 			return false;
 		}
 	}
@@ -159,7 +159,7 @@ public class ExportToOoWriter extends ExportAction {
 			trans.transform(xmlSource, result);
 		}
 		catch (final Exception e) {
-			Tools.logException(e);
+			LogTool.logException(e);
 		};
 		return;
 	}

@@ -22,25 +22,35 @@ package org.freeplane.features.common.clipboard;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 
+import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.extension.ControllerUtil;
+import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.modecontroller.IMapSelection;
-import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.ui.AFreeplaneAction;
 
-class CopyAction extends AFreeplaneAction {
+class CopyAction extends AFreeplaneAction implements IFreeplaneAction {
+    private static final long serialVersionUID = 4816549133103377252L;
+	private static final String NAME = "copy";
+
 	public CopyAction(final Controller controller) {
-		super(controller, "copy", "/images/editcopy.png");
+		super(controller, NAME, "/images/editcopy.png");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final Controller controller = getController();
-		final ModeController modeController = getModeController();
+		final ExtensionContainer modeController = getModeController();
 		final IMapSelection selection = controller.getSelection();
 		if (selection != null) {
-			final Transferable copy = ClipboardController.getController(modeController).copy(selection);
+			ClipboardController clipboardController = (ClipboardController)modeController.getExtension(ClipboardController.class);
+			final Transferable copy = clipboardController.copy(selection);
 			if (copy != null) {
-				ClipboardController.getController(modeController).setClipboardContents(copy);
+				clipboardController.setClipboardContents(copy);
 			}
 		}
 	}
+
+	public String getName() {
+	    return NAME;
+    }
 }

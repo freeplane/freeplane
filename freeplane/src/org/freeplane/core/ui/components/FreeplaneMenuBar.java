@@ -29,6 +29,7 @@ import javax.swing.KeyStroke;
  * Moreover, the StructuredMenuHolder of all menus are hold here.
  */
 public class FreeplaneMenuBar extends JMenuBar {
+    private static final long serialVersionUID = -998771495108665656L;
 	public static final String EDIT_MENU = FreeplaneMenuBar.MENU_BAR_PREFIX + "/edit";
 	public static final String EXTRAS_MENU = FreeplaneMenuBar.MENU_BAR_PREFIX + "/extras";
 	public static final String FILE_MENU = FreeplaneMenuBar.MENU_BAR_PREFIX + "/file";
@@ -45,7 +46,6 @@ public class FreeplaneMenuBar extends JMenuBar {
 	public FreeplaneMenuBar() {
 	}
 
-	// make method public
 	@Override
 	public boolean processKeyBinding(final KeyStroke ks, final KeyEvent e, final int condition, final boolean pressed) {
 		return super.processKeyBinding(ks, e, condition, pressed);

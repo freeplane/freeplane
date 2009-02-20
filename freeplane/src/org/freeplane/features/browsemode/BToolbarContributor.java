@@ -31,7 +31,7 @@ import org.freeplane.core.model.MapModel;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.PersistentEditableComboBox;
-import org.freeplane.core.util.Tools;
+import org.freeplane.core.util.LogTool;
 
 public class BToolbarContributor implements IMenuContributor, IMapTitleChangeListener {
 	private static final String BROWSE_URL_STORAGE_KEY = "browse_url_storage";
@@ -51,7 +51,7 @@ public class BToolbarContributor implements IMenuContributor, IMapTitleChangeLis
 					modeController.getMapController().newMap(new URL(urlText));
 				}
 				catch (final Exception e1) {
-					Tools.logException(e1);
+					LogTool.logException(e1);
 					controller.getController().errorMessage(e1);
 				}
 			}

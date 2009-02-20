@@ -97,12 +97,12 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 			iconElement.setAttribute("BUILTIN", ((MindIcon) node.getIcons().get(i)).getName());
 			xmlNode.addChild(iconElement);
 		}
-		writer.addExtensionAttributes(node, node.getExtensions());
+		writer.addExtensionAttributes(node, node.getExtensions().values());
 	}
 
 	public void writeContent(final ITreeWriter writer, final Object content, final String tag) throws IOException {
 		final NodeModel node = (NodeModel) content;
-		writer.addExtensionNodes(node, node.getExtensions());
+		writer.addExtensionNodes(node, node.getExtensions().values());
 		for (int i = 0; i < xmlNode.getChildrenCount(); i++) {
 			writer.addElement(null, xmlNode.getChildAtIndex(i));
 		}

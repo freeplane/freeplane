@@ -80,7 +80,7 @@ public class NodeAttributeTableModel extends AbstractTableModel implements IAttr
 		}
 	};
 	static private ImageIcon noteIcon = null;
-	private static boolean SHOW_ATTRIBUTE_ICON = ResourceController.getResourceController().getBoolProperty(
+	private static boolean SHOW_ATTRIBUTE_ICON = ResourceController.getResourceController().getBooleanProperty(
 	    "el__show_icon_for_attributes");
 	private static final String STATE_ICON = "AttributeExist";
 
@@ -91,7 +91,7 @@ public class NodeAttributeTableModel extends AbstractTableModel implements IAttr
 			return attributeModel;
 		}
 		attributeModel = new NodeAttributeTableModel(node);
-		node.addExtension(attributeModel);
+		node.putExtension(attributeModel);
 		if (node.areViewsEmpty()) {
 			return attributeModel;
 		}

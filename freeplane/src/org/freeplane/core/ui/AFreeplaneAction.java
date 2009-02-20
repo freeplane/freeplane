@@ -81,6 +81,7 @@ public abstract class AFreeplaneAction extends AbstractAction {
 		return annotation.checkOnPopup();
 	}
 
+	// TODO ARCH rladstaetter 18.02.2009 actions should not have a dependency on the controller
 	final private Controller controller;
 	private boolean selected;
 	private boolean visible;

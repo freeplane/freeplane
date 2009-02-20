@@ -208,7 +208,7 @@ public class EditNodeBase {
 	}
 
 	protected boolean binOptionIsTrue(final String option) {
-		return ResourceController.getResourceController().getBoolProperty(option);
+		return ResourceController.getResourceController().getBooleanProperty(option);
 	}
 
 	public void closeEdit() {

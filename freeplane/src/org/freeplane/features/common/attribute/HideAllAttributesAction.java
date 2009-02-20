@@ -23,12 +23,15 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
+import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 
-class HideAllAttributesAction extends AbstractAction {
+class HideAllAttributesAction extends AbstractAction implements IFreeplaneAction {
+    private static final String NAME = "hideAllAttributes";
+	private static final long serialVersionUID = 3322300017801009807L;
 	final private Controller controller;
 
 	/**
@@ -50,4 +53,8 @@ class HideAllAttributesAction extends AbstractAction {
 			attributes.setAttributeViewType(AttributeTableLayoutModel.HIDE_ALL);
 		}
 	}
+
+	public String getName() {
+	    return NAME;
+    }
 }

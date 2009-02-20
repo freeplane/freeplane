@@ -24,12 +24,15 @@ import java.net.URL;
 
 import javax.swing.AbstractAction;
 
+import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.core.util.Tools;
+import org.freeplane.core.util.LogTool;
 
-class KeyDocumentationAction extends AbstractAction {
+class KeyDocumentationAction extends AbstractAction implements IFreeplaneAction{
+	private static final String NAME = "keyDocumentation";
+    private static final long serialVersionUID = 3000552480373959869L;
 	final private Controller controller;
 
 	public KeyDocumentationAction(final Controller controller) {
@@ -49,8 +52,12 @@ class KeyDocumentationAction extends AbstractAction {
 			}
 		}
 		catch (final Exception e2) {
-			Tools.logException(e2);
+			LogTool.logException(e2);
 			return;
 		}
 	}
+
+	public String getName() {
+	    return NAME;
+    }
 }

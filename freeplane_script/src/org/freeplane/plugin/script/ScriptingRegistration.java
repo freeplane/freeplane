@@ -23,7 +23,9 @@ package org.freeplane.plugin.script;
 import java.io.PrintStream;
 import java.util.HashMap;
 
+import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.enums.ResourceControllerProperties;
+import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
@@ -31,8 +33,7 @@ import org.freeplane.core.resources.ui.OptionPanelBuilder;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.HtmlTools;
-import org.freeplane.core.util.Tools;
-import org.freeplane.core.util.Tools.BooleanHolder;
+import org.freeplane.core.util.LogTool;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapnode.pattern.IExternalPatternAction;
 import org.freeplane.features.mindmapnode.pattern.Pattern;
@@ -70,7 +71,7 @@ public class ScriptingRegistration implements IExternalPatternAction {
 
 		public boolean executeScript(final int pIndex, final PrintStream pOutStream, final IErrorHandler pErrorHandler) {
 			return ScriptingEngine.executeScript(modeController.getMapController().getSelectedNode(),
-			    new BooleanHolder(true), mScript, modeController, pErrorHandler, pOutStream, getScriptCookies());
+			    Boolean.TRUE, mScript, modeController, pErrorHandler, pOutStream, getScriptCookies());
 		}
 
 		public int getAmountOfScripts() {
@@ -86,7 +87,7 @@ public class ScriptingRegistration implements IExternalPatternAction {
 		}
 
 		public boolean isDirty() {
-			return !Tools.safeEquals(mScript, mOriginalScript);
+			return !StringUtils.equals(mScript, mOriginalScript);
 		}
 
 		public void setScript(final int pIndex, final ScriptHolder pScript) {
@@ -113,7 +114,7 @@ public class ScriptingRegistration implements IExternalPatternAction {
 
 	public void act(final NodeModel node, final Pattern pattern) {
 		if (pattern.getPatternScript() != null && pattern.getPatternScript().getValue() != null) {
-			ScriptingEngine.executeScript(node, new BooleanHolder(false), HtmlTools.unescapeHTMLUnicodeEntity(pattern
+			ScriptingEngine.executeScript(node, Boolean.FALSE, HtmlTools.unescapeHTMLUnicodeEntity(pattern
 			    .getPatternScript().getValue()), modeController, new IErrorHandler() {
 				public void gotoLine(final int pLineNumber) {
 				}
@@ -143,7 +144,7 @@ public class ScriptingRegistration implements IExternalPatternAction {
 	}
 
 	private void register() {
-		modeController.addExtension(IExternalPatternAction.class, this);
+		modeController.putExtension(IExternalPatternAction.class, this);
 		mScriptEditorStarter = new ScriptEditorProperty.IScriptEditorStarter() {
 			public String startEditor(final String pScriptInput) {
 				final PatternScriptModel patternScriptModel = new PatternScriptModel(pScriptInput);
@@ -153,7 +154,7 @@ public class ScriptingRegistration implements IExternalPatternAction {
 				return patternScriptModel.getScript();
 			}
 		};
-		modeController.addExtension(ScriptEditorProperty.IScriptEditorStarter.class, mScriptEditorStarter);
+		modeController.putExtension(ScriptEditorProperty.IScriptEditorStarter.class, mScriptEditorStarter);
 		addPropertiesToOptionPanel();
 		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
 		menuBuilder.addAnnotatedAction(new ScriptEditor(modeController.getController(), this));

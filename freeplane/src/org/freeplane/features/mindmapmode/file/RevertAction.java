@@ -29,12 +29,13 @@ import java.io.StringWriter;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.Compat;
+import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.util.Tools;
+import org.freeplane.core.util.LogTool;
 
 /**
  * Reverts the map to the saved version. In Xml, the old map is stored as xml
@@ -46,7 +47,11 @@ import org.freeplane.core.util.Tools;
  *
  * @author foltin
  */
-class RevertAction extends AFreeplaneAction {
+class RevertAction extends AFreeplaneAction implements IFreeplaneAction{
+
+	private static final String NAME = "revertAction";
+	private static final long serialVersionUID = 1251122535286448191L;
+
 	private static class RevertActionInstance {
 		final private Controller controller;
 		private String filePrefix;
@@ -80,7 +85,7 @@ class RevertAction extends AFreeplaneAction {
 				}
 			}
 			catch (final Exception e) {
-				Tools.logException(e);
+				LogTool.logException(e);
 			}
 		}
 
@@ -132,7 +137,7 @@ class RevertAction extends AFreeplaneAction {
 			doAction.act();
 		}
 		catch (final IOException e) {
-			Tools.logException(e);
+			LogTool.logException(e);
 		}
 	}
 
@@ -176,4 +181,8 @@ class RevertAction extends AFreeplaneAction {
 		final RevertActionInstance doAction = createRevertXmlAction(xmlFileContent, null, null);
 		doAction.act();
 	}
+
+	public String getName() {
+	    return NAME;
+    }
 }

@@ -25,6 +25,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -52,19 +53,22 @@ import org.freeplane.n3.nanoxml.XMLParseException;
  * format:"mode\:key",ie."Mindmap\:/home/joerg/freeplane.mm"
  */
 public class LastOpenedList implements IMapSelectionListener {
+	private static final String SEPARATOR = ";";
 	/**
 	 * Contains Restore strings.
 	 */
-	final private List lastOpenedList = new LinkedList();
+	final private List<String> lastOpenedList = new LinkedList<String>();
 	final private int maxEntries;
 	/**
 	 * Contains Restore string => map name (map.toString()).
 	 */
-	final private Map mRestorableToMapName = new HashMap();
+	final private Map<String,String> mRestorableToMapName = new HashMap<String,String>();
 
 	LastOpenedList(final String restored, final int maxEntries) {
 		this.maxEntries = maxEntries;
-		load(restored);
+		if (restored != null ) {
+			lastOpenedList.addAll(Arrays.asList(restored.split(SEPARATOR)));
+		}
 	}
 
 	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
@@ -85,33 +89,20 @@ public class LastOpenedList implements IMapSelectionListener {
 		return lastOpenedList.listIterator();
 	}
 
-	/**
-	 *
-	 */
-	void load(final String data) {
-		if (data != null) {
-			final StringTokenizer token = new StringTokenizer(data, ";");
-			while (token.hasMoreTokens()) {
-				lastOpenedList.add(token.nextToken());
-			}
-		}
-	}
 
 	void mapOpened(final MapModel map) {
-		if (map == null) {
-			return;
-		}
-		final String restoreString = UrlManager.getController(map.getModeController()).getRestoreable(map);
-		if (restoreString == null) {
-			return;
-		}
-		if (lastOpenedList.contains(restoreString)) {
-			lastOpenedList.remove(restoreString);
-		}
-		lastOpenedList.add(0, restoreString);
-		mRestorableToMapName.put(restoreString, map.getTitle());
-		while (lastOpenedList.size() > maxEntries) {
-			lastOpenedList.remove(lastOpenedList.size() - 1);
+		if (map != null) {
+			final String restoreString = UrlManager.getController(map.getModeController()).getRestoreable(map);
+			if (restoreString != null) {
+				if (lastOpenedList.contains(restoreString)) {
+					lastOpenedList.remove(restoreString);
+				}
+				lastOpenedList.add(0, restoreString);
+				mRestorableToMapName.put(restoreString, map.getTitle());
+				while (lastOpenedList.size() > maxEntries) {
+					lastOpenedList.remove(lastOpenedList.size() - 1);
+				}
+			}
 		}
 	}
 
@@ -131,13 +122,12 @@ public class LastOpenedList implements IMapSelectionListener {
 		}
 	}
 
-	/** fc, 8.8.2004: This method returns a string representation of this class. */
-	String save() {
-		String str = new String();
-		for (final ListIterator it = listIterator(); it.hasNext();) {
-			str = str.concat((String) it.next() + ";");
+	String getStringRep() {
+		StringBuilder strBldr = new StringBuilder();
+		for (String s : lastOpenedList) {
+			strBldr.append(s + SEPARATOR);
 		}
-		return str;
+		return strBldr.toString();
 	}
 
 	public void updateMenus(final Controller controller, final MenuBuilder menuBuilder) {
@@ -148,8 +138,8 @@ public class LastOpenedList implements IMapSelectionListener {
 			final JMenuItem item = new JMenuItem(key);
 			if (firstElement) {
 				firstElement = false;
-				item.setAccelerator(KeyStroke.getKeyStroke(ResourceController.getResourceController().getAdjustableProperty(
-				    "keystroke_open_first_in_history")));
+				item.setAccelerator(KeyStroke.getKeyStroke(ResourceController.getResourceController()
+				    .getAdjustableProperty("keystroke_open_first_in_history")));
 			}
 			final ActionListener lastOpenedActionListener = new LastOpenedActionListener(controller, this);
 			item.addActionListener(lastOpenedActionListener);

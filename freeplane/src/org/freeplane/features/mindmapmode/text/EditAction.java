@@ -26,6 +26,7 @@ import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
+import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.frame.ViewController;
@@ -35,7 +36,6 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.core.util.HtmlTools;
-import org.freeplane.core.util.Tools;
 import org.freeplane.features.common.text.IMainView;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.MMapController;
@@ -104,9 +104,9 @@ class EditAction extends AFreeplaneAction {
 			useRichTextInNewLongNodes = (showResult == JOptionPane.OK_OPTION) ? "true" : "false";
 		}
 		final boolean editHtml = isHtmlNode
-		        || (editDefinitivelyLong && Tools.safeEquals(useRichTextInNewLongNodes, "true"));
-		final boolean editInternalWysiwyg = editHtml && Tools.safeEquals(htmlEditingOption, "internal-wysiwyg");
-		final boolean editExternal = editHtml && Tools.safeEquals(htmlEditingOption, "external");
+		        || (editDefinitivelyLong && StringUtils.equals(useRichTextInNewLongNodes, "true"));
+		final boolean editInternalWysiwyg = editHtml && StringUtils.equals(htmlEditingOption, "internal-wysiwyg");
+		final boolean editExternal = editHtml && StringUtils.equals(htmlEditingOption, "external");
 		if (editHtml && !isHtmlNode) {
 			text = HtmlTools.plainToHTML(text);
 		}

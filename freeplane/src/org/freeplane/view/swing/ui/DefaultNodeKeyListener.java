@@ -32,8 +32,8 @@ public class DefaultNodeKeyListener implements KeyListener {
 		down = ResourceController.getResourceController().getAdjustableProperty("keystroke_move_down");
 		left = ResourceController.getResourceController().getAdjustableProperty("keystroke_move_left");
 		right = ResourceController.getResourceController().getAdjustableProperty("keystroke_move_right");
-		disabledKeyType = ResourceController.getResourceController().getBoolProperty("disable_key_type");
-		keyTypeAddsNew = ResourceController.getResourceController().getBoolProperty("key_type_adds_new");
+		disabledKeyType = ResourceController.getResourceController().getBooleanProperty("disable_key_type");
+		keyTypeAddsNew = ResourceController.getResourceController().getBooleanProperty("key_type_adds_new");
 		keyStrokeUp = KeyStroke.getKeyStroke(up);
 		keyStrokeDown = KeyStroke.getKeyStroke(down);
 		keyStrokeLeft = KeyStroke.getKeyStroke(left);

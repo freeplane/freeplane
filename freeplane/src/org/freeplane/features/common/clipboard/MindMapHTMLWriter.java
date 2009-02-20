@@ -201,7 +201,7 @@ class MindMapHTMLWriter {
 		writeFoldingCode = (htmlExportFoldingOption.equals("html_export_fold_currently_folded") && rootNodeOfBranch
 		    .hasFoldedStrictDescendant())
 		        || htmlExportFoldingOption.equals("html_export_fold_all");
-		ResourceController.getResourceController().getBoolProperty("export_icons_in_html");
+		ResourceController.getResourceController().getBooleanProperty("export_icons_in_html");
 		fileout
 		    .write("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">"
 		            + MindMapHTMLWriter.el + "<html>" + MindMapHTMLWriter.el + "<head>" + MindMapHTMLWriter.el);
@@ -260,7 +260,7 @@ class MindMapHTMLWriter {
 		if (!fontStyle.equals("")) {
 			fileout.write("<span style=\"" + fontStyle + "\">");
 		}
-		if (ResourceController.getResourceController().getBoolProperty("export_icons_in_html")) {
+		if (ResourceController.getResourceController().getBooleanProperty("export_icons_in_html")) {
 			writeIcons(model);
 		}
 		writeModelContent(model);

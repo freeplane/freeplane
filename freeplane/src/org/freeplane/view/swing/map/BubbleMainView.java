@@ -27,6 +27,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Stroke;
 
+import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
@@ -130,7 +131,7 @@ class BubbleMainView extends MainView {
 		}
 		paintSelected(g);
 		paintDragOver(g);
-		final Color edgeColor = EdgeController.getController(model.getModeController()).getColor(model);
+		final Color edgeColor = EdgeController.getController((ExtensionContainer)model.getModeController()).getColor(model);
 		g.setColor(edgeColor);
 		g.setStroke(BubbleMainView.DEF_STROKE);
 		g.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 10, 10);

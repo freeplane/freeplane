@@ -45,7 +45,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.url.UrlManager;
-import org.freeplane.core.util.Tools;
+import org.freeplane.core.util.LogTool;
 import org.freeplane.features.mindmapmode.file.MFileManager;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
@@ -54,7 +54,7 @@ import org.freeplane.n3.nanoxml.XMLParseException;
  */
 public class MMapController extends MapController {
 	static private DeleteAction delete;
-	private static final String EXPECTED_START_STRINGS[] = { "<map version=\"" + Controller.XML_VERSION + "\"",
+	private static final String EXPECTED_START_STRINGS[] = { "<map version=\"" + ResourceControllerProperties.XML_VERSION + "\"",
 	        "<map version=\"0.7.1\"" };
 	private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_version_updater.xslt";
 	public static final int NEW_CHILD = 2;
@@ -185,7 +185,7 @@ public class MMapController extends MapController {
 				}
 			}
 			catch (final Exception e) {
-				Tools.logException(e);
+				LogTool.logException(e);
 				UITools.informationMessage(getController().getViewController().getFrame(), UrlManager
 				    .expandPlaceholders(getModeController().getText("locking_failed_by_open"), file.getName()));
 				((MMapModel) map).setReadOnly(true);
@@ -235,7 +235,7 @@ public class MMapController extends MapController {
 		catch (final Exception ex) {
 			final String errorMessage = "Error while parsing file:" + ex;
 			System.err.println(errorMessage);
-			Tools.logException(ex);
+			LogTool.logException(ex);
 			final NodeModel result = new NodeModel(map);
 			result.setText(errorMessage);
 			return result;
@@ -308,7 +308,7 @@ public class MMapController extends MapController {
 			in.close();
 		}
 		catch (final Exception e) {
-			Tools.logException(e);
+			LogTool.logException(e);
 			return new StringBuffer();
 		}
 		return buffer;

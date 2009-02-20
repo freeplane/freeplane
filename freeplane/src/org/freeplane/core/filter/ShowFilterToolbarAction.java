@@ -25,11 +25,17 @@ import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JToggleButton;
 
+import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.SelectableAction;
 
 @SelectableAction
-class ShowFilterToolbarAction extends AbstractAction {
+class ShowFilterToolbarAction extends AbstractAction implements IFreeplaneAction{
+	private static final String NAME = "showFilterToolbarAction";
+	/**
+     * 
+     */
+    private static final long serialVersionUID = -6790731419014812473L;
 	final private FilterController filterController;
 
 	/**
@@ -49,4 +55,8 @@ class ShowFilterToolbarAction extends AbstractAction {
 			filterController.showFilterToolbar(false);
 		}
 	}
+
+	public String getName() {
+	    return NAME;
+    }
 }

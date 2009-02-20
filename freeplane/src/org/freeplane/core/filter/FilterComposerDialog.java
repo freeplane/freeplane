@@ -55,13 +55,13 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.filter.condition.ConditionNotSatisfiedDecorator;
 import org.freeplane.core.filter.condition.ConjunctConditions;
 import org.freeplane.core.filter.condition.DisjunctConditions;
 import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.filter.condition.IElementaryConditionController;
 import org.freeplane.core.filter.util.ExtendedComboBoxModel;
-import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceController;
@@ -80,12 +80,6 @@ public class FilterComposerDialog extends JDialog {
 	private class AddElementaryConditionAction extends AFreeplaneAction {
 		private static final long serialVersionUID = 6750527357555878788L;
 
-		/*
-		 * (non-Javadoc)
-		 * @see
-		 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent
-		 * )
-		 */
 		AddElementaryConditionAction(final Controller controller) {
 			super(controller, "filter_add");
 		}
@@ -162,12 +156,6 @@ public class FilterComposerDialog extends JDialog {
 		public void intervalRemoved(final ListDataEvent e) {
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * @see
-		 * javax.swing.event.ListSelectionListener#valueChanged(javax.swing.
-		 * event.ListSelectionEvent)
-		 */
 		public void valueChanged(final ListSelectionEvent e) {
 			if (elementaryConditionList.getMinSelectionIndex() == -1) {
 				btnNot.setEnabled(false);
@@ -193,17 +181,9 @@ public class FilterComposerDialog extends JDialog {
 	}
 
 	private class CreateConjunctConditionAction extends AFreeplaneAction {
-		/**
-		 * 
-		 */
+
 		private static final long serialVersionUID = 5016454533709313766L;
 
-		/*
-		 * (non-Javadoc)
-		 * @see
-		 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent
-		 * )
-		 */
 		CreateConjunctConditionAction() {
 			super(controller, "filter_and");
 		}
@@ -225,20 +205,13 @@ public class FilterComposerDialog extends JDialog {
 	}
 
 	private class CreateDisjunctConditionAction extends AFreeplaneAction {
-		/**
-		 * 
-		 */
+
 		private static final long serialVersionUID = -8191519725717206315L;
 
 		public String getName() {
 			return getClass().getSimpleName();
 		}
-		/*
-		 * (non-Javadoc)
-		 * @see
-		 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent
-		 * )
-		 */
+
 		CreateDisjunctConditionAction() {
 			super(controller, "filter_or");
 		}
@@ -265,12 +238,6 @@ public class FilterComposerDialog extends JDialog {
 			return getClass().getSimpleName();
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * @see
-		 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent
-		 * )
-		 */
 		CreateNotSatisfiedConditionAction() {
 			super(controller, "filter_not");
 		}
@@ -331,12 +298,6 @@ public class FilterComposerDialog extends JDialog {
 	}
 
 	private class FilteredPropertyChangeListener implements ItemListener {
-		/*
-		 * (non-Javadoc)
-		 * @see
-		 * javax.swing.event.ListSelectionListener#valueChanged(javax.swing.
-		 * event.ListSelectionEvent)
-		 */
 		public void itemStateChanged(final ItemEvent e) {
 			if (e.getStateChange() == ItemEvent.SELECTED) {
 				final Object selectedProperty = filteredPropertiesComponent.getSelectedItem();
@@ -595,7 +556,7 @@ public class FilterComposerDialog extends JDialog {
 	}
 
 	protected JFileChooser getFileChooser() {
-		final ModeController modeController = filterController.getMap().getModeController();
+		final ExtensionContainer modeController = filterController.getMap().getModeController();
 		final JFileChooser chooser = UrlManager.getController(modeController).getFileChooser(
 		    MindMapFilterFileFilter.filter);
 		return chooser;

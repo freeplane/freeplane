@@ -38,14 +38,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import org.apache.commons.lang.StringUtils;
+import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.frame.IMapViewChangeListener;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.modecontroller.IMapSelection;
-import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.util.Tools;
 
 /**
  * Manages the list of MapViews. As this task is very complex, I exported it
@@ -200,7 +200,7 @@ public class MapViewController implements IMapViewManager {
 		MapView mapViewCandidate = null;
 		for (final Iterator iterator = mapViewVector.iterator(); iterator.hasNext();) {
 			final MapView mapMod = (MapView) iterator.next();
-			if (Tools.safeEquals(mapViewDisplayName, mapMod.getName())) {
+			if (StringUtils.equals(mapViewDisplayName, mapMod.getName())) {
 				mapViewCandidate = mapMod;
 				break;
 			}
@@ -435,7 +435,7 @@ public class MapViewController implements IMapViewManager {
 	/* (non-Javadoc)
 	 * @see org.freeplane.core.frame.IMapViewController#newMapView(org.freeplane.core.model.MapModel, org.freeplane.core.modecontroller.ModeController)
 	 */
-	public void newMapView(final MapModel map, final ModeController modeController) {
+	public void newMapView(final MapModel map, final ExtensionContainer modeController) {
 		final MapView mapView = new MapView(map);
 		addToOrChangeInMapViews(mapView.getName(), mapView);
 		listener.mapViewCreated(mapView);

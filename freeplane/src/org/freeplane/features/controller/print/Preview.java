@@ -104,7 +104,6 @@ class Preview extends JComponent {
 			g2d.drawImage(previewPageImage, 0, 0, this);
 		}
 		catch (final PrinterException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

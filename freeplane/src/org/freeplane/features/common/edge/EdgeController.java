@@ -22,6 +22,7 @@ package org.freeplane.features.common.edge;
 import java.awt.Color;
 
 import org.freeplane.core.enums.ResourceControllerProperties;
+import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
@@ -54,12 +55,16 @@ public class EdgeController implements IExtension {
 	private static Color standardColor = null;
 	private static String standardStyle = null;
 
+	public static EdgeController getController(final ExtensionContainer modeController) {
+		return (EdgeController) modeController.getExtension(EdgeController.class);
+	}
+
 	public static EdgeController getController(final ModeController modeController) {
 		return (EdgeController) modeController.getExtension(EdgeController.class);
 	}
 
-	public static void install(final ModeController modeController, final EdgeController edgeController) {
-		modeController.addExtension(EdgeController.class, edgeController);
+	public static void install(final ExtensionContainer modeController, final EdgeController edgeController) {
+		modeController.putExtension(EdgeController.class, edgeController);
 	}
 
 	final private ExclusivePropertyChain<Color, NodeModel> colorHandlers;
@@ -168,7 +173,7 @@ public class EdgeController implements IExtension {
 		return widthHandlers.removeGetter(key);
 	}
 
-	private void updateStandards(final ModeController controller) {
+	private void updateStandards(final ExtensionContainer controller) {
 		if (standardColor == null) {
 			final String stdColor = ResourceController.getResourceController().getProperty(
 			    ResourceControllerProperties.RESOURCES_EDGE_COLOR);

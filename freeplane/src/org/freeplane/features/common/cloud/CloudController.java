@@ -24,6 +24,7 @@ import java.awt.Color;
 import java.awt.Stroke;
 
 import org.freeplane.core.enums.ResourceControllerProperties;
+import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
@@ -58,8 +59,8 @@ public class CloudController implements IExtension {
 		return (CloudController) modeController.getExtension(CloudController.class);
 	}
 
-	public static void install(final ModeController modeController, final CloudController cloudController) {
-		modeController.addExtension(CloudController.class, cloudController);
+	public static void install(final ExtensionContainer modeController, final CloudController cloudController) {
+		modeController.putExtension(CloudController.class, cloudController);
 	}
 
 	final private ExclusivePropertyChain<Color, NodeModel> colorHandlers;
@@ -110,7 +111,7 @@ public class CloudController implements IExtension {
 		return colorHandlers.removeGetter(key);
 	}
 
-	private void updateStandards(final ModeController controller) {
+	private void updateStandards(final ExtensionContainer controller) {
 		if (standardColor == null) {
 			final String stdColor = ResourceController.getResourceController().getProperty(
 			    ResourceControllerProperties.RESOURCES_CLOUD_COLOR);

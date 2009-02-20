@@ -27,20 +27,24 @@ import java.net.URL;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.Compat;
+import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.extension.ControllerUtil;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.url.UrlManager;
-import org.freeplane.core.util.Tools;
+import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.features.mindmapmode.clipboard.MClipboardController;
 
-class ImportLinkedBranchAction extends AFreeplaneAction {
+class ImportLinkedBranchAction extends AFreeplaneAction implements IFreeplaneAction{
+    private static final long serialVersionUID = -6730969236999381143L;
+
 	public ImportLinkedBranchAction(final Controller controller) {
 		super(controller, "import_linked_branch");
 	}
@@ -64,16 +68,20 @@ class ImportLinkedBranchAction extends AFreeplaneAction {
 		catch (final MalformedURLException ex) {
 			JOptionPane
 			    .showMessageDialog(viewController.getMapView(), "Couldn't create valid URL for:" + map.getFile());
-			Tools.logException(ex);
+			LogTool.logException(ex);
 			return;
 		}
 		try {
 			final NodeModel node = ((MMapController) modeController.getMapController()).loadTree(map, new File(absolute
 			    .getFile()));
-			((MClipboardController) ClipboardController.getController(modeController)).paste(node, selected);
+			((MClipboardController) modeController.getClipboardController()).paste(node, selected);
 		}
 		catch (final Exception ex) {
 			UrlManager.getController(modeController).handleLoadingException(ex);
 		}
 	}
+
+	public String getName() {
+	    return "importLinkedBranch";
+    }
 }

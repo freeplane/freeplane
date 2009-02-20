@@ -24,11 +24,14 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 
+import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 
-class NavigationNextMapAction extends AbstractAction {
+class NavigationNextMapAction extends AbstractAction implements IFreeplaneAction{
+    private static final String NAME = "navigationNextMap";
+	private static final long serialVersionUID = 4289019628489694112L;
 	final private Controller controller;
 
 	NavigationNextMapAction(final Controller controller) {
@@ -41,4 +44,8 @@ class NavigationNextMapAction extends AbstractAction {
 	public void actionPerformed(final ActionEvent event) {
 		controller.getMapViewManager().nextMapView();
 	}
+
+	public String getName() {
+	    return NAME;
+    }
 }

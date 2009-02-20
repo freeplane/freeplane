@@ -23,8 +23,8 @@ import java.io.File;
 
 import javax.swing.filechooser.FileFilter;
 
+import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.url.UrlManager;
-import org.freeplane.core.util.Tools;
 
 /**
  * @author Dimitry Polivaev
@@ -45,7 +45,7 @@ public class ExportFilter extends FileFilter {
 			return true;
 		}
 		final String extension = UrlManager.getExtension(f.getName());
-		return Tools.safeEqualsIgnoreCase(extension, type);
+		return StringUtils.equalsIgnoreCase(extension, type);
 	}
 
 	@Override

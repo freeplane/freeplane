@@ -36,6 +36,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.resources.ui.BooleanProperty;
+import org.freeplane.core.util.LogTool;
 
 /**
  * @author Dimitry Polivaev
@@ -47,8 +48,7 @@ public abstract class ResourceController {
 	/**
 	 * Removes the "TranslateMe" sign from the end of not translated texts.
 	 */
-	// TODO rladstaetter 15.02.2009 method should have no need for existance! the build process should filter out resources not fit for production.
-	@Deprecated
+	// TODO ARCH rladstaetter 15.02.2009 method should have no need for existance! the build process should filter out resources not fit for production.
 	public static String removeTranslateComment(String inputString) {
 		if (inputString != null && inputString.endsWith(FreeplaneResourceBundle.POSTFIX_TRANSLATE_ME)) {
 			inputString = inputString.substring(0, inputString.length()
@@ -91,7 +91,7 @@ public abstract class ResourceController {
 		resources.reloadLanguage();
 	}
 
-	public NamedObject createTranslatedString(final String key) {
+	public static NamedObject createTranslatedString(final String key) {
 		final String fs = getText(key);
 		return new NamedObject(key, fs);
 	}
@@ -126,7 +126,7 @@ public abstract class ResourceController {
 		return value;
 	}
 
-	public boolean getBoolProperty(final String key) {
+	public boolean getBooleanProperty(final String key) {
 		return Boolean.parseBoolean(getProperty(key));
 	}
 
@@ -140,26 +140,19 @@ public abstract class ResourceController {
 	/**
 	 */
 	public String getDefaultFontFamilyName() {
-		final String fontFamily = getProperty("defaultfont");
-		return fontFamily;
+		return getProperty("defaultfont");
 	}
 
 	/**
 	 */
 	public int getDefaultFontSize() {
-		// TODO rladstaetter 15.02.2009 final local variables will be garbage collected, thus the final keyword here is irrelevant
-		// it may work, however, since the whole controller follows a singleton pattern (but this should be addressed, too)
-		final int fontSize = Integer.parseInt(getProperty("defaultfontsize"));
-		return fontSize;
+		return Integer.parseInt(getProperty("defaultfontsize"));
 	}
 
 	/**
 	 */
 	public int getDefaultFontStyle() {
-		// TODO rladstaetter 15.02.2009 final local variables will be garbage collected, thus the final keyword here is irrelevant
-		// it may work, however, since the whole controller follows a singleton pattern (but this should be addressed, too)
-		final int fontStyle = Integer.parseInt(getProperty("defaultfontstyle"));
-		return fontStyle;
+		return Integer.parseInt(getProperty("defaultfontstyle"));
 	}
 
 	/**
@@ -249,6 +242,7 @@ public abstract class ResourceController {
 	}
 
 	public void updateMenus(final ModeController modeController) {
+		LogTool.warn("ResourceController.updateMenus(...) called, but not implemented.");
 	}
 
 	public static String getText(final String key) {
@@ -263,8 +257,7 @@ public abstract class ResourceController {
     	return ResourceController.resourceController;
 	}
 	
-	// TODO rladstaetter 15.02.2009 ?
 	public String getResourceBaseDir(){
-		return null;
+		return "";
 	}
 }

@@ -61,7 +61,7 @@ public class NodeBuilder implements IElementDOMHandler {
 
 	protected void createEncryptedNode(final NodeModel node, final String additionalInfo) {
 		final EncryptionModel encryptionModel = new EncryptionModel(node, additionalInfo);
-		node.addExtension(encryptionModel);
+		node.putExtension(encryptionModel);
 	}
 
 	public NodeModel createNode() {
@@ -71,7 +71,7 @@ public class NodeBuilder implements IElementDOMHandler {
 	public void endElement(final Object parentObject, final String tag, final Object userObject, final IXMLElement dom) {
 		final NodeModel node = (NodeModel) userObject;
 		if (dom.getAttributeCount() != 0 || dom.hasChildren()) {
-			node.addExtension(new UnknownElements(dom));
+			node.putExtension(new UnknownElements(dom));
 		}
 		if (tag.equals("node") && parentObject instanceof MapModel) {
 			mapChild = node;

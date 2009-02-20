@@ -23,13 +23,13 @@ import java.awt.EventQueue;
 import java.io.File;
 import java.util.Timer;
 
+import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.undo.UndoHandler;
-import org.freeplane.core.util.Tools;
 import org.freeplane.features.mindmapmode.file.DoAutomaticSave;
 
 public class MMapModel extends MapModel {
@@ -47,7 +47,7 @@ public class MMapModel extends MapModel {
 		super(modeController, root);
 		setReadOnly(false);
 		this
-		    .setLockManager(ResourceController.getResourceController().getBoolProperty("experimental_file_locking_on") ? new LockManager()
+		    .setLockManager(ResourceController.getResourceController().getBooleanProperty("experimental_file_locking_on") ? new LockManager()
 		            : new DummyLockManager());
 		undoHandler = new UndoHandler();
 		EventQueue.invokeLater(new Runnable() {
@@ -102,14 +102,14 @@ public class MMapModel extends MapModel {
 		if (numberOfTempFiles == 0) {
 			return;
 		}
-		final boolean filesShouldBeDeletedAfterShutdown = ResourceController.getResourceController().getBoolProperty(
+		final boolean filesShouldBeDeletedAfterShutdown = ResourceController.getResourceController().getBooleanProperty(
 		    "delete_automatic_saves_at_exit");
 		String path = ResourceController.getResourceController().getProperty("path_to_automatic_saves");
 		/* two standard values: */
-		if (Tools.safeEquals(path, "default")) {
+		if (StringUtils.equals(path, "default")) {
 			path = null;
 		}
-		if (Tools.safeEquals(path, "freeplane_home")) {
+		if (StringUtils.equals(path, "freeplane_home")) {
 			path = ResourceController.getResourceController().getFreeplaneUserDirectory();
 		}
 		int delay = Integer.parseInt(ResourceController.getResourceController().getProperty("time_for_automatic_save"));

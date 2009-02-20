@@ -24,6 +24,7 @@ import java.awt.Font;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.enums.ResourceControllerProperties;
+import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
@@ -43,12 +44,12 @@ import org.freeplane.core.resources.ResourceController;
 public class NodeStyleController implements IExtension {
 	public static Color standardNodeTextColor;
 
-	public static NodeStyleController getController(final ModeController modeController) {
+	public static <T extends ExtensionContainer> NodeStyleController getController(final T modeController) {
 		return (NodeStyleController) modeController.getExtension(NodeStyleController.class);
 	}
 
-	public static void install(final ModeController modeController, final NodeStyleController styleController) {
-		modeController.addExtension(NodeStyleController.class, styleController);
+	public static void install(final ExtensionContainer modeController, final NodeStyleController styleController) {
+		modeController.putExtension(NodeStyleController.class, styleController);
 	}
 
 	final private ExclusivePropertyChain<Color, NodeModel> backgroundColorHandlers;

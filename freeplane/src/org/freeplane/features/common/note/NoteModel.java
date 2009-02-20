@@ -22,7 +22,7 @@ package org.freeplane.features.common.note;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.util.HtmlTools;
-import org.freeplane.core.util.Tools;
+import org.freeplane.core.util.XmlTool;
 
 /**
  * @author Dimitry Polivaev
@@ -55,7 +55,7 @@ public class NoteModel implements IExtension {
 			noteText = null;
 			return;
 		}
-		noteText = Tools.makeValidXml(pNoteText);
+		noteText = XmlTool.makeValidXml(pNoteText);
 		xmlNoteText = HtmlTools.getInstance().toXhtml(noteText);
 	}
 
@@ -65,7 +65,7 @@ public class NoteModel implements IExtension {
 			noteText = null;
 			return;
 		}
-		xmlNoteText = Tools.makeValidXml(pXmlNoteText);
+		xmlNoteText = XmlTool.makeValidXml(pXmlNoteText);
 		noteText = HtmlTools.getInstance().toHtml(xmlNoteText);
 	}
 }

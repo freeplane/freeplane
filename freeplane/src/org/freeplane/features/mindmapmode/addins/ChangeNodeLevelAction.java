@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Vector;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.extension.ControllerUtil;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
@@ -115,13 +116,12 @@ public class ChangeNodeLevelAction {
 			final NodeModel node = (NodeModel) iter.next();
 			selectedNodesId.add(node.createID());
 		}
-		final MClipboardController clipboardController = (MClipboardController) ClipboardController
-		    .getController(modeController);
+		final MClipboardController clipboardController = (MClipboardController)(modeController.getClipboardController());
 		if (upwards) {
 			if (selectedParent.isRoot()) {
 				final boolean isLeft = selectedNode.isLeft();
 				final Transferable copy = clipboardController.cut(selectedNodes);
-				((MClipboardController) ClipboardController.getController(modeController)).paste(copy, selectedParent,
+				((MClipboardController) modeController.getClipboardController()).paste(copy, selectedParent,
 				    false, (!isLeft));
 				select(modeController, selectedNodeId, selectedNodesId);
 				return;
@@ -131,11 +131,11 @@ public class ChangeNodeLevelAction {
 			final boolean isLeft = selectedParent.isLeft();
 			final Transferable copy = clipboardController.cut(selectedNodes);
 			if (parentPosition == grandParent.getChildCount() - 1) {
-				((MClipboardController) ClipboardController.getController(modeController)).paste(copy, grandParent,
+				((MClipboardController) modeController.getClipboardController()).paste(copy, grandParent,
 				    false, isLeft);
 			}
 			else {
-				((MClipboardController) ClipboardController.getController(modeController)).paste(copy,
+				((MClipboardController) modeController.getClipboardController()).paste(copy,
 				    ((NodeModel) grandParent.getChildAt(parentPosition + 1)), true, isLeft);
 			}
 			select(modeController, selectedNodeId, selectedNodesId);
@@ -161,7 +161,7 @@ public class ChangeNodeLevelAction {
 			}
 			if (directSibling != null) {
 				final Transferable copy = clipboardController.cut(selectedNodes);
-				((MClipboardController) ClipboardController.getController(modeController)).paste(copy, directSibling,
+				((MClipboardController) modeController.getClipboardController()).paste(copy, directSibling,
 				    false, directSibling.isLeft());
 				select(modeController, selectedNodeId, selectedNodesId);
 				return;

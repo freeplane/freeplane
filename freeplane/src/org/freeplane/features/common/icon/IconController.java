@@ -20,6 +20,7 @@
 package org.freeplane.features.common.icon;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.io.ReadManager;
@@ -32,12 +33,12 @@ import org.freeplane.core.modecontroller.ModeController;
 public class IconController implements IExtension {
 	private static boolean firstRun = true;
 
-	public static IconController getController(final ModeController modeController) {
+	public static <T extends ExtensionContainer> IconController getController(final T modeController) {
 		return (IconController) modeController.getExtension(IconController.class);
 	}
 
 	public static void install(final ModeController modeController, final IconController iconController) {
-		modeController.addExtension(IconController.class, iconController);
+		modeController.putExtension(IconController.class, iconController);
 		if (firstRun) {
 			final Controller controller = modeController.getController();
 			FilterController.getConditionFactory().addConditionController(1, new IconConditionController(controller));

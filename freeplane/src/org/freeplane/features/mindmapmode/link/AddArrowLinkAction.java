@@ -60,7 +60,7 @@ class AddArrowLinkAction extends AFreeplaneAction {
 				NodeLinks nodeLinks = (NodeLinks) source.getExtension(NodeLinks.class);
 				if (nodeLinks == null) {
 					nodeLinks = new NodeLinks();
-					source.addExtension(nodeLinks);
+					source.putExtension(nodeLinks);
 				}
 				arrowLink = new ArrowLinkModel(source, targetID);
 				nodeLinks.addArrowlink(arrowLink);
