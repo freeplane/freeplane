@@ -22,6 +22,7 @@ package org.freeplane.view.swing.map.attribute;
 import javax.swing.event.ChangeEvent;
 
 import org.freeplane.features.common.attribute.Attribute;
+import org.freeplane.features.common.attribute.AttributeController;
 
 /**
  * @author Dimitry Polivaev
@@ -57,19 +58,19 @@ class ExtendedAttributeTableModelDecorator extends AttributeTableModelDecoratorA
 
 	public int getRowCount() {
 		if (newRow == ExtendedAttributeTableModelDecorator.AFTER_LAST_ROW) {
-			return nodeAttributeModel.getRowCount();
+			return getNodeAttributeModel().getRowCount();
 		}
-		return nodeAttributeModel.getRowCount() + 1;
+		return getNodeAttributeModel().getRowCount() + 1;
 	}
 
 	public Object getValueAt(final int row, final int col) {
 		if (row < newRow) {
-			return nodeAttributeModel.getValueAt(row, col);
+			return getNodeAttributeModel().getValueAt(row, col);
 		}
 		if (row == newRow) {
 			return "";
 		}
-		return nodeAttributeModel.getValueAt(row - 1, col);
+		return getNodeAttributeModel().getValueAt(row - 1, col);
 	}
 
 	public void insertRow(final int index) {
@@ -81,7 +82,7 @@ class ExtendedAttributeTableModelDecorator extends AttributeTableModelDecoratorA
 	public boolean isCellEditable(final int row, final int col) {
 		if (row != newRow) {
 			final int rowInModel = row < newRow ? row : row - 1;
-			return nodeAttributeModel.isCellEditable(rowInModel, col);
+			return getNodeAttributeModel().isCellEditable(rowInModel, col);
 		}
 		return col == 0;
 	}
@@ -89,19 +90,19 @@ class ExtendedAttributeTableModelDecorator extends AttributeTableModelDecoratorA
 	/**
 	 */
 	public void moveRowDown(final int row) {
-		final Attribute attribute = (Attribute) nodeAttributeModel.removeRow(row);
-		nodeAttributeModel.insertRow(row + 1, attribute.getName(), attribute.getValue());
+		final Attribute attribute = (Attribute) getAttributeController().performRemoveRow(getNodeAttributeModel(), row);
+		getAttributeController().performInsertRow(getNodeAttributeModel(), (row + 1), attribute.getName(), attribute.getValue());
 	}
 
 	/**
 	 */
 	public void moveRowUp(final int row) {
-		final Attribute attribute = (Attribute) nodeAttributeModel.removeRow(row);
-		nodeAttributeModel.insertRow(row - 1, attribute.getName(), attribute.getValue());
+		final Attribute attribute = (Attribute) getAttributeController().performRemoveRow(getNodeAttributeModel(), row);
+		getAttributeController().performInsertRow(getNodeAttributeModel(), (row - 1), attribute.getName(), attribute.getValue());
 	}
 
 	public Object removeRow(final int index) {
-		return nodeAttributeModel.removeRow(index);
+		return getAttributeController().performRemoveRow(getNodeAttributeModel(), index);
 	}
 
 	@Override
@@ -109,7 +110,7 @@ class ExtendedAttributeTableModelDecorator extends AttributeTableModelDecoratorA
 		if (row != newRow) {
 			if (col == 1 || o.toString().length() > 0) {
 				final int rowInModel = row < newRow ? row : row - 1;
-				nodeAttributeModel.setValueAt(o, rowInModel, col);
+				getAttributeController().performSetValueAt(getNodeAttributeModel(), o, rowInModel, col);
 			}
 			return;
 		}
@@ -117,7 +118,7 @@ class ExtendedAttributeTableModelDecorator extends AttributeTableModelDecoratorA
 			newRow = ExtendedAttributeTableModelDecorator.AFTER_LAST_ROW;
 			fireTableRowsDeleted(row, row);
 			if (col == 0 && o != null && o.toString().length() > 0) {
-				nodeAttributeModel.insertRow(row, o.toString(), "");
+				getAttributeController().performInsertRow(getNodeAttributeModel(), row, o.toString(), "");
 			}
 			return;
 		}

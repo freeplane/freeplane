@@ -64,8 +64,10 @@ public class CloudController implements IExtension {
 	}
 
 	final private ExclusivePropertyChain<Color, NodeModel> colorHandlers;
+	private ModeController modeController;
 
 	public CloudController(final ModeController modeController) {
+		this.modeController = modeController;
 		colorHandlers = new ExclusivePropertyChain<Color, NodeModel>();
 		if (listener == null) {
 			listener = new CloudAdapterListener();
@@ -86,9 +88,13 @@ public class CloudController implements IExtension {
 		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();
 		final WriteManager writeManager = mapController.getWriteManager();
-		final CloudBuilder cloudBuilder = new CloudBuilder();
+		final CloudBuilder cloudBuilder = new CloudBuilder(mapController);
 		cloudBuilder.registerBy(readManager, writeManager);
 	}
+
+	protected ModeController getModeController() {
+    	return modeController;
+    }
 
 	public IPropertyGetter<Color, NodeModel> addColorGetter(final Integer key,
 	                                                        final IPropertyGetter<Color, NodeModel> getter) {

@@ -46,7 +46,7 @@ public class MLinkController extends LinkController {
 	/**
 	 * @author Dimitry Polivaev
 	 */
-	private static final class NodeDeletionListener implements IMapChangeListener {
+	private final class NodeDeletionListener implements IMapChangeListener {
 		public void onNodeDeleted(final NodeModel parent, final NodeModel child, final int index) {
 		}
 
@@ -59,7 +59,7 @@ public class MLinkController extends LinkController {
 
 		public void onPreNodeDelete(final NodeModel oldParent, final NodeModel model, final int oldIndex) {
 			final MapModel map = model.getMap();
-			final MModeController modeController = (MModeController) map.getModeController();
+			final MModeController modeController = (MModeController) getModeController();
 			if (modeController.isUndoAction()) {
 				return;
 			}
@@ -85,7 +85,7 @@ public class MLinkController extends LinkController {
 					links.set(id, linkModels);
 				}
 			};
-			(model.getModeController()).execute(actor);
+			getModeController().execute(actor);
 		}
 	}
 

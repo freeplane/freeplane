@@ -95,7 +95,7 @@ class NodeUpAction extends AFreeplaneAction {
 	 */
 	private Vector getSortedSiblings(final NodeModel node) {
 		final Vector nodes = new Vector();
-		for (final Iterator i = node.getModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
+		for (final Iterator i = getModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
 			nodes.add(i.next());
 		}
 		Collections.sort(nodes, new Comparator() {
@@ -149,7 +149,7 @@ class NodeUpAction extends AFreeplaneAction {
 		}
 		final NodeModel destinationNode = (NodeModel) sortedNodesIndices.get(newPositionInVector);
 		newIndex = newParent.getIndex(destinationNode);
-		((MMapController) map.getModeController().getMapController()).moveNodeToWithoutUndo(child, newParent, newIndex);
+		((MMapController) getModeController().getMapController()).moveNodeToWithoutUndo(child, newParent, newIndex);
 		return newIndex;
 	}
 }

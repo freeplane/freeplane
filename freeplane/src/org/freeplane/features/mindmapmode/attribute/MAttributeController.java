@@ -161,7 +161,7 @@ public class MAttributeController extends AttributeController {
 			final Attribute newAttribute = new Attribute(name, value);
 			model.getAttributes().add(row, newAttribute);
 			model.enableStateIcon();
-			model.fireTableRowsInserted(row, row);
+			model.fireTableRowsDeleted(row, row);
 		}
 
 		public String getDescription() {
@@ -175,7 +175,7 @@ public class MAttributeController extends AttributeController {
 		}
 	}
 
-	private static class Iterator {
+	private class Iterator {
 		final private IVisitor visitor;
 
 		Iterator(final IVisitor v) {
@@ -186,7 +186,7 @@ public class MAttributeController extends AttributeController {
 		 */
 		void iterate(final NodeModel node) {
 			visitor.visit(NodeAttributeTableModel.getModel(node));
-			final ListIterator iterator = node.getModeController().getMapController().childrenUnfolded(node);
+			final ListIterator iterator = getModeController().getMapController().childrenUnfolded(node);
 			while (iterator.hasNext()) {
 				final NodeModel child = (NodeModel) iterator.next();
 				iterate(child);
@@ -492,7 +492,7 @@ public class MAttributeController extends AttributeController {
 	}
 
 	public int addAttribute(final NodeModel node, final Attribute pAttribute) {
-		NodeAttributeTableModel.createAttributeTableModel(node);
+		createAttributeTableModel(node);
 		final NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(node);
 		final int rowCount = attributes.getRowCount();
 		performInsertRow(attributes, rowCount, pAttribute.getName(), pAttribute.getValue());
@@ -503,11 +503,11 @@ public class MAttributeController extends AttributeController {
 	 *
 	 */
 	private void createActions() {
-		modeController.putAction("assignAttributes", new AssignAttributesAction(getModeController().getController()));
+		modeController.putAction("assignAttributes", new AssignAttributesAction(getModeController()));
 	}
 
 	public int editAttribute(final NodeModel pNode, final String pName, final String pNewValue) {
-		NodeAttributeTableModel.createAttributeTableModel(pNode);
+		createAttributeTableModel(pNode);
 		final Attribute newAttribute = new Attribute(pName, pNewValue);
 		final NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(pNode);
 		for (int i = 0; i < attributes.getRowCount(); i++) {
@@ -610,7 +610,7 @@ public class MAttributeController extends AttributeController {
 			final String value = NodeAttributeTableModel.getModel(node).getValueAt(i, 1).toString();
 			performRegistryAttributeValue(name, value);
 		}
-		for (final ListIterator e = node.getModeController().getMapController().childrenUnfolded(node); e.hasNext();) {
+		for (final ListIterator e = getModeController().getMapController().childrenUnfolded(node); e.hasNext();) {
 			final NodeModel child = (NodeModel) e.next();
 			performRegistrySubtreeAttributes(child);
 		}
@@ -638,9 +638,11 @@ public class MAttributeController extends AttributeController {
 	}
 
 	@Override
-	public void performRemoveRow(final NodeAttributeTableModel model, final int row) {
+	public Attribute performRemoveRow(final NodeAttributeTableModel model, final int row) {
+		final Object o = model.getAttributes().elementAt(row);
 		final IUndoableActor actor = new RemoveAttributeActor(model, row);
 		getModeController().execute(actor);
+		return (Attribute) o;
 	}
 
 	@Override
@@ -785,13 +787,14 @@ public class MAttributeController extends AttributeController {
 	}
 
 	public void removeAttribute(final NodeModel pNode, final int pPosition) {
-		NodeAttributeTableModel.createAttributeTableModel(pNode);
+		createAttributeTableModel(pNode);
 		performRemoveRow(NodeAttributeTableModel.getModel(pNode), pPosition);
 	}
 
 	public void setAttribute(final NodeModel pNode, final int pPosition, final Attribute pAttribute) {
-		NodeAttributeTableModel.createAttributeTableModel(pNode);
-		NodeAttributeTableModel.getModel(pNode).setValueAt(pAttribute.getName(), pPosition, 0);
-		NodeAttributeTableModel.getModel(pNode).setValueAt(pAttribute.getValue(), pPosition, 1);
+		createAttributeTableModel(pNode);
+		final NodeAttributeTableModel model = NodeAttributeTableModel.getModel(pNode);
+		performSetValueAt(model, pAttribute.getName(), pPosition, 0);
+		performSetValueAt(model, pAttribute.getValue(), pPosition, 1);
 	}
 }

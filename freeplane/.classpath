@@ -5,7 +5,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="resources"/>
 	<classpathentry kind="src" path="viewer-resources"/>
-	<classpathentry kind="src" path="test-src"/>
 	<classpathentry kind="lib" path="lib/forms-1.0.5.jar" sourcepath="lib/forms-1.0.5-src.zip"/>
 	<classpathentry exported="true" kind="lib" path="lib/commons-lang-2.0.jar" sourcepath="FreePlane_integrationsrc.zip"/>
 	<classpathentry kind="lib" path="lib/gnu-regexp-1.1.4.jar"/>

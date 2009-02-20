@@ -149,7 +149,7 @@ public class DefaultFilter implements IFilter {
 	 */
 	private boolean filterChildren(final NodeModel parent, final boolean isAncestorSelected,
 	                               final boolean isAncestorEclipsed) {
-		final ListIterator iterator = parent.getModeController().getMapController().childrenUnfolded(parent);
+		final ListIterator iterator = controller.getModeController().getMapController().childrenUnfolded(parent);
 		boolean isDescendantSelected = false;
 		while (iterator.hasNext()) {
 			final NodeModel node = (NodeModel) iterator.next();

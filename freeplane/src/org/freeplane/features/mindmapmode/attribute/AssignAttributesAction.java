@@ -22,20 +22,19 @@ package org.freeplane.features.mindmapmode.attribute;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.features.common.attribute.AttributeController;
 
 class AssignAttributesAction extends AFreeplaneAction {
-	protected AssignAttributeDialog assignAttributeDialog = null;
 
-	public AssignAttributesAction(final Controller controller) {
-		super(controller, "attributes_assign_dialog");
+	public AssignAttributesAction(final ModeController modeController) {
+		super(modeController.getController(), "attributes_assign_dialog");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		if (assignAttributeDialog == null) {
-			final Controller controller = getController();
-			assignAttributeDialog = new AssignAttributeDialog(controller, controller.getViewController().getFrame());
-		}
+		final Controller controller = getController();
+		AssignAttributeDialog assignAttributeDialog = new AssignAttributeDialog(AttributeController.getController(getModeController()), controller.getViewController().getFrame());
 		assignAttributeDialog.show();
 	}
 }

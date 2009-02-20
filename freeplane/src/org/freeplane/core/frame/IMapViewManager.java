@@ -30,6 +30,7 @@ import java.util.Map;
 
 import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.modecontroller.IMapSelection;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 
@@ -107,13 +108,13 @@ public interface IMapViewManager {
 
 	public float getZoom();
 
-	public void newMapView(final MapModel map, final ExtensionContainer modeController);
+	public void newMapView(final MapModel map, final ModeController modeController);
 
 	public void nextMapView();
 
 	public void previousMapView();
 
-	public void removeIMapViewChangeListener(final IMapSelectionListener pListener);
+	public void removeMapChangeListener(final IMapSelectionListener pListener);
 
 	public void removeMapViewChangeListener(final IMapViewChangeListener pListener);
 
@@ -131,4 +132,8 @@ public interface IMapViewManager {
 	public void updateMapView();
 
 	public void updateMapViewName();
+
+	public ModeController getModeController(Component newMap);
+
+	public MapModel getModel(Component mapView);
 }

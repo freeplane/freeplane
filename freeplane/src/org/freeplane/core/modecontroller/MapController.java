@@ -122,7 +122,7 @@ public class MapController {
 		controller = modeController.getController();
 		mapLifeCycleListeners = new LinkedList<IMapLifeCycleListener>();
 		writeManager = new WriteManager();
-		mapWriter = new MapWriter(writeManager);
+		mapWriter = new MapWriter(this);
 		readManager = new ReadManager();
 		mapReader = new MapReader(readManager);
 		readManager.addElementHandler("map", mapReader);
@@ -151,7 +151,7 @@ public class MapController {
 		if (node.isRoot() && folded) {
 			return;
 		}
-		if (node.getModeController().getMapController().isFolded(node) != folded) {
+		if (isFolded(node) != folded) {
 			node.setFolded(folded);
 		}
 	}
@@ -221,7 +221,7 @@ public class MapController {
 		final NodeModel[] path = node.getPathToRoot();
 		for (int i = 0; i < path.length - 1; i++) {
 			final NodeModel nodeOnPath = path[i];
-			if (nodeOnPath.getModeController().getMapController().isFolded(nodeOnPath)) {
+			if (isFolded(nodeOnPath)) {
 				if (nodesUnfoldedByDisplay != null) {
 					nodesUnfoldedByDisplay.add(nodeOnPath);
 				}
@@ -311,10 +311,10 @@ public class MapController {
 				continue;
 			}
 			if (state == null) {
-				state = node.getModeController().getMapController().isFolded(node);
+				state = isFolded(node);
 			}
 			else {
-				if (node.getModeController().getMapController().isFolded(node) != state) {
+				if (isFolded(node) != state) {
 					allNodeHaveSameFoldedStatus = false;
 					break;
 				}
@@ -522,16 +522,24 @@ public class MapController {
 		fireMapCreated(newModel);
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				newModel.setSaved(true);
+				setSaved(newModel, true);
 			}
 		});
 		return newModel;
 	}
 
 	protected void newMapView(final MapModel mapModel) {
-		getController().getMapViewManager().newMapView(mapModel, mapModel.getModeController());
-		mapModel.setSaved(false);
+		getController().getMapViewManager().newMapView(mapModel, getModeController());
+		setSaved(mapModel, false);
 	}
+
+	public void setSaved(final MapModel mapModel, boolean saved) {
+		boolean setTitle = saved != mapModel.isSaved();
+		mapModel.setSaved(saved);
+	    if(setTitle){
+	    	getModeController().getController().getViewController().setTitle();
+	    }
+    }
 
 	public MapModel newModel(final NodeModel root) {
 		final MapModel mindMapMapModel = new MapModel(getModeController(), root);
@@ -549,7 +557,7 @@ public class MapController {
 	}
 
 	public void nodeChanged(final NodeModel node, final Object property, final Object oldValue, final Object newValue) {
-		node.getMap().setSaved(false);
+		setSaved(node.getMap(), false);
 		nodeRefresh(node, property, oldValue, newValue, true);
 	}
 
@@ -704,5 +712,19 @@ public class MapController {
 	 */
 	public void toggleFolded(final ListIterator listIterator) {
 		toggleFolded.toggleFolded(listIterator);
+	}
+	/**
+	 * True iff one of node's <i>strict</i> descendants is folded. A node N is
+	 * not its strict descendant - the fact that node itself is folded is not
+	 * sufficient to return true.
+	 */
+	public boolean hasFoldedStrictDescendant(NodeModel node) {
+		for (final ListIterator e = childrenUnfolded(node); e.hasNext();) {
+			final NodeModel child = (NodeModel) e.next();
+			if (isFolded(child) || hasFoldedStrictDescendant(child)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

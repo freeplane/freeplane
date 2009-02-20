@@ -48,7 +48,7 @@ class FindAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final NodeModel selected = getController().getSelection().getSelected();
-		final String what = UITools.showInputDialog(selected, getModeController().getText("find_what"),
+		final String what = UITools.showInputDialog(getController(), selected, getModeController().getText("find_what"),
 		    getModeController().getText("find"), JOptionPane.QUESTION_MESSAGE);
 		if (what == null || what.equals("")) {
 			return;
@@ -113,7 +113,7 @@ class FindAction extends AFreeplaneAction {
 		final NodeModel[] path = node.getPathToRoot();
 		for (int i = 0; i < path.length - 1; i++) {
 			final NodeModel nodeOnPath = path[i];
-			if (nodeOnPath.getModeController().getMapController().isFolded(nodeOnPath)) {
+			if (getModeController().getMapController().isFolded(nodeOnPath)) {
 				if (nodesUnfoldedByDisplay != null) {
 					nodesUnfoldedByDisplay.add(nodeOnPath);
 				}
@@ -138,7 +138,7 @@ class FindAction extends AFreeplaneAction {
 		}
 		while (!nodes.isEmpty()) {
 			final NodeModel node = (NodeModel) nodes.removeFirst();
-			for (final ListIterator i = node.getModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
+			for (final ListIterator i = getModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
 				nodes.addLast(i.next());
 			}
 			if (!node.isVisible()) {

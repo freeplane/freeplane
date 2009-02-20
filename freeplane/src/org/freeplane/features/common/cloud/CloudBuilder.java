@@ -31,12 +31,16 @@ import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.io.xml.TreeXmlWriter;
+import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.n3.nanoxml.IXMLElement;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public class CloudBuilder implements IElementDOMHandler, IExtensionElementWriter {
-	public CloudBuilder() {
+	private MapController mapController;
+
+	public CloudBuilder(MapController mapController) {
+		this.mapController = mapController;
 	}
 
 	public Object createElement(final Object parent, final String tag, final IXMLElement attributes) {
@@ -51,7 +55,7 @@ public class CloudBuilder implements IElementDOMHandler, IExtensionElementWriter
 			final NodeModel node = (NodeModel) parent;
 			if (userObject instanceof CloudModel) {
 				final CloudModel cloud = (CloudModel) userObject;
-				CloudModel.setModel(node, cloud);
+				CloudModel.setModel(mapController, node, cloud);
 			}
 		}
 	}

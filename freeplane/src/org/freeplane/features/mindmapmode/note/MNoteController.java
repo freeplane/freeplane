@@ -35,8 +35,10 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IUndoableActor;
@@ -76,7 +78,10 @@ public class MNoteController extends NoteController {
 		}
 
 		private void docEvent() {
-			getModeController().getController().getMap().setSaved(false);
+			final ModeController modeController = getModeController();
+			final MapController mapController = modeController.getMapController();
+			final MapModel map = modeController.getController().getMap();
+			mapController.setSaved(map, false);
 		}
 
 		public void insertUpdate(final DocumentEvent arg0) {

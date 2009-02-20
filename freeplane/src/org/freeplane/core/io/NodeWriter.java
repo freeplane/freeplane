@@ -34,14 +34,16 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 	final private boolean writeChildren;
 	final private boolean writeInvisible;
 	private XMLElement xmlNode;
+	final private MapController mapController;
 
 	public NodeWriter(final MapController mapController, final boolean writeChildren, final boolean writeInvisible) {
+		this.mapController = mapController;
 		this.writeChildren = writeChildren;
 		this.writeInvisible = writeInvisible;
 	}
 
 	private void saveChildren(final ITreeWriter writer, final NodeModel node) throws IOException {
-		for (final ListIterator e = node.getModeController().getMapController().childrenUnfolded(node); e.hasNext();) {
+		for (final ListIterator e = mapController.childrenUnfolded(node); e.hasNext();) {
 			final NodeModel child = (NodeModel) e.next();
 			if (writeInvisible || child.isVisible()) {
 				writer.addElement(child, NodeBuilder.XML_NODE);
@@ -71,10 +73,10 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 		xmlNode = new XMLElement();
 		encryptionModel = EncryptionModel.getModel(node);
 		if (encryptionModel != null) {
-			final String additionalInfo = encryptionModel.getEncryptedContent();
+			final String additionalInfo = encryptionModel.getEncryptedContent(mapController);
 			writer.addAttribute(NodeBuilder.XML_NODE_ENCRYPTED_CONTENT, additionalInfo);
 		}
-		if (node.getModeController().getMapController().isFolded(node)) {
+		if (mapController.isFolded(node)) {
 			writer.addAttribute("FOLDED", "true");
 		}
 		if (!(node.isRoot()) && (node.getParentNode().isRoot())) {
@@ -107,7 +109,7 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 			writer.addElement(null, xmlNode.getChildAtIndex(i));
 		}
 		if (encryptionModel == null && writeChildren
-		        && node.getModeController().getMapController().childrenUnfolded(node).hasNext()) {
+		        && mapController.childrenUnfolded(node).hasNext()) {
 			saveChildren(writer, node);
 		}
 		return;

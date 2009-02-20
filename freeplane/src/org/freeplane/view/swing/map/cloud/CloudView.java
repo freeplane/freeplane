@@ -61,7 +61,7 @@ public class CloudView {
 
 	public Color getColor() {
 		final NodeModel model = source.getModel();
-		return CloudController.getController(model.getModeController()).getColor(model);
+		return CloudController.getController(source.getMap().getModeController()).getColor(model);
 	}
 
 	private double getDistanceToConvexHull() {
@@ -106,7 +106,7 @@ public class CloudView {
 
 	public int getWidth() {
 		final NodeModel node = source.getModel();
-		return CloudController.getController(node.getModeController()).getWidth(node);
+		return CloudController.getController(source.getMap().getModeController()).getWidth(node);
 	}
 
 	protected double getZoom() {

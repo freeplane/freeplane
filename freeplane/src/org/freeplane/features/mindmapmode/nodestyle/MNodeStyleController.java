@@ -94,7 +94,7 @@ public class MNodeStyleController extends NodeStyleController {
 				return font;
 			}
 		}
-		final ModeController modeController = node.getModeController();
+		final ModeController modeController = getModeController();
 		final IUndoableActor actor = new IUndoableActor() {
 			public void act() {
 				node.putExtension(new NodeStyleModel());
@@ -123,12 +123,12 @@ public class MNodeStyleController extends NodeStyleController {
 	}
 
 	public void setBackgroundColor(final NodeModel node, final Color color) {
-		final ModeController modeController = node.getModeController();
+		final ModeController modeController = getModeController();
 		final Color oldColor = NodeStyleModel.getBackgroundColor(node);
 		final IUndoableActor actor = new IUndoableActor() {
 			public void act() {
 				NodeStyleModel.setBackgroundColor(node, color);
-				node.getModeController().getMapController().nodeChanged(node);
+				getModeController().getMapController().nodeChanged(node);
 			}
 
 			public String getDescription() {
@@ -137,7 +137,7 @@ public class MNodeStyleController extends NodeStyleController {
 
 			public void undo() {
 				NodeStyleModel.setBackgroundColor(node, oldColor);
-				node.getModeController().getMapController().nodeChanged(node);
+				getModeController().getMapController().nodeChanged(node);
 			}
 		};
 		modeController.execute(actor);
@@ -151,7 +151,7 @@ public class MNodeStyleController extends NodeStyleController {
 	}
 
 	public void setColor(final NodeModel node, final Color color) {
-		final ModeController modeController = node.getModeController();
+		final ModeController modeController = getModeController();
 		final Color oldColor = NodeStyleModel.getColor(node);
 		if (oldColor == color || oldColor != null && oldColor.equals(color)) {
 			return;
@@ -159,7 +159,7 @@ public class MNodeStyleController extends NodeStyleController {
 		final IUndoableActor actor = new IUndoableActor() {
 			public void act() {
 				NodeStyleModel.setColor(node, color);
-				node.getModeController().getMapController().nodeChanged(node);
+				getModeController().getMapController().nodeChanged(node);
 			}
 
 			public String getDescription() {
@@ -168,7 +168,7 @@ public class MNodeStyleController extends NodeStyleController {
 
 			public void undo() {
 				NodeStyleModel.setColor(node, oldColor);
-				node.getModeController().getMapController().nodeChanged(node);
+				getModeController().getMapController().nodeChanged(node);
 			}
 		};
 		modeController.execute(actor);
@@ -183,12 +183,12 @@ public class MNodeStyleController extends NodeStyleController {
 			return;
 		}
 		createOwnFont(node);
-		final ModeController modeController = node.getModeController();
+		final ModeController modeController = getModeController();
 		final IUndoableActor actor = new IUndoableActor() {
 			public void act() {
 				final NodeStyleModel font = NodeStyleModel.getModel(node);
 				font.setFontFamilyName(fontFamily);
-				node.getModeController().getMapController().nodeChanged(node);
+				getModeController().getMapController().nodeChanged(node);
 			}
 
 			public String getDescription() {
@@ -198,7 +198,7 @@ public class MNodeStyleController extends NodeStyleController {
 			public void undo() {
 				final NodeStyleModel font = NodeStyleModel.getModel(node);
 				font.setFontFamilyName(oldFontFamily);
-				node.getModeController().getMapController().nodeChanged(node);
+				getModeController().getMapController().nodeChanged(node);
 			}
 		};
 		modeController.execute(actor);
@@ -226,12 +226,12 @@ public class MNodeStyleController extends NodeStyleController {
 			return;
 		}
 		createOwnFont(node);
-		final ModeController modeController = node.getModeController();
+		final ModeController modeController = getModeController();
 		final IUndoableActor actor = new IUndoableActor() {
 			public void act() {
 				final NodeStyleModel font = NodeStyleModel.getModel(node);
 				font.setFontSize(fontSize);
-				node.getModeController().getMapController().nodeChanged(node);
+				getModeController().getMapController().nodeChanged(node);
 			}
 
 			public String getDescription() {
@@ -241,7 +241,7 @@ public class MNodeStyleController extends NodeStyleController {
 			public void undo() {
 				final NodeStyleModel font = NodeStyleModel.getModel(node);
 				font.setFontSize(oldFontSize);
-				node.getModeController().getMapController().nodeChanged(node);
+				getModeController().getMapController().nodeChanged(node);
 			}
 		};
 		modeController.execute(actor);
@@ -255,7 +255,7 @@ public class MNodeStyleController extends NodeStyleController {
 	}
 
 	public void setShape(final NodeModel node, final String shape) {
-		final ModeController modeController = node.getModeController();
+		final ModeController modeController = getModeController();
 		final String oldShape = NodeStyleModel.getShape(node);
 		final IUndoableActor actor = new IUndoableActor() {
 			public void act() {
@@ -290,7 +290,7 @@ public class MNodeStyleController extends NodeStyleController {
 
 	public void toggleBold(final NodeModel node) {
 		createOwnFont(node);
-		final ModeController modeController = node.getModeController();
+		final ModeController modeController = getModeController();
 		final IUndoableActor actor = new IUndoableActor() {
 			public void act() {
 				toggleBold(node);
@@ -304,7 +304,7 @@ public class MNodeStyleController extends NodeStyleController {
 				final Font font = getFont(node);
 				final NodeStyleModel style = NodeStyleModel.getModel(node);
 				style.setBold(!font.isBold());
-				node.getModeController().getMapController().nodeChanged(node);
+				getModeController().getMapController().nodeChanged(node);
 			}
 
 			public void undo() {
@@ -316,7 +316,7 @@ public class MNodeStyleController extends NodeStyleController {
 
 	public void toggleItalic(final NodeModel node) {
 		createOwnFont(node);
-		final ModeController modeController = node.getModeController();
+		final ModeController modeController = getModeController();
 		final IUndoableActor actor = new IUndoableActor() {
 			public void act() {
 				toggleItalic(node);
@@ -330,7 +330,7 @@ public class MNodeStyleController extends NodeStyleController {
 				final Font font = getFont(node);
 				final NodeStyleModel style = NodeStyleModel.getModel(node);
 				style.setItalic(!font.isItalic());
-				node.getModeController().getMapController().nodeChanged(node);
+				getModeController().getMapController().nodeChanged(node);
 			}
 
 			public void undo() {

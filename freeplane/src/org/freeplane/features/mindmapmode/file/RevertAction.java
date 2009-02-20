@@ -155,7 +155,7 @@ class RevertAction extends AFreeplaneAction implements IFreeplaneAction{
 	public RevertActionInstance createRevertXmlAction(final MapModel map, final String fileName, final String filePrefix)
 	        throws IOException {
 		final StringWriter writer = new StringWriter();
-		map.getModeController().getMapController().getMapWriter().writeMapAsXml(map, writer, true);
+		getModeController().getMapController().getMapWriter().writeMapAsXml(map, writer, true);
 		return createRevertXmlAction(writer.getBuffer().toString(), fileName, filePrefix);
 	}
 

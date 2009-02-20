@@ -99,5 +99,3 @@ Export-Package: com.jgoodies.forms.builder,
  org.freeplane.view.swing.ui,
  org.freeplane.view.swing.ui.mindmapmode
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Require-Bundle: org.junit4
- 

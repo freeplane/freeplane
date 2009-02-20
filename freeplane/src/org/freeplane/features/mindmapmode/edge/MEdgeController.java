@@ -52,7 +52,7 @@ public class MEdgeController extends EdgeController {
 	}
 
 	public void setColor(final NodeModel node, final Color color) {
-		final ModeController modeController = node.getModeController();
+		final ModeController modeController = getModeController();
 		final Color oldColor = getColor(node);
 		if (color.equals(oldColor)) {
 			return;
@@ -76,7 +76,7 @@ public class MEdgeController extends EdgeController {
 	}
 
 	public void setStyle(final NodeModel node, final String style) {
-		final ModeController modeController = node.getModeController();
+		final ModeController modeController = getModeController();
 		final String oldStyle = getStyle(node);
 		if (style.equals(oldStyle)) {
 			return;
@@ -114,7 +114,7 @@ public class MEdgeController extends EdgeController {
 	}
 
 	public void setWidth(final NodeModel node, final int width) {
-		final ModeController modeController = node.getModeController();
+		final ModeController modeController = getModeController();
 		final int oldWidth = getWidth(node);
 		if (width == oldWidth) {
 			return;

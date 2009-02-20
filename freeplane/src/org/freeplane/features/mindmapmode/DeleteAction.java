@@ -49,8 +49,7 @@ class DeleteAction extends AFreeplaneAction {
 		}
 		final Controller controller = getController();
 		final ViewController viewController = controller.getViewController();
-		final int showResult = new OptionalDontShowMeAgainDialog(viewController.getJFrame(), controller.getSelection()
-		    .getSelected(), "really_remove_node", "confirmation",
+		final int showResult = new OptionalDontShowMeAgainDialog(controller, "really_remove_node", "confirmation",
 		    new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
 		        ResourceControllerProperties.RESOURCES_DELETE_NODES_WITHOUT_QUESTION),
 		    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED).show().getResult();

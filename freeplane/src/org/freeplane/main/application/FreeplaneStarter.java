@@ -81,7 +81,7 @@ public class FreeplaneStarter {
 		feedBack.increase(FreeplaneSplashModern.FREEPLANE_PROGRESS_CREATE_CONTROLLER);
 		System.setSecurityManager(new FreeplaneSecurityManager());
 		final MMapViewController mapViewController = new MMapViewController();
-		mapViewController.addMapChangeListener(applicationResourceController.getLastOpenedList());
+		mapViewController.addMapViewChangeListener(applicationResourceController.getLastOpenedList());
 		viewController = new ApplicationViewController(controller, mapViewController);
 		FilterController.install(controller);
 		PrintController.install(controller);

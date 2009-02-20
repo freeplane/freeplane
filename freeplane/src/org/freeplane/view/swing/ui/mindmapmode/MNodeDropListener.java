@@ -95,7 +95,7 @@ public class MNodeDropListener implements DropTargetListener {
 			final MainView mainView = (MainView) dtde.getDropTargetContext().getComponent();
 			final NodeView targetNodeView = mainView.getNodeView();
 			final NodeModel targetNode = targetNodeView.getModel();
-			final Controller controller = targetNode.getModeController().getController();
+			final Controller controller = mMindMapController.getController();
 			if (dtde.isLocalTransfer() && t.isDataFlavorSupported(MindMapNodesSelection.dropActionFlavor)) {
 				final String sourceAction = (String) t.getTransferData(MindMapNodesSelection.dropActionFlavor);
 				if (sourceAction.equals("LINK")) {

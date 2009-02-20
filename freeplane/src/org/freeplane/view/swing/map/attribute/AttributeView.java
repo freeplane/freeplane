@@ -30,6 +30,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableModel;
 
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.features.common.attribute.AttributeRegistry;
@@ -113,7 +114,7 @@ public class AttributeView implements ChangeListener, TableModelListener {
 		return NodeAttributeTableModel.getModel(getNode());
 	}
 
-	public IAttributeTableModel getCurrentAttributeTableModel() {
+	public TableModel getCurrentAttributeTableModel() {
 		return currentAttributeTableModel;
 	}
 
@@ -254,7 +255,7 @@ public class AttributeView implements ChangeListener, TableModelListener {
 
 	public void tableChanged(final TableModelEvent e) {
 		final NodeModel node = getNode();
-		node.getModeController().getMapController().nodeChanged(node);
+		getMapView().getModeController().getMapController().nodeChanged(node);
 	}
 
 	/**

@@ -219,7 +219,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 			    "el__max_default_window_width")));
 			htmlEditorPanel.setContentPanePreferredSize(new Dimension(preferredWidth, preferredHeight));
 			EditNodeWYSIWYG.htmlEditorWindow.pack();
-			UITools.setDialogLocationRelativeTo(EditNodeWYSIWYG.htmlEditorWindow, node);
+			UITools.setDialogLocationRelativeTo(EditNodeWYSIWYG.htmlEditorWindow, getController(), node);
 			String content = node.toString();
 			if (!HtmlTools.isHtmlNode(content)) {
 				content = HtmlTools.plainToHTML(content);

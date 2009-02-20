@@ -26,6 +26,7 @@ import java.util.Arrays;
 import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.xml.TreeXmlWriter;
+import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.n3.nanoxml.IXMLElement;
@@ -38,10 +39,12 @@ import org.freeplane.n3.nanoxml.XMLElement;
 public class MapWriter implements IElementWriter, IAttributeWriter {
 	private NodeWriter currentNodeWriter;
 	private boolean saveInvisible;
+	final private MapController mapController;
 	final private WriteManager writeManager;
 
-	public MapWriter(final WriteManager writeManager) {
-		this.writeManager = writeManager;
+	public MapWriter(final MapController mapController) {
+		this.mapController = mapController;
+		this.writeManager = mapController.getWriteManager();
 	}
 
 	public boolean isSaveInvisible() {
@@ -83,7 +86,7 @@ public class MapWriter implements IElementWriter, IAttributeWriter {
 			writeManager.removeElementWriter(NodeBuilder.XML_NODE, oldNodeWriter);
 			writeManager.removeAttributeWriter(NodeBuilder.XML_NODE, oldNodeWriter);
 		}
-		currentNodeWriter = new NodeWriter(node.getModeController().getMapController(), writeChildren, writeInvisible);
+		currentNodeWriter = new NodeWriter(mapController, writeChildren, writeInvisible);
 		try {
 			writeManager.addElementWriter(NodeBuilder.XML_NODE, currentNodeWriter);
 			writeManager.addAttributeWriter(NodeBuilder.XML_NODE, currentNodeWriter);

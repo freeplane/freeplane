@@ -60,7 +60,7 @@ class ToggleFoldedAction extends AFreeplaneAction {
 	}
 
 	private void toggleFolded(final NodeModel node) {
-		if (!node.getModeController().getMapController().hasChildren(node)
+		if (!getModeController().getMapController().hasChildren(node)
 		        && !StringUtils.equals(ResourceController.getResourceController().getProperty("enable_leaves_folding"), "true")) {
 			return;
 		}

@@ -64,7 +64,7 @@ public abstract class EdgeView {
 
 	public Color getColor() {
 		final NodeModel model = target.getModel();
-		final Color edgeColor = EdgeController.getController(model.getModeController()).getColor(model);
+		final Color edgeColor = EdgeController.getController(target.getMap().getModeController()).getColor(model);
 		return edgeColor;
 	}
 
@@ -95,8 +95,8 @@ public abstract class EdgeView {
 	}
 
 	public int getWidth() {
-		final NodeModel model = getTarget().getModel();
-		final int width = EdgeController.getController(model.getModeController()).getWidth(model);
+		final NodeModel model = target.getModel();
+		final int width = EdgeController.getController(target.getMap().getModeController()).getWidth(model);
 		return width;
 	}
 

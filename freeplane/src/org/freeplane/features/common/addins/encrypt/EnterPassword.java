@@ -57,7 +57,7 @@ public class EnterPassword extends AFreeplaneAction {
 				return false;
 			}
 			final StringBuffer password = pwdDialog.getPassword();
-			if (!encNode.decrypt(new SingleDesEncrypter(password))) {
+			if (!encNode.decrypt(getModeController().getMapController(), new SingleDesEncrypter(password))) {
 				final Controller controller = getController();
 				JOptionPane.showMessageDialog(controller.getViewController().getContentPane(), getModeController()
 				    .getText("accessories/plugins/EncryptNode.properties_wrong_password"), "Freeplane",

@@ -62,6 +62,7 @@ import org.freeplane.core.filter.condition.DisjunctConditions;
 import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.filter.condition.IElementaryConditionController;
 import org.freeplane.core.filter.util.ExtendedComboBoxModel;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceController;
@@ -556,7 +557,7 @@ public class FilterComposerDialog extends JDialog {
 	}
 
 	protected JFileChooser getFileChooser() {
-		final ExtensionContainer modeController = filterController.getMap().getModeController();
+		final ModeController modeController = controller.getModeController();
 		final JFileChooser chooser = UrlManager.getController(modeController).getFileChooser(
 		    MindMapFilterFileFilter.filter);
 		return chooser;

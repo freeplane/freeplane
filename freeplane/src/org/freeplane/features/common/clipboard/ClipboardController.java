@@ -58,14 +58,14 @@ public class ClipboardController implements IExtension {
 		modeController.putExtension(ClipboardController.class, clipboardController);
 	}
 
-	static public void saveHTML(final NodeModel rootNodeOfBranch, final File file) throws IOException {
+	public void saveHTML(final NodeModel rootNodeOfBranch, final File file) throws IOException {
 		final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
-		final MindMapHTMLWriter htmlWriter = new MindMapHTMLWriter(fileout);
+		final MindMapHTMLWriter htmlWriter = new MindMapHTMLWriter(getModeController().getMapController(), fileout);
 		htmlWriter.writeHTML(rootNodeOfBranch);
 	}
 
-	static public void writeHTML(final Collection<NodeModel> selectedNodes, final Writer fileout) throws IOException {
-		final MindMapHTMLWriter htmlWriter = new MindMapHTMLWriter(fileout);
+	public void writeHTML(final Collection<NodeModel> selectedNodes, final Writer fileout) throws IOException {
+		final MindMapHTMLWriter htmlWriter = new MindMapHTMLWriter(getModeController().getMapController(), fileout);
 		htmlWriter.writeHTML(selectedNodes);
 	}
 
@@ -115,9 +115,8 @@ public class ClipboardController implements IExtension {
 	public Transferable copy(final NodeModel node, final boolean saveInvisible) {
 		final StringWriter stringWriter = new StringWriter();
 		try {
-			final NodeModel r = (node);
-			r.getModeController().getMapController().getMapWriter()
-			    .writeNodeAsXml(stringWriter, r, saveInvisible, true);
+			getModeController().getMapController().getMapWriter()
+			    .writeNodeAsXml(stringWriter, node, saveInvisible, true);
 		}
 		catch (final IOException e) {
 		}
@@ -164,7 +163,7 @@ public class ClipboardController implements IExtension {
 		try {
 			final StringWriter stringWriter = new StringWriter();
 			final BufferedWriter fileout = new BufferedWriter(stringWriter);
-			ClipboardController.writeHTML(selectedNodes, fileout);
+			writeHTML(selectedNodes, fileout);
 			fileout.close();
 			return stringWriter.toString();
 		}
@@ -421,4 +420,8 @@ public class ClipboardController implements IExtension {
 		fileout.write("\n");
 		writeChildrenText(mindMapNodeModel, fileout, depth);
 	}
+
+	public static ClipboardController getController(ModeController modeController) {
+		return (ClipboardController) modeController.getExtension(ClipboardController.class);
+    }
 }

@@ -88,9 +88,10 @@ public class EncryptionModel implements IExtension {
 	}
 
 	/**
+	 * @param mapController 
 	 * @return true, if the password was correct.
 	 */
-	public boolean decrypt(final IEncrypter encrypter) {
+	public boolean decrypt(MapController mapController, final IEncrypter encrypter) {
 		if (!checkPassword(encrypter)) {
 			return false;
 		}
@@ -104,7 +105,7 @@ public class EncryptionModel implements IExtension {
 					if (string.length() == 0) {
 						continue;
 					}
-					pasteXML(string, node);
+					pasteXML(string, node, mapController);
 				}
 				isDecrypted = true;
 			}
@@ -139,13 +140,14 @@ public class EncryptionModel implements IExtension {
 	}
 
 	/**
+	 * @param mapController 
 	 * @throws IOException
 	 */
-	private void generateEncryptedContent() throws IOException {
+	private void generateEncryptedContent(MapController mapController) throws IOException {
 		final StringWriter sWriter = new StringWriter();
-		for (final Iterator i = node.getModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
+		for (final Iterator i = mapController.childrenUnfolded(node); i.hasNext();) {
 			final NodeModel child = (NodeModel) i.next();
-			child.getModeController().getMapController().getMapWriter().writeNodeAsXml(sWriter, child, true, true);
+			mapController.getMapWriter().writeNodeAsXml(sWriter, child, true, true);
 			if (i.hasNext()) {
 				sWriter.write(ResourceControllerProperties.NODESEPARATOR);
 			}
@@ -154,10 +156,10 @@ public class EncryptionModel implements IExtension {
 		encryptedContent = encryptXml(childXml);
 	}
 
-	public String getEncryptedContent() {
+	public String getEncryptedContent(MapController mapController) {
 		if (isDecrypted) {
 			try {
-				generateEncryptedContent();
+				generateEncryptedContent(mapController);
 			}
 			catch (final Exception e) {
 				LogTool.logException(e);
@@ -187,19 +189,8 @@ public class EncryptionModel implements IExtension {
 		return isAccessible;
 	}
 
-	/**
-	 *
-	 */
-	public boolean isFolded() {
-		if (isAccessible()) {
-			return node.getModeController().getMapController().isFolded(node);
-		}
-		return true;
-	}
-
-	private void pasteXML(final String pasted, final NodeModel target) {
+	private void pasteXML(final String pasted, final NodeModel target, MapController mapController) {
 		try {
-			final MapController mapController = target.getModeController().getMapController();
 			final NodeModel node = mapController.getMapReader().createNodeTreeFromXml(target.getMap(),
 			    new StringReader(pasted));
 			mapController.insertNodeIntoWithoutUndo(node, target, target.getChildCount());

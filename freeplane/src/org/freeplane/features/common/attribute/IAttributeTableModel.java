@@ -26,9 +26,7 @@ import org.freeplane.core.model.NodeModel;
 /**
  * @author Dimitry Polivaev
  */
-public interface IAttributeTableModel extends TableModel {
-	void fireTableDataChanged();
-
+public interface IAttributeTableModel{
 	int getColumnWidth(int col);
 
 	NodeModel getNode();
@@ -36,8 +34,4 @@ public interface IAttributeTableModel extends TableModel {
 	int getRowCount();
 
 	Object getValueAt(int row, int col);
-
-	void setColumnWidth(int col, int width);
-
-	void setValueAt(Object o, int row, int col);
 }

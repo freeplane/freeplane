@@ -45,7 +45,7 @@ class ColorArrowLinkAction extends AFreeplaneAction {
 		final Controller controller = getController();
 		final ExtensionContainer modeController = getModeController();
 		final Color selectedColor = LinkController.getController(modeController).getColor(arrowLink);
-		final Color color = ColorTracker.showCommonJColorChooserDialog(controller.getSelection().getSelected(),
+		final Color color = ColorTracker.showCommonJColorChooserDialog(controller, controller.getSelection().getSelected(),
 		    (String) this.getValue(Action.NAME), selectedColor);
 		if (color == null) {
 			return;
@@ -61,7 +61,7 @@ class ColorArrowLinkAction extends AFreeplaneAction {
 				oldColor = arrowLink.getColor();
 				arrowLink.setColor(color);
 				final NodeModel node = arrowLink.getSource();
-				node.getModeController().getMapController().nodeChanged(node);
+				getModeController().getMapController().nodeChanged(node);
 			}
 
 			public String getDescription() {
@@ -71,7 +71,7 @@ class ColorArrowLinkAction extends AFreeplaneAction {
 			public void undo() {
 				arrowLink.setColor(oldColor);
 				final NodeModel node = arrowLink.getSource();
-				node.getModeController().getMapController().nodeChanged(node);
+				getModeController().getMapController().nodeChanged(node);
 			}
 		};
 		getModeController().execute(actor);

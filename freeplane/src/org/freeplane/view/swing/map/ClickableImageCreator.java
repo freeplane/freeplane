@@ -76,8 +76,8 @@ class ClickableImageCreator {
 		final NodeView nodeView = mapView.getNodeView(node);
 		if (nodeView != null) {
 			final AreaHolder holder = new AreaHolder();
-			holder.title = node.getShortText(modeController);
-			holder.alt = node.getShortText(modeController);
+			holder.title = node.getShortText();
+			holder.alt = node.getShortText();
 			holder.href = node.createID();
 			final Point contentXY = mapView.getNodeContentLocation(nodeView);
 			final JComponent content = nodeView.getContent();
@@ -86,7 +86,7 @@ class ClickableImageCreator {
 			holder.coordinates.width = content.getWidth();
 			holder.coordinates.height = content.getHeight();
 			area.add(holder);
-			for (final Iterator i = node.getModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
+			for (final Iterator i = mapView.getModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
 				final NodeModel child = (NodeModel) i.next();
 				createArea(child);
 			}

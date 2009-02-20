@@ -47,8 +47,10 @@ import org.freeplane.n3.nanoxml.XMLElement;
 class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExtensionElementWriter,
         IExtensionAttributeWriter, IAttributeWriter {
 	final private HashSet<ArrowLinkModel> arrowLinks;
+	private LinkController linkController;
 
-	public LinkBuilder() {
+	public LinkBuilder(LinkController linkController) {
+		this.linkController = linkController;
 		arrowLinks = new HashSet<ArrowLinkModel>();
 	}
 
@@ -100,7 +102,7 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "LINK", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
-				(LinkController.getController(node.getModeController())).loadLink(node, value);
+				linkController.loadLink(node, value);
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "STYLE", new IAttributeHandler() {
@@ -223,7 +225,7 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 	public void writeAttributes(final ITreeWriter writer, final Object userObject, final String tag) {
 		final NodeModel node = (NodeModel) userObject;
 		final boolean saveID = MapController.saveOnlyIntrinsicallyNeededIds()
-		        && !LinkController.getController(node.getModeController()).getLinksTo(node).isEmpty();
+		        && !linkController.getLinksTo(node).isEmpty();
 		if (saveID) {
 			final String id = node.createID();
 			writer.addAttribute("ID", id);

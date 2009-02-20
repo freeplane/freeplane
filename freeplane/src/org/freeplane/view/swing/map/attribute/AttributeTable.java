@@ -53,6 +53,7 @@ import org.freeplane.features.common.attribute.AttributeTableLayoutModel;
 import org.freeplane.features.common.attribute.ColumnWidthChangeEvent;
 import org.freeplane.features.common.attribute.IAttributeTableModel;
 import org.freeplane.features.common.attribute.IColumnWidthChangeListener;
+import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
 /**
@@ -69,7 +70,7 @@ public class AttributeTable extends JTable implements IColumnWidthChangeListener
 			final JViewport port = (JViewport) table.getParent();
 			final Dimension extentSize = port.getExtentSize();
 			if (preferredScrollableViewportSize.width != extentSize.width) {
-				final IAttributeTableModel model = (IAttributeTableModel) table.getModel();
+				final AttributeTableModelDecoratorAdapter model = (AttributeTableModelDecoratorAdapter) table.getModel();
 				for (int col = 0; col < table.getColumnCount(); col++) {
 					final int modelColumnWidth = model.getColumnWidth(col);
 					final int currentColumnWidth = (int) (table.getColumnModel().getColumn(col).getWidth() / zoom);
@@ -214,8 +215,9 @@ public class AttributeTable extends JTable implements IColumnWidthChangeListener
 		final AttributeTableLayoutModel layoutModel = (AttributeTableLayoutModel) event.getSource();
 		final int width = layoutModel.getColumnWidth(col);
 		getColumnModel().getColumn(col).setPreferredWidth((int) (width * zoom));
-		final NodeModel node = getAttributeView().getNode();
-		node.getModeController().getMapController().nodeChanged(node);
+		final MapView map = attributeView.getMapView();
+		final NodeModel node = attributeView.getNode();
+		map.getModeController().getMapController().nodeChanged(node);
 	}
 
 	/**
@@ -453,8 +455,8 @@ public class AttributeTable extends JTable implements IColumnWidthChangeListener
 			updateRowHeights();
 		}
 		getParent().getParent().invalidate();
-		final NodeModel node = getAttributeView().getNode();
-		node.getModeController().getMapController().nodeChanged(node);
+		final NodeModel node = attributeView.getNode();
+		attributeView.getMapView().getModeController().getMapController().nodeChanged(node);
 	}
 
 	/**

@@ -63,7 +63,7 @@ public class MNodeMotionListener extends DefaultNodeMotionListener {
 	 */
 	private int getHGap(final Point dragNextPoint, final NodeModel node, final Point dragStartingPoint) {
 		int oldHGap = LocationModel.getModel(node).getHGap();
-		final Controller controller = node.getModeController().getController();
+		final Controller controller = c.getController();
 		final MapView mapView = ((MapView) controller.getViewController().getMapView());
 		int hGapChange = (int) ((dragNextPoint.x - dragStartingPoint.x) / mapView.getZoom());
 		if (node.isLeft()) {
@@ -77,7 +77,7 @@ public class MNodeMotionListener extends DefaultNodeMotionListener {
 	 */
 	private int getNodeShiftY(final Point dragNextPoint, final NodeModel node, final Point dragStartingPoint) {
 		int shiftY = LocationModel.getModel(node).getShiftY();
-		final Controller controller = node.getModeController().getController();
+		final Controller controller = c.getController();
 		final MapView mapView = ((MapView) controller.getViewController().getMapView());
 		final int shiftYChange = (int) ((dragNextPoint.y - dragStartingPoint.y) / mapView.getZoom());
 		shiftY += shiftYChange;
@@ -94,7 +94,7 @@ public class MNodeMotionListener extends DefaultNodeMotionListener {
 	 */
 	private int getVGap(final Point dragNextPoint, final NodeModel node, final Point dragStartingPoint) {
 		int oldVGap = LocationModel.getModel(node).getVGap();
-		final Controller controller = node.getModeController().getController();
+		final Controller controller = c.getController();
 		final MapView mapView = ((MapView) controller.getViewController().getMapView());
 		final int vGapChange = (int) ((dragNextPoint.y - dragStartingPoint.y) / mapView.getZoom());
 		oldVGap = Math.max(0, oldVGap - vGapChange);
@@ -150,7 +150,7 @@ public class MNodeMotionListener extends DefaultNodeMotionListener {
 					final NodeModel parentNode = nodeV.getVisibleParentView().getModel();
 					LocationModel.createLocationModel(parentNode).setVGap(
 					    getVGap(dragNextPoint, parentNode, dragStartingPoint));
-					final MapController mapController = parentNode.getModeController().getMapController();
+					final MapController mapController = c.getMapController();
 					mapController.nodeRefresh(parentNode);
 					mapController.nodeRefresh(nodeV.getModel());
 				}

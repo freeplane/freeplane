@@ -40,6 +40,7 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.core.frame.ViewController;
+import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.components.UITools;
@@ -90,12 +91,13 @@ public class EditNodeTextField extends AbstractEditNodeTextField {
 		final Component component = viewController.getComponent(getNode());
 		final NodeView nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, component);
 		final NodeModel model = nodeView.getModel();
+		final MapView mapView = (MapView) viewController.getMapView();
 		int xSize = nodeView.getMainView().getTextWidth() + widthAddition;
 		xOffset += nodeView.getMainView().getTextX();
 		int xExtraWidth = 0;
+		final MapController mapController = mapView.getModeController().getMapController();
 		if (MINIMAL_LEAF_WIDTH > xSize
-		        && (model.getModeController().getMapController().isFolded(model) || !model.getModeController()
-		            .getMapController().hasChildren(model))) {
+		        && (mapController.isFolded(model) || !mapController.hasChildren(model))) {
 			xExtraWidth = MINIMAL_LEAF_WIDTH - xSize;
 			xSize = MINIMAL_LEAF_WIDTH;
 			if (nodeView.isLeft()) {
@@ -129,7 +131,6 @@ public class EditNodeTextField extends AbstractEditNodeTextField {
 		textfield.addKeyListener(textFieldListener);
 		textfield.addMouseListener(textFieldListener);
 		SpellCheckerController.getController(getModeController()).enableAutoSpell(textfield);
-		final MapView mapView = (MapView) viewController.getMapView();
 		mapView.scrollNodeToVisible(nodeView, xExtraWidth);
 		final Point textFieldLocation = new Point();
 		UITools.convertPointToAncestor(nodeView.getMainView(), textFieldLocation, mapView);
@@ -235,7 +236,6 @@ public class EditNodeTextField extends AbstractEditNodeTextField {
 
 		public void mouseClicked(final MouseEvent e) {
 		}
-
 		public void mouseEntered(final MouseEvent e) {
 		}
 
@@ -250,4 +250,5 @@ public class EditNodeTextField extends AbstractEditNodeTextField {
 			conditionallyShowPopup(e);
 		}
 	}
+
 }

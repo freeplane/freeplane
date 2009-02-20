@@ -33,6 +33,8 @@ import org.freeplane.core.filter.util.IListModel;
 import org.freeplane.core.filter.util.SortedComboBoxModel;
 import org.freeplane.core.filter.util.SortedMapVector;
 import org.freeplane.core.io.ITreeWriter;
+import org.freeplane.core.modecontroller.MapController;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.features.mindmapmode.attribute.IAttributesListener;
@@ -45,13 +47,13 @@ public class AttributeRegistry implements IExtension {
 	static public final int GLOBAL = -1;
 	private static final int TABLE_FONT_SIZE = 12;
 
-	static AttributeRegistry createRegistry(final MapModel map) {
+	static AttributeRegistry createRegistry(ModeController modeController, final MapModel map) {
 		AttributeRegistry registry = AttributeRegistry.getRegistry(map);
 		if (registry == null) {
-			final AttributeController attributeController = AttributeController.getController(map.getModeController());
+			final AttributeController attributeController = AttributeController.getController(modeController);
 			registry = new AttributeRegistry(attributeController);
 			map.putExtension(AttributeRegistry.class, registry);
-			registry.registryAttributes(map.getRootNode());
+			registry.registryAttributes(modeController.getMapController(), map.getRootNode());
 		}
 		return registry;
 	}
@@ -298,7 +300,7 @@ public class AttributeRegistry implements IExtension {
 		getTableModel().fireTableRowsInserted(index, index);
 	}
 
-	private void registryAttributes(final NodeModel node) {
+	private void registryAttributes(MapController mapController, final NodeModel node) {
 		final NodeAttributeTableModel model = NodeAttributeTableModel.getModel(node);
 		if (model == null) {
 			return;
@@ -306,10 +308,10 @@ public class AttributeRegistry implements IExtension {
 		for (int i = 0; i < model.getRowCount(); i++) {
 			registry(model.getAttribute(i));
 		}
-		final ListIterator<NodeModel> iterator = node.getModeController().getMapController().childrenUnfolded(node);
+		final ListIterator<NodeModel> iterator = mapController.childrenUnfolded(node);
 		while (iterator.hasNext()) {
 			final NodeModel next = iterator.next();
-			registryAttributes(next);
+			registryAttributes(mapController, next);
 		}
 	}
 

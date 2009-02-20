@@ -110,7 +110,7 @@ class NodeViewFactory {
 	}
 
 	private void fireNodeViewCreated(final NodeView newView) {
-		newView.getMap().getModel().getModeController().onViewCreated(newView);
+		newView.getMap().getModeController().onViewCreated(newView);
 	}
 
 	private EdgeView getBezierEdgeView() {
@@ -122,7 +122,7 @@ class NodeViewFactory {
 
 	EdgeView getEdge(final NodeView newView) {
 		final NodeModel model = newView.getModel();
-		final String edgeStyle = EdgeController.getController(model.getModeController()).getStyle(model);
+		final String edgeStyle = EdgeController.getController(newView.getMap().getModeController()).getStyle(model);
 		if (edgeStyle.equals(EdgeModel.EDGESTYLE_LINEAR)) {
 			return getLinearEdgeView();
 		}
@@ -166,11 +166,12 @@ class NodeViewFactory {
 		return new ContentPane();
 	}
 
-	MainView newMainView(final NodeModel model) {
+	MainView newMainView(final NodeView node) {
+		NodeModel model = node.getModel();
 		if (model.isRoot()) {
 			return new RootMainView();
 		}
-		final String shape = NodeStyleController.getController(model.getModeController()).getShape(model);
+		final String shape = NodeStyleController.getController(node.getMap().getModeController()).getShape(model);
 		if (shape.equals(NodeStyleModel.STYLE_FORK)) {
 			return new ForkMainView();
 		}
@@ -194,7 +195,7 @@ class NodeViewFactory {
 			newView.setLayout(VerticalRootNodeViewLayout.getInstance());
 		}
 		else {
-			newView.setMainView(newMainView(model));
+			newView.setMainView(newMainView(newView));
 			if (newView.isLeft()) {
 				newView.setLayout(LeftNodeViewLayout.getInstance());
 			}

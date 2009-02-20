@@ -58,6 +58,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.modecontroller.IMapSelection;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
@@ -157,7 +158,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		}
 
 		private void addSelectionForHooks(final NodeView node) {
-			getModel().getModeController().getMapController().onSelect(node.getModel());
+			getModeController().getMapController().onSelect(node.getModel());
 		}
 
 		public void clear() {
@@ -212,7 +213,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 			if (node.getModel() == null) {
 				return;
 			}
-			getModel().getModeController().getMapController().onDeselect(node.getModel());
+			getModeController().getMapController().onDeselect(node.getModel());
 		}
 
 		public int size() {
@@ -248,11 +249,13 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 	private NodeView shiftSelectionOrigin = null;
 	private int siblingMaxLevel;
 	private float zoom = 1F;
+	private ModeController modeController;
 
-	public MapView(final MapModel model) {
+	public MapView(final MapModel model, ModeController modeController) {
 		super();
 		this.model = model;
-		controller = model.getModeController().getController();
+		this.modeController = modeController;
+		controller = modeController.getController();
 		final String name = getModel().getTitle();
         setName(name);
 		if (MapView.standardMapBackgroundColor == null) {
@@ -275,7 +278,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		this.setLayout(new MindMapLayout());
 		initRoot();
 		setBackground(MapView.standardMapBackgroundColor);
-		final IUserInputListenerFactory userInputListenerFactory = model.getModeController()
+		final IUserInputListenerFactory userInputListenerFactory = getModeController()
 		    .getUserInputListenerFactory();
 		addMouseListener(userInputListenerFactory.getMapMouseListener());
 		addMouseMotionListener(userInputListenerFactory.getMapMouseListener());
@@ -672,8 +675,8 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 			newSelected = oldSelected.getVisibleParentView();
 		}
 		else {
-			if (oldModel.getModeController().getMapController().isFolded(oldModel)) {
-				oldModel.getModeController().getMapController().setFolded(oldModel, false);
+			if (getModeController().getMapController().isFolded(oldModel)) {
+				getModeController().getMapController().setFolded(oldModel, false);
 				return oldSelected;
 			}
 			newSelected = oldSelected.getPreferredVisibleChild(true);
@@ -726,8 +729,8 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 			newSelected = oldSelected.getVisibleParentView();
 		}
 		else {
-			if (oldModel.getModeController().getMapController().isFolded(oldModel)) {
-				model.getModeController().getMapController().setFolded(oldModel, false);
+			if (getModeController().getMapController().isFolded(oldModel)) {
+				getModeController().getMapController().setFolded(oldModel, false);
 				return oldSelected;
 			}
 			newSelected = oldSelected.getPreferredVisibleChild(false);
@@ -876,7 +879,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		final NodeModel node = source.getModel();
 		final Collection<LinkModel> outLinks = NodeLinks.getLinks(node);
 		paintLinks(outLinks, graphics, alreadyPaintedLinks);
-		final Collection<LinkModel> inLinks = LinkController.getController(node.getModeController()).getLinksTo(node);
+		final Collection<LinkModel> inLinks = LinkController.getController(getModeController()).getLinksTo(node);
 		paintLinks(inLinks, graphics, alreadyPaintedLinks);
 		for (final ListIterator e = source.getChildrenViews().listIterator(); e.hasNext();) {
 			final NodeView target = (NodeView) e.next();
@@ -1311,4 +1314,8 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		super.validateTree();
 		setViewPositionAfterValidate();
 	}
+
+	public ModeController getModeController() {
+	    return modeController;
+    }
 }

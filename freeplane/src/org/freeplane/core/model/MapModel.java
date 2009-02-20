@@ -45,7 +45,6 @@ public class MapModel extends ExtensionContainer {
 	protected int changesPerformedSinceLastSave = 0;
 	private IFilter filter = null;
 	final private IconRegistry iconRegistry;
-	final private ModeController mModeController;
 	final private Map<String, NodeModel> nodes;
 	private boolean readOnly = true;
 	private NodeModel root;
@@ -54,7 +53,6 @@ public class MapModel extends ExtensionContainer {
 	public MapModel(final ModeController modeController, NodeModel root) {
 		super();
 		this.root = root;
-		mModeController = modeController;
 		final Controller controller = modeController.getController();
 		nodes = new HashMap<String, NodeModel>();
 		filter = new DefaultFilter(controller, NoFilteringCondition.createCondition(), true, false);
@@ -65,7 +63,7 @@ public class MapModel extends ExtensionContainer {
 		else {
 			root.setMap(this);
 		}
-		iconRegistry = new IconRegistry(this);
+		iconRegistry = new IconRegistry(modeController.getMapController(), this);
 	}
 
 
@@ -107,10 +105,6 @@ public class MapModel extends ExtensionContainer {
 
 	public IconRegistry getIconRegistry() {
 		return iconRegistry;
-	}
-
-	public ModeController getModeController() {
-		return mModeController;
 	}
 
 	/**
@@ -217,19 +211,11 @@ public class MapModel extends ExtensionContainer {
 	 *            true if the file was saved recently. False otherwise.
 	 */
 	public void setSaved(final boolean saved) {
-		boolean setTitle = false;
 		if (saved) {
 			changesPerformedSinceLastSave = 0;
-			setTitle = true;
 		}
 		else {
-			if (changesPerformedSinceLastSave == 0) {
-				setTitle = true;
-			}
 			++changesPerformedSinceLastSave;
-		}
-		if (setTitle) {
-			getModeController().getController().getViewController().setTitle();
 		}
 	};
 

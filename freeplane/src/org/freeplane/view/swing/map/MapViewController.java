@@ -44,6 +44,7 @@ import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.frame.IMapViewChangeListener;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.modecontroller.IMapSelection;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 
@@ -67,9 +68,13 @@ public class MapViewController implements IMapViewManager {
 		}
 
 		void afterMapChange(final MapView oldMap, final MapView newMap) {
+			final MapModel oldModel = getModel(oldMap);
+			final MapModel newModel = getModel(newMap);
 			for (final Iterator<IMapSelectionListener> iter = mapListeners.iterator(); iter.hasNext();) {
 				final IMapSelectionListener observer = iter.next();
-				observer.afterMapChange(getModel(oldMap), getModel(newMap));
+				if(oldModel != newModel){
+				observer.afterMapChange(oldModel, newModel);
+				}
 			}
 			for (final Iterator<IMapViewChangeListener> iter = viewListeners.iterator(); iter.hasNext();) {
 				final IMapViewChangeListener observer = iter.next();
@@ -187,7 +192,7 @@ public class MapViewController implements IMapViewManager {
 		listener.beforeMapChange(oldMapView, newMapView);
 		mapView = newMapView;
 		if (mapView != null) {
-			lastModeName = mapView.getModel().getModeController().getModeName();
+			lastModeName = mapView.getModeController().getModeName();
 		}
 		listener.afterMapChange(oldMapView, newMapView);
 		return true;
@@ -221,7 +226,7 @@ public class MapViewController implements IMapViewManager {
 		MapView mapViewCandidate = null;
 		for (final Iterator iterator = mapViewVector.iterator(); iterator.hasNext();) {
 			final MapView mapMod = (MapView) iterator.next();
-			if (modeName.equals(getModel(mapMod).getModeController().getModeName())) {
+			if (modeName.equals(mapMod.getModeController().getModeName())) {
 				mapViewCandidate = mapMod;
 				break;
 			}
@@ -254,7 +259,7 @@ public class MapViewController implements IMapViewManager {
 	 */
 	public boolean close(final boolean force) {
 		final MapView mapView = getMapView();
-		final boolean closingNotCancelled = getModel(mapView).getModeController().getMapController().close(force);
+		final boolean closingNotCancelled = mapView.getModeController().getMapController().close(force);
 		if (!closingNotCancelled) {
 			return false;
 		}
@@ -275,8 +280,9 @@ public class MapViewController implements IMapViewManager {
 	}
 
 	public String createHtmlMap() {
-		final ClickableImageCreator creator = new ClickableImageCreator(getModel().getRootNode(), getModel()
-		    .getModeController(), "FM$1FM");
+		final MapModel model = getModel();
+		final ClickableImageCreator creator = new ClickableImageCreator(model.getRootNode(),
+			getMapView().getModeController(), "FM$1FM");
 		return creator.generateHtml();
 	}
 
@@ -435,8 +441,8 @@ public class MapViewController implements IMapViewManager {
 	/* (non-Javadoc)
 	 * @see org.freeplane.core.frame.IMapViewController#newMapView(org.freeplane.core.model.MapModel, org.freeplane.core.modecontroller.ModeController)
 	 */
-	public void newMapView(final MapModel map, final ExtensionContainer modeController) {
-		final MapView mapView = new MapView(map);
+	public void newMapView(final MapModel map, final ModeController modeController) {
+		final MapView mapView = new MapView(map, modeController);
 		addToOrChangeInMapViews(mapView.getName(), mapView);
 		listener.mapViewCreated(mapView);
 		changeToMapView(mapView);
@@ -487,7 +493,7 @@ public class MapViewController implements IMapViewManager {
 	/* (non-Javadoc)
 	 * @see org.freeplane.core.frame.IMapViewController#removeIMapViewChangeListener(org.freeplane.core.frame.IMapChangeListener)
 	 */
-	public void removeIMapViewChangeListener(final IMapSelectionListener pListener) {
+	public void removeMapChangeListener(final IMapSelectionListener pListener) {
 		listener.removeListener(pListener);
 	}
 
@@ -555,4 +561,12 @@ public class MapViewController implements IMapViewManager {
 		addToOrChangeInMapViews(getMapView().getName(), getMapView());
 		changeToMapView(getMapView());
 	}
+
+	public ModeController getModeController(Component mapView) {
+		return ((MapView)mapView).getModeController();
+    }
+
+	public MapModel getModel(Component mapView) {
+		return ((MapView)mapView).getModel();
+    }
 }

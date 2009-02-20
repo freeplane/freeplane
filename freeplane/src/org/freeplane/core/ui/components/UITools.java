@@ -196,33 +196,30 @@ public class UITools {
 		dialog.setLocation(dx, dy);
 	}
 
-	public static void setDialogLocationRelativeTo(final JDialog dialog, final NodeModel node) {
+	public static void setDialogLocationRelativeTo(final JDialog dialog, final Controller controller, final NodeModel node) {
 		if (node == null) {
 			return;
 		}
-		final Controller controller = node.getModeController().getController();
 		final ViewController viewController = controller.getViewController();
 		viewController.scrollNodeToVisible(node);
 		final Component c = viewController.getComponent(node);
 		UITools.setDialogLocationRelativeTo(dialog, c);
 	}
 
-	public static String showInputDialog(final NodeModel node, final String text, final String string) {
+	public static String showInputDialog(final Controller controller, final NodeModel node, final String text, final String string) {
 		if (node == null) {
 			return null;
 		}
-		final Controller controller = node.getModeController().getController();
 		final ViewController viewController = controller.getViewController();
 		viewController.scrollNodeToVisible(node);
 		final Component parentComponent = viewController.getComponent(node);
 		return JOptionPane.showInputDialog(parentComponent, text, string);
 	}
 
-	public static String showInputDialog(final NodeModel node, final String text, final String title, final int type) {
+	public static String showInputDialog(final Controller controller, final NodeModel node, final String text, final String title, final int type) {
 		if (node == null) {
 			return null;
 		}
-		final Controller controller = node.getModeController().getController();
 		final ViewController viewController = controller.getViewController();
 		viewController.scrollNodeToVisible(node);
 		final Component parentComponent = viewController.getComponent(node);

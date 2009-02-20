@@ -54,7 +54,7 @@ class NodeHolder {
 
 	MapView getMapView() {
 		final MapView mapView = mMapView.get();
-		final Controller controller = mapView.getModel().getModeController().getController();
+		final Controller controller = mapView.getModeController().getController();
 		final Map mapViews = controller.getMapViewManager().getMaps();
 		for (final Iterator iter = mapViews.values().iterator(); iter.hasNext();) {
 			final MapView m = (MapView) iter.next();
@@ -69,7 +69,7 @@ class NodeHolder {
 		ExtensionContainer modeController = null;
 		final MapView mapView = getMapView();
 		if (mapView != null) {
-			modeController = mapView.getModel().getModeController();
+			modeController = mapView.getModeController();
 		}
 		return modeController;
 	}

@@ -152,7 +152,7 @@ public class NodeStyleController implements IExtension {
 					returnedString = getShape(node.getParentNode());
 				}
 				if (returnedString.equals(NodeStyleModel.SHAPE_COMBINED)) {
-					if (node.getModeController().getMapController().isFolded(node)) {
+					if (getModeController().getMapController().isFolded(node)) {
 						return NodeStyleModel.STYLE_BUBBLE;
 					}
 					else {

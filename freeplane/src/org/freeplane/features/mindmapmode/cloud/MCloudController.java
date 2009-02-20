@@ -22,6 +22,7 @@ package org.freeplane.features.mindmapmode.cloud;
 import java.awt.Color;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.undo.IUndoableActor;
@@ -45,7 +46,7 @@ public class MCloudController extends CloudController {
 			return;
 		}
 		final Color color = cloud != null ? cloud.getColor() : null;
-		final ModeController modeController = node.getModeController();
+		final ModeController modeController = getModeController();
 		final IUndoableActor actor = new IUndoableActor() {
 			public void act() {
 				if (enable) {
@@ -57,15 +58,17 @@ public class MCloudController extends CloudController {
 			}
 
 			private void disable() {
-				CloudModel.setModel(node, null);
-				modeController.getMapController().nodeChanged(node);
+				final MapController mapController = modeController.getMapController();
+				CloudModel.setModel(mapController, node, null);
+				mapController.nodeChanged(node);
 			}
 
 			private void enable() {
 				final CloudModel cloud = new CloudModel();
 				cloud.setColor(color);
-				CloudModel.setModel(node, cloud);
-				modeController.getMapController().nodeChanged(node);
+				final MapController mapController = modeController.getMapController();
+				CloudModel.setModel(mapController, node, cloud);
+				mapController.nodeChanged(node);
 			}
 
 			public String getDescription() {
@@ -86,7 +89,7 @@ public class MCloudController extends CloudController {
 
 	public void setColor(final NodeModel node, final Color color) {
 		setCloud(node, true);
-		final ModeController modeController = node.getModeController();
+		final ModeController modeController = getModeController();
 		final Color oldColor = CloudModel.getModel(node).getColor();
 		if (color.equals(oldColor)) {
 			return;

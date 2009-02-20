@@ -88,7 +88,7 @@ class PasteAction extends AFreeplaneAction {
 				final String body = m.group(2);
 				if (!body.matches(".*<\\s*a.*")) {
 					final String href = m.group(1);
-					((MLinkController) LinkController.getController(node.getModeController())).setLink(node, href);
+					((MLinkController) LinkController.getController(getModeController())).setLink(node, href);
 				}
 			}
 			PasteAction.this.paste(node, target, target.getChildCount());
@@ -108,7 +108,7 @@ class PasteAction extends AFreeplaneAction {
 				final File file = (File) it.next();
 				final NodeModel node = getModeController().getMapController().newNode(file.getName(), target.getMap());
 				node.setLeft(isLeft);
-				((MLinkController) LinkController.getController(node.getModeController())).setLink(node, file
+				((MLinkController) LinkController.getController(getModeController())).setLink(node, file
 				    .getAbsolutePath());
 				PasteAction.this.paste(node, target, asSibling, isLeft, false);
 			}
@@ -339,7 +339,7 @@ class PasteAction extends AFreeplaneAction {
 			}
 			final Matcher mailMatcher = mailPattern.matcher(visibleText);
 			if (mailMatcher.find()) {
-				((MLinkController) LinkController.getController(node.getModeController())).setLink(node,
+				((MLinkController) LinkController.getController(getModeController())).setLink(node,
 				    ("mailto:" + mailMatcher.group()));
 			}
 			for (int j = 0; j < linkPrefixes.length; j++) {
@@ -350,7 +350,7 @@ class PasteAction extends AFreeplaneAction {
 					        && !PasteAction.nonLinkCharacter.matcher(text.substring(linkEnd, linkEnd + 1)).matches()) {
 						linkEnd++;
 					}
-					((MLinkController) LinkController.getController(node.getModeController())).setLink(node, text
+					((MLinkController) LinkController.getController(getModeController())).setLink(node, text
 					    .substring(linkStart, linkEnd));
 				}
 			}

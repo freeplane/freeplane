@@ -52,17 +52,20 @@ import javax.swing.event.ListDataListener;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.modecontroller.IMapSelection;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.common.attribute.Attribute;
+import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.attribute.AttributeRegistry;
 import org.freeplane.features.common.attribute.AttributeRegistryElement;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
 
 public class AssignAttributeDialog extends JDialog implements IAttributesListener, IMapSelectionListener {
+	final private AttributeController attributeController;
 	private class AddAction extends IteratingAction {
 		private String name;
 		private String value;
@@ -88,9 +91,9 @@ public class AssignAttributeDialog extends JDialog implements IAttributesListene
 
 		@Override
 		protected void performAction(final NodeModel model) {
-			NodeAttributeTableModel.createAttributeTableModel(model);
+			attributeController.createAttributeTableModel(model);
 			final NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(model);
-			attributes.getAttributeController().performInsertRow(attributes, attributes.getRowCount(), name, value);
+			attributeController.performInsertRow(attributes, attributes.getRowCount(), name, value);
 		}
 	}
 
@@ -156,7 +159,7 @@ public class AssignAttributeDialog extends JDialog implements IAttributesListene
 			final NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(model);
 			for (int i = attributes.getRowCount() - 1; i >= 0; i--) {
 				if (attributes.getAttribute(i).getName().equals(name)) {
-					attributes.getAttributeController().performRemoveRow(attributes, i);
+					attributeController.performRemoveRow(attributes, i);
 				}
 			}
 		}
@@ -188,7 +191,7 @@ public class AssignAttributeDialog extends JDialog implements IAttributesListene
 			for (int i = attributes.getRowCount() - 1; i >= 0; i--) {
 				final Attribute attribute = attributes.getAttribute(i);
 				if (attribute.getName().equals(name) && attribute.getValue().equals(value)) {
-					attributes.getAttributeController().performRemoveRow(attributes, i);
+					attributeController.performRemoveRow(attributes, i);
 				}
 			}
 		}
@@ -276,8 +279,8 @@ public class AssignAttributeDialog extends JDialog implements IAttributesListene
 			for (int i = attributes.getRowCount() - 1; i >= 0; i--) {
 				final Attribute attribute = attributes.getAttribute(i);
 				if (attribute.getName().equals(name) && attribute.getValue().equals(value)) {
-					attributes.getAttributeController().performRemoveRow(attributes, i);
-					attributes.insertRow(i, replacingName, replacingValue);
+					attributeController.performRemoveRow(attributes, i);
+					attributeController.performInsertRow(attributes, i, replacingName, replacingValue);
 				}
 			}
 		}
@@ -294,9 +297,10 @@ public class AssignAttributeDialog extends JDialog implements IAttributesListene
 	final private JCheckBox skipRootBtn;
 	final private JRadioButton visibleBtn;
 
-	public AssignAttributeDialog(final Controller controller, final Frame frame) {
+	public AssignAttributeDialog(final AttributeController attributeController, final Frame frame) {
 		super(frame, UITools.removeMnemonic(ResourceController.getText("attributes_assign_dialog")), false);
-		this.controller = controller;
+		this.attributeController = attributeController;
+		this.controller = attributeController.getModeController().getController();
 		mapSelection = controller.getSelection();
 		final Border actionBorder = new MatteBorder(2, 2, 2, 2, Color.BLACK);
 		final Border emptyBorder = new EmptyBorder(5, 5, 5, 5);

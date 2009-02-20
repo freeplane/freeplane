@@ -51,7 +51,7 @@ public class BModeController extends ModeController {
 			}
 			node.setStateIcon(NodeNoteBase.NODE_NOTE_ICON, noteIcon);
 		}
-		final ListIterator children = node.getModeController().getMapController().childrenUnfolded(node);
+		final ListIterator children = getMapController().childrenUnfolded(node);
 		while (children.hasNext()) {
 			setNoteIcon((NodeModel) children.next());
 		}

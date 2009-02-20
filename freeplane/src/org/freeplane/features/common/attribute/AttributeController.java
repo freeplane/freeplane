@@ -51,11 +51,11 @@ public class AttributeController implements IExtension {
 		final ReadManager readManager = mapController.getReadManager();
 		final WriteManager writeManager = mapController.getWriteManager();
 		final MapReader mapReader = mapController.getMapReader();
-		final AttributeBuilder attributeBuilder = new AttributeBuilder(modeController.getController(), mapReader);
+		final AttributeBuilder attributeBuilder = new AttributeBuilder(this, mapReader);
 		attributeBuilder.registerBy(readManager, writeManager);
 		modeController.getMapController().addMapLifeCycleListener(new IMapLifeCycleListener() {
 			public void onCreate(final MapModel map) {
-				AttributeRegistry.createRegistry(map);
+				AttributeRegistry.createRegistry(getModeController(), map);
 			}
 
 			public void onRemove(final MapModel map) {
@@ -63,7 +63,7 @@ public class AttributeController implements IExtension {
 		});
 	}
 
-	protected ModeController getModeController() {
+	public ModeController getModeController() {
 		return modeController;
 	}
 
@@ -92,7 +92,7 @@ public class AttributeController implements IExtension {
 		throw new UnsupportedOperationException();
 	}
 
-	public void performRemoveRow(final NodeAttributeTableModel model, final int row) {
+	public Attribute performRemoveRow(final NodeAttributeTableModel model, final int row) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -123,4 +123,20 @@ public class AttributeController implements IExtension {
 	public void performSetVisibility(final int index, final boolean isVisible) {
 		throw new UnsupportedOperationException();
 	}
+
+	public NodeAttributeTableModel createAttributeTableModel(final NodeModel node) {
+		NodeAttributeTableModel attributeModel = (NodeAttributeTableModel) node
+		    .getExtension(NodeAttributeTableModel.class);
+		if (attributeModel != null) {
+			return attributeModel;
+		}
+		attributeModel = new NodeAttributeTableModel(node);
+		node.putExtension(attributeModel);
+		if (node.areViewsEmpty()) {
+			return attributeModel;
+		}
+		getModeController().getMapController().nodeRefresh(node);
+		return attributeModel;
+	}
+	
 }

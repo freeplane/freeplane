@@ -241,9 +241,10 @@ public abstract class MainView extends JLabel implements IMainView {
 	}
 
 	public boolean isInFollowLinkRegion(final double xCoord) {
-		final NodeModel model = getNodeView().getModel();
+		final NodeView nodeView = getNodeView();
+		final NodeModel model = nodeView.getModel();
 		return NodeLinks.getLink(model) != null
-		        && (model.isRoot() || !model.getModeController().getMapController().hasChildren(model) || isInVerticalRegion(
+		        && (model.isRoot() || !nodeView.getMap().getModeController().getMapController().hasChildren(model) || isInVerticalRegion(
 		            xCoord, 1. / 2));
 	}
 
@@ -309,8 +310,9 @@ public abstract class MainView extends JLabel implements IMainView {
 		final Color color = g.getColor();
 		g.setColor(Color.WHITE);
 		g.fillOval(p.x, p.y, zoomedFoldingSymbolHalfWidth * 2, zoomedFoldingSymbolHalfWidth * 2);
-		final NodeModel model = getNodeView().getModel();
-		final Color edgeColor = EdgeController.getController(model.getModeController()).getColor(model);
+		final NodeView nodeView = getNodeView();
+		final NodeModel model = nodeView.getModel();
+		final Color edgeColor = EdgeController.getController(nodeView.getMap().getModeController()).getColor(model);
 		g.setColor(edgeColor);
 		g.drawOval(p.x, p.y, zoomedFoldingSymbolHalfWidth * 2, zoomedFoldingSymbolHalfWidth * 2);
 		g.setColor(color);
@@ -344,7 +346,7 @@ public abstract class MainView extends JLabel implements IMainView {
 			return true;
 		}
 		final MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, this);
-		final FreeplaneMenuBar freeplaneMenuBar = mapView.getModel().getModeController().getController()
+		final FreeplaneMenuBar freeplaneMenuBar = mapView.getModeController().getController()
 		    .getViewController().getFreeplaneMenuBar();
 		return !freeplaneMenuBar.isVisible()
 		        && freeplaneMenuBar.processKeyBinding(ks, e, JComponent.WHEN_IN_FOCUSED_WINDOW, pressed);
@@ -370,30 +372,31 @@ public abstract class MainView extends JLabel implements IMainView {
 		return followLink;
 	}
 
-	public void updateFont(final NodeModel model) {
-		final Font font = NodeStyleController.getController(model.getModeController()).getFont(model);
+	public void updateFont(final NodeView node) {
+		final Font font = NodeStyleController.getController(node.getMap().getModeController()).getFont(node.getModel());
 		setFont(font);
 	}
 
-	void updateIcons(final NodeModel node) {
+	void updateIcons(final NodeView node) {
 		setHorizontalTextPosition(node.isLeft() ? SwingConstants.LEADING : SwingConstants.TRAILING);
 		final MultipleImage iconImages = new MultipleImage(1.0f);
 		boolean iconPresent = false;
 		/* fc, 06.10.2003: images? */
-		final Map stateIcons = node.getStateIcons();
+		final NodeModel model = node.getModel();
+		final Map stateIcons = model.getStateIcons();
 		for (final Iterator i = stateIcons.keySet().iterator(); i.hasNext();) {
 			final String key = (String) i.next();
 			iconPresent = true;
 			final ImageIcon myIcon = (ImageIcon) stateIcons.get(key);
 			iconImages.addImage(myIcon);
 		}
-		final List icons = node.getIcons();
+		final List icons = model.getIcons();
 		for (final Iterator i = icons.iterator(); i.hasNext();) {
 			final MindIcon myIcon = (MindIcon) i.next();
 			iconPresent = true;
 			iconImages.addImage(myIcon.getIcon());
 		}
-		final String link = NodeLinks.getLink(node);
+		final String link = NodeLinks.getLink(model);
 		if (link != null) {
 			iconPresent = true;
 			String iconPath = "/images/Link.png";
@@ -477,8 +480,8 @@ public abstract class MainView extends JLabel implements IMainView {
 		}
 	}
 
-	void updateTextColor(final NodeModel model) {
-		final Color color = NodeStyleController.getController(model.getModeController()).getColor(model);
+	void updateTextColor(final NodeView node) {
+		final Color color = NodeStyleController.getController(node.getMap().getModeController()).getColor(node.getModel());
 		setForeground(color);
 	}
 }

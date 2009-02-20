@@ -43,7 +43,7 @@ class CommonToggleChildrenFoldedAction extends AFreeplaneAction implements IFree
 		final Controller controller = getController();
 		final IMapSelection mapSelection = controller.getSelection();
 		final NodeModel model = mapSelection.getSelected();
-		mapController.toggleFolded(model.getModeController().getMapController().childrenUnfolded(model));
+		mapController.toggleFolded(getModeController().getMapController().childrenUnfolded(model));
 		mapSelection.selectAsTheOnlyOneSelected(model);
 		controller.getViewController().obtainFocusForSelected();
 	}

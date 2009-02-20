@@ -62,9 +62,6 @@ public class BToolbarContributor implements IMenuContributor, IMapTitleChangeLis
 		if (model == null) {
 			return;
 		}
-		if (model.getModeController() != modeController) {
-			return;
-		}
 		final URL url = model.getURL();
 		if (url == null) {
 			return;

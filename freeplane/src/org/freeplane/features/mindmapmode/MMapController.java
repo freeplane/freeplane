@@ -74,7 +74,8 @@ public class MMapController extends MapController {
 					}
 				}
 			};
-			ResourceController.getResourceController().addPropertyChangeListenerAndPropagate(sSaveIdPropertyChangeListener);
+			ResourceController.getResourceController().addPropertyChangeListenerAndPropagate(
+			    sSaveIdPropertyChangeListener);
 		}
 		createActions(modeController);
 	}
@@ -137,7 +138,7 @@ public class MMapController extends MapController {
 		final NodeModel oldParent = selectedNode.getParentNode();
 		firePreNodeDelete(oldParent, selectedNode, oldParent.getIndex(selectedNode));
 		final MapModel map = selectedNode.getMap();
-		map.setSaved(false);
+		setSaved(map, false);
 		oldParent.remove(selectedNode);
 		fireNodeDeleted(oldParent, selectedNode, oldParent.getIndex(selectedNode));
 	}
@@ -148,7 +149,7 @@ public class MMapController extends MapController {
 
 	@Override
 	public void insertNodeIntoWithoutUndo(final NodeModel newNode, final NodeModel parent, final int index) {
-		parent.getMap().setSaved(false);
+		setSaved(parent.getMap(), false);
 		super.insertNodeIntoWithoutUndo(newNode, parent, index);
 	}
 
@@ -217,9 +218,8 @@ public class MMapController extends MapController {
 		if (reader == null) {
 			final Controller controller = getController();
 			final ViewController viewController = controller.getViewController();
-			final int showResult = new OptionalDontShowMeAgainDialog(viewController.getJFrame(), controller
-			    .getSelection().getSelected(), "really_convert_to_current_version", "confirmation",
-			    new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
+			final int showResult = new OptionalDontShowMeAgainDialog(controller, "really_convert_to_current_version",
+			    "confirmation", new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
 			        ResourceControllerProperties.RESOURCES_CONVERT_TO_CURRENT_VERSION),
 			    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED).show().getResult();
 			if (showResult != JOptionPane.OK_OPTION) {

@@ -100,6 +100,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 		this.modeController = modeController;
 		controller = modeController.getController();
 		this.reminderHook = reminderHook;
+		controller.getMapViewManager().addMapChangeListener(this);
 	}
 
 	public void actionPerformed(final ActionEvent arg0) {
@@ -135,7 +136,6 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 	}
 
 	public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
-		controller.getMapViewManager().removeIMapViewChangeListener(this);
 		disposeDialog();
 	}
 
@@ -143,8 +143,12 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 	 *
 	 */
 	private void disposeDialog() {
+		if(dialog == null){
+			return;
+		}
 		dialog.setVisible(false);
 		dialog.dispose();
+		dialog = null;
 		TimeManagement.lastDate = getCalendarDate();
 		TimeManagement.sCurrentlyOpenTimeManagement = null;
 	}
@@ -236,7 +240,6 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 		}
 		TimeManagement.sCurrentlyOpenTimeManagement = this;
 		mController = getMindMapController();
-		controller.getMapViewManager().addMapChangeListener(this);
 		dialog = new JDialog(controller.getViewController().getFrame(), false /*not modal*/);
 		dialog.setTitle(getResourceString("plugins/TimeManagement.xml_WindowTitle"));
 		dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);

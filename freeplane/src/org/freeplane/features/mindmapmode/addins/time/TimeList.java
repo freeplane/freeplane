@@ -80,6 +80,7 @@ import org.freeplane.core.ui.components.MultipleImage;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.note.NoteModel;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.text.MTextController;
@@ -500,15 +501,15 @@ class TimeList {
 			final int row = selectedRows[i];
 			selectedNodes.add(getMindMapNode(row));
 		}
-		final MapModel newMap = getMindMapController().getMapController().newMap(((NodeModel) null));;
-		final ModeController newMindMapController = newMap.getModeController();
+		final ModeController mindMapController = getMindMapController();
+		final MapModel newMap = mindMapController.getMapController().newMap(((NodeModel) null));;
 		for (final Iterator iter = selectedNodes.iterator(); iter.hasNext();) {
 			final NodeModel node = (NodeModel) iter.next();
 			//
 			//
-			final NodeModel copy = node.getModeController().getClipboardController().shallowCopy(node);
+			final NodeModel copy = ClipboardController.getController(mindMapController).shallowCopy(node);
 			if (copy != null) {
-				newMindMapController.getMapController().insertNodeIntoWithoutUndo(copy, newMap.getRootNode());
+				mindMapController.getMapController().insertNodeIntoWithoutUndo(copy, newMap.getRootNode());
 			}
 		}
 		disposeDialog();
@@ -734,7 +735,7 @@ class TimeList {
 		});
 		rowSM.addListSelectionListener(new ListSelectionListener() {
 			String getNodeText(final NodeModel node) {
-				return node.getShortText(getMindMapController())
+				return node.getShortText()
 				        + ((node.isRoot()) ? "" : (" <- " + getNodeText(node.getParentNode())));
 			}
 
@@ -819,7 +820,7 @@ class TimeList {
 			        node.getHistoryInformation().getCreatedAt(), node.getHistoryInformation().getLastModifiedAt(),
 			        new NotesHolder(node) });
 		}
-		for (final Iterator i = node.getModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
+		for (final Iterator i = getMindMapController().getMapController().childrenUnfolded(node); i.hasNext();) {
 			final NodeModel child = (NodeModel) i.next();
 			updateModel(model, child);
 		}

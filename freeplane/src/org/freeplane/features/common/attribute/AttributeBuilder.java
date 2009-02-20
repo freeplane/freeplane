@@ -30,6 +30,7 @@ import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.MapReader;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.n3.nanoxml.IXMLElement;
@@ -53,9 +54,11 @@ class AttributeBuilder implements IElementDOMHandler {
 	public static final String XML_NODE_REGISTERED_ATTRIBUTE_VALUE = "attribute_value";
 	final private Controller controller;
 	final private MapReader mapReader;
+	final private AttributeController attributeController;
 
-	public AttributeBuilder(final Controller controller, final MapReader mapReader) {
-		this.controller = controller;
+	public AttributeBuilder(final AttributeController attributeController, final MapReader mapReader) {
+		this.attributeController = attributeController;
+		this.controller = attributeController.getModeController().getController();
 		this.mapReader = mapReader;
 	}
 
@@ -89,7 +92,7 @@ class AttributeBuilder implements IElementDOMHandler {
 			if (tag.equals(AttributeBuilder.XML_NODE_ATTRIBUTE)) {
 				final AttributeProperties ap = (AttributeProperties) userObject;
 				final Attribute attribute = new Attribute(ap.attributeName, ap.attributeValue);
-				NodeAttributeTableModel.createAttributeTableModel(node);
+				attributeController.createAttributeTableModel(node);
 				NodeAttributeTableModel.getModel(node).addRowNoUndo(attribute);
 				return;
 			}
@@ -136,7 +139,7 @@ class AttributeBuilder implements IElementDOMHandler {
 		reader.addAttributeHandler(AttributeBuilder.XML_NODE_ATTRIBUTE_LAYOUT, "NAME_WIDTH", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
-				NodeAttributeTableModel.createAttributeTableModel(node);
+				attributeController.createAttributeTableModel(node);
 				final AttributeTableLayoutModel layout = NodeAttributeTableModel.getModel(node).getLayout();
 				layout.setColumnWidth(0, Integer.parseInt(value));;
 			}
@@ -144,7 +147,7 @@ class AttributeBuilder implements IElementDOMHandler {
 		reader.addAttributeHandler(AttributeBuilder.XML_NODE_ATTRIBUTE_LAYOUT, "VALUE_WIDTH", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
-				NodeAttributeTableModel.createAttributeTableModel(node);
+				attributeController.createAttributeTableModel(node);
 				final AttributeTableLayoutModel layout = NodeAttributeTableModel.getModel(node).getLayout();
 				layout.setColumnWidth(1, Integer.parseInt(value));;
 			}

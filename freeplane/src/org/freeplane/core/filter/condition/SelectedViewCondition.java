@@ -21,28 +21,28 @@ package org.freeplane.core.filter.condition;
 
 import javax.swing.JComponent;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public class SelectedViewCondition implements ICondition {
-	private static ICondition condition;
 	private static String description;
 	private static JComponent renderer;
 
-	public static ICondition CreateCondition() {
-		if (SelectedViewCondition.condition == null) {
-			SelectedViewCondition.condition = new SelectedViewCondition();
-		}
-		return SelectedViewCondition.condition;
+	public static ICondition CreateCondition(Controller controller) {
+		return new SelectedViewCondition(controller);
 	}
 
-	public SelectedViewCondition() {
+	private Controller controller;
+
+	public SelectedViewCondition(Controller controller) {
 		super();
+		this.controller = controller;
 	}
 
 	public boolean checkNode(final NodeModel node) {
-		return node.getModeController().getController().getSelection().isSelected(node);
+		return controller.getSelection().isSelected(node);
 	}
 
 	public JComponent getListCellRendererComponent() {

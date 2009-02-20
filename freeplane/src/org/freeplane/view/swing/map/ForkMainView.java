@@ -24,6 +24,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
@@ -45,8 +46,9 @@ class ForkMainView extends MainView {
 
 	@Override
 	public int getDeltaX() {
-		final NodeModel model = getNodeView().getModel();
-		if (model.getModeController().getMapController().isFolded(model) && getNodeView().isLeft()) {
+		final NodeView nodeView = getNodeView();
+		final NodeModel model = nodeView.getModel();
+		if (nodeView.getMap().getModeController().getMapController().isFolded(model) && nodeView.isLeft()) {
 			return super.getDeltaX() + getZoomedFoldingSymbolHalfWidth() * 3;
 		}
 		return super.getDeltaX();
@@ -54,8 +56,9 @@ class ForkMainView extends MainView {
 
 	@Override
 	Point getLeftPoint() {
-		final NodeModel model = getNodeView().getModel();
-		int edgeWidth = EdgeController.getController(model.getModeController()).getWidth(model);
+		final NodeView nodeView = getNodeView();
+		final NodeModel model = nodeView.getModel();
+		int edgeWidth = EdgeController.getController(nodeView.getMap().getModeController()).getWidth(model);
 		if (edgeWidth == 0) {
 			edgeWidth = 1;
 		}
@@ -66,8 +69,9 @@ class ForkMainView extends MainView {
 	@Override
 	protected int getMainViewHeightWithFoldingMark() {
 		int height = getHeight();
-		final NodeModel model = getNodeView().getModel();
-		if (model.getModeController().getMapController().isFolded(model)) {
+		final NodeView nodeView = getNodeView();
+		final NodeModel model = nodeView.getModel();
+		if (nodeView.getMap().getModeController().getMapController().isFolded(model)) {
 			height += getZoomedFoldingSymbolHalfWidth();
 		}
 		return height;
@@ -76,8 +80,9 @@ class ForkMainView extends MainView {
 	@Override
 	protected int getMainViewWidthWithFoldingMark() {
 		int width = getWidth();
-		final NodeModel model = getNodeView().getModel();
-		if (model.getModeController().getMapController().isFolded(model)) {
+		final NodeView nodeView = getNodeView();
+		final NodeModel model = nodeView.getModel();
+		if (nodeView.getMap().getModeController().getMapController().isFolded(model)) {
 			width += getZoomedFoldingSymbolHalfWidth() * 2 + getZoomedFoldingSymbolHalfWidth();
 		}
 		return width;
@@ -85,8 +90,9 @@ class ForkMainView extends MainView {
 
 	@Override
 	Point getRightPoint() {
-		final NodeModel model = getNodeView().getModel();
-		int edgeWidth = EdgeController.getController(model.getModeController()).getWidth(model);
+		final NodeView nodeView = getNodeView();
+		final NodeModel model = nodeView.getModel();
+		int edgeWidth = EdgeController.getController(nodeView.getMap().getModeController()).getWidth(model);
 		if (edgeWidth == 0) {
 			edgeWidth = 1;
 		}
@@ -113,12 +119,14 @@ class ForkMainView extends MainView {
 		}
 		paintSelected(g);
 		paintDragOver(g);
-		int edgeWidth = EdgeController.getController(model.getModeController()).getWidth(model);
+		final ModeController modeController = nodeView.getMap().getModeController();
+		final EdgeController edgeController = EdgeController.getController(modeController);
+		int edgeWidth = edgeController.getWidth(model);
 		if (edgeWidth == 0) {
 			edgeWidth = 1;
 		}
 		final Color oldColor = g.getColor();
-		g.setColor(EdgeController.getController(model.getModeController()).getColor(model));
+		g.setColor(edgeController.getColor(model));
 		g.drawLine(0, getHeight() - edgeWidth / 2 - 1, getWidth(), getHeight() - edgeWidth / 2 - 1);
 		g.setColor(oldColor);
 		super.paint(g);

@@ -20,12 +20,16 @@
 package org.freeplane.features.common.attribute;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
-import javax.swing.table.AbstractTableModel;
+import javax.swing.event.EventListenerList;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.TableModel;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ITreeWriter;
@@ -36,68 +40,13 @@ import org.freeplane.n3.nanoxml.XMLElement;
 /**
  * @author Dimitry Polivaev
  */
-public class NodeAttributeTableModel extends AbstractTableModel implements IAttributeTableModel, IExtension {
+public class NodeAttributeTableModel implements IExtension, IAttributeTableModel, TableModel {
 	private static final int CAPACITY_INCREMENT = 10;
-	public static final NodeAttributeTableModel EMTPY_ATTRIBUTES = new NodeAttributeTableModel(null) {
-		@Override
-		public void addRowNoUndo(final Attribute newAttribute) {
-			throw new NoSuchMethodError();
-		}
-
-		@Override
-		public Attribute getAttribute(final int row) {
-			throw new NoSuchMethodError();
-		}
-
-		@Override
-		public void insertRow(final int index, final String name, final String value) {
-			throw new NoSuchMethodError();
-		}
-
-		@Override
-		public Object removeRow(final int index) {
-			throw new NoSuchMethodError();
-		}
-
-		@Override
-		public void setColumnWidth(final int col, final int width) {
-			throw new NoSuchMethodError();
-		}
-
-		@Override
-		public void setName(final int row, final Object newName) {
-			throw new NoSuchMethodError();
-		}
-
-		@Override
-		public void setValue(final int row, final Object newValue) {
-			throw new NoSuchMethodError();
-		}
-
-		@Override
-		public void setValueAt(final Object o, final int row, final int col) {
-			throw new NoSuchMethodError();
-		}
-	};
+	public static final NodeAttributeTableModel EMTPY_ATTRIBUTES = new NodeAttributeTableModel(null);
 	static private ImageIcon noteIcon = null;
 	private static boolean SHOW_ATTRIBUTE_ICON = ResourceController.getResourceController().getBooleanProperty(
 	    "el__show_icon_for_attributes");
 	private static final String STATE_ICON = "AttributeExist";
-
-	public static NodeAttributeTableModel createAttributeTableModel(final NodeModel node) {
-		NodeAttributeTableModel attributeModel = (NodeAttributeTableModel) node
-		    .getExtension(NodeAttributeTableModel.class);
-		if (attributeModel != null) {
-			return attributeModel;
-		}
-		attributeModel = new NodeAttributeTableModel(node);
-		node.putExtension(attributeModel);
-		if (node.areViewsEmpty()) {
-			return attributeModel;
-		}
-		node.getModeController().getMapController().nodeRefresh(node);
-		return attributeModel;
-	}
 
 	public static NodeAttributeTableModel getModel(final NodeModel node) {
 		final NodeAttributeTableModel attributes = (NodeAttributeTableModel) node
@@ -108,6 +57,7 @@ public class NodeAttributeTableModel extends AbstractTableModel implements IAttr
 	private Vector attributes = null;
 	private AttributeTableLayoutModel layout = null;
 	final private NodeModel node;
+	private HashSet<TableModelListener> listeners;
 
 	public NodeAttributeTableModel(final NodeModel node) {
 		this(node, 0);
@@ -158,10 +108,6 @@ public class NodeAttributeTableModel extends AbstractTableModel implements IAttr
 		return (Attribute) attributes.get(row);
 	}
 
-	public AttributeController getAttributeController() {
-		return AttributeController.getController(node.getMap().getModeController());
-	}
-
 	public List getAttributeKeyList() {
 		final Vector returnValue = new Vector();
 		for (final Iterator iter = getAttributes().iterator(); iter.hasNext();) {
@@ -198,11 +144,6 @@ public class NodeAttributeTableModel extends AbstractTableModel implements IAttr
 		return getRowCount();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see javax.swing.table.TableModel#getColumnClass(int)
-	 */
-	@Override
 	public Class getColumnClass(final int col) {
 		return Object.class;
 	}
@@ -215,11 +156,6 @@ public class NodeAttributeTableModel extends AbstractTableModel implements IAttr
 		return 2;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see javax.swing.table.TableModel#getColumnName(int)
-	 */
-	@Override
 	public String getColumnName(final int col) {
 		return "";
 	}
@@ -281,23 +217,8 @@ public class NodeAttributeTableModel extends AbstractTableModel implements IAttr
 		return attributeElement;
 	}
 
-	public void insertRow(final int index, final String name, final String value) {
-		getAttributeController().performInsertRow(this, index, name, value);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see javax.swing.table.TableModel#isCellEditable(int, int)
-	 */
-	@Override
 	public boolean isCellEditable(final int arg0, final int arg1) {
 		return !node.getMap().isReadOnly();
-	}
-
-	public Object removeRow(final int index) {
-		final Object o = getAttributes().elementAt(index);
-		getAttributeController().performRemoveRow(this, index);
-		return o;
 	}
 
 	void save(final ITreeWriter writer) throws IOException {
@@ -335,15 +256,12 @@ public class NodeAttributeTableModel extends AbstractTableModel implements IAttr
 		}
 	}
 
-	public void setColumnWidth(final int col, final int width) {
-		getAttributeController().performSetColumnWidth(this, col, width);
-	}
-
 	public void setName(final int row, final Object newName) {
 		final Attribute attr = (Attribute) attributes.get(row);
 		attr.setName(newName.toString());
 		fireTableRowsUpdated(row, row);
 	}
+
 
 	public void setValue(final int row, final Object newValue) {
 		final Attribute attr = (Attribute) attributes.get(row);
@@ -351,8 +269,69 @@ public class NodeAttributeTableModel extends AbstractTableModel implements IAttr
 		fireTableRowsUpdated(row, row);
 	}
 
-	@Override
-	public void setValueAt(final Object o, final int row, final int col) {
-		getAttributeController().performSetValueAt(this, o, row, col);
-	}
+	
+	public void addTableModelListener(TableModelListener listener) {
+		if(listeners == null){
+			listeners = new HashSet<TableModelListener>();
+		}
+	    listeners.add(listener);
+	    
+    }
+
+	public void removeTableModelListener(TableModelListener listener) {
+    	if(listeners == null){
+    		return;
+    	}
+	   listeners.remove(listener);
+	    
+    }
+
+     public void fireTableRowsInserted(int firstRow, int lastRow) {
+     	if(listeners == null){
+    		return;
+    	}
+        fireTableChanged(new TableModelEvent(this, firstRow, lastRow,
+                             TableModelEvent.ALL_COLUMNS, TableModelEvent.INSERT));
+    }
+
+     public void fireTableRowsUpdated(int firstRow, int lastRow) {
+     	if(listeners == null){
+    		return;
+    	}
+        fireTableChanged(new TableModelEvent(this, firstRow, lastRow,
+                             TableModelEvent.ALL_COLUMNS, TableModelEvent.UPDATE));
+    }
+
+     public void fireTableRowsDeleted(int firstRow, int lastRow) {
+     	if(listeners == null){
+    		return;
+    	}
+        fireTableChanged(new TableModelEvent(this, firstRow, lastRow,
+                             TableModelEvent.ALL_COLUMNS, TableModelEvent.DELETE));
+    }
+
+     public void fireTableCellUpdated(int row, int column) {
+     	if(listeners == null){
+    		return;
+    	}
+       fireTableChanged(new TableModelEvent(this, row, row, column));
+    }
+
+    private void fireTableChanged(TableModelEvent e) {
+    	if(listeners == null){
+    		return;
+    	}
+    	for(TableModelListener listener:listeners){
+    		listener.tableChanged(e);
+    	}
+    }
+
+	public void setValueAt(Object value, int rowIndex, int columnIndex) {
+	    switch(columnIndex){
+	    	case 0: setName(rowIndex, value); return;
+	    	case 1: setValue(rowIndex, value);return;
+	    	default: throw new ArrayIndexOutOfBoundsException(columnIndex + " >= 2");
+	    }
+	    
+    }
 }

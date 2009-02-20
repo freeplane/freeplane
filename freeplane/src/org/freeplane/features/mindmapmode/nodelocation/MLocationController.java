@@ -30,7 +30,7 @@ import org.freeplane.features.mindmapmode.MModeController;
  * @author Dimitry Polivaev
  */
 public class MLocationController extends LocationController {
-	private static final class ChangeNodePositionActor implements IUndoableActor {
+	private final class ChangeNodePositionActor implements IUndoableActor {
 		private final int gap;
 		private final NodeModel node;
 		private final int oldHgap;
@@ -65,7 +65,7 @@ public class MLocationController extends LocationController {
 			if (!node.isRoot()) {
 				LocationModel.createLocationModel(node.getParentNode()).setVGap(parentVGap);
 			}
-			node.getModeController().getMapController().nodeChanged(node);
+			getModeController().getMapController().nodeChanged(node);
 		}
 
 		public void undo() {

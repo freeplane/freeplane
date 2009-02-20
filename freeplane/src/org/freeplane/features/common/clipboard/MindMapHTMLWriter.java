@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.ListIterator;
 
 import org.freeplane.core.io.xml.TreeXmlWriter;
+import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
@@ -116,8 +117,10 @@ class MindMapHTMLWriter {
 	final private boolean basedOnHeadings;
 	final private Writer fileout;
 	private boolean writeFoldingCode;
+	private MapController mapController;
 
-	MindMapHTMLWriter(final Writer fileout) {
+	MindMapHTMLWriter(MapController mapController, final Writer fileout) {
+//		this.mapController = mapController;
 		this.fileout = fileout;
 		writeFoldingCode = false;
 		basedOnHeadings = (getProperty("html_export_folding").equals("html_export_based_on_headings"));
@@ -160,7 +163,7 @@ class MindMapHTMLWriter {
 	}
 
 	private boolean isHeading(final NodeModel model, final int depth) {
-		return basedOnHeadings && model.getModeController().getMapController().hasChildren(model) && depth <= 6
+		return basedOnHeadings && mapController.hasChildren(model) && depth <= 6
 		        && !hasHtml(model);
 	}
 
@@ -198,8 +201,7 @@ class MindMapHTMLWriter {
 
 	void writeHTML(final NodeModel rootNodeOfBranch) throws IOException {
 		final String htmlExportFoldingOption = getProperty("html_export_folding");
-		writeFoldingCode = (htmlExportFoldingOption.equals("html_export_fold_currently_folded") && rootNodeOfBranch
-		    .hasFoldedStrictDescendant())
+		writeFoldingCode = (htmlExportFoldingOption.equals("html_export_fold_currently_folded") && mapController.hasFoldedStrictDescendant(rootNodeOfBranch))
 		        || htmlExportFoldingOption.equals("html_export_fold_all");
 		ResourceController.getResourceController().getBooleanProperty("export_icons_in_html");
 		fileout
@@ -224,9 +226,9 @@ class MindMapHTMLWriter {
 
 	private int writeHTML(final NodeModel model, final String parentID, int lastChildNumber, final boolean isRoot,
 	                      final boolean treatAsParagraph, final int depth) throws IOException {
-		boolean createFolding = model.getModeController().getMapController().isFolded(model);
+		boolean createFolding = mapController.isFolded(model);
 		if (getProperty("html_export_folding").equals("html_export_fold_all")) {
-			createFolding = model.getModeController().getMapController().hasChildren(model);
+			createFolding = mapController.hasChildren(model);
 		}
 		if (getProperty("html_export_folding").equals("html_export_no_folding") || basedOnHeadings || isRoot) {
 			createFolding = false;
@@ -275,14 +277,14 @@ class MindMapHTMLWriter {
 			fileout.write("</h" + depth + ">" + MindMapHTMLWriter.el);
 		}
 		boolean treatChildrenAsParagraph = false;
-		for (final ListIterator e = model.getModeController().getMapController().childrenUnfolded(model); e.hasNext();) {
+		for (final ListIterator e = mapController.childrenUnfolded(model); e.hasNext();) {
 			if (((NodeModel) e.next()).toString().length() > 100) {
 				treatChildrenAsParagraph = true;
 				break;
 			}
 		}
 		if (getProperty("html_export_folding").equals("html_export_based_on_headings")) {
-			for (final ListIterator e = model.getModeController().getMapController().childrenUnfolded(model); e
+			for (final ListIterator e = mapController.childrenUnfolded(model); e
 			    .hasNext();) {
 				final NodeModel child = (NodeModel) e.next();
 				lastChildNumber = writeHTML(child, parentID, lastChildNumber,/*isRoot=*/false,
@@ -290,9 +292,9 @@ class MindMapHTMLWriter {
 			}
 			return lastChildNumber;
 		}
-		if (model.getModeController().getMapController().hasChildren(model)) {
+		if (mapController.hasChildren(model)) {
 			if (getProperty("html_export_folding").equals("html_export_based_on_headings")) {
-				for (final ListIterator e = model.getModeController().getMapController().childrenUnfolded(model); e
+				for (final ListIterator e = mapController.childrenUnfolded(model); e
 				    .hasNext();) {
 					final NodeModel child = (NodeModel) e.next();
 					lastChildNumber = writeHTML(child, parentID, lastChildNumber,
@@ -306,7 +308,7 @@ class MindMapHTMLWriter {
 					fileout.write("<li>");
 				}
 				int localLastChildNumber = 0;
-				for (final ListIterator e = model.getModeController().getMapController().childrenUnfolded(model); e
+				for (final ListIterator e =mapController.childrenUnfolded(model); e
 				    .hasNext();) {
 					final NodeModel child = (NodeModel) e.next();
 					localLastChildNumber = writeHTML(child, localParentID, localLastChildNumber,
@@ -318,7 +320,7 @@ class MindMapHTMLWriter {
 				if (treatChildrenAsParagraph) {
 					fileout.write("<li>");
 				}
-				for (final ListIterator e = model.getModeController().getMapController().childrenUnfolded(model); e
+				for (final ListIterator e = mapController.childrenUnfolded(model); e
 				    .hasNext();) {
 					final NodeModel child = (NodeModel) e.next();
 					lastChildNumber = writeHTML(child, parentID, lastChildNumber,

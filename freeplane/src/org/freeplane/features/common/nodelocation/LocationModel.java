@@ -49,7 +49,6 @@ public class LocationModel implements IExtension {
 			}
 		}
 	};
-	final static int SHIFT = -2;
 	public final static int VGAP = 3;
 
 	public static LocationModel createLocationModel(final NodeModel node) {
@@ -70,14 +69,6 @@ public class LocationModel implements IExtension {
 	private int shiftY = 0;
 	private int vGap = LocationModel.VGAP;
 
-	public int calcShiftY(final NodeModel parent) {
-		try {
-			return shiftY + (parent.getModeController().hasOneVisibleChild(parent) ? LocationModel.SHIFT : 0);
-		}
-		catch (final NullPointerException e) {
-			return 0;
-		}
-	}
 
 	public int getHGap() {
 		return hGap;

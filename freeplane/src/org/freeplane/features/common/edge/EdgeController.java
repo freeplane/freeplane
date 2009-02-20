@@ -70,8 +70,10 @@ public class EdgeController implements IExtension {
 	final private ExclusivePropertyChain<Color, NodeModel> colorHandlers;
 	final private ExclusivePropertyChain<String, NodeModel> styleHandlers;
 	final private ExclusivePropertyChain<Integer, NodeModel> widthHandlers;
+	private ModeController modeController;
 
 	public EdgeController(final ModeController modeController) {
+		this.modeController = modeController;
 		colorHandlers = new ExclusivePropertyChain<Color, NodeModel>();
 		styleHandlers = new ExclusivePropertyChain<String, NodeModel>();
 		widthHandlers = new ExclusivePropertyChain<Integer, NodeModel>();
@@ -133,6 +135,10 @@ public class EdgeController implements IExtension {
 		final EdgeBuilder edgeBuilder = new EdgeBuilder();
 		edgeBuilder.registerBy(readManager, writeManager);
 	}
+
+	protected ModeController getModeController() {
+    	return modeController;
+    }
 
 	public IPropertyGetter<Color, NodeModel> addColorGetter(final Integer key,
 	                                                        final IPropertyGetter<Color, NodeModel> getter) {

@@ -52,7 +52,7 @@ public class MMapModel extends MapModel {
 		undoHandler = new UndoHandler();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				scheduleTimerForAutomaticSaving();
+				scheduleTimerForAutomaticSaving(modeController);
 			}
 		});
 	}
@@ -96,7 +96,7 @@ public class MMapModel extends MapModel {
 		return undoHandler;
 	}
 
-	public void scheduleTimerForAutomaticSaving() {
+	public void scheduleTimerForAutomaticSaving(ModeController modeController) {
 		final int numberOfTempFiles = Integer.parseInt(ResourceController.getResourceController().getProperty(
 		    "number_of_different_files_for_automatic_save"));
 		if (numberOfTempFiles == 0) {
@@ -128,7 +128,7 @@ public class MMapModel extends MapModel {
 			}
 		}
 		final Timer timer = new Timer();
-		timer.schedule(new DoAutomaticSave(this, numberOfTempFiles, filesShouldBeDeletedAfterShutdown, dirToStore),
+		timer.schedule(new DoAutomaticSave(modeController, this, numberOfTempFiles, filesShouldBeDeletedAfterShutdown, dirToStore),
 		    delay, delay);
 		this.setTimerForAutomaticSaving(timer);
 	}

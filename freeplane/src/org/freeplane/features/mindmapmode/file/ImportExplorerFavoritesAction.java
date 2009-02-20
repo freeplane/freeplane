@@ -95,7 +95,7 @@ class ImportExplorerFavoritesAction extends AFreeplaneAction implements IFreepla
 						while (in.ready()) {
 							final String line = in.readLine();
 							if (line.startsWith("URL=")) {
-								((MLinkController) LinkController.getController(node.getModeController())).setLink(
+								((MLinkController) LinkController.getController(getModeController())).setLink(
 								    node, line.substring(4));
 								break;
 							}

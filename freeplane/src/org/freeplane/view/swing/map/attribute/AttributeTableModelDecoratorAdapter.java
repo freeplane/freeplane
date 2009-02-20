@@ -24,7 +24,9 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.attribute.AttributeRegistry;
 import org.freeplane.features.common.attribute.IAttributeTableModel;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
@@ -34,20 +36,23 @@ import org.freeplane.features.common.attribute.NodeAttributeTableModel;
  */
 abstract class AttributeTableModelDecoratorAdapter extends AbstractTableModel implements IAttributeTableModel,
         TableModelListener, ChangeListener {
-	protected AttributeRegistry attributeRegistry;
-	protected NodeAttributeTableModel nodeAttributeModel;
+	private AttributeRegistry attributeRegistry;
+	private NodeAttributeTableModel nodeAttributeModel;
+	final private AttributeController attributeController;
 
 	public AttributeTableModelDecoratorAdapter(final AttributeView attrView) {
 		super();
-		nodeAttributeModel = attrView.getAttributes();
-		attributeRegistry = attrView.getAttributeRegistry();
-		nodeAttributeModel.getNode();
+		setNodeAttributeModel(attrView.getAttributes());
+		setAttributeRegistry(attrView.getAttributeRegistry());
+		getNodeAttributeModel().getNode();
+		final ModeController modeController = attrView.getMapView().getModeController();
+		attributeController = AttributeController.getController(modeController);
 		addListeners();
 	}
 
 	private void addListeners() {
-		nodeAttributeModel.addTableModelListener(this);
-		attributeRegistry.addChangeListener(this);
+		getNodeAttributeModel().addTableModelListener(this);
+		getAttributeRegistry().addChangeListener(this);
 	}
 
 	/**
@@ -60,7 +65,7 @@ abstract class AttributeTableModelDecoratorAdapter extends AbstractTableModel im
 
 	@Override
 	public Class getColumnClass(final int columnIndex) {
-		return nodeAttributeModel.getColumnClass(columnIndex);
+		return getNodeAttributeModel().getColumnClass(columnIndex);
 	}
 
 	public int getColumnCount() {
@@ -69,24 +74,24 @@ abstract class AttributeTableModelDecoratorAdapter extends AbstractTableModel im
 
 	@Override
 	public String getColumnName(final int columnIndex) {
-		return nodeAttributeModel.getColumnName(columnIndex);
+		return getNodeAttributeModel().getColumnName(columnIndex);
 	}
 
 	public int getColumnWidth(final int col) {
-		return nodeAttributeModel.getColumnWidth(col);
+		return getNodeAttributeModel().getColumnWidth(col);
 	}
 
 	public NodeModel getNode() {
-		return nodeAttributeModel.getNode();
+		return getNodeAttributeModel().getNode();
 	}
 
 	private void removeListeners() {
-		nodeAttributeModel.removeTableModelListener(this);
-		attributeRegistry.removeChangeListener(this);
+		getNodeAttributeModel().removeTableModelListener(this);
+		getAttributeRegistry().removeChangeListener(this);
 	}
 
 	public void setColumnWidth(final int col, final int width) {
-		nodeAttributeModel.setColumnWidth(col, width);
+		getAttributeController().performSetColumnWidth(getNodeAttributeModel(), col, width);
 	}
 
 	/*
@@ -101,4 +106,24 @@ abstract class AttributeTableModelDecoratorAdapter extends AbstractTableModel im
 	public void viewRemoved() {
 		removeListeners();
 	}
+
+	public void setAttributeRegistry(AttributeRegistry attributeRegistry) {
+	    this.attributeRegistry = attributeRegistry;
+    }
+
+	public AttributeRegistry getAttributeRegistry() {
+	    return attributeRegistry;
+    }
+
+	public void setNodeAttributeModel(NodeAttributeTableModel nodeAttributeModel) {
+	    this.nodeAttributeModel = nodeAttributeModel;
+    }
+
+	public NodeAttributeTableModel getNodeAttributeModel() {
+	    return nodeAttributeModel;
+    }
+
+	public AttributeController getAttributeController() {
+	    return attributeController;
+    }
 }

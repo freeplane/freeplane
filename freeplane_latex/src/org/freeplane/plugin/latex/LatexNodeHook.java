@@ -19,8 +19,10 @@
  */
 package org.freeplane.plugin.latex;
 
+import java.awt.Component;
 import java.awt.Container;
 import java.util.Iterator;
+import java.util.Set;
 
 import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.addins.PersistentNodeHook;
@@ -29,6 +31,7 @@ import org.freeplane.core.modecontroller.INodeViewLifeCycleListener;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.n3.nanoxml.IXMLElement;
 import org.freeplane.view.swing.map.NodeView;
 
@@ -56,7 +59,7 @@ public class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCy
 		final Iterator iterator = node.getViewers().iterator();
 		while (iterator.hasNext()) {
 			final NodeView view = (NodeView) iterator.next();
-			latexExtension.createViewer(view);
+			createViewer(latexExtension, view);
 		}
 		super.add(node, extension);
 	}
@@ -66,6 +69,7 @@ public class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCy
 		final LatexExtension latexExtension = new LatexExtension(node);
 		if (element != null) {
 			latexExtension.setEquation(element.getAttribute("EQUATION"));
+			getModeController().getMapController().nodeChanged(node);
 		}
 		return latexExtension;
 	}
@@ -81,7 +85,7 @@ public class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCy
 		if (latexExtension == null) {
 			return;
 		}
-		latexExtension.createViewer(nodeView);
+		createViewer(latexExtension, nodeView);
 	}
 
 	public void onViewRemoved(final Container container) {
@@ -90,7 +94,7 @@ public class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCy
 		if (latexExtension == null) {
 			return;
 		}
-		latexExtension.deleteViewer(nodeView);
+		deleteViewer(latexExtension, nodeView);
 	}
 
 	@Override
@@ -105,5 +109,50 @@ public class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCy
 		final LatexExtension latexExtension = (LatexExtension) extension;
 		element.setAttribute("EQUATION", latexExtension.getEquation());
 		super.saveExtension(extension, element);
+	}
+	void setEquationUndoable(final LatexExtension model, final String newEquation) {
+		final String equation = model.getEquation();
+		if (equation.equals(newEquation)) {
+			return;
+		}
+		final IUndoableActor actor = new IUndoableActor() {
+			private final String oldEquation = equation;
+
+			public void act() {
+				model.setEquation(newEquation);
+			}
+
+			public String getDescription() {
+				return "setLatexEquationUndoable";
+			}
+
+			public void undo() {
+				model.setEquation(oldEquation);
+			}
+		};
+		getModeController().execute(actor);
+	}
+	void createViewer(LatexExtension model, final NodeView view) {
+		final JZoomedHotEqn comp = new JZoomedHotEqn(this, model);
+		final Set<JZoomedHotEqn> viewers = model.getViewers();
+		viewers.add(comp);
+		view.getContentPane().add(comp);
+	}
+
+	void deleteViewer(LatexExtension model, final NodeView nodeView) {
+		final Set<JZoomedHotEqn> viewers = model.getViewers();
+		if (viewers.isEmpty()) {
+			return;
+		}
+		final Container contentPane = nodeView.getContentPane();
+		final int componentCount = contentPane.getComponentCount();
+		for (int i = 0; i < componentCount; i++) {
+			final Component component = contentPane.getComponent(i);
+			if (viewers.contains(component)) {
+				viewers.remove(component);
+				contentPane.remove(i);
+				return;
+			}
+		}
 	}
 }

@@ -98,13 +98,13 @@ public class NodeHistory implements IExtension, INodeSelectionListener {
 			}
 		}
 		final boolean fChangeModule = changeModule;
-		final MapView fNewModule = newModule;
+		final MapView newView = newModule;
 		if (fChangeModule) {
-			final Controller controller = fNewModule.getModel().getModeController().getController();
+			final Controller controller = newView.getModeController().getController();
 			final IMapViewManager mapViewManager = controller.getMapViewManager();
-			final boolean res = mapViewManager.changeToMapView(fNewModule);
+			final boolean res = mapViewManager.changeToMapView(newView);
 			if (!res) {
-				Logger.global.warning("Can't change to map mapView " + fNewModule);
+				Logger.global.warning("Can't change to map mapView " + newView);
 				return;
 			}
 		}
@@ -126,7 +126,7 @@ public class NodeHistory implements IExtension, INodeSelectionListener {
 	}
 
 	public void onSelect(final NodeModel pNode) {
-		final Controller controller = pNode.getModeController().getController();
+		final Controller controller = modeController.getController();
 		if (currentNodeHolder != null
 		        && currentNodeHolder.isIdentical(((MapView) controller.getViewController().getMapView())
 		            .getNodeView(pNode))) {

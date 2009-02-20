@@ -136,7 +136,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 			}
 			setZoomComboBox(mapViewManager.getZoom());
 			obtainFocusForSelected();
-			newModeController = mapViewManager.getModel().getModeController();
+			newModeController = mapViewManager.getModeController(pNewMap);
 			if (newModeController != oldModeController) {
 				controller.selectMode(newModeController);
 			}

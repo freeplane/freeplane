@@ -19,6 +19,7 @@
  */
 package org.freeplane.main.application;
 
+import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -39,6 +40,9 @@ import javax.swing.KeyStroke;
 import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.IMapSelectionListener;
+import org.freeplane.core.frame.IMapViewChangeListener;
+import org.freeplane.core.frame.IMapViewManager;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
@@ -52,7 +56,7 @@ import org.freeplane.n3.nanoxml.XMLParseException;
  * provide persistence for the last recent maps. Maps should be shown in the
  * format:"mode\:key",ie."Mindmap\:/home/joerg/freeplane.mm"
  */
-public class LastOpenedList implements IMapSelectionListener {
+public class LastOpenedList implements IMapViewChangeListener {
 	private static final String SEPARATOR = ";";
 	/**
 	 * Contains Restore strings.
@@ -63,46 +67,40 @@ public class LastOpenedList implements IMapSelectionListener {
 	 * Contains Restore string => map name (map.toString()).
 	 */
 	final private Map<String,String> mRestorableToMapName = new HashMap<String,String>();
+	private Controller controller;
 
-	LastOpenedList(final String restored, final int maxEntries) {
+	LastOpenedList(Controller controller, final String restored, final int maxEntries) {
+		this.controller = controller;
 		this.maxEntries = maxEntries;
 		if (restored != null ) {
 			lastOpenedList.addAll(Arrays.asList(restored.split(SEPARATOR)));
 		}
 	}
 
-	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
-		mapOpened(newMap);
-	}
-
-	public void afterMapClose(final MapModel oldMap) {
-	}
-
-	public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
-	}
-
-	public boolean isMapChangeAllowed(final MapModel oldMap, final MapModel newMap) {
-		return true;
-	}
 
 	ListIterator listIterator() {
 		return lastOpenedList.listIterator();
 	}
 
 
-	void mapOpened(final MapModel map) {
-		if (map != null) {
-			final String restoreString = UrlManager.getController(map.getModeController()).getRestoreable(map);
-			if (restoreString != null) {
-				if (lastOpenedList.contains(restoreString)) {
-					lastOpenedList.remove(restoreString);
-				}
-				lastOpenedList.add(0, restoreString);
-				mRestorableToMapName.put(restoreString, map.getTitle());
-				while (lastOpenedList.size() > maxEntries) {
-					lastOpenedList.remove(lastOpenedList.size() - 1);
-				}
-			}
+	void mapOpened(final Component mapView) {
+		if (mapView == null) {
+			return;
+		}
+		final IMapViewManager mapViewManager = controller.getMapViewManager();
+		ModeController modeController= mapViewManager.getModeController(mapView);
+		MapModel map = mapViewManager.getModel(mapView);
+		final String restoreString = UrlManager.getController(modeController).getRestoreable(map);
+		if (restoreString == null) {
+			return;
+		}
+		if (lastOpenedList.contains(restoreString)) {
+			lastOpenedList.remove(restoreString);
+		}
+		lastOpenedList.add(0, restoreString);
+		mRestorableToMapName.put(restoreString, map.getTitle());
+		while (lastOpenedList.size() > maxEntries) {
+			lastOpenedList.remove(lastOpenedList.size() - 1);
 		}
 	}
 
@@ -146,4 +144,21 @@ public class LastOpenedList implements IMapSelectionListener {
 			menuBuilder.addMenuItem(FreeplaneMenuBar.FILE_MENU + "/last", item, UIBuilder.AS_CHILD);
 		}
 	}
+
+
+	public void afterViewChange(Component oldView, Component newView) {
+		mapOpened(newView);
+    }
+
+
+	public void afterViewClose(Component oldView) {
+    }
+
+
+	public void afterViewCreated(Component mapView) {
+    }
+
+
+	public void beforeViewChange(Component oldView, Component newView) {
+    }
 }

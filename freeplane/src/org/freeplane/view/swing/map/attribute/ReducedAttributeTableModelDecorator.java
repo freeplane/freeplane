@@ -25,6 +25,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.TableModelEvent;
 
 import org.freeplane.features.common.attribute.Attribute;
+import org.freeplane.features.common.attribute.AttributeController;
 
 /**
  * @author Dimitry Polivaev
@@ -63,8 +64,8 @@ class ReducedAttributeTableModelDecorator extends AttributeTableModelDecoratorAd
 	}
 
 	private Vector getIndex() {
-		if (index == null && attributeRegistry.getVisibleElementsNumber() > 0) {
-			index = new Vector(nodeAttributeModel.getRowCount(), 10);
+		if (index == null && getAttributeRegistry().getVisibleElementsNumber() > 0) {
+			index = new Vector(getNodeAttributeModel().getRowCount(), 10);
 		}
 		return index;
 	}
@@ -74,7 +75,7 @@ class ReducedAttributeTableModelDecorator extends AttributeTableModelDecoratorAd
 	}
 
 	public Object getValueAt(final int row, final int col) {
-		return nodeAttributeModel.getValueAt(calcRow(row), col);
+		return getNodeAttributeModel().getValueAt(calcRow(row), col);
 	}
 
 	/*
@@ -88,7 +89,7 @@ class ReducedAttributeTableModelDecorator extends AttributeTableModelDecoratorAd
 
 	@Override
 	public boolean isCellEditable(final int row, final int col) {
-		if (nodeAttributeModel.isCellEditable(row, col)) {
+		if (getNodeAttributeModel().isCellEditable(row, col)) {
 			return col == 1;
 		}
 		return false;
@@ -99,9 +100,9 @@ class ReducedAttributeTableModelDecorator extends AttributeTableModelDecoratorAd
 		if (index != null) {
 			visibleRowCount = 0;
 			index.clear();
-			for (int i = 0; i < nodeAttributeModel.getRowCount(); i++) {
-				final String name = (String) nodeAttributeModel.getValueAt(i, 0);
-				if (attributeRegistry.getElement(name).isVisible()) {
+			for (int i = 0; i < getNodeAttributeModel().getRowCount(); i++) {
+				final String name = (String) getNodeAttributeModel().getValueAt(i, 0);
+				if (getAttributeRegistry().getElement(name).isVisible()) {
 					index.add(new Integer(i));
 					visibleRowCount++;
 				}
@@ -119,7 +120,7 @@ class ReducedAttributeTableModelDecorator extends AttributeTableModelDecoratorAd
 
 	@Override
 	public void setValueAt(final Object o, final int row, final int col) {
-		nodeAttributeModel.setValueAt(o, calcRow(row), col);
+		getAttributeController().performSetValueAt(getNodeAttributeModel(), o, calcRow(row), col);
 		fireTableCellUpdated(row, col);
 	}
 

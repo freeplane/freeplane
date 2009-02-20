@@ -308,7 +308,7 @@ public class MFileManager extends UrlManager {
 				map.setFile(file);
 				map.setSaved(true);
 			}
-			map.scheduleTimerForAutomaticSaving();
+			map.scheduleTimerForAutomaticSaving(getModeController());
 			return true;
 		}
 		catch (final FileNotFoundException e) {
@@ -325,7 +325,7 @@ public class MFileManager extends UrlManager {
 			Logger.global.log(Level.SEVERE, "Error in MapModel.save(): ");
 			LogTool.logException(e);
 		}
-		map.scheduleTimerForAutomaticSaving();
+		map.scheduleTimerForAutomaticSaving(getModeController());
 		return false;
 	}
 

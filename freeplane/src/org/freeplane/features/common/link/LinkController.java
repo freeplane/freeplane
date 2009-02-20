@@ -73,7 +73,7 @@ public class LinkController implements IExtension {
 			public void onSelect(final NodeModel node) {
 				String link = NodeLinks.getLink(node);
 				link = (link != null ? link : " ");
-				node.getModeController().getController().getViewController().out(link);
+				modeController.getController().getViewController().out(link);
 			}
 		};
 		modeController.getMapController().addNodeSelectionListener(listener);
@@ -104,7 +104,7 @@ public class LinkController implements IExtension {
 		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();
 		final WriteManager writeManager = mapController.getWriteManager();
-		new LinkBuilder().registerBy(readManager, writeManager);
+		new LinkBuilder(this).registerBy(readManager, writeManager);
 	}
 
 	public IPropertyGetter<Color, ArrowLinkModel> addColorGetter(final Integer key,
@@ -154,7 +154,7 @@ public class LinkController implements IExtension {
 		if (adaptedText.startsWith("#")) {
 			try {
 				final NodeModel dest = modeController.getMapController().getNodeFromID(adaptedText.substring(1));
-				return dest.getShortText(modeController);
+				return dest.getShortText();
 			}
 			catch (final Exception e) {
 				return modeController.getText("link_not_available_any_more");

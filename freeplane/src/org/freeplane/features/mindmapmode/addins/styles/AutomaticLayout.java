@@ -378,7 +378,7 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 			return;
 		}
 		setStyleImpl(node);
-		for (final Iterator i = node.getModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
+		for (final Iterator i = getModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
 			final NodeModel child = (NodeModel) i.next();
 			setStyleRecursiveImpl(child);
 		}

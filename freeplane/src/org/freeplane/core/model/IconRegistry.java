@@ -25,6 +25,7 @@ import java.util.ListIterator;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.filter.util.SortedMapListModel;
+import org.freeplane.core.modecontroller.MapController;
 
 /**
  * @author Dimitry Polivaev
@@ -33,10 +34,10 @@ import org.freeplane.core.filter.util.SortedMapListModel;
 public class IconRegistry implements IExtension {
 	final private SortedMapListModel mapIcons;
 
-	IconRegistry(final MapModel map) {
+	IconRegistry(MapController mapController, final MapModel map) {
 		super();
 		mapIcons = new SortedMapListModel();
-		registryNodeIcons(map.getRootNode());
+		registryNodeIcons(mapController, map.getRootNode());
 	}
 
 	void addIcon(final MindIcon icon) {
@@ -47,17 +48,17 @@ public class IconRegistry implements IExtension {
 		return mapIcons;
 	}
 
-	private void registryNodeIcons(final NodeModel node) {
+	private void registryNodeIcons(MapController mapController, final NodeModel node) {
 		final List icons = node.getIcons();
 		final Iterator i = icons.iterator();
 		while (i.hasNext()) {
 			final MindIcon icon = (MindIcon) i.next();
 			addIcon(icon);
 		}
-		final ListIterator<NodeModel> iterator = node.getModeController().getMapController().childrenUnfolded(node);
+		final ListIterator<NodeModel> iterator = mapController.childrenUnfolded(node);
 		while (iterator.hasNext()) {
 			final NodeModel next = iterator.next();
-			registryNodeIcons(next);
+			registryNodeIcons(mapController, next);
 		}
 	}
 }

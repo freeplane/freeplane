@@ -77,7 +77,7 @@ public class MClipboardController extends ClipboardController {
 	 * @return true, if successfully.
 	 **/
 	public void paste(final Transferable t, final NodeModel target, final boolean asSibling, final boolean isLeft) {
-		final ModeController modeController = target.getModeController();
+		final ModeController modeController = getModeController();
 		if (!asSibling && modeController.getMapController().isFolded(target)
 		        && ResourceController.getResourceController().getBooleanProperty(RESOURCE_UNFOLD_ON_PASTE)) {
 			modeController.getMapController().setFolded(target, false);

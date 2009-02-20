@@ -45,27 +45,6 @@ class LatexExtension implements IExtension {
 		this.node = node;
 	}
 
-	void createViewer(final NodeView view) {
-		final JZoomedHotEqn comp = new JZoomedHotEqn(this);
-		viewers.add(comp);
-		view.getContentPane().add(comp);
-	}
-
-	void deleteViewer(final NodeView nodeView) {
-		if (viewers.isEmpty()) {
-			return;
-		}
-		final Container contentPane = nodeView.getContentPane();
-		final int componentCount = contentPane.getComponentCount();
-		for (int i = 0; i < componentCount; i++) {
-			final Component component = contentPane.getComponent(i);
-			if (viewers.contains(component)) {
-				viewers.remove(component);
-				contentPane.remove(i);
-				return;
-			}
-		}
-	}
 
 	public String getEquation() {
 		return equation;
@@ -95,28 +74,6 @@ class LatexExtension implements IExtension {
 			final JZoomedHotEqn comp = (JZoomedHotEqn) iterator.next();
 			comp.setModel(this);
 		}
-		getNode().getModeController().getMapController().nodeChanged(getNode());
 	}
 
-	public void setEquationUndoable(final String newEquation) {
-		if (equation.equals(newEquation)) {
-			return;
-		}
-		final IUndoableActor actor = new IUndoableActor() {
-			private final String oldEquation = equation;
-
-			public void act() {
-				setEquation(newEquation);
-			}
-
-			public String getDescription() {
-				return "setLatexEquationUndoable";
-			}
-
-			public void undo() {
-				setEquation(oldEquation);
-			}
-		};
-		getNode().getModeController().execute(actor);
-	}
 }

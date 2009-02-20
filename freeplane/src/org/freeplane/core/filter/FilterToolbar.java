@@ -42,6 +42,8 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.filter.condition.NoFilteringCondition;
 import org.freeplane.core.filter.condition.SelectedViewCondition;
+import org.freeplane.core.modecontroller.MapController;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
@@ -146,14 +148,16 @@ class FilterToolbar extends FreeplaneToolBar {
 		}
 
 		private void setFolded(final NodeModel node, final boolean state) {
-			if (node.getModeController().getMapController().hasChildren(node)
-			        && (node.getModeController().getMapController().isFolded(node) != state)) {
-				controller.getModeController().getMapController().setFolded(node, state);
+			final ModeController modeController = controller.getModeController();
+			final MapController mapController = modeController.getMapController();
+			if (mapController.hasChildren(node)
+			        && (mapController.isFolded(node) != state)) {
+				mapController.setFolded(node, state);
 			}
 		}
 
 		private void unfoldAncestors(final NodeModel parent) {
-			for (final Iterator i = parent.getModeController().getMapController().childrenUnfolded(parent); i.hasNext();) {
+			for (final Iterator i = controller.getModeController().getMapController().childrenUnfolded(parent); i.hasNext();) {
 				final NodeModel node = (NodeModel) i.next();
 				if (showDescendants.isSelected() || node.getFilterInfo().isAncestor()) {
 					setFolded(node, false);
@@ -210,7 +214,7 @@ class FilterToolbar extends FreeplaneToolBar {
 		final DefaultComboBoxModel filterConditionModel = fc.getFilterConditionModel();
 		final ICondition noFiltering = NoFilteringCondition.createCondition();
 		filterConditionModel.insertElementAt(noFiltering, 0);
-		filterConditionModel.insertElementAt(SelectedViewCondition.CreateCondition(), 1);
+		filterConditionModel.insertElementAt(SelectedViewCondition.CreateCondition(controller), 1);
 		if (filterConditionModel.getSelectedItem() == null) {
 			filterConditionModel.setSelectedItem(noFiltering);
 		}

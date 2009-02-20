@@ -224,10 +224,6 @@ public class NodeModel extends ExtensionContainer implements MutableTreeNode {
 		return map;
 	}
 
-	public ModeController getModeController() {
-		return map.getModeController();
-	}
-
 	public int getNodeLevel(final boolean countHidden) {
 		int level = 0;
 		NodeModel parent;
@@ -262,7 +258,7 @@ public class NodeModel extends ExtensionContainer implements MutableTreeNode {
 		return HtmlTools.htmlToPlain(getText());
 	}
 
-	public String getShortText(final ExtensionContainer controller) {
+	public String getShortText() {
 		String adaptedText = getPlainTextContent();
 		if (adaptedText.length() > 40) {
 			adaptedText = adaptedText.substring(0, 40) + " ...";
@@ -306,20 +302,6 @@ public class NodeModel extends ExtensionContainer implements MutableTreeNode {
 		return getChildCount() != 0;
 	}
 
-	/**
-	 * True iff one of node's <i>strict</i> descendants is folded. A node N is
-	 * not its strict descendant - the fact that node itself is folded is not
-	 * sufficient to return true.
-	 */
-	public boolean hasFoldedStrictDescendant() {
-		for (final ListIterator e = getModeController().getMapController().childrenUnfolded(this); e.hasNext();) {
-			final NodeModel child = (NodeModel) e.next();
-			if (child.getModeController().getMapController().isFolded(child) || child.hasFoldedStrictDescendant()) {
-				return true;
-			}
-		}
-		return false;
-	}
 
 	public boolean hasID() {
 		return id != null;
@@ -533,4 +515,5 @@ public class NodeModel extends ExtensionContainer implements MutableTreeNode {
 	public String toString() {
 		return getText();
 	}
+
 }

@@ -30,6 +30,7 @@ import javax.swing.JOptionPane;
 import org.freeplane.core.Compat;
 import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -52,9 +53,10 @@ class ImportLinkedBranchWithoutRootAction extends AFreeplaneAction implements IF
 
 	public void actionPerformed(final ActionEvent e) {
 		final MapModel map = getController().getMap();
-		final NodeModel selected = getModeController().getMapController().getSelectedNode();
+		final ModeController modeController = getModeController();
+		final NodeModel selected = modeController.getMapController().getSelectedNode();
 		if (selected == null || NodeLinks.getLink(selected) == null) {
-			JOptionPane.showMessageDialog(getController().getViewController().getMapView(), getModeController()
+			JOptionPane.showMessageDialog(getController().getViewController().getMapView(), modeController
 			    .getText("import_linked_branch_no_link"));
 			return;
 		}
@@ -70,16 +72,16 @@ class ImportLinkedBranchWithoutRootAction extends AFreeplaneAction implements IF
 			return;
 		}
 		try {
-			final NodeModel node = ((MMapController) getModeController().getMapController()).loadTree(map, new File(
+			final NodeModel node = ((MMapController) modeController.getMapController()).loadTree(map, new File(
 			    absolute.getFile()));
-			for (final ListIterator i = node.getModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
+			for (final ListIterator i = modeController.getMapController().childrenUnfolded(node); i.hasNext();) {
 				final NodeModel importNode = (NodeModel) i.next();
 				((MClipboardController) getController().getModeController().getClipboardController()).paste(
 				    importNode, selected);
 			}
 		}
 		catch (final Exception ex) {
-			UrlManager.getController(getModeController()).handleLoadingException(ex);
+			UrlManager.getController(modeController).handleLoadingException(ex);
 		}
 	}
 

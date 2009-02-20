@@ -51,7 +51,7 @@ import org.freeplane.core.ui.components.FreeplaneMenuBar;
 public class ApplicationResourceController extends ResourceController {
 	final private File autoPropertiesFile;
 	final private Properties defProps;
-	private final LastOpenedList lastOpened;
+	private LastOpenedList lastOpened;
 	final private Properties props;
 	private ClassLoader urlResourceLoader;
 	private final String resourceBaseDir;
@@ -87,9 +87,14 @@ public class ApplicationResourceController extends ResourceController {
 				}
 			}
 		});
-		final int maxEntries = new Integer(getProperty("last_opened_list_length", "25")).intValue();
-		lastOpened = new LastOpenedList(getProperty("lastOpened"), maxEntries);
 	}
+
+	@Override
+    public void init(Controller controller) {
+		final int maxEntries = new Integer(getProperty("last_opened_list_length", "25")).intValue();
+		lastOpened = new LastOpenedList(controller, getProperty("lastOpened"), maxEntries);
+	    super.init(controller);
+    }
 
 	private void createUserDirectory(final Properties pDefaultProperties) {
 		final File userPropertiesFolder = new File(getFreeplaneUserDirectory(pDefaultProperties));

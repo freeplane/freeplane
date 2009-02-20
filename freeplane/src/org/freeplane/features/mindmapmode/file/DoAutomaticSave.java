@@ -42,12 +42,15 @@ public class DoAutomaticSave extends TimerTask {
 	private int changeState;
 	final private boolean filesShouldBeDeletedAfterShutdown;
 	final private MapModel model;
+	final private ModeController modeController;
 	final private int numberOfFiles;
 	final private File pathToStore;
 	final private Vector tempFileStack; 
 	
-	public DoAutomaticSave(final MapModel model, final int numberOfTempFiles,
+	public DoAutomaticSave(ModeController modeController, 
+	                       final MapModel model, final int numberOfTempFiles,
 	                       final boolean filesShouldBeDeletedAfterShutdown, final File pathToStore) {
+		this.modeController = modeController;
 		this.model = model;
 		tempFileStack = new Vector();
 		numberOfFiles = ((numberOfTempFiles > 0) ? numberOfTempFiles : 1);
@@ -93,7 +96,6 @@ public class DoAutomaticSave extends TimerTask {
 						}
 					}
 					try {
-						final ModeController modeController = model.getModeController();
 						((MFileManager) UrlManager.getController(modeController)).saveInternal((MMapModel) model,
 						    tempFile, true /*=internal call*/);
 						modeController.getController().getViewController().out(

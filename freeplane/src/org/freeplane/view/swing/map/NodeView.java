@@ -47,6 +47,7 @@ import org.freeplane.core.model.NodeModel.NodeChangeType;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
 import org.freeplane.features.common.cloud.CloudController;
 import org.freeplane.features.common.cloud.CloudModel;
@@ -192,7 +193,7 @@ public class NodeView extends JComponent implements INodeView {
 	 */
 	public AttributeView getAttributeView() {
 		if (attributeView == null) {
-			NodeAttributeTableModel.createAttributeTableModel(model);
+			AttributeController.getController(getMap().getModeController()).createAttributeTableModel(model);
 			attributeView = new AttributeView(this);
 		}
 		return attributeView;
@@ -201,7 +202,7 @@ public class NodeView extends JComponent implements INodeView {
 	private Color getBackgroundColor() {
 		final CloudModel cloud = CloudModel.getModel(getModel());
 		if (cloud != null) {
-			return CloudController.getController(model.getModeController()).getColor(model);
+			return CloudController.getController(getMap().getModeController()).getColor(model);
 		}
 		if (isRoot()) {
 			return getMap().getBackground();
@@ -684,15 +685,26 @@ public class NodeView extends JComponent implements INodeView {
 	/**
 	 * @return returns the color that should used to select the node.
 	 */
-	protected Color getSelectedColor() {
+	Color getSelectedColor() {
 		return MapView.standardSelectColor;
 	}
 
-	/**
-	 * @return Returns the sHIFT.
+	public final static int SHIFT = -2;
+	private int calcShiftY(LocationModel locationModel) {
+		try {
+			final NodeModel parent = model.getParentNode();
+			return locationModel.getShiftY() + (getMap().getModeController().hasOneVisibleChild(parent) ? SHIFT : 0);
+		}
+		catch (final NullPointerException e) {
+			return 0;
+		}
+	}
+/**
+	 * @return Returns the sHIFT.s
 	 */
 	public int getShift() {
-		return map.getZoomed(LocationModel.getModel(model).calcShiftY(model.getParentNode()));
+		final LocationModel locationModel = LocationModel.getModel(model);
+		return map.getZoomed(calcShiftY(locationModel));
 	}
 
 	protected LinkedList getSiblingViews() {
@@ -700,7 +712,7 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	public Color getTextBackground() {
-		final Color modelBackgroundColor = NodeStyleController.getController(model.getModeController())
+		final Color modelBackgroundColor = NodeStyleController.getController(getMap().getModeController())
 		    .getBackgroundColor(model);
 		if (modelBackgroundColor != null) {
 			return modelBackgroundColor;
@@ -709,7 +721,7 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	public Color getTextColor() {
-		final Color color = NodeStyleController.getController(model.getModeController()).getColor(model);
+		final Color color = NodeStyleController.getController(getMap().getModeController()).getColor(model);
 		return color;
 	}
 
@@ -745,7 +757,7 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	void insert() {
-		final ListIterator it = getModel().getModeController().getMapController().childrenFolded(getModel());
+		final ListIterator it = getMap().getModeController().getMapController().childrenFolded(getModel());
 		while (it.hasNext()) {
 			insert((NodeModel) it.next(), 0);
 		}
@@ -814,7 +826,7 @@ public class NodeView extends JComponent implements INodeView {
 
 	public void onNodeDeleted(final NodeModel parent, final NodeModel child, final int index) {
 		getMap().resetShiftSelectionOrigin();
-		if (model.getModeController().getMapController().isFolded(model)) {
+		if (getMap().getModeController().getMapController().isFolded(model)) {
 			return;
 		}
 		final boolean preferredChildIsLeft = preferredChild != null && preferredChild.isLeft();
@@ -859,7 +871,7 @@ public class NodeView extends JComponent implements INodeView {
 
 	public void onNodeInserted(final NodeModel parent, final NodeModel child, final int index) {
 		assert parent == model;
-		if (model.getModeController().getMapController().isFolded(model)) {
+		if (getMap().getModeController().getMapController().isFolded(model)) {
 			return;
 		}
 		insert(child, index);
@@ -934,7 +946,7 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	public void paintFoldingMark(final Graphics2D g) {
-		if (model.getModeController().getMapController().isFolded(model)) {
+		if (getMap().getModeController().getMapController().isFolded(model)) {
 			final Point out = getMainViewOutPoint(null, null);
 			UITools.convertPointToAncestor(getMainView(), out, this);
 			mainView.paintFoldingMark(g, out);
@@ -953,7 +965,7 @@ public class NodeView extends JComponent implements INodeView {
 		if (isSelected()) {
 			getMap().deselect(this);
 		}
-		getMap().getModel().getModeController().onViewRemoved(this);
+		getMap().getModeController().onViewRemoved(this);
 		removeFromMap();
 		if (attributeView != null) {
 			attributeView.viewRemoved();
@@ -970,7 +982,7 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	void repaintSelected() {
-		mainView.updateTextColor(model);
+		mainView.updateTextColor(this);
 		repaint();
 	}
 
@@ -1001,7 +1013,7 @@ public class NodeView extends JComponent implements INodeView {
 			add(newMainView);
 		}
 		mainView = newMainView;
-		final IUserInputListenerFactory userInputListenerFactory = getMap().getModel().getModeController()
+		final IUserInputListenerFactory userInputListenerFactory = getMap().getModeController()
 		    .getUserInputListenerFactory();
 		mainView.addMouseListener(userInputListenerFactory.getNodeMouseMotionListener());
 		mainView.addMouseMotionListener(userInputListenerFactory.getNodeMouseMotionListener());
@@ -1080,9 +1092,9 @@ public class NodeView extends JComponent implements INodeView {
 			return;
 		}
 		mainView.setVisible(true);
-		mainView.updateTextColor(model);
-		mainView.updateFont(model);
-		mainView.updateIcons(model);
+		mainView.updateTextColor(this);
+		mainView.updateFont(this);
+		mainView.updateIcons(this);
 		createAttributeView();
 		if (attributeView != null) {
 			attributeView.update();
@@ -1102,11 +1114,11 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	void updateStyle() {
-		final String shape = NodeStyleController.getController(model.getModeController()).getShape(model);
+		final String shape = NodeStyleController.getController(getMap().getModeController()).getShape(model);
 		if (mainView != null && (mainView.getStyle().equals(shape) || model.isRoot())) {
 			return;
 		}
-		final MainView newMainView = NodeViewFactory.getInstance().newMainView(model);
+		final MainView newMainView = NodeViewFactory.getInstance().newMainView(this);
 		setMainView(newMainView);
 		if (map.getSelected() == this) {
 			requestFocus();

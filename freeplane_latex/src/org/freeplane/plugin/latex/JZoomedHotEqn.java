@@ -13,7 +13,9 @@ import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.WindowConstants;
 
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.undo.IUndoableActor;
 
 import atp.sHotEqn;
 
@@ -21,8 +23,10 @@ class JZoomedHotEqn extends sHotEqn {
 	static String editorTitle = null;
 	static private double zoom = 1f;
 	private LatexExtension model;
+	final private LatexNodeHook latexController;
 
-	JZoomedHotEqn(final LatexExtension latexExtension) {
+	JZoomedHotEqn(LatexNodeHook latexController, final LatexExtension latexExtension) {
+		this.latexController = latexController;
 		setDebug(false);
 		setEditable(false);
 		setBorder(true);
@@ -47,7 +51,7 @@ class JZoomedHotEqn extends sHotEqn {
 		edit.setLocationRelativeTo(this);
 		edit.setVisible(true);
 		final String eq = textArea.getText();
-		model.setEquationUndoable(eq);
+		latexController.setEquationUndoable(model, eq);
 	}
 
 	@Override

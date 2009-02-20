@@ -72,8 +72,7 @@ class ScriptingEngine extends AFreeplaneAction {
 	                             final MModeController pMindMapController, final IErrorHandler pErrorHandler,
 	                             final PrintStream pOutStream, final HashMap pScriptCookies) {
 		if (!pAlreadyAScriptExecuted) {
-			final int showResult = new OptionalDontShowMeAgainDialog(pMindMapController.getController()
-			    .getViewController().getJFrame(), pMindMapController.getController().getSelection().getSelected(),
+			final int showResult = new OptionalDontShowMeAgainDialog(pMindMapController.getController(),
 			    "really_execute_script", "confirmation", new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
 			        ResourceControllerProperties.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING),
 			    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED).show().getResult();
@@ -238,7 +237,7 @@ class ScriptingEngine extends AFreeplaneAction {
 
 	private void performScriptOperation(final NodeModel node, final Boolean pAlreadyAScriptExecuted) {
 		getController().getViewController().setWaitingCursor(true);
-		for (final Iterator iter = node.getModeController().getMapController().childrenUnfolded(node); iter.hasNext();) {
+		for (final Iterator iter = getModeController().getMapController().childrenUnfolded(node); iter.hasNext();) {
 			final NodeModel element = (NodeModel) iter.next();
 			performScriptOperation(element, pAlreadyAScriptExecuted);
 		}

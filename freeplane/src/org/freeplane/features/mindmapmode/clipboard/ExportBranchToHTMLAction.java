@@ -35,7 +35,7 @@ class ExportBranchToHTMLAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		try {
 			final File file = File.createTempFile("tmm", ".html");
-			ClipboardController.saveHTML(getModeController().getMapController().getSelectedNode(), file);
+			ClipboardController.getController(getModeController()).saveHTML(getModeController().getMapController().getSelectedNode(), file);
 			getModeController().getMapController().loadURL(file.toString());
 		}
 		catch (final IOException ex) {
