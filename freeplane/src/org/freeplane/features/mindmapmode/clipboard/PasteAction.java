@@ -36,7 +36,6 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.enums.ResourceControllerProperties;
-import org.freeplane.core.extension.ControllerUtil;
 import org.freeplane.core.io.MapReader;
 import org.freeplane.core.io.MapReader.NodeTreeCreator;
 import org.freeplane.core.model.MapModel;

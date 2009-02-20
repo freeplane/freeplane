@@ -28,7 +28,6 @@ import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.enums.ResourceControllerProperties;
-import org.freeplane.core.extension.ControllerUtil;
 import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;

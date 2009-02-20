@@ -25,7 +25,6 @@ import java.util.List;
 
 import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.extension.ControllerUtil;
 import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;

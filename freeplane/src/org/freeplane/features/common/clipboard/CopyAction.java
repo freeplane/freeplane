@@ -24,13 +24,12 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.extension.ControllerUtil;
 import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.ui.AFreeplaneAction;
 
 class CopyAction extends AFreeplaneAction implements IFreeplaneAction {
-    private static final long serialVersionUID = 4816549133103377252L;
+	private static final long serialVersionUID = 4816549133103377252L;
 	private static final String NAME = "copy";
 
 	public CopyAction(final Controller controller) {
@@ -42,7 +41,8 @@ class CopyAction extends AFreeplaneAction implements IFreeplaneAction {
 		final ExtensionContainer modeController = getModeController();
 		final IMapSelection selection = controller.getSelection();
 		if (selection != null) {
-			ClipboardController clipboardController = (ClipboardController)modeController.getExtension(ClipboardController.class);
+			ClipboardController clipboardController = (ClipboardController) modeController
+			    .getExtension(ClipboardController.class);
 			final Transferable copy = clipboardController.copy(selection);
 			if (copy != null) {
 				clipboardController.setClipboardContents(copy);
@@ -51,6 +51,6 @@ class CopyAction extends AFreeplaneAction implements IFreeplaneAction {
 	}
 
 	public String getName() {
-	    return NAME;
-    }
+		return NAME;
+	}
 }

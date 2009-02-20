@@ -68,7 +68,6 @@ import javax.swing.text.Document;
 
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.extension.ControllerUtil;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.MindIcon;
@@ -81,7 +80,6 @@ import org.freeplane.core.ui.components.MultipleImage;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.core.util.LogTool;
-import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.note.NoteModel;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.text.MTextController;

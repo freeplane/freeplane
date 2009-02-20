@@ -35,7 +35,8 @@ import org.freeplane.core.resources.ResourceController;
  * @author foltin
  */
 public class LogTool {
-	private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+//	private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private static final Logger LOGGER = Logger.global;
 
 	public static void logException(final Throwable e) {
 		LogTool.logException(e, "");

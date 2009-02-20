@@ -25,14 +25,12 @@ import java.util.List;
 import java.util.Vector;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.extension.ControllerUtil;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.mindmapmode.clipboard.MClipboardController;
 
 /**

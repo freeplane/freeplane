@@ -23,12 +23,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.extension.ControllerUtil;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionDescriptor;
-import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.features.mindmapmode.clipboard.MClipboardController;
 

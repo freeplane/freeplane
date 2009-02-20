@@ -13,11 +13,9 @@ import java.awt.dnd.DragSourceListener;
 import java.awt.event.InputEvent;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.extension.ControllerUtil;
 import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.clipboard.MindMapNodesSelection;
 import org.freeplane.view.swing.map.MainView;
 

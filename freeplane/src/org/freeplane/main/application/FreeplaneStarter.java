@@ -21,13 +21,7 @@
 
 import java.awt.EventQueue;
 import java.io.File;
-import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.FileHandler;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
