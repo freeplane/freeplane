@@ -246,9 +246,51 @@ public abstract class ResourceController {
 	}
 
 	public static String getText(final String key) {
-    	return key == null ? null : ((FreeplaneResourceBundle) getResourceController().getResources()).getResourceString(key);
+    	if (key == null){
+    		return null;
+    	}
+    	return ((FreeplaneResourceBundle) getResourceController().getResources()).getResourceString(key);
     }
 
+	public static String formatText(final String key, final String s1) {
+		String format = getText(key);
+    	if (format == null){
+    		return null;
+    	}
+    	return expandPlaceholders(format, s1);
+    }
+
+	public static String formatText(final String key, final String s1, final String s2) {
+		String format = getText(key);
+    	if (format == null){
+    		return null;
+    	}
+    	return expandPlaceholders(format, s1, s2);
+    }
+
+	private static String expandPlaceholders(final String message, final String s1, final String s2) {
+    	String result = message;
+    	if (s1 != null) {
+    		result = result.replaceAll("\\$1", s1);
+    	}
+    	if (s2 != null) {
+    		result = result.replaceAll("\\$2", s2);
+    	}
+    	return result;
+    }
+
+	/**
+     * Example: expandPlaceholders("Hello $1.","Dolly"); => "Hello Dolly."
+     */
+    private static String expandPlaceholders(final String message, String s1) {
+    	String result = message;
+    	if (s1 != null) {
+    		s1 = s1.replaceAll("\\\\", "\\\\\\\\");
+    		result = result.replaceAll("\\$1", s1);
+    	}
+    	return result;
+    }
+    
 	static public void setResourceController(final ResourceController resourceController) {
 		ResourceController.resourceController = resourceController;
     }
@@ -260,4 +302,6 @@ public abstract class ResourceController {
 	public String getResourceBaseDir(){
 		return "";
 	}
+
+    
 }
