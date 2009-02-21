@@ -25,6 +25,7 @@ import java.util.Map;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.ExtensionContainer;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
@@ -65,8 +66,8 @@ class NodeHolder {
 		return null;
 	}
 
-	ExtensionContainer getModeController() {
-		ExtensionContainer modeController = null;
+	ModeController getModeController() {
+		ModeController modeController = null;
 		final MapView mapView = getMapView();
 		if (mapView != null) {
 			modeController = mapView.getModeController();

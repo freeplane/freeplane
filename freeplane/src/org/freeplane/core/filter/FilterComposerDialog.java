@@ -55,7 +55,6 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.filter.condition.ConditionNotSatisfiedDecorator;
 import org.freeplane.core.filter.condition.ConjunctConditions;
 import org.freeplane.core.filter.condition.DisjunctConditions;

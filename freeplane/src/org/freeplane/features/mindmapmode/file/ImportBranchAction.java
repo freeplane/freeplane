@@ -30,6 +30,7 @@ import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.url.UrlManager;
+import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.features.mindmapmode.clipboard.MClipboardController;
 
@@ -57,7 +58,7 @@ class ImportBranchAction extends AFreeplaneAction implements IFreeplaneAction {
 				final MapModel map = parent.getMap();
 				final NodeModel node = ((MMapController) getModeController().getMapController()).loadTree(map, chooser
 				    .getSelectedFile());
-				((MClipboardController) getController().getModeController().getClipboardController()).paste(
+				((MClipboardController) ClipboardController.getController(getModeController())).paste(
 				    node, parent);
 			}
 			catch (final Exception ex) {

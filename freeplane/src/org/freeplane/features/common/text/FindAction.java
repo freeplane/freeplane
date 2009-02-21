@@ -50,8 +50,7 @@ class FindAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final NodeModel selected = getController().getSelection().getSelected();
-		ModeController r = getModeController();
-		ModeController r1 = getModeController();
+		
 		final String what = UITools.showInputDialog(getController(), selected, ResourceController.getText("find_what"),
 		    ResourceController.getText("find"), JOptionPane.QUESTION_MESSAGE);
 		if (what == null || what.equals("")) {
@@ -62,7 +61,6 @@ class FindAction extends AFreeplaneAction {
 		final boolean found = find(getModeController().getMapController().getSelectedNode(), subterms,
 		/*caseSensitive=*/false);
 		if (!found) {
-			ModeController r2 = getModeController();
 			final String messageText = ResourceController.getText("no_found_from");
 			final String searchTerm = messageText.startsWith("<html>") ? HtmlTools.toXMLEscapedText(getSearchTerm())
 			        : getSearchTerm();

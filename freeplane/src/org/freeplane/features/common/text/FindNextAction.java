@@ -41,13 +41,13 @@ class FindNextAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		final Collection subterms = find.getSubterms();
 		if (subterms == null) {
-			ModeController r = getModeController();
+			
 			UITools.informationMessage(getController().getViewController().getFrame(), ResourceController.getText("no_previous_find"));
 			return;
 		}
 		final boolean found = find.findNext();
 		if (!found) {
-			ModeController r = getModeController();
+			
 			final String messageText = ResourceController.getText("no_more_found_from");
 			final String searchTerm = messageText.startsWith("<html>") ? HtmlTools.toXMLEscapedText(find
 			    .getSearchTerm()) : find.getSearchTerm();

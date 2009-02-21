@@ -28,6 +28,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.MultipleNodeAction;
+import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.mindmapmode.clipboard.MClipboardController;
 
 /**
@@ -70,7 +71,7 @@ public class SortNodes extends MultipleNodeAction {
 			final NodeModel child = (NodeModel) iter.next();
 			final Vector childList = new Vector();
 			childList.add(child);
-			final MClipboardController clipboardController = (MClipboardController) getModeController().getClipboardController();
+			final MClipboardController clipboardController = (MClipboardController) ClipboardController.getController(getModeController());
 			final Transferable cut = clipboardController.cut(childList);
 			clipboardController.paste(cut, node);
 		}

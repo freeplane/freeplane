@@ -20,6 +20,7 @@
 package org.freeplane.core.modecontroller;
 
 import java.awt.Container;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -29,8 +30,9 @@ import javax.swing.Action;
 
 import org.freeplane.core.controller.AController;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.extension.ExtensionContainer;
+import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.IMenuContributor;
@@ -38,6 +40,7 @@ import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.core.url.UrlManager;
+import org.freeplane.features.common.attribute.AttributeController;
 
 /**
  * Derive from this class to implement the Controller for your mode. Overload
@@ -137,12 +140,14 @@ public class ModeController extends AController {
 	 * links).
 	 */
 	private IUserInputListenerFactory userInputListenerFactory;
+	private final ExtensionContainer extensionContainer;
 
 	/**
 	 * Instantiation order: first me and then the model.
 	 */
 	public ModeController(final Controller controller) {
 		this.controller = controller;
+		extensionContainer = new ExtensionContainer(new HashMap <Class<? extends IExtension>, IExtension>());
 	}
 
 	public void putAction(final String key, final Action action) {
@@ -308,4 +313,11 @@ public class ModeController extends AController {
 			iterator.next().updateMenus(menuBuilder);
 		}
 	}
+	public IExtension getExtension(Class<? extends IExtension> clazz) {
+		return extensionContainer.getExtension(clazz);
+	}
+
+	public void putExtension(Class<? extends IExtension> clazz, IExtension extension) {
+	   extensionContainer.putExtension(clazz, extension);
+    }
 }

@@ -263,7 +263,7 @@ public class MNoteController extends NoteController {
 
 	public void startupController() {
 		final ModeController modeController = getModeController();
-		noteManager = new NoteManager(modeController.getController(), this);
+		noteManager = new NoteManager(this);
 		noteViewerComponent = getHtmlEditorPanel();
 		final Action jumpToMapAction = new JumpToMapAction();
 		final String keystroke = ResourceController.getResourceController().getAdjustableProperty(

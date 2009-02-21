@@ -25,7 +25,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.TableModelEvent;
 
 import org.freeplane.features.common.attribute.Attribute;
-import org.freeplane.features.common.attribute.AttributeController;
 
 /**
  * @author Dimitry Polivaev

@@ -23,7 +23,6 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.frame.ColorTracker;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;

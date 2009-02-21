@@ -29,6 +29,9 @@ import javax.swing.JOptionPane;
 
 import org.freeplane.core.actions.QuitAction;
 import org.freeplane.core.enums.ResourceControllerProperties;
+import org.freeplane.core.extension.ExtensionContainer;
+import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.IMapSelection;
@@ -53,6 +56,7 @@ public class Controller extends AController {
 
 	public Controller() {
 		super();
+		extensionContainer = new ExtensionContainer(new HashMap <Class<? extends IExtension>, IExtension>());
 		putAction(new QuitAction(this)); 
 	}
 
@@ -181,7 +185,16 @@ public class Controller extends AController {
 			modeController.shutdown();
 		}
 		getViewController().stop();
-		getExtensions().clear();
+		extensionContainer.getExtensions().clear();
 		return true;
 	}
+	private final ExtensionContainer extensionContainer;
+
+
+	public IExtension getExtension(Class<? extends IExtension> clazz) {
+		return extensionContainer.getExtension(clazz);
+	}
+	public void putExtension(Class<? extends IExtension> clazz, IExtension extension) {
+		   extensionContainer.putExtension(clazz, extension);
+	    }
 }

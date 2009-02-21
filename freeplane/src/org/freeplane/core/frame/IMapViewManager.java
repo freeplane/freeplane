@@ -28,7 +28,6 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
-import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;

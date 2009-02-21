@@ -33,8 +33,6 @@ import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
-import javax.swing.SwingUtilities;
-
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.features.common.link.ArrowLinkModel;
 import org.freeplane.features.common.link.LinkController;

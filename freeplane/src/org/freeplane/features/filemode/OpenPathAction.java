@@ -23,7 +23,6 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
@@ -34,7 +33,7 @@ public class OpenPathAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		ModeController r = getModeController();
+		
 		final String inputValue = UITools.showInputDialog(getController(), getController().getSelection().getSelected(),
 		    ResourceController.getText("open"), "");
 		if (inputValue != null) {

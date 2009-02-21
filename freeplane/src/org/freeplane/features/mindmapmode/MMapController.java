@@ -96,9 +96,8 @@ public class MMapController extends MapController {
 	public boolean close(final boolean force) {
 		final MapModel map = getController().getMap();
 		if (!force && !map.isSaved()) {
-			ModeController r = getModeController();
+			
 			final String text = ResourceController.getText("save_unsaved") + "\n" + map.getTitle();
-			ModeController r1 = getModeController();
 			final String title = UITools.removeMnemonic(ResourceController.getText("save"));
 			final int returnVal = JOptionPane.showOptionDialog(getController().getViewController().getContentPane(),
 			    text, title, JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
@@ -169,7 +168,7 @@ public class MMapController extends MapController {
 	        URISyntaxException {
 		final File file = Compat.urlToFile(url);
 		if (!file.exists()) {
-			ModeController r = getModeController();
+			
 			throw new FileNotFoundException(ResourceController.formatText(
 			    "file_not_found", file.getPath()));
 		}
@@ -180,7 +179,7 @@ public class MMapController extends MapController {
 			try {
 				final String lockingUser = tryToLock(map, file);
 				if (lockingUser != null) {
-					ModeController r = getModeController();
+					
 					UITools.informationMessage(getController().getViewController().getFrame(), ResourceController
 					    .formatText("map_locked_by_open", file.getName(),
 					        lockingUser));
@@ -192,7 +191,7 @@ public class MMapController extends MapController {
 			}
 			catch (final Exception e) {
 				LogTool.logException(e);
-				ModeController r = getModeController();
+				
 				UITools.informationMessage(getController().getViewController().getFrame(), ResourceController
 				    .formatText("locking_failed_by_open", file.getName()));
 				((MMapModel) map).setReadOnly(true);
@@ -223,7 +222,6 @@ public class MMapController extends MapController {
 		}
 		if (reader == null) {
 			final Controller controller = getController();
-			final ViewController viewController = controller.getViewController();
 			final int showResult = new OptionalDontShowMeAgainDialog(controller, "really_convert_to_current_version",
 			    "confirmation", new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
 			        ResourceControllerProperties.RESOURCES_CONVERT_TO_CURRENT_VERSION),
@@ -343,7 +341,7 @@ public class MMapController extends MapController {
 		final String lockingUser = ((MMapModel) map).getLockManager().tryToLock(file);
 		final String lockingUserOfOldLock = ((MMapModel) map).getLockManager().popLockingUserOfOldLock();
 		if (lockingUserOfOldLock != null) {
-			ModeController r = getModeController();
+			
 			UITools.informationMessage(getController().getViewController().getFrame(), ResourceController.formatText(
 			    "locking_old_lock_removed", file.getName(), lockingUserOfOldLock));
 		}

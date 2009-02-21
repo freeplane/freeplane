@@ -22,7 +22,6 @@ package org.freeplane.view.swing.map.attribute;
 import javax.swing.event.ChangeEvent;
 
 import org.freeplane.features.common.attribute.Attribute;
-import org.freeplane.features.common.attribute.AttributeController;
 
 /**
  * @author Dimitry Polivaev

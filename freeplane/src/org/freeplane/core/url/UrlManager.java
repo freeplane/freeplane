@@ -45,7 +45,6 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
@@ -68,7 +67,7 @@ public class UrlManager implements IExtension {
 		return new BufferedReader(new FileReader(file));
 	}
 
-	public static <T extends ExtensionContainer> UrlManager getController(final T modeController) {
+	public static UrlManager getController(final ModeController modeController) {
 		return (UrlManager) modeController.getExtension(UrlManager.class);
 	}
 
@@ -196,7 +195,7 @@ public class UrlManager implements IExtension {
 		return new URL(input.toString().replaceFirst("#.*", ""));
 	}
 
-	public static void install(final ExtensionContainer modeController, final UrlManager urlManager) {
+	public static void install(final ModeController modeController, final UrlManager urlManager) {
 		modeController.putExtension(UrlManager.class, urlManager);
 	}
 

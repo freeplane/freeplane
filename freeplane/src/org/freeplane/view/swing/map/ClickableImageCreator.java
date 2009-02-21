@@ -42,7 +42,7 @@ class ClickableImageCreator {
 	Vector area = new Vector();
 	private Rectangle innerBounds;
 	final private MapView mapView;
-	final private ExtensionContainer modeController;
+	final private ModeController modeController;
 	final private String regExpLinkReplacement;
 	final private NodeModel root;
 

@@ -53,7 +53,6 @@ public class SaveAll extends AFreeplaneAction {
 		final Iterator<Entry<String, MapModel>> iterator = mapViews.entrySet().iterator();
 		while (iterator.hasNext()) {
 			final Entry<String, MapModel> entry = iterator.next();
-			final MapModel mapView = entry.getValue();
 			controller.getMapViewManager().changeToMapView(entry.getKey());
 			final ModeController modeController = controller.getModeController();
 			if (modeController instanceof MModeController && !((MModeController) modeController).save()) {

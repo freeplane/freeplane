@@ -37,6 +37,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.features.mindmapmode.clipboard.MClipboardController;
@@ -72,7 +73,7 @@ class ImportLinkedBranchAction extends AFreeplaneAction implements IFreeplaneAct
 		try {
 			final NodeModel node = ((MMapController) modeController.getMapController()).loadTree(map, new File(absolute
 			    .getFile()));
-			((MClipboardController) modeController.getClipboardController()).paste(node, selected);
+			((MClipboardController)ClipboardController.getController(modeController)).paste(node, selected);
 		}
 		catch (final Exception ex) {
 			UrlManager.getController(modeController).handleLoadingException(ex);

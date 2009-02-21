@@ -55,15 +55,11 @@ public class EdgeController implements IExtension {
 	private static Color standardColor = null;
 	private static String standardStyle = null;
 
-	public static EdgeController getController(final ExtensionContainer modeController) {
-		return (EdgeController) modeController.getExtension(EdgeController.class);
-	}
-
 	public static EdgeController getController(final ModeController modeController) {
 		return (EdgeController) modeController.getExtension(EdgeController.class);
 	}
 
-	public static void install(final ExtensionContainer modeController, final EdgeController edgeController) {
+	public static void install(final ModeController modeController, final EdgeController edgeController) {
 		modeController.putExtension(EdgeController.class, edgeController);
 	}
 
@@ -179,7 +175,7 @@ public class EdgeController implements IExtension {
 		return widthHandlers.removeGetter(key);
 	}
 
-	private void updateStandards(final ExtensionContainer controller) {
+	private void updateStandards(final ModeController controller) {
 		if (standardColor == null) {
 			final String stdColor = ResourceController.getResourceController().getProperty(
 			    ResourceControllerProperties.RESOURCES_EDGE_COLOR);

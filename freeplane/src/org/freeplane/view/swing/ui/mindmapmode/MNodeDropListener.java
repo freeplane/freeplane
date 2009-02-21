@@ -37,6 +37,7 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.clipboard.MindMapNodesSelection;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.mindmapmode.MMapController;
@@ -46,10 +47,10 @@ import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.NodeView;
 
 public class MNodeDropListener implements DropTargetListener {
-	final private ModeController mMindMapController;
+	final private ModeController modeController;
 
 	public MNodeDropListener(final ModeController controller) {
-		mMindMapController = controller;
+		modeController = controller;
 	}
 
 	/**
@@ -96,7 +97,7 @@ public class MNodeDropListener implements DropTargetListener {
 			final MainView mainView = (MainView) dtde.getDropTargetContext().getComponent();
 			final NodeView targetNodeView = mainView.getNodeView();
 			final NodeModel targetNode = targetNodeView.getModel();
-			final Controller controller = mMindMapController.getController();
+			final Controller controller = modeController.getController();
 			if (dtde.isLocalTransfer() && t.isDataFlavorSupported(MindMapNodesSelection.dropActionFlavor)) {
 				final String sourceAction = (String) t.getTransferData(MindMapNodesSelection.dropActionFlavor);
 				if (sourceAction.equals("LINK")) {
@@ -114,7 +115,7 @@ public class MNodeDropListener implements DropTargetListener {
 			}
 			dtde.acceptDrop(dtde.getDropAction());
 			if (!dtde.isLocalTransfer()) {
-				((MClipboardController) mMindMapController.getClipboardController())
+				((MClipboardController) ClipboardController.getController(modeController))
 				    .paste(t, targetNode, mainView.dropAsSibling(dtde.getLocation().getX()), mainView.dropPosition(dtde
 				        .getLocation().getX()));
 				dtde.dropComplete(true);
@@ -132,20 +133,20 @@ public class MNodeDropListener implements DropTargetListener {
 					for (final Iterator<NodeModel> it = controller.getSelection().getSelection().iterator(); it
 					    .hasNext();) {
 						final NodeModel selectedNodeModel = (it.next());
-						((MLinkController) LinkController.getController(mMindMapController)).addLink(selectedNodeModel,
+						((MLinkController) LinkController.getController(modeController)).addLink(selectedNodeModel,
 						    targetNode);
 					}
 				}
 			}
 			else {
-				if (!((MMapController) mMindMapController.getMapController()).isWriteable(targetNode)) {
+				if (!((MMapController) modeController.getMapController()).isWriteable(targetNode)) {
 					final String message = ResourceController.getText("node_is_write_protected");
 					JOptionPane.showMessageDialog(controller.getViewController().getContentPane(), message,
 					    "Freeplane", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				Transferable trans = null;
-				final List selecteds = mMindMapController.getMapController().getSelectedNodes();
+				final List selecteds = modeController.getMapController().getSelectedNodes();
 				if (DnDConstants.ACTION_MOVE == dropAction) {
 					NodeModel actualNode = targetNode;
 					do {
@@ -158,14 +159,14 @@ public class MNodeDropListener implements DropTargetListener {
 						}
 						actualNode = (actualNode.isRoot()) ? null : actualNode.getParentNode();
 					} while (actualNode != null);
-					trans = ((MClipboardController) mMindMapController.getClipboardController()).cut(controller
+					trans = ((MClipboardController) ClipboardController.getController(modeController)).cut(controller
 					    .getSelection().getSortedSelection());
 				}
 				else {
-					trans = mMindMapController.getClipboardController().copy(controller.getSelection());
+					trans = ClipboardController.getController(modeController).copy(controller.getSelection());
 				}
 				controller.getSelection().selectAsTheOnlyOneSelected(targetNode);
-				((MClipboardController) mMindMapController.getClipboardController())
+				((MClipboardController) ClipboardController.getController(modeController))
 				    .paste(trans, targetNode, mainView.dropAsSibling(dtde.getLocation().getX()), mainView
 				        .dropPosition(dtde.getLocation().getX()));
 			}
@@ -194,8 +195,8 @@ public class MNodeDropListener implements DropTargetListener {
 
 	private boolean isDropAcceptable(final DropTargetDropEvent event) {
 		final NodeModel node = ((MainView) event.getDropTargetContext().getComponent()).getNodeView().getModel();
-		final NodeModel selected = mMindMapController.getMapController().getSelectedNode();
-		if (!((MMapController) mMindMapController.getMapController()).isWriteable(node)) {
+		final NodeModel selected = modeController.getMapController().getSelectedNode();
+		if (!((MMapController) modeController.getMapController()).isWriteable(node)) {
 			return false;
 		}
 		return ((node != selected) && !node.isDescendantOf(selected));

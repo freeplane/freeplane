@@ -19,8 +19,6 @@
  */
 package org.freeplane.features.common.attribute;
 
-import javax.swing.table.TableModel;
-
 import org.freeplane.core.model.NodeModel;
 
 /**

@@ -24,8 +24,8 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.modecontroller.IMapSelection;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.ui.AFreeplaneAction;
 
 class CopyAction extends AFreeplaneAction implements IFreeplaneAction {
@@ -38,7 +38,7 @@ class CopyAction extends AFreeplaneAction implements IFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final Controller controller = getController();
-		final ExtensionContainer modeController = getModeController();
+		final ModeController modeController = getModeController();
 		final IMapSelection selection = controller.getSelection();
 		if (selection != null) {
 			ClipboardController clipboardController = (ClipboardController) modeController

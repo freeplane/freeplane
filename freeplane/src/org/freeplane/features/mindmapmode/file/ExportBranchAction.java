@@ -29,7 +29,6 @@ import javax.swing.JOptionPane;
 import org.freeplane.core.Compat;
 import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
@@ -90,7 +89,7 @@ class ExportBranchAction extends AFreeplaneAction implements IFreeplaneAction {
 				return;
 			}
 			if (chosenFile.exists()) {
-				ModeController r = getModeController();
+				
 				final int overwriteMap = JOptionPane.showConfirmDialog(controller.getViewController().getMapView(),
 				    ResourceController.getText("map_already_exists"), "Freeplane", JOptionPane.YES_NO_OPTION);
 				if (overwriteMap != JOptionPane.YES_OPTION) {

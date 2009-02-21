@@ -19,17 +19,9 @@
  */
 package org.freeplane.features.mindmapmode.addins.time;
 
-import java.text.MessageFormat;
-import java.util.Date;
 import java.util.Timer;
-import java.util.TimerTask;
-
-import javax.swing.ImageIcon;
-
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.ResourceController;
 
 /**
  * @author Dimitry Polivaev 30.11.2008

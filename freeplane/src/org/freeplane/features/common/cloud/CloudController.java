@@ -59,7 +59,7 @@ public class CloudController implements IExtension {
 		return (CloudController) modeController.getExtension(CloudController.class);
 	}
 
-	public static void install(final ExtensionContainer modeController, final CloudController cloudController) {
+	public static void install(final ModeController modeController, final CloudController cloudController) {
 		modeController.putExtension(CloudController.class, cloudController);
 	}
 
@@ -117,7 +117,7 @@ public class CloudController implements IExtension {
 		return colorHandlers.removeGetter(key);
 	}
 
-	private void updateStandards(final ExtensionContainer controller) {
+	private void updateStandards(final ModeController controller) {
 		if (standardColor == null) {
 			final String stdColor = ResourceController.getResourceController().getProperty(
 			    ResourceControllerProperties.RESOURCES_CLOUD_COLOR);

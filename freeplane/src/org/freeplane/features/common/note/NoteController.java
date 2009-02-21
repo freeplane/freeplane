@@ -22,7 +22,6 @@ package org.freeplane.features.common.note;
 import javax.swing.ImageIcon;
 
 import org.freeplane.core.enums.ResourceControllerProperties;
-import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MindIcon;
@@ -36,11 +35,11 @@ public class NoteController implements IExtension {
 	private static boolean firstRun = true;
 	private static ImageIcon noteIcon = null;
 
-	public static NoteController getController(final ExtensionContainer modeController) {
+	public static NoteController getController(final ModeController modeController) {
 		return (NoteController) modeController.getExtension(NoteController.class);
 	}
 
-	public static void install(final ExtensionContainer modeController, final NoteController noteController) {
+	public static void install(final ModeController modeController, final NoteController noteController) {
 		modeController.putExtension(NoteController.class, noteController);
 		if (firstRun) {
 			noteIcon = new ImageIcon(ResourceController.getResourceController().getResource("/images/knotes.png"));

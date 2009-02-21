@@ -29,6 +29,7 @@ import javax.swing.JOptionPane;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.extension.ExtensionContainer;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -42,7 +43,7 @@ class CutAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final ExtensionContainer mMindMapController = getModeController();
+		final ModeController mMindMapController = getModeController();
 		final Controller controller = getController();
 		final NodeModel root = controller.getMap().getRootNode();
 		if (controller.getSelection().isSelected(root)) {

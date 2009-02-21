@@ -27,7 +27,6 @@ import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -79,7 +78,7 @@ class JoinNodesAction extends AFreeplaneAction {
 		for (final Iterator it = selectedNodes.iterator(); it.hasNext();) {
 			final NodeModel node = (NodeModel) it.next();
 			if (getModeController().getMapController().hasChildren(node)) {
-				ModeController r = getModeController();
+				
 				UITools.informationMessage(controller.getViewController().getFrame(), ResourceController.getText("cannot_join_nodes_with_children"), "Freeplane", JOptionPane.WARNING_MESSAGE);
 				return;
 			}

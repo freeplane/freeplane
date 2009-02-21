@@ -19,7 +19,6 @@
  */
 package org.freeplane.features.common.text;
 
-import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.io.ReadManager;
@@ -33,7 +32,7 @@ import org.freeplane.core.modecontroller.ModeController;
 public class TextController implements IExtension {
 	private static boolean firstRun = true;
 
-	public static <T extends ExtensionContainer> TextController getController(final T modeController) {
+	public static TextController getController(final ModeController modeController) {
 		return (TextController) modeController.getExtension(TextController.class);
 	}
 

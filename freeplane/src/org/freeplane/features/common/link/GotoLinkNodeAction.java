@@ -37,7 +37,6 @@ class GotoLinkNodeAction extends AFreeplaneAction {
 		this.source = source;
 		if (source != null) {
 			final String adaptedText = source.getShortText();
-			ModeController r = linkController.getModeController();
 			putValue(Action.NAME, ResourceController.getText("follow_graphical_link") + adaptedText);
 			putValue(Action.SHORT_DESCRIPTION, source.toString());
 		}

@@ -51,7 +51,6 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.features.common.attribute.AttributeRegistry;
 import org.freeplane.features.common.attribute.AttributeTableLayoutModel;
 import org.freeplane.features.common.attribute.ColumnWidthChangeEvent;
-import org.freeplane.features.common.attribute.IAttributeTableModel;
 import org.freeplane.features.common.attribute.IColumnWidthChangeListener;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;

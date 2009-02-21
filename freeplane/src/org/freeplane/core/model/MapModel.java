@@ -29,13 +29,14 @@ import java.util.Random;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.ExtensionContainer;
+import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.filter.DefaultFilter;
 import org.freeplane.core.filter.IFilter;
 import org.freeplane.core.filter.condition.NoFilteringCondition;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.resources.ResourceController;
 
-public class MapModel extends ExtensionContainer {
+public class MapModel {
 	private static Random ran = new Random();
 	private static final int UNDEFINED_NODE_ID = 2000000000;
 	/**
@@ -50,8 +51,19 @@ public class MapModel extends ExtensionContainer {
 	private NodeModel root;
 	private URL url;
 
+	private final ExtensionContainer extensionContainer;
+	public Map<Class<? extends IExtension>, IExtension> getExtensions() {
+	    return extensionContainer.getExtensions();
+    }
+
+
+	public void putExtension(IExtension extension) {
+	    extensionContainer.putExtension(extension);
+    }
+
+
 	public MapModel(final ModeController modeController, NodeModel root) {
-		super();
+		extensionContainer = new ExtensionContainer(new HashMap<Class<? extends IExtension>, IExtension>());
 		this.root = root;
 		final Controller controller = modeController.getController();
 		nodes = new HashMap<String, NodeModel>();
@@ -228,4 +240,12 @@ public class MapModel extends ExtensionContainer {
 	public void setURL(final URL v) {
 		url = v;
 	}
+	public IExtension getExtension(Class<? extends IExtension> clazz) {
+		return extensionContainer.getExtension(clazz);
+	}
+
+	public void putExtension(Class<? extends IExtension> clazz, IExtension extension) {
+	   extensionContainer.putExtension(clazz, extension);
+    }
+	
 }

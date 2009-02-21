@@ -135,7 +135,6 @@ class NodeUpAction extends AFreeplaneAction {
 	}
 
 	private int moveNodeTo(final NodeModel child, final NodeModel newParent, final int direction) {
-		final MapModel map = getController().getMap();
 		final int index = newParent.getIndex(child);
 		int newIndex = index;
 		final int maxIndex = newParent.getChildCount();

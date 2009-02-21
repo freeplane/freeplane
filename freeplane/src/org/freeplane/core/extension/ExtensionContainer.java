@@ -1,6 +1,5 @@
 package org.freeplane.core.extension;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -14,7 +13,12 @@ import org.freeplane.features.common.clipboard.ClipboardController;
  */
 public class ExtensionContainer {
 
-	private final Map<Class<? extends IExtension>,IExtension> extensions = new HashMap<Class<? extends IExtension>, IExtension>();
+	public ExtensionContainer(Map<Class<? extends IExtension>, IExtension> extensions) {
+	    super();
+	    this.extensions = extensions;
+    }
+
+	private final Map<Class<? extends IExtension>,IExtension> extensions;
 
 	public Iterator<IExtension> extensionIterator() {
     	return getExtensions().values().iterator();
@@ -50,11 +54,7 @@ public class ExtensionContainer {
     }
 	
 	public boolean containsExtension(Class<? extends IExtension> clazz) {
-		return extensions.keySet().contains(clazz);
-	}
-	
-	public ClipboardController getClipboardController() {
-		return (ClipboardController)extensions.get(ClipboardController.class);
+		return extensions.containsKey(clazz);
 	}
 	
 }

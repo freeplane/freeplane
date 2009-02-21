@@ -37,7 +37,7 @@ import javax.swing.JOptionPane;
 
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.extension.ExtensionContainer;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.url.UrlManager;
@@ -70,7 +70,7 @@ abstract public class ExportAction extends AFreeplaneAction {
 			        + ((nameExtension != null) ? nameExtension : "") + "." + type;
 			chooser.setSelectedFile(new File(proposedName));
 		}
-		final ExtensionContainer mindMapController = getModeController();
+		final ModeController mindMapController = getModeController();
 		final File lastCurrentDir = UrlManager.getController(mindMapController).getLastCurrentDir();
 		if (lastCurrentDir != null) {
 			chooser.setCurrentDirectory(lastCurrentDir);

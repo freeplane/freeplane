@@ -441,7 +441,7 @@ public class MapController {
 				}
 				catch (final Exception e) {
 					LogTool.logException(e);
-					ModeController r = getModeController();
+					
 					getController().getViewController().out(
 					    ResourceController.formatText("link_not_found", target));
 					return;
@@ -486,7 +486,7 @@ public class MapController {
 					}
 					catch (final Exception e) {
 						LogTool.logException(e);
-						ModeController r = getModeController();
+						
 						getController().getViewController().out(
 						    ResourceController.formatText("link_not_found", ref));
 						return;
@@ -499,7 +499,7 @@ public class MapController {
 		}
 		catch (final MalformedURLException ex) {
 			LogTool.logException(ex);
-			ModeController r = getModeController();
+			
 			getController().errorMessage(ResourceController.getText("url_error") + "\n" + ex);
 			return;
 		}

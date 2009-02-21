@@ -36,10 +36,11 @@ import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
 
 import org.freeplane.core.extension.ExtensionContainer;
+import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.extension.SmallExtensionMap;
 import org.freeplane.core.filter.FilterInfo;
 import org.freeplane.core.filter.IFilter;
 import org.freeplane.core.modecontroller.INodeViewVisitor;
-import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.modecontroller.NodeChangeEvent;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.core.util.XmlTool;
@@ -48,7 +49,7 @@ import org.freeplane.core.util.XmlTool;
  * This class represents a single Node of a Tree. It contains direct handles to
  * its parent and children and to its view.
  */
-public class NodeModel extends ExtensionContainer implements MutableTreeNode {
+public class NodeModel implements MutableTreeNode {
 	public enum NodeChangeType {
 		FOLDING, REFRESH
 	}
@@ -79,7 +80,33 @@ public class NodeModel extends ExtensionContainer implements MutableTreeNode {
 		this(null, map);
 	}
 
+	private final ExtensionContainer extensionContainer;
+	public Map<Class<? extends IExtension>, IExtension> getExtensions() {
+	    return extensionContainer.getExtensions();
+    }
+
+	public boolean containsExtension(Class<? extends IExtension> clazz) {
+	    return extensionContainer.containsExtension(clazz);
+    }
+
+	public IExtension getExtension(Class<? extends IExtension> clazz) {
+	    return extensionContainer.getExtension(clazz);
+    }
+
+	public void putExtension(IExtension extension) {
+	    extensionContainer.putExtension(extension);
+    }
+
+	public IExtension removeExtension(Class<? extends IExtension> clazz) {
+	    return extensionContainer.removeExtension(clazz);
+    }
+
+	public boolean removeExtension(IExtension extension) {
+	    return extensionContainer.removeExtension(extension);
+    }
+
 	public NodeModel(final Object userObject, final MapModel map) {
+		extensionContainer = new ExtensionContainer(new SmallExtensionMap());
 		setText((String) userObject);
 		setHistoryInformation(new HistoryInformationModel());
 		this.map = map;

@@ -36,6 +36,7 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.url.UrlManager;
+import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.features.mindmapmode.clipboard.MClipboardController;
@@ -76,7 +77,7 @@ class ImportLinkedBranchWithoutRootAction extends AFreeplaneAction implements IF
 			    absolute.getFile()));
 			for (final ListIterator i = modeController.getMapController().childrenUnfolded(node); i.hasNext();) {
 				final NodeModel importNode = (NodeModel) i.next();
-				((MClipboardController) getController().getModeController().getClipboardController()).paste(
+				((MClipboardController) ClipboardController.getController(getModeController())).paste(
 				    importNode, selected);
 			}
 		}

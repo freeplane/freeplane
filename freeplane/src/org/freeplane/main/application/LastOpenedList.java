@@ -39,7 +39,6 @@ import javax.swing.KeyStroke;
 
 import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.frame.IMapViewChangeListener;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.modecontroller.ModeController;

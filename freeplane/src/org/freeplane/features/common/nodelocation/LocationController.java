@@ -19,7 +19,6 @@
  */
 package org.freeplane.features.common.nodelocation;
 
-import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
@@ -31,11 +30,11 @@ import org.freeplane.core.modecontroller.ModeController;
  */
 public class LocationController implements IExtension {
 
-	public static <T extends ExtensionContainer> LocationController getController(final T modeController) {
+	public static LocationController getController(final ModeController modeController) {
 		return (LocationController) modeController.getExtension(LocationController.class);
 	}
 
-	public static void install(final ExtensionContainer modeController, final LocationController locationController) {
+	public static void install(final ModeController modeController, final LocationController locationController) {
 		modeController.putExtension(LocationController.class, locationController);
 	}
 

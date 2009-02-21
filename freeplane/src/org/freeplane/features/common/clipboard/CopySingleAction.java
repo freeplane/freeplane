@@ -25,7 +25,7 @@ import java.util.List;
 
 import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.extension.ExtensionContainer;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
 
@@ -39,7 +39,7 @@ class CopySingleAction extends AFreeplaneAction implements IFreeplaneAction{
 	public void actionPerformed(final ActionEvent e) {
 		final Controller controller = getController();
 		final List<NodeModel> selection = controller.getSelection().getSelection();
-		final ExtensionContainer modeController = getModeController();
+		final ModeController modeController = getModeController();
 		final Transferable copy = ((ClipboardController)modeController.getExtension(ClipboardController.class)).copySingle(selection);
 		if (copy != null) {
 			((ClipboardController)modeController.getExtension(ClipboardController.class)).setClipboardContents(copy);

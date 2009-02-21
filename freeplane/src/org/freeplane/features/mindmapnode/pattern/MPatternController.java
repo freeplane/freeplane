@@ -35,7 +35,6 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 import org.freeplane.core.enums.ResourceControllerProperties;
-import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MindIcon;
@@ -49,11 +48,11 @@ import org.freeplane.core.util.LogTool;
  * @author Dimitry Polivaev
  */
 public class MPatternController implements IExtension {
-	public static <T extends ExtensionContainer> MPatternController getController(final T modeController) {
+	public static MPatternController getController(final ModeController modeController) {
 		return (MPatternController) modeController.getExtension(MPatternController.class);
 	}
 
-	public static void install(final ExtensionContainer modeController, final MPatternController patternController) {
+	public static void install(final ModeController modeController, final MPatternController patternController) {
 		modeController.putExtension(MPatternController.class, patternController);
 	}
 

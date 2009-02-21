@@ -41,7 +41,6 @@ import java.util.ListIterator;
 import java.util.Vector;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.modecontroller.ModeController;
@@ -49,12 +48,13 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
+import org.freeplane.features.mindmapmode.clipboard.MClipboardController;
 
 /**
  * @author Dimitry Polivaev
  */
 public class ClipboardController implements IExtension {
-	public static void install(final ExtensionContainer modeController, final ClipboardController clipboardController) {
+	public static void install(final ModeController modeController, final ClipboardController clipboardController) {
 		modeController.putExtension(ClipboardController.class, clipboardController);
 	}
 

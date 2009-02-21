@@ -7,13 +7,17 @@ import javax.swing.Action;
 
 import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.extension.ExtensionContainer;
+import org.freeplane.core.extension.IExtension;
 
 /**
  * Place for common controller things.
  * 
  * @author robert.ladstaetter
  */
-public class AController extends ExtensionContainer {
+public class AController{
+	public AController() {
+    }
+
 	// TODO ARCH rladstaetter 18.02.2009 replace with Map<Class<? extends IFreeplaneAction>,IFreeplaneAction>
 	private  final Map<String, Action> actions = new HashMap<String, Action>();
 

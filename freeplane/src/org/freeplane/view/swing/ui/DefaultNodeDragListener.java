@@ -13,9 +13,10 @@ import java.awt.dnd.DragSourceListener;
 import java.awt.event.InputEvent;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.extension.ExtensionContainer;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.clipboard.MindMapNodesSelection;
 import org.freeplane.view.swing.map.MainView;
 
@@ -47,8 +48,8 @@ class DefaultNodeDragListener implements DragGestureListener {
 			cursor = DragSource.DefaultCopyDrop;
 			dragAction = "COPY";
 		}
-		final ExtensionContainer modeController = controller.getModeController();
-		final Transferable t = modeController.getClipboardController().copy(
+		final ModeController modeController = controller.getModeController();
+		final Transferable t =ClipboardController.getController(modeController).copy(
 		    controller.getSelection());
 		((MindMapNodesSelection) t).setDropAction(dragAction);
 		e.startDrag(cursor, t, new DragSourceListener() {
