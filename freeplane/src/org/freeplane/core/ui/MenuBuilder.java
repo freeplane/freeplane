@@ -51,6 +51,7 @@ import org.freeplane.core.controller.AController;
 import org.freeplane.core.io.IElementHandler;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.JAutoCheckBoxMenuItem;
 import org.freeplane.core.ui.components.JAutoToggleButton;
@@ -389,10 +390,10 @@ public class MenuBuilder extends UIBuilder {
 		}
 	}
 
-	final private AController modeController;
+	final private ModeController modeController;
 	final MenuStructureReader reader;
 
-	public MenuBuilder(final AController modeController) {
+	public MenuBuilder(final ModeController modeController) {
 		super(null);
 		this.modeController = modeController;
 		reader = new MenuStructureReader();

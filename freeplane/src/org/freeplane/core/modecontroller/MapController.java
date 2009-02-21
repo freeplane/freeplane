@@ -204,7 +204,7 @@ public class MapController {
 	/**
 	 *
 	 */
-	private void createActions(final AController modeController) {
+	private void createActions(final ModeController modeController) {
 		toggleFolded = new CommonToggleFoldedAction(controller);
 		modeController.putAction(toggleFolded);
 		modeController.putAction(new CommonToggleChildrenFoldedAction(this));
