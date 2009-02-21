@@ -25,7 +25,7 @@ import java.util.Properties;
  * @author Marc De Scheemaecker
  * @version $Name: RELEASE_2_2_1 $, $Revision: 1.3 $
  */
-public class ValidatorPlugin implements IXMLValidator {
+class ValidatorPlugin implements IXMLValidator {
 	/**
 	 * The delegate.
 	 */

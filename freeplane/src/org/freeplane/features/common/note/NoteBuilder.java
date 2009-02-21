@@ -27,7 +27,7 @@ import org.freeplane.n3.nanoxml.IXMLElement;
 /**
  * @author Dimitry Polivaev
  */
-public class NoteBuilder implements IElementContentHandler {
+class NoteBuilder implements IElementContentHandler {
 	final private NoteController noteController;
 
 	public NoteBuilder(final NoteController noteController) {

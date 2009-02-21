@@ -45,7 +45,7 @@ import org.freeplane.core.util.LogTool;
 /**
  * @author Dimitry Polivaev
  */
-public class AppletViewController extends ViewController {
+class AppletViewController extends ViewController {
 	final private JApplet applet;
 	private JComponent mComponentInSplitPane;
 	private JPanel southPanel;

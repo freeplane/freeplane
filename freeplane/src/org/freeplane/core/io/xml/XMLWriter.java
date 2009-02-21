@@ -33,7 +33,7 @@ import org.freeplane.n3.nanoxml.IXMLElement;
  * @author Marc De Scheemaecker Modified by Dimitry Polivaev: optionally not
  *         write closing element tag
  */
-public class XMLWriter {
+class XMLWriter {
 	/**
 	 * Where to write the output to.
 	 */

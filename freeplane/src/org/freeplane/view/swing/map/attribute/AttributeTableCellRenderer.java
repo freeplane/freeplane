@@ -28,7 +28,7 @@ import javax.swing.JTable;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableCellRenderer;
 
-public class AttributeTableCellRenderer extends DefaultTableCellRenderer {
+class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 	static final float ZOOM_CORRECTION_FACTOR = 0.97F;
 	private boolean isPainting;
 	private float zoom;

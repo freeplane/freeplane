@@ -57,7 +57,7 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogTool;
 
-public class ListDialog extends JDialog {
+class ListDialog extends JDialog {
 	private class AddAction implements ActionListener {
 		/*
 		 * (non-Javadoc)

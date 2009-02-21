@@ -52,7 +52,7 @@ import com.lightdev.app.shtm.SHTMLPanel;
 /**
  * @author Daniel Polansky
  */
-public class EditNodeWYSIWYG extends EditNodeBase {
+class EditNodeWYSIWYG extends EditNodeBase {
 	private static class HTMLDialog extends EditDialog {
 		private SHTMLPanel htmlEditorPanel;
 

@@ -52,7 +52,7 @@ import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 
-public class ApplicationViewController extends ViewController {
+class ApplicationViewController extends ViewController {
 	private static final String SPLIT_PANE_LAST_POSITION = "split_pane_last_position";
 	private static final String SPLIT_PANE_POSITION = "split_pane_position";
 	final private Controller controller;

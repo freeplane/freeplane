@@ -34,7 +34,7 @@ import org.freeplane.n3.nanoxml.XMLParseException;
  * @version $Name: RELEASE_2_2_1 $, $Revision: 1.3 $ Modified by Dimitry
  *          Polivaev: method getLastBuiltElement added
  */
-public class StdXMLBuilder implements IXMLBuilder {
+class StdXMLBuilder implements IXMLBuilder {
 	/**
 	 * The last built element of the parsed XML tree.
 	 */

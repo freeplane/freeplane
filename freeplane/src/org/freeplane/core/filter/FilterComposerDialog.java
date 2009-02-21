@@ -73,7 +73,7 @@ import org.freeplane.core.url.UrlManager;
 /**
  * @author Dimitry Polivaev
  */
-public class FilterComposerDialog extends JDialog {
+class FilterComposerDialog extends JDialog {
 	/**
 	 * @author Dimitry Polivaev
 	 */

@@ -26,7 +26,7 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.Vector;
 
-public class ConvexHull {
+class ConvexHull {
 	protected class thetaComparator implements Comparator {
 		Point p0;
 

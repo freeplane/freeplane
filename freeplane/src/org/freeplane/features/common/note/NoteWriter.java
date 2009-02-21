@@ -31,7 +31,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
 /**
  * @author Dimitry Polivaev
  */
-public class NoteWriter implements IExtensionElementWriter {
+class NoteWriter implements IExtensionElementWriter {
 	NoteController noteManager;
 
 	public NoteWriter(final NoteController noteManager) {

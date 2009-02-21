@@ -34,7 +34,7 @@ import javax.swing.TransferHandler;
 import org.freeplane.features.mindmapmode.addins.styles.ManagePatternsPopupDialog.PatternListModel;
 
 class ArrayListTransferHandler extends TransferHandler {
-	public class ArrayListTransferable implements Transferable {
+	class ArrayListTransferable implements Transferable {
 		ArrayList data;
 
 		public ArrayListTransferable(final ArrayList alist) {

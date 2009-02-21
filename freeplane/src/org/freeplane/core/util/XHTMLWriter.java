@@ -27,7 +27,7 @@ import javax.swing.text.html.Option;
  * 
  * @author Richard "Shred" K�rber
  */
-public class XHTMLWriter extends FixedHTMLWriter {
+class XHTMLWriter extends FixedHTMLWriter {
 	/**
 	 * This FilterWriter will convert the output of Swing's HTMLWriter to XHTML
 	 * format. This is done by converting tags like &lt;br&gt; to

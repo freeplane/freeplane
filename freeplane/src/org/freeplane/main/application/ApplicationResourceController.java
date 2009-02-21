@@ -48,7 +48,7 @@ import org.freeplane.core.ui.components.FreeplaneMenuBar;
 /**
  * @author Dimitry Polivaev
  */
-public class ApplicationResourceController extends ResourceController {
+class ApplicationResourceController extends ResourceController {
 	final private File autoPropertiesFile;
 	final private Properties defProps;
 	private LastOpenedList lastOpened;

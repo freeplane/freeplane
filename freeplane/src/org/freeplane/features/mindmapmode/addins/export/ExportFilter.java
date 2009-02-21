@@ -30,7 +30,7 @@ import org.freeplane.core.url.UrlManager;
  * @author Dimitry Polivaev
  * 13.12.2008
  */
-public class ExportFilter extends FileFilter {
+class ExportFilter extends FileFilter {
 	final private String description;
 	final private String type;
 

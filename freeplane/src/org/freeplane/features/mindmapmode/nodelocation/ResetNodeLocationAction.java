@@ -31,7 +31,7 @@ import org.freeplane.features.common.nodelocation.LocationModel;
  * @author Dimitry Polivaev
  * 07.12.2008
  */
-public class ResetNodeLocationAction extends MultipleNodeAction {
+class ResetNodeLocationAction extends MultipleNodeAction {
 	public ResetNodeLocationAction(final Controller controller) {
 		super(controller, "reset_node_position");
 	}

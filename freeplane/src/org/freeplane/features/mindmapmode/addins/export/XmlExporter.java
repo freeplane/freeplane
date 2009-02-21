@@ -32,7 +32,7 @@ import org.freeplane.core.util.LogTool;
 /**
  * @author joerg
  */
-public class XmlExporter {
+class XmlExporter {
 	final JFileChooser fc = new JFileChooser();
 
 	/** Creates a new instance of XmlExporter */

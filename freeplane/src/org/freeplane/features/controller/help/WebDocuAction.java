@@ -2,7 +2,7 @@ package org.freeplane.features.controller.help;
 
 import org.freeplane.core.controller.Controller;
 
-public class WebDocuAction extends OpenURLAction {
+class WebDocuAction extends OpenURLAction {
 
     private static final String NAME = "webDocu";
 

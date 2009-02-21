@@ -34,7 +34,7 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-public class IconContainedCondition implements ICondition {
+class IconContainedCondition implements ICondition {
 	static final String ICON = "icon";
 	static final String NAME = "icon_contained_condition";
 

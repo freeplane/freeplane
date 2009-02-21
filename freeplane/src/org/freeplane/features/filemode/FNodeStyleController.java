@@ -31,7 +31,7 @@ import org.freeplane.features.common.nodestyle.NodeStyleController;
  * @author Dimitry Polivaev
  * 02.01.2009
  */
-public class FNodeStyleController extends NodeStyleController {
+class FNodeStyleController extends NodeStyleController {
 	public FNodeStyleController(final ModeController modeController) {
 		super(modeController);
 		addColorGetter(ExclusivePropertyChain.DEFAULT - 1, new IPropertyGetter<Color, NodeModel>() {

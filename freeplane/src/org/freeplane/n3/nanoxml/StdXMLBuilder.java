@@ -28,7 +28,7 @@ import java.util.Stack;
  * @author Marc De Scheemaecker
  * @version $Name: RELEASE_2_2_1 $, $Revision: 1.3 $
  */
-public class StdXMLBuilder implements IXMLBuilder {
+class StdXMLBuilder implements IXMLBuilder {
 	/**
 	 * Prototype element for creating the tree.
 	 */

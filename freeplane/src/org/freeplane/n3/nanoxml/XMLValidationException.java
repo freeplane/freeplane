@@ -23,7 +23,7 @@ package org.freeplane.n3.nanoxml;
  * @author Marc De Scheemaecker
  * @version $Name: RELEASE_2_2_1 $, $Revision: 1.3 $
  */
-public class XMLValidationException extends XMLException {
+class XMLValidationException extends XMLException {
 	/**
 	 * An attribute has an invalid value.
 	 */

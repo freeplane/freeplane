@@ -55,7 +55,7 @@ import org.freeplane.n3.nanoxml.XMLParseException;
  * provide persistence for the last recent maps. Maps should be shown in the
  * format:"mode\:key",ie."Mindmap\:/home/joerg/freeplane.mm"
  */
-public class LastOpenedList implements IMapViewChangeListener {
+class LastOpenedList implements IMapViewChangeListener {
 	private static final String SEPARATOR = ";";
 	/**
 	 * Contains Restore strings.

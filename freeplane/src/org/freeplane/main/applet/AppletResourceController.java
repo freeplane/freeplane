@@ -35,7 +35,7 @@ import org.freeplane.core.resources.ResourceController;
 /**
  * @author Dimitry Polivaev
  */
-public class AppletResourceController extends ResourceController {
+class AppletResourceController extends ResourceController {
 	final private JApplet applet;
 	private Properties userProps;
 

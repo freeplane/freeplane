@@ -50,7 +50,7 @@ import org.freeplane.features.mindmapmode.text.AbstractEditNodeTextField;
 /**
  * @author foltin
  */
-public class EditNodeTextField extends AbstractEditNodeTextField {
+class EditNodeTextField extends AbstractEditNodeTextField {
 	final private KeyEvent firstEvent;
 	private JTextField textfield;
 

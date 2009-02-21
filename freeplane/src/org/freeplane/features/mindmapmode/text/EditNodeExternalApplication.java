@@ -33,7 +33,7 @@ import org.freeplane.core.util.LogTool;
 /**
  * @author Daniel Polansky
  */
-public class EditNodeExternalApplication extends EditNodeBase {
+class EditNodeExternalApplication extends EditNodeBase {
 	final private KeyEvent firstEvent;
 
 	public EditNodeExternalApplication(final NodeModel node, final String text, final KeyEvent firstEvent,

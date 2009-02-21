@@ -24,7 +24,7 @@ import java.io.File;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 
-public class FMapModel extends MapModel {
+class FMapModel extends MapModel {
 	public FMapModel(final File root, final ModeController modeController) {
 		super(modeController, null);
 		setRoot(new FNodeModel(root, this));

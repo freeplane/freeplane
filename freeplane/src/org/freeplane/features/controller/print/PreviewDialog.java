@@ -36,7 +36,7 @@ import javax.swing.SwingConstants;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.UITools;
 
-public class PreviewDialog extends JDialog implements ActionListener {
+class PreviewDialog extends JDialog implements ActionListener {
 	final private static double DEFAULT_ZOOM_FACTOR_STEP = 0.1;
 	final private JLabel pageNumber;
 	protected Printable view;

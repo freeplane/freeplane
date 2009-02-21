@@ -29,7 +29,7 @@ import org.freeplane.core.model.NodeModel;
  * This class represents a single Node of a Tree. It contains direct handles to
  * its parent and children and to its view.
  */
-public class FNodeModel extends NodeModel {
+class FNodeModel extends NodeModel {
 	final private File file;
 
 	public FNodeModel(final File file, final MapModel map) {

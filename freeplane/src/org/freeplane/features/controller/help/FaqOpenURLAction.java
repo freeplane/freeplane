@@ -2,7 +2,7 @@ package org.freeplane.features.controller.help;
 
 import org.freeplane.core.controller.Controller;
 
-public class FaqOpenURLAction extends OpenURLAction {
+class FaqOpenURLAction extends OpenURLAction {
 
 	FaqOpenURLAction(Controller controller, String description, String url) {
 	    super(controller, description, url);

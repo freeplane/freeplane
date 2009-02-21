@@ -33,7 +33,8 @@ import org.freeplane.features.common.addins.encrypt.SingleDesEncrypter;
 tooltip = "accessories/plugins/NewEncryptedMap.properties_documentation", //
 iconPath = "/images/lock.png", //
 locations = { "/menu_bar/file/open" })
-public class EncryptedMap extends AFreeplaneAction implements INodeSelectionListener {
+public
+class EncryptedMap extends AFreeplaneAction implements INodeSelectionListener {
 	public EncryptedMap(final ModeController modeController) {
 		super(modeController.getController());
 		modeController.getMapController().addNodeSelectionListener(this);

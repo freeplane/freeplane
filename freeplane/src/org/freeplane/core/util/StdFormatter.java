@@ -23,7 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.SimpleFormatter;
 
-public class StdFormatter extends SimpleFormatter {
+class StdFormatter extends SimpleFormatter {
 	private static class StdOutErrLevel extends Level {
 		public StdOutErrLevel(final String name, final int value) {
 			super(name, value);

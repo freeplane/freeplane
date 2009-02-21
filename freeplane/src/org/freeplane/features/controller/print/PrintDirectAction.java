@@ -2,7 +2,7 @@ package org.freeplane.features.controller.print;
 
 import org.freeplane.core.controller.Controller;
 
-public class PrintDirectAction extends PrintAction {
+class PrintDirectAction extends PrintAction {
 	private static final long serialVersionUID = 6534539560828315255L;
 
 	static final String NAME = "printDirect";

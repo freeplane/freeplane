@@ -29,7 +29,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
 /**
  * @author Dimitry Polivaev
  */
-public class AttributeCompareCondition extends CompareConditionAdapter {
+class AttributeCompareCondition extends CompareConditionAdapter {
 	static final String ATTRIBUTE = "attribute";
 	static final String COMPARATION_RESULT = "comparation_result";
 	static final String NAME = "attribute_compare_condition";

@@ -63,7 +63,7 @@ import org.freeplane.features.common.attribute.AttributeRegistry;
 import org.freeplane.features.common.attribute.AttributeRegistryElement;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
 
-public class AssignAttributeDialog extends JDialog implements IAttributesListener, IMapSelectionListener {
+class AssignAttributeDialog extends JDialog implements IAttributesListener, IMapSelectionListener {
 	final private AttributeController attributeController;
 	private class AddAction extends IteratingAction {
 		private String name;

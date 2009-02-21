@@ -36,7 +36,7 @@ import javax.swing.JTextField;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.mindmapmode.text.ExampleFileFilter;
 
-public class ExportDialog extends JFrame {
+class ExportDialog extends JFrame {
 	class ExportListener implements ActionListener {
 		private boolean cancel = false;
 		boolean exitSystem = true;

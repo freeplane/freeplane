@@ -25,7 +25,7 @@ import java.io.Reader;
  * @author Marc De Scheemaecker
  * @version $Name: RELEASE_2_2_1 $, $Revision: 1.5 $
  */
-public class XMLUtil {
+class XMLUtil {
 	/**
 	 * Returns true if the data starts with <I>literal</I>. Enough chars are
 	 * read to determine this result.

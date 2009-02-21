@@ -53,7 +53,7 @@ import com.inet.jortho.SpellChecker;
 /**
  * @author foltin
  */
-public class EditNodeDialog extends EditNodeBase {
+class EditNodeDialog extends EditNodeBase {
 	class LongNodeDialog extends EditDialog {
 		final private JTextArea textArea;
 

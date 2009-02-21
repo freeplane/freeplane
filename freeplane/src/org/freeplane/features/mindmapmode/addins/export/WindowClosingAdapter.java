@@ -20,7 +20,7 @@ package org.freeplane.features.mindmapmode.addins.export;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class WindowClosingAdapter extends WindowAdapter {
+class WindowClosingAdapter extends WindowAdapter {
 	final private boolean exitSystem;
 
 	/**
