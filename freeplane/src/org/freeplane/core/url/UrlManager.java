@@ -60,29 +60,6 @@ public class UrlManager implements IExtension {
 	private static File lastCurrentDir = null;
 
 	/**
-	 * Example: expandPlaceholders("Hello $1.","Dolly"); => "Hello Dolly."
-	 */
-	public static String expandPlaceholders(final String message, String s1) {
-		String result = message;
-		if (s1 != null) {
-			s1 = s1.replaceAll("\\\\", "\\\\\\\\");
-			result = result.replaceAll("\\$1", s1);
-		}
-		return result;
-	}
-
-	public static String expandPlaceholders(final String message, final String s1, final String s2) {
-		String result = message;
-		if (s1 != null) {
-			result = result.replaceAll("\\$1", s1);
-		}
-		if (s2 != null) {
-			result = result.replaceAll("\\$2", s2);
-		}
-		return result;
-	}
-
-	/**
 	 * Creates a default reader that just reads the given file.
 	 *
 	 * @throws FileNotFoundException
@@ -397,7 +374,7 @@ public class UrlManager implements IExtension {
 		final String exceptionType = ex.getClass().getName();
 		if (exceptionType.equals("freeplane.main.XMLParseException")) {
 			final int showDetail = JOptionPane.showConfirmDialog(getController().getViewController().getMapView(),
-			    modeController.getText("map_corrupted"), "Freeplane", JOptionPane.YES_NO_OPTION,
+			    ResourceController.getText("map_corrupted"), "Freeplane", JOptionPane.YES_NO_OPTION,
 			    JOptionPane.ERROR_MESSAGE);
 			if (showDetail == JOptionPane.YES_OPTION) {
 				getController().errorMessage(ex);

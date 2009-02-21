@@ -33,6 +33,7 @@ import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.LogTool;
@@ -53,8 +54,7 @@ class ImportLinkedBranchAction extends AFreeplaneAction implements IFreeplaneAct
 		final NodeModel selected = modeController.getMapController().getSelectedNode();
 		final ViewController viewController = getController().getViewController();
 		if (selected == null || NodeLinks.getLink(selected) == null) {
-			JOptionPane.showMessageDialog((viewController.getMapView()), modeController
-			    .getText("import_linked_branch_no_link"));
+			JOptionPane.showMessageDialog((viewController.getMapView()), ResourceController.getText("import_linked_branch_no_link"));
 			return;
 		}
 		URL absolute = null;

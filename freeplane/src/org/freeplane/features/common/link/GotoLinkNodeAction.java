@@ -23,7 +23,9 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
 
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 
 /** Follow a graphical link (AKA connector) action. */
@@ -35,7 +37,8 @@ class GotoLinkNodeAction extends AFreeplaneAction {
 		this.source = source;
 		if (source != null) {
 			final String adaptedText = source.getShortText();
-			putValue(Action.NAME, linkController.getModeController().getText("follow_graphical_link") + adaptedText);
+			ModeController r = linkController.getModeController();
+			putValue(Action.NAME, ResourceController.getText("follow_graphical_link") + adaptedText);
 			putValue(Action.SHORT_DESCRIPTION, source.toString());
 		}
 	}

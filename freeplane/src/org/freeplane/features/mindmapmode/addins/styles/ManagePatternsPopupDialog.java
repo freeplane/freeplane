@@ -193,8 +193,7 @@ class ManagePatternsPopupDialog extends JDialog implements KeyListener {
 		}
 		catch (final Exception e) {
 			LogTool.logException(e);
-			JOptionPane.showMessageDialog(this, getDialogTitle(), controller
-			    .getText("accessories/plugins/ManagePatterns.not_found"), JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, getDialogTitle(), ResourceController.getText("accessories/plugins/ManagePatterns.not_found"), JOptionPane.ERROR_MESSAGE);
 		}
 		initialize(patternList);
 	}
@@ -257,7 +256,7 @@ class ManagePatternsPopupDialog extends JDialog implements KeyListener {
 	/**
 	 */
 	private String getDialogTitle() {
-		return mController.getText("accessories/plugins/ManagePatterns.dialog.title");
+		return ResourceController.getText("accessories/plugins/ManagePatterns.dialog.title");
 	}
 
 	/**
@@ -414,7 +413,7 @@ class ManagePatternsPopupDialog extends JDialog implements KeyListener {
 					okPressed();
 				}
 			});
-			jOKButton.setText(mController.getText("ManagePatternsPopupDialog.Save"));
+			jOKButton.setText(ResourceController.getText("ManagePatternsPopupDialog.Save"));
 		}
 		return jOKButton;
 	}
@@ -541,7 +540,7 @@ class ManagePatternsPopupDialog extends JDialog implements KeyListener {
 	}
 
 	private String searchForNameForNewPattern() {
-		final String newName = mController.getText("PatternNewNameProperty");
+		final String newName = ResourceController.getText("PatternNewNameProperty");
 		final Vector allNames = new Vector();
 		for (final Iterator iter = mPatternListModel.getPatternList().iterator(); iter.hasNext();) {
 			final Pattern p = (Pattern) iter.next();
@@ -574,8 +573,7 @@ class ManagePatternsPopupDialog extends JDialog implements KeyListener {
 						continue;
 					}
 					if (otherPattern.getName().equals(newPatternName)) {
-						JOptionPane.showMessageDialog(this, mController
-						    .getText("ManagePatternsPopupDialog.DuplicateNameMessage"));
+						JOptionPane.showMessageDialog(this, ResourceController.getText("ManagePatternsPopupDialog.DuplicateNameMessage"));
 					}
 				}
 			}

@@ -95,7 +95,7 @@ class ChooseFormatPopupDialog extends JDialog implements KeyListener {
 					cancelPressed();
 				}
 			});
-			MenuBuilder.setLabelAndMnemonic(jCancelButton, mController.getText(("cancel")));
+			MenuBuilder.setLabelAndMnemonic(jCancelButton, ResourceController.getText(("cancel")));
 		}
 		return jCancelButton;
 	}
@@ -138,7 +138,7 @@ class ChooseFormatPopupDialog extends JDialog implements KeyListener {
 					okPressed();
 				}
 			});
-			MenuBuilder.setLabelAndMnemonic(jOKButton, mController.getText("ok"));
+			MenuBuilder.setLabelAndMnemonic(jOKButton, ResourceController.getText("ok"));
 		}
 		return jOKButton;
 	}
@@ -172,7 +172,7 @@ class ChooseFormatPopupDialog extends JDialog implements KeyListener {
 	 * @return void
 	 */
 	private void initialize(final String dialogTitle) {
-		this.setTitle(mController.getText(dialogTitle));
+		this.setTitle(ResourceController.getText(dialogTitle));
 		final JPanel contentPane = getJContentPane();
 		this.setContentPane(contentPane);
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);

@@ -157,7 +157,7 @@ public class LinkController implements IExtension {
 				return dest.getShortText();
 			}
 			catch (final Exception e) {
-				return modeController.getText("link_not_available_any_more");
+				return ResourceController.getText("link_not_available_any_more");
 			}
 		}
 		return adaptedText;

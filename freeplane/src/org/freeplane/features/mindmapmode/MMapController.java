@@ -37,6 +37,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.MapController;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.EncryptionModel;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
@@ -95,8 +96,10 @@ public class MMapController extends MapController {
 	public boolean close(final boolean force) {
 		final MapModel map = getController().getMap();
 		if (!force && !map.isSaved()) {
-			final String text = getModeController().getText("save_unsaved") + "\n" + map.getTitle();
-			final String title = UITools.removeMnemonic(getModeController().getText("save"));
+			ModeController r = getModeController();
+			final String text = ResourceController.getText("save_unsaved") + "\n" + map.getTitle();
+			ModeController r1 = getModeController();
+			final String title = UITools.removeMnemonic(ResourceController.getText("save"));
 			final int returnVal = JOptionPane.showOptionDialog(getController().getViewController().getContentPane(),
 			    text, title, JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 			if (returnVal == JOptionPane.YES_OPTION) {
@@ -166,8 +169,9 @@ public class MMapController extends MapController {
 	        URISyntaxException {
 		final File file = Compat.urlToFile(url);
 		if (!file.exists()) {
-			throw new FileNotFoundException(UrlManager.expandPlaceholders(
-			    getModeController().getText("file_not_found"), file.getPath()));
+			ModeController r = getModeController();
+			throw new FileNotFoundException(ResourceController.formatText(
+			    "file_not_found", file.getPath()));
 		}
 		if (!file.canWrite()) {
 			((MMapModel) map).setReadOnly(true);
@@ -176,8 +180,9 @@ public class MMapController extends MapController {
 			try {
 				final String lockingUser = tryToLock(map, file);
 				if (lockingUser != null) {
-					UITools.informationMessage(getController().getViewController().getFrame(), UrlManager
-					    .expandPlaceholders(getModeController().getText("map_locked_by_open"), file.getName(),
+					ModeController r = getModeController();
+					UITools.informationMessage(getController().getViewController().getFrame(), ResourceController
+					    .formatText("map_locked_by_open", file.getName(),
 					        lockingUser));
 					((MMapModel) map).setReadOnly(true);
 				}
@@ -187,8 +192,9 @@ public class MMapController extends MapController {
 			}
 			catch (final Exception e) {
 				LogTool.logException(e);
-				UITools.informationMessage(getController().getViewController().getFrame(), UrlManager
-				    .expandPlaceholders(getModeController().getText("locking_failed_by_open"), file.getName()));
+				ModeController r = getModeController();
+				UITools.informationMessage(getController().getViewController().getFrame(), ResourceController
+				    .formatText("locking_failed_by_open", file.getName()));
 				((MMapModel) map).setReadOnly(true);
 			}
 		}
@@ -337,8 +343,9 @@ public class MMapController extends MapController {
 		final String lockingUser = ((MMapModel) map).getLockManager().tryToLock(file);
 		final String lockingUserOfOldLock = ((MMapModel) map).getLockManager().popLockingUserOfOldLock();
 		if (lockingUserOfOldLock != null) {
-			UITools.informationMessage(getController().getViewController().getFrame(), UrlManager.expandPlaceholders(
-			    getModeController().getText("locking_old_lock_removed"), file.getName(), lockingUserOfOldLock));
+			ModeController r = getModeController();
+			UITools.informationMessage(getController().getViewController().getFrame(), ResourceController.formatText(
+			    "locking_old_lock_removed", file.getName(), lockingUserOfOldLock));
 		}
 		if (lockingUser == null) {
 			((MMapModel) map).setReadOnly(false);

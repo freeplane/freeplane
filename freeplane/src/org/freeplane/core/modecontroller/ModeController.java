@@ -205,10 +205,6 @@ public class ModeController extends AController {
 		return null;
 	}
 
-	public String getText(final String textId) {
-		return ResourceController.getText(textId);
-	}
-
 	public IUserInputListenerFactory getUserInputListenerFactory() {
 		return userInputListenerFactory;
 	}

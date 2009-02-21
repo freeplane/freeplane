@@ -25,6 +25,7 @@ import javax.swing.Action;
 
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.edge.EdgeModel;
@@ -36,7 +37,7 @@ class EdgeWidthAction extends MultipleNodeAction {
 			returnValue = ("edge_width_parent");
 		}
 		else if (width == EdgeModel.WIDTH_THIN) {
-			returnValue = controller.getText("edge_width_thin");
+			returnValue = ResourceController.getText("edge_width_thin");
 		}
 		else {
 			returnValue = Integer.toString(width);

@@ -32,6 +32,7 @@ import org.freeplane.core.Compat;
 import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.MapController;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -129,8 +130,8 @@ class RevertAction extends AFreeplaneAction implements IFreeplaneAction{
 		try {
 			final File file = getController().getMap().getFile();
 			if (file == null) {
-				JOptionPane.showMessageDialog(getController().getViewController().getMapView(), getModeController()
-				    .getText("map_not_saved"), "Freeplane", JOptionPane.ERROR_MESSAGE);
+				ModeController r = getModeController();
+				JOptionPane.showMessageDialog(getController().getViewController().getMapView(), ResourceController.getText("map_not_saved"), "Freeplane", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			final RevertActionInstance doAction = createRevertXmlAction(file);

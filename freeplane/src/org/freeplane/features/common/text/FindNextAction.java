@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 import java.util.Collection;
 
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
@@ -33,20 +34,21 @@ class FindNextAction extends AFreeplaneAction {
 
 	public FindNextAction(final ModeController controller, final FindAction find) {
 		super(controller.getController(), "find_next");
-		MenuBuilder.setLabelAndMnemonic(this, controller.getText("find_next"));
+		MenuBuilder.setLabelAndMnemonic(this, ResourceController.getText("find_next"));
 		this.find = find;
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final Collection subterms = find.getSubterms();
 		if (subterms == null) {
-			UITools.informationMessage(getController().getViewController().getFrame(), getModeController().getText(
-			    "no_previous_find"));
+			ModeController r = getModeController();
+			UITools.informationMessage(getController().getViewController().getFrame(), ResourceController.getText("no_previous_find"));
 			return;
 		}
 		final boolean found = find.findNext();
 		if (!found) {
-			final String messageText = getModeController().getText("no_more_found_from");
+			ModeController r = getModeController();
+			final String messageText = ResourceController.getText("no_more_found_from");
 			final String searchTerm = messageText.startsWith("<html>") ? HtmlTools.toXMLEscapedText(find
 			    .getSearchTerm()) : find.getSearchTerm();
 			UITools.informationMessage(getController().getViewController().getFrame(), messageText.replaceAll("\\$1",
