@@ -35,7 +35,7 @@ import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.view.swing.map.MapView;
 
 @ActionDescriptor(name = "plugins/ExportSvg.xml_name", locations = { "/menu_bar/file/export/export" })
-public class ExportSvg extends ExportVectorGraphic {
+class ExportSvg extends ExportVectorGraphic {
 	public ExportSvg(final Controller controller) {
 		super(controller);
 	}

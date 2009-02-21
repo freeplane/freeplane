@@ -43,7 +43,7 @@ import org.w3c.dom.Element;
  * @author foltin
  */
 @ActionDescriptor(name = "plugins/ExportPdf.xml_name", locations = { "/menu_bar/file/export/export" })
-public class ExportPdf extends ExportVectorGraphic {
+class ExportPdf extends ExportVectorGraphic {
 	public ExportPdf(final Controller controller) {
 		super(controller);
 	}

@@ -37,7 +37,7 @@ import org.freeplane.core.ui.ActionDescriptor;
 @ActionDescriptor(name = "plugins/FreeplaneHelp.xml_name", //
 tooltip = "plugins/FreeplaneHelp.xml_documentation", //
 locations = { "/menu_bar/help/doc" })
-public class FreeplaneHelpStarter extends AFreeplaneAction {
+class FreeplaneHelpStarter extends AFreeplaneAction {
 	public FreeplaneHelpStarter(final Controller controller) {
 		super(controller);
 	}

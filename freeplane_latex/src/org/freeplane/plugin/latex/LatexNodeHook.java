@@ -45,7 +45,7 @@ onceForMap = false)
 @ActionDescriptor(name = "plugins/latex/LatexNodeHook.properties_name", //
 locations = "/menu_bar/insert/other", //
 tooltip = "plugins/latex/LatexNodeHook.properties_documentation")
-public class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCycleListener {
+class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCycleListener {
 	/**
 	 */
 	public LatexNodeHook(final ModeController modeController) {
