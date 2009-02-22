@@ -48,10 +48,10 @@ public class Activator implements BundleActivator {
 	    starter = new FreeplaneStarter();
 		Controller controller = starter.createController();
 		try {
-	        final ServiceReference[] controllerProviders = context.getServiceReferences(ControllerExtensionProvider.class.getName(), null);
+	        final ServiceReference[] controllerProviders = context.getServiceReferences(IControllerExtensionProvider.class.getName(), null);
 	        if(controllerProviders != null){
 	        	for(int i = 0; i < controllerProviders.length; i++){
-	        		final ControllerExtensionProvider service = (ControllerExtensionProvider) context.getService(controllerProviders[i]);
+	        		final IControllerExtensionProvider service = (IControllerExtensionProvider) context.getService(controllerProviders[i]);
 	        		service.installExtension(controller);
 	        	}
 	        }
@@ -62,11 +62,11 @@ public class Activator implements BundleActivator {
 		try {
 	        final Set<String> modes = controller.getModes();
 	        for(String modeName : modes){
-	        	final ServiceReference[] modeControllerProviders = context.getServiceReferences(ModeControllerExtensionProvider.class.getName(), "(mode="+modeName+")");
+	        	final ServiceReference[] modeControllerProviders = context.getServiceReferences(IModeControllerExtensionProvider.class.getName(), "(mode="+modeName+")");
 	        	if(modeControllerProviders != null){
 	        		final ModeController modeController = controller.getModeController(modeName);
 	        		for(int i = 0; i < modeControllerProviders.length; i++){
-	        			final ModeControllerExtensionProvider service = (ModeControllerExtensionProvider) context.getService(modeControllerProviders[i]);
+	        			final IModeControllerExtensionProvider service = (IModeControllerExtensionProvider) context.getService(modeControllerProviders[i]);
 	        			service.installExtension(modeController);
 	        		}
 	        	}

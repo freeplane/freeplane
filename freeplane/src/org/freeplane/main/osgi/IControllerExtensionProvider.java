@@ -25,6 +25,6 @@ import org.freeplane.core.controller.Controller;
  * @author Dimitry Polivaev
  * Feb 22, 2009
  */
-public interface ControllerExtensionProvider {	
+public interface IControllerExtensionProvider {	
 	void installExtension(Controller controller);
 }
