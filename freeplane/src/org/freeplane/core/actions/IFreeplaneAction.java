@@ -2,7 +2,7 @@ package org.freeplane.core.actions;
 
 import javax.swing.Action;
 
-import org.freeplane.core.controller.Named;
+import org.freeplane.core.controller.INamed;
 
 /**
  * Specifics for freeplane actions to be put here.
@@ -10,7 +10,7 @@ import org.freeplane.core.controller.Named;
  * @author robert.ladstaetter
  */
 // time will tell which methods should be placed here
-public interface IFreeplaneAction extends Named, Action {
+public interface IFreeplaneAction extends INamed, Action {
 
 	// rladstaetter 15.02.2009 getName() for this interface should be deprecated. use getClass().getName() as key. 
 	// since the actions are connected to static xml config files which aren't generated, this interface extends from Named. 

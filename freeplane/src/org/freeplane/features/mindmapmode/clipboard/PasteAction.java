@@ -53,14 +53,14 @@ import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.features.mindmapmode.link.MLinkController;
 
 class PasteAction extends AFreeplaneAction {
-	private interface DataFlavorHandler {
+	private interface IDataFlavorHandler {
 		DataFlavor getDataFlavor();
 
 		void paste(Object TransferData, NodeModel target, boolean asSibling, boolean isLeft, Transferable t)
 		        throws UnsupportedFlavorException, IOException;
 	}
 
-	private class DirectHtmlFlavorHandler implements DataFlavorHandler {
+	private class DirectHtmlFlavorHandler implements IDataFlavorHandler {
 		public DataFlavor getDataFlavor() {
 			return MindMapNodesSelection.htmlFlavor;
 		}
@@ -96,7 +96,7 @@ class PasteAction extends AFreeplaneAction {
 		}
 	}
 
-	private class FileListFlavorHandler implements DataFlavorHandler {
+	private class FileListFlavorHandler implements IDataFlavorHandler {
 		public DataFlavor getDataFlavor() {
 			return MindMapNodesSelection.fileListFlavor;
 		}
@@ -115,7 +115,7 @@ class PasteAction extends AFreeplaneAction {
 		}
 	}
 
-	private class MindMapNodesFlavorHandler implements DataFlavorHandler {
+	private class MindMapNodesFlavorHandler implements IDataFlavorHandler {
 		public DataFlavor getDataFlavor() {
 			return MindMapNodesSelection.mindMapNodesFlavor;
 		}
@@ -140,7 +140,7 @@ class PasteAction extends AFreeplaneAction {
 		}
 	}
 
-	private class StringFlavorHandler implements DataFlavorHandler {
+	private class StringFlavorHandler implements IDataFlavorHandler {
 		public DataFlavor getDataFlavor() {
 			return DataFlavor.stringFlavor;
 		}
@@ -180,8 +180,8 @@ class PasteAction extends AFreeplaneAction {
 
 	/**
 	 */
-	private DataFlavorHandler[] getFlavorHandlers() {
-		final DataFlavorHandler[] dataFlavorHandlerList = new DataFlavorHandler[] { new FileListFlavorHandler(),
+	private IDataFlavorHandler[] getFlavorHandlers() {
+		final IDataFlavorHandler[] dataFlavorHandlerList = new IDataFlavorHandler[] { new FileListFlavorHandler(),
 		        new MindMapNodesFlavorHandler(), new DirectHtmlFlavorHandler(), new StringFlavorHandler() };
 		return dataFlavorHandlerList;
 	}
@@ -254,9 +254,9 @@ class PasteAction extends AFreeplaneAction {
 				newNodes = new LinkedList();
 			}
 			newNodes.clear();
-			final DataFlavorHandler[] dataFlavorHandlerList = getFlavorHandlers();
+			final IDataFlavorHandler[] dataFlavorHandlerList = getFlavorHandlers();
 			for (int i = 0; i < dataFlavorHandlerList.length; i++) {
-				final DataFlavorHandler handler = dataFlavorHandlerList[i];
+				final IDataFlavorHandler handler = dataFlavorHandlerList[i];
 				final DataFlavor flavor = handler.getDataFlavor();
 				if (t.isDataFlavorSupported(flavor)) {
 					try {

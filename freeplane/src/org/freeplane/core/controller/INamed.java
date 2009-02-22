@@ -5,7 +5,7 @@ package org.freeplane.core.controller;
  * 
  * @author robert.ladstaetter
  */
-public interface Named {
+public interface INamed {
 
 	public String getName();
 }
