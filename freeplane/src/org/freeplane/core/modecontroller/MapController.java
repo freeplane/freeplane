@@ -377,10 +377,11 @@ public class MapController {
 	 *
 	 * @return returns a list of MindMapNode s.
 	 */
-	public List getSelectedNodes() {
+	public List<NodeModel> getSelectedNodes() {
 		final IMapSelection selection = getController().getSelection();
 		if (selection == null) {
-			return Collections.EMPTY_LIST;
+			List<NodeModel> list =  Collections.emptyList();
+			return list;
 		}
 		return selection.getSelection();
 	}

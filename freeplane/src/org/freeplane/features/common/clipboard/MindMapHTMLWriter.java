@@ -117,10 +117,10 @@ class MindMapHTMLWriter {
 	final private boolean basedOnHeadings;
 	final private Writer fileout;
 	private boolean writeFoldingCode;
-	private MapController mapController;
+	final private MapController mapController;
 
 	MindMapHTMLWriter(MapController mapController, final Writer fileout) {
-//		this.mapController = mapController;
+		this.mapController = mapController;
 		this.fileout = fileout;
 		writeFoldingCode = false;
 		basedOnHeadings = (getProperty("html_export_folding").equals("html_export_based_on_headings"));

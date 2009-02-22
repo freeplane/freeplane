@@ -20,6 +20,7 @@
 package org.freeplane.view.swing.map.edge;
 
 import java.awt.Graphics2D;
+import java.awt.Stroke;
 
 /**
  * This class represents a sharp Edge of a MindMap.
@@ -30,10 +31,18 @@ public class SharpLinearEdgeView extends EdgeView {
 	}
 
 	@Override
+    public Stroke getStroke() {
+	    if(isEdgeHidden()){
+	    	return EdgeView.getHiddenStroke();
+	    }
+	    return EdgeView.DEF_STROKE;
+    }
+
+	@Override
 	protected void paint(final Graphics2D g) {
 		g.setColor(getColor());
 		g.setPaint(getColor());
-		g.setStroke(EdgeView.DEF_STROKE);
+		g.setStroke(getStroke());
 		final int w = getMap().getZoomed(getWidth() / 2 + 1);
 		final int xs[] = { start.x, end.x, start.x };
 		final int ys[] = { start.y + w, end.y, start.y - w };

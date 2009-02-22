@@ -23,44 +23,45 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MultipleNodeAction;
+import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.edge.EdgeModel;
+import org.freeplane.features.common.nodestyle.NodeStyleController;
+import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
 
-class EdgeWidthAction extends MultipleNodeAction {
-	private static String getWidthTitle(final ModeController controller, final int width) {
-		String returnValue;
-		if (width == EdgeModel.WIDTH_PARENT) {
-			returnValue = ("edge_width_parent");
+@SelectableAction(checkOnNodeChange = true)
+class HideEdgeAction extends MultipleNodeAction {
+		private boolean hide;
+
+		/**
+		 */
+		public HideEdgeAction(final Controller controller) {
+			super(controller, "hide_edge");
 		}
-		else if (width == EdgeModel.WIDTH_THIN) {
-			returnValue = ResourceController.getText("edge_width_thin");
+
+		@Override
+		public void actionPerformed(final ActionEvent e) {
+			hide = !isHidden();
+			super.actionPerformed(e);
 		}
-		else {
-			returnValue = Integer.toString(width);
+
+		@Override
+		protected void actionPerformed(final ActionEvent e, final NodeModel selected) {
+			((MEdgeController) EdgeController.getController(getModeController())).setHidden(selected, hide);
 		}
-		return /* controller.getText("edge_width") + */returnValue;
-	}
 
-	final private int mWidth;
+		boolean isHidden() {
+			final NodeModel node = getModeController().getMapController().getSelectedNode();
+			return EdgeController.getController(getModeController()).isHidden(node);
+		}
 
-	public EdgeWidthAction(final ModeController controller, final int width) {
-		super(controller.getController());
-		mWidth = width;
-		putValue(Action.NAME, EdgeWidthAction.getWidthTitle(controller, width));
+		@Override
+		public void setSelected() {
+			setSelected(isHidden());
+		}
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * freeplane.modes.mindmapmode.actions.MultipleNodeAction#actionPerformed
-	 * (freeplane.modes.NodeModel)
-	 */
-	@Override
-	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		((MEdgeController) EdgeController.getController(getModeController())).setWidth(node, mWidth);
-	}
-}

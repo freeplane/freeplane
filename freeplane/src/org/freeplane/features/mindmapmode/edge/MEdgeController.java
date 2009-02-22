@@ -49,6 +49,8 @@ public class MEdgeController extends EdgeController {
 		    EdgeModel.EDGESTYLE_SHARP_LINEAR));
 		modeController.putAction("EdgeStyle_sharp_bezier", new EdgeStyleAction(modeController,
 		    EdgeModel.EDGESTYLE_SHARP_BEZIER));
+		modeController.putAction("Edge_hide", new HideEdgeAction(controller));
+		
 	}
 
 	public void setColor(final NodeModel node, final Color color) {
@@ -150,4 +152,48 @@ public class MEdgeController extends EdgeController {
 		};
 		modeController.execute(actor);
 	}
+	public void setHidden(final NodeModel node, final Boolean hide) {
+		final ModeController modeController = getModeController();
+		final Boolean oldHidden = isHidden(node);
+		if (oldHidden == hide || oldHidden != null && oldHidden.equals(hide)) {
+			return;
+		}
+		final IUndoableActor actor = new IUndoableActor() {
+			private boolean modelExists = EdgeModel.getModel(node) != null;
+			public void act() {
+				EdgeModel.createEdge(node).setHidden(hide);
+				modeController.getMapController().nodeChanged(node);
+				edgeHiddenRefresh(node);
+			}
+
+			private void edgeHiddenRefresh(final NodeModel node) {
+				final ListIterator childrenFolded = modeController.getMapController().childrenFolded(node);
+				while (childrenFolded.hasNext()) {
+					final NodeModel child = (NodeModel) childrenFolded.next();
+					final EdgeModel edge = EdgeModel.getModel(child);
+					if (edge == null) {
+						modeController.getMapController().nodeRefresh(child);
+						edgeHiddenRefresh(child);
+					}
+				}
+			}
+
+			public String getDescription() {
+				return "setStyle";
+			}
+
+			public void undo() {
+				if(modelExists){
+					EdgeModel.getModel(node).setHidden(! hide);
+				}
+				else{
+					EdgeModel.removeModel(node);
+				}
+				modeController.getMapController().nodeChanged(node);
+				edgeHiddenRefresh(node);
+			}
+		};
+		modeController.execute(actor);
+	}
+
 }

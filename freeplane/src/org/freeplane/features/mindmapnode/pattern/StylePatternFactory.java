@@ -123,6 +123,12 @@ public class StylePatternFactory {
 				edgeWidthPattern.setValue("" + edgeWidth);
 				pattern.setPatternEdgeWidth(edgeWidthPattern);
 			}
+			final Boolean edgeInvisible = edge.isHidden();
+			if (edgeInvisible != null) {
+				final PatternProperty edgeInvisiblePattern = new PatternProperty();
+				edgeInvisiblePattern.setValue(edgeInvisible.toString());
+				pattern.setPatternEdgeHidden(edgeInvisiblePattern);
+			}
 		}
 		return pattern;
 	}

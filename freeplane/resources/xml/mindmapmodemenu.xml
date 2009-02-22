@@ -195,6 +195,7 @@
 					<menu_action field="EdgeWidth_4" />
 					<menu_action field="EdgeWidth_8" />
 				</menu_submenu>
+				<menu_action field="Edge_hide" />
 			</menu_category>
 		</menu_submenu>
 		<menu_submenu name="navigate" name_ref="menu_navigate">

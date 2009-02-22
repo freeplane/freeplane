@@ -52,6 +52,15 @@ public class EdgeModel implements IExtension {
 
 	private Color color;
 	private String style;
+	private Boolean hidden;
+	public Boolean isHidden() {
+    	return hidden;
+    }
+
+	public void setHidden(Boolean invisible) {
+    	this.hidden = invisible;
+    }
+
 	private int width = EdgeController.DEFAULT_WIDTH;
 
 	public EdgeModel() {
@@ -80,4 +89,8 @@ public class EdgeModel implements IExtension {
 	public void setWidth(final int width) {
 		this.width = width;
 	}
+
+	public static IExtension removeModel(NodeModel node) {
+		return node.removeExtension(EdgeModel.class);
+    }
 }

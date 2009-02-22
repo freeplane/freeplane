@@ -51,6 +51,7 @@ import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
 import org.freeplane.features.common.cloud.CloudController;
 import org.freeplane.features.common.cloud.CloudModel;
+import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.nodelocation.LocationModel;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.view.swing.map.attribute.AttributeView;
@@ -807,7 +808,7 @@ public class NodeView extends JComponent implements INodeView {
 		return getModel().isRoot();
 	}
 
-	boolean isSelected() {
+	public boolean isSelected() {
 		return (getMap().isSelected(this));
 	}
 
@@ -983,6 +984,13 @@ public class NodeView extends JComponent implements INodeView {
 
 	void repaintSelected() {
 		mainView.updateTextColor(this);
+		if( EdgeController.getController(getMap().getModeController()).isHidden(model)){
+			final NodeView visibleParentView = getVisibleParentView();
+			if(visibleParentView != null){
+				visibleParentView.repaint();
+				return;
+			}
+		}
 		repaint();
 	}
 

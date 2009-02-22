@@ -20,6 +20,7 @@
 package org.freeplane.view.swing.map.edge;
 
 import java.awt.Graphics2D;
+import java.awt.Stroke;
 import java.awt.geom.CubicCurve2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
@@ -80,11 +81,19 @@ public class SharpBezierEdgeView extends EdgeView {
 	}
 
 	@Override
+    public Stroke getStroke() {
+	    if(isEdgeHidden()){
+	    	return EdgeView.getHiddenStroke();
+	    }
+	    return EdgeView.DEF_STROKE;
+    }
+	
+	@Override
 	protected void paint(final Graphics2D g) {
 		update();
 		g.setColor(getColor());
 		g.setPaint(getColor());
-		g.setStroke(EdgeView.DEF_STROKE);
+		g.setStroke(getStroke());
 		g.fill(graph);
 		g.draw(graph);
 	}
