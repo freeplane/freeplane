@@ -15,7 +15,7 @@
 		<property name="bin.ortho" value="${bin}/resources/ortho" />
 		<property name="script" value="${root}/script" />
 
-		<ant antfile="ant/build.xml" dir="${workspace}/freeplane" inheritall="false"/>
+		<ant antfile="ant/build.xml" target="osgi_dist" dir="${workspace}/freeplane" inheritall="false"/>
 		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_help" inheritall="false"/>
 		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_svg" inheritall="false"/>
 		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_latex" inheritall="false"/>
@@ -54,6 +54,7 @@
 				<exclude name="bin/**"/>
 				<exclude name="dist/**"/>
 				<exclude name="*/bin/**"/>
+				<exclude name="*/build/**"/>
 				<exclude name="*/dist/**"/>
 			</tarfileset>
 			<tarfileset dir="${root}" mode="777" username="ant" group="ant">
