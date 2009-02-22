@@ -6,7 +6,7 @@
 	<property name="lib" value="${root}/lib" />
 	<property name="framework.jar" value="${root}/../freeplane_framework/lib/knopflerfish/framework.jar" />
 	<property name="freeplane.dist.lib" value="${root}/../freeplane/bin/dist/lib" />
-	<property name="freeplane.jars" value="${freeplane.dist.lib}/freeplaneviewer.jar:${freeplane.dist.lib}/freeplaneeditor.jar:${freeplane.dist.lib}/commons-lang-2.0.jar:${freeplane.dist.lib}/forms-1.0.5.jar:${freeplane.dist.lib}/SimplyHTML/SimplyHTML.jar" />
+	<property name="freeplane.jars" value="${freeplane.dist.lib}/freeplaneviewer.jar:${freeplane.dist.lib}/freeplaneeditor.jar:${freeplane.dist.lib}/freeplaneosgi.jar:${freeplane.dist.lib}/commons-lang-2.0.jar:${freeplane.dist.lib}/forms-1.0.5.jar:${freeplane.dist.lib}/SimplyHTML/SimplyHTML.jar" />
 	<property name="src_base_for_post" value="${root}/../" />
 	<property name="build" value="${root}/build" />
 	<property name="dist" value="${root}/bin/dist" />

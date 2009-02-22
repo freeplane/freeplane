@@ -6,8 +6,6 @@
 # a unique ID for the platform itself
 -Dorg.osgi.provisioning.spid=knopflerfish
 
-# Initial startup verbosity, 0 is low verbosity
--Dorg.knopflerfish.verbosity=0
 
 # Security
 #-Djava.security.manager=
@@ -16,6 +14,8 @@
 # URL to bundle repository
 #-Doscar.repository.url=http://www.knopflerfish.org/releases/current/repository.xml
 
+# Initial startup verbosity, 0 is low verbosity
+-Dorg.knopflerfish.verbosity=0
 # Various debug flags
 -Dorg.knopflerfish.framework.debug.packages=false
 -Dorg.knopflerfish.framework.debug.errors=true
@@ -38,6 +38,6 @@
 #-Dorg.osgi.framework.bootdelegation=sun.*,com.sun.*,apple.laf.*
 
 
--Dorg.knopflerfish.startlevel.use=false
+-Dorg.knopflerfish.startlevel.use=true
 
 

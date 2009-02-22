@@ -65,7 +65,7 @@ public class FreeplaneStarter {
 		Compat.showSysInfo();
 	}
 
-	public void createController() {
+	public Controller createController() {
 		applicationResourceController = new ApplicationResourceController();
 		ResourceController.setResourceController(applicationResourceController);
 		controller = new Controller();
@@ -90,6 +90,7 @@ public class FreeplaneStarter {
 		MModeControllerFactory.createModeController(controller);
 		BModeControllerFactory.createModeController(controller, "/xml/browsemodemenu.xml");
 		FModeControllerFactory.createModeController(controller);
+		return controller;
 	}
 
 	public void createFrame(final String[] args) {

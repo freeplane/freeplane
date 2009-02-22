@@ -5,21 +5,23 @@
 -Dorg.knopflerfish.gosg.jars=file:jars/
 
 -init
-
-## Basic KF bundles
+## Basic plugin bundles
 -initlevel 1
--install org.freeplane.core.jar
 -install org.freeplane.plugin.help.jar
 -install org.freeplane.plugin.svg.jar
 -install org.freeplane.plugin.latex.jar
 -install org.freeplane.plugin.script.jar
 
+-initlevel 2
+-install org.freeplane.core.jar
 
--startlevel 1
+-startlevel 2
 
-
-# Start of these bundles are delayed since this makes start
-# order dependencies much easier
-
+## first start
+-start org.freeplane.plugin.help.jar
+-start org.freeplane.plugin.svg.jar
+-start org.freeplane.plugin.latex.jar
+-start org.freeplane.plugin.script.jar
 -start org.freeplane.core.jar
+
 

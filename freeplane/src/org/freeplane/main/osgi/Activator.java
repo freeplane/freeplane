@@ -20,11 +20,18 @@
 package org.freeplane.main.osgi;
 
 import java.util.LinkedList;
+import java.util.Set;
 
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.main.application.FreeplaneStarter;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkEvent;
+import org.osgi.framework.FrameworkListener;
+import org.osgi.framework.InvalidSyntaxException;
+import org.osgi.framework.ServiceReference;
 
 /**
  * @author Dimitry Polivaev
@@ -34,22 +41,42 @@ public class Activator implements BundleActivator {
 	private FreeplaneStarter starter;
 
 	public void start(final BundleContext context) throws Exception {
-		starter = new FreeplaneStarter();
-		starter.createController();
-		final Bundle[] bundles = context.getBundles();
-		for (int i = 0; i < bundles.length; i++) {
-			final Bundle bundle = bundles[i];
-			if (bundle.getState() < Bundle.STARTING && bundle.getSymbolicName().startsWith("org.freeplane.plugin.")) {
-				try {
-					bundle.start();
-				}
-				catch (final Exception e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		starter.createFrame(getCallParameters());
+		startFramework(context);
 	}
+
+	private void startFramework(final BundleContext context) {
+	    starter = new FreeplaneStarter();
+		Controller controller = starter.createController();
+		try {
+	        final ServiceReference[] controllerProviders = context.getServiceReferences(ControllerExtensionProvider.class.getName(), null);
+	        if(controllerProviders != null){
+	        	for(int i = 0; i < controllerProviders.length; i++){
+	        		final ControllerExtensionProvider service = (ControllerExtensionProvider) context.getService(controllerProviders[i]);
+	        		service.installExtension(controller);
+	        	}
+	        }
+        }
+        catch (InvalidSyntaxException e) {
+	        e.printStackTrace();
+        }
+		try {
+	        final Set<String> modes = controller.getModes();
+	        for(String modeName : modes){
+	        	final ServiceReference[] modeControllerProviders = context.getServiceReferences(ModeControllerExtensionProvider.class.getName(), "(mode="+modeName+")");
+	        	if(modeControllerProviders != null){
+	        		final ModeController modeController = controller.getModeController(modeName);
+	        		for(int i = 0; i < modeControllerProviders.length; i++){
+	        			final ModeControllerExtensionProvider service = (ModeControllerExtensionProvider) context.getService(modeControllerProviders[i]);
+	        			service.installExtension(modeController);
+	        		}
+	        	}
+	        }
+        }
+        catch (InvalidSyntaxException e) {
+	        e.printStackTrace();
+        }
+		starter.createFrame(getCallParameters());
+    }
 
 	private String[] getCallParameters() {
 		int i = 1;
