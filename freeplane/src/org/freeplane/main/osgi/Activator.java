@@ -31,6 +31,8 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkEvent;
 import org.osgi.framework.FrameworkListener;
 import org.osgi.framework.InvalidSyntaxException;
+import org.osgi.framework.ServiceEvent;
+import org.osgi.framework.ServiceListener;
 import org.osgi.framework.ServiceReference;
 
 /**
@@ -51,8 +53,10 @@ public class Activator implements BundleActivator {
 	        final ServiceReference[] controllerProviders = context.getServiceReferences(IControllerExtensionProvider.class.getName(), null);
 	        if(controllerProviders != null){
 	        	for(int i = 0; i < controllerProviders.length; i++){
-	        		final IControllerExtensionProvider service = (IControllerExtensionProvider) context.getService(controllerProviders[i]);
+	        		final ServiceReference controllerProvider = controllerProviders[i];
+					final IControllerExtensionProvider service = (IControllerExtensionProvider) context.getService(controllerProvider);
 	        		service.installExtension(controller);
+	        		context.ungetService(controllerProvider);
 	        	}
 	        }
         }
@@ -66,8 +70,10 @@ public class Activator implements BundleActivator {
 	        	if(modeControllerProviders != null){
 	        		final ModeController modeController = controller.getModeController(modeName);
 	        		for(int i = 0; i < modeControllerProviders.length; i++){
-	        			final IModeControllerExtensionProvider service = (IModeControllerExtensionProvider) context.getService(modeControllerProviders[i]);
+	        			final ServiceReference modeControllerProvider = modeControllerProviders[i];
+						final IModeControllerExtensionProvider service = (IModeControllerExtensionProvider) context.getService(modeControllerProvider);
 	        			service.installExtension(modeController);
+	        			context.ungetService(modeControllerProvider);
 	        		}
 	        	}
 	        }

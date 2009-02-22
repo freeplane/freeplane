@@ -29,6 +29,7 @@ import org.freeplane.core.addins.PersistentNodeHook;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.modecontroller.INodeViewLifeCycleListener;
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.undo.IUndoableActor;
@@ -120,6 +121,8 @@ class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCycleList
 
 			public void act() {
 				model.setEquation(newEquation);
+				final MapModel map = getModeController().getController().getMap();
+				getModeController().getMapController().setSaved(map,false);
 			}
 
 			public String getDescription() {
