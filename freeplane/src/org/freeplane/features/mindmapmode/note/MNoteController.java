@@ -54,7 +54,7 @@ import com.lightdev.app.shtm.TextResources;
  * @author Dimitry Polivaev
  */
 public class MNoteController extends NoteController {
-	private class JumpToMapAction extends AbstractAction {
+    private class JumpToMapAction extends AbstractAction {
 		/**
 		 * @param noteController
 		 */
@@ -125,6 +125,10 @@ public class MNoteController extends NoteController {
 		super(modeController);
 		modeController.putAction("selectNoteAction", new SelectNoteAction(this, getModeController()));
 		modeController.putAction("showHideNoteAction", new ShowHideNoteAction(this, getModeController()));
+		modeController.putAction("note_window_location.top", new SetNoteWindowPosition(modeController.getController(), "top"));
+		modeController.putAction("note_window_location.left", new SetNoteWindowPosition(modeController.getController(), "left"));
+		modeController.putAction("note_window_location.right", new SetNoteWindowPosition(modeController.getController(), "right"));
+		modeController.putAction("note_window_location.bottom", new SetNoteWindowPosition(modeController.getController(), "bottom"));
 		modeController.putAction("removeNoteAction", new RemoveNoteAction(this, getModeController()));
 	}
 

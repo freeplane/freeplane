@@ -535,4 +535,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 			setZoomByItem(zoom.getItemAt((int) (currentZoomIndex - 0.5f)));
 		}
 	}
+
+	public void changeNoteWindowLocation(boolean b) {
+    }
 }

@@ -92,9 +92,16 @@
 				<menu_action field="zoomIn" key_ref="keystroke_zoom_in" />
 				<menu_action field="zoomOut" key_ref="keystroke_zoom_out" />
 			</menu_category>
+			<menu_separator />
 			<menu_category name="note_window">
 				<menu_action field="showHideNoteAction"
 					key_ref="keystroke_accessories/plugins/NodeNote_hide_show.keystroke.control_shift_less" />
+				<menu_submenu name="note_window_location" name_ref="note_window_location">
+					<menu_radio_action field="note_window_location.top"/>
+					<menu_radio_action field="note_window_location.left"/>
+					<menu_radio_action field="note_window_location.right"/>
+					<menu_radio_action field="note_window_location.bottom"/>
+				</menu_submenu>
 			</menu_category>
 			<menu_separator />
 			<menu_submenu name="attributes" name_ref="menu_attributes">
