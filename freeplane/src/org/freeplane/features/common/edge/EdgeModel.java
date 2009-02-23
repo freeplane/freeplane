@@ -30,6 +30,7 @@ public class EdgeModel implements IExtension {
 	public final static String EDGESTYLE_LINEAR = "linear";
 	public final static String EDGESTYLE_SHARP_BEZIER = "sharp_bezier";
 	public final static String EDGESTYLE_SHARP_LINEAR = "sharp_linear";
+	public final static String EDGESTYLE_HIDDEN = "hide_edge";
 	public static final int WIDTH_PARENT = -1;
 	public static final int WIDTH_THIN = 0;
 
@@ -52,15 +53,6 @@ public class EdgeModel implements IExtension {
 
 	private Color color;
 	private String style;
-	private Boolean hidden;
-	public Boolean isHidden() {
-    	return hidden;
-    }
-
-	public void setHidden(Boolean invisible) {
-    	this.hidden = invisible;
-    }
-
 	private int width = EdgeController.DEFAULT_WIDTH;
 
 	public EdgeModel() {

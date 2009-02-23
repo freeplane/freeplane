@@ -170,11 +170,6 @@ class ApplyPatternAction extends MultipleNodeAction {
 			}
 			((MEdgeController) EdgeController.getController(getModeController())).setWidth(node, width);
 		}
-		final PatternProperty patternEdgeInvisible = pattern.getPatternEdgeHidden();
-		if (patternEdgeInvisible != null) {
-			((MEdgeController) EdgeController.getController(getModeController()))
-			.setHidden(node, TreeXmlReader.xmlToBoolean(patternEdgeInvisible.getValue()));
-		}
 		if (pattern.getPatternChild() != null && pattern.getPatternChild().getValue() != null) {
 			final String searchedPatternName = pattern.getPatternChild().getValue();
 			final ApplyPatternAction[] patterns = MPatternController.getController(modeController).patterns;

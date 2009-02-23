@@ -49,8 +49,9 @@ public class MEdgeController extends EdgeController {
 		    EdgeModel.EDGESTYLE_SHARP_LINEAR));
 		modeController.putAction("EdgeStyle_sharp_bezier", new EdgeStyleAction(modeController,
 		    EdgeModel.EDGESTYLE_SHARP_BEZIER));
-		modeController.putAction("Edge_hide", new HideEdgeAction(controller));
-		
+		modeController.putAction("EdgeStyle_hidden", new EdgeStyleAction(modeController,
+		    EdgeModel.EDGESTYLE_HIDDEN));
+		modeController.putAction("EdgeStyle_as_parent", new EdgeStyleAsParentAction(modeController));
 	}
 
 	public void setColor(final NodeModel node, final Color color) {
@@ -79,9 +80,18 @@ public class MEdgeController extends EdgeController {
 
 	public void setStyle(final NodeModel node, final String style) {
 		final ModeController modeController = getModeController();
-		final String oldStyle = getStyle(node);
-		if (style.equals(oldStyle)) {
-			return;
+		final String oldStyle;
+		if(style != null){
+			oldStyle = getStyle(node);
+			if (style.equals(oldStyle)) {
+				return;
+			}
+		}
+		else{
+			oldStyle = EdgeModel.createEdge(node).getStyle();
+			if (oldStyle == null) {
+				return;
+			}
 		}
 		final IUndoableActor actor = new IUndoableActor() {
 			public void act() {
@@ -152,48 +162,4 @@ public class MEdgeController extends EdgeController {
 		};
 		modeController.execute(actor);
 	}
-	public void setHidden(final NodeModel node, final Boolean hide) {
-		final ModeController modeController = getModeController();
-		final Boolean oldHidden = isHidden(node);
-		if (oldHidden == hide || oldHidden != null && oldHidden.equals(hide)) {
-			return;
-		}
-		final IUndoableActor actor = new IUndoableActor() {
-			private boolean modelExists = EdgeModel.getModel(node) != null;
-			public void act() {
-				EdgeModel.createEdge(node).setHidden(hide);
-				modeController.getMapController().nodeChanged(node);
-				edgeHiddenRefresh(node);
-			}
-
-			private void edgeHiddenRefresh(final NodeModel node) {
-				final ListIterator childrenFolded = modeController.getMapController().childrenFolded(node);
-				while (childrenFolded.hasNext()) {
-					final NodeModel child = (NodeModel) childrenFolded.next();
-					final EdgeModel edge = EdgeModel.getModel(child);
-					if (edge == null) {
-						modeController.getMapController().nodeRefresh(child);
-						edgeHiddenRefresh(child);
-					}
-				}
-			}
-
-			public String getDescription() {
-				return "setStyle";
-			}
-
-			public void undo() {
-				if(modelExists){
-					EdgeModel.getModel(node).setHidden(! hide);
-				}
-				else{
-					EdgeModel.removeModel(node);
-				}
-				modeController.getMapController().nodeChanged(node);
-				edgeHiddenRefresh(node);
-			}
-		};
-		modeController.execute(actor);
-	}
-
 }

@@ -54,6 +54,7 @@ import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.JAutoCheckBoxMenuItem;
+import org.freeplane.core.ui.components.JAutoRadioButtonMenuItem;
 import org.freeplane.core.ui.components.JAutoToggleButton;
 import org.freeplane.core.ui.components.JAutoVisibleMenuItem;
 import org.freeplane.core.ui.components.UITools;
@@ -603,7 +604,13 @@ public class MenuBuilder extends UIBuilder {
 
 	public JMenuItem addRadioItem(final String category, final Action action, final String keystroke,
 	                              final boolean isSelected) {
-		final JRadioButtonMenuItem item = new JRadioButtonMenuItem(action);
+		final JRadioButtonMenuItem item;
+		if (action.getClass().getAnnotation(SelectableAction.class) != null) {
+			item = new JAutoRadioButtonMenuItem(action);
+		}
+		else{
+			item = new JRadioButtonMenuItem(action); 
+		}
 		addMenuItem(category, item, MenuBuilder.AS_CHILD);
 		if (keystroke != null) {
 			item.setAccelerator(KeyStroke.getKeyStroke(ResourceController.getResourceController().getAdjustableProperty(

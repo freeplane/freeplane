@@ -32,9 +32,6 @@ public class SharpLinearEdgeView extends EdgeView {
 
 	@Override
     public Stroke getStroke() {
-	    if(isEdgeHidden()){
-	    	return EdgeView.getHiddenStroke();
-	    }
 	    return EdgeView.DEF_STROKE;
     }
 

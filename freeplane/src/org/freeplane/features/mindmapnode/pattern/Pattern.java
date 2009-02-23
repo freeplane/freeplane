@@ -51,12 +51,6 @@ public class Pattern implements Cloneable {
 	private PatternProperty patternNodeStyle;
 	private PatternProperty patternNodeText;
 	private PatternProperty patternScript;
-	private PatternProperty patternEdgeHidden;
-
-	public PatternProperty getPatternEdgeHidden() {
-    	return patternEdgeHidden;
-    }
-
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
@@ -176,10 +170,6 @@ public class Pattern implements Cloneable {
 		this.patternEdgeWidth = patternEdgeWidth;
 	}
 
-	public void setPatternEdgeHidden(PatternProperty edgeHiddenPattern) {
-		this.patternEdgeHidden = edgeHiddenPattern;
-	    
-    }
 	public void setPatternIcon(final PatternProperty patternIcon) {
 		this.patternIcon = patternIcon;
 	}

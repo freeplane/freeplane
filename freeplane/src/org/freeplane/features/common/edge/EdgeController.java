@@ -65,7 +65,6 @@ public class EdgeController implements IExtension {
 
 	final private ExclusivePropertyChain<Color, NodeModel> colorHandlers;
 	final private ExclusivePropertyChain<String, NodeModel> styleHandlers;
-	final private ExclusivePropertyChain<Boolean, NodeModel> hideHandlers;
 	final private ExclusivePropertyChain<Integer, NodeModel> widthHandlers;
 	private ModeController modeController;
 
@@ -74,7 +73,6 @@ public class EdgeController implements IExtension {
 		colorHandlers = new ExclusivePropertyChain<Color, NodeModel>();
 		styleHandlers = new ExclusivePropertyChain<String, NodeModel>();
 		widthHandlers = new ExclusivePropertyChain<Integer, NodeModel>();
-		hideHandlers = new ExclusivePropertyChain<Boolean, NodeModel>();
 		updateStandards(modeController);
 		if (listener == null) {
 			listener = new EdgePropertyListener();
@@ -106,20 +104,6 @@ public class EdgeController implements IExtension {
 					return standardStyle;
 				}
 				return getStyle(node.getParentNode());
-			}
-		});
-		addHiddenGetter(ExclusivePropertyChain.NODE, new IPropertyGetter<Boolean, NodeModel>() {
-			public Boolean getProperty(final NodeModel node, final Boolean currentValue) {
-				final EdgeModel edge = EdgeModel.getModel(node);
-				return edge == null ? null : edge.isHidden();
-			}
-		});
-		addHiddenGetter(ExclusivePropertyChain.DEFAULT, new IPropertyGetter<Boolean, NodeModel>() {
-			public Boolean getProperty(final NodeModel node, final Boolean currentValue) {
-				if (node.isRoot()) {
-					return Boolean.FALSE;
-				}
-				return isHidden(node.getParentNode());
 			}
 		});
 		addWidthGetter(ExclusivePropertyChain.NODE, new IPropertyGetter<Integer, NodeModel>() {
@@ -162,11 +146,6 @@ public class EdgeController implements IExtension {
 		return styleHandlers.addGetter(key, getter);
 	}
 
-	public IPropertyGetter<String, NodeModel> addHiddenGetter(final Integer key,
-	                                                         final IPropertyGetter<Boolean, NodeModel> getter) {
-		return hideHandlers.addGetter(key, getter);
-	}
-
 	public IPropertyGetter<Integer, NodeModel> addWidthGetter(final Integer key,
 	                                                          final IPropertyGetter<Integer, NodeModel> getter) {
 		return widthHandlers.addGetter(key, getter);
@@ -178,10 +157,6 @@ public class EdgeController implements IExtension {
 
 	public String getStyle(final NodeModel node) {
 		return styleHandlers.getProperty(node);
-	}
-
-	public Boolean isHidden(final NodeModel node) {
-		return hideHandlers.getProperty(node);
 	}
 
 	public int getWidth(final NodeModel node) {

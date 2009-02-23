@@ -27,14 +27,16 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MultipleNodeAction;
+import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.edge.EdgeModel;
 
+@SelectableAction(checkOnNodeChange = true)
 class EdgeWidthAction extends MultipleNodeAction {
 	private static String getWidthTitle(final ModeController controller, final int width) {
 		String returnValue;
 		if (width == EdgeModel.WIDTH_PARENT) {
-			returnValue = ("edge_width_parent");
+			returnValue = ResourceController.getText("edge_width_as_parent");
 		}
 		else if (width == EdgeModel.WIDTH_THIN) {
 			returnValue = ResourceController.getText("edge_width_thin");
@@ -62,5 +64,18 @@ class EdgeWidthAction extends MultipleNodeAction {
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
 		((MEdgeController) EdgeController.getController(getModeController())).setWidth(node, mWidth);
+	}
+	@Override
+	public void setSelected() {
+		final NodeModel node = getModeController().getMapController().getSelectedNode();
+		final EdgeModel model = EdgeModel.getModel(node);
+		if(model == null){
+			if(mWidth == EdgeModel.WIDTH_PARENT){
+				setSelected(true);
+			}
+		}
+		else if(model.getWidth() == mWidth){
+			setSelected(true);
+		}
 	}
 }

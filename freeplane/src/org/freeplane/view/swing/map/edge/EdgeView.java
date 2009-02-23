@@ -38,7 +38,6 @@ import org.freeplane.view.swing.map.NodeView;
 public abstract class EdgeView {
 	protected static final BasicStroke DEF_STROKE = new BasicStroke();
 	static Stroke ECLIPSED_STROKE = null;
-	private static Stroke HIDDEN_STROKE;
 
 	protected static Stroke getEclipsedStroke() {
 		if (EdgeView.ECLIPSED_STROKE == null) {
@@ -49,19 +48,9 @@ public abstract class EdgeView {
 		return EdgeView.ECLIPSED_STROKE;
 	}
 
-	protected static Stroke getHiddenStroke() {
-		if (EdgeView.HIDDEN_STROKE == null) {
-			final float dash[] = { 5.0f, 5.0f };
-			EdgeView.HIDDEN_STROKE = new BasicStroke(3.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 12.0f, dash,
-			    0.0f);
-		}
-		return EdgeView.HIDDEN_STROKE;
-	}
-
 	protected NodeView source;
 	protected Point start, end;
 	private NodeView target;
-	private boolean isEdgeHidden;
 
 	protected void createEnd() {
 		end = getTarget().getMainViewInPoint();
@@ -91,19 +80,12 @@ public abstract class EdgeView {
 	}
 
 	public Stroke getStroke() {
-		if(isEdgeHidden){
-			return getHiddenStroke();
-		}
 		final int width = getWidth();
 		if (width == EdgeModel.WIDTH_THIN) {
 			return EdgeView.DEF_STROKE;
 		}
 		return new BasicStroke(width * getMap().getZoom(), BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER);
 	}
-
-	protected boolean isEdgeHidden() {
-    	return isEdgeHidden;
-    }
 
 	/**
 	 * @return Returns the target.
@@ -130,11 +112,6 @@ public abstract class EdgeView {
 	 * @param target
 	 */
 	public void paint(final NodeView target, final Graphics2D g) {
-		final EdgeController controller = EdgeController.getController(target.getMap().getModeController());
-		isEdgeHidden = controller.isHidden(target.getModel()).booleanValue();
-		if(isEdgeHidden && ! target.isSelected()){
-			return;
-		}
 		final Stroke stroke = g.getStroke();
 		source = target.getVisibleParentView();
 		this.target = target;

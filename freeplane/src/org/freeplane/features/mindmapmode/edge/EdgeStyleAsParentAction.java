@@ -21,47 +21,35 @@ package org.freeplane.features.mindmapmode.edge;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.Action;
-
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.edge.EdgeModel;
-import org.freeplane.features.common.nodestyle.NodeStyleController;
-import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
 
 @SelectableAction(checkOnNodeChange = true)
-class HideEdgeAction extends MultipleNodeAction {
-		private boolean hide;
+class EdgeStyleAsParentAction extends MultipleNodeAction {
+	public EdgeStyleAsParentAction(final ModeController controller) {
+		super(controller.getController(), "edge_style_as_parent");
+	}
 
-		/**
-		 */
-		public HideEdgeAction(final Controller controller) {
-			super(controller, "hide_edge");
-		}
-
-		@Override
-		public void actionPerformed(final ActionEvent e) {
-			hide = !isHidden();
-			super.actionPerformed(e);
-		}
-
-		@Override
-		protected void actionPerformed(final ActionEvent e, final NodeModel selected) {
-			((MEdgeController) EdgeController.getController(getModeController())).setHidden(selected, hide);
-		}
-
-		boolean isHidden() {
-			final NodeModel node = getModeController().getMapController().getSelectedNode();
-			return EdgeController.getController(getModeController()).isHidden(node);
-		}
-
-		@Override
-		public void setSelected() {
-			setSelected(isHidden());
+	/*
+	 * (non-Javadoc)
+	 * @see
+	 * freeplane.modes.mindmapmode.actions.MultipleNodeAction#actionPerformed
+	 * (freeplane.modes.NodeModel)
+	 */
+	@Override
+	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
+		((MEdgeController) EdgeController.getController(getModeController())).setStyle(node, null);
+	}
+	@Override
+	public void setSelected() {
+		final NodeModel node = getModeController().getMapController().getSelectedNode();
+		final EdgeModel model = EdgeModel.getModel(node);
+		if(model == null || model.getStyle() == null){
+			setSelected(true);
 		}
 	}
+}
