@@ -77,7 +77,9 @@ public class FreeplaneStarter {
 		feedBack.setMaximumValue(9);
 		Compat.useScreenMenuBar();
 		feedBack.increase(FreeplaneSplashModern.FREEPLANE_PROGRESS_UPDATE_LOOK_AND_FEEL);
-		updateLookAndFeel();
+
+		Controller.setLookAndFeel(ResourceController.getResourceController().getProperty("lookandfeel"));
+		
 		feedBack.increase(FreeplaneSplashModern.FREEPLANE_PROGRESS_CREATE_CONTROLLER);
 		System.setSecurityManager(new FreeplaneSecurityManager());
 		final MMapViewController mapViewController = new MMapViewController();
@@ -221,38 +223,4 @@ public class FreeplaneStarter {
 		}
 	}
 
-	/**
-	 *
-	 */
-	private void updateLookAndFeel() {
-		try {
-			final String lookAndFeel = ResourceController.getResourceController().getProperty("lookandfeel");
-			if (lookAndFeel.equals("windows")) {
-				UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-			}
-			else if (lookAndFeel.equals("motif")) {
-				UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
-			}
-			else if (lookAndFeel.equals("mac")) {
-				UIManager.setLookAndFeel("javax.swing.plaf.mac.MacLookAndFeel");
-			}
-			else if (lookAndFeel.equals("metal")) {
-				UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
-			}
-			else if (lookAndFeel.equals("gtk")) {
-				UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
-			}
-			else if (lookAndFeel.equals("nothing")) {
-			}
-			else if (lookAndFeel.indexOf('.') != -1) {
-				UIManager.setLookAndFeel(lookAndFeel);
-			}
-			else {
-				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			}
-		}
-		catch (final Exception ex) {
-			System.err.println("Unable to set Look & Feel.");
-		}
-	}
 }

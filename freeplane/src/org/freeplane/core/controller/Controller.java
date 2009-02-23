@@ -26,6 +26,7 @@ import java.util.Set;
 
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 import org.freeplane.core.actions.QuitAction;
 import org.freeplane.core.enums.ResourceControllerProperties;
@@ -197,4 +198,37 @@ public class Controller extends AController {
 	public void putExtension(Class<? extends IExtension> clazz, IExtension extension) {
 		   extensionContainer.putExtension(clazz, extension);
 	    }
+
+
+
+	public static void setLookAndFeel(String lookAndFeel) {
+        try {
+    		if (lookAndFeel.equals("windows")) {
+    			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+    		}
+    		else if (lookAndFeel.equals("motif")) {
+    			UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+    		}
+    		else if (lookAndFeel.equals("mac")) {
+    			UIManager.setLookAndFeel("javax.swing.plaf.mac.MacLookAndFeel");
+    		}
+    		else if (lookAndFeel.equals("metal")) {
+    			UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+    		}
+    		else if (lookAndFeel.equals("gtk")) {
+    			UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+    		}
+    		else if (lookAndFeel.equals("nothing")) {
+    		}
+    		else if (lookAndFeel.indexOf('.') != -1) {
+    			UIManager.setLookAndFeel(lookAndFeel);
+    		}
+    		else {
+    			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+    		}
+    	}
+    	catch (final Exception ex) {
+    		System.err.println("Error while setting Look&Feel" + lookAndFeel);
+    	}
+    }
 }

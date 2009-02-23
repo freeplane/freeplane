@@ -23,7 +23,6 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 
 import javax.swing.JApplet;
-import javax.swing.UIManager;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.FilterController;
@@ -80,35 +79,8 @@ public class FreeplaneApplet extends JApplet {
 
 	private void updateLookAndFeel() {
 		String lookAndFeel = "";
-		try {
-			appletResourceController.setPropertyByParameter("lookandfeel");
-			lookAndFeel = appletResourceController.getProperty("lookandfeel");
-			if (lookAndFeel.equals("windows")) {
-				UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-			}
-			else if (lookAndFeel.equals("motif")) {
-				UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
-			}
-			else if (lookAndFeel.equals("mac")) {
-				UIManager.setLookAndFeel("javax.swing.plaf.mac.MacLookAndFeel");
-			}
-			else if (lookAndFeel.equals("metal")) {
-				UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
-			}
-			else if (lookAndFeel.equals("gtk")) {
-				UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
-			}
-			else if (lookAndFeel.equals("nothing")) {
-			}
-			else if (lookAndFeel.indexOf('.') != -1) {
-				UIManager.setLookAndFeel(lookAndFeel);
-			}
-			else {
-				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			}
-		}
-		catch (final Exception ex) {
-			System.err.println("Error while setting Look&Feel" + lookAndFeel);
-		}
+		appletResourceController.setPropertyByParameter("lookandfeel");
+		lookAndFeel = appletResourceController.getProperty("lookandfeel");
+		Controller.setLookAndFeel(lookAndFeel);
 	}
 }
