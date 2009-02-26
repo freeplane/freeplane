@@ -214,13 +214,13 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 				case KeyEvent.VK_ENTER:
 					e.consume();
 					eventSource = CANCEL;
+					hideMe();
 					if (commit) {
 						getEditControl().ok(textfield.getText());
 					}
 					else {
 						getEditControl().cancel();
 					}
-					hideMe();
 					nodeView.requestFocus();
 					break;
 				case KeyEvent.VK_SPACE:
