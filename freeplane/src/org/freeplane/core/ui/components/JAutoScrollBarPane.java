@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.mindmapmode.icon;
+package org.freeplane.core.ui.components;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -29,7 +29,7 @@ import javax.swing.ScrollPaneConstants;
 /**
  * @author Dimitry Polivaev
  */
-class JAutoScrollBarPane extends JScrollPane {
+public class JAutoScrollBarPane extends JScrollPane {
 	/**
 	 */
 	public JAutoScrollBarPane(final Component view) {

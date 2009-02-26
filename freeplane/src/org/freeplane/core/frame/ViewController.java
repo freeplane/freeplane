@@ -113,7 +113,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 		leftToolbarVisible = true;
 		menubarVisible = true;
 		toolbarPanel = new JPanel(new BorderLayout());
-		leftToolbarPanel = new JPanel();
+		leftToolbarPanel = new JPanel(new BorderLayout());
 		status = new JLabel("!");
 		scrollPane = new MapViewScrollPane();
 	}
