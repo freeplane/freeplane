@@ -228,7 +228,7 @@ public class ExportWithXSLT extends ExportAction {
 
 	private void export(final File file) {
 		final ExportDialog exp = new ExportDialog(file);
-		exp.setVisible(true);
+		exp.export();
 	}
 
 	/**
