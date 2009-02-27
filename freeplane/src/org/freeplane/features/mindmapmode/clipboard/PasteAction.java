@@ -518,6 +518,7 @@ class PasteAction extends AFreeplaneAction {
 					}
 					final NodeModel target = (NodeModel) parentNodes.get(j);
 					node.setLeft(isLeft);
+					node.setFolded(true);
 					if (target != parent) {
 						target.insert(node, target.getChildCount());
 					}
