@@ -26,12 +26,22 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Element;
+import javax.swing.text.ElementIterator;
+import javax.swing.text.html.HTML;
+import javax.swing.text.html.HTMLDocument;
+import javax.swing.text.html.HTMLEditorKit;
 
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
@@ -43,6 +53,7 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IUndoableActor;
+import org.freeplane.core.util.FixedHTMLWriter;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.attribute.AttributeController;
@@ -72,15 +83,7 @@ class PasteAction extends AFreeplaneAction {
 				throw new UnsupportedFlavorException(MindMapNodesSelection.htmlFlavor);
 			}
 			getController().getViewController().setWaitingCursor(true);
-			textFromClipboard = textFromClipboard.replaceFirst("(?i)(?s)<head>.*</head>", "").replaceFirst(
-			    "(?i)(?s)^.*<html[^>]*>", "<html>").replaceFirst("(?i)(?s)<body [^>]*>", "<body>").replaceAll(
-			    "(?i)(?s)<script.*?>.*?</script>", "").replaceAll("(?i)(?s)</?tbody.*?>", "").replaceAll(
-			    "(?i)(?s)<!--.*?-->", "").replaceAll("(?i)(?s)</?o[^>]*>", "");
-			if (StringUtils.equals(ResourceController.getResourceController().getProperty("cut_out_pictures_when_pasting_html"),
-			    "true")) {
-				textFromClipboard = textFromClipboard.replaceAll("(?i)(?s)<img[^>]*>", "");
-			}
-			textFromClipboard = HtmlTools.unescapeHTMLUnicodeEntity(textFromClipboard);
+			textFromClipboard = cleanHtml(textFromClipboard);
 			final NodeModel node = getModeController().getMapController().newNode(textFromClipboard,
 			    getController().getMap());
 			final Matcher m = PasteAction.HREF_PATTERN.matcher(textFromClipboard);
@@ -94,6 +97,178 @@ class PasteAction extends AFreeplaneAction {
 			PasteAction.this.paste(node, target, target.getChildCount());
 			getController().getViewController().setWaitingCursor(false);
 		}
+	}
+	private static class TextFragment{
+		public TextFragment(String text, String link, int depth) {
+	        super();
+	        this.text = text;
+	        this.depth = depth;
+	        this.link = link;
+        }
+		String text;
+		int depth;
+		String link;
+	}
+	private static final Pattern HEADER_REGEX = Pattern.compile("h(\\d)", Pattern.CASE_INSENSITIVE);
+	
+	private static class PasteHTmlWriter extends FixedHTMLWriter{
+
+		private Element element;
+
+		public PasteHTmlWriter(Writer writer, Element element, HTMLDocument doc, int pos, int len) {
+	       super(writer, doc, pos, len);
+	       this.element = getStandAloneElement(element);
+        }
+
+		private Element getStandAloneElement(Element element) {
+			final String name = element.getName();
+			if(name.equals("ul")||name.equals("ol")|| name.equals("table")|| name.equals("html")){
+				return element;
+			}
+	        return getStandAloneElement(element.getParentElement());
+		}
+
+		protected ElementIterator getElementIterator() {
+			return new ElementIterator(element);
+		}
+
+		@Override
+        public void write() throws IOException, BadLocationException {
+	        if(element.getName().equals("html")){
+	        	super.write();
+	        	return;
+	        }
+	        write("<html>");
+	        super.write();
+	        write("</html>");
+        }
+		
+	}
+	
+	private class StructuredHtmlFlavorHandler implements IDataFlavorHandler {
+		private TextFragment[] htmlFragments;
+		public DataFlavor getDataFlavor() {
+			return MindMapNodesSelection.htmlFlavor;
+		}
+
+		public void paste(final Object transferData, final NodeModel target, final boolean asSibling,
+		                  final boolean isLeft, final Transferable t) throws UnsupportedFlavorException, IOException {
+			String textFromClipboard = (String) transferData;
+			if (textFromClipboard.charAt(0) == 65533) {
+				throw new UnsupportedFlavorException(MindMapNodesSelection.htmlFlavor);
+			}
+			getController().getViewController().setWaitingCursor(true);
+			pasteHtmlWithoutRedisplay(transferData, target, asSibling, isLeft);
+			getController().getViewController().setWaitingCursor(false);
+		}
+		private void pasteHtmlWithoutRedisplay(final Object t, NodeModel parent, final boolean asSibling,
+		                                              final boolean isLeft) throws UnsupportedFlavorException, IOException {
+			getController().getViewController().setWaitingCursor(true);
+			String textFromClipboard = (String) t;
+			textFromClipboard = cleanHtml(textFromClipboard);
+			split(textFromClipboard);
+			pasteStringWithoutRedisplay(htmlFragments, parent, asSibling, isLeft);
+		}
+
+		private Element getParentElement(final HTMLDocument doc) {
+			final Element htmlRoot = doc.getDefaultRootElement();
+			Element parentCandidate = htmlRoot.getElement(htmlRoot.getElementCount() - 1);
+			do {
+				if (parentCandidate.getElementCount() > 1) {
+					return parentCandidate;
+				}
+				parentCandidate = parentCandidate.getElement(0);
+			} while (!(parentCandidate.isLeaf() || parentCandidate.getName().equalsIgnoreCase("p-implied")));
+			return null;
+		}
+		private void split(String text) {
+			LinkedList<TextFragment> htmlFragments = new LinkedList<TextFragment>();
+			final HTMLEditorKit kit = new HTMLEditorKit();
+			final HTMLDocument doc = new HTMLDocument();
+			final StringReader buf = new StringReader(text);
+			try {
+				kit.read(buf, doc, 0);
+				final Element parent = getParentElement(doc);
+				if (parent == null) {
+					return ;
+				}
+				split(doc, parent, htmlFragments, 0);
+			}
+			catch (final IOException e) {
+				LogTool.logException(e);
+			}
+			catch (final BadLocationException e) {
+				LogTool.logException(e);
+			}
+			this.htmlFragments = new TextFragment[htmlFragments.size()];
+			htmlFragments.toArray(this.htmlFragments);
+			return;
+        }
+
+		private void split(final HTMLDocument doc, final Element parent, LinkedList<TextFragment> htmlFragments, int depth)
+                throws BadLocationException, IOException {
+	        final int elementCount = parent.getElementCount();
+	        int headerDepth = 0;
+	        int start = -1;
+	        int end = -1;
+	        Element last = null;
+	        for (int i = 0; i < elementCount; i++) {
+	        	final Element current = parent.getElement(i);
+	        	final String name = current.getName();
+				final Matcher matcher = HEADER_REGEX.matcher(name);
+				if(matcher.matches()){
+					try {
+						int newHeaderDepth = Integer.parseInt(matcher.group(1));
+						depth += newHeaderDepth - headerDepth;
+						headerDepth = newHeaderDepth;
+					}
+					catch (NumberFormatException e) {
+						e.printStackTrace();
+					}
+				}
+	        	final boolean separateElement = isSeparateElement(current);
+	        	if(separateElement && current.getElementCount() != 0){
+	        		start = -1;
+	        		last = null;
+	        		split(doc, current, htmlFragments, depth + 1);
+	        		continue;
+	        	}
+	        	if(separateElement && start != -1){
+	        		addFragment(doc, last, depth, start, end, htmlFragments);
+	        	}
+				if(start == -1 || separateElement){
+	        		start = current.getStartOffset();
+	        		last = current;
+	        	}
+	        	end = current.getEndOffset();
+	        	if(separateElement){
+	        		addFragment(doc, current, depth, start, end, htmlFragments);
+	        	}
+	        }
+	        if(start != -1){
+	        	addFragment(doc, last, depth, start, end, htmlFragments);
+	        }
+        }
+
+		private String addFragment(final HTMLDocument doc, Element element, int depth, int start, int end,
+                                  LinkedList<TextFragment> htmlFragments) throws BadLocationException, IOException {
+	        final String paragraphText = doc.getText(start, end - start).trim();
+	        if (paragraphText.length() > 0) {
+	        	final StringWriter out = new StringWriter();
+	        	new PasteHTmlWriter(out, element, doc, start, end - start).write();
+	        	final String string = out.toString();
+	        	if (!string.equals("")) {
+	        		String link = findLink(string);
+	        		final TextFragment htmlFragment = new TextFragment(string, link, depth);
+	        		htmlFragments.add(htmlFragment);
+	        	}
+	        }
+	        return paragraphText;
+        }
+
+		private boolean isSeparateElement(Element current) {
+	        return ! current.isLeaf();
+        }
 	}
 
 	private class FileListFlavorHandler implements IDataFlavorHandler {
@@ -182,7 +357,9 @@ class PasteAction extends AFreeplaneAction {
 	 */
 	private IDataFlavorHandler[] getFlavorHandlers() {
 		final IDataFlavorHandler[] dataFlavorHandlerList = new IDataFlavorHandler[] { new FileListFlavorHandler(),
-		        new MindMapNodesFlavorHandler(), new DirectHtmlFlavorHandler(), new StringFlavorHandler() };
+		        new MindMapNodesFlavorHandler(), 
+		        new StructuredHtmlFlavorHandler(), 
+		        new DirectHtmlFlavorHandler(), new StringFlavorHandler() };
 		return dataFlavorHandlerList;
 	}
 
@@ -291,14 +468,15 @@ class PasteAction extends AFreeplaneAction {
 	 */
 	private NodeModel pasteStringWithoutRedisplay(final Transferable t, NodeModel parent, final boolean asSibling,
 	                                              final boolean isLeft) throws UnsupportedFlavorException, IOException {
+		getController().getViewController().setWaitingCursor(true);
 		final String textFromClipboard = (String) t.getTransferData(DataFlavor.stringFlavor);
-		if (mailPattern == null) {
-			mailPattern = Pattern.compile("([^@ <>\\*']+@[^@ <>\\*']+)");
-		}
-		final String[] textLines = textFromClipboard.split("\n");
-		if (textLines.length > 1) {
-			getController().getViewController().setWaitingCursor(true);
-		}
+		final TextFragment[] textFragments = split(textFromClipboard);
+		return pasteStringWithoutRedisplay(textFragments, parent, asSibling, isLeft);
+	}
+
+	private NodeModel pasteStringWithoutRedisplay(final TextFragment[] textFragments, NodeModel parent,
+                                                  final boolean asSibling, final boolean isLeft) {
+	    NodeModel pastedNode = null;
 		final MapModel map = parent.getMap();
 		if (asSibling) {
 			parent = new NodeModel(map);
@@ -307,8 +485,49 @@ class PasteAction extends AFreeplaneAction {
 		final ArrayList parentNodesDepths = new ArrayList();
 		parentNodes.add(parent);
 		parentNodesDepths.add(new Integer(-1));
-		final String[] linkPrefixes = { "http://", "ftp://", "https://" };
-		NodeModel pastedNode = null;
+		for (int i = 0; i < textFragments.length; ++i) {
+			final TextFragment textFragment = textFragments[i];
+			String text = textFragment.text;
+			final NodeModel node = getModeController().getMapController().newNode(text, map);
+			if (textFragments.length == 1) {
+				pastedNode = node;
+			}
+			if(textFragment.link != null){
+				((MLinkController) LinkController.getController(getModeController())).setLink(node,textFragment.link);
+			}
+			for (int j = parentNodes.size() - 1; j >= 0; --j) {
+				if (textFragment.depth > ((Integer) parentNodesDepths.get(j)).intValue()) {
+					for (int k = j + 1; k < parentNodes.size(); ++k) {
+						final NodeModel n = (NodeModel) parentNodes.get(k);
+						if (n.getParentNode() == null) {
+							paste(n, parent, parent.getChildCount());
+						}
+						parentNodes.remove(k);
+						parentNodesDepths.remove(k);
+					}
+					final NodeModel target = (NodeModel) parentNodes.get(j);
+					node.setLeft(isLeft);
+					if (target != parent) {
+						target.insert(node, target.getChildCount());
+					}
+					parentNodes.add(node);
+					parentNodesDepths.add(new Integer(textFragment.depth));
+					break;
+				}
+			}
+		}
+		for (int k = 0; k < parentNodes.size(); ++k) {
+			final NodeModel n = (NodeModel) parentNodes.get(k);
+			if (map.getRootNode() != n && n.getParentNode() == null) {
+				paste(n, parent, parent.getChildCount());
+			}
+		}
+		return pastedNode;
+    }
+
+	private TextFragment[] split(final String textFromClipboard) {
+		final LinkedList<TextFragment> textFragments= new LinkedList<TextFragment>();
+	    final String[] textLines = textFromClipboard.split("\n");
 		for (int i = 0; i < textLines.length; ++i) {
 			String text = textLines[i];
 			text = text.replaceAll("\t", "        ");
@@ -333,54 +552,52 @@ class PasteAction extends AFreeplaneAction {
 					    .firstLetterCapitalized(textParts[textPartIdx].replaceAll("^~*", ""));
 				}
 			}
-			final NodeModel node = getModeController().getMapController().newNode(visibleText, map);
-			if (textLines.length == 1) {
-				pastedNode = node;
-			}
-			final Matcher mailMatcher = mailPattern.matcher(visibleText);
-			if (mailMatcher.find()) {
-				((MLinkController) LinkController.getController(getModeController())).setLink(node,
-				    ("mailto:" + mailMatcher.group()));
-			}
-			for (int j = 0; j < linkPrefixes.length; j++) {
-				final int linkStart = text.indexOf(linkPrefixes[j]);
-				if (linkStart != -1) {
-					int linkEnd = linkStart;
-					while (linkEnd < text.length()
-					        && !PasteAction.nonLinkCharacter.matcher(text.substring(linkEnd, linkEnd + 1)).matches()) {
-						linkEnd++;
-					}
-					((MLinkController) LinkController.getController(getModeController())).setLink(node, text
-					    .substring(linkStart, linkEnd));
-				}
-			}
-			for (int j = parentNodes.size() - 1; j >= 0; --j) {
-				if (depth > ((Integer) parentNodesDepths.get(j)).intValue()) {
-					for (int k = j + 1; k < parentNodes.size(); ++k) {
-						final NodeModel n = (NodeModel) parentNodes.get(k);
-						if (n.getParentNode() == null) {
-							paste(n, parent, parent.getChildCount());
-						}
-						parentNodes.remove(k);
-						parentNodesDepths.remove(k);
-					}
-					final NodeModel target = (NodeModel) parentNodes.get(j);
-					node.setLeft(isLeft);
-					if (target != parent) {
-						target.insert(node, target.getChildCount());
-					}
-					parentNodes.add(node);
-					parentNodesDepths.add(new Integer(depth));
-					break;
-				}
+			String link = findLink(text);
+			if(! visibleText.equals("")){
+				textFragments.add(new TextFragment(visibleText, link, depth));
 			}
 		}
-		for (int k = 0; k < parentNodes.size(); ++k) {
-			final NodeModel n = (NodeModel) parentNodes.get(k);
-			if (map.getRootNode() != n && n.getParentNode() == null) {
-				paste(n, parent, parent.getChildCount());
+	    return textFragments.toArray(new TextFragment[textFragments.size()]);
+    }
+
+	private String findLink(String text) {
+		createMailPattern();
+		final Matcher mailMatcher = mailPattern.matcher(text);
+		String link = null;
+		final String[] linkPrefixes = { "http://", "ftp://", "https://" };
+		for (int j = 0; j < linkPrefixes.length; j++) {
+			final int linkStart = text.indexOf(linkPrefixes[j]);
+			if (linkStart != -1) {
+				int linkEnd = linkStart;
+				while (linkEnd < text.length()
+				        && !PasteAction.nonLinkCharacter.matcher(text.substring(linkEnd, linkEnd + 1)).matches()) {
+					linkEnd++;
+				}
+				link =text.substring(linkStart, linkEnd);
 			}
 		}
-		return pastedNode;
-	}
+		if (link == null && mailMatcher.find()) {
+			link = "mailto:" + mailMatcher.group();
+		}
+		return link;
+    }
+
+	private String cleanHtml(String in) {
+	    in = in.replaceFirst("(?i)(?s)<head>.*</head>", "").replaceFirst(
+	        "(?i)(?s)^.*<html[^>]*>", "<html>").replaceFirst("(?i)(?s)<body [^>]*>", "<body>").replaceAll(
+	        "(?i)(?s)<script.*?>.*?</script>", "").replaceAll("(?i)(?s)</?tbody.*?>", "").replaceAll(
+	        "(?i)(?s)<!--.*?-->", "").replaceAll("(?i)(?s)</?o[^>]*>", "");
+	    if (StringUtils.equals(ResourceController.getResourceController().getProperty("cut_out_pictures_when_pasting_html"),
+	        "true")) {
+	    	in = in.replaceAll("(?i)(?s)<img[^>]*>", "");
+	    }
+	    in = HtmlTools.unescapeHTMLUnicodeEntity(in);
+	    return in;
+    }
+
+	private void createMailPattern() {
+	    if (mailPattern == null) {
+	    	mailPattern = Pattern.compile("([^@ <>\\*']+@[^@ <>\\*']+)");
+	    }
+    }
 }
