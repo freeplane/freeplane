@@ -209,6 +209,7 @@ class PasteAction extends AFreeplaneAction {
                 throws BadLocationException, IOException {
 	        final int elementCount = parent.getElementCount();
 	        int headerDepth = 0;
+	        boolean headerFound = false;
 	        int start = -1;
 	        int end = -1;
 	        Element last = null;
@@ -218,12 +219,22 @@ class PasteAction extends AFreeplaneAction {
 				final Matcher matcher = HEADER_REGEX.matcher(name);
 				if(matcher.matches()){
 					try {
+						if(! headerFound){
+							depth--;
+						}
 						int newHeaderDepth = Integer.parseInt(matcher.group(1));
 						depth += newHeaderDepth - headerDepth;
 						headerDepth = newHeaderDepth;
+						headerFound = true;
 					}
 					catch (NumberFormatException e) {
 						e.printStackTrace();
+					}
+				}
+				else{
+					if(headerFound){
+						headerFound = false;
+						depth++;
 					}
 				}
 	        	final boolean separateElement = isSeparateElement(current);
