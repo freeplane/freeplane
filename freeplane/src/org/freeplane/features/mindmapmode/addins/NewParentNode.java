@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -80,7 +81,7 @@ public class NewParentNode extends AFreeplaneAction {
 		getController().getSelection().selectAsTheOnlyOneSelected(newNode);
 	}
 
-	private NodeModel moveToNewParent(final NodeModel selectedNode, final List selectedNodes) {
+	private NodeModel moveToNewParent(final NodeModel selectedNode, final List<NodeModel> selectedNodes) {
 		final NodeModel selectedParent = selectedNode.getParentNode();
 		final int childPosition = selectedParent.getChildPosition(selectedNode);
 		final NodeModel newNode = ((MMapController) getModeController().getMapController()).addNewNode(selectedParent,
@@ -88,7 +89,7 @@ public class NewParentNode extends AFreeplaneAction {
 		return moveToOtherNode(selectedNodes, selectedParent, newNode);
 	}
 
-	private NodeModel moveToOtherNode(final List selectedNodes, final NodeModel selectedParent, final NodeModel newNode) {
+	private NodeModel moveToOtherNode(final List<NodeModel> selectedNodes, final NodeModel selectedParent, final NodeModel newNode) {
 		for (final Iterator it = selectedNodes.iterator(); it.hasNext();) {
 			final NodeModel node = (NodeModel) it.next();
 			if (node.getParentNode() != selectedParent) {
@@ -100,10 +101,10 @@ public class NewParentNode extends AFreeplaneAction {
 				return null;
 			}
 		}
-		final Transferable copy = ((MClipboardController) ClipboardController.getController(getModeController()))
-		    .cut(selectedNodes);
-		((MClipboardController) ClipboardController.getController(getModeController())).paste(copy, newNode);
-		getModeController().getMapController().nodeChanged(selectedParent);
+		final MMapController mapController = (MMapController) getModeController().getMapController();
+		for(final NodeModel node:selectedNodes){
+			mapController.moveNode(node, selectedParent);
+		}
 		return newNode;
 	}
 }

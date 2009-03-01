@@ -95,16 +95,13 @@ class EditAction extends AFreeplaneAction {
 		final String htmlEditingOption = ResourceController.getResourceController().getProperty("html_editing_option");
 		final boolean editDefinitivelyLong = ((IMainView) node).isLong() || editLong;
 		final boolean isHtmlNode = HtmlTools.isHtmlNode(text);
-		String useRichTextInNewLongNodes = "true";
+		boolean useRichTextInNewLongNodes = true;
 		if (!isHtmlNode && editDefinitivelyLong) {
-			final int showResult = new OptionalDontShowMeAgainDialog(getController(),
-			    "edit.edit_rich_text", "edit.decision", new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
-			        ResourceControllerProperties.RESOURCES_REMIND_USE_RICH_TEXT_IN_NEW_LONG_NODES),
-			    OptionalDontShowMeAgainDialog.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED).show().getResult();
-			useRichTextInNewLongNodes = (showResult == JOptionPane.OK_OPTION) ? "true" : "false";
+			final MTextController textController = (MTextController) TextController.getController(getModeController());
+			useRichTextInNewLongNodes = textController.useRichTextInNewLongNodes();
 		}
 		final boolean editHtml = isHtmlNode
-		        || (editDefinitivelyLong && StringUtils.equals(useRichTextInNewLongNodes, "true"));
+		        || (editDefinitivelyLong && useRichTextInNewLongNodes);
 		final boolean editInternalWysiwyg = editHtml && StringUtils.equals(htmlEditingOption, "internal-wysiwyg");
 		final boolean editExternal = editHtml && StringUtils.equals(htmlEditingOption, "external");
 		if (editHtml && !isHtmlNode) {

@@ -77,8 +77,7 @@ class ImportLinkedBranchWithoutRootAction extends AFreeplaneAction implements IF
 			    absolute.getFile()));
 			for (final ListIterator i = modeController.getMapController().childrenUnfolded(node); i.hasNext();) {
 				final NodeModel importNode = (NodeModel) i.next();
-				((MClipboardController) ClipboardController.getController(getModeController())).paste(
-				    importNode, selected);
+				((MMapController)modeController.getMapController()).insertNode(importNode, selected);
 			}
 		}
 		catch (final Exception ex) {

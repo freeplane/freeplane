@@ -28,14 +28,17 @@ import java.net.MalformedURLException;
 import java.util.List;
 import java.util.ListIterator;
 
+import javax.swing.JOptionPane;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
 import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.FixedHTMLWriter;
 import org.freeplane.core.util.LogTool;
@@ -82,6 +85,15 @@ public class MTextController extends TextController {
 	                 final boolean isNewNode, final boolean parentFolded, final boolean editLong) {
 		edit.edit(node, prevSelected, firstEvent, isNewNode, parentFolded, editLong);
 	}
+
+	public boolean useRichTextInNewLongNodes() {
+	    final int showResult = new OptionalDontShowMeAgainDialog(getModeController().getController(),
+	        "edit.edit_rich_text", "edit.decision", new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
+	            ResourceControllerProperties.RESOURCES_REMIND_USE_RICH_TEXT_IN_NEW_LONG_NODES),
+	        OptionalDontShowMeAgainDialog.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED).show().getResult();
+	    final String useRichTextInNewLongNodes = (showResult == JOptionPane.OK_OPTION) ? "true" : "false";
+	    return useRichTextInNewLongNodes.equals("true");
+    }
 
 	private String[] getContent(final String text, final int pos) {
 		if (pos <= 0) {

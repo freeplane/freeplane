@@ -156,6 +156,23 @@ public class MMapController extends MapController {
 		super.insertNodeIntoWithoutUndo(newNode, parent, index);
 	}
 
+	public void insertNode(final NodeModel node, final NodeModel parentNode, final int index) {
+		final IUndoableActor actor = new IUndoableActor() {
+			public void act() {
+				(getModeController().getMapController()).insertNodeIntoWithoutUndo(node, parentNode, index);
+			}
+
+			public String getDescription() {
+				return "paste";
+			}
+
+			public void undo() {
+				((MMapController) getModeController().getMapController()).deleteWithoutUndo(node);
+			}
+		};
+		getModeController().execute(actor);
+	}
+
 	public boolean isWriteable(final NodeModel targetNode) {
 		final EncryptionModel encryptionModel = EncryptionModel.getModel(targetNode);
 		if (encryptionModel != null) {
@@ -372,4 +389,35 @@ public class MMapController extends MapController {
 		}
 		return lockingUser;
 	}
+
+	public void insertNode(NodeModel node, NodeModel parent) {
+	    insertNode(node, parent, parent.getChildCount());
+    }
+	
+	public void insertNode(final NodeModel node, final NodeModel target, final boolean asSibling, final boolean isLeft,
+		                   final boolean changeSide) {
+			NodeModel parent;
+			if (asSibling) {
+				parent = target.getParentNode();
+			}
+			else {
+				parent = target;
+			}
+			if (changeSide) {
+				node.setParent(parent);
+				node.setLeft(isLeft);
+			}
+			if (asSibling) {
+				insertNode(node, parent, parent.getChildPosition(target));
+			}
+			else {
+				insertNode(node, parent, parent.getChildCount());
+			}
+		}
+
+	public void moveNode(NodeModel node, NodeModel selectedParent) {
+	    moveNode(node, selectedParent, selectedParent.getChildCount());
+	    
+    }
+	
 }

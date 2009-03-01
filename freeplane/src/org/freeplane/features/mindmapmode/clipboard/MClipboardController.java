@@ -35,7 +35,6 @@ import org.freeplane.features.mindmapmode.MModeController;
 public class MClipboardController extends ClipboardController {
 	static private CutAction cut;
 	static private PasteAction paste;
-	private static final String RESOURCE_UNFOLD_ON_PASTE = "unfold_on_paste";
 
 	/**
 	 * @param modeController
@@ -62,14 +61,6 @@ public class MClipboardController extends ClipboardController {
 		return cut.cut(nodeList);
 	}
 
-	public void paste(final NodeModel node, final NodeModel parent) {
-		((PasteAction) getModeController().getAction("paste")).pasteNode(node, parent, parent.getChildCount());
-	}
-
-	public void paste(final Transferable t, final NodeModel parent) {
-		paste(t, /* target= */parent, /* asSibling= */false, parent.isNewChildLeft());
-	}
-
 	/**
 	 * @param isLeft
 	 *            determines, whether or not the node is placed on the left or
@@ -77,11 +68,6 @@ public class MClipboardController extends ClipboardController {
 	 * @return true, if successfully.
 	 **/
 	public void paste(final Transferable t, final NodeModel target, final boolean asSibling, final boolean isLeft) {
-		final ModeController modeController = getModeController();
-		if (!asSibling && modeController.getMapController().isFolded(target)
-		        && ResourceController.getResourceController().getBooleanProperty(RESOURCE_UNFOLD_ON_PASTE)) {
-			modeController.getMapController().setFolded(target, false);
-		}
 		((PasteAction) getModeController().getAction("paste")).paste(t, target, asSibling, isLeft);
 	}
 }

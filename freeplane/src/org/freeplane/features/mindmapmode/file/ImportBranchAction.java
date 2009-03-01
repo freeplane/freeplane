@@ -58,8 +58,7 @@ class ImportBranchAction extends AFreeplaneAction implements IFreeplaneAction {
 				final MapModel map = parent.getMap();
 				final NodeModel node = ((MMapController) getModeController().getMapController()).loadTree(map, chooser
 				    .getSelectedFile());
-				((MClipboardController) ClipboardController.getController(getModeController())).paste(
-				    node, parent);
+				((MMapController) getModeController().getMapController()).insertNode(node, parent);
 			}
 			catch (final Exception ex) {
 				UrlManager.getController(getModeController()).handleLoadingException(ex);

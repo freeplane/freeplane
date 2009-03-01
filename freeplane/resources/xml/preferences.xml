@@ -317,6 +317,9 @@
             </combo>
             <boolean name="export_icons_in_html"/>
         </separator>
+        <separator name="html_import">
+        	<boolean name="structured_html_import"/>
+        </separator>
     </tab>
 </tabbed_pane>
 </preferences_structure>

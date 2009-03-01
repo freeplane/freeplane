@@ -73,7 +73,7 @@ class ImportLinkedBranchAction extends AFreeplaneAction implements IFreeplaneAct
 		try {
 			final NodeModel node = ((MMapController) modeController.getMapController()).loadTree(map, new File(absolute
 			    .getFile()));
-			((MClipboardController)ClipboardController.getController(modeController)).paste(node, selected);
+			((MMapController)modeController.getMapController()).insertNode(node, selected);
 		}
 		catch (final Exception ex) {
 			UrlManager.getController(modeController).handleLoadingException(ex);
