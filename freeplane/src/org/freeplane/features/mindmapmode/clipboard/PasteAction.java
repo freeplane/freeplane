@@ -82,11 +82,15 @@ class PasteAction extends AFreeplaneAction {
 			if (textFromClipboard.charAt(0) == 65533) {
 				throw new UnsupportedFlavorException(MindMapNodesSelection.htmlFlavor);
 			}
-			getController().getViewController().setWaitingCursor(true);
-			textFromClipboard = cleanHtml(textFromClipboard);
-			final NodeModel node = getModeController().getMapController().newNode(textFromClipboard,
+			paste(textFromClipboard, target);
+		}
+
+		void paste(String text, final NodeModel target) {
+	        getController().getViewController().setWaitingCursor(true);
+			text = cleanHtml(text);
+			final NodeModel node = getModeController().getMapController().newNode(text,
 			    getController().getMap());
-			final Matcher m = PasteAction.HREF_PATTERN.matcher(textFromClipboard);
+			final Matcher m = PasteAction.HREF_PATTERN.matcher(text);
 			if (m.matches()) {
 				final String body = m.group(2);
 				if (!body.matches(".*<\\s*a.*")) {
@@ -94,9 +98,9 @@ class PasteAction extends AFreeplaneAction {
 					((MLinkController) LinkController.getController(getModeController())).setLink(node, href);
 				}
 			}
-			PasteAction.this.paste(node, target, target.getChildCount());
+			PasteAction.this.pasteNode(node, target, target.getChildCount());
 			getController().getViewController().setWaitingCursor(false);
-		}
+        }
 	}
 	private static class TextFragment{
 		public TextFragment(String text, String link, int depth) {
@@ -146,7 +150,6 @@ class PasteAction extends AFreeplaneAction {
 	}
 	
 	private class StructuredHtmlFlavorHandler implements IDataFlavorHandler {
-		private TextFragment[] htmlFragments;
 		public DataFlavor getDataFlavor() {
 			return MindMapNodesSelection.htmlFlavor;
 		}
@@ -166,7 +169,7 @@ class PasteAction extends AFreeplaneAction {
 			getController().getViewController().setWaitingCursor(true);
 			String textFromClipboard = (String) t;
 			textFromClipboard = cleanHtml(textFromClipboard);
-			split(textFromClipboard);
+			TextFragment[] htmlFragments = split(textFromClipboard);
 			pasteStringWithoutRedisplay(htmlFragments, parent, asSibling, isLeft);
 		}
 
@@ -181,7 +184,7 @@ class PasteAction extends AFreeplaneAction {
 			} while (!(parentCandidate.isLeaf() || parentCandidate.getName().equalsIgnoreCase("p-implied")));
 			return null;
 		}
-		private void split(String text) {
+		private TextFragment[] split(String text) {
 			LinkedList<TextFragment> htmlFragments = new LinkedList<TextFragment>();
 			final HTMLEditorKit kit = new HTMLEditorKit();
 			final HTMLDocument doc = new HTMLDocument();
@@ -190,7 +193,7 @@ class PasteAction extends AFreeplaneAction {
 				kit.read(buf, doc, 0);
 				final Element parent = getParentElement(doc);
 				if (parent == null) {
-					return ;
+					return new TextFragment[0];
 				}
 				split(doc, parent, htmlFragments, 0);
 			}
@@ -200,9 +203,7 @@ class PasteAction extends AFreeplaneAction {
 			catch (final BadLocationException e) {
 				LogTool.logException(e);
 			}
-			this.htmlFragments = new TextFragment[htmlFragments.size()];
-			htmlFragments.toArray(this.htmlFragments);
-			return;
+			return htmlFragments.toArray(new TextFragment[htmlFragments.size()]);
         }
 
 		private void split(final HTMLDocument doc, final Element parent, LinkedList<TextFragment> htmlFragments, int depth)
@@ -289,16 +290,20 @@ class PasteAction extends AFreeplaneAction {
 
 		public void paste(final Object TransferData, final NodeModel target, final boolean asSibling,
 		                  final boolean isLeft, final Transferable t) {
-			final List fileList = (List) TransferData;
-			for (final ListIterator it = fileList.listIterator(); it.hasNext();) {
-				final File file = (File) it.next();
+			final List<File> fileList = (List<File>) TransferData;
+			paste(fileList, target, asSibling, isLeft);
+		}
+
+		void paste(final List<File> fileList, final NodeModel target, final boolean asSibling,
+                           final boolean isLeft) {
+	        for (final File file:fileList) {
 				final NodeModel node = getModeController().getMapController().newNode(file.getName(), target.getMap());
 				node.setLeft(isLeft);
 				((MLinkController) LinkController.getController(getModeController())).setLink(node, file
 				    .getAbsolutePath());
-				PasteAction.this.paste(node, target, asSibling, isLeft, false);
+				PasteAction.this.pasteNode(node, target, asSibling, isLeft, false);
 			}
-		}
+        }
 	}
 
 	private class MindMapNodesFlavorHandler implements IDataFlavorHandler {
@@ -309,21 +314,25 @@ class PasteAction extends AFreeplaneAction {
 		public void paste(final Object TransferData, final NodeModel target, final boolean asSibling,
 		                  final boolean isLeft, final Transferable t) {
 			final String textFromClipboard = (String) TransferData;
-			if (textFromClipboard != null) {
-				final String[] textLines = textFromClipboard.split(ResourceControllerProperties.NODESEPARATOR);
-				if (textLines.length > 1) {
-					getController().getViewController().setWaitingCursor(true);
-				}
-				final MapReader mapController = getModeController().getMapController().getMapReader();
-				final NodeTreeCreator nodeTreeCreator = mapController.nodeTreeCreator(target.getMap());
-				for (int i = 0; i < textLines.length; ++i) {
-					final NodeModel newModel = nodeTreeCreator.create(new StringReader(textLines[i]));
-					newModel.setLeft(isLeft);
-					PasteAction.this.paste(newModel, target, target.getChildCount());
-				}
-				nodeTreeCreator.finish(target);
+	        if (textFromClipboard != null) {
+				paste(textFromClipboard, target, asSibling, isLeft);
 			}
-		}
+        }
+
+		private void paste(final String text, final NodeModel target, final boolean asSibling, final boolean isLeft) {
+	        final String[] textLines = text.split(ResourceControllerProperties.NODESEPARATOR);
+	        if (textLines.length > 1) {
+	        	getController().getViewController().setWaitingCursor(true);
+	        }
+	        final MapReader mapController = getModeController().getMapController().getMapReader();
+	        final NodeTreeCreator nodeTreeCreator = mapController.nodeTreeCreator(target.getMap());
+	        for (int i = 0; i < textLines.length; ++i) {
+	        	final NodeModel newModel = nodeTreeCreator.create(new StringReader(textLines[i]));
+	        	newModel.setLeft(isLeft);
+	        	PasteAction.this.pasteNode(newModel, target, asSibling, isLeft, isLeft);
+	        }
+	        nodeTreeCreator.finish(target);
+        }
 	}
 
 	private class StringFlavorHandler implements IDataFlavorHandler {
@@ -331,10 +340,53 @@ class PasteAction extends AFreeplaneAction {
 			return DataFlavor.stringFlavor;
 		}
 
-		public void paste(final Object TransferData, final NodeModel target, final boolean asSibling,
+		public void paste(final Object transferData, final NodeModel target, final boolean asSibling,
 		                  final boolean isLeft, final Transferable t) throws UnsupportedFlavorException, IOException {
-			pasteStringWithoutRedisplay(t, target, asSibling, isLeft);
+			final String textFromClipboard = (String) transferData;
+			paste(textFromClipboard, target, asSibling, isLeft);
 		}
+
+		void paste(final String text, final NodeModel target, final boolean asSibling, final boolean isLeft) {
+	        getController().getViewController().setWaitingCursor(true);
+			final TextFragment[] textFragments = split(text);
+			pasteStringWithoutRedisplay(textFragments, target, asSibling, isLeft);
+        }
+		
+		private TextFragment[] split(final String textFromClipboard) {
+			final LinkedList<TextFragment> textFragments= new LinkedList<TextFragment>();
+		    final String[] textLines = textFromClipboard.split("\n");
+			for (int i = 0; i < textLines.length; ++i) {
+				String text = textLines[i];
+				text = text.replaceAll("\t", "        ");
+				if (text.matches(" *")) {
+					continue;
+				}
+				int depth = 0;
+				while (depth < text.length() && text.charAt(depth) == ' ') {
+					++depth;
+				}
+				String visibleText = text.trim();
+				if (visibleText.matches("^http://(www\\.)?[^ ]*$")) {
+					visibleText = visibleText.replaceAll("^http://(www\\.)?", "").replaceAll("(/|\\.[^\\./\\?]*)$", "")
+					    .replaceAll("((\\.[^\\./]*\\?)|\\?)[^/]*$", " ? ...").replaceAll("_|%20", " ");
+					final String[] textParts = visibleText.split("/");
+					visibleText = "";
+					for (int textPartIdx = 0; textPartIdx < textParts.length; textPartIdx++) {
+						if (textPartIdx > 0) {
+							visibleText += " > ";
+						}
+						visibleText += textPartIdx == 0 ? textParts[textPartIdx] : PasteAction
+						    .firstLetterCapitalized(textParts[textPartIdx].replaceAll("^~*", ""));
+					}
+				}
+				String link = findLink(text);
+				if(! visibleText.equals("")){
+					textFragments.add(new TextFragment(visibleText, link, depth));
+				}
+			}
+		    return textFragments.toArray(new TextFragment[textFragments.size()]);
+	    }
+
 	}
 
 	private static final Pattern HREF_PATTERN = Pattern
@@ -374,11 +426,7 @@ class PasteAction extends AFreeplaneAction {
 		return dataFlavorHandlerList;
 	}
 
-	public void paste(final NodeModel node, final NodeModel parent) {
-		paste(node, parent, parent.getChildCount());
-	}
-
-	private void paste(final NodeModel node, final NodeModel target, final boolean asSibling, final boolean isLeft,
+	private void pasteNode(final NodeModel node, final NodeModel target, final boolean asSibling, final boolean isLeft,
 	                   final boolean changeSide) {
 		NodeModel parent;
 		if (asSibling) {
@@ -392,14 +440,14 @@ class PasteAction extends AFreeplaneAction {
 			node.setLeft(isLeft);
 		}
 		if (asSibling) {
-			paste(node, parent, parent.getChildPosition(target));
+			pasteNode(node, parent, parent.getChildPosition(target));
 		}
 		else {
-			paste(node, parent, parent.getChildCount());
+			pasteNode(node, parent, parent.getChildCount());
 		}
 	}
 
-	public void paste(final NodeModel node, final NodeModel parentNode, final int index) {
+	void pasteNode(final NodeModel node, final NodeModel parentNode, final int index) {
 		final IUndoableActor actor = new IUndoableActor() {
 			public void act() {
 				(getModeController().getMapController()).insertNodeIntoWithoutUndo(node, parentNode, index);
@@ -429,7 +477,7 @@ class PasteAction extends AFreeplaneAction {
 	 *            decided on which side of root
 	 * @return true, if successfully executed.
 	 */
-	public void paste(final Transferable t, final NodeModel target, final boolean asSibling, final boolean isLeft) {
+	void paste(final Transferable t, final NodeModel target, final boolean asSibling, final boolean isLeft) {
 		if (t == null) {
 			return;
 		}
@@ -468,23 +516,6 @@ class PasteAction extends AFreeplaneAction {
 		}
 	}
 
-	/**
-	 * Paste String (as opposed to other flavours) Split the text into lines;
-	 * determine the new tree structure by the number of leading spaces in
-	 * lines. In case that trimmed line starts with protocol (http:, https:,
-	 * ftp:), create a link with the same content. If there was only one line to
-	 * be pasted, return the pasted node, null otherwise.
-	 *
-	 * @param isLeft
-	 */
-	private NodeModel pasteStringWithoutRedisplay(final Transferable t, NodeModel parent, final boolean asSibling,
-	                                              final boolean isLeft) throws UnsupportedFlavorException, IOException {
-		getController().getViewController().setWaitingCursor(true);
-		final String textFromClipboard = (String) t.getTransferData(DataFlavor.stringFlavor);
-		final TextFragment[] textFragments = split(textFromClipboard);
-		return pasteStringWithoutRedisplay(textFragments, parent, asSibling, isLeft);
-	}
-
 	private NodeModel pasteStringWithoutRedisplay(final TextFragment[] textFragments, NodeModel parent,
                                                   final boolean asSibling, final boolean isLeft) {
 	    NodeModel pastedNode = null;
@@ -511,7 +542,7 @@ class PasteAction extends AFreeplaneAction {
 					for (int k = j + 1; k < parentNodes.size(); ++k) {
 						final NodeModel n = (NodeModel) parentNodes.get(k);
 						if (n.getParentNode() == null) {
-							paste(n, parent, parent.getChildCount());
+							pasteNode(n, parent, parent.getChildCount());
 						}
 						parentNodes.remove(k);
 						parentNodesDepths.remove(k);
@@ -531,45 +562,10 @@ class PasteAction extends AFreeplaneAction {
 		for (int k = 0; k < parentNodes.size(); ++k) {
 			final NodeModel n = (NodeModel) parentNodes.get(k);
 			if (map.getRootNode() != n && n.getParentNode() == null) {
-				paste(n, parent, parent.getChildCount());
+				pasteNode(n, parent, parent.getChildCount());
 			}
 		}
 		return pastedNode;
-    }
-
-	private TextFragment[] split(final String textFromClipboard) {
-		final LinkedList<TextFragment> textFragments= new LinkedList<TextFragment>();
-	    final String[] textLines = textFromClipboard.split("\n");
-		for (int i = 0; i < textLines.length; ++i) {
-			String text = textLines[i];
-			text = text.replaceAll("\t", "        ");
-			if (text.matches(" *")) {
-				continue;
-			}
-			int depth = 0;
-			while (depth < text.length() && text.charAt(depth) == ' ') {
-				++depth;
-			}
-			String visibleText = text.trim();
-			if (visibleText.matches("^http://(www\\.)?[^ ]*$")) {
-				visibleText = visibleText.replaceAll("^http://(www\\.)?", "").replaceAll("(/|\\.[^\\./\\?]*)$", "")
-				    .replaceAll("((\\.[^\\./]*\\?)|\\?)[^/]*$", " ? ...").replaceAll("_|%20", " ");
-				final String[] textParts = visibleText.split("/");
-				visibleText = "";
-				for (int textPartIdx = 0; textPartIdx < textParts.length; textPartIdx++) {
-					if (textPartIdx > 0) {
-						visibleText += " > ";
-					}
-					visibleText += textPartIdx == 0 ? textParts[textPartIdx] : PasteAction
-					    .firstLetterCapitalized(textParts[textPartIdx].replaceAll("^~*", ""));
-				}
-			}
-			String link = findLink(text);
-			if(! visibleText.equals("")){
-				textFragments.add(new TextFragment(visibleText, link, depth));
-			}
-		}
-	    return textFragments.toArray(new TextFragment[textFragments.size()]);
     }
 
 	private String findLink(String text) {

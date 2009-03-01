@@ -557,8 +557,7 @@ public class MapViewController implements IMapViewManager {
 	public void updateMapViewName() {
 		MapView r = getMapView();
 		final String name = r.getModel().getTitle();
-        r.setName(name);
-		addToOrChangeInMapViews(getMapView().getName(), getMapView());
+		addToOrChangeInMapViews(name, getMapView());
 		changeToMapView(getMapView());
 	}
 

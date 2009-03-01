@@ -45,6 +45,7 @@ import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.mindmapmode.file.MFileManager;
@@ -268,6 +269,27 @@ public class MMapController extends MapController {
 		((NodeUpAction) getModeController().getAction("nodeUp")).moveNodes(selected, selecteds, direction);
 	}
 
+	public void moveNode(final NodeModel child, final NodeModel newParent, final int newIndex) {
+		final NodeModel oldParent = child.getParentNode();
+		final int oldIndex = oldParent.getChildPosition(child);
+		if(oldParent == newParent && oldIndex == newIndex){
+			return;
+		}
+		IUndoableActor actor = new IUndoableActor(){
+			public void act() {
+	            moveNodeToWithoutUndo(child, newParent, newIndex);
+            }
+
+			public String getDescription() {
+	            return "moveNode";
+            }
+
+			public void undo() {
+	            moveNodeToWithoutUndo(child, oldParent, oldIndex);
+            }
+		};
+		getModeController().execute(actor);
+	}
 	/**
 	 * The direction is used if side left and right are present. then the next
 	 * suitable place on the same side# is searched. if there is no such place,

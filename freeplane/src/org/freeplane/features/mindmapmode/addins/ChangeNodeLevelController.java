@@ -1,0 +1,149 @@
+/*
+ *  Freeplane - mind map editor
+ *  Copyright (C) 2008 Joerg Mueller, Daniel Polansky, Christian Foltin, Dimitry Polivaev
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package org.freeplane.features.mindmapmode.addins;
+
+import java.awt.datatransfer.Transferable;
+import java.awt.event.ActionEvent;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Vector;
+
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.modecontroller.MapController;
+import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.features.common.clipboard.ClipboardController;
+import org.freeplane.features.mindmapmode.MMapController;
+import org.freeplane.features.mindmapmode.clipboard.MClipboardController;
+
+/**
+ * @author foltin
+ */
+public class ChangeNodeLevelController {
+	@ActionDescriptor(tooltip = "accessories/plugins/ChangeNodeLevelAction_right.properties_documentation", //
+	name = "accessories/plugins/ChangeNodeLevelAction_right.properties_name", //
+	keyStroke = "keystroke_accessories/plugins/ChangeNodeLevelAction_right.properties_key", //
+	locations = { "/menu_bar/navigate/nodes" })
+	private class ChangeNodeLevelDownwardsAction extends AFreeplaneAction {
+		public ChangeNodeLevelDownwardsAction() {
+			super(controller);
+		}
+
+		public void actionPerformed(final ActionEvent e) {
+			final ModeController modeController = getModeController();
+			NodeModel selectedNode = modeController.getMapController().getSelectedNode();
+			final NodeModel selectedParent = selectedNode.getParentNode();
+			List<NodeModel> selectedNodes = modeController.getMapController().getSelectedNodes();
+			final MMapController mapController = (MMapController) modeController.getMapController();
+			mapController.sortNodesByDepth(selectedNodes);
+			final int ownPosition = selectedParent.getChildPosition(selectedNode);
+			NodeModel directSibling = null;
+			for (int i = ownPosition - 1; i >= 0; --i) {
+				final NodeModel sibling = (NodeModel) selectedParent.getChildAt(i);
+				if ((!selectedNodes.contains(sibling)) && selectedNode.isLeft() == sibling.isLeft()) {
+					directSibling = sibling;
+					break;
+				}
+			}
+			if (directSibling == null) {
+				for (int i = ownPosition + 1; i < selectedParent.getChildCount(); ++i) {
+					final NodeModel sibling = (NodeModel) selectedParent.getChildAt(i);
+					if ((!selectedNodes.contains(sibling)) && selectedNode.isLeft() == sibling.isLeft()) {
+						directSibling = sibling;
+						break;
+					}
+				}
+			}
+			if (directSibling != null) {
+				for(final NodeModel node:selectedNodes){
+					mapController.moveNode(node, directSibling, directSibling.getChildCount());
+				}
+				modeController.getMapController().selectMultipleNodes(selectedNode, selectedNodes);
+			}
+		}
+	}
+
+	@ActionDescriptor(tooltip = "accessories/plugins/ChangeNodeLevelAction_left.properties_documentation", //
+	name = "accessories/plugins/ChangeNodeLevelAction_left.properties_name", //
+	keyStroke = "keystroke_accessories/plugins/ChangeNodeLevelAction_left.properties_key", //
+	locations = { "/menu_bar/navigate/nodes" })
+	private class ChangeNodeLevelUpwardsAction extends AFreeplaneAction {
+		public ChangeNodeLevelUpwardsAction() {
+			super(controller);
+		}
+
+		public void actionPerformed(final ActionEvent e) {
+			final ModeController modeController = getModeController();
+			final MMapController mapController = (MMapController) modeController.getMapController();
+			NodeModel selectedNode = mapController.getSelectedNode();
+			final NodeModel selectedParent = selectedNode.getParentNode();
+			List<NodeModel> selectedNodes = mapController.getSelectedNodes();
+			mapController.sortNodesByDepth(selectedNodes);
+			if(! checkSelection(modeController)){
+				return;
+			}
+			if (selectedParent.isRoot()) {
+				return;
+			}
+			final NodeModel grandParent = selectedParent.getParentNode();
+			final int parentPosition = grandParent.getChildPosition(selectedParent);
+			for(final NodeModel node:selectedNodes){
+				mapController.moveNode(node, grandParent, parentPosition + 1);
+			}
+			mapController.selectMultipleNodes(selectedNode, selectedNodes);
+		}
+	};
+
+	final private Controller controller;;
+
+	/**
+	 *
+	 */
+	public ChangeNodeLevelController(final Controller controller, final MenuBuilder menuBuilder) {
+		this.controller = controller;
+		menuBuilder.addAnnotatedAction(new ChangeNodeLevelUpwardsAction());
+		menuBuilder.addAnnotatedAction(new ChangeNodeLevelDownwardsAction());
+	}
+
+	private boolean checkSelection(final ModeController modeController){
+		NodeModel selectedNode = modeController.getMapController().getSelectedNode();
+		List<NodeModel> selectedNodes = modeController.getMapController().getSelectedNodes();
+		final Controller controller = modeController.getController();
+		if (selectedNode.isRoot()) {
+			controller.errorMessage(ResourceController.getText("cannot_add_parent_to_root"));
+			return false;
+		}
+		final NodeModel selectedParent = selectedNode.getParentNode();
+		for (final NodeModel node  : selectedNodes) {
+			if (node.getParentNode() != selectedParent) {
+				controller.errorMessage(ResourceController.getText("cannot_add_parent_diff_parents"));
+				return false;
+			}
+			if (node.isRoot()) {
+				controller.errorMessage(ResourceController.getText("cannot_add_parent_to_root"));
+				return false;
+			}
+		}
+		return true;
+	}
+}

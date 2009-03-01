@@ -63,7 +63,7 @@ public class MClipboardController extends ClipboardController {
 	}
 
 	public void paste(final NodeModel node, final NodeModel parent) {
-		((PasteAction) getModeController().getAction("paste")).paste(node, parent);
+		((PasteAction) getModeController().getAction("paste")).pasteNode(node, parent, parent.getChildCount());
 	}
 
 	public void paste(final Transferable t, final NodeModel parent) {

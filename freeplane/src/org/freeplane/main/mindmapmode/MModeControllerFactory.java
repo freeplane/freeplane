@@ -52,7 +52,7 @@ import org.freeplane.features.common.note.NoteController;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.features.mindmapmode.MModeController;
-import org.freeplane.features.mindmapmode.addins.ChangeNodeLevelAction;
+import org.freeplane.features.mindmapmode.addins.ChangeNodeLevelController;
 import org.freeplane.features.mindmapmode.addins.FormatPaste;
 import org.freeplane.features.mindmapmode.addins.IconSelectionPlugin;
 import org.freeplane.features.mindmapmode.addins.NewParentNode;
@@ -138,7 +138,7 @@ public class MModeControllerFactory {
 		menuBuilder.addAnnotatedAction(new SortNodes(controller));
 		menuBuilder.addAnnotatedAction(new SplitNode(controller));
 		new UnfoldAll(modeController);
-		new ChangeNodeLevelAction(modeController.getController(), menuBuilder);
+		new ChangeNodeLevelController(modeController.getController(), menuBuilder);
 		ExportWithXSLT.createXSLTExportActions(modeController, "/xml/ExportWithXSLT.xml");
 		ExportToImage.createActions(modeController);
 		new NodeHistory(modeController);

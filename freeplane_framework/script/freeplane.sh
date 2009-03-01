@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # we only want to test the script, not Freeplane itself
 if ( echo "${DEBUG}" | grep -qe "script" )
@@ -142,8 +142,6 @@ else
 	freefile="$0"
 fi
 freepath=$(dirname "${freefile}")
-freepath="${freepath%/bin}" # nothing happens if Freeplane is not installed
-                            # under something/bin
 
 # we try different possibilities to find framework.jar
 for jar in "${FREEPLANE_BASE_DIR}" \
@@ -176,23 +174,17 @@ fi
 
 #--------- Call (at last) Freeplane -------------------------------------
 
-paramNumber=0
 defines=
-for param in $@
-do
-  paramNumber=`expr $paramNumber + 1`
-  defines="$defines -Dorg.freeplane.param$paramNumber=$param"
-done
-
 defines="$defines -Dorg.freeplane.globalresourcedir=${freedir}/resources"
+defines="$defines -Dorg.osgi.framework.dir=${freedir}/fwdir"
 
-if [ "${JAVA_TYPE}" = "sun" ]
-then
-	_debug "Calling: '${JAVACMD} $defines -jar ${freedir}/framework.jar'."
-	( echo "${DEBUG}" | grep -qe "exit" ) && exit 0 # do not start Freeplane
-	"${JAVACMD}" $defines -jar "${freedir}/framework.jar"
-else # non-Sun environments don't work currently but we try anyway, who knows.
-	_debug "Calling: '${JAVACMD} -Dgnu.java.awt.peer.gtk.Graphics=Graphics2D $defines -jar ${freedir}/framework.jar'."
-	( echo "${DEBUG}" | grep -qe "exit" ) && exit 0 # do not start Freeplane
-	"${JAVACMD}" -Dgnu.java.awt.peer.gtk.Graphics=Graphics2D "$defines" -jar "${freedir}/framework.jar"
+call=
+if [ "${JAVA_TYPE}" != "sun" ]
+then # non-Sun environments don't work currently but we try anyway, who knows.
+	defines="$defines -Dgnu.java.awt.peer.gtk.Graphics=Graphics2D"
 fi
+call="${JAVACMD} "-Dorg.freeplane.param1=$1" $defines -jar ${freedir}/framework.jar"
+_debug "Calling: '$call'."
+( echo "${DEBUG}" | grep -qe "exit" ) && exit 0 # do not start Freeplane
+"${JAVACMD}" "-Dorg.freeplane.param1=$1" "-Dorg.freeplane.param2=$2" "-Dorg.freeplane.param3=$3" "-Dorg.freeplane.param4=$4" $defines -jar "${freedir}/framework.jar"
+
