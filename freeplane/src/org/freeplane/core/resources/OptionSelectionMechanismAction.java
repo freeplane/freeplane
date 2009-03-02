@@ -27,12 +27,12 @@ import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.enums.ResourceControllerProperties;
 
-public class OptionSelectionMechanismAction extends AbstractAction implements IFreeplanePropertyListener, IFreeplaneAction {
+class OptionSelectionMechanismAction extends AbstractAction implements IFreeplanePropertyListener, IFreeplaneAction {
 	private static final long serialVersionUID = -5573280308177905728L;
 	final private Controller controller;
 	static final String NAME = "optionSelectionMechanismAction";
 
-	public OptionSelectionMechanismAction(final Controller controller) {
+	OptionSelectionMechanismAction(final Controller controller) {
 		this.controller = controller;
 		ResourceController.getResourceController().addPropertyChangeListener(this);
 	}

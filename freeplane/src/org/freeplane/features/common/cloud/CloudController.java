@@ -30,9 +30,9 @@ import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.modecontroller.ExclusivePropertyChain;
+import org.freeplane.core.modecontroller.IPropertyHandler;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
-import org.freeplane.core.model.IFpPropertyHandler;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
@@ -74,13 +74,13 @@ public class CloudController implements IExtension {
 			ResourceController.getResourceController().addPropertyChangeListener(listener);
 		}
 		updateStandards(modeController);
-		addColorGetter(ResourceControllerProperties.NODE, new IFpPropertyHandler<Color, NodeModel>() {
+		addColorGetter(ResourceControllerProperties.NODE, new IPropertyHandler<Color, NodeModel>() {
 			public Color getProperty(final NodeModel node, final Color currentValue) {
 				final CloudModel cloud = CloudModel.getModel(node);
 				return cloud != null ? cloud.getColor() : null;
 			}
 		});
-		addColorGetter(ResourceControllerProperties.DEFAULT, new IFpPropertyHandler<Color, NodeModel>() {
+		addColorGetter(ResourceControllerProperties.DEFAULT, new IPropertyHandler<Color, NodeModel>() {
 			public Color getProperty(final NodeModel node, final Color currentValue) {
 				return standardColor;
 			}
@@ -96,9 +96,9 @@ public class CloudController implements IExtension {
     	return modeController;
     }
 
-	public IFpPropertyHandler<Color, NodeModel> addColorGetter(final Integer key,
-	                                                        final IFpPropertyHandler<Color, NodeModel> getter) {
-		return colorHandlers.put(key, getter);
+	public IPropertyHandler<Color, NodeModel> addColorGetter(final Integer key,
+	                                                        final IPropertyHandler<Color, NodeModel> getter) {
+		return colorHandlers.addGetter(key, getter);
 	}
 
 	public Color getColor(final NodeModel node) {
@@ -113,7 +113,7 @@ public class CloudController implements IExtension {
 		return NORMAL_WIDTH;
 	}
 
-	public IFpPropertyHandler<Color, NodeModel> removeColorGetter(final Integer key) {
+	public IPropertyHandler<Color, NodeModel> removeColorGetter(final Integer key) {
 		return colorHandlers.removeGetter(key);
 	}
 

@@ -22,7 +22,6 @@ package org.freeplane.core.modecontroller;
 import java.util.Iterator;
 import java.util.TreeMap;
 
-import org.freeplane.core.model.IFpPropertyHandler;
 
 @Deprecated
 public class CombinedPropertyChain<V, T> {
@@ -30,21 +29,21 @@ public class CombinedPropertyChain<V, T> {
 	static public Integer NODE = 100;
 	final private TreeMap handlers = new TreeMap();
 
-	public IFpPropertyHandler addGetter(final Integer key, final IFpPropertyHandler getter) {
-		return (IFpPropertyHandler) handlers.put(key, getter);
+	public IPropertyHandler addGetter(final Integer key, final IPropertyHandler getter) {
+		return (IPropertyHandler) handlers.put(key, getter);
 	}
 
 	public V getProperty(final T node) {
 		final Iterator iterator = handlers.values().iterator();
 		V property = null;
 		while (iterator.hasNext()) {
-			final IFpPropertyHandler<V, T> getter = (IFpPropertyHandler) iterator.next();
+			final IPropertyHandler<V, T> getter = (IPropertyHandler) iterator.next();
 			property = getter.getProperty(node, property);
 		}
 		return property;
 	}
 
-	public IFpPropertyHandler removeGetter(final Integer key) {
-		return (IFpPropertyHandler) handlers.remove(key);
+	public IPropertyHandler removeGetter(final Integer key) {
+		return (IPropertyHandler) handlers.remove(key);
 	}
 }

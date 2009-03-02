@@ -33,7 +33,7 @@ import org.freeplane.core.model.FpColor;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
-import org.freeplane.features.common.edge.EdgeExtension;
+import org.freeplane.features.common.edge.EdgeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
 
 /**
@@ -114,7 +114,7 @@ public class StylePatternFactory {
 		if (node.getIcons().size() == 1) {
 			pattern.setPatternIcon(((MindIcon) node.getIcons().get(0)).getName());
 		}
-		final EdgeExtension edge = EdgeExtension.getModel(node);
+		final EdgeModel edge = EdgeModel.getModel(node);
 		if (edge != null) {
 			final Color edgeColor = edge.getColor();
 			if (edgeColor != null) {
@@ -129,7 +129,7 @@ public class StylePatternFactory {
 				pattern.setPatternEdgeStyle(edgeStyle);
 			}
 			final int edgeWidth = edge.getWidth();
-			if (edgeWidth != EdgeExtension.WIDTH_PARENT) {
+			if (edgeWidth != EdgeModel.WIDTH_PARENT) {
 				final PatternProperty edgeWidthPattern = new PatternProperty();
 				edgeWidthPattern.setValue("" + edgeWidth);
 				pattern.setPatternEdgeWidth(Integer.toString(edgeWidth));

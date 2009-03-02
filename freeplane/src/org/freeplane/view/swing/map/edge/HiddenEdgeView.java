@@ -23,7 +23,7 @@ import java.awt.BasicStroke;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
 
-import org.freeplane.features.common.edge.EdgeExtension;
+import org.freeplane.features.common.edge.EdgeModel;
 import org.freeplane.view.swing.map.NodeView;
 
 /**

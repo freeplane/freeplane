@@ -33,7 +33,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.features.common.edge.EdgeController;
-import org.freeplane.features.common.edge.EdgeExtension;
+import org.freeplane.features.common.edge.EdgeModel;
 import org.freeplane.features.common.edge.EdgeStyle;
 import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
@@ -47,10 +47,10 @@ class ApplyPatternAction extends MultipleNodeAction {
 	/**
 	 */
 	public static String edgeWidthIntToString(final int value) {
-		if (value == EdgeExtension.WIDTH_PARENT) {
+		if (value == EdgeModel.WIDTH_PARENT) {
 			return null;
 		}
-		if (value == EdgeExtension.WIDTH_THIN) {
+		if (value == EdgeModel.WIDTH_THIN) {
 			return EdgeStyle.EDGESTYLE_THIN;
 		}
 		return Integer.toString(value);
@@ -60,10 +60,10 @@ class ApplyPatternAction extends MultipleNodeAction {
 	 */
 	public static int edgeWidthStringToInt(final String value) {
 		if (value == null) {
-			return EdgeExtension.WIDTH_PARENT;
+			return EdgeModel.WIDTH_PARENT;
 		}
 		if (value.equals(EdgeStyle.EDGESTYLE_THIN)) {
-			return EdgeExtension.WIDTH_THIN;
+			return EdgeModel.WIDTH_THIN;
 		}
 		return Integer.valueOf(value).intValue();
 	}
@@ -168,7 +168,7 @@ class ApplyPatternAction extends MultipleNodeAction {
 				width = ApplyPatternAction.edgeWidthStringToInt(patternEdgeWidth);
 			}
 			else {
-				width = EdgeExtension.WIDTH_PARENT;
+				width = EdgeModel.WIDTH_PARENT;
 			}
 			((MEdgeController) EdgeController.getController(getModeController())).setWidth(node, width);
 		}

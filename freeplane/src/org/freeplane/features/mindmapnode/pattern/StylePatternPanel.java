@@ -48,7 +48,7 @@ import org.freeplane.core.resources.ui.PropertyBean;
 import org.freeplane.core.resources.ui.SeparatorProperty;
 import org.freeplane.core.resources.ui.StringProperty;
 import org.freeplane.core.resources.ui.ThreeCheckBoxProperty;
-import org.freeplane.features.common.edge.EdgeExtension;
+import org.freeplane.features.common.edge.EdgeModel;
 import org.freeplane.features.common.edge.EdgeStyle;
 import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
@@ -312,8 +312,8 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 
 	private HashMap getEdgeWidthTransformation() {
 		final HashMap transformator = new HashMap();
-		transformator.put(StylePatternPanel.EDGE_WIDTHS[0], new Integer(EdgeExtension.WIDTH_PARENT));
-		transformator.put(StylePatternPanel.EDGE_WIDTHS[1], new Integer(EdgeExtension.WIDTH_THIN));
+		transformator.put(StylePatternPanel.EDGE_WIDTHS[0], new Integer(EdgeModel.WIDTH_PARENT));
+		transformator.put(StylePatternPanel.EDGE_WIDTHS[1], new Integer(EdgeModel.WIDTH_THIN));
 		transformator.put(StylePatternPanel.EDGE_WIDTHS[2], new Integer(1));
 		transformator.put(StylePatternPanel.EDGE_WIDTHS[3], new Integer(2));
 		transformator.put(StylePatternPanel.EDGE_WIDTHS[4], new Integer(4));

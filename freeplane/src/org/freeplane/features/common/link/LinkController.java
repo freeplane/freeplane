@@ -35,10 +35,10 @@ import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.modecontroller.ExclusivePropertyChain;
+import org.freeplane.core.modecontroller.IPropertyHandler;
 import org.freeplane.core.modecontroller.INodeSelectionListener;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
-import org.freeplane.core.model.IFpPropertyHandler;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
@@ -90,12 +90,12 @@ public class LinkController implements IExtension {
 			listener = new ArrowLinkListener();
 			ResourceController.getResourceController().addPropertyChangeListener(listener);
 		}
-		addColorGetter(ResourceControllerProperties.NODE, new IFpPropertyHandler<Color, ArrowLinkModel>() {
+		addColorGetter(ResourceControllerProperties.NODE, new IPropertyHandler<Color, ArrowLinkModel>() {
 			public Color getProperty(final ArrowLinkModel model, final Color currentValue) {
 				return model.getColor();
 			}
 		});
-		addColorGetter(ResourceControllerProperties.DEFAULT, new IFpPropertyHandler<Color, ArrowLinkModel>() {
+		addColorGetter(ResourceControllerProperties.DEFAULT, new IPropertyHandler<Color, ArrowLinkModel>() {
 			public Color getProperty(final ArrowLinkModel model, final Color currentValue) {
 				return standardColor;
 			}
@@ -107,9 +107,9 @@ public class LinkController implements IExtension {
 		new LinkBuilder(this).registerBy(readManager, writeManager);
 	}
 
-	public IFpPropertyHandler<Color, ArrowLinkModel> addColorGetter(final Integer key,
-	                                                             final IFpPropertyHandler<Color, ArrowLinkModel> getter) {
-		return colorHandlers.put(key, getter);
+	public IPropertyHandler<Color, ArrowLinkModel> addColorGetter(final Integer key,
+	                                                             final IPropertyHandler<Color, ArrowLinkModel> getter) {
+		return colorHandlers.addGetter(key, getter);
 	}
 
 	/**
@@ -218,7 +218,7 @@ public class LinkController implements IExtension {
 		}
 	}
 
-	public IFpPropertyHandler<Color, ArrowLinkModel> removeColorGetter(final Integer key) {
+	public IPropertyHandler<Color, ArrowLinkModel> removeColorGetter(final Integer key) {
 		return colorHandlers.removeGetter(key);
 	}
 

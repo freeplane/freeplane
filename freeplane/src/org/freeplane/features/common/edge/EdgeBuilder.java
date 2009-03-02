@@ -42,8 +42,8 @@ class EdgeBuilder implements IElementDOMHandler, IExtensionElementWriter {
 	public EdgeBuilder() {
 	}
 
-	protected EdgeExtension createEdge(final NodeModel node) {
-		return new EdgeExtension();
+	protected EdgeModel createEdge(final NodeModel node) {
+		return new EdgeModel();
 	}
 
 	public Object createElement(final Object parent, final String tag, final IXMLElement attributes) {
@@ -57,9 +57,9 @@ class EdgeBuilder implements IElementDOMHandler, IExtensionElementWriter {
 		/* attributes */
 		if (parent instanceof NodeModel) {
 			final NodeModel node = (NodeModel) parent;
-			if (userObject instanceof EdgeExtension) {
-				final EdgeExtension edge = (EdgeExtension) userObject;
-				EdgeExtension.setModel(node, edge);
+			if (userObject instanceof EdgeModel) {
+				final EdgeModel edge = (EdgeModel) userObject;
+				EdgeModel.setModel(node, edge);
 			}
 			return;
 		}
@@ -68,27 +68,27 @@ class EdgeBuilder implements IElementDOMHandler, IExtensionElementWriter {
 	private void registerAttributeHandlers(final ReadManager reader) {
 		reader.addAttributeHandler("edge", "STYLE", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
-				final EdgeExtension edge = (EdgeExtension) userObject;
+				final EdgeModel edge = (EdgeModel) userObject;
 				edge.setStyle(value.toString());
 			}
 		});
 		reader.addAttributeHandler("edge", "HIDE", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
-				final EdgeExtension edge = (EdgeExtension) userObject;
+				final EdgeModel edge = (EdgeModel) userObject;
 				edge.setStyle(EdgeStyle.EDGESTYLE_HIDDEN);
 			}
 		});
 		reader.addAttributeHandler("edge", "COLOR", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
-				final EdgeExtension edge = (EdgeExtension) userObject;
+				final EdgeModel edge = (EdgeModel) userObject;
 				edge.setColor(TreeXmlReader.xmlToColor(value.toString()));
 			}
 		});
 		reader.addAttributeHandler("edge", "WIDTH", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
-				final EdgeExtension edge = (EdgeExtension) userObject;
+				final EdgeModel edge = (EdgeModel) userObject;
 				if (value.toString().equals(EdgeStyle.EDGESTYLE_THIN)) {
-					edge.setWidth(EdgeExtension.WIDTH_THIN);
+					edge.setWidth(EdgeModel.WIDTH_THIN);
 				}
 				else {
 					edge.setWidth(Integer.parseInt(value.toString()));
@@ -102,7 +102,7 @@ class EdgeBuilder implements IElementDOMHandler, IExtensionElementWriter {
 	public void registerBy(final ReadManager reader, final WriteManager writer) {
 		reader.addElementHandler("edge", this);
 		registerAttributeHandlers(reader);
-		writer.addExtensionElementWriter(EdgeExtension.class, this);
+		writer.addExtensionElementWriter(EdgeModel.class, this);
 	}
 
 	public void setAttributes(final String tag, final Object node, final IXMLElement attributes) {
@@ -110,11 +110,11 @@ class EdgeBuilder implements IElementDOMHandler, IExtensionElementWriter {
 
 	public void writeContent(final ITreeWriter writer, final Object node, final IExtension extension)
 	        throws IOException {
-		final EdgeExtension model = (EdgeExtension) extension;
+		final EdgeModel model = (EdgeModel) extension;
 		final String style = model.getStyle();
 		final Color color = model.getColor();
 		final int width = model.getWidth();
-		if (style != null || color != null || width != EdgeExtension.DEFAULT_WIDTH) {
+		if (style != null || color != null || width != EdgeModel.DEFAULT_WIDTH) {
 			final XMLElement edge = new XMLElement();
 			edge.setName("edge");
 			boolean relevant = false;
@@ -130,8 +130,8 @@ class EdgeBuilder implements IElementDOMHandler, IExtensionElementWriter {
 				edge.setAttribute("COLOR", FpColor.colorToXml(color));
 				relevant = true;
 			}
-			if (width != EdgeExtension.WIDTH_PARENT) {
-				if (width == EdgeExtension.WIDTH_THIN) {
+			if (width != EdgeModel.WIDTH_PARENT) {
+				if (width == EdgeModel.WIDTH_THIN) {
 					edge.setAttribute("WIDTH", EdgeStyle.EDGESTYLE_THIN);
 				}
 				else {

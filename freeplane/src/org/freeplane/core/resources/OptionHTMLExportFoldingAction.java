@@ -26,7 +26,7 @@ import javax.swing.AbstractAction;
 import org.freeplane.core.actions.IFreeplaneAction;
 
 
-public class OptionHTMLExportFoldingAction extends AbstractAction implements IFreeplaneAction{
+ class OptionHTMLExportFoldingAction extends AbstractAction implements IFreeplaneAction{
 	private static final long serialVersionUID = 602116895676184299L;
 	static final String NAME = "optionHTMLExportFoldingAction";
 

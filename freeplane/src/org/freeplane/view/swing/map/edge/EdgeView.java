@@ -28,7 +28,7 @@ import java.awt.Stroke;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.common.edge.EdgeController;
-import org.freeplane.features.common.edge.EdgeExtension;
+import org.freeplane.features.common.edge.EdgeModel;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
@@ -81,7 +81,7 @@ public abstract class EdgeView {
 
 	public Stroke getStroke() {
 		final int width = getWidth();
-		if (width == EdgeExtension.WIDTH_THIN) {
+		if (width == EdgeModel.WIDTH_THIN) {
 			return EdgeView.DEF_STROKE;
 		}
 		return new BasicStroke(width * getMap().getZoom(), BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER);

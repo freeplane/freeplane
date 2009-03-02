@@ -30,9 +30,9 @@ import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.modecontroller.CombinedPropertyChain;
 import org.freeplane.core.modecontroller.ExclusivePropertyChain;
+import org.freeplane.core.modecontroller.IPropertyHandler;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
-import org.freeplane.core.model.IFpPropertyHandler;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
@@ -65,7 +65,7 @@ public class NodeStyleController implements IExtension {
 		textColorHandlers = new ExclusivePropertyChain<Color, NodeModel>();
 		backgroundColorHandlers = new ExclusivePropertyChain<Color, NodeModel>();
 		shapeHandlers = new ExclusivePropertyChain<String, NodeModel>();
-		addFontGetter(CombinedPropertyChain.NODE, new IFpPropertyHandler<Font, NodeModel>() {
+		addFontGetter(CombinedPropertyChain.NODE, new IPropertyHandler<Font, NodeModel>() {
 			public Font getProperty(final NodeModel node, final Font font) {
 				final NodeStyleModel nodeStyleModel = NodeStyleModel.getModel(node);
 				if (nodeStyleModel == null) {
@@ -100,27 +100,27 @@ public class NodeStyleController implements IExtension {
 				return new Font(family, style, size);
 			}
 		});
-		addFontGetter(CombinedPropertyChain.DEFAULT, new IFpPropertyHandler<Font, NodeModel>() {
+		addFontGetter(CombinedPropertyChain.DEFAULT, new IPropertyHandler<Font, NodeModel>() {
 			public Font getProperty(final NodeModel node, final Font currentValue) {
 				return ResourceController.getResourceController().getDefaultFont();
 			}
 		});
-		addColorGetter(ResourceControllerProperties.NODE, new IFpPropertyHandler<Color, NodeModel>() {
+		addColorGetter(ResourceControllerProperties.NODE, new IPropertyHandler<Color, NodeModel>() {
 			public Color getProperty(final NodeModel node, final Color currentValue) {
 				return NodeStyleModel.getColor(node);
 			}
 		});
-		addColorGetter(ResourceControllerProperties.DEFAULT, new IFpPropertyHandler<Color, NodeModel>() {
+		addColorGetter(ResourceControllerProperties.DEFAULT, new IPropertyHandler<Color, NodeModel>() {
 			public Color getProperty(final NodeModel node, final Color currentValue) {
 				return standardNodeTextColor;
 			}
 		});
-		addBackgroundColorGetter(ResourceControllerProperties.NODE, new IFpPropertyHandler<Color, NodeModel>() {
+		addBackgroundColorGetter(ResourceControllerProperties.NODE, new IPropertyHandler<Color, NodeModel>() {
 			public Color getProperty(final NodeModel node, final Color currentValue) {
 				return NodeStyleModel.getBackgroundColor(node);
 			}
 		});
-		addShapeGetter(ResourceControllerProperties.NODE, new IFpPropertyHandler<String, NodeModel>() {
+		addShapeGetter(ResourceControllerProperties.NODE, new IPropertyHandler<String, NodeModel>() {
 			public String getProperty(final NodeModel node, final String currentValue) {
 				return getShape(node);
 			}
@@ -174,24 +174,24 @@ public class NodeStyleController implements IExtension {
 		}
 	}
 
-	public IFpPropertyHandler<Color, NodeModel> addBackgroundColorGetter(final Integer key,
-	                                                                  final IFpPropertyHandler<Color, NodeModel> getter) {
-		return backgroundColorHandlers.put(key, getter);
+	public IPropertyHandler<Color, NodeModel> addBackgroundColorGetter(final Integer key,
+	                                                                  final IPropertyHandler<Color, NodeModel> getter) {
+		return backgroundColorHandlers.addGetter(key, getter);
 	}
 
-	public IFpPropertyHandler<Color, NodeModel> addColorGetter(final Integer key,
-	                                                        final IFpPropertyHandler<Color, NodeModel> getter) {
-		return textColorHandlers.put(key, getter);
+	public IPropertyHandler<Color, NodeModel> addColorGetter(final Integer key,
+	                                                        final IPropertyHandler<Color, NodeModel> getter) {
+		return textColorHandlers.addGetter(key, getter);
 	}
 
-	public IFpPropertyHandler<Font, NodeModel> addFontGetter(final Integer key,
-	                                                      final IFpPropertyHandler<Font, NodeModel> getter) {
+	public IPropertyHandler<Font, NodeModel> addFontGetter(final Integer key,
+	                                                      final IPropertyHandler<Font, NodeModel> getter) {
 		return fontHandlers.addGetter(key, getter);
 	}
 
-	public IFpPropertyHandler<String, NodeModel> addShapeGetter(final Integer key,
-	                                                         final IFpPropertyHandler<String, NodeModel> getter) {
-		return shapeHandlers.put(key, getter);
+	public IPropertyHandler<String, NodeModel> addShapeGetter(final Integer key,
+	                                                         final IPropertyHandler<String, NodeModel> getter) {
+		return shapeHandlers.addGetter(key, getter);
 	}
 
 	private void createPropertyChangeListener() {
@@ -244,19 +244,19 @@ public class NodeStyleController implements IExtension {
 		return getFont(node).isItalic();
 	}
 
-	public IFpPropertyHandler<Color, NodeModel> removeBackgroundColorGetter(final Integer key) {
+	public IPropertyHandler<Color, NodeModel> removeBackgroundColorGetter(final Integer key) {
 		return backgroundColorHandlers.removeGetter(key);
 	}
 
-	public IFpPropertyHandler<Color, NodeModel> removeColorGetter(final Integer key) {
+	public IPropertyHandler<Color, NodeModel> removeColorGetter(final Integer key) {
 		return textColorHandlers.removeGetter(key);
 	}
 
-	public IFpPropertyHandler<Font, NodeModel> removeFontGetter(final Integer key) {
+	public IPropertyHandler<Font, NodeModel> removeFontGetter(final Integer key) {
 		return fontHandlers.removeGetter(key);
 	}
 
-	public IFpPropertyHandler<String, NodeModel> removeShapeGetter(final Integer key) {
+	public IPropertyHandler<String, NodeModel> removeShapeGetter(final Integer key) {
 		return shapeHandlers.removeGetter(key);
 	}
 }

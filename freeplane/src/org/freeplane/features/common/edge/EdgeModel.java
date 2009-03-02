@@ -24,32 +24,32 @@ import java.awt.Color;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.model.NodeModel;
 
-public class EdgeExtension implements IExtension {
+public class EdgeModel implements IExtension {
 	public static final int WIDTH_PARENT = -1;
 	public static final int WIDTH_THIN = 0;
 	private Color color;
 	private String style;
-	private int width = EdgeExtension.DEFAULT_WIDTH;
+	private int width = EdgeModel.DEFAULT_WIDTH;
 	static final int DEFAULT_WIDTH = WIDTH_PARENT;
 
-	public static EdgeExtension createEdgeExtension(final NodeModel node) {
-		EdgeExtension edge = (EdgeExtension) node.getExtension(EdgeExtension.class);
+	public static EdgeModel createEdgeModel(final NodeModel node) {
+		EdgeModel edge = (EdgeModel) node.getExtension(EdgeModel.class);
 		if (edge == null) {
-			edge = new EdgeExtension();
+			edge = new EdgeModel();
 			node.putExtension(edge);
 		}
 		return edge;
 	}
 
-	public static EdgeExtension getModel(final NodeModel node) {
-		return (EdgeExtension) node.getExtension(EdgeExtension.class);
+	public static EdgeModel getModel(final NodeModel node) {
+		return (EdgeModel) node.getExtension(EdgeModel.class);
 	}
 
-	public static void setModel(final NodeModel node, final EdgeExtension edge) {
+	public static void setModel(final NodeModel node, final EdgeModel edge) {
 		node.putExtension(edge);
 	}
 
-	public EdgeExtension() {
+	public EdgeModel() {
 	}
 
 	public Color getColor() {

@@ -22,7 +22,7 @@ package org.freeplane.main.filemode;
 import javax.swing.JPopupMenu;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.model.IFpPropertyHandler;
+import org.freeplane.core.modecontroller.IPropertyHandler;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
@@ -61,7 +61,7 @@ public class FModeControllerFactory {
 		ClipboardController.install(modeController, new ClipboardController(modeController));
 		LocationController.install(modeController, new LocationController(modeController));
 		NodeStyleController.getController(modeController).addShapeGetter(new Integer(0),
-		    new IFpPropertyHandler<String, NodeModel>() {
+		    new IPropertyHandler<String, NodeModel>() {
 			    public String getProperty(final NodeModel node, final String currentValue) {
 				    return "fork";
 			    }

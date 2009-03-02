@@ -30,10 +30,7 @@ import javax.swing.JApplet;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.enums.ResourceControllerProperties;
-import org.freeplane.core.resources.OptionHTMLExportFoldingAction;
-import org.freeplane.core.resources.OptionSelectionMechanismAction;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.ShowSelectionAsRectangleAction;
 
 /**
  * @author Dimitry Polivaev
@@ -42,12 +39,9 @@ class AppletResourceController extends ResourceController {
 	final private JApplet applet;
 	private Properties userProps;
 
-	/**
-	 * @param controller
-	 */
-	public AppletResourceController(final JApplet applet) {
+	public AppletResourceController(FreeplaneApplet freeplaneApplet, Controller controller) {
 		super();
-		this.applet = applet;
+		this.applet = freeplaneApplet;
 		final URL defaultPropsURL = getResource(ResourceControllerProperties.FREEPLANE_PROPERTIES);
 		try {
 			userProps = new Properties();
@@ -63,10 +57,6 @@ class AppletResourceController extends ResourceController {
 			final String key = (String) allKeys.nextElement();
 			setPropertyByParameter(key);
 		}
-	}
-
-	public AppletResourceController(FreeplaneApplet freeplaneApplet, Controller controller) {
-		this(freeplaneApplet);
 		init(controller);
 	}
 

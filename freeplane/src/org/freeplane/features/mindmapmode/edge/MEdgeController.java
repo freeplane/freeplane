@@ -27,7 +27,7 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.features.common.edge.EdgeController;
-import org.freeplane.features.common.edge.EdgeExtension;
+import org.freeplane.features.common.edge.EdgeModel;
 import org.freeplane.features.common.edge.EdgeStyle;
 
 /**
@@ -38,8 +38,8 @@ public class MEdgeController extends EdgeController {
 		super(modeController);
 		final Controller controller = modeController.getController();
 		modeController.putAction("edgeColor", new EdgeColorAction(controller));
-		modeController.putAction("EdgeWidth_WIDTH_PARENT", new EdgeWidthAction(modeController, EdgeExtension.WIDTH_PARENT));
-		modeController.putAction("EdgeWidth_WIDTH_THIN", new EdgeWidthAction(modeController, EdgeExtension.WIDTH_THIN));
+		modeController.putAction("EdgeWidth_WIDTH_PARENT", new EdgeWidthAction(modeController, EdgeModel.WIDTH_PARENT));
+		modeController.putAction("EdgeWidth_WIDTH_THIN", new EdgeWidthAction(modeController, EdgeModel.WIDTH_THIN));
 		modeController.putAction("EdgeWidth_1", new EdgeWidthAction(modeController, 1));
 		modeController.putAction("EdgeWidth_2", new EdgeWidthAction(modeController, 2));
 		modeController.putAction("EdgeWidth_4", new EdgeWidthAction(modeController, 4));
@@ -63,7 +63,7 @@ public class MEdgeController extends EdgeController {
 		}
 		final IUndoableActor actor = new IUndoableActor() {
 			public void act() {
-				EdgeExtension.createEdgeExtension(node).setColor(color);
+				EdgeModel.createEdgeModel(node).setColor(color);
 				modeController.getMapController().nodeChanged(node);
 			}
 
@@ -72,7 +72,7 @@ public class MEdgeController extends EdgeController {
 			}
 
 			public void undo() {
-				EdgeExtension.createEdgeExtension(node).setColor(oldColor);
+				EdgeModel.createEdgeModel(node).setColor(oldColor);
 				modeController.getMapController().nodeChanged(node);
 			}
 		};
@@ -89,14 +89,14 @@ public class MEdgeController extends EdgeController {
 			}
 		}
 		else{
-			oldStyle = EdgeExtension.createEdgeExtension(node).getStyle();
+			oldStyle = EdgeModel.createEdgeModel(node).getStyle();
 			if (oldStyle == null) {
 				return;
 			}
 		}
 		final IUndoableActor actor = new IUndoableActor() {
 			public void act() {
-				EdgeExtension.createEdgeExtension(node).setStyle(style);
+				EdgeModel.createEdgeModel(node).setStyle(style);
 				modeController.getMapController().nodeChanged(node);
 				edgeStyleRefresh(node);
 			}
@@ -105,7 +105,7 @@ public class MEdgeController extends EdgeController {
 				final ListIterator childrenFolded = modeController.getMapController().childrenFolded(node);
 				while (childrenFolded.hasNext()) {
 					final NodeModel child = (NodeModel) childrenFolded.next();
-					final EdgeExtension edge = EdgeExtension.getModel(child);
+					final EdgeModel edge = EdgeModel.getModel(child);
 					if (edge == null || edge.getStyle() == null) {
 						modeController.getMapController().nodeRefresh(child);
 						edgeStyleRefresh(child);
@@ -118,7 +118,7 @@ public class MEdgeController extends EdgeController {
 			}
 
 			public void undo() {
-				EdgeExtension.createEdgeExtension(node).setStyle(oldStyle);
+				EdgeModel.createEdgeModel(node).setStyle(oldStyle);
 				modeController.getMapController().nodeChanged(node);
 				edgeStyleRefresh(node);
 			}
@@ -134,7 +134,7 @@ public class MEdgeController extends EdgeController {
 		}
 		final IUndoableActor actor = new IUndoableActor() {
 			public void act() {
-				EdgeExtension.createEdgeExtension(node).setWidth(width);
+				EdgeModel.createEdgeModel(node).setWidth(width);
 				modeController.getMapController().nodeChanged(node);
 				edgeWidthRefresh(node);
 			}
@@ -143,8 +143,8 @@ public class MEdgeController extends EdgeController {
 				final ListIterator childrenFolded = modeController.getMapController().childrenFolded(node);
 				while (childrenFolded.hasNext()) {
 					final NodeModel child = (NodeModel) childrenFolded.next();
-					final EdgeExtension edge = EdgeExtension.getModel(child);
-					if (edge == null || edge.getWidth() == EdgeExtension.WIDTH_PARENT) {
+					final EdgeModel edge = EdgeModel.getModel(child);
+					if (edge == null || edge.getWidth() == EdgeModel.WIDTH_PARENT) {
 						modeController.getMapController().nodeRefresh(child);
 						edgeWidthRefresh(child);
 					}
@@ -156,7 +156,7 @@ public class MEdgeController extends EdgeController {
 			}
 
 			public void undo() {
-				EdgeExtension.createEdgeExtension(node).setWidth(oldWidth);
+				EdgeModel.createEdgeModel(node).setWidth(oldWidth);
 				modeController.getMapController().nodeChanged(node);
 				edgeWidthRefresh(node);
 			}

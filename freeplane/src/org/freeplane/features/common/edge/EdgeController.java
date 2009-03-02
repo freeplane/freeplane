@@ -28,9 +28,9 @@ import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.modecontroller.ExclusivePropertyChain;
+import org.freeplane.core.modecontroller.IPropertyHandler;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
-import org.freeplane.core.model.IFpPropertyHandler;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
@@ -77,13 +77,13 @@ public class EdgeController implements IExtension {
 			listener = new EdgePropertyListener();
 			ResourceController.getResourceController().addPropertyChangeListener(listener);
 		}
-		addColorGetter(ResourceControllerProperties.NODE, new IFpPropertyHandler<Color, NodeModel>() {
+		addColorGetter(ResourceControllerProperties.NODE, new IPropertyHandler<Color, NodeModel>() {
 			public Color getProperty(final NodeModel node, final Color currentValue) {
-				final EdgeExtension edge = EdgeExtension.getModel(node);
+				final EdgeModel edge = EdgeModel.getModel(node);
 				return edge == null ? null : edge.getColor();
 			}
 		});
-		addColorGetter(ResourceControllerProperties.DEFAULT, new IFpPropertyHandler<Color, NodeModel>() {
+		addColorGetter(ResourceControllerProperties.DEFAULT, new IPropertyHandler<Color, NodeModel>() {
 			public Color getProperty(final NodeModel node, final Color currentValue) {
 				if (node.isRoot()) {
 					return standardColor;
@@ -91,13 +91,13 @@ public class EdgeController implements IExtension {
 				return getColor(node.getParentNode());
 			}
 		});
-		addStyleGetter(ResourceControllerProperties.NODE, new IFpPropertyHandler<String, NodeModel>() {
+		addStyleGetter(ResourceControllerProperties.NODE, new IPropertyHandler<String, NodeModel>() {
 			public String getProperty(final NodeModel node, final String currentValue) {
-				final EdgeExtension edge = EdgeExtension.getModel(node);
+				final EdgeModel edge = EdgeModel.getModel(node);
 				return edge == null ? null : edge.getStyle();
 			}
 		});
-		addStyleGetter(ResourceControllerProperties.DEFAULT, new IFpPropertyHandler<String, NodeModel>() {
+		addStyleGetter(ResourceControllerProperties.DEFAULT, new IPropertyHandler<String, NodeModel>() {
 			public String getProperty(final NodeModel node, final String currentValue) {
 				if (node.isRoot()) {
 					return standardStyle;
@@ -105,23 +105,23 @@ public class EdgeController implements IExtension {
 				return getStyle(node.getParentNode());
 			}
 		});
-		addWidthGetter(ResourceControllerProperties.NODE, new IFpPropertyHandler<Integer, NodeModel>() {
+		addWidthGetter(ResourceControllerProperties.NODE, new IPropertyHandler<Integer, NodeModel>() {
 			public Integer getProperty(final NodeModel node, final Integer currentValue) {
-				final EdgeExtension edge = EdgeExtension.getModel(node);
-				int width = edge == null ? EdgeExtension.DEFAULT_WIDTH : edge.getWidth();
-				if (width == EdgeExtension.WIDTH_PARENT) {
+				final EdgeModel edge = EdgeModel.getModel(node);
+				int width = edge == null ? EdgeModel.DEFAULT_WIDTH : edge.getWidth();
+				if (width == EdgeModel.WIDTH_PARENT) {
 					if (node.isRoot()) {
-						width = EdgeExtension.WIDTH_THIN;
+						width = EdgeModel.WIDTH_THIN;
 						return new Integer(width);
 					}
 					return getWidth(node.getParentNode());
 				}
-				return width != EdgeExtension.DEFAULT_WIDTH ? new Integer(width) : null;
+				return width != EdgeModel.DEFAULT_WIDTH ? new Integer(width) : null;
 			}
 		});
-		addWidthGetter(ResourceControllerProperties.DEFAULT, new IFpPropertyHandler<Integer, NodeModel>() {
+		addWidthGetter(ResourceControllerProperties.DEFAULT, new IPropertyHandler<Integer, NodeModel>() {
 			public Integer getProperty(final NodeModel node, final Integer currentValue) {
-				return new Integer(EdgeExtension.WIDTH_THIN);
+				return new Integer(EdgeModel.WIDTH_THIN);
 			}
 		});
 		final MapController mapController = modeController.getMapController();
@@ -135,19 +135,19 @@ public class EdgeController implements IExtension {
     	return modeController;
     }
 
-	public IFpPropertyHandler<Color, NodeModel> addColorGetter(final Integer key,
-	                                                        final IFpPropertyHandler<Color, NodeModel> getter) {
-		return colorHandlers.put(key, getter);
+	public IPropertyHandler<Color, NodeModel> addColorGetter(final Integer key,
+	                                                        final IPropertyHandler<Color, NodeModel> getter) {
+		return colorHandlers.addGetter(key, getter);
 	}
 
-	public IFpPropertyHandler<String, NodeModel> addStyleGetter(final Integer key,
-	                                                         final IFpPropertyHandler<String, NodeModel> getter) {
-		return styleHandlers.put(key, getter);
+	public IPropertyHandler<String, NodeModel> addStyleGetter(final Integer key,
+	                                                         final IPropertyHandler<String, NodeModel> getter) {
+		return styleHandlers.addGetter(key, getter);
 	}
 
-	public IFpPropertyHandler<Integer, NodeModel> addWidthGetter(final Integer key,
-	                                                          final IFpPropertyHandler<Integer, NodeModel> getter) {
-		return widthHandlers.put(key, getter);
+	public IPropertyHandler<Integer, NodeModel> addWidthGetter(final Integer key,
+	                                                          final IPropertyHandler<Integer, NodeModel> getter) {
+		return widthHandlers.addGetter(key, getter);
 	}
 
 	public Color getColor(final NodeModel node) {
@@ -162,15 +162,15 @@ public class EdgeController implements IExtension {
 		return widthHandlers.getProperty(node).intValue();
 	}
 
-	public IFpPropertyHandler<Color, NodeModel> removeColorGetter(final Integer key) {
+	public IPropertyHandler<Color, NodeModel> removeColorGetter(final Integer key) {
 		return colorHandlers.removeGetter(key);
 	}
 
-	public IFpPropertyHandler<String, NodeModel> removeStyleGetter(final Integer key) {
+	public IPropertyHandler<String, NodeModel> removeStyleGetter(final Integer key) {
 		return styleHandlers.removeGetter(key);
 	}
 
-	public IFpPropertyHandler<Integer, NodeModel> removeWidthGetter(final Integer key) {
+	public IPropertyHandler<Integer, NodeModel> removeWidthGetter(final Integer key) {
 		return widthHandlers.removeGetter(key);
 	}
 

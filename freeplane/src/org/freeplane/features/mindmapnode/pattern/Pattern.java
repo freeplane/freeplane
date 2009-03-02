@@ -5,7 +5,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 
 import org.freeplane.core.util.LogTool;
-import org.freeplane.features.common.edge.EdgeExtension;
+import org.freeplane.features.common.edge.EdgeModel;
 import org.freeplane.n3.nanoxml.IXMLElement;
 import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;

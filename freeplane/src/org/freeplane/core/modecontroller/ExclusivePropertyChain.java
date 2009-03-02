@@ -23,18 +23,17 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.freeplane.core.model.IFpPropertyHandler;
 
 @Deprecated
 public class ExclusivePropertyChain<V, T> {
-	final private Map<Integer, IFpPropertyHandler<V, T>> map = new TreeMap<Integer, IFpPropertyHandler<V, T>>();
+	final private Map<Integer, IPropertyHandler<V, T>> map = new TreeMap<Integer, IPropertyHandler<V, T>>();
 
-	public IFpPropertyHandler<V, T> put(final Integer key, final IFpPropertyHandler<V, T> getter) {
+	public IPropertyHandler<V, T> addGetter(final Integer key, final IPropertyHandler<V, T> getter) {
 		return map.put(key, getter);
 	}
 
 	public V getProperty(final T node) {
-		final Iterator<IFpPropertyHandler<V, T>> iterator = map.values().iterator();
+		final Iterator<IPropertyHandler<V, T>> iterator = map.values().iterator();
 		while (iterator.hasNext()) {
 			final V property = iterator.next().getProperty(node, null);
 			if (property != null) {
@@ -44,7 +43,7 @@ public class ExclusivePropertyChain<V, T> {
 		return null;
 	}
 
-	public IFpPropertyHandler<V, T> removeGetter(final Integer key) {
+	public IPropertyHandler<V, T> removeGetter(final Integer key) {
 		return map.remove(key);
 	}
 }
