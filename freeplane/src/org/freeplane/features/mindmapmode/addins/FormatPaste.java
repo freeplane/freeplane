@@ -23,7 +23,7 @@ import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.MenuBuilder;
@@ -87,7 +87,7 @@ public class FormatPaste extends MultipleNodeAction {
 	private void pasteFormat(final NodeModel node) {
 		final Pattern pattern = FormatCopy.getPattern();
 		if (pattern == null) {
-			JOptionPane.showMessageDialog(getController().getViewController().getContentPane(), ResourceController
+			JOptionPane.showMessageDialog(getController().getViewController().getContentPane(), FreeplaneResourceBundle
 			    .getText("no_format_copy_before_format_paste"), "" /*=Title*/, JOptionPane.ERROR_MESSAGE);
 			return;
 		}

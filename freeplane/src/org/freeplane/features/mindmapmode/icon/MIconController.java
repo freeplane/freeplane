@@ -25,6 +25,7 @@ import java.io.FilenameFilter;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.Action;
@@ -56,7 +57,7 @@ import org.freeplane.view.swing.ui.UserInputListenerFactory;
  * @author Dimitry Polivaev
  */
 public class MIconController extends IconController {
-	static final private Vector iconActions = new Vector();
+	static final private List<Action> iconActions = new Vector<Action>();
 	final private JToolBar iconToolBar;
 	final private JAutoScrollBarPane iconToolBarScrollPane;
 
@@ -110,7 +111,7 @@ public class MIconController extends IconController {
 		final RemoveIconAction removeLastIconAction = new RemoveIconAction(controller);
 		modeController.putAction("removeLastIconAction", removeLastIconAction);
 		modeController.putAction("removeAllIconsAction", new RemoveAllIconsAction(controller));
-		final Vector iconNames = MindIcon.getAllIconNames();
+		final List<String> iconNames = MindIcon.getAllIconNames();
 		final File iconDir = new File(ResourceController.getResourceController().getFreeplaneUserDirectory(), "icons");
 		if (iconDir.exists()) {
 			final String[] userIconArray = iconDir.list(new FilenameFilter() {

@@ -138,9 +138,9 @@ public class MPatternController implements IExtension {
 		for (int i = 0; i < patterns.length; i++) {
 			final Pattern actualPattern = (Pattern) patternsList.get(i);
 			patterns[i] = new ApplyPatternAction(modeController, actualPattern);
-			final PatternProperty patternIcon = actualPattern.getPatternIcon();
-			if (patternIcon != null && patternIcon.getValue() != null) {
-				patterns[i].putValue(Action.SMALL_ICON, MindIcon.factory(patternIcon.getValue()).getIcon());
+			final String patternIcon = actualPattern.getPatternIcon();
+			if (patternIcon != null) {
+				patterns[i].putValue(Action.SMALL_ICON, MindIcon.factory(patternIcon).getIcon());
 			}
 		}
 	}
@@ -169,7 +169,7 @@ public class MPatternController implements IExtension {
 			reader = new FileReader(patternsFile);
 		}
 		else {
-			System.out.println("User patterns file " + patternsFile + " not found.");
+			LogTool.warn("User patterns file " + patternsFile + " not found.");
 			reader = new InputStreamReader(ResourceController.getResourceController().getResource(ResourceControllerProperties.XML_PATTERNS_XML)
 			    .openStream());
 		}

@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.ResourceController;
 
 /**
@@ -42,12 +43,12 @@ public class HelpController implements IExtension {
 	public HelpController(final Controller controller) {
 		super();
 		controller.putAction(new AboutAction(controller));
-		controller.putAction(new OpenURLAction(controller, ResourceController.getResourceController().getText(
+		controller.putAction(new OpenURLAction(controller, FreeplaneResourceBundle.getText(
 		    "Freeplane"), ResourceController.getResourceController().getProperty("webFreeplaneLocation")));
-		controller.putAction(new FaqOpenURLAction(controller, ResourceController.getResourceController().getText("FAQ"),
+		controller.putAction(new FaqOpenURLAction(controller, FreeplaneResourceBundle.getText("FAQ"),
 		    ResourceController.getResourceController().getProperty("webFAQLocation")));
 		controller.putAction(new KeyDocumentationAction(controller));
-		webDocu = new WebDocuAction(controller, ResourceController.getResourceController().getText("webDocu"), ResourceController
+		webDocu = new WebDocuAction(controller, FreeplaneResourceBundle.getText("webDocu"), ResourceController
 		    .getResourceController().getProperty("webDocuLocation"));
 		controller.putAction(webDocu);
 		controller.putAction(new DocumentationAction(controller));

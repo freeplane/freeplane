@@ -27,22 +27,31 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
+import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.BlindIcon;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
+// TODO ARCH rladstaetter 28.02.2009 three way logic tends to be an architecture problem, remove
+@Deprecated
 public class ThreeCheckBoxProperty extends PropertyBean implements IPropertyControl {
+	@Deprecated
 	public static final String DON_T_TOUCH_VALUE = "don_t_touch";
+	@Deprecated
 	protected static final int DON_T_TOUCH_VALUE_INT = 2;
+	@Deprecated
 	static public final String FALSE_VALUE = "false";
+	@Deprecated
 	protected static final int FALSE_VALUE_INT = 1;
 	private static final ImageIcon MINUS_IMAGE = new ImageIcon(ResourceController.getResourceController().getResource(
 	    "/images/edit_remove.png"));
 	private static final Icon NO_IMAGE = new BlindIcon(15);
 	private static final ImageIcon PLUS_IMAGE = new ImageIcon(ResourceController.getResourceController().getResource(
 	    "/images/edit_add.png"));
+	@Deprecated
 	static public final String TRUE_VALUE = "true";
+	@Deprecated
 	protected static final int TRUE_VALUE_INT = 0;
 	JButton mButton = new JButton();
 	protected String mDontTouchValue = "don_t_touch";
@@ -80,8 +89,8 @@ public class ThreeCheckBoxProperty extends PropertyBean implements IPropertyCont
 	}
 
 	public void layout(final DefaultFormBuilder builder) {
-		final JLabel label = builder.append(OptionString.getText(getLabel()), mButton);
-		label.setToolTipText(OptionString.getText(getDescription()));
+		final JLabel label = builder.append(FpStringUtils.getOptionalText(getLabel()), mButton);
+		label.setToolTipText(FpStringUtils.getOptionalText(getDescription()));
 	}
 
 	public void setEnabled(final boolean pEnabled) {

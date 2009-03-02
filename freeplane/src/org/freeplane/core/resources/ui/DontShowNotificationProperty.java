@@ -19,10 +19,9 @@
  */
 package org.freeplane.core.resources.ui;
 
+@Deprecated
 public class DontShowNotificationProperty extends BooleanProperty {
 	public DontShowNotificationProperty(final String label) {
 		super(label);
-		mTrueValue = "true";
-		mFalseValue = "";
 	}
 }

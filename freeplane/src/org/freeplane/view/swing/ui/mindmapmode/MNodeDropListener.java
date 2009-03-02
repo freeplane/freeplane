@@ -35,7 +35,7 @@ import javax.swing.JOptionPane;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.clipboard.MindMapNodesSelection;
@@ -125,7 +125,7 @@ public class MNodeDropListener implements DropTargetListener {
 				int yesorno = JOptionPane.YES_OPTION;
 				if (controller.getSelection().size() >= 5) {
 					yesorno = JOptionPane.showConfirmDialog(controller.getViewController().getContentPane(),
-					    ResourceController.getText("lots_of_links_warning"), Integer.toString(controller.getSelection()
+					    FreeplaneResourceBundle.getText("lots_of_links_warning"), Integer.toString(controller.getSelection()
 					        .size())
 					            + " links to the same node", JOptionPane.YES_NO_OPTION);
 				}
@@ -140,7 +140,7 @@ public class MNodeDropListener implements DropTargetListener {
 			}
 			else {
 				if (!((MMapController) modeController.getMapController()).isWriteable(targetNode)) {
-					final String message = ResourceController.getText("node_is_write_protected");
+					final String message = FreeplaneResourceBundle.getText("node_is_write_protected");
 					JOptionPane.showMessageDialog(controller.getViewController().getContentPane(), message,
 					    "Freeplane", JOptionPane.ERROR_MESSAGE);
 					return;
@@ -151,7 +151,7 @@ public class MNodeDropListener implements DropTargetListener {
 					NodeModel actualNode = targetNode;
 					do {
 						if (selecteds.contains(actualNode)) {
-							final String message = ResourceController.getText("cannot_move_to_child");
+							final String message = FreeplaneResourceBundle.getText("cannot_move_to_child");
 							JOptionPane.showMessageDialog(controller.getViewController().getContentPane(), message,
 							    "Freeplane", JOptionPane.WARNING_MESSAGE);
 							dtde.dropComplete(true);

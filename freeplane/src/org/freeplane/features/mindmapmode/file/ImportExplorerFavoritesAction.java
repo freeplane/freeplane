@@ -29,7 +29,7 @@ import javax.swing.JFileChooser;
 import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.LogTool;
@@ -51,7 +51,7 @@ class ImportExplorerFavoritesAction extends AFreeplaneAction implements IFreepla
 		final JFileChooser chooser = new JFileChooser();
 		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		
-		chooser.setDialogTitle(ResourceController.getText("select_favorites_folder"));
+		chooser.setDialogTitle(FreeplaneResourceBundle.getText("select_favorites_folder"));
 		final int returnVal = chooser.showOpenDialog(getController().getViewController().getContentPane());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			final File folder = chooser.getSelectedFile();

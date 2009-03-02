@@ -35,6 +35,7 @@ import org.codehaus.groovy.ast.ModuleNode;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionDescriptor;
@@ -198,7 +199,7 @@ class ScriptingEngine extends AFreeplaneAction {
 			            + message);
 			return false;
 		}
-		pOutStream.print(ResourceController.getText("plugins/ScriptEditor/window.Result") + value);
+		pOutStream.print(FreeplaneResourceBundle.getText("plugins/ScriptEditor/window.Result") + value);
 		if (assignResult && value != null) {
 			if (assignTo == null) {
 				((MTextController) TextController.getController(pMindMapController))

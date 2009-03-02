@@ -35,7 +35,7 @@ import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.core.util.MultipleValueMap;
 
-class FreeplaneResourceBundle extends ResourceBundle {
+public class FreeplaneResourceBundle extends ResourceBundle {
 	private static final String DEFAULT_LANGUAGE = "en";
 	public static final String POSTFIX_TRANSLATE_ME = "[translate me]";
 	/**
@@ -169,4 +169,17 @@ class FreeplaneResourceBundle extends ResourceBundle {
 			e.printStackTrace();
 		}
 	}
+
+	public static NamedObject createTranslatedString(final String key) {
+    	final String fs = getText(key);
+    	return new NamedObject(key, fs);
+    }
+
+	public static String getText(final String key) {
+    	if (key == null) {
+    		return null;
+    	}
+    	FreeplaneResourceBundle freeplaneResourceBundle = (FreeplaneResourceBundle) ResourceController.getResourceController().getResources();
+    	return freeplaneResourceBundle.getResourceString(key);
+    }
 }

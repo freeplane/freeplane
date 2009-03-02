@@ -27,7 +27,7 @@ import javax.swing.JOptionPane;
 import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.FreeplaneVersion;
-import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.MenuBuilder;
 
 class AboutAction extends AbstractAction implements IFreeplaneAction{
@@ -40,12 +40,12 @@ class AboutAction extends AbstractAction implements IFreeplaneAction{
 	 */
 	AboutAction(final Controller controller) {
 		this.controller = controller;
-		MenuBuilder.setLabelAndMnemonic(this, ResourceController.getText("about"));
+		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText("about"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		JOptionPane.showMessageDialog(controller.getViewController().getViewport(), ResourceController.getText("about_text")
-		        + FreeplaneVersion.getVersion(), ResourceController.getText("about"), JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(controller.getViewController().getViewport(), FreeplaneResourceBundle.getText("about_text")
+		        + FreeplaneVersion.getVersion(), FreeplaneResourceBundle.getText("about"), JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	public String getName() {

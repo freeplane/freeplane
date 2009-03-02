@@ -30,7 +30,7 @@ import org.freeplane.core.modecontroller.INodeChangeListener;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.modecontroller.NodeChangeEvent;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.ActionDescriptor;
 
 /**
@@ -90,8 +90,7 @@ public class CreationModificationPlugin extends PersistentNodeHook implements IN
 		final Object[] messageArguments = { node.getHistoryInformation().getCreatedAt(),
 		        node.getHistoryInformation().getLastModifiedAt() };
 		if (tooltipFormat == null) {
-			// TODO
-			tooltipFormat = ResourceController.getText("CreationModificationPlugin.tooltip_format");
+			tooltipFormat = FreeplaneResourceBundle.getText("CreationModificationPlugin.tooltip_format");
 		}
 		final MessageFormat formatter = new MessageFormat(tooltipFormat);
 		final String message = formatter.format(messageArguments);

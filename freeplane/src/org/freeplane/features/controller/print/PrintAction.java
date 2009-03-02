@@ -25,6 +25,7 @@ import java.awt.print.Printable;
 import javax.swing.ImageIcon;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.LogTool;
@@ -39,7 +40,7 @@ class PrintAction extends AbstractPrintAction {
 		super(printController, null, new ImageIcon(ResourceController.getResourceController().getResource(
 		    "/images/fileprint.png")));
 		this.controller = controller;
-		MenuBuilder.setLabelAndMnemonic(this, isDlg ? ResourceController.getText("print_dialog") : ResourceController.getText("print"));
+		MenuBuilder.setLabelAndMnemonic(this, isDlg ? FreeplaneResourceBundle.getText("print_dialog") : FreeplaneResourceBundle.getText("print"));
 		this.isDlg = isDlg;
 	}
 

@@ -19,41 +19,39 @@
  */
 package org.freeplane.core.resources.ui;
 
+import org.freeplane.core.model.Triple;
 import org.freeplane.core.resources.ResourceController;
 
 /**
  * @author Dimitry Polivaev
  * 26.12.2008
  */
-public class PropertyAdapter {
-	private String description;
-	private final String label;
-	private final String name;
+// TODO ARCH rladstaetter 28.02.2009 a property is a property. finito. there is conceptually no need for an adapter 
+@Deprecated
+public class PropertyAdapter extends Triple<String,String,String>{
 
+	@Deprecated
 	public PropertyAdapter(final String name) {
 		this(name, "OptionPanel." + name, "OptionPanel." + name + ".tooltip");
-		if (ResourceController.getResourceController().getText(description, null) == null) {
-			description = null;
+		if (ResourceController.getResourceController().getText(null, null) == null) {
+			setC(null);
 		}
 	}
 
 	public PropertyAdapter(final String name, final String label, final String description) {
-		super();
+		super(name,label,description);
 		assert name != null;
-		this.name = name;
-		this.label = label;
-		this.description = description;
 	}
 
 	public String getDescription() {
-		return description;
+		return getC();
 	}
 
 	public String getLabel() {
-		return label;
+		return getB();
 	}
 
 	public String getName() {
-		return name;
+		return getA();
 	}
 }

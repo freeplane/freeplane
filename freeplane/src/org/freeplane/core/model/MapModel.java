@@ -34,7 +34,7 @@ import org.freeplane.core.filter.DefaultFilter;
 import org.freeplane.core.filter.IFilter;
 import org.freeplane.core.filter.condition.NoFilteringCondition;
 import org.freeplane.core.modecontroller.ModeController;
-import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.FreeplaneResourceBundle;
 
 public class MapModel {
 	private static Random ran = new Random();
@@ -69,7 +69,7 @@ public class MapModel {
 		nodes = new HashMap<String, NodeModel>();
 		filter = new DefaultFilter(controller, NoFilteringCondition.createCondition(), true, false);
 		if (root == null) {
-			root = new NodeModel(ResourceController.getText("new_mindmap"), this);
+			root = new NodeModel(FreeplaneResourceBundle.getText("new_mindmap"), this);
 			setRoot(root);
 		}
 		else {

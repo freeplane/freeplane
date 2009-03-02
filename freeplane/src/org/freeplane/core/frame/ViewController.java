@@ -52,6 +52,8 @@ import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.FpStringUtils;
+import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.MenuBuilder;
@@ -95,7 +97,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 		controller.putAction(zoomOut);
 		optionAntialiasAction = new OptionAntialiasAction(controller);
 		controller.putAction(optionAntialiasAction);
-		userDefinedZoom = ResourceController.getResourceController().getText("user_defined_zoom");
+		userDefinedZoom = FreeplaneResourceBundle.getText("user_defined_zoom");
 		zoom = new JComboBox(getZooms());
 		zoom.setSelectedItem("100%");
 		zoom.addItem(userDefinedZoom);
@@ -442,15 +444,15 @@ abstract public class ViewController implements IMapViewChangeListener {
 			setTitle("");
 			return;
 		}
-		final Object[] messageArguments = { ResourceController.getText(("mode_" + modeController.getModeName())) };
-		final MessageFormat formatter = new MessageFormat(ResourceController.getText("mode_title"));
+		final Object[] messageArguments = { FreeplaneResourceBundle.getText(("mode_" + modeController.getModeName())) };
+		final MessageFormat formatter = new MessageFormat(FreeplaneResourceBundle.getText("mode_title"));
 		String title = formatter.format(messageArguments);
 		String rawTitle = "";
 		final MapModel model = mapViewManager.getModel();
 		if (model != null) {
 			rawTitle = mapViewManager.getMapViewComponent().getName();
 			title = rawTitle + (model.isSaved() ? "" : "*") + " - " + title
-			        + (model.isReadOnly() ? " (" + ResourceController.getText("read_only") + ")" : "");
+			        + (model.isReadOnly() ? " (" + FreeplaneResourceBundle.getText("read_only") + ")" : "");
 			File file = model.getFile();
             if (file != null) {
                 title += " " + file.getAbsolutePath();
@@ -483,7 +485,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 		mapViewManager.setZoom(zoom);
 		setZoomComboBox(zoom);
 		final Object[] messageArguments = { String.valueOf(zoom * 100f) };
-		final String stringResult = ResourceController.getResourceController().format("user_defined_zoom_status_bar",
+		final String stringResult = FpStringUtils.format("user_defined_zoom_status_bar",
 		    messageArguments);
 		out(stringResult);
 	}

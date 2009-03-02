@@ -43,6 +43,7 @@ import org.freeplane.core.filter.IFilter;
 import org.freeplane.core.modecontroller.INodeViewVisitor;
 import org.freeplane.core.modecontroller.NodeChangeEvent;
 import org.freeplane.core.util.HtmlTools;
+import org.freeplane.core.util.LogTool;
 import org.freeplane.core.util.XmlTool;
 
 /**
@@ -86,7 +87,8 @@ public class NodeModel implements MutableTreeNode {
     }
 
 	public boolean containsExtension(Class<? extends IExtension> clazz) {
-	    return extensionContainer.containsExtension(clazz);
+		LogTool.info("requesting extension: " +clazz);
+		return extensionContainer.containsExtension(clazz);
     }
 
 	public IExtension getExtension(Class<? extends IExtension> clazz) {

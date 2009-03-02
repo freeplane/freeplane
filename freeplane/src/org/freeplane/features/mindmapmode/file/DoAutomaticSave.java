@@ -28,7 +28,7 @@ import java.util.Vector;
 import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
-import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.mindmapmode.MMapModel;
@@ -99,7 +99,7 @@ public class DoAutomaticSave extends TimerTask {
 						((MFileManager) UrlManager.getController(modeController)).saveInternal((MMapModel) model,
 						    tempFile, true /*=internal call*/);
 						modeController.getController().getViewController().out(
-						    ResourceController.getResourceController().format("automatically_save_message",
+						    FpStringUtils.format("automatically_save_message",
 						        new Object[] { tempFile.toString() }));
 					}
 					catch (final Exception e) {

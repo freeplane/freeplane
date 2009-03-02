@@ -25,7 +25,7 @@ import javax.swing.AbstractAction;
 
 import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 
@@ -36,12 +36,12 @@ class LicenseAction extends AbstractAction implements IFreeplaneAction{
 
 	LicenseAction(final Controller controller) {
 		this.controller = controller;
-		MenuBuilder.setLabelAndMnemonic(this, ResourceController.getText(NAME));
+		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText(NAME));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		UITools.informationMessage(controller.getViewController().getFrame(), ResourceController.getText("license_text"),
-		    ResourceController.getText(NAME));
+		UITools.informationMessage(controller.getViewController().getFrame(), FreeplaneResourceBundle.getText("license_text"),
+		    FreeplaneResourceBundle.getText(NAME));
 	}
 
 	public String getName() {

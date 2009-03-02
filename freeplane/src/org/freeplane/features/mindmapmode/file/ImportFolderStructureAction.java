@@ -31,7 +31,7 @@ import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.link.LinkController;
@@ -54,7 +54,7 @@ class ImportFolderStructureAction extends AFreeplaneAction implements IFreeplane
 		final JFileChooser chooser = new JFileChooser();
 		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		
-		chooser.setDialogTitle(ResourceController.getText("select_folder_for_importing"));
+		chooser.setDialogTitle(FreeplaneResourceBundle.getText("select_folder_for_importing"));
 		final ViewController viewController = getController().getViewController();
 		final int returnVal = chooser.showOpenDialog(viewController.getContentPane());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {

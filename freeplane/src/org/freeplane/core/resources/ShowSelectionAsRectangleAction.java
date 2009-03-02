@@ -27,7 +27,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 
 @SelectableAction(checkOnPopup = true)
-class ShowSelectionAsRectangleAction extends AFreeplaneAction implements IFreeplaneAction{
+public class ShowSelectionAsRectangleAction extends AFreeplaneAction implements IFreeplaneAction{
 	private static final long serialVersionUID = -8742240225318545598L;
 	static final String NAME = "showSelectionAsRectangle";
 

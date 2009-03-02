@@ -33,7 +33,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.VisibleAction;
@@ -127,7 +127,7 @@ public class ReminderHook extends PersistentNodeHook {
 		final Date date = new Date(model.getRemindUserAt());
 		model.getTimer().schedule(task, date);
 		final Object[] messageArguments = { date };
-		final MessageFormat formatter = new MessageFormat(ResourceController
+		final MessageFormat formatter = new MessageFormat(FreeplaneResourceBundle
 		    .getText("plugins/TimeManagement.xml_reminderNode_tooltip"));
 		final String message = formatter.format(messageArguments);
 		setToolTip(model.getNode(), message);
@@ -156,7 +156,6 @@ public class ReminderHook extends PersistentNodeHook {
 		}
 
 		public String getName() {
-			// TODO rladstaetter 15.02.2009 no annotation, thus no name? FIXME
 			return getClass().getSimpleName();
 		}
 	}
@@ -177,7 +176,7 @@ public class ReminderHook extends PersistentNodeHook {
 		public void actionPerformed(final ActionEvent e) {
 			timeList.startup();
 		}
-		// TODO rladstaetter 15.02.2009 remove name attributefrom ActionDescriptor
+		// TODO rladstaetter 15.02.2009 remove name attribute from ActionDescriptor
 		public String getName() {
 			return "plugins/NodeList.xml_name";
 		}

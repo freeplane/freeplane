@@ -54,7 +54,7 @@ import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.common.attribute.Attribute;
@@ -233,8 +233,8 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 		abstract protected void performAction(NodeModel model);
 
 		protected void showEmptyStringErrorMessage() {
-			JOptionPane.showMessageDialog(AssignAttributeDialog.this, ResourceController
-			    .getText("attributes_adding_empty_attribute_error"), ResourceController.getText("error"),
+			JOptionPane.showMessageDialog(AssignAttributeDialog.this, FreeplaneResourceBundle
+			    .getText("attributes_adding_empty_attribute_error"), FreeplaneResourceBundle.getText("error"),
 			    JOptionPane.ERROR_MESSAGE);
 		}
 	}
@@ -297,7 +297,7 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 	final private JRadioButton visibleBtn;
 
 	public AssignAttributeDialog(final AttributeController attributeController, final Frame frame) {
-		super(frame, UITools.removeMnemonic(ResourceController.getText("attributes_assign_dialog")), false);
+		super(frame, UITools.removeMnemonic(FreeplaneResourceBundle.getText("attributes_assign_dialog")), false);
 		this.attributeController = attributeController;
 		this.controller = attributeController.getModeController().getController();
 		mapSelection = controller.getSelection();
@@ -305,15 +305,15 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 		final Border emptyBorder = new EmptyBorder(5, 5, 5, 5);
 		final Border btnBorder = new EmptyBorder(2, 2, 2, 2);
 		selectedBtn = new JRadioButton();
-		MenuBuilder.setLabelAndMnemonic(selectedBtn, ResourceController.getText("attributes_for_selected"));
+		MenuBuilder.setLabelAndMnemonic(selectedBtn, FreeplaneResourceBundle.getText("attributes_for_selected"));
 		selectedBtn.setSelected(true);
 		visibleBtn = new JRadioButton();
-		MenuBuilder.setLabelAndMnemonic(visibleBtn, ResourceController.getText("attributes_for_visible"));
+		MenuBuilder.setLabelAndMnemonic(visibleBtn, FreeplaneResourceBundle.getText("attributes_for_visible"));
 		final ButtonGroup group = new ButtonGroup();
 		group.add(selectedBtn);
 		group.add(visibleBtn);
 		skipRootBtn = new JCheckBox();
-		MenuBuilder.setLabelAndMnemonic(skipRootBtn, ResourceController.getText("attributes_skip_root"));
+		MenuBuilder.setLabelAndMnemonic(skipRootBtn, FreeplaneResourceBundle.getText("attributes_skip_root"));
 		skipRootBtn.setSelected(true);
 		final Box selectionBox = Box.createHorizontalBox();
 		selectionBox.setBorder(emptyBorder);
@@ -326,19 +326,19 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 		selectionBox.add(Box.createHorizontalGlue());
 		getContentPane().add(selectionBox, BorderLayout.NORTH);
 		final JButton addBtn = new JButton();
-		MenuBuilder.setLabelAndMnemonic(addBtn, ResourceController.getText("filter_add"));
+		MenuBuilder.setLabelAndMnemonic(addBtn, FreeplaneResourceBundle.getText("filter_add"));
 		addBtn.addActionListener(new AddAction());
 		addBtn.setMaximumSize(AssignAttributeDialog.maxButtonDimension);
 		final JButton deleteAttributeBtn = new JButton();
-		MenuBuilder.setLabelAndMnemonic(deleteAttributeBtn, ResourceController.getText("attribute_delete"));
+		MenuBuilder.setLabelAndMnemonic(deleteAttributeBtn, FreeplaneResourceBundle.getText("attribute_delete"));
 		deleteAttributeBtn.addActionListener(new DeleteAttributeAction());
 		deleteAttributeBtn.setMaximumSize(AssignAttributeDialog.maxButtonDimension);
 		final JButton deleteAttributeValueBtn = new JButton();
-		MenuBuilder.setLabelAndMnemonic(deleteAttributeValueBtn, ResourceController.getText("attribute_delete_value"));
+		MenuBuilder.setLabelAndMnemonic(deleteAttributeValueBtn, FreeplaneResourceBundle.getText("attribute_delete_value"));
 		deleteAttributeValueBtn.addActionListener(new DeleteValueAction());
 		deleteAttributeValueBtn.setMaximumSize(AssignAttributeDialog.maxButtonDimension);
 		final JButton replaceBtn = new JButton();
-		MenuBuilder.setLabelAndMnemonic(replaceBtn, ResourceController.getText("attribute_replace"));
+		MenuBuilder.setLabelAndMnemonic(replaceBtn, FreeplaneResourceBundle.getText("attribute_replace"));
 		replaceBtn.addActionListener(new ReplaceValueAction());
 		replaceBtn.setMaximumSize(AssignAttributeDialog.maxButtonDimension);
 		UITools.addEscapeActionToDialog(this);
@@ -407,7 +407,7 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 		actionBox.add(Box.createVerticalGlue());
 		getContentPane().add(actionBox, BorderLayout.CENTER);
 		final JButton closeBtn = new JButton();
-		MenuBuilder.setLabelAndMnemonic(closeBtn, ResourceController.getText("close"));
+		MenuBuilder.setLabelAndMnemonic(closeBtn, FreeplaneResourceBundle.getText("close"));
 		closeBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent e) {
 				dispose();

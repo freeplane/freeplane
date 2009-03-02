@@ -27,7 +27,8 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
-import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.FpStringUtils;
+import org.freeplane.core.resources.FreeplaneResourceBundle;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
@@ -35,7 +36,7 @@ public class ComboProperty extends PropertyBean implements IPropertyControl {
 	static public Vector translate(final String[] possibles) {
 		final Vector possibleTranslations = new Vector(possibles.length);
 		for (int i = 0; i < possibles.length; i++) {
-			possibleTranslations.add(ResourceController.getText("OptionPanel." + possibles[i]));
+			possibleTranslations.add(FreeplaneResourceBundle.getText("OptionPanel." + possibles[i]));
 		}
 		return possibleTranslations;
 	}
@@ -66,8 +67,8 @@ public class ComboProperty extends PropertyBean implements IPropertyControl {
 	}
 
 	public void layout(final DefaultFormBuilder builder) {
-		final JLabel label = builder.append(OptionString.getText(getLabel()), mComboBox);
-		label.setToolTipText(OptionString.getText(getDescription()));
+		final JLabel label = builder.append(FpStringUtils.getOptionalText(getLabel()), mComboBox);
+		label.setToolTipText(FpStringUtils.getOptionalText(getDescription()));
 	}
 
 	public void setEnabled(final boolean pEnabled) {

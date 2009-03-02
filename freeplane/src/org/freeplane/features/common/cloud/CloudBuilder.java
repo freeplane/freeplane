@@ -30,8 +30,8 @@ import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
-import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.modecontroller.MapController;
+import org.freeplane.core.model.FpColor;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.n3.nanoxml.IXMLElement;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -103,7 +103,7 @@ class CloudBuilder implements IElementDOMHandler, IExtensionElementWriter {
 		}
 		final Color color = model.getColor();
 		if (color != null) {
-			cloud.setAttribute("COLOR", TreeXmlWriter.colorToXml(color));
+			cloud.setAttribute("COLOR", FpColor.colorToXml(color));
 		}
 		final int width = model.getWidth();
 		if (width != CloudController.DEFAULT_WIDTH) {

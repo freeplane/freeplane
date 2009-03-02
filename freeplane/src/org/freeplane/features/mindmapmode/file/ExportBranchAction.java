@@ -31,7 +31,7 @@ import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.LogTool;
@@ -91,7 +91,7 @@ class ExportBranchAction extends AFreeplaneAction implements IFreeplaneAction {
 			if (chosenFile.exists()) {
 				
 				final int overwriteMap = JOptionPane.showConfirmDialog(controller.getViewController().getMapView(),
-				    ResourceController.getText("map_already_exists"), "Freeplane", JOptionPane.YES_NO_OPTION);
+				    FreeplaneResourceBundle.getText("map_already_exists"), "Freeplane", JOptionPane.YES_NO_OPTION);
 				if (overwriteMap != JOptionPane.YES_OPTION) {
 					return;
 				}

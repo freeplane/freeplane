@@ -20,10 +20,11 @@ package org.freeplane.core.resources.ui;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 public abstract class PropertyBean extends PropertyAdapter implements IPropertyControl {
-	final private Vector mPropertyChangeListeners = new Vector();
+	final private List<PropertyChangeListener> mPropertyChangeListeners = new Vector<PropertyChangeListener>();
 
 	public PropertyBean(final String name) {
 		super(name);
@@ -39,9 +40,8 @@ public abstract class PropertyBean extends PropertyAdapter implements IPropertyC
 
 	protected void firePropertyChangeEvent() {
 		final PropertyChangeEvent evt = new PropertyChangeEvent(this, getName(), null, getValue());
-		for (final Iterator i = mPropertyChangeListeners.iterator(); i.hasNext();) {
-			final PropertyChangeListener listener = (PropertyChangeListener) i.next();
-			listener.propertyChange(evt);
+		for (PropertyChangeListener l : mPropertyChangeListeners) {
+			l.propertyChange(evt);
 		}
 	}
 

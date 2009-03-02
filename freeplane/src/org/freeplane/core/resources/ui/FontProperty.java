@@ -28,6 +28,8 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
+import org.freeplane.core.resources.FpStringUtils;
+
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 public class FontProperty extends PropertyBean implements IPropertyControl {
@@ -54,8 +56,8 @@ public class FontProperty extends PropertyBean implements IPropertyControl {
 	}
 
 	public void layout(final DefaultFormBuilder builder) {
-		final JLabel label = builder.append(OptionString.getText(getLabel()), mFontComboBox);
-		label.setToolTipText(OptionString.getText(getDescription()));
+		final JLabel label = builder.append(FpStringUtils.getOptionalText(getLabel()), mFontComboBox);
+		label.setToolTipText(FpStringUtils.getOptionalText(getDescription()));
 	}
 
 	public void setEnabled(final boolean pEnabled) {

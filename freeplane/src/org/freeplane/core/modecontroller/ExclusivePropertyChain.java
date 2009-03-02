@@ -20,22 +20,23 @@
 package org.freeplane.core.modecontroller;
 
 import java.util.Iterator;
+import java.util.Map;
 import java.util.TreeMap;
 
-public class ExclusivePropertyChain<V, T> {
-	static public Integer DEFAULT = 100;
-	static public Integer NODE = 10;
-	final private TreeMap handlers = new TreeMap();
+import org.freeplane.core.model.IFpPropertyHandler;
 
-	public IPropertyGetter addGetter(final Integer key, final IPropertyGetter getter) {
-		return (IPropertyGetter) handlers.put(key, getter);
+@Deprecated
+public class ExclusivePropertyChain<V, T> {
+	final private Map<Integer, IFpPropertyHandler<V, T>> map = new TreeMap<Integer, IFpPropertyHandler<V, T>>();
+
+	public IFpPropertyHandler<V, T> put(final Integer key, final IFpPropertyHandler<V, T> getter) {
+		return map.put(key, getter);
 	}
 
 	public V getProperty(final T node) {
-		final Iterator iterator = handlers.values().iterator();
+		final Iterator<IFpPropertyHandler<V, T>> iterator = map.values().iterator();
 		while (iterator.hasNext()) {
-			final IPropertyGetter<V, T> getter = (IPropertyGetter) iterator.next();
-			final V property = getter.getProperty(node, null);
+			final V property = iterator.next().getProperty(node, null);
 			if (property != null) {
 				return property;
 			}
@@ -43,7 +44,7 @@ public class ExclusivePropertyChain<V, T> {
 		return null;
 	}
 
-	public IPropertyGetter removeGetter(final Integer key) {
-		return (IPropertyGetter) handlers.remove(key);
+	public IFpPropertyHandler<V, T> removeGetter(final Integer key) {
+		return map.remove(key);
 	}
 }

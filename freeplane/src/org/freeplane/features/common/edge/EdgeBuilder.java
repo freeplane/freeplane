@@ -32,7 +32,7 @@ import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
-import org.freeplane.core.io.xml.TreeXmlWriter;
+import org.freeplane.core.model.FpColor;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.util.XmlTool;
 import org.freeplane.n3.nanoxml.IXMLElement;
@@ -42,8 +42,8 @@ class EdgeBuilder implements IElementDOMHandler, IExtensionElementWriter {
 	public EdgeBuilder() {
 	}
 
-	protected EdgeModel createEdge(final NodeModel node) {
-		return new EdgeModel();
+	protected EdgeExtension createEdge(final NodeModel node) {
+		return new EdgeExtension();
 	}
 
 	public Object createElement(final Object parent, final String tag, final IXMLElement attributes) {
@@ -57,9 +57,9 @@ class EdgeBuilder implements IElementDOMHandler, IExtensionElementWriter {
 		/* attributes */
 		if (parent instanceof NodeModel) {
 			final NodeModel node = (NodeModel) parent;
-			if (userObject instanceof EdgeModel) {
-				final EdgeModel edge = (EdgeModel) userObject;
-				EdgeModel.setModel(node, edge);
+			if (userObject instanceof EdgeExtension) {
+				final EdgeExtension edge = (EdgeExtension) userObject;
+				EdgeExtension.setModel(node, edge);
 			}
 			return;
 		}
@@ -68,27 +68,27 @@ class EdgeBuilder implements IElementDOMHandler, IExtensionElementWriter {
 	private void registerAttributeHandlers(final ReadManager reader) {
 		reader.addAttributeHandler("edge", "STYLE", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
-				final EdgeModel edge = (EdgeModel) userObject;
+				final EdgeExtension edge = (EdgeExtension) userObject;
 				edge.setStyle(value.toString());
 			}
 		});
 		reader.addAttributeHandler("edge", "HIDE", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
-				final EdgeModel edge = (EdgeModel) userObject;
-				edge.setStyle(EdgeModel.EDGESTYLE_HIDDEN);
+				final EdgeExtension edge = (EdgeExtension) userObject;
+				edge.setStyle(EdgeStyle.EDGESTYLE_HIDDEN);
 			}
 		});
 		reader.addAttributeHandler("edge", "COLOR", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
-				final EdgeModel edge = (EdgeModel) userObject;
+				final EdgeExtension edge = (EdgeExtension) userObject;
 				edge.setColor(TreeXmlReader.xmlToColor(value.toString()));
 			}
 		});
 		reader.addAttributeHandler("edge", "WIDTH", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
-				final EdgeModel edge = (EdgeModel) userObject;
-				if (value.toString().equals(EdgeModel.EDGE_WIDTH_THIN_STRING)) {
-					edge.setWidth(EdgeModel.WIDTH_THIN);
+				final EdgeExtension edge = (EdgeExtension) userObject;
+				if (value.toString().equals(EdgeStyle.EDGESTYLE_THIN)) {
+					edge.setWidth(EdgeExtension.WIDTH_THIN);
 				}
 				else {
 					edge.setWidth(Integer.parseInt(value.toString()));
@@ -102,7 +102,7 @@ class EdgeBuilder implements IElementDOMHandler, IExtensionElementWriter {
 	public void registerBy(final ReadManager reader, final WriteManager writer) {
 		reader.addElementHandler("edge", this);
 		registerAttributeHandlers(reader);
-		writer.addExtensionElementWriter(EdgeModel.class, this);
+		writer.addExtensionElementWriter(EdgeExtension.class, this);
 	}
 
 	public void setAttributes(final String tag, final Object node, final IXMLElement attributes) {
@@ -110,16 +110,16 @@ class EdgeBuilder implements IElementDOMHandler, IExtensionElementWriter {
 
 	public void writeContent(final ITreeWriter writer, final Object node, final IExtension extension)
 	        throws IOException {
-		final EdgeModel model = (EdgeModel) extension;
+		final EdgeExtension model = (EdgeExtension) extension;
 		final String style = model.getStyle();
 		final Color color = model.getColor();
 		final int width = model.getWidth();
-		if (style != null || color != null || width != EdgeController.DEFAULT_WIDTH) {
+		if (style != null || color != null || width != EdgeExtension.DEFAULT_WIDTH) {
 			final XMLElement edge = new XMLElement();
 			edge.setName("edge");
 			boolean relevant = false;
 			if (style != null) {
-				if (style.equals(EdgeModel.EDGESTYLE_HIDDEN)) {
+				if (style.equals(EdgeStyle.EDGESTYLE_HIDDEN)) {
 					edge.setAttribute("HIDE", "true");
 					relevant = true;
 				}
@@ -127,12 +127,12 @@ class EdgeBuilder implements IElementDOMHandler, IExtensionElementWriter {
 				relevant = true;
 			}
 			if (color != null) {
-				edge.setAttribute("COLOR", TreeXmlWriter.colorToXml(color));
+				edge.setAttribute("COLOR", FpColor.colorToXml(color));
 				relevant = true;
 			}
-			if (width != EdgeModel.WIDTH_PARENT) {
-				if (width == EdgeModel.WIDTH_THIN) {
-					edge.setAttribute("WIDTH", EdgeModel.EDGE_WIDTH_THIN_STRING);
+			if (width != EdgeExtension.WIDTH_PARENT) {
+				if (width == EdgeExtension.WIDTH_THIN) {
+					edge.setAttribute("WIDTH", EdgeStyle.EDGESTYLE_THIN);
 				}
 				else {
 					edge.setAttribute("WIDTH", Integer.toString(width));

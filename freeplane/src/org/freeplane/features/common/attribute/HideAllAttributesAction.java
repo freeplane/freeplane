@@ -26,7 +26,7 @@ import javax.swing.AbstractAction;
 import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.MapModel;
-import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.MenuBuilder;
 
 class HideAllAttributesAction extends AbstractAction implements IFreeplaneAction {
@@ -39,7 +39,7 @@ class HideAllAttributesAction extends AbstractAction implements IFreeplaneAction
 	 */
 	public HideAllAttributesAction(final Controller controller) {
 		this.controller = controller;
-		MenuBuilder.setLabelAndMnemonic(this, ResourceController.getText("attributes_hide_all"));
+		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText("attributes_hide_all"));
 	};
 
 	public void actionPerformed(final ActionEvent e) {

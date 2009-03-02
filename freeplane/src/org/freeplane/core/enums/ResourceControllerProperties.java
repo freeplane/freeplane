@@ -43,5 +43,7 @@ public class ResourceControllerProperties {
 	public static final String DEFAULT_ORG_FREEPLANE_GLOBALRESOURCEDIR = "resources";
 	public static final String XML_PATTERNS_XML = "/xml/patterns.xml";
 	public static final String XML_VERSION = "0.9.0";
+	static public Integer DEFAULT = 100;
+	static public Integer NODE = 10;
 
 }

@@ -26,6 +26,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+// TODO ARCH rladstaetter 28.02.2009 class not needed, stick to java.util.* classes
+@Deprecated
 public class SmallExtensionMap implements Map<Class<? extends IExtension>, IExtension>{
 
 

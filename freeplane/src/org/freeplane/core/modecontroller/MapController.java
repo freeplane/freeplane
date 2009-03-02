@@ -58,7 +58,8 @@ import org.freeplane.core.model.EncryptionModel;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.model.NodeModel.NodeChangeType;
-import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.FpStringUtils;
+import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.n3.nanoxml.XMLParseException;
@@ -444,7 +445,7 @@ public class MapController {
 					LogTool.logException(e);
 					
 					getController().getViewController().out(
-					    ResourceController.formatText("link_not_found", target));
+					    FpStringUtils.formatText("link_not_found", target));
 					return;
 				}
 			}
@@ -489,7 +490,7 @@ public class MapController {
 						LogTool.logException(e);
 						
 						getController().getViewController().out(
-						    ResourceController.formatText("link_not_found", ref));
+						    FpStringUtils.formatText("link_not_found", ref));
 						return;
 					}
 				}
@@ -501,7 +502,7 @@ public class MapController {
 		catch (final MalformedURLException ex) {
 			LogTool.logException(ex);
 			
-			getController().errorMessage(ResourceController.getText("url_error") + "\n" + ex);
+			getController().errorMessage(FreeplaneResourceBundle.getText("url_error") + "\n" + ex);
 			return;
 		}
 		catch (final Exception e) {

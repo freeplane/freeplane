@@ -30,7 +30,10 @@ import javax.swing.JApplet;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.enums.ResourceControllerProperties;
+import org.freeplane.core.resources.OptionHTMLExportFoldingAction;
+import org.freeplane.core.resources.OptionSelectionMechanismAction;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.ShowSelectionAsRectangleAction;
 
 /**
  * @author Dimitry Polivaev
@@ -60,7 +63,11 @@ class AppletResourceController extends ResourceController {
 			final String key = (String) allKeys.nextElement();
 			setPropertyByParameter(key);
 		}
+	}
 
+	public AppletResourceController(FreeplaneApplet freeplaneApplet, Controller controller) {
+		this(freeplaneApplet);
+		init(controller);
 	}
 
 	@Override

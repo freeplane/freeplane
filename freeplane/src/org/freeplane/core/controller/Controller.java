@@ -38,8 +38,10 @@ import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
+import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.url.UrlManager;
+import org.freeplane.core.util.LogTool;
 
 /**
  * Provides the methods to edit/change a Node. Forwards all messages to
@@ -82,7 +84,7 @@ public class Controller extends AController {
 		if (message != null) {
 			myMessage = message.toString();
 		} else {
-			myMessage = ResourceController.getText("undefined_error");
+			myMessage = FreeplaneResourceBundle.getText("undefined_error");
 			if (myMessage == null) {
 				myMessage = "Undefined error";
 			}
@@ -114,6 +116,7 @@ public class Controller extends AController {
 	}
 
 	public ModeController getModeController(final String modeName) {
+		LogTool.info("requesting mode: " +modeName);
 		return modeControllers.get(modeName);
 	}
 

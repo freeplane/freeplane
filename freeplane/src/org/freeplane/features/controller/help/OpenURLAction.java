@@ -28,6 +28,7 @@ import javax.swing.ImageIcon;
 
 import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 
@@ -51,7 +52,7 @@ class OpenURLAction extends AbstractAction implements IFreeplaneAction{
 			controller.getViewController().openDocument(new URL(url));
 		}
 		catch (final MalformedURLException ex) {
-			controller.errorMessage(ResourceController.getText("url_error") + "\n" + ex);
+			controller.errorMessage(FreeplaneResourceBundle.getText("url_error") + "\n" + ex);
 		}
 		catch (final Exception ex) {
 			controller.errorMessage(ex);

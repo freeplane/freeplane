@@ -33,7 +33,7 @@ import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.fop.svg.PDFTranscoder;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.view.swing.map.MapView;
 import org.w3c.dom.Document;
@@ -49,7 +49,7 @@ class ExportPdf extends ExportVectorGraphic {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final File chosenFile = chooseFile("pdf", ResourceController.getText("export_pdf_text"), null);
+		final File chosenFile = chooseFile("pdf", FreeplaneResourceBundle.getText("export_pdf_text"), null);
 		if (chosenFile == null) {
 			return;
 		}

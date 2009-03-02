@@ -50,10 +50,9 @@ public class FreeplaneApplet extends JApplet {
 		updateLookAndFeel();
 		final Container contentPane = getContentPane();
 		contentPane.setLayout(new BorderLayout());
-		appletResourceController = new AppletResourceController(this);
-		ResourceController.setResourceController(appletResourceController);
 		controller = new Controller();
-		appletResourceController.init(controller);
+		appletResourceController = new AppletResourceController(this,controller);
+		ResourceController.setResourceController(appletResourceController);
 		appletViewController = new AppletViewController(controller, this, new MapViewController());
 		FilterController.install(controller);
 		PrintController.install(controller);

@@ -1,4 +1,4 @@
-package org.freeplane.core.controller;
+package org.freeplane.core.model;
 
 /**
  * For entities which can have a name.

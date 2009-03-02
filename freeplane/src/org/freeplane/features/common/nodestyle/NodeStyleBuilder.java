@@ -31,7 +31,7 @@ import org.freeplane.core.io.NodeBuilder;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
-import org.freeplane.core.io.xml.TreeXmlWriter;
+import org.freeplane.core.model.FpColor;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.n3.nanoxml.IXMLElement;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -138,10 +138,10 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 	public void writeAttributes(final ITreeWriter writer, final Object userObject, final IExtension extension) {
 		final NodeStyleModel style = (NodeStyleModel) extension;
 		if (style.getColor() != null) {
-			writer.addAttribute("COLOR", TreeXmlWriter.colorToXml(style.getColor()));
+			writer.addAttribute("COLOR", FpColor.colorToXml(style.getColor()));
 		}
 		if (style.getBackgroundColor() != null) {
-			writer.addAttribute("BACKGROUND_COLOR", TreeXmlWriter.colorToXml(style.getBackgroundColor()));
+			writer.addAttribute("BACKGROUND_COLOR", FpColor.colorToXml(style.getBackgroundColor()));
 		}
 		if (style.getShape() != null) {
 			writer.addAttribute("STYLE", style.getShape());

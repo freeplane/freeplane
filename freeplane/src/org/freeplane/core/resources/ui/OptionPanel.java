@@ -39,6 +39,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 
@@ -132,7 +133,7 @@ public class OptionPanel {
 				rightBuilder = new DefaultFormBuilder(rightLayout);
 				rightBuilder.setDefaultDialogBorder();
 				lastTabName = newTab.getLabel();
-				final JButton tabButton = new JButton(OptionString.getText(lastTabName));
+				final JButton tabButton = new JButton(FpStringUtils.getOptionalText(lastTabName));
 				final ChangeTabAction changeTabAction = new ChangeTabAction(cardLayout, rightStack, lastTabName);
 				tabButton.addActionListener(changeTabAction);
 				registerTabButton(tabButton, lastTabName, changeTabAction);

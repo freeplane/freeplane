@@ -52,6 +52,7 @@ import org.freeplane.core.io.IElementHandler;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.JAutoCheckBoxMenuItem;
 import org.freeplane.core.ui.components.JAutoRadioButtonMenuItem;
@@ -285,7 +286,7 @@ public class MenuBuilder extends UIBuilder {
 				if (!contains(menuPath.path)) {
 					if (tag.equals("menu_submenu")) {
 						final JMenu menuItem = new JMenu();
-						MenuBuilder.setLabelAndMnemonic(menuItem, ResourceController.getText(attributes.getAttribute(
+						MenuBuilder.setLabelAndMnemonic(menuItem, FreeplaneResourceBundle.getText(attributes.getAttribute(
 						    "name_ref", null)));
 						addMenuItem(menuPath.parentPath, menuItem, menuPath.path, MenuBuilder.AS_CHILD);
 					}
@@ -340,14 +341,14 @@ public class MenuBuilder extends UIBuilder {
 
 	static public JMenu createMenu(final String name) {
 		final JMenu menu = new JMenu();
-		final String text = ResourceController.getText(name);
+		final String text = FreeplaneResourceBundle.getText(name);
 		MenuBuilder.setLabelAndMnemonic(menu, text);
 		return menu;
 	}
 
 	static public JMenuItem createMenuItem(final String name) {
 		final JMenuItem menu = new JMenuItem();
-		final String text = ResourceController.getText(name);
+		final String text = FreeplaneResourceBundle.getText(name);
 		MenuBuilder.setLabelAndMnemonic(menu, text);
 		return menu;
 	}
@@ -406,7 +407,7 @@ public class MenuBuilder extends UIBuilder {
 			action.setTooltip(docu);
 		}
 		final String actionName = actionAnnotation.name();
-		MenuBuilder.setLabelAndMnemonic(action, ResourceController.getText(actionName));
+		MenuBuilder.setLabelAndMnemonic(action, FreeplaneResourceBundle.getText(actionName));
 		final String iconPath = actionAnnotation.iconPath();
 		if (!iconPath.equals("")) {
 			final ImageIcon icon = new ImageIcon(ResourceController.getResourceController().getResource(iconPath));

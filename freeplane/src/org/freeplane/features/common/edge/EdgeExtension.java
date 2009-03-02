@@ -24,38 +24,32 @@ import java.awt.Color;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.model.NodeModel;
 
-public class EdgeModel implements IExtension {
-	public static final String EDGE_WIDTH_THIN_STRING = "thin";
-	public final static String EDGESTYLE_BEZIER = "bezier";
-	public final static String EDGESTYLE_LINEAR = "linear";
-	public final static String EDGESTYLE_SHARP_BEZIER = "sharp_bezier";
-	public final static String EDGESTYLE_SHARP_LINEAR = "sharp_linear";
-	public final static String EDGESTYLE_HIDDEN = "hide_edge";
+public class EdgeExtension implements IExtension {
 	public static final int WIDTH_PARENT = -1;
 	public static final int WIDTH_THIN = 0;
+	private Color color;
+	private String style;
+	private int width = EdgeExtension.DEFAULT_WIDTH;
+	static final int DEFAULT_WIDTH = WIDTH_PARENT;
 
-	public static EdgeModel createEdge(final NodeModel node) {
-		EdgeModel edge = (EdgeModel) node.getExtension(EdgeModel.class);
+	public static EdgeExtension createEdgeExtension(final NodeModel node) {
+		EdgeExtension edge = (EdgeExtension) node.getExtension(EdgeExtension.class);
 		if (edge == null) {
-			edge = new EdgeModel();
+			edge = new EdgeExtension();
 			node.putExtension(edge);
 		}
 		return edge;
 	}
 
-	public static EdgeModel getModel(final NodeModel node) {
-		return (EdgeModel) node.getExtension(EdgeModel.class);
+	public static EdgeExtension getModel(final NodeModel node) {
+		return (EdgeExtension) node.getExtension(EdgeExtension.class);
 	}
 
-	public static void setModel(final NodeModel node, final EdgeModel edge) {
+	public static void setModel(final NodeModel node, final EdgeExtension edge) {
 		node.putExtension(edge);
 	}
 
-	private Color color;
-	private String style;
-	private int width = EdgeController.DEFAULT_WIDTH;
-
-	public EdgeModel() {
+	public EdgeExtension() {
 	}
 
 	public Color getColor() {
@@ -82,7 +76,5 @@ public class EdgeModel implements IExtension {
 		this.width = width;
 	}
 
-	public static IExtension removeModel(NodeModel node) {
-		return node.removeExtension(EdgeModel.class);
-    }
+	
 }

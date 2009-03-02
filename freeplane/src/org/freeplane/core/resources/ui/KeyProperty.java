@@ -30,6 +30,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
+import org.freeplane.core.resources.FpStringUtils;
+
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.RowSpec;
 
@@ -73,10 +75,10 @@ public class KeyProperty extends PropertyBean implements IPropertyControl {
 			}
 		});
 		if (labelText == null) {
-			labelText = OptionString.getText(getLabel());
+			labelText = FpStringUtils.getOptionalText(getLabel());
 		}
 		final JLabel label = new JLabel(labelText, icon, JLabel.RIGHT);
-		label.setToolTipText(OptionString.getText(getDescription()));
+		label.setToolTipText(FpStringUtils.getOptionalText(getDescription()));
 		if (KeyProperty.rowSpec == null) {
 			KeyProperty.rowSpec = new RowSpec("fill:20dlu");
 		}

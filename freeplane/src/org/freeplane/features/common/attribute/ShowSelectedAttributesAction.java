@@ -26,7 +26,7 @@ import javax.swing.AbstractAction;
 import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.MapModel;
-import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.MenuBuilder;
 
 class ShowSelectedAttributesAction extends AbstractAction implements IFreeplaneAction{
@@ -40,7 +40,7 @@ class ShowSelectedAttributesAction extends AbstractAction implements IFreeplaneA
 	 */
 	public ShowSelectedAttributesAction(final Controller controller) {
 		this.controller = controller;
-		MenuBuilder.setLabelAndMnemonic(this, ResourceController.getText("attributes_show_selected"));
+		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText("attributes_show_selected"));
 	};
 
 	public void actionPerformed(final ActionEvent e) {

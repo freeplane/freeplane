@@ -26,6 +26,7 @@ import javax.swing.ImageIcon;
 
 import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 
@@ -38,7 +39,7 @@ class NavigationPreviousMapAction extends AbstractAction implements IFreeplaneAc
 	NavigationPreviousMapAction(final Controller controller) {
 		super(null, new ImageIcon(ResourceController.getResourceController().getResource("/images/1leftarrow.png")));
 		this.controller = controller;
-		MenuBuilder.setLabelAndMnemonic(this, ResourceController.getText("previous_map"));
+		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText("previous_map"));
 		setEnabled(false);
 	}
 

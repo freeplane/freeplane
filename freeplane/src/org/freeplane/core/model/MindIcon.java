@@ -21,7 +21,10 @@ package org.freeplane.core.model;
 
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.Vector;
@@ -42,10 +45,11 @@ public class MindIcon implements Comparable, IIconInformation {
 	/**
 	 * Set of all created icons. Name -> MindIcon
 	 */
+	// TODO rladstaetter 28.02.2009 create icon enums which encode necessary information. stop using property files for internal builders
 	private static Map<String,MindIcon> createdIcons = new HashMap<String,MindIcon>();
 	private static ImageIcon iconNotFound;
 	public static final int LAST = MindIcon.UNKNOWN;
-	private static Vector mAllIconNames;
+	private static List<String> mAllIconNames;
 	static int nextNumber = MindIcon.UNKNOWN - 1;
 	public static final String PROPERTY_STRING_ICONS_LIST = "icons.list";
 	private static final int UNKNOWN = -1;
@@ -71,17 +75,13 @@ public class MindIcon implements Comparable, IIconInformation {
 		return mindIcon;
 	}
 
-	public static Vector getAllIconNames() {
+	public static List<String> getAllIconNames() {
 		if (MindIcon.mAllIconNames != null) {
 			return MindIcon.mAllIconNames;
 		}
-		final Vector mAllIconNames = new Vector();
-		final String icons = ResourceController.getResourceController().getProperty(MindIcon.PROPERTY_STRING_ICONS_LIST);
-		final StringTokenizer tokenizer = new StringTokenizer(icons, ";");
-		while (tokenizer.hasMoreTokens()) {
-			mAllIconNames.add(tokenizer.nextToken());
-		}
-		return mAllIconNames;
+		List<String> list = new ArrayList<String>();
+		list.addAll(Arrays.asList(((String)ResourceController.getResourceController().getProperty(MindIcon.PROPERTY_STRING_ICONS_LIST)).split(";")));
+		return list;
 	}
 
 	public static String getIconsPath() {

@@ -23,7 +23,7 @@ import org.freeplane.core.filter.condition.ConditionFactory;
 import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.filter.condition.NodeCondition;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -64,7 +64,7 @@ class AttributeNotExistsCondition extends NodeCondition {
 
 	@Override
 	protected String createDesctiption() {
-		final String simpleCondition = ResourceController.getText(ConditionFactory.FILTER_DOES_NOT_EXIST);
+		final String simpleCondition = FreeplaneResourceBundle.getText(ConditionFactory.FILTER_DOES_NOT_EXIST);
 		return ConditionFactory.createDescription(attribute, simpleCondition, null, false);
 	}
 

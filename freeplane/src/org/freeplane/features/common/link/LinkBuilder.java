@@ -40,6 +40,7 @@ import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.modecontroller.MapController;
+import org.freeplane.core.model.FpColor;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.n3.nanoxml.IXMLElement;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -182,7 +183,7 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 		}
 		final Color color = model.getColor();
 		if (color != null) {
-			arrowLink.setAttribute("COLOR", TreeXmlWriter.colorToXml(color));
+			arrowLink.setAttribute("COLOR", FpColor.colorToXml(color));
 		}
 		final String destinationLabel = model.getTarget().createID();
 		if (destinationLabel != null) {

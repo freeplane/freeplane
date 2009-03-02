@@ -28,7 +28,7 @@ import javax.swing.JComponent;
 
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.features.common.edge.EdgeController;
-import org.freeplane.features.common.edge.EdgeModel;
+import org.freeplane.features.common.edge.EdgeStyle;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
 import org.freeplane.view.swing.map.edge.BezierEdgeView;
@@ -125,19 +125,19 @@ class NodeViewFactory {
 	EdgeView getEdge(final NodeView newView) {
 		final NodeModel model = newView.getModel();
 		final String edgeStyle = EdgeController.getController(newView.getMap().getModeController()).getStyle(model);
-		if (edgeStyle.equals(EdgeModel.EDGESTYLE_LINEAR)) {
+		if (edgeStyle.equals(EdgeStyle.EDGESTYLE_LINEAR)) {
 			return getLinearEdgeView();
 		}
-		else if (edgeStyle.equals(EdgeModel.EDGESTYLE_BEZIER)) {
+		else if (edgeStyle.equals(EdgeStyle.EDGESTYLE_BEZIER)) {
 			return getBezierEdgeView();
 		}
-		else if (edgeStyle.equals(EdgeModel.EDGESTYLE_SHARP_LINEAR)) {
+		else if (edgeStyle.equals(EdgeStyle.EDGESTYLE_SHARP_LINEAR)) {
 			return getSharpEdgeView();
 		}
-		else if (edgeStyle.equals(EdgeModel.EDGESTYLE_SHARP_BEZIER)) {
+		else if (edgeStyle.equals(EdgeStyle.EDGESTYLE_SHARP_BEZIER)) {
 			return getSharpBezierEdgeView();
 		}
-		else if (edgeStyle.equals(EdgeModel.EDGESTYLE_HIDDEN)) {
+		else if (edgeStyle.equals(EdgeStyle.EDGESTYLE_HIDDEN)) {
 			return getHiddenEdgeView();
 		}
 		else {

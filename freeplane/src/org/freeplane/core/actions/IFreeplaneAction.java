@@ -2,7 +2,7 @@ package org.freeplane.core.actions;
 
 import javax.swing.Action;
 
-import org.freeplane.core.controller.INamed;
+import org.freeplane.core.model.INamed;
 
 /**
  * Specifics for freeplane actions to be put here.

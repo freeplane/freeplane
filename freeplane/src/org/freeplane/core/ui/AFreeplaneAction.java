@@ -25,6 +25,7 @@ import javax.swing.ImageIcon;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.ResourceController;
 
 /**
@@ -104,7 +105,7 @@ public abstract class AFreeplaneAction extends AbstractAction {
 	public AFreeplaneAction(final Controller controller, final String title) {
 		this(controller);
 		if (title != null && !title.equals("")) {
-			MenuBuilder.setLabelAndMnemonic(this, ResourceController.getText(title));
+			MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText(title));
 		}
 	}
 
@@ -158,7 +159,7 @@ public abstract class AFreeplaneAction extends AbstractAction {
 	}
 
 	public void setTooltip(final String tooltip) {
-		final String tooltipLocalized = ResourceController.getText(tooltip);
+		final String tooltipLocalized = FreeplaneResourceBundle.getText(tooltip);
 		putValue(Action.SHORT_DESCRIPTION, tooltipLocalized);
 		putValue(Action.LONG_DESCRIPTION, tooltipLocalized);
 	}

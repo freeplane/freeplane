@@ -33,7 +33,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.features.common.clipboard.ClipboardController;
@@ -58,7 +58,7 @@ class ImportLinkedBranchWithoutRootAction extends AFreeplaneAction implements IF
 		final ModeController modeController = getModeController();
 		final NodeModel selected = modeController.getMapController().getSelectedNode();
 		if (selected == null || NodeLinks.getLink(selected) == null) {
-			JOptionPane.showMessageDialog(getController().getViewController().getMapView(), ResourceController.getText("import_linked_branch_no_link"));
+			JOptionPane.showMessageDialog(getController().getViewController().getMapView(), FreeplaneResourceBundle.getText("import_linked_branch_no_link"));
 			return;
 		}
 		URL absolute = null;

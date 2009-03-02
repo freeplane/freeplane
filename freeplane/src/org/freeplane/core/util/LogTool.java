@@ -108,4 +108,8 @@ public class LogTool {
 		}
 	}
 
+	public static void info(String string) {
+		LOGGER.log(Level.INFO, string);	    
+    }
+
 }

@@ -30,7 +30,10 @@ import javax.swing.JOptionPane;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.freeplane.core.resources.FpStringUtils;
+import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.LogTool;
 import org.freeplane.features.mindmapmode.text.ExampleFileFilter;
 
 /**
@@ -94,11 +97,11 @@ public class ExportDialog {
 
 		if (filtermap.isEmpty()) {
 			JOptionPane.showMessageDialog(parentframe,
-					ResourceController.formatText("xslt_export_file_not_found_in_dirs",
+					FpStringUtils.formatText("xslt_export_file_not_found_in_dirs",
 							getXsltUserDirectory().getAbsolutePath(),
 							getXsltSysDirectory().getAbsolutePath()
 							), 
-					ResourceController.getText("xslt_export_not_possible"), 
+					FreeplaneResourceBundle.getText("xslt_export_not_possible"), 
 					JOptionPane.WARNING_MESSAGE);
 					/* "No XSLT export file could be found,\n neither in '"
 					+ getXsltUserDirectory() + "'\n nor in '"
@@ -110,8 +113,8 @@ public class ExportDialog {
 		
 		// Finish to setup the File Chooser...
 		filechooser.setAcceptAllFileFilterUsed(false); // the user can't select an "All Files filter"
-		filechooser.setDialogTitle(ResourceController.getText("export_using_xslt"));
-		filechooser.setToolTipText(ResourceController.getText("select_file_export_to")); // "Select the file to export to"
+		filechooser.setDialogTitle(FreeplaneResourceBundle.getText("export_using_xslt"));
+		filechooser.setToolTipText(FreeplaneResourceBundle.getText("select_file_export_to")); // "Select the file to export to"
 
 		// And then use it
 		int returnVal = filechooser.showSaveDialog(parentframe);
@@ -197,14 +200,13 @@ public class ExportDialog {
 		        l++;
 		    }
 		} catch (IOException e) {
-			// TODO How to log properly a warning
-			e.printStackTrace();
+			LogTool.warn(e.getMessage());
 		} finally {
 		    if (xsl != null) {
 		    	try {
 		    		xsl.close();
 		    	} catch (IOException e) {
-		    		// TODO How to log properly a warning
+		    		LogTool.warn(e.getMessage());
 		    		e.printStackTrace();
 		    	}
 			}
@@ -217,7 +219,7 @@ public class ExportDialog {
 	 * @return The user directory where XSLT export files are supposed to be.
 	 */
 	private File getXsltUserDirectory() {
-		// TODO How to get Freeplane's user directory resp. the user's XSLT directory
+		// TODO dpolivaev 26.02.2009 How to get Freeplane's user directory resp. the user's XSLT directory
 		return new File(ResourceController.getResourceController().getFreeplaneUserDirectory(),
 				"xslt");
 	}
@@ -228,7 +230,7 @@ public class ExportDialog {
 	 * @return The system directory where XSLT export files are supposed to be.
 	 */
 	private File getXsltSysDirectory() {
-		// TODO How to get Freeplane's base directory resp. the system XSLT directory
+		// TODO dpolivaev 26.02.2009 How to get Freeplane's base directory resp. the system XSLT directory
 		return new File(ResourceController.getResourceController().getResourceBaseDir(),
 				"xslt");
 	}

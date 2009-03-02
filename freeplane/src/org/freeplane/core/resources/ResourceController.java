@@ -23,7 +23,6 @@ import java.awt.Font;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -44,18 +43,6 @@ import org.freeplane.core.util.LogTool;
 public abstract class ResourceController {
 	// TODO rladstaetter 15.02.2009 remove static
 	private static ResourceController resourceController;
-
-	/**
-	 * Removes the "TranslateMe" sign from the end of not translated texts.
-	 */
-	// TODO ARCH rladstaetter 15.02.2009 method should have no need for existance! the build process should filter out resources not fit for production.
-	public static String removeTranslateComment(String inputString) {
-		if (inputString != null && inputString.endsWith(FreeplaneResourceBundle.POSTFIX_TRANSLATE_ME)) {
-			inputString = inputString.substring(0, inputString.length()
-			        - FreeplaneResourceBundle.POSTFIX_TRANSLATE_ME.length());
-		}
-		return inputString;
-	}
 
 	final private List<IFreeplanePropertyListener> propertyChangeListeners = new Vector<IFreeplanePropertyListener>();
 	private FreeplaneResourceBundle resources;
@@ -91,11 +78,6 @@ public abstract class ResourceController {
 		resources.reloadLanguage();
 	}
 
-	public static NamedObject createTranslatedString(final String key) {
-		final String fs = getText(key);
-		return new NamedObject(key, fs);
-	}
-
 	protected void firePropertyChanged(final String property, final String value, final String oldValue) {
 		if (oldValue == null || !oldValue.equals(value)) {
 			setProperty(property, value);
@@ -104,12 +86,6 @@ public abstract class ResourceController {
 				listener.propertyChanged(property, value, oldValue);
 			}
 		}
-	}
-
-	public String format(final String resourceKey, final Object[] messageArguments) {
-		final MessageFormat formatter = new MessageFormat(getText(resourceKey));
-		final String stringResult = formatter.format(messageArguments);
-		return stringResult;
 	}
 
 	public String getAdjustableProperty(final String label) {
@@ -208,7 +184,8 @@ public abstract class ResourceController {
 		return ((FreeplaneResourceBundle) getResources()).getResourceString(key, resource);
 	}
 
-	public void init(final Controller controller) {
+	
+	protected void init(final Controller controller) {
 		controller.putAction(new OptionHTMLExportFoldingAction());
 		controller.putAction(new OptionSelectionMechanismAction(controller));
 		controller.putAction(new ShowSelectionAsRectangleAction(controller));
@@ -233,75 +210,24 @@ public abstract class ResourceController {
 	abstract public void setProperty(final String property, final String value);
 
 	public void toggleSelectionAsRectangle() {
-		if (isSelectionAsRectangle()) {
-			setProperty(ResourceControllerProperties.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION, BooleanProperty.FALSE_VALUE);
-		}
-		else {
-			setProperty(ResourceControllerProperties.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION, BooleanProperty.TRUE_VALUE);
-		}
+		setProperty(ResourceControllerProperties.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION, new Boolean(
+		    !isSelectionAsRectangle()).toString());
 	}
 
 	public void updateMenus(final ModeController modeController) {
 		LogTool.warn("ResourceController.updateMenus(...) called, but not implemented.");
 	}
 
-	public static String getText(final String key) {
-    	if (key == null){
-    		return null;
-    	}
-    	return ((FreeplaneResourceBundle) getResourceController().getResources()).getResourceString(key);
-    }
-
-	public static String formatText(final String key, final String s1) {
-		String format = getText(key);
-    	if (format == null){
-    		return null;
-    	}
-    	return expandPlaceholders(format, s1);
-    }
-
-	public static String formatText(final String key, final String s1, final String s2) {
-		String format = getText(key);
-    	if (format == null){
-    		return null;
-    	}
-    	return expandPlaceholders(format, s1, s2);
-    }
-
-	private static String expandPlaceholders(final String message, final String s1, final String s2) {
-    	String result = message;
-    	if (s1 != null) {
-    		result = result.replaceAll("\\$1", s1);
-    	}
-    	if (s2 != null) {
-    		result = result.replaceAll("\\$2", s2);
-    	}
-    	return result;
-    }
-
-	/**
-     * Example: expandPlaceholders("Hello $1.","Dolly"); => "Hello Dolly."
-     */
-    private static String expandPlaceholders(final String message, String s1) {
-    	String result = message;
-    	if (s1 != null) {
-    		s1 = s1.replaceAll("\\\\", "\\\\\\\\");
-    		result = result.replaceAll("\\$1", s1);
-    	}
-    	return result;
-    }
-    
 	static public void setResourceController(final ResourceController resourceController) {
 		ResourceController.resourceController = resourceController;
-    }
+		LogTool.info("called ResourceController.setResourceController(...)");
+	}
 
 	static public ResourceController getResourceController() {
-    	return ResourceController.resourceController;
-	}
-	
-	public String getResourceBaseDir(){
-		return "";
+		return ResourceController.resourceController;
 	}
 
-    
+	public String getResourceBaseDir() {
+		return "";
+	}
 }

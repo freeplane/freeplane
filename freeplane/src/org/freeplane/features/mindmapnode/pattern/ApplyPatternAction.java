@@ -33,7 +33,8 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.features.common.edge.EdgeController;
-import org.freeplane.features.common.edge.EdgeModel;
+import org.freeplane.features.common.edge.EdgeExtension;
+import org.freeplane.features.common.edge.EdgeStyle;
 import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.text.TextController;
@@ -46,11 +47,11 @@ class ApplyPatternAction extends MultipleNodeAction {
 	/**
 	 */
 	public static String edgeWidthIntToString(final int value) {
-		if (value == EdgeModel.WIDTH_PARENT) {
+		if (value == EdgeExtension.WIDTH_PARENT) {
 			return null;
 		}
-		if (value == EdgeModel.WIDTH_THIN) {
-			return EdgeModel.EDGE_WIDTH_THIN_STRING;
+		if (value == EdgeExtension.WIDTH_THIN) {
+			return EdgeStyle.EDGESTYLE_THIN;
 		}
 		return Integer.toString(value);
 	}
@@ -59,10 +60,10 @@ class ApplyPatternAction extends MultipleNodeAction {
 	 */
 	public static int edgeWidthStringToInt(final String value) {
 		if (value == null) {
-			return EdgeModel.WIDTH_PARENT;
+			return EdgeExtension.WIDTH_PARENT;
 		}
-		if (value.equals(EdgeModel.EDGE_WIDTH_THIN_STRING)) {
-			return EdgeModel.WIDTH_THIN;
+		if (value.equals(EdgeStyle.EDGESTYLE_THIN)) {
+			return EdgeExtension.WIDTH_THIN;
 		}
 		return Integer.valueOf(value).intValue();
 	}
@@ -105,7 +106,7 @@ class ApplyPatternAction extends MultipleNodeAction {
 			    pattern.getPatternNodeStyle().getValue());
 		}
 		if (pattern.getPatternIcon() != null) {
-			final String iconName = pattern.getPatternIcon().getValue();
+			final String iconName = pattern.getPatternIcon();
 			if (iconName == null) {
 				while (((MIconController) IconController.getController(getModeController())).removeIcon(node,
 				    MindIcon.LAST) > 0) {
@@ -151,22 +152,23 @@ class ApplyPatternAction extends MultipleNodeAction {
 			((MNodeStyleController) NodeStyleController.getController(modeController)).setBold(node,
 			    "true".equals(pattern.getPatternNodeFontBold().getValue()));
 		}
-		if (pattern.getPatternEdgeColor() != null) {
+		Edge edge = pattern.getEdge();
+		if (edge.getColor() != null) {
 			((MEdgeController) EdgeController.getController(getModeController())).setColor(node, TreeXmlReader
-			    .xmlToColor(pattern.getPatternEdgeColor().getValue()));
+			    .xmlToColor(edge.getColor()));
 		}
 		if (pattern.getPatternEdgeStyle() != null) {
 			((MEdgeController) EdgeController.getController(getModeController())).setStyle(node, pattern
-			    .getPatternEdgeStyle().getValue());
+			    .getPatternEdgeStyle());
 		}
-		final PatternProperty patternEdgeWidth = pattern.getPatternEdgeWidth();
+		final String patternEdgeWidth = pattern.getPatternEdgeWidth();
 		if (patternEdgeWidth != null) {
 			int width;
-			if (patternEdgeWidth.getValue() != null) {
-				width = ApplyPatternAction.edgeWidthStringToInt(patternEdgeWidth.getValue());
+			if (patternEdgeWidth != null) {
+				width = ApplyPatternAction.edgeWidthStringToInt(patternEdgeWidth);
 			}
 			else {
-				width = EdgeModel.WIDTH_PARENT;
+				width = EdgeExtension.WIDTH_PARENT;
 			}
 			((MEdgeController) EdgeController.getController(getModeController())).setWidth(node, width);
 		}

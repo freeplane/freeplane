@@ -27,6 +27,7 @@ import javax.swing.ImageIcon;
 
 import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.features.mindmapmode.attribute.AttributeManagerDialog;
@@ -44,7 +45,7 @@ class ShowAttributeDialogAction extends AbstractAction implements IFreeplaneActi
 	ShowAttributeDialogAction(final Controller controller) {
 		super(null, new ImageIcon(ResourceController.getResourceController().getResource("/images/showAttributes.gif")));
 		this.controller = controller;
-		MenuBuilder.setLabelAndMnemonic(this, ResourceController.getText("attributes_dialog"));
+		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText("attributes_dialog"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {

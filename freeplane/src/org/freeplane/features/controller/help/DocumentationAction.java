@@ -27,6 +27,8 @@ import javax.swing.SwingUtilities;
 
 import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.resources.FpStringUtils;
+import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.LogTool;
@@ -39,12 +41,12 @@ class DocumentationAction extends AbstractAction implements IFreeplaneAction{
 
 	DocumentationAction(final Controller controller) {
 		this.controller = controller;
-		MenuBuilder.setLabelAndMnemonic(this, ResourceController.getText(NAME));
+		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText(NAME));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		String map = ResourceController.getText("browsemode_initial_map");
-		map = ResourceController.removeTranslateComment(map);
+		String map = FreeplaneResourceBundle.getText("browsemode_initial_map");
+		map = FpStringUtils.removeTranslateComment(map);
 		if (map != null && map != "") {
 			URL url = null;
 			url = ResourceController.getResourceController().getResource(map);

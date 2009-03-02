@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 
 import org.freeplane.core.actions.IFreeplaneAction;
-import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.MenuBuilder;
 
 class ZoomInAction extends AbstractAction implements IFreeplaneAction{
@@ -34,7 +34,7 @@ class ZoomInAction extends AbstractAction implements IFreeplaneAction{
 
 	public ZoomInAction(final ViewController controller) {
 		this.controller = controller;
-		MenuBuilder.setLabelAndMnemonic(this, ResourceController.getText("zoom_in"));
+		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText("zoom_in"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {

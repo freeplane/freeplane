@@ -30,6 +30,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.model.MindIcon;
+import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.ui.components.IconSelectionPopupDialog;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
@@ -76,8 +77,8 @@ public class IconProperty extends PropertyBean implements IPropertyControl, Acti
 	}
 
 	public void layout(final DefaultFormBuilder builder) {
-		final JLabel label = builder.append(OptionString.getText(getLabel()), mButton);
-		label.setToolTipText(OptionString.getText(getDescription()));
+		final JLabel label = builder.append(FpStringUtils.getOptionalText(getLabel()), mButton);
+		label.setToolTipText(FpStringUtils.getOptionalText(getDescription()));
 	}
 
 	public void setEnabled(final boolean pEnabled) {

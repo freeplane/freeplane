@@ -32,10 +32,13 @@ import javax.swing.JPopupMenu;
 
 import org.freeplane.core.frame.ColorTracker;
 import org.freeplane.core.io.xml.TreeXmlReader;
-import org.freeplane.core.io.xml.TreeXmlWriter;
+import org.freeplane.core.model.FpColor;
+import org.freeplane.core.resources.FpStringUtils;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
+// TODO rladstaetter 28.02.2009 remove: a container for color properties is not necessary. if really need be, one can use a generic container (see Triple<A,B,C>); consider using FpColor
+@Deprecated
 public class ColorProperty extends PropertyBean implements IPropertyControl, ActionListener {
 	Color color;
 	final private String defaultColor;
@@ -55,8 +58,8 @@ public class ColorProperty extends PropertyBean implements IPropertyControl, Act
 	}
 
 	public void actionPerformed(final ActionEvent arg0) {
-		final Color result = ColorTracker.showCommonJColorChooserDialog(mButton.getRootPane(), OptionString
-		    .getText(getLabel()), getColorValue());
+		final Color result = ColorTracker.showCommonJColorChooserDialog(mButton.getRootPane(), FpStringUtils
+		    .getOptionalText(getLabel()), getColorValue());
 		if (result != null) {
 			setColorValue(result);
 			firePropertyChangeEvent();
@@ -71,13 +74,13 @@ public class ColorProperty extends PropertyBean implements IPropertyControl, Act
 
 	@Override
 	public String getValue() {
-		return TreeXmlWriter.colorToXml(getColorValue());
+		return FpColor.colorToXml(getColorValue());
 	}
 
 	public void layout(final DefaultFormBuilder builder) {
-		final JLabel label = builder.append(OptionString.getText(getLabel()), mButton);
-		label.setToolTipText(OptionString.getText(getDescription()));
-		final JMenuItem item = new JMenuItem(OptionString.getText("ColorProperty.ResetColor"));
+		final JLabel label = builder.append(FpStringUtils.getOptionalText(getLabel()), mButton);
+		label.setToolTipText(FpStringUtils.getOptionalText(getDescription()));
+		final JMenuItem item = new JMenuItem(FpStringUtils.getOptionalText("ColorProperty.ResetColor"));
 		item.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent e) {
 				setValue(defaultColor);
@@ -109,7 +112,7 @@ public class ColorProperty extends PropertyBean implements IPropertyControl, Act
 			result = Color.WHITE;
 		}
 		mButton.setBackground(result);
-		mButton.setText(TreeXmlWriter.colorToXml(result));
+		mButton.setText(FpColor.colorToXml(result));
 	}
 
 	public void setEnabled(final boolean pEnabled) {

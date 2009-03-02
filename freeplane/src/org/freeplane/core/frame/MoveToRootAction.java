@@ -25,7 +25,7 @@ import javax.swing.AbstractAction;
 
 import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.MenuBuilder;
 
 class MoveToRootAction extends AbstractAction implements IFreeplaneAction{
@@ -35,7 +35,7 @@ class MoveToRootAction extends AbstractAction implements IFreeplaneAction{
 
 	MoveToRootAction(final Controller controller) {
 		this.controller = controller;
-		MenuBuilder.setLabelAndMnemonic(this, ResourceController.getText("move_to_root"));
+		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText("move_to_root"));
 	}
 
 	public void actionPerformed(final ActionEvent event) {

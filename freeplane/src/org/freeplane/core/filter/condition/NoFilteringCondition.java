@@ -23,7 +23,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public class NoFilteringCondition implements ICondition {
@@ -56,7 +56,7 @@ public class NoFilteringCondition implements ICondition {
 	@Override
 	public String toString() {
 		if (NoFilteringCondition.description == null) {
-			NoFilteringCondition.description = ResourceController.getText("filter_no_filtering");
+			NoFilteringCondition.description = FreeplaneResourceBundle.getText("filter_no_filtering");
 		}
 		return NoFilteringCondition.description;
 	}

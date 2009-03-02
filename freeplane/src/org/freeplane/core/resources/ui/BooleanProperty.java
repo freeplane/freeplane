@@ -25,14 +25,13 @@ import java.awt.event.ItemListener;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 
+import org.freeplane.core.resources.FpStringUtils;
+
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 public class BooleanProperty extends PropertyBean implements IPropertyControl {
-	static public final String FALSE_VALUE = "false";
-	static public final String TRUE_VALUE = "true";
+	// TODO ARCH rladstaetter 28.02.2009 move JCheckbox out of here
 	JCheckBox mCheckBox = new JCheckBox();
-	protected String mFalseValue = BooleanProperty.FALSE_VALUE;
-	protected String mTrueValue = BooleanProperty.TRUE_VALUE;
 
 	/**
 	 */
@@ -47,12 +46,12 @@ public class BooleanProperty extends PropertyBean implements IPropertyControl {
 
 	@Override
 	public String getValue() {
-		return mCheckBox.isSelected() ? mTrueValue : mFalseValue;
+		return mCheckBox.isSelected() ? Boolean.TRUE.toString() : Boolean.FALSE.toString();
 	}
 
 	public void layout(final DefaultFormBuilder builder) {
-		final JLabel label = builder.append(OptionString.getText(getLabel()), mCheckBox);
-		label.setToolTipText(OptionString.getText(getDescription()));
+		final JLabel label = builder.append(FpStringUtils.getOptionalText(getLabel()), mCheckBox);
+		label.setToolTipText(FpStringUtils.getOptionalText(getDescription()));
 	}
 
 	public void setEnabled(final boolean pEnabled) {
@@ -61,9 +60,6 @@ public class BooleanProperty extends PropertyBean implements IPropertyControl {
 
 	@Override
 	public void setValue(final String value) {
-		if (value == null || !(value.toLowerCase().equals(mTrueValue) || value.toLowerCase().equals(mFalseValue))) {
-			throw new IllegalArgumentException("Cannot set a boolean to " + value);
-		}
-		mCheckBox.setSelected(value.toLowerCase().equals(mTrueValue));
+		mCheckBox.setSelected(Boolean.parseBoolean(value));
 	}
 }

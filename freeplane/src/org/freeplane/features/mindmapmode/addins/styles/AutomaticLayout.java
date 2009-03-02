@@ -45,12 +45,12 @@ import org.freeplane.core.modecontroller.INodeChangeListener;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.modecontroller.NodeChangeEvent;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.ui.IPropertyControl;
 import org.freeplane.core.resources.ui.IPropertyControlCreator;
 import org.freeplane.core.resources.ui.OptionPanelBuilder;
-import org.freeplane.core.resources.ui.OptionString;
 import org.freeplane.core.resources.ui.PropertyBean;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.IndexedTree;
@@ -110,9 +110,9 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 		}
 
 		public void layout(final DefaultFormBuilder builder) {
-			final JLabel label = builder.append(OptionString.getText(getLabel()));
+			final JLabel label = builder.append(FpStringUtils.getOptionalText(getLabel()));
 			builder.append(new JLabel());
-			label.setToolTipText(OptionString.getText(getDescription()));
+			label.setToolTipText(FpStringUtils.getOptionalText(getDescription()));
 			builder.appendSeparator();
 			builder.append(new JScrollPane(mList), 3);
 		}
@@ -129,7 +129,7 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 			int j = 1;
 			for (final Iterator i = resultPatterns.getListChoiceList().iterator(); i.hasNext();) {
 				final Pattern pattern = (Pattern) i.next();
-				mDefaultListModel.addElement(OptionString.getText("OptionPanel.level" + j) + ": "
+				mDefaultListModel.addElement(FpStringUtils.getOptionalText("OptionPanel.level" + j) + ": "
 				        + StylePatternFactory.toString(pattern));
 				j++;
 			}
@@ -212,8 +212,8 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 		}
 
 		public void layout(final DefaultFormBuilder builder) {
-			final JLabel label = builder.append(OptionString.getText(getLabel()), mButton);
-			label.setToolTipText(OptionString.getText(getDescription()));
+			final JLabel label = builder.append(FpStringUtils.getOptionalText(getLabel()), mButton);
+			label.setToolTipText(FpStringUtils.getOptionalText(getDescription()));
 		}
 
 		public void setEnabled(final boolean pEnabled) {

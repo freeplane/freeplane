@@ -23,14 +23,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.image.RenderedImage;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URL;
 import java.text.MessageFormat;
-import java.util.logging.Logger;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -38,7 +31,7 @@ import javax.swing.JOptionPane;
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
-import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.url.UrlManager;
 
@@ -46,7 +39,6 @@ import org.freeplane.core.url.UrlManager;
  * @author foltin
  */
 abstract public class ExportAction extends AFreeplaneAction {
-	private Component view;
 
 	public ExportAction(final Controller controller) {
 		super(controller);
@@ -59,7 +51,7 @@ abstract public class ExportAction extends AFreeplaneAction {
 	/**
 	 * @param nameExtension
 	 */
-	protected File chooseFile(final String type, final String description, final String nameExtension) {
+	protected  File chooseFile(final String type, final String description, final String nameExtension) {
 		final Controller controller = getController();
 		final Container component = controller.getViewController().getContentPane();
 		JFileChooser chooser = null;
@@ -87,7 +79,7 @@ abstract public class ExportAction extends AFreeplaneAction {
 			chosenFile = new File(chosenFile.getParent(), chosenFile.getName() + "." + type);
 		}
 		if (chosenFile.exists()) {
-			final String overwriteText = MessageFormat.format(ResourceController.getText("file_already_exists"),
+			final String overwriteText = MessageFormat.format(FreeplaneResourceBundle.getText("file_already_exists"),
 			    new Object[] { chosenFile.toString() });
 			final int overwriteMap = JOptionPane.showConfirmDialog(component, overwriteText, overwriteText,
 			    JOptionPane.YES_NO_OPTION);
@@ -96,54 +88,6 @@ abstract public class ExportAction extends AFreeplaneAction {
 			}
 		}
 		return chosenFile;
-	}
-
-	/**
-	 */
-	protected void copyFromFile(final String dir, final String fileName, final String destinationDirectory) {
-		try {
-			final File resource = new File(dir, fileName);
-			if (resource == null) {
-				Logger.global.severe("Cannot find resource: " + dir + fileName);
-				return;
-			}
-			final InputStream in = new FileInputStream(resource);
-			final OutputStream out = new FileOutputStream(destinationDirectory + "/" + fileName);
-			copyStream(in, out);
-		}
-		catch (final Exception e) {
-			Logger.global.severe("File not found or could not be copied. " + "Was earching for " + dir + fileName
-			        + " and should go to " + destinationDirectory);
-		}
-	}
-
-	/**
-	 */
-	protected void copyFromResource(final String prefix, final String fileName, final String destinationDirectory) {
-		try {
-			final URL resource = ResourceController.getResourceController().getResource(prefix + fileName);
-			if (resource == null) {
-				Logger.global.severe("Cannot find resource: " + prefix + fileName);
-				return;
-			}
-			final InputStream in = resource.openStream();
-			final OutputStream out = new FileOutputStream(destinationDirectory + "/" + fileName);
-			copyStream(in, out);
-		}
-		catch (final Exception e) {
-			Logger.global.severe("File not found or could not be copied. " + "Was earching for " + prefix + fileName
-			        + " and should go to " + destinationDirectory);
-		}
-	}
-
-	private void copyStream(final InputStream in, final OutputStream out) throws IOException {
-		final byte[] buf = new byte[1024];
-		int len;
-		while ((len = in.read(buf)) > 0) {
-			out.write(buf, 0, len);
-		}
-		in.close();
-		out.close();
 	}
 
 	public RenderedImage createBufferedImage() {

@@ -30,6 +30,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URL;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.Vector;
@@ -50,9 +51,11 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.MindIcon;
+import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.ResUtil;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.n3.nanoxml.IXMLElement;
 import org.freeplane.n3.nanoxml.IXMLParser;
@@ -148,7 +151,7 @@ public class ExportWithXSLT extends ExportAction {
 		final StringTokenizer tokenizer = new StringTokenizer(files, ",");
 		while (tokenizer.hasMoreTokens()) {
 			final String next = tokenizer.nextToken();
-			copyFromResource(filePrefix, next, directoryName);
+			ResUtil.copyFromResource(filePrefix, next, directoryName);
 		}
 	}
 
@@ -157,7 +160,7 @@ public class ExportWithXSLT extends ExportAction {
 	private boolean copyIcons(final String directoryName) {
 		boolean success;
 		final String iconDirectoryName = directoryName + File.separatorChar + "icons";
-		success = createDirectory(iconDirectoryName);
+		success = ResUtil.createDirectory(iconDirectoryName);
 		if (success) {
 			copyIconsToDirectory(iconDirectoryName);
 		}
@@ -166,12 +169,12 @@ public class ExportWithXSLT extends ExportAction {
 
 	/**
 	 */
-	private void copyIconsToDirectory(final String directoryName2) {
-		final Vector iconNames = MindIcon.getAllIconNames();
+	private static void copyIconsToDirectory(final String directoryName2) {
+		final List iconNames = MindIcon.getAllIconNames();
 		for (int i = 0; i < iconNames.size(); ++i) {
 			final String iconName = ((String) iconNames.get(i));
 			final MindIcon myIcon = MindIcon.factory(iconName);
-			copyFromResource(MindIcon.getIconsPath(), myIcon.getIconBaseFileName(), directoryName2);
+			ResUtil.copyFromResource(MindIcon.getIconsPath(), myIcon.getIconBaseFileName(), directoryName2);
 		}
 		final File iconDir = new File(ResourceController.getResourceController().getFreeplaneUserDirectory(), "icons");
 		if (iconDir.exists()) {
@@ -185,7 +188,7 @@ public class ExportWithXSLT extends ExportAction {
 				if (iconName.length() == 4) {
 					continue;
 				}
-				copyFromFile(iconDir.getAbsolutePath(), iconName, directoryName2);
+				ResUtil.copyFromFile(iconDir.getAbsolutePath(), iconName, directoryName2);
 			}
 		}
 	}
@@ -197,16 +200,6 @@ public class ExportWithXSLT extends ExportAction {
 		final MapModel map = getController().getMap();
 		getModeController().getMapController().getFilteredXml(map, fileout);
 		return success;
-	}
-
-	/**
-	 */
-	private boolean createDirectory(final String directoryName) {
-		final File dir = new File(directoryName);
-		if (!dir.exists()) {
-			return dir.mkdir();
-		}
-		return true;
 	}
 
 	/**
@@ -261,7 +254,7 @@ public class ExportWithXSLT extends ExportAction {
 	private String getTranslatableResourceString(final String resourceName) {
 		final String returnValue = getProperty(resourceName);
 		if (returnValue != null && returnValue.startsWith("%")) {
-			return ResourceController.getText(returnValue.substring(1));
+			return FreeplaneResourceBundle.getText(returnValue.substring(1));
 		}
 		return returnValue;
 	}
@@ -287,7 +280,7 @@ public class ExportWithXSLT extends ExportAction {
 			}
 			if (success && StringUtils.equals(getProperty("create_dir"), "true")) {
 				final String directoryName = saveFile.getAbsolutePath() + "_files";
-				success = createDirectory(directoryName);
+				success = ResUtil.createDirectory(directoryName);
 				if (success) {
 					final String files = getProperty("files_to_copy");
 					final String filePrefix = getProperty("file_prefix");

@@ -72,6 +72,7 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.WindowConfigurationStorage;
 import org.freeplane.core.ui.UIBuilder;
@@ -528,7 +529,7 @@ class TimeList {
 	}
 
 	private String getResourceString(final String string) {
-		return ResourceController.getText(string);
+		return FreeplaneResourceBundle.getText(string);
 	}
 
 	/**

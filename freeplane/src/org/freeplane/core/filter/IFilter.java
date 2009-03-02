@@ -25,6 +25,7 @@ import org.freeplane.core.model.NodeModel;
  * @author Dimitry Polivaev
  */
 public interface IFilter {
+	// TODO rladstaetter 02.03.2009 create enum, move out of interface definition (defining constants in interfaces is considered 'old style')
 	public static final int FILTER_INITIAL_VALUE = 1;
 	static final int FILTER_SHOW_ANCESTOR = 4;
 	static final int FILTER_SHOW_DESCENDANT = 8;

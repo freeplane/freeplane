@@ -26,6 +26,8 @@ import javax.swing.AbstractAction;
 
 import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.resources.FpStringUtils;
+import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.LogTool;
@@ -38,12 +40,12 @@ class KeyDocumentationAction extends AbstractAction implements IFreeplaneAction{
 	public KeyDocumentationAction(final Controller controller) {
 		super();
 		this.controller = controller;
-		MenuBuilder.setLabelAndMnemonic(this, ResourceController.getText("KeyDoc"));
+		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText("KeyDoc"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		String urlText = ResourceController.getText("pdfKeyDocLocation");
-		urlText = ResourceController.removeTranslateComment(urlText);
+		String urlText = FreeplaneResourceBundle.getText("pdfKeyDocLocation");
+		urlText = FpStringUtils.removeTranslateComment(urlText);
 		try {
 			if (urlText != null && urlText != "") {
 				URL url = null;

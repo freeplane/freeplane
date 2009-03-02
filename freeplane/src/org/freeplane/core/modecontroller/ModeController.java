@@ -28,6 +28,7 @@ import java.util.ListIterator;
 
 import javax.swing.Action;
 
+import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.AController;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.ExtensionContainer;
@@ -150,7 +151,7 @@ public class ModeController extends AController {
 		extensionContainer = new ExtensionContainer(new HashMap <Class<? extends IExtension>, IExtension>());
 	}
 
-	public void putAction(final String key, final Action action) {
+	public void putAction(final String key, final IFreeplaneAction action) {
 		super.putAction(key, action);
 		if (AFreeplaneAction.checkEnabledOnChange(action)) {
 			final ActionEnablerOnChange listener = new ActionEnablerOnChange((AFreeplaneAction) action);

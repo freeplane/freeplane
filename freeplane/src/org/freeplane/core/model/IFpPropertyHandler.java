@@ -17,8 +17,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.modecontroller;
+package org.freeplane.core.model;
 
-public interface IPropertyGetter<V, T> {
-	V getProperty(T model, V currentValue);
+public interface IFpPropertyHandler<V, M> {
+	V getProperty(M model, V currentValue);
 }

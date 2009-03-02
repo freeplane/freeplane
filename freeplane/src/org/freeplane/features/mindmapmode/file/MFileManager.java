@@ -40,6 +40,8 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
+import org.freeplane.core.resources.FpStringUtils;
+import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.url.UrlManager;
@@ -73,7 +75,7 @@ public class MFileManager extends UrlManager {
 		@Override
 		public String getDescription() {
 			
-			return ResourceController.getText("mindmaps_desc");
+			return FreeplaneResourceBundle.getText("mindmaps_desc");
 		}
 	}
 	FileFilter filefilter = new MindMapFilter();
@@ -143,7 +145,7 @@ public class MFileManager extends UrlManager {
 		JFileChooser chooser = null;
 		if (map.getFile() == null) {
 			
-			JOptionPane.showMessageDialog(getController().getViewController().getContentPane(), ResourceController.getText("not_saved_for_link_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(getController().getViewController().getContentPane(), FreeplaneResourceBundle.getText("not_saved_for_link_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
 			return null;
 		}
 		if (getLastCurrentDir() != null) {
@@ -168,7 +170,7 @@ public class MFileManager extends UrlManager {
 			}
 			catch (final MalformedURLException ex) {
 				
-				getController().errorMessage(ResourceController.getText("url_error"));
+				getController().errorMessage(FreeplaneResourceBundle.getText("url_error"));
 				return null;
 			}
 			if (ResourceController.getResourceController().getProperty("links").equals("relative")) {
@@ -177,7 +179,7 @@ public class MFileManager extends UrlManager {
 				}
 				catch (final MalformedURLException ex) {
 					
-					getController().errorMessage(ResourceController.getText("url_error"));
+					getController().errorMessage(FreeplaneResourceBundle.getText("url_error"));
 					return null;
 				}
 			}
@@ -246,14 +248,14 @@ public class MFileManager extends UrlManager {
 			final String lockingUser = ((MMapController) getModeController().getMapController()).tryToLock(map, file);
 			if (lockingUser != null) {
 				
-				UITools.informationMessage(getController().getViewController().getFrame(), ResourceController
+				UITools.informationMessage(getController().getViewController().getFrame(), FpStringUtils
 				    .formatText("map_locked_by_save_as", file.getName(), lockingUser));
 				return false;
 			}
 		}
 		catch (final Exception e) {
 			
-			UITools.informationMessage(getController().getViewController().getFrame(), ResourceController.formatText(
+			UITools.informationMessage(getController().getViewController().getFrame(), FpStringUtils.formatText(
 			    "locking_failed_by_save_as", file.getName()));
 			return false;
 		}
@@ -270,7 +272,7 @@ public class MFileManager extends UrlManager {
 			        + org.freeplane.core.enums.ResourceControllerProperties.FREEPLANE_FILE_EXTENSION));
 		}
 		
-		chooser.setDialogTitle(ResourceController.getText("save_as"));
+		chooser.setDialogTitle(FreeplaneResourceBundle.getText("save_as"));
 		final int returnVal = chooser.showSaveDialog(getController().getViewController().getMapView());
 		if (returnVal != JFileChooser.APPROVE_OPTION) {
 			return false;
@@ -284,7 +286,7 @@ public class MFileManager extends UrlManager {
 		}
 		if (f.exists()) {
 			final int overwriteMap = JOptionPane.showConfirmDialog(getController().getViewController().getMapView(),
-			    ResourceController.getText("map_already_exists"), "Freeplane", JOptionPane.YES_NO_OPTION);
+			    FreeplaneResourceBundle.getText("map_already_exists"), "Freeplane", JOptionPane.YES_NO_OPTION);
 			if (overwriteMap != JOptionPane.YES_OPTION) {
 				return false;
 			}
@@ -318,7 +320,7 @@ public class MFileManager extends UrlManager {
 		}
 		catch (final FileNotFoundException e) {
 			
-			final String message = ResourceController.formatText("save_failed", file
+			final String message = FpStringUtils.formatText("save_failed", file
 			    .getName());
 			if (!isInternal) {
 				getController().errorMessage(message);
