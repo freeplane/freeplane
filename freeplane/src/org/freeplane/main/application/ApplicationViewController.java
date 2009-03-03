@@ -24,6 +24,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Frame;
 import java.awt.Insets;
 import java.awt.Toolkit;
@@ -255,12 +256,6 @@ class ApplicationViewController extends ViewController {
 					                    pMindMapComponent);
 			splitPanePosition     =resourceController.getIntProperty(SPLIT_PANE_POSITION, -1);
 			lastSplitPanePosition =resourceController.getIntProperty(SPLIT_PANE_LAST_POSITION, -1);
-		} else {
-			mSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, 
-                    getScrollPane(),
-                    pMindMapComponent);
-			splitPanePosition     =resourceController.getIntProperty(SPLIT_PANE_POSITION, -1);
-			lastSplitPanePosition =resourceController.getIntProperty(SPLIT_PANE_LAST_POSITION, -1);			
 		}
 		
 		mSplitPane.setContinuousLayout(true);
@@ -280,6 +275,13 @@ class ApplicationViewController extends ViewController {
 		if (splitPanePosition != -1 && lastSplitPanePosition != -1) {
 			mSplitPane.setDividerLocation(splitPanePosition);
 			mSplitPane.setLastDividerLocation(lastSplitPanePosition);
+		}
+		else{
+			EventQueue.invokeLater(new Runnable(){
+
+				public void run() {
+					mSplitPane.setDividerLocation(0.5);
+                }});
 		}
 		return mSplitPane;
 	}
