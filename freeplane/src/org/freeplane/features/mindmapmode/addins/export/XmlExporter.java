@@ -38,6 +38,7 @@ class XmlExporter {
 	/** Creates a new instance of XmlExporter */
 	public XmlExporter() {
 	}
+
 	/**
 	 * The method actually performing the XSLT transformation.
 	 * @param xmlFile the source XML file

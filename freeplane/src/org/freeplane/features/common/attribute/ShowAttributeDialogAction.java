@@ -32,9 +32,8 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.features.mindmapmode.attribute.AttributeManagerDialog;
 
-class ShowAttributeDialogAction extends AbstractAction implements IFreeplaneAction{
-	
-    private static final long serialVersionUID = -3301794915146529692L;
+class ShowAttributeDialogAction extends AbstractAction implements IFreeplaneAction {
+	private static final long serialVersionUID = -3301794915146529692L;
 	private AttributeManagerDialog attributeDialog = null;
 	final private Controller controller;
 	private Frame frame;
@@ -66,6 +65,6 @@ class ShowAttributeDialogAction extends AbstractAction implements IFreeplaneActi
 	}
 
 	public String getName() {
-	    return "showAttributeManagerAction";
-    }
+		return "showAttributeManagerAction";
+	}
 }

@@ -31,9 +31,9 @@ import org.freeplane.core.ui.AFreeplaneAction;
 /**
  * @author foltin
  */
-class CommonToggleFoldedAction extends AFreeplaneAction implements IFreeplaneAction{
-	private static final long serialVersionUID = -910412788559039263L;
+class CommonToggleFoldedAction extends AFreeplaneAction implements IFreeplaneAction {
 	static final String NAME = "toggleFolded";
+	private static final long serialVersionUID = -910412788559039263L;
 
 	public CommonToggleFoldedAction(final Controller controller) {
 		super(controller, "toggle_folded");
@@ -41,6 +41,10 @@ class CommonToggleFoldedAction extends AFreeplaneAction implements IFreeplaneAct
 
 	public void actionPerformed(final ActionEvent e) {
 		toggleFolded();
+	}
+
+	public String getName() {
+		return NAME;
 	}
 
 	private ListIterator resetIterator(final ListIterator iterator) {
@@ -60,9 +64,5 @@ class CommonToggleFoldedAction extends AFreeplaneAction implements IFreeplaneAct
 			final NodeModel node = (NodeModel) i.next();
 			getModeController().getMapController().setFolded(node, fold);
 		}
-	}
-
-	public String getName() {
-		return NAME;
 	}
 }

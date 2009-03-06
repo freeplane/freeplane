@@ -196,7 +196,8 @@ public class UITools {
 		dialog.setLocation(dx, dy);
 	}
 
-	public static void setDialogLocationRelativeTo(final JDialog dialog, final Controller controller, final NodeModel node) {
+	public static void setDialogLocationRelativeTo(final JDialog dialog, final Controller controller,
+	                                               final NodeModel node) {
 		if (node == null) {
 			return;
 		}
@@ -206,7 +207,8 @@ public class UITools {
 		UITools.setDialogLocationRelativeTo(dialog, c);
 	}
 
-	public static String showInputDialog(final Controller controller, final NodeModel node, final String text, final String string) {
+	public static String showInputDialog(final Controller controller, final NodeModel node, final String text,
+	                                     final String string) {
 		if (node == null) {
 			return null;
 		}
@@ -216,7 +218,8 @@ public class UITools {
 		return JOptionPane.showInputDialog(parentComponent, text, string);
 	}
 
-	public static String showInputDialog(final Controller controller, final NodeModel node, final String text, final String title, final int type) {
+	public static String showInputDialog(final Controller controller, final NodeModel node, final String text,
+	                                     final String title, final int type) {
 		if (node == null) {
 			return null;
 		}

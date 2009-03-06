@@ -61,7 +61,7 @@ public class NodeModel implements MutableTreeNode {
 	public final static int UNKNOWN_POSITION = 0;
 	static public final Object UNKNOWN_PROPERTY = new Object();
 	private final List<NodeModel> children = new ArrayList<NodeModel>();
-
+	private final ExtensionContainer extensionContainer;
 	final private FilterInfo filterInfo = new FilterInfo();
 	protected boolean folded;
 	private HistoryInformationModel historyInformation = null;
@@ -80,31 +80,6 @@ public class NodeModel implements MutableTreeNode {
 		this(null, map);
 	}
 
-	private final ExtensionContainer extensionContainer;
-	public Map<Class<? extends IExtension>, IExtension> getExtensions() {
-	    return extensionContainer.getExtensions();
-    }
-
-	public boolean containsExtension(Class<? extends IExtension> clazz) {
-		return extensionContainer.containsExtension(clazz);
-    }
-
-	public IExtension getExtension(Class<? extends IExtension> clazz) {
-	    return extensionContainer.getExtension(clazz);
-    }
-
-	public void putExtension(IExtension extension) {
-	    extensionContainer.putExtension(extension);
-    }
-
-	public IExtension removeExtension(Class<? extends IExtension> clazz) {
-	    return extensionContainer.removeExtension(clazz);
-    }
-
-	public boolean removeExtension(IExtension extension) {
-	    return extensionContainer.removeExtension(extension);
-    }
-
 	public NodeModel(final Object userObject, final MapModel map) {
 		extensionContainer = new ExtensionContainer(new SmallExtensionMap());
 		setText((String) userObject);
@@ -119,7 +94,6 @@ public class NodeModel implements MutableTreeNode {
 			visitor.visit(iterator.next());
 		}
 	}
-
 
 	public void addIcon(final MindIcon _icon, final int position) {
 		icons.addIcon(_icon, position);
@@ -147,6 +121,9 @@ public class NodeModel implements MutableTreeNode {
 		};
 	}
 
+	public boolean containsExtension(final Class<? extends IExtension> clazz) {
+		return extensionContainer.containsExtension(clazz);
+	}
 
 	public String createID() {
 		if (id == null) {
@@ -159,8 +136,7 @@ public class NodeModel implements MutableTreeNode {
 		if (toolTip == null) {
 			toolTip = new TreeMap();
 		}
-	};
-
+	}
 
 	public void fireNodeChanged(final NodeChangeEvent nodeChangeEvent) {
 		if (views == null) {
@@ -198,7 +174,7 @@ public class NodeModel implements MutableTreeNode {
 
 	public TreeNode getChildAt(final int childIndex) {
 		return children.get(childIndex);
-	}
+	};
 
 	public int getChildCount() {
 		if (children == null) {
@@ -206,7 +182,7 @@ public class NodeModel implements MutableTreeNode {
 		}
 		final EncryptionModel encryptionModel = EncryptionModel.getModel(this);
 		return encryptionModel == null || encryptionModel.isAccessible() ? children.size() : 0;
-	};
+	}
 
 	public int getChildPosition(final NodeModel childNode) {
 		int position = 0;
@@ -222,10 +198,17 @@ public class NodeModel implements MutableTreeNode {
 		return Collections.unmodifiableList((children != null) ? children : Collections.EMPTY_LIST);
 	}
 
+	public IExtension getExtension(final Class<? extends IExtension> clazz) {
+		return extensionContainer.getExtension(clazz);
+	}
+
+	public Map<Class<? extends IExtension>, IExtension> getExtensions() {
+		return extensionContainer.getExtensions();
+	}
 
 	public FilterInfo getFilterInfo() {
 		return filterInfo;
-	}
+	};
 
 	public HistoryInformationModel getHistoryInformation() {
 		return historyInformation;
@@ -329,7 +312,6 @@ public class NodeModel implements MutableTreeNode {
 		return getChildCount() != 0;
 	}
 
-
 	public boolean hasID() {
 		return id != null;
 	}
@@ -411,6 +393,10 @@ public class NodeModel implements MutableTreeNode {
 		return filter == null || filter.isVisible(this);
 	}
 
+	public void putExtension(final IExtension extension) {
+		extensionContainer.putExtension(extension);
+	}
+
 	public void remove(final int index) {
 		final MutableTreeNode node = children.get(index);
 		remove(node);
@@ -430,6 +416,14 @@ public class NodeModel implements MutableTreeNode {
 		node.setParent(null);
 		children.remove(node);
 		fireNodeRemoved((NodeModel) node, index);
+	}
+
+	public IExtension removeExtension(final Class<? extends IExtension> clazz) {
+		return extensionContainer.removeExtension(clazz);
+	}
+
+	public boolean removeExtension(final IExtension extension) {
+		return extensionContainer.removeExtension(extension);
 	}
 
 	public void removeFromParent() {
@@ -542,5 +536,4 @@ public class NodeModel implements MutableTreeNode {
 	public String toString() {
 		return getText();
 	}
-
 }

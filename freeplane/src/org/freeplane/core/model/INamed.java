@@ -6,6 +6,5 @@ package org.freeplane.core.model;
  * @author robert.ladstaetter
  */
 public interface INamed {
-
 	public String getName();
 }

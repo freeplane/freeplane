@@ -64,8 +64,8 @@ public class MPatternController implements IExtension {
 	public MPatternController(final ModeController modeController) {
 		super();
 		this.modeController = modeController;
-		patternsFile = new File(ResourceController.getResourceController().getFreeplaneUserDirectory(), ResourceController
-		    .getResourceController().getProperty("patternsfile"));
+		patternsFile = new File(ResourceController.getResourceController().getFreeplaneUserDirectory(),
+		    ResourceController.getResourceController().getProperty("patternsfile"));
 		createActions();
 	}
 
@@ -153,8 +153,8 @@ public class MPatternController implements IExtension {
 		for (int i = 0; i < patterns.length; ++i) {
 			final JMenuItem item = new JMenuItem(patterns[i]);
 			builder.addMenuItem(group, item, MenuBuilder.AS_CHILD);
-			item.setAccelerator(KeyStroke.getKeyStroke(ResourceController.getResourceController().getAdjustableProperty(
-			    "keystroke_apply_pattern_" + (i + 1))));
+			item.setAccelerator(KeyStroke.getKeyStroke(ResourceController.getResourceController()
+			    .getAdjustableProperty("keystroke_apply_pattern_" + (i + 1))));
 		}
 	}
 
@@ -170,8 +170,8 @@ public class MPatternController implements IExtension {
 		}
 		else {
 			LogTool.warn("User patterns file " + patternsFile + " not found.");
-			reader = new InputStreamReader(ResourceController.getResourceController().getResource(ResourceControllerProperties.XML_PATTERNS_XML)
-			    .openStream());
+			reader = new InputStreamReader(ResourceController.getResourceController().getResource(
+			    ResourceControllerProperties.XML_PATTERNS_XML).openStream());
 		}
 		return reader;
 	}

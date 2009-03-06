@@ -88,7 +88,8 @@ class RootMainView extends MainView {
 	 */
 	@Override
 	String getStyle() {
-		return ResourceController.getResourceController().getProperty(ResourceControllerProperties.RESOURCES_ROOT_NODE_SHAPE);
+		return ResourceController.getResourceController().getProperty(
+		    ResourceControllerProperties.RESOURCES_ROOT_NODE_SHAPE);
 	}
 
 	@Override

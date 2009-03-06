@@ -148,7 +148,8 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 		final int k = depth(node);
 		if (k < stage) {
 			setFolded(node, false);
-			for (final Iterator i = controller.getModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
+			for (final Iterator i = controller.getModeController().getMapController().childrenUnfolded(node); i
+			    .hasNext();) {
 				foldStageN((NodeModel) i.next(), stage);
 			}
 		}
@@ -235,7 +236,8 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 		final int k = depth(node);
 		if (k < stage) {
 			setFolded(node, false);
-			for (final Iterator i = controller.getModeController().getMapController().childrenUnfolded(node); i.hasNext();) {
+			for (final Iterator i = controller.getModeController().getMapController().childrenUnfolded(node); i
+			    .hasNext();) {
 				unfoldStageN((NodeModel) i.next(), stage);
 			}
 		}

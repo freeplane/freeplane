@@ -20,7 +20,6 @@
 package org.freeplane.core.ui;
 
 import java.awt.event.ActionEvent;
-import java.util.ListIterator;
 
 import javax.swing.ImageIcon;
 

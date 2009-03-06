@@ -53,8 +53,8 @@ class ApplicationResourceController extends ResourceController {
 	final private Properties defProps;
 	private LastOpenedList lastOpened;
 	final private Properties props;
-	private ClassLoader urlResourceLoader;
 	private final String resourceBaseDir;
+	private ClassLoader urlResourceLoader;
 
 	/**
 	 * @param controller
@@ -62,16 +62,17 @@ class ApplicationResourceController extends ResourceController {
 	public ApplicationResourceController() {
 		super();
 		urlResourceLoader = null;
-		resourceBaseDir = System.getProperty(ResourceControllerProperties.ORG_FREEPLANE_GLOBALRESOURCEDIR, ResourceControllerProperties.DEFAULT_ORG_FREEPLANE_GLOBALRESOURCEDIR);
-		if(resourceBaseDir != null){
+		resourceBaseDir = System.getProperty(ResourceControllerProperties.ORG_FREEPLANE_GLOBALRESOURCEDIR,
+		    ResourceControllerProperties.DEFAULT_ORG_FREEPLANE_GLOBALRESOURCEDIR);
+		if (resourceBaseDir != null) {
 			try {
 				final File resourceDir = new File(resourceBaseDir);
-				if(resourceDir.exists()){
-					final URL globalResourceUrl =resourceDir.toURL();
-					urlResourceLoader = new URLClassLoader(new URL[]{globalResourceUrl}, null);
+				if (resourceDir.exists()) {
+					final URL globalResourceUrl = resourceDir.toURL();
+					urlResourceLoader = new URLClassLoader(new URL[] { globalResourceUrl }, null);
 				}
 			}
-			catch (Exception e) {
+			catch (final Exception e) {
 				e.printStackTrace();
 			}
 		}
@@ -88,13 +89,6 @@ class ApplicationResourceController extends ResourceController {
 			}
 		});
 	}
-
-	@Override
-    public void init(Controller controller) {
-		final int maxEntries = new Integer(getProperty("last_opened_list_length", "25")).intValue();
-		lastOpened = new LastOpenedList(controller, getProperty("lastOpened"), maxEntries);
-	    super.init(controller);
-    }
 
 	private void createUserDirectory(final Properties pDefaultProperties) {
 		final File userPropertiesFolder = new File(getFreeplaneUserDirectory(pDefaultProperties));
@@ -138,6 +132,30 @@ class ApplicationResourceController extends ResourceController {
 		return props.getProperty(key);
 	}
 
+	@Override
+	public URL getResource(final String name) {
+		if (urlResourceLoader == null) {
+			return super.getResource(name);
+		}
+		final String relName;
+		if (name.startsWith("/")) {
+			relName = name.substring(1);
+		}
+		else {
+			relName = name;
+		}
+		final URL resource = urlResourceLoader.getResource(relName);
+		if (resource != null) {
+			return resource;
+		}
+		return super.getResource(name);
+	}
+
+	@Override
+	public String getResourceBaseDir() {
+		return resourceBaseDir;
+	}
+
 	private File getUserPreferencesFile(final Properties defaultPreferences) {
 		if (defaultPreferences == null) {
 			System.err.println("Panic! Error while loading default properties.");
@@ -150,6 +168,13 @@ class ApplicationResourceController extends ResourceController {
 	}
 
 	@Override
+	public void init(final Controller controller) {
+		final int maxEntries = new Integer(getProperty("last_opened_list_length", "25")).intValue();
+		lastOpened = new LastOpenedList(controller, getProperty("lastOpened"), maxEntries);
+		super.init(controller);
+	}
+
+	@Override
 	public void loadProperties(final InputStream inStream) throws IOException {
 		defProps.load(inStream);
 	}
@@ -158,25 +183,6 @@ class ApplicationResourceController extends ResourceController {
 	public void loadPropertiesFromXML(final InputStream in) throws IOException, InvalidPropertiesFormatException {
 		defProps.loadFromXML(in);
 	}
-
-	@Override
-    public URL getResource(String name) {
-		if(urlResourceLoader == null){
-			return super.getResource(name);
-		}
-		final String relName;
-		if(name.startsWith("/")) {
-			relName = name.substring(1);
-		}
-		else {
-			 relName = name;
-		}
-		final URL resource = urlResourceLoader.getResource(relName);
-		if (resource != null) {
-			return resource;
-		}
-		return super.getResource(name);
-    }
 
 	private Properties readDefaultPreferences() {
 		final String propsLoc = ResourceControllerProperties.FREEPLANE_PROPERTIES;
@@ -280,8 +286,4 @@ class ApplicationResourceController extends ResourceController {
 			}
 		});
 	}
-
-	public String getResourceBaseDir() {
-		return resourceBaseDir;
-    }
 }

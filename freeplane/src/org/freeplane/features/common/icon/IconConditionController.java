@@ -80,8 +80,7 @@ class IconConditionController implements IElementaryConditionController {
 	}
 
 	public Object[] getIconConditionNames() {
-		return new NamedObject[] { FreeplaneResourceBundle.createTranslatedString(
-		    ConditionFactory.FILTER_CONTAINS), };
+		return new NamedObject[] { FreeplaneResourceBundle.createTranslatedString(ConditionFactory.FILTER_CONTAINS), };
 	}
 
 	public ComboBoxEditor getValueEditor() {
@@ -100,6 +99,9 @@ class IconConditionController implements IElementaryConditionController {
 	}
 
 	public ICondition loadCondition(final XMLElement element) {
-		return IconContainedCondition.load(element);
+		if (element.getName().equalsIgnoreCase(IconContainedCondition.NAME)) {
+			return IconContainedCondition.load(element);
+		}
+		return null;
 	}
 }

@@ -69,7 +69,6 @@ public class LocationModel implements IExtension {
 	private int shiftY = 0;
 	private int vGap = LocationModel.VGAP;
 
-
 	public int getHGap() {
 		return hGap;
 	}

@@ -22,8 +22,6 @@ package org.freeplane.features.common.edge;
 import java.awt.Color;
 import java.io.IOException;
 
-import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
-
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.IElementDOMHandler;
@@ -34,7 +32,6 @@ import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.model.FpColor;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.util.XmlTool;
 import org.freeplane.n3.nanoxml.IXMLElement;
 import org.freeplane.n3.nanoxml.XMLElement;
 

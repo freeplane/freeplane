@@ -35,9 +35,9 @@ import org.freeplane.main.browsemode.BModeControllerFactory;
 import org.freeplane.view.swing.map.MapViewController;
 
 public class FreeplaneApplet extends JApplet {
+	private AppletResourceController appletResourceController;
 	private AppletViewController appletViewController;
 	private Controller controller;
-	private AppletResourceController appletResourceController;
 
 	@Override
 	public void destroy() {
@@ -51,7 +51,7 @@ public class FreeplaneApplet extends JApplet {
 		final Container contentPane = getContentPane();
 		contentPane.setLayout(new BorderLayout());
 		controller = new Controller();
-		appletResourceController = new AppletResourceController(this,controller);
+		appletResourceController = new AppletResourceController(this, controller);
 		ResourceController.setResourceController(appletResourceController);
 		appletViewController = new AppletViewController(controller, this, new MapViewController());
 		FilterController.install(controller);

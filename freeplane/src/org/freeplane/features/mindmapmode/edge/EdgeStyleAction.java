@@ -27,7 +27,6 @@ import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.edge.EdgeModel;
-import org.freeplane.features.common.nodestyle.NodeStyleController;
 
 @SelectableAction(checkOnNodeChange = true)
 class EdgeStyleAction extends MultipleNodeAction {
@@ -48,18 +47,16 @@ class EdgeStyleAction extends MultipleNodeAction {
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
 		((MEdgeController) EdgeController.getController(getModeController())).setStyle(node, mStyle);
 	}
-	
 
 	@Override
 	public void setSelected() {
 		final NodeModel node = getModeController().getMapController().getSelectedNode();
 		final EdgeModel model = EdgeModel.getModel(node);
-		if(model == null){
+		if (model == null) {
 			return;
 		}
-		if(model.getStyle().equals(mStyle)){
+		if (model.getStyle().equals(mStyle)) {
 			setSelected(true);
 		}
 	}
-
 }

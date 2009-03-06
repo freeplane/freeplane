@@ -71,10 +71,10 @@ class EditNodeDialog extends EditNodeBase {
 			preferredHeight = Math.min(preferredHeight, Integer.parseInt(ResourceController.getResourceController()
 			    .getProperty("el__max_default_window_height")));
 			int preferredWidth = viewController.getComponent(getNode()).getWidth();
-			preferredWidth = Math.max(preferredWidth, Integer.parseInt(ResourceController.getResourceController().getProperty(
-			    "el__min_default_window_width")));
-			preferredWidth = Math.min(preferredWidth, Integer.parseInt(ResourceController.getResourceController().getProperty(
-			    "el__max_default_window_width")));
+			preferredWidth = Math.max(preferredWidth, Integer.parseInt(ResourceController.getResourceController()
+			    .getProperty("el__min_default_window_width")));
+			preferredWidth = Math.min(preferredWidth, Integer.parseInt(ResourceController.getResourceController()
+			    .getProperty("el__max_default_window_width")));
 			editorScrollPane.setPreferredSize(new Dimension(preferredWidth, preferredHeight));
 			final JPanel panel = new JPanel();
 			final JButton okButton = new JButton();

@@ -37,9 +37,9 @@ import org.freeplane.n3.nanoxml.IXMLElement;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 class CloudBuilder implements IElementDOMHandler, IExtensionElementWriter {
-	private MapController mapController;
+	private final MapController mapController;
 
-	public CloudBuilder(MapController mapController) {
+	public CloudBuilder(final MapController mapController) {
 		this.mapController = mapController;
 	}
 

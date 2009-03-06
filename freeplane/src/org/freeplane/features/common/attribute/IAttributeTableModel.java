@@ -24,7 +24,7 @@ import org.freeplane.core.model.NodeModel;
 /**
  * @author Dimitry Polivaev
  */
-public interface IAttributeTableModel{
+public interface IAttributeTableModel {
 	int getColumnWidth(int col);
 
 	NodeModel getNode();

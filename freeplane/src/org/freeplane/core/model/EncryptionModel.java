@@ -91,7 +91,7 @@ public class EncryptionModel implements IExtension {
 	 * @param mapController 
 	 * @return true, if the password was correct.
 	 */
-	public boolean decrypt(MapController mapController, final IEncrypter encrypter) {
+	public boolean decrypt(final MapController mapController, final IEncrypter encrypter) {
 		if (!checkPassword(encrypter)) {
 			return false;
 		}
@@ -143,7 +143,7 @@ public class EncryptionModel implements IExtension {
 	 * @param mapController 
 	 * @throws IOException
 	 */
-	private void generateEncryptedContent(MapController mapController) throws IOException {
+	private void generateEncryptedContent(final MapController mapController) throws IOException {
 		final StringWriter sWriter = new StringWriter();
 		for (final Iterator i = mapController.childrenUnfolded(node); i.hasNext();) {
 			final NodeModel child = (NodeModel) i.next();
@@ -156,7 +156,7 @@ public class EncryptionModel implements IExtension {
 		encryptedContent = encryptXml(childXml);
 	}
 
-	public String getEncryptedContent(MapController mapController) {
+	public String getEncryptedContent(final MapController mapController) {
 		if (isDecrypted) {
 			try {
 				generateEncryptedContent(mapController);
@@ -189,7 +189,7 @@ public class EncryptionModel implements IExtension {
 		return isAccessible;
 	}
 
-	private void pasteXML(final String pasted, final NodeModel target, MapController mapController) {
+	private void pasteXML(final String pasted, final NodeModel target, final MapController mapController) {
 		try {
 			final NodeModel node = mapController.getMapReader().createNodeTreeFromXml(target.getMap(),
 			    new StringReader(pasted));

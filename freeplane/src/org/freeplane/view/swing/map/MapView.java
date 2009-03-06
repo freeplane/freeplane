@@ -240,6 +240,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 	private boolean isPreparedForPrinting = false;
 	private boolean isPrinting = false;
 	private int maxNodeWidth = 0;
+	private final ModeController modeController;
 	final private MapModel model;
 	private NodeView nodeToBeVisible = null;
 	private Point rootContentLocation;
@@ -249,20 +250,20 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 	private NodeView shiftSelectionOrigin = null;
 	private int siblingMaxLevel;
 	private float zoom = 1F;
-	private ModeController modeController;
 
-	public MapView(final MapModel model, ModeController modeController) {
+	public MapView(final MapModel model, final ModeController modeController) {
 		super();
 		this.model = model;
 		this.modeController = modeController;
 		controller = modeController.getController();
 		final String name = getModel().getTitle();
-        setName(name);
+		setName(name);
 		if (MapView.standardMapBackgroundColor == null) {
 			String stdcolor = ResourceController.getResourceController().getProperty(
 			    ResourceControllerProperties.RESOURCES_BACKGROUND_COLOR);
 			MapView.standardMapBackgroundColor = TreeXmlReader.xmlToColor(stdcolor);
-			stdcolor = ResourceController.getResourceController().getProperty(ResourceControllerProperties.RESOURCES_SELECTED_NODE_COLOR);
+			stdcolor = ResourceController.getResourceController().getProperty(
+			    ResourceControllerProperties.RESOURCES_SELECTED_NODE_COLOR);
 			MapView.standardSelectColor = TreeXmlReader.xmlToColor(stdcolor);
 			final String stdtextcolor = ResourceController.getResourceController().getProperty(
 			    ResourceControllerProperties.RESOURCES_SELECTED_NODE_RECTANGLE_COLOR);
@@ -270,7 +271,8 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 			final String drawCircle = ResourceController.getResourceController().getProperty(
 			    ResourceControllerProperties.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION);
 			MapView.standardDrawRectangleForSelection = TreeXmlReader.xmlToBoolean(drawCircle);
-			final String printOnWhite = ResourceController.getResourceController().getProperty("printonwhitebackground");
+			final String printOnWhite = ResourceController.getResourceController()
+			    .getProperty("printonwhitebackground");
 			MapView.printOnWhiteBackground = TreeXmlReader.xmlToBoolean(printOnWhite);
 			createPropertyChangeListener();
 		}
@@ -278,8 +280,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		this.setLayout(new MindMapLayout());
 		initRoot();
 		setBackground(MapView.standardMapBackgroundColor);
-		final IUserInputListenerFactory userInputListenerFactory = getModeController()
-		    .getUserInputListenerFactory();
+		final IUserInputListenerFactory userInputListenerFactory = getModeController().getUserInputListenerFactory();
 		addMouseListener(userInputListenerFactory.getMapMouseListener());
 		addMouseMotionListener(userInputListenerFactory.getMapMouseListener());
 		addMouseWheelListener(userInputListenerFactory.getMapMouseWheelListener());
@@ -533,7 +534,8 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 	public int getMaxNodeWidth() {
 		if (maxNodeWidth == 0) {
 			try {
-				maxNodeWidth = Integer.parseInt(ResourceController.getResourceController().getProperty("max_node_width"));
+				maxNodeWidth = Integer.parseInt(ResourceController.getResourceController()
+				    .getProperty("max_node_width"));
 			}
 			catch (final NumberFormatException e) {
 				maxNodeWidth = Integer.parseInt(ResourceController.getResourceController().getProperty(
@@ -541,6 +543,10 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 			}
 		}
 		return maxNodeWidth;
+	}
+
+	public ModeController getModeController() {
+		return modeController;
 	}
 
 	public MapModel getModel() {
@@ -939,7 +945,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 			fitToPage = ResourceController.getResourceController().getBooleanProperty("fit_to_page");
 			isPreparedForPrinting = true;
 		}
-	}
+	};
 
 	@Override
 	public void print(final Graphics g) {
@@ -950,7 +956,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		finally {
 			endPrinting();
 		}
-	};
+	}
 
 	public int print(final Graphics graphics, final PageFormat pageFormat, final int pageIndex) {
 		double userZoomFactor = 1;
@@ -1314,8 +1320,4 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		super.validateTree();
 		setViewPositionAfterValidate();
 	}
-
-	public ModeController getModeController() {
-	    return modeController;
-    }
 }

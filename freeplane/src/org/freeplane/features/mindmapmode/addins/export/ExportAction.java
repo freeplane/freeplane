@@ -19,7 +19,6 @@
  */
 package org.freeplane.features.mindmapmode.addins.export;
 
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.image.RenderedImage;
 import java.io.File;
@@ -39,7 +38,6 @@ import org.freeplane.core.url.UrlManager;
  * @author foltin
  */
 abstract public class ExportAction extends AFreeplaneAction {
-
 	public ExportAction(final Controller controller) {
 		super(controller);
 	}
@@ -51,7 +49,7 @@ abstract public class ExportAction extends AFreeplaneAction {
 	/**
 	 * @param nameExtension
 	 */
-	protected  File chooseFile(final String type, final String description, final String nameExtension) {
+	protected File chooseFile(final String type, final String description, final String nameExtension) {
 		final Controller controller = getController();
 		final Container component = controller.getViewController().getContentPane();
 		JFileChooser chooser = null;

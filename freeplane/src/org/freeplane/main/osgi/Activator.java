@@ -28,11 +28,7 @@ import org.freeplane.main.application.FreeplaneStarter;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.FrameworkEvent;
-import org.osgi.framework.FrameworkListener;
 import org.osgi.framework.InvalidSyntaxException;
-import org.osgi.framework.ServiceEvent;
-import org.osgi.framework.ServiceListener;
 import org.osgi.framework.ServiceReference;
 
 /**
@@ -42,66 +38,69 @@ import org.osgi.framework.ServiceReference;
 public class Activator implements BundleActivator {
 	private FreeplaneStarter starter;
 
+	private String[] getCallParameters() {
+		int i = 1;
+		String param;
+		final LinkedList<String> parameters = new LinkedList<String>();
+		for (;;) {
+			param = System.getProperty("org.freeplane.param" + i++, null);
+			if (param == null) {
+				break;
+			}
+			if (param.equals("")) {
+				continue;
+			}
+			parameters.add(param);
+		}
+		final String[] array = parameters.toArray(new String[parameters.size()]);
+		return array;
+	}
+
 	public void start(final BundleContext context) throws Exception {
 		startFramework(context);
 	}
 
 	private void startFramework(final BundleContext context) {
-	    starter = new FreeplaneStarter();
-		Controller controller = starter.createController();
+		starter = new FreeplaneStarter();
+		final Controller controller = starter.createController();
 		try {
-	        final ServiceReference[] controllerProviders = context.getServiceReferences(IControllerExtensionProvider.class.getName(), null);
-	        if(controllerProviders != null){
-	        	for(int i = 0; i < controllerProviders.length; i++){
-	        		final ServiceReference controllerProvider = controllerProviders[i];
-					final IControllerExtensionProvider service = (IControllerExtensionProvider) context.getService(controllerProvider);
-	        		service.installExtension(controller);
-	        		context.ungetService(controllerProvider);
-	        	}
-	        }
-        }
-        catch (InvalidSyntaxException e) {
-	        e.printStackTrace();
-        }
-		try {
-	        final Set<String> modes = controller.getModes();
-	        for(String modeName : modes){
-	        	final ServiceReference[] modeControllerProviders = context.getServiceReferences(IModeControllerExtensionProvider.class.getName(), "(mode="+modeName+")");
-	        	if(modeControllerProviders != null){
-	        		final ModeController modeController = controller.getModeController(modeName);
-	        		for(int i = 0; i < modeControllerProviders.length; i++){
-	        			final ServiceReference modeControllerProvider = modeControllerProviders[i];
-						final IModeControllerExtensionProvider service = (IModeControllerExtensionProvider) context.getService(modeControllerProvider);
-	        			service.installExtension(modeController);
-	        			context.ungetService(modeControllerProvider);
-	        		}
-	        	}
-	        }
-        }
-        catch (InvalidSyntaxException e) {
-	        e.printStackTrace();
-        }
-		starter.createFrame(getCallParameters());
-    }
-
-	private String[] getCallParameters() {
-		int i = 1;
-		String param;
-		LinkedList<String> parameters = new LinkedList<String>();
-		for(;;) {
-			param = System.getProperty("org.freeplane.param" + i++, null);
-			if(param == null){
-				break;
+			final ServiceReference[] controllerProviders = context.getServiceReferences(
+			    IControllerExtensionProvider.class.getName(), null);
+			if (controllerProviders != null) {
+				for (int i = 0; i < controllerProviders.length; i++) {
+					final ServiceReference controllerProvider = controllerProviders[i];
+					final IControllerExtensionProvider service = (IControllerExtensionProvider) context
+					    .getService(controllerProvider);
+					service.installExtension(controller);
+					context.ungetService(controllerProvider);
+				}
 			}
-			if(param.equals("")){
-				continue;
-			}
-			parameters.add(param);
 		}
-		
-	    final String[] array = parameters.toArray(new String[parameters.size()]);
-		return array;
-    }
+		catch (final InvalidSyntaxException e) {
+			e.printStackTrace();
+		}
+		try {
+			final Set<String> modes = controller.getModes();
+			for (final String modeName : modes) {
+				final ServiceReference[] modeControllerProviders = context.getServiceReferences(
+				    IModeControllerExtensionProvider.class.getName(), "(mode=" + modeName + ")");
+				if (modeControllerProviders != null) {
+					final ModeController modeController = controller.getModeController(modeName);
+					for (int i = 0; i < modeControllerProviders.length; i++) {
+						final ServiceReference modeControllerProvider = modeControllerProviders[i];
+						final IModeControllerExtensionProvider service = (IModeControllerExtensionProvider) context
+						    .getService(modeControllerProvider);
+						service.installExtension(modeController);
+						context.ungetService(modeControllerProvider);
+					}
+				}
+			}
+		}
+		catch (final InvalidSyntaxException e) {
+			e.printStackTrace();
+		}
+		starter.createFrame(getCallParameters());
+	}
 
 	public void stop(final BundleContext context) throws Exception {
 		starter.stop();

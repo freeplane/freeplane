@@ -26,7 +26,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 
-import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.resources.FpStringUtils;

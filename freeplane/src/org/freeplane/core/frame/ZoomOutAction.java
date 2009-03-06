@@ -27,10 +27,10 @@ import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.MenuBuilder;
 
-class ZoomOutAction extends AbstractAction implements IFreeplaneAction{
+class ZoomOutAction extends AbstractAction implements IFreeplaneAction {
+	static final String NAME = "zoomOut";
 	private static final long serialVersionUID = 1L;
 	final private ViewController viewController;
-	static final String NAME = "zoomOut";
 
 	public ZoomOutAction(final ViewController viewController) {
 		this.viewController = viewController;

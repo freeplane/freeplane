@@ -30,12 +30,10 @@ import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.url.UrlManager;
-import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.mindmapmode.MMapController;
-import org.freeplane.features.mindmapmode.clipboard.MClipboardController;
 
 class ImportBranchAction extends AFreeplaneAction implements IFreeplaneAction {
-    private static final String NAME = "importBranch";
+	private static final String NAME = "importBranch";
 	private static final long serialVersionUID = 7546992261152336279L;
 
 	public ImportBranchAction(final Controller controller) {
@@ -67,6 +65,6 @@ class ImportBranchAction extends AFreeplaneAction implements IFreeplaneAction {
 	}
 
 	public String getName() {
-	    return NAME;
-    }
+		return NAME;
+	}
 }

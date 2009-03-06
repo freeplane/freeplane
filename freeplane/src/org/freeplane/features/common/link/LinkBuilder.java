@@ -48,9 +48,9 @@ import org.freeplane.n3.nanoxml.XMLElement;
 class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExtensionElementWriter,
         IExtensionAttributeWriter, IAttributeWriter {
 	final private HashSet<ArrowLinkModel> arrowLinks;
-	private LinkController linkController;
+	private final LinkController linkController;
 
-	public LinkBuilder(LinkController linkController) {
+	public LinkBuilder(final LinkController linkController) {
 		this.linkController = linkController;
 		arrowLinks = new HashSet<ArrowLinkModel>();
 	}

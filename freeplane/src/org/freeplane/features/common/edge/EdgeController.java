@@ -22,7 +22,6 @@ package org.freeplane.features.common.edge;
 import java.awt.Color;
 
 import org.freeplane.core.enums.ResourceControllerProperties;
-import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
@@ -63,9 +62,9 @@ public class EdgeController implements IExtension {
 	}
 
 	final private ExclusivePropertyChain<Color, NodeModel> colorHandlers;
+	private final ModeController modeController;
 	final private ExclusivePropertyChain<String, NodeModel> styleHandlers;
 	final private ExclusivePropertyChain<Integer, NodeModel> widthHandlers;
-	private ModeController modeController;
 
 	public EdgeController(final ModeController modeController) {
 		this.modeController = modeController;
@@ -131,27 +130,27 @@ public class EdgeController implements IExtension {
 		edgeBuilder.registerBy(readManager, writeManager);
 	}
 
-	protected ModeController getModeController() {
-    	return modeController;
-    }
-
 	public IPropertyHandler<Color, NodeModel> addColorGetter(final Integer key,
-	                                                        final IPropertyHandler<Color, NodeModel> getter) {
+	                                                         final IPropertyHandler<Color, NodeModel> getter) {
 		return colorHandlers.addGetter(key, getter);
 	}
 
 	public IPropertyHandler<String, NodeModel> addStyleGetter(final Integer key,
-	                                                         final IPropertyHandler<String, NodeModel> getter) {
+	                                                          final IPropertyHandler<String, NodeModel> getter) {
 		return styleHandlers.addGetter(key, getter);
 	}
 
 	public IPropertyHandler<Integer, NodeModel> addWidthGetter(final Integer key,
-	                                                          final IPropertyHandler<Integer, NodeModel> getter) {
+	                                                           final IPropertyHandler<Integer, NodeModel> getter) {
 		return widthHandlers.addGetter(key, getter);
 	}
 
 	public Color getColor(final NodeModel node) {
 		return colorHandlers.getProperty(node);
+	}
+
+	protected ModeController getModeController() {
+		return modeController;
 	}
 
 	public String getStyle(final NodeModel node) {

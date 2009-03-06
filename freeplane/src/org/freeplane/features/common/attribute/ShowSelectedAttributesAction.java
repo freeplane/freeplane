@@ -29,9 +29,8 @@ import org.freeplane.core.model.MapModel;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.MenuBuilder;
 
-class ShowSelectedAttributesAction extends AbstractAction implements IFreeplaneAction{
-	
-    private static final String NAME = "showSelectedAttributes";
+class ShowSelectedAttributesAction extends AbstractAction implements IFreeplaneAction {
+	private static final String NAME = "showSelectedAttributes";
 	private static final long serialVersionUID = -5910402741456371862L;
 	final private Controller controller;
 
@@ -48,14 +47,14 @@ class ShowSelectedAttributesAction extends AbstractAction implements IFreeplaneA
 		setAttributeViewType(map);
 	}
 
+	public String getName() {
+		return NAME;
+	}
+
 	void setAttributeViewType(final MapModel map) {
 		final AttributeRegistry attributes = AttributeRegistry.getRegistry(map);
 		if (attributes.getAttributeViewType() != AttributeTableLayoutModel.SHOW_SELECTED) {
 			attributes.setAttributeViewType(AttributeTableLayoutModel.SHOW_SELECTED);
 		}
 	}
-
-	public String getName() {
-	    return NAME;
-    }
 }

@@ -346,8 +346,8 @@ public abstract class MainView extends JLabel implements IMainView {
 			return true;
 		}
 		final MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, this);
-		final FreeplaneMenuBar freeplaneMenuBar = mapView.getModeController().getController()
-		    .getViewController().getFreeplaneMenuBar();
+		final FreeplaneMenuBar freeplaneMenuBar = mapView.getModeController().getController().getViewController()
+		    .getFreeplaneMenuBar();
 		return !freeplaneMenuBar.isVisible()
 		        && freeplaneMenuBar.processKeyBinding(ks, e, JComponent.WHEN_IN_FOCUSED_WINDOW, pressed);
 	}
@@ -434,7 +434,8 @@ public abstract class MainView extends JLabel implements IMainView {
 			if (nodeText.indexOf("<img") >= 0 && nodeText.indexOf("<base ") < 0) {
 				nodeText = "<html><base href=\"" + map.getModel().getURL() + "\">" + nodeText.substring(6);
 			}
-			final String htmlLongNodeHead = ResourceController.getResourceController().getProperty("html_long_node_head");
+			final String htmlLongNodeHead = ResourceController.getResourceController().getProperty(
+			    "html_long_node_head");
 			if (htmlLongNodeHead != null && !htmlLongNodeHead.equals("")) {
 				if (nodeText.matches("(?ims).*<head>.*")) {
 					nodeText = nodeText.replaceFirst("(?ims).*<head>.*", "<head>" + htmlLongNodeHead);
@@ -481,7 +482,8 @@ public abstract class MainView extends JLabel implements IMainView {
 	}
 
 	void updateTextColor(final NodeView node) {
-		final Color color = NodeStyleController.getController(node.getMap().getModeController()).getColor(node.getModel());
+		final Color color = NodeStyleController.getController(node.getMap().getModeController()).getColor(
+		    node.getModel());
 		setForeground(color);
 	}
 }

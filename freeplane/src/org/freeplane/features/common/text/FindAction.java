@@ -29,7 +29,6 @@ import java.util.ListIterator;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -50,9 +49,8 @@ class FindAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final NodeModel selected = getController().getSelection().getSelected();
-		
-		final String what = UITools.showInputDialog(getController(), selected, FreeplaneResourceBundle.getText("find_what"),
-		    FreeplaneResourceBundle.getText("find"), JOptionPane.QUESTION_MESSAGE);
+		final String what = UITools.showInputDialog(getController(), selected, FreeplaneResourceBundle
+		    .getText("find_what"), FreeplaneResourceBundle.getText("find"), JOptionPane.QUESTION_MESSAGE);
 		if (what == null || what.equals("")) {
 			return;
 		}

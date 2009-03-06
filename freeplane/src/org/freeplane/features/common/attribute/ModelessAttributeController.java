@@ -56,13 +56,13 @@ public class ModelessAttributeController implements IExtension {
 
 	public void setAttributeViewType(final MapModel map, final String value) {
 		if (value.equals(AttributeTableLayoutModel.SHOW_SELECTED)) {
-			((ShowSelectedAttributesAction) showSelectedAttributes).setAttributeViewType(map);
+			(showSelectedAttributes).setAttributeViewType(map);
 		}
 		else if (value.equals(AttributeTableLayoutModel.HIDE_ALL)) {
-			((HideAllAttributesAction) hideAllAttributes).setAttributeViewType(map);
+			(hideAllAttributes).setAttributeViewType(map);
 		}
 		else if (value.equals(AttributeTableLayoutModel.SHOW_ALL)) {
-			((ShowAllAttributesAction) showAllAttributes).setAttributeViewType(map);
+			(showAllAttributes).setAttributeViewType(map);
 		}
 	}
 }

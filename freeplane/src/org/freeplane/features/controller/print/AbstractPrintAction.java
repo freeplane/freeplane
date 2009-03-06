@@ -24,10 +24,8 @@ import javax.swing.ImageIcon;
 
 import org.freeplane.core.actions.IFreeplaneAction;
 
-abstract class AbstractPrintAction extends AbstractAction implements IFreeplaneAction{
-
+abstract class AbstractPrintAction extends AbstractAction implements IFreeplaneAction {
 	private static final long serialVersionUID = 892194048692112127L;
-
 	final private PrintController printController;
 
 	public AbstractPrintAction(final PrintController controller) {

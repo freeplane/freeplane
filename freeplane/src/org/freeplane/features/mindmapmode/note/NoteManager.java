@@ -21,9 +21,7 @@ package org.freeplane.features.mindmapmode.note;
 
 import javax.swing.text.html.HTMLDocument;
 
-import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.modecontroller.INodeSelectionListener;
-import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.features.common.note.NoteModel;
 import org.freeplane.features.mindmapmode.note.MNoteController.NoteDocumentListener;

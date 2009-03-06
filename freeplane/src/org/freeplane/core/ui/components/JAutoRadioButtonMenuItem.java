@@ -31,8 +31,9 @@ import org.freeplane.core.ui.SelectableAction;
  * @author Dimitry Polivaev
  * Feb 23, 2009
  */
-public class JAutoRadioButtonMenuItem extends JRadioButtonMenuItem  implements PropertyChangeListener {
+public class JAutoRadioButtonMenuItem extends JRadioButtonMenuItem implements PropertyChangeListener {
 	private PropertyChangeListener defaultPropertyChanegListener;
+
 	public JAutoRadioButtonMenuItem(final Action a) {
 		super(a);
 	}

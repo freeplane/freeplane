@@ -23,7 +23,6 @@ import java.awt.BasicStroke;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
 
-import org.freeplane.features.common.edge.EdgeModel;
 import org.freeplane.view.swing.map.NodeView;
 
 /**
@@ -32,6 +31,7 @@ import org.freeplane.view.swing.map.NodeView;
  */
 public class HiddenEdgeView extends BezierEdgeView {
 	private static Stroke STROKE;
+
 	protected static Stroke getHiddenStroke() {
 		if (HiddenEdgeView.STROKE == null) {
 			final float dash[] = { 5.0f, 5.0f };
@@ -41,13 +41,16 @@ public class HiddenEdgeView extends BezierEdgeView {
 		return HiddenEdgeView.STROKE;
 	}
 
+	@Override
 	public Stroke getStroke() {
-		return getHiddenStroke();
+		return HiddenEdgeView.getHiddenStroke();
 	}
+
+	@Override
 	public void paint(final NodeView target, final Graphics2D g) {
-		if(! target.isSelected()){
+		if (!target.isSelected()) {
 			return;
 		}
 		super.paint(target, g);
-	}	
+	}
 }

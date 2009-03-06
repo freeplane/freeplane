@@ -29,9 +29,9 @@ import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.MenuBuilder;
 
 class PrintPreviewAction extends AbstractPrintAction {
+	static final String NAME = "printPreview";
 	private static final long serialVersionUID = 5804287711073546422L;
 	final private Controller controller;
-	static final String NAME = "printPreview";
 
 	PrintPreviewAction(final Controller controller, final PrintController printController) {
 		super(printController);

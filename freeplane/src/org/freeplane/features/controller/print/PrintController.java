@@ -39,14 +39,14 @@ public class PrintController implements IExtension {
 		controller.putExtension(PrintController.class, new PrintController(controller));
 	}
 
-	private PageFormat pageFormat = null;
 	final private Controller controller;
 	final private PageAction pageAction;
+	private PageFormat pageFormat = null;
 	final private PrintAction printAction;
 	final private PrintDirectAction printDirectAction;
-	final private PrintPreviewAction printPreviewAction;
 	private PrinterJob printerJob = null;
 	private boolean printingAllowed;
+	final private PrintPreviewAction printPreviewAction;
 
 	public PrintController(final Controller controller) {
 		super();
@@ -78,10 +78,12 @@ public class PrintController implements IExtension {
 		}
 		if (pageFormat == null) {
 			pageFormat = printerJob.defaultPage();
-			if (StringUtils.equals(ResourceController.getResourceController().getProperty("page_orientation"), "landscape")) {
+			if (StringUtils.equals(ResourceController.getResourceController().getProperty("page_orientation"),
+			    "landscape")) {
 				pageFormat.setOrientation(PageFormat.LANDSCAPE);
 			}
-			else if (StringUtils.equals(ResourceController.getResourceController().getProperty("page_orientation"), "portrait")) {
+			else if (StringUtils.equals(ResourceController.getResourceController().getProperty("page_orientation"),
+			    "portrait")) {
 				pageFormat.setOrientation(PageFormat.PORTRAIT);
 			}
 			else if (StringUtils.equals(ResourceController.getResourceController().getProperty("page_orientation"),

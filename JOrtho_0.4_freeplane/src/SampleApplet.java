@@ -19,27 +19,24 @@
  *  USA.
  *  
  *  Created on 13.12.2007
- */  
-
-import javax.swing.*;
+ */
+import javax.swing.JApplet;
+import javax.swing.JEditorPane;
+import javax.swing.JTextPane;
 
 import com.inet.jortho.SpellChecker;
 
 public class SampleApplet extends JApplet {
-
-    @Override
-    public void start() {
-        // Build the test frame for the sample
-        JEditorPane text = new JTextPane();
-        text.setText( "This is a simppler textt with spellingg errors." );
-        add( text );
-
-        // Load the configuration from the file dictionaries.cnf and 
-        // use the english dictionary as default 
-        SpellChecker.registerDictionaries( getCodeBase(), "en" );
-
-        // enable the spell checking on the text component with all features
-        SpellChecker.register( text );
-    }
-
+	@Override
+	public void start() {
+		// Build the test frame for the sample
+		final JEditorPane text = new JTextPane();
+		text.setText("This is a simppler textt with spellingg errors.");
+		add(text);
+		// Load the configuration from the file dictionaries.cnf and 
+		// use the english dictionary as default 
+		SpellChecker.registerDictionaries(getCodeBase(), "en");
+		// enable the spell checking on the text component with all features
+		SpellChecker.register(text);
+	}
 }

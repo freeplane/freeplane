@@ -73,9 +73,8 @@ class NewChildAction extends AFreeplaneAction {
 				if (parentFolded) {
 					mapController.setFolded(targetNode, false);
 				}
-				final int position = ResourceController.getResourceController().getProperty("placenewbranches").equals("last") ? targetNode
-				    .getChildCount()
-				        : 0;
+				final int position = ResourceController.getResourceController().getProperty("placenewbranches").equals(
+				    "last") ? targetNode.getChildCount() : 0;
 				newNode = addNewNode(targetNode, position, targetNode.isNewChildLeft());
 				if (newNodeMode == MMapController.NEW_CHILD) {
 					modeController.getMapController().select(newNode);

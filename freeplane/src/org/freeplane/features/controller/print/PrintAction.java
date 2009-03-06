@@ -31,16 +31,17 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.LogTool;
 
 class PrintAction extends AbstractPrintAction {
+	static final String NAME = "print";
 	private static final long serialVersionUID = 5725878249752379602L;
 	final private Controller controller;
 	final private boolean isDlg;
-	static final String NAME = "print";
 
 	PrintAction(final Controller controller, final PrintController printController, final boolean isDlg) {
 		super(printController, null, new ImageIcon(ResourceController.getResourceController().getResource(
 		    "/images/fileprint.png")));
 		this.controller = controller;
-		MenuBuilder.setLabelAndMnemonic(this, isDlg ? FreeplaneResourceBundle.getText("print_dialog") : FreeplaneResourceBundle.getText("print"));
+		MenuBuilder.setLabelAndMnemonic(this, isDlg ? FreeplaneResourceBundle.getText("print_dialog")
+		        : FreeplaneResourceBundle.getText("print"));
 		this.isDlg = isDlg;
 	}
 

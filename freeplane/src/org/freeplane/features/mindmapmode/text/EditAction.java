@@ -28,12 +28,10 @@ import javax.swing.JOptionPane;
 
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.features.common.text.IMainView;
@@ -100,8 +98,7 @@ class EditAction extends AFreeplaneAction {
 			final MTextController textController = (MTextController) TextController.getController(getModeController());
 			useRichTextInNewLongNodes = textController.useRichTextInNewLongNodes();
 		}
-		final boolean editHtml = isHtmlNode
-		        || (editDefinitivelyLong && useRichTextInNewLongNodes);
+		final boolean editHtml = isHtmlNode || (editDefinitivelyLong && useRichTextInNewLongNodes);
 		final boolean editInternalWysiwyg = editHtml && StringUtils.equals(htmlEditingOption, "internal-wysiwyg");
 		final boolean editExternal = editHtml && StringUtils.equals(htmlEditingOption, "external");
 		if (editHtml && !isHtmlNode) {

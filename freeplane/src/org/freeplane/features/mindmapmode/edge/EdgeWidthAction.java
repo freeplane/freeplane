@@ -65,16 +65,17 @@ class EdgeWidthAction extends MultipleNodeAction {
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
 		((MEdgeController) EdgeController.getController(getModeController())).setWidth(node, mWidth);
 	}
+
 	@Override
 	public void setSelected() {
 		final NodeModel node = getModeController().getMapController().getSelectedNode();
 		final EdgeModel model = EdgeModel.getModel(node);
-		if(model == null){
-			if(mWidth == EdgeModel.WIDTH_PARENT){
+		if (model == null) {
+			if (mWidth == EdgeModel.WIDTH_PARENT) {
 				setSelected(true);
 			}
 		}
-		else if(model.getWidth() == mWidth){
+		else if (model.getWidth() == mWidth) {
 			setSelected(true);
 		}
 	}

@@ -27,10 +27,10 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 
 @SelectableAction(checkOnPopup = true)
-class ToggleMenubarAction extends AFreeplaneAction implements IFreeplaneAction{
+class ToggleMenubarAction extends AFreeplaneAction implements IFreeplaneAction {
+	static final String NAME = "toggleMenubar";
 	private static final long serialVersionUID = 4579282759651678504L;
 	final private ViewController controller;
-	static final String NAME = "toggleMenubar";
 
 	ToggleMenubarAction(final Controller controller, final ViewController viewController) {
 		super(controller, "toggle_menubar");
@@ -42,12 +42,12 @@ class ToggleMenubarAction extends AFreeplaneAction implements IFreeplaneAction{
 		controller.setMenubarVisible(controller.isMenubarVisible());
 	}
 
+	public String getName() {
+		return NAME;
+	}
+
 	@Override
 	public void setSelected() {
 		setSelected(controller.isMenubarVisible());
-	}
-
-	public String getName() {
-		return NAME;
 	}
 }

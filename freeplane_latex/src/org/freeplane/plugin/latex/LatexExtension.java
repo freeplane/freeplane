@@ -19,16 +19,12 @@
  */
 package org.freeplane.plugin.latex;
 
-import java.awt.Component;
-import java.awt.Container;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.undo.IUndoableActor;
-import org.freeplane.view.swing.map.NodeView;
 
 /**
  * @author Dimitry Polivaev
@@ -45,13 +41,8 @@ class LatexExtension implements IExtension {
 		this.node = node;
 	}
 
-
 	public String getEquation() {
 		return equation;
-	}
-
-	private NodeModel getNode() {
-		return node;
 	}
 
 	Set<JZoomedHotEqn> getViewers() {
@@ -75,5 +66,4 @@ class LatexExtension implements IExtension {
 			comp.setModel(this);
 		}
 	}
-
 }

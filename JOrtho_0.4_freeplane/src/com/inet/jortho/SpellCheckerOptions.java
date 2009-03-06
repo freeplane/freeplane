@@ -29,139 +29,133 @@ package com.inet.jortho;
  * @author Volker Berlin
  */
 public class SpellCheckerOptions {
+	private boolean caseSensitive = true;
+	private boolean ignoreAllCaps = true;
+	private boolean ignoreCapitalization = false;
+	private boolean ignoreNumbers = false;
+	private int suggestionsLimitDialog = 15;
+	private int suggestionsLimitMenu = 15;
 
-    private int     suggestionsLimitMenu   = 15;
+	/**
+	 * Create SpellCheckerOptions with default values.
+	 */
+	public SpellCheckerOptions() {
+		//empty block
+	}
 
-    private int     suggestionsLimitDialog = 15;
+	/**
+	 * Return whether capitalized words should be correct if the word is in the dictionary as lower-case.
+	 *
+	 * @return true, if capitalization is to be ignored
+	 */
+	public boolean getIgnoreCapitalization() {
+		return ignoreCapitalization;
+	}
 
-    private boolean caseSensitive          = true;
+	/**
+	 * Get the maximun count of enties for the suggestion list in the spell checker dialog.
+	 * 
+	 * @return the suggestions limit
+	 */
+	public int getSuggestionsLimitDialog() {
+		return suggestionsLimitDialog;
+	}
 
-    private boolean ignoreCapitalization   = false;
+	/**
+	 * Get the maximum count of entries for the suggestion menu.
+	 *
+	 * @return the suggestion limit
+	 */
+	public int getSuggestionsLimitMenu() {
+		return suggestionsLimitMenu;
+	}
 
-    private boolean ignoreAllCaps          = true;
+	/**
+	 * Return whether the spell checker is case-sensitive. This only has an effect on the first letter of a word.
+	 *
+	 * @return whether the spell checker is case-sensitive.
+	 */
+	public boolean isCaseSensitive() {
+		return caseSensitive;
+	}
 
-    private boolean ignoreNumbers          = false;
+	/**
+	 * Whether words entirely in upper-case should be ignored for spell checking.
+	 * 
+	 * @return true, if all entirely upper-case words are to be ignored
+	 */
+	public boolean isIgnoreAllCapsWords() {
+		return ignoreAllCaps;
+	}
 
-    /**
-     * Create SpellCheckerOptions with default values.
-     */
-    public SpellCheckerOptions() {
-        //empty block
-    }
+	/**
+	 * Whether words that include a number in any position should be ignored for spell checking.
+	 *
+	 * @return true, if words with numbers in any position are to be ignored
+	 */
+	public boolean isIgnoreWordsWithNumbers() {
+		return ignoreNumbers;
+	}
 
-    /**
-     * Set the maximun count of entries for the suggestion menu. The default is 15.
-     * 
-     * @param count
-     *            the suggestion limit for the suggestion menu
-     */
-    public void setSuggestionsLimitMenu( int count ) {
-        this.suggestionsLimitMenu = count;
-    }
+	/**
+	 * Set whether the spell checker is case-sensitive. This only has an effect on the first letter of a word. The default
+	 * value is true.
+	 *
+	 * @param caseSensitive whether the spell checker is to be case-sensitive for the first letter of each word.
+	 */
+	public void setCaseSensitive(final boolean caseSensitive) {
+		this.caseSensitive = caseSensitive;
+	}
 
-    /**
-     * Get the maximum count of entries for the suggestion menu.
-     *
-     * @return the suggestion limit
-     */
-    public int getSuggestionsLimitMenu() {
-        return suggestionsLimitMenu;
-    }
+	/**
+	 * Set if words that are entirely in uppercase should be ignored for spell checking. This is most often used for
+	 * abbreviations such DNS or HTTP. The default value is true.
+	 *
+	 * @param ignore
+	 *            the new value
+	 */
+	public void setIgnoreAllCapsWords(final boolean ignore) {
+		ignoreAllCaps = ignore;
+	}
 
-    /**
-     * Set the maximun count of entries for the suggestion list in the spell checker dialog. The default is 15.
-     * 
-     * @param count
-     *            the suggestion limit for the spell checker dialog
-     */
-    public void setSuggestionsLimitDialog( int count ) {
-        this.suggestionsLimitDialog = count;
-    }
+	/**
+	 * Set whether capitalized words should be correct if the word is in the dictionary as lower-case. This is often used in a title or in
+	 * names. The first word of a sentence will always ignore the capitalization. The default is false.
+	 *
+	 * @param ignore
+	 *            the new value
+	 */
+	public void setIgnoreCapitalization(final boolean ignore) {
+		ignoreCapitalization = ignore;
+	}
 
-    /**
-     * Get the maximun count of enties for the suggestion list in the spell checker dialog.
-     * 
-     * @return the suggestions limit
-     */
-    public int getSuggestionsLimitDialog() {
-        return suggestionsLimitDialog;
-    }
+	/**
+	 * Set if words that include a number in any position should be ignored for spell checking. The default is false.
+	 *
+	 * @param ignore
+	 *            the new value
+	 */
+	public void setIgnoreWordsWithNumbers(final boolean ignore) {
+		ignoreNumbers = ignore;
+	}
 
-    /**
-     * Set whether the spell checker is case-sensitive. This only has an effect on the first letter of a word. The default
-     * value is true.
-     *
-     * @param caseSensitive whether the spell checker is to be case-sensitive for the first letter of each word.
-     */
-    public void setCaseSensitive( boolean caseSensitive ) {
-        this.caseSensitive = caseSensitive;
-    }
+	/**
+	 * Set the maximun count of entries for the suggestion list in the spell checker dialog. The default is 15.
+	 * 
+	 * @param count
+	 *            the suggestion limit for the spell checker dialog
+	 */
+	public void setSuggestionsLimitDialog(final int count) {
+		suggestionsLimitDialog = count;
+	}
 
-    /**
-     * Return whether the spell checker is case-sensitive. This only has an effect on the first letter of a word.
-     *
-     * @return whether the spell checker is case-sensitive.
-     */
-    public boolean isCaseSensitive() {
-        return caseSensitive;
-    }
-
-    /**
-     * Set whether capitalized words should be correct if the word is in the dictionary as lower-case. This is often used in a title or in
-     * names. The first word of a sentence will always ignore the capitalization. The default is false.
-     *
-     * @param ignore
-     *            the new value
-     */
-    public void setIgnoreCapitalization( boolean ignore ) {
-        ignoreCapitalization = ignore;
-    }
-
-    /**
-     * Return whether capitalized words should be correct if the word is in the dictionary as lower-case.
-     *
-     * @return true, if capitalization is to be ignored
-     */
-    public boolean getIgnoreCapitalization() {
-        return ignoreCapitalization;
-    }
-
-    /**
-     * Set if words that are entirely in uppercase should be ignored for spell checking. This is most often used for
-     * abbreviations such DNS or HTTP. The default value is true.
-     *
-     * @param ignore
-     *            the new value
-     */
-    public void setIgnoreAllCapsWords( boolean ignore ) {
-        ignoreAllCaps = ignore;
-    }
-
-    /**
-     * Whether words entirely in upper-case should be ignored for spell checking.
-     * 
-     * @return true, if all entirely upper-case words are to be ignored
-     */
-    public boolean isIgnoreAllCapsWords() {
-        return ignoreAllCaps;
-    }
-
-    /**
-     * Set if words that include a number in any position should be ignored for spell checking. The default is false.
-     *
-     * @param ignore
-     *            the new value
-     */
-    public void setIgnoreWordsWithNumbers( boolean ignore ) {
-        ignoreNumbers = ignore;
-    }
-
-    /**
-     * Whether words that include a number in any position should be ignored for spell checking.
-     *
-     * @return true, if words with numbers in any position are to be ignored
-     */
-    public boolean isIgnoreWordsWithNumbers() {
-        return ignoreNumbers;
-    }
+	/**
+	 * Set the maximun count of entries for the suggestion menu. The default is 15.
+	 * 
+	 * @param count
+	 *            the suggestion limit for the suggestion menu
+	 */
+	public void setSuggestionsLimitMenu(final int count) {
+		suggestionsLimitMenu = count;
+	}
 }

@@ -97,7 +97,11 @@ public interface IMapViewManager {
 
 	public List getMapViewVector();
 
+	public ModeController getModeController(Component newMap);
+
 	public MapModel getModel();
+
+	public MapModel getModel(Component mapView);
 
 	public Component getSelectedComponent();
 
@@ -131,8 +135,4 @@ public interface IMapViewManager {
 	public void updateMapView();
 
 	public void updateMapViewName();
-
-	public ModeController getModeController(Component newMap);
-
-	public MapModel getModel(Component mapView);
 }

@@ -37,13 +37,11 @@ import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.LogTool;
-import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.mindmapmode.MMapController;
-import org.freeplane.features.mindmapmode.clipboard.MClipboardController;
 
-class ImportLinkedBranchAction extends AFreeplaneAction implements IFreeplaneAction{
-    private static final long serialVersionUID = -6730969236999381143L;
+class ImportLinkedBranchAction extends AFreeplaneAction implements IFreeplaneAction {
+	private static final long serialVersionUID = -6730969236999381143L;
 
 	public ImportLinkedBranchAction(final Controller controller) {
 		super(controller, "import_linked_branch");
@@ -55,14 +53,15 @@ class ImportLinkedBranchAction extends AFreeplaneAction implements IFreeplaneAct
 		final NodeModel selected = modeController.getMapController().getSelectedNode();
 		final ViewController viewController = getController().getViewController();
 		if (selected == null || NodeLinks.getLink(selected) == null) {
-			JOptionPane.showMessageDialog((viewController.getMapView()), FreeplaneResourceBundle.getText("import_linked_branch_no_link"));
+			JOptionPane.showMessageDialog((viewController.getMapView()), FreeplaneResourceBundle
+			    .getText("import_linked_branch_no_link"));
 			return;
 		}
 		URL absolute = null;
 		try {
 			final String relative = NodeLinks.getLink(selected);
-			absolute = UrlManager.isAbsolutePath(relative) ? Compat.fileToUrl(new File(relative)) : new URL(
-			    Compat.fileToUrl(map.getFile()), relative);
+			absolute = UrlManager.isAbsolutePath(relative) ? Compat.fileToUrl(new File(relative)) : new URL(Compat
+			    .fileToUrl(map.getFile()), relative);
 		}
 		catch (final MalformedURLException ex) {
 			JOptionPane
@@ -73,7 +72,7 @@ class ImportLinkedBranchAction extends AFreeplaneAction implements IFreeplaneAct
 		try {
 			final NodeModel node = ((MMapController) modeController.getMapController()).loadTree(map, new File(absolute
 			    .getFile()));
-			((MMapController)modeController.getMapController()).insertNode(node, selected);
+			((MMapController) modeController.getMapController()).insertNode(node, selected);
 		}
 		catch (final Exception ex) {
 			UrlManager.getController(modeController).handleLoadingException(ex);
@@ -81,6 +80,6 @@ class ImportLinkedBranchAction extends AFreeplaneAction implements IFreeplaneAct
 	}
 
 	public String getName() {
-	    return "importLinkedBranch";
-    }
+		return "importLinkedBranch";
+	}
 }

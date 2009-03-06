@@ -179,7 +179,7 @@ public class StylePatternFactory {
 		        : null);
 		result.setPatternEdgeWidth(p1.getPatternEdgeWidth().equals(p2.getPatternEdgeWidth()) ? p1.getPatternEdgeWidth()
 		        : null);
-		result.setPatternIcon(p1.getPatternIcon().equals(p2.getPatternIcon())? p1.getPatternIcon() : null);
+		result.setPatternIcon(p1.getPatternIcon().equals(p2.getPatternIcon()) ? p1.getPatternIcon() : null);
 		result.setPatternNodeBackgroundColor(StylePatternFactory.processPatternProperties(p1
 		    .getPatternNodeBackgroundColor(), p2.getPatternNodeBackgroundColor(), new PatternProperty()));
 		result.setPatternNodeColor(StylePatternFactory.processPatternProperties(p1.getPatternNodeColor(), p2

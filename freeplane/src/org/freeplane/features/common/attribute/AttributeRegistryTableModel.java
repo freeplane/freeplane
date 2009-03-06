@@ -105,17 +105,20 @@ public class AttributeRegistryTableModel extends AbstractTableModel {
 		switch (column) {
 			case 0:
 				if (AttributeRegistryTableModel.attributeColumnName == null) {
-					AttributeRegistryTableModel.attributeColumnName = FreeplaneResourceBundle.getText("attributes_attribute");
+					AttributeRegistryTableModel.attributeColumnName = FreeplaneResourceBundle
+					    .getText("attributes_attribute");
 				}
 				return AttributeRegistryTableModel.attributeColumnName;
 			case 1:
 				if (AttributeRegistryTableModel.visibilityColumnName == null) {
-					AttributeRegistryTableModel.visibilityColumnName = FreeplaneResourceBundle.getText("attributes_visible");
+					AttributeRegistryTableModel.visibilityColumnName = FreeplaneResourceBundle
+					    .getText("attributes_visible");
 				}
 				return AttributeRegistryTableModel.visibilityColumnName;
 			case 2:
 				if (AttributeRegistryTableModel.restrictionColumnName == null) {
-					AttributeRegistryTableModel.restrictionColumnName = FreeplaneResourceBundle.getText("attributes_restriction");
+					AttributeRegistryTableModel.restrictionColumnName = FreeplaneResourceBundle
+					    .getText("attributes_restriction");
 				}
 				return AttributeRegistryTableModel.restrictionColumnName;
 			case 3:

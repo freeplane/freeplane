@@ -74,6 +74,7 @@ public class NodeView extends JComponent implements INodeView {
 	/** For RootNodeView. */
 	public final static int DRAGGED_OVER_SON_LEFT = 3;
 	static private int FOLDING_SYMBOL_WIDTH = -1;
+	public final static int SHIFT = -2;
 	static final int SPACE_AROUND = 50;
 
 	/**
@@ -142,6 +143,16 @@ public class NodeView extends JComponent implements INodeView {
 	void addDropListener(final DropTargetListener dtl) {
 		final DropTarget dropTarget = new DropTarget(getMainView(), dtl);
 		dropTarget.setActive(true);
+	}
+
+	private int calcShiftY(final LocationModel locationModel) {
+		try {
+			final NodeModel parent = model.getParentNode();
+			return locationModel.getShiftY() + (getMap().getModeController().hasOneVisibleChild(parent) ? SHIFT : 0);
+		}
+		catch (final NullPointerException e) {
+			return 0;
+		}
 	}
 
 	@Override
@@ -691,19 +702,9 @@ public class NodeView extends JComponent implements INodeView {
 		return MapView.standardSelectColor;
 	}
 
-	public final static int SHIFT = -2;
-	private int calcShiftY(LocationModel locationModel) {
-		try {
-			final NodeModel parent = model.getParentNode();
-			return locationModel.getShiftY() + (getMap().getModeController().hasOneVisibleChild(parent) ? SHIFT : 0);
-		}
-		catch (final NullPointerException e) {
-			return 0;
-		}
-	}
-/**
-	 * @return Returns the sHIFT.s
-	 */
+	/**
+		 * @return Returns the sHIFT.s
+		 */
 	public int getShift() {
 		final LocationModel locationModel = LocationModel.getModel(model);
 		return map.getZoomed(calcShiftY(locationModel));
@@ -752,7 +753,8 @@ public class NodeView extends JComponent implements INodeView {
 
 	public int getZoomedFoldingSymbolHalfWidth() {
 		if (NodeView.FOLDING_SYMBOL_WIDTH == -1) {
-			NodeView.FOLDING_SYMBOL_WIDTH = ResourceController.getResourceController().getIntProperty("foldingsymbolwidth", 8);
+			NodeView.FOLDING_SYMBOL_WIDTH = ResourceController.getResourceController().getIntProperty(
+			    "foldingsymbolwidth", 8);
 		}
 		final int preferredFoldingSymbolHalfWidth = (int) ((NodeView.FOLDING_SYMBOL_WIDTH * map.getZoom()) / 2);
 		return Math.min(preferredFoldingSymbolHalfWidth, getHeight() / 2);
@@ -985,9 +987,10 @@ public class NodeView extends JComponent implements INodeView {
 
 	void repaintSelected() {
 		mainView.updateTextColor(this);
-		if( EdgeController.getController(getMap().getModeController()).getStyle(model).equals(EdgeStyle.EDGESTYLE_HIDDEN)){
+		if (EdgeController.getController(getMap().getModeController()).getStyle(model).equals(
+		    EdgeStyle.EDGESTYLE_HIDDEN)) {
 			final NodeView visibleParentView = getVisibleParentView();
-			if(visibleParentView != null){
+			if (visibleParentView != null) {
 				visibleParentView.repaint();
 				return;
 			}

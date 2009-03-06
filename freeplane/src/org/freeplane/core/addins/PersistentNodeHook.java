@@ -69,14 +69,14 @@ public abstract class PersistentNodeHook implements IExtension {
 			super();
 		}
 
-		@Override
-		public void setSelected() {
-			setSelected(isActiveForSelection());
-		}
-
 		public String getName() {
 			// TODO rladstaetter 15.02.2009 this action is not annotated and thus no name can be derived?
 			return getClass().getSimpleName();
+		}
+
+		@Override
+		public void setSelected() {
+			setSelected(isActiveForSelection());
 		}
 	}
 
@@ -146,9 +146,9 @@ public abstract class PersistentNodeHook implements IExtension {
 		}
 	}
 
-	private final HookAction selectableHookAction;
 	final private Controller controller;
 	private final ModeController modeController;
+	private final HookAction selectableHookAction;
 
 	public PersistentNodeHook(final ModeController modeController) {
 		super();
@@ -175,16 +175,16 @@ public abstract class PersistentNodeHook implements IExtension {
 		getModeController().getMapController().nodeChanged(node);
 	}
 
-	protected HookAction createHookAction() {
-		return new SelectableHookAction();
-	}
-
 	protected IExtension createExtension(final NodeModel node) {
 		return createExtension(node, null);
 	}
 
 	protected IExtension createExtension(final NodeModel node, final IXMLElement element) {
 		return this;
+	}
+
+	protected HookAction createHookAction() {
+		return new SelectableHookAction();
 	}
 
 	protected XmlReader createXmlReader() {

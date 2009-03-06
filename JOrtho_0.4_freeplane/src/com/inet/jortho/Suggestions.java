@@ -22,9 +22,9 @@
  */
 package com.inet.jortho;
 
-import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * A hash list of Suggestions. The list is cut with a max dissimilarity. If a suggestion already exist then the
@@ -33,47 +33,45 @@ import java.util.HashMap;
  * @author Volker Berlin
  */
 class Suggestions {
+	private final HashMap<Suggestion, Suggestion> map = new HashMap<Suggestion, Suggestion>();
+	private final int maxDiff;
 
-    private final int maxDiff;
-    private final HashMap<Suggestion,Suggestion> map = new HashMap<Suggestion,Suggestion>();
+	/**
+	 * Create a suggestions list. Suggestion with a larger dissimilarity can not be added.
+	 * @param maxDiff the max dissimilarity
+	 */
+	Suggestions(final int maxDiff) {
+		this.maxDiff = maxDiff;
+	}
 
-    /**
-     * Create a suggestions list. Suggestion with a larger dissimilarity can not be added.
-     * @param maxDiff the max dissimilarity
-     */
-    Suggestions(int maxDiff){
-        this.maxDiff = maxDiff;
-    }
-    
-    /**
-     * Add a suggestion. 
-     * @param suggestion the suggestion 
-     */
-    void add(Suggestion suggestion){
-        if(suggestion.getDissimilarity() > maxDiff){
-            return;
-        }
-        Suggestion oldSuggestion = map.get( suggestion );
-        if(oldSuggestion != null && oldSuggestion.getDissimilarity() <= suggestion.getDissimilarity()){
-            return;
-        }
-        map.put( suggestion, suggestion );
-    }
-    
-    
-    List<Suggestion> getlist(){
-        ArrayList<Suggestion> list = new ArrayList<Suggestion>();
-        for(Suggestion sugg : map.values()){
-            list.add( sugg );
-        }
-        return list;
-    }
+	/**
+	 * Add a suggestion. 
+	 * @param suggestion the suggestion 
+	 */
+	void add(final Suggestion suggestion) {
+		if (suggestion.getDissimilarity() > maxDiff) {
+			return;
+		}
+		final Suggestion oldSuggestion = map.get(suggestion);
+		if (oldSuggestion != null && oldSuggestion.getDissimilarity() <= suggestion.getDissimilarity()) {
+			return;
+		}
+		map.put(suggestion, suggestion);
+	}
 
-    /**
-     * Get the max dissimilarity. Suggestion with a larger value can not be added.
-     * @return
-     */
-    int getMaxDissimilarity() {
-        return maxDiff;
-    }
+	List<Suggestion> getlist() {
+		final ArrayList<Suggestion> list = new ArrayList<Suggestion>();
+		for (final Suggestion sugg : map.values()) {
+			list.add(sugg);
+		}
+		return list;
+	}
+
+	/**
+	 * Get the max dissimilarity. Suggestion with a larger value can not be added.
+	 * @return
+	 */
+	int getMaxDissimilarity() {
+		return maxDiff;
+	}
 }

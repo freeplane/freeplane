@@ -47,7 +47,6 @@ import javax.swing.event.PopupMenuListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.core.Compat;
-import org.freeplane.core.controller.AController;
 import org.freeplane.core.io.IElementHandler;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
@@ -286,8 +285,8 @@ public class MenuBuilder extends UIBuilder {
 				if (!contains(menuPath.path)) {
 					if (tag.equals("menu_submenu")) {
 						final JMenu menuItem = new JMenu();
-						MenuBuilder.setLabelAndMnemonic(menuItem, FreeplaneResourceBundle.getText(attributes.getAttribute(
-						    "name_ref", null)));
+						MenuBuilder.setLabelAndMnemonic(menuItem, FreeplaneResourceBundle.getText(attributes
+						    .getAttribute("name_ref", null)));
 						addMenuItem(menuPath.parentPath, menuItem, menuPath.path, MenuBuilder.AS_CHILD);
 					}
 					else {
@@ -609,13 +608,13 @@ public class MenuBuilder extends UIBuilder {
 		if (action.getClass().getAnnotation(SelectableAction.class) != null) {
 			item = new JAutoRadioButtonMenuItem(action);
 		}
-		else{
-			item = new JRadioButtonMenuItem(action); 
+		else {
+			item = new JRadioButtonMenuItem(action);
 		}
 		addMenuItem(category, item, MenuBuilder.AS_CHILD);
 		if (keystroke != null) {
-			item.setAccelerator(KeyStroke.getKeyStroke(ResourceController.getResourceController().getAdjustableProperty(
-			    keystroke)));
+			item.setAccelerator(KeyStroke.getKeyStroke(ResourceController.getResourceController()
+			    .getAdjustableProperty(keystroke)));
 		}
 		item.setSelected(isSelected);
 		return item;

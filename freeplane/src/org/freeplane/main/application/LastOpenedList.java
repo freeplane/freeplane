@@ -57,6 +57,7 @@ import org.freeplane.n3.nanoxml.XMLParseException;
  */
 class LastOpenedList implements IMapViewChangeListener {
 	private static final String SEPARATOR = ";";
+	private final Controller controller;
 	/**
 	 * Contains Restore strings.
 	 */
@@ -65,30 +66,48 @@ class LastOpenedList implements IMapViewChangeListener {
 	/**
 	 * Contains Restore string => map name (map.toString()).
 	 */
-	final private Map<String,String> mRestorableToMapName = new HashMap<String,String>();
-	private Controller controller;
+	final private Map<String, String> mRestorableToMapName = new HashMap<String, String>();
 
-	LastOpenedList(Controller controller, final String restored, final int maxEntries) {
+	LastOpenedList(final Controller controller, final String restored, final int maxEntries) {
 		this.controller = controller;
 		this.maxEntries = maxEntries;
-		if (restored != null ) {
+		if (restored != null) {
 			lastOpenedList.addAll(Arrays.asList(restored.split(SEPARATOR)));
 		}
 	}
 
+	public void afterViewChange(final Component oldView, final Component newView) {
+		mapOpened(newView);
+	}
+
+	public void afterViewClose(final Component oldView) {
+	}
+
+	public void afterViewCreated(final Component mapView) {
+	}
+
+	public void beforeViewChange(final Component oldView, final Component newView) {
+	}
+
+	String getStringRep() {
+		final StringBuilder strBldr = new StringBuilder();
+		for (final String s : lastOpenedList) {
+			strBldr.append(s + SEPARATOR);
+		}
+		return strBldr.toString();
+	}
 
 	ListIterator listIterator() {
 		return lastOpenedList.listIterator();
 	}
-
 
 	void mapOpened(final Component mapView) {
 		if (mapView == null) {
 			return;
 		}
 		final IMapViewManager mapViewManager = controller.getMapViewManager();
-		ModeController modeController= mapViewManager.getModeController(mapView);
-		MapModel map = mapViewManager.getModel(mapView);
+		final ModeController modeController = mapViewManager.getModeController(mapView);
+		final MapModel map = mapViewManager.getModel(mapView);
 		final String restoreString = UrlManager.getController(modeController).getRestoreable(map);
 		if (restoreString == null) {
 			return;
@@ -106,7 +125,7 @@ class LastOpenedList implements IMapViewChangeListener {
 	public void open(final Controller controller, final String restoreable) throws FileNotFoundException,
 	        XMLParseException, MalformedURLException, IOException, URISyntaxException {
 		final boolean changedToMapView = controller.getMapViewManager().tryToChangeToMapView(
-		    (String) mRestorableToMapName.get(restoreable));
+		    mRestorableToMapName.get(restoreable));
 		if ((restoreable != null) && !(changedToMapView)) {
 			final StringTokenizer token = new StringTokenizer(restoreable, ":");
 			if (token.hasMoreTokens()) {
@@ -117,14 +136,6 @@ class LastOpenedList implements IMapViewChangeListener {
 				}
 			}
 		}
-	}
-
-	String getStringRep() {
-		StringBuilder strBldr = new StringBuilder();
-		for (String s : lastOpenedList) {
-			strBldr.append(s + SEPARATOR);
-		}
-		return strBldr.toString();
 	}
 
 	public void updateMenus(final Controller controller, final MenuBuilder menuBuilder) {
@@ -143,21 +154,4 @@ class LastOpenedList implements IMapViewChangeListener {
 			menuBuilder.addMenuItem(FreeplaneMenuBar.FILE_MENU + "/last", item, UIBuilder.AS_CHILD);
 		}
 	}
-
-
-	public void afterViewChange(Component oldView, Component newView) {
-		mapOpened(newView);
-    }
-
-
-	public void afterViewClose(Component oldView) {
-    }
-
-
-	public void afterViewCreated(Component mapView) {
-    }
-
-
-	public void beforeViewChange(Component oldView, Component newView) {
-    }
 }

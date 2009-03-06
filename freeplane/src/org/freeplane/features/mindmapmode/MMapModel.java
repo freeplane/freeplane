@@ -47,9 +47,8 @@ public class MMapModel extends MapModel {
 	public MMapModel(final NodeModel root, final ModeController modeController) {
 		super(modeController, root);
 		setReadOnly(false);
-		this
-		    .setLockManager(ResourceController.getResourceController().getBooleanProperty("experimental_file_locking_on") ? new LockManager()
-		            : new DummyLockManager());
+		this.setLockManager(ResourceController.getResourceController().getBooleanProperty(
+		    "experimental_file_locking_on") ? new LockManager() : new DummyLockManager());
 		undoHandler = new UndoHandler();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -97,14 +96,14 @@ public class MMapModel extends MapModel {
 		return undoHandler;
 	}
 
-	public void scheduleTimerForAutomaticSaving(ModeController modeController) {
+	public void scheduleTimerForAutomaticSaving(final ModeController modeController) {
 		final int numberOfTempFiles = Integer.parseInt(ResourceController.getResourceController().getProperty(
 		    "number_of_different_files_for_automatic_save"));
 		if (numberOfTempFiles == 0) {
 			return;
 		}
-		final boolean filesShouldBeDeletedAfterShutdown = ResourceController.getResourceController().getBooleanProperty(
-		    "delete_automatic_saves_at_exit");
+		final boolean filesShouldBeDeletedAfterShutdown = ResourceController.getResourceController()
+		    .getBooleanProperty("delete_automatic_saves_at_exit");
 		String path = ResourceController.getResourceController().getProperty("path_to_automatic_saves");
 		/* two standard values: */
 		if (StringUtils.equals(path, "default")) {
@@ -129,8 +128,8 @@ public class MMapModel extends MapModel {
 			}
 		}
 		final Timer timer = new Timer();
-		timer.schedule(new DoAutomaticSave(modeController, this, numberOfTempFiles, filesShouldBeDeletedAfterShutdown, dirToStore),
-		    delay, delay);
+		timer.schedule(new DoAutomaticSave(modeController, this, numberOfTempFiles, filesShouldBeDeletedAfterShutdown,
+		    dirToStore), delay, delay);
 		this.setTimerForAutomaticSaving(timer);
 	}
 

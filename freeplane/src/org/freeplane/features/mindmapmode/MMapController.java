@@ -35,9 +35,7 @@ import javax.swing.JOptionPane;
 import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.enums.ResourceControllerProperties;
-import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.MapController;
-import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.EncryptionModel;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
@@ -58,8 +56,8 @@ import org.freeplane.n3.nanoxml.XMLParseException;
  */
 public class MMapController extends MapController {
 	static private DeleteAction delete;
-	private static final String EXPECTED_START_STRINGS[] = { "<map version=\"" + ResourceControllerProperties.XML_VERSION + "\"",
-	        "<map version=\"0.7.1\"" };
+	private static final String EXPECTED_START_STRINGS[] = {
+	        "<map version=\"" + ResourceControllerProperties.XML_VERSION + "\"", "<map version=\"0.7.1\"" };
 	private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_version_updater.xslt";
 	public static final int NEW_CHILD = 2;
 	public static final int NEW_CHILD_WITHOUT_FOCUS = 1;
@@ -99,7 +97,6 @@ public class MMapController extends MapController {
 	public boolean close(final boolean force) {
 		final MapModel map = getController().getMap();
 		if (!force && !map.isSaved()) {
-			
 			final String text = FreeplaneResourceBundle.getText("save_unsaved") + "\n" + map.getTitle();
 			final String title = UITools.removeMnemonic(FreeplaneResourceBundle.getText("save"));
 			final int returnVal = JOptionPane.showOptionDialog(getController().getViewController().getContentPane(),
@@ -152,10 +149,29 @@ public class MMapController extends MapController {
 		return (MModeController) getModeController();
 	}
 
-	@Override
-	public void insertNodeIntoWithoutUndo(final NodeModel newNode, final NodeModel parent, final int index) {
-		setSaved(parent.getMap(), false);
-		super.insertNodeIntoWithoutUndo(newNode, parent, index);
+	public void insertNode(final NodeModel node, final NodeModel parent) {
+		insertNode(node, parent, parent.getChildCount());
+	}
+
+	public void insertNode(final NodeModel node, final NodeModel target, final boolean asSibling, final boolean isLeft,
+	                       final boolean changeSide) {
+		NodeModel parent;
+		if (asSibling) {
+			parent = target.getParentNode();
+		}
+		else {
+			parent = target;
+		}
+		if (changeSide) {
+			node.setParent(parent);
+			node.setLeft(isLeft);
+		}
+		if (asSibling) {
+			insertNode(node, parent, parent.getChildPosition(target));
+		}
+		else {
+			insertNode(node, parent, parent.getChildCount());
+		}
 	}
 
 	public void insertNode(final NodeModel node, final NodeModel parentNode, final int index) {
@@ -175,6 +191,12 @@ public class MMapController extends MapController {
 		getModeController().execute(actor);
 	}
 
+	@Override
+	public void insertNodeIntoWithoutUndo(final NodeModel newNode, final NodeModel parent, final int index) {
+		setSaved(parent.getMap(), false);
+		super.insertNodeIntoWithoutUndo(newNode, parent, index);
+	}
+
 	public boolean isWriteable(final NodeModel targetNode) {
 		final EncryptionModel encryptionModel = EncryptionModel.getModel(targetNode);
 		if (encryptionModel != null) {
@@ -188,9 +210,7 @@ public class MMapController extends MapController {
 	        URISyntaxException {
 		final File file = Compat.urlToFile(url);
 		if (!file.exists()) {
-			
-			throw new FileNotFoundException(FpStringUtils.formatText(
-			    "file_not_found", file.getPath()));
+			throw new FileNotFoundException(FpStringUtils.formatText("file_not_found", file.getPath()));
 		}
 		if (!file.canWrite()) {
 			((MMapModel) map).setReadOnly(true);
@@ -199,10 +219,8 @@ public class MMapController extends MapController {
 			try {
 				final String lockingUser = tryToLock(map, file);
 				if (lockingUser != null) {
-					
 					UITools.informationMessage(getController().getViewController().getFrame(), FpStringUtils
-					    .formatText("map_locked_by_open", file.getName(),
-					        lockingUser));
+					    .formatText("map_locked_by_open", file.getName(), lockingUser));
 					((MMapModel) map).setReadOnly(true);
 				}
 				else {
@@ -211,9 +229,8 @@ public class MMapController extends MapController {
 			}
 			catch (final Exception e) {
 				LogTool.logException(e);
-				
-				UITools.informationMessage(getController().getViewController().getFrame(), FpStringUtils
-				    .formatText("locking_failed_by_open", file.getName()));
+				UITools.informationMessage(getController().getViewController().getFrame(), FpStringUtils.formatText(
+				    "locking_failed_by_open", file.getName()));
 				((MMapModel) map).setReadOnly(true);
 			}
 		}
@@ -284,31 +301,36 @@ public class MMapController extends MapController {
 		super.loadURL(relative);
 	}
 
-	public void moveNodes(final NodeModel selected, final List selecteds, final int direction) {
-		((NodeUpAction) getModeController().getAction("nodeUp")).moveNodes(selected, selecteds, direction);
+	public void moveNode(final NodeModel node, final NodeModel selectedParent) {
+		moveNode(node, selectedParent, selectedParent.getChildCount());
 	}
 
 	public void moveNode(final NodeModel child, final NodeModel newParent, final int newIndex) {
 		final NodeModel oldParent = child.getParentNode();
 		final int oldIndex = oldParent.getChildPosition(child);
-		if(oldParent == newParent && oldIndex == newIndex){
+		if (oldParent == newParent && oldIndex == newIndex) {
 			return;
 		}
-		IUndoableActor actor = new IUndoableActor(){
+		final IUndoableActor actor = new IUndoableActor() {
 			public void act() {
-	            moveNodeToWithoutUndo(child, newParent, newIndex);
-            }
+				moveNodeToWithoutUndo(child, newParent, newIndex);
+			}
 
 			public String getDescription() {
-	            return "moveNode";
-            }
+				return "moveNode";
+			}
 
 			public void undo() {
-	            moveNodeToWithoutUndo(child, oldParent, oldIndex);
-            }
+				moveNodeToWithoutUndo(child, oldParent, oldIndex);
+			}
 		};
 		getModeController().execute(actor);
 	}
+
+	public void moveNodes(final NodeModel selected, final List selecteds, final int direction) {
+		((NodeUpAction) getModeController().getAction("nodeUp")).moveNodes(selected, selecteds, direction);
+	}
+
 	/**
 	 * The direction is used if side left and right are present. then the next
 	 * suitable place on the same side# is searched. if there is no such place,
@@ -382,7 +404,6 @@ public class MMapController extends MapController {
 		final String lockingUser = ((MMapModel) map).getLockManager().tryToLock(file);
 		final String lockingUserOfOldLock = ((MMapModel) map).getLockManager().popLockingUserOfOldLock();
 		if (lockingUserOfOldLock != null) {
-			
 			UITools.informationMessage(getController().getViewController().getFrame(), FpStringUtils.formatText(
 			    "locking_old_lock_removed", file.getName(), lockingUserOfOldLock));
 		}
@@ -391,35 +412,4 @@ public class MMapController extends MapController {
 		}
 		return lockingUser;
 	}
-
-	public void insertNode(NodeModel node, NodeModel parent) {
-	    insertNode(node, parent, parent.getChildCount());
-    }
-	
-	public void insertNode(final NodeModel node, final NodeModel target, final boolean asSibling, final boolean isLeft,
-		                   final boolean changeSide) {
-			NodeModel parent;
-			if (asSibling) {
-				parent = target.getParentNode();
-			}
-			else {
-				parent = target;
-			}
-			if (changeSide) {
-				node.setParent(parent);
-				node.setLeft(isLeft);
-			}
-			if (asSibling) {
-				insertNode(node, parent, parent.getChildPosition(target));
-			}
-			else {
-				insertNode(node, parent, parent.getChildCount());
-			}
-		}
-
-	public void moveNode(NodeModel node, NodeModel selectedParent) {
-	    moveNode(node, selectedParent, selectedParent.getChildCount());
-	    
-    }
-	
 }

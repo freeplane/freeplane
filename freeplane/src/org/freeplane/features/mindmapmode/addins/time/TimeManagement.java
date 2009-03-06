@@ -52,6 +52,7 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.common.text.TextController;
+import org.freeplane.features.common.time.swing.JDayChooser;
 import org.freeplane.features.mindmapmode.text.MTextController;
 
 /**
@@ -143,7 +144,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 	 *
 	 */
 	private void disposeDialog() {
-		if(dialog == null){
+		if (dialog == null) {
 			return;
 		}
 		dialog.setVisible(false);

@@ -44,7 +44,6 @@ class AddArrowLinkAction extends AFreeplaneAction {
 		final List selecteds = getModeController().getMapController().getSelectedNodes();
 		if (selecteds.size() < 2) {
 			final Controller controller = getController();
-			
 			controller.errorMessage(FreeplaneResourceBundle.getText("less_than_two_selected_nodes"));
 			return;
 		}

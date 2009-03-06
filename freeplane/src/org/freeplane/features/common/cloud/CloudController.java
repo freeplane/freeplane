@@ -24,7 +24,6 @@ import java.awt.Color;
 import java.awt.Stroke;
 
 import org.freeplane.core.enums.ResourceControllerProperties;
-import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
@@ -64,7 +63,7 @@ public class CloudController implements IExtension {
 	}
 
 	final private ExclusivePropertyChain<Color, NodeModel> colorHandlers;
-	private ModeController modeController;
+	private final ModeController modeController;
 
 	public CloudController(final ModeController modeController) {
 		this.modeController = modeController;
@@ -92,12 +91,8 @@ public class CloudController implements IExtension {
 		cloudBuilder.registerBy(readManager, writeManager);
 	}
 
-	protected ModeController getModeController() {
-    	return modeController;
-    }
-
 	public IPropertyHandler<Color, NodeModel> addColorGetter(final Integer key,
-	                                                        final IPropertyHandler<Color, NodeModel> getter) {
+	                                                         final IPropertyHandler<Color, NodeModel> getter) {
 		return colorHandlers.addGetter(key, getter);
 	}
 
@@ -107,6 +102,10 @@ public class CloudController implements IExtension {
 
 	public Color getExteriorColor(final NodeModel node) {
 		return getColor(node).darker();
+	}
+
+	protected ModeController getModeController() {
+		return modeController;
 	}
 
 	public int getWidth(final NodeModel node) {

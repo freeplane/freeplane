@@ -30,8 +30,7 @@ import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.MenuBuilder;
 
 class ShowAllAttributesAction extends AbstractAction implements IFreeplaneAction {
-
-    private static final String NAME = "showAllAttributes";
+	private static final String NAME = "showAllAttributes";
 	private static final long serialVersionUID = -3615437970434820425L;
 	final private Controller controller;
 
@@ -48,14 +47,14 @@ class ShowAllAttributesAction extends AbstractAction implements IFreeplaneAction
 		setAttributeViewType(map);
 	}
 
+	public String getName() {
+		return NAME;
+	}
+
 	public void setAttributeViewType(final MapModel map) {
 		final AttributeRegistry attributes = AttributeRegistry.getRegistry(map);
 		if (attributes.getAttributeViewType() != AttributeTableLayoutModel.SHOW_ALL) {
 			attributes.setAttributeViewType(AttributeTableLayoutModel.SHOW_ALL);
 		}
 	}
-
-	public String getName() {
-	    return NAME;
-    }
 }

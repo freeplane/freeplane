@@ -116,10 +116,10 @@ class MindMapHTMLWriter {
 
 	final private boolean basedOnHeadings;
 	final private Writer fileout;
-	private boolean writeFoldingCode;
 	final private MapController mapController;
+	private boolean writeFoldingCode;
 
-	MindMapHTMLWriter(MapController mapController, final Writer fileout) {
+	MindMapHTMLWriter(final MapController mapController, final Writer fileout) {
 		this.mapController = mapController;
 		this.fileout = fileout;
 		writeFoldingCode = false;
@@ -163,8 +163,7 @@ class MindMapHTMLWriter {
 	}
 
 	private boolean isHeading(final NodeModel model, final int depth) {
-		return basedOnHeadings && mapController.hasChildren(model) && depth <= 6
-		        && !hasHtml(model);
+		return basedOnHeadings && mapController.hasChildren(model) && depth <= 6 && !hasHtml(model);
 	}
 
 	private void writeBodyWithFolding(final NodeModel rootNodeOfBranch) throws IOException {
@@ -201,7 +200,8 @@ class MindMapHTMLWriter {
 
 	void writeHTML(final NodeModel rootNodeOfBranch) throws IOException {
 		final String htmlExportFoldingOption = getProperty("html_export_folding");
-		writeFoldingCode = (htmlExportFoldingOption.equals("html_export_fold_currently_folded") && mapController.hasFoldedStrictDescendant(rootNodeOfBranch))
+		writeFoldingCode = (htmlExportFoldingOption.equals("html_export_fold_currently_folded") && mapController
+		    .hasFoldedStrictDescendant(rootNodeOfBranch))
 		        || htmlExportFoldingOption.equals("html_export_fold_all");
 		ResourceController.getResourceController().getBooleanProperty("export_icons_in_html");
 		fileout
@@ -284,8 +284,7 @@ class MindMapHTMLWriter {
 			}
 		}
 		if (getProperty("html_export_folding").equals("html_export_based_on_headings")) {
-			for (final ListIterator e = mapController.childrenUnfolded(model); e
-			    .hasNext();) {
+			for (final ListIterator e = mapController.childrenUnfolded(model); e.hasNext();) {
 				final NodeModel child = (NodeModel) e.next();
 				lastChildNumber = writeHTML(child, parentID, lastChildNumber,/*isRoot=*/false,
 				    treatChildrenAsParagraph, depth + 1);
@@ -294,8 +293,7 @@ class MindMapHTMLWriter {
 		}
 		if (mapController.hasChildren(model)) {
 			if (getProperty("html_export_folding").equals("html_export_based_on_headings")) {
-				for (final ListIterator e = mapController.childrenUnfolded(model); e
-				    .hasNext();) {
+				for (final ListIterator e = mapController.childrenUnfolded(model); e.hasNext();) {
 					final NodeModel child = (NodeModel) e.next();
 					lastChildNumber = writeHTML(child, parentID, lastChildNumber,
 					/*isRoot=*/false, treatChildrenAsParagraph, depth + 1);
@@ -308,8 +306,7 @@ class MindMapHTMLWriter {
 					fileout.write("<li>");
 				}
 				int localLastChildNumber = 0;
-				for (final ListIterator e =mapController.childrenUnfolded(model); e
-				    .hasNext();) {
+				for (final ListIterator e = mapController.childrenUnfolded(model); e.hasNext();) {
 					final NodeModel child = (NodeModel) e.next();
 					localLastChildNumber = writeHTML(child, localParentID, localLastChildNumber,
 					/* isRoot=*/false, treatChildrenAsParagraph, depth + 1);
@@ -320,8 +317,7 @@ class MindMapHTMLWriter {
 				if (treatChildrenAsParagraph) {
 					fileout.write("<li>");
 				}
-				for (final ListIterator e = mapController.childrenUnfolded(model); e
-				    .hasNext();) {
+				for (final ListIterator e = mapController.childrenUnfolded(model); e.hasNext();) {
 					final NodeModel child = (NodeModel) e.next();
 					lastChildNumber = writeHTML(child, parentID, lastChildNumber,
 					/* isRoot= */false, treatChildrenAsParagraph, depth + 1);

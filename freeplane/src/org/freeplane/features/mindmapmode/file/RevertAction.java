@@ -48,11 +48,7 @@ import org.freeplane.core.util.LogTool;
  *
  * @author foltin
  */
-class RevertAction extends AFreeplaneAction implements IFreeplaneAction{
-
-	private static final String NAME = "revertAction";
-	private static final long serialVersionUID = 1251122535286448191L;
-
+class RevertAction extends AFreeplaneAction implements IFreeplaneAction {
 	private static class RevertActionInstance {
 		final private Controller controller;
 		private String filePrefix;
@@ -115,6 +111,9 @@ class RevertAction extends AFreeplaneAction implements IFreeplaneAction{
 		}
 	}
 
+	private static final String NAME = "revertAction";
+	private static final long serialVersionUID = 1251122535286448191L;
+
 	/**
 	 */
 	public RevertAction(final Controller controller) {
@@ -130,8 +129,8 @@ class RevertAction extends AFreeplaneAction implements IFreeplaneAction{
 		try {
 			final File file = getController().getMap().getFile();
 			if (file == null) {
-				
-				JOptionPane.showMessageDialog(getController().getViewController().getMapView(), FreeplaneResourceBundle.getText("map_not_saved"), "Freeplane", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(getController().getViewController().getMapView(), FreeplaneResourceBundle
+				    .getText("map_not_saved"), "Freeplane", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			final RevertActionInstance doAction = createRevertXmlAction(file);
@@ -174,6 +173,10 @@ class RevertAction extends AFreeplaneAction implements IFreeplaneAction{
 		return revertXmlAction;
 	}
 
+	public String getName() {
+		return NAME;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see freeplane.controller.actions.ActorXml#getDoActionClass()
@@ -182,8 +185,4 @@ class RevertAction extends AFreeplaneAction implements IFreeplaneAction{
 		final RevertActionInstance doAction = createRevertXmlAction(xmlFileContent, null, null);
 		doAction.act();
 	}
-
-	public String getName() {
-	    return NAME;
-    }
 }

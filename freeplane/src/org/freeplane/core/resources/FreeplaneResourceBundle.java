@@ -38,6 +38,21 @@ import org.freeplane.core.util.MultipleValueMap;
 public class FreeplaneResourceBundle extends ResourceBundle {
 	private static final String DEFAULT_LANGUAGE = "en";
 	public static final String POSTFIX_TRANSLATE_ME = "[translate me]";
+
+	public static NamedObject createTranslatedString(final String key) {
+		final String fs = FreeplaneResourceBundle.getText(key);
+		return new NamedObject(key, fs);
+	}
+
+	public static String getText(final String key) {
+		if (key == null) {
+			return null;
+		}
+		final FreeplaneResourceBundle freeplaneResourceBundle = (FreeplaneResourceBundle) ResourceController
+		    .getResourceController().getResources();
+		return freeplaneResourceBundle.getResourceString(key);
+	}
+
 	/**
 	 *
 	 */
@@ -123,11 +138,11 @@ public class FreeplaneResourceBundle extends ResourceBundle {
 
 	String getResourceString(final String key, final String resource) {
 		String value = languageResources.get(key);
-		if(value != null){
+		if (value != null) {
 			return value;
 		}
-		value =  defaultResources.get(key);
-		if(value != null){
+		value = defaultResources.get(key);
+		if (value != null) {
 			return value + FreeplaneResourceBundle.POSTFIX_TRANSLATE_ME;
 		}
 		return resource;
@@ -169,17 +184,4 @@ public class FreeplaneResourceBundle extends ResourceBundle {
 			e.printStackTrace();
 		}
 	}
-
-	public static NamedObject createTranslatedString(final String key) {
-    	final String fs = getText(key);
-    	return new NamedObject(key, fs);
-    }
-
-	public static String getText(final String key) {
-    	if (key == null) {
-    		return null;
-    	}
-    	FreeplaneResourceBundle freeplaneResourceBundle = (FreeplaneResourceBundle) ResourceController.getResourceController().getResources();
-    	return freeplaneResourceBundle.getResourceString(key);
-    }
 }

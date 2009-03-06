@@ -44,11 +44,12 @@ class EdgeStyleAsParentAction extends MultipleNodeAction {
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
 		((MEdgeController) EdgeController.getController(getModeController())).setStyle(node, null);
 	}
+
 	@Override
 	public void setSelected() {
 		final NodeModel node = getModeController().getMapController().getSelectedNode();
 		final EdgeModel model = EdgeModel.getModel(node);
-		if(model == null || model.getStyle() == null){
+		if (model == null || model.getStyle() == null) {
 			setSelected(true);
 		}
 	}

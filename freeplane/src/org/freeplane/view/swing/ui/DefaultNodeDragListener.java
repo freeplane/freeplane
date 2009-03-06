@@ -49,8 +49,7 @@ class DefaultNodeDragListener implements DragGestureListener {
 			dragAction = "COPY";
 		}
 		final ModeController modeController = controller.getModeController();
-		final Transferable t =ClipboardController.getController(modeController).copy(
-		    controller.getSelection());
+		final Transferable t = ClipboardController.getController(modeController).copy(controller.getSelection());
 		((MindMapNodesSelection) t).setDropAction(dragAction);
 		e.startDrag(cursor, t, new DragSourceListener() {
 			public void dragDropEnd(final DragSourceDropEvent dsde) {

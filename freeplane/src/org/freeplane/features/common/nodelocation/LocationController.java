@@ -29,7 +29,6 @@ import org.freeplane.core.modecontroller.ModeController;
  * @author Dimitry Polivaev
  */
 public class LocationController implements IExtension {
-
 	public static LocationController getController(final ModeController modeController) {
 		return (LocationController) modeController.getExtension(LocationController.class);
 	}

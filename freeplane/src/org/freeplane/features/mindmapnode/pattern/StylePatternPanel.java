@@ -35,7 +35,6 @@ import javax.swing.JPanel;
 
 import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.modecontroller.ModeController;
-import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.ui.BooleanProperty;
 import org.freeplane.core.resources.ui.ColorProperty;
@@ -61,18 +60,6 @@ import com.jgoodies.forms.layout.FormLayout;
  * @author foltin
  */
 public class StylePatternPanel extends JPanel implements PropertyChangeListener {
-	final private class EdgeWidthBackTransformer implements IValueTransformator {
-		public String transform(final String value) {
-			return transformStringToWidth(value);
-		}
-	}
-
-	final private class EdgeWidthTransformer implements IValueTransformator {
-		public String transform(final String value) {
-			return transformEdgeWidth(value);
-		}
-	}
-
 	@Deprecated
 	final private class IdentityTransformer implements IValueTransformator {
 		public String transform(final String value) {
@@ -210,7 +197,8 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 			controls.add(mName);
 			mSetChildPattern = new ThreeCheckBoxProperty(StylePatternPanel.SET_CHILD_PATTERN);
 			controls.add(mSetChildPattern);
-			mChildPattern = new ComboProperty(StylePatternPanel.CHILD_PATTERN, Collections.EMPTY_LIST, Collections.EMPTY_LIST);
+			mChildPattern = new ComboProperty(StylePatternPanel.CHILD_PATTERN, Collections.EMPTY_LIST,
+			    Collections.EMPTY_LIST);
 			controls.add(mChildPattern);
 		}
 		controls.add(new NextLineProperty());
@@ -367,7 +355,6 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 		    mNodeBackgroundColor));
 		pattern.setPatternNodeStyle(getPatternResult(new PatternProperty(), mSetNodeStyle, mNodeStyle));
 		pattern.setPatternNodeText(getPatternResult(new PatternProperty(), mSetNodeText, mNodeText));
-
 		pattern.setPatternEdgeColor("000000");
 		pattern.setPatternEdgeStyle("000000");
 		pattern.setPatternEdgeWidth("000000");
@@ -418,24 +405,20 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 	}
 
 	public void setPattern(final Pattern pattern) {
-		setPatternControls(pattern.getPatternNodeColor(), mSetNodeColor, mNodeColor, ResourceController.getResourceController()
-		    .getDefaultProperty(ResourceControllerProperties.RESOURCES_NODE_TEXT_COLOR));
+		setPatternControls(pattern.getPatternNodeColor(), mSetNodeColor, mNodeColor, ResourceController
+		    .getResourceController().getDefaultProperty(ResourceControllerProperties.RESOURCES_NODE_TEXT_COLOR));
 		setPatternControls(pattern.getPatternNodeBackgroundColor(), mSetNodeBackgroundColor, mNodeBackgroundColor,
-		    ResourceController.getResourceController().getDefaultProperty(ResourceControllerProperties.RESOURCES_BACKGROUND_COLOR));
+		    ResourceController.getResourceController().getDefaultProperty(
+		        ResourceControllerProperties.RESOURCES_BACKGROUND_COLOR));
 		setPatternControls(pattern.getPatternNodeStyle(), mSetNodeStyle, mNodeStyle, NodeStyleModel.SHAPE_AS_PARENT);
 		setPatternControls(pattern.getPatternNodeText(), mSetNodeText, mNodeText, "");
-		
 		// FIXME rladstaetter 28.02.2009 add edge handling
-
 		setPatternControls(pattern.getPatternNodeFontName(), mSetNodeFontName, mNodeFontName, ResourceController
 		    .getResourceController().getDefaultFontFamilyName());
 		setPatternControls(pattern.getPatternNodeFontSize(), mSetNodeFontSize, mNodeFontSize, sizes[0]);
-		setPatternControls(pattern.getPatternNodeFontBold(), mSetNodeFontBold, mNodeFontBold,
-		    Boolean.TRUE.toString());
-		setPatternControls(pattern.getPatternNodeFontItalic(), mSetNodeFontItalic, mNodeFontItalic,
-		    Boolean.TRUE.toString());
-		final MindIcon firstInfo = (MindIcon) mIconInformationVector.get(0);
-
+		setPatternControls(pattern.getPatternNodeFontBold(), mSetNodeFontBold, mNodeFontBold, Boolean.TRUE.toString());
+		setPatternControls(pattern.getPatternNodeFontItalic(), mSetNodeFontItalic, mNodeFontItalic, Boolean.TRUE
+		    .toString());
 		// FIXME rladstaetter 28.02.2009 add icon handling
 		setPatternControls(pattern.getPatternScript(), mSetScriptPattern, mScriptPattern, "");
 		if (StylePatternPanelType.WITH_NAME_AND_CHILDS.equals(mType)) {

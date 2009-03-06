@@ -27,8 +27,8 @@ import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.mindmapmode.MModeController;
 
-class SaveAction extends AFreeplaneAction implements IFreeplaneAction{
-    private static final long serialVersionUID = -7502189138374624345L;
+class SaveAction extends AFreeplaneAction implements IFreeplaneAction {
+	private static final long serialVersionUID = -7502189138374624345L;
 
 	public SaveAction(final Controller controller) {
 		super(controller, "save", "/images/filesave.png");
@@ -47,6 +47,6 @@ class SaveAction extends AFreeplaneAction implements IFreeplaneAction{
 	}
 
 	public String getName() {
-	    return "save";
-    }
+		return "save";
+	}
 }

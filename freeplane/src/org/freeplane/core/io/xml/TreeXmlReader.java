@@ -57,7 +57,7 @@ public class TreeXmlReader implements IXMLBuilder {
 
 	// TODO rladstaetter 28.02.2009 replace method callees with code given below
 	@Deprecated
-	public static Color xmlToColor(String string) {
+	public static Color xmlToColor(final String string) {
 		return new FpColor(string).getColor();
 	}
 

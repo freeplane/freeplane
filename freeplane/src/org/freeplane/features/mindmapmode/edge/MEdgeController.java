@@ -50,8 +50,7 @@ public class MEdgeController extends EdgeController {
 		    EdgeStyle.EDGESTYLE_SHARP_LINEAR));
 		modeController.putAction("EdgeStyle_sharp_bezier", new EdgeStyleAction(modeController,
 		    EdgeStyle.EDGESTYLE_SHARP_BEZIER));
-		modeController.putAction("EdgeStyle_hidden", new EdgeStyleAction(modeController,
-		    EdgeStyle.EDGESTYLE_HIDDEN));
+		modeController.putAction("EdgeStyle_hidden", new EdgeStyleAction(modeController, EdgeStyle.EDGESTYLE_HIDDEN));
 		modeController.putAction("EdgeStyle_as_parent", new EdgeStyleAsParentAction(modeController));
 	}
 
@@ -82,13 +81,13 @@ public class MEdgeController extends EdgeController {
 	public void setStyle(final NodeModel node, final String style) {
 		final ModeController modeController = getModeController();
 		final String oldStyle;
-		if(style != null){
+		if (style != null) {
 			oldStyle = getStyle(node);
 			if (style.equals(oldStyle)) {
 				return;
 			}
 		}
-		else{
+		else {
 			oldStyle = EdgeModel.createEdgeModel(node).getStyle();
 			if (oldStyle == null) {
 				return;

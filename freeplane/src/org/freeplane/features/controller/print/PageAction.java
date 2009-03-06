@@ -42,26 +42,25 @@ import org.freeplane.core.ui.MenuBuilder;
 
 class PageAction extends AbstractPrintAction {
 	private final class ActionListenerImplementation implements ActionListener {
-	    private final JDialog dialog;
+		private final JDialog dialog;
 		private int eventSource;
 
-	    private ActionListenerImplementation(JDialog dialog) {
-		    this.dialog = dialog;
-	    }
+		private ActionListenerImplementation(final JDialog dialog) {
+			this.dialog = dialog;
+		}
 
-	    public void actionPerformed(final ActionEvent e) {
-	    	eventSource = 1;
-	    	dialog.dispose();
-	    }
+		public void actionPerformed(final ActionEvent e) {
+			eventSource = 1;
+			dialog.dispose();
+		}
 
 		public int getEventSource() {
-	        return eventSource;
-        }
-	    
-    }
+			return eventSource;
+		}
+	}
 
-	private static final long serialVersionUID = 2736613545540923942L;
 	static final String NAME = "page";
+	private static final long serialVersionUID = 2736613545540923942L;
 
 	PageAction(final PrintController controller) {
 		super(controller);
@@ -75,17 +74,18 @@ class PageAction extends AbstractPrintAction {
 		final Frame frame = getPrintController().getController().getViewController().getFrame();
 		final JDialog dialog = new JDialog(frame, FreeplaneResourceBundle.getText("printing_settings"), /* modal=*/
 		true);
-		final JCheckBox fitToPage = new JCheckBox(FreeplaneResourceBundle.getText("fit_to_page"), ResourceController.getResourceController()
-		    .getBooleanProperty("fit_to_page"));
+		final JCheckBox fitToPage = new JCheckBox(FreeplaneResourceBundle.getText("fit_to_page"), ResourceController
+		    .getResourceController().getBooleanProperty("fit_to_page"));
 		final JLabel userZoomL = new JLabel(FreeplaneResourceBundle.getText("user_zoom"));
-		final JTextField userZoom = new JTextField(ResourceController.getResourceController().getProperty("user_zoom"), 3);
+		final JTextField userZoom = new JTextField(ResourceController.getResourceController().getProperty("user_zoom"),
+		    3);
 		userZoom.setEditable(!fitToPage.isSelected());
 		final JButton okButton = new JButton();
 		MenuBuilder.setLabelAndMnemonic(okButton, FreeplaneResourceBundle.getText("ok"));
 		final JPanel panel = new JPanel();
 		final GridBagLayout gridbag = new GridBagLayout();
 		final GridBagConstraints c = new GridBagConstraints();
-		ActionListenerImplementation aListener = new ActionListenerImplementation(dialog);
+		final ActionListenerImplementation aListener = new ActionListenerImplementation(dialog);
 		okButton.addActionListener(aListener);
 		fitToPage.addItemListener(new ItemListener() {
 			public void itemStateChanged(final ItemEvent e) {
@@ -120,7 +120,8 @@ class PageAction extends AbstractPrintAction {
 		dialog.setVisible(true);
 		if (aListener.getEventSource() == 1) {
 			ResourceController.getResourceController().setProperty("user_zoom", userZoom.getText());
-			ResourceController.getResourceController().setProperty("fit_to_page", (fitToPage.isSelected() ? "true" : "false"));
+			ResourceController.getResourceController().setProperty("fit_to_page",
+			    (fitToPage.isSelected() ? "true" : "false"));
 		}
 		else {
 			return;

@@ -30,7 +30,6 @@ import java.util.logging.Logger;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.IMapSelection;
-import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IUndoableActor;
@@ -135,7 +134,7 @@ class NodeUpAction extends AFreeplaneAction {
 	}
 
 	private int moveNodeTo(final NodeModel child, final int direction) {
-		NodeModel parent = child.getParentNode();
+		final NodeModel parent = child.getParentNode();
 		final int index = parent.getIndex(child);
 		int newIndex = index;
 		final int maxIndex = parent.getChildCount();

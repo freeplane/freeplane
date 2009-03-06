@@ -45,8 +45,8 @@ class ColorArrowLinkAction extends AFreeplaneAction {
 		final Controller controller = getController();
 		final ModeController modeController = getModeController();
 		final Color selectedColor = LinkController.getController(modeController).getColor(arrowLink);
-		final Color color = ColorTracker.showCommonJColorChooserDialog(controller, controller.getSelection().getSelected(),
-		    (String) this.getValue(Action.NAME), selectedColor);
+		final Color color = ColorTracker.showCommonJColorChooserDialog(controller, controller.getSelection()
+		    .getSelected(), (String) this.getValue(Action.NAME), selectedColor);
 		if (color == null) {
 			return;
 		}

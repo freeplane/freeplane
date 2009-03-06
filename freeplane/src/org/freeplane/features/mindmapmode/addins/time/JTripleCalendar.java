@@ -25,6 +25,11 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
+import org.freeplane.features.common.time.swing.JCalendar;
+import org.freeplane.features.common.time.swing.JDayChooser;
+import org.freeplane.features.common.time.swing.JMonthChooser;
+import org.freeplane.features.common.time.swing.JYearChooser;
+
 /** */
 class JTripleCalendar extends JPanel implements PropertyChangeListener {
 	private static class JInfoPanel extends JPanel {

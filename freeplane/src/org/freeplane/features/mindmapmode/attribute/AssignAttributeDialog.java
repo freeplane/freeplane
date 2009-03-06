@@ -64,7 +64,6 @@ import org.freeplane.features.common.attribute.AttributeRegistryElement;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
 
 class AssignAttributeDialog extends JDialog implements IAttributesListener, IMapSelectionListener {
-	final private AttributeController attributeController;
 	private class AddAction extends IteratingAction {
 		private String name;
 		private String value;
@@ -286,6 +285,7 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 	}
 
 	private static final Dimension maxButtonDimension = new Dimension(1000, 1000);
+	final private AttributeController attributeController;
 	final private JComboBox attributeNames;
 	final private JComboBox attributeValues;
 	final private Controller controller;
@@ -299,7 +299,7 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 	public AssignAttributeDialog(final AttributeController attributeController, final Frame frame) {
 		super(frame, UITools.removeMnemonic(FreeplaneResourceBundle.getText("attributes_assign_dialog")), false);
 		this.attributeController = attributeController;
-		this.controller = attributeController.getModeController().getController();
+		controller = attributeController.getModeController().getController();
 		mapSelection = controller.getSelection();
 		final Border actionBorder = new MatteBorder(2, 2, 2, 2, Color.BLACK);
 		final Border emptyBorder = new EmptyBorder(5, 5, 5, 5);
@@ -334,7 +334,8 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 		deleteAttributeBtn.addActionListener(new DeleteAttributeAction());
 		deleteAttributeBtn.setMaximumSize(AssignAttributeDialog.maxButtonDimension);
 		final JButton deleteAttributeValueBtn = new JButton();
-		MenuBuilder.setLabelAndMnemonic(deleteAttributeValueBtn, FreeplaneResourceBundle.getText("attribute_delete_value"));
+		MenuBuilder.setLabelAndMnemonic(deleteAttributeValueBtn, FreeplaneResourceBundle
+		    .getText("attribute_delete_value"));
 		deleteAttributeValueBtn.addActionListener(new DeleteValueAction());
 		deleteAttributeValueBtn.setMaximumSize(AssignAttributeDialog.maxButtonDimension);
 		final JButton replaceBtn = new JButton();

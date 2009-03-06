@@ -24,16 +24,19 @@ import java.util.StringTokenizer;
 // TODO rladstaetter 15.02.2009 use build properties for this information
 @Deprecated
 public class FreeplaneVersion {
+	private static final FreeplaneVersion VERSION = new FreeplaneVersion("0.9.0 Freeplane 21");
+
+	public static FreeplaneVersion getVersion() {
+		return VERSION;
+	}
+
 	final int mMaj;
 	final int mMid;
 	final int mMin;
 	final int mNum;
 	final String mType;
-	
-	private static final FreeplaneVersion VERSION = new FreeplaneVersion("0.9.0 Freeplane 21");
 
-	public FreeplaneVersion(final int pMaj, final int pMid, final int pMin, final String pType,
-	                                   final int pNum) {
+	public FreeplaneVersion(final int pMaj, final int pMid, final int pMin, final String pType, final int pNum) {
 		super();
 		mMaj = pMaj;
 		mMid = pMid;
@@ -91,9 +94,5 @@ public class FreeplaneVersion {
 		buf.append(':');
 		buf.append(mNum);
 		return buf.toString();
-	}
-
-	public static FreeplaneVersion getVersion() {
-		return VERSION;
 	}
 }

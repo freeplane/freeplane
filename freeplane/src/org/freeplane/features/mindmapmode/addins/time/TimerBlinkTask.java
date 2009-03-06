@@ -28,16 +28,17 @@ import javax.swing.SwingUtilities;
  * Feb 20, 2009
  */
 class TimerBlinkTask extends TimerTask {
+	private final ReminderHook reminderController;
 	/**
-     * 
-     */
-    private final ReminderExtension reminderExtension;
+	 * 
+	 */
+	private final ReminderExtension reminderExtension;
 	private boolean stateAdded = false;
-	private ReminderHook reminderController;
 
 	/**
 	 */
-	public TimerBlinkTask(final ReminderHook reminderController, ReminderExtension reminderExtension, final boolean stateAdded) {
+	public TimerBlinkTask(final ReminderHook reminderController, final ReminderExtension reminderExtension,
+	                      final boolean stateAdded) {
 		super();
 		this.reminderController = reminderController;
 		this.reminderExtension = reminderExtension;

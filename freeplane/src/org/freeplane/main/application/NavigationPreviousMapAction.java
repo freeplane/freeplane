@@ -30,8 +30,7 @@ import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 
-class NavigationPreviousMapAction extends AbstractAction implements IFreeplaneAction{
-
+class NavigationPreviousMapAction extends AbstractAction implements IFreeplaneAction {
 	private static final String NAME = "navigationPreviousMap";
 	private static final long serialVersionUID = -6314541038760069176L;
 	final private Controller controller;
@@ -48,6 +47,6 @@ class NavigationPreviousMapAction extends AbstractAction implements IFreeplaneAc
 	}
 
 	public String getName() {
-	    return NAME;
-    }
+		return NAME;
+	}
 }

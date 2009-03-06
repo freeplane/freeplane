@@ -41,7 +41,6 @@ import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.core.url.UrlManager;
-import org.freeplane.features.common.attribute.AttributeController;
 
 /**
  * Derive from this class to implement the Controller for your mode. Overload
@@ -128,6 +127,7 @@ public class ModeController extends AController {
 	}
 
 	final private Controller controller;
+	private final ExtensionContainer extensionContainer;
 	private boolean isBlocked = false;
 	private MapController mapController;
 	final private List<IMenuContributor> menuContributors = new LinkedList<IMenuContributor>();
@@ -141,40 +141,19 @@ public class ModeController extends AController {
 	 * links).
 	 */
 	private IUserInputListenerFactory userInputListenerFactory;
-	private final ExtensionContainer extensionContainer;
 
 	/**
 	 * Instantiation order: first me and then the model.
 	 */
 	public ModeController(final Controller controller) {
 		this.controller = controller;
-		extensionContainer = new ExtensionContainer(new HashMap <Class<? extends IExtension>, IExtension>());
-	}
-
-	public void putAction(final String key, final IFreeplaneAction action) {
-		super.putAction(key, action);
-		if (AFreeplaneAction.checkEnabledOnChange(action)) {
-			final ActionEnablerOnChange listener = new ActionEnablerOnChange((AFreeplaneAction) action);
-			mapController.addNodeSelectionListener(listener);
-			mapController.addNodeChangeListener(listener);
-		}
-		if (AFreeplaneAction.checkSelectionOnChange(action)) {
-			final ActionSelectorOnChange listener = new ActionSelectorOnChange((AFreeplaneAction) action);
-			mapController.addNodeSelectionListener(listener);
-			mapController.addNodeChangeListener(listener);
-		}
-		if (AFreeplaneAction.checkVisibilityOnChange(action)) {
-			final ActionDisplayerOnChange listener = new ActionDisplayerOnChange((AFreeplaneAction) action);
-			mapController.addNodeSelectionListener(listener);
-			mapController.addNodeChangeListener(listener);
-		}
+		extensionContainer = new ExtensionContainer(new HashMap<Class<? extends IExtension>, IExtension>());
 	}
 
 	public void addAnnotatedAction(final Action action) {
 		final String name = action.getClass().getAnnotation(ActionDescriptor.class).name();
 		putAction(name, action);
 	}
-
 
 	public void addINodeViewLifeCycleListener(final INodeViewLifeCycleListener listener) {
 		nodeViewListeners.add(listener);
@@ -188,6 +167,7 @@ public class ModeController extends AController {
 		actor.act();
 	}
 
+	@Override
 	public Action getAction(final String key) {
 		final Action action = super.getAction(key);
 		if (action != null) {
@@ -198,6 +178,10 @@ public class ModeController extends AController {
 
 	public Controller getController() {
 		return controller;
+	}
+
+	public IExtension getExtension(final Class<? extends IExtension> clazz) {
+		return extensionContainer.getExtension(clazz);
 	}
 
 	/**
@@ -246,6 +230,30 @@ public class ModeController extends AController {
 		}
 	}
 
+	public void putAction(final String key, final IFreeplaneAction action) {
+		super.putAction(key, action);
+		if (AFreeplaneAction.checkEnabledOnChange(action)) {
+			final ActionEnablerOnChange listener = new ActionEnablerOnChange((AFreeplaneAction) action);
+			mapController.addNodeSelectionListener(listener);
+			mapController.addNodeChangeListener(listener);
+		}
+		if (AFreeplaneAction.checkSelectionOnChange(action)) {
+			final ActionSelectorOnChange listener = new ActionSelectorOnChange((AFreeplaneAction) action);
+			mapController.addNodeSelectionListener(listener);
+			mapController.addNodeChangeListener(listener);
+		}
+		if (AFreeplaneAction.checkVisibilityOnChange(action)) {
+			final ActionDisplayerOnChange listener = new ActionDisplayerOnChange((AFreeplaneAction) action);
+			mapController.addNodeSelectionListener(listener);
+			mapController.addNodeChangeListener(listener);
+		}
+	}
+
+	public void putExtension(final Class<? extends IExtension> clazz, final IExtension extension) {
+		extensionContainer.putExtension(clazz, extension);
+	}
+
+	@Override
 	public Action removeAction(final String key) {
 		final Action action = getActions().remove(key);
 		if (AFreeplaneAction.checkEnabledOnChange(action)) {
@@ -314,11 +322,4 @@ public class ModeController extends AController {
 			iterator.next().updateMenus(menuBuilder);
 		}
 	}
-	public IExtension getExtension(Class<? extends IExtension> clazz) {
-		return extensionContainer.getExtension(clazz);
-	}
-
-	public void putExtension(Class<? extends IExtension> clazz, IExtension extension) {
-	   extensionContainer.putExtension(clazz, extension);
-    }
 }

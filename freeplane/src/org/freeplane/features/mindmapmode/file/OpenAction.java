@@ -26,8 +26,8 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.url.UrlManager;
 
-class OpenAction extends AFreeplaneAction implements IFreeplaneAction{
-   private static final long serialVersionUID = 6555358381496003986L;
+class OpenAction extends AFreeplaneAction implements IFreeplaneAction {
+	private static final long serialVersionUID = 6555358381496003986L;
 
 	public OpenAction(final Controller controller) {
 		super(controller, "open", "/images/fileopen.png");
@@ -39,6 +39,6 @@ class OpenAction extends AFreeplaneAction implements IFreeplaneAction{
 	}
 
 	public String getName() {
-	    return "open";
-    }
+		return "open";
+	}
 }

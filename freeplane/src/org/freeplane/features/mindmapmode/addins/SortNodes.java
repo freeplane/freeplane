@@ -17,20 +17,16 @@
  */
 package org.freeplane.features.mindmapmode.addins;
 
-import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.Vector;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.MultipleNodeAction;
-import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.mindmapmode.MMapController;
-import org.freeplane.features.mindmapmode.clipboard.MClipboardController;
 
 /**
  * @author foltin
@@ -68,9 +64,9 @@ public class SortNodes extends MultipleNodeAction {
 		final Vector<NodeModel> sortVector = new Vector<NodeModel>();
 		sortVector.addAll(node.getChildren());
 		Collections.sort(sortVector, new NodeTextComparator());
-		MMapController mapController = (MMapController) getModeController().getMapController();
+		final MMapController mapController = (MMapController) getModeController().getMapController();
 		int i = 0;
-		for (final NodeModel child: sortVector) {
+		for (final NodeModel child : sortVector) {
 			mapController.moveNode(child, node, i++);
 		}
 	}

@@ -31,13 +31,11 @@ import java.util.EventListener;
  * @see SpellChecker#addLanguageChangeLister(LanguageChangeListener)
  * @see SpellChecker#removeLanguageChangeLister(LanguageChangeListener)
  */
-public interface LanguageChangeListener extends EventListener{
-    
-    /**
-     * This method gets called when the language is changed.
-     * This occurs if the user selects another language in the languages menu.
-     * @param ev A LanguageChangeEvent object describing the changes.
-     */
-    public void languageChanged(LanguageChangeEvent ev);
-
+public interface LanguageChangeListener extends EventListener {
+	/**
+	 * This method gets called when the language is changed.
+	 * This occurs if the user selects another language in the languages menu.
+	 * @param ev A LanguageChangeEvent object describing the changes.
+	 */
+	public void languageChanged(LanguageChangeEvent ev);
 }

@@ -27,7 +27,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.url.UrlManager;
 
 class SaveAsAction extends AFreeplaneAction implements IFreeplaneAction {
-    private static final String NAME = "saveAs";
+	private static final String NAME = "saveAs";
 	private static final long serialVersionUID = 2159332245929439677L;
 
 	public SaveAsAction(final Controller controller) {
@@ -40,6 +40,6 @@ class SaveAsAction extends AFreeplaneAction implements IFreeplaneAction {
 	}
 
 	public String getName() {
-	    return NAME;
-    }
+		return NAME;
+	}
 }

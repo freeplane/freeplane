@@ -39,9 +39,9 @@ class AppletResourceController extends ResourceController {
 	final private JApplet applet;
 	private Properties userProps;
 
-	public AppletResourceController(FreeplaneApplet freeplaneApplet, Controller controller) {
+	public AppletResourceController(final FreeplaneApplet freeplaneApplet, final Controller controller) {
 		super();
-		this.applet = freeplaneApplet;
+		applet = freeplaneApplet;
 		final URL defaultPropsURL = getResource(ResourceControllerProperties.FREEPLANE_PROPERTIES);
 		try {
 			userProps = new Properties();

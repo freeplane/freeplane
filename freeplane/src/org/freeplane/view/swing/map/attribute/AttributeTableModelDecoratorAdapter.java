@@ -36,9 +36,9 @@ import org.freeplane.features.common.attribute.NodeAttributeTableModel;
  */
 abstract class AttributeTableModelDecoratorAdapter extends AbstractTableModel implements IAttributeTableModel,
         TableModelListener, ChangeListener {
+	final private AttributeController attributeController;
 	private AttributeRegistry attributeRegistry;
 	private NodeAttributeTableModel nodeAttributeModel;
-	final private AttributeController attributeController;
 
 	public AttributeTableModelDecoratorAdapter(final AttributeView attrView) {
 		super();
@@ -63,6 +63,14 @@ abstract class AttributeTableModelDecoratorAdapter extends AbstractTableModel im
 	public void editingCanceled() {
 	}
 
+	public AttributeController getAttributeController() {
+		return attributeController;
+	}
+
+	public AttributeRegistry getAttributeRegistry() {
+		return attributeRegistry;
+	}
+
 	@Override
 	public Class getColumnClass(final int columnIndex) {
 		return getNodeAttributeModel().getColumnClass(columnIndex);
@@ -85,13 +93,25 @@ abstract class AttributeTableModelDecoratorAdapter extends AbstractTableModel im
 		return getNodeAttributeModel().getNode();
 	}
 
+	public NodeAttributeTableModel getNodeAttributeModel() {
+		return nodeAttributeModel;
+	}
+
 	private void removeListeners() {
 		getNodeAttributeModel().removeTableModelListener(this);
 		getAttributeRegistry().removeChangeListener(this);
 	}
 
+	public void setAttributeRegistry(final AttributeRegistry attributeRegistry) {
+		this.attributeRegistry = attributeRegistry;
+	}
+
 	public void setColumnWidth(final int col, final int width) {
 		getAttributeController().performSetColumnWidth(getNodeAttributeModel(), col, width);
+	}
+
+	public void setNodeAttributeModel(final NodeAttributeTableModel nodeAttributeModel) {
+		this.nodeAttributeModel = nodeAttributeModel;
 	}
 
 	/*
@@ -106,24 +126,4 @@ abstract class AttributeTableModelDecoratorAdapter extends AbstractTableModel im
 	public void viewRemoved() {
 		removeListeners();
 	}
-
-	public void setAttributeRegistry(AttributeRegistry attributeRegistry) {
-	    this.attributeRegistry = attributeRegistry;
-    }
-
-	public AttributeRegistry getAttributeRegistry() {
-	    return attributeRegistry;
-    }
-
-	public void setNodeAttributeModel(NodeAttributeTableModel nodeAttributeModel) {
-	    this.nodeAttributeModel = nodeAttributeModel;
-    }
-
-	public NodeAttributeTableModel getNodeAttributeModel() {
-	    return nodeAttributeModel;
-    }
-
-	public AttributeController getAttributeController() {
-	    return attributeController;
-    }
 }

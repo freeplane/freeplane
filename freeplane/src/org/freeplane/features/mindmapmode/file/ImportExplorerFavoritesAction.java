@@ -39,8 +39,8 @@ import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 
-class ImportExplorerFavoritesAction extends AFreeplaneAction implements IFreeplaneAction{
-    private static final String NAME = "importExplorerFavorites";
+class ImportExplorerFavoritesAction extends AFreeplaneAction implements IFreeplaneAction {
+	private static final String NAME = "importExplorerFavorites";
 	private static final long serialVersionUID = -5867758075802114863L;
 
 	public ImportExplorerFavoritesAction(final Controller controller) {
@@ -50,7 +50,6 @@ class ImportExplorerFavoritesAction extends AFreeplaneAction implements IFreepla
 	public void actionPerformed(final ActionEvent e) {
 		final JFileChooser chooser = new JFileChooser();
 		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		
 		chooser.setDialogTitle(FreeplaneResourceBundle.getText("select_favorites_folder"));
 		final int returnVal = chooser.showOpenDialog(getController().getViewController().getContentPane());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -69,6 +68,10 @@ class ImportExplorerFavoritesAction extends AFreeplaneAction implements IFreepla
 		    .getChildCount(), target.isNewChildLeft());
 		((MTextController) TextController.getController(getModeController())).setNodeText(node, nodeContent);
 		return node;
+	}
+
+	public String getName() {
+		return NAME;
 	}
 
 	public boolean importExplorerFavorites(final File folder, final NodeModel target, final boolean redisplay) {
@@ -97,8 +100,8 @@ class ImportExplorerFavoritesAction extends AFreeplaneAction implements IFreepla
 						while (in.ready()) {
 							final String line = in.readLine();
 							if (line.startsWith("URL=")) {
-								((MLinkController) LinkController.getController(getModeController())).setLink(
-								    node, line.substring(4));
+								((MLinkController) LinkController.getController(getModeController())).setLink(node,
+								    line.substring(4));
 								break;
 							}
 						}
@@ -114,8 +117,4 @@ class ImportExplorerFavoritesAction extends AFreeplaneAction implements IFreepla
 		}
 		return favoritesFound;
 	}
-
-	public String getName() {
-	    return NAME;
-    }
 }

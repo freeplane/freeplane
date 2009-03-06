@@ -29,8 +29,8 @@ import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 
-class LicenseAction extends AbstractAction implements IFreeplaneAction{
-    private static final String NAME = "license";
+class LicenseAction extends AbstractAction implements IFreeplaneAction {
+	private static final String NAME = "license";
 	private static final long serialVersionUID = -8521642658301662402L;
 	final private Controller controller;
 
@@ -40,11 +40,11 @@ class LicenseAction extends AbstractAction implements IFreeplaneAction{
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		UITools.informationMessage(controller.getViewController().getFrame(), FreeplaneResourceBundle.getText("license_text"),
-		    FreeplaneResourceBundle.getText(NAME));
+		UITools.informationMessage(controller.getViewController().getFrame(), FreeplaneResourceBundle
+		    .getText("license_text"), FreeplaneResourceBundle.getText(NAME));
 	}
 
 	public String getName() {
-	    return NAME;
-    }
+		return NAME;
+	}
 }

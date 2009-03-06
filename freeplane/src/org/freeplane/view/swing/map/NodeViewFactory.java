@@ -103,10 +103,10 @@ class NodeViewFactory {
 	}
 
 	private EdgeView bezierEdgeView;
+	private HiddenEdgeView hiddenEdgeView;
 	private EdgeView linearEdgeView;
 	private EdgeView sharpBezierEdgeView;
 	private EdgeView sharpLinearEdgeView;
-	private HiddenEdgeView hiddenEdgeView;
 
 	private NodeViewFactory() {
 	}
@@ -151,7 +151,7 @@ class NodeViewFactory {
 			hiddenEdgeView = new HiddenEdgeView();
 		}
 		return hiddenEdgeView;
-    }
+	}
 
 	private EdgeView getLinearEdgeView() {
 		if (linearEdgeView == null) {
@@ -179,7 +179,7 @@ class NodeViewFactory {
 	}
 
 	MainView newMainView(final NodeView node) {
-		NodeModel model = node.getModel();
+		final NodeModel model = node.getModel();
 		if (model.isRoot()) {
 			return new RootMainView();
 		}

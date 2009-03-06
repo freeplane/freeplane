@@ -172,6 +172,9 @@ abstract public class ViewController implements IMapViewChangeListener {
 		optionAntialiasAction.changeAntialias(property);
 	}
 
+	public void changeNoteWindowLocation(final boolean b) {
+	}
+
 	public void err(final String msg) {
 		status.setText(msg);
 	}
@@ -351,7 +354,8 @@ abstract public class ViewController implements IMapViewChangeListener {
 		ResourceController.getResourceController().setProperty("antialiasEdges", (antialiasEdges ? "true" : "false"));
 		ResourceController.getResourceController().setProperty("antialiasAll", (antialiasAll ? "true" : "false"));
 		ResourceController.getResourceController().setProperty("toolbarVisible", (toolbarVisible ? "true" : "false"));
-		ResourceController.getResourceController().setProperty("leftToolbarVisible", (leftToolbarVisible ? "true" : "false"));
+		ResourceController.getResourceController().setProperty("leftToolbarVisible",
+		    (leftToolbarVisible ? "true" : "false"));
 		return true;
 	}
 
@@ -453,10 +457,10 @@ abstract public class ViewController implements IMapViewChangeListener {
 			rawTitle = mapViewManager.getMapViewComponent().getName();
 			title = rawTitle + (model.isSaved() ? "" : "*") + " - " + title
 			        + (model.isReadOnly() ? " (" + FreeplaneResourceBundle.getText("read_only") + ")" : "");
-			File file = model.getFile();
-            if (file != null) {
-                title += " " + file.getAbsolutePath();
-            }
+			final File file = model.getFile();
+			if (file != null) {
+				title += " " + file.getAbsolutePath();
+			}
 		}
 		setTitle(title);
 		for (final Iterator iterator = mMapTitleChangeListenerSet.iterator(); iterator.hasNext();) {
@@ -485,8 +489,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 		mapViewManager.setZoom(zoom);
 		setZoomComboBox(zoom);
 		final Object[] messageArguments = { String.valueOf(zoom * 100f) };
-		final String stringResult = FpStringUtils.format("user_defined_zoom_status_bar",
-		    messageArguments);
+		final String stringResult = FpStringUtils.format("user_defined_zoom_status_bar", messageArguments);
 		out(stringResult);
 	}
 
@@ -537,7 +540,4 @@ abstract public class ViewController implements IMapViewChangeListener {
 			setZoomByItem(zoom.getItemAt((int) (currentZoomIndex - 0.5f)));
 		}
 	}
-
-	public void changeNoteWindowLocation(boolean b) {
-    }
 }

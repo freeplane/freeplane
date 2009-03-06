@@ -256,7 +256,8 @@ public class EnterPasswordDialog extends JDialog {
 
 	private void okPressed() {
 		if (!checkEqualAndMinimumSize()) {
-			JOptionPane.showMessageDialog(this, FreeplaneResourceBundle.getText("accessories/plugins/EncryptNode.properties_1"));
+			JOptionPane.showMessageDialog(this, FreeplaneResourceBundle
+			    .getText("accessories/plugins/EncryptNode.properties_1"));
 			return;
 		}
 		password = new StringBuffer();

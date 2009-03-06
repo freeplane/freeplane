@@ -43,7 +43,6 @@ import java.util.logging.Logger;
 import javax.swing.Action;
 
 import org.freeplane.core.Compat;
-import org.freeplane.core.controller.AController;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.io.IAttributeHandler;
@@ -381,7 +380,7 @@ public class MapController {
 	public List<NodeModel> getSelectedNodes() {
 		final IMapSelection selection = getController().getSelection();
 		if (selection == null) {
-			List<NodeModel> list =  Collections.emptyList();
+			final List<NodeModel> list = Collections.emptyList();
 			return list;
 		}
 		return selection.getSelection();
@@ -397,6 +396,21 @@ public class MapController {
 			return false;
 		}
 		return node.hasChildren();
+	}
+
+	/**
+	 * True iff one of node's <i>strict</i> descendants is folded. A node N is
+	 * not its strict descendant - the fact that node itself is folded is not
+	 * sufficient to return true.
+	 */
+	public boolean hasFoldedStrictDescendant(final NodeModel node) {
+		for (final ListIterator e = childrenUnfolded(node); e.hasNext();) {
+			final NodeModel child = (NodeModel) e.next();
+			if (isFolded(child) || hasFoldedStrictDescendant(child)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/*
@@ -443,9 +457,7 @@ public class MapController {
 				}
 				catch (final Exception e) {
 					LogTool.logException(e);
-					
-					getController().getViewController().out(
-					    FpStringUtils.formatText("link_not_found", target));
+					getController().getViewController().out(FpStringUtils.formatText("link_not_found", target));
 					return;
 				}
 			}
@@ -488,9 +500,7 @@ public class MapController {
 					}
 					catch (final Exception e) {
 						LogTool.logException(e);
-						
-						getController().getViewController().out(
-						    FpStringUtils.formatText("link_not_found", ref));
+						getController().getViewController().out(FpStringUtils.formatText("link_not_found", ref));
 						return;
 					}
 				}
@@ -501,7 +511,6 @@ public class MapController {
 		}
 		catch (final MalformedURLException ex) {
 			LogTool.logException(ex);
-			
 			getController().errorMessage(FreeplaneResourceBundle.getText("url_error") + "\n" + ex);
 			return;
 		}
@@ -538,14 +547,6 @@ public class MapController {
 		getController().getMapViewManager().newMapView(mapModel, getModeController());
 		setSaved(mapModel, false);
 	}
-
-	public void setSaved(final MapModel mapModel, boolean saved) {
-		boolean setTitle = saved != mapModel.isSaved();
-		mapModel.setSaved(saved);
-	    if(setTitle){
-	    	getModeController().getController().getViewController().setTitle();
-	    }
-    }
 
 	public MapModel newModel(final NodeModel root) {
 		final MapModel mindMapMapModel = new MapModel(getModeController(), root);
@@ -694,6 +695,14 @@ public class MapController {
 		_setFolded(node, folded);
 	}
 
+	public void setSaved(final MapModel mapModel, final boolean saved) {
+		final boolean setTitle = saved != mapModel.isSaved();
+		mapModel.setSaved(saved);
+		if (setTitle) {
+			getModeController().getController().getViewController().setTitle();
+		}
+	}
+
 	/**
 	*
 	*/
@@ -718,19 +727,5 @@ public class MapController {
 	 */
 	public void toggleFolded(final ListIterator listIterator) {
 		toggleFolded.toggleFolded(listIterator);
-	}
-	/**
-	 * True iff one of node's <i>strict</i> descendants is folded. A node N is
-	 * not its strict descendant - the fact that node itself is folded is not
-	 * sufficient to return true.
-	 */
-	public boolean hasFoldedStrictDescendant(NodeModel node) {
-		for (final ListIterator e = childrenUnfolded(node); e.hasNext();) {
-			final NodeModel child = (NodeModel) e.next();
-			if (isFolded(child) || hasFoldedStrictDescendant(child)) {
-				return true;
-			}
-		}
-		return false;
 	}
 }

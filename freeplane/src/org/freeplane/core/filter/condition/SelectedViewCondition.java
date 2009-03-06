@@ -30,13 +30,13 @@ public class SelectedViewCondition implements ICondition {
 	private static String description;
 	private static JComponent renderer;
 
-	public static ICondition CreateCondition(Controller controller) {
+	public static ICondition CreateCondition(final Controller controller) {
 		return new SelectedViewCondition(controller);
 	}
 
-	private Controller controller;
+	private final Controller controller;
 
-	public SelectedViewCondition(Controller controller) {
+	public SelectedViewCondition(final Controller controller) {
 		super();
 		this.controller = controller;
 	}

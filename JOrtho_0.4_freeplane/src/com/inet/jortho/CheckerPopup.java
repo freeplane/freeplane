@@ -22,17 +22,14 @@
  */
 package com.inet.jortho;
 
-import javax.swing.*;
+import javax.swing.JPopupMenu;
 
 /**
  * @author Volker Berlin
  */
 class CheckerPopup extends JPopupMenu {
-    
-    CheckerPopup(SpellCheckerOptions options){
-        CheckerListener listener = new CheckerListener(this, options);
-        super.addPopupMenuListener(listener);
-    }
-
-
+	CheckerPopup(final SpellCheckerOptions options) {
+		final CheckerListener listener = new CheckerListener(this, options);
+		super.addPopupMenuListener(listener);
+	}
 }

@@ -17,7 +17,6 @@
  */
 package org.freeplane.features.mindmapmode.addins;
 
-import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.util.Iterator;
 import java.util.List;
@@ -27,9 +26,7 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionDescriptor;
-import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.mindmapmode.MMapController;
-import org.freeplane.features.mindmapmode.clipboard.MClipboardController;
 
 /**
  * @author foltin The original version was sent by Stephen Viles (sviles) https:
@@ -88,7 +85,8 @@ public class NewParentNode extends AFreeplaneAction {
 		return moveToOtherNode(selectedNodes, selectedParent, newNode);
 	}
 
-	private NodeModel moveToOtherNode(final List<NodeModel> selectedNodes, final NodeModel selectedParent, final NodeModel newNode) {
+	private NodeModel moveToOtherNode(final List<NodeModel> selectedNodes, final NodeModel selectedParent,
+	                                  final NodeModel newNode) {
 		for (final Iterator it = selectedNodes.iterator(); it.hasNext();) {
 			final NodeModel node = (NodeModel) it.next();
 			if (node.getParentNode() != selectedParent) {
@@ -101,7 +99,7 @@ public class NewParentNode extends AFreeplaneAction {
 			}
 		}
 		final MMapController mapController = (MMapController) getModeController().getMapController();
-		for(final NodeModel node:selectedNodes){
+		for (final NodeModel node : selectedNodes) {
 			mapController.moveNode(node, selectedParent);
 		}
 		return newNode;

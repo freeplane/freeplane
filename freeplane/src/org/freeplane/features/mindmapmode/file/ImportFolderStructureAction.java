@@ -40,10 +40,8 @@ import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 
-class ImportFolderStructureAction extends AFreeplaneAction implements IFreeplaneAction{
-	
+class ImportFolderStructureAction extends AFreeplaneAction implements IFreeplaneAction {
 	private static final String NAME = "importFolderStructure";
-
 	private static final long serialVersionUID = 2655627952066324326L;
 
 	public ImportFolderStructureAction(final Controller controller) {
@@ -53,7 +51,6 @@ class ImportFolderStructureAction extends AFreeplaneAction implements IFreeplane
 	public void actionPerformed(final ActionEvent e) {
 		final JFileChooser chooser = new JFileChooser();
 		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		
 		chooser.setDialogTitle(FreeplaneResourceBundle.getText("select_folder_for_importing"));
 		final ViewController viewController = getController().getViewController();
 		final int returnVal = chooser.showOpenDialog(viewController.getContentPane());
@@ -81,6 +78,10 @@ class ImportFolderStructureAction extends AFreeplaneAction implements IFreeplane
 		return node;
 	}
 
+	public String getName() {
+		return NAME;
+	}
+
 	public void importFolderStructure(final File folder, final NodeModel target, final boolean redisplay)
 	        throws MalformedURLException {
 		Logger.global.warning("Entering folder: " + folder);
@@ -100,8 +101,4 @@ class ImportFolderStructureAction extends AFreeplaneAction implements IFreeplane
 		}
 		getModeController().getMapController().setFolded(target, true);
 	}
-
-	public String getName() {
-	    return NAME;
-    }
 }

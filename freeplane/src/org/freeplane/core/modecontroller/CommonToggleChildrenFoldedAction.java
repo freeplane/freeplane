@@ -29,10 +29,10 @@ import org.freeplane.core.ui.AFreeplaneAction;
 /**
  * @author foltin
  */
-class CommonToggleChildrenFoldedAction extends AFreeplaneAction implements IFreeplaneAction{
+class CommonToggleChildrenFoldedAction extends AFreeplaneAction implements IFreeplaneAction {
+	static final String NAME = "toggleChildrenFolded";
 	private static final long serialVersionUID = -7415016489982986544L;
 	final private MapController mapController;
-	static final String NAME = "toggleChildrenFolded";
 
 	public CommonToggleChildrenFoldedAction(final MapController mapController) {
 		super(mapController.getModeController().getController(), "toggle_children_folded");

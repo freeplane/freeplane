@@ -115,12 +115,13 @@ public class ChangeNodeLevelAction {
 			final NodeModel node = (NodeModel) iter.next();
 			selectedNodesId.add(node.createID());
 		}
-		final MClipboardController clipboardController = (MClipboardController)(ClipboardController.getController(modeController));
+		final MClipboardController clipboardController = (MClipboardController) (ClipboardController
+		    .getController(modeController));
 		if (upwards) {
 			if (selectedParent.isRoot()) {
 				final boolean isLeft = selectedNode.isLeft();
 				final Transferable copy = clipboardController.cut(selectedNodes);
-				((MClipboardController)ClipboardController.getController(modeController)).paste(copy, selectedParent,
+				((MClipboardController) ClipboardController.getController(modeController)).paste(copy, selectedParent,
 				    false, (!isLeft));
 				select(modeController, selectedNodeId, selectedNodesId);
 				return;
@@ -130,11 +131,11 @@ public class ChangeNodeLevelAction {
 			final boolean isLeft = selectedParent.isLeft();
 			final Transferable copy = clipboardController.cut(selectedNodes);
 			if (parentPosition == grandParent.getChildCount() - 1) {
-				((MClipboardController)ClipboardController.getController(modeController)).paste(copy, grandParent,
+				((MClipboardController) ClipboardController.getController(modeController)).paste(copy, grandParent,
 				    false, isLeft);
 			}
 			else {
-				((MClipboardController)ClipboardController.getController(modeController)).paste(copy,
+				((MClipboardController) ClipboardController.getController(modeController)).paste(copy,
 				    ((NodeModel) grandParent.getChildAt(parentPosition + 1)), true, isLeft);
 			}
 			select(modeController, selectedNodeId, selectedNodesId);
@@ -160,7 +161,7 @@ public class ChangeNodeLevelAction {
 			}
 			if (directSibling != null) {
 				final Transferable copy = clipboardController.cut(selectedNodes);
-				((MClipboardController)ClipboardController.getController(modeController)).paste(copy, directSibling,
+				((MClipboardController) ClipboardController.getController(modeController)).paste(copy, directSibling,
 				    false, directSibling.isLeft());
 				select(modeController, selectedNodeId, selectedNodesId);
 				return;

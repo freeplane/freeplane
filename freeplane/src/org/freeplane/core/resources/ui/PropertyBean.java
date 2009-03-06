@@ -19,7 +19,6 @@ package org.freeplane.core.resources.ui;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
@@ -40,7 +39,7 @@ public abstract class PropertyBean extends PropertyAdapter implements IPropertyC
 
 	protected void firePropertyChangeEvent() {
 		final PropertyChangeEvent evt = new PropertyChangeEvent(this, getName(), null, getValue());
-		for (PropertyChangeListener l : mPropertyChangeListeners) {
+		for (final PropertyChangeListener l : mPropertyChangeListeners) {
 			l.propertyChange(evt);
 		}
 	}

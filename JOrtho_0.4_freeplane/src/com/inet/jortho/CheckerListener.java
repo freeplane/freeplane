@@ -46,155 +46,136 @@ import javax.swing.text.Utilities;
  * @author Volker Berlin
  */
 public class CheckerListener implements PopupMenuListener, LanguageChangeListener {
+	private Dictionary dictionary;
+	private Locale locale;
+	private final JComponent menu;
+	private final SpellCheckerOptions options;
 
-    private final JComponent          menu;
+	CheckerListener(final JComponent menu, final SpellCheckerOptions options) {
+		this.menu = menu;
+		this.options = options == null ? SpellChecker.getOptions() : options;
+		SpellChecker.addLanguageChangeLister(this);
+		dictionary = SpellChecker.getCurrentDictionary();
+		locale = SpellChecker.getCurrentLocale();
+	}
 
-    private Dictionary                dictionary;
+	public void languageChanged(final LanguageChangeEvent ev) {
+		dictionary = SpellChecker.getCurrentDictionary();
+		locale = SpellChecker.getCurrentLocale();
+	}
 
-    private Locale                    locale;
+	public void popupMenuCanceled(final PopupMenuEvent e) {
+		/* empty */
+	}
 
-    private final SpellCheckerOptions options;
+	public void popupMenuWillBecomeInvisible(final PopupMenuEvent e) {
+		/* empty */
+	}
 
-    CheckerListener( JComponent menu, SpellCheckerOptions options ) {
-        this.menu = menu;
-        this.options = options == null ? SpellChecker.getOptions() : options;
-        SpellChecker.addLanguageChangeLister( this );
-        dictionary = SpellChecker.getCurrentDictionary();
-        locale = SpellChecker.getCurrentLocale();
-    }
-
-    public void popupMenuCanceled( PopupMenuEvent e ) {
-        /* empty */
-    }
-
-    public void popupMenuWillBecomeInvisible( PopupMenuEvent e ) {
-        /* empty */
-    }
-
-    public void popupMenuWillBecomeVisible( PopupMenuEvent ev ) {
-        if( SpellChecker.getCurrentDictionary() == null) {
-            menu.setEnabled( false );
-            return;
-        }
-
-        JPopupMenu popup = (JPopupMenu)ev.getSource();
-
-        Component invoker = popup.getInvoker();
-        if( invoker instanceof JTextComponent ) {
-            final JTextComponent jText = (JTextComponent)invoker;
-            if( !jText.isEditable() ) {
-                // Suggestions only for editable text components
-                menu.setEnabled( false );
-                return;
-            }
-            Caret caret = jText.getCaret();
-            int offs = Math.min( caret.getDot(), caret.getMark() );
-            Point p = jText.getMousePosition();
-            if( p != null ) {
-                // use position from mouse click and not from editor cursor position 
-                offs = jText.viewToModel( p );
-            }
-            try {
-                Document doc = jText.getDocument();
-                if( offs > 0 && (offs >= doc.getLength() || Character.isWhitespace( doc.getText( offs, 1 ).charAt( 0 ) )) ) {
-                    // if the next character is a white space then use the word on the left site
-                    offs--;
-                }
-                
-                if( offs < 0 ) {
-                    // occur if there nothing under the mouse pointer
-                    menu.setEnabled( false );
-                    return;
-                }
-                
-                // get the word from current position
-                final int begOffs = Utilities.getWordStart( jText, offs );
-                final int endOffs = Utilities.getWordEnd( jText, offs );
-                final String word = jText.getText( begOffs, endOffs - begOffs );
-
-                //find the first invalid word from current position
-                Tokenizer tokenizer = new Tokenizer( jText, dictionary, locale, offs, options );
-                String invalidWord;
-                do {
-                    invalidWord = tokenizer.nextInvalidWord();
-                } while( tokenizer.getWordOffset() < begOffs );
-                menu.removeAll();
-
-                if( !word.equals( invalidWord ) ) {
-                    // the current word is not invalid
-                    menu.setEnabled( false );
-                    return;
-                }
-
-                if( dictionary == null ) {
-                    // without dictionary it is disabled
-                    menu.setEnabled( false );
-                    return;
-                }
-
-                List<Suggestion> list = dictionary.searchSuggestions( word );
-
-                //Disable then menu item if there are no suggestions
-                menu.setEnabled( list.size() > 0 );
-
-                boolean needCapitalization = tokenizer.isFirstWordInSentence() && Utils.isFirstCapitalized( word );
-
-                for( int i = 0; i < list.size() && i < options.getSuggestionsLimitMenu(); i++ ) {
-                    Suggestion sugestion = list.get( i );
-                    String sugestionWord = sugestion.getWord();
-                    if( needCapitalization ) {
-                        sugestionWord = Utils.getCapitalized( sugestionWord );
-                    }
-                    JMenuItem item = new JMenuItem( sugestionWord );
-                    menu.add( item );
-                    final String newWord = sugestionWord;
-                    item.addActionListener( new ActionListener() {
-
-                        public void actionPerformed( ActionEvent e ) {
-                            jText.setSelectionStart( begOffs );
-                            jText.setSelectionEnd( endOffs );
-                            jText.replaceSelection( newWord );
-                        }
-
-                    } );
-                }
-                UserDictionaryProvider provider = SpellChecker.getUserDictionaryProvider();
-                if( provider == null ) {
-                	return;
-                }
-                JMenuItem addToDic = new JMenuItem(Utils.getResource("addToDictionary"));
-                addToDic.addActionListener(new ActionListener(){
-
-        			public void actionPerformed(ActionEvent e) {
-                        UserDictionaryProvider provider = SpellChecker.getUserDictionaryProvider();
-                        if( provider != null ) {
-                            provider.addWord( word );
-                        }
-                        dictionary.add( word );
-                        dictionary.trimToSize();
-                        AutoSpellChecker.refresh(jText);           }
-                	
-                });
-                if(list.size() > 0){
-                	if(menu instanceof JMenu){
-                		((JMenu)menu).addSeparator();
-                	}
-                	else if(menu instanceof JPopupMenu){
-                		((JPopupMenu)menu).addSeparator();
-                	}
-                }
-                menu.add(addToDic);
-                menu.setEnabled( true );
-
-
-            } catch( BadLocationException ex ) {
-                ex.printStackTrace();
-            }
-        }
-    }
-
-    public void languageChanged( LanguageChangeEvent ev ) {
-        dictionary = SpellChecker.getCurrentDictionary();
-        locale = SpellChecker.getCurrentLocale();
-    }
+	public void popupMenuWillBecomeVisible(final PopupMenuEvent ev) {
+		if (SpellChecker.getCurrentDictionary() == null) {
+			menu.setEnabled(false);
+			return;
+		}
+		final JPopupMenu popup = (JPopupMenu) ev.getSource();
+		final Component invoker = popup.getInvoker();
+		if (invoker instanceof JTextComponent) {
+			final JTextComponent jText = (JTextComponent) invoker;
+			if (!jText.isEditable()) {
+				// Suggestions only for editable text components
+				menu.setEnabled(false);
+				return;
+			}
+			final Caret caret = jText.getCaret();
+			int offs = Math.min(caret.getDot(), caret.getMark());
+			final Point p = jText.getMousePosition();
+			if (p != null) {
+				// use position from mouse click and not from editor cursor position 
+				offs = jText.viewToModel(p);
+			}
+			try {
+				final Document doc = jText.getDocument();
+				if (offs > 0 && (offs >= doc.getLength() || Character.isWhitespace(doc.getText(offs, 1).charAt(0)))) {
+					// if the next character is a white space then use the word on the left site
+					offs--;
+				}
+				if (offs < 0) {
+					// occur if there nothing under the mouse pointer
+					menu.setEnabled(false);
+					return;
+				}
+				// get the word from current position
+				final int begOffs = Utilities.getWordStart(jText, offs);
+				final int endOffs = Utilities.getWordEnd(jText, offs);
+				final String word = jText.getText(begOffs, endOffs - begOffs);
+				//find the first invalid word from current position
+				final Tokenizer tokenizer = new Tokenizer(jText, dictionary, locale, offs, options);
+				String invalidWord;
+				do {
+					invalidWord = tokenizer.nextInvalidWord();
+				} while (tokenizer.getWordOffset() < begOffs);
+				menu.removeAll();
+				if (!word.equals(invalidWord)) {
+					// the current word is not invalid
+					menu.setEnabled(false);
+					return;
+				}
+				if (dictionary == null) {
+					// without dictionary it is disabled
+					menu.setEnabled(false);
+					return;
+				}
+				final List<Suggestion> list = dictionary.searchSuggestions(word);
+				//Disable then menu item if there are no suggestions
+				menu.setEnabled(list.size() > 0);
+				final boolean needCapitalization = tokenizer.isFirstWordInSentence() && Utils.isFirstCapitalized(word);
+				for (int i = 0; i < list.size() && i < options.getSuggestionsLimitMenu(); i++) {
+					final Suggestion sugestion = list.get(i);
+					String sugestionWord = sugestion.getWord();
+					if (needCapitalization) {
+						sugestionWord = Utils.getCapitalized(sugestionWord);
+					}
+					final JMenuItem item = new JMenuItem(sugestionWord);
+					menu.add(item);
+					final String newWord = sugestionWord;
+					item.addActionListener(new ActionListener() {
+						public void actionPerformed(final ActionEvent e) {
+							jText.setSelectionStart(begOffs);
+							jText.setSelectionEnd(endOffs);
+							jText.replaceSelection(newWord);
+						}
+					});
+				}
+				final UserDictionaryProvider provider = SpellChecker.getUserDictionaryProvider();
+				if (provider == null) {
+					return;
+				}
+				final JMenuItem addToDic = new JMenuItem(Utils.getResource("addToDictionary"));
+				addToDic.addActionListener(new ActionListener() {
+					public void actionPerformed(final ActionEvent e) {
+						final UserDictionaryProvider provider = SpellChecker.getUserDictionaryProvider();
+						if (provider != null) {
+							provider.addWord(word);
+						}
+						dictionary.add(word);
+						dictionary.trimToSize();
+						AutoSpellChecker.refresh(jText);
+					}
+				});
+				if (list.size() > 0) {
+					if (menu instanceof JMenu) {
+						((JMenu) menu).addSeparator();
+					}
+					else if (menu instanceof JPopupMenu) {
+						((JPopupMenu) menu).addSeparator();
+					}
+				}
+				menu.add(addToDic);
+				menu.setEnabled(true);
+			}
+			catch (final BadLocationException ex) {
+				ex.printStackTrace();
+			}
+		}
+	}
 }

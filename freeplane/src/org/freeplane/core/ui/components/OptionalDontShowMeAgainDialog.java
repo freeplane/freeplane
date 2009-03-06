@@ -34,8 +34,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
-import org.freeplane.core.controller.Controller;
 import org.apache.commons.lang.StringUtils;
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.ResourceController;
@@ -80,6 +80,7 @@ public class OptionalDontShowMeAgainDialog {
 
 	public final static int BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED = 1;
 	public final static int ONLY_OK_SELECTION_IS_STORED = 0;
+	private final Controller controller;
 	private JDialog mDialog;
 	private JCheckBox mDontShowAgainBox;
 	final private IDontShowPropertyHandler mDontShowPropertyHandler;
@@ -89,13 +90,11 @@ public class OptionalDontShowMeAgainDialog {
 	final private Frame mParent;
 	private int mResult = JOptionPane.CANCEL_OPTION;
 	final private String mTitleId;
-	private Controller controller;
 
-	public OptionalDontShowMeAgainDialog(Controller controller, final String pMessageId,
-	                                     final String pTitleId,
+	public OptionalDontShowMeAgainDialog(final Controller controller, final String pMessageId, final String pTitleId,
 	                                     final IDontShowPropertyHandler pDontShowPropertyHandler, final int pMessageType) {
 		this.controller = controller;
-		mParent = controller.getViewController().getFrame(); 
+		mParent = controller.getViewController().getFrame();
 		mNode = controller.getSelection().getSelected();
 		mMessageId = pMessageId;
 		mTitleId = pTitleId;
@@ -191,7 +190,8 @@ public class OptionalDontShowMeAgainDialog {
 		    okButton,
 		    new GridBagConstraints(2, 3, 1, 1, 1.0, 1.0, GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(
 		        5, 5, 0, 0), 0, 0));
-		final JButton cancelButton = new JButton(FreeplaneResourceBundle.getText("OptionalDontShowMeAgainDialog.cancel"));
+		final JButton cancelButton = new JButton(FreeplaneResourceBundle
+		    .getText("OptionalDontShowMeAgainDialog.cancel"));
 		MenuBuilder.setLabelAndMnemonic(cancelButton, null);
 		cancelButton.addActionListener(cancelAction);
 		mDialog.getContentPane().add(

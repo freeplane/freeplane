@@ -38,13 +38,13 @@ import org.freeplane.n3.nanoxml.XMLElement;
  */
 public class MapWriter implements IElementWriter, IAttributeWriter {
 	private NodeWriter currentNodeWriter;
-	private boolean saveInvisible;
 	final private MapController mapController;
+	private boolean saveInvisible;
 	final private WriteManager writeManager;
 
 	public MapWriter(final MapController mapController) {
 		this.mapController = mapController;
-		this.writeManager = mapController.getWriteManager();
+		writeManager = mapController.getWriteManager();
 	}
 
 	public boolean isSaveInvisible() {
@@ -58,14 +58,14 @@ public class MapWriter implements IElementWriter, IAttributeWriter {
 	public void writeAttributes(final ITreeWriter writer, final Object userObject, final String tag) {
 		final MapModel map = (MapModel) userObject;
 		writer.addAttribute("version", ResourceControllerProperties.XML_VERSION);
-		writer.addExtensionAttributes(map, Arrays.asList(map.getExtensions().values().toArray(new IExtension[]{})));
+		writer.addExtensionAttributes(map, Arrays.asList(map.getExtensions().values().toArray(new IExtension[] {})));
 	}
 
 	public void writeContent(final ITreeWriter writer, final Object node, final String tag) throws IOException {
 		writer
 		    .addElementContent("<!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->\n");
 		final MapModel map = (MapModel) node;
-		writer.addExtensionNodes(map, Arrays.asList(map.getExtensions().values().toArray(new IExtension[]{})));
+		writer.addExtensionNodes(map, Arrays.asList(map.getExtensions().values().toArray(new IExtension[] {})));
 		final NodeModel rootNode = map.getRootNode();
 		writeNode(writer, rootNode, saveInvisible, true);
 	}

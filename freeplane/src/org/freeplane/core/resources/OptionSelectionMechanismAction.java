@@ -28,9 +28,9 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.enums.ResourceControllerProperties;
 
 class OptionSelectionMechanismAction extends AbstractAction implements IFreeplanePropertyListener, IFreeplaneAction {
+	static final String NAME = "optionSelectionMechanismAction";
 	private static final long serialVersionUID = -5573280308177905728L;
 	final private Controller controller;
-	static final String NAME = "optionSelectionMechanismAction";
 
 	OptionSelectionMechanismAction(final Controller controller) {
 		this.controller = controller;
@@ -54,13 +54,13 @@ class OptionSelectionMechanismAction extends AbstractAction implements IFreeplan
 		}
 	}
 
+	public String getName() {
+		return NAME;
+	}
+
 	public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
 		if (propertyName.equals(ResourceControllerProperties.RESOURCES_SELECTION_METHOD)) {
 			changeSelection(newValue);
 		}
-	}
-
-	public String getName() {
-		return NAME;
 	}
 }

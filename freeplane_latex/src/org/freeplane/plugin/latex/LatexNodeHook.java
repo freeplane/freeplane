@@ -75,6 +75,30 @@ class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCycleList
 		return latexExtension;
 	}
 
+	void createViewer(final LatexExtension model, final NodeView view) {
+		final JZoomedHotEqn comp = new JZoomedHotEqn(this, model);
+		final Set<JZoomedHotEqn> viewers = model.getViewers();
+		viewers.add(comp);
+		view.getContentPane().add(comp);
+	}
+
+	void deleteViewer(final LatexExtension model, final NodeView nodeView) {
+		final Set<JZoomedHotEqn> viewers = model.getViewers();
+		if (viewers.isEmpty()) {
+			return;
+		}
+		final Container contentPane = nodeView.getContentPane();
+		final int componentCount = contentPane.getComponentCount();
+		for (int i = 0; i < componentCount; i++) {
+			final Component component = contentPane.getComponent(i);
+			if (viewers.contains(component)) {
+				viewers.remove(component);
+				contentPane.remove(i);
+				return;
+			}
+		}
+	}
+
 	@Override
 	protected Class getExtensionClass() {
 		return LatexExtension.class;
@@ -111,6 +135,7 @@ class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCycleList
 		element.setAttribute("EQUATION", latexExtension.getEquation());
 		super.saveExtension(extension, element);
 	}
+
 	void setEquationUndoable(final LatexExtension model, final String newEquation) {
 		final String equation = model.getEquation();
 		if (equation.equals(newEquation)) {
@@ -122,7 +147,7 @@ class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCycleList
 			public void act() {
 				model.setEquation(newEquation);
 				final MapModel map = getModeController().getController().getMap();
-				getModeController().getMapController().setSaved(map,false);
+				getModeController().getMapController().setSaved(map, false);
 			}
 
 			public String getDescription() {
@@ -134,28 +159,5 @@ class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCycleList
 			}
 		};
 		getModeController().execute(actor);
-	}
-	void createViewer(LatexExtension model, final NodeView view) {
-		final JZoomedHotEqn comp = new JZoomedHotEqn(this, model);
-		final Set<JZoomedHotEqn> viewers = model.getViewers();
-		viewers.add(comp);
-		view.getContentPane().add(comp);
-	}
-
-	void deleteViewer(LatexExtension model, final NodeView nodeView) {
-		final Set<JZoomedHotEqn> viewers = model.getViewers();
-		if (viewers.isEmpty()) {
-			return;
-		}
-		final Container contentPane = nodeView.getContentPane();
-		final int componentCount = contentPane.getComponentCount();
-		for (int i = 0; i < componentCount; i++) {
-			final Component component = contentPane.getComponent(i);
-			if (viewers.contains(component)) {
-				viewers.remove(component);
-				contentPane.remove(i);
-				return;
-			}
-		}
 	}
 }

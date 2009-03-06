@@ -32,7 +32,8 @@ public class CloudModel implements IExtension {
 	 * @param mapController 
 	 * @param node 
 	 */
-	private static void changeChildCloudIterativeLevels(MapController mapController, final NodeModel node, final int deltaLevel) {
+	private static void changeChildCloudIterativeLevels(final MapController mapController, final NodeModel node,
+	                                                    final int deltaLevel) {
 		for (final ListIterator e = mapController.childrenUnfolded(node); e.hasNext();) {
 			final NodeModel childNode = (NodeModel) e.next();
 			final CloudModel childCloud = CloudModel.getModel(childNode);
@@ -47,7 +48,7 @@ public class CloudModel implements IExtension {
 		return (CloudModel) node.getExtension(CloudModel.class);
 	}
 
-	public static void setModel(MapController mapController, final NodeModel node, final CloudModel cloud) {
+	public static void setModel(final MapController mapController, final NodeModel node, final CloudModel cloud) {
 		final CloudModel oldCloud = CloudModel.getModel(node);
 		if (cloud != null && oldCloud == null) {
 			CloudModel.changeChildCloudIterativeLevels(mapController, node, 1);

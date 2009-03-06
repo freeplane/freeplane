@@ -100,8 +100,7 @@ public class MIconController extends IconController {
 		    "removeAllIconsAction")), MenuBuilder.AS_CHILD);
 		builder.addSeparator(iconMenuString + "/icons", MenuBuilder.AS_CHILD);
 		for (int i = 0; i < iconActions.size(); ++i) {
-			builder.addMenuItem(iconMenuString + "/icons", new JMenuItem((Action) iconActions.get(i)),
-			    MenuBuilder.AS_CHILD);
+			builder.addMenuItem(iconMenuString + "/icons", new JMenuItem(iconActions.get(i)), MenuBuilder.AS_CHILD);
 		}
 	}
 
@@ -131,7 +130,7 @@ public class MIconController extends IconController {
 			}
 		}
 		for (int i = 0; i < iconNames.size(); ++i) {
-			final String iconName = ((String) iconNames.get(i));
+			final String iconName = (iconNames.get(i));
 			final MindIcon myIcon = MindIcon.factory(iconName);
 			final IconAction myAction = new IconAction(modeController, myIcon);
 			iconActions.add(myAction);
@@ -200,7 +199,7 @@ public class MIconController extends IconController {
 		iconToolBar.add(getModeController().getAction("removeAllIconsAction"));
 		iconToolBar.addSeparator();
 		for (int i = 0; i < iconActions.size(); ++i) {
-			iconToolBar.add((Action) iconActions.get(i));
+			iconToolBar.add(iconActions.get(i));
 		}
 	}
 

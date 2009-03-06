@@ -45,7 +45,8 @@ class ShowHideNoteAction extends AFreeplaneAction {
 		}
 		else {
 			(noteController).hideNotesPanel();
-			ResourceController.getResourceController().setProperty(ResourceControllerProperties.RESOURCES_USE_SPLIT_PANE, "false");
+			ResourceController.getResourceController().setProperty(
+			    ResourceControllerProperties.RESOURCES_USE_SPLIT_PANE, "false");
 		}
 	}
 

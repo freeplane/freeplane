@@ -736,8 +736,7 @@ class TimeList {
 		});
 		rowSM.addListSelectionListener(new ListSelectionListener() {
 			String getNodeText(final NodeModel node) {
-				return node.getShortText()
-				        + ((node.isRoot()) ? "" : (" <- " + getNodeText(node.getParentNode())));
+				return node.getShortText() + ((node.isRoot()) ? "" : (" <- " + getNodeText(node.getParentNode())));
 			}
 
 			public void valueChanged(final ListSelectionEvent e) {

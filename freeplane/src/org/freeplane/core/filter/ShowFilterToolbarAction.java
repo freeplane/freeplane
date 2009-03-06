@@ -30,12 +30,12 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.SelectableAction;
 
 @SelectableAction
-class ShowFilterToolbarAction extends AbstractAction implements IFreeplaneAction{
+class ShowFilterToolbarAction extends AbstractAction implements IFreeplaneAction {
 	private static final String NAME = "showFilterToolbarAction";
 	/**
-     * 
-     */
-    private static final long serialVersionUID = -6790731419014812473L;
+	 * 
+	 */
+	private static final long serialVersionUID = -6790731419014812473L;
 	final private FilterController filterController;
 
 	/**
@@ -57,6 +57,6 @@ class ShowFilterToolbarAction extends AbstractAction implements IFreeplaneAction
 	}
 
 	public String getName() {
-	    return NAME;
-    }
+		return NAME;
+	}
 }

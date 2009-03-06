@@ -105,12 +105,12 @@ class EditNodeWYSIWYG extends EditNodeBase {
 		private SHTMLPanel createEditorPanel() throws Exception {
 			if (htmlEditorPanel == null) {
 				htmlEditorPanel = SHTMLPanel.createSHTMLPanel();
-				final SHTMLEditorPane editorPane = (SHTMLEditorPane)htmlEditorPanel.getEditorPane();
-				final SpellCheckerController spellCheckerController = SpellCheckerController.getController(getBase().getModeController());
+				final SHTMLEditorPane editorPane = (SHTMLEditorPane) htmlEditorPanel.getEditorPane();
+				final SpellCheckerController spellCheckerController = SpellCheckerController.getController(getBase()
+				    .getModeController());
 				spellCheckerController.enableAutoSpell(editorPane);
 				spellCheckerController.addSpellCheckerMenu(editorPane.getPopup());
 				spellCheckerController.enableShortKey(editorPane);
-				
 			}
 			return htmlEditorPanel;
 		}
@@ -213,10 +213,10 @@ class EditNodeWYSIWYG extends EditNodeBase {
 			preferredHeight = Math.min(preferredHeight, Integer.parseInt(ResourceController.getResourceController()
 			    .getProperty("el__max_default_window_height")));
 			int preferredWidth = (int) (viewController.getComponent(node).getWidth() * 1.2);
-			preferredWidth = Math.max(preferredWidth, Integer.parseInt(ResourceController.getResourceController().getProperty(
-			    "el__min_default_window_width")));
-			preferredWidth = Math.min(preferredWidth, Integer.parseInt(ResourceController.getResourceController().getProperty(
-			    "el__max_default_window_width")));
+			preferredWidth = Math.max(preferredWidth, Integer.parseInt(ResourceController.getResourceController()
+			    .getProperty("el__min_default_window_width")));
+			preferredWidth = Math.min(preferredWidth, Integer.parseInt(ResourceController.getResourceController()
+			    .getProperty("el__max_default_window_width")));
 			htmlEditorPanel.setContentPanePreferredSize(new Dimension(preferredWidth, preferredHeight));
 			EditNodeWYSIWYG.htmlEditorWindow.pack();
 			UITools.setDialogLocationRelativeTo(EditNodeWYSIWYG.htmlEditorWindow, getController(), node);

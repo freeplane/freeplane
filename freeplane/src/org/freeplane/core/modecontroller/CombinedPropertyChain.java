@@ -22,7 +22,6 @@ package org.freeplane.core.modecontroller;
 import java.util.Iterator;
 import java.util.TreeMap;
 
-
 @Deprecated
 public class CombinedPropertyChain<V, T> {
 	static public Integer DEFAULT = 10;

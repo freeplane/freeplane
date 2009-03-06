@@ -53,8 +53,8 @@ class CloudColorAction extends MultipleNodeAction implements PopupMenuListener {
 				selectedColor = CloudController.getController(getModeController()).getColor(selected);
 			}
 		}
-		actionColor = ColorTracker.showCommonJColorChooserDialog(getController(), controller.getController().getSelection()
-		    .getSelected(), FreeplaneResourceBundle.getText("choose_cloud_color"), selectedColor);
+		actionColor = ColorTracker.showCommonJColorChooserDialog(getController(), controller.getController()
+		    .getSelection().getSelected(), FreeplaneResourceBundle.getText("choose_cloud_color"), selectedColor);
 		if (actionColor == null) {
 			return;
 		}

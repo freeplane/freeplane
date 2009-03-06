@@ -35,8 +35,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.enums.ResourceControllerProperties;
+import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
@@ -54,7 +54,7 @@ import com.lightdev.app.shtm.TextResources;
  * @author Dimitry Polivaev
  */
 public class MNoteController extends NoteController {
-    private class JumpToMapAction extends AbstractAction {
+	private class JumpToMapAction extends AbstractAction {
 		/**
 		 * @param noteController
 		 */
@@ -125,10 +125,14 @@ public class MNoteController extends NoteController {
 		super(modeController);
 		modeController.putAction("selectNoteAction", new SelectNoteAction(this, getModeController()));
 		modeController.putAction("showHideNoteAction", new ShowHideNoteAction(this, getModeController()));
-		modeController.putAction("note_window_location.top", new SetNoteWindowPosition(modeController.getController(), "top"));
-		modeController.putAction("note_window_location.left", new SetNoteWindowPosition(modeController.getController(), "left"));
-		modeController.putAction("note_window_location.right", new SetNoteWindowPosition(modeController.getController(), "right"));
-		modeController.putAction("note_window_location.bottom", new SetNoteWindowPosition(modeController.getController(), "bottom"));
+		modeController.putAction("note_window_location.top", new SetNoteWindowPosition(modeController.getController(),
+		    "top"));
+		modeController.putAction("note_window_location.left", new SetNoteWindowPosition(modeController.getController(),
+		    "left"));
+		modeController.putAction("note_window_location.right", new SetNoteWindowPosition(
+		    modeController.getController(), "right"));
+		modeController.putAction("note_window_location.bottom", new SetNoteWindowPosition(modeController
+		    .getController(), "bottom"));
 		modeController.putAction("removeNoteAction", new RemoveNoteAction(this, getModeController()));
 	}
 
@@ -146,8 +150,9 @@ public class MNoteController extends NoteController {
 			});
 			htmlEditorPanel = SHTMLPanel.createSHTMLPanel();
 			htmlEditorPanel.setMinimumSize(new Dimension(100, 100));
-			final SHTMLEditorPane editorPane = (SHTMLEditorPane)htmlEditorPanel.getEditorPane();
-			final SpellCheckerController spellCheckerController = SpellCheckerController.getController(getModeController());
+			final SHTMLEditorPane editorPane = (SHTMLEditorPane) htmlEditorPanel.getEditorPane();
+			final SpellCheckerController spellCheckerController = SpellCheckerController
+			    .getController(getModeController());
 			spellCheckerController.enableAutoSpell(editorPane);
 			spellCheckerController.addSpellCheckerMenu(editorPane.getPopup());
 			spellCheckerController.enableShortKey(editorPane);
@@ -173,7 +178,8 @@ public class MNoteController extends NoteController {
 		if (splitPane == null) {
 			showNotesPanel();
 			splitPane = getSplitPane();
-			ResourceController.getResourceController().setProperty(ResourceControllerProperties.RESOURCES_USE_SPLIT_PANE, "true");
+			ResourceController.getResourceController().setProperty(
+			    ResourceControllerProperties.RESOURCES_USE_SPLIT_PANE, "true");
 		}
 		return splitPane;
 	}
@@ -244,8 +250,8 @@ public class MNoteController extends NoteController {
 	}
 
 	private boolean shouldUseSplitPane() {
-		return "true".equals(ResourceController.getResourceController()
-		    .getProperty(ResourceControllerProperties.RESOURCES_USE_SPLIT_PANE));
+		return "true".equals(ResourceController.getResourceController().getProperty(
+		    ResourceControllerProperties.RESOURCES_USE_SPLIT_PANE));
 	}
 
 	public void showNotesPanel() {

@@ -17,25 +17,17 @@
  */
 package org.freeplane.features.mindmapmode.addins;
 
-import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Vector;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.mindmapmode.MMapController;
-import org.freeplane.features.mindmapmode.clipboard.MClipboardController;
 
 /**
  * @author foltin
@@ -52,9 +44,9 @@ public class ChangeNodeLevelController {
 
 		public void actionPerformed(final ActionEvent e) {
 			final ModeController modeController = getModeController();
-			NodeModel selectedNode = modeController.getMapController().getSelectedNode();
+			final NodeModel selectedNode = modeController.getMapController().getSelectedNode();
 			final NodeModel selectedParent = selectedNode.getParentNode();
-			List<NodeModel> selectedNodes = modeController.getMapController().getSelectedNodes();
+			final List<NodeModel> selectedNodes = modeController.getMapController().getSelectedNodes();
 			final MMapController mapController = (MMapController) modeController.getMapController();
 			mapController.sortNodesByDepth(selectedNodes);
 			final int ownPosition = selectedParent.getChildPosition(selectedNode);
@@ -76,7 +68,7 @@ public class ChangeNodeLevelController {
 				}
 			}
 			if (directSibling != null) {
-				for(final NodeModel node:selectedNodes){
+				for (final NodeModel node : selectedNodes) {
 					mapController.moveNode(node, directSibling, directSibling.getChildCount());
 				}
 				modeController.getMapController().selectMultipleNodes(selectedNode, selectedNodes);
@@ -96,11 +88,11 @@ public class ChangeNodeLevelController {
 		public void actionPerformed(final ActionEvent e) {
 			final ModeController modeController = getModeController();
 			final MMapController mapController = (MMapController) modeController.getMapController();
-			NodeModel selectedNode = mapController.getSelectedNode();
+			final NodeModel selectedNode = mapController.getSelectedNode();
 			final NodeModel selectedParent = selectedNode.getParentNode();
-			List<NodeModel> selectedNodes = mapController.getSelectedNodes();
+			final List<NodeModel> selectedNodes = mapController.getSelectedNodes();
 			mapController.sortNodesByDepth(selectedNodes);
-			if(! checkSelection(modeController)){
+			if (!checkSelection(modeController)) {
 				return;
 			}
 			if (selectedParent.isRoot()) {
@@ -108,7 +100,7 @@ public class ChangeNodeLevelController {
 			}
 			final NodeModel grandParent = selectedParent.getParentNode();
 			final int parentPosition = grandParent.getChildPosition(selectedParent);
-			for(final NodeModel node:selectedNodes){
+			for (final NodeModel node : selectedNodes) {
 				mapController.moveNode(node, grandParent, parentPosition + 1);
 			}
 			mapController.selectMultipleNodes(selectedNode, selectedNodes);
@@ -126,16 +118,16 @@ public class ChangeNodeLevelController {
 		menuBuilder.addAnnotatedAction(new ChangeNodeLevelDownwardsAction());
 	}
 
-	private boolean checkSelection(final ModeController modeController){
-		NodeModel selectedNode = modeController.getMapController().getSelectedNode();
-		List<NodeModel> selectedNodes = modeController.getMapController().getSelectedNodes();
+	private boolean checkSelection(final ModeController modeController) {
+		final NodeModel selectedNode = modeController.getMapController().getSelectedNode();
+		final List<NodeModel> selectedNodes = modeController.getMapController().getSelectedNodes();
 		final Controller controller = modeController.getController();
 		if (selectedNode.isRoot()) {
 			controller.errorMessage(FreeplaneResourceBundle.getText("cannot_add_parent_to_root"));
 			return false;
 		}
 		final NodeModel selectedParent = selectedNode.getParentNode();
-		for (final NodeModel node  : selectedNodes) {
+		for (final NodeModel node : selectedNodes) {
 			if (node.getParentNode() != selectedParent) {
 				controller.errorMessage(FreeplaneResourceBundle.getText("cannot_add_parent_diff_parents"));
 				return false;

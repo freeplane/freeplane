@@ -32,10 +32,8 @@ import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 
-class OpenURLAction extends AbstractAction implements IFreeplaneAction{
-
+class OpenURLAction extends AbstractAction implements IFreeplaneAction {
 	private static final String NAME = "freeplaneUrl";
-
 	private static final long serialVersionUID = 7266357451275984398L;
 	final private Controller controller;
 	final private String url;
@@ -60,6 +58,6 @@ class OpenURLAction extends AbstractAction implements IFreeplaneAction{
 	}
 
 	public String getName() {
-	    return NAME;
-    }
+		return NAME;
+	}
 }

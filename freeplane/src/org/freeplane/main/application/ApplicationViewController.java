@@ -20,7 +20,6 @@
 package org.freeplane.main.application;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -55,31 +54,23 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 
 class ApplicationViewController extends ViewController {
+	private static final String SPLIT_PANE_LAST_LEFT_POSITION = "split_pane_last_left_position";
 	private static final String SPLIT_PANE_LAST_POSITION = "split_pane_last_position";
-	
-	private static final String SPLIT_PANE_RIGHT_POSITION      = "split_pane_right_position";
 	private static final String SPLIT_PANE_LAST_RIGHT_POSITION = "split_pane_last_right_position";
-		
-	private static final String SPLIT_PANE_LEFT_POSITION       = "split_pane_left_position";
-	private static final String SPLIT_PANE_LAST_LEFT_POSITION  = "split_pane_last_left_position";
-	
-	private static final String SPLIT_PANE_TOP_POSITION        = "split_pane_top_position";
-	private static final String SPLIT_PANE_LAST_TOP_POSITION   = "split_pane_last_top_position";	
-	
+	private static final String SPLIT_PANE_LAST_TOP_POSITION = "split_pane_last_top_position";
+	private static final String SPLIT_PANE_LEFT_POSITION = "split_pane_left_position";
 	private static final String SPLIT_PANE_POSITION = "split_pane_position";
+	private static final String SPLIT_PANE_RIGHT_POSITION = "split_pane_right_position";
+	private static final String SPLIT_PANE_TOP_POSITION = "split_pane_top_position";
 	final private Controller controller;
 	final private JFrame frame;
 	private MapViewTabs mapViewManager;
 	private JComponent mContentComponent = null;
-	private JSplitPane mSplitPane;
-	
 	/** Contains the value where the Note Window should be displayed (right, left, top, bottom) */
 	private String mLocationPreferenceValue;
-		
 	/** Contains the Note Window Component */
-	private JComponent mMindMapComponent;	
-	
-
+	private JComponent mMindMapComponent;
+	private JSplitPane mSplitPane;
 	final private NavigationNextMapAction navigationNextMap;
 	final private NavigationPreviousMapAction navigationPreviousMap;
 	final private ResourceController resourceController;
@@ -93,30 +84,29 @@ class ApplicationViewController extends ViewController {
 		controller.putAction(navigationNextMap);
 		resourceController = ResourceController.getResourceController();
 		frame = new JFrame("Freeplane");
-		
 		// --- Set Note Window Location ---
-		mLocationPreferenceValue = resourceController.getProperty("location");		
+		mLocationPreferenceValue = resourceController.getProperty("location");
 	}
 
 	/**
 	 * Called from the Controller, when the Location of the Note Window is changed on the Menu->View->Note Window Location 
 	 */
-	public void changeNoteWindowLocation(boolean isSplitWindowOnorOff)
-	{
+	@Override
+	public void changeNoteWindowLocation(final boolean isSplitWindowOnorOff) {
 		// -- Remove Note Window from old location -- 
-		if ( isSplitWindowOnorOff == true ) {
+		if (isSplitWindowOnorOff == true) {
 			// --- Remove and put it back in the new location the Note Window --
 			removeSplitPane();
 		}
 		// --- Get the new location --
 		mLocationPreferenceValue = resourceController.getProperty("location");
 		// -- Display Note Window in the new location --
-		if ( isSplitWindowOnorOff == true ) {
+		if (isSplitWindowOnorOff == true) {
 			// --- Place the Note Window in the new place --
 			insertComponentIntoSplitPane(mMindMapComponent);
 		}
-	}	
-	
+	}
+
 	public String getAdjustableProperty(final String label) {
 		return resourceController.getAdjustableProperty(label);
 	}
@@ -213,7 +203,8 @@ class ApplicationViewController extends ViewController {
 		win_y = Math.max(screenInsets.top, win_y);
 		win_y = Math.min(screenWidth + screenInsets.top - win_height, win_y);
 		frame.setBounds(win_x, win_y, win_width, win_height);
-		int win_state = Integer.parseInt(ResourceController.getResourceController().getProperty("appwindow_state", "0"));
+		int win_state = Integer
+		    .parseInt(ResourceController.getResourceController().getProperty("appwindow_state", "0"));
 		win_state = ((win_state & Frame.ICONIFIED) != 0) ? Frame.NORMAL : win_state;
 		frame.setExtendedState(win_state);
 	}
@@ -224,40 +215,31 @@ class ApplicationViewController extends ViewController {
 			return mSplitPane;
 		}
 		removeContentComponent();
-		
 		// --- Save the Component --
 		mMindMapComponent = pMindMapComponent;
-		
 		// --- Devider position variables --
-		int splitPanePosition     = -1;
+		int splitPanePosition = -1;
 		int lastSplitPanePosition = -1;
-		
 		if ("right".equals(mLocationPreferenceValue)) {
-			mSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, 
-					                    getScrollPane(),
-					                    pMindMapComponent);
-			splitPanePosition     =resourceController.getIntProperty(SPLIT_PANE_RIGHT_POSITION, -1);
-			lastSplitPanePosition =resourceController.getIntProperty(SPLIT_PANE_LAST_RIGHT_POSITION, -1);
-		} else if ("left".equals(mLocationPreferenceValue)) {
-			mSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, 
-					                    pMindMapComponent,
-                                        getScrollPane());
-			splitPanePosition     =resourceController.getIntProperty(SPLIT_PANE_LEFT_POSITION, -1);
-			lastSplitPanePosition =resourceController.getIntProperty(SPLIT_PANE_LAST_LEFT_POSITION, -1);
-		} else if ("top".equals(mLocationPreferenceValue))  {
-			mSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, 
-					                    pMindMapComponent,
-					                    getScrollPane());
-			splitPanePosition     =resourceController.getIntProperty(SPLIT_PANE_TOP_POSITION, -1);
-			lastSplitPanePosition =resourceController.getIntProperty(SPLIT_PANE_LAST_TOP_POSITION, -1);
-		} else if ("bottom".equals(mLocationPreferenceValue)) {
-			mSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, 
-					                    getScrollPane(),
-					                    pMindMapComponent);
-			splitPanePosition     =resourceController.getIntProperty(SPLIT_PANE_POSITION, -1);
-			lastSplitPanePosition =resourceController.getIntProperty(SPLIT_PANE_LAST_POSITION, -1);
+			mSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, getScrollPane(), pMindMapComponent);
+			splitPanePosition = resourceController.getIntProperty(SPLIT_PANE_RIGHT_POSITION, -1);
+			lastSplitPanePosition = resourceController.getIntProperty(SPLIT_PANE_LAST_RIGHT_POSITION, -1);
 		}
-		
+		else if ("left".equals(mLocationPreferenceValue)) {
+			mSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, pMindMapComponent, getScrollPane());
+			splitPanePosition = resourceController.getIntProperty(SPLIT_PANE_LEFT_POSITION, -1);
+			lastSplitPanePosition = resourceController.getIntProperty(SPLIT_PANE_LAST_LEFT_POSITION, -1);
+		}
+		else if ("top".equals(mLocationPreferenceValue)) {
+			mSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, pMindMapComponent, getScrollPane());
+			splitPanePosition = resourceController.getIntProperty(SPLIT_PANE_TOP_POSITION, -1);
+			lastSplitPanePosition = resourceController.getIntProperty(SPLIT_PANE_LAST_TOP_POSITION, -1);
+		}
+		else if ("bottom".equals(mLocationPreferenceValue)) {
+			mSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, getScrollPane(), pMindMapComponent);
+			splitPanePosition = resourceController.getIntProperty(SPLIT_PANE_POSITION, -1);
+			lastSplitPanePosition = resourceController.getIntProperty(SPLIT_PANE_LAST_POSITION, -1);
+		}
 		mSplitPane.setContinuousLayout(true);
 		mSplitPane.setOneTouchExpandable(false);
 		/*
@@ -276,12 +258,12 @@ class ApplicationViewController extends ViewController {
 			mSplitPane.setDividerLocation(splitPanePosition);
 			mSplitPane.setLastDividerLocation(lastSplitPanePosition);
 		}
-		else{
-			EventQueue.invokeLater(new Runnable(){
-
+		else {
+			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					mSplitPane.setDividerLocation(0.5);
-                }});
+				}
+			});
 		}
 		return mSplitPane;
 	}
@@ -314,8 +296,8 @@ class ApplicationViewController extends ViewController {
 			String command = new String();
 			try {
 				final Object[] messageArguments = { url.toString() };
-				final MessageFormat formatter = new MessageFormat(ResourceController.getResourceController().getProperty(
-				    propertyString));
+				final MessageFormat formatter = new MessageFormat(ResourceController.getResourceController()
+				    .getProperty(propertyString));
 				browser_command = formatter.format(messageArguments);
 				if (url.getProtocol().equals("file")) {
 					command = "rundll32 url.dll,FileProtocolHandler " + url.toString();
@@ -345,8 +327,8 @@ class ApplicationViewController extends ViewController {
 			String browser_command = new String();
 			try {
 				final Object[] messageArguments = { correctedUrl, url.toString() };
-				final MessageFormat formatter = new MessageFormat(ResourceController.getResourceController().getProperty(
-				    "default_browser_command_mac"));
+				final MessageFormat formatter = new MessageFormat(ResourceController.getResourceController()
+				    .getProperty("default_browser_command_mac"));
 				browser_command = formatter.format(messageArguments);
 				Runtime.getRuntime().exec(browser_command);
 			}
@@ -362,8 +344,8 @@ class ApplicationViewController extends ViewController {
 			String browser_command = new String();
 			try {
 				final Object[] messageArguments = { correctedUrl, url.toString() };
-				final MessageFormat formatter = new MessageFormat(ResourceController.getResourceController().getProperty(
-				    "default_browser_command_other_os"));
+				final MessageFormat formatter = new MessageFormat(ResourceController.getResourceController()
+				    .getProperty("default_browser_command_other_os"));
 				browser_command = formatter.format(messageArguments);
 				Runtime.getRuntime().exec(browser_command);
 			}
@@ -391,20 +373,25 @@ class ApplicationViewController extends ViewController {
 	public void removeSplitPane() {
 		if (mSplitPane != null) {
 			if ("right".equals(mLocationPreferenceValue)) {
-				resourceController.setProperty(SPLIT_PANE_RIGHT_POSITION, ""	+ mSplitPane.getDividerLocation());
-				resourceController.setProperty(SPLIT_PANE_LAST_RIGHT_POSITION, "" + mSplitPane.getLastDividerLocation());
-			} else if ("left".equals(mLocationPreferenceValue)) {
-				resourceController.setProperty(SPLIT_PANE_LEFT_POSITION, ""	+ mSplitPane.getDividerLocation());
-				resourceController.setProperty(SPLIT_PANE_LAST_LEFT_POSITION, "" + mSplitPane.getLastDividerLocation());				
-			} else if ("top".equals(mLocationPreferenceValue)) {
-				resourceController.setProperty(SPLIT_PANE_TOP_POSITION, ""	+ mSplitPane.getDividerLocation());
+				resourceController.setProperty(SPLIT_PANE_RIGHT_POSITION, "" + mSplitPane.getDividerLocation());
+				resourceController
+				    .setProperty(SPLIT_PANE_LAST_RIGHT_POSITION, "" + mSplitPane.getLastDividerLocation());
+			}
+			else if ("left".equals(mLocationPreferenceValue)) {
+				resourceController.setProperty(SPLIT_PANE_LEFT_POSITION, "" + mSplitPane.getDividerLocation());
+				resourceController.setProperty(SPLIT_PANE_LAST_LEFT_POSITION, "" + mSplitPane.getLastDividerLocation());
+			}
+			else if ("top".equals(mLocationPreferenceValue)) {
+				resourceController.setProperty(SPLIT_PANE_TOP_POSITION, "" + mSplitPane.getDividerLocation());
 				resourceController.setProperty(SPLIT_PANE_LAST_TOP_POSITION, "" + mSplitPane.getLastDividerLocation());
-			} else if ("bottom".equals(mLocationPreferenceValue)) {
-				resourceController.setProperty(SPLIT_PANE_POSITION, ""	+ mSplitPane.getDividerLocation());
+			}
+			else if ("bottom".equals(mLocationPreferenceValue)) {
+				resourceController.setProperty(SPLIT_PANE_POSITION, "" + mSplitPane.getDividerLocation());
 				resourceController.setProperty(SPLIT_PANE_LAST_POSITION, "" + mSplitPane.getLastDividerLocation());
-			} else {
-				resourceController.setProperty(SPLIT_PANE_POSITION, ""	+ mSplitPane.getDividerLocation());
-				resourceController.setProperty(SPLIT_PANE_LAST_POSITION, "" + mSplitPane.getLastDividerLocation());				
+			}
+			else {
+				resourceController.setProperty(SPLIT_PANE_POSITION, "" + mSplitPane.getDividerLocation());
+				resourceController.setProperty(SPLIT_PANE_LAST_POSITION, "" + mSplitPane.getLastDividerLocation());
 			}
 			removeContentComponent();
 			mContentComponent = getScrollPane();

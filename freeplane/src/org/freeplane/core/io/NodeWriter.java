@@ -31,10 +31,10 @@ import org.freeplane.n3.nanoxml.XMLElement;
 
 class NodeWriter implements IElementWriter, IAttributeWriter {
 	private EncryptionModel encryptionModel;
+	final private MapController mapController;
 	final private boolean writeChildren;
 	final private boolean writeInvisible;
 	private XMLElement xmlNode;
-	final private MapController mapController;
 
 	public NodeWriter(final MapController mapController, final boolean writeChildren, final boolean writeInvisible) {
 		this.mapController = mapController;
@@ -108,8 +108,7 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 		for (int i = 0; i < xmlNode.getChildrenCount(); i++) {
 			writer.addElement(null, xmlNode.getChildAtIndex(i));
 		}
-		if (encryptionModel == null && writeChildren
-		        && mapController.childrenUnfolded(node).hasNext()) {
+		if (encryptionModel == null && writeChildren && mapController.childrenUnfolded(node).hasNext()) {
 			saveChildren(writer, node);
 		}
 		return;

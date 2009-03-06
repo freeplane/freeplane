@@ -34,8 +34,8 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.browsemode.BModeController;
 
-class DocumentationAction extends AbstractAction implements IFreeplaneAction{
-    private static final String NAME = "documentation";
+class DocumentationAction extends AbstractAction implements IFreeplaneAction {
+	private static final String NAME = "documentation";
 	private static final long serialVersionUID = 1631839376411875744L;
 	final private Controller controller;
 
@@ -67,6 +67,6 @@ class DocumentationAction extends AbstractAction implements IFreeplaneAction{
 	}
 
 	public String getName() {
-	    return NAME;
-    }
+		return NAME;
+	}
 }

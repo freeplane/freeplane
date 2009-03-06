@@ -46,7 +46,7 @@ public class ListHashTable<K, V> {
 		}
 	}
 
-	final private Map<K, List<V>> table = new Hashtable<K,List<V>>();
+	final private Map<K, List<V>> table = new Hashtable<K, List<V>>();
 
 	public void add(final K tag, final V element) {
 		List<V> elementsForTag = table.get(tag);

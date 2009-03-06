@@ -34,7 +34,6 @@ import java.util.Vector;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.modecontroller.ModeController;
-import org.freeplane.core.resources.ui.BooleanProperty;
 import org.freeplane.core.util.LogTool;
 
 /**
@@ -43,6 +42,15 @@ import org.freeplane.core.util.LogTool;
 public abstract class ResourceController {
 	// TODO rladstaetter 15.02.2009 remove static
 	private static ResourceController resourceController;
+
+	static public ResourceController getResourceController() {
+		return ResourceController.resourceController;
+	}
+
+	static public void setResourceController(final ResourceController resourceController) {
+		ResourceController.resourceController = resourceController;
+		LogTool.info("called ResourceController.setResourceController(...)");
+	}
 
 	final private List<IFreeplanePropertyListener> propertyChangeListeners = new Vector<IFreeplanePropertyListener>();
 	private FreeplaneResourceBundle resources;
@@ -172,6 +180,10 @@ public abstract class ResourceController {
 		return getClass().getResource(name);
 	}
 
+	public String getResourceBaseDir() {
+		return "";
+	}
+
 	/** Returns the ResourceBundle with the current language */
 	public ResourceBundle getResources() {
 		if (resources == null) {
@@ -184,7 +196,6 @@ public abstract class ResourceController {
 		return ((FreeplaneResourceBundle) getResources()).getResourceString(key, resource);
 	}
 
-	
 	protected void init(final Controller controller) {
 		controller.putAction(new OptionHTMLExportFoldingAction());
 		controller.putAction(new OptionSelectionMechanismAction(controller));
@@ -216,18 +227,5 @@ public abstract class ResourceController {
 
 	public void updateMenus(final ModeController modeController) {
 		LogTool.warn("ResourceController.updateMenus(...) called, but not implemented.");
-	}
-
-	static public void setResourceController(final ResourceController resourceController) {
-		ResourceController.resourceController = resourceController;
-		LogTool.info("called ResourceController.setResourceController(...)");
-	}
-
-	static public ResourceController getResourceController() {
-		return ResourceController.resourceController;
-	}
-
-	public String getResourceBaseDir() {
-		return "";
 	}
 }

@@ -38,73 +38,80 @@ import com.inet.jortho.SpellChecker;
  * @author Dimitry Polivaev
  * Feb 8, 2009
  */
-public class SpellCheckerController implements IExtension{
-	private SpellCheckerController() {
-	    init();
-    }
-
+public class SpellCheckerController implements IExtension {
 	public static SpellCheckerController getController(final ModeController modeController) {
-    	return (SpellCheckerController) modeController.getExtension(SpellCheckerController.class);
-    }
-	private boolean spellCheckerInitialized = false;
+		return (SpellCheckerController) modeController.getExtension(SpellCheckerController.class);
+	}
+
+	public static void install(final MModeController modeController) {
+		modeController.putExtension(SpellCheckerController.class, new SpellCheckerController());
+	}
+
 	private boolean spellCheckerEnabled = false;
-	public  boolean isSpellCheckerActive() {
-    	return spellCheckerEnabled;
-    }
+	private boolean spellCheckerInitialized = false;
+
+	private SpellCheckerController() {
+		init();
+	}
+
+	public void addSpellCheckerMenu(final JPopupMenu popupMenu) {
+		if (!isSpellCheckerActive()) {
+			return;
+		}
+		popupMenu.add(SpellChecker.createCheckerMenu());
+		popupMenu.add(SpellChecker.createLanguagesMenu());
+	}
+
+	public void enableAutoSpell(final JTextComponent editorPane) {
+		if (!isSpellCheckerActive()) {
+			return;
+		}
+		SpellChecker.enableAutoSpell(editorPane, true);
+	}
+
+	public void enableShortKey(final JTextComponent editorPane) {
+		if (!isSpellCheckerActive()) {
+			return;
+		}
+		SpellChecker.enableShortKey(editorPane, true);
+	}
+
 	private void init() {
-		if(spellCheckerInitialized == false){
+		if (spellCheckerInitialized == false) {
 			spellCheckerInitialized = true;
 			final ResourceController resourceController = ResourceController.getResourceController();
-			File orthoDir = new File(resourceController.getResourceBaseDir() + File.separatorChar + "ortho");
-			if(! orthoDir.exists()){
+			final File orthoDir = new File(resourceController.getResourceBaseDir() + File.separatorChar + "ortho");
+			if (!orthoDir.exists()) {
 				return;
 			}
-			final String[] dictionaryList = orthoDir.list(new FilenameFilter(){
-				public boolean accept(File dir, String name) {
-	                return name.length() == "dictionary_XX.ortho".length() && name.startsWith("dictionary_") && name.endsWith(".ortho");
-                }
+			final String[] dictionaryList = orthoDir.list(new FilenameFilter() {
+				public boolean accept(final File dir, final String name) {
+					return name.length() == "dictionary_XX.ortho".length() && name.startsWith("dictionary_")
+					        && name.endsWith(".ortho");
+				}
 			});
-			if(dictionaryList.length == 0){
+			if (dictionaryList.length == 0) {
 				return;
 			}
-			SpellChecker.setUserDictionaryProvider(new FileUserDictionary(resourceController.getFreeplaneUserDirectory()));
-			StringBuffer availableLocales = new StringBuffer();
-			for(int i = 0; i < dictionaryList.length; i++){
+			SpellChecker.setUserDictionaryProvider(new FileUserDictionary(resourceController
+			    .getFreeplaneUserDirectory()));
+			final StringBuffer availableLocales = new StringBuffer();
+			for (int i = 0; i < dictionaryList.length; i++) {
 				final String language = dictionaryList[i].substring("dictionary_".length(), "dictionary_".length() + 2);
 				availableLocales.append(language);
 				availableLocales.append(",");
 			}
 			try {
-	            SpellChecker.registerDictionaries(orthoDir.toURL(), availableLocales.toString(), null, ".ortho");
-	            spellCheckerEnabled = true;
-            }
-            catch (MalformedURLException e) {
-	            e.printStackTrace();
-            }
-			
+				SpellChecker.registerDictionaries(orthoDir.toURL(), availableLocales.toString(), null, ".ortho");
+				spellCheckerEnabled = true;
+			}
+			catch (final MalformedURLException e) {
+				e.printStackTrace();
+			}
 		}
-    }
-	public void addSpellCheckerMenu(JPopupMenu popupMenu) {
-		if(! isSpellCheckerActive()){
-			return;
-		}
-		popupMenu.add(SpellChecker.createCheckerMenu());
-		popupMenu.add(SpellChecker.createLanguagesMenu());
-    }
-	public void enableAutoSpell(JTextComponent editorPane) {
-		if(! isSpellCheckerActive()){
-			return;
-		}
-		SpellChecker.enableAutoSpell(editorPane, true);
-	    
-    }
-	public void enableShortKey(JTextComponent editorPane) {
-		if(! isSpellCheckerActive()){
-			return;
-		}
-		SpellChecker.enableShortKey(editorPane, true);
-    }
-	public static void install(MModeController modeController) {
-	    modeController.putExtension(SpellCheckerController.class, new SpellCheckerController());
-    }
+	}
+
+	public boolean isSpellCheckerActive() {
+		return spellCheckerEnabled;
+	}
 }

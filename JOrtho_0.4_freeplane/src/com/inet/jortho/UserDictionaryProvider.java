@@ -31,30 +31,28 @@ import java.util.Locale;
  * @author Volker Berlin
  */
 public interface UserDictionaryProvider {
+	/**
+	 * Adds a new word to the current user dictionary. The implementor must save this word in its own backend.
+	 * 
+	 * @param word the new word.
+	 */
+	void addWord(String word);
 
-    /**
-     * Gets the list of user words for this locale. The implementation can decide if there is a
-     * user dictionary for each available language or only one. This method is called before the
-     * language change event is fired if the language is changed and the dictionary is loaded.
-     * 
-     * @param locale The locale of the selected language.
-     * @return A list of words delimited with line breaks. It can be null.
-     */
-    String getUserWords( Locale locale );
+	/**
+	 * Gets the list of user words for this locale. The implementation can decide if there is a
+	 * user dictionary for each available language or only one. This method is called before the
+	 * language change event is fired if the language is changed and the dictionary is loaded.
+	 * 
+	 * @param locale The locale of the selected language.
+	 * @return A list of words delimited with line breaks. It can be null.
+	 */
+	String getUserWords(Locale locale);
 
-    /**
-     * Adds a new word to the current user dictionary. The implementor must save this word in its own backend.
-     * 
-     * @param word the new word.
-     */
-    void addWord( String word );
-
-    /**
-     * Set a completely new word list
-     * 
-     * @param wordList
-     *            the new word list. Can be empty but not null.
-     */
-    void setUserWords( String wordList );
-
+	/**
+	 * Set a completely new word list
+	 * 
+	 * @param wordList
+	 *            the new word list. Can be empty but not null.
+	 */
+	void setUserWords(String wordList);
 }

@@ -35,38 +35,8 @@ import org.freeplane.core.resources.ResourceController;
  * @author foltin
  */
 public class LogTool {
-//	private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	//	private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	private static final Logger LOGGER = Logger.global;
-
-	public static void logException(final Throwable e) {
-		LogTool.logException(e, "");
-	}
-
-	public static void logException(final Throwable e, final String comment) {
-		LOGGER.log(Level.SEVERE, "An exception occured: " + comment, e);
-	}
-
-	public static void logTransferable(final Transferable t) {
-		System.err.println();
-		System.err.println("BEGIN OF Transferable:\t" + t);
-		final DataFlavor[] dataFlavors = t.getTransferDataFlavors();
-		for (int i = 0; i < dataFlavors.length; i++) {
-			System.out.println("  Flavor:\t" + dataFlavors[i]);
-			System.out.println("    Supported:\t" + t.isDataFlavorSupported(dataFlavors[i]));
-			try {
-				System.out.println("    Content:\t" + t.getTransferData(dataFlavors[i]));
-			}
-			catch (final Exception e) {
-			}
-		}
-		System.err.println("END OF Transferable");
-		System.err.println();
-	}
-
-	public static void warn(String msg) {
-		LOGGER.log(Level.WARNING, msg);
-	}
-	
 	static private boolean loggerCreated = false;
 
 	public static void createLogger() {
@@ -108,8 +78,36 @@ public class LogTool {
 		}
 	}
 
-	public static void info(String string) {
-		LOGGER.log(Level.INFO, string);	    
-    }
+	public static void info(final String string) {
+		LOGGER.log(Level.INFO, string);
+	}
 
+	public static void logException(final Throwable e) {
+		LogTool.logException(e, "");
+	}
+
+	public static void logException(final Throwable e, final String comment) {
+		LOGGER.log(Level.SEVERE, "An exception occured: " + comment, e);
+	}
+
+	public static void logTransferable(final Transferable t) {
+		System.err.println();
+		System.err.println("BEGIN OF Transferable:\t" + t);
+		final DataFlavor[] dataFlavors = t.getTransferDataFlavors();
+		for (int i = 0; i < dataFlavors.length; i++) {
+			System.out.println("  Flavor:\t" + dataFlavors[i]);
+			System.out.println("    Supported:\t" + t.isDataFlavorSupported(dataFlavors[i]));
+			try {
+				System.out.println("    Content:\t" + t.getTransferData(dataFlavors[i]));
+			}
+			catch (final Exception e) {
+			}
+		}
+		System.err.println("END OF Transferable");
+		System.err.println();
+	}
+
+	public static void warn(final String msg) {
+		LOGGER.log(Level.WARNING, msg);
+	}
 }

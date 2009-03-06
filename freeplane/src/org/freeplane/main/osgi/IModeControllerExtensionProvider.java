@@ -25,6 +25,6 @@ import org.freeplane.core.modecontroller.ModeController;
  * @author Dimitry Polivaev
  * Feb 22, 2009
  */
-public interface IModeControllerExtensionProvider {	
+public interface IModeControllerExtensionProvider {
 	void installExtension(ModeController modeController);
 }

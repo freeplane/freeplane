@@ -50,6 +50,7 @@ import org.freeplane.features.common.nodelocation.LocationController;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.note.NoteController;
 import org.freeplane.features.common.text.TextController;
+import org.freeplane.features.common.time.TimeController;
 import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.addins.ChangeNodeLevelController;
@@ -216,6 +217,7 @@ public class MModeControllerFactory {
 		CloudController.install(modeController, new MCloudController(modeController));
 		NoteController.install(modeController, new MNoteController(modeController));
 		LinkController.install(modeController, new MLinkController(modeController));
+		TimeController.install(modeController);
 		userInputListenerFactory.setMapMouseListener(new DefaultMapMouseListener(controller, new MMouseMotionListener(
 		    modeController)));
 		MPatternController.install(modeController, new MPatternController(modeController));

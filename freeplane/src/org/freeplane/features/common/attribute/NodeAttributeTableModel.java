@@ -55,8 +55,8 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 
 	private Vector attributes = null;
 	private AttributeTableLayoutModel layout = null;
-	final private NodeModel node;
 	private HashSet<TableModelListener> listeners;
+	final private NodeModel node;
 
 	public NodeAttributeTableModel(final NodeModel node) {
 		this(node, 0);
@@ -77,6 +77,13 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 		fireTableRowsInserted(index, index);
 	}
 
+	public void addTableModelListener(final TableModelListener listener) {
+		if (listeners == null) {
+			listeners = new HashSet<TableModelListener>();
+		}
+		listeners.add(listener);
+	}
+
 	private void allocateAttributes(final int size) {
 		if (attributes == null && size > 0) {
 			attributes = new Vector(size, NodeAttributeTableModel.CAPACITY_INCREMENT);
@@ -92,11 +99,51 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 	public void enableStateIcon() {
 		if (NodeAttributeTableModel.SHOW_ATTRIBUTE_ICON && getRowCount() == 1) {
 			if (NodeAttributeTableModel.noteIcon == null) {
-				NodeAttributeTableModel.noteIcon = new ImageIcon(ResourceController.getResourceController().getResource(
-				    "/images/showAttributes.gif"));
+				NodeAttributeTableModel.noteIcon = new ImageIcon(ResourceController.getResourceController()
+				    .getResource("/images/showAttributes.gif"));
 			}
 			node.setStateIcon(NodeAttributeTableModel.STATE_ICON, NodeAttributeTableModel.noteIcon);
 		}
+	}
+
+	public void fireTableCellUpdated(final int row, final int column) {
+		if (listeners == null) {
+			return;
+		}
+		fireTableChanged(new TableModelEvent(this, row, row, column));
+	}
+
+	private void fireTableChanged(final TableModelEvent e) {
+		if (listeners == null) {
+			return;
+		}
+		for (final TableModelListener listener : listeners) {
+			listener.tableChanged(e);
+		}
+	}
+
+	public void fireTableRowsDeleted(final int firstRow, final int lastRow) {
+		if (listeners == null) {
+			return;
+		}
+		fireTableChanged(new TableModelEvent(this, firstRow, lastRow, TableModelEvent.ALL_COLUMNS,
+		    TableModelEvent.DELETE));
+	}
+
+	public void fireTableRowsInserted(final int firstRow, final int lastRow) {
+		if (listeners == null) {
+			return;
+		}
+		fireTableChanged(new TableModelEvent(this, firstRow, lastRow, TableModelEvent.ALL_COLUMNS,
+		    TableModelEvent.INSERT));
+	}
+
+	public void fireTableRowsUpdated(final int firstRow, final int lastRow) {
+		if (listeners == null) {
+			return;
+		}
+		fireTableChanged(new TableModelEvent(this, firstRow, lastRow, TableModelEvent.ALL_COLUMNS,
+		    TableModelEvent.UPDATE));
 	}
 
 	/*
@@ -220,6 +267,13 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 		return !node.getMap().isReadOnly();
 	}
 
+	public void removeTableModelListener(final TableModelListener listener) {
+		if (listeners == null) {
+			return;
+		}
+		listeners.remove(listener);
+	}
+
 	void save(final ITreeWriter writer) throws IOException {
 		saveLayout(writer);
 		if (attributes != null) {
@@ -261,76 +315,22 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 		fireTableRowsUpdated(row, row);
 	}
 
-
 	public void setValue(final int row, final Object newValue) {
 		final Attribute attr = (Attribute) attributes.get(row);
 		attr.setValue(newValue.toString());
 		fireTableRowsUpdated(row, row);
 	}
 
-	
-	public void addTableModelListener(TableModelListener listener) {
-		if(listeners == null){
-			listeners = new HashSet<TableModelListener>();
+	public void setValueAt(final Object value, final int rowIndex, final int columnIndex) {
+		switch (columnIndex) {
+			case 0:
+				setName(rowIndex, value);
+				return;
+			case 1:
+				setValue(rowIndex, value);
+				return;
+			default:
+				throw new ArrayIndexOutOfBoundsException(columnIndex + " >= 2");
 		}
-	    listeners.add(listener);
-	    
-    }
-
-	public void removeTableModelListener(TableModelListener listener) {
-    	if(listeners == null){
-    		return;
-    	}
-	   listeners.remove(listener);
-	    
-    }
-
-     public void fireTableRowsInserted(int firstRow, int lastRow) {
-     	if(listeners == null){
-    		return;
-    	}
-        fireTableChanged(new TableModelEvent(this, firstRow, lastRow,
-                             TableModelEvent.ALL_COLUMNS, TableModelEvent.INSERT));
-    }
-
-     public void fireTableRowsUpdated(int firstRow, int lastRow) {
-     	if(listeners == null){
-    		return;
-    	}
-        fireTableChanged(new TableModelEvent(this, firstRow, lastRow,
-                             TableModelEvent.ALL_COLUMNS, TableModelEvent.UPDATE));
-    }
-
-     public void fireTableRowsDeleted(int firstRow, int lastRow) {
-     	if(listeners == null){
-    		return;
-    	}
-        fireTableChanged(new TableModelEvent(this, firstRow, lastRow,
-                             TableModelEvent.ALL_COLUMNS, TableModelEvent.DELETE));
-    }
-
-     public void fireTableCellUpdated(int row, int column) {
-     	if(listeners == null){
-    		return;
-    	}
-       fireTableChanged(new TableModelEvent(this, row, row, column));
-    }
-
-    private void fireTableChanged(TableModelEvent e) {
-    	if(listeners == null){
-    		return;
-    	}
-    	for(TableModelListener listener:listeners){
-    		listener.tableChanged(e);
-    	}
-    }
-
-	public void setValueAt(Object value, int rowIndex, int columnIndex) {
-	    switch(columnIndex){
-	    	case 0: setName(rowIndex, value); return;
-	    	case 1: setValue(rowIndex, value);return;
-	    	default: throw new ArrayIndexOutOfBoundsException(columnIndex + " >= 2");
-	    }
-	    
-    }
+	}
 }

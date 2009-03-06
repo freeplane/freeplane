@@ -1,8 +1,18 @@
 package org.freeplane.core.enums;
 
 public class ResourceControllerProperties {
+	static public Integer DEFAULT = 100;
+	public static final String DEFAULT_ORG_FREEPLANE_GLOBALRESOURCEDIR = "resources";
+	public static final String FREEPLANE_FILE_EXTENSION_WITHOUT_DOT = "mm";
+	public static final String FREEPLANE_FILE_EXTENSION = "." + FREEPLANE_FILE_EXTENSION_WITHOUT_DOT;
+	public static final String FREEPLANE_PROPERTIES = "/freeplane.properties";
+	public static final String LOAD_LAST_MAP = "load_last_map";
+	public static final String LOCAL_PROPERTIES = "LocalProperties.";
+	static public Integer NODE = 10;
+	public static final String NODESEPARATOR = "<nodeseparator>";
 	// TODO ARCH rladstaetter 15.02.2009 introduce namespaces where feasible
 	public static final String ON_START_IF_NOT_SPECIFIED = "on_start_if_not_specified";
+	public static final String ORG_FREEPLANE_GLOBALRESOURCEDIR = "org.freeplane.globalresourcedir";
 	public static final String RESOURCE_DRAW_RECTANGLE_FOR_SELECTION = "standarddrawrectangleforselection";
 	public static final String RESOURCE_LANGUAGE = "language";
 	public static final String RESOURCE_PRINT_ON_WHITE_BACKGROUND = "printonwhitebackground";
@@ -33,17 +43,6 @@ public class ResourceControllerProperties {
 	public static final String RESOURCES_USE_SPLIT_PANE = "use_split_pane";
 	public static final String RESOURCES_USE_TABBED_PANE = "use_tabbed_pane";
 	public static final String RESOURCES_WHEEL_VELOCITY = "wheel_velocity";
-	public static final String LOCAL_PROPERTIES = "LocalProperties.";
-	public static final String FREEPLANE_PROPERTIES = "/freeplane.properties";
-	public static final String LOAD_LAST_MAP = "load_last_map";
-	public static final String FREEPLANE_FILE_EXTENSION_WITHOUT_DOT = "mm";
-	public static final String FREEPLANE_FILE_EXTENSION = "." + FREEPLANE_FILE_EXTENSION_WITHOUT_DOT;
-	public static final String NODESEPARATOR = "<nodeseparator>";
-	public static final String ORG_FREEPLANE_GLOBALRESOURCEDIR = "org.freeplane.globalresourcedir";
-	public static final String DEFAULT_ORG_FREEPLANE_GLOBALRESOURCEDIR = "resources";
 	public static final String XML_PATTERNS_XML = "/xml/patterns.xml";
 	public static final String XML_VERSION = "0.9.0";
-	static public Integer DEFAULT = 100;
-	static public Integer NODE = 10;
-
 }

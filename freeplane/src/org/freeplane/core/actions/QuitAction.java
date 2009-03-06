@@ -32,12 +32,10 @@ import org.freeplane.core.ui.MenuBuilder;
  * removed from History too?
  */
 public class QuitAction extends AbstractAction implements IFreeplaneAction {
-
-	private static final long serialVersionUID = -5577659571225676781L;
-
-	final private Controller controller;
 	// TODO rladstaetter 15.02.2009 just replace the name with getClass().getSimpleName() ?
 	public static final String NAME = "quit";
+	private static final long serialVersionUID = -5577659571225676781L;
+	final private Controller controller;
 
 	/**
 	 * @param resourceController

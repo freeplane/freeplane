@@ -51,13 +51,13 @@ class AttributeBuilder implements IElementDOMHandler {
 	public static final String XML_NODE_ATTRIBUTE_REGISTRY = "attribute_registry";
 	public static final String XML_NODE_REGISTERED_ATTRIBUTE_NAME = "attribute_name";
 	public static final String XML_NODE_REGISTERED_ATTRIBUTE_VALUE = "attribute_value";
+	final private AttributeController attributeController;
 	final private Controller controller;
 	final private MapReader mapReader;
-	final private AttributeController attributeController;
 
 	public AttributeBuilder(final AttributeController attributeController, final MapReader mapReader) {
 		this.attributeController = attributeController;
-		this.controller = attributeController.getModeController().getController();
+		controller = attributeController.getModeController().getController();
 		this.mapReader = mapReader;
 	}
 

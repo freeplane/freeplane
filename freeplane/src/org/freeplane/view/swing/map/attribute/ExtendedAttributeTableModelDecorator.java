@@ -89,15 +89,17 @@ class ExtendedAttributeTableModelDecorator extends AttributeTableModelDecoratorA
 	/**
 	 */
 	public void moveRowDown(final int row) {
-		final Attribute attribute = (Attribute) getAttributeController().performRemoveRow(getNodeAttributeModel(), row);
-		getAttributeController().performInsertRow(getNodeAttributeModel(), (row + 1), attribute.getName(), attribute.getValue());
+		final Attribute attribute = getAttributeController().performRemoveRow(getNodeAttributeModel(), row);
+		getAttributeController().performInsertRow(getNodeAttributeModel(), (row + 1), attribute.getName(),
+		    attribute.getValue());
 	}
 
 	/**
 	 */
 	public void moveRowUp(final int row) {
-		final Attribute attribute = (Attribute) getAttributeController().performRemoveRow(getNodeAttributeModel(), row);
-		getAttributeController().performInsertRow(getNodeAttributeModel(), (row - 1), attribute.getName(), attribute.getValue());
+		final Attribute attribute = getAttributeController().performRemoveRow(getNodeAttributeModel(), row);
+		getAttributeController().performInsertRow(getNodeAttributeModel(), (row - 1), attribute.getName(),
+		    attribute.getValue());
 	}
 
 	public Object removeRow(final int index) {

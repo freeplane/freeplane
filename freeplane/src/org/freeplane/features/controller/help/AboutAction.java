@@ -30,8 +30,7 @@ import org.freeplane.core.controller.FreeplaneVersion;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.MenuBuilder;
 
-class AboutAction extends AbstractAction implements IFreeplaneAction{
-
+class AboutAction extends AbstractAction implements IFreeplaneAction {
 	private static final long serialVersionUID = -5711560831676141530L;
 	final private Controller controller;
 
@@ -44,11 +43,13 @@ class AboutAction extends AbstractAction implements IFreeplaneAction{
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		JOptionPane.showMessageDialog(controller.getViewController().getViewport(), FreeplaneResourceBundle.getText("about_text")
-		        + FreeplaneVersion.getVersion(), FreeplaneResourceBundle.getText("about"), JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(controller.getViewController().getViewport(), FreeplaneResourceBundle
+		    .getText("about_text")
+		        + FreeplaneVersion.getVersion(), FreeplaneResourceBundle.getText("about"),
+		    JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	public String getName() {
-	    return "about";
-    }
+		return "about";
+	}
 }

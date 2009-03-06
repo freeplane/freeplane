@@ -48,7 +48,7 @@ name = "accessories/plugins/HierarchicalIcons.properties_name", //
 tooltip = "accessories/plugins/HierarchicalIcons.properties_documentation")
 public class HierarchicalIcons extends PersistentNodeHook implements INodeChangeListener, IMapChangeListener,
         IReadCompletionListener {
-	final private Map<NodeModel,TreeSet> nodeIconSets = new HashMap<NodeModel,TreeSet>();
+	final private Map<NodeModel, TreeSet> nodeIconSets = new HashMap<NodeModel, TreeSet>();
 
 	public HierarchicalIcons(final ModeController modeController) {
 		super(modeController);
@@ -190,7 +190,7 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 		final ListIterator<NodeModel> childrenUnfolded = getModeController().getMapController().childrenUnfolded(node);
 		for (final Iterator i = childrenUnfolded; i.hasNext();) {
 			final NodeModel child = (NodeModel) i.next();
-			addAccumulatedIconsToTreeSet(child, iconSet, (TreeSet) nodeIconSets.get(child));
+			addAccumulatedIconsToTreeSet(child, iconSet, nodeIconSets.get(child));
 		}
 		for (final Iterator i = node.getIcons().iterator(); i.hasNext();) {
 			final MindIcon icon = (MindIcon) i.next();
@@ -198,7 +198,7 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 		}
 		boolean dirty = true;
 		if (nodeIconSets.containsKey(node)) {
-			final TreeSet storedIconSet = (TreeSet) nodeIconSets.get(node);
+			final TreeSet storedIconSet = nodeIconSets.get(node);
 			if (storedIconSet.equals(iconSet)) {
 				dirty = false;
 			}

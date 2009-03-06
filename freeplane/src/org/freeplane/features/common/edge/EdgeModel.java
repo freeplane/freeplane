@@ -27,9 +27,6 @@ import org.freeplane.core.model.NodeModel;
 public class EdgeModel implements IExtension {
 	public static final int WIDTH_PARENT = -1;
 	public static final int WIDTH_THIN = 0;
-	private Color color;
-	private String style;
-	private int width = EdgeModel.DEFAULT_WIDTH;
 	static final int DEFAULT_WIDTH = WIDTH_PARENT;
 
 	public static EdgeModel createEdgeModel(final NodeModel node) {
@@ -48,6 +45,10 @@ public class EdgeModel implements IExtension {
 	public static void setModel(final NodeModel node, final EdgeModel edge) {
 		node.putExtension(edge);
 	}
+
+	private Color color;
+	private String style;
+	private int width = EdgeModel.DEFAULT_WIDTH;
 
 	public EdgeModel() {
 	}
@@ -75,6 +76,4 @@ public class EdgeModel implements IExtension {
 	public void setWidth(final int width) {
 		this.width = width;
 	}
-
-	
 }

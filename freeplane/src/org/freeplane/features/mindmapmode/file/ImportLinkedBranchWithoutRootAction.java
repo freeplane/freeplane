@@ -36,16 +36,13 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.url.UrlManager;
-import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.mindmapmode.MMapController;
-import org.freeplane.features.mindmapmode.clipboard.MClipboardController;
 
 /**
  * This is exactly the opposite of exportBranch.
  */
-class ImportLinkedBranchWithoutRootAction extends AFreeplaneAction implements IFreeplaneAction{
-
+class ImportLinkedBranchWithoutRootAction extends AFreeplaneAction implements IFreeplaneAction {
 	private static final String NAME = "importLinkedBranchWithoutRoot";
 	private static final long serialVersionUID = -6244651836308760718L;
 
@@ -58,14 +55,15 @@ class ImportLinkedBranchWithoutRootAction extends AFreeplaneAction implements IF
 		final ModeController modeController = getModeController();
 		final NodeModel selected = modeController.getMapController().getSelectedNode();
 		if (selected == null || NodeLinks.getLink(selected) == null) {
-			JOptionPane.showMessageDialog(getController().getViewController().getMapView(), FreeplaneResourceBundle.getText("import_linked_branch_no_link"));
+			JOptionPane.showMessageDialog(getController().getViewController().getMapView(), FreeplaneResourceBundle
+			    .getText("import_linked_branch_no_link"));
 			return;
 		}
 		URL absolute = null;
 		try {
 			final String relative = NodeLinks.getLink(selected);
-			absolute = UrlManager.isAbsolutePath(relative) ? Compat.fileToUrl(new File(relative)) : new URL(
-			    Compat.fileToUrl(map.getFile()), relative);
+			absolute = UrlManager.isAbsolutePath(relative) ? Compat.fileToUrl(new File(relative)) : new URL(Compat
+			    .fileToUrl(map.getFile()), relative);
 		}
 		catch (final MalformedURLException ex) {
 			JOptionPane.showMessageDialog(getController().getViewController().getMapView(),
@@ -73,11 +71,11 @@ class ImportLinkedBranchWithoutRootAction extends AFreeplaneAction implements IF
 			return;
 		}
 		try {
-			final NodeModel node = ((MMapController) modeController.getMapController()).loadTree(map, new File(
-			    absolute.getFile()));
+			final NodeModel node = ((MMapController) modeController.getMapController()).loadTree(map, new File(absolute
+			    .getFile()));
 			for (final ListIterator i = modeController.getMapController().childrenUnfolded(node); i.hasNext();) {
 				final NodeModel importNode = (NodeModel) i.next();
-				((MMapController)modeController.getMapController()).insertNode(importNode, selected);
+				((MMapController) modeController.getMapController()).insertNode(importNode, selected);
 			}
 		}
 		catch (final Exception ex) {
@@ -86,6 +84,6 @@ class ImportLinkedBranchWithoutRootAction extends AFreeplaneAction implements IF
 	}
 
 	public String getName() {
-	    return NAME;
-    }
+		return NAME;
+	}
 }

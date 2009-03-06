@@ -25,7 +25,6 @@ import java.util.HashMap;
 
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.enums.ResourceControllerProperties;
-import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
@@ -33,7 +32,6 @@ import org.freeplane.core.resources.ui.OptionPanelBuilder;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.HtmlTools;
-import org.freeplane.core.util.LogTool;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapnode.pattern.IExternalPatternAction;
 import org.freeplane.features.mindmapnode.pattern.Pattern;
@@ -70,8 +68,8 @@ class ScriptingRegistration implements IExternalPatternAction {
 		}
 
 		public boolean executeScript(final int pIndex, final PrintStream pOutStream, final IErrorHandler pErrorHandler) {
-			return ScriptingEngine.executeScript(modeController.getMapController().getSelectedNode(),
-			    Boolean.TRUE, mScript, modeController, pErrorHandler, pOutStream, getScriptCookies());
+			return ScriptingEngine.executeScript(modeController.getMapController().getSelectedNode(), Boolean.TRUE,
+			    mScript, modeController, pErrorHandler, pOutStream, getScriptCookies());
 		}
 
 		public int getAmountOfScripts() {
@@ -127,14 +125,14 @@ class ScriptingRegistration implements IExternalPatternAction {
 		controls.addTab(TAB);
 		controls.addSeparator(TAB, SEPARATOR, IndexedTree.AS_CHILD);
 		final String GROUP = TAB + "/" + SEPARATOR;
-		controls.addBooleanProperty(GROUP, ResourceControllerProperties.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION,
+		controls.addBooleanProperty(GROUP,
+		    ResourceControllerProperties.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION, IndexedTree.AS_CHILD);
+		controls.addBooleanProperty(GROUP,
+		    ResourceControllerProperties.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION, IndexedTree.AS_CHILD);
+		controls.addBooleanProperty(GROUP,
+		    ResourceControllerProperties.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION, IndexedTree.AS_CHILD);
+		controls.addBooleanProperty(GROUP, ResourceControllerProperties.RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED,
 		    IndexedTree.AS_CHILD);
-		controls.addBooleanProperty(GROUP, ResourceControllerProperties.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION,
-		    IndexedTree.AS_CHILD);
-		controls.addBooleanProperty(GROUP, ResourceControllerProperties.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION,
-		    IndexedTree.AS_CHILD);
-		controls
-		    .addBooleanProperty(GROUP, ResourceControllerProperties.RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED, IndexedTree.AS_CHILD);
 		controls.addStringProperty(GROUP, ResourceControllerProperties.RESOURCES_SCRIPT_USER_KEY_NAME_FOR_SIGNING,
 		    IndexedTree.AS_CHILD);
 	}

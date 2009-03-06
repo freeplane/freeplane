@@ -69,7 +69,8 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			final JViewport port = (JViewport) table.getParent();
 			final Dimension extentSize = port.getExtentSize();
 			if (preferredScrollableViewportSize.width != extentSize.width) {
-				final AttributeTableModelDecoratorAdapter model = (AttributeTableModelDecoratorAdapter) table.getModel();
+				final AttributeTableModelDecoratorAdapter model = (AttributeTableModelDecoratorAdapter) table
+				    .getModel();
 				for (int col = 0; col < table.getColumnCount(); col++) {
 					final int modelColumnWidth = model.getColumnWidth(col);
 					final int currentColumnWidth = (int) (table.getColumnModel().getColumn(col).getWidth() / zoom);

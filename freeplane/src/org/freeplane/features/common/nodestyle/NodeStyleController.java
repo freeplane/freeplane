@@ -175,22 +175,22 @@ public class NodeStyleController implements IExtension {
 	}
 
 	public IPropertyHandler<Color, NodeModel> addBackgroundColorGetter(final Integer key,
-	                                                                  final IPropertyHandler<Color, NodeModel> getter) {
+	                                                                   final IPropertyHandler<Color, NodeModel> getter) {
 		return backgroundColorHandlers.addGetter(key, getter);
 	}
 
 	public IPropertyHandler<Color, NodeModel> addColorGetter(final Integer key,
-	                                                        final IPropertyHandler<Color, NodeModel> getter) {
+	                                                         final IPropertyHandler<Color, NodeModel> getter) {
 		return textColorHandlers.addGetter(key, getter);
 	}
 
 	public IPropertyHandler<Font, NodeModel> addFontGetter(final Integer key,
-	                                                      final IPropertyHandler<Font, NodeModel> getter) {
+	                                                       final IPropertyHandler<Font, NodeModel> getter) {
 		return fontHandlers.addGetter(key, getter);
 	}
 
 	public IPropertyHandler<String, NodeModel> addShapeGetter(final Integer key,
-	                                                         final IPropertyHandler<String, NodeModel> getter) {
+	                                                          final IPropertyHandler<String, NodeModel> getter) {
 		return shapeHandlers.addGetter(key, getter);
 	}
 

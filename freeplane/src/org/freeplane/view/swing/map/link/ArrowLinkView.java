@@ -134,6 +134,15 @@ public class ArrowLinkView {
 		return (source == null) ? target.getMap() : source.getMap();
 	}
 
+	private ModeController getModeController() {
+		NodeView nodeView = source;
+		if (source == null) {
+			nodeView = target;
+		}
+		final MapView mapView = nodeView.getMap();
+		return mapView.getModeController();
+	}
+
 	/**
 	 * fc: This getter is public, because the view gets the model by click on
 	 * the curve.
@@ -162,15 +171,6 @@ public class ArrowLinkView {
 		final ArrowLinkModel model = getModel();
 		return LinkController.getController(getModeController()).getWidth(model);
 	}
-
-	private ModeController getModeController() {
-	    NodeView nodeView = source;
-	    if(source == null){
-	    	nodeView = target;
-	    }
-	    MapView mapView = nodeView.getMap();
-	    return mapView.getModeController();
-    }
 
 	protected double getZoom() {
 		return getMap().getZoom();

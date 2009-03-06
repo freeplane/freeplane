@@ -13,19 +13,17 @@ import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.WindowConstants;
 
-import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
-import org.freeplane.core.undo.IUndoableActor;
 
 import atp.sHotEqn;
 
 class JZoomedHotEqn extends sHotEqn {
 	static String editorTitle = null;
 	static private double zoom = 1f;
-	private LatexExtension model;
 	final private LatexNodeHook latexController;
+	private LatexExtension model;
 
-	JZoomedHotEqn(LatexNodeHook latexController, final LatexExtension latexExtension) {
+	JZoomedHotEqn(final LatexNodeHook latexController, final LatexExtension latexExtension) {
 		this.latexController = latexController;
 		setDebug(false);
 		setEditable(false);

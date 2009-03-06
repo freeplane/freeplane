@@ -194,7 +194,8 @@ class ManagePatternsPopupDialog extends JDialog implements KeyListener {
 		}
 		catch (final Exception e) {
 			LogTool.logException(e);
-			JOptionPane.showMessageDialog(this, getDialogTitle(), FreeplaneResourceBundle.getText("accessories/plugins/ManagePatterns.not_found"), JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, getDialogTitle(), FreeplaneResourceBundle
+			    .getText("accessories/plugins/ManagePatterns.not_found"), JOptionPane.ERROR_MESSAGE);
 		}
 		initialize(patternList);
 	}
@@ -471,8 +472,7 @@ class ManagePatternsPopupDialog extends JDialog implements KeyListener {
 		this.pack();
 		final String marshalled = ResourceController.getResourceController().getProperty(
 		    ManagePatternsPopupDialog.WINDOW_PREFERENCE_STORAGE_PROPERTY);
-		final StyleEditorWindowCfgStorage decorateDialog = StyleEditorWindowCfgStorage
-		    .decorateDialog(marshalled, this);
+		final StyleEditorWindowCfgStorage decorateDialog = StyleEditorWindowCfgStorage.decorateDialog(marshalled, this);
 		if (decorateDialog != null) {
 			mSplitPane.setDividerLocation(decorateDialog.getDividerPosition());
 		}
@@ -574,7 +574,8 @@ class ManagePatternsPopupDialog extends JDialog implements KeyListener {
 						continue;
 					}
 					if (otherPattern.getName().equals(newPatternName)) {
-						JOptionPane.showMessageDialog(this, FreeplaneResourceBundle.getText("ManagePatternsPopupDialog.DuplicateNameMessage"));
+						JOptionPane.showMessageDialog(this, FreeplaneResourceBundle
+						    .getText("ManagePatternsPopupDialog.DuplicateNameMessage"));
 					}
 				}
 			}

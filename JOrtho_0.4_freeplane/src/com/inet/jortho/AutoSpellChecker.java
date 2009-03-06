@@ -24,9 +24,15 @@ package com.inet.jortho;
 
 import java.util.Locale;
 
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.text.*;
+import javax.swing.SwingUtilities;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.Element;
+import javax.swing.text.Highlighter;
+import javax.swing.text.JTextComponent;
 import javax.swing.text.Highlighter.Highlight;
 
 /**
@@ -36,206 +42,197 @@ import javax.swing.text.Highlighter.Highlight;
  * @author Volker Berlin
  */
 class AutoSpellChecker implements DocumentListener, LanguageChangeListener {
-    private static final RedZigZagPainter painter = new RedZigZagPainter();
+	private static final RedZigZagPainter painter = new RedZigZagPainter();
 
-    private final JTextComponent                jText;
-    private final SpellCheckerOptions options;
+	/**
+	 * Remove the AutoSpellChecker from the given JTextComponent.
+	 * 
+	 * @param text
+	 *            the JTextComponent
+	 */
+	static void disable(final JTextComponent text) {
+		final AbstractDocument doc = (AbstractDocument) text.getDocument();
+		for (final DocumentListener listener : doc.getDocumentListeners()) {
+			if (listener instanceof AutoSpellChecker) {
+				final AutoSpellChecker autoSpell = (AutoSpellChecker) listener;
+				doc.removeDocumentListener(autoSpell);
+				AutoSpellChecker.removeHighlights(text);
+			}
+		}
+	}
 
-    private Dictionary                    dictionary;
+	/**
+	 * Refresh the highlighting. This can be useful if the dictionary was modify.
+	 * 
+	 * @param text
+	 *            the JTextComponent
+	 */
+	static void refresh(final JTextComponent text) {
+		final AbstractDocument doc = (AbstractDocument) text.getDocument();
+		for (final DocumentListener listener : doc.getDocumentListeners()) {
+			if (listener instanceof AutoSpellChecker) {
+				final AutoSpellChecker autoSpell = (AutoSpellChecker) listener;
+				autoSpell.checkAll();
+			}
+		}
+	}
 
-    private Locale                        locale;
+	private static void removeHighlights(final JTextComponent text) {
+		final Highlighter highlighter = text.getHighlighter();
+		for (final Highlight highlight : highlighter.getHighlights()) {
+			if (highlight.getPainter() == painter) {
+				highlighter.removeHighlight(highlight);
+			}
+		}
+	}
 
-    
-    public AutoSpellChecker(JTextComponent text, SpellCheckerOptions options){
-        this.jText = text;
-        this.options = options == null ? SpellChecker.getOptions() : options;
-        jText.getDocument().addDocumentListener( this );
+	private Dictionary dictionary;
+	private final JTextComponent jText;
+	private Locale locale;
+	private final SpellCheckerOptions options;
 
-        SpellChecker.addLanguageChangeLister( this );
-        dictionary = SpellChecker.getCurrentDictionary();
-        locale = SpellChecker.getCurrentLocale();
-        checkAll();
-    }
+	public AutoSpellChecker(final JTextComponent text, final SpellCheckerOptions options) {
+		jText = text;
+		this.options = options == null ? SpellChecker.getOptions() : options;
+		jText.getDocument().addDocumentListener(this);
+		SpellChecker.addLanguageChangeLister(this);
+		dictionary = SpellChecker.getCurrentDictionary();
+		locale = SpellChecker.getCurrentLocale();
+		checkAll();
+	}
 
-    /**
-     * Remove the AutoSpellChecker from the given JTextComponent.
-     * 
-     * @param text
-     *            the JTextComponent
-     */
-    static void disable( JTextComponent text ){
-        AbstractDocument doc = (AbstractDocument)text.getDocument();
-        for(DocumentListener listener : doc.getDocumentListeners()){
-            if(listener instanceof AutoSpellChecker){
-                AutoSpellChecker autoSpell = (AutoSpellChecker)listener;
-                doc.removeDocumentListener( autoSpell );
-                removeHighlights(text);
-            }
-        }
-    }
+	/*====================================================================
+	 * 
+	 * Methods of interface DocumentListener
+	 * 
+	 *===================================================================*/
+	/**
+	 * {@inheritDoc}
+	 */
+	public void changedUpdate(final DocumentEvent ev) {
+		//Nothing
+	}
 
-	private static void removeHighlights(JTextComponent text) {
-	    Highlighter highlighter = text.getHighlighter();
-	    for( Highlight highlight : highlighter.getHighlights() ) {
-	        if( highlight.getPainter() == painter ){
-	            highlighter.removeHighlight( highlight );
-	        }
-	    }
-    }
-    
-    /**
-     * Refresh the highlighting. This can be useful if the dictionary was modify.
-     * 
-     * @param text
-     *            the JTextComponent
-     */
-    static void refresh( JTextComponent text ){
-        AbstractDocument doc = (AbstractDocument)text.getDocument();
-        for(DocumentListener listener : doc.getDocumentListeners()){
-            if( listener instanceof AutoSpellChecker ){
-                AutoSpellChecker autoSpell = (AutoSpellChecker)listener;
-                autoSpell.checkAll();
-            }
-        }
-    }
+	/**
+	//     * Check the completely text. Because this can consume many times with large Documents that this will do in a thread
+	 * in the background step by step.
+	 */
+	private void checkAll() {
+		if (jText == null) {
+			//the needed objects does not exists
+			return;
+		}
+		if (dictionary == null) {
+			AutoSpellChecker.removeHighlights(jText);
+			return;
+		}
+		final Thread thread = new Thread(new Runnable() {
+			public void run() {
+				final Document document = jText.getDocument();
+				for (int i = 0; i < document.getLength();) {
+					try {
+						final Element element = ((AbstractDocument) document).getParagraphElement(i);
+						i = element.getEndOffset();
+						SwingUtilities.invokeLater(new Runnable() {
+							public void run() {
+								checkElement(element);
+							}
+						});
+					}
+					catch (final java.lang.Exception ex) {
+						return;
+					}
+				}
+			}
+		}, "JOrtho checkall");
+		thread.setPriority(Thread.NORM_PRIORITY - 1);
+		thread.setDaemon(true);
+		thread.start();
+	}
 
-    /*====================================================================
-     * 
-     * Methods of interface DocumentListener
-     * 
-     *===================================================================*/
+	/**
+	 * Check the spelling of the text of an element.
+	 * 
+	 * @param element
+	 *            the to checking Element
+	 */
+	private void checkElement(final javax.swing.text.Element element) {
+		try {
+			final int i = element.getStartOffset();
+			int j = element.getEndOffset();
+			final Highlighter highlighter = jText.getHighlighter();
+			final Highlight[] highlights = highlighter.getHighlights();
+			for (int k = highlights.length; --k >= 0;) {
+				final Highlight highlight = highlights[k];
+				final int hlStartOffset = highlight.getStartOffset();
+				final int hlEndOffset = highlight.getEndOffset();
+				if ((i <= hlStartOffset && hlStartOffset <= j) || (i <= hlEndOffset && hlEndOffset <= j)) {
+					highlighter.removeHighlight(highlight);
+				}
+			}
+			final int l = ((AbstractDocument) jText.getDocument()).getLength();
+			j = Math.min(j, l);
+			if (i >= j) {
+				return;
+			}
+			// prevent a NPE if the dictionary is currently not loaded.
+			final Dictionary dic = dictionary;
+			final Locale loc = locale;
+			if (dic == null || loc == null) {
+				return;
+			}
+			final Tokenizer tok = new Tokenizer(jText, dic, loc, i, j, options);
+			String word;
+			while ((word = tok.nextInvalidWord()) != null) {
+				final int wordOffset = tok.getWordOffset();
+				highlighter.addHighlight(wordOffset, wordOffset + word.length(), painter);
+			}
+		}
+		catch (final BadLocationException e) {
+			e.printStackTrace();
+		}
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public void changedUpdate( DocumentEvent ev ) {
-        //Nothing
-    }
+	/**
+	 * Check the Elements on the given position.
+	 */
+	private void checkElements(int offset, final int length) {
+		final int end = offset + length;
+		final Document document = jText.getDocument();
+		Element element;
+		do {
+			try {
+				// We need to use a ParagraphElement because a CharacterElement produce problems with formating in a word
+				element = ((AbstractDocument) document).getParagraphElement(offset);
+			}
+			catch (final java.lang.Exception ex) {
+				return;
+			}
+			checkElement(element);
+			offset = element.getEndOffset();
+		} while (offset <= end && offset < document.getLength());
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public void insertUpdate( DocumentEvent ev ) {
-        checkElements( ev.getOffset(), ev.getLength() );
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	public void insertUpdate(final DocumentEvent ev) {
+		checkElements(ev.getOffset(), ev.getLength());
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public void removeUpdate( DocumentEvent ev ) {
-        checkElements( ev.getOffset(), 0 );
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	public void languageChanged(final LanguageChangeEvent ev) {
+		dictionary = SpellChecker.getCurrentDictionary();
+		locale = SpellChecker.getCurrentLocale();
+		checkAll();
+	}
 
-    /**
-     * Check the Elements on the given position.
-     */
-    private void checkElements( int offset, int length ) {
-        int end = offset + length;
-        Document document = jText.getDocument();
-        Element element;
-
-        do{
-            try {
-                // We need to use a ParagraphElement because a CharacterElement produce problems with formating in a word
-                element = ((AbstractDocument)document).getParagraphElement( offset );
-            } catch( java.lang.Exception ex ) {
-                return;
-            }
-            checkElement( element );
-            offset = element.getEndOffset();
-        }while( offset <= end && offset < document.getLength() );
-    }
-
-    /**
-     * Check the spelling of the text of an element.
-     * 
-     * @param element
-     *            the to checking Element
-     */
-    private void checkElement( javax.swing.text.Element element ) {
-        try {
-            int i = element.getStartOffset();
-            int j = element.getEndOffset();
-            Highlighter highlighter = jText.getHighlighter();
-            Highlight[] highlights = highlighter.getHighlights();
-            for( int k = highlights.length; --k >= 0; ) {
-                Highlight highlight = highlights[k];
-                int hlStartOffset = highlight.getStartOffset();
-                int hlEndOffset = highlight.getEndOffset();
-                if( (i <= hlStartOffset && hlStartOffset <= j) || 
-                    (i <= hlEndOffset && hlEndOffset <= j) ) {
-                    highlighter.removeHighlight( highlight );
-                }
-            }
-
-            int l = ((AbstractDocument)jText.getDocument()).getLength();
-            j = Math.min( j, l );
-            if( i >= j )
-                return;
-
-            // prevent a NPE if the dictionary is currently not loaded.
-            Dictionary dic = dictionary;
-            Locale loc = locale;
-            if( dic == null || loc == null ){
-                return;
-            }
-            
-            Tokenizer tok = new Tokenizer( jText, dic, loc, i, j, options );
-            String word;
-            while( (word = tok.nextInvalidWord()) != null ) {
-                int wordOffset = tok.getWordOffset();
-                highlighter.addHighlight( wordOffset, wordOffset + word.length(), painter );
-            }
-        } catch( BadLocationException e ) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-//     * Check the completely text. Because this can consume many times with large Documents that this will do in a thread
-     * in the background step by step.
-     */
-    private void checkAll() {
-        if( jText == null ) {
-            //the needed objects does not exists
-            return;
-        }
-        if( dictionary == null) {
-            removeHighlights(jText);
-            return;
-        }
-
-        Thread thread = new Thread( new Runnable() {
-            public void run() {
-                Document document = jText.getDocument();
-                for( int i = 0; i < document.getLength(); ) {
-                    try {
-                        final Element element = ((AbstractDocument)document).getParagraphElement( i );
-                        i = element.getEndOffset();
-                        SwingUtilities.invokeLater( new Runnable() {
-                            public void run() {
-                                checkElement( element );
-                            }
-
-                        } );
-                    } catch( java.lang.Exception ex ) {
-                        return;
-                    }
-                }
-            }
-        }, "JOrtho checkall" );
-        thread.setPriority( Thread.NORM_PRIORITY - 1 );
-        thread.setDaemon( true );
-        thread.start();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void languageChanged( LanguageChangeEvent ev ) {
-        dictionary = SpellChecker.getCurrentDictionary();
-        locale = SpellChecker.getCurrentLocale();
-        checkAll();
-    }
-
+	/**
+	 * {@inheritDoc}
+	 */
+	public void removeUpdate(final DocumentEvent ev) {
+		checkElements(ev.getOffset(), 0);
+	}
 }

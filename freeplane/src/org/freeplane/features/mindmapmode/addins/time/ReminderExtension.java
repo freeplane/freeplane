@@ -20,6 +20,7 @@
 package org.freeplane.features.mindmapmode.addins.time;
 
 import java.util.Timer;
+
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.model.NodeModel;
 
@@ -27,7 +28,6 @@ import org.freeplane.core.model.NodeModel;
  * @author Dimitry Polivaev 30.11.2008
  */
 class ReminderExtension implements IExtension {
-
 	/**
 	 */
 	public static ReminderExtension getExtension(final NodeModel node) {
@@ -42,24 +42,23 @@ class ReminderExtension implements IExtension {
 		this.node = node;
 	}
 
+	public NodeModel getNode() {
+		return node;
+	}
+
 	long getRemindUserAt() {
 		return remindUserAt;
+	}
+
+	public Timer getTimer() {
+		return timer;
 	}
 
 	void setRemindUserAt(final long remindUserAt) {
 		this.remindUserAt = remindUserAt;
 	}
 
-	public NodeModel getNode() {
-	    return node;
-    }
-
-	public void setTimer(Timer timer) {
-	    this.timer = timer;
-    }
-
-	public Timer getTimer() {
-	    return timer;
-    }
-
+	public void setTimer(final Timer timer) {
+		this.timer = timer;
+	}
 }

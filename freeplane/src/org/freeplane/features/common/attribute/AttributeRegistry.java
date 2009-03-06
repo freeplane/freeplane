@@ -47,7 +47,7 @@ public class AttributeRegistry implements IExtension {
 	static public final int GLOBAL = -1;
 	private static final int TABLE_FONT_SIZE = 12;
 
-	static AttributeRegistry createRegistry(ModeController modeController, final MapModel map) {
+	static AttributeRegistry createRegistry(final ModeController modeController, final MapModel map) {
 		AttributeRegistry registry = AttributeRegistry.getRegistry(map);
 		if (registry == null) {
 			final AttributeController attributeController = AttributeController.getController(modeController);
@@ -300,7 +300,7 @@ public class AttributeRegistry implements IExtension {
 		getTableModel().fireTableRowsInserted(index, index);
 	}
 
-	private void registryAttributes(MapController mapController, final NodeModel node) {
+	private void registryAttributes(final MapController mapController, final NodeModel node) {
 		final NodeAttributeTableModel model = NodeAttributeTableModel.getModel(node);
 		if (model == null) {
 			return;

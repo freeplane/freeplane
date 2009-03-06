@@ -181,7 +181,6 @@ class FilterComposerDialog extends JDialog {
 	}
 
 	private class CreateConjunctConditionAction extends AFreeplaneAction {
-
 		private static final long serialVersionUID = 5016454533709313766L;
 
 		CreateConjunctConditionAction() {
@@ -205,12 +204,7 @@ class FilterComposerDialog extends JDialog {
 	}
 
 	private class CreateDisjunctConditionAction extends AFreeplaneAction {
-
 		private static final long serialVersionUID = -8191519725717206315L;
-
-		public String getName() {
-			return getClass().getSimpleName();
-		}
 
 		CreateDisjunctConditionAction() {
 			super(controller, "filter_or");
@@ -226,6 +220,10 @@ class FilterComposerDialog extends JDialog {
 			model.addElement(newCond);
 			validate();
 		}
+
+		public String getName() {
+			return getClass().getSimpleName();
+		}
 	}
 
 	private class CreateNotSatisfiedConditionAction extends AFreeplaneAction {
@@ -233,10 +231,6 @@ class FilterComposerDialog extends JDialog {
 		 * 
 		 */
 		private static final long serialVersionUID = -2133453353200102893L;
-
-		public String getName() {
-			return getClass().getSimpleName();
-		}
 
 		CreateNotSatisfiedConditionAction() {
 			super(controller, "filter_not");
@@ -255,14 +249,15 @@ class FilterComposerDialog extends JDialog {
 				}
 			}
 		}
+
+		public String getName() {
+			return getClass().getSimpleName();
+		}
 	}
 
 	private class DeleteConditionAction extends AFreeplaneAction {
 		private static final long serialVersionUID = -5082978222163959862L;
 
-		public String getName() {
-			return getClass().getSimpleName();
-		}
 		DeleteConditionAction() {
 			super(controller, "filter_delete");
 		}
@@ -279,6 +274,10 @@ class FilterComposerDialog extends JDialog {
 				elementaryConditionList.setSelectedIndex(minSelectionIndex < size ? minSelectionIndex : size - 1);
 			}
 			validate();
+		}
+
+		public String getName() {
+			return getClass().getSimpleName();
 		}
 	}
 

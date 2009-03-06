@@ -12,62 +12,61 @@ import java.util.logging.Logger;
 import org.freeplane.core.resources.ResourceController;
 
 public class ResUtil {
+	/**
+	 */
+	public static void copyFromFile(final String dir, final String fileName, final String destinationDirectory) {
+		try {
+			final File resource = new File(dir, fileName);
+			if (resource == null) {
+				Logger.global.severe("Cannot find resource: " + dir + fileName);
+				return;
+			}
+			final InputStream in = new FileInputStream(resource);
+			final OutputStream out = new FileOutputStream(destinationDirectory + "/" + fileName);
+			ResUtil.copyStream(in, out);
+		}
+		catch (final Exception e) {
+			Logger.global.severe("File not found or could not be copied. " + "Was earching for " + dir + fileName
+			        + " and should go to " + destinationDirectory);
+		}
+	}
 
 	/**
-     */
-    public static boolean createDirectory(final String directoryName) {
-    	final File dir = new File(directoryName);
-    	if (!dir.exists()) {
-    		return dir.mkdir();
-    	}
-    	return true;
-    }
+	 */
+	public static void copyFromResource(final String prefix, final String fileName, final String destinationDirectory) {
+		try {
+			final URL resource = ResourceController.getResourceController().getResource(prefix + fileName);
+			if (resource == null) {
+				Logger.global.severe("Cannot find resource: " + prefix + fileName);
+				return;
+			}
+			final InputStream in = resource.openStream();
+			final OutputStream out = new FileOutputStream(destinationDirectory + "/" + fileName);
+			ResUtil.copyStream(in, out);
+		}
+		catch (final Exception e) {
+			Logger.global.severe("File not found or could not be copied. " + "Was earching for " + prefix + fileName
+			        + " and should go to " + destinationDirectory);
+		}
+	}
 
 	public static void copyStream(final InputStream in, final OutputStream out) throws IOException {
-    	final byte[] buf = new byte[1024];
-    	int len;
-    	while ((len = in.read(buf)) > 0) {
-    		out.write(buf, 0, len);
-    	}
-    	in.close();
-    	out.close();
-    }
+		final byte[] buf = new byte[1024];
+		int len;
+		while ((len = in.read(buf)) > 0) {
+			out.write(buf, 0, len);
+		}
+		in.close();
+		out.close();
+	}
 
 	/**
-     */
-    public static void copyFromResource(final String prefix, final String fileName, final String destinationDirectory) {
-    	try {
-    		final URL resource = ResourceController.getResourceController().getResource(prefix + fileName);
-    		if (resource == null) {
-    			Logger.global.severe("Cannot find resource: " + prefix + fileName);
-    			return;
-    		}
-    		final InputStream in = resource.openStream();
-    		final OutputStream out = new FileOutputStream(destinationDirectory + "/" + fileName);
-    		copyStream(in, out);
-    	}
-    	catch (final Exception e) {
-    		Logger.global.severe("File not found or could not be copied. " + "Was earching for " + prefix + fileName
-    		        + " and should go to " + destinationDirectory);
-    	}
-    }
-
-	/**
-     */
-    public static void copyFromFile(final String dir, final String fileName, final String destinationDirectory) {
-    	try {
-    		final File resource = new File(dir, fileName);
-    		if (resource == null) {
-    			Logger.global.severe("Cannot find resource: " + dir + fileName);
-    			return;
-    		}
-    		final InputStream in = new FileInputStream(resource);
-    		final OutputStream out = new FileOutputStream(destinationDirectory + "/" + fileName);
-    		copyStream(in, out);
-    	}
-    	catch (final Exception e) {
-    		Logger.global.severe("File not found or could not be copied. " + "Was earching for " + dir + fileName
-    		        + " and should go to " + destinationDirectory);
-    	}
-    }
+	 */
+	public static boolean createDirectory(final String directoryName) {
+		final File dir = new File(directoryName);
+		if (!dir.exists()) {
+			return dir.mkdir();
+		}
+		return true;
+	}
 }

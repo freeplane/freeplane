@@ -29,8 +29,8 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.ui.AFreeplaneAction;
 
 class CopyAction extends AFreeplaneAction implements IFreeplaneAction {
-	private static final long serialVersionUID = 4816549133103377252L;
 	private static final String NAME = "copy";
+	private static final long serialVersionUID = 4816549133103377252L;
 
 	public CopyAction(final Controller controller) {
 		super(controller, NAME, "/images/editcopy.png");
@@ -41,7 +41,7 @@ class CopyAction extends AFreeplaneAction implements IFreeplaneAction {
 		final ModeController modeController = getModeController();
 		final IMapSelection selection = controller.getSelection();
 		if (selection != null) {
-			ClipboardController clipboardController = (ClipboardController) modeController
+			final ClipboardController clipboardController = (ClipboardController) modeController
 			    .getExtension(ClipboardController.class);
 			final Transferable copy = clipboardController.copy(selection);
 			if (copy != null) {

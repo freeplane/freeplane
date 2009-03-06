@@ -10,19 +10,22 @@ import org.freeplane.core.ui.AFreeplaneAction;
 
 /** Select Note Window at the position action */
 class SetNoteWindowPosition extends AFreeplaneAction {
-    private String position;
-	public SetNoteWindowPosition(Controller controller, String position){
-        super(controller, "note_window_location." + position);
-        this.position = position;
-    };
-    public void actionPerformed(ActionEvent e) {
-    	final ResourceController resourceController = ResourceController.getResourceController();
-		resourceController.setProperty("location", position );
-   	    final ViewController viewController = getModeController().getController().getViewController();
-    	if ( "true".equals(resourceController.getProperty(ResourceControllerProperties.RESOURCES_USE_SPLIT_PANE) )) {        		
+	private final String position;
+
+	public SetNoteWindowPosition(final Controller controller, final String position) {
+		super(controller, "note_window_location." + position);
+		this.position = position;
+	};
+
+	public void actionPerformed(final ActionEvent e) {
+		final ResourceController resourceController = ResourceController.getResourceController();
+		resourceController.setProperty("location", position);
+		final ViewController viewController = getModeController().getController().getViewController();
+		if ("true".equals(resourceController.getProperty(ResourceControllerProperties.RESOURCES_USE_SPLIT_PANE))) {
 			viewController.changeNoteWindowLocation(true);
-    	} else {
+		}
+		else {
 			viewController.changeNoteWindowLocation(true);
-    	}
-    }
+		}
+	}
 }

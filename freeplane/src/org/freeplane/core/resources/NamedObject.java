@@ -24,8 +24,6 @@ package org.freeplane.core.resources;
  *
  * @author Dimitry Polivaev
  */
-// TODO ARCH rladstaetter 18.02.2009 class gives no added value to application. remove. use autoboxing if necessary
-@Deprecated
 public class NamedObject {
 	static public NamedObject literal(final String literal) {
 		final NamedObject result = new NamedObject();

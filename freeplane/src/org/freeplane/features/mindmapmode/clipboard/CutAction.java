@@ -28,7 +28,6 @@ import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.enums.ResourceControllerProperties;
-import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
@@ -58,13 +57,14 @@ class CutAction extends AFreeplaneAction {
 			return;
 		}
 		final Transferable copy = cut(controller.getSelection().getSortedSelection());
-		((ClipboardController)mMindMapController.getExtension(ClipboardController.class)).setClipboardContents(copy);
+		((ClipboardController) mMindMapController.getExtension(ClipboardController.class)).setClipboardContents(copy);
 		controller.getViewController().obtainFocusForSelected();
 	}
 
 	Transferable cut(final List<NodeModel> collection) {
 		getModeController().getMapController().sortNodesByDepth(collection);
-		final Transferable totalCopy = ((ClipboardController)getModeController().getExtension(ClipboardController.class)).copy(collection, true);
+		final Transferable totalCopy = ((ClipboardController) getModeController().getExtension(
+		    ClipboardController.class)).copy(collection, true);
 		for (final Iterator i = collection.iterator(); i.hasNext();) {
 			final NodeModel node = (NodeModel) i.next();
 			if (node.getParentNode() != null) {

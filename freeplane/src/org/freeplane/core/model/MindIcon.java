@@ -26,8 +26,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.StringTokenizer;
-import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
@@ -46,7 +44,7 @@ public class MindIcon implements Comparable, IIconInformation {
 	 * Set of all created icons. Name -> MindIcon
 	 */
 	// TODO rladstaetter 28.02.2009 create icon enums which encode necessary information. stop using property files for internal builders
-	private static Map<String,MindIcon> createdIcons = new HashMap<String,MindIcon>();
+	private static Map<String, MindIcon> createdIcons = new HashMap<String, MindIcon>();
 	private static ImageIcon iconNotFound;
 	public static final int LAST = MindIcon.UNKNOWN;
 	private static List<String> mAllIconNames;
@@ -56,7 +54,7 @@ public class MindIcon implements Comparable, IIconInformation {
 
 	public static MindIcon factory(final String iconName) {
 		if (MindIcon.createdIcons.containsKey(iconName)) {
-			return (MindIcon) MindIcon.createdIcons.get(iconName);
+			return MindIcon.createdIcons.get(iconName);
 		}
 		final MindIcon icon = new MindIcon(iconName);
 		MindIcon.createdIcons.put(iconName, icon);
@@ -67,7 +65,7 @@ public class MindIcon implements Comparable, IIconInformation {
 	 */
 	public static MindIcon factory(final String iconName, final ImageIcon icon) {
 		if (MindIcon.createdIcons.containsKey(iconName)) {
-			return (MindIcon) MindIcon.createdIcons.get(iconName);
+			return MindIcon.createdIcons.get(iconName);
 		}
 		final MindIcon mindIcon = new MindIcon(iconName, icon);
 		MindIcon.getAllIconNames().add(iconName);
@@ -79,8 +77,9 @@ public class MindIcon implements Comparable, IIconInformation {
 		if (MindIcon.mAllIconNames != null) {
 			return MindIcon.mAllIconNames;
 		}
-		List<String> list = new ArrayList<String>();
-		list.addAll(Arrays.asList(((String)ResourceController.getResourceController().getProperty(MindIcon.PROPERTY_STRING_ICONS_LIST)).split(";")));
+		final List<String> list = new ArrayList<String>();
+		list.addAll(Arrays.asList((ResourceController.getResourceController()
+		    .getProperty(MindIcon.PROPERTY_STRING_ICONS_LIST)).split(";")));
 		return list;
 	}
 
@@ -139,8 +138,8 @@ public class MindIcon implements Comparable, IIconInformation {
 			URL imageURL = ResourceController.getResourceController().getResource(getIconFileName());
 			if (imageURL == null) {
 				try {
-					final File file = new File(ResourceController.getResourceController().getFreeplaneUserDirectory(), "icons/"
-					        + getName() + ".png");
+					final File file = new File(ResourceController.getResourceController().getFreeplaneUserDirectory(),
+					    "icons/" + getName() + ".png");
 					if (file.canRead()) {
 						imageURL = Compat.fileToUrl(file);
 					}

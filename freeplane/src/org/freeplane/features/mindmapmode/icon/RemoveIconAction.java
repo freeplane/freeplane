@@ -65,8 +65,8 @@ class RemoveIconAction extends MultipleNodeAction implements IIconInformation {
 	}
 
 	public KeyStroke getKeyStroke() {
-		return UITools.getKeyStroke(ResourceController.getResourceController()
-		    .getAdjustableProperty(getKeystrokeResourceName()));
+		return UITools.getKeyStroke(ResourceController.getResourceController().getAdjustableProperty(
+		    getKeystrokeResourceName()));
 	}
 
 	public String getKeystrokeResourceName() {

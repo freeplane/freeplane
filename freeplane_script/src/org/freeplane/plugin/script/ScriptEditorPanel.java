@@ -301,7 +301,8 @@ class ScriptEditorPanel extends JDialog {
 		mSignAction = new SignAction(controller, FreeplaneResourceBundle.getText("plugins/ScriptEditor.sign"));
 		mSignAction.setEnabled(false);
 		addAction(menu, mSignAction);
-		final AbstractAction cancelAction = new CancelAction(FreeplaneResourceBundle.getText("plugins/ScriptEditor.cancel"));
+		final AbstractAction cancelAction = new CancelAction(FreeplaneResourceBundle
+		    .getText("plugins/ScriptEditor.cancel"));
 		addAction(menu, cancelAction);
 		final AbstractAction exitAction = new ExitAction(FreeplaneResourceBundle.getText("plugins/ScriptEditor.exit"));
 		addAction(menu, exitAction);

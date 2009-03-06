@@ -41,14 +41,13 @@ public class DoAutomaticSave extends TimerTask {
 	 */
 	private int changeState;
 	final private boolean filesShouldBeDeletedAfterShutdown;
-	final private MapModel model;
 	final private ModeController modeController;
+	final private MapModel model;
 	final private int numberOfFiles;
 	final private File pathToStore;
-	final private Vector tempFileStack; 
-	
-	public DoAutomaticSave(ModeController modeController, 
-	                       final MapModel model, final int numberOfTempFiles,
+	final private Vector tempFileStack;
+
+	public DoAutomaticSave(final ModeController modeController, final MapModel model, final int numberOfTempFiles,
 	                       final boolean filesShouldBeDeletedAfterShutdown, final File pathToStore) {
 		this.modeController = modeController;
 		this.model = model;
@@ -83,8 +82,7 @@ public class DoAutomaticSave extends TimerTask {
 						try {
 							tempFile = File.createTempFile("FM_"
 							        + ((model.toString() == null) ? "unnamed" : model.toString()),
-							    ResourceControllerProperties.FREEPLANE_FILE_EXTENSION,
-							    pathToStore);
+							    ResourceControllerProperties.FREEPLANE_FILE_EXTENSION, pathToStore);
 							if (filesShouldBeDeletedAfterShutdown) {
 								tempFile.deleteOnExit();
 							}
@@ -99,8 +97,7 @@ public class DoAutomaticSave extends TimerTask {
 						((MFileManager) UrlManager.getController(modeController)).saveInternal((MMapModel) model,
 						    tempFile, true /*=internal call*/);
 						modeController.getController().getViewController().out(
-						    FpStringUtils.format("automatically_save_message",
-						        new Object[] { tempFile.toString() }));
+						    FpStringUtils.format("automatically_save_message", new Object[] { tempFile.toString() }));
 					}
 					catch (final Exception e) {
 						System.err.println("Error in automatic MapModel.save(): " + e.getMessage());

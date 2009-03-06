@@ -29,10 +29,10 @@ import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.MenuBuilder;
 
 /** This closes only the current map */
-class CloseAction extends AbstractAction implements IFreeplaneAction{
+class CloseAction extends AbstractAction implements IFreeplaneAction {
+	static final String NAME = "close";
 	private static final long serialVersionUID = -1585226261004948225L;
 	final private Controller controller;
-	static final String NAME = "close";
 
 	CloseAction(final Controller controller) {
 		this.controller = controller;

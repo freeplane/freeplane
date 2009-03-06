@@ -22,107 +22,106 @@
  */
 package com.inet.jortho;
 
-import java.util.*;
+import java.util.ResourceBundle;
 
 /**
  * @author Volker Berlin
  */
 class Utils {
+	/**
+	 * Create a String where the first letter is written with a uppercase.
+	 * 
+	 * @param word
+	 *            the word that should be change
+	 * @return the new String if needed
+	 */
+	static String getCapitalized(final String word) {
+		if ((word.length() > 0) && Character.isLowerCase(word.charAt(0))) {
+			return word.substring(0, 1).toUpperCase() + word.substring(1);
+		}
+		return word;
+	}
 
-    /**
-     * Translate a GUI string in one of the supported languages. If the value was not find then the key is returned.
-     * 
-     * @param value
-     *            the key of the language resource.
-     * @return the translation result
-     */
-    static String getResource( String value ) {
-        try {
-            ResourceBundle resource = ResourceBundle.getBundle( "com.inet.jortho.i18n.resource" );
-            return resource.getString( value );
-        } catch( Exception e ) {
-            e.printStackTrace();
-        }
-        return value;
-    }
+	/**
+	 * Create a String with inverted case for the first letter. If it is lowercase then it will change to uppercase and
+	 * vice versa.
+	 * 
+	 * @param word
+	 *            the word that should be change
+	 * @return the new String if needed
+	 */
+	static String getInvertedCapitalizion(final String word) {
+		if (word.length() > 0) {
+			if (Character.isLowerCase(word.charAt(0))) {
+				return word.substring(0, 1).toUpperCase() + word.substring(1);
+			}
+			if (Character.isUpperCase(word.charAt(0))) {
+				return word.substring(0, 1).toLowerCase() + word.substring(1);
+			}
+		}
+		return word;
+	}
 
-    /**
-     * Create a String where the first letter is written with a uppercase.
-     * 
-     * @param word
-     *            the word that should be change
-     * @return the new String if needed
-     */
-    static String getCapitalized( String word ) {
-        if( (word.length() > 0) && Character.isLowerCase( word.charAt( 0 ) ) ) {
-            return word.substring( 0, 1 ).toUpperCase() + word.substring( 1 );
-        }
-        return word;
-    }
+	/**
+	 * Translate a GUI string in one of the supported languages. If the value was not find then the key is returned.
+	 * 
+	 * @param value
+	 *            the key of the language resource.
+	 * @return the translation result
+	 */
+	static String getResource(final String value) {
+		try {
+			final ResourceBundle resource = ResourceBundle.getBundle("com.inet.jortho.i18n.resource");
+			return resource.getString(value);
+		}
+		catch (final Exception e) {
+			e.printStackTrace();
+		}
+		return value;
+	}
 
-    /**
-     * Create a String with inverted case for the first letter. If it is lowercase then it will change to uppercase and
-     * vice versa.
-     * 
-     * @param word
-     *            the word that should be change
-     * @return the new String if needed
-     */
-    static String getInvertedCapitalizion( String word ) {
-        if( word.length() > 0 ) {
-            if( Character.isLowerCase( word.charAt( 0 ) ) ) {
-                return word.substring( 0, 1 ).toUpperCase() + word.substring( 1 );
-            }
-            if( Character.isUpperCase( word.charAt( 0 ) ) ) {
-                return word.substring( 0, 1 ).toLowerCase() + word.substring( 1 );
-            }
-        }
-        return word;
-    }
+	/**
+	 * Check if all letter are uppercase. Character that are not letters are ignored.
+	 * 
+	 * @param word
+	 *            the word that should be check. It can not be null or empty.
+	 * @return if all character are a uppercase letter
+	 */
+	static boolean isAllCapitalized(final String word) {
+		for (int i = 0; i < word.length(); i++) {
+			final char ch = word.charAt(i);
+			if (Character.isLetter(ch) && !Character.isUpperCase(ch)) {
+				return false;
+			}
+		}
+		return true;
+	}
 
-    /**
-     * Check if the first character is a uppcase letter
-     * 
-     * @param word
-     *            the word that should be check. It can not be null.
-     * @return true if the first character is a uppercase letter
-     */
-    static boolean isFirstCapitalized( String word ) {
-        return (word.length() > 0) && Character.isUpperCase( word.charAt( 0 ) );
-    }
+	/**
+	 * Check if the first character is a uppcase letter
+	 * 
+	 * @param word
+	 *            the word that should be check. It can not be null.
+	 * @return true if the first character is a uppercase letter
+	 */
+	static boolean isFirstCapitalized(final String word) {
+		return (word.length() > 0) && Character.isUpperCase(word.charAt(0));
+	}
 
-    /**
-     * Check if all letter are uppercase. Character that are not letters are ignored.
-     * 
-     * @param word
-     *            the word that should be check. It can not be null or empty.
-     * @return if all character are a uppercase letter
-     */
-    static boolean isAllCapitalized( String word ) {
-        for( int i = 0; i < word.length(); i++ ) {
-            char ch = word.charAt( i );
-
-            if( Character.isLetter( ch ) && !Character.isUpperCase( ch ) ) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Check if the word include a digit.
-     * 
-     * @param word
-     *            the word that should be check. It can not be null.
-     * @return if there is any number in the word.
-     */
-    static boolean isIncludeNumbers( String word ) {
-        for( int i = 0; i < word.length(); i++ ) {
-            char ch = word.charAt( i );
-            if( Character.isDigit( ch ) ) {
-                return true;
-            }
-        }
-        return false;
-    }
+	/**
+	 * Check if the word include a digit.
+	 * 
+	 * @param word
+	 *            the word that should be check. It can not be null.
+	 * @return if there is any number in the word.
+	 */
+	static boolean isIncludeNumbers(final String word) {
+		for (int i = 0; i < word.length(); i++) {
+			final char ch = word.charAt(i);
+			if (Character.isDigit(ch)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

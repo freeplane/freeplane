@@ -350,7 +350,8 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			else {
 				newItem.setSelected(false);
 			}
-			final String keystroke = ResourceController.getResourceController().getAdjustableProperty("keystroke_mode_" + key);
+			final String keystroke = ResourceController.getResourceController().getAdjustableProperty(
+			    "keystroke_mode_" + key);
 			if (keystroke != null) {
 				newItem.setAccelerator(KeyStroke.getKeyStroke(keystroke));
 			}

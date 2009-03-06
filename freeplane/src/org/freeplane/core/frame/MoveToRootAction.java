@@ -28,10 +28,10 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.MenuBuilder;
 
-class MoveToRootAction extends AbstractAction implements IFreeplaneAction{
+class MoveToRootAction extends AbstractAction implements IFreeplaneAction {
+	static final String NAME = "moveToRoot";
 	private static final long serialVersionUID = 1633978434705890609L;
 	final private Controller controller;
-	static final String NAME = "moveToRoot";
 
 	MoveToRootAction(final Controller controller) {
 		this.controller = controller;

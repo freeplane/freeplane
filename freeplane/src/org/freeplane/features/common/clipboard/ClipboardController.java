@@ -48,25 +48,17 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
-import org.freeplane.features.mindmapmode.clipboard.MClipboardController;
 
 /**
  * @author Dimitry Polivaev
  */
 public class ClipboardController implements IExtension {
+	public static ClipboardController getController(final ModeController modeController) {
+		return (ClipboardController) modeController.getExtension(ClipboardController.class);
+	}
+
 	public static void install(final ModeController modeController, final ClipboardController clipboardController) {
 		modeController.putExtension(ClipboardController.class, clipboardController);
-	}
-
-	public void saveHTML(final NodeModel rootNodeOfBranch, final File file) throws IOException {
-		final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
-		final MindMapHTMLWriter htmlWriter = new MindMapHTMLWriter(getModeController().getMapController(), fileout);
-		htmlWriter.writeHTML(rootNodeOfBranch);
-	}
-
-	public void writeHTML(final Collection<NodeModel> selectedNodes, final Writer fileout) throws IOException {
-		final MindMapHTMLWriter htmlWriter = new MindMapHTMLWriter(getModeController().getMapController(), fileout);
-		htmlWriter.writeHTML(selectedNodes);
 	}
 
 	final private Clipboard clipboard;
@@ -115,8 +107,8 @@ public class ClipboardController implements IExtension {
 	public Transferable copy(final NodeModel node, final boolean saveInvisible) {
 		final StringWriter stringWriter = new StringWriter();
 		try {
-			getModeController().getMapController().getMapWriter()
-			    .writeNodeAsXml(stringWriter, node, saveInvisible, true);
+			getModeController().getMapController().getMapWriter().writeNodeAsXml(stringWriter, node, saveInvisible,
+			    true);
 		}
 		catch (final IOException e) {
 		}
@@ -246,6 +238,12 @@ public class ClipboardController implements IExtension {
 		return result.toString();
 	}
 
+	public void saveHTML(final NodeModel rootNodeOfBranch, final File file) throws IOException {
+		final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
+		final MindMapHTMLWriter htmlWriter = new MindMapHTMLWriter(getModeController().getMapController(), fileout);
+		htmlWriter.writeHTML(rootNodeOfBranch);
+	}
+
 	public boolean saveTXT(final NodeModel rootNodeOfBranch, final File file) {
 		try {
 			final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
@@ -312,6 +310,11 @@ public class ClipboardController implements IExtension {
 				writeChildrenText(child, fileout, depth);
 			}
 		}
+	}
+
+	public void writeHTML(final Collection<NodeModel> selectedNodes, final Writer fileout) throws IOException {
+		final MindMapHTMLWriter htmlWriter = new MindMapHTMLWriter(getModeController().getMapController(), fileout);
+		htmlWriter.writeHTML(selectedNodes);
 	}
 
 	public boolean writeRTF(final Collection<NodeModel> selectedNodes, final BufferedWriter fileout) {
@@ -420,8 +423,4 @@ public class ClipboardController implements IExtension {
 		fileout.write("\n");
 		writeChildrenText(mindMapNodeModel, fileout, depth);
 	}
-
-	public static ClipboardController getController(ModeController modeController) {
-		return (ClipboardController) modeController.getExtension(ClipboardController.class);
-    }
 }

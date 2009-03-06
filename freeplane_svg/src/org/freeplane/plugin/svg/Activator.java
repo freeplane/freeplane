@@ -16,16 +16,17 @@ public class Activator implements BundleActivator {
 	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(final BundleContext context) throws Exception {
-		Hashtable<String, String[]> props = new Hashtable<String, String[]>();
+		final Hashtable<String, String[]> props = new Hashtable<String, String[]>();
 		props.put("mode", new String[] { MModeController.MODENAME });
-		context.registerService(IModeControllerExtensionProvider.class.getName(), new IModeControllerExtensionProvider() {
-			public void installExtension(ModeController modeController) {
-				final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
-				final Controller controller = modeController.getController();
-				menuBuilder.addAnnotatedAction(new ExportPdf(controller));
-				menuBuilder.addAnnotatedAction(new ExportSvg(controller));
-			}
-		}, props);
+		context.registerService(IModeControllerExtensionProvider.class.getName(),
+		    new IModeControllerExtensionProvider() {
+			    public void installExtension(final ModeController modeController) {
+				    final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
+				    final Controller controller = modeController.getController();
+				    menuBuilder.addAnnotatedAction(new ExportPdf(controller));
+				    menuBuilder.addAnnotatedAction(new ExportSvg(controller));
+			    }
+		    }, props);
 	}
 
 	/*

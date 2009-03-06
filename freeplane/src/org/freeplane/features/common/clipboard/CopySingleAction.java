@@ -29,7 +29,7 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
 
-class CopySingleAction extends AFreeplaneAction implements IFreeplaneAction{
+class CopySingleAction extends AFreeplaneAction implements IFreeplaneAction {
 	private static final String NAME = "copySingle";
 
 	public CopySingleAction(final Controller controller) {
@@ -40,13 +40,14 @@ class CopySingleAction extends AFreeplaneAction implements IFreeplaneAction{
 		final Controller controller = getController();
 		final List<NodeModel> selection = controller.getSelection().getSelection();
 		final ModeController modeController = getModeController();
-		final Transferable copy = ((ClipboardController)modeController.getExtension(ClipboardController.class)).copySingle(selection);
+		final Transferable copy = ((ClipboardController) modeController.getExtension(ClipboardController.class))
+		    .copySingle(selection);
 		if (copy != null) {
-			((ClipboardController)modeController.getExtension(ClipboardController.class)).setClipboardContents(copy);
+			((ClipboardController) modeController.getExtension(ClipboardController.class)).setClipboardContents(copy);
 		}
 	}
 
 	public String getName() {
-	    return NAME;
-    }
+		return NAME;
+	}
 }

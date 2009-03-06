@@ -43,7 +43,7 @@ import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 
 class ExportBranchAction extends AFreeplaneAction implements IFreeplaneAction {
-    private static final String NAME = "exportBranch";
+	private static final String NAME = "exportBranch";
 	private static final long serialVersionUID = 8805695439736505873L;
 
 	public ExportBranchAction(final Controller controller) {
@@ -89,7 +89,6 @@ class ExportBranchAction extends AFreeplaneAction implements IFreeplaneAction {
 				return;
 			}
 			if (chosenFile.exists()) {
-				
 				final int overwriteMap = JOptionPane.showConfirmDialog(controller.getViewController().getMapView(),
 				    FreeplaneResourceBundle.getText("map_already_exists"), "Freeplane", JOptionPane.YES_NO_OPTION);
 				if (overwriteMap != JOptionPane.YES_OPTION) {
@@ -134,6 +133,6 @@ class ExportBranchAction extends AFreeplaneAction implements IFreeplaneAction {
 	}
 
 	public String getName() {
-	    return NAME;
-    }
+		return NAME;
+	}
 }

@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- package org.freeplane.main.application;
+package org.freeplane.main.application;
 
 import java.awt.EventQueue;
 import java.io.File;
@@ -25,7 +25,6 @@ import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 
 import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
@@ -47,15 +46,14 @@ import org.freeplane.main.mindmapmode.MModeControllerFactory;
 import org.freeplane.view.swing.map.MMapViewController;
 
 public class FreeplaneStarter {
-
 	static public void main(final String[] args) {
 		final FreeplaneStarter starter = new FreeplaneStarter();
 		starter.run(args);
 	}
 
+	private ApplicationResourceController applicationResourceController;
 	private Controller controller;
 	private IFeedBack feedBack;
-	private ApplicationResourceController applicationResourceController;
 	private IFreeplaneSplash splash;
 	private ApplicationViewController viewController;
 
@@ -77,9 +75,7 @@ public class FreeplaneStarter {
 		feedBack.setMaximumValue(9);
 		Compat.useScreenMenuBar();
 		feedBack.increase(FreeplaneSplashModern.FREEPLANE_PROGRESS_UPDATE_LOOK_AND_FEEL);
-
 		Controller.setLookAndFeel(ResourceController.getResourceController().getProperty("lookandfeel"));
-		
 		feedBack.increase(FreeplaneSplashModern.FREEPLANE_PROGRESS_CREATE_CONTROLLER);
 		System.setSecurityManager(new FreeplaneSecurityManager());
 		final MMapViewController mapViewController = new MMapViewController();
@@ -130,7 +126,6 @@ public class FreeplaneStarter {
 			}
 		});
 	}
-
 
 	private ModeController createModeController(final String[] args) {
 		final ModeController ctrl = controller.getModeController();
@@ -222,5 +217,4 @@ public class FreeplaneStarter {
 			e.printStackTrace();
 		}
 	}
-
 }

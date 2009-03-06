@@ -22,80 +22,73 @@
  */
 package com.inet.jortho;
 
-
 /**
  * This class hold one Suggestion for another spelling. 
  * Note: this class has a natural ordering that is inconsistent with equals.
  * @author Volker Berlin
  */
-final class Suggestion implements Comparable<Suggestion>{
+final class Suggestion implements Comparable<Suggestion> {
+	private final int diff;
+	private final String word;
 
-    private final String word;
-    private final int diff;
-    
-    /**
-     * Construct a suggestion
-     * @param word the characters of the suggested the word.
-     * @param diff the difference to the original word.
-     */
-    Suggestion( CharSequence word, int diff) {
-        this.word = word.toString();
-        this.diff = diff;
-    }
-    
-    /**
-     * Return the suggested word and it equals to getWord().
-     */
-    @Override
-    public String toString(){
-        return word;
-    }
+	/**
+	 * Construct a suggestion
+	 * @param word the characters of the suggested the word.
+	 * @param diff the difference to the original word.
+	 */
+	Suggestion(final CharSequence word, final int diff) {
+		this.word = word.toString();
+		this.diff = diff;
+	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	public int compareTo(final Suggestion sugg) {
+		return diff - sugg.diff;
+	}
 
-    /**
-     * Get the suggested word.
-     * @return the word
-     */
-    public String getWord() {
-        return word;
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean equals(final Object sugg) {
+		if (sugg instanceof Suggestion) {
+			return word.equals(((Suggestion) sugg).word);
+		}
+		return false;
+	}
 
-    
-    /**
-     * Return a value that descript dissimilarity to the original word.
-     * A vaulue of 0 means that the value is 100% identical. This should not occur.
-     * @return the dissimilarity, so larger to differ the word.   
-     */
-    public int getDissimilarity(){
-        return diff;
-    }
-    
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(Object sugg){
-        if (sugg instanceof Suggestion) {
-            return word.equals( ((Suggestion)sugg).word );
-        }
-        return false;
-    }
-    
-    
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode(){
-        return word.hashCode();
-    }
+	/**
+	 * Return a value that descript dissimilarity to the original word.
+	 * A vaulue of 0 means that the value is 100% identical. This should not occur.
+	 * @return the dissimilarity, so larger to differ the word.   
+	 */
+	public int getDissimilarity() {
+		return diff;
+	}
 
+	/**
+	 * Get the suggested word.
+	 * @return the word
+	 */
+	public String getWord() {
+		return word;
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public int compareTo( Suggestion sugg ) {
-        return diff - sugg.diff;
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int hashCode() {
+		return word.hashCode();
+	}
+
+	/**
+	 * Return the suggested word and it equals to getWord().
+	 */
+	@Override
+	public String toString() {
+		return word;
+	}
 }

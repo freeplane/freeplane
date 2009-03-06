@@ -32,7 +32,6 @@ import org.freeplane.core.actions.QuitAction;
 import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.IMapSelection;
@@ -48,22 +47,51 @@ import org.freeplane.core.util.LogTool;
  * MapModel(editing) or MapView(navigation).
  */
 public class Controller extends AController {
+	public static void setLookAndFeel(final String lookAndFeel) {
+		try {
+			if (lookAndFeel.equals("windows")) {
+				UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+			}
+			else if (lookAndFeel.equals("motif")) {
+				UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+			}
+			else if (lookAndFeel.equals("mac")) {
+				UIManager.setLookAndFeel("javax.swing.plaf.mac.MacLookAndFeel");
+			}
+			else if (lookAndFeel.equals("metal")) {
+				UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+			}
+			else if (lookAndFeel.equals("gtk")) {
+				UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+			}
+			else if (lookAndFeel.equals("nothing")) {
+			}
+			else if (lookAndFeel.indexOf('.') != -1) {
+				UIManager.setLookAndFeel(lookAndFeel);
+			}
+			else {
+				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			}
+		}
+		catch (final Exception ex) {
+			System.err.println("Error while setting Look&Feel" + lookAndFeel);
+		}
+	}
+
+	private final ExtensionContainer extensionContainer;
 	/**
 	 * Converts from a local link to the real file URL of the documentation map.
 	 * (Used to change this behavior under MacOSX).
 	 */
 	private ModeController modeController;
 	final private Map<String, ModeController> modeControllers = new HashMap<String, ModeController>();
-
 	private ViewController viewController;
 
 	public Controller() {
 		super();
-		extensionContainer = new ExtensionContainer(new HashMap <Class<? extends IExtension>, IExtension>());
-		putAction(new QuitAction(this)); 
+		extensionContainer = new ExtensionContainer(new HashMap<Class<? extends IExtension>, IExtension>());
+		putAction(new QuitAction(this));
 	}
-
-
 
 	public void addModeController(final ModeController modeController) {
 		modeControllers.put(modeController.getModeName(), modeController);
@@ -83,21 +111,24 @@ public class Controller extends AController {
 		String myMessage = "";
 		if (message != null) {
 			myMessage = message.toString();
-		} else {
+		}
+		else {
 			myMessage = FreeplaneResourceBundle.getText("undefined_error");
 			if (myMessage == null) {
 				myMessage = "Undefined error";
 			}
 		}
-		JOptionPane.showMessageDialog(getViewController().getContentPane(),
-				myMessage, "Freeplane", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(getViewController().getContentPane(), myMessage, "Freeplane",
+		    JOptionPane.ERROR_MESSAGE);
 	}
 
 	public void errorMessage(final Object message, final JComponent component) {
-		JOptionPane.showMessageDialog(component, message.toString(),
-				"Freeplane", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(component, message.toString(), "Freeplane", JOptionPane.ERROR_MESSAGE);
 	}
 
+	public IExtension getExtension(final Class<? extends IExtension> clazz) {
+		return extensionContainer.getExtension(clazz);
+	}
 
 	/**
 	 * @return
@@ -116,7 +147,7 @@ public class Controller extends AController {
 	}
 
 	public ModeController getModeController(final String modeName) {
-		LogTool.info("requesting mode: " +modeName);
+		LogTool.info("requesting mode: " + modeName);
 		return modeControllers.get(modeName);
 	}
 
@@ -135,6 +166,10 @@ public class Controller extends AController {
 		return viewController;
 	}
 
+	public void putExtension(final Class<? extends IExtension> clazz, final IExtension extension) {
+		extensionContainer.putExtension(clazz, extension);
+	}
+
 	public void quit() {
 		if (shutdown()) {
 			System.exit(0);
@@ -147,7 +182,6 @@ public class Controller extends AController {
 	public void quit(final ActionEvent actionEvent) {
 		getActions().get(QuitAction.NAME).actionPerformed(actionEvent);
 	}
-
 
 	public void selectMode(final ModeController newModeController) {
 		if (modeController == newModeController) {
@@ -175,15 +209,13 @@ public class Controller extends AController {
 	}
 
 	public boolean shutdown() {
-		final String currentMapRestorable = UrlManager.getController(
-				getModeController()).getRestoreable(getMap());
+		final String currentMapRestorable = UrlManager.getController(getModeController()).getRestoreable(getMap());
 		if (!getViewController().quit()) {
 			return false;
 		}
 		if (currentMapRestorable != null) {
 			ResourceController.getResourceController().setProperty(
-					ResourceControllerProperties.ON_START_IF_NOT_SPECIFIED,
-					currentMapRestorable);
+			    ResourceControllerProperties.ON_START_IF_NOT_SPECIFIED, currentMapRestorable);
 		}
 		if (modeController != null) {
 			modeController.shutdown();
@@ -192,46 +224,4 @@ public class Controller extends AController {
 		extensionContainer.getExtensions().clear();
 		return true;
 	}
-	private final ExtensionContainer extensionContainer;
-
-
-	public IExtension getExtension(Class<? extends IExtension> clazz) {
-		return extensionContainer.getExtension(clazz);
-	}
-	public void putExtension(Class<? extends IExtension> clazz, IExtension extension) {
-		   extensionContainer.putExtension(clazz, extension);
-	    }
-
-
-
-	public static void setLookAndFeel(String lookAndFeel) {
-        try {
-    		if (lookAndFeel.equals("windows")) {
-    			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-    		}
-    		else if (lookAndFeel.equals("motif")) {
-    			UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
-    		}
-    		else if (lookAndFeel.equals("mac")) {
-    			UIManager.setLookAndFeel("javax.swing.plaf.mac.MacLookAndFeel");
-    		}
-    		else if (lookAndFeel.equals("metal")) {
-    			UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
-    		}
-    		else if (lookAndFeel.equals("gtk")) {
-    			UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
-    		}
-    		else if (lookAndFeel.equals("nothing")) {
-    		}
-    		else if (lookAndFeel.indexOf('.') != -1) {
-    			UIManager.setLookAndFeel(lookAndFeel);
-    		}
-    		else {
-    			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-    		}
-    	}
-    	catch (final Exception ex) {
-    		System.err.println("Error while setting Look&Feel" + lookAndFeel);
-    	}
-    }
 }

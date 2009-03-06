@@ -27,31 +27,26 @@ import com.inet.jortho.SpellChecker;
  *  
  *  Created on 13.02.2008
  */
+public class SampleApplication extends JFrame {
+	public static void main(final String[] args) {
+		new SampleApplication().setVisible(true);
+	}
 
-public class SampleApplication extends JFrame{
-
-    public static void main(String[] args){
-        new SampleApplication().setVisible( true );
-    }
-    
-    private SampleApplication(){
-        // Build the test frame for the sample
-        super("JOrtho Sample");
-        JEditorPane text = new JTextPane();
-        text.setText( "This is a simppler textt with spellingg errors." );
-        add( text );
-        setSize(200, 160);
-        setDefaultCloseOperation( DISPOSE_ON_CLOSE );
-        setLocationRelativeTo( null );
-
-        // Create user dictionary in the current working directory of your application
-        SpellChecker.setUserDictionaryProvider( new FileUserDictionary() );
-        
-        // Load the configuration from the file dictionaries.cnf and 
-        // use the current locale or the first language as default 
-        SpellChecker.registerDictionaries( null, null );
-
-        // enable the spell checking on the text component with all features
-        SpellChecker.register( text );
-    }
+	private SampleApplication() {
+		// Build the test frame for the sample
+		super("JOrtho Sample");
+		final JEditorPane text = new JTextPane();
+		text.setText("This is a simppler textt with spellingg errors.");
+		add(text);
+		setSize(200, 160);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		setLocationRelativeTo(null);
+		// Create user dictionary in the current working directory of your application
+		SpellChecker.setUserDictionaryProvider(new FileUserDictionary());
+		// Load the configuration from the file dictionaries.cnf and 
+		// use the current locale or the first language as default 
+		SpellChecker.registerDictionaries(null, null);
+		// enable the spell checking on the text component with all features
+		SpellChecker.register(text);
+	}
 }

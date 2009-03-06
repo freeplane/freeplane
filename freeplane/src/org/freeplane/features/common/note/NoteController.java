@@ -80,7 +80,8 @@ public class NoteController implements IExtension {
 
 	protected void setStateIcon(final NodeModel node, final boolean enabled) {
 		boolean showIcon = enabled;
-		if (ResourceController.getResourceController().getBooleanProperty(ResourceControllerProperties.RESOURCES_DON_T_SHOW_NOTE_ICONS)) {
+		if (ResourceController.getResourceController().getBooleanProperty(
+		    ResourceControllerProperties.RESOURCES_DON_T_SHOW_NOTE_ICONS)) {
 			showIcon = false;
 		}
 		node.setStateIcon(NodeNoteBase.NODE_NOTE_ICON, (showIcon) ? noteIcon : null);

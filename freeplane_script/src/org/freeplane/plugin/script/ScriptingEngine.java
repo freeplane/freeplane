@@ -40,7 +40,6 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
-import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
 import org.freeplane.features.common.text.TextController;
@@ -48,6 +47,7 @@ import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.attribute.MAttributeController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 import org.freeplane.main.application.FreeplaneSecurityManager;
+
 /**
  * @author foltin
  */
@@ -69,7 +69,7 @@ class ScriptingEngine extends AFreeplaneAction {
 	 * @return true, if further scripts can be executed, false, if the user
 	 *         canceled or an error occurred.
 	 */
-	static boolean executeScript(final NodeModel node,  Boolean pAlreadyAScriptExecuted, String script,
+	static boolean executeScript(final NodeModel node, Boolean pAlreadyAScriptExecuted, String script,
 	                             final MModeController pMindMapController, final IErrorHandler pErrorHandler,
 	                             final PrintStream pOutStream, final HashMap pScriptCookies) {
 		if (!pAlreadyAScriptExecuted) {
@@ -154,17 +154,19 @@ class ScriptingEngine extends AFreeplaneAction {
 			securityManager.setFinalSecurityManager(scriptingSecurityManager);
 			System.setOut(oldOut);
 			/* restore preferences (and assure that the values are unchanged!). */
-			ResourceController.getResourceController().setProperty(ResourceControllerProperties.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
-			    executeWithoutAsking);
 			ResourceController.getResourceController().setProperty(
-			    ResourceControllerProperties.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION, executeWithoutFileRestriction);
+			    ResourceControllerProperties.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING, executeWithoutAsking);
+			ResourceController.getResourceController().setProperty(
+			    ResourceControllerProperties.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION,
+			    executeWithoutFileRestriction);
 			ResourceController.getResourceController().setProperty(
 			    ResourceControllerProperties.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION,
 			    executeWithoutNetworkRestriction);
 			ResourceController.getResourceController().setProperty(
-			    ResourceControllerProperties.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION, executeWithoutExecRestriction);
-			ResourceController.getResourceController().setProperty(ResourceControllerProperties.RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED,
-			    signedScriptsWithoutRestriction);
+			    ResourceControllerProperties.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION,
+			    executeWithoutExecRestriction);
+			ResourceController.getResourceController().setProperty(
+			    ResourceControllerProperties.RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED, signedScriptsWithoutRestriction);
 		}
 		/*
 		 * Cover exceptions in normal security context (ie. no problem with

@@ -34,7 +34,7 @@ import org.freeplane.core.modecontroller.MapController;
 public class IconRegistry implements IExtension {
 	final private SortedMapListModel mapIcons;
 
-	IconRegistry(MapController mapController, final MapModel map) {
+	IconRegistry(final MapController mapController, final MapModel map) {
 		super();
 		mapIcons = new SortedMapListModel();
 		registryNodeIcons(mapController, map.getRootNode());
@@ -48,7 +48,7 @@ public class IconRegistry implements IExtension {
 		return mapIcons;
 	}
 
-	private void registryNodeIcons(MapController mapController, final NodeModel node) {
+	private void registryNodeIcons(final MapController mapController, final NodeModel node) {
 		final List icons = node.getIcons();
 		final Iterator i = icons.iterator();
 		while (i.hasNext()) {

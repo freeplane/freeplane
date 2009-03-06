@@ -33,7 +33,6 @@ import org.freeplane.core.model.NodeModel;
  * @author Dimitry Polivaev 22.11.2008
  */
 public class AttributeController implements IExtension {
-	
 	public static AttributeController getController(final ModeController modeController) {
 		return (AttributeController) modeController.getExtension(AttributeController.class);
 	}
@@ -60,6 +59,21 @@ public class AttributeController implements IExtension {
 			public void onRemove(final MapModel map) {
 			}
 		});
+	}
+
+	public NodeAttributeTableModel createAttributeTableModel(final NodeModel node) {
+		NodeAttributeTableModel attributeModel = (NodeAttributeTableModel) node
+		    .getExtension(NodeAttributeTableModel.class);
+		if (attributeModel != null) {
+			return attributeModel;
+		}
+		attributeModel = new NodeAttributeTableModel(node);
+		node.putExtension(attributeModel);
+		if (node.areViewsEmpty()) {
+			return attributeModel;
+		}
+		getModeController().getMapController().nodeRefresh(node);
+		return attributeModel;
 	}
 
 	public ModeController getModeController() {
@@ -122,20 +136,4 @@ public class AttributeController implements IExtension {
 	public void performSetVisibility(final int index, final boolean isVisible) {
 		throw new UnsupportedOperationException();
 	}
-
-	public NodeAttributeTableModel createAttributeTableModel(final NodeModel node) {
-		NodeAttributeTableModel attributeModel = (NodeAttributeTableModel) node
-		    .getExtension(NodeAttributeTableModel.class);
-		if (attributeModel != null) {
-			return attributeModel;
-		}
-		attributeModel = new NodeAttributeTableModel(node);
-		node.putExtension(attributeModel);
-		if (node.areViewsEmpty()) {
-			return attributeModel;
-		}
-		getModeController().getMapController().nodeRefresh(node);
-		return attributeModel;
-	}
-	
 }

@@ -44,23 +44,13 @@ public class MapModel {
 	 * zero, such that new models are not to be saved.
 	 */
 	protected int changesPerformedSinceLastSave = 0;
+	private final ExtensionContainer extensionContainer;
 	private IFilter filter = null;
 	final private IconRegistry iconRegistry;
 	final private Map<String, NodeModel> nodes;
 	private boolean readOnly = true;
 	private NodeModel root;
 	private URL url;
-
-	private final ExtensionContainer extensionContainer;
-	public Map<Class<? extends IExtension>, IExtension> getExtensions() {
-	    return extensionContainer.getExtensions();
-    }
-
-
-	public void putExtension(IExtension extension) {
-	    extensionContainer.putExtension(extension);
-    }
-
 
 	public MapModel(final ModeController modeController, NodeModel root) {
 		extensionContainer = new ExtensionContainer(new HashMap<Class<? extends IExtension>, IExtension>());
@@ -78,10 +68,8 @@ public class MapModel {
 		iconRegistry = new IconRegistry(modeController.getMapController(), this);
 	}
 
-
 	public void destroy() {
 	}
-
 
 	public String generateNodeID(final String proposedID) {
 		String myProposedID = new String((proposedID != null) ? proposedID : "");
@@ -103,6 +91,13 @@ public class MapModel {
 		return returnValue;
 	}
 
+	public IExtension getExtension(final Class<? extends IExtension> clazz) {
+		return extensionContainer.getExtension(clazz);
+	}
+
+	public Map<Class<? extends IExtension>, IExtension> getExtensions() {
+		return extensionContainer.getExtensions();
+	}
 
 	/**
 	 * Change this to always return null if your model doesn't support files.
@@ -161,6 +156,14 @@ public class MapModel {
 		return (changesPerformedSinceLastSave == 0);
 	}
 
+	public void putExtension(final Class<? extends IExtension> clazz, final IExtension extension) {
+		extensionContainer.putExtension(clazz, extension);
+	}
+
+	public void putExtension(final IExtension extension) {
+		extensionContainer.putExtension(extension);
+	}
+
 	/**
 	 * @param value
 	 * @param nodeModel
@@ -194,7 +197,6 @@ public class MapModel {
 		}
 	}
 
-
 	public void setFile(final File file) {
 		try {
 			url = file.toURL();
@@ -206,15 +208,15 @@ public class MapModel {
 
 	public void setFilter(final IFilter filter) {
 		this.filter = filter;
-	}
+	};
 
 	public void setReadOnly(final boolean readOnly) {
 		this.readOnly = readOnly;
-	}
+	};
 
 	public void setRoot(final NodeModel root) {
 		this.root = root;
-	};
+	}
 
 	/**
 	 * Counts the amount of actions performed.
@@ -229,7 +231,7 @@ public class MapModel {
 		else {
 			++changesPerformedSinceLastSave;
 		}
-	};
+	}
 
 	/**
 	 * Set the value of url.
@@ -240,12 +242,4 @@ public class MapModel {
 	public void setURL(final URL v) {
 		url = v;
 	}
-	public IExtension getExtension(Class<? extends IExtension> clazz) {
-		return extensionContainer.getExtension(clazz);
-	}
-
-	public void putExtension(Class<? extends IExtension> clazz, IExtension extension) {
-	   extensionContainer.putExtension(clazz, extension);
-    }
-	
 }

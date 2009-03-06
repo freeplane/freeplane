@@ -27,14 +27,14 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.common.attribute.AttributeController;
 
 class AssignAttributesAction extends AFreeplaneAction {
-
 	public AssignAttributesAction(final ModeController modeController) {
 		super(modeController.getController(), "attributes_assign_dialog");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final Controller controller = getController();
-		AssignAttributeDialog assignAttributeDialog = new AssignAttributeDialog(AttributeController.getController(getModeController()), controller.getViewController().getFrame());
+		final AssignAttributeDialog assignAttributeDialog = new AssignAttributeDialog(AttributeController
+		    .getController(getModeController()), controller.getViewController().getFrame());
 		assignAttributeDialog.show();
 	}
 }

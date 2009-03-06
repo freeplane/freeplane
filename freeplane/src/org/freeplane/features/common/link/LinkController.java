@@ -35,8 +35,8 @@ import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.modecontroller.ExclusivePropertyChain;
-import org.freeplane.core.modecontroller.IPropertyHandler;
 import org.freeplane.core.modecontroller.INodeSelectionListener;
+import org.freeplane.core.modecontroller.IPropertyHandler;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
@@ -108,7 +108,7 @@ public class LinkController implements IExtension {
 	}
 
 	public IPropertyHandler<Color, ArrowLinkModel> addColorGetter(final Integer key,
-	                                                             final IPropertyHandler<Color, ArrowLinkModel> getter) {
+	                                                              final IPropertyHandler<Color, ArrowLinkModel> getter) {
 		return colorHandlers.addGetter(key, getter);
 	}
 

@@ -29,7 +29,6 @@ import javax.swing.KeyStroke;
  * Moreover, the StructuredMenuHolder of all menus are hold here.
  */
 public class FreeplaneMenuBar extends JMenuBar {
-    private static final long serialVersionUID = -998771495108665656L;
 	public static final String EDIT_MENU = FreeplaneMenuBar.MENU_BAR_PREFIX + "/edit";
 	public static final String EXTRAS_MENU = FreeplaneMenuBar.MENU_BAR_PREFIX + "/extras";
 	public static final String FILE_MENU = FreeplaneMenuBar.MENU_BAR_PREFIX + "/file";
@@ -41,6 +40,7 @@ public class FreeplaneMenuBar extends JMenuBar {
 	public static final String MINDMAP_MENU = FreeplaneMenuBar.MENU_BAR_PREFIX + "/mindmaps";
 	public static final String MODES_MENU = FreeplaneMenuBar.MINDMAP_MENU;
 	public static final String NAVIGATE_MENU = FreeplaneMenuBar.MENU_BAR_PREFIX + "/navigate";
+	private static final long serialVersionUID = -998771495108665656L;
 	public static final String VIEW_MENU = FreeplaneMenuBar.MENU_BAR_PREFIX + "/view";
 
 	public FreeplaneMenuBar() {

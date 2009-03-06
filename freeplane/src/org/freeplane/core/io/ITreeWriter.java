@@ -47,6 +47,4 @@ public interface ITreeWriter {
 	Object getHint(Object key);
 
 	void setHint(Object key, Object value);
-
-
 }
