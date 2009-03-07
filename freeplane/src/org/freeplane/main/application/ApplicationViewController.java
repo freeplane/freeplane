@@ -85,7 +85,7 @@ class ApplicationViewController extends ViewController {
 		resourceController = ResourceController.getResourceController();
 		frame = new JFrame("Freeplane");
 		// --- Set Note Window Location ---
-		mLocationPreferenceValue = resourceController.getProperty("location");
+		mLocationPreferenceValue = resourceController.getProperty("location", "bottom");
 	}
 
 	/**
