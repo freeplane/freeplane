@@ -33,6 +33,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
@@ -114,9 +115,10 @@ public class MNodeDropListener implements DropTargetListener {
 				return;
 			}
 			dtde.acceptDrop(dtde.getDropAction());
+			final boolean dropAsSibling = mainView.dropAsSibling(dtde.getLocation().getX());
 			if (!dtde.isLocalTransfer()) {
 				((MClipboardController) ClipboardController.getController(modeController))
-				    .paste(t, targetNode, mainView.dropAsSibling(dtde.getLocation().getX()), mainView.dropPosition(dtde
+				    .paste(t, targetNode, dropAsSibling, mainView.dropPosition(dtde
 				        .getLocation().getX()));
 				dtde.dropComplete(true);
 				return;
@@ -139,14 +141,15 @@ public class MNodeDropListener implements DropTargetListener {
 				}
 			}
 			else {
-				if (!((MMapController) modeController.getMapController()).isWriteable(targetNode)) {
+				final MMapController mapController = (MMapController) modeController.getMapController();
+				if (!mapController.isWriteable(targetNode)) {
 					final String message = FreeplaneResourceBundle.getText("node_is_write_protected");
 					JOptionPane.showMessageDialog(controller.getViewController().getContentPane(), message,
 					    "Freeplane", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				Transferable trans = null;
-				final List selecteds = modeController.getMapController().getSelectedNodes();
+				final List selecteds = mapController.getSelectedNodes();
 				if (DnDConstants.ACTION_MOVE == dropAction) {
 					NodeModel actualNode = targetNode;
 					do {
@@ -159,16 +162,19 @@ public class MNodeDropListener implements DropTargetListener {
 						}
 						actualNode = (actualNode.isRoot()) ? null : actualNode.getParentNode();
 					} while (actualNode != null);
-					trans = ((MClipboardController) ClipboardController.getController(modeController)).cut(controller
-					    .getSelection().getSortedSelection());
+					final List<NodeModel> sortedSelection = controller
+					    .getSelection().getSortedSelection();
+					for(NodeModel node:sortedSelection){
+						mapController.moveNode(node, targetNode, dropAsSibling);
+					}
 				}
 				else {
 					trans = ClipboardController.getController(modeController).copy(controller.getSelection());
+					((MClipboardController) ClipboardController.getController(modeController))
+				    .paste(trans, targetNode, dropAsSibling, mainView
+				        .dropPosition(dtde.getLocation().getX()));
 				}
 				controller.getSelection().selectAsTheOnlyOneSelected(targetNode);
-				((MClipboardController) ClipboardController.getController(modeController))
-				    .paste(trans, targetNode, mainView.dropAsSibling(dtde.getLocation().getX()), mainView
-				        .dropPosition(dtde.getLocation().getX()));
 			}
 		}
 		catch (final Exception e) {

@@ -156,7 +156,7 @@ public class MMapController extends MapController {
 	public void moveNodeBefore(final NodeModel node, final NodeModel target) {
 		NodeModel parent;
 		parent = target.getParentNode();
-		insertNode(node, parent, parent.getChildPosition(target));
+		moveNode(node, parent, parent.getChildPosition(target));
 	}
 
 	public void insertNode(final NodeModel node, final NodeModel target, final boolean asSibling, final boolean isLeft,
@@ -307,6 +307,14 @@ public class MMapController extends MapController {
 		super.loadURL(relative);
 	}
 
+	public void moveNode(final NodeModel node, final NodeModel selectedParent, boolean asSibling) {
+		if(asSibling){
+			moveNodeBefore(node, selectedParent);
+		}
+		else{
+			moveNode(node, selectedParent);
+		}
+	}
 	public void moveNode(final NodeModel node, final NodeModel selectedParent) {
 		moveNode(node, selectedParent, selectedParent.getChildCount());
 	}
