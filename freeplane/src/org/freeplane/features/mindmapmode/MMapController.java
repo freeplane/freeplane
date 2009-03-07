@@ -153,6 +153,12 @@ public class MMapController extends MapController {
 		insertNode(node, parent, parent.getChildCount());
 	}
 
+	public void moveNodeBefore(final NodeModel node, final NodeModel target) {
+		NodeModel parent;
+		parent = target.getParentNode();
+		insertNode(node, parent, parent.getChildPosition(target));
+	}
+
 	public void insertNode(final NodeModel node, final NodeModel target, final boolean asSibling, final boolean isLeft,
 	                       final boolean changeSide) {
 		NodeModel parent;

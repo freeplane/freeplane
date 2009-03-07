@@ -17,12 +17,8 @@
  */
 package org.freeplane.features.mindmapmode.addins;
 
-import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Vector;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
@@ -31,8 +27,7 @@ import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.features.common.clipboard.ClipboardController;
-import org.freeplane.features.mindmapmode.clipboard.MClipboardController;
+import org.freeplane.features.mindmapmode.MMapController;
 
 /**
  * @author foltin
@@ -83,23 +78,17 @@ public class ChangeNodeLevelAction {
 	 * java.util.List)
 	 */
 	public void actionPerformed(final ModeController modeController, final boolean upwards) {
-		NodeModel selectedNode;
-		List selectedNodes;
-		{
-			final NodeModel focussed = modeController.getMapController().getSelectedNode();
-			final List selecteds = modeController.getMapController().getSelectedNodes();
-			selectedNode = focussed;
-			selectedNodes = selecteds;
-		}
-		modeController.getMapController().sortNodesByDepth(selectedNodes);
+		final MMapController mapController = (MMapController) modeController.getMapController();
+		NodeModel selectedNode = mapController.getSelectedNode();
+		List<NodeModel> selectedNodes = mapController.getSelectedNodes();
+		mapController.sortNodesByDepth(selectedNodes);
 		final Controller controller = modeController.getController();
 		if (selectedNode.isRoot()) {
 			controller.errorMessage(FreeplaneResourceBundle.getText("cannot_add_parent_to_root"));
 			return;
 		}
 		final NodeModel selectedParent = selectedNode.getParentNode();
-		for (final Iterator it = selectedNodes.iterator(); it.hasNext();) {
-			final NodeModel node = (NodeModel) it.next();
+		for (final NodeModel node : selectedNodes) {
 			if (node.getParentNode() != selectedParent) {
 				controller.errorMessage(FreeplaneResourceBundle.getText("cannot_add_parent_diff_parents"));
 				return;
@@ -109,36 +98,22 @@ public class ChangeNodeLevelAction {
 				return;
 			}
 		}
-		final String selectedNodeId = selectedNode.createID();
-		final Vector selectedNodesId = new Vector();
-		for (final Iterator iter = selectedNodes.iterator(); iter.hasNext();) {
-			final NodeModel node = (NodeModel) iter.next();
-			selectedNodesId.add(node.createID());
-		}
-		final MClipboardController clipboardController = (MClipboardController) (ClipboardController
-		    .getController(modeController));
 		if (upwards) {
 			if (selectedParent.isRoot()) {
 				final boolean isLeft = selectedNode.isLeft();
-				final Transferable copy = clipboardController.cut(selectedNodes);
-				((MClipboardController) ClipboardController.getController(modeController)).paste(copy, selectedParent,
-				    false, (!isLeft));
-				select(modeController, selectedNodeId, selectedNodesId);
+				for (final NodeModel node : selectedNodes) {
+					mapController.moveNode(node, selectedParent);
+				}
 				return;
 			}
-			final NodeModel grandParent = selectedParent.getParentNode();
+			NodeModel grandParent = selectedParent.getParentNode();
 			final int parentPosition = grandParent.getChildPosition(selectedParent);
-			final boolean isLeft = selectedParent.isLeft();
-			final Transferable copy = clipboardController.cut(selectedNodes);
-			if (parentPosition == grandParent.getChildCount() - 1) {
-				((MClipboardController) ClipboardController.getController(modeController)).paste(copy, grandParent,
-				    false, isLeft);
+			if (parentPosition != grandParent.getChildCount() - 1) {
+				grandParent = ((NodeModel) grandParent.getChildAt(parentPosition + 1));
 			}
-			else {
-				((MClipboardController) ClipboardController.getController(modeController)).paste(copy,
-				    ((NodeModel) grandParent.getChildAt(parentPosition + 1)), true, isLeft);
+			for (final NodeModel node : selectedNodes) {
+				mapController.moveNode(node, grandParent);
 			}
-			select(modeController, selectedNodeId, selectedNodesId);
 		}
 		else {
 			final int ownPosition = selectedParent.getChildPosition(selectedNode);
@@ -160,22 +135,11 @@ public class ChangeNodeLevelAction {
 				}
 			}
 			if (directSibling != null) {
-				final Transferable copy = clipboardController.cut(selectedNodes);
-				((MClipboardController) ClipboardController.getController(modeController)).paste(copy, directSibling,
-				    false, directSibling.isLeft());
-				select(modeController, selectedNodeId, selectedNodesId);
+				for (final NodeModel node : selectedNodes) {
+					mapController.moveNode(node, directSibling);
+				}
 				return;
 			}
 		}
-	}
-
-	private void select(final ModeController modeController, final String selectedNodeId, final List selectedNodesIds) {
-		final NodeModel newInstanceOfSelectedNode = modeController.getMapController().getNodeFromID(selectedNodeId);
-		final List newSelecteds = new LinkedList();
-		for (final Iterator iter = selectedNodesIds.iterator(); iter.hasNext();) {
-			final String nodeId = (String) iter.next();
-			newSelecteds.add(modeController.getMapController().getNodeFromID(nodeId));
-		}
-		modeController.getMapController().selectMultipleNodes(newInstanceOfSelectedNode, newSelecteds);
 	}
 }

@@ -78,18 +78,18 @@ public class NewParentNode extends AFreeplaneAction {
 	}
 
 	private NodeModel moveToNewParent(final NodeModel selectedNode, final List<NodeModel> selectedNodes) {
-		final NodeModel selectedParent = selectedNode.getParentNode();
-		final int childPosition = selectedParent.getChildPosition(selectedNode);
-		final NodeModel newNode = ((MMapController) getModeController().getMapController()).addNewNode(selectedParent,
+		final NodeModel oldParent = selectedNode.getParentNode();
+		final int childPosition = oldParent.getChildPosition(selectedNode);
+		final NodeModel newParent = ((MMapController) getModeController().getMapController()).addNewNode(oldParent,
 		    childPosition, selectedNode.isLeft());
-		return moveToOtherNode(selectedNodes, selectedParent, newNode);
+		return moveToOtherNode(selectedNodes, oldParent, newParent);
 	}
 
-	private NodeModel moveToOtherNode(final List<NodeModel> selectedNodes, final NodeModel selectedParent,
-	                                  final NodeModel newNode) {
+	private NodeModel moveToOtherNode(final List<NodeModel> selectedNodes, final NodeModel oldParent,
+	                                  final NodeModel newParent) {
 		for (final Iterator it = selectedNodes.iterator(); it.hasNext();) {
 			final NodeModel node = (NodeModel) it.next();
-			if (node.getParentNode() != selectedParent) {
+			if (node.getParentNode() != oldParent) {
 				getController().errorMessage(FreeplaneResourceBundle.getText("cannot_add_parent_diff_parents"));
 				return null;
 			}
@@ -100,8 +100,8 @@ public class NewParentNode extends AFreeplaneAction {
 		}
 		final MMapController mapController = (MMapController) getModeController().getMapController();
 		for (final NodeModel node : selectedNodes) {
-			mapController.moveNode(node, selectedParent);
+			mapController.moveNode(node, newParent);
 		}
-		return newNode;
+		return newParent;
 	}
 }
