@@ -27,6 +27,7 @@ import java.util.TreeMap;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
+import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -45,7 +46,7 @@ public class ConditionFactory {
 	public static final String FILTER_IS_NOT_EQUAL_TO = "filter_is_not_equal_to";
 	public static final String FILTER_LE = "<=";
 	public static final String FILTER_LT = "<";
-
+	
 	static public JComponent createCellRendererComponent(final String description) {
 		final JCondition component = new JCondition();
 		final JLabel label = new JLabel(description);
@@ -66,9 +67,6 @@ public class ConditionFactory {
 
 	final private SortedMap<Integer, IElementaryConditionController> conditionControllers;
 
-	/**
-	 *
-	 */
 	public ConditionFactory() {
 		conditionControllers = new TreeMap<Integer, IElementaryConditionController>();
 	}
@@ -101,13 +99,13 @@ public class ConditionFactory {
 
 	public ICondition loadCondition(final XMLElement element) {
 		if (element.getName().equalsIgnoreCase(ConditionNotSatisfiedDecorator.NAME)) {
-			return ConditionNotSatisfiedDecorator.load(element);
+			return ConditionNotSatisfiedDecorator.load(this, element);
 		}
 		if (element.getName().equalsIgnoreCase(ConjunctConditions.NAME)) {
-			return ConjunctConditions.load(element);
+			return ConjunctConditions.load(this, element);
 		}
 		if (element.getName().equalsIgnoreCase(DisjunctConditions.NAME)) {
-			return DisjunctConditions.load(element);
+			return DisjunctConditions.load(this, element);
 		}
 		final Iterator<IElementaryConditionController> conditionIterator = conditionIterator();
 		while (conditionIterator.hasNext()) {

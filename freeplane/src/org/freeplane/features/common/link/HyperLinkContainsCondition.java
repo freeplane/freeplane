@@ -17,43 +17,36 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.common.time;
-
-import java.util.Date;
-
-import javax.swing.JComponent;
+package org.freeplane.features.common.link;
 
 import org.freeplane.core.filter.condition.ConditionFactory;
-import org.freeplane.core.filter.condition.ICondition;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
  * @author Dimitry Polivaev
- * Mar 5, 2009
+ * Mar 7, 2009
  */
-class TimeConditionModifiedAfter extends TimeConditionModifiedBefore implements ICondition {
-	static final String NAME = "time_condition_modified_after";
-
-	public TimeConditionModifiedAfter(final Date date) {
-		super(date);
-	}
-
-	@Override
-	public boolean checkNode(final NodeModel node) {
-		return !super.checkNode(node);
-	}
-
-	@Override
-    protected String createDesctiption() {
-		final String filterTime = FreeplaneResourceBundle.getText(TimeConditionController.FILTER_TIME);
-		final String dateAsString = TimeCondition.format(getDate());
-		final String after = FreeplaneResourceBundle.getText(FILTER_MODIFIED_AFTER);
-		return ConditionFactory.createDescription(filterTime, after, dateAsString, false);
+public class HyperLinkContainsCondition extends HyperLinkCondition {
+	public static final String NAME = "hyper_link_contains";
+	public HyperLinkContainsCondition(String hyperlink) {
+	    super(hyperlink);
     }
 
 	@Override
-	String getName() {
-		return NAME;
+	protected String createDesctiption() {
+		final String condition = FreeplaneResourceBundle.getText(LinkConditionController.FILTER_LINK);
+		final String simpleCondition = FreeplaneResourceBundle.getText(ConditionFactory.FILTER_CONTAINS);
+		return ConditionFactory.createDescription(condition, simpleCondition, getHyperlink(), false);
 	}
+
+	protected boolean checkLink(final String nodeLink) {
+	    return nodeLink.contains(getHyperlink());
+    }
+
+	@Override
+    String getName() {
+	    return NAME;
+    }
+	
 }

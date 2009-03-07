@@ -51,11 +51,10 @@ import org.freeplane.n3.nanoxml.XMLWriter;
  * @author Dimitry Polivaev
  */
 public class FilterController implements IMapSelectionListener, IExtension {
-	// TODO rladstaetter 15.02.2009 why static??
-	private static ConditionFactory conditionFactory;
+	private ConditionFactory conditionFactory;
 	static final String FREEPLANE_FILTER_EXTENSION_WITHOUT_DOT = "mmfilter";
 
-	public static ConditionFactory getConditionFactory() {
+	public ConditionFactory getConditionFactory() {
 		if (conditionFactory == null) {
 			conditionFactory = new ConditionFactory();
 		}
@@ -157,7 +156,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 			final XMLElement loader = (XMLElement) parser.parse();
 			final Vector conditions = loader.getChildren();
 			for (int i = 0; i < conditions.size(); i++) {
-				filterConditionModel.addElement(FilterController.getConditionFactory().loadCondition(
+				filterConditionModel.addElement(conditionFactory.loadCondition(
 				    (XMLElement) conditions.get(i)));
 			}
 		}

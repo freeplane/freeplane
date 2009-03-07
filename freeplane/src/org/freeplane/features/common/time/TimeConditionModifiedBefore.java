@@ -45,11 +45,13 @@ class TimeConditionModifiedBefore extends TimeCondition {
 		return before;
 	}
 
-	public JComponent getListCellRendererComponent() {
+	@Override
+    protected String createDesctiption() {
+		final String filterTime = FreeplaneResourceBundle.getText(TimeConditionController.FILTER_TIME);
 		final String dateAsString = TimeCondition.format(getDate());
 		final String before = FreeplaneResourceBundle.getText(FILTER_MODIFIED_BEFORE);
-		return ConditionFactory.createCellRendererComponent(before + ' ' + dateAsString);
-	}
+		return ConditionFactory.createDescription(filterTime, before, dateAsString, false);
+    }
 
 	@Override
 	String getName() {

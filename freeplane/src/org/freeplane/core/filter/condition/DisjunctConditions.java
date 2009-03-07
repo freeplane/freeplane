@@ -36,11 +36,11 @@ import org.freeplane.n3.nanoxml.XMLElement;
 public class DisjunctConditions implements ICondition {
 	static final String NAME = "disjunct_condition";
 
-	static ICondition load(final XMLElement element) {
+	static ICondition load(final ConditionFactory conditionFactory, final XMLElement element) {
 		final Vector children = element.getChildren();
 		final Object[] conditions = new Object[children.size()];
 		for (int i = 0; i < conditions.length; i++) {
-			final ICondition cond = FilterController.getConditionFactory().loadCondition((XMLElement) children.get(i));
+			final ICondition cond = conditionFactory.loadCondition((XMLElement) children.get(i));
 			conditions[i] = cond;
 		}
 		return new DisjunctConditions(conditions);

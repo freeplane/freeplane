@@ -48,7 +48,7 @@ public class NodeLinks implements IExtension {
 
 	public static String getLink(final NodeModel node) {
 		final NodeLinks links = NodeLinks.getModel(node);
-		return links != null ? links.getLink() : null;
+		return links != null ? links.getHyperLink() : null;
 	}
 
 	/**
@@ -69,7 +69,7 @@ public class NodeLinks implements IExtension {
 		return links;
 	}
 
-	private String link;
+	private String hyperlink;
 	final private LinkedList<LinkModel> links;
 
 	public NodeLinks() {
@@ -98,8 +98,8 @@ public class NodeLinks implements IExtension {
 	/**
 	 * @return
 	 */
-	public String getLink() {
-		return link;
+	public String getHyperLink() {
+		return hyperlink;
 	}
 
 	public Collection<LinkModel> getLinks() {
@@ -132,8 +132,8 @@ public class NodeLinks implements IExtension {
 		return null;
 	}
 
-	public void setLink(final String link) {
-		this.link = link;
+	public void setHyperLink(final String hyperlink) {
+		this.hyperlink = hyperlink;
 	}
 
 	public void setLocalHyperlink(final String targetID) {

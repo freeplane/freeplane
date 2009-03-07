@@ -30,6 +30,6 @@ import org.freeplane.core.modecontroller.ModeController;
 public class TimeController {
 	public static void install(final ModeController modeController) {
 		final Controller controller = modeController.getController();
-		FilterController.getConditionFactory().addConditionController(3, new TimeConditionController(controller));
+		FilterController.getController(controller).getConditionFactory().addConditionController(4, new TimeConditionController(controller));
 	}
 }

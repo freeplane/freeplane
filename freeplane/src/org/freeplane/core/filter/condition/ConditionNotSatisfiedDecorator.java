@@ -36,9 +36,9 @@ import org.freeplane.n3.nanoxml.XMLElement;
 public class ConditionNotSatisfiedDecorator implements ICondition {
 	static final String NAME = "negate_condition";
 
-	static ICondition load(final XMLElement element) {
+	static ICondition load(final ConditionFactory conditionFactory, final XMLElement element) {
 		final Vector children = element.getChildren();
-		final ICondition cond = FilterController.getConditionFactory().loadCondition((XMLElement) children.get(0));
+		final ICondition cond = conditionFactory.loadCondition((XMLElement) children.get(0));
 		return new ConditionNotSatisfiedDecorator(cond);
 	}
 

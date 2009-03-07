@@ -40,7 +40,7 @@ public class IconController implements IExtension {
 		modeController.putExtension(IconController.class, iconController);
 		if (firstRun) {
 			final Controller controller = modeController.getController();
-			FilterController.getConditionFactory().addConditionController(1, new IconConditionController(controller));
+			FilterController.getController(controller).getConditionFactory().addConditionController(1, new IconConditionController(controller));
 			firstRun = false;
 		}
 	}

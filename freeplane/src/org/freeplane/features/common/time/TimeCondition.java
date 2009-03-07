@@ -24,6 +24,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.ListIterator;
 
+import javax.swing.JComponent;
+
+import org.freeplane.core.filter.condition.ConditionFactory;
 import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
@@ -81,6 +84,8 @@ abstract class TimeCondition implements ICondition {
 	}
 
 	final private Date date;
+	private String description;
+	private JComponent renderer;
 
 	public TimeCondition(final Date date) {
 		this.date = date;
@@ -90,6 +95,21 @@ abstract class TimeCondition implements ICondition {
 		return date;
 	}
 
+	abstract protected String createDesctiption();
+
+	public JComponent getListCellRendererComponent() {
+		if (renderer == null) {
+			renderer = ConditionFactory.createCellRendererComponent(toString());
+		}
+		return renderer;
+	}
+	@Override
+	public String toString() {
+		if (description == null) {
+			description = createDesctiption();
+		}
+		return description;
+	}
 	abstract String getName();
 
 	public void toXml(final XMLElement element) {

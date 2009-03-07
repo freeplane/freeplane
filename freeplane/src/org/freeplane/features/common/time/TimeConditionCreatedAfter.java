@@ -45,11 +45,12 @@ class TimeConditionCreatedAfter extends TimeConditionCreatedBefore implements IC
 	}
 
 	@Override
-	public JComponent getListCellRendererComponent() {
+    protected String createDesctiption() {
+		final String filterTime = FreeplaneResourceBundle.getText(TimeConditionController.FILTER_TIME);
 		final String dateAsString = TimeCondition.format(getDate());
 		final String before = FreeplaneResourceBundle.getText(FILTER_CREATED_AFTER);
-		return ConditionFactory.createCellRendererComponent(before + ' ' + dateAsString);
-	}
+		return ConditionFactory.createDescription(filterTime, before, dateAsString, false);
+    }
 
 	@Override
 	String getName() {

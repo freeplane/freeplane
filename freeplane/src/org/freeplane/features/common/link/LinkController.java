@@ -29,8 +29,11 @@ import java.util.Set;
 
 import javax.swing.JPopupMenu;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.filter.FilterController;
+import org.freeplane.core.filter.condition.ConditionFactory;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
@@ -77,6 +80,8 @@ public class LinkController implements IExtension {
 			}
 		};
 		modeController.getMapController().addNodeSelectionListener(listener);
+		Controller controller = modeController.getController();
+		FilterController.getController(controller).getConditionFactory().addConditionController(3, new LinkConditionController());
 	}
 
 	final private ExclusivePropertyChain<Color, ArrowLinkModel> colorHandlers;
@@ -208,7 +213,7 @@ public class LinkController implements IExtension {
 		if (link != null && link.startsWith("#")) {
 			links.setLocalHyperlink(link.substring(1));
 		}
-		links.setLink(link);
+		links.setHyperLink(link);
 	}
 
 	public void loadURL() {

@@ -34,7 +34,7 @@ public class ModelessAttributeController implements IExtension {
 
 	public static void install(final Controller controller) {
 		controller.putExtension(ModelessAttributeController.class, new ModelessAttributeController(controller));
-		FilterController.getConditionFactory().addConditionController(2, new AttributeConditionController(controller));
+		FilterController.getController(controller).getConditionFactory().addConditionController(2, new AttributeConditionController(controller));
 	}
 
 	final private HideAllAttributesAction hideAllAttributes;

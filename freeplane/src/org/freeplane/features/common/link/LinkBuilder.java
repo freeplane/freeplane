@@ -217,7 +217,7 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 
 	public void writeAttributes(final ITreeWriter writer, final Object userObject, final IExtension extension) {
 		final NodeLinks links = (NodeLinks) extension;
-		final String link = links.getLink();
+		final String link = links.getHyperLink();
 		if (link != null) {
 			writer.addAttribute("LINK", link);
 		}
