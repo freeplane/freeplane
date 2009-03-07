@@ -1264,8 +1264,11 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 
 	public void setZoom(final float zoom) {
 		this.zoom = zoom;
-		anchor = getSelected();
-		anchorContentLocation = getAnchorCenterPoint();
+		 final NodeView selected = getSelected();
+		if(selected != null){
+			anchor = selected;
+			anchorContentLocation = getAnchorCenterPoint();
+		}
 		getRoot().updateAll();
 		revalidate();
 	}

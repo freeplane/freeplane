@@ -144,6 +144,7 @@ public class MapViewController implements IMapViewManager {
 	 * order.
 	 */
 	final private Vector mapViewVector = new Vector();
+	private float zoom;
 
 	/**
 	 * Reference to the current mode as the mapView may be null.
@@ -192,6 +193,9 @@ public class MapViewController implements IMapViewManager {
 		mapView = newMapView;
 		if (mapView != null) {
 			lastModeName = mapView.getModeController().getModeName();
+			if(zoom != mapView.getZoom()){
+				mapView.setZoom(zoom);
+			}
 		}
 		listener.afterMapChange(oldMapView, newMapView);
 		return true;
@@ -443,7 +447,7 @@ public class MapViewController implements IMapViewManager {
 	 * @see org.freeplane.core.frame.IMapViewController#getZoom()
 	 */
 	public float getZoom() {
-		return getMapView().getZoom();
+		return zoom;
 	}
 
 	/* (non-Javadoc)
@@ -536,7 +540,12 @@ public class MapViewController implements IMapViewManager {
 	 * @see org.freeplane.core.frame.IMapViewController#setZoom(float)
 	 */
 	public void setZoom(final float zoom) {
-		getMapView().setZoom(zoom);
+		this.zoom = zoom;
+		final MapView mapView = getMapView();
+		if(mapView == null){
+			return;
+		}
+		mapView.setZoom(zoom);
 	}
 
 	/* (non-Javadoc)

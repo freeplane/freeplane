@@ -450,6 +450,7 @@ class ApplicationViewController extends ViewController {
 			resourceController.setProperty("appwindow_height", String.valueOf(frame.getHeight()));
 		}
 		resourceController.setProperty("appwindow_state", String.valueOf(winState));
+		resourceController.setProperty("map_view_zoom", Float.toString(getZoom()));
 		resourceController.saveProperties(controller);
 		frame.dispose();
 	}

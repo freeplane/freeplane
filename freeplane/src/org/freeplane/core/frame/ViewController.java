@@ -86,6 +86,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 
 	public ViewController(final Controller controller, final IMapViewManager mapViewManager) {
 		super();
+		status = new JLabel("!");
 		this.controller = controller;
 		controller.setViewController(this);
 		this.mapViewManager = mapViewManager;
@@ -100,8 +101,15 @@ abstract public class ViewController implements IMapViewChangeListener {
 		controller.putAction(optionAntialiasAction);
 		userDefinedZoom = FreeplaneResourceBundle.getText("user_defined_zoom");
 		zoomModel = new DefaultComboBoxModel(getZooms());
-		zoomModel.setSelectedItem("100%");
 		zoomModel.addElement(userDefinedZoom);
+		String mapViewZoom = ResourceController.getResourceController().getProperty("map_view_zoom", "1.0");
+		try {
+	        setZoom(Float.parseFloat(mapViewZoom));
+        }
+        catch (Exception e) {
+    		zoomModel.setSelectedItem("100%");
+	        e.printStackTrace();
+        }
 		controller.putAction(new ToggleMenubarAction(controller, this));
 		controller.putAction(new ToggleToolbarAction(controller, this));
 		controller.putAction(new ToggleLeftToolbarAction(controller, this));
@@ -110,7 +118,6 @@ abstract public class ViewController implements IMapViewChangeListener {
 		menubarVisible = true;
 		toolbarPanel = new JPanel(new BorderLayout());
 		leftToolbarPanel = new JPanel(new BorderLayout());
-		status = new JLabel("!");
 		scrollPane = new MapViewScrollPane();
 	}
 
