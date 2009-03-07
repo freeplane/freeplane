@@ -35,6 +35,7 @@ import java.text.MessageFormat;
 import java.util.HashSet;
 import java.util.Iterator;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -79,9 +80,9 @@ abstract public class ViewController implements IMapViewChangeListener {
 	final private JPanel toolbarPanel;
 	private boolean toolbarVisible;
 	final private String userDefinedZoom;
-	final private JComboBox zoom;
 	final private ZoomInAction zoomIn;
 	final private ZoomOutAction zoomOut;
+	private DefaultComboBoxModel zoomModel;
 
 	public ViewController(final Controller controller, final IMapViewManager mapViewManager) {
 		super();
@@ -98,16 +99,9 @@ abstract public class ViewController implements IMapViewChangeListener {
 		optionAntialiasAction = new OptionAntialiasAction(controller);
 		controller.putAction(optionAntialiasAction);
 		userDefinedZoom = FreeplaneResourceBundle.getText("user_defined_zoom");
-		zoom = new JComboBox(getZooms());
-		zoom.setSelectedItem("100%");
-		zoom.addItem(userDefinedZoom);
-		zoom.addItemListener(new ItemListener() {
-			public void itemStateChanged(final ItemEvent e) {
-				if (e.getStateChange() == ItemEvent.SELECTED) {
-					setZoomByItem(e.getItem());
-				}
-			}
-		});
+		zoomModel = new DefaultComboBoxModel(getZooms());
+		zoomModel.setSelectedItem("100%");
+		zoomModel.addElement(userDefinedZoom);
 		controller.putAction(new ToggleMenubarAction(controller, this));
 		controller.putAction(new ToggleToolbarAction(controller, this));
 		controller.putAction(new ToggleLeftToolbarAction(controller, this));
@@ -205,14 +199,14 @@ abstract public class ViewController implements IMapViewChangeListener {
 	}
 
 	private float getCurrentZoomIndex() {
-		final int selectedIndex = zoom.getSelectedIndex();
-		final int itemCount = zoom.getItemCount();
+		final int selectedIndex = zoomModel.getIndexOf(zoomModel.getSelectedItem());
+		final int itemCount = zoomModel.getSize();
 		if (selectedIndex != itemCount - 1) {
 			return selectedIndex;
 		}
 		final float userZoom = mapViewManager.getZoom();
 		for (int i = 0; i < itemCount - 1; i++) {
-			if (userZoom < getZoomValue(zoom.getItemAt(i))) {
+			if (userZoom < getZoomValue(zoomModel.getElementAt(i))) {
 				return i - 0.5f;
 			}
 		}
@@ -278,10 +272,6 @@ abstract public class ViewController implements IMapViewChangeListener {
 
 	public float getZoom() {
 		return mapViewManager.getZoom();
-	}
-
-	public JComboBox getZoomComboBox() {
-		return zoom;
 	}
 
 	public String[] getZooms() {
@@ -503,20 +493,28 @@ abstract public class ViewController implements IMapViewChangeListener {
 
 	public void setZoomComboBox(final float f) {
 		final String toBeFound = getItemForZoom(f);
-		for (int i = 0; i < zoom.getItemCount(); ++i) {
-			if (toBeFound.equals(zoom.getItemAt(i))) {
-				zoom.setSelectedItem(toBeFound);
+		for (int i = 0; i < zoomModel.getSize(); ++i) {
+			if (toBeFound.equals(zoomModel.getElementAt(i))) {
+				zoomModel.setSelectedItem(toBeFound);
 				return;
 			}
 		}
-		zoom.setSelectedItem(userDefinedZoom);
+		zoomModel.setSelectedItem(userDefinedZoom);
 	}
 
 	abstract public void stop();
 
 	public void updateMenus(final MenuBuilder menuBuilder) {
 		if (menuBuilder.contains("/main_toolbar/zoom")) {
-			menuBuilder.addComponent("/main_toolbar/zoom", getZoomComboBox(), zoomIn, MenuBuilder.AS_CHILD);
+			JComboBox zoomBox = new JComboBox(zoomModel);
+			zoomBox.addItemListener(new ItemListener() {
+				public void itemStateChanged(final ItemEvent e) {
+					if (e.getStateChange() == ItemEvent.SELECTED) {
+						setZoomByItem(e.getItem());
+					}
+				}
+			});
+			menuBuilder.addComponent("/main_toolbar/zoom", zoomBox,  MenuBuilder.AS_CHILD);
 		}
 	}
 
@@ -529,15 +527,15 @@ abstract public class ViewController implements IMapViewChangeListener {
 
 	public void zoomIn() {
 		final float currentZoomIndex = getCurrentZoomIndex();
-		if (currentZoomIndex < zoom.getItemCount() - 1) {
-			setZoomByItem(zoom.getItemAt((int) (currentZoomIndex + 1f)));
+		if (currentZoomIndex < zoomModel.getSize() - 1) {
+			setZoomByItem(zoomModel.getElementAt((int) (currentZoomIndex + 1f)));
 		}
 	}
 
 	public void zoomOut() {
 		final float currentZoomIndex = getCurrentZoomIndex();
 		if (currentZoomIndex > 0) {
-			setZoomByItem(zoom.getItemAt((int) (currentZoomIndex - 0.5f)));
+			setZoomByItem(zoomModel.getElementAt((int) (currentZoomIndex - 0.5f)));
 		}
 	}
 }

@@ -243,13 +243,14 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 	private final ModeController modeController;
 	final private MapModel model;
 	private NodeView nodeToBeVisible = null;
-	private Point rootContentLocation;
+	private Point anchorContentLocation;
 	private NodeView rootView = null;
 	private boolean selectedsValid = true;
 	final private Selection selection = new Selection();
 	private NodeView shiftSelectionOrigin = null;
 	private int siblingMaxLevel;
 	private float zoom = 1F;
+	private NodeView anchor;
 
 	public MapView(final MapModel model, final ModeController modeController) {
 		super();
@@ -756,9 +757,10 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 	}
 
 	public void initRoot() {
-		rootContentLocation = new Point();
+		anchorContentLocation = new Point();
 		rootView = NodeViewFactory.getInstance().newNodeView(getModel().getRootNode(), 0, this, this);
 		rootView.insert();
+		anchor = rootView;
 		revalidate();
 	}
 
@@ -818,8 +820,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 	@Override
 	public void paint(final Graphics g) {
 		if (isValid()) {
-			getRoot().getContent().getLocation(rootContentLocation);
-			UITools.convertPointToAncestor(getRoot(), rootContentLocation, getParent());
+			anchorContentLocation = getAnchorCenterPoint();
 		}
 		final Graphics2D g2 = (Graphics2D) g;
 		final Object renderingHint = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
@@ -1225,12 +1226,14 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 	private void setViewPositionAfterValidate() {
 		final JViewport vp = (JViewport) getParent();
 		final Point viewPosition = vp.getViewPosition();
-		final Point oldRootContentLocation = rootContentLocation;
-		final NodeView root = getRoot();
-		final Point newRootContentLocation = root.getContent().getLocation();
-		UITools.convertPointToAncestor(getRoot(), newRootContentLocation, getParent());
-		final int deltaX = newRootContentLocation.x - oldRootContentLocation.x;
-		final int deltaY = newRootContentLocation.y - oldRootContentLocation.y;
+		final Point oldAnchorContentLocation = anchorContentLocation;
+		final Point newAnchorContentLocation = getAnchorCenterPoint();
+		if(anchor != getRoot()){
+			anchor = getRoot();
+			anchorContentLocation = getAnchorCenterPoint();
+		}
+		final int deltaX = newAnchorContentLocation.x - oldAnchorContentLocation.x;
+		final int deltaY = newAnchorContentLocation.y - oldAnchorContentLocation.y;
 		if (deltaX != 0 || deltaY != 0) {
 			viewPosition.x += deltaX;
 			viewPosition.y += deltaY;
@@ -1251,11 +1254,20 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		}
 	}
 
+	private Point getAnchorCenterPoint() {
+	    final Point anchorCenterPoint = anchor.getContent().getLocation();
+		anchorCenterPoint.x += anchor.getMainView().getWidth()/2;
+		anchorCenterPoint.y += anchor.getMainView().getHeight()/2;
+		UITools.convertPointToAncestor(anchor, anchorCenterPoint, getParent());
+	    return anchorCenterPoint;
+    }
+
 	public void setZoom(final float zoom) {
 		this.zoom = zoom;
+		anchor = getSelected();
+		anchorContentLocation = getAnchorCenterPoint();
 		getRoot().updateAll();
 		revalidate();
-		nodeToBeVisible = getSelected();
 	}
 
 	/**
