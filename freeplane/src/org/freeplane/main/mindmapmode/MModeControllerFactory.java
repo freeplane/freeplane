@@ -217,7 +217,6 @@ public class MModeControllerFactory {
 		CloudController.install(modeController, new MCloudController(modeController));
 		NoteController.install(modeController, new MNoteController(modeController));
 		LinkController.install(modeController, new MLinkController(modeController));
-		TimeController.install(modeController);
 		userInputListenerFactory.setMapMouseListener(new DefaultMapMouseListener(controller, new MMouseMotionListener(
 		    modeController)));
 		MPatternController.install(modeController, new MPatternController(modeController));

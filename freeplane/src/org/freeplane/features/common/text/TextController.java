@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.common.text;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.io.ReadManager;
@@ -30,7 +31,6 @@ import org.freeplane.core.modecontroller.ModeController;
  * @author Dimitry Polivaev
  */
 public class TextController implements IExtension {
-	private static boolean firstRun = true;
 
 	public static TextController getController(final ModeController modeController) {
 		return (TextController) modeController.getExtension(TextController.class);
@@ -38,12 +38,13 @@ public class TextController implements IExtension {
 
 	public static void install(final ModeController modeController, final TextController textController) {
 		modeController.putExtension(TextController.class, textController);
-		if (firstRun) {
-			FilterController.getController(modeController.getController()).getConditionFactory()
-			    .addConditionController(0, new NodeConditionController());
-			firstRun = false;
-		}
+		final Controller controller = modeController.getController();
 	}
+
+	public static void install(final Controller controller) {
+	    FilterController.getController(controller).getConditionFactory()
+		.addConditionController(0, new NodeConditionController());
+    }
 
 	final private ModeController modeController;
 

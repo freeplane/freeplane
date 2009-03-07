@@ -38,12 +38,11 @@ public class IconController implements IExtension {
 
 	public static void install(final ModeController modeController, final IconController iconController) {
 		modeController.putExtension(IconController.class, iconController);
-		if (firstRun) {
-			final Controller controller = modeController.getController();
-			FilterController.getController(controller).getConditionFactory().addConditionController(1, new IconConditionController(controller));
-			firstRun = false;
-		}
 	}
+	
+	public static void install(Controller controller) {
+		FilterController.getController(controller).getConditionFactory().addConditionController(1, new IconConditionController(controller));
+    }
 
 	final private ModeController modeController;
 
@@ -59,4 +58,5 @@ public class IconController implements IExtension {
 	public ModeController getModeController() {
 		return modeController;
 	}
+
 }

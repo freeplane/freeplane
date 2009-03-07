@@ -29,6 +29,10 @@ import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.browsemode.BModeController;
 import org.freeplane.features.common.attribute.ModelessAttributeController;
+import org.freeplane.features.common.icon.IconController;
+import org.freeplane.features.common.link.LinkController;
+import org.freeplane.features.common.text.TextController;
+import org.freeplane.features.common.time.TimeController;
 import org.freeplane.features.controller.help.HelpController;
 import org.freeplane.features.controller.print.PrintController;
 import org.freeplane.main.browsemode.BModeControllerFactory;
@@ -58,6 +62,10 @@ public class FreeplaneApplet extends JApplet {
 		PrintController.install(controller);
 		HelpController.install(controller);
 		ModelessAttributeController.install(controller);
+		TextController.install(controller);
+		TimeController.install(controller);
+		LinkController.install(controller);
+		IconController.install(controller);
 		final BModeController browseController = BModeControllerFactory.createModeController(controller,
 		    "/xml/appletMenu.xml");
 		controller.selectMode(browseController);

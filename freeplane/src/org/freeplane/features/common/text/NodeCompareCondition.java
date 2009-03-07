@@ -25,6 +25,7 @@ import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.util.HtmlTools;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 class NodeCompareCondition extends CompareConditionAdapter {
@@ -51,13 +52,13 @@ class NodeCompareCondition extends CompareConditionAdapter {
 	}
 
 	public boolean checkNode(final NodeModel node) {
-		try {
-			return succeed == (compareTo(node.getText()) == comparationResult);
-		}
-		catch (final NumberFormatException fne) {
-			return false;
-		}
+		final String text = node.getText();
+		return checkText(text) || HtmlTools.isHtmlNode(text) && checkText(node.getPlainTextContent());
 	}
+
+	private boolean checkText(final String plainTextContent) {
+			return succeed == (compareTo(plainTextContent) == comparationResult);
+    }
 
 	@Override
 	protected String createDesctiption() {

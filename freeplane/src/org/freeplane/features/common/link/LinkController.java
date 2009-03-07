@@ -81,8 +81,11 @@ public class LinkController implements IExtension {
 		};
 		modeController.getMapController().addNodeSelectionListener(listener);
 		Controller controller = modeController.getController();
-		FilterController.getController(controller).getConditionFactory().addConditionController(3, new LinkConditionController());
 	}
+
+	public static void install(Controller controller) {
+	    FilterController.getController(controller).getConditionFactory().addConditionController(3, new LinkConditionController());
+    }
 
 	final private ExclusivePropertyChain<Color, ArrowLinkModel> colorHandlers;
 	final private ModeController modeController;

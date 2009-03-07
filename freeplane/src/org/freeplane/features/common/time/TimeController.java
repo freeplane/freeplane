@@ -28,8 +28,7 @@ import org.freeplane.core.modecontroller.ModeController;
  * Mar 5, 2009
  */
 public class TimeController {
-	public static void install(final ModeController modeController) {
-		final Controller controller = modeController.getController();
+	public static void install(final Controller controller) {
 		FilterController.getController(controller).getConditionFactory().addConditionController(4, new TimeConditionController(controller));
 	}
 }
