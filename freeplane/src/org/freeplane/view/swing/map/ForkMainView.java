@@ -133,17 +133,14 @@ class ForkMainView extends MainView {
 	}
 
 	@Override
-	void paintFoldingMark(final Graphics2D g, final Point p) {
+	void paintFoldingMark(NodeView nodeView, final Graphics2D g, final Point p) {
 		final int zoomedFoldingSymbolHalfWidth = getZoomedFoldingSymbolHalfWidth();
-		if (p.x == getX()) {
+		if (nodeView.isLeft()) {
 			p.x -= zoomedFoldingSymbolHalfWidth;
 		}
-		else if (p.x == getX() + getWidth() - 1) {
+		else{
 			p.x += zoomedFoldingSymbolHalfWidth;
 		}
-		else {
-			System.err.println("unexpected folding mark location " + p);
-		}
-		super.paintFoldingMark(g, p);
+		super.paintFoldingMark(nodeView, g, p);
 	}
 }

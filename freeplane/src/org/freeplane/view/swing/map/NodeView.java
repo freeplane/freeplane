@@ -953,7 +953,7 @@ public class NodeView extends JComponent implements INodeView {
 		if (getMap().getModeController().getMapController().isFolded(model)) {
 			final Point out = getMainViewOutPoint(null, null);
 			UITools.convertPointToAncestor(getMainView(), out, this);
-			mainView.paintFoldingMark(g, out);
+			mainView.paintFoldingMark(this, g, out);
 		}
 	}
 

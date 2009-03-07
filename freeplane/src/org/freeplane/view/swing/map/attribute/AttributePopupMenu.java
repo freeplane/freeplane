@@ -49,14 +49,19 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 	private int row;
 	private AttributeTable table;
 	private JMenuItem up = null;
+	private boolean oldTable;
 
 	@Override
 	protected void firePopupMenuWillBecomeInvisible() {
 		if (row != -1) {
 			table.removeRowSelectionInterval(row, row);
 		}
+		oldTable = true;
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
+				if(! oldTable){
+					return;
+				}
 				final KeyboardFocusManager focusManager = java.awt.KeyboardFocusManager
 				    .getCurrentKeyboardFocusManager();
 				final Component focusOwner = SwingUtilities.getAncestorOfClass(AttributeTable.class, focusManager
@@ -229,6 +234,7 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 		}
 		if (component instanceof AttributeTable) {
 			table = (AttributeTable) component;
+			oldTable = false;
 			row = table.rowAtPoint(point);
 			if (table.getValueAt(row, 0).equals("")) {
 				row--;
@@ -237,6 +243,7 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 		}
 		else if (component instanceof JTableHeader) {
 			final JTableHeader header = (JTableHeader) component;
+			oldTable = false;
 			table = (AttributeTable) header.getTable();
 			row = -1;
 		}
