@@ -38,6 +38,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.resources.ResourceController;
@@ -128,7 +129,7 @@ public class ExportToOoWriter extends ExportAction {
 		final StringWriter writer = new StringWriter();
 		final ModeController controller = getModeController();
 		final MapModel map = controller.getController().getMap();
-		controller.getMapController().getFilteredXml(map, writer);
+		controller.getMapController().getFilteredXml(map, writer, Mode.FILE);
 		final Result result = new StreamResult(zipout);
 		ZipEntry entry = new ZipEntry("content.xml");
 		zipout.putNextEntry(entry);

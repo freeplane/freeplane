@@ -37,6 +37,19 @@ import org.freeplane.n3.nanoxml.XMLElement;
  * 07.12.2008
  */
 public class MapWriter implements IElementWriter, IAttributeWriter {
+	public enum Mode {
+		FILE, CLIPBOARD;
+		public static Mode parse(String string){
+			if(string.equals("FILE")){
+				return FILE;
+			}
+			if(string.equals("CLIPBOARD")){
+				return CLIPBOARD;
+			}
+			throw new NoSuchFieldError("value " + string + " not exist");			
+		}
+	};
+	public enum Hint{MODE};
 	private NodeWriter currentNodeWriter;
 	final private MapController mapController;
 	private boolean saveInvisible;
@@ -70,9 +83,10 @@ public class MapWriter implements IElementWriter, IAttributeWriter {
 		writeNode(writer, rootNode, saveInvisible, true);
 	}
 
-	public void writeMapAsXml(final MapModel map, final Writer fileout, final boolean saveInvisible2)
+	public void writeMapAsXml(final MapModel map, final Writer fileout, final Mode mode, final boolean saveInvisible)
 	        throws IOException {
 		final TreeXmlWriter xmlWriter = new TreeXmlWriter(writeManager, fileout);
+		xmlWriter.setHint(Hint.MODE, mode);
 		final IXMLElement xmlMap = new XMLElement("map");
 		setSaveInvisible(saveInvisible);
 		xmlWriter.addElement(map, xmlMap);
@@ -103,9 +117,10 @@ public class MapWriter implements IElementWriter, IAttributeWriter {
 		}
 	}
 
-	public void writeNodeAsXml(final Writer writer, final NodeModel node, final boolean writeInvisible,
+	public void writeNodeAsXml(final Writer writer, final NodeModel node, final Mode mode, final boolean writeInvisible,
 	                           final boolean writeChildren) throws IOException {
 		final TreeXmlWriter xmlWriter = new TreeXmlWriter(writeManager, writer);
+		xmlWriter.setHint(Hint.MODE, mode);
 		writeNode(xmlWriter, node, writeInvisible, writeChildren);
 	}
 }

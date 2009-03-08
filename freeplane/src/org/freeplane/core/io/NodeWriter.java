@@ -22,11 +22,15 @@ package org.freeplane.core.io;
 import java.io.IOException;
 import java.util.ListIterator;
 
+import org.freeplane.core.enums.ResourceControllerProperties;
+import org.freeplane.core.io.MapWriter.Hint;
+import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.model.EncryptionModel;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 class NodeWriter implements IElementWriter, IAttributeWriter {
@@ -35,11 +39,15 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 	final private boolean writeChildren;
 	final private boolean writeInvisible;
 	private XMLElement xmlNode;
+	private boolean writeFolded;
 
 	public NodeWriter(final MapController mapController, final boolean writeChildren, final boolean writeInvisible) {
 		this.mapController = mapController;
 		this.writeChildren = writeChildren;
 		this.writeInvisible = writeInvisible;
+		final String saveFolding = ResourceController.getResourceController().getProperty(ResourceControllerProperties.RESOURCES_SAVE_FOLDING);
+		this.writeFolded = saveFolding.equals(ResourceControllerProperties.RESOURCES_ALWAYS_SAVE_FOLDING)
+		||saveFolding.equals(ResourceControllerProperties.RESOURCES_SAVE_FOLDING_IF_MAP_IS_CHANGED);
 	}
 
 	private void saveChildren(final ITreeWriter writer, final NodeModel node) throws IOException {
@@ -73,13 +81,13 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 		xmlNode = new XMLElement();
 		encryptionModel = EncryptionModel.getModel(node);
 		if (encryptionModel != null) {
-			final String additionalInfo = encryptionModel.getEncryptedContent(mapController);
+			final String additionalInfo = encryptionModel.getEncryptedContent(mapController, (Mode)writer.getHint(Hint.MODE));
 			writer.addAttribute(NodeBuilder.XML_NODE_ENCRYPTED_CONTENT, additionalInfo);
 		}
-		if (mapController.isFolded(node)) {
+		if (mapController.isFolded(node) && (writeFolded || writer.getHint(Hint.MODE).equals(Mode.CLIPBOARD))) {
 			writer.addAttribute("FOLDED", "true");
 		}
-		if (!(node.isRoot()) && (node.getParentNode().isRoot())) {
+		if (!node.isRoot() && node.getParentNode().isRoot()) {
 			writer.addAttribute("POSITION", node.isLeft() ? "left" : "right");
 		}
 		final boolean saveID = !MapController.saveOnlyIntrinsicallyNeededIds();
@@ -87,7 +95,7 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 			final String id = node.createID();
 			writer.addAttribute("ID", id);
 		}
-		if (node.getHistoryInformation() != null) {
+		if (node.getHistoryInformation() != null && ResourceController.getResourceController().getBooleanProperty(ResourceControllerProperties.RESOURCES_SAVE_MODIFICATION_TIMES)) {
 			writer.addAttribute(NodeBuilder.XML_NODE_HISTORY_CREATED_AT, TreeXmlWriter.dateToString(node
 			    .getHistoryInformation().getCreatedAt()));
 			writer.addAttribute(NodeBuilder.XML_NODE_HISTORY_LAST_MODIFIED_AT, TreeXmlWriter.dateToString(node

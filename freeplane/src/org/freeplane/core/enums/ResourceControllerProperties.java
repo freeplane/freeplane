@@ -34,7 +34,21 @@ public class ResourceControllerProperties {
 	public static final String RESOURCES_REMIND_USE_RICH_TEXT_IN_NEW_LONG_NODES = "remind_use_rich_text_in_new_long_nodes";
 	public static final String RESOURCES_REMOVE_NOTES_WITHOUT_QUESTION = "remove_notes_without_question";
 	public static final String RESOURCES_ROOT_NODE_SHAPE = "standardrootnodeshape";
-	public static final String RESOURCES_SAVE_FOLDING_STATE = "save_folding_state";
+	
+	public static final String RESOURCES_SAVE_MODIFICATION_TIMES = "save_modification_times";
+	
+	
+	public static final String RESOURCES_SAVE_FOLDING = "save_folding";
+	public static final String RESOURCES_ALWAYS_SAVE_FOLDING = "always_save_folding";
+	public static final String RESOURCES_SAVE_FOLDING_IF_MAP_IS_CHANGED = "save_folding_if_map_is_changed";
+	public static final String RESOURCES_NEVER_SAVE_FOLDING = "never_save_folding";
+	
+	public static final String RESOURCES_LOAD_FOLDING = "load_folding";
+	public static final String RESOURCES_ALWAYS_FOLD_ALL_AFTER_LOAD = "always_fold_all_after_load";
+	public static final String RESOURCES_ALWAYS_UNFOLD_ALL_AFTER_LOAD = "always_unfold_all_after_load";
+	public static final String RESOURCES_LOAD_FOLDING_FROM_MAP_DEFAULT_FOLD_ALL = "load_folding_from_map_default_fold_all";
+	public static final String RESOURCES_LOAD_FOLDING_FROM_MAP_DEFAULT_UNFOLD_ALL = "load_folding_from_map_default_unfold_all";
+	
 	public static final String RESOURCES_SCRIPT_USER_KEY_NAME_FOR_SIGNING = "script_user_key_name_for_signing";
 	public static final String RESOURCES_SELECTED_NODE_COLOR = "standardselectednodecolor";
 	public static final String RESOURCES_SELECTED_NODE_RECTANGLE_COLOR = "standardselectednoderectanglecolor";

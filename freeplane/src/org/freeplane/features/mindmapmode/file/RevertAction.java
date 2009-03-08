@@ -38,6 +38,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.LogTool;
 
+import org.freeplane.core.io.MapWriter.Mode;
 /**
  * Reverts the map to the saved version. In Xml, the old map is stored as xml
  * and as an undo action, the new map is stored, too. Moreover, the filename of
@@ -155,7 +156,7 @@ class RevertAction extends AFreeplaneAction implements IFreeplaneAction {
 	public RevertActionInstance createRevertXmlAction(final MapModel map, final String fileName, final String filePrefix)
 	        throws IOException {
 		final StringWriter writer = new StringWriter();
-		getModeController().getMapController().getMapWriter().writeMapAsXml(map, writer, true);
+		getModeController().getMapController().getMapWriter().writeMapAsXml(map, writer, Mode.FILE,  true);
 		return createRevertXmlAction(writer.getBuffer().toString(), fileName, filePrefix);
 	}
 

@@ -191,15 +191,15 @@ public class TreeXmlWriter implements ITreeWriter {
 		return writeManager.getAttributeWriters();
 	}
 
+	private ListHashTable getNodeWriters() {
+		return writeManager.getElementWriters();
+	}
+	public void setHint(final Object key, final Object value) {
+		hints.put(key, value);
+	}
 	public Object getHint(final Object key) {
 		return hints.get(key);
 	}
 
-	private ListHashTable getNodeWriters() {
-		return writeManager.getElementWriters();
-	}
 
-	public void setHint(final Object key, final Object value) {
-		hints.put(key, value);
-	}
 }

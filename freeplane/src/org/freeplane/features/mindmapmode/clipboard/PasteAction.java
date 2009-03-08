@@ -44,7 +44,10 @@ import javax.swing.text.html.HTMLEditorKit;
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.enums.ResourceControllerProperties;
+import org.freeplane.core.io.MapReader;
 import org.freeplane.core.io.MapReader.NodeTreeCreator;
+import org.freeplane.core.io.MapWriter.Hint;
+import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
@@ -135,7 +138,9 @@ class PasteAction extends AFreeplaneAction {
 				getController().getViewController().setWaitingCursor(true);
 			}
 			final MMapController mapController = (MMapController) getModeController().getMapController();
-			final NodeTreeCreator nodeTreeCreator = mapController.getMapReader().nodeTreeCreator(target.getMap());
+			final MapReader mapReader = mapController.getMapReader();
+			final NodeTreeCreator nodeTreeCreator = mapReader.nodeTreeCreator(target.getMap());
+			mapReader.setHint(Hint.MODE, Mode.CLIPBOARD);
 			for (int i = 0; i < textLines.length; ++i) {
 				final NodeModel newModel = nodeTreeCreator.create(new StringReader(textLines[i]));
 				newModel.setLeft(isLeft);

@@ -29,6 +29,7 @@ import javax.swing.ImageIcon;
 
 import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.modecontroller.IEncrypter;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.util.LogTool;
@@ -141,13 +142,14 @@ public class EncryptionModel implements IExtension {
 
 	/**
 	 * @param mapController 
+	 * @param mode 
 	 * @throws IOException
 	 */
-	private void generateEncryptedContent(final MapController mapController) throws IOException {
+	private void generateEncryptedContent(final MapController mapController, Mode mode) throws IOException {
 		final StringWriter sWriter = new StringWriter();
 		for (final Iterator i = mapController.childrenUnfolded(node); i.hasNext();) {
 			final NodeModel child = (NodeModel) i.next();
-			mapController.getMapWriter().writeNodeAsXml(sWriter, child, true, true);
+			mapController.getMapWriter().writeNodeAsXml(sWriter, child, mode, true, true);
 			if (i.hasNext()) {
 				sWriter.write(ResourceControllerProperties.NODESEPARATOR);
 			}
@@ -156,10 +158,10 @@ public class EncryptionModel implements IExtension {
 		encryptedContent = encryptXml(childXml);
 	}
 
-	public String getEncryptedContent(final MapController mapController) {
+	public String getEncryptedContent(final MapController mapController, Mode mode) {
 		if (isDecrypted) {
 			try {
-				generateEncryptedContent(mapController);
+				generateEncryptedContent(mapController, mode);
 			}
 			catch (final Exception e) {
 				LogTool.logException(e);
@@ -192,7 +194,7 @@ public class EncryptionModel implements IExtension {
 	private void pasteXML(final String pasted, final NodeModel target, final MapController mapController) {
 		try {
 			final NodeModel node = mapController.getMapReader().createNodeTreeFromXml(target.getMap(),
-			    new StringReader(pasted));
+			    new StringReader(pasted), Mode.FILE);
 			mapController.insertNodeIntoWithoutUndo(node, target, target.getChildCount());
 		}
 		catch (final Exception ee) {

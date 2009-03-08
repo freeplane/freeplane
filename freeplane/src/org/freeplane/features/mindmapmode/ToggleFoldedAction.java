@@ -69,8 +69,9 @@ class ToggleFoldedAction extends AFreeplaneAction {
 		final IUndoableActor actor = new IUndoableActor() {
 			public void act() {
 				modeController.getMapController()._setFolded(node, !node.isFolded());
-				if (ResourceController.getResourceController().getBooleanProperty(
-				    ResourceControllerProperties.RESOURCES_SAVE_FOLDING_STATE)) {
+				final ResourceController resourceController = ResourceController.getResourceController();
+				if (resourceController.getProperty(ResourceControllerProperties.RESOURCES_SAVE_FOLDING)
+				    .equals(ResourceControllerProperties.RESOURCES_ALWAYS_SAVE_FOLDING)) {
 					modeController.getMapController().nodeChanged(node);
 				}
 			}

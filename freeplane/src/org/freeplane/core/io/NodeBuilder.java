@@ -21,11 +21,15 @@ package org.freeplane.core.io;
 
 import java.util.HashMap;
 
+import org.freeplane.core.enums.ResourceControllerProperties;
+import org.freeplane.core.io.MapWriter.Hint;
+import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.model.EncryptionModel;
 import org.freeplane.core.model.HistoryInformationModel;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.n3.nanoxml.IXMLElement;
 
 public class NodeBuilder implements IElementDOMHandler {
@@ -39,12 +43,13 @@ public class NodeBuilder implements IElementDOMHandler {
 	public static final String XML_NODE_ENCRYPTED_CONTENT = "ENCRYPTED_CONTENT";
 	public static final String XML_NODE_HISTORY_CREATED_AT = "CREATED";
 	public static final String XML_NODE_HISTORY_LAST_MODIFIED_AT = "MODIFIED";
+	protected static final String FOLDING_LOADED = "folding_loaded";
 	private NodeModel mapChild = null;
 	private final MapReader mapReader;
 	private final HashMap<String, String> newIds;
 
-	public NodeBuilder(final MapReader mapController) {
-		mapReader = mapController;
+	public NodeBuilder(final MapReader mapReader) {
+		this.mapReader = mapReader;
 		newIds = new HashMap<String, String>();
 	}
 
@@ -129,8 +134,48 @@ public class NodeBuilder implements IElementDOMHandler {
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "FOLDED", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
+				final Object mode = mapReader.getHint(Hint.MODE);
+				if(mode.equals(Mode.FILE)){
+					final String loadFolding = ResourceController.getResourceController().getProperty(ResourceControllerProperties.RESOURCES_LOAD_FOLDING);
+					if(loadFolding.equals(ResourceControllerProperties.RESOURCES_ALWAYS_FOLD_ALL_AFTER_LOAD)
+							||loadFolding.equals(ResourceControllerProperties.RESOURCES_ALWAYS_UNFOLD_ALL_AFTER_LOAD)){
+						return;
+					}
+					mapReader.setHint(FOLDING_LOADED, Boolean.TRUE);
+				}
 				if (value.equals("true")) {
 					node.setFolded(true);
+				}
+			}
+		});
+		reader.addReadCompletionListener(new IReadCompletionListener() {
+			private void foldAll(NodeModel node) {
+				if (node.getChildCount() == 0) {
+					return;
+				}
+				if (! node.getText().equals("")){
+					node.setFolded(true);
+				}
+				for (NodeModel child : node.getChildren()) {
+					foldAll(child);
+				}
+			}
+
+			public void readingCompleted(NodeModel topNode, HashMap<String, String> newIds) {
+				if (!Mode.FILE.equals(mapReader.getHint(Hint.MODE))) {
+					return;
+				}
+				if (Boolean.TRUE.equals(mapReader.getHint(NodeBuilder.FOLDING_LOADED))) {
+					return;
+				}
+				final String loadFolding = ResourceController.getResourceController().getProperty(
+				    ResourceControllerProperties.RESOURCES_LOAD_FOLDING);
+				if (loadFolding.equals(ResourceControllerProperties.RESOURCES_ALWAYS_FOLD_ALL_AFTER_LOAD)
+				        || loadFolding
+				            .equals(ResourceControllerProperties.RESOURCES_LOAD_FOLDING_FROM_MAP_DEFAULT_FOLD_ALL)) {
+					for (NodeModel child : topNode.getChildren()) {
+						foldAll(child);
+					}
 				}
 			}
 		});

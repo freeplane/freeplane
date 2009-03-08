@@ -46,6 +46,7 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
@@ -406,7 +407,7 @@ public class UrlManager implements IExtension {
 			return null;
 		}
 		try {
-			root = modeController.getMapController().getMapReader().createNodeTreeFromXml(map, urlStreamReader);
+			root = modeController.getMapController().getMapReader().createNodeTreeFromXml(map, urlStreamReader, Mode.FILE);
 			urlStreamReader.close();
 			return root;
 		}

@@ -42,6 +42,7 @@ import java.util.Vector;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
@@ -107,7 +108,7 @@ public class ClipboardController implements IExtension {
 	public Transferable copy(final NodeModel node, final boolean saveInvisible) {
 		final StringWriter stringWriter = new StringWriter();
 		try {
-			getModeController().getMapController().getMapWriter().writeNodeAsXml(stringWriter, node, saveInvisible,
+			getModeController().getMapController().getMapWriter().writeNodeAsXml(stringWriter, node, Mode.CLIPBOARD, saveInvisible,
 			    true);
 		}
 		catch (final IOException e) {
@@ -271,10 +272,10 @@ public class ClipboardController implements IExtension {
 	public NodeModel shallowCopy(final NodeModel source) {
 		try {
 			final StringWriter writer = new StringWriter();
-			modeController.getMapController().getMapWriter().writeNodeAsXml(writer, source, true, false);
+			modeController.getMapController().getMapWriter().writeNodeAsXml(writer, source, Mode.CLIPBOARD, true, false);
 			final String result = writer.toString();
 			final NodeModel copy = modeController.getMapController().getMapReader().createNodeTreeFromXml(
-			    source.getMap(), new StringReader(result));
+			    source.getMap(), new StringReader(result), Mode.CLIPBOARD);
 			copy.setFolded(false);
 			return copy;
 		}

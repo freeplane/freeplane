@@ -25,7 +25,7 @@ import java.util.Collection;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.n3.nanoxml.IXMLElement;
 
-public interface ITreeWriter {
+public interface ITreeWriter extends IHintProvider {
 	void addAttribute(String name, double value);
 
 	void addAttribute(String name, int value);
@@ -43,8 +43,4 @@ public interface ITreeWriter {
 	void addExtensionAttributes(Object o, Collection<IExtension> extensions);
 
 	void addExtensionNodes(Object o, Collection<IExtension> extensions) throws IOException;
-
-	Object getHint(Object key);
-
-	void setHint(Object key, Object value);
 }

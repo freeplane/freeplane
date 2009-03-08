@@ -47,6 +47,7 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.MindIcon;
@@ -197,7 +198,7 @@ public class ExportWithXSLT extends ExportAction {
 		final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(pDirectoryName
 		        + File.separator + "map.mm")));
 		final MapModel map = getController().getMap();
-		getModeController().getMapController().getFilteredXml(map, fileout);
+		getModeController().getMapController().getFilteredXml(map, fileout, Mode.FILE);
 		return success;
 	}
 
@@ -235,19 +236,24 @@ public class ExportWithXSLT extends ExportAction {
 	}
 
 	/**
+	 * @param mode 
 	 * @throws IOException
 	 */
-	private String getMapXml() throws IOException {
+	private String getMapXml(Mode mode) throws IOException {
 		final StringWriter writer = new StringWriter();
 		final ModeController modeController = getModeController();
 		final Controller controller = modeController.getController();
 		final MapModel map = controller.getMap();
-		modeController.getMapController().getFilteredXml(map, writer);
+		modeController.getMapController().getFilteredXml(map, writer, mode);
 		return writer.getBuffer().toString();
 	}
 
-	public String getProperty(final String key) {
-		return properties.getProperty(key, null);
+	String getProperty(final String key) {
+		return getProperty(key, null);
+	}
+
+	String getProperty(final String key, final String value) {
+		return properties.getProperty(key, value);
 	}
 
 	private String getTranslatableResourceString(final String resourceName) {
@@ -310,32 +316,13 @@ public class ExportWithXSLT extends ExportAction {
 		}
 	}
 
-	public boolean transform(final Source xmlSource, final InputStream xsltStream, final File resultFile,
-	                         final String areaCode) {
-		final Source xsltSource = new StreamSource(xsltStream);
-		final Result result = new StreamResult(resultFile);
-		try {
-			final TransformerFactory transFact = TransformerFactory.newInstance();
-			final Transformer trans = transFact.newTransformer(xsltSource);
-			trans.setParameter("destination_dir", resultFile.getName() + "_files/");
-			trans.setParameter("area_code", areaCode);
-			trans.setParameter("folding_type", ResourceController.getResourceController().getProperty(
-			    "html_export_folding"));
-			trans.transform(xmlSource, result);
-		}
-		catch (final Exception e) {
-			LogTool.logException(e);
-			return false;
-		};
-		return true;
-	}
-
 	/**
 	 * @throws IOException
 	 */
 	private boolean transformMapWithXslt(final String xsltFileName, final File saveFile, final String areaCode)
 	        throws IOException {
-		final String map = getMapXml();
+		Mode mode = Mode.parse(getProperty("mode", "SAVE"));
+		final String map = getMapXml(mode);
 		final StringReader reader = new StringReader(map);
 		final URL xsltUrl = ResourceController.getResourceController().getResource(xsltFileName);
 		if (xsltUrl == null) {
@@ -343,6 +330,21 @@ public class ExportWithXSLT extends ExportAction {
 			throw new IllegalArgumentException("Can't find " + xsltFileName + " as resource.");
 		}
 		final InputStream xsltFile = xsltUrl.openStream();
-		return transform(new StreamSource(reader), xsltFile, saveFile, areaCode);
+		final Source xsltSource = new StreamSource(xsltFile);
+        final Result result = new StreamResult(saveFile);
+        try {
+        	final TransformerFactory transFact = TransformerFactory.newInstance();
+        	final Transformer trans = transFact.newTransformer(xsltSource);
+        	trans.setParameter("destination_dir", saveFile.getName() + "_files/");
+        	trans.setParameter("area_code", areaCode);
+        	trans.setParameter("folding_type", ResourceController.getResourceController().getProperty(
+        	    "html_export_folding"));
+        	trans.transform(new StreamSource(reader), result);
+        }
+        catch (final Exception e) {
+        	LogTool.logException(e);
+        	return false;
+        };
+        return true;
 	}
 }

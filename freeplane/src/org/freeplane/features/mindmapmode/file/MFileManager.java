@@ -38,6 +38,7 @@ import javax.swing.filechooser.FileFilter;
 import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.enums.ResourceControllerProperties;
+import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.resources.FpStringUtils;
@@ -304,7 +305,7 @@ public class MFileManager extends UrlManager {
 				map.getTimerForAutomaticSaving().cancel();
 			}
 			final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
-			getModeController().getMapController().getMapWriter().writeMapAsXml(map, fileout, true);
+			getModeController().getMapController().getMapWriter().writeMapAsXml(map, fileout, Mode.FILE, true);
 			if (!isInternal) {
 				map.setFile(file);
 				map.setSaved(true);

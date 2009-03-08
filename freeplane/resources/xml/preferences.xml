@@ -54,8 +54,21 @@
             <string name = "path_to_automatic_saves"/>
         </separator>
         <separator name = "save">
-            <boolean name = "save_folding_state"/> 
+            <combo name = "save_folding">
+            	<choice value="never_save_folding"/>
+            	<choice value="save_folding_if_map_is_changed"/>
+            	<choice value="always_save_folding"/>
+            </combo> 
             <boolean name = "save_only_intrisically_needed_ids"/>
+            <boolean name = "save_modification_times"/>
+        </separator>
+        <separator name = "load">
+           <combo name = "load_folding">
+            	<choice value="always_fold_all_after_load"/>
+            	<choice value="load_folding_from_map_default_fold_all"/>
+            	<choice value="load_folding_from_map_default_unfold_all"/>
+            	<choice value="always_unfold_all_after_load"/>
+            </combo> 
         </separator>
     </tab>
     <tab name="Defaults">

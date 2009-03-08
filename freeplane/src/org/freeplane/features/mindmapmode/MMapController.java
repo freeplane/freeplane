@@ -35,6 +35,7 @@ import javax.swing.JOptionPane;
 import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.enums.ResourceControllerProperties;
+import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.model.EncryptionModel;
 import org.freeplane.core.model.MapModel;
@@ -277,7 +278,7 @@ public class MMapController extends MapController {
 			}
 		}
 		try {
-			return getMapReader().createNodeTreeFromXml(map, reader);
+			return getMapReader().createNodeTreeFromXml(map, reader, Mode.FILE);
 		}
 		catch (final Exception ex) {
 			final String errorMessage = "Error while parsing file:" + ex;

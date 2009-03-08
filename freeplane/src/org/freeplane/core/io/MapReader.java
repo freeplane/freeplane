@@ -23,9 +23,13 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.HashMap;
 
+import org.freeplane.core.enums.ResourceControllerProperties;
+import org.freeplane.core.io.MapWriter.Hint;
+import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.n3.nanoxml.IXMLElement;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
@@ -33,8 +37,14 @@ import org.freeplane.n3.nanoxml.XMLParseException;
  * @author Dimitry Polivaev
  * 20.12.2008
  */
-public class MapReader implements IElementDOMHandler {
+public class MapReader implements IElementDOMHandler, IHintProvider {
+	private HashMap<Object, Object> hints;
 	public class NodeTreeCreator {
+		public NodeTreeCreator() {
+	        super();
+			hints = new HashMap<Object, Object>();
+        }
+		
 		public NodeModel create(final Reader pReader) {
 			final TreeXmlReader reader = new TreeXmlReader(readManager);
 			reader.load(pReader);
@@ -78,11 +88,13 @@ public class MapReader implements IElementDOMHandler {
 		return getCreatedMap();
 	}
 
-	public NodeModel createNodeTreeFromXml(final MapModel map, final Reader pReader) throws XMLParseException,
+	public NodeModel createNodeTreeFromXml(final MapModel map, final Reader pReader, Mode mode) throws XMLParseException,
 	        IOException {
 		try {
 			mapLoadingInProcess = true;
-			final NodeModel topNode = new NodeTreeCreator().createNodeTreeFromXml(map, pReader);
+			final NodeTreeCreator nodeTreeCreator = new NodeTreeCreator();
+			setHint(Hint.MODE, mode);
+			final NodeModel topNode = nodeTreeCreator.createNodeTreeFromXml(map, pReader);
 			mapLoadingInProcess = false;
 			return topNode;
 		}
@@ -110,5 +122,12 @@ public class MapReader implements IElementDOMHandler {
 		final NodeTreeCreator nodeTreeCreator = new NodeTreeCreator();
 		nodeTreeCreator.start(map);
 		return nodeTreeCreator;
+	}
+
+	public void setHint(final Object key, final Object value) {
+		hints.put(key, value);
+	}
+	public Object getHint(final Object key) {
+		return hints.get(key);
 	}
 }

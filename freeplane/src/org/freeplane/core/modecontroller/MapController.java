@@ -52,6 +52,7 @@ import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.UnknownElementWriter;
 import org.freeplane.core.io.UnknownElements;
 import org.freeplane.core.io.WriteManager;
+import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.modecontroller.ModeController.IActionOnChange;
 import org.freeplane.core.model.EncryptionModel;
 import org.freeplane.core.model.MapModel;
@@ -286,8 +287,8 @@ public class MapController {
 		return controller;
 	}
 
-	public void getFilteredXml(final MapModel map, final Writer fileout) throws IOException {
-		getMapWriter().writeMapAsXml(map, fileout, false);
+	public void getFilteredXml(final MapModel map, final Writer fileout, final Mode mode) throws IOException {
+		getMapWriter().writeMapAsXml(map, fileout, mode, false);
 	}
 
 	/**
