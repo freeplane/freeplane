@@ -42,6 +42,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IReadCompletionListener;
 import org.freeplane.core.modecontroller.IMapChangeListener;
 import org.freeplane.core.modecontroller.INodeChangeListener;
+import org.freeplane.core.modecontroller.MapChangeEvent;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.modecontroller.NodeChangeEvent;
 import org.freeplane.core.model.NodeModel;
@@ -59,6 +60,7 @@ import org.freeplane.features.mindmapnode.pattern.MPatternController;
 import org.freeplane.features.mindmapnode.pattern.Pattern;
 import org.freeplane.features.mindmapnode.pattern.Patterns;
 import org.freeplane.features.mindmapnode.pattern.StylePatternFactory;
+import org.freeplane.n3.nanoxml.IXMLElement;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
@@ -67,7 +69,7 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
 name = "accessories/plugins/AutomaticLayout.properties_name", //
 tooltip = "accessories/plugins/AutomaticLayout.properties_documentation")
 public class AutomaticLayout extends PersistentNodeHook implements IMapChangeListener, INodeChangeListener,
-        IReadCompletionListener {
+        IReadCompletionListener, IExtension {
 	/**
 	 * Registers the property pages.
 	 *
@@ -382,5 +384,13 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 			final NodeModel child = (NodeModel) i.next();
 			setStyleRecursiveImpl(child);
 		}
+	}
+
+	public void mapChanged(MapChangeEvent event) {
+	    // TODO Auto-generated method stub
+	    
+    }
+	protected IExtension createExtension(final NodeModel node, final IXMLElement element) {
+		return this;
 	}
 }

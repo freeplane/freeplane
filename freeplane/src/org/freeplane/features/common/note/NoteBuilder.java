@@ -52,7 +52,7 @@ class NoteBuilder implements IElementContentHandler {
 			final String xmlText = content;
 			final NoteModel note = new NoteModel();
 			note.setXmlNoteText(xmlText);
-			((NodeModel) node).putExtension(note);
+			((NodeModel) node).addExtension(note);
 			noteController.setStateIcon(((NodeModel) node), true);
 		}
 	}

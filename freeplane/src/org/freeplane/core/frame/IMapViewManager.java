@@ -38,7 +38,7 @@ import org.freeplane.core.model.NodeModel;
  * 12.01.2009
  */
 public interface IMapViewManager {
-	public void addMapChangeListener(final IMapSelectionListener pListener);
+	public void addMapSelectionListener(final IMapSelectionListener pListener);
 
 	public void addMapViewChangeListener(final IMapViewChangeListener pListener);
 
@@ -117,7 +117,7 @@ public interface IMapViewManager {
 
 	public void previousMapView();
 
-	public void removeMapChangeListener(final IMapSelectionListener pListener);
+	public void removeMapSelectionListener(final IMapSelectionListener pListener);
 
 	public void removeMapViewChangeListener(final IMapViewChangeListener pListener);
 
@@ -131,8 +131,6 @@ public interface IMapViewManager {
 	 * nothing + returns false.
 	 */
 	public boolean tryToChangeToMapView(final String mapView);
-
-	public void updateMapView();
 
 	public void updateMapViewName();
 }

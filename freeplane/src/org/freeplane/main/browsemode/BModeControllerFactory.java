@@ -32,6 +32,7 @@ import org.freeplane.core.url.UrlManager;
 import org.freeplane.features.browsemode.BModeController;
 import org.freeplane.features.browsemode.BNodeNoteViewer;
 import org.freeplane.features.browsemode.BToolbarContributor;
+import org.freeplane.features.common.addins.mapstyle.MapStyle;
 import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.cloud.CloudController;
@@ -43,6 +44,7 @@ import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.note.NoteController;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.common.time.TimeController;
+import org.freeplane.view.swing.addins.nodehistory.NodeHistory;
 import org.freeplane.view.swing.ui.UserInputListenerFactory;
 
 /**
@@ -83,6 +85,8 @@ public class BModeControllerFactory {
 		userInputListenerFactory.updateMenus(modeController);
 		modeController.updateMenus();
 		ResourceController.getResourceController().updateMenus(modeController);
+		NodeHistory.install(modeController);
+		new MapStyle(modeController);
 		return modeController;
 	}
 }

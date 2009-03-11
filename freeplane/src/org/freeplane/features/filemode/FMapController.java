@@ -39,8 +39,8 @@ public class FMapController extends MapController {
 
 	public MapModel newMap(final File file) {
 		final FMapModel fileMapModel = new FMapModel(file, getModeController());
-		newMapView(fileMapModel);
 		fireMapCreated(fileMapModel);
+		newMapView(fileMapModel);
 		return fileMapModel;
 	}
 

@@ -59,7 +59,7 @@ public class ClipboardController implements IExtension {
 	}
 
 	public static void install(final ModeController modeController, final ClipboardController clipboardController) {
-		modeController.putExtension(ClipboardController.class, clipboardController);
+		modeController.addExtension(ClipboardController.class, clipboardController);
 	}
 
 	final private Clipboard clipboard;

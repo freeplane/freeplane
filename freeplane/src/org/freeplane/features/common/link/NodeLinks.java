@@ -42,7 +42,7 @@ public class NodeLinks implements IExtension {
 			return linkExtension;
 		}
 		linkExtension = new NodeLinks();
-		node.putExtension(linkExtension);
+		node.addExtension(linkExtension);
 		return linkExtension;
 	}
 

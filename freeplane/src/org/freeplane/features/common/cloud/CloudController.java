@@ -59,7 +59,7 @@ public class CloudController implements IExtension {
 	}
 
 	public static void install(final ModeController modeController, final CloudController cloudController) {
-		modeController.putExtension(CloudController.class, cloudController);
+		modeController.addExtension(CloudController.class, cloudController);
 	}
 
 	final private ExclusivePropertyChain<Color, NodeModel> colorHandlers;

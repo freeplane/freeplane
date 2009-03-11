@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.view.swing.addins.mindmapmode.nodehistory;
+package org.freeplane.view.swing.addins.nodehistory;
 
 import java.awt.event.ActionEvent;
 
@@ -39,7 +39,7 @@ import org.freeplane.core.ui.EnabledAction;
 tooltip = "accessories/plugins/NodeHistoryBack.properties_documentation", //
 keyStroke = "keystroke_accessories/plugins/NodeHistoryBack.keystroke.alt_BACK", //
 iconPath = "/images/back.png", //
-locations = { "/menu_bar/navigate/folding", "/main_toolbar/folding" })
+locations = { "/menu_bar/navigate/folding", "/main_toolbar/history" })
 class BackAction extends AFreeplaneAction {
 	final private NodeHistory nodeHistory;
 

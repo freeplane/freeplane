@@ -65,7 +65,6 @@ public class MNodeStyleController extends NodeStyleController {
 		modeController.putAction("nodeColor", new NodeColorAction(controller));
 		modeController.putAction("nodeColorBlend", new NodeColorBlendAction(controller));
 		modeController.putAction("nodeBackgroundColor", new NodeBackgroundColorAction(controller));
-		modeController.putAction("removeNodeBackgroundColor", new RemoveNodeBackgroundColorAction(controller));
 		modeController.putAction("fork", new NodeShapeAction(modeController, NodeStyleModel.STYLE_FORK));
 		modeController.putAction("bubble", new NodeShapeAction(modeController, NodeStyleModel.STYLE_BUBBLE));
 		final MToolbarContributor menuContributor = new MToolbarContributor(this);
@@ -97,7 +96,7 @@ public class MNodeStyleController extends NodeStyleController {
 		final ModeController modeController = getModeController();
 		final IUndoableActor actor = new IUndoableActor() {
 			public void act() {
-				node.putExtension(new NodeStyleModel());
+				node.addExtension(new NodeStyleModel());
 			}
 
 			public String getDescription() {
@@ -125,6 +124,9 @@ public class MNodeStyleController extends NodeStyleController {
 	public void setBackgroundColor(final NodeModel node, final Color color) {
 		final ModeController modeController = getModeController();
 		final Color oldColor = NodeStyleModel.getBackgroundColor(node);
+		if (color == oldColor || color != null && color.equals(oldColor)) {
+			return;
+		}
 		final IUndoableActor actor = new IUndoableActor() {
 			public void act() {
 				NodeStyleModel.setBackgroundColor(node, color);

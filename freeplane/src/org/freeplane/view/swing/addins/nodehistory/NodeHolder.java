@@ -17,16 +17,19 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.view.swing.addins.mindmapmode.nodehistory;
+package org.freeplane.view.swing.addins.nodehistory;
 
 import java.lang.ref.WeakReference;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.MapViewController;
 import org.freeplane.view.swing.map.NodeView;
 
 /**
@@ -55,8 +58,9 @@ class NodeHolder {
 	MapView getMapView() {
 		final MapView mapView = mMapView.get();
 		final Controller controller = mapView.getModeController().getController();
-		final Map mapViews = controller.getMapViewManager().getMaps();
-		for (final Iterator iter = mapViews.values().iterator(); iter.hasNext();) {
+		final MapViewController mapViewManager = (MapViewController) controller.getMapViewManager();
+		final List<MapView> mapViews = mapViewManager.getMapViewVector();
+		for (final Iterator iter = mapViews.iterator(); iter.hasNext();) {
 			final MapView m = (MapView) iter.next();
 			if (m == mapView) {
 				return mapView;

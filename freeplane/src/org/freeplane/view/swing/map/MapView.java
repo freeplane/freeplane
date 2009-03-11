@@ -57,7 +57,9 @@ import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.io.xml.TreeXmlReader;
+import org.freeplane.core.modecontroller.IMapChangeListener;
 import org.freeplane.core.modecontroller.IMapSelection;
+import org.freeplane.core.modecontroller.MapChangeEvent;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
@@ -65,6 +67,7 @@ import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.features.common.addins.mapstyle.MapStyle;
 import org.freeplane.features.common.link.ArrowLinkModel;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.LinkModel;
@@ -75,7 +78,7 @@ import org.freeplane.view.swing.map.link.ArrowLinkView;
  * This class represents the view of a whole MindMap (in analogy to class
  * JTree).
  */
-public class MapView extends JPanel implements Printable, Autoscroll {
+public class MapView extends JPanel implements Printable, Autoscroll, IMapChangeListener {
 	private class MapSelection implements IMapSelection {
 		public void centerNode(final NodeModel node) {
 			final NodeView nodeView = getNodeView(node);
@@ -225,7 +228,6 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 	static boolean printOnWhiteBackground;
 	static private IFreeplanePropertyListener propertyChangeListener;
 	static boolean standardDrawRectangleForSelection;
-	static Color standardMapBackgroundColor;
 	static Color standardSelectColor;
 	private static Stroke standardSelectionStroke;
 	static Color standardSelectRectangleColor;
@@ -259,11 +261,8 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		controller = modeController.getController();
 		final String name = getModel().getTitle();
 		setName(name);
-		if (MapView.standardMapBackgroundColor == null) {
+		if (MapView.standardSelectColor == null) {
 			String stdcolor = ResourceController.getResourceController().getProperty(
-			    ResourceControllerProperties.RESOURCES_BACKGROUND_COLOR);
-			MapView.standardMapBackgroundColor = TreeXmlReader.xmlToColor(stdcolor);
-			stdcolor = ResourceController.getResourceController().getProperty(
 			    ResourceControllerProperties.RESOURCES_SELECTED_NODE_COLOR);
 			MapView.standardSelectColor = TreeXmlReader.xmlToColor(stdcolor);
 			final String stdtextcolor = ResourceController.getResourceController().getProperty(
@@ -280,7 +279,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		this.setAutoscrolls(true);
 		this.setLayout(new MindMapLayout());
 		initRoot();
-		setBackground(MapView.standardMapBackgroundColor);
+		setBackground(requiredBackground());
 		final IUserInputListenerFactory userInputListenerFactory = getModeController().getUserInputListenerFactory();
 		addMouseListener(userInputListenerFactory.getMapMouseListener());
 		addMouseMotionListener(userInputListenerFactory.getMapMouseListener());
@@ -290,6 +289,12 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		setFocusTraversalKeys(KeyboardFocusManager.UP_CYCLE_TRAVERSAL_KEYS, Collections.EMPTY_SET);
 		disableMoveCursor = ResourceController.getResourceController().getBooleanProperty("disable_cursor_move_paper");
 	}
+
+	private Color requiredBackground() {
+		MapStyle mapStyle = (MapStyle) getModeController().getExtension(MapStyle.class);		
+		final Color mapBackground = mapStyle.getBackground(model);
+	    return mapBackground;
+    }
 
 	/*
 	 * (non-Javadoc)
@@ -353,11 +358,7 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 				if (!(mapView instanceof MapView)) {
 					return;
 				}
-				if (propertyName.equals(ResourceControllerProperties.RESOURCES_BACKGROUND_COLOR)) {
-					MapView.standardMapBackgroundColor = TreeXmlReader.xmlToColor(newValue);
-					mapView.setBackground(MapView.standardMapBackgroundColor);
-				}
-				else if (propertyName.equals(ResourceControllerProperties.RESOURCES_SELECTED_NODE_COLOR)) {
+				if (propertyName.equals(ResourceControllerProperties.RESOURCES_SELECTED_NODE_COLOR)) {
 					MapView.standardSelectColor = TreeXmlReader.xmlToColor(newValue);
 					((MapView) mapView).repaintSelecteds();
 				}
@@ -1335,4 +1336,26 @@ public class MapView extends JPanel implements Printable, Autoscroll {
 		super.validateTree();
 		setViewPositionAfterValidate();
 	}
+
+	public void mapChanged(MapChangeEvent event) {
+		   if(event.getProperty().equals(ResourceControllerProperties.RESOURCES_BACKGROUND_COLOR)){
+			   setBackground(requiredBackground());
+		   }
+		   if(event.getProperty().equals(ResourceControllerProperties.RESOURCES_NODE_TEXT_COLOR)){
+			   getRoot().updateAll();
+		   }
+	    
+    }
+
+	public void onNodeDeleted(NodeModel parent, NodeModel child, int index) {
+    }
+
+	public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
+    }
+
+	public void onNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
+    }
+
+	public void onPreNodeDelete(NodeModel oldParent, NodeModel selectedNode, int index) {
+    }
 }

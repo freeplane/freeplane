@@ -101,7 +101,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 		this.modeController = modeController;
 		controller = modeController.getController();
 		this.reminderHook = reminderHook;
-		controller.getMapViewManager().addMapChangeListener(this);
+		controller.getMapViewManager().addMapSelectionListener(this);
 	}
 
 	public void actionPerformed(final ActionEvent arg0) {

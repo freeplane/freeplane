@@ -44,7 +44,7 @@ public class SpellCheckerController implements IExtension {
 	}
 
 	public static void install(final MModeController modeController) {
-		modeController.putExtension(SpellCheckerController.class, new SpellCheckerController());
+		modeController.addExtension(SpellCheckerController.class, new SpellCheckerController());
 	}
 
 	private boolean spellCheckerEnabled = false;

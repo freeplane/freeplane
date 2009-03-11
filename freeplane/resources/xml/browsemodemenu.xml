@@ -123,7 +123,7 @@
 			<menu_action name="copy" field="copy" key_ref="keystroke_copy" />
 		</menu_category>
 		<menu_separator />
-		<menu_category name="folding">
-		</menu_category>
+		<menu_category name="history"/>
+		<menu_category name="folding"/>
 	</menu_category>
 </menu_structure>

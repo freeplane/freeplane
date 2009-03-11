@@ -174,7 +174,6 @@
 					<menu_action field="nodeColor" key_ref="keystroke_node_color" />
 					<menu_action field="nodeColorBlend" key_ref="keystroke_node_color_blend" />
 					<menu_action field="nodeBackgroundColor" />
-					<menu_action field="removeNodeBackgroundColor" />
 				</menu_category>
 				<menu_category name="position">
 					<menu_action field="moveNodeAction" />
@@ -366,7 +365,6 @@
 					<menu_action field="nodeColor" key_ref="keystroke_node_color" />
 					<menu_action field="nodeColorBlend" key_ref="keystroke_node_color_blend" />
 					<menu_action field="nodeBackgroundColor" />
-					<menu_action field="removeNodeBackgroundColor" />
 				</menu_category>
 				<menu_separator />
 			</menu_category>
@@ -465,7 +463,7 @@
 			<menu_action field="showAttributeManagerAction" key_ref="keystroke_show_attribute_manager" />
 		</menu_category>
 		<menu_separator />
-		<menu_category name="folding">
-		</menu_category>
+		<menu_category name="history"/>
+		<menu_category name="folding"/>
 	</menu_category>
 </menu_structure>

@@ -42,9 +42,6 @@ class NodeBackgroundColorAction extends MultipleNodeAction {
 		actionBackgroundColor = ColorTracker.showCommonJColorChooserDialog(getController(), getController()
 		    .getSelection().getSelected(), FreeplaneResourceBundle.getText("choose_node_color"), NodeStyleModel
 		    .getBackgroundColor(getModeController().getMapController().getSelectedNode()));
-		if (actionBackgroundColor == null) {
-			return;
-		}
 		super.actionPerformed(e);
 	}
 

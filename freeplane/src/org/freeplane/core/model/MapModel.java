@@ -24,6 +24,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -33,8 +35,11 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.filter.DefaultFilter;
 import org.freeplane.core.filter.IFilter;
 import org.freeplane.core.filter.condition.NoFilteringCondition;
+import org.freeplane.core.modecontroller.IMapChangeListener;
+import org.freeplane.core.modecontroller.MapChangeEvent;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.view.swing.map.MapView;
 
 public class MapModel {
 	private static Random ran = new Random();
@@ -51,10 +56,12 @@ public class MapModel {
 	private boolean readOnly = true;
 	private NodeModel root;
 	private URL url;
+	final private List<IMapChangeListener> listeners;
 
 	public MapModel(final ModeController modeController, NodeModel root) {
 		extensionContainer = new ExtensionContainer(new HashMap<Class<? extends IExtension>, IExtension>());
 		this.root = root;
+		this.listeners = new LinkedList<IMapChangeListener>();
 		final Controller controller = modeController.getController();
 		nodes = new HashMap<String, NodeModel>();
 		filter = new DefaultFilter(controller, NoFilteringCondition.createCondition(), true, false);
@@ -241,5 +248,20 @@ public class MapModel {
 	 */
 	public void setURL(final URL v) {
 		url = v;
+	}
+
+	public void addMapChangeListener(IMapChangeListener listener) {
+		listeners.add(listener);
+	    
+    }
+
+	public void removeMapChangeListener(IMapChangeListener listener) {
+		listeners.remove(listener);
+    }
+	
+	public void fireMapChangeEvent(MapChangeEvent event){
+		for(IMapChangeListener listener:listeners){
+			listener.mapChanged(event);
+		}
 	}
 }

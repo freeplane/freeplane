@@ -198,7 +198,7 @@ public class UrlManager implements IExtension {
 	}
 
 	public static void install(final ModeController modeController, final UrlManager urlManager) {
-		modeController.putExtension(UrlManager.class, urlManager);
+		modeController.addExtension(UrlManager.class, urlManager);
 	}
 
 	public static boolean isAbsolutePath(final String path) {

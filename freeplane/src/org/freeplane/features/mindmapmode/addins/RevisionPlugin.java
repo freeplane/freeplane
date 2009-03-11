@@ -32,13 +32,14 @@ import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
+import org.freeplane.n3.nanoxml.IXMLElement;
 
 /**
  * @author foltin
  */
 @NodeHookDescriptor(hookName = "accessories/plugins/RevisionPlugin.properties")
 @ActionDescriptor(name = "accessories/plugins/RevisionPlugin.properties_name")
-public class RevisionPlugin extends PersistentNodeHook implements INodeChangeListener {
+public class RevisionPlugin extends PersistentNodeHook implements INodeChangeListener, IExtension {
 	public RevisionPlugin(final ModeController modeController) {
 		super(modeController);
 		getModeController().getMapController().addNodeChangeListener(this);
@@ -64,5 +65,8 @@ public class RevisionPlugin extends PersistentNodeHook implements INodeChangeLis
 	@Override
 	protected void remove(final NodeModel node, final IExtension extension) {
 		super.remove(node, extension);
+	}
+	protected IExtension createExtension(final NodeModel node, final IXMLElement element) {
+		return this;
 	}
 }

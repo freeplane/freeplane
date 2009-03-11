@@ -525,10 +525,6 @@ abstract public class ViewController implements IMapViewChangeListener {
 		}
 	}
 
-	public void updateView() {
-		mapViewManager.updateMapView();
-	}
-
 	protected void viewNumberChanged(final int number) {
 	}
 

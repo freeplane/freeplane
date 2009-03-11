@@ -47,18 +47,17 @@ class ColorArrowLinkAction extends AFreeplaneAction {
 		final Color selectedColor = LinkController.getController(modeController).getColor(arrowLink);
 		final Color color = ColorTracker.showCommonJColorChooserDialog(controller, controller.getSelection()
 		    .getSelected(), (String) this.getValue(Action.NAME), selectedColor);
-		if (color == null) {
-			return;
-		}
 		setArrowLinkColor(arrowLink, color);
 	}
 
 	public void setArrowLinkColor(final ArrowLinkModel arrowLink, final Color color) {
+		final Color oldColor = arrowLink.getColor();
+		if (color == oldColor || color != null && color.equals(oldColor)) {
+			return;
+		}
 		final IUndoableActor actor = new IUndoableActor() {
-			private Color oldColor;
 
 			public void act() {
-				oldColor = arrowLink.getColor();
 				arrowLink.setColor(color);
 				final NodeModel node = arrowLink.getSource();
 				getModeController().getMapController().nodeChanged(node);

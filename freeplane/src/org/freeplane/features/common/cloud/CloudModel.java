@@ -52,7 +52,7 @@ public class CloudModel implements IExtension {
 		final CloudModel oldCloud = CloudModel.getModel(node);
 		if (cloud != null && oldCloud == null) {
 			CloudModel.changeChildCloudIterativeLevels(mapController, node, 1);
-			node.putExtension(cloud);
+			node.addExtension(cloud);
 		}
 		else if (cloud == null && oldCloud != null) {
 			CloudModel.changeChildCloudIterativeLevels(mapController, node, -1);

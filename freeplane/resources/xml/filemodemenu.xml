@@ -95,5 +95,6 @@
 		</menu_category>
 		<menu_separator />
 		<menu_action field="center" />
+		<menu_category name="history"/>
 	</menu_category>
 </menu_structure>

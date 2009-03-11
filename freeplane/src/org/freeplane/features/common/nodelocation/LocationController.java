@@ -34,7 +34,7 @@ public class LocationController implements IExtension {
 	}
 
 	public static void install(final ModeController modeController, final LocationController locationController) {
-		modeController.putExtension(LocationController.class, locationController);
+		modeController.addExtension(LocationController.class, locationController);
 	}
 
 	final private ModeController modeController;

@@ -21,6 +21,7 @@ package org.freeplane.core.frame;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.HeadlessException;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
@@ -31,11 +32,13 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.Serializable;
 
+import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JDialog;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.FreeplaneResourceBundle;
 
 public class ColorTracker implements ActionListener, Serializable {
 	static class Closer extends WindowAdapter implements Serializable {
@@ -67,11 +70,25 @@ public class ColorTracker implements ActionListener, Serializable {
 		pane.setColor(initialColor);
 		final ColorTracker ok = new ColorTracker(pane);
 		final JDialog dialog = JColorChooser.createDialog(component, title, true, pane, ok, null);
+		final Container container = (Container) dialog.getContentPane().getComponent(1);
+		final JButton defaultBtn = new JButton(FreeplaneResourceBundle.getText("reset_to_default"));
+		defaultBtn.addActionListener(new ActionListener(){
+
+			public void actionPerformed(ActionEvent e) {
+	            dialog.dispose();
+	            ok.setColor(null);
+	            
+            }});
+		container.add(defaultBtn);
 		dialog.addWindowListener(new Closer());
 		dialog.addComponentListener(new DisposeOnClose());
 		dialog.show();
 		return ok.getColor();
 	}
+
+	protected void setColor(Color color) {
+	    this.color = color;
+    }
 
 	public static Color showCommonJColorChooserDialog(final Controller controller, final NodeModel nodeModel,
 	                                                  final String title, final Color initialColor)

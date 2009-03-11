@@ -37,7 +37,7 @@ public class IconController implements IExtension {
 	}
 
 	public static void install(final ModeController modeController, final IconController iconController) {
-		modeController.putExtension(IconController.class, iconController);
+		modeController.addExtension(IconController.class, iconController);
 	}
 	
 	public static void install(Controller controller) {

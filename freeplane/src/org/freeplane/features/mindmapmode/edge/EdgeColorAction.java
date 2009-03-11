@@ -45,9 +45,6 @@ class EdgeColorAction extends MultipleNodeAction {
 		final Color edgeColor = EdgeController.getController(controller.getModeController()).getColor(model);
 		actionColor = ColorTracker.showCommonJColorChooserDialog(controller, controller.getSelection().getSelected(),
 		    FreeplaneResourceBundle.getText("choose_edge_color"), edgeColor);
-		if (actionColor == null) {
-			return;
-		}
 		super.actionPerformed(e);
 	}
 

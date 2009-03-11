@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.view.swing.addins.mindmapmode.nodehistory;
+package org.freeplane.view.swing.addins.nodehistory;
 
 import java.util.LinkedList;
 import java.util.ListIterator;
@@ -35,24 +35,33 @@ import org.freeplane.view.swing.map.MapView;
  */
 public class NodeHistory implements IExtension, INodeSelectionListener {
 	private NodeHolder currentNodeHolder;
-	final private ModeController modeController;
+	final private Controller controller;
 	private ListIterator<NodeHolder> nodeIterator;
 	private final LinkedList<NodeHolder> nodes;
 
-	public NodeHistory(final ModeController c) {
-		modeController = c;
+	static public void install(final Controller controller){
+		controller.putExtension(NodeHistory.class, new NodeHistory(controller));
+	}
+	
+	private NodeHistory(final Controller controller) {
+		this.controller = controller;
 		nodes = new LinkedList<NodeHolder>();
 		nodeIterator = nodes.listIterator();
-		modeController.getMapController().addNodeSelectionListener(this);
+	}
+
+	static public void install(ModeController modeController){
+		final Controller controller = modeController.getController();
+		NodeHistory history = (NodeHistory) controller.getExtension(NodeHistory.class);
+		modeController.getMapController().addNodeSelectionListener(history);
 		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
-		final BackAction backAction = new BackAction(modeController.getController(), this);
+		final BackAction backAction = new BackAction(controller, history);
 		menuBuilder.addAnnotatedAction(backAction);
 		modeController.addAnnotatedAction(backAction);
-		final ForwardAction forwardAction = new ForwardAction(modeController.getController(), this);
+		final ForwardAction forwardAction = new ForwardAction(controller, history);
 		menuBuilder.addAnnotatedAction(forwardAction);
 		modeController.addAnnotatedAction(forwardAction);
 	}
-
+	
 	boolean canGoBack() {
 		return nodeIterator.previousIndex() > 0;
 	}
@@ -109,9 +118,9 @@ public class NodeHistory implements IExtension, INodeSelectionListener {
 			}
 		}
 		if (!toBeSelected.isRoot()) {
-			modeController.getMapController().setFolded(toBeSelected.getParentNode(), false);
+			newView.getModeController().getMapController().setFolded(toBeSelected.getParentNode(), false);
 		}
-		modeController.getMapController().select(toBeSelected);
+		newView.getModeController().getMapController().select(toBeSelected);
 	}
 
 	public void goBack() {
@@ -126,7 +135,6 @@ public class NodeHistory implements IExtension, INodeSelectionListener {
 	}
 
 	public void onSelect(final NodeModel pNode) {
-		final Controller controller = modeController.getController();
 		if (currentNodeHolder != null
 		        && currentNodeHolder.isIdentical(((MapView) controller.getViewController().getMapView())
 		            .getNodeView(pNode))) {
@@ -142,9 +150,5 @@ public class NodeHistory implements IExtension, INodeSelectionListener {
 		}
 		currentNodeHolder = new NodeHolder(((MapView) controller.getViewController().getMapView()).getNodeView(pNode));
 		nodeIterator.add(currentNodeHolder);
-	}
-
-	public void register() {
-		modeController.getMapController().addNodeSelectionListener(this);
 	}
 }

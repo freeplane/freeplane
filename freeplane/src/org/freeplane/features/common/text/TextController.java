@@ -37,7 +37,7 @@ public class TextController implements IExtension {
 	}
 
 	public static void install(final ModeController modeController, final TextController textController) {
-		modeController.putExtension(TextController.class, textController);
+		modeController.addExtension(TextController.class, textController);
 		final Controller controller = modeController.getController();
 	}
 

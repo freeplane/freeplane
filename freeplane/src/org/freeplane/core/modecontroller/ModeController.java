@@ -249,7 +249,7 @@ public class ModeController extends AController {
 		}
 	}
 
-	public void putExtension(final Class<? extends IExtension> clazz, final IExtension extension) {
+	public void addExtension(final Class<? extends IExtension> clazz, final IExtension extension) {
 		extensionContainer.putExtension(clazz, extension);
 	}
 

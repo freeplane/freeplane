@@ -19,19 +19,44 @@
  */
 package org.freeplane.core.modecontroller;
 
+import java.awt.AWTEvent;
+import java.awt.Color;
+
+import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 
 /**
- * @author Dimitry Polivaev
+ * @author Dimitry Polivaev 27.11.2008
  */
-public interface IMapChangeListener {
-	void onNodeDeleted(NodeModel parent, NodeModel child, int index);
+public class MapChangeEvent extends AWTEvent {
+	final private Object newValue;
+	final private Object oldValue;
+	final private Object property;
 
-	void onNodeInserted(NodeModel parent, NodeModel child, int newIndex);
+	public  MapChangeEvent(final MapModel map, final Object property, final Object oldValue, final Object newValue) {
+		super(map, 0);
+		this.oldValue = oldValue;
+		this.newValue = newValue;
+		this.property = property;
+	}
 
-	void onNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex);
+	public MapChangeEvent(final Object property, final Object oldValue, final Object newValue) {
+		this(null, property, oldValue, newValue);
+    }
 
-	void onPreNodeDelete(NodeModel oldParent, NodeModel selectedNode, int index);
-	
-	public void mapChanged(MapChangeEvent event);
+	public Object getNewValue() {
+		return newValue;
+	}
+
+	public MapModel getMap() {
+		return (MapModel) getSource();
+	}
+
+	public Object getOldValue() {
+		return oldValue;
+	}
+
+	public Object getProperty() {
+		return property;
+	}
 }

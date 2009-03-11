@@ -38,6 +38,7 @@ import org.freeplane.features.filemode.CenterAction;
 import org.freeplane.features.filemode.FMapController;
 import org.freeplane.features.filemode.FModeController;
 import org.freeplane.features.filemode.OpenPathAction;
+import org.freeplane.view.swing.addins.nodehistory.NodeHistory;
 import org.freeplane.view.swing.ui.UserInputListenerFactory;
 
 /**
@@ -74,6 +75,7 @@ public class FModeControllerFactory {
 		userInputListenerFactory.updateMenus(modeController);
 		modeController.updateMenus();
 		ResourceController.getResourceController().updateMenus(modeController);
+		NodeHistory.install(modeController);
 		return modeController;
 	}
 }

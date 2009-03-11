@@ -89,7 +89,7 @@ public class EncryptedMap extends AFreeplaneAction implements INodeSelectionList
 		    .getText("accessories/plugins/EncryptNode.properties_select_me"), null);
 		final EncryptionModel encryptedMindMapNode = new EncryptionModel(node);
 		encryptedMindMapNode.setEncrypter(new SingleDesEncrypter(password));
-		node.putExtension(encryptedMindMapNode);
+		node.addExtension(encryptedMindMapNode);
 		newModeController.getMapController().newMap(node);
 	}
 

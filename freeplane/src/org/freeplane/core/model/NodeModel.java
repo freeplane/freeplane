@@ -393,7 +393,7 @@ public class NodeModel implements MutableTreeNode {
 		return filter == null || filter.isVisible(this);
 	}
 
-	public void putExtension(final IExtension extension) {
+	public void addExtension(final IExtension extension) {
 		extensionContainer.putExtension(extension);
 	}
 

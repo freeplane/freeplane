@@ -226,7 +226,7 @@ public class MNoteController extends NoteController {
 				if (enabled) {
 					final NoteModel note = new NoteModel();
 					note.setNoteText(text);
-					node.putExtension(note);
+					node.addExtension(note);
 				}
 				else {
 					if (null != node.getExtension(NoteModel.class)) {

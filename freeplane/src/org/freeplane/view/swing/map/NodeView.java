@@ -40,6 +40,7 @@ import java.util.Map;
 import javax.swing.JComponent;
 import javax.swing.tree.TreeNode;
 
+import org.freeplane.core.modecontroller.MapChangeEvent;
 import org.freeplane.core.modecontroller.NodeChangeEvent;
 import org.freeplane.core.model.INodeView;
 import org.freeplane.core.model.NodeModel;
@@ -1116,7 +1117,7 @@ public class NodeView extends JComponent implements INodeView {
 		revalidate();
 	}
 
-	public void updateAll() {
+	void updateAll() {
 		update();
 		invalidate();
 		for (final ListIterator e = getChildrenViews().listIterator(); e.hasNext();) {
@@ -1170,4 +1171,7 @@ public class NodeView extends JComponent implements INodeView {
 	boolean useSelectionColors() {
 		return isSelected() && !MapView.standardDrawRectangleForSelection && !map.isCurrentlyPrinting();
 	}
+
+	public void mapChanged(MapChangeEvent event) {
+    }
 }

@@ -427,7 +427,7 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 		replacingAttributeNames.setMaximumSize(comboBoxMaximumSize);
 		replacingAttributeValues.setMaximumSize(comboBoxMaximumSize);
 		afterMapChange(null, controller.getMap());
-		controller.getMapViewManager().addMapChangeListener(this);
+		controller.getMapViewManager().addMapSelectionListener(this);
 	}
 
 	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {

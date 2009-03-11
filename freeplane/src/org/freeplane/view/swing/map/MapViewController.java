@@ -43,6 +43,7 @@ import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.frame.IMapViewChangeListener;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.modecontroller.IMapSelection;
+import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
@@ -143,7 +144,7 @@ public class MapViewController implements IMapViewManager {
 	 * A vector of MapView instances. They are ordered according to their screen
 	 * order.
 	 */
-	final private Vector mapViewVector = new Vector();
+	final private Vector<MapView> mapViewVector = new Vector<MapView>();
 	private float zoom;
 
 	/**
@@ -155,7 +156,7 @@ public class MapViewController implements IMapViewManager {
 	/* (non-Javadoc)
 	 * @see org.freeplane.core.frame.IMapViewController#addMapChangeListener(org.freeplane.core.frame.IMapChangeListener)
 	 */
-	public void addMapChangeListener(final IMapSelectionListener pListener) {
+	public void addMapSelectionListener(final IMapSelectionListener pListener) {
 		listener.addListener(pListener);
 	}
 
@@ -262,11 +263,13 @@ public class MapViewController implements IMapViewManager {
 	 */
 	public boolean close(final boolean force) {
 		final MapView mapView = getMapView();
-		final boolean closingNotCancelled = mapView.getModeController().getMapController().close(force);
+		final MapController mapController = mapView.getModeController().getMapController();
+		final boolean closingNotCancelled = mapController.close(force);
 		if (!closingNotCancelled) {
 			return false;
 		}
 		int index = mapViewVector.indexOf(mapView);
+		mapController.removeMapChangeListener(mapView);
 		mapViewVector.remove(mapView);
 		if (mapViewVector.isEmpty()) {
 			/* Keep the current running mode */
@@ -389,7 +392,7 @@ public class MapViewController implements IMapViewManager {
 	/* (non-Javadoc)
 	 * @see org.freeplane.core.frame.IMapViewController#getMapViewVector()
 	 */
-	public List getMapViewVector() {
+	public List<MapView> getMapViewVector() {
 		return Collections.unmodifiableList(mapViewVector);
 	}
 
@@ -454,8 +457,9 @@ public class MapViewController implements IMapViewManager {
 	 * @see org.freeplane.core.frame.IMapViewController#newMapView(org.freeplane.core.model.MapModel, org.freeplane.core.modecontroller.ModeController)
 	 */
 	public void newMapView(final MapModel map, final ModeController modeController) {
-		final MapView mapView = new MapView(map, modeController);
+		final MapView mapView = new MapView(map, modeController);		
 		addToOrChangeInMapViews(mapView.getName(), mapView);
+		modeController.getMapController().addMapChangeListener(mapView);
 		listener.mapViewCreated(mapView);
 		changeToMapView(mapView);
 	}
@@ -505,7 +509,7 @@ public class MapViewController implements IMapViewManager {
 	/* (non-Javadoc)
 	 * @see org.freeplane.core.frame.IMapViewController#removeIMapViewChangeListener(org.freeplane.core.frame.IMapChangeListener)
 	 */
-	public void removeMapChangeListener(final IMapSelectionListener pListener) {
+	public void removeMapSelectionListener(final IMapSelectionListener pListener) {
 		listener.removeListener(pListener);
 	}
 
@@ -559,13 +563,6 @@ public class MapViewController implements IMapViewManager {
 		else {
 			return false;
 		}
-	}
-
-	/* (non-Javadoc)
-	 * @see org.freeplane.core.frame.IMapViewController#updateMapView()
-	 */
-	public void updateMapView() {
-		mapView.getRoot().updateAll();
 	}
 
 	/* (non-Javadoc)

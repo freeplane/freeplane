@@ -53,7 +53,7 @@ public class MPatternController implements IExtension {
 	}
 
 	public static void install(final ModeController modeController, final MPatternController patternController) {
-		modeController.putExtension(MPatternController.class, patternController);
+		modeController.addExtension(MPatternController.class, patternController);
 	}
 
 	final private ModeController modeController;

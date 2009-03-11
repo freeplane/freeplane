@@ -91,7 +91,7 @@ public class MCloudController extends CloudController {
 		setCloud(node, true);
 		final ModeController modeController = getModeController();
 		final Color oldColor = CloudModel.getModel(node).getColor();
-		if (color.equals(oldColor)) {
+		if (color == oldColor || color != null && color.equals(oldColor)) {
 			return;
 		}
 		final IUndoableActor actor = new IUndoableActor() {

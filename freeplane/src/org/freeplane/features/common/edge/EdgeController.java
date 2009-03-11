@@ -58,7 +58,7 @@ public class EdgeController implements IExtension {
 	}
 
 	public static void install(final ModeController modeController, final EdgeController edgeController) {
-		modeController.putExtension(EdgeController.class, edgeController);
+		modeController.addExtension(EdgeController.class, edgeController);
 	}
 
 	final private ExclusivePropertyChain<Color, NodeModel> colorHandlers;

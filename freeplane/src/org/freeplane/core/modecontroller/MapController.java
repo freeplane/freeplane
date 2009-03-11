@@ -282,6 +282,17 @@ public class MapController {
 			iterator.next().onPreNodeDelete(parent, selectedNode, index);
 		}
 	}
+		
+	public void fireMapChanged(final MapChangeEvent event){		
+		for(IMapChangeListener listener:mapChangeListeners){
+			listener.mapChanged(event);
+		}
+		final MapModel map = event.getMap();
+		if(map != null){
+			map.fireMapChangeEvent(event);
+			setSaved(map, false);
+		}
+	}
 
 	public Controller getController() {
 		return controller;
@@ -525,8 +536,8 @@ public class MapController {
 
 	public MapModel newMap(final NodeModel root) {
 		final MapModel newModel = newModel(root);
-		newMapView(newModel);
 		fireMapCreated(newModel);
+		newMapView(newModel);
 		return newModel;
 	}
 
@@ -534,8 +545,8 @@ public class MapController {
 	        URISyntaxException {
 		final MapModel newModel = newModel(null);
 		load(newModel, file);
-		newMapView(newModel);
 		fireMapCreated(newModel);
+		newMapView(newModel);
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				setSaved(newModel, true);

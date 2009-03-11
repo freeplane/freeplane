@@ -29,6 +29,7 @@ import javax.swing.JRadioButtonMenuItem;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.IMapChangeListener;
+import org.freeplane.core.modecontroller.MapChangeEvent;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
@@ -87,6 +88,11 @@ public class MLinkController extends LinkController {
 			};
 			getModeController().execute(actor);
 		}
+
+		public void mapChanged(MapChangeEvent event) {
+	        // TODO Auto-generated method stub
+	        
+        }
 	}
 
 	static private ColorArrowLinkAction colorArrowLinkAction;

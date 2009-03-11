@@ -36,36 +36,30 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.core.undo.IUndoableActor;
+import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.n3.nanoxml.IXMLElement;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-public abstract class PersistentNodeHook implements IExtension {
+public abstract class PersistentNodeHook {
 	public abstract class HookAction extends AFreeplaneAction {
 		public HookAction() {
 			super(controller);
 		}
 
 		public void actionPerformed(final ActionEvent e) {
-			final NodeModel[] nodes = getNodes();
-			final boolean activeForSelection = isActiveForSelection();
-			for (int i = 0; i < nodes.length; i++) {
-				final NodeModel node = nodes[i];
-				if (node.containsExtension(getExtensionClass()) != activeForSelection) {
-					continue;
-				}
-				undoableToggleHook(node);
-			}
+			undoableSetHook(!isActiveForSelection());
 		}
+
 	}
 
 	@SelectableAction(checkOnNodeChange = true)
-	private class SelectableHookAction extends HookAction {
+	protected class SelectableHookAction extends HookAction {
 		/**
 		 * 
 		 */
 		private static final long serialVersionUID = 4427219027418034535L;
 
-		public SelectableHookAction() {
+		protected SelectableHookAction() {
 			super();
 		}
 
@@ -154,11 +148,16 @@ public abstract class PersistentNodeHook implements IExtension {
 		super();
 		this.modeController = modeController;
 		controller = modeController.getController();
-		final ActionDescriptor actionAnnotation = getActionAnnotation();
-		if (actionAnnotation != null) {
-			selectableHookAction = createHookAction();
-			if (selectableHookAction != null) {
-				registerAction(selectableHookAction, actionAnnotation);
+		if(modeController.getModeName().equals("MindMap")){
+			final ActionDescriptor actionAnnotation = getActionAnnotation();
+			if (actionAnnotation != null) {
+				selectableHookAction = createHookAction();
+				if (selectableHookAction != null) {
+					registerAction(selectableHookAction, actionAnnotation);
+				}
+			}
+			else {
+				selectableHookAction = null;
 			}
 		}
 		else {
@@ -167,11 +166,14 @@ public abstract class PersistentNodeHook implements IExtension {
 		final MapController mapController = modeController.getMapController();
 		mapController.getReadManager().addElementHandler("hook", createXmlReader());
 		mapController.getWriteManager().addExtensionElementWriter(getExtensionClass(), createXmlWriter());
+		if(this instanceof IExtension){
+			modeController.addExtension((Class<? extends IExtension>) getClass(), (IExtension)this);
+		}
 	}
 
 	protected void add(final NodeModel node, final IExtension extension) {
 		assert (getExtensionClass().equals(extension.getClass()));
-		node.putExtension(extension);
+		node.addExtension(extension);
 		getModeController().getMapController().nodeChanged(node);
 	}
 
@@ -179,9 +181,7 @@ public abstract class PersistentNodeHook implements IExtension {
 		return createExtension(node, null);
 	}
 
-	protected IExtension createExtension(final NodeModel node, final IXMLElement element) {
-		return this;
-	}
+	abstract protected IExtension createExtension(final NodeModel node, final IXMLElement element);
 
 	protected HookAction createHookAction() {
 		return new SelectableHookAction();
@@ -282,6 +282,30 @@ public abstract class PersistentNodeHook implements IExtension {
 		undoableToggleHook(node, extension);
 	}
 
+	public void undoableDeactivateHook(final NodeModel node) {
+		if(node.getExtension(getExtensionClass()) != null){
+			undoableToggleHook(node, null);
+		}
+	}
+
+	public void undoableSetHook(final boolean enable) {
+        final NodeModel[] nodes = getNodes();
+		for (int i = 0; i < nodes.length; i++) {
+			final NodeModel node = nodes[i];
+			if (node.containsExtension(getExtensionClass()) != enable) {
+				undoableToggleHook(node);
+			}
+		}
+    }
+	public void undoableSetHook(final IExtension extension) {
+        final NodeModel[] nodes = getNodes();
+		for (int i = 0; i < nodes.length; i++) {
+			final NodeModel node = nodes[i];
+			if(extension != null ||node.containsExtension(getExtensionClass())){
+				undoableToggleHook(node, extension);
+			}
+		}
+    }
 	public void undoableToggleHook(final NodeModel node) {
 		undoableToggleHook(node, null);
 	}
@@ -290,4 +314,12 @@ public abstract class PersistentNodeHook implements IExtension {
 		final IUndoableActor actor = new ToggleHookActor(node, extension);
 		getModeController().execute(actor);
 	}
+	
+	public IExtension getMapHook(){
+		final NodeModel rootNode = controller.getMap().getRootNode();
+		return rootNode.getExtension(getExtensionClass());
+	}
+	protected Controller getController() {
+	    return controller;
+    }
 }

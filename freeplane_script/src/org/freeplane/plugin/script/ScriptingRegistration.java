@@ -142,7 +142,7 @@ class ScriptingRegistration implements IExternalPatternAction {
 	}
 
 	private void register() {
-		modeController.putExtension(IExternalPatternAction.class, this);
+		modeController.addExtension(IExternalPatternAction.class, this);
 		mScriptEditorStarter = new ScriptEditorProperty.IScriptEditorStarter() {
 			public String startEditor(final String pScriptInput) {
 				final PatternScriptModel patternScriptModel = new PatternScriptModel(pScriptInput);
@@ -152,7 +152,7 @@ class ScriptingRegistration implements IExternalPatternAction {
 				return patternScriptModel.getScript();
 			}
 		};
-		modeController.putExtension(ScriptEditorProperty.IScriptEditorStarter.class, mScriptEditorStarter);
+		modeController.addExtension(ScriptEditorProperty.IScriptEditorStarter.class, mScriptEditorStarter);
 		addPropertiesToOptionPanel();
 		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
 		menuBuilder.addAnnotatedAction(new ScriptEditor(modeController.getController(), this));

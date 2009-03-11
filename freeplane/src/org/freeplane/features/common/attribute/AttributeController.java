@@ -38,7 +38,7 @@ public class AttributeController implements IExtension {
 	}
 
 	public static void install(final ModeController modeController, final AttributeController attributeController) {
-		modeController.putExtension(AttributeController.class, attributeController);
+		modeController.addExtension(AttributeController.class, attributeController);
 	}
 
 	final private ModeController modeController;
@@ -68,7 +68,7 @@ public class AttributeController implements IExtension {
 			return attributeModel;
 		}
 		attributeModel = new NodeAttributeTableModel(node);
-		node.putExtension(attributeModel);
+		node.addExtension(attributeModel);
 		if (node.areViewsEmpty()) {
 			return attributeModel;
 		}

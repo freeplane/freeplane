@@ -57,7 +57,7 @@ public class MEdgeController extends EdgeController {
 	public void setColor(final NodeModel node, final Color color) {
 		final ModeController modeController = getModeController();
 		final Color oldColor = getColor(node);
-		if (color.equals(oldColor)) {
+		if (color == oldColor || color != null && color.equals(oldColor)) {
 			return;
 		}
 		final IUndoableActor actor = new IUndoableActor() {

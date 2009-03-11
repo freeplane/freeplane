@@ -213,7 +213,7 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 		UITools.addEscapeActionToDialog(this);
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new ClosingListener());
-		controller.getMapViewManager().addMapChangeListener(this);
+		controller.getMapViewManager().addMapSelectionListener(this);
 		addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentShown(final ComponentEvent e) {

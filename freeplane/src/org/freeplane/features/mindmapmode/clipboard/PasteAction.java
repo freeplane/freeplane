@@ -150,10 +150,10 @@ class PasteAction extends AFreeplaneAction {
 		}
 	}
 
-	private static class PasteHTmlWriter extends FixedHTMLWriter {
+	private static class PasteHtmlWriter extends FixedHTMLWriter {
 		private final Element element;
 
-		public PasteHTmlWriter(final Writer writer, final Element element, final HTMLDocument doc, final int pos,
+		public PasteHtmlWriter(final Writer writer, final Element element, final HTMLDocument doc, final int pos,
 		                       final int len) {
 			super(writer, doc, pos, len);
 			this.element = getStandAloneElement(element);
@@ -211,19 +211,19 @@ class PasteAction extends AFreeplaneAction {
 					++depth;
 				}
 				String visibleText = text.trim();
-				if (visibleText.matches("^http://(www\\.)?[^ ]*$")) {
-					visibleText = visibleText.replaceAll("^http://(www\\.)?", "").replaceAll("(/|\\.[^\\./\\?]*)$", "")
-					    .replaceAll("((\\.[^\\./]*\\?)|\\?)[^/]*$", " ? ...").replaceAll("_|%20", " ");
-					final String[] textParts = visibleText.split("/");
-					visibleText = "";
-					for (int textPartIdx = 0; textPartIdx < textParts.length; textPartIdx++) {
-						if (textPartIdx > 0) {
-							visibleText += " > ";
-						}
-						visibleText += textPartIdx == 0 ? textParts[textPartIdx] : PasteAction
-						    .firstLetterCapitalized(textParts[textPartIdx].replaceAll("^~*", ""));
-					}
-				}
+//				if (visibleText.matches("^http://(www\\.)?[^ ]*$")) {
+//					visibleText = visibleText.replaceAll("^http://(www\\.)?", "").replaceAll("(/|\\.[^\\./\\?]*)$", "")
+//					    .replaceAll("((\\.[^\\./]*\\?)|\\?)[^/]*$", " ? ...").replaceAll("_|%20", " ");
+//					final String[] textParts = visibleText.split("/");
+//					visibleText = "";
+//					for (int textPartIdx = 0; textPartIdx < textParts.length; textPartIdx++) {
+//						if (textPartIdx > 0) {
+//							visibleText += " > ";
+//						}
+//						visibleText += textPartIdx == 0 ? textParts[textPartIdx] : PasteAction
+//						    .firstLetterCapitalized(textParts[textPartIdx].replaceAll("^~*", ""));
+//					}
+//				}
 				final String link = findLink(text);
 				if (!visibleText.equals("")) {
 					textFragments.add(new TextFragment(visibleText, link, depth));
@@ -246,7 +246,7 @@ class PasteAction extends AFreeplaneAction {
 			final String paragraphText = doc.getText(start, end - start).trim();
 			if (paragraphText.length() > 0) {
 				final StringWriter out = new StringWriter();
-				new PasteHTmlWriter(out, element, doc, start, end - start).write();
+				new PasteHtmlWriter(out, element, doc, start, end - start).write();
 				final String string = out.toString();
 				if (!string.equals("")) {
 					final String link = findLink(string);

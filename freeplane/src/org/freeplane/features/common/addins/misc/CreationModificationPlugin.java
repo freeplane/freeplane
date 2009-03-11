@@ -32,6 +32,7 @@ import org.freeplane.core.modecontroller.NodeChangeEvent;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.n3.nanoxml.IXMLElement;
 
 /**
  * @author foltin
@@ -41,7 +42,7 @@ import org.freeplane.core.ui.ActionDescriptor;
 name = "accessories/plugins/CreationModificationPlugin.properties_name", //
 iconPath = "/images/kword.png", //
 tooltip = "accessories/plugins/CreationModificationPlugin.properties_documentation")
-public class CreationModificationPlugin extends PersistentNodeHook implements INodeChangeListener {
+public class CreationModificationPlugin extends PersistentNodeHook implements INodeChangeListener, IExtension {
 	private String tooltipFormat = "<html>Created:  {0,date} {0,time}<br>Modified: {1,date} {1,time}</html>";
 
 	/**
@@ -109,5 +110,8 @@ public class CreationModificationPlugin extends PersistentNodeHook implements IN
 
 	protected void setToolTip(final NodeModel node, final String key, final String value) {
 		(getModeController().getMapController()).setToolTip(node, key, value);
+	}
+	protected IExtension createExtension(final NodeModel node, final IXMLElement element) {
+		return this;
 	}
 }

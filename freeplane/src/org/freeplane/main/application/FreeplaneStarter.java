@@ -47,6 +47,7 @@ import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.main.browsemode.BModeControllerFactory;
 import org.freeplane.main.filemode.FModeControllerFactory;
 import org.freeplane.main.mindmapmode.MModeControllerFactory;
+import org.freeplane.view.swing.addins.nodehistory.NodeHistory;
 import org.freeplane.view.swing.map.MMapViewController;
 
 public class FreeplaneStarter {
@@ -93,6 +94,7 @@ public class FreeplaneStarter {
 		LinkController.install(controller);
 		IconController.install(controller);
 		HelpController.install(controller);
+		NodeHistory.install(controller);
 		MModeControllerFactory.createModeController(controller);
 		BModeControllerFactory.createModeController(controller, "/xml/browsemodemenu.xml");
 		FModeControllerFactory.createModeController(controller);

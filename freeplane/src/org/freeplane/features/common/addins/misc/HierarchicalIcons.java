@@ -32,12 +32,14 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IReadCompletionListener;
 import org.freeplane.core.modecontroller.IMapChangeListener;
 import org.freeplane.core.modecontroller.INodeChangeListener;
+import org.freeplane.core.modecontroller.MapChangeEvent;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.modecontroller.NodeChangeEvent;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.components.MultipleImage;
+import org.freeplane.n3.nanoxml.IXMLElement;
 
 /**
  * @author Foltin
@@ -47,7 +49,7 @@ import org.freeplane.core.ui.components.MultipleImage;
 name = "accessories/plugins/HierarchicalIcons.properties_name", //
 tooltip = "accessories/plugins/HierarchicalIcons.properties_documentation")
 public class HierarchicalIcons extends PersistentNodeHook implements INodeChangeListener, IMapChangeListener,
-        IReadCompletionListener {
+        IReadCompletionListener, IExtension {
 	final private Map<NodeModel, TreeSet> nodeIconSets = new HashMap<NodeModel, TreeSet>();
 
 	public HierarchicalIcons(final ModeController modeController) {
@@ -228,5 +230,13 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 		if (node.getParentNode() != null) {
 			setStyleRecursive(node.getParentNode());
 		}
+	}
+
+	public void mapChanged(MapChangeEvent event) {
+	    // TODO Auto-generated method stub
+	    
+    }
+	protected IExtension createExtension(final NodeModel node, final IXMLElement element) {
+		return this;
 	}
 }

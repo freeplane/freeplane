@@ -34,7 +34,7 @@ class UndoAction extends AFreeplaneAction implements IMapSelectionListener {
 
 	public UndoAction(final Controller controller) {
 		super(controller, "undo", "/images/undo.png");
-		getController().getMapViewManager().addMapChangeListener(this);
+		getController().getMapViewManager().addMapSelectionListener(this);
 		setEnabled(false);
 	}
 

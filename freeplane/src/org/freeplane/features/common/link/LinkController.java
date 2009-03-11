@@ -68,7 +68,7 @@ public class LinkController implements IExtension {
 	}
 
 	public static void install(final ModeController modeController, final LinkController linkController) {
-		modeController.putExtension(LinkController.class, linkController);
+		modeController.addExtension(LinkController.class, linkController);
 		final INodeSelectionListener listener = new INodeSelectionListener() {
 			public void onDeselect(final NodeModel node) {
 			}
