@@ -90,7 +90,7 @@ public class NodeLinks implements IExtension {
 		MapLinks mapLinks = (MapLinks) map.getExtension(MapLinks.class);
 		if (mapLinks == null) {
 			mapLinks = new MapLinks();
-			map.putExtension(mapLinks);
+			map.addExtension(mapLinks);
 		}
 		mapLinks.add(newLink);
 	}

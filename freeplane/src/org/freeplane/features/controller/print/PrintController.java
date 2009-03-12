@@ -36,7 +36,7 @@ public class PrintController implements IExtension {
 	}
 
 	public static void install(final Controller controller) {
-		controller.putExtension(PrintController.class, new PrintController(controller));
+		controller.addExtension(PrintController.class, new PrintController(controller));
 	}
 
 	final private Controller controller;

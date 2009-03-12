@@ -32,18 +32,18 @@ public class ExtensionContainer {
 		return extensions;
 	}
 
-	// use putExtension (IExtension)
-	@Deprecated
-	public void putExtension(final Class<? extends IExtension> clazz, final IExtension extension) {
-		getExtensions().put(clazz, extension);
+	public void addExtension(final Class<? extends IExtension> clazz, final IExtension extension) {
+		IExtension oldExtension = getExtensions().put(clazz, extension);
+		if(oldExtension != null && ! oldExtension.equals(extension)){
+			getExtensions().put(clazz, oldExtension);
+			throw new AssertionError("extension of class "+ clazz.getName() + " already registered");
+		}
 	}
 
-	public void putExtension(final IExtension extension) {
-		getExtensions().put(extension.getClass(), extension);
+	public void addExtension(final IExtension extension) {
+		addExtension(extension.getClass(), extension);
 	}
 
-	// use removeExtension(IExtension extension)
-	@Deprecated
 	public IExtension removeExtension(final Class<? extends IExtension> clazz) {
 		return getExtensions().remove(clazz);
 	}

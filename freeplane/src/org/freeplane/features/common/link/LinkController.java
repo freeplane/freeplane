@@ -38,10 +38,12 @@ import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.modecontroller.ExclusivePropertyChain;
+import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.modecontroller.INodeSelectionListener;
 import org.freeplane.core.modecontroller.IPropertyHandler;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.modecontroller.SelectionController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
@@ -50,7 +52,7 @@ import org.freeplane.core.resources.ResourceController;
 /**
  * @author Dimitry Polivaev
  */
-public class LinkController implements IExtension {
+public class LinkController extends SelectionController implements IExtension {
 	private static class ArrowLinkListener implements IFreeplanePropertyListener {
 		public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
 			if (propertyName.equals(ResourceControllerProperties.RESOURCES_LINK_COLOR)) {
@@ -129,26 +131,48 @@ public class LinkController implements IExtension {
 	}
 
 	protected void createArrowLinkPopup(final ArrowLinkModel link, final JPopupMenu arrowLinkPopup) {
-		arrowLinkPopup.add(new GotoLinkNodeAction(this, link.getSource()));
-		arrowLinkPopup.add(new GotoLinkNodeAction(this, link.getTarget()));
-		arrowLinkPopup.addSeparator();
-		final HashSet NodeAlreadyVisited = new HashSet();
-		NodeAlreadyVisited.add(link.getSource());
-		NodeAlreadyVisited.add(link.getTarget());
-		final Collection<LinkModel> links = new LinkedList<LinkModel>();;
-		links.addAll(NodeLinks.getLinks(link.getSource()));
-		links.addAll(NodeLinks.getLinks(link.getTarget()));
-		final Iterator<LinkModel> iterator = links.iterator();
-		while (iterator.hasNext()) {
-			final ArrowLinkModel foreign_link = (ArrowLinkModel) iterator.next();
-			if (NodeAlreadyVisited.add(foreign_link.getTarget())) {
-				arrowLinkPopup.add(new GotoLinkNodeAction(this, foreign_link.getTarget()));
+		final NodeModel source = link.getSource();
+		final NodeModel target = link.getTarget();
+		final HashSet<NodeModel> nodeAlreadyVisited = new HashSet<NodeModel>();
+		nodeAlreadyVisited.add(source);
+		nodeAlreadyVisited.add(target);
+		addLinks(arrowLinkPopup, source, nodeAlreadyVisited);
+		addLinks(arrowLinkPopup, target, nodeAlreadyVisited);
+	}
+
+	private void addLinks(final JPopupMenu arrowLinkPopup, final NodeModel source, final HashSet<NodeModel> nodeAlreadyVisited) {
+	    boolean actionsAdded = false;
+		final IMapSelection selection = getModeController().getController().getSelection();
+		if(! selection.isSelected(source)){
+			arrowLinkPopup.add(new GotoLinkNodeAction(this, source));
+			actionsAdded = true;
+		}
+		addForeignLinks(arrowLinkPopup, nodeAlreadyVisited, NodeLinks.getLinks(source));
+		if(actionsAdded){
+			actionsAdded = false;
+			arrowLinkPopup.addSeparator();
+		}
+    }
+
+	private void addForeignLinks(final JPopupMenu arrowLinkPopup, final HashSet<NodeModel> nodeAlreadyVisited,
+                                 final Collection<LinkModel> sourceLinks) {
+	    final Collection<LinkModel> links = new LinkedList<LinkModel>();;
+		links.addAll(sourceLinks);
+		for (final LinkModel foreign_link:links) {
+			if(! (foreign_link instanceof ArrowLinkModel)){
+				continue;
 			}
-			if (NodeAlreadyVisited.add(foreign_link.getSource())) {
-				arrowLinkPopup.add(new GotoLinkNodeAction(this, foreign_link.getSource()));
+			ArrowLinkModel arrowLink = (ArrowLinkModel) foreign_link;
+			final NodeModel foreignTarget = arrowLink.getTarget();
+			if (nodeAlreadyVisited.add(foreignTarget)) {
+				arrowLinkPopup.add(new GotoLinkNodeAction(this, foreignTarget));
+			}
+			final NodeModel foreignSource = arrowLink.getSource();
+			if (nodeAlreadyVisited.add(foreignSource)) {
+				arrowLinkPopup.add(new GotoLinkNodeAction(this, foreignSource));
 			}
 		}
-	}
+    }
 
 	public Color getColor(final ArrowLinkModel model) {
 		return colorHandlers.getProperty(model);

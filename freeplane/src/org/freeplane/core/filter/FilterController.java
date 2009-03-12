@@ -66,7 +66,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	}
 
 	public static void install(final Controller controller) {
-		controller.putExtension(FilterController.class, new FilterController(controller));
+		controller.addExtension(FilterController.class, new FilterController(controller));
 	}
 
 	private DefaultConditionRenderer conditionRenderer = null;

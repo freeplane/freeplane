@@ -29,19 +29,23 @@ import org.freeplane.core.ui.AFreeplaneAction;
 
 /** Follow a graphical link (AKA connector) action. */
 class GotoLinkNodeAction extends AFreeplaneAction {
-	NodeModel source;
+	private NodeModel target;
+	private LinkController linkController;
 
-	public GotoLinkNodeAction(final LinkController linkController, final NodeModel source) {
+	public GotoLinkNodeAction(final LinkController linkController, final NodeModel target) {
 		super(linkController.getModeController().getController(), "goto_link_node_action", "/images/Link.png");
-		this.source = source;
-		if (source != null) {
-			final String adaptedText = source.getShortText();
+		this.target = target;
+		this.linkController = linkController;
+		if (target != null) {
+			final String adaptedText = target.getShortText();
 			putValue(Action.NAME, FreeplaneResourceBundle.getText("follow_graphical_link") + adaptedText);
-			putValue(Action.SHORT_DESCRIPTION, source.toString());
+			putValue(Action.SHORT_DESCRIPTION, target.toString());
 		}
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		getModeController().getMapController().select(source);
+		linkController.onDeselect(getModeController().getMapController().getSelectedNode());
+		getModeController().getMapController().select(target);
+		linkController.onSelect(target);
 	}
 }

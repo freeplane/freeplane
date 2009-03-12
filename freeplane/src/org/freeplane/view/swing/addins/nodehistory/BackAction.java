@@ -49,7 +49,7 @@ class BackAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		nodeHistory.goBack();
+		nodeHistory.goBack(0 != (e.getModifiers() & ActionEvent.CTRL_MASK));
 	}
 
 	@Override

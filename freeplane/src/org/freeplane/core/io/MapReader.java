@@ -106,7 +106,7 @@ public class MapReader implements IElementDOMHandler, IHintProvider {
 	public void endElement(final Object parent, final String tag, final Object element, final IXMLElement dom) {
 		final MapModel map = (MapModel) element;
 		if (dom.getAttributeCount() != 0 || dom.hasChildren()) {
-			map.putExtension(new UnknownElements(dom));
+			map.addExtension(new UnknownElements(dom));
 		}
 	}
 

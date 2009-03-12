@@ -45,7 +45,7 @@ class ForwardAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		nodeHistory.goForward();
+		nodeHistory.goForward(0 != (e.getModifiers() & ActionEvent.CTRL_MASK));
 	}
 
 	@Override

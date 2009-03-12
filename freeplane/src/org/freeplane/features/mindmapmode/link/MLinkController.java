@@ -136,6 +136,7 @@ public class MLinkController extends LinkController {
 
 	@Override
 	protected void createArrowLinkPopup(final ArrowLinkModel link, final JPopupMenu arrowLinkPopup) {
+		super.createArrowLinkPopup(link, arrowLinkPopup);
 		((RemoveArrowLinkAction) getModeController().getAction("removeArrowLinkAction")).setArrowLink(link);
 		arrowLinkPopup.add(new RemoveArrowLinkAction(this, link));
 		arrowLinkPopup.add(new ColorArrowLinkAction(this, link));
@@ -162,8 +163,6 @@ public class MLinkController extends LinkController {
 		itemtt.setText(null);
 		arrowLinkPopup.add(itemtt);
 		itemtt.setSelected(a && b);
-		arrowLinkPopup.addSeparator();
-		super.createArrowLinkPopup(link, arrowLinkPopup);
 	}
 
 	public void setArrowLinkColor(final ArrowLinkModel arrowLink, final Color color) {

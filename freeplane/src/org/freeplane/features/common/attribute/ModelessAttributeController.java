@@ -33,7 +33,7 @@ public class ModelessAttributeController implements IExtension {
 	}
 
 	public static void install(final Controller controller) {
-		controller.putExtension(ModelessAttributeController.class, new ModelessAttributeController(controller));
+		controller.addExtension(ModelessAttributeController.class, new ModelessAttributeController(controller));
 		FilterController.getController(controller).getConditionFactory().addConditionController(2, new AttributeConditionController(controller));
 	}
 

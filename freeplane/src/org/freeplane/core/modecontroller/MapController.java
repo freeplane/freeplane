@@ -32,13 +32,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.swing.Action;
 
@@ -67,7 +64,7 @@ import org.freeplane.n3.nanoxml.XMLParseException;
 /**
  * @author Dimitry Polivaev
  */
-public class MapController {
+public class MapController extends SelectionController {
 	/**
 	 * This class sortes nodes by ascending depth of their paths to root. This
 	 * is useful to assure that children are cutted <b>before </b> their
@@ -114,7 +111,6 @@ public class MapController {
 	final private MapWriter mapWriter;
 	final private ModeController modeController;
 	final private LinkedList<INodeChangeListener> nodeChangeListeners;
-	final private LinkedList<INodeSelectionListener> nodeSelectionListeners;
 	final private ReadManager readManager;
 	private final WriteManager writeManager;
 
@@ -139,7 +135,6 @@ public class MapController {
 		writeManager.addExtensionElementWriter(UnknownElements.class, unknownElementWriter);
 		createActions(modeController);
 		mapChangeListeners = new LinkedList<IMapChangeListener>();
-		nodeSelectionListeners = new LinkedList();
 		nodeChangeListeners = new LinkedList();
 	}
 
@@ -168,10 +163,6 @@ public class MapController {
 
 	public void addNodeChangeListener(final INodeChangeListener listener) {
 		nodeChangeListeners.add(listener);
-	}
-
-	public void addNodeSelectionListener(final INodeSelectionListener listener) {
-		nodeSelectionListeners.add(listener);
 	}
 
 	public void centerNode(final NodeModel node) {
@@ -603,26 +594,6 @@ public class MapController {
 		fireNodeChanged(node, nodeChangeEvent);
 	}
 
-	public void onDeselect(final NodeModel node) {
-		try {
-			final HashSet copy = new HashSet(nodeSelectionListeners);
-			for (final Iterator iter = copy.iterator(); iter.hasNext();) {
-				final INodeSelectionListener listener = (INodeSelectionListener) iter.next();
-				listener.onDeselect(node);
-			}
-		}
-		catch (final RuntimeException e) {
-			Logger.global.log(Level.SEVERE, "Error in node selection listeners", e);
-		}
-	}
-
-	public void onSelect(final NodeModel node) {
-		for (final Iterator iter = nodeSelectionListeners.iterator(); iter.hasNext();) {
-			final INodeSelectionListener listener = (INodeSelectionListener) iter.next();
-			listener.onSelect(node);
-		}
-	}
-
 	public void refreshMap() {
 		final MapModel map = getController().getMap();
 		final NodeModel root = map.getRootNode();
@@ -667,7 +638,7 @@ public class MapController {
 	}
 
 	void removeNodeSelectionListener(final Class<? extends IActionOnChange> clazz, final Action action) {
-		final Iterator<INodeSelectionListener> iterator = nodeSelectionListeners.iterator();
+		final Iterator<INodeSelectionListener> iterator = getNodeSelectionListeners().iterator();
 		while (iterator.hasNext()) {
 			final INodeSelectionListener next = iterator.next();
 			if (next instanceof IActionOnChange && ((IActionOnChange) next).getAction() == action) {
@@ -675,10 +646,6 @@ public class MapController {
 				return;
 			}
 		}
-	}
-
-	public void removeNodeSelectionListener(final INodeSelectionListener listener) {
-		nodeSelectionListeners.remove(listener);
 	}
 
 	public void select(final NodeModel node) {

@@ -27,6 +27,8 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.modecontroller.MapController;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
 
@@ -36,11 +38,19 @@ class FollowLinkAction extends AFreeplaneAction implements PopupMenuListener {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		for (final Iterator iterator = getModeController().getMapController().getSelectedNodes().iterator(); iterator
+		final ModeController modeController = getModeController();
+		final MapController mapController = modeController.getMapController();
+		LinkController linkController = null;
+		for (final Iterator iterator = mapController.getSelectedNodes().iterator(); iterator
 		    .hasNext();) {
 			final NodeModel selNode = (NodeModel) iterator.next();
 			if (NodeLinks.getLink(selNode) != null) {
-				getModeController().getMapController().loadURL(NodeLinks.getLink(selNode));
+				if(linkController == null){
+					linkController = LinkController.getController(modeController); 
+				}
+				linkController.onDeselect(mapController.getSelectedNode());
+				mapController.loadURL(NodeLinks.getLink(selNode));
+				linkController.onSelect(selNode);
 			}
 		}
 	}

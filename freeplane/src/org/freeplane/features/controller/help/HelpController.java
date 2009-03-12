@@ -35,7 +35,7 @@ public class HelpController implements IExtension {
 	}
 
 	public static void install(final Controller controller) {
-		controller.putExtension(HelpController.class, new HelpController(controller));
+		controller.addExtension(HelpController.class, new HelpController(controller));
 	}
 
 	final private WebDocuAction webDocu;

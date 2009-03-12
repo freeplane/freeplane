@@ -213,7 +213,7 @@ public abstract class PersistentNodeHook {
 		return getHookAnnotation().hookName();
 	}
 
-	protected ModeController getModeController() {
+	public ModeController getModeController() {
 		return modeController;
 	}
 
@@ -319,7 +319,7 @@ public abstract class PersistentNodeHook {
 		final NodeModel rootNode = controller.getMap().getRootNode();
 		return rootNode.getExtension(getExtensionClass());
 	}
-	protected Controller getController() {
+	public Controller getController() {
 	    return controller;
     }
 }

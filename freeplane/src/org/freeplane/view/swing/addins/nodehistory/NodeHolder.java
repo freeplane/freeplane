@@ -37,13 +37,23 @@ import org.freeplane.view.swing.map.NodeView;
  * 13.12.2008
  */
 class NodeHolder {
-	public WeakReference<MapView> mMapView;
-	public String mNodeId;
+	private WeakReference<MapView> mMapView;
+	private String mNodeId;
+	private boolean reachedByLink;
+
+	protected boolean isReachedByLink() {
+    	return reachedByLink;
+    }
+
+	protected void setReachedByLink(boolean reachedByLink) {
+    	this.reachedByLink = reachedByLink;
+    }
 
 	public NodeHolder(final NodeView pNode) {
 		mNodeId = pNode.getModel().createID();
 		final MapView mapView = pNode.getMap();
 		mMapView = new WeakReference<MapView>(mapView);
+		reachedByLink = false;
 	}
 
 	@Override
@@ -98,4 +108,8 @@ class NodeHolder {
 		final MapView mapView = pNode.getMap();
 		return mapView == mMapView.get() && id.equals(mNodeId);
 	}
+
+	public MapView getHoldMapView() {
+	    return mMapView.get();
+    }
 }

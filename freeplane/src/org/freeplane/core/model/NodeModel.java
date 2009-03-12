@@ -394,7 +394,7 @@ public class NodeModel implements MutableTreeNode {
 	}
 
 	public void addExtension(final IExtension extension) {
-		extensionContainer.putExtension(extension);
+		extensionContainer.addExtension(extension);
 	}
 
 	public void remove(final int index) {

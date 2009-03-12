@@ -250,7 +250,7 @@ public class ModeController extends AController {
 	}
 
 	public void addExtension(final Class<? extends IExtension> clazz, final IExtension extension) {
-		extensionContainer.putExtension(clazz, extension);
+		extensionContainer.addExtension(clazz, extension);
 	}
 
 	@Override

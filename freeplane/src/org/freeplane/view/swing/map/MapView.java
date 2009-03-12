@@ -391,7 +391,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 		for (int i = 0; i < arrowLinkViews.size(); ++i) {
 			final ArrowLinkView arrowView = (ArrowLinkView) arrowLinkViews.get(i);
-			if (arrowView.detectCollision(p)) {
+			final NodeView source = arrowView.getSource();
+			final NodeView target = arrowView.getTarget();
+			if ((source != null && source.isSelected() || target != null && target.isSelected())
+			        && arrowView.detectCollision(p)) {
 				return arrowView.getModel();
 			}
 		}
@@ -509,7 +512,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		final Rectangle maxBounds = new Rectangle(0, 0, getWidth(), getHeight());
 		for (int i = 0; i < arrowLinkViews.size(); ++i) {
 			final ArrowLinkView arrowView = (ArrowLinkView) arrowLinkViews.get(i);
-			final CubicCurve2D arrowLinkCurve = arrowView.arrowLinkCurve;
+			final CubicCurve2D arrowLinkCurve = arrowView.getArrowLinkCurve();
 			if (arrowLinkCurve == null) {
 				continue;
 			}

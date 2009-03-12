@@ -28,19 +28,20 @@ import org.freeplane.core.modecontroller.INodeSelectionListener;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.features.common.link.LinkController;
 import org.freeplane.view.swing.map.MapView;
 
 /**
  * @author foltin
  */
-public class NodeHistory implements IExtension, INodeSelectionListener {
+public class NodeHistory implements IExtension {
 	private NodeHolder currentNodeHolder;
 	final private Controller controller;
 	private ListIterator<NodeHolder> nodeIterator;
 	private final LinkedList<NodeHolder> nodes;
 
 	static public void install(final Controller controller){
-		controller.putExtension(NodeHistory.class, new NodeHistory(controller));
+		controller.addExtension(NodeHistory.class, new NodeHistory(controller));
 	}
 	
 	private NodeHistory(final Controller controller) {
@@ -52,7 +53,8 @@ public class NodeHistory implements IExtension, INodeSelectionListener {
 	static public void install(ModeController modeController){
 		final Controller controller = modeController.getController();
 		NodeHistory history = (NodeHistory) controller.getExtension(NodeHistory.class);
-		modeController.getMapController().addNodeSelectionListener(history);
+		modeController.getMapController().addNodeSelectionListener(history.getMapSelectionListener());
+		LinkController.getController(modeController).addNodeSelectionListener(history.getLinkSelectionListener());
 		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
 		final BackAction backAction = new BackAction(controller, history);
 		menuBuilder.addAnnotatedAction(backAction);
@@ -62,6 +64,32 @@ public class NodeHistory implements IExtension, INodeSelectionListener {
 		modeController.addAnnotatedAction(forwardAction);
 	}
 	
+	private INodeSelectionListener getLinkSelectionListener() {
+		return new INodeSelectionListener(){
+
+			public void onDeselect(NodeModel node) {
+				onNodeSelect(node);
+				currentNodeHolder.setReachedByLink(true);
+            }
+
+			public void onSelect(NodeModel node) {
+				onNodeSelect(node);
+				currentNodeHolder.setReachedByLink(true);
+            }};
+    }
+	
+
+	private INodeSelectionListener getMapSelectionListener() {
+		return new INodeSelectionListener(){
+
+			public void onDeselect(NodeModel node) {
+            }
+
+			public void onSelect(NodeModel node) {
+				onNodeSelect(node);
+            }};
+    }
+
 	boolean canGoBack() {
 		return nodeIterator.previousIndex() > 0;
 	}
@@ -70,6 +98,13 @@ public class NodeHistory implements IExtension, INodeSelectionListener {
 		return nodeIterator.hasNext();
 	}
 
+	private void go(final boolean back, final boolean fast) {
+		NodeHolder lastCurrentNodeHolder;
+		do {
+			lastCurrentNodeHolder = currentNodeHolder;
+			go(back);
+		} while (fast && lastCurrentNodeHolder != currentNodeHolder && !currentNodeHolder.isReachedByLink());
+	}
 	private void go(final boolean back) {
 		final NodeHolder lastNodeHolder = currentNodeHolder;
 		if (back) {
@@ -97,7 +132,7 @@ public class NodeHistory implements IExtension, INodeSelectionListener {
 		final NodeModel toBeSelected = currentNodeHolder.getNode();
 		boolean changeModule = false;
 		MapView newModule = null;
-		if (lastNodeHolder.mMapView.get() != currentNodeHolder.mMapView.get()) {
+		if (lastNodeHolder.getHoldMapView() != currentNodeHolder.getHoldMapView()) {
 			changeModule = true;
 			newModule = currentNodeHolder.getMapView();
 			if (newModule == null) {
@@ -107,8 +142,9 @@ public class NodeHistory implements IExtension, INodeSelectionListener {
 			}
 		}
 		final boolean fChangeModule = changeModule;
-		final MapView newView = newModule;
+		final MapView newView;
 		if (fChangeModule) {
+			newView = newModule;
 			final Controller controller = newView.getModeController().getController();
 			final IMapViewManager mapViewManager = controller.getMapViewManager();
 			final boolean res = mapViewManager.changeToMapView(newView);
@@ -117,24 +153,25 @@ public class NodeHistory implements IExtension, INodeSelectionListener {
 				return;
 			}
 		}
+		else{
+			newView = currentNodeHolder.getHoldMapView();
+		}
 		if (!toBeSelected.isRoot()) {
 			newView.getModeController().getMapController().setFolded(toBeSelected.getParentNode(), false);
 		}
 		newView.getModeController().getMapController().select(toBeSelected);
 	}
 
-	public void goBack() {
-		go(true);
+	public void goBack(boolean fast) {
+		go(true, fast);
 	}
 
-	public void goForward() {
-		go(false);
+	public void goForward(boolean fast) {
+		go(false, fast);
 	}
 
-	public void onDeselect(final NodeModel pNode) {
-	}
 
-	public void onSelect(final NodeModel pNode) {
+	private void onNodeSelect(final NodeModel pNode) {
 		if (currentNodeHolder != null
 		        && currentNodeHolder.isIdentical(((MapView) controller.getViewController().getMapView())
 		            .getNodeView(pNode))) {

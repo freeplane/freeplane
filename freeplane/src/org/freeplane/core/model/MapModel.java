@@ -163,12 +163,12 @@ public class MapModel {
 		return (changesPerformedSinceLastSave == 0);
 	}
 
-	public void putExtension(final Class<? extends IExtension> clazz, final IExtension extension) {
-		extensionContainer.putExtension(clazz, extension);
+	public void addExtension(final Class<? extends IExtension> clazz, final IExtension extension) {
+		extensionContainer.addExtension(clazz, extension);
 	}
 
-	public void putExtension(final IExtension extension) {
-		extensionContainer.putExtension(extension);
+	public void addExtension(final IExtension extension) {
+		extensionContainer.addExtension(extension);
 	}
 
 	/**

@@ -20,14 +20,11 @@
 package org.freeplane.features.common.addins.mapstyle;
 
 import java.awt.Color;
-import java.awt.event.ActionEvent;
 
 import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.addins.PersistentNodeHook;
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.frame.ColorTracker;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.modecontroller.IMapLifeCycleListener;
 import org.freeplane.core.modecontroller.MapChangeEvent;
@@ -35,9 +32,7 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.FpColor;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.undo.IUndoableActor;
 import org.freeplane.n3.nanoxml.IXMLElement;
 import org.freeplane.view.swing.map.MapView;
@@ -48,65 +43,13 @@ import org.freeplane.view.swing.map.MapView;
  */
 @NodeHookDescriptor(hookName="MapStyle")
 public class MapStyle extends PersistentNodeHook implements IExtension, IMapLifeCycleListener{
-	public static class Model implements IExtension{
-		private Color backgroundColor;
-
-		public Model() {
-        }
-
-		protected void setBackgroundColor(Color backgroundColor) {
-        	this.backgroundColor = backgroundColor;
-        }
-
-		protected Color getBackgroundColor() {
-        	return backgroundColor;
-        }
-
-		public static Model createExtension(NodeModel node) {
-	        Model extension = (Model)node.getExtension(Model.class);
-	        if(extension == null){
-	        	extension = new Model();
-	        	node.addExtension(extension);
-	        }
-			return extension;
-        }
-		public static Model getExtension(NodeModel node) {
-	        return (Model)node.getExtension(Model.class);
-        }
-	}
-	
-	@ActionDescriptor(name = "MapBackgroundColor", //
-		locations = { "/menu_bar/format/nodes" })
-	private class MapBackgroundColorAction extends HookAction {
-        private static final long serialVersionUID = 1L;
-
-		public void actionPerformed(final ActionEvent e){
-			final Controller controller = getController();
-			Model model = (Model)getMapHook();
-			final Color oldBackgroundColor;
-			if(model != null){
-				oldBackgroundColor = model.getBackgroundColor();
-			}
-			else{
-				final String colorPropertyString = ResourceController.getResourceController().getProperty(ResourceControllerProperties.RESOURCES_BACKGROUND_COLOR);
-				oldBackgroundColor = new FpColor(colorPropertyString).getColor();
-			}
-
-			final Color actionColor = ColorTracker.showCommonJColorChooserDialog(controller, controller.getSelection()
-			    .getSelected(), FreeplaneResourceBundle.getText("choose_map_background_color"), 
-			    oldBackgroundColor);
-			setBackgroundColor(model, actionColor);
-		}
-
-	}
-
 	public MapStyle(ModeController modeController) {
 	    super(modeController);
-	    registerAction(new MapBackgroundColorAction());
+	    registerAction(new MapBackgroundColorAction(this));
 	    modeController.getMapController().addMapLifeCycleListener(this);
    }
 	
-	public void setBackgroundColor(final Model model, final Color actionColor) {
+	public void setBackgroundColor(final MapStyleModel model, final Color actionColor) {
 		final Color oldColor = model.getBackgroundColor();
 			if(actionColor == oldColor || actionColor != null && actionColor.equals(oldColor)){
 				return;
@@ -142,19 +85,19 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		else{
 			bgColor = null; 
 		}
-		final Model model = new Model(); 
+		final MapStyleModel model = new MapStyleModel(); 
 		model.setBackgroundColor(bgColor);
 		return model;
 	}
 	
 	@Override
 	protected Class getExtensionClass() {
-		return Model.class;
+		return MapStyleModel.class;
 	}
 	
 	public Color getBackground(MapModel map){
-		final IExtension extension = map.getRootNode().getExtension(Model.class);
-		final Color backgroundColor = extension != null ? ((Model)extension).getBackgroundColor() : null;
+		final IExtension extension = map.getRootNode().getExtension(MapStyleModel.class);
+		final Color backgroundColor = extension != null ? ((MapStyleModel)extension).getBackgroundColor() : null;
 		if (backgroundColor != null){
 			return backgroundColor;
 		}
@@ -167,7 +110,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	@Override
     protected void saveExtension(IExtension extension, IXMLElement element) {
 	    super.saveExtension(extension, element);
-	    final Color backgroundColor = ((Model)extension).getBackgroundColor();
+	    final Color backgroundColor = ((MapStyleModel)extension).getBackgroundColor();
 	    if(backgroundColor != null){
 	    	element.setAttribute("background", FpColor.colorToXml(backgroundColor));
 	    }
@@ -175,10 +118,10 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	
 	public void onCreate(MapModel map) {
         final NodeModel rootNode = map.getRootNode();
-        if(rootNode.containsExtension(Model.class)){
+        if(rootNode.containsExtension(MapStyleModel.class)){
         	return;
         }
-        rootNode.addExtension(new Model());
+        rootNode.addExtension(new MapStyleModel());
         
     }
 

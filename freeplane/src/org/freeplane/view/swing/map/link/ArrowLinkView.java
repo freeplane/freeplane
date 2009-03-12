@@ -44,12 +44,28 @@ import org.freeplane.view.swing.map.NodeView;
  */
 public class ArrowLinkView {
 	static final Stroke DEF_STROKE = new BasicStroke(1);
-	public CubicCurve2D arrowLinkCurve;
-	protected ArrowLinkModel arrowLinkModel;
-	protected int iterativeLevel;
+	private CubicCurve2D arrowLinkCurve;
+	public CubicCurve2D getArrowLinkCurve() {
+    	return arrowLinkCurve;
+    }
+
+	public ArrowLinkModel getArrowLinkModel() {
+    	return arrowLinkModel;
+    }
+
+	public NodeView getSource() {
+    	return source;
+    }
+
+	public NodeView getTarget() {
+    	return target;
+    }
+
+	private ArrowLinkModel arrowLinkModel;
+	private int iterativeLevel;
 	/** MAXIMAL_RECTANGLE_SIZE_FOR_COLLISION_DETECTION describes itself. */
 	final private int MAXIMAL_RECTANGLE_SIZE_FOR_COLLISION_DETECTION = 16;
-	protected NodeView source, target;
+	private NodeView source, target;
 
 	/* Note, that source and target are nodeviews and not nodemodels!. */
 	public ArrowLinkView(final ArrowLinkModel arrowLinkModel, final NodeView source, final NodeView target) {

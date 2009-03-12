@@ -166,8 +166,8 @@ public class Controller extends AController {
 		return viewController;
 	}
 
-	public void putExtension(final Class<? extends IExtension> clazz, final IExtension extension) {
-		extensionContainer.putExtension(clazz, extension);
+	public void addExtension(final Class<? extends IExtension> clazz, final IExtension extension) {
+		extensionContainer.addExtension(clazz, extension);
 	}
 
 	public void quit() {
