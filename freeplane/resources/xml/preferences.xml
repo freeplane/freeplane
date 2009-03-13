@@ -294,10 +294,10 @@
        </separator>
         <separator name="notifications">
             <remind_value name="remind_use_rich_text_in_new_long_nodes"/>
-            <dont_show_notification_property name="delete_nodes_without_question"/>
-            <dont_show_notification_property name="cut_nodes_without_question"/>
-            <dont_show_notification_property name="remove_notes_without_question"/>
-            <dont_show_notification_property name="execute_scripts_without_asking"/>
+            <boolean name="delete_nodes_without_question"/>
+            <boolean name="cut_nodes_without_question"/>
+            <boolean name="remove_notes_without_question"/>
+            <boolean name="execute_scripts_without_asking"/>
         </separator>
         <separator name="selection_method">
             <combo name="selection_method">

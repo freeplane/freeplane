@@ -50,8 +50,7 @@ class CutAction extends AFreeplaneAction {
 			return;
 		}
 		final int showResult = new OptionalDontShowMeAgainDialog(controller, "really_cut_node", "confirmation",
-		    new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
-		        ResourceControllerProperties.RESOURCES_CUT_NODES_WITHOUT_QUESTION),
+		        ResourceControllerProperties.RESOURCES_CUT_NODES_WITHOUT_QUESTION,
 		    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED).show().getResult();
 		if (showResult != JOptionPane.OK_OPTION) {
 			return;

@@ -46,8 +46,8 @@ class RemoveNoteAction extends AFreeplaneAction implements PopupMenuListener {
 
 	public void actionPerformed(final ActionEvent e) {
 		final int showResult = new OptionalDontShowMeAgainDialog(getController(), "really_remove_notes",
-		    "confirmation", new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
-		        ResourceControllerProperties.RESOURCES_REMOVE_NOTES_WITHOUT_QUESTION),
+		    "confirmation",
+		    ResourceControllerProperties.RESOURCES_REMOVE_NOTES_WITHOUT_QUESTION,
 		    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED).show().getResult();
 		if (showResult != JOptionPane.OK_OPTION) {
 			return;

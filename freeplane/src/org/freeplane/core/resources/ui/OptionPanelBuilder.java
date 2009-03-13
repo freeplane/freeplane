@@ -68,13 +68,6 @@ public class OptionPanelBuilder {
 		}
 	}
 
-	private class DontShowNotificationPropertyCreator extends PropertyCreator {
-		@Override
-		public IPropertyControlCreator getCreator(final String name, final IXMLElement data) {
-			return createDontShowNotificationProperty(name);
-		}
-	}
-
 	private class EmptyCreator extends PropertyCreator {
 		@Override
 		public IPropertyControlCreator getCreator(final String name, final IXMLElement data) {
@@ -249,10 +242,6 @@ public class OptionPanelBuilder {
 		tree.addElement(path, creator, path + "/" + name, position);
 	}
 
-	public void addDontShowNotificationProperty(final String path, final String name, final int position) {
-		tree.addElement(path, createDontShowNotificationProperty(name), path + "/" + name, position);
-	}
-
 	public void addKeyProperty(final String path, final String name, final int position) {
 		tree.addElement(path, createKeyOptionCreator(name), path + "/" + name, position);
 	}
@@ -302,14 +291,6 @@ public class OptionPanelBuilder {
 		return new IPropertyControlCreator() {
 			public IPropertyControl createControl() {
 				return new ComboProperty(name, choices, translations);
-			}
-		};
-	}
-
-	private IPropertyControlCreator createDontShowNotificationProperty(final String name) {
-		return new IPropertyControlCreator() {
-			public IPropertyControl createControl() {
-				return new DontShowNotificationProperty(name);
 			}
 		};
 	}
@@ -382,7 +363,6 @@ public class OptionPanelBuilder {
 		readManager.addElementHandler("combo", new ComboOptionCreator());
 		readManager.addElementHandler("key", new KeyOptionCreator());
 		readManager.addElementHandler("remind_value", new RemindValueCreator());
-		readManager.addElementHandler("dont_show_notification_property", new DontShowNotificationPropertyCreator());
 	}
 
 	public void load(final URL menu) {

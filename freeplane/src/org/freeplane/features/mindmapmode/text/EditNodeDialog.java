@@ -80,7 +80,7 @@ class EditNodeDialog extends EditNodeBase {
 			final JButton okButton = new JButton();
 			final JButton cancelButton = new JButton();
 			final JButton splitButton = new JButton();
-			final JCheckBox enterConfirms = new JCheckBox("", binOptionIsTrue("el__enter_confirms_by_default"));
+			final JCheckBox enterConfirms = new JCheckBox("", ResourceController.getResourceController().getBooleanProperty("el__enter_confirms_by_default"));
 			MenuBuilder.setLabelAndMnemonic(okButton, getText("ok"));
 			MenuBuilder.setLabelAndMnemonic(cancelButton, getText("cancel"));
 			MenuBuilder.setLabelAndMnemonic(splitButton, getText("split"));
@@ -110,6 +110,7 @@ class EditNodeDialog extends EditNodeBase {
 				public void actionPerformed(final ActionEvent e) {
 					textArea.requestFocus();
 					EditNodeDialog.booleanHolderForConfirmState = enterConfirms.isSelected();
+					ResourceController.getResourceController().setProperty(text, booleanHolderForConfirmState.toString());
 				}
 			});
 			textArea.addKeyListener(new KeyListener() {

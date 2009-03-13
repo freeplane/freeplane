@@ -74,8 +74,8 @@ class ScriptingEngine extends AFreeplaneAction {
 	                             final PrintStream pOutStream, final HashMap pScriptCookies) {
 		if (!pAlreadyAScriptExecuted) {
 			final int showResult = new OptionalDontShowMeAgainDialog(pMindMapController.getController(),
-			    "really_execute_script", "confirmation", new OptionalDontShowMeAgainDialog.StandardPropertyHandler(
-			        ResourceControllerProperties.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING),
+			    "really_execute_script", "confirmation",
+			    ResourceControllerProperties.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
 			    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED).show().getResult();
 			if (showResult != JOptionPane.OK_OPTION) {
 				return false;

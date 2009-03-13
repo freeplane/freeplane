@@ -208,10 +208,6 @@ public class EditNodeBase {
 		this.text = text;
 	}
 
-	protected boolean binOptionIsTrue(final String option) {
-		return ResourceController.getResourceController().getBooleanProperty(option);
-	}
-
 	public void closeEdit() {
 		if (textFieldListener != null) {
 			textFieldListener.focusLost(null);

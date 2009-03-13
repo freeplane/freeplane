@@ -47,58 +47,28 @@ import org.freeplane.core.ui.MenuBuilder;
  * @author foltin
  */
 public class OptionalDontShowMeAgainDialog {
-	public interface IDontShowPropertyHandler {
-		/**
-		 * @return accepted are the following values as return values: * ""
-		 *         (means: show this dialog) * "true" (means: the answer was ok
-		 *         and I want to remember that). * "false" (means: the answer
-		 *         was cancel and I want to remember that).
-		 */
-		String getProperty();
-
-		void setProperty(String pValue);
-	}
-
-	/**
-	 * Standard property handler, if you have a controller and a property.
-	 */
-	public static class StandardPropertyHandler implements IDontShowPropertyHandler {
-		final private String mPropertyName;
-
-		public StandardPropertyHandler(final String pPropertyName) {
-			mPropertyName = pPropertyName;
-		}
-
-		public String getProperty() {
-			return ResourceController.getResourceController().getProperty(mPropertyName);
-		}
-
-		public void setProperty(final String pValue) {
-			ResourceController.getResourceController().setProperty(mPropertyName, pValue);
-		}
-	}
 
 	public final static int BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED = 1;
 	public final static int ONLY_OK_SELECTION_IS_STORED = 0;
 	private final Controller controller;
 	private JDialog mDialog;
 	private JCheckBox mDontShowAgainBox;
-	final private IDontShowPropertyHandler mDontShowPropertyHandler;
 	final private String mMessageId;
 	final private int mMessageType;
 	final private NodeModel mNode;
 	final private Frame mParent;
 	private int mResult = JOptionPane.CANCEL_OPTION;
 	final private String mTitleId;
+	final private String mPropertyName;
 
 	public OptionalDontShowMeAgainDialog(final Controller controller, final String pMessageId, final String pTitleId,
-	                                     final IDontShowPropertyHandler pDontShowPropertyHandler, final int pMessageType) {
+	                                     final String pPropertyName, final int pMessageType) {
 		this.controller = controller;
 		mParent = controller.getViewController().getFrame();
 		mNode = controller.getSelection().getSelected();
 		mMessageId = pMessageId;
 		mTitleId = pTitleId;
-		mDontShowPropertyHandler = pDontShowPropertyHandler;
+		mPropertyName = pPropertyName;
 		mMessageType = pMessageType;
 	}
 
@@ -107,19 +77,28 @@ public class OptionalDontShowMeAgainDialog {
 		if (mDontShowAgainBox.isSelected()) {
 			if (mMessageType == OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED) {
 				if (mResult == JOptionPane.OK_OPTION) {
-					mDontShowPropertyHandler.setProperty("true");
+					setProperty("true");
 				}
 			}
 			else {
-				mDontShowPropertyHandler.setProperty((mResult == JOptionPane.OK_OPTION) ? "true" : "false");
+				setProperty((mResult == JOptionPane.OK_OPTION) ? "true" : "false");
 			}
 		}
 		else {
-			mDontShowPropertyHandler.setProperty("");
+			setProperty("");
 		}
 		mDialog.setVisible(false);
 		mDialog.dispose();
 	}
+
+	private void setProperty(String value) {
+	    ResourceController.getResourceController().setProperty(mPropertyName, value);
+	    
+    }
+
+	private String getProperty() {
+	    return ResourceController.getResourceController().getProperty(mPropertyName);
+    }
 
 	/**
 	 * @return an int from JOptionPane (eg. JOptionPane.OK_OPTION).
@@ -129,12 +108,12 @@ public class OptionalDontShowMeAgainDialog {
 	}
 
 	public OptionalDontShowMeAgainDialog show() {
-		final String property = mDontShowPropertyHandler.getProperty();
+		final String property = getProperty();
 		if (StringUtils.equals(property, "true")) {
 			mResult = JOptionPane.OK_OPTION;
 			return this;
 		}
-		if (StringUtils.equals(property, "false")) {
+		if (mMessageType == BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED && StringUtils.equals(property, "false")) {
 			mResult = JOptionPane.CANCEL_OPTION;
 			return this;
 		}
