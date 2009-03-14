@@ -320,23 +320,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	 */
 	public void centerNode(final NodeView node) {
 		final JViewport viewPort = (JViewport) getParent();
-		if (!isShowing()) {
-			addAncestorListener(new AncestorListener(){
-
-				public void ancestorAdded(AncestorEvent event) {
-					removeAncestorListener(this);
-					EventQueue.invokeLater(new Runnable(){
-						public void run() {
-							centerNode(node);
-                        }});
-					
-                }
-
-				public void ancestorMoved(AncestorEvent event) {
-                }
-
-				public void ancestorRemoved(AncestorEvent event) {
-                }});
+		if (! (isShowing() && isValid())) {
+			EventQueue.invokeLater(new Runnable(){
+				public void run() {
+					centerNode(node);
+				}});
 			return;
 		}
 		final Dimension d = viewPort.getExtentSize();
