@@ -34,6 +34,8 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
 import java.awt.dnd.Autoscroll;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.geom.CubicCurve2D;
 import java.awt.print.PageFormat;
@@ -52,6 +54,8 @@ import java.util.Vector;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JViewport;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 
 import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
@@ -316,24 +320,23 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	 */
 	public void centerNode(final NodeView node) {
 		final JViewport viewPort = (JViewport) getParent();
-		if (!(isValid())) {
-			class CenterNodeRunnable implements Runnable {
-				private int counter;
+		if (!isShowing()) {
+			addAncestorListener(new AncestorListener(){
 
-				public CenterNodeRunnable() {
-					counter = 1;
-				}
+				public void ancestorAdded(AncestorEvent event) {
+					removeAncestorListener(this);
+					EventQueue.invokeLater(new Runnable(){
+						public void run() {
+							centerNode(node);
+                        }});
+					
+                }
 
-				public void run() {
-					if (counter-- == 0) {
-						centerNode(node);
-					}
-					else {
-						EventQueue.invokeLater(this);
-					}
-				}
-			};
-			EventQueue.invokeLater(new CenterNodeRunnable());
+				public void ancestorMoved(AncestorEvent event) {
+                }
+
+				public void ancestorRemoved(AncestorEvent event) {
+                }});
 			return;
 		}
 		final Dimension d = viewPort.getExtentSize();
@@ -808,11 +811,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			}
 			e.consume();
 		}
-	}
-
-	public void moveToRoot() {
-		selectAsTheOnlyOneSelected(getRoot());
-		centerNode(getRoot());
 	}
 
 	/*****************************************************************
@@ -1362,4 +1360,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	public void onPreNodeDelete(NodeModel oldParent, NodeModel selectedNode, int index) {
     }
+	
+	
 }

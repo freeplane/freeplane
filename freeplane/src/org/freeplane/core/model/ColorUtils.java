@@ -28,6 +28,9 @@ public class ColorUtils {
 	}
 	
 	public static Color stringToColor(final String str) {
+		if(str == null){
+			return null;
+		}
 		if(str.length() != 7 || str.charAt(0) != '#'){
 			throw new NumberFormatException("wrong color format in " + str);
 		}
