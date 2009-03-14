@@ -90,6 +90,7 @@
             <color name="standardedgecolor"/>
             <color name="standardlinkcolor"/>
             <color name="standardbackgroundcolor"/>
+            <color name="revision_color"/>
             <boolean name="printonwhitebackground"/>
             <color name="standardcloudcolor"/>
          </separator>

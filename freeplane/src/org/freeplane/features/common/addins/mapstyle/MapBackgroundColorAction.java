@@ -26,7 +26,7 @@ import org.freeplane.core.addins.PersistentNodeHook.HookAction;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.frame.ColorTracker;
-import org.freeplane.core.model.FpColor;
+import org.freeplane.core.model.ColorUtils;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -62,7 +62,7 @@ import org.freeplane.core.ui.ActionDescriptor;
 		}
 		else{
 			final String colorPropertyString = ResourceController.getResourceController().getProperty(ResourceControllerProperties.RESOURCES_BACKGROUND_COLOR);
-			oldBackgroundColor = new FpColor(colorPropertyString).getColor();
+			oldBackgroundColor = ColorUtils.stringToColor(colorPropertyString);
 		}
 
 		final Color actionColor = ColorTracker.showCommonJColorChooserDialog(controller, controller.getSelection()

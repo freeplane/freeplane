@@ -36,7 +36,7 @@ import org.freeplane.core.io.IElementDOMHandler;
 import org.freeplane.core.io.IElementHandler;
 import org.freeplane.core.io.ListHashTable;
 import org.freeplane.core.io.ReadManager;
-import org.freeplane.core.model.FpColor;
+import org.freeplane.core.model.ColorUtils;
 import org.freeplane.n3.nanoxml.IXMLBuilder;
 import org.freeplane.n3.nanoxml.IXMLElement;
 import org.freeplane.n3.nanoxml.IXMLReader;
@@ -53,12 +53,6 @@ public class TreeXmlReader implements IXMLBuilder {
 			return true;
 		}
 		return false;
-	}
-
-	// TODO rladstaetter 28.02.2009 replace method callees with code given below
-	@Deprecated
-	public static Color xmlToColor(final String string) {
-		return new FpColor(string).getColor();
 	}
 
 	/**

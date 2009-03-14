@@ -40,7 +40,7 @@ import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.modecontroller.MapController;
-import org.freeplane.core.model.FpColor;
+import org.freeplane.core.model.ColorUtils;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.n3.nanoxml.IXMLElement;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -115,7 +115,7 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 		reader.addAttributeHandler("arrowlink", "COLOR", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final ArrowLinkModel arrowLink = (ArrowLinkModel) userObject;
-				arrowLink.setColor(TreeXmlReader.xmlToColor(value.toString()));
+				arrowLink.setColor(ColorUtils.stringToColor(value.toString()));
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "DESTINATION", new IAttributeHandler() {
@@ -183,7 +183,7 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 		}
 		final Color color = model.getColor();
 		if (color != null) {
-			arrowLink.setAttribute("COLOR", FpColor.colorToXml(color));
+			arrowLink.setAttribute("COLOR", ColorUtils.colorToString(color));
 		}
 		final String destinationLabel = model.getTarget().createID();
 		if (destinationLabel != null) {

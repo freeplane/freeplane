@@ -29,7 +29,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.freeplane.core.model.FpColor;
+import org.freeplane.core.model.ColorUtils;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
@@ -83,12 +83,12 @@ public class StylePatternFactory {
 		final Pattern pattern = new Pattern();
 		if (NodeStyleModel.getColor(node) != null) {
 			final PatternProperty subPattern = new PatternProperty();
-			subPattern.setValue(FpColor.colorToXml(NodeStyleModel.getColor(node)));
+			subPattern.setValue(ColorUtils.colorToString(NodeStyleModel.getColor(node)));
 			pattern.setPatternNodeColor(subPattern);
 		}
 		if (NodeStyleModel.getBackgroundColor(node) != null) {
 			final PatternProperty subPattern = new PatternProperty();
-			subPattern.setValue(FpColor.colorToXml(NodeStyleModel.getBackgroundColor(node)));
+			subPattern.setValue(ColorUtils.colorToString(NodeStyleModel.getBackgroundColor(node)));
 			pattern.setPatternNodeBackgroundColor(subPattern);
 		}
 		if (NodeStyleModel.getShape(node) != null) {
@@ -119,8 +119,8 @@ public class StylePatternFactory {
 			final Color edgeColor = edge.getColor();
 			if (edgeColor != null) {
 				final PatternProperty colorPattern = new PatternProperty();
-				colorPattern.setValue(FpColor.colorToXml(edgeColor));
-				pattern.setPatternEdgeColor(FpColor.colorToXml(edgeColor));
+				colorPattern.setValue(ColorUtils.colorToString(edgeColor));
+				pattern.setPatternEdgeColor(ColorUtils.colorToString(edgeColor));
 			}
 			final String edgeStyle = edge.getStyle();
 			if (edgeStyle != null) {

@@ -30,7 +30,7 @@ import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
-import org.freeplane.core.model.FpColor;
+import org.freeplane.core.model.ColorUtils;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.n3.nanoxml.IXMLElement;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -78,7 +78,7 @@ class EdgeBuilder implements IElementDOMHandler, IExtensionElementWriter {
 		reader.addAttributeHandler("edge", "COLOR", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final EdgeModel edge = (EdgeModel) userObject;
-				edge.setColor(TreeXmlReader.xmlToColor(value.toString()));
+				edge.setColor(ColorUtils.stringToColor(value.toString()));
 			}
 		});
 		reader.addAttributeHandler("edge", "WIDTH", new IAttributeHandler() {
@@ -124,7 +124,7 @@ class EdgeBuilder implements IElementDOMHandler, IExtensionElementWriter {
 				relevant = true;
 			}
 			if (color != null) {
-				edge.setAttribute("COLOR", FpColor.colorToXml(color));
+				edge.setAttribute("COLOR", ColorUtils.colorToString(color));
 				relevant = true;
 			}
 			if (width != EdgeModel.WIDTH_PARENT) {

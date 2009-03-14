@@ -31,7 +31,7 @@ import org.freeplane.core.io.NodeBuilder;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
-import org.freeplane.core.model.FpColor;
+import org.freeplane.core.model.ColorUtils;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.n3.nanoxml.IXMLElement;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -79,7 +79,7 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 			public void setAttribute(final Object userObject, final String value) {
 				if (value.length() == 7) {
 					final NodeModel node = (NodeModel) userObject;
-					NodeStyleModel.setColor(node, TreeXmlReader.xmlToColor(value));
+					NodeStyleModel.setColor(node, ColorUtils.stringToColor(value));
 				}
 			}
 		});
@@ -87,7 +87,7 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 			public void setAttribute(final Object userObject, final String value) {
 				if (value.length() == 7) {
 					final NodeModel node = (NodeModel) userObject;
-					NodeStyleModel.setBackgroundColor(node, TreeXmlReader.xmlToColor(value));
+					NodeStyleModel.setBackgroundColor(node, ColorUtils.stringToColor(value));
 				}
 			}
 		});
@@ -138,10 +138,10 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 	public void writeAttributes(final ITreeWriter writer, final Object userObject, final IExtension extension) {
 		final NodeStyleModel style = (NodeStyleModel) extension;
 		if (style.getColor() != null) {
-			writer.addAttribute("COLOR", FpColor.colorToXml(style.getColor()));
+			writer.addAttribute("COLOR", ColorUtils.colorToString(style.getColor()));
 		}
 		if (style.getBackgroundColor() != null) {
-			writer.addAttribute("BACKGROUND_COLOR", FpColor.colorToXml(style.getBackgroundColor()));
+			writer.addAttribute("BACKGROUND_COLOR", ColorUtils.colorToString(style.getBackgroundColor()));
 		}
 		if (style.getShape() != null) {
 			writer.addAttribute("STYLE", style.getShape());

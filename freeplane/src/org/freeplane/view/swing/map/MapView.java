@@ -61,6 +61,7 @@ import org.freeplane.core.modecontroller.IMapChangeListener;
 import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.modecontroller.MapChangeEvent;
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.ColorUtils;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
@@ -264,10 +265,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if (MapView.standardSelectColor == null) {
 			String stdcolor = ResourceController.getResourceController().getProperty(
 			    ResourceControllerProperties.RESOURCES_SELECTED_NODE_COLOR);
-			MapView.standardSelectColor = TreeXmlReader.xmlToColor(stdcolor);
+			MapView.standardSelectColor = ColorUtils.stringToColor(stdcolor);
 			final String stdtextcolor = ResourceController.getResourceController().getProperty(
 			    ResourceControllerProperties.RESOURCES_SELECTED_NODE_RECTANGLE_COLOR);
-			MapView.standardSelectRectangleColor = TreeXmlReader.xmlToColor(stdtextcolor);
+			MapView.standardSelectRectangleColor = ColorUtils.stringToColor(stdtextcolor);
 			final String drawCircle = ResourceController.getResourceController().getProperty(
 			    ResourceControllerProperties.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION);
 			MapView.standardDrawRectangleForSelection = TreeXmlReader.xmlToBoolean(drawCircle);
@@ -359,11 +360,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 					return;
 				}
 				if (propertyName.equals(ResourceControllerProperties.RESOURCES_SELECTED_NODE_COLOR)) {
-					MapView.standardSelectColor = TreeXmlReader.xmlToColor(newValue);
+					MapView.standardSelectColor = ColorUtils.stringToColor(newValue);
 					((MapView) mapView).repaintSelecteds();
 				}
 				else if (propertyName.equals(ResourceControllerProperties.RESOURCES_SELECTED_NODE_RECTANGLE_COLOR)) {
-					MapView.standardSelectRectangleColor = TreeXmlReader.xmlToColor(newValue);
+					MapView.standardSelectRectangleColor = ColorUtils.stringToColor(newValue);
 					((MapView) mapView).repaintSelecteds();
 				}
 				else if (propertyName.equals(ResourceControllerProperties.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION)) {

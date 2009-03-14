@@ -29,7 +29,7 @@ import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.modecontroller.IMapLifeCycleListener;
 import org.freeplane.core.modecontroller.MapChangeEvent;
 import org.freeplane.core.modecontroller.ModeController;
-import org.freeplane.core.model.FpColor;
+import org.freeplane.core.model.ColorUtils;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
@@ -80,7 +80,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		String colorString = element.getAttribute("background", null);
 		final Color bgColor;
 		if(colorString != null){
-			bgColor = new FpColor(colorString).getColor();
+			bgColor = ColorUtils.stringToColor(colorString);
 		}
 		else{
 			bgColor = null; 
@@ -103,7 +103,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		}
 		String stdcolor = ResourceController.getResourceController().getProperty(
 			ResourceControllerProperties.RESOURCES_BACKGROUND_COLOR);
-		Color standardMapBackgroundColor = TreeXmlReader.xmlToColor(stdcolor);
+		Color standardMapBackgroundColor = ColorUtils.stringToColor(stdcolor);
 		return standardMapBackgroundColor;
 
 	}
@@ -112,7 +112,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	    super.saveExtension(extension, element);
 	    final Color backgroundColor = ((MapStyleModel)extension).getBackgroundColor();
 	    if(backgroundColor != null){
-	    	element.setAttribute("background", FpColor.colorToXml(backgroundColor));
+	    	element.setAttribute("background", ColorUtils.colorToString(backgroundColor));
 	    }
     }
 	

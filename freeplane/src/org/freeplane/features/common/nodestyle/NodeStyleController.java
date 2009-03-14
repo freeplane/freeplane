@@ -34,6 +34,7 @@ import org.freeplane.core.modecontroller.IPropertyHandler;
 import org.freeplane.core.modecontroller.MapChangeEvent;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.ColorUtils;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
@@ -170,7 +171,7 @@ public class NodeStyleController implements IExtension {
 		if (standardNodeTextColor == null) {
 			final String stdcolor = ResourceController.getResourceController().getProperty(
 			    ResourceControllerProperties.RESOURCES_NODE_TEXT_COLOR);
-			standardNodeTextColor = TreeXmlReader.xmlToColor(stdcolor);
+			standardNodeTextColor = ColorUtils.stringToColor(stdcolor);
 			createPropertyChangeListener();
 		}
 	}
@@ -199,9 +200,8 @@ public class NodeStyleController implements IExtension {
 		final IFreeplanePropertyListener propertyChangeListener = new IFreeplanePropertyListener() {
 			public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
 				if (propertyName.equals(ResourceControllerProperties.RESOURCES_NODE_TEXT_COLOR)) {
-					standardNodeTextColor = TreeXmlReader.xmlToColor(newValue);
-					MapChangeEvent event = new MapChangeEvent(ResourceControllerProperties.RESOURCES_NODE_TEXT_COLOR, TreeXmlReader
-					    .xmlToColor(oldValue), standardNodeTextColor);
+					standardNodeTextColor = ColorUtils.stringToColor(newValue);
+					MapChangeEvent event = new MapChangeEvent(ResourceControllerProperties.RESOURCES_NODE_TEXT_COLOR, ColorUtils.stringToColor(oldValue), standardNodeTextColor);
 					getModeController().getMapController().fireMapChanged(event);
 				}
 			}

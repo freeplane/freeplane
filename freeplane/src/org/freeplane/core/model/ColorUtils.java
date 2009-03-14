@@ -7,8 +7,8 @@ import java.awt.Color;
  * 
  * @author robert.ladstaetter
  */
-public class FpColor {
-	public static String colorToXml(final Color col) {
+public class ColorUtils {
+	public static String colorToString(final Color col) {
 		if (col == null) {
 			return null;
 		}
@@ -26,21 +26,12 @@ public class FpColor {
 		}
 		return "#" + red + green + blue;
 	}
-
-	final Color color;
-
-	public FpColor(final Color color) {
-		super();
-		assert color != null;
-		this.color = color;
-	}
-
-	public FpColor(final String color) {
-		this(color == null ? null : new Color(Integer.parseInt(color.substring(1, 3), 16), Integer.parseInt(color
-		    .substring(3, 5), 16), Integer.parseInt(color.substring(5, 7), 16)));
-	}
-
-	public Color getColor() {
-		return color;
+	
+	public static Color stringToColor(final String str) {
+		if(str.length() != 7 || str.charAt(0) != '#'){
+			throw new NumberFormatException("wrong color format in " + str);
+		}
+		return new Color(Integer.parseInt(str.substring(1, 3), 16), Integer.parseInt(str
+		    .substring(3, 5), 16), Integer.parseInt(str.substring(5, 7), 16));
 	}
 }

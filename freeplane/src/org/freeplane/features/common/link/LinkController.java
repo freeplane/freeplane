@@ -44,6 +44,7 @@ import org.freeplane.core.modecontroller.IPropertyHandler;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.modecontroller.SelectionController;
+import org.freeplane.core.model.ColorUtils;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
@@ -56,7 +57,7 @@ public class LinkController extends SelectionController implements IExtension {
 	private static class ArrowLinkListener implements IFreeplanePropertyListener {
 		public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
 			if (propertyName.equals(ResourceControllerProperties.RESOURCES_LINK_COLOR)) {
-				standardColor = TreeXmlReader.xmlToColor(newValue);
+				standardColor = ColorUtils.stringToColor(newValue);
 			}
 		}
 	}
@@ -262,7 +263,7 @@ public class LinkController extends SelectionController implements IExtension {
 			final String stdColor = ResourceController.getResourceController().getProperty(
 			    ResourceControllerProperties.RESOURCES_LINK_COLOR);
 			if (stdColor != null && stdColor.length() == 7) {
-				standardColor = TreeXmlReader.xmlToColor(stdColor);
+				standardColor = ColorUtils.stringToColor(stdColor);
 			}
 			else {
 				standardColor = Color.RED;

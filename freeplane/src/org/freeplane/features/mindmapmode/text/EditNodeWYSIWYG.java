@@ -37,7 +37,7 @@ import javax.swing.text.html.HTMLDocument;
 
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.ModeController;
-import org.freeplane.core.model.FpColor;
+import org.freeplane.core.model.ColorUtils;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
@@ -195,7 +195,7 @@ class EditNodeWYSIWYG extends EditNodeBase {
 				rule += "font-weight: bold; ";
 			}
 			final Color nodeTextColor = viewController.getTextColor(node);
-			rule += "color: " + FpColor.colorToXml(nodeTextColor) + ";";
+			rule += "color: " + ColorUtils.colorToString(nodeTextColor) + ";";
 			rule += "}\n";
 			rule += "p {";
 			rule += "margin-top:0;";

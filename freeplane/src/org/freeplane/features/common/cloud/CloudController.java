@@ -32,6 +32,7 @@ import org.freeplane.core.modecontroller.ExclusivePropertyChain;
 import org.freeplane.core.modecontroller.IPropertyHandler;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.ColorUtils;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
@@ -43,7 +44,7 @@ public class CloudController implements IExtension {
 	protected static class CloudAdapterListener implements IFreeplanePropertyListener {
 		public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
 			if (propertyName.equals(ResourceControllerProperties.RESOURCES_CLOUD_COLOR)) {
-				standardColor = TreeXmlReader.xmlToColor(newValue);
+				standardColor = ColorUtils.stringToColor(newValue);
 			}
 		}
 	}
@@ -120,7 +121,7 @@ public class CloudController implements IExtension {
 		if (standardColor == null) {
 			final String stdColor = ResourceController.getResourceController().getProperty(
 			    ResourceControllerProperties.RESOURCES_CLOUD_COLOR);
-			standardColor = TreeXmlReader.xmlToColor(stdColor);
+			standardColor = ColorUtils.stringToColor(stdColor);
 		}
 	}
 }
