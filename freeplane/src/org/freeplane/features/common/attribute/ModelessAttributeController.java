@@ -48,10 +48,10 @@ public class ModelessAttributeController implements IExtension {
 		showAllAttributes = new ShowAllAttributesAction(controller);
 		showSelectedAttributes = new ShowSelectedAttributesAction(controller);
 		hideAllAttributes = new HideAllAttributesAction(controller);
-		controller.putAction(showAttributeManagerAction);
-		controller.putAction(showAllAttributes);
-		controller.putAction(showSelectedAttributes);
-		controller.putAction(hideAllAttributes);
+		controller.addAction(showAttributeManagerAction);
+		controller.addAction(showAllAttributes);
+		controller.addAction(showSelectedAttributes);
+		controller.addAction(hideAllAttributes);
 	}
 
 	public void setAttributeViewType(final MapModel map, final String value) {

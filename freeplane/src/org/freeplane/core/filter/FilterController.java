@@ -81,7 +81,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		this.controller = controller;
 		defaultFilter = new DefaultFilter(controller, null, false, false);
 		controller.getMapViewManager().addMapSelectionListener(this);
-		controller.putAction(new ShowFilterToolbarAction(this));
+		controller.addAction(new ShowFilterToolbarAction(this));
 	}
 
 	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {

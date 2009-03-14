@@ -152,7 +152,7 @@ public class ModeController extends AController {
 
 	public void addAnnotatedAction(final Action action) {
 		final String name = action.getClass().getAnnotation(ActionDescriptor.class).name();
-		putAction(name, action);
+		addAction(name, action);
 	}
 
 	public void addINodeViewLifeCycleListener(final INodeViewLifeCycleListener listener) {
@@ -231,7 +231,7 @@ public class ModeController extends AController {
 	}
 
 	public void putAction(final String key, final IFreeplaneAction action) {
-		super.putAction(key, action);
+		super.addAction(key, action);
 		if (AFreeplaneAction.checkEnabledOnChange(action)) {
 			final ActionEnablerOnChange listener = new ActionEnablerOnChange((AFreeplaneAction) action);
 			mapController.addNodeSelectionListener(listener);

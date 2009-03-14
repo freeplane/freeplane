@@ -91,14 +91,14 @@ abstract public class ViewController implements IMapViewChangeListener {
 		controller.setViewController(this);
 		this.mapViewManager = mapViewManager;
 		mapViewManager.addMapViewChangeListener(this);
-		controller.putAction(new CloseAction(controller));
-		controller.putAction(new MoveToRootAction(controller));
+		controller.addAction(new CloseAction(controller));
+		controller.addAction(new MoveToRootAction(controller));
 		zoomIn = new ZoomInAction(this);
-		controller.putAction(zoomIn);
+		controller.addAction(zoomIn);
 		zoomOut = new ZoomOutAction(this);
-		controller.putAction(zoomOut);
+		controller.addAction(zoomOut);
 		optionAntialiasAction = new OptionAntialiasAction(controller);
-		controller.putAction(optionAntialiasAction);
+		controller.addAction(optionAntialiasAction);
 		userDefinedZoom = FreeplaneResourceBundle.getText("user_defined_zoom");
 		zoomModel = new DefaultComboBoxModel(getZooms());
 		zoomModel.addElement(userDefinedZoom);
@@ -110,9 +110,9 @@ abstract public class ViewController implements IMapViewChangeListener {
     		zoomModel.setSelectedItem("100%");
 	        e.printStackTrace();
         }
-		controller.putAction(new ToggleMenubarAction(controller, this));
-		controller.putAction(new ToggleToolbarAction(controller, this));
-		controller.putAction(new ToggleLeftToolbarAction(controller, this));
+		controller.addAction(new ToggleMenubarAction(controller, this));
+		controller.addAction(new ToggleToolbarAction(controller, this));
+		controller.addAction(new ToggleLeftToolbarAction(controller, this));
 		toolbarVisible = true;
 		leftToolbarVisible = true;
 		menubarVisible = true;

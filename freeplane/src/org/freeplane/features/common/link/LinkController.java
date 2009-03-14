@@ -127,8 +127,8 @@ public class LinkController extends SelectionController implements IExtension {
 	 *
 	 */
 	private void createActions(final ModeController modeController) {
-		modeController.putAction("followLink", new FollowLinkAction(modeController.getController()));
-		modeController.putAction("gotoLinkNodeAction", new GotoLinkNodeAction(this, null));
+		modeController.addAction("followLink", new FollowLinkAction(modeController.getController()));
+		modeController.addAction("gotoLinkNodeAction", new GotoLinkNodeAction(this, null));
 	}
 
 	protected void createArrowLinkPopup(final ArrowLinkModel link, final JPopupMenu arrowLinkPopup) {

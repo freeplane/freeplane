@@ -48,12 +48,12 @@ public class MClipboardController extends ClipboardController {
 	 */
 	private void createActions(final ModeController modeController) {
 		final Controller controller = modeController.getController();
-		modeController.putAction("exportToHTML", new ExportToHTMLAction(controller));
-		modeController.putAction("exportBranchToHTML", new ExportBranchToHTMLAction(controller));
+		modeController.addAction("exportToHTML", new ExportToHTMLAction(controller));
+		modeController.addAction("exportBranchToHTML", new ExportBranchToHTMLAction(controller));
 		cut = new CutAction(controller);
-		modeController.putAction("cut", cut);
+		modeController.addAction("cut", cut);
 		paste = new PasteAction(controller);
-		modeController.putAction("paste", paste);
+		modeController.addAction("paste", paste);
 	}
 
 	public Transferable cut(final List nodeList) {

@@ -265,7 +265,7 @@ public abstract class PersistentNodeHook {
 	}
 
 	protected void registerAction(final AFreeplaneAction action, final ActionDescriptor actionAnnotation) {
-		modeController.putAction(actionAnnotation.name(), action);
+		modeController.addAction(actionAnnotation.name(), action);
 		getModeController().getUserInputListenerFactory().getMenuBuilder().addAction(action, actionAnnotation);
 	}
 

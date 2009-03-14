@@ -503,7 +503,7 @@ public class MAttributeController extends AttributeController {
 	 *
 	 */
 	private void createActions() {
-		modeController.putAction("assignAttributes", new AssignAttributesAction(getModeController()));
+		modeController.addAction("assignAttributes", new AssignAttributesAction(getModeController()));
 	}
 
 	public int editAttribute(final NodeModel pNode, final String pName, final String pNewValue) {

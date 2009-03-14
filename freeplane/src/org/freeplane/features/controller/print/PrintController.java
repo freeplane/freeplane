@@ -55,10 +55,10 @@ public class PrintController implements IExtension {
 		printDirectAction = new PrintDirectAction(controller, this);
 		printPreviewAction = new PrintPreviewAction(controller, this);
 		pageAction = new PageAction(this);
-		controller.putAction(printAction);
-		controller.putAction(printDirectAction);
-		controller.putAction(printPreviewAction);
-		controller.putAction(pageAction);
+		controller.addAction(printAction);
+		controller.addAction(printDirectAction);
+		controller.addAction(printPreviewAction);
+		controller.addAction(pageAction);
 		printingAllowed = true;
 	}
 

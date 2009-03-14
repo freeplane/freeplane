@@ -118,17 +118,17 @@ public class MMapController extends MapController {
 
 	private void createActions(final MModeController modeController) {
 		final Controller controller = modeController.getController();
-		modeController.putAction("newMap", new NewMapAction(controller));
-		modeController.putAction("newSibling", new NewSiblingAction(controller));
-		modeController.putAction("newPreviousSibling", new NewPreviousSiblingAction(controller));
+		modeController.addAction("newMap", new NewMapAction(controller));
+		modeController.addAction("newSibling", new NewSiblingAction(controller));
+		modeController.addAction("newPreviousSibling", new NewPreviousSiblingAction(controller));
 		newChild = new NewChildAction(controller);
-		modeController.putAction("newChild", newChild);
+		modeController.addAction("newChild", newChild);
 		delete = new DeleteAction(controller);
-		modeController.putAction("deleteChild", delete);
-		modeController.putAction("undoableToggleFolded", new ToggleFoldedAction(controller));
-		modeController.putAction("undoableToggleChildrenFolded", new ToggleChildrenFoldedAction(controller));
-		modeController.putAction("nodeUp", new NodeUpAction(controller));
-		modeController.putAction("nodeDown", new NodeDownAction(controller));
+		modeController.addAction("deleteChild", delete);
+		modeController.addAction("undoableToggleFolded", new ToggleFoldedAction(controller));
+		modeController.addAction("undoableToggleChildrenFolded", new ToggleChildrenFoldedAction(controller));
+		modeController.addAction("nodeUp", new NodeUpAction(controller));
+		modeController.addAction("nodeDown", new NodeDownAction(controller));
 	}
 
 	public void deleteNode(final NodeModel node) {

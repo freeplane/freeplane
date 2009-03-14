@@ -36,8 +36,9 @@ import org.freeplane.core.ui.ActionDescriptor;
  * @author Dimitry Polivaev
  * Mar 12, 2009
  */
-@ActionDescriptor(name = "MapBackgroundColor", //
-	locations = { "/menu_bar/format/nodes" }) class MapBackgroundColorAction extends AFreeplaneAction {
+@ActionDescriptor(name = "map_background_color_action", //
+	locations = { "/menu_bar/format/nodes" }) 
+class MapBackgroundColorAction extends AFreeplaneAction {
     /**
      * 
      */

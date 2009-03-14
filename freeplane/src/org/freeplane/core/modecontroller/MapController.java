@@ -198,8 +198,8 @@ public class MapController extends SelectionController {
 	 */
 	private void createActions(final ModeController modeController) {
 		toggleFolded = new CommonToggleFoldedAction(controller);
-		modeController.putAction(toggleFolded);
-		modeController.putAction(new CommonToggleChildrenFoldedAction(this));
+		modeController.addAction(toggleFolded);
+		modeController.addAction(new CommonToggleChildrenFoldedAction(this));
 	}
 
 	public void displayNode(final NodeModel node) {

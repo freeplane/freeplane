@@ -49,12 +49,12 @@ public class ExportToImage extends ExportAction {
 		final ExportToImage pngExport = new ExportToImage(modeController.getController(),
 		    "accessories/plugins/ExportToImage_PNG.properties_name", "png", "Portable Network Graphic (PNG)");
 		pngExport.setTooltip("accessories/plugins/ExportToImage_PNG.properties_documentation");
-		modeController.putAction("ExportToImage_PNG", pngExport);
+		modeController.addAction("ExportToImage_PNG", pngExport);
 		menuBuilder.addAction("/menu_bar/file/export/export", pngExport, "ExportToImage_PNG", MenuBuilder.AS_CHILD);
 		final ExportToImage jpgExport = new ExportToImage(modeController.getController(),
 		    "accessories/plugins/ExportToImage_JPEG.properties_name", "jpg", "Compressed image (JPEG)");
 		pngExport.setTooltip("accessories/plugins/ExportToImage_JPEG.properties_documentation");
-		modeController.putAction("ExportToImage_JPEG", jpgExport);
+		modeController.addAction("ExportToImage_JPEG", jpgExport);
 		menuBuilder.addAction("/menu_bar/file/export/export", jpgExport, "ExportToImage_JPEG", MenuBuilder.AS_CHILD);
 	}
 

@@ -27,14 +27,18 @@ public class AController {
 		return actions;
 	}
 
-	public void putAction(final IFreeplaneAction a) {
-		getActions().put(a.getName(), a);
+	public void addAction(final IFreeplaneAction a) {
+		addAction(a.getName(), a);
 	}
 
-	// TODO rladstaetter 15.02.2009 use put(FreeplaneAction a)
+	// TODO rladstaetter 15.02.2009 use addAction(IFreeplaneAction a)
 	@Deprecated
-	public void putAction(final String key, final Action value) {
-		getActions().put(key, value);
+	public void addAction(final String key, final Action value) {
+		Action old = getActions().put(key, value);
+		if(old != null && ! old.equals(value)){
+			getActions().put(key, old);
+			throw new RuntimeException("action " + key + "already registered");
+		}
 	}
 
 	public Action removeAction(final String key) {

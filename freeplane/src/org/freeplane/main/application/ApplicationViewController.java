@@ -79,9 +79,9 @@ class ApplicationViewController extends ViewController {
 		super(controller, mapViewController);
 		this.controller = controller;
 		navigationPreviousMap = new NavigationPreviousMapAction(controller);
-		controller.putAction(navigationPreviousMap);
+		controller.addAction(navigationPreviousMap);
 		navigationNextMap = new NavigationNextMapAction(controller);
-		controller.putAction(navigationNextMap);
+		controller.addAction(navigationNextMap);
 		resourceController = ResourceController.getResourceController();
 		frame = new JFrame("Freeplane");
 		// --- Set Note Window Location ---

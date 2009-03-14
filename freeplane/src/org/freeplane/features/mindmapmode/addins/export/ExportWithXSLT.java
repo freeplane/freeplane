@@ -113,7 +113,7 @@ public class ExportWithXSLT extends ExportAction {
 				final Properties properties = xmlProperties.getAttributes();
 				final ExportWithXSLT action = new ExportWithXSLT(modeController.getController(), name, tooltip,
 				    properties);
-				modeController.putAction(name, action);
+				modeController.addAction(name, action);
 				modeController.getUserInputListenerFactory().getMenuBuilder().addAction(location, action,
 				    location + "/" + name, MenuBuilder.AS_CHILD);
 			}

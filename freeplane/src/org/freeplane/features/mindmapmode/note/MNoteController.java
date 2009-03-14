@@ -123,17 +123,17 @@ public class MNoteController extends NoteController {
 	 */
 	public MNoteController(final ModeController modeController) {
 		super(modeController);
-		modeController.putAction("selectNoteAction", new SelectNoteAction(this, getModeController()));
-		modeController.putAction("showHideNoteAction", new ShowHideNoteAction(this, getModeController()));
-		modeController.putAction("note_window_location.top", new SetNoteWindowPosition(modeController.getController(),
+		modeController.addAction("selectNoteAction", new SelectNoteAction(this, getModeController()));
+		modeController.addAction("showHideNoteAction", new ShowHideNoteAction(this, getModeController()));
+		modeController.addAction("note_window_location.top", new SetNoteWindowPosition(modeController.getController(),
 		    "top"));
-		modeController.putAction("note_window_location.left", new SetNoteWindowPosition(modeController.getController(),
+		modeController.addAction("note_window_location.left", new SetNoteWindowPosition(modeController.getController(),
 		    "left"));
-		modeController.putAction("note_window_location.right", new SetNoteWindowPosition(
+		modeController.addAction("note_window_location.right", new SetNoteWindowPosition(
 		    modeController.getController(), "right"));
-		modeController.putAction("note_window_location.bottom", new SetNoteWindowPosition(modeController
+		modeController.addAction("note_window_location.bottom", new SetNoteWindowPosition(modeController
 		    .getController(), "bottom"));
-		modeController.putAction("removeNoteAction", new RemoveNoteAction(this, getModeController()));
+		modeController.addAction("removeNoteAction", new RemoveNoteAction(this, getModeController()));
 	}
 
 	SHTMLPanel getHtmlEditorPanel() {

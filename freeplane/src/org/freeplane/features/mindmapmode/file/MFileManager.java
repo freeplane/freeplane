@@ -93,16 +93,16 @@ public class MFileManager extends UrlManager {
 	 */
 	private void createActions(final ModeController modeController) {
 		final Controller controller = modeController.getController();
-		getController().putAction(new OpenAction(controller));
-		modeController.putAction(new SaveAction(controller));
-		modeController.putAction(new SaveAsAction(controller));
-		modeController.putAction(new ExportBranchAction(controller));
-		modeController.putAction(new ImportBranchAction(controller));
-		modeController.putAction(new ImportLinkedBranchAction(controller));
-		modeController.putAction(new ImportLinkedBranchWithoutRootAction(controller));
-		modeController.putAction(new ImportExplorerFavoritesAction(controller));
-		modeController.putAction(new ImportFolderStructureAction(controller));
-		modeController.putAction(new RevertAction(controller));
+		getController().addAction(new OpenAction(controller));
+		modeController.addAction(new SaveAction(controller));
+		modeController.addAction(new SaveAsAction(controller));
+		modeController.addAction(new ExportBranchAction(controller));
+		modeController.addAction(new ImportBranchAction(controller));
+		modeController.addAction(new ImportLinkedBranchAction(controller));
+		modeController.addAction(new ImportLinkedBranchWithoutRootAction(controller));
+		modeController.addAction(new ImportExplorerFavoritesAction(controller));
+		modeController.addAction(new ImportFolderStructureAction(controller));
+		modeController.addAction(new RevertAction(controller));
 	}
 
 	protected JFileChooser getFileChooser() {

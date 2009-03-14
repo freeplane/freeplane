@@ -90,7 +90,7 @@ public class Controller extends AController {
 	public Controller() {
 		super();
 		extensionContainer = new ExtensionContainer(new HashMap<Class<? extends IExtension>, IExtension>());
-		putAction(new QuitAction(this));
+		addAction(new QuitAction(this));
 	}
 
 	public void addModeController(final ModeController modeController) {

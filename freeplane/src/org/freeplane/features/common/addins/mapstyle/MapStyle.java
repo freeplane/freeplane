@@ -45,7 +45,9 @@ import org.freeplane.view.swing.map.MapView;
 public class MapStyle extends PersistentNodeHook implements IExtension, IMapLifeCycleListener{
 	public MapStyle(ModeController modeController) {
 	    super(modeController);
-	    registerAction(new MapBackgroundColorAction(this));
+	    if(modeController.getModeName().equals("MindMap")){
+	    	registerAction(new MapBackgroundColorAction(this));
+	    }
 	    modeController.getMapController().addMapLifeCycleListener(this);
    }
 	

@@ -69,12 +69,12 @@ public class MTextController extends TextController {
 	private void createActions(final ModeController modeController) {
 		final Controller controller = modeController.getController();
 		edit = new EditAction(controller);
-		modeController.putAction("edit", edit);
-		modeController.putAction("useRichFormatting", new UseRichFormattingAction(controller));
-		modeController.putAction("usePlainText", new UsePlainTextAction(controller));
-		modeController.putAction("joinNodes", new JoinNodesAction(controller));
-		modeController.putAction("editLong", new EditLongAction(controller));
-		modeController.putAction("setImageByFileChooser", new SetImageByFileChooserAction(controller));
+		modeController.addAction("edit", edit);
+		modeController.addAction("useRichFormatting", new UseRichFormattingAction(controller));
+		modeController.addAction("usePlainText", new UsePlainTextAction(controller));
+		modeController.addAction("joinNodes", new JoinNodesAction(controller));
+		modeController.addAction("editLong", new EditLongAction(controller));
+		modeController.addAction("setImageByFileChooser", new SetImageByFileChooserAction(controller));
 	}
 
 	public void edit(final KeyEvent e, final boolean addNew, final boolean editLong) {
