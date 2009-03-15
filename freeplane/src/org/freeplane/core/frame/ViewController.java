@@ -217,7 +217,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 				return i - 0.5f;
 			}
 		}
-		return itemCount - 0.5f;
+		return selectedIndex - 0.5f;
 	}
 
 	public Font getFont(final NodeModel node) {
