@@ -87,13 +87,17 @@ public class NodeLinks implements IExtension {
 		}
 		links.add(newLink);
 		final MapModel map = newLink.getSource().getMap();
-		MapLinks mapLinks = (MapLinks) map.getExtension(MapLinks.class);
+		addLinkToMap(map, newLink);
+	}
+
+	private void addLinkToMap(final MapModel map, final LinkModel newLink) {
+	    MapLinks mapLinks = (MapLinks) map.getExtension(MapLinks.class);
 		if (mapLinks == null) {
 			mapLinks = new MapLinks();
 			map.addExtension(mapLinks);
 		}
 		mapLinks.add(newLink);
-	}
+    }
 
 	/**
 	 * @return
@@ -116,16 +120,21 @@ public class NodeLinks implements IExtension {
 			}
 		}
 		final MapModel map = link.getSource().getMap();
-		final MapLinks mapLinks = (MapLinks) map.getExtension(MapLinks.class);
-		mapLinks.remove(link);
+		removeLinkFromMap(map, link);
 	}
 
-	public String removeLocalHyperLink() {
+	private void removeLinkFromMap(final MapModel map, final LinkModel link) {
+	    final MapLinks mapLinks = (MapLinks) map.getExtension(MapLinks.class);
+		mapLinks.remove(link);
+    }
+
+	public String removeLocalHyperLink(NodeModel node) {
 		final Iterator<LinkModel> iterator = links.iterator();
 		while (iterator.hasNext()) {
 			final LinkModel link = iterator.next();
 			if (link instanceof HyperTextLinkModel) {
 				iterator.remove();
+				removeLinkFromMap(node.getMap(), link);
 				return link.getTargetID();
 			}
 		}
@@ -136,10 +145,12 @@ public class NodeLinks implements IExtension {
 		this.hyperlink = hyperlink;
 	}
 
-	public void setLocalHyperlink(final String targetID) {
-		removeLocalHyperLink();
+	public void setLocalHyperlink(NodeModel node, final String targetID) {
+		removeLocalHyperLink(node);
 		if (targetID != null) {
-			links.add(new HyperTextLinkModel(targetID));
+			final HyperTextLinkModel link = new HyperTextLinkModel(targetID);
+			links.add(link);
+			addLinkToMap(node.getMap(), link);
 		}
 	}
 }

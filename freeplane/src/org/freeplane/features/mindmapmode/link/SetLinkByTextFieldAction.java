@@ -57,13 +57,13 @@ class SetLinkByTextFieldAction extends AFreeplaneAction {
 				NodeLinks links = NodeLinks.getLinkExtension(node);
 				if (links != null) {
 					oldlink = links.getHyperLink();
-					oldTargetID = links.removeLocalHyperLink();
+					oldTargetID = links.removeLocalHyperLink(node);
 				}
 				else {
 					links = NodeLinks.createLinkExtension(node);
 				}
 				if (link != null && link.startsWith("#")) {
-					links.setLocalHyperlink(link.substring(1));
+					links.setLocalHyperlink(node, link.substring(1));
 				}
 				links.setHyperLink(link);
 				getModeController().getMapController().nodeChanged(node);
@@ -75,7 +75,7 @@ class SetLinkByTextFieldAction extends AFreeplaneAction {
 
 			public void undo() {
 				final NodeLinks links = NodeLinks.getLinkExtension(node);
-				links.setLocalHyperlink(oldTargetID);
+				links.setLocalHyperlink(node, oldTargetID);
 				links.setHyperLink(oldlink);
 				getModeController().getMapController().nodeChanged(node);
 			}

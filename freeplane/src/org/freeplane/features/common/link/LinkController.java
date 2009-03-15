@@ -239,15 +239,18 @@ public class LinkController extends SelectionController implements IExtension {
 			links = NodeLinks.createLinkExtension(node);
 		}
 		if (link != null && link.startsWith("#")) {
-			links.setLocalHyperlink(link.substring(1));
+			links.setLocalHyperlink(node, link.substring(1));
 		}
 		links.setHyperLink(link);
 	}
 
 	public void loadURL() {
-		final String link = NodeLinks.getLink(modeController.getMapController().getSelectedNode());
+		final NodeModel selectedNode = modeController.getMapController().getSelectedNode();
+		final String link = NodeLinks.getLink(selectedNode);
 		if (link != null) {
+			onDeselect(selectedNode);
 			modeController.getMapController().loadURL(link);
+			onSelect(modeController.getController().getSelection().getSelected());
 		}
 	}
 

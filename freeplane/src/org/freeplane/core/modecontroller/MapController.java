@@ -455,7 +455,7 @@ public class MapController extends SelectionController {
 			else if (relative.startsWith("#")) {
 				final String target = relative.substring(1);
 				try {
-					centerNode(getNodeFromID(target));
+					select(getNodeFromID(target));
 					return;
 				}
 				catch (final Exception e) {

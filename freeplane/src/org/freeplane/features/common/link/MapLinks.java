@@ -31,7 +31,7 @@ import org.freeplane.core.extension.IExtension;
 public class MapLinks implements IExtension {
 	final private HashMap<String, Set<LinkModel>> links = new HashMap<String, Set<LinkModel>>();
 
-	public boolean add(final ArrowLinkModel link) {
+	public boolean add(final LinkModel link) {
 		final String targetID = link.getTargetID();
 		Set<LinkModel> set = get(targetID);
 		if (set == null) {
@@ -55,7 +55,7 @@ public class MapLinks implements IExtension {
 		return links.get(targetID);
 	}
 
-	public boolean remove(final ArrowLinkModel link) {
+	public boolean remove(final LinkModel link) {
 		final String targetID = link.getTargetID();
 		final Set<LinkModel> set = get(targetID);
 		if (set == null) {
