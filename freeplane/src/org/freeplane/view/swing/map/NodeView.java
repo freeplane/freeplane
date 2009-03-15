@@ -27,6 +27,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DragGestureListener;
 import java.awt.dnd.DragSource;
@@ -41,6 +42,7 @@ import javax.swing.JComponent;
 import javax.swing.tree.TreeNode;
 
 import org.freeplane.core.modecontroller.MapChangeEvent;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.modecontroller.NodeChangeEvent;
 import org.freeplane.core.model.INodeView;
 import org.freeplane.core.model.NodeModel;
@@ -903,12 +905,17 @@ public class NodeView extends JComponent implements INodeView {
 			paintCloud(g);
 		}
 		if (isContentVisible()) {
-			final Graphics2D g2d = (Graphics2D) g;
-			paintCloudsAndEdges(g2d);
+			final Graphics2D g2 = (Graphics2D) g;
+			final ModeController modeController = getMap().getModeController();
+			Object renderingHint = modeController.getController().getViewController().setEdgesRenderingHint(g2);
+			paintCloudsAndEdges(g2);
+			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 			super.paint(g);
-			g2d.setStroke(BubbleMainView.DEF_STROKE);
+			g2.setStroke(BubbleMainView.DEF_STROKE);
 			if (!isRoot) {
-				paintFoldingMark(g2d);
+				modeController.getController().getViewController().setEdgesRenderingHint(g2);
+				paintFoldingMark(g2);
+				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 			}
 		}
 		else {

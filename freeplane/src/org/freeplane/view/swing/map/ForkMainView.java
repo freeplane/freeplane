@@ -23,6 +23,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.RenderingHints;
 
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
@@ -117,9 +118,10 @@ class ForkMainView extends MainView {
 		if (model == null) {
 			return;
 		}
+		final ModeController modeController = getNodeView().getMap().getModeController();
+		Object renderingHint = modeController.getController().getViewController().setEdgesRenderingHint(g);
 		paintSelected(g);
 		paintDragOver(g);
-		final ModeController modeController = nodeView.getMap().getModeController();
 		final EdgeController edgeController = EdgeController.getController(modeController);
 		int edgeWidth = edgeController.getWidth(model);
 		if (edgeWidth == 0) {
@@ -129,6 +131,7 @@ class ForkMainView extends MainView {
 		g.setColor(edgeController.getColor(model));
 		g.drawLine(0, getHeight() - edgeWidth / 2 - 1, getWidth(), getHeight() - edgeWidth / 2 - 1);
 		g.setColor(oldColor);
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 		super.paint(g);
 	}
 

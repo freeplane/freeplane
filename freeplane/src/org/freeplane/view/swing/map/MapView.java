@@ -813,28 +813,21 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if (isValid()) {
 			anchorContentLocation = getAnchorCenterPoint();
 		}
-		final Graphics2D g2 = (Graphics2D) g;
-		final Object renderingHint = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
-		final Object textRenderingHint = g2.getRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING);
-		controller.getViewController().setEdgesRenderingHint(g2);
-		controller.getViewController().setTextRenderingHint(g2);
-		final Object oldRenderingHintFM = g2.getRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS);
-		final Object newRenderingHintFM = getZoom() != 1F ? RenderingHints.VALUE_FRACTIONALMETRICS_ON
-		        : RenderingHints.VALUE_FRACTIONALMETRICS_OFF;
-		if (oldRenderingHintFM != newRenderingHintFM) {
-			g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, newRenderingHintFM);
-		}
-		super.paint(g);
-		if (RenderingHints.KEY_ANTIALIASING.isCompatibleValue(renderingHint)) {
-			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
-		}
-		if (RenderingHints.KEY_TEXT_ANTIALIASING.isCompatibleValue(textRenderingHint)) {
-			g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, textRenderingHint);
-		}
-		if (oldRenderingHintFM != newRenderingHintFM
-		        && RenderingHints.KEY_FRACTIONALMETRICS.isCompatibleValue(oldRenderingHintFM)) {
-			g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, oldRenderingHintFM);
-		}
+        final Graphics2D g2 = (Graphics2D) g.create();
+		try {
+	        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+	        controller.getViewController().setTextRenderingHint(g2);
+	        final Object oldRenderingHintFM = g2.getRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS);
+	        final Object newRenderingHintFM = getZoom() != 1F ? RenderingHints.VALUE_FRACTIONALMETRICS_ON
+	                : RenderingHints.VALUE_FRACTIONALMETRICS_OFF;
+	        if (oldRenderingHintFM != newRenderingHintFM) {
+	        	g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, newRenderingHintFM);
+	        }
+	        super.paint(g2);
+        }
+        finally {
+        	g2.dispose();
+        }
 	}
 
 	@Override
@@ -905,6 +898,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			MapView.standardSelectionStroke = new BasicStroke(2.0f);
 		}
 		g.setStroke(MapView.standardSelectionStroke);
+    	Object renderingHint = getModeController().getController().getViewController().setEdgesRenderingHint(g);
 		final Iterator i = getSelection().iterator();
 		while (i.hasNext()) {
 			final NodeView selected = (NodeView) i.next();
@@ -912,6 +906,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 		g.setColor(c);
 		g.setStroke(s);
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 	}
 
 	/**

@@ -25,8 +25,10 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.RenderingHints;
 import java.awt.Stroke;
 
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
@@ -128,13 +130,16 @@ class BubbleMainView extends MainView {
 		if (model == null) {
 			return;
 		}
+		final ModeController modeController = getNodeView().getMap().getModeController();
+		Object renderingHint = modeController.getController().getViewController().setEdgesRenderingHint(g);
 		paintSelected(g);
 		paintDragOver(g);
-		final Color edgeColor = EdgeController.getController(getNodeView().getMap().getModeController())
+		final Color edgeColor = EdgeController.getController(modeController)
 		    .getColor(model);
 		g.setColor(edgeColor);
 		g.setStroke(BubbleMainView.DEF_STROKE);
 		g.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 10, 10);
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 		super.paint(g);
 	}
 

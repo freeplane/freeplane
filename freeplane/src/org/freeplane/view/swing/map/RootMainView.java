@@ -26,8 +26,10 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.RenderingHints;
 
 import org.freeplane.core.enums.ResourceControllerProperties;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.resources.ResourceController;
 
 class RootMainView extends MainView {
@@ -112,11 +114,14 @@ class RootMainView extends MainView {
 		if (getNodeView().getModel() == null) {
 			return;
 		}
+		final ModeController modeController = getNodeView().getMap().getModeController();
+		Object renderingHint = modeController.getController().getViewController().setEdgesRenderingHint(g);
 		paintSelected(g);
 		paintDragOver(g);
 		g.setColor(Color.gray);
 		g.setStroke(new BasicStroke(1.0f));
 		g.drawOval(0, 0, getWidth() - 1, getHeight() - 1);
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 		super.paint(g);
 	}
 

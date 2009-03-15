@@ -406,13 +406,15 @@ abstract public class ViewController implements IMapViewChangeListener {
 		this.antialiasEdges = antialiasEdges;
 	}
 
-	public void setEdgesRenderingHint(final Graphics2D g) {
+	public Object setEdgesRenderingHint(final Graphics2D g) {
+		final Object renderingHint = g.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
 		if (getAntialiasEdges()) {
 			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		}
 		else {
 			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
 		}
+		return renderingHint;
 	}
 
 	abstract protected void setFreeplaneMenuBar(FreeplaneMenuBar menuBar);
