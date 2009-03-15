@@ -999,12 +999,28 @@ public class NodeView extends JComponent implements INodeView {
 		    EdgeStyle.EDGESTYLE_HIDDEN)) {
 			final NodeView visibleParentView = getVisibleParentView();
 			if (visibleParentView != null) {
-				visibleParentView.repaint();
-				return;
+				visibleParentView.repaintEdge(this);
 			}
 		}
-		repaint();
+		final JComponent content = getContent();
+		final int EXTRA = 20;
+		final int x = content.getX()-EXTRA;
+		final int y = content.getY()-EXTRA;
+		repaint(x, y, content.getWidth() + EXTRA*2, content.getHeight() + EXTRA*2);
 	}
+
+	private void repaintEdge(NodeView nodeView) {
+	    final Point inPoint = nodeView.getMainViewInPoint();
+	    UITools.convertPointToAncestor(nodeView.getMainView(), inPoint, this);
+	    final Point outPoint = getMainViewOutPoint(nodeView, inPoint);
+	    UITools.convertPointToAncestor(getMainView(), outPoint, this);
+	    final int x = Math.min(inPoint.x, outPoint.x);
+	    final int y = Math.min(inPoint.y, outPoint.y);
+	    final int w = Math.abs(inPoint.x - outPoint.x); 
+	    final int h = Math.abs(inPoint.y - outPoint.y);
+	    final int EXTRA = 50;
+	    repaint(x - EXTRA, y - EXTRA, w + EXTRA * 2, h + EXTRA * 2);
+    }
 
 	@Override
 	public void requestFocus() {
