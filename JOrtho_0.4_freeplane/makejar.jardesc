@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <jardesc>
     <jar path="freeplane/lib/jortho.jar"/>
-    <options buildIfNeeded="true" compress="true" descriptionLocation="/JOrtho_0.4/makejar.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/JOrtho_0.4_freeplane/makejar.jardesc" exportErrors="false" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
     <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
     <selectedProjects/>
     <manifest generateManifest="true" manifestLocation="" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
@@ -11,7 +11,9 @@
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
-        <javaElement handleIdentifier="=JOrtho_0.4/src"/>
+        <javaElement handleIdentifier="=JOrtho_0.4_freeplane/src&lt;com.inet.jortho.i18n"/>
+        <javaElement handleIdentifier="=JOrtho_0.4_freeplane/src&lt;com.inet"/>
+        <javaElement handleIdentifier="=JOrtho_0.4_freeplane/src&lt;com.inet.jortho"/>
     </selectedElements>
     <fatjar builder="org.eclipse.jdt.ui.plain_jar_builder" launchConfig=""/>
 </jardesc>

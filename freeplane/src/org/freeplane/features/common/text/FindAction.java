@@ -101,12 +101,6 @@ class FindAction extends AFreeplaneAction {
 	}
 
 	/**
-	 */
-	private void centerNode(final NodeModel node) {
-		getModeController().getMapController().centerNode(node);
-	}
-
-	/**
 	 * Display a node in the display (used by find and the goto action by arrow
 	 * link actions).
 	 */
@@ -158,11 +152,11 @@ class FindAction extends AFreeplaneAction {
 			}
 			if (found) {
 				displayNode(node, findNodesUnfoldedByLastFind);
-				centerNode(node);
+				getModeController().getMapController().select(node);
 				return true;
 			}
 		}
-		centerNode(findFromNode);
+		getModeController().getMapController().select(findFromNode);
 		return false;
 	}
 

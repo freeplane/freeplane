@@ -499,7 +499,7 @@ public class MapController extends SelectionController {
 					try {
 						final ModeController newModeController = getController().getModeController();
 						final MapController newMapController = newModeController.getMapController();
-						newMapController.centerNode(newMapController.getNodeFromID(ref));
+						newMapController.select(newMapController.getNodeFromID(ref));
 					}
 					catch (final Exception e) {
 						LogTool.logException(e);
