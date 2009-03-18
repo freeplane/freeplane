@@ -98,18 +98,26 @@ public class StylePatternFactory {
 		}
 		final NodeStyleModel font = NodeStyleModel.getModel(node);
 		if (font != null) {
-			final PatternProperty nodeFontBold = new PatternProperty();
-			nodeFontBold.setValue(font.isBold() ? StylePatternFactory.TRUE_VALUE : StylePatternFactory.FALSE_VALUE);
-			pattern.setPatternNodeFontBold(nodeFontBold);
-			final PatternProperty nodeFontItalic = new PatternProperty();
-			nodeFontItalic.setValue(font.isItalic() ? StylePatternFactory.TRUE_VALUE : StylePatternFactory.FALSE_VALUE);
-			pattern.setPatternNodeFontItalic(nodeFontItalic);
-			final PatternProperty nodeFontSize = new PatternProperty();
-			nodeFontSize.setValue("" + font.getFontSize());
-			pattern.setPatternNodeFontSize(nodeFontSize);
-			final PatternProperty subPattern = new PatternProperty();
-			subPattern.setValue(font.getFontFamilyName());
-			pattern.setPatternNodeFontName(subPattern);
+			if(font.isBold() != null){
+				final PatternProperty nodeFontBold = new PatternProperty();
+				nodeFontBold.setValue(font.isBold() ? StylePatternFactory.TRUE_VALUE : StylePatternFactory.FALSE_VALUE);
+				pattern.setPatternNodeFontBold(nodeFontBold);
+			}
+			if(font.isItalic() != null){
+				final PatternProperty nodeFontItalic = new PatternProperty();
+				nodeFontItalic.setValue(font.isItalic() ? StylePatternFactory.TRUE_VALUE : StylePatternFactory.FALSE_VALUE);
+				pattern.setPatternNodeFontItalic(nodeFontItalic);
+			}
+			if(font.getFontSize() != null){
+				final PatternProperty nodeFontSize = new PatternProperty();
+				nodeFontSize.setValue("" + font.getFontSize());
+				pattern.setPatternNodeFontSize(nodeFontSize);
+			}
+			if(font.getFontFamilyName() != null){
+				final PatternProperty subPattern = new PatternProperty();
+				subPattern.setValue(font.getFontFamilyName());
+				pattern.setPatternNodeFontName(subPattern);
+			}
 		}
 		if (node.getIcons().size() == 1) {
 			pattern.setPatternIcon(((MindIcon) node.getIcons().get(0)).getName());
@@ -173,13 +181,13 @@ public class StylePatternFactory {
 	 */
 	public static Pattern intersectPattern(final Pattern p1, final Pattern p2) {
 		final Pattern result = new Pattern();
-		result.setPatternEdgeColor(p1.getPatternEdgeColor().equals(p2.getPatternEdgeColor()) ? p1.getPatternEdgeColor()
+		result.setPatternEdgeColor(p1.getPatternEdgeColor() != null && p1.getPatternEdgeColor().equals(p2.getPatternEdgeColor()) ? p1.getPatternEdgeColor()
 		        : null);
-		result.setPatternEdgeStyle(p1.getPatternEdgeStyle().equals(p2.getPatternEdgeStyle()) ? p1.getPatternEdgeStyle()
+		result.setPatternEdgeStyle(p1.getPatternEdgeStyle() != null && p1.getPatternEdgeStyle().equals(p2.getPatternEdgeStyle()) ? p1.getPatternEdgeStyle()
 		        : null);
-		result.setPatternEdgeWidth(p1.getPatternEdgeWidth().equals(p2.getPatternEdgeWidth()) ? p1.getPatternEdgeWidth()
+		result.setPatternEdgeWidth(p1.getPatternEdgeWidth() != null && p1.getPatternEdgeWidth().equals(p2.getPatternEdgeWidth()) ? p1.getPatternEdgeWidth()
 		        : null);
-		result.setPatternIcon(p1.getPatternIcon().equals(p2.getPatternIcon()) ? p1.getPatternIcon() : null);
+		result.setPatternIcon(p1.getPatternIcon() != null && p1.getPatternIcon().equals(p2.getPatternIcon()) ? p1.getPatternIcon() : null);
 		result.setPatternNodeBackgroundColor(StylePatternFactory.processPatternProperties(p1
 		    .getPatternNodeBackgroundColor(), p2.getPatternNodeBackgroundColor(), new PatternProperty()));
 		result.setPatternNodeColor(StylePatternFactory.processPatternProperties(p1.getPatternNodeColor(), p2

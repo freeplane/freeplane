@@ -50,15 +50,14 @@ abstract public class CompareConditionAdapter extends NodeCondition {
 		}
 		catch (final NumberFormatException fne) {
 		};
-		double d2;
 		try {
-			d2 = Double.parseDouble(conditionValue);
+			final double d2 = Double.parseDouble(conditionValue);
+			final double d1 = Double.parseDouble(nodeValue);
+			return Double.compare(d1, d2);
 		}
 		catch (final NumberFormatException fne) {
 			return ignoreCase ? nodeValue.compareToIgnoreCase(conditionValue) : nodeValue.compareTo(conditionValue);
-		};
-		final double d1 = Double.parseDouble(nodeValue);
-		return Double.compare(d1, d2);
+		}
 	}
 
 	public String createDescription(final String attribute, final int comparationResult, final boolean succeed) {
