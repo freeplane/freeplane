@@ -116,10 +116,11 @@ public class MNodeDropListener implements DropTargetListener {
 			}
 			dtde.acceptDrop(dtde.getDropAction());
 			final boolean dropAsSibling = mainView.dropAsSibling(dtde.getLocation().getX());
+			final boolean isLeft = mainView
+                .dropPosition(dtde.getLocation().getX());
 			if (!dtde.isLocalTransfer()) {
 				((MClipboardController) ClipboardController.getController(modeController))
-				    .paste(t, targetNode, dropAsSibling, mainView.dropPosition(dtde
-				        .getLocation().getX()));
+				    .paste(t, targetNode, dropAsSibling, isLeft);
 				dtde.dropComplete(true);
 				return;
 			}
@@ -165,14 +166,13 @@ public class MNodeDropListener implements DropTargetListener {
 					final List<NodeModel> sortedSelection = controller
 					    .getSelection().getSortedSelection();
 					for(NodeModel node:sortedSelection){
-						mapController.moveNode(node, targetNode, dropAsSibling);
+						mapController.moveNode(node, targetNode, dropAsSibling, isLeft, isLeft!=node.isLeft());
 					}
 				}
 				else {
 					trans = ClipboardController.getController(modeController).copy(controller.getSelection());
 					((MClipboardController) ClipboardController.getController(modeController))
-				    .paste(trans, targetNode, dropAsSibling, mainView
-				        .dropPosition(dtde.getLocation().getX()));
+				    .paste(trans, targetNode, dropAsSibling, isLeft);
 				}
 				controller.getSelection().selectAsTheOnlyOneSelected(targetNode);
 			}

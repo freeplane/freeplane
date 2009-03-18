@@ -89,19 +89,26 @@ public class ChangeNodeLevelController {
 			final ModeController modeController = getModeController();
 			final MMapController mapController = (MMapController) modeController.getMapController();
 			final NodeModel selectedNode = mapController.getSelectedNode();
-			final NodeModel selectedParent = selectedNode.getParentNode();
+			NodeModel selectedParent = selectedNode.getParentNode();
 			final List<NodeModel> selectedNodes = mapController.getSelectedNodes();
 			mapController.sortNodesByDepth(selectedNodes);
 			if (!checkSelection(modeController)) {
 				return;
 			}
+			final int position;
+			final boolean changeSide;
 			if (selectedParent.isRoot()) {
-				return;
+				position = selectedParent.getChildCount() - 1;
+				changeSide = true;
 			}
-			final NodeModel grandParent = selectedParent.getParentNode();
-			final int parentPosition = grandParent.getChildPosition(selectedParent);
+			else{
+				final NodeModel grandParent = selectedParent.getParentNode();
+				position = grandParent.getChildPosition(selectedParent) + 1;
+				selectedParent = grandParent;
+				changeSide = false;
+			}
 			for (final NodeModel node : selectedNodes) {
-				mapController.moveNode(node, grandParent, parentPosition + 1);
+				mapController.moveNode(node, selectedParent, position, ! node.isLeft(), changeSide);
 			}
 			mapController.selectMultipleNodes(selectedNode, selectedNodes);
 		}

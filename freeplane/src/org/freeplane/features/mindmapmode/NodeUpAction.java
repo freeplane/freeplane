@@ -148,7 +148,7 @@ class NodeUpAction extends AFreeplaneAction {
 		}
 		final NodeModel destinationNode = (NodeModel) sortedNodesIndices.get(newPositionInVector);
 		newIndex = parent.getIndex(destinationNode);
-		((MMapController) getModeController().getMapController()).moveNodeToWithoutUndo(child, parent, newIndex);
+		((MMapController) getModeController().getMapController()).moveNodeToWithoutUndo(child, parent, newIndex, false, false);
 		return newIndex;
 	}
 }

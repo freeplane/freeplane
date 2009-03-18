@@ -107,10 +107,9 @@ class PasteAction extends AFreeplaneAction {
 			for (final File file : fileList) {
 				final MMapController mapController = (MMapController) getModeController().getMapController();
 				final NodeModel node = mapController.newNode(file.getName(), target.getMap());
-				node.setLeft(isLeft);
 				((MLinkController) LinkController.getController(getModeController())).setLink(node, file
 				    .getAbsolutePath());
-				mapController.insertNode(node, target, asSibling, isLeft, false);
+				mapController.insertNode(node, target, asSibling, isLeft, isLeft);
 			}
 		}
 	}
@@ -143,8 +142,8 @@ class PasteAction extends AFreeplaneAction {
 			mapReader.setHint(Hint.MODE, Mode.CLIPBOARD);
 			for (int i = 0; i < textLines.length; ++i) {
 				final NodeModel newModel = nodeTreeCreator.create(new StringReader(textLines[i]));
-				newModel.setLeft(isLeft);
-				mapController.insertNode(newModel, target, asSibling, isLeft, isLeft);
+				boolean wasLeft = newModel.isLeft();
+				mapController.insertNode(newModel, target, asSibling, isLeft, wasLeft != isLeft);
 			}
 			nodeTreeCreator.finish(target);
 		}
