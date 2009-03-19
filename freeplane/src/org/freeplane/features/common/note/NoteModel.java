@@ -29,12 +29,17 @@ import org.freeplane.core.util.XmlTool;
  */
 public class NoteModel implements IExtension {
 	public static String getNoteText(final NodeModel node) {
-		final NoteModel extension = (NoteModel) node.getExtension(NoteModel.class);
+		final NoteModel extension = getNote(node);
 		return extension != null ? extension.getNoteText() : null;
 	}
 
+	public static NoteModel getNote(final NodeModel node) {
+	    final NoteModel extension = (NoteModel) node.getExtension(NoteModel.class);
+	    return extension;
+    }
+
 	public static String getXmlNoteText(final NodeModel node) {
-		final NoteModel extension = (NoteModel) node.getExtension(NoteModel.class);
+		final NoteModel extension = getNote(node);
 		return extension != null ? extension.getXmlNoteText() : null;
 	}
 
@@ -68,4 +73,13 @@ public class NoteModel implements IExtension {
 		xmlNoteText = XmlTool.makeValidXml(pXmlNoteText);
 		noteText = HtmlTools.getInstance().toHtml(xmlNoteText);
 	}
+
+	public static NoteModel createNote(NodeModel node) {
+		NoteModel note = getNote(node);
+		if(note == null){
+			note = new NoteModel();
+			node.addExtension(note);
+		}
+		return note;
+    }
 }

@@ -53,6 +53,7 @@ import java.util.Vector;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.JRootPane;
 import javax.swing.JViewport;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
@@ -311,28 +312,45 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		scrollRectToVisible(r);
 	}
 
-	/**
-	 * Problem: Before scrollRectToVisible is called, the node has the location
-	 * (0,0), ie. the location first gets calculated after the scrollpane is
-	 * actually scrolled. Thus, as a workaround, I simply call
-	 * scrollRectToVisible twice, the first time the location of the node is
-	 * calculated, the second time the scrollPane is actually scrolled.
-	 */
-	public void centerNode(final NodeView node) {
-		final JViewport viewPort = (JViewport) getParent();
-		if (! (isShowing() && isValid())) {
-			EventQueue.invokeLater(new Runnable(){
-				public void run() {
-					centerNode(node);
-				}});
-			return;
+		/**
+    	 * Problem: Before scrollRectToVisible is called, the node has the location
+    	 * (0,0), ie. the location first gets calculated after the scrollpane is
+    	 * actually scrolled. Thus, as a workaround, I simply call
+    	 * scrollRectToVisible twice, the first time the location of the node is
+    	 * calculated, the second time the scrollPane is actually scrolled.
+    	 */
+    	public void centerNode(final NodeView node) {
+    		nodeToBeVisible = null;
+    		anchorContentLocation = new Point();
+    		final JViewport viewPort = (JViewport) getParent();
+    		if (! isReady()) {
+    			EventQueue.invokeLater(new Runnable(){
+    				public void run() {
+    					centerNode(node);
+    				}});
+    			return;
+    		}
+    		final Dimension d = viewPort.getExtentSize();
+    		final JComponent content = node.getContent();
+    		final Rectangle rect = new Rectangle(content.getWidth() / 2 - d.width / 2, content.getHeight() / 2 - d.height
+    		        / 2, d.width, d.height);
+    		content.scrollRectToVisible(rect);
+    	}
+
+	private boolean isReady() {
+		Component c = this;
+		do{
+			c = c.getParent();
+			if(! c.isValid()){
+				return false;
+			}
+			if(c instanceof JComponent && ((JComponent)c).isValidateRoot()){
+				return true;
+			}
 		}
-		final Dimension d = viewPort.getExtentSize();
-		final JComponent content = node.getContent();
-		final Rectangle rect = new Rectangle(content.getWidth() / 2 - d.width / 2, content.getHeight() / 2 - d.height
-		        / 2, d.width, d.height);
-		content.scrollRectToVisible(rect);
-	}
+		while(c != null);
+	    return false;
+    }
 
 	/**
 	 * @return
@@ -1210,6 +1228,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	private void setViewPositionAfterValidate() {
+		if(anchorContentLocation.getX() == 0 && anchorContentLocation.getY() == 0){
+			return;
+		}
 		final JViewport vp = (JViewport) getParent();
 		final Point viewPosition = vp.getViewPosition();
 		final Point oldAnchorContentLocation = anchorContentLocation;

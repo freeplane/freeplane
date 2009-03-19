@@ -134,8 +134,12 @@ abstract public class ViewController implements IMapViewChangeListener {
 		if (pNewMap != null) {
 			setViewportView(pNewMap);
 			final IMapSelection mapSelection = mapViewManager.getMapSelection();
-			if (mapSelection.getSelected() == null) {
+			final NodeModel selected = mapSelection.getSelected();
+			if (selected == null) {
 				mapSelection.selectRoot();
+			}
+			else{
+				mapSelection.centerNode(selected);
 			}
 			setZoomComboBox(mapViewManager.getZoom());
 			obtainFocusForSelected();

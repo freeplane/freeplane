@@ -184,7 +184,6 @@ class ApplicationViewController extends ViewController {
 			controller.getViewController().setLeftToolbarVisible(false);
 		}
 		frame.setFocusTraversalKeysEnabled(false);
-		frame.pack();
 		int win_width = ResourceController.getResourceController().getIntProperty("appwindow_width", 0);
 		int win_height = ResourceController.getResourceController().getIntProperty("appwindow_height", 0);
 		int win_x = ResourceController.getResourceController().getIntProperty("appwindow_x", 0);
@@ -207,6 +206,7 @@ class ApplicationViewController extends ViewController {
 		    .parseInt(ResourceController.getResourceController().getProperty("appwindow_state", "0"));
 		win_state = ((win_state & Frame.ICONIFIED) != 0) ? Frame.NORMAL : win_state;
 		frame.setExtendedState(win_state);
+		frame.getRootPane().revalidate();
 	}
 
 	@Override

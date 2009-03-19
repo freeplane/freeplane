@@ -224,7 +224,7 @@ public class MNoteController extends NoteController {
 			private void setText(final String text) {
 				final boolean enabled = !(text == null || text.equals(""));
 				if (enabled) {
-					final NoteModel note = new NoteModel();
+					final NoteModel note = NoteModel.createNote(node);
 					note.setNoteText(text);
 					node.addExtension(note);
 				}
