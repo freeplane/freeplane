@@ -24,10 +24,10 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
-import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.IFreeplaneAction;
 
 class OptionAntialiasAction extends AbstractAction implements IFreeplanePropertyListener, IFreeplaneAction {
 	static final String NAME = "optionAntialiasAction";

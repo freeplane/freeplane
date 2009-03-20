@@ -29,13 +29,13 @@ import java.io.StringWriter;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.Compat;
-import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.IFreeplaneAction;
 import org.freeplane.core.util.LogTool;
 
 import org.freeplane.core.io.MapWriter.Mode;

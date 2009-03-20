@@ -5,7 +5,7 @@ import java.util.Map;
 
 import javax.swing.Action;
 
-import org.freeplane.core.actions.IFreeplaneAction;
+import org.freeplane.core.ui.IFreeplaneAction;
 
 /**
  * Place for common controller things.

@@ -23,7 +23,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
-import org.freeplane.core.actions.IFreeplaneAction;
+import org.freeplane.core.ui.IFreeplaneAction;
 
 class OptionHTMLExportFoldingAction extends AbstractAction implements IFreeplaneAction {
 	static final String NAME = "optionHTMLExportFoldingAction";

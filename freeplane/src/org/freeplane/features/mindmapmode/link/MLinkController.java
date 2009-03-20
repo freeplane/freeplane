@@ -23,6 +23,8 @@ import java.awt.Color;
 import java.awt.Point;
 import java.util.Collections;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
@@ -39,7 +41,6 @@ import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.LinkModel;
 import org.freeplane.features.common.link.MapLinks;
 import org.freeplane.features.mindmapmode.MModeController;
-
 /**
  * @author Dimitry Polivaev
  */
@@ -132,6 +133,7 @@ public class MLinkController extends LinkController {
 		setLinkByTextField = new SetLinkByTextFieldAction(controller);
 		modeController.addAction("setLinkByTextField", setLinkByTextField);
 		modeController.addAction("addLocalLinkAction", new AddLocalLinkAction(controller));
+		modeController.addAction("extract_link_from_text", new ExtractLinkFromTextAction(controller));
 	}
 
 	@Override
@@ -199,5 +201,33 @@ public class MLinkController extends LinkController {
 
 	public void setLinkByFileChooser() {
 		setLinkByFileChooser.setLinkByFileChooser();
+	}
+	static private Pattern mailPattern;
+	private void createMailPattern() {
+		if (mailPattern == null) {
+			mailPattern = Pattern.compile("([^@ <>\\*']+@[^@ <>\\*']+)");
+		}
+	}
+	static final Pattern nonLinkCharacter = Pattern.compile("[ \n()'\",;]");
+	public String findLink(final String text) {
+		createMailPattern();
+		final Matcher mailMatcher = mailPattern.matcher(text);
+		String link = null;
+		final String[] linkPrefixes = { "http://", "ftp://", "https://" };
+		for (int j = 0; j < linkPrefixes.length; j++) {
+			final int linkStart = text.indexOf(linkPrefixes[j]);
+			if (linkStart != -1) {
+				int linkEnd = linkStart;
+				while (linkEnd < text.length()
+				        && !nonLinkCharacter.matcher(text.substring(linkEnd, linkEnd + 1)).matches()) {
+					linkEnd++;
+				}
+				link = text.substring(linkStart, linkEnd);
+			}
+		}
+		if (link == null && mailMatcher.find()) {
+			link = "mailto:" + mailMatcher.group();
+		}
+		return link;
 	}
 }

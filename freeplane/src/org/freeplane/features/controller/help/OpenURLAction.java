@@ -26,10 +26,10 @@ import java.net.URL;
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 
-import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.IFreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
 
 class OpenURLAction extends AbstractAction implements IFreeplaneAction {

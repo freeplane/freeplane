@@ -133,7 +133,11 @@ public class FreeplaneResourceBundle extends ResourceBundle {
 	}
 
 	String getResourceString(final String key) {
-		return getResourceString(key, key);
+		final String resourceString = getResourceString(key, key);
+		if(resourceString == key){
+			return '[' + key + ']';
+		}
+		return resourceString;
 	}
 
 	String getResourceString(final String key, final String resource) {

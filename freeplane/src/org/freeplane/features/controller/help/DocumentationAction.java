@@ -25,11 +25,11 @@ import java.net.URL;
 import javax.swing.AbstractAction;
 import javax.swing.SwingUtilities;
 
-import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.IFreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.browsemode.BModeController;

@@ -28,7 +28,6 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
-import org.freeplane.core.actions.QuitAction;
 import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;

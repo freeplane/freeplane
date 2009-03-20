@@ -78,7 +78,8 @@ class PasteAction extends AFreeplaneAction {
 			textFromClipboard = cleanHtml(textFromClipboard);
 			final NodeModel node = getModeController().getMapController().newNode(textFromClipboard,
 			    getController().getMap());
-			final Matcher m = PasteAction.HREF_PATTERN.matcher(textFromClipboard);
+			final String text = textFromClipboard;
+			final Matcher m = PasteAction.HREF_PATTERN.matcher(text);
 			if (m.matches()) {
 				final String body = m.group(2);
 				if (!body.matches(".*<\\s*a.*")) {
@@ -223,7 +224,8 @@ class PasteAction extends AFreeplaneAction {
 //						    .firstLetterCapitalized(textParts[textPartIdx].replaceAll("^~*", ""));
 //					}
 //				}
-				final String link = findLink(text);
+				final MLinkController linkController = (MLinkController) LinkController.getController(getModeController());
+				final String link = linkController.findLink(text);
 				if (!visibleText.equals("")) {
 					textFragments.add(new TextFragment(visibleText, link, depth));
 				}
@@ -248,7 +250,8 @@ class PasteAction extends AFreeplaneAction {
 				new PasteHtmlWriter(out, element, doc, start, end - start).write();
 				final String string = out.toString();
 				if (!string.equals("")) {
-					final String link = findLink(string);
+					final MLinkController linkController = (MLinkController) LinkController.getController(getModeController());
+					final String link = linkController.findLink(string);
 					final TextFragment htmlFragment = new TextFragment(string, link, depth);
 					htmlFragments.add(htmlFragment);
 				}
@@ -382,8 +385,6 @@ class PasteAction extends AFreeplaneAction {
 	private static final Pattern HEADER_REGEX = Pattern.compile("h(\\d)", Pattern.CASE_INSENSITIVE);
 	private static final Pattern HREF_PATTERN = Pattern
 	    .compile("<html>\\s*<body>\\s*<a\\s+href=\"([^>]+)\">(.*)</a>\\s*</body>\\s*</html>");
-	static private Pattern mailPattern;
-	static final Pattern nonLinkCharacter = Pattern.compile("[ \n()'\",;]");
 	private static final String RESOURCE_UNFOLD_ON_PASTE = "unfold_on_paste";
 
 	public static String firstLetterCapitalized(final String text) {
@@ -417,33 +418,7 @@ class PasteAction extends AFreeplaneAction {
 		return in;
 	}
 
-	private void createMailPattern() {
-		if (mailPattern == null) {
-			mailPattern = Pattern.compile("([^@ <>\\*']+@[^@ <>\\*']+)");
-		}
-	}
 
-	private String findLink(final String text) {
-		createMailPattern();
-		final Matcher mailMatcher = mailPattern.matcher(text);
-		String link = null;
-		final String[] linkPrefixes = { "http://", "ftp://", "https://" };
-		for (int j = 0; j < linkPrefixes.length; j++) {
-			final int linkStart = text.indexOf(linkPrefixes[j]);
-			if (linkStart != -1) {
-				int linkEnd = linkStart;
-				while (linkEnd < text.length()
-				        && !PasteAction.nonLinkCharacter.matcher(text.substring(linkEnd, linkEnd + 1)).matches()) {
-					linkEnd++;
-				}
-				link = text.substring(linkStart, linkEnd);
-			}
-		}
-		if (link == null && mailMatcher.find()) {
-			link = "mailto:" + mailMatcher.group();
-		}
-		return link;
-	}
 
 	/**
 	 * @param t 

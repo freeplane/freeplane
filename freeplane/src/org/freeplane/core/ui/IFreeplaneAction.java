@@ -1,4 +1,4 @@
-package org.freeplane.core.actions;
+package org.freeplane.core.ui;
 
 import javax.swing.Action;
 

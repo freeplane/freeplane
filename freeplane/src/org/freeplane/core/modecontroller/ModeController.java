@@ -28,7 +28,6 @@ import java.util.ListIterator;
 
 import javax.swing.Action;
 
-import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.controller.AController;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.ExtensionContainer;
@@ -36,6 +35,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.core.ui.IFreeplaneAction;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.MenuBuilder;

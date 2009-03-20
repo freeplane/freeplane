@@ -25,8 +25,8 @@ import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JToggleButton;
 
-import org.freeplane.core.actions.IFreeplaneAction;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.IFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 
 @SelectableAction

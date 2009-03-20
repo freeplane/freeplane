@@ -22,7 +22,7 @@ package org.freeplane.features.controller.print;
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 
-import org.freeplane.core.actions.IFreeplaneAction;
+import org.freeplane.core.ui.IFreeplaneAction;
 
 abstract class AbstractPrintAction extends AbstractAction implements IFreeplaneAction {
 	private static final long serialVersionUID = 892194048692112127L;

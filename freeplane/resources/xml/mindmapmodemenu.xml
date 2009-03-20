@@ -237,6 +237,9 @@
 					<menu_action field="joinNodes" key_ref="keystroke_join_nodes" />
 				</menu_category>
 				<menu_category name="nodes">
+
+					<menu_action name="extract_link_from_text" field="extract_link_from_text"
+					tooltip="extract_link_from_text.tooptip"/>
 					<menu_category name="sorting" />
 					<menu_category name="crypto" />
 					<menu_category name="change">
