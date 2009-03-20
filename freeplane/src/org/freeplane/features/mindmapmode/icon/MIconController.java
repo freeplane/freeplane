@@ -69,7 +69,6 @@ public class MIconController extends IconController {
 		iconToolBar = new FreeplaneToolBar();
 		iconToolBarScrollPane = new JAutoScrollBarPane(iconToolBar);
 		iconToolBar.setOrientation(SwingConstants.VERTICAL);
-		iconToolBar.setRollover(true);
 		createIconActions();
 		createPreferences();
 	}

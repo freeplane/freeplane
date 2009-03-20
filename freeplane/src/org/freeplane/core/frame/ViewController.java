@@ -23,10 +23,17 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.awt.event.ContainerEvent;
+import java.awt.event.ContainerListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
@@ -116,7 +123,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 		toolbarVisible = true;
 		leftToolbarVisible = true;
 		menubarVisible = true;
-		toolbarPanel = new JPanel(new BorderLayout());
+		toolbarPanel = new JPanel(new FlowLayout(FlowLayout.LEFT,0,0));
 		leftToolbarPanel = new JPanel(new BorderLayout());
 		scrollPane = new MapViewScrollPane();
 	}
@@ -300,11 +307,79 @@ abstract public class ViewController implements IMapViewChangeListener {
 		final JToolBar filterToolbar = FilterController.getController(controller).getFilterToolbar();
 		getContentPane().add(toolbarPanel, BorderLayout.NORTH);
 		getContentPane().add(leftToolbarPanel, BorderLayout.WEST);
-		toolbarPanel.add(filterToolbar, BorderLayout.SOUTH);
+		toolbarPanel.add(filterToolbar);
+		filterToolbar.addComponentListener(new ComponentListener(){
+
+			public void componentHidden(ComponentEvent e) {
+				resizeToolbarPane();
+			}
+
+			public void componentMoved(ComponentEvent e) {
+				resizeToolbarPane();
+			}
+
+			public void componentResized(ComponentEvent e) {
+			}
+
+			public void componentShown(ComponentEvent e) {
+				resizeToolbarPane();
+			}
+		});
+			    
+		toolbarPanel.addComponentListener(new ComponentListener(){
+
+			public void componentHidden(ComponentEvent e) {
+	        }
+
+			public void componentMoved(ComponentEvent e) {
+	        }
+
+			public void componentResized(ComponentEvent e) {
+				resizeToolbarPane();
+	        }
+
+			public void componentShown(ComponentEvent e) {
+	        }
+			});
+	    
+		toolbarPanel.addContainerListener(new ContainerListener(){
+
+			public void componentAdded(ContainerEvent e) {
+		        resizeToolbarPane();
+	        }
+
+			public void componentRemoved(ContainerEvent e) {
+		        resizeToolbarPane();
+	        }});
+
 		status.setPreferredSize(status.getPreferredSize());
 		status.setText("");
 	}
 
+	private void resizeToolbarPane() {
+		if(!toolbarPanel.isValid()){
+			EventQueue.invokeLater(new Runnable(){
+				public void run() {
+					resizeToolbarPane();
+	                
+                }});
+			return ;
+		}
+		int lastComponent = toolbarPanel.getComponentCount()-1;
+		while(lastComponent >= 0 && !toolbarPanel.getComponent(lastComponent).isVisible()){
+			lastComponent--;
+		}
+		if(lastComponent >= 0){
+			final Component component = toolbarPanel.getComponent(lastComponent);
+			final Dimension oldPreferredSize = toolbarPanel.getPreferredSize();
+			final Dimension preferredSize = new Dimension(toolbarPanel.getWidth(), component.getY() + component.getHeight());
+			if(oldPreferredSize.height != preferredSize.height){
+				toolbarPanel.setPreferredSize(preferredSize);
+				toolbarPanel.getParent().invalidate();
+				((JComponent)getContentPane()).revalidate();
+			}
+		}
+	}
 	abstract public JSplitPane insertComponentIntoSplitPane(JComponent noteViewerComponent);
 
 	abstract public boolean isApplet();
@@ -390,7 +465,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 		}
 		final JToolBar newToolBar = newModeController.getUserInputListenerFactory().getMainToolBar();
 		if (newToolBar != null) {
-			toolbarPanel.add(newToolBar, BorderLayout.NORTH);
+			toolbarPanel.add(newToolBar, 0);
 			newToolBar.repaint();
 		}
 		/* new left toolbar. */
