@@ -110,7 +110,7 @@ public class ChangeNodeLevelController {
 
 	private void moveDownwards(ModeController modeController, NodeModel selectedNode) {
 	    final NodeModel selectedParent = selectedNode.getParentNode();
-	    final List<NodeModel> selectedNodes = modeController.getMapController().getSelectedNodes();
+	    final List<NodeModel> selectedNodes = modeController.getController().getSelection().getSortedSelection();
 	    final MMapController mapController = (MMapController) modeController.getMapController();
 	    mapController.sortNodesByDepth(selectedNodes);
 	    final int ownPosition = selectedParent.getChildPosition(selectedNode);
@@ -142,7 +142,7 @@ public class ChangeNodeLevelController {
 	private void moveUpwards(ModeController modeController, NodeModel selectedNode) {
 	    final MMapController mapController = (MMapController) modeController.getMapController();
 	    NodeModel selectedParent = selectedNode.getParentNode();
-	    final List<NodeModel> selectedNodes = mapController.getSelectedNodes();
+	    final List<NodeModel> selectedNodes =  modeController.getController().getSelection().getSortedSelection();
 	    mapController.sortNodesByDepth(selectedNodes);
 	    if (!checkSelection(modeController)) {
 	    	return;
