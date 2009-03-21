@@ -54,9 +54,10 @@
 			<menu_separator />
 		</menu_submenu>
 		<menu_submenu name="mindmaps" name_ref="mindmaps">
+			<menu_category name="modes"></menu_category>
 			<menu_category name="navigate"></menu_category>
-			<menu_category name="mindmaps"></menu_category>
 			<menu_separator />
+			<menu_category name="mindmaps"></menu_category>
 		</menu_submenu>
 		<menu_submenu name="help" name_ref="help">
 			<menu_category name="doc">

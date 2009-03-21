@@ -27,6 +27,7 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.url.UrlManager;
+import org.freeplane.features.common.addins.mapstyle.MapStyle;
 import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.icon.IconController;
@@ -76,6 +77,7 @@ public class FModeControllerFactory {
 		modeController.updateMenus();
 		ResourceController.getResourceController().updateMenus(modeController);
 		NodeHistory.install(modeController);
+		new MapStyle(modeController);
 		return modeController;
 	}
 }

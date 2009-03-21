@@ -474,7 +474,6 @@ abstract public class ViewController implements IMapViewChangeListener {
 			leftToolbarPanel.add(newLeftToolBar, BorderLayout.WEST);
 		}
 		setFreeplaneMenuBar(newModeController.getUserInputListenerFactory().getMenuBar());
-		newModeController.getUserInputListenerFactory().updateMapList();
 	}
 
 	public void setAntialiasAll(final boolean antialiasAll) {

@@ -292,7 +292,12 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 
 	public void updateMapList() {
 		updateModeMenu();
-		menuBuilder.removeChildElements(FreeplaneMenuBar.MAP_POPUP_MENU + "/maps");
+		updateMapList(FreeplaneMenuBar.MAP_POPUP_MENU + "/maps");
+		updateMapList(FreeplaneMenuBar.MINDMAP_MENU + "/mindmaps");
+	}
+
+	private void updateMapList(final String mapsMenuPosition) {
+	    menuBuilder.removeChildElements(mapsMenuPosition);
 		final IMapViewManager mapViewManager = controller.getMapViewManager();
 		final List mapViewVector = mapViewManager.getMapViewVector();
 		if (mapViewVector == null) {
@@ -313,9 +318,9 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 					newItem.setSelected(true);
 				}
 			}
-			menuBuilder.addMenuItem(FreeplaneMenuBar.MAP_POPUP_MENU + "/maps", newItem, UIBuilder.AS_CHILD);
+			menuBuilder.addMenuItem(mapsMenuPosition, newItem, UIBuilder.AS_CHILD);
 		}
-	}
+    }
 
 	public void updateMenus(final ModeController modeController) {
 		final FreeplaneMenuBar menuBar = getMenuBar();
@@ -330,7 +335,6 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		}
 		final ViewController viewController = controller.getViewController();
 		viewController.updateMenus(menuBuilder);
-		updateMapList();
 	}
 
 	private void updateModeMenu() {

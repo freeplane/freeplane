@@ -166,4 +166,8 @@ public class IndexedTree {
 		}
 		return node;
 	}
+	
+	public String dump(){
+		return string2Element.toString();
+	}
 }
