@@ -20,10 +20,14 @@
 package org.freeplane.features.filemode;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.util.List;
 
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.features.common.link.LinkController;
+import org.freeplane.features.common.link.LinkModel;
+import org.freeplane.features.common.link.NodeLinks;
 
 /**
  * This class represents a single Node of a Tree. It contains direct handles to
@@ -40,9 +44,8 @@ class FNodeModel extends NodeModel {
 
 	@Override
 	public List getChildren() {
-		final List<NodeModel> children = super.getChildren();
 		if (!children.isEmpty()) {
-			return children;
+			return super.getChildren();
 		}
 		try {
 			final String[] files = file.list();
@@ -52,15 +55,23 @@ class FNodeModel extends NodeModel {
 					final File childFile = new File(path, files[i]);
 					if (!childFile.isHidden()) {
 						final FNodeModel fileNodeModel = new FNodeModel(childFile, getMap());
+						try {
+	                        final String url = childFile.toURL().toString();
+	                        NodeLinks.createLinkExtension(fileNodeModel).setHyperLink(url);
+                        }
+                        catch (MalformedURLException e) {
+	                        e.printStackTrace();
+                        }
 						fileNodeModel.setLeft(isNewChildLeft());
-						insert(fileNodeModel, getChildCount());
+						children.add(getChildCount(), fileNodeModel);
+						fileNodeModel.setParent(this);
 					}
 				}
 			}
 		}
 		catch (final SecurityException se) {
 		}
-		return children;
+		return super.getChildren();
 	}
 
 	public File getFile() {
