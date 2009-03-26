@@ -370,14 +370,14 @@ class FilterComposerDialog extends JDialog {
 
 		@Override
 		public String getDescription() {
-			return FreeplaneResourceBundle.getText("mindmaps_filter_desc");
+			return FreeplaneResourceBundle.getByKey("mindmaps_filter_desc");
 		}
 	}
 
 	private class SaveAction implements ActionListener {
 		public void actionPerformed(final ActionEvent e) {
 			final JFileChooser chooser = getFileChooser();
-			chooser.setDialogTitle(FreeplaneResourceBundle.getText("save_as"));
+			chooser.setDialogTitle(FreeplaneResourceBundle.getByKey("save_as"));
 			final int returnVal = chooser.showSaveDialog(FilterComposerDialog.this);
 			if (returnVal != JFileChooser.APPROVE_OPTION) {
 				return;
@@ -434,7 +434,7 @@ class FilterComposerDialog extends JDialog {
 	final private JComboBox values;
 
 	public FilterComposerDialog(final FilterToolbar ft, final Controller controller) {
-		super(controller.getViewController().getFrame(), FreeplaneResourceBundle.getText("filter_dialog"));
+		super(controller.getViewController().getFrame(), FreeplaneResourceBundle.getByKey("filter_dialog"));
 		filterController = FilterController.getController(controller);
 		this.controller = controller;
 		final Box simpleConditionBox = Box.createHorizontalBox();
@@ -460,7 +460,7 @@ class FilterComposerDialog extends JDialog {
 		caseInsensitive = new JCheckBox();
 		simpleConditionBox.add(Box.createHorizontalGlue());
 		simpleConditionBox.add(caseInsensitive);
-		caseInsensitive.setText(FreeplaneResourceBundle.getText("filter_ignore_case"));
+		caseInsensitive.setText(FreeplaneResourceBundle.getByKey("filter_ignore_case"));
 		final Box conditionButtonBox = Box.createVerticalBox();
 		conditionButtonBox.setBorder(new EmptyBorder(0, 10, 0, 10));
 		getContentPane().add(conditionButtonBox, BorderLayout.EAST);
@@ -494,15 +494,15 @@ class FilterComposerDialog extends JDialog {
 		getContentPane().add(controllerBox, BorderLayout.SOUTH);
 		final CloseAction closeAction = new CloseAction();
 		btnOK = new JButton();
-		MenuBuilder.setLabelAndMnemonic(btnOK, FreeplaneResourceBundle.getText("ok"));
+		MenuBuilder.setLabelAndMnemonic(btnOK, FreeplaneResourceBundle.getByKey("ok"));
 		btnOK.addActionListener(closeAction);
 		btnOK.setMaximumSize(FilterComposerDialog.maxButtonDimension);
 		btnApply = new JButton();
-		MenuBuilder.setLabelAndMnemonic(btnApply, FreeplaneResourceBundle.getText("apply"));
+		MenuBuilder.setLabelAndMnemonic(btnApply, FreeplaneResourceBundle.getByKey("apply"));
 		btnApply.addActionListener(closeAction);
 		btnApply.setMaximumSize(FilterComposerDialog.maxButtonDimension);
 		btnCancel = new JButton();
-		MenuBuilder.setLabelAndMnemonic(btnCancel, FreeplaneResourceBundle.getText("cancel"));
+		MenuBuilder.setLabelAndMnemonic(btnCancel, FreeplaneResourceBundle.getByKey("cancel"));
 		btnCancel.addActionListener(closeAction);
 		btnCancel.setMaximumSize(FilterComposerDialog.maxButtonDimension);
 		controllerBox.add(Box.createHorizontalGlue());
@@ -515,12 +515,12 @@ class FilterComposerDialog extends JDialog {
 		if (!controller.getViewController().isApplet()) {
 			final ActionListener saveAction = new SaveAction();
 			btnSave = new JButton();
-			MenuBuilder.setLabelAndMnemonic(btnSave, FreeplaneResourceBundle.getText("save"));
+			MenuBuilder.setLabelAndMnemonic(btnSave, FreeplaneResourceBundle.getByKey("save"));
 			btnSave.addActionListener(saveAction);
 			btnSave.setMaximumSize(FilterComposerDialog.maxButtonDimension);
 			final ActionListener loadAction = new LoadAction();
 			btnLoad = new JButton();
-			MenuBuilder.setLabelAndMnemonic(btnLoad, FreeplaneResourceBundle.getText("load"));
+			MenuBuilder.setLabelAndMnemonic(btnLoad, FreeplaneResourceBundle.getByKey("load"));
 			btnLoad.addActionListener(loadAction);
 			btnLoad.setMaximumSize(FilterComposerDialog.maxButtonDimension);
 			controllerBox.add(btnSave);
@@ -537,7 +537,7 @@ class FilterComposerDialog extends JDialog {
 		elementaryConditionList.addListSelectionListener(conditionListListener);
 		elementaryConditionList.addMouseListener(new ConditionListMouseListener());
 		final JScrollPane conditionScrollPane = new JScrollPane(elementaryConditionList);
-		final JLabel conditionColumnHeader = new JLabel(FreeplaneResourceBundle.getText("filter_conditions"));
+		final JLabel conditionColumnHeader = new JLabel(FreeplaneResourceBundle.getByKey("filter_conditions"));
 		conditionColumnHeader.setHorizontalAlignment(SwingConstants.CENTER);
 		conditionScrollPane.setColumnHeaderView(conditionColumnHeader);
 		conditionScrollPane.setPreferredSize(new Dimension(500, 200));

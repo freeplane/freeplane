@@ -21,7 +21,7 @@ package org.freeplane.features.mindmapmode.nodelocation;
 
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.undo.IUndoableActor;
+import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.nodelocation.LocationController;
 import org.freeplane.features.common.nodelocation.LocationModel;
 import org.freeplane.features.mindmapmode.MModeController;
@@ -30,7 +30,7 @@ import org.freeplane.features.mindmapmode.MModeController;
  * @author Dimitry Polivaev
  */
 public class MLocationController extends LocationController {
-	private final class ChangeNodePositionActor implements IUndoableActor {
+	private final class ChangeNodePositionActor implements IActor {
 		private final int gap;
 		private final NodeModel node;
 		private final int oldHgap;
@@ -83,7 +83,7 @@ public class MLocationController extends LocationController {
 	}
 
 	public void moveNodePosition(final NodeModel node, final int parentVGap, final int hGap, final int shiftY) {
-		final IUndoableActor actor = new ChangeNodePositionActor(node, hGap, shiftY, parentVGap);
+		final IActor actor = new ChangeNodePositionActor(node, hGap, shiftY, parentVGap);
 		getModeController().execute(actor);
 	}
 }

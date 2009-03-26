@@ -31,7 +31,7 @@ import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.util.HtmlTools;
-import org.freeplane.n3.nanoxml.IXMLElement;
+import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public class NodeTextBuilder implements IElementContentHandler, IElementWriter, IAttributeWriter {
@@ -42,7 +42,7 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 	public static final String XML_NODE_XHTML_TYPE_TAG = "TYPE";
 	private boolean isTextNode;
 
-	public Object createElement(final Object parent, final String tag, final IXMLElement attributes) {
+	public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
 		if (attributes == null) {
 			return null;
 		}
@@ -53,7 +53,7 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 		return parent;
 	}
 
-	public void endElement(final Object parent, final String tag, final Object node, final IXMLElement attributes,
+	public void endElement(final Object parent, final String tag, final Object node, final XMLElement attributes,
 	                       final String content) {
 		assert tag.equals("richcontent");
 		final String xmlText = content;

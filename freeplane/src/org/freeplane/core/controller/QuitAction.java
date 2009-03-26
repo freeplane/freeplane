@@ -42,7 +42,7 @@ public class QuitAction extends AbstractAction implements IFreeplaneAction {
 	 */
 	public QuitAction(final Controller controller) {
 		this.controller = controller;
-		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText("quit"));
+		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getByKey("quit"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {

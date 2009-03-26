@@ -46,7 +46,7 @@ import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.undo.IUndoableActor;
+import org.freeplane.core.undo.IActor;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.mindmapmode.file.MFileManager;
@@ -98,8 +98,8 @@ public class MMapController extends MapController {
 	public boolean close(final boolean force) {
 		final MapModel map = getController().getMap();
 		if (!force && !map.isSaved()) {
-			final String text = FreeplaneResourceBundle.getText("save_unsaved") + "\n" + map.getTitle();
-			final String title = UITools.removeMnemonic(FreeplaneResourceBundle.getText("save"));
+			final String text = FreeplaneResourceBundle.getByKey("save_unsaved") + "\n" + map.getTitle();
+			final String title = FpStringUtils.removeMnemonic(FreeplaneResourceBundle.getByKey("save"));
 			final int returnVal = JOptionPane.showOptionDialog(getController().getViewController().getContentPane(),
 			    text, title, JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 			if (returnVal == JOptionPane.YES_OPTION) {
@@ -118,17 +118,17 @@ public class MMapController extends MapController {
 
 	private void createActions(final MModeController modeController) {
 		final Controller controller = modeController.getController();
-		modeController.addAction("newMap", new NewMapAction(controller));
-		modeController.addAction("newSibling", new NewSiblingAction(controller));
-		modeController.addAction("newPreviousSibling", new NewPreviousSiblingAction(controller));
+		modeController.addAction(new NewMapAction(controller));
+		modeController.addAction(new NewSiblingAction(controller));
+		modeController.addAction(new NewPreviousSiblingAction(controller));
 		newChild = new NewChildAction(controller);
-		modeController.addAction("newChild", newChild);
+		modeController.addAction(newChild);
 		delete = new DeleteAction(controller);
-		modeController.addAction("deleteChild", delete);
-		modeController.addAction("undoableToggleFolded", new ToggleFoldedAction(controller));
-		modeController.addAction("undoableToggleChildrenFolded", new ToggleChildrenFoldedAction(controller));
-		modeController.addAction("nodeUp", new NodeUpAction(controller));
-		modeController.addAction("nodeDown", new NodeDownAction(controller));
+		modeController.addAction(delete);
+		modeController.addAction(new ToggleFoldedAction(controller));
+		modeController.addAction(new ToggleChildrenFoldedAction(controller));
+		modeController.addAction(new NodeUpAction(controller));
+		modeController.addAction(new NodeDownAction(controller));
 	}
 
 	public void deleteNode(final NodeModel node) {
@@ -154,7 +154,8 @@ public class MMapController extends MapController {
 		insertNode(node, parent, parent.getChildCount());
 	}
 
-	public void moveNodeBefore(final NodeModel node, final NodeModel target, final boolean isLeft, final boolean changeSide) {
+	public void moveNodeBefore(final NodeModel node, final NodeModel target, final boolean isLeft,
+	                           final boolean changeSide) {
 		NodeModel parent;
 		parent = target.getParentNode();
 		moveNode(node, parent, parent.getChildPosition(target), isLeft, changeSide);
@@ -182,7 +183,7 @@ public class MMapController extends MapController {
 	}
 
 	public void insertNode(final NodeModel node, final NodeModel parentNode, final int index) {
-		final IUndoableActor actor = new IUndoableActor() {
+		final IActor actor = new IActor() {
 			public void act() {
 				(getModeController().getMapController()).insertNodeIntoWithoutUndo(node, parentNode, index);
 			}
@@ -267,8 +268,7 @@ public class MMapController extends MapController {
 		if (reader == null) {
 			final Controller controller = getController();
 			final int showResult = new OptionalDontShowMeAgainDialog(controller, "really_convert_to_current_version",
-			    "confirmation", 
-			    ResourceControllerProperties.RESOURCES_CONVERT_TO_CURRENT_VERSION,
+			    "confirmation", ResourceControllerProperties.RESOURCES_CONVERT_TO_CURRENT_VERSION,
 			    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED).show().getResult();
 			if (showResult != JOptionPane.OK_OPTION) {
 				reader = UrlManager.getActualReader(file);
@@ -309,29 +309,32 @@ public class MMapController extends MapController {
 	}
 
 	public void moveNode(NodeModel node, NodeModel targetNode, boolean asSibling, boolean isLeft, boolean changeSide) {
-		if(asSibling){
+		if (asSibling) {
 			moveNodeBefore(node, targetNode, isLeft, changeSide);
 		}
-		else{
+		else {
 			moveNodeAsChild(node, targetNode, isLeft, changeSide);
 		}
-    }
-	public void moveNodeAsChild(final NodeModel node, final NodeModel selectedParent, final boolean isLeft, final boolean changeSide) {
+	}
+
+	public void moveNodeAsChild(final NodeModel node, final NodeModel selectedParent, final boolean isLeft,
+	                            final boolean changeSide) {
 		int position = selectedParent.getChildCount();
-		if(node.getParent() == selectedParent){
+		if (node.getParent() == selectedParent) {
 			position--;
 		}
 		moveNode(node, selectedParent, position, isLeft, changeSide);
 	}
 
-	public void moveNode(final NodeModel child, final NodeModel newParent, final int newIndex, final boolean isLeft, final boolean changeSide) {
+	public void moveNode(final NodeModel child, final NodeModel newParent, final int newIndex, final boolean isLeft,
+	                     final boolean changeSide) {
 		final NodeModel oldParent = child.getParentNode();
 		final int oldIndex = oldParent.getChildPosition(child);
 		final boolean wasLeft = child.isLeft();
 		if (oldParent == newParent && oldIndex == newIndex && changeSide == false) {
 			return;
 		}
-		final IUndoableActor actor = new IUndoableActor() {
+		final IActor actor = new IActor() {
 			public void act() {
 				moveNodeToWithoutUndo(child, newParent, newIndex, isLeft, changeSide);
 			}
@@ -358,7 +361,8 @@ public class MMapController extends MapController {
 	 *
 	 * @return returns the new index.
 	 */
-	int moveNodeToWithoutUndo(final NodeModel child, final NodeModel newParent, final int newIndex, final boolean isLeft, final boolean changeSide) {
+	int moveNodeToWithoutUndo(final NodeModel child, final NodeModel newParent, final int newIndex,
+	                          final boolean isLeft, final boolean changeSide) {
 		final NodeModel oldParent = child.getParentNode();
 		final int oldIndex = oldParent.getIndex(child);
 		oldParent.remove(child);
@@ -439,7 +443,5 @@ public class MMapController extends MapController {
 
 	public void moveNode(NodeModel node, NodeModel directSibling, int childCount) {
 		moveNode(node, directSibling, childCount, false, false);
-	    
-    }
-
+	}
 }

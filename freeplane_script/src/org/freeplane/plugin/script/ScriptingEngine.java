@@ -201,7 +201,7 @@ class ScriptingEngine extends AFreeplaneAction {
 			            + message);
 			return false;
 		}
-		pOutStream.print(FreeplaneResourceBundle.getText("plugins/ScriptEditor/window.Result") + value);
+		pOutStream.print(FreeplaneResourceBundle.getByKey("plugins/ScriptEditor/window.Result") + value);
 		if (assignResult && value != null) {
 			if (assignTo == null) {
 				((MTextController) TextController.getController(pMindMapController))

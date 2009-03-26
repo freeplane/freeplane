@@ -29,7 +29,10 @@ import java.util.Vector;
  * @author Marc De Scheemaecker
  * @version $Name: RELEASE_2_2_1 $, $Revision: 1.5 $
  */
-public class XMLElement implements IXMLElement, Serializable {
+// TODO ARCH rladstaetter 21.03.2009 use standard xml serialisation provided by jdk - is at least easier to maintain
+// for most people and has all the nice gadgets you want
+@Deprecated
+public class XMLElement implements Serializable {
 	/**
 	 * No line number defined.
 	 */
@@ -69,7 +72,7 @@ public class XMLElement implements IXMLElement, Serializable {
 	/**
 	 * The parent element.
 	 */
-	private IXMLElement parent;
+	private XMLElement parent;
 	/**
 	 * The system ID of the source data where this element is located.
 	 */
@@ -159,12 +162,12 @@ public class XMLElement implements IXMLElement, Serializable {
 	 * @param child
 	 *            the non-null child to add.
 	 */
-	public void addChild(final IXMLElement child) {
+	public void addChild(final XMLElement child) {
 		if (child == null) {
 			throw new IllegalArgumentException("child must not be null");
 		}
 		if ((child.getName() == null) && (!children.isEmpty())) {
-			final IXMLElement lastChild = (IXMLElement) children.lastElement();
+			final XMLElement lastChild = (XMLElement) children.lastElement();
 			if (lastChild.getName() == null) {
 				lastChild.setContent(lastChild.getContent() + child.getContent());
 				return;
@@ -180,7 +183,7 @@ public class XMLElement implements IXMLElement, Serializable {
 	 * @param fullName
 	 *            the name of the element.
 	 */
-	public IXMLElement createElement(final String fullName) {
+	public XMLElement createElement(final String fullName) {
 		return new XMLElement(fullName);
 	}
 
@@ -192,7 +195,7 @@ public class XMLElement implements IXMLElement, Serializable {
 	 * @param namespace
 	 *            the namespace URI.
 	 */
-	public IXMLElement createElement(final String fullName, final String namespace) {
+	public XMLElement createElement(final String fullName, final String namespace) {
 		return new XMLElement(fullName, namespace);
 	}
 
@@ -206,7 +209,7 @@ public class XMLElement implements IXMLElement, Serializable {
 	 * @param lineNr
 	 *            the line in the XML data where the element starts.
 	 */
-	public IXMLElement createElement(final String fullName, final String systemID, final int lineNr) {
+	public XMLElement createElement(final String fullName, final String systemID, final int lineNr) {
 		return new XMLElement(fullName, systemID, lineNr);
 	}
 
@@ -222,15 +225,17 @@ public class XMLElement implements IXMLElement, Serializable {
 	 * @param lineNr
 	 *            the line in the XML data where the element starts.
 	 */
-	public IXMLElement createElement(final String fullName, final String namespace, final String systemID,
-	                                 final int lineNr) {
+	// TODO ARCH rladstaetter 21.03.2009 use constructor directly
+	@Deprecated
+	public static XMLElement createElement(final String fullName, final String namespace, final String systemID,
+	                                final int lineNr) {
 		return new XMLElement(fullName, namespace, systemID, lineNr);
 	}
 
 	/**
 	 * Creates an element to be used for #PCDATA content.
 	 */
-	public IXMLElement createPCDataElement() {
+	public XMLElement createPCDataElement() {
 		return new XMLElement();
 	}
 
@@ -267,7 +272,7 @@ public class XMLElement implements IXMLElement, Serializable {
 	@Override
 	public boolean equals(final Object rawElement) {
 		try {
-			return this.equalsXMLElement((IXMLElement) rawElement);
+			return this.equalsXMLElement((XMLElement) rawElement);
 		}
 		catch (final ClassCastException e) {
 			return false;
@@ -280,7 +285,7 @@ public class XMLElement implements IXMLElement, Serializable {
 	 * @param rawElement
 	 *            the element to compare to
 	 */
-	public boolean equalsXMLElement(final IXMLElement elt) {
+	public boolean equalsXMLElement(final XMLElement elt) {
 		if (!name.equals(elt.getName())) {
 			return false;
 		}
@@ -306,8 +311,8 @@ public class XMLElement implements IXMLElement, Serializable {
 			return false;
 		}
 		for (int i = 0; i < children.size(); i++) {
-			final IXMLElement child1 = this.getChildAtIndex(i);
-			final IXMLElement child2 = elt.getChildAtIndex(i);
+			final XMLElement child1 = this.getChildAtIndex(i);
+			final XMLElement child2 = elt.getChildAtIndex(i);
 			if (!child1.equalsXMLElement(child2)) {
 				return false;
 			}
@@ -570,8 +575,8 @@ public class XMLElement implements IXMLElement, Serializable {
 	 * @throws java.lang.ArrayIndexOutOfBoundsException
 	 *             if the index is out of bounds.
 	 */
-	public IXMLElement getChildAtIndex(final int index) throws ArrayIndexOutOfBoundsException {
-		return (IXMLElement) children.elementAt(index);
+	public XMLElement getChildAtIndex(final int index) throws ArrayIndexOutOfBoundsException {
+		return (XMLElement) children.elementAt(index);
 	}
 
 	/**
@@ -603,7 +608,7 @@ public class XMLElement implements IXMLElement, Serializable {
 		final Vector result = new Vector(children.size());
 		final Enumeration enumeration = children.elements();
 		while (enumeration.hasMoreElements()) {
-			final IXMLElement child = (IXMLElement) enumeration.nextElement();
+			final XMLElement child = (XMLElement) enumeration.nextElement();
 			final String childName = child.getFullName();
 			if ((childName != null) && childName.equals(name)) {
 				result.addElement(child);
@@ -625,7 +630,7 @@ public class XMLElement implements IXMLElement, Serializable {
 		final Vector result = new Vector(children.size());
 		final Enumeration enumeration = children.elements();
 		while (enumeration.hasMoreElements()) {
-			final IXMLElement child = (IXMLElement) enumeration.nextElement();
+			final XMLElement child = (XMLElement) enumeration.nextElement();
 			String str = child.getName();
 			boolean found = (str != null) && (str.equals(name));
 			str = child.getNamespace();
@@ -661,10 +666,10 @@ public class XMLElement implements IXMLElement, Serializable {
 	 *            the full name of the child to search for.
 	 * @return the child element, or null if no such child was found.
 	 */
-	public IXMLElement getFirstChildNamed(final String name) {
+	public XMLElement getFirstChildNamed(final String name) {
 		final Enumeration enumeration = children.elements();
 		while (enumeration.hasMoreElements()) {
-			final IXMLElement child = (IXMLElement) enumeration.nextElement();
+			final XMLElement child = (XMLElement) enumeration.nextElement();
 			final String childName = child.getFullName();
 			if ((childName != null) && childName.equals(name)) {
 				return child;
@@ -682,10 +687,10 @@ public class XMLElement implements IXMLElement, Serializable {
 	 *            the namespace, which may be null.
 	 * @return the child element, or null if no such child was found.
 	 */
-	public IXMLElement getFirstChildNamed(final String name, final String namespace) {
+	public XMLElement getFirstChildNamed(final String name, final String namespace) {
 		final Enumeration enumeration = children.elements();
 		while (enumeration.hasMoreElements()) {
-			final IXMLElement child = (IXMLElement) enumeration.nextElement();
+			final XMLElement child = (XMLElement) enumeration.nextElement();
 			String str = child.getName();
 			boolean found = (str != null) && (str.equals(name));
 			str = child.getNamespace();
@@ -746,7 +751,7 @@ public class XMLElement implements IXMLElement, Serializable {
 	 * Returns the parent element. This method returns null for the root
 	 * element.
 	 */
-	public IXMLElement getParent() {
+	public XMLElement getParent() {
 		return parent;
 	}
 
@@ -795,12 +800,12 @@ public class XMLElement implements IXMLElement, Serializable {
 	 * @param index
 	 *            where to put the child.
 	 */
-	public void insertChild(final IXMLElement child, final int index) {
+	public void insertChild(final XMLElement child, final int index) {
 		if (child == null) {
 			throw new IllegalArgumentException("child must not be null");
 		}
 		if ((child.getName() == null) && (!children.isEmpty())) {
-			final IXMLElement lastChild = (IXMLElement) children.lastElement();
+			final XMLElement lastChild = (XMLElement) children.lastElement();
 			if (lastChild.getName() == null) {
 				lastChild.setContent(lastChild.getContent() + child.getContent());
 				return;
@@ -866,7 +871,7 @@ public class XMLElement implements IXMLElement, Serializable {
 	 * @param child
 	 *            the non-null child to remove.
 	 */
-	public void removeChild(final IXMLElement child) {
+	public void removeChild(final XMLElement child) {
 		if (child == null) {
 			throw new IllegalArgumentException("child must not be null");
 		}

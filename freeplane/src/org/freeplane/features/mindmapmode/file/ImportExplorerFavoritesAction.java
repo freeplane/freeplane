@@ -50,7 +50,7 @@ class ImportExplorerFavoritesAction extends AFreeplaneAction implements IFreepla
 	public void actionPerformed(final ActionEvent e) {
 		final JFileChooser chooser = new JFileChooser();
 		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		chooser.setDialogTitle(FreeplaneResourceBundle.getText("select_favorites_folder"));
+		chooser.setDialogTitle(FreeplaneResourceBundle.getByKey("select_favorites_folder"));
 		final int returnVal = chooser.showOpenDialog(getController().getViewController().getContentPane());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			final File folder = chooser.getSelectedFile();

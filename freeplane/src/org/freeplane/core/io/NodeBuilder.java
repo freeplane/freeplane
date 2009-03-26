@@ -30,7 +30,7 @@ import org.freeplane.core.model.HistoryInformationModel;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.n3.nanoxml.IXMLElement;
+import org.freeplane.n3.nanoxml.XMLElement;
 
 public class NodeBuilder implements IElementDOMHandler {
 	static class IconProperties {
@@ -53,7 +53,7 @@ public class NodeBuilder implements IElementDOMHandler {
 		newIds = new HashMap<String, String>();
 	}
 
-	public Object createElement(final Object parent, final String tag, final IXMLElement attributes) {
+	public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
 		if (tag.equals(NodeBuilder.XML_NODE)) {
 			final NodeModel userObject = createNode();
 			if (mapChild == null) {
@@ -73,7 +73,7 @@ public class NodeBuilder implements IElementDOMHandler {
 		return new NodeModel(getMap());
 	}
 
-	public void endElement(final Object parentObject, final String tag, final Object userObject, final IXMLElement dom) {
+	public void endElement(final Object parentObject, final String tag, final Object userObject, final XMLElement dom) {
 		final NodeModel node = (NodeModel) userObject;
 		if (dom.getAttributeCount() != 0 || dom.hasChildren()) {
 			node.addExtension(new UnknownElements(dom));
@@ -208,6 +208,6 @@ public class NodeBuilder implements IElementDOMHandler {
 		mapChild = null;
 	}
 
-	public void setAttributes(final String tag, final Object node, final IXMLElement attributes) {
+	public void setAttributes(final String tag, final Object node, final XMLElement attributes) {
 	}
 }

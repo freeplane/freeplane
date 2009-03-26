@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.util.Collection;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.n3.nanoxml.IXMLElement;
+import org.freeplane.n3.nanoxml.XMLElement;
 
 public interface ITreeWriter extends IHintProvider {
 	void addAttribute(String name, double value);
@@ -34,7 +34,7 @@ public interface ITreeWriter extends IHintProvider {
 
 	void addComment(String string) throws IOException;
 
-	void addElement(Object userObject, IXMLElement element) throws IOException;
+	void addElement(Object userObject, XMLElement element) throws IOException;
 
 	void addElement(Object userObject, String name) throws IOException;
 

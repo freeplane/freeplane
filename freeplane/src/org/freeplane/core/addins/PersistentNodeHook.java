@@ -35,9 +35,7 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.SelectableAction;
-import org.freeplane.core.undo.IUndoableActor;
-import org.freeplane.features.mindmapmode.MMapController;
-import org.freeplane.n3.nanoxml.IXMLElement;
+import org.freeplane.core.undo.IActor;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public abstract class PersistentNodeHook {
@@ -74,7 +72,7 @@ public abstract class PersistentNodeHook {
 		}
 	}
 
-	private final class ToggleHookActor implements IUndoableActor {
+	private final class ToggleHookActor implements IActor {
 		IExtension extension;
 		private final NodeModel node;
 
@@ -105,7 +103,7 @@ public abstract class PersistentNodeHook {
 	}
 
 	protected class XmlReader implements IElementDOMHandler {
-		public Object createElement(final Object parent, final String tag, final IXMLElement attributes) {
+		public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
 			if (attributes == null) {
 				return null;
 			}
@@ -116,9 +114,9 @@ public abstract class PersistentNodeHook {
 		}
 
 		public void endElement(final Object parent, final String tag, final Object userObject,
-		                       final IXMLElement lastBuiltElement) {
+		                       final XMLElement lastBuiltElement) {
 			if (getHookAnnotation().onceForMap()) {
-				final IXMLElement parentNodeElement = lastBuiltElement.getParent().getParent();
+				final XMLElement parentNodeElement = lastBuiltElement.getParent().getParent();
 				if (parentNodeElement == null || parentNodeElement.getName().equals("node")) {
 					return;
 				}
@@ -181,7 +179,7 @@ public abstract class PersistentNodeHook {
 		return createExtension(node, null);
 	}
 
-	abstract protected IExtension createExtension(final NodeModel node, final IXMLElement element);
+	abstract protected IExtension createExtension(final NodeModel node, final XMLElement element);
 
 	protected HookAction createHookAction() {
 		return new SelectableHookAction();
@@ -274,7 +272,7 @@ public abstract class PersistentNodeHook {
 		getModeController().getMapController().nodeChanged(node);
 	}
 
-	protected void saveExtension(final IExtension extension, final IXMLElement element) {
+	protected void saveExtension(final IExtension extension, final XMLElement element) {
 		element.setAttribute("NAME", getHookName());
 	}
 
@@ -311,7 +309,7 @@ public abstract class PersistentNodeHook {
 	}
 
 	private void undoableToggleHook(final NodeModel node, final IExtension extension) {
-		final IUndoableActor actor = new ToggleHookActor(node, extension);
+		final IActor actor = new ToggleHookActor(node, extension);
 		getModeController().execute(actor);
 	}
 	
@@ -319,6 +317,7 @@ public abstract class PersistentNodeHook {
 		final NodeModel rootNode = controller.getMap().getRootNode();
 		return rootNode.getExtension(getExtensionClass());
 	}
+	
 	public Controller getController() {
 	    return controller;
     }

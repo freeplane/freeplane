@@ -26,7 +26,7 @@ import java.util.Vector;
 /**
  * An XMLWriter writes XML data to a stream.
  * 
- * @see org.freeplane.n3.nanoxml.IXMLElement
+ * @see org.freeplane.n3.nanoxml.XMLElement
  * @see java.io.Writer
  * @author Marc De Scheemaecker
  * @version $Name: RELEASE_2_2_1 $, $Revision: 1.4 $
@@ -77,7 +77,7 @@ public class XMLWriter {
 	 * @param xml
 	 *            the non-null XML element to write.
 	 */
-	public void write(final IXMLElement xml) throws IOException {
+	public void write(final XMLElement xml) throws IOException {
 		this.write(xml, false, 0, true);
 	}
 
@@ -89,7 +89,7 @@ public class XMLWriter {
 	 * @param prettyPrint
 	 *            if spaces need to be inserted to make the output more readable
 	 */
-	public void write(final IXMLElement xml, final boolean prettyPrint) throws IOException {
+	public void write(final XMLElement xml, final boolean prettyPrint) throws IOException {
 		this.write(xml, prettyPrint, 0, true);
 	}
 
@@ -103,7 +103,7 @@ public class XMLWriter {
 	 * @param indent
 	 *            how many spaces to indent the element.
 	 */
-	public void write(final IXMLElement xml, final boolean prettyPrint, final int indent) throws IOException {
+	public void write(final XMLElement xml, final boolean prettyPrint, final int indent) throws IOException {
 		this.write(xml, prettyPrint, indent, true);
 	}
 
@@ -117,7 +117,7 @@ public class XMLWriter {
 	 * @param indent
 	 *            how many spaces to indent the element.
 	 */
-	public void write(final IXMLElement xml, final boolean prettyPrint, final int indent,
+	public void write(final XMLElement xml, final boolean prettyPrint, final int indent,
 	                  final boolean collapseEmptyElements) throws IOException {
 		if (prettyPrint) {
 			for (int i = 0; i < indent; i++) {
@@ -190,7 +190,7 @@ public class XMLWriter {
 				}
 				enumeration = xml.enumerateChildren();
 				while (enumeration.hasMoreElements()) {
-					final IXMLElement child = (IXMLElement) enumeration.nextElement();
+					final XMLElement child = (XMLElement) enumeration.nextElement();
 					this.write(child, prettyPrint, indent + 4, collapseEmptyElements);
 				}
 				if (prettyPrint) {

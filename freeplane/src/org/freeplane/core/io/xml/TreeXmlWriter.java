@@ -39,7 +39,7 @@ import org.freeplane.core.io.IExtensionElementWriter;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.ListHashTable;
 import org.freeplane.core.io.WriteManager;
-import org.freeplane.n3.nanoxml.IXMLElement;
+import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public class TreeXmlWriter implements ITreeWriter {
@@ -73,7 +73,7 @@ public class TreeXmlWriter implements ITreeWriter {
 	private boolean elementStarted = false;
 	final private HashMap<Object, Object> hints;
 	final private WriteManager writeManager;
-	private IXMLElement xmlElement;
+	private XMLElement xmlElement;
 	final private XMLWriter xmlwriter;
 
 	public TreeXmlWriter(final WriteManager writeManager, final Writer writer) {
@@ -108,7 +108,7 @@ public class TreeXmlWriter implements ITreeWriter {
 		xmlwriter.write(" -->\n");
 	}
 
-	public void addElement(final Object userObject, final IXMLElement element) throws IOException {
+	public void addElement(final Object userObject, final XMLElement element) throws IOException {
 		if (elementStarted == false && xmlElement != null) {
 			xmlwriter.write(xmlElement, true, 0, true, false);
 		}

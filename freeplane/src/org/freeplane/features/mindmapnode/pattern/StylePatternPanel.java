@@ -35,6 +35,8 @@ import javax.swing.JPanel;
 
 import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.ColorUtils;
+import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.ui.BooleanProperty;
 import org.freeplane.core.resources.ui.ColorProperty;
@@ -412,14 +414,16 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 		        ResourceControllerProperties.RESOURCES_BACKGROUND_COLOR));
 		setPatternControls(pattern.getPatternNodeStyle(), mSetNodeStyle, mNodeStyle, NodeStyleModel.SHAPE_AS_PARENT);
 		setPatternControls(pattern.getPatternNodeText(), mSetNodeText, mNodeText, "");
-		// FIXME rladstaetter 28.02.2009 add edge handling
+		setPatternControls(new PatternProperty(pattern.getPatternEdgeColor()),mSetEdgeColor,mEdgeColor,ColorUtils.BLACK);
+		setPatternControls(new PatternProperty(pattern.getPatternEdgeStyle()),mSetEdgeStyle,mEdgeStyle,StylePatternPanel.EDGE_STYLES[0]);
+		setPatternControls(new PatternProperty(pattern.getPatternEdgeWidth()),mSetEdgeWidth,mEdgeWidth,StylePatternPanel.EDGE_WIDTHS[0]);
 		setPatternControls(pattern.getPatternNodeFontName(), mSetNodeFontName, mNodeFontName, ResourceController
 		    .getResourceController().getDefaultFontFamilyName());
 		setPatternControls(pattern.getPatternNodeFontSize(), mSetNodeFontSize, mNodeFontSize, sizes[0]);
 		setPatternControls(pattern.getPatternNodeFontBold(), mSetNodeFontBold, mNodeFontBold, Boolean.TRUE.toString());
 		setPatternControls(pattern.getPatternNodeFontItalic(), mSetNodeFontItalic, mNodeFontItalic, Boolean.TRUE
 		    .toString());
-		// FIXME rladstaetter 28.02.2009 add icon handling
+		setPatternControls(new PatternProperty(pattern.getPatternIcon()),mSetIcon,mIcon,((MindIcon) mIconInformationVector.get(0)).getName());
 		setPatternControls(pattern.getPatternScript(), mSetScriptPattern, mScriptPattern, "");
 		if (StylePatternPanelType.WITH_NAME_AND_CHILDS.equals(mType)) {
 			mName.setValue(pattern.getName());

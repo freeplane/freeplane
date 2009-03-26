@@ -45,7 +45,7 @@ public class UndoHandler implements IUndoHandler {
 	private static final long TIME_TO_BEGIN_NEW_ACTION = 100;
 	private boolean actionFrameStarted;
 	private ListIterator actorIterator;
-	final private LinkedList<IUndoableActor> actorList;
+	final private LinkedList<IActor> actorList;
 	private boolean isUndoActionRunning = false;
 	final private ActionListener redoAction;
 	private long timeOfLastAdd;
@@ -66,22 +66,22 @@ public class UndoHandler implements IUndoHandler {
 	 * freeplane.base.undo.UndoHandler#addActor(freeplane.base.undo.UndoableActor
 	 * )
 	 */
-	public void addActor(final IUndoableActor actor) {
+	public void addActor(final IActor actor) {
 		resetRedo();
 		final long currentTime = System.currentTimeMillis();
 		if ((actorList.size() > 0)
 		        && (actionFrameStarted || currentTime - timeOfLastAdd < UndoHandler.TIME_TO_BEGIN_NEW_ACTION)) {
-			final IUndoableActor lastActor = (IUndoableActor) actorIterator.previous();
+			final IActor lastActor = (IActor) actorIterator.previous();
 			CompoundActor compoundActor;
 			if (!(lastActor instanceof CompoundActor)) {
 				compoundActor = new CompoundActor();
-				compoundActor.addActor(lastActor);
+				compoundActor.add(lastActor);
 				actorIterator.set(compoundActor);
 			}
 			else {
 				compoundActor = (CompoundActor) lastActor;
 			}
-			compoundActor.addActor(actor);
+			compoundActor.add(actor);
 			actorIterator.next();
 		}
 		else {
@@ -141,7 +141,7 @@ public class UndoHandler implements IUndoHandler {
 	 */
 	public void redo() {
 		if (canRedo()) {
-			final IUndoableActor redoActor = (IUndoableActor) actorIterator.next();
+			final IActor redoActor = (IActor) actorIterator.next();
 			isUndoActionRunning = true;
 			redoActor.act();
 			isUndoActionRunning = false;
@@ -172,7 +172,7 @@ public class UndoHandler implements IUndoHandler {
 	 */
 	public void undo() {
 		if (canUndo()) {
-			final IUndoableActor actor = (IUndoableActor) actorIterator.previous();
+			final IActor actor = (IActor) actorIterator.previous();
 			isUndoActionRunning = true;
 			actor.undo();
 			isUndoActionRunning = false;

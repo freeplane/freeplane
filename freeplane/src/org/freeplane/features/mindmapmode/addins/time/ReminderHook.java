@@ -37,7 +37,7 @@ import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.VisibleAction;
-import org.freeplane.n3.nanoxml.IXMLElement;
+import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
  * @author foltin
@@ -179,7 +179,7 @@ public class ReminderHook extends PersistentNodeHook {
 	}
 
 	@Override
-	protected IExtension createExtension(final NodeModel node, final IXMLElement element) {
+	protected IExtension createExtension(final NodeModel node, final XMLElement element) {
 		final ReminderExtension reminderExtension = new ReminderExtension(node);
 		final String attribute = element.getFirstChildNamed("Parameters").getAttribute(REMINDUSERAT, "0");
 		reminderExtension.setRemindUserAt(Long.parseLong(attribute));
@@ -257,10 +257,10 @@ public class ReminderHook extends PersistentNodeHook {
 	}
 
 	@Override
-	protected void saveExtension(final IExtension extension, final IXMLElement element) {
+	protected void saveExtension(final IExtension extension, final XMLElement element) {
 		super.saveExtension(extension, element);
 		final ReminderExtension reminderExtension = (ReminderExtension) extension;
-		final IXMLElement parameters = element.createElement("Parameters");
+		final XMLElement parameters = element.createElement("Parameters");
 		parameters.setAttribute(REMINDUSERAT, Long.toString(reminderExtension.getRemindUserAt()));
 		element.addChild(parameters);
 	}
@@ -275,7 +275,7 @@ public class ReminderHook extends PersistentNodeHook {
 		model.getTimer().schedule(task, date);
 		final Object[] messageArguments = { date };
 		final MessageFormat formatter = new MessageFormat(FreeplaneResourceBundle
-		    .getText("plugins/TimeManagement.xml_reminderNode_tooltip"));
+		    .getByKey("plugins/TimeManagement.xml_reminderNode_tooltip"));
 		final String message = formatter.format(messageArguments);
 		setToolTip(model.getNode(), message);
 		displayState(model, CLOCK_VISIBLE, model.getNode(), false);

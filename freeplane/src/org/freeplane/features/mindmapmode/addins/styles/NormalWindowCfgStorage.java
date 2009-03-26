@@ -3,7 +3,7 @@ package org.freeplane.features.mindmapmode.addins.styles;
 import javax.swing.JDialog;
 
 import org.freeplane.core.resources.WindowConfigurationStorage;
-import org.freeplane.n3.nanoxml.IXMLElement;
+import org.freeplane.n3.nanoxml.XMLElement;
 
 class NormalWindowCfgStorage extends WindowConfigurationStorage {
 	public static void decorateDialog(final String marshalled, final JDialog dialog) {
@@ -12,7 +12,7 @@ class NormalWindowCfgStorage extends WindowConfigurationStorage {
 	}
 
 	@Override
-	protected void marschallSpecificElements(final IXMLElement xml) {
+	protected void marshallSpecificElements(final XMLElement xml) {
 		xml.setName("window_configuration_storage");
 	}
 }

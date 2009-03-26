@@ -89,7 +89,7 @@ public class MMapModel extends MapModel {
 		if (titleNumber == 0) {
 			titleNumber = MMapModel.unnamedMapsNumber++;
 		}
-		return FreeplaneResourceBundle.getText("mindmap") + titleNumber;
+		return FreeplaneResourceBundle.getByKey("mindmap") + titleNumber;
 	}
 
 	public IUndoHandler getUndoHandler() {

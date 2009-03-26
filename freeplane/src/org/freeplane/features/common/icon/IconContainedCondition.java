@@ -99,8 +99,8 @@ class IconContainedCondition implements ICondition {
 	 */
 	public JComponent getListCellRendererComponent() {
 		final JCondition component = new JCondition();
-		final String text = FreeplaneResourceBundle.getText("filter_icon") + ' '
-		        + FreeplaneResourceBundle.getText("filter_contains") + ' ';
+		final String text = FreeplaneResourceBundle.getByKey("filter_icon") + ' '
+		        + FreeplaneResourceBundle.getByKey("filter_contains") + ' ';
 		component.add(new JLabel(text));
 		component.add(MindIcon.factory(getIconName()).getRendererComponent());
 		return component;

@@ -27,13 +27,13 @@ public class FpStringUtils {
 	}
 
 	public static String format(final String resourceKey, final Object[] messageArguments) {
-		final MessageFormat formatter = new MessageFormat(FreeplaneResourceBundle.getText(resourceKey));
+		final MessageFormat formatter = new MessageFormat(FreeplaneResourceBundle.getByKey(resourceKey));
 		final String stringResult = formatter.format(messageArguments);
 		return stringResult;
 	}
 
 	public static String formatText(final String key, final String s1) {
-		final String format = FreeplaneResourceBundle.getText(key);
+		final String format = FreeplaneResourceBundle.getByKey(key);
 		if (format == null) {
 			return null;
 		}
@@ -41,7 +41,7 @@ public class FpStringUtils {
 	}
 
 	public static String formatText(final String key, final String s1, final String s2) {
-		final String format = FreeplaneResourceBundle.getText(key);
+		final String format = FreeplaneResourceBundle.getByKey(key);
 		if (format == null) {
 			return null;
 		}
@@ -49,7 +49,7 @@ public class FpStringUtils {
 	}
 
 	public static String getOptionalText(final String string) {
-		return string == null ? null : FreeplaneResourceBundle.getText(string);
+		return string == null ? null : FreeplaneResourceBundle.getByKey(string);
 	}
 
 	/**
@@ -63,4 +63,8 @@ public class FpStringUtils {
 		}
 		return inputString;
 	}
+
+	public static String removeMnemonic(final String rawLabel) {
+    	return rawLabel.replaceFirst("&([^ ])", "$1");
+    }
 }

@@ -42,7 +42,7 @@ import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.model.ColorUtils;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.n3.nanoxml.IXMLElement;
+import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExtensionElementWriter,
@@ -59,14 +59,14 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 		return new ArrowLinkModel(source, targetID);
 	}
 
-	public Object createElement(final Object parent, final String tag, final IXMLElement attributes) {
+	public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
 		if (tag.equals("arrowlink")) {
 			return createArrowLink(null, null);
 		}
 		return null;
 	}
 
-	public void endElement(final Object parent, final String tag, final Object userObject, final IXMLElement dom) {
+	public void endElement(final Object parent, final String tag, final Object userObject, final XMLElement dom) {
 		if (parent instanceof NodeModel) {
 			final NodeModel node = (NodeModel) parent;
 			if (userObject instanceof ArrowLinkModel) {
@@ -212,7 +212,7 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 		return arrowLink;
 	}
 
-	public void setAttributes(final String tag, final Object node, final IXMLElement attributes) {
+	public void setAttributes(final String tag, final Object node, final XMLElement attributes) {
 	}
 
 	public void writeAttributes(final ITreeWriter writer, final Object userObject, final IExtension extension) {

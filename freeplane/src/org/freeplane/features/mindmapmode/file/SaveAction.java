@@ -38,7 +38,7 @@ class SaveAction extends AFreeplaneAction implements IFreeplaneAction {
 		final boolean success = ((MModeController) getModeController()).save();
 		final Controller controller = getController();
 		if (success) {
-			controller.getViewController().out(FreeplaneResourceBundle.getText("saved"));
+			controller.getViewController().out(FreeplaneResourceBundle.getByKey("saved"));
 		}
 		else {
 			controller.errorMessage("Saving failed.");

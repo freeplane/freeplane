@@ -28,11 +28,12 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.undo.IUndoableActor;
+import org.freeplane.core.ui.IFreeplaneAction;
+import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 
-class NewChildAction extends AFreeplaneAction {
+class NewChildAction extends AFreeplaneAction implements IFreeplaneAction {
 	public NewChildAction(final Controller controller) {
 		super(controller, "new_child", "/images/idea.png");
 	}
@@ -90,7 +91,7 @@ class NewChildAction extends AFreeplaneAction {
 	public NodeModel addNewNode(final NodeModel parent, final int index, final boolean newNodeIsLeft) {
 		final NodeModel newNode = getModeController().getMapController().newNode("", parent.getMap());
 		newNode.setLeft(newNodeIsLeft);
-		final IUndoableActor actor = new IUndoableActor() {
+		final IActor actor = new IActor() {
 			public void act() {
 				(getModeController().getMapController()).insertNodeIntoWithoutUndo(newNode, parent, index);
 			}
@@ -106,4 +107,8 @@ class NewChildAction extends AFreeplaneAction {
 		getModeController().execute(actor);
 		return newNode;
 	}
+
+	public String getName() {
+	    return "newChild";
+    }
 }

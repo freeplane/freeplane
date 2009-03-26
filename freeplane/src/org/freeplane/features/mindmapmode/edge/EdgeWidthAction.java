@@ -36,10 +36,10 @@ class EdgeWidthAction extends MultipleNodeAction {
 	private static String getWidthTitle(final ModeController controller, final int width) {
 		String returnValue;
 		if (width == EdgeModel.WIDTH_PARENT) {
-			returnValue = FreeplaneResourceBundle.getText("edge_width_as_parent");
+			returnValue = FreeplaneResourceBundle.getByKey("edge_width_as_parent");
 		}
 		else if (width == EdgeModel.WIDTH_THIN) {
-			returnValue = FreeplaneResourceBundle.getText("edge_width_thin");
+			returnValue = FreeplaneResourceBundle.getByKey("edge_width_thin");
 		}
 		else {
 			returnValue = Integer.toString(width);

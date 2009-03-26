@@ -90,7 +90,7 @@ class ExportBranchAction extends AFreeplaneAction implements IFreeplaneAction {
 			}
 			if (chosenFile.exists()) {
 				final int overwriteMap = JOptionPane.showConfirmDialog(controller.getViewController().getMapView(),
-				    FreeplaneResourceBundle.getText("map_already_exists"), "Freeplane", JOptionPane.YES_NO_OPTION);
+				    FreeplaneResourceBundle.getByKey("map_already_exists"), "Freeplane", JOptionPane.YES_NO_OPTION);
 				if (overwriteMap != JOptionPane.YES_OPTION) {
 					return;
 				}

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
 
-import org.freeplane.n3.nanoxml.IXMLElement;
+import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;
@@ -19,11 +19,11 @@ public class Patterns {
 			final IXMLParser parser = XMLParserFactory.createDefaultXMLParser();
 			final IXMLReader xmlReader = new StdXMLReader(reader);
 			parser.setReader(xmlReader);
-			final IXMLElement xml = (IXMLElement) parser.parse();
+			final XMLElement xml = (XMLElement) parser.parse();
 			final Patterns patterns = new Patterns();
 			final Enumeration xmlPatterns = xml.enumerateChildren();
 			while (xmlPatterns.hasMoreElements()) {
-				final IXMLElement xmlPattern = (IXMLElement) xmlPatterns.nextElement();
+				final XMLElement xmlPattern = (XMLElement) xmlPatterns.nextElement();
 				patterns.addChoice(Pattern.unMarshall(xmlPattern));
 			}
 			return patterns;

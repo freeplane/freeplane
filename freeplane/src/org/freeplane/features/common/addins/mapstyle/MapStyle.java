@@ -33,8 +33,8 @@ import org.freeplane.core.model.ColorUtils;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.undo.IUndoableActor;
-import org.freeplane.n3.nanoxml.IXMLElement;
+import org.freeplane.core.undo.IActor;
+import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.view.swing.map.MapView;
 
 /**
@@ -56,7 +56,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			if(actionColor == oldColor || actionColor != null && actionColor.equals(oldColor)){
 				return;
         }
-		IUndoableActor actor = new IUndoableActor(){
+		IActor actor = new IActor(){
 			public void act() {
 				model.setBackgroundColor(actionColor);
 				getModeController().getMapController().fireMapChanged(
@@ -78,7 +78,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		getModeController().execute(actor);
     }
 	@Override
-	protected IExtension createExtension(final NodeModel node, final IXMLElement element) {
+	protected IExtension createExtension(final NodeModel node, final XMLElement element) {
 		String colorString = element.getAttribute("background", null);
 		final Color bgColor;
 		if(colorString != null){
@@ -110,7 +110,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 
 	}
 	@Override
-    protected void saveExtension(IExtension extension, IXMLElement element) {
+    protected void saveExtension(IExtension extension, XMLElement element) {
 	    super.saveExtension(extension, element);
 	    final Color backgroundColor = ((MapStyleModel)extension).getBackgroundColor();
 	    if(backgroundColor != null){

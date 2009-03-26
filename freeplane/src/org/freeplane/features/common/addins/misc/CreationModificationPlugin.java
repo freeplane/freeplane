@@ -32,7 +32,7 @@ import org.freeplane.core.modecontroller.NodeChangeEvent;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.ActionDescriptor;
-import org.freeplane.n3.nanoxml.IXMLElement;
+import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
  * @author foltin
@@ -91,7 +91,7 @@ public class CreationModificationPlugin extends PersistentNodeHook implements IN
 		final Object[] messageArguments = { node.getHistoryInformation().getCreatedAt(),
 		        node.getHistoryInformation().getLastModifiedAt() };
 		if (tooltipFormat == null) {
-			tooltipFormat = FreeplaneResourceBundle.getText("CreationModificationPlugin.tooltip_format");
+			tooltipFormat = FreeplaneResourceBundle.getByKey("CreationModificationPlugin.tooltip_format");
 		}
 		final MessageFormat formatter = new MessageFormat(tooltipFormat);
 		final String message = formatter.format(messageArguments);
@@ -111,7 +111,7 @@ public class CreationModificationPlugin extends PersistentNodeHook implements IN
 	protected void setToolTip(final NodeModel node, final String key, final String value) {
 		(getModeController().getMapController()).setToolTip(node, key, value);
 	}
-	protected IExtension createExtension(final NodeModel node, final IXMLElement element) {
+	protected IExtension createExtension(final NodeModel node, final XMLElement element) {
 		return this;
 	}
 }

@@ -41,7 +41,7 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.undo.IUndoableActor;
+import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.note.NoteController;
 import org.freeplane.features.common.note.NoteModel;
 import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;
@@ -212,7 +212,7 @@ public class MNoteController extends NoteController {
 		if (oldText == newText || null != oldText && oldText.equals(newText)) {
 			return;
 		}
-		final IUndoableActor actor = new IUndoableActor() {
+		final IActor actor = new IActor() {
 			public void act() {
 				setText(newText);
 			}

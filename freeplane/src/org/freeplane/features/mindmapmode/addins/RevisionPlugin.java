@@ -34,7 +34,7 @@ import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
-import org.freeplane.n3.nanoxml.IXMLElement;
+import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
  * @author foltin
@@ -71,7 +71,7 @@ public class RevisionPlugin extends PersistentNodeHook implements INodeChangeLis
 	protected void remove(final NodeModel node, final IExtension extension) {
 		super.remove(node, extension);
 	}
-	protected IExtension createExtension(final NodeModel node, final IXMLElement element) {
+	protected IExtension createExtension(final NodeModel node, final XMLElement element) {
 		return this;
 	}
 }

@@ -33,7 +33,7 @@ import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.model.ColorUtils;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.n3.nanoxml.IXMLElement;
+import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 class CloudBuilder implements IElementDOMHandler, IExtensionElementWriter {
@@ -43,14 +43,14 @@ class CloudBuilder implements IElementDOMHandler, IExtensionElementWriter {
 		this.mapController = mapController;
 	}
 
-	public Object createElement(final Object parent, final String tag, final IXMLElement attributes) {
+	public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
 		if (tag.equals("cloud")) {
 			return new CloudModel();
 		}
 		return null;
 	}
 
-	public void endElement(final Object parent, final String tag, final Object userObject, final IXMLElement dom) {
+	public void endElement(final Object parent, final String tag, final Object userObject, final XMLElement dom) {
 		if (parent instanceof NodeModel) {
 			final NodeModel node = (NodeModel) parent;
 			if (userObject instanceof CloudModel) {
@@ -89,7 +89,7 @@ class CloudBuilder implements IElementDOMHandler, IExtensionElementWriter {
 		writer.addExtensionElementWriter(CloudModel.class, this);
 	}
 
-	public void setAttributes(final String tag, final Object node, final IXMLElement attributes) {
+	public void setAttributes(final String tag, final Object node, final XMLElement attributes) {
 	}
 
 	public void writeContent(final ITreeWriter writer, final Object node, final IExtension extension)

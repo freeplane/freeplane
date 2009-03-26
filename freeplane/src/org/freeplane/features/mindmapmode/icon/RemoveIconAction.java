@@ -32,7 +32,7 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.undo.IUndoableActor;
+import org.freeplane.core.undo.IActor;
 
 /**
  * @author foltin
@@ -74,7 +74,7 @@ class RemoveIconAction extends MultipleNodeAction implements IIconInformation {
 	}
 
 	public int removeIcon(final NodeModel node, final int position) {
-		final IUndoableActor actor = new IUndoableActor() {
+		final IActor actor = new IActor() {
 			private final MindIcon icon = node.getIcon(position);
 
 			public void act() {

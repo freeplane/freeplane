@@ -29,7 +29,7 @@ import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.n3.nanoxml.IXMLElement;
+import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -87,7 +87,7 @@ public class MapWriter implements IElementWriter, IAttributeWriter {
 	        throws IOException {
 		final TreeXmlWriter xmlWriter = new TreeXmlWriter(writeManager, fileout);
 		xmlWriter.setHint(Hint.MODE, mode);
-		final IXMLElement xmlMap = new XMLElement("map");
+		final XMLElement xmlMap = new XMLElement("map");
 		setSaveInvisible(saveInvisible);
 		xmlWriter.addElement(map, xmlMap);
 		fileout.close();

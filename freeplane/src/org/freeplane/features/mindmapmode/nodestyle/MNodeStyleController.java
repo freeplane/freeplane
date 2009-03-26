@@ -28,7 +28,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.MultipleNodeAction;
-import org.freeplane.core.undo.IUndoableActor;
+import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
 
@@ -94,7 +94,7 @@ public class MNodeStyleController extends NodeStyleController {
 			}
 		}
 		final ModeController modeController = getModeController();
-		final IUndoableActor actor = new IUndoableActor() {
+		final IActor actor = new IActor() {
 			public void act() {
 				node.addExtension(new NodeStyleModel());
 			}
@@ -127,7 +127,7 @@ public class MNodeStyleController extends NodeStyleController {
 		if (color == oldColor || color != null && color.equals(oldColor)) {
 			return;
 		}
-		final IUndoableActor actor = new IUndoableActor() {
+		final IActor actor = new IActor() {
 			public void act() {
 				NodeStyleModel.setBackgroundColor(node, color);
 				getModeController().getMapController().nodeChanged(node);
@@ -158,7 +158,7 @@ public class MNodeStyleController extends NodeStyleController {
 		if (oldColor == color || oldColor != null && oldColor.equals(color)) {
 			return;
 		}
-		final IUndoableActor actor = new IUndoableActor() {
+		final IActor actor = new IActor() {
 			public void act() {
 				NodeStyleModel.setColor(node, color);
 				getModeController().getMapController().nodeChanged(node);
@@ -186,7 +186,7 @@ public class MNodeStyleController extends NodeStyleController {
 		}
 		createOwnFont(node);
 		final ModeController modeController = getModeController();
-		final IUndoableActor actor = new IUndoableActor() {
+		final IActor actor = new IActor() {
 			public void act() {
 				final NodeStyleModel font = NodeStyleModel.getModel(node);
 				font.setFontFamilyName(fontFamily);
@@ -229,7 +229,7 @@ public class MNodeStyleController extends NodeStyleController {
 		}
 		createOwnFont(node);
 		final ModeController modeController = getModeController();
-		final IUndoableActor actor = new IUndoableActor() {
+		final IActor actor = new IActor() {
 			public void act() {
 				final NodeStyleModel font = NodeStyleModel.getModel(node);
 				font.setFontSize(fontSize);
@@ -259,7 +259,7 @@ public class MNodeStyleController extends NodeStyleController {
 	public void setShape(final NodeModel node, final String shape) {
 		final ModeController modeController = getModeController();
 		final String oldShape = NodeStyleModel.getShape(node);
-		final IUndoableActor actor = new IUndoableActor() {
+		final IActor actor = new IActor() {
 			public void act() {
 				NodeStyleModel.setShape(node, shape);
 				modeController.getMapController().nodeChanged(node);
@@ -293,7 +293,7 @@ public class MNodeStyleController extends NodeStyleController {
 	public void toggleBold(final NodeModel node) {
 		createOwnFont(node);
 		final ModeController modeController = getModeController();
-		final IUndoableActor actor = new IUndoableActor() {
+		final IActor actor = new IActor() {
 			public void act() {
 				toggleBold(node);
 			}
@@ -319,7 +319,7 @@ public class MNodeStyleController extends NodeStyleController {
 	public void toggleItalic(final NodeModel node) {
 		createOwnFont(node);
 		final ModeController modeController = getModeController();
-		final IUndoableActor actor = new IUndoableActor() {
+		final IActor actor = new IActor() {
 			public void act() {
 				toggleItalic(node);
 			}

@@ -35,22 +35,25 @@ import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.core.util.MultipleValueMap;
 
+/**
+ * Class for managing localized resources. See translation property files.
+ */
+// TODO ARCH rladstaetter 22.03.2009 reduce this class to a simple Map<String,String>
 public class FreeplaneResourceBundle extends ResourceBundle {
 	private static final String DEFAULT_LANGUAGE = "en";
 	public static final String POSTFIX_TRANSLATE_ME = "[translate me]";
 
 	public static NamedObject createTranslatedString(final String key) {
-		final String fs = FreeplaneResourceBundle.getText(key);
+		final String fs = FreeplaneResourceBundle.getByKey(key);
 		return new NamedObject(key, fs);
 	}
 
-	public static String getText(final String key) {
+	public static String getByKey(final String key) {
 		if (key == null) {
 			return null;
 		}
-		final FreeplaneResourceBundle freeplaneResourceBundle = (FreeplaneResourceBundle) ResourceController
-		    .getResourceController().getResources();
-		return freeplaneResourceBundle.getResourceString(key);
+		return ((FreeplaneResourceBundle) ResourceController
+		    .getResourceController().getResources()).getResourceString(key);
 	}
 
 	/**

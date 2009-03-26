@@ -49,7 +49,7 @@ class ExportPdf extends ExportVectorGraphic {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final File chosenFile = chooseFile("pdf", FreeplaneResourceBundle.getText("export_pdf_text"), null);
+		final File chosenFile = chooseFile("pdf", FreeplaneResourceBundle.getByKey("export_pdf_text"), null);
 		if (chosenFile == null) {
 			return;
 		}

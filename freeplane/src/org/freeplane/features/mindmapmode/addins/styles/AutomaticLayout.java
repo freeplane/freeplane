@@ -60,7 +60,7 @@ import org.freeplane.features.mindmapnode.pattern.MPatternController;
 import org.freeplane.features.mindmapnode.pattern.Pattern;
 import org.freeplane.features.mindmapnode.pattern.Patterns;
 import org.freeplane.features.mindmapnode.pattern.StylePatternFactory;
-import org.freeplane.n3.nanoxml.IXMLElement;
+import org.freeplane.n3.nanoxml.XMLElement;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
@@ -390,7 +390,7 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 	    // TODO Auto-generated method stub
 	    
     }
-	protected IExtension createExtension(final NodeModel node, final IXMLElement element) {
+	protected IExtension createExtension(final NodeModel node, final XMLElement element) {
 		return this;
 	}
 }

@@ -34,7 +34,7 @@ class ZoomInAction extends AbstractAction implements IFreeplaneAction {
 
 	public ZoomInAction(final ViewController controller) {
 		this.controller = controller;
-		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText("zoom_in"));
+		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getByKey("zoom_in"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {

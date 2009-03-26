@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import org.freeplane.core.controller.FreeplaneVersion;
 import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.url.UrlManager;
+import org.freeplane.core.util.LogTool;
 
 /**
  * Provides methods and constants which are dependend on the underlying java version
@@ -24,11 +25,10 @@ public class Compat {
 	public static final boolean NEED_PREF_SIZE_BUG_FIX = JAVA_VERSION.compareTo(VERSION_1_5_0) < 0;
 
 	public static void checkJavaVersion() {
-		System.out.println("Checking Java Version...");
 		if (Compat.isLowerJdk(VERSION_1_5_0)) {
 			final String message = "Warning: Freeplane requires version Java 1.5.0 or higher (your version: "
 			        + JAVA_VERSION + ", installed in " + System.getProperty("java.home") + ").";
-			System.err.println(message);
+			LogTool.severe(message);
 			JOptionPane.showMessageDialog(null, message, "Freeplane", JOptionPane.WARNING_MESSAGE);
 			System.exit(1);
 		}
@@ -66,6 +66,7 @@ public class Compat {
 		info.append(System.getProperty("os.name"));
 		info.append("; os_version = ");
 		info.append(System.getProperty("os.version"));
+		LogTool.info(info.toString());
 	}
 
 	public static File urlToFile(final URL pUrl) throws URISyntaxException {

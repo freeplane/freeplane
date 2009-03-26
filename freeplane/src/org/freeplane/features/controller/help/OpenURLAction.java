@@ -50,7 +50,7 @@ class OpenURLAction extends AbstractAction implements IFreeplaneAction {
 			controller.getViewController().openDocument(new URL(url));
 		}
 		catch (final MalformedURLException ex) {
-			controller.errorMessage(FreeplaneResourceBundle.getText("url_error") + "\n" + ex);
+			controller.errorMessage(FreeplaneResourceBundle.getByKey("url_error") + "\n" + ex);
 		}
 		catch (final Exception ex) {
 			controller.errorMessage(ex);

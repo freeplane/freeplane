@@ -38,7 +38,7 @@ import org.freeplane.core.io.ListHashTable;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.model.ColorUtils;
 import org.freeplane.n3.nanoxml.IXMLBuilder;
-import org.freeplane.n3.nanoxml.IXMLElement;
+import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.NonValidator;
 import org.freeplane.n3.nanoxml.StdXMLReader;
@@ -92,7 +92,7 @@ public class TreeXmlReader implements IXMLBuilder {
 	private Object parentElement;
 	final private ReadManager parseManager;
 	private XMLParser parser;
-	private IXMLElement saveAsXmlUntil;
+	private XMLElement saveAsXmlUntil;
 	private String tag;
 	private StdXMLBuilder xmlBuilder;
 
@@ -149,7 +149,7 @@ public class TreeXmlReader implements IXMLBuilder {
 			return;
 		}
 		final Iterator iterator = getElementHandlers().iterator(tag);
-		final IXMLElement lastBuiltElement = xmlBuilder.getLastBuiltElement();
+		final XMLElement lastBuiltElement = xmlBuilder.getLastBuiltElement();
 		while (iterator.hasNext() && currentElement == null) {
 			nodeCreator = (IElementHandler) iterator.next();
 			currentElement = nodeCreator.createElement(parentElement, name, lastBuiltElement);
@@ -184,7 +184,7 @@ public class TreeXmlReader implements IXMLBuilder {
 	 * .String, java.lang.String, java.lang.String)
 	 */
 	public void endElement(final String name, final String nsPrefix, final String nsURI) throws Exception {
-		final IXMLElement lastBuiltElement = xmlBuilder.getParentElement();
+		final XMLElement lastBuiltElement = xmlBuilder.getParentElement();
 		xmlBuilder.endElement(name, nsPrefix, nsURI);
 		if (saveAsXmlUntil == lastBuiltElement) {
 			saveAsXmlUntil = null;
@@ -205,7 +205,7 @@ public class TreeXmlReader implements IXMLBuilder {
 			((IElementContentHandler) nodeCreator).endElement(currentElement, name, element, lastBuiltElement,
 			    elementContentAsString);
 		}
-		final IXMLElement top = lastBuiltElement.getParent();
+		final XMLElement top = lastBuiltElement.getParent();
 		if (nodeCreator != null && top != null && top.hasChildren()) {
 			final int lastChildIndex = top.getChildrenCount() - 1;
 			top.removeChildAtIndex(lastChildIndex);

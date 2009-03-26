@@ -37,8 +37,8 @@ public class HyperLinkEqualsCondition extends HyperLinkCondition {
 
 	@Override
 	protected String createDesctiption() {
-		final String condition = FreeplaneResourceBundle.getText(LinkConditionController.FILTER_LINK);
-		final String simpleCondition = FreeplaneResourceBundle.getText(ConditionFactory.FILTER_IS_EQUAL_TO);
+		final String condition = FreeplaneResourceBundle.getByKey(LinkConditionController.FILTER_LINK);
+		final String simpleCondition = FreeplaneResourceBundle.getByKey(ConditionFactory.FILTER_IS_EQUAL_TO);
 		return ConditionFactory.createDescription(condition, simpleCondition, getHyperlink(), false);
 	}
 

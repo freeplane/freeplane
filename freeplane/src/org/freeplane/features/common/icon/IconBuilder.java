@@ -24,21 +24,21 @@ import org.freeplane.core.io.IElementDOMHandler;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.n3.nanoxml.IXMLElement;
+import org.freeplane.n3.nanoxml.XMLElement;
 
 class IconBuilder implements IElementDOMHandler {
 	static class IconProperties {
 		String iconName;
 	}
 
-	public Object createElement(final Object parent, final String tag, final IXMLElement attributes) {
+	public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
 		if (tag.equals("icon")) {
 			return new IconProperties();
 		}
 		return null;
 	}
 
-	public void endElement(final Object parent, final String tag, final Object userObject, final IXMLElement dom) {
+	public void endElement(final Object parent, final String tag, final Object userObject, final XMLElement dom) {
 		if (parent instanceof NodeModel && tag.equals("icon")) {
 			final NodeModel node = (NodeModel) parent;
 			final IconProperties ip = (IconProperties) userObject;
@@ -63,6 +63,6 @@ class IconBuilder implements IElementDOMHandler {
 		registerAttributeHandlers(reader);
 	}
 
-	public void setAttributes(final String tag, final Object node, final IXMLElement attributes) {
+	public void setAttributes(final String tag, final Object node, final XMLElement attributes) {
 	}
 }

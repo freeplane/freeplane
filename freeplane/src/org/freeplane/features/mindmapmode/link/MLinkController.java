@@ -35,7 +35,7 @@ import org.freeplane.core.modecontroller.MapChangeEvent;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.undo.IUndoableActor;
+import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.link.ArrowLinkModel;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.LinkModel;
@@ -74,7 +74,7 @@ public class MLinkController extends LinkController {
 			if (linkModels == null || linkModels.isEmpty()) {
 				return;
 			}
-			final IUndoableActor actor = new IUndoableActor() {
+			final IActor actor = new IActor() {
 				public void act() {
 					links.set(id, Collections.EMPTY_SET);
 				}
@@ -124,7 +124,7 @@ public class MLinkController extends LinkController {
 		setLinkByFileChooser = new SetLinkByFileChooserAction(controller);
 		modeController.addAction("setLinkByFileChooser", setLinkByFileChooser);
 		final AddArrowLinkAction addArrowLinkAction = new AddArrowLinkAction(controller);
-		modeController.addAction("addArrowLinkAction", addArrowLinkAction);
+		modeController.addAction(addArrowLinkAction);
 		modeController.addAction("removeArrowLinkAction", new RemoveArrowLinkAction(this, null));
 		colorArrowLinkAction = new ColorArrowLinkAction(this, null);
 		modeController.addAction("colorArrowLinkAction", colorArrowLinkAction);
@@ -172,7 +172,7 @@ public class MLinkController extends LinkController {
 	}
 
 	public void setArrowLinkEndPoints(final ArrowLinkModel link, final Point startPoint, final Point endPoint) {
-		final IUndoableActor actor = new IUndoableActor() {
+		final IActor actor = new IActor() {
 			final private Point oldEndPoint = link.getEndInclination();
 			final private Point oldStartPoint = link.getStartInclination();
 

@@ -50,7 +50,7 @@ class FindAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		final NodeModel selected = getController().getSelection().getSelected();
 		final String what = UITools.showInputDialog(getController(), selected, FreeplaneResourceBundle
-		    .getText("find_what"), FreeplaneResourceBundle.getText("find"), JOptionPane.QUESTION_MESSAGE);
+		    .getByKey("find_what"), FreeplaneResourceBundle.getByKey("find"), JOptionPane.QUESTION_MESSAGE);
 		if (what == null || what.equals("")) {
 			return;
 		}
@@ -59,7 +59,7 @@ class FindAction extends AFreeplaneAction {
 		final boolean found = find(getModeController().getMapController().getSelectedNode(), subterms,
 		/*caseSensitive=*/false);
 		if (!found) {
-			final String messageText = FreeplaneResourceBundle.getText("no_found_from");
+			final String messageText = FreeplaneResourceBundle.getByKey("no_found_from");
 			final String searchTerm = messageText.startsWith("<html>") ? HtmlTools.toXMLEscapedText(getSearchTerm())
 			        : getSearchTerm();
 			UITools.informationMessage(getController().getViewController().getFrame(), messageText.replaceAll("\\$1",

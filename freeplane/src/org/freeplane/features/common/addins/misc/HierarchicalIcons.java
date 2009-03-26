@@ -39,7 +39,7 @@ import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.components.MultipleImage;
-import org.freeplane.n3.nanoxml.IXMLElement;
+import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
  * @author Foltin
@@ -236,7 +236,7 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 	    // TODO Auto-generated method stub
 	    
     }
-	protected IExtension createExtension(final NodeModel node, final IXMLElement element) {
+	protected IExtension createExtension(final NodeModel node, final XMLElement element) {
 		return this;
 	}
 }

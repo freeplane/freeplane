@@ -195,7 +195,7 @@ class ManagePatternsPopupDialog extends JDialog implements KeyListener {
 		catch (final Exception e) {
 			LogTool.logException(e);
 			JOptionPane.showMessageDialog(this, getDialogTitle(), FreeplaneResourceBundle
-			    .getText("accessories/plugins/ManagePatterns.not_found"), JOptionPane.ERROR_MESSAGE);
+			    .getByKey("accessories/plugins/ManagePatterns.not_found"), JOptionPane.ERROR_MESSAGE);
 		}
 		initialize(patternList);
 	}
@@ -258,7 +258,7 @@ class ManagePatternsPopupDialog extends JDialog implements KeyListener {
 	/**
 	 */
 	private String getDialogTitle() {
-		return FreeplaneResourceBundle.getText("accessories/plugins/ManagePatterns.dialog.title");
+		return FreeplaneResourceBundle.getByKey("accessories/plugins/ManagePatterns.dialog.title");
 	}
 
 	/**
@@ -274,7 +274,7 @@ class ManagePatternsPopupDialog extends JDialog implements KeyListener {
 					cancelPressed();
 				}
 			});
-			MenuBuilder.setLabelAndMnemonic(jCancelButton, FreeplaneResourceBundle.getText("cancel"));
+			MenuBuilder.setLabelAndMnemonic(jCancelButton, FreeplaneResourceBundle.getByKey("cancel"));
 		}
 		return jCancelButton;
 	}
@@ -415,7 +415,7 @@ class ManagePatternsPopupDialog extends JDialog implements KeyListener {
 					okPressed();
 				}
 			});
-			jOKButton.setText(FreeplaneResourceBundle.getText("ManagePatternsPopupDialog.Save"));
+			jOKButton.setText(FreeplaneResourceBundle.getByKey("ManagePatternsPopupDialog.Save"));
 		}
 		return jOKButton;
 	}
@@ -541,7 +541,7 @@ class ManagePatternsPopupDialog extends JDialog implements KeyListener {
 	}
 
 	private String searchForNameForNewPattern() {
-		final String newName = FreeplaneResourceBundle.getText("PatternNewNameProperty");
+		final String newName = FreeplaneResourceBundle.getByKey("PatternNewNameProperty");
 		final Vector allNames = new Vector();
 		for (final Iterator iter = mPatternListModel.getPatternList().iterator(); iter.hasNext();) {
 			final Pattern p = (Pattern) iter.next();
@@ -575,7 +575,7 @@ class ManagePatternsPopupDialog extends JDialog implements KeyListener {
 					}
 					if (otherPattern.getName().equals(newPatternName)) {
 						JOptionPane.showMessageDialog(this, FreeplaneResourceBundle
-						    .getText("ManagePatternsPopupDialog.DuplicateNameMessage"));
+						    .getByKey("ManagePatternsPopupDialog.DuplicateNameMessage"));
 					}
 				}
 			}

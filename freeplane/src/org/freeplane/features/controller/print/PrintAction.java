@@ -40,8 +40,8 @@ class PrintAction extends AbstractPrintAction {
 		super(printController, null, new ImageIcon(ResourceController.getResourceController().getResource(
 		    "/images/fileprint.png")));
 		this.controller = controller;
-		MenuBuilder.setLabelAndMnemonic(this, isDlg ? FreeplaneResourceBundle.getText("print_dialog")
-		        : FreeplaneResourceBundle.getText("print"));
+		MenuBuilder.setLabelAndMnemonic(this, isDlg ? FreeplaneResourceBundle.getByKey("print_dialog")
+		        : FreeplaneResourceBundle.getByKey("print"));
 		this.isDlg = isDlg;
 	}
 

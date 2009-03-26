@@ -51,7 +51,7 @@ class ImportFolderStructureAction extends AFreeplaneAction implements IFreeplane
 	public void actionPerformed(final ActionEvent e) {
 		final JFileChooser chooser = new JFileChooser();
 		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		chooser.setDialogTitle(FreeplaneResourceBundle.getText("select_folder_for_importing"));
+		chooser.setDialogTitle(FreeplaneResourceBundle.getByKey("select_folder_for_importing"));
 		final ViewController viewController = getController().getViewController();
 		final int returnVal = chooser.showOpenDialog(viewController.getContentPane());
 		if (returnVal == JFileChooser.APPROVE_OPTION) {

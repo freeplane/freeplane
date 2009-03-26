@@ -61,7 +61,7 @@ public class ConditionFactory {
 		        + simpleCondition
 		        + (value != null ? " \"" + value + "\"" : "")
 		        + (ignoreCase && value != null ? ", "
-		                + FreeplaneResourceBundle.getText(ConditionFactory.FILTER_IGNORE_CASE) : "");
+		                + FreeplaneResourceBundle.getByKey(ConditionFactory.FILTER_IGNORE_CASE) : "");
 		return description;
 	}
 

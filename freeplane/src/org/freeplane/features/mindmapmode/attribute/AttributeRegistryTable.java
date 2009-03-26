@@ -126,7 +126,7 @@ class AttributeRegistryTable extends JTable {
 	static final private Icon checkBoxImage = new ImageIcon(ResourceController.getResourceController().getResource(
 	    "/images/checkbox12.png"));
 	private static final ButtonRenderer editButtonRenderer = new ButtonRenderer(AttributeManagerDialog.editButtonImage,
-	    FreeplaneResourceBundle.getText("attributes_edit_tooltip"));
+	    FreeplaneResourceBundle.getByKey("attributes_edit_tooltip"));
 	final private AttributeManagerDialog.EditListAction editListAction;
 	final private ButtonEditor selectAllButtonEditor;
 	final private ButtonRenderer selectAllButtonRenderer;
@@ -136,7 +136,7 @@ class AttributeRegistryTable extends JTable {
 		this.editListAction = editListAction;
 		getTableHeader().setReorderingAllowed(false);
 		selectAllButtonRenderer = new ButtonRenderer(AttributeRegistryTable.checkBoxImage, FreeplaneResourceBundle
-		    .getText("attributes_select_all_tooltip"));
+		    .getByKey("attributes_select_all_tooltip"));
 		selectAllButtonEditor = new ButtonEditor(new ToggleAllAction());
 		setDefaultEditor(IListModel.class, new ButtonEditor(editListAction));
 		setDefaultRenderer(IListModel.class, AttributeRegistryTable.editButtonRenderer);
@@ -171,15 +171,15 @@ class AttributeRegistryTable extends JTable {
 			final JComponent label = (JComponent) tableCellRenderer;
 			switch (column) {
 				case 1:
-					label.setToolTipText(FreeplaneResourceBundle.getText("attributes_visible_tooltip"));
+					label.setToolTipText(FreeplaneResourceBundle.getByKey("attributes_visible_tooltip"));
 					break;
 				case 2:
 					if (row == 0) {
 						label.setToolTipText(FreeplaneResourceBundle
-						    .getText("attributes_restricted_attributes_tooltip"));
+						    .getByKey("attributes_restricted_attributes_tooltip"));
 					}
 					else {
-						label.setToolTipText(FreeplaneResourceBundle.getText("attributes_restricted_values_tooltip"));
+						label.setToolTipText(FreeplaneResourceBundle.getByKey("attributes_restricted_values_tooltip"));
 					}
 					break;
 			}
@@ -192,7 +192,7 @@ class AttributeRegistryTable extends JTable {
 		if (column == 3) {
 			final IListModel list = (IListModel) getModel().getValueAt(row, column);
 			final String title = getModel().getValueAt(row, 0).toString();
-			final String labelText = FreeplaneResourceBundle.getText("attribute_list_box_label_text");
+			final String labelText = FreeplaneResourceBundle.getByKey("attribute_list_box_label_text");
 			editListAction.setListBoxModel(title, labelText, list);
 		}
 		return super.prepareEditor(editor, row, column);

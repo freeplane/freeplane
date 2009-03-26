@@ -112,7 +112,7 @@ public class Controller extends AController {
 			myMessage = message.toString();
 		}
 		else {
-			myMessage = FreeplaneResourceBundle.getText("undefined_error");
+			myMessage = FreeplaneResourceBundle.getByKey("undefined_error");
 			if (myMessage == null) {
 				myMessage = "Undefined error";
 			}

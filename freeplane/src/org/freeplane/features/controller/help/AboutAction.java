@@ -39,13 +39,13 @@ class AboutAction extends AbstractAction implements IFreeplaneAction {
 	 */
 	AboutAction(final Controller controller) {
 		this.controller = controller;
-		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText("about"));
+		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getByKey("about"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		JOptionPane.showMessageDialog(controller.getViewController().getViewport(), FreeplaneResourceBundle
-		    .getText("about_text")
-		        + FreeplaneVersion.getVersion(), FreeplaneResourceBundle.getText("about"),
+		    .getByKey("about_text")
+		        + FreeplaneVersion.getVersion(), FreeplaneResourceBundle.getByKey("about"),
 		    JOptionPane.INFORMATION_MESSAGE);
 	}
 

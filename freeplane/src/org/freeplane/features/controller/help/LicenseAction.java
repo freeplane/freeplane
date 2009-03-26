@@ -36,12 +36,12 @@ class LicenseAction extends AbstractAction implements IFreeplaneAction {
 
 	LicenseAction(final Controller controller) {
 		this.controller = controller;
-		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText(NAME));
+		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getByKey(NAME));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		UITools.informationMessage(controller.getViewController().getFrame(), FreeplaneResourceBundle
-		    .getText("license_text"), FreeplaneResourceBundle.getText(NAME));
+		    .getByKey("license_text"), FreeplaneResourceBundle.getByKey(NAME));
 	}
 
 	public String getName() {

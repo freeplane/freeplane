@@ -175,7 +175,7 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 	final private JTable view;
 
 	public AttributeManagerDialog(final Controller controller, final Frame frame) {
-		super(frame, FreeplaneResourceBundle.getText("attributes_dialog_title"), true);
+		super(frame, FreeplaneResourceBundle.getByKey("attributes_dialog_title"), true);
 		this.controller = controller;
 		view = new AttributeRegistryTable(new EditListAction());
 		model = AttributeRegistry.getRegistry(controller.getMap());
@@ -203,11 +203,11 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 				model.setAttributeLayoutChanged();
 			}
 		});
-		size.setToolTipText(FreeplaneResourceBundle.getText("attribute_font_size_tooltip"));
+		size.setToolTipText(FreeplaneResourceBundle.getByKey("attribute_font_size_tooltip"));
 		southButtons.add(size);
 		southButtons.add(Box.createHorizontalGlue());
 		final JButton importBtn = new JButton(new ImportAction());
-		importBtn.setToolTipText(FreeplaneResourceBundle.getText("attributes_import_tooltip"));
+		importBtn.setToolTipText(FreeplaneResourceBundle.getByKey("attributes_import_tooltip"));
 		southButtons.add(importBtn);
 		southButtons.add(Box.createHorizontalGlue());
 		UITools.addEscapeActionToDialog(this);

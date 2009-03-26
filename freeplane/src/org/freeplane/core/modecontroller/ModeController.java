@@ -39,7 +39,7 @@ import org.freeplane.core.ui.IFreeplaneAction;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.core.undo.IUndoableActor;
+import org.freeplane.core.undo.IActor;
 import org.freeplane.core.url.UrlManager;
 
 /**
@@ -163,7 +163,7 @@ public class ModeController extends AController {
 		menuContributors.add(contributor);
 	}
 
-	public void execute(final IUndoableActor actor) {
+	public void execute(final IActor actor) {
 		actor.act();
 	}
 

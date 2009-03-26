@@ -36,10 +36,12 @@ import javax.swing.WindowConstants;
 
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.util.LogTool;
 
 /**
  * Dialog with a decision that can be disabled.
@@ -47,7 +49,6 @@ import org.freeplane.core.ui.MenuBuilder;
  * @author foltin
  */
 public class OptionalDontShowMeAgainDialog {
-
 	public final static int BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED = 1;
 	public final static int ONLY_OK_SELECTION_IS_STORED = 0;
 	private final Controller controller;
@@ -65,7 +66,14 @@ public class OptionalDontShowMeAgainDialog {
 	                                     final String pPropertyName, final int pMessageType) {
 		this.controller = controller;
 		mParent = controller.getViewController().getFrame();
-		mNode = controller.getSelection().getSelected();
+		IMapSelection selection = controller.getSelection();
+		if (selection != null) {
+			mNode = selection.getSelected();
+		}
+		else {
+			mNode = null;
+			LogTool.warn("controller.getSelection() was null!");
+		}
 		mMessageId = pMessageId;
 		mTitleId = pTitleId;
 		mPropertyName = pPropertyName;
@@ -92,13 +100,12 @@ public class OptionalDontShowMeAgainDialog {
 	}
 
 	private void setProperty(String value) {
-	    ResourceController.getResourceController().setProperty(mPropertyName, value);
-	    
-    }
+		ResourceController.getResourceController().setProperty(mPropertyName, value);
+	}
 
 	private String getProperty() {
-	    return ResourceController.getResourceController().getProperty(mPropertyName);
-    }
+		return ResourceController.getResourceController().getProperty(mPropertyName);
+	}
 
 	/**
 	 * @return an int from JOptionPane (eg. JOptionPane.OK_OPTION).
@@ -118,7 +125,7 @@ public class OptionalDontShowMeAgainDialog {
 			return this;
 		}
 		mDialog = null;
-		mDialog = new JDialog(mParent, FreeplaneResourceBundle.getText(mTitleId));
+		mDialog = new JDialog(mParent, FreeplaneResourceBundle.getByKey(mTitleId));
 		mDialog.setModal(true);
 		mDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		final AbstractAction cancelAction = new AbstractAction() {
@@ -140,7 +147,7 @@ public class OptionalDontShowMeAgainDialog {
 		});
 		mDialog.getContentPane().setLayout(new GridBagLayout());
 		mDialog.getContentPane().add(
-		    new JLabel(FreeplaneResourceBundle.getText(mMessageId)),
+		    new JLabel(FreeplaneResourceBundle.getByKey(mMessageId)),
 		    new GridBagConstraints(1, 0, 1, 1, 1.0, 1.0, GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(
 		        5, 5, 0, 0), 0, 0));
 		final ImageIcon questionMark = new ImageIcon(ResourceController.getResourceController().getResource(
@@ -156,13 +163,13 @@ public class OptionalDontShowMeAgainDialog {
 		else {
 			boxString = "OptionalDontShowMeAgainDialog.rememberMyDescision";
 		}
-		mDontShowAgainBox = new JCheckBox(FreeplaneResourceBundle.getText(boxString));
+		mDontShowAgainBox = new JCheckBox(FreeplaneResourceBundle.getByKey(boxString));
 		MenuBuilder.setLabelAndMnemonic(mDontShowAgainBox, null);
 		mDialog.getContentPane().add(
 		    mDontShowAgainBox,
 		    new GridBagConstraints(0, 2, 3, 1, 1.0, 1.0, GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(
 		        5, 5, 0, 0), 0, 0));
-		final JButton okButton = new JButton(FreeplaneResourceBundle.getText("OptionalDontShowMeAgainDialog.ok"));
+		final JButton okButton = new JButton(FreeplaneResourceBundle.getByKey("OptionalDontShowMeAgainDialog.ok"));
 		MenuBuilder.setLabelAndMnemonic(okButton, null);
 		okButton.addActionListener(okAction);
 		mDialog.getContentPane().add(
@@ -170,7 +177,7 @@ public class OptionalDontShowMeAgainDialog {
 		    new GridBagConstraints(2, 3, 1, 1, 1.0, 1.0, GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(
 		        5, 5, 0, 0), 0, 0));
 		final JButton cancelButton = new JButton(FreeplaneResourceBundle
-		    .getText("OptionalDontShowMeAgainDialog.cancel"));
+		    .getByKey("OptionalDontShowMeAgainDialog.cancel"));
 		MenuBuilder.setLabelAndMnemonic(cancelButton, null);
 		cancelButton.addActionListener(cancelAction);
 		mDialog.getContentPane().add(

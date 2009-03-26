@@ -22,7 +22,7 @@ package org.freeplane.core.undo;
 import java.awt.event.ActionListener;
 
 public interface IUndoHandler {
-	void addActor(IUndoableActor actor);
+	void addActor(IActor actor);
 
 	boolean canRedo();
 

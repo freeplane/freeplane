@@ -43,12 +43,12 @@ public class HelpController implements IExtension {
 	public HelpController(final Controller controller) {
 		super();
 		controller.addAction(new AboutAction(controller));
-		controller.addAction(new OpenURLAction(controller, FreeplaneResourceBundle.getText("Freeplane"),
+		controller.addAction(new OpenURLAction(controller, FreeplaneResourceBundle.getByKey("Freeplane"),
 		    ResourceController.getResourceController().getProperty("webFreeplaneLocation")));
-		controller.addAction(new FaqOpenURLAction(controller, FreeplaneResourceBundle.getText("FAQ"),
+		controller.addAction(new FaqOpenURLAction(controller, FreeplaneResourceBundle.getByKey("FAQ"),
 		    ResourceController.getResourceController().getProperty("webFAQLocation")));
 		controller.addAction(new KeyDocumentationAction(controller));
-		webDocu = new WebDocuAction(controller, FreeplaneResourceBundle.getText("webDocu"), ResourceController
+		webDocu = new WebDocuAction(controller, FreeplaneResourceBundle.getByKey("webDocu"), ResourceController
 		    .getResourceController().getProperty("webDocuLocation"));
 		controller.addAction(webDocu);
 		controller.addAction(new DocumentationAction(controller));

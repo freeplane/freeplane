@@ -22,7 +22,7 @@ package org.freeplane.features.common.note;
 import org.freeplane.core.io.IElementContentHandler;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.features.common.text.NodeTextBuilder;
-import org.freeplane.n3.nanoxml.IXMLElement;
+import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
  * @author Dimitry Polivaev
@@ -35,7 +35,7 @@ class NoteBuilder implements IElementContentHandler {
 		this.noteController = noteController;
 	}
 
-	public Object createElement(final Object parent, final String tag, final IXMLElement attributes) {
+	public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
 		if (attributes == null) {
 			return null;
 		}
@@ -46,7 +46,7 @@ class NoteBuilder implements IElementContentHandler {
 		return parent;
 	}
 
-	public void endElement(final Object parent, final String tag, final Object node, final IXMLElement attributes,
+	public void endElement(final Object parent, final String tag, final Object node, final XMLElement attributes,
 	                       final String content) {
 		if (tag.equals("richcontent")) {
 			final String xmlText = content;

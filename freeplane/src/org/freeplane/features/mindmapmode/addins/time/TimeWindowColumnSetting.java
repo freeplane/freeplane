@@ -1,10 +1,10 @@
 package org.freeplane.features.mindmapmode.addins.time;
 
-import org.freeplane.n3.nanoxml.IXMLElement;
+import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 class TimeWindowColumnSetting {
-	static TimeWindowColumnSetting create(final IXMLElement xml) {
+	static TimeWindowColumnSetting create(final XMLElement xml) {
 		final TimeWindowColumnSetting timeWindowColumnSetting = new TimeWindowColumnSetting();
 		timeWindowColumnSetting.columnSorting = Integer.parseInt(xml.getAttribute("column_sorting", null));
 		timeWindowColumnSetting.columnWidth = Integer.parseInt(xml.getAttribute("column_width", null));
@@ -22,8 +22,8 @@ class TimeWindowColumnSetting {
 		return columnWidth;
 	}
 
-	void marschall(final IXMLElement xml) {
-		final IXMLElement child = new XMLElement("time_window_column_setting");
+	void marschall(final XMLElement xml) {
+		final XMLElement child = new XMLElement("time_window_column_setting");
 		child.setAttribute("column_sorting", Integer.toString(columnSorting));
 		child.setAttribute("column_width", Integer.toString(columnWidth));
 		xml.addChild(child);

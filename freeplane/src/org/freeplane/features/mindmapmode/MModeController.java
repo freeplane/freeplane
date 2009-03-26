@@ -33,7 +33,7 @@ import org.freeplane.core.resources.ui.OptionPanelBuilder;
 import org.freeplane.core.resources.ui.PropertyAction;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.undo.IUndoHandler;
-import org.freeplane.core.undo.IUndoableActor;
+import org.freeplane.core.undo.IActor;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.features.common.note.NoteController;
 import org.freeplane.features.mindmapmode.file.MFileManager;
@@ -56,7 +56,7 @@ public class MModeController extends ModeController {
 		createOptionPanelControls();
 	}
 
-	private void addUndoableActor(final IUndoableActor actor) {
+	private void addUndoableActor(final IActor actor) {
 		final MMapModel map = (MMapModel) getController().getMap();
 		final IUndoHandler undoHandler = map.getUndoHandler();
 		undoHandler.addActor(actor);
@@ -106,7 +106,7 @@ public class MModeController extends ModeController {
 	}
 
 	@Override
-	public void execute(final IUndoableActor actor) {
+	public void execute(final IActor actor) {
 		actor.act();
 		addUndoableActor(actor);
 	}

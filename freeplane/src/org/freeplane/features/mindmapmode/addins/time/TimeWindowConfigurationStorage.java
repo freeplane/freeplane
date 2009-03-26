@@ -6,16 +6,16 @@ import java.util.Iterator;
 import javax.swing.JDialog;
 
 import org.freeplane.core.resources.WindowConfigurationStorage;
-import org.freeplane.n3.nanoxml.IXMLElement;
+import org.freeplane.n3.nanoxml.XMLElement;
 
 class TimeWindowConfigurationStorage extends WindowConfigurationStorage {
 	public static TimeWindowConfigurationStorage decorateDialog(final String marshalled, final JDialog dialog) {
 		final TimeWindowConfigurationStorage storage = new TimeWindowConfigurationStorage();
-		final IXMLElement xml = storage.unmarschall(marshalled, dialog);
+		final XMLElement xml = storage.unmarschall(marshalled, dialog);
 		if (xml != null) {
 			final Iterator iterator = xml.getChildren().iterator();
 			while (iterator.hasNext()) {
-				storage.addTimeWindowColumnSetting(TimeWindowColumnSetting.create((IXMLElement) iterator.next()));
+				storage.addTimeWindowColumnSetting(TimeWindowColumnSetting.create((XMLElement) iterator.next()));
 			}
 			return storage;
 		}
@@ -45,7 +45,7 @@ class TimeWindowConfigurationStorage extends WindowConfigurationStorage {
 	}
 
 	@Override
-	protected void marschallSpecificElements(final IXMLElement xml) {
+	protected void marshallSpecificElements(final XMLElement xml) {
 		xml.setName("time_window_configuration_storage");
 		final Iterator<TimeWindowColumnSetting> iterator = timeWindowColumnSettingList.iterator();
 		while (iterator.hasNext()) {

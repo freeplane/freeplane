@@ -252,7 +252,7 @@ public class EditNodeBase {
 	/**
 		 */
 	protected String getText(final String string) {
-		return FreeplaneResourceBundle.getText(string);
+		return FreeplaneResourceBundle.getByKey(string);
 	}
 
 	/**

@@ -37,4 +37,6 @@ public class ColorUtils {
 		return new Color(Integer.parseInt(str.substring(1, 3), 16), Integer.parseInt(str
 		    .substring(3, 5), 16), Integer.parseInt(str.substring(5, 7), 16));
 	}
+
+	public static final String BLACK = "#000000";
 }

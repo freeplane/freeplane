@@ -39,7 +39,7 @@ class HideAllAttributesAction extends AbstractAction implements IFreeplaneAction
 	 */
 	public HideAllAttributesAction(final Controller controller) {
 		this.controller = controller;
-		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText("attributes_hide_all"));
+		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getByKey("attributes_hide_all"));
 	};
 
 	public void actionPerformed(final ActionEvent e) {

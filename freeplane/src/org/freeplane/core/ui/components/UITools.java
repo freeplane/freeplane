@@ -116,10 +116,6 @@ public class UITools {
 		JOptionPane.showMessageDialog(frame, text, string, type);
 	}
 
-	public static String removeMnemonic(final String rawLabel) {
-		return rawLabel.replaceFirst("&([^ ])", "$1");
-	}
-
 	public static void setDialogLocationRelativeTo(final JDialog dialog, final Component c) {
 		if (c == null) {
 			return;

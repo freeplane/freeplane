@@ -25,7 +25,7 @@ import java.util.ListIterator;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.undo.IUndoableActor;
+import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.edge.EdgeModel;
 import org.freeplane.features.common.edge.EdgeStyle;
@@ -60,7 +60,7 @@ public class MEdgeController extends EdgeController {
 		if (color == oldColor || color != null && color.equals(oldColor)) {
 			return;
 		}
-		final IUndoableActor actor = new IUndoableActor() {
+		final IActor actor = new IActor() {
 			public void act() {
 				EdgeModel.createEdgeModel(node).setColor(color);
 				modeController.getMapController().nodeChanged(node);
@@ -93,7 +93,7 @@ public class MEdgeController extends EdgeController {
 				return;
 			}
 		}
-		final IUndoableActor actor = new IUndoableActor() {
+		final IActor actor = new IActor() {
 			public void act() {
 				EdgeModel.createEdgeModel(node).setStyle(style);
 				modeController.getMapController().nodeChanged(node);
@@ -131,7 +131,7 @@ public class MEdgeController extends EdgeController {
 		if (width == oldWidth) {
 			return;
 		}
-		final IUndoableActor actor = new IUndoableActor() {
+		final IActor actor = new IActor() {
 			public void act() {
 				EdgeModel.createEdgeModel(node).setWidth(width);
 				modeController.getMapController().nodeChanged(node);

@@ -29,7 +29,7 @@ import org.freeplane.core.frame.ColorTracker;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.undo.IUndoableActor;
+import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.link.ArrowLinkModel;
 import org.freeplane.features.common.link.LinkController;
 
@@ -55,7 +55,7 @@ class ColorArrowLinkAction extends AFreeplaneAction {
 		if (color == oldColor || color != null && color.equals(oldColor)) {
 			return;
 		}
-		final IUndoableActor actor = new IUndoableActor() {
+		final IActor actor = new IActor() {
 
 			public void act() {
 				arrowLink.setColor(color);

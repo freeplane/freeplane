@@ -19,6 +19,8 @@
  */
 package org.freeplane.core.ui;
 
+import static javax.swing.Action.SMALL_ICON;
+
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
@@ -84,13 +86,11 @@ public abstract class AFreeplaneAction extends AbstractAction{
 
 	// TODO ARCH rladstaetter 18.02.2009 actions should not have a dependency on the controller
 	final private Controller controller;
-	private boolean selected;
-	private boolean visible;
+	private boolean selected = false;
+	private boolean visible = true;
 
 	public AFreeplaneAction(final Controller controller) {
 		super();
-		selected = false;
-		visible = true;
 		this.controller = controller;
 	}
 
@@ -102,10 +102,10 @@ public abstract class AFreeplaneAction extends AbstractAction{
 	 * @param controller
 	 * @param string
 	 */
-	public AFreeplaneAction(final Controller controller, final String title) {
+	public AFreeplaneAction(final Controller controller, final String titleKey) {
 		this(controller);
-		if (title != null && !title.equals("")) {
-			MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText(title));
+		if (titleKey != null && !titleKey.equals("")) {
+			MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getByKey(titleKey));
 		}
 	}
 
@@ -124,7 +124,7 @@ public abstract class AFreeplaneAction extends AbstractAction{
 		this(controller, title);
 		if (iconPath != null && !iconPath.equals("")) {
 			final ImageIcon icon = new ImageIcon(ResourceController.getResourceController().getResource(iconPath));
-			putValue(Action.SMALL_ICON, icon);
+			putValue(SMALL_ICON, icon);
 		}
 	}
 
@@ -158,10 +158,10 @@ public abstract class AFreeplaneAction extends AbstractAction{
 		}
 	}
 
-	public void setTooltip(final String tooltip) {
-		final String tooltipLocalized = FreeplaneResourceBundle.getText(tooltip);
-		putValue(Action.SHORT_DESCRIPTION, tooltipLocalized);
-		putValue(Action.LONG_DESCRIPTION, tooltipLocalized);
+	public void setTooltip(final String tooltipKey) {
+		final String tooltip = FreeplaneResourceBundle.getByKey(tooltipKey);
+		putValue(Action.SHORT_DESCRIPTION, tooltip);
+		putValue(Action.LONG_DESCRIPTION, tooltip);
 	}
 
 	public void setVisible() {

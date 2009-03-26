@@ -26,25 +26,35 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.undo.IUndoableActor;
+import org.freeplane.core.ui.IFreeplaneAction;
+import org.freeplane.core.ui.IResourceFreeplaneAction;
+import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.link.ArrowLinkModel;
 import org.freeplane.features.common.link.NodeLinks;
 
 /**
  * @author foltin
  */
-class AddArrowLinkAction extends AFreeplaneAction {
+class AddArrowLinkAction extends AFreeplaneAction implements IFreeplaneAction{
 	/**
 	 */
 	public AddArrowLinkAction(final Controller controller) {
-		super(controller, "add_link", "/images/designer.png");
+		super(controller, getTitle(), getIconPath());
 	}
+
+	private static String getIconPath() {
+	    return "/images/designer.png";
+    }
+
+	private static String getTitle() {
+	    return "add_link";
+    }
 
 	public void actionPerformed(final ActionEvent e) {
 		final List selecteds = getModeController().getMapController().getSelectedNodes();
 		if (selecteds.size() < 2) {
 			final Controller controller = getController();
-			controller.errorMessage(FreeplaneResourceBundle.getText("less_than_two_selected_nodes"));
+			controller.errorMessage(FreeplaneResourceBundle.getByKey("less_than_two_selected_nodes"));
 			return;
 		}
 		for (int i = 1; i < selecteds.size(); i++) {
@@ -54,7 +64,7 @@ class AddArrowLinkAction extends AFreeplaneAction {
 
 	public void addLink(final NodeModel source, final NodeModel target) {
 		final String targetID = target.createID();
-		final IUndoableActor actor = new IUndoableActor() {
+		final IActor actor = new IActor() {
 			private ArrowLinkModel arrowLink;
 
 			public void act() {
@@ -80,4 +90,8 @@ class AddArrowLinkAction extends AFreeplaneAction {
 		};
 		getModeController().execute(actor);
 	}
+
+	public String getName() {
+	    return "addArrowLinkAction";
+    }
 }

@@ -20,21 +20,21 @@
 package org.freeplane.core.io;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.n3.nanoxml.IXMLElement;
+import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
  * @author Dimitry Polivaev
  * 17.01.2009
  */
 public class UnknownElements implements IExtension {
-	final private IXMLElement unknownElements;
+	final private XMLElement unknownElements;
 
-	public UnknownElements(final IXMLElement unknownElements) {
+	public UnknownElements(final XMLElement unknownElements) {
 		super();
 		this.unknownElements = unknownElements;
 	}
 
-	public IXMLElement getUnknownElements() {
+	public XMLElement getUnknownElements() {
 		return unknownElements;
 	}
 }

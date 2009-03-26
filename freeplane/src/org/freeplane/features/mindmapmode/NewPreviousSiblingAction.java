@@ -23,8 +23,9 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.IFreeplaneAction;
 
-class NewPreviousSiblingAction extends AFreeplaneAction {
+class NewPreviousSiblingAction extends AFreeplaneAction implements IFreeplaneAction {
 	public NewPreviousSiblingAction(final Controller controller) {
 		super(controller, "new_sibling_before");
 	}
@@ -32,4 +33,8 @@ class NewPreviousSiblingAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		((MMapController) getModeController().getMapController()).addNewNode(MMapController.NEW_SIBLING_BEFORE, null);
 	}
+
+	public String getName() {
+	    return "newPreviousSibling";
+    }
 }

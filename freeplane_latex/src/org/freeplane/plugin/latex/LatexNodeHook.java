@@ -32,8 +32,8 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.ActionDescriptor;
-import org.freeplane.core.undo.IUndoableActor;
-import org.freeplane.n3.nanoxml.IXMLElement;
+import org.freeplane.core.undo.IActor;
+import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.view.swing.map.NodeView;
 
 /**
@@ -66,7 +66,7 @@ class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCycleList
 	}
 
 	@Override
-	protected IExtension createExtension(final NodeModel node, final IXMLElement element) {
+	protected IExtension createExtension(final NodeModel node, final XMLElement element) {
 		final LatexExtension latexExtension = new LatexExtension(node);
 		if (element != null) {
 			latexExtension.setEquation(element.getAttribute("EQUATION"));
@@ -130,7 +130,7 @@ class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCycleList
 	}
 
 	@Override
-	protected void saveExtension(final IExtension extension, final IXMLElement element) {
+	protected void saveExtension(final IExtension extension, final XMLElement element) {
 		final LatexExtension latexExtension = (LatexExtension) extension;
 		element.setAttribute("EQUATION", latexExtension.getEquation());
 		super.saveExtension(extension, element);
@@ -141,7 +141,7 @@ class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCycleList
 		if (equation.equals(newEquation)) {
 			return;
 		}
-		final IUndoableActor actor = new IUndoableActor() {
+		final IActor actor = new IActor() {
 			private final String oldEquation = equation;
 
 			public void act() {

@@ -71,7 +71,7 @@ public class ColorTracker implements ActionListener, Serializable {
 		final ColorTracker ok = new ColorTracker(pane);
 		final JDialog dialog = JColorChooser.createDialog(component, title, true, pane, ok, null);
 		final Container container = (Container) dialog.getContentPane().getComponent(1);
-		final JButton defaultBtn = new JButton(FreeplaneResourceBundle.getText("reset_to_default"));
+		final JButton defaultBtn = new JButton(FreeplaneResourceBundle.getByKey("reset_to_default"));
 		defaultBtn.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent e) {

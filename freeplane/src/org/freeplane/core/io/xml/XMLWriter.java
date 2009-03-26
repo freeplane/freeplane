@@ -23,12 +23,12 @@ import java.io.Writer;
 import java.util.Enumeration;
 import java.util.Vector;
 
-import org.freeplane.n3.nanoxml.IXMLElement;
+import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
  * An XMLWriter writes XML data to a stream.
  * 
- * @see org.freeplane.n3.nanoxml.IXMLElement
+ * @see org.freeplane.n3.nanoxml.XMLElement
  * @see java.io.Writer
  * @author Marc De Scheemaecker Modified by Dimitry Polivaev: optionally not
  *         write closing element tag
@@ -86,7 +86,7 @@ class XMLWriter {
 	 * @param xml
 	 *            the non-null XML element to write.
 	 */
-	public void startElement(final IXMLElement xml) throws IOException {
+	public void startElement(final XMLElement xml) throws IOException {
 		this.write(xml, false, 0, true, false);
 	}
 
@@ -96,7 +96,7 @@ class XMLWriter {
 	 * @param xml
 	 *            the non-null XML element to write.
 	 */
-	public void write(final IXMLElement xml) throws IOException {
+	public void write(final XMLElement xml) throws IOException {
 		this.write(xml, false, 0, true, true);
 	}
 
@@ -111,7 +111,7 @@ class XMLWriter {
 	 *            how many spaces to indent the element.
 	 * @param endElement
 	 */
-	protected void write(final IXMLElement xml, final boolean prettyPrint, final int indent,
+	protected void write(final XMLElement xml, final boolean prettyPrint, final int indent,
 	                     final boolean collapseEmptyElements, final boolean endElement) throws IOException {
 		if (prettyPrint) {
 			for (int i = 0; i < indent; i++) {
@@ -184,7 +184,7 @@ class XMLWriter {
 				}
 				enumeration = xml.enumerateChildren();
 				while (enumeration.hasMoreElements()) {
-					final IXMLElement child = (IXMLElement) enumeration.nextElement();
+					final XMLElement child = (XMLElement) enumeration.nextElement();
 					this.write(child, prettyPrint, indent + 4, collapseEmptyElements, true);
 				}
 				if (prettyPrint) {

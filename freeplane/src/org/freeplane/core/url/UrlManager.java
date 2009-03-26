@@ -375,7 +375,7 @@ public class UrlManager implements IExtension {
 		final String exceptionType = ex.getClass().getName();
 		if (exceptionType.equals("freeplane.main.XMLParseException")) {
 			final int showDetail = JOptionPane.showConfirmDialog(getController().getViewController().getMapView(),
-			    FreeplaneResourceBundle.getText("map_corrupted"), "Freeplane", JOptionPane.YES_NO_OPTION,
+			    FreeplaneResourceBundle.getByKey("map_corrupted"), "Freeplane", JOptionPane.YES_NO_OPTION,
 			    JOptionPane.ERROR_MESSAGE);
 			if (showDetail == JOptionPane.YES_OPTION) {
 				getController().errorMessage(ex);

@@ -57,7 +57,7 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.core.util.ResUtil;
 import org.freeplane.features.mindmapmode.MModeController;
-import org.freeplane.n3.nanoxml.IXMLElement;
+import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;
@@ -102,14 +102,14 @@ public class ExportWithXSLT extends ExportAction {
 			final URL resource = ResourceController.getResourceController().getResource(xmlDescriptorFile);
 			final IXMLReader reader = new StdXMLReader(resource.openStream());
 			parser.setReader(reader);
-			final IXMLElement xml = (IXMLElement) parser.parse();
+			final XMLElement xml = (XMLElement) parser.parse();
 			final Enumeration actionDescriptors = xml.enumerateChildren();
 			while (actionDescriptors.hasMoreElements()) {
-				final IXMLElement descriptor = (IXMLElement) actionDescriptors.nextElement();
+				final XMLElement descriptor = (XMLElement) actionDescriptors.nextElement();
 				final String name = descriptor.getAttribute("name", null);
 				final String tooltip = descriptor.getAttribute("tooltip", null);
 				final String location = descriptor.getAttribute("location", null);
-				final IXMLElement xmlProperties = descriptor.getFirstChildNamed("properties");
+				final XMLElement xmlProperties = descriptor.getFirstChildNamed("properties");
 				final Properties properties = xmlProperties.getAttributes();
 				final ExportWithXSLT action = new ExportWithXSLT(modeController.getController(), name, tooltip,
 				    properties);
@@ -259,7 +259,7 @@ public class ExportWithXSLT extends ExportAction {
 	private String getTranslatableResourceString(final String resourceName) {
 		final String returnValue = getProperty(resourceName);
 		if (returnValue != null && returnValue.startsWith("%")) {
-			return FreeplaneResourceBundle.getText(returnValue.substring(1));
+			return FreeplaneResourceBundle.getByKey(returnValue.substring(1));
 		}
 		return returnValue;
 	}

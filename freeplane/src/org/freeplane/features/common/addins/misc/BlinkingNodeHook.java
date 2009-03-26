@@ -36,7 +36,7 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.INodeView;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.ActionDescriptor;
-import org.freeplane.n3.nanoxml.IXMLElement;
+import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
  */
@@ -109,7 +109,7 @@ public class BlinkingNodeHook extends PersistentNodeHook {
 	}
 
 	@Override
-	protected IExtension createExtension(final NodeModel node, final IXMLElement element) {
+	protected IExtension createExtension(final NodeModel node, final XMLElement element) {
 		return new TimerColorChanger(node);
 	}
 

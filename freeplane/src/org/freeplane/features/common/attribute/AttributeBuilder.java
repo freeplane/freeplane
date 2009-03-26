@@ -32,7 +32,7 @@ import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.n3.nanoxml.IXMLElement;
+import org.freeplane.n3.nanoxml.XMLElement;
 
 class AttributeBuilder implements IElementDOMHandler {
 	static class AttributeProperties {
@@ -61,7 +61,7 @@ class AttributeBuilder implements IElementDOMHandler {
 		this.mapReader = mapReader;
 	}
 
-	public Object createElement(final Object parent, final String tag, final IXMLElement attributes) {
+	public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
 		if (tag.equals(AttributeBuilder.XML_NODE_ATTRIBUTE)) {
 			return new AttributeProperties();
 		}
@@ -74,7 +74,7 @@ class AttributeBuilder implements IElementDOMHandler {
 		return null;
 	}
 
-	public void endElement(final Object parent, final String tag, final Object userObject, final IXMLElement dom) {
+	public void endElement(final Object parent, final String tag, final Object userObject, final XMLElement dom) {
 		/* attributes */
 		if (tag.equals(AttributeBuilder.XML_NODE_REGISTERED_ATTRIBUTE_NAME)) {
 			final RegisteredAttributeProperties rap = (RegisteredAttributeProperties) userObject;
@@ -211,6 +211,6 @@ class AttributeBuilder implements IElementDOMHandler {
 		registerAttributeHandlers(reader);
 	}
 
-	public void setAttributes(final String tag, final Object node, final IXMLElement attributes) {
+	public void setAttributes(final String tag, final Object node, final XMLElement attributes) {
 	}
 }

@@ -38,7 +38,7 @@ class NavigationNextMapAction extends AbstractAction implements IFreeplaneAction
 	NavigationNextMapAction(final Controller controller) {
 		super(null, new ImageIcon(ResourceController.getResourceController().getResource("/images/1rightarrow.png")));
 		this.controller = controller;
-		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText("next_map"));
+		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getByKey("next_map"));
 		setEnabled(false);
 	}
 

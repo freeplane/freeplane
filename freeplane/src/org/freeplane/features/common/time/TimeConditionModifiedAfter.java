@@ -46,9 +46,9 @@ class TimeConditionModifiedAfter extends TimeConditionModifiedBefore implements 
 
 	@Override
     protected String createDesctiption() {
-		final String filterTime = FreeplaneResourceBundle.getText(TimeConditionController.FILTER_TIME);
+		final String filterTime = FreeplaneResourceBundle.getByKey(TimeConditionController.FILTER_TIME);
 		final String dateAsString = TimeCondition.format(getDate());
-		final String after = FreeplaneResourceBundle.getText(FILTER_MODIFIED_AFTER);
+		final String after = FreeplaneResourceBundle.getByKey(FILTER_MODIFIED_AFTER);
 		return ConditionFactory.createDescription(filterTime, after, dateAsString, false);
     }
 

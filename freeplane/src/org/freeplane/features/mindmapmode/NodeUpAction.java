@@ -32,9 +32,10 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.undo.IUndoableActor;
+import org.freeplane.core.ui.IFreeplaneAction;
+import org.freeplane.core.undo.IActor;
 
-class NodeUpAction extends AFreeplaneAction {
+class NodeUpAction extends AFreeplaneAction implements IFreeplaneAction {
 	public NodeUpAction(final Controller controller) {
 		super(controller, "node_up");
 	}
@@ -117,7 +118,7 @@ class NodeUpAction extends AFreeplaneAction {
 	/**
 	 */
 	public void moveNodes(final NodeModel selected, final List selecteds, final int direction) {
-		final IUndoableActor actor = new IUndoableActor() {
+		final IActor actor = new IActor() {
 			public void act() {
 				_moveNodes(selected, selecteds, direction);
 			}
@@ -148,7 +149,12 @@ class NodeUpAction extends AFreeplaneAction {
 		}
 		final NodeModel destinationNode = (NodeModel) sortedNodesIndices.get(newPositionInVector);
 		newIndex = parent.getIndex(destinationNode);
-		((MMapController) getModeController().getMapController()).moveNodeToWithoutUndo(child, parent, newIndex, false, false);
+		((MMapController) getModeController().getMapController()).moveNodeToWithoutUndo(child, parent, newIndex, false,
+		    false);
 		return newIndex;
 	}
+
+	public String getName() {
+	    return "nodeUp";
+    }
 }

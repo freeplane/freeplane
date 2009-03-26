@@ -22,7 +22,7 @@ package org.freeplane.features.mindmapmode.link;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.undo.IUndoableActor;
+import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.link.ArrowLinkModel;
 
 class ChangeArrowsInArrowLinkAction extends AFreeplaneAction {
@@ -45,7 +45,7 @@ class ChangeArrowsInArrowLinkAction extends AFreeplaneAction {
 
 	public void changeArrowsOfArrowLink(final ArrowLinkModel link, final boolean hasStartArrow,
 	                                    final boolean hasEndArrow) {
-		final IUndoableActor actor = new IUndoableActor() {
+		final IActor actor = new IActor() {
 			final private String oldEndArrow = link.getEndArrow();
 			final private String oldStartArrow = link.getStartArrow();
 

@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.util.Enumeration;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.n3.nanoxml.IXMLElement;
+import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
  * @author Dimitry Polivaev
@@ -32,7 +32,7 @@ import org.freeplane.n3.nanoxml.IXMLElement;
 public class UnknownElementWriter implements IExtensionAttributeWriter, IExtensionElementWriter {
 	public void writeAttributes(final ITreeWriter writer, final Object userObject, final IExtension extension) {
 		final UnknownElements elements = (UnknownElements) extension;
-		final IXMLElement unknownElements = elements.getUnknownElements();
+		final XMLElement unknownElements = elements.getUnknownElements();
 		if (unknownElements != null) {
 			final Enumeration unknownAttributes = unknownElements.enumerateAttributeNames();
 			while (unknownAttributes.hasMoreElements()) {
@@ -46,11 +46,11 @@ public class UnknownElementWriter implements IExtensionAttributeWriter, IExtensi
 	public void writeContent(final ITreeWriter writer, final Object element, final IExtension extension)
 	        throws IOException {
 		final UnknownElements elements = (UnknownElements) extension;
-		final IXMLElement unknownElements = elements.getUnknownElements();
+		final XMLElement unknownElements = elements.getUnknownElements();
 		if (unknownElements != null) {
 			final Enumeration unknownChildren = unknownElements.enumerateChildren();
 			while (unknownChildren.hasMoreElements()) {
-				writer.addElement(null, (IXMLElement) unknownChildren.nextElement());
+				writer.addElement(null, (XMLElement) unknownChildren.nextElement());
 			}
 		}
 	}

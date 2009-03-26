@@ -97,7 +97,7 @@ public class ExportDialog {
 		if (filtermap.isEmpty()) {
 			JOptionPane.showMessageDialog(parentframe, FpStringUtils.formatText("xslt_export_file_not_found_in_dirs",
 			    getXsltUserDirectory().getAbsolutePath(), getXsltSysDirectory().getAbsolutePath()),
-			    FreeplaneResourceBundle.getText("xslt_export_not_possible"), JOptionPane.WARNING_MESSAGE);
+			    FreeplaneResourceBundle.getByKey("xslt_export_not_possible"), JOptionPane.WARNING_MESSAGE);
 			/* "No XSLT export file could be found,\n neither in '"
 			+ getXsltUserDirectory() + "'\n nor in '"
 			+ getXsltSysDirectory() + "'.",
@@ -106,8 +106,8 @@ public class ExportDialog {
 		}
 		// Finish to setup the File Chooser...
 		filechooser.setAcceptAllFileFilterUsed(false); // the user can't select an "All Files filter"
-		filechooser.setDialogTitle(FreeplaneResourceBundle.getText("export_using_xslt"));
-		filechooser.setToolTipText(FreeplaneResourceBundle.getText("select_file_export_to")); // "Select the file to export to"
+		filechooser.setDialogTitle(FreeplaneResourceBundle.getByKey("export_using_xslt"));
+		filechooser.setToolTipText(FreeplaneResourceBundle.getByKey("select_file_export_to")); // "Select the file to export to"
 		// And then use it
 		final int returnVal = filechooser.showSaveDialog(parentframe);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {

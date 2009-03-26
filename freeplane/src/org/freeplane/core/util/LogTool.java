@@ -110,4 +110,8 @@ public class LogTool {
 	public static void warn(final String msg) {
 		LOGGER.log(Level.WARNING, msg);
 	}
+
+	public static void severe(String message) {
+		LOGGER.log(Level.SEVERE, message);
+	}
 }

@@ -29,9 +29,10 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.undo.IUndoableActor;
+import org.freeplane.core.ui.IFreeplaneAction;
+import org.freeplane.core.undo.IActor;
 
-class ToggleFoldedAction extends AFreeplaneAction {
+class ToggleFoldedAction extends AFreeplaneAction implements IFreeplaneAction {
 	public ToggleFoldedAction(final Controller controller) {
 		super(controller, "toggle_folded");
 	}
@@ -66,7 +67,7 @@ class ToggleFoldedAction extends AFreeplaneAction {
 			return;
 		}
 		final ModeController modeController = getModeController();
-		final IUndoableActor actor = new IUndoableActor() {
+		final IActor actor = new IActor() {
 			public void act() {
 				modeController.getMapController()._setFolded(node, !node.isFolded());
 				final ResourceController resourceController = ResourceController.getResourceController();
@@ -86,4 +87,8 @@ class ToggleFoldedAction extends AFreeplaneAction {
 		};
 		modeController.execute(actor);
 	}
+
+	public String getName() {
+	    return "undoableToggleFolded";
+    }
 }

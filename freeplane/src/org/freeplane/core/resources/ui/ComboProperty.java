@@ -36,7 +36,7 @@ public class ComboProperty extends PropertyBean implements IPropertyControl {
 	static public Vector translate(final String[] possibles) {
 		final Vector possibleTranslations = new Vector(possibles.length);
 		for (int i = 0; i < possibles.length; i++) {
-			possibleTranslations.add(FreeplaneResourceBundle.getText("OptionPanel." + possibles[i]));
+			possibleTranslations.add(FreeplaneResourceBundle.getByKey("OptionPanel." + possibles[i]));
 		}
 		return possibleTranslations;
 	}

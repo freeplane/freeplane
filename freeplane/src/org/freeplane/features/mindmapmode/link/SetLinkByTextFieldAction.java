@@ -27,7 +27,7 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.undo.IUndoableActor;
+import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.link.NodeLinks;
 
 class SetLinkByTextFieldAction extends AFreeplaneAction {
@@ -38,7 +38,7 @@ class SetLinkByTextFieldAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		final ModeController modeController = getModeController();
 		String inputValue = UITools.showInputDialog(getController(), getController().getSelection().getSelected(),
-		    FreeplaneResourceBundle.getText("edit_link_manually"), NodeLinks.getLink(modeController.getMapController()
+		    FreeplaneResourceBundle.getByKey("edit_link_manually"), NodeLinks.getLink(modeController.getMapController()
 		        .getSelectedNode()));
 		if (inputValue != null) {
 			if (inputValue.equals("")) {
@@ -49,7 +49,7 @@ class SetLinkByTextFieldAction extends AFreeplaneAction {
 	}
 
 	public void setLink(final NodeModel node, final String link) {
-		final IUndoableActor actor = new IUndoableActor() {
+		final IActor actor = new IActor() {
 			private String oldlink;
 			private String oldTargetID;
 

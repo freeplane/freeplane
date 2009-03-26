@@ -62,7 +62,7 @@ class NodeCompareCondition extends CompareConditionAdapter {
 
 	@Override
 	protected String createDesctiption() {
-		final String nodeCondition = FreeplaneResourceBundle.getText(NodeConditionController.FILTER_NODE);
+		final String nodeCondition = FreeplaneResourceBundle.getByKey(NodeConditionController.FILTER_NODE);
 		return super.createDescription(nodeCondition, comparationResult, succeed);
 	}
 

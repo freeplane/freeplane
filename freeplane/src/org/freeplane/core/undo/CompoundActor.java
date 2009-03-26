@@ -19,57 +19,48 @@
  */
 package org.freeplane.core.undo;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
-public class CompoundActor implements IUndoableActor {
-	final private LinkedList actorList = new LinkedList();
+/**
+ * Contains a list of actors and applys act() and undo() in a batch operation.
+ * 
+ * Implements composite design pattern.
+ * 
+ * @author Robert Ladstaetter
+ */
+public class CompoundActor implements IActor {
+	final private LinkedList<IActor> actors = new LinkedList<IActor>();
 
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.base.undo.UndoableActor#act()
-	 */
 	public void act() {
-		final Iterator iterator = actorList.iterator();
-		while (iterator.hasNext()) {
-			((IUndoableActor) iterator.next()).act();
+		for (IActor a : actors) {
+			a.act();
 		}
 	}
 
-	/**
-	 */
-	public void addActor(final IUndoableActor firstActor) {
-		actorList.add(firstActor);
+	public void add(final IActor firstActor) {
+		actors.add(firstActor);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.base.undo.UndoableActor#getDescription()
-	 */
 	public String getDescription() {
-		if (actorList.size() == 0) {
+		if (actors.size() == 0) {
 			return "";
 		}
-		final String firstDescription = ((IUndoableActor) actorList.getFirst()).getDescription();
-		if (actorList.size() == 1) {
+		final String firstDescription = actors.getFirst().getDescription();
+		if (actors.size() == 1) {
 			return firstDescription;
 		}
-		final String lastDescription = ((IUndoableActor) actorList.getLast()).getDescription();
-		if (actorList.size() == 2 && !firstDescription.equals("") && !lastDescription.equals("")) {
+		final String lastDescription = actors.getLast().getDescription();
+		if (actors.size() == 2 && !firstDescription.equals("") && !lastDescription.equals("")) {
 			return firstDescription + ", " + lastDescription;
 		}
 		return firstDescription + "... " + lastDescription;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.base.undo.UndoableActor#undo()
-	 */
 	public void undo() {
-		final ListIterator iterator = actorList.listIterator(actorList.size());
+		final ListIterator<IActor> iterator = actors.listIterator(actors.size());
 		while (iterator.hasPrevious()) {
-			((IUndoableActor) iterator.previous()).undo();
+			iterator.previous().undo();
 		}
 	}
 }

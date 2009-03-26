@@ -23,7 +23,7 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.undo.IUndoableActor;
+import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.link.ArrowLinkModel;
 import org.freeplane.features.common.link.NodeLinks;
 
@@ -50,7 +50,7 @@ class RemoveArrowLinkAction extends AFreeplaneAction {
 	}
 
 	public void removeArrowLink(final ArrowLinkModel arrowLink) {
-		final IUndoableActor actor = new IUndoableActor() {
+		final IActor actor = new IActor() {
 			public void act() {
 				final NodeModel source = arrowLink.getSource();
 				final NodeLinks nodeLinks = (NodeLinks) source.getExtension(NodeLinks.class);

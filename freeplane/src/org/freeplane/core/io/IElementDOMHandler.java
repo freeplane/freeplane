@@ -19,12 +19,12 @@
  */
 package org.freeplane.core.io;
 
-import org.freeplane.n3.nanoxml.IXMLElement;
+import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
  * @author Dimitry Polivaev
  * 28.12.2008
  */
 public interface IElementDOMHandler extends IElementHandler {
-	void endElement(Object parent, String tag, Object element, IXMLElement dom);
+	void endElement(Object parent, String tag, Object element, XMLElement dom);
 }

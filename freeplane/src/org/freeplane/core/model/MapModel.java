@@ -66,7 +66,7 @@ public class MapModel {
 		nodes = new HashMap<String, NodeModel>();
 		filter = new DefaultFilter(controller, NoFilteringCondition.createCondition(), true, false);
 		if (root == null) {
-			root = new NodeModel(FreeplaneResourceBundle.getText("new_mindmap"), this);
+			root = new NodeModel(FreeplaneResourceBundle.getByKey("new_mindmap"), this);
 			setRoot(root);
 		}
 		else {

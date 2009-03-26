@@ -19,8 +19,8 @@
  */
 package org.freeplane.core.io;
 
-import org.freeplane.n3.nanoxml.IXMLElement;
+import org.freeplane.n3.nanoxml.XMLElement;
 
 public interface IElementHandler {
-	Object createElement(Object parent, String tag, IXMLElement attributes);
+	Object createElement(Object parent, String tag, XMLElement attributes);
 }

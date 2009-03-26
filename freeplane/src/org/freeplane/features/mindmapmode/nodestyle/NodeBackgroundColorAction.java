@@ -40,7 +40,7 @@ class NodeBackgroundColorAction extends MultipleNodeAction {
 	@Override
 	public void actionPerformed(final ActionEvent e) {
 		actionBackgroundColor = ColorTracker.showCommonJColorChooserDialog(getController(), getController()
-		    .getSelection().getSelected(), FreeplaneResourceBundle.getText("choose_node_color"), NodeStyleModel
+		    .getSelection().getSelected(), FreeplaneResourceBundle.getByKey("choose_node_color"), NodeStyleModel
 		    .getBackgroundColor(getModeController().getMapController().getSelectedNode()));
 		super.actionPerformed(e);
 	}

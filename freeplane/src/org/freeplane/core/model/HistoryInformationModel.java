@@ -28,6 +28,7 @@ import java.util.Date;
  *
  * @author foltin
  */
+// TODO ARCH rladstaetter 21.03.2009 make created/lastmodified attributes of Node(Model)
 public class HistoryInformationModel {
 	long createdAt = 0l;
 	long lastModifiedAt = 0l;

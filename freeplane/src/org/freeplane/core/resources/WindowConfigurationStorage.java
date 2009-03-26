@@ -9,7 +9,7 @@ import java.io.StringWriter;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
-import org.freeplane.n3.nanoxml.IXMLElement;
+import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;
@@ -40,15 +40,15 @@ abstract public class WindowConfigurationStorage {
 		return y;
 	}
 
-	abstract protected void marschallSpecificElements(IXMLElement xml);
+	abstract protected void marshallSpecificElements(XMLElement xml);
 
 	private String marshall() {
-		final IXMLElement xml = new XMLElement();
+		final XMLElement xml = new XMLElement();
 		xml.setAttribute("x", Integer.toString(x));
 		xml.setAttribute("y", Integer.toString(y));
 		xml.setAttribute("width", Integer.toString(width));
 		xml.setAttribute("height", Integer.toString(height));
-		marschallSpecificElements(xml);
+		marshallSpecificElements(xml);
 		final StringWriter string = new StringWriter();
 		final XMLWriter writer = new XMLWriter(string);
 		try {
@@ -86,13 +86,13 @@ abstract public class WindowConfigurationStorage {
 		ResourceController.getResourceController().setProperty(window_preference_storage_property, marshalled);
 	}
 
-	protected IXMLElement unmarschall(final String marshalled, final JDialog dialog) {
+	protected XMLElement unmarschall(final String marshalled, final JDialog dialog) {
 		if (marshalled != null) {
 			final IXMLParser parser = XMLParserFactory.createDefaultXMLParser();
 			final IXMLReader xmlReader = new StdXMLReader(new StringReader(marshalled));
 			parser.setReader(xmlReader);
 			try {
-				final IXMLElement storage = (IXMLElement) parser.parse();
+				final XMLElement storage = (XMLElement) parser.parse();
 				if (storage != null) {
 					x = Integer.parseInt(storage.getAttribute("x", null));
 					y = Integer.parseInt(storage.getAttribute("y", null));

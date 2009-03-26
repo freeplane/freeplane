@@ -51,15 +51,15 @@ import org.freeplane.core.io.IElementHandler;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.JAutoCheckBoxMenuItem;
 import org.freeplane.core.ui.components.JAutoRadioButtonMenuItem;
 import org.freeplane.core.ui.components.JAutoToggleButton;
 import org.freeplane.core.ui.components.JAutoVisibleMenuItem;
-import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogTool;
-import org.freeplane.n3.nanoxml.IXMLElement;
+import org.freeplane.n3.nanoxml.XMLElement;
 
 public class MenuBuilder extends UIBuilder {
 	private static class ActionHolder implements INameMnemonicHolder {
@@ -244,7 +244,7 @@ public class MenuBuilder extends UIBuilder {
 
 	private class MenuStructureReader {
 		private final class ActionCreator implements IElementHandler {
-			public Object createElement(final Object parent, final String tag, final IXMLElement attributes) {
+			public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
 				if (attributes == null) {
 					return null;
 				}
@@ -275,7 +275,7 @@ public class MenuBuilder extends UIBuilder {
 		}
 
 		private final class CategoryCreator implements IElementHandler {
-			public Object createElement(final Object parent, final String tag, final IXMLElement attributes) {
+			public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
 				if (attributes == null) {
 					return null;
 				}
@@ -285,7 +285,7 @@ public class MenuBuilder extends UIBuilder {
 				if (!contains(menuPath.path)) {
 					if (tag.equals("menu_submenu")) {
 						final JMenu menuItem = new JMenu();
-						MenuBuilder.setLabelAndMnemonic(menuItem, FreeplaneResourceBundle.getText(attributes
+						MenuBuilder.setLabelAndMnemonic(menuItem, FreeplaneResourceBundle.getByKey(attributes
 						    .getAttribute("name_ref", null)));
 						addMenuItem(menuPath.parentPath, menuItem, menuPath.path, MenuBuilder.AS_CHILD);
 					}
@@ -300,14 +300,14 @@ public class MenuBuilder extends UIBuilder {
 		}
 
 		private final class SeparatorCreator implements IElementHandler {
-			public Object createElement(final Object parent, final String tag, final IXMLElement attributes) {
+			public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
 				addSeparator(parent.toString(), MenuBuilder.AS_CHILD);
 				return parent;
 			}
 		}
 
 		private final class StructureCreator implements IElementHandler {
-			public Object createElement(final Object parent, final String tag, final IXMLElement attributes) {
+			public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
 				return MenuPath.emptyPath();
 			}
 		}
@@ -340,14 +340,14 @@ public class MenuBuilder extends UIBuilder {
 
 	static public JMenu createMenu(final String name) {
 		final JMenu menu = new JMenu();
-		final String text = FreeplaneResourceBundle.getText(name);
+		final String text = FreeplaneResourceBundle.getByKey(name);
 		MenuBuilder.setLabelAndMnemonic(menu, text);
 		return menu;
 	}
 
 	static public JMenuItem createMenuItem(final String name) {
 		final JMenuItem menu = new JMenuItem();
-		final String text = FreeplaneResourceBundle.getText(name);
+		final String text = FreeplaneResourceBundle.getByKey(name);
 		MenuBuilder.setLabelAndMnemonic(menu, text);
 		return menu;
 	}
@@ -378,7 +378,7 @@ public class MenuBuilder extends UIBuilder {
 		if (rawLabel == null) {
 			return;
 		}
-		item.setText(UITools.removeMnemonic(rawLabel));
+		item.setText(FpStringUtils.removeMnemonic(rawLabel));
 		final int mnemoSignIndex = rawLabel.indexOf("&");
 		if (mnemoSignIndex >= 0 && mnemoSignIndex + 1 < rawLabel.length()) {
 			final char charAfterMnemoSign = rawLabel.charAt(mnemoSignIndex + 1);
@@ -406,7 +406,7 @@ public class MenuBuilder extends UIBuilder {
 			action.setTooltip(docu);
 		}
 		final String actionName = actionAnnotation.name();
-		MenuBuilder.setLabelAndMnemonic(action, FreeplaneResourceBundle.getText(actionName));
+		MenuBuilder.setLabelAndMnemonic(action, FreeplaneResourceBundle.getByKey(actionName));
 		final String iconPath = actionAnnotation.iconPath();
 		if (!iconPath.equals("")) {
 			final ImageIcon icon = new ImageIcon(ResourceController.getResourceController().getResource(iconPath));

@@ -30,7 +30,7 @@ import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.n3.nanoxml.IXMLElement;
+import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
 /**
@@ -84,7 +84,7 @@ public class MapReader implements IElementDOMHandler, IHintProvider {
 		nodeBuilder.registerBy(readManager);
 	}
 
-	public Object createElement(final Object parent, final String tag, final IXMLElement attributes) {
+	public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
 		return getCreatedMap();
 	}
 
@@ -103,7 +103,7 @@ public class MapReader implements IElementDOMHandler, IHintProvider {
 		}
 	}
 
-	public void endElement(final Object parent, final String tag, final Object element, final IXMLElement dom) {
+	public void endElement(final Object parent, final String tag, final Object element, final XMLElement dom) {
 		final MapModel map = (MapModel) element;
 		if (dom.getAttributeCount() != 0 || dom.hasChildren()) {
 			map.addExtension(new UnknownElements(dom));

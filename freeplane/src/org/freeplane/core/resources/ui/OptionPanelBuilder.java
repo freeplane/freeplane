@@ -32,7 +32,7 @@ import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IndexedTree;
-import org.freeplane.n3.nanoxml.IXMLElement;
+import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
  * @author Dimitry Polivaev
@@ -41,21 +41,21 @@ import org.freeplane.n3.nanoxml.IXMLElement;
 public class OptionPanelBuilder {
 	private class BooleanOptionCreator extends PropertyCreator {
 		@Override
-		public IPropertyControlCreator getCreator(final String name, final IXMLElement data) {
+		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
 			return createBooleanOptionCreator(name);
 		}
 	}
 
 	private class ColorOptionCreator extends PropertyCreator {
 		@Override
-		public IPropertyControlCreator getCreator(final String name, final IXMLElement data) {
+		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
 			return createColorOptionCreator(name);
 		}
 	}
 
 	private class ComboOptionCreator extends PropertyCreator {
 		@Override
-		public IPropertyControlCreator getCreator(final String name, final IXMLElement data) {
+		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
 			final int childrenCount = data.getChildrenCount();
 			final Vector<String> choices = new Vector(childrenCount);
 			final Vector<String> translations = new Vector(childrenCount);
@@ -70,14 +70,14 @@ public class OptionPanelBuilder {
 
 	private class EmptyCreator extends PropertyCreator {
 		@Override
-		public IPropertyControlCreator getCreator(final String name, final IXMLElement data) {
+		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
 			return null;
 		}
 	}
 
 	private class KeyOptionCreator extends PropertyCreator {
 		@Override
-		public IPropertyControlCreator getCreator(final String name, final IXMLElement data) {
+		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
 			return createKeyOptionCreator(name);
 		}
 	}
@@ -93,7 +93,7 @@ public class OptionPanelBuilder {
 		}
 
 		@Override
-		public IPropertyControlCreator getCreator(final String name, final IXMLElement data) {
+		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
 			final int min = Integer.parseInt(data.getAttribute("min", "1"));
 			final int step = Integer.parseInt(data.getAttribute("step", "1"));
 			final int max = Integer.parseInt(data.getAttribute("max", MAX_INT));
@@ -126,7 +126,7 @@ public class OptionPanelBuilder {
 	}
 
 	protected abstract class PropertyCreator implements IElementDOMHandler {
-		public Object createElement(final Object parent, final String tag, final IXMLElement attributes) {
+		public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
 			if (attributes == null) {
 				return null;
 			}
@@ -144,7 +144,7 @@ public class OptionPanelBuilder {
 		}
 
 		public void endElement(final Object parent, final String tag, final Object userObject,
-		                       final IXMLElement lastBuiltElement) {
+		                       final XMLElement lastBuiltElement) {
 			final String name = lastBuiltElement.getAttribute("name", null);
 			final Path path = (Path) userObject;
 			if (path.path == null) {
@@ -157,12 +157,12 @@ public class OptionPanelBuilder {
 			}
 		}
 
-		abstract public IPropertyControlCreator getCreator(String name, IXMLElement data);
+		abstract public IPropertyControlCreator getCreator(String name, XMLElement data);
 	};
 
 	private class RemindValueCreator extends PropertyCreator {
 		@Override
-		public IPropertyControlCreator getCreator(final String name, final IXMLElement data) {
+		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
 			return createRemindValueProperty(name);
 		}
 	}
@@ -170,7 +170,7 @@ public class OptionPanelBuilder {
 	private class SeparatorCreator extends PropertyCreator {
 		@Override
 		public void endElement(final Object parent, final String tag, final Object userObject,
-		                       final IXMLElement lastBuiltElement) {
+		                       final XMLElement lastBuiltElement) {
 			final Path path = (Path) userObject;
 			final DefaultMutableTreeNode treeNode = tree.get(path.path);
 			if (treeNode.getUserObject() != this) {
@@ -182,7 +182,7 @@ public class OptionPanelBuilder {
 		}
 
 		@Override
-		public IPropertyControlCreator getCreator(final String name, final IXMLElement data) {
+		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
 			final String label = "OptionPanel.separator." + name;
 			return createSeparatorCreator(label);
 		}
@@ -190,14 +190,14 @@ public class OptionPanelBuilder {
 
 	private class StringOptionCreator extends PropertyCreator {
 		@Override
-		public IPropertyControlCreator getCreator(final String name, final IXMLElement data) {
+		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
 			return createStringOptionCreator(name);
 		}
 	}
 
 	private class TabCreator extends PropertyCreator {
 		@Override
-		public IPropertyControlCreator getCreator(final String name, final IXMLElement data) {
+		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
 			final String label = "OptionPanel." + name;
 			final String layout = data.getAttribute("layout", null);
 			return createTabCreator(label, layout);

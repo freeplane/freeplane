@@ -34,7 +34,7 @@ class ZoomOutAction extends AbstractAction implements IFreeplaneAction {
 
 	public ZoomOutAction(final ViewController viewController) {
 		this.viewController = viewController;
-		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText("zoom_out"));
+		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getByKey("zoom_out"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {

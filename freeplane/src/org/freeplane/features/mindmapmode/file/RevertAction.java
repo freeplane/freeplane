@@ -69,7 +69,7 @@ class RevertAction extends AFreeplaneAction implements IFreeplaneAction {
 					mapController.newMap(Compat.fileToUrl(new File(this.getLocalFileName())));
 				}
 				else {
-					String filePrefix = FreeplaneResourceBundle.getText("freeplane_reverted");
+					String filePrefix = FreeplaneResourceBundle.getByKey("freeplane_reverted");
 					if (this.getFilePrefix() != null) {
 						filePrefix = this.getFilePrefix();
 					}
@@ -131,7 +131,7 @@ class RevertAction extends AFreeplaneAction implements IFreeplaneAction {
 			final File file = getController().getMap().getFile();
 			if (file == null) {
 				JOptionPane.showMessageDialog(getController().getViewController().getMapView(), FreeplaneResourceBundle
-				    .getText("map_not_saved"), "Freeplane", JOptionPane.ERROR_MESSAGE);
+				    .getByKey("map_not_saved"), "Freeplane", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			final RevertActionInstance doAction = createRevertXmlAction(file);

@@ -32,7 +32,7 @@ import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.undo.IUndoableActor;
+import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.features.common.text.IMainView;
 import org.freeplane.features.common.text.TextController;
@@ -219,7 +219,7 @@ class EditAction extends AFreeplaneAction {
 		if (oldText.equals(newText)) {
 			return;
 		}
-		final IUndoableActor actor = new IUndoableActor() {
+		final IActor actor = new IActor() {
 			public void act() {
 				if (!oldText.equals(newText)) {
 					node.setText(newText);

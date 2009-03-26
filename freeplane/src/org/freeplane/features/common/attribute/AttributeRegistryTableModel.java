@@ -32,7 +32,7 @@ public class AttributeRegistryTableModel extends AbstractTableModel {
 	static private String editorColumnName = null;
 	static private String restrictionColumnName = null;
 	static private String visibilityColumnName = null;
-	final private String allAttributes = FreeplaneResourceBundle.getText("attributes_all");
+	final private String allAttributes = FreeplaneResourceBundle.getByKey("attributes_all");
 	final private AttributeRegistry attributeRegistry;
 
 	AttributeRegistryTableModel(final AttributeRegistry registry) {
@@ -106,24 +106,24 @@ public class AttributeRegistryTableModel extends AbstractTableModel {
 			case 0:
 				if (AttributeRegistryTableModel.attributeColumnName == null) {
 					AttributeRegistryTableModel.attributeColumnName = FreeplaneResourceBundle
-					    .getText("attributes_attribute");
+					    .getByKey("attributes_attribute");
 				}
 				return AttributeRegistryTableModel.attributeColumnName;
 			case 1:
 				if (AttributeRegistryTableModel.visibilityColumnName == null) {
 					AttributeRegistryTableModel.visibilityColumnName = FreeplaneResourceBundle
-					    .getText("attributes_visible");
+					    .getByKey("attributes_visible");
 				}
 				return AttributeRegistryTableModel.visibilityColumnName;
 			case 2:
 				if (AttributeRegistryTableModel.restrictionColumnName == null) {
 					AttributeRegistryTableModel.restrictionColumnName = FreeplaneResourceBundle
-					    .getText("attributes_restriction");
+					    .getByKey("attributes_restriction");
 				}
 				return AttributeRegistryTableModel.restrictionColumnName;
 			case 3:
 				if (AttributeRegistryTableModel.editorColumnName == null) {
-					AttributeRegistryTableModel.editorColumnName = FreeplaneResourceBundle.getText("attributes_edit");
+					AttributeRegistryTableModel.editorColumnName = FreeplaneResourceBundle.getByKey("attributes_edit");
 				}
 				return AttributeRegistryTableModel.editorColumnName;
 		}

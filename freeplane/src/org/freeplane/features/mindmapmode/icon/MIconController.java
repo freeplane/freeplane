@@ -48,7 +48,7 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.JAutoScrollBarPane;
-import org.freeplane.core.undo.IUndoableActor;
+import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.view.swing.ui.UserInputListenerFactory;
@@ -74,7 +74,7 @@ public class MIconController extends IconController {
 	}
 
 	public void addIcon(final NodeModel node, final MindIcon icon, final int position) {
-		final IUndoableActor actor = new IUndoableActor() {
+		final IActor actor = new IActor() {
 			public void act() {
 				node.addIcon(icon, position);
 				getModeController().getMapController().nodeChanged(node, "icon", null, icon);
