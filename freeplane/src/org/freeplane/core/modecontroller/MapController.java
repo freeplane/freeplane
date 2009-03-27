@@ -210,7 +210,7 @@ public class MapController extends SelectionController {
 	 * Display a node in the display (used by find and the goto action by arrow
 	 * link actions).
 	 */
-	public void displayNode(final NodeModel node, final ArrayList nodesUnfoldedByDisplay) {
+	private void displayNode(final NodeModel node, final ArrayList nodesUnfoldedByDisplay) {
 		final NodeModel[] path = node.getPathToRoot();
 		for (int i = 0; i < path.length - 1; i++) {
 			final NodeModel nodeOnPath = path[i];
@@ -649,6 +649,7 @@ public class MapController extends SelectionController {
 	}
 
 	public void select(final NodeModel node) {
+		displayNode(node);
 		getController().getSelection().selectAsTheOnlyOneSelected(node);
 	}
 

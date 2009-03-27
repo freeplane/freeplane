@@ -851,7 +851,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	@Override
 	public void paintChildren(final Graphics graphics) {
 		super.paintChildren(graphics);
-		paintLinks(graphics);
+		paintLinks((Graphics2D) graphics);
 		paintSelecteds((Graphics2D) graphics);
 	}
 
@@ -879,9 +879,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 	}
 
-	private void paintLinks(final Graphics graphics) {
+	private void paintLinks(final Graphics2D graphics) {
 		arrowLinkViews = new Vector();
-		paintLinks(rootView, (Graphics2D) graphics, new HashSet());
+	   	Object renderingHint = getModeController().getController().getViewController().setEdgesRenderingHint(graphics);
+		paintLinks(rootView,  graphics, new HashSet());
+		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 	}
 
 	protected void paintLinks(final NodeView source, final Graphics2D graphics, final HashSet alreadyPaintedLinks) {
