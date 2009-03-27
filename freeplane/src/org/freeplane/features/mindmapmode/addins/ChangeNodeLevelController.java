@@ -109,10 +109,12 @@ public class ChangeNodeLevelController {
 	}
 
 	private void moveDownwards(ModeController modeController, NodeModel selectedNode) {
+	    if (!checkSelection(modeController)) {
+	    	return;
+	    }
 	    final NodeModel selectedParent = selectedNode.getParentNode();
 	    final List<NodeModel> selectedNodes = modeController.getController().getSelection().getSortedSelection();
 	    final MMapController mapController = (MMapController) modeController.getMapController();
-	    mapController.sortNodesByDepth(selectedNodes);
 	    final int ownPosition = selectedParent.getChildPosition(selectedNode);
 	    NodeModel directSibling = null;
 	    for (int i = ownPosition - 1; i >= 0; --i) {
@@ -140,14 +142,13 @@ public class ChangeNodeLevelController {
     }
 
 	private void moveUpwards(ModeController modeController, NodeModel selectedNode) {
-	    final MMapController mapController = (MMapController) modeController.getMapController();
-	    NodeModel selectedParent = selectedNode.getParentNode();
-	    final List<NodeModel> selectedNodes =  modeController.getController().getSelection().getSortedSelection();
-	    mapController.sortNodesByDepth(selectedNodes);
 	    if (!checkSelection(modeController)) {
 	    	return;
 	    }
-	    final int position;
+	    final MMapController mapController = (MMapController) modeController.getMapController();
+	    NodeModel selectedParent = selectedNode.getParentNode();
+	    final List<NodeModel> selectedNodes =  modeController.getController().getSelection().getSortedSelection();
+	    int position;
 	    final boolean changeSide;
 	    if (selectedParent.isRoot()) {
 	    	position = selectedParent.getChildCount() - 1;
@@ -161,6 +162,9 @@ public class ChangeNodeLevelController {
 	    }
 	    for (final NodeModel node : selectedNodes) {
 	    	mapController.moveNode(node, selectedParent, position, ! node.isLeft(), changeSide);
+		    if (!changeSide) {
+		    	position++;
+		    }
 	    }
 	    mapController.selectMultipleNodes(selectedNode, selectedNodes);
     }
