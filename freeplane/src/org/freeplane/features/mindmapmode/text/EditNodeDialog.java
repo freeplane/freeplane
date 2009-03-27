@@ -85,12 +85,6 @@ class EditNodeDialog extends EditNodeBase {
 			MenuBuilder.setLabelAndMnemonic(cancelButton, getText("cancel"));
 			MenuBuilder.setLabelAndMnemonic(splitButton, getText("split"));
 			MenuBuilder.setLabelAndMnemonic(enterConfirms, getText("enter_confirms"));
-			if (EditNodeDialog.booleanHolderForConfirmState == null) {
-				EditNodeDialog.booleanHolderForConfirmState = enterConfirms.isSelected();
-			}
-			else {
-				enterConfirms.setSelected(EditNodeDialog.booleanHolderForConfirmState);
-			}
 			okButton.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent e) {
 					submit();
@@ -109,8 +103,7 @@ class EditNodeDialog extends EditNodeBase {
 			enterConfirms.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent e) {
 					textArea.requestFocus();
-					EditNodeDialog.booleanHolderForConfirmState = enterConfirms.isSelected();
-					ResourceController.getResourceController().setProperty(text, booleanHolderForConfirmState.toString());
+					ResourceController.getResourceController().setProperty("el__enter_confirms_by_default", Boolean.toString(enterConfirms.isSelected()));
 				}
 			});
 			textArea.addKeyListener(new KeyListener() {
@@ -256,7 +249,6 @@ class EditNodeDialog extends EditNodeBase {
 	}
 
 	/** Private variable to hold the last value of the "Enter confirms" state. */
-	private static Boolean booleanHolderForConfirmState;
 	final private KeyEvent firstEvent;
 
 	public EditNodeDialog(final NodeModel node, final String text, final KeyEvent firstEvent,
