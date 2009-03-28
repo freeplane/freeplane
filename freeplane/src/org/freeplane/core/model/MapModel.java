@@ -32,8 +32,8 @@ import java.util.Random;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.filter.DefaultFilter;
-import org.freeplane.core.filter.IFilter;
+import org.freeplane.core.filter.Filter;
+import org.freeplane.core.filter.Filter;
 import org.freeplane.core.filter.condition.NoFilteringCondition;
 import org.freeplane.core.modecontroller.IMapChangeListener;
 import org.freeplane.core.modecontroller.MapChangeEvent;
@@ -50,7 +50,7 @@ public class MapModel {
 	 */
 	protected int changesPerformedSinceLastSave = 0;
 	private final ExtensionContainer extensionContainer;
-	private IFilter filter = null;
+	private Filter filter = null;
 	final private IconRegistry iconRegistry;
 	final private Map<String, NodeModel> nodes;
 	private boolean readOnly = true;
@@ -64,9 +64,9 @@ public class MapModel {
 		this.listeners = new LinkedList<IMapChangeListener>();
 		final Controller controller = modeController.getController();
 		nodes = new HashMap<String, NodeModel>();
-		filter = new DefaultFilter(controller, NoFilteringCondition.createCondition(), true, false);
+		filter = new Filter(controller, NoFilteringCondition.createCondition(), true, false);
 		if (root == null) {
-			root = new NodeModel(FreeplaneResourceBundle.getByKey("new_mindmap"), this);
+			root = new NodeModel(FreeplaneResourceBundle.getText("new_mindmap"), this);
 			setRoot(root);
 		}
 		else {
@@ -113,7 +113,7 @@ public class MapModel {
 		return url != null ? new File(url.getFile()) : null;
 	}
 
-	public IFilter getFilter() {
+	public Filter getFilter() {
 		return filter;
 	}
 
@@ -213,7 +213,7 @@ public class MapModel {
 		}
 	}
 
-	public void setFilter(final IFilter filter) {
+	public void setFilter(final Filter filter) {
 		this.filter = filter;
 	};
 

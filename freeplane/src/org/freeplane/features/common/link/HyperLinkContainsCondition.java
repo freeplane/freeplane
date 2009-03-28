@@ -35,8 +35,8 @@ public class HyperLinkContainsCondition extends HyperLinkCondition {
 
 	@Override
 	protected String createDesctiption() {
-		final String condition = FreeplaneResourceBundle.getByKey(LinkConditionController.FILTER_LINK);
-		final String simpleCondition = FreeplaneResourceBundle.getByKey(ConditionFactory.FILTER_CONTAINS);
+		final String condition = FreeplaneResourceBundle.getText(LinkConditionController.FILTER_LINK);
+		final String simpleCondition = FreeplaneResourceBundle.getText(ConditionFactory.FILTER_CONTAINS);
 		return ConditionFactory.createDescription(condition, simpleCondition, getHyperlink(), false);
 	}
 

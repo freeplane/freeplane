@@ -39,7 +39,7 @@ import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.extension.SmallExtensionMap;
 import org.freeplane.core.filter.FilterInfo;
-import org.freeplane.core.filter.IFilter;
+import org.freeplane.core.filter.Filter;
 import org.freeplane.core.modecontroller.INodeViewVisitor;
 import org.freeplane.core.modecontroller.NodeChangeEvent;
 import org.freeplane.core.util.HtmlTools;
@@ -390,7 +390,7 @@ public class NodeModel implements MutableTreeNode {
 	}
 
 	public boolean isVisible() {
-		final IFilter filter = getMap().getFilter();
+		final Filter filter = getMap().getFilter();
 		return filter == null || filter.isVisible(this);
 	}
 

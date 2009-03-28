@@ -87,7 +87,7 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 	 */
 	private JMenuItem getDelete() {
 		if (delete == null) {
-			delete = new JMenuItem(FreeplaneResourceBundle.getByKey("attributes_popup_delete"));
+			delete = new JMenuItem(FreeplaneResourceBundle.getText("attributes_popup_delete"));
 			delete.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent e) {
 					table.removeRow(row);
@@ -102,7 +102,7 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 	 */
 	private JMenuItem getDown() {
 		if (down == null) {
-			down = new JMenuItem(FreeplaneResourceBundle.getByKey("attributes_popup_down"));
+			down = new JMenuItem(FreeplaneResourceBundle.getText("attributes_popup_down"));
 			down.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent e) {
 					table.moveRowDown(row);
@@ -117,7 +117,7 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 	 */
 	private JMenuItem getInsert() {
 		if (insert == null) {
-			insert = new JMenuItem(FreeplaneResourceBundle.getByKey("attributes_popup_new"));
+			insert = new JMenuItem(FreeplaneResourceBundle.getText("attributes_popup_new"));
 			insert.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent e) {
 					table.insertRow(row + 1);
@@ -132,7 +132,7 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 	 */
 	private JMenuItem getOptimalWidth() {
 		if (optimalWidth == null) {
-			optimalWidth = new JMenuItem(FreeplaneResourceBundle.getByKey("attributes_popup_optimal_width"));
+			optimalWidth = new JMenuItem(FreeplaneResourceBundle.getText("attributes_popup_optimal_width"));
 			optimalWidth.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent e) {
 					table.setOptimalColumnWidths();
@@ -151,7 +151,7 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 	 */
 	private JMenuItem getUp() {
 		if (up == null) {
-			up = new JMenuItem(FreeplaneResourceBundle.getByKey("attributes_popup_up"));
+			up = new JMenuItem(FreeplaneResourceBundle.getText("attributes_popup_up"));
 			up.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent e) {
 					table.moveRowUp(row);

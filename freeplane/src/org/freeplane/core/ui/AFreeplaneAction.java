@@ -19,8 +19,6 @@
  */
 package org.freeplane.core.ui;
 
-import static javax.swing.Action.SMALL_ICON;
-
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
@@ -105,7 +103,7 @@ public abstract class AFreeplaneAction extends AbstractAction{
 	public AFreeplaneAction(final Controller controller, final String titleKey) {
 		this(controller);
 		if (titleKey != null && !titleKey.equals("")) {
-			MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getByKey(titleKey));
+			MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText(titleKey));
 		}
 	}
 
@@ -159,7 +157,7 @@ public abstract class AFreeplaneAction extends AbstractAction{
 	}
 
 	public void setTooltip(final String tooltipKey) {
-		final String tooltip = FreeplaneResourceBundle.getByKey(tooltipKey);
+		final String tooltip = FreeplaneResourceBundle.getText(tooltipKey);
 		putValue(Action.SHORT_DESCRIPTION, tooltip);
 		putValue(Action.LONG_DESCRIPTION, tooltip);
 	}

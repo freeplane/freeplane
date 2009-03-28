@@ -48,7 +48,7 @@ class OptionSelectionMechanismAction extends AbstractAction implements IFreeplan
 		ResourceController.getResourceController().setProperty("selection_method", command);
 		controller.getModeController().getUserInputListenerFactory().getNodeMouseMotionListener()
 		    .updateSelectionMethod();
-		final String statusBarString = FreeplaneResourceBundle.getByKey(command);
+		final String statusBarString = FreeplaneResourceBundle.getText(command);
 		if (statusBarString != null) {
 			controller.getViewController().out(statusBarString);
 		}

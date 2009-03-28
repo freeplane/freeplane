@@ -19,6 +19,10 @@
  */
 package org.freeplane.core.filter;
 
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -26,8 +30,21 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.Vector;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.Box;
+import javax.swing.ButtonModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JToggleButton;
+import javax.swing.JToolBar;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
@@ -35,15 +52,19 @@ import org.freeplane.core.filter.condition.ConditionFactory;
 import org.freeplane.core.filter.condition.DefaultConditionRenderer;
 import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.filter.condition.NoFilteringCondition;
+import org.freeplane.core.filter.condition.SelectedViewCondition;
 import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.MindIcon;
+import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.FpStringUtils;
+import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;
 import org.freeplane.n3.nanoxml.XMLElement;
-import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.n3.nanoxml.XMLParserFactory;
 import org.freeplane.n3.nanoxml.XMLWriter;
 
@@ -51,15 +72,34 @@ import org.freeplane.n3.nanoxml.XMLWriter;
  * @author Dimitry Polivaev
  */
 public class FilterController implements IMapSelectionListener, IExtension {
-	private ConditionFactory conditionFactory;
-	static final String FREEPLANE_FILTER_EXTENSION_WITHOUT_DOT = "mmfilter";
-
-	public ConditionFactory getConditionFactory() {
-		if (conditionFactory == null) {
-			conditionFactory = new ConditionFactory();
+	private class FilterChangeListener extends AbstractAction implements ListDataListener {
+		/*
+		 * (non-Javadoc)
+		 * @see
+		 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent
+		 * )
+		 */
+		public FilterChangeListener() {
 		}
-		return conditionFactory;
+
+		public void actionPerformed(final ActionEvent arg0) {
+			applyFilter(false);
+		}
+
+		public void contentsChanged(final ListDataEvent e) {
+			if (e.getIndex0() == -1) {
+				applyFilter(false);
+			}
+		}
+
+		public void intervalAdded(final ListDataEvent e) {
+		}
+
+		public void intervalRemoved(final ListDataEvent e) {
+		}
 	}
+
+	static final String FREEPLANE_FILTER_EXTENSION_WITHOUT_DOT = "mmfilter";
 
 	public static FilterController getController(final Controller controller) {
 		return (FilterController) controller.getExtension(FilterController.class);
@@ -69,28 +109,62 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		controller.addExtension(FilterController.class, new FilterController(controller));
 	}
 
+	private ConditionFactory conditionFactory;
 	private DefaultConditionRenderer conditionRenderer = null;
-	final private Controller controller;
-	private final DefaultFilter defaultFilter;
-	private DefaultComboBoxModel filterConditionModel;
-	private FilterToolbar filterToolbar;
-	private IFilter inactiveFilter;
-	private MapModel map;
+	private final Controller controller;
+	private final Filter defaultFilter;
+	final private FilterChangeListener filterChangeListener;
+	private DefaultComboBoxModel filterConditions;
+	private JToolBar filterToolbar;
+	private Filter inactiveFilter;
+	final private String pathToFilterFile;
+	private final ButtonModel showAncestors;
+	private final ButtonModel showDescendants;
+	private final ButtonModel applyToVisibleNodeOnly;
+	private ICondition selectedViewCondition;
 
 	public FilterController(final Controller controller) {
 		this.controller = controller;
-		defaultFilter = new DefaultFilter(controller, null, false, false);
+		defaultFilter = new Filter(controller, null, false, false);
 		controller.getMapViewManager().addMapSelectionListener(this);
 		controller.addAction(new ShowFilterToolbarAction(this));
+		filterChangeListener = new FilterChangeListener();
+		showAncestors = new JToggleButton.ToggleButtonModel();
+		showAncestors.addActionListener(filterChangeListener);
+		showAncestors.setSelected(true);
+		showDescendants = new JToggleButton.ToggleButtonModel();
+		showDescendants.setSelected(false);
+		showDescendants.addActionListener(filterChangeListener);
+		applyToVisibleNodeOnly = new JToggleButton.ToggleButtonModel();
+		applyToVisibleNodeOnly.setSelected(false);
+		pathToFilterFile = ResourceController.getResourceController().getFreeplaneUserDirectory() + File.separator
+		        + "auto." + FilterController.FREEPLANE_FILTER_EXTENSION_WITHOUT_DOT;
 	}
 
-	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
-		final FilterComposerDialog fd = getFilterToolbar().getFilterDialog();
-		if (fd != null) {
-			fd.mapChanged(newMap);
+	private void addStandardConditions() {
+		final ICondition noFiltering = NoFilteringCondition.createCondition();
+		filterConditions.insertElementAt(noFiltering, 0);
+		if(selectedViewCondition == null){
+			selectedViewCondition = SelectedViewCondition.CreateCondition(controller);
 		}
-		map = newMap;
-		getFilterToolbar().mapChanged(newMap);
+		filterConditions.insertElementAt(selectedViewCondition, 1);
+		if (filterConditions.getSelectedItem() == null) {
+			filterConditions.setSelectedItem(noFiltering);
+		}
+	}
+
+	/**
+	 */
+	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
+		if (newMap != null) {
+			final Filter filter = newMap.getFilter();
+				filterConditions.setSelectedItem(filter.getCondition());
+				showAncestors.setSelected(filter.areAncestorsShown());
+				showDescendants.setSelected(filter.areDescendantsShown());
+		}
+		else {
+			filterConditions.setSelectedItem(filterConditions.getElementAt(0));
+		}
 	}
 
 	public void afterMapClose(final MapModel pOldMapView) {
@@ -99,11 +173,18 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
 	}
 
-	private IFilter createTransparentFilter() {
+	private Filter createTransparentFilter() {
 		if (inactiveFilter == null) {
-			inactiveFilter = new DefaultFilter(controller, NoFilteringCondition.createCondition(), true, false);
+			inactiveFilter = new Filter(controller, NoFilteringCondition.createCondition(), true, false);
 		}
 		return inactiveFilter;
+	}
+
+	public ConditionFactory getConditionFactory() {
+		if (conditionFactory == null) {
+			conditionFactory = new ConditionFactory();
+		}
+		return conditionFactory;
 	}
 
 	DefaultConditionRenderer getConditionRenderer() {
@@ -113,33 +194,125 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		return conditionRenderer;
 	}
 
-	public DefaultFilter getDefaultFilter() {
+	public Controller getController() {
+		return controller;
+	}
+
+	public Filter getDefaultFilter() {
 		return defaultFilter;
 	}
 
-	public DefaultComboBoxModel getFilterConditionModel() {
-		return filterConditionModel;
+	public DefaultComboBoxModel getFilterConditions() {
+		if (filterConditions == null) {
+			initConditions();
+		}
+		return filterConditions;
 	}
 
 	/**
 	 */
-	public FilterToolbar getFilterToolbar() {
+	public JToolBar getFilterToolbar() {
 		if (filterToolbar == null) {
-			filterToolbar = new FilterToolbar(controller, this);
-			filterConditionModel = (DefaultComboBoxModel) filterToolbar.getFilterConditionModel();
+			filterToolbar = createFilterToolbar();
 			MindIcon.factory("AttributeExist", new ImageIcon(ResourceController.getResourceController().getResource(
 			    "/images/showAttributes.gif")));
 			MindIcon.factory("encrypted");
 			MindIcon.factory("decrypted");
-			filterToolbar.initConditions();
 		}
 		return filterToolbar;
 	}
 
-	/**
-	 */
-	public MapModel getMap() {
-		return map;
+	private JToolBar createFilterToolbar() {
+		JToolBar filterToolbar = new FreeplaneToolBar();
+	    filterToolbar.setVisible(false);
+	    filterToolbar.setFocusable(false);
+	    
+	    filterToolbar.add(new JLabel(FreeplaneResourceBundle.getText("filter_toolbar") + " "));
+	    
+	    JButton btnEdit = new JButton(new EditFilterAction(this));
+	    filterToolbar.add(btnEdit);
+	    
+	    JButton btnUnfoldAncestors = new JButton(new UnfoldAncestorsAction(this));
+	    btnUnfoldAncestors.setToolTipText(FreeplaneResourceBundle.getText("filter_unfold_ancestors"));
+	    filterToolbar.add(btnUnfoldAncestors);
+	    
+	    JCheckBox showAncestorsBox = new JCheckBox(FreeplaneResourceBundle.getText("filter_show_ancestors"));
+	    showAncestorsBox.setModel(this.showAncestors);
+	    filterToolbar.add(showAncestorsBox);
+	    
+	    JCheckBox showDescendantsBox = new JCheckBox(FreeplaneResourceBundle.getText("filter_show_descendants"));
+	    showDescendantsBox.setModel(this.showDescendants);
+	    filterToolbar.add(showDescendantsBox);
+	    
+	    JComboBox activeFilterConditionComboBox = new JComboBox(getFilterConditions()) {
+	    	@Override
+	    	public Dimension getMaximumSize() {
+	    		return getPreferredSize();
+	    	}
+
+	    };
+	    filterToolbar.add(activeFilterConditionComboBox);
+	    
+	    JCheckBox applyToVisibleBox = new JCheckBox(FreeplaneResourceBundle.getText("filter_apply_to_visible"));
+	    applyToVisibleBox.setModel(this.applyToVisibleNodeOnly);
+	    filterToolbar.add(applyToVisibleBox);
+	    
+	    JButton applyBtn = new JButton(FpStringUtils.removeMnemonic(FreeplaneResourceBundle.getText("apply")));
+	    applyBtn.addActionListener(new ActionListener(){
+
+			public void actionPerformed(ActionEvent e) {
+					applyFilter(true);
+            }});
+
+	    filterToolbar.add(applyBtn);
+
+	    JButton drillDownBtn = new JButton(FpStringUtils.removeMnemonic(FreeplaneResourceBundle.getText("filter_drill_down")));
+	    drillDownBtn.addActionListener(new ActionListener(){
+
+			public void actionPerformed(ActionEvent e) {
+					drillDown();
+            }});
+
+	    filterToolbar.add(drillDownBtn);
+
+	    JButton drillUpBtn = new JButton(FpStringUtils.removeMnemonic(FreeplaneResourceBundle.getText("filter_drill_up")));
+	    drillUpBtn.addActionListener(new ActionListener(){
+
+			public void actionPerformed(ActionEvent e) {
+					drillUp();
+            }});
+
+	    filterToolbar.add(drillUpBtn);
+
+	    activeFilterConditionComboBox.setFocusable(false);
+	    activeFilterConditionComboBox.setRenderer(this.getConditionRenderer());
+
+	    return filterToolbar;
+    }
+
+	ICondition getSelectedCondition() {
+		return (ICondition) getFilterConditions().getSelectedItem();
+	}
+
+	public ButtonModel getShowAncestors() {
+		return showAncestors;
+	}
+
+	public ButtonModel getShowDescendants() {
+		return showDescendants;
+	}
+
+	private void initConditions() {
+		filterConditions = new DefaultComboBoxModel();
+		try {
+			loadConditions(filterConditions, pathToFilterFile);
+		}
+		catch (final Exception e) {
+			e.printStackTrace();
+		}
+		addStandardConditions();
+		filterConditions.setSelectedItem(filterConditions.getElementAt(0));
+		filterConditions.addListDataListener(filterChangeListener);
 	}
 
 	public boolean isMapChangeAllowed(final MapModel oldMap, final MapModel newMap) {
@@ -156,24 +329,52 @@ public class FilterController implements IMapSelectionListener, IExtension {
 			final XMLElement loader = (XMLElement) parser.parse();
 			final Vector conditions = loader.getChildren();
 			for (int i = 0; i < conditions.size(); i++) {
-				filterConditionModel.addElement(conditionFactory.loadCondition(
-				    (XMLElement) conditions.get(i)));
+				filterConditionModel.addElement(getConditionFactory().loadCondition((XMLElement) conditions.get(i)));
 			}
 		}
 		catch (final FileNotFoundException e) {
 		}
-		catch (final XMLException e) {
+		catch (final Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	void refreshMap() {
-		controller.getModeController().getMapController().refreshMap();
+	void applyFilter(boolean force) {
+		final Filter filter = createFilter();
+		filter.applyFilter(getController().getMap(), force);
 	}
 
+	private Filter createFilter() {
+	    final ICondition selectedCondition = getSelectedCondition();
+		final ICondition filterCondition;
+		if(applyToVisibleNodeOnly.isSelected()){
+			filterCondition = new ICondition(){
+
+				public boolean checkNode(NodeModel node) {
+	                return node.isVisible() && selectedCondition.checkNode(node);
+                }
+
+				public JComponent getListCellRendererComponent() {
+	                return selectedCondition.getListCellRendererComponent();
+                }
+
+				public void toXml(XMLElement element) {
+	                selectedCondition.toXml(element);
+                }};
+		}
+		else{
+			filterCondition = selectedCondition;
+		}
+		final Filter filter = new Filter(controller, filterCondition, showAncestors.isSelected(), showDescendants
+		    .isSelected());
+	    return filter;
+    }
+
 	public void saveConditions() {
-		if (filterToolbar != null) {
-			filterToolbar.saveConditions();
+		try {
+			saveConditions(getFilterConditions(), pathToFilterFile);
+		}
+		catch (final Exception e) {
 		}
 	}
 
@@ -191,9 +392,14 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		writer.close();
 	}
 
-	public void setFilterConditionModel(final DefaultComboBoxModel filterConditionModel) {
-		this.filterConditionModel = filterConditionModel;
-		filterToolbar.setFilterConditionModel(filterConditionModel);
+	public void setFilterConditions(final DefaultComboBoxModel newConditionModel) {
+		filterConditions.removeAllElements();
+		for (int i = 0; i < newConditionModel.getSize(); i++) {
+			filterConditions.addElement(newConditionModel.getElementAt(i));
+		}
+		filterConditions.setSelectedItem(newConditionModel.getSelectedItem());
+		addStandardConditions();
+		applyFilter(false);
 	}
 
 	/**
@@ -203,13 +409,48 @@ public class FilterController implements IMapSelectionListener, IExtension {
 			return;
 		}
 		getFilterToolbar().setVisible(show);
-		final IFilter filter = getMap().getFilter();
+		final MapModel map = getController().getMap();
+		final Filter filter = map.getFilter();
 		if (show) {
-			filter.applyFilter();
+			filter.applyFilter(map, false);
 		}
 		else {
-			createTransparentFilter().applyFilter();
+			createTransparentFilter().applyFilter(map, false);
 		}
-		refreshMap();
 	}
+	
+	void drillDown(){
+		final Filter filter = new Filter(controller, selectedViewCondition, false, true);
+		filter.applyFilter(controller.getMap(), true);
+	}
+	
+	void drillUp(){
+		final NodeModel root = controller.getMap().getRootNode();
+		drillUp(root);
+		controller.getModeController().getMapController().refreshMap();
+	}
+
+	private void drillUp(NodeModel parent) {
+		if(! parent.isRoot() && parent.isVisible()){
+			return;
+		}
+		for(NodeModel node:parent.getChildren()){
+			if(node.isVisible()){
+				resetFilter(parent);
+				return;
+			}
+		}
+		for(NodeModel node:parent.getChildren()){
+			drillUp(node);
+		}
+    }
+
+	private void resetFilter(NodeModel node) {
+	    node.getFilterInfo().reset();
+		for(NodeModel child:node.getChildren()){
+			resetFilter(child);
+		}
+	    
+	    
+    }
 }

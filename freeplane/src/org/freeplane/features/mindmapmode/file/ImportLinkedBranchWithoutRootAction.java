@@ -56,7 +56,7 @@ class ImportLinkedBranchWithoutRootAction extends AFreeplaneAction implements IF
 		final NodeModel selected = modeController.getMapController().getSelectedNode();
 		if (selected == null || NodeLinks.getLink(selected) == null) {
 			JOptionPane.showMessageDialog(getController().getViewController().getMapView(), FreeplaneResourceBundle
-			    .getByKey("import_linked_branch_no_link"));
+			    .getText("import_linked_branch_no_link"));
 			return;
 		}
 		URL absolute = null;

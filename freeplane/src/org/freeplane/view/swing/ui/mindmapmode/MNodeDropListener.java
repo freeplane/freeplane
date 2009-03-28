@@ -128,7 +128,7 @@ public class MNodeDropListener implements DropTargetListener {
 				int yesorno = JOptionPane.YES_OPTION;
 				if (controller.getSelection().size() >= 5) {
 					yesorno = JOptionPane.showConfirmDialog(controller.getViewController().getContentPane(),
-					    FreeplaneResourceBundle.getByKey("lots_of_links_warning"), Integer.toString(controller
+					    FreeplaneResourceBundle.getText("lots_of_links_warning"), Integer.toString(controller
 					        .getSelection().size())
 					            + " links to the same node", JOptionPane.YES_NO_OPTION);
 				}
@@ -144,7 +144,7 @@ public class MNodeDropListener implements DropTargetListener {
 			else {
 				final MMapController mapController = (MMapController) modeController.getMapController();
 				if (!mapController.isWriteable(targetNode)) {
-					final String message = FreeplaneResourceBundle.getByKey("node_is_write_protected");
+					final String message = FreeplaneResourceBundle.getText("node_is_write_protected");
 					JOptionPane.showMessageDialog(controller.getViewController().getContentPane(), message,
 					    "Freeplane", JOptionPane.ERROR_MESSAGE);
 					return;
@@ -155,7 +155,7 @@ public class MNodeDropListener implements DropTargetListener {
 					NodeModel actualNode = targetNode;
 					do {
 						if (selecteds.contains(actualNode)) {
-							final String message = FreeplaneResourceBundle.getByKey("cannot_move_to_child");
+							final String message = FreeplaneResourceBundle.getText("cannot_move_to_child");
 							JOptionPane.showMessageDialog(controller.getViewController().getContentPane(), message,
 							    "Freeplane", JOptionPane.WARNING_MESSAGE);
 							dtde.dropComplete(true);

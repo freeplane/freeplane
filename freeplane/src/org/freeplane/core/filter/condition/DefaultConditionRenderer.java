@@ -45,7 +45,7 @@ public class DefaultConditionRenderer implements ListCellRenderer {
 	public Component getListCellRendererComponent(final JList list, final Object value, final int index,
 	                                              final boolean isSelected, final boolean cellHasFocus) {
 		if (value == null) {
-			return new JLabel(FreeplaneResourceBundle.getByKey("filter_no_filtering"));
+			return new JLabel(FreeplaneResourceBundle.getText("filter_no_filtering"));
 		}
 		JComponent component;
 		if (value instanceof MindIcon) {
@@ -66,6 +66,7 @@ public class DefaultConditionRenderer implements ListCellRenderer {
 			component.setBackground(Color.WHITE);
 		}
 		component.setAlignmentX(Component.LEFT_ALIGNMENT);
+//		return new JLabel(value.toString());
 		return component;
 	}
 }

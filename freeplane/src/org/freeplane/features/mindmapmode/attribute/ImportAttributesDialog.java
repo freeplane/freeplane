@@ -138,10 +138,10 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 	final private DefaultTreeModel treeModel;
 
 	public ImportAttributesDialog(final Controller controller, final Component parentComponent) {
-		super(controller.getViewController().getFrame(), FreeplaneResourceBundle.getByKey("attributes_import"), true);
+		super(controller.getViewController().getFrame(), FreeplaneResourceBundle.getText("attributes_import"), true);
 		this.controller = controller;
 		this.parentComponent = parentComponent;
-		final TreeNodeInfo nodeInfo = new TreeNodeInfo(FreeplaneResourceBundle.getByKey("attribute_top"));
+		final TreeNodeInfo nodeInfo = new TreeNodeInfo(FreeplaneResourceBundle.getText("attribute_top"));
 		topNode = new DefaultMutableTreeNode(nodeInfo);
 		treeModel = new DefaultTreeModel(topNode);
 		tree = new JTree(treeModel);
@@ -154,7 +154,7 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 		final Box buttons = Box.createHorizontalBox();
 		buttons.setBorder(new EmptyBorder(5, 5, 5, 5));
 		final JButton okBtn = new JButton();
-		MenuBuilder.setLabelAndMnemonic(okBtn, FreeplaneResourceBundle.getByKey("ok"));
+		MenuBuilder.setLabelAndMnemonic(okBtn, FreeplaneResourceBundle.getText("ok"));
 		okBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent e) {
 				performImport(topNode);
@@ -162,7 +162,7 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 			}
 		});
 		final JButton cancelBtn = new JButton();
-		MenuBuilder.setLabelAndMnemonic(cancelBtn, FreeplaneResourceBundle.getByKey("cancel"));
+		MenuBuilder.setLabelAndMnemonic(cancelBtn, FreeplaneResourceBundle.getText("cancel"));
 		cancelBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent e) {
 				dispose();
@@ -309,7 +309,7 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 		createMapSubTrees(topNode);
 		if (topNode.getChildCount() == 0) {
 			JOptionPane.showMessageDialog(parentComponent, FreeplaneResourceBundle
-			    .getByKey("attributes_no_import_candidates_found"), getTitle(), JOptionPane.INFORMATION_MESSAGE);
+			    .getText("attributes_no_import_candidates_found"), getTitle(), JOptionPane.INFORMATION_MESSAGE);
 			return;
 		}
 		treeModel.reload();

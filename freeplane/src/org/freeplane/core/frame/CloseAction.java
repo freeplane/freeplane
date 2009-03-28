@@ -36,7 +36,7 @@ class CloseAction extends AbstractAction implements IFreeplaneAction {
 
 	CloseAction(final Controller controller) {
 		this.controller = controller;
-		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getByKey("close"));
+		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText("close"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {

@@ -176,7 +176,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 	}
 
 	private String getResourceString(final String string) {
-		return FreeplaneResourceBundle.getByKey(string);
+		return FreeplaneResourceBundle.getText(string);
 	}
 
 	/**

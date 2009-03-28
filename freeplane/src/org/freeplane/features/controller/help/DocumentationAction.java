@@ -41,11 +41,11 @@ class DocumentationAction extends AbstractAction implements IFreeplaneAction {
 
 	DocumentationAction(final Controller controller) {
 		this.controller = controller;
-		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getByKey(NAME));
+		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText(NAME));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		String map = FreeplaneResourceBundle.getByKey("browsemode_initial_map");
+		String map = FreeplaneResourceBundle.getText("browsemode_initial_map");
 		map = FpStringUtils.removeTranslateComment(map);
 		if (map != null && map != "") {
 			URL url = null;

@@ -23,7 +23,14 @@ package org.freeplane.core.filter;
  * @author Dimitry Polivaev
  */
 public class FilterInfo {
-	private int info = IFilter.FILTER_INITIAL_VALUE;
+	private int info = FilterInfo.FILTER_INITIAL_VALUE;
+	// TODO rladstaetter 02.03.2009 create enum, move out of interface definition (defining constants in interfaces is considered 'old style')
+    public static final int FILTER_INITIAL_VALUE = 1;
+	public static final int FILTER_SHOW_ANCESTOR = 4;
+	public static final int FILTER_SHOW_DESCENDANT = 8;
+	public static final int FILTER_SHOW_ECLIPSED = 16;
+	public static final int FILTER_SHOW_HIDDEN = 32;
+	public static final int FILTER_SHOW_MATCHED = 2;
 
 	/**
 	 *
@@ -33,8 +40,8 @@ public class FilterInfo {
 	}
 
 	void add(final int flag) {
-		if ((flag & (IFilter.FILTER_SHOW_MATCHED | IFilter.FILTER_SHOW_HIDDEN)) != 0) {
-			info &= ~IFilter.FILTER_INITIAL_VALUE;
+		if ((flag & (FilterInfo.FILTER_SHOW_MATCHED | FilterInfo.FILTER_SHOW_HIDDEN)) != 0) {
+			info &= ~FilterInfo.FILTER_INITIAL_VALUE;
 		}
 		info |= flag;
 	}
@@ -46,28 +53,28 @@ public class FilterInfo {
 	/**
 	 */
 	public boolean isAncestor() {
-		return (info & IFilter.FILTER_SHOW_ANCESTOR) != 0;
+		return (info & FilterInfo.FILTER_SHOW_ANCESTOR) != 0;
 	}
 
 	/**
 	 */
 	public boolean isMatched() {
-		return (info & IFilter.FILTER_SHOW_MATCHED) != 0;
+		return (info & FilterInfo.FILTER_SHOW_MATCHED) != 0;
 	}
 
 	public void reset() {
-		info = IFilter.FILTER_INITIAL_VALUE;
+		info = FilterInfo.FILTER_INITIAL_VALUE;
 	}
 
 	public void setAncestor() {
-		add(IFilter.FILTER_SHOW_ANCESTOR);
+		add(FilterInfo.FILTER_SHOW_ANCESTOR);
 	}
 
 	public void setDescendant() {
-		add(IFilter.FILTER_SHOW_DESCENDANT);
+		add(FilterInfo.FILTER_SHOW_DESCENDANT);
 	}
 
 	public void setMatched() {
-		add(IFilter.FILTER_SHOW_MATCHED);
+		add(FilterInfo.FILTER_SHOW_MATCHED);
 	}
 }

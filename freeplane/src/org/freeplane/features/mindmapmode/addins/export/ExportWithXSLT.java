@@ -259,7 +259,7 @@ public class ExportWithXSLT extends ExportAction {
 	private String getTranslatableResourceString(final String resourceName) {
 		final String returnValue = getProperty(resourceName);
 		if (returnValue != null && returnValue.startsWith("%")) {
-			return FreeplaneResourceBundle.getByKey(returnValue.substring(1));
+			return FreeplaneResourceBundle.getText(returnValue.substring(1));
 		}
 		return returnValue;
 	}

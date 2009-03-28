@@ -77,7 +77,7 @@ abstract public class ExportAction extends AFreeplaneAction {
 			chosenFile = new File(chosenFile.getParent(), chosenFile.getName() + "." + type);
 		}
 		if (chosenFile.exists()) {
-			final String overwriteText = MessageFormat.format(FreeplaneResourceBundle.getByKey("file_already_exists"),
+			final String overwriteText = MessageFormat.format(FreeplaneResourceBundle.getText("file_already_exists"),
 			    new Object[] { chosenFile.toString() });
 			final int overwriteMap = JOptionPane.showConfirmDialog(component, overwriteText, overwriteText,
 			    JOptionPane.YES_NO_OPTION);

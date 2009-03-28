@@ -44,11 +44,11 @@ public class FreeplaneResourceBundle extends ResourceBundle {
 	public static final String POSTFIX_TRANSLATE_ME = "[translate me]";
 
 	public static NamedObject createTranslatedString(final String key) {
-		final String fs = FreeplaneResourceBundle.getByKey(key);
+		final String fs = FreeplaneResourceBundle.getText(key);
 		return new NamedObject(key, fs);
 	}
 
-	public static String getByKey(final String key) {
+	public static String getText(final String key) {
 		if (key == null) {
 			return null;
 		}

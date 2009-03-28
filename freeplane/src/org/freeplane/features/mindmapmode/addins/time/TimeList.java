@@ -585,12 +585,12 @@ class TimeList {
 	}
 
 	public void startup() {
-		TimeList.COLUMN_MODIFIED = FreeplaneResourceBundle.getByKey(PLUGINS_TIME_LIST_XML_MODIFIED);
-		TimeList.COLUMN_CREATED = FreeplaneResourceBundle.getByKey(PLUGINS_TIME_LIST_XML_CREATED);
-		TimeList.COLUMN_ICONS = FreeplaneResourceBundle.getByKey(PLUGINS_TIME_LIST_XML_ICONS);
-		TimeList.COLUMN_TEXT = FreeplaneResourceBundle.getByKey(PLUGINS_TIME_LIST_XML_TEXT);
-		TimeList.COLUMN_DATE = FreeplaneResourceBundle.getByKey(PLUGINS_TIME_LIST_XML_DATE);
-		TimeList.COLUMN_NOTES = FreeplaneResourceBundle.getByKey(PLUGINS_TIME_LIST_XML_NOTES);
+		TimeList.COLUMN_MODIFIED = FreeplaneResourceBundle.getText(PLUGINS_TIME_LIST_XML_MODIFIED);
+		TimeList.COLUMN_CREATED = FreeplaneResourceBundle.getText(PLUGINS_TIME_LIST_XML_CREATED);
+		TimeList.COLUMN_ICONS = FreeplaneResourceBundle.getText(PLUGINS_TIME_LIST_XML_ICONS);
+		TimeList.COLUMN_TEXT = FreeplaneResourceBundle.getText(PLUGINS_TIME_LIST_XML_TEXT);
+		TimeList.COLUMN_DATE = FreeplaneResourceBundle.getText(PLUGINS_TIME_LIST_XML_DATE);
+		TimeList.COLUMN_NOTES = FreeplaneResourceBundle.getText(PLUGINS_TIME_LIST_XML_NOTES);
 		dialog = new JDialog(modeController.getController().getViewController().getFrame(), true /* modal */);
 		String windowTitle;
 		if (showAllNodes) {
@@ -599,7 +599,7 @@ class TimeList {
 		else {
 			windowTitle = PLUGINS_TIME_MANAGEMENT_XML_WINDOW_TITLE;
 		}
-		dialog.setTitle(FreeplaneResourceBundle.getByKey(windowTitle));
+		dialog.setTitle(FreeplaneResourceBundle.getText(windowTitle));
 		dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		dialog.addWindowListener(new WindowAdapter() {
 			@Override
@@ -617,7 +617,7 @@ class TimeList {
 		gbl.columnWeights = new double[] { 1.0f };
 		gbl.rowWeights = new double[] { 1.0f };
 		contentPane.setLayout(gbl);
-		contentPane.add(new JLabel(FreeplaneResourceBundle.getByKey(PLUGINS_TIME_MANAGEMENT_XML_FIND)), new GridBagConstraints(0, 0,
+		contentPane.add(new JLabel(FreeplaneResourceBundle.getText(PLUGINS_TIME_MANAGEMENT_XML_FIND)), new GridBagConstraints(0, 0,
 		    1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
 		mFilterTextSearchField = new JTextField();
 		mFilterTextSearchField.getDocument().addDocumentListener(new FilterTextDocumentListener());
@@ -631,7 +631,7 @@ class TimeList {
 		});
 		contentPane.add(/* new JScrollPane */(mFilterTextSearchField), new GridBagConstraints(0, 1, 1, 1, 1.0, 0.0,
 		    GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
-		contentPane.add(new JLabel(FreeplaneResourceBundle.getByKey(PLUGINS_TIME_MANAGEMENT_XML_REPLACE)), new GridBagConstraints(0,
+		contentPane.add(new JLabel(FreeplaneResourceBundle.getText(PLUGINS_TIME_MANAGEMENT_XML_REPLACE)), new GridBagConstraints(0,
 		    2, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
 		mFilterTextReplaceField = new JTextField();
 		contentPane.add(/* new JScrollPane */(mFilterTextReplaceField), new GridBagConstraints(0, 3, 1, 1, 1.0, 0.0,
@@ -670,40 +670,40 @@ class TimeList {
 		mTreeLabel = new JLabel();
 		contentPane.add(new JScrollPane(mTreeLabel), new GridBagConstraints(0, 5, 1, 1, 1.0, 1.0,
 		    GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
-		final AbstractAction selectAction = new AbstractAction(FreeplaneResourceBundle.getByKey(PLUGINS_TIME_MANAGEMENT_XML_SELECT)) {
+		final AbstractAction selectAction = new AbstractAction(FreeplaneResourceBundle.getText(PLUGINS_TIME_MANAGEMENT_XML_SELECT)) {
 			public void actionPerformed(final ActionEvent arg0) {
 				selectSelectedRows();
 			}
 		};
 		final JButton selectButton = new JButton(selectAction);
-		final AbstractAction exportAction = new AbstractAction(FreeplaneResourceBundle.getByKey("plugins/TimeManagement.xml_Export")) {
+		final AbstractAction exportAction = new AbstractAction(FreeplaneResourceBundle.getText("plugins/TimeManagement.xml_Export")) {
 			public void actionPerformed(final ActionEvent arg0) {
 				exportSelectedRowsAndClose();
 			}
 		};
 		final JButton exportButton = new JButton(exportAction);
 		final AbstractAction replaceAllAction = new AbstractAction(
-		    FreeplaneResourceBundle.getByKey("plugins/TimeManagement.xml_Replace_All")) {
+		    FreeplaneResourceBundle.getText("plugins/TimeManagement.xml_Replace_All")) {
 			public void actionPerformed(final ActionEvent arg0) {
 				replace(new ReplaceAllInfo());
 			}
 		};
 		final JButton replaceAllButton = new JButton(replaceAllAction);
 		final AbstractAction replaceSelectedAction = new AbstractAction(
-		    FreeplaneResourceBundle.getByKey("plugins/TimeManagement.xml_Replace_Selected")) {
+		    FreeplaneResourceBundle.getText("plugins/TimeManagement.xml_Replace_Selected")) {
 			public void actionPerformed(final ActionEvent arg0) {
 				replace(new ReplaceSelectedInfo());
 			}
 		};
 		final JButton replaceSelectedButton = new JButton(replaceSelectedAction);
-		final AbstractAction gotoAction = new AbstractAction(FreeplaneResourceBundle.getByKey("plugins/TimeManagement.xml_Goto")) {
+		final AbstractAction gotoAction = new AbstractAction(FreeplaneResourceBundle.getText("plugins/TimeManagement.xml_Goto")) {
 			public void actionPerformed(final ActionEvent arg0) {
 				selectSelectedRows();
 				disposeDialog();
 			}
 		};
 		final JButton gotoButton = new JButton(gotoAction);
-		final AbstractAction disposeAction = new AbstractAction(FreeplaneResourceBundle.getByKey(PLUGINS_TIME_MANAGEMENT_XML_CANCEL)) {
+		final AbstractAction disposeAction = new AbstractAction(FreeplaneResourceBundle.getText(PLUGINS_TIME_MANAGEMENT_XML_CANCEL)) {
 			public void actionPerformed(final ActionEvent arg0) {
 				disposeDialog();
 			}
@@ -719,7 +719,7 @@ class TimeList {
 		contentPane.add(/* new JScrollPane */(bar), new GridBagConstraints(0, 6, 1, 1, 1.0, 1.0,
 		    GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
 		final JMenuBar menuBar = new JMenuBar();
-		final JMenu menu = new JMenu(FreeplaneResourceBundle.getByKey("plugins/TimeManagement.xml_menu_actions"));
+		final JMenu menu = new JMenu(FreeplaneResourceBundle.getText("plugins/TimeManagement.xml_menu_actions"));
 		final AbstractAction[] actionList = new AbstractAction[] { selectAction, gotoAction, replaceSelectedAction,
 		        replaceAllAction, exportAction, disposeAction };
 		for (int i = 0; i < actionList.length; i++) {

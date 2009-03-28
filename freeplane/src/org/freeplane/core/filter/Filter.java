@@ -31,25 +31,25 @@ import org.freeplane.core.model.NodeModel;
 /**
  * @author Dimitry Polivaev
  */
-public class DefaultFilter implements IFilter {
+public class Filter {
 	private ICondition condition = null;
 	final private Controller controller;
 	private int options = 0;
 
 	/**
 	 */
-	public DefaultFilter(final Controller controller, final ICondition condition, final boolean areAnchestorsShown,
+	public Filter(final Controller controller, final ICondition condition, final boolean areAnchestorsShown,
 	                     final boolean areDescendantsShown) {
 		super();
 		this.controller = controller;
 		this.condition = condition;
-		options = IFilter.FILTER_INITIAL_VALUE | IFilter.FILTER_SHOW_MATCHED;
+		options = FilterInfo.FILTER_INITIAL_VALUE | FilterInfo.FILTER_SHOW_MATCHED;
 		if (areAnchestorsShown) {
-			options += IFilter.FILTER_SHOW_ANCESTOR;
+			options += FilterInfo.FILTER_SHOW_ANCESTOR;
 		}
-		options += IFilter.FILTER_SHOW_ECLIPSED;
+		options += FilterInfo.FILTER_SHOW_ECLIPSED;
 		if (areDescendantsShown) {
-			options += IFilter.FILTER_SHOW_DESCENDANT;
+			options += FilterInfo.FILTER_SHOW_DESCENDANT;
 		}
 	}
 
@@ -62,132 +62,33 @@ public class DefaultFilter implements IFilter {
 	 * @see
 	 * freeplane.controller.filter.Filter#applyFilter(freeplane.modes.MindMap)
 	 */
-	public void applyFilter() {
-		if (condition != null) {
-			try {
-				controller.getViewController().setWaitingCursor(true);
-				final MapModel map = controller.getMap();
+	public void applyFilter(final MapModel map, boolean force) {
+		if(map == null){
+			return;
+		}
+		try {
+			controller.getViewController().setWaitingCursor(true);
+			final Filter oldFilter = map.getFilter();
+			map.setFilter(this);
+			if (force || oldFilter == null || ! condition.equals(oldFilter.getCondition())) {
 				final NodeModel root = map.getRootNode();
 				resetFilter(root);
 				if (filterChildren(root, condition.checkNode(root), false)) {
-					addFilterResult(root, IFilter.FILTER_SHOW_ANCESTOR);
+					addFilterResult(root, FilterInfo.FILTER_SHOW_ANCESTOR);
 				}
-				selectVisibleNode();
 			}
-			finally {
-				controller.getViewController().setWaitingCursor(false);
-			}
+			refreshMap();
+			selectVisibleNode();
+		}
+		finally {
+			controller.getViewController().setWaitingCursor(false);
 		}
 	}
 
-	private boolean applyFilter(final NodeModel node, final boolean isAncestorSelected,
-	                            final boolean isAncestorEclipsed, boolean isDescendantSelected) {
-		resetFilter(node);
-		if (isAncestorSelected) {
-			addFilterResult(node, IFilter.FILTER_SHOW_DESCENDANT);
-		}
-		final boolean conditionSatisfied = condition.checkNode(node);
-		if (conditionSatisfied) {
-			isDescendantSelected = true;
-			addFilterResult(node, IFilter.FILTER_SHOW_MATCHED);
-		}
-		else {
-			addFilterResult(node, IFilter.FILTER_SHOW_HIDDEN);
-		}
-		if (isAncestorEclipsed) {
-			addFilterResult(node, IFilter.FILTER_SHOW_ECLIPSED);
-		}
-		if (filterChildren(node, conditionSatisfied || isAncestorSelected, !conditionSatisfied || isAncestorEclipsed)) {
-			addFilterResult(node, IFilter.FILTER_SHOW_ANCESTOR);
-			isDescendantSelected = true;
-		}
-		return isDescendantSelected;
+	private void refreshMap() {
+		controller.getModeController().getMapController().refreshMap();
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.controller.filter.Filter#areAncestorsShown()
-	 */
-	public boolean areAncestorsShown() {
-		return 0 != (options & IFilter.FILTER_SHOW_ANCESTOR);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.controller.filter.Filter#areDescendantsShown()
-	 */
-	public boolean areDescendantsShown() {
-		return 0 != (options & IFilter.FILTER_SHOW_DESCENDANT);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.controller.filter.Filter#areEclipsedShown()
-	 */
-	public boolean areEclipsedShown() {
-		return true;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.controller.filter.Filter#areHiddenShown()
-	 */
-	public boolean areHiddenShown() {
-		return false;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.controller.filter.Filter#areMatchedShown()
-	 */
-	public boolean areMatchedShown() {
-		return true;
-	}
-
-	/**
-	 * @param c
-	 */
-	private boolean filterChildren(final NodeModel parent, final boolean isAncestorSelected,
-	                               final boolean isAncestorEclipsed) {
-		final ListIterator iterator = controller.getModeController().getMapController().childrenUnfolded(parent);
-		boolean isDescendantSelected = false;
-		while (iterator.hasNext()) {
-			final NodeModel node = (NodeModel) iterator.next();
-			isDescendantSelected = applyFilter(node, isAncestorSelected, isAncestorEclipsed, isDescendantSelected);
-		}
-		return isDescendantSelected;
-	}
-
-	public Object getCondition() {
-		return condition;
-	}
-
-	private NodeModel getNearestVisibleParent(final NodeModel selectedNode) {
-		if (selectedNode.isVisible()) {
-			return selectedNode;
-		}
-		return getNearestVisibleParent(selectedNode.getParentNode());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * freeplane.controller.filter.Filter#isVisible(freeplane.modes.MindMapNode)
-	 */
-	public boolean isVisible(final NodeModel node) {
-		if (condition == null) {
-			return true;
-		}
-		final int filterResult = node.getFilterInfo().get();
-		return ((options & IFilter.FILTER_SHOW_ANCESTOR) != 0 || (options & IFilter.FILTER_SHOW_ECLIPSED) >= (filterResult & IFilter.FILTER_SHOW_ECLIPSED))
-		        && ((options & filterResult & ~IFilter.FILTER_SHOW_ECLIPSED) != 0);
-	}
-
-	public void resetFilter(final NodeModel node) {
-		node.getFilterInfo().reset();
-	}
-
-	public void selectVisibleNode() {
+	private void selectVisibleNode() {
 		final IMapSelection mapSelection = controller.getSelection();
 		final List<NodeModel> selectedNodes = mapSelection.getSelection();
 		final int lastSelectedIndex = selectedNodes.size() - 1;
@@ -208,4 +109,89 @@ public class DefaultFilter implements IFilter {
 		}
 		mapSelection.setSiblingMaxLevel(selected.getNodeLevel(false));
 	}
+
+	private NodeModel getNearestVisibleParent(final NodeModel selectedNode) {
+		if (selectedNode.isVisible()) {
+			return selectedNode;
+		}
+		return getNearestVisibleParent(selectedNode.getParentNode());
+	}
+
+	private boolean applyFilter(final NodeModel node, final boolean isAncestorSelected,
+	                            final boolean isAncestorEclipsed, boolean isDescendantSelected) {
+		final boolean conditionSatisfied = condition.checkNode(node);
+		resetFilter(node);
+		if (isAncestorSelected) {
+			addFilterResult(node, FilterInfo.FILTER_SHOW_DESCENDANT);
+		}
+		if (conditionSatisfied) {
+			isDescendantSelected = true;
+			addFilterResult(node, FilterInfo.FILTER_SHOW_MATCHED);
+		}
+		else {
+			addFilterResult(node, FilterInfo.FILTER_SHOW_HIDDEN);
+		}
+		if (isAncestorEclipsed) {
+			addFilterResult(node, FilterInfo.FILTER_SHOW_ECLIPSED);
+		}
+		if (filterChildren(node, conditionSatisfied || isAncestorSelected, !conditionSatisfied || isAncestorEclipsed)) {
+			addFilterResult(node, FilterInfo.FILTER_SHOW_ANCESTOR);
+			isDescendantSelected = true;
+		}
+		return isDescendantSelected;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see freeplane.controller.filter.Filter#areAncestorsShown()
+	 */
+	public boolean areAncestorsShown() {
+		return 0 != (options & FilterInfo.FILTER_SHOW_ANCESTOR);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see freeplane.controller.filter.Filter#areDescendantsShown()
+	 */
+	public boolean areDescendantsShown() {
+		return 0 != (options & FilterInfo.FILTER_SHOW_DESCENDANT);
+	}
+
+	/**
+	 * @param c
+	 */
+	private boolean filterChildren(final NodeModel parent, final boolean isAncestorSelected,
+	                               final boolean isAncestorEclipsed) {
+		final ListIterator iterator = controller.getModeController().getMapController().childrenUnfolded(parent);
+		boolean isDescendantSelected = false;
+		while (iterator.hasNext()) {
+			final NodeModel node = (NodeModel) iterator.next();
+			isDescendantSelected = applyFilter(node, isAncestorSelected, isAncestorEclipsed, isDescendantSelected);
+		}
+		return isDescendantSelected;
+	}
+
+	public Object getCondition() {
+		return condition;
+	}
+
+
+	/*
+	 * (non-Javadoc)
+	 * @see
+	 * freeplane.controller.filter.Filter#isVisible(freeplane.modes.MindMapNode)
+	 */
+	public boolean isVisible(final NodeModel node) {
+		if (condition == null) {
+			return true;
+		}
+		final int filterResult = node.getFilterInfo().get();
+		return ((options & FilterInfo.FILTER_SHOW_ANCESTOR) != 0 || (options & FilterInfo.FILTER_SHOW_ECLIPSED) >= (filterResult & FilterInfo.FILTER_SHOW_ECLIPSED))
+		        && ((options & filterResult & ~FilterInfo.FILTER_SHOW_ECLIPSED) != 0);
+	}
+
+	private void resetFilter(final NodeModel node) {
+		node.getFilterInfo().reset();
+	}
+
 }

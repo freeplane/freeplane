@@ -57,10 +57,10 @@ public class StylePatternFactory {
 		if (patternType != null) {
 			result = StylePatternFactory.addSeparatorIfNecessary(result);
 			if (patternType.getValue() == null) {
-				result += "-" + FreeplaneResourceBundle.getByKey(patternString);
+				result += "-" + FreeplaneResourceBundle.getText(patternString);
 			}
 			else {
-				result += "+" + FreeplaneResourceBundle.getByKey(patternString) + " " + patternType.getValue();
+				result += "+" + FreeplaneResourceBundle.getText(patternString) + " " + patternType.getValue();
 			}
 		}
 		return result;
@@ -70,10 +70,10 @@ public class StylePatternFactory {
 		if (patternType != null) {
 			result = StylePatternFactory.addSeparatorIfNecessary(result);
 			if (patternType == null) {
-				result += "-" + FreeplaneResourceBundle.getByKey(patternString);
+				result += "-" + FreeplaneResourceBundle.getText(patternString);
 			}
 			else {
-				result += "+" + FreeplaneResourceBundle.getByKey(patternString) + " " + patternType;
+				result += "+" + FreeplaneResourceBundle.getText(patternString) + " " + patternType;
 			}
 		}
 		return result;
@@ -252,19 +252,19 @@ public class StylePatternFactory {
 		if (pPattern.getPatternNodeColor() != null) {
 			result = StylePatternFactory.addSeparatorIfNecessary(result);
 			if (pPattern.getPatternNodeColor().getValue() == null) {
-				result += "-" + FreeplaneResourceBundle.getByKey("PatternToString.color");
+				result += "-" + FreeplaneResourceBundle.getText("PatternToString.color");
 			}
 			else {
-				result += "+" + FreeplaneResourceBundle.getByKey("PatternToString.color");
+				result += "+" + FreeplaneResourceBundle.getText("PatternToString.color");
 			}
 		}
 		if (pPattern.getPatternNodeBackgroundColor() != null) {
 			result = StylePatternFactory.addSeparatorIfNecessary(result);
 			if (pPattern.getPatternNodeBackgroundColor().getValue() == null) {
-				result += "-" + FreeplaneResourceBundle.getByKey("PatternToString.backgroundColor");
+				result += "-" + FreeplaneResourceBundle.getText("PatternToString.backgroundColor");
 			}
 			else {
-				result += "+" + FreeplaneResourceBundle.getByKey("PatternToString.backgroundColor");
+				result += "+" + FreeplaneResourceBundle.getText("PatternToString.backgroundColor");
 			}
 		}
 		result = StylePatternFactory.addSubPatternToString(result, pPattern.getPatternNodeFontSize(),

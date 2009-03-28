@@ -86,7 +86,7 @@ public class EncryptedMap extends AFreeplaneAction implements INodeSelectionList
 		}
 		final ModeController newModeController = getModeController();
 		final NodeModel node = new NodeModel(FreeplaneResourceBundle
-		    .getByKey("accessories/plugins/EncryptNode.properties_select_me"), null);
+		    .getText("accessories/plugins/EncryptNode.properties_select_me"), null);
 		final EncryptionModel encryptedMindMapNode = new EncryptionModel(node);
 		encryptedMindMapNode.setEncrypter(new SingleDesEncrypter(password));
 		node.addExtension(encryptedMindMapNode);

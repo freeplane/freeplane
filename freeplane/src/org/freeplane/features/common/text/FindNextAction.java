@@ -34,7 +34,7 @@ class FindNextAction extends AFreeplaneAction {
 
 	public FindNextAction(final ModeController controller, final FindAction find) {
 		super(controller.getController(), "find_next");
-		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getByKey("find_next"));
+		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText("find_next"));
 		this.find = find;
 	}
 
@@ -42,12 +42,12 @@ class FindNextAction extends AFreeplaneAction {
 		final Collection subterms = find.getSubterms();
 		if (subterms == null) {
 			UITools.informationMessage(getController().getViewController().getFrame(), FreeplaneResourceBundle
-			    .getByKey("no_previous_find"));
+			    .getText("no_previous_find"));
 			return;
 		}
 		final boolean found = find.findNext();
 		if (!found) {
-			final String messageText = FreeplaneResourceBundle.getByKey("no_more_found_from");
+			final String messageText = FreeplaneResourceBundle.getText("no_more_found_from");
 			final String searchTerm = messageText.startsWith("<html>") ? HtmlTools.toXMLEscapedText(find
 			    .getSearchTerm()) : find.getSearchTerm();
 			UITools.informationMessage(getController().getViewController().getFrame(), messageText.replaceAll("\\$1",

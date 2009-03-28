@@ -64,7 +64,7 @@ class AttributeExistsCondition extends NodeCondition {
 
 	@Override
 	protected String createDesctiption() {
-		final String simpleCondition = FreeplaneResourceBundle.getByKey(ConditionFactory.FILTER_EXIST);
+		final String simpleCondition = FreeplaneResourceBundle.getText(ConditionFactory.FILTER_EXIST);
 		return ConditionFactory.createDescription(attribute, simpleCondition, null, false);
 	}
 

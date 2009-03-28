@@ -31,7 +31,7 @@ class JZoomedHotEqn extends sHotEqn {
 		model = latexExtension;
 		setEquation(latexExtension.getEquation());
 		if (JZoomedHotEqn.editorTitle == null) {
-			JZoomedHotEqn.editorTitle = FreeplaneResourceBundle.getByKey("plugins/latex/LatexNodeHook.editorTitle");
+			JZoomedHotEqn.editorTitle = FreeplaneResourceBundle.getText("plugins/latex/LatexNodeHook.editorTitle");
 		}
 	}
 

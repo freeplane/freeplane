@@ -52,9 +52,9 @@ class TimeConditionCreatedBefore extends TimeCondition {
 
 	@Override
     protected String createDesctiption() {
-		final String filterTime = FreeplaneResourceBundle.getByKey(TimeConditionController.FILTER_TIME);
+		final String filterTime = FreeplaneResourceBundle.getText(TimeConditionController.FILTER_TIME);
 		final String dateAsString = TimeCondition.format(getDate());
-		final String before = FreeplaneResourceBundle.getByKey(FILTER_CREATED_BEFORE);
+		final String before = FreeplaneResourceBundle.getText(FILTER_CREATED_BEFORE);
 		return ConditionFactory.createDescription(filterTime, before, dateAsString, false);
     }
 }

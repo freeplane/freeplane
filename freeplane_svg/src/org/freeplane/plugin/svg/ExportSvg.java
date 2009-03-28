@@ -41,7 +41,7 @@ class ExportSvg extends ExportVectorGraphic {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final File chosenFile = chooseFile("svg", FreeplaneResourceBundle.getByKey("export_svg_text"), null);
+		final File chosenFile = chooseFile("svg", FreeplaneResourceBundle.getText("export_svg_text"), null);
 		if (chosenFile == null) {
 			return;
 		}

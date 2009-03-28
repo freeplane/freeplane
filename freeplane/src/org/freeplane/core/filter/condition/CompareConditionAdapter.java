@@ -67,7 +67,7 @@ abstract public class CompareConditionAdapter extends NodeCondition {
 				simpleCondition = succeed ? ConditionFactory.FILTER_LT : ConditionFactory.FILTER_GE;
 				break;
 			case 0:
-				simpleCondition = FreeplaneResourceBundle.getByKey(succeed ? ConditionFactory.FILTER_IS_EQUAL_TO
+				simpleCondition = FreeplaneResourceBundle.getText(succeed ? ConditionFactory.FILTER_IS_EQUAL_TO
 				        : ConditionFactory.FILTER_IS_NOT_EQUAL_TO);
 				break;
 			case 1:

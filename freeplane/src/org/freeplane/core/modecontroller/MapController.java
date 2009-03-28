@@ -514,7 +514,7 @@ public class MapController extends SelectionController {
 		}
 		catch (final MalformedURLException ex) {
 			LogTool.logException(ex);
-			getController().errorMessage(FreeplaneResourceBundle.getByKey("url_error") + "\n" + ex);
+			getController().errorMessage(FreeplaneResourceBundle.getText("url_error") + "\n" + ex);
 			return;
 		}
 		catch (final Exception e) {

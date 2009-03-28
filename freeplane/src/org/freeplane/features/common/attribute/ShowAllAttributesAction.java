@@ -39,7 +39,7 @@ class ShowAllAttributesAction extends AbstractAction implements IFreeplaneAction
 	 */
 	public ShowAllAttributesAction(final Controller controller) {
 		this.controller = controller;
-		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getByKey("attributes_show_all"));
+		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText("attributes_show_all"));
 	};
 
 	public void actionPerformed(final ActionEvent e) {

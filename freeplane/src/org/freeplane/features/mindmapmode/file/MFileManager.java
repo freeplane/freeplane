@@ -74,7 +74,7 @@ public class MFileManager extends UrlManager {
 
 		@Override
 		public String getDescription() {
-			return FreeplaneResourceBundle.getByKey("mindmaps_desc");
+			return FreeplaneResourceBundle.getText("mindmaps_desc");
 		}
 	}
 
@@ -145,7 +145,7 @@ public class MFileManager extends UrlManager {
 		JFileChooser chooser = null;
 		if (map.getFile() == null) {
 			JOptionPane.showMessageDialog(getController().getViewController().getContentPane(), FreeplaneResourceBundle
-			    .getByKey("not_saved_for_link_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
+			    .getText("not_saved_for_link_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
 			return null;
 		}
 		if (getLastCurrentDir() != null) {
@@ -169,7 +169,7 @@ public class MFileManager extends UrlManager {
 				relative = link.toString();
 			}
 			catch (final MalformedURLException ex) {
-				getController().errorMessage(FreeplaneResourceBundle.getByKey("url_error"));
+				getController().errorMessage(FreeplaneResourceBundle.getText("url_error"));
 				return null;
 			}
 			if (ResourceController.getResourceController().getProperty("links").equals("relative")) {
@@ -177,7 +177,7 @@ public class MFileManager extends UrlManager {
 					relative = UrlManager.toRelativeURL(Compat.fileToUrl(map.getFile()), link);
 				}
 				catch (final MalformedURLException ex) {
-					getController().errorMessage(FreeplaneResourceBundle.getByKey("url_error"));
+					getController().errorMessage(FreeplaneResourceBundle.getText("url_error"));
 					return null;
 				}
 			}
@@ -267,7 +267,7 @@ public class MFileManager extends UrlManager {
 			chooser.setSelectedFile(new File(getFileNameProposal(map)
 			        + org.freeplane.core.enums.ResourceControllerProperties.FREEPLANE_FILE_EXTENSION));
 		}
-		chooser.setDialogTitle(FreeplaneResourceBundle.getByKey("save_as"));
+		chooser.setDialogTitle(FreeplaneResourceBundle.getText("save_as"));
 		final int returnVal = chooser.showSaveDialog(getController().getViewController().getMapView());
 		if (returnVal != JFileChooser.APPROVE_OPTION) {
 			return false;
@@ -281,7 +281,7 @@ public class MFileManager extends UrlManager {
 		}
 		if (f.exists()) {
 			final int overwriteMap = JOptionPane.showConfirmDialog(getController().getViewController().getMapView(),
-			    FreeplaneResourceBundle.getByKey("map_already_exists"), "Freeplane", JOptionPane.YES_NO_OPTION);
+			    FreeplaneResourceBundle.getText("map_already_exists"), "Freeplane", JOptionPane.YES_NO_OPTION);
 			if (overwriteMap != JOptionPane.YES_OPTION) {
 				return false;
 			}

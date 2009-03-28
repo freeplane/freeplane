@@ -34,7 +34,7 @@ public class OpenPathAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final String inputValue = UITools.showInputDialog(getController(),
-		    getController().getSelection().getSelected(), FreeplaneResourceBundle.getByKey("open"), "");
+		    getController().getSelection().getSelected(), FreeplaneResourceBundle.getText("open"), "");
 		if (inputValue != null) {
 			final File newCenter = new File(inputValue);
 			if (newCenter.exists()) {

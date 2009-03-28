@@ -48,7 +48,7 @@ public class SelectedViewCondition implements ICondition {
 	public JComponent getListCellRendererComponent() {
 		if (SelectedViewCondition.renderer == null) {
 			SelectedViewCondition.renderer = ConditionFactory
-			    .createCellRendererComponent(SelectedViewCondition.description);
+			    .createCellRendererComponent(toString());
 		}
 		return SelectedViewCondition.renderer;
 	}
@@ -56,7 +56,7 @@ public class SelectedViewCondition implements ICondition {
 	@Override
 	public String toString() {
 		if (SelectedViewCondition.description == null) {
-			SelectedViewCondition.description = FreeplaneResourceBundle.getByKey("filter_selected_node_view");
+			SelectedViewCondition.description = FreeplaneResourceBundle.getText("filter_selected_node_view");
 		}
 		return SelectedViewCondition.description;
 	}

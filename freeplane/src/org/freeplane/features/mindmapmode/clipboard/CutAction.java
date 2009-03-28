@@ -46,7 +46,7 @@ class CutAction extends AFreeplaneAction {
 		final Controller controller = getController();
 		final NodeModel root = controller.getMap().getRootNode();
 		if (controller.getSelection().isSelected(root)) {
-			controller.errorMessage(FreeplaneResourceBundle.getByKey("cannot_delete_root"));
+			controller.errorMessage(FreeplaneResourceBundle.getText("cannot_delete_root"));
 			return;
 		}
 		final int showResult = new OptionalDontShowMeAgainDialog(controller, "really_cut_node", "confirmation",

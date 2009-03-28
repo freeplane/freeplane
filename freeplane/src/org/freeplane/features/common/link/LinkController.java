@@ -190,7 +190,7 @@ public class LinkController extends SelectionController implements IExtension {
 				return dest.getShortText();
 			}
 			catch (final Exception e) {
-				return FreeplaneResourceBundle.getByKey("link_not_available_any_more");
+				return FreeplaneResourceBundle.getText("link_not_available_any_more");
 			}
 		}
 		return adaptedText;

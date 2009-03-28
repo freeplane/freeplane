@@ -39,7 +39,7 @@ class ShowSelectedAttributesAction extends AbstractAction implements IFreeplaneA
 	 */
 	public ShowSelectedAttributesAction(final Controller controller) {
 		this.controller = controller;
-		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getByKey("attributes_show_selected"));
+		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText("attributes_show_selected"));
 	};
 
 	public void actionPerformed(final ActionEvent e) {

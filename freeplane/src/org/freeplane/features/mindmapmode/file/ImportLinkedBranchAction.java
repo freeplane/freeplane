@@ -54,7 +54,7 @@ class ImportLinkedBranchAction extends AFreeplaneAction implements IFreeplaneAct
 		final ViewController viewController = getController().getViewController();
 		if (selected == null || NodeLinks.getLink(selected) == null) {
 			JOptionPane.showMessageDialog((viewController.getMapView()), FreeplaneResourceBundle
-			    .getByKey("import_linked_branch_no_link"));
+			    .getText("import_linked_branch_no_link"));
 			return;
 		}
 		URL absolute = null;

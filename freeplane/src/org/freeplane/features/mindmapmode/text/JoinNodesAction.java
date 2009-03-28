@@ -79,7 +79,7 @@ class JoinNodesAction extends AFreeplaneAction {
 			final NodeModel node = (NodeModel) it.next();
 			if (getModeController().getMapController().hasChildren(node)) {
 				UITools.informationMessage(controller.getViewController().getFrame(), FreeplaneResourceBundle
-				    .getByKey("cannot_join_nodes_with_children"), "Freeplane", JOptionPane.WARNING_MESSAGE);
+				    .getText("cannot_join_nodes_with_children"), "Freeplane", JOptionPane.WARNING_MESSAGE);
 				return;
 			}
 		}

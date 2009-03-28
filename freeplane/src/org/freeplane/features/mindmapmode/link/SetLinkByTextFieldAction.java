@@ -38,7 +38,7 @@ class SetLinkByTextFieldAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		final ModeController modeController = getModeController();
 		String inputValue = UITools.showInputDialog(getController(), getController().getSelection().getSelected(),
-		    FreeplaneResourceBundle.getByKey("edit_link_manually"), NodeLinks.getLink(modeController.getMapController()
+		    FreeplaneResourceBundle.getText("edit_link_manually"), NodeLinks.getLink(modeController.getMapController()
 		        .getSelectedNode()));
 		if (inputValue != null) {
 			if (inputValue.equals("")) {

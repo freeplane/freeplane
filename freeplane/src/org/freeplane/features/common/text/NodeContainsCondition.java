@@ -53,8 +53,8 @@ class NodeContainsCondition extends NodeCondition {
 
 	@Override
 	protected String createDesctiption() {
-		final String nodeCondition = FreeplaneResourceBundle.getByKey(NodeConditionController.FILTER_NODE);
-		final String simpleCondition = FreeplaneResourceBundle.getByKey(ConditionFactory.FILTER_CONTAINS);
+		final String nodeCondition = FreeplaneResourceBundle.getText(NodeConditionController.FILTER_NODE);
+		final String simpleCondition = FreeplaneResourceBundle.getText(ConditionFactory.FILTER_CONTAINS);
 		return ConditionFactory.createDescription(nodeCondition, simpleCondition, value, false);
 	}
 

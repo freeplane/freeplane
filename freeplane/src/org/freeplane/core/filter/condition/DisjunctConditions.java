@@ -86,7 +86,7 @@ public class DisjunctConditions implements ICondition {
 		component.add(rendererComponent);
 		int i;
 		for (i = 1; i < conditions.length; i++) {
-			final String or = FpStringUtils.removeMnemonic(FreeplaneResourceBundle.getByKey("filter_or"));
+			final String or = FpStringUtils.removeMnemonic(FreeplaneResourceBundle.getText("filter_or"));
 			final String text = ' ' + or + ' ';
 			component.add(new JLabel(text));
 			cond = (ICondition) conditions[i];

@@ -88,7 +88,7 @@ public class FormatPaste extends MultipleNodeAction {
 		final Pattern pattern = FormatCopy.getPattern();
 		if (pattern == null) {
 			JOptionPane.showMessageDialog(getController().getViewController().getContentPane(), FreeplaneResourceBundle
-			    .getByKey("no_format_copy_before_format_paste"), "" /*=Title*/, JOptionPane.ERROR_MESSAGE);
+			    .getText("no_format_copy_before_format_paste"), "" /*=Title*/, JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		MPatternController.getController((getModeController())).applyPattern(node, pattern);

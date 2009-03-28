@@ -978,32 +978,36 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			return Printable.NO_SUCH_PAGE;
 		}
 		final Graphics2D graphics2D = (Graphics2D) graphics;
-		preparePrinting();
-		double zoomFactor = 1;
-		if (fitToPage) {
-			final double zoomFactorX = pageFormat.getImageableWidth() / boundingRectangle.getWidth();
-			final double zoomFactorY = pageFormat.getImageableHeight() / boundingRectangle.getHeight();
-			zoomFactor = Math.min(zoomFactorX, zoomFactorY);
-		}
-		else {
-			zoomFactor = userZoomFactor;
-			final int nrPagesInWidth = (int) Math.ceil(zoomFactor * boundingRectangle.getWidth()
-			        / pageFormat.getImageableWidth());
-			final int nrPagesInHeight = (int) Math.ceil(zoomFactor * boundingRectangle.getHeight()
-			        / pageFormat.getImageableHeight());
-			if (pageIndex >= nrPagesInWidth * nrPagesInHeight) {
-				return Printable.NO_SUCH_PAGE;
-			}
-			final int yPageCoord = (int) Math.floor(pageIndex / nrPagesInWidth);
-			final int xPageCoord = pageIndex - yPageCoord * nrPagesInWidth;
-			graphics2D.translate(-pageFormat.getImageableWidth() * xPageCoord, -pageFormat.getImageableHeight()
-			        * yPageCoord);
-		}
-		graphics2D.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
-		graphics2D.scale(zoomFactor, zoomFactor);
-		graphics2D.translate(-boundingRectangle.getX(), -boundingRectangle.getY());
-		print(graphics2D);
-		endPrinting();
+		try {
+	        preparePrinting();
+	        double zoomFactor = 1;
+	        if (fitToPage) {
+		        final double zoomFactorX = pageFormat.getImageableWidth() / boundingRectangle.getWidth();
+		        final double zoomFactorY = pageFormat.getImageableHeight() / boundingRectangle.getHeight();
+		        zoomFactor = Math.min(zoomFactorX, zoomFactorY);
+	        }
+	        else {
+		        zoomFactor = userZoomFactor;
+		        final int nrPagesInWidth = (int) Math.ceil(zoomFactor * boundingRectangle.getWidth()
+		                / pageFormat.getImageableWidth());
+		        final int nrPagesInHeight = (int) Math.ceil(zoomFactor * boundingRectangle.getHeight()
+		                / pageFormat.getImageableHeight());
+		        if (pageIndex >= nrPagesInWidth * nrPagesInHeight) {
+			        return Printable.NO_SUCH_PAGE;
+		        }
+		        final int yPageCoord = (int) Math.floor(pageIndex / nrPagesInWidth);
+		        final int xPageCoord = pageIndex - yPageCoord * nrPagesInWidth;
+		        graphics2D.translate(-pageFormat.getImageableWidth() * xPageCoord, -pageFormat.getImageableHeight()
+		                * yPageCoord);
+	        }
+	        graphics2D.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
+	        graphics2D.scale(zoomFactor, zoomFactor);
+	        graphics2D.translate(-boundingRectangle.getX(), -boundingRectangle.getY());
+	        print(graphics2D);
+        }
+        finally {
+    		endPrinting();
+        }
 		return Printable.PAGE_EXISTS;
 	}
 

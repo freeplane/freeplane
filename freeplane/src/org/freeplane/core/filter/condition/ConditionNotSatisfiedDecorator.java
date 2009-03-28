@@ -49,6 +49,7 @@ public class ConditionNotSatisfiedDecorator implements ICondition {
 	 */
 	public ConditionNotSatisfiedDecorator(final ICondition originalCondition) {
 		super();
+		assert originalCondition != null;
 		this.originalCondition = originalCondition;
 	}
 
@@ -70,7 +71,7 @@ public class ConditionNotSatisfiedDecorator implements ICondition {
 	 */
 	public JComponent getListCellRendererComponent() {
 		final JCondition component = new JCondition();
-		final String not = FpStringUtils.removeMnemonic(FreeplaneResourceBundle.getByKey("filter_not"));
+		final String not = FpStringUtils.removeMnemonic(FreeplaneResourceBundle.getText("filter_not"));
 		final String text = not + ' ';
 		component.add(new JLabel(text));
 		final JComponent renderer = originalCondition.getListCellRendererComponent();

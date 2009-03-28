@@ -40,11 +40,11 @@ class KeyDocumentationAction extends AbstractAction implements IFreeplaneAction 
 	public KeyDocumentationAction(final Controller controller) {
 		super();
 		this.controller = controller;
-		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getByKey("KeyDoc"));
+		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText("KeyDoc"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		String urlText = FreeplaneResourceBundle.getByKey("pdfKeyDocLocation");
+		String urlText = FreeplaneResourceBundle.getText("pdfKeyDocLocation");
 		urlText = FpStringUtils.removeTranslateComment(urlText);
 		try {
 			if (urlText != null && urlText != "") {

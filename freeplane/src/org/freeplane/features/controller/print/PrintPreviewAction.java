@@ -36,7 +36,7 @@ class PrintPreviewAction extends AbstractPrintAction {
 	PrintPreviewAction(final Controller controller, final PrintController printController) {
 		super(printController);
 		this.controller = controller;
-		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getByKey("print_preview"));
+		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText("print_preview"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -45,7 +45,7 @@ class PrintPreviewAction extends AbstractPrintAction {
 		}
 		final Component mapView = controller.getViewController().getMapView();
 		final PreviewDialog previewDialog = new PreviewDialog(getPrintController(), FreeplaneResourceBundle
-		    .getByKey("print_preview_title"), mapView);
+		    .getText("print_preview_title"), mapView);
 		previewDialog.pack();
 		previewDialog.setLocationRelativeTo(JOptionPane.getFrameForComponent(mapView));
 		previewDialog.setVisible(true);

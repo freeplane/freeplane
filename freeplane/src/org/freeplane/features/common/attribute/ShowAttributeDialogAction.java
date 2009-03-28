@@ -44,7 +44,7 @@ class ShowAttributeDialogAction extends AbstractAction implements IFreeplaneActi
 	ShowAttributeDialogAction(final Controller controller) {
 		super(null, new ImageIcon(ResourceController.getResourceController().getResource("/images/showAttributes.gif")));
 		this.controller = controller;
-		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getByKey("attributes_dialog"));
+		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText("attributes_dialog"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {

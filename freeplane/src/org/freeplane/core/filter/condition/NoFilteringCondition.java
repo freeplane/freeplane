@@ -48,7 +48,7 @@ public class NoFilteringCondition implements ICondition {
 
 	public JComponent getListCellRendererComponent() {
 		if (NoFilteringCondition.renderer == null) {
-			NoFilteringCondition.renderer = new JLabel(NoFilteringCondition.description);
+			NoFilteringCondition.renderer = new JLabel(toString());
 		}
 		return NoFilteringCondition.renderer;
 	}
@@ -56,11 +56,12 @@ public class NoFilteringCondition implements ICondition {
 	@Override
 	public String toString() {
 		if (NoFilteringCondition.description == null) {
-			NoFilteringCondition.description = FreeplaneResourceBundle.getByKey("filter_no_filtering");
+			NoFilteringCondition.description = FreeplaneResourceBundle.getText("filter_no_filtering");
 		}
 		return NoFilteringCondition.description;
 	}
 
 	public void toXml(final XMLElement element) {
 	}
+
 }

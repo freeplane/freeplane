@@ -275,7 +275,7 @@ public class ReminderHook extends PersistentNodeHook {
 		model.getTimer().schedule(task, date);
 		final Object[] messageArguments = { date };
 		final MessageFormat formatter = new MessageFormat(FreeplaneResourceBundle
-		    .getByKey("plugins/TimeManagement.xml_reminderNode_tooltip"));
+		    .getText("plugins/TimeManagement.xml_reminderNode_tooltip"));
 		final String message = formatter.format(messageArguments);
 		setToolTip(model.getNode(), message);
 		displayState(model, CLOCK_VISIBLE, model.getNode(), false);

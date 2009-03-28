@@ -35,7 +35,7 @@ class MoveToRootAction extends AbstractAction implements IFreeplaneAction {
 
 	MoveToRootAction(final Controller controller) {
 		this.controller = controller;
-		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getByKey("move_to_root"));
+		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText("move_to_root"));
 	}
 
 	public void actionPerformed(final ActionEvent event) {

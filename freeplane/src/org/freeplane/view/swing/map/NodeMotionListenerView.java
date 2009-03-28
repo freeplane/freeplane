@@ -45,7 +45,7 @@ public class NodeMotionListenerView extends JComponent {
 		addMouseListener(userInputListenerFactory.getNodeMotionListener());
 		addMouseMotionListener(userInputListenerFactory.getNodeMotionListener());
 		this.setCursor(new Cursor(Cursor.MOVE_CURSOR));
-		final String helpMsg = FreeplaneResourceBundle.getByKey("node_location_help");
+		final String helpMsg = FreeplaneResourceBundle.getText("node_location_help");
 		this.setToolTipText(helpMsg);
 	}
 

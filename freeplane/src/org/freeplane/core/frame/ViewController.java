@@ -106,7 +106,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 		controller.addAction(zoomOut);
 		optionAntialiasAction = new OptionAntialiasAction(controller);
 		controller.addAction(optionAntialiasAction);
-		userDefinedZoom = FreeplaneResourceBundle.getByKey("user_defined_zoom");
+		userDefinedZoom = FreeplaneResourceBundle.getText("user_defined_zoom");
 		zoomModel = new DefaultComboBoxModel(getZooms());
 		zoomModel.addElement(userDefinedZoom);
 		String mapViewZoom = ResourceController.getResourceController().getProperty("map_view_zoom", "1.0");
@@ -525,15 +525,15 @@ abstract public class ViewController implements IMapViewChangeListener {
 			setTitle("");
 			return;
 		}
-		final Object[] messageArguments = { FreeplaneResourceBundle.getByKey(("mode_" + modeController.getModeName())) };
-		final MessageFormat formatter = new MessageFormat(FreeplaneResourceBundle.getByKey("mode_title"));
+		final Object[] messageArguments = { FreeplaneResourceBundle.getText(("mode_" + modeController.getModeName())) };
+		final MessageFormat formatter = new MessageFormat(FreeplaneResourceBundle.getText("mode_title"));
 		String title = formatter.format(messageArguments);
 		String rawTitle = "";
 		final MapModel model = mapViewManager.getModel();
 		if (model != null) {
 			rawTitle = mapViewManager.getMapViewComponent().getName();
 			title = rawTitle + (model.isSaved() ? "" : "*") + " - " + title
-			        + (model.isReadOnly() ? " (" + FreeplaneResourceBundle.getByKey("read_only") + ")" : "");
+			        + (model.isReadOnly() ? " (" + FreeplaneResourceBundle.getText("read_only") + ")" : "");
 			final File file = model.getFile();
 			if (file != null) {
 				title += " " + file.getAbsolutePath();

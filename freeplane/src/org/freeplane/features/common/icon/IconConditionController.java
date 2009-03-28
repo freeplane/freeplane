@@ -66,7 +66,7 @@ class IconConditionController implements IElementaryConditionController {
 
 	public ICondition createCondition(final Object selectedItem, final NamedObject simpleCond, final Object value,
 	                                  final boolean ignoreCase) {
-		return new IconContainedCondition(((MindIcon) value).getName());
+		return value != null ? new IconContainedCondition(((MindIcon) value).getName()) : null;
 	}
 
 	public ComboBoxModel getConditionsForProperty(final Object property) {

@@ -91,17 +91,17 @@ public class ChangeNodeLevelController {
 		final List<NodeModel> selectedNodes = modeController.getMapController().getSelectedNodes();
 		final Controller controller = modeController.getController();
 		if (selectedNode.isRoot()) {
-			controller.errorMessage(FreeplaneResourceBundle.getByKey("cannot_add_parent_to_root"));
+			controller.errorMessage(FreeplaneResourceBundle.getText("cannot_add_parent_to_root"));
 			return false;
 		}
 		final NodeModel selectedParent = selectedNode.getParentNode();
 		for (final NodeModel node : selectedNodes) {
 			if (node.getParentNode() != selectedParent) {
-				controller.errorMessage(FreeplaneResourceBundle.getByKey("cannot_add_parent_diff_parents"));
+				controller.errorMessage(FreeplaneResourceBundle.getText("cannot_add_parent_diff_parents"));
 				return false;
 			}
 			if (node.isRoot()) {
-				controller.errorMessage(FreeplaneResourceBundle.getByKey("cannot_add_parent_to_root"));
+				controller.errorMessage(FreeplaneResourceBundle.getText("cannot_add_parent_to_root"));
 				return false;
 			}
 		}

@@ -31,7 +31,7 @@ import org.freeplane.core.ui.MenuBuilder;
 class NodeDownAction extends AFreeplaneAction implements IFreeplaneAction{
 	public NodeDownAction(final Controller controller) {
 		super(controller, "new_sibling_behind");
-		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getByKey("node_down"));
+		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText("node_down"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {

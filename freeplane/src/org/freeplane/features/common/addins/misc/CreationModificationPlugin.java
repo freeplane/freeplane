@@ -91,7 +91,7 @@ public class CreationModificationPlugin extends PersistentNodeHook implements IN
 		final Object[] messageArguments = { node.getHistoryInformation().getCreatedAt(),
 		        node.getHistoryInformation().getLastModifiedAt() };
 		if (tooltipFormat == null) {
-			tooltipFormat = FreeplaneResourceBundle.getByKey("CreationModificationPlugin.tooltip_format");
+			tooltipFormat = FreeplaneResourceBundle.getText("CreationModificationPlugin.tooltip_format");
 		}
 		final MessageFormat formatter = new MessageFormat(tooltipFormat);
 		final String message = formatter.format(messageArguments);
