@@ -55,7 +55,9 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 				final int additionalCloudHeigth = child.getAdditionalCloudHeigth();
 				final int contentHeight = child.getContent().getHeight();
 				height += contentHeight + additionalCloudHeigth;
-				count++;
+				if(child.getHeight() - 2 * getSpaceAround() != 0){
+					count++;
+				}
 			}
 		}
 		return height + vGap * (count - 1);
@@ -189,7 +191,10 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 				y += shiftY;
 				child.setLocation(x, y);
 			}
-			y += child.getHeight() - 2 * getSpaceAround() + getVGap() + additionalCloudHeigth;
+			final int childHeight = child.getHeight() - 2 * getSpaceAround();
+			if(childHeight != 0){
+				y += childHeight + getVGap() + additionalCloudHeigth;
+			}
 			right = Math.max(right, x + child.getWidth());
 		}
 		final int bottom = getContent().getY() + getContent().getHeight() + getSpaceAround();
@@ -226,7 +231,10 @@ abstract public class NodeViewLayoutAdapter implements INodeViewLayout {
 				y += shiftY;
 				child.setLocation(x, y);
 			}
-			y += child.getHeight() - 2 * getSpaceAround() + getVGap() + additionalCloudHeigth;
+			final int childHeight = child.getHeight() - 2 * getSpaceAround();
+			if(childHeight != 0){
+				y += childHeight + getVGap() + additionalCloudHeigth;
+			}
 			right = Math.max(right, x + child.getWidth() + additionalCloudHeigth);
 		}
 		final int bottom = getContent().getY() + getContent().getHeight() + getSpaceAround();
