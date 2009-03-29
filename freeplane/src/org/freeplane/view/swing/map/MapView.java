@@ -1090,7 +1090,12 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	 * Select the node, resulting in only that one being selected.
 	 */
 	public void selectAsTheOnlyOneSelected(final NodeView newSelected) {
-		scrollNodeToVisible(newSelected);
+		if (ResourceController.getResourceController().getBooleanProperty("center_selected_node")){
+			centerNode(newSelected);
+		}
+		else{
+			scrollNodeToVisible(newSelected);
+		}
 		selectAsTheOnlyOneSelected(newSelected, true);
 		setSiblingMaxLevel(newSelected.getModel().getNodeLevel(false));
 	}

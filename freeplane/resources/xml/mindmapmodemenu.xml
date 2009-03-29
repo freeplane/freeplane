@@ -88,10 +88,12 @@
 			<menu_category name="general">
 				<menu_action field="showSelectionAsRectangle" />
 			</menu_category>
+			
+			<menu_action field="center_selected" key_ref="keystroke_center_selected" />
 			<menu_category name="zoom">
 				<menu_action field="zoomIn" key_ref="keystroke_zoom_in" />
 				<menu_action field="zoomOut" key_ref="keystroke_zoom_out" />
-			</menu_category>
+			</menu_category>			
 			<menu_separator />
 			<menu_category name="note_window">
 				<menu_action field="showHideNoteAction"

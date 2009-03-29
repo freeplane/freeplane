@@ -200,6 +200,7 @@ public class MapController extends SelectionController {
 		toggleFolded = new CommonToggleFoldedAction(controller);
 		modeController.addAction(toggleFolded);
 		modeController.addAction(new CommonToggleChildrenFoldedAction(this));
+		modeController.addAction(new CenterSelectedNodeAction(controller));
 	}
 
 	public void displayNode(final NodeModel node) {
