@@ -19,11 +19,13 @@
  */
 package org.freeplane.view.swing.map;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
+import java.awt.Stroke;
 
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
@@ -127,10 +129,13 @@ class ForkMainView extends MainView {
 		if (edgeWidth == 0) {
 			edgeWidth = 1;
 		}
+		final Stroke oldStroke = g.getStroke();
+		g.setStroke(new BasicStroke(edgeWidth));
 		final Color oldColor = g.getColor();
 		g.setColor(edgeController.getColor(model));
 		g.drawLine(0, getHeight() - edgeWidth / 2 - 1, getWidth(), getHeight() - edgeWidth / 2 - 1);
 		g.setColor(oldColor);
+        g.setStroke(oldStroke);
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 		super.paint(g);
 	}
