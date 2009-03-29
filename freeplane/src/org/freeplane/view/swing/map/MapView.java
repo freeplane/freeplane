@@ -93,6 +93,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			}
 		}
 
+		public void keepNodePosition(final NodeModel node) {
+			anchorToSelected(node);
+		}
 		public NodeModel getSelected() {
 			final NodeView selected = MapView.this.getSelected();
 			return selected == null ? null : selected.getModel();
@@ -1277,14 +1280,22 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	public void setZoom(final float zoom) {
 		this.zoom = zoom;
-		 final NodeView selected = getSelected();
-		if(selected != null){
-			anchor = selected;
-			anchorContentLocation = getAnchorCenterPoint();
-		}
+		anchorToSelected(getSelected());
 		getRoot().updateAll();
 		revalidate();
 	}
+
+	private void anchorToSelected(NodeModel node) {
+	    final NodeView view = getNodeView(node);
+		anchorToSelected(view);
+    }
+
+	private void anchorToSelected(final NodeView view) {
+	    if(view != null){
+			anchor = view;
+			anchorContentLocation = getAnchorCenterPoint();
+		}
+    }
 
 	/**
 	 * Add the node to the selection if it is not yet there, remove it

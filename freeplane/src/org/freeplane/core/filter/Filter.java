@@ -77,6 +77,8 @@ public class Filter {
 					addFilterResult(root, FilterInfo.FILTER_SHOW_ANCESTOR);
 				}
 			}
+			final IMapSelection selection = controller.getSelection();
+			selection.keepNodePosition(selection.getSelected());
 			refreshMap();
 			selectVisibleNode();
 		}

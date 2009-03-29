@@ -53,4 +53,6 @@ public interface IMapSelection {
 	public int size();
 
 	public void toggleSelected(final NodeModel node);
+	
+	public void keepNodePosition(final NodeModel node);
 }
