@@ -28,9 +28,9 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
 
-import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.ResourceControllerProperties;
 
 class RootMainView extends MainView {
 	@Override

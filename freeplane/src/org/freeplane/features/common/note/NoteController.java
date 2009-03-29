@@ -21,12 +21,12 @@ package org.freeplane.features.common.note;
 
 import javax.swing.ImageIcon;
 
-import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.ResourceControllerProperties;
 
 /**
  * @author Dimitry Polivaev

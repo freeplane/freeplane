@@ -32,7 +32,6 @@ import java.util.ResourceBundle;
 import java.util.Vector;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.util.LogTool;
 

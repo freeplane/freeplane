@@ -29,8 +29,8 @@ import java.util.Properties;
 import javax.swing.JApplet;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.ResourceControllerProperties;
 
 /**
  * @author Dimitry Polivaev

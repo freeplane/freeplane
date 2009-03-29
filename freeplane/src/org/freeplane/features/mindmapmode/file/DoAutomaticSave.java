@@ -25,10 +25,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.TimerTask;
 import java.util.Vector;
 
-import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.resources.FpStringUtils;
+import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.mindmapmode.MMapModel;

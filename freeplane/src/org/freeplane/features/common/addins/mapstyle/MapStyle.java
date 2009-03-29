@@ -23,7 +23,6 @@ import java.awt.Color;
 
 import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.addins.PersistentNodeHook;
-import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.modecontroller.IMapLifeCycleListener;
@@ -32,6 +31,7 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.n3.nanoxml.XMLElement;

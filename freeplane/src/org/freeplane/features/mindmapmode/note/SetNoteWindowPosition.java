@@ -3,9 +3,9 @@ package org.freeplane.features.mindmapmode.note;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.core.ui.AFreeplaneAction;
 
 /** Select Note Window at the position action */

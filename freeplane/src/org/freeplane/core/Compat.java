@@ -9,7 +9,7 @@ import java.net.URL;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.FreeplaneVersion;
-import org.freeplane.core.enums.ResourceControllerProperties;
+import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.LogTool;
 

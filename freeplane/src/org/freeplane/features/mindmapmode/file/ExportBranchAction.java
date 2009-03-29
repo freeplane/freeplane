@@ -76,9 +76,9 @@ class ExportBranchAction extends AFreeplaneAction implements IFreeplaneAction {
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File chosenFile = chooser.getSelectedFile();
 			final String ext = UrlManager.getExtension(chosenFile.getName());
-			if (!ext.equals(org.freeplane.core.enums.ResourceControllerProperties.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
+			if (!ext.equals(org.freeplane.core.resources.ResourceControllerProperties.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
 				chosenFile = new File(chosenFile.getParent(), chosenFile.getName()
-				        + org.freeplane.core.enums.ResourceControllerProperties.FREEPLANE_FILE_EXTENSION);
+				        + org.freeplane.core.resources.ResourceControllerProperties.FREEPLANE_FILE_EXTENSION);
 			}
 			try {
 				Compat.fileToUrl(chosenFile);

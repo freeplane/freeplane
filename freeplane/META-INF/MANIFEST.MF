@@ -16,7 +16,6 @@ Import-Package: org.osgi.framework
 Export-Package: org.apache.commons.lang,
  org.freeplane.core.addins,
  org.freeplane.core.controller,
- org.freeplane.core.enums,
  org.freeplane.core.extension,
  org.freeplane.core.filter,
  org.freeplane.core.filter.condition,

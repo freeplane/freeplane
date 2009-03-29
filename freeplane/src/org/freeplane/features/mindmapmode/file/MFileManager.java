@@ -37,13 +37,13 @@ import javax.swing.filechooser.FileFilter;
 
 import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.LogTool;
@@ -265,7 +265,7 @@ public class MFileManager extends UrlManager {
 		final JFileChooser chooser = getFileChooser();
 		if (getMapsParentFile() == null) {
 			chooser.setSelectedFile(new File(getFileNameProposal(map)
-			        + org.freeplane.core.enums.ResourceControllerProperties.FREEPLANE_FILE_EXTENSION));
+			        + org.freeplane.core.resources.ResourceControllerProperties.FREEPLANE_FILE_EXTENSION));
 		}
 		chooser.setDialogTitle(FreeplaneResourceBundle.getText("save_as"));
 		final int returnVal = chooser.showSaveDialog(getController().getViewController().getMapView());
@@ -275,9 +275,9 @@ public class MFileManager extends UrlManager {
 		File f = chooser.getSelectedFile();
 		setLastCurrentDir(f.getParentFile());
 		final String ext = UrlManager.getExtension(f.getName());
-		if (!ext.equals(org.freeplane.core.enums.ResourceControllerProperties.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
+		if (!ext.equals(org.freeplane.core.resources.ResourceControllerProperties.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
 			f = new File(f.getParent(), f.getName()
-			        + org.freeplane.core.enums.ResourceControllerProperties.FREEPLANE_FILE_EXTENSION);
+			        + org.freeplane.core.resources.ResourceControllerProperties.FREEPLANE_FILE_EXTENSION);
 		}
 		if (f.exists()) {
 			final int overwriteMap = JOptionPane.showConfirmDialog(getController().getViewController().getMapView(),

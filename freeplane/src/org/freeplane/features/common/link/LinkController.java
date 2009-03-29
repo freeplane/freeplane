@@ -30,7 +30,6 @@ import java.util.Set;
 import javax.swing.JPopupMenu;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.filter.condition.ConditionFactory;
@@ -48,6 +47,7 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.core.util.ColorUtils;
 
 /**

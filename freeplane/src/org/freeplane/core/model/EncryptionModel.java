@@ -27,11 +27,11 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
-import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.modecontroller.IEncrypter;
 import org.freeplane.core.modecontroller.MapController;
+import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.core.util.LogTool;
 
 public class EncryptionModel implements IExtension {

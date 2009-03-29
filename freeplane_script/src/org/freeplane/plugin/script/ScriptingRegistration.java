@@ -24,10 +24,10 @@ import java.io.PrintStream;
 import java.util.HashMap;
 
 import org.apache.commons.lang.StringUtils;
-import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.core.resources.ui.OptionPanelBuilder;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.ui.MenuBuilder;

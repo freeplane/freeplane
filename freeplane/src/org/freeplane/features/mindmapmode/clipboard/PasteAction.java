@@ -43,7 +43,6 @@ import javax.swing.text.html.HTMLEditorKit;
 
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.io.MapReader;
 import org.freeplane.core.io.MapReader.NodeTreeCreator;
 import org.freeplane.core.io.MapWriter.Hint;
@@ -52,6 +51,7 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.FixedHTMLWriter;
 import org.freeplane.core.util.HtmlTools;

@@ -1,4 +1,4 @@
-package org.freeplane.core.enums;
+package org.freeplane.core.resources;
 
 public class ResourceControllerProperties {
 	static public Integer DEFAULT = 100;

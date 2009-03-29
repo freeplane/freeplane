@@ -23,13 +23,13 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.HashMap;
 
-import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.io.MapWriter.Hint;
 import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.n3.nanoxml.XMLParseException;
 

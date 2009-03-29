@@ -28,7 +28,6 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
-import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.frame.IMapViewManager;
@@ -38,6 +37,7 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.LogTool;
 

@@ -28,12 +28,12 @@ import javax.swing.SwingUtilities;
 
 import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.attribute.ModelessAttributeController;
@@ -153,7 +153,7 @@ public class FreeplaneStarter {
 		for (int i = 0; i < args.length; i++) {
 			String fileArgument = args[i];
 			if (fileArgument.toLowerCase().endsWith(
-			    org.freeplane.core.enums.ResourceControllerProperties.FREEPLANE_FILE_EXTENSION)) {
+			    org.freeplane.core.resources.ResourceControllerProperties.FREEPLANE_FILE_EXTENSION)) {
 				if (!UrlManager.isAbsolutePath(fileArgument)) {
 					fileArgument = System.getProperty("user.dir") + System.getProperty("file.separator") + fileArgument;
 				}

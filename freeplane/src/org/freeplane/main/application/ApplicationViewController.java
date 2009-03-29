@@ -47,10 +47,10 @@ import javax.swing.UIManager;
 
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 
 class ApplicationViewController extends ViewController {

@@ -481,7 +481,7 @@ public class MapController extends SelectionController {
 			final String extension = UrlManager.getExtension(absolute.toString());
 			if ((extension != null)
 			        && extension
-			            .equals(org.freeplane.core.enums.ResourceControllerProperties.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
+			            .equals(org.freeplane.core.resources.ResourceControllerProperties.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
 				final IMapViewManager mapViewManager = getController().getMapViewManager();
 				/*
 				 * this can lead to confusion if the user handles multiple maps

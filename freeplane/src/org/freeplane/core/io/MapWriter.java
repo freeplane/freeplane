@@ -23,12 +23,12 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.Arrays;
 
-import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.n3.nanoxml.XMLElement;
 

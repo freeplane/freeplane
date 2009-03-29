@@ -22,7 +22,6 @@ package org.freeplane.core.io;
 import java.io.IOException;
 import java.util.ListIterator;
 
-import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.io.MapWriter.Hint;
 import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.io.xml.TreeXmlWriter;
@@ -31,6 +30,7 @@ import org.freeplane.core.model.EncryptionModel;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 class NodeWriter implements IElementWriter, IAttributeWriter {

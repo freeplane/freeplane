@@ -34,7 +34,6 @@ import javax.swing.JOptionPane;
 
 import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.model.EncryptionModel;
@@ -44,6 +43,7 @@ import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
