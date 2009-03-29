@@ -44,11 +44,11 @@ import org.freeplane.core.modecontroller.IPropertyHandler;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.modecontroller.SelectionController;
-import org.freeplane.core.model.ColorUtils;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.ColorUtils;
 
 /**
  * @author Dimitry Polivaev

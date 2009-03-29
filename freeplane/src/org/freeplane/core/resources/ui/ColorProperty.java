@@ -32,8 +32,8 @@ import javax.swing.JPopupMenu;
 
 import org.freeplane.core.frame.ColorTracker;
 import org.freeplane.core.io.xml.TreeXmlReader;
-import org.freeplane.core.model.ColorUtils;
 import org.freeplane.core.resources.FpStringUtils;
+import org.freeplane.core.util.ColorUtils;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 

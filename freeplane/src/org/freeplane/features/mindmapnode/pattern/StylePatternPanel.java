@@ -25,7 +25,6 @@ import java.awt.HeadlessException;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -33,9 +32,9 @@ import java.util.Vector;
 
 import javax.swing.JPanel;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.modecontroller.ModeController;
-import org.freeplane.core.model.ColorUtils;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.ui.BooleanProperty;
@@ -62,14 +61,24 @@ import com.jgoodies.forms.layout.FormLayout;
  * @author foltin
  */
 public class StylePatternPanel extends JPanel implements PropertyChangeListener {
-	@Deprecated
+	final private class EdgeWidthBackTransformer implements IValueTransformator {
+		public String transform(final String value) {
+			return transformStringToWidth(value);
+		}
+	}
+
+	final private class EdgeWidthTransformer implements IValueTransformator {
+		public String transform(final String value) {
+			return transformEdgeWidth(value);
+		}
+	}
+
 	final private class IdentityTransformer implements IValueTransformator {
 		public String transform(final String value) {
 			return value;
 		}
 	}
 
-	// TODO ARCH rladstaetter 28.02.2009 smells like the need for state handling, implement this as an statemachine 
 	private interface IValueTransformator {
 		String transform(String value);
 	}
@@ -87,7 +96,7 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 	private static final String EDGE_COLOR = "edgecolor";
 	private static final String EDGE_STYLE = "edgestyle";
 	private static final String[] EDGE_STYLES = new String[] { EdgeStyle.EDGESTYLE_LINEAR, EdgeStyle.EDGESTYLE_BEZIER,
-	        EdgeStyle.EDGESTYLE_SHARP_LINEAR, EdgeStyle.EDGESTYLE_SHARP_BEZIER };
+		EdgeStyle.EDGESTYLE_SHARP_LINEAR, EdgeStyle.EDGESTYLE_SHARP_BEZIER };
 	private static final String EDGE_WIDTH = "edgewidth";
 	private static final String[] EDGE_WIDTHS = new String[] { "EdgeWidth_parent", "EdgeWidth_thin", "EdgeWidth_1",
 	        "EdgeWidth_2", "EdgeWidth_4", "EdgeWidth_8" };
@@ -119,7 +128,7 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 	private static final String SET_SCRIPT = "setscript";
 	private ComboProperty mChildPattern;
 	private ThreeCheckBoxProperty mClearSetters;
-	private List<IPropertyControl> mControls;
+	private Vector mControls;
 	private ColorProperty mEdgeColor;
 	private ComboProperty mEdgeStyle;
 	private ComboProperty mEdgeWidth;
@@ -188,8 +197,8 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 		});
 	}
 
-	private List<IPropertyControl> getControls() {
-		final List<IPropertyControl> controls = new Vector<IPropertyControl>();
+	private Vector getControls() {
+		final Vector controls = new Vector();
 		controls.add(new SeparatorProperty("OptionPanel.separator.General"));
 		mClearSetters = new ThreeCheckBoxProperty(StylePatternPanel.CLEAR_ALL_SETTERS);
 		mClearSetters.setValue(ThreeCheckBoxProperty.TRUE_VALUE);
@@ -199,8 +208,8 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 			controls.add(mName);
 			mSetChildPattern = new ThreeCheckBoxProperty(StylePatternPanel.SET_CHILD_PATTERN);
 			controls.add(mSetChildPattern);
-			mChildPattern = new ComboProperty(StylePatternPanel.CHILD_PATTERN, Collections.EMPTY_LIST,
-			    Collections.EMPTY_LIST);
+			final Vector childNames = new Vector();
+			mChildPattern = new ComboProperty(StylePatternPanel.CHILD_PATTERN, childNames, childNames);
 			controls.add(mChildPattern);
 		}
 		controls.add(new NextLineProperty());
@@ -218,7 +227,7 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 		controls.add(new SeparatorProperty("OptionPanel.separator.NodeStyles"));
 		mSetNodeStyle = new ThreeCheckBoxProperty(StylePatternPanel.SET_NODE_STYLE);
 		controls.add(mSetNodeStyle);
-		mNodeStyle = new ComboProperty(StylePatternPanel.NODE_STYLE + ".tooltip", new String[] { "fork", "bubble",
+		mNodeStyle = new ComboProperty(StylePatternPanel.NODE_STYLE, new String[] { "fork", "bubble",
 		        "as_parent", "combined" });
 		controls.add(mNodeStyle);
 		mIconInformationVector = new Vector();
@@ -260,13 +269,13 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 		controls.add(new SeparatorProperty("OptionPanel.separator.EdgeControls"));
 		mSetEdgeWidth = new ThreeCheckBoxProperty(StylePatternPanel.SET_EDGE_WIDTH);
 		controls.add(mSetEdgeWidth);
-		mEdgeWidth = new ComboProperty(StylePatternPanel.EDGE_WIDTH + ".tooltip", new String[] { "EdgeWidth_parent",
+		mEdgeWidth = new ComboProperty(StylePatternPanel.EDGE_WIDTH, new String[] { "EdgeWidth_parent",
 		        "EdgeWidth_thin", "EdgeWidth_1", "EdgeWidth_2", "EdgeWidth_4", "EdgeWidth_8" });
 		controls.add(mEdgeWidth);
 		/* **** */
 		mSetEdgeStyle = new ThreeCheckBoxProperty(StylePatternPanel.SET_EDGE_STYLE);
 		controls.add(mSetEdgeStyle);
-		mEdgeStyle = new ComboProperty(StylePatternPanel.EDGE_STYLE + ".tooltip", new String[] { "linear", "bezier",
+		mEdgeStyle = new ComboProperty(StylePatternPanel.EDGE_STYLE, new String[] { "linear", "bezier",
 		        "sharp_linear", "sharp_bezier" });
 		controls.add(mEdgeStyle);
 		/* **** */
@@ -357,15 +366,17 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 		    mNodeBackgroundColor));
 		pattern.setPatternNodeStyle(getPatternResult(new PatternProperty(), mSetNodeStyle, mNodeStyle));
 		pattern.setPatternNodeText(getPatternResult(new PatternProperty(), mSetNodeText, mNodeText));
-		pattern.setPatternEdgeColor("000000");
-		pattern.setPatternEdgeStyle("000000");
-		pattern.setPatternEdgeWidth("000000");
+		/* edges */
+		pattern.setPatternEdgeColor(getPatternResult(new PatternProperty(), mSetEdgeColor, mEdgeColor));
+		pattern.setPatternEdgeStyle(getPatternResult(new PatternProperty(), mSetEdgeStyle, mEdgeStyle));
+		pattern.setPatternEdgeWidth(getPatternResult(new PatternProperty(), mSetEdgeWidth, mEdgeWidth,
+		    new EdgeWidthBackTransformer()));
 		/* font */
 		pattern.setPatternNodeFontName(getPatternResult(new PatternProperty(), mSetNodeFontName, mNodeFontName));
 		pattern.setPatternNodeFontSize(getPatternResult(new PatternProperty(), mSetNodeFontSize, mNodeFontSize));
 		pattern.setPatternNodeFontBold(getPatternResult(new PatternProperty(), mSetNodeFontBold, mNodeFontBold));
 		pattern.setPatternNodeFontItalic(getPatternResult(new PatternProperty(), mSetNodeFontItalic, mNodeFontItalic));
-		pattern.setPatternIcon("");
+		pattern.setPatternIcon(getPatternResult(new PatternProperty(), mSetIcon, mIcon));
 		pattern.setPatternScript(getPatternResult(new PatternProperty(), mSetScriptPattern, mScriptPattern));
 		if (StylePatternPanelType.WITH_NAME_AND_CHILDS.equals(mType)) {
 			pattern.setName(mName.getValue());
@@ -407,23 +418,26 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 	}
 
 	public void setPattern(final Pattern pattern) {
-		setPatternControls(pattern.getPatternNodeColor(), mSetNodeColor, mNodeColor, ResourceController
-		    .getResourceController().getDefaultProperty(ResourceControllerProperties.RESOURCES_NODE_TEXT_COLOR));
+		setPatternControls(pattern.getPatternNodeColor(), mSetNodeColor, mNodeColor, ResourceController.getResourceController()
+		    .getDefaultProperty(ResourceControllerProperties.RESOURCES_NODE_TEXT_COLOR));
 		setPatternControls(pattern.getPatternNodeBackgroundColor(), mSetNodeBackgroundColor, mNodeBackgroundColor,
-		    ResourceController.getResourceController().getDefaultProperty(
-		        ResourceControllerProperties.RESOURCES_BACKGROUND_COLOR));
+			ResourceController.getResourceController().getDefaultProperty(ResourceControllerProperties.RESOURCES_BACKGROUND_COLOR));
 		setPatternControls(pattern.getPatternNodeStyle(), mSetNodeStyle, mNodeStyle, NodeStyleModel.SHAPE_AS_PARENT);
 		setPatternControls(pattern.getPatternNodeText(), mSetNodeText, mNodeText, "");
-		setPatternControls(new PatternProperty(pattern.getPatternEdgeColor()),mSetEdgeColor,mEdgeColor,ColorUtils.BLACK);
-		setPatternControls(new PatternProperty(pattern.getPatternEdgeStyle()),mSetEdgeStyle,mEdgeStyle,StylePatternPanel.EDGE_STYLES[0]);
-		setPatternControls(new PatternProperty(pattern.getPatternEdgeWidth()),mSetEdgeWidth,mEdgeWidth,StylePatternPanel.EDGE_WIDTHS[0]);
+		setPatternControls(pattern.getPatternEdgeColor(), mSetEdgeColor, mEdgeColor, ResourceController.getResourceController()
+		    .getDefaultProperty(ResourceControllerProperties.RESOURCES_EDGE_COLOR));
+		setPatternControls(pattern.getPatternEdgeStyle(), mSetEdgeStyle, mEdgeStyle, StylePatternPanel.EDGE_STYLES[0]);
+		setPatternControls(pattern.getPatternEdgeWidth(), mSetEdgeWidth, mEdgeWidth, StylePatternPanel.EDGE_WIDTHS[0],
+		    new EdgeWidthTransformer());
 		setPatternControls(pattern.getPatternNodeFontName(), mSetNodeFontName, mNodeFontName, ResourceController
 		    .getResourceController().getDefaultFontFamilyName());
 		setPatternControls(pattern.getPatternNodeFontSize(), mSetNodeFontSize, mNodeFontSize, sizes[0]);
-		setPatternControls(pattern.getPatternNodeFontBold(), mSetNodeFontBold, mNodeFontBold, Boolean.TRUE.toString());
-		setPatternControls(pattern.getPatternNodeFontItalic(), mSetNodeFontItalic, mNodeFontItalic, Boolean.TRUE
-		    .toString());
-		setPatternControls(new PatternProperty(pattern.getPatternIcon()),mSetIcon,mIcon,((MindIcon) mIconInformationVector.get(0)).getName());
+		setPatternControls(pattern.getPatternNodeFontBold(), mSetNodeFontBold, mNodeFontBold,
+			Boolean.TRUE.toString());
+		setPatternControls(pattern.getPatternNodeFontItalic(), mSetNodeFontItalic, mNodeFontItalic,
+			Boolean.TRUE.toString());
+		final MindIcon firstInfo = (MindIcon) mIconInformationVector.get(0);
+		setPatternControls(pattern.getPatternIcon(), mSetIcon, mIcon, firstInfo.getName());
 		setPatternControls(pattern.getPatternScript(), mSetScriptPattern, mScriptPattern, "");
 		if (StylePatternPanelType.WITH_NAME_AND_CHILDS.equals(mType)) {
 			mName.setValue(pattern.getName());

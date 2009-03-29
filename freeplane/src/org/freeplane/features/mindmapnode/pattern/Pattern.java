@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 
-import org.freeplane.core.util.LogTool;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
@@ -14,7 +13,6 @@ import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.n3.nanoxml.XMLParserFactory;
 import org.freeplane.n3.nanoxml.XMLWriter;
 
-// TODO ARCH rladstaetter 02.03.2009 class will vanish over time and be replaced by its attributes where feasible.
 public class Pattern implements Cloneable {
 	public static Pattern unMarshall(final XMLElement xmlPattern) {
 		final Pattern pattern = new Pattern();
@@ -36,28 +34,25 @@ public class Pattern implements Cloneable {
 		}
 	}
 
-	//// TODO rladstaetter 18.02.2009 make following attributes typesafe, see edge as an example
-	private PatternProperty child;
-	private final Edge edge = new Edge();
-	private String icon;
 	private String name;
-	private PatternProperty nodeBackgroundColor;
-	private PatternProperty nodeColor;
-	private PatternProperty nodeFontBold;
-	private PatternProperty nodeFontItalic;
-	private PatternProperty nodeFontName;
-	private PatternProperty nodeFontSize;
-	private PatternProperty nodeStyle;
-	private PatternProperty nodeText;
-	private PatternProperty script;
+	private PatternProperty patternChild;
+	private PatternProperty patternEdgeColor;
+	private PatternProperty patternEdgeStyle;
+	private PatternProperty patternEdgeWidth;
+	private PatternProperty patternIcon;
+	private PatternProperty patternNodeBackgroundColor;
+	private PatternProperty patternNodeColor;
+	private PatternProperty patternNodeFontBold;
+	private PatternProperty patternNodeFontItalic;
+	private PatternProperty patternNodeFontName;
+	private PatternProperty patternNodeFontSize;
+	private PatternProperty patternNodeStyle;
+	private PatternProperty patternNodeText;
+	private PatternProperty patternScript;
 
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
-	}
-
-	public Edge getEdge() {
-		return edge;
 	}
 
 	public String getName() {
@@ -65,79 +60,82 @@ public class Pattern implements Cloneable {
 	}
 
 	public PatternProperty getPatternChild() {
-		return child;
+		return patternChild;
 	}
 
-	public String getPatternEdgeColor() {
-		return edge.getColor();
+	public PatternProperty getPatternEdgeColor() {
+		return patternEdgeColor;
 	}
 
-	public String getPatternEdgeStyle() {
-		return edge.getStyle();
+	public PatternProperty getPatternEdgeStyle() {
+		return patternEdgeStyle;
 	}
 
-	public String getPatternEdgeWidth() {
-		return edge.getWidth();
+	public PatternProperty getPatternEdgeWidth() {
+		return patternEdgeWidth;
 	}
 
-	public String getPatternIcon() {
-		return icon;
+	public PatternProperty getPatternIcon() {
+		return patternIcon;
 	}
 
 	public PatternProperty getPatternNodeBackgroundColor() {
-		return nodeBackgroundColor;
+		return patternNodeBackgroundColor;
 	}
 
 	public PatternProperty getPatternNodeColor() {
-		return nodeColor;
+		return patternNodeColor;
 	}
 
 	public PatternProperty getPatternNodeFontBold() {
-		return nodeFontBold;
+		return patternNodeFontBold;
 	}
 
 	public PatternProperty getPatternNodeFontItalic() {
-		return nodeFontItalic;
+		return patternNodeFontItalic;
 	}
 
 	public PatternProperty getPatternNodeFontName() {
-		return nodeFontName;
+		return patternNodeFontName;
 	}
 
 	public PatternProperty getPatternNodeFontSize() {
-		return nodeFontSize;
+		return patternNodeFontSize;
 	}
 
 	public PatternProperty getPatternNodeStyle() {
-		return nodeStyle;
+		return patternNodeStyle;
 	}
 
 	public PatternProperty getPatternNodeText() {
-		return nodeText;
+		return patternNodeText;
 	}
 
 	public PatternProperty getPatternScript() {
-		return script;
+		return patternScript;
 	}
 
-	// TODO ARCH rladstaetter 02.03.2009 get to a common stream handling, e.g.: public Writer marshall(Writer w), or use streams or stringbuilder
+	private void marschall(final XMLElement xml, final String string, final PatternProperty pattern) {
+		// TODO Auto-generated method stub
+	}
+
 	public String marshall() {
 		final XMLElement xml = new XMLElement("pattern");
 		xml.setAttribute("name", name);
-		marshall(xml, "pattern_node_background_color", nodeBackgroundColor);
-		marshall(xml, "pattern_node_color", nodeColor);
-		marshall(xml, "pattern_node_style", nodeStyle);
-		marshall(xml, "pattern_node_text", nodeText);
-		marshall(xml, "pattern_node_font_name", nodeFontName);
-		marshall(xml, "pattern_node_font_bold", nodeFontBold);
-		marshall(xml, "pattern_node_font_italic", nodeFontItalic);
-		marshall(xml, "pattern_node_font_size", nodeFontSize);
-		marshall(xml, "pattern_node_icon", icon);
-		marshall(xml, "pattern_node_edge_color", edge.getColor());
-		marshall(xml, "pattern_node_edge_style", edge.getStyle());
-		marshall(xml, "pattern_node_wdge_width", edge.getWidth());
-		marshall(xml, "pattern_node_child", child);
-		marshall(xml, "pattern_node_script", script);
+		marschall(xml, "pattern_node_background_color", patternNodeBackgroundColor);
+		marschall(xml, "pattern_node_color", patternNodeColor);
+		marschall(xml, "pattern_node_style", patternNodeStyle);
+		marschall(xml, "pattern_node_text", patternNodeText);
+		marschall(xml, "pattern_node_font_name", patternNodeFontName);
+		marschall(xml, "pattern_node_font_bold", patternNodeFontBold);
+		marschall(xml, "pattern_node_font_italic", patternNodeFontItalic);
+		marschall(xml, "pattern_node_font_size", patternNodeFontSize);
+		marschall(xml, "pattern_node_icon", patternIcon);
+		marschall(xml, "pattern_node_edge_color", patternEdgeColor);
+		marschall(xml, "pattern_node_edge_style", patternEdgeStyle);
+		marschall(xml, "pattern_node_wdge_width", patternEdgeWidth);
+		marschall(xml, "pattern_node_child", patternChild);
+		marschall(xml, "pattern_node_script", patternScript);
 		final StringWriter string = new StringWriter();
 		final XMLWriter writer = new XMLWriter(string);
 		try {
@@ -150,70 +148,64 @@ public class Pattern implements Cloneable {
 		}
 	}
 
-	private void marshall(final XMLElement xml, final String string, final Object pattern) {
-		// FIXME rladstaetter method not implemented
-		//		throw new UnsupportedOperationException();
-		LogTool.warn("not implemented for " + xml.getClass().getSimpleName() + "," + string + "," + pattern);
-	}
-
 	public void setName(final String name) {
 		this.name = name;
 	}
 
 	public void setPatternChild(final PatternProperty patternChild) {
-		child = patternChild;
+		this.patternChild = patternChild;
 	}
 
-	public void setPatternEdgeColor(final String color) {
-		edge.setColor(color);
+	public void setPatternEdgeColor(final PatternProperty patternEdgeColor) {
+		this.patternEdgeColor = patternEdgeColor;
 	}
 
-	public void setPatternEdgeStyle(final String style) {
-		edge.setStyle(style);
+	public void setPatternEdgeStyle(final PatternProperty patternEdgeStyle) {
+		this.patternEdgeStyle = patternEdgeStyle;
 	}
 
-	public void setPatternEdgeWidth(final String width) {
-		edge.setWidth(width);
+	public void setPatternEdgeWidth(final PatternProperty patternEdgeWidth) {
+		this.patternEdgeWidth = patternEdgeWidth;
 	}
 
-	public void setPatternIcon(final String patternIcon) {
-		icon = icon;
+	public void setPatternIcon(final PatternProperty patternIcon) {
+		this.patternIcon = patternIcon;
 	}
 
 	public void setPatternNodeBackgroundColor(final PatternProperty patternNodeBackgroundColor) {
-		nodeBackgroundColor = patternNodeBackgroundColor;
+		this.patternNodeBackgroundColor = patternNodeBackgroundColor;
 	}
 
 	public void setPatternNodeColor(final PatternProperty patternNodeColor) {
-		nodeColor = patternNodeColor;
+		this.patternNodeColor = patternNodeColor;
 	}
 
 	public void setPatternNodeFontBold(final PatternProperty patternNodeFontBold) {
-		nodeFontBold = patternNodeFontBold;
+		this.patternNodeFontBold = patternNodeFontBold;
 	}
 
 	public void setPatternNodeFontItalic(final PatternProperty patternNodeFontItalic) {
-		nodeFontItalic = patternNodeFontItalic;
+		this.patternNodeFontItalic = patternNodeFontItalic;
 	}
 
 	public void setPatternNodeFontName(final PatternProperty patternNodeFontName) {
-		nodeFontName = patternNodeFontName;
+		this.patternNodeFontName = patternNodeFontName;
 	}
 
 	public void setPatternNodeFontSize(final PatternProperty patternNodeFontSize) {
-		nodeFontSize = patternNodeFontSize;
+		this.patternNodeFontSize = patternNodeFontSize;
 	}
 
 	public void setPatternNodeStyle(final PatternProperty patternNodeStyle) {
-		nodeStyle = patternNodeStyle;
+		this.patternNodeStyle = patternNodeStyle;
 	}
 
 	public void setPatternNodeText(final PatternProperty patternNodeText) {
-		nodeText = patternNodeText;
+		this.patternNodeText = patternNodeText;
 	}
 
 	public void setPatternScript(final PatternProperty patternScript) {
-		script = patternScript;
+		this.patternScript = patternScript;
 	}
 
 	private void unMarshallImpl(final XMLElement xmlPattern) {
@@ -221,95 +213,99 @@ public class Pattern implements Cloneable {
 		{
 			final XMLElement xmlProperty = xmlPattern.getFirstChildNamed("pattern_node_background_color");
 			if (xmlProperty != null) {
-				nodeBackgroundColor = new PatternProperty();
-				nodeBackgroundColor.value = xmlProperty.getAttribute("value", null);
+				patternNodeBackgroundColor = new PatternProperty();
+				patternNodeBackgroundColor.value = xmlProperty.getAttribute("value", null);
 			}
 		}
 		{
 			final XMLElement xmlProperty = xmlPattern.getFirstChildNamed("pattern_node_color");
 			if (xmlProperty != null) {
-				nodeColor = new PatternProperty();
-				nodeColor.value = xmlProperty.getAttribute("value", null);
+				patternNodeColor = new PatternProperty();
+				patternNodeColor.value = xmlProperty.getAttribute("value", null);
 			}
 		}
 		{
 			final XMLElement xmlProperty = xmlPattern.getFirstChildNamed("pattern_node_style");
 			if (xmlProperty != null) {
-				nodeStyle = new PatternProperty();
-				nodeStyle.value = xmlProperty.getAttribute("value", null);
+				patternNodeStyle = new PatternProperty();
+				patternNodeStyle.value = xmlProperty.getAttribute("value", null);
 			}
 		}
 		{
 			final XMLElement xmlProperty = xmlPattern.getFirstChildNamed("pattern_node_textr");
 			if (xmlProperty != null) {
-				nodeText = new PatternProperty();
-				nodeText.value = xmlProperty.getAttribute("value", null);
+				patternNodeText = new PatternProperty();
+				patternNodeText.value = xmlProperty.getAttribute("value", null);
 			}
 		}
 		{
 			final XMLElement xmlProperty = xmlPattern.getFirstChildNamed("pattern_node_font_name");
 			if (xmlProperty != null) {
-				nodeFontName = new PatternProperty();
-				nodeFontName.value = xmlProperty.getAttribute("value", null);
+				patternNodeFontName = new PatternProperty();
+				patternNodeFontName.value = xmlProperty.getAttribute("value", null);
 			}
 		}
 		{
 			final XMLElement xmlProperty = xmlPattern.getFirstChildNamed("pattern_font_bold");
 			if (xmlProperty != null) {
-				nodeFontBold = new PatternProperty();
-				nodeFontBold.value = xmlProperty.getAttribute("value", null);
+				patternNodeFontBold = new PatternProperty();
+				patternNodeFontBold.value = xmlProperty.getAttribute("value", null);
 			}
 		}
 		{
 			final XMLElement xmlProperty = xmlPattern.getFirstChildNamed("pattern_font_italic");
 			if (xmlProperty != null) {
-				nodeFontItalic = new PatternProperty();
-				nodeFontItalic.value = xmlProperty.getAttribute("value", null);
+				patternNodeFontItalic = new PatternProperty();
+				patternNodeFontItalic.value = xmlProperty.getAttribute("value", null);
 			}
 		}
 		{
 			final XMLElement xmlProperty = xmlPattern.getFirstChildNamed("pattern_font_size");
 			if (xmlProperty != null) {
-				nodeFontSize = new PatternProperty();
-				nodeFontSize.value = xmlProperty.getAttribute("value", null);
+				patternNodeFontSize = new PatternProperty();
+				patternNodeFontSize.value = xmlProperty.getAttribute("value", null);
 			}
 		}
 		{
 			final XMLElement xmlProperty = xmlPattern.getFirstChildNamed("pattern_icon");
 			if (xmlProperty != null) {
-				icon = xmlProperty.getAttribute("value", null);
+				patternIcon = new PatternProperty();
+				patternIcon.value = xmlProperty.getAttribute("value", null);
 			}
 		}
 		{
 			final XMLElement xmlProperty = xmlPattern.getFirstChildNamed("pattern_edge_color");
 			if (xmlProperty != null) {
-				edge.setColor(xmlProperty.getAttribute("value", null));
+				patternEdgeColor = new PatternProperty();
+				patternEdgeColor.value = xmlProperty.getAttribute("value", null);
 			}
 		}
 		{
 			final XMLElement xmlProperty = xmlPattern.getFirstChildNamed("pattern_edge_style");
 			if (xmlProperty != null) {
-				edge.setStyle(xmlProperty.getAttribute("value", null));
+				patternEdgeStyle = new PatternProperty();
+				patternEdgeStyle.value = xmlProperty.getAttribute("value", null);
 			}
 		}
 		{
 			final XMLElement xmlProperty = xmlPattern.getFirstChildNamed("pattern_edge_width");
 			if (xmlProperty != null) {
-				edge.setWidth(xmlProperty.getAttribute("value", null));
+				patternEdgeWidth = new PatternProperty();
+				patternEdgeWidth.value = xmlProperty.getAttribute("value", null);
 			}
 		}
 		{
 			final XMLElement xmlProperty = xmlPattern.getFirstChildNamed("pattern_child");
 			if (xmlProperty != null) {
-				child = new PatternProperty();
-				child.value = xmlProperty.getAttribute("value", null);
+				patternChild = new PatternProperty();
+				patternChild.value = xmlProperty.getAttribute("value", null);
 			}
 		}
 		{
 			final XMLElement xmlProperty = xmlPattern.getFirstChildNamed("pattern_script");
 			if (xmlProperty != null) {
-				script = new PatternProperty();
-				script.value = xmlProperty.getAttribute("value", null);
+				patternScript = new PatternProperty();
+				patternScript.value = xmlProperty.getAttribute("value", null);
 			}
 		}
 	}

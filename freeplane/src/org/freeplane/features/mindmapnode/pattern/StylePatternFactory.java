@@ -27,12 +27,14 @@ import java.io.Reader;
 import java.io.Writer;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ResourceBundle;
 
-import org.apache.commons.lang.StringUtils;
-import org.freeplane.core.model.ColorUtils;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.common.edge.EdgeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
 
@@ -61,19 +63,6 @@ public class StylePatternFactory {
 			}
 			else {
 				result += "+" + FreeplaneResourceBundle.getText(patternString) + " " + patternType.getValue();
-			}
-		}
-		return result;
-	}
-
-	private static String addSubPatternToString(String result, final String patternType, final String patternString) {
-		if (patternType != null) {
-			result = StylePatternFactory.addSeparatorIfNecessary(result);
-			if (patternType == null) {
-				result += "-" + FreeplaneResourceBundle.getText(patternString);
-			}
-			else {
-				result += "+" + FreeplaneResourceBundle.getText(patternString) + " " + patternType;
 			}
 		}
 		return result;
@@ -120,7 +109,9 @@ public class StylePatternFactory {
 			}
 		}
 		if (node.getIcons().size() == 1) {
-			pattern.setPatternIcon(((MindIcon) node.getIcons().get(0)).getName());
+			final PatternProperty iconPattern = new PatternProperty();
+			iconPattern.setValue(((MindIcon) node.getIcons().get(0)).getName());
+			pattern.setPatternIcon(iconPattern);
 		}
 		final EdgeModel edge = EdgeModel.getModel(node);
 		if (edge != null) {
@@ -128,19 +119,19 @@ public class StylePatternFactory {
 			if (edgeColor != null) {
 				final PatternProperty colorPattern = new PatternProperty();
 				colorPattern.setValue(ColorUtils.colorToString(edgeColor));
-				pattern.setPatternEdgeColor(ColorUtils.colorToString(edgeColor));
+				pattern.setPatternEdgeColor(colorPattern);
 			}
 			final String edgeStyle = edge.getStyle();
 			if (edgeStyle != null) {
 				final PatternProperty stylePattern = new PatternProperty();
 				stylePattern.setValue(edgeStyle);
-				pattern.setPatternEdgeStyle(edgeStyle);
+				pattern.setPatternEdgeStyle(stylePattern);
 			}
 			final int edgeWidth = edge.getWidth();
 			if (edgeWidth != EdgeModel.WIDTH_PARENT) {
 				final PatternProperty edgeWidthPattern = new PatternProperty();
 				edgeWidthPattern.setValue("" + edgeWidth);
-				pattern.setPatternEdgeWidth(Integer.toString(edgeWidth));
+				pattern.setPatternEdgeWidth(edgeWidthPattern);
 			}
 		}
 		return pattern;
@@ -181,13 +172,14 @@ public class StylePatternFactory {
 	 */
 	public static Pattern intersectPattern(final Pattern p1, final Pattern p2) {
 		final Pattern result = new Pattern();
-		result.setPatternEdgeColor(p1.getPatternEdgeColor() != null && p1.getPatternEdgeColor().equals(p2.getPatternEdgeColor()) ? p1.getPatternEdgeColor()
-		        : null);
-		result.setPatternEdgeStyle(p1.getPatternEdgeStyle() != null && p1.getPatternEdgeStyle().equals(p2.getPatternEdgeStyle()) ? p1.getPatternEdgeStyle()
-		        : null);
-		result.setPatternEdgeWidth(p1.getPatternEdgeWidth() != null && p1.getPatternEdgeWidth().equals(p2.getPatternEdgeWidth()) ? p1.getPatternEdgeWidth()
-		        : null);
-		result.setPatternIcon(p1.getPatternIcon() != null && p1.getPatternIcon().equals(p2.getPatternIcon()) ? p1.getPatternIcon() : null);
+		result.setPatternEdgeColor(StylePatternFactory.processPatternProperties(p1.getPatternEdgeColor(), p2
+		    .getPatternEdgeColor(), new PatternProperty()));
+		result.setPatternEdgeStyle(StylePatternFactory.processPatternProperties(p1.getPatternEdgeStyle(), p2
+		    .getPatternEdgeStyle(), new PatternProperty()));
+		result.setPatternEdgeWidth(StylePatternFactory.processPatternProperties(p1.getPatternEdgeWidth(), p2
+		    .getPatternEdgeWidth(), new PatternProperty()));
+		result.setPatternIcon(StylePatternFactory.processPatternProperties(p1.getPatternIcon(), p2.getPatternIcon(),
+		    new PatternProperty()));
 		result.setPatternNodeBackgroundColor(StylePatternFactory.processPatternProperties(p1
 		    .getPatternNodeBackgroundColor(), p2.getPatternNodeBackgroundColor(), new PatternProperty()));
 		result.setPatternNodeColor(StylePatternFactory.processPatternProperties(p1.getPatternNodeColor(), p2
@@ -218,12 +210,15 @@ public class StylePatternFactory {
 		return patterns.getListChoiceList();
 	}
 
+	private static boolean safeEquals(final String string1, final String string2) {
+		return (string1 != null && string2 != null && string1.equals(string2)) || (string1 == null && string2 == null);
+	}
 	private static PatternProperty processPatternProperties(final PatternProperty prop1, final PatternProperty prop2,
 	                                                        final PatternProperty destination) {
 		if (prop1 == null || prop2 == null) {
 			return null;
 		}
-		if (StringUtils.equals(prop1.getValue(), prop2.getValue())) {
+		if (safeEquals(prop1.getValue(), prop2.getValue())) {
 			destination.setValue(prop1.getValue());
 			return destination;
 		}

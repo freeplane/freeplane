@@ -26,11 +26,11 @@ import org.freeplane.core.addins.PersistentNodeHook.HookAction;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.enums.ResourceControllerProperties;
 import org.freeplane.core.frame.ColorTracker;
-import org.freeplane.core.model.ColorUtils;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.core.util.ColorUtils;
 
 /**
  * @author Dimitry Polivaev

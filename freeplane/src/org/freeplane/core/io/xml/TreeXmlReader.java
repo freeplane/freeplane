@@ -36,7 +36,7 @@ import org.freeplane.core.io.IElementDOMHandler;
 import org.freeplane.core.io.IElementHandler;
 import org.freeplane.core.io.ListHashTable;
 import org.freeplane.core.io.ReadManager;
-import org.freeplane.core.model.ColorUtils;
+import org.freeplane.core.util.ColorUtils;
 import org.freeplane.n3.nanoxml.IXMLBuilder;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.n3.nanoxml.IXMLReader;

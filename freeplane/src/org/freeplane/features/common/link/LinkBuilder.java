@@ -40,8 +40,8 @@ import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.modecontroller.MapController;
-import org.freeplane.core.model.ColorUtils;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.util.ColorUtils;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.n3.nanoxml.XMLElement;
 

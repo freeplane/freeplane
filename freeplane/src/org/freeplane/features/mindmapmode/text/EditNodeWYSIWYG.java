@@ -37,11 +37,11 @@ import javax.swing.text.html.HTMLDocument;
 
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.ModeController;
-import org.freeplane.core.model.ColorUtils;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;

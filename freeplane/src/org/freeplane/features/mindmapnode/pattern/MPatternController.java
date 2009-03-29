@@ -34,7 +34,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
-import org.freeplane.core.enums.ResourceControllerProperties;
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MindIcon;
@@ -64,8 +64,8 @@ public class MPatternController implements IExtension {
 	public MPatternController(final ModeController modeController) {
 		super();
 		this.modeController = modeController;
-		patternsFile = new File(ResourceController.getResourceController().getFreeplaneUserDirectory(),
-		    ResourceController.getResourceController().getProperty("patternsfile"));
+		patternsFile = new File(ResourceController.getResourceController().getFreeplaneUserDirectory(), ResourceController
+		    .getResourceController().getProperty("patternsfile"));
 		createActions();
 	}
 
@@ -138,9 +138,9 @@ public class MPatternController implements IExtension {
 		for (int i = 0; i < patterns.length; i++) {
 			final Pattern actualPattern = (Pattern) patternsList.get(i);
 			patterns[i] = new ApplyPatternAction(modeController, actualPattern);
-			final String patternIcon = actualPattern.getPatternIcon();
-			if (patternIcon != null) {
-				patterns[i].putValue(Action.SMALL_ICON, MindIcon.factory(patternIcon).getIcon());
+			final PatternProperty patternIcon = actualPattern.getPatternIcon();
+			if (patternIcon != null && patternIcon.getValue() != null) {
+				patterns[i].putValue(Action.SMALL_ICON, MindIcon.factory(patternIcon.getValue()).getIcon());
 			}
 		}
 	}
@@ -153,8 +153,8 @@ public class MPatternController implements IExtension {
 		for (int i = 0; i < patterns.length; ++i) {
 			final JMenuItem item = new JMenuItem(patterns[i]);
 			builder.addMenuItem(group, item, MenuBuilder.AS_CHILD);
-			item.setAccelerator(KeyStroke.getKeyStroke(ResourceController.getResourceController()
-			    .getAdjustableProperty("keystroke_apply_pattern_" + (i + 1))));
+			item.setAccelerator(KeyStroke.getKeyStroke(ResourceController.getResourceController().getAdjustableProperty(
+			    "keystroke_apply_pattern_" + (i + 1))));
 		}
 	}
 
@@ -169,9 +169,9 @@ public class MPatternController implements IExtension {
 			reader = new FileReader(patternsFile);
 		}
 		else {
-			LogTool.warn("User patterns file " + patternsFile + " not found.");
-			reader = new InputStreamReader(ResourceController.getResourceController().getResource(
-			    ResourceControllerProperties.XML_PATTERNS_XML).openStream());
+			System.out.println("User patterns file " + patternsFile + " not found.");
+			reader = new InputStreamReader(ResourceController.getResourceController().getResource("/xml/patterns.xml")
+			    .openStream());
 		}
 		return reader;
 	}

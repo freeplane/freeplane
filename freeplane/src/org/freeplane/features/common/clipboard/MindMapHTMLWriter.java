@@ -26,10 +26,10 @@ import java.util.Iterator;
 import java.util.ListIterator;
 
 import org.freeplane.core.modecontroller.MapController;
-import org.freeplane.core.model.ColorUtils;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;

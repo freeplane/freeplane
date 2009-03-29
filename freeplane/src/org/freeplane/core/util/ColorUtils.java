@@ -1,4 +1,4 @@
-package org.freeplane.core.model;
+package org.freeplane.core.util;
 
 import java.awt.Color;
 
