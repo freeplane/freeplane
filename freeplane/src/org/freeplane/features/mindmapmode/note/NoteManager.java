@@ -19,6 +19,8 @@
  */
 package org.freeplane.features.mindmapmode.note;
 
+import java.util.regex.Pattern;
+
 import javax.swing.text.html.HTMLDocument;
 
 import org.freeplane.core.modecontroller.INodeSelectionListener;
@@ -27,8 +29,9 @@ import org.freeplane.features.common.note.NoteModel;
 import org.freeplane.features.mindmapmode.note.MNoteController.NoteDocumentListener;
 
 final class NoteManager implements INodeSelectionListener {
-	public final static String EMPTY_EDITOR_STRING = "<html>\n  <head>\n\n  </head>\n  <body>\n    <p>\n      \n    </p>\n  </body>\n</html>\n";
-	public final static String EMPTY_EDITOR_STRING_ALTERNATIVE = "<html>\n  <head>\n    \n  </head>\n  <body>\n    <p>\n      \n    </p>\n  </body>\n</html>\n";
+	public final static Pattern HEAD = Pattern.compile("<head>.*</head>\n", Pattern.DOTALL);
+	public final static String EMPTY_EDITOR_STRING = "<html>\n    <body>\n    <p>\n      \n    </p>\n  </body>\n</html>\n";
+	public final static String EMPTY_EDITOR_STRING_ALTERNATIVE = "<html>\n    <body>\n    <p>\n      \n    </p>\n  </body>\n</html>\n";
 	NoteDocumentListener mNoteDocumentListener;
 	private NodeModel node;
 	/**
@@ -56,7 +59,8 @@ final class NoteManager implements INodeSelectionListener {
 			return;
 		}
 		boolean editorContentEmpty = true;
-		final String documentText = noteController.getNoteViewerComponent().getDocumentText();
+		String documentText = noteController.getNoteViewerComponent().getDocumentText();
+		documentText = HEAD.matcher(documentText).replaceFirst("");
 		editorContentEmpty = documentText.equals(EMPTY_EDITOR_STRING)
 		        || documentText.equals(EMPTY_EDITOR_STRING_ALTERNATIVE);
 		noteController.getModeController().getMapController().removeNodeSelectionListener(this);

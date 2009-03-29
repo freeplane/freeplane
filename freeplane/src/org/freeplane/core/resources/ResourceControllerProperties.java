@@ -59,4 +59,6 @@ public class ResourceControllerProperties {
 	public static final String RESOURCES_WHEEL_VELOCITY = "wheel_velocity";
 	public static final String XML_PATTERNS_XML = "/xml/patterns.xml";
 	public static final String XML_VERSION = "0.9.0";
+	public static final String RESOURCES_USE_DEFAULT_FONT_FOR_NOTES_TOO = "resources_use_default_font_for_notes_too";
+	public static final String RESOURCES_USE_MARGIN_TOP_ZERO_FOR_NOTES = "resources_use_margin_top_zero_for_notes";
 }
