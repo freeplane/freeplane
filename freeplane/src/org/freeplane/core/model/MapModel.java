@@ -34,6 +34,7 @@ import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.filter.Filter;
 import org.freeplane.core.filter.Filter;
+import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.filter.condition.NoFilteringCondition;
 import org.freeplane.core.modecontroller.IMapChangeListener;
 import org.freeplane.core.modecontroller.MapChangeEvent;
@@ -64,7 +65,7 @@ public class MapModel {
 		this.listeners = new LinkedList<IMapChangeListener>();
 		final Controller controller = modeController.getController();
 		nodes = new HashMap<String, NodeModel>();
-		filter = new Filter(controller, NoFilteringCondition.createCondition(), true, false);
+		filter = FilterController.getController(controller).createTransparentFilter();
 		if (root == null) {
 			root = new NodeModel(FreeplaneResourceBundle.getText("new_mindmap"), this);
 			setRoot(root);

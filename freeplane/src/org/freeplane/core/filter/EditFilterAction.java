@@ -35,7 +35,7 @@ class EditFilterAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 6280668187345048213L;
 
 	EditFilterAction(FilterController filterController) {
-		super(filterController.getController(), "filter_edit_description", "/images/Btn_edit.gif");
+		super(filterController.getController(), null, "/images/Btn_edit.gif");
 		this.filterController = filterController;
 	}
 

@@ -32,18 +32,27 @@ import org.freeplane.core.model.NodeModel;
  * @author Dimitry Polivaev
  */
 public class Filter {
-	private ICondition condition = null;
+	final private ICondition condition;
 	final private Controller controller;
-	private int options = 0;
+	final private int options;
+	final private boolean appliesToVisibleNodesOnly;
 
+	protected boolean appliesToVisibleNodesOnly() {
+    	return appliesToVisibleNodesOnly;
+    }
+	static Filter createTransparentFilter(final Controller controller)
+	{
+		return new Filter(controller, null, true, false, false);
+	}
 	/**
+	 * @param b 
 	 */
 	public Filter(final Controller controller, final ICondition condition, final boolean areAnchestorsShown,
-	                     final boolean areDescendantsShown) {
+	                     final boolean areDescendantsShown, boolean applyToVisibleNodesOnly) {
 		super();
 		this.controller = controller;
 		this.condition = condition;
-		options = FilterInfo.FILTER_INITIAL_VALUE | FilterInfo.FILTER_SHOW_MATCHED;
+		int options = FilterInfo.FILTER_INITIAL_VALUE | FilterInfo.FILTER_SHOW_MATCHED;
 		if (areAnchestorsShown) {
 			options += FilterInfo.FILTER_SHOW_ANCESTOR;
 		}
@@ -51,6 +60,8 @@ public class Filter {
 		if (areDescendantsShown) {
 			options += FilterInfo.FILTER_SHOW_DESCENDANT;
 		}
+		this.options = options;
+		this.appliesToVisibleNodesOnly = condition != null && applyToVisibleNodesOnly;
 	}
 
 	void addFilterResult(final NodeModel node, final int flag) {
@@ -70,10 +81,10 @@ public class Filter {
 			controller.getViewController().setWaitingCursor(true);
 			final Filter oldFilter = map.getFilter();
 			map.setFilter(this);
-			if (force || oldFilter == null || ! condition.equals(oldFilter.getCondition())) {
+			if (force  || ! areConditionsEqual(oldFilter)) {
 				final NodeModel root = map.getRootNode();
 				resetFilter(root);
-				if (filterChildren(root, condition.checkNode(root), false)) {
+				if (filterChildren(root, checkNode(root), false)) {
 					addFilterResult(root, FilterInfo.FILTER_SHOW_ANCESTOR);
 				}
 			}
@@ -86,6 +97,24 @@ public class Filter {
 			controller.getViewController().setWaitingCursor(false);
 		}
 	}
+
+	public boolean areConditionsEqual(Filter oldFilter) {
+		return (! appliesToVisibleNodesOnly 
+				|| appliesToVisibleNodesOnly == oldFilter.appliesToVisibleNodesOnly)
+		&& 
+		(condition != null && condition.equals(oldFilter.getCondition())
+			|| condition == null && oldFilter.getCondition() == null);
+	}
+	
+	private boolean checkNode(final NodeModel node) {
+		if(condition == null){
+			return true;
+		}
+		if(appliesToVisibleNodesOnly && ! node.isVisible()){
+			return false;
+		}
+	    return condition.checkNode(node);
+    }
 
 	private void refreshMap() {
 		controller.getModeController().getMapController().refreshMap();
@@ -121,7 +150,7 @@ public class Filter {
 
 	private boolean applyFilter(final NodeModel node, final boolean isAncestorSelected,
 	                            final boolean isAncestorEclipsed, boolean isDescendantSelected) {
-		final boolean conditionSatisfied = condition.checkNode(node);
+		final boolean conditionSatisfied = checkNode(node);
 		resetFilter(node);
 		if (isAncestorSelected) {
 			addFilterResult(node, FilterInfo.FILTER_SHOW_DESCENDANT);
