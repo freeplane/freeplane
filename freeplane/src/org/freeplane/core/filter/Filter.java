@@ -81,7 +81,7 @@ public class Filter {
 			controller.getViewController().setWaitingCursor(true);
 			final Filter oldFilter = map.getFilter();
 			map.setFilter(this);
-			if (force  || ! areConditionsEqual(oldFilter)) {
+			if (force  || ! isConditionStronger(oldFilter)) {
 				final NodeModel root = map.getRootNode();
 				resetFilter(root);
 				if (filterChildren(root, checkNode(root), false)) {
@@ -98,7 +98,7 @@ public class Filter {
 		}
 	}
 
-	public boolean areConditionsEqual(Filter oldFilter) {
+	public boolean isConditionStronger(Filter oldFilter) {
 		return (! appliesToVisibleNodesOnly 
 				|| appliesToVisibleNodesOnly == oldFilter.appliesToVisibleNodesOnly)
 		&& 

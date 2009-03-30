@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.filter.condition.SelectedViewSnapshotCondition;
 import org.freeplane.core.model.MapModel;
 
 /**
@@ -52,7 +53,9 @@ public class FilterHistory {
 		final Filter previous = filters.previous();
 		undoImpl(map);
 		while(previous != filters.next());
-		filters.previous();
+		if (filters.nextIndex() > 1){
+			filters.previous();
+		}
 	}
 
 	private void undoImpl(final MapModel map) {
@@ -77,7 +80,7 @@ public class FilterHistory {
 	
 	void add(final Filter filter){
 		final Filter currentFilter = getCurrentFilter();
-		if (filter.areConditionsEqual(currentFilter)){
+		if (isConditionStronger(currentFilter, filter)){
 			filters.previous();
 			filters.remove();
 		}
@@ -87,6 +90,14 @@ public class FilterHistory {
 		}
 		filters.add(filter);
 	}
+
+	private boolean isConditionStronger(final Filter oldFilter, final Filter newFilter) {
+	    if (newFilter.isConditionStronger(oldFilter)){
+	    	return true;
+	    }
+	    return newFilter.getCondition()instanceof SelectedViewSnapshotCondition 
+	    && oldFilter.getCondition()instanceof SelectedViewSnapshotCondition;
+    }
 
 	Filter getCurrentFilter() {
 		filters.previous();
