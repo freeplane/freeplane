@@ -41,6 +41,7 @@ import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.LinkModel;
 import org.freeplane.features.common.link.MapLinks;
 import org.freeplane.features.mindmapmode.MModeController;
+
 /**
  * @author Dimitry Polivaev
  */
@@ -49,6 +50,10 @@ public class MLinkController extends LinkController {
 	 * @author Dimitry Polivaev
 	 */
 	private final class NodeDeletionListener implements IMapChangeListener {
+		public void mapChanged(final MapChangeEvent event) {
+			// TODO Auto-generated method stub
+		}
+
 		public void onNodeDeleted(final NodeModel parent, final NodeModel child, final int index) {
 		}
 
@@ -89,14 +94,11 @@ public class MLinkController extends LinkController {
 			};
 			getModeController().execute(actor);
 		}
-
-		public void mapChanged(MapChangeEvent event) {
-	        // TODO Auto-generated method stub
-	        
-        }
 	}
 
 	static private ColorArrowLinkAction colorArrowLinkAction;
+	static private Pattern mailPattern;
+	static final Pattern nonLinkCharacter = Pattern.compile("[ \n()'\",;]");
 	static private SetLinkByFileChooserAction setLinkByFileChooser;
 	static private SetLinkByTextFieldAction setLinkByTextField;
 
@@ -167,6 +169,34 @@ public class MLinkController extends LinkController {
 		itemtt.setSelected(a && b);
 	}
 
+	private void createMailPattern() {
+		if (mailPattern == null) {
+			mailPattern = Pattern.compile("([^@ <>\\*']+@[^@ <>\\*']+)");
+		}
+	}
+
+	public String findLink(final String text) {
+		createMailPattern();
+		final Matcher mailMatcher = mailPattern.matcher(text);
+		String link = null;
+		final String[] linkPrefixes = { "http://", "ftp://", "https://" };
+		for (int j = 0; j < linkPrefixes.length; j++) {
+			final int linkStart = text.indexOf(linkPrefixes[j]);
+			if (linkStart != -1) {
+				int linkEnd = linkStart;
+				while (linkEnd < text.length()
+				        && !nonLinkCharacter.matcher(text.substring(linkEnd, linkEnd + 1)).matches()) {
+					linkEnd++;
+				}
+				link = text.substring(linkStart, linkEnd);
+			}
+		}
+		if (link == null && mailMatcher.find()) {
+			link = "mailto:" + mailMatcher.group();
+		}
+		return link;
+	}
+
 	public void setArrowLinkColor(final ArrowLinkModel arrowLink, final Color color) {
 		colorArrowLinkAction.setArrowLinkColor(arrowLink, color);
 	}
@@ -201,33 +231,5 @@ public class MLinkController extends LinkController {
 
 	public void setLinkByFileChooser() {
 		setLinkByFileChooser.setLinkByFileChooser();
-	}
-	static private Pattern mailPattern;
-	private void createMailPattern() {
-		if (mailPattern == null) {
-			mailPattern = Pattern.compile("([^@ <>\\*']+@[^@ <>\\*']+)");
-		}
-	}
-	static final Pattern nonLinkCharacter = Pattern.compile("[ \n()'\",;]");
-	public String findLink(final String text) {
-		createMailPattern();
-		final Matcher mailMatcher = mailPattern.matcher(text);
-		String link = null;
-		final String[] linkPrefixes = { "http://", "ftp://", "https://" };
-		for (int j = 0; j < linkPrefixes.length; j++) {
-			final int linkStart = text.indexOf(linkPrefixes[j]);
-			if (linkStart != -1) {
-				int linkEnd = linkStart;
-				while (linkEnd < text.length()
-				        && !nonLinkCharacter.matcher(text.substring(linkEnd, linkEnd + 1)).matches()) {
-					linkEnd++;
-				}
-				link = text.substring(linkStart, linkEnd);
-			}
-		}
-		if (link == null && mailMatcher.find()) {
-			link = "mailto:" + mailMatcher.group();
-		}
-		return link;
 	}
 }

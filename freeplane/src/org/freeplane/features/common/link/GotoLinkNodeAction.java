@@ -29,8 +29,8 @@ import org.freeplane.core.ui.AFreeplaneAction;
 
 /** Follow a graphical link (AKA connector) action. */
 class GotoLinkNodeAction extends AFreeplaneAction {
-	private NodeModel target;
-	private LinkController linkController;
+	private final LinkController linkController;
+	private final NodeModel target;
 
 	public GotoLinkNodeAction(final LinkController linkController, final NodeModel target) {
 		super(linkController.getModeController().getController(), "goto_link_node_action", "/images/Link.png");

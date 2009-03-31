@@ -21,19 +21,22 @@ package org.freeplane.features.common.link;
 
 import org.freeplane.core.filter.condition.ConditionFactory;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
-import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
  * @author Dimitry Polivaev
  * Mar 7, 2009
  */
 public class HyperLinkEqualsCondition extends HyperLinkCondition {
-
 	public static final String NAME = "hyper_link_equals";
 
-	public HyperLinkEqualsCondition(String hyperlink) {
-	    super(hyperlink);
-    }
+	public HyperLinkEqualsCondition(final String hyperlink) {
+		super(hyperlink);
+	}
+
+	@Override
+	protected boolean checkLink(final String nodeLink) {
+		return getHyperlink().equals(nodeLink);
+	}
 
 	@Override
 	protected String createDesctiption() {
@@ -42,12 +45,8 @@ public class HyperLinkEqualsCondition extends HyperLinkCondition {
 		return ConditionFactory.createDescription(condition, simpleCondition, getHyperlink(), false);
 	}
 
-	protected boolean checkLink(final String nodeLink) {
-	    return getHyperlink().equals(nodeLink);
-    }
-
 	@Override
-    String getName() {
-	    return NAME;
-    }
+	String getName() {
+		return NAME;
+	}
 }

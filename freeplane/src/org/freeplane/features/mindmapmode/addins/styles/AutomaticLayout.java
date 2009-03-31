@@ -280,11 +280,20 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 		}, AUTOMATIC_FORMAT_LEVEL, IndexedTree.AS_CHILD);
 	}
 
+	@Override
+	protected IExtension createExtension(final NodeModel node, final XMLElement element) {
+		return this;
+	}
+
 	private int depth(final NodeModel node) {
 		if (node.isRoot()) {
 			return 0;
 		}
 		return depth(node.getParentNode()) + 1;
+	}
+
+	public void mapChanged(final MapChangeEvent event) {
+		// TODO Auto-generated method stub
 	}
 
 	public void nodeChanged(final NodeChangeEvent event) {
@@ -384,13 +393,5 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 			final NodeModel child = (NodeModel) i.next();
 			setStyleRecursiveImpl(child);
 		}
-	}
-
-	public void mapChanged(MapChangeEvent event) {
-	    // TODO Auto-generated method stub
-	    
-    }
-	protected IExtension createExtension(final NodeModel node, final XMLElement element) {
-		return this;
 	}
 }

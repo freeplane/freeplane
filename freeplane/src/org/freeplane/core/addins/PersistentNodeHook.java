@@ -47,7 +47,6 @@ public abstract class PersistentNodeHook {
 		public void actionPerformed(final ActionEvent e) {
 			undoableSetHook(!isActiveForSelection());
 		}
-
 	}
 
 	@SelectableAction(checkOnNodeChange = true)
@@ -61,6 +60,7 @@ public abstract class PersistentNodeHook {
 			super();
 		}
 
+		@Override
 		public String getName() {
 			// TODO rladstaetter 15.02.2009 this action is not annotated and thus no name can be derived?
 			return getClass().getSimpleName();
@@ -146,7 +146,7 @@ public abstract class PersistentNodeHook {
 		super();
 		this.modeController = modeController;
 		controller = modeController.getController();
-		if(modeController.getModeName().equals("MindMap")){
+		if (modeController.getModeName().equals("MindMap")) {
 			final ActionDescriptor actionAnnotation = getActionAnnotation();
 			if (actionAnnotation != null) {
 				selectableHookAction = createHookAction();
@@ -164,8 +164,8 @@ public abstract class PersistentNodeHook {
 		final MapController mapController = modeController.getMapController();
 		mapController.getReadManager().addElementHandler("hook", createXmlReader());
 		mapController.getWriteManager().addExtensionElementWriter(getExtensionClass(), createXmlWriter());
-		if(this instanceof IExtension){
-			modeController.addExtension((Class<? extends IExtension>) getClass(), (IExtension)this);
+		if (this instanceof IExtension) {
+			modeController.addExtension((Class<? extends IExtension>) getClass(), (IExtension) this);
 		}
 	}
 
@@ -198,6 +198,10 @@ public abstract class PersistentNodeHook {
 		return annotation;
 	}
 
+	public Controller getController() {
+		return controller;
+	}
+
 	protected Class getExtensionClass() {
 		return getClass();
 	}
@@ -209,6 +213,11 @@ public abstract class PersistentNodeHook {
 
 	protected String getHookName() {
 		return getHookAnnotation().hookName();
+	}
+
+	public IExtension getMapHook() {
+		final NodeModel rootNode = controller.getMap().getRootNode();
+		return rootNode.getExtension(getExtensionClass());
 	}
 
 	public ModeController getModeController() {
@@ -281,29 +290,31 @@ public abstract class PersistentNodeHook {
 	}
 
 	public void undoableDeactivateHook(final NodeModel node) {
-		if(node.getExtension(getExtensionClass()) != null){
+		if (node.getExtension(getExtensionClass()) != null) {
 			undoableToggleHook(node, null);
 		}
 	}
 
 	public void undoableSetHook(final boolean enable) {
-        final NodeModel[] nodes = getNodes();
+		final NodeModel[] nodes = getNodes();
 		for (int i = 0; i < nodes.length; i++) {
 			final NodeModel node = nodes[i];
 			if (node.containsExtension(getExtensionClass()) != enable) {
 				undoableToggleHook(node);
 			}
 		}
-    }
+	}
+
 	public void undoableSetHook(final IExtension extension) {
-        final NodeModel[] nodes = getNodes();
+		final NodeModel[] nodes = getNodes();
 		for (int i = 0; i < nodes.length; i++) {
 			final NodeModel node = nodes[i];
-			if(extension != null ||node.containsExtension(getExtensionClass())){
+			if (extension != null || node.containsExtension(getExtensionClass())) {
 				undoableToggleHook(node, extension);
 			}
 		}
-    }
+	}
+
 	public void undoableToggleHook(final NodeModel node) {
 		undoableToggleHook(node, null);
 	}
@@ -312,13 +323,4 @@ public abstract class PersistentNodeHook {
 		final IActor actor = new ToggleHookActor(node, extension);
 		getModeController().execute(actor);
 	}
-	
-	public IExtension getMapHook(){
-		final NodeModel rootNode = controller.getMap().getRootNode();
-		return rootNode.getExtension(getExtensionClass());
-	}
-	
-	public Controller getController() {
-	    return controller;
-    }
 }

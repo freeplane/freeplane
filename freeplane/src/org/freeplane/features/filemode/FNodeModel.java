@@ -25,8 +25,6 @@ import java.util.List;
 
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.features.common.link.LinkController;
-import org.freeplane.features.common.link.LinkModel;
 import org.freeplane.features.common.link.NodeLinks;
 
 /**
@@ -56,12 +54,12 @@ class FNodeModel extends NodeModel {
 					if (!childFile.isHidden()) {
 						final FNodeModel fileNodeModel = new FNodeModel(childFile, getMap());
 						try {
-	                        final String url = childFile.toURL().toString();
-	                        NodeLinks.createLinkExtension(fileNodeModel).setHyperLink(url);
-                        }
-                        catch (MalformedURLException e) {
-	                        e.printStackTrace();
-                        }
+							final String url = childFile.toURL().toString();
+							NodeLinks.createLinkExtension(fileNodeModel).setHyperLink(url);
+						}
+						catch (final MalformedURLException e) {
+							e.printStackTrace();
+						}
 						fileNodeModel.setLeft(isNewChildLeft());
 						children.add(getChildCount(), fileNodeModel);
 						fileNodeModel.setParent(this);

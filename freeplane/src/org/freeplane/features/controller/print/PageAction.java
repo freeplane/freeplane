@@ -139,6 +139,7 @@ class PageAction extends AbstractPrintAction {
 		}
 	}
 
+	@Override
 	public String getName() {
 		return NAME;
 	}

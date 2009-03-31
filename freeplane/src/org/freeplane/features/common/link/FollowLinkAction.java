@@ -41,13 +41,12 @@ class FollowLinkAction extends AFreeplaneAction implements PopupMenuListener {
 		final ModeController modeController = getModeController();
 		final MapController mapController = modeController.getMapController();
 		LinkController linkController = null;
-		for (final Iterator iterator = mapController.getSelectedNodes().iterator(); iterator
-		    .hasNext();) {
+		for (final Iterator iterator = mapController.getSelectedNodes().iterator(); iterator.hasNext();) {
 			final NodeModel selNode = (NodeModel) iterator.next();
 			final String link = NodeLinks.getLink(selNode);
 			if (link != null) {
-				if(linkController == null){
-					linkController = LinkController.getController(modeController); 
+				if (linkController == null) {
+					linkController = LinkController.getController(modeController);
 				}
 				linkController.onDeselect(mapController.getSelectedNode());
 				mapController.loadURL(link);

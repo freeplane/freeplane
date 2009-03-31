@@ -91,6 +91,12 @@ class XMLWriter {
 	}
 
 	/**
+	*/
+	public void write(final String content) {
+		writer.print(content);
+	}
+
+	/**
 	 * Writes an XML element.
 	 * 
 	 * @param xml
@@ -209,12 +215,6 @@ class XMLWriter {
 			}
 		}
 		writer.flush();
-	}
-
-	/**
-	*/
-	public void write(final String content) {
-		writer.print(content);
 	}
 
 	/**

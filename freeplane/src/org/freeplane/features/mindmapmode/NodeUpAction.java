@@ -32,10 +32,9 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.IFreeplaneAction;
 import org.freeplane.core.undo.IActor;
 
-class NodeUpAction extends AFreeplaneAction implements IFreeplaneAction {
+class NodeUpAction extends AFreeplaneAction {
 	public NodeUpAction(final Controller controller) {
 		super(controller, "node_up");
 	}
@@ -88,6 +87,11 @@ class NodeUpAction extends AFreeplaneAction implements IFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		moveNodes(getModeController().getMapController().getSelectedNode(), getModeController().getMapController()
 		    .getSelectedNodes(), -1);
+	}
+
+	@Override
+	public String getName() {
+		return "nodeUp";
 	}
 
 	/**
@@ -153,8 +157,4 @@ class NodeUpAction extends AFreeplaneAction implements IFreeplaneAction {
 		    false);
 		return newIndex;
 	}
-
-	public String getName() {
-	    return "nodeUp";
-    }
 }

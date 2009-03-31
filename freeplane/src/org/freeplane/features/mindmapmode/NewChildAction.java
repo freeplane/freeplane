@@ -28,12 +28,11 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.IFreeplaneAction;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 
-class NewChildAction extends AFreeplaneAction implements IFreeplaneAction {
+class NewChildAction extends AFreeplaneAction {
 	public NewChildAction(final Controller controller) {
 		super(controller, "new_child", "/images/idea.png");
 	}
@@ -108,7 +107,8 @@ class NewChildAction extends AFreeplaneAction implements IFreeplaneAction {
 		return newNode;
 	}
 
+	@Override
 	public String getName() {
-	    return "newChild";
-    }
+		return "newChild";
+	}
 }

@@ -40,34 +40,34 @@ public class SelectionController {
 	}
 
 	public void addNodeSelectionListener(final INodeSelectionListener listener) {
-    	nodeSelectionListeners.add(listener);
-    }
-
-	public void onDeselect(final NodeModel node) {
-    	try {
-    		final HashSet copy = new HashSet(nodeSelectionListeners);
-    		for (final Iterator iter = copy.iterator(); iter.hasNext();) {
-    			final INodeSelectionListener listener = (INodeSelectionListener) iter.next();
-    			listener.onDeselect(node);
-    		}
-    	}
-    	catch (final RuntimeException e) {
-    		Logger.global.log(Level.SEVERE, "Error in node selection listeners", e);
-    	}
-    }
-
-	public void onSelect(final NodeModel node) {
-    	for (final Iterator iter = nodeSelectionListeners.iterator(); iter.hasNext();) {
-    		final INodeSelectionListener listener = (INodeSelectionListener) iter.next();
-    		listener.onSelect(node);
-    	}
-    }
-
-	public void removeNodeSelectionListener(final INodeSelectionListener listener) {
-    	nodeSelectionListeners.remove(listener);
-    }
+		nodeSelectionListeners.add(listener);
+	}
 
 	public LinkedList<INodeSelectionListener> getNodeSelectionListeners() {
-	    return nodeSelectionListeners;
-    }
+		return nodeSelectionListeners;
+	}
+
+	public void onDeselect(final NodeModel node) {
+		try {
+			final HashSet copy = new HashSet(nodeSelectionListeners);
+			for (final Iterator iter = copy.iterator(); iter.hasNext();) {
+				final INodeSelectionListener listener = (INodeSelectionListener) iter.next();
+				listener.onDeselect(node);
+			}
+		}
+		catch (final RuntimeException e) {
+			Logger.global.log(Level.SEVERE, "Error in node selection listeners", e);
+		}
+	}
+
+	public void onSelect(final NodeModel node) {
+		for (final Iterator iter = nodeSelectionListeners.iterator(); iter.hasNext();) {
+			final INodeSelectionListener listener = (INodeSelectionListener) iter.next();
+			listener.onSelect(node);
+		}
+	}
+
+	public void removeNodeSelectionListener(final INodeSelectionListener listener) {
+		nodeSelectionListeners.remove(listener);
+	}
 }

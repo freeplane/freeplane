@@ -19,22 +19,19 @@
  */
 package org.freeplane.features.controller.print;
 
-import javax.swing.AbstractAction;
-import javax.swing.ImageIcon;
+import org.freeplane.core.ui.AFreeplaneAction;
 
-import org.freeplane.core.ui.IFreeplaneAction;
-
-abstract class AbstractPrintAction extends AbstractAction implements IFreeplaneAction {
+abstract class AbstractPrintAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 892194048692112127L;
 	final private PrintController printController;
 
 	public AbstractPrintAction(final PrintController controller) {
-		super();
+		super(controller.getController());
 		printController = controller;
 	}
 
-	public AbstractPrintAction(final PrintController controller, final String name, final ImageIcon imageIcon) {
-		super(name, imageIcon);
+	public AbstractPrintAction(final PrintController controller, final String name, final String imageIcon) {
+		super(controller.getController(), name, imageIcon);
 		printController = controller;
 	}
 

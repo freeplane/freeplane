@@ -115,6 +115,10 @@ public class IndexedTree {
 		return string2Element.containsKey(key);
 	}
 
+	public String dump() {
+		return string2Element.toString();
+	}
+
 	public DefaultMutableTreeNode get(final Object key) {
 		final Object object = string2Element.get(key);
 		if (object == null) {
@@ -165,9 +169,5 @@ public class IndexedTree {
 			removeChildKeys((Node) node);
 		}
 		return node;
-	}
-	
-	public String dump(){
-		return string2Element.toString();
 	}
 }

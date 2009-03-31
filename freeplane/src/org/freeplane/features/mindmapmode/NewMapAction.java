@@ -24,13 +24,12 @@ import java.awt.event.ActionEvent;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.IFreeplaneAction;
 
-class NewMapAction extends AFreeplaneAction implements IFreeplaneAction {
+class NewMapAction extends AFreeplaneAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 158359355321302419L;
+	 * 
+	 */
+	private static final long serialVersionUID = 158359355321302419L;
 
 	public NewMapAction(final Controller controller) {
 		super(controller, "new", "/images/filenew.png");
@@ -40,7 +39,8 @@ class NewMapAction extends AFreeplaneAction implements IFreeplaneAction {
 		getModeController().getMapController().newMap(((NodeModel) null));
 	}
 
+	@Override
 	public String getName() {
-	    return "newMap";
-    }
+		return "newMap";
+	}
 }

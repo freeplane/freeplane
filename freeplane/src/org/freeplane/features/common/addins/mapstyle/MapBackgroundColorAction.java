@@ -22,7 +22,6 @@ package org.freeplane.features.common.addins.mapstyle;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 
-import org.freeplane.core.addins.PersistentNodeHook.HookAction;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ColorTracker;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
@@ -37,39 +36,36 @@ import org.freeplane.core.util.ColorUtils;
  * Mar 12, 2009
  */
 @ActionDescriptor(name = "map_background_color_action", //
-	locations = { "/menu_bar/format/nodes" }) 
+locations = { "/menu_bar/format/nodes" })
 class MapBackgroundColorAction extends AFreeplaneAction {
-    /**
-     * 
-     */
-    private final MapStyle mapStyle;
+	private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private final MapStyle mapStyle;
 
 	/**
-     * @param mapStyle
-     */
-    MapBackgroundColorAction(MapStyle mapStyle) {
-    	super(mapStyle.getController());
-        this.mapStyle = mapStyle;
-    }
-
-	private static final long serialVersionUID = 1L;
-
-	public void actionPerformed(final ActionEvent e){
-		final Controller controller = getController();
-		MapStyleModel model = (MapStyleModel)this.mapStyle.getMapHook();
-		final Color oldBackgroundColor;
-		if(model != null){
-			oldBackgroundColor = model.getBackgroundColor();
-		}
-		else{
-			final String colorPropertyString = ResourceController.getResourceController().getProperty(ResourceControllerProperties.RESOURCES_BACKGROUND_COLOR);
-			oldBackgroundColor = ColorUtils.stringToColor(colorPropertyString);
-		}
-
-		final Color actionColor = ColorTracker.showCommonJColorChooserDialog(controller, controller.getSelection()
-		    .getSelected(), FreeplaneResourceBundle.getText("choose_map_background_color"), 
-		    oldBackgroundColor);
-		this.mapStyle.setBackgroundColor(model, actionColor);
+	 * @param mapStyle
+	 */
+	MapBackgroundColorAction(final MapStyle mapStyle) {
+		super(mapStyle.getController());
+		this.mapStyle = mapStyle;
 	}
 
+	public void actionPerformed(final ActionEvent e) {
+		final Controller controller = getController();
+		final MapStyleModel model = (MapStyleModel) mapStyle.getMapHook();
+		final Color oldBackgroundColor;
+		if (model != null) {
+			oldBackgroundColor = model.getBackgroundColor();
+		}
+		else {
+			final String colorPropertyString = ResourceController.getResourceController().getProperty(
+			    ResourceControllerProperties.RESOURCES_BACKGROUND_COLOR);
+			oldBackgroundColor = ColorUtils.stringToColor(colorPropertyString);
+		}
+		final Color actionColor = ColorTracker.showCommonJColorChooserDialog(controller, controller.getSelection()
+		    .getSelected(), FreeplaneResourceBundle.getText("choose_map_background_color"), oldBackgroundColor);
+		mapStyle.setBackgroundColor(model, actionColor);
+	}
 }

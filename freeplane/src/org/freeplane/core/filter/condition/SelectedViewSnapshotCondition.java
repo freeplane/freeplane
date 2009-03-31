@@ -37,6 +37,7 @@ public class SelectedViewSnapshotCondition implements ICondition {
 	}
 
 	HashSet<NodeModel> selectedNodes;
+
 	public SelectedViewSnapshotCondition(final Controller controller) {
 		super();
 		selectedNodes = new HashSet<NodeModel>();
@@ -49,8 +50,7 @@ public class SelectedViewSnapshotCondition implements ICondition {
 
 	public JComponent getListCellRendererComponent() {
 		if (SelectedViewSnapshotCondition.renderer == null) {
-			SelectedViewSnapshotCondition.renderer = ConditionFactory
-			    .createCellRendererComponent(toString());
+			SelectedViewSnapshotCondition.renderer = ConditionFactory.createCellRendererComponent(toString());
 		}
 		return SelectedViewSnapshotCondition.renderer;
 	}
@@ -58,7 +58,8 @@ public class SelectedViewSnapshotCondition implements ICondition {
 	@Override
 	public String toString() {
 		if (SelectedViewSnapshotCondition.description == null) {
-			SelectedViewSnapshotCondition.description = FreeplaneResourceBundle.getText("filter_selected_node_view_snapshot");
+			SelectedViewSnapshotCondition.description = FreeplaneResourceBundle
+			    .getText("filter_selected_node_view_snapshot");
 		}
 		return SelectedViewSnapshotCondition.description;
 	}

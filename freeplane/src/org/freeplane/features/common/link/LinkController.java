@@ -23,7 +23,6 @@ import java.awt.Color;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Set;
 
@@ -32,10 +31,8 @@ import javax.swing.JPopupMenu;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.filter.FilterController;
-import org.freeplane.core.filter.condition.ConditionFactory;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
-import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.modecontroller.ExclusivePropertyChain;
 import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.modecontroller.INodeSelectionListener;
@@ -70,6 +67,11 @@ public class LinkController extends SelectionController implements IExtension {
 		return (LinkController) modeController.getExtension(LinkController.class);
 	}
 
+	public static void install(final Controller controller) {
+		FilterController.getController(controller).getConditionFactory().addConditionController(3,
+		    new LinkConditionController());
+	}
+
 	public static void install(final ModeController modeController, final LinkController linkController) {
 		modeController.addExtension(LinkController.class, linkController);
 		final INodeSelectionListener listener = new INodeSelectionListener() {
@@ -83,12 +85,8 @@ public class LinkController extends SelectionController implements IExtension {
 			}
 		};
 		modeController.getMapController().addNodeSelectionListener(listener);
-		Controller controller = modeController.getController();
+		modeController.getController();
 	}
-
-	public static void install(Controller controller) {
-	    FilterController.getController(controller).getConditionFactory().addConditionController(3, new LinkConditionController());
-    }
 
 	final private ExclusivePropertyChain<Color, ArrowLinkModel> colorHandlers;
 	final private ModeController modeController;
@@ -123,6 +121,41 @@ public class LinkController extends SelectionController implements IExtension {
 		return colorHandlers.addGetter(key, getter);
 	}
 
+	private void addForeignLinks(final JPopupMenu arrowLinkPopup, final HashSet<NodeModel> nodeAlreadyVisited,
+	                             final Collection<LinkModel> sourceLinks) {
+		final Collection<LinkModel> links = new LinkedList<LinkModel>();;
+		links.addAll(sourceLinks);
+		for (final LinkModel foreign_link : links) {
+			if (!(foreign_link instanceof ArrowLinkModel)) {
+				continue;
+			}
+			final ArrowLinkModel arrowLink = (ArrowLinkModel) foreign_link;
+			final NodeModel foreignTarget = arrowLink.getTarget();
+			if (nodeAlreadyVisited.add(foreignTarget)) {
+				arrowLinkPopup.add(new GotoLinkNodeAction(this, foreignTarget));
+			}
+			final NodeModel foreignSource = arrowLink.getSource();
+			if (nodeAlreadyVisited.add(foreignSource)) {
+				arrowLinkPopup.add(new GotoLinkNodeAction(this, foreignSource));
+			}
+		}
+	}
+
+	private void addLinks(final JPopupMenu arrowLinkPopup, final NodeModel source,
+	                      final HashSet<NodeModel> nodeAlreadyVisited) {
+		boolean actionsAdded = false;
+		final IMapSelection selection = getModeController().getController().getSelection();
+		if (!selection.isSelected(source)) {
+			arrowLinkPopup.add(new GotoLinkNodeAction(this, source));
+			actionsAdded = true;
+		}
+		addForeignLinks(arrowLinkPopup, nodeAlreadyVisited, NodeLinks.getLinks(source));
+		if (actionsAdded) {
+			actionsAdded = false;
+			arrowLinkPopup.addSeparator();
+		}
+	}
+
 	/**
 	 *
 	 */
@@ -140,40 +173,6 @@ public class LinkController extends SelectionController implements IExtension {
 		addLinks(arrowLinkPopup, source, nodeAlreadyVisited);
 		addLinks(arrowLinkPopup, target, nodeAlreadyVisited);
 	}
-
-	private void addLinks(final JPopupMenu arrowLinkPopup, final NodeModel source, final HashSet<NodeModel> nodeAlreadyVisited) {
-	    boolean actionsAdded = false;
-		final IMapSelection selection = getModeController().getController().getSelection();
-		if(! selection.isSelected(source)){
-			arrowLinkPopup.add(new GotoLinkNodeAction(this, source));
-			actionsAdded = true;
-		}
-		addForeignLinks(arrowLinkPopup, nodeAlreadyVisited, NodeLinks.getLinks(source));
-		if(actionsAdded){
-			actionsAdded = false;
-			arrowLinkPopup.addSeparator();
-		}
-    }
-
-	private void addForeignLinks(final JPopupMenu arrowLinkPopup, final HashSet<NodeModel> nodeAlreadyVisited,
-                                 final Collection<LinkModel> sourceLinks) {
-	    final Collection<LinkModel> links = new LinkedList<LinkModel>();;
-		links.addAll(sourceLinks);
-		for (final LinkModel foreign_link:links) {
-			if(! (foreign_link instanceof ArrowLinkModel)){
-				continue;
-			}
-			ArrowLinkModel arrowLink = (ArrowLinkModel) foreign_link;
-			final NodeModel foreignTarget = arrowLink.getTarget();
-			if (nodeAlreadyVisited.add(foreignTarget)) {
-				arrowLinkPopup.add(new GotoLinkNodeAction(this, foreignTarget));
-			}
-			final NodeModel foreignSource = arrowLink.getSource();
-			if (nodeAlreadyVisited.add(foreignSource)) {
-				arrowLinkPopup.add(new GotoLinkNodeAction(this, foreignSource));
-			}
-		}
-    }
 
 	public Color getColor(final ArrowLinkModel model) {
 		return colorHandlers.getProperty(model);

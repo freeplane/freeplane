@@ -110,7 +110,7 @@
 	<menu_category name="main_toolbar">
 		<menu_category name="main">
 			<menu_action field="printDirect" />
-			<menu_action field="showFilterToolbarAction" tooltip="filter_toolbar" />
+			<menu_action field="ShowFilterToolbarAction" tooltip="filter_toolbar" />
 		</menu_category>
 		<menu_category name="zoom">
 		</menu_category>

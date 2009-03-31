@@ -55,9 +55,9 @@ import org.freeplane.core.model.NodeModel;
  */
 public class MapViewController implements IMapViewManager {
 	private String lastModeName;
-	MapViewChangeObserverCompound mapViewChangeListeners = new MapViewChangeObserverCompound();
 	/** reference to the current mapmapView; null is allowed, too. */
 	private MapView mapView;
+	MapViewChangeObserverCompound mapViewChangeListeners = new MapViewChangeObserverCompound();
 	/**
 	 * A vector of MapView instances. They are ordered according to their screen
 	 * order.
@@ -112,7 +112,7 @@ public class MapViewController implements IMapViewManager {
 		mapView = newMapView;
 		if (mapView != null) {
 			lastModeName = mapView.getModeController().getModeName();
-			if(zoom != mapView.getZoom()){
+			if (zoom != mapView.getZoom()) {
 				mapView.setZoom(zoom);
 			}
 		}
@@ -197,7 +197,7 @@ public class MapViewController implements IMapViewManager {
 			if (index >= mapViewVector.size() || index < 0) {
 				index = mapViewVector.size() - 1;
 			}
-			changeToMapView(((MapView) mapViewVector.get(index)));
+			changeToMapView((mapViewVector.get(index)));
 		}
 		mapViewChangeListeners.afterMapViewClose(mapView);
 		return true;
@@ -375,7 +375,7 @@ public class MapViewController implements IMapViewManager {
 	 * @see org.freeplane.core.frame.IMapViewController#newMapView(org.freeplane.core.model.MapModel, org.freeplane.core.modecontroller.ModeController)
 	 */
 	public void newMapView(final MapModel map, final ModeController modeController) {
-		final MapView mapView = new MapView(map, modeController);		
+		final MapView mapView = new MapView(map, modeController);
 		addToOrChangeInMapViews(mapView.getName(), mapView);
 		modeController.getMapController().addMapChangeListener(mapView);
 		mapViewChangeListeners.mapViewCreated(mapView);
@@ -395,10 +395,10 @@ public class MapViewController implements IMapViewManager {
 			index = size - 1;
 		}
 		if (index + 1 < size && index >= 0) {
-			changeToMapView(((MapView) mapViewVector.get(index + 1)));
+			changeToMapView((mapViewVector.get(index + 1)));
 		}
 		else if (size > 0) {
-			changeToMapView(((MapView) mapViewVector.get(0)));
+			changeToMapView((mapViewVector.get(0)));
 		}
 	}
 
@@ -415,11 +415,11 @@ public class MapViewController implements IMapViewManager {
 			index = 0;
 		}
 		if (index > 0) {
-			changeToMapView(((MapView) mapViewVector.get(index - 1)));
+			changeToMapView((mapViewVector.get(index - 1)));
 		}
 		else {
 			if (size > 0) {
-				changeToMapView(((MapView) mapViewVector.get(size - 1)));
+				changeToMapView((mapViewVector.get(size - 1)));
 			}
 		}
 	}
@@ -464,7 +464,7 @@ public class MapViewController implements IMapViewManager {
 	public void setZoom(final float zoom) {
 		this.zoom = zoom;
 		final MapView mapView = getMapView();
-		if(mapView == null){
+		if (mapView == null) {
 			return;
 		}
 		mapView.setZoom(zoom);

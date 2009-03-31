@@ -25,10 +25,9 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.IFreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
 
-class NodeDownAction extends AFreeplaneAction implements IFreeplaneAction{
+class NodeDownAction extends AFreeplaneAction {
 	public NodeDownAction(final Controller controller) {
 		super(controller, "new_sibling_behind");
 		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText("node_down"));
@@ -40,7 +39,8 @@ class NodeDownAction extends AFreeplaneAction implements IFreeplaneAction{
 		    .getSelectedNode(), modeController.getMapController().getSelectedNodes(), 1);
 	}
 
+	@Override
 	public String getName() {
-	    return "nodeDown";
-    }
+		return "nodeDown";
+	}
 }

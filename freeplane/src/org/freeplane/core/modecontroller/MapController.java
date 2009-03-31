@@ -224,6 +224,17 @@ public class MapController extends SelectionController {
 		}
 	}
 
+	public void fireMapChanged(final MapChangeEvent event) {
+		for (final IMapChangeListener listener : mapChangeListeners) {
+			listener.mapChanged(event);
+		}
+		final MapModel map = event.getMap();
+		if (map != null) {
+			map.fireMapChangeEvent(event);
+			setSaved(map, false);
+		}
+	}
+
 	protected void fireMapCreated(final MapModel map) {
 		final Iterator<IMapLifeCycleListener> iterator = mapLifeCycleListeners.iterator();
 		while (iterator.hasNext()) {
@@ -272,17 +283,6 @@ public class MapController extends SelectionController {
 		final Iterator<IMapChangeListener> iterator = mapChangeListeners.iterator();
 		while (iterator.hasNext()) {
 			iterator.next().onPreNodeDelete(parent, selectedNode, index);
-		}
-	}
-		
-	public void fireMapChanged(final MapChangeEvent event){		
-		for(IMapChangeListener listener:mapChangeListeners){
-			listener.mapChanged(event);
-		}
-		final MapModel map = event.getMap();
-		if(map != null){
-			map.fireMapChangeEvent(event);
-			setSaved(map, false);
 		}
 	}
 

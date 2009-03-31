@@ -22,7 +22,6 @@ import java.util.Stack;
 
 import org.freeplane.n3.nanoxml.IXMLBuilder;
 import org.freeplane.n3.nanoxml.XMLElement;
-import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
 /**

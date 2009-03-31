@@ -22,26 +22,22 @@ package org.freeplane.features.controller.help;
 import java.awt.event.ActionEvent;
 import java.net.URL;
 
-import javax.swing.AbstractAction;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.IFreeplaneAction;
-import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.browsemode.BModeController;
 
-class DocumentationAction extends AbstractAction implements IFreeplaneAction {
+class DocumentationAction extends AFreeplaneAction {
 	private static final String NAME = "documentation";
 	private static final long serialVersionUID = 1631839376411875744L;
-	final private Controller controller;
 
 	DocumentationAction(final Controller controller) {
-		this.controller = controller;
-		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText(NAME));
+		super(controller, NAME);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -54,8 +50,8 @@ class DocumentationAction extends AbstractAction implements IFreeplaneAction {
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
 					try {
-						if (controller.selectMode(BModeController.MODENAME)) {
-							((BModeController) controller.getModeController()).getMapController().newMap(endUrl);
+						if (getController().selectMode(BModeController.MODENAME)) {
+							((BModeController) getModeController()).getMapController().newMap(endUrl);
 						}
 					}
 					catch (final Exception e1) {
@@ -66,6 +62,7 @@ class DocumentationAction extends AbstractAction implements IFreeplaneAction {
 		}
 	}
 
+	@Override
 	public String getName() {
 		return NAME;
 	}

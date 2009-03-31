@@ -56,7 +56,6 @@ class ColorArrowLinkAction extends AFreeplaneAction {
 			return;
 		}
 		final IActor actor = new IActor() {
-
 			public void act() {
 				arrowLink.setColor(color);
 				final NodeModel node = arrowLink.getSource();

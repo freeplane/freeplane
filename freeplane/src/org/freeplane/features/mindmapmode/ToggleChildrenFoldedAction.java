@@ -26,9 +26,8 @@ import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.IFreeplaneAction;
 
-class ToggleChildrenFoldedAction extends AFreeplaneAction implements IFreeplaneAction {
+class ToggleChildrenFoldedAction extends AFreeplaneAction {
 	public ToggleChildrenFoldedAction(final Controller controller) {
 		super(controller, "toggle_children_folded");
 	}
@@ -43,7 +42,8 @@ class ToggleChildrenFoldedAction extends AFreeplaneAction implements IFreeplaneA
 		getController().getViewController().obtainFocusForSelected();
 	}
 
+	@Override
 	public String getName() {
-	    return "undoableToggleChildrenFolded";
-    }
+		return "undoableToggleChildrenFolded";
+	}
 }

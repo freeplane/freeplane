@@ -48,8 +48,8 @@ class IgnoreCaseNodeContainsCondition extends NodeCondition {
 	}
 
 	private boolean checkText(final String plainTextContent) {
-	    return plainTextContent.toLowerCase().indexOf(value) > -1;
-    }
+		return plainTextContent.toLowerCase().indexOf(value) > -1;
+	}
 
 	@Override
 	protected String createDesctiption() {

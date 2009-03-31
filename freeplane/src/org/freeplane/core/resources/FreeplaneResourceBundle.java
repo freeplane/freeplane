@@ -51,8 +51,8 @@ public class FreeplaneResourceBundle extends ResourceBundle {
 		if (key == null) {
 			return null;
 		}
-		return ((FreeplaneResourceBundle) ResourceController
-		    .getResourceController().getResources()).getResourceString(key);
+		return ((FreeplaneResourceBundle) ResourceController.getResourceController().getResources())
+		    .getResourceString(key);
 	}
 
 	/**
@@ -136,7 +136,7 @@ public class FreeplaneResourceBundle extends ResourceBundle {
 
 	String getResourceString(final String key) {
 		final String resourceString = getResourceString(key, key);
-		if(resourceString == key){
+		if (resourceString == key) {
 			return '[' + key + ']';
 		}
 		return resourceString;

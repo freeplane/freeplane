@@ -33,27 +33,6 @@ import org.freeplane.features.mindmapmode.MMapController;
  * @author foltin
  */
 public class ChangeNodeLevelController {
-	@ActionDescriptor(tooltip = "accessories/plugins/ChangeNodeLevelAction_right.properties_documentation", //
-	name = "accessories/plugins/ChangeNodeLevelAction_right.properties_name", //
-	keyStroke = "keystroke_accessories/plugins/ChangeNodeLevelAction_right.properties_key", //
-	locations = { "/menu_bar/navigate/nodes" })
-	private class ChangeNodeLevelRightsAction extends AFreeplaneAction {
-		public ChangeNodeLevelRightsAction() {
-			super(controller);
-		}
-
-		public void actionPerformed(final ActionEvent e) {
-		    final ModeController modeController = getModeController();
-		    final NodeModel selectedNode = modeController.getMapController().getSelectedNode();
-		    if(selectedNode.isLeft()){
-		    	moveUpwards(modeController, selectedNode);
-		    }
-		    else{
-				moveDownwards(modeController, selectedNode);
-		    }
-		}
-	}
-
 	@ActionDescriptor(tooltip = "accessories/plugins/ChangeNodeLevelAction_left.properties_documentation", //
 	name = "accessories/plugins/ChangeNodeLevelAction_left.properties_name", //
 	keyStroke = "keystroke_accessories/plugins/ChangeNodeLevelAction_left.properties_key", //
@@ -64,14 +43,35 @@ public class ChangeNodeLevelController {
 		}
 
 		public void actionPerformed(final ActionEvent e) {
-		    final ModeController modeController = getModeController();
-		    final NodeModel selectedNode = modeController.getMapController().getSelectedNode();
-		    if(selectedNode.isLeft()){
+			final ModeController modeController = getModeController();
+			final NodeModel selectedNode = modeController.getMapController().getSelectedNode();
+			if (selectedNode.isLeft()) {
 				moveDownwards(modeController, selectedNode);
-		    }
-		    else{
-		    	moveUpwards(modeController, selectedNode);
-		    }
+			}
+			else {
+				moveUpwards(modeController, selectedNode);
+			}
+		}
+	}
+
+	@ActionDescriptor(tooltip = "accessories/plugins/ChangeNodeLevelAction_right.properties_documentation", //
+	name = "accessories/plugins/ChangeNodeLevelAction_right.properties_name", //
+	keyStroke = "keystroke_accessories/plugins/ChangeNodeLevelAction_right.properties_key", //
+	locations = { "/menu_bar/navigate/nodes" })
+	private class ChangeNodeLevelRightsAction extends AFreeplaneAction {
+		public ChangeNodeLevelRightsAction() {
+			super(controller);
+		}
+
+		public void actionPerformed(final ActionEvent e) {
+			final ModeController modeController = getModeController();
+			final NodeModel selectedNode = modeController.getMapController().getSelectedNode();
+			if (selectedNode.isLeft()) {
+				moveUpwards(modeController, selectedNode);
+			}
+			else {
+				moveDownwards(modeController, selectedNode);
+			}
 		}
 	};
 
@@ -108,64 +108,64 @@ public class ChangeNodeLevelController {
 		return true;
 	}
 
-	private void moveDownwards(ModeController modeController, NodeModel selectedNode) {
-	    if (!checkSelection(modeController)) {
-	    	return;
-	    }
-	    final NodeModel selectedParent = selectedNode.getParentNode();
-	    final List<NodeModel> selectedNodes = modeController.getController().getSelection().getSortedSelection();
-	    final MMapController mapController = (MMapController) modeController.getMapController();
-	    final int ownPosition = selectedParent.getChildPosition(selectedNode);
-	    NodeModel directSibling = null;
-	    for (int i = ownPosition - 1; i >= 0; --i) {
-	    	final NodeModel sibling = (NodeModel) selectedParent.getChildAt(i);
-	    	if ((!selectedNodes.contains(sibling)) && selectedNode.isLeft() == sibling.isLeft()) {
-	    		directSibling = sibling;
-	    		break;
-	    	}
-	    }
-	    if (directSibling == null) {
-	    	for (int i = ownPosition + 1; i < selectedParent.getChildCount(); ++i) {
-	    		final NodeModel sibling = (NodeModel) selectedParent.getChildAt(i);
-	    		if ((!selectedNodes.contains(sibling)) && selectedNode.isLeft() == sibling.isLeft()) {
-	    			directSibling = sibling;
-	    			break;
-	    		}
-	    	}
-	    }
-	    if (directSibling != null) {
-	    	for (final NodeModel node : selectedNodes) {
-	    		mapController.moveNode(node, directSibling, directSibling.getChildCount());
-	    	}
-	    	modeController.getMapController().selectMultipleNodes(selectedNode, selectedNodes);
-	    }
-    }
+	private void moveDownwards(final ModeController modeController, final NodeModel selectedNode) {
+		if (!checkSelection(modeController)) {
+			return;
+		}
+		final NodeModel selectedParent = selectedNode.getParentNode();
+		final List<NodeModel> selectedNodes = modeController.getController().getSelection().getSortedSelection();
+		final MMapController mapController = (MMapController) modeController.getMapController();
+		final int ownPosition = selectedParent.getChildPosition(selectedNode);
+		NodeModel directSibling = null;
+		for (int i = ownPosition - 1; i >= 0; --i) {
+			final NodeModel sibling = (NodeModel) selectedParent.getChildAt(i);
+			if ((!selectedNodes.contains(sibling)) && selectedNode.isLeft() == sibling.isLeft()) {
+				directSibling = sibling;
+				break;
+			}
+		}
+		if (directSibling == null) {
+			for (int i = ownPosition + 1; i < selectedParent.getChildCount(); ++i) {
+				final NodeModel sibling = (NodeModel) selectedParent.getChildAt(i);
+				if ((!selectedNodes.contains(sibling)) && selectedNode.isLeft() == sibling.isLeft()) {
+					directSibling = sibling;
+					break;
+				}
+			}
+		}
+		if (directSibling != null) {
+			for (final NodeModel node : selectedNodes) {
+				mapController.moveNode(node, directSibling, directSibling.getChildCount());
+			}
+			modeController.getMapController().selectMultipleNodes(selectedNode, selectedNodes);
+		}
+	}
 
-	private void moveUpwards(ModeController modeController, NodeModel selectedNode) {
-	    if (!checkSelection(modeController)) {
-	    	return;
-	    }
-	    final MMapController mapController = (MMapController) modeController.getMapController();
-	    NodeModel selectedParent = selectedNode.getParentNode();
-	    final List<NodeModel> selectedNodes =  modeController.getController().getSelection().getSortedSelection();
-	    int position;
-	    final boolean changeSide;
-	    if (selectedParent.isRoot()) {
-	    	position = selectedParent.getChildCount() - 1;
-	    	changeSide = true;
-	    }
-	    else{
-	    	final NodeModel grandParent = selectedParent.getParentNode();
-	    	position = grandParent.getChildPosition(selectedParent) + 1;
-	    	selectedParent = grandParent;
-	    	changeSide = false;
-	    }
-	    for (final NodeModel node : selectedNodes) {
-	    	mapController.moveNode(node, selectedParent, position, ! node.isLeft(), changeSide);
-		    if (!changeSide) {
-		    	position++;
-		    }
-	    }
-	    mapController.selectMultipleNodes(selectedNode, selectedNodes);
-    }
+	private void moveUpwards(final ModeController modeController, final NodeModel selectedNode) {
+		if (!checkSelection(modeController)) {
+			return;
+		}
+		final MMapController mapController = (MMapController) modeController.getMapController();
+		NodeModel selectedParent = selectedNode.getParentNode();
+		final List<NodeModel> selectedNodes = modeController.getController().getSelection().getSortedSelection();
+		int position;
+		final boolean changeSide;
+		if (selectedParent.isRoot()) {
+			position = selectedParent.getChildCount() - 1;
+			changeSide = true;
+		}
+		else {
+			final NodeModel grandParent = selectedParent.getParentNode();
+			position = grandParent.getChildPosition(selectedParent) + 1;
+			selectedParent = grandParent;
+			changeSide = false;
+		}
+		for (final NodeModel node : selectedNodes) {
+			mapController.moveNode(node, selectedParent, position, !node.isLeft(), changeSide);
+			if (!changeSide) {
+				position++;
+			}
+		}
+		mapController.selectMultipleNodes(selectedNode, selectedNodes);
+	}
 }

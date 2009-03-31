@@ -29,9 +29,9 @@ import org.freeplane.features.common.note.NoteModel;
 import org.freeplane.features.mindmapmode.note.MNoteController.NoteDocumentListener;
 
 final class NoteManager implements INodeSelectionListener {
-	public final static Pattern HEAD = Pattern.compile("<head>.*</head>\n", Pattern.DOTALL);
 	public final static String EMPTY_EDITOR_STRING = "<html>\n    <body>\n    <p>\n      \n    </p>\n  </body>\n</html>\n";
 	public final static String EMPTY_EDITOR_STRING_ALTERNATIVE = "<html>\n    <body>\n    <p>\n      \n    </p>\n  </body>\n</html>\n";
+	public final static Pattern HEAD = Pattern.compile("<head>.*</head>\n", Pattern.DOTALL);
 	NoteDocumentListener mNoteDocumentListener;
 	private NodeModel node;
 	/**

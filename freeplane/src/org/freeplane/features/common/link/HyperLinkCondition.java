@@ -24,38 +24,42 @@ import javax.swing.JComponent;
 import org.freeplane.core.filter.condition.ConditionFactory;
 import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.NamedObject;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
  * @author Dimitry Polivaev
  * Mar 7, 2009
  */
-public abstract class HyperLinkCondition implements ICondition{
-	public HyperLinkCondition(String hyperlink) {
-	    super();
-	    this.hyperlink = hyperlink;
-    }
-
+public abstract class HyperLinkCondition implements ICondition {
+	private String description;
 	final private String hyperlink;
-
 	private JComponent renderer;
 
-	private String description; 
+	public HyperLinkCondition(final String hyperlink) {
+		super();
+		this.hyperlink = hyperlink;
+	}
 
-	public boolean checkNode(NodeModel node) {
-	    final NodeLinks model = NodeLinks.getModel(node);
-	    if(model == null){
-	    	return false;
-	    }
-	    final String nodeLink = model.getHyperLink();
-	    if(nodeLink == null){
-	    	return false;
-	    }
-	    return checkLink(nodeLink);
-    }
+	abstract protected boolean checkLink(final String nodeLink);
 
-	abstract protected boolean checkLink(final String nodeLink) ;
+	public boolean checkNode(final NodeModel node) {
+		final NodeLinks model = NodeLinks.getModel(node);
+		if (model == null) {
+			return false;
+		}
+		final String nodeLink = model.getHyperLink();
+		if (nodeLink == null) {
+			return false;
+		}
+		return checkLink(nodeLink);
+	}
+
+	abstract protected String createDesctiption();
+
+	public String getHyperlink() {
+		return hyperlink;
+	}
+
 	public JComponent getListCellRendererComponent() {
 		if (renderer == null) {
 			renderer = ConditionFactory.createCellRendererComponent(toString());
@@ -63,8 +67,7 @@ public abstract class HyperLinkCondition implements ICondition{
 		return renderer;
 	}
 
-
-	abstract protected String createDesctiption();
+	abstract String getName();
 
 	@Override
 	public String toString() {
@@ -74,12 +77,6 @@ public abstract class HyperLinkCondition implements ICondition{
 		return description;
 	}
 
-	public String getHyperlink() {
-	    return hyperlink;
-    }
-	
-	abstract String getName();
-
 	public void toXml(final XMLElement element) {
 		final XMLElement child = new XMLElement();
 		child.setName(getName());
@@ -87,4 +84,3 @@ public abstract class HyperLinkCondition implements ICondition{
 		element.addChild(child);
 	}
 }
-

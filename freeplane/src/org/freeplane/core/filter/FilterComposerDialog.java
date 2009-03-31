@@ -111,6 +111,7 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 			validate();
 		}
 
+		@Override
 		public String getName() {
 			return this.getClass().getSimpleName();
 		}
@@ -199,6 +200,7 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 			validate();
 		}
 
+		@Override
 		public String getName() {
 			return getClass().getSimpleName();
 		}
@@ -222,6 +224,7 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 			validate();
 		}
 
+		@Override
 		public String getName() {
 			return getClass().getSimpleName();
 		}
@@ -251,6 +254,7 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 			}
 		}
 
+		@Override
 		public String getName() {
 			return getClass().getSimpleName();
 		}
@@ -277,6 +281,7 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 			validate();
 		}
 
+		@Override
 		public String getName() {
 			return getClass().getSimpleName();
 		}
@@ -548,11 +553,21 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 		pack();
 	}
 
+	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
+		mapChanged(newMap);
+	}
+
+	public void afterMapClose(final MapModel oldMap) {
+	}
+
 	private void applyChanges() {
 		internalConditionsModel.setSelectedItem(elementaryConditionList.getSelectedValue());
 		internalConditionsModel.removeListDataListener(conditionListListener);
 		filterController.setFilterConditions(internalConditionsModel);
 		internalConditionsModel = null;
+	}
+
+	public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
 	}
 
 	protected JFileChooser getFileChooser() {
@@ -586,6 +601,10 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 		else {
 			elementaryConditionList.clearSelection();
 		}
+	}
+
+	public boolean isMapChangeAllowed(final MapModel oldMap, final MapModel newMap) {
+		return true;
 	}
 
 	/**
@@ -630,19 +649,5 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 	public void show() {
 		initInternalConditionModel();
 		super.show();
-	}
-
-	public void afterMapChange(MapModel oldMap, MapModel newMap) {
-		mapChanged(newMap);
-	}
-
-	public void afterMapClose(MapModel oldMap) {
-	}
-
-	public void beforeMapChange(MapModel oldMap, MapModel newMap) {
-	}
-
-	public boolean isMapChangeAllowed(MapModel oldMap, MapModel newMap) {
-		return true;
 	}
 }

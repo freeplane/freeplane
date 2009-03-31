@@ -35,7 +35,6 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionDescriptor;
-import org.freeplane.core.ui.IFreeplaneAction;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.MenuBuilder;
@@ -155,6 +154,10 @@ public class ModeController extends AController {
 		addAction(name, action);
 	}
 
+	public void addExtension(final Class<? extends IExtension> clazz, final IExtension extension) {
+		extensionContainer.addExtension(clazz, extension);
+	}
+
 	public void addINodeViewLifeCycleListener(final INodeViewLifeCycleListener listener) {
 		nodeViewListeners.add(listener);
 	}
@@ -230,27 +233,23 @@ public class ModeController extends AController {
 		}
 	}
 
-	public void putAction(final String key, final IFreeplaneAction action) {
+	public void putAction(final String key, final AFreeplaneAction action) {
 		super.addAction(key, action);
 		if (AFreeplaneAction.checkEnabledOnChange(action)) {
-			final ActionEnablerOnChange listener = new ActionEnablerOnChange((AFreeplaneAction) action);
+			final ActionEnablerOnChange listener = new ActionEnablerOnChange(action);
 			mapController.addNodeSelectionListener(listener);
 			mapController.addNodeChangeListener(listener);
 		}
 		if (AFreeplaneAction.checkSelectionOnChange(action)) {
-			final ActionSelectorOnChange listener = new ActionSelectorOnChange((AFreeplaneAction) action);
+			final ActionSelectorOnChange listener = new ActionSelectorOnChange(action);
 			mapController.addNodeSelectionListener(listener);
 			mapController.addNodeChangeListener(listener);
 		}
 		if (AFreeplaneAction.checkVisibilityOnChange(action)) {
-			final ActionDisplayerOnChange listener = new ActionDisplayerOnChange((AFreeplaneAction) action);
+			final ActionDisplayerOnChange listener = new ActionDisplayerOnChange(action);
 			mapController.addNodeSelectionListener(listener);
 			mapController.addNodeChangeListener(listener);
 		}
-	}
-
-	public void addExtension(final Class<? extends IExtension> clazz, final IExtension extension) {
-		extensionContainer.addExtension(clazz, extension);
 	}
 
 	@Override

@@ -82,6 +82,11 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 		}
 	}
 
+	@Override
+	protected IExtension createExtension(final NodeModel node, final XMLElement element) {
+		return this;
+	}
+
 	/**
 	 */
 	private void gatherLeavesAndSetParentsStyle(final NodeModel node) {
@@ -110,6 +115,10 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 			final NodeModel child = (NodeModel) i.next();
 			gatherLeavesAndSetStyle(child);
 		}
+	}
+
+	public void mapChanged(final MapChangeEvent event) {
+		// TODO Auto-generated method stub
 	}
 
 	public void nodeChanged(final NodeChangeEvent event) {
@@ -230,13 +239,5 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 		if (node.getParentNode() != null) {
 			setStyleRecursive(node.getParentNode());
 		}
-	}
-
-	public void mapChanged(MapChangeEvent event) {
-	    // TODO Auto-generated method stub
-	    
-    }
-	protected IExtension createExtension(final NodeModel node, final XMLElement element) {
-		return this;
 	}
 }

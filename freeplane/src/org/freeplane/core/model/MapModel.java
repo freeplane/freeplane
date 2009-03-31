@@ -33,14 +33,11 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.filter.Filter;
-import org.freeplane.core.filter.Filter;
 import org.freeplane.core.filter.FilterController;
-import org.freeplane.core.filter.condition.NoFilteringCondition;
 import org.freeplane.core.modecontroller.IMapChangeListener;
 import org.freeplane.core.modecontroller.MapChangeEvent;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
-import org.freeplane.view.swing.map.MapView;
 
 public class MapModel {
 	private static Random ran = new Random();
@@ -53,16 +50,16 @@ public class MapModel {
 	private final ExtensionContainer extensionContainer;
 	private Filter filter = null;
 	final private IconRegistry iconRegistry;
+	final private List<IMapChangeListener> listeners;
 	final private Map<String, NodeModel> nodes;
 	private boolean readOnly = true;
 	private NodeModel root;
 	private URL url;
-	final private List<IMapChangeListener> listeners;
 
 	public MapModel(final ModeController modeController, NodeModel root) {
 		extensionContainer = new ExtensionContainer(new HashMap<Class<? extends IExtension>, IExtension>());
 		this.root = root;
-		this.listeners = new LinkedList<IMapChangeListener>();
+		listeners = new LinkedList<IMapChangeListener>();
 		final Controller controller = modeController.getController();
 		nodes = new HashMap<String, NodeModel>();
 		filter = FilterController.getController(controller).createTransparentFilter();
@@ -76,7 +73,25 @@ public class MapModel {
 		iconRegistry = new IconRegistry(modeController.getMapController(), this);
 	}
 
+	public void addExtension(final Class<? extends IExtension> clazz, final IExtension extension) {
+		extensionContainer.addExtension(clazz, extension);
+	}
+
+	public void addExtension(final IExtension extension) {
+		extensionContainer.addExtension(extension);
+	}
+
+	public void addMapChangeListener(final IMapChangeListener listener) {
+		listeners.add(listener);
+	}
+
 	public void destroy() {
+	}
+
+	public void fireMapChangeEvent(final MapChangeEvent event) {
+		for (final IMapChangeListener listener : listeners) {
+			listener.mapChanged(event);
+		}
 	}
 
 	public String generateNodeID(final String proposedID) {
@@ -164,14 +179,6 @@ public class MapModel {
 		return (changesPerformedSinceLastSave == 0);
 	}
 
-	public void addExtension(final Class<? extends IExtension> clazz, final IExtension extension) {
-		extensionContainer.addExtension(clazz, extension);
-	}
-
-	public void addExtension(final IExtension extension) {
-		extensionContainer.addExtension(extension);
-	}
-
 	/**
 	 * @param value
 	 * @param nodeModel
@@ -203,7 +210,11 @@ public class MapModel {
 			final NodeModel next = iterator.next();
 			registryNodeRecursive(next);
 		}
-	}
+	};
+
+	public void removeMapChangeListener(final IMapChangeListener listener) {
+		listeners.remove(listener);
+	};
 
 	public void setFile(final File file) {
 		try {
@@ -216,11 +227,11 @@ public class MapModel {
 
 	public void setFilter(final Filter filter) {
 		this.filter = filter;
-	};
+	}
 
 	public void setReadOnly(final boolean readOnly) {
 		this.readOnly = readOnly;
-	};
+	}
 
 	public void setRoot(final NodeModel root) {
 		this.root = root;
@@ -249,20 +260,5 @@ public class MapModel {
 	 */
 	public void setURL(final URL v) {
 		url = v;
-	}
-
-	public void addMapChangeListener(IMapChangeListener listener) {
-		listeners.add(listener);
-	    
-    }
-
-	public void removeMapChangeListener(IMapChangeListener listener) {
-		listeners.remove(listener);
-    }
-	
-	public void fireMapChangeEvent(MapChangeEvent event){
-		for(IMapChangeListener listener:listeners){
-			listener.mapChanged(event);
-		}
 	}
 }

@@ -27,9 +27,8 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.IFreeplaneAction;
 
-class CopySingleAction extends AFreeplaneAction implements IFreeplaneAction {
+class CopySingleAction extends AFreeplaneAction {
 	private static final String NAME = "copySingle";
 
 	public CopySingleAction(final Controller controller) {
@@ -47,6 +46,7 @@ class CopySingleAction extends AFreeplaneAction implements IFreeplaneAction {
 		}
 	}
 
+	@Override
 	public String getName() {
 		return NAME;
 	}

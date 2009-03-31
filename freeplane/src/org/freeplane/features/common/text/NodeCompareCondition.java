@@ -57,8 +57,8 @@ class NodeCompareCondition extends CompareConditionAdapter {
 	}
 
 	private boolean checkText(final String plainTextContent) {
-			return succeed == (compareTo(plainTextContent) == comparationResult);
-    }
+		return succeed == (compareTo(plainTextContent) == comparationResult);
+	}
 
 	@Override
 	protected String createDesctiption() {

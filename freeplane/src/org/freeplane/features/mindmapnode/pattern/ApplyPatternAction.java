@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
@@ -96,7 +95,7 @@ class ApplyPatternAction extends MultipleNodeAction {
 		}
 		if (pattern.getPatternNodeColor() != null) {
 			((MNodeStyleController) NodeStyleController.getController(controller.getModeController())).setColor(node,
-				ColorUtils.stringToColor(pattern.getPatternNodeColor().getValue()));
+			    ColorUtils.stringToColor(pattern.getPatternNodeColor().getValue()));
 		}
 		if (pattern.getPatternNodeBackgroundColor() != null) {
 			((MNodeStyleController) NodeStyleController.getController(controller.getModeController()))
@@ -154,7 +153,8 @@ class ApplyPatternAction extends MultipleNodeAction {
 			    "true".equals(pattern.getPatternNodeFontBold().getValue()));
 		}
 		if (pattern.getPatternEdgeColor() != null) {
-			((MEdgeController) EdgeController.getController(getModeController())).setColor(node,ColorUtils.stringToColor(pattern.getPatternEdgeColor().getValue()));
+			((MEdgeController) EdgeController.getController(getModeController())).setColor(node, ColorUtils
+			    .stringToColor(pattern.getPatternEdgeColor().getValue()));
 		}
 		if (pattern.getPatternEdgeStyle() != null) {
 			((MEdgeController) EdgeController.getController(getModeController())).setStyle(node, pattern
@@ -177,7 +177,7 @@ class ApplyPatternAction extends MultipleNodeAction {
 			for (int i = 0; i < patterns.length; i++) {
 				final ApplyPatternAction action = patterns[i];
 				if (action.getPattern().getName().equals(searchedPatternName)) {
-					for (final ListIterator j =getModeController().getMapController().childrenUnfolded(node); j
+					for (final ListIterator j = getModeController().getMapController().childrenUnfolded(node); j
 					    .hasNext();) {
 						final NodeModel child = (NodeModel) j.next();
 						applyPattern(child, action.getPattern());

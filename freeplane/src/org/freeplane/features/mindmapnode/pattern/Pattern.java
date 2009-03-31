@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 
-import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;
@@ -14,12 +13,6 @@ import org.freeplane.n3.nanoxml.XMLParserFactory;
 import org.freeplane.n3.nanoxml.XMLWriter;
 
 public class Pattern implements Cloneable {
-	public static Pattern unMarshall(final XMLElement xmlPattern) {
-		final Pattern pattern = new Pattern();
-		pattern.unMarshallImpl(xmlPattern);
-		return pattern;
-	}
-
 	public static Pattern unMarshall(final String patternString) {
 		try {
 			final IXMLParser parser = XMLParserFactory.createDefaultXMLParser();
@@ -32,6 +25,12 @@ public class Pattern implements Cloneable {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	public static Pattern unMarshall(final XMLElement xmlPattern) {
+		final Pattern pattern = new Pattern();
+		pattern.unMarshallImpl(xmlPattern);
+		return pattern;
 	}
 
 	private String name;

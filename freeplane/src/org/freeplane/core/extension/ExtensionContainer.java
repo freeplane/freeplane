@@ -16,6 +16,18 @@ public class ExtensionContainer {
 		this.extensions = extensions;
 	}
 
+	public void addExtension(final Class<? extends IExtension> clazz, final IExtension extension) {
+		final IExtension oldExtension = getExtensions().put(clazz, extension);
+		if (oldExtension != null && !oldExtension.equals(extension)) {
+			getExtensions().put(clazz, oldExtension);
+			throw new AssertionError("extension of class " + clazz.getName() + " already registered");
+		}
+	}
+
+	public void addExtension(final IExtension extension) {
+		addExtension(extension.getClass(), extension);
+	}
+
 	public boolean containsExtension(final Class<? extends IExtension> clazz) {
 		return extensions.containsKey(clazz);
 	}
@@ -30,18 +42,6 @@ public class ExtensionContainer {
 
 	public Map<Class<? extends IExtension>, IExtension> getExtensions() {
 		return extensions;
-	}
-
-	public void addExtension(final Class<? extends IExtension> clazz, final IExtension extension) {
-		IExtension oldExtension = getExtensions().put(clazz, extension);
-		if(oldExtension != null && ! oldExtension.equals(extension)){
-			getExtensions().put(clazz, oldExtension);
-			throw new AssertionError("extension of class "+ clazz.getName() + " already registered");
-		}
-	}
-
-	public void addExtension(final IExtension extension) {
-		addExtension(extension.getClass(), extension);
 	}
 
 	public IExtension removeExtension(final Class<? extends IExtension> clazz) {

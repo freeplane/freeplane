@@ -52,6 +52,11 @@ public class RevisionPlugin extends PersistentNodeHook implements INodeChangeLis
 		super.add(node, extension);
 	}
 
+	@Override
+	protected IExtension createExtension(final NodeModel node, final XMLElement element) {
+		return this;
+	}
+
 	public void nodeChanged(final NodeChangeEvent event) {
 		final NodeModel node = event.getNode();
 		if (!isActive(node)) {
@@ -60,7 +65,6 @@ public class RevisionPlugin extends PersistentNodeHook implements INodeChangeLis
 		if (event.getProperty().equals(NodeModel.NODE_TEXT) && !((MModeController) getModeController()).isUndoAction()) {
 			final MNodeStyleController nodeStyleController = (MNodeStyleController) NodeStyleController
 			    .getController(getModeController());
-			
 			final String colorProperty = ResourceController.getResourceController().getProperty("revision_color");
 			final Color color = ColorUtils.stringToColor(colorProperty);
 			nodeStyleController.setBackgroundColor(event.getNode(), color);
@@ -70,8 +74,5 @@ public class RevisionPlugin extends PersistentNodeHook implements INodeChangeLis
 	@Override
 	protected void remove(final NodeModel node, final IExtension extension) {
 		super.remove(node, extension);
-	}
-	protected IExtension createExtension(final NodeModel node, final XMLElement element) {
-		return this;
 	}
 }

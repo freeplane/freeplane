@@ -21,18 +21,15 @@ package org.freeplane.core.resources;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.AbstractAction;
-
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.ui.IFreeplaneAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 
-class OptionSelectionMechanismAction extends AbstractAction implements IFreeplanePropertyListener, IFreeplaneAction {
+class OptionSelectionMechanismAction extends AFreeplaneAction implements IFreeplanePropertyListener {
 	static final String NAME = "optionSelectionMechanismAction";
 	private static final long serialVersionUID = -5573280308177905728L;
-	final private Controller controller;
 
 	OptionSelectionMechanismAction(final Controller controller) {
-		this.controller = controller;
+		super(controller);
 		ResourceController.getResourceController().addPropertyChangeListener(this);
 	}
 
@@ -45,14 +42,14 @@ class OptionSelectionMechanismAction extends AbstractAction implements IFreeplan
 	 */
 	private void changeSelection(final String command) {
 		ResourceController.getResourceController().setProperty("selection_method", command);
-		controller.getModeController().getUserInputListenerFactory().getNodeMouseMotionListener()
-		    .updateSelectionMethod();
+		getModeController().getUserInputListenerFactory().getNodeMouseMotionListener().updateSelectionMethod();
 		final String statusBarString = FreeplaneResourceBundle.getText(command);
 		if (statusBarString != null) {
-			controller.getViewController().out(statusBarString);
+			getController().getViewController().out(statusBarString);
 		}
 	}
 
+	@Override
 	public String getName() {
 		return NAME;
 	}

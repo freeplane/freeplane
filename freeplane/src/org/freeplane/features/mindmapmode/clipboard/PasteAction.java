@@ -143,7 +143,7 @@ class PasteAction extends AFreeplaneAction {
 			mapReader.setHint(Hint.MODE, Mode.CLIPBOARD);
 			for (int i = 0; i < textLines.length; ++i) {
 				final NodeModel newModel = nodeTreeCreator.create(new StringReader(textLines[i]));
-				boolean wasLeft = newModel.isLeft();
+				final boolean wasLeft = newModel.isLeft();
 				mapController.insertNode(newModel, target, asSibling, isLeft, wasLeft != isLeft);
 			}
 			nodeTreeCreator.finish(target);
@@ -210,21 +210,22 @@ class PasteAction extends AFreeplaneAction {
 				while (depth < text.length() && text.charAt(depth) == ' ') {
 					++depth;
 				}
-				String visibleText = text.trim();
-//				if (visibleText.matches("^http://(www\\.)?[^ ]*$")) {
-//					visibleText = visibleText.replaceAll("^http://(www\\.)?", "").replaceAll("(/|\\.[^\\./\\?]*)$", "")
-//					    .replaceAll("((\\.[^\\./]*\\?)|\\?)[^/]*$", " ? ...").replaceAll("_|%20", " ");
-//					final String[] textParts = visibleText.split("/");
-//					visibleText = "";
-//					for (int textPartIdx = 0; textPartIdx < textParts.length; textPartIdx++) {
-//						if (textPartIdx > 0) {
-//							visibleText += " > ";
-//						}
-//						visibleText += textPartIdx == 0 ? textParts[textPartIdx] : PasteAction
-//						    .firstLetterCapitalized(textParts[textPartIdx].replaceAll("^~*", ""));
-//					}
-//				}
-				final MLinkController linkController = (MLinkController) LinkController.getController(getModeController());
+				final String visibleText = text.trim();
+				//				if (visibleText.matches("^http://(www\\.)?[^ ]*$")) {
+				//					visibleText = visibleText.replaceAll("^http://(www\\.)?", "").replaceAll("(/|\\.[^\\./\\?]*)$", "")
+				//					    .replaceAll("((\\.[^\\./]*\\?)|\\?)[^/]*$", " ? ...").replaceAll("_|%20", " ");
+				//					final String[] textParts = visibleText.split("/");
+				//					visibleText = "";
+				//					for (int textPartIdx = 0; textPartIdx < textParts.length; textPartIdx++) {
+				//						if (textPartIdx > 0) {
+				//							visibleText += " > ";
+				//						}
+				//						visibleText += textPartIdx == 0 ? textParts[textPartIdx] : PasteAction
+				//						    .firstLetterCapitalized(textParts[textPartIdx].replaceAll("^~*", ""));
+				//					}
+				//				}
+				final MLinkController linkController = (MLinkController) LinkController
+				    .getController(getModeController());
 				final String link = linkController.findLink(text);
 				if (!visibleText.equals("")) {
 					textFragments.add(new TextFragment(visibleText, link, depth));
@@ -250,7 +251,8 @@ class PasteAction extends AFreeplaneAction {
 				new PasteHtmlWriter(out, element, doc, start, end - start).write();
 				final String string = out.toString();
 				if (!string.equals("")) {
-					final MLinkController linkController = (MLinkController) LinkController.getController(getModeController());
+					final MLinkController linkController = (MLinkController) LinkController
+					    .getController(getModeController());
 					final String link = linkController.findLink(string);
 					final TextFragment htmlFragment = new TextFragment(string, link, depth);
 					htmlFragments.add(htmlFragment);
@@ -417,8 +419,6 @@ class PasteAction extends AFreeplaneAction {
 		in = HtmlTools.unescapeHTMLUnicodeEntity(in);
 		return in;
 	}
-
-
 
 	/**
 	 * @param t 

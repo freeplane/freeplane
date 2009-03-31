@@ -22,36 +22,27 @@ package org.freeplane.features.common.attribute;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 
-import javax.swing.AbstractAction;
-import javax.swing.ImageIcon;
-
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
-import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.IFreeplaneAction;
-import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.mindmapmode.attribute.AttributeManagerDialog;
 
-class ShowAttributeDialogAction extends AbstractAction implements IFreeplaneAction {
+class ShowAttributeDialogAction extends AFreeplaneAction {
 	private static final long serialVersionUID = -3301794915146529692L;
 	private AttributeManagerDialog attributeDialog = null;
-	final private Controller controller;
 	private Frame frame;
 
 	/**
 	 *
 	 */
 	ShowAttributeDialogAction(final Controller controller) {
-		super(null, new ImageIcon(ResourceController.getResourceController().getResource("/images/showAttributes.gif")));
-		this.controller = controller;
-		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText("attributes_dialog"));
+		super(controller, "attributes_dialog", "/images/showAttributes.gif");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		if (frame == null) {
-			frame = controller.getViewController().getFrame();
+			frame = getController().getViewController().getFrame();
 		}
-		if (getAttributeDialog().isVisible() == false && controller.getMap() != null) {
+		if (getAttributeDialog().isVisible() == false && getController().getMap() != null) {
 			getAttributeDialog().pack();
 			getAttributeDialog().show();
 		}
@@ -59,11 +50,12 @@ class ShowAttributeDialogAction extends AbstractAction implements IFreeplaneActi
 
 	private AttributeManagerDialog getAttributeDialog() {
 		if (attributeDialog == null) {
-			attributeDialog = new AttributeManagerDialog(controller, frame);
+			attributeDialog = new AttributeManagerDialog(getController(), frame);
 		}
 		return attributeDialog;
 	}
 
+	@Override
 	public String getName() {
 		return "showAttributeManagerAction";
 	}

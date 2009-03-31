@@ -24,12 +24,11 @@ import java.awt.event.ActionEvent;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.IFreeplaneAction;
 
 /**
  * @author foltin
  */
-class CommonToggleChildrenFoldedAction extends AFreeplaneAction implements IFreeplaneAction {
+class CommonToggleChildrenFoldedAction extends AFreeplaneAction {
 	static final String NAME = "toggleChildrenFolded";
 	private static final long serialVersionUID = -7415016489982986544L;
 	final private MapController mapController;
@@ -48,6 +47,7 @@ class CommonToggleChildrenFoldedAction extends AFreeplaneAction implements IFree
 		controller.getViewController().obtainFocusForSelected();
 	}
 
+	@Override
 	public String getName() {
 		return NAME;
 	}

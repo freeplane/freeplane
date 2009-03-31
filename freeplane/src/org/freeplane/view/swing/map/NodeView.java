@@ -823,6 +823,9 @@ public class NodeView extends JComponent implements INodeView {
 		return getParentView() == myNodeView.getParentView();
 	}
 
+	public void mapChanged(final MapChangeEvent event) {
+	}
+
 	public void nodeChanged(final NodeChangeEvent event) {
 		if (event.getProperty() == NodeChangeType.FOLDING) {
 			treeStructureChanged();
@@ -907,7 +910,7 @@ public class NodeView extends JComponent implements INodeView {
 		if (isContentVisible()) {
 			final Graphics2D g2 = (Graphics2D) g;
 			final ModeController modeController = getMap().getModeController();
-			Object renderingHint = modeController.getController().getViewController().setEdgesRenderingHint(g2);
+			final Object renderingHint = modeController.getController().getViewController().setEdgesRenderingHint(g2);
 			paintCloudsAndEdges(g2);
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 			super.paint(g);
@@ -993,6 +996,19 @@ public class NodeView extends JComponent implements INodeView {
 		}
 	}
 
+	private void repaintEdge(final NodeView nodeView) {
+		final Point inPoint = nodeView.getMainViewInPoint();
+		UITools.convertPointToAncestor(nodeView.getMainView(), inPoint, this);
+		final Point outPoint = getMainViewOutPoint(nodeView, inPoint);
+		UITools.convertPointToAncestor(getMainView(), outPoint, this);
+		final int x = Math.min(inPoint.x, outPoint.x);
+		final int y = Math.min(inPoint.y, outPoint.y);
+		final int w = Math.abs(inPoint.x - outPoint.x);
+		final int h = Math.abs(inPoint.y - outPoint.y);
+		final int EXTRA = 50;
+		repaint(x - EXTRA, y - EXTRA, w + EXTRA * 2, h + EXTRA * 2);
+	}
+
 	void repaintSelected() {
 		mainView.updateTextColor(this);
 		if (EdgeController.getController(getMap().getModeController()).getStyle(model).equals(
@@ -1004,23 +1020,10 @@ public class NodeView extends JComponent implements INodeView {
 		}
 		final JComponent content = getContent();
 		final int EXTRA = 20;
-		final int x = content.getX()-EXTRA;
-		final int y = content.getY()-EXTRA;
-		repaint(x, y, content.getWidth() + EXTRA*2, content.getHeight() + EXTRA*2);
+		final int x = content.getX() - EXTRA;
+		final int y = content.getY() - EXTRA;
+		repaint(x, y, content.getWidth() + EXTRA * 2, content.getHeight() + EXTRA * 2);
 	}
-
-	private void repaintEdge(NodeView nodeView) {
-	    final Point inPoint = nodeView.getMainViewInPoint();
-	    UITools.convertPointToAncestor(nodeView.getMainView(), inPoint, this);
-	    final Point outPoint = getMainViewOutPoint(nodeView, inPoint);
-	    UITools.convertPointToAncestor(getMainView(), outPoint, this);
-	    final int x = Math.min(inPoint.x, outPoint.x);
-	    final int y = Math.min(inPoint.y, outPoint.y);
-	    final int w = Math.abs(inPoint.x - outPoint.x); 
-	    final int h = Math.abs(inPoint.y - outPoint.y);
-	    final int EXTRA = 50;
-	    repaint(x - EXTRA, y - EXTRA, w + EXTRA * 2, h + EXTRA * 2);
-    }
 
 	@Override
 	public void requestFocus() {
@@ -1194,7 +1197,4 @@ public class NodeView extends JComponent implements INodeView {
 	boolean useSelectionColors() {
 		return isSelected() && !MapView.standardDrawRectangleForSelection && !map.isCurrentlyPrinting();
 	}
-
-	public void mapChanged(MapChangeEvent event) {
-    }
 }

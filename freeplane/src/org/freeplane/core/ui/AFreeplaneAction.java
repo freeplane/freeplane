@@ -31,7 +31,7 @@ import org.freeplane.core.resources.ResourceController;
 /**
  * @author Dimitry Polivaev
  */
-public abstract class AFreeplaneAction extends AbstractAction{
+public abstract class AFreeplaneAction extends AbstractAction {
 	private static final long serialVersionUID = -5779325074243496610L;
 
 	static public boolean checkEnabledOnChange(final Action action) {
@@ -132,6 +132,11 @@ public abstract class AFreeplaneAction extends AbstractAction{
 
 	public ModeController getModeController() {
 		return controller.getModeController();
+	}
+
+	@Deprecated
+	public String getName() {
+		return getClass().getSimpleName();
 	}
 
 	public boolean isSelected() {

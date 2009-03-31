@@ -37,13 +37,13 @@ public class NodeBuilder implements IElementDOMHandler {
 		String iconName;
 	}
 
+	protected static final String FOLDING_LOADED = "folding_loaded";
 	public static final String XML_NODE = "node";
 	public static final String XML_NODE_ADDITIONAL_INFO = "ADDITIONAL_INFO";
 	public static final String XML_NODE_CLASS = "AA_NODE_CLASS";
 	public static final String XML_NODE_ENCRYPTED_CONTENT = "ENCRYPTED_CONTENT";
 	public static final String XML_NODE_HISTORY_CREATED_AT = "CREATED";
 	public static final String XML_NODE_HISTORY_LAST_MODIFIED_AT = "MODIFIED";
-	protected static final String FOLDING_LOADED = "folding_loaded";
 	private NodeModel mapChild = null;
 	private final MapReader mapReader;
 	private final HashMap<String, String> newIds;
@@ -135,10 +135,11 @@ public class NodeBuilder implements IElementDOMHandler {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
 				final Object mode = mapReader.getHint(Hint.MODE);
-				if(mode.equals(Mode.FILE)){
-					final String loadFolding = ResourceController.getResourceController().getProperty(ResourceControllerProperties.RESOURCES_LOAD_FOLDING);
-					if(loadFolding.equals(ResourceControllerProperties.RESOURCES_ALWAYS_FOLD_ALL_AFTER_LOAD)
-							||loadFolding.equals(ResourceControllerProperties.RESOURCES_ALWAYS_UNFOLD_ALL_AFTER_LOAD)){
+				if (mode.equals(Mode.FILE)) {
+					final String loadFolding = ResourceController.getResourceController().getProperty(
+					    ResourceControllerProperties.RESOURCES_LOAD_FOLDING);
+					if (loadFolding.equals(ResourceControllerProperties.RESOURCES_ALWAYS_FOLD_ALL_AFTER_LOAD)
+					        || loadFolding.equals(ResourceControllerProperties.RESOURCES_ALWAYS_UNFOLD_ALL_AFTER_LOAD)) {
 						return;
 					}
 					mapReader.setHint(FOLDING_LOADED, Boolean.TRUE);
@@ -149,19 +150,19 @@ public class NodeBuilder implements IElementDOMHandler {
 			}
 		});
 		reader.addReadCompletionListener(new IReadCompletionListener() {
-			private void foldAll(NodeModel node) {
+			private void foldAll(final NodeModel node) {
 				if (node.getChildCount() == 0) {
 					return;
 				}
-				if (! node.getText().equals("")){
+				if (!node.getText().equals("")) {
 					node.setFolded(true);
 				}
-				for (NodeModel child : node.getChildren()) {
+				for (final NodeModel child : node.getChildren()) {
 					foldAll(child);
 				}
 			}
 
-			public void readingCompleted(NodeModel topNode, HashMap<String, String> newIds) {
+			public void readingCompleted(final NodeModel topNode, final HashMap<String, String> newIds) {
 				if (!Mode.FILE.equals(mapReader.getHint(Hint.MODE))) {
 					return;
 				}
@@ -173,7 +174,7 @@ public class NodeBuilder implements IElementDOMHandler {
 				if (loadFolding.equals(ResourceControllerProperties.RESOURCES_ALWAYS_FOLD_ALL_AFTER_LOAD)
 				        || loadFolding
 				            .equals(ResourceControllerProperties.RESOURCES_LOAD_FOLDING_FROM_MAP_DEFAULT_FOLD_ALL)) {
-					for (NodeModel child : topNode.getChildren()) {
+					for (final NodeModel child : topNode.getChildren()) {
 						foldAll(child);
 					}
 				}

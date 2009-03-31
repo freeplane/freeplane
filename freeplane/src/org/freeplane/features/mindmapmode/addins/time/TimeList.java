@@ -92,19 +92,6 @@ import com.jgoodies.forms.factories.ButtonBarFactory;
  * @author foltin
  */
 class TimeList {
-	private static final String PLUGINS_TIME_MANAGEMENT_XML_REPLACE = "plugins/TimeManagement.xml_Replace";
-	private static final String PLUGINS_TIME_MANAGEMENT_XML_CANCEL = "plugins/TimeManagement.xml_Cancel";
-	private static final String PLUGINS_TIME_MANAGEMENT_XML_SELECT = "plugins/TimeManagement.xml_Select";
-	private static final String PLUGINS_TIME_MANAGEMENT_XML_FIND = "plugins/TimeManagement.xml_Find";
-	private static final String PLUGINS_TIME_MANAGEMENT_XML_WINDOW_TITLE = "plugins/TimeManagement.xml_WindowTitle";
-	private static final String PLUGINS_TIME_MANAGEMENT_XML_WINDOW_TITLE_ALL_NODES = "plugins/TimeManagement.xml_WindowTitle_All_Nodes";
-	private static final String PLUGINS_TIME_LIST_XML_NOTES = "plugins/TimeList.xml_Notes";
-	private static final String PLUGINS_TIME_LIST_XML_DATE = "plugins/TimeList.xml_Date";
-	private static final String PLUGINS_TIME_LIST_XML_TEXT = "plugins/TimeList.xml_Text";
-	private static final String PLUGINS_TIME_LIST_XML_ICONS = "plugins/TimeList.xml_Icons";
-	private static final String PLUGINS_TIME_LIST_XML_CREATED = "plugins/TimeList.xml_Created";
-	private static final String PLUGINS_TIME_LIST_XML_MODIFIED = "plugins/TimeList.xml_Modified";
-
 	static class DateRenderer extends DefaultTableCellRenderer {
 		DateFormat formatter;
 
@@ -438,6 +425,18 @@ class TimeList {
 	protected static final int NODE_MODIFIED_COLUMN = 4;
 	protected static final int NODE_NOTES_COLUMN = 5;
 	public static final int NODE_TEXT_COLUMN = 1;
+	private static final String PLUGINS_TIME_LIST_XML_CREATED = "plugins/TimeList.xml_Created";
+	private static final String PLUGINS_TIME_LIST_XML_DATE = "plugins/TimeList.xml_Date";
+	private static final String PLUGINS_TIME_LIST_XML_ICONS = "plugins/TimeList.xml_Icons";
+	private static final String PLUGINS_TIME_LIST_XML_MODIFIED = "plugins/TimeList.xml_Modified";
+	private static final String PLUGINS_TIME_LIST_XML_NOTES = "plugins/TimeList.xml_Notes";
+	private static final String PLUGINS_TIME_LIST_XML_TEXT = "plugins/TimeList.xml_Text";
+	private static final String PLUGINS_TIME_MANAGEMENT_XML_CANCEL = "plugins/TimeManagement.xml_Cancel";
+	private static final String PLUGINS_TIME_MANAGEMENT_XML_FIND = "plugins/TimeManagement.xml_Find";
+	private static final String PLUGINS_TIME_MANAGEMENT_XML_REPLACE = "plugins/TimeManagement.xml_Replace";
+	private static final String PLUGINS_TIME_MANAGEMENT_XML_SELECT = "plugins/TimeManagement.xml_Select";
+	private static final String PLUGINS_TIME_MANAGEMENT_XML_WINDOW_TITLE = "plugins/TimeManagement.xml_WindowTitle";
+	private static final String PLUGINS_TIME_MANAGEMENT_XML_WINDOW_TITLE_ALL_NODES = "plugins/TimeManagement.xml_WindowTitle_All_Nodes";
 	private static final int TYPE_DELAY_TIME = 500;
 	private static final String WINDOW_PREFERENCE_STORAGE_PROPERTY = TimeList.class.getName() + "_properties";
 
@@ -617,8 +616,9 @@ class TimeList {
 		gbl.columnWeights = new double[] { 1.0f };
 		gbl.rowWeights = new double[] { 1.0f };
 		contentPane.setLayout(gbl);
-		contentPane.add(new JLabel(FreeplaneResourceBundle.getText(PLUGINS_TIME_MANAGEMENT_XML_FIND)), new GridBagConstraints(0, 0,
-		    1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
+		contentPane.add(new JLabel(FreeplaneResourceBundle.getText(PLUGINS_TIME_MANAGEMENT_XML_FIND)),
+		    new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL,
+		        new Insets(0, 0, 0, 0), 0, 0));
 		mFilterTextSearchField = new JTextField();
 		mFilterTextSearchField.getDocument().addDocumentListener(new FilterTextDocumentListener());
 		mFilterTextSearchField.addKeyListener(new KeyAdapter() {
@@ -631,8 +631,9 @@ class TimeList {
 		});
 		contentPane.add(/* new JScrollPane */(mFilterTextSearchField), new GridBagConstraints(0, 1, 1, 1, 1.0, 0.0,
 		    GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
-		contentPane.add(new JLabel(FreeplaneResourceBundle.getText(PLUGINS_TIME_MANAGEMENT_XML_REPLACE)), new GridBagConstraints(0,
-		    2, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
+		contentPane.add(new JLabel(FreeplaneResourceBundle.getText(PLUGINS_TIME_MANAGEMENT_XML_REPLACE)),
+		    new GridBagConstraints(0, 2, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL,
+		        new Insets(0, 0, 0, 0), 0, 0));
 		mFilterTextReplaceField = new JTextField();
 		contentPane.add(/* new JScrollPane */(mFilterTextReplaceField), new GridBagConstraints(0, 3, 1, 1, 1.0, 0.0,
 		    GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
@@ -670,40 +671,44 @@ class TimeList {
 		mTreeLabel = new JLabel();
 		contentPane.add(new JScrollPane(mTreeLabel), new GridBagConstraints(0, 5, 1, 1, 1.0, 1.0,
 		    GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
-		final AbstractAction selectAction = new AbstractAction(FreeplaneResourceBundle.getText(PLUGINS_TIME_MANAGEMENT_XML_SELECT)) {
+		final AbstractAction selectAction = new AbstractAction(FreeplaneResourceBundle
+		    .getText(PLUGINS_TIME_MANAGEMENT_XML_SELECT)) {
 			public void actionPerformed(final ActionEvent arg0) {
 				selectSelectedRows();
 			}
 		};
 		final JButton selectButton = new JButton(selectAction);
-		final AbstractAction exportAction = new AbstractAction(FreeplaneResourceBundle.getText("plugins/TimeManagement.xml_Export")) {
+		final AbstractAction exportAction = new AbstractAction(FreeplaneResourceBundle
+		    .getText("plugins/TimeManagement.xml_Export")) {
 			public void actionPerformed(final ActionEvent arg0) {
 				exportSelectedRowsAndClose();
 			}
 		};
 		final JButton exportButton = new JButton(exportAction);
-		final AbstractAction replaceAllAction = new AbstractAction(
-		    FreeplaneResourceBundle.getText("plugins/TimeManagement.xml_Replace_All")) {
+		final AbstractAction replaceAllAction = new AbstractAction(FreeplaneResourceBundle
+		    .getText("plugins/TimeManagement.xml_Replace_All")) {
 			public void actionPerformed(final ActionEvent arg0) {
 				replace(new ReplaceAllInfo());
 			}
 		};
 		final JButton replaceAllButton = new JButton(replaceAllAction);
-		final AbstractAction replaceSelectedAction = new AbstractAction(
-		    FreeplaneResourceBundle.getText("plugins/TimeManagement.xml_Replace_Selected")) {
+		final AbstractAction replaceSelectedAction = new AbstractAction(FreeplaneResourceBundle
+		    .getText("plugins/TimeManagement.xml_Replace_Selected")) {
 			public void actionPerformed(final ActionEvent arg0) {
 				replace(new ReplaceSelectedInfo());
 			}
 		};
 		final JButton replaceSelectedButton = new JButton(replaceSelectedAction);
-		final AbstractAction gotoAction = new AbstractAction(FreeplaneResourceBundle.getText("plugins/TimeManagement.xml_Goto")) {
+		final AbstractAction gotoAction = new AbstractAction(FreeplaneResourceBundle
+		    .getText("plugins/TimeManagement.xml_Goto")) {
 			public void actionPerformed(final ActionEvent arg0) {
 				selectSelectedRows();
 				disposeDialog();
 			}
 		};
 		final JButton gotoButton = new JButton(gotoAction);
-		final AbstractAction disposeAction = new AbstractAction(FreeplaneResourceBundle.getText(PLUGINS_TIME_MANAGEMENT_XML_CANCEL)) {
+		final AbstractAction disposeAction = new AbstractAction(FreeplaneResourceBundle
+		    .getText(PLUGINS_TIME_MANAGEMENT_XML_CANCEL)) {
 			public void actionPerformed(final ActionEvent arg0) {
 				disposeDialog();
 			}

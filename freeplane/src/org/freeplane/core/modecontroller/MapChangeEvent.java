@@ -20,10 +20,8 @@
 package org.freeplane.core.modecontroller;
 
 import java.awt.AWTEvent;
-import java.awt.Color;
 
 import org.freeplane.core.model.MapModel;
-import org.freeplane.core.model.NodeModel;
 
 /**
  * @author Dimitry Polivaev 27.11.2008
@@ -33,7 +31,7 @@ public class MapChangeEvent extends AWTEvent {
 	final private Object oldValue;
 	final private Object property;
 
-	public  MapChangeEvent(final MapModel map, final Object property, final Object oldValue, final Object newValue) {
+	public MapChangeEvent(final MapModel map, final Object property, final Object oldValue, final Object newValue) {
 		super(map, 0);
 		this.oldValue = oldValue;
 		this.newValue = newValue;
@@ -42,14 +40,14 @@ public class MapChangeEvent extends AWTEvent {
 
 	public MapChangeEvent(final Object property, final Object oldValue, final Object newValue) {
 		this(null, property, oldValue, newValue);
-    }
-
-	public Object getNewValue() {
-		return newValue;
 	}
 
 	public MapModel getMap() {
 		return (MapModel) getSource();
+	}
+
+	public Object getNewValue() {
+		return newValue;
 	}
 
 	public Object getOldValue() {

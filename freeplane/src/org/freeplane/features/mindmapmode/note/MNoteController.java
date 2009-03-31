@@ -42,7 +42,6 @@ import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.core.undo.IActor;
@@ -262,34 +261,38 @@ public class MNoteController extends NoteController {
 	public void showNotesPanel() {
 		final SouthPanel southPanel = new SouthPanel();
 		southPanel.add(noteViewerComponent, BorderLayout.CENTER);
-		     	if(ResourceController.getResourceController().getBooleanProperty(ResourceControllerProperties.RESOURCES_USE_DEFAULT_FONT_FOR_NOTES_TOO)) {
- 	    	// set default font for notes:
- 	    	Font defaultFont = ResourceController.getResourceController().getDefaultFont();
- 	        String rule = "BODY {";
- 	        rule += "font-family: "+defaultFont.getFamily()+";";
- 	        rule += "font-size: "+defaultFont.getSize()+"pt;";
- 	        rule += "}\n";
- 	        if(ResourceController.getResourceController().getBooleanProperty(ResourceControllerProperties.RESOURCES_USE_MARGIN_TOP_ZERO_FOR_NOTES)) {
- 		        /* this is used for paragraph spacing. I put it here, too, as
- 		         * the tooltip display uses the same spacing. But it is to be discussed.
- 		         * fc, 23.3.2009.
- 		         */
- 		        rule += "p {";
- 		        rule += "margin-top:0;";            
- 		        rule += "}\n";
- 	        }
- 	        noteViewerComponent.getDocument().getStyleSheet().addRule(rule);
- 	        // done setting default font.
-     	}
-     	noteViewerComponent.setOpenHyperlinkHandler(new ActionListener(){
- 
- 			public void actionPerformed(ActionEvent pE) {
- 				try {
- 					getModeController().getController().getViewController().openDocument(new URL(pE.getActionCommand()));
- 				} catch (Exception e) {
- 					LogTool.logException(e);
- 				}
- 			}});
+		if (ResourceController.getResourceController().getBooleanProperty(
+		    ResourceControllerProperties.RESOURCES_USE_DEFAULT_FONT_FOR_NOTES_TOO)) {
+			// set default font for notes:
+			final Font defaultFont = ResourceController.getResourceController().getDefaultFont();
+			String rule = "BODY {";
+			rule += "font-family: " + defaultFont.getFamily() + ";";
+			rule += "font-size: " + defaultFont.getSize() + "pt;";
+			rule += "}\n";
+			if (ResourceController.getResourceController().getBooleanProperty(
+			    ResourceControllerProperties.RESOURCES_USE_MARGIN_TOP_ZERO_FOR_NOTES)) {
+				/* this is used for paragraph spacing. I put it here, too, as
+				 * the tooltip display uses the same spacing. But it is to be discussed.
+				 * fc, 23.3.2009.
+				 */
+				rule += "p {";
+				rule += "margin-top:0;";
+				rule += "}\n";
+			}
+			noteViewerComponent.getDocument().getStyleSheet().addRule(rule);
+			// done setting default font.
+		}
+		noteViewerComponent.setOpenHyperlinkHandler(new ActionListener() {
+			public void actionPerformed(final ActionEvent pE) {
+				try {
+					getModeController().getController().getViewController()
+					    .openDocument(new URL(pE.getActionCommand()));
+				}
+				catch (final Exception e) {
+					LogTool.logException(e);
+				}
+			}
+		});
 		noteViewerComponent.setVisible(true);
 		mSplitPane = getModeController().getController().getViewController().insertComponentIntoSplitPane(southPanel);
 		southPanel.revalidate();

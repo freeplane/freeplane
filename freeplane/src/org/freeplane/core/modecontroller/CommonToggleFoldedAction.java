@@ -26,12 +26,11 @@ import java.util.ListIterator;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.IFreeplaneAction;
 
 /**
  * @author foltin
  */
-class CommonToggleFoldedAction extends AFreeplaneAction implements IFreeplaneAction {
+class CommonToggleFoldedAction extends AFreeplaneAction {
 	static final String NAME = "toggleFolded";
 	private static final long serialVersionUID = -910412788559039263L;
 
@@ -43,6 +42,7 @@ class CommonToggleFoldedAction extends AFreeplaneAction implements IFreeplaneAct
 		toggleFolded();
 	}
 
+	@Override
 	public String getName() {
 		return NAME;
 	}

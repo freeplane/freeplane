@@ -407,7 +407,8 @@ public class UrlManager implements IExtension {
 			return null;
 		}
 		try {
-			root = modeController.getMapController().getMapReader().createNodeTreeFromXml(map, urlStreamReader, Mode.FILE);
+			root = modeController.getMapController().getMapReader().createNodeTreeFromXml(map, urlStreamReader,
+			    Mode.FILE);
 			urlStreamReader.close();
 			return root;
 		}

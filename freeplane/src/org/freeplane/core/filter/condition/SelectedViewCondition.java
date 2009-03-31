@@ -47,8 +47,7 @@ public class SelectedViewCondition implements ICondition {
 
 	public JComponent getListCellRendererComponent() {
 		if (SelectedViewCondition.renderer == null) {
-			SelectedViewCondition.renderer = ConditionFactory
-			    .createCellRendererComponent(toString());
+			SelectedViewCondition.renderer = ConditionFactory.createCellRendererComponent(toString());
 		}
 		return SelectedViewCondition.renderer;
 	}

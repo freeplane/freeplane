@@ -26,9 +26,8 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.IFreeplaneAction;
 
-class CopyAction extends AFreeplaneAction implements IFreeplaneAction {
+class CopyAction extends AFreeplaneAction {
 	private static final String NAME = "copy";
 	private static final long serialVersionUID = 4816549133103377252L;
 
@@ -50,6 +49,7 @@ class CopyAction extends AFreeplaneAction implements IFreeplaneAction {
 		}
 	}
 
+	@Override
 	public String getName() {
 		return NAME;
 	}

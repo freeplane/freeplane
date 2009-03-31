@@ -26,7 +26,6 @@ import java.awt.Stroke;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
-import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.modecontroller.ExclusivePropertyChain;
 import org.freeplane.core.modecontroller.IPropertyHandler;
 import org.freeplane.core.modecontroller.MapController;

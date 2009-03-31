@@ -31,7 +31,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 import org.freeplane.core.frame.ColorTracker;
-import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.util.ColorUtils;
 
@@ -59,7 +58,7 @@ public class ColorProperty extends PropertyBean implements IPropertyControl, Act
 
 	public void actionPerformed(final ActionEvent arg0) {
 		final Color result = ColorTracker.showCommonJColorChooserDialog(mButton.getRootPane(), FpStringUtils
-			.getOptionalText(getLabel()), getColorValue());
+		    .getOptionalText(getLabel()), getColorValue());
 		setColorValue(result);
 		firePropertyChangeEvent();
 	}

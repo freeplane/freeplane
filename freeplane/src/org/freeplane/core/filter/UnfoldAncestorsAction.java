@@ -22,7 +22,6 @@ package org.freeplane.core.filter;
 import java.awt.event.ActionEvent;
 import java.util.Iterator;
 
-import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 
 import org.freeplane.core.modecontroller.MapController;
@@ -37,27 +36,28 @@ import org.freeplane.core.ui.AFreeplaneAction;
  */
 class UnfoldAncestorsAction extends AFreeplaneAction {
 	/**
-     * 
-     */
-    private final FilterController filterController;
+	 * 
+	 */
+	private final FilterController filterController;
 
 	/**
 	 * @param filterController TODO
 	 *
 	 */
-	UnfoldAncestorsAction(FilterController filterController) {
-		super(filterController.getController(), null, new ImageIcon(ResourceController.getResourceController().getResource("/images/unfold.png")));
+	UnfoldAncestorsAction(final FilterController filterController) {
+		super(filterController.getController(), null, new ImageIcon(ResourceController.getResourceController()
+		    .getResource("/images/unfold.png")));
 		this.filterController = filterController;
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-    	if (this.filterController.getSelectedCondition() != null) {
-    		unfoldAncestors(this.filterController.getController().getMap().getRootNode());
-    	}
-    }
+		if (filterController.getSelectedCondition() != null) {
+			unfoldAncestors(filterController.getController().getMap().getRootNode());
+		}
+	}
 
 	private void setFolded(final NodeModel node, final boolean state) {
-		final ModeController modeController = this.filterController.getController().getModeController();
+		final ModeController modeController = filterController.getController().getModeController();
 		final MapController mapController = modeController.getMapController();
 		if (mapController.hasChildren(node) && (mapController.isFolded(node) != state)) {
 			mapController.setFolded(node, state);
@@ -65,10 +65,10 @@ class UnfoldAncestorsAction extends AFreeplaneAction {
 	}
 
 	private void unfoldAncestors(final NodeModel parent) {
-		for (final Iterator i = this.filterController.getController().getModeController().getMapController().childrenUnfolded(parent); i
-		    .hasNext();) {
+		for (final Iterator i = filterController.getController().getModeController().getMapController()
+		    .childrenUnfolded(parent); i.hasNext();) {
 			final NodeModel node = (NodeModel) i.next();
-			if (this.filterController.getShowDescendants().isSelected() || node.getFilterInfo().isAncestor()) {
+			if (filterController.getShowDescendants().isSelected() || node.getFilterInfo().isAncestor()) {
 				setFolded(node, false);
 				unfoldAncestors(node);
 			}

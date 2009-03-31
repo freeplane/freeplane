@@ -9,7 +9,6 @@ import java.io.StringWriter;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
-import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;
@@ -40,8 +39,6 @@ abstract public class WindowConfigurationStorage {
 		return y;
 	}
 
-	abstract protected void marshallSpecificElements(XMLElement xml);
-
 	private String marshall() {
 		final XMLElement xml = new XMLElement();
 		xml.setAttribute("x", Integer.toString(x));
@@ -60,6 +57,8 @@ abstract public class WindowConfigurationStorage {
 			return null;
 		}
 	}
+
+	abstract protected void marshallSpecificElements(XMLElement xml);
 
 	public void setHeight(final int height) {
 		this.height = height;

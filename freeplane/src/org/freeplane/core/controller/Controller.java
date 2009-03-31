@@ -92,6 +92,10 @@ public class Controller extends AController {
 		addAction(new QuitAction(this));
 	}
 
+	public void addExtension(final Class<? extends IExtension> clazz, final IExtension extension) {
+		extensionContainer.addExtension(clazz, extension);
+	}
+
 	public void addModeController(final ModeController modeController) {
 		modeControllers.put(modeController.getModeName(), modeController);
 	}
@@ -163,10 +167,6 @@ public class Controller extends AController {
 	 */
 	public ViewController getViewController() {
 		return viewController;
-	}
-
-	public void addExtension(final Class<? extends IExtension> clazz, final IExtension extension) {
-		extensionContainer.addExtension(clazz, extension);
 	}
 
 	public void quit() {

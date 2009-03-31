@@ -34,8 +34,6 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
 import java.awt.dnd.Autoscroll;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.geom.CubicCurve2D;
 import java.awt.print.PageFormat;
@@ -53,10 +51,7 @@ import java.util.Vector;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import javax.swing.JRootPane;
 import javax.swing.JViewport;
-import javax.swing.event.AncestorEvent;
-import javax.swing.event.AncestorListener;
 
 import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
@@ -93,9 +88,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			}
 		}
 
-		public void keepNodePosition(final NodeModel node) {
-			anchorToSelected(node);
-		}
 		public NodeModel getSelected() {
 			final NodeView selected = MapView.this.getSelected();
 			return selected == null ? null : selected.getModel();
@@ -112,6 +104,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		public boolean isSelected(final NodeModel node) {
 			final NodeView nodeView = getNodeView(node);
 			return nodeView != null && MapView.this.isSelected(nodeView);
+		}
+
+		public void keepNodePosition(final NodeModel node) {
+			anchorToSelected(node);
 		}
 
 		public void makeTheSelected(final NodeModel node) {
@@ -240,6 +236,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	static Color standardSelectColor;
 	private static Stroke standardSelectionStroke;
 	static Color standardSelectRectangleColor;
+	private NodeView anchor;
+	private Point anchorContentLocation;
 	/** Used to identify a right click onto a link curve. */
 	private Vector/* of ArrowLinkViews */arrowLinkViews;
 	private Color background = null;
@@ -254,14 +252,12 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private final ModeController modeController;
 	final private MapModel model;
 	private NodeView nodeToBeVisible = null;
-	private Point anchorContentLocation;
 	private NodeView rootView = null;
 	private boolean selectedsValid = true;
 	final private Selection selection = new Selection();
 	private NodeView shiftSelectionOrigin = null;
 	private int siblingMaxLevel;
 	private float zoom = 1F;
-	private NodeView anchor;
 
 	public MapView(final MapModel model, final ModeController modeController) {
 		super();
@@ -271,7 +267,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		final String name = getModel().getTitle();
 		setName(name);
 		if (MapView.standardSelectColor == null) {
-			String stdcolor = ResourceController.getResourceController().getProperty(
+			final String stdcolor = ResourceController.getResourceController().getProperty(
 			    ResourceControllerProperties.RESOURCES_SELECTED_NODE_COLOR);
 			MapView.standardSelectColor = ColorUtils.stringToColor(stdcolor);
 			final String stdtextcolor = ResourceController.getResourceController().getProperty(
@@ -299,11 +295,17 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		disableMoveCursor = ResourceController.getResourceController().getBooleanProperty("disable_cursor_move_paper");
 	}
 
-	private Color requiredBackground() {
-		MapStyle mapStyle = (MapStyle) getModeController().getExtension(MapStyle.class);		
-		final Color mapBackground = mapStyle.getBackground(model);
-	    return mapBackground;
-    }
+	private void anchorToSelected(final NodeModel node) {
+		final NodeView view = getNodeView(node);
+		anchorToSelected(view);
+	}
+
+	private void anchorToSelected(final NodeView view) {
+		if (view != null) {
+			anchor = view;
+			anchorContentLocation = getAnchorCenterPoint();
+		}
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -315,45 +317,31 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		scrollRectToVisible(r);
 	}
 
-		/**
-    	 * Problem: Before scrollRectToVisible is called, the node has the location
-    	 * (0,0), ie. the location first gets calculated after the scrollpane is
-    	 * actually scrolled. Thus, as a workaround, I simply call
-    	 * scrollRectToVisible twice, the first time the location of the node is
-    	 * calculated, the second time the scrollPane is actually scrolled.
-    	 */
-    	public void centerNode(final NodeView node) {
-    		nodeToBeVisible = null;
-    		anchorContentLocation = new Point();
-    		final JViewport viewPort = (JViewport) getParent();
-    		if (! isReady()) {
-    			EventQueue.invokeLater(new Runnable(){
-    				public void run() {
-    					centerNode(node);
-    				}});
-    			return;
-    		}
-    		final Dimension d = viewPort.getExtentSize();
-    		final JComponent content = node.getContent();
-    		final Rectangle rect = new Rectangle(content.getWidth() / 2 - d.width / 2, content.getHeight() / 2 - d.height
-    		        / 2, d.width, d.height);
-    		content.scrollRectToVisible(rect);
-    	}
-
-	private boolean isReady() {
-		Component c = this;
-		do{
-			c = c.getParent();
-			if(! c.isValid()){
-				return false;
-			}
-			if(c instanceof JComponent && ((JComponent)c).isValidateRoot()){
-				return true;
-			}
+	/**
+	 * Problem: Before scrollRectToVisible is called, the node has the location
+	 * (0,0), ie. the location first gets calculated after the scrollpane is
+	 * actually scrolled. Thus, as a workaround, I simply call
+	 * scrollRectToVisible twice, the first time the location of the node is
+	 * calculated, the second time the scrollPane is actually scrolled.
+	 */
+	public void centerNode(final NodeView node) {
+		nodeToBeVisible = null;
+		anchorContentLocation = new Point();
+		final JViewport viewPort = (JViewport) getParent();
+		if (!isReady()) {
+			EventQueue.invokeLater(new Runnable() {
+				public void run() {
+					centerNode(node);
+				}
+			});
+			return;
 		}
-		while(c != null);
-	    return false;
-    }
+		final Dimension d = viewPort.getExtentSize();
+		final JComponent content = node.getContent();
+		final Rectangle rect = new Rectangle(content.getWidth() / 2 - d.width / 2, content.getHeight() / 2 - d.height
+		        / 2, d.width, d.height);
+		content.scrollRectToVisible(rect);
+	}
 
 	/**
 	 * @return
@@ -499,6 +487,14 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			shiftSelectionOrigin = null;
 			selectAsTheOnlyOneSelected(newlySelectedNodeView);
 		}
+	}
+
+	private Point getAnchorCenterPoint() {
+		final Point anchorCenterPoint = anchor.getContent().getLocation();
+		anchorCenterPoint.x += anchor.getMainView().getWidth() / 2;
+		anchorCenterPoint.y += anchor.getMainView().getHeight() / 2;
+		UITools.convertPointToAncestor(anchor, anchorCenterPoint, getParent());
+		return anchorCenterPoint;
 	}
 
 	/*
@@ -789,6 +785,20 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		return isPrinting;
 	}
 
+	private boolean isReady() {
+		Component c = this;
+		do {
+			c = c.getParent();
+			if (!c.isValid()) {
+				return false;
+			}
+			if (c instanceof JComponent && ((JComponent) c).isValidateRoot()) {
+				return true;
+			}
+		} while (c != null);
+		return false;
+	}
+
 	public boolean isSelected(final NodeView n) {
 		if (isPrinting) {
 			return false;
@@ -811,6 +821,15 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		getSelected().repaintSelected();
 	}
 
+	public void mapChanged(final MapChangeEvent event) {
+		if (event.getProperty().equals(ResourceControllerProperties.RESOURCES_BACKGROUND_COLOR)) {
+			setBackground(requiredBackground());
+		}
+		if (event.getProperty().equals(ResourceControllerProperties.RESOURCES_NODE_TEXT_COLOR)) {
+			getRoot().updateAll();
+		}
+	}
+
 	public void move(final KeyEvent e) {
 		final NodeView newSelected = getVisibleNeighbour(e.getKeyCode());
 		if (newSelected != null) {
@@ -820,6 +839,19 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			}
 			e.consume();
 		}
+	}
+
+	public void onNodeDeleted(final NodeModel parent, final NodeModel child, final int index) {
+	}
+
+	public void onNodeInserted(final NodeModel parent, final NodeModel child, final int newIndex) {
+	}
+
+	public void onNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
+	                        final NodeModel child, final int newIndex) {
+	}
+
+	public void onPreNodeDelete(final NodeModel oldParent, final NodeModel selectedNode, final int index) {
 	}
 
 	/*****************************************************************
@@ -834,22 +866,22 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if (isValid()) {
 			anchorContentLocation = getAnchorCenterPoint();
 		}
-        final Graphics2D g2 = (Graphics2D) g.create();
+		final Graphics2D g2 = (Graphics2D) g.create();
 		try {
-	        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-	        controller.getViewController().setTextRenderingHint(g2);
-	        final Object oldRenderingHintFM = g2.getRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS);
-	        final Object newRenderingHintFM = getZoom() != 1F ? RenderingHints.VALUE_FRACTIONALMETRICS_ON
-	                : RenderingHints.VALUE_FRACTIONALMETRICS_OFF;
-	        if (oldRenderingHintFM != newRenderingHintFM) {
-	        	g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, newRenderingHintFM);
-	        }
-	        super.paint(g2);
-        }
-        finally {
-        	g2.dispose();
-        }
-	}
+			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+			controller.getViewController().setTextRenderingHint(g2);
+			final Object oldRenderingHintFM = g2.getRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS);
+			final Object newRenderingHintFM = getZoom() != 1F ? RenderingHints.VALUE_FRACTIONALMETRICS_ON
+			        : RenderingHints.VALUE_FRACTIONALMETRICS_OFF;
+			if (oldRenderingHintFM != newRenderingHintFM) {
+				g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, newRenderingHintFM);
+			}
+			super.paint(g2);
+		}
+		finally {
+			g2.dispose();
+		}
+	};
 
 	@Override
 	public void paintChildren(final Graphics graphics) {
@@ -884,8 +916,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	private void paintLinks(final Graphics2D graphics) {
 		arrowLinkViews = new Vector();
-	   	Object renderingHint = getModeController().getController().getViewController().setEdgesRenderingHint(graphics);
-		paintLinks(rootView,  graphics, new HashSet());
+		final Object renderingHint = getModeController().getController().getViewController().setEdgesRenderingHint(
+		    graphics);
+		paintLinks(rootView, graphics, new HashSet());
 		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 	}
 
@@ -921,7 +954,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			MapView.standardSelectionStroke = new BasicStroke(2.0f);
 		}
 		g.setStroke(MapView.standardSelectionStroke);
-    	Object renderingHint = getModeController().getController().getViewController().setEdgesRenderingHint(g);
+		final Object renderingHint = getModeController().getController().getViewController().setEdgesRenderingHint(g);
 		final Iterator i = getSelection().iterator();
 		while (i.hasNext()) {
 			final NodeView selected = (NodeView) i.next();
@@ -955,7 +988,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			fitToPage = ResourceController.getResourceController().getBooleanProperty("fit_to_page");
 			isPreparedForPrinting = true;
 		}
-	};
+	}
 
 	@Override
 	public void print(final Graphics g) {
@@ -982,35 +1015,35 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 		final Graphics2D graphics2D = (Graphics2D) graphics;
 		try {
-	        preparePrinting();
-	        double zoomFactor = 1;
-	        if (fitToPage) {
-		        final double zoomFactorX = pageFormat.getImageableWidth() / boundingRectangle.getWidth();
-		        final double zoomFactorY = pageFormat.getImageableHeight() / boundingRectangle.getHeight();
-		        zoomFactor = Math.min(zoomFactorX, zoomFactorY);
-	        }
-	        else {
-		        zoomFactor = userZoomFactor;
-		        final int nrPagesInWidth = (int) Math.ceil(zoomFactor * boundingRectangle.getWidth()
-		                / pageFormat.getImageableWidth());
-		        final int nrPagesInHeight = (int) Math.ceil(zoomFactor * boundingRectangle.getHeight()
-		                / pageFormat.getImageableHeight());
-		        if (pageIndex >= nrPagesInWidth * nrPagesInHeight) {
-			        return Printable.NO_SUCH_PAGE;
-		        }
-		        final int yPageCoord = (int) Math.floor(pageIndex / nrPagesInWidth);
-		        final int xPageCoord = pageIndex - yPageCoord * nrPagesInWidth;
-		        graphics2D.translate(-pageFormat.getImageableWidth() * xPageCoord, -pageFormat.getImageableHeight()
-		                * yPageCoord);
-	        }
-	        graphics2D.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
-	        graphics2D.scale(zoomFactor, zoomFactor);
-	        graphics2D.translate(-boundingRectangle.getX(), -boundingRectangle.getY());
-	        print(graphics2D);
-        }
-        finally {
-    		endPrinting();
-        }
+			preparePrinting();
+			double zoomFactor = 1;
+			if (fitToPage) {
+				final double zoomFactorX = pageFormat.getImageableWidth() / boundingRectangle.getWidth();
+				final double zoomFactorY = pageFormat.getImageableHeight() / boundingRectangle.getHeight();
+				zoomFactor = Math.min(zoomFactorX, zoomFactorY);
+			}
+			else {
+				zoomFactor = userZoomFactor;
+				final int nrPagesInWidth = (int) Math.ceil(zoomFactor * boundingRectangle.getWidth()
+				        / pageFormat.getImageableWidth());
+				final int nrPagesInHeight = (int) Math.ceil(zoomFactor * boundingRectangle.getHeight()
+				        / pageFormat.getImageableHeight());
+				if (pageIndex >= nrPagesInWidth * nrPagesInHeight) {
+					return Printable.NO_SUCH_PAGE;
+				}
+				final int yPageCoord = (int) Math.floor(pageIndex / nrPagesInWidth);
+				final int xPageCoord = pageIndex - yPageCoord * nrPagesInWidth;
+				graphics2D.translate(-pageFormat.getImageableWidth() * xPageCoord, -pageFormat.getImageableHeight()
+				        * yPageCoord);
+			}
+			graphics2D.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
+			graphics2D.scale(zoomFactor, zoomFactor);
+			graphics2D.translate(-boundingRectangle.getX(), -boundingRectangle.getY());
+			print(graphics2D);
+		}
+		finally {
+			endPrinting();
+		}
 		return Printable.PAGE_EXISTS;
 	}
 
@@ -1020,6 +1053,12 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			final NodeView next = (NodeView) iterator.next();
 			next.repaintSelected();
 		}
+	}
+
+	private Color requiredBackground() {
+		final MapStyle mapStyle = (MapStyle) getModeController().getExtension(MapStyle.class);
+		final Color mapBackground = mapStyle.getBackground(model);
+		return mapBackground;
 	}
 
 	public void resetShiftSelectionOrigin() {
@@ -1090,10 +1129,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	 * Select the node, resulting in only that one being selected.
 	 */
 	public void selectAsTheOnlyOneSelected(final NodeView newSelected) {
-		if (ResourceController.getResourceController().getBooleanProperty("center_selected_node")){
+		if (ResourceController.getResourceController().getBooleanProperty("center_selected_node")) {
 			centerNode(newSelected);
 		}
-		else{
+		else {
 			scrollNodeToVisible(newSelected);
 		}
 		selectAsTheOnlyOneSelected(newSelected, true);
@@ -1242,14 +1281,14 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	private void setViewPositionAfterValidate() {
-		if(anchorContentLocation.getX() == 0 && anchorContentLocation.getY() == 0){
+		if (anchorContentLocation.getX() == 0 && anchorContentLocation.getY() == 0) {
 			return;
 		}
 		final JViewport vp = (JViewport) getParent();
 		final Point viewPosition = vp.getViewPosition();
 		final Point oldAnchorContentLocation = anchorContentLocation;
 		final Point newAnchorContentLocation = getAnchorCenterPoint();
-		if(anchor != getRoot()){
+		if (anchor != getRoot()) {
 			anchor = getRoot();
 			anchorContentLocation = getAnchorCenterPoint();
 		}
@@ -1275,32 +1314,12 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 	}
 
-	private Point getAnchorCenterPoint() {
-	    final Point anchorCenterPoint = anchor.getContent().getLocation();
-		anchorCenterPoint.x += anchor.getMainView().getWidth()/2;
-		anchorCenterPoint.y += anchor.getMainView().getHeight()/2;
-		UITools.convertPointToAncestor(anchor, anchorCenterPoint, getParent());
-	    return anchorCenterPoint;
-    }
-
 	public void setZoom(final float zoom) {
 		this.zoom = zoom;
 		anchorToSelected(getSelected());
 		getRoot().updateAll();
 		revalidate();
 	}
-
-	private void anchorToSelected(NodeModel node) {
-	    final NodeView view = getNodeView(node);
-		anchorToSelected(view);
-    }
-
-	private void anchorToSelected(final NodeView view) {
-	    if(view != null){
-			anchor = view;
-			anchorContentLocation = getAnchorCenterPoint();
-		}
-    }
 
 	/**
 	 * Add the node to the selection if it is not yet there, remove it
@@ -1364,28 +1383,4 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		super.validateTree();
 		setViewPositionAfterValidate();
 	}
-
-	public void mapChanged(MapChangeEvent event) {
-		   if(event.getProperty().equals(ResourceControllerProperties.RESOURCES_BACKGROUND_COLOR)){
-			   setBackground(requiredBackground());
-		   }
-		   if(event.getProperty().equals(ResourceControllerProperties.RESOURCES_NODE_TEXT_COLOR)){
-			   getRoot().updateAll();
-		   }
-	    
-    }
-
-	public void onNodeDeleted(NodeModel parent, NodeModel child, int index) {
-    }
-
-	public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
-    }
-
-	public void onNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
-    }
-
-	public void onPreNodeDelete(NodeModel oldParent, NodeModel selectedNode, int index) {
-    }
-	
-	
 }

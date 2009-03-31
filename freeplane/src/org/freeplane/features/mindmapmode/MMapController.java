@@ -154,13 +154,6 @@ public class MMapController extends MapController {
 		insertNode(node, parent, parent.getChildCount());
 	}
 
-	public void moveNodeBefore(final NodeModel node, final NodeModel target, final boolean isLeft,
-	                           final boolean changeSide) {
-		NodeModel parent;
-		parent = target.getParentNode();
-		moveNode(node, parent, parent.getChildPosition(target), isLeft, changeSide);
-	}
-
 	public void insertNode(final NodeModel node, final NodeModel target, final boolean asSibling, final boolean isLeft,
 	                       final boolean changeSide) {
 		NodeModel parent;
@@ -308,7 +301,8 @@ public class MMapController extends MapController {
 		super.loadURL(relative);
 	}
 
-	public void moveNode(NodeModel node, NodeModel targetNode, boolean asSibling, boolean isLeft, boolean changeSide) {
+	public void moveNode(final NodeModel node, final NodeModel targetNode, final boolean asSibling,
+	                     final boolean isLeft, final boolean changeSide) {
 		if (asSibling) {
 			moveNodeBefore(node, targetNode, isLeft, changeSide);
 		}
@@ -317,13 +311,8 @@ public class MMapController extends MapController {
 		}
 	}
 
-	public void moveNodeAsChild(final NodeModel node, final NodeModel selectedParent, final boolean isLeft,
-	                            final boolean changeSide) {
-		int position = selectedParent.getChildCount();
-		if (node.getParent() == selectedParent) {
-			position--;
-		}
-		moveNode(node, selectedParent, position, isLeft, changeSide);
+	public void moveNode(final NodeModel node, final NodeModel directSibling, final int childCount) {
+		moveNode(node, directSibling, childCount, false, false);
 	}
 
 	public void moveNode(final NodeModel child, final NodeModel newParent, final int newIndex, final boolean isLeft,
@@ -348,6 +337,22 @@ public class MMapController extends MapController {
 			}
 		};
 		getModeController().execute(actor);
+	}
+
+	public void moveNodeAsChild(final NodeModel node, final NodeModel selectedParent, final boolean isLeft,
+	                            final boolean changeSide) {
+		int position = selectedParent.getChildCount();
+		if (node.getParent() == selectedParent) {
+			position--;
+		}
+		moveNode(node, selectedParent, position, isLeft, changeSide);
+	}
+
+	public void moveNodeBefore(final NodeModel node, final NodeModel target, final boolean isLeft,
+	                           final boolean changeSide) {
+		NodeModel parent;
+		parent = target.getParentNode();
+		moveNode(node, parent, parent.getChildPosition(target), isLeft, changeSide);
 	}
 
 	public void moveNodes(final NodeModel selected, final List selecteds, final int direction) {
@@ -439,9 +444,5 @@ public class MMapController extends MapController {
 			((MMapModel) map).setReadOnly(false);
 		}
 		return lockingUser;
-	}
-
-	public void moveNode(NodeModel node, NodeModel directSibling, int childCount) {
-		moveNode(node, directSibling, childCount, false, false);
 	}
 }

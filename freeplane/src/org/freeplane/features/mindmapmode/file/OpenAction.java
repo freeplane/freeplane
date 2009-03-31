@@ -23,10 +23,9 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.IFreeplaneAction;
 import org.freeplane.core.url.UrlManager;
 
-class OpenAction extends AFreeplaneAction implements IFreeplaneAction {
+class OpenAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 6555358381496003986L;
 
 	public OpenAction(final Controller controller) {
@@ -38,6 +37,7 @@ class OpenAction extends AFreeplaneAction implements IFreeplaneAction {
 		getController().getViewController().setTitle();
 	}
 
+	@Override
 	public String getName() {
 		return "open";
 	}

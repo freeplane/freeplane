@@ -34,9 +34,9 @@ public interface ITreeWriter extends IHintProvider {
 
 	void addComment(String string) throws IOException;
 
-	void addElement(Object userObject, XMLElement element) throws IOException;
-
 	void addElement(Object userObject, String name) throws IOException;
+
+	void addElement(Object userObject, XMLElement element) throws IOException;
 
 	void addElementContent(String content) throws IOException;
 

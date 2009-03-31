@@ -31,20 +31,20 @@ import org.freeplane.features.common.link.LinkController;
  * Mar 20, 2009
  */
 public class ExtractLinkFromTextAction extends MultipleNodeAction {
-	public ExtractLinkFromTextAction(Controller controller) {
-	    super(controller, "extract_link_from_text");
-    }
-
 	/**
-     * 
-     */
-    private static final long serialVersionUID = -2579214095445662717L;
+	 * 
+	 */
+	private static final long serialVersionUID = -2579214095445662717L;
+
+	public ExtractLinkFromTextAction(final Controller controller) {
+		super(controller, "extract_link_from_text");
+	}
 
 	@Override
-	protected void actionPerformed(ActionEvent e, NodeModel node) {
+	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
 		final MLinkController controller = (MLinkController) LinkController.getController(getModeController());
-		String link = controller.findLink(node.getText());
-		if(link != null){
+		final String link = controller.findLink(node.getText());
+		if (link != null) {
 			controller.setLink(node, link);
 		}
 	}

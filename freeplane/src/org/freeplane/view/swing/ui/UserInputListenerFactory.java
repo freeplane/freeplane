@@ -297,7 +297,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	}
 
 	private void updateMapList(final String mapsMenuPosition) {
-	    menuBuilder.removeChildElements(mapsMenuPosition);
+		menuBuilder.removeChildElements(mapsMenuPosition);
 		final IMapViewManager mapViewManager = controller.getMapViewManager();
 		final List mapViewVector = mapViewManager.getMapViewVector();
 		if (mapViewVector == null) {
@@ -320,7 +320,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			}
 			menuBuilder.addMenuItem(mapsMenuPosition, newItem, UIBuilder.AS_CHILD);
 		}
-    }
+	}
 
 	public void updateMenus(final ModeController modeController) {
 		final FreeplaneMenuBar menuBar = getMenuBar();

@@ -8,6 +8,8 @@ import java.awt.Color;
  * @author robert.ladstaetter
  */
 public class ColorUtils {
+	public static final String BLACK = "#000000";
+
 	public static String colorToString(final Color col) {
 		if (col == null) {
 			return null;
@@ -26,17 +28,15 @@ public class ColorUtils {
 		}
 		return "#" + red + green + blue;
 	}
-	
+
 	public static Color stringToColor(final String str) {
-		if(str == null){
+		if (str == null) {
 			return null;
 		}
-		if(str.length() != 7 || str.charAt(0) != '#'){
+		if (str.length() != 7 || str.charAt(0) != '#') {
 			throw new NumberFormatException("wrong color format in " + str);
 		}
-		return new Color(Integer.parseInt(str.substring(1, 3), 16), Integer.parseInt(str
-		    .substring(3, 5), 16), Integer.parseInt(str.substring(5, 7), 16));
+		return new Color(Integer.parseInt(str.substring(1, 3), 16), Integer.parseInt(str.substring(3, 5), 16), Integer
+		    .parseInt(str.substring(5, 7), 16));
 	}
-
-	public static final String BLACK = "#000000";
 }

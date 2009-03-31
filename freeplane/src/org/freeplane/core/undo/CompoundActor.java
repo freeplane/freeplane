@@ -33,7 +33,7 @@ public class CompoundActor implements IActor {
 	final private LinkedList<IActor> actors = new LinkedList<IActor>();
 
 	public void act() {
-		for (IActor a : actors) {
+		for (final IActor a : actors) {
 			a.act();
 		}
 	}

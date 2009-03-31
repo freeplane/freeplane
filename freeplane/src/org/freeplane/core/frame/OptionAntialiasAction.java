@@ -22,20 +22,17 @@ package org.freeplane.core.frame;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 
-import javax.swing.AbstractAction;
-
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.IFreeplaneAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 
-class OptionAntialiasAction extends AbstractAction implements IFreeplanePropertyListener, IFreeplaneAction {
+class OptionAntialiasAction extends AFreeplaneAction implements IFreeplanePropertyListener {
 	static final String NAME = "optionAntialiasAction";
 	private static final long serialVersionUID = -3806222986205044097L;
-	final private Controller controller;
 
 	OptionAntialiasAction(final Controller controller) {
-		this.controller = controller;
+		super(controller);
 		ResourceController.getResourceController().addPropertyChangeListener(this);
 	}
 
@@ -50,6 +47,7 @@ class OptionAntialiasAction extends AbstractAction implements IFreeplaneProperty
 		if (command == null) {
 			return;
 		}
+		final Controller controller = getController();
 		if (command.equals("antialias_none")) {
 			controller.getViewController().setAntialiasEdges(false);
 			controller.getViewController().setAntialiasAll(false);
@@ -68,6 +66,7 @@ class OptionAntialiasAction extends AbstractAction implements IFreeplaneProperty
 		}
 	}
 
+	@Override
 	public String getName() {
 		return NAME;
 	}

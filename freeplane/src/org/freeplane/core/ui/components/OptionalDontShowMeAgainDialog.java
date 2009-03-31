@@ -58,15 +58,15 @@ public class OptionalDontShowMeAgainDialog {
 	final private int mMessageType;
 	final private NodeModel mNode;
 	final private Frame mParent;
+	final private String mPropertyName;
 	private int mResult = JOptionPane.CANCEL_OPTION;
 	final private String mTitleId;
-	final private String mPropertyName;
 
 	public OptionalDontShowMeAgainDialog(final Controller controller, final String pMessageId, final String pTitleId,
 	                                     final String pPropertyName, final int pMessageType) {
 		this.controller = controller;
 		mParent = controller.getViewController().getFrame();
-		IMapSelection selection = controller.getSelection();
+		final IMapSelection selection = controller.getSelection();
 		if (selection != null) {
 			mNode = selection.getSelected();
 		}
@@ -99,10 +99,6 @@ public class OptionalDontShowMeAgainDialog {
 		mDialog.dispose();
 	}
 
-	private void setProperty(String value) {
-		ResourceController.getResourceController().setProperty(mPropertyName, value);
-	}
-
 	private String getProperty() {
 		return ResourceController.getResourceController().getProperty(mPropertyName);
 	}
@@ -112,6 +108,10 @@ public class OptionalDontShowMeAgainDialog {
 	 */
 	public int getResult() {
 		return mResult;
+	}
+
+	private void setProperty(final String value) {
+		ResourceController.getResourceController().setProperty(mPropertyName, value);
 	}
 
 	public OptionalDontShowMeAgainDialog show() {

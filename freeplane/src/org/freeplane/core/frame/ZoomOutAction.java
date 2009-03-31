@@ -21,26 +21,23 @@ package org.freeplane.core.frame;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.AbstractAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 
-import org.freeplane.core.resources.FreeplaneResourceBundle;
-import org.freeplane.core.ui.IFreeplaneAction;
-import org.freeplane.core.ui.MenuBuilder;
-
-class ZoomOutAction extends AbstractAction implements IFreeplaneAction {
+class ZoomOutAction extends AFreeplaneAction {
 	static final String NAME = "zoomOut";
 	private static final long serialVersionUID = 1L;
 	final private ViewController viewController;
 
 	public ZoomOutAction(final ViewController viewController) {
+		super(viewController.getController(), "zoom_out");
 		this.viewController = viewController;
-		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText("zoom_out"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		viewController.zoomOut();
 	}
 
+	@Override
 	public String getName() {
 		return NAME;
 	}

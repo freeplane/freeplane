@@ -34,13 +34,12 @@ import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.IFreeplaneAction;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.mindmapmode.MMapController;
 
-class ImportLinkedBranchAction extends AFreeplaneAction implements IFreeplaneAction {
+class ImportLinkedBranchAction extends AFreeplaneAction {
 	private static final long serialVersionUID = -6730969236999381143L;
 
 	public ImportLinkedBranchAction(final Controller controller) {
@@ -79,6 +78,7 @@ class ImportLinkedBranchAction extends AFreeplaneAction implements IFreeplaneAct
 		}
 	}
 
+	@Override
 	public String getName() {
 		return "importLinkedBranch";
 	}

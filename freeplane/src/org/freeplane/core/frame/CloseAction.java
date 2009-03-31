@@ -21,20 +21,19 @@ package org.freeplane.core.frame;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.AbstractAction;
-
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
-import org.freeplane.core.ui.IFreeplaneAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
 
 /** This closes only the current map */
-class CloseAction extends AbstractAction implements IFreeplaneAction {
+class CloseAction extends AFreeplaneAction {
 	static final String NAME = "close";
 	private static final long serialVersionUID = -1585226261004948225L;
 	final private Controller controller;
 
 	CloseAction(final Controller controller) {
+		super(controller);
 		this.controller = controller;
 		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText("close"));
 	}
@@ -43,6 +42,7 @@ class CloseAction extends AbstractAction implements IFreeplaneAction {
 		controller.close(false);
 	}
 
+	@Override
 	public String getName() {
 		return NAME;
 	}

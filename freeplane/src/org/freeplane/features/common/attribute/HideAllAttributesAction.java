@@ -21,32 +21,27 @@ package org.freeplane.features.common.attribute;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.AbstractAction;
-
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.MapModel;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
-import org.freeplane.core.ui.IFreeplaneAction;
-import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.AFreeplaneAction;
 
-class HideAllAttributesAction extends AbstractAction implements IFreeplaneAction {
+class HideAllAttributesAction extends AFreeplaneAction {
 	private static final String NAME = "hideAllAttributes";
 	private static final long serialVersionUID = 3322300017801009807L;
-	final private Controller controller;
 
 	/**
 	 *
 	 */
 	public HideAllAttributesAction(final Controller controller) {
-		this.controller = controller;
-		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText("attributes_hide_all"));
+		super(controller, "attributes_hide_all");
 	};
 
 	public void actionPerformed(final ActionEvent e) {
-		final MapModel map = controller.getMap();
+		final MapModel map = getController().getMap();
 		setAttributeViewType(map);
 	}
 
+	@Override
 	public String getName() {
 		return NAME;
 	}

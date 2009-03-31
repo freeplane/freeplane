@@ -26,8 +26,6 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.IFreeplaneAction;
-import org.freeplane.core.ui.IResourceFreeplaneAction;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.link.ArrowLinkModel;
 import org.freeplane.features.common.link.NodeLinks;
@@ -35,20 +33,20 @@ import org.freeplane.features.common.link.NodeLinks;
 /**
  * @author foltin
  */
-class AddArrowLinkAction extends AFreeplaneAction implements IFreeplaneAction{
+class AddArrowLinkAction extends AFreeplaneAction {
+	private static String getIconPath() {
+		return "/images/designer.png";
+	}
+
+	private static String getTitle() {
+		return "add_link";
+	}
+
 	/**
 	 */
 	public AddArrowLinkAction(final Controller controller) {
-		super(controller, getTitle(), getIconPath());
+		super(controller, AddArrowLinkAction.getTitle(), AddArrowLinkAction.getIconPath());
 	}
-
-	private static String getIconPath() {
-	    return "/images/designer.png";
-    }
-
-	private static String getTitle() {
-	    return "add_link";
-    }
 
 	public void actionPerformed(final ActionEvent e) {
 		final List selecteds = getModeController().getMapController().getSelectedNodes();
@@ -91,7 +89,8 @@ class AddArrowLinkAction extends AFreeplaneAction implements IFreeplaneAction{
 		getModeController().execute(actor);
 	}
 
+	@Override
 	public String getName() {
-	    return "addArrowLinkAction";
-    }
+		return "addArrowLinkAction";
+	}
 }

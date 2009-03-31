@@ -16,6 +16,9 @@ public class ResourceControllerProperties {
 	public static final String RESOURCE_DRAW_RECTANGLE_FOR_SELECTION = "standarddrawrectangleforselection";
 	public static final String RESOURCE_LANGUAGE = "language";
 	public static final String RESOURCE_PRINT_ON_WHITE_BACKGROUND = "printonwhitebackground";
+	public static final String RESOURCES_ALWAYS_FOLD_ALL_AFTER_LOAD = "always_fold_all_after_load";
+	public static final String RESOURCES_ALWAYS_SAVE_FOLDING = "always_save_folding";
+	public static final String RESOURCES_ALWAYS_UNFOLD_ALL_AFTER_LOAD = "always_unfold_all_after_load";
 	public static final String RESOURCES_BACKGROUND_COLOR = "standardbackgroundcolor";
 	public static final String RESOURCES_CLOUD_COLOR = "standardcloudcolor";
 	public static final String RESOURCES_CONVERT_TO_CURRENT_VERSION = "convert_to_current_version";
@@ -29,36 +32,28 @@ public class ResourceControllerProperties {
 	public static final String RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION = "execute_scripts_without_file_restriction";
 	public static final String RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION = "execute_scripts_without_network_restriction";
 	public static final String RESOURCES_LINK_COLOR = "standardlinkcolor";
+	public static final String RESOURCES_LOAD_FOLDING = "load_folding";
+	public static final String RESOURCES_LOAD_FOLDING_FROM_MAP_DEFAULT_FOLD_ALL = "load_folding_from_map_default_fold_all";
+	public static final String RESOURCES_LOAD_FOLDING_FROM_MAP_DEFAULT_UNFOLD_ALL = "load_folding_from_map_default_unfold_all";
+	public static final String RESOURCES_NEVER_SAVE_FOLDING = "never_save_folding";
 	public static final String RESOURCES_NODE_SHAPE = "standardnodeshape";
 	public static final String RESOURCES_NODE_TEXT_COLOR = "standardnodetextcolor";
 	public static final String RESOURCES_REMIND_USE_RICH_TEXT_IN_NEW_LONG_NODES = "remind_use_rich_text_in_new_long_nodes";
 	public static final String RESOURCES_REMOVE_NOTES_WITHOUT_QUESTION = "remove_notes_without_question";
 	public static final String RESOURCES_ROOT_NODE_SHAPE = "standardrootnodeshape";
-	
-	public static final String RESOURCES_SAVE_MODIFICATION_TIMES = "save_modification_times";
-	
-	
 	public static final String RESOURCES_SAVE_FOLDING = "save_folding";
-	public static final String RESOURCES_ALWAYS_SAVE_FOLDING = "always_save_folding";
 	public static final String RESOURCES_SAVE_FOLDING_IF_MAP_IS_CHANGED = "save_folding_if_map_is_changed";
-	public static final String RESOURCES_NEVER_SAVE_FOLDING = "never_save_folding";
-	
-	public static final String RESOURCES_LOAD_FOLDING = "load_folding";
-	public static final String RESOURCES_ALWAYS_FOLD_ALL_AFTER_LOAD = "always_fold_all_after_load";
-	public static final String RESOURCES_ALWAYS_UNFOLD_ALL_AFTER_LOAD = "always_unfold_all_after_load";
-	public static final String RESOURCES_LOAD_FOLDING_FROM_MAP_DEFAULT_FOLD_ALL = "load_folding_from_map_default_fold_all";
-	public static final String RESOURCES_LOAD_FOLDING_FROM_MAP_DEFAULT_UNFOLD_ALL = "load_folding_from_map_default_unfold_all";
-	
+	public static final String RESOURCES_SAVE_MODIFICATION_TIMES = "save_modification_times";
 	public static final String RESOURCES_SCRIPT_USER_KEY_NAME_FOR_SIGNING = "script_user_key_name_for_signing";
 	public static final String RESOURCES_SELECTED_NODE_COLOR = "standardselectednodecolor";
 	public static final String RESOURCES_SELECTED_NODE_RECTANGLE_COLOR = "standardselectednoderectanglecolor";
 	public static final String RESOURCES_SELECTION_METHOD = "selection_method";
 	public static final String RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED = "signed_script_are_trusted";
+	public static final String RESOURCES_USE_DEFAULT_FONT_FOR_NOTES_TOO = "resources_use_default_font_for_notes_too";
+	public static final String RESOURCES_USE_MARGIN_TOP_ZERO_FOR_NOTES = "resources_use_margin_top_zero_for_notes";
 	public static final String RESOURCES_USE_SPLIT_PANE = "use_split_pane";
 	public static final String RESOURCES_USE_TABBED_PANE = "use_tabbed_pane";
 	public static final String RESOURCES_WHEEL_VELOCITY = "wheel_velocity";
 	public static final String XML_PATTERNS_XML = "/xml/patterns.xml";
 	public static final String XML_VERSION = "0.9.0";
-	public static final String RESOURCES_USE_DEFAULT_FONT_FOR_NOTES_TOO = "resources_use_default_font_for_notes_too";
-	public static final String RESOURCES_USE_MARGIN_TOP_ZERO_FOR_NOTES = "resources_use_margin_top_zero_for_notes";
 }

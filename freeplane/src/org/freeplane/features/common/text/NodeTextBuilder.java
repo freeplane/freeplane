@@ -32,7 +32,6 @@ import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.n3.nanoxml.XMLElement;
-import org.freeplane.n3.nanoxml.XMLElement;
 
 public class NodeTextBuilder implements IElementContentHandler, IElementWriter, IAttributeWriter {
 	public static final String XML_NODE_TEXT = "TEXT";

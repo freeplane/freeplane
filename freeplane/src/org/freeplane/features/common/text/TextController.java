@@ -31,20 +31,19 @@ import org.freeplane.core.modecontroller.ModeController;
  * @author Dimitry Polivaev
  */
 public class TextController implements IExtension {
-
 	public static TextController getController(final ModeController modeController) {
 		return (TextController) modeController.getExtension(TextController.class);
 	}
 
-	public static void install(final ModeController modeController, final TextController textController) {
-		modeController.addExtension(TextController.class, textController);
-		final Controller controller = modeController.getController();
+	public static void install(final Controller controller) {
+		FilterController.getController(controller).getConditionFactory().addConditionController(0,
+		    new NodeConditionController());
 	}
 
-	public static void install(final Controller controller) {
-	    FilterController.getController(controller).getConditionFactory()
-		.addConditionController(0, new NodeConditionController());
-    }
+	public static void install(final ModeController modeController, final TextController textController) {
+		modeController.addExtension(TextController.class, textController);
+		modeController.getController();
+	}
 
 	final private ModeController modeController;
 

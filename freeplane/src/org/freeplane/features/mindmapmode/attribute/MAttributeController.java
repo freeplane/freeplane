@@ -628,8 +628,7 @@ public class MAttributeController extends AttributeController {
 
 	@Override
 	public void performRemoveAttributeValue(final String name, final String value) {
-		final IActor unregistryActor = new UnregistryAttributeValueActor(getAttributeRegistry()
-		    .getElement(name), value);
+		final IActor unregistryActor = new UnregistryAttributeValueActor(getAttributeRegistry().getElement(name), value);
 		getModeController().execute(unregistryActor);
 		final IVisitor remover = new AttributeValueRemover(name, value);
 		final Iterator iterator = new Iterator(remover);
@@ -658,8 +657,8 @@ public class MAttributeController extends AttributeController {
 		getModeController().execute(registryActor);
 		final AttributeRegistryElement newElement = registry.getElement(newName);
 		for (int i = 0; i < values.getSize(); i++) {
-			final IActor registryValueActor = new RegistryAttributeValueActor(newElement, values
-			    .getElementAt(i).toString());
+			final IActor registryValueActor = new RegistryAttributeValueActor(newElement, values.getElementAt(i)
+			    .toString());
 			getModeController().execute(registryValueActor);
 		}
 		final IVisitor replacer = new AttributeRenamer(oldName, newName);

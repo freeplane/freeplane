@@ -91,11 +91,11 @@ abstract class TimeCondition implements ICondition {
 		this.date = date;
 	}
 
+	abstract protected String createDesctiption();
+
 	public Date getDate() {
 		return date;
 	}
-
-	abstract protected String createDesctiption();
 
 	public JComponent getListCellRendererComponent() {
 		if (renderer == null) {
@@ -103,6 +103,9 @@ abstract class TimeCondition implements ICondition {
 		}
 		return renderer;
 	}
+
+	abstract String getName();
+
 	@Override
 	public String toString() {
 		if (description == null) {
@@ -110,7 +113,6 @@ abstract class TimeCondition implements ICondition {
 		}
 		return description;
 	}
-	abstract String getName();
 
 	public void toXml(final XMLElement element) {
 		final XMLElement child = new XMLElement();

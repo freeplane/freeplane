@@ -21,32 +21,27 @@ package org.freeplane.features.common.attribute;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.AbstractAction;
-
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.MapModel;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
-import org.freeplane.core.ui.IFreeplaneAction;
-import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.AFreeplaneAction;
 
-class ShowSelectedAttributesAction extends AbstractAction implements IFreeplaneAction {
+class ShowSelectedAttributesAction extends AFreeplaneAction {
 	private static final String NAME = "showSelectedAttributes";
 	private static final long serialVersionUID = -5910402741456371862L;
-	final private Controller controller;
 
 	/**
 	 *
 	 */
 	public ShowSelectedAttributesAction(final Controller controller) {
-		this.controller = controller;
-		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText("attributes_show_selected"));
+		super(controller, "attributes_show_selected");
 	};
 
 	public void actionPerformed(final ActionEvent e) {
-		final MapModel map = controller.getMap();
+		final MapModel map = getController().getMap();
 		setAttributeViewType(map);
 	}
 
+	@Override
 	public String getName() {
 		return NAME;
 	}

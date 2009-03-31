@@ -32,75 +32,79 @@ import org.freeplane.core.model.MapModel;
  * Mar 30, 2009
  */
 public class FilterHistory {
+	private final Controller controller;
 	private ListIterator<Filter> filters;
-	private Controller controller;
-	FilterHistory(Controller controller){
+
+	FilterHistory(final Controller controller) {
 		this.controller = controller;
 		init();
 	}
 
-	private void init() {
-	    List list = new LinkedList<Filter>();
-		filters = list.listIterator();
-		filters.add(Filter.createTransparentFilter(controller));
-    }
-	
-	void clear(){
-		init();
-	}
-	void undo(){
-		final MapModel map = controller.getMap();
-		final Filter previous = filters.previous();
-		undoImpl(map);
-		while(previous != filters.next());
-		if (filters.nextIndex() > 1){
-			filters.previous();
-		}
-	}
-
-	private void undoImpl(final MapModel map) {
-		if(! filters.hasPrevious()){
-			return;
-		}
-		final Filter previous = filters.previous();
-	    if(previous.appliesToVisibleNodesOnly()){
-	    	undoImpl(map);
-		}
-		previous.applyFilter(map, true);
-    }
-	
-	void redo(){
-		if(! filters.hasNext()){
-			return;
-		}
-		final MapModel map = controller.getMap();
-		final Filter next = filters.next();
-		next.applyFilter(map, true);
-	}
-	
-	void add(final Filter filter){
+	void add(final Filter filter) {
 		final Filter currentFilter = getCurrentFilter();
-		if (isConditionStronger(currentFilter, filter)){
+		if (isConditionStronger(currentFilter, filter)) {
 			filters.previous();
 			filters.remove();
 		}
-		while(filters.hasNext()){
+		while (filters.hasNext()) {
 			filters.next();
 			filters.remove();
 		}
 		filters.add(filter);
 	}
 
-	private boolean isConditionStronger(final Filter oldFilter, final Filter newFilter) {
-	    if (newFilter.isConditionStronger(oldFilter)){
-	    	return true;
-	    }
-	    return newFilter.getCondition()instanceof SelectedViewSnapshotCondition 
-	    && oldFilter.getCondition()instanceof SelectedViewSnapshotCondition;
-    }
+	void clear() {
+		init();
+	}
 
 	Filter getCurrentFilter() {
 		filters.previous();
 		return filters.next();
-    }
+	}
+
+	private void init() {
+		final List list = new LinkedList<Filter>();
+		filters = list.listIterator();
+		filters.add(Filter.createTransparentFilter(controller));
+	}
+
+	private boolean isConditionStronger(final Filter oldFilter, final Filter newFilter) {
+		if (newFilter.isConditionStronger(oldFilter)) {
+			return true;
+		}
+		return newFilter.getCondition() instanceof SelectedViewSnapshotCondition
+		        && oldFilter.getCondition() instanceof SelectedViewSnapshotCondition;
+	}
+
+	void redo() {
+		if (!filters.hasNext()) {
+			return;
+		}
+		final MapModel map = controller.getMap();
+		final Filter next = filters.next();
+		next.applyFilter(map, true);
+	}
+
+	void undo() {
+		final MapModel map = controller.getMap();
+		final Filter previous = filters.previous();
+		undoImpl(map);
+		while (previous != filters.next()) {
+			;
+		}
+		if (filters.nextIndex() > 1) {
+			filters.previous();
+		}
+	}
+
+	private void undoImpl(final MapModel map) {
+		if (!filters.hasPrevious()) {
+			return;
+		}
+		final Filter previous = filters.previous();
+		if (previous.appliesToVisibleNodesOnly()) {
+			undoImpl(map);
+		}
+		previous.applyFilter(map, true);
+	}
 }

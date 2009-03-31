@@ -21,18 +21,22 @@ package org.freeplane.core.resources;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.AbstractAction;
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.ui.AFreeplaneAction;
 
-import org.freeplane.core.ui.IFreeplaneAction;
-
-class OptionHTMLExportFoldingAction extends AbstractAction implements IFreeplaneAction {
+class OptionHTMLExportFoldingAction extends AFreeplaneAction {
 	static final String NAME = "optionHTMLExportFoldingAction";
 	private static final long serialVersionUID = 602116895676184299L;
+
+	OptionHTMLExportFoldingAction(final Controller controller) {
+		super(controller);
+	}
 
 	public void actionPerformed(final ActionEvent e) {
 		ResourceController.getResourceController().setProperty("html_export_folding", e.getActionCommand());
 	}
 
+	@Override
 	public String getName() {
 		return NAME;
 	}

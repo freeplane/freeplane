@@ -19,12 +19,10 @@
  */
 package org.freeplane.core.undo;
 
-public interface IActor  {
-
+public interface IActor {
 	void act();
-
-	void undo();
 
 	String getDescription();
 
+	void undo();
 }

@@ -23,40 +23,33 @@ import java.awt.event.ActionEvent;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import javax.swing.AbstractAction;
-import javax.swing.ImageIcon;
-
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
-import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.IFreeplaneAction;
-import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.AFreeplaneAction;
 
-class OpenURLAction extends AbstractAction implements IFreeplaneAction {
+class OpenURLAction extends AFreeplaneAction {
 	private static final String NAME = "freeplaneUrl";
 	private static final long serialVersionUID = 7266357451275984398L;
-	final private Controller controller;
 	final private String url;
 
 	OpenURLAction(final Controller controller, final String description, final String url) {
-		super(null, new ImageIcon(ResourceController.getResourceController().getResource("/images/Link.png")));
-		MenuBuilder.setLabelAndMnemonic(this, description);
+		super(controller, description, "/images/Link.png");
 		this.url = url;
-		this.controller = controller;
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		try {
-			controller.getViewController().openDocument(new URL(url));
+			getController().getViewController().openDocument(new URL(url));
 		}
 		catch (final MalformedURLException ex) {
-			controller.errorMessage(FreeplaneResourceBundle.getText("url_error") + "\n" + ex);
+			getController().errorMessage(FreeplaneResourceBundle.getText("url_error") + "\n" + ex);
 		}
 		catch (final Exception ex) {
-			controller.errorMessage(ex);
+			getController().errorMessage(ex);
 		}
 	}
 
+	@Override
 	public String getName() {
 		return NAME;
 	}

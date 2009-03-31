@@ -115,7 +115,7 @@ class RootMainView extends MainView {
 			return;
 		}
 		final ModeController modeController = getNodeView().getMap().getModeController();
-		Object renderingHint = modeController.getController().getViewController().setEdgesRenderingHint(g);
+		final Object renderingHint = modeController.getController().getViewController().setEdgesRenderingHint(g);
 		paintSelected(g);
 		paintDragOver(g);
 		g.setColor(Color.gray);

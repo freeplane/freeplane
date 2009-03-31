@@ -23,10 +23,9 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.IFreeplaneAction;
 import org.freeplane.core.url.UrlManager;
 
-class SaveAsAction extends AFreeplaneAction implements IFreeplaneAction {
+class SaveAsAction extends AFreeplaneAction {
 	private static final String NAME = "saveAs";
 	private static final long serialVersionUID = 2159332245929439677L;
 
@@ -39,6 +38,7 @@ class SaveAsAction extends AFreeplaneAction implements IFreeplaneAction {
 		getController().getViewController().setTitle();
 	}
 
+	@Override
 	public String getName() {
 		return NAME;
 	}

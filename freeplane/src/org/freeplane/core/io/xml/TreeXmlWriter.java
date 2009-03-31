@@ -40,7 +40,6 @@ import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.ListHashTable;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.n3.nanoxml.XMLElement;
-import org.freeplane.n3.nanoxml.XMLElement;
 
 public class TreeXmlWriter implements ITreeWriter {
 	public static String BooleanToXml(final boolean col) {
@@ -108,6 +107,11 @@ public class TreeXmlWriter implements ITreeWriter {
 		xmlwriter.write(" -->\n");
 	}
 
+	public void addElement(final Object userObject, final String name) throws IOException {
+		final XMLElement element = new XMLElement(name);
+		addElement(userObject, element);
+	}
+
 	public void addElement(final Object userObject, final XMLElement element) throws IOException {
 		if (elementStarted == false && xmlElement != null) {
 			xmlwriter.write(xmlElement, true, 0, true, false);
@@ -145,11 +149,6 @@ public class TreeXmlWriter implements ITreeWriter {
 		else {
 			xmlwriter.endElement(name, true);
 		}
-	}
-
-	public void addElement(final Object userObject, final String name) throws IOException {
-		final XMLElement element = new XMLElement(name);
-		addElement(userObject, element);
 	}
 
 	public void addElementContent(final String content) throws IOException {
@@ -191,15 +190,15 @@ public class TreeXmlWriter implements ITreeWriter {
 		return writeManager.getAttributeWriters();
 	}
 
-	private ListHashTable getNodeWriters() {
-		return writeManager.getElementWriters();
-	}
-	public void setHint(final Object key, final Object value) {
-		hints.put(key, value);
-	}
 	public Object getHint(final Object key) {
 		return hints.get(key);
 	}
 
+	private ListHashTable getNodeWriters() {
+		return writeManager.getElementWriters();
+	}
 
+	public void setHint(final Object key, final Object value) {
+		hints.put(key, value);
+	}
 }

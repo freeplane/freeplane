@@ -37,17 +37,18 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 	private EncryptionModel encryptionModel;
 	final private MapController mapController;
 	final private boolean writeChildren;
+	private final boolean writeFolded;
 	final private boolean writeInvisible;
 	private XMLElement xmlNode;
-	private boolean writeFolded;
 
 	public NodeWriter(final MapController mapController, final boolean writeChildren, final boolean writeInvisible) {
 		this.mapController = mapController;
 		this.writeChildren = writeChildren;
 		this.writeInvisible = writeInvisible;
-		final String saveFolding = ResourceController.getResourceController().getProperty(ResourceControllerProperties.RESOURCES_SAVE_FOLDING);
-		this.writeFolded = saveFolding.equals(ResourceControllerProperties.RESOURCES_ALWAYS_SAVE_FOLDING)
-		||saveFolding.equals(ResourceControllerProperties.RESOURCES_SAVE_FOLDING_IF_MAP_IS_CHANGED);
+		final String saveFolding = ResourceController.getResourceController().getProperty(
+		    ResourceControllerProperties.RESOURCES_SAVE_FOLDING);
+		writeFolded = saveFolding.equals(ResourceControllerProperties.RESOURCES_ALWAYS_SAVE_FOLDING)
+		        || saveFolding.equals(ResourceControllerProperties.RESOURCES_SAVE_FOLDING_IF_MAP_IS_CHANGED);
 	}
 
 	private void saveChildren(final ITreeWriter writer, final NodeModel node) throws IOException {
@@ -81,7 +82,8 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 		xmlNode = new XMLElement();
 		encryptionModel = EncryptionModel.getModel(node);
 		if (encryptionModel != null) {
-			final String additionalInfo = encryptionModel.getEncryptedContent(mapController, (Mode)writer.getHint(Hint.MODE));
+			final String additionalInfo = encryptionModel.getEncryptedContent(mapController, (Mode) writer
+			    .getHint(Hint.MODE));
 			writer.addAttribute(NodeBuilder.XML_NODE_ENCRYPTED_CONTENT, additionalInfo);
 		}
 		if (mapController.isFolded(node) && (writeFolded || writer.getHint(Hint.MODE).equals(Mode.CLIPBOARD))) {
@@ -95,7 +97,9 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 			final String id = node.createID();
 			writer.addAttribute("ID", id);
 		}
-		if (node.getHistoryInformation() != null && ResourceController.getResourceController().getBooleanProperty(ResourceControllerProperties.RESOURCES_SAVE_MODIFICATION_TIMES)) {
+		if (node.getHistoryInformation() != null
+		        && ResourceController.getResourceController().getBooleanProperty(
+		            ResourceControllerProperties.RESOURCES_SAVE_MODIFICATION_TIMES)) {
 			writer.addAttribute(NodeBuilder.XML_NODE_HISTORY_CREATED_AT, TreeXmlWriter.dateToString(node
 			    .getHistoryInformation().getCreatedAt()));
 			writer.addAttribute(NodeBuilder.XML_NODE_HISTORY_LAST_MODIFIED_AT, TreeXmlWriter.dateToString(node

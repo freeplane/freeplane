@@ -34,7 +34,6 @@ import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.IFreeplaneAction;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.mindmapmode.MMapController;
@@ -42,7 +41,7 @@ import org.freeplane.features.mindmapmode.MMapController;
 /**
  * This is exactly the opposite of exportBranch.
  */
-class ImportLinkedBranchWithoutRootAction extends AFreeplaneAction implements IFreeplaneAction {
+class ImportLinkedBranchWithoutRootAction extends AFreeplaneAction {
 	private static final String NAME = "importLinkedBranchWithoutRoot";
 	private static final long serialVersionUID = -6244651836308760718L;
 
@@ -83,6 +82,7 @@ class ImportLinkedBranchWithoutRootAction extends AFreeplaneAction implements IF
 		}
 	}
 
+	@Override
 	public String getName() {
 		return NAME;
 	}

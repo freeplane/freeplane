@@ -21,7 +21,6 @@ package org.freeplane.features.common.time;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.FilterController;
-import org.freeplane.core.modecontroller.ModeController;
 
 /**
  * @author Dimitry Polivaev
@@ -29,6 +28,7 @@ import org.freeplane.core.modecontroller.ModeController;
  */
 public class TimeController {
 	public static void install(final Controller controller) {
-		FilterController.getController(controller).getConditionFactory().addConditionController(4, new TimeConditionController(controller));
+		FilterController.getController(controller).getConditionFactory().addConditionController(4,
+		    new TimeConditionController(controller));
 	}
 }

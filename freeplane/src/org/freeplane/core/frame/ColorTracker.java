@@ -72,23 +72,18 @@ public class ColorTracker implements ActionListener, Serializable {
 		final JDialog dialog = JColorChooser.createDialog(component, title, true, pane, ok, null);
 		final Container container = (Container) dialog.getContentPane().getComponent(1);
 		final JButton defaultBtn = new JButton(FreeplaneResourceBundle.getText("reset_to_default"));
-		defaultBtn.addActionListener(new ActionListener(){
-
-			public void actionPerformed(ActionEvent e) {
-	            dialog.dispose();
-	            ok.setColor(null);
-	            
-            }});
+		defaultBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(final ActionEvent e) {
+				dialog.dispose();
+				ok.setColor(null);
+			}
+		});
 		container.add(defaultBtn);
 		dialog.addWindowListener(new Closer());
 		dialog.addComponentListener(new DisposeOnClose());
 		dialog.show();
 		return ok.getColor();
 	}
-
-	protected void setColor(Color color) {
-	    this.color = color;
-    }
 
 	public static Color showCommonJColorChooserDialog(final Controller controller, final NodeModel nodeModel,
 	                                                  final String title, final Color initialColor)
@@ -110,5 +105,9 @@ public class ColorTracker implements ActionListener, Serializable {
 
 	Color getColor() {
 		return color;
+	}
+
+	protected void setColor(final Color color) {
+		this.color = color;
 	}
 }

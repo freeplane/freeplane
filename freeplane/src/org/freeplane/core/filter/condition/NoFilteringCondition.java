@@ -63,5 +63,4 @@ public class NoFilteringCondition implements ICondition {
 
 	public void toXml(final XMLElement element) {
 	}
-
 }

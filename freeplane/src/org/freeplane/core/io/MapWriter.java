@@ -30,26 +30,29 @@ import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.n3.nanoxml.XMLElement;
-import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
  * @author Dimitry Polivaev
  * 07.12.2008
  */
 public class MapWriter implements IElementWriter, IAttributeWriter {
+	public enum Hint {
+		MODE
+	};
+
 	public enum Mode {
-		FILE, CLIPBOARD;
-		public static Mode parse(String string){
-			if(string.equals("FILE")){
+		CLIPBOARD, FILE;
+		public static Mode parse(final String string) {
+			if (string.equals("FILE")) {
 				return FILE;
 			}
-			if(string.equals("CLIPBOARD")){
+			if (string.equals("CLIPBOARD")) {
 				return CLIPBOARD;
 			}
-			throw new NoSuchFieldError("value " + string + " not exist");			
+			throw new NoSuchFieldError("value " + string + " not exist");
 		}
 	};
-	public enum Hint{MODE};
+
 	private NodeWriter currentNodeWriter;
 	final private MapController mapController;
 	private boolean saveInvisible;
@@ -117,8 +120,8 @@ public class MapWriter implements IElementWriter, IAttributeWriter {
 		}
 	}
 
-	public void writeNodeAsXml(final Writer writer, final NodeModel node, final Mode mode, final boolean writeInvisible,
-	                           final boolean writeChildren) throws IOException {
+	public void writeNodeAsXml(final Writer writer, final NodeModel node, final Mode mode,
+	                           final boolean writeInvisible, final boolean writeChildren) throws IOException {
 		final TreeXmlWriter xmlWriter = new TreeXmlWriter(writeManager, writer);
 		xmlWriter.setHint(Hint.MODE, mode);
 		writeNode(xmlWriter, node, writeInvisible, writeChildren);

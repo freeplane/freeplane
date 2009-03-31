@@ -88,8 +88,8 @@ abstract public class ViewController implements IMapViewChangeListener {
 	private boolean toolbarVisible;
 	final private String userDefinedZoom;
 	final private ZoomInAction zoomIn;
+	private final DefaultComboBoxModel zoomModel;
 	final private ZoomOutAction zoomOut;
-	private DefaultComboBoxModel zoomModel;
 
 	public ViewController(final Controller controller, final IMapViewManager mapViewManager) {
 		super();
@@ -109,21 +109,21 @@ abstract public class ViewController implements IMapViewChangeListener {
 		userDefinedZoom = FreeplaneResourceBundle.getText("user_defined_zoom");
 		zoomModel = new DefaultComboBoxModel(getZooms());
 		zoomModel.addElement(userDefinedZoom);
-		String mapViewZoom = ResourceController.getResourceController().getProperty("map_view_zoom", "1.0");
+		final String mapViewZoom = ResourceController.getResourceController().getProperty("map_view_zoom", "1.0");
 		try {
-	        setZoom(Float.parseFloat(mapViewZoom));
-        }
-        catch (Exception e) {
-    		zoomModel.setSelectedItem("100%");
-	        e.printStackTrace();
-        }
+			setZoom(Float.parseFloat(mapViewZoom));
+		}
+		catch (final Exception e) {
+			zoomModel.setSelectedItem("100%");
+			e.printStackTrace();
+		}
 		controller.addAction(new ToggleMenubarAction(controller, this));
 		controller.addAction(new ToggleToolbarAction(controller, this));
 		controller.addAction(new ToggleLeftToolbarAction(controller, this));
 		toolbarVisible = true;
 		leftToolbarVisible = true;
 		menubarVisible = true;
-		toolbarPanel = new JPanel(new FlowLayout(FlowLayout.LEFT,0,0));
+		toolbarPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		leftToolbarPanel = new JPanel(new BorderLayout());
 		scrollPane = new MapViewScrollPane();
 	}
@@ -145,7 +145,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 			if (selected == null) {
 				mapSelection.selectRoot();
 			}
-			else{
+			else {
 				mapSelection.centerNode(selected);
 			}
 			setZoomComboBox(mapViewManager.getZoom());
@@ -308,78 +308,49 @@ abstract public class ViewController implements IMapViewChangeListener {
 		getContentPane().add(toolbarPanel, BorderLayout.NORTH);
 		getContentPane().add(leftToolbarPanel, BorderLayout.WEST);
 		toolbarPanel.add(filterToolbar);
-		filterToolbar.addComponentListener(new ComponentListener(){
-
-			public void componentHidden(ComponentEvent e) {
+		filterToolbar.addComponentListener(new ComponentListener() {
+			public void componentHidden(final ComponentEvent e) {
 				resizeToolbarPane();
 			}
 
-			public void componentMoved(ComponentEvent e) {
+			public void componentMoved(final ComponentEvent e) {
 				resizeToolbarPane();
 			}
 
-			public void componentResized(ComponentEvent e) {
+			public void componentResized(final ComponentEvent e) {
 			}
 
-			public void componentShown(ComponentEvent e) {
+			public void componentShown(final ComponentEvent e) {
 				resizeToolbarPane();
 			}
 		});
-			    
-		toolbarPanel.addComponentListener(new ComponentListener(){
+		toolbarPanel.addComponentListener(new ComponentListener() {
+			public void componentHidden(final ComponentEvent e) {
+			}
 
-			public void componentHidden(ComponentEvent e) {
-	        }
+			public void componentMoved(final ComponentEvent e) {
+			}
 
-			public void componentMoved(ComponentEvent e) {
-	        }
-
-			public void componentResized(ComponentEvent e) {
+			public void componentResized(final ComponentEvent e) {
 				resizeToolbarPane();
-	        }
+			}
 
-			public void componentShown(ComponentEvent e) {
-	        }
-			});
-	    
-		toolbarPanel.addContainerListener(new ContainerListener(){
+			public void componentShown(final ComponentEvent e) {
+			}
+		});
+		toolbarPanel.addContainerListener(new ContainerListener() {
+			public void componentAdded(final ContainerEvent e) {
+				resizeToolbarPane();
+			}
 
-			public void componentAdded(ContainerEvent e) {
-		        resizeToolbarPane();
-	        }
-
-			public void componentRemoved(ContainerEvent e) {
-		        resizeToolbarPane();
-	        }});
-
+			public void componentRemoved(final ContainerEvent e) {
+				resizeToolbarPane();
+			}
+		});
 		status.setPreferredSize(status.getPreferredSize());
 		status.setText("");
 	}
 
-	private void resizeToolbarPane() {
-		if(!toolbarPanel.isValid()){
-			EventQueue.invokeLater(new Runnable(){
-				public void run() {
-					resizeToolbarPane();
-	                
-                }});
-			return ;
-		}
-		int lastComponent = toolbarPanel.getComponentCount()-1;
-		while(lastComponent >= 0 && !toolbarPanel.getComponent(lastComponent).isVisible()){
-			lastComponent--;
-		}
-		if(lastComponent >= 0){
-			final Component component = toolbarPanel.getComponent(lastComponent);
-			final Dimension oldPreferredSize = toolbarPanel.getPreferredSize();
-			final Dimension preferredSize = new Dimension(toolbarPanel.getWidth(), component.getY() + component.getHeight());
-			if(oldPreferredSize.height != preferredSize.height){
-				toolbarPanel.setPreferredSize(preferredSize);
-				toolbarPanel.getParent().invalidate();
-				((JComponent)getContentPane()).revalidate();
-			}
-		}
-	}
 	abstract public JSplitPane insertComponentIntoSplitPane(JComponent noteViewerComponent);
 
 	abstract public boolean isApplet();
@@ -443,6 +414,32 @@ abstract public class ViewController implements IMapViewChangeListener {
 	 * 
 	 */
 	abstract public void removeSplitPane();
+
+	private void resizeToolbarPane() {
+		if (!toolbarPanel.isValid()) {
+			EventQueue.invokeLater(new Runnable() {
+				public void run() {
+					resizeToolbarPane();
+				}
+			});
+			return;
+		}
+		int lastComponent = toolbarPanel.getComponentCount() - 1;
+		while (lastComponent >= 0 && !toolbarPanel.getComponent(lastComponent).isVisible()) {
+			lastComponent--;
+		}
+		if (lastComponent >= 0) {
+			final Component component = toolbarPanel.getComponent(lastComponent);
+			final Dimension oldPreferredSize = toolbarPanel.getPreferredSize();
+			final Dimension preferredSize = new Dimension(toolbarPanel.getWidth(), component.getY()
+			        + component.getHeight());
+			if (oldPreferredSize.height != preferredSize.height) {
+				toolbarPanel.setPreferredSize(preferredSize);
+				toolbarPanel.getParent().invalidate();
+				((JComponent) getContentPane()).revalidate();
+			}
+		}
+	}
 
 	public void scrollNodeToVisible(final NodeModel node) {
 		mapViewManager.scrollNodeToVisible(node);
@@ -593,7 +590,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 
 	public void updateMenus(final MenuBuilder menuBuilder) {
 		if (menuBuilder.contains("/main_toolbar/zoom")) {
-			JComboBox zoomBox = new JComboBox(zoomModel);
+			final JComboBox zoomBox = new JComboBox(zoomModel);
 			zoomBox.addItemListener(new ItemListener() {
 				public void itemStateChanged(final ItemEvent e) {
 					if (e.getStateChange() == ItemEvent.SELECTED) {
@@ -601,7 +598,7 @@ abstract public class ViewController implements IMapViewChangeListener {
 					}
 				}
 			});
-			menuBuilder.addComponent("/main_toolbar/zoom", zoomBox,  MenuBuilder.AS_CHILD);
+			menuBuilder.addComponent("/main_toolbar/zoom", zoomBox, MenuBuilder.AS_CHILD);
 		}
 	}
 

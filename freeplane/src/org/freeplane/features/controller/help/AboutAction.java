@@ -21,34 +21,31 @@ package org.freeplane.features.controller.help;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.FreeplaneVersion;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
-import org.freeplane.core.ui.IFreeplaneAction;
-import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.AFreeplaneAction;
 
-class AboutAction extends AbstractAction implements IFreeplaneAction {
+class AboutAction extends AFreeplaneAction {
 	private static final long serialVersionUID = -5711560831676141530L;
-	final private Controller controller;
 
 	/**
 	 *
 	 */
 	AboutAction(final Controller controller) {
-		this.controller = controller;
-		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText("about"));
+		super(controller, "about");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		JOptionPane.showMessageDialog(controller.getViewController().getViewport(), FreeplaneResourceBundle
+		JOptionPane.showMessageDialog(getController().getViewController().getViewport(), FreeplaneResourceBundle
 		    .getText("about_text")
 		        + FreeplaneVersion.getVersion(), FreeplaneResourceBundle.getText("about"),
 		    JOptionPane.INFORMATION_MESSAGE);
 	}
 
+	@Override
 	public String getName() {
 		return "about";
 	}

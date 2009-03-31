@@ -29,16 +29,20 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.IFreeplaneAction;
 import org.freeplane.core.undo.IActor;
 
-class ToggleFoldedAction extends AFreeplaneAction implements IFreeplaneAction {
+class ToggleFoldedAction extends AFreeplaneAction {
 	public ToggleFoldedAction(final Controller controller) {
 		super(controller, "toggle_folded");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		toggleFolded();
+	}
+
+	@Override
+	public String getName() {
+		return "undoableToggleFolded";
 	}
 
 	/**
@@ -71,8 +75,8 @@ class ToggleFoldedAction extends AFreeplaneAction implements IFreeplaneAction {
 			public void act() {
 				modeController.getMapController()._setFolded(node, !node.isFolded());
 				final ResourceController resourceController = ResourceController.getResourceController();
-				if (resourceController.getProperty(ResourceControllerProperties.RESOURCES_SAVE_FOLDING)
-				    .equals(ResourceControllerProperties.RESOURCES_ALWAYS_SAVE_FOLDING)) {
+				if (resourceController.getProperty(ResourceControllerProperties.RESOURCES_SAVE_FOLDING).equals(
+				    ResourceControllerProperties.RESOURCES_ALWAYS_SAVE_FOLDING)) {
 					modeController.getMapController().nodeChanged(node);
 				}
 			}
@@ -87,8 +91,4 @@ class ToggleFoldedAction extends AFreeplaneAction implements IFreeplaneAction {
 		};
 		modeController.execute(actor);
 	}
-
-	public String getName() {
-	    return "undoableToggleFolded";
-    }
 }

@@ -28,15 +28,25 @@ import org.freeplane.core.ui.AFreeplaneAction;
  * Mar 28, 2009
  */
 class EditFilterAction extends AFreeplaneAction {
-	/**
-     * 
-     */
-    private final FilterController filterController;
 	private static final long serialVersionUID = 6280668187345048213L;
+	/**
+	 * 
+	 */
+	private final FilterController filterController;
+	private FilterComposerDialog filterDialog = null;
 
-	EditFilterAction(FilterController filterController) {
-		super(filterController.getController(), null, "/images/Btn_edit.gif");
+	EditFilterAction(final FilterController filterController) {
+		super(filterController.getController(), "", "/images/Btn_edit.gif");
 		this.filterController = filterController;
+	}
+
+	public void actionPerformed(final ActionEvent arg0) {
+		final Object selectedItem = filterController.getFilterConditions().getSelectedItem();
+		filterController.showFilterToolbar(true);
+		if (selectedItem != null) {
+			getFilterDialog().setSelectedItem(selectedItem);
+		}
+		getFilterDialog().show();
 	}
 
 	/*
@@ -48,22 +58,9 @@ class EditFilterAction extends AFreeplaneAction {
 	private FilterComposerDialog getFilterDialog() {
 		if (filterDialog == null) {
 			filterDialog = new FilterComposerDialog(getController());
-			getFilterDialog().setLocationRelativeTo(this.filterController.getFilterToolbar());
+			getFilterDialog().setLocationRelativeTo(filterController.getFilterToolbar());
 			getController().getMapViewManager().addMapSelectionListener(filterDialog);
 		}
 		return filterDialog;
-	}
-	private FilterComposerDialog filterDialog = null;
-	public void actionPerformed(final ActionEvent arg0) {
-		final Object selectedItem = this.filterController.getFilterConditions().getSelectedItem();
-		filterController.showFilterToolbar(true);
-		if (selectedItem != null) {
-			getFilterDialog().setSelectedItem(selectedItem);
-		}
-		getFilterDialog().show();
-	}
-
-	public String getName() {
-		return getClass().getSimpleName();
 	}
 }

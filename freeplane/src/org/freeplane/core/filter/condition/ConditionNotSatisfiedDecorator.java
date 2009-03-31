@@ -24,7 +24,6 @@ import java.util.Vector;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
-import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.FreeplaneResourceBundle;

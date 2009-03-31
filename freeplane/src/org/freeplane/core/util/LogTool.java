@@ -107,11 +107,11 @@ public class LogTool {
 		System.err.println();
 	}
 
-	public static void warn(final String msg) {
-		LOGGER.log(Level.WARNING, msg);
+	public static void severe(final String message) {
+		LOGGER.log(Level.SEVERE, message);
 	}
 
-	public static void severe(String message) {
-		LOGGER.log(Level.SEVERE, message);
+	public static void warn(final String msg) {
+		LOGGER.log(Level.WARNING, msg);
 	}
 }

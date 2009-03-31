@@ -23,14 +23,14 @@ package org.freeplane.core.filter;
  * @author Dimitry Polivaev
  */
 public class FilterInfo {
-	private int info = FilterInfo.FILTER_INITIAL_VALUE;
 	// TODO rladstaetter 02.03.2009 create enum, move out of interface definition (defining constants in interfaces is considered 'old style')
-    public static final int FILTER_INITIAL_VALUE = 1;
+	public static final int FILTER_INITIAL_VALUE = 1;
 	public static final int FILTER_SHOW_ANCESTOR = 4;
 	public static final int FILTER_SHOW_DESCENDANT = 8;
 	public static final int FILTER_SHOW_ECLIPSED = 16;
 	public static final int FILTER_SHOW_HIDDEN = 32;
 	public static final int FILTER_SHOW_MATCHED = 2;
+	private int info = FilterInfo.FILTER_INITIAL_VALUE;
 
 	/**
 	 *

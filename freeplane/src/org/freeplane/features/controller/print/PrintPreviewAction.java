@@ -51,6 +51,7 @@ class PrintPreviewAction extends AbstractPrintAction {
 		previewDialog.setVisible(true);
 	}
 
+	@Override
 	public String getName() {
 		return NAME;
 	}

@@ -35,24 +35,13 @@ import org.freeplane.view.swing.map.MapView;
  * @author foltin
  */
 public class NodeHistory implements IExtension {
-	private NodeHolder currentNodeHolder;
-	final private Controller controller;
-	private ListIterator<NodeHolder> nodeIterator;
-	private final LinkedList<NodeHolder> nodes;
-
-	static public void install(final Controller controller){
+	static public void install(final Controller controller) {
 		controller.addExtension(NodeHistory.class, new NodeHistory(controller));
 	}
-	
-	private NodeHistory(final Controller controller) {
-		this.controller = controller;
-		nodes = new LinkedList<NodeHolder>();
-		nodeIterator = nodes.listIterator();
-	}
 
-	static public void install(ModeController modeController){
+	static public void install(final ModeController modeController) {
 		final Controller controller = modeController.getController();
-		NodeHistory history = (NodeHistory) controller.getExtension(NodeHistory.class);
+		final NodeHistory history = (NodeHistory) controller.getExtension(NodeHistory.class);
 		modeController.getMapController().addNodeSelectionListener(history.getMapSelectionListener());
 		LinkController.getController(modeController).addNodeSelectionListener(history.getLinkSelectionListener());
 		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
@@ -63,32 +52,17 @@ public class NodeHistory implements IExtension {
 		menuBuilder.addAnnotatedAction(forwardAction);
 		modeController.addAnnotatedAction(forwardAction);
 	}
-	
-	private INodeSelectionListener getLinkSelectionListener() {
-		return new INodeSelectionListener(){
 
-			public void onDeselect(NodeModel node) {
-				onNodeSelect(node);
-				currentNodeHolder.setReachedByLink(true);
-            }
+	final private Controller controller;
+	private NodeHolder currentNodeHolder;
+	private ListIterator<NodeHolder> nodeIterator;
+	private final LinkedList<NodeHolder> nodes;
 
-			public void onSelect(NodeModel node) {
-				onNodeSelect(node);
-				currentNodeHolder.setReachedByLink(true);
-            }};
-    }
-	
-
-	private INodeSelectionListener getMapSelectionListener() {
-		return new INodeSelectionListener(){
-
-			public void onDeselect(NodeModel node) {
-            }
-
-			public void onSelect(NodeModel node) {
-				onNodeSelect(node);
-            }};
-    }
+	private NodeHistory(final Controller controller) {
+		this.controller = controller;
+		nodes = new LinkedList<NodeHolder>();
+		nodeIterator = nodes.listIterator();
+	}
 
 	boolean canGoBack() {
 		return nodeIterator.previousIndex() > 0;
@@ -98,13 +72,31 @@ public class NodeHistory implements IExtension {
 		return nodeIterator.hasNext();
 	}
 
-	private void go(final boolean back, final boolean fast) {
-		NodeHolder lastCurrentNodeHolder;
-		do {
-			lastCurrentNodeHolder = currentNodeHolder;
-			go(back);
-		} while (fast && lastCurrentNodeHolder != currentNodeHolder && !currentNodeHolder.isReachedByLink());
+	private INodeSelectionListener getLinkSelectionListener() {
+		return new INodeSelectionListener() {
+			public void onDeselect(final NodeModel node) {
+				onNodeSelect(node);
+				currentNodeHolder.setReachedByLink(true);
+			}
+
+			public void onSelect(final NodeModel node) {
+				onNodeSelect(node);
+				currentNodeHolder.setReachedByLink(true);
+			}
+		};
 	}
+
+	private INodeSelectionListener getMapSelectionListener() {
+		return new INodeSelectionListener() {
+			public void onDeselect(final NodeModel node) {
+			}
+
+			public void onSelect(final NodeModel node) {
+				onNodeSelect(node);
+			}
+		};
+	}
+
 	private void go(final boolean back) {
 		final NodeHolder lastNodeHolder = currentNodeHolder;
 		if (back) {
@@ -153,7 +145,7 @@ public class NodeHistory implements IExtension {
 				return;
 			}
 		}
-		else{
+		else {
 			newView = currentNodeHolder.getHoldMapView();
 		}
 		if (!toBeSelected.isRoot()) {
@@ -162,14 +154,21 @@ public class NodeHistory implements IExtension {
 		newView.getModeController().getMapController().select(toBeSelected);
 	}
 
-	public void goBack(boolean fast) {
+	private void go(final boolean back, final boolean fast) {
+		NodeHolder lastCurrentNodeHolder;
+		do {
+			lastCurrentNodeHolder = currentNodeHolder;
+			go(back);
+		} while (fast && lastCurrentNodeHolder != currentNodeHolder && !currentNodeHolder.isReachedByLink());
+	}
+
+	public void goBack(final boolean fast) {
 		go(true, fast);
 	}
 
-	public void goForward(boolean fast) {
+	public void goForward(final boolean fast) {
 		go(false, fast);
 	}
-
 
 	private void onNodeSelect(final NodeModel pNode) {
 		if (currentNodeHolder != null

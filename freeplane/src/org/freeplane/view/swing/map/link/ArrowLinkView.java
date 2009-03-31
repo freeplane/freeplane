@@ -45,27 +45,11 @@ import org.freeplane.view.swing.map.NodeView;
 public class ArrowLinkView {
 	static final Stroke DEF_STROKE = new BasicStroke(1);
 	private CubicCurve2D arrowLinkCurve;
-	public CubicCurve2D getArrowLinkCurve() {
-    	return arrowLinkCurve;
-    }
-
-	public ArrowLinkModel getArrowLinkModel() {
-    	return arrowLinkModel;
-    }
-
-	public NodeView getSource() {
-    	return source;
-    }
-
-	public NodeView getTarget() {
-    	return target;
-    }
-
-	private ArrowLinkModel arrowLinkModel;
+	private final ArrowLinkModel arrowLinkModel;
 	private int iterativeLevel;
 	/** MAXIMAL_RECTANGLE_SIZE_FOR_COLLISION_DETECTION describes itself. */
 	final private int MAXIMAL_RECTANGLE_SIZE_FOR_COLLISION_DETECTION = 16;
-	private NodeView source, target;
+	private final NodeView source, target;
 
 	/* Note, that source and target are nodeviews and not nodemodels!. */
 	public ArrowLinkView(final ArrowLinkModel arrowLinkModel, final NodeView source, final NodeView target) {
@@ -129,6 +113,14 @@ public class ArrowLinkView {
 		return false;
 	}
 
+	public CubicCurve2D getArrowLinkCurve() {
+		return arrowLinkCurve;
+	}
+
+	public ArrowLinkModel getArrowLinkModel() {
+		return arrowLinkModel;
+	}
+
 	public Rectangle getBounds() {
 		if (arrowLinkCurve == null) {
 			return new Rectangle();
@@ -175,12 +167,20 @@ public class ArrowLinkView {
 		return (width < 1) ? 1 : width;
 	}
 
+	public NodeView getSource() {
+		return source;
+	}
+
 	public Stroke getStroke() {
 		final int width = getWidth();
 		if (width < 1) {
 			return ArrowLinkView.DEF_STROKE;
 		}
 		return new BasicStroke(width, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER);
+	}
+
+	public NodeView getTarget() {
+		return target;
 	}
 
 	public int getWidth() {

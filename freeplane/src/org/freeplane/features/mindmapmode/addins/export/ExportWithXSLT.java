@@ -57,10 +57,10 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.core.util.ResUtil;
 import org.freeplane.features.mindmapmode.MModeController;
-import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;
+import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.n3.nanoxml.XMLParserFactory;
 
 /**
@@ -239,7 +239,7 @@ public class ExportWithXSLT extends ExportAction {
 	 * @param mode 
 	 * @throws IOException
 	 */
-	private String getMapXml(Mode mode) throws IOException {
+	private String getMapXml(final Mode mode) throws IOException {
 		final StringWriter writer = new StringWriter();
 		final ModeController modeController = getModeController();
 		final Controller controller = modeController.getController();
@@ -321,7 +321,7 @@ public class ExportWithXSLT extends ExportAction {
 	 */
 	private boolean transformMapWithXslt(final String xsltFileName, final File saveFile, final String areaCode)
 	        throws IOException {
-		Mode mode = Mode.parse(getProperty("mode", "SAVE"));
+		final Mode mode = Mode.parse(getProperty("mode", "SAVE"));
 		final String map = getMapXml(mode);
 		final StringReader reader = new StringReader(map);
 		final URL xsltUrl = ResourceController.getResourceController().getResource(xsltFileName);
@@ -331,20 +331,20 @@ public class ExportWithXSLT extends ExportAction {
 		}
 		final InputStream xsltFile = xsltUrl.openStream();
 		final Source xsltSource = new StreamSource(xsltFile);
-        final Result result = new StreamResult(saveFile);
-        try {
-        	final TransformerFactory transFact = TransformerFactory.newInstance();
-        	final Transformer trans = transFact.newTransformer(xsltSource);
-        	trans.setParameter("destination_dir", saveFile.getName() + "_files/");
-        	trans.setParameter("area_code", areaCode);
-        	trans.setParameter("folding_type", ResourceController.getResourceController().getProperty(
-        	    "html_export_folding"));
-        	trans.transform(new StreamSource(reader), result);
-        }
-        catch (final Exception e) {
-        	LogTool.logException(e);
-        	return false;
-        };
-        return true;
+		final Result result = new StreamResult(saveFile);
+		try {
+			final TransformerFactory transFact = TransformerFactory.newInstance();
+			final Transformer trans = transFact.newTransformer(xsltSource);
+			trans.setParameter("destination_dir", saveFile.getName() + "_files/");
+			trans.setParameter("area_code", areaCode);
+			trans.setParameter("folding_type", ResourceController.getResourceController().getProperty(
+			    "html_export_folding"));
+			trans.transform(new StreamSource(reader), result);
+		}
+		catch (final Exception e) {
+			LogTool.logException(e);
+			return false;
+		};
+		return true;
 	}
 }

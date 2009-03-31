@@ -25,6 +25,8 @@ import org.freeplane.core.model.NodeModel;
  * @author Dimitry Polivaev
  */
 public interface IMapChangeListener {
+	public void mapChanged(MapChangeEvent event);
+
 	void onNodeDeleted(NodeModel parent, NodeModel child, int index);
 
 	void onNodeInserted(NodeModel parent, NodeModel child, int newIndex);
@@ -32,6 +34,4 @@ public interface IMapChangeListener {
 	void onNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex);
 
 	void onPreNodeDelete(NodeModel oldParent, NodeModel selectedNode, int index);
-	
-	public void mapChanged(MapChangeEvent event);
 }

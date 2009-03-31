@@ -26,7 +26,6 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
-import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.modecontroller.CombinedPropertyChain;
 import org.freeplane.core.modecontroller.ExclusivePropertyChain;
 import org.freeplane.core.modecontroller.IPropertyHandler;
@@ -201,7 +200,9 @@ public class NodeStyleController implements IExtension {
 			public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
 				if (propertyName.equals(ResourceControllerProperties.RESOURCES_NODE_TEXT_COLOR)) {
 					standardNodeTextColor = ColorUtils.stringToColor(newValue);
-					MapChangeEvent event = new MapChangeEvent(ResourceControllerProperties.RESOURCES_NODE_TEXT_COLOR, ColorUtils.stringToColor(oldValue), standardNodeTextColor);
+					final MapChangeEvent event = new MapChangeEvent(
+					    ResourceControllerProperties.RESOURCES_NODE_TEXT_COLOR, ColorUtils.stringToColor(oldValue),
+					    standardNodeTextColor);
 					getModeController().getMapController().fireMapChanged(event);
 				}
 			}

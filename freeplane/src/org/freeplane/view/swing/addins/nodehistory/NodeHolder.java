@@ -22,10 +22,8 @@ package org.freeplane.view.swing.addins.nodehistory;
 import java.lang.ref.WeakReference;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.view.swing.map.MapView;
@@ -37,17 +35,9 @@ import org.freeplane.view.swing.map.NodeView;
  * 13.12.2008
  */
 class NodeHolder {
-	private WeakReference<MapView> mMapView;
-	private String mNodeId;
+	private final WeakReference<MapView> mMapView;
+	private final String mNodeId;
 	private boolean reachedByLink;
-
-	protected boolean isReachedByLink() {
-    	return reachedByLink;
-    }
-
-	protected void setReachedByLink(boolean reachedByLink) {
-    	this.reachedByLink = reachedByLink;
-    }
 
 	public NodeHolder(final NodeView pNode) {
 		mNodeId = pNode.getModel().createID();
@@ -63,6 +53,10 @@ class NodeHolder {
 		}
 		final NodeHolder nodeHolder = (NodeHolder) obj;
 		return nodeHolder.mMapView.get() == mMapView.get() && nodeHolder.mNodeId.equals(mNodeId);
+	}
+
+	public MapView getHoldMapView() {
+		return mMapView.get();
 	}
 
 	MapView getMapView() {
@@ -109,7 +103,11 @@ class NodeHolder {
 		return mapView == mMapView.get() && id.equals(mNodeId);
 	}
 
-	public MapView getHoldMapView() {
-	    return mMapView.get();
-    }
+	protected boolean isReachedByLink() {
+		return reachedByLink;
+	}
+
+	protected void setReachedByLink(final boolean reachedByLink) {
+		this.reachedByLink = reachedByLink;
+	}
 }

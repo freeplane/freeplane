@@ -30,15 +30,14 @@ import javax.swing.JOptionPane;
 
 import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.IFreeplaneAction;
 import org.freeplane.core.util.LogTool;
 
-import org.freeplane.core.io.MapWriter.Mode;
 /**
  * Reverts the map to the saved version. In Xml, the old map is stored as xml
  * and as an undo action, the new map is stored, too. Moreover, the filename of
@@ -49,7 +48,7 @@ import org.freeplane.core.io.MapWriter.Mode;
  *
  * @author foltin
  */
-class RevertAction extends AFreeplaneAction implements IFreeplaneAction {
+class RevertAction extends AFreeplaneAction {
 	private static class RevertActionInstance {
 		final private Controller controller;
 		private String filePrefix;
@@ -156,7 +155,7 @@ class RevertAction extends AFreeplaneAction implements IFreeplaneAction {
 	public RevertActionInstance createRevertXmlAction(final MapModel map, final String fileName, final String filePrefix)
 	        throws IOException {
 		final StringWriter writer = new StringWriter();
-		getModeController().getMapController().getMapWriter().writeMapAsXml(map, writer, Mode.FILE,  true);
+		getModeController().getMapController().getMapWriter().writeMapAsXml(map, writer, Mode.FILE, true);
 		return createRevertXmlAction(writer.getBuffer().toString(), fileName, filePrefix);
 	}
 
@@ -174,6 +173,7 @@ class RevertAction extends AFreeplaneAction implements IFreeplaneAction {
 		return revertXmlAction;
 	}
 
+	@Override
 	public String getName() {
 		return NAME;
 	}

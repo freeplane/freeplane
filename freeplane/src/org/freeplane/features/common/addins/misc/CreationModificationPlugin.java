@@ -62,6 +62,11 @@ public class CreationModificationPlugin extends PersistentNodeHook implements IN
 		setStyleRecursive(node);
 	}
 
+	@Override
+	protected IExtension createExtension(final NodeModel node, final XMLElement element) {
+		return this;
+	}
+
 	public void nodeChanged(final NodeChangeEvent event) {
 		final NodeModel node = event.getNode();
 		if (!isActive(node)) {
@@ -110,8 +115,5 @@ public class CreationModificationPlugin extends PersistentNodeHook implements IN
 
 	protected void setToolTip(final NodeModel node, final String key, final String value) {
 		(getModeController().getMapController()).setToolTip(node, key, value);
-	}
-	protected IExtension createExtension(final NodeModel node, final XMLElement element) {
-		return this;
 	}
 }

@@ -21,27 +21,22 @@ package org.freeplane.core.frame;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.AbstractAction;
-
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
-import org.freeplane.core.ui.IFreeplaneAction;
-import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.AFreeplaneAction;
 
-class MoveToRootAction extends AbstractAction implements IFreeplaneAction {
+class MoveToRootAction extends AFreeplaneAction {
 	static final String NAME = "moveToRoot";
 	private static final long serialVersionUID = 1633978434705890609L;
-	final private Controller controller;
 
 	MoveToRootAction(final Controller controller) {
-		this.controller = controller;
-		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText("move_to_root"));
+		super(controller, "move_to_root");
 	}
 
 	public void actionPerformed(final ActionEvent event) {
-		controller.getSelection().selectRoot();
+		getController().getSelection().selectRoot();
 	}
 
+	@Override
 	public String getName() {
 		return NAME;
 	}

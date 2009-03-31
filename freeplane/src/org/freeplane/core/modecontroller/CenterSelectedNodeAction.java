@@ -20,20 +20,16 @@
 package org.freeplane.core.modecontroller;
 
 import java.awt.event.ActionEvent;
-import java.util.Iterator;
-import java.util.ListIterator;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.IFreeplaneAction;
 
 /**
  * @author foltin
  */
-class CenterSelectedNodeAction extends AFreeplaneAction implements IFreeplaneAction {
-    private static final long serialVersionUID = 7614139535200155019L;
+class CenterSelectedNodeAction extends AFreeplaneAction {
 	static final String NAME = "center_selected";
+	private static final long serialVersionUID = 7614139535200155019L;
 
 	public CenterSelectedNodeAction(final Controller controller) {
 		super(controller, "center_selected");
@@ -44,8 +40,8 @@ class CenterSelectedNodeAction extends AFreeplaneAction implements IFreeplaneAct
 		selection.centerNode(selection.getSelected());
 	}
 
+	@Override
 	public String getName() {
 		return NAME;
 	}
-
 }

@@ -23,11 +23,10 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.IFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 
 @SelectableAction(checkOnPopup = true)
-class ToggleLeftToolbarAction extends AFreeplaneAction implements IFreeplaneAction {
+class ToggleLeftToolbarAction extends AFreeplaneAction {
 	static final String NAME = "toggleLeftToolbar";
 	/**
 	 * 
@@ -48,6 +47,7 @@ class ToggleLeftToolbarAction extends AFreeplaneAction implements IFreeplaneActi
 		controller.setLeftToolbarVisible(controller.isLeftToolbarVisible());
 	}
 
+	@Override
 	public String getName() {
 		return NAME;
 	}

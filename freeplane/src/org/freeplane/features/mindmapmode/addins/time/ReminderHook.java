@@ -59,6 +59,7 @@ public class ReminderHook extends PersistentNodeHook {
 			super();
 		}
 
+		@Override
 		public String getName() {
 			return getClass().getSimpleName();
 		}
@@ -87,6 +88,7 @@ public class ReminderHook extends PersistentNodeHook {
 		}
 
 		// TODO rladstaetter 15.02.2009 remove name attribute from ActionDescriptor
+		@Override
 		public String getName() {
 			return "plugins/NodeList.xml_name";
 		}
@@ -111,6 +113,7 @@ public class ReminderHook extends PersistentNodeHook {
 			timeList.startup();
 		}
 
+		@Override
 		public String getName() {
 			return "plugins/TimeList.xml_name";
 		}
@@ -136,6 +139,7 @@ public class ReminderHook extends PersistentNodeHook {
 			timeManagement.startup();
 		}
 
+		@Override
 		public String getName() {
 			return "plugins/TimeManagement.xml_name";
 		}

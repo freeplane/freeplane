@@ -32,7 +32,6 @@ import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.IFreeplaneAction;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.link.LinkController;
@@ -42,7 +41,7 @@ import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 
-class ExportBranchAction extends AFreeplaneAction implements IFreeplaneAction {
+class ExportBranchAction extends AFreeplaneAction {
 	private static final String NAME = "exportBranch";
 	private static final long serialVersionUID = 8805695439736505873L;
 
@@ -76,7 +75,8 @@ class ExportBranchAction extends AFreeplaneAction implements IFreeplaneAction {
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File chosenFile = chooser.getSelectedFile();
 			final String ext = UrlManager.getExtension(chosenFile.getName());
-			if (!ext.equals(org.freeplane.core.resources.ResourceControllerProperties.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
+			if (!ext
+			    .equals(org.freeplane.core.resources.ResourceControllerProperties.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
 				chosenFile = new File(chosenFile.getParent(), chosenFile.getName()
 				        + org.freeplane.core.resources.ResourceControllerProperties.FREEPLANE_FILE_EXTENSION);
 			}
@@ -132,6 +132,7 @@ class ExportBranchAction extends AFreeplaneAction implements IFreeplaneAction {
 		}
 	}
 
+	@Override
 	public String getName() {
 		return NAME;
 	}

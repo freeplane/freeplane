@@ -32,23 +32,20 @@ import org.freeplane.core.model.NodeModel;
  * @author Dimitry Polivaev
  */
 public class Filter {
+	static Filter createTransparentFilter(final Controller controller) {
+		return new Filter(controller, null, true, false, false);
+	}
+
+	final private boolean appliesToVisibleNodesOnly;
 	final private ICondition condition;
 	final private Controller controller;
 	final private int options;
-	final private boolean appliesToVisibleNodesOnly;
 
-	protected boolean appliesToVisibleNodesOnly() {
-    	return appliesToVisibleNodesOnly;
-    }
-	static Filter createTransparentFilter(final Controller controller)
-	{
-		return new Filter(controller, null, true, false, false);
-	}
 	/**
 	 * @param b 
 	 */
 	public Filter(final Controller controller, final ICondition condition, final boolean areAnchestorsShown,
-	                     final boolean areDescendantsShown, boolean applyToVisibleNodesOnly) {
+	              final boolean areDescendantsShown, final boolean applyToVisibleNodesOnly) {
 		super();
 		this.controller = controller;
 		this.condition = condition;
@@ -61,11 +58,15 @@ public class Filter {
 			options += FilterInfo.FILTER_SHOW_DESCENDANT;
 		}
 		this.options = options;
-		this.appliesToVisibleNodesOnly = condition != null && applyToVisibleNodesOnly;
+		appliesToVisibleNodesOnly = condition != null && applyToVisibleNodesOnly;
 	}
 
 	void addFilterResult(final NodeModel node, final int flag) {
 		node.getFilterInfo().add(flag);
+	}
+
+	protected boolean appliesToVisibleNodesOnly() {
+		return appliesToVisibleNodesOnly;
 	}
 
 	/*
@@ -73,15 +74,15 @@ public class Filter {
 	 * @see
 	 * freeplane.controller.filter.Filter#applyFilter(freeplane.modes.MindMap)
 	 */
-	public void applyFilter(final MapModel map, boolean force) {
-		if(map == null){
+	public void applyFilter(final MapModel map, final boolean force) {
+		if (map == null) {
 			return;
 		}
 		try {
 			controller.getViewController().setWaitingCursor(true);
 			final Filter oldFilter = map.getFilter();
 			map.setFilter(this);
-			if (force  || ! isConditionStronger(oldFilter)) {
+			if (force || !isConditionStronger(oldFilter)) {
 				final NodeModel root = map.getRootNode();
 				resetFilter(root);
 				if (filterChildren(root, checkNode(root), false)) {
@@ -96,56 +97,6 @@ public class Filter {
 		finally {
 			controller.getViewController().setWaitingCursor(false);
 		}
-	}
-
-	public boolean isConditionStronger(Filter oldFilter) {
-		return (! appliesToVisibleNodesOnly 
-				|| appliesToVisibleNodesOnly == oldFilter.appliesToVisibleNodesOnly)
-		&& 
-		(condition != null && condition.equals(oldFilter.getCondition())
-			|| condition == null && oldFilter.getCondition() == null);
-	}
-	
-	private boolean checkNode(final NodeModel node) {
-		if(condition == null){
-			return true;
-		}
-		if(appliesToVisibleNodesOnly && ! node.isVisible()){
-			return false;
-		}
-	    return condition.checkNode(node);
-    }
-
-	private void refreshMap() {
-		controller.getModeController().getMapController().refreshMap();
-	}
-	private void selectVisibleNode() {
-		final IMapSelection mapSelection = controller.getSelection();
-		final List<NodeModel> selectedNodes = mapSelection.getSelection();
-		final int lastSelectedIndex = selectedNodes.size() - 1;
-		if (lastSelectedIndex == -1) {
-			return;
-		}
-		final ListIterator<NodeModel> iterator = selectedNodes.listIterator(lastSelectedIndex);
-		while (iterator.hasPrevious()) {
-			final NodeModel previous = iterator.previous();
-			if (!previous.isVisible()) {
-				mapSelection.toggleSelected(previous);
-			}
-		}
-		NodeModel selected = mapSelection.getSelected();
-		if (!selected.isVisible()) {
-			selected = getNearestVisibleParent(selected);
-			mapSelection.selectAsTheOnlyOneSelected(selected);
-		}
-		mapSelection.setSiblingMaxLevel(selected.getNodeLevel(false));
-	}
-
-	private NodeModel getNearestVisibleParent(final NodeModel selectedNode) {
-		if (selectedNode.isVisible()) {
-			return selectedNode;
-		}
-		return getNearestVisibleParent(selectedNode.getParentNode());
 	}
 
 	private boolean applyFilter(final NodeModel node, final boolean isAncestorSelected,
@@ -188,6 +139,16 @@ public class Filter {
 		return 0 != (options & FilterInfo.FILTER_SHOW_DESCENDANT);
 	}
 
+	private boolean checkNode(final NodeModel node) {
+		if (condition == null) {
+			return true;
+		}
+		if (appliesToVisibleNodesOnly && !node.isVisible()) {
+			return false;
+		}
+		return condition.checkNode(node);
+	}
+
 	/**
 	 * @param c
 	 */
@@ -206,6 +167,18 @@ public class Filter {
 		return condition;
 	}
 
+	private NodeModel getNearestVisibleParent(final NodeModel selectedNode) {
+		if (selectedNode.isVisible()) {
+			return selectedNode;
+		}
+		return getNearestVisibleParent(selectedNode.getParentNode());
+	}
+
+	public boolean isConditionStronger(final Filter oldFilter) {
+		return (!appliesToVisibleNodesOnly || appliesToVisibleNodesOnly == oldFilter.appliesToVisibleNodesOnly)
+		        && (condition != null && condition.equals(oldFilter.getCondition()) || condition == null
+		                && oldFilter.getCondition() == null);
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -221,8 +194,33 @@ public class Filter {
 		        && ((options & filterResult & ~FilterInfo.FILTER_SHOW_ECLIPSED) != 0);
 	}
 
+	private void refreshMap() {
+		controller.getModeController().getMapController().refreshMap();
+	}
+
 	private void resetFilter(final NodeModel node) {
 		node.getFilterInfo().reset();
 	}
 
+	private void selectVisibleNode() {
+		final IMapSelection mapSelection = controller.getSelection();
+		final List<NodeModel> selectedNodes = mapSelection.getSelection();
+		final int lastSelectedIndex = selectedNodes.size() - 1;
+		if (lastSelectedIndex == -1) {
+			return;
+		}
+		final ListIterator<NodeModel> iterator = selectedNodes.listIterator(lastSelectedIndex);
+		while (iterator.hasPrevious()) {
+			final NodeModel previous = iterator.previous();
+			if (!previous.isVisible()) {
+				mapSelection.toggleSelected(previous);
+			}
+		}
+		NodeModel selected = mapSelection.getSelected();
+		if (!selected.isVisible()) {
+			selected = getNearestVisibleParent(selected);
+			mapSelection.selectAsTheOnlyOneSelected(selected);
+		}
+		mapSelection.setSiblingMaxLevel(selected.getNodeLevel(false));
+	}
 }

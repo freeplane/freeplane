@@ -28,29 +28,30 @@ import org.freeplane.core.model.NodeModel;
  * @author Dimitry Polivaev
  * Mar 12, 2009
  */
-public class MapStyleModel implements IExtension{
+public class MapStyleModel implements IExtension {
+	public static MapStyleModel createExtension(final NodeModel node) {
+		MapStyleModel extension = (MapStyleModel) node.getExtension(MapStyleModel.class);
+		if (extension == null) {
+			extension = new MapStyleModel();
+			node.addExtension(extension);
+		}
+		return extension;
+	}
+
+	public static MapStyleModel getExtension(final NodeModel node) {
+		return (MapStyleModel) node.getExtension(MapStyleModel.class);
+	}
+
 	private Color backgroundColor;
 
 	public MapStyleModel() {
-    }
-
-	protected void setBackgroundColor(Color backgroundColor) {
-    	this.backgroundColor = backgroundColor;
-    }
+	}
 
 	protected Color getBackgroundColor() {
-    	return backgroundColor;
-    }
+		return backgroundColor;
+	}
 
-	public static MapStyleModel createExtension(NodeModel node) {
-        MapStyleModel extension = (MapStyleModel)node.getExtension(MapStyleModel.class);
-        if(extension == null){
-        	extension = new MapStyleModel();
-        	node.addExtension(extension);
-        }
-		return extension;
-    }
-	public static MapStyleModel getExtension(NodeModel node) {
-        return (MapStyleModel)node.getExtension(MapStyleModel.class);
-    }
+	protected void setBackgroundColor(final Color backgroundColor) {
+		this.backgroundColor = backgroundColor;
+	}
 }

@@ -38,6 +38,8 @@ public interface IMapSelection {
 
 	public boolean isSelected(final NodeModel node);
 
+	public void keepNodePosition(final NodeModel node);
+
 	public void makeTheSelected(final NodeModel node);
 
 	public void selectAsTheOnlyOneSelected(final NodeModel node);
@@ -53,6 +55,4 @@ public interface IMapSelection {
 	public int size();
 
 	public void toggleSelected(final NodeModel node);
-	
-	public void keepNodePosition(final NodeModel node);
 }

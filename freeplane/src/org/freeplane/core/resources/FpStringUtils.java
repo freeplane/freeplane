@@ -52,6 +52,10 @@ public class FpStringUtils {
 		return string == null ? null : FreeplaneResourceBundle.getText(string);
 	}
 
+	public static String removeMnemonic(final String rawLabel) {
+		return rawLabel.replaceFirst("&([^ ])", "$1");
+	}
+
 	/**
 	 * Removes the "TranslateMe" sign from the end of not translated texts.
 	 */
@@ -63,8 +67,4 @@ public class FpStringUtils {
 		}
 		return inputString;
 	}
-
-	public static String removeMnemonic(final String rawLabel) {
-    	return rawLabel.replaceFirst("&([^ ])", "$1");
-    }
 }

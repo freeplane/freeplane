@@ -41,6 +41,26 @@ public class XMLElement implements Serializable {
 	 * Necessary for serialization.
 	 */
 	static final long serialVersionUID = -2383376380548624920L;
+
+	/**
+	 * Creates an empty element.
+	 * 
+	 * @param fullName
+	 *            the full name of the element
+	 * @param namespace
+	 *            the namespace URI.
+	 * @param systemID
+	 *            the system ID of the XML data where the element starts.
+	 * @param lineNr
+	 *            the line in the XML data where the element starts.
+	 */
+	// TODO ARCH rladstaetter 21.03.2009 use constructor directly
+	@Deprecated
+	public static XMLElement createElement(final String fullName, final String namespace, final String systemID,
+	                                       final int lineNr) {
+		return new XMLElement(fullName, namespace, systemID, lineNr);
+	}
+
 	/**
 	 * The attributes of the element.
 	 */
@@ -173,7 +193,7 @@ public class XMLElement implements Serializable {
 				return;
 			}
 		}
-		((XMLElement) child).parent = this;
+		(child).parent = this;
 		children.addElement(child);
 	}
 
@@ -211,25 +231,6 @@ public class XMLElement implements Serializable {
 	 */
 	public XMLElement createElement(final String fullName, final String systemID, final int lineNr) {
 		return new XMLElement(fullName, systemID, lineNr);
-	}
-
-	/**
-	 * Creates an empty element.
-	 * 
-	 * @param fullName
-	 *            the full name of the element
-	 * @param namespace
-	 *            the namespace URI.
-	 * @param systemID
-	 *            the system ID of the XML data where the element starts.
-	 * @param lineNr
-	 *            the line in the XML data where the element starts.
-	 */
-	// TODO ARCH rladstaetter 21.03.2009 use constructor directly
-	@Deprecated
-	public static XMLElement createElement(final String fullName, final String namespace, final String systemID,
-	                                final int lineNr) {
-		return new XMLElement(fullName, namespace, systemID, lineNr);
 	}
 
 	/**
@@ -811,7 +812,7 @@ public class XMLElement implements Serializable {
 				return;
 			}
 		}
-		((XMLElement) child).parent = this;
+		(child).parent = this;
 		children.insertElementAt(child, index);
 	}
 

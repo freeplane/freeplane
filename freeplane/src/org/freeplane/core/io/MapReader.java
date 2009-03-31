@@ -28,8 +28,6 @@ import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
@@ -38,13 +36,12 @@ import org.freeplane.n3.nanoxml.XMLParseException;
  * 20.12.2008
  */
 public class MapReader implements IElementDOMHandler, IHintProvider {
-	private HashMap<Object, Object> hints;
 	public class NodeTreeCreator {
 		public NodeTreeCreator() {
-	        super();
+			super();
 			hints = new HashMap<Object, Object>();
-        }
-		
+		}
+
 		public NodeModel create(final Reader pReader) {
 			final TreeXmlReader reader = new TreeXmlReader(readManager);
 			reader.load(pReader);
@@ -74,6 +71,7 @@ public class MapReader implements IElementDOMHandler, IHintProvider {
 	}
 
 	private MapModel createdMap;
+	private HashMap<Object, Object> hints;
 	private boolean mapLoadingInProcess;
 	private final NodeBuilder nodeBuilder;
 	final private ReadManager readManager;
@@ -88,8 +86,8 @@ public class MapReader implements IElementDOMHandler, IHintProvider {
 		return getCreatedMap();
 	}
 
-	public NodeModel createNodeTreeFromXml(final MapModel map, final Reader pReader, Mode mode) throws XMLParseException,
-	        IOException {
+	public NodeModel createNodeTreeFromXml(final MapModel map, final Reader pReader, final Mode mode)
+	        throws XMLParseException, IOException {
 		try {
 			mapLoadingInProcess = true;
 			final NodeTreeCreator nodeTreeCreator = new NodeTreeCreator();
@@ -114,6 +112,10 @@ public class MapReader implements IElementDOMHandler, IHintProvider {
 		return createdMap;
 	}
 
+	public Object getHint(final Object key) {
+		return hints.get(key);
+	}
+
 	public boolean isMapLoadingInProcess() {
 		return mapLoadingInProcess;
 	}
@@ -126,8 +128,5 @@ public class MapReader implements IElementDOMHandler, IHintProvider {
 
 	public void setHint(final Object key, final Object value) {
 		hints.put(key, value);
-	}
-	public Object getHint(final Object key) {
-		return hints.get(key);
 	}
 }

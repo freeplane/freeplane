@@ -21,17 +21,13 @@ package org.freeplane.core.filter;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.AbstractAction;
-import javax.swing.ImageIcon;
 import javax.swing.JToggleButton;
 
-import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.IFreeplaneAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 
 @SelectableAction
-class ShowFilterToolbarAction extends AbstractAction implements IFreeplaneAction {
-	private static final String NAME = "showFilterToolbarAction";
+class ShowFilterToolbarAction extends AFreeplaneAction {
 	/**
 	 * 
 	 */
@@ -42,7 +38,7 @@ class ShowFilterToolbarAction extends AbstractAction implements IFreeplaneAction
 	 *
 	 */
 	ShowFilterToolbarAction(final FilterController filterController) {
-		super(null, new ImageIcon(ResourceController.getResourceController().getResource("/images/filter.gif")));
+		super(filterController.getController(), "show_filter_toolbar", "/images/filter.gif");
 		this.filterController = filterController;
 	}
 
@@ -54,9 +50,5 @@ class ShowFilterToolbarAction extends AbstractAction implements IFreeplaneAction
 		else {
 			filterController.showFilterToolbar(false);
 		}
-	}
-
-	public String getName() {
-		return NAME;
 	}
 }

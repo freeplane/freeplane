@@ -24,10 +24,9 @@ import java.awt.event.ActionEvent;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.IFreeplaneAction;
 import org.freeplane.features.mindmapmode.MModeController;
 
-class SaveAction extends AFreeplaneAction implements IFreeplaneAction {
+class SaveAction extends AFreeplaneAction {
 	private static final long serialVersionUID = -7502189138374624345L;
 
 	public SaveAction(final Controller controller) {
@@ -46,6 +45,7 @@ class SaveAction extends AFreeplaneAction implements IFreeplaneAction {
 		controller.getViewController().setTitle();
 	}
 
+	@Override
 	public String getName() {
 		return "save";
 	}

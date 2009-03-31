@@ -66,7 +66,7 @@ public class DefaultConditionRenderer implements ListCellRenderer {
 			component.setBackground(Color.WHITE);
 		}
 		component.setAlignmentX(Component.LEFT_ALIGNMENT);
-//		return new JLabel(value.toString());
+		//		return new JLabel(value.toString());
 		return component;
 	}
 }

@@ -121,7 +121,7 @@ class ForkMainView extends MainView {
 			return;
 		}
 		final ModeController modeController = getNodeView().getMap().getModeController();
-		Object renderingHint = modeController.getController().getViewController().setEdgesRenderingHint(g);
+		final Object renderingHint = modeController.getController().getViewController().setEdgesRenderingHint(g);
 		paintSelected(g);
 		paintDragOver(g);
 		final EdgeController edgeController = EdgeController.getController(modeController);
@@ -135,18 +135,18 @@ class ForkMainView extends MainView {
 		g.setColor(edgeController.getColor(model));
 		g.drawLine(0, getHeight() - edgeWidth / 2 - 1, getWidth(), getHeight() - edgeWidth / 2 - 1);
 		g.setColor(oldColor);
-        g.setStroke(oldStroke);
+		g.setStroke(oldStroke);
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 		super.paint(g);
 	}
 
 	@Override
-	void paintFoldingMark(NodeView nodeView, final Graphics2D g, final Point p) {
+	void paintFoldingMark(final NodeView nodeView, final Graphics2D g, final Point p) {
 		final int zoomedFoldingSymbolHalfWidth = getZoomedFoldingSymbolHalfWidth();
 		if (nodeView.isLeft()) {
 			p.x -= zoomedFoldingSymbolHalfWidth;
 		}
-		else{
+		else {
 			p.x += zoomedFoldingSymbolHalfWidth;
 		}
 		super.paintFoldingMark(nodeView, g, p);

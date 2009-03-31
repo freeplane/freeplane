@@ -49,7 +49,7 @@ class NodeContainsCondition extends NodeCondition {
 
 	private boolean checkText(final String plainTextContent) {
 		return plainTextContent.indexOf(value) > -1;
-    }
+	}
 
 	@Override
 	protected String createDesctiption() {

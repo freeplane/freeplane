@@ -27,10 +27,7 @@ import java.io.Reader;
 import java.io.Writer;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ResourceBundle;
 
-import org.freeplane.core.controller.Controller;
-import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
@@ -87,22 +84,23 @@ public class StylePatternFactory {
 		}
 		final NodeStyleModel font = NodeStyleModel.getModel(node);
 		if (font != null) {
-			if(font.isBold() != null){
+			if (font.isBold() != null) {
 				final PatternProperty nodeFontBold = new PatternProperty();
 				nodeFontBold.setValue(font.isBold() ? StylePatternFactory.TRUE_VALUE : StylePatternFactory.FALSE_VALUE);
 				pattern.setPatternNodeFontBold(nodeFontBold);
 			}
-			if(font.isItalic() != null){
+			if (font.isItalic() != null) {
 				final PatternProperty nodeFontItalic = new PatternProperty();
-				nodeFontItalic.setValue(font.isItalic() ? StylePatternFactory.TRUE_VALUE : StylePatternFactory.FALSE_VALUE);
+				nodeFontItalic.setValue(font.isItalic() ? StylePatternFactory.TRUE_VALUE
+				        : StylePatternFactory.FALSE_VALUE);
 				pattern.setPatternNodeFontItalic(nodeFontItalic);
 			}
-			if(font.getFontSize() != null){
+			if (font.getFontSize() != null) {
 				final PatternProperty nodeFontSize = new PatternProperty();
 				nodeFontSize.setValue("" + font.getFontSize());
 				pattern.setPatternNodeFontSize(nodeFontSize);
 			}
-			if(font.getFontFamilyName() != null){
+			if (font.getFontFamilyName() != null) {
 				final PatternProperty subPattern = new PatternProperty();
 				subPattern.setValue(font.getFontFamilyName());
 				pattern.setPatternNodeFontName(subPattern);
@@ -210,19 +208,20 @@ public class StylePatternFactory {
 		return patterns.getListChoiceList();
 	}
 
-	private static boolean safeEquals(final String string1, final String string2) {
-		return (string1 != null && string2 != null && string1.equals(string2)) || (string1 == null && string2 == null);
-	}
 	private static PatternProperty processPatternProperties(final PatternProperty prop1, final PatternProperty prop2,
 	                                                        final PatternProperty destination) {
 		if (prop1 == null || prop2 == null) {
 			return null;
 		}
-		if (safeEquals(prop1.getValue(), prop2.getValue())) {
+		if (StylePatternFactory.safeEquals(prop1.getValue(), prop2.getValue())) {
 			destination.setValue(prop1.getValue());
 			return destination;
 		}
 		return null;
+	}
+
+	private static boolean safeEquals(final String string1, final String string2) {
+		return (string1 != null && string2 != null && string1.equals(string2)) || (string1 == null && string2 == null);
 	}
 
 	/**

@@ -21,31 +21,26 @@ package org.freeplane.main.application;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.AbstractAction;
-import javax.swing.ImageIcon;
-
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
-import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.IFreeplaneAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
 
-class NavigationNextMapAction extends AbstractAction implements IFreeplaneAction {
+class NavigationNextMapAction extends AFreeplaneAction {
 	private static final String NAME = "navigationNextMap";
 	private static final long serialVersionUID = 4289019628489694112L;
-	final private Controller controller;
 
 	NavigationNextMapAction(final Controller controller) {
-		super(null, new ImageIcon(ResourceController.getResourceController().getResource("/images/1rightarrow.png")));
-		this.controller = controller;
+		super(controller, null, "/images/1rightarrow.png");
 		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText("next_map"));
 		setEnabled(false);
 	}
 
 	public void actionPerformed(final ActionEvent event) {
-		controller.getMapViewManager().nextMapView();
+		getController().getMapViewManager().nextMapView();
 	}
 
+	@Override
 	public String getName() {
 		return NAME;
 	}

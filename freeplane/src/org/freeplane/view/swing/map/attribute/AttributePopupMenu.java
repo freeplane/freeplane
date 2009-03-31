@@ -45,11 +45,11 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 	private JMenuItem delete = null;
 	private JMenuItem down = null;
 	private JMenuItem insert = null;
+	private boolean oldTable;
 	private JMenuItem optimalWidth = null;
 	private int row;
 	private AttributeTable table;
 	private JMenuItem up = null;
-	private boolean oldTable;
 
 	@Override
 	protected void firePopupMenuWillBecomeInvisible() {
@@ -59,7 +59,7 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 		oldTable = true;
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				if(! oldTable){
+				if (!oldTable) {
 					return;
 				}
 				final KeyboardFocusManager focusManager = java.awt.KeyboardFocusManager

@@ -145,7 +145,7 @@ public class EncryptionModel implements IExtension {
 	 * @param mode 
 	 * @throws IOException
 	 */
-	private void generateEncryptedContent(final MapController mapController, Mode mode) throws IOException {
+	private void generateEncryptedContent(final MapController mapController, final Mode mode) throws IOException {
 		final StringWriter sWriter = new StringWriter();
 		for (final Iterator i = mapController.childrenUnfolded(node); i.hasNext();) {
 			final NodeModel child = (NodeModel) i.next();
@@ -158,7 +158,7 @@ public class EncryptionModel implements IExtension {
 		encryptedContent = encryptXml(childXml);
 	}
 
-	public String getEncryptedContent(final MapController mapController, Mode mode) {
+	public String getEncryptedContent(final MapController mapController, final Mode mode) {
 		if (isDecrypted) {
 			try {
 				generateEncryptedContent(mapController, mode);
