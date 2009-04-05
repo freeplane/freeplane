@@ -249,12 +249,11 @@ public class MenuBuilder extends UIBuilder {
 					return null;
 				}
 				final MenuPath menuPath = new MenuPath(parent.toString());
-				final String field = attributes.getAttribute("field", null);
-				final String name = attributes.getAttribute("name", field);
-				menuPath.setName(name);
+				final String action = attributes.getAttribute("action", null);
+				menuPath.setName(action);
 				final String keystroke = attributes.getAttribute("key_ref", null);
 				try {
-					final Action theAction = modeController.getAction(field);
+					final Action theAction = modeController.getAction(action);
 					if (tag.equals("menu_radio_action")) {
 						final JRadioButtonMenuItem item = (JRadioButtonMenuItem) addRadioItem(menuPath.parentPath,
 						    theAction, keystroke, "true".equals(attributes.getAttribute("selected", "false")));

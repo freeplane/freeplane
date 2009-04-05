@@ -3,54 +3,54 @@
 	<menu_category name="menu_bar">
 		<menu_submenu name="file" name_ref="file">
 			<menu_category name="close">
-				<menu_action field="close" key_ref="keystroke_close" />
+				<menu_action action="close" key_ref="keystroke_close" />
 			</menu_category>
 			<menu_separator />
 			<menu_submenu name="last" name_ref="most_recent_files"></menu_submenu>
 			<menu_category name="print">
-				<menu_action field="page" />
-				<menu_action field="print" key_ref="keystroke_print" />
-				<menu_action field="printPreview" key_ref="keystroke_print_preview" />
+				<menu_action action="page" />
+				<menu_action action="print" key_ref="keystroke_print" />
+				<menu_action action="printPreview" key_ref="keystroke_print_preview" />
 			</menu_category>
 			<menu_separator />
 			<menu_category name="quit">
-				<menu_action field="quit" key_ref="keystroke_quit" />
+				<menu_action action="quit" key_ref="keystroke_quit" />
 			</menu_category>
 			<menu_separator />
 		</menu_submenu>
 		<menu_submenu name="edit" name_ref="edit">
 			<menu_category name="find">
-				<menu_action field="find" key_ref="keystroke_find" />
-				<menu_action field="findNext" key_ref="keystroke_find_next" />
-				<menu_action field="openPath"/>
+				<menu_action action="find" key_ref="keystroke_find" />
+				<menu_action action="findNext" key_ref="keystroke_find_next" />
+				<menu_action action="openPath"/>
 			</menu_category>
 		</menu_submenu>
 		<menu_submenu name="view" name_ref="menu_view">
 			<menu_category name="toolbars"></menu_category>
-			<menu_action field="toggleToolbar" />
+			<menu_action action="toggleToolbar" />
 			<menu_separator />
 			<menu_category name="general">
-				<menu_action field="showSelectionAsRectangle" />
+				<menu_action action="showSelectionAsRectangle" />
 			</menu_category>
-			<menu_action field="center_selected" key_ref="keystroke_center_selected" />
+			<menu_action action="center_selected" key_ref="keystroke_center_selected" />
 			<menu_category name="zoom">
-				<menu_action field="zoomIn" key_ref="keystroke_zoom_in" />
-				<menu_action field="zoomOut" key_ref="keystroke_zoom_out" />
+				<menu_action action="zoomIn" key_ref="keystroke_zoom_in" />
+				<menu_action action="zoomOut" key_ref="keystroke_zoom_out" />
 			</menu_category>
 		</menu_submenu>
 		<menu_submenu name="navigate" name_ref="menu_navigate">
 			<menu_category name="navigate">
-				<menu_action field="navigationPreviousMap" key_ref="keystroke_previousMap" />
-				<menu_action field="navigationNextMap" key_ref="keystroke_nextMap" />
+				<menu_action action="navigationPreviousMap" key_ref="keystroke_previousMap" />
+				<menu_action action="navigationNextMap" key_ref="keystroke_nextMap" />
 			</menu_category>
 			<menu_separator />
 			<menu_category name="nodes">
-				<menu_action field="moveToRoot" key_ref="keystroke_moveToRoot" />
+				<menu_action action="moveToRoot" key_ref="keystroke_moveToRoot" />
 			</menu_category>
 			<menu_separator />
 			<menu_category name="folding">
-				<menu_action field="toggleFolded" key_ref="keystroke_toggle_folded" />
-				<menu_action field="toggleChildrenFolded" key_ref="keystroke_toggle_children_folded" />
+				<menu_action action="toggleFolded" key_ref="keystroke_toggle_folded" />
+				<menu_action action="toggleChildrenFolded" key_ref="keystroke_toggle_children_folded" />
 			</menu_category>
 			<menu_separator />
 		</menu_submenu>
@@ -62,11 +62,11 @@
 		</menu_submenu>
 		<menu_submenu name="help" name_ref="help">
 			<menu_category name="doc">
-				<menu_action field="documentation" />
-				<menu_action field="freeplaneUrl" />
-				<menu_action field="faq" />
-				<menu_action field="license" />
-				<menu_action field="about" />
+				<menu_action action="documentation" />
+				<menu_action action="freeplaneUrl" />
+				<menu_action action="faq" />
+				<menu_action action="license" />
+				<menu_action action="about" />
 			</menu_category>
 		</menu_submenu>
 	</menu_category>
@@ -75,28 +75,28 @@
 		</menu_category>
 		<menu_separator />
 		<menu_category name="toolbars">
-			<menu_action field="toggleMenubar" />
-			<menu_action field="toggleToolbar" />
+			<menu_action action="toggleMenubar" />
+			<menu_action action="toggleToolbar" />
 		</menu_category>
 	</menu_category>
 	<menu_category name="node_popup">
-			<menu_action field="center"/>
+			<menu_action action="center"/>
 			<menu_separator />
-			<menu_action field="find" key_ref="keystroke_find" />
-			<menu_action field="findNext" key_ref="keystroke_find_next" />
+			<menu_action action="find" key_ref="keystroke_find" />
+			<menu_action action="findNext" key_ref="keystroke_find_next" />
 		<menu_separator />
 	</menu_category>
 	<menu_category name="main_toolbar">
 		<menu_category name="main">
-			<menu_action field="navigationPreviousMap" />
-			<menu_action field="navigationNextMap" />
-			<menu_action field="printDirect" />
-			<menu_action field="ShowFilterToolbarAction" tooltip="filter_toolbar" />
+			<menu_action action="navigationPreviousMap" />
+			<menu_action action="navigationNextMap" />
+			<menu_action action="printDirect" />
+			<menu_action action="ShowFilterToolbarAction" tooltip="filter_toolbar" />
 		</menu_category>
 		<menu_category name="zoom">
 		</menu_category>
 		<menu_separator />
-		<menu_action field="center" />
+		<menu_action action="center" />
 		<menu_category name="history"/>
 	</menu_category>
 </menu_structure>

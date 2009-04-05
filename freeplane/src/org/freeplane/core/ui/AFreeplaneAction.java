@@ -134,7 +134,6 @@ public abstract class AFreeplaneAction extends AbstractAction {
 		return controller.getModeController();
 	}
 
-	@Deprecated
 	public String getName() {
 		return getClass().getSimpleName();
 	}

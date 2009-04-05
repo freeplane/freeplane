@@ -33,6 +33,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.model.NodeModel.NodeChangeType;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionDescriptor;
 import org.freeplane.core.ui.IMenuContributor;
@@ -110,7 +111,9 @@ public class ModeController extends AController {
 		}
 
 		public void nodeChanged(final NodeChangeEvent event) {
-			action.setSelected();
+			if(!NodeChangeType.REFRESH.equals(event.getProperty())){
+				action.setSelected();
+			}
 		}
 
 		public void onDeselect(final NodeModel node) {
@@ -149,7 +152,7 @@ public class ModeController extends AController {
 		extensionContainer = new ExtensionContainer(new HashMap<Class<? extends IExtension>, IExtension>());
 	}
 
-	public void addAnnotatedAction(final Action action) {
+	public void addAnnotatedAction(final AFreeplaneAction action) {
 		final String name = action.getClass().getAnnotation(ActionDescriptor.class).name();
 		addAction(name, action);
 	}
@@ -233,7 +236,7 @@ public class ModeController extends AController {
 		}
 	}
 
-	public void putAction(final String key, final AFreeplaneAction action) {
+	public void addAction(final String key, final AFreeplaneAction action) {
 		super.addAction(key, action);
 		if (AFreeplaneAction.checkEnabledOnChange(action)) {
 			final ActionEnablerOnChange listener = new ActionEnablerOnChange(action);
