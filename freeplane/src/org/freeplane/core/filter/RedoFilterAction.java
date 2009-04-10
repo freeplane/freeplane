@@ -29,6 +29,10 @@ import org.freeplane.core.ui.AFreeplaneAction;
  */
 final class RedoFilterAction extends AFreeplaneAction {
 	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+	/**
 	 * 
 	 */
 	private final FilterController filterController;
@@ -37,7 +41,7 @@ final class RedoFilterAction extends AFreeplaneAction {
 	 * @param filterController
 	 */
 	RedoFilterAction(final FilterController filterController) {
-		super(filterController.getController());
+		super("RedoFilterAction", filterController.getController());
 		this.filterController = filterController;
 	}
 

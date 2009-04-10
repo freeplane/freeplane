@@ -26,6 +26,10 @@ import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.link.ArrowLinkModel;
 
 class ChangeArrowsInArrowLinkAction extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 	ArrowLinkModel arrowLink;
 	boolean hasEndArrow;
 	boolean hasStartArrow;
@@ -33,7 +37,7 @@ class ChangeArrowsInArrowLinkAction extends AFreeplaneAction {
 	public ChangeArrowsInArrowLinkAction(final MLinkController linkController, final String text,
 	                                     final String iconPath, final ArrowLinkModel arrowLink,
 	                                     final boolean hasStartArrow, final boolean hasEndArrow) {
-		super(linkController.getModeController().getController(), "change_arrows_in_arrow_link", iconPath);
+		super("ChangeArrowsInArrowLinkAction", linkController.getModeController().getController());
 		this.arrowLink = arrowLink;
 		this.hasStartArrow = hasStartArrow;
 		this.hasEndArrow = hasEndArrow;

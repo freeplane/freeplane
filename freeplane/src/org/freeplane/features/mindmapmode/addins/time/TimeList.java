@@ -93,6 +93,10 @@ import com.jgoodies.forms.factories.ButtonBarFactory;
  */
 class TimeList {
 	static class DateRenderer extends DefaultTableCellRenderer {
+		/**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
 		DateFormat formatter;
 
 		public DateRenderer() {
@@ -159,6 +163,11 @@ class TimeList {
 	}
 
 	final private class FlatNodeTable extends JTable {
+		/**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
 		@Override
 		public TableCellRenderer getCellRenderer(final int row, final int column) {
 			final Object object = getModel().getValueAt(row, column);
@@ -263,6 +272,11 @@ class TimeList {
 	}
 
 	static class IconsRenderer extends DefaultTableCellRenderer {
+		/**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
 		public IconsRenderer(final ModeController controller) {
 			super();
 		}
@@ -327,6 +341,11 @@ class TimeList {
 	}
 
 	static class NodeRenderer extends DefaultTableCellRenderer {
+		/**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
 		public NodeRenderer() {
 			super();
 		}
@@ -373,6 +392,11 @@ class TimeList {
 	}
 
 	static class NotesRenderer extends DefaultTableCellRenderer {
+		/**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
 		public NotesRenderer() {
 			super();
 		}
@@ -607,6 +631,11 @@ class TimeList {
 			}
 		});
 		UITools.addEscapeActionToDialog(dialog, new AbstractAction() {
+			/**
+             * 
+             */
+            private static final long serialVersionUID = 1L;
+
 			public void actionPerformed(final ActionEvent arg0) {
 				disposeDialog();
 			}
@@ -673,6 +702,11 @@ class TimeList {
 		    GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
 		final AbstractAction selectAction = new AbstractAction(FreeplaneResourceBundle
 		    .getText(PLUGINS_TIME_MANAGEMENT_XML_SELECT)) {
+			/**
+                 * 
+                 */
+                private static final long serialVersionUID = 1L;
+
 			public void actionPerformed(final ActionEvent arg0) {
 				selectSelectedRows();
 			}
@@ -680,6 +714,11 @@ class TimeList {
 		final JButton selectButton = new JButton(selectAction);
 		final AbstractAction exportAction = new AbstractAction(FreeplaneResourceBundle
 		    .getText("plugins/TimeManagement.xml_Export")) {
+			/**
+                 * 
+                 */
+                private static final long serialVersionUID = 1L;
+
 			public void actionPerformed(final ActionEvent arg0) {
 				exportSelectedRowsAndClose();
 			}
@@ -687,6 +726,11 @@ class TimeList {
 		final JButton exportButton = new JButton(exportAction);
 		final AbstractAction replaceAllAction = new AbstractAction(FreeplaneResourceBundle
 		    .getText("plugins/TimeManagement.xml_Replace_All")) {
+			/**
+                 * 
+                 */
+                private static final long serialVersionUID = 1L;
+
 			public void actionPerformed(final ActionEvent arg0) {
 				replace(new ReplaceAllInfo());
 			}
@@ -694,6 +738,11 @@ class TimeList {
 		final JButton replaceAllButton = new JButton(replaceAllAction);
 		final AbstractAction replaceSelectedAction = new AbstractAction(FreeplaneResourceBundle
 		    .getText("plugins/TimeManagement.xml_Replace_Selected")) {
+			/**
+                 * 
+                 */
+                private static final long serialVersionUID = 1L;
+
 			public void actionPerformed(final ActionEvent arg0) {
 				replace(new ReplaceSelectedInfo());
 			}
@@ -701,6 +750,11 @@ class TimeList {
 		final JButton replaceSelectedButton = new JButton(replaceSelectedAction);
 		final AbstractAction gotoAction = new AbstractAction(FreeplaneResourceBundle
 		    .getText("plugins/TimeManagement.xml_Goto")) {
+			/**
+                 * 
+                 */
+                private static final long serialVersionUID = 1L;
+
 			public void actionPerformed(final ActionEvent arg0) {
 				selectSelectedRows();
 				disposeDialog();
@@ -709,6 +763,11 @@ class TimeList {
 		final JButton gotoButton = new JButton(gotoAction);
 		final AbstractAction disposeAction = new AbstractAction(FreeplaneResourceBundle
 		    .getText(PLUGINS_TIME_MANAGEMENT_XML_CANCEL)) {
+			/**
+                 * 
+                 */
+                private static final long serialVersionUID = 1L;
+
 			public void actionPerformed(final ActionEvent arg0) {
 				disposeDialog();
 			}
@@ -791,6 +850,11 @@ class TimeList {
 	private DefaultTableModel updateModel() {
 		final NodeModel node = controller.getMap().getRootNode();
 		final DefaultTableModel model = new DefaultTableModel() {
+			/**
+             * 
+             */
+            private static final long serialVersionUID = 1L;
+
 			/*
 			 * (non-Javadoc)
 			 * @see javax.swing.table.AbstractTableModel#getColumnClass(int)

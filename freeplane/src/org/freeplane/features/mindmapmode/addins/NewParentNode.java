@@ -25,7 +25,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.features.mindmapmode.MMapController;
 
 /**
@@ -42,17 +42,18 @@ import org.freeplane.features.mindmapmode.MMapController;
  *         The code simply performs these actions in sequence, after validating
  *         the selected nodes.
  */
-@ActionDescriptor(tooltip = "accessories/plugins/NewParentNode.properties_documentation", //
-name = "accessories/plugins/NewParentNode.properties_name", //
-keyStroke = "keystroke_accessories/plugins/NewParentNode.properties_key", //
-iconPath = "/images/stock_text_indent.png", //
-locations = { "/menu_bar/insert/nodes" })
+@ActionLocationDescriptor(locations = { "/menu_bar/insert/nodes" })
 public class NewParentNode extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	/**
 	 *
 	 */
 	public NewParentNode(final Controller controller) {
-		super(controller);
+		super("NewParentNode", controller);
 	}
 
 	/*

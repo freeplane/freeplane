@@ -30,12 +30,15 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.LogTool;
 
 class KeyDocumentationAction extends AFreeplaneAction {
-	private static final String NAME = "keyDocumentation";
-	private static final long serialVersionUID = 3000552480373959869L;
+
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 	final private Controller controller;
 
 	public KeyDocumentationAction(final Controller controller) {
-		super(controller, "KeyDoc");
+		super("KeyDocumentationAction", controller);
 		this.controller = controller;
 	}
 
@@ -53,10 +56,5 @@ class KeyDocumentationAction extends AFreeplaneAction {
 			LogTool.logException(e2);
 			return;
 		}
-	}
-
-	@Override
-	public String getName() {
-		return NAME;
 	}
 }

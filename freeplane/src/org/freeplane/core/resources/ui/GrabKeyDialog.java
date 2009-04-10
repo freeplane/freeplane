@@ -43,6 +43,11 @@ import org.freeplane.core.resources.FreeplaneResourceBundle;
  * A dialog for getting shortcut keys.
  */
 public class GrabKeyDialog extends JDialog {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	class ActionHandler implements ActionListener {
 		public void actionPerformed(final ActionEvent evt) {
 			if (evt.getSource() == ok) {
@@ -122,6 +127,11 @@ public class GrabKeyDialog extends JDialog {
 	}
 
 	class InputPane extends JTextField {
+		/**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
 		/**
 		 * Makes the tab key work in Java 1.4.
 		 * 
@@ -355,6 +365,11 @@ public class GrabKeyDialog extends JDialog {
 		this.debugBuffer = debugBuffer;
 		enableEvents(AWTEvent.KEY_EVENT_MASK);
 		final JPanel content = new JPanel(new GridLayout(0, 1, 0, 6)) {
+			/**
+             * 
+             */
+            private static final long serialVersionUID = 1L;
+
 			/**
 			 * Makes the tab key work in Java 1.4.
 			 * 

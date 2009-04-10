@@ -109,12 +109,12 @@ public class MLinkController extends LinkController {
 	}
 
 	public void addLink(final NodeModel source, final NodeModel target) {
-		((AddArrowLinkAction) getModeController().getAction("addArrowLinkAction")).addLink(source, target);
+		((AddArrowLinkAction) getModeController().getAction("AddArrowLinkAction")).addLink(source, target);
 	}
 
 	public void changeArrowsOfArrowLink(final ArrowLinkModel arrowLink, final boolean hasStartArrow,
 	                                    final boolean hasEndArrow) {
-		((ChangeArrowsInArrowLinkAction) getModeController().getAction("changeArrowsInArrowLinkAction"))
+		((ChangeArrowsInArrowLinkAction) getModeController().getAction("ChangeArrowsInArrowLinkAction"))
 		    .changeArrowsOfArrowLink(arrowLink, hasStartArrow, hasEndArrow);
 	}
 
@@ -124,24 +124,24 @@ public class MLinkController extends LinkController {
 	private void createActions(final ModeController modeController) {
 		final Controller controller = modeController.getController();
 		setLinkByFileChooser = new SetLinkByFileChooserAction(controller);
-		modeController.addAction("setLinkByFileChooser", setLinkByFileChooser);
+		modeController.addAction(setLinkByFileChooser);
 		final AddArrowLinkAction addArrowLinkAction = new AddArrowLinkAction(controller);
 		modeController.addAction(addArrowLinkAction);
-		modeController.addAction("removeArrowLinkAction", new RemoveArrowLinkAction(this, null));
+		modeController.addAction(new RemoveArrowLinkAction(this, null));
 		colorArrowLinkAction = new ColorArrowLinkAction(this, null);
-		modeController.addAction("colorArrowLinkAction", colorArrowLinkAction);
-		modeController.addAction("changeArrowsInArrowLinkAction", new ChangeArrowsInArrowLinkAction(this, "none", null,
+		modeController.addAction(colorArrowLinkAction);
+		modeController.addAction(new ChangeArrowsInArrowLinkAction(this, "none", null,
 		    null, true, true));
 		setLinkByTextField = new SetLinkByTextFieldAction(controller);
-		modeController.addAction("setLinkByTextField", setLinkByTextField);
-		modeController.addAction("addLocalLinkAction", new AddLocalLinkAction(controller));
-		modeController.addAction("extract_link_from_text", new ExtractLinkFromTextAction(controller));
+		modeController.addAction(setLinkByTextField);
+		modeController.addAction(new AddLocalLinkAction(controller));
+		modeController.addAction(new ExtractLinkFromTextAction(controller));
 	}
 
 	@Override
 	protected void createArrowLinkPopup(final ArrowLinkModel link, final JPopupMenu arrowLinkPopup) {
 		super.createArrowLinkPopup(link, arrowLinkPopup);
-		((RemoveArrowLinkAction) getModeController().getAction("removeArrowLinkAction")).setArrowLink(link);
+		((RemoveArrowLinkAction) getModeController().getAction("RemoveArrowLinkAction")).setArrowLink(link);
 		arrowLinkPopup.add(new RemoveArrowLinkAction(this, link));
 		arrowLinkPopup.add(new ColorArrowLinkAction(this, link));
 		arrowLinkPopup.addSeparator();

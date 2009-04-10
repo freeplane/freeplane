@@ -23,6 +23,7 @@ import java.awt.GraphicsEnvironment;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
+import javax.swing.Action;
 import javax.swing.JComboBox;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 
@@ -120,7 +121,7 @@ class MToolbarContributor implements IMenuContributor, INodeSelectionListener, I
 	}
 
 	public void updateMenus(final MenuBuilder builder) {
-		builder.addComponent("/main_toolbar/font", fonts, styleController.fontFamilyAction, MenuBuilder.AS_CHILD);
-		builder.addComponent("/main_toolbar/font", size, styleController.fontSizeAction, MenuBuilder.AS_CHILD);
+		builder.addComponent("/main_toolbar/font", fonts, (Action)styleController.fontFamilyAction, MenuBuilder.AS_CHILD);
+		builder.addComponent("/main_toolbar/font", size, (Action)styleController.fontSizeAction, MenuBuilder.AS_CHILD);
 	}
 }

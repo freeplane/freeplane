@@ -25,16 +25,16 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 
 class NewSiblingAction extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	public NewSiblingAction(final Controller controller) {
-		super(controller, "new_sibling_behind");
+		super("NewSiblingAction", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		((MMapController) getModeController().getMapController()).addNewNode(MMapController.NEW_SIBLING_BEHIND, null);
-	}
-
-	@Override
-	public String getName() {
-		return "newSibling";
 	}
 }

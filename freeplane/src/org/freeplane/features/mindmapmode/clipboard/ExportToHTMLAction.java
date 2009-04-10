@@ -30,8 +30,13 @@ import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.clipboard.ClipboardController;
 
 class ExportToHTMLAction extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	public ExportToHTMLAction(final Controller controller) {
-		super(controller, "export_to_html");
+		super("ExportToHTMLAction", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {

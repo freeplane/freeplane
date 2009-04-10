@@ -39,11 +39,15 @@ import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 
 class ImportExplorerFavoritesAction extends AFreeplaneAction {
-	private static final String NAME = "importExplorerFavorites";
-	private static final long serialVersionUID = -5867758075802114863L;
+
+
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 
 	public ImportExplorerFavoritesAction(final Controller controller) {
-		super(controller, "import_explorer_favorites");
+		super("ImportExplorerFavoritesAction", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -67,11 +71,6 @@ class ImportExplorerFavoritesAction extends AFreeplaneAction {
 		    .getChildCount(), target.isNewChildLeft());
 		((MTextController) TextController.getController(getModeController())).setNodeText(node, nodeContent);
 		return node;
-	}
-
-	@Override
-	public String getName() {
-		return NAME;
 	}
 
 	public boolean importExplorerFavorites(final File folder, final NodeModel target, final boolean redisplay) {

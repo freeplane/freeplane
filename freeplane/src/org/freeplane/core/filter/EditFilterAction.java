@@ -28,7 +28,11 @@ import org.freeplane.core.ui.AFreeplaneAction;
  * Mar 28, 2009
  */
 class EditFilterAction extends AFreeplaneAction {
-	private static final long serialVersionUID = 6280668187345048213L;
+
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 	/**
 	 * 
 	 */
@@ -36,7 +40,7 @@ class EditFilterAction extends AFreeplaneAction {
 	private FilterComposerDialog filterDialog = null;
 
 	EditFilterAction(final FilterController filterController) {
-		super(filterController.getController(), "", "/images/Btn_edit.gif");
+		super("EditFilterAction", filterController.getController());
 		this.filterController = filterController;
 	}
 

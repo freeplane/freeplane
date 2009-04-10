@@ -22,16 +22,15 @@ package org.freeplane.features.controller.print;
 import org.freeplane.core.ui.AFreeplaneAction;
 
 abstract class AbstractPrintAction extends AFreeplaneAction {
-	private static final long serialVersionUID = 892194048692112127L;
+
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 	final private PrintController printController;
 
-	public AbstractPrintAction(final PrintController controller) {
-		super(controller.getController());
-		printController = controller;
-	}
-
-	public AbstractPrintAction(final PrintController controller, final String name, final String imageIcon) {
-		super(controller.getController(), name, imageIcon);
+	public AbstractPrintAction(final String key, final PrintController controller) {
+		super(key, controller.getController());
 		printController = controller;
 	}
 

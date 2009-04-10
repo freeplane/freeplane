@@ -29,6 +29,10 @@ import org.freeplane.core.ui.AFreeplaneAction;
  */
 final class UndoFilterAction extends AFreeplaneAction {
 	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+	/**
 	 * 
 	 */
 	private final FilterController filterController;
@@ -37,7 +41,7 @@ final class UndoFilterAction extends AFreeplaneAction {
 	 * @param filterController
 	 */
 	UndoFilterAction(final FilterController filterController) {
-		super(filterController.getController());
+		super("UndoFilterAction", filterController.getController());
 		this.filterController = filterController;
 	}
 

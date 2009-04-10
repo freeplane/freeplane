@@ -29,7 +29,7 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.modecontroller.NodeChangeEvent;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.mindmapmode.MModeController;
@@ -39,8 +39,8 @@ import org.freeplane.n3.nanoxml.XMLElement;
 /**
  * @author foltin
  */
+@ActionLocationDescriptor(locations = { })
 @NodeHookDescriptor(hookName = "accessories/plugins/RevisionPlugin.properties")
-@ActionDescriptor(name = "accessories/plugins/RevisionPlugin.properties_name")
 public class RevisionPlugin extends PersistentNodeHook implements INodeChangeListener, IExtension {
 	public RevisionPlugin(final ModeController modeController) {
 		super(modeController);

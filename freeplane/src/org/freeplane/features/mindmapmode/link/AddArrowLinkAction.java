@@ -34,6 +34,11 @@ import org.freeplane.features.common.link.NodeLinks;
  * @author foltin
  */
 class AddArrowLinkAction extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	private static String getIconPath() {
 		return "/images/designer.png";
 	}
@@ -45,7 +50,7 @@ class AddArrowLinkAction extends AFreeplaneAction {
 	/**
 	 */
 	public AddArrowLinkAction(final Controller controller) {
-		super(controller, AddArrowLinkAction.getTitle(), AddArrowLinkAction.getIconPath());
+		super("AddArrowLinkAction", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -89,8 +94,4 @@ class AddArrowLinkAction extends AFreeplaneAction {
 		getModeController().execute(actor);
 	}
 
-	@Override
-	public String getName() {
-		return "addArrowLinkAction";
-	}
 }

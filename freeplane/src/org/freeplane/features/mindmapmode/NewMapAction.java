@@ -27,20 +27,20 @@ import org.freeplane.core.ui.AFreeplaneAction;
 
 class NewMapAction extends AFreeplaneAction {
 	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
+	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 158359355321302419L;
+
 
 	public NewMapAction(final Controller controller) {
-		super(controller, "new", "/images/filenew.png");
+		super("NewMapAction", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		getModeController().getMapController().newMap(((NodeModel) null));
-	}
-
-	@Override
-	public String getName() {
-		return "newMap";
 	}
 }

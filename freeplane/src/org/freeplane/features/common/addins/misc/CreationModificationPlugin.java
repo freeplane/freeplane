@@ -31,17 +31,14 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.modecontroller.NodeChangeEvent;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
-import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
  * @author foltin
  */
 @NodeHookDescriptor(hookName = "accessories/plugins/CreationModificationPlugin.properties")
-@ActionDescriptor(locations = { "/menu_bar/extras/first/nodes/change" }, //
-name = "accessories/plugins/CreationModificationPlugin.properties_name", //
-iconPath = "/images/kword.png", //
-tooltip = "accessories/plugins/CreationModificationPlugin.properties_documentation")
+@ActionLocationDescriptor(locations = { "/menu_bar/extras/first/nodes/change" })
 public class CreationModificationPlugin extends PersistentNodeHook implements INodeChangeListener, IExtension {
 	private String tooltipFormat = "<html>Created:  {0,date} {0,time}<br>Modified: {1,date} {1,time}</html>";
 

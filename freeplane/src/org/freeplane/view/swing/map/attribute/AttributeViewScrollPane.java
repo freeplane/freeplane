@@ -26,6 +26,11 @@ import javax.swing.JScrollPane;
 
 class AttributeViewScrollPane extends JScrollPane {
 	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
+	/**
 	 */
 	AttributeViewScrollPane(final AttributeTable attributeTable) {
 		super(attributeTable);

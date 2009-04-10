@@ -27,6 +27,11 @@ import org.freeplane.n3.nanoxml.XMLElement;
  */
 public class AttributeRegistryElement {
 	private class RegisteredAttributeValues extends SortedComboBoxModel {
+		/**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
 		public void _add(final Object element) {
 			super.add(element);
 		}

@@ -28,6 +28,11 @@ import javax.swing.JScrollPane;
  * 10.01.2009
  */
 class MapViewScrollPane extends JScrollPane {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	@Override
 	protected void validateTree() {
 		final Component view = getViewport().getView();

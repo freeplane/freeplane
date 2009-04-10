@@ -41,6 +41,11 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 
 class PageAction extends AbstractPrintAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	private final class ActionListenerImplementation implements ActionListener {
 		private final JDialog dialog;
 		private int eventSource;
@@ -60,11 +65,10 @@ class PageAction extends AbstractPrintAction {
 	}
 
 	static final String NAME = "page";
-	private static final long serialVersionUID = 2736613545540923942L;
+
 
 	PageAction(final PrintController controller) {
-		super(controller);
-		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText("page"));
+		super("PageAction", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -137,10 +141,5 @@ class PageAction extends AbstractPrintAction {
 		else if (printController.getPageFormat().getOrientation() == PageFormat.REVERSE_LANDSCAPE) {
 			ResourceController.getResourceController().setProperty("page_orientation", "reverse_landscape");
 		}
-	}
-
-	@Override
-	public String getName() {
-		return NAME;
 	}
 }

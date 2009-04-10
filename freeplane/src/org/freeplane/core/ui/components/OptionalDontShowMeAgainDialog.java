@@ -129,11 +129,21 @@ public class OptionalDontShowMeAgainDialog {
 		mDialog.setModal(true);
 		mDialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		final AbstractAction cancelAction = new AbstractAction() {
+			/**
+             * 
+             */
+            private static final long serialVersionUID = 1L;
+
 			public void actionPerformed(final ActionEvent pE) {
 				close(JOptionPane.CANCEL_OPTION);
 			}
 		};
 		final AbstractAction okAction = new AbstractAction() {
+			/**
+             * 
+             */
+            private static final long serialVersionUID = 1L;
+
 			public void actionPerformed(final ActionEvent pE) {
 				close(JOptionPane.OK_OPTION);
 			}

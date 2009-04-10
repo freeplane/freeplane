@@ -33,8 +33,13 @@ import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 
 class NewChildAction extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	public NewChildAction(final Controller controller) {
-		super(controller, "new_child", "/images/idea.png");
+		super("NewChildAction", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -105,10 +110,5 @@ class NewChildAction extends AFreeplaneAction {
 		};
 		getModeController().execute(actor);
 		return newNode;
-	}
-
-	@Override
-	public String getName() {
-		return "newChild";
 	}
 }

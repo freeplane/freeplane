@@ -29,13 +29,16 @@ import java.io.Reader;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
+import java.util.ListIterator;
 
 import javax.swing.JOptionPane;
 
+import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.modecontroller.MapController;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.EncryptionModel;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
@@ -125,8 +128,6 @@ public class MMapController extends MapController {
 		modeController.addAction(newChild);
 		delete = new DeleteAction(controller);
 		modeController.addAction(delete);
-		modeController.addAction(new ToggleFoldedAction(controller));
-		modeController.addAction(new ToggleChildrenFoldedAction(controller));
 		modeController.addAction(new NodeUpAction(controller));
 		modeController.addAction(new NodeDownAction(controller));
 	}
@@ -356,7 +357,7 @@ public class MMapController extends MapController {
 	}
 
 	public void moveNodes(final NodeModel selected, final List selecteds, final int direction) {
-		((NodeUpAction) getModeController().getAction("nodeUp")).moveNodes(selected, selecteds, direction);
+		((NodeUpAction) getModeController().getAction("NodeUpAction")).moveNodes(selected, selecteds, direction);
 	}
 
 	/**
@@ -414,16 +415,51 @@ public class MMapController extends MapController {
 		return buffer;
 	}
 
-	@Override
+	/**
+	 */
 	public void setFolded(final NodeModel node, final boolean folded) {
-		((ToggleFoldedAction) getModeController().getAction("undoableToggleFolded")).setFolded(node, folded);
+		if (node.isFolded() == folded) {
+			return;
+		}
+		toggleFolded(node);
 	}
 
-	@Override
 	public void toggleFolded() {
-		((ToggleFoldedAction) getModeController().getAction("undoableToggleFolded")).toggleFolded();
+		toggleFolded(getSelectedNodes().listIterator());
 	}
 
+	public void toggleFolded(final ListIterator listIterator) {
+		while (listIterator.hasNext()) {
+			toggleFolded((NodeModel) listIterator.next());
+		}
+	}
+
+	private void toggleFolded(final NodeModel node) {
+		if (!getModeController().getMapController().hasChildren(node)
+		        && !StringUtils.equals(ResourceController.getResourceController().getProperty("enable_leaves_folding"),
+		            "true")) {
+			return;
+		}
+		final IActor actor = new IActor() {
+			public void act() {
+				_setFolded(node, !node.isFolded());
+				final ResourceController resourceController = ResourceController.getResourceController();
+				if (resourceController.getProperty(ResourceControllerProperties.RESOURCES_SAVE_FOLDING).equals(
+				    ResourceControllerProperties.RESOURCES_ALWAYS_SAVE_FOLDING)) {
+					nodeChanged(node);
+				}
+			}
+
+			public String getDescription() {
+				return "toggleFolded";
+			}
+
+			public void undo() {
+				act();
+			}
+		};
+		getModeController().execute(actor);
+	}
 	/**
 	 * Attempts to lock the map using a semaphore file
 	 *

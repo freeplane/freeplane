@@ -31,8 +31,13 @@ import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.link.NodeLinks;
 
 class SetLinkByTextFieldAction extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	public SetLinkByTextFieldAction(final Controller controller) {
-		super(controller, "set_link_by_textfield", (String) null);
+		super("SetLinkByTextFieldAction", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {

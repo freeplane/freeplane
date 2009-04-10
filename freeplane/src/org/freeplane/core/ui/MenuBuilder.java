@@ -253,7 +253,7 @@ public class MenuBuilder extends UIBuilder {
 				menuPath.setName(action);
 				final String keystroke = attributes.getAttribute("key_ref", null);
 				try {
-					final Action theAction = modeController.getAction(action);
+					final AFreeplaneAction theAction = modeController.getAction(action);
 					if (tag.equals("menu_radio_action")) {
 						final JRadioButtonMenuItem item = (JRadioButtonMenuItem) addRadioItem(menuPath.parentPath,
 						    theAction, keystroke, "true".equals(attributes.getAttribute("selected", "false")));
@@ -399,26 +399,11 @@ public class MenuBuilder extends UIBuilder {
 		reader = new MenuStructureReader();
 	}
 
-	public void addAction(final AFreeplaneAction action, final ActionDescriptor actionAnnotation) {
-		final String docu = actionAnnotation.tooltip();
-		if (!docu.equals("")) {
-			action.setTooltip(docu);
-		}
-		final String actionName = actionAnnotation.name();
-		MenuBuilder.setLabelAndMnemonic(action, FreeplaneResourceBundle.getText(actionName));
-		final String iconPath = actionAnnotation.iconPath();
-		if (!iconPath.equals("")) {
-			final ImageIcon icon = new ImageIcon(ResourceController.getResourceController().getResource(iconPath));
-			action.putValue(Action.SMALL_ICON, icon);
-		}
+	public void addAction(final AFreeplaneAction action, final ActionLocationDescriptor actionAnnotation) {
 		final String[] actionLocations = actionAnnotation.locations();
-		String keystroke = actionAnnotation.keyStroke();
-		if (keystroke.equals("")) {
-			keystroke = null;
-		}
 		for (int i = 0; i < actionLocations.length; i++) {
-			final String key = actionLocations.length == 0 ? actionName : actionName + "[" + i + "]";
-			addAction(actionLocations[i], key, action, keystroke, MenuBuilder.AS_CHILD);
+			final String key = actionLocations.length == 0 ? action.getKey() : action.getKey() + "[" + i + "]";
+			addAction(actionLocations[i], key, action, action.getShortcutKey(), MenuBuilder.AS_CHILD);
 		}
 	}
 
@@ -427,11 +412,11 @@ public class MenuBuilder extends UIBuilder {
 	 * @param keystroke
 	 *            can be null, if no keystroke should be assigned.
 	 */
-	public void addAction(final String category, final Action action, final String keystroke, final int position) {
+	public void addAction(final String category, final AFreeplaneAction action, final String keystroke, final int position) {
 		addAction(category, null, action, keystroke, position);
 	}
 
-	public void addAction(final String category, final String key, final Action action, final String keystroke,
+	public void addAction(final String category, final String key, final AFreeplaneAction action, final String keystroke,
 	                      final int position) {
 		assert action != null;
 		if (getContainer(get(category), Container.class) instanceof JToolBar) {
@@ -466,7 +451,7 @@ public class MenuBuilder extends UIBuilder {
 				}
 
 				public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
-					((AFreeplaneAction) action).setSelected();
+					action.setSelected();
 				}
 			});
 		}
@@ -479,7 +464,7 @@ public class MenuBuilder extends UIBuilder {
 				}
 
 				public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
-					((AFreeplaneAction) action).setVisible();
+					action.setVisible();
 				}
 			});
 		}
@@ -492,19 +477,20 @@ public class MenuBuilder extends UIBuilder {
 				}
 
 				public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
-					((AFreeplaneAction) action).setEnabled();
+					action.setEnabled();
 				}
 			});
 		}
-		if (keystroke != null) {
-			final String keyProperty = ResourceController.getResourceController().getAdjustableProperty(keystroke);
+		final String actionShortcutKey = action.getShortcutKey();
+		if (actionShortcutKey != null) {
+			final String keyProperty = ResourceController.getResourceController().getAdjustableProperty(actionShortcutKey);
 			item.setAccelerator(KeyStroke.getKeyStroke(keyProperty));
 		}
 		return;
 	}
 
 	public void addAnnotatedAction(final AFreeplaneAction action) {
-		addAction(action, action.getClass().getAnnotation(ActionDescriptor.class));
+		addAction(action, action.getClass().getAnnotation(ActionLocationDescriptor.class));
 	}
 
 	private void addButton(final String category, final Action action, final int position) {

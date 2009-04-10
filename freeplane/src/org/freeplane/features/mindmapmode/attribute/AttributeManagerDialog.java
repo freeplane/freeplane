@@ -57,9 +57,19 @@ import org.freeplane.features.common.attribute.AttributeRegistry;
  * @author Dimitry Polivaev
  */
 public class AttributeManagerDialog extends JDialog implements IMapSelectionListener {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	private class ApplyAction extends AFreeplaneAction {
+		/**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
 		ApplyAction() {
-			super(controller, "apply");
+			super("ApplyAction", controller);
 		}
 
 		/*
@@ -74,8 +84,13 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 	}
 
 	private class CancelAction extends AFreeplaneAction {
+		/**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
 		CancelAction() {
-			super(controller, "cancel");
+			super("CancelAction", controller);
 		}
 
 		/*
@@ -100,6 +115,10 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 	}
 
 	class EditListAction extends AbstractAction {
+		/**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
 		private String labelText;
 		private IListModel listBoxModel;
 		private int row = 0;
@@ -130,8 +149,13 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 	}
 
 	private class ImportAction extends AFreeplaneAction {
+		/**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
 		ImportAction() {
-			super(controller, "attributes_import");
+			super("ImportAction", controller);
 		}
 
 		/*
@@ -149,8 +173,13 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 	}
 
 	private class OKAction extends AFreeplaneAction {
+		/**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
 		OKAction() {
-			super(controller, "ok");
+			super("OKAction", controller);
 		}
 
 		/*

@@ -45,6 +45,10 @@ import org.freeplane.core.ui.components.UITools;
  * @author foltin
  */
 public class PropertyAction extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 	private final DefaultMutableTreeNode controls;
 
 	/**
@@ -52,7 +56,7 @@ public class PropertyAction extends AFreeplaneAction {
 	 *
 	 */
 	public PropertyAction(final Controller controller, final DefaultMutableTreeNode controls) {
-		super(controller, "property_dialog");
+		super("PropertyAction", controller);
 		this.controls = controls;
 	}
 
@@ -91,6 +95,11 @@ public class PropertyAction extends AFreeplaneAction {
 			}
 		});
 		final Action action = new AbstractAction() {
+			/**
+             * 
+             */
+            private static final long serialVersionUID = 1L;
+
 			public void actionPerformed(final ActionEvent arg0) {
 				options.closeWindow();
 			}

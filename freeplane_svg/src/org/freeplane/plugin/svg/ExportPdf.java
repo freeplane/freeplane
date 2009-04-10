@@ -34,7 +34,7 @@ import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.fop.svg.PDFTranscoder;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
-import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.view.swing.map.MapView;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -42,10 +42,15 @@ import org.w3c.dom.Element;
 /**
  * @author foltin
  */
-@ActionDescriptor(name = "plugins/ExportPdf.xml_name", locations = { "/menu_bar/file/export/export" })
+@ActionLocationDescriptor(locations = { "/menu_bar/file/export/export" })
 class ExportPdf extends ExportVectorGraphic {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	public ExportPdf(final Controller controller) {
-		super(controller);
+		super("ExportPdf", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {

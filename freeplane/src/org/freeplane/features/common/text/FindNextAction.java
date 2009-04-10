@@ -30,11 +30,14 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlTools;
 
 class FindNextAction extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 	final private FindAction find;
 
 	public FindNextAction(final ModeController controller, final FindAction find) {
-		super(controller.getController(), "find_next");
-		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText("find_next"));
+		super("FindNextAction", controller.getController());
 		this.find = find;
 	}
 

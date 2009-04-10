@@ -28,8 +28,13 @@ import org.freeplane.core.util.HtmlTools;
 import org.freeplane.features.common.text.TextController;
 
 class UseRichFormattingAction extends MultipleNodeAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	public UseRichFormattingAction(final Controller controller) {
-		super(controller, "use_rich_formatting");
+		super("UseRichFormattingAction", controller);
 	}
 
 	@Override

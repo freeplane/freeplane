@@ -33,7 +33,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.util.FixedHTMLWriter;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
@@ -45,17 +45,18 @@ import org.freeplane.features.mindmapmode.text.MTextController;
 /**
  * @author Dimitry Polivaev
  */
-@ActionDescriptor(tooltip = "accessories/plugins/SplitNode.properties_documentation", //
-name = "accessories/plugins/SplitNode.properties_name", //
-keyStroke = "%keystroke_accessories/plugins/SplitNode.properties_key", //
-iconPath = "/images/stock_text_indent.png", //
-locations = { "/menu_bar/extras/first/join" })
+@ActionLocationDescriptor(locations = { "/menu_bar/extras/first/join" })
 public class SplitNode extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	/**
 	 *
 	 */
 	public SplitNode(final Controller controller) {
-		super(controller);
+		super("SplitNode", controller);
 	}
 
 	/*

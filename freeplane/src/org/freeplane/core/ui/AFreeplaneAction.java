@@ -19,6 +19,8 @@
  */
 package org.freeplane.core.ui;
 
+import java.awt.event.ActionListener;
+
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
@@ -32,9 +34,15 @@ import org.freeplane.core.resources.ResourceController;
  * @author Dimitry Polivaev
  */
 public abstract class AFreeplaneAction extends AbstractAction {
-	private static final long serialVersionUID = -5779325074243496610L;
 
-	static public boolean checkEnabledOnChange(final Action action) {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+	final private String key;
+	
+
+	static public boolean checkEnabledOnChange(final AFreeplaneAction action) {
 		final EnabledAction annotation = action.getClass().getAnnotation(EnabledAction.class);
 		if (!(action instanceof AFreeplaneAction) || annotation == null) {
 			return false;
@@ -42,7 +50,7 @@ public abstract class AFreeplaneAction extends AbstractAction {
 		return annotation.checkOnNodeChange();
 	}
 
-	static public boolean checkEnabledOnPopup(final Action action) {
+	static public boolean checkEnabledOnPopup(final AFreeplaneAction action) {
 		final EnabledAction annotation = action.getClass().getAnnotation(EnabledAction.class);
 		if (annotation == null) {
 			return false;
@@ -50,7 +58,7 @@ public abstract class AFreeplaneAction extends AbstractAction {
 		return annotation.checkOnPopup();
 	}
 
-	static public boolean checkSelectionOnChange(final Action action) {
+	static public boolean checkSelectionOnChange(final AFreeplaneAction action) {
 		final SelectableAction annotation = action.getClass().getAnnotation(SelectableAction.class);
 		if (!(action instanceof AFreeplaneAction) || annotation == null) {
 			return false;
@@ -58,7 +66,7 @@ public abstract class AFreeplaneAction extends AbstractAction {
 		return annotation.checkOnNodeChange();
 	}
 
-	static public boolean checkSelectionOnPopup(final Action action) {
+	static public boolean checkSelectionOnPopup(final AFreeplaneAction action) {
 		final SelectableAction annotation = action.getClass().getAnnotation(SelectableAction.class);
 		if (annotation == null) {
 			return false;
@@ -87,44 +95,55 @@ public abstract class AFreeplaneAction extends AbstractAction {
 	private boolean selected = false;
 	private boolean visible = true;
 
-	public AFreeplaneAction(final Controller controller) {
+	public AFreeplaneAction(final String key, final Controller controller) {
 		super();
 		this.controller = controller;
-	}
-
-	public AFreeplaneAction(final Controller controller, final ActionDescriptor descriptor) {
-		this(controller, descriptor.name(), descriptor.iconPath());
-	}
-
-	/**
-	 * @param controller
-	 * @param string
-	 */
-	public AFreeplaneAction(final Controller controller, final String titleKey) {
-		this(controller);
-		if (titleKey != null && !titleKey.equals("")) {
-			MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText(titleKey));
-		}
-	}
-
-	public AFreeplaneAction(final Controller controller, final String title, final ImageIcon icon) {
-		this(controller, title);
-		putValue(SMALL_ICON, icon);
-	}
-
-	/**
-	 * @param title
-	 *            Title is a resource.
-	 * @param iconPath
-	 *            is a path to an icon.
-	 */
-	public AFreeplaneAction(final Controller controller, final String title, final String iconPath) {
-		this(controller, title);
-		if (iconPath != null && !iconPath.equals("")) {
-			final ImageIcon icon = new ImageIcon(ResourceController.getResourceController().getResource(iconPath));
+		this.key = key;
+		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText(getTextKey()));
+		String iconResource = ResourceController.getResourceController().getProperty(getIconKey(), null);
+		if(iconResource != null){
+			final ImageIcon icon = new ImageIcon(ResourceController.getResourceController().getResource(iconResource));
 			putValue(SMALL_ICON, icon);
 		}
+		String tooltip = FreeplaneResourceBundle.getText(getTooltipKey(), null);
+		if(tooltip != null){
+			putValue(Action.SHORT_DESCRIPTION, tooltip);
+			putValue(Action.LONG_DESCRIPTION, tooltip);
+		}
+	
+System.out.println(key);		
 	}
+//	/**
+//	 * @param controller
+//	 * @param string
+//	 */
+//	private AFreeplaneAction(final Controller controller, final String titleKey) {
+//		this(controller);
+//	}
+//
+	public AFreeplaneAction(final Controller controller, final String title, final ImageIcon icon) {
+		this.controller = controller;
+		putValue(SMALL_ICON, icon);
+		if (title != null && !title.equals("")) {
+			MenuBuilder.setLabelAndMnemonic(this, title);
+		}
+		key = null;
+	}
+//
+//	/**
+//	 * @param title
+//	 *            Title is a resource.
+//	 * @param iconPath
+//	 *            is a path to an icon.
+//	 */
+//	private AFreeplaneAction(final Controller controller, final String title, final String iconPath) {
+//		this(controller, title);
+//		if (iconPath != null && !iconPath.equals("")) {
+//			final ImageIcon icon = new ImageIcon(ResourceController.getResourceController().getResource(iconPath));
+//			putValue(SMALL_ICON, icon);
+//System.out.println("icon\t\t" + getClass().getSimpleName() + ".icon=" + iconPath);		
+//		}
+//	}
 
 	public Controller getController() {
 		return controller;
@@ -134,8 +153,20 @@ public abstract class AFreeplaneAction extends AbstractAction {
 		return controller.getModeController();
 	}
 
-	public String getName() {
-		return getClass().getSimpleName();
+	public String getKey() {
+		return key;
+	}
+	final String getIconKey() {
+		return key+".icon";
+	}
+	final String getTextKey() {
+		return key+".text";
+	}
+	final String getTooltipKey() {
+		return key+".tooltip";
+	}
+	public String getShortcutKey() {
+		return key == null ? null : key+".shortcut";
 	}
 
 	public boolean isSelected() {
@@ -160,11 +191,6 @@ public abstract class AFreeplaneAction extends AbstractAction {
 		}
 	}
 
-	public void setTooltip(final String tooltipKey) {
-		final String tooltip = FreeplaneResourceBundle.getText(tooltipKey);
-		putValue(Action.SHORT_DESCRIPTION, tooltip);
-		putValue(Action.LONG_DESCRIPTION, tooltip);
-	}
 
 	public void setVisible() {
 	}

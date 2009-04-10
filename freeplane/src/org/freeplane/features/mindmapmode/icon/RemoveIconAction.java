@@ -39,9 +39,14 @@ import org.freeplane.core.undo.IActor;
  */
 class RemoveIconAction extends MultipleNodeAction implements IIconInformation {
 	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
+	/**
 	 */
 	public RemoveIconAction(final Controller controller) {
-		super(controller, "remove_last_icon", "/images/remove.png");
+		super("RemoveLastIconAction", controller);
 	}
 
 	@Override
@@ -66,11 +71,7 @@ class RemoveIconAction extends MultipleNodeAction implements IIconInformation {
 
 	public KeyStroke getKeyStroke() {
 		return UITools.getKeyStroke(ResourceController.getResourceController().getAdjustableProperty(
-		    getKeystrokeResourceName()));
-	}
-
-	public String getKeystrokeResourceName() {
-		return "keystroke_remove_last_icon";
+		    getShortcutKey()));
 	}
 
 	public int removeIcon(final NodeModel node, final int position) {

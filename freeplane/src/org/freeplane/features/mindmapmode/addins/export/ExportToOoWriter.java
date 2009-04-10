@@ -42,18 +42,21 @@ import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.util.LogTool;
 
 /**
  * @author foltin
  */
-@ActionDescriptor(name = "accessories/plugins/ExportToOoWriter.properties_name", //
-tooltip = "accessories/plugins/ExportToOoWriter.properties_documentation", // 
-locations = { "/menu_bar/file/export/export" })
+@ActionLocationDescriptor(locations = { "/menu_bar/file/export/export" })
 public class ExportToOoWriter extends ExportAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	public ExportToOoWriter(final Controller controller) {
-		super(controller);
+		super("ExportToOoWriter", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {

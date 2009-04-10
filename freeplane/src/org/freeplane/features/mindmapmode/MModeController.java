@@ -70,10 +70,10 @@ public class MModeController extends ModeController {
 		redo = new RedoAction(controller);
 		undo.setRedo(redo);
 		redo.setUndo(undo);
-		addAction("undo", undo);
-		addAction("redo", redo);
-		addAction("selectBranchAction", new SelectBranchAction(controller));
-		addAction("selectAllAction", new SelectAllAction(controller));
+		addAction(undo);
+		addAction(redo);
+		addAction(new SelectBranchAction(controller));
+		addAction(new SelectAllAction(controller));
 	}
 
 	private void createOptionPanelControls() {
@@ -102,7 +102,7 @@ public class MModeController extends ModeController {
 		}
 		optionPanelBuilder.addComboProperty("Appearance/look_and_feel/lookandfeel", "lookandfeel", lafNames,
 		    translatedLafNames, IndexedTree.AS_CHILD);
-		addAction("propertyAction", new PropertyAction(getController(), optionPanelBuilder.getRoot()));
+		addAction(new PropertyAction(getController(), optionPanelBuilder.getRoot()));
 	}
 
 	@Override

@@ -93,8 +93,6 @@ class AppletViewController extends ViewController {
 
 	@Override
 	public void init() {
-		getController().getViewController().changeAntialias(
-		    ResourceController.getResourceController().getProperty(ViewController.RESOURCE_ANTIALIAS));
 		getContentPane().add(getScrollPane(), BorderLayout.CENTER);
 		southPanel = new JPanel(new BorderLayout());
 		southPanel.add(getStatusLabel(), BorderLayout.SOUTH);

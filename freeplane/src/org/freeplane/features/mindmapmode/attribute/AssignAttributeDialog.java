@@ -65,6 +65,11 @@ import org.freeplane.features.common.attribute.AttributeRegistryElement;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
 
 class AssignAttributeDialog extends JDialog implements IAttributesListener, IMapSelectionListener {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	private class AddAction extends IteratingAction {
 		private String name;
 		private String value;
@@ -97,6 +102,10 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 	}
 
 	private static class ClonedComboBoxModel extends AbstractListModel implements ComboBoxModel {
+		/**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
 		private Object selectedItem;
 		final private AbstractListModel sharedListModel;
 

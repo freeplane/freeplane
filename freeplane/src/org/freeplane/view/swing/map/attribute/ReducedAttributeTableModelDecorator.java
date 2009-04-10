@@ -30,6 +30,10 @@ import org.freeplane.features.common.attribute.Attribute;
  * @author Dimitry Polivaev
  */
 class ReducedAttributeTableModelDecorator extends AttributeTableModelDecoratorAdapter {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 	private Vector index = null;
 	private int visibleRowCount;
 

@@ -36,6 +36,10 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlTools;
 
 class FindAction extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 	private boolean findCaseSensitive;
 	private NodeModel findFromNode;
 	private LinkedList findNodeQueue;
@@ -44,7 +48,7 @@ class FindAction extends AFreeplaneAction {
 	private Collection subterms;
 
 	public FindAction(final Controller controller) {
-		super(controller, "find", "/images/filefind.png");
+		super("FindAction", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {

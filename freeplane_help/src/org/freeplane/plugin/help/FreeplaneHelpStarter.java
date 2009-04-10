@@ -29,17 +29,20 @@ import javax.help.HelpSet;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.core.ui.ActionLocationDescriptor;
 
 /**
  * @author foltin
  */
-@ActionDescriptor(name = "plugins/FreeplaneHelp.xml_name", //
-tooltip = "plugins/FreeplaneHelp.xml_documentation", //
-locations = { "/menu_bar/help/doc" })
+@ActionLocationDescriptor(locations = { "/menu_bar/help/doc" })
 class FreeplaneHelpStarter extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	public FreeplaneHelpStarter(final Controller controller) {
-		super(controller);
+		super("FreeplaneHelpStarter", controller);
 	}
 
 	/**

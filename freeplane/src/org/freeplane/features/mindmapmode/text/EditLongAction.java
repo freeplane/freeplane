@@ -27,10 +27,15 @@ import org.freeplane.features.common.text.TextController;
 
 class EditLongAction extends AFreeplaneAction {
 	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
+	/**
 	 *
 	 */
 	public EditLongAction(final Controller controller) {
-		super(controller, "edit_long_node");
+		super("EditLongAction", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {

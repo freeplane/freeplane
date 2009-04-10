@@ -29,12 +29,16 @@ import org.freeplane.features.common.nodestyle.NodeStyleController;
 
 @SelectableAction(checkOnNodeChange = true)
 class ItalicAction extends MultipleNodeAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 	private boolean italic;
 
 	/**
 	 */
 	public ItalicAction(final Controller controller) {
-		super(controller, "italic", "/images/Italic16.gif");
+		super("ItalicAction", controller);
 	}
 
 	@Override

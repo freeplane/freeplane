@@ -63,6 +63,10 @@ import javax.swing.text.JTextComponent;
  * @author Volker Berlin
  */
 class SpellCheckerDialog extends JDialog implements ActionListener {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 	final private JButton addToDic = new JButton(Utils.getResource("addToDictionary"));
 	final private JButton change = new JButton(Utils.getResource("change"));
 	final private JButton changeAll = new JButton(Utils.getResource("changeAll"));
@@ -208,6 +212,11 @@ class SpellCheckerDialog extends JDialog implements ActionListener {
 		close.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, false),
 		    "ESCAPE");
 		close.getActionMap().put("ESCAPE", new AbstractAction() {
+			/**
+             * 
+             */
+            private static final long serialVersionUID = 1L;
+
 			public void actionPerformed(final ActionEvent e) {
 				dispose();
 			}

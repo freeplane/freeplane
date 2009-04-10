@@ -76,13 +76,23 @@ import org.freeplane.core.url.UrlManager;
  */
 class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
+	/**
 	 * @author Dimitry Polivaev
 	 */
 	private class AddElementaryConditionAction extends AFreeplaneAction {
-		private static final long serialVersionUID = 6750527357555878788L;
+
+
+		/**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
 
 		AddElementaryConditionAction(final Controller controller) {
-			super(controller, "filter_add");
+			super("AddElementaryConditionAction", controller);
 		}
 
 		public void actionPerformed(final ActionEvent e) {
@@ -109,11 +119,6 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 				}
 			}
 			validate();
-		}
-
-		@Override
-		public String getName() {
-			return this.getClass().getSimpleName();
 		}
 	}
 
@@ -183,10 +188,15 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 	}
 
 	private class CreateConjunctConditionAction extends AFreeplaneAction {
-		private static final long serialVersionUID = 5016454533709313766L;
+
+
+		/**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
 
 		CreateConjunctConditionAction() {
-			super(controller, "filter_and");
+			super("CreateConjunctConditionAction", controller);
 		}
 
 		public void actionPerformed(final ActionEvent e) {
@@ -199,18 +209,18 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 			model.addElement(newCond);
 			validate();
 		}
-
-		@Override
-		public String getName() {
-			return getClass().getSimpleName();
-		}
 	}
 
 	private class CreateDisjunctConditionAction extends AFreeplaneAction {
-		private static final long serialVersionUID = -8191519725717206315L;
+
+
+		/**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
 
 		CreateDisjunctConditionAction() {
-			super(controller, "filter_or");
+			super("CreateDisjunctConditionAction", controller);
 		}
 
 		public void actionPerformed(final ActionEvent e) {
@@ -223,21 +233,21 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 			model.addElement(newCond);
 			validate();
 		}
-
-		@Override
-		public String getName() {
-			return getClass().getSimpleName();
-		}
 	}
 
 	private class CreateNotSatisfiedConditionAction extends AFreeplaneAction {
 		/**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
+		/**
 		 * 
 		 */
-		private static final long serialVersionUID = -2133453353200102893L;
+
 
 		CreateNotSatisfiedConditionAction() {
-			super(controller, "filter_not");
+			super("CreateNotSatisfiedConditionAction", controller);
 		}
 
 		public void actionPerformed(final ActionEvent e) {
@@ -253,18 +263,18 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 				}
 			}
 		}
-
-		@Override
-		public String getName() {
-			return getClass().getSimpleName();
-		}
 	}
 
 	private class DeleteConditionAction extends AFreeplaneAction {
-		private static final long serialVersionUID = -5082978222163959862L;
+
+
+		/**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
 
 		DeleteConditionAction() {
-			super(controller, "filter_delete");
+			super("DeleteConditionAction", controller);
 		}
 
 		public void actionPerformed(final ActionEvent e) {
@@ -279,11 +289,6 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 				elementaryConditionList.setSelectedIndex(minSelectionIndex < size ? minSelectionIndex : size - 1);
 			}
 			validate();
-		}
-
-		@Override
-		public String getName() {
-			return getClass().getSimpleName();
 		}
 	}
 

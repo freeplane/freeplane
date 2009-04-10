@@ -26,20 +26,19 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.url.UrlManager;
 
 class SaveAsAction extends AFreeplaneAction {
-	private static final String NAME = "saveAs";
-	private static final long serialVersionUID = 2159332245929439677L;
+
+
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 
 	public SaveAsAction(final Controller controller) {
-		super(controller, "save_as", "/images/filesaveas.png");
+		super("SaveAsAction", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		((MFileManager) UrlManager.getController(getModeController())).saveAs(getController().getMap());
 		getController().getViewController().setTitle();
-	}
-
-	@Override
-	public String getName() {
-		return NAME;
 	}
 }

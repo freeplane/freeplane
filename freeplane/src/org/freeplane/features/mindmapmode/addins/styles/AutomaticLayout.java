@@ -53,7 +53,7 @@ import org.freeplane.core.resources.ui.IPropertyControl;
 import org.freeplane.core.resources.ui.IPropertyControlCreator;
 import org.freeplane.core.resources.ui.OptionPanelBuilder;
 import org.freeplane.core.resources.ui.PropertyBean;
-import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapnode.pattern.MPatternController;
@@ -65,9 +65,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 @NodeHookDescriptor(hookName = "accessories/plugins/AutomaticLayout.properties")
-@ActionDescriptor(locations = "/menu_bar/extras/first/nodes/change", //
-name = "accessories/plugins/AutomaticLayout.properties_name", //
-tooltip = "accessories/plugins/AutomaticLayout.properties_documentation")
+@ActionLocationDescriptor(locations = "/menu_bar/extras/first/nodes/change")
 public class AutomaticLayout extends PersistentNodeHook implements IMapChangeListener, INodeChangeListener,
         IReadCompletionListener, IExtension {
 	/**

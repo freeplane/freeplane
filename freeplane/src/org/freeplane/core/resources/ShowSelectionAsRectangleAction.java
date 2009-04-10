@@ -27,23 +27,22 @@ import org.freeplane.core.ui.SelectableAction;
 
 @SelectableAction(checkOnPopup = true)
 class ShowSelectionAsRectangleAction extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 	static final String NAME = "showSelectionAsRectangle";
-	private static final long serialVersionUID = -8742240225318545598L;
+
 
 	/**
 	 *
 	 */
 	public ShowSelectionAsRectangleAction(final Controller controller) {
-		super(controller, "selection_as_rectangle");
+		super("ShowSelectionAsRectangleAction", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		ResourceController.getResourceController().toggleSelectionAsRectangle();
-	}
-
-	@Override
-	public String getName() {
-		return NAME;
 	}
 
 	@Override

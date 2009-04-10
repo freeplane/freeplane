@@ -32,11 +32,15 @@ import org.freeplane.core.url.UrlManager;
 import org.freeplane.features.mindmapmode.MMapController;
 
 class ImportBranchAction extends AFreeplaneAction {
-	private static final String NAME = "importBranch";
-	private static final long serialVersionUID = 7546992261152336279L;
+
+
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 
 	public ImportBranchAction(final Controller controller) {
-		super(controller, "import_branch");
+		super("ImportBranchAction", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -61,10 +65,5 @@ class ImportBranchAction extends AFreeplaneAction {
 				UrlManager.getController(getModeController()).handleLoadingException(ex);
 			}
 		}
-	}
-
-	@Override
-	public String getName() {
-		return NAME;
 	}
 }

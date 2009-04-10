@@ -38,12 +38,13 @@ import org.freeplane.core.url.UrlManager;
  * @author foltin
  */
 abstract public class ExportAction extends AFreeplaneAction {
-	public ExportAction(final Controller controller) {
-		super(controller);
-	}
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 
-	public ExportAction(final Controller controller, final String title) {
-		super(controller, title);
+	public ExportAction(final String key, final Controller controller) {
+		super(key,  controller);
 	}
 
 	/**

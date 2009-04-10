@@ -38,7 +38,7 @@ import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
@@ -51,8 +51,13 @@ import org.freeplane.main.application.FreeplaneSecurityManager;
 /**
  * @author foltin
  */
-@ActionDescriptor(name = "plugins/ScriptingEngine.xml_name", keyStroke = "keystroke_plugins/ScriptingEngine.keystroke.evaluate", locations = { "/menu_bar/extras/first/scripting" })
+@ActionLocationDescriptor(locations = { "/menu_bar/extras/first/scripting" })
 class ScriptingEngine extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	public interface IErrorHandler {
 		void gotoLine(int pLineNumber);
 	}
@@ -228,7 +233,7 @@ class ScriptingEngine extends AFreeplaneAction {
 	final private ScriptingRegistration reg;
 
 	public ScriptingEngine(final Controller controller, final ScriptingRegistration reg) {
-		super(controller);
+		super("ScriptingEngine", controller);
 		this.reg = reg;
 	}
 

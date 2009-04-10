@@ -25,7 +25,7 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.features.mindmapmode.MMapController;
 
@@ -33,13 +33,15 @@ import org.freeplane.features.mindmapmode.MMapController;
  * @author foltin
  */
 public class ChangeNodeLevelController {
-	@ActionDescriptor(tooltip = "accessories/plugins/ChangeNodeLevelAction_left.properties_documentation", //
-	name = "accessories/plugins/ChangeNodeLevelAction_left.properties_name", //
-	keyStroke = "keystroke_accessories/plugins/ChangeNodeLevelAction_left.properties_key", //
-	locations = { "/menu_bar/navigate/nodes" })
+	@ActionLocationDescriptor(locations = { "/menu_bar/navigate/nodes" })
 	private class ChangeNodeLevelLeftsAction extends AFreeplaneAction {
+		/**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
 		public ChangeNodeLevelLeftsAction() {
-			super(controller);
+			super("ChangeNodeLevelLeftsAction", controller);
 		}
 
 		public void actionPerformed(final ActionEvent e) {
@@ -54,13 +56,15 @@ public class ChangeNodeLevelController {
 		}
 	}
 
-	@ActionDescriptor(tooltip = "accessories/plugins/ChangeNodeLevelAction_right.properties_documentation", //
-	name = "accessories/plugins/ChangeNodeLevelAction_right.properties_name", //
-	keyStroke = "keystroke_accessories/plugins/ChangeNodeLevelAction_right.properties_key", //
-	locations = { "/menu_bar/navigate/nodes" })
+	@ActionLocationDescriptor(locations = { "/menu_bar/navigate/nodes" })
 	private class ChangeNodeLevelRightsAction extends AFreeplaneAction {
+		/**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
 		public ChangeNodeLevelRightsAction() {
-			super(controller);
+			super("ChangeNodeLevelRightsAction", controller);
 		}
 
 		public void actionPerformed(final ActionEvent e) {

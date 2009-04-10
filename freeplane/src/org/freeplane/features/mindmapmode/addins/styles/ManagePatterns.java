@@ -26,21 +26,23 @@ import javax.swing.JOptionPane;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.features.mindmapnode.pattern.MPatternController;
 import org.freeplane.features.mindmapnode.pattern.StylePatternFactory;
 import org.freeplane.view.swing.ui.UserInputListenerFactory;
 
-@ActionDescriptor(tooltip = "accessories/plugins/ManagePatterns.properties_documentation", //
-name = "accessories/plugins/ManagePatterns.properties_name", //
-keyStroke = "keystroke_accessories/plugins/ManagePatterns_manage_patterns_dialog", //
-locations = { "/menu_bar/format/patterns/manage", "/node_popup/patterns/manage" })
+@ActionLocationDescriptor(locations = { "/menu_bar/format/patterns/manage", "/node_popup/patterns/manage" })
 public class ManagePatterns extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	/**
 	 *
 	 */
 	public ManagePatterns(final Controller controller) {
-		super(controller);
+		super("ManagePatterns", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {

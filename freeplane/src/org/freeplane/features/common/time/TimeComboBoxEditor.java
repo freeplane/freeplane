@@ -40,6 +40,11 @@ import org.freeplane.features.common.time.swing.JCalendar;
  */
 public class TimeComboBoxEditor implements ComboBoxEditor {
 	private static class DayDate extends Date {
+		/**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
 		public DayDate(final Date date) {
 			super(date.getTime());
 			setHours(0);

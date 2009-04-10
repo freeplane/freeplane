@@ -36,11 +36,15 @@ import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.MMapController;
 
 class JoinNodesAction extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 	final static Pattern BODY_END = Pattern.compile("</body>", Pattern.CASE_INSENSITIVE);
 	final static Pattern BODY_START = Pattern.compile("<body>", Pattern.CASE_INSENSITIVE);
 
 	public JoinNodesAction(final Controller controller) {
-		super(controller, "join_nodes");
+		super("JoinNodesAction", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {

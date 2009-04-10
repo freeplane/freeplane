@@ -27,6 +27,10 @@ import org.freeplane.core.model.NodeModel;
  * @author Dimitry Polivaev 27.11.2008
  */
 public class NodeChangeEvent extends AWTEvent {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 	final private Object newValue;
 	final private Object oldValue;
 	final private Object property;

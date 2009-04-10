@@ -63,6 +63,10 @@ import org.freeplane.features.common.text.IMainView;
  * Base class for all node views.
  */
 public abstract class MainView extends JLabel implements IMainView {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 	public static final Set executableExtensions = new HashSet(Arrays.asList(new String[] { "exe", "com", "vbs", "bat",
 	        "lnk" }));
 	static Dimension maximumSize = new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);

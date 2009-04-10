@@ -20,6 +20,7 @@
 package org.freeplane.core.modecontroller;
 
 import java.awt.Container;
+import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -35,7 +36,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.model.NodeModel.NodeChangeType;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.MenuBuilder;
@@ -58,7 +59,7 @@ public class ModeController extends AController {
 			this.action = action;
 		}
 
-		public Action getAction() {
+		public AFreeplaneAction getAction() {
 			return action;
 		}
 
@@ -82,7 +83,7 @@ public class ModeController extends AController {
 			this.action = action;
 		}
 
-		public Action getAction() {
+		public AFreeplaneAction getAction() {
 			return action;
 		}
 
@@ -106,7 +107,7 @@ public class ModeController extends AController {
 			this.action = action;
 		}
 
-		public Action getAction() {
+		public AFreeplaneAction getAction() {
 			return action;
 		}
 
@@ -125,7 +126,7 @@ public class ModeController extends AController {
 	}
 
 	interface IActionOnChange {
-		Action getAction();
+		AFreeplaneAction getAction();
 	}
 
 	final private Controller controller;
@@ -152,11 +153,6 @@ public class ModeController extends AController {
 		extensionContainer = new ExtensionContainer(new HashMap<Class<? extends IExtension>, IExtension>());
 	}
 
-	public void addAnnotatedAction(final AFreeplaneAction action) {
-		final String name = action.getClass().getAnnotation(ActionDescriptor.class).name();
-		addAction(name, action);
-	}
-
 	public void addExtension(final Class<? extends IExtension> clazz, final IExtension extension) {
 		extensionContainer.addExtension(clazz, extension);
 	}
@@ -174,8 +170,8 @@ public class ModeController extends AController {
 	}
 
 	@Override
-	public Action getAction(final String key) {
-		final Action action = super.getAction(key);
+	public AFreeplaneAction getAction(final String key) {
+		final AFreeplaneAction action = super.getAction(key);
 		if (action != null) {
 			return action;
 		}
@@ -236,8 +232,8 @@ public class ModeController extends AController {
 		}
 	}
 
-	public void addAction(final String key, final AFreeplaneAction action) {
-		super.addAction(key, action);
+	public void addAction(final AFreeplaneAction action) {
+		super.addAction(action);
 		if (AFreeplaneAction.checkEnabledOnChange(action)) {
 			final ActionEnablerOnChange listener = new ActionEnablerOnChange(action);
 			mapController.addNodeSelectionListener(listener);
@@ -256,8 +252,8 @@ public class ModeController extends AController {
 	}
 
 	@Override
-	public Action removeAction(final String key) {
-		final Action action = getActions().remove(key);
+	public AFreeplaneAction removeAction(final String key) {
+		final AFreeplaneAction action = getActions().remove(key);
 		if (AFreeplaneAction.checkEnabledOnChange(action)) {
 			mapController.removeNodeSelectionListener(ActionEnablerOnChange.class, action);
 			mapController.removeNodeChangeListener(ActionEnablerOnChange.class, action);

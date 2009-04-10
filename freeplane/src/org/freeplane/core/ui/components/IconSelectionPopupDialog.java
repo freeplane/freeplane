@@ -47,6 +47,11 @@ import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.ResourceController;
 
 public class IconSelectionPopupDialog extends JDialog implements KeyListener, MouseListener {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	static class Position {
 		final private int x, y;
 
@@ -336,7 +341,7 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 		final int index = calculateIndex(position);
 		final IIconInformation iconInformation = (IIconInformation) icons.get(index);
 		final String keyStroke = ResourceController.getResourceController().getAdjustableProperty(
-		    iconInformation.getKeystrokeResourceName());
+		    iconInformation.getShortcutKey());
 		if (keyStroke != null) {
 			descriptionLabel.setText(iconInformation.getDescription() + ", " + keyStroke);
 		}

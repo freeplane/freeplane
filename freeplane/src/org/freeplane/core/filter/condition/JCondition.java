@@ -27,6 +27,11 @@ import javax.swing.JPanel;
  */
 public class JCondition extends JPanel {
 	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
+	/**
 	 */
 	public JCondition() {
 		super();

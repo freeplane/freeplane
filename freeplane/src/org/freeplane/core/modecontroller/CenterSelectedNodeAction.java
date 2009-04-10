@@ -28,20 +28,19 @@ import org.freeplane.core.ui.AFreeplaneAction;
  * @author foltin
  */
 class CenterSelectedNodeAction extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 	static final String NAME = "center_selected";
-	private static final long serialVersionUID = 7614139535200155019L;
+
 
 	public CenterSelectedNodeAction(final Controller controller) {
-		super(controller, "center_selected");
+		super("CenterSelectedNodeAction", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final IMapSelection selection = getController().getSelection();
 		selection.centerNode(selection.getSelected());
-	}
-
-	@Override
-	public String getName() {
-		return NAME;
 	}
 }

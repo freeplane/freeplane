@@ -44,6 +44,11 @@ class DictionaryFactory {
 	 * A node in the search tree. Every Node can include a list of NodeEnties
 	 */
 	private final static class Node extends ArrayList<NodeEntry> {
+		/**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
 		Node() {
 			super(1);
 		}

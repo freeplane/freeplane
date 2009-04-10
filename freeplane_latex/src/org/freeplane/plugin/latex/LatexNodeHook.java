@@ -31,7 +31,7 @@ import org.freeplane.core.modecontroller.INodeViewLifeCycleListener;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.view.swing.map.NodeView;
@@ -43,9 +43,7 @@ import org.freeplane.view.swing.map.NodeView;
  */
 @NodeHookDescriptor(hookName = "plugins/latex/LatexNodeHook.properties", //
 onceForMap = false)
-@ActionDescriptor(name = "plugins/latex/LatexNodeHook.properties_name", //
-locations = "/menu_bar/insert/other", //
-tooltip = "plugins/latex/LatexNodeHook.properties_documentation")
+@ActionLocationDescriptor(locations = "/menu_bar/insert/other")
 class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCycleListener {
 	/**
 	 */

@@ -3,139 +3,139 @@
 	<menu_category name="menu_bar">
 		<menu_submenu name="file" name_ref="file">
 			<menu_category name="open">
-				<menu_action action="newMap" key_ref="keystroke_newMap" />
-				<menu_action action="open" key_ref="keystroke_open" />
-				<menu_action action="save" key_ref="keystroke_save" />
-				<menu_action action="saveAs" key_ref="keystroke_saveAs" />
-				<menu_action action="revertAction" />
+				<menu_action action="NewMapAction"  />
+				<menu_action action="OpenAction"  />
+				<menu_action action="SaveAction"  />
+				<menu_action action="SaveAsAction"  />
+				<menu_action action="RevertAction" />
 			</menu_category>
 			<menu_category name="close">
-				<menu_action action="close" key_ref="keystroke_close" />
+				<menu_action action="CloseAction"  />
 			</menu_category>
 			<menu_separator />
 			<menu_submenu name="last" name_ref="most_recent_files"></menu_submenu>
 			<menu_category name="export">
 				<menu_submenu name="export" name_ref="menu_file_export">
-					<menu_action action="exportBranch" key_ref="keystroke_export_branch" />
+					<menu_action action="ExportBranchAction"  />
 					<menu_separator />
 					<menu_category name="html">
-						<menu_action action="exportToHTML" key_ref="keystroke_export_to_html" />
+						<menu_action action="ExportToHTMLAction"  />
 					</menu_category>
-					<menu_action action="exportBranchToHTML" key_ref="keystroke_export_branch_to_html" />
+					<menu_action action="ExportBranchToHTMLAction"  />
 				</menu_submenu>
 			</menu_category>
 			<menu_separator />
 			<menu_category name="import">
 				<menu_submenu name="import" name_ref="menu_file_import">
-					<menu_action action="importBranch" />
-					<menu_action action="importLinkedBranch"></menu_action>
-					<menu_action action="importLinkedBranchWithoutRoot"></menu_action>
+					<menu_action action="ImportBranchAction" />
+					<menu_action action="ImportLinkedBranchAction"></menu_action>
+					<menu_action action="ImportLinkedBranchWithoutRootAction"></menu_action>
 					<menu_separator />
-					<menu_action action="importExplorerFavorites"></menu_action>
-					<menu_action action="importFolderStructure"></menu_action>
+					<menu_action action="ImportExplorerFavoritesAction"></menu_action>
+					<menu_action action="ImportFolderStructureAction"></menu_action>
 				</menu_submenu>
 			</menu_category>
 			<menu_separator />
 			<menu_category name="print">
-				<menu_action action="page" />
-				<menu_action action="print" key_ref="keystroke_print" />
-				<menu_action action="printPreview" key_ref="keystroke_print_preview" />
+				<menu_action action="PageAction" />
+				<menu_action action="PrintAction"  />
+				<menu_action action="PrintPreviewAction"  />
 			</menu_category>
 			<menu_separator />
 			<menu_category name="quit">
-				<menu_action action="quit" key_ref="keystroke_quit" />
+				<menu_action action="QuitAction"  />
 			</menu_category>
 			<menu_separator />
 		</menu_submenu>
 		<menu_submenu name="edit" name_ref="edit">
-			<menu_category name="undo">
-				<menu_action action="undo" key_ref="keystroke_undo" />
-				<menu_action action="redo" key_ref="keystroke_redo" />
+			<menu_category name="UndoAction">
+				<menu_action action="UndoAction"  />
+				<menu_action action="RedoAction"  />
 			</menu_category>
 			<menu_category name="select">
-				<menu_action action="selectAllAction" name="select_all"
-					key_ref="keystroke_select_all" />
-				<menu_action action="selectBranchAction" name="select_branch"
-					key_ref="keystroke_select_branch" />
+				<menu_action action="SelectAllAction" name="select_all"
+					 />
+				<menu_action action="SelectBranchAction" name="select_branch"
+					 />
 			</menu_category>
 			<menu_category name="paste">
-				<menu_action action="cut" key_ref="keystroke_cut" />
-				<menu_action action="copy" key_ref="keystroke_copy" />
-				<menu_action action="copySingle"
-					key_ref="keystroke_copy_single" />
-				<menu_action action="paste" key_ref="keystroke_paste" />
+				<menu_action action="CutAction"  />
+				<menu_action action="CopyAction"  />
+				<menu_action action="CopySingleAction"
+					 />
+				<menu_action action="PasteAction"  />
 			</menu_category>
 			<menu_category name="edit">
-				<menu_action action="edit" key_ref="keystroke_edit" />
-				<menu_action action="editLong"
-					key_ref="keystroke_edit_long_node" />
-				<menu_action action="editAttributes"
-					key_ref="keystroke_edit_attributes" />
-				<menu_action action="deleteChild"
-					key_ref="keystroke_delete_child" />
-				<!-- <menu_action action="remove" key_ref="keystroke_remove"/> -->
+				<menu_action action="EditAction"  />
+				<menu_action action="EditLongAction"
+					 />
+				<menu_action action="EditAttributesAction"
+					 />
+				<menu_action action="DeleteAction"
+					 />
+				<!-- <menu_action action="remove" /> -->
 			</menu_category>
 			<menu_category name="find">
-				<menu_action action="find" key_ref="keystroke_find" />
-				<menu_action action="findNext" key_ref="keystroke_find_next" />
+				<menu_action action="FindAction"  />
+				<menu_action action="FindNextAction"  />
 			</menu_category>
 		</menu_submenu>
 		<menu_submenu name="view" name_ref="menu_view">
 			<menu_category name="toolbars"></menu_category>
-			<menu_action action="toggleToolbar" />
-			<menu_action action="toggleLeftToolbar" />
+			<menu_action action="ToggleToolbarAction" />
+			<menu_action action="ToggleLeftToolbarAction" />
 			<menu_separator />
 			<menu_category name="general">
-				<menu_action action="showSelectionAsRectangle" />
+				<menu_action action="ShowSelectionAsRectangleAction" />
 			</menu_category>
 
-			<menu_action action="center_selected" key_ref="keystroke_center_selected" />
+			<menu_action action="CenterSelectedNodeAction"  />
 			<menu_category name="zoom">
-				<menu_action action="zoomIn" key_ref="keystroke_zoom_in" />
-				<menu_action action="zoomOut" key_ref="keystroke_zoom_out" />
+				<menu_action action="ZoomInAction"  />
+				<menu_action action="ZoomOutAction"  />
 			</menu_category>
 			<menu_separator />
 			<menu_category name="note_window">
-				<menu_action action="showHideNoteAction"
-					key_ref="keystroke_accessories/plugins/NodeNote_hide_show.keystroke.control_shift_less" />
+				<menu_action action="ShowHideNoteAction"
+					 />
 				<menu_submenu name="note_window_location" name_ref="note_window_location">
-					<menu_radio_action action="note_window_location.top"/>
-					<menu_radio_action action="note_window_location.left"/>
-					<menu_radio_action action="note_window_location.right"/>
-					<menu_radio_action action="note_window_location.bottom"/>
+					<menu_radio_action action="SetNoteWindowPosition.top"/>
+					<menu_radio_action action="SetNoteWindowPosition.left"/>
+					<menu_radio_action action="SetNoteWindowPosition.right"/>
+					<menu_radio_action action="SetNoteWindowPosition.bottom"/>
 				</menu_submenu>
 			</menu_category>
 			<menu_separator />
 			<menu_submenu name="attributes" name_ref="menu_attributes">
-				<menu_radio_action action="showAllAttributes"
-					key_ref="keystroke_show_all_attributes" selected="true" />
+				<menu_radio_action action="ShowAllAttributesAction"
+					 />
 				<menu_radio_action
-					action="showSelectedAttributes" key_ref="keystroke_show_selected_attributes" />
-				<menu_radio_action action="hideAllAttributes"
-					key_ref="keystroke_hide_all_attributes" />
+					action="ShowSelectedAttributesAction"  />
+				<menu_radio_action action="HideAllAttributesAction"
+					 />
 			</menu_submenu>
 		</menu_submenu>
 		<menu_submenu name="insert" name_ref="menu_insert">
 			<menu_category name="nodes">
-				<menu_action action="newChild" key_ref="keystroke_add_child" />
-				<menu_action action="newSibling" key_ref="keystroke_add" />
-				<menu_action action="newPreviousSibling"
-					key_ref="keystroke_add_sibling_before" />
+				<menu_action action="NewChildAction"  />
+				<menu_action action="NewSiblingAction"  />
+				<menu_action action="NewPreviousSiblingAction"
+					 />
 			</menu_category>
 			<menu_category name="image">
-				<menu_action action="setImageByFileChooser" key_ref="keystroke_set_image_by_filechooser" />
+				<menu_action action="SetImageByFileChooserAction"  />
 			</menu_category>
 			<menu_category name="links">
-				<menu_action action="setLinkByFileChooser" key_ref="keystroke_set_link_by_filechooser" />
-				<menu_action action="setLinkByTextField" key_ref="keystroke_set_link_by_textfield" />
-				<menu_action action="addArrowLinkAction" key_ref="keystroke_add_arrow_link_action" />
-				<menu_action action="addLocalLinkAction" key_ref="keystroke_add_local_link_action" />
+				<menu_action action="SetLinkByFileChooserAction"  />
+				<menu_action action="SetLinkByTextFieldAction"  />
+				<menu_action action="AddArrowLinkAction"  />
+				<menu_action action="AddLocalLinkAction"  />
 			</menu_category>
 			<menu_separator />
 			<menu_submenu name="icons" name_ref="icon_menu">
 			</menu_submenu>
 			<menu_category name="clouds">
-				<menu_action action="cloud" key_ref="keystroke_node_toggle_cloud" />
+				<menu_action action="CloudAction"  />
 			</menu_category>
 			<menu_category name="other">
 			</menu_category>
@@ -145,10 +145,10 @@
 			</menu_category>
 			<menu_separator />
 			<menu_category name="formatting_type">
-				<menu_action action="useRichFormatting"
-					key_ref="keystroke_use_rich_formatting" />
-				<menu_action action="usePlainText"
-					key_ref="keystroke_use_plain_text" />
+				<menu_action action="UseRichFormattingAction"
+					 />
+				<menu_action action="UsePlainTextAction"
+					 />
 			</menu_category>
 			<menu_submenu name="patterns" name_ref="extension_menu">
 				<menu_category name="manage">
@@ -160,102 +160,101 @@
 			<menu_separator />
 			<menu_category name="nodes">
 				<menu_category name="style">
-					<menu_action action="fork" />
-					<menu_action action="bubble" />
+					<menu_action action="NodeShapeAction.fork" />
+					<menu_action action="NodeShapeAction.bubble" />
 				</menu_category>
 				<menu_separator />
 				<menu_category name="font">
-					<menu_action action="increaseNodeFont" key_ref="keystroke_node_increase_font_size" />
-					<menu_action action="decreaseNodeFont" key_ref="keystroke_node_decrease_font_size" />
-					<menu_action action="italic" key_ref="keystroke_node_toggle_italic" />
-					<menu_action action="bold" key_ref="keystroke_node_toggle_boldface" />
+					<menu_action action="IncreaseNodeFontAction"  />
+					<menu_action action="DecreaseNodeFontAction"  />
+					<menu_action action="ItalicAction"  />
+					<menu_action action="BoldAction"  />
 					<!--
 						Underlined is not implemented in the view yet. <menu_action
-						action="underlined" key_ref="keystroke_node_toggle_underlined"/>
+						action="underlined" />
 					-->
-					<menu_action action="nodeColor" key_ref="keystroke_node_color" />
-					<menu_action action="nodeColorBlend" key_ref="keystroke_node_color_blend" />
-					<menu_action action="nodeBackgroundColor" />
+					<menu_action action="NodeColorAction"  />
+					<menu_action action="NodeColorBlendAction"  />
+					<menu_action action="NodeBackgroundColorAction" />
 				</menu_category>
 				<menu_category name="position">
-					<menu_action action="moveNodeAction" />
+					<menu_action action="ResetNodeLocationAction" />
 				</menu_category>
 				<menu_category name="automaticLayout2"></menu_category>
 				<menu_separator />
 			</menu_category>
 			<menu_category name="clouds">
-				<menu_action action="cloudColor" />
+				<menu_action action="CloudColorAction" />
 			</menu_category>
 			<menu_separator />
 			<menu_category name="edges">
-				<menu_action action="edgeColor" key_ref="keystroke_edge_color" />
+				<menu_action action="EdgeColorAction"  />
 				<menu_submenu name="styles" name_ref="format_menu_edge_styles">
-					<menu_radio_action action="EdgeStyle_as_parent" />
-					<menu_radio_action action="EdgeStyle_linear" />
-					<menu_radio_action action="EdgeStyle_bezier" />
-					<menu_radio_action action="EdgeStyle_sharp_linear" />
-					<menu_radio_action action="EdgeStyle_sharp_bezier" />
-					<menu_radio_action action="EdgeStyle_hidden" />
+					<menu_radio_action action="EdgeStyleAsParentAction" />
+					<menu_radio_action action="EdgeStyleAction.linear" />
+					<menu_radio_action action="EdgeStyleAction.bezier" />
+					<menu_radio_action action="EdgeStyleAction.sharp_linear" />
+					<menu_radio_action action="EdgeStyleAction.sharp_bezier" />
+					<menu_radio_action action="EdgeStyleAction.hide_edge" />
 				</menu_submenu>
 				<menu_submenu name="widths" name_ref="format_menu_edge_widths">
-					<menu_radio_action action="EdgeWidth_WIDTH_PARENT" />
-					<menu_radio_action action="EdgeWidth_WIDTH_THIN" />
-					<menu_radio_action action="EdgeWidth_1" />
-					<menu_radio_action action="EdgeWidth_2" />
-					<menu_radio_action action="EdgeWidth_4" />
-					<menu_radio_action action="EdgeWidth_8" />
+					<menu_radio_action action="EdgeWidthAction_width_parent" />
+					<menu_radio_action action="EdgeWidthAction_width_thin" />
+					<menu_radio_action action="EdgeWidthAction_1" />
+					<menu_radio_action action="EdgeWidthAction_2" />
+					<menu_radio_action action="EdgeWidthAction_4" />
+					<menu_radio_action action="EdgeWidthAction_8" />
 				</menu_submenu>
 			</menu_category>
 		</menu_submenu>
 		<menu_submenu name="navigate" name_ref="menu_navigate">
 			<menu_category name="navigate">
-				<menu_action action="navigationPreviousMap" key_ref="keystroke_previousMap" />
-				<menu_action action="navigationNextMap" key_ref="keystroke_nextMap" />
+				<menu_action action="NavigationPreviousMapAction"  />
+				<menu_action action="NavigationNextMapAction"  />
 			</menu_category>
 			<menu_separator />
 			<menu_category name="nodes">
-				<menu_action action="moveToRoot" key_ref="keystroke_moveToRoot" />
-				<menu_action action="nodeUp" key_ref="keystroke_node_up" />
-				<menu_action action="nodeDown" key_ref="keystroke_node_down" />
+				<menu_action action="MoveToRootAction"  />
+				<menu_action action="NodeUpAction"  />
+				<menu_action action="NodeDownAction"  />
 			</menu_category>
 			<menu_separator />
 			<menu_category name="folding">
-				<menu_action action="toggleFolded" key_ref="keystroke_toggle_folded" />
-				<menu_action action="toggleChildrenFolded" key_ref="keystroke_toggle_children_folded" />
+				<menu_action action="ToggleFoldedAction"  />
+				<menu_action action="ToggleChildrenFoldedAction"  />
 			</menu_category>
 			<menu_separator />
 			<menu_category name="links">
-				<menu_action action="followLink" key_ref="keystroke_follow_link" /> <!-- goto -->
+				<menu_action action="FollowLinkAction"  /> <!-- goto -->
 			</menu_category>
 			<menu_separator></menu_separator>
 			<menu_category name="notes">
-				<menu_action action="selectNoteAction"
-					key_ref="keystroke_accessories/plugins/NodeNote_jumpto.keystroke.alt_N" /> <!-- goto -->
+				<menu_action action="SelectNoteAction"
+					 /> <!-- goto -->
 			</menu_category>
 		</menu_submenu>
 		<menu_submenu name="extras" name_ref="menu_extras">
 			<menu_category name="first">
 				<menu_category name="join">
-					<menu_action action="joinNodes" key_ref="keystroke_join_nodes" />
+					<menu_action action="JoinNodesAction"  />
 				</menu_category>
 				<menu_category name="nodes">
 
-					<menu_action action="extract_link_from_text"
-					tooltip="extract_link_from_text.tooptip"/>
+					<menu_action action="ExtractLinkFromTextAction"/>
 					<menu_category name="sorting" />
 					<menu_category name="crypto" />
 					<menu_category name="change">
-						<menu_action action="accessories/plugins/RevisionPlugin.properties_name"
-							tooltip="accessories/plugins/RevisionPlugin.properties_documentation"/>
+						<menu_action action="RevisionPluginAction"
+							/>
 					</menu_category>
 				</menu_category>
-				<menu_action action="removeNoteAction"
-					key_ref="keystroke_accessories/plugins/RemoveNote.properties.properties_key" />
+				<menu_action action="RemoveNoteAction"
+					 />
 				<menu_separator />
-				<menu_action action="showAttributeManagerAction"
-					key_ref="keystroke_show_attribute_manager" />
-				<menu_action action="assignAttributes"
-					key_ref="keystroke_assign_attributes" />
+				<menu_action action="ShowAttributeDialogAction"
+					 />
+				<menu_action action="AssignAttributesAction"
+					 />
 				<menu_separator />
 				<menu_category name="time_management">
 				</menu_category>
@@ -266,7 +265,7 @@
 				</menu_category>
 				<menu_separator />
 				<menu_category name="options">
-					<menu_action action="propertyAction" key_ref="keystroke_option_dialog" />
+					<menu_action action="PropertyAction"  />
 				</menu_category>
 			</menu_category>
 			<menu_category name="last"></menu_category>
@@ -279,11 +278,11 @@
 		</menu_submenu>
 		<menu_submenu name="help" name_ref="help">
 			<menu_category name="doc">
-				<menu_action action="documentation" />
-				<menu_action action="freeplaneUrl" />
-				<menu_action action="faq" />
-				<menu_action action="license" />
-				<menu_action action="about" />
+				<menu_action action="DocumentationAction" />
+				<menu_action action="OpenFreeplaneSiteAction" />
+				<menu_action action="FaqOpenURLAction" />
+				<menu_action action="LicenseAction" />
+				<menu_action action="AboutAction" />
 			</menu_category>
 		</menu_submenu>
 	</menu_category>
@@ -292,57 +291,57 @@
 		</menu_category>
 		<menu_separator />
 		<menu_category name="toolbars">
-			<menu_action action="toggleMenubar" />
-			<menu_action action="toggleToolbar" />
-			<menu_action action="toggleLeftToolbar" />
+			<menu_action action="ToggleMenubarAction" />
+			<menu_action action="ToggleToolbarAction" />
+			<menu_action action="ToggleLeftToolbarAction" />
 		</menu_category>
 	</menu_category>
 	<menu_category name="node_popup">
-		<menu_category name="edit">
-			<menu_action action="edit" key_ref="keystroke_edit" />
-			<menu_action action="editLong"
-				key_ref="keystroke_edit_long_node" />
-			<menu_action action="editAttributes"
-				key_ref="keystroke_edit_attributes" />
-			<menu_action action="deleteChild"
-				key_ref="keystroke_delete_child" />
+		<menu_category name="EditAction">
+			<menu_action action="EditAction"  />
+			<menu_action action="EditLongAction"
+				 />
+			<menu_action action="EditAttributesAction"
+				 />
+			<menu_action action="DeleteAction"
+				 />
 			<!--
-				<menu_action action="useRichFormatting"
-				key_ref="keystroke_use_rich_formatting"/> <menu_action
-				name="usePlainText" action="usePlainText"
-				key_ref="keystroke_use_plain_text"/>
+				<menu_action action="UseRichFormattingAction"
+				/> <menu_action
+				name="UsePlainTextAction" action="usePlainText"
+				/>
 			-->
-			<!-- <menu_action action="remove" key_ref="keystroke_remove"/> -->
+			<!-- <menu_action action="remove" /> -->
 		</menu_category>
 		<menu_separator />
-		<menu_category name="paste">
-			<menu_action action="cut" key_ref="keystroke_cut" />
-			<menu_action action="copy" key_ref="keystroke_copy" />
-			<menu_action action="copySingle"
-				key_ref="keystroke_copy_single" />
-			<menu_action action="paste" key_ref="keystroke_paste" />
+		<menu_category name="PasteAction">
+			<menu_action action="CutAction"  />
+			<menu_action action="CopyAction"  />
+			<menu_action action="CopySingleAction"
+				 />
+			<menu_action action="PasteAction"  />
 		</menu_category>
 		<menu_separator />
 		<menu_category name="new_nodes">
 			<!--
-				<menu_action action="newChild"
-				key_ref="keystroke_add_child_mac"/>
+				<menu_action action="NewChildAction"
+				/>
 			-->
-			<menu_action action="newChild" key_ref="keystroke_add_child" />
-			<menu_action action="newSibling" key_ref="keystroke_add" />
-			<menu_action action="newPreviousSibling"
-				key_ref="keystroke_add_sibling_before" />
+			<menu_action action="NewChildAction"  />
+			<menu_action action="NewSiblingAction"  />
+			<menu_action action="NewPreviousSiblingAction"
+				 />
 		</menu_category>
 		<menu_separator />
 
 	<menu_category name="navigate_nodes">
-		<menu_action action="nodeUp" key_ref="keystroke_node_up" />
-		<menu_action action="nodeDown" key_ref="keystroke_node_down" />
+		<menu_action action="NodeUpAction"  />
+		<menu_action action="NodeDownAction"  />
 	</menu_category>
 
 		<menu_separator />
 		<menu_category name="folding">
-			<menu_action action="toggleFolded" key_ref="keystroke_toggle_folded" />
+			<menu_action action="ToggleFoldedAction"  />
 		</menu_category>
 		<menu_category name="context">
 		</menu_category>
@@ -350,69 +349,69 @@
 		<menu_submenu name="icons" name_ref="icon_menu">
 		</menu_submenu>
 		<menu_submenu name="export" name_ref="menu_file_export">
-			<menu_action action="exportBranch" key_ref="keystroke_export_branch" />
+			<menu_action action="ExportBranchAction"  />
 		</menu_submenu>
 		<menu_submenu name="format" name_ref="menu_format">
 			<menu_category name="nodes">
 				<menu_category name="style">
-					<menu_action action="fork" />
-					<menu_action action="bubble" />
+					<menu_action action="NodeShapeAction.fork" />
+					<menu_action action="NodeShapeAction.bubble" />
 				</menu_category>
 				<menu_separator />
 				<menu_category name="font">
-					<menu_action action="increaseNodeFont" key_ref="keystroke_node_increase_font_size" />
-					<menu_action action="decreaseNodeFont" key_ref="keystroke_node_decrease_font_size" />
-					<menu_action action="italic" key_ref="keystroke_node_toggle_italic" />
-					<menu_action action="bold" key_ref="keystroke_node_toggle_boldface" />
+					<menu_action action="IncreaseNodeFontAction"  />
+					<menu_action action="DecreaseNodeFontAction"  />
+					<menu_action action="ItalicAction"  />
+					<menu_action action="BoldAction"  />
 					<!--
 						Underlined is not implemented in the view yet. <menu_action
-						action="underlined" key_ref="keystroke_node_toggle_underlined"/>
+						action="underlined" />
 					-->
-					<menu_action action="nodeColor" key_ref="keystroke_node_color" />
-					<menu_action action="nodeColorBlend" key_ref="keystroke_node_color_blend" />
-					<menu_action action="nodeBackgroundColor" />
+					<menu_action action="NodeColorAction"  />
+					<menu_action action="NodeColorBlendAction"  />
+					<menu_action action="NodeBackgroundColorAction" />
 				</menu_category>
 				<menu_separator />
 			</menu_category>
 			<menu_category name="icons">
 			</menu_category>
 			<menu_category name="clouds">
-				<menu_action action="cloudColor" />
+				<menu_action action="CloudColorAction" />
 			</menu_category>
 			<menu_separator />
 			<menu_category name="edges">
-				<menu_action action="edgeColor" key_ref="keystroke_edge_color" />
+				<menu_action action="EdgeColorAction"  />
 				<menu_submenu name="styles" name_ref="format_menu_edge_styles">
-					<menu_radio_action action="EdgeStyle_as_parent" />
-					<menu_radio_action action="EdgeStyle_linear" />
-					<menu_radio_action action="EdgeStyle_bezier" />
-					<menu_radio_action action="EdgeStyle_sharp_linear" />
-					<menu_radio_action action="EdgeStyle_sharp_bezier" />
-					<menu_radio_action action="EdgeStyle_hidden" />
+					<menu_radio_action action="EdgeStyleAsParentAction" />
+					<menu_radio_action action="EdgeStyleAction.linear" />
+					<menu_radio_action action="EdgeStyleAction.bezier" />
+					<menu_radio_action action="EdgeStyleAction.sharp_linear" />
+					<menu_radio_action action="EdgeStyleAction.sharp_bezier" />
+					<menu_radio_action action="EdgeStyleAction.hide_edge" />
 				</menu_submenu>
 				<menu_submenu name="widths" name_ref="format_menu_edge_widths">
-					<menu_radio_action action="EdgeWidth_WIDTH_PARENT" />
-					<menu_radio_action action="EdgeWidth_WIDTH_THIN" />
-					<menu_radio_action action="EdgeWidth_1" />
-					<menu_radio_action action="EdgeWidth_2" />
-					<menu_radio_action action="EdgeWidth_4" />
-					<menu_radio_action action="EdgeWidth_8" />
+					<menu_radio_action action="EdgeWidthAction_width_parent" />
+					<menu_radio_action action="EdgeWidthAction_width_thin" />
+					<menu_radio_action action="EdgeWidthAction_1" />
+					<menu_radio_action action="EdgeWidthAction_2" />
+					<menu_radio_action action="EdgeWidthAction_4" />
+					<menu_radio_action action="EdgeWidthAction_8" />
 				</menu_submenu>
 			</menu_category>
 		</menu_submenu>
 		<menu_submenu name="insert" name_ref="menu_insert">
 			<menu_category name="clouds">
-				<menu_action action="cloud" key_ref="keystroke_node_toggle_cloud" />
+				<menu_action action="CloudAction"  />
 			</menu_category>
 			<menu_category name="image">
-				<menu_action action="setImageByFileChooser" key_ref="keystroke_set_image_by_filechooser" />
+				<menu_action action="SetImageByFileChooserAction"  />
 			</menu_category>
 			<menu_separator />
 			<menu_category name="links">
-				<menu_action action="setLinkByFileChooser" key_ref="keystroke_set_link_by_filechooser" />
-				<menu_action action="setLinkByTextField" key_ref="keystroke_set_link_by_textfield" />
-				<menu_action action="addArrowLinkAction" key_ref="keystroke_add_arrow_link_action" />
-				<menu_action action="addLocalLinkAction" key_ref="keystroke_add_local_link_action" />
+				<menu_action action="SetLinkByFileChooserAction"  />
+				<menu_action action="SetLinkByTextFieldAction"  />
+				<menu_action action="AddArrowLinkAction"  />
+				<menu_action action="AddLocalLinkAction"  />
 			</menu_category>
 		</menu_submenu>
 		<menu_submenu name="patterns" name_ref="extension_menu">
@@ -425,48 +424,48 @@
 	</menu_category>
 	<menu_category name="main_toolbar">
 		<menu_category name="main">
-			<menu_action action="navigationPreviousMap" />
-			<menu_action action="navigationNextMap" />
-			<menu_action action="printDirect" />
-			<menu_action action="ShowFilterToolbarAction" tooltip="filter_toolbar" />
+			<menu_action action="NavigationPreviousMapAction" />
+			<menu_action action="NavigationNextMapAction" />
+			<menu_action action="PrintAction" />
+			<menu_action action="ShowFilterToolbarAction"  />
 		</menu_category>
 		<menu_category name="zoom">
 		</menu_category>
 		<menu_category name="open">
-			<menu_action action="newMap" key_ref="keystroke_newMap" />
-			<menu_action action="open" key_ref="keystroke_open" />
-			<menu_action action="save" key_ref="keystroke_save" />
-			<menu_action action="saveAs" key_ref="keystroke_saveAs" />
+			<menu_action action="NewMapAction"  />
+			<menu_action action="OpenAction"  />
+			<menu_action action="SaveAction"  />
+			<menu_action action="SaveAsAction"  />
 		</menu_category>
 		<menu_category name="font">
 		</menu_category>
 		<menu_separator />
 		<menu_category name="undo">
-			<menu_action action="undo" key_ref="keystroke_undo" />
-			<menu_action action="redo" key_ref="keystroke_redo" />
+			<menu_action action="UndoAction"  />
+			<menu_action action="RedoAction"  />
 		</menu_category>
 		<menu_separator />
 		<menu_category name="paste">
-			<menu_action action="cut" key_ref="keystroke_cut" />
-			<menu_action action="copy" key_ref="keystroke_copy" />
-			<menu_action action="paste" key_ref="keystroke_paste" />
+			<menu_action action="CutAction"  />
+			<menu_action action="CopyAction"  />
+			<menu_action action="PasteAction"  />
 		</menu_category>
 		<menu_separator />
 		<menu_category name="insert">
-			<menu_action action="newChild" />
+			<menu_action action="NewChildAction" />
 		</menu_category>
 		<menu_category name="font">
-			<menu_action action="italic" key_ref="keystroke_node_toggle_italic" />
-			<menu_action action="bold" key_ref="keystroke_node_toggle_boldface" />
+			<menu_action action="ItalicAction"  />
+			<menu_action action="BoldAction"  />
 		</menu_category>
 		<menu_category name="icons">
 		</menu_category>
 		<menu_category name="clouds">
-			<menu_action action="cloud" key_ref="keystroke_node_toggle_cloud" />
+			<menu_action action="CloudAction"  />
 		</menu_category>
 		<menu_separator />
 		<menu_category name="attributes">
-			<menu_action action="showAttributeManagerAction" key_ref="keystroke_show_attribute_manager" />
+			<menu_action action="ShowAttributeDialogAction"  />
 		</menu_category>
 		<menu_separator />
 		<menu_category name="history"/>

@@ -32,12 +32,17 @@ import org.freeplane.features.common.link.LinkController;
  */
 public class ExtractLinkFromTextAction extends MultipleNodeAction {
 	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
+	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -2579214095445662717L;
+
 
 	public ExtractLinkFromTextAction(final Controller controller) {
-		super(controller, "extract_link_from_text");
+		super("ExtractLinkFromTextAction", controller);
 	}
 
 	@Override

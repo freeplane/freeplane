@@ -29,10 +29,13 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
 
 class CopySingleAction extends AFreeplaneAction {
-	private static final String NAME = "copySingle";
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 
 	public CopySingleAction(final Controller controller) {
-		super(controller, "copy_single");
+		super("CopySingleAction", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -44,10 +47,5 @@ class CopySingleAction extends AFreeplaneAction {
 		if (copy != null) {
 			((ClipboardController) modeController.getExtension(ClipboardController.class)).setClipboardContents(copy);
 		}
-	}
-
-	@Override
-	public String getName() {
-		return NAME;
 	}
 }

@@ -26,6 +26,11 @@ import java.awt.Dimension;
 import java.awt.Insets;
 
 public class VariableSizeCardLayout extends CardLayout {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	public VariableSizeCardLayout() {
 		super();
 	}

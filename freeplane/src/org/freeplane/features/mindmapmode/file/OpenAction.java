@@ -26,19 +26,19 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.url.UrlManager;
 
 class OpenAction extends AFreeplaneAction {
-	private static final long serialVersionUID = 6555358381496003986L;
+
+
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 
 	public OpenAction(final Controller controller) {
-		super(controller, "open", "/images/fileopen.png");
+		super("OpenAction", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		((MFileManager) UrlManager.getController(getModeController())).open();
 		getController().getViewController().setTitle();
-	}
-
-	@Override
-	public String getName() {
-		return "open";
 	}
 }

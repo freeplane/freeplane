@@ -28,16 +28,18 @@ import org.freeplane.core.model.EncryptionModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.components.EnterPasswordDialog;
 
-@ActionDescriptor(tooltip = "accessories/plugins/EnterPassword.properties_documentation", //
-name = "accessories/plugins/EnterPassword.properties_name", //
-iconPath = "/images/unlock.png", //
-locations = { "/menu_bar/extras/first/nodes/crypto" })
+@ActionLocationDescriptor(locations = { "/menu_bar/extras/first/nodes/crypto" })
 public class EnterPassword extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	public EnterPassword(final ModeController modeController) {
-		super(modeController.getController());
+		super("EnterPassword", modeController.getController());
 	}
 
 	public void actionPerformed(final ActionEvent e) {

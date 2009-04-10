@@ -71,7 +71,16 @@ import com.jgoodies.forms.factories.ButtonBarFactory;
 
 /** */
 class ManagePatternsPopupDialog extends JDialog implements KeyListener {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	protected final class PatternListModel extends AbstractListModel {
+		/**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
 		final private List mPatternList;
 
 		public PatternListModel(final List patternList) {
@@ -270,6 +279,11 @@ class ManagePatternsPopupDialog extends JDialog implements KeyListener {
 		if (jCancelButton == null) {
 			jCancelButton = new JButton();
 			jCancelButton.setAction(new AbstractAction() {
+				/**
+                 * 
+                 */
+                private static final long serialVersionUID = 1L;
+
 				public void actionPerformed(final ActionEvent e) {
 					cancelPressed();
 				}
@@ -411,6 +425,11 @@ class ManagePatternsPopupDialog extends JDialog implements KeyListener {
 		if (jOKButton == null) {
 			jOKButton = new JButton();
 			jOKButton.setAction(new AbstractAction() {
+				/**
+                 * 
+                 */
+                private static final long serialVersionUID = 1L;
+
 				public void actionPerformed(final ActionEvent e) {
 					okPressed();
 				}
@@ -452,6 +471,11 @@ class ManagePatternsPopupDialog extends JDialog implements KeyListener {
 			}
 		});
 		final Action cancelAction = new AbstractAction() {
+			/**
+             * 
+             */
+            private static final long serialVersionUID = 1L;
+
 			public void actionPerformed(final ActionEvent arg0) {
 				cancelPressed();
 			}

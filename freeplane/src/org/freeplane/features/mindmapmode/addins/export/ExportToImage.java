@@ -44,25 +44,28 @@ import org.freeplane.core.util.LogTool;
  * @author rreppel
  */
 public class ExportToImage extends ExportAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	public static void createActions(final ModeController modeController) {
 		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
 		final ExportToImage pngExport = new ExportToImage(modeController.getController(),
-		    "accessories/plugins/ExportToImage_PNG.properties_name", "png", "Portable Network Graphic (PNG)");
-		pngExport.setTooltip("accessories/plugins/ExportToImage_PNG.properties_documentation");
-		modeController.addAction("ExportToImage_PNG", pngExport);
+		    "png", "Portable Network Graphic (PNG)");
+		modeController.addAction(pngExport);
 		menuBuilder.addAction("/menu_bar/file/export/export", pngExport, "ExportToImage_PNG", MenuBuilder.AS_CHILD);
 		final ExportToImage jpgExport = new ExportToImage(modeController.getController(),
-		    "accessories/plugins/ExportToImage_JPEG.properties_name", "jpg", "Compressed image (JPEG)");
-		pngExport.setTooltip("accessories/plugins/ExportToImage_JPEG.properties_documentation");
-		modeController.addAction("ExportToImage_JPEG", jpgExport);
+		    "jpg", "Compressed image (JPEG)");
+		modeController.addAction(jpgExport);
 		menuBuilder.addAction("/menu_bar/file/export/export", jpgExport, "ExportToImage_JPEG", MenuBuilder.AS_CHILD);
 	}
 
 	private final String imageDescripton;
 	private final String imageType;
 
-	ExportToImage(final Controller controller, final String title, final String imageType, final String imageDescripton) {
-		super(controller, title);
+	ExportToImage(final Controller controller, final String imageType, final String imageDescripton) {
+		super("ExportToImage." + imageType, controller);
 		this.imageType = imageType;
 		this.imageDescripton = imageDescripton;
 	}

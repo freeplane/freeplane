@@ -31,6 +31,11 @@ import javax.swing.ScrollPaneConstants;
  */
 public class JAutoScrollBarPane extends JScrollPane {
 	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
+	/**
 	 */
 	public JAutoScrollBarPane(final Component view) {
 		super(view, ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);

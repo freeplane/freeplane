@@ -42,11 +42,15 @@ import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 
 class ExportBranchAction extends AFreeplaneAction {
-	private static final String NAME = "exportBranch";
-	private static final long serialVersionUID = 8805695439736505873L;
+
+
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 
 	public ExportBranchAction(final Controller controller) {
-		super(controller, "export_branch_new");
+		super("ExportBranchAction", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -130,10 +134,5 @@ class ExportBranchAction extends AFreeplaneAction {
 				LogTool.logException(ex);
 			}
 		}
-	}
-
-	@Override
-	public String getName() {
-		return NAME;
 	}
 }

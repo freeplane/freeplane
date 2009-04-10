@@ -48,12 +48,12 @@ public class MClipboardController extends ClipboardController {
 	 */
 	private void createActions(final ModeController modeController) {
 		final Controller controller = modeController.getController();
-		modeController.addAction("exportToHTML", new ExportToHTMLAction(controller));
-		modeController.addAction("exportBranchToHTML", new ExportBranchToHTMLAction(controller));
+		modeController.addAction(new ExportToHTMLAction(controller));
+		modeController.addAction(new ExportBranchToHTMLAction(controller));
 		cut = new CutAction(controller);
-		modeController.addAction("cut", cut);
+		modeController.addAction(cut);
 		paste = new PasteAction(controller);
-		modeController.addAction("paste", paste);
+		modeController.addAction(paste);
 	}
 
 	public Transferable cut(final List nodeList) {
@@ -67,6 +67,6 @@ public class MClipboardController extends ClipboardController {
 	 * @return true, if successfully.
 	 **/
 	public void paste(final Transferable t, final NodeModel target, final boolean asSibling, final boolean isLeft) {
-		((PasteAction) getModeController().getAction("paste")).paste(t, target, asSibling, isLeft);
+		((PasteAction) getModeController().getAction("PasteAction")).paste(t, target, asSibling, isLeft);
 	}
 }

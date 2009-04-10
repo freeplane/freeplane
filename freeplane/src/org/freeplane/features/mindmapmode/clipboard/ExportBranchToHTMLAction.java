@@ -28,8 +28,13 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.common.clipboard.ClipboardController;
 
 class ExportBranchToHTMLAction extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	public ExportBranchToHTMLAction(final Controller controller) {
-		super(controller, "export_branch_to_html");
+		super("ExportBranchToHTMLAction", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {

@@ -22,14 +22,22 @@ package org.freeplane.features.filemode;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
+import javax.swing.Action;
+
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 
 public class OpenPathAction extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	public OpenPathAction(final Controller controller) {
-		super(controller, "open");
+		super("OpenPathAction", controller);
+		putValue(Action.NAME, FreeplaneResourceBundle.getText("OpenAction.text"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {

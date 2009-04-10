@@ -62,6 +62,7 @@ import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.MenuBuilder;
@@ -70,7 +71,7 @@ import org.freeplane.core.ui.components.FreeplaneMenuBar;
 /**
  * @author Dimitry Polivaev
  */
-abstract public class ViewController implements IMapViewChangeListener {
+abstract public class ViewController implements IMapViewChangeListener, IFreeplanePropertyListener {
 	public static final String RESOURCE_ANTIALIAS = "antialias";
 	private static final String[] zooms = { "25%", "50%", "75%", "100%", "150%", "200%", "300%", "400%" };
 	private boolean antialiasAll = false;
@@ -81,7 +82,6 @@ abstract public class ViewController implements IMapViewChangeListener {
 	private final IMapViewManager mapViewManager;
 	private boolean menubarVisible;
 	final private HashSet mMapTitleChangeListenerSet = new HashSet();
-	final private OptionAntialiasAction optionAntialiasAction;
 	final private JScrollPane scrollPane;
 	final private JLabel status;
 	final private JPanel toolbarPanel;
@@ -104,12 +104,11 @@ abstract public class ViewController implements IMapViewChangeListener {
 		controller.addAction(zoomIn);
 		zoomOut = new ZoomOutAction(this);
 		controller.addAction(zoomOut);
-		optionAntialiasAction = new OptionAntialiasAction(controller);
-		controller.addAction(optionAntialiasAction);
 		userDefinedZoom = FreeplaneResourceBundle.getText("user_defined_zoom");
 		zoomModel = new DefaultComboBoxModel(getZooms());
 		zoomModel.addElement(userDefinedZoom);
-		final String mapViewZoom = ResourceController.getResourceController().getProperty("map_view_zoom", "1.0");
+		ResourceController resourceController = ResourceController.getResourceController();
+		final String mapViewZoom = resourceController.getProperty("map_view_zoom", "1.0");
 		try {
 			setZoom(Float.parseFloat(mapViewZoom));
 		}
@@ -126,6 +125,10 @@ abstract public class ViewController implements IMapViewChangeListener {
 		toolbarPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		leftToolbarPanel = new JPanel(new BorderLayout());
 		scrollPane = new MapViewScrollPane();
+		resourceController.addPropertyChangeListener(this);
+		String antialiasProperty = resourceController.getProperty(ViewController.RESOURCE_ANTIALIAS);
+		changeAntialias(antialiasProperty);
+
 	}
 
 	public void addMapTitleChangeListener(final IMapTitleChangeListener pMapTitleChangeListener) {
@@ -175,13 +178,6 @@ abstract public class ViewController implements IMapViewChangeListener {
 		if (oldMap != null) {
 			modeController.setVisible(false);
 		}
-	}
-
-	/**
-	 * @param property
-	 */
-	public void changeAntialias(final String property) {
-		optionAntialiasAction.changeAntialias(property);
 	}
 
 	public void changeNoteWindowLocation(final boolean b) {
@@ -616,6 +612,35 @@ abstract public class ViewController implements IMapViewChangeListener {
 		final float currentZoomIndex = getCurrentZoomIndex();
 		if (currentZoomIndex > 0) {
 			setZoomByItem(zoomModel.getElementAt((int) (currentZoomIndex - 0.5f)));
+		}
+	}
+	public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
+		if (propertyName.equals(ViewController.RESOURCE_ANTIALIAS)) {
+			changeAntialias(newValue);
+		}
+	}
+	/**
+	 */
+	private void changeAntialias(final String command) {
+		if (command == null) {
+			return;
+		}
+		final Controller controller = getController();
+		if (command.equals("antialias_none")) {
+			setAntialiasEdges(false);
+			setAntialiasAll(false);
+		}
+		if (command.equals("antialias_edges")) {
+			setAntialiasEdges(true);
+			setAntialiasAll(false);
+		}
+		if (command.equals("antialias_all")) {
+			setAntialiasEdges(true);
+			setAntialiasAll(true);
+		}
+		final Component mapView = controller.getViewController().getMapView();
+		if (mapView != null) {
+			mapView.repaint();
 		}
 	}
 }

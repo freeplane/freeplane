@@ -27,29 +27,29 @@ import org.freeplane.core.ui.SelectableAction;
 
 @SelectableAction(checkOnPopup = true)
 class ToggleLeftToolbarAction extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	static final String NAME = "toggleLeftToolbar";
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 5980310709675916011L;
+
 	/**
 	 *
 	 */
 	final private ViewController controller;
 
 	ToggleLeftToolbarAction(final Controller controller, final ViewController viewController) {
-		super(controller, "toggle_left_toolbar");
+		super("ToggleLeftToolbarAction", controller);
 		this.controller = viewController;
 	}
 
 	public void actionPerformed(final ActionEvent event) {
 		controller.setLeftToolbarVisible(!controller.isLeftToolbarVisible());
 		controller.setLeftToolbarVisible(controller.isLeftToolbarVisible());
-	}
-
-	@Override
-	public String getName() {
-		return NAME;
 	}
 
 	@Override

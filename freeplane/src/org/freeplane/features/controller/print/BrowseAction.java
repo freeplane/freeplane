@@ -21,6 +21,10 @@ import javax.swing.AbstractAction;
 import javax.swing.JLabel;
 
 class BrowseAction extends AbstractAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 	final private Runnable pageIndexPainter;
 	final private JLabel pageNumber;
 	protected int pageStep;

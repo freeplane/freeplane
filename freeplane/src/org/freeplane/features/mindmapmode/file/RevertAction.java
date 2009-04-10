@@ -49,6 +49,11 @@ import org.freeplane.core.util.LogTool;
  * @author foltin
  */
 class RevertAction extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	private static class RevertActionInstance {
 		final private Controller controller;
 		private String filePrefix;
@@ -111,13 +116,12 @@ class RevertAction extends AFreeplaneAction {
 		}
 	}
 
-	private static final String NAME = "revertAction";
-	private static final long serialVersionUID = 1251122535286448191L;
+
 
 	/**
 	 */
 	public RevertAction(final Controller controller) {
-		super(controller, "RevertAction", (String) null);
+		super("RevertAction", controller);
 	}
 
 	/*
@@ -171,11 +175,6 @@ class RevertAction extends AFreeplaneAction {
 		revertXmlAction.setMap(xmlPackedFile);
 		revertXmlAction.setFilePrefix(filePrefix);
 		return revertXmlAction;
-	}
-
-	@Override
-	public String getName() {
-		return NAME;
 	}
 
 	/*

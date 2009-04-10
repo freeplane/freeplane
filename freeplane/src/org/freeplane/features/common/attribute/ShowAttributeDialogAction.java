@@ -27,7 +27,11 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.mindmapmode.attribute.AttributeManagerDialog;
 
 class ShowAttributeDialogAction extends AFreeplaneAction {
-	private static final long serialVersionUID = -3301794915146529692L;
+
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 	private AttributeManagerDialog attributeDialog = null;
 	private Frame frame;
 
@@ -35,7 +39,7 @@ class ShowAttributeDialogAction extends AFreeplaneAction {
 	 *
 	 */
 	ShowAttributeDialogAction(final Controller controller) {
-		super(controller, "attributes_dialog", "/images/showAttributes.gif");
+		super("ShowAttributeDialogAction", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -53,10 +57,5 @@ class ShowAttributeDialogAction extends AFreeplaneAction {
 			attributeDialog = new AttributeManagerDialog(getController(), frame);
 		}
 		return attributeDialog;
-	}
-
-	@Override
-	public String getName() {
-		return "showAttributeManagerAction";
 	}
 }

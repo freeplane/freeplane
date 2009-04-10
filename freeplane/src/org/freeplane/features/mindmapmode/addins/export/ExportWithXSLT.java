@@ -68,6 +68,10 @@ import org.freeplane.n3.nanoxml.XMLParserFactory;
  *         Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 public class ExportWithXSLT extends ExportAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 	private static final String NAME_EXTENSION_PROPERTY = "name_extension";
 
 	/**
@@ -107,13 +111,11 @@ public class ExportWithXSLT extends ExportAction {
 			while (actionDescriptors.hasMoreElements()) {
 				final XMLElement descriptor = (XMLElement) actionDescriptors.nextElement();
 				final String name = descriptor.getAttribute("name", null);
-				final String tooltip = descriptor.getAttribute("tooltip", null);
 				final String location = descriptor.getAttribute("location", null);
 				final XMLElement xmlProperties = descriptor.getFirstChildNamed("properties");
 				final Properties properties = xmlProperties.getAttributes();
-				final ExportWithXSLT action = new ExportWithXSLT(modeController.getController(), name, tooltip,
-				    properties);
-				modeController.addAction(name, action);
+				final ExportWithXSLT action = new ExportWithXSLT(name, modeController.getController(), properties);
+				modeController.addAction(action);
 				modeController.getUserInputListenerFactory().getMenuBuilder().addAction(location, action,
 				    location + "/" + name, MenuBuilder.AS_CHILD);
 			}
@@ -129,11 +131,10 @@ public class ExportWithXSLT extends ExportAction {
 	private boolean mTransformResultWithoutError = false;
 	final private Properties properties;
 
-	public ExportWithXSLT(final Controller controller, final String name, final String tooltip,
+	public ExportWithXSLT(final String name, final Controller controller, 
 	                      final Properties properties) {
-		super(controller, name);
+		super(name, controller);
 		this.properties = properties;
-		setTooltip(tooltip);
 	}
 
 	public void actionPerformed(final ActionEvent e) {

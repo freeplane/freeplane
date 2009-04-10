@@ -29,16 +29,20 @@ import org.freeplane.core.ui.SelectableAction;
 @SelectableAction
 class ShowFilterToolbarAction extends AFreeplaneAction {
 	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -6790731419014812473L;
+
 	final private FilterController filterController;
 
 	/**
 	 *
 	 */
 	ShowFilterToolbarAction(final FilterController filterController) {
-		super(filterController.getController(), "show_filter_toolbar", "/images/filter.gif");
+		super("ShowFilterToolbarAction", filterController.getController());
 		this.filterController = filterController;
 	}
 

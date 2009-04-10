@@ -26,8 +26,13 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 
 public class CenterAction extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	public CenterAction(final Controller controller) {
-		super(controller, "center");
+		super("CenterAction", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {

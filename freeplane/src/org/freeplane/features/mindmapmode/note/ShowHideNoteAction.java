@@ -30,12 +30,16 @@ import org.freeplane.core.ui.SelectableAction;
 @SelectableAction(checkOnPopup = true)
 class ShowHideNoteAction extends AFreeplaneAction {
 	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+	/**
 	 *
 	 */
 	final private MNoteController noteController;
 
 	public ShowHideNoteAction(final MNoteController noteController, final ModeController modeController) {
-		super(modeController.getController(), "accessories/plugins/NodeNote_hide_show.properties_name");
+		super("ShowHideNoteAction", modeController.getController());
 		this.noteController = noteController;
 	}
 

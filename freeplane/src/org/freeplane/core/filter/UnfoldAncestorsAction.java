@@ -36,6 +36,10 @@ import org.freeplane.core.ui.AFreeplaneAction;
  */
 class UnfoldAncestorsAction extends AFreeplaneAction {
 	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+	/**
 	 * 
 	 */
 	private final FilterController filterController;
@@ -45,8 +49,7 @@ class UnfoldAncestorsAction extends AFreeplaneAction {
 	 *
 	 */
 	UnfoldAncestorsAction(final FilterController filterController) {
-		super(filterController.getController(), null, new ImageIcon(ResourceController.getResourceController()
-		    .getResource("/images/unfold.png")));
+		super("UnfoldAncestorsAction", filterController.getController());
 		this.filterController = filterController;
 	}
 

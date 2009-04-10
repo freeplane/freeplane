@@ -33,6 +33,11 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.ResourceControllerProperties;
 
 class RootMainView extends MainView {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	@Override
 	public boolean dropAsSibling(final double xCoord) {
 		return false;

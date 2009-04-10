@@ -28,10 +28,15 @@ import org.freeplane.core.ui.AFreeplaneAction;
 /** */
 class SelectBranchAction extends AFreeplaneAction {
 	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
+	/**
 	 *
 	 */
 	public SelectBranchAction(final Controller controller) {
-		super(controller, "select_branch", (String) null);
+		super("SelectBranchAction", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {

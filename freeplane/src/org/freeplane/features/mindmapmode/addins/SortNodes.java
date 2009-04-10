@@ -24,18 +24,20 @@ import java.util.Vector;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.features.mindmapmode.MMapController;
 
 /**
  * @author foltin
  */
-@ActionDescriptor(tooltip = "accessories/plugins/SortNodes.properties_documentation", //
-name = "accessories/plugins/SortNodes.properties_name", //
-keyStroke = "keystroke_accessories/plugins/SortNodes.properties_key", //
-locations = { "/menu_bar/extras/first/nodes/sorting" })
+@ActionLocationDescriptor(locations = { "/menu_bar/extras/first/nodes/sorting" })
 public class SortNodes extends MultipleNodeAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	final private class NodeTextComparator implements Comparator {
 		public int compare(final Object pArg0, final Object pArg1) {
 			if (pArg0 instanceof NodeModel) {
@@ -56,7 +58,7 @@ public class SortNodes extends MultipleNodeAction {
 	 *
 	 */
 	public SortNodes(final Controller controller) {
-		super(controller);
+		super("SortNodes", controller);
 	}
 
 	@Override

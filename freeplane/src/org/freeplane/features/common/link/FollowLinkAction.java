@@ -33,8 +33,13 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
 
 class FollowLinkAction extends AFreeplaneAction implements PopupMenuListener {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	public FollowLinkAction(final Controller controller) {
-		super(controller, "follow_link");
+		super("FollowLinkAction", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {

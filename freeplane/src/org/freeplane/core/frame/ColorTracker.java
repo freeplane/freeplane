@@ -41,7 +41,17 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 
 public class ColorTracker implements ActionListener, Serializable {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	static class Closer extends WindowAdapter implements Serializable {
+		/**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
 		@Override
 		public void windowClosing(final WindowEvent e) {
 			final Window w = e.getWindow();
@@ -50,6 +60,11 @@ public class ColorTracker implements ActionListener, Serializable {
 	}
 
 	static class DisposeOnClose extends ComponentAdapter implements Serializable {
+		/**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
 		@Override
 		public void componentHidden(final ComponentEvent e) {
 			final Window w = (Window) e.getComponent();

@@ -43,18 +43,22 @@ import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
 /**
  * Applies an XSLT to the Document.xml file of MindManager(c) files.
  */
-@ActionDescriptor(name = "accessories/plugins/ImportMindmanagerFiles.properties_name", //
-locations = { "/menu_bar/file/import/import" })
+@ActionLocationDescriptor(locations = { "/menu_bar/file/import/import" })
 public class ImportMindmanagerFiles extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	public ImportMindmanagerFiles(final Controller controller) {
-		super(controller);
+		super("ImportMindmanagerFiles", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {

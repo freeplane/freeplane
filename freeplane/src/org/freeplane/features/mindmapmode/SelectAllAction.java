@@ -29,10 +29,15 @@ import org.freeplane.core.ui.MultipleNodeAction;
 /** */
 class SelectAllAction extends MultipleNodeAction {
 	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
+	/**
 	 *
 	 */
 	public SelectAllAction(final Controller controller) {
-		super(controller, "select_all");
+		super("SelectAllAction", controller);
 	}
 
 	@Override

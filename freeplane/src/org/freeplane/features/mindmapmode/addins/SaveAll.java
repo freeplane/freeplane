@@ -29,21 +29,24 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.features.mindmapmode.MModeController;
 
 /**
  * @author foltin
  */
-@ActionDescriptor(tooltip = "accessories/plugins/SaveAll.properties_documentation", //
-name = "accessories/plugins/SaveAll.properties_name", //
-locations = { "/menu_bar/file/open" })
+@ActionLocationDescriptor(locations = { "/menu_bar/file/open" })
 public class SaveAll extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	/**
 	 *
 	 */
 	public SaveAll(final Controller controller) {
-		super(controller);
+		super("SaveAll", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {

@@ -53,7 +53,17 @@ import javax.swing.WindowConstants;
  * @author Volker Berlin
  */
 class DictionaryEditDialog extends JDialog {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	private class DeleteAction extends AbstractAction {
+		/**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
 		/**
 		 * Delete the selected entries. The "Delete" Button it the only Listener.
 		 */
@@ -94,6 +104,11 @@ class DictionaryEditDialog extends JDialog {
 		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
 		    KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, false), "ESCAPE");
 		getRootPane().getActionMap().put("ESCAPE", new AbstractAction() {
+			/**
+             * 
+             */
+            private static final long serialVersionUID = 1L;
+
 			public void actionPerformed(final ActionEvent e) {
 				dispose();
 			}

@@ -40,10 +40,15 @@ import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.mindmapmode.MMapController;
 
 class ImportLinkedBranchAction extends AFreeplaneAction {
-	private static final long serialVersionUID = -6730969236999381143L;
+
+
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 
 	public ImportLinkedBranchAction(final Controller controller) {
-		super(controller, "import_linked_branch");
+		super("ImportLinkedBranchAction", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -76,10 +81,5 @@ class ImportLinkedBranchAction extends AFreeplaneAction {
 		catch (final Exception ex) {
 			UrlManager.getController(modeController).handleLoadingException(ex);
 		}
-	}
-
-	@Override
-	public String getName() {
-		return "importLinkedBranch";
 	}
 }

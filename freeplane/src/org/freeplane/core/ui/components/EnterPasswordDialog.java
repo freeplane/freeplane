@@ -38,6 +38,10 @@ import org.freeplane.core.resources.FreeplaneResourceBundle;
 
 /** */
 public class EnterPasswordDialog extends JDialog {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 	public static final int CANCEL = -1;
 	public static final int OK = 1;
 	private boolean enterTwoPasswords = true;
@@ -108,6 +112,11 @@ public class EnterPasswordDialog extends JDialog {
 		if (jCancelButton == null) {
 			jCancelButton = new JButton();
 			jCancelButton.setAction(new AbstractAction() {
+				/**
+                 * 
+                 */
+                private static final long serialVersionUID = 1L;
+
 				public void actionPerformed(final ActionEvent e) {
 					cancelPressed();
 				}
@@ -189,6 +198,11 @@ public class EnterPasswordDialog extends JDialog {
 		if (jOKButton == null) {
 			jOKButton = new JButton();
 			jOKButton.setAction(new AbstractAction() {
+				/**
+                 * 
+                 */
+                private static final long serialVersionUID = 1L;
+
 				public void actionPerformed(final ActionEvent e) {
 					okPressed();
 				}

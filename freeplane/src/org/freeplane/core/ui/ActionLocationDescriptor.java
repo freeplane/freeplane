@@ -26,14 +26,6 @@ import java.lang.annotation.RetentionPolicy;
  * @author Dimitry Polivaev 29.11.2008
  */
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ActionDescriptor {
-	String iconPath() default "";
-
-	String keyStroke() default "";
-
-	String[] locations() default {};
-
-	String name();
-
-	String tooltip() default "";;
+public @interface ActionLocationDescriptor {
+	String[] locations();
 }

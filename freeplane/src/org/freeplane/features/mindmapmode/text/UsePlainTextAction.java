@@ -28,8 +28,13 @@ import org.freeplane.core.util.HtmlTools;
 import org.freeplane.features.common.text.TextController;
 
 class UsePlainTextAction extends MultipleNodeAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	public UsePlainTextAction(final Controller controller) {
-		super(controller, "use_plain_text");
+		super("UsePlainTextAction", controller);
 	}
 
 	@Override

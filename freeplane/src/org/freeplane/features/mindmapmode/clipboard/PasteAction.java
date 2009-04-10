@@ -66,6 +66,11 @@ import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 
 class PasteAction extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	private class DirectHtmlFlavorHandler implements IDataFlavorHandler {
 		private String textFromClipboard;
 
@@ -399,7 +404,7 @@ class PasteAction extends AFreeplaneAction {
 	private List newNodes;
 
 	public PasteAction(final Controller controller) {
-		super(controller, "paste", "/images/editpaste.png");
+		super("PasteAction", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {

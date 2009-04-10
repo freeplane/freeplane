@@ -29,13 +29,18 @@ import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.AFreeplaneAction;
 
 class AboutAction extends AFreeplaneAction {
-	private static final long serialVersionUID = -5711560831676141530L;
+
+
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 
 	/**
 	 *
 	 */
 	AboutAction(final Controller controller) {
-		super(controller, "about");
+		super("AboutAction", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -45,8 +50,4 @@ class AboutAction extends AFreeplaneAction {
 		    JOptionPane.INFORMATION_MESSAGE);
 	}
 
-	@Override
-	public String getName() {
-		return "about";
-	}
 }

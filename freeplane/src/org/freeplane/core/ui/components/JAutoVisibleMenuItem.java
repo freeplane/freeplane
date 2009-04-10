@@ -28,6 +28,10 @@ import javax.swing.JMenuItem;
 import org.freeplane.core.ui.SelectableAction;
 
 public class JAutoVisibleMenuItem extends JMenuItem implements PropertyChangeListener {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 	private PropertyChangeListener defaultPropertyChanegListener;
 
 	public JAutoVisibleMenuItem(final Action a) {

@@ -47,6 +47,11 @@ import org.freeplane.core.model.NodeModel;
 public class UITools {
 	public static void addEscapeActionToDialog(final JDialog dialog) {
 		class EscapeAction extends AbstractAction {
+			/**
+             * 
+             */
+            private static final long serialVersionUID = 1L;
+
 			public void actionPerformed(final ActionEvent e) {
 				dialog.dispose();
 			};

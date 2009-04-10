@@ -25,6 +25,11 @@ package org.freeplane.n3.nanoxml;
  */
 public class XMLParseException extends XMLException {
 	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
+	/**
 	 * Creates a new exception.
 	 * 
 	 * @param msg

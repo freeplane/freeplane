@@ -34,10 +34,14 @@ import org.freeplane.features.common.link.ArrowLinkModel;
 import org.freeplane.features.common.link.LinkController;
 
 class ColorArrowLinkAction extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 	ArrowLinkModel arrowLink;
 
-	public ColorArrowLinkAction(final MLinkController modeController, final ArrowLinkModel arrowLink) {
-		super(modeController.getModeController().getController(), "arrow_link_color", "/images/Colors24.gif");
+	public ColorArrowLinkAction(final MLinkController linkController, final ArrowLinkModel arrowLink) {
+		super("ColorArrowLinkAction", linkController.getModeController().getController());
 		this.arrowLink = arrowLink;
 	}
 

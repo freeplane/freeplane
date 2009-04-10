@@ -29,16 +29,21 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.IIconInformation;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.common.icon.IconController;
 
 class IconAction extends MultipleNodeAction implements IIconInformation {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 	final private MindIcon icon;
 
 	public IconAction(final ModeController controller, final MindIcon _icon) {
-		super(controller.getController(), "icon_" + _icon.getName(), _icon.getIcon());
+		super(controller.getController(), FreeplaneResourceBundle.getText("icon_" + _icon.getName()), _icon.getIcon());
 		putValue(Action.SHORT_DESCRIPTION, _icon.getDescription());
 		icon = _icon;
 	}
@@ -66,14 +71,14 @@ class IconAction extends MultipleNodeAction implements IIconInformation {
 	}
 
 	public KeyStroke getKeyStroke() {
-		final String keystrokeResourceName = icon.getKeystrokeResourceName();
+		final String keystrokeResourceName = icon.getShortcutKey();
 		final String keyStrokeDescription = ResourceController.getResourceController().getAdjustableProperty(
 		    keystrokeResourceName);
 		return UITools.getKeyStroke(keyStrokeDescription);
 	}
 
-	public String getKeystrokeResourceName() {
-		return icon.getKeystrokeResourceName();
+	public String getShortcutKey() {
+		return icon.getShortcutKey();
 	}
 
 	public MindIcon getMindIcon() {

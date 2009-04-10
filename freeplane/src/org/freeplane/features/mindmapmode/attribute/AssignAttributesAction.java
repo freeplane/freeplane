@@ -27,8 +27,13 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.common.attribute.AttributeController;
 
 class AssignAttributesAction extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	public AssignAttributesAction(final ModeController modeController) {
-		super(modeController.getController(), "attributes_assign_dialog");
+		super("AssignAttributesAction", modeController.getController());
 	}
 
 	public void actionPerformed(final ActionEvent e) {

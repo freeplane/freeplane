@@ -3,69 +3,69 @@
 	<menu_category name="menu_bar">
 		<menu_submenu name="file" name_ref="file">
 			<menu_category name="close">
-				<menu_action action="close" key_ref="keystroke_close" />
+				<menu_action action="CloseAction"  />
 			</menu_category>
 			<menu_separator />
 			<menu_submenu name="last" name_ref="most_recent_files"></menu_submenu>
 			<menu_category name="print">
-				<menu_action action="page" />
-				<menu_action action="print" key_ref="keystroke_print" />
-				<menu_action action="printPreview" key_ref="keystroke_print_preview" />
+				<menu_action action="PageAction" />
+				<menu_action action="PrintAction"  />
+				<menu_action action="PrintPreviewAction"  />
 			</menu_category>
 			<menu_separator />
-			<menu_category name="quit">
-				<menu_action action="quit" key_ref="keystroke_quit" />
+			<menu_category name="QuitAction">
+				<menu_action action="QuitAction"  />
 			</menu_category>
 			<menu_separator />
 		</menu_submenu>
 		<menu_submenu name="edit" name_ref="edit">
 			<menu_category name="paste">
-				<menu_action action="copy" key_ref="keystroke_copy" />
-				<menu_action action="copySingle"
-					key_ref="keystroke_copy_single" />
+				<menu_action action="CopyAction"  />
+				<menu_action action="CopySingleAction"
+					 />
 			</menu_category>
 			<menu_category name="find">
-				<menu_action action="find" key_ref="keystroke_find" />
-				<menu_action action="findNext" key_ref="keystroke_find_next" />
+				<menu_action action="FindAction"  />
+				<menu_action action="FindNextAction"  />
 			</menu_category>
 			<menu_category name="followLink">
-				<menu_action action="followLink" key_ref="keystroke_follow_link" />
+				<menu_action action="FollowLinkAction"  />
 			</menu_category>
 		</menu_submenu>
 		<menu_submenu name="view" name_ref="menu_view">
 			<menu_category name="toolbars"></menu_category>
-			<menu_action action="toggleToolbar" />
+			<menu_action action="ToggleToolbarAction" />
 			<menu_separator />
 			<menu_category name="general">
-				<menu_action action="showSelectionAsRectangle" />
+				<menu_action action="ShowSelectionAsRectangleAction" />
 			</menu_category>
-			<menu_action action="center_selected" key_ref="keystroke_center_selected" />
+			<menu_action action="CenterSelectedNodeAction"  />
 			<menu_category name="zoom">
-				<menu_action action="zoomIn" key_ref="keystroke_zoom_in" />
-				<menu_action action="zoomOut" key_ref="keystroke_zoom_out" />
+				<menu_action action="ZoomInAction"  />
+				<menu_action action="ZoomOutAction"  />
 			</menu_category>
 			<menu_separator />
 			<menu_submenu name="attributes" name_ref="menu_attributes">
-				<menu_radio_action action="showAllAttributes"
-					key_ref="keystroke_show_all_attributes" selected="true" />
+				<menu_radio_action action="ShowAllAttributesAction"
+					 />
 				<menu_radio_action
-					action="showSelectedAttributes" key_ref="keystroke_show_selected_attributes" />
-				<menu_radio_action action="hideAllAttributes"
-					key_ref="keystroke_hide_all_attributes" />
+					action="ShowSelectedAttributesAction"  />
+				<menu_radio_action action="HideAllAttributesAction"
+					 />
 			</menu_submenu>
 		</menu_submenu>
 		<menu_submenu name="navigate" name_ref="menu_navigate">
 			<menu_category name="nodes">
-				<menu_action action="moveToRoot" key_ref="keystroke_moveToRoot" />
+				<menu_action action="MoveToRootAction"  />
 			</menu_category>
 			<menu_separator />
 			<menu_category name="folding">
-				<menu_action action="toggleFolded" key_ref="keystroke_toggle_folded" />
-				<menu_action action="toggleChildrenFolded" key_ref="keystroke_toggle_children_folded" />
+				<menu_action action="ToggleFoldedAction"  />
+				<menu_action action="ToggleChildrenFoldedAction"  />
 			</menu_category>
 			<menu_separator />
 			<menu_category name="links">
-				<menu_action action="followLink" key_ref="keystroke_follow_link" /> <!-- goto -->
+				<menu_action action="FollowLinkAction"  /> <!-- goto -->
 			</menu_category>
 			<menu_separator />
 		</menu_submenu>
@@ -77,11 +77,11 @@
 		</menu_submenu>
 		<menu_submenu name="help" name_ref="help">
 			<menu_category name="doc">
-				<menu_action action="documentation" />
-				<menu_action action="freeplaneUrl" />
-				<menu_action action="faq" />
-				<menu_action action="license" />
-				<menu_action action="about" />
+				<menu_action action="DocumentationAction" />
+				<menu_action action="OpenURLAction" />
+				<menu_action action="FaqOpenURLAction" />
+				<menu_action action="LicenseAction" />
+				<menu_action action="AboutAction" />
 			</menu_category>
 		</menu_submenu>
 	</menu_category>
@@ -90,18 +90,18 @@
 		</menu_category>
 		<menu_separator />
 		<menu_category name="toolbars">
-			<menu_action action="toggleMenubar" />
-			<menu_action action="toggleToolbar" />
+			<menu_action action="ToggleMenubarAction" />
+			<menu_action action="ToggleToolbarAction" />
 		</menu_category>
 	</menu_category>
 	<menu_category name="node_popup">
-		<menu_category name="paste">
-			<menu_action action="copy" key_ref="keystroke_copy" />
-			<menu_action action="copySingle"
-				key_ref="keystroke_copy_single" />
+		<menu_category name="PasteAction">
+			<menu_action action="CopyAction"  />
+			<menu_action action="CopySingleAction"
+				 />
 		</menu_category>
 		<menu_category name="folding">
-			<menu_action action="toggleFolded" key_ref="keystroke_toggle_folded" />
+			<menu_action action="ToggleFoldedAction"  />
 		</menu_category>
 		<menu_category name="context">
 		</menu_category>
@@ -109,13 +109,13 @@
 	</menu_category>
 	<menu_category name="main_toolbar">
 		<menu_category name="main">
-			<menu_action action="printDirect" />
+			<menu_action action="PrintDirectAction" />
 			<menu_action action="ShowFilterToolbarAction" tooltip="filter_toolbar" />
 		</menu_category>
 		<menu_category name="zoom">
 		</menu_category>
-		<menu_category name="paste">
-			<menu_action action="copy" key_ref="keystroke_copy" />
+		<menu_category name="PasteAction">
+			<menu_action action="CopyAction"  />
 		</menu_category>
 		<menu_separator />
 		<menu_category name="folding">

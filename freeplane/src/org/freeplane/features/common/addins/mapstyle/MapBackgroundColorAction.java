@@ -28,17 +28,20 @@ import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.util.ColorUtils;
 
 /**
  * @author Dimitry Polivaev
  * Mar 12, 2009
  */
-@ActionDescriptor(name = "map_background_color_action", //
-locations = { "/menu_bar/format/nodes" })
+@ActionLocationDescriptor(locations = { "/menu_bar/format/nodes" })
 class MapBackgroundColorAction extends AFreeplaneAction {
-	private static final long serialVersionUID = 1L;
+
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 	/**
 	 * 
 	 */
@@ -48,7 +51,7 @@ class MapBackgroundColorAction extends AFreeplaneAction {
 	 * @param mapStyle
 	 */
 	MapBackgroundColorAction(final MapStyle mapStyle) {
-		super(mapStyle.getController());
+		super("MapBackgroundColorAction", mapStyle.getController());
 		this.mapStyle = mapStyle;
 	}
 

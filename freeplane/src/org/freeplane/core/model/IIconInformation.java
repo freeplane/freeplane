@@ -29,5 +29,5 @@ public interface IIconInformation {
 
 	KeyStroke getKeyStroke();
 
-	String getKeystrokeResourceName();
+	String getShortcutKey();
 }

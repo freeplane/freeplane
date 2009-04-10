@@ -35,7 +35,7 @@ import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.VisibleAction;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -43,25 +43,23 @@ import org.freeplane.n3.nanoxml.XMLElement;
  * @author foltin
  */
 @NodeHookDescriptor(hookName = "plugins/TimeManagementReminder.xml", onceForMap = false)
-@ActionDescriptor(name = "plugins/RemoveReminder.xml_name", //
-tooltip = "accessories/plugins/RevisionPlugin.properties_documentation", //
-locations = { "/menu_bar/extras/first/time_management" })
+@ActionLocationDescriptor(locations = { "/menu_bar/extras/first/time_management" })
 public class ReminderHook extends PersistentNodeHook {
 	//******************************************	
 	@VisibleAction(checkOnNodeChange = true)
-	private class HideableAction extends HookAction {
+	private class ReminderHookAction extends HookAction {
+		/**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
 		/**
 		 * 
 		 */
-		private static final long serialVersionUID = -2103302242985377540L;
 
-		public HideableAction() {
-			super();
-		}
 
-		@Override
-		public String getName() {
-			return getClass().getSimpleName();
+		public ReminderHookAction() {
+			super("ReminderHookAction");
 		}
 
 		@Override
@@ -70,78 +68,66 @@ public class ReminderHook extends PersistentNodeHook {
 		}
 	}
 
-	@ActionDescriptor(name = "plugins/NodeList.xml_name", //
-	locations = { "/menu_bar/edit/find" }, //
-	keyStroke = "keystroke_plugins/TimeList.xml_key", //
-	tooltip = "plugins/NodeList.xml_documentation")
+	@ActionLocationDescriptor(locations = { "/menu_bar/edit/find" })
 	static private class NodeListAction extends AFreeplaneAction {
-		private static final long serialVersionUID = -4589651186325844658L;
+
+		/**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
 		private final TimeList timeList;
 
 		public NodeListAction(final ModeController modeController) {
-			super(modeController.getController(), NodeListAction.class.getAnnotation(ActionDescriptor.class));
+			super("NodeListAction", modeController.getController());
 			timeList = new TimeList(modeController, true);
 		}
 
 		public void actionPerformed(final ActionEvent e) {
 			timeList.startup();
 		}
-
-		// TODO rladstaetter 15.02.2009 remove name attribute from ActionDescriptor
-		@Override
-		public String getName() {
-			return "plugins/NodeList.xml_name";
-		}
 	}
 
-	@ActionDescriptor(name = "plugins/TimeList.xml_name", //
-	locations = { "/menu_bar/extras/first/time_management" }, //
-	tooltip = "plugins/TimeList.xml_documentation")
+	@ActionLocationDescriptor( locations = { "/menu_bar/extras/first/time_management" })
 	static private class TimeListAction extends AFreeplaneAction {
+		/**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
 		/**
 		 * 
 		 */
-		private static final long serialVersionUID = -7761576994743050649L;
+
 		private final TimeList timeList;
 
 		public TimeListAction(final ModeController modeController) {
-			super(modeController.getController(), TimeListAction.class.getAnnotation(ActionDescriptor.class));
+			super("TimeListAction", modeController.getController());
 			timeList = new TimeList(modeController, false);
 		}
 
 		public void actionPerformed(final ActionEvent e) {
 			timeList.startup();
 		}
-
-		@Override
-		public String getName() {
-			return "plugins/TimeList.xml_name";
-		}
 	}
 
-	@ActionDescriptor(name = "plugins/TimeManagement.xml_name", //
-	locations = { "/menu_bar/extras/first/time_management" }, //
-	keyStroke = "keystroke_plugins/TimeManagement.xml_key", //
-	tooltip = "plugins/TimeManagement.xml_documentation")
+	@ActionLocationDescriptor(locations = { "/menu_bar/extras/first/time_management" })
 	static private class TimeManagementAction extends AFreeplaneAction {
+		/**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
 		/**
 		 * 
 		 */
-		private static final long serialVersionUID = -8894665436621773509L;
+
 		private final TimeManagement timeManagement;
 
 		public TimeManagementAction(final ModeController modeController, final ReminderHook reminderHook) {
-			super(modeController.getController(), TimeManagementAction.class.getAnnotation(ActionDescriptor.class));
+			super("TimeManagementAction",modeController.getController());
 			timeManagement = new TimeManagement(modeController, reminderHook);
 		}
 
 		public void actionPerformed(final ActionEvent e) {
 			timeManagement.startup();
-		}
-
-		@Override
-		public String getName() {
-			return "plugins/TimeManagement.xml_name";
 		}
 	}
 
@@ -192,7 +178,7 @@ public class ReminderHook extends PersistentNodeHook {
 
 	@Override
 	protected HookAction createHookAction() {
-		return getModeController() instanceof ModeController ? new HideableAction() : null;
+		return getModeController() instanceof ModeController ? new ReminderHookAction() : null;
 	}
 
 	void deactivate(final ReminderExtension model) {

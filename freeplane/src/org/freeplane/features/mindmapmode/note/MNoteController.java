@@ -60,6 +60,11 @@ import com.lightdev.app.shtm.TextResources;
 public class MNoteController extends NoteController {
 	private class JumpToMapAction extends AbstractAction {
 		/**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
+		/**
 		 * @param noteController
 		 */
 		JumpToMapAction() {
@@ -98,6 +103,11 @@ public class MNoteController extends NoteController {
 	}
 
 	private static class SouthPanel extends JPanel {
+		/**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
 		public SouthPanel() {
 			super(new BorderLayout());
 			setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
@@ -127,17 +137,17 @@ public class MNoteController extends NoteController {
 	 */
 	public MNoteController(final ModeController modeController) {
 		super(modeController);
-		modeController.addAction("selectNoteAction", new SelectNoteAction(this, getModeController()));
-		modeController.addAction("showHideNoteAction", new ShowHideNoteAction(this, getModeController()));
-		modeController.addAction("note_window_location.top", new SetNoteWindowPosition(modeController.getController(),
+		modeController.addAction(new SelectNoteAction(this, getModeController()));
+		modeController.addAction(new ShowHideNoteAction(this, getModeController()));
+		modeController.addAction(new SetNoteWindowPosition(modeController.getController(),
 		    "top"));
-		modeController.addAction("note_window_location.left", new SetNoteWindowPosition(modeController.getController(),
+		modeController.addAction(new SetNoteWindowPosition(modeController.getController(),
 		    "left"));
-		modeController.addAction("note_window_location.right", new SetNoteWindowPosition(
+		modeController.addAction(new SetNoteWindowPosition(
 		    modeController.getController(), "right"));
-		modeController.addAction("note_window_location.bottom", new SetNoteWindowPosition(modeController
+		modeController.addAction(new SetNoteWindowPosition(modeController
 		    .getController(), "bottom"));
-		modeController.addAction("removeNoteAction", new RemoveNoteAction(this, getModeController()));
+		modeController.addAction(new RemoveNoteAction(this, getModeController()));
 	}
 
 	SHTMLPanel getHtmlEditorPanel() {

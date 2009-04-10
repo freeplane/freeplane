@@ -35,8 +35,13 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IActor;
 
 class NodeUpAction extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	public NodeUpAction(final Controller controller) {
-		super(controller, "node_up");
+		super("NodeUpAction", controller);
 	}
 
 	public void _moveNodes(final NodeModel selected, final List selecteds, final int direction) {
@@ -87,11 +92,6 @@ class NodeUpAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		moveNodes(getModeController().getMapController().getSelectedNode(), getModeController().getMapController()
 		    .getSelectedNodes(), -1);
-	}
-
-	@Override
-	public String getName() {
-		return "nodeUp";
 	}
 
 	/**

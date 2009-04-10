@@ -30,12 +30,16 @@ import org.freeplane.core.ui.AFreeplaneAction;
 
 class SelectNoteAction extends AFreeplaneAction {
 	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+	/**
 	 *
 	 */
 	final private MNoteController noteController;
 
 	public SelectNoteAction(final MNoteController noteController, final ModeController modeController) {
-		super(modeController.getController(), "accessories/plugins/NodeNote_jumpto.properties_name");
+		super("SelectNoteAction", modeController.getController());
 		this.noteController = noteController;
 	}
 

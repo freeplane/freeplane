@@ -26,6 +26,10 @@ import java.awt.print.PrinterException;
 import javax.swing.JComponent;
 
 class Preview extends JComponent {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 	final private static int DEFAULT_PREVIEW_SIZE = 300;
 	final private static double MINIMUM_ZOOM_FACTOR = 0.1;
 	private Graphics2D imageGraphics;

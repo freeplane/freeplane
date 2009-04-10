@@ -26,16 +26,25 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.util.LogTool;
 
 class PrintAction extends AbstractPrintAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	static final String NAME = "print";
-	private static final long serialVersionUID = 5725878249752379602L;
+
 	final private Controller controller;
 	final private boolean isDlg;
 
 	PrintAction(final Controller controller, final PrintController printController, final boolean isDlg) {
-		super(printController, isDlg ? "print_dialog" : "print", "/images/fileprint.png");
+		this("PrintAction", controller, printController, isDlg); 
+	}
+
+	public PrintAction(String key, Controller controller, PrintController printController, boolean isDlg) {
+		super(key, printController);
 		this.controller = controller;
 		this.isDlg = isDlg;
-	}
+    }
 
 	public void actionPerformed(final ActionEvent e) {
 		final PrintController printController = getPrintController();
@@ -52,10 +61,5 @@ class PrintAction extends AbstractPrintAction {
 				LogTool.logException(ex);
 			}
 		}
-	}
-
-	@Override
-	public String getName() {
-		return NAME;
 	}
 }

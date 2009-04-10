@@ -35,16 +35,13 @@ import org.freeplane.core.modecontroller.INodeViewVisitor;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.INodeView;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
  */
 @NodeHookDescriptor(hookName = "accessories/plugins/BlinkingNodeHook.properties", onceForMap = false)
-@ActionDescriptor(name = "accessories/plugins/BlinkingNodeHook.properties_name", //
-iconPath = "/images/xeyes.png", //
-tooltip = "accessories/plugins/BlinkingNodeHook.properties_documentation", //
-locations = { "/menu_bar/format/nodes" })
+@ActionLocationDescriptor(locations = { "/menu_bar/format/nodes" })
 public class BlinkingNodeHook extends PersistentNodeHook {
 	protected class TimerColorChanger extends TimerTask implements IExtension {
 		final private NodeModel node;

@@ -54,10 +54,14 @@ import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;
  */
 public class EditNodeBase {
 	protected class EditCopyAction extends AFreeplaneAction {
+		/**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
 		final private JTextComponent textComponent;
 
 		public EditCopyAction(final Controller controller, final JTextComponent textComponent) {
-			super(controller, "copy");
+			super("EditCopyAction", controller);
 			this.textComponent = textComponent;
 		}
 
@@ -70,7 +74,17 @@ public class EditNodeBase {
 	}
 
 	abstract static class EditDialog extends JDialog {
+		/**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
 		class CancelAction extends AbstractAction {
+			/**
+             * 
+             */
+            private static final long serialVersionUID = 1L;
+
 			public void actionPerformed(final ActionEvent e) {
 				confirmedCancel();
 			}
@@ -97,12 +111,22 @@ public class EditNodeBase {
 		}
 
 		class SplitAction extends AbstractAction {
+			/**
+             * 
+             */
+            private static final long serialVersionUID = 1L;
+
 			public void actionPerformed(final ActionEvent e) {
 				split();
 			}
 		}
 
 		class SubmitAction extends AbstractAction {
+			/**
+             * 
+             */
+            private static final long serialVersionUID = 1L;
+
 			public void actionPerformed(final ActionEvent e) {
 				submit();
 			}
@@ -176,6 +200,11 @@ public class EditNodeBase {
 	}
 
 	public class EditPopupMenu extends JPopupMenu {
+		/**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
 		public EditPopupMenu(final JTextComponent textComponent) {
 			this.add(new EditCopyAction(getController(), textComponent));
 			SpellCheckerController.getController(modeController).addSpellCheckerMenu(this);

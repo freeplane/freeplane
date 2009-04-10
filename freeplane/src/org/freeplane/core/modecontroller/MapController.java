@@ -94,7 +94,6 @@ public class MapController extends SelectionController {
 	}
 
 	private static boolean saveOnlyIntrinsicallyNeededIds = false;
-	static private CommonToggleFoldedAction toggleFolded;
 
 	public static boolean saveOnlyIntrinsicallyNeededIds() {
 		return saveOnlyIntrinsicallyNeededIds;
@@ -197,9 +196,8 @@ public class MapController extends SelectionController {
 	 *
 	 */
 	private void createActions(final ModeController modeController) {
-		toggleFolded = new CommonToggleFoldedAction(controller);
-		modeController.addAction(toggleFolded);
-		modeController.addAction(new CommonToggleChildrenFoldedAction(this));
+		modeController.addAction(new ToggleFoldedAction(controller));
+		modeController.addAction(new ToggleChildrenFoldedAction(this));
 		modeController.addAction(new CenterSelectedNodeAction(controller));
 	}
 
@@ -696,17 +694,22 @@ public class MapController extends SelectionController {
 		Collections.sort(collection, new NodesDepthComparator());
 	}
 
-	/**
-	 *
-	 */
-	public void toggleFolded() {
-		toggleFolded.toggleFolded();
+	private ListIterator resetIterator(final ListIterator iterator) {
+		while (iterator.hasPrevious()) {
+			iterator.previous();
+		}
+		return iterator;
 	}
 
-	/**
-	 * @param listIterator
-	 */
+	public void toggleFolded() {
+		toggleFolded(getSelectedNodes().listIterator());
+	}
+
 	public void toggleFolded(final ListIterator listIterator) {
-		toggleFolded.toggleFolded(listIterator);
+		final boolean fold = getFoldingState(resetIterator(listIterator));
+		for (final Iterator i = resetIterator(listIterator); i.hasNext();) {
+			final NodeModel node = (NodeModel) i.next();
+			getModeController().getMapController().setFolded(node, fold);
+		}
 	}
 }

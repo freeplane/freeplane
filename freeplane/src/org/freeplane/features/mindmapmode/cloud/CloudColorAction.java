@@ -36,10 +36,14 @@ import org.freeplane.features.common.cloud.CloudController;
 import org.freeplane.features.common.cloud.CloudModel;
 
 class CloudColorAction extends MultipleNodeAction implements PopupMenuListener {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 	private Color actionColor;
 
 	public CloudColorAction(final Controller controller) {
-		super(controller, "cloud_color", "/images/Colors24.gif");
+		super("CloudColorAction", controller);
 	}
 
 	@Override

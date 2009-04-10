@@ -28,6 +28,11 @@ import com.inet.jortho.SpellChecker;
  *  Created on 13.02.2008
  */
 public class SampleApplication extends JFrame {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	public static void main(final String[] args) {
 		new SampleApplication().setVisible(true);
 	}

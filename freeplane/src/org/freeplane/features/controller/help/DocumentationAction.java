@@ -33,11 +33,15 @@ import org.freeplane.core.util.LogTool;
 import org.freeplane.features.browsemode.BModeController;
 
 class DocumentationAction extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 	private static final String NAME = "documentation";
-	private static final long serialVersionUID = 1631839376411875744L;
+
 
 	DocumentationAction(final Controller controller) {
-		super(controller, NAME);
+		super("DocumentationAction", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -60,10 +64,5 @@ class DocumentationAction extends AFreeplaneAction {
 				}
 			});
 		}
-	}
-
-	@Override
-	public String getName() {
-		return NAME;
 	}
 }

@@ -13,32 +13,31 @@ import org.freeplane.core.ui.AFreeplaneAction;
  * @author robert.ladstaetter
  */
 public class AController {
-	private final Map<String, Action> actions = new HashMap<String, Action>();
+	private final Map<String, AFreeplaneAction> actions = new HashMap<String, AFreeplaneAction>();
 
 	public AController() {
 	}
 
-	public void addAction(final AFreeplaneAction a) {
-		addAction(a.getName(), a);
-	}
-
-	public void addAction(final String key, final AFreeplaneAction value) {
-		final Action old = getActions().put(key, value);
+	public void addAction(final AFreeplaneAction value) {
+		final String key = value.getKey();
+		final AFreeplaneAction old = getActions().put(key, value);
+//String pattern = key.replaceAll("\\.", "\\\\.").replaceAll("/", "\\\\/"); 			
+//System.out.println("key\t\t" + value.getClass().getSimpleName() + "\t\ts/\\\"" + pattern + "\\\"/\\\"" + value.getClass().getSimpleName() + "\\\"/;");		
 		if (old != null && !old.equals(value)) {
 			getActions().put(key, old);
 			throw new RuntimeException("action " + key + "already registered");
 		}
 	}
 
-	public Action getAction(final String key) {
+	public AFreeplaneAction getAction(final String key) {
 		return getActions().get(key);
 	}
 
-	protected Map<String, Action> getActions() {
+	protected Map<String, AFreeplaneAction> getActions() {
 		return actions;
 	}
 
-	public Action removeAction(final String key) {
+	public AFreeplaneAction removeAction(final String key) {
 		return getActions().remove(key);
 	}
 }

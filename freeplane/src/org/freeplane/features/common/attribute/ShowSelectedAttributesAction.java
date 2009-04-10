@@ -26,24 +26,23 @@ import org.freeplane.core.model.MapModel;
 import org.freeplane.core.ui.AFreeplaneAction;
 
 class ShowSelectedAttributesAction extends AFreeplaneAction {
-	private static final String NAME = "showSelectedAttributes";
-	private static final long serialVersionUID = -5910402741456371862L;
+
+
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 
 	/**
 	 *
 	 */
 	public ShowSelectedAttributesAction(final Controller controller) {
-		super(controller, "attributes_show_selected");
+		super("ShowSelectedAttributesAction", controller);
 	};
 
 	public void actionPerformed(final ActionEvent e) {
 		final MapModel map = getController().getMap();
 		setAttributeViewType(map);
-	}
-
-	@Override
-	public String getName() {
-		return NAME;
 	}
 
 	void setAttributeViewType(final MapModel map) {

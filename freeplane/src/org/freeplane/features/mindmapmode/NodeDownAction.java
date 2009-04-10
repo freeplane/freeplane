@@ -28,19 +28,18 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
 
 class NodeDownAction extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	public NodeDownAction(final Controller controller) {
-		super(controller, "new_sibling_behind");
-		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText("node_down"));
+		super("NodeDownAction", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final ModeController modeController = getModeController();
 		((MMapController) modeController.getMapController()).moveNodes(modeController.getMapController()
 		    .getSelectedNode(), modeController.getMapController().getSelectedNodes(), 1);
-	}
-
-	@Override
-	public String getName() {
-		return "nodeDown";
 	}
 }

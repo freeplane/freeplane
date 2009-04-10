@@ -44,7 +44,16 @@ import org.freeplane.core.resources.ResourceController;
  * @author Dimitry Polivaev
  */
 class AttributeRegistryTable extends JTable {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	static private class ButtonEditor extends AbstractCellEditor implements TableCellEditor {
+		/**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
 		final private JButton editButton;
 		private Object value;
 
@@ -110,6 +119,11 @@ class AttributeRegistryTable extends JTable {
 	}
 
 	private class ToggleAllAction extends AbstractAction {
+		/**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
 		public ToggleAllAction() {
 			super(null, AttributeRegistryTable.checkBoxImage);
 		}

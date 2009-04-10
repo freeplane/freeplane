@@ -26,24 +26,23 @@ import org.freeplane.core.model.MapModel;
 import org.freeplane.core.ui.AFreeplaneAction;
 
 class HideAllAttributesAction extends AFreeplaneAction {
-	private static final String NAME = "hideAllAttributes";
-	private static final long serialVersionUID = 3322300017801009807L;
+
+
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 
 	/**
 	 *
 	 */
 	public HideAllAttributesAction(final Controller controller) {
-		super(controller, "attributes_hide_all");
+		super("HideAllAttributesAction", controller);
 	};
 
 	public void actionPerformed(final ActionEvent e) {
 		final MapModel map = getController().getMap();
 		setAttributeViewType(map);
-	}
-
-	@Override
-	public String getName() {
-		return NAME;
 	}
 
 	public void setAttributeViewType(final MapModel map) {

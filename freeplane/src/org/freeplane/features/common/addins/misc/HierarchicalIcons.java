@@ -37,7 +37,7 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.modecontroller.NodeChangeEvent;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.components.MultipleImage;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -45,9 +45,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
  * @author Foltin
  */
 @NodeHookDescriptor(hookName = "accessories/plugins/HierarchicalIcons.properties")
-@ActionDescriptor(locations = { "/menu_bar/format/nodes/automaticLayout2" }, //
-name = "accessories/plugins/HierarchicalIcons.properties_name", //
-tooltip = "accessories/plugins/HierarchicalIcons.properties_documentation")
+@ActionLocationDescriptor(locations = { "/menu_bar/format/nodes/automaticLayout2" })
 public class HierarchicalIcons extends PersistentNodeHook implements INodeChangeListener, IMapChangeListener,
         IReadCompletionListener, IExtension {
 	final private Map<NodeModel, TreeSet> nodeIconSets = new HashMap<NodeModel, TreeSet>();

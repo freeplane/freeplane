@@ -40,11 +40,15 @@ import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 
 class ImportFolderStructureAction extends AFreeplaneAction {
-	private static final String NAME = "importFolderStructure";
-	private static final long serialVersionUID = 2655627952066324326L;
+
+
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 
 	public ImportFolderStructureAction(final Controller controller) {
-		super(controller, "import_folder_structure");
+		super("ImportFolderStructureAction", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -75,11 +79,6 @@ class ImportFolderStructureAction extends AFreeplaneAction {
 		((MTextController) TextController.getController(getModeController())).setNodeText(node, nodeContent);
 		((MLinkController) LinkController.getController(getModeController())).setLink(node, link);
 		return node;
-	}
-
-	@Override
-	public String getName() {
-		return NAME;
 	}
 
 	public void importFolderStructure(final File folder, final NodeModel target, final boolean redisplay)

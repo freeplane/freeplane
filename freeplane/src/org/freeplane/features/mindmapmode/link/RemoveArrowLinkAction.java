@@ -28,13 +28,17 @@ import org.freeplane.features.common.link.ArrowLinkModel;
 import org.freeplane.features.common.link.NodeLinks;
 
 class RemoveArrowLinkAction extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 	private ArrowLinkModel mArrowLink;
 
 	/**
 	 * can be null can be null.
 	 */
 	public RemoveArrowLinkAction(final MLinkController linkController, final ArrowLinkModel arrowLink) {
-		super(linkController.getModeController().getController(), "remove_arrow_link", "/images/edittrash.png");
+		super("RemoveArrowLinkAction", linkController.getModeController().getController());
 		setArrowLink(arrowLink);
 	}
 

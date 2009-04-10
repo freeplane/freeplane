@@ -34,6 +34,11 @@ import org.freeplane.features.common.nodestyle.NodeStyleModel;
 
 class ForkMainView extends MainView {
 	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
+	/**
 	 * Returns the relative position of the Edge
 	 */
 	@Override

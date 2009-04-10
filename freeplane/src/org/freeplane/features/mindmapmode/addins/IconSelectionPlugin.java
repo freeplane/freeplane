@@ -28,7 +28,7 @@ import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.components.IconSelectionPopupDialog;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.common.icon.IconController;
@@ -37,16 +37,17 @@ import org.freeplane.features.mindmapmode.icon.MIconController;
 /**
  * @author adapted to the plugin mechanism by ganzer
  */
-@ActionDescriptor(tooltip = "accessories/plugins/IconSelectionPlugin.properties_documentation", //
-name = "accessories/plugins/IconSelectionPlugin.properties_name", //
-keyStroke = "keystroke_accessories/plugins/IconSelectionPlugin.properties.properties_key", //
-iconPath = "/images/kalzium.png", //
-locations = { "/menu_bar/insert/icons" })
+@ActionLocationDescriptor(locations = { "/menu_bar/insert/icons" })
 public class IconSelectionPlugin extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	/**
 	 */
 	public IconSelectionPlugin(final Controller controller) {
-		super(controller);
+		super("IconSelectionPlugin", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -55,8 +56,8 @@ public class IconSelectionPlugin extends AFreeplaneAction {
 		final Collection<Action> iconActions = ((MIconController) IconController.getController(modeController))
 		    .getIconActions();
 		actions.addAll(iconActions);
-		actions.add(modeController.getAction("removeLastIconAction"));
-		actions.add(modeController.getAction("removeAllIconsAction"));
+		actions.add(modeController.getAction("RemoveLastIconAction"));
+		actions.add(modeController.getAction("RemoveAllIconsAction"));
 		final ViewController viewController = getController().getViewController();
 		final IconSelectionPopupDialog selectionDialog = new IconSelectionPopupDialog(viewController.getJFrame(),
 		    actions);

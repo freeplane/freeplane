@@ -32,8 +32,13 @@ import org.freeplane.features.common.nodelocation.LocationModel;
  * 07.12.2008
  */
 class ResetNodeLocationAction extends MultipleNodeAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	public ResetNodeLocationAction(final Controller controller) {
-		super(controller, "reset_node_position");
+		super("ResetNodeLocationAction", controller);
 	}
 
 	@Override

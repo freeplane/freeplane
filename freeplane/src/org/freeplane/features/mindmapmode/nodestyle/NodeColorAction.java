@@ -31,10 +31,14 @@ import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
 
 class NodeColorAction extends MultipleNodeAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 	private Color actionColor;
 
 	public NodeColorAction(final Controller controller) {
-		super(controller, "node_color");
+		super("NodeColorAction", controller);
 	}
 
 	@Override

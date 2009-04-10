@@ -60,6 +60,11 @@ import com.jgoodies.forms.layout.FormLayout;
  * @author foltin
  */
 public class StylePatternPanel extends JPanel implements PropertyChangeListener {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	final private class EdgeWidthBackTransformer implements IValueTransformator {
 		public String transform(final String value) {
 			return transformStringToWidth(value);

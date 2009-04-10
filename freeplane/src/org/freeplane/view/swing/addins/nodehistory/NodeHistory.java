@@ -47,10 +47,10 @@ public class NodeHistory implements IExtension {
 		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
 		final BackAction backAction = new BackAction(controller, history);
 		menuBuilder.addAnnotatedAction(backAction);
-		modeController.addAnnotatedAction(backAction);
+		modeController.addAction(backAction);
 		final ForwardAction forwardAction = new ForwardAction(controller, history);
 		menuBuilder.addAnnotatedAction(forwardAction);
-		modeController.addAnnotatedAction(forwardAction);
+		modeController.addAction(forwardAction);
 	}
 
 	final private Controller controller;

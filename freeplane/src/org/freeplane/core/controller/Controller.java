@@ -179,7 +179,7 @@ public class Controller extends AController {
 	 * @param actionEvent
 	 */
 	public void quit(final ActionEvent actionEvent) {
-		getActions().get(QuitAction.NAME).actionPerformed(actionEvent);
+		getActions().get("QuitAction").actionPerformed(actionEvent);
 	}
 
 	public void selectMode(final ModeController newModeController) {

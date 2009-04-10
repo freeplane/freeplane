@@ -42,11 +42,15 @@ import org.freeplane.features.mindmapmode.MMapController;
  * This is exactly the opposite of exportBranch.
  */
 class ImportLinkedBranchWithoutRootAction extends AFreeplaneAction {
-	private static final String NAME = "importLinkedBranchWithoutRoot";
-	private static final long serialVersionUID = -6244651836308760718L;
+
+
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 
 	public ImportLinkedBranchWithoutRootAction(final Controller controller) {
-		super(controller, "import_linked_branch_without_root");
+		super("ImportLinkedBranchWithoutRootAction", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -80,10 +84,5 @@ class ImportLinkedBranchWithoutRootAction extends AFreeplaneAction {
 		catch (final Exception ex) {
 			UrlManager.getController(modeController).handleLoadingException(ex);
 		}
-	}
-
-	@Override
-	public String getName() {
-		return NAME;
 	}
 }

@@ -69,16 +69,16 @@ public class MTextController extends TextController {
 	private void createActions(final ModeController modeController) {
 		final Controller controller = modeController.getController();
 		edit = new EditAction(controller);
-		modeController.addAction("edit", edit);
-		modeController.addAction("useRichFormatting", new UseRichFormattingAction(controller));
-		modeController.addAction("usePlainText", new UsePlainTextAction(controller));
-		modeController.addAction("joinNodes", new JoinNodesAction(controller));
-		modeController.addAction("editLong", new EditLongAction(controller));
-		modeController.addAction("setImageByFileChooser", new SetImageByFileChooserAction(controller));
+		modeController.addAction(edit);
+		modeController.addAction(new UseRichFormattingAction(controller));
+		modeController.addAction(new UsePlainTextAction(controller));
+		modeController.addAction(new JoinNodesAction(controller));
+		modeController.addAction(new EditLongAction(controller));
+		modeController.addAction(new SetImageByFileChooserAction(controller));
 	}
 
 	public void edit(final KeyEvent e, final boolean addNew, final boolean editLong) {
-		((EditAction) getModeController().getAction("edit")).edit(e, addNew, editLong);
+		((EditAction) getModeController().getAction("EditAction")).edit(e, addNew, editLong);
 	}
 
 	public void edit(final NodeModel node, final NodeModel prevSelected, final KeyEvent firstEvent,
@@ -144,7 +144,7 @@ public class MTextController extends TextController {
 	}
 
 	public void joinNodes(final NodeModel selectedNode, final List selectedNodes) {
-		((JoinNodesAction) getModeController().getAction("joinNodes")).joinNodes(selectedNode, selectedNodes);
+		((JoinNodesAction) getModeController().getAction("JoinNodesAction")).joinNodes(selectedNode, selectedNodes);
 	}
 
 	public void setImageByFileChooser() {
@@ -197,7 +197,7 @@ public class MTextController extends TextController {
 	}
 
 	public void setNodeText(final NodeModel selected, final String newText) {
-		((EditAction) getModeController().getAction("edit")).setNodeText(selected, newText);
+		((EditAction) getModeController().getAction("EditAction")).setNodeText(selected, newText);
 	}
 
 	public void splitNode(final NodeModel node, final int caretPosition, final String newText) {

@@ -25,17 +25,19 @@ import org.freeplane.core.model.EncryptionModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.components.EnterPasswordDialog;
 import org.freeplane.features.common.addins.encrypt.SingleDesEncrypter;
 
-@ActionDescriptor(name = "accessories/plugins/NewEncryptedMap.properties_name", //
-tooltip = "accessories/plugins/NewEncryptedMap.properties_documentation", //
-iconPath = "/images/lock.png", //
-locations = { "/menu_bar/file/open" })
+@ActionLocationDescriptor(locations = { "/menu_bar/file/open" })
 public class EncryptedMap extends AFreeplaneAction implements INodeSelectionListener {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	public EncryptedMap(final ModeController modeController) {
-		super(modeController.getController());
+		super("EncryptedMap", modeController.getController());
 		modeController.getMapController().addNodeSelectionListener(this);
 	}
 

@@ -26,22 +26,28 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 
+import javax.swing.Action;
 import javax.swing.JOptionPane;
 
 import org.apache.batik.svggen.SVGGraphics2D;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
-import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.view.swing.map.MapView;
 
-@ActionDescriptor(name = "plugins/ExportSvg.xml_name", locations = { "/menu_bar/file/export/export" })
+@ActionLocationDescriptor(locations = { "/menu_bar/file/export/export" })
 class ExportSvg extends ExportVectorGraphic {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	public ExportSvg(final Controller controller) {
-		super(controller);
+		super("ExportSvg", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final File chosenFile = chooseFile("svg", FreeplaneResourceBundle.getText("export_svg_text"), null);
+		final File chosenFile = chooseFile("svg", (String) getValue(Action.NAME), null);
 		if (chosenFile == null) {
 			return;
 		}

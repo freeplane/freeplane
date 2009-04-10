@@ -31,12 +31,16 @@ import org.freeplane.core.ui.SelectableAction;
 @SelectableAction(checkOnPopup = true)
 class ShowDescendantsAction extends AFreeplaneAction {
 	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+	/**
 	 * 
 	 */
 	private final FilterController filterController;
 
 	ShowDescendantsAction(final FilterController filterController) {
-		super(filterController.getController());
+		super("ShowDescendantsAction", filterController.getController());
 		this.filterController = filterController;
 	}
 

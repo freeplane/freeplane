@@ -27,7 +27,7 @@ import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.IMouseWheelEventHandler;
 import org.freeplane.core.ui.MenuBuilder;
 
@@ -35,11 +35,16 @@ import org.freeplane.core.ui.MenuBuilder;
  * @author foltin
  */
 public class UnfoldAll implements IMouseWheelEventHandler {
-	@ActionDescriptor(tooltip = "accessories/plugins/FoldAll.properties_documentation", name = "accessories/plugins/FoldAll.properties_name", keyStroke = "keystroke_accessories/plugins/UnfoldAll.keystroke.alt_HOME", iconPath = "/images/hotlistdel.png", locations = {
+	@ActionLocationDescriptor(locations = {
 	        "/menu_bar/navigate/folding", "/main_toolbar/folding" })
 	private class FoldAllAction extends AFreeplaneAction {
+		/**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
 		public FoldAllAction() {
-			super(controller);
+			super("FoldAllAction", controller);
 		}
 
 		public void actionPerformed(final ActionEvent e) {
@@ -47,11 +52,15 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 		}
 	}
 
-	@ActionDescriptor(tooltip = "accessories/plugins/FoldOneLevel.properties_documentation", name = "accessories/plugins/FoldOneLevel.properties_name", keyStroke = "keystroke_accessories/plugins/UnfoldAll.keystroke.alt_PAGE_UP", iconPath = "/images/edit_remove.png", locations = {
-	        "/menu_bar/navigate/folding", "/main_toolbar/folding" })
+	@ActionLocationDescriptor(locations = {"/menu_bar/navigate/folding", "/main_toolbar/folding" })
 	private class FoldOneLevelAction extends AFreeplaneAction {
+		/**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
 		public FoldOneLevelAction() {
-			super(controller);
+			super("FoldOneLevelAction", controller);
 		}
 
 		public void actionPerformed(final ActionEvent e) {
@@ -59,11 +68,15 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 		}
 	}
 
-	@ActionDescriptor(tooltip = "accessories/plugins/UnfoldAll.properties_documentation", name = "accessories/plugins/UnfoldAll.properties_name", keyStroke = "keystroke_accessories/plugins/UnfoldAll.keystroke.alt_END", iconPath = "/images/hotlistadd.png", locations = {
-	        "/menu_bar/navigate/folding", "/main_toolbar/folding" })
+	@ActionLocationDescriptor(locations = {"/menu_bar/navigate/folding", "/main_toolbar/folding" })
 	private class UnfoldAllAction extends AFreeplaneAction {
+		/**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
 		public UnfoldAllAction() {
-			super(controller);
+			super("UnfoldAllAction", controller);
 		}
 
 		public void actionPerformed(final ActionEvent e) {
@@ -71,11 +84,15 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 		}
 	}
 
-	@ActionDescriptor(tooltip = "accessories/plugins/UnfoldOneLevel.properties_documentation", name = "accessories/plugins/UnfoldOneLevel.properties_name", keyStroke = "keystroke_accessories/plugins/UnfoldAll.keystroke.alt_PAGE_DOWN", iconPath = "/images/edit_add.png", locations = {
-	        "/menu_bar/navigate/folding", "/main_toolbar/folding" })
+	@ActionLocationDescriptor(locations = {"/menu_bar/navigate/folding", "/main_toolbar/folding" })
 	private class UnfoldOneLevelAction extends AFreeplaneAction {
+		/**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
 		public UnfoldOneLevelAction() {
-			super(controller);
+			super("UnfoldOneLevelAction", controller);
 		}
 
 		public void actionPerformed(final ActionEvent e) {

@@ -169,8 +169,8 @@ public class MindIcon implements Comparable, IIconInformation {
 		return null;
 	}
 
-	public String getKeystrokeResourceName() {
-		return "keystroke_icon_" + name;
+	public String getShortcutKey() {
+		return "IconAction." + name + ".shortcut";
 	}
 
 	/**

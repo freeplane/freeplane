@@ -51,8 +51,13 @@ import org.w3c.dom.Document;
  * @author foltin
  */
 abstract class ExportVectorGraphic extends ExportAction {
-	public ExportVectorGraphic(final Controller controller) {
-		super(controller);
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
+	public ExportVectorGraphic(final String key, final Controller controller) {
+		super(key, controller);
 	}
 
 	/**

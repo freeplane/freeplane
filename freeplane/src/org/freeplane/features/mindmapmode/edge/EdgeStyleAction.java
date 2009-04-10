@@ -30,10 +30,14 @@ import org.freeplane.features.common.edge.EdgeModel;
 
 @SelectableAction(checkOnNodeChange = true)
 class EdgeStyleAction extends MultipleNodeAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 	final private String mStyle;
 
 	public EdgeStyleAction(final ModeController controller, final String style) {
-		super(controller.getController(), style);
+		super("EdgeStyleAction." + style, controller.getController());
 		mStyle = style;
 	}
 

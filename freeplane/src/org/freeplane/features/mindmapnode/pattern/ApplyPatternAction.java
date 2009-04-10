@@ -43,6 +43,10 @@ import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 
 class ApplyPatternAction extends MultipleNodeAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 	private static final String EDGE_WIDTH_THIN_STRING = "EDGE_WIDTH_THIN";
 
 	/**
@@ -72,11 +76,14 @@ class ApplyPatternAction extends MultipleNodeAction {
 	final private Pattern mpattern;
 
 	public ApplyPatternAction(final ModeController controller, final Pattern pattern) {
-		super(controller.getController());
+		super(controller.getController(), pattern.getName(), null);
 		mpattern = pattern;
-		MenuBuilder.setLabelAndMnemonic(this, pattern.getName());
 	}
 
+	public String getShortcutKey() {
+		return "ApplyPatternAction." + mpattern.getName() + ".shortcut";
+	}
+	
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
 		applyPattern(node, mpattern);

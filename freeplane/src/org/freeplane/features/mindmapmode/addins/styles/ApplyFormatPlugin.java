@@ -25,20 +25,22 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.features.mindmapnode.pattern.MPatternController;
 import org.freeplane.features.mindmapnode.pattern.Pattern;
 import org.freeplane.features.mindmapnode.pattern.StylePatternFactory;
 
-@ActionDescriptor(name = "accessories/plugins/ApplyFormatPlugin.properties_name", //
-locations = { "/menu_bar/format/change" }, //
-tooltip = "accessories/plugins/ApplyFormatPlugin.properties_documentation" //
-)
+@ActionLocationDescriptor(locations = { "/menu_bar/format/change" })
 public class ApplyFormatPlugin extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	/**
 	 */
 	public ApplyFormatPlugin(final Controller controller) {
-		super(controller);
+		super("ApplyFormatPlugin", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {

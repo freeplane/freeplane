@@ -29,14 +29,18 @@ import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.MenuBuilder;
 
 class PrintPreviewAction extends AbstractPrintAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	static final String NAME = "printPreview";
-	private static final long serialVersionUID = 5804287711073546422L;
+
 	final private Controller controller;
 
 	PrintPreviewAction(final Controller controller, final PrintController printController) {
-		super(printController);
+		super("PrintPreviewAction", printController);
 		this.controller = controller;
-		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText("print_preview"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -49,10 +53,5 @@ class PrintPreviewAction extends AbstractPrintAction {
 		previewDialog.pack();
 		previewDialog.setLocationRelativeTo(JOptionPane.getFrameForComponent(mapView));
 		previewDialog.setVisible(true);
-	}
-
-	@Override
-	public String getName() {
-		return NAME;
 	}
 }

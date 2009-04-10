@@ -27,10 +27,15 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.mindmapmode.MModeController;
 
 class SaveAction extends AFreeplaneAction {
-	private static final long serialVersionUID = -7502189138374624345L;
+
+
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 
 	public SaveAction(final Controller controller) {
-		super(controller, "save", "/images/filesave.png");
+		super("SaveAction", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -43,10 +48,5 @@ class SaveAction extends AFreeplaneAction {
 			controller.errorMessage("Saving failed.");
 		}
 		controller.getViewController().setTitle();
-	}
-
-	@Override
-	public String getName() {
-		return "save";
 	}
 }

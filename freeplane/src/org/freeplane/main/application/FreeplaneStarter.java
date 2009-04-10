@@ -69,42 +69,46 @@ public class FreeplaneStarter {
 	}
 
 	public Controller createController() {
-		applicationResourceController = new ApplicationResourceController();
-		ResourceController.setResourceController(applicationResourceController);
-		controller = new Controller();
-		applicationResourceController.init(controller);
-		LogTool.createLogger();
-		splash = new FreeplaneSplashModern();
-		splash.setVisible(true);
-		feedBack = splash.getFeedBack();
-		feedBack.setMaximumValue(9);
-		Compat.useScreenMenuBar();
-		feedBack.increase(FreeplaneSplashModern.FREEPLANE_PROGRESS_UPDATE_LOOK_AND_FEEL);
-		Controller.setLookAndFeel(ResourceController.getResourceController().getProperty("lookandfeel"));
-		feedBack.increase(FreeplaneSplashModern.FREEPLANE_PROGRESS_CREATE_CONTROLLER);
-		System.setSecurityManager(new FreeplaneSecurityManager());
-		final MMapViewController mapViewController = new MMapViewController();
-		mapViewController.addMapViewChangeListener(applicationResourceController.getLastOpenedList());
-		viewController = new ApplicationViewController(controller, mapViewController);
-		FilterController.install(controller);
-		PrintController.install(controller);
-		ModelessAttributeController.install(controller);
-		TextController.install(controller);
-		TimeController.install(controller);
-		LinkController.install(controller);
-		IconController.install(controller);
-		HelpController.install(controller);
-		NodeHistory.install(controller);
-		MModeControllerFactory.createModeController(controller);
-		BModeControllerFactory.createModeController(controller, "/xml/browsemodemenu.xml");
-		FModeControllerFactory.createModeController(controller);
-		return controller;
+		try {
+	        applicationResourceController = new ApplicationResourceController();
+	        ResourceController.setResourceController(applicationResourceController);
+	        controller = new Controller();
+	        applicationResourceController.init(controller);
+	        LogTool.createLogger();
+	        splash = new FreeplaneSplashModern();
+	        splash.setVisible(true);
+	        feedBack = splash.getFeedBack();
+	        feedBack.setMaximumValue(9);
+	        Compat.useScreenMenuBar();
+	        feedBack.increase(FreeplaneSplashModern.FREEPLANE_PROGRESS_UPDATE_LOOK_AND_FEEL);
+	        Controller.setLookAndFeel(ResourceController.getResourceController().getProperty("lookandfeel"));
+	        feedBack.increase(FreeplaneSplashModern.FREEPLANE_PROGRESS_CREATE_CONTROLLER);
+	        System.setSecurityManager(new FreeplaneSecurityManager());
+	        final MMapViewController mapViewController = new MMapViewController();
+	        mapViewController.addMapViewChangeListener(applicationResourceController.getLastOpenedList());
+	        viewController = new ApplicationViewController(controller, mapViewController);
+	        FilterController.install(controller);
+	        PrintController.install(controller);
+	        ModelessAttributeController.install(controller);
+	        TextController.install(controller);
+	        TimeController.install(controller);
+	        LinkController.install(controller);
+	        IconController.install(controller);
+	        HelpController.install(controller);
+	        NodeHistory.install(controller);
+	        MModeControllerFactory.createModeController(controller);
+	        BModeControllerFactory.createModeController(controller, "/xml/browsemodemenu.xml");
+	        FModeControllerFactory.createModeController(controller);
+	        return controller;
+        }
+        catch (Exception e) {
+	        e.printStackTrace();
+	        throw new RuntimeException(e);
+        }
 	}
 
 	public void createFrame(final String[] args) {
 		feedBack.increase("Freeplane.progress.settingPreferences");
-		controller.getViewController().changeAntialias(
-		    ResourceController.getResourceController().getProperty(ViewController.RESOURCE_ANTIALIAS));
 		feedBack.increase("Freeplane.progress.propagateLookAndFeel");
 		SwingUtilities.updateComponentTreeUI(controller.getViewController().getFrame());
 		feedBack.increase("Freeplane.progress.buildScreen");

@@ -26,24 +26,26 @@ import javax.swing.JViewport;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.view.swing.map.MapView;
 
 /**
  * @author foltin
  * @author Dimitry Polivaev
  */
-@ActionDescriptor(tooltip = "accessories/plugins/FitToPage.properties_documentation", //
-name = "accessories/plugins/FitToPage.properties_name", //
-locations = { "/menu_bar/view/zoom" })
+@ActionLocationDescriptor(locations = { "/menu_bar/view/zoom" })
 public class FitToPage extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 	private MapView view;
 
 	/**
 	 *
 	 */
 	public FitToPage(final Controller controller) {
-		super(controller);
+		super("FitToPage", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {

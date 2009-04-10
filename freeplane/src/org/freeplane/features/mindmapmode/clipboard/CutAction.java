@@ -37,8 +37,13 @@ import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.mindmapmode.MMapController;
 
 class CutAction extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	public CutAction(final Controller controller) {
-		super(controller, "cut", "/images/editcut.png");
+		super("CutAction", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {

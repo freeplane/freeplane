@@ -24,21 +24,21 @@ import java.awt.event.ActionEvent;
 import org.freeplane.core.ui.AFreeplaneAction;
 
 class ZoomOutAction extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	static final String NAME = "zoomOut";
-	private static final long serialVersionUID = 1L;
+
 	final private ViewController viewController;
 
 	public ZoomOutAction(final ViewController viewController) {
-		super(viewController.getController(), "zoom_out");
+		super("ZoomOutAction", viewController.getController());
 		this.viewController = viewController;
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		viewController.zoomOut();
-	}
-
-	@Override
-	public String getName() {
-		return NAME;
 	}
 }

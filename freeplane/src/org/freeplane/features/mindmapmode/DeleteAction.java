@@ -33,8 +33,13 @@ import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.undo.IActor;
 
 class DeleteAction extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	public DeleteAction(final Controller controller) {
-		super(controller, "remove_node", "/images/editdelete.png");
+		super("DeleteAction", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -88,10 +93,5 @@ class DeleteAction extends AFreeplaneAction {
 
 	void deleteWithoutUndo(final NodeModel node) {
 		((MMapController) getModeController().getMapController()).deleteWithoutUndo(node);
-	}
-
-	@Override
-	public String getName() {
-		return "deleteChild";
 	}
 }

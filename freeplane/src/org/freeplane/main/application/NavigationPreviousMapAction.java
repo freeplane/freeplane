@@ -27,21 +27,19 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
 
 class NavigationPreviousMapAction extends AFreeplaneAction {
-	private static final String NAME = "navigationPreviousMap";
-	private static final long serialVersionUID = -6314541038760069176L;
+
+
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 
 	NavigationPreviousMapAction(final Controller controller) {
-		super(controller, null, "/images/1leftarrow.png");
-		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText("previous_map"));
+		super("NavigationPreviousMapAction", controller);
 		setEnabled(false);
 	}
 
 	public void actionPerformed(final ActionEvent event) {
 		getController().getMapViewManager().previousMapView();
-	}
-
-	@Override
-	public String getName() {
-		return NAME;
 	}
 }

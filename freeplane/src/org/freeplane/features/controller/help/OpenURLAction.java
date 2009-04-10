@@ -28,12 +28,15 @@ import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.AFreeplaneAction;
 
 class OpenURLAction extends AFreeplaneAction {
-	private static final String NAME = "freeplaneUrl";
-	private static final long serialVersionUID = 7266357451275984398L;
+
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 	final private String url;
 
-	OpenURLAction(final Controller controller, final String description, final String url) {
-		super(controller, description, "/images/Link.png");
+	OpenURLAction(String key, final Controller controller, final String url) {
+		super(key, controller);
 		this.url = url;
 	}
 
@@ -47,10 +50,5 @@ class OpenURLAction extends AFreeplaneAction {
 		catch (final Exception ex) {
 			getController().errorMessage(ex);
 		}
-	}
-
-	@Override
-	public String getName() {
-		return NAME;
 	}
 }

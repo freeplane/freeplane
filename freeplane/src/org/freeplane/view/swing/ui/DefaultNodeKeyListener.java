@@ -18,26 +18,13 @@ public class DefaultNodeKeyListener implements KeyListener {
 	final private Controller controller;
 	private boolean disabledKeyType = true;
 	final private IEditHandler editHandler;
-	final private KeyStroke keyStrokeDown;
-	final private KeyStroke keyStrokeLeft;
-	final private KeyStroke keyStrokeRight;
-	final private KeyStroke keyStrokeUp;
 	private boolean keyTypeAddsNew = false;
-	final private String up, down, left, right;
 
 	public DefaultNodeKeyListener(final Controller controller, final IEditHandler editHandler) {
 		this.controller = controller;
 		this.editHandler = editHandler;
-		up = ResourceController.getResourceController().getAdjustableProperty("keystroke_move_up");
-		down = ResourceController.getResourceController().getAdjustableProperty("keystroke_move_down");
-		left = ResourceController.getResourceController().getAdjustableProperty("keystroke_move_left");
-		right = ResourceController.getResourceController().getAdjustableProperty("keystroke_move_right");
 		disabledKeyType = ResourceController.getResourceController().getBooleanProperty("disable_key_type");
 		keyTypeAddsNew = ResourceController.getResourceController().getBooleanProperty("key_type_adds_new");
-		keyStrokeUp = KeyStroke.getKeyStroke(up);
-		keyStrokeDown = KeyStroke.getKeyStroke(down);
-		keyStrokeLeft = KeyStroke.getKeyStroke(left);
-		keyStrokeRight = KeyStroke.getKeyStroke(right);
 	}
 
 	public void keyPressed(final KeyEvent e) {
@@ -78,22 +65,6 @@ public class DefaultNodeKeyListener implements KeyListener {
 			}
 		}
 		boolean doMove = false;
-		if (keyStrokeUp != null && e.getKeyCode() == keyStrokeUp.getKeyCode()) {
-			e.setKeyCode(KeyEvent.VK_UP);
-			doMove = true;
-		}
-		else if (keyStrokeDown != null && e.getKeyCode() == keyStrokeDown.getKeyCode()) {
-			e.setKeyCode(KeyEvent.VK_DOWN);
-			doMove = true;
-		}
-		else if (keyStrokeLeft != null && e.getKeyCode() == keyStrokeLeft.getKeyCode()) {
-			e.setKeyCode(KeyEvent.VK_LEFT);
-			doMove = true;
-		}
-		else if (keyStrokeRight != null && e.getKeyCode() == keyStrokeRight.getKeyCode()) {
-			e.setKeyCode(KeyEvent.VK_RIGHT);
-			doMove = true;
-		}
 		if (doMove) {
 			((MapView) controller.getViewController().getMapView()).move(e);
 			e.consume();

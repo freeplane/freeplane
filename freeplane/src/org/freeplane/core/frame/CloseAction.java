@@ -28,22 +28,21 @@ import org.freeplane.core.ui.MenuBuilder;
 
 /** This closes only the current map */
 class CloseAction extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	static final String NAME = "close";
-	private static final long serialVersionUID = -1585226261004948225L;
+
 	final private Controller controller;
 
 	CloseAction(final Controller controller) {
-		super(controller);
+		super("CloseAction", controller);
 		this.controller = controller;
-		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText("close"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		controller.close(false);
-	}
-
-	@Override
-	public String getName() {
-		return NAME;
 	}
 }

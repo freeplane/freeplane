@@ -25,7 +25,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.features.mindmapnode.pattern.MPatternController;
@@ -35,12 +35,12 @@ import org.freeplane.features.mindmapnode.pattern.StylePatternFactory;
 /**
  * @author foltin
  */
-@ActionDescriptor(tooltip = "accessories/plugins/FormatCopy.properties_documentation", //
-name = "accessories/plugins/FormatCopy.properties_name", //,
-iconPath = "/images/colorpicker.png", //
-keyStroke = "keystroke_accessories/plugins/FormatCopy.properties.properties_key", //
-locations = { "/menu_bar/edit/paste" })
+@ActionLocationDescriptor(locations = { "/menu_bar/edit/paste" })
 class FormatCopy extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 	private static Pattern pattern = null;
 
 	public static Pattern getPattern() {
@@ -48,7 +48,7 @@ class FormatCopy extends AFreeplaneAction {
 	}
 
 	public FormatCopy(final Controller controller) {
-		super(controller);
+		super("FormatCopy", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -65,14 +65,15 @@ class FormatCopy extends AFreeplaneAction {
 /**
  * @author foltin
  */
-@ActionDescriptor(tooltip = "accessories/plugins/FormatPaste.properties_documentation", //
-name = "accessories/plugins/FormatPaste.properties_name", //
-keyStroke = "keystroke_accessories/plugins/FormatPaste.properties.properties_key", //
-iconPath = "/images/color_fill.png", //
-locations = { "/menu_bar/edit/paste" })
+@ActionLocationDescriptor(locations = { "/menu_bar/edit/paste" })
 public class FormatPaste extends MultipleNodeAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	public FormatPaste(final Controller controller, final MenuBuilder menuBuilder) {
-		super(controller);
+		super("FormatPaste", controller);
 		menuBuilder.addAnnotatedAction(new FormatCopy(controller));
 		menuBuilder.addAnnotatedAction(this);
 	}

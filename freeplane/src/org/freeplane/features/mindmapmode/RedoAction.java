@@ -28,10 +28,14 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IUndoHandler;
 
 class RedoAction extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 	private Action undo;
 
 	public RedoAction(final Controller controller) {
-		super(controller, "redo", "/images/redo.png");
+		super("RedoAction", controller);
 		setEnabled(false);
 	}
 

@@ -30,7 +30,7 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.features.common.attribute.Attribute;
 import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
@@ -43,8 +43,13 @@ import org.freeplane.plugin.script.ScriptingEngine.IErrorHandler;
 /**
  * @author foltin
  */
-@ActionDescriptor(name = "plugins/ScriptEditor.xml_name", tooltip = "plugins/ScriptEditor.xml_documentation", locations = { "/menu_bar/extras/first/scripting" })
+@ActionLocationDescriptor(locations = { "/menu_bar/extras/first/scripting" })
 class ScriptEditor extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	final private class AttributeHolder {
 		Attribute mAttribute;
 		int mPosition;
@@ -165,7 +170,7 @@ class ScriptEditor extends AFreeplaneAction {
 	final private ScriptingRegistration reg;
 
 	public ScriptEditor(final Controller controller, final ScriptingRegistration reg) {
-		super(controller);
+		super("ScriptEditor", controller);
 		this.reg = reg;
 	}
 

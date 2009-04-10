@@ -29,11 +29,15 @@ import org.freeplane.core.ui.AFreeplaneAction;
 
 /** Follow a graphical link (AKA connector) action. */
 class GotoLinkNodeAction extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 	private final LinkController linkController;
 	private final NodeModel target;
 
 	public GotoLinkNodeAction(final LinkController linkController, final NodeModel target) {
-		super(linkController.getModeController().getController(), "goto_link_node_action", "/images/Link.png");
+		super("GotoLinkNodeAction", linkController.getModeController().getController());
 		this.target = target;
 		this.linkController = linkController;
 		if (target != null) {

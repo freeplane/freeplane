@@ -30,12 +30,16 @@ import org.freeplane.features.common.nodestyle.NodeStyleController;
  * @author foltin
  */
 class FontFamilyAction extends MultipleNodeAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 	private String actionFont;
 
 	/**
 	 */
 	public FontFamilyAction(final Controller controller) {
-		super(controller, "font_family");
+		super("FontFamilyAction", controller);
 	}
 
 	@Override

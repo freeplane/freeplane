@@ -27,20 +27,19 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 
 class LicenseAction extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 	private static final String NAME = "license";
-	private static final long serialVersionUID = -8521642658301662402L;
+
 
 	LicenseAction(final Controller controller) {
-		super(controller, NAME);
+		super("LicenseAction", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		UITools.informationMessage(getController().getViewController().getFrame(), FreeplaneResourceBundle
 		    .getText("license_text"), FreeplaneResourceBundle.getText(NAME));
-	}
-
-	@Override
-	public String getName() {
-		return NAME;
 	}
 }

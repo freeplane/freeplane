@@ -29,12 +29,16 @@ import org.freeplane.features.common.nodestyle.NodeStyleController;
 
 @SelectableAction(checkOnNodeChange = true)
 class BoldAction extends MultipleNodeAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 	private boolean bold;
 
 	/**
 	 */
 	public BoldAction(final Controller controller) {
-		super(controller, "bold", "/images/Bold16.gif");
+		super("BoldAction", controller);
 	}
 
 	@Override

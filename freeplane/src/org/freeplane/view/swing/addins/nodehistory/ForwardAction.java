@@ -23,7 +23,7 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.EnabledAction;
 
 /**
@@ -31,16 +31,16 @@ import org.freeplane.core.ui.EnabledAction;
  * 13.12.2008
  */
 @EnabledAction(checkOnNodeChange = true)
-@ActionDescriptor(name = "accessories/plugins/NodeHistoryForward.properties_name", //
-tooltip = "accessories/plugins/NodeHistoryForward.properties_documentation", //
-keyStroke = "keystroke_accessories/plugins/NodeHistoryForward.keystroke.alt_FORWARD", //
-iconPath = "/images/forward.png", //
-locations = { "/menu_bar/navigate/folding", "/main_toolbar/history" })
+@ActionLocationDescriptor(locations = { "/menu_bar/navigate/folding", "/main_toolbar/history" })
 class ForwardAction extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 	final private NodeHistory nodeHistory;
 
 	public ForwardAction(final Controller controller, final NodeHistory nodeHistory) {
-		super(controller);
+		super("ForwardAction", controller);
 		this.nodeHistory = nodeHistory;
 	}
 

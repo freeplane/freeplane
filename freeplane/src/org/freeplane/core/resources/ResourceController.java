@@ -196,8 +196,6 @@ public abstract class ResourceController {
 	}
 
 	protected void init(final Controller controller) {
-		controller.addAction(new OptionHTMLExportFoldingAction(controller));
-		controller.addAction(new OptionSelectionMechanismAction(controller));
 		controller.addAction(new ShowSelectionAsRectangleAction(controller));
 	}
 

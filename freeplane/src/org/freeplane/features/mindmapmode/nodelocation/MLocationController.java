@@ -79,7 +79,7 @@ public class MLocationController extends LocationController {
 	}
 
 	private void createActions(final ModeController modeController) {
-		modeController.addAction("moveNodeAction", new ResetNodeLocationAction(modeController.getController()));
+		modeController.addAction(new ResetNodeLocationAction(modeController.getController()));
 	}
 
 	public void moveNodePosition(final NodeModel node, final int parentVGap, final int hGap, final int shiftY) {

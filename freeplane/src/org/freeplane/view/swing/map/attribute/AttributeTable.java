@@ -59,6 +59,11 @@ import org.freeplane.view.swing.map.NodeView;
  * @author Dimitry Polivaev
  */
 class AttributeTable extends JTable implements IColumnWidthChangeListener {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	static private class HeaderMouseListener extends MouseAdapter {
 		@Override
 		public void mouseReleased(final MouseEvent e) {

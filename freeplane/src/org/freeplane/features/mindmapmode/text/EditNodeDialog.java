@@ -55,6 +55,10 @@ import com.inet.jortho.SpellChecker;
  */
 class EditNodeDialog extends EditNodeBase {
 	class LongNodeDialog extends EditDialog {
+		/**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
 		final private JTextArea textArea;
 
 		LongNodeDialog(final Frame frame) {

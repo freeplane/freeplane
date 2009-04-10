@@ -35,12 +35,16 @@ import org.freeplane.features.common.note.NoteModel;
 
 class RemoveNoteAction extends AFreeplaneAction implements PopupMenuListener {
 	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+	/**
 	 *
 	 */
 	final private MNoteController noteController;
 
 	public RemoveNoteAction(final MNoteController noteController, final ModeController modeController) {
-		super(modeController.getController(), "accessories/plugins/RemoveNote.properties_name");
+		super("RemoveNoteAction", modeController.getController());
 		this.noteController = noteController;
 	}
 

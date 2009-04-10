@@ -34,9 +34,14 @@ import org.freeplane.features.common.link.LinkController;
  */
 class AddLocalLinkAction extends AFreeplaneAction {
 	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
+	/**
 	 */
 	public AddLocalLinkAction(final Controller controller) {
-		super(controller, "add_local_link", "/images/LinkLocal.png");
+		super("AddLocalLinkAction", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {

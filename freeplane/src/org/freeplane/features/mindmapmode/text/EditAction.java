@@ -40,11 +40,15 @@ import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.features.mindmapmode.MModeController;
 
 class EditAction extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 	private static final Pattern HTML_HEAD = Pattern.compile("\\s*<head>.*</head>", Pattern.DOTALL);
 	private EditNodeBase mCurrentEditDialog = null;
 
 	public EditAction(final Controller controller) {
-		super(controller, "edit_node");
+		super("EditAction", controller);
 	}
 
 	/*

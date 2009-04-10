@@ -27,10 +27,14 @@ import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 
 class NodeShapeAction extends MultipleNodeAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 	final private String actionShape;
 
 	public NodeShapeAction(final ModeController controller, final String shape) {
-		super(controller.getController(), shape);
+		super("NodeShapeAction." + shape, controller.getController());
 		actionShape = shape;
 	}
 

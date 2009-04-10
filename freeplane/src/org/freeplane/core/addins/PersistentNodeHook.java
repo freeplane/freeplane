@@ -33,15 +33,20 @@ import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ActionDescriptor;
+import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public abstract class PersistentNodeHook {
 	public abstract class HookAction extends AFreeplaneAction {
-		public HookAction() {
-			super(controller);
+		/**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
+		public HookAction(final String key) {
+			super(key, controller);
 		}
 
 		public void actionPerformed(final ActionEvent e) {
@@ -52,18 +57,18 @@ public abstract class PersistentNodeHook {
 	@SelectableAction(checkOnNodeChange = true)
 	protected class SelectableHookAction extends HookAction {
 		/**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
+		/**
 		 * 
 		 */
-		private static final long serialVersionUID = 4427219027418034535L;
 
-		protected SelectableHookAction() {
-			super();
-		}
 
-		@Override
-		public String getName() {
-			// TODO rladstaetter 15.02.2009 this action is not annotated and thus no name can be derived?
-			return getClass().getSimpleName();
+		protected SelectableHookAction(String key) {
+			super(key);
+System.out.println("SelectableHookAction " + key);			
 		}
 
 		@Override
@@ -147,7 +152,7 @@ public abstract class PersistentNodeHook {
 		this.modeController = modeController;
 		controller = modeController.getController();
 		if (modeController.getModeName().equals("MindMap")) {
-			final ActionDescriptor actionAnnotation = getActionAnnotation();
+			final ActionLocationDescriptor actionAnnotation = getActionAnnotation();
 			if (actionAnnotation != null) {
 				selectableHookAction = createHookAction();
 				if (selectableHookAction != null) {
@@ -182,7 +187,7 @@ public abstract class PersistentNodeHook {
 	abstract protected IExtension createExtension(final NodeModel node, final XMLElement element);
 
 	protected HookAction createHookAction() {
-		return new SelectableHookAction();
+		return new SelectableHookAction(getClass().getSimpleName() + "Action");
 	}
 
 	protected XmlReader createXmlReader() {
@@ -193,8 +198,8 @@ public abstract class PersistentNodeHook {
 		return new XmlWriter();
 	}
 
-	protected ActionDescriptor getActionAnnotation() {
-		final ActionDescriptor annotation = getClass().getAnnotation(ActionDescriptor.class);
+	protected ActionLocationDescriptor getActionAnnotation() {
+		final ActionLocationDescriptor annotation = getClass().getAnnotation(ActionLocationDescriptor.class);
 		return annotation;
 	}
 
@@ -268,11 +273,11 @@ public abstract class PersistentNodeHook {
 	}
 
 	protected void registerAction(final AFreeplaneAction action) {
-		registerAction(action, action.getClass().getAnnotation(ActionDescriptor.class));
+		registerAction(action, action.getClass().getAnnotation(ActionLocationDescriptor.class));
 	}
 
-	protected void registerAction(final AFreeplaneAction action, final ActionDescriptor actionAnnotation) {
-		modeController.addAction(actionAnnotation.name(), action);
+	protected void registerAction(final AFreeplaneAction action, final ActionLocationDescriptor actionAnnotation) {
+		modeController.addAction(action);
 		getModeController().getUserInputListenerFactory().getMenuBuilder().addAction(action, actionAnnotation);
 	}
 

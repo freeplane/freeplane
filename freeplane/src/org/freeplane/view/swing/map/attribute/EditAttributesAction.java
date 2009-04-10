@@ -30,8 +30,13 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.view.swing.map.MapView;
 
 public class EditAttributesAction extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	public EditAttributesAction(final Controller controller) {
-		super(controller, "attributes_edit_in_place");
+		super("EditAttributesAction", controller);
 	};
 
 	public void actionPerformed(final ActionEvent e) {

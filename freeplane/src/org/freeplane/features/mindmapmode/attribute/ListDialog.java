@@ -58,6 +58,11 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogTool;
 
 class ListDialog extends JDialog {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
 	private class AddAction implements ActionListener {
 		/*
 		 * (non-Javadoc)
@@ -197,6 +202,11 @@ class ListDialog extends JDialog {
 		textField = new JTextField(20);
 		textField.getDocument().addDocumentListener(new TextChangeListener());
 		list = new JList(data) {
+			/**
+             * 
+             */
+            private static final long serialVersionUID = 1L;
+
 			@Override
 			public int getScrollableUnitIncrement(final Rectangle visibleRect, final int orientation,
 			                                      final int direction) {

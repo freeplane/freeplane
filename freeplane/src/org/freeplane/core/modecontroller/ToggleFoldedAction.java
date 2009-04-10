@@ -17,27 +17,33 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.resources;
+package org.freeplane.core.modecontroller;
 
 import java.awt.event.ActionEvent;
+import java.util.Iterator;
+import java.util.ListIterator;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
 
-class OptionHTMLExportFoldingAction extends AFreeplaneAction {
-	static final String NAME = "optionHTMLExportFoldingAction";
-	private static final long serialVersionUID = 602116895676184299L;
+/**
+ * @author foltin
+ */
+class ToggleFoldedAction extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+	static final String NAME = "toggleFolded";
 
-	OptionHTMLExportFoldingAction(final Controller controller) {
-		super(controller);
+
+	public ToggleFoldedAction(final Controller controller) {
+		super("ToggleFoldedAction", controller);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		ResourceController.getResourceController().setProperty("html_export_folding", e.getActionCommand());
+		getModeController().getMapController().toggleFolded();
 	}
 
-	@Override
-	public String getName() {
-		return NAME;
-	}
 }

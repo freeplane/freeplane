@@ -25,19 +25,18 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 
 class MoveToRootAction extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 	static final String NAME = "moveToRoot";
-	private static final long serialVersionUID = 1633978434705890609L;
+
 
 	MoveToRootAction(final Controller controller) {
-		super(controller, "move_to_root");
+		super("MoveToRootAction", controller);
 	}
 
 	public void actionPerformed(final ActionEvent event) {
 		getController().getSelection().selectRoot();
-	}
-
-	@Override
-	public String getName() {
-		return NAME;
 	}
 }
