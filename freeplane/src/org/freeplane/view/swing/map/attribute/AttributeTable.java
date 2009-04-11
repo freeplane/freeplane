@@ -59,11 +59,6 @@ import org.freeplane.view.swing.map.NodeView;
  * @author Dimitry Polivaev
  */
 class AttributeTable extends JTable implements IColumnWidthChangeListener {
-	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-
 	static private class HeaderMouseListener extends MouseAdapter {
 		@Override
 		public void mouseReleased(final MouseEvent e) {
@@ -153,6 +148,10 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	private static final int MAX_HEIGTH = 300;
 	private static final int MAX_WIDTH = 600;
 	private static final Dimension prefHeaderSize = new Dimension(1, 8);
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static final float TABLE_ROW_HEIGHT = 4;
 
 	static ComboBoxModel getDefaultComboBoxModel() {

@@ -22,11 +22,10 @@ package org.freeplane.features.controller.print;
 import org.freeplane.core.ui.AFreeplaneAction;
 
 abstract class AbstractPrintAction extends AFreeplaneAction {
-
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	final private PrintController printController;
 
 	public AbstractPrintAction(final String key, final PrintController controller) {

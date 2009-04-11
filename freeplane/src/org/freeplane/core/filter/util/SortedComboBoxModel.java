@@ -26,9 +26,9 @@ import javax.swing.ComboBoxModel;
  */
 public class SortedComboBoxModel extends SortedMapListModel implements ComboBoxModel {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Object selectedItem;
 
 	/*

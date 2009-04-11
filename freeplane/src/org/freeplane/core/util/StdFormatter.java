@@ -26,9 +26,9 @@ import java.util.logging.SimpleFormatter;
 class StdFormatter extends SimpleFormatter {
 	private static class StdOutErrLevel extends Level {
 		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
 		public StdOutErrLevel(final String name, final int value) {
 			super(name, value);

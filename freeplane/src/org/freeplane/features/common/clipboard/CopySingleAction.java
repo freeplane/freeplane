@@ -30,9 +30,9 @@ import org.freeplane.core.ui.AFreeplaneAction;
 
 class CopySingleAction extends AFreeplaneAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public CopySingleAction(final Controller controller) {
 		super("CopySingleAction", controller);

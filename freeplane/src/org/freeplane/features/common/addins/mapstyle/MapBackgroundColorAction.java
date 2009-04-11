@@ -37,11 +37,10 @@ import org.freeplane.core.util.ColorUtils;
  */
 @ActionLocationDescriptor(locations = { "/menu_bar/format/nodes" })
 class MapBackgroundColorAction extends AFreeplaneAction {
-
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * 
 	 */

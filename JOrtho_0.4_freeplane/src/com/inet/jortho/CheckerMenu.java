@@ -33,9 +33,9 @@ import javax.swing.JPopupMenu;
  */
 class CheckerMenu extends JMenu implements HierarchyListener {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final CheckerListener listener;
 
 	CheckerMenu(final SpellCheckerOptions options) {

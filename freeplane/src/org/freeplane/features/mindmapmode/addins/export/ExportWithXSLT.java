@@ -68,11 +68,11 @@ import org.freeplane.n3.nanoxml.XMLParserFactory;
  *         Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 public class ExportWithXSLT extends ExportAction {
-	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
 	private static final String NAME_EXTENSION_PROPERTY = "name_extension";
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 */
@@ -131,8 +131,7 @@ public class ExportWithXSLT extends ExportAction {
 	private boolean mTransformResultWithoutError = false;
 	final private Properties properties;
 
-	public ExportWithXSLT(final String name, final Controller controller, 
-	                      final Properties properties) {
+	public ExportWithXSLT(final String name, final Controller controller, final Properties properties) {
 		super(name, controller);
 		this.properties = properties;
 	}

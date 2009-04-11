@@ -25,10 +25,6 @@ package org.freeplane.n3.nanoxml;
  */
 class XMLValidationException extends XMLException {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-	/**
 	 * An attribute has an invalid value.
 	 */
 	public static final int ATTRIBUTE_WITH_INVALID_VALUE = 5;
@@ -48,6 +44,10 @@ class XMLValidationException extends XMLException {
 	 * A PCDATA element was missing.
 	 */
 	public static final int MISSING_PCDATA = 6;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * An unexpected attribute was encountered.
 	 */

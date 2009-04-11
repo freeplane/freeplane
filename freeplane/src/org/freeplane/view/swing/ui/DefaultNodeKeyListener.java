@@ -3,8 +3,6 @@ package org.freeplane.view.swing.ui;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import javax.swing.KeyStroke;
-
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IEditHandler;
@@ -64,7 +62,7 @@ public class DefaultNodeKeyListener implements KeyListener {
 				return;
 			}
 		}
-		boolean doMove = false;
+		final boolean doMove = false;
 		if (doMove) {
 			((MapView) controller.getViewController().getMapView()).move(e);
 			e.consume();

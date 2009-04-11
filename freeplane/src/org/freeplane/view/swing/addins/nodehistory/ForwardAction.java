@@ -34,9 +34,9 @@ import org.freeplane.core.ui.EnabledAction;
 @ActionLocationDescriptor(locations = { "/menu_bar/navigate/folding", "/main_toolbar/history" })
 class ForwardAction extends AFreeplaneAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	final private NodeHistory nodeHistory;
 
 	public ForwardAction(final Controller controller, final NodeHistory nodeHistory) {

@@ -48,12 +48,12 @@ import org.freeplane.features.mindmapnode.pattern.StylePatternPanel.StylePattern
 
 /** */
 class ChooseFormatPopupDialog extends JDialog implements KeyListener {
-	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
 	public static final int CANCEL = -1;
 	public static final int OK = 1;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static final String WINDOW_PREFERENCE_STORAGE_PROPERTY = "accessories.plugins.dialogs.ChooseFormatPopupDialog.window_storage";
 	private JButton jCancelButton;
 	private javax.swing.JPanel jContentPane = null;
@@ -97,9 +97,9 @@ class ChooseFormatPopupDialog extends JDialog implements KeyListener {
 			jCancelButton = new JButton();
 			jCancelButton.setAction(new AbstractAction() {
 				/**
-                 * 
-                 */
-                private static final long serialVersionUID = 1L;
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
 
 				public void actionPerformed(final ActionEvent e) {
 					cancelPressed();
@@ -145,9 +145,9 @@ class ChooseFormatPopupDialog extends JDialog implements KeyListener {
 			jOKButton = new JButton();
 			jOKButton.setAction(new AbstractAction() {
 				/**
-                 * 
-                 */
-                private static final long serialVersionUID = 1L;
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
 
 				public void actionPerformed(final ActionEvent e) {
 					okPressed();
@@ -200,9 +200,9 @@ class ChooseFormatPopupDialog extends JDialog implements KeyListener {
 		addKeyListener(this);
 		final Action action = new AbstractAction() {
 			/**
-             * 
-             */
-            private static final long serialVersionUID = 1L;
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
 
 			public void actionPerformed(final ActionEvent arg0) {
 				cancelPressed();

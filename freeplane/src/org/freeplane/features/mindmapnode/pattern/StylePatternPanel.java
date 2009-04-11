@@ -60,11 +60,6 @@ import com.jgoodies.forms.layout.FormLayout;
  * @author foltin
  */
 public class StylePatternPanel extends JPanel implements PropertyChangeListener {
-	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-
 	final private class EdgeWidthBackTransformer implements IValueTransformator {
 		public String transform(final String value) {
 			return transformStringToWidth(value);
@@ -115,6 +110,10 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 	private static final String NODE_STYLE = "nodeshape";
 	private static final String NODE_TEXT = "nodetext";
 	private static final String SCRIPT = "script";
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static final String SET_CHILD_PATTERN = StylePatternPanel.SET_RESOURCE;
 	private static final String SET_EDGE_COLOR = StylePatternPanel.SET_RESOURCE;
 	private static final String SET_EDGE_STYLE = StylePatternPanel.SET_RESOURCE;

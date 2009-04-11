@@ -20,14 +20,11 @@
 package org.freeplane.core.modecontroller;
 
 import java.awt.Container;
-import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
-
-import javax.swing.Action;
 
 import org.freeplane.core.controller.AController;
 import org.freeplane.core.controller.Controller;
@@ -36,7 +33,6 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.model.NodeModel.NodeChangeType;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.MenuBuilder;
@@ -112,7 +108,7 @@ public class ModeController extends AController {
 		}
 
 		public void nodeChanged(final NodeChangeEvent event) {
-			if(!NodeChangeType.REFRESH.equals(event.getProperty())){
+			if (!NodeChangeType.REFRESH.equals(event.getProperty())) {
 				action.setSelected();
 			}
 		}
@@ -151,6 +147,26 @@ public class ModeController extends AController {
 	public ModeController(final Controller controller) {
 		this.controller = controller;
 		extensionContainer = new ExtensionContainer(new HashMap<Class<? extends IExtension>, IExtension>());
+	}
+
+	@Override
+	public void addAction(final AFreeplaneAction action) {
+		super.addAction(action);
+		if (AFreeplaneAction.checkEnabledOnChange(action)) {
+			final ActionEnablerOnChange listener = new ActionEnablerOnChange(action);
+			mapController.addNodeSelectionListener(listener);
+			mapController.addNodeChangeListener(listener);
+		}
+		if (AFreeplaneAction.checkSelectionOnChange(action)) {
+			final ActionSelectorOnChange listener = new ActionSelectorOnChange(action);
+			mapController.addNodeSelectionListener(listener);
+			mapController.addNodeChangeListener(listener);
+		}
+		if (AFreeplaneAction.checkVisibilityOnChange(action)) {
+			final ActionDisplayerOnChange listener = new ActionDisplayerOnChange(action);
+			mapController.addNodeSelectionListener(listener);
+			mapController.addNodeChangeListener(listener);
+		}
 	}
 
 	public void addExtension(final Class<? extends IExtension> clazz, final IExtension extension) {
@@ -229,25 +245,6 @@ public class ModeController extends AController {
 		for (final Iterator i = nodeViewListeners.iterator(); i.hasNext();) {
 			final INodeViewLifeCycleListener hook = (INodeViewLifeCycleListener) i.next();
 			hook.onViewRemoved(node);
-		}
-	}
-
-	public void addAction(final AFreeplaneAction action) {
-		super.addAction(action);
-		if (AFreeplaneAction.checkEnabledOnChange(action)) {
-			final ActionEnablerOnChange listener = new ActionEnablerOnChange(action);
-			mapController.addNodeSelectionListener(listener);
-			mapController.addNodeChangeListener(listener);
-		}
-		if (AFreeplaneAction.checkSelectionOnChange(action)) {
-			final ActionSelectorOnChange listener = new ActionSelectorOnChange(action);
-			mapController.addNodeSelectionListener(listener);
-			mapController.addNodeChangeListener(listener);
-		}
-		if (AFreeplaneAction.checkVisibilityOnChange(action)) {
-			final ActionDisplayerOnChange listener = new ActionDisplayerOnChange(action);
-			mapController.addNodeSelectionListener(listener);
-			mapController.addNodeChangeListener(listener);
 		}
 	}
 

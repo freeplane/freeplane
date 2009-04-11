@@ -40,9 +40,9 @@ import org.freeplane.features.mindmapmode.icon.MIconController;
 @ActionLocationDescriptor(locations = { "/menu_bar/insert/icons" })
 public class IconSelectionPlugin extends AFreeplaneAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 */

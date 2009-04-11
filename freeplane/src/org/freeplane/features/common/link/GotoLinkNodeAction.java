@@ -30,9 +30,9 @@ import org.freeplane.core.ui.AFreeplaneAction;
 /** Follow a graphical link (AKA connector) action. */
 class GotoLinkNodeAction extends AFreeplaneAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final LinkController linkController;
 	private final NodeModel target;
 

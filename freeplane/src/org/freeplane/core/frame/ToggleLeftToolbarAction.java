@@ -27,16 +27,14 @@ import org.freeplane.core.ui.SelectableAction;
 
 @SelectableAction(checkOnPopup = true)
 class ToggleLeftToolbarAction extends AFreeplaneAction {
-	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-
 	static final String NAME = "toggleLeftToolbar";
 	/**
 	 * 
 	 */
-
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 *
 	 */

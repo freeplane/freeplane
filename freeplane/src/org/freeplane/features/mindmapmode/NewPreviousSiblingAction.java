@@ -26,9 +26,9 @@ import org.freeplane.core.ui.AFreeplaneAction;
 
 class NewPreviousSiblingAction extends AFreeplaneAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public NewPreviousSiblingAction(final Controller controller) {
 		super("NewPreviousSiblingAction", controller);

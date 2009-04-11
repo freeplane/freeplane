@@ -29,9 +29,9 @@ import org.freeplane.core.ui.SelectableAction;
 
 public class JAutoCheckBoxMenuItem extends JCheckBoxMenuItem implements PropertyChangeListener {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private PropertyChangeListener defaultPropertyChanegListener;
 
 	public JAutoCheckBoxMenuItem(final Action a) {

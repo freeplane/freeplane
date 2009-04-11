@@ -647,6 +647,13 @@ public class MapController extends SelectionController {
 		}
 	}
 
+	private ListIterator resetIterator(final ListIterator iterator) {
+		while (iterator.hasPrevious()) {
+			iterator.previous();
+		}
+		return iterator;
+	}
+
 	public void select(final NodeModel node) {
 		displayNode(node);
 		getController().getSelection().selectAsTheOnlyOneSelected(node);
@@ -692,13 +699,6 @@ public class MapController extends SelectionController {
 
 	public void sortNodesByDepth(final List<NodeModel> collection) {
 		Collections.sort(collection, new NodesDepthComparator());
-	}
-
-	private ListIterator resetIterator(final ListIterator iterator) {
-		while (iterator.hasPrevious()) {
-			iterator.previous();
-		}
-		return iterator;
 	}
 
 	public void toggleFolded() {

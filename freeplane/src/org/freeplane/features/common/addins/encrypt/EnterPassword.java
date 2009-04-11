@@ -34,9 +34,9 @@ import org.freeplane.core.ui.components.EnterPasswordDialog;
 @ActionLocationDescriptor(locations = { "/menu_bar/extras/first/nodes/crypto" })
 public class EnterPassword extends AFreeplaneAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public EnterPassword(final ModeController modeController) {
 		super("EnterPassword", modeController.getController());

@@ -57,16 +57,11 @@ import org.freeplane.features.common.attribute.AttributeRegistry;
  * @author Dimitry Polivaev
  */
 public class AttributeManagerDialog extends JDialog implements IMapSelectionListener {
-	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-
 	private class ApplyAction extends AFreeplaneAction {
 		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
 		ApplyAction() {
 			super("ApplyAction", controller);
@@ -85,9 +80,9 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 
 	private class CancelAction extends AFreeplaneAction {
 		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
 		CancelAction() {
 			super("CancelAction", controller);
@@ -116,9 +111,9 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 
 	class EditListAction extends AbstractAction {
 		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 		private String labelText;
 		private IListModel listBoxModel;
 		private int row = 0;
@@ -150,9 +145,9 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 
 	private class ImportAction extends AFreeplaneAction {
 		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
 		ImportAction() {
 			super("ImportAction", controller);
@@ -174,9 +169,9 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 
 	private class OKAction extends AFreeplaneAction {
 		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
 		OKAction() {
 			super("OKAction", controller);
@@ -197,6 +192,10 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 	static final Icon editButtonImage = new ImageIcon(ResourceController.getResourceController().getResource(
 	    "/images/edit12.png"));
 	private static final String[] fontSizes = { "6", "8", "10", "12", "14", "16", "18", "20", "24" };
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	final private Controller controller;
 	private ImportAttributesDialog importDialog = null;
 	private AttributeRegistry model;

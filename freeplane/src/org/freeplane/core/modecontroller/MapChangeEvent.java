@@ -28,9 +28,9 @@ import org.freeplane.core.model.MapModel;
  */
 public class MapChangeEvent extends AWTEvent {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	final private Object newValue;
 	final private Object oldValue;
 	final private Object property;

@@ -55,11 +55,6 @@ import org.freeplane.features.common.attribute.AttributeRegistry;
 import org.freeplane.features.common.attribute.AttributeRegistryElement;
 
 class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
-	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-
 	static private class AttributeTreeNodeInfo extends TreeNodeInfo {
 		final private boolean restricted;
 
@@ -74,13 +69,13 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 	}
 
 	static private class MyRenderer extends DefaultTreeCellRenderer {
-		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
 		static final Icon iconFull = MindIcon.factory("button_ok").getIcon();
 		static final Icon iconNotSelected = MindIcon.factory("button_cancel").getIcon();
 		static final Icon iconPartial = MindIcon.factory("forward").getIcon();
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
 		public MyRenderer() {
 		}
@@ -137,6 +132,10 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 		}
 	}
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	final private Controller controller;
 	private AttributeRegistry currentAttributes;
 	final private Component parentComponent;

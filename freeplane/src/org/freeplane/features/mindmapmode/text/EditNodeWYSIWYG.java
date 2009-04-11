@@ -55,9 +55,9 @@ import com.lightdev.app.shtm.SHTMLPanel;
 class EditNodeWYSIWYG extends EditNodeBase {
 	private static class HTMLDialog extends EditDialog {
 		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 		private SHTMLPanel htmlEditorPanel;
 
 		HTMLDialog(final EditNodeBase base, final Frame frame) throws Exception {

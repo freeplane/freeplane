@@ -39,7 +39,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
 /**
  * @author foltin
  */
-@ActionLocationDescriptor(locations = { })
+@ActionLocationDescriptor(locations = {})
 @NodeHookDescriptor(hookName = "accessories/plugins/RevisionPlugin.properties")
 public class RevisionPlugin extends PersistentNodeHook implements INodeChangeListener, IExtension {
 	public RevisionPlugin(final ModeController modeController) {

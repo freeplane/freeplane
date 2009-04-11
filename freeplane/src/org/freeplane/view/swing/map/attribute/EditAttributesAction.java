@@ -31,9 +31,9 @@ import org.freeplane.view.swing.map.MapView;
 
 public class EditAttributesAction extends AFreeplaneAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public EditAttributesAction(final Controller controller) {
 		super("EditAttributesAction", controller);

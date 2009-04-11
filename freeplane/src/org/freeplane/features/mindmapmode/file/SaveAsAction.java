@@ -26,12 +26,10 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.url.UrlManager;
 
 class SaveAsAction extends AFreeplaneAction {
-
-
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public SaveAsAction(final Controller controller) {
 		super("SaveAsAction", controller);

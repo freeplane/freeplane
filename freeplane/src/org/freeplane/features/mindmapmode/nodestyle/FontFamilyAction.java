@@ -31,9 +31,9 @@ import org.freeplane.features.common.nodestyle.NodeStyleController;
  */
 class FontFamilyAction extends MultipleNodeAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String actionFont;
 
 	/**

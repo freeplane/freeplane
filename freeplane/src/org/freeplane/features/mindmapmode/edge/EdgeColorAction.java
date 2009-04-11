@@ -32,9 +32,9 @@ import org.freeplane.features.common.edge.EdgeController;
 
 class EdgeColorAction extends MultipleNodeAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Color actionColor;
 
 	public EdgeColorAction(final Controller controller) {

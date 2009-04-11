@@ -35,13 +35,12 @@ import org.freeplane.core.ui.MenuBuilder;
  * @author foltin
  */
 public class UnfoldAll implements IMouseWheelEventHandler {
-	@ActionLocationDescriptor(locations = {
-	        "/menu_bar/navigate/folding", "/main_toolbar/folding" })
+	@ActionLocationDescriptor(locations = { "/menu_bar/navigate/folding", "/main_toolbar/folding" })
 	private class FoldAllAction extends AFreeplaneAction {
 		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
 		public FoldAllAction() {
 			super("FoldAllAction", controller);
@@ -52,12 +51,12 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 		}
 	}
 
-	@ActionLocationDescriptor(locations = {"/menu_bar/navigate/folding", "/main_toolbar/folding" })
+	@ActionLocationDescriptor(locations = { "/menu_bar/navigate/folding", "/main_toolbar/folding" })
 	private class FoldOneLevelAction extends AFreeplaneAction {
 		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
 		public FoldOneLevelAction() {
 			super("FoldOneLevelAction", controller);
@@ -68,12 +67,12 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 		}
 	}
 
-	@ActionLocationDescriptor(locations = {"/menu_bar/navigate/folding", "/main_toolbar/folding" })
+	@ActionLocationDescriptor(locations = { "/menu_bar/navigate/folding", "/main_toolbar/folding" })
 	private class UnfoldAllAction extends AFreeplaneAction {
 		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
 		public UnfoldAllAction() {
 			super("UnfoldAllAction", controller);
@@ -84,12 +83,12 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 		}
 	}
 
-	@ActionLocationDescriptor(locations = {"/menu_bar/navigate/folding", "/main_toolbar/folding" })
+	@ActionLocationDescriptor(locations = { "/menu_bar/navigate/folding", "/main_toolbar/folding" })
 	private class UnfoldOneLevelAction extends AFreeplaneAction {
 		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
 		public UnfoldOneLevelAction() {
 			super("UnfoldOneLevelAction", controller);

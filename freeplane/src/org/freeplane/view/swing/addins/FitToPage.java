@@ -36,9 +36,9 @@ import org.freeplane.view.swing.map.MapView;
 @ActionLocationDescriptor(locations = { "/menu_bar/view/zoom" })
 public class FitToPage extends AFreeplaneAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private MapView view;
 
 	/**

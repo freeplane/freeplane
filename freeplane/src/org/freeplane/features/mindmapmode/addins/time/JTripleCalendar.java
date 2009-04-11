@@ -32,16 +32,11 @@ import org.freeplane.features.common.time.swing.JYearChooser;
 
 /** */
 class JTripleCalendar extends JPanel implements PropertyChangeListener {
-	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-
 	private static class JInfoPanel extends JPanel {
 		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 		final private JDayChooser dayChooser;
 		final private JMonthChooser monthChooser;
 		final private JYearChooser yearChooser;
@@ -58,9 +53,9 @@ class JTripleCalendar extends JPanel implements PropertyChangeListener {
 			monthYearPanel.add(yearChooser, BorderLayout.CENTER);
 			dayChooser = new JDayChooser(true) {
 				/**
-                 * 
-                 */
-                private static final long serialVersionUID = 1L;
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
 
 				@Override
 				protected void init() {
@@ -83,6 +78,11 @@ class JTripleCalendar extends JPanel implements PropertyChangeListener {
 			dayChooser.setEnabled(false);
 		}
 	}
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public static void main(final String[] args) {
 		final JFrame frame = new JFrame("JTripleCalendar");

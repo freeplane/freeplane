@@ -37,9 +37,9 @@ import org.freeplane.features.common.icon.IconController;
 
 class IconAction extends MultipleNodeAction implements IIconInformation {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	final private MindIcon icon;
 
 	public IconAction(final ModeController controller, final MindIcon _icon) {
@@ -77,11 +77,12 @@ class IconAction extends MultipleNodeAction implements IIconInformation {
 		return UITools.getKeyStroke(keyStrokeDescription);
 	}
 
-	public String getShortcutKey() {
-		return icon.getShortcutKey();
-	}
-
 	public MindIcon getMindIcon() {
 		return icon;
+	}
+
+	@Override
+	public String getShortcutKey() {
+		return icon.getShortcutKey();
 	}
 }

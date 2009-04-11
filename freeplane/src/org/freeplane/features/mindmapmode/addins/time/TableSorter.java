@@ -86,11 +86,6 @@ import javax.swing.table.TableModel;
  * @version 2.0 02/27/04
  */
 class TableSorter extends AbstractTableModel {
-	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-
 	private static class Arrow implements Icon {
 		final private boolean descending;
 		final private int priority;
@@ -261,6 +256,10 @@ class TableSorter extends AbstractTableModel {
 		}
 	};
 	public static final int NOT_SORTED = 0;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	final private Map columnComparators = new HashMap();
 	private int[] modelToView;
 	final private MouseListener mouseListener;

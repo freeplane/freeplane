@@ -46,10 +46,8 @@ public class MEdgeController extends EdgeController {
 		modeController.addAction(new EdgeWidthAction(modeController, 8));
 		modeController.addAction(new EdgeStyleAction(modeController, EdgeStyle.EDGESTYLE_LINEAR));
 		modeController.addAction(new EdgeStyleAction(modeController, EdgeStyle.EDGESTYLE_BEZIER));
-		modeController.addAction(new EdgeStyleAction(modeController,
-		    EdgeStyle.EDGESTYLE_SHARP_LINEAR));
-		modeController.addAction(new EdgeStyleAction(modeController,
-		    EdgeStyle.EDGESTYLE_SHARP_BEZIER));
+		modeController.addAction(new EdgeStyleAction(modeController, EdgeStyle.EDGESTYLE_SHARP_LINEAR));
+		modeController.addAction(new EdgeStyleAction(modeController, EdgeStyle.EDGESTYLE_SHARP_BEZIER));
 		modeController.addAction(new EdgeStyleAction(modeController, EdgeStyle.EDGESTYLE_HIDDEN));
 		modeController.addAction(new EdgeStyleAsParentAction(modeController));
 	}

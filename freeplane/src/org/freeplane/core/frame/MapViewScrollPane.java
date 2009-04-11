@@ -29,9 +29,9 @@ import javax.swing.JScrollPane;
  */
 class MapViewScrollPane extends JScrollPane {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Override
 	protected void validateTree() {

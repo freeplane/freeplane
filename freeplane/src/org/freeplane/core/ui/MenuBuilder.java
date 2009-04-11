@@ -32,7 +32,6 @@ import java.net.URL;
 import javax.swing.AbstractButton;
 import javax.swing.Action;
 import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -412,12 +411,13 @@ public class MenuBuilder extends UIBuilder {
 	 * @param keystroke
 	 *            can be null, if no keystroke should be assigned.
 	 */
-	public void addAction(final String category, final AFreeplaneAction action, final String keystroke, final int position) {
+	public void addAction(final String category, final AFreeplaneAction action, final String keystroke,
+	                      final int position) {
 		addAction(category, null, action, keystroke, position);
 	}
 
-	public void addAction(final String category, final String key, final AFreeplaneAction action, final String keystroke,
-	                      final int position) {
+	public void addAction(final String category, final String key, final AFreeplaneAction action,
+	                      final String keystroke, final int position) {
 		assert action != null;
 		if (getContainer(get(category), Container.class) instanceof JToolBar) {
 			addButton(category, action, position);
@@ -483,7 +483,8 @@ public class MenuBuilder extends UIBuilder {
 		}
 		final String actionShortcutKey = action.getShortcutKey();
 		if (actionShortcutKey != null) {
-			final String keyProperty = ResourceController.getResourceController().getAdjustableProperty(actionShortcutKey);
+			final String keyProperty = ResourceController.getResourceController().getAdjustableProperty(
+			    actionShortcutKey);
 			item.setAccelerator(KeyStroke.getKeyStroke(keyProperty));
 		}
 		return;

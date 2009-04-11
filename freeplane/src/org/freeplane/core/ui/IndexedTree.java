@@ -32,9 +32,9 @@ import javax.swing.tree.DefaultMutableTreeNode;
 public class IndexedTree {
 	protected static class Node extends DefaultMutableTreeNode {
 		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 		private Object key;
 
 		Node(final Object userObject) {

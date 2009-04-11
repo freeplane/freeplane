@@ -32,9 +32,9 @@ import org.freeplane.features.common.nodestyle.NodeStyleModel;
 
 class NodeColorAction extends MultipleNodeAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Color actionColor;
 
 	public NodeColorAction(final Controller controller) {

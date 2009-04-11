@@ -76,20 +76,13 @@ import org.freeplane.core.url.UrlManager;
  */
 class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-
-	/**
 	 * @author Dimitry Polivaev
 	 */
 	private class AddElementaryConditionAction extends AFreeplaneAction {
-
-
 		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
 		AddElementaryConditionAction(final Controller controller) {
 			super("AddElementaryConditionAction", controller);
@@ -188,12 +181,10 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 	}
 
 	private class CreateConjunctConditionAction extends AFreeplaneAction {
-
-
 		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
 		CreateConjunctConditionAction() {
 			super("CreateConjunctConditionAction", controller);
@@ -212,12 +203,10 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 	}
 
 	private class CreateDisjunctConditionAction extends AFreeplaneAction {
-
-
 		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
 		CreateDisjunctConditionAction() {
 			super("CreateDisjunctConditionAction", controller);
@@ -237,15 +226,13 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 
 	private class CreateNotSatisfiedConditionAction extends AFreeplaneAction {
 		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
 		/**
 		 * 
 		 */
-
-
 		CreateNotSatisfiedConditionAction() {
 			super("CreateNotSatisfiedConditionAction", controller);
 		}
@@ -266,12 +253,10 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 	}
 
 	private class DeleteConditionAction extends AFreeplaneAction {
-
-
 		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
 		DeleteConditionAction() {
 			super("DeleteConditionAction", controller);
@@ -412,6 +397,10 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 	}
 
 	private static final Dimension maxButtonDimension = new Dimension(1000, 1000);
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	final private JButton btnAdd;
 	final private JButton btnAnd;
 	final private JButton btnApply;

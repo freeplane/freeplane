@@ -28,11 +28,10 @@ import org.freeplane.core.ui.AFreeplaneAction;
  * Mar 28, 2009
  */
 class EditFilterAction extends AFreeplaneAction {
-
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * 
 	 */

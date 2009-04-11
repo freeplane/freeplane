@@ -30,9 +30,9 @@ import org.freeplane.features.common.nodestyle.NodeStyleController;
 @SelectableAction(checkOnNodeChange = true)
 class BoldAction extends MultipleNodeAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private boolean bold;
 
 	/**

@@ -37,9 +37,9 @@ import org.freeplane.core.util.HtmlTools;
 
 class FindAction extends AFreeplaneAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private boolean findCaseSensitive;
 	private NodeModel findFromNode;
 	private LinkedList findNodeQueue;

@@ -80,11 +80,6 @@ import org.freeplane.view.swing.map.link.ArrowLinkView;
  * JTree).
  */
 public class MapView extends JPanel implements Printable, Autoscroll, IMapChangeListener {
-	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-
 	private class MapSelection implements IMapSelection {
 		public void centerNode(final NodeModel node) {
 			final NodeView nodeView = getNodeView(node);
@@ -237,6 +232,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private static final int margin = 20;
 	static boolean printOnWhiteBackground;
 	static private IFreeplanePropertyListener propertyChangeListener;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	static boolean standardDrawRectangleForSelection;
 	static Color standardSelectColor;
 	private static Stroke standardSelectionStroke;

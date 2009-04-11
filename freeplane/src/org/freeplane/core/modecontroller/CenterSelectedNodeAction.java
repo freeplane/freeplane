@@ -28,12 +28,11 @@ import org.freeplane.core.ui.AFreeplaneAction;
  * @author foltin
  */
 class CenterSelectedNodeAction extends AFreeplaneAction {
-	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
 	static final String NAME = "center_selected";
-
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public CenterSelectedNodeAction(final Controller controller) {
 		super("CenterSelectedNodeAction", controller);

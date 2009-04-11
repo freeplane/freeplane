@@ -45,9 +45,9 @@ class DictionaryFactory {
 	 */
 	private final static class Node extends ArrayList<NodeEntry> {
 		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
 		Node() {
 			super(1);

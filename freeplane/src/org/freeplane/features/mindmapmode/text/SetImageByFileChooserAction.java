@@ -27,9 +27,9 @@ import org.freeplane.features.common.text.TextController;
 
 class SetImageByFileChooserAction extends AFreeplaneAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public SetImageByFileChooserAction(final Controller controller) {
 		super("SetImageByFileChooserAction", controller);

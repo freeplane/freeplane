@@ -38,9 +38,9 @@ import org.freeplane.features.mindmapmode.MMapController;
 
 class CutAction extends AFreeplaneAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public CutAction(final Controller controller) {
 		super("CutAction", controller);

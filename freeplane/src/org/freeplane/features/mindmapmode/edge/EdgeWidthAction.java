@@ -34,9 +34,9 @@ import org.freeplane.features.common.edge.EdgeModel;
 @SelectableAction(checkOnNodeChange = true)
 class EdgeWidthAction extends MultipleNodeAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private static String getWidthTitle(final ModeController controller, final int width) {
 		String returnValue;
@@ -52,25 +52,25 @@ class EdgeWidthAction extends MultipleNodeAction {
 		return /* controller.getText("edge_width") + */returnValue;
 	}
 
+	private static String width2String(final int width) {
+		if (width == EdgeModel.WIDTH_PARENT) {
+			return "width_parent";
+		}
+		if (width == EdgeModel.WIDTH_THIN) {
+			return "width_thin";
+		}
+		return Integer.toString(width);
+	}
+
 	final private int mWidth;
 
 	public EdgeWidthAction(final ModeController controller, final int width) {
 		super("EdgeWidthAction_" + EdgeWidthAction.width2String(width), controller.getController());
 		mWidth = width;
-		if(width >= 1){
+		if (width >= 1) {
 			putValue(Action.NAME, EdgeWidthAction.getWidthTitle(controller, width));
 		}
 	}
-
-	private static String width2String(int width) {
-	    if(width == EdgeModel.WIDTH_PARENT){
-	    	return "width_parent";
-	    }
-	    if(width == EdgeModel.WIDTH_THIN){
-	    	return "width_thin";
-	    }
-	    return Integer.toString(width);
-    }
 
 	/*
 	 * (non-Javadoc)

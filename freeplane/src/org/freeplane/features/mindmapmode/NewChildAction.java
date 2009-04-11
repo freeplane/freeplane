@@ -34,9 +34,9 @@ import org.freeplane.features.mindmapmode.text.MTextController;
 
 class NewChildAction extends AFreeplaneAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public NewChildAction(final Controller controller) {
 		super("NewChildAction", controller);

@@ -22,12 +22,9 @@ package org.freeplane.core.filter;
 import java.awt.event.ActionEvent;
 import java.util.Iterator;
 
-import javax.swing.ImageIcon;
-
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 
 /**
@@ -36,9 +33,9 @@ import org.freeplane.core.ui.AFreeplaneAction;
  */
 class UnfoldAncestorsAction extends AFreeplaneAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * 
 	 */

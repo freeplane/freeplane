@@ -40,11 +40,11 @@ import org.freeplane.view.swing.map.edge.SharpLinearEdgeView;
 
 class NodeViewFactory {
 	private static class ContentPane extends JComponent {
-		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
 		static private LayoutManager layoutManager = new ContentPaneLayout();
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
 		ContentPane() {
 			setLayout(ContentPane.layoutManager);

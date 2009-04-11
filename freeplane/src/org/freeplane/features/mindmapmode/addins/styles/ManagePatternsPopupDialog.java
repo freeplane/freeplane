@@ -71,16 +71,11 @@ import com.jgoodies.forms.factories.ButtonBarFactory;
 
 /** */
 class ManagePatternsPopupDialog extends JDialog implements KeyListener {
-	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-
 	protected final class PatternListModel extends AbstractListModel {
 		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 		final private List mPatternList;
 
 		public PatternListModel(final List patternList) {
@@ -171,6 +166,10 @@ class ManagePatternsPopupDialog extends JDialog implements KeyListener {
 	public static final int CANCEL = -1;
 	private static final String EMPTY_FRAME = "EMPTY_FRAME";
 	public static final int OK = 1;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static Pattern sLastSelectedPattern = null;
 	private static final String STACK_PATTERN_FRAME = "PATTERN";
 	private static final String WINDOW_PREFERENCE_STORAGE_PROPERTY = "accessories.plugins.dialogs.ManagePatternsPopupDialog/window_positions";
@@ -280,9 +279,9 @@ class ManagePatternsPopupDialog extends JDialog implements KeyListener {
 			jCancelButton = new JButton();
 			jCancelButton.setAction(new AbstractAction() {
 				/**
-                 * 
-                 */
-                private static final long serialVersionUID = 1L;
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
 
 				public void actionPerformed(final ActionEvent e) {
 					cancelPressed();
@@ -426,9 +425,9 @@ class ManagePatternsPopupDialog extends JDialog implements KeyListener {
 			jOKButton = new JButton();
 			jOKButton.setAction(new AbstractAction() {
 				/**
-                 * 
-                 */
-                private static final long serialVersionUID = 1L;
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
 
 				public void actionPerformed(final ActionEvent e) {
 					okPressed();
@@ -472,9 +471,9 @@ class ManagePatternsPopupDialog extends JDialog implements KeyListener {
 		});
 		final Action cancelAction = new AbstractAction() {
 			/**
-             * 
-             */
-            private static final long serialVersionUID = 1L;
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
 
 			public void actionPerformed(final ActionEvent arg0) {
 				cancelPressed();

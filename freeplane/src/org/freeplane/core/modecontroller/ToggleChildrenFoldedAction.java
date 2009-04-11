@@ -29,13 +29,11 @@ import org.freeplane.core.ui.AFreeplaneAction;
  * @author foltin
  */
 class ToggleChildrenFoldedAction extends AFreeplaneAction {
-	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-
 	static final String NAME = "toggleChildrenFolded";
-
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	final private MapController mapController;
 
 	public ToggleChildrenFoldedAction(final MapController mapController) {

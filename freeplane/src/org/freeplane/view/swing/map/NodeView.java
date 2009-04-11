@@ -67,10 +67,6 @@ import org.freeplane.view.swing.map.edge.EdgeView;
  * TreeCellRenderer).
  */
 public class NodeView extends JComponent implements INodeView {
-	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
 	final static int ALIGN_BOTTOM = -1;
 	final static int ALIGN_CENTER = 0;
 	final static int ALIGN_TOP = 1;
@@ -81,6 +77,10 @@ public class NodeView extends JComponent implements INodeView {
 	/** For RootNodeView. */
 	public final static int DRAGGED_OVER_SON_LEFT = 3;
 	static private int FOLDING_SYMBOL_WIDTH = -1;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public final static int SHIFT = -2;
 	static final int SPACE_AROUND = 50;
 

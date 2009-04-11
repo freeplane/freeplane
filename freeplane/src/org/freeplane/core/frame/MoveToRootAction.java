@@ -25,12 +25,11 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 
 class MoveToRootAction extends AFreeplaneAction {
-	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
 	static final String NAME = "moveToRoot";
-
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	MoveToRootAction(final Controller controller) {
 		super("MoveToRootAction", controller);

@@ -45,9 +45,9 @@ import org.w3c.dom.Element;
 @ActionLocationDescriptor(locations = { "/menu_bar/file/export/export" })
 class ExportPdf extends ExportVectorGraphic {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public ExportPdf(final Controller controller) {
 		super("ExportPdf", controller);

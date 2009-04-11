@@ -38,7 +38,6 @@ import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.modecontroller.MapController;
-import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.EncryptionModel;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
@@ -417,6 +416,7 @@ public class MMapController extends MapController {
 
 	/**
 	 */
+	@Override
 	public void setFolded(final NodeModel node, final boolean folded) {
 		if (node.isFolded() == folded) {
 			return;
@@ -424,10 +424,12 @@ public class MMapController extends MapController {
 		toggleFolded(node);
 	}
 
+	@Override
 	public void toggleFolded() {
 		toggleFolded(getSelectedNodes().listIterator());
 	}
 
+	@Override
 	public void toggleFolded(final ListIterator listIterator) {
 		while (listIterator.hasNext()) {
 			toggleFolded((NodeModel) listIterator.next());
@@ -460,6 +462,7 @@ public class MMapController extends MapController {
 		};
 		getModeController().execute(actor);
 	}
+
 	/**
 	 * Attempts to lock the map using a semaphore file
 	 *

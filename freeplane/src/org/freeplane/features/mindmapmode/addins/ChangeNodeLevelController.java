@@ -36,9 +36,9 @@ public class ChangeNodeLevelController {
 	@ActionLocationDescriptor(locations = { "/menu_bar/navigate/nodes" })
 	private class ChangeNodeLevelLeftsAction extends AFreeplaneAction {
 		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
 		public ChangeNodeLevelLeftsAction() {
 			super("ChangeNodeLevelLeftsAction", controller);
@@ -59,9 +59,9 @@ public class ChangeNodeLevelController {
 	@ActionLocationDescriptor(locations = { "/menu_bar/navigate/nodes" })
 	private class ChangeNodeLevelRightsAction extends AFreeplaneAction {
 		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
 		public ChangeNodeLevelRightsAction() {
 			super("ChangeNodeLevelRightsAction", controller);

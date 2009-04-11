@@ -34,9 +34,9 @@ import org.freeplane.features.common.cloud.CloudModel;
 @SelectableAction(checkOnNodeChange = true)
 class CloudAction extends MultipleNodeAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public CloudAction(final Controller controller) {
 		super("CloudAction", controller);

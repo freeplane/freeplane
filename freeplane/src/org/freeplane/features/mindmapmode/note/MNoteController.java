@@ -60,9 +60,9 @@ import com.lightdev.app.shtm.TextResources;
 public class MNoteController extends NoteController {
 	private class JumpToMapAction extends AbstractAction {
 		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
 		/**
 		 * @param noteController
@@ -104,9 +104,9 @@ public class MNoteController extends NoteController {
 
 	private static class SouthPanel extends JPanel {
 		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
 		public SouthPanel() {
 			super(new BorderLayout());
@@ -139,14 +139,10 @@ public class MNoteController extends NoteController {
 		super(modeController);
 		modeController.addAction(new SelectNoteAction(this, getModeController()));
 		modeController.addAction(new ShowHideNoteAction(this, getModeController()));
-		modeController.addAction(new SetNoteWindowPosition(modeController.getController(),
-		    "top"));
-		modeController.addAction(new SetNoteWindowPosition(modeController.getController(),
-		    "left"));
-		modeController.addAction(new SetNoteWindowPosition(
-		    modeController.getController(), "right"));
-		modeController.addAction(new SetNoteWindowPosition(modeController
-		    .getController(), "bottom"));
+		modeController.addAction(new SetNoteWindowPosition(modeController.getController(), "top"));
+		modeController.addAction(new SetNoteWindowPosition(modeController.getController(), "left"));
+		modeController.addAction(new SetNoteWindowPosition(modeController.getController(), "right"));
+		modeController.addAction(new SetNoteWindowPosition(modeController.getController(), "bottom"));
 		modeController.addAction(new RemoveNoteAction(this, getModeController()));
 	}
 

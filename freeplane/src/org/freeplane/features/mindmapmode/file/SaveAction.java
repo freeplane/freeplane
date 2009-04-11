@@ -27,12 +27,10 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.mindmapmode.MModeController;
 
 class SaveAction extends AFreeplaneAction {
-
-
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public SaveAction(final Controller controller) {
 		super("SaveAction", controller);

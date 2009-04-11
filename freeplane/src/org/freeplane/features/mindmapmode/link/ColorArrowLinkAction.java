@@ -35,9 +35,9 @@ import org.freeplane.features.common.link.LinkController;
 
 class ColorArrowLinkAction extends AFreeplaneAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	ArrowLinkModel arrowLink;
 
 	public ColorArrowLinkAction(final MLinkController linkController, final ArrowLinkModel arrowLink) {

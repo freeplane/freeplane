@@ -63,16 +63,11 @@ import org.freeplane.plugin.script.ScriptingEngine.IErrorHandler;
 /**
  */
 class ScriptEditorPanel extends JDialog {
-	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-
 	final private class CancelAction extends AbstractAction {
 		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
 		private CancelAction(final String pArg0) {
 			super(pArg0);
@@ -85,9 +80,9 @@ class ScriptEditorPanel extends JDialog {
 
 	final private class ExitAction extends AbstractAction {
 		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
 		private ExitAction(final String pArg0) {
 			super(pArg0);
@@ -131,9 +126,9 @@ class ScriptEditorPanel extends JDialog {
 
 	final private class NewScriptAction extends AbstractAction {
 		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
 		private NewScriptAction(final String pArg0) {
 			super(pArg0);
@@ -162,9 +157,9 @@ class ScriptEditorPanel extends JDialog {
 
 	final private class RunAction extends AbstractAction {
 		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
 		private RunAction(final String pArg0) {
 			super(pArg0);
@@ -217,9 +212,9 @@ class ScriptEditorPanel extends JDialog {
 
 	final private class SignAction extends AbstractAction {
 		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 		final private Controller controller;
 
 		private SignAction(final Controller controller, final String pArg0) {
@@ -241,9 +236,12 @@ class ScriptEditorPanel extends JDialog {
 	}
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
 	 *
 	 */
-
 	private static final String WINDOW_PREFERENCE_STORAGE_PROPERTY = "plugins.script.ScriptEditorPanel/window_positions";
 	final private JSplitPane mCentralPanel;
 	final private JSplitPane mCentralUpperPanel;
@@ -271,9 +269,9 @@ class ScriptEditorPanel extends JDialog {
 		});
 		UITools.addEscapeActionToDialog(this, new AbstractAction() {
 			/**
-             * 
-             */
-            private static final long serialVersionUID = 1L;
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
 
 			public void actionPerformed(final ActionEvent arg0) {
 				disposeDialog(true);

@@ -22,19 +22,15 @@ package org.freeplane.core.frame;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.MenuBuilder;
 
 /** This closes only the current map */
 class CloseAction extends AFreeplaneAction {
-	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-
 	static final String NAME = "close";
-
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	final private Controller controller;
 
 	CloseAction(final Controller controller) {

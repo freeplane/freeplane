@@ -47,11 +47,6 @@ import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.ResourceController;
 
 public class IconSelectionPopupDialog extends JDialog implements KeyListener, MouseListener {
-	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-
 	static class Position {
 		final private int x, y;
 
@@ -81,6 +76,10 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 	}
 
 	private static Position lastPosition = new Position(0, 0);
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	final private JLabel descriptionLabel;
 	final private JLabel[] iconLabels;
 	final private JPanel iconPanel = new JPanel();

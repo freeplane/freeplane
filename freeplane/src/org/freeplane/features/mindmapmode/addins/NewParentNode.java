@@ -45,9 +45,9 @@ import org.freeplane.features.mindmapmode.MMapController;
 @ActionLocationDescriptor(locations = { "/menu_bar/insert/nodes" })
 public class NewParentNode extends AFreeplaneAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 *

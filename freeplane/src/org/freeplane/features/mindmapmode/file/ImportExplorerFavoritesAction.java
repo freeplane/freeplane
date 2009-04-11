@@ -39,12 +39,10 @@ import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 
 class ImportExplorerFavoritesAction extends AFreeplaneAction {
-
-
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public ImportExplorerFavoritesAction(final Controller controller) {
 		super("ImportExplorerFavoritesAction", controller);

@@ -31,16 +31,15 @@ import javax.swing.JOptionPane;
 
 import org.apache.batik.svggen.SVGGraphics2D;
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.view.swing.map.MapView;
 
 @ActionLocationDescriptor(locations = { "/menu_bar/file/export/export" })
 class ExportSvg extends ExportVectorGraphic {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public ExportSvg(final Controller controller) {
 		super("ExportSvg", controller);

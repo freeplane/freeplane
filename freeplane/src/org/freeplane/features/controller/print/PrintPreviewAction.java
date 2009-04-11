@@ -26,16 +26,13 @@ import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
-import org.freeplane.core.ui.MenuBuilder;
 
 class PrintPreviewAction extends AbstractPrintAction {
-	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-
 	static final String NAME = "printPreview";
-
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	final private Controller controller;
 
 	PrintPreviewAction(final Controller controller, final PrintController printController) {

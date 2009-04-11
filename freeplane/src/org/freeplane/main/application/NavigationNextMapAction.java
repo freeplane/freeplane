@@ -22,17 +22,13 @@ package org.freeplane.main.application;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.MenuBuilder;
 
 class NavigationNextMapAction extends AFreeplaneAction {
-
-
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	NavigationNextMapAction(final Controller controller) {
 		super("NavigationNextMapAction", controller);

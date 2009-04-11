@@ -18,11 +18,11 @@ import org.freeplane.core.resources.FreeplaneResourceBundle;
 import atp.sHotEqn;
 
 class JZoomedHotEqn extends sHotEqn {
-	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
 	static String editorTitle = null;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	static private double zoom = 1f;
 	final private LatexNodeHook latexController;
 	private LatexExtension model;

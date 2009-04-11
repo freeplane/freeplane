@@ -32,9 +32,9 @@ import org.freeplane.features.common.nodestyle.NodeStyleModel;
 
 class NodeBackgroundColorAction extends MultipleNodeAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Color actionBackgroundColor;
 
 	public NodeBackgroundColorAction(final Controller controller) {

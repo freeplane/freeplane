@@ -107,7 +107,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		userDefinedZoom = FreeplaneResourceBundle.getText("user_defined_zoom");
 		zoomModel = new DefaultComboBoxModel(getZooms());
 		zoomModel.addElement(userDefinedZoom);
-		ResourceController resourceController = ResourceController.getResourceController();
+		final ResourceController resourceController = ResourceController.getResourceController();
 		final String mapViewZoom = resourceController.getProperty("map_view_zoom", "1.0");
 		try {
 			setZoom(Float.parseFloat(mapViewZoom));
@@ -126,9 +126,8 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		leftToolbarPanel = new JPanel(new BorderLayout());
 		scrollPane = new MapViewScrollPane();
 		resourceController.addPropertyChangeListener(this);
-		String antialiasProperty = resourceController.getProperty(ViewController.RESOURCE_ANTIALIAS);
+		final String antialiasProperty = resourceController.getProperty(ViewController.RESOURCE_ANTIALIAS);
 		changeAntialias(antialiasProperty);
-
 	}
 
 	public void addMapTitleChangeListener(final IMapTitleChangeListener pMapTitleChangeListener) {
@@ -177,6 +176,31 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		final ModeController modeController = controller.getModeController();
 		if (oldMap != null) {
 			modeController.setVisible(false);
+		}
+	}
+
+	/**
+	 */
+	private void changeAntialias(final String command) {
+		if (command == null) {
+			return;
+		}
+		final Controller controller = getController();
+		if (command.equals("antialias_none")) {
+			setAntialiasEdges(false);
+			setAntialiasAll(false);
+		}
+		if (command.equals("antialias_edges")) {
+			setAntialiasEdges(true);
+			setAntialiasAll(false);
+		}
+		if (command.equals("antialias_all")) {
+			setAntialiasEdges(true);
+			setAntialiasAll(true);
+		}
+		final Component mapView = controller.getViewController().getMapView();
+		if (mapView != null) {
+			mapView.repaint();
 		}
 	}
 
@@ -380,6 +404,12 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 
 	public void out(final String msg) {
 		status.setText(msg);
+	}
+
+	public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
+		if (propertyName.equals(ViewController.RESOURCE_ANTIALIAS)) {
+			changeAntialias(newValue);
+		}
 	}
 
 	public boolean quit() {
@@ -612,35 +642,6 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		final float currentZoomIndex = getCurrentZoomIndex();
 		if (currentZoomIndex > 0) {
 			setZoomByItem(zoomModel.getElementAt((int) (currentZoomIndex - 0.5f)));
-		}
-	}
-	public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
-		if (propertyName.equals(ViewController.RESOURCE_ANTIALIAS)) {
-			changeAntialias(newValue);
-		}
-	}
-	/**
-	 */
-	private void changeAntialias(final String command) {
-		if (command == null) {
-			return;
-		}
-		final Controller controller = getController();
-		if (command.equals("antialias_none")) {
-			setAntialiasEdges(false);
-			setAntialiasAll(false);
-		}
-		if (command.equals("antialias_edges")) {
-			setAntialiasEdges(true);
-			setAntialiasAll(false);
-		}
-		if (command.equals("antialias_all")) {
-			setAntialiasEdges(true);
-			setAntialiasAll(true);
-		}
-		final Component mapView = controller.getViewController().getMapView();
-		if (mapView != null) {
-			mapView.repaint();
 		}
 	}
 }

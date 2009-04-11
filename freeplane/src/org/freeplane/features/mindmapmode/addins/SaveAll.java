@@ -38,9 +38,9 @@ import org.freeplane.features.mindmapmode.MModeController;
 @ActionLocationDescriptor(locations = { "/menu_bar/file/open" })
 public class SaveAll extends AFreeplaneAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 *

@@ -35,9 +35,9 @@ import org.freeplane.features.common.nodelocation.LocationModel;
  */
 public class NodeMotionListenerView extends JComponent {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private boolean isMouseEntered;
 	final private NodeView movedView;
 

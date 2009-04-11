@@ -37,9 +37,9 @@ import org.freeplane.core.ui.ActionLocationDescriptor;
 @ActionLocationDescriptor(locations = { "/menu_bar/help/doc" })
 class FreeplaneHelpStarter extends AFreeplaneAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public FreeplaneHelpStarter(final Controller controller) {
 		super("FreeplaneHelpStarter", controller);

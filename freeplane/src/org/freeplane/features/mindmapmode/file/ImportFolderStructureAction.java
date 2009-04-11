@@ -40,12 +40,10 @@ import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 
 class ImportFolderStructureAction extends AFreeplaneAction {
-
-
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public ImportFolderStructureAction(final Controller controller) {
 		super("ImportFolderStructureAction", controller);

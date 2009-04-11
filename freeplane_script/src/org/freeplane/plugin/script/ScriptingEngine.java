@@ -53,16 +53,15 @@ import org.freeplane.main.application.FreeplaneSecurityManager;
  */
 @ActionLocationDescriptor(locations = { "/menu_bar/extras/first/scripting" })
 class ScriptingEngine extends AFreeplaneAction {
-	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-
 	public interface IErrorHandler {
 		void gotoLine(int pLineNumber);
 	}
 
 	public static final String SCRIPT_PREFIX = "script";
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private static final HashMap sScriptCookies = new HashMap();
 
 	/**

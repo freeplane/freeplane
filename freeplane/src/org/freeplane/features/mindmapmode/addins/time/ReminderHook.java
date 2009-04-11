@@ -45,36 +45,12 @@ import org.freeplane.n3.nanoxml.XMLElement;
 @NodeHookDescriptor(hookName = "plugins/TimeManagementReminder.xml", onceForMap = false)
 @ActionLocationDescriptor(locations = { "/menu_bar/extras/first/time_management" })
 public class ReminderHook extends PersistentNodeHook {
-	//******************************************	
-	@VisibleAction(checkOnNodeChange = true)
-	private class ReminderHookAction extends HookAction {
-		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
-
+	@ActionLocationDescriptor(locations = { "/menu_bar/edit/find" })
+	static private class NodeListAction extends AFreeplaneAction {
 		/**
 		 * 
 		 */
-
-
-		public ReminderHookAction() {
-			super("ReminderHookAction");
-		}
-
-		@Override
-		public void setVisible() {
-			setVisible(isActiveForSelection());
-		}
-	}
-
-	@ActionLocationDescriptor(locations = { "/menu_bar/edit/find" })
-	static private class NodeListAction extends AFreeplaneAction {
-
-		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
+		private static final long serialVersionUID = 1L;
 		private final TimeList timeList;
 
 		public NodeListAction(final ModeController modeController) {
@@ -87,16 +63,36 @@ public class ReminderHook extends PersistentNodeHook {
 		}
 	}
 
-	@ActionLocationDescriptor( locations = { "/menu_bar/extras/first/time_management" })
-	static private class TimeListAction extends AFreeplaneAction {
-		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
+	//******************************************	
+	@VisibleAction(checkOnNodeChange = true)
+	private class ReminderHookAction extends HookAction {
 		/**
 		 * 
 		 */
+		private static final long serialVersionUID = 1L;
 
+		/**
+		 * 
+		 */
+		public ReminderHookAction() {
+			super("ReminderHookAction");
+		}
+
+		@Override
+		public void setVisible() {
+			setVisible(isActiveForSelection());
+		}
+	}
+
+	@ActionLocationDescriptor(locations = { "/menu_bar/extras/first/time_management" })
+	static private class TimeListAction extends AFreeplaneAction {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		/**
+		 * 
+		 */
 		private final TimeList timeList;
 
 		public TimeListAction(final ModeController modeController) {
@@ -112,17 +108,16 @@ public class ReminderHook extends PersistentNodeHook {
 	@ActionLocationDescriptor(locations = { "/menu_bar/extras/first/time_management" })
 	static private class TimeManagementAction extends AFreeplaneAction {
 		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 		/**
 		 * 
 		 */
-
 		private final TimeManagement timeManagement;
 
 		public TimeManagementAction(final ModeController modeController, final ReminderHook reminderHook) {
-			super("TimeManagementAction",modeController.getController());
+			super("TimeManagementAction", modeController.getController());
 			timeManagement = new TimeManagement(modeController, reminderHook);
 		}
 

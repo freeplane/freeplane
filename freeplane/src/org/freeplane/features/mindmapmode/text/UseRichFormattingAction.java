@@ -29,9 +29,9 @@ import org.freeplane.features.common.text.TextController;
 
 class UseRichFormattingAction extends MultipleNodeAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public UseRichFormattingAction(final Controller controller) {
 		super("UseRichFormattingAction", controller);

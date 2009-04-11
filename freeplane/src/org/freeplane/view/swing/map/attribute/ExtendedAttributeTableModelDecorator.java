@@ -27,11 +27,11 @@ import org.freeplane.features.common.attribute.Attribute;
  * @author Dimitry Polivaev
  */
 class ExtendedAttributeTableModelDecorator extends AttributeTableModelDecoratorAdapter {
-	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
 	private static final int AFTER_LAST_ROW = Integer.MAX_VALUE;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	int newRow;
 
 	public ExtendedAttributeTableModelDecorator(final AttributeView attrView) {

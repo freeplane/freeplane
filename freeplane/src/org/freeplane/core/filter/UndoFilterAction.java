@@ -29,9 +29,9 @@ import org.freeplane.core.ui.AFreeplaneAction;
  */
 final class UndoFilterAction extends AFreeplaneAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * 
 	 */

@@ -34,9 +34,9 @@ import org.freeplane.view.swing.ui.UserInputListenerFactory;
 @ActionLocationDescriptor(locations = { "/menu_bar/format/patterns/manage", "/node_popup/patterns/manage" })
 public class ManagePatterns extends AFreeplaneAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 *

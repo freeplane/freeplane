@@ -20,23 +20,19 @@
 package org.freeplane.core.modecontroller;
 
 import java.awt.event.ActionEvent;
-import java.util.Iterator;
-import java.util.ListIterator;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
 
 /**
  * @author foltin
  */
 class ToggleFoldedAction extends AFreeplaneAction {
-	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
 	static final String NAME = "toggleFolded";
-
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public ToggleFoldedAction(final Controller controller) {
 		super("ToggleFoldedAction", controller);
@@ -45,5 +41,4 @@ class ToggleFoldedAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		getModeController().getMapController().toggleFolded();
 	}
-
 }

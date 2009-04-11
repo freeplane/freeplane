@@ -74,9 +74,9 @@ import javax.swing.text.JTextComponent;
 public class SpellChecker {
 	private static class ActionToggleButtonModel extends JToggleButton.ToggleButtonModel {
 		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 		private final LanguageAction action;
 
 		ActionToggleButtonModel(final LanguageAction action) {
@@ -116,11 +116,11 @@ public class SpellChecker {
 	}
 
 	private static class DisableLanguageAction extends LanguageAction {
-		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
 		static DisableLanguageAction instance = new DisableLanguageAction();
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
 		private DisableLanguageAction() {
 			super(Utils.getResource("disable"));
@@ -171,12 +171,12 @@ public class SpellChecker {
 	 * Action for change the current dictionary language.
 	 */
 	private static class LanguageAction extends AbstractAction implements Comparable<LanguageAction> {
-		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
 		// the current active (selected) LanguageAction
 		private static LanguageAction currentAction;
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 		private final URL baseURL;
 		private final String extension;
 		private final Locale locale;
@@ -450,9 +450,9 @@ public class SpellChecker {
 			text.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_F7, 0), "spell-checking");
 			text.getActionMap().put("spell-checking", new AbstractAction() {
 				/**
-                 * 
-                 */
-                private static final long serialVersionUID = 1L;
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
 
 				public void actionPerformed(final ActionEvent e) {
 					SpellChecker.showSpellCheckerDialog(text, options);

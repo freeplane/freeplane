@@ -30,11 +30,11 @@ import org.freeplane.core.ui.SelectableAction;
  */
 @SelectableAction(checkOnPopup = true)
 class ApplyToVisibleAction extends AFreeplaneAction {
-	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
 	final static String NAME = "ApplyToVisibleAction";
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * 
 	 */
@@ -48,7 +48,6 @@ class ApplyToVisibleAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		filterController.getApplyToVisibleNodeOnly().setSelected(!isSelected());
 	}
-
 
 	@Override
 	public boolean isSelected() {

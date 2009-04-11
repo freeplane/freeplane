@@ -28,9 +28,9 @@ import org.freeplane.features.common.attribute.AttributeController;
 
 class AssignAttributesAction extends AFreeplaneAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public AssignAttributesAction(final ModeController modeController) {
 		super("AssignAttributesAction", modeController.getController());

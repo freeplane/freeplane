@@ -29,7 +29,6 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.common.edge.EdgeController;
@@ -43,11 +42,11 @@ import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 
 class ApplyPatternAction extends MultipleNodeAction {
-	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
 	private static final String EDGE_WIDTH_THIN_STRING = "EDGE_WIDTH_THIN";
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 */
@@ -80,10 +79,6 @@ class ApplyPatternAction extends MultipleNodeAction {
 		mpattern = pattern;
 	}
 
-	public String getShortcutKey() {
-		return "ApplyPatternAction." + mpattern.getName() + ".shortcut";
-	}
-	
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
 		applyPattern(node, mpattern);
@@ -206,5 +201,10 @@ class ApplyPatternAction extends MultipleNodeAction {
 	 */
 	public Pattern getPattern() {
 		return mpattern;
+	}
+
+	@Override
+	public String getShortcutKey() {
+		return "ApplyPatternAction." + mpattern.getName() + ".shortcut";
 	}
 }

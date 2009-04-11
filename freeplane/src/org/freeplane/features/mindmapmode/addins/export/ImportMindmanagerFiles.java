@@ -53,9 +53,9 @@ import org.freeplane.n3.nanoxml.XMLParseException;
 @ActionLocationDescriptor(locations = { "/menu_bar/file/import/import" })
 public class ImportMindmanagerFiles extends AFreeplaneAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public ImportMindmanagerFiles(final Controller controller) {
 		super("ImportMindmanagerFiles", controller);

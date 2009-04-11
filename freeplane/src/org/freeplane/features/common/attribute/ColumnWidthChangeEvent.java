@@ -26,9 +26,9 @@ import java.util.EventObject;
  */
 public class ColumnWidthChangeEvent extends EventObject {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	final private int col;
 
 	/**

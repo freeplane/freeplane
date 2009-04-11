@@ -41,11 +41,6 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 
 class PageAction extends AbstractPrintAction {
-	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-
 	private final class ActionListenerImplementation implements ActionListener {
 		private final JDialog dialog;
 		private int eventSource;
@@ -65,7 +60,10 @@ class PageAction extends AbstractPrintAction {
 	}
 
 	static final String NAME = "page";
-
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	PageAction(final PrintController controller) {
 		super("PageAction", controller);

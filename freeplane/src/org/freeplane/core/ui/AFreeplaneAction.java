@@ -19,8 +19,6 @@
  */
 package org.freeplane.core.ui;
 
-import java.awt.event.ActionListener;
-
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
@@ -34,13 +32,10 @@ import org.freeplane.core.resources.ResourceController;
  * @author Dimitry Polivaev
  */
 public abstract class AFreeplaneAction extends AbstractAction {
-
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-	final private String key;
-	
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	static public boolean checkEnabledOnChange(final AFreeplaneAction action) {
 		final EnabledAction annotation = action.getClass().getAnnotation(EnabledAction.class);
@@ -92,35 +87,18 @@ public abstract class AFreeplaneAction extends AbstractAction {
 
 	// TODO ARCH rladstaetter 18.02.2009 actions should not have a dependency on the controller
 	final private Controller controller;
+	final private String key;
 	private boolean selected = false;
 	private boolean visible = true;
 
-	public AFreeplaneAction(final String key, final Controller controller) {
-		super();
-		this.controller = controller;
-		this.key = key;
-		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText(getTextKey()));
-		String iconResource = ResourceController.getResourceController().getProperty(getIconKey(), null);
-		if(iconResource != null){
-			final ImageIcon icon = new ImageIcon(ResourceController.getResourceController().getResource(iconResource));
-			putValue(SMALL_ICON, icon);
-		}
-		String tooltip = FreeplaneResourceBundle.getText(getTooltipKey(), null);
-		if(tooltip != null){
-			putValue(Action.SHORT_DESCRIPTION, tooltip);
-			putValue(Action.LONG_DESCRIPTION, tooltip);
-		}
-	
-System.out.println(key);		
-	}
-//	/**
-//	 * @param controller
-//	 * @param string
-//	 */
-//	private AFreeplaneAction(final Controller controller, final String titleKey) {
-//		this(controller);
-//	}
-//
+	//	/**
+	//	 * @param controller
+	//	 * @param string
+	//	 */
+	//	private AFreeplaneAction(final Controller controller, final String titleKey) {
+	//		this(controller);
+	//	}
+	//
 	public AFreeplaneAction(final Controller controller, final String title, final ImageIcon icon) {
 		this.controller = controller;
 		putValue(SMALL_ICON, icon);
@@ -129,44 +107,66 @@ System.out.println(key);
 		}
 		key = null;
 	}
-//
-//	/**
-//	 * @param title
-//	 *            Title is a resource.
-//	 * @param iconPath
-//	 *            is a path to an icon.
-//	 */
-//	private AFreeplaneAction(final Controller controller, final String title, final String iconPath) {
-//		this(controller, title);
-//		if (iconPath != null && !iconPath.equals("")) {
-//			final ImageIcon icon = new ImageIcon(ResourceController.getResourceController().getResource(iconPath));
-//			putValue(SMALL_ICON, icon);
-//System.out.println("icon\t\t" + getClass().getSimpleName() + ".icon=" + iconPath);		
-//		}
-//	}
+
+	//
+	//	/**
+	//	 * @param title
+	//	 *            Title is a resource.
+	//	 * @param iconPath
+	//	 *            is a path to an icon.
+	//	 */
+	//	private AFreeplaneAction(final Controller controller, final String title, final String iconPath) {
+	//		this(controller, title);
+	//		if (iconPath != null && !iconPath.equals("")) {
+	//			final ImageIcon icon = new ImageIcon(ResourceController.getResourceController().getResource(iconPath));
+	//			putValue(SMALL_ICON, icon);
+	//System.out.println("icon\t\t" + getClass().getSimpleName() + ".icon=" + iconPath);		
+	//		}
+	//	}
+	public AFreeplaneAction(final String key, final Controller controller) {
+		super();
+		this.controller = controller;
+		this.key = key;
+		MenuBuilder.setLabelAndMnemonic(this, FreeplaneResourceBundle.getText(getTextKey()));
+		final String iconResource = ResourceController.getResourceController().getProperty(getIconKey(), null);
+		if (iconResource != null) {
+			final ImageIcon icon = new ImageIcon(ResourceController.getResourceController().getResource(iconResource));
+			putValue(SMALL_ICON, icon);
+		}
+		final String tooltip = FreeplaneResourceBundle.getText(getTooltipKey(), null);
+		if (tooltip != null) {
+			putValue(Action.SHORT_DESCRIPTION, tooltip);
+			putValue(Action.LONG_DESCRIPTION, tooltip);
+		}
+		System.out.println(key);
+	}
 
 	public Controller getController() {
 		return controller;
+	}
+
+	final String getIconKey() {
+		return key + ".icon";
+	}
+
+	public String getKey() {
+		return key;
 	}
 
 	public ModeController getModeController() {
 		return controller.getModeController();
 	}
 
-	public String getKey() {
-		return key;
-	}
-	final String getIconKey() {
-		return key+".icon";
-	}
-	final String getTextKey() {
-		return key+".text";
-	}
-	final String getTooltipKey() {
-		return key+".tooltip";
-	}
 	public String getShortcutKey() {
-		return key == null ? null : key+".shortcut";
+		return key == null ? null : key + ".shortcut";
+	}
+
+	final String getTextKey() {
+		return key + ".text";
+	}
+
+	final String getTooltipKey() {
+		return key + ".tooltip";
 	}
 
 	public boolean isSelected() {
@@ -190,7 +190,6 @@ System.out.println(key);
 			firePropertyChange("selected", Boolean.valueOf(oldValue), Boolean.valueOf(newValue));
 		}
 	}
-
 
 	public void setVisible() {
 	}

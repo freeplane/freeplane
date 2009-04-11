@@ -38,7 +38,6 @@ public abstract class MultipleNodeAction extends AFreeplaneAction {
 		super(key, controller);
 	}
 
-
 	public void actionPerformed(final ActionEvent e) {
 		for (final NodeModel selected : getModeController().getMapController().getSelectedNodes()) {
 			actionPerformed(e, selected);

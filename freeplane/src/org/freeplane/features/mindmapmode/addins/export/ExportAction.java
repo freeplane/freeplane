@@ -39,12 +39,12 @@ import org.freeplane.core.url.UrlManager;
  */
 abstract public class ExportAction extends AFreeplaneAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public ExportAction(final String key, final Controller controller) {
-		super(key,  controller);
+		super(key, controller);
 	}
 
 	/**

@@ -24,13 +24,11 @@ import java.awt.event.ActionEvent;
 import org.freeplane.core.ui.AFreeplaneAction;
 
 class ZoomInAction extends AFreeplaneAction {
-	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-
 	static final String NAME = "zoomIn";
-
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	final private ViewController controller;
 
 	public ZoomInAction(final ViewController controller) {

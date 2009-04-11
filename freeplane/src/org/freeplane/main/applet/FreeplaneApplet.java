@@ -40,9 +40,9 @@ import org.freeplane.view.swing.map.MapViewController;
 
 public class FreeplaneApplet extends JApplet {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private AppletResourceController appletResourceController;
 	private AppletViewController appletViewController;
 	private Controller controller;

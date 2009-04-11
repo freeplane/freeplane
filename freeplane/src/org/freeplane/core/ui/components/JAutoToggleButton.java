@@ -29,9 +29,9 @@ import org.freeplane.core.ui.SelectableAction;
 
 public class JAutoToggleButton extends JToggleButton implements PropertyChangeListener {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private PropertyChangeListener defaultPropertyChanegListener;
 
 	public JAutoToggleButton(final Action a) {

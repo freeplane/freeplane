@@ -28,14 +28,13 @@ import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.AFreeplaneAction;
 
 class OpenURLAction extends AFreeplaneAction {
-
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	final private String url;
 
-	OpenURLAction(String key, final Controller controller, final String url) {
+	OpenURLAction(final String key, final Controller controller, final String url) {
 		super(key, controller);
 		this.url = url;
 	}

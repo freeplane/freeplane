@@ -66,11 +66,6 @@ import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 
 class PasteAction extends AFreeplaneAction {
-	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-
 	private class DirectHtmlFlavorHandler implements IDataFlavorHandler {
 		private String textFromClipboard;
 
@@ -393,6 +388,10 @@ class PasteAction extends AFreeplaneAction {
 	private static final Pattern HREF_PATTERN = Pattern
 	    .compile("<html>\\s*<body>\\s*<a\\s+href=\"([^>]+)\">(.*)</a>\\s*</body>\\s*</html>");
 	private static final String RESOURCE_UNFOLD_ON_PASTE = "unfold_on_paste";
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public static String firstLetterCapitalized(final String text) {
 		if (text == null || text.length() == 0) {

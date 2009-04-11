@@ -169,10 +169,6 @@ public class MindIcon implements Comparable, IIconInformation {
 		return null;
 	}
 
-	public String getShortcutKey() {
-		return "IconAction." + name + ".shortcut";
-	}
-
 	/**
 	 * Get the value of name.
 	 *
@@ -199,6 +195,10 @@ public class MindIcon implements Comparable, IIconInformation {
 			component = new JLabel(getIcon());
 		}
 		return component;
+	}
+
+	public String getShortcutKey() {
+		return "IconAction." + name + ".shortcut";
 	}
 
 	/**

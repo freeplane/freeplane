@@ -29,13 +29,12 @@ import org.freeplane.core.ui.SelectableAction;
 @SelectableAction
 class ShowFilterToolbarAction extends AFreeplaneAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * 
 	 */
-
 	final private FilterController filterController;
 
 	/**

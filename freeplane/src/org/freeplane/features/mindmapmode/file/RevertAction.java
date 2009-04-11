@@ -49,11 +49,6 @@ import org.freeplane.core.util.LogTool;
  * @author foltin
  */
 class RevertAction extends AFreeplaneAction {
-	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-
 	private static class RevertActionInstance {
 		final private Controller controller;
 		private String filePrefix;
@@ -116,7 +111,10 @@ class RevertAction extends AFreeplaneAction {
 		}
 	}
 
-
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 */

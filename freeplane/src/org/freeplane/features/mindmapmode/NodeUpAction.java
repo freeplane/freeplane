@@ -36,9 +36,9 @@ import org.freeplane.core.undo.IActor;
 
 class NodeUpAction extends AFreeplaneAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public NodeUpAction(final Controller controller) {
 		super("NodeUpAction", controller);

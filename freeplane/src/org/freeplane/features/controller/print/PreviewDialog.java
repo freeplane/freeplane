@@ -37,11 +37,11 @@ import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.UITools;
 
 class PreviewDialog extends JDialog implements ActionListener {
-	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
 	final private static double DEFAULT_ZOOM_FACTOR_STEP = 0.1;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	final private JLabel pageNumber;
 	protected Printable view;
 

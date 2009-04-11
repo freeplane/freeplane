@@ -45,11 +45,6 @@ import org.freeplane.plugin.script.ScriptingEngine.IErrorHandler;
  */
 @ActionLocationDescriptor(locations = { "/menu_bar/extras/first/scripting" })
 class ScriptEditor extends AFreeplaneAction {
-	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-
 	final private class AttributeHolder {
 		Attribute mAttribute;
 		int mPosition;
@@ -167,6 +162,10 @@ class ScriptEditor extends AFreeplaneAction {
 		}
 	}
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	final private ScriptingRegistration reg;
 
 	public ScriptEditor(final Controller controller, final ScriptingRegistration reg) {

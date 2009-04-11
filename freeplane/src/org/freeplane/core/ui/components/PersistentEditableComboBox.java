@@ -28,9 +28,9 @@ import org.freeplane.core.resources.ResourceController;
 
 public class PersistentEditableComboBox extends JComboBox {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ActionListener actionListener = null;
 	final private String pStorageKey;
 	private boolean sendExternalEvents = true;

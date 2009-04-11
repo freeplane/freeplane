@@ -37,9 +37,9 @@ import org.freeplane.features.common.attribute.NodeAttributeTableModel;
 abstract class AttributeTableModelDecoratorAdapter extends AbstractTableModel implements IAttributeTableModel,
         TableModelListener, ChangeListener {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	final private AttributeController attributeController;
 	private AttributeRegistry attributeRegistry;
 	private NodeAttributeTableModel nodeAttributeModel;

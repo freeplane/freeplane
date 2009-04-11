@@ -42,12 +42,10 @@ import org.freeplane.features.mindmapmode.MMapController;
  * This is exactly the opposite of exportBranch.
  */
 class ImportLinkedBranchWithoutRootAction extends AFreeplaneAction {
-
-
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public ImportLinkedBranchWithoutRootAction(final Controller controller) {
 		super("ImportLinkedBranchWithoutRootAction", controller);

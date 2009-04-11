@@ -52,9 +52,9 @@ import org.w3c.dom.Document;
  */
 abstract class ExportVectorGraphic extends ExportAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public ExportVectorGraphic(final String key, final Controller controller) {
 		super(key, controller);

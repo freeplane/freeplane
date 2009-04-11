@@ -27,15 +27,13 @@ import org.freeplane.core.ui.AFreeplaneAction;
 
 class NewMapAction extends AFreeplaneAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * 
 	 */
-
-
 	public NewMapAction(final Controller controller) {
 		super("NewMapAction", controller);
 	}

@@ -33,9 +33,9 @@ import org.freeplane.core.ui.SelectableAction;
  */
 public class JAutoRadioButtonMenuItem extends JRadioButtonMenuItem implements PropertyChangeListener {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private PropertyChangeListener defaultPropertyChanegListener;
 
 	public JAutoRadioButtonMenuItem(final Action a) {

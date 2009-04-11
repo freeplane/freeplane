@@ -34,11 +34,6 @@ import javax.swing.TransferHandler;
 import org.freeplane.features.mindmapmode.addins.styles.ManagePatternsPopupDialog.PatternListModel;
 
 class ArrayListTransferHandler extends TransferHandler {
-	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-
 	class ArrayListTransferable implements Transferable {
 		ArrayList data;
 
@@ -65,6 +60,10 @@ class ArrayListTransferHandler extends TransferHandler {
 		}
 	}
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	int addCount = 0;
 	int addIndex = -1;
 	int[] indices = null;

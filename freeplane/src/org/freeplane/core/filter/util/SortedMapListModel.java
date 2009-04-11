@@ -29,9 +29,9 @@ import javax.swing.AbstractListModel;
 
 public class SortedMapListModel extends AbstractListModel implements IListModel {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	SortedSet model;
 
 	public SortedMapListModel() {

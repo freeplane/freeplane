@@ -45,18 +45,18 @@ import org.freeplane.core.util.LogTool;
  */
 public class ExportToImage extends ExportAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public static void createActions(final ModeController modeController) {
 		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
-		final ExportToImage pngExport = new ExportToImage(modeController.getController(),
-		    "png", "Portable Network Graphic (PNG)");
+		final ExportToImage pngExport = new ExportToImage(modeController.getController(), "png",
+		    "Portable Network Graphic (PNG)");
 		modeController.addAction(pngExport);
 		menuBuilder.addAction("/menu_bar/file/export/export", pngExport, "ExportToImage_PNG", MenuBuilder.AS_CHILD);
-		final ExportToImage jpgExport = new ExportToImage(modeController.getController(),
-		    "jpg", "Compressed image (JPEG)");
+		final ExportToImage jpgExport = new ExportToImage(modeController.getController(), "jpg",
+		    "Compressed image (JPEG)");
 		modeController.addAction(jpgExport);
 		menuBuilder.addAction("/menu_bar/file/export/export", jpgExport, "ExportToImage_JPEG", MenuBuilder.AS_CHILD);
 	}

@@ -37,11 +37,11 @@ import org.freeplane.features.mindmapnode.pattern.StylePatternFactory;
  */
 @ActionLocationDescriptor(locations = { "/menu_bar/edit/paste" })
 class FormatCopy extends AFreeplaneAction {
-	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
 	private static Pattern pattern = null;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public static Pattern getPattern() {
 		return pattern;
@@ -68,9 +68,9 @@ class FormatCopy extends AFreeplaneAction {
 @ActionLocationDescriptor(locations = { "/menu_bar/edit/paste" })
 public class FormatPaste extends MultipleNodeAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public FormatPaste(final Controller controller, final MenuBuilder menuBuilder) {
 		super("FormatPaste", controller);

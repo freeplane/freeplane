@@ -27,13 +27,11 @@ import org.freeplane.core.ui.SelectableAction;
 
 @SelectableAction(checkOnPopup = true)
 class ToggleMenubarAction extends AFreeplaneAction {
-	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-
 	static final String NAME = "toggleMenubar";
-
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	final private ViewController controller;
 
 	ToggleMenubarAction(final Controller controller, final ViewController viewController) {

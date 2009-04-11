@@ -34,9 +34,9 @@ import org.freeplane.features.common.nodestyle.NodeStyleModel;
  */
 class NodeColorBlendAction extends MultipleNodeAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 *

@@ -252,9 +252,9 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 		});
 		final Action action = new AbstractAction() {
 			/**
-             * 
-             */
-            private static final long serialVersionUID = 1L;
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
 
 			public void actionPerformed(final ActionEvent arg0) {
 				disposeDialog();

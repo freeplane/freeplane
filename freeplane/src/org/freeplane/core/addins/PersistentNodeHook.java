@@ -41,9 +41,9 @@ import org.freeplane.n3.nanoxml.XMLElement;
 public abstract class PersistentNodeHook {
 	public abstract class HookAction extends AFreeplaneAction {
 		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
 		public HookAction(final String key) {
 			super(key, controller);
@@ -57,18 +57,16 @@ public abstract class PersistentNodeHook {
 	@SelectableAction(checkOnNodeChange = true)
 	protected class SelectableHookAction extends HookAction {
 		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
 		/**
 		 * 
 		 */
-
-
-		protected SelectableHookAction(String key) {
+		protected SelectableHookAction(final String key) {
 			super(key);
-System.out.println("SelectableHookAction " + key);			
+			System.out.println("SelectableHookAction " + key);
 		}
 
 		@Override

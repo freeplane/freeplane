@@ -31,9 +31,9 @@ import org.freeplane.features.common.nodestyle.NodeStyleController;
  */
 class FontSizeAction extends MultipleNodeAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/** This action is used for all sizes, which have to be set first. */
 	private int actionSize;
 

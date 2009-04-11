@@ -29,9 +29,9 @@ import javax.swing.event.ListDataListener;
  */
 class DoubleListModel extends AbstractListModel implements IListModel {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	final private IListModel first;
 	final private IListModel second;
 

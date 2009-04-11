@@ -25,9 +25,9 @@ import javax.swing.AbstractAction;
 
 class ZoomAction extends AbstractAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	protected Preview preview;
 	protected double zoomStep;
 

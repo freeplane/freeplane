@@ -33,17 +33,16 @@ import org.freeplane.features.mindmapmode.addins.time.TimeList.NodeHolder;
  * @author foltin
  */
 class FlatNodeTableFilterModel extends AbstractTableModel {
-	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-
 	private class TableModelHandler implements TableModelListener {
 		public void tableChanged(final TableModelEvent arg0) {
 			fireTableDataChanged();
 		}
 	}
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String mFilterRegexp;
 	/**
 	 * Contains indices or rows matching the filter criteria.

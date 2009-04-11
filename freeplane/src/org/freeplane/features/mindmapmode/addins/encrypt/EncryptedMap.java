@@ -32,9 +32,9 @@ import org.freeplane.features.common.addins.encrypt.SingleDesEncrypter;
 @ActionLocationDescriptor(locations = { "/menu_bar/file/open" })
 public class EncryptedMap extends AFreeplaneAction implements INodeSelectionListener {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public EncryptedMap(final ModeController modeController) {
 		super("EncryptedMap", modeController.getController());

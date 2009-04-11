@@ -51,9 +51,9 @@ import org.freeplane.core.util.LogTool;
 @ActionLocationDescriptor(locations = { "/menu_bar/file/export/export" })
 public class ExportToOoWriter extends ExportAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public ExportToOoWriter(final Controller controller) {
 		super("ExportToOoWriter", controller);

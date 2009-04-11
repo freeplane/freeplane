@@ -33,9 +33,9 @@ import org.freeplane.features.mindmapnode.pattern.StylePatternFactory;
 @ActionLocationDescriptor(locations = { "/menu_bar/format/change" })
 public class ApplyFormatPlugin extends AFreeplaneAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 */

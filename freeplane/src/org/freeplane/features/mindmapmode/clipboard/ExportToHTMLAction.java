@@ -31,9 +31,9 @@ import org.freeplane.features.common.clipboard.ClipboardController;
 
 class ExportToHTMLAction extends AFreeplaneAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public ExportToHTMLAction(final Controller controller) {
 		super("ExportToHTMLAction", controller);

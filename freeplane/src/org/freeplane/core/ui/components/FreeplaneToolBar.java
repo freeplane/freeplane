@@ -32,11 +32,11 @@ import javax.swing.SwingConstants;
  * @author Stefan Zechmeister
  */
 public class FreeplaneToolBar extends JToolBar {
-	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
 	private static Insets nullInsets = new Insets(0, 0, 0, 0);
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 *

@@ -32,12 +32,10 @@ import org.freeplane.core.url.UrlManager;
 import org.freeplane.features.mindmapmode.MMapController;
 
 class ImportBranchAction extends AFreeplaneAction {
-
-
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public ImportBranchAction(final Controller controller) {
 		super("ImportBranchAction", controller);

@@ -94,9 +94,9 @@ import com.jgoodies.forms.factories.ButtonBarFactory;
 class TimeList {
 	static class DateRenderer extends DefaultTableCellRenderer {
 		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 		DateFormat formatter;
 
 		public DateRenderer() {
@@ -164,9 +164,9 @@ class TimeList {
 
 	final private class FlatNodeTable extends JTable {
 		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
 		@Override
 		public TableCellRenderer getCellRenderer(final int row, final int column) {
@@ -273,9 +273,9 @@ class TimeList {
 
 	static class IconsRenderer extends DefaultTableCellRenderer {
 		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
 		public IconsRenderer(final ModeController controller) {
 			super();
@@ -342,9 +342,9 @@ class TimeList {
 
 	static class NodeRenderer extends DefaultTableCellRenderer {
 		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
 		public NodeRenderer() {
 			super();
@@ -393,9 +393,9 @@ class TimeList {
 
 	static class NotesRenderer extends DefaultTableCellRenderer {
 		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
 		public NotesRenderer() {
 			super();
@@ -632,9 +632,9 @@ class TimeList {
 		});
 		UITools.addEscapeActionToDialog(dialog, new AbstractAction() {
 			/**
-             * 
-             */
-            private static final long serialVersionUID = 1L;
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
 
 			public void actionPerformed(final ActionEvent arg0) {
 				disposeDialog();
@@ -703,9 +703,9 @@ class TimeList {
 		final AbstractAction selectAction = new AbstractAction(FreeplaneResourceBundle
 		    .getText(PLUGINS_TIME_MANAGEMENT_XML_SELECT)) {
 			/**
-                 * 
-                 */
-                private static final long serialVersionUID = 1L;
+			     * 
+			     */
+			private static final long serialVersionUID = 1L;
 
 			public void actionPerformed(final ActionEvent arg0) {
 				selectSelectedRows();
@@ -715,9 +715,9 @@ class TimeList {
 		final AbstractAction exportAction = new AbstractAction(FreeplaneResourceBundle
 		    .getText("plugins/TimeManagement.xml_Export")) {
 			/**
-                 * 
-                 */
-                private static final long serialVersionUID = 1L;
+			     * 
+			     */
+			private static final long serialVersionUID = 1L;
 
 			public void actionPerformed(final ActionEvent arg0) {
 				exportSelectedRowsAndClose();
@@ -727,9 +727,9 @@ class TimeList {
 		final AbstractAction replaceAllAction = new AbstractAction(FreeplaneResourceBundle
 		    .getText("plugins/TimeManagement.xml_Replace_All")) {
 			/**
-                 * 
-                 */
-                private static final long serialVersionUID = 1L;
+			     * 
+			     */
+			private static final long serialVersionUID = 1L;
 
 			public void actionPerformed(final ActionEvent arg0) {
 				replace(new ReplaceAllInfo());
@@ -739,9 +739,9 @@ class TimeList {
 		final AbstractAction replaceSelectedAction = new AbstractAction(FreeplaneResourceBundle
 		    .getText("plugins/TimeManagement.xml_Replace_Selected")) {
 			/**
-                 * 
-                 */
-                private static final long serialVersionUID = 1L;
+			     * 
+			     */
+			private static final long serialVersionUID = 1L;
 
 			public void actionPerformed(final ActionEvent arg0) {
 				replace(new ReplaceSelectedInfo());
@@ -751,9 +751,9 @@ class TimeList {
 		final AbstractAction gotoAction = new AbstractAction(FreeplaneResourceBundle
 		    .getText("plugins/TimeManagement.xml_Goto")) {
 			/**
-                 * 
-                 */
-                private static final long serialVersionUID = 1L;
+			     * 
+			     */
+			private static final long serialVersionUID = 1L;
 
 			public void actionPerformed(final ActionEvent arg0) {
 				selectSelectedRows();
@@ -764,9 +764,9 @@ class TimeList {
 		final AbstractAction disposeAction = new AbstractAction(FreeplaneResourceBundle
 		    .getText(PLUGINS_TIME_MANAGEMENT_XML_CANCEL)) {
 			/**
-                 * 
-                 */
-                private static final long serialVersionUID = 1L;
+			     * 
+			     */
+			private static final long serialVersionUID = 1L;
 
 			public void actionPerformed(final ActionEvent arg0) {
 				disposeDialog();
@@ -851,9 +851,9 @@ class TimeList {
 		final NodeModel node = controller.getMap().getRootNode();
 		final DefaultTableModel model = new DefaultTableModel() {
 			/**
-             * 
-             */
-            private static final long serialVersionUID = 1L;
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
 
 			/*
 			 * (non-Javadoc)

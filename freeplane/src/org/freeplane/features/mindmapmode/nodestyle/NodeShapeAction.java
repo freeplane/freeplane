@@ -28,9 +28,9 @@ import org.freeplane.features.common.nodestyle.NodeStyleController;
 
 class NodeShapeAction extends MultipleNodeAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	final private String actionShape;
 
 	public NodeShapeAction(final ModeController controller, final String shape) {

@@ -35,9 +35,9 @@ import org.freeplane.features.common.note.NoteModel;
 
 class RemoveNoteAction extends AFreeplaneAction implements PopupMenuListener {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 *
 	 */

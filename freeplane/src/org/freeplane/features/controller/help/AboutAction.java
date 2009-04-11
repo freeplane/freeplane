@@ -29,12 +29,10 @@ import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.ui.AFreeplaneAction;
 
 class AboutAction extends AFreeplaneAction {
-
-
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 *
@@ -49,5 +47,4 @@ class AboutAction extends AFreeplaneAction {
 		        + FreeplaneVersion.getVersion(), FreeplaneResourceBundle.getText("about"),
 		    JOptionPane.INFORMATION_MESSAGE);
 	}
-
 }

@@ -34,17 +34,16 @@ import java.util.Vector;
 @Deprecated
 public class XMLElement implements Serializable {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-	/**
 	 * No line number defined.
 	 */
 	public static final int NO_LINE = -1;
 	/**
 	 * Necessary for serialization.
 	 */
-
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Creates an empty element.

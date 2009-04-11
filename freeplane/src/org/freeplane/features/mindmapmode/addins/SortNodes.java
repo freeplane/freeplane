@@ -33,11 +33,6 @@ import org.freeplane.features.mindmapmode.MMapController;
  */
 @ActionLocationDescriptor(locations = { "/menu_bar/extras/first/nodes/sorting" })
 public class SortNodes extends MultipleNodeAction {
-	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-
 	final private class NodeTextComparator implements Comparator {
 		public int compare(final Object pArg0, final Object pArg1) {
 			if (pArg0 instanceof NodeModel) {
@@ -52,6 +47,11 @@ public class SortNodes extends MultipleNodeAction {
 			return 0;
 		}
 	}
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @param controller 

@@ -31,9 +31,9 @@ import org.freeplane.core.ui.SelectableAction;
 @SelectableAction(checkOnPopup = true)
 class ShowDescendantsAction extends AFreeplaneAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * 
 	 */

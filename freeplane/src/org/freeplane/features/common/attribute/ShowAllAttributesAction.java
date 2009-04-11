@@ -26,18 +26,16 @@ import org.freeplane.core.model.MapModel;
 import org.freeplane.core.ui.AFreeplaneAction;
 
 class ShowAllAttributesAction extends AFreeplaneAction {
-
-
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 *
 	 */
 	public ShowAllAttributesAction(final Controller controller) {
-		super("ShowAllAttributesAction",controller);
+		super("ShowAllAttributesAction", controller);
 	};
 
 	public void actionPerformed(final ActionEvent e) {

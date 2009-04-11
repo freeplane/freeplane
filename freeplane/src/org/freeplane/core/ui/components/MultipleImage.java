@@ -32,9 +32,9 @@ import javax.swing.ImageIcon;
 
 public class MultipleImage extends ImageIcon {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private boolean isDirty;
 	final private Vector mImages = new Vector();
 	private double zoomFactor = 1;

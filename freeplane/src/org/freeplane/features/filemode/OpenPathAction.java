@@ -31,9 +31,9 @@ import org.freeplane.core.ui.components.UITools;
 
 public class OpenPathAction extends AFreeplaneAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public OpenPathAction(final Controller controller) {
 		super("OpenPathAction", controller);

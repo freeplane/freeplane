@@ -29,9 +29,9 @@ import org.freeplane.features.mindmapmode.file.MFileManager;
 
 class SetLinkByFileChooserAction extends AFreeplaneAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public SetLinkByFileChooserAction(final Controller controller) {
 		super("SetLinkByFileChooserAction", controller);

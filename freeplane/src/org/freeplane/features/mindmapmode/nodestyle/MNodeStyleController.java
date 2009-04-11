@@ -48,9 +48,9 @@ public class MNodeStyleController extends NodeStyleController {
 		modeController.addAction(fontSizeAction);
 		final MultipleNodeAction increaseNodeFont = new MultipleNodeAction("IncreaseNodeFontAction", controller) {
 			/**
-             * 
-             */
-            private static final long serialVersionUID = 1L;
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void actionPerformed(final ActionEvent e, final NodeModel node) {
@@ -60,9 +60,9 @@ public class MNodeStyleController extends NodeStyleController {
 		modeController.addAction(increaseNodeFont);
 		final MultipleNodeAction decreaseNodeFont = new MultipleNodeAction("DecreaseNodeFontAction", controller) {
 			/**
-             * 
-             */
-            private static final long serialVersionUID = 1L;
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void actionPerformed(final ActionEvent e, final NodeModel node) {

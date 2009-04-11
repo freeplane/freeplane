@@ -26,7 +26,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
-import javax.swing.Action;
 import javax.swing.JPopupMenu;
 
 import org.freeplane.core.controller.Controller;
@@ -133,11 +132,11 @@ public class LinkController extends SelectionController implements IExtension {
 			final ArrowLinkModel arrowLink = (ArrowLinkModel) foreign_link;
 			final NodeModel foreignTarget = arrowLink.getTarget();
 			if (nodeAlreadyVisited.add(foreignTarget)) {
-				arrowLinkPopup.add((Action)new GotoLinkNodeAction(this, foreignTarget));
+				arrowLinkPopup.add(new GotoLinkNodeAction(this, foreignTarget));
 			}
 			final NodeModel foreignSource = arrowLink.getSource();
 			if (nodeAlreadyVisited.add(foreignSource)) {
-				arrowLinkPopup.add((Action)new GotoLinkNodeAction(this, foreignSource));
+				arrowLinkPopup.add(new GotoLinkNodeAction(this, foreignSource));
 			}
 		}
 	}
@@ -147,7 +146,7 @@ public class LinkController extends SelectionController implements IExtension {
 		boolean actionsAdded = false;
 		final IMapSelection selection = getModeController().getController().getSelection();
 		if (!selection.isSelected(source)) {
-			arrowLinkPopup.add((Action)new GotoLinkNodeAction(this, source));
+			arrowLinkPopup.add(new GotoLinkNodeAction(this, source));
 			actionsAdded = true;
 		}
 		addForeignLinks(arrowLinkPopup, nodeAlreadyVisited, NodeLinks.getLinks(source));

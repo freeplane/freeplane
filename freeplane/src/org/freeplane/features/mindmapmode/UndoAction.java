@@ -31,9 +31,9 @@ import org.freeplane.core.undo.IUndoHandler;
 
 class UndoAction extends AFreeplaneAction implements IMapSelectionListener {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Action redo;
 
 	public UndoAction(final Controller controller) {

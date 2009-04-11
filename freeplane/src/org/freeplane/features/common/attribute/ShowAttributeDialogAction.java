@@ -27,11 +27,10 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.mindmapmode.attribute.AttributeManagerDialog;
 
 class ShowAttributeDialogAction extends AFreeplaneAction {
-
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private AttributeManagerDialog attributeDialog = null;
 	private Frame frame;
 

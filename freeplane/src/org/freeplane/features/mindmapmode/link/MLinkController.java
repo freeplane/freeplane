@@ -130,8 +130,7 @@ public class MLinkController extends LinkController {
 		modeController.addAction(new RemoveArrowLinkAction(this, null));
 		colorArrowLinkAction = new ColorArrowLinkAction(this, null);
 		modeController.addAction(colorArrowLinkAction);
-		modeController.addAction(new ChangeArrowsInArrowLinkAction(this, "none", null,
-		    null, true, true));
+		modeController.addAction(new ChangeArrowsInArrowLinkAction(this, "none", null, null, true, true));
 		setLinkByTextField = new SetLinkByTextFieldAction(controller);
 		modeController.addAction(setLinkByTextField);
 		modeController.addAction(new AddLocalLinkAction(controller));

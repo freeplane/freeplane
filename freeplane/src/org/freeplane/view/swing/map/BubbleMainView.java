@@ -34,11 +34,11 @@ import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
 
 class BubbleMainView extends MainView {
-	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
 	final static Stroke DEF_STROKE = new BasicStroke();
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Returns the relative position of the Edge

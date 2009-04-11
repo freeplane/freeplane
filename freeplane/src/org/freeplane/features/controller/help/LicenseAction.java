@@ -27,12 +27,11 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 
 class LicenseAction extends AFreeplaneAction {
-	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
 	private static final String NAME = "license";
-
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	LicenseAction(final Controller controller) {
 		super("LicenseAction", controller);

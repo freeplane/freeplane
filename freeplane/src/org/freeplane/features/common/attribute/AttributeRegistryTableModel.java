@@ -28,13 +28,13 @@ import org.freeplane.core.resources.FreeplaneResourceBundle;
  * @author Dimitry Polivaev
  */
 public class AttributeRegistryTableModel extends AbstractTableModel {
-	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
 	static private String attributeColumnName = null;
 	static private String editorColumnName = null;
 	static private String restrictionColumnName = null;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	static private String visibilityColumnName = null;
 	final private String allAttributes = FreeplaneResourceBundle.getText("attributes_all");
 	final private AttributeRegistry attributeRegistry;

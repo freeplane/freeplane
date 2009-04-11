@@ -48,9 +48,9 @@ import org.freeplane.features.mindmapmode.text.MTextController;
 @ActionLocationDescriptor(locations = { "/menu_bar/extras/first/join" })
 public class SplitNode extends AFreeplaneAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 *

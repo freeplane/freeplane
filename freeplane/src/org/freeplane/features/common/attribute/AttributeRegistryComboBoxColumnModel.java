@@ -29,9 +29,9 @@ import org.freeplane.core.filter.util.IListModel;
 class AttributeRegistryComboBoxColumnModel extends AbstractListModel implements TableModelListener, ComboBoxModel,
         IListModel {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	final private AttributeRegistry model;
 	private Object selectedItem;
 

@@ -35,17 +35,9 @@ import org.freeplane.features.common.link.NodeLinks;
  */
 class AddArrowLinkAction extends AFreeplaneAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-
-	private static String getIconPath() {
-		return "/images/designer.png";
-	}
-
-	private static String getTitle() {
-		return "add_link";
-	}
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 */
@@ -93,5 +85,4 @@ class AddArrowLinkAction extends AFreeplaneAction {
 		};
 		getModeController().execute(actor);
 	}
-
 }

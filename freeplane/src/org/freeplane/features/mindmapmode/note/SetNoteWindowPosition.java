@@ -11,13 +11,13 @@ import org.freeplane.core.ui.AFreeplaneAction;
 /** Select Note Window at the position action */
 class SetNoteWindowPosition extends AFreeplaneAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final String position;
 
 	public SetNoteWindowPosition(final Controller controller, final String position) {
-		super("SetNoteWindowPosition."+ position, controller);
+		super("SetNoteWindowPosition." + position, controller);
 		this.position = position;
 	};
 

@@ -43,9 +43,9 @@ import org.freeplane.features.common.attribute.IAttributeTableModel;
  */
 class AttributePopupMenu extends JPopupMenu implements MouseListener {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JMenuItem delete = null;
 	private JMenuItem down = null;
 	private JMenuItem insert = null;

@@ -70,9 +70,9 @@ import org.freeplane.n3.nanoxml.XMLWriter;
 public class FilterController implements IMapSelectionListener, IExtension {
 	private class FilterChangeListener extends AbstractAction implements ListDataListener {
 		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
 		/*
 		 * (non-Javadoc)
@@ -204,10 +204,12 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		filterToolbar.setVisible(false);
 		filterToolbar.setFocusable(false);
 		filterToolbar.add(new JLabel(FreeplaneResourceBundle.getText("filter_toolbar") + " "));
-		final JButton undoBtn = new JButton(FpStringUtils.removeMnemonic(FreeplaneResourceBundle.getText("UndoAction.text")));
+		final JButton undoBtn = new JButton(FpStringUtils.removeMnemonic(FreeplaneResourceBundle
+		    .getText("UndoAction.text")));
 		undoBtn.addActionListener(new UndoFilterAction(this));
 		filterToolbar.add(undoBtn);
-		final JButton redoBtn = new JButton(FpStringUtils.removeMnemonic(FreeplaneResourceBundle.getText("RedoAction.text")));
+		final JButton redoBtn = new JButton(FpStringUtils.removeMnemonic(FreeplaneResourceBundle
+		    .getText("RedoAction.text")));
 		redoBtn.addActionListener(new RedoFilterAction(this));
 		filterToolbar.add(redoBtn);
 		final JButton btnUnfoldAncestors = new JButton(new UnfoldAncestorsAction(this));
@@ -216,7 +218,8 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		final JCheckBox showAncestorsBox = new JCheckBox(FreeplaneResourceBundle.getText("ShowAncestorsAction.text"));
 		showAncestorsBox.setModel(showAncestors);
 		filterToolbar.add(showAncestorsBox);
-		final JCheckBox showDescendantsBox = new JCheckBox(FreeplaneResourceBundle.getText("ShowDescendantsAction.text"));
+		final JCheckBox showDescendantsBox = new JCheckBox(FreeplaneResourceBundle
+		    .getText("ShowDescendantsAction.text"));
 		showDescendantsBox.setModel(showDescendants);
 		filterToolbar.add(showDescendantsBox);
 		final JCheckBox applyToVisibleBox = new JCheckBox(FreeplaneResourceBundle.getText("ReapplyFilterAction.text"));
@@ -226,9 +229,9 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		filterToolbar.add(btnEdit);
 		final JComboBox activeFilterConditionComboBox = new JComboBox(getFilterConditions()) {
 			/**
-             * 
-             */
-            private static final long serialVersionUID = 1L;
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public Dimension getMaximumSize() {
