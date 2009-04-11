@@ -172,7 +172,9 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		textfield.removeKeyListener((KeyListener) textFieldListener);
 		textfield.removeMouseListener((MouseListener) textFieldListener);
 		final Component component = getModeController().getController().getViewController().getComponent(getNode());
-		component.removeComponentListener((ComponentListener) textFieldListener);
+		if(component != null){
+			component.removeComponentListener((ComponentListener) textFieldListener);
+		}
 		parent.remove(0);
 		parent.revalidate();
 		parent.repaint(bounds);

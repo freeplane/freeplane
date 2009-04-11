@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <export_with_xslt>
     <action
-        tooltip="accessories/plugins/ExportWithXSLT.tooltip"
         name="accessories/plugins/ExportWithXSLT"
         location="/menu_bar/file/export/export"
     >
@@ -9,7 +8,6 @@
             file_type="user" />
     </action>
     <action
-        tooltip="accessories/plugins/ExportWithXSLT_HTML.tooltip"
         name="accessories/plugins/ExportWithXSLT_HTML"
         location="/menu_bar/file/export/export/html"
     >
@@ -25,7 +23,6 @@
             create_html_linked_image="false" />
     </action>
     <action
-        tooltip="accessories/plugins/ExportWithXSLT_HTML3.tooltip"
         name="accessories/plugins/ExportWithXSLT_HTML3"
         location="/menu_bar/file/export/export/html"
     >
@@ -41,7 +38,6 @@
             create_html_linked_image="true"/>
     </action>
     <action
-        tooltip="accessories/plugins/ExportWithXSLT_Applet.tooltip"
         name="accessories/plugins/ExportWithXSLT_Applet"
         location="/menu_bar/file/export/export/html"
     >
@@ -56,7 +52,6 @@
             load_file="true" />
     </action>
     <action
-        tooltip="accessories/plugins/ExportWithXSLT_Flash.tooltip"
         name="accessories/plugins/ExportWithXSLT_Flash"
         location="/menu_bar/file/export/export/html"
     >
@@ -71,7 +66,6 @@
             load_file="true" />
     </action>
     <action
-        tooltip="accessories/plugins/ExportWithXSLT_TASKSTJI.tooltip"
         name="accessories/plugins/ExportWithXSLT_TASKSTJI"
         location="/menu_bar/file/export/export/html"
     >
@@ -86,7 +80,6 @@
             create_html_linked_image="false" />
     </action>
     <action
-        tooltip="accessories/plugins/ExportWithXSLT_RESOURCESTJI.tooltip"
         name="accessories/plugins/ExportWithXSLT_RESOURCESTJI"
         location="/menu_bar/file/export/export/html"
     >
@@ -101,7 +94,6 @@
             create_html_linked_image="false" />
     </action>
     <action
-        tooltip="accessories/plugins/ExportWithTWiki.tooltip"
         name="accessories/plugins/ExportWithTWiki"
         location="/menu_bar/file/export/export/html"
     >

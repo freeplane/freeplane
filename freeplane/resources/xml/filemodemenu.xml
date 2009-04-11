@@ -91,7 +91,7 @@
 			<menu_action action="NavigationPreviousMapAction" />
 			<menu_action action="NavigationNextMapAction" />
 			<menu_action action="PrintAction" />
-			<menu_action action="ShowFilterToolbarAction" tooltip="filter_toolbar" />
+			<menu_action action="ShowFilterToolbarAction"/>
 		</menu_category>
 		<menu_category name="zoom">
 		</menu_category>

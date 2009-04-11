@@ -101,7 +101,7 @@ public class MMapController extends MapController {
 		final MapModel map = getController().getMap();
 		if (!force && !map.isSaved()) {
 			final String text = FreeplaneResourceBundle.getText("save_unsaved") + "\n" + map.getTitle();
-			final String title = FpStringUtils.removeMnemonic(FreeplaneResourceBundle.getText("save"));
+			final String title = FpStringUtils.removeMnemonic(FreeplaneResourceBundle.getText("SaveAction.text"));
 			final int returnVal = JOptionPane.showOptionDialog(getController().getViewController().getContentPane(),
 			    text, title, JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 			if (returnVal == JOptionPane.YES_OPTION) {

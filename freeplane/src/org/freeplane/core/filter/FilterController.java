@@ -203,7 +203,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		final JToolBar filterToolbar = new FreeplaneToolBar();
 		filterToolbar.setVisible(false);
 		filterToolbar.setFocusable(false);
-		filterToolbar.add(new JLabel(FreeplaneResourceBundle.getText("filter_toolbar") + " "));
+		filterToolbar.add(new JLabel(FreeplaneResourceBundle.getText("ShowFilterToolbarAction.text") + " "));
 		final JButton undoBtn = new JButton(FpStringUtils.removeMnemonic(FreeplaneResourceBundle
 		    .getText("UndoAction.text")));
 		undoBtn.addActionListener(new UndoFilterAction(this));
@@ -212,8 +212,8 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		    .getText("RedoAction.text")));
 		redoBtn.addActionListener(new RedoFilterAction(this));
 		filterToolbar.add(redoBtn);
-		final JButton btnUnfoldAncestors = new JButton(new UnfoldAncestorsAction(this));
-		btnUnfoldAncestors.setToolTipText(FreeplaneResourceBundle.getText("filter_unfold_ancestors"));
+		final JButton btnUnfoldAncestors = new JButton(new UnfoldFilteredAncestorsAction(this));
+		btnUnfoldAncestors.setToolTipText(FreeplaneResourceBundle.getText("UnfoldFilteredAncestorsAction.text"));
 		filterToolbar.add(btnUnfoldAncestors);
 		final JCheckBox showAncestorsBox = new JCheckBox(FreeplaneResourceBundle.getText("ShowAncestorsAction.text"));
 		showAncestorsBox.setModel(showAncestors);

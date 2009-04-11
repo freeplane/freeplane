@@ -267,7 +267,7 @@ public class MFileManager extends UrlManager {
 			chooser.setSelectedFile(new File(getFileNameProposal(map)
 			        + org.freeplane.core.resources.ResourceControllerProperties.FREEPLANE_FILE_EXTENSION));
 		}
-		chooser.setDialogTitle(FreeplaneResourceBundle.getText("save_as"));
+		chooser.setDialogTitle(FreeplaneResourceBundle.getText("SaveAsAction.text"));
 		final int returnVal = chooser.showSaveDialog(getController().getViewController().getMapView());
 		if (returnVal != JFileChooser.APPROVE_OPTION) {
 			return false;

@@ -46,7 +46,7 @@ class RemoveIconAction extends MultipleNodeAction implements IIconInformation {
 	/**
 	 */
 	public RemoveIconAction(final Controller controller) {
-		super("RemoveLastIconAction", controller);
+		super("RemoveLastIconAction", controller, null, null);
 	}
 
 	@Override

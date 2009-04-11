@@ -145,7 +145,7 @@ public class FreeplaneResourceBundle extends ResourceBundle {
 	String getResourceString(final String key) {
 		final String resourceString = getResourceString(key, key);
 		if (resourceString == key) {
-			System.out.println("missing key " + key);
+			System.err.println("missing key " + key);
 			return '[' + key + ']';
 		}
 		return resourceString;

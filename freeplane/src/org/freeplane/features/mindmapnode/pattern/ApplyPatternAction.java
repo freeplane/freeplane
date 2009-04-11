@@ -75,7 +75,7 @@ class ApplyPatternAction extends MultipleNodeAction {
 	final private Pattern mpattern;
 
 	public ApplyPatternAction(final ModeController controller, final Pattern pattern) {
-		super(controller.getController(), pattern.getName(), null);
+		super("ApplyPatternAction." + pattern.getName(), controller.getController(), pattern.getName(), null);
 		mpattern = pattern;
 	}
 
@@ -201,10 +201,5 @@ class ApplyPatternAction extends MultipleNodeAction {
 	 */
 	public Pattern getPattern() {
 		return mpattern;
-	}
-
-	@Override
-	public String getShortcutKey() {
-		return "ApplyPatternAction." + mpattern.getName() + ".shortcut";
 	}
 }

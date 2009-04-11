@@ -31,7 +31,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
  * @author Dimitry Polivaev
  * Mar 28, 2009
  */
-class UnfoldAncestorsAction extends AFreeplaneAction {
+class UnfoldFilteredAncestorsAction extends AFreeplaneAction {
 	/**
 	 * 
 	 */
@@ -45,8 +45,8 @@ class UnfoldAncestorsAction extends AFreeplaneAction {
 	 * @param filterController TODO
 	 *
 	 */
-	UnfoldAncestorsAction(final FilterController filterController) {
-		super("UnfoldAncestorsAction", filterController.getController());
+	UnfoldFilteredAncestorsAction(final FilterController filterController) {
+		super("UnfoldFilteredAncestorsAction", filterController.getController());
 		this.filterController = filterController;
 	}
 

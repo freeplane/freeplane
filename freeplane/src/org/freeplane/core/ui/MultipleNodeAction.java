@@ -30,8 +30,8 @@ import org.freeplane.core.model.NodeModel;
  * @author Dimitry Polivaev
  */
 public abstract class MultipleNodeAction extends AFreeplaneAction {
-	public MultipleNodeAction(final Controller controller, final String name, final ImageIcon imageIcon) {
-		super(controller, name, imageIcon);
+	public MultipleNodeAction(String key, final Controller controller, final String name, final ImageIcon imageIcon) {
+		super(key, controller, name, imageIcon);
 	}
 
 	public MultipleNodeAction(final String key, final Controller controller) {

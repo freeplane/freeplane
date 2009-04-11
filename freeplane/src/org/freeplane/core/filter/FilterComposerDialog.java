@@ -373,7 +373,7 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 	private class SaveAction implements ActionListener {
 		public void actionPerformed(final ActionEvent e) {
 			final JFileChooser chooser = getFileChooser();
-			chooser.setDialogTitle(FreeplaneResourceBundle.getText("save_as"));
+			chooser.setDialogTitle(FreeplaneResourceBundle.getText("SaveAsAction.text"));
 			final int returnVal = chooser.showSaveDialog(FilterComposerDialog.this);
 			if (returnVal != JFileChooser.APPROVE_OPTION) {
 				return;
@@ -515,7 +515,7 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 		if (!controller.getViewController().isApplet()) {
 			final ActionListener saveAction = new SaveAction();
 			btnSave = new JButton();
-			MenuBuilder.setLabelAndMnemonic(btnSave, FreeplaneResourceBundle.getText("save"));
+			MenuBuilder.setLabelAndMnemonic(btnSave, FreeplaneResourceBundle.getText("SaveAction.text"));
 			btnSave.addActionListener(saveAction);
 			btnSave.setMaximumSize(FilterComposerDialog.maxButtonDimension);
 			final ActionListener loadAction = new LoadAction();

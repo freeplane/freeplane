@@ -99,13 +99,13 @@ public abstract class AFreeplaneAction extends AbstractAction {
 	//		this(controller);
 	//	}
 	//
-	public AFreeplaneAction(final Controller controller, final String title, final ImageIcon icon) {
+	public AFreeplaneAction(String key, final Controller controller, final String title, final ImageIcon icon) {
 		this.controller = controller;
 		putValue(SMALL_ICON, icon);
 		if (title != null && !title.equals("")) {
 			MenuBuilder.setLabelAndMnemonic(this, title);
 		}
-		key = null;
+		this.key = key;
 	}
 
 	//
@@ -138,7 +138,7 @@ public abstract class AFreeplaneAction extends AbstractAction {
 			putValue(Action.SHORT_DESCRIPTION, tooltip);
 			putValue(Action.LONG_DESCRIPTION, tooltip);
 		}
-		System.out.println(key);
+//		System.out.println(key);
 	}
 
 	public Controller getController() {
