@@ -23,7 +23,7 @@ public class AController {
 		//System.out.println("key\t\t" + value.getClass().getSimpleName() + "\t\ts/\\\"" + pattern + "\\\"/\\\"" + value.getClass().getSimpleName() + "\\\"/;");		
 		if (old != null && !old.equals(value)) {
 			getActions().put(key, old);
-			throw new RuntimeException("action " + key + "already registered");
+			throw new RuntimeException("action " + key + " already registered");
 		}
 	}
 

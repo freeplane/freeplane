@@ -94,4 +94,7 @@ class RemoveIconAction extends MultipleNodeAction implements IIconInformation {
 		getModeController().execute(actor);
 		return node.getIcons().size();
 	}
+	public String getShortcutKey() {
+	    return getKey() + ".shortcut";
+    }
 }

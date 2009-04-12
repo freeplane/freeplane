@@ -172,24 +172,6 @@ public class GrabKeyDialog extends JDialog {
 	 * 
 	 * @since jEdit 3.2pre8
 	 */
-	public static class KeyBinding {
-		public boolean isPrefix;
-		public String label;
-		public String name;
-		public String shortcut;
-
-		public KeyBinding(final String name, final String label, final String shortcut, final boolean isPrefix) {
-			this.name = name;
-			this.label = label;
-			this.shortcut = shortcut;
-			this.isPrefix = isPrefix;
-		}
-
-		public boolean isAssigned() {
-			return shortcut != null && shortcut.length() > 0;
-		}
-	}
-
 	public final static String MODIFIER_SEPARATOR = " ";
 	/**
 	 * 
@@ -235,14 +217,14 @@ public class GrabKeyDialog extends JDialog {
 	private InputPane shortcut;
 	private int modifierMask;
 
-	public GrabKeyDialog(final Dialog parent, int modifierMask) {
+	public GrabKeyDialog(final Dialog parent, String input, int modifierMask) {
 		super(parent, getText("grab-key.title"), true);
-		init(modifierMask);
+		init(input, modifierMask);
 	}
 
-	public GrabKeyDialog(final Frame parent) {
+	public GrabKeyDialog(final Frame parent, String input) {
 		super(parent, getText("grab-key.title"), true);
-		init(modifierMask);
+		init(input, 0);
 	}
 
 	/**
@@ -301,7 +283,7 @@ public class GrabKeyDialog extends JDialog {
 		return FreeplaneResourceBundle.getText("GrabKeyDialog." + resourceString);
 	}
 
-	private void init(int modifierMask) {
+	private void init(String inputText, int modifierMask) {
 		this.modifierMask = modifierMask;
 		enableEvents(AWTEvent.KEY_EVENT_MASK);
 		final JPanel content = new JPanel(new GridLayout(0, 1, 0, 6)) {
@@ -334,6 +316,9 @@ public class GrabKeyDialog extends JDialog {
 		new JLabel(getText("grab-key.caption"));
 		final Box input = Box.createHorizontalBox();
 		shortcut = new InputPane();
+		if(inputText != null){
+			shortcut.setText(inputText);
+		}
 		input.add(shortcut);
 		input.add(Box.createHorizontalStrut(12));
 		clear = new JButton((getText("grab-key.clear")));

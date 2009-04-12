@@ -80,4 +80,8 @@ class IconAction extends MultipleNodeAction implements IIconInformation {
 	public MindIcon getMindIcon() {
 		return icon;
 	}
+
+	public String getShortcutKey() {
+	    return icon.getShortcutKey();
+    }
 }

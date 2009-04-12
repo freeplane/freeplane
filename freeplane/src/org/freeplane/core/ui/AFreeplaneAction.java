@@ -157,10 +157,6 @@ public abstract class AFreeplaneAction extends AbstractAction {
 		return controller.getModeController();
 	}
 
-	public String getShortcutKey() {
-		return key == null ? null : key + ".shortcut";
-	}
-
 	final String getTextKey() {
 		return key + ".text";
 	}

@@ -72,4 +72,8 @@ class RemoveAllIconsAction extends MultipleNodeAction implements IIconInformatio
 			iconController.removeIcon(node, 0);
 		}
 	}
+
+	public String getShortcutKey() {
+	    return getKey() + ".shortcut";
+    }
 }

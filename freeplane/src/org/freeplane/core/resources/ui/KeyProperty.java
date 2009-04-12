@@ -31,6 +31,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.core.resources.FpStringUtils;
+import org.freeplane.core.ui.components.UITools;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.RowSpec;
@@ -65,7 +66,7 @@ public class KeyProperty extends PropertyBean implements IPropertyControl {
 		mButton.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent arg0) {
 				final Dialog dialog = (Dialog) SwingUtilities.getAncestorOfClass(Dialog.class, builder.getContainer());
-				final GrabKeyDialog keyDialog = new GrabKeyDialog(dialog, modifierMask);
+				final GrabKeyDialog keyDialog = new GrabKeyDialog(dialog, getValue(), modifierMask);
 				keyDialog.setVisible(true);
 				if (keyDialog.isOK()) {
 					setValue(keyDialog.getShortcut());

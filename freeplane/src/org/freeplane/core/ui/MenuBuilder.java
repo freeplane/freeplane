@@ -450,8 +450,10 @@ public class MenuBuilder extends UIBuilder {
 
 		private void newAccelerator(final JMenuItem editedItem) {
 	        Frame frame = JOptionPane.getFrameForComponent(editedItem);
-			final GrabKeyDialog grabKeyDialog = new  GrabKeyDialog (frame);
 			final Object key = getKeyByUserObject(editedItem);
+			String shortcutKey = getShortcutKey(key.toString());
+			final GrabKeyDialog grabKeyDialog = new GrabKeyDialog(frame, 
+				ResourceController.getResourceController().getProperty(shortcutKey));
 			grabKeyDialog.setValidator(new IKeystrokeValidator(){
 				public boolean isValid(KeyStroke keystroke) {
 					if(keystroke == null){
@@ -469,7 +471,7 @@ public class MenuBuilder extends UIBuilder {
 							JMenu menu = menuBar.getMenu(i);
 							char c = (char) menu.getMnemonic();
 							if(Character.toLowerCase(keystroke.getKeyCode()) == Character.toLowerCase(c)){
-								JOptionPane.showMessageDialog (grabKeyDialog, menu.getText(), "used_in_menu", JOptionPane.WARNING_MESSAGE);
+								JOptionPane.showMessageDialog (grabKeyDialog, menu.getText(), FreeplaneResourceBundle.getText("used_in_menu"), JOptionPane.WARNING_MESSAGE);
 								return false;
 							}
 						}
@@ -488,7 +490,7 @@ public class MenuBuilder extends UIBuilder {
 								if(editedItem.equals(menuItem)){
 									return true;
 								}
-								int replace = JOptionPane.showConfirmDialog(grabKeyDialog, menuItem.getText(), "remove shortcut?", JOptionPane.YES_NO_OPTION);
+								int replace = JOptionPane.showConfirmDialog(grabKeyDialog, menuItem.getText(), FreeplaneResourceBundle.getText("remove_shortcut_question"), JOptionPane.YES_NO_OPTION);
 								if(replace == JOptionPane.YES_OPTION){
 									menuItem.setAccelerator(null);
 									String shortcutKey = getShortcutKey(menuItemNode.getKey().toString());
@@ -509,7 +511,6 @@ public class MenuBuilder extends UIBuilder {
 				String shortcut = grabKeyDialog.getShortcut();
 				KeyStroke accelerator = UITools.getKeyStroke(shortcut);
 				editedItem.setAccelerator(accelerator);
-				String shortcutKey = getShortcutKey(key.toString());
 				ResourceController.getResourceController().setProperty(shortcutKey, shortcut);
 			}
         }

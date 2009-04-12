@@ -53,6 +53,16 @@
 					 />
 			</menu_submenu>
 		</menu_submenu>
+		<menu_submenu name="filter" name_ref="filter">
+			<menu_action action="ShowFilterToolbarAction" /> 
+			<menu_action action="UnfoldFilteredAncestorsAction" /> 
+			<menu_action action="ApplyNoFilteringAction" /> 
+			<menu_action action="ApplySelectedViewConditionAction" /> 
+			<menu_action action="EditFilterAction" /> 
+			<menu_action action="UndoFilterAction" /> 
+			<menu_action action="RedoFilterAction" /> 
+			<menu_action action="ReapplyFilterAction" /> 
+		</menu_submenu>
 		<menu_submenu name="navigate" name_ref="menu_navigate">
 			<menu_category name="navigate">
 				<menu_action action="NavigationPreviousMapAction" accelerator="alt shift LEFT" />

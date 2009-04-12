@@ -26,7 +26,7 @@ import javax.swing.JToggleButton;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 
-@SelectableAction
+@SelectableAction(checkOnPopup=true)
 class ShowFilterToolbarAction extends AFreeplaneAction {
 	/**
 	 * 
@@ -46,12 +46,18 @@ class ShowFilterToolbarAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent event) {
-		final JToggleButton btnFilter = (JToggleButton) event.getSource();
-		if (btnFilter.getModel().isSelected()) {
+		if (! isSelected()) {
 			filterController.showFilterToolbar(true);
 		}
 		else {
 			filterController.showFilterToolbar(false);
 		}
 	}
+
+	@Override
+    public void setSelected() {
+		setSelected(filterController.getFilterToolbar().isVisible());
+    }
+	
+	
 }
