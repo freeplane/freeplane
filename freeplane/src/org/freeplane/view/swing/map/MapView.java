@@ -51,7 +51,9 @@ import java.util.Vector;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.JRootPane;
 import javax.swing.JViewport;
+import javax.swing.SwingUtilities;
 
 import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
@@ -790,17 +792,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	private boolean isReady() {
-		Component c = this;
-		do {
-			c = c.getParent();
-			if (!c.isValid()) {
-				return false;
-			}
-			if (c instanceof JComponent && ((JComponent) c).isValidateRoot()) {
-				return true;
-			}
-		} while (c != null);
-		return false;
+		JRootPane rootPane = SwingUtilities.getRootPane(this);
+		return rootPane != null && rootPane.isValid();
 	}
 
 	public boolean isSelected(final NodeView n) {

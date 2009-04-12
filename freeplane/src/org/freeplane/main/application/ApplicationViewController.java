@@ -206,7 +206,6 @@ class ApplicationViewController extends ViewController {
 		    .parseInt(ResourceController.getResourceController().getProperty("appwindow_state", "0"));
 		win_state = ((win_state & Frame.ICONIFIED) != 0) ? Frame.NORMAL : win_state;
 		frame.setExtendedState(win_state);
-		frame.getRootPane().revalidate();
 	}
 
 	@Override

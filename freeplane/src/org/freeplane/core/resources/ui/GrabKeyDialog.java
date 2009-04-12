@@ -19,34 +19,47 @@ package org.freeplane.core.resources.ui;
 
 import java.awt.AWTEvent;
 import java.awt.Dialog;
+import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.lang.reflect.Field;
 import java.util.Enumeration;
-import java.util.Vector;
 
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
 import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.ui.components.UITools;
 
 /**
  * A dialog for getting shortcut keys.
  */
 public class GrabKeyDialog extends JDialog {
+	private IKeystrokeValidator validator;
+	public IKeystrokeValidator getValidator() {
+    	return validator;
+    }
+
+	public void setValidator(IKeystrokeValidator validator) {
+    	this.validator = validator;
+    }
+
 	class ActionHandler implements ActionListener {
 		public void actionPerformed(final ActionEvent evt) {
 			if (evt.getSource() == ok) {
-				if (canClose()) {
+				if (canClose(UITools.getKeyStroke(shortcut.getText()))) {
+					isOK = true;
 					dispose();
 				}
 			}
@@ -60,53 +73,11 @@ public class GrabKeyDialog extends JDialog {
 			}
 			else if (evt.getSource() == clear) {
 				shortcut.setText(null);
-				if (debugBuffer == null) {
-					updateAssignedTo(null);
-				}
 				shortcut.requestFocus();
 			}
 		}
 
-		private boolean canClose() {
-			final String shortcutString = shortcut.getText();
-			if (shortcutString.length() == 0 && binding.isAssigned()) {
-				final int answer = JOptionPane.showConfirmDialog(GrabKeyDialog.this, getText("grab-key.remove-ask"),
-				    null, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-				if (answer == JOptionPane.YES_OPTION) {
-					shortcut.setText(null);
-					isOK = true;
-				}
-				else {
-					return false;
-				}
-			}
-			final KeyBinding other = getKeyBinding(shortcutString);
-			if (other == null || other == binding) {
-				isOK = true;
-				return true;
-			}
-			if (other.name == binding.name) {
-				JOptionPane.showMessageDialog(GrabKeyDialog.this, getText("grab-key.duplicate-alt-shortcut"));
-				return false;
-			}
-			if (other.isPrefix) {
-				JOptionPane.showMessageDialog(GrabKeyDialog.this, getText("grab-key.prefix-shortcut"));
-				return false;
-			}
-			final int answer = JOptionPane.showConfirmDialog(GrabKeyDialog.this, getText("grab-key.duplicate-shortcut")
-			        + new Object[] { other.label }, null, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-			if (answer == JOptionPane.YES_OPTION) {
-				if (other.shortcut != null && shortcutString.startsWith(other.shortcut)) {
-					other.shortcut = null;
-				}
-				isOK = true;
-				return true;
-			}
-			else {
-				return false;
-			}
 		}
-	}
 
 	private static class Buffer {
 		/**
@@ -149,10 +120,6 @@ public class GrabKeyDialog extends JDialog {
 				return;
 			}
 			final KeyEvent evt = KeyEventWorkaround.processKeyEvent(_evt);
-			if (debugBuffer != null) {
-				debugBuffer.insert(debugBuffer.getLength(), "Event " + GrabKeyDialog.toString(_evt)
-				        + (evt == null ? " filtered\n" : " passed\n"));
-			}
 			if (evt == null) {
 				return;
 			}
@@ -160,9 +127,6 @@ public class GrabKeyDialog extends JDialog {
 			final KeyEventTranslator.Key key = KeyEventTranslator.translateKeyEvent(evt);
 			if (key == null) {
 				return;
-			}
-			if (debugBuffer != null) {
-				debugBuffer.insert(debugBuffer.getLength(), "==> Translated to " + key + "\n");
 			}
 			final StringBuffer keyString = new StringBuffer(/* getText() */);
 			if (key.modifiers != null) {
@@ -182,10 +146,12 @@ public class GrabKeyDialog extends JDialog {
 				keyString.append(symbolicName);
 			}
 			setText(keyString.toString());
-			if (debugBuffer == null) {
-				updateAssignedTo(keyString.toString());
-			}
+			updateAssignedTo(keyString.toString());
 		}
+
+		private int getModifierMask() {
+	        return modifierMask;
+        }
 	}
 
 	/**
@@ -236,6 +202,10 @@ public class GrabKeyDialog extends JDialog {
 		return false;
 	}
 
+	public boolean canClose(KeyStroke ks) {
+	    return validator == null || validator.isValid(ks);
+    }
+
 	public static String toString(final KeyEvent evt) {
 		String id;
 		switch (evt.getID()) {
@@ -256,24 +226,23 @@ public class GrabKeyDialog extends JDialog {
 		        + Integer.toString(evt.getKeyChar(), 16) + ",modifiers=0x" + Integer.toString(evt.getModifiers(), 16);
 	}
 
-	private Vector allBindings;
 	private JLabel assignedTo;
-	private KeyBinding binding;
 	private JButton cancel;
 	private JButton clear;
-	private Buffer debugBuffer;
 	private boolean isOK;
-	final private int modifierMask;
 	private JButton ok;
 	private JButton remove;
 	private InputPane shortcut;
+	private int modifierMask;
 
-	public GrabKeyDialog(final Dialog parent, final KeyBinding binding, final Vector allBindings,
-	                     final Buffer debugBuffer, final int modifierMask) {
-		super(parent, "grab-key.title", true);
-		this.modifierMask = modifierMask;
-		setTitle(getText("grab-key.title"));
-		init(binding, allBindings, debugBuffer);
+	public GrabKeyDialog(final Dialog parent, int modifierMask) {
+		super(parent, getText("grab-key.title"), true);
+		init(modifierMask);
+	}
+
+	public GrabKeyDialog(final Frame parent) {
+		super(parent, getText("grab-key.title"), true);
+		init(modifierMask);
 	}
 
 	/**
@@ -284,32 +253,6 @@ public class GrabKeyDialog extends JDialog {
 	@Override
 	public boolean getFocusTraversalKeysEnabled() {
 		return false;
-	}
-
-	private KeyBinding getKeyBinding(final String shortcut) {
-		if (shortcut == null || shortcut.length() == 0) {
-			return null;
-		}
-		final String spacedShortcut = shortcut + " ";
-		final Enumeration e = allBindings.elements();
-		while (e.hasMoreElements()) {
-			final KeyBinding kb = (KeyBinding) e.nextElement();
-			if (!kb.isAssigned()) {
-				continue;
-			}
-			final String spacedKbShortcut = kb.shortcut + " ";
-			if (spacedShortcut.startsWith(spacedKbShortcut)) {
-				return kb;
-			}
-			if (spacedKbShortcut.startsWith(spacedShortcut)) {
-				return new KeyBinding(kb.name, kb.label, shortcut, true);
-			}
-		}
-		return null;
-	}
-
-	private int getModifierMask() {
-		return modifierMask;
 	}
 
 	/**
@@ -354,14 +297,12 @@ public class GrabKeyDialog extends JDialog {
 
 	/**
 	 */
-	private String getText(final String resourceString) {
+	private static String getText(final String resourceString) {
 		return FreeplaneResourceBundle.getText("GrabKeyDialog." + resourceString);
 	}
 
-	private void init(final KeyBinding binding, final Vector allBindings, final Buffer debugBuffer) {
-		this.binding = binding;
-		this.allBindings = allBindings;
-		this.debugBuffer = debugBuffer;
+	private void init(int modifierMask) {
+		this.modifierMask = modifierMask;
 		enableEvents(AWTEvent.KEY_EVENT_MASK);
 		final JPanel content = new JPanel(new GridLayout(0, 1, 0, 6)) {
 			/**
@@ -390,8 +331,7 @@ public class GrabKeyDialog extends JDialog {
 		};
 		content.setBorder(new EmptyBorder(12, 12, 12, 12));
 		setContentPane(content);
-		new JLabel(debugBuffer == null ? (getText("grab-key.caption") + " " + binding.label)
-		        : (getText("grab-key.keyboard-test")));
+		new JLabel(getText("grab-key.caption"));
 		final Box input = Box.createHorizontalBox();
 		shortcut = new InputPane();
 		input.add(shortcut);
@@ -400,22 +340,13 @@ public class GrabKeyDialog extends JDialog {
 		clear.addActionListener(new ActionHandler());
 		input.add(clear);
 		assignedTo = new JLabel();
-		if (debugBuffer == null) {
 			updateAssignedTo(null);
-		}
 		final Box buttons = Box.createHorizontalBox();
 		buttons.add(Box.createGlue());
-		if (debugBuffer == null) {
-			ok = new JButton(getText("common.ok"));
-			ok.addActionListener(new ActionHandler());
-			buttons.add(ok);
-			buttons.add(Box.createHorizontalStrut(12));
-			if (binding.isAssigned()) {
-				remove = new JButton((getText("grab-key.remove")));
-				remove.addActionListener(new ActionHandler());
-				buttons.add(Box.createHorizontalStrut(12));
-			}
-		}
+		ok = new JButton(getText("common.ok"));
+		ok.addActionListener(new ActionHandler());
+		buttons.add(ok);
+		buttons.add(Box.createHorizontalStrut(12));
 		cancel = new JButton(getText("common.cancel"));
 		cancel.addActionListener(new ActionHandler());
 		buttons.add(cancel);
@@ -426,7 +357,6 @@ public class GrabKeyDialog extends JDialog {
 		pack();
 		setLocationRelativeTo(getParent());
 		setResizable(false);
-		setVisible(true);
 	}
 
 	/**
@@ -453,17 +383,8 @@ public class GrabKeyDialog extends JDialog {
 
 	private void updateAssignedTo(final String shortcut) {
 		String text = (getText("grab-key.assigned-to.none"));
-		final KeyBinding kb = getKeyBinding(shortcut);
-		if (kb != null) {
-			if (kb.isPrefix) {
-				text = getText("grab-key.assigned-to.prefix") + " " + shortcut;
-			}
-			else {
-				text = kb.label;
-			}
-		}
 		if (ok != null) {
-			ok.setEnabled(kb == null || !kb.isPrefix);
+			ok.setEnabled(true);
 		}
 		assignedTo.setText((getText("grab-key.assigned-to") + " " + text));
 	}

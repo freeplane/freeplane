@@ -135,6 +135,7 @@ public class FreeplaneStarter {
 				if (splash != null) {
 					splash.setVisible(false);
 				}
+//				frame.getRootPane().revalidate();
 				controller.getViewController().getFrame().setVisible(true);
 			}
 		});

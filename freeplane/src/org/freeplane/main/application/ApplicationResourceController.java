@@ -266,6 +266,12 @@ class ApplicationResourceController extends ResourceController {
 	@Override
 	public void setProperty(final String key, final String value) {
 		final String oldValue = getProperty(key);
+		if(oldValue == value){
+			return;
+		}
+		if(oldValue != null && oldValue.equals(value)){
+			return;
+		}
 		props.setProperty(key, value);
 		firePropertyChanged(key, value, oldValue);
 	}
