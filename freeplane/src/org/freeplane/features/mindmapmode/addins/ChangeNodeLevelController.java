@@ -33,7 +33,8 @@ import org.freeplane.features.mindmapmode.MMapController;
  * @author foltin
  */
 public class ChangeNodeLevelController {
-	@ActionLocationDescriptor(locations = { "/menu_bar/navigate/nodes" })
+	@ActionLocationDescriptor(locations = { "/menu_bar/navigate/nodes" }, //
+		accelerator="control LEFT")
 	private class ChangeNodeLevelLeftsAction extends AFreeplaneAction {
 		/**
 		 * 
@@ -56,7 +57,8 @@ public class ChangeNodeLevelController {
 		}
 	}
 
-	@ActionLocationDescriptor(locations = { "/menu_bar/navigate/nodes" })
+	@ActionLocationDescriptor(locations = { "/menu_bar/navigate/nodes" }, //
+		accelerator="control RIGHT")
 	private class ChangeNodeLevelRightsAction extends AFreeplaneAction {
 		/**
 		 * 

@@ -35,7 +35,8 @@ import org.freeplane.features.mindmapnode.pattern.StylePatternFactory;
 /**
  * @author foltin
  */
-@ActionLocationDescriptor(locations = { "/menu_bar/edit/paste" })
+@ActionLocationDescriptor(locations = { "/menu_bar/edit/paste" }, //
+	accelerator="alt C")
 class FormatCopy extends AFreeplaneAction {
 	private static Pattern pattern = null;
 	/**
@@ -65,7 +66,8 @@ class FormatCopy extends AFreeplaneAction {
 /**
  * @author foltin
  */
-@ActionLocationDescriptor(locations = { "/menu_bar/edit/paste" })
+@ActionLocationDescriptor(locations = { "/menu_bar/edit/paste" }, //
+	accelerator="alt V")
 public class FormatPaste extends MultipleNodeAction {
 	/**
 	 * 

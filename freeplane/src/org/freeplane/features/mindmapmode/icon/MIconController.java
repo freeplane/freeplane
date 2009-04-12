@@ -43,6 +43,7 @@ import org.freeplane.core.resources.ui.IPropertyControl;
 import org.freeplane.core.resources.ui.IPropertyControlCreator;
 import org.freeplane.core.resources.ui.KeyProperty;
 import org.freeplane.core.resources.ui.OptionPanelBuilder;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
@@ -57,7 +58,7 @@ import org.freeplane.view.swing.ui.UserInputListenerFactory;
  * @author Dimitry Polivaev
  */
 public class MIconController extends IconController {
-	static final private List<Action> iconActions = new Vector<Action>();
+	static final private List<AFreeplaneAction> iconActions = new Vector<AFreeplaneAction>();
 	final private JToolBar iconToolBar;
 	final private JAutoScrollBarPane iconToolBarScrollPane;
 
@@ -93,13 +94,13 @@ public class MIconController extends IconController {
 	}
 
 	public void addIconsToMenu(final MenuBuilder builder, final String iconMenuString) {
-		builder.addMenuItem(iconMenuString + "/icons", new JMenuItem(getModeController().getAction(
-		    "RemoveLastIconAction")), MenuBuilder.AS_CHILD);
-		builder.addMenuItem(iconMenuString + "/icons", new JMenuItem(getModeController().getAction(
-		    "RemoveAllIconsAction")), MenuBuilder.AS_CHILD);
+		builder.addAction(iconMenuString + "/icons", getModeController().getAction(
+		    "RemoveIconAction"), MenuBuilder.AS_CHILD);
+		builder.addAction(iconMenuString + "/icons", getModeController().getAction(
+		    "RemoveAllIconsAction"), MenuBuilder.AS_CHILD);
 		builder.addSeparator(iconMenuString + "/icons", MenuBuilder.AS_CHILD);
 		for (int i = 0; i < iconActions.size(); ++i) {
-			builder.addMenuItem(iconMenuString + "/icons", new JMenuItem(iconActions.get(i)), MenuBuilder.AS_CHILD);
+			builder.addAction(iconMenuString + "/icons", iconActions.get(i), MenuBuilder.AS_CHILD);
 		}
 	}
 
@@ -141,7 +142,7 @@ public class MIconController extends IconController {
 		actions.addAll(iconActions);
 		final MModeController modeController = (MModeController) getModeController();
 		final OptionPanelBuilder optionPanelBuilder = modeController.getOptionPanelBuilder();
-		actions.add(modeController.getAction("RemoveLastIconAction"));
+		actions.add(modeController.getAction("RemoveIconAction"));
 		actions.add(modeController.getAction("RemoveAllIconsAction"));
 		final Iterator iterator = actions.iterator();
 		while (iterator.hasNext()) {
@@ -158,7 +159,7 @@ public class MIconController extends IconController {
 		}
 	}
 
-	public Collection<Action> getIconActions() {
+	public Collection<AFreeplaneAction> getIconActions() {
 		return Collections.unmodifiableCollection(iconActions);
 	}
 
@@ -171,8 +172,8 @@ public class MIconController extends IconController {
 
 	public Collection getMindIcons() {
 		final Vector iconInformationVector = new Vector();
-		final Collection<Action> iconActions = getIconActions();
-		for (final Iterator<Action> i = iconActions.iterator(); i.hasNext();) {
+		final Collection<AFreeplaneAction> iconActions = getIconActions();
+		for (final Iterator<AFreeplaneAction> i = iconActions.iterator(); i.hasNext();) {
 			final Action action = i.next();
 			final MindIcon info = ((IconAction) action).getMindIcon();
 			iconInformationVector.add(info);
@@ -185,7 +186,7 @@ public class MIconController extends IconController {
 	}
 
 	public int removeIcon(final NodeModel node, final int position) {
-		return ((RemoveIconAction) getModeController().getAction("RemoveLastIconAction")).removeIcon(node, position);
+		return ((RemoveIconAction) getModeController().getAction("RemoveIconAction")).removeIcon(node, position);
 	}
 
 	public void updateIconToolbar() {
@@ -194,7 +195,7 @@ public class MIconController extends IconController {
 
 	private void updateIconToolbar(final JToolBar iconToolBar) {
 		iconToolBar.removeAll();
-		iconToolBar.add(getModeController().getAction("RemoveLastIconAction"));
+		iconToolBar.add(getModeController().getAction("RemoveIconAction"));
 		iconToolBar.add(getModeController().getAction("RemoveAllIconsAction"));
 		iconToolBar.addSeparator();
 		for (int i = 0; i < iconActions.size(); ++i) {

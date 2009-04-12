@@ -20,28 +20,30 @@
 package org.freeplane.main.application;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.LogTool;
 
-class LastOpenedActionListener implements ActionListener {
-	final private Controller controller;
+class OpenLastOpenedAction extends AFreeplaneAction {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 	final private LastOpenedList list;
 
-	public LastOpenedActionListener(final Controller controller, final LastOpenedList list) {
-		super();
-		this.controller = controller;
+	public OpenLastOpenedAction(int i, String name, final Controller controller, final LastOpenedList list) {
+		super("OpenLastOpenedAction_" + i, controller, name, null);
 		this.list = list;
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final String restoreable = e.getActionCommand();
 		try {
-			list.open(controller, restoreable);
+			list.open(getController(), restoreable);
 		}
 		catch (final Exception ex) {
-			controller.errorMessage("An error occured on opening the file: " + restoreable + ".");
+			getController().errorMessage("An error occured on opening the file: " + restoreable + ".");
 			LogTool.logException(ex);
 		}
 	}

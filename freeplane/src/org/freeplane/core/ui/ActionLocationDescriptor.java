@@ -28,4 +28,5 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ActionLocationDescriptor {
 	String[] locations();
+	String accelerator() default "";
 }

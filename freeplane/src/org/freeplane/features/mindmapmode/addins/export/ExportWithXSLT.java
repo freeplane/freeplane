@@ -117,7 +117,7 @@ public class ExportWithXSLT extends ExportAction {
 				final ExportWithXSLT action = new ExportWithXSLT(name, modeController.getController(), properties);
 				modeController.addAction(action);
 				modeController.getUserInputListenerFactory().getMenuBuilder().addAction(location, action,
-				    location + "/" + name, MenuBuilder.AS_CHILD);
+				    MenuBuilder.AS_CHILD);
 			}
 		}
 		catch (final Exception e) {

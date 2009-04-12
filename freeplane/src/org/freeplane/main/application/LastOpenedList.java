@@ -44,6 +44,7 @@ import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.UIBuilder;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
@@ -140,18 +141,11 @@ class LastOpenedList implements IMapViewChangeListener {
 
 	public void updateMenus(final Controller controller, final MenuBuilder menuBuilder) {
 		menuBuilder.removeChildElements(FreeplaneMenuBar.FILE_MENU + "/last");
-		boolean firstElement = true;
+		int i = 1;
 		for (final ListIterator it = listIterator(); it.hasNext();) {
 			final String key = (String) it.next();
-			final JMenuItem item = new JMenuItem(key);
-			if (firstElement) {
-				firstElement = false;
-				item.setAccelerator(KeyStroke.getKeyStroke(ResourceController.getResourceController()
-				    .getAdjustableProperty("keystroke_open_first_in_history")));
-			}
-			final ActionListener lastOpenedActionListener = new LastOpenedActionListener(controller, this);
-			item.addActionListener(lastOpenedActionListener);
-			menuBuilder.addMenuItem(FreeplaneMenuBar.FILE_MENU + "/last", item, UIBuilder.AS_CHILD);
+			final AFreeplaneAction lastOpenedActionListener = new OpenLastOpenedAction(i++, key, controller, this);
+			menuBuilder.addAction(FreeplaneMenuBar.FILE_MENU + "/last", lastOpenedActionListener, UIBuilder.AS_CHILD);
 		}
 	}
 }

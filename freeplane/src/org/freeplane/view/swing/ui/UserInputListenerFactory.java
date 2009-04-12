@@ -48,6 +48,7 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.IMouseWheelEventHandler;
 import org.freeplane.core.ui.INodeMouseMotionListener;
@@ -299,13 +300,13 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	private void updateMapList(final String mapsMenuPosition) {
 		menuBuilder.removeChildElements(mapsMenuPosition);
 		final IMapViewManager mapViewManager = controller.getMapViewManager();
-		final List mapViewVector = mapViewManager.getMapViewVector();
+		final List<MapView> mapViewVector = mapViewManager.getMapViewVector();
 		if (mapViewVector == null) {
 			return;
 		}
-		final ButtonGroup group = new ButtonGroup();
-		for (final Iterator iterator = mapViewVector.iterator(); iterator.hasNext();) {
-			final MapView mapView = (MapView) iterator.next();
+		final ButtonGroup group = new ButtonGroup();	
+		int i = 0;
+		for (final MapView mapView : mapViewVector) {
 			final String displayName = mapView.getName();
 			final JRadioButtonMenuItem newItem = new JRadioButtonMenuItem(displayName);
 			newItem.setSelected(false);
@@ -318,7 +319,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 					newItem.setSelected(true);
 				}
 			}
-			menuBuilder.addMenuItem(mapsMenuPosition, newItem, UIBuilder.AS_CHILD);
+			menuBuilder.addMenuItem(mapsMenuPosition, newItem, mapsMenuPosition + '-' + i++, UIBuilder.AS_CHILD);
 		}
 	}
 
@@ -339,27 +340,21 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 
 	private void updateModeMenu() {
 		menuBuilder.removeChildElements(FreeplaneMenuBar.MODES_MENU);
-		final ButtonGroup group = new ButtonGroup();
-		final ActionListener modesMenuActionListener = new ModesMenuActionListener(controller);
 		final List keys = new LinkedList(controller.getModes());
 		for (final ListIterator i = keys.listIterator(); i.hasNext();) {
 			final String key = (String) i.next();
-			final JRadioButtonMenuItem newItem = new JRadioButtonMenuItem(key);
-			menuBuilder.addMenuItem(FreeplaneMenuBar.MODES_MENU, newItem, MenuBuilder.AS_CHILD);
-			group.add(newItem);
+			final AFreeplaneAction modesMenuActionListener = new ModesMenuActionListener(key, controller);
 			final ModeController modeController = controller.getModeController();
+			final boolean isSelected;
 			if (modeController != null) {
-				newItem.setSelected(modeController.getModeName().equals(key));
+				isSelected = modeController.getModeName().equals(key);
 			}
 			else {
-				newItem.setSelected(false);
+				isSelected = false;
 			}
+			menuBuilder.addRadioItem(FreeplaneMenuBar.MODES_MENU, modesMenuActionListener, isSelected);
 			final String keystroke = ResourceController.getResourceController().getAdjustableProperty(
 			    "keystroke_mode_" + key);
-			if (keystroke != null) {
-				newItem.setAccelerator(KeyStroke.getKeyStroke(keystroke));
-			}
-			newItem.addActionListener(modesMenuActionListener);
 		}
 	}
 }

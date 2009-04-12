@@ -37,7 +37,8 @@ import org.freeplane.features.mindmapmode.icon.MIconController;
 /**
  * @author adapted to the plugin mechanism by ganzer
  */
-@ActionLocationDescriptor(locations = { "/menu_bar/insert/icons" })
+@ActionLocationDescriptor(locations = { "/menu_bar/insert/icons" }, //
+	accelerator="alt I")
 public class IconSelectionPlugin extends AFreeplaneAction {
 	/**
 	 * 
@@ -53,10 +54,10 @@ public class IconSelectionPlugin extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		final ModeController modeController = getModeController();
 		final Vector actions = new Vector();
-		final Collection<Action> iconActions = ((MIconController) IconController.getController(modeController))
+		final Collection<AFreeplaneAction> iconActions = ((MIconController) IconController.getController(modeController))
 		    .getIconActions();
 		actions.addAll(iconActions);
-		actions.add(modeController.getAction("RemoveLastIconAction"));
+		actions.add(modeController.getAction("RemoveIconAction"));
 		actions.add(modeController.getAction("RemoveAllIconsAction"));
 		final ViewController viewController = getController().getViewController();
 		final IconSelectionPopupDialog selectionDialog = new IconSelectionPopupDialog(viewController.getJFrame(),

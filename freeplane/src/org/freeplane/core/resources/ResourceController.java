@@ -213,7 +213,7 @@ public abstract class ResourceController {
 
 	abstract public void saveProperties(Controller controller);
 
-	abstract protected void setDefaultProperty(final String key, final String value);
+	abstract public void setDefaultProperty(final String key, final String value);
 
 	abstract public void setProperty(final String property, final String value);
 

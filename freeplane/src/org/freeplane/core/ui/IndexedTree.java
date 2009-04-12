@@ -19,8 +19,12 @@
  */
 package org.freeplane.core.ui;
 
+import java.util.AbstractCollection;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.logging.Logger;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -73,18 +77,19 @@ public class IndexedTree {
 		return node;
 	}
 
-	public void addElement(final Object relativeKey, final Object element, final Object key, final int position) {
+	public DefaultMutableTreeNode addElement(final Object relativeKey, final Object element, final Object key, final int position) {
 		final DefaultMutableTreeNode existingNode = get(key);
 		if (existingNode != null) {
 			throw new RuntimeException(key.toString() + " added twice");
 		}
 		final DefaultMutableTreeNode relativeNode = getNode(relativeKey);
 		if (relativeNode == null) {
-			return;
+			return null;
 		}
 		final Node node = new Node(element, key);
 		addNode(relativeNode, node, position);
 		string2Element.put(key, node);
+		return node;
 	}
 
 	protected void addNode(final DefaultMutableTreeNode relativeNode, final DefaultMutableTreeNode node,
@@ -131,12 +136,74 @@ public class IndexedTree {
 		return (DefaultMutableTreeNode) object;
 	}
 
+	public Object getKeyByUserObject(Object object) {
+		Collection<Node> values = string2Element.values();
+		for (Node node : values) {
+			if (object != null && object.equals(node.getUserObject())) {
+				return node.getKey();
+			}
+		}
+		return null;
+	}
+
+	public Collection<Object> getUserObjects() {
+		return Collections.unmodifiableCollection(new UserObjects());
+	}
+
+	private final class UserObjects extends AbstractCollection<Object> {
+		public Iterator<Object> iterator() {
+			return newObjectIterator();
+		}
+
+		public int size() {
+			return string2Element.size();
+		}
+
+		public boolean contains(Object o) {
+			Iterator<Object> iterator = iterator();
+			while (iterator.hasNext()) {
+				Object next = iterator.next();
+				if (o != null) {
+					if (o.equals(next)) {
+						return true;
+					}
+				}
+				if (next == null) {
+					return true;
+				}
+			}
+			return false;
+		}
+
+		public void clear() {
+			string2Element.clear();
+		}
+	}
+
 	protected DefaultMutableTreeNode getNode(final Object key) {
 		final DefaultMutableTreeNode node = (string2Element.get(key));
 		if (node == null) {
 			Logger.global.warning(key + " not found");
 		}
 		return node;
+	}
+
+	public Iterator<Object> newObjectIterator() {
+		return new Iterator<Object>() {
+			private Iterator<Node> nodeIterator = string2Element.values().iterator();
+
+			public boolean hasNext() {
+				return nodeIterator.hasNext();
+			}
+
+			public Object next() {
+				return nodeIterator.next().getUserObject();
+			}
+
+			public void remove() {
+				nodeIterator.remove();
+			}
+		};
 	}
 
 	public DefaultMutableTreeNode getRoot() {

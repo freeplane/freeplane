@@ -54,11 +54,11 @@ public class ExportToImage extends ExportAction {
 		final ExportToImage pngExport = new ExportToImage(modeController.getController(), "png",
 		    "Portable Network Graphic (PNG)");
 		modeController.addAction(pngExport);
-		menuBuilder.addAction("/menu_bar/file/export/export", pngExport, "ExportToImage_PNG", MenuBuilder.AS_CHILD);
+		menuBuilder.addAction("/menu_bar/file/export/export", pngExport, MenuBuilder.AS_CHILD);
 		final ExportToImage jpgExport = new ExportToImage(modeController.getController(), "jpg",
 		    "Compressed image (JPEG)");
 		modeController.addAction(jpgExport);
-		menuBuilder.addAction("/menu_bar/file/export/export", jpgExport, "ExportToImage_JPEG", MenuBuilder.AS_CHILD);
+		menuBuilder.addAction("/menu_bar/file/export/export", jpgExport, MenuBuilder.AS_CHILD);
 	}
 
 	private final String imageDescripton;

@@ -150,10 +150,7 @@ public class MPatternController implements IExtension {
 		final String group = formatMenuString + "/patterns/patterns";
 		builder.removeChildElements(group);
 		for (int i = 0; i < patterns.length; ++i) {
-			final JMenuItem item = new JMenuItem(patterns[i]);
-			builder.addMenuItem(group, item, MenuBuilder.AS_CHILD);
-			item.setAccelerator(KeyStroke.getKeyStroke(ResourceController.getResourceController()
-			    .getAdjustableProperty("keystroke_apply_pattern_" + (i + 1))));
+			builder.addAction(group, patterns[i], MenuBuilder.AS_CHILD);
 		}
 	}
 

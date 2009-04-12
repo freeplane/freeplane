@@ -110,7 +110,7 @@ class AppletResourceController extends ResourceController {
 	}
 
 	@Override
-	protected void setDefaultProperty(final String key, final String value) {
+	public void setDefaultProperty(final String key, final String value) {
 		userProps.setProperty(key, value);
 	}
 

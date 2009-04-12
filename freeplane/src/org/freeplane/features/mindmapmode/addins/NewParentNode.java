@@ -42,7 +42,8 @@ import org.freeplane.features.mindmapmode.MMapController;
  *         The code simply performs these actions in sequence, after validating
  *         the selected nodes.
  */
-@ActionLocationDescriptor(locations = { "/menu_bar/insert/nodes" })
+@ActionLocationDescriptor(locations = { "/menu_bar/insert/nodes" }, //
+	accelerator="shift INSERT")
 public class NewParentNode extends AFreeplaneAction {
 	/**
 	 * 

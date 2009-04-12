@@ -3,25 +3,25 @@
 	<menu_category name="menu_bar">
 		<menu_submenu name="file" name_ref="file">
 			<menu_category name="close">
-				<menu_action action="CloseAction"  />
+				<menu_action action="CloseAction" accelerator="control W" />
 			</menu_category>
 			<menu_separator />
 			<menu_submenu name="last" name_ref="most_recent_files"></menu_submenu>
 			<menu_category name="print">
 				<menu_action action="PageAction" />
-				<menu_action action="PrintAction"  />
+				<menu_action action="PrintAction" accelerator="control P" />
 				<menu_action action="PrintPreviewAction"  />
 			</menu_category>
 			<menu_separator />
 			<menu_category name="quit">
-				<menu_action action="QuitAction"  />
+				<menu_action action="QuitAction" accelerator="control Q" />
 			</menu_category>
 			<menu_separator />
 		</menu_submenu>
 		<menu_submenu name="edit" name_ref="edit">
 			<menu_category name="find">
-				<menu_action action="FindAction"  />
-				<menu_action action="FindNextAction"  />
+				<menu_action action="FindAction" accelerator="control F"/>
+				<menu_action action="FindNextAction" accelerator="control G" />
 				<menu_action action="OpenPathAction"/>
 			</menu_category>
 		</menu_submenu>
@@ -32,20 +32,20 @@
 			<menu_category name="general">
 				<menu_action action="ShowSelectionAsRectangleAction" />
 			</menu_category>
-			<menu_action action="CenterSelectedNodeAction"  />
+			<menu_action action="CenterSelectedNodeAction" accelerator="control alt C" />
 			<menu_category name="zoom">
-				<menu_action action="ZoomInAction"  />
-				<menu_action action="ZoomOutAction"  />
+				<menu_action action="ZoomInAction" accelerator="alt UP" />
+				<menu_action action="ZoomOutAction" accelerator="alt DOWN" />
 			</menu_category>
 		</menu_submenu>
 		<menu_submenu name="navigate" name_ref="menu_navigate">
 			<menu_category name="navigate">
-				<menu_action action="NavigationPreviousMapAction"  />
-				<menu_action action="NavigationNextMapAction"  />
+				<menu_action action="NavigationPreviousMapAction" accelerator="alt shift LEFT" />
+				<menu_action action="NavigationNextMapAction" accelerator="alt shift RIGHT" />
 			</menu_category>
 			<menu_separator />
 			<menu_category name="nodes">
-				<menu_action action="MoveToRootAction"  />
+				<menu_action action="MoveToRootAction" accelerator="ESCAPE" />
 			</menu_category>
 			<menu_separator />
 			<menu_category name="folding">

@@ -45,7 +45,8 @@ import org.freeplane.n3.nanoxml.XMLElement;
 @NodeHookDescriptor(hookName = "plugins/TimeManagementReminder.xml", onceForMap = false)
 @ActionLocationDescriptor(locations = { "/menu_bar/extras/first/time_management" })
 public class ReminderHook extends PersistentNodeHook {
-	@ActionLocationDescriptor(locations = { "/menu_bar/edit/find" })
+	@ActionLocationDescriptor(locations = { "/menu_bar/edit/find" }, //
+		accelerator="control shift F")
 	static private class NodeListAction extends AFreeplaneAction {
 		/**
 		 * 
@@ -105,7 +106,8 @@ public class ReminderHook extends PersistentNodeHook {
 		}
 	}
 
-	@ActionLocationDescriptor(locations = { "/menu_bar/extras/first/time_management" })
+	@ActionLocationDescriptor(locations = { "/menu_bar/extras/first/time_management" }, //
+		accelerator = "control T")
 	static private class TimeManagementAction extends AFreeplaneAction {
 		/**
 		 * 

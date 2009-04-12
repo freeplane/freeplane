@@ -259,7 +259,7 @@ class ApplicationResourceController extends ResourceController {
 	}
 
 	@Override
-	protected void setDefaultProperty(final String key, final String value) {
+	public void setDefaultProperty(final String key, final String value) {
 		defProps.setProperty(key, value);
 	}
 

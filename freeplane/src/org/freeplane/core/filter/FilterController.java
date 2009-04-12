@@ -161,9 +161,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		history.clear();
 		if (newMap != null) {
 			final Filter filter = newMap.getFilter();
-			filterConditions.setSelectedItem(filter.getCondition());
-			showAncestors.setSelected(filter.areAncestorsShown());
-			showDescendants.setSelected(filter.areDescendantsShown());
+			updateSettingsFromFilter(filter);
 		}
 		else {
 			filterConditions.setSelectedItem(filterConditions.getElementAt(0));
@@ -402,7 +400,11 @@ public class FilterController implements IMapSelectionListener, IExtension {
 
 	void updateSettingsFromHistory() {
 		final Filter filter = history.getCurrentFilter();
-		filterConditions.removeListDataListener(filterChangeListener);
+		updateSettingsFromFilter(filter);
+	}
+
+	private void updateSettingsFromFilter(final Filter filter) {
+	    filterConditions.removeListDataListener(filterChangeListener);
 		showAncestors.removeActionListener(filterChangeListener);
 		showDescendants.removeActionListener(filterChangeListener);
 		filterConditions.setSelectedItem(filter.getCondition());
@@ -412,5 +414,5 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		filterConditions.addListDataListener(filterChangeListener);
 		showAncestors.addActionListener(filterChangeListener);
 		showDescendants.addActionListener(filterChangeListener);
-	}
+    }
 }
