@@ -69,11 +69,7 @@ public class FilterHistory {
 	}
 
 	private boolean isConditionStronger(final Filter oldFilter, final Filter newFilter) {
-		if (newFilter.isConditionStronger(oldFilter)) {
-			return true;
-		}
-		return newFilter.getCondition() instanceof SelectedViewSnapshotCondition
-		        && oldFilter.getCondition() instanceof SelectedViewSnapshotCondition;
+		return newFilter.isConditionStronger(oldFilter);
 	}
 
 	void redo() {

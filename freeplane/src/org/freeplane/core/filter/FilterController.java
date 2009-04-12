@@ -164,7 +164,12 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	}
 	
 	void applySelectedViewCondition(){
-		getFilterConditions().setSelectedItem(selectedViewCondition);
+		if(getFilterConditions().getSelectedItem() != selectedViewCondition){
+			getFilterConditions().setSelectedItem(selectedViewCondition);
+		}
+		else{
+			applyFilter(true);
+		}
 	}
 
 	/**
