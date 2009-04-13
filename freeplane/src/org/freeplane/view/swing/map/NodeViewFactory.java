@@ -34,6 +34,7 @@ import org.freeplane.features.common.nodestyle.NodeStyleModel;
 import org.freeplane.view.swing.map.edge.BezierEdgeView;
 import org.freeplane.view.swing.map.edge.EdgeView;
 import org.freeplane.view.swing.map.edge.HiddenEdgeView;
+import org.freeplane.view.swing.map.edge.HorizontalEdgeView;
 import org.freeplane.view.swing.map.edge.LinearEdgeView;
 import org.freeplane.view.swing.map.edge.SharpBezierEdgeView;
 import org.freeplane.view.swing.map.edge.SharpLinearEdgeView;
@@ -107,7 +108,8 @@ class NodeViewFactory {
 	}
 
 	private EdgeView bezierEdgeView;
-	private HiddenEdgeView hiddenEdgeView;
+	private EdgeView hiddenEdgeView;
+	private EdgeView horizontalEdgeView;
 	private EdgeView linearEdgeView;
 	private EdgeView sharpBezierEdgeView;
 	private EdgeView sharpLinearEdgeView;
@@ -141,6 +143,9 @@ class NodeViewFactory {
 		else if (edgeStyle.equals(EdgeStyle.EDGESTYLE_SHARP_BEZIER)) {
 			return getSharpBezierEdgeView();
 		}
+		else if (edgeStyle.equals(EdgeStyle.EDGESTYLE_HORIZONTAL)) {
+			return getHorizontalEdgeView();
+		}
 		else if (edgeStyle.equals(EdgeStyle.EDGESTYLE_HIDDEN)) {
 			return getHiddenEdgeView();
 		}
@@ -149,6 +154,13 @@ class NodeViewFactory {
 			return getLinearEdgeView();
 		}
 	}
+
+	private EdgeView getHorizontalEdgeView() {
+		if (horizontalEdgeView == null) {
+			horizontalEdgeView = new HorizontalEdgeView();
+		}
+		return horizontalEdgeView;
+    }
 
 	private EdgeView getHiddenEdgeView() {
 		if (hiddenEdgeView == null) {

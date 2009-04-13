@@ -185,6 +185,7 @@
 					<menu_radio_action action="EdgeStyleAction.bezier" />
 					<menu_radio_action action="EdgeStyleAction.sharp_linear" />
 					<menu_radio_action action="EdgeStyleAction.sharp_bezier" />
+					<menu_radio_action action="EdgeStyleAction.horizontal" />
 					<menu_radio_action action="EdgeStyleAction.hide_edge" />
 				</menu_submenu>
 				<menu_submenu name="widths" name_ref="format_menu_edge_widths">
