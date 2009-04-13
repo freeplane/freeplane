@@ -77,7 +77,7 @@ public class FreeplaneStarter {
 			splash = new FreeplaneSplashModern();
 			splash.setVisible(true);
 			feedBack = splash.getFeedBack();
-			feedBack.setMaximumValue(9);
+			feedBack.setMaximumValue(8);
 			Compat.useScreenMenuBar();
 			feedBack.increase(FreeplaneSplashModern.FREEPLANE_PROGRESS_UPDATE_LOOK_AND_FEEL);
 			Controller.setLookAndFeel(ResourceController.getResourceController().getProperty("lookandfeel"));
@@ -107,7 +107,6 @@ public class FreeplaneStarter {
 	}
 
 	public void createFrame(final String[] args) {
-		feedBack.increase("Freeplane.progress.settingPreferences");
 		feedBack.increase("Freeplane.progress.propagateLookAndFeel");
 		SwingUtilities.updateComponentTreeUI(controller.getViewController().getFrame());
 		feedBack.increase("Freeplane.progress.buildScreen");

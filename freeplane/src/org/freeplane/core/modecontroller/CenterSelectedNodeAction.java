@@ -19,7 +19,11 @@
  */
 package org.freeplane.core.modecontroller;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
+
+import javax.swing.JRootPane;
+import javax.swing.SwingUtilities;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -40,6 +44,11 @@ class CenterSelectedNodeAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final IMapSelection selection = getController().getSelection();
+		Component mapView = getController().getViewController().getMapView();
+		JRootPane rootPane = SwingUtilities.getRootPane(mapView);
+		if(! rootPane.isValid()){
+			rootPane.revalidate();
+		}
 		selection.centerNode(selection.getSelected());
 	}
 }

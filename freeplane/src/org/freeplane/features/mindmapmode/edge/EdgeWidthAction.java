@@ -40,36 +40,30 @@ class EdgeWidthAction extends MultipleNodeAction {
 
 	private static String getWidthTitle(final ModeController controller, final int width) {
 		String returnValue;
-		if (width == EdgeModel.WIDTH_PARENT) {
-			returnValue = FreeplaneResourceBundle.getText("edge_width_as_parent");
-		}
-		else if (width == EdgeModel.WIDTH_THIN) {
-			returnValue = FreeplaneResourceBundle.getText("edge_width_thin");
+		if (width <= 0) {
+			returnValue = FreeplaneResourceBundle.getText(width2String(width)+".text");
 		}
 		else {
 			returnValue = Integer.toString(width);
 		}
-		return /* controller.getText("edge_width") + */returnValue;
+		return  returnValue;
 	}
 
 	private static String width2String(final int width) {
 		if (width == EdgeModel.WIDTH_PARENT) {
-			return "width_parent";
+			return "EdgeWidthAction_width_parent";
 		}
 		if (width == EdgeModel.WIDTH_THIN) {
-			return "width_thin";
+			return "EdgeWidthAction_width_thin";
 		}
-		return Integer.toString(width);
+		return "EdgeWidthAction_" + width;
 	}
 
 	final private int mWidth;
 
 	public EdgeWidthAction(final ModeController controller, final int width) {
-		super("EdgeWidthAction_" + EdgeWidthAction.width2String(width), controller.getController());
+		super(EdgeWidthAction.width2String(width), controller.getController(), EdgeWidthAction.getWidthTitle(controller, width), null);
 		mWidth = width;
-		if (width >= 1) {
-			putValue(Action.NAME, EdgeWidthAction.getWidthTitle(controller, width));
-		}
 	}
 
 	/*
