@@ -75,7 +75,7 @@ class ApplicationViewController extends ViewController {
 	final private NavigationPreviousMapAction navigationPreviousMap;
 	final private ResourceController resourceController;
 
-	public ApplicationViewController(final Controller controller, final IMapViewManager mapViewController) {
+	public ApplicationViewController(final Controller controller, final IMapViewManager mapViewController, JFrame frame) {
 		super(controller, mapViewController);
 		this.controller = controller;
 		navigationPreviousMap = new NavigationPreviousMapAction(controller);
@@ -83,9 +83,30 @@ class ApplicationViewController extends ViewController {
 		navigationNextMap = new NavigationNextMapAction(controller);
 		controller.addAction(navigationNextMap);
 		resourceController = ResourceController.getResourceController();
-		frame = new JFrame("Freeplane");
+		this.frame = frame;
+		getContentPane().setLayout(new BorderLayout());
 		// --- Set Note Window Location ---
 		mLocationPreferenceValue = resourceController.getProperty("location", "bottom");
+		
+		if (ResourceController.getResourceController().getBooleanProperty("no_scrollbar")) {
+			getScrollPane().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+			getScrollPane().setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		}
+		else {
+			getScrollPane().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+			getScrollPane().setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		}
+		mContentComponent = getScrollPane();
+		final boolean shouldUseTabbedPane = ResourceController.getResourceController().getBooleanProperty(
+		    ResourceControllerProperties.RESOURCES_USE_TABBED_PANE);
+		if (shouldUseTabbedPane) {
+			mapViewManager = new MapViewTabs(controller, this, mContentComponent);
+		}
+		else {
+			getContentPane().add(mContentComponent, BorderLayout.CENTER);
+		}
+		getContentPane().add(getStatusLabel(), BorderLayout.SOUTH);
+
 	}
 
 	/**
@@ -142,71 +163,6 @@ class ApplicationViewController extends ViewController {
 		return frame.getLayeredPane();
 	}
 
-	@Override
-	public void init() {
-		final ImageIcon mWindowIcon = new ImageIcon(resourceController.getResource("/images/Freeplane_frame_icon.png"));
-		getJFrame().setIconImage(mWindowIcon.getImage());
-		getContentPane().setLayout(new BorderLayout());
-		super.init();
-		if (ResourceController.getResourceController().getBooleanProperty("no_scrollbar")) {
-			getScrollPane().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-			getScrollPane().setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		}
-		else {
-			getScrollPane().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-			getScrollPane().setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-		}
-		mContentComponent = getScrollPane();
-		final boolean shouldUseTabbedPane = ResourceController.getResourceController().getBooleanProperty(
-		    ResourceControllerProperties.RESOURCES_USE_TABBED_PANE);
-		if (shouldUseTabbedPane) {
-			mapViewManager = new MapViewTabs(controller, this, mContentComponent);
-		}
-		else {
-			getContentPane().add(mContentComponent, BorderLayout.CENTER);
-		}
-		getContentPane().add(getStatusLabel(), BorderLayout.SOUTH);
-		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		frame.addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(final WindowEvent e) {
-				controller.quit(new ActionEvent(this, 0, "quit"));
-			}
-			/*
-			 * fc, 14.3.2008: Completely removed, as it damaged the focus if for
-			 * example the note window was active.
-			 */
-		});
-		if (StringUtils.equals(ResourceController.getResourceController().getProperty("toolbarVisible"), "false")) {
-			controller.getViewController().setToolbarVisible(false);
-		}
-		if (StringUtils.equals(ResourceController.getResourceController().getProperty("leftToolbarVisible"), "false")) {
-			controller.getViewController().setLeftToolbarVisible(false);
-		}
-		frame.setFocusTraversalKeysEnabled(false);
-		int win_width = ResourceController.getResourceController().getIntProperty("appwindow_width", 0);
-		int win_height = ResourceController.getResourceController().getIntProperty("appwindow_height", 0);
-		int win_x = ResourceController.getResourceController().getIntProperty("appwindow_x", 0);
-		int win_y = ResourceController.getResourceController().getIntProperty("appwindow_y", 0);
-		win_width = (win_width > 0) ? win_width : 640;
-		win_height = (win_height > 0) ? win_height : 440;
-		final Toolkit defaultToolkit = Toolkit.getDefaultToolkit();
-		final Insets screenInsets = defaultToolkit.getScreenInsets(frame.getGraphicsConfiguration());
-		final Dimension screenSize = defaultToolkit.getScreenSize();
-		final int screenWidth = screenSize.width - screenInsets.left - screenInsets.right;
-		win_width = Math.min(win_width, screenWidth);
-		final int screenHeight = screenSize.height - screenInsets.top - screenInsets.bottom;
-		win_height = Math.min(win_height, screenHeight);
-		win_x = Math.max(screenInsets.left, win_x);
-		win_x = Math.min(screenWidth + screenInsets.left - win_width, win_x);
-		win_y = Math.max(screenInsets.top, win_y);
-		win_y = Math.min(screenWidth + screenInsets.top - win_height, win_y);
-		frame.setBounds(win_x, win_y, win_width, win_height);
-		int win_state = Integer
-		    .parseInt(ResourceController.getResourceController().getProperty("appwindow_state", "0"));
-		win_state = ((win_state & Frame.ICONIFIED) != 0) ? Frame.NORMAL : win_state;
-		frame.setExtendedState(win_state);
-	}
 
 	@Override
 	public JSplitPane insertComponentIntoSplitPane(final JComponent pMindMapComponent) {

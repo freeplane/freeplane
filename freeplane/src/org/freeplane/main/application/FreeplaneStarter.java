@@ -19,13 +19,25 @@
  */
 package org.freeplane.main.application;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Frame;
+import java.awt.Insets;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
+import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.FilterController;
@@ -58,7 +70,7 @@ public class FreeplaneStarter {
 	private ApplicationResourceController applicationResourceController;
 	private Controller controller;
 	private IFeedBack feedBack;
-	private IFreeplaneSplash splash;
+	private FreeplaneSplashModern splash;
 	private ApplicationViewController viewController;
 
 	public FreeplaneStarter() {
@@ -74,18 +86,26 @@ public class FreeplaneStarter {
 			controller = new Controller();
 			applicationResourceController.init(controller);
 			LogTool.createLogger();
-			splash = new FreeplaneSplashModern();
+			final JFrame frame = new JFrame("Freeplane");
+			Controller.setLookAndFeel(ResourceController.getResourceController().getProperty("lookandfeel"));
+			Compat.useScreenMenuBar();
+			splash = new FreeplaneSplashModern(null);
 			splash.setVisible(true);
 			feedBack = splash.getFeedBack();
-			feedBack.setMaximumValue(8);
-			Compat.useScreenMenuBar();
-			feedBack.increase(FreeplaneSplashModern.FREEPLANE_PROGRESS_UPDATE_LOOK_AND_FEEL);
-			Controller.setLookAndFeel(ResourceController.getResourceController().getProperty("lookandfeel"));
+			feedBack.setMaximumValue(4);
+			final MMapViewController mapViewController = new MMapViewController();
+			viewController = new ApplicationViewController(controller, mapViewController, frame);
+			feedBack.increase("Freeplane.progress.buildScreen");
+			initFrame(frame);
+			int extendedState = frame.getExtendedState();
+			frame.setVisible(true);
+			if(extendedState != frame.getExtendedState()){
+				frame.setExtendedState(extendedState);
+			}
+			frame.setVisible(false);
 			feedBack.increase(FreeplaneSplashModern.FREEPLANE_PROGRESS_CREATE_CONTROLLER);
 			System.setSecurityManager(new FreeplaneSecurityManager());
-			final MMapViewController mapViewController = new MMapViewController();
 			mapViewController.addMapViewChangeListener(applicationResourceController.getLastOpenedList());
-			viewController = new ApplicationViewController(controller, mapViewController);
 			FilterController.install(controller);
 			PrintController.install(controller);
 			ModelessAttributeController.install(controller);
@@ -105,37 +125,68 @@ public class FreeplaneStarter {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	public void initFrame(JFrame frame) {
+		final ImageIcon mWindowIcon = new ImageIcon(ResourceController.getResourceController().getResource("/images/Freeplane_frame_icon.png"));
+		frame.setIconImage(mWindowIcon.getImage());
+		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		frame.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(final WindowEvent e) {
+				controller.quit(new ActionEvent(this, 0, "quit"));
+			}
+			/*
+			 * fc, 14.3.2008: Completely removed, as it damaged the focus if for
+			 * example the note window was active.
+			 */
+		});
+		if (StringUtils.equals(ResourceController.getResourceController().getProperty("toolbarVisible"), "false")) {
+			controller.getViewController().setToolbarVisible(false);
+		}
+		if (StringUtils.equals(ResourceController.getResourceController().getProperty("leftToolbarVisible"), "false")) {
+			controller.getViewController().setLeftToolbarVisible(false);
+		}
+		frame.setFocusTraversalKeysEnabled(false);
+		int win_width = ResourceController.getResourceController().getIntProperty("appwindow_width", 0);
+		int win_height = ResourceController.getResourceController().getIntProperty("appwindow_height", 0);
+		int win_x = ResourceController.getResourceController().getIntProperty("appwindow_x", 0);
+		int win_y = ResourceController.getResourceController().getIntProperty("appwindow_y", 0);
+		win_width = (win_width > 0) ? win_width : 640;
+		win_height = (win_height > 0) ? win_height : 440;
+		final Toolkit defaultToolkit = Toolkit.getDefaultToolkit();
+		final Insets screenInsets = defaultToolkit.getScreenInsets(frame.getGraphicsConfiguration());
+		final Dimension screenSize = defaultToolkit.getScreenSize();
+		final int screenWidth = screenSize.width - screenInsets.left - screenInsets.right;
+		win_width = Math.min(win_width, screenWidth);
+		final int screenHeight = screenSize.height - screenInsets.top - screenInsets.bottom;
+		win_height = Math.min(win_height, screenHeight);
+		win_x = Math.max(screenInsets.left, win_x);
+		win_x = Math.min(screenWidth + screenInsets.left - win_width, win_x);
+		win_y = Math.max(screenInsets.top, win_y);
+		win_y = Math.min(screenWidth + screenInsets.top - win_height, win_y);
+		frame.setBounds(win_x, win_y, win_width, win_height);
+		int win_state = Integer
+		    .parseInt(ResourceController.getResourceController().getProperty("appwindow_state", "0"));
+		win_state = ((win_state & Frame.ICONIFIED) != 0) ? Frame.NORMAL : win_state;
+		frame.setExtendedState(win_state);
+	}
+	
 
 	public void createFrame(final String[] args) {
-		feedBack.increase("Freeplane.progress.propagateLookAndFeel");
-		SwingUtilities.updateComponentTreeUI(controller.getViewController().getFrame());
-		feedBack.increase("Freeplane.progress.buildScreen");
-		viewController.init();
-		try {
-			if (!EventQueue.isDispatchThread()) {
-				EventQueue.invokeAndWait(new Runnable() {
-					public void run() {
-					};
-				});
-			}
-		}
-		catch (final Exception e) {
-			LogTool.logException(e);
-		}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				feedBack.increase("Freeplane.progress.createInitialMode");
-				controller.selectMode(ResourceController.getResourceController().getProperty("initial_mode"));
+				viewController.init();
 				feedBack.increase("Freeplane.progress.startCreateController");
 				final ModeController ctrl = createModeController(args);
 				feedBack.increase("Freeplane.progress.loadMaps");
 				loadMaps(args, ctrl);
-				feedBack.increase("Freeplane.progress.endStartup");
-				if (splash != null) {
-					splash.setVisible(false);
+				Frame frame = viewController.getFrame();
+				int extendedState = frame.getExtendedState();
+				frame.setVisible(true);
+				if(extendedState != frame.getExtendedState()){
+					frame.setExtendedState(extendedState);
 				}
-//				frame.getRootPane().revalidate();
-				controller.getViewController().getFrame().setVisible(true);
+				splash.dispose();
 			}
 		});
 	}

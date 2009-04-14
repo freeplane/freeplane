@@ -334,7 +334,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		nodeToBeVisible = null;
 		anchorContentLocation = new Point();
 		final JViewport viewPort = (JViewport) getParent();
-		if (!isReady()) {
+		JRootPane rootPane = SwingUtilities.getRootPane(this);
+		if (rootPane == null) {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					centerNode(node);
@@ -342,6 +343,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			});
 			return;
 		}
+		rootPane.validate();
 		final Dimension d = viewPort.getExtentSize();
 		final JComponent content = node.getContent();
 		final Rectangle rect = new Rectangle(content.getWidth() / 2 - d.width / 2, content.getHeight() / 2 - d.height
@@ -789,11 +791,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	 */
 	public boolean isCurrentlyPrinting() {
 		return isPrinting;
-	}
-
-	private boolean isReady() {
-		JRootPane rootPane = SwingUtilities.getRootPane(this);
-		return rootPane != null && rootPane.isValid();
 	}
 
 	public boolean isSelected(final NodeView n) {
