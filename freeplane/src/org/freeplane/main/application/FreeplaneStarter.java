@@ -90,12 +90,10 @@ public class FreeplaneStarter {
 			Controller.setLookAndFeel(ResourceController.getResourceController().getProperty("lookandfeel"));
 			Compat.useScreenMenuBar();
 			splash = new FreeplaneSplashModern(null);
-			splash.setVisible(true);
 			feedBack = splash.getFeedBack();
-			feedBack.setMaximumValue(4);
+			feedBack.setMaximumValue(3);
 			final MMapViewController mapViewController = new MMapViewController();
 			viewController = new ApplicationViewController(controller, mapViewController, frame);
-			feedBack.increase("Freeplane.progress.buildScreen");
 			initFrame(frame);
 			int extendedState = frame.getExtendedState();
 			frame.setVisible(true);
@@ -103,6 +101,8 @@ public class FreeplaneStarter {
 				frame.setExtendedState(extendedState);
 			}
 			frame.setVisible(false);
+			splash.setVisible(true);
+			splash.toFront();
 			feedBack.increase(FreeplaneSplashModern.FREEPLANE_PROGRESS_CREATE_CONTROLLER);
 			System.setSecurityManager(new FreeplaneSecurityManager());
 			mapViewController.addMapViewChangeListener(applicationResourceController.getLastOpenedList());
