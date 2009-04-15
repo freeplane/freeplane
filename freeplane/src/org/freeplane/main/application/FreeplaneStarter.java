@@ -23,11 +23,19 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.GraphicsConfiguration;
+import java.awt.Image;
+import java.awt.ImageCapabilities;
 import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.ImageObserver;
+import java.awt.image.ImageProducer;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 
@@ -95,12 +103,6 @@ public class FreeplaneStarter {
 			final MMapViewController mapViewController = new MMapViewController();
 			viewController = new ApplicationViewController(controller, mapViewController, frame);
 			initFrame(frame);
-			int extendedState = frame.getExtendedState();
-			frame.setVisible(true);
-			if(extendedState != frame.getExtendedState()){
-				frame.setExtendedState(extendedState);
-			}
-			frame.setVisible(false);
 			splash.setVisible(true);
 			splash.toFront();
 			feedBack.increase(FreeplaneSplashModern.FREEPLANE_PROGRESS_CREATE_CONTROLLER);
@@ -164,10 +166,11 @@ public class FreeplaneStarter {
 		win_x = Math.min(screenWidth + screenInsets.left - win_width, win_x);
 		win_y = Math.max(screenInsets.top, win_y);
 		win_y = Math.min(screenWidth + screenInsets.top - win_height, win_y);
-		frame.setBounds(win_x, win_y, win_width, win_height);
 		int win_state = Integer
 		    .parseInt(ResourceController.getResourceController().getProperty("appwindow_state", "0"));
 		win_state = ((win_state & Frame.ICONIFIED) != 0) ? Frame.NORMAL : win_state;
+		
+		frame.setBounds(win_x, win_y, win_width, win_height);
 		frame.setExtendedState(win_state);
 	}
 	

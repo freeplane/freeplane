@@ -148,7 +148,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 				mapSelection.selectRoot();
 			}
 			else {
-				mapSelection.centerNode(selected);
+				mapSelection.scrollNodeToVisible(selected);
 			}
 			setZoomComboBox(mapViewManager.getZoom());
 			obtainFocusForSelected();

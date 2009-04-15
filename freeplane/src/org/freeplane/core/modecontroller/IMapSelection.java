@@ -55,4 +55,6 @@ public interface IMapSelection {
 	public int size();
 
 	public void toggleSelected(final NodeModel node);
+
+	public void scrollNodeToVisible(NodeModel selected);
 }

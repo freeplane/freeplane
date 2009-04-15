@@ -25,6 +25,7 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
@@ -34,6 +35,8 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
 import java.awt.dnd.Autoscroll;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.geom.CubicCurve2D;
 import java.awt.print.PageFormat;
@@ -50,6 +53,8 @@ import java.util.TreeMap;
 import java.util.Vector;
 
 import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.JViewport;
@@ -151,6 +156,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		public void toggleSelected(final NodeModel node) {
 			MapView.this.toggleSelected(getNodeView(node));
 		}
+
+		public void scrollNodeToVisible(NodeModel node) {
+	        MapView.this.scrollNodeToVisible(getNodeView(node));
+	        
+        }
 	}
 
 	private class Selection {
@@ -264,6 +274,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private NodeView shiftSelectionOrigin = null;
 	private int siblingMaxLevel;
 	private float zoom = 1F;
+	private int centerNodeCounter;
 
 	public MapView(final MapModel model, final ModeController modeController) {
 		super();
@@ -332,18 +343,19 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	 */
 	public void centerNode(final NodeView node) {
 		nodeToBeVisible = null;
-		anchorContentLocation = new Point();
-		final JViewport viewPort = (JViewport) getParent();
-		JRootPane rootPane = SwingUtilities.getRootPane(this);
-		if (rootPane == null) {
-			EventQueue.invokeLater(new Runnable() {
+		if(! (isValid() && isShowing())){
+			centerNodeCounter = 5;
+		}
+		if(centerNodeCounter != 0){
+			centerNodeCounter --;
+			EventQueue.invokeLater(new Runnable(){
 				public void run() {
-					centerNode(node);
-				}
-			});
+	                centerNode(node);
+                }});
 			return;
 		}
-		rootPane.validate();
+		anchorContentLocation = new Point();
+		final JViewport viewPort = (JViewport) getParent();
 		final Dimension d = viewPort.getExtentSize();
 		final JComponent content = node.getContent();
 		final Rectangle rect = new Rectangle(content.getWidth() / 2 - d.width / 2, content.getHeight() / 2 - d.height
