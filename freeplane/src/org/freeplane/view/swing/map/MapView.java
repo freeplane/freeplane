@@ -432,14 +432,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			if (MapView.printOnWhiteBackground) {
 				setBackground(background);
 			}
-			/* repaint for end printing: */
-			if (Compat.NEED_PREF_SIZE_BUG_FIX) {
-				getRoot().updateAll();
-				validate();
-			}
-			else {
-				repaintSelecteds();
-			}
+			repaintSelecteds();
 		}
 		isPreparedForPrinting = false;
 	}
@@ -978,14 +971,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	public void preparePrinting() {
 		if (isPreparedForPrinting == false) {
 			isPrinting = true;
-			/* repaint for printing: */
-			if (Compat.NEED_PREF_SIZE_BUG_FIX) {
-				getRoot().updateAll();
-				validate();
-			}
-			else {
-				repaintSelecteds();
-			}
+			repaintSelecteds();
 			if (MapView.printOnWhiteBackground) {
 				background = getBackground();
 				setBackground(Color.WHITE);

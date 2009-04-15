@@ -127,9 +127,17 @@ public class FreeplaneStarter {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	public void initFrame(JFrame frame) {
-		final ImageIcon mWindowIcon = new ImageIcon(ResourceController.getResourceController().getResource("/images/Freeplane_frame_icon.png"));
+		final ImageIcon mWindowIcon;
+		if(Compat.isLowerJdk(Compat.VERSION_1_6_0)){
+			mWindowIcon = new ImageIcon(ResourceController.getResourceController().getResource(
+			"/images/Freeplane_frame_icon.png"));
+		}
+		else{
+			mWindowIcon = new ImageIcon(ResourceController.getResourceController().getResource(
+			"/images/Freeplane_frame_icon_32x32.png"));
+		}
 		frame.setIconImage(mWindowIcon.getImage());
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frame.addWindowListener(new WindowAdapter() {
@@ -169,11 +177,9 @@ public class FreeplaneStarter {
 		int win_state = Integer
 		    .parseInt(ResourceController.getResourceController().getProperty("appwindow_state", "0"));
 		win_state = ((win_state & Frame.ICONIFIED) != 0) ? Frame.NORMAL : win_state;
-		
 		frame.setBounds(win_x, win_y, win_width, win_height);
 		frame.setExtendedState(win_state);
 	}
-	
 
 	public void createFrame(final String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -186,7 +192,7 @@ public class FreeplaneStarter {
 				Frame frame = viewController.getFrame();
 				int extendedState = frame.getExtendedState();
 				frame.setVisible(true);
-				if(extendedState != frame.getExtendedState()){
+				if (extendedState != frame.getExtendedState()) {
 					frame.setExtendedState(extendedState);
 				}
 				splash.dispose();

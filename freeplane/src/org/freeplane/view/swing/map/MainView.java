@@ -187,9 +187,6 @@ public abstract class MainView extends JLabel implements IMainView {
 			prefSize.width = (int) (0.99 + prefSize.width * zoom);
 			prefSize.height = (int) (0.99 + prefSize.height * zoom);
 		}
-		if (isCurrentlyPrinting() && Compat.NEED_PREF_SIZE_BUG_FIX) {
-			prefSize.width += getNodeView().getMap().getZoomed(10);
-		}
 		prefSize.width = Math.max(getNodeView().getMap().getZoomed(MainView.MIN_HOR_NODE_SIZE), prefSize.width);
 		if (isEmpty) {
 			setText("");

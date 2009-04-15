@@ -20,9 +20,8 @@ import org.freeplane.core.util.LogTool;
  */
 public class Compat {
 	public static final String JAVA_VERSION = System.getProperty("java.version");
-	private static final String VERSION_1_5_0 = "1.5.0";
-	private static final String VERSION_1_6_0 = "1.6.0";
-	public static final boolean NEED_PREF_SIZE_BUG_FIX = JAVA_VERSION.compareTo(VERSION_1_5_0) < 0;
+	public static final String VERSION_1_5_0 = "1.5.0";
+	public static final String VERSION_1_6_0 = "1.6.0";
 
 	public static void checkJavaVersion() {
 		if (Compat.isLowerJdk(VERSION_1_5_0)) {
