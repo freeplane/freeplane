@@ -120,6 +120,16 @@ public class FreeplaneToolBar extends JToolBar {
 		}
 		final AbstractButton abstractButton = (AbstractButton) comp;
 		abstractButton.setMargin(FreeplaneToolBar.nullInsets);
+		if (null != abstractButton.getIcon()){
+			String text = abstractButton.getText();
+			String toolTipText = abstractButton.getToolTipText();
+			if(text != null){
+				if(toolTipText == null){
+					abstractButton.setToolTipText(text);
+				}
+				abstractButton.setText(null);
+			}
+		}
 		if (System.getProperty("os.name").startsWith("Mac OS")) {
 			abstractButton.setBorderPainted(false);
 		}

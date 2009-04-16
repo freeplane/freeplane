@@ -129,11 +129,31 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		this.controller = controller;
 		history = new FilterHistory(controller);
 		controller.getMapViewManager().addMapSelectionListener(this);
-		controller.addAction(new ShowFilterToolbarAction(this));
+		ShowFilterToolbarAction showFilterToolbar = new ShowFilterToolbarAction(this);
+		controller.addAction(showFilterToolbar);
+		UnfoldFilteredAncestorsAction unfoldFilteredAncestors = new UnfoldFilteredAncestorsAction(this);
+		controller.addAction(unfoldFilteredAncestors);
+		ApplyNoFilteringAction applyNoFiltering = new ApplyNoFilteringAction(this);
+		controller.addAction(applyNoFiltering);
+		ApplySelectedViewConditionAction applySelectedViewCondition = new ApplySelectedViewConditionAction(this);
+		controller.addAction(applySelectedViewCondition);
+		EditFilterAction editFilter = new EditFilterAction(this);
+		controller.addAction(editFilter);
+		UndoFilterAction undoFilter = new UndoFilterAction(this);
+		controller.addAction(undoFilter);
+		RedoFilterAction redoFilter = new RedoFilterAction(this);
+		controller.addAction(redoFilter);
+		ReapplyFilterAction reapplyFilter = new ReapplyFilterAction(this);
+		controller.addAction(reapplyFilter);		
+		ShowAncestorsAction showAncestorsAction = new ShowAncestorsAction(this);
+		controller.addAction(showAncestorsAction);
+		ShowDescendantsAction showDescendantsAction = new ShowDescendantsAction(this);
+		controller.addAction(showDescendantsAction);
+		
 		filterChangeListener = new FilterChangeListener();
 		showAncestors = new JToggleButton.ToggleButtonModel();
-		showAncestors.addActionListener(filterChangeListener);
 		showAncestors.setSelected(true);
+		showAncestors.addActionListener(filterChangeListener);
 		showDescendants = new JToggleButton.ToggleButtonModel();
 		showDescendants.setSelected(false);
 		showDescendants.addActionListener(filterChangeListener);
@@ -142,13 +162,6 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		pathToFilterFile = ResourceController.getResourceController().getFreeplaneUserDirectory() + File.separator
 		        + "auto." + FilterController.FREEPLANE_FILTER_EXTENSION_WITHOUT_DOT;
 		
-		controller.addAction(new UnfoldFilteredAncestorsAction(this));
-		controller.addAction(new ApplyNoFilteringAction(this));
-		controller.addAction(new ApplySelectedViewConditionAction(this));
-		controller.addAction(new EditFilterAction(this));
-		controller.addAction(new UndoFilterAction(this));
-		controller.addAction(new RedoFilterAction(this));
-		controller.addAction(new ReapplyFilterAction(this));
 	}
 
 	private void addStandardConditions() {
@@ -219,7 +232,6 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		final JToolBar filterToolbar = new FreeplaneToolBar();
 		filterToolbar.setVisible(false);
 		filterToolbar.setFocusable(false);
-		filterToolbar.add(new JLabel(FreeplaneResourceBundle.getText("filter") + " "));
 		final JButton undoBtn = new JButton(controller.getAction("UndoFilterAction"));
 //		undoBtn.setText(null);
 		filterToolbar.add(undoBtn);

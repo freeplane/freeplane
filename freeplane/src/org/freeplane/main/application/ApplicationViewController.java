@@ -397,7 +397,7 @@ class ApplicationViewController extends ViewController {
 	 */
 	@Override
 	public void stop() {
-		final int winState = frame.getExtendedState();
+		final int winState = frame.getExtendedState() & ~ Frame.ICONIFIED;
 		if (JFrame.MAXIMIZED_BOTH != (winState & JFrame.MAXIMIZED_BOTH)) {
 			resourceController.setProperty("appwindow_x", String.valueOf(frame.getX()));
 			resourceController.setProperty("appwindow_y", String.valueOf(frame.getY()));

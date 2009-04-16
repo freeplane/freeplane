@@ -50,7 +50,7 @@ class ShowAncestorsAction extends AFreeplaneAction {
 	}
 
 	@Override
-	public boolean isSelected() {
-		return filterController.getShowAncestors().isSelected();
+	public void setSelected() {
+		setSelected( filterController.getShowAncestors().isSelected());
 	}
 }

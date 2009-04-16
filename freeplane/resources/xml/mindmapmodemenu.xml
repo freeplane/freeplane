@@ -125,6 +125,9 @@
 			</menu_category>
 			<menu_separator />
 			<menu_submenu name="icons" name_ref="icon_menu">
+			<menu_category name="actions" />
+			<menu_separator />
+			<menu_category name="icons" />
 			</menu_submenu>
 			<menu_category name="clouds">
 				<menu_action action="CloudAction" accelerator="control shift B" />
@@ -223,11 +226,13 @@
 				<menu_action action="SelectNoteAction" accelerator="control LESS"/> <!-- goto -->
 			</menu_category>
 		</menu_submenu>
-		<menu_submenu name="filter" name_ref="filter">
+		<menu_submenu name="filter" name_ref="menu_filter">
 			<menu_action action="ShowFilterToolbarAction" /> 
 			<menu_action action="UnfoldFilteredAncestorsAction" /> 
 			<menu_action action="ApplyNoFilteringAction" /> 
 			<menu_action action="ApplySelectedViewConditionAction" /> 
+			<menu_action action="ShowAncestorsAction" /> 
+			<menu_action action="ShowDescendantsAction" /> 
 			<menu_action action="EditFilterAction" /> 
 			<menu_action action="UndoFilterAction" /> 
 			<menu_action action="RedoFilterAction" /> 
@@ -347,6 +352,7 @@
 		</menu_category>
 		<menu_separator />
 		<menu_submenu name="icons" name_ref="icon_menu">
+			<menu_category name="icons" />
 		</menu_submenu>
 		<menu_submenu name="export" name_ref="menu_file_export">
 			<menu_action action="ExportBranchAction"  />
@@ -372,8 +378,6 @@
 					<menu_action action="NodeBackgroundColorAction" />
 				</menu_category>
 				<menu_separator />
-			</menu_category>
-			<menu_category name="icons">
 			</menu_category>
 			<menu_category name="clouds">
 				<menu_action action="CloudColorAction" />
@@ -457,8 +461,6 @@
 		<menu_category name="font">
 			<menu_action action="ItalicAction"  />
 			<menu_action action="BoldAction"  />
-		</menu_category>
-		<menu_category name="icons">
 		</menu_category>
 		<menu_category name="clouds">
 			<menu_action action="CloudAction"  />

@@ -94,13 +94,14 @@ public class MIconController extends IconController {
 	}
 
 	public void addIconsToMenu(final MenuBuilder builder, final String iconMenuString) {
-		builder.addAction(iconMenuString + "/icons", getModeController().getAction(
+		String category = iconMenuString + "/icons/icons";
+		builder.addAction(category, getModeController().getAction(
 		    "RemoveIconAction"), MenuBuilder.AS_CHILD);
-		builder.addAction(iconMenuString + "/icons", getModeController().getAction(
+		builder.addAction(category, getModeController().getAction(
 		    "RemoveAllIconsAction"), MenuBuilder.AS_CHILD);
-		builder.addSeparator(iconMenuString + "/icons", MenuBuilder.AS_CHILD);
+		builder.addSeparator(category, MenuBuilder.AS_CHILD);
 		for (int i = 0; i < iconActions.size(); ++i) {
-			builder.addAction(iconMenuString + "/icons", iconActions.get(i), MenuBuilder.AS_CHILD);
+			builder.addAction(category, iconActions.get(i), MenuBuilder.AS_CHILD);
 		}
 	}
 

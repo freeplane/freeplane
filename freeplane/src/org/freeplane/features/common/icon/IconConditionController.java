@@ -61,7 +61,7 @@ class IconConditionController implements IElementaryConditionController {
 	}
 
 	public boolean canSelectValues(final Object property, final NamedObject simpleCond) {
-		return true;
+		return controller.getMap().getIconRegistry().getIcons().getSize() > 0;
 	}
 
 	public ICondition createCondition(final Object selectedItem, final NamedObject simpleCond, final Object value,
