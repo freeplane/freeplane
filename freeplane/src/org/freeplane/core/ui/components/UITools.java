@@ -25,6 +25,7 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Insets;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 
@@ -208,6 +209,17 @@ public class UITools {
 		UITools.setDialogLocationRelativeTo(dialog, c);
 	}
 
+	public static void setDialogLocationUnder(JDialog dialog, Controller controller, NodeModel node) {
+		final ViewController viewController = controller.getViewController();
+		final JComponent c = (JComponent) viewController.getComponent(node);
+		Container frame = dialog.getParent();
+		int x = 0;
+		int y = c.getHeight();
+		Point location = new Point(x, y);
+		convertPointToAncestor(c, location, frame.getParent());
+		dialog.setLocation(location);
+    }
+	
 	public static String showInputDialog(final Controller controller, final NodeModel node, final String text,
 	                                     final String string) {
 		if (node == null) {
@@ -229,4 +241,5 @@ public class UITools {
 		final Component parentComponent = viewController.getComponent(node);
 		return JOptionPane.showInputDialog(parentComponent, text, title, type);
 	}
+
 }
