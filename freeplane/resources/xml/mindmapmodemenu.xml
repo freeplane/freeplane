@@ -49,8 +49,8 @@
 		</menu_submenu>
 		<menu_submenu name="edit" name_ref="edit">
 			<menu_category name="UndoAction">
-				<menu_action action="UndoAction" accelerator="? control Y" />
-				<menu_action action="RedoAction" accelerator="? control Z" />
+				<menu_action action="UndoAction" accelerator="control Z" />
+				<menu_action action="RedoAction" accelerator="control Y" />
 			</menu_category>
 			<menu_category name="select">
 				<menu_action action="SelectAllAction" accelerator="control A"/>
