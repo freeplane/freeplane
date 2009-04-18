@@ -1,4 +1,5 @@
 <project name="freeplane" default="dist" basedir="..">
+	<property name="ver" value="1.0.1" />
 	<property name = "root" value = "."/>
 	<property name="bin" value="${root}/bin" />
 	<property name="dist" value="${root}/dist" />
@@ -41,13 +42,13 @@
 			<fileset dir="${workspace}/freeplane/ortho"/>
 		</copy>
 		<mkdir dir="${dist}" />		
-		<zip destfile="${dist}/freeplane_bin.zip" compress="false">
+		<zip destfile="${dist}/freeplane_bin-${ver}.zip" compress="false">
 			<fileset dir="${bin}"/>
 			<fileset dir="${root}">
 				<include name="${license}"/>
 			</fileset>
 		</zip>
-		<tar destfile="${dist}/freeplane_src.tar.gz" compression="gzip">
+		<tar destfile="${dist}/freeplane_src-${ver}.tar.gz" compression="gzip">
 			<tarfileset dir="${workspace}" mode="777" username="ant" group="ant">
 				<include name="*freeplane*/**"/>
 				<exclude name=".*/**"/>
