@@ -105,7 +105,7 @@ public class FreeplaneSplashModern extends JWindow{
 	private static final long serialVersionUID = 1L;
 	final private FeedBackImpl feedBack;
 	final private JProgressBar mProgressBar;
-	public FreeplaneSplashModern(JFrame frame) {
+	public FreeplaneSplashModern() {
 		super();
 			final ImageIcon splashImage = new ImageIcon(ResourceController.getResourceController().getResource(
 			"/images/Freeplane_splash.png"));
