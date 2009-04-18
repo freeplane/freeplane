@@ -212,11 +212,10 @@ public class UITools {
 	public static void setDialogLocationUnder(JDialog dialog, Controller controller, NodeModel node) {
 		final ViewController viewController = controller.getViewController();
 		final JComponent c = (JComponent) viewController.getComponent(node);
-		Container frame = dialog.getParent();
-		int x = 0;
-		int y = c.getHeight();
+		final int x = 0;
+		final int y = c.getHeight();
 		Point location = new Point(x, y);
-		convertPointToAncestor(c, location, frame.getParent());
+		SwingUtilities.convertPointToScreen(location, c);
 		dialog.setLocation(location);
     }
 	
