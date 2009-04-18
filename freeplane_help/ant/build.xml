@@ -1,5 +1,5 @@
 <project name="freeplane_help" default="dist" basedir="..">
-	<property name="ver" value="0.9.0:21" />
+	<property name="ver" value="1.0.1" />
 	<property name="src" value="src" />
 	<property name="resources" value="resources" />
 	<property name = "root" value = "."/>
