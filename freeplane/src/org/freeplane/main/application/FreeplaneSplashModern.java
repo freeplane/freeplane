@@ -130,8 +130,8 @@ public class FreeplaneSplashModern extends JWindow{
 					final Graphics2D g2 = (Graphics2D) g;
 					g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 					g2.setFont(versionTextFont);
-					final String freeplaneVersion = FreeplaneVersion.getVersion().toVersionNumberString();
-					final int yCoordinate = 60;
+					final String freeplaneVersion = FreeplaneVersion.getVersion().toString();
+					final int yCoordinate = 20;
 					final int xCoordinate = 300;
 					g2.setColor(new Color(0, 0, 0));
 					g2.drawString(freeplaneVersion, xCoordinate, yCoordinate);

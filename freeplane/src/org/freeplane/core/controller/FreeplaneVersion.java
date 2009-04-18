@@ -24,7 +24,7 @@ import java.util.StringTokenizer;
 // TODO rladstaetter 15.02.2009 use build properties for this information
 @Deprecated
 public class FreeplaneVersion {
-	private static final FreeplaneVersion VERSION = new FreeplaneVersion("1.0.1");
+	private static final FreeplaneVersion VERSION = new FreeplaneVersion("1.0.1 beta");
 
 	public static FreeplaneVersion getVersion() {
 		return VERSION;
@@ -52,7 +52,7 @@ public class FreeplaneVersion {
 		while (t.hasMoreTokens()) {
 			info[i++] = t.nextToken();
 		}
-		if (info.length != 3 && info.length != 5) {
+		if (info.length < 3 | info.length > 5) {
 			throw new IllegalArgumentException("Wrong number of tokens for version information: " + pString);
 		}
 		mMaj = Integer.parseInt(info[0]);
@@ -64,6 +64,10 @@ public class FreeplaneVersion {
 			return;
 		}
 		mType = info[3];
+		if (info.length == 4) {
+			mNum = 0;
+			return;
+		}
 		mNum = Integer.parseInt(info[4]);
 	}
 
@@ -78,21 +82,9 @@ public class FreeplaneVersion {
 		if (!mType.equals("")) {
 			buf.append(' ');
 			buf.append(mType);
-			buf.append(' ');
-			buf.append(mNum);
 		}
-		return buf.toString();
-	}
-
-	public String toVersionNumberString() {
-		final StringBuilder buf = new StringBuilder();
-		buf.append(mMaj);
-		buf.append('.');
-		buf.append(mMid);
-		buf.append('.');
-		buf.append(mMin);
-		if(mNum != 0){
-			buf.append(':');
+		if (mNum != 0) {
+			buf.append(' ');
 			buf.append(mNum);
 		}
 		return buf.toString();
