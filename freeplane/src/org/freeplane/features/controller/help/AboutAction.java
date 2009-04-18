@@ -44,7 +44,7 @@ class AboutAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		JOptionPane.showMessageDialog(getController().getViewController().getViewport(), FreeplaneResourceBundle
 		    .getText("about_text")
-		        + FreeplaneVersion.getVersion(), FreeplaneResourceBundle.getText("about"),
+		        + FreeplaneVersion.getVersion(), FreeplaneResourceBundle.getText("AboutAction.text"),
 		    JOptionPane.INFORMATION_MESSAGE);
 	}
 }

@@ -114,7 +114,6 @@ public class FreeplaneSplashModern extends JWindow{
 				 * 
 				 */
 				private static final long serialVersionUID = 1L;
-				private Integer mWidth = null;
 				final private Font progressFont = new Font("SansSerif", Font.PLAIN, 10);
 				private Font versionTextFont = null;
 				{
@@ -132,11 +131,8 @@ public class FreeplaneSplashModern extends JWindow{
 					g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 					g2.setFont(versionTextFont);
 					final String freeplaneVersion = FreeplaneVersion.getVersion().toVersionNumberString();
-					if (mWidth == null) {
-						mWidth = new Integer(g2.getFontMetrics().stringWidth(freeplaneVersion));
-					}
 					final int yCoordinate = 60;
-					final int xCoordinate = (int) (getSize().getWidth() - mWidth.intValue() - 20);
+					final int xCoordinate = 300;
 					g2.setColor(new Color(0, 0, 0));
 					g2.drawString(freeplaneVersion, xCoordinate, yCoordinate);
 					final String progressString = (String) getClientProperty("progressString");
