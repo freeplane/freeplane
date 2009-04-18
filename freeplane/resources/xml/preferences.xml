@@ -101,9 +101,6 @@
             <boolean name="resources_use_margin_top_zero_for_notes"/>
             <number name="max_node_width"/>
             <number name="max_tooltip_width"/>
-            <string name="standardbackgroundcolor"/>
-            <boolean name="printonwhitebackground"/>
-            <string name="standardcloudcolor"/>
          </separator>
         <separator name="other_defaults">
             <combo name="standardedgestyle">

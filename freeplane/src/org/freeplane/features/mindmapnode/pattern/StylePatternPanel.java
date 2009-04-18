@@ -225,7 +225,7 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 		mSetNodeBackgroundColor = new ThreeCheckBoxProperty(StylePatternPanel.SET_NODE_BACKGROUND_COLOR);
 		controls.add(mSetNodeBackgroundColor);
 		mNodeBackgroundColor = new ColorProperty(StylePatternPanel.NODE_BACKGROUND_COLOR, ResourceController
-		    .getResourceController().getDefaultProperty(ResourceControllerProperties.RESOURCES_BACKGROUND_COLOR));
+		    .getResourceController().getDefaultProperty(NODE_BACKGROUND_COLOR));
 		controls.add(mNodeBackgroundColor);
 		controls.add(new SeparatorProperty("OptionPanel.separator.NodeStyles"));
 		mSetNodeStyle = new ThreeCheckBoxProperty(StylePatternPanel.SET_NODE_STYLE);
@@ -424,8 +424,7 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 		setPatternControls(pattern.getPatternNodeColor(), mSetNodeColor, mNodeColor, ResourceController
 		    .getResourceController().getDefaultProperty(ResourceControllerProperties.RESOURCES_NODE_TEXT_COLOR));
 		setPatternControls(pattern.getPatternNodeBackgroundColor(), mSetNodeBackgroundColor, mNodeBackgroundColor,
-		    ResourceController.getResourceController().getDefaultProperty(
-		        ResourceControllerProperties.RESOURCES_BACKGROUND_COLOR));
+		    ResourceController.getResourceController().getDefaultProperty(NODE_BACKGROUND_COLOR));
 		setPatternControls(pattern.getPatternNodeStyle(), mSetNodeStyle, mNodeStyle, NodeStyleModel.SHAPE_AS_PARENT);
 		setPatternControls(pattern.getPatternNodeText(), mSetNodeText, mNodeText, "");
 		setPatternControls(pattern.getPatternEdgeColor(), mSetEdgeColor, mEdgeColor, ResourceController
