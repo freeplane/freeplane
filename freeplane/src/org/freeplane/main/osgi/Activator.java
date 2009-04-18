@@ -19,6 +19,9 @@
  */
 package org.freeplane.main.osgi;
 
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.LinkedList;
 import java.util.Set;
 
@@ -57,8 +60,29 @@ public class Activator implements BundleActivator {
 	}
 
 	public void start(final BundleContext context) throws Exception {
+		deleteAllBundleJars(context);
 		startFramework(context);
 	}
+
+	private void deleteAllBundleJars(final BundleContext context) {
+	    Bundle[] bundles = context.getBundles();
+		for(final Bundle bundle:bundles){
+			try {
+				String location = bundle.getLocation();
+				URL bundleUrl = new URL(location);
+				if(! bundleUrl.getProtocol().equalsIgnoreCase("file")){
+					continue;
+				}
+				File bundleFile = new File(bundleUrl.getFile());
+				if(bundleFile.canRead() && ! bundleFile.isDirectory()){
+					bundleFile.delete();
+					System.out.println("deleted jar file " + location);
+				}
+			}
+			catch (Exception e) {
+			}
+		}
+    }
 
 	private void startFramework(final BundleContext context) {
 		starter = new FreeplaneStarter();
