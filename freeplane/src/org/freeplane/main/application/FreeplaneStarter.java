@@ -200,6 +200,7 @@ public class FreeplaneStarter {
 	}
 
 	private ModeController createModeController(final String[] args) {
+		controller.selectMode(MModeController.MODENAME);
 		final ModeController ctrl = controller.getModeController();
 		try {
 			final Class macClass = Class.forName("accessories.plugins.MacChanges");
