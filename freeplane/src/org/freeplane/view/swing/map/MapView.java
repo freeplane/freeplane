@@ -382,17 +382,25 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				if (propertyName.equals(ResourceControllerProperties.RESOURCES_SELECTED_NODE_COLOR)) {
 					MapView.standardSelectColor = ColorUtils.stringToColor(newValue);
 					((MapView) mapView).repaintSelecteds();
+					return;
 				}
-				else if (propertyName.equals(ResourceControllerProperties.RESOURCES_SELECTED_NODE_RECTANGLE_COLOR)) {
+				if (propertyName.equals(ResourceControllerProperties.RESOURCES_SELECTED_NODE_RECTANGLE_COLOR)) {
 					MapView.standardSelectRectangleColor = ColorUtils.stringToColor(newValue);
 					((MapView) mapView).repaintSelecteds();
+					return;
 				}
-				else if (propertyName.equals(ResourceControllerProperties.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION)) {
+				if (propertyName.equals(ResourceControllerProperties.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION)) {
 					MapView.standardDrawRectangleForSelection = TreeXmlReader.xmlToBoolean(newValue);
 					((MapView) mapView).repaintSelecteds();
+					return;
 				}
-				else if (propertyName.equals("printonwhitebackground")) {
+				if (propertyName.equals("printonwhitebackground")) {
 					MapView.printOnWhiteBackground = TreeXmlReader.xmlToBoolean(newValue);
+					return;
+				}
+				if (propertyName.equals(ResourceControllerProperties.RESOURCES_SHOW_NODE_TOOLTIPS)) {
+					getRoot().updateToolTipsRecursive();
+					return;
 				}
 			}
 		};
@@ -823,9 +831,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	public void mapChanged(final MapChangeEvent event) {
 		if (event.getProperty().equals(ResourceControllerProperties.RESOURCES_BACKGROUND_COLOR)) {
 			setBackground(requiredBackground());
+			return;
 		}
 		if (event.getProperty().equals(ResourceControllerProperties.RESOURCES_NODE_TEXT_COLOR)) {
 			getRoot().updateAll();
+			return;
 		}
 	}
 

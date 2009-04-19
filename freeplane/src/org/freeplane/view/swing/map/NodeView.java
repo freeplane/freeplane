@@ -47,7 +47,9 @@ import org.freeplane.core.modecontroller.NodeChangeEvent;
 import org.freeplane.core.model.INodeView;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.model.NodeModel.NodeChangeType;
+import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.common.attribute.AttributeController;
@@ -1156,7 +1158,7 @@ public class NodeView extends JComponent implements INodeView {
 		}
 	}
 
-	void updateStyle() {
+	private void updateStyle() {
 		final String shape = NodeStyleController.getController(getMap().getModeController()).getShape(model);
 		if (mainView != null && (mainView.getStyle().equals(shape) || model.isRoot())) {
 			return;
@@ -1174,31 +1176,49 @@ public class NodeView extends JComponent implements INodeView {
 	/**
 	 * Updates the tool tip of the node.
 	 */
-	public void updateToolTip() {
-		final Map tooltips = getModel().getToolTip();
-		/*
-		 * if(tooltips.size() == 1) { String toolTipText = (String)
-		 * tooltips.values().iterator().next();
-		 * mainView.setToolTipText(toolTipText); } else
-		 */if (tooltips.size() == 0) {
-			mainView.setToolTipText(null);
-		}
-		else {
-			final StringBuffer text = new StringBuffer("<html><table width=\"" + getMaxToolTipWidth() + "\">");
-			for (final Iterator i = tooltips.keySet().iterator(); i.hasNext();) {
-				final String key = (String) i.next();
-				String value = (String) tooltips.get(key);
-				value = value.replaceAll("</html>", "");
-				text.append("<tr><td>");
-				text.append(value);
-				text.append("</td></tr>");
-			}
-			text.append("</table></html>");
-			mainView.setToolTipText(text.toString());
-		}
+	private void updateToolTip() {
+		final boolean areTooltipsDisplayed = ResourceController.getResourceController().getBooleanProperty(ResourceControllerProperties.RESOURCES_SHOW_NODE_TOOLTIPS);
+		updateToolTip(areTooltipsDisplayed);
 	}
+
+	private void updateToolTip(final boolean areTooltipsDisplayed) {
+	    if (! areTooltipsDisplayed) {
+			mainView.setToolTipText(null);
+			return;
+		}
+		final Map tooltips = getModel().getToolTip();
+		if (tooltips.size() == 0) {
+			mainView.setToolTipText(null);
+			return;
+		}
+		final StringBuffer text = new StringBuffer("<html><table width=\"" + getMaxToolTipWidth() + "\">");
+		for (final Iterator i = tooltips.keySet().iterator(); i.hasNext();) {
+			final String key = (String) i.next();
+			String value = (String) tooltips.get(key);
+			value = value.replaceAll("</html>", "");
+			text.append("<tr><td>");
+			text.append(value);
+			text.append("</td></tr>");
+		}
+		text.append("</table></html>");
+		mainView.setToolTipText(text.toString());
+    }
 
 	boolean useSelectionColors() {
 		return isSelected() && !MapView.standardDrawRectangleForSelection && !map.isCurrentlyPrinting();
 	}
+
+	void updateToolTipsRecursive() {
+		final boolean areTooltipsDisplayed = ResourceController.getResourceController().getBooleanProperty(ResourceControllerProperties.RESOURCES_SHOW_NODE_TOOLTIPS);
+		updateToolTipsRecursive(areTooltipsDisplayed);
+    }
+
+	private void updateToolTipsRecursive(final boolean areTooltipsDisplayed) {
+	    updateToolTip(areTooltipsDisplayed);
+		invalidate();
+		for (final ListIterator e = getChildrenViews().listIterator(); e.hasNext();) {
+			final NodeView child = (NodeView) e.next();
+			child.updateToolTipsRecursive(areTooltipsDisplayed);
+		}
+    }
 }

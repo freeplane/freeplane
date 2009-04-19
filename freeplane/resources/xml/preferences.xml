@@ -170,6 +170,7 @@
             <boolean name="disable_cursor_move_paper"/>
             <boolean name="enable_leaves_folding"/>
             <string name="foldingsymbolwidth"/>
+            <boolean name="show_node_tooltips"/>
         </separator>
         <separator name="key_typing">
             <boolean name="disable_key_type"/>

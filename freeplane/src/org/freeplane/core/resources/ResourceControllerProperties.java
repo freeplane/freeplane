@@ -56,4 +56,5 @@ public class ResourceControllerProperties {
 	public static final String RESOURCES_WHEEL_VELOCITY = "wheel_velocity";
 	public static final String XML_PATTERNS_XML = "/xml/patterns.xml";
 	public static final String XML_VERSION = "0.9.0";
+	public static final String RESOURCES_SHOW_NODE_TOOLTIPS = "show_node_tooltips";
 }
