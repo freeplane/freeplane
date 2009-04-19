@@ -100,7 +100,7 @@ public class FreeplaneStarter {
 			final JFrame frame = new JFrame("Freeplane");
 			Compat.useScreenMenuBar();
 			feedBack = splash.getFeedBack();
-			feedBack.setMaximumValue(3);
+			feedBack.setMaximumValue(2);
 			final MMapViewController mapViewController = new MMapViewController();
 			viewController = new ApplicationViewController(controller, mapViewController, frame);
 			initFrame(frame);
@@ -184,10 +184,14 @@ public class FreeplaneStarter {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				viewController.init();
-				feedBack.increase("Freeplane.progress.startCreateController");
-				final ModeController ctrl = createModeController(args);
+                try {
+                	final Class macClass = Class.forName("accessories.plugins.MacChanges");
+                	macClass.getConstructors()[0].newInstance(new Object[] { this });
+                }
+                catch (final Exception e) {
+                }
 				feedBack.increase("Freeplane.progress.loadMaps");
-				loadMaps(args, ctrl);
+				loadMaps(args);
 				Frame frame = viewController.getFrame();
 				int extendedState = frame.getExtendedState();
 				frame.setVisible(true);
@@ -199,19 +203,7 @@ public class FreeplaneStarter {
 		});
 	}
 
-	private ModeController createModeController(final String[] args) {
-		controller.selectMode(MModeController.MODENAME);
-		final ModeController ctrl = controller.getModeController();
-		try {
-			final Class macClass = Class.forName("accessories.plugins.MacChanges");
-			macClass.getConstructors()[0].newInstance(new Object[] { this });
-		}
-		catch (final Exception e1) {
-		}
-		return ctrl;
-	}
-
-	private void loadMaps(final String[] args, final ModeController pModeController) {
+	private void loadMaps(final String[] args) {
 		boolean fileLoaded = false;
 		for (int i = 0; i < args.length; i++) {
 			String fileArgument = args[i];
@@ -221,8 +213,11 @@ public class FreeplaneStarter {
 					fileArgument = System.getProperty("user.dir") + System.getProperty("file.separator") + fileArgument;
 				}
 				try {
-					((MModeController) pModeController).getMapController().newMap(
-					    Compat.fileToUrl(new File(fileArgument)));
+					if(! fileLoaded){
+						controller.selectMode(MModeController.MODENAME);
+					}
+					final MModeController modeController = (MModeController) controller.getModeController();
+					modeController.getMapController().newMap(Compat.fileToUrl(new File(fileArgument)));
 					fileLoaded = true;
 				}
 				catch (final Exception ex) {
@@ -230,30 +225,31 @@ public class FreeplaneStarter {
 				}
 			}
 		}
-		if (!fileLoaded) {
-			final String restoreable = ResourceController.getResourceController().getProperty(
-			    ResourceControllerProperties.ON_START_IF_NOT_SPECIFIED);
-			if (Boolean.parseBoolean(ResourceController.getResourceController().getProperty(
-			    ResourceControllerProperties.LOAD_LAST_MAP))
-			        && restoreable != null && restoreable.length() > 0) {
-				try {
-					applicationResourceController.getLastOpenedList().open(controller, restoreable);
-					fileLoaded = true;
-				}
-				catch (final Exception e) {
-					LogTool.logException(e);
-					controller.getViewController().out("An error occured on opening the file: " + restoreable + ".");
-				}
+		if (fileLoaded) {
+			return;
+		}
+		final String restoreable = ResourceController.getResourceController().getProperty(
+			ResourceControllerProperties.ON_START_IF_NOT_SPECIFIED);
+		if (Boolean.parseBoolean(ResourceController.getResourceController().getProperty(
+			ResourceControllerProperties.LOAD_LAST_MAP))
+			&& restoreable != null && restoreable.length() > 0) {
+			try {
+				applicationResourceController.getLastOpenedList().open(controller, restoreable);
+				return;
+			}
+			catch (final Exception e) {
+				LogTool.logException(e);
+				controller.getViewController().out("An error occured on opening the file: " + restoreable + ".");
 			}
 		}
-		if (!fileLoaded) {
-			/*
-			 * nothing loaded so far. Perhaps, we should display a new map...
-			 * According to Summary: On first start Freeplane should show new map
-			 * to newbies https: &aid=1752516&group_id=7118
-			 */
-			pModeController.getMapController().newMap(((NodeModel) null));
-		}
+		/*
+		 * nothing loaded so far. Perhaps, we should display a new map...
+		 * According to Summary: On first start Freeplane should show new map
+		 * to newbies https: &aid=1752516&group_id=7118
+		 */
+		controller.selectMode(MModeController.MODENAME);
+		final MModeController modeController = (MModeController) controller.getModeController();
+		modeController.getMapController().newMap(((NodeModel) null));
 	}
 
 	/**

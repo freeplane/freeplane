@@ -276,20 +276,4 @@ class ApplicationResourceController extends ResourceController {
 		firePropertyChanged(key, value, oldValue);
 	}
 
-	@Override
-	public void updateMenus(final ModeController modeController) {
-		super.updateMenus(modeController);
-		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
-		menuBuilder.addPopupMenuListener(FreeplaneMenuBar.FILE_MENU, new PopupMenuListener() {
-			public void popupMenuCanceled(final PopupMenuEvent e) {
-			}
-
-			public void popupMenuWillBecomeInvisible(final PopupMenuEvent e) {
-			}
-
-			public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
-				lastOpened.updateMenus(modeController.getController(), menuBuilder);
-			}
-		});
-	}
 }

@@ -121,6 +121,7 @@ class LastOpenedList implements IMapViewChangeListener {
 		while (lastOpenedList.size() > maxEntries) {
 			lastOpenedList.remove(lastOpenedList.size() - 1);
 		}
+		updateMenus();
 	}
 
 	public void open(final Controller controller, final String restoreable) throws FileNotFoundException,
@@ -139,12 +140,16 @@ class LastOpenedList implements IMapViewChangeListener {
 		}
 	}
 
-	public void updateMenus(final Controller controller, final MenuBuilder menuBuilder) {
+	private void updateMenus() {
+		final MenuBuilder menuBuilder = controller.getModeController().getUserInputListenerFactory().getMenuBuilder();
 		menuBuilder.removeChildElements(FreeplaneMenuBar.FILE_MENU + "/last");
-		int i = 1;
+		int i = 0;
 		for (final ListIterator it = listIterator(); it.hasNext();) {
 			final String key = (String) it.next();
-			final AFreeplaneAction lastOpenedActionListener = new OpenLastOpenedAction(i++, key, controller, this);
+			if(i++ == 0){
+				continue;
+			}
+			final AFreeplaneAction lastOpenedActionListener = new OpenLastOpenedAction(i, key, controller, this);
 			menuBuilder.addAction(FreeplaneMenuBar.FILE_MENU + "/last", lastOpenedActionListener, UIBuilder.AS_CHILD);
 		}
 	}
