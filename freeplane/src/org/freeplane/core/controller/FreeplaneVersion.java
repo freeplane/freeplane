@@ -24,7 +24,7 @@ import java.util.StringTokenizer;
 // TODO rladstaetter 15.02.2009 use build properties for this information
 @Deprecated
 public class FreeplaneVersion {
-	private static final FreeplaneVersion VERSION = new FreeplaneVersion("1.0.1 alpha");
+	private static final FreeplaneVersion VERSION = new FreeplaneVersion("1.0.3 alpha");
 
 	public static FreeplaneVersion getVersion() {
 		return VERSION;

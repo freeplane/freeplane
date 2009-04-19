@@ -1,5 +1,5 @@
 <project name="freeplane" default="dist" basedir="..">
-	<property name="ver" value="1.0.2" />
+	<property name="ver" value="1.0.3" />
 	<property name = "root" value = "."/>
 	<property name="bin" value="${root}/bin" />
 	<property name="dist" value="${root}/dist" />

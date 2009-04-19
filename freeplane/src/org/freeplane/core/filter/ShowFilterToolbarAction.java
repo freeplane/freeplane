@@ -46,7 +46,7 @@ class ShowFilterToolbarAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent event) {
-		if (! isSelected()) {
+		if (! isFilterToolbarVisible()) {
 			filterController.showFilterToolbar(true);
 		}
 		else {
@@ -56,7 +56,11 @@ class ShowFilterToolbarAction extends AFreeplaneAction {
 
 	@Override
     public void setSelected() {
-		setSelected(filterController.getFilterToolbar().isVisible());
+		setSelected(isFilterToolbarVisible());
+    }
+
+	private boolean isFilterToolbarVisible() {
+	    return filterController.getFilterToolbar().isVisible();
     }
 	
 	
