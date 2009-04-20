@@ -21,19 +21,13 @@ package org.freeplane.core.ui;
 
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.Event;
-import java.awt.Frame;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
-import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.ref.WeakReference;
 import java.net.URL;
-import java.util.Enumeration;
 
 import javax.swing.AbstractButton;
 import javax.swing.Action;
@@ -42,7 +36,6 @@ import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JToolBar;
@@ -60,7 +53,6 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.components.GrabKeyDialog;
 import org.freeplane.core.ui.components.JAutoCheckBoxMenuItem;
 import org.freeplane.core.ui.components.JAutoRadioButtonMenuItem;
 import org.freeplane.core.ui.components.JAutoToggleButton;
@@ -429,121 +421,13 @@ public class MenuBuilder extends UIBuilder {
 	}
 
 	Action decorateAction(String category, Action action){
-		if (null == getMenubar(get(category))){
+		if (null == getMenubar(get(category))
+				|| modeController.getController().getViewController().isApplet()){
 			return action;
 		}
-		return new AccelerateableAction(action);
+		return new AccelerateableAction(this, action);
 		
 	}
-	class AccelerateableAction implements Action{
-		final private Action originalAction;
-
-		public void actionPerformed(ActionEvent e) {
-			if(! (e.getModifiers() == ActionEvent.CTRL_MASK + InputEvent.BUTTON1_MASK && e.getSource() instanceof JMenuItem)){
-		        originalAction.actionPerformed(e);
-		        return;
-			}
-			JMenuItem item = (JMenuItem) e.getSource();
-			newAccelerator(item);
-			
-        }
-
-		private void newAccelerator(final JMenuItem editedItem) {
-	        Frame frame = JOptionPane.getFrameForComponent(editedItem);
-			final Object key = getKeyByUserObject(editedItem);
-			String shortcutKey = getShortcutKey(key.toString());
-			final GrabKeyDialog grabKeyDialog = new GrabKeyDialog(frame, 
-				ResourceController.getResourceController().getProperty(shortcutKey));
-			grabKeyDialog.setValidator(new IKeystrokeValidator(){
-				public boolean isValid(KeyStroke keystroke) {
-					if(keystroke == null){
-						return true;
-					}
-					Object menubarKey = getMenubar(get(key));
-					if(menubarKey == null){
-						return true;
-					}
-					DefaultMutableTreeNode menubarNode = get(menubarKey);
-					if((keystroke.getModifiers() & (Event.ALT_MASK | Event.CTRL_MASK)) == Event.ALT_MASK){
-						JMenuBar menuBar = (JMenuBar) menubarNode.getUserObject();
-						int menuCount = menuBar.getMenuCount();
-						for(int i = 0; i < menuCount; i++){
-							JMenu menu = menuBar.getMenu(i);
-							char c = (char) menu.getMnemonic();
-							if(Character.toLowerCase(keystroke.getKeyCode()) == Character.toLowerCase(c)){
-								JOptionPane.showMessageDialog (grabKeyDialog, menu.getText(), FreeplaneResourceBundle.getText("used_in_menu"), JOptionPane.WARNING_MESSAGE);
-								return false;
-							}
-						}
-					}
-					return isValid(menubarNode, keystroke);
-                }
-
-				private boolean isValid(DefaultMutableTreeNode menubarNode, KeyStroke keystroke) {
-	                Enumeration menuElements = menubarNode.children();
-					while (menuElements.hasMoreElements()){
-						Node menuItemNode = (Node) menuElements.nextElement();
-						Object userObject = menuItemNode.getUserObject();
-						if(userObject instanceof JMenuItem){
-							JMenuItem menuItem = (JMenuItem) userObject;
-							if(keystroke.equals(menuItem.getAccelerator())){
-								if(editedItem.equals(menuItem)){
-									return true;
-								}
-								int replace = JOptionPane.showConfirmDialog(grabKeyDialog, menuItem.getText(), FreeplaneResourceBundle.getText("remove_shortcut_question"), JOptionPane.YES_NO_OPTION);
-								if(replace == JOptionPane.YES_OPTION){
-									menuItem.setAccelerator(null);
-									String shortcutKey = getShortcutKey(menuItemNode.getKey().toString());
-									ResourceController.getResourceController().setProperty(shortcutKey, "");
-									return true;
-								}
-								return false;
-							}
-						}
-						if (! isValid(menuItemNode, keystroke)) {
-							return false;
-						}
-					}
-					return true;
-                }});
-			grabKeyDialog.setVisible(true);
-			if (grabKeyDialog.isOK()) {
-				String shortcut = grabKeyDialog.getShortcut();
-				KeyStroke accelerator = UITools.getKeyStroke(shortcut);
-				editedItem.setAccelerator(accelerator);
-				ResourceController.getResourceController().setProperty(shortcutKey, shortcut);
-			}
-        }
-
-		public void addPropertyChangeListener(PropertyChangeListener listener) {
-	        originalAction.addPropertyChangeListener(listener);
-        }
-
-		public Object getValue(String key) {
-	        return originalAction.getValue(key);
-        }
-
-		public boolean isEnabled() {
-	        return originalAction.isEnabled();
-        }
-
-		public void putValue(String key, Object value) {
-	        originalAction.putValue(key, value);
-        }
-
-		public void removePropertyChangeListener(PropertyChangeListener listener) {
-	        originalAction.removePropertyChangeListener(listener);
-        }
-
-		public void setEnabled(boolean b) {
-	        originalAction.setEnabled(b);
-        }
-
-		public AccelerateableAction(Action originalAction) {
-	        super();
-	        this.originalAction = originalAction;
-        }
-	};
 	/**
 	 * @return returns the new JMenuItem.
 	 */
@@ -676,7 +560,7 @@ public class MenuBuilder extends UIBuilder {
 		}
 	}
 
-	private Object getMenubar(DefaultMutableTreeNode element) {
+	Object getMenubar(DefaultMutableTreeNode element) {
 		do {
 	        Object userObject = element.getUserObject();
 			if (userObject instanceof JMenuBar) {
@@ -687,7 +571,7 @@ public class MenuBuilder extends UIBuilder {
         return null;
     }
 
-	private String getShortcutKey(final String key) {
+	String getShortcutKey(final String key) {
 	    return "acceleratorFor" + modeController.getModeName() + "/" + key;
     }
 
