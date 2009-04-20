@@ -236,20 +236,13 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		filterToolbar.setVisible(false);
 		filterToolbar.setFocusable(false);
 		final JButton undoBtn = new JButton(controller.getAction("UndoFilterAction"));
-		filterToolbar.add(undoBtn);
 		final JButton redoBtn = new JButton(controller.getAction("RedoFilterAction"));
-		filterToolbar.add(redoBtn);
 		final JButton btnUnfoldAncestors = new JButton(controller.getAction("UnfoldFilteredAncestorsAction"));
-		filterToolbar.add(btnUnfoldAncestors);
 		final JToggleButton showAncestorsBox = new JAutoToggleButton(controller.getAction("ShowAncestorsAction"));
 		showAncestorsBox.setSelected(showAncestors.isSelected());
-		filterToolbar.add(showAncestorsBox);
 		final JToggleButton showDescendantsBox = new JAutoToggleButton(controller.getAction("ShowDescendantsAction"));
-		filterToolbar.add(showDescendantsBox);
 		final JToggleButton applyToVisibleBox = new JAutoToggleButton(controller.getAction("ApplyToVisibleAction"));
-		filterToolbar.add(applyToVisibleBox);
 		final JButton btnEdit = new JButton(controller.getAction("EditFilterAction"));
-		filterToolbar.add(btnEdit);
 		final JComboBox activeFilterConditionComboBox = new JComboBox(getFilterConditions()) {
 			/**
 			 * 
@@ -261,9 +254,18 @@ public class FilterController implements IMapSelectionListener, IExtension {
 				return getPreferredSize();
 			}
 		};
-		filterToolbar.add(activeFilterConditionComboBox);
 		final JButton applyBtn = new JButton(controller.getAction("ReapplyFilterAction"));
+
+		filterToolbar.add(undoBtn);
+		filterToolbar.add(redoBtn);
+		filterToolbar.add(showAncestorsBox);
+		filterToolbar.add(showDescendantsBox);
+		filterToolbar.add(applyToVisibleBox);
+		filterToolbar.add(activeFilterConditionComboBox);
 		filterToolbar.add(applyBtn);
+		filterToolbar.add(btnUnfoldAncestors);
+		filterToolbar.add(btnEdit);
+
 		activeFilterConditionComboBox.setFocusable(false);
 		activeFilterConditionComboBox.setRenderer(this.getConditionRenderer());
 		return filterToolbar;
