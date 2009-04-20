@@ -36,6 +36,7 @@ import org.freeplane.features.common.time.TimeController;
 import org.freeplane.features.controller.help.HelpController;
 import org.freeplane.features.controller.print.PrintController;
 import org.freeplane.main.browsemode.BModeControllerFactory;
+import org.freeplane.view.swing.addins.nodehistory.NodeHistory;
 import org.freeplane.view.swing.map.MapViewController;
 
 public class FreeplaneApplet extends JApplet {
@@ -43,7 +44,7 @@ public class FreeplaneApplet extends JApplet {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private AppletResourceController appletResourceController;
+	static private AppletResourceController appletResourceController;
 	private AppletViewController appletViewController;
 	private Controller controller;
 
@@ -54,17 +55,21 @@ public class FreeplaneApplet extends JApplet {
 
 	@Override
 	public void init() {
-		createRootPane();
+		if(appletResourceController == null){
+			appletResourceController = new AppletResourceController(this);
+		}
 		updateLookAndFeel();
+		createRootPane();
+		controller = new Controller();
+		appletResourceController.init(controller);
 		final Container contentPane = getContentPane();
 		contentPane.setLayout(new BorderLayout());
-		controller = new Controller();
-		appletResourceController = new AppletResourceController(this, controller);
 		ResourceController.setResourceController(appletResourceController);
 		appletViewController = new AppletViewController(controller, this, new MapViewController());
 		FilterController.install(controller);
 		PrintController.install(controller);
 		HelpController.install(controller);
+		NodeHistory.install(controller);
 		ModelessAttributeController.install(controller);
 		TextController.install(controller);
 		TimeController.install(controller);

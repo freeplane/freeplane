@@ -41,6 +41,7 @@ import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.features.browsemode.BModeController;
 
 /**
  * @author Dimitry Polivaev
@@ -113,7 +114,7 @@ class AppletViewController extends ViewController {
 				LogTool.logException(e);
 			}
 		}
-		getController().selectMode(ResourceController.getResourceController().getProperty("initial_mode"));
+		getController().selectMode(BModeController.MODENAME);
 		String initialMapName = ResourceController.getResourceController().getProperty("browsemode_initial_map");
 		if (initialMapName != null && initialMapName.startsWith(".")) {
 			/* new handling for relative urls. fc, 29.10.2003. */

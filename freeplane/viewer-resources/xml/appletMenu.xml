@@ -88,8 +88,7 @@
 		</menu_submenu>
 		<menu_submenu name="help" name_ref="help">
 			<menu_category name="doc">
-				<menu_action action="DocumentationAction" />
-				<menu_action action="OpenURLAction" />
+				<menu_action action="OpenFreeplaneSiteAction" />
 				<menu_action action="FaqOpenURLAction" />
 				<menu_action action="LicenseAction" />
 				<menu_action action="AboutAction" />
@@ -129,6 +128,7 @@
 			<menu_action action="CopyAction"  />
 		</menu_category>
 		<menu_separator />
+		<menu_category name="history"/>
 		<menu_category name="folding">
 		</menu_category>
 	</menu_category>

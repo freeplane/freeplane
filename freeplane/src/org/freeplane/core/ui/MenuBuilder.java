@@ -60,8 +60,7 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.ui.GrabKeyDialog;
-import org.freeplane.core.resources.ui.IKeystrokeValidator;
+import org.freeplane.core.ui.components.GrabKeyDialog;
 import org.freeplane.core.ui.components.JAutoCheckBoxMenuItem;
 import org.freeplane.core.ui.components.JAutoRadioButtonMenuItem;
 import org.freeplane.core.ui.components.JAutoToggleButton;
@@ -267,6 +266,7 @@ public class MenuBuilder extends UIBuilder {
 				}
 				try {
 					final AFreeplaneAction theAction = modeController.getAction(action);
+					assert  theAction != null;
 					if (tag.equals("menu_radio_action")) {
 						final JRadioButtonMenuItem item = (JRadioButtonMenuItem) addRadioItem(menuPath.parentPath,
 						    theAction, "true".equals(attributes.getAttribute("selected", "false")));

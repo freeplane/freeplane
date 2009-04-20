@@ -15,7 +15,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.resources.ui;
+package org.freeplane.core.ui.components;
 
 import java.awt.AWTEvent;
 import java.awt.Dialog;
@@ -40,7 +40,10 @@ import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
 import org.freeplane.core.resources.FreeplaneResourceBundle;
-import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.resources.ui.KeyEventTranslator;
+import org.freeplane.core.resources.ui.KeyEventWorkaround;
+import org.freeplane.core.resources.ui.KeyEventTranslator.Key;
+import org.freeplane.core.ui.IKeystrokeValidator;
 
 /**
  * A dialog for getting shortcut keys.

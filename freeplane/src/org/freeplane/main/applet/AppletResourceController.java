@@ -39,7 +39,7 @@ class AppletResourceController extends ResourceController {
 	final private JApplet applet;
 	private Properties userProps;
 
-	public AppletResourceController(final FreeplaneApplet freeplaneApplet, final Controller controller) {
+	public AppletResourceController(final FreeplaneApplet freeplaneApplet) {
 		super();
 		applet = freeplaneApplet;
 		final URL defaultPropsURL = getResource(ResourceControllerProperties.FREEPLANE_PROPERTIES);
@@ -57,7 +57,7 @@ class AppletResourceController extends ResourceController {
 			final String key = (String) allKeys.nextElement();
 			setPropertyByParameter(key);
 		}
-		init(controller);
+		ResourceController.setResourceController(this);
 	}
 
 	@Override
@@ -124,4 +124,11 @@ class AppletResourceController extends ResourceController {
 			userProps.setProperty(key, val);
 		}
 	}
+
+	@Override
+	public void init(Controller controller) {
+	    super.init(controller);
+    }
+	
+	
 }

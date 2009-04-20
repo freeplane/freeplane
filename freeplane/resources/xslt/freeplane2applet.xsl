@@ -63,18 +63,16 @@ html { height:100% }
       </head>
 		<body>
         <xsl:element name="applet">
-            <xsl:attribute name="code">org.freeplane.startup.FreeplaneApplet.class</xsl:attribute>
+            <xsl:attribute name="code">org.freeplane.main.applet.FreeplaneApplet.class</xsl:attribute>
             <xsl:attribute name="archive">./<xsl:value-of select="$destination_dir"/>freeplaneviewer.jar</xsl:attribute>
             <xsl:attribute name="width">100%</xsl:attribute>
             <xsl:attribute name="height">100%</xsl:attribute>
-            <param name="type" value="application/x-java-applet;version=1.4"/>
+            <param name="type" value="application/x-java-applet;version=1.5"/>
             <param name="scriptable" value="false"/>
-            <param name="modes" value="freeplane.modes.browsemode.BrowseMode"/>
             <xsl:element name="param">
                 <xsl:attribute name="name">browsemode_initial_map</xsl:attribute>
                 <xsl:attribute name="value">./<xsl:value-of select="$destination_dir"/>map.mm</xsl:attribute>
             </xsl:element>
-            <param name="initial_mode" value="Browse"/>
             <param name="selection_method" value="selection_method_direct"/>
         </xsl:element>
    		</body>

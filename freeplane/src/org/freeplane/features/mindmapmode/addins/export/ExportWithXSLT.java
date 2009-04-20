@@ -321,7 +321,7 @@ public class ExportWithXSLT extends ExportAction {
 	 */
 	private boolean transformMapWithXslt(final String xsltFileName, final File saveFile, final String areaCode)
 	        throws IOException {
-		final Mode mode = Mode.parse(getProperty("mode", "SAVE"));
+		final Mode mode = Mode.parse(getProperty("mode", "FILE"));
 		final String map = getMapXml(mode);
 		final StringReader reader = new StringReader(map);
 		final URL xsltUrl = ResourceController.getResourceController().getResource(xsltFileName);

@@ -50,7 +50,7 @@ class ApplyToVisibleAction extends AFreeplaneAction {
 	}
 
 	@Override
-	public boolean isSelected() {
-		return filterController.getApplyToVisibleNodeOnly().isSelected();
+	public void setSelected() {
+		setSelected(filterController.getApplyToVisibleNodeOnly().isSelected());
 	}
 }

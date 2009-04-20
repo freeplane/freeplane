@@ -80,7 +80,7 @@
 	</div>
 	
 	<script type="text/javascript">
-		var fo = new FlashObject("./<xsl:value-of select="$destination_dir"/>visorFreeplane.swf", "visorFreeplane", "100%", "100%", 6, "#9999ff");
+		var fo = new FlashObject("./<xsl:value-of select="$destination_dir"/>visorFreemind.swf", "visorFreeMind", "100%", "100%", 6, "#9999ff");
 		fo.addParam("quality", "high");
 		fo.addParam("bgcolor", "#ffffff");
 		fo.addVariable("openUrl", "_blank");

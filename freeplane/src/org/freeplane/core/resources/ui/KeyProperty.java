@@ -31,6 +31,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.core.resources.FpStringUtils;
+import org.freeplane.core.ui.components.GrabKeyDialog;
 import org.freeplane.core.ui.components.UITools;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;

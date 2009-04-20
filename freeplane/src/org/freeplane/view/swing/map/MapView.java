@@ -25,7 +25,6 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
@@ -35,8 +34,6 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
 import java.awt.dnd.Autoscroll;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.geom.CubicCurve2D;
 import java.awt.print.PageFormat;
@@ -53,14 +50,9 @@ import java.util.TreeMap;
 import java.util.Vector;
 
 import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRootPane;
 import javax.swing.JViewport;
-import javax.swing.SwingUtilities;
 
-import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.modecontroller.IMapChangeListener;
@@ -354,13 +346,19 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
                 }});
 			return;
 		}
-		anchorContentLocation = new Point();
 		final JViewport viewPort = (JViewport) getParent();
 		final Dimension d = viewPort.getExtentSize();
 		final JComponent content = node.getContent();
 		final Rectangle rect = new Rectangle(content.getWidth() / 2 - d.width / 2, content.getHeight() / 2 - d.height
 		        / 2, d.width, d.height);
+		final Point oldAnchorContentLocation = anchorContentLocation;
+		anchorContentLocation = new Point();
+		Point oldViewPosition = viewPort.getViewPosition();
 		content.scrollRectToVisible(rect);
+		Point newViewPosition = viewPort.getViewPosition();
+		if(oldViewPosition.equals(newViewPosition)){
+			anchorContentLocation = oldAnchorContentLocation;
+		}
 	}
 
 	/**
