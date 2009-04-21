@@ -709,7 +709,7 @@ public class MapController extends SelectionController {
 		final boolean fold = getFoldingState(resetIterator(listIterator));
 		for (final Iterator i = resetIterator(listIterator); i.hasNext();) {
 			final NodeModel node = (NodeModel) i.next();
-			getModeController().getMapController().setFolded(node, fold);
+			setFolded(node, fold);
 		}
 	}
 }
