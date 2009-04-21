@@ -188,6 +188,15 @@ public class OptionPanelBuilder {
 		}
 	}
 
+	private class TextCreator extends PropertyCreator {
+
+		@Override
+		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
+			final String label = "OptionPanel.text." + name;
+			return createTextCreator(label);
+		}
+	}
+
 	private class StringOptionCreator extends PropertyCreator {
 		@Override
 		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
@@ -252,6 +261,10 @@ public class OptionPanelBuilder {
 
 	public void addSeparator(final String path, final String name, final int position) {
 		tree.addElement(path, createSeparatorCreator(name), path + "/" + name, position);
+	}
+
+	public void addText(final String path, final String name, final int position) {
+		tree.addElement(path, createTextCreator(name), path + "/" + name, position);
 	}
 
 	public void addSpace(final String path, final int position) {
@@ -319,6 +332,14 @@ public class OptionPanelBuilder {
 		};
 	}
 
+	private IPropertyControlCreator createTextCreator(final String label) {
+		return new IPropertyControlCreator() {
+			public IPropertyControl createControl() {
+				return new Text(label);
+			}
+		};
+	}
+
 	private IPropertyControlCreator createStringOptionCreator(final String name) {
 		return new IPropertyControlCreator() {
 			public IPropertyControl createControl() {
@@ -356,6 +377,7 @@ public class OptionPanelBuilder {
 		readManager.addElementHandler("group", new EmptyCreator());
 		readManager.addElementHandler("tab", new TabCreator());
 		readManager.addElementHandler("separator", new SeparatorCreator());
+		readManager.addElementHandler("text", new TextCreator());
 		readManager.addElementHandler("string", new StringOptionCreator());
 		readManager.addElementHandler("boolean", new BooleanOptionCreator());
 		readManager.addElementHandler("number", new NumberOptionCreator());
