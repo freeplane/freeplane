@@ -51,11 +51,11 @@ class RemoveIconAction extends MultipleNodeAction implements IIconInformation {
 
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		if ((e.getModifiers() & ~ActionEvent.SHIFT_MASK & ~ActionEvent.CTRL_MASK & ActionEvent.ALT_MASK) != 0) {
+		if ((e.getModifiers() & (ActionEvent.SHIFT_MASK | ActionEvent.CTRL_MASK | ActionEvent.ALT_MASK)) == 0) {
 			removeIcon(node, MindIcon.LAST);
 			return;
 		}
-		if ((e.getModifiers() & ~ActionEvent.SHIFT_MASK & ~ActionEvent.CTRL_MASK & ~ActionEvent.ALT_MASK) != 0) {
+		if ((e.getModifiers() & ~ActionEvent.SHIFT_MASK & ~ActionEvent.CTRL_MASK & ActionEvent.ALT_MASK) != 0) {
 			removeIcon(node, 0);
 			return;
 		}
@@ -74,9 +74,12 @@ class RemoveIconAction extends MultipleNodeAction implements IIconInformation {
 	}
 
 	public int removeIcon(final NodeModel node, final int position) {
+		final int size = node.getIcons().size();
+		if(size <= position){
+			return size;
+		}
 		final IActor actor = new IActor() {
 			private final MindIcon icon = node.getIcon(position);
-
 			public void act() {
 				node.removeIcon(position);
 				getModeController().getMapController().nodeChanged(node, "icon", icon, null);
