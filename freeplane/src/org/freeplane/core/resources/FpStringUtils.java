@@ -1,6 +1,7 @@
 package org.freeplane.core.resources;
 
 import java.text.MessageFormat;
+import java.util.regex.Matcher;
 
 public class FpStringUtils {
 	/**
@@ -9,8 +10,7 @@ public class FpStringUtils {
 	static String expandPlaceholders(final String message, String s1) {
 		String result = message;
 		if (s1 != null) {
-			s1 = s1.replaceAll("\\\\", "\\\\\\\\");
-			result = result.replaceAll("\\$1", s1);
+			result = result.replaceAll("\\$1", Matcher.quoteReplacement(s1));
 		}
 		return result;
 	}
@@ -18,10 +18,10 @@ public class FpStringUtils {
 	static String expandPlaceholders(final String message, final String s1, final String s2) {
 		String result = message;
 		if (s1 != null) {
-			result = result.replaceAll("\\$1", s1);
+			result = result.replaceAll("\\$1", Matcher.quoteReplacement(s1));
 		}
 		if (s2 != null) {
-			result = result.replaceAll("\\$2", s2);
+			result = result.replaceAll("\\$2", Matcher.quoteReplacement(s2));
 		}
 		return result;
 	}

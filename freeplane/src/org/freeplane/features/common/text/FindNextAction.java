@@ -21,6 +21,7 @@ package org.freeplane.features.common.text;
 
 import java.awt.event.ActionEvent;
 import java.util.Collection;
+import java.util.regex.Matcher;
 
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.resources.FreeplaneResourceBundle;
@@ -52,8 +53,9 @@ class FindNextAction extends AFreeplaneAction {
 			final String messageText = FreeplaneResourceBundle.getText("no_more_found_from");
 			final String searchTerm = messageText.startsWith("<html>") ? HtmlTools.toXMLEscapedText(find
 			    .getSearchTerm()) : find.getSearchTerm();
-			UITools.informationMessage(getController().getViewController().getFrame(), messageText.replaceAll("\\$1",
-			    searchTerm).replaceAll("\\$2", find.getFindFromText()));
+			UITools.informationMessage(getController().getViewController().getFrame(), 
+				messageText.replaceAll("\\$1",Matcher.quoteReplacement(searchTerm))
+				.replaceAll("\\$2", Matcher.quoteReplacement(find.getFindFromText())));
 		}
 	}
 }

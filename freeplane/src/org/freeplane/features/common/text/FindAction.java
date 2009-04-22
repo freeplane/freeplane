@@ -25,6 +25,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.ListIterator;
+import java.util.regex.Matcher;
 
 import javax.swing.JOptionPane;
 
@@ -66,8 +67,9 @@ class FindAction extends AFreeplaneAction {
 			final String messageText = FreeplaneResourceBundle.getText("no_found_from");
 			final String searchTerm = messageText.startsWith("<html>") ? HtmlTools.toXMLEscapedText(getSearchTerm())
 			        : getSearchTerm();
-			UITools.informationMessage(getController().getViewController().getFrame(), messageText.replaceAll("\\$1",
-			    searchTerm).replaceAll("\\$2", getFindFromText()));
+			UITools.informationMessage(getController().getViewController().getFrame(), 
+				messageText.replaceAll("\\$1",Matcher.quoteReplacement(searchTerm))
+				.replaceAll("\\$2", Matcher.quoteReplacement(getFindFromText())));
 		}
 	}
 

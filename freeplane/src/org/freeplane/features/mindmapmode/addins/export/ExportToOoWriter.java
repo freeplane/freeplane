@@ -140,7 +140,7 @@ public class ExportToOoWriter extends ExportAction {
 		zipout.closeEntry();
 		entry = new ZipEntry("META-INF/manifest.xml");
 		zipout.putNextEntry(entry);
-		resultValue &= applyXsltFile("/accessories/mm2oowriter.manifest.xsl", writer, result);
+		resultValue &= applyXsltFile("/xslt/mm2oowriter.manifest.xsl", writer, result);
 		zipout.closeEntry();
 		entry = new ZipEntry("styles.xml");
 		zipout.putNextEntry(entry);

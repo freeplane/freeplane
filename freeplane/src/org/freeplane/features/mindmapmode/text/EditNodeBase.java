@@ -53,15 +53,15 @@ import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;
  * @author foltin
  */
 public class EditNodeBase {
-	protected class EditCopyAction extends AFreeplaneAction {
+	protected class EditCopyAction extends AbstractAction {
 		/**
 		 * 
 		 */
 		private static final long serialVersionUID = 1L;
 		final private JTextComponent textComponent;
 
-		public EditCopyAction(final Controller controller, final JTextComponent textComponent) {
-			super("EditCopyAction", controller);
+		public EditCopyAction(final JTextComponent textComponent) {
+			super(FreeplaneResourceBundle.getText("CopyAction.text"));
 			this.textComponent = textComponent;
 		}
 
@@ -205,7 +205,7 @@ public class EditNodeBase {
 		private static final long serialVersionUID = 1L;
 
 		public EditPopupMenu(final JTextComponent textComponent) {
-			this.add(new EditCopyAction(getController(), textComponent));
+			this.add(new EditCopyAction(textComponent));
 			SpellCheckerController.getController(modeController).addSpellCheckerMenu(this);
 		}
 	}

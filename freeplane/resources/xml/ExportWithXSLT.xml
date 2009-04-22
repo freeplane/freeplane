@@ -17,7 +17,7 @@
             xslt_file="/xslt/toxhtml.xsl"
             create_dir="true"
             files_to_copy="marktree.js,minus.png,plus.png,ilink.png,treestyles.css"
-            file_prefix="/accessories/"
+            file_prefix="/html/"
             copy_icons="true"
             load_file="true"
             create_html_linked_image="false" />
