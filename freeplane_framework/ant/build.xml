@@ -1,12 +1,13 @@
 <project name="freeplane" default="dist" basedir="..">
-	<property name="ver" value="1.0.3" />
+	<property name = "workspace" value = ".."/>
+	<property file="${workspace}/freeplane/viewer-resources/version.properties"/>
+	<property name="ver" value="${freeplane_version}" />
 	<property name = "root" value = "."/>
 	<property name="bin" value="${root}/bin" />
 	<property name="dist" value="${root}/dist" />
 	
 	<target name="dist" depends="clean">
 		<property name = "root" value = "."/>
-		<property name = "workspace" value = ".."/>
 		<property name="framework.jar" value="lib/knopflerfish/framework.jar" />
 		<property name="freeplane.exe" value="windows-launcher/freeplane.exe" />
 		<property name="license" value="license.txt" />

@@ -1,4 +1,6 @@
 <project name="freeplane" default="dist" basedir="..">
+	<property file="viewer-resources/version.properties"/>
+	<property name="ver" value="${freeplane_version}" />
 	<property name="ver" value="1.0.1" />
 	<property name="src" value="src" />
 	<property name="resources" value="resources" />
