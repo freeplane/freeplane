@@ -21,6 +21,7 @@ package org.freeplane.features.mindmapmode.note;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,6 +35,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -324,7 +326,10 @@ public class MNoteController extends NoteController {
 		    KeyStroke.getKeyStroke(keystroke), "jumpToMapAction");
 		noteViewerComponent.getActionMap().put("jumpToMapAction", jumpToMapAction);
 		if (shouldUseSplitPane()) {
-			showNotesPanel();
+			EventQueue.invokeLater(new Runnable(){
+				public void run() {
+					showNotesPanel();
+				}});
 		}
 		modeController.getMapController().addNodeSelectionListener(noteManager);
 		noteManager.mNoteDocumentListener = new NoteDocumentListener();
