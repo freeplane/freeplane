@@ -204,6 +204,13 @@ public class OptionPanelBuilder {
 		}
 	}
 
+	private class FontOptionCreator extends PropertyCreator {
+		@Override
+		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
+			return createFontOptionCreator(name);
+		}
+	}
+
 	private class TabCreator extends PropertyCreator {
 		@Override
 		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
@@ -273,6 +280,10 @@ public class OptionPanelBuilder {
 
 	public void addStringProperty(final String path, final String name, final int position) {
 		tree.addElement(path, createStringOptionCreator(name), path + "/" + name, position);
+	}
+
+	public void addFontProperty(final String path, final String name, final int position) {
+		tree.addElement(path, createFontOptionCreator(name), path + "/" + name, position);
 	}
 
 	public void addTab(final String name) {
@@ -348,6 +359,14 @@ public class OptionPanelBuilder {
 		};
 	}
 
+	private IPropertyControlCreator createFontOptionCreator(final String name) {
+		return new IPropertyControlCreator() {
+			public IPropertyControl createControl() {
+				return new FontProperty(name);
+			}
+		};
+	}
+
 	private IPropertyControlCreator createTabCreator(final String label, final String layout) {
 		return new IPropertyControlCreator() {
 			public IPropertyControl createControl() {
@@ -379,6 +398,7 @@ public class OptionPanelBuilder {
 		readManager.addElementHandler("separator", new SeparatorCreator());
 		readManager.addElementHandler("text", new TextCreator());
 		readManager.addElementHandler("string", new StringOptionCreator());
+		readManager.addElementHandler("font", new FontOptionCreator());
 		readManager.addElementHandler("boolean", new BooleanOptionCreator());
 		readManager.addElementHandler("number", new NumberOptionCreator());
 		readManager.addElementHandler("color", new ColorOptionCreator());
