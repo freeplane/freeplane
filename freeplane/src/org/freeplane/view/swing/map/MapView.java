@@ -25,6 +25,7 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
@@ -899,24 +900,36 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	private void paintLinks(final Collection<LinkModel> links, final Graphics2D graphics,
 	                        final HashSet alreadyPaintedLinks) {
-		final Iterator<LinkModel> linkIterator = links.iterator();
-		while (linkIterator.hasNext()) {
-			final LinkModel next = linkIterator.next();
-			if (!(next instanceof ArrowLinkModel)) {
-				continue;
+		final Font font = graphics.getFont();
+		try{
+			if(zoom != 1f){
+				final Font derivedFont = font.deriveFont(font.getSize2D()*zoom);
+				graphics.setFont(derivedFont);
 			}
-			final ArrowLinkModel ref = (ArrowLinkModel) next;
-			if (alreadyPaintedLinks.add(ref)) {
-				if (ref instanceof ArrowLinkModel) {
-					final NodeModel target = ref.getTarget();
-					if (target == null) {
-						continue;
-					}
-					final ArrowLinkView arrowLink = new ArrowLinkView(ref, getNodeView(ref.getSource()),
-					    getNodeView(target));
-					arrowLink.paint(graphics);
-					arrowLinkViews.add(arrowLink);
+			final Iterator<LinkModel> linkIterator = links.iterator();
+			while (linkIterator.hasNext()) {
+				final LinkModel next = linkIterator.next();
+				if (!(next instanceof ArrowLinkModel)) {
+					continue;
 				}
+				final ArrowLinkModel ref = (ArrowLinkModel) next;
+				if (alreadyPaintedLinks.add(ref)) {
+					if (ref instanceof ArrowLinkModel) {
+						final NodeModel target = ref.getTarget();
+						if (target == null) {
+							continue;
+						}
+						final ArrowLinkView arrowLink = new ArrowLinkView(ref, getNodeView(ref.getSource()),
+							getNodeView(target));
+						arrowLink.paint(graphics);
+						arrowLinkViews.add(arrowLink);
+					}
+				}
+			}
+		}
+		finally{
+			if(zoom != 1f){
+				graphics.setFont(font);
 			}
 		}
 	}

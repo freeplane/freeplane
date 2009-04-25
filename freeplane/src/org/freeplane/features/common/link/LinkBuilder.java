@@ -124,10 +124,22 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 				arrowLinks.add(arrowLink);
 			}
 		});
-		reader.addAttributeHandler("arrowlink", "REFERENCETEXT", new IAttributeHandler() {
+		reader.addAttributeHandler("arrowlink", "SOURCE_LABEL", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final ArrowLinkModel arrowLink = (ArrowLinkModel) userObject;
-				arrowLink.setReferenceText((value.toString()));
+				arrowLink.setSourceLabel(value.toString());
+			}
+		});
+		reader.addAttributeHandler("arrowlink", "MIDDLE_LABEL", new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final ArrowLinkModel arrowLink = (ArrowLinkModel) userObject;
+				arrowLink.setMiddleLabel(value.toString());
+			}
+		});
+		reader.addAttributeHandler("arrowlink", "TARGET_LABEL", new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final ArrowLinkModel arrowLink = (ArrowLinkModel) userObject;
+				arrowLink.setTargetLabel(value.toString());
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "STARTINCLINATION", new IAttributeHandler() {
@@ -188,9 +200,17 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 		if (destinationLabel != null) {
 			arrowLink.setAttribute("DESTINATION", destinationLabel);
 		}
-		final String referenceText = model.getReferenceText();
-		if (referenceText != null) {
-			arrowLink.setAttribute("REFERENCETEXT", referenceText);
+		final String sourceLabel = model.getSourceLabel();
+		if (sourceLabel != null) {
+			arrowLink.setAttribute("SOURCE_LABEL", sourceLabel);
+		}
+		final String targetLabel = model.getTargetLabel();
+		if (targetLabel != null) {
+			arrowLink.setAttribute("TARGET_LABEL", targetLabel);
+		}
+		final String middleLabel = model.getMiddleLabel();
+		if (middleLabel != null) {
+			arrowLink.setAttribute("MIDDLE_LABEL", middleLabel);
 		}
 		final Point startInclination = model.getStartInclination();
 		if (startInclination != null) {

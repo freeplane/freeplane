@@ -34,23 +34,30 @@ class DefaultNodeDragListener implements DragGestureListener {
 		if (!ResourceController.getResourceController().getBooleanProperty("draganddrop")) {
 			return;
 		}
-		final NodeModel node = ((MainView) e.getComponent()).getNodeView().getModel();
-		if (node.isRoot()) {
-			return;
+		
+		final int dragActionType = e.getDragAction();
+		if(dragActionType == DnDConstants.ACTION_MOVE){
+			final NodeModel node = ((MainView) e.getComponent()).getNodeView().getModel();
+			if (node.isRoot()) {
+				return;
+			}
 		}
-		String dragAction = "MOVE";
-		Cursor cursor = getCursorByAction(e.getDragAction());
+		final String dragActionName;
+		Cursor cursor = getCursorByAction(dragActionType);
 		if ((e.getTriggerEvent().getModifiersEx() & InputEvent.BUTTON3_DOWN_MASK) != 0) {
 			cursor = DragSource.DefaultLinkDrop;
-			dragAction = "LINK";
+			dragActionName = "LINK";
 		}
-		if ((e.getTriggerEvent().getModifiersEx() & InputEvent.BUTTON2_DOWN_MASK) != 0) {
+		else if ((e.getTriggerEvent().getModifiersEx() & InputEvent.BUTTON2_DOWN_MASK) != 0) {
 			cursor = DragSource.DefaultCopyDrop;
-			dragAction = "COPY";
+			dragActionName = "COPY";
+		}
+		else{
+			dragActionName = "MOVE";
 		}
 		final ModeController modeController = controller.getModeController();
 		final Transferable t = ClipboardController.getController(modeController).copy(controller.getSelection());
-		((MindMapNodesSelection) t).setDropAction(dragAction);
+		((MindMapNodesSelection) t).setDropAction(dragActionName);
 		e.startDrag(cursor, t, new DragSourceListener() {
 			public void dragDropEnd(final DragSourceDropEvent dsde) {
 			}

@@ -26,8 +26,12 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JTextField;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.IMapChangeListener;
@@ -35,6 +39,7 @@ import org.freeplane.core.modecontroller.MapChangeEvent;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.FreeplaneResourceBundle;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.link.ArrowLinkModel;
 import org.freeplane.features.common.link.LinkController;
@@ -130,7 +135,7 @@ public class MLinkController extends LinkController {
 		modeController.addAction(new RemoveArrowLinkAction(this, null));
 		colorArrowLinkAction = new ColorArrowLinkAction(this, null);
 		modeController.addAction(colorArrowLinkAction);
-		modeController.addAction(new ChangeArrowsInArrowLinkAction(this, "none", null, null, true, true));
+		modeController.addAction(new ChangeArrowsInArrowLinkAction(this, "none", null, true, true));
 		setLinkByTextField = new SetLinkByTextFieldAction(controller);
 		modeController.addAction(setLinkByTextField);
 		modeController.addAction(new AddLocalLinkAction(controller));
@@ -144,26 +149,47 @@ public class MLinkController extends LinkController {
 		arrowLinkPopup.add(new RemoveArrowLinkAction(this, link));
 		arrowLinkPopup.add(new ColorArrowLinkAction(this, link));
 		arrowLinkPopup.addSeparator();
+		arrowLinkPopup.add(new JLabel(FreeplaneResourceBundle.getText("edit_source_label")));
+		final JTextField sourceLabelEditor = new JTextField(link.getSourceLabel());
+		arrowLinkPopup.add(sourceLabelEditor);
+		arrowLinkPopup.addSeparator();
+		arrowLinkPopup.add(new JLabel(FreeplaneResourceBundle.getText("edit_middle_label")));
+		final JTextField middleLabelEditor = new JTextField(link.getMiddleLabel());
+		arrowLinkPopup.add(middleLabelEditor);
+		arrowLinkPopup.addSeparator();
+		arrowLinkPopup.add(new JLabel(FreeplaneResourceBundle.getText("edit_target_label")));
+		final JTextField targetLabelEditor = new JTextField(link.getTargetLabel());
+		arrowLinkPopup.add(targetLabelEditor);
+		arrowLinkPopup.addSeparator();
+		arrowLinkPopup.addPopupMenuListener(new PopupMenuListener(){
+
+			public void popupMenuCanceled(PopupMenuEvent e) {
+            }
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+	            setSourceLabel(link, sourceLabelEditor.getText());
+	            setMiddleLabel(link, middleLabelEditor.getText());
+	            setTargetLabel(link, targetLabelEditor.getText());
+	            
+            }
+			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+            }});
+		
 		final boolean a = !link.getStartArrow().equals("None");
 		final boolean b = !link.getEndArrow().equals("None");
 		final JRadioButtonMenuItem itemnn = new JRadioButtonMenuItem(new ChangeArrowsInArrowLinkAction(this, "none",
-		    "/images/arrow-mode-none.png", link, false, false));
-		itemnn.setText(null);
+		    link, false, false));
 		arrowLinkPopup.add(itemnn);
 		itemnn.setSelected(!a && !b);
 		final JRadioButtonMenuItem itemnt = new JRadioButtonMenuItem(new ChangeArrowsInArrowLinkAction(this, "forward",
-		    "/images/arrow-mode-forward.png", link, false, true));
-		itemnt.setText(null);
+		    link, false, true));
 		arrowLinkPopup.add(itemnt);
 		itemnt.setSelected(!a && b);
 		final JRadioButtonMenuItem itemtn = new JRadioButtonMenuItem(new ChangeArrowsInArrowLinkAction(this,
-		    "backward", "/images/arrow-mode-backward.png", link, true, false));
-		itemtn.setText(null);
+		    "backward", link, true, false));
 		arrowLinkPopup.add(itemtn);
 		itemtn.setSelected(a && !b);
 		final JRadioButtonMenuItem itemtt = new JRadioButtonMenuItem(new ChangeArrowsInArrowLinkAction(this, "both",
-		    "/images/arrow-mode-both.png", link, true, true));
-		itemtt.setText(null);
+		    link, true, true));
 		arrowLinkPopup.add(itemtt);
 		itemtt.setSelected(a && b);
 	}
@@ -231,4 +257,74 @@ public class MLinkController extends LinkController {
 	public void setLinkByFileChooser() {
 		setLinkByFileChooser.setLinkByFileChooser();
 	}
+	
+	public void setSourceLabel(final ArrowLinkModel model, final String label) {
+		final String oldLabel = model.getSourceLabel();
+		if (label == oldLabel || label != null && label.equals(oldLabel)) {
+			return;
+		}
+		IActor actor = new IActor() {
+			public void act() {
+				model.setSourceLabel(label);
+				getModeController().getMapController().nodeChanged(model.getSource());
+			}
+
+			public String getDescription() {
+				return "setSourceLabel";
+			}
+
+			public void undo() {
+				model.setSourceLabel(oldLabel);
+				getModeController().getMapController().nodeChanged(model.getSource());
+			}
+		};
+		getModeController().execute(actor);
+	}
+	
+	public void setTargetLabel(final ArrowLinkModel model, final String label) {
+		final String oldLabel = model.getTargetLabel();
+		if (label == oldLabel || label != null && label.equals(oldLabel)) {
+			return;
+		}
+		IActor actor = new IActor() {
+			public void act() {
+				model.setTargetLabel(label);
+				getModeController().getMapController().nodeChanged(model.getSource());
+			}
+
+			public String getDescription() {
+				return "setTargetLabel";
+			}
+
+			public void undo() {
+				model.setTargetLabel(oldLabel);
+				getModeController().getMapController().nodeChanged(model.getSource());
+			}
+		};
+		getModeController().execute(actor);
+	}
+	
+	public void setMiddleLabel(final ArrowLinkModel model, final String label) {
+		final String oldLabel = model.getMiddleLabel();
+		if (label == oldLabel || label != null && label.equals(oldLabel)) {
+			return;
+		}
+		IActor actor = new IActor() {
+			public void act() {
+				model.setMiddleLabel(label);
+				getModeController().getMapController().nodeChanged(model.getSource());
+			}
+
+			public String getDescription() {
+				return "setMiddleLabel";
+			}
+
+			public void undo() {
+				model.setMiddleLabel(oldLabel);
+				getModeController().getMapController().nodeChanged(model.getSource());
+			}
+		};
+		getModeController().execute(actor);
+	}
+	
 }
