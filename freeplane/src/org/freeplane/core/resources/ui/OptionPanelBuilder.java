@@ -204,6 +204,7 @@ public class OptionPanelBuilder {
 		}
 	}
 
+
 	private class FontOptionCreator extends PropertyCreator {
 		@Override
 		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
@@ -282,6 +283,11 @@ public class OptionPanelBuilder {
 		tree.addElement(path, createStringOptionCreator(name), path + "/" + name, position);
 	}
 
+	public void addNumberProperty(final String path, final String name, final int min, final int max, final int step, final int position) {
+		tree.addElement(path, createNumberOptionCreator(name, min, max, step), path + "/" + name, position);
+	}
+
+
 	public void addFontProperty(final String path, final String name, final int position) {
 		tree.addElement(path, createFontOptionCreator(name), path + "/" + name, position);
 	}
@@ -359,6 +365,14 @@ public class OptionPanelBuilder {
 		};
 	}
 
+	private Object createNumberOptionCreator(final String name, final int min, final int max, final int step) {
+		return new IPropertyControlCreator() {
+			public IPropertyControl createControl() {
+				return new NumberProperty(name, min, max, step);
+			}
+		};
+    }
+	
 	private IPropertyControlCreator createFontOptionCreator(final String name) {
 		return new IPropertyControlCreator() {
 			public IPropertyControl createControl() {

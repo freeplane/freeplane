@@ -48,6 +48,7 @@ import org.freeplane.view.swing.map.NodeView;
  */
 public class ArrowLinkView {
 	static final Stroke DEF_STROKE = new BasicStroke(1);
+	private static final int LABEL_SHIFT = 4;
 	private CubicCurve2D arrowLinkCurve;
 	private final ArrowLinkModel arrowLinkModel;
 	private int iterativeLevel;
@@ -392,9 +393,8 @@ public class ArrowLinkView {
 		}		
 		final FontMetrics fontMetrics = g.getFontMetrics();
 		final int textWidth = fontMetrics.stringWidth(middleLabel);
-		final int textHeight = fontMetrics.getHeight();
 		final Point centerPoint = getCenterPoint();
-		g.drawString(middleLabel, centerPoint.x - textWidth/2, centerPoint.y - textHeight);
+		g.drawString(middleLabel, centerPoint.x - textWidth/2, centerPoint.y - LABEL_SHIFT);
 	}
 
 	private void drawEndPointText(final Graphics2D g, String text, Point endPoint, Point controlPoint) {
@@ -403,20 +403,20 @@ public class ArrowLinkView {
 		}
 	    final FontMetrics fontMetrics = g.getFontMetrics();
 		final int textWidth = fontMetrics.stringWidth(text);
-		final int textHeight = fontMetrics.getHeight();
+		final int textHeight = fontMetrics.getMaxAscent();
 		final int x;
 		if(controlPoint.x > endPoint.x){
-			x = endPoint.x;
+			x = endPoint.x - textWidth;
 		}
 		else{
-			x = endPoint.x - textWidth; 
+			x = endPoint.x; 
 		}
 		final int y;
 		if(controlPoint.y > endPoint.y){
-			y = endPoint.y + textHeight;
+			y = endPoint.y + textHeight + LABEL_SHIFT;
 		}
 		else{
-			y = endPoint.y - textHeight; 
+			y = endPoint.y - LABEL_SHIFT; 
 		}
 		g.drawString(text, x, y);
     }

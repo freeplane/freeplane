@@ -893,8 +893,15 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	@Override
 	public void paintChildren(final Graphics graphics) {
-		super.paintChildren(graphics);
-		paintLinks((Graphics2D) graphics);
+		final boolean paintLinksBehind = ResourceController.getResourceController().getBooleanProperty("paint_links_behind");
+		if(paintLinksBehind){
+			paintLinks((Graphics2D) graphics);
+			super.paintChildren(graphics);
+		}
+		else{
+			super.paintChildren(graphics);
+			paintLinks((Graphics2D) graphics);
+		}
 		paintSelecteds((Graphics2D) graphics);
 	}
 
@@ -902,10 +909,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	                        final HashSet alreadyPaintedLinks) {
 		final Font font = graphics.getFont();
 		try{
-			if(zoom != 1f){
-				final Font derivedFont = font.deriveFont(font.getSize2D()*zoom);
-				graphics.setFont(derivedFont);
-			}
+			String fontFamily = ResourceController.getResourceController().getProperty("label_font_family");
+			int fontSize = ResourceController.getResourceController().getIntProperty("label_font_size", 12);			
+			final Font linksFont = new Font(fontFamily, 0, getZoomed(fontSize)); 
+			graphics.setFont(linksFont);
 			final Iterator<LinkModel> linkIterator = links.iterator();
 			while (linkIterator.hasNext()) {
 				final LinkModel next = linkIterator.next();
@@ -928,9 +935,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			}
 		}
 		finally{
-			if(zoom != 1f){
-				graphics.setFont(font);
-			}
+			graphics.setFont(font);
 		}
 	}
 

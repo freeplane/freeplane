@@ -125,6 +125,7 @@
 		<menu_separator />
 	</menu_category>
 	<menu_category name="main_toolbar">
+		<menu_separator />
 		<menu_category name="main">
 			<menu_action action="NavigationPreviousMapAction" />
 			<menu_action action="NavigationNextMapAction" />

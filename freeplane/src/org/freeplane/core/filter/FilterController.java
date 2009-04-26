@@ -256,6 +256,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		};
 		final JButton applyBtn = new JButton(controller.getAction("ReapplyFilterAction"));
 
+		filterToolbar.addSeparator();
 		filterToolbar.add(undoBtn);
 		filterToolbar.add(redoBtn);
 		filterToolbar.add(showAncestorsBox);

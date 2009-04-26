@@ -185,7 +185,7 @@ class ListDialog extends JDialog {
 		super(frame, title, true);
 		this.data = data;
 		final JButton closeButton = new JButton();
-		MenuBuilder.setLabelAndMnemonic(closeButton, FreeplaneResourceBundle.getText("close"));
+		MenuBuilder.setLabelAndMnemonic(closeButton, FreeplaneResourceBundle.getText("CloseAction.text"));
 		closeButton.addActionListener(new CloseAction());
 		getRootPane().setDefaultButton(closeButton);
 		addButton = new JButton();

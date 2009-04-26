@@ -154,10 +154,11 @@ class BubbleMainView extends MainView {
 
 	@Override
 	public void paintSelected(final Graphics2D graphics) {
-		super.paintSelected(graphics);
 		if (getNodeView().useSelectionColors()) {
-			graphics.setColor(MapView.standardSelectColor);
-			graphics.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 10, 10);
+			paintBackground(graphics, getNodeView().getSelectedColor());
+		}
+		else {
+			paintBackground(graphics, getNodeView().getTextBackground());
 		}
 	}
 }
