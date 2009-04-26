@@ -28,7 +28,6 @@ import java.util.Vector;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.resources.FpStringUtils;
-import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.mindmapmode.MMapModel;
@@ -82,7 +81,7 @@ public class DoAutomaticSave extends TimerTask {
 						try {
 							tempFile = File.createTempFile("FM_"
 							        + ((model.toString() == null) ? "unnamed" : model.toString()),
-							    ResourceControllerProperties.FREEPLANE_FILE_EXTENSION, pathToStore);
+							    UrlManager.FREEPLANE_FILE_EXTENSION, pathToStore);
 							if (filesShouldBeDeletedAfterShutdown) {
 								tempFile.deleteOnExit();
 							}

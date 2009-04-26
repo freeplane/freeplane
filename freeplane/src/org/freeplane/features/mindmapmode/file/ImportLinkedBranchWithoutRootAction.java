@@ -32,7 +32,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.features.common.link.NodeLinks;
@@ -56,7 +56,7 @@ class ImportLinkedBranchWithoutRootAction extends AFreeplaneAction {
 		final ModeController modeController = getModeController();
 		final NodeModel selected = modeController.getMapController().getSelectedNode();
 		if (selected == null || NodeLinks.getLink(selected) == null) {
-			JOptionPane.showMessageDialog(getController().getViewController().getMapView(), FreeplaneResourceBundle
+			JOptionPane.showMessageDialog(getController().getViewController().getMapView(), ResourceBundles
 			    .getText("import_linked_branch_no_link"));
 			return;
 		}

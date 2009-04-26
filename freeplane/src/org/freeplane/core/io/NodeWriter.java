@@ -30,7 +30,6 @@ import org.freeplane.core.model.EncryptionModel;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 class NodeWriter implements IElementWriter, IAttributeWriter {
@@ -46,9 +45,9 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 		this.writeChildren = writeChildren;
 		this.writeInvisible = writeInvisible;
 		final String saveFolding = ResourceController.getResourceController().getProperty(
-		    ResourceControllerProperties.RESOURCES_SAVE_FOLDING);
-		writeFolded = saveFolding.equals(ResourceControllerProperties.RESOURCES_ALWAYS_SAVE_FOLDING)
-		        || saveFolding.equals(ResourceControllerProperties.RESOURCES_SAVE_FOLDING_IF_MAP_IS_CHANGED);
+		    NodeBuilder.RESOURCES_SAVE_FOLDING);
+		writeFolded = saveFolding.equals(NodeBuilder.RESOURCES_ALWAYS_SAVE_FOLDING)
+		        || saveFolding.equals(NodeBuilder.RESOURCES_SAVE_FOLDING_IF_MAP_IS_CHANGED);
 	}
 
 	private void saveChildren(final ITreeWriter writer, final NodeModel node) throws IOException {
@@ -99,7 +98,7 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 		}
 		if (node.getHistoryInformation() != null
 		        && ResourceController.getResourceController().getBooleanProperty(
-		            ResourceControllerProperties.RESOURCES_SAVE_MODIFICATION_TIMES)) {
+		            NodeBuilder.RESOURCES_SAVE_MODIFICATION_TIMES)) {
 			writer.addAttribute(NodeBuilder.XML_NODE_HISTORY_CREATED_AT, TreeXmlWriter.dateToString(node
 			    .getHistoryInformation().getCreatedAt()));
 			writer.addAttribute(NodeBuilder.XML_NODE_HISTORY_LAST_MODIFIED_AT, TreeXmlWriter.dateToString(node

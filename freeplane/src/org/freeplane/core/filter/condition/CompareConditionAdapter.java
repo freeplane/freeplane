@@ -20,7 +20,7 @@
 package org.freeplane.core.filter.condition;
 
 import org.freeplane.core.io.xml.TreeXmlWriter;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 abstract public class CompareConditionAdapter extends NodeCondition {
@@ -67,7 +67,7 @@ abstract public class CompareConditionAdapter extends NodeCondition {
 				simpleCondition = succeed ? ConditionFactory.FILTER_LT : ConditionFactory.FILTER_GE;
 				break;
 			case 0:
-				simpleCondition = FreeplaneResourceBundle.getText(succeed ? ConditionFactory.FILTER_IS_EQUAL_TO
+				simpleCondition = ResourceBundles.getText(succeed ? ConditionFactory.FILTER_IS_EQUAL_TO
 				        : ConditionFactory.FILTER_IS_NOT_EQUAL_TO);
 				break;
 			case 1:

@@ -36,7 +36,6 @@ import java.util.regex.Pattern;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.core.ui.components.EnterPasswordDialog;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.addins.encrypt.DesEncrypter;
@@ -201,7 +200,7 @@ class SignedScriptHandler {
 			final Signature instance = Signature.getInstance("SHA1withDSA");
 			String keyName = SignedScriptHandler.FREEPLANE_SCRIPT_KEY_NAME;
 			final String propertyKeyName = ResourceController.getResourceController().getProperty(
-			    ResourceControllerProperties.RESOURCES_SCRIPT_USER_KEY_NAME_FOR_SIGNING);
+				ScriptingEngine.RESOURCES_SCRIPT_USER_KEY_NAME_FOR_SIGNING);
 			if (content.mKeyName != null) {
 				keyName = content.mKeyName;
 			}

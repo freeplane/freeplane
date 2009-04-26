@@ -41,9 +41,8 @@ import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.resources.FpStringUtils;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.LogTool;
@@ -62,7 +61,7 @@ public class MFileManager extends UrlManager {
 			}
 			final String extension = UrlManager.getExtension(f.getName());
 			if (extension != null) {
-				if (extension.equals(ResourceControllerProperties.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
+				if (extension.equals(UrlManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
 					return true;
 				}
 				else {
@@ -74,7 +73,7 @@ public class MFileManager extends UrlManager {
 
 		@Override
 		public String getDescription() {
-			return FreeplaneResourceBundle.getText("mindmaps_desc");
+			return ResourceBundles.getText("mindmaps_desc");
 		}
 	}
 
@@ -144,7 +143,7 @@ public class MFileManager extends UrlManager {
 		File input;
 		JFileChooser chooser = null;
 		if (map.getFile() == null) {
-			JOptionPane.showMessageDialog(getController().getViewController().getContentPane(), FreeplaneResourceBundle
+			JOptionPane.showMessageDialog(getController().getViewController().getContentPane(), ResourceBundles
 			    .getText("not_saved_for_link_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
 			return null;
 		}
@@ -169,7 +168,7 @@ public class MFileManager extends UrlManager {
 				relative = link.toString();
 			}
 			catch (final MalformedURLException ex) {
-				getController().errorMessage(FreeplaneResourceBundle.getText("url_error"));
+				getController().errorMessage(ResourceBundles.getText("url_error"));
 				return null;
 			}
 			if (ResourceController.getResourceController().getProperty("links").equals("relative")) {
@@ -177,7 +176,7 @@ public class MFileManager extends UrlManager {
 					relative = UrlManager.toRelativeURL(Compat.fileToUrl(map.getFile()), link);
 				}
 				catch (final MalformedURLException ex) {
-					getController().errorMessage(FreeplaneResourceBundle.getText("url_error"));
+					getController().errorMessage(ResourceBundles.getText("url_error"));
 					return null;
 				}
 			}
@@ -265,9 +264,9 @@ public class MFileManager extends UrlManager {
 		final JFileChooser chooser = getFileChooser();
 		if (getMapsParentFile() == null) {
 			chooser.setSelectedFile(new File(getFileNameProposal(map)
-			        + org.freeplane.core.resources.ResourceControllerProperties.FREEPLANE_FILE_EXTENSION));
+			        + org.freeplane.core.url.UrlManager.FREEPLANE_FILE_EXTENSION));
 		}
-		chooser.setDialogTitle(FreeplaneResourceBundle.getText("SaveAsAction.text"));
+		chooser.setDialogTitle(ResourceBundles.getText("SaveAsAction.text"));
 		final int returnVal = chooser.showSaveDialog(getController().getViewController().getMapView());
 		if (returnVal != JFileChooser.APPROVE_OPTION) {
 			return false;
@@ -275,13 +274,13 @@ public class MFileManager extends UrlManager {
 		File f = chooser.getSelectedFile();
 		setLastCurrentDir(f.getParentFile());
 		final String ext = UrlManager.getExtension(f.getName());
-		if (!ext.equals(org.freeplane.core.resources.ResourceControllerProperties.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
+		if (!ext.equals(org.freeplane.core.url.UrlManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
 			f = new File(f.getParent(), f.getName()
-			        + org.freeplane.core.resources.ResourceControllerProperties.FREEPLANE_FILE_EXTENSION);
+			        + org.freeplane.core.url.UrlManager.FREEPLANE_FILE_EXTENSION);
 		}
 		if (f.exists()) {
 			final int overwriteMap = JOptionPane.showConfirmDialog(getController().getViewController().getMapView(),
-			    FreeplaneResourceBundle.getText("map_already_exists"), "Freeplane", JOptionPane.YES_NO_OPTION);
+			    ResourceBundles.getText("map_already_exists"), "Freeplane", JOptionPane.YES_NO_OPTION);
 			if (overwriteMap != JOptionPane.YES_OPTION) {
 				return false;
 			}

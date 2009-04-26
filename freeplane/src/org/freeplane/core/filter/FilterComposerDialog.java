@@ -64,7 +64,7 @@ import org.freeplane.core.filter.util.ExtendedComboBoxModel;
 import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
@@ -366,14 +366,14 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 
 		@Override
 		public String getDescription() {
-			return FreeplaneResourceBundle.getText("mindmaps_filter_desc");
+			return ResourceBundles.getText("mindmaps_filter_desc");
 		}
 	}
 
 	private class SaveAction implements ActionListener {
 		public void actionPerformed(final ActionEvent e) {
 			final JFileChooser chooser = getFileChooser();
-			chooser.setDialogTitle(FreeplaneResourceBundle.getText("SaveAsAction.text"));
+			chooser.setDialogTitle(ResourceBundles.getText("SaveAsAction.text"));
 			final int returnVal = chooser.showSaveDialog(FilterComposerDialog.this);
 			if (returnVal != JFileChooser.APPROVE_OPTION) {
 				return;
@@ -434,7 +434,7 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 	final private JComboBox values;
 
 	public FilterComposerDialog(final Controller controller) {
-		super(controller.getViewController().getFrame(), FreeplaneResourceBundle.getText("filter_dialog"));
+		super(controller.getViewController().getFrame(), ResourceBundles.getText("filter_dialog"));
 		filterController = FilterController.getController(controller);
 		this.controller = controller;
 		final Box simpleConditionBox = Box.createHorizontalBox();
@@ -460,7 +460,7 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 		caseInsensitive = new JCheckBox();
 		simpleConditionBox.add(Box.createHorizontalGlue());
 		simpleConditionBox.add(caseInsensitive);
-		caseInsensitive.setText(FreeplaneResourceBundle.getText("filter_ignore_case"));
+		caseInsensitive.setText(ResourceBundles.getText("filter_ignore_case"));
 		final Box conditionButtonBox = Box.createVerticalBox();
 		conditionButtonBox.setBorder(new EmptyBorder(0, 10, 0, 10));
 		getContentPane().add(conditionButtonBox, BorderLayout.EAST);
@@ -494,15 +494,15 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 		getContentPane().add(controllerBox, BorderLayout.SOUTH);
 		final CloseAction closeAction = new CloseAction();
 		btnOK = new JButton();
-		MenuBuilder.setLabelAndMnemonic(btnOK, FreeplaneResourceBundle.getText("ok"));
+		MenuBuilder.setLabelAndMnemonic(btnOK, ResourceBundles.getText("ok"));
 		btnOK.addActionListener(closeAction);
 		btnOK.setMaximumSize(FilterComposerDialog.maxButtonDimension);
 		btnApply = new JButton();
-		MenuBuilder.setLabelAndMnemonic(btnApply, FreeplaneResourceBundle.getText("apply"));
+		MenuBuilder.setLabelAndMnemonic(btnApply, ResourceBundles.getText("apply"));
 		btnApply.addActionListener(closeAction);
 		btnApply.setMaximumSize(FilterComposerDialog.maxButtonDimension);
 		btnCancel = new JButton();
-		MenuBuilder.setLabelAndMnemonic(btnCancel, FreeplaneResourceBundle.getText("cancel"));
+		MenuBuilder.setLabelAndMnemonic(btnCancel, ResourceBundles.getText("cancel"));
 		btnCancel.addActionListener(closeAction);
 		btnCancel.setMaximumSize(FilterComposerDialog.maxButtonDimension);
 		controllerBox.add(Box.createHorizontalGlue());
@@ -515,12 +515,12 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 		if (!controller.getViewController().isApplet()) {
 			final ActionListener saveAction = new SaveAction();
 			btnSave = new JButton();
-			MenuBuilder.setLabelAndMnemonic(btnSave, FreeplaneResourceBundle.getText("SaveAction.text"));
+			MenuBuilder.setLabelAndMnemonic(btnSave, ResourceBundles.getText("SaveAction.text"));
 			btnSave.addActionListener(saveAction);
 			btnSave.setMaximumSize(FilterComposerDialog.maxButtonDimension);
 			final ActionListener loadAction = new LoadAction();
 			btnLoad = new JButton();
-			MenuBuilder.setLabelAndMnemonic(btnLoad, FreeplaneResourceBundle.getText("load"));
+			MenuBuilder.setLabelAndMnemonic(btnLoad, ResourceBundles.getText("load"));
 			btnLoad.addActionListener(loadAction);
 			btnLoad.setMaximumSize(FilterComposerDialog.maxButtonDimension);
 			controllerBox.add(btnSave);
@@ -537,7 +537,7 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 		elementaryConditionList.addListSelectionListener(conditionListListener);
 		elementaryConditionList.addMouseListener(new ConditionListMouseListener());
 		final JScrollPane conditionScrollPane = new JScrollPane(elementaryConditionList);
-		final JLabel conditionColumnHeader = new JLabel(FreeplaneResourceBundle.getText("filter_conditions"));
+		final JLabel conditionColumnHeader = new JLabel(ResourceBundles.getText("filter_conditions"));
 		conditionColumnHeader.setHorizontalAlignment(SwingConstants.CENTER);
 		conditionScrollPane.setColumnHeaderView(conditionColumnHeader);
 		conditionScrollPane.setPreferredSize(new Dimension(500, 200));

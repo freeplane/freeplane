@@ -28,7 +28,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
 import org.freeplane.core.resources.FpStringUtils;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
@@ -36,7 +36,7 @@ public class ComboProperty extends PropertyBean implements IPropertyControl {
 	static public Vector translate(final String[] possibles) {
 		final Vector possibleTranslations = new Vector(possibles.length);
 		for (int i = 0; i < possibles.length; i++) {
-			possibleTranslations.add(FreeplaneResourceBundle.getText("OptionPanel." + possibles[i]));
+			possibleTranslations.add(ResourceBundles.getText("OptionPanel." + possibles[i]));
 		}
 		return possibleTranslations;
 	}

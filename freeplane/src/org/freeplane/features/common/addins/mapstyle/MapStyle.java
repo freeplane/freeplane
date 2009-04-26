@@ -30,7 +30,6 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -41,6 +40,8 @@ import org.freeplane.n3.nanoxml.XMLElement;
  */
 @NodeHookDescriptor(hookName = "MapStyle")
 public class MapStyle extends PersistentNodeHook implements IExtension, IMapLifeCycleListener {
+	public static final String RESOURCES_BACKGROUND_COLOR = "standardbackgroundcolor";
+
 	public MapStyle(final ModeController modeController) {
 		super(modeController);
 		if (modeController.getModeName().equals("MindMap")) {
@@ -71,7 +72,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			return backgroundColor;
 		}
 		final String stdcolor = ResourceController.getResourceController().getProperty(
-		    ResourceControllerProperties.RESOURCES_BACKGROUND_COLOR);
+		    MapStyle.RESOURCES_BACKGROUND_COLOR);
 		final Color standardMapBackgroundColor = ColorUtils.stringToColor(stdcolor);
 		return standardMapBackgroundColor;
 	}
@@ -111,7 +112,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 				model.setBackgroundColor(actionColor);
 				getModeController().getMapController().fireMapChanged(
 				    new MapChangeEvent(getController().getMap(),
-				        ResourceControllerProperties.RESOURCES_BACKGROUND_COLOR, oldColor, actionColor));
+				        MapStyle.RESOURCES_BACKGROUND_COLOR, oldColor, actionColor));
 			}
 
 			public String getDescription() {
@@ -122,7 +123,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 				model.setBackgroundColor(oldColor);
 				getModeController().getMapController().fireMapChanged(
 				    new MapChangeEvent(getController().getMap(),
-				        ResourceControllerProperties.RESOURCES_BACKGROUND_COLOR, actionColor, oldColor));
+				        MapStyle.RESOURCES_BACKGROUND_COLOR, actionColor, oldColor));
 			}
 		};
 		getModeController().execute(actor);

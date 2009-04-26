@@ -20,7 +20,7 @@
 package org.freeplane.features.common.link;
 
 import org.freeplane.core.filter.condition.ConditionFactory;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 
 /**
  * @author Dimitry Polivaev
@@ -40,8 +40,8 @@ public class HyperLinkContainsCondition extends HyperLinkCondition {
 
 	@Override
 	protected String createDesctiption() {
-		final String condition = FreeplaneResourceBundle.getText(LinkConditionController.FILTER_LINK);
-		final String simpleCondition = FreeplaneResourceBundle.getText(ConditionFactory.FILTER_CONTAINS);
+		final String condition = ResourceBundles.getText(LinkConditionController.FILTER_LINK);
+		final String simpleCondition = ResourceBundles.getText(ConditionFactory.FILTER_CONTAINS);
 		return ConditionFactory.createDescription(condition, simpleCondition, getHyperlink(), false);
 	}
 

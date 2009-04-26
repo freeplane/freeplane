@@ -46,7 +46,7 @@ import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IMouseListener;
@@ -330,7 +330,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		menuBuilder.addPopupMenu(mapsPopupMenu, FreeplaneMenuBar.MAP_POPUP_MENU);
 		menuBuilder.addPopupMenu(getNodePopupMenu(), UserInputListenerFactory.NODE_POPUP);
 		menuBuilder.addToolbar(getMainToolBar(), "/main_toolbar");
-		mapsPopupMenu.setName(FreeplaneResourceBundle.getText("mindmaps"));
+		mapsPopupMenu.setName(ResourceBundles.getText("mindmaps"));
 		if (menuStructure != null) {
 			menuBuilder.processMenuCategory(menuStructure);
 		}

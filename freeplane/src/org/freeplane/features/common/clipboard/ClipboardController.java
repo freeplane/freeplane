@@ -65,6 +65,7 @@ public class ClipboardController implements IExtension {
 	final private Clipboard clipboard;
 	final private ModeController modeController;
 	final private Clipboard selection;
+	public static final String NODESEPARATOR = "<nodeseparator>";
 
 	public ClipboardController(final ModeController modeController) {
 		super();

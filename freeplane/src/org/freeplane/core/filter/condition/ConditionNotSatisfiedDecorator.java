@@ -26,7 +26,7 @@ import javax.swing.JLabel;
 
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FpStringUtils;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -70,7 +70,7 @@ public class ConditionNotSatisfiedDecorator implements ICondition {
 	 */
 	public JComponent getListCellRendererComponent() {
 		final JCondition component = new JCondition();
-		final String not = FpStringUtils.removeMnemonic(FreeplaneResourceBundle.getText("filter_not"));
+		final String not = FpStringUtils.removeMnemonic(ResourceBundles.getText("filter_not"));
 		final String text = not + ' ';
 		component.add(new JLabel(text));
 		final JComponent renderer = originalCondition.getListCellRendererComponent();

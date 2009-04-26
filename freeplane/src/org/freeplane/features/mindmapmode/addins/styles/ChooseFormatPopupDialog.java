@@ -37,7 +37,7 @@ import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
 
 import org.freeplane.core.modecontroller.ModeController;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.WindowConfigurationStorage;
 import org.freeplane.core.ui.MenuBuilder;
@@ -105,7 +105,7 @@ class ChooseFormatPopupDialog extends JDialog implements KeyListener {
 					cancelPressed();
 				}
 			});
-			MenuBuilder.setLabelAndMnemonic(jCancelButton, FreeplaneResourceBundle.getText(("cancel")));
+			MenuBuilder.setLabelAndMnemonic(jCancelButton, ResourceBundles.getText(("cancel")));
 		}
 		return jCancelButton;
 	}
@@ -153,7 +153,7 @@ class ChooseFormatPopupDialog extends JDialog implements KeyListener {
 					okPressed();
 				}
 			});
-			MenuBuilder.setLabelAndMnemonic(jOKButton, FreeplaneResourceBundle.getText("ok"));
+			MenuBuilder.setLabelAndMnemonic(jOKButton, ResourceBundles.getText("ok"));
 		}
 		return jOKButton;
 	}
@@ -187,7 +187,7 @@ class ChooseFormatPopupDialog extends JDialog implements KeyListener {
 	 * @return void
 	 */
 	private void initialize(final String dialogTitle) {
-		this.setTitle(FreeplaneResourceBundle.getText(dialogTitle));
+		this.setTitle(ResourceBundles.getText(dialogTitle));
 		final JPanel contentPane = getJContentPane();
 		this.setContentPane(contentPane);
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);

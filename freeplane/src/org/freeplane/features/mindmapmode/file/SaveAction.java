@@ -22,7 +22,7 @@ package org.freeplane.features.mindmapmode.file;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.mindmapmode.MModeController;
 
@@ -40,7 +40,7 @@ class SaveAction extends AFreeplaneAction {
 		final boolean success = ((MModeController) getModeController()).save();
 		final Controller controller = getController();
 		if (success) {
-			controller.getViewController().out(FreeplaneResourceBundle.getText("saved"));
+			controller.getViewController().out(ResourceBundles.getText("saved"));
 		}
 		else {
 			controller.errorMessage("Saving failed.");

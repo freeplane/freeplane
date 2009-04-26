@@ -56,7 +56,7 @@ import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.model.NodeModel.NodeChangeType;
 import org.freeplane.core.resources.FpStringUtils;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.n3.nanoxml.XMLParseException;
@@ -479,7 +479,7 @@ public class MapController extends SelectionController {
 			final String extension = UrlManager.getExtension(absolute.toString());
 			if ((extension != null)
 			        && extension
-			            .equals(org.freeplane.core.resources.ResourceControllerProperties.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
+			            .equals(org.freeplane.core.url.UrlManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
 				final IMapViewManager mapViewManager = getController().getMapViewManager();
 				/*
 				 * this can lead to confusion if the user handles multiple maps
@@ -513,7 +513,7 @@ public class MapController extends SelectionController {
 		}
 		catch (final MalformedURLException ex) {
 			LogTool.logException(ex);
-			getController().errorMessage(FreeplaneResourceBundle.getText("url_error") + "\n" + ex);
+			getController().errorMessage(ResourceBundles.getText("url_error") + "\n" + ex);
 			return;
 		}
 		catch (final Exception e) {

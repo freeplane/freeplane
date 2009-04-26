@@ -51,7 +51,7 @@ import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.MindIcon;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.LogTool;
@@ -259,7 +259,7 @@ public class ExportWithXSLT extends ExportAction {
 	private String getTranslatableResourceString(final String resourceName) {
 		final String returnValue = getProperty(resourceName);
 		if (returnValue != null && returnValue.startsWith("%")) {
-			return FreeplaneResourceBundle.getText(returnValue.substring(1));
+			return ResourceBundles.getText(returnValue.substring(1));
 		}
 		return returnValue;
 	}

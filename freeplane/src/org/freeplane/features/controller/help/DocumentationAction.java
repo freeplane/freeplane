@@ -26,7 +26,7 @@ import javax.swing.SwingUtilities;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.FpStringUtils;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.LogTool;
@@ -44,7 +44,7 @@ class DocumentationAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		String map = FreeplaneResourceBundle.getText("browsemode_initial_map");
+		String map = ResourceBundles.getText("browsemode_initial_map");
 		map = FpStringUtils.removeTranslateComment(map);
 		if (map != null && map != "") {
 			URL url = null;

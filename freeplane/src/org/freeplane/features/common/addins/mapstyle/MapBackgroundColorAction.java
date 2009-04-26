@@ -24,9 +24,8 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ColorTracker;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.util.ColorUtils;
@@ -63,11 +62,11 @@ class MapBackgroundColorAction extends AFreeplaneAction {
 		}
 		else {
 			final String colorPropertyString = ResourceController.getResourceController().getProperty(
-			    ResourceControllerProperties.RESOURCES_BACKGROUND_COLOR);
+			    MapStyle.RESOURCES_BACKGROUND_COLOR);
 			oldBackgroundColor = ColorUtils.stringToColor(colorPropertyString);
 		}
 		final Color actionColor = ColorTracker.showCommonJColorChooserDialog(controller, controller.getSelection()
-		    .getSelected(), FreeplaneResourceBundle.getText("choose_map_background_color"), oldBackgroundColor);
+		    .getSelected(), ResourceBundles.getText("choose_map_background_color"), oldBackgroundColor);
 		mapStyle.setBackgroundColor(model, actionColor);
 	}
 }

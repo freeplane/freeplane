@@ -39,9 +39,9 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.FreeplaneVersion;
 import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 
@@ -55,6 +55,8 @@ class ApplicationResourceController extends ResourceController {
 	final private Properties props;
 	private final String resourceBaseDir;
 	private ClassLoader urlResourceLoader;
+	public static final String ORG_FREEPLANE_GLOBALRESOURCEDIR = "org.freeplane.globalresourcedir";
+	public static final String DEFAULT_ORG_FREEPLANE_GLOBALRESOURCEDIR = "resources";
 
 	/**
 	 * @param controller
@@ -62,8 +64,8 @@ class ApplicationResourceController extends ResourceController {
 	public ApplicationResourceController() {
 		super();
 		urlResourceLoader = null;
-		resourceBaseDir = System.getProperty(ResourceControllerProperties.ORG_FREEPLANE_GLOBALRESOURCEDIR,
-		    ResourceControllerProperties.DEFAULT_ORG_FREEPLANE_GLOBALRESOURCEDIR);
+		resourceBaseDir = System.getProperty(ApplicationResourceController.ORG_FREEPLANE_GLOBALRESOURCEDIR,
+		    ApplicationResourceController.DEFAULT_ORG_FREEPLANE_GLOBALRESOURCEDIR);
 		if (resourceBaseDir != null) {
 			try {
 				final File resourceDir = new File(resourceBaseDir);
@@ -83,7 +85,7 @@ class ApplicationResourceController extends ResourceController {
 		autoPropertiesFile = getUserPreferencesFile(defProps);
 		addPropertyChangeListener(new IFreeplanePropertyListener() {
 			public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
-				if (propertyName.equals(ResourceControllerProperties.RESOURCE_LANGUAGE)) {
+				if (propertyName.equals(ResourceBundles.RESOURCE_LANGUAGE)) {
 					clearLanguageResources();
 				}
 			}
@@ -185,7 +187,7 @@ class ApplicationResourceController extends ResourceController {
 	}
 
 	private Properties readDefaultPreferences() {
-		final String propsLoc = ResourceControllerProperties.FREEPLANE_PROPERTIES;
+		final String propsLoc = ResourceController.FREEPLANE_PROPERTIES;
 		final URL defaultPropsURL = getResource(propsLoc);
 		final Properties props = new Properties();
 		try {
@@ -240,7 +242,7 @@ class ApplicationResourceController extends ResourceController {
 	 * @param pProperties
 	 */
 	private void setDefaultLocale(final Properties pProperties) {
-		final String lang = pProperties.getProperty(ResourceControllerProperties.RESOURCE_LANGUAGE);
+		final String lang = pProperties.getProperty(ResourceBundles.RESOURCE_LANGUAGE);
 		if (lang == null) {
 			return;
 		}

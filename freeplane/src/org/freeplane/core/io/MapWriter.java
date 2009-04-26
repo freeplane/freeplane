@@ -23,12 +23,12 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.Arrays;
 
+import org.freeplane.core.controller.FreeplaneVersion;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -73,7 +73,7 @@ public class MapWriter implements IElementWriter, IAttributeWriter {
 
 	public void writeAttributes(final ITreeWriter writer, final Object userObject, final String tag) {
 		final MapModel map = (MapModel) userObject;
-		writer.addAttribute("version", ResourceControllerProperties.XML_VERSION);
+		writer.addAttribute("version", FreeplaneVersion.XML_VERSION);
 		writer.addExtensionAttributes(map, Arrays.asList(map.getExtensions().values().toArray(new IExtension[] {})));
 	}
 

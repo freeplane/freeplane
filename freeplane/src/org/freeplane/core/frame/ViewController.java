@@ -61,7 +61,7 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FpStringUtils;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IUserInputListenerFactory;
@@ -104,7 +104,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		controller.addAction(zoomIn);
 		zoomOut = new ZoomOutAction(this);
 		controller.addAction(zoomOut);
-		userDefinedZoom = FreeplaneResourceBundle.getText("user_defined_zoom");
+		userDefinedZoom = ResourceBundles.getText("user_defined_zoom");
 		zoomModel = new DefaultComboBoxModel(getZooms());
 		zoomModel.addElement(userDefinedZoom);
 		final ResourceController resourceController = ResourceController.getResourceController();
@@ -548,15 +548,15 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 			setTitle("");
 			return;
 		}
-		final Object[] messageArguments = { FreeplaneResourceBundle.getText(("mode_" + modeController.getModeName())) };
-		final MessageFormat formatter = new MessageFormat(FreeplaneResourceBundle.getText("mode_title"));
+		final Object[] messageArguments = { ResourceBundles.getText(("mode_" + modeController.getModeName())) };
+		final MessageFormat formatter = new MessageFormat(ResourceBundles.getText("mode_title"));
 		String title = formatter.format(messageArguments);
 		String rawTitle = "";
 		final MapModel model = mapViewManager.getModel();
 		if (model != null) {
 			rawTitle = mapViewManager.getMapViewComponent().getName();
 			title = rawTitle + (model.isSaved() ? "" : "*") + " - " + title
-			        + (model.isReadOnly() ? " (" + FreeplaneResourceBundle.getText("read_only") + ")" : "");
+			        + (model.isReadOnly() ? " (" + ResourceBundles.getText("read_only") + ")" : "");
 			final File file = model.getFile();
 			if (file != null) {
 				title += " " + file.getAbsolutePath();

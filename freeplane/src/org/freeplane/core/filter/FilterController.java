@@ -54,7 +54,7 @@ import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.resources.FpStringUtils;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.JAutoToggleButton;

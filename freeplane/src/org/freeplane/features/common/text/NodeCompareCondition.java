@@ -24,7 +24,7 @@ import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -62,7 +62,7 @@ class NodeCompareCondition extends CompareConditionAdapter {
 
 	@Override
 	protected String createDesctiption() {
-		final String nodeCondition = FreeplaneResourceBundle.getText(NodeConditionController.FILTER_NODE);
+		final String nodeCondition = ResourceBundles.getText(NodeConditionController.FILTER_NODE);
 		return super.createDescription(nodeCondition, comparationResult, succeed);
 	}
 

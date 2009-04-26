@@ -29,7 +29,7 @@ import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.filter.condition.IElementaryConditionController;
 import org.freeplane.core.filter.util.IListModel;
 import org.freeplane.core.filter.util.SortedMapListModel;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -122,16 +122,16 @@ class NodeConditionController implements IElementaryConditionController {
 
 	public ComboBoxModel getConditionsForProperty(final Object selectedItem) {
 		return new DefaultComboBoxModel(new NamedObject[] {
-		        FreeplaneResourceBundle.createTranslatedString(ConditionFactory.FILTER_CONTAINS),
-		        FreeplaneResourceBundle.createTranslatedString(ConditionFactory.FILTER_IS_EQUAL_TO),
-		        FreeplaneResourceBundle.createTranslatedString(ConditionFactory.FILTER_IS_NOT_EQUAL_TO),
+		        ResourceBundles.createTranslatedString(ConditionFactory.FILTER_CONTAINS),
+		        ResourceBundles.createTranslatedString(ConditionFactory.FILTER_IS_EQUAL_TO),
+		        ResourceBundles.createTranslatedString(ConditionFactory.FILTER_IS_NOT_EQUAL_TO),
 		        NamedObject.literal(ConditionFactory.FILTER_GT), NamedObject.literal(ConditionFactory.FILTER_GE),
 		        NamedObject.literal(ConditionFactory.FILTER_LE), NamedObject.literal(ConditionFactory.FILTER_LT), });
 	}
 
 	public IListModel getFilteredProperties() {
 		final SortedMapListModel list = new SortedMapListModel();
-		list.add(FreeplaneResourceBundle.createTranslatedString(NodeConditionController.FILTER_NODE));
+		list.add(ResourceBundles.createTranslatedString(NodeConditionController.FILTER_NODE));
 		return list;
 	}
 

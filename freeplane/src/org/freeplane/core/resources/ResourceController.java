@@ -52,7 +52,10 @@ public abstract class ResourceController {
 	}
 
 	final private List<IFreeplanePropertyListener> propertyChangeListeners = new Vector<IFreeplanePropertyListener>();
-	private FreeplaneResourceBundle resources;
+	private ResourceBundles resources;
+	public static final String RESOURCE_DRAW_RECTANGLE_FOR_SELECTION = "standarddrawrectangleforselection";
+	public static final String LOCAL_PROPERTIES = "LocalProperties.";
+	public static final String FREEPLANE_PROPERTIES = "/freeplane.properties";
 
 	public ResourceController() {
 		super();
@@ -101,8 +104,8 @@ public abstract class ResourceController {
 			return value;
 		}
 		if (value.startsWith("?") && !value.equals("?")) {
-			final String localValue = ((FreeplaneResourceBundle) getResources()).getResourceString(
-			    ResourceControllerProperties.LOCAL_PROPERTIES + label, null);
+			final String localValue = ((ResourceBundles) getResources()).getResourceString(
+			    ResourceController.LOCAL_PROPERTIES + label, null);
 			value = localValue == null ? value.substring(1).trim() : localValue;
 			setDefaultProperty(label, value);
 		}
@@ -186,13 +189,13 @@ public abstract class ResourceController {
 	/** Returns the ResourceBundle with the current language */
 	public ResourceBundle getResources() {
 		if (resources == null) {
-			resources = new FreeplaneResourceBundle(this);
+			resources = new ResourceBundles(this);
 		}
 		return resources;
 	}
 
 	public String getText(final String key, final String resource) {
-		return ((FreeplaneResourceBundle) getResources()).getResourceString(key, resource);
+		return ((ResourceBundles) getResources()).getResourceString(key, resource);
 	}
 
 	protected void init(final Controller controller) {
@@ -200,7 +203,7 @@ public abstract class ResourceController {
 	}
 
 	boolean isSelectionAsRectangle() {
-		return Boolean.parseBoolean(getProperty(ResourceControllerProperties.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION));
+		return Boolean.parseBoolean(getProperty(ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION));
 	}
 
 	abstract public void loadProperties(InputStream inStream) throws IOException;
@@ -218,7 +221,7 @@ public abstract class ResourceController {
 	abstract public void setProperty(final String property, final String value);
 
 	public void toggleSelectionAsRectangle() {
-		setProperty(ResourceControllerProperties.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION, new Boolean(
+		setProperty(ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION, new Boolean(
 		    !isSelectionAsRectangle()).toString());
 	}
 

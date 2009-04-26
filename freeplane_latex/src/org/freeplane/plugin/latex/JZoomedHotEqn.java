@@ -13,7 +13,7 @@ import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.WindowConstants;
 
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 
 import atp.sHotEqn;
 
@@ -35,7 +35,7 @@ class JZoomedHotEqn extends sHotEqn {
 		model = latexExtension;
 		setEquation(latexExtension.getEquation());
 		if (JZoomedHotEqn.editorTitle == null) {
-			JZoomedHotEqn.editorTitle = FreeplaneResourceBundle.getText("plugins/latex/LatexNodeHook.editorTitle");
+			JZoomedHotEqn.editorTitle = ResourceBundles.getText("plugins/latex/LatexNodeHook.editorTitle");
 		}
 	}
 

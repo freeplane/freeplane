@@ -41,7 +41,7 @@ import javax.swing.JWindow;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.core.controller.FreeplaneVersion;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 
 
@@ -67,7 +67,7 @@ public class FreeplaneSplashModern extends JWindow{
 		}
 
 		public void progress(final int act, final String messageId) {
-			final String progressString = FreeplaneResourceBundle.getText(messageId);
+			final String progressString = ResourceBundles.getText(messageId);
 			System.out.println(progressString);
 			mActualValue = act;
 			final long timeDifference = System.currentTimeMillis() - mActualTimeStamp;

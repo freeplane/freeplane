@@ -33,7 +33,6 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.core.util.ColorUtils;
 
 /**
@@ -42,7 +41,7 @@ import org.freeplane.core.util.ColorUtils;
 public class CloudController implements IExtension {
 	protected static class CloudAdapterListener implements IFreeplanePropertyListener {
 		public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
-			if (propertyName.equals(ResourceControllerProperties.RESOURCES_CLOUD_COLOR)) {
+			if (propertyName.equals(CloudController.RESOURCES_CLOUD_COLOR)) {
 				standardColor = ColorUtils.stringToColor(newValue);
 			}
 		}
@@ -64,6 +63,7 @@ public class CloudController implements IExtension {
 
 	final private ExclusivePropertyChain<Color, NodeModel> colorHandlers;
 	private final ModeController modeController;
+	public static final String RESOURCES_CLOUD_COLOR = "standardcloudcolor";
 
 	public CloudController(final ModeController modeController) {
 		this.modeController = modeController;
@@ -73,13 +73,13 @@ public class CloudController implements IExtension {
 			ResourceController.getResourceController().addPropertyChangeListener(listener);
 		}
 		updateStandards(modeController);
-		addColorGetter(ResourceControllerProperties.NODE, new IPropertyHandler<Color, NodeModel>() {
+		addColorGetter(IPropertyHandler.NODE, new IPropertyHandler<Color, NodeModel>() {
 			public Color getProperty(final NodeModel node, final Color currentValue) {
 				final CloudModel cloud = CloudModel.getModel(node);
 				return cloud != null ? cloud.getColor() : null;
 			}
 		});
-		addColorGetter(ResourceControllerProperties.DEFAULT, new IPropertyHandler<Color, NodeModel>() {
+		addColorGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<Color, NodeModel>() {
 			public Color getProperty(final NodeModel node, final Color currentValue) {
 				return standardColor;
 			}
@@ -119,7 +119,7 @@ public class CloudController implements IExtension {
 	private void updateStandards(final ModeController controller) {
 		if (standardColor == null) {
 			final String stdColor = ResourceController.getResourceController().getProperty(
-			    ResourceControllerProperties.RESOURCES_CLOUD_COLOR);
+			    CloudController.RESOURCES_CLOUD_COLOR);
 			standardColor = ColorUtils.stringToColor(stdColor);
 		}
 	}

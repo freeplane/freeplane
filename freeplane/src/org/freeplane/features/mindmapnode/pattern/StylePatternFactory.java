@@ -30,7 +30,7 @@ import java.util.List;
 
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.common.edge.EdgeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
@@ -56,10 +56,10 @@ public class StylePatternFactory {
 		if (patternType != null) {
 			result = StylePatternFactory.addSeparatorIfNecessary(result);
 			if (patternType.getValue() == null) {
-				result += "-" + FreeplaneResourceBundle.getText(patternString);
+				result += "-" + ResourceBundles.getText(patternString);
 			}
 			else {
-				result += "+" + FreeplaneResourceBundle.getText(patternString) + " " + patternType.getValue();
+				result += "+" + ResourceBundles.getText(patternString) + " " + patternType.getValue();
 			}
 		}
 		return result;
@@ -246,19 +246,19 @@ public class StylePatternFactory {
 		if (pPattern.getPatternNodeColor() != null) {
 			result = StylePatternFactory.addSeparatorIfNecessary(result);
 			if (pPattern.getPatternNodeColor().getValue() == null) {
-				result += "-" + FreeplaneResourceBundle.getText("PatternToString.color");
+				result += "-" + ResourceBundles.getText("PatternToString.color");
 			}
 			else {
-				result += "+" + FreeplaneResourceBundle.getText("PatternToString.color");
+				result += "+" + ResourceBundles.getText("PatternToString.color");
 			}
 		}
 		if (pPattern.getPatternNodeBackgroundColor() != null) {
 			result = StylePatternFactory.addSeparatorIfNecessary(result);
 			if (pPattern.getPatternNodeBackgroundColor().getValue() == null) {
-				result += "-" + FreeplaneResourceBundle.getText("PatternToString.backgroundColor");
+				result += "-" + ResourceBundles.getText("PatternToString.backgroundColor");
 			}
 			else {
-				result += "+" + FreeplaneResourceBundle.getText("PatternToString.backgroundColor");
+				result += "+" + ResourceBundles.getText("PatternToString.backgroundColor");
 			}
 		}
 		result = StylePatternFactory.addSubPatternToString(result, pPattern.getPatternNodeFontSize(),

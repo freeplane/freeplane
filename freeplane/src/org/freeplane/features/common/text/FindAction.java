@@ -31,7 +31,7 @@ import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlTools;
@@ -54,8 +54,8 @@ class FindAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final NodeModel selected = getController().getSelection().getSelected();
-		final String what = UITools.showInputDialog(getController(), selected, FreeplaneResourceBundle
-		    .getText("find_what"), FreeplaneResourceBundle.getText("find"), JOptionPane.QUESTION_MESSAGE);
+		final String what = UITools.showInputDialog(getController(), selected, ResourceBundles
+		    .getText("find_what"), ResourceBundles.getText("find"), JOptionPane.QUESTION_MESSAGE);
 		if (what == null || what.equals("")) {
 			return;
 		}
@@ -64,7 +64,7 @@ class FindAction extends AFreeplaneAction {
 		final boolean found = find(getModeController().getMapController().getSelectedNode(), subterms,
 		/*caseSensitive=*/false);
 		if (!found) {
-			final String messageText = FreeplaneResourceBundle.getText("no_found_from");
+			final String messageText = ResourceBundles.getText("no_found_from");
 			final String searchTerm = messageText.startsWith("<html>") ? HtmlTools.toXMLEscapedText(getSearchTerm())
 			        : getSearchTerm();
 			UITools.informationMessage(getController().getViewController().getFrame(), 

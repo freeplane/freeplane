@@ -27,7 +27,7 @@ import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.undo.UndoHandler;
@@ -89,7 +89,7 @@ public class MMapModel extends MapModel {
 		if (titleNumber == 0) {
 			titleNumber = MMapModel.unnamedMapsNumber++;
 		}
-		return FreeplaneResourceBundle.getText("mindmap") + titleNumber;
+		return ResourceBundles.getText("mindmap") + titleNumber;
 	}
 
 	public IUndoHandler getUndoHandler() {

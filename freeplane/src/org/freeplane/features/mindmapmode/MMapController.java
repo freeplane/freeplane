@@ -36,16 +36,17 @@ import javax.swing.JOptionPane;
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.FreeplaneVersion;
+import org.freeplane.core.io.NodeBuilder;
 import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.model.EncryptionModel;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FpStringUtils;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
@@ -60,7 +61,7 @@ import org.freeplane.n3.nanoxml.XMLParseException;
 public class MMapController extends MapController {
 	static private DeleteAction delete;
 	private static final String EXPECTED_START_STRINGS[] = {
-	        "<map version=\"" + ResourceControllerProperties.XML_VERSION + "\"", "<map version=\"0.7.1\"" };
+	        "<map version=\"" + FreeplaneVersion.XML_VERSION + "\"", "<map version=\"0.7.1\"" };
 	private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_version_updater.xslt";
 	public static final int NEW_CHILD = 2;
 	public static final int NEW_CHILD_WITHOUT_FOCUS = 1;
@@ -68,6 +69,7 @@ public class MMapController extends MapController {
 	public static final int NEW_SIBLING_BEHIND = 3;
 	static private NewChildAction newChild;
 	private static IFreeplanePropertyListener sSaveIdPropertyChangeListener;
+	public static final String RESOURCES_CONVERT_TO_CURRENT_VERSION = "convert_to_current_version";
 
 	public MMapController(final MModeController modeController) {
 		super(modeController);
@@ -100,8 +102,8 @@ public class MMapController extends MapController {
 	public boolean close(final boolean force) {
 		final MapModel map = getController().getMap();
 		if (!force && !map.isSaved()) {
-			final String text = FreeplaneResourceBundle.getText("save_unsaved") + "\n" + map.getTitle();
-			final String title = FpStringUtils.removeMnemonic(FreeplaneResourceBundle.getText("SaveAction.text"));
+			final String text = ResourceBundles.getText("save_unsaved") + "\n" + map.getTitle();
+			final String title = FpStringUtils.removeMnemonic(ResourceBundles.getText("SaveAction.text"));
 			final int returnVal = JOptionPane.showOptionDialog(getController().getViewController().getContentPane(),
 			    text, title, JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 			if (returnVal == JOptionPane.YES_OPTION) {
@@ -261,7 +263,7 @@ public class MMapController extends MapController {
 		if (reader == null) {
 			final Controller controller = getController();
 			final int showResult = new OptionalDontShowMeAgainDialog(controller, "really_convert_to_current_version",
-			    "confirmation", ResourceControllerProperties.RESOURCES_CONVERT_TO_CURRENT_VERSION,
+			    "confirmation", MMapController.RESOURCES_CONVERT_TO_CURRENT_VERSION,
 			    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED).show().getResult();
 			if (showResult != JOptionPane.OK_OPTION) {
 				reader = UrlManager.getActualReader(file);
@@ -446,8 +448,8 @@ public class MMapController extends MapController {
 			public void act() {
 				_setFolded(node, !node.isFolded());
 				final ResourceController resourceController = ResourceController.getResourceController();
-				if (resourceController.getProperty(ResourceControllerProperties.RESOURCES_SAVE_FOLDING).equals(
-				    ResourceControllerProperties.RESOURCES_ALWAYS_SAVE_FOLDING)) {
+				if (resourceController.getProperty(NodeBuilder.RESOURCES_SAVE_FOLDING).equals(
+				    NodeBuilder.RESOURCES_ALWAYS_SAVE_FOLDING)) {
 					nodeChanged(node);
 				}
 			}

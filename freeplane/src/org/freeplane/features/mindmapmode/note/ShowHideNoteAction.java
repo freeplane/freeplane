@@ -23,7 +23,6 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 
@@ -50,7 +49,7 @@ class ShowHideNoteAction extends AFreeplaneAction {
 		else {
 			(noteController).hideNotesPanel();
 			ResourceController.getResourceController().setProperty(
-			    ResourceControllerProperties.RESOURCES_USE_SPLIT_PANE, "false");
+			    MNoteController.RESOURCES_USE_SPLIT_PANE, "false");
 		}
 	}
 

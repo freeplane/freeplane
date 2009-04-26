@@ -25,7 +25,7 @@ import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.FreeplaneVersion;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 
 class AboutAction extends AFreeplaneAction {
@@ -42,9 +42,9 @@ class AboutAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		JOptionPane.showMessageDialog(getController().getViewController().getViewport(), FreeplaneResourceBundle
+		JOptionPane.showMessageDialog(getController().getViewController().getViewport(), ResourceBundles
 		    .getText("about_text")
-		        + FreeplaneVersion.getVersion(), FreeplaneResourceBundle.getText("AboutAction.text"),
+		        + FreeplaneVersion.getVersion(), ResourceBundles.getText("AboutAction.text"),
 		    JOptionPane.INFORMATION_MESSAGE);
 	}
 }

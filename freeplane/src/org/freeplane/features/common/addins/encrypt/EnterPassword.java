@@ -26,7 +26,7 @@ import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.EncryptionModel;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.components.EnterPasswordDialog;
@@ -62,7 +62,7 @@ public class EnterPassword extends AFreeplaneAction {
 			final StringBuffer password = pwdDialog.getPassword();
 			if (!encNode.decrypt(getModeController().getMapController(), new SingleDesEncrypter(password))) {
 				final Controller controller = getController();
-				JOptionPane.showMessageDialog(controller.getViewController().getContentPane(), FreeplaneResourceBundle
+				JOptionPane.showMessageDialog(controller.getViewController().getContentPane(), ResourceBundles
 				    .getText("accessories/plugins/EncryptNode.properties_wrong_password"), "Freeplane",
 				    JOptionPane.ERROR_MESSAGE);
 				return false;

@@ -49,6 +49,7 @@ public class MModeController extends ModeController {
 	}
 
 	private OptionPanelBuilder optionPanelBuilder;
+	public static final String RESOURCES_DELETE_NODES_WITHOUT_QUESTION = "delete_nodes_without_question";
 
 	public MModeController(final Controller controller) {
 		super(controller);

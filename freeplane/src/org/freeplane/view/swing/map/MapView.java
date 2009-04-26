@@ -64,7 +64,6 @@ import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ColorUtils;
@@ -73,6 +72,7 @@ import org.freeplane.features.common.link.ArrowLinkModel;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.LinkModel;
 import org.freeplane.features.common.link.NodeLinks;
+import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.view.swing.map.link.ArrowLinkView;
 
 /**
@@ -268,6 +268,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private int siblingMaxLevel;
 	private float zoom = 1F;
 	private int centerNodeCounter;
+	public static final String RESOURCES_SELECTED_NODE_COLOR = "standardselectednodecolor";
+	public static final String RESOURCES_SELECTED_NODE_RECTANGLE_COLOR = "standardselectednoderectanglecolor";
 
 	public MapView(final MapModel model, final ModeController modeController) {
 		super();
@@ -278,13 +280,13 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		setName(name);
 		if (MapView.standardSelectColor == null) {
 			final String stdcolor = ResourceController.getResourceController().getProperty(
-			    ResourceControllerProperties.RESOURCES_SELECTED_NODE_COLOR);
+			    MapView.RESOURCES_SELECTED_NODE_COLOR);
 			MapView.standardSelectColor = ColorUtils.stringToColor(stdcolor);
 			final String stdtextcolor = ResourceController.getResourceController().getProperty(
-			    ResourceControllerProperties.RESOURCES_SELECTED_NODE_RECTANGLE_COLOR);
+			    MapView.RESOURCES_SELECTED_NODE_RECTANGLE_COLOR);
 			MapView.standardSelectRectangleColor = ColorUtils.stringToColor(stdtextcolor);
 			final String drawCircle = ResourceController.getResourceController().getProperty(
-			    ResourceControllerProperties.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION);
+			    ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION);
 			MapView.standardDrawRectangleForSelection = TreeXmlReader.xmlToBoolean(drawCircle);
 			final String printOnWhite = ResourceController.getResourceController()
 			    .getProperty("printonwhitebackground");
@@ -378,17 +380,17 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				if (!(mapView instanceof MapView)) {
 					return;
 				}
-				if (propertyName.equals(ResourceControllerProperties.RESOURCES_SELECTED_NODE_COLOR)) {
+				if (propertyName.equals(MapView.RESOURCES_SELECTED_NODE_COLOR)) {
 					MapView.standardSelectColor = ColorUtils.stringToColor(newValue);
 					((MapView) mapView).repaintSelecteds();
 					return;
 				}
-				if (propertyName.equals(ResourceControllerProperties.RESOURCES_SELECTED_NODE_RECTANGLE_COLOR)) {
+				if (propertyName.equals(MapView.RESOURCES_SELECTED_NODE_RECTANGLE_COLOR)) {
 					MapView.standardSelectRectangleColor = ColorUtils.stringToColor(newValue);
 					((MapView) mapView).repaintSelecteds();
 					return;
 				}
-				if (propertyName.equals(ResourceControllerProperties.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION)) {
+				if (propertyName.equals(ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION)) {
 					MapView.standardDrawRectangleForSelection = TreeXmlReader.xmlToBoolean(newValue);
 					((MapView) mapView).repaintSelecteds();
 					return;
@@ -397,7 +399,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 					MapView.printOnWhiteBackground = TreeXmlReader.xmlToBoolean(newValue);
 					return;
 				}
-				if (propertyName.equals(ResourceControllerProperties.RESOURCES_SHOW_NODE_TOOLTIPS)) {
+				if (propertyName.equals(NodeView.RESOURCES_SHOW_NODE_TOOLTIPS)) {
 					getRoot().updateToolTipsRecursive();
 					return;
 				}
@@ -828,11 +830,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	public void mapChanged(final MapChangeEvent event) {
-		if (event.getProperty().equals(ResourceControllerProperties.RESOURCES_BACKGROUND_COLOR)) {
+		if (event.getProperty().equals(MapStyle.RESOURCES_BACKGROUND_COLOR)) {
 			setBackground(requiredBackground());
 			return;
 		}
-		if (event.getProperty().equals(ResourceControllerProperties.RESOURCES_NODE_TEXT_COLOR)) {
+		if (event.getProperty().equals(NodeStyleController.RESOURCES_NODE_TEXT_COLOR)) {
 			getRoot().updateAll();
 			return;
 		}

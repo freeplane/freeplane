@@ -39,7 +39,7 @@ import javax.swing.KeyStroke;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.components.UITools;
 
 /**
@@ -280,7 +280,7 @@ public class GrabKeyDialog extends JDialog {
 	/**
 	 */
 	private static String getText(final String resourceString) {
-		return FreeplaneResourceBundle.getText("GrabKeyDialog." + resourceString);
+		return ResourceBundles.getText("GrabKeyDialog." + resourceString);
 	}
 
 	private void init(String inputText, int modifierMask) {

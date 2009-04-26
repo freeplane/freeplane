@@ -28,7 +28,6 @@ import javax.swing.event.PopupMenuListener;
 
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.features.common.note.NoteModel;
@@ -50,7 +49,7 @@ class RemoveNoteAction extends AFreeplaneAction implements PopupMenuListener {
 
 	public void actionPerformed(final ActionEvent e) {
 		final int showResult = new OptionalDontShowMeAgainDialog(getController(), "really_remove_notes",
-		    "confirmation", ResourceControllerProperties.RESOURCES_REMOVE_NOTES_WITHOUT_QUESTION,
+		    "confirmation", MNoteController.RESOURCES_REMOVE_NOTES_WITHOUT_QUESTION,
 		    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED).show().getResult();
 		if (showResult != JOptionPane.OK_OPTION) {
 			return;

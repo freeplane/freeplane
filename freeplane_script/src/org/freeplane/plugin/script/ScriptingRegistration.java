@@ -27,7 +27,6 @@ import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.core.resources.ui.OptionPanelBuilder;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.ui.MenuBuilder;
@@ -126,14 +125,14 @@ class ScriptingRegistration implements IExternalPatternAction {
 		controls.addSeparator(TAB, SEPARATOR, IndexedTree.AS_CHILD);
 		final String GROUP = TAB + "/" + SEPARATOR;
 		controls.addBooleanProperty(GROUP,
-		    ResourceControllerProperties.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION, IndexedTree.AS_CHILD);
+		    ScriptingEngine.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION, IndexedTree.AS_CHILD);
 		controls.addBooleanProperty(GROUP,
-		    ResourceControllerProperties.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION, IndexedTree.AS_CHILD);
+			ScriptingEngine.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION, IndexedTree.AS_CHILD);
 		controls.addBooleanProperty(GROUP,
-		    ResourceControllerProperties.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION, IndexedTree.AS_CHILD);
-		controls.addBooleanProperty(GROUP, ResourceControllerProperties.RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED,
+			ScriptingEngine.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION, IndexedTree.AS_CHILD);
+		controls.addBooleanProperty(GROUP, ScriptingEngine.RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED,
 		    IndexedTree.AS_CHILD);
-		controls.addStringProperty(GROUP, ResourceControllerProperties.RESOURCES_SCRIPT_USER_KEY_NAME_FOR_SIGNING,
+		controls.addStringProperty(GROUP, ScriptingEngine.RESOURCES_SCRIPT_USER_KEY_NAME_FOR_SIGNING,
 		    IndexedTree.AS_CHILD);
 	}
 

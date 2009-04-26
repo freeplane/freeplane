@@ -25,7 +25,7 @@ import javax.swing.JComponent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public class SelectedViewSnapshotCondition implements ICondition {
@@ -58,7 +58,7 @@ public class SelectedViewSnapshotCondition implements ICondition {
 	@Override
 	public String toString() {
 		if (SelectedViewSnapshotCondition.description == null) {
-			SelectedViewSnapshotCondition.description = FreeplaneResourceBundle
+			SelectedViewSnapshotCondition.description = ResourceBundles
 			    .getText("filter_selected_node_view_snapshot");
 		}
 		return SelectedViewSnapshotCondition.description;

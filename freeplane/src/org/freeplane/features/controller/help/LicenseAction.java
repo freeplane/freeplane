@@ -22,7 +22,7 @@ package org.freeplane.features.controller.help;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 
@@ -38,7 +38,7 @@ class LicenseAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		UITools.informationMessage(getController().getViewController().getFrame(), FreeplaneResourceBundle
-		    .getText("license_text"), FreeplaneResourceBundle.getText(NAME));
+		UITools.informationMessage(getController().getViewController().getFrame(), ResourceBundles
+		    .getText("license_text"), ResourceBundles.getText(NAME));
 	}
 }

@@ -30,7 +30,7 @@ import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.LogTool;
@@ -78,9 +78,9 @@ class ExportBranchAction extends AFreeplaneAction {
 			File chosenFile = chooser.getSelectedFile();
 			final String ext = UrlManager.getExtension(chosenFile.getName());
 			if (!ext
-			    .equals(org.freeplane.core.resources.ResourceControllerProperties.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
+			    .equals(org.freeplane.core.url.UrlManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
 				chosenFile = new File(chosenFile.getParent(), chosenFile.getName()
-				        + org.freeplane.core.resources.ResourceControllerProperties.FREEPLANE_FILE_EXTENSION);
+				        + org.freeplane.core.url.UrlManager.FREEPLANE_FILE_EXTENSION);
 			}
 			try {
 				Compat.fileToUrl(chosenFile);
@@ -92,7 +92,7 @@ class ExportBranchAction extends AFreeplaneAction {
 			}
 			if (chosenFile.exists()) {
 				final int overwriteMap = JOptionPane.showConfirmDialog(controller.getViewController().getMapView(),
-				    FreeplaneResourceBundle.getText("map_already_exists"), "Freeplane", JOptionPane.YES_NO_OPTION);
+				    ResourceBundles.getText("map_already_exists"), "Freeplane", JOptionPane.YES_NO_OPTION);
 				if (overwriteMap != JOptionPane.YES_OPTION) {
 					return;
 				}

@@ -45,7 +45,6 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.note.NoteController;
@@ -133,6 +132,10 @@ public class MNoteController extends NoteController {
 	private NoteManager noteManager;
 	private SHTMLPanel noteViewerComponent;
 	private Integer positionToRecover = null;
+	public static final String RESOURCES_USE_SPLIT_PANE = "use_split_pane";
+	public static final String RESOURCES_USE_MARGIN_TOP_ZERO_FOR_NOTES = "resources_use_margin_top_zero_for_notes";
+	public static final String RESOURCES_USE_DEFAULT_FONT_FOR_NOTES_TOO = "resources_use_default_font_for_notes_too";
+	public static final String RESOURCES_REMOVE_NOTES_WITHOUT_QUESTION = "remove_notes_without_question";
 
 	/**
 	 * @param modeController
@@ -191,7 +194,7 @@ public class MNoteController extends NoteController {
 			showNotesPanel();
 			splitPane = getSplitPane();
 			ResourceController.getResourceController().setProperty(
-			    ResourceControllerProperties.RESOURCES_USE_SPLIT_PANE, "true");
+			    MNoteController.RESOURCES_USE_SPLIT_PANE, "true");
 		}
 		return splitPane;
 	}
@@ -263,14 +266,14 @@ public class MNoteController extends NoteController {
 
 	private boolean shouldUseSplitPane() {
 		return "true".equals(ResourceController.getResourceController().getProperty(
-		    ResourceControllerProperties.RESOURCES_USE_SPLIT_PANE));
+		    MNoteController.RESOURCES_USE_SPLIT_PANE));
 	}
 
 	public void showNotesPanel() {
 		final SouthPanel southPanel = new SouthPanel();
 		southPanel.add(noteViewerComponent, BorderLayout.CENTER);
 		if (ResourceController.getResourceController().getBooleanProperty(
-		    ResourceControllerProperties.RESOURCES_USE_DEFAULT_FONT_FOR_NOTES_TOO)) {
+		    MNoteController.RESOURCES_USE_DEFAULT_FONT_FOR_NOTES_TOO)) {
 			// set default font for notes:
 			final Font defaultFont = ResourceController.getResourceController().getDefaultFont();
 			String rule = "BODY {";
@@ -278,7 +281,7 @@ public class MNoteController extends NoteController {
 			rule += "font-size: " + defaultFont.getSize() + "pt;";
 			rule += "}\n";
 			if (ResourceController.getResourceController().getBooleanProperty(
-			    ResourceControllerProperties.RESOURCES_USE_MARGIN_TOP_ZERO_FOR_NOTES)) {
+			    MNoteController.RESOURCES_USE_MARGIN_TOP_ZERO_FOR_NOTES)) {
 				/* this is used for paragraph spacing. I put it here, too, as
 				 * the tooltip display uses the same spacing. But it is to be discussed.
 				 * fc, 23.3.2009.

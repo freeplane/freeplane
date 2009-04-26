@@ -38,12 +38,12 @@ import org.freeplane.core.util.MultipleValueMap;
  * Class for managing localized resources. See translation property files.
  */
 // TODO ARCH rladstaetter 22.03.2009 reduce this class to a simple Map<String,String>
-public class FreeplaneResourceBundle extends ResourceBundle {
+public class ResourceBundles extends ResourceBundle {
 	private static final String DEFAULT_LANGUAGE = "en";
 	public static final String POSTFIX_TRANSLATE_ME = "[translate me]";
 
 	public static NamedObject createTranslatedString(final String key) {
-		final String fs = FreeplaneResourceBundle.getText(key);
+		final String fs = ResourceBundles.getText(key);
 		return new NamedObject(key, fs);
 	}
 
@@ -51,7 +51,7 @@ public class FreeplaneResourceBundle extends ResourceBundle {
 		if (key == null) {
 			return null;
 		}
-		return ((FreeplaneResourceBundle) ResourceController.getResourceController().getResources())
+		return ((ResourceBundles) ResourceController.getResourceController().getResources())
 		    .getResourceString(key);
 	}
 
@@ -59,7 +59,7 @@ public class FreeplaneResourceBundle extends ResourceBundle {
 		if (key == null) {
 			return defaultString;
 		}
-		return ((FreeplaneResourceBundle) ResourceController.getResourceController().getResources()).getResourceString(
+		return ((ResourceBundles) ResourceController.getResourceController().getResources()).getResourceString(
 		    key, defaultString);
 	}
 
@@ -71,8 +71,9 @@ public class FreeplaneResourceBundle extends ResourceBundle {
 	private final MultipleValueMap<String, URL> externalResources;
 	private String lang;
 	private Map<String, String> languageResources;
+	public static final String RESOURCE_LANGUAGE = "language";
 
-	FreeplaneResourceBundle(final ResourceController controller) {
+	ResourceBundles(final ResourceController controller) {
 		this.controller = controller;
 		externalResources = new MultipleValueMap<String, URL>();
 		try {
@@ -158,7 +159,7 @@ public class FreeplaneResourceBundle extends ResourceBundle {
 		}
 		value = defaultResources.get(key);
 		if (value != null) {
-			return value + FreeplaneResourceBundle.POSTFIX_TRANSLATE_ME;
+			return value + ResourceBundles.POSTFIX_TRANSLATE_ME;
 		}
 		return resource;
 	}
@@ -170,12 +171,12 @@ public class FreeplaneResourceBundle extends ResourceBundle {
 		}
 		catch (final Exception ex) {
 			Logger.global.severe("Warning - resource string not found:" + key);
-			return defaultResources.get(key) + FreeplaneResourceBundle.POSTFIX_TRANSLATE_ME;
+			return defaultResources.get(key) + ResourceBundles.POSTFIX_TRANSLATE_ME;
 		}
 	}
 
 	private void loadLocalLanguageResources() throws IOException {
-		lang = controller.getProperty(ResourceControllerProperties.RESOURCE_LANGUAGE);
+		lang = controller.getProperty(ResourceBundles.RESOURCE_LANGUAGE);
 		if (lang == null || lang.equals("automatic")) {
 			lang = Locale.getDefault().getLanguage() + "_" + Locale.getDefault().getCountry();
 			if (getLanguageResources(lang) == null) {

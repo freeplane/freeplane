@@ -31,7 +31,7 @@ import org.freeplane.core.filter.util.ExtendedComboBoxModel;
 import org.freeplane.core.filter.util.IListModel;
 import org.freeplane.core.filter.util.SortedMapListModel;
 import org.freeplane.core.model.MindIcon;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -75,12 +75,12 @@ class IconConditionController implements IElementaryConditionController {
 
 	public IListModel getFilteredProperties() {
 		final SortedMapListModel list = new SortedMapListModel();
-		list.add(FreeplaneResourceBundle.createTranslatedString(FILTER_ICON));
+		list.add(ResourceBundles.createTranslatedString(FILTER_ICON));
 		return list;
 	}
 
 	public Object[] getIconConditionNames() {
-		return new NamedObject[] { FreeplaneResourceBundle.createTranslatedString(ConditionFactory.FILTER_CONTAINS), };
+		return new NamedObject[] { ResourceBundles.createTranslatedString(ConditionFactory.FILTER_CONTAINS), };
 	}
 
 	public ComboBoxEditor getValueEditor() {

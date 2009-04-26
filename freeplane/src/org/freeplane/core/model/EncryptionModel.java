@@ -31,8 +31,8 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.modecontroller.IEncrypter;
 import org.freeplane.core.modecontroller.MapController;
-import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.features.common.clipboard.ClipboardController;
 
 public class EncryptionModel implements IExtension {
 	private static ImageIcon decryptedIcon;
@@ -100,7 +100,7 @@ public class EncryptionModel implements IExtension {
 		if (!isDecrypted) {
 			try {
 				final String childXml = decryptXml(encryptedContent, encrypter);
-				final String[] childs = childXml.split(ResourceControllerProperties.NODESEPARATOR);
+				final String[] childs = childXml.split(ClipboardController.NODESEPARATOR);
 				for (int i = childs.length - 1; i >= 0; i--) {
 					final String string = childs[i];
 					if (string.length() == 0) {
@@ -151,7 +151,7 @@ public class EncryptionModel implements IExtension {
 			final NodeModel child = (NodeModel) i.next();
 			mapController.getMapWriter().writeNodeAsXml(sWriter, child, mode, true, true);
 			if (i.hasNext()) {
-				sWriter.write(ResourceControllerProperties.NODESEPARATOR);
+				sWriter.write(ClipboardController.NODESEPARATOR);
 			}
 		}
 		final StringBuffer childXml = sWriter.getBuffer();

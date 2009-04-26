@@ -24,7 +24,7 @@ import java.util.Date;
 import org.freeplane.core.filter.condition.ConditionFactory;
 import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 
 /**
  * @author Dimitry Polivaev
@@ -44,9 +44,9 @@ class TimeConditionCreatedAfter extends TimeConditionCreatedBefore implements IC
 
 	@Override
 	protected String createDesctiption() {
-		final String filterTime = FreeplaneResourceBundle.getText(TimeConditionController.FILTER_TIME);
+		final String filterTime = ResourceBundles.getText(TimeConditionController.FILTER_TIME);
 		final String dateAsString = TimeCondition.format(getDate());
-		final String before = FreeplaneResourceBundle.getText(FILTER_CREATED_AFTER);
+		final String before = ResourceBundles.getText(FILTER_CREATED_AFTER);
 		return ConditionFactory.createDescription(filterTime, before, dateAsString, false);
 	}
 

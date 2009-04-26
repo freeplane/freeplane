@@ -50,7 +50,7 @@ import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogTool;
 
@@ -315,6 +315,8 @@ public class UrlManager implements IExtension {
 
 	final private Controller controller;
 	final private ModeController modeController;
+	public static final String FREEPLANE_FILE_EXTENSION_WITHOUT_DOT = "mm";
+	public static final String FREEPLANE_FILE_EXTENSION = "." + FREEPLANE_FILE_EXTENSION_WITHOUT_DOT;
 
 	public UrlManager(final ModeController modeController) {
 		super();
@@ -375,7 +377,7 @@ public class UrlManager implements IExtension {
 		final String exceptionType = ex.getClass().getName();
 		if (exceptionType.equals("freeplane.main.XMLParseException")) {
 			final int showDetail = JOptionPane.showConfirmDialog(getController().getViewController().getMapView(),
-			    FreeplaneResourceBundle.getText("map_corrupted"), "Freeplane", JOptionPane.YES_NO_OPTION,
+			    ResourceBundles.getText("map_corrupted"), "Freeplane", JOptionPane.YES_NO_OPTION,
 			    JOptionPane.ERROR_MESSAGE);
 			if (showDetail == JOptionPane.YES_OPTION) {
 				getController().errorMessage(ex);

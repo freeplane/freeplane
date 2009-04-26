@@ -72,7 +72,7 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.WindowConfigurationStorage;
 import org.freeplane.core.ui.UIBuilder;
@@ -608,12 +608,12 @@ class TimeList {
 	}
 
 	public void startup() {
-		TimeList.COLUMN_MODIFIED = FreeplaneResourceBundle.getText(PLUGINS_TIME_LIST_XML_MODIFIED);
-		TimeList.COLUMN_CREATED = FreeplaneResourceBundle.getText(PLUGINS_TIME_LIST_XML_CREATED);
-		TimeList.COLUMN_ICONS = FreeplaneResourceBundle.getText(PLUGINS_TIME_LIST_XML_ICONS);
-		TimeList.COLUMN_TEXT = FreeplaneResourceBundle.getText(PLUGINS_TIME_LIST_XML_TEXT);
-		TimeList.COLUMN_DATE = FreeplaneResourceBundle.getText(PLUGINS_TIME_LIST_XML_DATE);
-		TimeList.COLUMN_NOTES = FreeplaneResourceBundle.getText(PLUGINS_TIME_LIST_XML_NOTES);
+		TimeList.COLUMN_MODIFIED = ResourceBundles.getText(PLUGINS_TIME_LIST_XML_MODIFIED);
+		TimeList.COLUMN_CREATED = ResourceBundles.getText(PLUGINS_TIME_LIST_XML_CREATED);
+		TimeList.COLUMN_ICONS = ResourceBundles.getText(PLUGINS_TIME_LIST_XML_ICONS);
+		TimeList.COLUMN_TEXT = ResourceBundles.getText(PLUGINS_TIME_LIST_XML_TEXT);
+		TimeList.COLUMN_DATE = ResourceBundles.getText(PLUGINS_TIME_LIST_XML_DATE);
+		TimeList.COLUMN_NOTES = ResourceBundles.getText(PLUGINS_TIME_LIST_XML_NOTES);
 		dialog = new JDialog(modeController.getController().getViewController().getFrame(), true /* modal */);
 		String windowTitle;
 		if (showAllNodes) {
@@ -622,7 +622,7 @@ class TimeList {
 		else {
 			windowTitle = PLUGINS_TIME_MANAGEMENT_XML_WINDOW_TITLE;
 		}
-		dialog.setTitle(FreeplaneResourceBundle.getText(windowTitle));
+		dialog.setTitle(ResourceBundles.getText(windowTitle));
 		dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		dialog.addWindowListener(new WindowAdapter() {
 			@Override
@@ -645,7 +645,7 @@ class TimeList {
 		gbl.columnWeights = new double[] { 1.0f };
 		gbl.rowWeights = new double[] { 1.0f };
 		contentPane.setLayout(gbl);
-		contentPane.add(new JLabel(FreeplaneResourceBundle.getText(PLUGINS_TIME_MANAGEMENT_XML_FIND)),
+		contentPane.add(new JLabel(ResourceBundles.getText(PLUGINS_TIME_MANAGEMENT_XML_FIND)),
 		    new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL,
 		        new Insets(0, 0, 0, 0), 0, 0));
 		mFilterTextSearchField = new JTextField();
@@ -660,7 +660,7 @@ class TimeList {
 		});
 		contentPane.add(/* new JScrollPane */(mFilterTextSearchField), new GridBagConstraints(0, 1, 1, 1, 1.0, 0.0,
 		    GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
-		contentPane.add(new JLabel(FreeplaneResourceBundle.getText(PLUGINS_TIME_MANAGEMENT_XML_REPLACE)),
+		contentPane.add(new JLabel(ResourceBundles.getText(PLUGINS_TIME_MANAGEMENT_XML_REPLACE)),
 		    new GridBagConstraints(0, 2, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL,
 		        new Insets(0, 0, 0, 0), 0, 0));
 		mFilterTextReplaceField = new JTextField();
@@ -700,7 +700,7 @@ class TimeList {
 		mTreeLabel = new JLabel();
 		contentPane.add(new JScrollPane(mTreeLabel), new GridBagConstraints(0, 5, 1, 1, 1.0, 1.0,
 		    GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
-		final AbstractAction selectAction = new AbstractAction(FreeplaneResourceBundle
+		final AbstractAction selectAction = new AbstractAction(ResourceBundles
 		    .getText(PLUGINS_TIME_MANAGEMENT_XML_SELECT)) {
 			/**
 			     * 
@@ -712,7 +712,7 @@ class TimeList {
 			}
 		};
 		final JButton selectButton = new JButton(selectAction);
-		final AbstractAction exportAction = new AbstractAction(FreeplaneResourceBundle
+		final AbstractAction exportAction = new AbstractAction(ResourceBundles
 		    .getText("plugins/TimeManagement.xml_Export")) {
 			/**
 			     * 
@@ -724,7 +724,7 @@ class TimeList {
 			}
 		};
 		final JButton exportButton = new JButton(exportAction);
-		final AbstractAction replaceAllAction = new AbstractAction(FreeplaneResourceBundle
+		final AbstractAction replaceAllAction = new AbstractAction(ResourceBundles
 		    .getText("plugins/TimeManagement.xml_Replace_All")) {
 			/**
 			     * 
@@ -736,7 +736,7 @@ class TimeList {
 			}
 		};
 		final JButton replaceAllButton = new JButton(replaceAllAction);
-		final AbstractAction replaceSelectedAction = new AbstractAction(FreeplaneResourceBundle
+		final AbstractAction replaceSelectedAction = new AbstractAction(ResourceBundles
 		    .getText("plugins/TimeManagement.xml_Replace_Selected")) {
 			/**
 			     * 
@@ -748,7 +748,7 @@ class TimeList {
 			}
 		};
 		final JButton replaceSelectedButton = new JButton(replaceSelectedAction);
-		final AbstractAction gotoAction = new AbstractAction(FreeplaneResourceBundle
+		final AbstractAction gotoAction = new AbstractAction(ResourceBundles
 		    .getText("plugins/TimeManagement.xml_Goto")) {
 			/**
 			     * 
@@ -761,7 +761,7 @@ class TimeList {
 			}
 		};
 		final JButton gotoButton = new JButton(gotoAction);
-		final AbstractAction disposeAction = new AbstractAction(FreeplaneResourceBundle
+		final AbstractAction disposeAction = new AbstractAction(ResourceBundles
 		    .getText(PLUGINS_TIME_MANAGEMENT_XML_CANCEL)) {
 			/**
 			     * 
@@ -783,7 +783,7 @@ class TimeList {
 		contentPane.add(/* new JScrollPane */(bar), new GridBagConstraints(0, 6, 1, 1, 1.0, 1.0,
 		    GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
 		final JMenuBar menuBar = new JMenuBar();
-		final JMenu menu = new JMenu(FreeplaneResourceBundle.getText("plugins/TimeManagement.xml_menu_actions"));
+		final JMenu menu = new JMenu(ResourceBundles.getText("plugins/TimeManagement.xml_menu_actions"));
 		final AbstractAction[] actionList = new AbstractAction[] { selectAction, gotoAction, replaceSelectedAction,
 		        replaceAllAction, exportAction, disposeAction };
 		for (int i = 0; i < actionList.length; i++) {

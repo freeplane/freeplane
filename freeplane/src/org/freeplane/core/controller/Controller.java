@@ -35,9 +35,8 @@ import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.LogTool;
 
@@ -85,6 +84,8 @@ public class Controller extends AController {
 	private ModeController modeController;
 	final private Map<String, ModeController> modeControllers = new HashMap<String, ModeController>();
 	private ViewController viewController;
+	// TODO ARCH rladstaetter 15.02.2009 introduce namespaces where feasible
+    public static final String ON_START_IF_NOT_SPECIFIED = "on_start_if_not_specified";
 
 	public Controller() {
 		super();
@@ -116,7 +117,7 @@ public class Controller extends AController {
 			myMessage = message.toString();
 		}
 		else {
-			myMessage = FreeplaneResourceBundle.getText("undefined_error");
+			myMessage = ResourceBundles.getText("undefined_error");
 			if (myMessage == null) {
 				myMessage = "Undefined error";
 			}
@@ -214,7 +215,7 @@ public class Controller extends AController {
 		}
 		if (currentMapRestorable != null) {
 			ResourceController.getResourceController().setProperty(
-			    ResourceControllerProperties.ON_START_IF_NOT_SPECIFIED, currentMapRestorable);
+			    Controller.ON_START_IF_NOT_SPECIFIED, currentMapRestorable);
 		}
 		if (modeController != null) {
 			modeController.shutdown();

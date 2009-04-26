@@ -34,7 +34,7 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.ui.GrabKeyDialog;
 import org.freeplane.core.resources.ui.IKeystrokeValidator;
@@ -85,7 +85,7 @@ class AccelerateableAction implements Action{
 						JMenu menu = menuBar.getMenu(i);
 						char c = (char) menu.getMnemonic();
 						if(Character.toLowerCase(keystroke.getKeyCode()) == Character.toLowerCase(c)){
-							JOptionPane.showMessageDialog (grabKeyDialog, menu.getText(), FreeplaneResourceBundle.getText("used_in_menu"), JOptionPane.WARNING_MESSAGE);
+							JOptionPane.showMessageDialog (grabKeyDialog, menu.getText(), ResourceBundles.getText("used_in_menu"), JOptionPane.WARNING_MESSAGE);
 							return false;
 						}
 					}
@@ -104,7 +104,7 @@ class AccelerateableAction implements Action{
 							if(editedItem.equals(menuItem)){
 								return true;
 							}
-							int replace = JOptionPane.showConfirmDialog(grabKeyDialog, menuItem.getText(), FreeplaneResourceBundle.getText("remove_shortcut_question"), JOptionPane.YES_NO_OPTION);
+							int replace = JOptionPane.showConfirmDialog(grabKeyDialog, menuItem.getText(), ResourceBundles.getText("remove_shortcut_question"), JOptionPane.YES_NO_OPTION);
 							if(replace == JOptionPane.YES_OPTION){
 								menuItem.setAccelerator(null);
 								String shortcutKey = AccelerateableAction.this.menuBuilder.getShortcutKey(menuItemNode.getKey().toString());

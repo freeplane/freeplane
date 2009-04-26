@@ -30,7 +30,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ColorTracker;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.features.common.cloud.CloudController;
 import org.freeplane.features.common.cloud.CloudModel;
@@ -58,7 +58,7 @@ class CloudColorAction extends MultipleNodeAction implements PopupMenuListener {
 			}
 		}
 		actionColor = ColorTracker.showCommonJColorChooserDialog(getController(), controller.getController()
-		    .getSelection().getSelected(), FreeplaneResourceBundle.getText("choose_cloud_color"), selectedColor);
+		    .getSelection().getSelected(), ResourceBundles.getText("choose_cloud_color"), selectedColor);
 		super.actionPerformed(e);
 	}
 

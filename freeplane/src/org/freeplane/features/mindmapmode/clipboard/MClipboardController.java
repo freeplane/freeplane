@@ -34,6 +34,7 @@ import org.freeplane.features.mindmapmode.MModeController;
 public class MClipboardController extends ClipboardController {
 	static private CutAction cut;
 	static private PasteAction paste;
+	public static final String RESOURCES_CUT_NODES_WITHOUT_QUESTION = "cut_nodes_without_question";
 
 	/**
 	 * @param modeController

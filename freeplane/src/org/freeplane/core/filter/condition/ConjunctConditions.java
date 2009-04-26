@@ -26,7 +26,7 @@ import javax.swing.JLabel;
 
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FpStringUtils;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -85,7 +85,7 @@ public class ConjunctConditions implements ICondition {
 		component.add(rendererComponent);
 		int i;
 		for (i = 1; i < conditions.length; i++) {
-			final String and = FpStringUtils.removeMnemonic(FreeplaneResourceBundle.getText("filter_and"));
+			final String and = FpStringUtils.removeMnemonic(ResourceBundles.getText("filter_and"));
 			final String text = ' ' + and + ' ';
 			component.add(new JLabel(text));
 			cond = (ICondition) conditions[i];

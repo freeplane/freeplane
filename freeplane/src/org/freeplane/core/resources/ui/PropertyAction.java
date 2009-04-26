@@ -35,7 +35,7 @@ import javax.swing.WindowConstants;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.ui.OptionPanel.IOptionPanelFeedback;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -78,7 +78,7 @@ public class PropertyAction extends AFreeplaneAction {
 					ResourceController.getResourceController().setProperty(key, newProperty);
 				}
 				if (propertiesChanged) {
-					JOptionPane.showMessageDialog(null, FreeplaneResourceBundle
+					JOptionPane.showMessageDialog(null, ResourceBundles
 					    .getText("option_changes_may_require_restart"));
 					ResourceController.getResourceController().saveProperties(getController());
 				}

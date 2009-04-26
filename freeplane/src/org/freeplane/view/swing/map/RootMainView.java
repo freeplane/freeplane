@@ -30,7 +30,7 @@ import java.awt.RenderingHints;
 
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.ResourceControllerProperties;
+import org.freeplane.features.common.nodestyle.NodeStyleController;
 
 class RootMainView extends MainView {
 	/**
@@ -96,7 +96,7 @@ class RootMainView extends MainView {
 	@Override
 	String getStyle() {
 		return ResourceController.getResourceController().getProperty(
-		    ResourceControllerProperties.RESOURCES_ROOT_NODE_SHAPE);
+		    NodeStyleController.RESOURCES_ROOT_NODE_SHAPE);
 	}
 
 	@Override

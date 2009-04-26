@@ -52,6 +52,7 @@ public class FreeplaneVersion {
 	final int mMin;
 	final int mNum;
 	String mType;
+	public static final String XML_VERSION = "0.9.0";
 
 	public FreeplaneVersion(final int pMaj, final int pMid, final int pMin, final String pType, final int pNum) {
 		super();

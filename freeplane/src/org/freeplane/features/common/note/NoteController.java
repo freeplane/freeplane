@@ -26,7 +26,6 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.ResourceControllerProperties;
 
 /**
  * @author Dimitry Polivaev
@@ -49,6 +48,7 @@ public class NoteController implements IExtension {
 	}
 
 	final private ModeController modeController;
+	public static final String RESOURCES_DON_T_SHOW_NOTE_ICONS = "don_t_show_note_icons";
 
 	public NoteController(final ModeController modeController) {
 		super();
@@ -81,7 +81,7 @@ public class NoteController implements IExtension {
 	protected void setStateIcon(final NodeModel node, final boolean enabled) {
 		boolean showIcon = enabled;
 		if (ResourceController.getResourceController().getBooleanProperty(
-		    ResourceControllerProperties.RESOURCES_DON_T_SHOW_NOTE_ICONS)) {
+		    NoteController.RESOURCES_DON_T_SHOW_NOTE_ICONS)) {
 			showIcon = false;
 		}
 		node.setStateIcon(NodeNoteBase.NODE_NOTE_ICON, (showIcon) ? noteIcon : null);

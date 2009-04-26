@@ -50,7 +50,6 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 
 class ApplicationViewController extends ViewController {
@@ -74,6 +73,7 @@ class ApplicationViewController extends ViewController {
 	final private NavigationNextMapAction navigationNextMap;
 	final private NavigationPreviousMapAction navigationPreviousMap;
 	final private ResourceController resourceController;
+	public static final String RESOURCES_USE_TABBED_PANE = "use_tabbed_pane";
 
 	public ApplicationViewController(final Controller controller, final IMapViewManager mapViewController, JFrame frame) {
 		super(controller, mapViewController);
@@ -98,7 +98,7 @@ class ApplicationViewController extends ViewController {
 		}
 		mContentComponent = getScrollPane();
 		final boolean shouldUseTabbedPane = ResourceController.getResourceController().getBooleanProperty(
-		    ResourceControllerProperties.RESOURCES_USE_TABBED_PANE);
+		    ApplicationViewController.RESOURCES_USE_TABBED_PANE);
 		if (shouldUseTabbedPane) {
 			mapViewManager = new MapViewTabs(controller, this, mContentComponent);
 		}

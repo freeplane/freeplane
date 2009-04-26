@@ -41,10 +41,9 @@ import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.modecontroller.SelectionController;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.core.util.ColorUtils;
 
 /**
@@ -53,7 +52,7 @@ import org.freeplane.core.util.ColorUtils;
 public class LinkController extends SelectionController implements IExtension {
 	private static class ArrowLinkListener implements IFreeplanePropertyListener {
 		public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
-			if (propertyName.equals(ResourceControllerProperties.RESOURCES_LINK_COLOR)) {
+			if (propertyName.equals(LinkController.RESOURCES_LINK_COLOR)) {
 				standardColor = ColorUtils.stringToColor(newValue);
 			}
 		}
@@ -90,6 +89,7 @@ public class LinkController extends SelectionController implements IExtension {
 
 	final private ExclusivePropertyChain<Color, ArrowLinkModel> colorHandlers;
 	final private ModeController modeController;
+	public static final String RESOURCES_LINK_COLOR = "standardlinkcolor";
 
 	public LinkController(final ModeController modeController) {
 		this.modeController = modeController;
@@ -99,12 +99,12 @@ public class LinkController extends SelectionController implements IExtension {
 			listener = new ArrowLinkListener();
 			ResourceController.getResourceController().addPropertyChangeListener(listener);
 		}
-		addColorGetter(ResourceControllerProperties.NODE, new IPropertyHandler<Color, ArrowLinkModel>() {
+		addColorGetter(IPropertyHandler.NODE, new IPropertyHandler<Color, ArrowLinkModel>() {
 			public Color getProperty(final ArrowLinkModel model, final Color currentValue) {
 				return model.getColor();
 			}
 		});
-		addColorGetter(ResourceControllerProperties.DEFAULT, new IPropertyHandler<Color, ArrowLinkModel>() {
+		addColorGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<Color, ArrowLinkModel>() {
 			public Color getProperty(final ArrowLinkModel model, final Color currentValue) {
 				return standardColor;
 			}
@@ -189,7 +189,7 @@ public class LinkController extends SelectionController implements IExtension {
 				return dest.getShortText();
 			}
 			catch (final Exception e) {
-				return FreeplaneResourceBundle.getText("link_not_available_any_more");
+				return ResourceBundles.getText("link_not_available_any_more");
 			}
 		}
 		return adaptedText;
@@ -263,7 +263,7 @@ public class LinkController extends SelectionController implements IExtension {
 	private void updateStandards(final ModeController modeController) {
 		if (standardColor == null) {
 			final String stdColor = ResourceController.getResourceController().getProperty(
-			    ResourceControllerProperties.RESOURCES_LINK_COLOR);
+			    LinkController.RESOURCES_LINK_COLOR);
 			if (stdColor != null && stdColor.length() == 7) {
 				standardColor = ColorUtils.stringToColor(stdColor);
 			}

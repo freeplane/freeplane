@@ -37,7 +37,6 @@ import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.FixedHTMLWriter;
@@ -57,6 +56,7 @@ import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
  */
 public class MTextController extends TextController {
 	static private EditAction edit;
+	public static final String RESOURCES_REMIND_USE_RICH_TEXT_IN_NEW_LONG_NODES = "remind_use_rich_text_in_new_long_nodes";
 
 	public MTextController(final MModeController modeController) {
 		super(modeController);
@@ -232,7 +232,7 @@ public class MTextController extends TextController {
 	public boolean useRichTextInNewLongNodes() {
 		final int showResult = new OptionalDontShowMeAgainDialog(getModeController().getController(),
 		    "edit.edit_rich_text", "edit.decision",
-		    ResourceControllerProperties.RESOURCES_REMIND_USE_RICH_TEXT_IN_NEW_LONG_NODES,
+		    MTextController.RESOURCES_REMIND_USE_RICH_TEXT_IN_NEW_LONG_NODES,
 		    OptionalDontShowMeAgainDialog.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED).show().getResult();
 		final String useRichTextInNewLongNodes = (showResult == JOptionPane.OK_OPTION) ? "true" : "false";
 		return useRichTextInNewLongNodes.equals("true");

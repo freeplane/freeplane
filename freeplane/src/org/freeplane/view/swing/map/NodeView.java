@@ -47,9 +47,8 @@ import org.freeplane.core.modecontroller.NodeChangeEvent;
 import org.freeplane.core.model.INodeView;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.model.NodeModel.NodeChangeType;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.common.attribute.AttributeController;
@@ -128,6 +127,7 @@ public class NodeView extends JComponent implements INodeView {
 	private NodeModel model;
 	private NodeMotionListenerView motionListenerView;
 	private NodeView preferredChild;
+	public static final String RESOURCES_SHOW_NODE_TOOLTIPS = "show_node_tooltips";
 
 	protected NodeView(final NodeModel model, final int position, final MapView map, final Container parent) {
 		setFocusCycleRoot(true);
@@ -1177,7 +1177,7 @@ public class NodeView extends JComponent implements INodeView {
 	 * Updates the tool tip of the node.
 	 */
 	private void updateToolTip() {
-		final boolean areTooltipsDisplayed = ResourceController.getResourceController().getBooleanProperty(ResourceControllerProperties.RESOURCES_SHOW_NODE_TOOLTIPS);
+		final boolean areTooltipsDisplayed = ResourceController.getResourceController().getBooleanProperty(NodeView.RESOURCES_SHOW_NODE_TOOLTIPS);
 		updateToolTip(areTooltipsDisplayed);
 	}
 
@@ -1209,7 +1209,7 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	void updateToolTipsRecursive() {
-		final boolean areTooltipsDisplayed = ResourceController.getResourceController().getBooleanProperty(ResourceControllerProperties.RESOURCES_SHOW_NODE_TOOLTIPS);
+		final boolean areTooltipsDisplayed = ResourceController.getResourceController().getBooleanProperty(NodeView.RESOURCES_SHOW_NODE_TOOLTIPS);
 		updateToolTipsRecursive(areTooltipsDisplayed);
     }
 

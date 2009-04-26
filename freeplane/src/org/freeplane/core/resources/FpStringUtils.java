@@ -27,13 +27,13 @@ public class FpStringUtils {
 	}
 
 	public static String format(final String resourceKey, final Object[] messageArguments) {
-		final MessageFormat formatter = new MessageFormat(FreeplaneResourceBundle.getText(resourceKey));
+		final MessageFormat formatter = new MessageFormat(ResourceBundles.getText(resourceKey));
 		final String stringResult = formatter.format(messageArguments);
 		return stringResult;
 	}
 
 	public static String formatText(final String key, final String s1) {
-		final String format = FreeplaneResourceBundle.getText(key);
+		final String format = ResourceBundles.getText(key);
 		if (format == null) {
 			return null;
 		}
@@ -41,7 +41,7 @@ public class FpStringUtils {
 	}
 
 	public static String formatText(final String key, final String s1, final String s2) {
-		final String format = FreeplaneResourceBundle.getText(key);
+		final String format = ResourceBundles.getText(key);
 		if (format == null) {
 			return null;
 		}
@@ -49,7 +49,7 @@ public class FpStringUtils {
 	}
 
 	public static String getOptionalText(final String string) {
-		return string == null ? null : FreeplaneResourceBundle.getText(string);
+		return string == null ? null : ResourceBundles.getText(string);
 	}
 
 	public static String removeMnemonic(final String rawLabel) {
@@ -61,9 +61,9 @@ public class FpStringUtils {
 	 */
 	// TODO ARCH rladstaetter 15.02.2009 method should have no need for existance! the build process should filter out resources not fit for production.
 	public static String removeTranslateComment(String inputString) {
-		if (inputString != null && inputString.endsWith(FreeplaneResourceBundle.POSTFIX_TRANSLATE_ME)) {
+		if (inputString != null && inputString.endsWith(ResourceBundles.POSTFIX_TRANSLATE_ME)) {
 			inputString = inputString.substring(0, inputString.length()
-			        - FreeplaneResourceBundle.POSTFIX_TRANSLATE_ME.length());
+			        - ResourceBundles.POSTFIX_TRANSLATE_ME.length());
 		}
 		return inputString;
 	}

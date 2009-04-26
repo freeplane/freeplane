@@ -29,8 +29,7 @@ import javax.swing.JOptionPane;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
-import org.freeplane.core.resources.ResourceControllerProperties;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.features.common.clipboard.ClipboardController;
@@ -51,11 +50,11 @@ class CutAction extends AFreeplaneAction {
 		final Controller controller = getController();
 		final NodeModel root = controller.getMap().getRootNode();
 		if (controller.getSelection().isSelected(root)) {
-			controller.errorMessage(FreeplaneResourceBundle.getText("cannot_delete_root"));
+			controller.errorMessage(ResourceBundles.getText("cannot_delete_root"));
 			return;
 		}
 		final int showResult = new OptionalDontShowMeAgainDialog(controller, "really_cut_node", "confirmation",
-		    ResourceControllerProperties.RESOURCES_CUT_NODES_WITHOUT_QUESTION,
+		    MClipboardController.RESOURCES_CUT_NODES_WITHOUT_QUESTION,
 		    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED).show().getResult();
 		if (showResult != JOptionPane.OK_OPTION) {
 			return;

@@ -33,7 +33,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.model.MapModel;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.LogTool;
@@ -68,12 +68,12 @@ class RevertAction extends AFreeplaneAction {
 					mapController.newMap(Compat.fileToUrl(new File(this.getLocalFileName())));
 				}
 				else {
-					String filePrefix = FreeplaneResourceBundle.getText("freeplane_reverted");
+					String filePrefix = ResourceBundles.getText("freeplane_reverted");
 					if (this.getFilePrefix() != null) {
 						filePrefix = this.getFilePrefix();
 					}
 					final File tempFile = File.createTempFile(filePrefix,
-					    org.freeplane.core.resources.ResourceControllerProperties.FREEPLANE_FILE_EXTENSION, new File(
+					    org.freeplane.core.url.UrlManager.FREEPLANE_FILE_EXTENSION, new File(
 					        ResourceController.getResourceController().getFreeplaneUserDirectory()));
 					final FileWriter fw = new FileWriter(tempFile);
 					fw.write(this.getMap());
@@ -131,7 +131,7 @@ class RevertAction extends AFreeplaneAction {
 		try {
 			final File file = getController().getMap().getFile();
 			if (file == null) {
-				JOptionPane.showMessageDialog(getController().getViewController().getMapView(), FreeplaneResourceBundle
+				JOptionPane.showMessageDialog(getController().getViewController().getMapView(), ResourceBundles
 				    .getText("map_not_saved"), "Freeplane", JOptionPane.ERROR_MESSAGE);
 				return;
 			}

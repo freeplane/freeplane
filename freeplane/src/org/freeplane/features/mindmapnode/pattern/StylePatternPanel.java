@@ -35,7 +35,6 @@ import javax.swing.JPanel;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.core.resources.ui.BooleanProperty;
 import org.freeplane.core.resources.ui.ColorProperty;
 import org.freeplane.core.resources.ui.ComboProperty;
@@ -47,9 +46,11 @@ import org.freeplane.core.resources.ui.PropertyBean;
 import org.freeplane.core.resources.ui.SeparatorProperty;
 import org.freeplane.core.resources.ui.StringProperty;
 import org.freeplane.core.resources.ui.ThreeCheckBoxProperty;
+import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.edge.EdgeModel;
 import org.freeplane.features.common.edge.EdgeStyle;
 import org.freeplane.features.common.icon.IconController;
+import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
 import org.freeplane.features.mindmapmode.icon.MIconController;
 
@@ -220,7 +221,7 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 		mSetNodeColor = new ThreeCheckBoxProperty(StylePatternPanel.SET_NODE_COLOR);
 		controls.add(mSetNodeColor);
 		mNodeColor = new ColorProperty(StylePatternPanel.NODE_COLOR, ResourceController.getResourceController()
-		    .getDefaultProperty(ResourceControllerProperties.RESOURCES_NODE_TEXT_COLOR));
+		    .getDefaultProperty(NodeStyleController.RESOURCES_NODE_TEXT_COLOR));
 		controls.add(mNodeColor);
 		mSetNodeBackgroundColor = new ThreeCheckBoxProperty(StylePatternPanel.SET_NODE_BACKGROUND_COLOR);
 		controls.add(mSetNodeBackgroundColor);
@@ -285,7 +286,7 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 		mSetEdgeColor = new ThreeCheckBoxProperty(StylePatternPanel.SET_EDGE_COLOR);
 		controls.add(mSetEdgeColor);
 		mEdgeColor = new ColorProperty(StylePatternPanel.EDGE_COLOR, ResourceController.getResourceController()
-		    .getDefaultProperty(ResourceControllerProperties.RESOURCES_EDGE_COLOR));
+		    .getDefaultProperty(EdgeController.RESOURCES_EDGE_COLOR));
 		controls.add(mEdgeColor);
 		/* **** */
 		controls.add(new SeparatorProperty("OptionPanel.separator.ScriptingControl"));
@@ -422,13 +423,13 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 
 	public void setPattern(final Pattern pattern) {
 		setPatternControls(pattern.getPatternNodeColor(), mSetNodeColor, mNodeColor, ResourceController
-		    .getResourceController().getDefaultProperty(ResourceControllerProperties.RESOURCES_NODE_TEXT_COLOR));
+		    .getResourceController().getDefaultProperty(NodeStyleController.RESOURCES_NODE_TEXT_COLOR));
 		setPatternControls(pattern.getPatternNodeBackgroundColor(), mSetNodeBackgroundColor, mNodeBackgroundColor,
 		    ResourceController.getResourceController().getDefaultProperty(NODE_BACKGROUND_COLOR));
 		setPatternControls(pattern.getPatternNodeStyle(), mSetNodeStyle, mNodeStyle, NodeStyleModel.SHAPE_AS_PARENT);
 		setPatternControls(pattern.getPatternNodeText(), mSetNodeText, mNodeText, "");
 		setPatternControls(pattern.getPatternEdgeColor(), mSetEdgeColor, mEdgeColor, ResourceController
-		    .getResourceController().getDefaultProperty(ResourceControllerProperties.RESOURCES_EDGE_COLOR));
+		    .getResourceController().getDefaultProperty(EdgeController.RESOURCES_EDGE_COLOR));
 		setPatternControls(pattern.getPatternEdgeStyle(), mSetEdgeStyle, mEdgeStyle, StylePatternPanel.EDGE_STYLES[0]);
 		setPatternControls(pattern.getPatternEdgeWidth(), mSetEdgeWidth, mEdgeWidth, StylePatternPanel.EDGE_WIDTHS[0],
 		    new EdgeWidthTransformer());

@@ -48,11 +48,11 @@ import javax.swing.SwingUtilities;
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.FreeplaneVersion;
 import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.attribute.ModelessAttributeController;
@@ -80,11 +80,12 @@ public class FreeplaneStarter {
 	private IFeedBack feedBack;
 	private FreeplaneSplashModern splash;
 	private ApplicationViewController viewController;
+	public static final String LOAD_LAST_MAP = "load_last_map";
 
 	public FreeplaneStarter() {
 		super();
 		Compat.checkJavaVersion();
-		Compat.showSysInfo();
+		FreeplaneStarter.showSysInfo();
 	}
 
 	public Controller createController() {
@@ -208,7 +209,7 @@ public class FreeplaneStarter {
 		for (int i = 0; i < args.length; i++) {
 			String fileArgument = args[i];
 			if (fileArgument.toLowerCase().endsWith(
-			    org.freeplane.core.resources.ResourceControllerProperties.FREEPLANE_FILE_EXTENSION)) {
+			    org.freeplane.core.url.UrlManager.FREEPLANE_FILE_EXTENSION)) {
 				if (!UrlManager.isAbsolutePath(fileArgument)) {
 					fileArgument = System.getProperty("user.dir") + System.getProperty("file.separator") + fileArgument;
 				}
@@ -229,9 +230,9 @@ public class FreeplaneStarter {
 			return;
 		}
 		final String restoreable = ResourceController.getResourceController().getProperty(
-			ResourceControllerProperties.ON_START_IF_NOT_SPECIFIED);
+			Controller.ON_START_IF_NOT_SPECIFIED);
 		if (Boolean.parseBoolean(ResourceController.getResourceController().getProperty(
-			ResourceControllerProperties.LOAD_LAST_MAP))
+			FreeplaneStarter.LOAD_LAST_MAP))
 			&& restoreable != null && restoreable.length() > 0) {
 			try {
 				applicationResourceController.getLastOpenedList().open(controller, restoreable);
@@ -286,4 +287,19 @@ public class FreeplaneStarter {
 			e.printStackTrace();
 		}
 	}
+
+	public static void showSysInfo() {
+    	final StringBuffer info = new StringBuffer();
+    	info.append("freeplane_version = ");
+    	info.append(FreeplaneVersion.getVersion());
+    	info.append("; freeplane_xml_version = ");
+    	info.append(FreeplaneVersion.XML_VERSION);
+    	info.append("\njava_version = ");
+    	info.append(System.getProperty("java.version"));
+    	info.append("; os_name = ");
+    	info.append(System.getProperty("os.name"));
+    	info.append("; os_version = ");
+    	info.append(System.getProperty("os.version"));
+    	LogTool.info(info.toString());
+    }
 }

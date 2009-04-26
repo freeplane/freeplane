@@ -24,7 +24,7 @@ import java.util.Collection;
 import java.util.regex.Matcher;
 
 import org.freeplane.core.modecontroller.ModeController;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlTools;
@@ -44,13 +44,13 @@ class FindNextAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		final Collection subterms = find.getSubterms();
 		if (subterms == null) {
-			UITools.informationMessage(getController().getViewController().getFrame(), FreeplaneResourceBundle
+			UITools.informationMessage(getController().getViewController().getFrame(), ResourceBundles
 			    .getText("no_previous_find"));
 			return;
 		}
 		final boolean found = find.findNext();
 		if (!found) {
-			final String messageText = FreeplaneResourceBundle.getText("no_more_found_from");
+			final String messageText = ResourceBundles.getText("no_more_found_from");
 			final String searchTerm = messageText.startsWith("<html>") ? HtmlTools.toXMLEscapedText(find
 			    .getSearchTerm()) : find.getSearchTerm();
 			UITools.informationMessage(getController().getViewController().getFrame(), 

@@ -23,7 +23,7 @@ import javax.swing.JComponent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public class SelectedViewCondition implements ICondition {
@@ -55,7 +55,7 @@ public class SelectedViewCondition implements ICondition {
 	@Override
 	public String toString() {
 		if (SelectedViewCondition.description == null) {
-			SelectedViewCondition.description = FreeplaneResourceBundle.getText("filter_selected_node_view");
+			SelectedViewCondition.description = ResourceBundles.getText("filter_selected_node_view");
 		}
 		return SelectedViewCondition.description;
 	}

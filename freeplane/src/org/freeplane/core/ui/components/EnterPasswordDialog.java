@@ -34,7 +34,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.WindowConstants;
 
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 
 /** */
 public class EnterPasswordDialog extends JDialog {
@@ -121,7 +121,7 @@ public class EnterPasswordDialog extends JDialog {
 					cancelPressed();
 				}
 			});
-			jCancelButton.setText(FreeplaneResourceBundle.getText("accessories/plugins/EncryptNode.properties_7"));
+			jCancelButton.setText(ResourceBundles.getText("accessories/plugins/EncryptNode.properties_7"));
 		}
 		return jCancelButton;
 	}
@@ -148,11 +148,11 @@ public class EnterPasswordDialog extends JDialog {
 			gridBagConstraints1.gridx = 0;
 			gridBagConstraints1.gridy = 1;
 			gridBagConstraints1.fill = java.awt.GridBagConstraints.HORIZONTAL;
-			jLabel.setText(FreeplaneResourceBundle.getText("accessories/plugins/EncryptNode.properties_2"));
+			jLabel.setText(ResourceBundles.getText("accessories/plugins/EncryptNode.properties_2"));
 			gridBagConstraints2.gridx = 0;
 			gridBagConstraints2.gridy = 2;
 			gridBagConstraints2.fill = java.awt.GridBagConstraints.HORIZONTAL;
-			jLabel1.setText(FreeplaneResourceBundle.getText("accessories/plugins/EncryptNode.properties_3"));
+			jLabel1.setText(ResourceBundles.getText("accessories/plugins/EncryptNode.properties_3"));
 			gridBagConstraints3.gridx = 1;
 			gridBagConstraints3.gridy = 1;
 			gridBagConstraints3.weightx = 1.0;
@@ -167,8 +167,8 @@ public class EnterPasswordDialog extends JDialog {
 			gridBagConstraints5.fill = java.awt.GridBagConstraints.HORIZONTAL;
 			gridBagConstraints5.anchor = java.awt.GridBagConstraints.CENTER;
 			gridBagConstraints5.insets = new java.awt.Insets(0, 0, 20, 0);
-			jLabel2.setText(FreeplaneResourceBundle.getText("accessories/plugins/EncryptNode.properties_4"));
-			jLabel2.setToolTipText(FreeplaneResourceBundle.getText("accessories/plugins/EncryptNode.properties_5"));
+			jLabel2.setText(ResourceBundles.getText("accessories/plugins/EncryptNode.properties_4"));
+			jLabel2.setToolTipText(ResourceBundles.getText("accessories/plugins/EncryptNode.properties_5"));
 			gridBagConstraints6.gridx = 0;
 			gridBagConstraints6.gridy = 3;
 			gridBagConstraints6.insets = new java.awt.Insets(20, 0, 0, 0);
@@ -207,7 +207,7 @@ public class EnterPasswordDialog extends JDialog {
 					okPressed();
 				}
 			});
-			jOKButton.setText(FreeplaneResourceBundle.getText("accessories/plugins/EncryptNode.properties_6"));
+			jOKButton.setText(ResourceBundles.getText("accessories/plugins/EncryptNode.properties_6"));
 		}
 		return jOKButton;
 	}
@@ -256,7 +256,7 @@ public class EnterPasswordDialog extends JDialog {
 	 * @return void
 	 */
 	private void initialize() {
-		this.setTitle(FreeplaneResourceBundle.getText("accessories/plugins/EncryptNode.properties_0"));
+		this.setTitle(ResourceBundles.getText("accessories/plugins/EncryptNode.properties_0"));
 		this.setSize(300, 200);
 		this.setContentPane(getJContentPane());
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -270,7 +270,7 @@ public class EnterPasswordDialog extends JDialog {
 
 	private void okPressed() {
 		if (!checkEqualAndMinimumSize()) {
-			JOptionPane.showMessageDialog(this, FreeplaneResourceBundle
+			JOptionPane.showMessageDialog(this, ResourceBundles
 			    .getText("accessories/plugins/EncryptNode.properties_1"));
 			return;
 		}

@@ -8,8 +8,6 @@ import java.net.URL;
 
 import javax.swing.JOptionPane;
 
-import org.freeplane.core.controller.FreeplaneVersion;
-import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.LogTool;
 
@@ -51,21 +49,6 @@ public class Compat {
 			underMac = true;
 		}
 		return underMac;
-	}
-
-	public static void showSysInfo() {
-		final StringBuffer info = new StringBuffer();
-		info.append("freeplane_version = ");
-		info.append(FreeplaneVersion.getVersion());
-		info.append("; freeplane_xml_version = ");
-		info.append(ResourceControllerProperties.XML_VERSION);
-		info.append("\njava_version = ");
-		info.append(System.getProperty("java.version"));
-		info.append("; os_name = ");
-		info.append(System.getProperty("os.name"));
-		info.append("; os_version = ");
-		info.append(System.getProperty("os.version"));
-		LogTool.info(info.toString());
 	}
 
 	public static File urlToFile(final URL pUrl) throws URISyntaxException {

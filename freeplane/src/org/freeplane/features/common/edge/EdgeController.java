@@ -31,7 +31,6 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.core.util.ColorUtils;
 
 /**
@@ -40,10 +39,10 @@ import org.freeplane.core.util.ColorUtils;
 public class EdgeController implements IExtension {
 	protected static class EdgePropertyListener implements IFreeplanePropertyListener {
 		public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
-			if (propertyName.equals(ResourceControllerProperties.RESOURCES_EDGE_COLOR)) {
+			if (propertyName.equals(EdgeController.RESOURCES_EDGE_COLOR)) {
 				standardColor = ColorUtils.stringToColor(newValue);
 			}
-			if (propertyName.equals(ResourceControllerProperties.RESOURCES_EDGE_STYLE)) {
+			if (propertyName.equals(EdgeController.RESOURCES_EDGE_STYLE)) {
 				standardStyle = newValue;
 			}
 		}
@@ -65,6 +64,8 @@ public class EdgeController implements IExtension {
 	private final ModeController modeController;
 	final private ExclusivePropertyChain<String, NodeModel> styleHandlers;
 	final private ExclusivePropertyChain<Integer, NodeModel> widthHandlers;
+	public static final String RESOURCES_EDGE_STYLE = "standardedgestyle";
+	public static final String RESOURCES_EDGE_COLOR = "standardedgecolor";
 
 	public EdgeController(final ModeController modeController) {
 		this.modeController = modeController;
@@ -76,13 +77,13 @@ public class EdgeController implements IExtension {
 			listener = new EdgePropertyListener();
 			ResourceController.getResourceController().addPropertyChangeListener(listener);
 		}
-		addColorGetter(ResourceControllerProperties.NODE, new IPropertyHandler<Color, NodeModel>() {
+		addColorGetter(IPropertyHandler.NODE, new IPropertyHandler<Color, NodeModel>() {
 			public Color getProperty(final NodeModel node, final Color currentValue) {
 				final EdgeModel edge = EdgeModel.getModel(node);
 				return edge == null ? null : edge.getColor();
 			}
 		});
-		addColorGetter(ResourceControllerProperties.DEFAULT, new IPropertyHandler<Color, NodeModel>() {
+		addColorGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<Color, NodeModel>() {
 			public Color getProperty(final NodeModel node, final Color currentValue) {
 				if (node.isRoot()) {
 					return standardColor;
@@ -90,13 +91,13 @@ public class EdgeController implements IExtension {
 				return getColor(node.getParentNode());
 			}
 		});
-		addStyleGetter(ResourceControllerProperties.NODE, new IPropertyHandler<String, NodeModel>() {
+		addStyleGetter(IPropertyHandler.NODE, new IPropertyHandler<String, NodeModel>() {
 			public String getProperty(final NodeModel node, final String currentValue) {
 				final EdgeModel edge = EdgeModel.getModel(node);
 				return edge == null ? null : edge.getStyle();
 			}
 		});
-		addStyleGetter(ResourceControllerProperties.DEFAULT, new IPropertyHandler<String, NodeModel>() {
+		addStyleGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<String, NodeModel>() {
 			public String getProperty(final NodeModel node, final String currentValue) {
 				if (node.isRoot()) {
 					return standardStyle;
@@ -104,7 +105,7 @@ public class EdgeController implements IExtension {
 				return getStyle(node.getParentNode());
 			}
 		});
-		addWidthGetter(ResourceControllerProperties.NODE, new IPropertyHandler<Integer, NodeModel>() {
+		addWidthGetter(IPropertyHandler.NODE, new IPropertyHandler<Integer, NodeModel>() {
 			public Integer getProperty(final NodeModel node, final Integer currentValue) {
 				final EdgeModel edge = EdgeModel.getModel(node);
 				int width = edge == null ? EdgeModel.DEFAULT_WIDTH : edge.getWidth();
@@ -118,7 +119,7 @@ public class EdgeController implements IExtension {
 				return width != EdgeModel.DEFAULT_WIDTH ? new Integer(width) : null;
 			}
 		});
-		addWidthGetter(ResourceControllerProperties.DEFAULT, new IPropertyHandler<Integer, NodeModel>() {
+		addWidthGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<Integer, NodeModel>() {
 			public Integer getProperty(final NodeModel node, final Integer currentValue) {
 				return new Integer(EdgeModel.WIDTH_THIN);
 			}
@@ -176,7 +177,7 @@ public class EdgeController implements IExtension {
 	private void updateStandards(final ModeController controller) {
 		if (standardColor == null) {
 			final String stdColor = ResourceController.getResourceController().getProperty(
-			    ResourceControllerProperties.RESOURCES_EDGE_COLOR);
+			    EdgeController.RESOURCES_EDGE_COLOR);
 			if (stdColor != null && stdColor.length() == 7) {
 				standardColor = ColorUtils.stringToColor(stdColor);
 			}
@@ -186,7 +187,7 @@ public class EdgeController implements IExtension {
 		}
 		if (standardStyle == null) {
 			final String stdStyle = ResourceController.getResourceController().getProperty(
-			    ResourceControllerProperties.RESOURCES_EDGE_STYLE);
+			    EdgeController.RESOURCES_EDGE_STYLE);
 			if (stdStyle != null) {
 				standardStyle = stdStyle;
 			}

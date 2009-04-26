@@ -51,7 +51,6 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.FixedHTMLWriter;
 import org.freeplane.core.util.HtmlTools;
@@ -133,7 +132,7 @@ class PasteAction extends AFreeplaneAction {
 		}
 
 		private void paste(final String text, final NodeModel target, final boolean asSibling, final boolean isLeft) {
-			final String[] textLines = text.split(ResourceControllerProperties.NODESEPARATOR);
+			final String[] textLines = text.split(ClipboardController.NODESEPARATOR);
 			if (textLines.length > 1) {
 				getController().getViewController().setWaitingCursor(true);
 			}

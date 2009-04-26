@@ -10,7 +10,6 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.core.ui.IMouseWheelEventHandler;
 import org.freeplane.view.swing.map.MapView;
 
@@ -23,6 +22,7 @@ public class DefaultMouseWheelListener implements MouseWheelListener {
 	private static int SCROLL_SKIPS = 8;
 	private static final int ZOOM_MASK = InputEvent.CTRL_MASK;
 	final private Controller controller;
+	public static final String RESOURCES_WHEEL_VELOCITY = "wheel_velocity";
 
 	/**
 	 *
@@ -32,13 +32,13 @@ public class DefaultMouseWheelListener implements MouseWheelListener {
 		this.controller = controller;
 		ResourceController.getResourceController().addPropertyChangeListener(new IFreeplanePropertyListener() {
 			public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
-				if (propertyName.equals(ResourceControllerProperties.RESOURCES_WHEEL_VELOCITY)) {
+				if (propertyName.equals(DefaultMouseWheelListener.RESOURCES_WHEEL_VELOCITY)) {
 					DefaultMouseWheelListener.SCROLL_SKIPS = Integer.parseInt(newValue);
 				}
 			}
 		});
 		DefaultMouseWheelListener.SCROLL_SKIPS = ResourceController.getResourceController().getIntProperty(
-		    ResourceControllerProperties.RESOURCES_WHEEL_VELOCITY, 8);
+		    DefaultMouseWheelListener.RESOURCES_WHEEL_VELOCITY, 8);
 	}
 
 	/*

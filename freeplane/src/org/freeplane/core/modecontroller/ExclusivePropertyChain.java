@@ -23,7 +23,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
-@Deprecated
 public class ExclusivePropertyChain<V, T> {
 	final private Map<Integer, IPropertyHandler<V, T>> map = new TreeMap<Integer, IPropertyHandler<V, T>>();
 

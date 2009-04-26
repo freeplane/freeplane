@@ -35,7 +35,6 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.ResourceControllerProperties;
 import org.freeplane.core.util.ColorUtils;
 
 /**
@@ -58,6 +57,9 @@ public class NodeStyleController implements IExtension {
 	final private ModeController modeController;
 	final private ExclusivePropertyChain<String, NodeModel> shapeHandlers;
 	final private ExclusivePropertyChain<Color, NodeModel> textColorHandlers;
+	public static final String RESOURCES_NODE_SHAPE = "standardnodeshape";
+	public static final String RESOURCES_NODE_TEXT_COLOR = "standardnodetextcolor";
+	public static final String RESOURCES_ROOT_NODE_SHAPE = "standardrootnodeshape";
 
 	public NodeStyleController(final ModeController modeController) {
 		this.modeController = modeController;
@@ -106,22 +108,22 @@ public class NodeStyleController implements IExtension {
 				return ResourceController.getResourceController().getDefaultFont();
 			}
 		});
-		addColorGetter(ResourceControllerProperties.NODE, new IPropertyHandler<Color, NodeModel>() {
+		addColorGetter(IPropertyHandler.NODE, new IPropertyHandler<Color, NodeModel>() {
 			public Color getProperty(final NodeModel node, final Color currentValue) {
 				return NodeStyleModel.getColor(node);
 			}
 		});
-		addColorGetter(ResourceControllerProperties.DEFAULT, new IPropertyHandler<Color, NodeModel>() {
+		addColorGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<Color, NodeModel>() {
 			public Color getProperty(final NodeModel node, final Color currentValue) {
 				return standardNodeTextColor;
 			}
 		});
-		addBackgroundColorGetter(ResourceControllerProperties.NODE, new IPropertyHandler<Color, NodeModel>() {
+		addBackgroundColorGetter(IPropertyHandler.NODE, new IPropertyHandler<Color, NodeModel>() {
 			public Color getProperty(final NodeModel node, final Color currentValue) {
 				return NodeStyleModel.getBackgroundColor(node);
 			}
 		});
-		addShapeGetter(ResourceControllerProperties.NODE, new IPropertyHandler<String, NodeModel>() {
+		addShapeGetter(IPropertyHandler.NODE, new IPropertyHandler<String, NodeModel>() {
 			public String getProperty(final NodeModel node, final String currentValue) {
 				return getShape(node);
 			}
@@ -131,11 +133,11 @@ public class NodeStyleController implements IExtension {
 				if (NodeStyleModel.getShape(node) == null) {
 					if (node.isRoot()) {
 						returnedString = ResourceController.getResourceController().getProperty(
-						    ResourceControllerProperties.RESOURCES_ROOT_NODE_SHAPE);
+						    NodeStyleController.RESOURCES_ROOT_NODE_SHAPE);
 					}
 					else {
 						final String stdstyle = ResourceController.getResourceController().getProperty(
-						    ResourceControllerProperties.RESOURCES_NODE_SHAPE);
+						    NodeStyleController.RESOURCES_NODE_SHAPE);
 						if (stdstyle.equals(NodeStyleModel.SHAPE_AS_PARENT)) {
 							returnedString = getShape(node.getParentNode());
 						}
@@ -146,7 +148,7 @@ public class NodeStyleController implements IExtension {
 				}
 				else if (node.isRoot() && NodeStyleModel.getShape(node).equals(NodeStyleModel.SHAPE_AS_PARENT)) {
 					returnedString = ResourceController.getResourceController().getProperty(
-					    ResourceControllerProperties.RESOURCES_ROOT_NODE_SHAPE);
+					    NodeStyleController.RESOURCES_ROOT_NODE_SHAPE);
 				}
 				else if (NodeStyleModel.getShape(node).equals(NodeStyleModel.SHAPE_AS_PARENT)) {
 					returnedString = getShape(node.getParentNode());
@@ -169,7 +171,7 @@ public class NodeStyleController implements IExtension {
 		styleBuilder.registerBy(readManager, writeManager);
 		if (standardNodeTextColor == null) {
 			final String stdcolor = ResourceController.getResourceController().getProperty(
-			    ResourceControllerProperties.RESOURCES_NODE_TEXT_COLOR);
+			    NodeStyleController.RESOURCES_NODE_TEXT_COLOR);
 			standardNodeTextColor = ColorUtils.stringToColor(stdcolor);
 			createPropertyChangeListener();
 		}
@@ -198,10 +200,10 @@ public class NodeStyleController implements IExtension {
 	private void createPropertyChangeListener() {
 		final IFreeplanePropertyListener propertyChangeListener = new IFreeplanePropertyListener() {
 			public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
-				if (propertyName.equals(ResourceControllerProperties.RESOURCES_NODE_TEXT_COLOR)) {
+				if (propertyName.equals(NodeStyleController.RESOURCES_NODE_TEXT_COLOR)) {
 					standardNodeTextColor = ColorUtils.stringToColor(newValue);
 					final MapChangeEvent event = new MapChangeEvent(
-					    ResourceControllerProperties.RESOURCES_NODE_TEXT_COLOR, ColorUtils.stringToColor(oldValue),
+					    NodeStyleController.RESOURCES_NODE_TEXT_COLOR, ColorUtils.stringToColor(oldValue),
 					    standardNodeTextColor);
 					getModeController().getMapController().fireMapChanged(event);
 				}

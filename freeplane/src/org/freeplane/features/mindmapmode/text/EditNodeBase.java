@@ -45,7 +45,7 @@ import javax.swing.text.JTextComponent;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;
 
@@ -61,7 +61,7 @@ public class EditNodeBase {
 		final private JTextComponent textComponent;
 
 		public EditCopyAction(final JTextComponent textComponent) {
-			super(FreeplaneResourceBundle.getText("CopyAction.text"));
+			super(ResourceBundles.getText("CopyAction.text"));
 			this.textComponent = textComponent;
 		}
 
@@ -279,7 +279,7 @@ public class EditNodeBase {
 	/**
 		 */
 	protected String getText(final String string) {
-		return FreeplaneResourceBundle.getText(string);
+		return ResourceBundles.getText(string);
 	}
 
 	/**

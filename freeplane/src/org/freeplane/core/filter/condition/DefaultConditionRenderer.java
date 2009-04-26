@@ -28,7 +28,7 @@ import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
 import org.freeplane.core.model.MindIcon;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 
 /**
  * @author Dimitry Polivaev
@@ -45,7 +45,7 @@ public class DefaultConditionRenderer implements ListCellRenderer {
 	public Component getListCellRendererComponent(final JList list, final Object value, final int index,
 	                                              final boolean isSelected, final boolean cellHasFocus) {
 		if (value == null) {
-			return new JLabel(FreeplaneResourceBundle.getText("filter_no_filtering"));
+			return new JLabel(ResourceBundles.getText("filter_no_filtering"));
 		}
 		JComponent component;
 		if (value instanceof MindIcon) {

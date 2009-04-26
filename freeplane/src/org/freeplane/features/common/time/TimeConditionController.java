@@ -30,7 +30,7 @@ import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.filter.condition.IElementaryConditionController;
 import org.freeplane.core.filter.util.IListModel;
 import org.freeplane.core.filter.util.SortedMapListModel;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -76,15 +76,15 @@ class TimeConditionController implements IElementaryConditionController {
 
 	public IListModel getFilteredProperties() {
 		final SortedMapListModel list = new SortedMapListModel();
-		list.add(FreeplaneResourceBundle.createTranslatedString(FILTER_TIME));
+		list.add(ResourceBundles.createTranslatedString(FILTER_TIME));
 		return list;
 	}
 
 	public Object[] getTimeConditionNames() {
-		return new NamedObject[] { FreeplaneResourceBundle.createTranslatedString(TimeCondition.FILTER_MODIFIED_AFTER),
-		        FreeplaneResourceBundle.createTranslatedString(TimeCondition.FILTER_MODIFIED_BEFORE),
-		        FreeplaneResourceBundle.createTranslatedString(TimeCondition.FILTER_CREATED_AFTER),
-		        FreeplaneResourceBundle.createTranslatedString(TimeCondition.FILTER_CREATED_BEFORE) };
+		return new NamedObject[] { ResourceBundles.createTranslatedString(TimeCondition.FILTER_MODIFIED_AFTER),
+		        ResourceBundles.createTranslatedString(TimeCondition.FILTER_MODIFIED_BEFORE),
+		        ResourceBundles.createTranslatedString(TimeCondition.FILTER_CREATED_AFTER),
+		        ResourceBundles.createTranslatedString(TimeCondition.FILTER_CREATED_BEFORE) };
 	}
 
 	public ComboBoxEditor getValueEditor() {

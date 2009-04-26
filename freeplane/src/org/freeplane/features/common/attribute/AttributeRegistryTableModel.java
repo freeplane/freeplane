@@ -22,7 +22,7 @@ package org.freeplane.features.common.attribute;
 import javax.swing.table.AbstractTableModel;
 
 import org.freeplane.core.filter.util.IListModel;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 
 /**
  * @author Dimitry Polivaev
@@ -36,7 +36,7 @@ public class AttributeRegistryTableModel extends AbstractTableModel {
 	 */
 	private static final long serialVersionUID = 1L;
 	static private String visibilityColumnName = null;
-	final private String allAttributes = FreeplaneResourceBundle.getText("attributes_all");
+	final private String allAttributes = ResourceBundles.getText("attributes_all");
 	final private AttributeRegistry attributeRegistry;
 
 	AttributeRegistryTableModel(final AttributeRegistry registry) {
@@ -109,25 +109,25 @@ public class AttributeRegistryTableModel extends AbstractTableModel {
 		switch (column) {
 			case 0:
 				if (AttributeRegistryTableModel.attributeColumnName == null) {
-					AttributeRegistryTableModel.attributeColumnName = FreeplaneResourceBundle
+					AttributeRegistryTableModel.attributeColumnName = ResourceBundles
 					    .getText("attributes_attribute");
 				}
 				return AttributeRegistryTableModel.attributeColumnName;
 			case 1:
 				if (AttributeRegistryTableModel.visibilityColumnName == null) {
-					AttributeRegistryTableModel.visibilityColumnName = FreeplaneResourceBundle
+					AttributeRegistryTableModel.visibilityColumnName = ResourceBundles
 					    .getText("attributes_visible");
 				}
 				return AttributeRegistryTableModel.visibilityColumnName;
 			case 2:
 				if (AttributeRegistryTableModel.restrictionColumnName == null) {
-					AttributeRegistryTableModel.restrictionColumnName = FreeplaneResourceBundle
+					AttributeRegistryTableModel.restrictionColumnName = ResourceBundles
 					    .getText("attributes_restriction");
 				}
 				return AttributeRegistryTableModel.restrictionColumnName;
 			case 3:
 				if (AttributeRegistryTableModel.editorColumnName == null) {
-					AttributeRegistryTableModel.editorColumnName = FreeplaneResourceBundle.getText("attributes_edit");
+					AttributeRegistryTableModel.editorColumnName = ResourceBundles.getText("attributes_edit");
 				}
 				return AttributeRegistryTableModel.editorColumnName;
 		}

@@ -36,7 +36,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
 
@@ -74,16 +74,16 @@ class PageAction extends AbstractPrintAction {
 			return;
 		}
 		final Frame frame = getPrintController().getController().getViewController().getFrame();
-		final JDialog dialog = new JDialog(frame, FreeplaneResourceBundle.getText("printing_settings"), /* modal=*/
+		final JDialog dialog = new JDialog(frame, ResourceBundles.getText("printing_settings"), /* modal=*/
 		true);
-		final JCheckBox fitToPage = new JCheckBox(FreeplaneResourceBundle.getText("fit_to_page"), ResourceController
+		final JCheckBox fitToPage = new JCheckBox(ResourceBundles.getText("fit_to_page"), ResourceController
 		    .getResourceController().getBooleanProperty("fit_to_page"));
-		final JLabel userZoomL = new JLabel(FreeplaneResourceBundle.getText("user_zoom"));
+		final JLabel userZoomL = new JLabel(ResourceBundles.getText("user_zoom"));
 		final JTextField userZoom = new JTextField(ResourceController.getResourceController().getProperty("user_zoom"),
 		    3);
 		userZoom.setEditable(!fitToPage.isSelected());
 		final JButton okButton = new JButton();
-		MenuBuilder.setLabelAndMnemonic(okButton, FreeplaneResourceBundle.getText("ok"));
+		MenuBuilder.setLabelAndMnemonic(okButton, ResourceBundles.getText("ok"));
 		final JPanel panel = new JPanel();
 		final GridBagLayout gridbag = new GridBagLayout();
 		final GridBagConstraints c = new GridBagConstraints();

@@ -23,7 +23,7 @@ import org.freeplane.core.modecontroller.INodeSelectionListener;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.EncryptionModel;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.components.EnterPasswordDialog;
@@ -87,7 +87,7 @@ public class EncryptedMap extends AFreeplaneAction implements INodeSelectionList
 			return;
 		}
 		final ModeController newModeController = getModeController();
-		final NodeModel node = new NodeModel(FreeplaneResourceBundle
+		final NodeModel node = new NodeModel(ResourceBundles
 		    .getText("accessories/plugins/EncryptNode.properties_select_me"), null);
 		final EncryptionModel encryptedMindMapNode = new EncryptionModel(node);
 		encryptedMindMapNode.setEncrypter(new SingleDesEncrypter(password));

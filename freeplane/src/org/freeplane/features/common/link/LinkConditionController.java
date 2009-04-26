@@ -29,7 +29,7 @@ import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.filter.condition.IElementaryConditionController;
 import org.freeplane.core.filter.util.IListModel;
 import org.freeplane.core.filter.util.SortedMapListModel;
-import org.freeplane.core.resources.FreeplaneResourceBundle;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -75,13 +75,13 @@ public class LinkConditionController implements IElementaryConditionController {
 
 	public IListModel getFilteredProperties() {
 		final SortedMapListModel list = new SortedMapListModel();
-		list.add(FreeplaneResourceBundle.createTranslatedString(FILTER_LINK));
+		list.add(ResourceBundles.createTranslatedString(FILTER_LINK));
 		return list;
 	}
 
 	private Object[] getLinkConditionNames() {
-		return new NamedObject[] { FreeplaneResourceBundle.createTranslatedString(ConditionFactory.FILTER_IS_EQUAL_TO),
-		        FreeplaneResourceBundle.createTranslatedString(ConditionFactory.FILTER_CONTAINS) };
+		return new NamedObject[] { ResourceBundles.createTranslatedString(ConditionFactory.FILTER_IS_EQUAL_TO),
+		        ResourceBundles.createTranslatedString(ConditionFactory.FILTER_CONTAINS) };
 	}
 
 	public ComboBoxEditor getValueEditor() {
