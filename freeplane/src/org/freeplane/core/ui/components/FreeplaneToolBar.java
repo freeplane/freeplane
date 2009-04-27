@@ -76,7 +76,7 @@ public class FreeplaneToolBar extends JToolBar {
 		arg0.putValue(Action.SHORT_DESCRIPTION, actionName);
 		final JButton returnValue = super.add(arg0);
 		returnValue.setName(actionName);
-		returnValue.setText("");
+		configureComponent(returnValue);
 		return returnValue;
 	}
 

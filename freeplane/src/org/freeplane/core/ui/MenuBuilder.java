@@ -512,7 +512,6 @@ public class MenuBuilder extends UIBuilder {
 		else {
 			button = new JButton(action);
 		}
-		button.setText(null);
 		addComponent(category, button, position);
 	}
 

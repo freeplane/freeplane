@@ -134,7 +134,7 @@ public abstract class AFreeplaneAction extends AbstractAction {
 			putValue(SMALL_ICON, icon);
 		}
 		final String tooltip = ResourceBundles.getText(getTooltipKey(), null);
-		if (tooltip != null) {
+		if (tooltip != null && ! "".equals(tooltip)) {
 			putValue(Action.SHORT_DESCRIPTION, tooltip);
 			putValue(Action.LONG_DESCRIPTION, tooltip);
 		}

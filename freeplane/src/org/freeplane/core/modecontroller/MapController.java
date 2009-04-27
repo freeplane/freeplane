@@ -210,6 +210,10 @@ public class MapController extends SelectionController {
 	 * link actions).
 	 */
 	private void displayNode(final NodeModel node, final ArrayList nodesUnfoldedByDisplay) {
+		if(! node.isVisible()){
+			node.getFilterInfo().reset();
+			nodeRefresh(node);
+		}
 		final NodeModel[] path = node.getPathToRoot();
 		for (int i = 0; i < path.length - 1; i++) {
 			final NodeModel nodeOnPath = path[i];

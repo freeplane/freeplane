@@ -488,8 +488,8 @@ public class NodeModel implements MutableTreeNode {
 
 	public void setStateIcon(final String key, final ImageIcon icon) {
 		icons.setStateIcon(key, icon);
-		if (icon != null) {
-			getMap().getIconRegistry().addIcon(MindIcon.factory(key, icon));
+		if (icon != null && map != null) {
+			map.getIconRegistry().addIcon(MindIcon.factory(key, icon));
 		}
 	}
 

@@ -35,7 +35,7 @@ import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.features.common.cloud.CloudController;
 import org.freeplane.features.common.cloud.CloudModel;
 
-class CloudColorAction extends MultipleNodeAction implements PopupMenuListener {
+class CloudColorAction extends MultipleNodeAction{
 	/**
 	 * 
 	 */
@@ -53,9 +53,9 @@ class CloudColorAction extends MultipleNodeAction implements PopupMenuListener {
 		{
 			controller = getModeController();
 			final NodeModel selected = controller.getMapController().getSelectedNode();
-			if (CloudModel.getModel(selected) != null) {
-				selectedColor = CloudController.getController(getModeController()).getColor(selected);
-			}
+			final MCloudController cloudController = (MCloudController) CloudController.getController(getModeController());
+			cloudController.setCloud(selected, true);
+			selectedColor = cloudController.getColor(selected);
 		}
 		actionColor = ColorTracker.showCommonJColorChooserDialog(getController(), controller.getController()
 		    .getSelection().getSelected(), ResourceBundles.getText("choose_cloud_color"), selectedColor);
@@ -72,42 +72,5 @@ class CloudColorAction extends MultipleNodeAction implements PopupMenuListener {
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
 		final MCloudController cloudController = (MCloudController) CloudController.getController(getModeController());
 		cloudController.setColor(node, actionColor);
-	}
-
-	/**
-	 *
-	 */
-	private boolean isCloudEnabled() {
-		final NodeModel selected = getModeController().getMapController().getSelectedNode();
-		return selected != null && CloudModel.getModel(selected) != null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * javax.swing.event.PopupMenuListener#popupMenuCanceled(javax.swing.event
-	 * .PopupMenuEvent)
-	 */
-	public void popupMenuCanceled(final PopupMenuEvent e) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * javax.swing.event.PopupMenuListener#popupMenuWillBecomeInvisible(javax
-	 * .swing.event.PopupMenuEvent)
-	 */
-	public void popupMenuWillBecomeInvisible(final PopupMenuEvent e) {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * javax.swing.event.PopupMenuListener#popupMenuWillBecomeVisible(javax.
-	 * swing.event.PopupMenuEvent)
-	 */
-	public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
-		final JMenuItem item = (JMenuItem) e.getSource();
-		item.setEnabled(isCloudEnabled());
 	}
 }

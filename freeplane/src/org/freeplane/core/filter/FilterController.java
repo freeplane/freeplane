@@ -238,10 +238,10 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		final JButton undoBtn = new JButton(controller.getAction("UndoFilterAction"));
 		final JButton redoBtn = new JButton(controller.getAction("RedoFilterAction"));
 		final JButton btnUnfoldAncestors = new JButton(controller.getAction("UnfoldFilteredAncestorsAction"));
-		final JToggleButton showAncestorsBox = new JAutoToggleButton(controller.getAction("ShowAncestorsAction"));
+		final JToggleButton showAncestorsBox = new JAutoToggleButton(controller.getAction("ShowAncestorsAction"), showAncestors);
 		showAncestorsBox.setSelected(showAncestors.isSelected());
-		final JToggleButton showDescendantsBox = new JAutoToggleButton(controller.getAction("ShowDescendantsAction"));
-		final JToggleButton applyToVisibleBox = new JAutoToggleButton(controller.getAction("ApplyToVisibleAction"));
+		final JToggleButton showDescendantsBox = new JAutoToggleButton(controller.getAction("ShowDescendantsAction"), showDescendants);
+		final JToggleButton applyToVisibleBox = new JAutoToggleButton(controller.getAction("ApplyToVisibleAction"), applyToVisibleNodeOnly);
 		final JButton btnEdit = new JButton(controller.getAction("EditFilterAction"));
 		final JComboBox activeFilterConditionComboBox = new JComboBox(getFilterConditions()) {
 			/**

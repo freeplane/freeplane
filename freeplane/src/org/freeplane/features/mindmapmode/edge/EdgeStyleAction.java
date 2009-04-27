@@ -59,7 +59,7 @@ class EdgeStyleAction extends MultipleNodeAction {
 		if (model == null) {
 			return;
 		}
-		if (model.getStyle().equals(mStyle)) {
+		if (mStyle.equals(model.getStyle())) {
 			setSelected(true);
 		}
 	}

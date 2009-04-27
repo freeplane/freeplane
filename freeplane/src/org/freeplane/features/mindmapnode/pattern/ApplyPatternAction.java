@@ -42,7 +42,7 @@ import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
 import org.freeplane.features.mindmapmode.text.MTextController;
 
 class ApplyPatternAction extends MultipleNodeAction {
-	private static final String EDGE_WIDTH_THIN_STRING = "EDGE_WIDTH_THIN";
+	private static final String EDGE_WIDTH_THIN_STRING = "thin";
 	/**
 	 * 
 	 */

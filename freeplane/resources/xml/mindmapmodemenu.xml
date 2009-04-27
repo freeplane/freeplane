@@ -467,6 +467,7 @@
 		</menu_category>
 		<menu_category name="clouds">
 			<menu_action action="CloudAction"  />
+			<menu_action action="CloudColorAction" />
 		</menu_category>
 		<menu_separator />
 		<menu_category name="attributes">

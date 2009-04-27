@@ -93,6 +93,7 @@ public class EncryptedMap extends AFreeplaneAction implements INodeSelectionList
 		encryptedMindMapNode.setEncrypter(new SingleDesEncrypter(password));
 		node.addExtension(encryptedMindMapNode);
 		newModeController.getMapController().newMap(node);
+		encryptedMindMapNode.updateIcon();
 	}
 
 	public void onDeselect(final NodeModel node) {
