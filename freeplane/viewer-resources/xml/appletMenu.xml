@@ -73,7 +73,7 @@
 			<menu_separator />
 			<menu_category name="folding">
 				<menu_action action="ToggleFoldedAction" accelerator="SPACE"  />
-				<menu_action action="ToggleChildrenFoldedAction"  />
+				<menu_action action="ToggleChildrenFoldedAction"   accelerator="control SPACE" />
 			</menu_category>
 			<menu_separator />
 			<menu_category name="links">
