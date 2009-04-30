@@ -452,6 +452,9 @@ public class MMapController extends MapController {
 				    NodeBuilder.RESOURCES_ALWAYS_SAVE_FOLDING)) {
 					nodeChanged(node);
 				}
+				else{
+					nodeRefresh(node);
+				}
 			}
 
 			public String getDescription() {
