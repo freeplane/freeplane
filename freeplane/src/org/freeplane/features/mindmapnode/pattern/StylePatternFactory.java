@@ -243,26 +243,12 @@ public class StylePatternFactory {
 
 	public static String toString(final Pattern pPattern) {
 		String result = "";
-		if (pPattern.getPatternNodeColor() != null) {
-			result = StylePatternFactory.addSeparatorIfNecessary(result);
-			if (pPattern.getPatternNodeColor().getValue() == null) {
-				result += "-" + ResourceBundles.getText("PatternToString.color");
-			}
-			else {
-				result += "+" + ResourceBundles.getText("PatternToString.color");
-			}
-		}
-		if (pPattern.getPatternNodeBackgroundColor() != null) {
-			result = StylePatternFactory.addSeparatorIfNecessary(result);
-			if (pPattern.getPatternNodeBackgroundColor().getValue() == null) {
-				result += "-" + ResourceBundles.getText("PatternToString.backgroundColor");
-			}
-			else {
-				result += "+" + ResourceBundles.getText("PatternToString.backgroundColor");
-			}
-		}
+		result = StylePatternFactory.addSubPatternToString(result, pPattern.getPatternNodeColor(),
+	    "PatternToString.color");
+		result = StylePatternFactory.addSubPatternToString(result, pPattern.getPatternNodeBackgroundColor(),
+	    "PatternToString.backgroundColor");
 		result = StylePatternFactory.addSubPatternToString(result, pPattern.getPatternNodeFontSize(),
-		    "PatternToString.NodeFontSize");
+	    "PatternToString.NodeFontSize");
 		result = StylePatternFactory.addSubPatternToString(result, pPattern.getPatternNodeFontName(),
 		    "PatternToString.FontName");
 		result = StylePatternFactory.addSubPatternToString(result, pPattern.getPatternNodeFontBold(),

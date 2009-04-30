@@ -115,7 +115,12 @@ public class Pattern implements Cloneable {
 	}
 
 	private void marschall(final XMLElement xml, final String string, final PatternProperty pattern) {
-		// TODO Auto-generated method stub
+		if(pattern == null){
+			return;
+		}
+		XMLElement property = new XMLElement(string);
+		property.setAttribute("value", pattern.getValue());
+		xml.addChild(property);
 	}
 
 	public String marshall() {
@@ -129,12 +134,12 @@ public class Pattern implements Cloneable {
 		marschall(xml, "pattern_node_font_bold", patternNodeFontBold);
 		marschall(xml, "pattern_node_font_italic", patternNodeFontItalic);
 		marschall(xml, "pattern_node_font_size", patternNodeFontSize);
-		marschall(xml, "pattern_node_icon", patternIcon);
-		marschall(xml, "pattern_node_edge_color", patternEdgeColor);
-		marschall(xml, "pattern_node_edge_style", patternEdgeStyle);
-		marschall(xml, "pattern_node_wdge_width", patternEdgeWidth);
-		marschall(xml, "pattern_node_child", patternChild);
-		marschall(xml, "pattern_node_script", patternScript);
+		marschall(xml, "pattern_icon", patternIcon);
+		marschall(xml, "pattern_edge_color", patternEdgeColor);
+		marschall(xml, "pattern_edge_style", patternEdgeStyle);
+		marschall(xml, "pattern_edge_width", patternEdgeWidth);
+		marschall(xml, "pattern_child", patternChild);
+		marschall(xml, "pattern_script", patternScript);
 		final StringWriter string = new StringWriter();
 		final XMLWriter writer = new XMLWriter(string);
 		try {
@@ -231,7 +236,7 @@ public class Pattern implements Cloneable {
 			}
 		}
 		{
-			final XMLElement xmlProperty = xmlPattern.getFirstChildNamed("pattern_node_textr");
+			final XMLElement xmlProperty = xmlPattern.getFirstChildNamed("pattern_node_text");
 			if (xmlProperty != null) {
 				patternNodeText = new PatternProperty();
 				patternNodeText.value = xmlProperty.getAttribute("value", null);
@@ -245,21 +250,21 @@ public class Pattern implements Cloneable {
 			}
 		}
 		{
-			final XMLElement xmlProperty = xmlPattern.getFirstChildNamed("pattern_font_bold");
+			final XMLElement xmlProperty = xmlPattern.getFirstChildNamed("pattern_node_font_bold");
 			if (xmlProperty != null) {
 				patternNodeFontBold = new PatternProperty();
 				patternNodeFontBold.value = xmlProperty.getAttribute("value", null);
 			}
 		}
 		{
-			final XMLElement xmlProperty = xmlPattern.getFirstChildNamed("pattern_font_italic");
+			final XMLElement xmlProperty = xmlPattern.getFirstChildNamed("pattern_node_font_italic");
 			if (xmlProperty != null) {
 				patternNodeFontItalic = new PatternProperty();
 				patternNodeFontItalic.value = xmlProperty.getAttribute("value", null);
 			}
 		}
 		{
-			final XMLElement xmlProperty = xmlPattern.getFirstChildNamed("pattern_font_size");
+			final XMLElement xmlProperty = xmlPattern.getFirstChildNamed("pattern_node_font_size");
 			if (xmlProperty != null) {
 				patternNodeFontSize = new PatternProperty();
 				patternNodeFontSize.value = xmlProperty.getAttribute("value", null);
