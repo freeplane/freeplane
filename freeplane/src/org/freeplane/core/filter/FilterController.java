@@ -39,6 +39,8 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
@@ -69,7 +71,7 @@ import org.freeplane.n3.nanoxml.XMLWriter;
  * @author Dimitry Polivaev
  */
 public class FilterController implements IMapSelectionListener, IExtension {
-	private class FilterChangeListener extends AbstractAction implements ListDataListener {
+	private class FilterChangeListener implements ListDataListener, ChangeListener {
 		/**
 		 * 
 		 */
@@ -84,10 +86,6 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		public FilterChangeListener() {
 		}
 
-		public void actionPerformed(final ActionEvent arg0) {
-			applyFilter(false);
-		}
-
 		public void contentsChanged(final ListDataEvent e) {
 			if (e.getIndex0() == -1) {
 				applyFilter(false);
@@ -99,6 +97,10 @@ public class FilterController implements IMapSelectionListener, IExtension {
 
 		public void intervalRemoved(final ListDataEvent e) {
 		}
+
+		public void stateChanged(ChangeEvent e) {
+			applyFilter(false);
+        }
 	}
 
 	static final String FREEPLANE_FILTER_EXTENSION_WITHOUT_DOT = "mmfilter";
@@ -156,10 +158,10 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		filterChangeListener = new FilterChangeListener();
 		showAncestors = new JToggleButton.ToggleButtonModel();
 		showAncestors.setSelected(true);
-		showAncestors.addActionListener(filterChangeListener);
+		showAncestors.addChangeListener(filterChangeListener);
 		showDescendants = new JToggleButton.ToggleButtonModel();
 		showDescendants.setSelected(false);
-		showDescendants.addActionListener(filterChangeListener);
+		showDescendants.addChangeListener(filterChangeListener);
 		applyToVisibleNodeOnly = new JToggleButton.ToggleButtonModel();
 		applyToVisibleNodeOnly.setSelected(false);
 		pathToFilterFile = ResourceController.getResourceController().getFreeplaneUserDirectory() + File.separator
@@ -432,15 +434,15 @@ public class FilterController implements IMapSelectionListener, IExtension {
 
 	private void updateSettingsFromFilter(final Filter filter) {
 	    filterConditions.removeListDataListener(filterChangeListener);
-		showAncestors.removeActionListener(filterChangeListener);
-		showDescendants.removeActionListener(filterChangeListener);
+		showAncestors.removeChangeListener(filterChangeListener);
+		showDescendants.removeChangeListener(filterChangeListener);
 		filterConditions.setSelectedItem(filter.getCondition());
 		showAncestors.setSelected(filter.areAncestorsShown());
 		showDescendants.setSelected(filter.areDescendantsShown());
 		applyToVisibleNodeOnly.setSelected(filter.appliesToVisibleNodesOnly());
 		filterConditions.addListDataListener(filterChangeListener);
-		showAncestors.addActionListener(filterChangeListener);
-		showDescendants.addActionListener(filterChangeListener);
+		showAncestors.addChangeListener(filterChangeListener);
+		showDescendants.addChangeListener(filterChangeListener);
     }
 
 	public void applyNoFiltering() {

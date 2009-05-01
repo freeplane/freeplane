@@ -45,12 +45,16 @@ class ShowDescendantsAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		filterController.getShowDescendants().setSelected(!isSelected());
+		filterController.getShowDescendants().setSelected(!isModelSelected());
 		filterController.showFilterToolbar(true);
 	}
 
 	@Override
 	public void setSelected() {
-		setSelected( filterController.getShowDescendants().isSelected());
+		setSelected( isModelSelected());
 	}
+
+	private boolean isModelSelected() {
+	    return filterController.getShowDescendants().isSelected();
+    }
 }
