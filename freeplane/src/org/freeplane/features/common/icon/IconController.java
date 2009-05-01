@@ -39,6 +39,9 @@ public class IconController implements IExtension {
 	public static void install(final Controller controller) {
 		FilterController.getController(controller).getConditionFactory().addConditionController(1,
 		    new IconConditionController(controller));
+		FilterController.getController(controller).getConditionFactory().addConditionController(5,
+		    new PriorityConditionController());
+		
 	}
 
 	public static void install(final ModeController modeController, final IconController iconController) {

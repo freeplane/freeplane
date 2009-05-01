@@ -26,38 +26,59 @@ import org.freeplane.n3.nanoxml.XMLElement;
 abstract public class CompareConditionAdapter extends NodeCondition {
 	public static final String IGNORE_CASE = "ignore_case";
 	public static final String VALUE = "value";
-	final private String conditionValue;
+	private Comparable conditionValue;
+	public Comparable getConditionValue() {
+    	return conditionValue;
+    }
+
 	final private boolean ignoreCase;
 
 	protected CompareConditionAdapter(final String value, final boolean ignoreCase) {
 		super();
-		conditionValue = value;
 		this.ignoreCase = ignoreCase;
+		try {
+			conditionValue = Integer.valueOf(value);
+			return;
+		}
+		catch (final NumberFormatException fne) {
+		};
+		try {
+			conditionValue = Double.valueOf(value);
+			return;
+		}
+		catch (final NumberFormatException fne) {
+		};
+		conditionValue = value;
 	}
 
 	@Override
 	public void attributesToXml(final XMLElement child) {
 		super.attributesToXml(child);
-		child.setAttribute(CompareConditionAdapter.VALUE, conditionValue);
+		child.setAttribute(CompareConditionAdapter.VALUE, conditionValue.toString());
 		child.setAttribute(CompareConditionAdapter.IGNORE_CASE, TreeXmlWriter.BooleanToXml(ignoreCase));
 	}
 
 	protected int compareTo(final String nodeValue) throws NumberFormatException {
-		try {
-			final int i2 = Integer.parseInt(conditionValue);
-			final int i1 = Integer.parseInt(nodeValue);
-			return i1 < i2 ? -1 : (i1 == i2 ? 0 : 1);
+		if(conditionValue instanceof Integer){
+			try {
+				return Integer.valueOf(nodeValue).compareTo((Integer)conditionValue);
+			}
+			catch (final NumberFormatException fne) {
+			};
+			try {
+				return Double.valueOf(nodeValue).compareTo(new Double((Integer)conditionValue));
+			}
+			catch (final NumberFormatException fne) {
+			};
 		}
-		catch (final NumberFormatException fne) {
-		};
-		try {
-			final double d2 = Double.parseDouble(conditionValue);
-			final double d1 = Double.parseDouble(nodeValue);
-			return Double.compare(d1, d2);
+		else if(conditionValue instanceof Double){
+			try {
+				return Double.valueOf(nodeValue).compareTo((Double)conditionValue);
+			}
+			catch (final NumberFormatException fne) {
+			};
 		}
-		catch (final NumberFormatException fne) {
-			return ignoreCase ? nodeValue.compareToIgnoreCase(conditionValue) : nodeValue.compareTo(conditionValue);
-		}
+		return ignoreCase ? nodeValue.compareToIgnoreCase(conditionValue.toString()) : nodeValue.compareTo(conditionValue.toString());
 	}
 
 	public String createDescription(final String attribute, final int comparationResult, final boolean succeed) {
@@ -76,6 +97,6 @@ abstract public class CompareConditionAdapter extends NodeCondition {
 			default:
 				throw new IllegalArgumentException();
 		}
-		return ConditionFactory.createDescription(attribute, simpleCondition, conditionValue, ignoreCase);
+		return ConditionFactory.createDescription(attribute, simpleCondition, conditionValue.toString(), ignoreCase);
 	}
 }

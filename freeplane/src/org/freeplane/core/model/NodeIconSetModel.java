@@ -32,7 +32,7 @@ import javax.swing.ImageIcon;
  */
 class NodeIconSetModel {
 	/** stores the icons associated with this node. */
-	protected Vector/* <MindIcon> */icons = null;
+	protected Vector<MindIcon>/* <MindIcon> */icons = null;
 	private TreeMap /* of String to MindIcon s */stateIcons = null;
 
 	void addIcon(final MindIcon _icon, final int position) {
@@ -62,9 +62,9 @@ class NodeIconSetModel {
 		return (MindIcon) (position == MindIcon.LAST ? icons.get(icons.size() - 1) : icons.get(position));
 	}
 
-	List getIcons() {
+	List<MindIcon> getIcons() {
 		if (icons == null) {
-			return Collections.EMPTY_LIST;
+			return Collections.emptyList();
 		}
 		return icons;
 	}

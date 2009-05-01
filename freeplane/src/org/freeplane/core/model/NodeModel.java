@@ -223,7 +223,7 @@ public class NodeModel implements MutableTreeNode {
 		return icons.getIcon(position);
 	}
 
-	public List getIcons() {
+	public List<MindIcon> getIcons() {
 		return icons.getIcons();
 	}
 
