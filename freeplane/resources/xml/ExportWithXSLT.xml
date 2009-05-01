@@ -32,7 +32,7 @@
             xslt_file="/xslt/freeplane2html.xsl"
             create_dir="true"
             files_to_copy="freeplane2html.css,hide.png,leaf.png,show.png,ilink.png"
-            file_prefix="/accessories/"
+            file_prefix="/html/"
             copy_icons="true"
             load_file="true"
             create_html_linked_image="true"/>

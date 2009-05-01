@@ -324,7 +324,7 @@ public class MNoteController extends NoteController {
 		noteViewerComponent = getHtmlEditorPanel();
 		final Action jumpToMapAction = new JumpToMapAction();
 		final String keystroke = ResourceController.getResourceController().getAdjustableProperty(
-		    "keystroke_accessories/plugins/NodeNote_jumpto.keystroke.alt_N");
+		    "acceleratorForMindMap//menu_bar/navigate/notes/SelectNoteAction");
 		noteViewerComponent.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
 		    KeyStroke.getKeyStroke(keystroke), "jumpToMapAction");
 		noteViewerComponent.getActionMap().put("jumpToMapAction", jumpToMapAction);
