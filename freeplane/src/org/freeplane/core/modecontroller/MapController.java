@@ -541,11 +541,7 @@ public class MapController extends SelectionController {
 		load(newModel, file);
 		fireMapCreated(newModel);
 		newMapView(newModel);
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				setSaved(newModel, true);
-			}
-		});
+		setSaved(newModel, true);
 		return newModel;
 	}
 

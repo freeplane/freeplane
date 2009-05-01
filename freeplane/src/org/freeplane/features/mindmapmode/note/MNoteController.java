@@ -20,9 +20,11 @@
 package org.freeplane.features.mindmapmode.note;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -88,6 +90,10 @@ public class MNoteController extends NoteController {
 		}
 
 		private void docEvent() {
+			final Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
+			if (focusOwner == null || ! SwingUtilities.isDescendingFrom(focusOwner, htmlEditorPanel)){
+				return;
+			}
 			final ModeController modeController = getModeController();
 			final MapController mapController = modeController.getMapController();
 			final MapModel map = modeController.getController().getMap();
