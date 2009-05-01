@@ -65,18 +65,10 @@ abstract public class CompareConditionAdapter extends NodeCondition {
 			}
 			catch (final NumberFormatException fne) {
 			};
-			try {
-				return Double.valueOf(nodeValue).compareTo(new Double((Integer)conditionValue));
-			}
-			catch (final NumberFormatException fne) {
-			};
+			return Double.valueOf(nodeValue).compareTo(new Double((Integer)conditionValue));
 		}
 		else if(conditionValue instanceof Double){
-			try {
 				return Double.valueOf(nodeValue).compareTo((Double)conditionValue);
-			}
-			catch (final NumberFormatException fne) {
-			};
 		}
 		return ignoreCase ? nodeValue.compareToIgnoreCase(conditionValue.toString()) : nodeValue.compareTo(conditionValue.toString());
 	}
