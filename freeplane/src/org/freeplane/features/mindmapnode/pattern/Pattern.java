@@ -119,7 +119,10 @@ public class Pattern implements Cloneable {
 			return;
 		}
 		XMLElement property = new XMLElement(string);
-		property.setAttribute("value", pattern.getValue());
+		final String value = pattern.getValue();
+		if(value != null){
+			property.setAttribute("value", value);
+		}
 		xml.addChild(property);
 	}
 
@@ -143,7 +146,7 @@ public class Pattern implements Cloneable {
 		final StringWriter string = new StringWriter();
 		final XMLWriter writer = new XMLWriter(string);
 		try {
-			writer.write(xml);
+			writer.write(xml, true);
 			return string.toString();
 		}
 		catch (final IOException e) {
