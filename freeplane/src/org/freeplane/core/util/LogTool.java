@@ -87,7 +87,7 @@ public class LogTool {
 	}
 
 	public static void logException(final Throwable e, final String comment) {
-		LOGGER.log(Level.SEVERE, "An exception occured: " + comment, e);
+		LOGGER.log(Level.SEVERE, comment, e);
 	}
 
 	public static void logTransferable(final Transferable t) {

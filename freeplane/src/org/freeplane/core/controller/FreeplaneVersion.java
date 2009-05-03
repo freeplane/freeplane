@@ -19,15 +19,17 @@
  */
 package org.freeplane.core.controller;
 
-import java.io.IOException;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.ResUtil;
 
 // TODO rladstaetter 15.02.2009 use build properties for this information
 @Deprecated
 public class FreeplaneVersion {
+	public static final String VERSION_KEY = "freeplane_version";
+	public static final String VERSION_PROPERTIES = "/version.properties";
 	private static final FreeplaneVersion VERSION = loadVersion();
 
 	public static FreeplaneVersion getVersion() {
@@ -35,14 +37,8 @@ public class FreeplaneVersion {
 	}
 
 	private static FreeplaneVersion loadVersion() {
-		Properties versionProperties = new Properties();
-		try {
-	        versionProperties.load(FreeplaneVersion.class.getResource("/version.properties").openStream());
-        }
-        catch (IOException e) {
-        	throw new RuntimeException(e);
-        }
-		final String versionString = versionProperties.getProperty("freeplane_version");
+		Properties versionProperties = ResUtil.loadProperties(VERSION_PROPERTIES);
+		final String versionString = versionProperties.getProperty(VERSION_KEY);
 		final String versionStatus = versionProperties.getProperty("freeplane_version_status");
 		return new FreeplaneVersion(versionString, versionStatus);
 	}

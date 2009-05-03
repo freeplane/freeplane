@@ -7,8 +7,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.util.Properties;
 import java.util.logging.Logger;
 
+import org.freeplane.core.controller.FreeplaneVersion;
 import org.freeplane.core.resources.ResourceController;
 
 public class ResUtil {
@@ -69,4 +71,15 @@ public class ResUtil {
 		}
 		return true;
 	}
+
+	public static Properties loadProperties(String classpathRessource) {
+        Properties versionProperties = new Properties();
+    	try {
+            versionProperties.load(ResUtil.class.getResource(classpathRessource).openStream());
+        }
+        catch (IOException e) {
+        	throw new RuntimeException(e);
+        }
+        return versionProperties;
+    }
 }
