@@ -262,14 +262,15 @@ class PasteAction extends AFreeplaneAction {
 
 		private Element getParentElement(final HTMLDocument doc) {
 			final Element htmlRoot = doc.getDefaultRootElement();
-			Element parentCandidate = htmlRoot.getElement(htmlRoot.getElementCount() - 1);
+			final Element bodyElement = htmlRoot.getElement(htmlRoot.getElementCount() - 1);
+			Element parentCandidate = bodyElement;
 			do {
 				if (parentCandidate.getElementCount() > 1) {
 					return parentCandidate;
 				}
 				parentCandidate = parentCandidate.getElement(0);
 			} while (!(parentCandidate.isLeaf() || parentCandidate.getName().equalsIgnoreCase("p-implied")));
-			return null;
+			return bodyElement;
 		}
 
 		private boolean isSeparateElement(final Element current) {
@@ -355,9 +356,6 @@ class PasteAction extends AFreeplaneAction {
 			try {
 				kit.read(buf, doc, 0);
 				final Element parent = getParentElement(doc);
-				if (parent == null) {
-					return new TextFragment[0];
-				}
 				split(doc, parent, htmlFragments, 0);
 			}
 			catch (final IOException e) {
@@ -573,8 +571,8 @@ class PasteAction extends AFreeplaneAction {
 					}
 					final NodeModel target = (NodeModel) parentNodes.get(j);
 					node.setLeft(isLeft);
-					node.setFolded(true);
 					if (target != parent) {
+						target.setFolded(true);
 						target.insert(node, target.getChildCount());
 					}
 					parentNodes.add(node);

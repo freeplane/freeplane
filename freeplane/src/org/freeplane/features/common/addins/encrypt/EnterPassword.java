@@ -22,6 +22,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.io.MapWriter;
 import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.EncryptionModel;
@@ -108,6 +109,7 @@ public class EnterPassword extends AFreeplaneAction {
 		if (encNode != null) {
 			if (encNode.isAccessible()) {
 				encNode.setAccessible(false);
+				encNode.getEncryptedContent(mindMapController.getMapController());
 				node.setFolded(true);
 			}
 			else {

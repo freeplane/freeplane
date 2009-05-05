@@ -26,6 +26,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
@@ -292,15 +293,22 @@ public class MMapController extends MapController {
 
 	@Override
 	public void loadURL(final String relative) {
-		final MapModel map = getController().getMap();
-		if (map.getFile() == null) {
-			getController().getViewController().out("You must save the current map first!");
-			final boolean result = ((MFileManager) UrlManager.getController(getModeController())).save(map);
-			if (!result) {
-				return;
-			}
-		}
-		super.loadURL(relative);
+		try {
+	        final MapModel map = getController().getMap();
+	        if (map.getFile() == null) {
+	        	URL url = new URL(relative);
+	        	if(url.getProtocol().equalsIgnoreCase("file")){
+	        		getController().getViewController().out("You must save the current map first!");
+	        		final boolean result = ((MFileManager) UrlManager.getController(getModeController())).save(map);
+	        		if (!result) {
+	        			return;
+	        		}
+	        	}
+	        }
+	        super.loadURL(relative);
+        }
+        catch (MalformedURLException e) {
+        }
 	}
 
 	public void moveNode(final NodeModel node, final NodeModel targetNode, final boolean asSibling,

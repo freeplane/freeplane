@@ -81,8 +81,7 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 		xmlNode = new XMLElement();
 		encryptionModel = EncryptionModel.getModel(node);
 		if (encryptionModel != null) {
-			final String additionalInfo = encryptionModel.getEncryptedContent(mapController, (Mode) writer
-			    .getHint(Hint.MODE));
+			final String additionalInfo = encryptionModel.getEncryptedContent(mapController);
 			writer.addAttribute(NodeBuilder.XML_NODE_ENCRYPTED_CONTENT, additionalInfo);
 		}
 		if (mapController.isFolded(node) && (writeFolded || writer.getHint(Hint.MODE).equals(Mode.CLIPBOARD))) {

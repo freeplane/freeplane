@@ -64,7 +64,7 @@ public class NodeModel implements MutableTreeNode {
 	protected final List<NodeModel> children = new ArrayList<NodeModel>();
 	private final ExtensionContainer extensionContainer;
 	final private FilterInfo filterInfo = new FilterInfo();
-	protected boolean folded;
+	private boolean folded;
 	private HistoryInformationModel historyInformation = null;
 	final private NodeIconSetModel icons;
 	private String id;
@@ -439,13 +439,15 @@ public class NodeModel implements MutableTreeNode {
 		getViewers().remove(viewer);
 	}
 
-	public void setFolded(final boolean folded) {
+	public void setFolded(boolean folded) {
 		if (this.folded == folded) {
 			return;
 		}
 		final EncryptionModel encryptionModel = EncryptionModel.getModel(this);
-		if (encryptionModel != null && !encryptionModel.isAccessible()) {
-			this.folded = true;
+		if (encryptionModel != null && !encryptionModel.isAccessible() && folded == false) {
+			folded = true;
+		}
+		if(this.folded == folded){
 			return;
 		}
 		this.folded = folded;

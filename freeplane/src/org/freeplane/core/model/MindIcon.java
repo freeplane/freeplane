@@ -34,6 +34,7 @@ import javax.swing.KeyStroke;
 
 import org.freeplane.core.Compat;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.LogTool;
 
 /**
  * This class represents a MindIcon than can be applied to a node or a whole
@@ -153,6 +154,7 @@ public class MindIcon implements Comparable, IIconInformation {
 		}
 		else {
 			setIcon(MindIcon.iconNotFound);
+			LogTool.warn("icon " + getName() + " not found");
 			return MindIcon.iconNotFound;
 		}
 	}

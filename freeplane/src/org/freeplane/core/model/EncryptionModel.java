@@ -28,6 +28,7 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.io.MapWriter;
 import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.modecontroller.IEncrypter;
 import org.freeplane.core.modecontroller.MapController;
@@ -145,11 +146,11 @@ public class EncryptionModel implements IExtension {
 	 * @param mode 
 	 * @throws IOException
 	 */
-	private void generateEncryptedContent(final MapController mapController, final Mode mode) throws IOException {
+	private void generateEncryptedContent(final MapController mapController) throws IOException {
 		final StringWriter sWriter = new StringWriter();
-		for (final Iterator i = mapController.childrenUnfolded(node); i.hasNext();) {
+		for (final Iterator i = node.getChildren().listIterator(); i.hasNext();) {
 			final NodeModel child = (NodeModel) i.next();
-			mapController.getMapWriter().writeNodeAsXml(sWriter, child, mode, true, true);
+			mapController.getMapWriter().writeNodeAsXml(sWriter, child, MapWriter.Mode.FILE, true, true);
 			if (i.hasNext()) {
 				sWriter.write(ClipboardController.NODESEPARATOR);
 			}
@@ -158,10 +159,10 @@ public class EncryptionModel implements IExtension {
 		encryptedContent = encryptXml(childXml);
 	}
 
-	public String getEncryptedContent(final MapController mapController, final Mode mode) {
+	public String getEncryptedContent(final MapController mapController) {
 		if (isDecrypted) {
 			try {
-				generateEncryptedContent(mapController, mode);
+				generateEncryptedContent(mapController);
 			}
 			catch (final Exception e) {
 				LogTool.logException(e);

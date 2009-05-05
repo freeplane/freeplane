@@ -96,6 +96,7 @@
          </separator>
         <separator name="default_fonts">
             <font name="defaultfont"/>
+            <number name="defaultfontsize" min="4" max="272"/>
             <string name="defaultfontstyle"/>
             <boolean name="resources_use_default_font_for_notes_too"/>
             <boolean name="resources_use_margin_top_zero_for_notes"/>
@@ -143,7 +144,6 @@
                 <choice value="relative"/>
                 <choice value="absolute"/>
             </combo>
-            <string name="mapysize"/>
         </separator>
         
        <separator name="edit_long_node_window">        

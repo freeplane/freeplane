@@ -18,10 +18,10 @@
 		<property name="script" value="${root}/script" />
 
 		<ant antfile="ant/build.xml" target="osgi_dist" dir="${workspace}/freeplane" inheritall="false"/>
-		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_help" inheritall="false"/>
-		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_svg" inheritall="false"/>
-		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_latex" inheritall="false"/>
-		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_script" inheritall="false"/>
+		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_help" inheritall="false"/>
+		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_svg" inheritall="false"/>
+		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_latex" inheritall="false"/>
+		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_script" inheritall="false"/>
 		<mkdir dir="${bin}" />
 		<copy todir="${bin}">
 			<fileset dir="${script}"/>
@@ -32,10 +32,10 @@
 		<mkdir dir="${bin.jars}" />
 		<copy todir="${bin.jars}">
 			<fileset dir="${workspace}/freeplane/bin/dist/osgi"/>
-			<fileset dir="${workspace}/freeplane_help/bin/dist/osgi"/>
-			<fileset dir="${workspace}/freeplane_latex/bin/dist/osgi"/>
-			<fileset dir="${workspace}/freeplane_script/bin/dist/osgi"/>
-			<fileset dir="${workspace}/freeplane_svg/bin/dist/osgi"/>
+			<fileset dir="${workspace}/freeplane_plugin_help/bin/dist/osgi"/>
+			<fileset dir="${workspace}/freeplane_plugin_latex/bin/dist/osgi"/>
+			<fileset dir="${workspace}/freeplane_plugin_script/bin/dist/osgi"/>
+			<fileset dir="${workspace}/freeplane_plugin_svg/bin/dist/osgi"/>
 		</copy>
 		<mkdir dir="${bin.resources}" />		
 		<mkdir dir="${bin.ortho}" />		
