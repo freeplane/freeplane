@@ -20,15 +20,12 @@
 package org.freeplane.main.application;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.GraphicsConfiguration;
 import java.awt.Image;
 import java.awt.ImageCapabilities;
-import java.awt.Insets;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -53,6 +50,7 @@ import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.attribute.ModelessAttributeController;
@@ -161,23 +159,10 @@ public class FreeplaneStarter {
 		int win_height = ResourceController.getResourceController().getIntProperty("appwindow_height", 0);
 		int win_x = ResourceController.getResourceController().getIntProperty("appwindow_x", 0);
 		int win_y = ResourceController.getResourceController().getIntProperty("appwindow_y", 0);
-		win_width = (win_width > 0) ? win_width : 640;
-		win_height = (win_height > 0) ? win_height : 440;
-		final Toolkit defaultToolkit = Toolkit.getDefaultToolkit();
-		final Insets screenInsets = defaultToolkit.getScreenInsets(frame.getGraphicsConfiguration());
-		final Dimension screenSize = defaultToolkit.getScreenSize();
-		final int screenWidth = screenSize.width - screenInsets.left - screenInsets.right;
-		win_width = Math.min(win_width, screenWidth);
-		final int screenHeight = screenSize.height - screenInsets.top - screenInsets.bottom;
-		win_height = Math.min(win_height, screenHeight);
-		win_x = Math.max(screenInsets.left, win_x);
-		win_x = Math.min(screenWidth + screenInsets.left - win_width, win_x);
-		win_y = Math.max(screenInsets.top, win_y);
-		win_y = Math.min(screenWidth + screenInsets.top - win_height, win_y);
+		UITools.setBounds(frame, win_x, win_y, win_width, win_height);
 		int win_state = Integer
 		    .parseInt(ResourceController.getResourceController().getProperty("appwindow_state", "0"));
 		win_state = ((win_state & Frame.ICONIFIED) != 0) ? Frame.NORMAL : win_state;
-		frame.setBounds(win_x, win_y, win_width, win_height);
 		frame.setExtendedState(win_state);
 	}
 

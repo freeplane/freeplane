@@ -241,4 +241,21 @@ public class UITools {
 		return JOptionPane.showInputDialog(parentComponent, text, title, type);
 	}
 
+	static public void setBounds(Component frame, int win_x, int win_y, int win_width, int win_height) {
+        win_width = (win_width > 0) ? win_width : 640;
+    	win_height = (win_height > 0) ? win_height : 440;
+    	final Toolkit defaultToolkit = Toolkit.getDefaultToolkit();
+    	final Insets screenInsets = defaultToolkit.getScreenInsets(frame.getGraphicsConfiguration());
+    	final Dimension screenSize = defaultToolkit.getScreenSize();
+    	final int screenWidth = screenSize.width - screenInsets.left - screenInsets.right;
+    	win_width = Math.min(win_width, screenWidth);
+    	final int screenHeight = screenSize.height - screenInsets.top - screenInsets.bottom;
+    	win_height = Math.min(win_height, screenHeight);
+    	win_x = Math.max(screenInsets.left, win_x);
+    	win_x = Math.min(screenWidth + screenInsets.left - win_width, win_x);
+    	win_y = Math.max(screenInsets.top, win_y);
+    	win_y = Math.min(screenWidth + screenInsets.top - win_height, win_y);
+    	frame.setBounds(win_x, win_y, win_width, win_height);
+    }
+
 }

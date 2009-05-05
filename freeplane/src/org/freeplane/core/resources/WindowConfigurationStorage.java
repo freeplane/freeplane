@@ -9,6 +9,7 @@ import java.io.StringWriter;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;
@@ -97,8 +98,7 @@ abstract public class WindowConfigurationStorage {
 					y = Integer.parseInt(storage.getAttribute("y", null));
 					width = Integer.parseInt(storage.getAttribute("width", null));
 					height = Integer.parseInt(storage.getAttribute("height", null));
-					dialog.setLocation(x, y);
-					dialog.setSize(new Dimension(width, height));
+					UITools.setBounds(dialog, x, y, width, height);
 					return storage;
 				}
 			}
