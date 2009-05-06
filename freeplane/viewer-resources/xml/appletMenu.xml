@@ -93,7 +93,6 @@
 				<menu_action action="FaqOpenURLAction" />
 				<menu_action action="LicenseAction" />
 				<menu_action action="AboutAction" />
-				<menu_action action="UpdateCheckAction" />
 			</menu_category>
 		</menu_submenu>
 	</menu_category>
