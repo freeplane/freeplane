@@ -188,8 +188,7 @@ class AttributeRegistryTable extends JTable {
 					break;
 				case 2:
 					if (row == 0) {
-						label.setToolTipText(ResourceBundles
-						    .getText("attributes_restricted_attributes_tooltip"));
+						label.setToolTipText(ResourceBundles.getText("attributes_restricted_attributes_tooltip"));
 					}
 					else {
 						label.setToolTipText(ResourceBundles.getText("attributes_restricted_values_tooltip"));

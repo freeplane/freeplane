@@ -52,17 +52,16 @@ import org.freeplane.main.application.FreeplaneSecurityManager;
  */
 @ActionLocationDescriptor(locations = { "/menu_bar/extras/first/scripting" })
 class ScriptingEngine extends AFreeplaneAction {
+	public interface IErrorHandler {
+		void gotoLine(int pLineNumber);
+	}
+
 	public static final String RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING = "execute_scripts_without_asking";
 	public static final String RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION = "execute_scripts_without_exec_restriction";
 	public static final String RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION = "execute_scripts_without_file_restriction";
 	public static final String RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION = "execute_scripts_without_network_restriction";
 	public static final String RESOURCES_SCRIPT_USER_KEY_NAME_FOR_SIGNING = "script_user_key_name_for_signing";
 	public static final String RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED = "signed_script_are_trusted";
-	
-	public interface IErrorHandler {
-		void gotoLine(int pLineNumber);
-	}
-
 	public static final String SCRIPT_PREFIX = "script";
 	/**
 	 * 
@@ -84,8 +83,7 @@ class ScriptingEngine extends AFreeplaneAction {
 	                             final PrintStream pOutStream, final HashMap pScriptCookies) {
 		if (!pAlreadyAScriptExecuted) {
 			final int showResult = new OptionalDontShowMeAgainDialog(pMindMapController.getController(),
-			    "really_execute_script", "confirmation",
-			    RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
+			    "really_execute_script", "confirmation", RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
 			    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED).show().getResult();
 			if (showResult != JOptionPane.OK_OPTION) {
 				return false;
@@ -164,19 +162,16 @@ class ScriptingEngine extends AFreeplaneAction {
 			securityManager.setFinalSecurityManager(scriptingSecurityManager);
 			System.setOut(oldOut);
 			/* restore preferences (and assure that the values are unchanged!). */
-			ResourceController.getResourceController().setProperty(
-			    RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING, executeWithoutAsking);
-			ResourceController.getResourceController().setProperty(
-			    RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION,
+			ResourceController.getResourceController().setProperty(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
+			    executeWithoutAsking);
+			ResourceController.getResourceController().setProperty(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_FILE_RESTRICTION,
 			    executeWithoutFileRestriction);
 			ResourceController.getResourceController().setProperty(
-			    RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION,
-			    executeWithoutNetworkRestriction);
-			ResourceController.getResourceController().setProperty(
-			    RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION,
+			    RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION, executeWithoutNetworkRestriction);
+			ResourceController.getResourceController().setProperty(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION,
 			    executeWithoutExecRestriction);
-			ResourceController.getResourceController().setProperty(
-			    RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED, signedScriptsWithoutRestriction);
+			ResourceController.getResourceController().setProperty(RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED,
+			    signedScriptsWithoutRestriction);
 		}
 		/*
 		 * Cover exceptions in normal security context (ie. no problem with

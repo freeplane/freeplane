@@ -25,14 +25,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.lang.reflect.Field;
-import java.util.Enumeration;
 
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
@@ -46,15 +43,6 @@ import org.freeplane.core.ui.components.UITools;
  * A dialog for getting shortcut keys.
  */
 public class GrabKeyDialog extends JDialog {
-	private IKeystrokeValidator validator;
-	public IKeystrokeValidator getValidator() {
-    	return validator;
-    }
-
-	public void setValidator(IKeystrokeValidator validator) {
-    	this.validator = validator;
-    }
-
 	class ActionHandler implements ActionListener {
 		public void actionPerformed(final ActionEvent evt) {
 			if (evt.getSource() == ok) {
@@ -76,20 +64,6 @@ public class GrabKeyDialog extends JDialog {
 				shortcut.requestFocus();
 			}
 		}
-
-		}
-
-	private static class Buffer {
-		/**
-		 */
-		public int getLength() {
-			return 0;
-		}
-
-		/**
-		 */
-		public void insert(final int length, final String string) {
-		}
 	}
 
 	class InputPane extends JTextField {
@@ -106,6 +80,10 @@ public class GrabKeyDialog extends JDialog {
 		@Override
 		public boolean getFocusTraversalKeysEnabled() {
 			return false;
+		}
+
+		private int getModifierMask() {
+			return modifierMask;
 		}
 
 		@Override
@@ -148,10 +126,6 @@ public class GrabKeyDialog extends JDialog {
 			setText(keyString.toString());
 			updateAssignedTo(keyString.toString());
 		}
-
-		private int getModifierMask() {
-	        return modifierMask;
-        }
 	}
 
 	/**
@@ -180,13 +154,15 @@ public class GrabKeyDialog extends JDialog {
 
 	/**
 	 */
+	private static String getText(final String resourceString) {
+		return ResourceBundles.getText("GrabKeyDialog." + resourceString);
+	}
+
+	/**
+	 */
 	public static boolean isMacOS() {
 		return false;
 	}
-
-	public boolean canClose(KeyStroke ks) {
-	    return validator == null || validator.isValid(ks);
-    }
 
 	public static String toString(final KeyEvent evt) {
 		String id;
@@ -212,19 +188,24 @@ public class GrabKeyDialog extends JDialog {
 	private JButton cancel;
 	private JButton clear;
 	private boolean isOK;
+	private int modifierMask;
 	private JButton ok;
 	private JButton remove;
 	private InputPane shortcut;
-	private int modifierMask;
+	private IKeystrokeValidator validator;
 
-	public GrabKeyDialog(final Dialog parent, String input, int modifierMask) {
-		super(parent, getText("grab-key.title"), true);
+	public GrabKeyDialog(final Dialog parent, final String input, final int modifierMask) {
+		super(parent, GrabKeyDialog.getText("grab-key.title"), true);
 		init(input, modifierMask);
 	}
 
-	public GrabKeyDialog(final Frame parent, String input) {
-		super(parent, getText("grab-key.title"), true);
+	public GrabKeyDialog(final Frame parent, final String input) {
+		super(parent, GrabKeyDialog.getText("grab-key.title"), true);
 		init(input, 0);
+	}
+
+	public boolean canClose(final KeyStroke ks) {
+		return validator == null || validator.isValid(ks);
 	}
 
 	/**
@@ -277,13 +258,11 @@ public class GrabKeyDialog extends JDialog {
 		return null;
 	}
 
-	/**
-	 */
-	private static String getText(final String resourceString) {
-		return ResourceBundles.getText("GrabKeyDialog." + resourceString);
+	public IKeystrokeValidator getValidator() {
+		return validator;
 	}
 
-	private void init(String inputText, int modifierMask) {
+	private void init(final String inputText, final int modifierMask) {
 		this.modifierMask = modifierMask;
 		enableEvents(AWTEvent.KEY_EVENT_MASK);
 		final JPanel content = new JPanel(new GridLayout(0, 1, 0, 6)) {
@@ -313,26 +292,26 @@ public class GrabKeyDialog extends JDialog {
 		};
 		content.setBorder(new EmptyBorder(12, 12, 12, 12));
 		setContentPane(content);
-		new JLabel(getText("grab-key.caption"));
+		new JLabel(GrabKeyDialog.getText("grab-key.caption"));
 		final Box input = Box.createHorizontalBox();
 		shortcut = new InputPane();
-		if(inputText != null){
+		if (inputText != null) {
 			shortcut.setText(inputText);
 		}
 		input.add(shortcut);
 		input.add(Box.createHorizontalStrut(12));
-		clear = new JButton((getText("grab-key.clear")));
+		clear = new JButton((GrabKeyDialog.getText("grab-key.clear")));
 		clear.addActionListener(new ActionHandler());
 		input.add(clear);
 		assignedTo = new JLabel();
-			updateAssignedTo(null);
+		updateAssignedTo(null);
 		final Box buttons = Box.createHorizontalBox();
 		buttons.add(Box.createGlue());
-		ok = new JButton(getText("common.ok"));
+		ok = new JButton(GrabKeyDialog.getText("common.ok"));
 		ok.addActionListener(new ActionHandler());
 		buttons.add(ok);
 		buttons.add(Box.createHorizontalStrut(12));
-		cancel = new JButton(getText("common.cancel"));
+		cancel = new JButton(GrabKeyDialog.getText("common.cancel"));
 		cancel.addActionListener(new ActionHandler());
 		buttons.add(cancel);
 		buttons.add(Box.createGlue());
@@ -366,11 +345,15 @@ public class GrabKeyDialog extends JDialog {
 		shortcut.processKeyEvent(evt);
 	}
 
+	public void setValidator(final IKeystrokeValidator validator) {
+		this.validator = validator;
+	}
+
 	private void updateAssignedTo(final String shortcut) {
-		String text = (getText("grab-key.assigned-to.none"));
+		final String text = (GrabKeyDialog.getText("grab-key.assigned-to.none"));
 		if (ok != null) {
 			ok.setEnabled(true);
 		}
-		assignedTo.setText((getText("grab-key.assigned-to") + " " + text));
+		assignedTo.setText((GrabKeyDialog.getText("grab-key.assigned-to") + " " + text));
 	}
 }

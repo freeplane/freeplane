@@ -447,7 +447,7 @@ public class NodeModel implements MutableTreeNode {
 		if (encryptionModel != null && !encryptionModel.isAccessible() && folded == false) {
 			folded = true;
 		}
-		if(this.folded == folded){
+		if (this.folded == folded) {
 			return;
 		}
 		this.folded = folded;

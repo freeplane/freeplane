@@ -21,12 +21,10 @@ package org.freeplane.core.filter;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.JToggleButton;
-
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 
-@SelectableAction(checkOnPopup=true)
+@SelectableAction(checkOnPopup = true)
 class ShowFilterToolbarAction extends AFreeplaneAction {
 	/**
 	 * 
@@ -46,19 +44,17 @@ class ShowFilterToolbarAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent event) {
-		final boolean shouldFilterToolbarBeVisibleNow = ! isFilterToolbarVisible();
+		final boolean shouldFilterToolbarBeVisibleNow = !isFilterToolbarVisible();
 		filterController.showFilterToolbar(shouldFilterToolbarBeVisibleNow);
 		setSelected(shouldFilterToolbarBeVisibleNow);
 	}
 
-	@Override
-    public void setSelected() {
-		setSelected(isFilterToolbarVisible());
-    }
-
 	private boolean isFilterToolbarVisible() {
-	    return filterController.getFilterToolbar().isVisible();
-    }
-	
-	
+		return filterController.getFilterToolbar().isVisible();
+	}
+
+	@Override
+	public void setSelected() {
+		setSelected(isFilterToolbarVisible());
+	}
 }

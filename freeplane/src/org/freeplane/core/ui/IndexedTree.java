@@ -55,6 +55,40 @@ public class IndexedTree {
 		}
 	}
 
+	private final class UserObjects extends AbstractCollection<Object> {
+		@Override
+		public void clear() {
+			string2Element.clear();
+		}
+
+		@Override
+		public boolean contains(final Object o) {
+			final Iterator<Object> iterator = iterator();
+			while (iterator.hasNext()) {
+				final Object next = iterator.next();
+				if (o != null) {
+					if (o.equals(next)) {
+						return true;
+					}
+				}
+				if (next == null) {
+					return true;
+				}
+			}
+			return false;
+		}
+
+		@Override
+		public Iterator<Object> iterator() {
+			return newObjectIterator();
+		}
+
+		@Override
+		public int size() {
+			return string2Element.size();
+		}
+	}
+
 	public static final int AFTER = 1;
 	public static final int AS_CHILD = 0;
 	public static final int BEFORE = -1;
@@ -77,7 +111,8 @@ public class IndexedTree {
 		return node;
 	}
 
-	public DefaultMutableTreeNode addElement(final Object relativeKey, final Object element, final Object key, final int position) {
+	public DefaultMutableTreeNode addElement(final Object relativeKey, final Object element, final Object key,
+	                                         final int position) {
 		final DefaultMutableTreeNode existingNode = get(key);
 		if (existingNode != null) {
 			throw new RuntimeException(key.toString() + " added twice");
@@ -136,48 +171,14 @@ public class IndexedTree {
 		return (DefaultMutableTreeNode) object;
 	}
 
-	public Object getKeyByUserObject(Object object) {
-		Collection<Node> values = string2Element.values();
-		for (Node node : values) {
+	public Object getKeyByUserObject(final Object object) {
+		final Collection<Node> values = string2Element.values();
+		for (final Node node : values) {
 			if (object != null && object.equals(node.getUserObject())) {
 				return node.getKey();
 			}
 		}
 		return null;
-	}
-
-	public Collection<Object> getUserObjects() {
-		return Collections.unmodifiableCollection(new UserObjects());
-	}
-
-	private final class UserObjects extends AbstractCollection<Object> {
-		public Iterator<Object> iterator() {
-			return newObjectIterator();
-		}
-
-		public int size() {
-			return string2Element.size();
-		}
-
-		public boolean contains(Object o) {
-			Iterator<Object> iterator = iterator();
-			while (iterator.hasNext()) {
-				Object next = iterator.next();
-				if (o != null) {
-					if (o.equals(next)) {
-						return true;
-					}
-				}
-				if (next == null) {
-					return true;
-				}
-			}
-			return false;
-		}
-
-		public void clear() {
-			string2Element.clear();
-		}
 	}
 
 	protected DefaultMutableTreeNode getNode(final Object key) {
@@ -188,9 +189,17 @@ public class IndexedTree {
 		return node;
 	}
 
+	public DefaultMutableTreeNode getRoot() {
+		return string2Element.get(this);
+	}
+
+	public Collection<Object> getUserObjects() {
+		return Collections.unmodifiableCollection(new UserObjects());
+	}
+
 	public Iterator<Object> newObjectIterator() {
 		return new Iterator<Object>() {
-			private Iterator<Node> nodeIterator = string2Element.values().iterator();
+			private final Iterator<Node> nodeIterator = string2Element.values().iterator();
 
 			public boolean hasNext() {
 				return nodeIterator.hasNext();
@@ -204,10 +213,6 @@ public class IndexedTree {
 				nodeIterator.remove();
 			}
 		};
-	}
-
-	public DefaultMutableTreeNode getRoot() {
-		return string2Element.get(this);
 	}
 
 	public void removeChildElements(final Object key) {

@@ -20,7 +20,6 @@
 package org.freeplane.main.application;
 
 import java.awt.Component;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -34,16 +33,12 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import javax.swing.JMenuItem;
-import javax.swing.KeyStroke;
-
 import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.IMapViewChangeListener;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.UIBuilder;
@@ -146,7 +141,7 @@ class LastOpenedList implements IMapViewChangeListener {
 		int i = 0;
 		for (final ListIterator it = listIterator(); it.hasNext();) {
 			final String key = (String) it.next();
-			if(i++ == 0){
+			if (i++ == 0) {
 				continue;
 			}
 			final AFreeplaneAction lastOpenedActionListener = new OpenLastOpenedAction(i, key, controller, this);

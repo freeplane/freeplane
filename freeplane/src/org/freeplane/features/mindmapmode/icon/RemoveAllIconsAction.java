@@ -65,6 +65,10 @@ class RemoveAllIconsAction extends MultipleNodeAction implements IIconInformatio
 		return UITools.getKeyStroke(ResourceController.getResourceController().getAdjustableProperty(getShortcutKey()));
 	}
 
+	public String getShortcutKey() {
+		return getKey() + ".shortcut";
+	}
+
 	public void removeAllIcons(final NodeModel node) {
 		final int size = node.getIcons().size();
 		final MIconController iconController = (MIconController) IconController.getController(getModeController());
@@ -72,8 +76,4 @@ class RemoveAllIconsAction extends MultipleNodeAction implements IIconInformatio
 			iconController.removeIcon(node, 0);
 		}
 	}
-
-	public String getShortcutKey() {
-	    return getKey() + ".shortcut";
-    }
 }

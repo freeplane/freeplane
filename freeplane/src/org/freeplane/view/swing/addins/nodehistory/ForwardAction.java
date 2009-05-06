@@ -32,7 +32,7 @@ import org.freeplane.core.ui.EnabledAction;
  */
 @EnabledAction(checkOnNodeChange = true)
 @ActionLocationDescriptor(locations = { "/menu_bar/navigate/folding", "/main_toolbar/history" }, //
-	accelerator="alt RIGHT")
+accelerator = "alt RIGHT")
 class ForwardAction extends AFreeplaneAction {
 	/**
 	 * 

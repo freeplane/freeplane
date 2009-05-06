@@ -41,8 +41,8 @@ import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.modecontroller.SelectionController;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.ColorUtils;
 
@@ -59,6 +59,7 @@ public class LinkController extends SelectionController implements IExtension {
 	}
 
 	private static ArrowLinkListener listener = null;
+	public static final String RESOURCES_LINK_COLOR = "standardlinkcolor";
 	public static final int STANDARD_WIDTH = 1;
 	static Color standardColor = null;
 
@@ -89,7 +90,6 @@ public class LinkController extends SelectionController implements IExtension {
 
 	final private ExclusivePropertyChain<Color, ArrowLinkModel> colorHandlers;
 	final private ModeController modeController;
-	public static final String RESOURCES_LINK_COLOR = "standardlinkcolor";
 
 	public LinkController(final ModeController modeController) {
 		this.modeController = modeController;

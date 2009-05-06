@@ -43,7 +43,8 @@ class IconAction extends MultipleNodeAction implements IIconInformation {
 	final private MindIcon icon;
 
 	public IconAction(final ModeController controller, final MindIcon _icon) {
-		super("IconAction." + _icon.getName(), controller.getController(), ResourceBundles.getText("icon_" + _icon.getName()), _icon.getIcon());
+		super("IconAction." + _icon.getName(), controller.getController(), ResourceBundles.getText("icon_"
+		        + _icon.getName()), _icon.getIcon());
 		putValue(Action.SHORT_DESCRIPTION, _icon.getDescription());
 		icon = _icon;
 	}
@@ -82,6 +83,6 @@ class IconAction extends MultipleNodeAction implements IIconInformation {
 	}
 
 	public String getShortcutKey() {
-	    return icon.getShortcutKey();
-    }
+		return icon.getShortcutKey();
+	}
 }

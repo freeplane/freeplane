@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.Vector;
 
 import javax.swing.Action;
-import javax.swing.JMenuItem;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 
@@ -94,11 +93,9 @@ public class MIconController extends IconController {
 	}
 
 	public void addIconsToMenu(final MenuBuilder builder, final String iconMenuString) {
-		String category = iconMenuString + "/icons/icons";
-		builder.addAction(category, getModeController().getAction(
-		    "RemoveIconAction"), MenuBuilder.AS_CHILD);
-		builder.addAction(category, getModeController().getAction(
-		    "RemoveAllIconsAction"), MenuBuilder.AS_CHILD);
+		final String category = iconMenuString + "/icons/icons";
+		builder.addAction(category, getModeController().getAction("RemoveIconAction"), MenuBuilder.AS_CHILD);
+		builder.addAction(category, getModeController().getAction("RemoveAllIconsAction"), MenuBuilder.AS_CHILD);
 		builder.addSeparator(category, MenuBuilder.AS_CHILD);
 		for (int i = 0; i < iconActions.size(); ++i) {
 			builder.addAction(category, iconActions.get(i), MenuBuilder.AS_CHILD);

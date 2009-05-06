@@ -91,23 +91,6 @@ public abstract class AFreeplaneAction extends AbstractAction {
 	private boolean selected = false;
 	private boolean visible = true;
 
-	//	/**
-	//	 * @param controller
-	//	 * @param string
-	//	 */
-	//	private AFreeplaneAction(final Controller controller, final String titleKey) {
-	//		this(controller);
-	//	}
-	//
-	public AFreeplaneAction(String key, final Controller controller, final String title, final ImageIcon icon) {
-		this.controller = controller;
-		putValue(SMALL_ICON, icon);
-		if (title != null && !title.equals("")) {
-			MenuBuilder.setLabelAndMnemonic(this, title);
-		}
-		this.key = key;
-	}
-
 	//
 	//	/**
 	//	 * @param title
@@ -134,11 +117,28 @@ public abstract class AFreeplaneAction extends AbstractAction {
 			putValue(SMALL_ICON, icon);
 		}
 		final String tooltip = ResourceBundles.getText(getTooltipKey(), null);
-		if (tooltip != null && ! "".equals(tooltip)) {
+		if (tooltip != null && !"".equals(tooltip)) {
 			putValue(Action.SHORT_DESCRIPTION, tooltip);
 			putValue(Action.LONG_DESCRIPTION, tooltip);
 		}
-//		System.out.println(key);
+		//		System.out.println(key);
+	}
+
+	//	/**
+	//	 * @param controller
+	//	 * @param string
+	//	 */
+	//	private AFreeplaneAction(final Controller controller, final String titleKey) {
+	//		this(controller);
+	//	}
+	//
+	public AFreeplaneAction(final String key, final Controller controller, final String title, final ImageIcon icon) {
+		this.controller = controller;
+		putValue(SMALL_ICON, icon);
+		if (title != null && !title.equals("")) {
+			MenuBuilder.setLabelAndMnemonic(this, title);
+		}
+		this.key = key;
 	}
 
 	public Controller getController() {

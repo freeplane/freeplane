@@ -109,14 +109,12 @@ public class AttributeRegistryTableModel extends AbstractTableModel {
 		switch (column) {
 			case 0:
 				if (AttributeRegistryTableModel.attributeColumnName == null) {
-					AttributeRegistryTableModel.attributeColumnName = ResourceBundles
-					    .getText("attributes_attribute");
+					AttributeRegistryTableModel.attributeColumnName = ResourceBundles.getText("attributes_attribute");
 				}
 				return AttributeRegistryTableModel.attributeColumnName;
 			case 1:
 				if (AttributeRegistryTableModel.visibilityColumnName == null) {
-					AttributeRegistryTableModel.visibilityColumnName = ResourceBundles
-					    .getText("attributes_visible");
+					AttributeRegistryTableModel.visibilityColumnName = ResourceBundles.getText("attributes_visible");
 				}
 				return AttributeRegistryTableModel.visibilityColumnName;
 			case 2:

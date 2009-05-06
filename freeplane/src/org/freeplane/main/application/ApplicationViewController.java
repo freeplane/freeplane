@@ -22,20 +22,13 @@ package org.freeplane.main.application;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Cursor;
-import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Frame;
-import java.awt.Insets;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.text.MessageFormat;
 
-import javax.swing.ImageIcon;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -45,7 +38,6 @@ import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 
-import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.frame.ViewController;
@@ -53,6 +45,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 
 class ApplicationViewController extends ViewController {
+	public static final String RESOURCES_USE_TABBED_PANE = "use_tabbed_pane";
 	private static final String SPLIT_PANE_LAST_LEFT_POSITION = "split_pane_last_left_position";
 	private static final String SPLIT_PANE_LAST_POSITION = "split_pane_last_position";
 	private static final String SPLIT_PANE_LAST_RIGHT_POSITION = "split_pane_last_right_position";
@@ -73,9 +66,9 @@ class ApplicationViewController extends ViewController {
 	final private NavigationNextMapAction navigationNextMap;
 	final private NavigationPreviousMapAction navigationPreviousMap;
 	final private ResourceController resourceController;
-	public static final String RESOURCES_USE_TABBED_PANE = "use_tabbed_pane";
 
-	public ApplicationViewController(final Controller controller, final IMapViewManager mapViewController, JFrame frame) {
+	public ApplicationViewController(final Controller controller, final IMapViewManager mapViewController,
+	                                 final JFrame frame) {
 		super(controller, mapViewController);
 		this.controller = controller;
 		navigationPreviousMap = new NavigationPreviousMapAction(controller);
@@ -87,7 +80,6 @@ class ApplicationViewController extends ViewController {
 		getContentPane().setLayout(new BorderLayout());
 		// --- Set Note Window Location ---
 		mLocationPreferenceValue = resourceController.getProperty("location", "bottom");
-		
 		if (ResourceController.getResourceController().getBooleanProperty("no_scrollbar")) {
 			getScrollPane().setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 			getScrollPane().setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -106,7 +98,6 @@ class ApplicationViewController extends ViewController {
 			getContentPane().add(mContentComponent, BorderLayout.CENTER);
 		}
 		getContentPane().add(getStatusLabel(), BorderLayout.SOUTH);
-
 	}
 
 	/**
@@ -162,7 +153,6 @@ class ApplicationViewController extends ViewController {
 	public JLayeredPane getLayeredPane() {
 		return frame.getLayeredPane();
 	}
-
 
 	@Override
 	public JSplitPane insertComponentIntoSplitPane(final JComponent pMindMapComponent) {
@@ -397,7 +387,7 @@ class ApplicationViewController extends ViewController {
 	 */
 	@Override
 	public void stop() {
-		final int winState = frame.getExtendedState() & ~ Frame.ICONIFIED;
+		final int winState = frame.getExtendedState() & ~Frame.ICONIFIED;
 		if (JFrame.MAXIMIZED_BOTH != (winState & JFrame.MAXIMIZED_BOTH)) {
 			resourceController.setProperty("appwindow_x", String.valueOf(frame.getX()));
 			resourceController.setProperty("appwindow_y", String.valueOf(frame.getY()));

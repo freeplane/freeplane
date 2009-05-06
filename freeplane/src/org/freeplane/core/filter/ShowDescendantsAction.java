@@ -49,12 +49,12 @@ class ShowDescendantsAction extends AFreeplaneAction {
 		filterController.showFilterToolbar(true);
 	}
 
-	@Override
-	public void setSelected() {
-		setSelected( isModelSelected());
+	private boolean isModelSelected() {
+		return filterController.getShowDescendants().isSelected();
 	}
 
-	private boolean isModelSelected() {
-	    return filterController.getShowDescendants().isSelected();
-    }
+	@Override
+	public void setSelected() {
+		setSelected(isModelSelected());
+	}
 }

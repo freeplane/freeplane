@@ -21,8 +21,6 @@ package org.freeplane.features.mindmapmode.edge;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.Action;
-
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
@@ -41,12 +39,12 @@ class EdgeWidthAction extends MultipleNodeAction {
 	private static String getWidthTitle(final ModeController controller, final int width) {
 		String returnValue;
 		if (width <= 0) {
-			returnValue = ResourceBundles.getText(width2String(width)+".text");
+			returnValue = ResourceBundles.getText(EdgeWidthAction.width2String(width) + ".text");
 		}
 		else {
 			returnValue = Integer.toString(width);
 		}
-		return  returnValue;
+		return returnValue;
 	}
 
 	private static String width2String(final int width) {
@@ -62,7 +60,8 @@ class EdgeWidthAction extends MultipleNodeAction {
 	final private int mWidth;
 
 	public EdgeWidthAction(final ModeController controller, final int width) {
-		super(EdgeWidthAction.width2String(width), controller.getController(), EdgeWidthAction.getWidthTitle(controller, width), null);
+		super(EdgeWidthAction.width2String(width), controller.getController(), EdgeWidthAction.getWidthTitle(
+		    controller, width), null);
 		mWidth = width;
 	}
 

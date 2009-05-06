@@ -41,6 +41,7 @@ import org.freeplane.core.util.MultipleValueMap;
 public class ResourceBundles extends ResourceBundle {
 	private static final String DEFAULT_LANGUAGE = "en";
 	public static final String POSTFIX_TRANSLATE_ME = "[translate me]";
+	public static final String RESOURCE_LANGUAGE = "language";
 
 	public static NamedObject createTranslatedString(final String key) {
 		final String fs = ResourceBundles.getText(key);
@@ -51,16 +52,15 @@ public class ResourceBundles extends ResourceBundle {
 		if (key == null) {
 			return null;
 		}
-		return ((ResourceBundles) ResourceController.getResourceController().getResources())
-		    .getResourceString(key);
+		return ((ResourceBundles) ResourceController.getResourceController().getResources()).getResourceString(key);
 	}
 
 	public static String getText(final String key, final String defaultString) {
 		if (key == null) {
 			return defaultString;
 		}
-		return ((ResourceBundles) ResourceController.getResourceController().getResources()).getResourceString(
-		    key, defaultString);
+		return ((ResourceBundles) ResourceController.getResourceController().getResources()).getResourceString(key,
+		    defaultString);
 	}
 
 	/**
@@ -71,7 +71,6 @@ public class ResourceBundles extends ResourceBundle {
 	private final MultipleValueMap<String, URL> externalResources;
 	private String lang;
 	private Map<String, String> languageResources;
-	public static final String RESOURCE_LANGUAGE = "language";
 
 	ResourceBundles(final ResourceController controller) {
 		this.controller = controller;

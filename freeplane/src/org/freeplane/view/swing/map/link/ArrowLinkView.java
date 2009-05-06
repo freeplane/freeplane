@@ -21,7 +21,6 @@ package org.freeplane.view.swing.map.link;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -36,10 +35,8 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import org.freeplane.core.modecontroller.ModeController;
-import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.common.link.ArrowLinkModel;
 import org.freeplane.features.common.link.LinkController;
-import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
@@ -118,6 +115,40 @@ public class ArrowLinkView {
 		return false;
 	}
 
+	private void drawEndPointText(final Graphics2D g, final String text, final Point endPoint, final Point controlPoint) {
+		if (text == null || text.equals("")) {
+			return;
+		}
+		final FontMetrics fontMetrics = g.getFontMetrics();
+		final int textWidth = fontMetrics.stringWidth(text);
+		final int textHeight = fontMetrics.getMaxAscent();
+		final int x;
+		if (controlPoint.x > endPoint.x) {
+			x = endPoint.x - textWidth;
+		}
+		else {
+			x = endPoint.x;
+		}
+		final int y;
+		if (controlPoint.y > endPoint.y) {
+			y = endPoint.y + textHeight + LABEL_SHIFT;
+		}
+		else {
+			y = endPoint.y - LABEL_SHIFT;
+		}
+		g.drawString(text, x, y);
+	}
+
+	private void drawMiddleLabel(final Graphics2D g, final String middleLabel) {
+		if (middleLabel == null || middleLabel.equals("")) {
+			return;
+		}
+		final FontMetrics fontMetrics = g.getFontMetrics();
+		final int textWidth = fontMetrics.stringWidth(middleLabel);
+		final Point centerPoint = getCenterPoint();
+		g.drawString(middleLabel, centerPoint.x - textWidth / 2, centerPoint.y - LABEL_SHIFT);
+	}
+
 	public CubicCurve2D getArrowLinkCurve() {
 		return arrowLinkCurve;
 	}
@@ -131,6 +162,40 @@ public class ArrowLinkView {
 			return new Rectangle();
 		}
 		return arrowLinkCurve.getBounds();
+	}
+
+	public Point getCenterPoint() {
+		if (arrowLinkCurve == null) {
+			return null;
+		}
+		final Point2D p1 = arrowLinkCurve.getP1();
+		final Point2D p2 = arrowLinkCurve.getP2();
+		final Point2D center = new Point2D.Double((p1.getX() + p2.getX()) / 2, (p1.getY() + p2.getY()) / 2);
+		final Point2D normal = normal(p1.getX(), p1.getY(), p2.getX(), p2.getY());
+		// flatten the curve and test for intersection (bug fix, fc, 16.1.2004).
+		final FlatteningPathIterator pi = new FlatteningPathIterator(arrowLinkCurve.getPathIterator(null), 2, 10/*=maximal 2^10=1024 points.*/);
+		double oldCoordinateX = 0, oldCoordinateY = 0;
+		while (pi.isDone() == false) {
+			final double[] coordinates = new double[6];
+			final int type = pi.currentSegment(coordinates);
+			switch (type) {
+				case PathIterator.SEG_LINETO:
+					final Point centerPoint = intersection(oldCoordinateX, oldCoordinateY, coordinates[0],
+					    coordinates[1], center.getX(), center.getY(), center.getX() + 1024 * normal.getX(), center
+					        .getY()
+					            + 1024 * normal.getY());
+					if (centerPoint != null) {
+						return centerPoint;
+					}
+					/* this case needs the same action as the next case, thus no "break" */
+				case PathIterator.SEG_MOVETO:
+					oldCoordinateX = coordinates[0];
+					oldCoordinateY = coordinates[1];
+					break;
+			}
+			pi.next();
+		}
+		throw new RuntimeException("center point not found");
 	}
 
 	public Color getColor() {
@@ -198,6 +263,36 @@ public class ArrowLinkView {
 	}
 
 	/**
+	 * Computes the intersection between two lines. The calculated point is approximate, 
+	 * since integers are used. If you need a more precise result, use doubles
+	 * everywhere. 
+	 * (c) 2007 Alexander Hristov. Use Freely (LGPL license). http://www.ahristov.com
+	 *
+	 * @param x1 Point 1 of Line 1
+	 * @param y1 Point 1 of Line 1
+	 * @param x2 Point 2 of Line 1
+	 * @param y2 Point 2 of Line 1
+	 * @param x3 Point 1 of Line 2
+	 * @param y3 Point 1 of Line 2
+	 * @param x4 Point 2 of Line 2
+	 * @param y4 Point 2 of Line 2
+	 * @return Point where the segments intersect, or null if they don't
+	 */
+	public Point intersection(final double x1, final double y1, final double x2, final double y2, final double x3,
+	                          final double y3, final double x4, final double y4) {
+		final double d = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+		if (d == 0) {
+			return null;
+		}
+		final int xi = (int) (((x3 - x4) * (x1 * y2 - y1 * x2) - (x1 - x2) * (x3 * y4 - y3 * x4)) / d);
+		final int yi = (int) (((y3 - y4) * (x1 * y2 - y1 * x2) - (y1 - y2) * (x3 * y4 - y3 * x4)) / d);
+		if (xi + 2 < Math.min(x1, x2) || xi - 2 > Math.max(x1, x2)) {
+			return null;
+		}
+		return new Point(xi, yi);
+	}
+
+	/**
 	 */
 	private boolean isSourceVisible() {
 		return (source != null && source.isContentVisible());
@@ -209,85 +304,27 @@ public class ArrowLinkView {
 		return (target != null && target.isContentVisible());
 	}
 
-	   /**
-     * Computes the unitary normal vector of a segment
-     * @param x1 Starting point of the segment
-     * @param y1 Starting point of the segment
-     * @param x2 Ending point of the segment
-     * @param y2 Ending point of the segment
-     * @return
-     */
-    public Point2D.Double normal(double x1,double y1,double x2, double y2) {
-      double nx,ny;
-      if (x1 == x2) {
-        nx = Math.signum(y2-y1);
-        ny = 0;
-      } else {
-        double f = (y2-y1)/(double)(x2-x1);
-        nx = f*Math.signum(x2-x1)/Math.sqrt(1+f*f);
-        ny = -1*Math.signum(x2-x1)/Math.sqrt(1+f*f);
-      }
-      return new Point2D.Double(nx,ny);
-    }
-    /**
-     * Computes the intersection between two lines. The calculated point is approximate, 
-  	 * since integers are used. If you need a more precise result, use doubles
-  	 * everywhere. 
-  	 * (c) 2007 Alexander Hristov. Use Freely (LGPL license). http://www.ahristov.com
-  	 *
-     * @param x1 Point 1 of Line 1
-     * @param y1 Point 1 of Line 1
-     * @param x2 Point 2 of Line 1
-     * @param y2 Point 2 of Line 1
-     * @param x3 Point 1 of Line 2
-     * @param y3 Point 1 of Line 2
-     * @param x4 Point 2 of Line 2
-     * @param y4 Point 2 of Line 2
-     * @return Point where the segments intersect, or null if they don't
-     */
-    public Point intersection(
-  	  double x1,double y1,double x2,double y2, 
-  	double x3, double y3, double x4,double y4
-  	) {
-    	double d = (x1-x2)*(y3-y4) - (y1-y2)*(x3-x4);
-      if (d == 0) return null;
-      
-      int xi = (int) (((x3-x4)*(x1*y2-y1*x2)-(x1-x2)*(x3*y4-y3*x4))/d);
-      int yi = (int) (((y3-y4)*(x1*y2-y1*x2)-(y1-y2)*(x3*y4-y3*x4))/d);
-      if (xi+2 < Math.min(x1,x2) || xi-2 > Math.max(x1,x2)) return null;
-      return new Point(xi,yi);
-    }     
-    public Point getCenterPoint() {
-        if(arrowLinkCurve == null)
-            return null;
-        final Point2D p1 = arrowLinkCurve.getP1();
-        final Point2D p2 = arrowLinkCurve.getP2();
-        final Point2D center = new Point2D.Double((p1.getX()+p2.getX())/2, (p1.getY()+p2.getY())/2);
-        final Point2D normal = normal(p1.getX(), p1.getY(), p2.getX(), p2.getY());
-        // flatten the curve and test for intersection (bug fix, fc, 16.1.2004).
-        FlatteningPathIterator pi = new FlatteningPathIterator(arrowLinkCurve.getPathIterator(null),2,10/*=maximal 2^10=1024 points.*/);
-        double oldCoordinateX=0, oldCoordinateY=0;
-        while (pi.isDone() == false) {
-            double[] coordinates = new double[6];
-            int type = pi.currentSegment(coordinates);
-            switch(type) {
-            case PathIterator.SEG_LINETO:
-            	final Point centerPoint = intersection(oldCoordinateX, oldCoordinateY, coordinates[0], coordinates[1],
-                    	center.getX(), center.getY(),
-                    	center.getX() + 1024*normal.getX(), center.getY() + 1024*normal.getY());
-            	if(centerPoint != null){
-            		return centerPoint;
-            	}
-                /* this case needs the same action as the next case, thus no "break" */
-            case PathIterator.SEG_MOVETO:
-                oldCoordinateX=coordinates[0];
-                oldCoordinateY=coordinates[1];
-                break;
-            }
-            pi.next();
-        }
-        throw new RuntimeException("center point not found");
-    }
+	/**
+	 * Computes the unitary normal vector of a segment
+	 * @param x1 Starting point of the segment
+	 * @param y1 Starting point of the segment
+	 * @param x2 Ending point of the segment
+	 * @param y2 Ending point of the segment
+	 * @return
+	 */
+	public Point2D.Double normal(final double x1, final double y1, final double x2, final double y2) {
+		double nx, ny;
+		if (x1 == x2) {
+			nx = Math.signum(y2 - y1);
+			ny = 0;
+		}
+		else {
+			final double f = (y2 - y1) / (x2 - x1);
+			nx = f * Math.signum(x2 - x1) / Math.sqrt(1 + f * f);
+			ny = -1 * Math.signum(x2 - x1) / Math.sqrt(1 + f * f);
+		}
+		return new Point2D.Double(nx, ny);
+	}
 
 	/**
 	 * \param iterativeLevel describes the n-th nested arrowLink that is to be
@@ -370,56 +407,22 @@ public class ArrowLinkView {
 		final String sourceLabel = arrowLinkModel.getSourceLabel();
 		final String middleLabel = arrowLinkModel.getMiddleLabel();
 		final String targetLabel = arrowLinkModel.getTargetLabel();
-		if(p1 != null){
+		if (p1 != null) {
 			drawEndPointText(g, sourceLabel, p1, p3);
-			if(p2 == null){
+			if (p2 == null) {
 				drawEndPointText(g, middleLabel, p3, p1);
 			}
 		}
-		if(p2 != null){
+		if (p2 != null) {
 			drawEndPointText(g, targetLabel, p2, p4);
-			if(p1 == null){
+			if (p1 == null) {
 				drawEndPointText(g, middleLabel, p4, p2);
 			}
 		}
-		if(p1 != null && p2 != null){
-	        drawMiddleLabel(g, middleLabel);
+		if (p1 != null && p2 != null) {
+			drawMiddleLabel(g, middleLabel);
 		}
 	}
-
-	private void drawMiddleLabel(final Graphics2D g, final String middleLabel) {
-		if ( middleLabel == null || middleLabel.equals("")){
-			return;
-		}		
-		final FontMetrics fontMetrics = g.getFontMetrics();
-		final int textWidth = fontMetrics.stringWidth(middleLabel);
-		final Point centerPoint = getCenterPoint();
-		g.drawString(middleLabel, centerPoint.x - textWidth/2, centerPoint.y - LABEL_SHIFT);
-	}
-
-	private void drawEndPointText(final Graphics2D g, String text, Point endPoint, Point controlPoint) {
-		if(text == null || text.equals("")){
-			return;
-		}
-	    final FontMetrics fontMetrics = g.getFontMetrics();
-		final int textWidth = fontMetrics.stringWidth(text);
-		final int textHeight = fontMetrics.getMaxAscent();
-		final int x;
-		if(controlPoint.x > endPoint.x){
-			x = endPoint.x - textWidth;
-		}
-		else{
-			x = endPoint.x; 
-		}
-		final int y;
-		if(controlPoint.y > endPoint.y){
-			y = endPoint.y + textHeight + LABEL_SHIFT;
-		}
-		else{
-			y = endPoint.y - LABEL_SHIFT; 
-		}
-		g.drawString(text, x, y);
-    }
 
 	/**
 	 * @param p1

@@ -19,35 +19,23 @@
  */
 package org.freeplane.main.application;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Frame;
-import java.awt.Graphics;
-import java.awt.GraphicsConfiguration;
-import java.awt.Image;
-import java.awt.ImageCapabilities;
 import java.awt.event.ActionEvent;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.image.ImageObserver;
-import java.awt.image.ImageProducer;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.SwingUtilities;
 
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.FreeplaneVersion;
 import org.freeplane.core.filter.FilterController;
-import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
@@ -68,9 +56,26 @@ import org.freeplane.view.swing.addins.nodehistory.NodeHistory;
 import org.freeplane.view.swing.map.MMapViewController;
 
 public class FreeplaneStarter {
+	public static final String LOAD_LAST_MAP = "load_last_map";
+
 	static public void main(final String[] args) {
 		final FreeplaneStarter starter = new FreeplaneStarter();
 		starter.run(args);
+	}
+
+	public static void showSysInfo() {
+		final StringBuffer info = new StringBuffer();
+		info.append("freeplane_version = ");
+		info.append(FreeplaneVersion.getVersion());
+		info.append("; freeplane_xml_version = ");
+		info.append(FreeplaneVersion.XML_VERSION);
+		info.append("\njava_version = ");
+		info.append(System.getProperty("java.version"));
+		info.append("; os_name = ");
+		info.append(System.getProperty("os.name"));
+		info.append("; os_version = ");
+		info.append(System.getProperty("os.version"));
+		LogTool.info(info.toString());
 	}
 
 	private ApplicationResourceController applicationResourceController;
@@ -78,7 +83,6 @@ public class FreeplaneStarter {
 	private IFeedBack feedBack;
 	private FreeplaneSplashModern splash;
 	private ApplicationViewController viewController;
-	public static final String LOAD_LAST_MAP = "load_last_map";
 
 	public FreeplaneStarter() {
 		super();
@@ -126,15 +130,38 @@ public class FreeplaneStarter {
 		}
 	}
 
-	public void initFrame(JFrame frame) {
+	public void createFrame(final String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				viewController.init();
+				try {
+					final Class macClass = Class.forName("accessories.plugins.MacChanges");
+					macClass.getConstructors()[0].newInstance(new Object[] { this });
+				}
+				catch (final Exception e) {
+				}
+				feedBack.increase("Freeplane.progress.loadMaps");
+				loadMaps(args);
+				final Frame frame = viewController.getFrame();
+				final int extendedState = frame.getExtendedState();
+				frame.setVisible(true);
+				if (extendedState != frame.getExtendedState()) {
+					frame.setExtendedState(extendedState);
+				}
+				splash.dispose();
+			}
+		});
+	}
+
+	public void initFrame(final JFrame frame) {
 		final ImageIcon mWindowIcon;
-		if(Compat.isLowerJdk(Compat.VERSION_1_6_0)){
+		if (Compat.isLowerJdk(Compat.VERSION_1_6_0)) {
 			mWindowIcon = new ImageIcon(ResourceController.getResourceController().getResource(
-			"/images/Freeplane_frame_icon.png"));
+			    "/images/Freeplane_frame_icon.png"));
 		}
-		else{
+		else {
 			mWindowIcon = new ImageIcon(ResourceController.getResourceController().getResource(
-			"/images/Freeplane_frame_icon_32x32.png"));
+			    "/images/Freeplane_frame_icon_32x32.png"));
 		}
 		frame.setIconImage(mWindowIcon.getImage());
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -155,10 +182,10 @@ public class FreeplaneStarter {
 			controller.getViewController().setLeftToolbarVisible(false);
 		}
 		frame.setFocusTraversalKeysEnabled(false);
-		int win_width = ResourceController.getResourceController().getIntProperty("appwindow_width", 0);
-		int win_height = ResourceController.getResourceController().getIntProperty("appwindow_height", 0);
-		int win_x = ResourceController.getResourceController().getIntProperty("appwindow_x", 0);
-		int win_y = ResourceController.getResourceController().getIntProperty("appwindow_y", 0);
+		final int win_width = ResourceController.getResourceController().getIntProperty("appwindow_width", 0);
+		final int win_height = ResourceController.getResourceController().getIntProperty("appwindow_height", 0);
+		final int win_x = ResourceController.getResourceController().getIntProperty("appwindow_x", 0);
+		final int win_y = ResourceController.getResourceController().getIntProperty("appwindow_y", 0);
 		UITools.setBounds(frame, win_x, win_y, win_width, win_height);
 		int win_state = Integer
 		    .parseInt(ResourceController.getResourceController().getProperty("appwindow_state", "0"));
@@ -166,40 +193,16 @@ public class FreeplaneStarter {
 		frame.setExtendedState(win_state);
 	}
 
-	public void createFrame(final String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				viewController.init();
-                try {
-                	final Class macClass = Class.forName("accessories.plugins.MacChanges");
-                	macClass.getConstructors()[0].newInstance(new Object[] { this });
-                }
-                catch (final Exception e) {
-                }
-				feedBack.increase("Freeplane.progress.loadMaps");
-				loadMaps(args);
-				Frame frame = viewController.getFrame();
-				int extendedState = frame.getExtendedState();
-				frame.setVisible(true);
-				if (extendedState != frame.getExtendedState()) {
-					frame.setExtendedState(extendedState);
-				}
-				splash.dispose();
-			}
-		});
-	}
-
 	private void loadMaps(final String[] args) {
 		boolean fileLoaded = false;
 		for (int i = 0; i < args.length; i++) {
 			String fileArgument = args[i];
-			if (fileArgument.toLowerCase().endsWith(
-			    org.freeplane.core.url.UrlManager.FREEPLANE_FILE_EXTENSION)) {
+			if (fileArgument.toLowerCase().endsWith(org.freeplane.core.url.UrlManager.FREEPLANE_FILE_EXTENSION)) {
 				if (!UrlManager.isAbsolutePath(fileArgument)) {
 					fileArgument = System.getProperty("user.dir") + System.getProperty("file.separator") + fileArgument;
 				}
 				try {
-					if(! fileLoaded){
+					if (!fileLoaded) {
 						controller.selectMode(MModeController.MODENAME);
 					}
 					final MModeController modeController = (MModeController) controller.getModeController();
@@ -215,10 +218,10 @@ public class FreeplaneStarter {
 			return;
 		}
 		final String restoreable = ResourceController.getResourceController().getProperty(
-			Controller.ON_START_IF_NOT_SPECIFIED);
-		if (Boolean.parseBoolean(ResourceController.getResourceController().getProperty(
-			FreeplaneStarter.LOAD_LAST_MAP))
-			&& restoreable != null && restoreable.length() > 0) {
+		    Controller.ON_START_IF_NOT_SPECIFIED);
+		if (Boolean
+		    .parseBoolean(ResourceController.getResourceController().getProperty(FreeplaneStarter.LOAD_LAST_MAP))
+		        && restoreable != null && restoreable.length() > 0) {
 			try {
 				applicationResourceController.getLastOpenedList().open(controller, restoreable);
 				return;
@@ -272,19 +275,4 @@ public class FreeplaneStarter {
 			e.printStackTrace();
 		}
 	}
-
-	public static void showSysInfo() {
-    	final StringBuffer info = new StringBuffer();
-    	info.append("freeplane_version = ");
-    	info.append(FreeplaneVersion.getVersion());
-    	info.append("; freeplane_xml_version = ");
-    	info.append(FreeplaneVersion.XML_VERSION);
-    	info.append("\njava_version = ");
-    	info.append(System.getProperty("java.version"));
-    	info.append("; os_name = ");
-    	info.append(System.getProperty("os.name"));
-    	info.append("; os_version = ");
-    	info.append(System.getProperty("os.version"));
-    	LogTool.info(info.toString());
-    }
 }

@@ -126,8 +126,8 @@ public class MNodeDropListener implements DropTargetListener {
 				int yesorno = JOptionPane.YES_OPTION;
 				if (controller.getSelection().size() >= 5) {
 					yesorno = JOptionPane.showConfirmDialog(controller.getViewController().getContentPane(),
-					    ResourceBundles.getText("lots_of_links_warning"), Integer.toString(controller
-					        .getSelection().size())
+					    ResourceBundles.getText("lots_of_links_warning"), Integer.toString(controller.getSelection()
+					        .size())
 					            + " links to the same node", JOptionPane.YES_NO_OPTION);
 				}
 				if (yesorno == JOptionPane.YES_OPTION) {

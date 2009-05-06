@@ -33,6 +33,7 @@ import org.freeplane.core.resources.ResourceController;
 public class NoteController implements IExtension {
 	private static boolean firstRun = true;
 	private static ImageIcon noteIcon = null;
+	public static final String RESOURCES_DON_T_SHOW_NOTE_ICONS = "don_t_show_note_icons";
 
 	public static NoteController getController(final ModeController modeController) {
 		return (NoteController) modeController.getExtension(NoteController.class);
@@ -48,7 +49,6 @@ public class NoteController implements IExtension {
 	}
 
 	final private ModeController modeController;
-	public static final String RESOURCES_DON_T_SHOW_NOTE_ICONS = "don_t_show_note_icons";
 
 	public NoteController(final ModeController modeController) {
 		super();

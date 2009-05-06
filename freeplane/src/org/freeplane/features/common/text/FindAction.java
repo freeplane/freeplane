@@ -54,8 +54,8 @@ class FindAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final NodeModel selected = getController().getSelection().getSelected();
-		final String what = UITools.showInputDialog(getController(), selected, ResourceBundles
-		    .getText("find_what"), ResourceBundles.getText("find"), JOptionPane.QUESTION_MESSAGE);
+		final String what = UITools.showInputDialog(getController(), selected, ResourceBundles.getText("find_what"),
+		    ResourceBundles.getText("find"), JOptionPane.QUESTION_MESSAGE);
 		if (what == null || what.equals("")) {
 			return;
 		}
@@ -67,9 +67,8 @@ class FindAction extends AFreeplaneAction {
 			final String messageText = ResourceBundles.getText("no_found_from");
 			final String searchTerm = messageText.startsWith("<html>") ? HtmlTools.toXMLEscapedText(getSearchTerm())
 			        : getSearchTerm();
-			UITools.informationMessage(getController().getViewController().getFrame(), 
-				messageText.replaceAll("\\$1",Matcher.quoteReplacement(searchTerm))
-				.replaceAll("\\$2", Matcher.quoteReplacement(getFindFromText())));
+			UITools.informationMessage(getController().getViewController().getFrame(), messageText.replaceAll("\\$1",
+			    Matcher.quoteReplacement(searchTerm)).replaceAll("\\$2", Matcher.quoteReplacement(getFindFromText())));
 		}
 	}
 

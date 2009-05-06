@@ -30,9 +30,7 @@ import java.util.List;
 import java.util.Vector;
 
 import javax.swing.Action;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.KeyStroke;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.modecontroller.ModeController;

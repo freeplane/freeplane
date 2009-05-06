@@ -30,10 +30,6 @@ public abstract class NodeCondition implements ICondition {
 	private String description;
 	private JComponent renderer;
 
-	protected void setListCellRendererComponent(JComponent renderer) {
-    	this.renderer = renderer;
-    }
-
 	protected NodeCondition() {
 	}
 
@@ -47,6 +43,10 @@ public abstract class NodeCondition implements ICondition {
 			renderer = ConditionFactory.createCellRendererComponent(toString());
 		}
 		return renderer;
+	}
+
+	protected void setListCellRendererComponent(final JComponent renderer) {
+		this.renderer = renderer;
 	}
 
 	@Override

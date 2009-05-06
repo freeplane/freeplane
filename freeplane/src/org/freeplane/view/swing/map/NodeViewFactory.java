@@ -155,18 +155,18 @@ class NodeViewFactory {
 		}
 	}
 
-	private EdgeView getHorizontalEdgeView() {
-		if (horizontalEdgeView == null) {
-			horizontalEdgeView = new HorizontalEdgeView();
-		}
-		return horizontalEdgeView;
-    }
-
 	private EdgeView getHiddenEdgeView() {
 		if (hiddenEdgeView == null) {
 			hiddenEdgeView = new HiddenEdgeView();
 		}
 		return hiddenEdgeView;
+	}
+
+	private EdgeView getHorizontalEdgeView() {
+		if (horizontalEdgeView == null) {
+			horizontalEdgeView = new HorizontalEdgeView();
+		}
+		return horizontalEdgeView;
 	}
 
 	private EdgeView getLinearEdgeView() {

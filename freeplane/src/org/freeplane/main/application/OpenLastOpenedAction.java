@@ -27,12 +27,12 @@ import org.freeplane.core.util.LogTool;
 
 class OpenLastOpenedAction extends AFreeplaneAction {
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	final private LastOpenedList list;
 
-	public OpenLastOpenedAction(int i, String name, final Controller controller, final LastOpenedList list) {
+	public OpenLastOpenedAction(final int i, final String name, final Controller controller, final LastOpenedList list) {
 		super("OpenLastOpenedAction_" + i, controller, name, null);
 		this.list = list;
 	}

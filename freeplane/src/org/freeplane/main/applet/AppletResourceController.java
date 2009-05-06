@@ -95,6 +95,11 @@ class AppletResourceController extends ResourceController {
 	}
 
 	@Override
+	public void init(final Controller controller) {
+		super.init(controller);
+	}
+
+	@Override
 	public void loadProperties(final InputStream inStream) throws IOException {
 		userProps.load(inStream);
 	}
@@ -123,11 +128,4 @@ class AppletResourceController extends ResourceController {
 			userProps.setProperty(key, val);
 		}
 	}
-
-	@Override
-	public void init(Controller controller) {
-	    super.init(controller);
-    }
-	
-	
 }

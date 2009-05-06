@@ -40,11 +40,11 @@ import org.freeplane.view.swing.addins.nodehistory.NodeHistory;
 import org.freeplane.view.swing.map.MapViewController;
 
 public class FreeplaneApplet extends JApplet {
+	static private AppletResourceController appletResourceController;
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	static private AppletResourceController appletResourceController;
 	private AppletViewController appletViewController;
 	private Controller controller;
 
@@ -55,7 +55,7 @@ public class FreeplaneApplet extends JApplet {
 
 	@Override
 	public void init() {
-		if(appletResourceController == null){
+		if (appletResourceController == null) {
 			appletResourceController = new AppletResourceController(this);
 		}
 		updateLookAndFeel();

@@ -36,7 +36,7 @@ import org.freeplane.core.ui.MenuBuilder;
  */
 public class UnfoldAll implements IMouseWheelEventHandler {
 	@ActionLocationDescriptor(locations = { "/menu_bar/navigate/folding", "/main_toolbar/folding" }, //
-		accelerator="alt HOME")
+	accelerator = "alt HOME")
 	private class FoldAllAction extends AFreeplaneAction {
 		/**
 		 * 
@@ -53,7 +53,7 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 	}
 
 	@ActionLocationDescriptor(locations = { "/menu_bar/navigate/folding", "/main_toolbar/folding" }, //
-		accelerator="alt PAGE_UP")
+	accelerator = "alt PAGE_UP")
 	private class FoldOneLevelAction extends AFreeplaneAction {
 		/**
 		 * 
@@ -70,7 +70,7 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 	}
 
 	@ActionLocationDescriptor(locations = { "/menu_bar/navigate/folding", "/main_toolbar/folding" }, //
-		accelerator="alt END")
+	accelerator = "alt END")
 	private class UnfoldAllAction extends AFreeplaneAction {
 		/**
 		 * 
@@ -87,7 +87,7 @@ public class UnfoldAll implements IMouseWheelEventHandler {
 	}
 
 	@ActionLocationDescriptor(locations = { "/menu_bar/navigate/folding", "/main_toolbar/folding" }, //
-		accelerator="alt PAGE_DOWN")
+	accelerator = "alt PAGE_DOWN")
 	private class UnfoldOneLevelAction extends AFreeplaneAction {
 		/**
 		 * 

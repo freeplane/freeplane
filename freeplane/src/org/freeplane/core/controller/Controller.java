@@ -45,6 +45,9 @@ import org.freeplane.core.util.LogTool;
  * MapModel(editing) or MapView(navigation).
  */
 public class Controller extends AController {
+	// TODO ARCH rladstaetter 15.02.2009 introduce namespaces where feasible
+	public static final String ON_START_IF_NOT_SPECIFIED = "on_start_if_not_specified";
+
 	public static void setLookAndFeel(final String lookAndFeel) {
 		try {
 			if (lookAndFeel.equals("windows")) {
@@ -84,8 +87,6 @@ public class Controller extends AController {
 	private ModeController modeController;
 	final private Map<String, ModeController> modeControllers = new HashMap<String, ModeController>();
 	private ViewController viewController;
-	// TODO ARCH rladstaetter 15.02.2009 introduce namespaces where feasible
-    public static final String ON_START_IF_NOT_SPECIFIED = "on_start_if_not_specified";
 
 	public Controller() {
 		super();
@@ -214,8 +215,8 @@ public class Controller extends AController {
 			return false;
 		}
 		if (currentMapRestorable != null) {
-			ResourceController.getResourceController().setProperty(
-			    Controller.ON_START_IF_NOT_SPECIFIED, currentMapRestorable);
+			ResourceController.getResourceController().setProperty(Controller.ON_START_IF_NOT_SPECIFIED,
+			    currentMapRestorable);
 		}
 		if (modeController != null) {
 			modeController.shutdown();

@@ -41,23 +41,23 @@ public class HorizontalEdgeView extends EdgeView {
 		g.setStroke(stroke);
 		final int w = getWidth();
 		int xMiddle = getTarget().getMap().getZoomed(LocationModel.HGAP) / 2;
-		if(getTarget().isLeft()){
-			xMiddle = - xMiddle;
+		if (getTarget().isLeft()) {
+			xMiddle = -xMiddle;
 		}
 		xMiddle += start.x;
 		int endX = end.x;
-		int mainViewWidth = getTarget().getMainView().getWidth();
-		if(getTarget().isLeft()){
-			if(end.x - mainViewWidth/2> xMiddle){
-				endX -= mainViewWidth; 
+		final int mainViewWidth = getTarget().getMainView().getWidth();
+		if (getTarget().isLeft()) {
+			if (end.x - mainViewWidth / 2 > xMiddle) {
+				endX -= mainViewWidth;
 			}
 		}
-		else{
-			if(end.x + mainViewWidth/2< xMiddle){
-				endX += mainViewWidth; 
+		else {
+			if (end.x + mainViewWidth / 2 < xMiddle) {
+				endX += mainViewWidth;
 			}
 		}
-		int xs[] = { start.x, xMiddle, xMiddle,  endX };
+		final int xs[] = { start.x, xMiddle, xMiddle, endX };
 		final int ys[] = { start.y, start.y, end.y, end.y };
 		if (w <= 1) {
 			g.drawPolyline(xs, ys, 4);
@@ -74,8 +74,6 @@ public class HorizontalEdgeView extends EdgeView {
 			if (getTarget().isLeft()) {
 				dx = -dx;
 			}
-			
-			
 			g.drawPolyline(xs, ys, 4);
 			if (isTargetEclipsed()) {
 				g.setColor(g.getBackground());

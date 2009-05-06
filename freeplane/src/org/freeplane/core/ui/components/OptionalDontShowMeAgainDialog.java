@@ -186,8 +186,7 @@ public class OptionalDontShowMeAgainDialog {
 		    okButton,
 		    new GridBagConstraints(2, 3, 1, 1, 1.0, 1.0, GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(
 		        5, 5, 0, 0), 0, 0));
-		final JButton cancelButton = new JButton(ResourceBundles
-		    .getText("OptionalDontShowMeAgainDialog.cancel"));
+		final JButton cancelButton = new JButton(ResourceBundles.getText("OptionalDontShowMeAgainDialog.cancel"));
 		MenuBuilder.setLabelAndMnemonic(cancelButton, null);
 		cancelButton.addActionListener(cancelAction);
 		mDialog.getContentPane().add(

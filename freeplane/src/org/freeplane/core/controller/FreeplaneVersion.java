@@ -22,22 +22,22 @@ package org.freeplane.core.controller;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.ResUtil;
 
 // TODO rladstaetter 15.02.2009 use build properties for this information
 @Deprecated
 public class FreeplaneVersion {
+	private static final FreeplaneVersion VERSION = FreeplaneVersion.loadVersion();
 	public static final String VERSION_KEY = "freeplane_version";
 	public static final String VERSION_PROPERTIES = "/version.properties";
-	private static final FreeplaneVersion VERSION = loadVersion();
+	public static final String XML_VERSION = "0.9.0";
 
 	public static FreeplaneVersion getVersion() {
 		return VERSION;
 	}
 
 	private static FreeplaneVersion loadVersion() {
-		Properties versionProperties = ResUtil.loadProperties(VERSION_PROPERTIES);
+		final Properties versionProperties = ResUtil.loadProperties(VERSION_PROPERTIES);
 		final String versionString = versionProperties.getProperty(VERSION_KEY);
 		final String versionStatus = versionProperties.getProperty("freeplane_version_status");
 		return new FreeplaneVersion(versionString, versionStatus);
@@ -48,7 +48,6 @@ public class FreeplaneVersion {
 	final int mMin;
 	final int mNum;
 	String mType;
-	public static final String XML_VERSION = "0.9.0";
 
 	public FreeplaneVersion(final int pMaj, final int pMid, final int pMin, final String pType, final int pNum) {
 		super();
@@ -85,10 +84,10 @@ public class FreeplaneVersion {
 		mNum = Integer.parseInt(info[4]);
 	}
 
-	public FreeplaneVersion(String versionString, String versionStatus) {
-	    this(versionString);
-	    this.mType = versionStatus;
-    }
+	public FreeplaneVersion(final String versionString, final String versionStatus) {
+		this(versionString);
+		mType = versionStatus;
+	}
 
 	@Override
 	public String toString() {

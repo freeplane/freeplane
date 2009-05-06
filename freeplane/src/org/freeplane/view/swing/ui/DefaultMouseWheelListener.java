@@ -19,10 +19,10 @@ import org.freeplane.view.swing.map.MapView;
 public class DefaultMouseWheelListener implements MouseWheelListener {
 	private static final int HORIZONTAL_SCROLL_MASK = InputEvent.SHIFT_MASK | InputEvent.BUTTON1_MASK
 	        | InputEvent.BUTTON2_MASK | InputEvent.BUTTON3_MASK;
+	public static final String RESOURCES_WHEEL_VELOCITY = "wheel_velocity";
 	private static int SCROLL_SKIPS = 8;
 	private static final int ZOOM_MASK = InputEvent.CTRL_MASK;
 	final private Controller controller;
-	public static final String RESOURCES_WHEEL_VELOCITY = "wheel_velocity";
 
 	/**
 	 *

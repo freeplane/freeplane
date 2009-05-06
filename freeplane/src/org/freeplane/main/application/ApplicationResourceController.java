@@ -32,31 +32,25 @@ import java.util.InvalidPropertiesFormatException;
 import java.util.Locale;
 import java.util.Properties;
 
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
-
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.FreeplaneVersion;
 import org.freeplane.core.filter.FilterController;
-import org.freeplane.core.modecontroller.ModeController;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.MenuBuilder;
-import org.freeplane.core.ui.components.FreeplaneMenuBar;
 
 /**
  * @author Dimitry Polivaev
  */
 class ApplicationResourceController extends ResourceController {
+	public static final String DEFAULT_ORG_FREEPLANE_GLOBALRESOURCEDIR = "resources";
+	public static final String ORG_FREEPLANE_GLOBALRESOURCEDIR = "org.freeplane.globalresourcedir";
 	final private File autoPropertiesFile;
 	final private Properties defProps;
 	private LastOpenedList lastOpened;
 	final private Properties props;
 	private final String resourceBaseDir;
 	private ClassLoader urlResourceLoader;
-	public static final String ORG_FREEPLANE_GLOBALRESOURCEDIR = "org.freeplane.globalresourcedir";
-	public static final String DEFAULT_ORG_FREEPLANE_GLOBALRESOURCEDIR = "resources";
 
 	/**
 	 * @param controller
@@ -268,14 +262,13 @@ class ApplicationResourceController extends ResourceController {
 	@Override
 	public void setProperty(final String key, final String value) {
 		final String oldValue = getProperty(key);
-		if(oldValue == value){
+		if (oldValue == value) {
 			return;
 		}
-		if(oldValue != null && oldValue.equals(value)){
+		if (oldValue != null && oldValue.equals(value)) {
 			return;
 		}
 		props.setProperty(key, value);
 		firePropertyChanged(key, value, oldValue);
 	}
-
 }

@@ -42,6 +42,8 @@ public interface IMapSelection {
 
 	public void makeTheSelected(final NodeModel node);
 
+	public void scrollNodeToVisible(NodeModel selected);
+
 	public void selectAsTheOnlyOneSelected(final NodeModel node);
 
 	public void selectBranch(final NodeModel node, final boolean extend);
@@ -55,6 +57,4 @@ public interface IMapSelection {
 	public int size();
 
 	public void toggleSelected(final NodeModel node);
-
-	public void scrollNodeToVisible(NodeModel selected);
 }

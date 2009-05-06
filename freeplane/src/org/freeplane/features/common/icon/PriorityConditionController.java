@@ -23,16 +23,14 @@ import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 
-import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.condition.ConditionFactory;
 import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.filter.condition.IElementaryConditionController;
-import org.freeplane.core.filter.util.ExtendedComboBoxModel;
 import org.freeplane.core.filter.util.IListModel;
 import org.freeplane.core.filter.util.SortedMapListModel;
 import org.freeplane.core.model.MindIcon;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.NamedObject;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -62,9 +60,9 @@ class PriorityConditionController implements IElementaryConditionController {
 		return true;
 	}
 
-	public ICondition createCondition(final Object selectedItem, final NamedObject simpleCondition, final Object valueObj,
-	                                  final boolean ignoreCase) {
-		final String value = ((MindIcon)valueObj).getName().substring(5, 6);
+	public ICondition createCondition(final Object selectedItem, final NamedObject simpleCondition,
+	                                  final Object valueObj, final boolean ignoreCase) {
+		final String value = ((MindIcon) valueObj).getName().substring(5, 6);
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
 			return new PriorityCompareCondition(value, 0, true);
 		}
@@ -100,24 +98,16 @@ class PriorityConditionController implements IElementaryConditionController {
 		return list;
 	}
 
-
 	public ComboBoxEditor getValueEditor() {
 		return null;
 	}
 
 	public ComboBoxModel getValuesForProperty(final Object property) {
-		Object[] items = new Object[]{
-				MindIcon.factory("full-1"),
-				MindIcon.factory("full-2"),
-				MindIcon.factory("full-3"),
-				MindIcon.factory("full-4"),
-				MindIcon.factory("full-5"),
-				MindIcon.factory("full-6"),
-				MindIcon.factory("full-7"),
-				MindIcon.factory("full-8"),
-				MindIcon.factory("full-9")
-		};
-		ComboBoxModel box = new DefaultComboBoxModel(items);
+		final Object[] items = new Object[] { MindIcon.factory("full-1"), MindIcon.factory("full-2"),
+		        MindIcon.factory("full-3"), MindIcon.factory("full-4"), MindIcon.factory("full-5"),
+		        MindIcon.factory("full-6"), MindIcon.factory("full-7"), MindIcon.factory("full-8"),
+		        MindIcon.factory("full-9") };
+		final ComboBoxModel box = new DefaultComboBoxModel(items);
 		return box;
 	}
 

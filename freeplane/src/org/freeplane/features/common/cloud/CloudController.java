@@ -51,6 +51,7 @@ public class CloudController implements IExtension {
 	public static final int DEFAULT_WIDTH = -1;
 	private static CloudAdapterListener listener = null;
 	public static final int NORMAL_WIDTH = 3;
+	public static final String RESOURCES_CLOUD_COLOR = "standardcloudcolor";
 	private static Color standardColor = null;
 
 	public static CloudController getController(final ModeController modeController) {
@@ -63,7 +64,6 @@ public class CloudController implements IExtension {
 
 	final private ExclusivePropertyChain<Color, NodeModel> colorHandlers;
 	private final ModeController modeController;
-	public static final String RESOURCES_CLOUD_COLOR = "standardcloudcolor";
 
 	public CloudController(final ModeController modeController) {
 		this.modeController = modeController;

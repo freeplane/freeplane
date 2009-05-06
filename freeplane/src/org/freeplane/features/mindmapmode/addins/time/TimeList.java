@@ -645,9 +645,9 @@ class TimeList {
 		gbl.columnWeights = new double[] { 1.0f };
 		gbl.rowWeights = new double[] { 1.0f };
 		contentPane.setLayout(gbl);
-		contentPane.add(new JLabel(ResourceBundles.getText(PLUGINS_TIME_MANAGEMENT_XML_FIND)),
-		    new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL,
-		        new Insets(0, 0, 0, 0), 0, 0));
+		contentPane
+		    .add(new JLabel(ResourceBundles.getText(PLUGINS_TIME_MANAGEMENT_XML_FIND)), new GridBagConstraints(0, 0, 1,
+		        1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
 		mFilterTextSearchField = new JTextField();
 		mFilterTextSearchField.getDocument().addDocumentListener(new FilterTextDocumentListener());
 		mFilterTextSearchField.addKeyListener(new KeyAdapter() {
@@ -748,8 +748,7 @@ class TimeList {
 			}
 		};
 		final JButton replaceSelectedButton = new JButton(replaceSelectedAction);
-		final AbstractAction gotoAction = new AbstractAction(ResourceBundles
-		    .getText("plugins/TimeManagement.xml_Goto")) {
+		final AbstractAction gotoAction = new AbstractAction(ResourceBundles.getText("plugins/TimeManagement.xml_Goto")) {
 			/**
 			     * 
 			     */

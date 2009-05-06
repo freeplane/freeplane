@@ -37,6 +37,16 @@ public class NodeBuilder implements IElementDOMHandler {
 	}
 
 	protected static final String FOLDING_LOADED = "folding_loaded";
+	public static final String RESOURCES_ALWAYS_FOLD_ALL_AFTER_LOAD = "always_fold_all_after_load";
+	public static final String RESOURCES_ALWAYS_SAVE_FOLDING = "always_save_folding";
+	public static final String RESOURCES_ALWAYS_UNFOLD_ALL_AFTER_LOAD = "always_unfold_all_after_load";
+	public static final String RESOURCES_LOAD_FOLDING = "load_folding";
+	public static final String RESOURCES_LOAD_FOLDING_FROM_MAP_DEFAULT_FOLD_ALL = "load_folding_from_map_default_fold_all";
+	public static final String RESOURCES_LOAD_FOLDING_FROM_MAP_DEFAULT_UNFOLD_ALL = "load_folding_from_map_default_unfold_all";
+	public static final String RESOURCES_NEVER_SAVE_FOLDING = "never_save_folding";
+	public static final String RESOURCES_SAVE_FOLDING = "save_folding";
+	public static final String RESOURCES_SAVE_FOLDING_IF_MAP_IS_CHANGED = "save_folding_if_map_is_changed";
+	public static final String RESOURCES_SAVE_MODIFICATION_TIMES = "save_modification_times";
 	public static final String XML_NODE = "node";
 	public static final String XML_NODE_ADDITIONAL_INFO = "ADDITIONAL_INFO";
 	public static final String XML_NODE_CLASS = "AA_NODE_CLASS";
@@ -46,16 +56,6 @@ public class NodeBuilder implements IElementDOMHandler {
 	private NodeModel mapChild = null;
 	private final MapReader mapReader;
 	private final HashMap<String, String> newIds;
-	public static final String RESOURCES_SAVE_FOLDING = "save_folding";
-	public static final String RESOURCES_SAVE_FOLDING_IF_MAP_IS_CHANGED = "save_folding_if_map_is_changed";
-	public static final String RESOURCES_SAVE_MODIFICATION_TIMES = "save_modification_times";
-	public static final String RESOURCES_LOAD_FOLDING = "load_folding";
-	public static final String RESOURCES_LOAD_FOLDING_FROM_MAP_DEFAULT_FOLD_ALL = "load_folding_from_map_default_fold_all";
-	public static final String RESOURCES_LOAD_FOLDING_FROM_MAP_DEFAULT_UNFOLD_ALL = "load_folding_from_map_default_unfold_all";
-	public static final String RESOURCES_NEVER_SAVE_FOLDING = "never_save_folding";
-	public static final String RESOURCES_ALWAYS_UNFOLD_ALL_AFTER_LOAD = "always_unfold_all_after_load";
-	public static final String RESOURCES_ALWAYS_SAVE_FOLDING = "always_save_folding";
-	public static final String RESOURCES_ALWAYS_FOLD_ALL_AFTER_LOAD = "always_fold_all_after_load";
 
 	public NodeBuilder(final MapReader mapReader) {
 		this.mapReader = mapReader;
@@ -181,8 +181,7 @@ public class NodeBuilder implements IElementDOMHandler {
 				final String loadFolding = ResourceController.getResourceController().getProperty(
 				    NodeBuilder.RESOURCES_LOAD_FOLDING);
 				if (loadFolding.equals(NodeBuilder.RESOURCES_ALWAYS_FOLD_ALL_AFTER_LOAD)
-				        || loadFolding
-				            .equals(NodeBuilder.RESOURCES_LOAD_FOLDING_FROM_MAP_DEFAULT_FOLD_ALL)) {
+				        || loadFolding.equals(NodeBuilder.RESOURCES_LOAD_FOLDING_FROM_MAP_DEFAULT_FOLD_ALL)) {
 					for (final NodeModel child : topNode.getChildren()) {
 						foldAll(child);
 					}

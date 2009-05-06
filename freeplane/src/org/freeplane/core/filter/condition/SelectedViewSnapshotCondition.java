@@ -58,8 +58,7 @@ public class SelectedViewSnapshotCondition implements ICondition {
 	@Override
 	public String toString() {
 		if (SelectedViewSnapshotCondition.description == null) {
-			SelectedViewSnapshotCondition.description = ResourceBundles
-			    .getText("filter_selected_node_view_snapshot");
+			SelectedViewSnapshotCondition.description = ResourceBundles.getText("filter_selected_node_view_snapshot");
 		}
 		return SelectedViewSnapshotCondition.description;
 	}

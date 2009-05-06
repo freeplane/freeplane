@@ -96,8 +96,8 @@ public class ExportDialog {
 		gatherXsltScripts();
 		if (filtermap.isEmpty()) {
 			JOptionPane.showMessageDialog(parentframe, FpStringUtils.formatText("xslt_export_file_not_found_in_dirs",
-			    getXsltUserDirectory().getAbsolutePath(), getXsltSysDirectory().getAbsolutePath()),
-			    ResourceBundles.getText("xslt_export_not_possible"), JOptionPane.WARNING_MESSAGE);
+			    getXsltUserDirectory().getAbsolutePath(), getXsltSysDirectory().getAbsolutePath()), ResourceBundles
+			    .getText("xslt_export_not_possible"), JOptionPane.WARNING_MESSAGE);
 			/* "No XSLT export file could be found,\n neither in '"
 			+ getXsltUserDirectory() + "'\n nor in '"
 			+ getXsltSysDirectory() + "'.",

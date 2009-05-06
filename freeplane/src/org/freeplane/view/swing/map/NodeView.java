@@ -47,7 +47,6 @@ import org.freeplane.core.modecontroller.NodeChangeEvent;
 import org.freeplane.core.model.INodeView;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.model.NodeModel.NodeChangeType;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
@@ -78,6 +77,7 @@ public class NodeView extends JComponent implements INodeView {
 	/** For RootNodeView. */
 	public final static int DRAGGED_OVER_SON_LEFT = 3;
 	static private int FOLDING_SYMBOL_WIDTH = -1;
+	public static final String RESOURCES_SHOW_NODE_TOOLTIPS = "show_node_tooltips";
 	/**
 	 * 
 	 */
@@ -127,7 +127,6 @@ public class NodeView extends JComponent implements INodeView {
 	private NodeModel model;
 	private NodeMotionListenerView motionListenerView;
 	private NodeView preferredChild;
-	public static final String RESOURCES_SHOW_NODE_TOOLTIPS = "show_node_tooltips";
 
 	protected NodeView(final NodeModel model, final int position, final MapView map, final Container parent) {
 		setFocusCycleRoot(true);
@@ -1177,12 +1176,13 @@ public class NodeView extends JComponent implements INodeView {
 	 * Updates the tool tip of the node.
 	 */
 	private void updateToolTip() {
-		final boolean areTooltipsDisplayed = ResourceController.getResourceController().getBooleanProperty(NodeView.RESOURCES_SHOW_NODE_TOOLTIPS);
+		final boolean areTooltipsDisplayed = ResourceController.getResourceController().getBooleanProperty(
+		    NodeView.RESOURCES_SHOW_NODE_TOOLTIPS);
 		updateToolTip(areTooltipsDisplayed);
 	}
 
 	private void updateToolTip(final boolean areTooltipsDisplayed) {
-	    if (! areTooltipsDisplayed) {
+		if (!areTooltipsDisplayed) {
 			mainView.setToolTipText(null);
 			return;
 		}
@@ -1202,23 +1202,24 @@ public class NodeView extends JComponent implements INodeView {
 		}
 		text.append("</table></html>");
 		mainView.setToolTipText(text.toString());
-    }
-
-	boolean useSelectionColors() {
-		return isSelected() && !MapView.standardDrawRectangleForSelection && !map.isCurrentlyPrinting();
 	}
 
 	void updateToolTipsRecursive() {
-		final boolean areTooltipsDisplayed = ResourceController.getResourceController().getBooleanProperty(NodeView.RESOURCES_SHOW_NODE_TOOLTIPS);
+		final boolean areTooltipsDisplayed = ResourceController.getResourceController().getBooleanProperty(
+		    NodeView.RESOURCES_SHOW_NODE_TOOLTIPS);
 		updateToolTipsRecursive(areTooltipsDisplayed);
-    }
+	}
 
 	private void updateToolTipsRecursive(final boolean areTooltipsDisplayed) {
-	    updateToolTip(areTooltipsDisplayed);
+		updateToolTip(areTooltipsDisplayed);
 		invalidate();
 		for (final ListIterator e = getChildrenViews().listIterator(); e.hasNext();) {
 			final NodeView child = (NodeView) e.next();
 			child.updateToolTipsRecursive(areTooltipsDisplayed);
 		}
-    }
+	}
+
+	boolean useSelectionColors() {
+		return isSelected() && !MapView.standardDrawRectangleForSelection && !map.isCurrentlyPrinting();
+	}
 }

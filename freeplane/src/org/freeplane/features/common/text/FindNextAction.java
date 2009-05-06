@@ -53,9 +53,9 @@ class FindNextAction extends AFreeplaneAction {
 			final String messageText = ResourceBundles.getText("no_more_found_from");
 			final String searchTerm = messageText.startsWith("<html>") ? HtmlTools.toXMLEscapedText(find
 			    .getSearchTerm()) : find.getSearchTerm();
-			UITools.informationMessage(getController().getViewController().getFrame(), 
-				messageText.replaceAll("\\$1",Matcher.quoteReplacement(searchTerm))
-				.replaceAll("\\$2", Matcher.quoteReplacement(find.getFindFromText())));
+			UITools.informationMessage(getController().getViewController().getFrame(), messageText.replaceAll("\\$1",
+			    Matcher.quoteReplacement(searchTerm)).replaceAll("\\$2",
+			    Matcher.quoteReplacement(find.getFindFromText())));
 		}
 	}
 }

@@ -28,44 +28,15 @@ public class ArrowLinkModel extends LinkModel {
 	private Color color;
 	private String endArrow;
 	private Point endInclination;
+	private String middleLabel;
 	private boolean showControlPointsFlag;
 	private NodeModel source;
+	private String sourceLabel;
 	private String startArrow;
 	private Point startInclination;
 	private String style;
-	private int width;
-
-	private String sourceLabel;
 	private String targetLabel;
-	private String middleLabel;
-
-	public String getSourceLabel() {
-    	return sourceLabel;
-    }
-
-	public void setSourceLabel(String label) {		
-    	this.sourceLabel = empty2null(label);
-    }
-
-	private String empty2null(String label) {
-	    return "".equals(label) ? null : label;
-    }
-
-	public String getTargetLabel() {
-    	return targetLabel;
-    }
-
-	public void setTargetLabel(String targetLabel) {
-    	this.targetLabel = empty2null(targetLabel);
-    }
-
-	public String getMiddleLabel() {
-    	return middleLabel;
-    }
-
-	public void setMiddleLabel(String middleLabel) {
-    	this.middleLabel = empty2null(middleLabel);
-    }
+	private int width;
 
 	public ArrowLinkModel(final NodeModel source, final String targetID) {
 		super(targetID);
@@ -95,6 +66,10 @@ public class ArrowLinkModel extends LinkModel {
 		}
 	}
 
+	private String empty2null(final String label) {
+		return "".equals(label) ? null : label;
+	}
+
 	public Color getColor() {
 		return color;
 	}
@@ -110,12 +85,20 @@ public class ArrowLinkModel extends LinkModel {
 		return new Point(endInclination);
 	}
 
+	public String getMiddleLabel() {
+		return middleLabel;
+	}
+
 	public boolean getShowControlPointsFlag() {
 		return showControlPointsFlag;
 	}
 
 	public NodeModel getSource() {
 		return source;
+	}
+
+	public String getSourceLabel() {
+		return sourceLabel;
 	}
 
 	public String getStartArrow() {
@@ -135,6 +118,10 @@ public class ArrowLinkModel extends LinkModel {
 
 	public NodeModel getTarget() {
 		return source.getMap().getNodeForID(getTargetID());
+	}
+
+	public String getTargetLabel() {
+		return targetLabel;
 	}
 
 	public int getWidth() {
@@ -161,12 +148,20 @@ public class ArrowLinkModel extends LinkModel {
 		this.endInclination = endInclination;
 	}
 
+	public void setMiddleLabel(final String middleLabel) {
+		this.middleLabel = empty2null(middleLabel);
+	}
+
 	public void setShowControlPoints(final boolean bShowControlPointsFlag) {
 		showControlPointsFlag = bShowControlPointsFlag;
 	}
 
 	public void setSource(final NodeModel source) {
 		this.source = source;
+	}
+
+	public void setSourceLabel(final String label) {
+		sourceLabel = empty2null(label);
 	}
 
 	public void setStartArrow(final String startArrow) {
@@ -187,6 +182,10 @@ public class ArrowLinkModel extends LinkModel {
 
 	public void setStyle(final String style) {
 		this.style = style;
+	}
+
+	public void setTargetLabel(final String targetLabel) {
+		this.targetLabel = empty2null(targetLabel);
 	}
 
 	public void setWidth(final int width) {

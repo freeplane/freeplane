@@ -43,7 +43,7 @@ import org.freeplane.features.mindmapmode.MMapController;
  *         the selected nodes.
  */
 @ActionLocationDescriptor(locations = { "/menu_bar/insert/nodes" }, //
-	accelerator="shift INSERT")
+accelerator = "shift INSERT")
 public class NewParentNode extends AFreeplaneAction {
 	/**
 	 * 

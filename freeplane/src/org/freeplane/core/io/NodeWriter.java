@@ -27,7 +27,6 @@ import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.model.EncryptionModel;
-import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -106,7 +105,7 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 		for (int i = 0; i < node.getIcons().size(); ++i) {
 			final XMLElement iconElement = new XMLElement();
 			iconElement.setName("icon");
-			iconElement.setAttribute("BUILTIN", ((MindIcon) node.getIcons().get(i)).getName());
+			iconElement.setAttribute("BUILTIN", (node.getIcons().get(i)).getName());
 			xmlNode.addChild(iconElement);
 		}
 		writer.addExtensionAttributes(node, node.getExtensions().values());

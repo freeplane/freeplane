@@ -20,6 +20,10 @@ import org.freeplane.core.util.ResUtil;
  */
 public class UpdateCheckAction extends AFreeplaneAction {
 	/**
+	 * the sid.
+	 */
+	private static final long serialVersionUID = 7910922464393515103L;
+	/**
 	 * the url where to download the newest version
 	 */
 	private static final String WEB_DOWNLOAD_LOCATION_KEY = "webDownloadLocation";
@@ -28,38 +32,30 @@ public class UpdateCheckAction extends AFreeplaneAction {
 	 */
 	private static final String WEB_UPDATE_LOCATION_KEY = "webUpdateLocation";
 	/**
-	 * the sid.
+	 * The property file which saves the installed version information.
 	 */
-	private static final long serialVersionUID = 7910922464393515103L;
+	private final Properties localProperties;
 	/**
 	 * the client which asks a remote repository for the current version of the program.
 	 */
 	private VersionClient versionClient;
-	/**
-	 * The property file which saves the installed version information.
-	 */
-	private Properties localProperties;
 
-	public void setVersionClient(VersionClient versionClient) {
-		this.versionClient = versionClient;
-	}
-
-	public UpdateCheckAction(Controller controller) {
+	public UpdateCheckAction(final Controller controller) {
 		super("UpdateCheckAction", controller);
 		setVersionClient(new HttpVersionClient(ResourceController.getResourceController().getProperty(
 		    WEB_UPDATE_LOCATION_KEY)));
 		localProperties = ResUtil.loadProperties(FreeplaneVersion.VERSION_PROPERTIES);
 	}
 
-	public void actionPerformed(ActionEvent e) {
-		String currentVersion = versionClient.getCurrentVersion();
+	public void actionPerformed(final ActionEvent e) {
+		final String currentVersion = versionClient.getCurrentVersion();
 		if (currentVersion == null) {
 			LogTool.warn("Couldn't determine current version. Ignoring update request.");
 			return;
 		}
-		String localVersion = (String)localProperties.get(FreeplaneVersion.VERSION_KEY);
+		final String localVersion = (String) localProperties.get(FreeplaneVersion.VERSION_KEY);
 		if (!localVersion.equals(currentVersion)) {
-			LogTool.info("You have an old version installed (" +localVersion + ") - opening download page.");
+			LogTool.info("You have an old version installed (" + localVersion + ") - opening download page.");
 			// go to download page
 			try {
 				getController().getViewController().openDocument(
@@ -71,9 +67,14 @@ public class UpdateCheckAction extends AFreeplaneAction {
 			catch (final Exception ex) {
 				getController().errorMessage(ex);
 			}
-		} else {
+		}
+		else {
 			// show a dialog to indicate that the current version matches the latest release.
 			LogTool.info("You have the lastest version of freeplane installed : " + localVersion);
 		}
+	}
+
+	public void setVersionClient(final VersionClient versionClient) {
+		this.versionClient = versionClient;
 	}
 }

@@ -19,7 +19,6 @@
  */
 package org.freeplane.core.modecontroller;
 
-import java.awt.EventQueue;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -210,7 +209,7 @@ public class MapController extends SelectionController {
 	 * link actions).
 	 */
 	private void displayNode(final NodeModel node, final ArrayList nodesUnfoldedByDisplay) {
-		if(! node.isVisible()){
+		if (!node.isVisible()) {
 			node.getFilterInfo().reset();
 			nodeRefresh(node);
 		}
@@ -482,8 +481,7 @@ public class MapController extends SelectionController {
 			}
 			final String extension = UrlManager.getExtension(absolute.toString());
 			if ((extension != null)
-			        && extension
-			            .equals(org.freeplane.core.url.UrlManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
+			        && extension.equals(org.freeplane.core.url.UrlManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
 				final IMapViewManager mapViewManager = getController().getMapViewManager();
 				/*
 				 * this can lead to confusion if the user handles multiple maps

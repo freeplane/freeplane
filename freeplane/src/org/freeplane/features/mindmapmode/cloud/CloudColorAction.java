@@ -22,10 +22,6 @@ package org.freeplane.features.mindmapmode.cloud;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 
-import javax.swing.JMenuItem;
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
-
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ColorTracker;
 import org.freeplane.core.modecontroller.ModeController;
@@ -33,9 +29,8 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.features.common.cloud.CloudController;
-import org.freeplane.features.common.cloud.CloudModel;
 
-class CloudColorAction extends MultipleNodeAction{
+class CloudColorAction extends MultipleNodeAction {
 	/**
 	 * 
 	 */
@@ -53,7 +48,8 @@ class CloudColorAction extends MultipleNodeAction{
 		{
 			controller = getModeController();
 			final NodeModel selected = controller.getMapController().getSelectedNode();
-			final MCloudController cloudController = (MCloudController) CloudController.getController(getModeController());
+			final MCloudController cloudController = (MCloudController) CloudController
+			    .getController(getModeController());
 			cloudController.setCloud(selected, true);
 			selectedColor = cloudController.getColor(selected);
 		}

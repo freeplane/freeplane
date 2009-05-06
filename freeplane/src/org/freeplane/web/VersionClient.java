@@ -6,7 +6,6 @@ package org.freeplane.web;
  * @author robert ladstaetter
  */
 public interface VersionClient {
-	
 	/**
 	 * @return current version as string, null if not successful.
 	 */

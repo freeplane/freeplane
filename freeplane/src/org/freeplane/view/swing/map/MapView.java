@@ -117,6 +117,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			}
 		}
 
+		public void scrollNodeToVisible(final NodeModel node) {
+			MapView.this.scrollNodeToVisible(getNodeView(node));
+		}
+
 		public void selectAsTheOnlyOneSelected(final NodeModel node) {
 			final NodeView nodeView = getNodeView(node);
 			if (nodeView != null) {
@@ -149,11 +153,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		public void toggleSelected(final NodeModel node) {
 			MapView.this.toggleSelected(getNodeView(node));
 		}
-
-		public void scrollNodeToVisible(NodeModel node) {
-	        MapView.this.scrollNodeToVisible(getNodeView(node));
-	        
-        }
 	}
 
 	private class Selection {
@@ -237,6 +236,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private static final int margin = 20;
 	static boolean printOnWhiteBackground;
 	static private IFreeplanePropertyListener propertyChangeListener;
+	public static final String RESOURCES_SELECTED_NODE_COLOR = "standardselectednodecolor";
+	public static final String RESOURCES_SELECTED_NODE_RECTANGLE_COLOR = "standardselectednoderectanglecolor";
 	/**
 	 * 
 	 */
@@ -251,6 +252,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private Vector/* of ArrowLinkViews */arrowLinkViews;
 	private Color background = null;
 	private Rectangle boundingRectangle = null;
+	private int centerNodeCounter;
 	final private Controller controller;
 	private boolean disableMoveCursor = true;
 	private int extraWidth;
@@ -267,9 +269,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private NodeView shiftSelectionOrigin = null;
 	private int siblingMaxLevel;
 	private float zoom = 1F;
-	private int centerNodeCounter;
-	public static final String RESOURCES_SELECTED_NODE_COLOR = "standardselectednodecolor";
-	public static final String RESOURCES_SELECTED_NODE_RECTANGLE_COLOR = "standardselectednoderectanglecolor";
 
 	public MapView(final MapModel model, final ModeController modeController) {
 		super();
@@ -338,15 +337,16 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	 */
 	public void centerNode(final NodeView node) {
 		nodeToBeVisible = null;
-		if(! (isValid() && isShowing())){
+		if (!(isValid() && isShowing())) {
 			centerNodeCounter = 5;
 		}
-		if(centerNodeCounter != 0){
-			centerNodeCounter --;
-			EventQueue.invokeLater(new Runnable(){
+		if (centerNodeCounter != 0) {
+			centerNodeCounter--;
+			EventQueue.invokeLater(new Runnable() {
 				public void run() {
-	                centerNode(node);
-                }});
+					centerNode(node);
+				}
+			});
 			return;
 		}
 		final JViewport viewPort = (JViewport) getParent();
@@ -356,10 +356,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		        / 2, d.width, d.height);
 		final Point oldAnchorContentLocation = anchorContentLocation;
 		anchorContentLocation = new Point();
-		Point oldViewPosition = viewPort.getViewPosition();
+		final Point oldViewPosition = viewPort.getViewPosition();
 		content.scrollRectToVisible(rect);
-		Point newViewPosition = viewPort.getViewPosition();
-		if(oldViewPosition.equals(newViewPosition)){
+		final Point newViewPosition = viewPort.getViewPosition();
+		if (oldViewPosition.equals(newViewPosition)) {
 			anchorContentLocation = oldAnchorContentLocation;
 		}
 	}
@@ -895,12 +895,13 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	@Override
 	public void paintChildren(final Graphics graphics) {
-		final boolean paintLinksBehind = ResourceController.getResourceController().getBooleanProperty("paint_links_behind");
-		if(paintLinksBehind){
+		final boolean paintLinksBehind = ResourceController.getResourceController().getBooleanProperty(
+		    "paint_links_behind");
+		if (paintLinksBehind) {
 			paintLinks((Graphics2D) graphics);
 			super.paintChildren(graphics);
 		}
-		else{
+		else {
 			super.paintChildren(graphics);
 			paintLinks((Graphics2D) graphics);
 		}
@@ -910,10 +911,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private void paintLinks(final Collection<LinkModel> links, final Graphics2D graphics,
 	                        final HashSet alreadyPaintedLinks) {
 		final Font font = graphics.getFont();
-		try{
-			String fontFamily = ResourceController.getResourceController().getProperty("label_font_family");
-			int fontSize = ResourceController.getResourceController().getIntProperty("label_font_size", 12);			
-			final Font linksFont = new Font(fontFamily, 0, getZoomed(fontSize)); 
+		try {
+			final String fontFamily = ResourceController.getResourceController().getProperty("label_font_family");
+			final int fontSize = ResourceController.getResourceController().getIntProperty("label_font_size", 12);
+			final Font linksFont = new Font(fontFamily, 0, getZoomed(fontSize));
 			graphics.setFont(linksFont);
 			final Iterator<LinkModel> linkIterator = links.iterator();
 			while (linkIterator.hasNext()) {
@@ -929,14 +930,14 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 							continue;
 						}
 						final ArrowLinkView arrowLink = new ArrowLinkView(ref, getNodeView(ref.getSource()),
-							getNodeView(target));
+						    getNodeView(target));
 						arrowLink.paint(graphics);
 						arrowLinkViews.add(arrowLink);
 					}
 				}
 			}
 		}
-		finally{
+		finally {
 			graphics.setFont(font);
 		}
 	}

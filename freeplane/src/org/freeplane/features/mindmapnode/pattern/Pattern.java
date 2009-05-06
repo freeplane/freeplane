@@ -115,12 +115,12 @@ public class Pattern implements Cloneable {
 	}
 
 	private void marschall(final XMLElement xml, final String string, final PatternProperty pattern) {
-		if(pattern == null){
+		if (pattern == null) {
 			return;
 		}
-		XMLElement property = new XMLElement(string);
+		final XMLElement property = new XMLElement(string);
 		final String value = pattern.getValue();
-		if(value != null){
+		if (value != null) {
 			property.setAttribute("value", value);
 		}
 		xml.addChild(property);

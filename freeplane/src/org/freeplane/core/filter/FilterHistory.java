@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.filter.condition.SelectedViewSnapshotCondition;
 import org.freeplane.core.model.MapModel;
 
 /**

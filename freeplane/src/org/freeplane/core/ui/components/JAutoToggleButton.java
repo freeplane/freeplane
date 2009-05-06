@@ -62,7 +62,7 @@ public class JAutoToggleButton extends JToggleButton implements PropertyChangeLi
 		}
 	}
 
-	public void stateChanged(ChangeEvent e) {
+	public void stateChanged(final ChangeEvent e) {
 		setSelected(((ButtonModel) e.getSource()).isSelected());
-    }
+	}
 }

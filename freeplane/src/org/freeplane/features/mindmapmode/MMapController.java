@@ -45,8 +45,8 @@ import org.freeplane.core.model.EncryptionModel;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FpStringUtils;
-import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.UITools;
@@ -61,16 +61,16 @@ import org.freeplane.n3.nanoxml.XMLParseException;
  */
 public class MMapController extends MapController {
 	static private DeleteAction delete;
-	private static final String EXPECTED_START_STRINGS[] = {
-	        "<map version=\"" + FreeplaneVersion.XML_VERSION + "\"", "<map version=\"0.7.1\"" };
+	private static final String EXPECTED_START_STRINGS[] = { "<map version=\"" + FreeplaneVersion.XML_VERSION + "\"",
+	        "<map version=\"0.7.1\"" };
 	private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_version_updater.xslt";
 	public static final int NEW_CHILD = 2;
 	public static final int NEW_CHILD_WITHOUT_FOCUS = 1;
 	public static final int NEW_SIBLING_BEFORE = 4;
 	public static final int NEW_SIBLING_BEHIND = 3;
 	static private NewChildAction newChild;
-	private static IFreeplanePropertyListener sSaveIdPropertyChangeListener;
 	public static final String RESOURCES_CONVERT_TO_CURRENT_VERSION = "convert_to_current_version";
+	private static IFreeplanePropertyListener sSaveIdPropertyChangeListener;
 
 	public MMapController(final MModeController modeController) {
 		super(modeController);
@@ -294,21 +294,21 @@ public class MMapController extends MapController {
 	@Override
 	public void loadURL(final String relative) {
 		try {
-	        final MapModel map = getController().getMap();
-	        if (map.getFile() == null) {
-	        	URL url = new URL(relative);
-	        	if(url.getProtocol().equalsIgnoreCase("file")){
-	        		getController().getViewController().out("You must save the current map first!");
-	        		final boolean result = ((MFileManager) UrlManager.getController(getModeController())).save(map);
-	        		if (!result) {
-	        			return;
-	        		}
-	        	}
-	        }
-	        super.loadURL(relative);
-        }
-        catch (MalformedURLException e) {
-        }
+			final MapModel map = getController().getMap();
+			if (map.getFile() == null) {
+				final URL url = new URL(relative);
+				if (url.getProtocol().equalsIgnoreCase("file")) {
+					getController().getViewController().out("You must save the current map first!");
+					final boolean result = ((MFileManager) UrlManager.getController(getModeController())).save(map);
+					if (!result) {
+						return;
+					}
+				}
+			}
+			super.loadURL(relative);
+		}
+		catch (final MalformedURLException e) {
+		}
 	}
 
 	public void moveNode(final NodeModel node, final NodeModel targetNode, final boolean asSibling,
@@ -460,7 +460,7 @@ public class MMapController extends MapController {
 				    NodeBuilder.RESOURCES_ALWAYS_SAVE_FOLDING)) {
 					nodeChanged(node);
 				}
-				else{
+				else {
 					nodeRefresh(node);
 				}
 			}

@@ -41,6 +41,9 @@ import org.freeplane.core.util.ColorUtils;
  * @author Dimitry Polivaev
  */
 public class NodeStyleController implements IExtension {
+	public static final String RESOURCES_NODE_SHAPE = "standardnodeshape";
+	public static final String RESOURCES_NODE_TEXT_COLOR = "standardnodetextcolor";
+	public static final String RESOURCES_ROOT_NODE_SHAPE = "standardrootnodeshape";
 	public static Color standardNodeTextColor;
 
 	public static NodeStyleController getController(final ModeController modeController) {
@@ -57,9 +60,6 @@ public class NodeStyleController implements IExtension {
 	final private ModeController modeController;
 	final private ExclusivePropertyChain<String, NodeModel> shapeHandlers;
 	final private ExclusivePropertyChain<Color, NodeModel> textColorHandlers;
-	public static final String RESOURCES_NODE_SHAPE = "standardnodeshape";
-	public static final String RESOURCES_NODE_TEXT_COLOR = "standardnodetextcolor";
-	public static final String RESOURCES_ROOT_NODE_SHAPE = "standardrootnodeshape";
 
 	public NodeStyleController(final ModeController modeController) {
 		this.modeController = modeController;
@@ -202,9 +202,8 @@ public class NodeStyleController implements IExtension {
 			public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
 				if (propertyName.equals(NodeStyleController.RESOURCES_NODE_TEXT_COLOR)) {
 					standardNodeTextColor = ColorUtils.stringToColor(newValue);
-					final MapChangeEvent event = new MapChangeEvent(
-					    NodeStyleController.RESOURCES_NODE_TEXT_COLOR, ColorUtils.stringToColor(oldValue),
-					    standardNodeTextColor);
+					final MapChangeEvent event = new MapChangeEvent(NodeStyleController.RESOURCES_NODE_TEXT_COLOR,
+					    ColorUtils.stringToColor(oldValue), standardNodeTextColor);
 					getModeController().getMapController().fireMapChanged(event);
 				}
 			}

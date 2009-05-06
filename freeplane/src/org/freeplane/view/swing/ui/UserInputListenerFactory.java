@@ -29,7 +29,6 @@ import java.awt.event.MouseWheelListener;
 import java.net.URL;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
@@ -39,7 +38,6 @@ import javax.swing.ButtonGroup;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JToolBar;
-import javax.swing.KeyStroke;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.IMapViewManager;
@@ -304,7 +302,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		if (mapViewVector == null) {
 			return;
 		}
-		final ButtonGroup group = new ButtonGroup();	
+		final ButtonGroup group = new ButtonGroup();
 		int i = 0;
 		for (final MapView mapView : mapViewVector) {
 			final String displayName = mapView.getName();
@@ -353,8 +351,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 				isSelected = false;
 			}
 			menuBuilder.addRadioItem(FreeplaneMenuBar.MODES_MENU, modesMenuActionListener, isSelected);
-			final String keystroke = ResourceController.getResourceController().getAdjustableProperty(
-			    "keystroke_mode_" + key);
+			ResourceController.getResourceController().getAdjustableProperty("keystroke_mode_" + key);
 		}
 	}
 }

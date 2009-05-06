@@ -75,6 +75,13 @@ public class OptionPanelBuilder {
 		}
 	}
 
+	private class FontOptionCreator extends PropertyCreator {
+		@Override
+		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
+			return createFontOptionCreator(name);
+		}
+	}
+
 	private class KeyOptionCreator extends PropertyCreator {
 		@Override
 		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
@@ -123,7 +130,7 @@ public class OptionPanelBuilder {
 		public String toString() {
 			return path;
 		}
-	}
+	};
 
 	protected abstract class PropertyCreator implements IElementDOMHandler {
 		public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
@@ -158,7 +165,7 @@ public class OptionPanelBuilder {
 		}
 
 		abstract public IPropertyControlCreator getCreator(String name, XMLElement data);
-	};
+	}
 
 	private class RemindValueCreator extends PropertyCreator {
 		@Override
@@ -188,27 +195,10 @@ public class OptionPanelBuilder {
 		}
 	}
 
-	private class TextCreator extends PropertyCreator {
-
-		@Override
-		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
-			final String label = "OptionPanel.text." + name;
-			return createTextCreator(label);
-		}
-	}
-
 	private class StringOptionCreator extends PropertyCreator {
 		@Override
 		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
 			return createStringOptionCreator(name);
-		}
-	}
-
-
-	private class FontOptionCreator extends PropertyCreator {
-		@Override
-		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
-			return createFontOptionCreator(name);
 		}
 	}
 
@@ -218,6 +208,14 @@ public class OptionPanelBuilder {
 			final String label = "OptionPanel." + name;
 			final String layout = data.getAttribute("layout", null);
 			return createTabCreator(label, layout);
+		}
+	}
+
+	private class TextCreator extends PropertyCreator {
+		@Override
+		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
+			final String label = "OptionPanel.text." + name;
+			return createTextCreator(label);
 		}
 	}
 
@@ -259,8 +257,17 @@ public class OptionPanelBuilder {
 		tree.addElement(path, creator, path + "/" + name, position);
 	}
 
+	public void addFontProperty(final String path, final String name, final int position) {
+		tree.addElement(path, createFontOptionCreator(name), path + "/" + name, position);
+	}
+
 	public void addKeyProperty(final String path, final String name, final int position) {
 		tree.addElement(path, createKeyOptionCreator(name), path + "/" + name, position);
+	}
+
+	public void addNumberProperty(final String path, final String name, final int min, final int max, final int step,
+	                              final int position) {
+		tree.addElement(path, createNumberOptionCreator(name, min, max, step), path + "/" + name, position);
 	}
 
 	public void addRemindValueProperty(final String path, final String name, final int position) {
@@ -271,10 +278,6 @@ public class OptionPanelBuilder {
 		tree.addElement(path, createSeparatorCreator(name), path + "/" + name, position);
 	}
 
-	public void addText(final String path, final String name, final int position) {
-		tree.addElement(path, createTextCreator(name), path + "/" + name, position);
-	}
-
 	public void addSpace(final String path, final int position) {
 		tree.addElement(path, nextLineCreator, position);
 	}
@@ -283,21 +286,16 @@ public class OptionPanelBuilder {
 		tree.addElement(path, createStringOptionCreator(name), path + "/" + name, position);
 	}
 
-	public void addNumberProperty(final String path, final String name, final int min, final int max, final int step, final int position) {
-		tree.addElement(path, createNumberOptionCreator(name, min, max, step), path + "/" + name, position);
-	}
-
-
-	public void addFontProperty(final String path, final String name, final int position) {
-		tree.addElement(path, createFontOptionCreator(name), path + "/" + name, position);
-	}
-
 	public void addTab(final String name) {
 		addTab(name, null, IndexedTree.AS_CHILD);
 	}
 
 	public void addTab(final String name, final String layout, final int position) {
 		tree.addElement(tree, createTabCreator(name, layout), name, position);
+	}
+
+	public void addText(final String path, final String name, final int position) {
+		tree.addElement(path, createTextCreator(name), path + "/" + name, position);
 	}
 
 	private IPropertyControlCreator createBooleanOptionCreator(final String name) {
@@ -325,10 +323,26 @@ public class OptionPanelBuilder {
 		};
 	}
 
+	private IPropertyControlCreator createFontOptionCreator(final String name) {
+		return new IPropertyControlCreator() {
+			public IPropertyControl createControl() {
+				return new FontProperty(name);
+			}
+		};
+	}
+
 	private IPropertyControlCreator createKeyOptionCreator(final String name) {
 		return new IPropertyControlCreator() {
 			public IPropertyControl createControl() {
 				return new KeyProperty(name);
+			}
+		};
+	}
+
+	private Object createNumberOptionCreator(final String name, final int min, final int max, final int step) {
+		return new IPropertyControlCreator() {
+			public IPropertyControl createControl() {
+				return new NumberProperty(name, min, max, step);
 			}
 		};
 	}
@@ -349,34 +363,10 @@ public class OptionPanelBuilder {
 		};
 	}
 
-	private IPropertyControlCreator createTextCreator(final String label) {
-		return new IPropertyControlCreator() {
-			public IPropertyControl createControl() {
-				return new Text(label);
-			}
-		};
-	}
-
 	private IPropertyControlCreator createStringOptionCreator(final String name) {
 		return new IPropertyControlCreator() {
 			public IPropertyControl createControl() {
 				return new StringProperty(name);
-			}
-		};
-	}
-
-	private Object createNumberOptionCreator(final String name, final int min, final int max, final int step) {
-		return new IPropertyControlCreator() {
-			public IPropertyControl createControl() {
-				return new NumberProperty(name, min, max, step);
-			}
-		};
-    }
-	
-	private IPropertyControlCreator createFontOptionCreator(final String name) {
-		return new IPropertyControlCreator() {
-			public IPropertyControl createControl() {
-				return new FontProperty(name);
 			}
 		};
 	}
@@ -388,6 +378,14 @@ public class OptionPanelBuilder {
 					return new TabProperty(label, layout);
 				}
 				return new TabProperty(label);
+			}
+		};
+	}
+
+	private IPropertyControlCreator createTextCreator(final String label) {
+		return new IPropertyControlCreator() {
+			public IPropertyControl createControl() {
+				return new Text(label);
 			}
 		};
 	}

@@ -20,15 +20,14 @@
 package org.freeplane.view.swing.ui;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.SwingUtilities;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
 
-class ModesMenuActionListener extends AFreeplaneAction{
-	public ModesMenuActionListener(String mode, final Controller controller) {
+class ModesMenuActionListener extends AFreeplaneAction {
+	public ModesMenuActionListener(final String mode, final Controller controller) {
 		super("ModesMenuAction." + mode, controller, mode, null);
 	}
 

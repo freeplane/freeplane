@@ -20,7 +20,6 @@
 package org.freeplane.main.osgi;
 
 import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.Set;
@@ -40,6 +39,26 @@ import org.osgi.framework.ServiceReference;
  */
 public class Activator implements BundleActivator {
 	private FreeplaneStarter starter;
+
+	private void deleteAllBundleJars(final BundleContext context) {
+		final Bundle[] bundles = context.getBundles();
+		for (final Bundle bundle : bundles) {
+			try {
+				final String location = bundle.getLocation();
+				final URL bundleUrl = new URL(location);
+				if (!bundleUrl.getProtocol().equalsIgnoreCase("file")) {
+					continue;
+				}
+				final File bundleFile = new File(bundleUrl.getFile());
+				if (bundleFile.canRead() && !bundleFile.isDirectory()) {
+					bundleFile.delete();
+					System.out.println("deleted jar file " + location);
+				}
+			}
+			catch (final Exception e) {
+			}
+		}
+	}
 
 	private String[] getCallParameters() {
 		int i = 1;
@@ -63,26 +82,6 @@ public class Activator implements BundleActivator {
 		deleteAllBundleJars(context);
 		startFramework(context);
 	}
-
-	private void deleteAllBundleJars(final BundleContext context) {
-	    Bundle[] bundles = context.getBundles();
-		for(final Bundle bundle:bundles){
-			try {
-				String location = bundle.getLocation();
-				URL bundleUrl = new URL(location);
-				if(! bundleUrl.getProtocol().equalsIgnoreCase("file")){
-					continue;
-				}
-				File bundleFile = new File(bundleUrl.getFile());
-				if(bundleFile.canRead() && ! bundleFile.isDirectory()){
-					bundleFile.delete();
-					System.out.println("deleted jar file " + location);
-				}
-			}
-			catch (Exception e) {
-			}
-		}
-    }
 
 	private void startFramework(final BundleContext context) {
 		starter = new FreeplaneStarter();

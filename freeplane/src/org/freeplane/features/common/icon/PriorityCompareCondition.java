@@ -25,7 +25,6 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 import org.freeplane.core.filter.condition.CompareConditionAdapter;
-import org.freeplane.core.filter.condition.ConditionFactory;
 import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.filter.condition.JCondition;
 import org.freeplane.core.io.xml.TreeXmlReader;
@@ -33,9 +32,6 @@ import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
-import org.freeplane.core.util.HtmlTools;
-import org.freeplane.features.common.attribute.IAttributeTableModel;
-import org.freeplane.features.common.attribute.NodeAttributeTableModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 class PriorityCompareCondition extends CompareConditionAdapter {
@@ -45,46 +41,41 @@ class PriorityCompareCondition extends CompareConditionAdapter {
 	static final String VALUE = "value";
 
 	static ICondition load(final XMLElement element) {
-		return new PriorityCompareCondition(element.getAttribute(PriorityCompareCondition.VALUE, null), 
-			Integer.parseInt(element.getAttribute(PriorityCompareCondition.COMPARATION_RESULT, null)), 
-			TreeXmlReader.xmlToBoolean(element.getAttribute(PriorityCompareCondition.SUCCEED, null)));
+		return new PriorityCompareCondition(element.getAttribute(PriorityCompareCondition.VALUE, null), Integer
+		    .parseInt(element.getAttribute(PriorityCompareCondition.COMPARATION_RESULT, null)), TreeXmlReader
+		    .xmlToBoolean(element.getAttribute(PriorityCompareCondition.SUCCEED, null)));
 	}
 
 	final private int comparationResult;
 	final private boolean succeed;
 
-	PriorityCompareCondition(final String value, final int comparationResult,
-	                     final boolean succeed) {
+	PriorityCompareCondition(final String value, final int comparationResult, final boolean succeed) {
 		super(value, false);
 		this.comparationResult = comparationResult;
 		this.succeed = succeed;
 		final JCondition renderer = new JCondition();
-        final String string = toString();
-		final JLabel label = new JLabel(string.substring(0, string.length()-3));
+		final String string = toString();
+		final JLabel label = new JLabel(string.substring(0, string.length() - 3));
 		label.setIcon(MindIcon.factory(getIconName()).getIcon());
 		label.setHorizontalTextPosition(SwingConstants.LEFT);
-        renderer.add(label);
-        setListCellRendererComponent(renderer);
+		renderer.add(label);
+		setListCellRendererComponent(renderer);
 	}
-
-	private String getIconName() {
-	    return "full-" + getConditionValue().toString();
-    }
 
 	public boolean checkNode(final NodeModel node) {
 		final List<MindIcon> icons = node.getIcons();
-		for (final MindIcon icon:icons) {
+		for (final MindIcon icon : icons) {
 			final String iconName = icon.getName();
-			if(iconName.length()!= 6){
+			if (iconName.length() != 6) {
 				continue;
 			}
-			if(! iconName.startsWith("full-")){
+			if (!iconName.startsWith("full-")) {
 				continue;
 			}
-			if (iconName.charAt(5) < '0' ||iconName.charAt(5) > '9'){
+			if (iconName.charAt(5) < '0' || iconName.charAt(5) > '9') {
 				continue;
 			}
-			if ( succeed == (compareTo(iconName.substring(5, 6)) == comparationResult)) {
+			if (succeed == (compareTo(iconName.substring(5, 6)) == comparationResult)) {
 				return true;
 			}
 		}
@@ -95,6 +86,10 @@ class PriorityCompareCondition extends CompareConditionAdapter {
 	protected String createDesctiption() {
 		final String priorityCondition = ResourceBundles.getText(PriorityConditionController.FILTER_PRIORITY);
 		return super.createDescription(priorityCondition, comparationResult, succeed);
+	}
+
+	private String getIconName() {
+		return "full-" + getConditionValue().toString();
 	}
 
 	public void toXml(final XMLElement element) {

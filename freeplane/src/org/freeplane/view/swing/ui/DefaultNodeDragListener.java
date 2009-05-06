@@ -34,9 +34,8 @@ class DefaultNodeDragListener implements DragGestureListener {
 		if (!ResourceController.getResourceController().getBooleanProperty("draganddrop")) {
 			return;
 		}
-		
 		final int dragActionType = e.getDragAction();
-		if(dragActionType == DnDConstants.ACTION_MOVE){
+		if (dragActionType == DnDConstants.ACTION_MOVE) {
 			final NodeModel node = ((MainView) e.getComponent()).getNodeView().getModel();
 			if (node.isRoot()) {
 				return;
@@ -52,7 +51,7 @@ class DefaultNodeDragListener implements DragGestureListener {
 			cursor = DragSource.DefaultCopyDrop;
 			dragActionName = "COPY";
 		}
-		else{
+		else {
 			dragActionName = "MOVE";
 		}
 		final ModeController modeController = controller.getModeController();

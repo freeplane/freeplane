@@ -58,6 +58,8 @@ import org.freeplane.core.util.LogTool;
  * @author Dimitry Polivaev
  */
 public class UrlManager implements IExtension {
+	public static final String FREEPLANE_FILE_EXTENSION_WITHOUT_DOT = "mm";
+	public static final String FREEPLANE_FILE_EXTENSION = "." + FREEPLANE_FILE_EXTENSION_WITHOUT_DOT;
 	private static File lastCurrentDir = null;
 
 	/**
@@ -315,8 +317,6 @@ public class UrlManager implements IExtension {
 
 	final private Controller controller;
 	final private ModeController modeController;
-	public static final String FREEPLANE_FILE_EXTENSION_WITHOUT_DOT = "mm";
-	public static final String FREEPLANE_FILE_EXTENSION = "." + FREEPLANE_FILE_EXTENSION_WITHOUT_DOT;
 
 	public UrlManager(final ModeController modeController) {
 		super();

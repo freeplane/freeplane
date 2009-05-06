@@ -343,8 +343,7 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 		deleteAttributeBtn.addActionListener(new DeleteAttributeAction());
 		deleteAttributeBtn.setMaximumSize(AssignAttributeDialog.maxButtonDimension);
 		final JButton deleteAttributeValueBtn = new JButton();
-		MenuBuilder.setLabelAndMnemonic(deleteAttributeValueBtn, ResourceBundles
-		    .getText("attribute_delete_value"));
+		MenuBuilder.setLabelAndMnemonic(deleteAttributeValueBtn, ResourceBundles.getText("attribute_delete_value"));
 		deleteAttributeValueBtn.addActionListener(new DeleteValueAction());
 		deleteAttributeValueBtn.setMaximumSize(AssignAttributeDialog.maxButtonDimension);
 		final JButton replaceBtn = new JButton();

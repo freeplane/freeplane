@@ -28,7 +28,6 @@ import java.io.Writer;
 import java.util.Iterator;
 import java.util.List;
 
-import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.util.ColorUtils;
@@ -108,7 +107,7 @@ public class StylePatternFactory {
 		}
 		if (node.getIcons().size() == 1) {
 			final PatternProperty iconPattern = new PatternProperty();
-			iconPattern.setValue(((MindIcon) node.getIcons().get(0)).getName());
+			iconPattern.setValue((node.getIcons().get(0)).getName());
 			pattern.setPatternIcon(iconPattern);
 		}
 		final EdgeModel edge = EdgeModel.getModel(node);
@@ -244,11 +243,11 @@ public class StylePatternFactory {
 	public static String toString(final Pattern pPattern) {
 		String result = "";
 		result = StylePatternFactory.addSubPatternToString(result, pPattern.getPatternNodeColor(),
-	    "PatternToString.color");
+		    "PatternToString.color");
 		result = StylePatternFactory.addSubPatternToString(result, pPattern.getPatternNodeBackgroundColor(),
-	    "PatternToString.backgroundColor");
+		    "PatternToString.backgroundColor");
 		result = StylePatternFactory.addSubPatternToString(result, pPattern.getPatternNodeFontSize(),
-	    "PatternToString.NodeFontSize");
+		    "PatternToString.NodeFontSize");
 		result = StylePatternFactory.addSubPatternToString(result, pPattern.getPatternNodeFontName(),
 		    "PatternToString.FontName");
 		result = StylePatternFactory.addSubPatternToString(result, pPattern.getPatternNodeFontBold(),

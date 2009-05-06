@@ -91,7 +91,7 @@ public class MNoteController extends NoteController {
 
 		private void docEvent() {
 			final Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
-			if (focusOwner == null || ! SwingUtilities.isDescendingFrom(focusOwner, htmlEditorPanel)){
+			if (focusOwner == null || !SwingUtilities.isDescendingFrom(focusOwner, htmlEditorPanel)) {
 				return;
 			}
 			final ModeController modeController = getModeController();
@@ -129,6 +129,10 @@ public class MNoteController extends NoteController {
 	}
 
 	private static SHTMLPanel htmlEditorPanel;
+	public static final String RESOURCES_REMOVE_NOTES_WITHOUT_QUESTION = "remove_notes_without_question";
+	public static final String RESOURCES_USE_DEFAULT_FONT_FOR_NOTES_TOO = "resources_use_default_font_for_notes_too";
+	public static final String RESOURCES_USE_MARGIN_TOP_ZERO_FOR_NOTES = "resources_use_margin_top_zero_for_notes";
+	public static final String RESOURCES_USE_SPLIT_PANE = "use_split_pane";
 	/**
 	 * Indicates, whether or not the main panel has to be refreshed with new
 	 * content. The typical content will be empty, so this state is saved here.
@@ -138,10 +142,6 @@ public class MNoteController extends NoteController {
 	private NoteManager noteManager;
 	private SHTMLPanel noteViewerComponent;
 	private Integer positionToRecover = null;
-	public static final String RESOURCES_USE_SPLIT_PANE = "use_split_pane";
-	public static final String RESOURCES_USE_MARGIN_TOP_ZERO_FOR_NOTES = "resources_use_margin_top_zero_for_notes";
-	public static final String RESOURCES_USE_DEFAULT_FONT_FOR_NOTES_TOO = "resources_use_default_font_for_notes_too";
-	public static final String RESOURCES_REMOVE_NOTES_WITHOUT_QUESTION = "remove_notes_without_question";
 
 	/**
 	 * @param modeController
@@ -199,8 +199,7 @@ public class MNoteController extends NoteController {
 		if (splitPane == null) {
 			showNotesPanel();
 			splitPane = getSplitPane();
-			ResourceController.getResourceController().setProperty(
-			    MNoteController.RESOURCES_USE_SPLIT_PANE, "true");
+			ResourceController.getResourceController().setProperty(MNoteController.RESOURCES_USE_SPLIT_PANE, "true");
 		}
 		return splitPane;
 	}
@@ -335,10 +334,11 @@ public class MNoteController extends NoteController {
 		    KeyStroke.getKeyStroke(keystroke), "jumpToMapAction");
 		noteViewerComponent.getActionMap().put("jumpToMapAction", jumpToMapAction);
 		if (shouldUseSplitPane()) {
-			EventQueue.invokeLater(new Runnable(){
+			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					showNotesPanel();
-				}});
+				}
+			});
 		}
 		modeController.getMapController().addNodeSelectionListener(noteManager);
 		noteManager.mNoteDocumentListener = new NoteDocumentListener();

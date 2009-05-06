@@ -66,7 +66,7 @@ public abstract class PersistentNodeHook {
 		 */
 		protected SelectableHookAction(final String key) {
 			super(key);
-//			System.out.println("SelectableHookAction " + key);
+			//			System.out.println("SelectableHookAction " + key);
 		}
 
 		@Override

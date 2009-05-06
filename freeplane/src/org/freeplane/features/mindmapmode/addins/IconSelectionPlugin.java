@@ -38,7 +38,7 @@ import org.freeplane.features.mindmapmode.icon.MIconController;
  * @author adapted to the plugin mechanism by ganzer
  */
 @ActionLocationDescriptor(locations = { "/menu_bar/insert/icons/actions" }, //
-	accelerator="control F2")
+accelerator = "control F2")
 public class IconSelectionPlugin extends AFreeplaneAction {
 	/**
 	 * 
@@ -54,8 +54,8 @@ public class IconSelectionPlugin extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		final ModeController modeController = getModeController();
 		final Vector actions = new Vector();
-		final Collection<AFreeplaneAction> iconActions = ((MIconController) IconController.getController(modeController))
-		    .getIconActions();
+		final Collection<AFreeplaneAction> iconActions = ((MIconController) IconController
+		    .getController(modeController)).getIconActions();
 		actions.addAll(iconActions);
 		actions.add(modeController.getAction("RemoveIconAction"));
 		actions.add(modeController.getAction("RemoveAllIconsAction"));

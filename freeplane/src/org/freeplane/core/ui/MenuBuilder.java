@@ -252,13 +252,13 @@ public class MenuBuilder extends UIBuilder {
 				final String action = attributes.getAttribute("action", null);
 				menuPath.setName(action);
 				final String accelerator = attributes.getAttribute("accelerator", null);
-				if(accelerator != null){
-					String shortcutKey = getShortcutKey(menuPath.path);
+				if (accelerator != null) {
+					final String shortcutKey = getShortcutKey(menuPath.path);
 					ResourceController.getResourceController().setDefaultProperty(shortcutKey, accelerator);
 				}
 				try {
 					final AFreeplaneAction theAction = modeController.getAction(action);
-					assert  theAction != null;
+					assert theAction != null;
 					if (tag.equals("menu_radio_action")) {
 						final JRadioButtonMenuItem item = (JRadioButtonMenuItem) addRadioItem(menuPath.parentPath,
 						    theAction, "true".equals(attributes.getAttribute("selected", "false")));
@@ -289,8 +289,8 @@ public class MenuBuilder extends UIBuilder {
 				if (!contains(menuPath.path)) {
 					if (tag.equals("menu_submenu")) {
 						final JMenu menuItem = new JMenu();
-						MenuBuilder.setLabelAndMnemonic(menuItem, ResourceBundles.getText(attributes
-						    .getAttribute("name_ref", null)));
+						MenuBuilder.setLabelAndMnemonic(menuItem, ResourceBundles.getText(attributes.getAttribute(
+						    "name_ref", null)));
 						addMenuItem(menuPath.parentPath, menuItem, menuPath.path, MenuBuilder.AS_CHILD);
 					}
 					else {
@@ -408,11 +408,11 @@ public class MenuBuilder extends UIBuilder {
 		final String[] actionLocations = actionAnnotation.locations();
 		for (int i = 0; i < actionLocations.length; i++) {
 			final String key = actionLocations.length == 0 ? action.getKey() : action.getKey() + "[" + i + "]";
-			String itemKey = actionLocations[i] + '/' + key;
-			if(i == 0){
-				String accelerator = actionAnnotation.accelerator();
-				if(! accelerator.equals("")){
-					String shortcutKey = getShortcutKey(itemKey);
+			final String itemKey = actionLocations[i] + '/' + key;
+			if (i == 0) {
+				final String accelerator = actionAnnotation.accelerator();
+				if (!accelerator.equals("")) {
+					final String shortcutKey = getShortcutKey(itemKey);
 					ResourceController.getResourceController().setDefaultProperty(shortcutKey, accelerator);
 				}
 			}
@@ -420,14 +420,6 @@ public class MenuBuilder extends UIBuilder {
 		}
 	}
 
-	Action decorateAction(String category, Action action){
-		if (null == getMenubar(get(category))
-				|| modeController.getController().getViewController().isApplet()){
-			return action;
-		}
-		return new AccelerateableAction(this, action);
-		
-	}
 	/**
 	 * @return returns the new JMenuItem.
 	 */
@@ -435,8 +427,7 @@ public class MenuBuilder extends UIBuilder {
 		addAction(category, category + '/' + action.getKey(), action, position);
 	}
 
-	public void addAction(final String category, final String key, final AFreeplaneAction action,
-	                      final int position) {
+	public void addAction(final String category, final String key, final AFreeplaneAction action, final int position) {
 		assert action != null;
 		assert key != null;
 		if (getContainer(get(category), Container.class) instanceof JToolBar) {
@@ -547,32 +538,17 @@ public class MenuBuilder extends UIBuilder {
 	}
 
 	public void addMenuItem(final String relativeKey, final JMenuItem item, final String key, final int position) {
-		String shortcutKey = getShortcutKey(key);
-		String keyStrokeString = ResourceController.getResourceController().getAdjustableProperty(shortcutKey);
-		DefaultMutableTreeNode element = addElement(relativeKey, item, key, position);
-		if(null == getMenubar(element)){
+		final String shortcutKey = getShortcutKey(key);
+		final String keyStrokeString = ResourceController.getResourceController().getAdjustableProperty(shortcutKey);
+		final DefaultMutableTreeNode element = addElement(relativeKey, item, key, position);
+		if (null == getMenubar(element)) {
 			return;
 		}
-		if(keyStrokeString != null && !keyStrokeString.equals("")){
-			KeyStroke keyStroke = UITools.getKeyStroke(keyStrokeString);
+		if (keyStrokeString != null && !keyStrokeString.equals("")) {
+			final KeyStroke keyStroke = UITools.getKeyStroke(keyStrokeString);
 			item.setAccelerator(keyStroke);
 		}
 	}
-
-	Object getMenubar(DefaultMutableTreeNode element) {
-		do {
-	        Object userObject = element.getUserObject();
-			if (userObject instanceof JMenuBar) {
-		        return ((Node)element).getKey();
-	        }
-	        element = (DefaultMutableTreeNode) element.getParent();
-        } while (element != null);
-        return null;
-    }
-
-	String getShortcutKey(final String key) {
-	    return "acceleratorFor" + modeController.getModeName() + "/" + key;
-    }
 
 	public void addMenuItemGroup(final String key, final int position) {
 		addElement(this, key, key, position);
@@ -614,7 +590,7 @@ public class MenuBuilder extends UIBuilder {
 
 	public JMenuItem addRadioItem(final String category, final AFreeplaneAction action, final boolean isSelected) {
 		assert action != null;
-		String key = action.getKey();
+		final String key = action.getKey();
 		assert key != null;
 		final JRadioButtonMenuItem item;
 		if (action.getClass().getAnnotation(SelectableAction.class) != null) {
@@ -656,12 +632,30 @@ public class MenuBuilder extends UIBuilder {
 		addElement(this, toolbar, key, UIBuilder.AS_CHILD);
 	}
 
+	Action decorateAction(final String category, final Action action) {
+		if (null == getMenubar(get(category)) || modeController.getController().getViewController().isApplet()) {
+			return action;
+		}
+		return new AccelerateableAction(this, action);
+	}
+
 	@Override
 	protected Component getChildComponent(final Container parentComponent, final int index) {
 		if (parentComponent instanceof JMenu) {
 			return ((JMenu) parentComponent).getMenuComponent(index);
 		}
 		return super.getChildComponent(parentComponent, index);
+	}
+
+	Object getMenubar(DefaultMutableTreeNode element) {
+		do {
+			final Object userObject = element.getUserObject();
+			if (userObject instanceof JMenuBar) {
+				return ((Node) element).getKey();
+			}
+			element = (DefaultMutableTreeNode) element.getParent();
+		} while (element != null);
+		return null;
 	}
 
 	@Override
@@ -676,6 +670,10 @@ public class MenuBuilder extends UIBuilder {
 			return ((JMenu) parentComponent).getMenuComponentCount();
 		}
 		return super.getParentComponentCount(parentComponent);
+	}
+
+	String getShortcutKey(final String key) {
+		return "acceleratorFor" + modeController.getModeName() + "/" + key;
 	}
 
 	public void processMenuCategory(final URL menu) {

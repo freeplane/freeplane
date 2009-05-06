@@ -24,6 +24,7 @@ package org.freeplane.features.common.link;
  */
 public class LinkModel {
 	private String targetID;
+
 	public LinkModel(final String targetID) {
 		this.targetID = targetID;
 	}

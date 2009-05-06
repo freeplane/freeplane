@@ -49,6 +49,8 @@ public class EdgeController implements IExtension {
 	}
 
 	private static EdgePropertyListener listener = null;
+	public static final String RESOURCES_EDGE_COLOR = "standardedgecolor";
+	public static final String RESOURCES_EDGE_STYLE = "standardedgestyle";
 	private static Color standardColor = null;
 	private static String standardStyle = null;
 
@@ -64,8 +66,6 @@ public class EdgeController implements IExtension {
 	private final ModeController modeController;
 	final private ExclusivePropertyChain<String, NodeModel> styleHandlers;
 	final private ExclusivePropertyChain<Integer, NodeModel> widthHandlers;
-	public static final String RESOURCES_EDGE_STYLE = "standardedgestyle";
-	public static final String RESOURCES_EDGE_COLOR = "standardedgecolor";
 
 	public EdgeController(final ModeController modeController) {
 		this.modeController = modeController;

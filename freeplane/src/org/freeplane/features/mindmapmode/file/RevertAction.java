@@ -73,8 +73,8 @@ class RevertAction extends AFreeplaneAction {
 						filePrefix = this.getFilePrefix();
 					}
 					final File tempFile = File.createTempFile(filePrefix,
-					    org.freeplane.core.url.UrlManager.FREEPLANE_FILE_EXTENSION, new File(
-					        ResourceController.getResourceController().getFreeplaneUserDirectory()));
+					    org.freeplane.core.url.UrlManager.FREEPLANE_FILE_EXTENSION, new File(ResourceController
+					        .getResourceController().getFreeplaneUserDirectory()));
 					final FileWriter fw = new FileWriter(tempFile);
 					fw.write(this.getMap());
 					fw.close();

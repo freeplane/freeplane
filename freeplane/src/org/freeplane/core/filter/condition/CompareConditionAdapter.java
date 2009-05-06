@@ -27,10 +27,6 @@ abstract public class CompareConditionAdapter extends NodeCondition {
 	public static final String IGNORE_CASE = "ignore_case";
 	public static final String VALUE = "value";
 	private Comparable conditionValue;
-	public Comparable getConditionValue() {
-    	return conditionValue;
-    }
-
 	final private boolean ignoreCase;
 
 	protected CompareConditionAdapter(final String value, final boolean ignoreCase) {
@@ -59,18 +55,19 @@ abstract public class CompareConditionAdapter extends NodeCondition {
 	}
 
 	protected int compareTo(final String nodeValue) throws NumberFormatException {
-		if(conditionValue instanceof Integer){
+		if (conditionValue instanceof Integer) {
 			try {
-				return Integer.valueOf(nodeValue).compareTo((Integer)conditionValue);
+				return Integer.valueOf(nodeValue).compareTo((Integer) conditionValue);
 			}
 			catch (final NumberFormatException fne) {
 			};
-			return Double.valueOf(nodeValue).compareTo(new Double((Integer)conditionValue));
+			return Double.valueOf(nodeValue).compareTo(new Double((Integer) conditionValue));
 		}
-		else if(conditionValue instanceof Double){
-				return Double.valueOf(nodeValue).compareTo((Double)conditionValue);
+		else if (conditionValue instanceof Double) {
+			return Double.valueOf(nodeValue).compareTo((Double) conditionValue);
 		}
-		return ignoreCase ? nodeValue.compareToIgnoreCase(conditionValue.toString()) : nodeValue.compareTo(conditionValue.toString());
+		return ignoreCase ? nodeValue.compareToIgnoreCase(conditionValue.toString()) : nodeValue
+		    .compareTo(conditionValue.toString());
 	}
 
 	public String createDescription(final String attribute, final int comparationResult, final boolean succeed) {
@@ -90,5 +87,9 @@ abstract public class CompareConditionAdapter extends NodeCondition {
 				throw new IllegalArgumentException();
 		}
 		return ConditionFactory.createDescription(attribute, simpleCondition, conditionValue.toString(), ignoreCase);
+	}
+
+	public Comparable getConditionValue() {
+		return conditionValue;
 	}
 }

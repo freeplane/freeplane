@@ -39,6 +39,9 @@ import org.freeplane.core.util.LogTool;
  * @author Dimitry Polivaev
  */
 public abstract class ResourceController {
+	public static final String FREEPLANE_PROPERTIES = "/freeplane.properties";
+	public static final String LOCAL_PROPERTIES = "LocalProperties.";
+	public static final String RESOURCE_DRAW_RECTANGLE_FOR_SELECTION = "standarddrawrectangleforselection";
 	// TODO rladstaetter 15.02.2009 remove static
 	private static ResourceController resourceController;
 
@@ -53,9 +56,6 @@ public abstract class ResourceController {
 
 	final private List<IFreeplanePropertyListener> propertyChangeListeners = new Vector<IFreeplanePropertyListener>();
 	private ResourceBundles resources;
-	public static final String RESOURCE_DRAW_RECTANGLE_FOR_SELECTION = "standarddrawrectangleforselection";
-	public static final String LOCAL_PROPERTIES = "LocalProperties.";
-	public static final String FREEPLANE_PROPERTIES = "/freeplane.properties";
 
 	public ResourceController() {
 		super();
@@ -221,8 +221,8 @@ public abstract class ResourceController {
 	abstract public void setProperty(final String property, final String value);
 
 	public void toggleSelectionAsRectangle() {
-		setProperty(ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION, new Boolean(
-		    !isSelectionAsRectangle()).toString());
+		setProperty(ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION, new Boolean(!isSelectionAsRectangle())
+		    .toString());
 	}
 
 	public void updateMenus(final ModeController modeController) {

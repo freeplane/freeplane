@@ -44,9 +44,9 @@ class CenterSelectedNodeAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final IMapSelection selection = getController().getSelection();
-		Component mapView = getController().getViewController().getMapView();
-		JRootPane rootPane = SwingUtilities.getRootPane(mapView);
-		if(! rootPane.isValid()){
+		final Component mapView = getController().getViewController().getMapView();
+		final JRootPane rootPane = SwingUtilities.getRootPane(mapView);
+		if (!rootPane.isValid()) {
 			rootPane.revalidate();
 		}
 		selection.centerNode(selection.getSelected());

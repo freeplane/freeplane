@@ -110,7 +110,7 @@ class FlatNodeTableFilterModel extends AbstractTableModel {
 
 	public void setFilter(final String filterRegexp) {
 		mFilterRegexp = filterRegexp;
-//		System.out.println("Setting filter to '" + mFilterRegexp + "'");
+		//		System.out.println("Setting filter to '" + mFilterRegexp + "'");
 		mPattern = Pattern.compile(mFilterRegexp, Pattern.CASE_INSENSITIVE);
 		updateIndexArray();
 		fireTableDataChanged();

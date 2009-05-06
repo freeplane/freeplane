@@ -73,13 +73,18 @@ class RemoveIconAction extends MultipleNodeAction implements IIconInformation {
 		return UITools.getKeyStroke(ResourceController.getResourceController().getAdjustableProperty(getShortcutKey()));
 	}
 
+	public String getShortcutKey() {
+		return getKey() + ".shortcut";
+	}
+
 	public int removeIcon(final NodeModel node, final int position) {
 		final int size = node.getIcons().size();
-		if(size == 0 || size <= position){
+		if (size == 0 || size <= position) {
 			return size;
 		}
 		final IActor actor = new IActor() {
 			private final MindIcon icon = node.getIcon(position);
+
 			public void act() {
 				node.removeIcon(position);
 				getModeController().getMapController().nodeChanged(node, "icon", icon, null);
@@ -97,7 +102,4 @@ class RemoveIconAction extends MultipleNodeAction implements IIconInformation {
 		getModeController().execute(actor);
 		return node.getIcons().size();
 	}
-	public String getShortcutKey() {
-	    return getKey() + ".shortcut";
-    }
 }

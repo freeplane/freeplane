@@ -161,19 +161,19 @@ public class MLinkController extends LinkController {
 		final JTextField targetLabelEditor = new JTextField(link.getTargetLabel());
 		arrowLinkPopup.add(targetLabelEditor);
 		arrowLinkPopup.addSeparator();
-		arrowLinkPopup.addPopupMenuListener(new PopupMenuListener(){
+		arrowLinkPopup.addPopupMenuListener(new PopupMenuListener() {
+			public void popupMenuCanceled(final PopupMenuEvent e) {
+			}
 
-			public void popupMenuCanceled(PopupMenuEvent e) {
-            }
-			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-	            setSourceLabel(link, sourceLabelEditor.getText());
-	            setMiddleLabel(link, middleLabelEditor.getText());
-	            setTargetLabel(link, targetLabelEditor.getText());
-	            
-            }
-			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-            }});
-		
+			public void popupMenuWillBecomeInvisible(final PopupMenuEvent e) {
+				setSourceLabel(link, sourceLabelEditor.getText());
+				setMiddleLabel(link, middleLabelEditor.getText());
+				setTargetLabel(link, targetLabelEditor.getText());
+			}
+
+			public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
+			}
+		});
 		final boolean a = !link.getStartArrow().equals("None");
 		final boolean b = !link.getEndArrow().equals("None");
 		final JRadioButtonMenuItem itemnn = new JRadioButtonMenuItem(new ChangeArrowsInArrowLinkAction(this, "none",
@@ -257,59 +257,13 @@ public class MLinkController extends LinkController {
 	public void setLinkByFileChooser() {
 		setLinkByFileChooser.setLinkByFileChooser();
 	}
-	
-	public void setSourceLabel(final ArrowLinkModel model, final String label) {
-		final String oldLabel = model.getSourceLabel();
-		if (label == oldLabel || label != null && label.equals(oldLabel)) {
-			return;
-		}
-		IActor actor = new IActor() {
-			public void act() {
-				model.setSourceLabel(label);
-				getModeController().getMapController().nodeChanged(model.getSource());
-			}
 
-			public String getDescription() {
-				return "setSourceLabel";
-			}
-
-			public void undo() {
-				model.setSourceLabel(oldLabel);
-				getModeController().getMapController().nodeChanged(model.getSource());
-			}
-		};
-		getModeController().execute(actor);
-	}
-	
-	public void setTargetLabel(final ArrowLinkModel model, final String label) {
-		final String oldLabel = model.getTargetLabel();
-		if (label == oldLabel || label != null && label.equals(oldLabel)) {
-			return;
-		}
-		IActor actor = new IActor() {
-			public void act() {
-				model.setTargetLabel(label);
-				getModeController().getMapController().nodeChanged(model.getSource());
-			}
-
-			public String getDescription() {
-				return "setTargetLabel";
-			}
-
-			public void undo() {
-				model.setTargetLabel(oldLabel);
-				getModeController().getMapController().nodeChanged(model.getSource());
-			}
-		};
-		getModeController().execute(actor);
-	}
-	
 	public void setMiddleLabel(final ArrowLinkModel model, final String label) {
 		final String oldLabel = model.getMiddleLabel();
 		if (label == oldLabel || label != null && label.equals(oldLabel)) {
 			return;
 		}
-		IActor actor = new IActor() {
+		final IActor actor = new IActor() {
 			public void act() {
 				model.setMiddleLabel(label);
 				getModeController().getMapController().nodeChanged(model.getSource());
@@ -326,5 +280,50 @@ public class MLinkController extends LinkController {
 		};
 		getModeController().execute(actor);
 	}
-	
+
+	public void setSourceLabel(final ArrowLinkModel model, final String label) {
+		final String oldLabel = model.getSourceLabel();
+		if (label == oldLabel || label != null && label.equals(oldLabel)) {
+			return;
+		}
+		final IActor actor = new IActor() {
+			public void act() {
+				model.setSourceLabel(label);
+				getModeController().getMapController().nodeChanged(model.getSource());
+			}
+
+			public String getDescription() {
+				return "setSourceLabel";
+			}
+
+			public void undo() {
+				model.setSourceLabel(oldLabel);
+				getModeController().getMapController().nodeChanged(model.getSource());
+			}
+		};
+		getModeController().execute(actor);
+	}
+
+	public void setTargetLabel(final ArrowLinkModel model, final String label) {
+		final String oldLabel = model.getTargetLabel();
+		if (label == oldLabel || label != null && label.equals(oldLabel)) {
+			return;
+		}
+		final IActor actor = new IActor() {
+			public void act() {
+				model.setTargetLabel(label);
+				getModeController().getMapController().nodeChanged(model.getSource());
+			}
+
+			public String getDescription() {
+				return "setTargetLabel";
+			}
+
+			public void undo() {
+				model.setTargetLabel(oldLabel);
+				getModeController().getMapController().nodeChanged(model.getSource());
+			}
+		};
+		getModeController().execute(actor);
+	}
 }

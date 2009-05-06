@@ -37,7 +37,7 @@ class ChangeArrowsInArrowLinkAction extends AFreeplaneAction {
 	public ChangeArrowsInArrowLinkAction(final MLinkController linkController, final String key,
 	                                     final ArrowLinkModel arrowLink, final boolean hasStartArrow,
 	                                     final boolean hasEndArrow) {
-		super("ChangeArrowsInArrowLinkAction."+key, linkController.getModeController().getController());
+		super("ChangeArrowsInArrowLinkAction." + key, linkController.getModeController().getController());
 		this.arrowLink = arrowLink;
 		this.hasStartArrow = hasStartArrow;
 		this.hasEndArrow = hasEndArrow;

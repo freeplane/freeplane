@@ -333,8 +333,7 @@ class ScriptEditorPanel extends JDialog {
 		mSignAction = new SignAction(controller, ResourceBundles.getText("plugins/ScriptEditor.sign"));
 		mSignAction.setEnabled(false);
 		addAction(menu, mSignAction);
-		final AbstractAction cancelAction = new CancelAction(ResourceBundles
-		    .getText("plugins/ScriptEditor.cancel"));
+		final AbstractAction cancelAction = new CancelAction(ResourceBundles.getText("plugins/ScriptEditor.cancel"));
 		addAction(menu, cancelAction);
 		final AbstractAction exitAction = new ExitAction(ResourceBundles.getText("plugins/ScriptEditor.exit"));
 		addAction(menu, exitAction);
