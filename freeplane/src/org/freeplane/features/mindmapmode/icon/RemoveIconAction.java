@@ -75,7 +75,7 @@ class RemoveIconAction extends MultipleNodeAction implements IIconInformation {
 
 	public int removeIcon(final NodeModel node, final int position) {
 		final int size = node.getIcons().size();
-		if(size <= position){
+		if(size == 0 || size <= position){
 			return size;
 		}
 		final IActor actor = new IActor() {
