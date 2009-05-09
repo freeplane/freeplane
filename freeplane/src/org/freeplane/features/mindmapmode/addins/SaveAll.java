@@ -17,6 +17,7 @@
  */
 package org.freeplane.features.mindmapmode.addins;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.util.Iterator;
 import java.util.Map;
@@ -51,7 +52,7 @@ public class SaveAll extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final Controller controller = getController();
-		final MapModel initialMapView = controller.getMap();
+		final Component initialMapView = controller.getViewController().getMapView();
 		final Map<String, MapModel> mapViews = getMapViews();
 		final Iterator<Entry<String, MapModel>> iterator = mapViews.entrySet().iterator();
 		while (iterator.hasNext()) {
@@ -65,7 +66,9 @@ public class SaveAll extends AFreeplaneAction {
 				return;
 			}
 		}
-		controller.getMapViewManager().changeToMapView(initialMapView.toString());
+		if(initialMapView != null){
+			controller.getMapViewManager().changeToMapView(initialMapView);
+		}
 	}
 
 	/**

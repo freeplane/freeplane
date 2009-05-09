@@ -92,7 +92,12 @@ class EditNodeWYSIWYG extends EditNodeBase {
 			buttonPane.add(cancelButton);
 			buttonPane.add(splitButton);
 			buttonPane.setMaximumSize(new Dimension(1000, 20));
-			getContentPane().add(buttonPane, BorderLayout.SOUTH);
+			if (ResourceController.getResourceController().getBooleanProperty("el__buttons_above")) {
+				getContentPane().add(buttonPane, BorderLayout.NORTH);
+			}
+			else {
+				getContentPane().add(buttonPane, BorderLayout.SOUTH);
+			}
 		}
 
 		/*
@@ -223,7 +228,12 @@ class EditNodeWYSIWYG extends EditNodeBase {
 			    .getProperty("el__max_default_window_width")));
 			htmlEditorPanel.setContentPanePreferredSize(new Dimension(preferredWidth, preferredHeight));
 			EditNodeWYSIWYG.htmlEditorWindow.pack();
-			UITools.setDialogLocationUnder(EditNodeWYSIWYG.htmlEditorWindow, getController(), node);
+			if(ResourceController.getResourceController().getBooleanProperty("el__position_window_below_node")){
+				UITools.setDialogLocationUnder(EditNodeWYSIWYG.htmlEditorWindow, getController(), node);
+			}
+			else{
+				UITools.setDialogLocationRelativeTo(EditNodeWYSIWYG.htmlEditorWindow, getController(), node);
+			}
 			String content = node.toString();
 			if (!HtmlTools.isHtmlNode(content)) {
 				content = HtmlTools.plainToHTML(content);

@@ -180,7 +180,7 @@ class EditNodeDialog extends EditNodeBase {
 			buttonPane.add(cancelButton);
 			buttonPane.add(splitButton);
 			buttonPane.setMaximumSize(new Dimension(1000, 20));
-			if (ResourceController.getResourceController().getProperty("el__buttons_position").equals("above")) {
+			if (ResourceController.getResourceController().getBooleanProperty("el__buttons_above")) {
 				panel.add(buttonPane);
 				panel.add(editorScrollPane);
 			}
@@ -267,7 +267,12 @@ class EditNodeDialog extends EditNodeBase {
 		final EditDialog dialog = new LongNodeDialog(frame);
 		dialog.pack();
 		getModeController().getController().getViewController().scrollNodeToVisible(node);
-		UITools.setDialogLocationUnder(dialog, getController(), getNode());
+		if(ResourceController.getResourceController().getBooleanProperty("el__position_window_below_node")){
+			UITools.setDialogLocationUnder(dialog, getController(), getNode());
+		}
+		else{
+			UITools.setDialogLocationRelativeTo(dialog, getController(), getNode());
+		}
 		dialog.show();
 	}
 }
