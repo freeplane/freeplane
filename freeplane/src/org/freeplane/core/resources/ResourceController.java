@@ -163,6 +163,15 @@ public abstract class ResourceController {
 		}
 	}
 
+	public long getLongProperty(final String key, final int defaultValue) {
+		try {
+			return Long.parseLong(getProperty(key));
+		}
+		catch (final NumberFormatException nfe) {
+			return defaultValue;
+		}
+	}
+
 	/**
 	 * @return
 	 */

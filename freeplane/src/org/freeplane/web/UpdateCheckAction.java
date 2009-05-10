@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Date;
 import java.util.Locale;
 
 import javax.swing.Box;
@@ -31,6 +32,10 @@ import org.freeplane.core.util.LogTool;
  * @author robert ladstaetter
  */
 public class UpdateCheckAction extends AFreeplaneAction {
+	private static final int CHECK_TIME = 30 * 1000;
+	private static final String LAST_UPDATE_CHECK_TIME = "last_update_check_time";
+	private static final String CHECK_UPDATES_AUTOMATICALLY = "check_updates_automatically";
+	private static final int TWO_DAYS = 1000*60*60*24*2;
 	private static boolean autorunEnabled  = true;
 	private static Timer autorunTimer = null;
 	/**
@@ -53,12 +58,18 @@ public class UpdateCheckAction extends AFreeplaneAction {
 		if(autorunEnabled == false){
 			return;
 		}
-		autorunEnabled = ResourceController.getResourceController().getBooleanProperty("check_updates_automatically");
+		autorunEnabled = ResourceController.getResourceController().getBooleanProperty(CHECK_UPDATES_AUTOMATICALLY);
 		if(autorunEnabled == false){
 			return;
 		}
 		autorunEnabled = false;
-		autorunTimer = new Timer(30000, this);
+		final Date now = new Date();
+		final long nextCheckMillis = ResourceController.getResourceController().getLongProperty(LAST_UPDATE_CHECK_TIME, 0) + TWO_DAYS;
+		final Date nextCheckDate = new Date(nextCheckMillis);
+		if(now.before(nextCheckDate)){
+			return;
+		}
+		autorunTimer = new Timer(CHECK_TIME, this);
 		autorunTimer.setRepeats(false);
 		autorunTimer.start();
 	}
@@ -77,6 +88,8 @@ public class UpdateCheckAction extends AFreeplaneAction {
 	}
 
 	private void checkForUpdates(final boolean autoRun) {
+		final Date now = new Date();
+		ResourceController.getResourceController().setProperty(LAST_UPDATE_CHECK_TIME, Long.toString(now.getTime()));
 	    final Locale defaultLocale = Locale.getDefault();
 		final String language = defaultLocale.getLanguage();
 		final String DEFAULT_LANGUAGE="en";
@@ -158,7 +171,7 @@ public class UpdateCheckAction extends AFreeplaneAction {
 	    historyPane.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 	    messagePane.add(historyPane);			
 	    final JCheckBox updateAutomatically = new JCheckBox(ResourceBundles.getText("OptionPanel.check_updates_automatically"),
-		    ResourceController.getResourceController().getBooleanProperty("check_updates_automatically"));
+		    ResourceController.getResourceController().getBooleanProperty(CHECK_UPDATES_AUTOMATICALLY));
 	    updateAutomatically.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 	    messagePane.add(updateAutomatically);
 	    Object[] options = new Object[]{ResourceBundles.getText("download"), 
@@ -166,7 +179,7 @@ public class UpdateCheckAction extends AFreeplaneAction {
 	    final int choice = JOptionPane.showOptionDialog(getController().getViewController().getFrame(), 
 	    	messagePane, ResourceBundles.getText("updatecheckdialog"), JOptionPane.DEFAULT_OPTION, 
 	    	JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
-	    ResourceController.getResourceController().setProperty("check_updates_automatically",
+	    ResourceController.getResourceController().setProperty(CHECK_UPDATES_AUTOMATICALLY,
 		    Boolean.toString(updateAutomatically.isSelected()));
 	    return choice;
     }
