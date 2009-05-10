@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -73,7 +74,7 @@ public class NodeModel implements MutableTreeNode {
 	private int position = NodeModel.UNKNOWN_POSITION;
 	private NodeModel preferredChild;
 	private String text = "no text";
-	private TreeMap toolTip = null;
+	private HashMap toolTip = null;
 	private Collection<INodeView> views = null;
 	private String xmlText = "no text";
 
@@ -139,7 +140,7 @@ public class NodeModel implements MutableTreeNode {
 
 	private void createToolTip() {
 		if (toolTip == null) {
-			toolTip = new TreeMap();
+			toolTip = new HashMap();
 		}
 	}
 
@@ -295,11 +296,11 @@ public class NodeModel implements MutableTreeNode {
 
 	/**
 	 */
-	public SortedMap getToolTip() {
+	public Map getToolTip() {
 		if (toolTip == null) {
 			return new TreeMap();
 		};
-		return Collections.unmodifiableSortedMap(toolTip);
+		return Collections.unmodifiableMap(toolTip);
 	}
 
 	public Collection<INodeView> getViewers() {
