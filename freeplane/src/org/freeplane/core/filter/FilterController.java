@@ -391,7 +391,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 			cond.toXml(saver);
 		}
 		final XMLWriter xmlWriter = new XMLWriter(writer);
-		xmlWriter.write(saver);
+		xmlWriter.write(saver, true);
 		writer.close();
 	}
 

@@ -29,10 +29,10 @@ import org.freeplane.core.util.HtmlTools;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 class NodeCompareCondition extends CompareConditionAdapter {
-	static final String COMPARATION_RESULT = "comparation_result";
 	static final String NAME = "node_compare_condition";
-	static final String SUCCEED = "succeed";
-	static final String VALUE = "value";
+	static final String COMPARATION_RESULT = "COMPARATION_RESULT";
+	static final String SUCCEED = "SUCCEED";
+	static final String VALUE = "VALUE";
 
 	static ICondition load(final XMLElement element) {
 		return new NodeCompareCondition(element.getAttribute(NodeCompareCondition.VALUE, null), TreeXmlReader
