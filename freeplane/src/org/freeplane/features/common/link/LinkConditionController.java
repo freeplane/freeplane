@@ -98,11 +98,11 @@ public class LinkConditionController implements IElementaryConditionController {
 
 	public ICondition loadCondition(final XMLElement element) {
 		if (element.getName().equalsIgnoreCase(HyperLinkEqualsCondition.NAME)) {
-			final String target = element.getAttribute("text", null);
+			final String target = element.getAttribute(HyperLinkEqualsCondition.TEXT, null);
 			return new HyperLinkEqualsCondition(target);
 		}
 		if (element.getName().equalsIgnoreCase(HyperLinkContainsCondition.NAME)) {
-			final String target = element.getAttribute("text", null);
+			final String target = element.getAttribute(HyperLinkContainsCondition.TEXT, null);
 			return new HyperLinkContainsCondition(target);
 		}
 		return null;

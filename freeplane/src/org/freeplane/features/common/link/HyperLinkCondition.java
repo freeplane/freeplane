@@ -31,6 +31,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
  * Mar 7, 2009
  */
 public abstract class HyperLinkCondition implements ICondition {
+	static final String TEXT = "TEXT";
 	private String description;
 	final private String hyperlink;
 	private JComponent renderer;
@@ -80,7 +81,7 @@ public abstract class HyperLinkCondition implements ICondition {
 	public void toXml(final XMLElement element) {
 		final XMLElement child = new XMLElement();
 		child.setName(getName());
-		child.setAttribute("text", hyperlink);
+		child.setAttribute(TEXT, hyperlink);
 		element.addChild(child);
 	}
 }

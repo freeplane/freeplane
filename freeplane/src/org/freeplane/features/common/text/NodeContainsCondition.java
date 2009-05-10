@@ -29,7 +29,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
 
 class NodeContainsCondition extends NodeCondition {
 	static final String NAME = "node_contains_condition";
-	static final String VALUE = "value";
+	static final String VALUE = "VALUE";
 
 	static ICondition load(final XMLElement element) {
 		return new NodeContainsCondition(element.getAttribute(NodeContainsCondition.VALUE, null));

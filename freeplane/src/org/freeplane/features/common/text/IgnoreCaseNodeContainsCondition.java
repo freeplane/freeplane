@@ -29,7 +29,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
 
 class IgnoreCaseNodeContainsCondition extends NodeCondition {
 	static final String NAME = "ignore_case_node_contains_condition";
-	static final String VALUE = "value";
+	static final String VALUE = "VALUE";
 
 	static ICondition load(final XMLElement element) {
 		return new IgnoreCaseNodeContainsCondition(element.getAttribute(IgnoreCaseNodeContainsCondition.VALUE, null));

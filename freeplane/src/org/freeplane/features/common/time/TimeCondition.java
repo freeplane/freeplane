@@ -34,7 +34,7 @@ import org.freeplane.core.resources.NamedObject;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 abstract class TimeCondition implements ICondition {
-	static final String DATE = "date";
+	static final String DATE = "DATE";
 	static final String FILTER_CREATED_AFTER = "filter_created_after";
 	static final String FILTER_CREATED_BEFORE = "filter_created_before";
 	static final String FILTER_MODIFIED_AFTER = "filter_modified_after";
@@ -117,7 +117,7 @@ abstract class TimeCondition implements ICondition {
 	public void toXml(final XMLElement element) {
 		final XMLElement child = new XMLElement();
 		child.setName(getName());
-		child.setAttribute("date", Long.toString(getDate().getTime()));
+		child.setAttribute(DATE, Long.toString(getDate().getTime()));
 		element.addChild(child);
 	}
 }

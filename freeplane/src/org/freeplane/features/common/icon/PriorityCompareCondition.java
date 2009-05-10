@@ -35,10 +35,10 @@ import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 class PriorityCompareCondition extends CompareConditionAdapter {
-	static final String COMPARATION_RESULT = "comparation_result";
 	static final String NAME = "priority_compare_condition";
-	static final String SUCCEED = "succeed";
-	static final String VALUE = "value";
+	static final String COMPARATION_RESULT = "COMPARATION_RESULT";
+	static final String SUCCEED = "SUCCEED";
+	static final String VALUE = "VALUE";
 
 	static ICondition load(final XMLElement element) {
 		return new PriorityCompareCondition(element.getAttribute(PriorityCompareCondition.VALUE, null), Integer
