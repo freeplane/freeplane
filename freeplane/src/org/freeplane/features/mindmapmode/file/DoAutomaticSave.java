@@ -22,6 +22,7 @@ package org.freeplane.features.mindmapmode.file;
 import java.awt.EventQueue;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
 import java.util.TimerTask;
 import java.util.Vector;
 
@@ -79,8 +80,15 @@ public class DoAutomaticSave extends TimerTask {
 					}
 					else {
 						try {
-							tempFile = File.createTempFile("FM_"
-							        + ((model.toString() == null) ? "unnamed" : model.toString()),
+							final URL url = model.getURL();
+							final String string;
+							if(url == null){
+								string = "unnamed";
+							}
+							else{
+								string = new File(url.getFile()).getName();
+							}
+							tempFile = File.createTempFile("FM_"+ string,
 							    UrlManager.FREEPLANE_FILE_EXTENSION, pathToStore);
 							if (filesShouldBeDeletedAfterShutdown) {
 								tempFile.deleteOnExit();
