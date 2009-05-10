@@ -137,14 +137,19 @@ class LastOpenedList implements IMapViewChangeListener {
 	private void updateMenus() {
 		final MenuBuilder menuBuilder = controller.getModeController().getUserInputListenerFactory().getMenuBuilder();
 		menuBuilder.removeChildElements(FreeplaneMenuBar.FILE_MENU + "/last");
-		int i = 0;
+		int i = -1;
 		for (final ListIterator it = listIterator(); it.hasNext();) {
 			final String key = (String) it.next();
-			if (i++ == 0) {
+			if (++i == 0) {
 				continue;
 			}
 			final AFreeplaneAction lastOpenedActionListener = new OpenLastOpenedAction(i, key, controller, this);
 			menuBuilder.addAction(FreeplaneMenuBar.FILE_MENU + "/last", lastOpenedActionListener, UIBuilder.AS_CHILD);
 		}
 	}
+
+	public void remove(String restoreable) {
+	    lastOpenedList.remove(restoreable);
+	    updateMenus();
+    }
 }

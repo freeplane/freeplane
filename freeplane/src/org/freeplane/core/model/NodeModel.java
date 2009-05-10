@@ -469,7 +469,9 @@ public class NodeModel implements MutableTreeNode {
 		if (!isRoot()) {
 			for (int i = 0; i < getChildCount(); i++) {
 				final NodeModel child = (NodeModel) getChildAt(i);
-				child.position = position;
+				if (child.position != position){
+					child.setLeft(isLeft);
+				}
 			}
 		}
 	}
