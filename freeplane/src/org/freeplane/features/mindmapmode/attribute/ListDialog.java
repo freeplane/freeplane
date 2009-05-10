@@ -284,7 +284,7 @@ class ListDialog extends JDialog {
 			return text;
 		}
 		catch (final BadLocationException e) {
-			LogTool.logException(e);
+			LogTool.severe(e);
 			return "";
 		}
 	}

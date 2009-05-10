@@ -461,7 +461,7 @@ public class MapController extends SelectionController {
 					return;
 				}
 				catch (final Exception e) {
-					LogTool.logException(e);
+					LogTool.severe(e);
 					getController().getViewController().out(FpStringUtils.formatText("link_not_found", target));
 					return;
 				}
@@ -503,7 +503,7 @@ public class MapController extends SelectionController {
 						newMapController.select(newMapController.getNodeFromID(ref));
 					}
 					catch (final Exception e) {
-						LogTool.logException(e);
+						LogTool.severe(e);
 						getController().getViewController().out(FpStringUtils.formatText("link_not_found", ref));
 						return;
 					}
@@ -514,12 +514,12 @@ public class MapController extends SelectionController {
 			}
 		}
 		catch (final MalformedURLException ex) {
-			LogTool.logException(ex);
+			LogTool.severe(ex);
 			getController().errorMessage(ResourceBundles.getText("url_error") + "\n" + ex);
 			return;
 		}
 		catch (final Exception e) {
-			LogTool.logException(e);
+			LogTool.severe(e);
 		}
 		finally {
 			getController().getViewController().setWaitingCursor(false);

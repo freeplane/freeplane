@@ -42,13 +42,16 @@
 		<copy todir="${bin.ortho}">
 			<fileset dir="${workspace}/freeplane/ortho"/>
 		</copy>
-		<mkdir dir="${dist}" />		
+		
+		<mkdir dir="${dist}" />	
+		
 		<zip destfile="${dist}/freeplane_bin-${ver}.zip" compress="false">
 			<fileset dir="${bin}"/>
 			<fileset dir="${root}">
 				<include name="${license}"/>
 			</fileset>
 		</zip>
+		
 		<tar destfile="${dist}/freeplane_src-${ver}.tar.gz" compression="gzip">
 			<tarfileset dir="${workspace}" mode="777" username="ant" group="ant">
 				<include name="*freeplane*/**"/>
@@ -64,7 +67,8 @@
 				<include name="${readme_src}"/>
 			</tarfileset>
 		</tar>
-
+		
+		<copy file="${workspace}/freeplane/resources/history_en.txt" todir="${dist}"/>
 	</target>
 
 	<target name="clean">

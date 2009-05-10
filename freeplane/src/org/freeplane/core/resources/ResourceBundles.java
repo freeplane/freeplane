@@ -70,6 +70,10 @@ public class ResourceBundles extends ResourceBundle {
 	private Map<String, String> defaultResources;
 	private final MultipleValueMap<String, URL> externalResources;
 	private String lang;
+	public String getLanguageCode() {
+    	return lang;
+    }
+
 	private Map<String, String> languageResources;
 
 	ResourceBundles(final ResourceController controller) {
@@ -80,7 +84,7 @@ public class ResourceBundles extends ResourceBundle {
 			defaultResources = getLanguageResources(DEFAULT_LANGUAGE);
 		}
 		catch (final Exception ex) {
-			LogTool.logException(ex);
+			LogTool.severe(ex);
 			Logger.global.severe("Error loading Resources");
 		}
 	}

@@ -215,7 +215,7 @@ public class ExportWithXSLT extends ExportAction {
 			out.close();
 		}
 		catch (final IOException e1) {
-			LogTool.logException(e1);
+			LogTool.severe(e1);
 		}
 	}
 
@@ -311,7 +311,7 @@ public class ExportWithXSLT extends ExportAction {
 			}
 		}
 		catch (final Exception e) {
-			LogTool.logException(e);
+			LogTool.severe(e);
 			mTransformResultWithoutError = false;
 		}
 	}
@@ -342,7 +342,7 @@ public class ExportWithXSLT extends ExportAction {
 			trans.transform(new StreamSource(reader), result);
 		}
 		catch (final Exception e) {
-			LogTool.logException(e);
+			LogTool.severe(e);
 			return false;
 		};
 		return true;

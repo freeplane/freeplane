@@ -69,7 +69,7 @@ public class ExportToOoWriter extends ExportAction {
 			exportToOoWriter(chosenFile);
 		}
 		catch (final IOException ex) {
-			LogTool.logException(ex);
+			LogTool.severe(ex);
 		}
 		getController().getViewController().setWaitingCursor(false);
 	}
@@ -94,7 +94,7 @@ public class ExportToOoWriter extends ExportAction {
 			return true;
 		}
 		catch (final Exception e) {
-			LogTool.logException(e);
+			LogTool.severe(e);
 			return false;
 		}
 	}
@@ -121,7 +121,7 @@ public class ExportToOoWriter extends ExportAction {
 		catch (final Exception e) {
 			Logger.global.severe("File not found or could not be copied. " + "Was earching for " + fileName
 			        + " and should go to " + out);
-			LogTool.logException(e);
+			LogTool.severe(e);
 			return false;
 		}
 	}
@@ -164,7 +164,7 @@ public class ExportToOoWriter extends ExportAction {
 			trans.transform(xmlSource, result);
 		}
 		catch (final Exception e) {
-			LogTool.logException(e);
+			LogTool.severe(e);
 		};
 		return;
 	}

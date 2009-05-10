@@ -51,7 +51,7 @@ public class BToolbarContributor implements IMenuContributor, IMapTitleChangeLis
 					modeController.getMapController().newMap(new URL(urlText));
 				}
 				catch (final Exception e1) {
-					LogTool.logException(e1);
+					LogTool.severe(e1);
 					controller.getController().errorMessage(e1);
 				}
 			}

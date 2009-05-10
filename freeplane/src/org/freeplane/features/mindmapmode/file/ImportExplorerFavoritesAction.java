@@ -104,7 +104,7 @@ class ImportExplorerFavoritesAction extends AFreeplaneAction {
 						}
 					}
 					catch (final Exception e) {
-						LogTool.logException(e);
+						LogTool.severe(e);
 					}
 				}
 			}

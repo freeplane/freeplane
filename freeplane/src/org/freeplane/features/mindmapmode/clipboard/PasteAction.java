@@ -359,10 +359,10 @@ class PasteAction extends AFreeplaneAction {
 				split(doc, parent, htmlFragments, 0);
 			}
 			catch (final IOException e) {
-				LogTool.logException(e);
+				LogTool.severe(e);
 			}
 			catch (final BadLocationException e) {
-				LogTool.logException(e);
+				LogTool.severe(e);
 			}
 			return htmlFragments.toArray(new TextFragment[htmlFragments.size()]);
 		}

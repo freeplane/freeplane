@@ -322,7 +322,7 @@ public class MFileManager extends UrlManager {
 		}
 		catch (final Exception e) {
 			Logger.global.log(Level.SEVERE, "Error in MapModel.save(): ");
-			LogTool.logException(e);
+			LogTool.severe(e);
 		}
 		map.scheduleTimerForAutomaticSaving(getModeController());
 		return false;

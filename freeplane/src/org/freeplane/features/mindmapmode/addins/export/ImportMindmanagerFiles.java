@@ -106,13 +106,13 @@ public class ImportMindmanagerFiles extends AFreeplaneAction {
 			}
 		}
 		catch (final IOException e) {
-			LogTool.logException(e);
+			LogTool.severe(e);
 		}
 		catch (final XMLParseException e) {
-			LogTool.logException(e);
+			LogTool.severe(e);
 		}
 		catch (final URISyntaxException e) {
-			LogTool.logException(e);
+			LogTool.severe(e);
 		}
 	}
 
@@ -126,7 +126,7 @@ public class ImportMindmanagerFiles extends AFreeplaneAction {
 			trans.transform(xmlSource, result);
 		}
 		catch (final Exception e) {
-			LogTool.logException(e);
+			LogTool.severe(e);
 			return null;
 		}
 		return writer.toString();

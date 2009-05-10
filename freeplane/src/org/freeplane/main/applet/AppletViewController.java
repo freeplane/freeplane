@@ -108,10 +108,10 @@ class AppletViewController extends ViewController {
 				});
 			}
 			catch (final InterruptedException e) {
-				LogTool.logException(e);
+				LogTool.severe(e);
 			}
 			catch (final InvocationTargetException e) {
-				LogTool.logException(e);
+				LogTool.severe(e);
 			}
 		}
 		getController().selectMode(BModeController.MODENAME);
@@ -135,7 +135,7 @@ class AppletViewController extends ViewController {
 				getController().getModeController().getMapController().newMap(mapUrl);
 			}
 			catch (final Exception e) {
-				LogTool.logException(e);
+				LogTool.severe(e);
 			}
 		}
 	}
@@ -203,7 +203,7 @@ class AppletViewController extends ViewController {
 			}
 		}
 		catch (final Exception e) {
-			LogTool.logException(e);
+			LogTool.severe(e);
 		}
 	}
 

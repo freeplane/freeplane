@@ -52,7 +52,7 @@ class KeyDocumentationAction extends AFreeplaneAction {
 			}
 		}
 		catch (final Exception e2) {
-			LogTool.logException(e2);
+			LogTool.severe(e2);
 			return;
 		}
 	}

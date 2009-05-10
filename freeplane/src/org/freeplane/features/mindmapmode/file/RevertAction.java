@@ -82,7 +82,7 @@ class RevertAction extends AFreeplaneAction {
 				}
 			}
 			catch (final Exception e) {
-				LogTool.logException(e);
+				LogTool.severe(e);
 			}
 		}
 
@@ -139,7 +139,7 @@ class RevertAction extends AFreeplaneAction {
 			doAction.act();
 		}
 		catch (final IOException e) {
-			LogTool.logException(e);
+			LogTool.severe(e);
 		}
 	}
 

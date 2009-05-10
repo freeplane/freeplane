@@ -88,7 +88,7 @@ public class DoAutomaticSave extends TimerTask {
 						}
 						catch (final Exception e) {
 							System.err.println("Error in automatic MapModel.save(): " + e.getMessage());
-							LogTool.logException(e);
+							LogTool.severe(e);
 							return;
 						}
 					}
@@ -100,17 +100,17 @@ public class DoAutomaticSave extends TimerTask {
 					}
 					catch (final Exception e) {
 						System.err.println("Error in automatic MapModel.save(): " + e.getMessage());
-						LogTool.logException(e);
+						LogTool.severe(e);
 					}
 					tempFileStack.add(tempFile);
 				}
 			});
 		}
 		catch (final InterruptedException e) {
-			LogTool.logException(e);
+			LogTool.severe(e);
 		}
 		catch (final InvocationTargetException e) {
-			LogTool.logException(e);
+			LogTool.severe(e);
 		}
 	}
 }

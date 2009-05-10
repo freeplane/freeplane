@@ -92,7 +92,7 @@ public class ExportToImage extends ExportAction {
 			out.close();
 		}
 		catch (final IOException e1) {
-			LogTool.logException(e1);
+			LogTool.severe(e1);
 		}
 		getController().getViewController().setWaitingCursor(false);
 		return true;
@@ -112,7 +112,7 @@ public class ExportToImage extends ExportAction {
 			trans.transform(xmlSource, result);
 		}
 		catch (final Exception e) {
-			LogTool.logException(e);
+			LogTool.severe(e);
 		};
 		return;
 	}

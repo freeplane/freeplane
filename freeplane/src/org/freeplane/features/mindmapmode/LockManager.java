@@ -73,7 +73,7 @@ class LockManager extends TimerTask {
 			writeSemaphoreFile(lockedSemaphoreFile);
 		}
 		catch (final Exception e) {
-			LogTool.logException(e);
+			LogTool.severe(e);
 		}
 	}
 

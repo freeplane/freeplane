@@ -63,7 +63,7 @@ class ImportFolderStructureAction extends AFreeplaneAction {
 				/*redisplay=*/true);
 			}
 			catch (final Exception ex) {
-				LogTool.logException(ex);
+				LogTool.severe(ex);
 			}
 			viewController.out("Folder structure imported.");
 		}

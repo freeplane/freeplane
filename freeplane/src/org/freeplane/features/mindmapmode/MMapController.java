@@ -232,7 +232,7 @@ public class MMapController extends MapController {
 				}
 			}
 			catch (final Exception e) {
-				LogTool.logException(e);
+				LogTool.severe(e);
 				UITools.informationMessage(getController().getViewController().getFrame(), FpStringUtils.formatText(
 				    "locking_failed_by_open", file.getName()));
 				((MMapModel) map).setReadOnly(true);
@@ -279,7 +279,7 @@ public class MMapController extends MapController {
 		catch (final Exception ex) {
 			final String errorMessage = "Error while parsing file:" + ex;
 			System.err.println(errorMessage);
-			LogTool.logException(ex);
+			LogTool.severe(ex);
 			final NodeModel result = new NodeModel(map);
 			result.setText(errorMessage);
 			return result;
@@ -418,7 +418,7 @@ public class MMapController extends MapController {
 			in.close();
 		}
 		catch (final Exception e) {
-			LogTool.logException(e);
+			LogTool.severe(e);
 			return new StringBuffer();
 		}
 		return buffer;

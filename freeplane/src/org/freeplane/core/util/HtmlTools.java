@@ -447,10 +447,10 @@ public class HtmlTools {
 			return resultXml;
 		}
 		catch (final IOException e) {
-			LogTool.logException(e);
+			LogTool.severe(e);
 		}
 		catch (final BadLocationException e) {
-			LogTool.logException(e);
+			LogTool.severe(e);
 		}
 		htmlText = htmlText.replaceAll("<", "&gt;");
 		htmlText = htmlText.replaceAll(">", "&lt;");

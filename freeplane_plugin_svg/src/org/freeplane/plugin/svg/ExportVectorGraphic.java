@@ -97,7 +97,7 @@ abstract class ExportVectorGraphic extends ExportAction {
 			trans.transform(xmlSource, result);
 		}
 		catch (final Exception e) {
-			LogTool.logException(e);
+			LogTool.severe(e);
 		};
 		return;
 	}

@@ -130,7 +130,7 @@ class TimeList {
 							mFlatNodeTableFilterModel.setFilter(text);
 						}
 						catch (final BadLocationException e) {
-							LogTool.logException(e);
+							LogTool.severe(e);
 							mFlatNodeTableFilterModel.resetFilter();
 						}
 					}
@@ -587,7 +587,7 @@ class TimeList {
 			mFilterTextSearchField.setText("");
 		}
 		catch (final BadLocationException e) {
-			LogTool.logException(e);
+			LogTool.severe(e);
 		}
 	}
 

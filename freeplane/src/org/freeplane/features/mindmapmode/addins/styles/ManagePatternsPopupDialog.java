@@ -201,7 +201,7 @@ class ManagePatternsPopupDialog extends JDialog implements KeyListener {
 			    .getPatternReader());
 		}
 		catch (final Exception e) {
-			LogTool.logException(e);
+			LogTool.severe(e);
 			JOptionPane.showMessageDialog(this, getDialogTitle(), ResourceBundles
 			    .getText("accessories/plugins/ManagePatterns.not_found"), JOptionPane.ERROR_MESSAGE);
 		}

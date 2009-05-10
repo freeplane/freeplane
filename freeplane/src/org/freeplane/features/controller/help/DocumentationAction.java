@@ -58,7 +58,7 @@ class DocumentationAction extends AFreeplaneAction {
 						}
 					}
 					catch (final Exception e1) {
-						LogTool.logException(e1);
+						LogTool.severe(e1);
 					}
 				}
 			});

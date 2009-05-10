@@ -70,6 +70,9 @@
             	<choice value="always_unfold_all_after_load"/>
             </combo> 
         </separator>
+        <separator name = "updates">
+        	<boolean name = "check_updates_automatically"/>
+        </separator>
     </tab>
     <tab name="Defaults">
         <separator name="default_styles">

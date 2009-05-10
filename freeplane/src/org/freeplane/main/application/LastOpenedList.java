@@ -105,16 +105,15 @@ class LastOpenedList implements IMapViewChangeListener {
 		final ModeController modeController = mapViewManager.getModeController(mapView);
 		final MapModel map = mapViewManager.getModel(mapView);
 		final String restoreString = UrlManager.getController(modeController).getRestoreable(map);
-		if (restoreString == null) {
-			return;
-		}
-		if (lastOpenedList.contains(restoreString)) {
-			lastOpenedList.remove(restoreString);
-		}
-		lastOpenedList.add(0, restoreString);
-		mRestorableToMapName.put(restoreString, map.getTitle());
-		while (lastOpenedList.size() > maxEntries) {
-			lastOpenedList.remove(lastOpenedList.size() - 1);
+		if (restoreString != null) {
+			if (lastOpenedList.contains(restoreString)) {
+				lastOpenedList.remove(restoreString);
+			}
+			lastOpenedList.add(0, restoreString);
+			mRestorableToMapName.put(restoreString, map.getTitle());
+			while (lastOpenedList.size() > maxEntries) {
+				lastOpenedList.remove(lastOpenedList.size() - 1);
+			}
 		}
 		updateMenus();
 	}

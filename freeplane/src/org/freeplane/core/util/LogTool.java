@@ -82,17 +82,9 @@ public class LogTool {
 		LOGGER.log(Level.INFO, string);
 	}
 
-	public static void logException(final Throwable e) {
-		LogTool.logException(e, "");
-	}
-
-	public static void logException(final Throwable e, final String comment) {
-		LOGGER.log(Level.SEVERE, comment, e);
-	}
-
-	public static void logTransferable(final Transferable t) {
-		System.err.println();
-		System.err.println("BEGIN OF Transferable:\t" + t);
+	public static void info(final Transferable t) {
+		System.out.println();
+		System.out.println("BEGIN OF Transferable:\t" + t);
 		final DataFlavor[] dataFlavors = t.getTransferDataFlavors();
 		for (int i = 0; i < dataFlavors.length; i++) {
 			System.out.println("  Flavor:\t" + dataFlavors[i]);
@@ -103,15 +95,27 @@ public class LogTool {
 			catch (final Exception e) {
 			}
 		}
-		System.err.println("END OF Transferable");
-		System.err.println();
+		System.out.println("END OF Transferable");
+		System.out.println();
 	}
 
 	public static void severe(final String message) {
 		LOGGER.log(Level.SEVERE, message);
 	}
 
+	public static void severe(final Throwable e) {
+		LogTool.severe(e, "");
+	}
+
+	public static void severe(final Throwable e, final String comment) {
+		LOGGER.log(Level.SEVERE, comment, e);
+	}
+
 	public static void warn(final String msg) {
 		LOGGER.log(Level.WARNING, msg);
+	}
+
+	public static void warn(final Throwable e, final String comment) {
+		LOGGER.log(Level.WARNING, comment, e);
 	}
 }

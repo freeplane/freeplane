@@ -32,6 +32,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import org.apache.commons.lang.StringUtils;
@@ -72,7 +73,6 @@ public class OptionalDontShowMeAgainDialog {
 		}
 		else {
 			mNode = null;
-			LogTool.warn("controller.getSelection() was null!");
 		}
 		mMessageId = pMessageId;
 		mTitleId = pTitleId;
@@ -195,7 +195,12 @@ public class OptionalDontShowMeAgainDialog {
 		        5, 5, 0, 0), 0, 0));
 		mDialog.getRootPane().setDefaultButton(okButton);
 		mDialog.pack();
-		UITools.setDialogLocationRelativeTo(mDialog, controller, mNode);
+		if(mNode != null){
+			UITools.setDialogLocationRelativeTo(mDialog, controller, mNode);
+		}
+		else{
+			mDialog.setLocationRelativeTo(null);
+		}
 		mDialog.setVisible(true);
 		return this;
 	}

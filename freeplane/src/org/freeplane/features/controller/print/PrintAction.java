@@ -57,7 +57,7 @@ class PrintAction extends AbstractPrintAction {
 				printController.getPrinterJob().print();
 			}
 			catch (final Exception ex) {
-				LogTool.logException(ex);
+				LogTool.severe(ex);
 			}
 		}
 	}

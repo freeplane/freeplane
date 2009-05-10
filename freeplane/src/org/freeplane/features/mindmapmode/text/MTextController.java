@@ -127,10 +127,10 @@ public class MTextController extends TextController {
 				return strings;
 			}
 			catch (final IOException e) {
-				LogTool.logException(e);
+				LogTool.severe(e);
 			}
 			catch (final BadLocationException e) {
-				LogTool.logException(e);
+				LogTool.severe(e);
 			}
 		}
 		else {
@@ -192,7 +192,7 @@ public class MTextController extends TextController {
 			}
 		}
 		catch (final MalformedURLException e) {
-			LogTool.logException(e);
+			LogTool.severe(e);
 		}
 	}
 

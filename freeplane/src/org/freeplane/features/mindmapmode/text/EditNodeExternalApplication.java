@@ -69,7 +69,7 @@ class EditNodeExternalApplication extends EditNodeBase {
 					getEditControl().ok(content);
 				}
 				catch (final Exception e) {
-					LogTool.logException(e);
+					LogTool.severe(e);
 					try {
 						if (writer != null) {
 							writer.close();

@@ -77,7 +77,7 @@ public class NumberProperty extends PropertyBean implements IPropertyControl {
 			}
 		}
 		catch (final NumberFormatException e) {
-			LogTool.logException(e);
+			LogTool.severe(e);
 		}
 		spinner.setValue(new Integer(intValue));
 	}

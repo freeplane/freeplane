@@ -305,7 +305,7 @@ public class MNoteController extends NoteController {
 					    .openDocument(new URL(pE.getActionCommand()));
 				}
 				catch (final Exception e) {
-					LogTool.logException(e);
+					LogTool.severe(e);
 				}
 			}
 		});

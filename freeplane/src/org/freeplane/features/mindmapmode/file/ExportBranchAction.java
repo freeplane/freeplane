@@ -110,7 +110,7 @@ class ExportBranchAction extends AFreeplaneAction {
 				    linkToNewMapString);
 			}
 			catch (final MalformedURLException ex) {
-				LogTool.logException(ex);
+				LogTool.severe(ex);
 			}
 			final int nodePosition = parent.getChildPosition(node);
 			((MMapController) getModeController().getMapController()).deleteNode(node);
@@ -128,7 +128,7 @@ class ExportBranchAction extends AFreeplaneAction {
 				    linkString);
 			}
 			catch (final MalformedURLException ex) {
-				LogTool.logException(ex);
+				LogTool.severe(ex);
 			}
 		}
 	}

@@ -155,10 +155,10 @@ public class SplitNode extends AFreeplaneAction {
 				}
 			}
 			catch (final IOException e) {
-				LogTool.logException(e);
+				LogTool.severe(e);
 			}
 			catch (final BadLocationException e) {
-				LogTool.logException(e);
+				LogTool.severe(e);
 			}
 			return parts;
 		}

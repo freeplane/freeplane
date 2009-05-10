@@ -197,7 +197,7 @@ class ScriptingEngine extends AFreeplaneAction {
 			return false;
 		}
 		if (e2 != null) {
-			org.freeplane.core.util.LogTool.logException(e2);
+			org.freeplane.core.util.LogTool.severe(e2);
 			pOutStream.print(e2.getMessage());
 			final String cause = ((e2.getCause() != null) ? e2.getCause().getMessage() : "");
 			final String message = ((e2.getMessage() != null) ? e2.getMessage() : "");

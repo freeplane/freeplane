@@ -60,7 +60,7 @@ class FreeplaneHelpStarter extends AFreeplaneAction {
 			hb.setViewDisplayed(true);
 		}
 		catch (final Exception ee) {
-			org.freeplane.core.util.LogTool.logException(ee);
+			org.freeplane.core.util.LogTool.severe(ee);
 			Logger.global.warning("HelpSet " + ee.getMessage() + ee);
 			Logger.global.warning("HelpSet " + helpHS + " not found");
 			return;

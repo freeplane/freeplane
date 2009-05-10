@@ -227,7 +227,7 @@ public class FreeplaneStarter {
 				return;
 			}
 			catch (final Exception e) {
-				LogTool.logException(e);
+				LogTool.severe(e);
 				controller.getViewController().out("An error occured on opening the file: " + restoreable + ".");
 			}
 		}

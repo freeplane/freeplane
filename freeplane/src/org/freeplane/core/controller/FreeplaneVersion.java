@@ -24,9 +24,7 @@ import java.util.StringTokenizer;
 
 import org.freeplane.core.util.ResUtil;
 
-// TODO rladstaetter 15.02.2009 use build properties for this information
-@Deprecated
-public class FreeplaneVersion {
+public class FreeplaneVersion implements Comparable<FreeplaneVersion>{
 	private static final FreeplaneVersion VERSION = FreeplaneVersion.loadVersion();
 	public static final String VERSION_KEY = "freeplane_version";
 	public static final String VERSION_PROPERTIES = "/version.properties";
@@ -40,7 +38,9 @@ public class FreeplaneVersion {
 		final Properties versionProperties = ResUtil.loadProperties(VERSION_PROPERTIES);
 		final String versionString = versionProperties.getProperty(VERSION_KEY);
 		final String versionStatus = versionProperties.getProperty("freeplane_version_status");
-		return new FreeplaneVersion(versionString, versionStatus);
+		final FreeplaneVersion version = getVersion(versionString);
+		version.mType = versionStatus;
+		return version;
 	}
 
 	final int mMaj;
@@ -58,7 +58,7 @@ public class FreeplaneVersion {
 		mNum = pNum;
 	}
 
-	public FreeplaneVersion(final String pString) {
+	public static FreeplaneVersion getVersion(final String pString) throws IllegalArgumentException {
 		final StringTokenizer t = new StringTokenizer(pString, ". ", false);
 		final String[] info = new String[t.countTokens()];
 		int i = 0;
@@ -68,25 +68,30 @@ public class FreeplaneVersion {
 		if (info.length < 3 | info.length > 5) {
 			throw new IllegalArgumentException("Wrong number of tokens for version information: " + pString);
 		}
-		mMaj = Integer.parseInt(info[0]);
-		mMid = Integer.parseInt(info[1]);
-		mMin = Integer.parseInt(info[2]);
-		if (info.length == 3) {
-			mType = "";
-			mNum = 0;
-			return;
-		}
-		mType = info[3];
-		if (info.length == 4) {
-			mNum = 0;
-			return;
-		}
-		mNum = Integer.parseInt(info[4]);
-	}
-
-	public FreeplaneVersion(final String versionString, final String versionStatus) {
-		this(versionString);
-		mType = versionStatus;
+		try {
+	        int maj = Integer.parseInt(info[0]);
+	        int mid = Integer.parseInt(info[1]);
+	        int min = Integer.parseInt(info[2]);
+	        final String type;
+	        final int num;
+	        if (info.length == 3) {
+	        	type = "";
+	        	num = 0;
+	        }
+	        else{
+	        	type = info[3];
+	        	if (info.length == 4) {
+	        		num = 0;
+	        	}
+	        	else{
+	        		num = Integer.parseInt(info[4]);
+	        	}
+	        }
+	        return new FreeplaneVersion(maj, mid, min, type, num);
+        }
+        catch (NumberFormatException e) {
+        	throw new IllegalArgumentException("Wrong version token: " + pString, e);
+        }
 	}
 
 	@Override
@@ -107,4 +112,32 @@ public class FreeplaneVersion {
 		}
 		return buf.toString();
 	}
+
+	public int compareTo(FreeplaneVersion o) {
+		if(mMaj < o.mMaj){
+			return -1;
+		}
+		if(mMaj > o.mMaj){
+			return 1;
+		}
+		if(mMid < o.mMid){
+			return -1;
+		}
+		if(mMid > o.mMid){
+			return 1;
+		}
+		if(mMin < o.mMin){
+			return -1;
+		}
+		if(mMin > o.mMin){
+			return 1;
+		}
+		if(mNum < o.mNum){
+			return -1;
+		}
+		if(mNum > o.mNum){
+			return 1;
+		}
+		return 0;
+    }
 }

@@ -176,7 +176,7 @@ public class MNodeDropListener implements DropTargetListener {
 		}
 		catch (final Exception e) {
 			System.err.println("Drop exception:" + e);
-			LogTool.logException(e);
+			LogTool.severe(e);
 			dtde.dropComplete(false);
 			return;
 		}

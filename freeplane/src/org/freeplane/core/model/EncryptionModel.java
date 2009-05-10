@@ -112,7 +112,7 @@ public class EncryptionModel implements IExtension {
 				isDecrypted = true;
 			}
 			catch (final Exception e) {
-				LogTool.logException(e);
+				LogTool.severe(e);
 				setAccessible(false);
 				return true;
 			}
@@ -136,7 +136,7 @@ public class EncryptionModel implements IExtension {
 			return encrypted;
 		}
 		catch (final Exception e) {
-			LogTool.logException(e);
+			LogTool.severe(e);
 		}
 		throw new IllegalArgumentException("Can't encrypt the node.");
 	}
@@ -165,7 +165,7 @@ public class EncryptionModel implements IExtension {
 				generateEncryptedContent(mapController);
 			}
 			catch (final Exception e) {
-				LogTool.logException(e);
+				LogTool.severe(e);
 			}
 		}
 		return encryptedContent;
@@ -199,7 +199,7 @@ public class EncryptionModel implements IExtension {
 			mapController.insertNodeIntoWithoutUndo(node, target, target.getChildCount());
 		}
 		catch (final Exception ee) {
-			LogTool.logException(ee);
+			LogTool.severe(ee);
 		}
 	}
 

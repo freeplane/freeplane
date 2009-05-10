@@ -44,7 +44,7 @@ class OpenLastOpenedAction extends AFreeplaneAction {
 		}
 		catch (final Exception ex) {
 			getController().errorMessage("An error occured on opening the file: " + restoreable + ".");
-			LogTool.logException(ex);
+			LogTool.severe(ex);
 		}
 	}
 }

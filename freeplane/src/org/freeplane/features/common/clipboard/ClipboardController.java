@@ -95,10 +95,10 @@ public class ClipboardController implements IExtension {
 			    getAsHTML(selectedNodes), null, null);
 		}
 		catch (final UnsupportedFlavorException ex) {
-			LogTool.logException(ex);
+			LogTool.severe(ex);
 		}
 		catch (final IOException ex) {
-			LogTool.logException(ex);
+			LogTool.severe(ex);
 		}
 		return null;
 	}
@@ -163,7 +163,7 @@ public class ClipboardController implements IExtension {
 			return stringWriter.toString();
 		}
 		catch (final Exception e) {
-			LogTool.logException(e);
+			LogTool.severe(e);
 			return null;
 		}
 	}
@@ -179,7 +179,7 @@ public class ClipboardController implements IExtension {
 			return stringWriter.toString();
 		}
 		catch (final Exception e) {
-			LogTool.logException(e);
+			LogTool.severe(e);
 			return null;
 		}
 	}
@@ -193,7 +193,7 @@ public class ClipboardController implements IExtension {
 			return stringWriter.toString();
 		}
 		catch (final Exception e) {
-			LogTool.logException(e);
+			LogTool.severe(e);
 			return null;
 		}
 	}
@@ -257,7 +257,7 @@ public class ClipboardController implements IExtension {
 		}
 		catch (final Exception e) {
 			System.err.println("Error in MindMapMapModel.saveTXT(): ");
-			LogTool.logException(e);
+			LogTool.severe(e);
 			return false;
 		}
 	}
@@ -283,7 +283,7 @@ public class ClipboardController implements IExtension {
 			return copy;
 		}
 		catch (final Exception e) {
-			LogTool.logException(e);
+			LogTool.severe(e);
 			return null;
 		}
 	}
@@ -346,7 +346,7 @@ public class ClipboardController implements IExtension {
 			return true;
 		}
 		catch (final Exception e) {
-			LogTool.logException(e);
+			LogTool.severe(e);
 			return false;
 		}
 	}

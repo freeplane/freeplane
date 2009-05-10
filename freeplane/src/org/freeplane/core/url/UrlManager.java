@@ -111,13 +111,13 @@ public class UrlManager implements IExtension {
 			bufferedReader.close();
 		}
 		catch (final Exception e) {
-			LogTool.logException(e);
+			LogTool.severe(e);
 			if (bufferedReader != null) {
 				try {
 					bufferedReader.close();
 				}
 				catch (final Exception ex) {
-					LogTool.logException(ex);
+					LogTool.severe(ex);
 				}
 			}
 			return null;
@@ -161,7 +161,7 @@ public class UrlManager implements IExtension {
 						successful = true;
 					}
 					catch (final Exception ex) {
-						LogTool.logException(ex);
+						LogTool.severe(ex);
 					}
 				}
 			}
@@ -237,7 +237,7 @@ public class UrlManager implements IExtension {
 				}
 			}
 			catch (final Exception e) {
-				LogTool.logException(e);
+				LogTool.severe(e);
 			}
 		}
 	}
@@ -387,7 +387,7 @@ public class UrlManager implements IExtension {
 			getController().errorMessage(ex.getMessage());
 		}
 		else {
-			LogTool.logException(ex);
+			LogTool.severe(ex);
 			getController().errorMessage(ex);
 		}
 	}

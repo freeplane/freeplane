@@ -115,7 +115,7 @@ public class MPatternController implements IExtension {
 					success = true;
 				}
 				catch (final Exception e) {
-					LogTool.logException(e);
+					LogTool.severe(e);
 				}
 				if (success) {
 					JOptionPane.showMessageDialog(null, "Successfully repaired the pattern file.", repairTitle,

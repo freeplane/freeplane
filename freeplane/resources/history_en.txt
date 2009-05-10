@@ -1,4 +1,85 @@
 ===============================
+1.0.8 alpha
+===============================
+update check
+big fix for changing left/right map sides
+===============================
+1.0.7 alpha
+===============================
+bug fix in xml parser
+auto clean up
+bug fix in remove icon action
+bug fix: place dialogs visible if properties become corrupted
+bug fix: drag and drop oh html links from firefox
+bug fix: encrypted nodes
+bug fix: Java export
+font size option added to preferences
+bug fix: Max-Y-size in preferences is repeated
+bug fix: show filter tool bar button
+
+===============================
+1.0.6 alpha
+===============================
+
+Priority filters based on priority icons
+filter conditions for numeric values return false for non numeric values
+links optionally painted behind nodes
+
+different bug fixes
+
+===============================
+1.0.5 alpha
+===============================
+
+Tool tips for nodes can be switched off in preferences 
+https://sourceforge.net/forum/message.php?msg_id=7224634
+
+Place editing dialog under the node
+Filter icons
+Horizontal Edge Style
+Filter menu
+Filter history (almost) as proposed by Rigel
+Hot keys can be set by pressing mouse button1 + ctrl on menu item
+Use default font and paragraph spacing for notes too
+Center selected nodes as user setting and as action
+Selected node position is kept after filtering
+
+Performance optimization: repaint only small area around selected node 
+if selection is changed
+
+Resources for map background color selection added
+Link Navigation History can be used if CTRL is hold when you press 
+nNvigation buttons
+New XSLT export dialog translations from ewl
+
+New options for saving
+<combo name="save_folding">
+	<choice value="never_save_folding"/>
+	<choice value="save_folding_if_map_is_changed"/>
+	<choice value="always_save_folding"/>
+</combo>
+<boolean name="save_modification_times"/>
+
+New options for loading
+<comboname="load_folding">
+	<choice value="always_fold_all_after_load"/>
+	<choice value="load_folding_from_map_default_fold_all"/>
+	<choice value="load_folding_from_map_default_unfold_all"/>
+	<choice value="always_unfold_all_after_load"/>
+</combo>
+
+Zoom saved between sessions
+The same zooms applies to all maps
+Plain text search for filter in html nodes added
+Zoom keep selected node position
+Date based filter
+Structured HTML paste
+Hidden Edges
+Spell checker
+Personal modification color
+text labels can be added to any end and in the middle of any link by link pop-up menu
+
+===============================
 Changes made in Freeplane 0.9.0 Beta20
 ===============================
 * Fixed some documentation bugs reported by Edmund Laugasson. Thanks.

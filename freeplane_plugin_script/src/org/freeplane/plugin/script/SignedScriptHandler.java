@@ -113,7 +113,7 @@ class SignedScriptHandler {
 			SignedScriptHandler.mKeyStore.load(fis, pPassword);
 		}
 		catch (final Exception e) {
-			LogTool.logException(e);
+			LogTool.severe(e);
 		}
 		finally {
 			if (fis != null) {
@@ -121,7 +121,7 @@ class SignedScriptHandler {
 					fis.close();
 				}
 				catch (final IOException e) {
-					LogTool.logException(e);
+					LogTool.severe(e);
 				}
 			}
 		}
@@ -173,13 +173,13 @@ class SignedScriptHandler {
 				return verify;
 			}
 			catch (final Exception e) {
-				LogTool.logException(e);
+				LogTool.severe(e);
 				try {
 					pOutStream.write(e.toString().getBytes());
 					pOutStream.write("\n".getBytes());
 				}
 				catch (final Exception e1) {
-					LogTool.logException(e1);
+					LogTool.severe(e1);
 				}
 			}
 		}
@@ -215,7 +215,7 @@ class SignedScriptHandler {
 			return content.toString();
 		}
 		catch (final Exception e) {
-			LogTool.logException(e);
+			LogTool.severe(e);
 			controller.errorMessage(e.getLocalizedMessage());
 		}
 		return content.mScript;

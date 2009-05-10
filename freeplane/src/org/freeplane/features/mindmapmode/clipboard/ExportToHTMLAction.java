@@ -47,7 +47,7 @@ class ExportToHTMLAction extends AFreeplaneAction {
 			getModeController().getMapController().loadURL(file.toString());
 		}
 		catch (final IOException ex) {
-			LogTool.logException(ex);
+			LogTool.severe(ex);
 		}
 	}
 }

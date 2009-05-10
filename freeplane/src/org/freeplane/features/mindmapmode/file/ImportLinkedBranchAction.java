@@ -68,7 +68,7 @@ class ImportLinkedBranchAction extends AFreeplaneAction {
 		catch (final MalformedURLException ex) {
 			JOptionPane
 			    .showMessageDialog(viewController.getMapView(), "Couldn't create valid URL for:" + map.getFile());
-			LogTool.logException(ex);
+			LogTool.severe(ex);
 			return;
 		}
 		try {
