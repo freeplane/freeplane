@@ -41,7 +41,7 @@ public class UpdateCheckAction extends AFreeplaneAction {
 	/**
 	 * the sid.
 	 */
-	private static final long serialVersionUID = 7910922464393515103L;
+	private static final long serialVersionUID = 1L;
 	/**
 	 * the url where to download the newest version
 	 */

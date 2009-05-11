@@ -21,8 +21,10 @@ package org.freeplane.plugin.script;
 import groovy.lang.Binding;
 import groovy.lang.GroovyRuntimeException;
 import groovy.lang.GroovyShell;
+import groovy.lang.Script;
 
 import java.awt.event.ActionEvent;
+import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -32,6 +34,8 @@ import javax.swing.JOptionPane;
 
 import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.ModuleNode;
+import org.codehaus.groovy.control.CompilationFailedException;
+import org.codehaus.groovy.runtime.InvokerHelper;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
@@ -94,7 +98,6 @@ class ScriptingEngine extends AFreeplaneAction {
 		binding.setVariable("c", pMindMapController);
 		binding.setVariable("node", node);
 		binding.setVariable("cookies", ScriptingEngine.sScriptCookies);
-		final GroovyShell shell = new GroovyShell(binding);
 		boolean assignResult = false;
 		String assignTo = null;
 		if (script.startsWith("=")) {
@@ -149,7 +152,27 @@ class ScriptingEngine extends AFreeplaneAction {
 		final FreeplaneSecurityManager securityManager = (FreeplaneSecurityManager) System.getSecurityManager();
 		try {
 			System.setOut(pOutStream);
-			securityManager.setFinalSecurityManager(scriptingSecurityManager);
+			final GroovyShell shell = new GroovyShell(binding){
+				/**
+				 * Evaluates some script against the current Binding and returns the result
+				 *
+				 * @param in       the stream reading the script
+				 * @param fileName is the logical file name of the script (which is used to create the class name of the script)
+				 */
+				public Object evaluate(InputStream in, String fileName) throws CompilationFailedException {
+					Script script = null;
+					try {
+						script = parse(in, fileName);
+						securityManager.setFinalSecurityManager(scriptingSecurityManager);
+						return script.run();
+					} finally {
+						if (script != null) {
+							InvokerHelper.removeClass(script.getClass());
+						}
+					}
+				}
+
+			};
 			value = shell.evaluate(script);
 		}
 		catch (final GroovyRuntimeException e) {

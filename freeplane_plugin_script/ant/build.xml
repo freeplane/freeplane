@@ -32,15 +32,17 @@
 	<target name="dist" depends="build">
 		<!-- third party libs -->
 		<mkdir dir="${dist.osgi}" />
+		<jar jarfile="lib/activator.jar">
+			<fileset dir="${build}"/>
+		</jar>
 		<jar jarfile="${freeplaneplugin.jar}"
 			 manifest="${osgimanifest}">
-			<fileset dir="${build}">
-			</fileset>
 			<fileset dir="${root}">
 				<include name="lib/**"/>
 			</fileset>
 		</jar>
 		<delete dir="${build}"  quiet="true"/>
+		<delete file="lib/activator.jar" quiet="true"/>
 	</target>
 
 	<target name="clean">
