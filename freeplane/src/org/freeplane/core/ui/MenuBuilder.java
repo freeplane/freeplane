@@ -431,7 +431,7 @@ public class MenuBuilder extends UIBuilder {
 		assert action != null;
 		assert key != null;
 		if (getContainer(get(category), Container.class) instanceof JToolBar) {
-			addButton(category, action, position);
+			addButton(category, action, key, position);
 			return;
 		}
 		final JMenuItem item;
@@ -494,7 +494,7 @@ public class MenuBuilder extends UIBuilder {
 		addAction(action, action.getClass().getAnnotation(ActionLocationDescriptor.class));
 	}
 
-	private void addButton(final String category, final Action action, final int position) {
+	private void addButton(final String category, final Action action, String key, final int position) {
 		final AbstractButton button;
 		assert action != null;
 		if (action.getClass().getAnnotation(SelectableAction.class) != null) {
@@ -503,7 +503,7 @@ public class MenuBuilder extends UIBuilder {
 		else {
 			button = new JButton(action);
 		}
-		addComponent(category, button, position);
+		addElement(category, button, key, position);
 	}
 
 	@Override
@@ -523,10 +523,6 @@ public class MenuBuilder extends UIBuilder {
 
 	public void addComponent(final String parent, final Container item, final Action action, final int position) {
 		action.addPropertyChangeListener(new Enabler(item));
-		addElement(parent, item, position);
-	}
-
-	public void addComponent(final String parent, final Container item, final int position) {
 		addElement(parent, item, position);
 	}
 

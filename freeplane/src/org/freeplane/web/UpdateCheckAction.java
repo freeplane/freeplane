@@ -1,5 +1,6 @@
 package org.freeplane.web;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
@@ -10,6 +11,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import javax.swing.Box;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -17,13 +19,16 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.FreeplaneVersion;
+import org.freeplane.core.frame.IMapViewChangeListener;
 import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.util.LogTool;
 
 /**
@@ -32,10 +37,10 @@ import org.freeplane.core.util.LogTool;
  * @author robert ladstaetter
  */
 public class UpdateCheckAction extends AFreeplaneAction {
-	private static final int CHECK_TIME = 30 * 1000;
+	private static final int CHECK_TIME = 1 * 1000;
 	private static final String LAST_UPDATE_CHECK_TIME = "last_update_check_time";
 	private static final String CHECK_UPDATES_AUTOMATICALLY = "check_updates_automatically";
-	private static final int TWO_DAYS = 1000*60*60*24*2;
+	private static final int TWO_DAYS = 2*24*60*60*1000;
 	private static boolean autorunEnabled  = true;
 	private static Timer autorunTimer = null;
 	/**
@@ -50,12 +55,44 @@ public class UpdateCheckAction extends AFreeplaneAction {
 	 * the url to check the local version against
 	 */
 	private static final String WEB_UPDATE_LOCATION_KEY = "webUpdateLocation";
+	private static final String UPDATE_BUTTON_LOCATION = "/main_toolbar/update";
+	private static final String UPDATE_BUTTON_PATH = UPDATE_BUTTON_LOCATION + "/checkUpdate";
+	private static final String LAST_UPDATE_VERSION = "last_update_verson";
 	/**
 	 * the client which asks a remote repository for the current version of the program.
 	 */
 	public UpdateCheckAction(final Controller controller) {
 		super("UpdateCheckAction", controller);
-		if(autorunEnabled == false){
+		controller.getMapViewManager().addMapViewChangeListener(new IMapViewChangeListener(){
+
+			public void afterViewChange(Component oldView, Component newView) {
+				if(newView == null){
+					return;
+				}
+				EventQueue.invokeLater(new Runnable(){
+
+					public void run() {
+						removeMe(controller);
+                    }});
+				setTimer();
+            }
+
+			private void removeMe(final Controller controller) {
+	            controller.getMapViewManager().removeMapViewChangeListener(this);
+            }
+
+			public void afterViewClose(Component oldView) {
+            }
+
+			public void afterViewCreated(Component mapView) {
+            }
+
+			public void beforeViewChange(Component oldView, Component newView) {
+            }});
+	}
+
+	private void setTimer() {
+	    if(autorunEnabled == false){
 			return;
 		}
 		autorunEnabled = ResourceController.getResourceController().getBooleanProperty(CHECK_UPDATES_AUTOMATICALLY);
@@ -67,12 +104,14 @@ public class UpdateCheckAction extends AFreeplaneAction {
 		final long nextCheckMillis = ResourceController.getResourceController().getLongProperty(LAST_UPDATE_CHECK_TIME, 0) + TWO_DAYS;
 		final Date nextCheckDate = new Date(nextCheckMillis);
 		if(now.before(nextCheckDate)){
+			final FreeplaneVersion knownNewVersion = getKnownNewVersion();
+			addUpdateButton(knownNewVersion);
 			return;
 		}
 		autorunTimer = new Timer(CHECK_TIME, this);
 		autorunTimer.setRepeats(false);
 		autorunTimer.start();
-	}
+    }
 
 	public void actionPerformed(final ActionEvent e) {
 		final boolean autoRun = e.getSource().equals(autorunTimer);
@@ -118,16 +157,51 @@ public class UpdateCheckAction extends AFreeplaneAction {
 		EventQueue.invokeLater(new Runnable(){
 
 			public void run() {
-				showUpdateDialog(autoRun, localVersion, lastVersion, history);
+				addUpdateButton(lastVersion);
+				if(autoRun){
+					return;
+				}
+				showUpdateDialog(localVersion, lastVersion, history);
             }});
     }
 
-	private void showUpdateDialog(final boolean autoRun, final FreeplaneVersion localVersion,
-                                  final FreeplaneVersion lastVersion, String history) {
-	    if (lastVersion == null) {
-			if(! autoRun){
-				showUpdateDialog("can_not_connect_to_update_server", null, null);
+	private FreeplaneVersion getKnownNewVersion() {
+		final FreeplaneVersion localVersion = FreeplaneVersion.getVersion();
+		final String property = ResourceController.getResourceController().getProperty(LAST_UPDATE_VERSION);
+		if(property.equals("")){
+			return null;
+		}
+		FreeplaneVersion lastVersion = FreeplaneVersion.getVersion(property);
+		if(lastVersion.compareTo(localVersion) <= 0){
+			lastVersion = null;
+		}
+	    return lastVersion;
+    }
+
+	private void addUpdateButton(FreeplaneVersion lastVersion) {
+		if(lastVersion == null || lastVersion.compareTo(FreeplaneVersion.getVersion())<= 0){
+			ResourceController.getResourceController().setProperty(LAST_UPDATE_VERSION, "");
+			final MenuBuilder menuBuilder = getModeController().getUserInputListenerFactory().getMenuBuilder();
+			if(menuBuilder.get(UPDATE_BUTTON_PATH) != null){
+				menuBuilder.removeElement(UPDATE_BUTTON_PATH);
 			}
+			return;
+		}
+		ResourceController.getResourceController().setProperty(LAST_UPDATE_VERSION, lastVersion.toString());
+		final String updateAvailable = FpStringUtils.formatText("new_version_available", lastVersion.toString());
+		putValue(SHORT_DESCRIPTION, updateAvailable);
+		putValue(LONG_DESCRIPTION, updateAvailable);
+		final MenuBuilder menuBuilder = getModeController().getUserInputListenerFactory().getMenuBuilder();
+		if(menuBuilder.get(UPDATE_BUTTON_PATH) == null){
+			menuBuilder.addAction(UPDATE_BUTTON_LOCATION, UPDATE_BUTTON_PATH, UpdateCheckAction.this, MenuBuilder.AS_CHILD);
+		}
+		
+    }
+
+	private void showUpdateDialog(final FreeplaneVersion localVersion, final FreeplaneVersion lastVersion,
+                                  String history) {
+	    if (lastVersion == null) {
+				showUpdateDialog("can_not_connect_to_update_server", null, null);
 			LogTool.warn("Couldn't determine current version. Ignoring update request.");
 			return;
 		}
@@ -148,7 +222,7 @@ public class UpdateCheckAction extends AFreeplaneAction {
 				getController().errorMessage(ex);
 			}
 		}
-		else if(! autoRun){
+		else{
 			showUpdateDialog("version_up_to_date", null, null);
 		}
     }
@@ -174,8 +248,14 @@ public class UpdateCheckAction extends AFreeplaneAction {
 		    ResourceController.getResourceController().getBooleanProperty(CHECK_UPDATES_AUTOMATICALLY));
 	    updateAutomatically.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 	    messagePane.add(updateAutomatically);
-	    Object[] options = new Object[]{ResourceBundles.getText("download"), 
+	    final Object[] options;
+	    if(lastVersion != null){
+	    	options = new Object[]{ResourceBundles.getText("download"), 
 	    		FpStringUtils.removeMnemonic(ResourceBundles.getText("cancel"))};
+	    }
+	    else{
+	    	options = new Object[]{FpStringUtils.removeMnemonic(ResourceBundles.getText("CloseAction.text"))};
+	    }
 	    final int choice = JOptionPane.showOptionDialog(getController().getViewController().getFrame(), 
 	    	messagePane, ResourceBundles.getText("updatecheckdialog"), JOptionPane.DEFAULT_OPTION, 
 	    	JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);

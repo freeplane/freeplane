@@ -624,7 +624,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 					}
 				}
 			});
-			menuBuilder.addComponent("/main_toolbar/zoom", zoomBox, MenuBuilder.AS_CHILD);
+			menuBuilder.addElement("/main_toolbar/zoom", zoomBox, MenuBuilder.AS_CHILD);
 		}
 	}
 

@@ -24,7 +24,9 @@ public class HttpVersionClient{
 		try {
 			in = new BufferedReader(new InputStreamReader(new URL(versionUrl).openConnection().getInputStream()));
 			String line;
-			for(line = in.readLine(); line != null && line.startsWith("====="); line=in.readLine());
+			for(line = in.readLine(); 
+			line != null && line.startsWith("====="); 
+			line=in.readLine());
             if(line == null){
             	return;
             }

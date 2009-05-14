@@ -52,8 +52,7 @@ class MapViewChangeObserverCompound {
 				observer.afterMapChange(oldModel, newModel);
 			}
 		}
-		for (final Iterator<IMapViewChangeListener> iter = viewListeners.iterator(); iter.hasNext();) {
-			final IMapViewChangeListener observer = iter.next();
+		for (final IMapViewChangeListener observer: viewListeners) {
 			observer.afterViewChange(oldMap, newMap);
 		}
 	}

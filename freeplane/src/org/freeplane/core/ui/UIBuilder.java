@@ -186,6 +186,10 @@ public abstract class UIBuilder extends IndexedTree {
 		}
 		removeChildComponents(parentComponent, node);
 		((DefaultMutableTreeNode) node.getParent()).remove(node);
+		if(parentComponent.isShowing()){
+			parentComponent.validate();
+			parentComponent.repaint();
+		}
 		return node;
 	}
 }
