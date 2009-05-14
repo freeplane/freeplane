@@ -9,6 +9,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Set;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -179,24 +180,25 @@ public class UpdateCheckAction extends AFreeplaneAction {
     }
 
 	private void addUpdateButton(FreeplaneVersion lastVersion) {
-		if(lastVersion == null || lastVersion.compareTo(FreeplaneVersion.getVersion())<= 0){
-			ResourceController.getResourceController().setProperty(LAST_UPDATE_VERSION, "");
-			final MenuBuilder menuBuilder = getModeController().getUserInputListenerFactory().getMenuBuilder();
-			if(menuBuilder.get(UPDATE_BUTTON_PATH) != null){
-				menuBuilder.removeElement(UPDATE_BUTTON_PATH);
+		final Set<String> modes = getController().getModes();
+		for(String mode:modes){
+			final MenuBuilder menuBuilder = getController().getModeController(mode).getUserInputListenerFactory().getMenuBuilder();
+			if(lastVersion == null || lastVersion.compareTo(FreeplaneVersion.getVersion())<= 0){
+				ResourceController.getResourceController().setProperty(LAST_UPDATE_VERSION, "");
+				if(menuBuilder.get(UPDATE_BUTTON_PATH) != null){
+					menuBuilder.removeElement(UPDATE_BUTTON_PATH);
+				}
+				continue;
 			}
-			return;
+			ResourceController.getResourceController().setProperty(LAST_UPDATE_VERSION, lastVersion.toString());
+			final String updateAvailable = FpStringUtils.formatText("new_version_available", lastVersion.toString());
+			putValue(SHORT_DESCRIPTION, updateAvailable);
+			putValue(LONG_DESCRIPTION, updateAvailable);
+			if(menuBuilder.get(UPDATE_BUTTON_PATH) == null){
+				menuBuilder.addAction(UPDATE_BUTTON_LOCATION, UPDATE_BUTTON_PATH, UpdateCheckAction.this, MenuBuilder.AS_CHILD);
+			}
 		}
-		ResourceController.getResourceController().setProperty(LAST_UPDATE_VERSION, lastVersion.toString());
-		final String updateAvailable = FpStringUtils.formatText("new_version_available", lastVersion.toString());
-		putValue(SHORT_DESCRIPTION, updateAvailable);
-		putValue(LONG_DESCRIPTION, updateAvailable);
-		final MenuBuilder menuBuilder = getModeController().getUserInputListenerFactory().getMenuBuilder();
-		if(menuBuilder.get(UPDATE_BUTTON_PATH) == null){
-			menuBuilder.addAction(UPDATE_BUTTON_LOCATION, UPDATE_BUTTON_PATH, UpdateCheckAction.this, MenuBuilder.AS_CHILD);
-		}
-		
-    }
+	}
 
 	private void showUpdateDialog(final FreeplaneVersion localVersion, final FreeplaneVersion lastVersion,
                                   String history) {
