@@ -16,13 +16,15 @@ import org.freeplane.core.util.LogTool;
 public class HttpVersionClient{
 	private FreeplaneVersion remoteVersion;
 	private String history;
+	private boolean successful;
 
-	public HttpVersionClient(final String versionUrl, final FreeplaneVersion currentVersion) {
+	public HttpVersionClient(final URL url, final FreeplaneVersion currentVersion) {
 		remoteVersion = null;
 		history = "";
+		successful = false;
 		BufferedReader in = null;
 		try {
-			in = new BufferedReader(new InputStreamReader(new URL(versionUrl).openConnection().getInputStream()));
+			in = new BufferedReader(new InputStreamReader(url.openConnection().getInputStream()));
 			String line;
 			for(line = in.readLine(); 
 			line != null && line.startsWith("====="); 
@@ -31,6 +33,7 @@ public class HttpVersionClient{
             	return;
             }
 			remoteVersion = FreeplaneVersion.getVersion(line);
+			successful = true;
             if(remoteVersion.compareTo(currentVersion) <= 0){
             	return;
             }
@@ -51,16 +54,15 @@ public class HttpVersionClient{
 			}
 			history = historyBuffer.toString();
 		}
-		catch (final MalformedURLException e) {
-			LogTool.warn(e, "Url not well formed: " + versionUrl);
+		catch (final NullPointerException e) {
 			return;
 		}
 		catch (final IOException e) {
-			LogTool.warn(e, "Could not read update url - check your internet connection.");
+			LogTool.warn("Could not read update url - check your internet connection.");
 			return;
 		}
 		catch (final IllegalArgumentException e){
-			LogTool.warn(e, "Could not read version.");
+			LogTool.warn("Could not read version.");
 			return;
 		}
 		finally {
@@ -75,6 +77,21 @@ public class HttpVersionClient{
 			}
 		}
 	}
+		public boolean isSuccessful() {
+    	return successful;
+    }
+		public HttpVersionClient(final String versionUrl, final FreeplaneVersion currentVersion) {
+		this(getUrl(versionUrl), currentVersion);
+	}
+
+	private static URL getUrl(final String versionUrl){
+	    try {
+	        return new URL(versionUrl);
+        }
+        catch (MalformedURLException e) {
+        	return null;
+        }
+    }
 
 	public FreeplaneVersion getRemoteVersion() {
 		return remoteVersion;

@@ -38,10 +38,10 @@ import org.freeplane.core.util.LogTool;
  * @author robert ladstaetter
  */
 public class UpdateCheckAction extends AFreeplaneAction {
-	private static final int CHECK_TIME = 1 * 1000;
+	private static final int CHECK_TIME = 30 * 1000;
 	private static final String LAST_UPDATE_CHECK_TIME = "last_update_check_time";
 	private static final String CHECK_UPDATES_AUTOMATICALLY = "check_updates_automatically";
-	private static final int TWO_DAYS = 2*24*60*60*1000;
+	private static final int TWO_DAYS = 1*24*60*60*1000;
 	private static boolean autorunEnabled  = true;
 	private static Timer autorunTimer = null;
 	/**
@@ -145,15 +145,18 @@ public class UpdateCheckAction extends AFreeplaneAction {
 		
 		final String history;
 		final FreeplaneVersion lastVersion;
+		final boolean connectSuccesfull;
 		if(! language.equals(DEFAULT_LANGUAGE)){
 			final String defaultWebUpdate = webUpdateUrl + "history_" + DEFAULT_LANGUAGE +".txt";
 			final HttpVersionClient defaultVersionClient = new HttpVersionClient(defaultWebUpdate, lastTranslatedVersion);
 			lastVersion= defaultVersionClient.getRemoteVersion();
 			history = defaultVersionClient.getHistory() + translatedVersionClient.getHistory();
+			connectSuccesfull = defaultVersionClient.isSuccessful();
 		}
 		else{
 			lastVersion = lastTranslatedVersion;
 			history = translatedVersionClient.getHistory();
+			connectSuccesfull = translatedVersionClient.isSuccessful();
 		}
 		EventQueue.invokeLater(new Runnable(){
 
@@ -162,7 +165,7 @@ public class UpdateCheckAction extends AFreeplaneAction {
 				if(autoRun){
 					return;
 				}
-				showUpdateDialog(localVersion, lastVersion, history);
+				showUpdateDialog(connectSuccesfull, localVersion, lastVersion, history);
             }});
     }
 
@@ -200,40 +203,40 @@ public class UpdateCheckAction extends AFreeplaneAction {
 		}
 	}
 
-	private void showUpdateDialog(final FreeplaneVersion localVersion, final FreeplaneVersion lastVersion,
+	private void showUpdateDialog(boolean connectSuccesfull, final FreeplaneVersion localVersion, final FreeplaneVersion newVersion,
                                   String history) {
-	    if (lastVersion == null) {
-				showUpdateDialog("can_not_connect_to_update_server", null, null);
-			LogTool.warn("Couldn't determine current version. Ignoring update request.");
-			return;
+		final int choice;
+	    if (connectSuccesfull == false) {
+	    	choice =showUpdateDialog("can_not_connect_to_info_server", "", "");
 		}
-		if (localVersion.compareTo(lastVersion) < 0) {
-			final int choice = showUpdateDialog("new_version_available", lastVersion, history);
-			if (0 != choice){
-				return;
-			}
-			// go to download page
-			try {
-				getController().getViewController().openDocument(
-				    new URL(ResourceController.getResourceController().getProperty(WEB_DOWNLOAD_LOCATION_KEY)));
-			}
-			catch (final MalformedURLException ex) {
-				getController().errorMessage(ResourceBundles.getText("url_error") + "\n" + ex);
-			}
-			catch (final Exception ex) {
-				getController().errorMessage(ex);
-			}
-		}
-		else{
+	    else if (localVersion.compareTo(newVersion) < 0) {
+	    	choice = showUpdateDialog("new_version_available", newVersion.toString(), history);
+	    }
+	    else{
 			showUpdateDialog("version_up_to_date", null, null);
-		}
+	    	choice =-1;
+	    }
+	    if (0 != choice){
+	    	return;
+	    }
+	    // go to download page
+	    try {
+	    	getController().getViewController().openDocument(
+	    		new URL(ResourceController.getResourceController().getProperty(WEB_DOWNLOAD_LOCATION_KEY)));
+	    }
+	    catch (final MalformedURLException ex) {
+	    	getController().errorMessage(ResourceBundles.getText("url_error") + "\n" + ex);
+	    }
+	    catch (final Exception ex) {
+	    	getController().errorMessage(ex);
+	    }
     }
 
-	private int showUpdateDialog(final String info, final FreeplaneVersion lastVersion, String history) {
+	private int showUpdateDialog(final String info, final String newVersion, String history) {
 	    final Box messagePane = Box.createVerticalBox();
 	    final JLabel messageLabel;
-	    if(lastVersion != null){
-	    	messageLabel = new JLabel(FpStringUtils.formatText(info, lastVersion.toString()));
+	    if(newVersion != null){
+	    	messageLabel = new JLabel(FpStringUtils.formatText(info, newVersion.toString()));
 	    }
 	    else{
 	    	messageLabel = new JLabel(ResourceBundles.getText(info));
@@ -251,7 +254,7 @@ public class UpdateCheckAction extends AFreeplaneAction {
 	    updateAutomatically.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 	    messagePane.add(updateAutomatically);
 	    final Object[] options;
-	    if(lastVersion != null){
+	    if(newVersion != null){
 	    	options = new Object[]{ResourceBundles.getText("download"), 
 	    		FpStringUtils.removeMnemonic(ResourceBundles.getText("cancel"))};
 	    }
