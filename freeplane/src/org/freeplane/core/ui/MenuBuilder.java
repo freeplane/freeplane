@@ -60,6 +60,7 @@ import org.freeplane.core.ui.components.JAutoVisibleMenuItem;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.n3.nanoxml.XMLElement;
+import org.freeplane.n3.nanoxml.XMLException;
 
 public class MenuBuilder extends UIBuilder {
 	private static class ActionHolder implements INameMnemonicHolder {
@@ -337,6 +338,9 @@ public class MenuBuilder extends UIBuilder {
 			catch (final IOException e) {
 				throw new RuntimeException(e);
 			}
+            catch (XMLException e) {
+				throw new RuntimeException(e);
+            }
 		}
 	}
 

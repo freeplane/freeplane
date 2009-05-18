@@ -23,12 +23,16 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.HashMap;
 
+import javax.swing.JOptionPane;
+
 import org.freeplane.core.io.MapWriter.Hint;
 import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.n3.nanoxml.XMLElement;
+import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
 /**
@@ -44,7 +48,15 @@ public class MapReader implements IElementDOMHandler, IHintProvider {
 
 		public NodeModel create(final Reader pReader) {
 			final TreeXmlReader reader = new TreeXmlReader(readManager);
-			reader.load(pReader);
+			try {
+	            reader.load(pReader);
+            }
+            catch (XMLException e) {
+        			JOptionPane.showMessageDialog(null, ResourceBundles.getText("map_damaged"), "Freeplane", JOptionPane.ERROR_MESSAGE);
+        			e.printStackTrace();
+
+	            e.printStackTrace();
+            }
 			final NodeModel node = nodeBuilder.getMapChild();
 			nodeBuilder.reset();
 			return node;

@@ -29,6 +29,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import javax.swing.JOptionPane;
+
 import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.IElementContentHandler;
 import org.freeplane.core.io.IElementDOMHandler;
@@ -232,18 +234,13 @@ public class TreeXmlReader implements IXMLBuilder {
 	 * (non-Javadoc)
 	 * @see freeplane.persistence.Reader#load()
 	 */
-	public void load(final Reader reader) {
-		try {
-			parser = new XMLParser();
-			final IXMLReader nanoxmlReader = new StdXMLReader(reader);
-			parser.setReader(nanoxmlReader);
-			parser.setBuilder(this);
-			parser.setValidator(new NonValidator());
-			parser.parse();
-		}
-		catch (final XMLException e) {
-			e.printStackTrace();
-		}
+	public void load(final Reader reader) throws XMLException {
+		parser = new XMLParser();
+		final IXMLReader nanoxmlReader = new StdXMLReader(reader);
+		parser.setReader(nanoxmlReader);
+		parser.setBuilder(this);
+		parser.setValidator(new NonValidator());
+		parser.parse();
 	}
 
 	/*
