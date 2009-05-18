@@ -273,14 +273,12 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 		controls.add(new SeparatorProperty("OptionPanel.separator.EdgeControls"));
 		mSetEdgeWidth = new ThreeCheckBoxProperty(StylePatternPanel.SET_EDGE_WIDTH);
 		controls.add(mSetEdgeWidth);
-		mEdgeWidth = new ComboProperty(StylePatternPanel.EDGE_WIDTH, new String[] { "EdgeWidth_parent",
-		        "EdgeWidth_thin", "EdgeWidth_1", "EdgeWidth_2", "EdgeWidth_4", "EdgeWidth_8" });
+		mEdgeWidth = new ComboProperty(StylePatternPanel.EDGE_WIDTH, EDGE_WIDTHS);
 		controls.add(mEdgeWidth);
 		/* **** */
 		mSetEdgeStyle = new ThreeCheckBoxProperty(StylePatternPanel.SET_EDGE_STYLE);
 		controls.add(mSetEdgeStyle);
-		mEdgeStyle = new ComboProperty(StylePatternPanel.EDGE_STYLE, new String[] { "linear", "bezier", "sharp_linear",
-		        "sharp_bezier" });
+		mEdgeStyle = new ComboProperty(StylePatternPanel.EDGE_STYLE, EDGE_STYLES);
 		controls.add(mEdgeStyle);
 		/* **** */
 		mSetEdgeColor = new ThreeCheckBoxProperty(StylePatternPanel.SET_EDGE_COLOR);
