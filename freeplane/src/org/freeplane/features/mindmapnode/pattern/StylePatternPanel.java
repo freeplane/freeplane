@@ -96,7 +96,7 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 	private static final String EDGE_COLOR = "edgecolor";
 	private static final String EDGE_STYLE = "edgestyle";
 	private static final String[] EDGE_STYLES = new String[] { EdgeStyle.EDGESTYLE_LINEAR, EdgeStyle.EDGESTYLE_BEZIER,
-	        EdgeStyle.EDGESTYLE_SHARP_LINEAR, EdgeStyle.EDGESTYLE_SHARP_BEZIER };
+	        EdgeStyle.EDGESTYLE_SHARP_LINEAR, EdgeStyle.EDGESTYLE_SHARP_BEZIER, EdgeStyle.EDGESTYLE_HORIZONTAL, EdgeStyle.EDGESTYLE_HIDDEN };
 	private static final String EDGE_WIDTH = "edgewidth";
 	private static final String[] EDGE_WIDTHS = new String[] { "EdgeWidth_parent", "EdgeWidth_thin", "EdgeWidth_1",
 	        "EdgeWidth_2", "EdgeWidth_4", "EdgeWidth_8" };
