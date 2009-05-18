@@ -63,7 +63,12 @@ public class OptionalDontShowMeAgainDialog {
 	private int mResult = JOptionPane.CANCEL_OPTION;
 	final private String mTitleId;
 
-	public OptionalDontShowMeAgainDialog(final Controller controller, final String pMessageId, final String pTitleId,
+	static public int show(	final Controller controller, final String pMessageId, final String pTitleId,
+	                	                                     final String pPropertyName, final int pMessageType) {
+		return new OptionalDontShowMeAgainDialog(controller, pMessageId, pTitleId, pPropertyName, pMessageType).show().getResult();
+	}
+	
+	private OptionalDontShowMeAgainDialog(final Controller controller, final String pMessageId, final String pTitleId,
 	                                     final String pPropertyName, final int pMessageType) {
 		this.controller = controller;
 		mParent = controller.getViewController().getFrame();
@@ -106,7 +111,7 @@ public class OptionalDontShowMeAgainDialog {
 	/**
 	 * @return an int from JOptionPane (eg. JOptionPane.OK_OPTION).
 	 */
-	public int getResult() {
+	private int getResult() {
 		return mResult;
 	}
 
@@ -114,7 +119,7 @@ public class OptionalDontShowMeAgainDialog {
 		ResourceController.getResourceController().setProperty(mPropertyName, value);
 	}
 
-	public OptionalDontShowMeAgainDialog show() {
+	private OptionalDontShowMeAgainDialog show() {
 		final String property = getProperty();
 		if (StringUtils.equals(property, "true")) {
 			mResult = JOptionPane.OK_OPTION;

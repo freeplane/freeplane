@@ -96,7 +96,9 @@
 			<menu_category name="doc">
 				<menu_action action="DocumentationAction" />
 				<menu_action action="OpenFreeplaneSiteAction" />
-				<menu_action action="FaqOpenURLAction" />
+				<menu_action action="ReportBugAction" />
+				<menu_action action="RequestFeatureAction" />
+				<menu_action action="AskForHelp" />
 				<menu_action action="LicenseAction" />
 				<menu_action action="AboutAction" />
 				<menu_action action="UpdateCheckAction" />  

@@ -86,9 +86,9 @@ class ScriptingEngine extends AFreeplaneAction {
 	                             final MModeController pMindMapController, final IErrorHandler pErrorHandler,
 	                             final PrintStream pOutStream, final HashMap pScriptCookies) {
 		if (!pAlreadyAScriptExecuted) {
-			final int showResult = new OptionalDontShowMeAgainDialog(pMindMapController.getController(),
+			final int showResult = OptionalDontShowMeAgainDialog.show(pMindMapController.getController(),
 			    "really_execute_script", "confirmation", RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
-			    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED).show().getResult();
+			    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED);
 			if (showResult != JOptionPane.OK_OPTION) {
 				return false;
 			}

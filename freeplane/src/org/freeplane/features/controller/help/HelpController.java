@@ -38,7 +38,7 @@ public class HelpController implements IExtension {
 		controller.addExtension(HelpController.class, new HelpController(controller));
 	}
 
-	final private WebDocuAction webDocu;
+	final private OpenURLAction webDocu;
 
 	public HelpController(final Controller controller) {
 		super();
@@ -46,10 +46,14 @@ public class HelpController implements IExtension {
 		controller.addAction(new UpdateCheckAction(controller));
 		controller.addAction(new OpenURLAction("OpenFreeplaneSiteAction", controller, ResourceController
 		    .getResourceController().getProperty("webFreeplaneLocation")));
-		controller.addAction(new FaqOpenURLAction(controller, ResourceController.getResourceController().getProperty(
-		    "webFAQLocation")));
+		controller.addAction(new OpenSourceForgeURLAction("ReportBugAction", controller, ResourceController
+		    .getResourceController().getProperty("bugTrackerLocation")));
+		controller.addAction(new OpenSourceForgeURLAction("RequestFeatureAction", controller, ResourceController
+		    .getResourceController().getProperty("featureTrackerLocation")));
+		controller.addAction(new OpenSourceForgeURLAction("AskForHelp", controller, ResourceController
+		    .getResourceController().getProperty("helpForumLocation")));
 		controller.addAction(new KeyDocumentationAction(controller));
-		webDocu = new WebDocuAction(controller, ResourceController.getResourceController().getProperty(
+		webDocu = new OpenURLAction("WebDocuAction", controller, ResourceController.getResourceController().getProperty(
 		    "webDocuLocation"));
 		controller.addAction(webDocu);
 		controller.addAction(new DocumentationAction(controller));

@@ -53,9 +53,9 @@ class CutAction extends AFreeplaneAction {
 			controller.errorMessage(ResourceBundles.getText("cannot_delete_root"));
 			return;
 		}
-		final int showResult = new OptionalDontShowMeAgainDialog(controller, "really_cut_node", "confirmation",
+		final int showResult = OptionalDontShowMeAgainDialog.show(controller, "really_cut_node", "confirmation",
 		    MClipboardController.RESOURCES_CUT_NODES_WITHOUT_QUESTION,
-		    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED).show().getResult();
+		    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED);
 		if (showResult != JOptionPane.OK_OPTION) {
 			return;
 		}
