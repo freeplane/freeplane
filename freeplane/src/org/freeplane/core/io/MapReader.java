@@ -52,7 +52,7 @@ public class MapReader implements IElementDOMHandler, IHintProvider {
 	            reader.load(pReader);
             }
             catch (XMLException e) {
-        			JOptionPane.showMessageDialog(null, ResourceBundles.getText("map_damaged"), "Freeplane", JOptionPane.ERROR_MESSAGE);
+        			JOptionPane.showMessageDialog(null, ResourceBundles.getText("corrupt_map"), "Freeplane", JOptionPane.ERROR_MESSAGE);
         			e.printStackTrace();
 
 	            e.printStackTrace();

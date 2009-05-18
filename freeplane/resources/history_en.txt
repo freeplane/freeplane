@@ -2,6 +2,8 @@
 1.0.8 alpha
 ===============================
 update check
+open bug/feature trackers from help menu
+warning if map file is corrupted
 big fix for changing left/right map sides
 ===============================
 1.0.7 alpha
