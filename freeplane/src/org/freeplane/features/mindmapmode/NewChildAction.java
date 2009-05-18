@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.mindmapmode;
 
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
@@ -43,7 +44,7 @@ class NewChildAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		((MMapController) getModeController().getMapController()).addNewNode(MMapController.NEW_CHILD, null);
+		addNewNode(MMapController.NEW_CHILD, null);
 	}
 
 	public NodeModel addNewNode(int newNodeMode, final KeyEvent e) {
@@ -51,7 +52,7 @@ class NewChildAction extends AFreeplaneAction {
 		final NodeModel target = modeController.getMapController().getSelectedNode();
 		((MTextController) TextController.getController(modeController)).stopEditing();
 		final NodeModel targetNode = target;
-		NodeModel newNode = null;
+		final NodeModel newNode;
 		switch (newNodeMode) {
 			case MMapController.NEW_SIBLING_BEFORE:
 			case MMapController.NEW_SIBLING_BEHIND: {
@@ -63,8 +64,12 @@ class NewChildAction extends AFreeplaneAction {
 					}
 					newNode = addNewNode(parent, childPosition, targetNode.isLeft());
 					modeController.getMapController().select(newNode);
-					((MTextController) TextController.getController(modeController)).edit(newNode, targetNode, e, true,
-					    false, false);
+					EventQueue.invokeLater(new Runnable(){
+
+						public void run() {
+							((MTextController) TextController.getController(modeController)).edit(newNode, targetNode, e, true,
+							    false, false);
+                        }});
 					break;
 				}
 				else {
@@ -84,10 +89,16 @@ class NewChildAction extends AFreeplaneAction {
 				if (newNodeMode == MMapController.NEW_CHILD) {
 					modeController.getMapController().select(newNode);
 				}
-				((MTextController) TextController.getController(modeController)).edit(newNode, targetNode, e, true,
-				    parentFolded, false);
+				EventQueue.invokeLater(new Runnable(){
+
+					public void run() {
+						((MTextController) TextController.getController(modeController)).edit(newNode, targetNode, e, true,
+						    parentFolded, false);
+                    }});
 				break;
 			}
+			default:
+				newNode = null;
 		}
 		return newNode;
 	}
