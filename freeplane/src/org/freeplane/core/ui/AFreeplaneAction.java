@@ -19,6 +19,8 @@
  */
 package org.freeplane.core.ui;
 
+import java.net.URL;
+
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
@@ -27,6 +29,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.LogTool;
 
 /**
  * @author Dimitry Polivaev
@@ -113,8 +116,14 @@ public abstract class AFreeplaneAction extends AbstractAction {
 		MenuBuilder.setLabelAndMnemonic(this, ResourceBundles.getText(getTextKey()));
 		final String iconResource = ResourceController.getResourceController().getProperty(getIconKey(), null);
 		if (iconResource != null) {
-			final ImageIcon icon = new ImageIcon(ResourceController.getResourceController().getResource(iconResource));
-			putValue(SMALL_ICON, icon);
+			final URL url = ResourceController.getResourceController().getResource(iconResource);
+			if(url == null){
+				LogTool.severe("can not load icon '" + iconResource + "'");
+			}
+			else{
+				final ImageIcon icon = new ImageIcon(url);
+				putValue(SMALL_ICON, icon);
+			}
 		}
 		final String tooltip = ResourceBundles.getText(getTooltipKey(), null);
 		if (tooltip != null && !"".equals(tooltip)) {
