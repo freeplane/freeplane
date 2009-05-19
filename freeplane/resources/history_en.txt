@@ -5,6 +5,8 @@ update check
 open bug/feature trackers from help menu
 warning if map file is corrupted
 big fix for changing left/right map sides
+simplyhtml loaded only if should be displayed
+
 ===============================
 1.0.7 alpha
 ===============================
