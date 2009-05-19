@@ -37,6 +37,7 @@ import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.FixedHTMLWriter;
@@ -50,6 +51,9 @@ import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.file.MFileManager;
 import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
+
+import com.lightdev.app.shtm.SHTMLPanel;
+import com.lightdev.app.shtm.TextResources;
 
 /**
  * @author Dimitry Polivaev
@@ -236,4 +240,18 @@ public class MTextController extends TextController {
 		final String useRichTextInNewLongNodes = (showResult == JOptionPane.OK_OPTION) ? "true" : "false";
 		return useRichTextInNewLongNodes.equals("true");
 	}
+
+	static public SHTMLPanel createSHTMLPanel() {
+        SHTMLPanel.setResources(new TextResources() {
+    		public String getString(String pKey) {
+    			pKey = "simplyhtml." + pKey;
+    			String resourceString = ResourceController.getResourceController().getText(pKey, null);
+    			if (resourceString == null) {
+    				resourceString = ResourceController.getResourceController().getProperty(pKey);
+    			}
+    			return resourceString;
+    		}
+    	});
+        return SHTMLPanel.createSHTMLPanel();
+    }
 }

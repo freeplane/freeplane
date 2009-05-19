@@ -28,6 +28,8 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.features.common.note.NoteModel;
 import org.freeplane.features.mindmapmode.note.MNoteController.NoteDocumentListener;
 
+import com.lightdev.app.shtm.SHTMLPanel;
+
 final class NoteManager implements INodeSelectionListener {
 	public final static String EMPTY_EDITOR_STRING = "<html>\n    <body>\n    <p>\n      \n    </p>\n  </body>\n</html>\n";
 	public final static String EMPTY_EDITOR_STRING_ALTERNATIVE = "<html>\n    <body>\n    <p>\n      \n    </p>\n  </body>\n</html>\n";
@@ -44,7 +46,11 @@ final class NoteManager implements INodeSelectionListener {
 	}
 
 	public void onDeselect(final NodeModel node) {
-		noteController.getNoteViewerComponent().getDocument().removeDocumentListener(mNoteDocumentListener);
+		final SHTMLPanel noteViewerComponent = noteController.getNoteViewerComponent();
+		if(noteViewerComponent == null){
+			return;
+		}
+		noteViewerComponent.getDocument().removeDocumentListener(mNoteDocumentListener);
 		onWrite(node);
 		this.node = null;
 	}
@@ -58,13 +64,17 @@ final class NoteManager implements INodeSelectionListener {
 		if (this.node != node) {
 			return;
 		}
+		final SHTMLPanel noteViewerComponent = noteController.getNoteViewerComponent();
+		if(noteViewerComponent == null){
+			return;
+		}
 		boolean editorContentEmpty = true;
-		String documentText = noteController.getNoteViewerComponent().getDocumentText();
+		String documentText = noteViewerComponent.getDocumentText();
 		documentText = HEAD.matcher(documentText).replaceFirst("");
 		editorContentEmpty = documentText.equals(EMPTY_EDITOR_STRING)
 		        || documentText.equals(EMPTY_EDITOR_STRING_ALTERNATIVE);
 		noteController.getModeController().getMapController().removeNodeSelectionListener(this);
-		if (noteController.getNoteViewerComponent().needsSaving()) {
+		if (noteViewerComponent.needsSaving()) {
 			if (editorContentEmpty) {
 				noteController.setNoteText(node, null);
 			}
@@ -77,7 +87,11 @@ final class NoteManager implements INodeSelectionListener {
 	}
 
 	void updateEditor() {
-		final HTMLDocument document = noteController.getNoteViewerComponent().getDocument();
+		final SHTMLPanel noteViewerComponent = noteController.getNoteViewerComponent();
+		if(noteViewerComponent == null){
+			return;
+		}
+		final HTMLDocument document = noteViewerComponent.getDocument();
 		document.removeDocumentListener(mNoteDocumentListener);
 		try {
 			document.setBase(node.getMap().getFile().toURL());
@@ -86,11 +100,11 @@ final class NoteManager implements INodeSelectionListener {
 		}
 		final String note = NoteModel.getNoteText(node);
 		if (note != null) {
-			noteController.getNoteViewerComponent().setCurrentDocumentContent(note);
+			noteViewerComponent.setCurrentDocumentContent(note);
 			noteController.setLastContentEmpty(false);
 		}
 		else if (!noteController.isLastContentEmpty()) {
-			noteController.getNoteViewerComponent().setCurrentDocumentContent("");
+			noteViewerComponent.setCurrentDocumentContent("");
 			noteController.setLastContentEmpty(true);
 		}
 		document.addDocumentListener(mNoteDocumentListener);

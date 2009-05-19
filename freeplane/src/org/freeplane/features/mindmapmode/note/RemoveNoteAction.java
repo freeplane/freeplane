@@ -92,9 +92,6 @@ class RemoveNoteAction extends AFreeplaneAction implements PopupMenuListener {
 	}
 
 	private void removeNote(final NodeModel node) {
-		if ((getModeController()).getMapController().getSelectedNode() == node) {
-			noteController.getHtmlEditorPanel().setCurrentDocumentContent("");
-		}
 		noteController.setNoteText(node, null);
 	}
 

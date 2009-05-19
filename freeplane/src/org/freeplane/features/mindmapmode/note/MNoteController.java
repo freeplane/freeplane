@@ -52,10 +52,10 @@ import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.note.NoteController;
 import org.freeplane.features.common.note.NoteModel;
 import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;
+import org.freeplane.features.mindmapmode.text.MTextController;
 
 import com.lightdev.app.shtm.SHTMLEditorPane;
 import com.lightdev.app.shtm.SHTMLPanel;
-import com.lightdev.app.shtm.TextResources;
 
 /**
  * @author Dimitry Polivaev
@@ -158,26 +158,24 @@ public class MNoteController extends NoteController {
 	}
 
 	SHTMLPanel getHtmlEditorPanel() {
-		if (htmlEditorPanel == null) {
-			SHTMLPanel.setResources(new TextResources() {
-				public String getString(String pKey) {
-					pKey = "simplyhtml." + pKey;
-					String resourceString = ResourceController.getResourceController().getText(pKey, null);
-					if (resourceString == null) {
-						resourceString = ResourceController.getResourceController().getProperty(pKey);
-					}
-					return resourceString;
-				}
-			});
-			htmlEditorPanel = SHTMLPanel.createSHTMLPanel();
-			htmlEditorPanel.setMinimumSize(new Dimension(100, 100));
-			final SHTMLEditorPane editorPane = (SHTMLEditorPane) htmlEditorPanel.getEditorPane();
-			final SpellCheckerController spellCheckerController = SpellCheckerController
-			    .getController(getModeController());
-			spellCheckerController.enableAutoSpell(editorPane);
-			spellCheckerController.addSpellCheckerMenu(editorPane.getPopup());
-			spellCheckerController.enableShortKey(editorPane);
+		if (htmlEditorPanel != null) {
+			return htmlEditorPanel;
 		}
+		
+		htmlEditorPanel = MTextController.createSHTMLPanel();
+		htmlEditorPanel.setMinimumSize(new Dimension(100, 100));
+		final SHTMLEditorPane editorPane = (SHTMLEditorPane) htmlEditorPanel.getEditorPane();
+		final SpellCheckerController spellCheckerController = SpellCheckerController
+		.getController(getModeController());
+		spellCheckerController.enableAutoSpell(editorPane);
+		spellCheckerController.addSpellCheckerMenu(editorPane.getPopup());
+		spellCheckerController.enableShortKey(editorPane);
+		final Action jumpToMapAction = new JumpToMapAction();
+		final String keystroke = ResourceController.getResourceController().getAdjustableProperty(
+			"acceleratorForMindMap//menu_bar/navigate/notes/SelectNoteAction");
+		htmlEditorPanel.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
+			KeyStroke.getKeyStroke(keystroke), "jumpToMapAction");
+		htmlEditorPanel.getActionMap().put("jumpToMapAction", jumpToMapAction);
 		return htmlEditorPanel;
 	}
 
@@ -275,6 +273,10 @@ public class MNoteController extends NoteController {
 	}
 
 	public void showNotesPanel() {
+		if(noteViewerComponent == null){
+			noteViewerComponent = getHtmlEditorPanel();
+			noteManager.updateEditor();
+		}
 		final SouthPanel southPanel = new SouthPanel();
 		southPanel.add(noteViewerComponent, BorderLayout.CENTER);
 		if (ResourceController.getResourceController().getBooleanProperty(
@@ -316,8 +318,11 @@ public class MNoteController extends NoteController {
 
 	public void shutdownController() {
 		getModeController().getMapController().removeNodeSelectionListener(noteManager);
+		if (noteViewerComponent == null){
+			return;
+		}
 		noteViewerComponent.getActionMap().remove("jumpToMapAction");
-		if (noteViewerComponent != null && shouldUseSplitPane()) {
+		if( shouldUseSplitPane()) {
 			hideNotesPanel();
 			noteViewerComponent = null;
 		}
@@ -326,13 +331,6 @@ public class MNoteController extends NoteController {
 	public void startupController() {
 		final ModeController modeController = getModeController();
 		noteManager = new NoteManager(this);
-		noteViewerComponent = getHtmlEditorPanel();
-		final Action jumpToMapAction = new JumpToMapAction();
-		final String keystroke = ResourceController.getResourceController().getAdjustableProperty(
-		    "acceleratorForMindMap//menu_bar/navigate/notes/SelectNoteAction");
-		noteViewerComponent.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
-		    KeyStroke.getKeyStroke(keystroke), "jumpToMapAction");
-		noteViewerComponent.getActionMap().put("jumpToMapAction", jumpToMapAction);
 		if (shouldUseSplitPane()) {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
