@@ -32,6 +32,8 @@ import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.components.EnterPasswordDialog;
+import org.freeplane.core.undo.IActor;
+import org.freeplane.core.undo.IUndoHandler;
 
 @ActionLocationDescriptor(locations = { "/menu_bar/extras/first/nodes/crypto" })
 public class EnterPassword extends AFreeplaneAction  implements INodeSelectionListener{
@@ -85,7 +87,24 @@ public class EnterPassword extends AFreeplaneAction  implements INodeSelectionLi
 		}
 		final EncryptionModel encryptedMindMapNode = new EncryptionModel(node);
 		encryptedMindMapNode.setEncrypter(new SingleDesEncrypter(password));
-		node.addExtension(encryptedMindMapNode);
+		IActor actor = new IActor() {
+			public void act() {
+				node.addExtension(encryptedMindMapNode);
+				encryptedMindMapNode.updateIcon();
+				getModeController().getMapController().nodeRefresh(node);
+			}
+
+			public String getDescription() {
+				return "encrypt";
+			}
+
+			public void undo() {
+				node.removeExtension(encryptedMindMapNode);
+				node.setStateIcon("decrypted", null);
+				getModeController().getMapController().nodeRefresh(node);
+			}
+		};
+		getModeController().execute(actor);
 	}
 
 	/**
@@ -109,7 +128,9 @@ public class EnterPassword extends AFreeplaneAction  implements INodeSelectionLi
 		final ModeController mindMapController = getModeController();
 		final EncryptionModel encNode = EncryptionModel.getModel(node);
 		if (encNode != null) {
-			if (encNode.isAccessible()) {
+			final boolean wasAccessible = encNode.isAccessible();
+			final boolean wasFolded = node.isFolded();
+			if (wasAccessible) {
 				encNode.setAccessible(false);
 				encNode.getEncryptedContent(mindMapController.getMapController());
 				node.setFolded(true);
@@ -122,11 +143,33 @@ public class EnterPassword extends AFreeplaneAction  implements INodeSelectionLi
 			final Controller controller = getController();
 			final IMapSelection selection = controller.getSelection();
 			selection.selectAsTheOnlyOneSelected(node);
+			IActor actor = new IActor(){
+				public void act() {
+					encNode.setAccessible(! wasAccessible);
+					if(wasAccessible){
+						node.setFolded(true);
+					}
+					encNode.updateIcon();
+					mindMapController.getMapController().nodeRefresh(node);
+                }
+
+				public String getDescription() {
+	                return "toggleCryptState";
+                }
+
+				public void undo() {
+					encNode.setAccessible(wasAccessible);
+					if(wasAccessible){
+						node.setFolded(wasFolded);
+					}
+					encNode.updateIcon();
+					mindMapController.getMapController().nodeRefresh(node);
+                }};
+                getModeController().execute(actor);                
 		}
 		else {
 			encrypt(node);
 		}
-		mindMapController.getMapController().nodeRefresh(node);
 	}
 	public boolean canBeEnabled() {
 		final ModeController modeController = getModeController();
