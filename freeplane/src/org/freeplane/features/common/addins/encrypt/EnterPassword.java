@@ -23,6 +23,8 @@ import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.IMapSelection;
+import org.freeplane.core.modecontroller.INodeSelectionListener;
+import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.EncryptionModel;
 import org.freeplane.core.model.NodeModel;
@@ -32,7 +34,7 @@ import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.components.EnterPasswordDialog;
 
 @ActionLocationDescriptor(locations = { "/menu_bar/extras/first/nodes/crypto" })
-public class EnterPassword extends AFreeplaneAction {
+public class EnterPassword extends AFreeplaneAction  implements INodeSelectionListener{
 	/**
 	 * 
 	 */
@@ -40,6 +42,7 @@ public class EnterPassword extends AFreeplaneAction {
 
 	public EnterPassword(final ModeController modeController) {
 		super("EnterPassword", modeController.getController());
+		modeController.getMapController().addNodeSelectionListener(this);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -124,5 +127,33 @@ public class EnterPassword extends AFreeplaneAction {
 			encrypt(node);
 		}
 		mindMapController.getMapController().nodeRefresh(node);
+	}
+	public boolean canBeEnabled() {
+		final ModeController modeController = getModeController();
+		if (modeController == null) {
+			return false;
+		}
+		boolean isEncryptedNode = false;
+		boolean isOpened = false;
+		final MapController mapController = modeController.getMapController();
+		final NodeModel selectedNode = mapController.getSelectedNode();
+		if (selectedNode != null) {
+			if(! selectedNode.getMap().isReadOnly()){
+				return true;
+			}
+			final EncryptionModel enode = EncryptionModel.getModel(selectedNode);
+			if (enode != null) {
+				isEncryptedNode = true;
+				isOpened = enode.isAccessible();
+			}
+		}
+		return (isEncryptedNode && !isOpened);
+	}
+	public void onDeselect(final NodeModel node) {
+		setEnabled(false);
+	}
+
+	public void onSelect(final NodeModel node) {
+		setEnabled(canBeEnabled());
 	}
 }

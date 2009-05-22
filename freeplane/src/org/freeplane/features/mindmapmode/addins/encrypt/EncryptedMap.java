@@ -30,7 +30,7 @@ import org.freeplane.core.ui.components.EnterPasswordDialog;
 import org.freeplane.features.common.addins.encrypt.SingleDesEncrypter;
 
 @ActionLocationDescriptor(locations = { "/menu_bar/file/open" })
-public class EncryptedMap extends AFreeplaneAction implements INodeSelectionListener {
+public class EncryptedMap extends AFreeplaneAction {
 	/**
 	 * 
 	 */
@@ -38,29 +38,12 @@ public class EncryptedMap extends AFreeplaneAction implements INodeSelectionList
 
 	public EncryptedMap(final ModeController modeController) {
 		super("EncryptedMap", modeController.getController());
-		modeController.getMapController().addNodeSelectionListener(this);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		newEncryptedMap();
 	}
 
-	public boolean canBeEnabled() {
-		boolean isEncryptedNode = false;
-		boolean isOpened = false;
-		final ModeController modeController = getModeController();
-		if (modeController == null) {
-			return false;
-		}
-		if (modeController.getMapController().getSelectedNode() != null) {
-			final EncryptionModel enode = EncryptionModel.getModel(modeController.getMapController().getSelectedNode());
-			if (enode != null) {
-				isEncryptedNode = true;
-				isOpened = enode.isAccessible();
-			}
-		}
-		return (!isEncryptedNode || isOpened);
-	}
 
 	/**
 	 * @param e 
@@ -96,11 +79,4 @@ public class EncryptedMap extends AFreeplaneAction implements INodeSelectionList
 		encryptedMindMapNode.updateIcon();
 	}
 
-	public void onDeselect(final NodeModel node) {
-		setEnabled(false);
-	}
-
-	public void onSelect(final NodeModel node) {
-		setEnabled(canBeEnabled());
-	}
 }

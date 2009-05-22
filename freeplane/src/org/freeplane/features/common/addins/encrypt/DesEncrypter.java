@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.KeySpec;
+import java.util.Arrays;
 
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -59,7 +60,7 @@ public class DesEncrypter implements IEncrypter {
 	int iterationCount = 19;
 	final private String mAlgorithm;
 	final private char[] passPhrase;
-	byte[] salt = { (byte) 0xA9, (byte) 0x9B, (byte) 0xC8, (byte) 0x32, (byte) 0x56, (byte) 0x35, (byte) 0xE3,
+	byte[] mSalt = { (byte) 0xA9, (byte) 0x9B, (byte) 0xC8, (byte) 0x32, (byte) 0x56, (byte) 0x35, (byte) 0xE3,
 	        (byte) 0x03 };
 
 	public DesEncrypter(final StringBuffer pPassPhrase, final String pAlgorithm) {
@@ -116,17 +117,21 @@ public class DesEncrypter implements IEncrypter {
 
 	/**
 	 */
-	private void init(final byte[] mSalt) {
-		if (mSalt != null) {
-			salt = mSalt;
+	private void init(final byte[] salt) {
+		if(ecipher != null && mSalt != null && ! Arrays.equals(mSalt, salt)){
+			ecipher = null;
+			dcipher = null;
+		}
+		if (salt != null) {
+			mSalt = salt;
 		}
 		if (ecipher == null) {
 			try {
-				final KeySpec keySpec = new PBEKeySpec(passPhrase, salt, iterationCount);
+				final KeySpec keySpec = new PBEKeySpec(passPhrase, mSalt, iterationCount);
 				final SecretKey key = SecretKeyFactory.getInstance(mAlgorithm).generateSecret(keySpec);
 				ecipher = Cipher.getInstance(mAlgorithm);
 				dcipher = Cipher.getInstance(mAlgorithm);
-				final AlgorithmParameterSpec paramSpec = new PBEParameterSpec(salt, iterationCount);
+				final AlgorithmParameterSpec paramSpec = new PBEParameterSpec(mSalt, iterationCount);
 				ecipher.init(Cipher.ENCRYPT_MODE, key, paramSpec);
 				dcipher.init(Cipher.DECRYPT_MODE, key, paramSpec);
 			}
