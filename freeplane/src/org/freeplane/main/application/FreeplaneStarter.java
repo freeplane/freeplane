@@ -30,6 +30,7 @@ import java.lang.reflect.InvocationTargetException;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.ToolTipManager;
 
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.Compat;
@@ -37,6 +38,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.FreeplaneVersion;
 import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.url.UrlManager;
@@ -56,6 +58,10 @@ import org.freeplane.view.swing.addins.nodehistory.NodeHistory;
 import org.freeplane.view.swing.map.MMapViewController;
 
 public class FreeplaneStarter {
+	private static final String TOOL_TIP_MANAGER = "toolTipManager.";
+	private static final String TOOL_TIP_MANAGER_RESHOW_DELAY = "toolTipManager.reshowDelay";
+	private static final String TOOL_TIP_MANAGER_DISMISS_DELAY = "toolTipManager.dismissDelay";
+	private static final String TOOL_TIP_MANAGER_INITIAL_DELAY = "toolTipManager.initialDelay";
 	public static final String LOAD_LAST_MAP = "load_last_map";
 
 	static public void main(final String[] args) {
@@ -191,7 +197,25 @@ public class FreeplaneStarter {
 		    .parseInt(ResourceController.getResourceController().getProperty("appwindow_state", "0"));
 		win_state = ((win_state & Frame.ICONIFIED) != 0) ? Frame.NORMAL : win_state;
 		frame.setExtendedState(win_state);
+		setTooltipDelays();
+		ResourceController.getResourceController().addPropertyChangeListener(new IFreeplanePropertyListener(){
+
+			public void propertyChanged(String propertyName, String newValue, String oldValue) {
+	            if(propertyName.startsWith(TOOL_TIP_MANAGER)){
+	            	setTooltipDelays();
+	            }
+            }});
 	}
+
+	private void setTooltipDelays() {
+	    final ToolTipManager toolTipManager = ToolTipManager.sharedInstance();
+		final int initialDelay = ResourceController.getResourceController().getIntProperty(TOOL_TIP_MANAGER_INITIAL_DELAY, 0);
+		toolTipManager.setInitialDelay(initialDelay);
+		final int dismissDelay = ResourceController.getResourceController().getIntProperty(TOOL_TIP_MANAGER_DISMISS_DELAY, 0);
+		toolTipManager.setDismissDelay(dismissDelay);
+		final int reshowDelay = ResourceController.getResourceController().getIntProperty(TOOL_TIP_MANAGER_RESHOW_DELAY, 0);
+		toolTipManager.setReshowDelay(reshowDelay);
+    }
 
 	private void loadMaps(final String[] args) {
 		boolean fileLoaded = false;
