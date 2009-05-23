@@ -23,9 +23,13 @@ import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
@@ -49,8 +53,12 @@ public class MindIcon implements Comparable, IIconInformation {
 	private static ImageIcon iconNotFound;
 	public static final int LAST = MindIcon.UNKNOWN;
 	private static List<String> mAllIconNames;
+	private static Map<String, List<String>> mIconGroups;
 	static int nextNumber = MindIcon.UNKNOWN - 1;
-	public static final String PROPERTY_STRING_ICONS_LIST = "icons.list";
+	public static final String PROPERTY_ICONS_GROUPS_LIST = "icons.groups";
+	public static final String PROPERTY_ICONS_LIST = "icons.list";
+	
+	public static final String PROPERTY_ICONS_GROUP = "icons.group.";
 	private static final int UNKNOWN = -1;
 
 	public static MindIcon factory(final String iconName) {
@@ -78,10 +86,36 @@ public class MindIcon implements Comparable, IIconInformation {
 		if (MindIcon.mAllIconNames != null) {
 			return MindIcon.mAllIconNames;
 		}
-		final List<String> list = new ArrayList<String>();
-		list.addAll(Arrays.asList((ResourceController.getResourceController()
-		    .getProperty(MindIcon.PROPERTY_STRING_ICONS_LIST)).split(";")));
-		return list;
+		
+		final String iconList = ResourceController.getResourceController().getProperty(MindIcon.PROPERTY_ICONS_LIST, null);
+		if(iconList != null){
+			mAllIconNames = Arrays.asList(iconList.split(";"));
+			return mAllIconNames;
+		}
+		Set<String> set = new LinkedHashSet<String>();
+		final Collection<List<String>> iconGroups = getIconGroups().values();
+		for(List<String>iconGroup:iconGroups){
+			set.addAll(iconGroup);
+		}
+		mAllIconNames = new ArrayList<String>(set);
+		return mAllIconNames;
+	}
+
+	public static Map<String, List<String>> getIconGroups() {
+		if (MindIcon.mIconGroups != null) {
+			return MindIcon.mIconGroups;
+		}
+		mIconGroups = new LinkedHashMap<String, List<String>>();
+		final String[] groups = ResourceController.getResourceController().getProperty(MindIcon.PROPERTY_ICONS_GROUPS_LIST).split(";");
+		for(String group:groups){
+			final String groupProperty = ResourceController.getResourceController().getProperty(MindIcon.PROPERTY_ICONS_GROUP + group);
+			if(groupProperty.equals("")){
+				continue;
+			}
+			final String[] icons = groupProperty.split(";");
+			mIconGroups.put(group, Arrays.asList(icons));
+		}
+		return mIconGroups;
 	}
 
 	public static String getIconsPath() {

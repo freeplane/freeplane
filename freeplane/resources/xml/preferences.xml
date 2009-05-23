@@ -160,8 +160,9 @@
             <boolean name="el__show_icon_for_attributes" />
         </separator>
        <separator name="icon_properties">        
+            <boolean name="structured_icon_toolbar"/>
+            <string name="icons.list"/>
             <boolean name="don_t_show_note_icons" />
-            <string name="icon_order_description"/>
         </separator>
     </tab>
     <tab name="Keystrokes" layout="right:max(40dlu;p), 4dlu, 80dlu, 7dlu,right:max(40dlu;p), 4dlu, 80dlu, 7dlu">

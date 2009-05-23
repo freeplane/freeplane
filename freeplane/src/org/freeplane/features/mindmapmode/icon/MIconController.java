@@ -20,15 +20,33 @@
 package org.freeplane.features.mindmapmode.icon;
 
 import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.Insets;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.Vector;
+import java.util.Map.Entry;
 
 import javax.swing.Action;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 
@@ -37,6 +55,7 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.IIconInformation;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.ui.IPropertyControl;
 import org.freeplane.core.resources.ui.IPropertyControlCreator;
@@ -57,9 +76,10 @@ import org.freeplane.view.swing.ui.UserInputListenerFactory;
  * @author Dimitry Polivaev
  */
 public class MIconController extends IconController {
-	static final private List<AFreeplaneAction> iconActions = new Vector<AFreeplaneAction>();
+	static final private Map<String, AFreeplaneAction> iconActions = new LinkedHashMap<String, AFreeplaneAction>();
 	final private JToolBar iconToolBar;
 	final private JAutoScrollBarPane iconToolBarScrollPane;
+	final List<String>  userIconNames;
 
 	/**
 	 * @param modeController
@@ -69,6 +89,7 @@ public class MIconController extends IconController {
 		iconToolBar = new FreeplaneToolBar();
 		iconToolBarScrollPane = new JAutoScrollBarPane(iconToolBar);
 		iconToolBar.setOrientation(SwingConstants.VERTICAL);
+		userIconNames = new LinkedList<String>();
 		createIconActions();
 		createPreferences();
 	}
@@ -97,8 +118,21 @@ public class MIconController extends IconController {
 		builder.addAction(category, getModeController().getAction("RemoveIconAction"), MenuBuilder.AS_CHILD);
 		builder.addAction(category, getModeController().getAction("RemoveAllIconsAction"), MenuBuilder.AS_CHILD);
 		builder.addSeparator(category, MenuBuilder.AS_CHILD);
-		for (int i = 0; i < iconActions.size(); ++i) {
-			builder.addAction(category, iconActions.get(i), MenuBuilder.AS_CHILD);
+		final Set<Entry<String, List<String>>> iconGroups = MindIcon.getIconGroups().entrySet();
+		for(Entry<String, List<String>> entry:iconGroups){
+			JMenuItem item = new JMenu();
+			String key = entry.getKey();
+			final List<String> iconList = entry.getValue();
+			if(iconList.isEmpty()){
+				continue;
+			}
+			final ImageIcon icon = MindIcon.factory(iconList.get(0)).getIcon();
+			item.setIcon(icon);
+			item.setText(ResourceBundles.getText("IconGroupPopupAction." +key + ".text"));
+			key = category + "/" + key;
+			builder.addMenuItem(category, item, key, MenuBuilder.AS_CHILD);
+			for(String iconName:iconList)
+				builder.addAction(key, iconActions.get(iconName), MenuBuilder.AS_CHILD);
 		}
 	}
 
@@ -124,20 +158,20 @@ public class MIconController extends IconController {
 						continue;
 					}
 					iconNames.add(iconName);
+					userIconNames.add(iconName);
 				}
 			}
 		}
-		for (int i = 0; i < iconNames.size(); ++i) {
-			final String iconName = (iconNames.get(i));
+		for (String iconName:iconNames) {
 			final MindIcon myIcon = MindIcon.factory(iconName);
-			final IconAction myAction = new IconAction(modeController, myIcon);
-			iconActions.add(myAction);
+			final IconAction myAction = new IconAction(controller, myIcon);
+			iconActions.put(iconName, myAction);
 		}
 	}
 
 	private void createPreferences() {
 		final Vector actions = new Vector();
-		actions.addAll(iconActions);
+		actions.addAll(iconActions.values());
 		final MModeController modeController = (MModeController) getModeController();
 		final OptionPanelBuilder optionPanelBuilder = modeController.getOptionPanelBuilder();
 		actions.add(modeController.getAction("RemoveIconAction"));
@@ -158,7 +192,7 @@ public class MIconController extends IconController {
 	}
 
 	public Collection<AFreeplaneAction> getIconActions() {
-		return Collections.unmodifiableCollection(iconActions);
+		return Collections.unmodifiableCollection(iconActions.values());
 	}
 
 	/**
@@ -188,19 +222,71 @@ public class MIconController extends IconController {
 	}
 
 	public void updateIconToolbar() {
-		updateIconToolbar(iconToolBar);
-	}
-
-	private void updateIconToolbar(final JToolBar iconToolBar) {
 		iconToolBar.removeAll();
-		iconToolBar.add(getModeController().getAction("RemoveIconAction"));
-		iconToolBar.add(getModeController().getAction("RemoveAllIconsAction"));
+		iconToolBar.add(getModeController().getAction("RemoveIconAction")).setAlignmentX(JComponent.CENTER_ALIGNMENT);
+		iconToolBar.add(getModeController().getAction("RemoveAllIconsAction")).setAlignmentX(JComponent.CENTER_ALIGNMENT);
 		iconToolBar.addSeparator();
-		for (int i = 0; i < iconActions.size(); ++i) {
-			iconToolBar.add(iconActions.get(i));
+
+		if(ResourceController.getResourceController().getBooleanProperty("structured_icon_toolbar")){
+			insertSubmenus(iconToolBar);
+			return;
+		}
+		for (String name:MindIcon.getAllIconNames()) {
+			final AFreeplaneAction iconAction = iconActions.get(name);
+			if(iconAction != null){
+				iconToolBar.add(iconAction).setAlignmentX(JComponent.CENTER_ALIGNMENT);
+			}
+		}
+		for (String name:userIconNames) {
+			final AFreeplaneAction iconAction = iconActions.get(name);
+			if(iconAction != null){
+				iconToolBar.add(iconAction).setAlignmentX(JComponent.CENTER_ALIGNMENT);
+			}
 		}
 	}
 
+
+	private void insertSubmenus(final JToolBar iconToolBar) {
+	    JMenuBar iconMenuBar = new JMenuBar(){
+            private static final long serialVersionUID = 1L;
+
+			@Override
+            public Dimension getMaximumSize() {
+	            final Dimension preferredSize = getPreferredSize();
+				return new Dimension(Short.MAX_VALUE, preferredSize.height);
+            }
+			
+		};
+		iconMenuBar.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+		iconMenuBar.setLayout(new GridLayout(0, 1));
+		final Controller controller = getModeController().getController();
+		for (Entry<String, List<String>> entry:MindIcon.getIconGroups().entrySet()) {
+			final List<String> groupIconList = entry.getValue();
+			if(groupIconList.isEmpty()){
+				continue;
+			}
+			final String iconName = groupIconList.get(0);
+			iconMenuBar.add(getSubmenu(controller, entry.getKey(), groupIconList, MindIcon.factory(iconName)));
+		}
+		if(! userIconNames.isEmpty()){
+			iconMenuBar.add(getSubmenu(controller, "user", userIconNames, MindIcon.factory(userIconNames.get(0))));
+		}
+		iconToolBar.add(iconMenuBar);
+    }
+
+	private  JMenu getSubmenu(Controller controller, String group, final List<String> iconList, MindIcon menuIcon) {
+		JMenu menu = new JMenu("\u25ba");
+		menu.setFont(menu.getFont().deriveFont(8F));
+		menu.setMargin(new Insets(0, 0, 0, 0));
+		menu.setIcon(menuIcon.getIcon());
+		for(String icon:iconList){
+			final AFreeplaneAction myAction = iconActions.get(icon);
+			menu.add(myAction);
+		}
+		menu.setToolTipText(ResourceBundles.getText("IconGroupPopupAction." + group + ".text"));
+		return menu;
+    }
+	
 	public void updateMenus(final MenuBuilder builder) {
 		addIconsToMenu(builder, FreeplaneMenuBar.INSERT_MENU);
 		addIconsToMenu(builder, UserInputListenerFactory.NODE_POPUP);

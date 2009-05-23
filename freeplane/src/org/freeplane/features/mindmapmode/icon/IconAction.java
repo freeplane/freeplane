@@ -25,6 +25,7 @@ import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.IIconInformation;
 import org.freeplane.core.model.MindIcon;
@@ -42,8 +43,8 @@ class IconAction extends MultipleNodeAction implements IIconInformation {
 	private static final long serialVersionUID = 1L;
 	final private MindIcon icon;
 
-	public IconAction(final ModeController controller, final MindIcon _icon) {
-		super("IconAction." + _icon.getName(), controller.getController(), ResourceBundles.getText("icon_"
+	public IconAction(final Controller controller, final MindIcon _icon) {
+		super("IconAction." + _icon.getName(), controller, ResourceBundles.getText("icon_"
 		        + _icon.getName()), _icon.getIcon());
 		putValue(Action.SHORT_DESCRIPTION, _icon.getDescription());
 		icon = _icon;

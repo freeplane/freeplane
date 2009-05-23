@@ -21,8 +21,10 @@ package org.freeplane.core.ui.components;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Insets;
 
+import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
@@ -63,6 +65,10 @@ public class JAutoScrollBarPane extends JScrollPane {
 		}
 		if (layoutAgain) {
 			super.doLayout();
+			EventQueue.invokeLater(new Runnable(){
+				public void run() {
+	                ((JComponent) getParent()).revalidate();
+                }});
 		}
 	}
 
