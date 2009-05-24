@@ -90,26 +90,10 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 
 		public void actionPerformed(final ActionEvent e) {
 			ICondition newCond;
-			final Object value = values.getSelectedItem();
-			final NamedObject simpleCond = (NamedObject) elementaryConditions.getSelectedItem();
-			final boolean ignoreCase = caseInsensitive.isSelected();
-			final Object selectedItem = filteredPropertiesComponent.getSelectedItem();
-			newCond = filterController.getConditionFactory().createCondition(selectedItem, simpleCond, value,
-			    ignoreCase);
+			newCond = editor.getCondition();
 			if (newCond != null) {
 				final DefaultComboBoxModel model = (DefaultComboBoxModel) elementaryConditionList.getModel();
 				model.addElement(newCond);
-			}
-			if (values.isEditable()) {
-				final Object item = values.getSelectedItem();
-				if (item != null && !item.equals("")) {
-					values.removeItem(item);
-					values.insertItemAt(item, 0);
-					values.setSelectedIndex(0);
-					if (values.getItemCount() >= 10) {
-						values.removeItemAt(9);
-					}
-				}
 			}
 			validate();
 		}
@@ -277,51 +261,6 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 		}
 	}
 
-	private class ElementaryConditionChangeListener implements ItemListener {
-		public void itemStateChanged(final ItemEvent e) {
-			if (e.getStateChange() == ItemEvent.SELECTED) {
-				final Object property = filteredPropertiesModel.getSelectedItem();
-				final NamedObject selectedItem = (NamedObject) elementaryConditions.getSelectedItem();
-				final IElementaryConditionController conditionController = filterController.getConditionFactory()
-				    .getConditionController(property);
-				final boolean canSelectValues = conditionController.canSelectValues(property, selectedItem);
-				values.setEnabled(canSelectValues);
-				caseInsensitive.setEnabled(canSelectValues
-				        && conditionController.isCaseDependent(property, selectedItem));
-			}
-		}
-	}
-
-	private class FilteredPropertyChangeListener implements ItemListener {
-		public void itemStateChanged(final ItemEvent e) {
-			if (e.getStateChange() == ItemEvent.SELECTED) {
-				final Object selectedProperty = filteredPropertiesComponent.getSelectedItem();
-				final IElementaryConditionController conditionController = filterController.getConditionFactory()
-				    .getConditionController(selectedProperty);
-				final ComboBoxModel simpleConditionComboBoxModel = conditionController
-				    .getConditionsForProperty(selectedProperty);
-				elementaryConditions.setModel(simpleConditionComboBoxModel);
-				elementaryConditions.setEnabled(simpleConditionComboBoxModel.getSize() > 0);
-				final NamedObject selectedCondition = (NamedObject) simpleConditionComboBoxModel.getSelectedItem();
-				values.setEditable(conditionController.canEditValues(selectedProperty, selectedCondition));
-				final boolean canSelectValues = conditionController
-				    .canSelectValues(selectedProperty, selectedCondition);
-				values.setEnabled(canSelectValues);
-				values.setModel(conditionController.getValuesForProperty(selectedProperty));
-				final ComboBoxEditor valueEditor = conditionController.getValueEditor();
-				values.setEditor(valueEditor != null ? valueEditor : new BasicComboBoxEditor());
-				if (values.getModel().getSize() > 0) {
-					values.setSelectedIndex(0);
-				}
-				else {
-					values.setSelectedIndex(-1);
-				}
-				caseInsensitive.setEnabled(canSelectValues
-				        && conditionController.isCaseDependent(selectedProperty, selectedCondition));
-				return;
-			}
-		}
-	}
 
 	private class LoadAction implements ActionListener {
 		public void actionPerformed(final ActionEvent e) {
@@ -411,56 +350,24 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 	final private JButton btnOK;
 	final private JButton btnOr;
 	private JButton btnSave;
-	final private JCheckBox caseInsensitive;
 	final private ConditionListSelectionListener conditionListListener;
 	final private Controller controller;
+	
+
 	final private JList elementaryConditionList;
-	final private JComboBox elementaryConditions;
 	private ComboBoxModel externalConditionsModel;
 	final private FilterController filterController;
-	final private JComboBox filteredPropertiesComponent;
-	final private ExtendedComboBoxModel filteredPropertiesModel;
 	private DefaultComboBoxModel internalConditionsModel;
-	//	private static final String FILTER_ICON = "filter_icon";
-	//	private static final int ICON_POSITION = 1;
-	//	final private ExtendedComboBoxModel icons;
-	//	private static final String FILTER_NODE = "filter_node";
-	//	final private ExtendedComboBoxModel nodes;
-	//	private static final int NODE_POSITION = 0;
-	//	private AttributeRegistry registeredAttributes;
-	//	final private DefaultComboBoxModel simpleAttributeConditionComboBoxModel;
-	//	final private DefaultComboBoxModel simpleIconConditionComboBoxModel;
-	//	final private DefaultComboBoxModel simpleNodeConditionComboBoxModel;
-	final private JComboBox values;
+	final private FilterConditionEditor editor;
+	
+	
 
 	public FilterComposerDialog(final Controller controller) {
 		super(controller.getViewController().getFrame(), ResourceBundles.getText("filter_dialog"));
 		filterController = FilterController.getController(controller);
+		editor = new FilterConditionEditor(filterController);
 		this.controller = controller;
-		final Box simpleConditionBox = Box.createHorizontalBox();
-		simpleConditionBox.setBorder(new EmptyBorder(5, 0, 5, 0));
-		getContentPane().add(simpleConditionBox, BorderLayout.NORTH);
-		filteredPropertiesComponent = new JComboBox();
-		filteredPropertiesModel = new ExtendedComboBoxModel();
-		filteredPropertiesComponent.setModel(filteredPropertiesModel);
-		filteredPropertiesComponent.addItemListener(new FilteredPropertyChangeListener());
-		simpleConditionBox.add(Box.createHorizontalGlue());
-		simpleConditionBox.add(filteredPropertiesComponent);
-		filteredPropertiesComponent.setRenderer(filterController.getConditionRenderer());
-		elementaryConditions = new JComboBox();
-		elementaryConditions.addItemListener(new ElementaryConditionChangeListener());
-		simpleConditionBox.add(Box.createHorizontalGlue());
-		simpleConditionBox.add(elementaryConditions);
-		elementaryConditions.setRenderer(filterController.getConditionRenderer());
-		values = new JComboBox();
-		simpleConditionBox.add(Box.createHorizontalGlue());
-		simpleConditionBox.add(values);
-		values.setRenderer(filterController.getConditionRenderer());
-		values.setEditable(true);
-		caseInsensitive = new JCheckBox();
-		simpleConditionBox.add(Box.createHorizontalGlue());
-		simpleConditionBox.add(caseInsensitive);
-		caseInsensitive.setText(ResourceBundles.getText("filter_ignore_case"));
+		getContentPane().add(editor, BorderLayout.NORTH);
 		final Box conditionButtonBox = Box.createVerticalBox();
 		conditionButtonBox.setBorder(new EmptyBorder(0, 10, 0, 10));
 		getContentPane().add(conditionButtonBox, BorderLayout.EAST);
@@ -543,25 +450,15 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 		conditionScrollPane.setPreferredSize(new Dimension(500, 200));
 		getContentPane().add(conditionScrollPane, BorderLayout.CENTER);
 		UITools.addEscapeActionToDialog(this);
-		mapChanged(controller.getMap());
 		pack();
 	}
 
-	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
-		mapChanged(newMap);
-	}
-
-	public void afterMapClose(final MapModel oldMap) {
-	}
 
 	private void applyChanges() {
 		internalConditionsModel.setSelectedItem(elementaryConditionList.getSelectedValue());
 		internalConditionsModel.removeListDataListener(conditionListListener);
 		filterController.setFilterConditions(internalConditionsModel);
 		internalConditionsModel = null;
-	}
-
-	public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
 	}
 
 	protected JFileChooser getFileChooser() {
@@ -597,29 +494,7 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 		}
 	}
 
-	public boolean isMapChangeAllowed(final MapModel oldMap, final MapModel newMap) {
-		return true;
-	}
 
-	/**
-	 */
-	void mapChanged(final MapModel newMap) {
-		if (newMap != null) {
-			filteredPropertiesModel.removeAllElements();
-			final Iterator<IElementaryConditionController> conditionIterator = filterController.getConditionFactory()
-			    .conditionIterator();
-			while (conditionIterator.hasNext()) {
-				final IElementaryConditionController next = conditionIterator.next();
-				filteredPropertiesModel.addExtensionList(next.getFilteredProperties());
-				filteredPropertiesModel.setSelectedItem(filteredPropertiesModel.getElementAt(0));
-			}
-		}
-		else {
-			values.setSelectedIndex(-1);
-			filteredPropertiesComponent.setSelectedIndex(0);
-			filteredPropertiesModel.setExtensionList(null);
-		}
-	}
 
 	private boolean selectCondition() {
 		final int min = elementaryConditionList.getMinSelectionIndex();
@@ -643,5 +518,18 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 	public void show() {
 		initInternalConditionModel();
 		super.show();
+	}
+
+	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
+		editor.mapChanged(newMap);
+	}
+
+	public void afterMapClose(final MapModel oldMap) {
+	}
+	public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
+	}
+
+	public boolean isMapChangeAllowed(final MapModel oldMap, final MapModel newMap) {
+		return true;
 	}
 }

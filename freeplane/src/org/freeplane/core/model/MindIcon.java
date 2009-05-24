@@ -56,7 +56,6 @@ public class MindIcon implements Comparable, IIconInformation {
 	private static Map<String, List<String>> mIconGroups;
 	static int nextNumber = MindIcon.UNKNOWN - 1;
 	public static final String PROPERTY_ICONS_GROUPS_LIST = "icons.groups";
-	public static final String PROPERTY_ICONS_LIST = "icons.list";
 	
 	public static final String PROPERTY_ICONS_GROUP = "icons.group.";
 	private static final int UNKNOWN = -1;
@@ -87,11 +86,6 @@ public class MindIcon implements Comparable, IIconInformation {
 			return MindIcon.mAllIconNames;
 		}
 		
-		final String iconList = ResourceController.getResourceController().getProperty(MindIcon.PROPERTY_ICONS_LIST, null);
-		if(iconList != null){
-			mAllIconNames = Arrays.asList(iconList.split(";"));
-			return mAllIconNames;
-		}
 		Set<String> set = new LinkedHashSet<String>();
 		final Collection<List<String>> iconGroups = getIconGroups().values();
 		for(List<String>iconGroup:iconGroups){

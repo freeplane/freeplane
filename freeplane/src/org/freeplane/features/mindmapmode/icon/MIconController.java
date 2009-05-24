@@ -120,21 +120,32 @@ public class MIconController extends IconController {
 		builder.addSeparator(category, MenuBuilder.AS_CHILD);
 		final Set<Entry<String, List<String>>> iconGroups = MindIcon.getIconGroups().entrySet();
 		for(Entry<String, List<String>> entry:iconGroups){
-			JMenuItem item = new JMenu();
-			String key = entry.getKey();
+			final String group = entry.getKey();
 			final List<String> iconList = entry.getValue();
 			if(iconList.isEmpty()){
 				continue;
 			}
-			final ImageIcon icon = MindIcon.factory(iconList.get(0)).getIcon();
-			item.setIcon(icon);
-			item.setText(ResourceBundles.getText("IconGroupPopupAction." +key + ".text"));
-			key = category + "/" + key;
-			builder.addMenuItem(category, item, key, MenuBuilder.AS_CHILD);
-			for(String iconName:iconList)
-				builder.addAction(key, iconActions.get(iconName), MenuBuilder.AS_CHILD);
+			addIconGroupToMenu(builder, category, group, iconList, getGroupIconName(group));
+		}
+		final String group = "user";
+		final List<String> iconList = userIconNames;
+		if(! iconList.isEmpty()){
+			addIconGroupToMenu(builder, category, group, iconList, userIconNames.get(0));
 		}
 	}
+
+	private void addIconGroupToMenu(final MenuBuilder builder, final String category, final String group,
+                                    final List<String> iconList, String groupIconName) {
+	    final ImageIcon icon = MindIcon.factory(groupIconName).getIcon();
+	    final JMenuItem item = new JMenu();
+	    item.setIcon(icon);
+	    item.setText(ResourceBundles.getText("IconGroupPopupAction." +group + ".text"));
+	    final String itemKey = category + "/" + group;
+	    builder.addMenuItem(category, item, itemKey, MenuBuilder.AS_CHILD);
+	    for(String iconName:iconList){
+	    	builder.addAction(itemKey, iconActions.get(iconName), MenuBuilder.AS_CHILD);
+	    }
+    }
 
 	private void createIconActions() {
 		final ModeController modeController = getModeController();
@@ -265,13 +276,19 @@ public class MIconController extends IconController {
 			if(groupIconList.isEmpty()){
 				continue;
 			}
-			final String iconName = groupIconList.get(0);
-			iconMenuBar.add(getSubmenu(controller, entry.getKey(), groupIconList, MindIcon.factory(iconName)));
+			final String group = entry.getKey();
+			final String iconName = getGroupIconName(group);
+			iconMenuBar.add(getSubmenu(controller, group, groupIconList, MindIcon.factory(iconName)));
 		}
 		if(! userIconNames.isEmpty()){
 			iconMenuBar.add(getSubmenu(controller, "user", userIconNames, MindIcon.factory(userIconNames.get(0))));
 		}
 		iconToolBar.add(iconMenuBar);
+    }
+
+	private String getGroupIconName(final String group) {
+	    final String iconName = ResourceController.getResourceController().getProperty("IconGroupPopupAction." + group + ".icon");
+	    return iconName;
     }
 
 	private  JMenu getSubmenu(Controller controller, String group, final List<String> iconList, MindIcon menuIcon) {

@@ -42,8 +42,8 @@ class FindNextAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final Collection subterms = find.getSubterms();
-		if (subterms == null) {
+		final String searchTerm = find.getSearchTerm();
+		if (searchTerm == null) {
 			UITools.informationMessage(getController().getViewController().getFrame(), ResourceBundles
 			    .getText("no_previous_find"));
 			return;
@@ -51,8 +51,6 @@ class FindNextAction extends AFreeplaneAction {
 		final boolean found = find.findNext();
 		if (!found) {
 			final String messageText = ResourceBundles.getText("no_more_found_from");
-			final String searchTerm = messageText.startsWith("<html>") ? HtmlTools.toXMLEscapedText(find
-			    .getSearchTerm()) : find.getSearchTerm();
 			UITools.informationMessage(getController().getViewController().getFrame(), messageText.replaceAll("\\$1",
 			    Matcher.quoteReplacement(searchTerm)).replaceAll("\\$2",
 			    Matcher.quoteReplacement(find.getFindFromText())));

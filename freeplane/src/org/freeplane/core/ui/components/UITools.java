@@ -30,6 +30,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -246,6 +247,14 @@ public class UITools {
 		return JOptionPane.showInputDialog(parentComponent, text, string);
 	}
 
+	public static int showConfirmDialog(final Controller controller, final NodeModel node, Object message,
+	                                    String title, int optionType) {
+		final ViewController viewController = controller.getViewController();
+		viewController.scrollNodeToVisible(node);
+		final Component parentComponent = viewController.getComponent(node);
+		return JOptionPane.showConfirmDialog(parentComponent, message, title, optionType);
+	}
+	
 	public static String showInputDialog(final Controller controller, final NodeModel node, final String text,
 	                                     final String title, final int type) {
 		if (node == null) {

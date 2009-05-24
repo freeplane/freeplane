@@ -19,7 +19,10 @@
  */
 package org.freeplane.features.common.text;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -27,9 +30,15 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.regex.Matcher;
 
+import javax.swing.JComponent;
 import javax.swing.JOptionPane;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.filter.FilterConditionEditor;
+import org.freeplane.core.filter.FilterController;
+import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -45,8 +54,9 @@ class FindAction extends AFreeplaneAction {
 	private NodeModel findFromNode;
 	private LinkedList findNodeQueue;
 	private ArrayList findNodesUnfoldedByLastFind;
+	private ICondition condition;
 	private String searchTerm;
-	private Collection subterms;
+	private FilterConditionEditor editor;
 
 	public FindAction(final Controller controller) {
 		super("FindAction", controller);
@@ -54,56 +64,47 @@ class FindAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final NodeModel selected = getController().getSelection().getSelected();
-		final String what = UITools.showInputDialog(getController(), selected, ResourceBundles.getText("find_what"),
-		    ResourceBundles.getText("find"), JOptionPane.QUESTION_MESSAGE);
-		if (what == null || what.equals("")) {
+		if(editor == null){
+			editor = new FilterConditionEditor(FilterController.getController(getController()));
+		}
+		else{
+			editor.mapChanged(selected.getMap());
+		}
+		editor.addAncestorListener(new AncestorListener(){
+
+			public void ancestorAdded(AncestorEvent event) {
+            }
+
+			public void ancestorMoved(AncestorEvent event) {
+				final Component component = event.getComponent();
+				((FilterConditionEditor)component).focusInputField();
+				((JComponent) component).removeAncestorListener(this);
+            }
+
+			public void ancestorRemoved(AncestorEvent event) {
+            }});
+		final int run = UITools.showConfirmDialog(getController(), selected, editor, 
+		    ResourceBundles.getText("FindAction.text"), JOptionPane.OK_CANCEL_OPTION);
+		if(run != JOptionPane.OK_OPTION){
 			return;
 		}
-		final Collection subterms = breakSearchTermIntoSubterms(what);
-		searchTerm = what;
-		final boolean found = find(getModeController().getMapController().getSelectedNode(), subterms,
-		/*caseSensitive=*/false);
+		
+		condition = editor.getCondition();
+		final boolean found = find(getModeController().getMapController().getSelectedNode());
+		searchTerm = editor.getSearchTerm();
+		searchTerm = searchTerm.startsWith("<html>") ? HtmlTools.toXMLEscapedText(searchTerm)
+		        : searchTerm;
 		if (!found) {
 			final String messageText = ResourceBundles.getText("no_found_from");
-			final String searchTerm = messageText.startsWith("<html>") ? HtmlTools.toXMLEscapedText(getSearchTerm())
-			        : getSearchTerm();
 			UITools.informationMessage(getController().getViewController().getFrame(), messageText.replaceAll("\\$1",
 			    Matcher.quoteReplacement(searchTerm)).replaceAll("\\$2", Matcher.quoteReplacement(getFindFromText())));
+			searchTerm = null;
 		}
 	}
 
-	private Collection breakSearchTermIntoSubterms(final String searchTerm) {
-		final ArrayList subterms = new ArrayList();
-		final StringBuffer subterm = new StringBuffer();
-		final int len = searchTerm.length();
-		char myChar;
-		boolean withinQuotes = false;
-		for (int i = 0; i < len; ++i) {
-			myChar = searchTerm.charAt(i);
-			if (myChar == ' ' && withinQuotes) {
-				subterm.append(myChar);
-			}
-			else if ((myChar == ' ' && !withinQuotes)) {
-				subterms.add(subterm.toString());
-				subterm.setLength(0);
-			}
-			else if (myChar == '"' && i > 0 && i < len - 1 && searchTerm.charAt(i - 1) != ' '
-			        && searchTerm.charAt(i + 1) != ' ') {
-				subterm.append(myChar);
-			}
-			else if (myChar == '"' && withinQuotes) {
-				withinQuotes = false;
-			}
-			else if (myChar == '"' && !withinQuotes) {
-				withinQuotes = true;
-			}
-			else {
-				subterm.append(myChar);
-			}
-		}
-		subterms.add(subterm.toString());
-		return subterms;
-	}
+	public String getSearchTerm() {
+    	return searchTerm;
+    }
 
 	/**
 	 * Display a node in the display (used by find and the goto action by arrow
@@ -122,8 +123,7 @@ class FindAction extends AFreeplaneAction {
 		}
 	}
 
-	private boolean find(final LinkedList /* queue of MindMapNode */nodes, final Collection subterms,
-	                     final boolean caseSensitive) {
+	private boolean find(final LinkedList /* queue of MindMapNode */nodes) {
 		if (!findNodesUnfoldedByLastFind.isEmpty()) {
 			final ListIterator i = findNodesUnfoldedByLastFind.listIterator(findNodesUnfoldedByLastFind.size());
 			while (i.hasPrevious()) {
@@ -144,17 +144,8 @@ class FindAction extends AFreeplaneAction {
 			if (!node.isVisible()) {
 				continue;
 			}
-			final String nodeText = caseSensitive ? node.toString() : node.toString().toLowerCase();
-			this.subterms = subterms;
-			findCaseSensitive = caseSensitive;
 			findNodeQueue = nodes;
-			boolean found = true;
-			for (final Iterator i = subterms.iterator(); i.hasNext();) {
-				if (nodeText.indexOf((String) i.next()) < 0) {
-					found = false;
-					break;
-				}
-			}
+			boolean found = condition.checkNode(node);
 			if (found) {
 				displayNode(node, findNodesUnfoldedByLastFind);
 				getModeController().getMapController().select(node);
@@ -165,30 +156,20 @@ class FindAction extends AFreeplaneAction {
 		return false;
 	}
 
-	public boolean find(final NodeModel node, final Collection subterms, final boolean caseSensitive) {
+	public boolean find(final NodeModel node) {
 		findNodesUnfoldedByLastFind = new ArrayList();
 		final LinkedList nodes = new LinkedList();
 		nodes.addFirst(node);
 		findFromNode = node;
-		Collection finalizedSubterms;
-		if (!caseSensitive) {
-			finalizedSubterms = new ArrayList();
-			for (final Iterator i = subterms.iterator(); i.hasNext();) {
-				finalizedSubterms.add(((String) i.next()).toLowerCase());
-			}
-		}
-		else {
-			finalizedSubterms = subterms;
-		}
-		return find(nodes, finalizedSubterms, caseSensitive);
+		return find(nodes);
 	}
 
 	public boolean findNext() {
-		if (subterms != null) {
+		if (condition != null) {
 			if (findNodeQueue.isEmpty()) {
-				return find(getModeController().getMapController().getSelectedNode(), subterms, findCaseSensitive);
+				return find(getModeController().getMapController().getSelectedNode());
 			}
-			return find(findNodeQueue, subterms, findCaseSensitive);
+			return find(findNodeQueue);
 		}
 		return false;
 	}
@@ -198,14 +179,4 @@ class FindAction extends AFreeplaneAction {
 		return plainNodeText.length() <= 30 ? plainNodeText : plainNodeText.substring(0, 30) + "...";
 	}
 
-	public String getSearchTerm() {
-		return searchTerm;
-	}
-
-	/**
-	 * @return Returns the subterms.
-	 */
-	public Collection getSubterms() {
-		return subterms;
-	}
 }
