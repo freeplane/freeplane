@@ -68,7 +68,7 @@ class AttributeBuilder implements IElementDOMHandler {
 		if (tag.equals(AttributeBuilder.XML_NODE_REGISTERED_ATTRIBUTE_NAME)) {
 			return new RegisteredAttributeProperties();
 		}
-		if (tag.equals(AttributeBuilder.XML_NODE_REGISTERED_ATTRIBUTE_VALUE)) {
+		if (tag.equals(AttributeBuilder.XML_NODE_REGISTERED_ATTRIBUTE_VALUE) || tag.equals(AttributeBuilder.XML_NODE_ATTRIBUTE_REGISTRY)) {
 			return parent;
 		}
 		return null;
