@@ -54,7 +54,8 @@
 		
 		<tar destfile="${dist}/freeplane_src-${ver}.tar.gz" compression="gzip">
 			<tarfileset dir="${workspace}" mode="777" username="ant" group="ant">
-				<include name="*freeplane*/**"/>
+				<include name="*freeplane/**"/>
+				<include name="*freeplane_plugin*/**"/>
 				<exclude name=".*/**"/>
 				<exclude name="bin/**"/>
 				<exclude name="dist/**"/>
