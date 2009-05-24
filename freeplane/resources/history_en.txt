@@ -1,4 +1,13 @@
 ===============================
+1.0.9 alpha
+===============================
+hierarchical icon tool bar
+find dialog uses filter conditions
+Tool tip times can be changed in preferences
+bug fix: reading of attribute information, bug fixes for encrypted nodes and maps
+translations unified
+
+===============================
 1.0.8 alpha
 ===============================
 update check
