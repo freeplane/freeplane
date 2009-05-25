@@ -127,11 +127,11 @@ class XMLWriter {
 		if (xml.getName() == null) {
 			if (xml.getContent() != null) {
 				if (prettyPrint) {
-					this.writeEncoded(xml.getContent().trim());
+					this.writeEncoded(xml.getContent().trim(), false);
 					writer.println();
 				}
 				else {
-					this.writeEncoded(xml.getContent());
+					this.writeEncoded(xml.getContent(), false);
 				}
 			}
 		}
@@ -173,12 +173,12 @@ class XMLWriter {
 				final String key = (String) enumeration.nextElement();
 				final String value = xml.getAttribute(key, null);
 				writer.print(" " + key + "=\"");
-				this.writeEncoded(value);
+				this.writeEncoded(value, true);
 				writer.print('"');
 			}
 			if ((xml.getContent() != null) && (xml.getContent().length() > 0)) {
 				writer.print('>');
-				this.writeEncoded(xml.getContent());
+				this.writeEncoded(xml.getContent(), false);
 				if (endElement) {
 					endElement(fullName, prettyPrint);
 				}
@@ -222,14 +222,12 @@ class XMLWriter {
 	 * 
 	 * @param str
 	 *            the string to write.
+	 * @param atributeValue TODO
 	 */
-	private void writeEncoded(final String str) {
+	private void writeEncoded(final String str, boolean atributeValue) {
 		for (int i = 0; i < str.length(); i++) {
 			final char c = str.charAt(i);
 			switch (c) {
-				case 0x0A:
-					writer.print(c);
-					break;
 				case '<':
 					writer.print("&lt;");
 					break;
@@ -244,6 +242,14 @@ class XMLWriter {
 					break;
 				case '"':
 					writer.print("&quot;");
+					break;
+				case 0x0A:
+					if(atributeValue){
+						writer.print("&#xa;");
+					}
+					else{
+						writer.print(c);
+					}
 					break;
 				default:
 					if ((c < ' ') || (c > 0x7E)) {
