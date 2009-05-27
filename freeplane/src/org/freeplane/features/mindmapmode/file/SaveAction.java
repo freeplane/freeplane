@@ -43,7 +43,7 @@ class SaveAction extends AFreeplaneAction {
 			controller.getViewController().out(ResourceBundles.getText("saved"));
 		}
 		else {
-			controller.errorMessage("Saving failed.");
+			controller.getViewController().out(ResourceBundles.getText("saving_canceled"));
 		}
 		controller.getViewController().setTitle();
 	}

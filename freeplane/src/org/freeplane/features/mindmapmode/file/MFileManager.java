@@ -284,9 +284,11 @@ public class MFileManager extends UrlManager {
 				return false;
 			}
 		}
-		save(map, f);
-		getController().getMapViewManager().updateMapViewName();
-		return true;
+		if(save(map, f)){
+			getController().getMapViewManager().updateMapViewName();
+			return true;
+		}
+		return false;
 	}
 
 	/**
