@@ -63,6 +63,7 @@ class LastOpenedList implements IMapViewChangeListener {
 	 * Contains Restore string => map name (map.toString()).
 	 */
 	final private Map<String, String> mRestorableToMapName = new HashMap<String, String>();
+	private int displayedMapIndex;
 
 	LastOpenedList(final Controller controller, final String restored, final int maxEntries) {
 		this.controller = controller;
@@ -93,12 +94,10 @@ class LastOpenedList implements IMapViewChangeListener {
 		return strBldr.toString();
 	}
 
-	ListIterator listIterator() {
-		return lastOpenedList.listIterator();
-	}
-
 	void mapOpened(final Component mapView) {
 		if (mapView == null) {
+			displayedMapIndex = -1;
+			updateMenus();
 			return;
 		}
 		final IMapViewManager mapViewManager = controller.getMapViewManager();
@@ -115,6 +114,7 @@ class LastOpenedList implements IMapViewChangeListener {
 				lastOpenedList.remove(lastOpenedList.size() - 1);
 			}
 		}
+		displayedMapIndex = 0;
 		updateMenus();
 	}
 
@@ -138,9 +138,8 @@ class LastOpenedList implements IMapViewChangeListener {
 		final MenuBuilder menuBuilder = controller.getModeController().getUserInputListenerFactory().getMenuBuilder();
 		menuBuilder.removeChildElements(FreeplaneMenuBar.FILE_MENU + "/last");
 		int i = -1;
-		for (final ListIterator it = listIterator(); it.hasNext();) {
-			final String key = (String) it.next();
-			if (++i == 0) {
+		for (final String key : lastOpenedList) {
+			if (++i == displayedMapIndex) {
 				continue;
 			}
 			final AFreeplaneAction lastOpenedActionListener = new OpenLastOpenedAction(i, key, controller, this);

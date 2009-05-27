@@ -184,16 +184,22 @@ public class Controller extends AController {
 		getActions().get("QuitAction").actionPerformed(actionEvent);
 	}
 
-	public void selectMode(final ModeController newModeController) {
-		if (modeController == newModeController) {
-			return;
+	public boolean selectMode(final ModeController newModeController) {
+		final ModeController oldModeController = modeController;
+		if (oldModeController == newModeController) {
+			return true;
 		}
-		if (modeController != null) {
-			modeController.shutdown();
+		if (oldModeController != null) {
+			oldModeController.shutdown();
 		}
-		viewController.selectMode(modeController, newModeController);
 		modeController = newModeController;
+		if(! getMapViewManager().changeToMode(newModeController.getModeName())){
+			modeController = oldModeController;
+			return false;
+		}
+		viewController.selectMode(oldModeController, newModeController);
 		newModeController.startup();
+		return true;
 	}
 
 	public boolean selectMode(final String modeName) {
@@ -201,8 +207,8 @@ public class Controller extends AController {
 		if (modeController == newModeController) {
 			return true;
 		}
-		selectMode(newModeController);
-		return getMapViewManager().changeToMode(modeName);
+		return selectMode(newModeController);
+		
 	}
 
 	public void setViewController(final ViewController viewController) {

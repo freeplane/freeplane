@@ -156,7 +156,6 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 			if (newModeController != oldModeController) {
 				controller.selectMode(newModeController);
 			}
-			newModeController.setVisible(true);
 		}
 		else {
 			setViewportView(null);
@@ -480,6 +479,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 			final JToolBar modeToolBar = userInputListenerFactory.getMainToolBar();
 			if (modeToolBar != null) {
 				toolbarPanel.remove(modeToolBar);
+				toolbarPanel.revalidate();
 			}
 			final Component leftToolBar = userInputListenerFactory.getLeftToolBar();
 			if (leftToolBar != null) {
@@ -489,6 +489,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		final JToolBar newToolBar = newModeController.getUserInputListenerFactory().getMainToolBar();
 		if (newToolBar != null) {
 			toolbarPanel.add(newToolBar, 0);
+			toolbarPanel.revalidate();
 			newToolBar.repaint();
 		}
 		/* new left toolbar. */

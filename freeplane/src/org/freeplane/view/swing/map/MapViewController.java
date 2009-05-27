@@ -105,16 +105,21 @@ public class MapViewController implements IMapViewManager {
 	public boolean changeToMapView(final Component newMapViewComponent) {
 		final MapView newMapView = (MapView) newMapViewComponent;
 		final MapView oldMapView = mapView;
+		if(newMapView == oldMapView){
+			return true;
+		}
 		if (!mapViewChangeListeners.isMapChangeAllowed(getModel(oldMapView), getModel(newMapView))) {
 			return false;
 		}
 		mapViewChangeListeners.beforeMapViewChange(oldMapView, newMapView);
 		mapView = newMapView;
 		if (mapView != null) {
-			lastModeName = mapView.getModeController().getModeName();
+			final ModeController modeController = mapView.getModeController();
+			lastModeName = modeController.getModeName();
 			if (zoom != mapView.getZoom()) {
 				mapView.setZoom(zoom);
 			}
+			modeController.getController().selectMode(modeController);
 		}
 		mapViewChangeListeners.afterMapViewChange(oldMapView, newMapView);
 		return true;
@@ -153,9 +158,14 @@ public class MapViewController implements IMapViewManager {
 				break;
 			}
 		}
+		final MapView oldMapView = mapView;
 		final boolean changed = changeToMapView(mapViewCandidate);
 		if (changed) {
 			lastModeName = modeName;
+			if(oldMapView == mapView){
+				// if the same map remains selected post event for menu updates.
+				mapViewChangeListeners.afterMapViewChange(oldMapView, mapView);
+			}
 		}
 		return changed;
 	}

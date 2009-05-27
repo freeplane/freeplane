@@ -43,6 +43,7 @@ class ForwardAction extends AFreeplaneAction {
 	public ForwardAction(final Controller controller, final NodeHistory nodeHistory) {
 		super("ForwardAction", controller);
 		this.nodeHistory = nodeHistory;
+		setEnabled(false);
 	}
 
 	public void actionPerformed(final ActionEvent e) {

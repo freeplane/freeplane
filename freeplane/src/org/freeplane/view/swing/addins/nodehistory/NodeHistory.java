@@ -45,18 +45,20 @@ public class NodeHistory implements IExtension {
 		modeController.getMapController().addNodeSelectionListener(history.getMapSelectionListener());
 		LinkController.getController(modeController).addNodeSelectionListener(history.getLinkSelectionListener());
 		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
-		final BackAction backAction = new BackAction(controller, history);
-		menuBuilder.addAnnotatedAction(backAction);
-		modeController.addAction(backAction);
-		final ForwardAction forwardAction = new ForwardAction(controller, history);
-		menuBuilder.addAnnotatedAction(forwardAction);
-		modeController.addAction(forwardAction);
+		history.backAction = new BackAction(controller, history);
+		menuBuilder.addAnnotatedAction(history.backAction);
+		modeController.addAction(history.backAction);
+		history.forwardAction = new ForwardAction(controller, history);
+		menuBuilder.addAnnotatedAction(history.forwardAction);
+		modeController.addAction(history.forwardAction);
 	}
 
 	final private Controller controller;
 	private NodeHolder currentNodeHolder;
 	private ListIterator<NodeHolder> nodeIterator;
 	private final LinkedList<NodeHolder> nodes;
+	private BackAction backAction;
+	private ForwardAction forwardAction;
 
 	private NodeHistory(final Controller controller) {
 		this.controller = controller;
@@ -106,6 +108,7 @@ public class NodeHistory implements IExtension {
 				currentNodeHolder = nodeIterator.next();
 			}
 			else {
+				backAction.setEnabled(false);
 				return;
 			}
 		}
@@ -114,6 +117,7 @@ public class NodeHistory implements IExtension {
 				currentNodeHolder = nodeIterator.next();
 			}
 			else {
+				forwardAction.setEnabled(false);
 				return;
 			}
 		}
