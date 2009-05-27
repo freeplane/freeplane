@@ -102,6 +102,13 @@ public class ExportWithXSLT extends ExportAction {
 
 	public static void createXSLTExportActions(final ModeController modeController, final String xmlDescriptorFile) {
 		try {
+			final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
+			final ExportToHTMLAction e1 = new ExportToHTMLAction(modeController.getController());
+			modeController.addAction(e1);
+			menuBuilder.addAnnotatedAction(e1);
+			final ExportBranchToHTMLAction e2 = new ExportBranchToHTMLAction(modeController.getController());
+			modeController.addAction(e2);
+			menuBuilder.addAnnotatedAction(e2);
 			final IXMLParser parser = XMLParserFactory.createDefaultXMLParser();
 			final URL resource = ResourceController.getResourceController().getResource(xmlDescriptorFile);
 			final IXMLReader reader = new StdXMLReader(resource.openStream());
@@ -116,7 +123,7 @@ public class ExportWithXSLT extends ExportAction {
 				final Properties properties = xmlProperties.getAttributes();
 				final ExportWithXSLT action = new ExportWithXSLT(name, modeController.getController(), properties);
 				modeController.addAction(action);
-				modeController.getUserInputListenerFactory().getMenuBuilder().addAction(location, action,
+				menuBuilder.addAction(location, action,
 				    MenuBuilder.AS_CHILD);
 			}
 		}

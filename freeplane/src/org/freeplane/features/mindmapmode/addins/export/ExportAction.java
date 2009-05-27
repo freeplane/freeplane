@@ -52,6 +52,11 @@ abstract public class ExportAction extends AFreeplaneAction {
 	 */
 	protected File chooseFile(final String type, final String description, final String nameExtension) {
 		final Controller controller = getController();
+		return chooseFile(controller, type, description, nameExtension);
+	}
+	
+	static File chooseFile(final Controller controller, final String type, final String description, final String nameExtension) {
+		final ModeController mindMapController = controller.getModeController();
 		final Container component = controller.getViewController().getContentPane();
 		JFileChooser chooser = null;
 		chooser = new JFileChooser();
@@ -61,7 +66,6 @@ abstract public class ExportAction extends AFreeplaneAction {
 			        + ((nameExtension != null) ? nameExtension : "") + "." + type;
 			chooser.setSelectedFile(new File(proposedName));
 		}
-		final ModeController mindMapController = getModeController();
 		final File lastCurrentDir = UrlManager.getController(mindMapController).getLastCurrentDir();
 		if (lastCurrentDir != null) {
 			chooser.setCurrentDirectory(lastCurrentDir);

@@ -293,22 +293,23 @@ public class MMapController extends MapController {
 
 	@Override
 	public void loadURL(final String relative) {
-		try {
 			final MapModel map = getController().getMap();
 			if (map.getFile() == null) {
-				final URL url = new URL(relative);
-				if (url.getProtocol().equalsIgnoreCase("file")) {
-					getController().getViewController().out("You must save the current map first!");
-					final boolean result = ((MFileManager) UrlManager.getController(getModeController())).save(map);
-					if (!result) {
-						return;
+				URL url;
+				try {
+					url = new URL(relative);
+					if (url.getProtocol().equalsIgnoreCase("file")) {
+						getController().getViewController().out("You must save the current map first!");
+						final boolean result = ((MFileManager) UrlManager.getController(getModeController())).save(map);
+						if (!result) {
+							return;
+						}
 					}
+				}
+				catch (MalformedURLException e) {
 				}
 			}
 			super.loadURL(relative);
-		}
-		catch (final MalformedURLException e) {
-		}
 	}
 
 	public void moveNode(final NodeModel node, final NodeModel targetNode, final boolean asSibling,

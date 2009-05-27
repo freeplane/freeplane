@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.mindmapmode.clipboard;
+package org.freeplane.features.mindmapmode.addins.export;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -25,8 +25,10 @@ import java.io.IOException;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.features.common.clipboard.ClipboardController;
 
+@ActionLocationDescriptor(accelerator = "control H", locations={"/menu_bar/file/export/export/html"})
 class ExportBranchToHTMLAction extends AFreeplaneAction {
 	/**
 	 * 
@@ -39,7 +41,10 @@ class ExportBranchToHTMLAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		try {
-			final File file = File.createTempFile("tmm", ".html");
+			final File file = ExportAction.chooseFile(getController(), "html", "html", null);
+			if(file == null){
+				return;
+			}
 			ClipboardController.getController(getModeController()).saveHTML(
 			    getModeController().getMapController().getSelectedNode(), file);
 			getModeController().getMapController().loadURL(file.toString());

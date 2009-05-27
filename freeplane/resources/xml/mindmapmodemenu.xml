@@ -18,10 +18,7 @@
 				<menu_submenu name="export" name_ref="menu_file_export">
 					<menu_action action="ExportBranchAction" accelerator="alt shift A" />
 					<menu_separator />
-					<menu_category name="html">
-						<menu_action action="ExportToHTMLAction" accelerator="control E" />
-					</menu_category>
-					<menu_action action="ExportBranchToHTMLAction" accelerator="control H" />
+					<menu_category name="html"/>
 				</menu_submenu>
 			</menu_category>
 			<menu_separator />

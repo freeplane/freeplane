@@ -49,8 +49,6 @@ public class MClipboardController extends ClipboardController {
 	 */
 	private void createActions(final ModeController modeController) {
 		final Controller controller = modeController.getController();
-		modeController.addAction(new ExportToHTMLAction(controller));
-		modeController.addAction(new ExportBranchToHTMLAction(controller));
 		cut = new CutAction(controller);
 		modeController.addAction(cut);
 		paste = new PasteAction(controller);
