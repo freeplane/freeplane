@@ -34,7 +34,7 @@ import org.freeplane.core.ui.ActionLocationDescriptor;
 /**
  * @author foltin
  */
-@ActionLocationDescriptor(locations = { "/menu_bar/help/doc" })
+@ActionLocationDescriptor(locations = { "/menu_bar/help/doc" }, accelerator="shift F1")
 class FreeplaneHelpStarter extends AFreeplaneAction {
 	/**
 	 * 
