@@ -34,6 +34,7 @@ import javax.swing.JEditorPane;
 import javax.swing.JPanel;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.html.HTMLDocument;
+import javax.swing.text.html.StyleSheet;
 
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.ModeController;
@@ -106,7 +107,9 @@ class EditNodeWYSIWYG extends EditNodeBase {
 		 */
 		@Override
 		protected void cancel() {
-			htmlEditorPanel.getDocument().getStyleSheet().removeStyle("body");
+			final StyleSheet styleSheet = htmlEditorPanel.getDocument().getStyleSheet();
+			styleSheet.removeStyle("p");
+			styleSheet.removeStyle("BODY");
 			getBase().getEditControl().cancel();
 			super.cancel();
 		}
@@ -152,7 +155,9 @@ class EditNodeWYSIWYG extends EditNodeBase {
 		 */
 		@Override
 		protected void split() {
-			htmlEditorPanel.getDocument().getStyleSheet().removeStyle("body");
+			final StyleSheet styleSheet = htmlEditorPanel.getDocument().getStyleSheet();
+			styleSheet.removeStyle("p");
+			styleSheet.removeStyle("BODY");
 			getBase().getEditControl().split(HtmlTools.unescapeHTMLUnicodeEntity(htmlEditorPanel.getDocumentText()),
 			    htmlEditorPanel.getCaretPosition());
 			super.split();
@@ -164,7 +169,8 @@ class EditNodeWYSIWYG extends EditNodeBase {
 		 */
 		@Override
 		protected void submit() {
-			htmlEditorPanel.getDocument().getStyleSheet().removeStyle("body");
+			htmlEditorPanel.getDocument().getStyleSheet().removeStyle("p");
+			htmlEditorPanel.getDocument().getStyleSheet().removeStyle("BODY");
 			if (htmlEditorPanel.needsSaving()) {
 				getBase().getEditControl().ok(HtmlTools.unescapeHTMLUnicodeEntity(htmlEditorPanel.getDocumentText()));
 			}
@@ -214,7 +220,10 @@ class EditNodeWYSIWYG extends EditNodeBase {
 			editorPane.setForeground(nodeTextColor);
 			editorPane.setBackground(nodeTextBackground);
 			editorPane.setCaretColor(nodeTextColor);
-			document.getStyleSheet().addRule(rule);
+			final StyleSheet styleSheet = document.getStyleSheet();
+			styleSheet.removeStyle("p");
+			styleSheet.removeStyle("BODY");
+			styleSheet.addRule(rule);
 			document.setBase(node.getMap().getURL());
 			int preferredHeight = (int) (viewController.getComponent(node).getHeight() * 1.2);
 			preferredHeight = Math.max(preferredHeight, Integer.parseInt(ResourceController.getResourceController()

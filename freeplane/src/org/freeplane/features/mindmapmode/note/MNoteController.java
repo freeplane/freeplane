@@ -40,6 +40,7 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.html.StyleSheet;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.MapController;
@@ -297,7 +298,10 @@ public class MNoteController extends NoteController {
 				rule += "margin-top:0;";
 				rule += "}\n";
 			}
-			noteViewerComponent.getDocument().getStyleSheet().addRule(rule);
+			final StyleSheet styleSheet = noteViewerComponent.getDocument().getStyleSheet();
+			styleSheet.removeStyle("BODY");
+			styleSheet.removeStyle("p");
+			styleSheet.addRule(rule);
 			// done setting default font.
 		}
 		noteViewerComponent.setOpenHyperlinkHandler(new ActionListener() {
