@@ -157,7 +157,7 @@ class EditNodeWYSIWYG extends EditNodeBase {
 		protected void split() {
 			final StyleSheet styleSheet = htmlEditorPanel.getDocument().getStyleSheet();
 			styleSheet.removeStyle("p");
-			styleSheet.removeStyle("BODY");
+			styleSheet.removeStyle("body");
 			getBase().getEditControl().split(HtmlTools.unescapeHTMLUnicodeEntity(htmlEditorPanel.getDocumentText()),
 			    htmlEditorPanel.getCaretPosition());
 			super.split();
@@ -170,7 +170,7 @@ class EditNodeWYSIWYG extends EditNodeBase {
 		@Override
 		protected void submit() {
 			htmlEditorPanel.getDocument().getStyleSheet().removeStyle("p");
-			htmlEditorPanel.getDocument().getStyleSheet().removeStyle("BODY");
+			htmlEditorPanel.getDocument().getStyleSheet().removeStyle("body");
 			if (htmlEditorPanel.needsSaving()) {
 				getBase().getEditControl().ok(HtmlTools.unescapeHTMLUnicodeEntity(htmlEditorPanel.getDocumentText()));
 			}
@@ -197,10 +197,10 @@ class EditNodeWYSIWYG extends EditNodeBase {
 			}
 			EditNodeWYSIWYG.htmlEditorWindow.setBase(this);
 			final SHTMLPanel htmlEditorPanel = (EditNodeWYSIWYG.htmlEditorWindow).getHtmlEditorPanel();
-			String rule = "BODY {";
 			final ViewController viewController = getModeController().getController().getViewController();
 			final Font font = viewController.getFont(node);
 			final Color nodeTextBackground = viewController.getBackgroundColor(node);
+			String rule = "body {";
 			rule += "font-family: " + font.getFamily() + ";";
 			rule += "font-size: " + font.getSize() + "pt;";
 			if (font.isItalic()) {
@@ -222,7 +222,7 @@ class EditNodeWYSIWYG extends EditNodeBase {
 			editorPane.setCaretColor(nodeTextColor);
 			final StyleSheet styleSheet = document.getStyleSheet();
 			styleSheet.removeStyle("p");
-			styleSheet.removeStyle("BODY");
+			styleSheet.removeStyle("body");
 			styleSheet.addRule(rule);
 			document.setBase(node.getMap().getURL());
 			int preferredHeight = (int) (viewController.getComponent(node).getHeight() * 1.2);
