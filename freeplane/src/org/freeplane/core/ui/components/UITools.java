@@ -135,7 +135,7 @@ public class UITools {
 		win_x = Math.max(screenInsets.left, win_x);
 		win_x = Math.min(screenWidth + screenInsets.left - win_width, win_x);
 		win_y = Math.max(screenInsets.top, win_y);
-		win_y = Math.min(screenWidth + screenInsets.top - win_height, win_y);
+		win_y = Math.min(screenHeight + screenInsets.top - win_height, win_y);
 		frame.setBounds(win_x, win_y, win_width, win_height);
 	}
 
@@ -233,7 +233,7 @@ public class UITools {
 		final int y = c.getHeight();
 		final Point location = new Point(x, y);
 		SwingUtilities.convertPointToScreen(location, c);
-		dialog.setLocation(location);
+		setBounds(dialog, location.x, location.y, dialog.getWidth(), dialog.getHeight());
 	}
 
 	public static String showInputDialog(final Controller controller, final NodeModel node, final String text,
