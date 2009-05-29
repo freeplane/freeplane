@@ -19,6 +19,8 @@
  */
 package org.freeplane.features.common.note;
 
+import java.awt.Font;
+
 import javax.swing.ImageIcon;
 
 import org.freeplane.core.extension.IExtension;
@@ -26,6 +28,7 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.features.mindmapmode.note.MNoteController;
 
 /**
  * @author Dimitry Polivaev
@@ -85,7 +88,19 @@ public class NoteController implements IExtension {
 			showIcon = false;
 		}
 		node.setStateIcon(NodeNoteBase.NODE_NOTE_ICON, (showIcon) ? noteIcon : null);
-		(getModeController().getMapController()).setToolTip(node, "nodeNoteText", (enabled) ? NoteModel
-		    .getNoteText(node) : null);
+		if(enabled){
+			final Font defaultFont = ResourceController.getResourceController().getDefaultFont();
+            StringBuffer rule = new StringBuffer();
+            rule.append("font-family: " + defaultFont.getFamily() + ";");
+            rule.append("font-size: " + defaultFont.getSize() + "pt;");
+            rule.append("margin-top:0;");
+			final String noteText = NoteModel.getNoteText(node)
+			.replaceFirst("<body>", "<body><div style=\"" + rule + "\">")
+			.replaceFirst("</body>", "</div></body>");
+			(getModeController().getMapController()).setToolTip(node, "nodeNoteText", noteText );
+		}
+		else{
+			(getModeController().getMapController()).setToolTip(node, "nodeNoteText",  null);
+		}
 	}
 }
