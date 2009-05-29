@@ -40,6 +40,7 @@ final class NoteManager implements INodeSelectionListener {
 	 *
 	 */
 	final private MNoteController noteController;
+	private boolean ignoreEditorUpdate;
 
 	public NoteManager(final MNoteController noteController) {
 		this.noteController = noteController;
@@ -75,11 +76,17 @@ final class NoteManager implements INodeSelectionListener {
 		        || documentText.equals(EMPTY_EDITOR_STRING_ALTERNATIVE);
 		noteController.getModeController().getMapController().removeNodeSelectionListener(this);
 		if (noteViewerComponent.needsSaving()) {
-			if (editorContentEmpty) {
-				noteController.setNoteText(node, null);
+			try{
+				ignoreEditorUpdate = true;
+				if (editorContentEmpty) {
+					noteController.setNoteText(node, null);
+				}
+				else {
+					noteController.setNoteText(node, documentText);
+				}
 			}
-			else {
-				noteController.setNoteText(node, documentText);
+			finally{
+				ignoreEditorUpdate = false;
 			}
 			noteController.setLastContentEmpty(editorContentEmpty);
 		}
@@ -87,6 +94,9 @@ final class NoteManager implements INodeSelectionListener {
 	}
 
 	void updateEditor() {
+		if(ignoreEditorUpdate){
+			return;
+		}
 		final SHTMLPanel noteViewerComponent = noteController.getNoteViewerComponent();
 		if(noteViewerComponent == null){
 			return;
