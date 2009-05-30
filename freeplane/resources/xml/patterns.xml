@@ -31,7 +31,6 @@
 	<pattern name="Floating Node">
 		<pattern_cloud value="true"/>
 		<pattern_edge_style value="hide_edge"/>
-		<pattern_edge_width />
 	</pattern>
 	<pattern name="Needs action">
 		<pattern_node_background_color/>
