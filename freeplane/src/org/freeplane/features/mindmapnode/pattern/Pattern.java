@@ -35,6 +35,8 @@ public class Pattern implements Cloneable {
 
 	private String name;
 	private PatternProperty patternChild;
+	private PatternProperty patternCloud;
+	private PatternProperty patternCloudColor;
 	private PatternProperty patternEdgeColor;
 	private PatternProperty patternEdgeStyle;
 	private PatternProperty patternEdgeWidth;
@@ -60,6 +62,14 @@ public class Pattern implements Cloneable {
 
 	public PatternProperty getPatternChild() {
 		return patternChild;
+	}
+
+	public PatternProperty getPatternCloud() {
+		return patternCloud;
+	}
+
+	public PatternProperty getPatternCloudColor() {
+		return patternCloudColor;
 	}
 
 	public PatternProperty getPatternEdgeColor() {
@@ -138,6 +148,8 @@ public class Pattern implements Cloneable {
 		marschall(xml, "pattern_node_font_italic", patternNodeFontItalic);
 		marschall(xml, "pattern_node_font_size", patternNodeFontSize);
 		marschall(xml, "pattern_icon", patternIcon);
+		marschall(xml, "pattern_cloud", patternCloud);
+		marschall(xml, "pattern_cloud_color", patternCloudColor);
 		marschall(xml, "pattern_edge_color", patternEdgeColor);
 		marschall(xml, "pattern_edge_style", patternEdgeStyle);
 		marschall(xml, "pattern_edge_width", patternEdgeWidth);
@@ -165,6 +177,14 @@ public class Pattern implements Cloneable {
 
 	public void setPatternEdgeColor(final PatternProperty patternEdgeColor) {
 		this.patternEdgeColor = patternEdgeColor;
+	}
+
+	public void setPatternCloud(final PatternProperty patternEdgeColor) {
+		this.patternCloud = patternEdgeColor;
+	}
+
+	public void setPatternCloudColor(final PatternProperty patternEdgeColor) {
+		this.patternCloudColor = patternEdgeColor;
 	}
 
 	public void setPatternEdgeStyle(final PatternProperty patternEdgeStyle) {
@@ -278,6 +298,20 @@ public class Pattern implements Cloneable {
 			if (xmlProperty != null) {
 				patternIcon = new PatternProperty();
 				patternIcon.value = xmlProperty.getAttribute("value", null);
+			}
+		}
+		{
+			final XMLElement xmlProperty = xmlPattern.getFirstChildNamed("pattern_cloud");
+			if (xmlProperty != null) {
+				patternCloud = new PatternProperty();
+				patternCloud.value = xmlProperty.getAttribute("value", null);
+			}
+		}
+		{
+			final XMLElement xmlProperty = xmlPattern.getFirstChildNamed("pattern_cloud_color");
+			if (xmlProperty != null) {
+				patternCloudColor = new PatternProperty();
+				patternCloudColor.value = xmlProperty.getAttribute("value", null);
 			}
 		}
 		{

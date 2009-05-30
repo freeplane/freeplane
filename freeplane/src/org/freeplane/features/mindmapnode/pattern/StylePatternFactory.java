@@ -171,6 +171,10 @@ public class StylePatternFactory {
 		final Pattern result = new Pattern();
 		result.setPatternEdgeColor(StylePatternFactory.processPatternProperties(p1.getPatternEdgeColor(), p2
 		    .getPatternEdgeColor(), new PatternProperty()));
+		result.setPatternCloud(StylePatternFactory.processPatternProperties(p1.getPatternCloud(), p2
+		    .getPatternCloud(), new PatternProperty()));
+		result.setPatternCloudColor(StylePatternFactory.processPatternProperties(p1.getPatternCloudColor(), p2
+		    .getPatternCloudColor(), new PatternProperty()));
 		result.setPatternEdgeStyle(StylePatternFactory.processPatternProperties(p1.getPatternEdgeStyle(), p2
 		    .getPatternEdgeStyle(), new PatternProperty()));
 		result.setPatternEdgeWidth(StylePatternFactory.processPatternProperties(p1.getPatternEdgeWidth(), p2
@@ -257,7 +261,11 @@ public class StylePatternFactory {
 		result = StylePatternFactory.addSubPatternToString(result, pPattern.getPatternEdgeStyle(),
 		    "PatternToString.EdgeStyle");
 		result = StylePatternFactory.addSubPatternToString(result, pPattern.getPatternEdgeColor(),
-		    "PatternToString.EdgeColor");
+	    "PatternToString.Cloud");
+		result = StylePatternFactory.addSubPatternToString(result, pPattern.getPatternCloud(),
+	    "PatternToString.CloudColor");
+		result = StylePatternFactory.addSubPatternToString(result, pPattern.getPatternCloudColor(),
+	    "PatternToString.EdgeColor");
 		result = StylePatternFactory.addSubPatternToString(result, pPattern.getPatternEdgeWidth(),
 		    "PatternToString.EdgeWidth");
 		result = StylePatternFactory.addSubPatternToString(result, pPattern.getPatternIcon(), "PatternToString.Icon");

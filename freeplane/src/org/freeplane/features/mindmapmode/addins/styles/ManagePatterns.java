@@ -60,6 +60,9 @@ public class ManagePatterns extends AFreeplaneAction {
 				patternController.loadPatterns(patternController.getPatternReader());
 				patternController.createPatternSubMenu(
 				    mindMapController.getUserInputListenerFactory().getMenuBuilder(),
+				    "/menu_bar/format");
+				patternController.createPatternSubMenu(
+				    mindMapController.getUserInputListenerFactory().getMenuBuilder(),
 				    UserInputListenerFactory.NODE_POPUP);
 			}
 			catch (final Exception ex) {

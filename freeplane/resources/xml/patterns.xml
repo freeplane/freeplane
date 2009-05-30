@@ -28,6 +28,11 @@
 		<pattern_node_color value="#338800"/>
 		<pattern_node_style/>
 	</pattern>
+	<pattern name="Floating Node">
+		<pattern_cloud value="true"/>
+		<pattern_edge_style value="hide_edge"/>
+		<pattern_edge_width />
+	</pattern>
 	<pattern name="Needs action">
 		<pattern_node_background_color/>
 		<pattern_node_color value="#990000"/>

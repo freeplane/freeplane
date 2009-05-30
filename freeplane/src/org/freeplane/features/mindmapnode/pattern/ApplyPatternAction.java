@@ -31,11 +31,13 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MultipleNodeAction;
 import org.freeplane.core.util.ColorUtils;
+import org.freeplane.features.common.cloud.CloudController;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.edge.EdgeModel;
 import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.text.TextController;
+import org.freeplane.features.mindmapmode.cloud.MCloudController;
 import org.freeplane.features.mindmapmode.edge.MEdgeController;
 import org.freeplane.features.mindmapmode.icon.MIconController;
 import org.freeplane.features.mindmapmode.nodestyle.MNodeStyleController;
@@ -153,6 +155,14 @@ class ApplyPatternAction extends MultipleNodeAction {
 		if (pattern.getPatternNodeFontBold() != null) {
 			((MNodeStyleController) NodeStyleController.getController(controller.getModeController())).setBold(node,
 			    "true".equals(pattern.getPatternNodeFontBold().getValue()));
+		}
+		if (pattern.getPatternCloud() != null) {
+			((MCloudController) CloudController.getController(getModeController())).setCloud(node, "true".equals
+				(pattern.getPatternCloud().getValue()));
+		}
+		if (pattern.getPatternCloudColor() != null) {
+			((MCloudController) CloudController.getController(getModeController())).setColor(node, ColorUtils
+			    .stringToColor(pattern.getPatternCloudColor().getValue()));
 		}
 		if (pattern.getPatternEdgeColor() != null) {
 			((MEdgeController) EdgeController.getController(getModeController())).setColor(node, ColorUtils

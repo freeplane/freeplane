@@ -46,6 +46,7 @@ import org.freeplane.core.resources.ui.PropertyBean;
 import org.freeplane.core.resources.ui.SeparatorProperty;
 import org.freeplane.core.resources.ui.StringProperty;
 import org.freeplane.core.resources.ui.ThreeCheckBoxProperty;
+import org.freeplane.features.common.cloud.CloudController;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.edge.EdgeModel;
 import org.freeplane.features.common.edge.EdgeStyle;
@@ -93,6 +94,8 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 
 	private static final String CHILD_PATTERN = "childpattern";
 	private static final String CLEAR_ALL_SETTERS = "clear_all_setters";
+	private static final String CLOUD = "cloud";
+	private static final String CLOUD_COLOR = "cloudcolor";
 	private static final String EDGE_COLOR = "edgecolor";
 	private static final String EDGE_STYLE = "edgestyle";
 	private static final String[] EDGE_STYLES = new String[] { EdgeStyle.EDGESTYLE_LINEAR, EdgeStyle.EDGESTYLE_BEZIER,
@@ -116,6 +119,8 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 	 */
 	private static final long serialVersionUID = 1L;
 	private static final String SET_CHILD_PATTERN = StylePatternPanel.SET_RESOURCE;
+	private static final String SET_CLOUD = StylePatternPanel.SET_RESOURCE;
+	private static final String SET_CLOUD_COLOR = StylePatternPanel.SET_RESOURCE;
 	private static final String SET_EDGE_COLOR = StylePatternPanel.SET_RESOURCE;
 	private static final String SET_EDGE_STYLE = StylePatternPanel.SET_RESOURCE;
 	private static final String SET_EDGE_WIDTH = StylePatternPanel.SET_RESOURCE;
@@ -133,6 +138,8 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 	private ComboProperty mChildPattern;
 	private ThreeCheckBoxProperty mClearSetters;
 	private Vector mControls;
+	private BooleanProperty mCloud;
+	private ColorProperty mCloudColor;
 	private ColorProperty mEdgeColor;
 	private ComboProperty mEdgeStyle;
 	private ComboProperty mEdgeWidth;
@@ -157,6 +164,8 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 	private ScriptEditorProperty mScriptPattern;
 	private ThreeCheckBoxProperty mSetChildPattern;
 	private ThreeCheckBoxProperty mSetEdgeColor;
+	private ThreeCheckBoxProperty mSetCloud;
+	private ThreeCheckBoxProperty mSetCloudColor;
 	private ThreeCheckBoxProperty mSetEdgeStyle;
 	private ThreeCheckBoxProperty mSetEdgeWidth;
 	private ThreeCheckBoxProperty mSetIcon;
@@ -287,6 +296,18 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 		    .getDefaultProperty(EdgeController.RESOURCES_EDGE_COLOR));
 		controls.add(mEdgeColor);
 		/* **** */
+		controls.add(new SeparatorProperty("OptionPanel.separator.CloudControls"));
+		mSetCloud = new ThreeCheckBoxProperty(StylePatternPanel.SET_CLOUD);
+		controls.add(mSetCloud);
+		mCloud = new BooleanProperty(StylePatternPanel.CLOUD);
+		controls.add(mCloud);
+		/* **** */
+		mSetCloudColor = new ThreeCheckBoxProperty(StylePatternPanel.SET_CLOUD_COLOR);
+		controls.add(mSetCloudColor);
+		mCloudColor = new ColorProperty(StylePatternPanel.CLOUD_COLOR, ResourceController.getResourceController()
+		    .getDefaultProperty(CloudController.RESOURCES_CLOUD_COLOR));
+		controls.add(mCloudColor);
+		/* **** */
 		controls.add(new SeparatorProperty("OptionPanel.separator.ScriptingControl"));
 		mSetScriptPattern = new ThreeCheckBoxProperty(StylePatternPanel.SET_SCRIPT);
 		controls.add(mSetScriptPattern);
@@ -300,6 +321,8 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 		mPropertyChangePropagation.put(mSetNodeFontBold, mNodeFontBold);
 		mPropertyChangePropagation.put(mSetNodeFontItalic, mNodeFontItalic);
 		mPropertyChangePropagation.put(mSetNodeText, mNodeText);
+		mPropertyChangePropagation.put(mSetCloud, mCloud);
+		mPropertyChangePropagation.put(mSetCloudColor, mCloudColor);
 		mPropertyChangePropagation.put(mSetEdgeColor, mEdgeColor);
 		mPropertyChangePropagation.put(mSetEdgeStyle, mEdgeStyle);
 		mPropertyChangePropagation.put(mSetEdgeWidth, mEdgeWidth);
@@ -373,6 +396,9 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 		pattern.setPatternEdgeStyle(getPatternResult(new PatternProperty(), mSetEdgeStyle, mEdgeStyle));
 		pattern.setPatternEdgeWidth(getPatternResult(new PatternProperty(), mSetEdgeWidth, mEdgeWidth,
 		    new EdgeWidthBackTransformer()));
+		/* clouds */
+		pattern.setPatternCloud(getPatternResult(new PatternProperty(), mSetCloud, mCloud));
+		pattern.setPatternCloudColor(getPatternResult(new PatternProperty(), mSetCloudColor, mCloudColor));
 		/* font */
 		pattern.setPatternNodeFontName(getPatternResult(new PatternProperty(), mSetNodeFontName, mNodeFontName));
 		pattern.setPatternNodeFontSize(getPatternResult(new PatternProperty(), mSetNodeFontSize, mNodeFontSize));
@@ -431,6 +457,9 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 		setPatternControls(pattern.getPatternEdgeStyle(), mSetEdgeStyle, mEdgeStyle, StylePatternPanel.EDGE_STYLES[0]);
 		setPatternControls(pattern.getPatternEdgeWidth(), mSetEdgeWidth, mEdgeWidth, StylePatternPanel.EDGE_WIDTHS[0],
 		    new EdgeWidthTransformer());
+		setPatternControls(pattern.getPatternCloud(), mSetCloud, mCloud, Boolean.TRUE.toString());
+		setPatternControls(pattern.getPatternCloudColor(), mSetCloudColor, mCloudColor, ResourceController
+		    .getResourceController().getDefaultProperty(CloudController.RESOURCES_CLOUD_COLOR));
 		setPatternControls(pattern.getPatternNodeFontName(), mSetNodeFontName, mNodeFontName, ResourceController
 		    .getResourceController().getDefaultFontFamilyName());
 		setPatternControls(pattern.getPatternNodeFontSize(), mSetNodeFontSize, mNodeFontSize, sizes[0]);
