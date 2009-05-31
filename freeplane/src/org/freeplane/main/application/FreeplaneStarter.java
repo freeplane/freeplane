@@ -62,7 +62,6 @@ public class FreeplaneStarter {
 	private static final String TOOL_TIP_MANAGER_RESHOW_DELAY = "toolTipManager.reshowDelay";
 	private static final String TOOL_TIP_MANAGER_DISMISS_DELAY = "toolTipManager.dismissDelay";
 	private static final String TOOL_TIP_MANAGER_INITIAL_DELAY = "toolTipManager.initialDelay";
-	public static final String LOAD_LAST_MAP = "load_last_map";
 
 	static public void main(final String[] args) {
 		final FreeplaneStarter starter = new FreeplaneStarter();
@@ -241,25 +240,16 @@ public class FreeplaneStarter {
 		if (fileLoaded) {
 			return;
 		}
-		final String restoreable = ResourceController.getResourceController().getProperty(
-		    Controller.ON_START_IF_NOT_SPECIFIED);
-		if (Boolean
-		    .parseBoolean(ResourceController.getResourceController().getProperty(FreeplaneStarter.LOAD_LAST_MAP))
-		        && restoreable != null && restoreable.length() > 0) {
-			try {
-				applicationResourceController.getLastOpenedList().open(controller, restoreable);
-				return;
-			}
-			catch (final Exception e) {
-				LogTool.severe(e);
-				controller.getViewController().out("An error occured on opening the file: " + restoreable + ".");
-			}
-		}
+		
+		applicationResourceController.getLastOpenedList().openMapsOnStart();
 		/*
 		 * nothing loaded so far. Perhaps, we should display a new map...
 		 * According to Summary: On first start Freeplane should show new map
 		 * to newbies https: &aid=1752516&group_id=7118
 		 */
+		if (null != controller.getMap()){
+			return;
+		}
 		controller.selectMode(MModeController.MODENAME);
 		final MModeController modeController = (MModeController) controller.getModeController();
 		modeController.getMapController().newMap(((NodeModel) null));

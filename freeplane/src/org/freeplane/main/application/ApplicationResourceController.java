@@ -165,8 +165,7 @@ class ApplicationResourceController extends ResourceController {
 
 	@Override
 	public void init(final Controller controller) {
-		final int maxEntries = new Integer(getProperty("last_opened_list_length", "25")).intValue();
-		lastOpened = new LastOpenedList(controller, getProperty("lastOpened"), maxEntries);
+		lastOpened = new LastOpenedList(controller);
 		super.init(controller);
 	}
 
@@ -215,8 +214,7 @@ class ApplicationResourceController extends ResourceController {
 
 	@Override
 	public void saveProperties(final Controller controller) {
-		final String lastOpenedString = lastOpened.getStringRep();
-		setProperty("lastOpened", lastOpenedString);
+		lastOpened.saveProperties();
 		try {
 			final OutputStream out = new FileOutputStream(autoPropertiesFile);
 			final OutputStreamWriter outputStreamWriter = new OutputStreamWriter(out, "8859_1");

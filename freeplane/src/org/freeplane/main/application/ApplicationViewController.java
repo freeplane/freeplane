@@ -381,12 +381,11 @@ class ApplicationViewController extends ViewController {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.main.FreeplaneMain#exit()
-	 */
 	@Override
-	public void stop() {
+    public boolean quit() {
+	    if (! super.quit()){
+	    	return false;
+	    }
 		final int winState = frame.getExtendedState() & ~Frame.ICONIFIED;
 		if (JFrame.MAXIMIZED_BOTH != (winState & JFrame.MAXIMIZED_BOTH)) {
 			resourceController.setProperty("appwindow_x", String.valueOf(frame.getX()));
@@ -396,9 +395,9 @@ class ApplicationViewController extends ViewController {
 		}
 		resourceController.setProperty("appwindow_state", String.valueOf(winState));
 		resourceController.setProperty("map_view_zoom", Float.toString(getZoom()));
-		resourceController.saveProperties(controller);
 		frame.dispose();
-	}
+		return true;
+    }
 
 	@Override
 	protected void viewNumberChanged(final int number) {

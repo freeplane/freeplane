@@ -45,8 +45,6 @@ import org.freeplane.core.util.LogTool;
  * MapModel(editing) or MapView(navigation).
  */
 public class Controller extends AController {
-	// TODO ARCH rladstaetter 15.02.2009 introduce namespaces where feasible
-	public static final String ON_START_IF_NOT_SPECIFIED = "on_start_if_not_specified";
 
 	public static void setLookAndFeel(final String lookAndFeel) {
 		try {
@@ -216,18 +214,10 @@ public class Controller extends AController {
 	}
 
 	public boolean shutdown() {
-		final String currentMapRestorable = UrlManager.getController(getModeController()).getRestoreable(getMap());
+		ResourceController.getResourceController().saveProperties(this);
 		if (!getViewController().quit()) {
 			return false;
 		}
-		if (currentMapRestorable != null) {
-			ResourceController.getResourceController().setProperty(Controller.ON_START_IF_NOT_SPECIFIED,
-			    currentMapRestorable);
-		}
-		if (modeController != null) {
-			modeController.shutdown();
-		}
-		getViewController().stop();
 		extensionContainer.getExtensions().clear();
 		return true;
 	}

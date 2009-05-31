@@ -613,8 +613,6 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		zoomModel.setSelectedItem(userDefinedZoom);
 	}
 
-	abstract public void stop();
-
 	public void updateMenus(final MenuBuilder menuBuilder) {
 		if (menuBuilder.contains("/main_toolbar/zoom")) {
 			final JComboBox zoomBox = new JComboBox(zoomModel);

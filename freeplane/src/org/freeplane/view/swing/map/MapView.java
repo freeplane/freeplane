@@ -53,6 +53,8 @@ import java.util.Vector;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JViewport;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.io.xml.TreeXmlReader;
@@ -336,6 +338,21 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	 * calculated, the second time the scrollPane is actually scrolled.
 	 */
 	public void centerNode(final NodeView node) {
+		if(controller.getMapViewManager().getMapViewComponent() != this){
+			addAncestorListener(new AncestorListener(){
+
+				public void ancestorAdded(AncestorEvent event) {
+	                removeAncestorListener(this);
+	                centerNode(node);
+                }
+
+				public void ancestorMoved(AncestorEvent event) {
+                }
+
+				public void ancestorRemoved(AncestorEvent event) {
+                }});
+			return;
+		}
 		nodeToBeVisible = null;
 		if (!(isValid() && isShowing())) {
 			centerNodeCounter = 5;

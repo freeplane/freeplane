@@ -206,12 +206,4 @@ class AppletViewController extends ViewController {
 			LogTool.severe(e);
 		}
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.main.FreeplaneMain#exit()
-	 */
-	@Override
-	public void stop() {
-	}
 }

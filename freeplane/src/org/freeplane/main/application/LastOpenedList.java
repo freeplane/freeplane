@@ -39,11 +39,13 @@ import org.freeplane.core.frame.IMapViewChangeListener;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.UIBuilder;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.url.UrlManager;
+import org.freeplane.core.util.LogTool;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
 /**
@@ -52,73 +54,90 @@ import org.freeplane.n3.nanoxml.XMLParseException;
  * format:"mode\:key",ie."Mindmap\:/home/joerg/freeplane.mm"
  */
 class LastOpenedList implements IMapViewChangeListener {
+	public static final String LOAD_LAST_MAP = "load_last_map";
+	public static final String LOAD_LAST_MAPS = "load_last_maps";
 	private static final String SEPARATOR = ";";
 	private final Controller controller;
 	/**
 	 * Contains Restore strings.
 	 */
 	final private List<String> lastOpenedList = new LinkedList<String>();
-	final private int maxEntries;
+	final private List<String> currenlyOpenedList = new LinkedList<String>();
 	/**
 	 * Contains Restore string => map name (map.toString()).
 	 */
 	final private Map<String, String> mRestorableToMapName = new HashMap<String, String>();
 	private int displayedMapIndex;
 
-	LastOpenedList(final Controller controller, final String restored, final int maxEntries) {
+	LastOpenedList(final Controller controller) {
 		this.controller = controller;
-		this.maxEntries = maxEntries;
-		if (restored != null) {
-			lastOpenedList.addAll(Arrays.asList(restored.split(SEPARATOR)));
-		}
+		restoreList("lastOpened", lastOpenedList);
 	}
+
+	private void restoreList(final String key, List<String> list) {
+		final String  restored = ResourceController.getResourceController().getProperty(key, null);
+	    if (restored != null) {
+			list.addAll(Arrays.asList(restored.split(SEPARATOR)));
+		}
+    }
 
 	public void afterViewChange(final Component oldView, final Component newView) {
-		mapOpened(newView);
-	}
-
-	public void afterViewClose(final Component oldView) {
-	}
-
-	public void afterViewCreated(final Component mapView) {
-	}
-
-	public void beforeViewChange(final Component oldView, final Component newView) {
-	}
-
-	String getStringRep() {
-		final StringBuilder strBldr = new StringBuilder();
-		for (final String s : lastOpenedList) {
-			strBldr.append(s + SEPARATOR);
-		}
-		return strBldr.toString();
-	}
-
-	void mapOpened(final Component mapView) {
-		if (mapView == null) {
+		if (newView == null) {
 			displayedMapIndex = -1;
 			updateMenus();
 			return;
 		}
 		final IMapViewManager mapViewManager = controller.getMapViewManager();
-		final ModeController modeController = mapViewManager.getModeController(mapView);
-		final MapModel map = mapViewManager.getModel(mapView);
-		final String restoreString = UrlManager.getController(modeController).getRestoreable(map);
+        final ModeController modeController = mapViewManager.getModeController(newView);
+        final MapModel map = mapViewManager.getModel(newView);
+        final String restoreString = UrlManager.getController(modeController).getRestoreable(map);
 		if (restoreString != null) {
 			if (lastOpenedList.contains(restoreString)) {
 				lastOpenedList.remove(restoreString);
 			}
 			lastOpenedList.add(0, restoreString);
 			mRestorableToMapName.put(restoreString, map.getTitle());
-			while (lastOpenedList.size() > maxEntries) {
-				lastOpenedList.remove(lastOpenedList.size() - 1);
-			}
 		}
 		displayedMapIndex = 0;
 		updateMenus();
 	}
 
-	public void open(final Controller controller, final String restoreable) throws FileNotFoundException,
+	private String getRestoreable(final Component mapView) {
+	    final IMapViewManager mapViewManager = controller.getMapViewManager();
+		final ModeController modeController = mapViewManager.getModeController(mapView);
+		final MapModel map = mapViewManager.getModel(mapView);
+		final String restoreString = UrlManager.getController(modeController).getRestoreable(map);
+	    return restoreString;
+    }
+
+	public void afterViewCreated(final Component mapView) {
+		final String restoreable = getRestoreable(mapView);
+		if(restoreable == null){
+			return;
+		}
+		currenlyOpenedList.add(restoreable);
+	}
+
+	public void afterViewClose(final Component oldView) {
+		final String restoreable = getRestoreable(oldView);
+		if(restoreable == null){
+			return;
+		}
+		currenlyOpenedList.remove(restoreable);
+	}
+
+	public void beforeViewChange(final Component oldView, final Component newView) {
+	}
+
+	private String getStringRep(List<String> list) {
+		final StringBuilder strBldr = new StringBuilder();
+		for (final String s : list) {
+			strBldr.append(s + SEPARATOR);
+		}
+		return strBldr.toString();
+	}
+
+	public void open(final String restoreable) throws FileNotFoundException,
 	        XMLParseException, MalformedURLException, IOException, URISyntaxException {
 		final boolean changedToMapView = controller.getMapViewManager().tryToChangeToMapView(
 		    mRestorableToMapName.get(restoreable));
@@ -142,13 +161,60 @@ class LastOpenedList implements IMapViewChangeListener {
 			if (++i == displayedMapIndex) {
 				continue;
 			}
+			final int maxEntries = getMaxMenuEntries();
+			if (i == maxEntries){
+				break;
+			}
 			final AFreeplaneAction lastOpenedActionListener = new OpenLastOpenedAction(i, key, controller, this);
 			menuBuilder.addAction(FreeplaneMenuBar.FILE_MENU + "/last", lastOpenedActionListener, UIBuilder.AS_CHILD);
 		}
 	}
 
-	public void remove(String restoreable) {
+	private int getMaxMenuEntries() {
+	    return ResourceController.getResourceController().getIntProperty("last_opened_list_length", 25);
+    }
+
+	private void remove(String restoreable) {
 	    lastOpenedList.remove(restoreable);
 	    updateMenus();
     }
+
+	public void openMapsOnStart() {
+		final boolean loadLastMap = ResourceController.getResourceController().getBooleanProperty(LOAD_LAST_MAP);
+		final String lastMap;
+		if(loadLastMap && ! lastOpenedList.isEmpty()){
+			lastMap = lastOpenedList.get(0);
+		}
+		else{
+			lastMap = null;
+		}
+		final boolean loadLastMaps = ResourceController.getResourceController().getBooleanProperty(LOAD_LAST_MAPS);
+		if(loadLastMaps){
+			List<String> startList = new LinkedList<String>();
+			restoreList("openedNow", startList);
+			for( final String restoreable :startList){
+				safeOpen(restoreable);
+			}
+		}
+		if(loadLastMap && ! lastOpenedList.isEmpty()){
+			safeOpen(lastMap);
+		}
+		
+    }
+
+	public void safeOpen(String restoreable) {
+		try {
+			open(restoreable);
+		}
+		catch (final Exception ex) {
+			remove(restoreable);
+			controller.errorMessage("An error occured on opening the file: " + restoreable + ".");
+			LogTool.severe(ex);
+		}
+    }
+
+	public void saveProperties() {
+		ResourceController.getResourceController().setProperty("lastOpened", getStringRep(lastOpenedList));
+		ResourceController.getResourceController().setProperty("openedNow", getStringRep(currenlyOpenedList));
+   }
 }
