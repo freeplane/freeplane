@@ -182,7 +182,7 @@ public class StdXMLParser implements IXMLParser {
 		}
 		XMLUtil.skipWhitespace(reader, null);
 		String systemID = null;
-		final StringBuffer publicID = new StringBuffer();
+		final StringBuilder publicID = new StringBuilder();
 		XMLUtil.scanIdentifier(reader);
 		XMLUtil.skipWhitespace(reader, null);
 		char ch = reader.read();
@@ -333,7 +333,7 @@ public class StdXMLParser implements IXMLParser {
 	                                     final String fullName, final String name, final String prefix)
 	        throws IOException, XMLParseException, Exception {
 		char ch;
-		final StringBuffer buffer = new StringBuffer(16);
+		final StringBuilder buffer = new StringBuilder(16);
 		for (;;) {
 			buffer.setLength(0);
 			String str;

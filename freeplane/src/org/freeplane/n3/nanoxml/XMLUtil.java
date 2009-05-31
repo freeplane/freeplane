@@ -351,7 +351,7 @@ class XMLUtil {
 	 */
 	static String read(final IXMLReader reader, final char entityChar) throws IOException, XMLParseException {
 		char ch = reader.read();
-		final StringBuffer buf = new StringBuffer();
+		final StringBuilder buf = new StringBuilder();
 		buf.append(ch);
 		if (ch == entityChar) {
 			while (ch != ';') {
@@ -388,7 +388,7 @@ class XMLUtil {
 	 *             if an error occurred reading the data
 	 */
 	static String scanIdentifier(final IXMLReader reader) throws IOException, XMLParseException {
-		final StringBuffer result = new StringBuffer();
+		final StringBuilder result = new StringBuilder();
 		for (;;) {
 			final char ch = reader.read();
 			if ((ch == '_') || (ch == ':') || (ch == '-') || (ch == '.') || ((ch >= 'a') && (ch <= 'z'))
@@ -414,7 +414,7 @@ class XMLUtil {
 	 * @throws java.io.IOException
 	 *             if an error occurred reading the data
 	 */
-	static String scanPublicID(final StringBuffer publicID, final IXMLReader reader) throws IOException,
+	static String scanPublicID(final StringBuilder publicID, final IXMLReader reader) throws IOException,
 	        XMLParseException {
 		if (!XMLUtil.checkLiteral(reader, "UBLIC")) {
 			return null;
@@ -439,7 +439,7 @@ class XMLUtil {
 	 */
 	static String scanString(final IXMLReader reader, final char entityChar, final IXMLEntityResolver entityResolver)
 	        throws IOException, XMLParseException {
-		final StringBuffer result = new StringBuffer();
+		final StringBuilder result = new StringBuilder();
 		final int startingLevel = reader.getStreamLevel();
 		final char delim = reader.read();
 		if ((delim != '\'') && (delim != '"')) {
@@ -565,7 +565,7 @@ class XMLUtil {
 	 * @throws java.io.IOException
 	 *             if an error occurred reading the data
 	 */
-	static void skipWhitespace(final IXMLReader reader, final StringBuffer buffer) throws IOException {
+	static void skipWhitespace(final IXMLReader reader, final StringBuilder buffer) throws IOException {
 		char ch;
 		if (buffer == null) {
 			do {

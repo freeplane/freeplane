@@ -248,7 +248,7 @@ public class MMapController extends MapController {
 	public NodeModel loadTree(final MapModel map, final File file) throws XMLParseException, IOException {
 		int versionInfoLength;
 		versionInfoLength = EXPECTED_START_STRINGS[0].length();
-		final StringBuffer buffer = readFileStart(file, versionInfoLength);
+		final StringBuilder buffer = readFileStart(file, versionInfoLength);
 		Reader reader = null;
 		for (int i = 0; i < EXPECTED_START_STRINGS.length; i++) {
 			versionInfoLength = EXPECTED_START_STRINGS[i].length();
@@ -404,9 +404,9 @@ public class MMapController extends MapController {
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
-	private StringBuffer readFileStart(final File file, final int pMinimumLength) {
+	private StringBuilder readFileStart(final File file, final int pMinimumLength) {
 		BufferedReader in = null;
-		final StringBuffer buffer = new StringBuffer();
+		final StringBuilder buffer = new StringBuilder();
 		try {
 			in = new BufferedReader(new FileReader(file));
 			String str;
@@ -420,7 +420,7 @@ public class MMapController extends MapController {
 		}
 		catch (final Exception e) {
 			LogTool.severe(e);
-			return new StringBuffer();
+			return new StringBuilder();
 		}
 		return buffer;
 	}

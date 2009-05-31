@@ -24,7 +24,7 @@ package org.freeplane.features.common.addins.encrypt;
  * 29.12.2008
  */
 public class SingleDesEncrypter extends DesEncrypter {
-	public SingleDesEncrypter(final StringBuffer pPassPhrase) {
+	public SingleDesEncrypter(final StringBuilder pPassPhrase) {
 		super(pPassPhrase, "PBEWithMD5AndDES");
 	}
 }

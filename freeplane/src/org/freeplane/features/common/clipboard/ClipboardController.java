@@ -210,7 +210,7 @@ public class ClipboardController implements IExtension {
 
 	private String rtfEscapeUnicodeAndSpecialCharacters(final String text) {
 		final int len = text.length();
-		final StringBuffer result = new StringBuffer(len);
+		final StringBuilder result = new StringBuilder(len);
 		int intValue;
 		char myChar;
 		for (int i = 0; i < len; ++i) {

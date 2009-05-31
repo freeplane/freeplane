@@ -69,7 +69,7 @@ public class FreeplaneStarter {
 	}
 
 	public static void showSysInfo() {
-		final StringBuffer info = new StringBuffer();
+		final StringBuilder info = new StringBuilder();
 		info.append("freeplane_version = ");
 		info.append(FreeplaneVersion.getVersion());
 		info.append("; freeplane_xml_version = ");

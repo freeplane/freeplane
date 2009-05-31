@@ -64,7 +64,7 @@ public class EnterPassword extends AFreeplaneAction  implements INodeSelectionLi
 			if (pwdDialog.getResult() == EnterPasswordDialog.CANCEL) {
 				return false;
 			}
-			final StringBuffer password = pwdDialog.getPassword();
+			final StringBuilder password = pwdDialog.getPassword();
 			if (!encNode.decrypt(getModeController().getMapController(), new SingleDesEncrypter(password))) {
 				final Controller controller = getController();
 				JOptionPane.showMessageDialog(controller.getViewController().getContentPane(), ResourceBundles
@@ -81,7 +81,7 @@ public class EnterPassword extends AFreeplaneAction  implements INodeSelectionLi
 	/**
 	 */
 	private void encrypt(final NodeModel node) {
-		final StringBuffer password = getUsersPassword();
+		final StringBuilder password = getUsersPassword();
 		if (password == null) {
 			return;
 		}
@@ -109,7 +109,7 @@ public class EnterPassword extends AFreeplaneAction  implements INodeSelectionLi
 
 	/**
 	 */
-	private StringBuffer getUsersPassword() {
+	private StringBuilder getUsersPassword() {
 		final EnterPasswordDialog pwdDialog = new EnterPasswordDialog(getController().getViewController().getFrame(),
 		    true);
 		pwdDialog.setModal(true);
@@ -117,7 +117,7 @@ public class EnterPassword extends AFreeplaneAction  implements INodeSelectionLi
 		if (pwdDialog.getResult() == EnterPasswordDialog.CANCEL) {
 			return null;
 		}
-		final StringBuffer password = pwdDialog.getPassword();
+		final StringBuilder password = pwdDialog.getPassword();
 		return password;
 	}
 

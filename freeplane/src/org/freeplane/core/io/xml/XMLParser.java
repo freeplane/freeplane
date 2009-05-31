@@ -50,7 +50,7 @@ class XMLParser extends StdXMLParser implements IXMLParser {
 	        throws IOException, XMLParseException, Exception {
 		if (skipNextElementContent) {
 			final TreeXmlReader builder = (TreeXmlReader) getBuilder();
-			final StringBuffer waitingBuf = new StringBuffer();
+			final StringBuilder waitingBuf = new StringBuilder();
 			int level = 1;
 			for (;;) {
 				final IXMLReader reader = getReader();

@@ -48,7 +48,7 @@ public class EncryptedMap extends AFreeplaneAction {
 	/**
 	 * @param e 
 	 */
-	private StringBuffer getUsersPassword() {
+	private StringBuilder getUsersPassword() {
 		final EnterPasswordDialog pwdDialog = new EnterPasswordDialog(getController().getViewController().getFrame(),
 		    true);
 		pwdDialog.setModal(true);
@@ -56,7 +56,7 @@ public class EncryptedMap extends AFreeplaneAction {
 		if (pwdDialog.getResult() == EnterPasswordDialog.CANCEL) {
 			return null;
 		}
-		final StringBuffer password = pwdDialog.getPassword();
+		final StringBuilder password = pwdDialog.getPassword();
 		return password;
 	}
 
@@ -65,7 +65,7 @@ public class EncryptedMap extends AFreeplaneAction {
 	 *
 	 */
 	private void newEncryptedMap() {
-		final StringBuffer password = getUsersPassword();
+		final StringBuilder password = getUsersPassword();
 		if (password == null) {
 			return;
 		}

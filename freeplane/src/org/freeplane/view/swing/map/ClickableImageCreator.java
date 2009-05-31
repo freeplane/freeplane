@@ -93,7 +93,7 @@ class ClickableImageCreator {
 	}
 
 	public String generateHtml() {
-		final StringBuffer htmlArea = new StringBuffer();
+		final StringBuilder htmlArea = new StringBuilder();
 		for (final Iterator i = area.iterator(); i.hasNext();) {
 			final AreaHolder holder = (AreaHolder) i.next();
 			htmlArea.append("<area shape=\"" + holder.shape + "\" href=\"#"

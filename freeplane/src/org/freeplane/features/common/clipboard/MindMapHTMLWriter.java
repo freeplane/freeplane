@@ -70,7 +70,7 @@ class MindMapHTMLWriter {
 
 	private static String writeHTML_escapeUnicodeAndSpecialCharacters(final String text) {
 		final int len = text.length();
-		final StringBuffer result = new StringBuffer(len);
+		final StringBuilder result = new StringBuilder(len);
 		int intValue;
 		char myChar;
 		boolean previousSpace = false;

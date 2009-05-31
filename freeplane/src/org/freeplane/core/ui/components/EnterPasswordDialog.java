@@ -53,7 +53,7 @@ public class EnterPasswordDialog extends JDialog {
 	private JButton jOKButton = null;
 	private JPasswordField jPasswordField = null;
 	private JPasswordField jPasswordField1 = null;
-	private StringBuffer password = null;
+	private StringBuilder password = null;
 	private int result = EnterPasswordDialog.CANCEL;
 
 	/**
@@ -239,7 +239,7 @@ public class EnterPasswordDialog extends JDialog {
 	/**
 	 * @return Returns the password.
 	 */
-	public StringBuffer getPassword() {
+	public StringBuilder getPassword() {
 		return password;
 	}
 
@@ -274,7 +274,7 @@ public class EnterPasswordDialog extends JDialog {
 			    .showMessageDialog(this, ResourceBundles.getText("accessories/plugins/EncryptNode.properties_1"));
 			return;
 		}
-		password = new StringBuffer();
+		password = new StringBuilder();
 		password.append(jPasswordField.getPassword());
 		result = EnterPasswordDialog.OK;
 		close();

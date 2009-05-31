@@ -127,7 +127,7 @@ class StdXMLBuilder implements IXMLBuilder {
 	public void addPCData(final Reader reader, final String systemID, final int lineNr) {
 		int bufSize = 2048;
 		int sizeRead = 0;
-		final StringBuffer str = new StringBuffer(bufSize);
+		final StringBuilder str = new StringBuilder(bufSize);
 		final char[] buf = new char[bufSize];
 		for (;;) {
 			if (sizeRead >= bufSize) {

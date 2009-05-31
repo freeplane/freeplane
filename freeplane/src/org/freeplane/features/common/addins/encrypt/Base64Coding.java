@@ -97,7 +97,7 @@ public class Base64Coding {
 	 * Helper method for encoding an array of bytes as a Base64 String.
 	 */
 	public static String encode64(final byte[] b) {
-		final StringBuffer sb = new StringBuffer((b.length / 3) * 4);
+		final StringBuilder sb = new StringBuilder((b.length / 3) * 4);
 		int i = 0;
 		int remaining = b.length;
 		final char c[] = new char[4];

@@ -65,7 +65,7 @@ public class HtmlTools {
 		 */
 		@Override
 		public String toString() {
-			final StringBuffer buffer = new StringBuffer();
+			final StringBuilder buffer = new StringBuilder();
 			buffer.append("[IndexPair:");
 			buffer.append(" originalStart: ");
 			buffer.append(originalStart);
@@ -131,7 +131,7 @@ public class HtmlTools {
 	public static String plainToHTML(final String text) {
 		char myChar;
 		final String textTabsExpanded = text.replaceAll("\t", "         ");
-		final StringBuffer result = new StringBuffer(textTabsExpanded.length());
+		final StringBuilder result = new StringBuilder(textTabsExpanded.length());
 		final int lengthMinus1 = textTabsExpanded.length() - 1;
 		result.append("<html><body><p>");
 		for (int i = 0; i < textTabsExpanded.length(); ++i) {
@@ -189,7 +189,7 @@ public class HtmlTools {
 	public static String toXMLEscapedTextExpandingWhitespace(String text) {
 		text = text.replaceAll("\t", "         ");
 		final int len = text.length();
-		final StringBuffer result = new StringBuffer(len);
+		final StringBuilder result = new StringBuilder(len);
 		char myChar;
 		for (int i = 0; i < len; ++i) {
 			myChar = text.charAt(i);
@@ -223,8 +223,8 @@ public class HtmlTools {
 	}
 
 	public static String unescapeHTMLUnicodeEntity(final String text) {
-		final StringBuffer result = new StringBuffer(text.length());
-		final StringBuffer entity = new StringBuffer();
+		final StringBuilder result = new StringBuilder(text.length());
+		final StringBuilder entity = new StringBuilder();
 		boolean readingEntity = false;
 		char myChar;
 		for (int i = 0; i < text.length(); ++i) {
@@ -273,7 +273,7 @@ public class HtmlTools {
 		/*
 		 * Heuristic reserve for expansion : factor 1.2
 		 */
-		final StringBuffer result = new StringBuffer((int) (text.length() * 1.2));
+		final StringBuilder result = new StringBuilder((int) (text.length() * 1.2));
 		int intValue;
 		char myChar;
 		for (int i = 0; i < text.length(); ++i) {
@@ -361,7 +361,7 @@ public class HtmlTools {
 			stringWithoutTags = sb.toString();
 		}
 		final Matcher matcher = pattern.matcher(stringWithoutTags);
-		final StringBuffer sbResult = new StringBuffer();
+		final StringBuilder sbResult = new StringBuilder();
 		if (matcher.find()) {
 			/*
 			 * now, take all from 0 to m.start() from original. append the

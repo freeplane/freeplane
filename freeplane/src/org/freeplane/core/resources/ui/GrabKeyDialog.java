@@ -106,7 +106,7 @@ public class GrabKeyDialog extends JDialog {
 			if (key == null) {
 				return;
 			}
-			final StringBuffer keyString = new StringBuffer(/* getText() */);
+			final StringBuilder keyString = new StringBuilder(/* getText() */);
 			if (key.modifiers != null) {
 				keyString.append(key.modifiers).append(' ');
 			}

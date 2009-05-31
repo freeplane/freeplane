@@ -146,7 +146,7 @@ class RevertAction extends AFreeplaneAction {
 	public RevertActionInstance createRevertXmlAction(final File file) throws IOException {
 		final String fileName = file.getAbsolutePath();
 		final FileReader f = new FileReader(file);
-		final StringBuffer buffer = new StringBuffer();
+		final StringBuilder buffer = new StringBuilder();
 		for (int c; (c = f.read()) != -1;) {
 			buffer.append((char) c);
 		}

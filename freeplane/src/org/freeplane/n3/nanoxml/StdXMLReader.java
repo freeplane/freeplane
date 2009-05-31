@@ -101,7 +101,7 @@ public class StdXMLReader implements IXMLReader {
 	 */
 	public StdXMLReader(final InputStream stream) throws IOException {
 		new PushbackInputStream(stream);
-		final StringBuffer charsRead = new StringBuffer();
+		final StringBuilder charsRead = new StringBuilder();
 		final Reader reader = this.stream2reader(stream, charsRead);
 		currentReader = new StackedReader();
 		readers = new Stack();
@@ -239,7 +239,7 @@ public class StdXMLReader implements IXMLReader {
 		}
 		int index = 5;
 		while (index < str.length()) {
-			final StringBuffer key = new StringBuffer();
+			final StringBuilder key = new StringBuilder();
 			while ((index < str.length()) && (str.charAt(index) <= ' ')) {
 				index++;
 			}
@@ -339,7 +339,7 @@ public class StdXMLReader implements IXMLReader {
 		}
 		currentReader.publicId = publicID;
 		currentReader.systemId = url;
-		final StringBuffer charsRead = new StringBuffer();
+		final StringBuilder charsRead = new StringBuilder();
 		final Reader reader = this.stream2reader(url.openStream(), charsRead);
 		if (charsRead.length() == 0) {
 			return reader;
@@ -452,7 +452,7 @@ public class StdXMLReader implements IXMLReader {
 	 * @throws java.io.IOException
 	 *             if an I/O error occurred
 	 */
-	protected Reader stream2reader(final InputStream stream, final StringBuffer charsRead) throws IOException {
+	protected Reader stream2reader(final InputStream stream, final StringBuilder charsRead) throws IOException {
 		final PushbackInputStream pbstream = new PushbackInputStream(stream);
 		int b = pbstream.read();
 		switch (b) {

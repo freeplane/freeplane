@@ -100,7 +100,7 @@ public class KeyEventTranslator {
 	 * @since jEdit 4.2pre3
 	 */
 	public static String getModifierString(final InputEvent evt) {
-		final StringBuffer buf = new StringBuffer();
+		final StringBuilder buf = new StringBuilder();
 		if (evt.isControlDown()) {
 			buf.append(KeyEventTranslator.getSymbolicModifierName(InputEvent.CTRL_MASK));
 		}
@@ -143,10 +143,10 @@ public class KeyEventTranslator {
 	}
 
 	public static String modifiersToString(final int mods) {
-		StringBuffer buf = null;
+		StringBuilder buf = null;
 		if ((mods & InputEvent.CTRL_MASK) != 0) {
 			if (buf == null) {
-				buf = new StringBuffer();
+				buf = new StringBuilder();
 			}
 			else {
 				buf.append(GrabKeyDialog.MODIFIER_SEPARATOR);
@@ -155,7 +155,7 @@ public class KeyEventTranslator {
 		}
 		if ((mods & InputEvent.ALT_MASK) != 0) {
 			if (buf == null) {
-				buf = new StringBuffer();
+				buf = new StringBuilder();
 			}
 			else {
 				buf.append(GrabKeyDialog.MODIFIER_SEPARATOR);
@@ -164,7 +164,7 @@ public class KeyEventTranslator {
 		}
 		if ((mods & InputEvent.META_MASK) != 0) {
 			if (buf == null) {
-				buf = new StringBuffer();
+				buf = new StringBuilder();
 			}
 			else {
 				buf.append(GrabKeyDialog.MODIFIER_SEPARATOR);
@@ -173,7 +173,7 @@ public class KeyEventTranslator {
 		}
 		if ((mods & InputEvent.SHIFT_MASK) != 0) {
 			if (buf == null) {
-				buf = new StringBuffer();
+				buf = new StringBuilder();
 			}
 			else {
 				buf.append(GrabKeyDialog.MODIFIER_SEPARATOR);

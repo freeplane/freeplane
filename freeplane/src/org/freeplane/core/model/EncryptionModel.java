@@ -53,7 +53,7 @@ public class EncryptionModel implements IExtension {
 	private boolean isDecrypted = true;
 	private IEncrypter mEncrypter;
 	/**
-	 * password have to be stored in a StringBuffer as Strings cannot be deleted
+	 * password have to be stored in a StringBuilder as Strings cannot be deleted
 	 * or overwritten.
 	 */
 	final private NodeModel node;

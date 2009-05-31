@@ -76,7 +76,7 @@ public class PersistentEditableComboBox extends JComboBox {
 		addItem(selectedItem);
 		setSelectedIndex(getModel().getSize() - 1);
 		if (calledFromSetText) {
-			final StringBuffer resultBuffer = new StringBuffer();
+			final StringBuilder resultBuffer = new StringBuilder();
 			for (int i = 0; i < getModel().getSize(); i++) {
 				final String element = (String) getModel().getElementAt(i);
 				resultBuffer.append(element);

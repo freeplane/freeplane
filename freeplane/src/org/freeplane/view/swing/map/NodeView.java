@@ -1191,7 +1191,7 @@ public class NodeView extends JComponent implements INodeView {
 			mainView.setToolTipText(null);
 			return;
 		}
-		final StringBuffer text = new StringBuffer("<html><table width=\"" + getMaxToolTipWidth() + "\">");
+		final StringBuilder text = new StringBuilder("<html><table width=\"" + getMaxToolTipWidth() + "\">");
 		for (final Iterator i = tooltips.keySet().iterator(); i.hasNext();) {
 			final String key = (String) i.next();
 			String value = (String) tooltips.get(key);

@@ -61,7 +61,7 @@ public class Patterns {
 	}
 
 	public String marshall() {
-		final StringBuffer buffer = new StringBuffer();
+		final StringBuilder buffer = new StringBuilder();
 		buffer.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?><patterns>");
 		final Iterator<Pattern> iterator = choiceList.iterator();
 		while (iterator.hasNext()) {

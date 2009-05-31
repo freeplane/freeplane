@@ -99,7 +99,7 @@ public class UrlManager implements IExtension {
 	 *         occured.
 	 */
 	public static String getFile(final File pInputFile) {
-		final StringBuffer lines = new StringBuffer();
+		final StringBuilder lines = new StringBuilder();
 		BufferedReader bufferedReader = null;
 		try {
 			bufferedReader = new BufferedReader(new FileReader(pInputFile));

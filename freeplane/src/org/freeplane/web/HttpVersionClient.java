@@ -37,7 +37,7 @@ public class HttpVersionClient{
             if(remoteVersion.compareTo(currentVersion) <= 0){
             	return;
             }
-			StringBuffer historyBuffer = new StringBuffer();
+			StringBuilder historyBuffer = new StringBuilder();
 			historyBuffer.append(line);
 			historyBuffer.append('\n');
 			for(line = in.readLine(); line != null; line=in.readLine()){

@@ -95,7 +95,7 @@ public class SpellCheckerController implements IExtension {
 			}
 			SpellChecker.setUserDictionaryProvider(new FileUserDictionary(resourceController
 			    .getFreeplaneUserDirectory()));
-			final StringBuffer availableLocales = new StringBuffer();
+			final StringBuilder availableLocales = new StringBuilder();
 			for (int i = 0; i < dictionaryList.length; i++) {
 				final String language = dictionaryList[i].substring("dictionary_".length(), "dictionary_".length() + 2);
 				availableLocales.append(language);
