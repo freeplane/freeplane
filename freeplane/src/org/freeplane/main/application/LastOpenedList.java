@@ -192,14 +192,18 @@ class LastOpenedList implements IMapViewChangeListener {
 		if(loadLastMaps){
 			List<String> startList = new LinkedList<String>();
 			restoreList("openedNow", startList);
-			for( final String restoreable :startList){
-				safeOpen(restoreable);
-			}
+			safeOpen(startList);
 		}
 		if(loadLastMap && ! lastOpenedList.isEmpty()){
 			safeOpen(lastMap);
 		}
 		
+    }
+
+	void safeOpen(List<String> maps) {
+	    for( final String restoreable :maps){
+	    	safeOpen(restoreable);
+	    }
     }
 
 	public void safeOpen(String restoreable) {

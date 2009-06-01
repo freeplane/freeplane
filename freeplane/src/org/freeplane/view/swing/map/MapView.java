@@ -53,6 +53,7 @@ import java.util.Vector;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JViewport;
+import javax.swing.SwingUtilities;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 
@@ -338,7 +339,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	 * calculated, the second time the scrollPane is actually scrolled.
 	 */
 	public void centerNode(final NodeView node) {
-		if(controller.getMapViewManager().getMapViewComponent() != this){
+		if(SwingUtilities.getRoot(this) == null){
 			addAncestorListener(new AncestorListener(){
 
 				public void ancestorAdded(AncestorEvent event) {
