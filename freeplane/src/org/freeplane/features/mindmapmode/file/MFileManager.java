@@ -320,7 +320,10 @@ private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_ve
 				map.getTimerForAutomaticSaving().cancel();
 			}
 			final FileOutputStream out = new FileOutputStream(file);
-			out.getChannel().tryLock();
+			final FileLock lock = out.getChannel().tryLock();
+			if(lock == null){
+				throw new IOException("can not obtain file lock for " + file);
+			}
 			final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(out));
 			getModeController().getMapController().getMapWriter().writeMapAsXml(map, fileout, Mode.FILE, true);
 			if (!isInternal) {
@@ -360,6 +363,9 @@ private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_ve
 		final FileInputStream input = new FileInputStream(file);
 		final FileChannel channel = input.getChannel();
 		final FileLock lock = channel.tryLock(0, Long.MAX_VALUE, true);
+		if(lock == null){
+			throw new IOException("can not obtain file lock for " + file);
+		}
 		final NodeModel rootNode = loadTreeImpl(map, input);
 		return rootNode;
 	}

@@ -139,8 +139,7 @@ class LastOpenedList implements IMapViewChangeListener {
 
 	public void open(final String restoreable) throws FileNotFoundException,
 	        XMLParseException, MalformedURLException, IOException, URISyntaxException {
-		final boolean changedToMapView = controller.getMapViewManager().tryToChangeToMapView(
-		    mRestorableToMapName.get(restoreable));
+		final boolean changedToMapView = tryToChangeToMapView(restoreable);
 		if ((restoreable != null) && !(changedToMapView)) {
 			final StringTokenizer token = new StringTokenizer(restoreable, ":");
 			if (token.hasMoreTokens()) {
@@ -152,6 +151,11 @@ class LastOpenedList implements IMapViewChangeListener {
 			}
 		}
 	}
+
+	private boolean tryToChangeToMapView(final String restoreable) {
+	    return controller.getMapViewManager().tryToChangeToMapView(
+		    mRestorableToMapName.get(restoreable));
+    }
 
 	private void updateMenus() {
 		final MenuBuilder menuBuilder = controller.getModeController().getUserInputListenerFactory().getMenuBuilder();
@@ -193,6 +197,10 @@ class LastOpenedList implements IMapViewChangeListener {
 			List<String> startList = new LinkedList<String>();
 			restoreList("openedNow", startList);
 			safeOpen(startList);
+			if(! lastOpenedList.isEmpty()){
+				tryToChangeToMapView(lastMap);
+			}
+			return;
 		}
 		if(loadLastMap && ! lastOpenedList.isEmpty()){
 			safeOpen(lastMap);

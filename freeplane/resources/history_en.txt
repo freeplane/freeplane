@@ -1,4 +1,27 @@
 ===============================
+1.0.10 alpha
+===============================
+New features:
+
+Lock map files on load/save
+Patterns support clouds, "Floating node" pattern
+Load all previously loaded maps
+
+Bug fixes: 
+
+[Bugs 0000062]: eol  in long nodes are saved/copied
+[Bugs 0000063] bug fixes when empty mode is selected
+[Bugs 0000064]: F1 keyboard shortcut to open Freeplane documentation
+[Bugs 0000065]: Error message box shown when Cancel button is pressed in save file as dialog
+[Bugs 0000066]: Export as HTML of unsaved map not working
+[Bugs 0000071]: In Notes Window, the default font remains as Serif even if you change Preferences to Times New Roman
+[Bugs 0000071]: In rich text editor window
+[Bugs 0000071]: use default font in tool tips
+[Bugs 0000072]: Edit Long Node window at right of screen edge
+[Bugs 0000081]: "Cursor jumping in notes text entry"
+
+
+===============================
 1.0.9 alpha
 ===============================
 hierarchical icon tool bar
