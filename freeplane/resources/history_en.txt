@@ -5,7 +5,7 @@ New features:
 
 Lock map files on load/save
 Patterns support clouds, "Floating node" pattern
-Load all previously loaded maps
+Load all previously loaded maps on start
 
 Bug fixes: 
 
