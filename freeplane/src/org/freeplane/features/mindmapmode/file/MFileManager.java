@@ -23,11 +23,19 @@ import java.awt.Component;
 import java.awt.dnd.DropTarget;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.SequenceInputStream;
+import java.io.StringBufferInputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -37,22 +45,29 @@ import javax.swing.filechooser.FileFilter;
 
 import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.controller.FreeplaneVersion;
 import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.features.mindmapmode.MMapModel;
+import org.freeplane.n3.nanoxml.XMLParseException;
 
 /**
  * @author Dimitry Polivaev
  */
 public class MFileManager extends UrlManager {
+	private static final String EXPECTED_START_STRINGS[] = { "<map version=\"" + FreeplaneVersion.XML_VERSION + "\"",
+    "<map version=\"0.7.1\"" };
+private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_version_updater.xslt";
 	private class MindMapFilter extends FileFilter {
 		@Override
 		public boolean accept(final File f) {
@@ -304,7 +319,9 @@ public class MFileManager extends UrlManager {
 			if (map.getTimerForAutomaticSaving() != null) {
 				map.getTimerForAutomaticSaving().cancel();
 			}
-			final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
+			final FileOutputStream out = new FileOutputStream(file);
+			out.getChannel().tryLock();
+			final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(out));
 			getModeController().getMapController().getMapWriter().writeMapAsXml(map, fileout, Mode.FILE, true);
 			if (!isInternal) {
 				map.setFile(file);
@@ -313,7 +330,7 @@ public class MFileManager extends UrlManager {
 			map.scheduleTimerForAutomaticSaving(getModeController());
 			return true;
 		}
-		catch (final FileNotFoundException e) {
+		catch (final IOException e) {
 			final String message = FpStringUtils.formatText("save_failed", file.getName());
 			if (!isInternal) {
 				getController().errorMessage(message);
@@ -339,4 +356,72 @@ public class MFileManager extends UrlManager {
 			new DropTarget(mapView, fileOpener);
 		}
 	}
+	public NodeModel loadTree(final MapModel map, final File file) throws XMLParseException, IOException {
+		final FileInputStream input = new FileInputStream(file);
+		final FileChannel channel = input.getChannel();
+		final FileLock lock = channel.tryLock(0, Long.MAX_VALUE, true);
+		final NodeModel rootNode = loadTreeImpl(map, input);
+		return rootNode;
+	}
+
+	private NodeModel loadTreeImpl(final MapModel map, final FileInputStream input) throws FileNotFoundException,
+            IOException {
+	    int versionInfoLength = EXPECTED_START_STRINGS[0].length();
+		final String buffer = readFileStart(input, versionInfoLength).toString();
+		StringBufferInputStream startInput = new StringBufferInputStream(buffer);
+		InputStream sequencedInput = new SequenceInputStream(startInput, input);
+		Reader reader = null;
+		for (int i = 0; i < EXPECTED_START_STRINGS.length; i++) {
+			versionInfoLength = EXPECTED_START_STRINGS[i].length();
+			String mapStart = "";
+			if (buffer.length() >= versionInfoLength) {
+				mapStart = buffer.substring(0, versionInfoLength);
+			}
+			if (mapStart.startsWith(EXPECTED_START_STRINGS[i])) {
+				reader = UrlManager.getActualReader(sequencedInput);
+				break;
+			}
+		}
+		if (reader == null) {
+			final Controller controller = getController();
+			final int showResult = OptionalDontShowMeAgainDialog.show(controller, "really_convert_to_current_version",
+			    "confirmation", MMapController.RESOURCES_CONVERT_TO_CURRENT_VERSION,
+			    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED);
+			if (showResult != JOptionPane.OK_OPTION) {
+				reader = UrlManager.getActualReader(sequencedInput);
+			}
+			else {
+				reader = UrlManager.getUpdateReader(sequencedInput, FREEPLANE_VERSION_UPDATER_XSLT);
+			}
+		}
+		try {
+			return getModeController().getMapController().getMapReader().createNodeTreeFromXml(map, reader, Mode.FILE);
+		}
+		catch (final Exception ex) {
+			final String errorMessage = "Error while parsing file:" + ex;
+			System.err.println(errorMessage);
+			LogTool.severe(ex);
+			final NodeModel result = new NodeModel(map);
+			result.setText(errorMessage);
+			return result;
+		}
+		finally {
+			if (reader != null) {
+				reader.close();
+			}
+		}
+    }
+	/**
+	 * Returns pMinimumLength bytes of the files content.
+	 * @throws IOException 
+	 *
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
+	private String readFileStart(final FileInputStream input, final int pMinimumLength) throws IOException {
+		byte[] buffer = new byte[pMinimumLength];
+		input.read(buffer);
+		return new String(buffer);
+	}
+	
 }

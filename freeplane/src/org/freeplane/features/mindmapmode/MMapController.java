@@ -22,13 +22,20 @@ package org.freeplane.features.mindmapmode;
 import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.SequenceInputStream;
+import java.io.StringBufferInputStream;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileLock;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -61,9 +68,6 @@ import org.freeplane.n3.nanoxml.XMLParseException;
  */
 public class MMapController extends MapController {
 	static private DeleteAction delete;
-	private static final String EXPECTED_START_STRINGS[] = { "<map version=\"" + FreeplaneVersion.XML_VERSION + "\"",
-	        "<map version=\"0.7.1\"" };
-	private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_version_updater.xslt";
 	public static final int NEW_CHILD = 2;
 	public static final int NEW_CHILD_WITHOUT_FOCUS = 1;
 	public static final int NEW_SIBLING_BEFORE = 4;
@@ -246,50 +250,9 @@ public class MMapController extends MapController {
 	}
 
 	public NodeModel loadTree(final MapModel map, final File file) throws XMLParseException, IOException {
-		int versionInfoLength;
-		versionInfoLength = EXPECTED_START_STRINGS[0].length();
-		final StringBuilder buffer = readFileStart(file, versionInfoLength);
-		Reader reader = null;
-		for (int i = 0; i < EXPECTED_START_STRINGS.length; i++) {
-			versionInfoLength = EXPECTED_START_STRINGS[i].length();
-			String mapStart = "";
-			if (buffer.length() >= versionInfoLength) {
-				mapStart = buffer.substring(0, versionInfoLength);
-			}
-			if (mapStart.startsWith(EXPECTED_START_STRINGS[i])) {
-				reader = UrlManager.getActualReader(file);
-				break;
-			}
-		}
-		if (reader == null) {
-			final Controller controller = getController();
-			final int showResult = OptionalDontShowMeAgainDialog.show(controller, "really_convert_to_current_version",
-			    "confirmation", MMapController.RESOURCES_CONVERT_TO_CURRENT_VERSION,
-			    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED);
-			if (showResult != JOptionPane.OK_OPTION) {
-				reader = UrlManager.getActualReader(file);
-			}
-			else {
-				reader = UrlManager.getUpdateReader(file, FREEPLANE_VERSION_UPDATER_XSLT);
-			}
-		}
-		try {
-			return getMapReader().createNodeTreeFromXml(map, reader, Mode.FILE);
-		}
-		catch (final Exception ex) {
-			final String errorMessage = "Error while parsing file:" + ex;
-			System.err.println(errorMessage);
-			LogTool.severe(ex);
-			final NodeModel result = new NodeModel(map);
-			result.setText(errorMessage);
-			return result;
-		}
-		finally {
-			if (reader != null) {
-				reader.close();
-			}
-		}
-	}
+	    return ((MFileManager) UrlManager.getController(getModeController())).loadTree(map, file);
+    }
+
 
 	@Override
 	public void loadURL(final String relative) {
@@ -398,32 +361,6 @@ public class MMapController extends MapController {
 		return mindMapMapModel;
 	}
 
-	/**
-	 * Returns pMinimumLength bytes of the files content.
-	 *
-	 * @throws FileNotFoundException
-	 * @throws IOException
-	 */
-	private StringBuilder readFileStart(final File file, final int pMinimumLength) {
-		BufferedReader in = null;
-		final StringBuilder buffer = new StringBuilder();
-		try {
-			in = new BufferedReader(new FileReader(file));
-			String str;
-			while ((str = in.readLine()) != null) {
-				buffer.append(str);
-				if (buffer.length() >= pMinimumLength) {
-					break;
-				}
-			}
-			in.close();
-		}
-		catch (final Exception e) {
-			LogTool.severe(e);
-			return new StringBuilder();
-		}
-		return buffer;
-	}
 
 	/**
 	 */

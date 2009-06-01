@@ -21,6 +21,7 @@ package org.freeplane.core.url;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -67,8 +68,8 @@ public class UrlManager implements IExtension {
 	 *
 	 * @throws FileNotFoundException
 	 */
-	public static Reader getActualReader(final File file) throws FileNotFoundException {
-		return new BufferedReader(new FileReader(file));
+	public static Reader getActualReader(final InputStream file) throws FileNotFoundException {
+		return new BufferedReader(new InputStreamReader(file));
 	}
 
 	public static UrlManager getController(final ModeController modeController) {
@@ -125,13 +126,16 @@ public class UrlManager implements IExtension {
 		return lines.toString();
 	}
 
+	public static Reader getUpdateReader(File file, String xsltScript) throws FileNotFoundException, IOException {
+		return getUpdateReader(new FileInputStream(file), xsltScript);
+    }
 	/**
 	 * Creates a reader that pipes the input file through a XSLT-Script that
 	 * updates the version to the current.
 	 *
 	 * @throws IOException
 	 */
-	public static Reader getUpdateReader(final File file, final String xsltScript) throws IOException {
+	public static Reader getUpdateReader(final InputStream file, final String xsltScript) throws IOException {
 		StringWriter writer = null;
 		InputStream inputStream = null;
 		boolean successful = false;
@@ -188,6 +192,10 @@ public class UrlManager implements IExtension {
 			return UrlManager.getActualReader(file);
 		}
 	}
+
+	private static Reader getActualReader(File file) throws FileNotFoundException {
+		return getActualReader(new FileInputStream(file));
+    }
 
 	/**
 	 * Returns the same URL as input with the addition, that the reference part
@@ -426,4 +434,5 @@ public class UrlManager implements IExtension {
 
 	public void startup() {
 	}
+
 }
