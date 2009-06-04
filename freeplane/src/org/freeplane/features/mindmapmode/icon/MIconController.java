@@ -295,6 +295,11 @@ public class MIconController extends IconController {
 	private  JMenu getSubmenu(Controller controller, String group, final List<String> iconList, MindIcon menuIcon) {
 		JMenu menu = new JMenu("\u25ba"){
 
+			/**
+             * 
+             */
+            private static final long serialVersionUID = 1L;
+
 			@Override
             protected Point getPopupMenuOrigin() {
 				return new Point(getWidth(), 0);
