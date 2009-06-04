@@ -24,6 +24,7 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.Point;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.Collection;
@@ -292,7 +293,14 @@ public class MIconController extends IconController {
     }
 
 	private  JMenu getSubmenu(Controller controller, String group, final List<String> iconList, MindIcon menuIcon) {
-		JMenu menu = new JMenu("\u25ba");
+		JMenu menu = new JMenu("\u25ba"){
+
+			@Override
+            protected Point getPopupMenuOrigin() {
+				return new Point(getWidth(), 0);
+            }
+			
+		};
 		menu.setFont(menu.getFont().deriveFont(8F));
 		menu.setMargin(new Insets(0, 0, 0, 0));
 		menu.setIcon(menuIcon.getIcon());
