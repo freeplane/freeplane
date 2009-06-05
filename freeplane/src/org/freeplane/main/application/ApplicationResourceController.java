@@ -32,6 +32,7 @@ import java.util.InvalidPropertiesFormatException;
 import java.util.Locale;
 import java.util.Properties;
 
+import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.FreeplaneVersion;
 import org.freeplane.core.filter.FilterController;
@@ -64,7 +65,7 @@ class ApplicationResourceController extends ResourceController {
 			try {
 				final File resourceDir = new File(resourceBaseDir);
 				if (resourceDir.exists()) {
-					final URL globalResourceUrl = resourceDir.toURL();
+					final URL globalResourceUrl = Compat.fileToUrl(resourceDir);
 					urlResourceLoader = new URLClassLoader(new URL[] { globalResourceUrl }, null);
 				}
 			}

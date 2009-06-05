@@ -23,6 +23,7 @@ import java.util.regex.Pattern;
 
 import javax.swing.text.html.HTMLDocument;
 
+import org.freeplane.core.Compat;
 import org.freeplane.core.modecontroller.INodeSelectionListener;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.features.common.note.NoteModel;
@@ -104,7 +105,7 @@ final class NoteManager implements INodeSelectionListener {
 		final HTMLDocument document = noteViewerComponent.getDocument();
 		document.removeDocumentListener(mNoteDocumentListener);
 		try {
-			document.setBase(node.getMap().getFile().toURL());
+			document.setBase(Compat.fileToUrl(node.getMap().getFile()));
 		}
 		catch (final Exception e) {
 		}

@@ -32,10 +32,7 @@ public class Compat {
 	}
 
 	public static URL fileToUrl(final File pFile) throws MalformedURLException {
-		if (Compat.isLowerJdk(VERSION_1_6_0)) {
 			return pFile.toURL();
-		}
-		return pFile.toURI().toURL();
 	}
 
 	public static boolean isLowerJdk(final String version) {

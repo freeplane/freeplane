@@ -23,6 +23,7 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.util.List;
 
+import org.freeplane.core.Compat;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.features.common.link.NodeLinks;
@@ -54,7 +55,7 @@ class FNodeModel extends NodeModel {
 					if (!childFile.isHidden()) {
 						final FNodeModel fileNodeModel = new FNodeModel(childFile, getMap());
 						try {
-							final String url = childFile.toURL().toString();
+							final String url = Compat.fileToUrl(file).toString();
 							NodeLinks.createLinkExtension(fileNodeModel).setHyperLink(url);
 						}
 						catch (final MalformedURLException e) {

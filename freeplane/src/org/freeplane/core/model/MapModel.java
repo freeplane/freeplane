@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
@@ -218,7 +219,7 @@ public class MapModel {
 
 	public void setFile(final File file) {
 		try {
-			url = file.toURL();
+			url = Compat.fileToUrl(file);
 		}
 		catch (final MalformedURLException e) {
 			e.printStackTrace();
