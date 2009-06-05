@@ -49,10 +49,7 @@ public class Compat {
 	}
 
 	public static File urlToFile(final URL pUrl) throws URISyntaxException {
-		if (Compat.isLowerJdk(VERSION_1_6_0)) {
-			return new File(UrlManager.urlGetFile(pUrl));
-		}
-		return new File(new URI(pUrl.toString()));
+		return new File(UrlManager.urlGetFile(pUrl));
 	}
 
 	public static void useScreenMenuBar() {
