@@ -50,9 +50,13 @@ public class Compat {
 
 	public static File urlToFile(final URL pUrl) throws URISyntaxException {
 		final String string = pUrl.toString();
-		if (string.contains("%")) {
-			return new File(new URI(string));
-		}
+		try {
+	        if (string.contains("%")) {
+	        	return new File(new URI(string));
+	        }
+        }
+        catch (URISyntaxException e) {
+        }
 		return new File(UrlManager.urlGetFile(pUrl));
 	}
 
