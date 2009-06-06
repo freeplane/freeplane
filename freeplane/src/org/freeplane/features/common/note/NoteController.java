@@ -30,7 +30,6 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.features.mindmapmode.note.MNoteController;
 
 /**
  * @author Dimitry Polivaev

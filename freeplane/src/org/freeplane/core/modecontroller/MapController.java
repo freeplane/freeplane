@@ -513,13 +513,17 @@ public class MapController extends SelectionController {
 				getController().getViewController().openDocument(originalURL);
 			}
 		}
-		catch (final MalformedURLException ex) {
-			LogTool.severe(ex);
-			getController().errorMessage(ResourceBundles.getText("url_error") + "\n" + ex);
-			return;
+		catch (final MalformedURLException e) {
+			LogTool.severe(e);
+			getController().errorMessage(ResourceBundles.getText("url_error") + "\n" + e);
+		}
+		catch (final FileNotFoundException e) {
+			LogTool.severe(e);
+			getController().errorMessage(FpStringUtils.formatText("file_not_found", relative));
 		}
 		catch (final Exception e) {
 			LogTool.severe(e);
+			getController().getViewController().out(FpStringUtils.formatText("link_not_found", relative));
 		}
 		finally {
 			getController().getViewController().setWaitingCursor(false);
