@@ -1,4 +1,4 @@
-package org.freeplane.core;
+package org.freeplane.core.util;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -9,7 +9,6 @@ import java.net.URL;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.url.UrlManager;
-import org.freeplane.core.util.LogTool;
 
 /**
  * Provides methods and constants which are dependend on the underlying java version
@@ -49,14 +48,6 @@ public class Compat {
 	}
 
 	public static File urlToFile(final URL pUrl) throws URISyntaxException {
-		final String string = pUrl.toString();
-		try {
-	        if (string.contains("%")) {
-	        	return new File(new URI(string));
-	        }
-        }
-        catch (URISyntaxException e) {
-        }
 		return new File(UrlManager.urlGetFile(pUrl));
 	}
 

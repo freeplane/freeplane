@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
@@ -39,6 +38,7 @@ import org.freeplane.core.modecontroller.IMapChangeListener;
 import org.freeplane.core.modecontroller.MapChangeEvent;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.resources.ResourceBundles;
+import org.freeplane.core.util.Compat;
 
 public class MapModel {
 	private static Random ran = new Random();

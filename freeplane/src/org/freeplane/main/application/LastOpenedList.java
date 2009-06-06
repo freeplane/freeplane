@@ -33,7 +33,6 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.IMapViewChangeListener;
 import org.freeplane.core.frame.IMapViewManager;
@@ -45,6 +44,7 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.UIBuilder;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.url.UrlManager;
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.n3.nanoxml.XMLParseException;
 

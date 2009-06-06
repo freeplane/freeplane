@@ -42,7 +42,6 @@ import java.util.ListIterator;
 import javax.swing.JOptionPane;
 
 import org.apache.commons.lang.StringUtils;
-import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.FreeplaneVersion;
 import org.freeplane.core.io.NodeBuilder;
@@ -59,6 +58,7 @@ import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.url.UrlManager;
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.mindmapmode.file.MFileManager;
 import org.freeplane.n3.nanoxml.XMLParseException;

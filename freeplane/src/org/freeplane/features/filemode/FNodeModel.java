@@ -23,9 +23,9 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.util.List;
 
-import org.freeplane.core.Compat;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.util.Compat;
 import org.freeplane.features.common.link.NodeLinks;
 
 /**

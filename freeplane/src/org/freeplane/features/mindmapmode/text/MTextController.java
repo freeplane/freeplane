@@ -33,13 +33,13 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
-import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.url.UrlManager;
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FixedHTMLWriter;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.link.LinkController;

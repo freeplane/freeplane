@@ -33,7 +33,6 @@ import javax.swing.JOptionPane;
 import javax.swing.ToolTipManager;
 
 import org.apache.commons.lang.StringUtils;
-import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.FreeplaneVersion;
 import org.freeplane.core.filter.FilterController;
@@ -42,6 +41,7 @@ import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.url.UrlManager;
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.attribute.ModelessAttributeController;
 import org.freeplane.features.common.icon.IconController;

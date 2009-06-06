@@ -36,8 +36,8 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.KeyStroke;
 
-import org.freeplane.core.Compat;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogTool;
 
 /**

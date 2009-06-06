@@ -28,7 +28,6 @@ import java.io.StringWriter;
 
 import javax.swing.JOptionPane;
 
-import org.freeplane.core.Compat;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.modecontroller.MapController;
@@ -36,6 +35,7 @@ import org.freeplane.core.model.MapModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogTool;
 
 /**
