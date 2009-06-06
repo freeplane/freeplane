@@ -1,4 +1,17 @@
 ===============================
+1.0.11 alpha
+===============================
+New features:
+
+Search and filter on note content
+Icon toolbar menu improved
+
+Bug fixes: 
+Internal representation of linked files should not use escape characters
+[Bugs 0000085] handling of empty notes in html  
+[Bugs 0000067]: Display message if invalid hyperlink to an external map file is handled
+
+===============================
 1.0.10 alpha
 ===============================
 New features:
