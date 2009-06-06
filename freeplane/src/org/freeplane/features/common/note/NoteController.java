@@ -23,7 +23,9 @@ import java.awt.Font;
 
 import javax.swing.ImageIcon;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
@@ -46,12 +48,16 @@ public class NoteController implements IExtension {
 		modeController.addExtension(NoteController.class, noteController);
 		if (firstRun) {
 			noteIcon = new ImageIcon(ResourceController.getResourceController().getResource("/images/knotes.png"));
-			MindIcon.factory(NodeNoteBase.NODE_NOTE_ICON, noteIcon);
+			MindIcon.factory(NoteController.NODE_NOTE_ICON, noteIcon);
 			firstRun = false;
 		}
 	}
 
 	final private ModeController modeController;
+	/**
+     *
+     */
+    public static final String NODE_NOTE_ICON = "accessories.plugins.NodeNoteIcon";
 
 	public NoteController(final ModeController modeController) {
 		super();
@@ -87,7 +93,7 @@ public class NoteController implements IExtension {
 		    NoteController.RESOURCES_DON_T_SHOW_NOTE_ICONS)) {
 			showIcon = false;
 		}
-		node.setStateIcon(NodeNoteBase.NODE_NOTE_ICON, (showIcon) ? noteIcon : null);
+		node.setStateIcon(NoteController.NODE_NOTE_ICON, (showIcon) ? noteIcon : null);
 		if(enabled){
 			final Font defaultFont = ResourceController.getResourceController().getDefaultFont();
             StringBuilder rule = new StringBuilder();
@@ -103,4 +109,9 @@ public class NoteController implements IExtension {
 			(getModeController().getMapController()).setToolTip(node, "nodeNoteText",  null);
 		}
 	}
+
+	public static void install(Controller controller) {
+		FilterController.getController(controller).getConditionFactory().addConditionController(6,
+		    new NoteConditionController());
+    }
 }

@@ -29,9 +29,6 @@ import java.util.Vector;
  * @author Marc De Scheemaecker
  * @version $Name: RELEASE_2_2_1 $, $Revision: 1.5 $
  */
-// TODO ARCH rladstaetter 21.03.2009 use standard xml serialisation provided by jdk - is at least easier to maintain
-// for most people and has all the nice gadgets you want
-@Deprecated
 public class XMLElement implements Serializable {
 	/**
 	 * No line number defined.

@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.common.text;
+package org.freeplane.features.common.note;
 
 import org.freeplane.core.filter.condition.ConditionFactory;
 import org.freeplane.core.filter.condition.ICondition;
@@ -27,28 +27,31 @@ import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-class NodeContainsCondition extends NodeCondition {
+class NoteContainsCondition extends NodeCondition {
 	static final String NAME = "node_contains_condition";
 	static final String VALUE = "VALUE";
 
 	static ICondition load(final XMLElement element) {
-		return new NodeContainsCondition(element.getAttribute(NodeContainsCondition.VALUE, null));
+		return new NoteContainsCondition(element.getAttribute(NoteContainsCondition.VALUE, null));
 	}
 
 	final private String value;
 
-	NodeContainsCondition(final String value) {
+	NoteContainsCondition(final String value) {
 		super();
 		this.value = value;
 	}
 
 	public boolean checkNode(final NodeModel node) {
 		final String text = getText(node);
+		if(text == null){
+			return false;
+		}
 		return checkText(text) || HtmlTools.isHtmlNode(text) && checkText(HtmlTools.htmlToPlain(text));
 	}
 
-	private String getText(final NodeModel node) {
-	    return node.getText();
+	protected String getText(final NodeModel node) {
+	    return NoteModel.getNoteText(node);
     }
 
 	private boolean checkText(final String plainTextContent) {
@@ -57,16 +60,24 @@ class NodeContainsCondition extends NodeCondition {
 
 	@Override
 	protected String createDesctiption() {
-		final String nodeCondition = ResourceBundles.getText(NodeConditionController.FILTER_NODE);
-		final String simpleCondition = ResourceBundles.getText(ConditionFactory.FILTER_CONTAINS);
-		return ConditionFactory.createDescription(nodeCondition, simpleCondition, value, false);
+		return createDesctiption(false);
 	}
 
+	protected String createDesctiption(final boolean ignoreCase) {
+	    final String nodeCondition = ResourceBundles.getText(NoteConditionController.FILTER_NOTE);
+		final String simpleCondition = ResourceBundles.getText(ConditionFactory.FILTER_CONTAINS);
+		return ConditionFactory.createDescription(nodeCondition, simpleCondition, value, ignoreCase);
+    }
+
 	public void toXml(final XMLElement element) {
-		final XMLElement child = new XMLElement();
-		child.setName(NodeContainsCondition.NAME);
-		super.attributesToXml(child);
-		child.setAttribute(NodeContainsCondition.VALUE, value);
-		element.addChild(child);
+		toXml(element, NAME);
 	}
+
+	protected void toXml(final XMLElement element, final String name) {
+	    final XMLElement child = new XMLElement();
+		child.setName(name);
+		super.attributesToXml(child);
+		child.setAttribute(NoteContainsCondition.VALUE, value);
+		element.addChild(child);
+    }
 }

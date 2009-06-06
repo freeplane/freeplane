@@ -32,13 +32,13 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.INodeSelectionListener;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.features.common.note.NodeNoteBase;
+import org.freeplane.features.common.note.NoteController;
 import org.freeplane.features.common.note.NoteModel;
 
 /**
  * @author foltin
  */
-public class BNodeNoteViewer extends NodeNoteBase implements INodeSelectionListener {
+public class BNodeNoteViewer implements INodeSelectionListener {
 	private static ImageIcon noteIcon = null;
 	final private Controller controller;
 	private JComponent noteScrollPane;
@@ -82,6 +82,6 @@ public class BNodeNoteViewer extends NodeNoteBase implements INodeSelectionListe
 			BNodeNoteViewer.noteIcon = new ImageIcon(ResourceController.getResourceController().getResource(
 			    "/images/knotes.png"));
 		}
-		node.setStateIcon(NodeNoteBase.NODE_NOTE_ICON, (enabled) ? BNodeNoteViewer.noteIcon : null);
+		node.setStateIcon(NoteController.NODE_NOTE_ICON, (enabled) ? BNodeNoteViewer.noteIcon : null);
 	}
 }

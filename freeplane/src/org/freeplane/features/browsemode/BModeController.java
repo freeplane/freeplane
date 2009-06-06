@@ -27,7 +27,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.features.common.note.NodeNoteBase;
+import org.freeplane.features.common.note.NoteController;
 import org.freeplane.features.common.note.NoteModel;
 
 public class BModeController extends ModeController {
@@ -49,7 +49,7 @@ public class BModeController extends ModeController {
 			if (noteIcon == null) {
 				noteIcon = new ImageIcon(ResourceController.getResourceController().getResource("/images/knotes.png"));
 			}
-			node.setStateIcon(NodeNoteBase.NODE_NOTE_ICON, noteIcon);
+			node.setStateIcon(NoteController.NODE_NOTE_ICON, noteIcon);
 		}
 		final ListIterator children = getMapController().childrenUnfolded(node);
 		while (children.hasNext()) {
