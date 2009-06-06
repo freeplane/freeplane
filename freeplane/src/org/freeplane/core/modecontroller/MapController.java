@@ -50,6 +50,7 @@ import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.modecontroller.ModeController.IActionOnChange;
 import org.freeplane.core.model.EncryptionModel;
+import org.freeplane.core.model.ITooltipProvider;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.model.NodeModel.NodeChangeType;
@@ -694,7 +695,7 @@ public class MapController extends SelectionController {
 	/**
 	*
 	*/
-	public void setToolTip(final NodeModel node, final String key, final String value) {
+	public void setToolTip(final NodeModel node, final String key, final ITooltipProvider value) {
 		node.setToolTip(key, value);
 		nodeRefresh(node);
 	}

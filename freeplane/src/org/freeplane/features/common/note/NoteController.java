@@ -27,6 +27,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.ITooltipProvider;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
@@ -102,7 +103,11 @@ public class NoteController implements IExtension {
 			final String noteText = NoteModel.getNoteText(node)
 			.replaceFirst("<body>", "<body><div style=\"" + rule + "\">")
 			.replaceFirst("</body>", "</div></body>");
-			(getModeController().getMapController()).setToolTip(node, "nodeNoteText", noteText );
+			(getModeController().getMapController()).setToolTip(node, "nodeNoteText", new ITooltipProvider(){
+
+				public String getTooltip() {
+	                return noteText;
+                }} );
 		}
 		else{
 			(getModeController().getMapController()).setToolTip(node, "nodeNoteText",  null);

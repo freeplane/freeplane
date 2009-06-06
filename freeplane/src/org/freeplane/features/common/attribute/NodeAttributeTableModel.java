@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.common.attribute;
 
+import java.awt.EventQueue;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -32,6 +33,7 @@ import javax.swing.table.TableModel;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ITreeWriter;
+import org.freeplane.core.model.ITooltipProvider;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -43,9 +45,8 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 	private static final int CAPACITY_INCREMENT = 10;
 	public static final NodeAttributeTableModel EMTPY_ATTRIBUTES = new NodeAttributeTableModel(null);
 	static private ImageIcon noteIcon = null;
-	private static boolean SHOW_ATTRIBUTE_ICON = ResourceController.getResourceController().getBooleanProperty(
-	    "el__show_icon_for_attributes");
 	private static final String STATE_ICON = "AttributeExist";
+	private static final String ATTRIBUTE_TOOLTIP = "attribute_tooltip";
 
 	public static NodeAttributeTableModel getModel(final NodeModel node) {
 		final NodeAttributeTableModel attributes = (NodeAttributeTableModel) node
@@ -73,7 +74,7 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 		final int index = getRowCount();
 		AttributeRegistry.getRegistry(node.getMap()).registry(newAttribute);
 		attributes.add(newAttribute);
-		enableStateIcon();
+		setStateIcon();
 		fireTableRowsInserted(index, index);
 	}
 
@@ -90,21 +91,49 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 		}
 	}
 
-	public void disableStateIcon() {
-		if (NodeAttributeTableModel.SHOW_ATTRIBUTE_ICON && getRowCount() == 0) {
+	public void setStateIcon() {
+		final boolean showIcon = ResourceController.getResourceController().getBooleanProperty("el__show_icon_for_attributes");
+		if (showIcon && getRowCount() == 0) {
 			node.setStateIcon(NodeAttributeTableModel.STATE_ICON, null);
 		}
-	}
-
-	public void enableStateIcon() {
-		if (NodeAttributeTableModel.SHOW_ATTRIBUTE_ICON && getRowCount() == 1) {
+		if (showIcon && getRowCount() == 1) {
 			if (NodeAttributeTableModel.noteIcon == null) {
 				NodeAttributeTableModel.noteIcon = new ImageIcon(ResourceController.getResourceController()
 				    .getResource("/images/showAttributes.gif"));
 			}
 			node.setStateIcon(NodeAttributeTableModel.STATE_ICON, NodeAttributeTableModel.noteIcon);
 		}
+		setTooltip();
 	}
+
+	protected void setTooltip() {
+		final int rowCount = getRowCount();
+		if(rowCount == 0){
+			node.setToolTip(ATTRIBUTE_TOOLTIP, null);
+			return;
+		}
+		if(rowCount == 1){
+			node.setToolTip(ATTRIBUTE_TOOLTIP, new ITooltipProvider(){
+				public String getTooltip() {
+					final AttributeRegistry registry = AttributeRegistry.getRegistry(node.getMap());
+					if (registry.getAttributeViewType().equals(
+					    AttributeTableLayoutModel.SHOW_ALL)) {
+						return null;
+					}
+					StringBuilder tooltip = new StringBuilder();
+					tooltip.append("<html><body><table  border=\"1\">");
+					for(int i = 0; i < rowCount; i++){
+						tooltip.append("<tr><td>");
+						tooltip.append(getValueAt(i, 0));
+						tooltip.append("</td><td>");
+						tooltip.append(getValueAt(i, 1));
+						tooltip.append("</td></tr>");
+					}
+					tooltip.append("</table></body></html>");
+					return tooltip.toString();
+				}});
+		}
+    }
 
 	public void fireTableCellUpdated(final int row, final int column) {
 		if (listeners == null) {

@@ -1186,22 +1186,7 @@ public class NodeView extends JComponent implements INodeView {
 			mainView.setToolTipText(null);
 			return;
 		}
-		final Map tooltips = getModel().getToolTip();
-		if (tooltips.size() == 0) {
-			mainView.setToolTipText(null);
-			return;
-		}
-		final StringBuilder text = new StringBuilder("<html><table width=\"" + getMaxToolTipWidth() + "\">");
-		for (final Iterator i = tooltips.keySet().iterator(); i.hasNext();) {
-			final String key = (String) i.next();
-			String value = (String) tooltips.get(key);
-			value = value.replaceAll("</html>", "");
-			text.append("<tr><td>");
-			text.append(value);
-			text.append("</td></tr>");
-		}
-		text.append("</table></html>");
-		mainView.setToolTipText(text.toString());
+		mainView.setToolTipText(getModel().getToolTip());
 	}
 
 	void updateToolTipsRecursive() {

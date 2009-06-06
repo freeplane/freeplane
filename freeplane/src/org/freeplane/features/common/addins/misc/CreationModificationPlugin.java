@@ -29,6 +29,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.modecontroller.INodeChangeListener;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.modecontroller.NodeChangeEvent;
+import org.freeplane.core.model.ITooltipProvider;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.ActionLocationDescriptor;
@@ -111,6 +112,9 @@ public class CreationModificationPlugin extends PersistentNodeHook implements IN
 	}
 
 	protected void setToolTip(final NodeModel node, final String key, final String value) {
-		(getModeController().getMapController()).setToolTip(node, key, value);
+		(getModeController().getMapController()).setToolTip(node, key, new ITooltipProvider(){
+			public String getTooltip() {
+	            return value;
+            }});
 	}
 }

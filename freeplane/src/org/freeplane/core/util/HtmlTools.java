@@ -223,7 +223,29 @@ public class HtmlTools {
 	}
 
 	public static String toXMLEscapedText(final String text) {
-		return text.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\"", "&quot;");
+		final int len = text.length();
+		final StringBuilder result = new StringBuilder(len);
+		char myChar;
+		for (int i = 0; i < len; ++i) {
+			myChar = text.charAt(i);
+			switch (myChar) {
+				case '&':
+					result.append("&amp;");
+					break;
+				case '<':
+					result.append("&lt;");
+					break;
+				case '>':
+					result.append("&gt;");
+					break;
+				case '"':
+					result.append("&quot;");
+					break;
+				default:
+					result.append(myChar);
+			}
+		}
+		return result.toString();
 	}
 
 	public static String toXMLEscapedTextExpandingWhitespace(String text) {
@@ -242,6 +264,9 @@ public class HtmlTools {
 					break;
 				case '>':
 					result.append("&gt;");
+					break;
+				case '"':
+					result.append("&quot;");
 					break;
 				case ' ':
 					if (i > 0 && i < len - 1 && text.charAt(i - 1) > 32 && text.charAt(i + 1) > 32) {

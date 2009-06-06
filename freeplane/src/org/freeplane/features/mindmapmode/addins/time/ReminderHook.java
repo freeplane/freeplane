@@ -31,6 +31,7 @@ import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.addins.PersistentNodeHook;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.ITooltipProvider;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
@@ -269,6 +270,9 @@ public class ReminderHook extends PersistentNodeHook {
 	}
 
 	protected void setToolTip(final NodeModel node, final String value) {
-		(getModeController().getMapController()).setToolTip(node, getClass().getName(), value);
+		(getModeController().getMapController()).setToolTip(node, getClass().getName(), new ITooltipProvider(){
+			public String getTooltip() {
+	            return value;
+            }});
 	}
 }

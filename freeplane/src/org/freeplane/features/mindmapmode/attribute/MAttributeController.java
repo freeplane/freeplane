@@ -160,7 +160,7 @@ public class MAttributeController extends AttributeController {
 		public void act() {
 			final Attribute newAttribute = new Attribute(name, value);
 			model.getAttributes().add(row, newAttribute);
-			model.enableStateIcon();
+			model.setStateIcon();
 			model.fireTableRowsDeleted(row, row);
 		}
 
@@ -170,7 +170,7 @@ public class MAttributeController extends AttributeController {
 
 		public void undo() {
 			model.getAttributes().remove(row);
-			model.disableStateIcon();
+			model.setStateIcon();
 			model.fireTableRowsDeleted(row, row);
 		}
 	}

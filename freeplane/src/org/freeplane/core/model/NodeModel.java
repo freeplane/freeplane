@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
@@ -36,6 +37,7 @@ import javax.swing.ImageIcon;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
 
+import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.extension.SmallExtensionMap;
@@ -74,7 +76,7 @@ public class NodeModel implements MutableTreeNode {
 	private int position = NodeModel.UNKNOWN_POSITION;
 	private NodeModel preferredChild;
 	private String text = "no text";
-	private HashMap toolTip = null;
+	private Map<String, ITooltipProvider> toolTip = null;
 	private Collection<INodeView> views = null;
 	private String xmlText = "no text";
 
@@ -140,7 +142,7 @@ public class NodeModel implements MutableTreeNode {
 
 	private void createToolTip() {
 		if (toolTip == null) {
-			toolTip = new HashMap();
+			toolTip = new LinkedHashMap<String, ITooltipProvider>();
 		}
 	}
 
@@ -296,11 +298,26 @@ public class NodeModel implements MutableTreeNode {
 
 	/**
 	 */
-	public Map getToolTip() {
-		if (toolTip == null) {
-			return new TreeMap();
-		};
-		return Collections.unmodifiableMap(toolTip);
+	public String getToolTip() {
+		if(toolTip == null){
+			return null;
+		}
+		final StringBuilder text = new StringBuilder("<html><table>");
+		for (final String key : toolTip.keySet()) {
+			String value =  toolTip.get(key).getTooltip();
+			if(value == null){
+				continue;
+			}
+			value = value.replaceFirst("<html>", "<div>");
+			value = value.replaceFirst("<body>", "");
+			value = value.replaceFirst("</body>", "");
+			value = value.replaceFirst("</html>", "</div>");
+			text.append("<tr><td>");
+			text.append(value);
+			text.append("</td></tr>");
+		}
+		text.append("</table></html>");
+		return text.toString();
 	}
 
 	public Collection<INodeView> getViewers() {
@@ -514,9 +531,9 @@ public class NodeModel implements MutableTreeNode {
 
 	/**
 	 */
-	public void setToolTip(final String key, final String string) {
+	public void setToolTip(final String key, final ITooltipProvider tooltip) {
 		createToolTip();
-		if (string == null) {
+		if (tooltip == null) {
 			if (toolTip.containsKey(key)) {
 				toolTip.remove(key);
 			}
@@ -525,7 +542,7 @@ public class NodeModel implements MutableTreeNode {
 			}
 		}
 		else {
-			toolTip.put(key, string);
+			toolTip.put(key, tooltip);
 		}
 	}
 
