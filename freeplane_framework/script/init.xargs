@@ -7,21 +7,21 @@
 -init
 ## Basic plugin bundles
 -initlevel 1
--install org.freeplane.plugin.help.jar
--install org.freeplane.plugin.svg.jar
--install org.freeplane.plugin.latex.jar
--install org.freeplane.plugin.script.jar
+-install reference:file:plugins/org.freeplane.plugin.help
+-install reference:file:plugins/org.freeplane.plugin.svg
+-install reference:file:plugins/org.freeplane.plugin.latex
+-install reference:file:plugins/org.freeplane.plugin.script
 
 -initlevel 2
--install org.freeplane.core.jar
+-install reference:file:plugins/org.freeplane.core
 
 -startlevel 2
 
 ## first start
--start org.freeplane.plugin.help.jar
--start org.freeplane.plugin.svg.jar
--start org.freeplane.plugin.latex.jar
--start org.freeplane.plugin.script.jar
--start org.freeplane.core.jar
+-start reference:file:plugins/org.freeplane.plugin.help
+-start reference:file:plugins/org.freeplane.plugin.svg
+-start reference:file:plugins/org.freeplane.plugin.latex
+-start reference:file:plugins/org.freeplane.plugin.script
+-start reference:file:plugins/org.freeplane.core
 
 

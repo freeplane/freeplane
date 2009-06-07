@@ -13,6 +13,7 @@
 		<property name="license" value="license.txt" />
 		<property name="readme_src" value="readme.txt" />
 		<property name="bin.jars" value="${bin}/jars" />
+		<property name="bin.plugins" value="${bin}/plugins" />
 		<property name="bin.resources" value="${bin}/resources" />
 		<property name="bin.ortho" value="${bin}/resources/ortho" />
 		<property name="script" value="${root}/script" />
@@ -29,14 +30,27 @@
 			<fileset file="${freeplane.exe}"/>
 		</copy>
 		<chmod file="${bin}/freeplane.sh" perm="ugo+rx"/>
-		<mkdir dir="${bin.jars}" />
-		<copy todir="${bin.jars}">
-			<fileset dir="${workspace}/freeplane/bin/dist/osgi"/>
-			<fileset dir="${workspace}/freeplane_plugin_help/bin/dist/osgi"/>
-			<fileset dir="${workspace}/freeplane_plugin_latex/bin/dist/osgi"/>
-			<fileset dir="${workspace}/freeplane_plugin_script/bin/dist/osgi"/>
-			<fileset dir="${workspace}/freeplane_plugin_svg/bin/dist/osgi"/>
+		<mkdir dir="${bin.plugins}/org.freeplane.core" />
+		<copy todir="${bin.plugins}/org.freeplane.core">
+			<fileset dir="${workspace}/freeplane/bin/dist/osgi/dir"/>
 		</copy>
+		<mkdir dir="${bin.plugins}/org.freeplane.plugin.help" />
+		<copy todir="${bin.plugins}/org.freeplane.plugin.help">
+			<fileset dir="${workspace}/freeplane_plugin_help/bin/dist/osgi/dir"/>
+		</copy>
+		<mkdir dir="${bin.plugins}/org.freeplane.plugin.latex" />
+		<copy todir="${bin.plugins}/org.freeplane.plugin.latex">
+			<fileset dir="${workspace}/freeplane_plugin_latex/bin/dist/osgi/dir"/>
+		</copy>
+		<mkdir dir="${bin.plugins}/org.freeplane.plugin.script" />
+		<copy todir="${bin.plugins}/org.freeplane.plugin.script">
+			<fileset dir="${workspace}/freeplane_plugin_script/bin/dist/osgi/dir"/>
+		</copy>
+		<mkdir dir="${bin.plugins}/org.freeplane.plugin.svg" />
+		<copy todir="${bin.plugins}/org.freeplane.plugin.svg">
+			<fileset dir="${workspace}/freeplane_plugin_svg/bin/dist/osgi/dir"/>
+		</copy>
+		
 		<mkdir dir="${bin.resources}" />		
 		<mkdir dir="${bin.ortho}" />		
 		<copy todir="${bin.ortho}">

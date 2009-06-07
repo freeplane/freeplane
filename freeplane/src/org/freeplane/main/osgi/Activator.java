@@ -79,7 +79,7 @@ public class Activator implements BundleActivator {
 	}
 
 	public void start(final BundleContext context) throws Exception {
-		deleteAllBundleJars(context);
+//		deleteAllBundleJars(context);
 		startFramework(context);
 	}
 

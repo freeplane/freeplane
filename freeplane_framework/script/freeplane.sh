@@ -175,16 +175,17 @@ fi
 #--------- Call (at last) Freeplane -------------------------------------
 
 defines=
-defines="$defines -Dorg.freeplane.globalresourcedir=${freedir}/resources"
-defines="$defines -Dorg.osgi.framework.dir=${freedir}/fwdir"
+defines="$defines -Dorg.freeplane.globalresourcedir=resources"
+defines="$defines -Dorg.osgi.framework.dir=${home}/freeplane/fwdir"
 
 call=
 if [ "${JAVA_TYPE}" != "sun" ]
 then # non-Sun environments don't work currently but we try anyway, who knows.
 	defines="$defines -Dgnu.java.awt.peer.gtk.Graphics=Graphics2D"
 fi
-call="${JAVACMD} "-Dorg.freeplane.param1=$1" $defines -jar ${freedir}/framework.jar"
+call="${JAVACMD} "-Dorg.freeplane.param1=$1" $defines -jar framework.jar"
 _debug "Calling: '$call'."
 ( echo "${DEBUG}" | grep -qe "exit" ) && exit 0 # do not start Freeplane
-"${JAVACMD}" "-Dorg.freeplane.param1=$1" "-Dorg.freeplane.param2=$2" "-Dorg.freeplane.param3=$3" "-Dorg.freeplane.param4=$4" $defines -jar "${freedir}/framework.jar"
+cd ${freedir}
+"${JAVACMD}" "-Dorg.freeplane.param1=$1" "-Dorg.freeplane.param2=$2" "-Dorg.freeplane.param3=$3" "-Dorg.freeplane.param4=$4" $defines -jar "framework.jar"
 
