@@ -49,15 +49,15 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [VersionInfo]
-Major=0
-Minor=9
-Release=0
-Build=2
+Major=1
+Minor=0
+Release=11
+Build=1
 LanguageID=1033
 CharsetID=1252
 CompanyName=Freeplane team
 FileVersion=
-FileDescription=Freeplane — free mind mapping software
+FileDescription=Freeplane - free mind mapping software
 InternalName=
 LegalCopyright=Freeplane is a free software, licenced under GPL (GNU General Public License)
 LegalTrademarks=

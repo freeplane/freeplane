@@ -20,6 +20,7 @@
 package org.freeplane.main.osgi;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.Set;
@@ -40,27 +41,8 @@ import org.osgi.framework.ServiceReference;
 public class Activator implements BundleActivator {
 	private FreeplaneStarter starter;
 
-	private void deleteAllBundleJars(final BundleContext context) {
-		final Bundle[] bundles = context.getBundles();
-		for (final Bundle bundle : bundles) {
-			try {
-				final String location = bundle.getLocation();
-				final URL bundleUrl = new URL(location);
-				if (!bundleUrl.getProtocol().equalsIgnoreCase("file")) {
-					continue;
-				}
-				final File bundleFile = new File(bundleUrl.getFile());
-				if (bundleFile.canRead() && !bundleFile.isDirectory()) {
-					bundleFile.delete();
-					System.out.println("deleted jar file " + location);
-				}
-			}
-			catch (final Exception e) {
-			}
-		}
-	}
-
 	private String[] getCallParameters() {
+		final String dir = System.getProperty("org.freeplane.dir", ".");
 		int i = 1;
 		String param;
 		final LinkedList<String> parameters = new LinkedList<String>();
@@ -72,14 +54,18 @@ public class Activator implements BundleActivator {
 			if (param.equals("")) {
 				continue;
 			}
-			parameters.add(param);
+			try {
+	            parameters.add(new File(dir, param).getCanonicalPath());
+            }
+            catch (IOException e) {
+	            e.printStackTrace();
+            }
 		}
 		final String[] array = parameters.toArray(new String[parameters.size()]);
 		return array;
 	}
 
 	public void start(final BundleContext context) throws Exception {
-//		deleteAllBundleJars(context);
 		startFramework(context);
 	}
 
