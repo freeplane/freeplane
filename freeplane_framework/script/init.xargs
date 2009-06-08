@@ -1,27 +1,23 @@
-# load common properties
--xargs props.xargs
-
 # Prefix for searching for bundle URLs from console or command line
--Dorg.knopflerfish.gosg.jars=file:jars/
 
 -init
 ## Basic plugin bundles
 -initlevel 1
--install reference:file:plugins/org.freeplane.plugin.help
--install reference:file:plugins/org.freeplane.plugin.svg
--install reference:file:plugins/org.freeplane.plugin.latex
--install reference:file:plugins/org.freeplane.plugin.script
+-install org.freeplane.plugin.help
+-install org.freeplane.plugin.svg
+-install org.freeplane.plugin.latex
+-install org.freeplane.plugin.script
 
 -initlevel 2
--install reference:file:plugins/org.freeplane.core
+-install org.freeplane.core
 
 -startlevel 2
 
 ## first start
--start reference:file:plugins/org.freeplane.plugin.help
--start reference:file:plugins/org.freeplane.plugin.svg
--start reference:file:plugins/org.freeplane.plugin.latex
--start reference:file:plugins/org.freeplane.plugin.script
--start reference:file:plugins/org.freeplane.core
+-start org.freeplane.plugin.help
+-start org.freeplane.plugin.svg
+-start org.freeplane.plugin.latex
+-start org.freeplane.plugin.script
+-start org.freeplane.core
 
 

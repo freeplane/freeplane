@@ -107,16 +107,16 @@ int main(int argc, char *argv[])  {
    struct stat info;
    bool fwdirExist = 0 == stat(fwdir, &info) && 0 != S_ISDIR (info.st_mode);
    
-   char* curdir = getcwd ();
-   
-   {
-      const char *argv[] = {"\"-Dorg.freelpane.dir=", curdir, "\"", 0};
-      arguments[argumentNumber++] = concat(argv);
-   }
    {
       const char *argv[] = {"\"-Dorg.osgi.framework.dir=", fwdir, "\"", 0};
       arguments[argumentNumber++] = concat(argv);
    }
+   
+   {
+      const char *argv[] = {"\"-Dorg.knopflerfish.gosg.jars=reference:file:", path_to_launcher_without_file, "plugins/\"", 0};
+      arguments[argumentNumber++] = concat(argv);
+   }
+   
    for (int i=1; i <= no_of_passed_arguments_without_caller; ++i) {
       arguments[argumentNumber++] = param2define(i, argv[i]); 
 
@@ -131,6 +131,11 @@ int main(int argc, char *argv[])  {
 
    arguments[argumentNumber++] = "-xargs";
    {
+      const char *argv[] = {path_to_launcher_without_file, "props.xargs", 0};
+      arguments[argumentNumber++] = surround_by_quote(concat(argv));
+   }
+   arguments[argumentNumber++] = "-xargs";
+   {
       const char *argv[] = {path_to_launcher_without_file, fwdirExist ? "restart.xargs":"init.xargs", 0};
       arguments[argumentNumber++] = surround_by_quote(concat(argv));
    }
@@ -143,10 +148,6 @@ int main(int argc, char *argv[])  {
          printf("Argument %s\n",arguments[i]); }}
    // Replace current process by a new one running our application
 
-   if(! fwdirExist)
-   {
-      chdir(path_to_launcher_without_file);
-   }
    execvp(javaw_path, arguments);
    // the following patch seems useful for vista but needs additional testing.
    // https://sourceforge.net/tracker/?func=detail&atid=107118&aid=2350483&group_id=7118

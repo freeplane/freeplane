@@ -121,8 +121,9 @@ output_debug_info() {
 
 #--------- Put the environment together --------------------------------
 
+userfpdir=${HOME}/freeplane
 _source /etc/freeplane/freeplanerc
-_source ~/.freeplane/freeplanerc
+_source ${userfpdir}/freeplanerc
 
 findjava
 if [ $? -ne 0 ]
@@ -161,31 +162,40 @@ then
 	exit 1
 fi
 
-if [ ! -f ~/.freeplane/patterns.xml ] && [ -f /etc/freeplane/patterns.xml ]
+if [ ! -f ${userfpdir}/patterns.xml ] && [ -f /etc/freeplane/patterns.xml ]
 then
-	if [ ! -d ~/.freeplane ]
+	if [ ! -d ${userfpdir} ]
 	then
-		_debug "Creating directory ~/.freeplane."
-		mkdir -p ~/.freeplane
+		_debug "Creating directory ${userfpdir}."
+		mkdir -p ${userfpdir}
 	fi
-	_debug "Copying patterns.xml to ~/.freeplane."
-	cp /etc/freeplane/patterns.xml ~/.freeplane/patterns.xml
+	_debug "Copying patterns.xml to ${userfpdir}."
+	cp /etc/freeplane/patterns.xml ${userfpdir}/patterns.xml
 fi
 
 #--------- Call (at last) Freeplane -------------------------------------
+fwdir=${userfpdir}/fwdir
 
 defines=
-defines="$defines -Dorg.freeplane.globalresourcedir=resources"
-defines="$defines -Dorg.osgi.framework.dir=${home}/freeplane/fwdir"
+defines="$defines -Dorg.freeplane.globalresourcedir=${freedir}/resources"
+defines="$defines -Dorg.osgi.framework.dir=${fwdir}"
+defines="$defines -Dorg.knopflerfish.gosg.jars=reference:file:${freedir}/plugins/"
+
+xargs=
+xargs="$xargs -xargs ${freedir}/props.xargs"
+if [ -z "${freedir}" ]
+then
+	xargs="$xargs -xargs ${freedir}/init.xargs"
+else	
+	xargs="$xargs -xargs ${freedir}/restart.xargs"
+fi
 
 call=
 if [ "${JAVA_TYPE}" != "sun" ]
 then # non-Sun environments don't work currently but we try anyway, who knows.
 	defines="$defines -Dgnu.java.awt.peer.gtk.Graphics=Graphics2D"
 fi
-call="${JAVACMD} "-Dorg.freeplane.param1=$1" $defines -jar framework.jar"
 _debug "Calling: '$call'."
 ( echo "${DEBUG}" | grep -qe "exit" ) && exit 0 # do not start Freeplane
-cd ${freedir}
-"${JAVACMD}" "-Dorg.freeplane.param1=$1" "-Dorg.freeplane.param2=$2" "-Dorg.freeplane.param3=$3" "-Dorg.freeplane.param4=$4" $defines -jar "framework.jar"
+"${JAVACMD}" "-Dorg.freeplane.param1=$1" "-Dorg.freeplane.param2=$2" "-Dorg.freeplane.param3=$3" "-Dorg.freeplane.param4=$4" $defines -jar "${freedir}/framework.jar"  $xargs
 
