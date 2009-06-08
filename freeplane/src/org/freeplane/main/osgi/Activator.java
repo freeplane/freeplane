@@ -42,7 +42,6 @@ public class Activator implements BundleActivator {
 	private FreeplaneStarter starter;
 
 	private String[] getCallParameters() {
-		final String dir = System.getProperty("org.freeplane.dir", ".");
 		int i = 1;
 		String param;
 		final LinkedList<String> parameters = new LinkedList<String>();
@@ -54,12 +53,7 @@ public class Activator implements BundleActivator {
 			if (param.equals("")) {
 				continue;
 			}
-			try {
-	            parameters.add(new File(dir, param).getCanonicalPath());
-            }
-            catch (IOException e) {
-	            e.printStackTrace();
-            }
+	            parameters.add(param);
 		}
 		final String[] array = parameters.toArray(new String[parameters.size()]);
 		return array;

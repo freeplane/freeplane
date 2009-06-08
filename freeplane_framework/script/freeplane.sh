@@ -183,11 +183,11 @@ defines="$defines -Dorg.knopflerfish.gosg.jars=reference:file:${freedir}/plugins
 
 xargs=
 xargs="$xargs -xargs ${freedir}/props.xargs"
-if [ -z "${freedir}" ]
+if [ -d "${fwdir}" ]
 then
-	xargs="$xargs -xargs ${freedir}/init.xargs"
-else	
 	xargs="$xargs -xargs ${freedir}/restart.xargs"
+else	
+	xargs="$xargs -xargs ${freedir}/init.xargs"
 fi
 
 call=
@@ -195,7 +195,7 @@ if [ "${JAVA_TYPE}" != "sun" ]
 then # non-Sun environments don't work currently but we try anyway, who knows.
 	defines="$defines -Dgnu.java.awt.peer.gtk.Graphics=Graphics2D"
 fi
-_debug "Calling: '$call'."
+_debug "Calling: '"${JAVACMD}" "-Dorg.freeplane.param1=$1" "-Dorg.freeplane.param2=$2" "-Dorg.freeplane.param3=$3" "-Dorg.freeplane.param4=$4" $defines -jar "${freedir}/framework.jar"  $xargs'."
 ( echo "${DEBUG}" | grep -qe "exit" ) && exit 0 # do not start Freeplane
 "${JAVACMD}" "-Dorg.freeplane.param1=$1" "-Dorg.freeplane.param2=$2" "-Dorg.freeplane.param3=$3" "-Dorg.freeplane.param4=$4" $defines -jar "${freedir}/framework.jar"  $xargs
 
