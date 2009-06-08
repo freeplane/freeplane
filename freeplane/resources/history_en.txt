@@ -5,6 +5,9 @@ New features:
 
 Search and filter on note content
 Icon toolbar menu improved
+Osgi does not use jar bundles but directories.
+Attributes are shown as tooltips if they are hidden 
+	or only selected attributes are displayed.
 
 Bug fixes: 
 Internal representation of linked files should not use escape characters
