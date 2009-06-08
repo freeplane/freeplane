@@ -56,7 +56,7 @@ char *param2define(int number, const char *in_string) {
 int main(int argc, char *argv[])  {
     // argv[0] - caller name, argv[argc -1] == last argument,
 
-   int no_of_fixed_arguments = 6;
+   int no_of_fixed_arguments = 11;
    int one_for_stopping_null = 1;
    int no_of_passed_arguments_without_caller = argc - 1;
 
@@ -143,9 +143,11 @@ int main(int argc, char *argv[])  {
 
    arguments[argumentNumber++] = (char *)0;
 
-   if (0) { //    For debugging
+#ifdef __DEBUG__
       for (int i=0; i < argumentNumber; ++i) {
-         printf("Argument %s\n",arguments[i]); }}
+         printf("Argument %s\n",arguments[i]); 
+      }
+#endif         
    // Replace current process by a new one running our application
 
    execvp(javaw_path, arguments);
