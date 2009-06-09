@@ -3,6 +3,7 @@
 ===============================
 New features:
 
+use .freeplane as user folder 
 Search and filter on note content
 Icon toolbar menu improved
 Osgi does not use jar bundles but directories.
