@@ -1,5 +1,5 @@
 @echo off
-set fwdir=%USERPROFILE%\freeplane\fwdir
+set fwdir=%~dp0\fwdir
 set xargs=restart.xargs
 if not exist %fwdir% set xargs=init.xargs
 set defines= "-Dorg.freeplane.param1=%1" "-Dorg.freeplane.param2=%2" "-Dorg.freeplane.param3=%3" "-Dorg.freeplane.param4=%4"

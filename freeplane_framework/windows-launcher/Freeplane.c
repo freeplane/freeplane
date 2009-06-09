@@ -71,7 +71,6 @@ int main(int argc, char *argv[])  {
    int /*bool*/ take_standard_javaw_path = 1; // 1 - true; 0 - false.
 
    char* javaw_path = take_standard_javaw_path ? standard_javaw_path : alternative_javaw_path;
-   char* userhome = getenv("userprofile");
 
    // Pick the path from argv[0]. This is for the case that the launcher is not
    // started from the folder in which it resides.
@@ -99,7 +98,7 @@ int main(int argc, char *argv[])  {
    
    char* fwdir;
    {
-      const char *argv[] = {userhome, "\\freeplane\\fwdir", 0};
+      const char *argv[] = {path_to_launcher_without_file, "fwdir", 0};
       fwdir = concat(argv);
    }
    

@@ -121,7 +121,7 @@ output_debug_info() {
 
 #--------- Put the environment together --------------------------------
 
-userfpdir=${HOME}/freeplane
+userfpdir=${HOME}/.freeplane
 _source /etc/freeplane/freeplanerc
 _source ${userfpdir}/freeplanerc
 
@@ -174,7 +174,7 @@ then
 fi
 
 #--------- Call (at last) Freeplane -------------------------------------
-fwdir=${userfpdir}/fwdir
+fwdir=${freedir}/fwdir
 
 defines=
 defines="$defines -Dorg.freeplane.globalresourcedir=${freedir}/resources"
