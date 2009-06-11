@@ -252,9 +252,8 @@ public class MapController extends SelectionController {
 	}
 
 	private void fireNodeChanged(final NodeModel node, final NodeChangeEvent nodeChangeEvent) {
-		final Iterator<INodeChangeListener> iterator = nodeChangeListeners.iterator();
-		while (iterator.hasNext()) {
-			iterator.next().nodeChanged(nodeChangeEvent);
+		for (INodeChangeListener next:nodeChangeListeners) {
+			next.nodeChanged(nodeChangeEvent);
 		}
 		node.fireNodeChanged(nodeChangeEvent);
 	}

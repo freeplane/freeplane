@@ -191,7 +191,7 @@ public class MNodeStyleController extends NodeStyleController {
 	 */
 	public void setFontFamily(final NodeModel node, final String fontFamily) {
 		final String oldFontFamily = getFont(node).getFamily();
-		if (fontFamily.equals(oldFontFamily)) {
+		if (oldFontFamily == fontFamily || oldFontFamily != null && oldFontFamily.equals(fontFamily)) {
 			return;
 		}
 		createOwnFont(node);

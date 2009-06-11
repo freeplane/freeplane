@@ -48,6 +48,7 @@ public class CreationModificationPlugin extends PersistentNodeHook implements IN
 	 */
 	public CreationModificationPlugin(final ModeController modeControler) {
 		super(modeControler);
+		modeControler.getMapController().addNodeChangeListener(this);
 	}
 
 	/*
@@ -56,8 +57,14 @@ public class CreationModificationPlugin extends PersistentNodeHook implements IN
 	 */
 	@Override
 	public void add(final NodeModel node, final IExtension extension) {
+		getModeController().getMapController().removeNodeChangeListener(this);
 		super.add(node, extension);
-		setStyleRecursive(node);
+		try{
+			setStyleRecursive(node);
+		}
+		finally{
+			getModeController().getMapController().addNodeChangeListener(this);
+		}
 	}
 
 	@Override
@@ -70,7 +77,13 @@ public class CreationModificationPlugin extends PersistentNodeHook implements IN
 		if (!isActive(node)) {
 			return;
 		}
-		setStyle(node);
+		getModeController().getMapController().removeNodeChangeListener(this);
+		try{
+			setStyle(node);
+		}
+		finally{
+			getModeController().getMapController().addNodeChangeListener(this);
+		}
 	}
 
 	@Override
@@ -92,7 +105,7 @@ public class CreationModificationPlugin extends PersistentNodeHook implements IN
 
 	private void setStyle(final NodeModel node) {
 		final Object[] messageArguments = { node.getHistoryInformation().getCreatedAt(),
-		        node.getHistoryInformation().getLastModifiedAt() };
+				node.getHistoryInformation().getLastModifiedAt() };
 		if (tooltipFormat == null) {
 			tooltipFormat = ResourceBundles.getText("CreationModificationPlugin.tooltip_format");
 		}
