@@ -15,7 +15,6 @@
 		<property name="bin.jars" value="${bin}/jars" />
 		<property name="bin.plugins" value="${bin}/plugins" />
 		<property name="bin.resources" value="${bin}/resources" />
-		<property name="bin.ortho" value="${bin}/resources/ortho" />
 		<property name="script" value="${root}/script" />
 
 		<ant antfile="ant/build.xml" target="osgi_dist" dir="${workspace}/freeplane" inheritall="false"/>
@@ -52,14 +51,13 @@
 		</copy>
 		
 		<mkdir dir="${bin.resources}" />		
-		<mkdir dir="${bin.ortho}" />		
-		<copy todir="${bin.ortho}">
-			<fileset dir="${workspace}/freeplane/ortho"/>
+		<copy todir="${bin.resources}">
+			<fileset dir="${workspace}/freeplane/bin/dist/resources"/>
 		</copy>
 		
 		<mkdir dir="${dist}" />	
 		
-		<zip destfile="${dist}/freeplane_bin-${ver}.zip" compress="false">
+		<zip destfile="${dist}/freeplane_bin-${ver}.zip" compress="true">
 			<fileset dir="${bin}"/>
 			<fileset dir="${root}">
 				<include name="${license}"/>
