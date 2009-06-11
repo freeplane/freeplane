@@ -214,6 +214,7 @@ public class Controller extends AController {
 	}
 
 	public boolean shutdown() {
+		getViewController().saveProperties();
 		ResourceController.getResourceController().saveProperties(this);
 		if (!getViewController().quit()) {
 			return false;

@@ -386,7 +386,13 @@ class ApplicationViewController extends ViewController {
 	    if (! super.quit()){
 	    	return false;
 	    }
-		final int winState = frame.getExtendedState() & ~Frame.ICONIFIED;
+		frame.dispose();
+		return true;
+    }
+	
+	@Override
+	public void saveProperties() {
+	    final int winState = frame.getExtendedState() & ~Frame.ICONIFIED;
 		if (JFrame.MAXIMIZED_BOTH != (winState & JFrame.MAXIMIZED_BOTH)) {
 			resourceController.setProperty("appwindow_x", String.valueOf(frame.getX()));
 			resourceController.setProperty("appwindow_y", String.valueOf(frame.getY()));
@@ -395,8 +401,6 @@ class ApplicationViewController extends ViewController {
 		}
 		resourceController.setProperty("appwindow_state", String.valueOf(winState));
 		resourceController.setProperty("map_view_zoom", Float.toString(getZoom()));
-		frame.dispose();
-		return true;
     }
 
 	@Override

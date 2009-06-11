@@ -643,4 +643,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 			setZoomByItem(zoomModel.getElementAt((int) (currentZoomIndex - 0.5f)));
 		}
 	}
+
+	public void saveProperties() {
+    }
 }
