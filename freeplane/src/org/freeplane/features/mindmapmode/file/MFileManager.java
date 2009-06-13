@@ -45,6 +45,7 @@ import javax.swing.filechooser.FileFilter;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.FreeplaneVersion;
+import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
@@ -65,6 +66,7 @@ import org.freeplane.n3.nanoxml.XMLParseException;
  * @author Dimitry Polivaev
  */
 public class MFileManager extends UrlManager {
+	private static final String BACKUP_FILE_NUMBER = "backup_file_number";
 	private static final String EXPECTED_START_STRINGS[] = { "<map version=\"" + FreeplaneVersion.XML_VERSION + "\"",
     "<map version=\"0.7.1\"" };
 private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_version_updater.xslt";
@@ -240,6 +242,8 @@ private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_ve
 		getController().getViewController().setTitle();
 	}
 
+	static private class BackupFlag implements IExtension{
+	};
 	public boolean save(final MapModel map) {
 		if (map.isSaved()) {
 			return true;
@@ -252,11 +256,80 @@ private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_ve
 		}
 	}
 
+	private void backup(MapModel map) {
+	    final File file = map.getFile();
+	    if(file == null){
+	    	return;
+	    }
+		final int backupFileNumber =ResourceController.getResourceController().getIntProperty(BACKUP_FILE_NUMBER, 0);
+	    backupFile(file, backupFileNumber, ".backup", "bak");
+    }
+
+	private static void backupFile(final File file, final int backupFileNumber, final String dir, String extension) {
+	    if(backupFileNumber == 0){
+			return;
+		}
+	    final String name = file.getName();
+		final File backupDir = new File(file.getParentFile(), dir);
+		backupDir.mkdir();
+		if(backupDir.exists()){			
+			File backupFile = renameBackupFiles(backupDir, name, backupFileNumber, extension);
+			if(! backupFile.exists()){
+				file.renameTo(backupFile);
+			}
+		}
+    }
+
+	static File renameBackupFiles(File backupDir, String name, int backupFileNumber, String extension) {
+	    if(backupFileNumber == 0){
+			return null;
+		}
+	    for(int i =backupFileNumber+1;;i++){
+	    	File newFile = createBackupFile(backupDir, name, i, extension);
+	    	if(! newFile.exists()){
+	    		break;
+	    	}
+	    	newFile.delete();
+	    }
+
+	    int i =backupFileNumber;
+		for(;;){
+			File newFile = createBackupFile(backupDir, name, i, extension);			
+			if(newFile.exists()){
+				break;
+			}
+			i--;
+			if(i == 0){
+				break;
+			}
+		}
+		if(i < backupFileNumber){
+			return createBackupFile(backupDir, name, i+1, extension);
+		}
+		for(i =1; i <backupFileNumber ; i++){
+			File newFile = createBackupFile(backupDir, name, i, extension);
+			File oldFile = createBackupFile(backupDir, name, i+1, extension);
+			newFile.delete();
+			if(! oldFile.renameTo(newFile)){
+				return null;
+			}
+		}
+		return createBackupFile(backupDir, name, backupFileNumber, extension);
+    }
+
+	static File createBackupFile(File backupDir, String name, int number, String extension) {
+	    return new File(backupDir, name + '.' +  number + '.' + extension);
+    }
+
 	/**
 	 * Return the success of saving
 	 */
 	public boolean save(final MapModel map, final File file) {
 		try {
+			if(null == map.getExtension(BackupFlag.class)){
+				map.addExtension(new BackupFlag());
+				backup(map);
+			}
 			final String lockingUser = ((MMapController) getModeController().getMapController()).tryToLock(map, file);
 			if (lockingUser != null) {
 				UITools.informationMessage(getController().getViewController().getFrame(), FpStringUtils.formatText(

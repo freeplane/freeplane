@@ -104,32 +104,12 @@ public class MMapModel extends MapModel {
 		}
 		final boolean filesShouldBeDeletedAfterShutdown = ResourceController.getResourceController()
 		    .getBooleanProperty("delete_automatic_saves_at_exit");
-		String path = ResourceController.getResourceController().getProperty("path_to_automatic_saves");
-		/* two standard values: */
-		if (StringUtils.equals(path, "default")) {
-			path = null;
-		}
-		if (StringUtils.equals(path, "freeplane_home")) {
-			path = ResourceController.getResourceController().getFreeplaneUserDirectory();
-		}
 		int delay = Integer.parseInt(ResourceController.getResourceController().getProperty("time_for_automatic_save"));
 		if (delay == 0) {
 			return;
 		}
-		File dirToStore = null;
-		if (path != null) {
-			dirToStore = new File(path);
-			/* existence? */
-			if (!dirToStore.isDirectory()) {
-				dirToStore = null;
-				System.err.println("Temporary directory " + path + " not found. Disabling automatic store.");
-				delay = Integer.MAX_VALUE;
-				return;
-			}
-		}
 		final Timer timer = new Timer();
-		timer.schedule(new DoAutomaticSave(modeController, this, numberOfTempFiles, filesShouldBeDeletedAfterShutdown,
-		    dirToStore), delay, delay);
+		timer.schedule(new DoAutomaticSave(modeController, this, numberOfTempFiles, filesShouldBeDeletedAfterShutdown), delay, delay);
 		this.setTimerForAutomaticSaving(timer);
 	}
 

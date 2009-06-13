@@ -29,6 +29,7 @@ import java.util.Vector;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.resources.FpStringUtils;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.mindmapmode.MMapModel;
@@ -44,17 +45,13 @@ public class DoAutomaticSave extends TimerTask {
 	final private ModeController modeController;
 	final private MapModel model;
 	final private int numberOfFiles;
-	final private File pathToStore;
-	final private Vector tempFileStack;
 
 	public DoAutomaticSave(final ModeController modeController, final MapModel model, final int numberOfTempFiles,
-	                       final boolean filesShouldBeDeletedAfterShutdown, final File pathToStore) {
+	                       final boolean filesShouldBeDeletedAfterShutdown) {
 		this.modeController = modeController;
 		this.model = model;
-		tempFileStack = new Vector();
 		numberOfFiles = ((numberOfTempFiles > 0) ? numberOfTempFiles : 1);
 		this.filesShouldBeDeletedAfterShutdown = filesShouldBeDeletedAfterShutdown;
-		this.pathToStore = pathToStore;
 		changeState = model.getNumberOfChangesSinceLastSave();
 	}
 
@@ -72,35 +69,31 @@ public class DoAutomaticSave extends TimerTask {
 		try {
 			cancel();
 			EventQueue.invokeAndWait(new Runnable() {
+
 				public void run() {
 					/* Now, it is dirty, we save it. */
-					File tempFile;
-					if (tempFileStack.size() >= numberOfFiles) {
-						tempFile = (File) tempFileStack.remove(0);
-					}
-					else {
-						try {
-							final URL url = model.getURL();
-							final String string;
-							if(url == null){
-								string = "unnamed";
-							}
-							else{
-								string = new File(url.getFile()).getName();
-							}
-							tempFile = File.createTempFile("FM_"+ string,
-							    UrlManager.FREEPLANE_FILE_EXTENSION, pathToStore);
-							if (filesShouldBeDeletedAfterShutdown) {
-								tempFile.deleteOnExit();
-							}
+					try {
+						final String name;
+						final File pathToStore;
+						final URL url = model.getURL();
+						if(url == null){
+							name = model.getTitle()+UrlManager.FREEPLANE_FILE_EXTENSION;
+							final String freeplaneUserDirectory = ResourceController.getResourceController().getFreeplaneUserDirectory();
+							pathToStore = new File(freeplaneUserDirectory, ".backup"); 
 						}
-						catch (final Exception e) {
-							System.err.println("Error in automatic MapModel.save(): " + e.getMessage());
-							LogTool.severe(e);
+						else{
+							final File file = new File(url.getFile());
+							name = file.getName();
+							pathToStore = new File(file.getParent(), ".backup");
+						}
+						pathToStore.mkdirs();
+						final File tempFile = MFileManager.renameBackupFiles(pathToStore, name, numberOfFiles, "autosave");
+						if(tempFile == null){
 							return;
 						}
-					}
-					try {
+						if (filesShouldBeDeletedAfterShutdown) {
+							tempFile.deleteOnExit();
+						}
 						((MFileManager) UrlManager.getController(modeController)).saveInternal((MMapModel) model,
 						    tempFile, true /*=internal call*/);
 						modeController.getController().getViewController().out(
@@ -110,7 +103,6 @@ public class DoAutomaticSave extends TimerTask {
 						System.err.println("Error in automatic MapModel.save(): " + e.getMessage());
 						LogTool.severe(e);
 					}
-					tempFileStack.add(tempFile);
 				}
 			});
 		}

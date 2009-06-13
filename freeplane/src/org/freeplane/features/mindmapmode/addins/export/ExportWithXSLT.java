@@ -53,6 +53,7 @@ import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.core.util.ResUtil;
@@ -203,7 +204,7 @@ public class ExportWithXSLT extends ExportAction {
 	private boolean copyMap(final String pDirectoryName) throws IOException {
 		final boolean success = true;
 		final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(pDirectoryName
-		        + File.separator + "map.mm")));
+		        + File.separator + "map" + UrlManager.FREEPLANE_FILE_EXTENSION)));
 		final MapModel map = getController().getMap();
 		getModeController().getMapController().getFilteredXml(map, fileout, Mode.FILE);
 		return success;

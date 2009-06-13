@@ -29,6 +29,7 @@ import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.features.common.link.NodeLinks;
@@ -253,7 +254,7 @@ class MindMapHTMLWriter {
 		}
 		String link = NodeLinks.getLink(model);
 		if (link != null) {
-			if (link.endsWith(".mm")) {
+			if (link.endsWith(UrlManager.FREEPLANE_FILE_EXTENSION)) {
 				link += ".html";
 			}
 			fileout.write("<a href=\"" + link + "\" target=\"_blank\"><span class=l>~</span>&nbsp;");
