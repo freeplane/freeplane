@@ -4,7 +4,7 @@
 New features:
 Automatic backup for all loaded files on first save.
 Backup and autosave use directory ".backup" created in the map directory.
-All backup or autosave files are numbered from 1 to maximum number, the bigger number the satest file.
+All backup or autosave files are numbered from 1 to maximum number, the bigger number the latest file.
 Exception traces for critical internal errors are automatically sent to freeplane team for analysis.   
 
 Bug fixes: 
