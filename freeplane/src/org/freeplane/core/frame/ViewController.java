@@ -442,6 +442,9 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 
 	private void resizeToolbarPane() {
 		if (!toolbarPanel.isValid()) {
+			if(toolbarPanel.getWidth() == 0){
+				return;
+			}
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					resizeToolbarPane();
