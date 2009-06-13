@@ -31,12 +31,12 @@
 
 
 	<target name="dist" depends="build">
-		<jar jarfile="lib/activator.jar">
+		<jar jarfile="lib/plugin.jar">
 			<fileset dir="${build}"/>
 		</jar>
+		<delete dir="${dist.osgi.dir}" quiet="true"/>
 		<mkdir dir="${dist.osgi.dir}" />
 		<copy todir="${dist.osgi.dir}">
-			<fileset dir="${build}"/>
 			<fileset dir="${root}">
 				<include name="lib/**"/>
 			</fileset>
@@ -44,7 +44,7 @@
 		<mkdir dir="${dist.osgi.dir}/META-INF" />
 		<copyfile dest="${dist.osgi.dir}/META-INF/MANIFEST.MF" src="${osgimanifest}"/>
 		<delete dir="${build}"  quiet="true"/>
-		<delete file="lib/activator.jar" quiet="true"/>
+		<delete file="lib/plugin.jar" quiet="true"/>
 	</target>
 
 	<target name="osgi_dist_as_jar" depends="dist">

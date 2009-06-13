@@ -22,6 +22,7 @@
 		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_svg" inheritall="false"/>
 		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_latex" inheritall="false"/>
 		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_script" inheritall="false"/>
+		<ant antfile="ant/build.xml" dir="${workspace}/freeplane_plugin_bugreport" inheritall="false"/>
 		<mkdir dir="${bin}" />
 		<copy todir="${bin}">
 			<fileset dir="${script}"/>
@@ -41,14 +42,18 @@
 		<copy todir="${bin.plugins}/org.freeplane.plugin.latex">
 			<fileset dir="${workspace}/freeplane_plugin_latex/bin/dist/osgi/dir"/>
 		</copy>
-		<mkdir dir="${bin.plugins}/org.freeplane.plugin.script" />
-		<copy todir="${bin.plugins}/org.freeplane.plugin.script">
-			<fileset dir="${workspace}/freeplane_plugin_script/bin/dist/osgi/dir"/>
-		</copy>
 		<mkdir dir="${bin.plugins}/org.freeplane.plugin.svg" />
 		<copy todir="${bin.plugins}/org.freeplane.plugin.svg">
 			<fileset dir="${workspace}/freeplane_plugin_svg/bin/dist/osgi/dir"/>
 		</copy>
+		<mkdir dir="${bin.plugins}/org.freeplane.plugin.script" />
+		<copy todir="${bin.plugins}/org.freeplane.plugin.script">
+			<fileset dir="${workspace}/freeplane_plugin_script/bin/dist/osgi/dir"/>
+		</copy>
+		<mkdir dir="${bin.plugins}/org.freeplane.plugin.bugreport" />
+		<copy todir="${bin.plugins}/org.freeplane.plugin.bugreport">
+			<fileset dir="${workspace}/freeplane_plugin_bugreport/bin/dist/osgi/dir"/>
+		</copy>		
 		
 		<mkdir dir="${bin.resources}" />		
 		<copy todir="${bin.resources}">
@@ -58,10 +63,10 @@
 		<mkdir dir="${dist}" />	
 		
 		<zip destfile="${dist}/freeplane_bin-${ver}.zip" compress="true">
-			<fileset dir="${bin}"/>
-			<fileset dir="${root}">
+			<zipfileset dir="${bin}" prefix="freeplane-${ver}"/>
+			<zipfileset dir="${root}" prefix="freeplane-${ver}">
 				<include name="${license}"/>
-			</fileset>
+			</zipfileset>
 		</zip>
 		
 		<tar destfile="${dist}/freeplane_src-${ver}.tar.gz" compression="gzip">
@@ -75,7 +80,8 @@
 				<exclude name="*/build/**"/>
 				<exclude name="*/dist/**"/>
 			</tarfileset>
-			<tarfileset dir="${root}" mode="777" username="ant" group="ant">
+			<tarfileset dir="${root}" prefix="freeplane-${ver}"
+					mode="777" username="ant" group="ant">
 				<include name="${license}"/>
 				<include name="${readme_src}"/>
 			</tarfileset>

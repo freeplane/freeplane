@@ -107,6 +107,10 @@ public class LogTool {
 		LogTool.severe(e, "");
 	}
 
+	public static void warn(final Throwable e) {
+		LogTool.warn(e, "");
+	}
+
 	public static void severe(final Throwable e, final String comment) {
 		LOGGER.log(Level.SEVERE, comment, e);
 	}

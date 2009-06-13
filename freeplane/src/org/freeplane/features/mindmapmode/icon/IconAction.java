@@ -30,6 +30,7 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.IIconInformation;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MultipleNodeAction;
@@ -44,11 +45,19 @@ class IconAction extends MultipleNodeAction implements IIconInformation {
 	final private MindIcon icon;
 
 	public IconAction(final Controller controller, final MindIcon _icon) {
-		super("IconAction." + _icon.getName(), controller, ResourceBundles.getText("icon_"
-		        + _icon.getName()), _icon.getIcon());
+		super("IconAction." + _icon.getName(), controller, getLocalName(_icon), _icon.getIcon());
 		putValue(Action.SHORT_DESCRIPTION, _icon.getDescription());
 		icon = _icon;
 	}
+
+	private static String getLocalName(final MindIcon _icon) {
+	    final String name = _icon.getName();
+		final String localName = ResourceBundles.getText("icon_"+ name, null);
+		if(localName != null){
+			return localName;
+		}
+		return FpStringUtils.formatText("user_icon", name);
+    }
 
 	@Override
 	public void actionPerformed(final ActionEvent e, final NodeModel node) {

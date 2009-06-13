@@ -7,6 +7,7 @@
 -install org.freeplane.plugin.svg
 -install org.freeplane.plugin.latex
 -install org.freeplane.plugin.script
+-install org.freeplane.plugin.bugreport
 
 -initlevel 2
 -install org.freeplane.core
@@ -18,6 +19,7 @@
 -start org.freeplane.plugin.svg
 -start org.freeplane.plugin.latex
 -start org.freeplane.plugin.script
+-start org.freeplane.plugin.bugreport
 -start org.freeplane.core
 
 
