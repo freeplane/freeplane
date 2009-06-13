@@ -103,6 +103,7 @@ public class XmlRpcHandler extends StreamHandler{
 			Map<String, String> report = new LinkedHashMap<String, String>();
 			report.put("hash", hash);
 			report.put("log", log);
+			report.put("version", version.replace(' ', '_'));
 			sendReport(report);
 
 		} catch (UnsupportedEncodingException e) {
@@ -120,7 +121,8 @@ public class XmlRpcHandler extends StreamHandler{
 	    if(info == null){
 	    	StringBuilder sb = new StringBuilder();
 	    	sb.append("freeplane_version = ");
-	    	sb.append(FreeplaneVersion.getVersion());
+	    	version = FreeplaneVersion.getVersion().toString();
+			sb.append(version);
 	    	sb.append("; freeplane_xml_version = ");
 	    	sb.append(FreeplaneVersion.XML_VERSION);
 	    	sb.append("\njava_version = ");
@@ -178,6 +180,7 @@ public class XmlRpcHandler extends StreamHandler{
 	private static String BUG_TRACKER_URL = null;
 	static boolean disabled = false;
 	private static String info;
+	private static String version;
 	private String getBugTrackerUrl() {
 		if(BUG_TRACKER_URL != null){
 			return BUG_TRACKER_URL;
