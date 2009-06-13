@@ -103,7 +103,7 @@ public class XmlRpcHandler extends StreamHandler{
 			Map<String, String> report = new LinkedHashMap<String, String>();
 			report.put("hash", hash);
 			report.put("log", log);
-			report.put("version", version.replace(' ', '_'));
+			report.put("version", version);
 			sendReport(report);
 
 		} catch (UnsupportedEncodingException e) {
@@ -201,6 +201,7 @@ public class XmlRpcHandler extends StreamHandler{
 	private String calculateHash() {
 		final String[] lines = log.split("\n");
 		StringBuffer hashInput  = new StringBuffer();
+		hashInput.append(version);
 		for(int i = 0; i < lines.length; i++){
 			if(lines[i].contains("org.freeplane.")){
 				hashInput.append(lines[i]);
