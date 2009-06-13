@@ -36,8 +36,8 @@ public class BugFormatter extends Formatter {
 		final String message = record.getMessage();
 		StringBuilder sb = new StringBuilder();
 		sb.append(message);
+		sb.append('\n');
 		if (record.getThrown() != null) {
-			sb.append('\n');
 		    try {
 		        StringWriter sw = new StringWriter();
 		        PrintWriter pw = new PrintWriter(sw);

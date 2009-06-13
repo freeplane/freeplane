@@ -156,12 +156,18 @@ public class XmlRpcHandler extends StreamHandler{
 		        wr.write(data.toString());
 		        wr.flush();
 		    
-//		        // Get the response
-//		        BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-//		        String line = rd.readLine();
-//		        wr.close();
-//		        rd.close();
-//		        return line;
+		        // Get the response
+		        BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+		        String line = rd.readLine();
+		        if(line != "ok"){
+		        	do {
+		        		System.out.println(line);
+		        		line = rd.readLine();
+		        	} while (line != null);
+		        }
+		        wr.close();
+		        rd.close();
+		        return line;
 		    } catch (Exception e) {
 		    }
 	    	return null;
