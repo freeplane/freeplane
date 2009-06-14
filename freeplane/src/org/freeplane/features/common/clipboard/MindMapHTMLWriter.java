@@ -19,19 +19,24 @@
  */
 package org.freeplane.features.common.clipboard;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.ListIterator;
 
+import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.modecontroller.MapController;
+import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.HtmlTools;
+import org.freeplane.features.common.addins.mapstyle.MapStyle;
+import org.freeplane.features.common.addins.mapstyle.MapStyleModel;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
 
@@ -212,7 +217,13 @@ class MindMapHTMLWriter {
 		        + MindMapHTMLWriter.writeHTML_escapeUnicodeAndSpecialCharacters(rootNodeOfBranch.getPlainTextContent()
 		            .replace('\n', ' ')) + "</title>" + MindMapHTMLWriter.el);
 		writeStyle();
-		fileout.write(MindMapHTMLWriter.el + "</head>" + MindMapHTMLWriter.el + "<body>" + MindMapHTMLWriter.el);
+		fileout.write(MindMapHTMLWriter.el + "</head>" + MindMapHTMLWriter.el + "<body");
+		final MapStyleModel style = MapStyleModel.getExtension(rootNodeOfBranch.getMap());
+		final Color background = style != null ? style.getBackgroundColor() : null;
+		if(background != null){
+			fileout.write( " bgcolor=" + ColorUtils.colorToString(background));
+		}
+		fileout.write( ">" + MindMapHTMLWriter.el);
 		if (writeFoldingCode) {
 			writeBodyWithFolding(rootNodeOfBranch);
 		}

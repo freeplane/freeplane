@@ -22,6 +22,7 @@ package org.freeplane.features.common.addins.mapstyle;
 import java.awt.Color;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 
 /**
@@ -42,12 +43,16 @@ public class MapStyleModel implements IExtension {
 		return (MapStyleModel) node.getExtension(MapStyleModel.class);
 	}
 
+	public static MapStyleModel getExtension(final MapModel map) {
+		return getExtension(map.getRootNode());
+	}
+
 	private Color backgroundColor;
 
 	public MapStyleModel() {
 	}
 
-	protected Color getBackgroundColor() {
+	public Color getBackgroundColor() {
 		return backgroundColor;
 	}
 
