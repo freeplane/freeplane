@@ -74,6 +74,14 @@
         <separator name = "updates">
         	<boolean name = "check_updates_automatically"/>
         </separator>
+        <separator name="org.freeplane.plugin.bugreport">
+       	    <combo name = "org.freeplane.plugin.bugreport">
+                <choice value="org.freeplane.plugin.bugreport.allowed"/>
+                <choice value="org.freeplane.plugin.bugreport.denied"/>
+                <choice value="org.freeplane.plugin.bugreport.ask"/>
+            </combo>
+        </separator>
+                
     </tab>
     <tab name="Defaults">
         <separator name="default_styles">
