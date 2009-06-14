@@ -160,7 +160,7 @@ public class XmlRpcHandler extends StreamHandler{
 	    		ResourceBundles.getText("org.freeplane.plugin.bugreport.always_deny")};
 	    final int choice = JOptionPane.showOptionDialog(null, 
 	    	messagePane, ResourceBundles.getText("org.freeplane.plugin.bugreport.dialog.title"), JOptionPane.DEFAULT_OPTION, 
-	    	JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+	    	JOptionPane.INFORMATION_MESSAGE, null, options, options[1]);
 	    final String decision;
 	    switch(choice){
 	    	case 0: 
