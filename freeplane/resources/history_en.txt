@@ -5,7 +5,7 @@ New features:
 Automatic backup for all loaded files on first save.
 Backup and autosave use directory ".backup" created in the map directory.
 All backup or autosave files are numbered from 1 to maximum number, the bigger number the latest file.
-Exception traces for critical internal errors are automatically sent to freeplane team for analysis.   
+Exception traces for internal errors are automatically sent to freeplane team for analysis.   
 
 Bug fixes: 
 [Bugs 0000076]: Notes window size not remembered between sessions

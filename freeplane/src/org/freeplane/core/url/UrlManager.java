@@ -41,6 +41,7 @@ import javax.swing.filechooser.FileFilter;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
@@ -138,7 +139,6 @@ public class UrlManager implements IExtension {
 	public static Reader getUpdateReader(final InputStream file, final String xsltScript) throws IOException {
 		StringWriter writer = null;
 		InputStream inputStream = null;
-		boolean successful = false;
 		try {
 			URL updaterUrl = null;
 			updaterUrl = ResourceController.getResourceController().getResource(xsltScript);
@@ -150,10 +150,10 @@ public class UrlManager implements IExtension {
 			writer = new StringWriter();
 			final Result result = new StreamResult(writer);
 			class TransformerRunnable implements Runnable {
-				private boolean successful = false;
+				private Throwable thrownException = null;
 
-				public boolean isSuccessful() {
-					return successful;
+				public Throwable thrownException() {
+					return thrownException;
 				}
 
 				public void run() {
@@ -162,10 +162,10 @@ public class UrlManager implements IExtension {
 					try {
 						trans = transFact.newTransformer(xsltSource);
 						trans.transform(new StreamSource(file), result);
-						successful = true;
 					}
 					catch (final Exception ex) {
 						LogTool.severe(ex);
+						thrownException = ex;
 					}
 				}
 			}
@@ -173,9 +173,15 @@ public class UrlManager implements IExtension {
 			final Thread transformerThread = new Thread(transformer, "XSLT");
 			transformerThread.start();
 			transformerThread.join();
-			successful = transformer.isSuccessful();
+			final Throwable thrownException = transformer.thrownException();
+			if(thrownException != null){
+				throw new TransformerException(thrownException);
+			}
+			return new StringReader(writer.getBuffer().toString());
 		}
 		catch (final Exception ex) {
+			LogTool.severe(ex);
+			return  UrlManager.getActualReader(file);
 		}
 		finally {
 			if (inputStream != null) {
@@ -184,12 +190,6 @@ public class UrlManager implements IExtension {
 			if (writer != null) {
 				writer.close();
 			}
-		}
-		if (successful) {
-			return new StringReader(writer.getBuffer().toString());
-		}
-		else {
-			return UrlManager.getActualReader(file);
 		}
 	}
 
