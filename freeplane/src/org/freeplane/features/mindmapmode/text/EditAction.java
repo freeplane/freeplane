@@ -219,30 +219,8 @@ class EditAction extends AFreeplaneAction {
 	}
 
 	public void setNodeText(final NodeModel node, final String newText) {
-		final String oldText = node.toString();
-		if (oldText.equals(newText)) {
-			return;
-		}
-		final IActor actor = new IActor() {
-			public void act() {
-				if (!oldText.equals(newText)) {
-					node.setText(newText);
-					getModeController().getMapController().nodeChanged(node, NodeModel.NODE_TEXT, oldText, newText);
-				}
-			}
-
-			public String getDescription() {
-				return "editAction";
-			}
-
-			public void undo() {
-				if (!oldText.equals(newText)) {
-					node.setText(oldText);
-					getModeController().getMapController().nodeChanged(node, NodeModel.NODE_TEXT, newText, oldText);
-				}
-			}
-		};
-		getModeController().execute(actor);
+		final MTextController textController = (MTextController) TextController.getController(getModeController());
+		textController.setNodeText(node, newText);
 	}
 
 	public void stopEditing() {

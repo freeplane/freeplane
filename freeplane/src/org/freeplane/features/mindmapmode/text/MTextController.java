@@ -38,6 +38,7 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
+import org.freeplane.core.undo.IActor;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FixedHTMLWriter;
@@ -200,8 +201,31 @@ public class MTextController extends TextController {
 		}
 	}
 
-	public void setNodeText(final NodeModel selected, final String newText) {
-		((EditAction) getModeController().getAction("EditAction")).setNodeText(selected, newText);
+	public void setNodeText(final NodeModel node, final String newText) {
+		final String oldText = node.toString();
+		if (oldText.equals(newText)) {
+			return;
+		}
+		final IActor actor = new IActor() {
+			public void act() {
+				if (!oldText.equals(newText)) {
+					node.setText(newText);
+					getModeController().getMapController().nodeChanged(node, NodeModel.NODE_TEXT, oldText, newText);
+				}
+			}
+
+			public String getDescription() {
+				return "setNodeText";
+			}
+
+			public void undo() {
+				if (!oldText.equals(newText)) {
+					node.setText(oldText);
+					getModeController().getMapController().nodeChanged(node, NodeModel.NODE_TEXT, newText, oldText);
+				}
+			}
+		};
+		getModeController().execute(actor);
 	}
 
 	public void splitNode(final NodeModel node, final int caretPosition, final String newText) {

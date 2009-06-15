@@ -317,34 +317,42 @@ class ApplicationViewController extends ViewController {
 
 	@Override
 	public void removeSplitPane() {
-		if (mSplitPane != null) {
-			if ("right".equals(mLocationPreferenceValue)) {
-				resourceController.setProperty(SPLIT_PANE_RIGHT_POSITION, "" + mSplitPane.getDividerLocation());
-				resourceController
-				    .setProperty(SPLIT_PANE_LAST_RIGHT_POSITION, "" + mSplitPane.getLastDividerLocation());
-			}
-			else if ("left".equals(mLocationPreferenceValue)) {
-				resourceController.setProperty(SPLIT_PANE_LEFT_POSITION, "" + mSplitPane.getDividerLocation());
-				resourceController.setProperty(SPLIT_PANE_LAST_LEFT_POSITION, "" + mSplitPane.getLastDividerLocation());
-			}
-			else if ("top".equals(mLocationPreferenceValue)) {
-				resourceController.setProperty(SPLIT_PANE_TOP_POSITION, "" + mSplitPane.getDividerLocation());
-				resourceController.setProperty(SPLIT_PANE_LAST_TOP_POSITION, "" + mSplitPane.getLastDividerLocation());
-			}
-			else if ("bottom".equals(mLocationPreferenceValue)) {
-				resourceController.setProperty(SPLIT_PANE_POSITION, "" + mSplitPane.getDividerLocation());
-				resourceController.setProperty(SPLIT_PANE_LAST_POSITION, "" + mSplitPane.getLastDividerLocation());
-			}
-			else {
-				resourceController.setProperty(SPLIT_PANE_POSITION, "" + mSplitPane.getDividerLocation());
-				resourceController.setProperty(SPLIT_PANE_LAST_POSITION, "" + mSplitPane.getLastDividerLocation());
-			}
-			removeContentComponent();
-			mContentComponent = getScrollPane();
-			setContentComponent();
-			mSplitPane = null;
+		if (mSplitPane == null) {
+			return;
 		}
+		saveSplitPanePosition();
+		removeContentComponent();
+		mContentComponent = getScrollPane();
+		setContentComponent();
+		mSplitPane = null;
 	}
+
+	private void saveSplitPanePosition() {
+		if (mSplitPane == null) {
+			return;
+		}
+	    if ("right".equals(mLocationPreferenceValue)) {
+	    	resourceController.setProperty(SPLIT_PANE_RIGHT_POSITION, "" + mSplitPane.getDividerLocation());
+	    	resourceController
+	    	    .setProperty(SPLIT_PANE_LAST_RIGHT_POSITION, "" + mSplitPane.getLastDividerLocation());
+	    }
+	    else if ("left".equals(mLocationPreferenceValue)) {
+	    	resourceController.setProperty(SPLIT_PANE_LEFT_POSITION, "" + mSplitPane.getDividerLocation());
+	    	resourceController.setProperty(SPLIT_PANE_LAST_LEFT_POSITION, "" + mSplitPane.getLastDividerLocation());
+	    }
+	    else if ("top".equals(mLocationPreferenceValue)) {
+	    	resourceController.setProperty(SPLIT_PANE_TOP_POSITION, "" + mSplitPane.getDividerLocation());
+	    	resourceController.setProperty(SPLIT_PANE_LAST_TOP_POSITION, "" + mSplitPane.getLastDividerLocation());
+	    }
+	    else if ("bottom".equals(mLocationPreferenceValue)) {
+	    	resourceController.setProperty(SPLIT_PANE_POSITION, "" + mSplitPane.getDividerLocation());
+	    	resourceController.setProperty(SPLIT_PANE_LAST_POSITION, "" + mSplitPane.getLastDividerLocation());
+	    }
+	    else {
+	    	resourceController.setProperty(SPLIT_PANE_POSITION, "" + mSplitPane.getDividerLocation());
+	    	resourceController.setProperty(SPLIT_PANE_LAST_POSITION, "" + mSplitPane.getLastDividerLocation());
+	    }
+    }
 
 	private void setContentComponent() {
 		if (mapViewManager != null) {
@@ -393,6 +401,7 @@ class ApplicationViewController extends ViewController {
 	
 	@Override
 	public void saveProperties() {
+		saveSplitPanePosition();
 	    final int winState = frame.getExtendedState() & ~Frame.ICONIFIED;
 		if (JFrame.MAXIMIZED_BOTH != (winState & JFrame.MAXIMIZED_BOTH)) {
 			resourceController.setProperty("appwindow_x", String.valueOf(frame.getX()));

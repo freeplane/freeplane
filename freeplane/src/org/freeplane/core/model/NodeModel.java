@@ -515,10 +515,6 @@ public class NodeModel implements MutableTreeNode {
 		}
 	}
 
-	public void setText(final Object object) {
-		setText((String) object);
-	}
-
 	public final void setText(final String text) {
 		if (text == null) {
 			this.text = null;
