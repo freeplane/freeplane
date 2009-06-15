@@ -35,6 +35,7 @@ import org.apache.fop.svg.PDFTranscoder;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.ActionLocationDescriptor;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.view.swing.map.MapView;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -86,9 +87,8 @@ class ExportPdf extends ExportVectorGraphic {
 			ostream.close();
 		}
 		catch (final Exception ex) {
-			org.freeplane.core.util.LogTool.severe(ex);
-			JOptionPane.showMessageDialog(getController().getViewController().getContentPane(), ex
-			    .getLocalizedMessage(), null, JOptionPane.ERROR_MESSAGE);
+			org.freeplane.core.util.LogTool.warn(ex);
+			UITools.errorMessage(ex.getLocalizedMessage());
 		}
 		getController().getViewController().setWaitingCursor(false);
 	}

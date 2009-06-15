@@ -124,7 +124,7 @@ public class XmlRpcHandler extends StreamHandler{
 				sendReport(report);
 			}
 		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+			LogTool.severe(e);
 		}
 		finally{
 			out = null;

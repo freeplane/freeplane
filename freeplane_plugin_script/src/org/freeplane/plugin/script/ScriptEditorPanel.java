@@ -58,6 +58,7 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.UIBuilder;
 import org.freeplane.core.ui.components.BlindIcon;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.LogTool;
 import org.freeplane.plugin.script.ScriptingEngine.IErrorHandler;
 
 /**
@@ -315,7 +316,7 @@ class ScriptEditorPanel extends JDialog {
 					        + (caretPosition - mScriptTextField.getLineStartOffset(lineOfOffset) + 1));
 				}
 				catch (final BadLocationException e) {
-					org.freeplane.core.util.LogTool.severe(e);
+					LogTool.severe(e);
 				}
 			}
 		});

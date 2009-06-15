@@ -32,6 +32,7 @@ import javax.swing.JOptionPane;
 import org.apache.batik.svggen.SVGGraphics2D;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.ActionLocationDescriptor;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.view.swing.map.MapView;
 
 @ActionLocationDescriptor(locations = { "/menu_bar/file/export/export" })
@@ -66,9 +67,8 @@ class ExportSvg extends ExportVectorGraphic {
 			bos.close();
 		}
 		catch (final Exception ex) {
-			org.freeplane.core.util.LogTool.severe(ex);
-			JOptionPane.showMessageDialog(getController().getViewController().getContentPane(), ex
-			    .getLocalizedMessage(), null, JOptionPane.ERROR_MESSAGE);
+			org.freeplane.core.util.LogTool.warn(ex);
+			UITools.errorMessage(ex.getLocalizedMessage());
 		}
 		getController().getViewController().setWaitingCursor(false);
 	}

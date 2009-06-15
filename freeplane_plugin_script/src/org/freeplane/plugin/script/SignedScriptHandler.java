@@ -37,6 +37,7 @@ import java.util.regex.Pattern;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.EnterPasswordDialog;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.addins.encrypt.DesEncrypter;
 
@@ -216,7 +217,7 @@ class SignedScriptHandler {
 		}
 		catch (final Exception e) {
 			LogTool.severe(e);
-			controller.errorMessage(e.getLocalizedMessage());
+			UITools.errorMessage(e.getLocalizedMessage());
 		}
 		return content.mScript;
 	}

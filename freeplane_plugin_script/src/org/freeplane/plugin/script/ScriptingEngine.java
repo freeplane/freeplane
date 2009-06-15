@@ -43,6 +43,8 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
+import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.attribute.AttributeController;
 import org.freeplane.features.common.attribute.NodeAttributeTableModel;
 import org.freeplane.features.common.text.TextController;
@@ -220,11 +222,11 @@ class ScriptingEngine extends AFreeplaneAction {
 			return false;
 		}
 		if (e2 != null) {
-			org.freeplane.core.util.LogTool.severe(e2);
+			LogTool.warn(e2);
 			pOutStream.print(e2.getMessage());
 			final String cause = ((e2.getCause() != null) ? e2.getCause().getMessage() : "");
 			final String message = ((e2.getMessage() != null) ? e2.getMessage() : "");
-			pMindMapController.getController().errorMessage(
+			UITools.errorMessage(
 			    e2.getClass().getName() + ": " + cause + ((cause.length() != 0 && message.length() != 0) ? ", " : "")
 			            + message);
 			return false;
