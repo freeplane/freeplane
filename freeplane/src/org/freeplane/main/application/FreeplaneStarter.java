@@ -133,7 +133,7 @@ public class FreeplaneStarter {
 			return controller;
 		}
 		catch (final Exception e) {
-			e.printStackTrace();
+			LogTool.severe(e);
 			throw new RuntimeException(e);
 		}
 	}
@@ -266,7 +266,7 @@ public class FreeplaneStarter {
 			createFrame(args);
 		}
 		catch (final Exception e) {
-			e.printStackTrace();
+			LogTool.severe(e);
 			JOptionPane.showMessageDialog(null, "freeplane.main.Freeplane can't be started", "Startup problem",
 			    JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
@@ -286,10 +286,10 @@ public class FreeplaneStarter {
 			});
 		}
 		catch (final InterruptedException e) {
-			e.printStackTrace();
+			LogTool.severe(e);
 		}
 		catch (final InvocationTargetException e) {
-			e.printStackTrace();
+			LogTool.severe(e);
 		}
 	}
 }

@@ -26,6 +26,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.link.ArrowLinkModel;
 import org.freeplane.features.common.link.NodeLinks;
@@ -49,7 +50,7 @@ class AddArrowLinkAction extends AFreeplaneAction {
 		final List selecteds = getModeController().getMapController().getSelectedNodes();
 		if (selecteds.size() < 2) {
 			final Controller controller = getController();
-			controller.errorMessage(ResourceBundles.getText("less_than_two_selected_nodes"));
+			UITools.errorMessage(ResourceBundles.getText("less_than_two_selected_nodes"));
 			return;
 		}
 		for (int i = 1; i < selecteds.size(); i++) {

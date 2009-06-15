@@ -43,6 +43,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.UIBuilder;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogTool;
@@ -220,8 +221,8 @@ class LastOpenedList implements IMapViewChangeListener {
 		}
 		catch (final Exception ex) {
 			remove(restoreable);
-			controller.errorMessage("An error occured on opening the file: " + restoreable + ".");
-			LogTool.severe(ex);
+			UITools.errorMessage("An error occured on opening the file: " + restoreable + ".");
+			LogTool.warn(ex);
 		}
     }
 

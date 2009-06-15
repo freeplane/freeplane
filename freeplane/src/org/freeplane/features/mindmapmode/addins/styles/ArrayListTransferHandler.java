@@ -31,6 +31,7 @@ import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.TransferHandler;
 
+import org.freeplane.core.util.LogTool;
 import org.freeplane.features.mindmapmode.addins.styles.ManagePatternsPopupDialog.PatternListModel;
 
 class ArrayListTransferHandler extends TransferHandler {
@@ -169,7 +170,7 @@ class ArrayListTransferHandler extends TransferHandler {
 			return false;
 		}
 		catch (final IOException ioe) {
-			System.out.println("importData: I/O exception");
+			LogTool.severe("importData: I/O exception", ioe);
 			return false;
 		}
 		int index = target.getSelectedIndex();

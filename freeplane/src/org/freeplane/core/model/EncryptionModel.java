@@ -136,9 +136,8 @@ public class EncryptionModel implements IExtension {
 			return encrypted;
 		}
 		catch (final Exception e) {
-			LogTool.severe(e);
+			throw new IllegalArgumentException("Can't encrypt the node.", e);
 		}
-		throw new IllegalArgumentException("Can't encrypt the node.");
 	}
 
 	/**

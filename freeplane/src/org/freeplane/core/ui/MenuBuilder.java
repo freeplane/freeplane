@@ -272,8 +272,8 @@ public class MenuBuilder extends UIBuilder {
 						addAction(menuPath.parentPath, theAction, MenuBuilder.AS_CHILD);
 					}
 				}
-				catch (final Exception e1) {
-					LogTool.severe(e1);
+				catch (final Exception e) {
+					LogTool.severe(e);
 				}
 				return menuPath;
 			}

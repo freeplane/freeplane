@@ -36,6 +36,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.clipboard.MindMapNodesSelection;
@@ -143,8 +144,7 @@ public class MNodeDropListener implements DropTargetListener {
 				final MMapController mapController = (MMapController) modeController.getMapController();
 				if (!mapController.isWriteable(targetNode)) {
 					final String message = ResourceBundles.getText("node_is_write_protected");
-					JOptionPane.showMessageDialog(controller.getViewController().getContentPane(), message,
-					    "Freeplane", JOptionPane.ERROR_MESSAGE);
+					UITools.errorMessage(message);
 					return;
 				}
 				Transferable trans = null;
@@ -175,8 +175,7 @@ public class MNodeDropListener implements DropTargetListener {
 			}
 		}
 		catch (final Exception e) {
-			System.err.println("Drop exception:" + e);
-			LogTool.severe(e);
+			LogTool.severe("Drop exception:", e);
 			dtde.dropComplete(false);
 			return;
 		}

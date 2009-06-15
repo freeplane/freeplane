@@ -26,6 +26,8 @@ import java.net.URL;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.LogTool;
 
 class OpenURLAction extends AFreeplaneAction {
 	/**
@@ -44,10 +46,12 @@ class OpenURLAction extends AFreeplaneAction {
 			getController().getViewController().openDocument(new URL(url));
 		}
 		catch (final MalformedURLException ex) {
-			getController().errorMessage(ResourceBundles.getText("url_error") + "\n" + ex);
+			UITools.errorMessage(ResourceBundles.getText("url_error") + "\n" + ex);
+			LogTool.warn( ex);		
 		}
 		catch (final Exception ex) {
-			getController().errorMessage(ex);
+			UITools.errorMessage(ex);
+			LogTool.warn( ex);		
 		}
 	}
 }

@@ -262,8 +262,7 @@ class EditNodeWYSIWYG extends EditNodeBase {
 			EditNodeWYSIWYG.htmlEditorWindow.show();
 		}
 		catch (final Exception ex) {
-			LogTool.severe(ex);
-			System.err.println("Loading of WYSIWYG HTML editor failed. Use the other editors instead.");
+			LogTool.severe("Loading of WYSIWYG HTML editor failed. Use the other editors instead.", ex);
 		}
 	}
 }

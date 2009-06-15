@@ -29,6 +29,7 @@ import javax.swing.text.JTextComponent;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.LogTool;
 import org.freeplane.features.mindmapmode.MModeController;
 
 import com.inet.jortho.FileUserDictionary;
@@ -106,7 +107,7 @@ public class SpellCheckerController implements IExtension {
 				spellCheckerEnabled = true;
 			}
 			catch (final MalformedURLException e) {
-				e.printStackTrace();
+				LogTool.severe(e);
 			}
 		}
 	}

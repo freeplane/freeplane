@@ -89,7 +89,7 @@ public class ImportMindmanagerFiles extends AFreeplaneAction {
 				final String xsltFileName = "/xslt/mindmanager2mm.xsl";
 				final URL xsltUrl = ResourceController.getResourceController().getResource(xsltFileName);
 				if (xsltUrl == null) {
-					Logger.global.severe("Can't find " + xsltFileName + " as resource.");
+					LogTool.severe("Can't find " + xsltFileName + " as resource.");
 					throw new IllegalArgumentException("Can't find " + xsltFileName + " as resource.");
 				}
 				final InputStream xsltFile = xsltUrl.openStream();

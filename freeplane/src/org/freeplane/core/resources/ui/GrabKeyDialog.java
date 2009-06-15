@@ -38,6 +38,7 @@ import javax.swing.border.EmptyBorder;
 
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.LogTool;
 
 /**
  * A dialog for getting shortcut keys.
@@ -254,6 +255,7 @@ public class GrabKeyDialog extends JDialog {
 			}
 		}
 		catch (final Exception e) {
+			LogTool.severe(e);
 		}
 		return null;
 	}

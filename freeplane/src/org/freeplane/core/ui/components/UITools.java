@@ -22,6 +22,7 @@ package org.freeplane.core.ui.components;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Frame;
 import java.awt.Insets;
 import java.awt.Point;
@@ -40,6 +41,7 @@ import javax.swing.SwingUtilities;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceBundles;
 
 /**
  * @author Dimitry Polivaev
@@ -265,4 +267,18 @@ public class UITools {
 		final Component parentComponent = viewController.getComponent(node);
 		return JOptionPane.showInputDialog(parentComponent, text, title, type);
 	}
+
+	static public void errorMessage(final Object message) {
+    	final String myMessage;
+    	if (message != null) {
+    		myMessage = message.toString();
+    	}
+    	else {
+    		myMessage = ResourceBundles.getText("undefined_error");
+    	}
+    	EventQueue.invokeLater(new Runnable(){
+    	public void run() {
+    		JOptionPane.showMessageDialog(null, myMessage, "Freeplane", JOptionPane.ERROR_MESSAGE);
+        }});
+    }
 }

@@ -85,7 +85,7 @@ public class ResourceBundles extends ResourceBundle {
 		}
 		catch (final Exception ex) {
 			LogTool.severe(ex);
-			Logger.global.severe("Error loading Resources");
+			LogTool.severe("Error loading Resources");
 		}
 	}
 
@@ -100,7 +100,7 @@ public class ResourceBundles extends ResourceBundle {
 			externalResources.put(language, url);
 		}
 		catch (final IOException e) {
-			e.printStackTrace();
+			LogTool.severe(e);
 		}
 	}
 
@@ -173,7 +173,7 @@ public class ResourceBundles extends ResourceBundle {
 			return languageResources.get(key);
 		}
 		catch (final Exception ex) {
-			Logger.global.severe("Warning - resource string not found:" + key);
+			LogTool.severe("Warning - resource string not found:" + key);
 			return defaultResources.get(key) + ResourceBundles.POSTFIX_TRANSLATE_ME;
 		}
 	}
@@ -200,7 +200,7 @@ public class ResourceBundles extends ResourceBundle {
 			loadLocalLanguageResources();
 		}
 		catch (final IOException e) {
-			e.printStackTrace();
+			LogTool.severe(e);
 		}
 	}
 }

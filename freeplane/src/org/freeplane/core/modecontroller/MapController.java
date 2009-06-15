@@ -19,6 +19,7 @@
  */
 package org.freeplane.core.modecontroller;
 
+import java.awt.EventQueue;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -37,6 +38,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 import javax.swing.Action;
+import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.IMapViewManager;
@@ -56,6 +58,7 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.model.NodeModel.NodeChangeType;
 import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.ResourceBundles;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogTool;
@@ -461,9 +464,8 @@ public class MapController extends SelectionController {
 					return;
 				}
 				catch (final Exception e) {
-					LogTool.severe(e);
-					getController().getViewController().out(FpStringUtils.formatText("link_not_found", target));
-					return;
+		           	LogTool.warn( "link " + target + " not found", e);
+		           	UITools.errorMessage(FpStringUtils.formatText("link_not_found", target));
 				}
 			}
 			else {
@@ -503,8 +505,8 @@ public class MapController extends SelectionController {
 						newMapController.select(newMapController.getNodeFromID(ref));
 					}
 					catch (final Exception e) {
-						LogTool.severe(e);
-						getController().getViewController().out(FpStringUtils.formatText("link_not_found", ref));
+			           	LogTool.warn( "link " + ref + " not found", e);
+			           	UITools.errorMessage(FpStringUtils.formatText("link_not_found", ref));
 						return;
 					}
 				}
@@ -514,16 +516,16 @@ public class MapController extends SelectionController {
 			}
 		}
 		catch (final MalformedURLException e) {
-			LogTool.severe(e);
-			getController().errorMessage(ResourceBundles.getText("url_error") + "\n" + e);
+           	LogTool.warn( "url_error", e);
+           	UITools.errorMessage(ResourceBundles.getText("url_error"));
 		}
 		catch (final FileNotFoundException e) {
-			LogTool.severe(e);
-			getController().errorMessage(FpStringUtils.formatText("file_not_found", relative));
+           	LogTool.warn( e);
+           	UITools.errorMessage(FpStringUtils.formatText("file_not_found", relative));
 		}
 		catch (final Exception e) {
-			LogTool.severe(e);
-			getController().getViewController().out(FpStringUtils.formatText("link_not_found", relative));
+           	LogTool.warn( e);
+           	UITools.errorMessage(FpStringUtils.formatText("link_not_found", relative));
 		}
 		finally {
 			getController().getViewController().setWaitingCursor(false);

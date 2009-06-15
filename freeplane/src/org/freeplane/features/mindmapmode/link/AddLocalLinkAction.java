@@ -27,6 +27,7 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.common.link.LinkController;
 
 /**
@@ -49,7 +50,7 @@ class AddLocalLinkAction extends AFreeplaneAction {
 		final List selecteds = modeController.getMapController().getSelectedNodes();
 		if (selecteds.size() < 2) {
 			final Controller controller = getController();
-			controller.errorMessage(ResourceBundles.getText("less_than_two_selected_nodes"));
+			UITools.errorMessage(ResourceBundles.getText("less_than_two_selected_nodes"));
 			return;
 		}
 		final NodeModel target = (NodeModel) selecteds.get(0);

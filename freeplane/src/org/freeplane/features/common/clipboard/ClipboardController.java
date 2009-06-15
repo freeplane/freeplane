@@ -114,6 +114,7 @@ public class ClipboardController implements IExtension {
 			    saveInvisible, true);
 		}
 		catch (final IOException e) {
+			LogTool.severe(e);
 		}
 		return new MindMapNodesSelection(stringWriter.toString(), null, null, null, null, null);
 	}
@@ -256,8 +257,7 @@ public class ClipboardController implements IExtension {
 			return true;
 		}
 		catch (final Exception e) {
-			System.err.println("Error in MindMapMapModel.saveTXT(): ");
-			LogTool.severe(e);
+			LogTool.severe("Error in MindMapMapModel.saveTXT(): ", e);
 			return false;
 		}
 	}

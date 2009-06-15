@@ -30,6 +30,7 @@ import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogTool;
 
 /**
@@ -225,10 +226,10 @@ public class UpdateCheckAction extends AFreeplaneAction {
 	    		new URL(ResourceController.getResourceController().getProperty(WEB_DOWNLOAD_LOCATION_KEY)));
 	    }
 	    catch (final MalformedURLException ex) {
-	    	getController().errorMessage(ResourceBundles.getText("url_error") + "\n" + ex);
+	    	UITools.errorMessage(ResourceBundles.getText("url_error") + "\n" + ex);
 	    }
 	    catch (final Exception ex) {
-	    	getController().errorMessage(ex);
+	    	UITools.errorMessage(ex);
 	    }
     }
 

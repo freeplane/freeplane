@@ -19,7 +19,7 @@ public class ResUtil {
 		try {
 			final File resource = new File(dir, fileName);
 			if (resource == null) {
-				Logger.global.severe("Cannot find resource: " + dir + fileName);
+				LogTool.severe("Cannot find resource: " + dir + fileName);
 				return;
 			}
 			final InputStream in = new FileInputStream(resource);
@@ -27,7 +27,7 @@ public class ResUtil {
 			ResUtil.copyStream(in, out);
 		}
 		catch (final Exception e) {
-			Logger.global.severe("File not found or could not be copied. " + "Was earching for " + dir + fileName
+			LogTool.severe("File not found or could not be copied. " + "Was searching for " + dir + fileName
 			        + " and should go to " + destinationDirectory);
 		}
 	}
@@ -38,7 +38,7 @@ public class ResUtil {
 		try {
 			final URL resource = ResourceController.getResourceController().getResource(prefix + fileName);
 			if (resource == null) {
-				Logger.global.severe("Cannot find resource: " + prefix + fileName);
+				LogTool.severe("Cannot find resource: " + prefix + fileName);
 				return;
 			}
 			final InputStream in = resource.openStream();
@@ -46,7 +46,7 @@ public class ResUtil {
 			ResUtil.copyStream(in, out);
 		}
 		catch (final Exception e) {
-			Logger.global.severe("File not found or could not be copied. " + "Was earching for " + prefix + fileName
+			LogTool.severe("File not found or could not be copied. " + "Was earching for " + prefix + fileName
 			        + " and should go to " + destinationDirectory);
 		}
 	}

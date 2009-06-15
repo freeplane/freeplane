@@ -10,6 +10,7 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.LogTool;
 import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;
@@ -54,7 +55,7 @@ abstract public class WindowConfigurationStorage {
 			return string.toString();
 		}
 		catch (final IOException e) {
-			e.printStackTrace();
+			LogTool.severe(e);
 			return null;
 		}
 	}
@@ -103,10 +104,10 @@ abstract public class WindowConfigurationStorage {
 				}
 			}
 			catch (final NumberFormatException e) {
-				e.printStackTrace();
+				LogTool.severe(e);
 			}
 			catch (final XMLException e) {
-				e.printStackTrace();
+				LogTool.severe(e);
 			}
 		}
 		final Frame rootFrame = JOptionPane.getFrameForComponent(dialog);

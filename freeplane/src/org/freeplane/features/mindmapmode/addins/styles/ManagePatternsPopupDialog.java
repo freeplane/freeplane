@@ -201,7 +201,7 @@ class ManagePatternsPopupDialog extends JDialog implements KeyListener {
 			    .getPatternReader());
 		}
 		catch (final Exception e) {
-			LogTool.severe(e);
+			LogTool.warn(e);
 			JOptionPane.showMessageDialog(this, getDialogTitle(), ResourceBundles
 			    .getText("accessories/plugins/ManagePatterns.not_found"), JOptionPane.ERROR_MESSAGE);
 		}
@@ -259,7 +259,7 @@ class ManagePatternsPopupDialog extends JDialog implements KeyListener {
 			mList.setSelectedIndex(selectedIndex);
 		}
 		catch (final CloneNotSupportedException e) {
-			e.printStackTrace();
+			LogTool.severe(e);
 		}
 	}
 

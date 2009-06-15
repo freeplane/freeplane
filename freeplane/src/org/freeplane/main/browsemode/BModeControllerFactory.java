@@ -29,6 +29,7 @@ import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.url.UrlManager;
+import org.freeplane.core.util.LogTool;
 import org.freeplane.features.browsemode.BModeController;
 import org.freeplane.features.browsemode.BNodeNoteViewer;
 import org.freeplane.features.browsemode.BToolbarContributor;
@@ -71,7 +72,7 @@ public class BModeControllerFactory {
 			ClipboardController.install(modeController, new ClipboardController(modeController));
 		}
 		catch (final AccessControlException e) {
-			Logger.global.severe("can not access system clipboard, clipboard controller disabled");
+			LogTool.warn("can not access system clipboard, clipboard controller disabled");
 		}
 		LocationController.install(modeController, new LocationController(modeController));
 		modeController.getMapController().addNodeSelectionListener(new BNodeNoteViewer(modeController.getController()));

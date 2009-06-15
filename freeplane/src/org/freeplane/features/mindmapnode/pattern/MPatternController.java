@@ -95,7 +95,7 @@ public class MPatternController implements IExtension {
 			loadPatterns(getPatternReader());
 		}
 		catch (final Exception ex) {
-			System.err.println("Patterns not loaded:" + ex);
+			LogTool.severe("Patterns not loaded:" + ex);
 			// repair old patterns:
 			final String repairTitle = "Repair patterns";
 			final File patternsFile = getPatternsFile();

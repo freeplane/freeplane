@@ -43,6 +43,7 @@ import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
+import org.freeplane.core.ui.components.UITools;
 
 class ApplicationViewController extends ViewController {
 	public static final String RESOURCES_USE_TABBED_PANE = "use_tabbed_pane";
@@ -259,7 +260,7 @@ class ApplicationViewController extends ViewController {
 				Runtime.getRuntime().exec(command);
 			}
 			catch (final IOException x) {
-				controller
+				UITools
 				    .errorMessage("Could not invoke browser.\n\nFreeplane excecuted the following statement on a command line:\n\""
 				            + command
 				            + "\".\n\nYou may look at the user or default property called '"
@@ -278,7 +279,7 @@ class ApplicationViewController extends ViewController {
 				Runtime.getRuntime().exec(browser_command);
 			}
 			catch (final IOException ex2) {
-				controller
+				UITools
 				    .errorMessage("Could not invoke browser.\n\nFreeplane excecuted the following statement on a command line:\n\""
 				            + browser_command
 				            + "\".\n\nYou may look at the user or default property called 'default_browser_command_mac'.");
@@ -295,7 +296,7 @@ class ApplicationViewController extends ViewController {
 				Runtime.getRuntime().exec(browser_command);
 			}
 			catch (final IOException ex2) {
-				controller
+				UITools
 				    .errorMessage("Could not invoke browser.\n\nFreeplane excecuted the following statement on a command line:\n\""
 				            + browser_command
 				            + "\".\n\nYou may look at the user or default property called 'default_browser_command_other_os'.");

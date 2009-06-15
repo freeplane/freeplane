@@ -32,6 +32,7 @@ import org.freeplane.core.filter.util.IListModel;
 import org.freeplane.core.filter.util.SortedMapListModel;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceBundles;
+import org.freeplane.core.util.LogTool;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -123,7 +124,7 @@ class TimeConditionController implements IElementaryConditionController {
 			}
 		}
 		catch (final Exception e) {
-			e.printStackTrace();
+			LogTool.severe(e);
 		}
 		return null;
 	}

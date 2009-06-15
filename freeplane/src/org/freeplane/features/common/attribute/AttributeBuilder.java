@@ -177,12 +177,8 @@ class AttributeBuilder implements IElementDOMHandler {
 		    });
 		reader.addAttributeHandler(AttributeBuilder.XML_NODE_ATTRIBUTE_REGISTRY, "FONT_SIZE", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
-				try {
-					final int size = Integer.parseInt(value.toString());
-					AttributeRegistry.getRegistry(getMap()).setFontSize(size);
-				}
-				catch (final NumberFormatException ex) {
-				}
+				final int size = Integer.parseInt(value.toString());
+				AttributeRegistry.getRegistry(getMap()).setFontSize(size);
 			}
 		});
 	}

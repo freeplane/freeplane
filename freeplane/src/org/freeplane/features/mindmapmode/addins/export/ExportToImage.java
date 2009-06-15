@@ -34,8 +34,10 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogTool;
 
 /**
@@ -92,28 +94,11 @@ public class ExportToImage extends ExportAction {
 			out.close();
 		}
 		catch (final IOException e1) {
-			LogTool.severe(e1);
+			LogTool.warn(e1);
+			UITools.errorMessage(ResourceBundles.getText("export_failed"));
 		}
 		getController().getViewController().setWaitingCursor(false);
 		return true;
 	}
 
-	public void transForm(final Source xmlSource, final InputStream xsltStream, final File resultFile,
-	                      final String areaCode) {
-		final Source xsltSource = new StreamSource(xsltStream);
-		final Result result = new StreamResult(resultFile);
-		try {
-			final TransformerFactory transFact = TransformerFactory.newInstance();
-			final Transformer trans = transFact.newTransformer(xsltSource);
-			trans.setParameter("destination_dir", resultFile.getName() + "_files/");
-			trans.setParameter("area_code", areaCode);
-			trans.setParameter("folding_type", ResourceController.getResourceController().getProperty(
-			    "html_export_folding"));
-			trans.transform(xmlSource, result);
-		}
-		catch (final Exception e) {
-			LogTool.severe(e);
-		};
-		return;
-	}
 }

@@ -25,6 +25,8 @@ import java.awt.print.PrinterException;
 
 import javax.swing.JComponent;
 
+import org.freeplane.core.util.LogTool;
+
 class Preview extends JComponent {
 	final private static int DEFAULT_PREVIEW_SIZE = 300;
 	final private static double MINIMUM_ZOOM_FACTOR = 0.1;
@@ -108,7 +110,7 @@ class Preview extends JComponent {
 			g2d.drawImage(previewPageImage, 0, 0, this);
 		}
 		catch (final PrinterException e) {
-			e.printStackTrace();
+			LogTool.severe(e);
 		}
 	}
 

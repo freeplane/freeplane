@@ -315,7 +315,7 @@ class PasteAction extends AFreeplaneAction {
 						headerFound = true;
 					}
 					catch (final NumberFormatException e) {
-						e.printStackTrace();
+						LogTool.severe(e);
 					}
 				}
 				else {

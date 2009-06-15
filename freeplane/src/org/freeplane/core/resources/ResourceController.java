@@ -163,6 +163,15 @@ public abstract class ResourceController {
 		}
 	}
 
+	public double getDoubleProperty(final String key, final double defaultValue) {
+		try {
+			return Double.parseDouble(ResourceController.getResourceController().getProperty("user_zoom"));
+		}
+		catch (final Exception e) {
+			return defaultValue;
+		}
+	}
+	
 	public long getLongProperty(final String key, final int defaultValue) {
 		try {
 			return Long.parseLong(getProperty(key));

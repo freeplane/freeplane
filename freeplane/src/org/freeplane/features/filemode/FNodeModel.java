@@ -26,6 +26,7 @@ import java.util.List;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.util.Compat;
+import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.link.NodeLinks;
 
 /**
@@ -59,7 +60,7 @@ class FNodeModel extends NodeModel {
 							NodeLinks.createLinkExtension(fileNodeModel).setHyperLink(url);
 						}
 						catch (final MalformedURLException e) {
-							e.printStackTrace();
+							LogTool.severe(e);
 						}
 						fileNodeModel.setLeft(isNewChildLeft());
 						children.add(getChildCount(), fileNodeModel);

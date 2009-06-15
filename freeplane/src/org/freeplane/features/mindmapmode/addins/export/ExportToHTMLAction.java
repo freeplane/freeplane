@@ -25,8 +25,10 @@ import java.io.IOException;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.MapModel;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.clipboard.ClipboardController;
 
@@ -52,7 +54,8 @@ class ExportToHTMLAction extends AFreeplaneAction {
 			getModeController().getMapController().loadURL(file.toString());
 		}
 		catch (final IOException ex) {
-			LogTool.severe(ex);
+			LogTool.warn(ex);
+			UITools.errorMessage(ResourceBundles.getText("export_failed"));
 		}
 	}
 }

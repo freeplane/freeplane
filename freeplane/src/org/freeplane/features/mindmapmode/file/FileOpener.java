@@ -32,6 +32,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 
 class FileOpener implements DropTargetListener {
@@ -82,8 +83,7 @@ class FileOpener implements DropTargetListener {
 			}
 		}
 		catch (final Exception e) {
-			JOptionPane.showMessageDialog(modeController.getController().getViewController().getMapView(),
-			    "Couldn't open dropped file(s). Reason: " + e.getMessage());
+			UITools.errorMessage("Couldn't open dropped file(s). Reason: " + e.getMessage());
 			dtde.dropComplete(false);
 			return;
 		}

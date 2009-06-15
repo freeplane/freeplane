@@ -185,7 +185,7 @@ private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_ve
 				relative = link.toString();
 			}
 			catch (final MalformedURLException ex) {
-				getController().errorMessage(ResourceBundles.getText("url_error"));
+				UITools.errorMessage(ResourceBundles.getText("url_error"));
 				return null;
 			}
 			if (ResourceController.getResourceController().getProperty("links").equals("relative")) {
@@ -193,7 +193,7 @@ private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_ve
 					relative = UrlManager.toRelativeURL(Compat.fileToUrl(map.getFile()), link);
 				}
 				catch (final MalformedURLException ex) {
-					getController().errorMessage(ResourceBundles.getText("url_error"));
+					UITools.errorMessage(ResourceBundles.getText("url_error"));
 					return null;
 				}
 			}
@@ -409,15 +409,14 @@ private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_ve
 		catch (final IOException e) {
 			final String message = FpStringUtils.formatText("save_failed", file.getName());
 			if (!isInternal) {
-				getController().errorMessage(message);
+				UITools.errorMessage(message);
 			}
 			else {
 				getController().getViewController().out(message);
 			}
 		}
 		catch (final Exception e) {
-			Logger.global.log(Level.SEVERE, "Error in MapModel.save(): ");
-			LogTool.severe(e);
+			LogTool.severe("Error in MapModel.save(): ", e);
 		}
 		map.scheduleTimerForAutomaticSaving(getModeController());
 		return false;
@@ -478,8 +477,7 @@ private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_ve
 		}
 		catch (final Exception ex) {
 			final String errorMessage = "Error while parsing file:" + ex;
-			System.err.println(errorMessage);
-			LogTool.severe(ex);
+			LogTool.severe(errorMessage, ex);
 			final NodeModel result = new NodeModel(map);
 			result.setText(errorMessage);
 			return result;

@@ -39,6 +39,7 @@ import org.freeplane.core.modecontroller.MapChangeEvent;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.util.Compat;
+import org.freeplane.core.util.LogTool;
 
 public class MapModel {
 	private static Random ran = new Random();
@@ -222,7 +223,7 @@ public class MapModel {
 			url = Compat.fileToUrl(file);
 		}
 		catch (final MalformedURLException e) {
-			e.printStackTrace();
+			LogTool.severe(e);
 		}
 	}
 

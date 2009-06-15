@@ -26,6 +26,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.util.LogTool;
 
 /**
  * @author Dimitry Polivaev
@@ -56,7 +57,7 @@ public class SelectionController {
 			}
 		}
 		catch (final RuntimeException e) {
-			Logger.global.log(Level.SEVERE, "Error in node selection listeners", e);
+			LogTool.severe( "Error in node selection listeners", e);
 		}
 	}
 

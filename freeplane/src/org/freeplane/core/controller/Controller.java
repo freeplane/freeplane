@@ -25,7 +25,6 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.swing.JComponent;
-import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 import org.freeplane.core.extension.ExtensionContainer;
@@ -35,7 +34,7 @@ import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
-import org.freeplane.core.resources.ResourceBundles;
+import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.LogTool;
@@ -73,7 +72,7 @@ public class Controller extends AController {
 			}
 		}
 		catch (final Exception ex) {
-			System.err.println("Error while setting Look&Feel" + lookAndFeel);
+			LogTool.severe("Error while setting Look&Feel" + lookAndFeel, ex);
 		}
 	}
 
@@ -108,25 +107,6 @@ public class Controller extends AController {
 	 */
 	public void close(final boolean force) {
 		getMapViewManager().close(force);
-	}
-
-	public void errorMessage(final Object message) {
-		String myMessage = "";
-		if (message != null) {
-			myMessage = message.toString();
-		}
-		else {
-			myMessage = ResourceBundles.getText("undefined_error");
-			if (myMessage == null) {
-				myMessage = "Undefined error";
-			}
-		}
-		JOptionPane.showMessageDialog(getViewController().getContentPane(), myMessage, "Freeplane",
-		    JOptionPane.ERROR_MESSAGE);
-	}
-
-	public void errorMessage(final Object message, final JComponent component) {
-		JOptionPane.showMessageDialog(component, message.toString(), "Freeplane", JOptionPane.ERROR_MESSAGE);
 	}
 
 	public IExtension getExtension(final Class<? extends IExtension> clazz) {

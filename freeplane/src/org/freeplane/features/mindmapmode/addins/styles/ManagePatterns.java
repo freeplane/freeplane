@@ -27,6 +27,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.mindmapnode.pattern.MPatternController;
 import org.freeplane.features.mindmapnode.pattern.StylePatternFactory;
 import org.freeplane.view.swing.ui.UserInputListenerFactory;
@@ -66,7 +67,7 @@ public class ManagePatterns extends AFreeplaneAction {
 				    UserInputListenerFactory.NODE_POPUP);
 			}
 			catch (final Exception ex) {
-				JOptionPane.showMessageDialog(null, ex.getLocalizedMessage());
+				UITools.errorMessage(ex.getLocalizedMessage());
 			}
 		}
 	}

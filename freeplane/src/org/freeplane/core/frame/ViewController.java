@@ -67,6 +67,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
+import org.freeplane.core.util.LogTool;
 
 /**
  * @author Dimitry Polivaev
@@ -114,7 +115,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		}
 		catch (final Exception e) {
 			zoomModel.setSelectedItem("100%");
-			e.printStackTrace();
+			LogTool.severe(e);
 		}
 		controller.addAction(new ToggleMenubarAction(controller, this));
 		controller.addAction(new ToggleToolbarAction(controller, this));

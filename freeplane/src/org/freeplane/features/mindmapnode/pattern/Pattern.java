@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 
+import org.freeplane.core.util.LogTool;
 import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;
@@ -22,7 +23,7 @@ public class Pattern implements Cloneable {
 			return Pattern.unMarshall(xml);
 		}
 		catch (final XMLException e) {
-			e.printStackTrace();
+			LogTool.severe(e);
 			return null;
 		}
 	}
@@ -162,7 +163,7 @@ public class Pattern implements Cloneable {
 			return string.toString();
 		}
 		catch (final IOException e) {
-			e.printStackTrace();
+			LogTool.severe(e);
 			return null;
 		}
 	}

@@ -54,7 +54,7 @@ public class MapReader implements IElementDOMHandler, IHintProvider {
 	            reader.load(pReader);
             }
             catch (XMLException e) {
-            	LogTool.warn( e, "corrupt_map");
+            	LogTool.warn( "corrupt_map", e);
             	EventQueue.invokeLater(new Runnable(){
 					public void run() {
 	        			JOptionPane.showMessageDialog(null, ResourceBundles.getText("corrupt_map"), "Freeplane", JOptionPane.ERROR_MESSAGE);

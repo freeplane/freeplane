@@ -54,6 +54,7 @@ import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogTool;
 
 /**
@@ -388,15 +389,15 @@ public class UrlManager implements IExtension {
 			    ResourceBundles.getText("map_corrupted"), "Freeplane", JOptionPane.YES_NO_OPTION,
 			    JOptionPane.ERROR_MESSAGE);
 			if (showDetail == JOptionPane.YES_OPTION) {
-				getController().errorMessage(ex);
+				UITools.errorMessage(ex);
 			}
 		}
 		else if (exceptionType.equals("java.io.FileNotFoundException")) {
-			getController().errorMessage(ex.getMessage());
+			UITools.errorMessage(ex.getMessage());
 		}
 		else {
 			LogTool.severe(ex);
-			getController().errorMessage(ex);
+			UITools.errorMessage(ex);
 		}
 	}
 
@@ -407,12 +408,12 @@ public class UrlManager implements IExtension {
 			urlStreamReader = new InputStreamReader(url.openStream());
 		}
 		catch (final AccessControlException ex) {
-			getController().errorMessage("Could not open URL " + url.toString() + ". Access Denied.");
+			UITools.errorMessage("Could not open URL " + url.toString() + ". Access Denied.");
 			System.err.println(ex);
 			return null;
 		}
 		catch (final Exception ex) {
-			getController().errorMessage("Could not open URL " + url.toString() + ".");
+			UITools.errorMessage("Could not open URL " + url.toString() + ".");
 			System.err.println(ex);
 			return null;
 		}
@@ -423,7 +424,7 @@ public class UrlManager implements IExtension {
 			return root;
 		}
 		catch (final Exception ex) {
-			System.err.println(ex);
+			LogTool.severe(ex);
 			return null;
 		}
 	}

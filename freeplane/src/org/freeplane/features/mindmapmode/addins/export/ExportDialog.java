@@ -33,6 +33,7 @@ import javax.swing.JOptionPane;
 import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.mindmapmode.text.ExampleFileFilter;
 
@@ -152,7 +153,8 @@ public class ExportDialog {
 			}
 		}
 		catch (final IOException e) {
-			LogTool.warn(e.getMessage());
+			LogTool.warn(e);
+			UITools.errorMessage(ResourceBundles.getText("export_failed"));
 		}
 		finally {
 			if (xsl != null) {
@@ -160,8 +162,7 @@ public class ExportDialog {
 					xsl.close();
 				}
 				catch (final IOException e) {
-					LogTool.warn(e.getMessage());
-					e.printStackTrace();
+					LogTool.severe(e);
 				}
 			}
 		}

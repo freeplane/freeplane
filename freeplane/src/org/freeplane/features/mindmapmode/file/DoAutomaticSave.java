@@ -100,8 +100,7 @@ public class DoAutomaticSave extends TimerTask {
 						    FpStringUtils.format("automatically_save_message", new Object[] { tempFile.toString() }));
 					}
 					catch (final Exception e) {
-						System.err.println("Error in automatic MapModel.save(): " + e.getMessage());
-						LogTool.severe(e);
+						LogTool.severe("Error in automatic MapModel.save(): ", e);
 					}
 				}
 			});

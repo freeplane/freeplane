@@ -70,6 +70,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.url.UrlManager;
+import org.freeplane.core.util.LogTool;
 
 /**
  * @author Dimitry Polivaev
@@ -272,14 +273,9 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 					filterController.loadConditions(internalConditionsModel, theFile.getCanonicalPath());
 				}
 				catch (final Exception ex) {
-					handleLoadingException(ex);
-				}
-				{
+					LogTool.severe(ex);
 				}
 			}
-		}
-
-		private void handleLoadingException(final Exception ex) {
 		}
 	}
 
@@ -327,11 +323,8 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 				filterController.saveConditions(internalConditionsModel, canonicalPath);
 			}
 			catch (final Exception ex) {
-				handleSavingException(ex);
+				LogTool.severe(ex);
 			}
-		}
-
-		private void handleSavingException(final Exception ex) {
 		}
 	}
 

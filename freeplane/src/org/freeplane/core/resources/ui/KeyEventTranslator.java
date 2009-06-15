@@ -19,6 +19,8 @@ import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.freeplane.core.util.LogTool;
+
 /**
  * In conjunction with the <code>KeyEventWorkaround</code>, hides some warts in
  * the AWT key event API.
@@ -239,6 +241,7 @@ public class KeyEventTranslator {
 				ch = KeyEvent.class.getField("VK_".concat(key)).getInt(null);
 			}
 			catch (final Exception e) {
+				LogTool.severe(e);
 				return null;
 			}
 			return new Key(KeyEventTranslator.modifiersToString(modifiers), ch, '\0');

@@ -73,8 +73,7 @@ public class LogTool {
 			System.setErr(new PrintStream(los, true));
 		}
 		catch (final Exception e) {
-			System.err.println("Error creating logging File Handler");
-			e.printStackTrace();
+			LogTool.warn("Error creating logging File Handler", e);
 		}
 	}
 
@@ -104,14 +103,14 @@ public class LogTool {
 	}
 
 	public static void severe(final Throwable e) {
-		LogTool.severe(e, "");
+		LogTool.severe("", e);
 	}
 
 	public static void warn(final Throwable e) {
-		LogTool.warn(e, "");
+		LogTool.warn("", e);
 	}
 
-	public static void severe(final Throwable e, final String comment) {
+	public static void severe(final String comment, final Throwable e) {
 		LOGGER.log(Level.SEVERE, comment, e);
 	}
 
@@ -119,7 +118,7 @@ public class LogTool {
 		LOGGER.log(Level.WARNING, msg);
 	}
 
-	public static void warn(final Throwable e, final String comment) {
+	public static void warn(final String comment, final Throwable e) {
 		LOGGER.log(Level.WARNING, comment, e);
 	}
 }

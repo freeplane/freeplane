@@ -54,6 +54,7 @@ import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.JAutoToggleButton;
+import org.freeplane.core.util.LogTool;
 import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;
@@ -342,7 +343,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 			loadConditions(filterConditions, pathToFilterFile);
 		}
 		catch (final Exception e) {
-			e.printStackTrace();
+			LogTool.severe(e);
 		}
 		addStandardConditions();
 		filterConditions.setSelectedItem(filterConditions.getElementAt(0));
@@ -369,7 +370,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		catch (final FileNotFoundException e) {
 		}
 		catch (final Exception e) {
-			e.printStackTrace();
+			LogTool.severe(e);
 		}
 	}
 
@@ -378,6 +379,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 			saveConditions(getFilterConditions(), pathToFilterFile);
 		}
 		catch (final Exception e) {
+			LogTool.warn(e);
 		}
 	}
 

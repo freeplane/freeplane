@@ -27,6 +27,8 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.ByteArrayInputStream;
 import java.util.List;
 
+import org.freeplane.core.util.LogTool;
+
 public class MindMapNodesSelection implements Transferable, ClipboardOwner {
 	/**
 	 * fc, 7.8.2004: This is a quite interisting flavor, but how does it
@@ -46,7 +48,7 @@ public class MindMapNodesSelection implements Transferable, ClipboardOwner {
 			MindMapNodesSelection.dropActionFlavor = new DataFlavor("text/drop-action; class=java.lang.String");
 		}
 		catch (final Exception e) {
-			System.err.println(e);
+			LogTool.severe(e);
 		}
 	}
 	private String dropActionContent;

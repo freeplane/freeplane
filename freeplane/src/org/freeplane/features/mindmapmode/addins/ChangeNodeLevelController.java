@@ -27,6 +27,7 @@ import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.mindmapmode.MMapController;
 
 /**
@@ -97,17 +98,17 @@ public class ChangeNodeLevelController {
 		final List<NodeModel> selectedNodes = modeController.getMapController().getSelectedNodes();
 		final Controller controller = modeController.getController();
 		if (selectedNode.isRoot()) {
-			controller.errorMessage(ResourceBundles.getText("cannot_add_parent_to_root"));
+			UITools.errorMessage(ResourceBundles.getText("cannot_add_parent_to_root"));
 			return false;
 		}
 		final NodeModel selectedParent = selectedNode.getParentNode();
 		for (final NodeModel node : selectedNodes) {
 			if (node.getParentNode() != selectedParent) {
-				controller.errorMessage(ResourceBundles.getText("cannot_add_parent_diff_parents"));
+				UITools.errorMessage(ResourceBundles.getText("cannot_add_parent_diff_parents"));
 				return false;
 			}
 			if (node.isRoot()) {
-				controller.errorMessage(ResourceBundles.getText("cannot_add_parent_to_root"));
+				UITools.errorMessage(ResourceBundles.getText("cannot_add_parent_to_root"));
 				return false;
 			}
 		}

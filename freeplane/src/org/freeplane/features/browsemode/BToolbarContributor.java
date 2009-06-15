@@ -31,6 +31,7 @@ import org.freeplane.core.model.MapModel;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.PersistentEditableComboBox;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogTool;
 
 public class BToolbarContributor implements IMenuContributor, IMapTitleChangeListener {
@@ -51,8 +52,8 @@ public class BToolbarContributor implements IMenuContributor, IMapTitleChangeLis
 					modeController.getMapController().newMap(new URL(urlText));
 				}
 				catch (final Exception e1) {
-					LogTool.severe(e1);
-					controller.getController().errorMessage(e1);
+					LogTool.warn(e1);
+					UITools.errorMessage(e1);
 				}
 			}
 		});

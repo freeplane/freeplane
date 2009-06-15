@@ -33,6 +33,7 @@ import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogTool;
@@ -66,9 +67,8 @@ class ImportLinkedBranchAction extends AFreeplaneAction {
 			    .fileToUrl(map.getFile()), relative);
 		}
 		catch (final MalformedURLException ex) {
-			JOptionPane
-			    .showMessageDialog(viewController.getMapView(), "Couldn't create valid URL for:" + map.getFile());
-			LogTool.severe(ex);
+			UITools.errorMessage("Couldn't create valid URL for:" + map.getFile());
+			LogTool.warn(ex);
 			return;
 		}
 		try {

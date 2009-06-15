@@ -485,10 +485,10 @@ public class HtmlTools {
 			return true;
 		}
 		catch (final SAXParseException e) {
-			Logger.global.log(Level.SEVERE, "XmlParseError on line " + e.getLineNumber() + " of " + xml, e);
+			LogTool.severe( "XmlParseError on line " + e.getLineNumber() + " of " + xml, e);
 		}
 		catch (final Exception e) {
-			Logger.global.log(Level.SEVERE, "XmlParseError", e);
+			LogTool.severe( "XmlParseError", e);
 		}
 		return false;
 	}

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
 
+import org.freeplane.core.util.LogTool;
 import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;
@@ -29,7 +30,7 @@ public class Patterns {
 			return patterns;
 		}
 		catch (final XMLException e) {
-			e.printStackTrace();
+			LogTool.severe(e);
 			return null;
 		}
 	}
