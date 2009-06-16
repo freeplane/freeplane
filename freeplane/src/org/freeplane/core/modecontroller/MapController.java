@@ -191,6 +191,7 @@ public class MapController extends SelectionController {
 	 */
 	public boolean close(final boolean force) {
 		final MapModel map = getController().getMap();
+		fireMapRemoved(map);
 		map.destroy();
 		return true;
 	}

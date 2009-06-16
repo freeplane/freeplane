@@ -32,10 +32,6 @@ class FMapModel extends MapModel {
 	}
 
 	@Override
-	public void destroy() {
-	}
-
-	@Override
 	public String getTitle() {
 		return "File: " + getRootNode().toString();
 	}

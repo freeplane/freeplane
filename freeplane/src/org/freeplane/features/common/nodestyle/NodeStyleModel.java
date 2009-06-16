@@ -112,8 +112,18 @@ public class NodeStyleModel implements IExtension, Cloneable {
 		return fontFamilyName;
 	}
 
+	public static String getFontFamilyName(final NodeModel node) {
+		final NodeStyleModel styleModel = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
+		return styleModel == null ? null : styleModel.getFontFamilyName();
+	}
+
 	public Integer getFontSize() {
 		return fontSize;
+	}
+
+	public static Integer getFontSize(final NodeModel node) {
+		final NodeStyleModel styleModel = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
+		return styleModel == null ? null : styleModel.getFontSize();
 	}
 
 	public String getShape() {
@@ -124,8 +134,18 @@ public class NodeStyleModel implements IExtension, Cloneable {
 		return isBold;
 	}
 
+	public static Boolean isBold(final NodeModel node) {
+		final NodeStyleModel styleModel = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
+		return styleModel == null ? null : styleModel.isBold();
+	}
+
 	public Boolean isItalic() {
 		return isItalic;
+	}
+
+	public static Boolean isItalic(final NodeModel node) {
+		final NodeStyleModel styleModel = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
+		return styleModel == null ? null : styleModel.isItalic();
 	}
 
 	public void setBackgroundColor(final Color color) {
