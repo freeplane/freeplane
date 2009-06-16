@@ -37,6 +37,8 @@ import java.awt.event.ContainerListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
+import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.HashSet;
@@ -650,4 +652,6 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 
 	public void saveProperties() {
     }
+
+	abstract public void openDocument(URI uri) throws IOException;
 }

@@ -26,6 +26,7 @@ import java.awt.EventQueue;
 import java.awt.Frame;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
 import java.text.MessageFormat;
 
@@ -305,6 +306,30 @@ class ApplicationViewController extends ViewController {
 		}
 	}
 
+	@Override
+	public void openDocument(URI uri) throws IOException{
+		String propertyString;
+		String osName = System.getProperty("os.name");
+		if (osName.substring(0, 3).equals("Win")) {
+			propertyString = new String("default_browser_command_windows");
+			if (osName.indexOf("9") != -1 || osName.indexOf("Me") != -1) {
+				propertyString += "_9x";
+			} else {
+				propertyString += "_nt";
+			}
+		}
+        else if (osName.startsWith("Mac OS")) {
+			propertyString = new String("default_browser_command_mac");
+        }
+        else
+        	propertyString = new String("default_browser_command_other_os");
+		String browser_command = new String();
+		Object[] messageArguments = { uri.toString() };
+		MessageFormat formatter = new MessageFormat(ResourceController.getResourceController().getProperty(propertyString));
+		browser_command = formatter.format(messageArguments);
+		Runtime.getRuntime().exec(browser_command);
+	}
+	
 	private void removeContentComponent() {
 		if (mapViewManager != null) {
 			mapViewManager.removeContentComponent();
@@ -418,4 +443,5 @@ class ApplicationViewController extends ViewController {
 		navigationPreviousMap.setEnabled(number > 0);
 		navigationNextMap.setEnabled(number > 0);
 	}
+
 }

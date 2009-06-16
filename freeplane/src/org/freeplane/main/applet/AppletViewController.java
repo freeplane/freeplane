@@ -24,6 +24,8 @@ import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.EventQueue;
 import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 
 import javax.swing.JApplet;
@@ -207,4 +209,14 @@ class AppletViewController extends ViewController {
 			LogTool.severe(e);
 		}
 	}
+
+	@Override
+    public void openDocument(URI location) {
+		try {
+	        applet.getAppletContext().showDocument(location.toURL(),"_blank");
+        }
+        catch (MalformedURLException e) {
+	        e.printStackTrace();
+        }
+    }
 }
