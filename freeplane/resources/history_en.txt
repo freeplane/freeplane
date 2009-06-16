@@ -1,4 +1,16 @@
 ===============================
+1.0.13 alpha
+===============================
+New features:
+[Feature Requests 0000104]: protocol handler: FreeMind patch for linking to arbitrary URL integrated
+
+Bug fixes: 
+[Bugs 0000076]: Notes window size not remembered between sessions
+[Bugs 0000094]: Error splitting (rich text) long node - with revsion tracking
+Bug fixes for automatically reported bugs
+
+
+===============================
 1.0.12 alpha
 ===============================
 New features:
