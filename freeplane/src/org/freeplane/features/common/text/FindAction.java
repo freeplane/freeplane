@@ -39,6 +39,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.FilterConditionEditor;
 import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.filter.condition.ICondition;
+import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -50,7 +51,6 @@ class FindAction extends AFreeplaneAction {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private boolean findCaseSensitive;
 	private NodeModel findFromNode;
 	private LinkedList findNodeQueue;
 	private ArrayList findNodesUnfoldedByLastFind;
@@ -63,7 +63,11 @@ class FindAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final NodeModel selected = getController().getSelection().getSelected();
+		final IMapSelection selection = getController().getSelection();
+		if(selection == null){
+			return;
+		}
+		final NodeModel selected = selection.getSelected();
 		if(editor == null){
 			editor = new FilterConditionEditor(FilterController.getController(getController()));
 		}

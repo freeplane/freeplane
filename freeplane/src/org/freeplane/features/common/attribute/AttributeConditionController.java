@@ -30,6 +30,7 @@ import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.filter.condition.IElementaryConditionController;
 import org.freeplane.core.filter.util.ExtendedComboBoxModel;
 import org.freeplane.core.filter.util.IListModel;
+import org.freeplane.core.filter.util.SortedMapListModel;
 import org.freeplane.core.resources.NamedObject;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -124,7 +125,11 @@ class AttributeConditionController implements IElementaryConditionController {
 	}
 
 	public IListModel getFilteredProperties() {
-		return AttributeRegistry.getRegistry(controller.getMap()).getListBoxModel();
+		final AttributeRegistry registry = AttributeRegistry.getRegistry(controller.getMap());
+		if(registry != null){
+			return registry.getListBoxModel();
+		}
+		return new SortedMapListModel();
 	}
 
 	public ComboBoxEditor getValueEditor() {
