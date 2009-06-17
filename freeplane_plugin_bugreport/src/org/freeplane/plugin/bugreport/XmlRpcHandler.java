@@ -83,6 +83,20 @@ public class XmlRpcHandler extends StreamHandler{
 	}
 
 	private class SubmitStarter implements Runnable{ 
+		SubmitStarter(){
+			if(EventQueue.isDispatchThread()){
+				return;
+			}
+			final Thread currentThread = Thread.currentThread();
+			EventQueue.invokeLater(new Runnable(){
+				public void run() {
+					try {
+						currentThread.join(1000);
+					} catch (InterruptedException e) {
+					}
+				}
+			});
+		}
 		public void run() {
 			startSubmit();
 		}
