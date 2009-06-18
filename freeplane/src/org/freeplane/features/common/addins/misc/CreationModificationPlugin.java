@@ -42,6 +42,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
 @ActionLocationDescriptor(locations = { "/menu_bar/extras/first/nodes/change" })
 public class CreationModificationPlugin extends PersistentNodeHook implements INodeChangeListener, IExtension {
 	private String tooltipFormat = "<html>Created:  {0,date} {0,time}<br>Modified: {1,date} {1,time}</html>";
+	private boolean nodeChangeListenerDisabled;
 
 	/**
 	 *
@@ -73,16 +74,19 @@ public class CreationModificationPlugin extends PersistentNodeHook implements IN
 	}
 
 	public void nodeChanged(final NodeChangeEvent event) {
+		if (nodeChangeListenerDisabled) {
+			return;
+		}
 		final NodeModel node = event.getNode();
 		if (!isActive(node)) {
 			return;
 		}
-		getModeController().getMapController().removeNodeChangeListener(this);
+		nodeChangeListenerDisabled = true;
 		try{
 			setStyle(node);
 		}
 		finally{
-			getModeController().getMapController().addNodeChangeListener(this);
+			nodeChangeListenerDisabled = false;
 		}
 	}
 
