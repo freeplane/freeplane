@@ -20,6 +20,7 @@
 package org.freeplane.features.common.text;
 
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -77,18 +78,22 @@ class FindAction extends AFreeplaneAction {
 		editor.addAncestorListener(new AncestorListener(){
 
 			public void ancestorAdded(AncestorEvent event) {
-            }
-
-			public void ancestorMoved(AncestorEvent event) {
 				final Component component = event.getComponent();
 				((FilterConditionEditor)component).focusInputField();
 				((JComponent) component).removeAncestorListener(this);
+            }
+
+			public void ancestorMoved(AncestorEvent event) {
             }
 
 			public void ancestorRemoved(AncestorEvent event) {
             }});
 		final int run = UITools.showConfirmDialog(getController(), selected, editor, 
 		    ResourceBundles.getText("FindAction.text"), JOptionPane.OK_CANCEL_OPTION);
+		Container parent = editor.getParent();
+		if(parent != null){
+			parent.remove(editor);
+		}
 		if(run != JOptionPane.OK_OPTION){
 			return;
 		}
