@@ -34,20 +34,23 @@ public class MapChangeEvent extends AWTEvent {
 	final private Object newValue;
 	final private Object oldValue;
 	final private Object property;
+	final private MapModel map;
+	
 
-	public MapChangeEvent(final MapModel map, final Object property, final Object oldValue, final Object newValue) {
-		super(map, 0);
+	public MapChangeEvent(final Object source, final MapModel map, final Object property, final Object oldValue, final Object newValue) {
+		super(source, 0);
+		this.map = map;
 		this.oldValue = oldValue;
 		this.newValue = newValue;
 		this.property = property;
 	}
 
-	public MapChangeEvent(final Object property, final Object oldValue, final Object newValue) {
-		this(null, property, oldValue, newValue);
+	public MapChangeEvent(final Object source, final Object property, final Object oldValue, final Object newValue) {
+		this(source, null, property, oldValue, newValue);
 	}
 
 	public MapModel getMap() {
-		return (MapModel) getSource();
+		return map;
 	}
 
 	public Object getNewValue() {
