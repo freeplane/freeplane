@@ -64,12 +64,18 @@ class NewChildAction extends AFreeplaneAction {
 					}
 					newNode = addNewNode(parent, childPosition, targetNode.isLeft());
 					modeController.getMapController().select(newNode);
+					if(e != null){
+						((MTextController) TextController.getController(modeController)).edit(newNode, targetNode, e, true,
+						    false, false);
+					}
+					else{
 					EventQueue.invokeLater(new Runnable(){
 
 						public void run() {
 							((MTextController) TextController.getController(modeController)).edit(newNode, targetNode, e, true,
 							    false, false);
                         }});
+					}
 					break;
 				}
 				else {
