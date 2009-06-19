@@ -300,6 +300,7 @@
 			<menu_action action="ToggleMenubarAction" />
 			<menu_action action="ToggleToolbarAction" />
 			<menu_action action="ToggleLeftToolbarAction" />
+			<menu_action action="ShowHideNoteAction" />
 		</menu_category>
 	</menu_category>
 	<menu_category name="node_popup">
