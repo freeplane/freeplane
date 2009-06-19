@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.mindmapmode.note;
 
+import java.net.URL;
 import java.util.regex.Pattern;
 
 import javax.swing.text.html.HTMLDocument;
@@ -103,7 +104,13 @@ final class NoteManager implements INodeSelectionListener {
 		final HTMLDocument document = noteViewerComponent.getDocument();
 		document.removeDocumentListener(mNoteDocumentListener);
 		try {
-			document.setBase(Compat.fileToUrl(node.getMap().getFile()));
+			final URL url = node.getMap().getURL();
+			if(url != null){
+				document.setBase(url);
+			}
+			else{
+				document.setBase(new URL("file: "));
+			}
 		}
 		catch (final Exception e) {
 		}

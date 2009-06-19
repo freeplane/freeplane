@@ -28,6 +28,7 @@ import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.net.URL;
 
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
@@ -224,7 +225,13 @@ class EditNodeWYSIWYG extends EditNodeBase {
 			styleSheet.removeStyle("p");
 			styleSheet.removeStyle("body");
 			styleSheet.addRule(rule);
-			document.setBase(node.getMap().getURL());
+			final URL url = node.getMap().getURL();
+			if(url != null){
+				document.setBase(url);
+			}
+			else{
+				document.setBase(new URL("file: "));
+			}
 			int preferredHeight = (int) (viewController.getComponent(node).getHeight() * 1.2);
 			preferredHeight = Math.max(preferredHeight, Integer.parseInt(ResourceController.getResourceController()
 			    .getProperty("el__min_default_window_height")));
