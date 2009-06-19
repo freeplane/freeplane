@@ -258,7 +258,6 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 				return;
 			}
 		}
-		setVisible(false);
 	}
 
 	public void afterMapClose(final MapModel pOldMapView) {
