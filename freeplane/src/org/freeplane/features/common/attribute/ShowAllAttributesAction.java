@@ -44,7 +44,13 @@ class ShowAllAttributesAction extends AFreeplaneAction {
 	}
 
 	public void setAttributeViewType(final MapModel map) {
+		if(map == null){
+			return;
+		}
 		final AttributeRegistry attributes = AttributeRegistry.getRegistry(map);
+		if(attributes == null){
+			return;
+		}
 		if (attributes.getAttributeViewType() != AttributeTableLayoutModel.SHOW_ALL) {
 			attributes.setAttributeViewType(AttributeTableLayoutModel.SHOW_ALL);
 		}
