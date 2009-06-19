@@ -162,11 +162,6 @@ public class ModeController extends AController {
 			mapController.addNodeSelectionListener(listener);
 			mapController.addNodeChangeListener(listener);
 		}
-		if (AFreeplaneAction.checkVisibilityOnChange(action)) {
-			final ActionDisplayerOnChange listener = new ActionDisplayerOnChange(action);
-			mapController.addNodeSelectionListener(listener);
-			mapController.addNodeChangeListener(listener);
-		}
 	}
 
 	public void addExtension(final Class<? extends IExtension> clazz, final IExtension extension) {
@@ -258,10 +253,6 @@ public class ModeController extends AController {
 		if (AFreeplaneAction.checkSelectionOnChange(action)) {
 			mapController.removeNodeSelectionListener(ActionSelectorOnChange.class, action);
 			mapController.removeNodeChangeListener(ActionSelectorOnChange.class, action);
-		}
-		if (AFreeplaneAction.checkVisibilityOnChange(action)) {
-			mapController.removeNodeSelectionListener(ActionDisplayerOnChange.class, action);
-			mapController.removeNodeChangeListener(ActionDisplayerOnChange.class, action);
 		}
 		return action;
 	}

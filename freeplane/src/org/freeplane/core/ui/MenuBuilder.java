@@ -55,7 +55,6 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.JAutoCheckBoxMenuItem;
 import org.freeplane.core.ui.components.JAutoRadioButtonMenuItem;
 import org.freeplane.core.ui.components.JAutoToggleButton;
-import org.freeplane.core.ui.components.JAutoVisibleMenuItem;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogTool;
@@ -442,9 +441,6 @@ public class MenuBuilder extends UIBuilder {
 		if (action.getClass().getAnnotation(SelectableAction.class) != null) {
 			item = new JAutoCheckBoxMenuItem(decorateAction(category, action));
 		}
-		else if (action.getClass().getAnnotation(VisibleAction.class) != null) {
-			item = new JAutoVisibleMenuItem(decorateAction(category, action));
-		}
 		else {
 			item = new JMenuItem(decorateAction(category, action));
 		}
@@ -462,19 +458,6 @@ public class MenuBuilder extends UIBuilder {
 
 				public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
 					action.setSelected();
-				}
-			});
-		}
-		if (AFreeplaneAction.checkVisibilityOnPopup(action)) {
-			addPopupMenuListener(key, new PopupMenuListener() {
-				public void popupMenuCanceled(final PopupMenuEvent e) {
-				}
-
-				public void popupMenuWillBecomeInvisible(final PopupMenuEvent e) {
-				}
-
-				public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
-					action.setVisible();
 				}
 			});
 		}

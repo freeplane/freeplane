@@ -37,7 +37,8 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
-import org.freeplane.core.ui.VisibleAction;
+import org.freeplane.core.ui.EnabledAction;
+import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -66,7 +67,7 @@ public class ReminderHook extends PersistentNodeHook {
 	}
 
 	//******************************************	
-	@VisibleAction(checkOnNodeChange = true)
+	@EnabledAction(checkOnNodeChange = true)
 	private class ReminderHookAction extends HookAction {
 		/**
 		 * 
@@ -81,8 +82,8 @@ public class ReminderHook extends PersistentNodeHook {
 		}
 
 		@Override
-		public void setVisible() {
-			setVisible(isActiveForSelection());
+		public void setEnabled() {
+			setEnabled(isActiveForSelection());
 		}
 	}
 

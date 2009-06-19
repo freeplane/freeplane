@@ -72,27 +72,10 @@ public abstract class AFreeplaneAction extends AbstractAction {
 		return annotation.checkOnPopup();
 	}
 
-	static public boolean checkVisibilityOnChange(final Action action) {
-		final VisibleAction annotation = action.getClass().getAnnotation(VisibleAction.class);
-		if (!(action instanceof AFreeplaneAction) || annotation == null) {
-			return false;
-		}
-		return annotation.checkOnNodeChange();
-	}
-
-	static public boolean checkVisibilityOnPopup(final Action action) {
-		final VisibleAction annotation = action.getClass().getAnnotation(VisibleAction.class);
-		if (annotation == null) {
-			return false;
-		}
-		return annotation.checkOnPopup();
-	}
-
 	// TODO ARCH rladstaetter 18.02.2009 actions should not have a dependency on the controller
 	final private Controller controller;
 	final private String key;
 	private boolean selected = false;
-	private boolean visible = true;
 
 	//
 	//	/**
@@ -178,10 +161,6 @@ public abstract class AFreeplaneAction extends AbstractAction {
 		return selected;
 	}
 
-	public boolean isVisible() {
-		return visible;
-	}
-
 	public void setEnabled() {
 	}
 
@@ -192,18 +171,10 @@ public abstract class AFreeplaneAction extends AbstractAction {
 		final boolean oldValue = selected;
 		if (oldValue != newValue) {
 			selected = newValue;
-			firePropertyChange("selected", Boolean.valueOf(oldValue), Boolean.valueOf(newValue));
+			firePropertyChange(SelectableAction.SELECTION_PROPERTY, Boolean.valueOf(oldValue), Boolean.valueOf(newValue));
 		}
 	}
 
 	public void setVisible() {
-	}
-
-	public void setVisible(final boolean newValue) {
-		final boolean oldValue = visible;
-		if (oldValue != newValue) {
-			visible = newValue;
-			firePropertyChange("visible", Boolean.valueOf(oldValue), Boolean.valueOf(newValue));
-		}
 	}
 }
