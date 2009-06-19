@@ -20,6 +20,7 @@
 package org.freeplane.core.filter;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.lang.ref.WeakReference;
@@ -33,6 +34,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
+import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.filter.condition.IElementaryConditionController;
@@ -181,6 +183,10 @@ public class FilterConditionEditor extends Box{
 	public void focusInputField() {
 		if(values.isEnabled()){
 			values.requestFocus();
+			Component editorComponent = values.getEditor().getEditorComponent();
+			if(editorComponent instanceof JTextComponent){
+				((JTextComponent)editorComponent).selectAll();
+			}
 			return;
 		}
     }
