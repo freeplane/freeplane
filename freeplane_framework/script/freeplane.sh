@@ -133,8 +133,8 @@ fi
 
 output_debug_info
 
-if [ -L "$0" ] && [ -x $(which readlink) ]
-then # if the script is a link and we have 'readlink' to follow it
+if [ -x $(which readlink) ]
+then # if we have 'readlink' we can use it to get an absolute path
 	# -m should be faster and link does always resolve, else this script
 	# wouldn't be called, would it?
 	freefile=$(readlink -mn "$0")
