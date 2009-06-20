@@ -470,7 +470,7 @@ public class NodeView extends JComponent implements INodeView {
 	public int getMaxToolTipWidth() {
 		if (maxToolTipWidth == 0) {
 			try {
-				maxToolTipWidth = ResourceController.getResourceController().getIntProperty("max_tooltip_width", 600);
+				maxToolTipWidth = ResourceController.getResourceController().getIntProperty("toolTipManager.max_tooltip_width", 600);
 			}
 			catch (final NumberFormatException e) {
 				maxToolTipWidth = 600;

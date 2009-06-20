@@ -39,6 +39,7 @@ import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.LimitedWidthTooltipUI;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Compat;
@@ -200,6 +201,7 @@ public class FreeplaneStarter {
 		win_state = ((win_state & Frame.ICONIFIED) != 0) ? Frame.NORMAL : win_state;
 		frame.setExtendedState(win_state);
 		setTooltipDelays();
+		LimitedWidthTooltipUI.initialize();
 		ResourceController.getResourceController().addPropertyChangeListener(new IFreeplanePropertyListener(){
 
 			public void propertyChanged(String propertyName, String newValue, String oldValue) {
@@ -217,6 +219,8 @@ public class FreeplaneStarter {
 		toolTipManager.setDismissDelay(dismissDelay);
 		final int reshowDelay = ResourceController.getResourceController().getIntProperty(TOOL_TIP_MANAGER_RESHOW_DELAY, 0);
 		toolTipManager.setReshowDelay(reshowDelay);
+		final int maxWidth = ResourceController.getResourceController().getIntProperty("toolTipManager.max_tooltip_width", Integer.MAX_VALUE);
+		LimitedWidthTooltipUI.setMaximumWidth(maxWidth);
     }
 
 	private void loadMaps(final String[] args) {
