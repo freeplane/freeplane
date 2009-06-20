@@ -78,7 +78,7 @@ public class BModeControllerFactory {
 		modeController.getMapController().addNodeSelectionListener(new BNodeNoteViewer(modeController.getController()));
 		final BToolbarContributor toolbarContributor = new BToolbarContributor(modeController);
 		modeController.addMenuContributor(toolbarContributor);
-		controller.getViewController().addMapTitleChangeListener(toolbarContributor);
+		controller.getMapViewManager().addMapViewChangeListener(toolbarContributor);
 		userInputListenerFactory.setNodePopupMenu(new JPopupMenu());
 		userInputListenerFactory.setMainToolBar(new FreeplaneToolBar());
 		userInputListenerFactory.setMenuStructure(menuStructure);

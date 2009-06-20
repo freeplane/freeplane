@@ -129,6 +129,8 @@ public class FreeplaneStarter {
 			HelpController.install(controller);
 			NodeHistory.install(controller);
 			MModeControllerFactory.createModeController(controller);
+			controller.getModeController(MModeController.MODENAME).getMapController().addMapChangeListener(
+			    applicationResourceController.getLastOpenedList());
 			BModeControllerFactory.createModeController(controller, "/xml/browsemodemenu.xml");
 			FModeControllerFactory.createModeController(controller);
 			return controller;

@@ -63,6 +63,7 @@ import org.freeplane.core.util.LogTool;
 public class UrlManager implements IExtension {
 	public static final String FREEPLANE_FILE_EXTENSION_WITHOUT_DOT = "mm";
 	public static final String FREEPLANE_FILE_EXTENSION = "." + FREEPLANE_FILE_EXTENSION_WITHOUT_DOT;
+	public static final String MAP_URL = "map_url";
 	private static File lastCurrentDir = null;
 
 	/**
@@ -376,10 +377,6 @@ public class UrlManager implements IExtension {
 
 	public ModeController getModeController() {
 		return modeController;
-	}
-
-	public String getRestoreable(final MapModel map) {
-		return null;
 	}
 
 	public void handleLoadingException(final Exception ex) {

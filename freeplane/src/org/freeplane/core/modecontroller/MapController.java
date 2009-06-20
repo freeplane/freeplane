@@ -575,10 +575,10 @@ public class MapController extends SelectionController {
 		return newModel;
 	}
 
-	public MapModel newMap(final URL file) throws FileNotFoundException, XMLParseException, IOException,
+	public MapModel newMap(final URL url) throws FileNotFoundException, XMLParseException, IOException,
 	        URISyntaxException {
 		final MapModel newModel = newModel(null);
-		load(newModel, file);
+		load(newModel, url);
 		fireMapCreated(newModel);
 		newMapView(newModel);
 		setSaved(newModel, true);

@@ -84,7 +84,6 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	private boolean leftToolbarVisible;
 	private final IMapViewManager mapViewManager;
 	private boolean menubarVisible;
-	final private HashSet mMapTitleChangeListenerSet = new HashSet();
 	final private JScrollPane scrollPane;
 	final private JLabel status;
 	final private JPanel toolbarPanel;
@@ -131,10 +130,6 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		resourceController.addPropertyChangeListener(this);
 		final String antialiasProperty = resourceController.getProperty(ViewController.RESOURCE_ANTIALIAS);
 		changeAntialias(antialiasProperty);
-	}
-
-	public void addMapTitleChangeListener(final IMapTitleChangeListener pMapTitleChangeListener) {
-		mMapTitleChangeListenerSet.add(pMapTitleChangeListener);
 	}
 
 	public void afterMapClose(final MapModel pOldMapView) {
@@ -434,10 +429,6 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		return true;
 	}
 
-	public void removeMapTitleChangeListener(final IMapTitleChangeListener pMapTitleChangeListener) {
-		mMapTitleChangeListenerSet.remove(pMapTitleChangeListener);
-	}
-
 	/**
 	 * 
 	 */
@@ -570,10 +561,6 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 			}
 		}
 		setTitle(title);
-		for (final Iterator iterator = mMapTitleChangeListenerSet.iterator(); iterator.hasNext();) {
-			final IMapTitleChangeListener listener = (IMapTitleChangeListener) iterator.next();
-			listener.setMapTitle(model, rawTitle);
-		}
 	}
 
 	abstract public void setTitle(String title);

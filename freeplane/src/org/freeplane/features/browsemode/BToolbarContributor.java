@@ -19,22 +19,29 @@
  */
 package org.freeplane.features.browsemode;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
 
 import javax.swing.JLabel;
 
-import org.freeplane.core.frame.IMapTitleChangeListener;
+import org.freeplane.core.frame.IMapViewChangeListener;
+import org.freeplane.core.frame.IMapViewManager;
+import org.freeplane.core.modecontroller.IMapChangeListener;
+import org.freeplane.core.modecontroller.IMapLifeCycleListener;
+import org.freeplane.core.modecontroller.MapChangeEvent;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
+import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.IMenuContributor;
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.PersistentEditableComboBox;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.LogTool;
 
-public class BToolbarContributor implements IMenuContributor, IMapTitleChangeListener {
+public class BToolbarContributor implements IMenuContributor, IMapViewChangeListener{
 	private static final String BROWSE_URL_STORAGE_KEY = "browse_url_storage";
 	final private ModeController modeController;
 	private PersistentEditableComboBox urlfield = null;
@@ -53,22 +60,11 @@ public class BToolbarContributor implements IMenuContributor, IMapTitleChangeLis
 				}
 				catch (final Exception e1) {
 					LogTool.warn(e1);
-					UITools.errorMessage(e1);
 				}
 			}
 		});
 	}
 
-	public void setMapTitle(final MapModel model, final String newMapTitle) {
-		if (model == null) {
-			return;
-		}
-		final URL url = model.getURL();
-		if (url == null) {
-			return;
-		}
-		setURLField(url.toString());
-	}
 
 	private void setURLField(final String text) {
 		urlfield.setText(text);
@@ -78,4 +74,30 @@ public class BToolbarContributor implements IMenuContributor, IMapTitleChangeLis
 		builder.addElement("/main_toolbar", new JLabel("URL:"), MenuBuilder.AS_CHILD);
 		builder.addElement("/main_toolbar", urlfield, MenuBuilder.AS_CHILD);
 	}
+
+	public void afterViewChange(Component oldView, Component newView) {
+		if (newView == null) {
+			return;
+		}
+		final IMapViewManager mapViewManager = modeController.getController().getMapViewManager();
+        final ModeController modeController = mapViewManager.getModeController(newView);
+        final MapModel map = mapViewManager.getModel(newView);
+		final URL url = map.getURL();
+		if (url == null) {
+			return;
+		}
+		setURLField(url.toString());
+    }
+
+
+	public void afterViewClose(Component oldView) {
+    }
+
+
+	public void afterViewCreated(Component mapView) {
+    }
+
+
+	public void beforeViewChange(Component oldView, Component newView) {
+    }
 }

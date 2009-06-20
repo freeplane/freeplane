@@ -47,6 +47,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.FreeplaneVersion;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.MapWriter.Mode;
+import org.freeplane.core.modecontroller.MapChangeEvent;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
@@ -201,21 +202,6 @@ private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_ve
 		return relative;
 	}
 
-	/**
-	 * @return
-	 */
-	@Override
-	public String getRestoreable(final MapModel map) {
-		if (map == null) {
-			return null;
-		}
-		final File file = map.getFile();
-		if (file == null) {
-			return null;
-		}
-		return "MindMap:" + file.getAbsolutePath();
-	}
-
 	public void open() {
 		final JFileChooser chooser = getFileChooser();
 		final int returnVal = chooser.showOpenDialog(getController().getViewController().getMapView());
@@ -330,7 +316,8 @@ private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_ve
 				map.addExtension(new BackupFlag());
 				backup(map);
 			}
-			final String lockingUser = ((MMapController) getModeController().getMapController()).tryToLock(map, file);
+			final MMapController mapController = (MMapController) getModeController().getMapController();
+			final String lockingUser = mapController.tryToLock(map, file);
 			if (lockingUser != null) {
 				UITools.informationMessage(getController().getViewController().getFrame(), FpStringUtils.formatText(
 				    "map_locked_by_save_as", file.getName(), lockingUser));
@@ -342,7 +329,16 @@ private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_ve
 			    "locking_failed_by_save_as", file.getName()));
 			return false;
 		}
-		return saveInternal((MMapModel) map, file, false);
+		final URL urlBefore = map.getURL();
+		final boolean saved = saveInternal((MMapModel) map, file, false);
+		if(! saved){
+			return false;
+		}			
+		final URL urlAfter = map.getURL();
+		final MMapController mapController = (MMapController) getModeController().getMapController();
+		mapController.fireMapChanged(new MapChangeEvent(this, map, UrlManager.MAP_URL, urlBefore, urlAfter));
+		mapController.setSaved(map, true);
+		return true;
 	}
 
 	/**

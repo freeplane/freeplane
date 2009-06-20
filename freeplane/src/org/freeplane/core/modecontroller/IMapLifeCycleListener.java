@@ -19,6 +19,8 @@
  */
 package org.freeplane.core.modecontroller;
 
+import java.net.URL;
+
 import org.freeplane.core.model.MapModel;
 
 /**
@@ -26,6 +28,5 @@ import org.freeplane.core.model.MapModel;
  */
 public interface IMapLifeCycleListener {
 	public void onCreate(MapModel map);
-
 	public void onRemove(MapModel map);
 }
