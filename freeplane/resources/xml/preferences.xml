@@ -119,6 +119,10 @@
             <combo name="standardedgestyle">
                 <choice value="bezier"/>
                 <choice value="linear"/>
+                <choice value="sharp_bezier"/>
+                <choice value="sharp_linear"/>
+                <choice value="horizontal"/>
+                <choice value="hide_edge"/>
             </combo>
         </separator>
     </tab>
