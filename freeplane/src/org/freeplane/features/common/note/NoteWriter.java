@@ -22,8 +22,11 @@ package org.freeplane.features.common.note;
 import java.io.IOException;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.io.IAttributeWriter;
+import org.freeplane.core.io.IElementWriter;
 import org.freeplane.core.io.IExtensionElementWriter;
 import org.freeplane.core.io.ITreeWriter;
+import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.features.common.text.NodeTextBuilder;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -31,7 +34,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
 /**
  * @author Dimitry Polivaev
  */
-class NoteWriter implements IExtensionElementWriter {
+class NoteWriter implements IExtensionElementWriter, IAttributeWriter {
 	NoteController noteManager;
 
 	public NoteWriter(final NoteController noteManager) {
@@ -61,8 +64,11 @@ class NoteWriter implements IExtensionElementWriter {
 	 */
 	public void writeContent(final ITreeWriter writer, final Object element, final IExtension note) throws IOException {
 		final NodeModel node = (NodeModel) element;
-		noteManager.onWrite(node);
 		saveContent(writer, (NoteModel) note);
 		return;
 	}
+
+	public void writeAttributes(ITreeWriter writer, Object userObject, String tag) {
+		noteManager.onWrite((MapModel)userObject);	    
+    }
 }

@@ -218,8 +218,8 @@ public class MNoteController extends NoteController {
 	}
 
 	@Override
-	protected void onWrite(final NodeModel node) {
-		noteManager.onWrite(node);
+	protected void onWrite(final MapModel map) {
+		noteManager.onWrite(getModeController().getController().getSelection().getSelected());
 	}
 
 	void setLastContentEmpty(final boolean mLastContentEmpty) {

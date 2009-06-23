@@ -26,8 +26,10 @@ import javax.swing.ImageIcon;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.filter.FilterController;
+import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.ITooltipProvider;
+import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
@@ -64,7 +66,9 @@ public class NoteController implements IExtension {
 		this.modeController = modeController;
 		modeController.getMapController().getReadManager().addElementHandler("richcontent", new NoteBuilder(this));
 		final NoteWriter noteWriter = new NoteWriter(this);
-		modeController.getMapController().getWriteManager().addExtensionElementWriter(NoteModel.class, noteWriter);
+		final WriteManager writeManager = modeController.getMapController().getWriteManager();
+		writeManager.addAttributeWriter("map", noteWriter);
+		writeManager.addExtensionElementWriter(NoteModel.class, noteWriter);
 	}
 
 	public ModeController getModeController() {
@@ -84,7 +88,7 @@ public class NoteController implements IExtension {
 	/**
 	 * @param node
 	 */
-	protected void onWrite(final NodeModel node) {
+	protected void onWrite(final MapModel map) {
 	}
 
 	protected void setStateIcon(final NodeModel node, final boolean enabled) {
