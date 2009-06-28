@@ -185,7 +185,11 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 		writer.addAttributeWriter(NodeBuilder.XML_NODE, this);
 	}
 
-	public XMLElement save(final ArrowLinkModel model) {
+	public void save(ITreeWriter writer, final ArrowLinkModel model) throws IOException {
+		final NodeModel target = model.getTarget();
+		if(target == null){
+			return;
+		}
 		final XMLElement arrowLink = new XMLElement();
 		arrowLink.setName("arrowlink");
 		final String style = model.getStyle();
@@ -196,7 +200,7 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 		if (color != null) {
 			arrowLink.setAttribute("COLOR", ColorUtils.colorToString(color));
 		}
-		final String destinationLabel = model.getTarget().createID();
+		final String destinationLabel = target.createID();
 		if (destinationLabel != null) {
 			arrowLink.setAttribute("DESTINATION", destinationLabel);
 		}
@@ -228,7 +232,7 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 		if (endArrow != null) {
 			arrowLink.setAttribute("ENDARROW", endArrow);
 		}
-		return arrowLink;
+		writer.addElement(model, arrowLink);
 	}
 
 	public void setAttributes(final String tag, final Object node, final XMLElement attributes) {
@@ -260,8 +264,7 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 			final LinkModel linkModel = iterator.next();
 			if (linkModel instanceof ArrowLinkModel) {
 				final ArrowLinkModel arrowLinkModel = (ArrowLinkModel) linkModel;
-				final XMLElement arrowLinkElement = save(arrowLinkModel);
-				writer.addElement(arrowLinkModel, arrowLinkElement);
+				save(writer, arrowLinkModel);
 			}
 		}
 	}

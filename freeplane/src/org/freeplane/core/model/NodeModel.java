@@ -408,7 +408,7 @@ public class NodeModel implements MutableTreeNode {
 	}
 
 	public boolean isRoot() {
-		return (parent == null);
+		return getMap().getRootNode() == this;
 	}
 
 	public boolean isVisible() {

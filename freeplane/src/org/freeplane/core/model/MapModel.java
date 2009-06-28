@@ -144,7 +144,11 @@ public class MapModel {
 	 * @return
 	 */
 	public NodeModel getNodeForID(final String nodeID) {
-		return nodes.get(nodeID);
+		final NodeModel node = nodes.get(nodeID);
+		if(node.getParent() == null && node != root){
+			return null;
+		}
+		return node;
 	}
 
 	public int getNumberOfChangesSinceLastSave() {
