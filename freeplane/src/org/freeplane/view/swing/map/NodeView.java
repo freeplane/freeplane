@@ -1015,6 +1015,10 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	void repaintSelected() {
+		// do not repaint removed nodes
+		if(model.getParentNode() == null && !model.isRoot()){
+			return;
+		}
 		mainView.updateTextColor(this);
 		if (EdgeController.getController(getMap().getModeController()).getStyle(model).equals(
 		    EdgeStyle.EDGESTYLE_HIDDEN)) {
