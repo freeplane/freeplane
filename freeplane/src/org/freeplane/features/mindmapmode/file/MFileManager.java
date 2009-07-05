@@ -402,6 +402,11 @@ private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_ve
 				return false;
 			}
 		}
+		// do not backup in this case.
+		final File oldFile = map.getFile();
+		if((oldFile == null || ! f.getAbsoluteFile().equals(oldFile.getAbsoluteFile())) && null == map.getExtension(BackupFlag.class)){
+			map.addExtension(new BackupFlag());
+		}
 		if(save(map, f)){
 			getController().getMapViewManager().updateMapViewName();
 			return true;
