@@ -32,7 +32,7 @@ import javax.swing.SwingConstants;
  * @author Stefan Zechmeister
  */
 public class FreeplaneToolBar extends JToolBar {
-	private static Insets nullInsets = new Insets(0, 0, 0, 0);
+	protected static Insets nullInsets = new Insets(0, 0, 0, 0);
 	/**
 	 * 
 	 */
@@ -113,7 +113,7 @@ public class FreeplaneToolBar extends JToolBar {
 		return comp;
 	}
 
-	private void configureComponent(final Component comp) {
+	protected void configureComponent(final Component comp) {
 		comp.setFocusable(false);
 		if (!(comp instanceof AbstractButton)) {
 			return;

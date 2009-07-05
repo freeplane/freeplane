@@ -33,6 +33,7 @@ import java.io.Reader;
 import java.io.SequenceInputStream;
 import java.io.StringBufferInputStream;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
@@ -316,8 +317,7 @@ private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_ve
 				map.addExtension(new BackupFlag());
 				backup(map);
 			}
-			final MMapController mapController = (MMapController) getModeController().getMapController();
-			final String lockingUser = mapController.tryToLock(map, file);
+			final String lockingUser = tryToLock(map, file);
 			if (lockingUser != null) {
 				UITools.informationMessage(getController().getViewController().getFrame(), FpStringUtils.formatText(
 				    "map_locked_by_save_as", file.getName(), lockingUser));
@@ -341,6 +341,40 @@ private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_ve
 		return true;
 	}
 
+	@Override
+	public void load(final URL url, final MapModel map) throws FileNotFoundException, IOException, XMLParseException,
+	        URISyntaxException {
+		final File file = Compat.urlToFile(url);
+		if (!file.exists()) {
+			throw new FileNotFoundException(FpStringUtils.formatText("file_not_found", file.getPath()));
+		}
+		if (!file.canWrite()) {
+			((MMapModel) map).setReadOnly(true);
+		}
+		else {
+			try {
+				final String lockingUser = tryToLock(map, file);
+				if (lockingUser != null) {
+					UITools.informationMessage(getController().getViewController().getFrame(), FpStringUtils
+					    .formatText("map_locked_by_open", file.getName(), lockingUser));
+					((MMapModel) map).setReadOnly(true);
+				}
+				else {
+					((MMapModel) map).setReadOnly(false);
+				}
+			}
+			catch (final Exception e) {
+				LogTool.severe(e);
+				UITools.informationMessage(getController().getViewController().getFrame(), FpStringUtils.formatText(
+				    "locking_failed_by_open", file.getName()));
+				((MMapModel) map).setReadOnly(true);
+			}
+		}
+		final NodeModel root = loadTree(map, file);
+		if (root != null) {
+			((MMapModel) map).setRoot(root);
+		}
+	}
 	/**
 	 * Save as; return false is the action was cancelled
 	 */
@@ -396,7 +430,7 @@ private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_ve
 			final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(out));
 			getModeController().getMapController().getMapWriter().writeMapAsXml(map, fileout, Mode.FILE, true);
 			if (!isInternal) {
-				map.setFile(file);
+				setFile(map, file);
 				map.setSaved(true);
 			}
 			map.scheduleTimerForAutomaticSaving(getModeController());
@@ -427,6 +461,27 @@ private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_ve
 			new DropTarget(mapView, fileOpener);
 		}
 	}
+	/**
+	 * Attempts to lock the map using a semaphore file
+	 *
+	 * @return If the map is locked, return the name of the locking user,
+	 *         otherwise return null.
+	 * @throws Exception
+	 *             , when the locking failed for other reasons than that the
+	 *             file is being edited.
+	 */
+	public String tryToLock(final MapModel map, final File file) throws Exception {
+		final String lockingUser = ((MMapModel) map).getLockManager().tryToLock(file);
+		final String lockingUserOfOldLock = ((MMapModel) map).getLockManager().popLockingUserOfOldLock();
+		if (lockingUserOfOldLock != null) {
+			UITools.informationMessage(getController().getViewController().getFrame(), FpStringUtils.formatText(
+			    "locking_old_lock_removed", file.getName(), lockingUserOfOldLock));
+		}
+		if (lockingUser == null) {
+			((MMapModel) map).setReadOnly(false);
+		}
+		return lockingUser;
+	}
 	public NodeModel loadTree(final MapModel map, final File file) throws XMLParseException, IOException {
 		final FileInputStream input = new FileInputStream(file);
 		final FileChannel channel = input.getChannel();
@@ -435,8 +490,20 @@ private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_ve
 			throw new IOException("can not obtain file lock for " + file);
 		}
 		final NodeModel rootNode = loadTreeImpl(map, input);
+		setFile(map, file);
 		return rootNode;
 	}
+	
+	public void setFile(MapModel map, final File file) {
+		try {
+			URL url = Compat.fileToUrl(file);
+			setURL(map, url);
+		}
+		catch (final MalformedURLException e) {
+			LogTool.severe(e);
+		}
+	}
+
 
 	private NodeModel loadTreeImpl(final MapModel map, final FileInputStream input) throws FileNotFoundException,
             IOException {
@@ -497,4 +564,24 @@ private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_ve
 		return new String(buffer);
 	}
 	
+	@Override
+	public void loadURL(final String relative) {
+			final MapModel map = getController().getMap();
+			if (map.getFile() == null) {
+				URL url;
+				try {
+					url = new URL(relative);
+					if (url.getProtocol().equalsIgnoreCase("file")) {
+						getController().getViewController().out("You must save the current map first!");
+						final boolean result = ((MFileManager) UrlManager.getController(getModeController())).save(map);
+						if (!result) {
+							return;
+						}
+					}
+				}
+				catch (MalformedURLException e) {
+				}
+			}
+			super.loadURL(relative);
+	}
 }

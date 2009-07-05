@@ -80,7 +80,7 @@ public class BModeControllerFactory {
 		modeController.addMenuContributor(toolbarContributor);
 		controller.getMapViewManager().addMapViewChangeListener(toolbarContributor);
 		userInputListenerFactory.setNodePopupMenu(new JPopupMenu());
-		userInputListenerFactory.setMainToolBar(new FreeplaneToolBar());
+		userInputListenerFactory.addMainToolBar("/main_toolbar", new FreeplaneToolBar());
 		userInputListenerFactory.setMenuStructure(menuStructure);
 		userInputListenerFactory.updateMenus(modeController);
 		modeController.updateMenus();

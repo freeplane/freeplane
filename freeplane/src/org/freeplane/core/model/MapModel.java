@@ -222,15 +222,6 @@ public class MapModel {
 		listeners.remove(listener);
 	};
 
-	public void setFile(final File file) {
-		try {
-			url = Compat.fileToUrl(file);
-		}
-		catch (final MalformedURLException e) {
-			LogTool.severe(e);
-		}
-	}
-
 	public void setFilter(final Filter filter) {
 		this.filter = filter;
 	}

@@ -81,13 +81,10 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	private boolean antialiasEdges = false;
 	final private Controller controller;
 	final private JPanel leftToolbarPanel;
-	private boolean leftToolbarVisible;
 	private final IMapViewManager mapViewManager;
-	private boolean menubarVisible;
 	final private JScrollPane scrollPane;
 	final private JLabel status;
 	final private JPanel toolbarPanel;
-	private boolean toolbarVisible;
 	final private String userDefinedZoom;
 	final private ZoomInAction zoomIn;
 	private final DefaultComboBoxModel zoomModel;
@@ -119,11 +116,8 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 			LogTool.severe(e);
 		}
 		controller.addAction(new ToggleMenubarAction(controller, this));
-		controller.addAction(new ToggleToolbarAction(controller, this));
+		controller.addAction(new ToggleToolbarAction(controller, this, "ToggleToolbarAction", "/main_toolbar", "toolbarVisible"));
 		controller.addAction(new ToggleLeftToolbarAction(controller, this));
-		toolbarVisible = true;
-		leftToolbarVisible = true;
-		menubarVisible = true;
 		toolbarPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		leftToolbarPanel = new JPanel(new BorderLayout());
 		scrollPane = new MapViewScrollPane();
@@ -324,6 +318,10 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		final JToolBar filterToolbar = FilterController.getController(controller).getFilterToolbar();
 		getContentPane().add(toolbarPanel, BorderLayout.NORTH);
 		getContentPane().add(leftToolbarPanel, BorderLayout.WEST);
+		if (!ResourceController.getResourceController().getBooleanProperty("leftToolbarVisible")) {
+			controller.getViewController().setLeftToolbarVisible(false);
+		}
+
 		toolbarPanel.add(filterToolbar);
 		filterToolbar.addComponentListener(new ComponentListener() {
 			public void componentHidden(final ComponentEvent e) {
@@ -373,15 +371,15 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	abstract public boolean isApplet();
 
 	boolean isLeftToolbarVisible() {
-		return leftToolbarVisible;
+		return ResourceController.getResourceController().getBooleanProperty("leftToolbarVisible");
 	}
 
-	boolean isMenubarVisible() {
-		return menubarVisible;
+	protected boolean isMenubarVisible() {
+		return ResourceController.getResourceController().getBooleanProperty("menubarVisible");
 	}
 
 	boolean isToolbarVisible() {
-		return toolbarVisible;
+		return ResourceController.getResourceController().getBooleanProperty("toolbarVisible");
 	}
 
 	public void obtainFocusForSelected() {
@@ -423,9 +421,6 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		}
 		ResourceController.getResourceController().setProperty("antialiasEdges", (antialiasEdges ? "true" : "false"));
 		ResourceController.getResourceController().setProperty("antialiasAll", (antialiasAll ? "true" : "false"));
-		ResourceController.getResourceController().setProperty("toolbarVisible", (toolbarVisible ? "true" : "false"));
-		ResourceController.getResourceController().setProperty("leftToolbarVisible",
-		    (leftToolbarVisible ? "true" : "false"));
 		return true;
 	}
 
@@ -434,7 +429,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	 */
 	abstract public void removeSplitPane();
 
-	private void resizeToolbarPane() {
+	public void resizeToolbarPane() {
 		if (!toolbarPanel.isValid()) {
 			if(toolbarPanel.getWidth() == 0){
 				return;
@@ -473,9 +468,11 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		}
 		if (oldModeController != null) {
 			final IUserInputListenerFactory userInputListenerFactory = oldModeController.getUserInputListenerFactory();
-			final JToolBar modeToolBar = userInputListenerFactory.getMainToolBar();
-			if (modeToolBar != null) {
-				toolbarPanel.remove(modeToolBar);
+			final Iterable<JToolBar> modeToolBars = userInputListenerFactory.getToolBars();
+			if (modeToolBars != null) {
+				for (JToolBar toolBar:modeToolBars){
+					toolbarPanel.remove(toolBar);
+				}
 				toolbarPanel.revalidate();
 			}
 			final Component leftToolBar = userInputListenerFactory.getLeftToolBar();
@@ -483,18 +480,24 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 				leftToolbarPanel.remove(leftToolBar);
 			}
 		}
-		final JToolBar newToolBar = newModeController.getUserInputListenerFactory().getMainToolBar();
-		if (newToolBar != null) {
-			toolbarPanel.add(newToolBar, 0);
+		final IUserInputListenerFactory newUserInputListenerFactory = newModeController.getUserInputListenerFactory();
+		newUserInputListenerFactory.getToolBar("/main_toolbar").setVisible(isToolbarVisible());
+		final Iterable<JToolBar> newToolBars = newUserInputListenerFactory.getToolBars();
+		if (newToolBars != null) {
+			int i = 0;
+			for (JToolBar toolBar:newToolBars){
+				toolbarPanel.add(toolBar, i++);
+			}
 			toolbarPanel.revalidate();
-			newToolBar.repaint();
+			toolbarPanel.repaint();
 		}
 		/* new left toolbar. */
-		final Component newLeftToolBar = newModeController.getUserInputListenerFactory().getLeftToolBar();
+		final Component newLeftToolBar = newUserInputListenerFactory.getLeftToolBar();
 		if (newLeftToolBar != null) {
 			leftToolbarPanel.add(newLeftToolBar, BorderLayout.WEST);
 		}
-		setFreeplaneMenuBar(newModeController.getUserInputListenerFactory().getMenuBar());
+		setFreeplaneMenuBar(newUserInputListenerFactory.getMenuBar());
+		setMenubarVisible(isMenubarVisible());		
 	}
 
 	public void setAntialiasAll(final boolean antialiasAll) {
@@ -519,13 +522,13 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	abstract protected void setFreeplaneMenuBar(FreeplaneMenuBar menuBar);
 
 	public void setLeftToolbarVisible(final boolean visible) {
-		leftToolbarVisible = visible;
+		ResourceController.getResourceController().setProperty("leftToolbarVisible", visible);
 		leftToolbarPanel.setVisible(visible);
 	}
 
 	public void setMenubarVisible(final boolean visible) {
-		menubarVisible = visible;
-		getFreeplaneMenuBar().setVisible(menubarVisible);
+		ResourceController.getResourceController().setProperty("menubarVisible", visible);
+		getFreeplaneMenuBar().setVisible(visible);
 	}
 
 	public void setTextRenderingHint(final Graphics2D g) {
@@ -566,8 +569,13 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	abstract public void setTitle(String title);
 
 	public void setToolbarVisible(final boolean visible) {
-		toolbarVisible = visible;
-		toolbarPanel.setVisible(toolbarVisible);
+		ResourceController.getResourceController().setProperty("toolbarVisible", visible);		
+		final JToolBar toolBar = controller.getModeController().getUserInputListenerFactory().getToolBar("/main_toolbar");
+		if(toolBar.isVisible() == visible){
+			return;
+		}
+		toolBar.setVisible(visible);
+		resizeToolbarPane();
 	}
 
 	private void setViewportView(final Component view) {

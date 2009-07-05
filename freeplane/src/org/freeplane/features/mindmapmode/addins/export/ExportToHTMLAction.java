@@ -29,6 +29,7 @@ import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.clipboard.ClipboardController;
 
@@ -51,7 +52,7 @@ class ExportToHTMLAction extends AFreeplaneAction {
 				return;
 			}
 			ClipboardController.getController(getModeController()).saveHTML(map.getRootNode(), file);
-			getModeController().getMapController().loadURL(file.toString());
+			((UrlManager)getModeController().getMapController().getModeController().getExtension(UrlManager.class)).loadURL(file.toString());
 		}
 		catch (final IOException ex) {
 			LogTool.warn(ex);

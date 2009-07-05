@@ -44,6 +44,7 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.ColorUtils;
 
 /**
@@ -248,7 +249,7 @@ public class LinkController extends SelectionController implements IExtension {
 		final String link = NodeLinks.getLink(selectedNode);
 		if (link != null) {
 			onDeselect(selectedNode);
-			modeController.getMapController().loadURL(link);
+			((UrlManager)modeController.getMapController().getModeController().getExtension(UrlManager.class)).loadURL(link);
 			onSelect(modeController.getController().getSelection().getSelected());
 		}
 	}

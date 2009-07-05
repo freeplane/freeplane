@@ -213,67 +213,12 @@ public class MMapController extends MapController {
 		return true;
 	}
 
-	@Override
-	public void load(final MapModel map, final URL url) throws FileNotFoundException, IOException, XMLParseException,
-	        URISyntaxException {
-		final File file = Compat.urlToFile(url);
-		if (!file.exists()) {
-			throw new FileNotFoundException(FpStringUtils.formatText("file_not_found", file.getPath()));
-		}
-		if (!file.canWrite()) {
-			((MMapModel) map).setReadOnly(true);
-		}
-		else {
-			try {
-				final String lockingUser = tryToLock(map, file);
-				if (lockingUser != null) {
-					UITools.informationMessage(getController().getViewController().getFrame(), FpStringUtils
-					    .formatText("map_locked_by_open", file.getName(), lockingUser));
-					((MMapModel) map).setReadOnly(true);
-				}
-				else {
-					((MMapModel) map).setReadOnly(false);
-				}
-			}
-			catch (final Exception e) {
-				LogTool.severe(e);
-				UITools.informationMessage(getController().getViewController().getFrame(), FpStringUtils.formatText(
-				    "locking_failed_by_open", file.getName()));
-				((MMapModel) map).setReadOnly(true);
-			}
-		}
-		final NodeModel root = loadTree(map, file);
-		if (root != null) {
-			((MMapModel) map).setRoot(root);
-		}
-		((MMapModel) map).setFile(file);
-	}
 
 	public NodeModel loadTree(final MapModel map, final File file) throws XMLParseException, IOException {
 	    return ((MFileManager) UrlManager.getController(getModeController())).loadTree(map, file);
     }
 
 
-	@Override
-	public void loadURL(final String relative) {
-			final MapModel map = getController().getMap();
-			if (map.getFile() == null) {
-				URL url;
-				try {
-					url = new URL(relative);
-					if (url.getProtocol().equalsIgnoreCase("file")) {
-						getController().getViewController().out("You must save the current map first!");
-						final boolean result = ((MFileManager) UrlManager.getController(getModeController())).save(map);
-						if (!result) {
-							return;
-						}
-					}
-				}
-				catch (MalformedURLException e) {
-				}
-			}
-			super.loadURL(relative);
-	}
 
 	public void moveNode(final NodeModel node, final NodeModel targetNode, final boolean asSibling,
 	                     final boolean isLeft, final boolean changeSide) {
@@ -414,25 +359,4 @@ public class MMapController extends MapController {
 		getModeController().execute(actor);
 	}
 
-	/**
-	 * Attempts to lock the map using a semaphore file
-	 *
-	 * @return If the map is locked, return the name of the locking user,
-	 *         otherwise return null.
-	 * @throws Exception
-	 *             , when the locking failed for other reasons than that the
-	 *             file is being edited.
-	 */
-	public String tryToLock(final MapModel map, final File file) throws Exception {
-		final String lockingUser = ((MMapModel) map).getLockManager().tryToLock(file);
-		final String lockingUserOfOldLock = ((MMapModel) map).getLockManager().popLockingUserOfOldLock();
-		if (lockingUserOfOldLock != null) {
-			UITools.informationMessage(getController().getViewController().getFrame(), FpStringUtils.formatText(
-			    "locking_old_lock_removed", file.getName(), lockingUserOfOldLock));
-		}
-		if (lockingUser == null) {
-			((MMapModel) map).setReadOnly(false);
-		}
-		return lockingUser;
-	}
 }

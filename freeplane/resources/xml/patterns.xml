@@ -5,17 +5,18 @@
 -->
 <patterns>
 	<pattern name="Default">
-		<pattern_node_background_color/>
-		<pattern_node_color/>
-		<pattern_node_style/>
-		<pattern_node_font_name/>
-		<pattern_node_font_bold/>
-		<pattern_node_font_italic/>
-		<pattern_node_font_size/>
-		<pattern_icon/>
-		<pattern_edge_color/>
-		<pattern_edge_style/>
-		<pattern_edge_width/>
+    <pattern_node_background_color/>
+    <pattern_node_color/>
+    <pattern_node_style/>
+    <pattern_node_font_name/>
+    <pattern_node_font_bold/>
+    <pattern_node_font_italic/>
+    <pattern_node_font_size/>
+    <pattern_icon/>
+    <pattern_cloud/>
+    <pattern_edge_color/>
+    <pattern_edge_style/>
+    <pattern_edge_width/>
 	</pattern>
 	<pattern name="Normal">
 		<pattern_node_background_color/>

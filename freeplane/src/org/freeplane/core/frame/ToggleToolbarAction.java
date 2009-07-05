@@ -21,13 +21,19 @@ package org.freeplane.core.frame;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.JToolBar;
+
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 
+import sun.security.action.GetBooleanAction;
+
 @SelectableAction(checkOnPopup = true)
-class ToggleToolbarAction extends AFreeplaneAction {
-	static final String NAME = "toggleToolbar";
+public class ToggleToolbarAction extends AFreeplaneAction {
+	private final String toolbarName;
+	private final String propertyName;
 	/**
 	 * 
 	 */
@@ -37,18 +43,26 @@ class ToggleToolbarAction extends AFreeplaneAction {
 	 */
 	final private ViewController controller;
 
-	ToggleToolbarAction(final Controller controller, final ViewController viewController) {
-		super("ToggleToolbarAction", controller);
+	public ToggleToolbarAction(final Controller controller, final ViewController viewController, String actionName, String toolbarName, String propertyName) {
+		super(actionName, controller);
 		this.controller = viewController;
+		this.toolbarName = toolbarName;
+		this.propertyName=propertyName;
 	}
 
 	public void actionPerformed(final ActionEvent event) {
-		controller.setToolbarVisible(!controller.isToolbarVisible());
-		controller.setToolbarVisible(controller.isToolbarVisible());
+		final ResourceController resourceController = ResourceController.getResourceController();
+		boolean visible = !resourceController.getBooleanProperty(propertyName);
+		resourceController.setProperty(propertyName, visible);		
+		final JToolBar toolBar = getModeController().getUserInputListenerFactory().getToolBar(toolbarName);
+		toolBar.setVisible(visible);
+		controller.resizeToolbarPane();
+
 	}
 
 	@Override
 	public void setSelected() {
-		setSelected(controller.isToolbarVisible());
+		boolean isVisible = ResourceController.getResourceController().getBooleanProperty(propertyName);
+		setSelected(isVisible);
 	}
 }

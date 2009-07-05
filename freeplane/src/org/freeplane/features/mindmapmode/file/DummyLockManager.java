@@ -17,34 +17,31 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.frame;
+package org.freeplane.features.mindmapmode.file;
 
-import java.awt.event.ActionEvent;
+import java.io.File;
 
-import org.freeplane.core.controller.Controller;
-import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.SelectableAction;
 
-@SelectableAction(checkOnPopup = true)
-class ToggleMenubarAction extends AFreeplaneAction {
-	static final String NAME = "toggleMenubar";
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	final private ViewController controller;
-
-	ToggleMenubarAction(final Controller controller, final ViewController viewController) {
-		super("ToggleMenubarAction", controller);
-		this.controller = viewController;
-	}
-
-	public void actionPerformed(final ActionEvent event) {
-		controller.setMenubarVisible(!controller.isMenubarVisible());
+public class DummyLockManager extends LockManager {
+	@Override
+	public synchronized String popLockingUserOfOldLock() {
+		return null;
 	}
 
 	@Override
-	public void setSelected() {
-		setSelected(controller.isMenubarVisible());
+	public synchronized void releaseLock() {
+	}
+
+	@Override
+	public synchronized void releaseTimer() {
+	}
+
+	@Override
+	public synchronized void run() {
+	}
+
+	@Override
+	public synchronized String tryToLock(final File file) throws Exception {
+		return null;
 	}
 }

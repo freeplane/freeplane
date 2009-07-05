@@ -238,6 +238,10 @@ public abstract class ResourceController {
 
 	abstract public void setProperty(final String property, final String value);
 
+	public void setProperty(final String property, final boolean value){
+		setProperty(property, Boolean.toString(value));
+	}
+
 	public void toggleSelectionAsRectangle() {
 		setProperty(ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION, new Boolean(!isSelectionAsRectangle())
 		    .toString());

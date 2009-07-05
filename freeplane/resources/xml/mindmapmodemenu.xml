@@ -74,6 +74,7 @@
 		<menu_submenu name="view" name_ref="menu_view">
 			<menu_category name="toolbars"></menu_category>
 			<menu_action action="ToggleToolbarAction" />
+			<menu_action action="ToggleFBarAction" />
 			<menu_action action="ToggleLeftToolbarAction" />
 			<menu_separator />
 			<menu_category name="general">
@@ -269,6 +270,8 @@
 				<menu_separator />
 				<menu_category name="options">
 					<menu_action action="PropertyAction" accelerator="control COMMA" />
+					<menu_submenu name="acceleratorPresets" name_ref="acceleratorPresets">
+					</menu_submenu>
 				</menu_category>
 			</menu_category>
 			<menu_category name="last"></menu_category>
@@ -299,6 +302,7 @@
 		<menu_category name="toolbars">
 			<menu_action action="ToggleMenubarAction" />
 			<menu_action action="ToggleToolbarAction" />
+			<menu_action action="ToggleFBarAction" />
 			<menu_action action="ToggleLeftToolbarAction" />
 			<menu_action action="ShowHideNoteAction" />
 		</menu_category>

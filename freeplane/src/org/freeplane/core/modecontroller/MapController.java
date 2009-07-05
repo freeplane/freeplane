@@ -442,146 +442,10 @@ public class MapController extends SelectionController {
 		return node.isFolded();
 	}
 
-	public void load(final MapModel map, final URL url) throws IOException, XMLParseException, URISyntaxException {
-		map.setURL(url);
-		final NodeModel root = UrlManager.getController(getModeController()).load(url, map);
-		if (root != null) {
-			map.setRoot(root);
-		}
-		else {
-			throw new IOException();
-		}
-	}
-
-
-    /**
-     * This method checks whether the passed string matches the syntax of a well-formed URL.
-     * 
-     * @param url
-     * @return true if url is well-formed
-     */
-    public static boolean isURLString(String url) {
-    	try {
-    		new URL(url);
-    	} catch (MalformedURLException e) {
-    		return false;
-    	}
-    	return true;
-    }
-	public void loadURL(final String relative) {
-		try {
-			URL absolute = null;
-			boolean isURI = false;
-			if (UrlManager.isAbsolutePath(relative)) {
-				absolute = Compat.fileToUrl(new File(relative));
-			}
-			else if (relative.startsWith("#")) {
-				final String target = relative.substring(1);
-				try {
-					select(getNodeFromID(target));
-					return;
-				}
-				catch (final Exception e) {
-		           	LogTool.warn( "link " + target + " not found", e);
-		           	UITools.errorMessage(FpStringUtils.formatText("link_not_found", target));
-				}
-			}
-			else if (isURLString(relative)) {
-				/*
-				 * Remark: getMap().getURL() returns URLs like file:/C:/... It
-				 * seems, that it does not cause any problems.
-				 */
-				final MapModel map = getController().getMap();
-				absolute = new URL(map.getURL(), relative);
-			} else {
-				/*
-				 * It's not a file, it's not a URL, it still might be a URI
-				 * (e.g. link to Lotus Notes via notes://... etc. 
-				 */
-				isURI = true;
-			} 
-
-			if (isURI) {
-				try {
-					URI uri = new URI(relative);
-					getController().getViewController().openDocument(uri); 
-				} catch (URISyntaxException eu) {
-					LogTool.warn(eu);
-					UITools.errorMessage(ResourceBundles.getText("uri_error")+"\n"+eu);
-				}
-			} else {
-
-				final URL originalURL = absolute;
-				final String ref = absolute.getRef();
-				if (ref != null) {
-					absolute = UrlManager.getURLWithoutReference(absolute);
-				}
-				final String extension = UrlManager.getExtension(absolute.toString());
-				if ((extension != null)
-						&& extension.equals(org.freeplane.core.url.UrlManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
-					final IMapViewManager mapViewManager = getController().getMapViewManager();
-					/*
-					 * this can lead to confusion if the user handles multiple maps
-					 * with the same name. Obviously, this is wrong. Get a better
-					 * check whether or not the file is already opened.
-					 */
-					final String mapExtensionKey = mapViewManager.checkIfFileIsAlreadyOpened(absolute);
-					if (mapExtensionKey == null) {
-						getController().getViewController().setWaitingCursor(true);
-						newMap(absolute);
-					}
-					else {
-						mapViewManager.tryToChangeToMapView(mapExtensionKey);
-					}
-					if (ref != null) {
-						try {
-							final ModeController newModeController = getController().getModeController();
-							final MapController newMapController = newModeController.getMapController();
-							newMapController.select(newMapController.getNodeFromID(ref));
-						}
-						catch (final Exception e) {
-							LogTool.warn( "link " + ref + " not found", e);
-							UITools.errorMessage(FpStringUtils.formatText("link_not_found", ref));
-							return;
-						}
-					}
-				}
-				else {
-					getController().getViewController().openDocument(originalURL);
-				}
-			}
-		}
-		catch (final MalformedURLException e) {
-			LogTool.warn( "url_error", e);
-           	UITools.errorMessage(ResourceBundles.getText("url_error"));
-		}
-		catch (final FileNotFoundException e) {
-           	LogTool.warn( e);
-           	UITools.errorMessage(FpStringUtils.formatText("file_not_found", relative));
-		}
-		catch (final Exception e) {
-           	LogTool.warn( e);
-           	UITools.errorMessage(FpStringUtils.formatText("link_not_found", relative));
-		}
-		finally {
-			getController().getViewController().setWaitingCursor(false);
-		}
-	}
-
 	public MapModel newMap(final NodeModel root) {
 		final MapModel newModel = newModel(root);
 		fireMapCreated(newModel);
 		newMapView(newModel);
-		return newModel;
-	}
-
-	public MapModel newMap(final URL url) throws FileNotFoundException, XMLParseException, IOException,
-	        URISyntaxException {
-		final MapModel newModel = newModel(null);
-		load(newModel, url);
-		fireMapCreated(newModel);
-		newMapView(newModel);
-		setSaved(newModel, true);
 		return newModel;
 	}
 
@@ -750,6 +614,32 @@ public class MapController extends SelectionController {
 		for (final Iterator i = resetIterator(listIterator); i.hasNext();) {
 			final NodeModel node = (NodeModel) i.next();
 			setFolded(node, fold);
+		}
+	}
+	
+	public void newMap(final URL url) throws FileNotFoundException, XMLParseException, IOException,
+	URISyntaxException {
+		final IMapViewManager mapViewManager = getController().getMapViewManager();
+		/*
+		 * this can lead to confusion if the user handles multiple maps
+		 * with the same name. Obviously, this is wrong. Get a better
+		 * check whether or not the file is already opened.
+		 */
+		final String mapExtensionKey = mapViewManager.checkIfFileIsAlreadyOpened(url);
+		if (mapExtensionKey != null) {
+			mapViewManager.tryToChangeToMapView(mapExtensionKey);
+			return;
+		}
+		try{
+			getController().getViewController().setWaitingCursor(true);
+			final MapModel newModel = newModel(null);
+			((UrlManager) getModeController().getExtension(UrlManager.class)).load(url, newModel);
+			fireMapCreated(newModel);
+			newMapView(newModel);
+			setSaved(newModel, true);
+		}
+		finally {
+			getController().getViewController().setWaitingCursor(false);
 		}
 	}
 }

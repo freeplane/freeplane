@@ -30,6 +30,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.clipboard.ClipboardController;
 
@@ -52,7 +53,7 @@ class ExportBranchToHTMLAction extends AFreeplaneAction {
 			}
 			ClipboardController.getController(getModeController()).saveHTML(
 			    getModeController().getMapController().getSelectedNode(), file);
-			getModeController().getMapController().loadURL(file.toString());
+			((UrlManager)getModeController().getMapController().getModeController().getExtension(UrlManager.class)).loadURL(file.toString());
 		}
 		catch (final IOException ex) {
 			LogTool.warn(ex);

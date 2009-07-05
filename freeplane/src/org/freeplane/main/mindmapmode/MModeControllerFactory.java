@@ -26,12 +26,14 @@ import java.awt.event.MouseEvent;
 import javax.swing.JPopupMenu;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.frame.ToggleToolbarAction;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IEditHandler;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.components.FButtonBar;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.url.UrlManager;
@@ -56,6 +58,7 @@ import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.features.mindmapmode.addins.ChangeNodeLevelController;
 import org.freeplane.features.mindmapmode.addins.FormatPaste;
 import org.freeplane.features.mindmapmode.addins.IconSelectionPlugin;
+import org.freeplane.features.mindmapmode.addins.LoadAcceleratorPresetsAction;
 import org.freeplane.features.mindmapmode.addins.NewParentNode;
 import org.freeplane.features.mindmapmode.addins.RevisionPlugin;
 import org.freeplane.features.mindmapmode.addins.SaveAll;
@@ -146,11 +149,7 @@ public class MModeControllerFactory {
 		NodeHistory.install(modeController);
 		menuBuilder.addAnnotatedAction(new ExportToOoWriter(controller));
 		menuBuilder.addAnnotatedAction(new ImportMindmanagerFiles(controller));
-		//		new LatexNodeHook(modeController);
-		//		new ScriptingRegistration(modeController);
-		//		menuBuilder.addAnnotatedAction(new FreeplaneHelpStarter());
-		//		menuBuilder.addAnnotatedAction(new ExportPdf());
-		//		menuBuilder.addAnnotatedAction(new ExportSvg());
+		LoadAcceleratorPresetsAction.install(modeController);
 	}
 
 	private MModeController createModeControllerImpl(final Controller controller) {
@@ -238,7 +237,13 @@ public class MModeControllerFactory {
 		final JPopupMenu popupmenu = new JPopupMenu();
 		userInputListenerFactory.setNodePopupMenu(popupmenu);
 		final FreeplaneToolBar toolbar = new FreeplaneToolBar();
-		userInputListenerFactory.setMainToolBar(toolbar);
+		userInputListenerFactory.addMainToolBar("/main_toolbar", toolbar);
+		final FButtonBar fButtonToolBar = new FButtonBar();
+		fButtonToolBar.setVisible(ResourceController.getResourceController().getBooleanProperty("fbarVisible"));
+		userInputListenerFactory.addMainToolBar("/fbuttons", fButtonToolBar);
+		controller.addAction(new ToggleToolbarAction(controller, controller.getViewController(), "ToggleFBarAction", "/fbuttons", "fbarVisible"));
+
+		userInputListenerFactory.getMenuBuilder().setAcceleratorChangeListener(fButtonToolBar);
 		userInputListenerFactory.setLeftToolBar(((MIconController) IconController.getController(modeController))
 		    .getIconToolBarScrollPane());
 		new RevisionPlugin(modeController);

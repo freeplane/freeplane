@@ -99,6 +99,9 @@ class FindAction extends AFreeplaneAction {
 		}
 		
 		condition = editor.getCondition();
+		if(condition == null){
+			return;
+		}
 		final boolean found = find(getModeController().getMapController().getSelectedNode());
 		searchTerm = editor.getSearchTerm();
 		searchTerm = searchTerm.startsWith("<html>") ? HtmlTools.toXMLEscapedText(searchTerm)

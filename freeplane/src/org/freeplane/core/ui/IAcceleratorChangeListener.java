@@ -1,8 +1,8 @@
 /*
  *  Freeplane - mind map editor
- *  Copyright (C) 2008 Joerg Mueller, Daniel Polansky, Christian Foltin, Dimitry Polivaev
+ *  Copyright (C) 2009 Dimitry
  *
- *  This file is modified by Dimitry Polivaev in 2008.
+ *  This file author is Dimitry
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -17,30 +17,15 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.mindmapmode;
+package org.freeplane.core.ui;
 
-import java.io.File;
+import javax.swing.JMenuItem;
+import javax.swing.KeyStroke;
 
-class DummyLockManager extends LockManager {
-	@Override
-	public synchronized String popLockingUserOfOldLock() {
-		return null;
-	}
-
-	@Override
-	public synchronized void releaseLock() {
-	}
-
-	@Override
-	public synchronized void releaseTimer() {
-	}
-
-	@Override
-	public synchronized void run() {
-	}
-
-	@Override
-	public synchronized String tryToLock(final File file) throws Exception {
-		return null;
-	}
+/**
+ * @author Dimitry Polivaev
+ * 03.07.2009
+ */
+public interface IAcceleratorChangeListener {
+	void acceleratorChanged(JMenuItem action, KeyStroke oldStroke, KeyStroke newStroke);
 }

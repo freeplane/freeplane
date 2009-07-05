@@ -31,6 +31,7 @@ import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.url.UrlManager;
 
 class FollowLinkAction extends AFreeplaneAction implements PopupMenuListener {
 	/**
@@ -54,7 +55,7 @@ class FollowLinkAction extends AFreeplaneAction implements PopupMenuListener {
 					linkController = LinkController.getController(modeController);
 				}
 				linkController.onDeselect(mapController.getSelectedNode());
-				mapController.loadURL(link);
+				((UrlManager)mapController.getModeController().getExtension(UrlManager.class)).loadURL(link);
 				linkController.onSelect(mapController.getSelectedNode());
 			}
 		}

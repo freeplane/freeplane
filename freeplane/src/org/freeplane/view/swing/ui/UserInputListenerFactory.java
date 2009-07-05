@@ -29,9 +29,11 @@ import java.awt.event.MouseWheelListener;
 import java.net.URL;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 import java.util.Set;
 
 import javax.swing.ButtonGroup;
@@ -61,7 +63,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	public static final String NODE_POPUP = "/node_popup";
 	final private Controller controller;
 	private Component leftToolBar;
-	private JToolBar mainToolBar;
+	private Map<String, JToolBar> toolBars;
 	private IMouseListener mapMouseListener;
 	private MouseWheelListener mapMouseWheelListener;
 	final private ActionListener mapsMenuActionListener;
@@ -81,6 +83,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		controller = modeController.getController();
 		mapsMenuActionListener = new MapsMenuActionListener(controller);
 		menuBuilder = new MenuBuilder(modeController);
+		toolBars = new LinkedHashMap<String, JToolBar>();
 	}
 
 	public void addMouseWheelEventHandler(final IMouseWheelEventHandler handler) {
@@ -123,8 +126,8 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		return leftToolBar;
 	}
 
-	public JToolBar getMainToolBar() {
-		return mainToolBar;
+	public Iterable<JToolBar> getToolBars() {
+		return toolBars.values();
 	}
 
 	public IMouseListener getMapMouseListener() {
@@ -214,11 +217,8 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		this.leftToolBar = leftToolBar;
 	}
 
-	public void setMainToolBar(final JToolBar mainToolBar) {
-		if (this.mainToolBar != null) {
-			throw new RuntimeException("already set");
-		}
-		this.mainToolBar = mainToolBar;
+	public void addMainToolBar(final String name, final JToolBar mainToolBar) {
+		this.toolBars.put(name, mainToolBar);
 	}
 
 	public void setMapMouseListener(final IMouseListener mapMouseMotionListener) {
@@ -327,7 +327,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		mapsPopupMenu = new JPopupMenu();
 		menuBuilder.addPopupMenu(mapsPopupMenu, FreeplaneMenuBar.MAP_POPUP_MENU);
 		menuBuilder.addPopupMenu(getNodePopupMenu(), UserInputListenerFactory.NODE_POPUP);
-		menuBuilder.addToolbar(getMainToolBar(), "/main_toolbar");
+		menuBuilder.addToolbar(getToolBars().iterator().next(), "/main_toolbar");
 		mapsPopupMenu.setName(ResourceBundles.getText("mindmaps"));
 		if (menuStructure != null) {
 			menuBuilder.processMenuCategory(menuStructure);
@@ -354,4 +354,8 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			ResourceController.getResourceController().getAdjustableProperty("keystroke_mode_" + key);
 		}
 	}
+
+	public JToolBar getToolBar(String name) {
+		return toolBars.get(name);
+    }
 }

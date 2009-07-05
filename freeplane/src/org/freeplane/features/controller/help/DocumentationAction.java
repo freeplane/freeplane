@@ -29,6 +29,7 @@ import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.browsemode.BModeController;
 
@@ -54,7 +55,7 @@ class DocumentationAction extends AFreeplaneAction {
 				public void run() {
 					try {
 						if (getController().selectMode(BModeController.MODENAME)) {
-							((BModeController) getModeController()).getMapController().newMap(endUrl);
+							getModeController().getMapController().newMap(endUrl);
 						}
 					}
 					catch (final Exception e1) {

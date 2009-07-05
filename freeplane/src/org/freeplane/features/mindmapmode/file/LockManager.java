@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.mindmapmode;
+package org.freeplane.features.mindmapmode.file;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -31,7 +31,7 @@ import java.util.TimerTask;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.LogTool;
 
-class LockManager extends TimerTask {
+public class LockManager extends TimerTask {
 	File lockedSemaphoreFile = null;
 	String lockingUserOfOldLock = null;
 	final long lockSafetyPeriod = 5 * 60 * 1000;

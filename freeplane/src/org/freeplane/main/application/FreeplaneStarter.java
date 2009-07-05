@@ -186,12 +186,6 @@ public class FreeplaneStarter {
 			 * example the note window was active.
 			 */
 		});
-		if (StringUtils.equals(ResourceController.getResourceController().getProperty("toolbarVisible"), "false")) {
-			controller.getViewController().setToolbarVisible(false);
-		}
-		if (StringUtils.equals(ResourceController.getResourceController().getProperty("leftToolbarVisible"), "false")) {
-			controller.getViewController().setLeftToolbarVisible(false);
-		}
 		frame.setFocusTraversalKeysEnabled(false);
 		final int win_width = ResourceController.getResourceController().getIntProperty("appwindow_width", 0);
 		final int win_height = ResourceController.getResourceController().getIntProperty("appwindow_height", 0);

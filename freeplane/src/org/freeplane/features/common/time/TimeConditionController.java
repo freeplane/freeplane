@@ -103,22 +103,22 @@ class TimeConditionController implements IElementaryConditionController {
 	public ICondition loadCondition(final XMLElement element) {
 		try {
 			if (element.getName().equalsIgnoreCase(TimeConditionCreatedBefore.NAME)) {
-				final String dateString = element.getAttribute("date", null);
+				final String dateString = element.getAttribute(TimeCondition.DATE, null);
 				final Date date = new Date(Long.parseLong(dateString));
 				return new TimeConditionCreatedBefore(date);
 			}
 			if (element.getName().equalsIgnoreCase(TimeConditionCreatedAfter.NAME)) {
-				final String dateString = element.getAttribute("date", null);
+				final String dateString = element.getAttribute(TimeCondition.DATE, null);
 				final Date date = new Date(Long.parseLong(dateString));
 				return new TimeConditionCreatedAfter(date);
 			}
 			if (element.getName().equalsIgnoreCase(TimeConditionModifiedBefore.NAME)) {
-				final String dateString = element.getAttribute("date", null);
+				final String dateString = element.getAttribute(TimeCondition.DATE, null);
 				final Date date = new Date(Long.parseLong(dateString));
 				return new TimeConditionModifiedBefore(date);
 			}
 			if (element.getName().equalsIgnoreCase(TimeConditionModifiedAfter.NAME)) {
-				final String dateString = element.getAttribute("date", null);
+				final String dateString = element.getAttribute(TimeCondition.DATE, null);
 				final Date date = new Date(Long.parseLong(dateString));
 				return new TimeConditionModifiedAfter(date);
 			}

@@ -31,6 +31,8 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.security.AccessControlException;
 import java.util.StringTokenizer;
@@ -48,14 +50,19 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.io.MapWriter.Mode;
+import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.n3.nanoxml.XMLParseException;
 
 /**
  * @author Dimitry Polivaev
@@ -398,8 +405,8 @@ public class UrlManager implements IExtension {
 		}
 	}
 
-	public NodeModel load(final URL url, final MapModel map) {
-		NodeModel root = null;
+	public void load(final URL url, final MapModel map) throws FileNotFoundException, IOException, XMLParseException, URISyntaxException {
+		setURL(map, url);
 		InputStreamReader urlStreamReader = null;
 		try {
 			urlStreamReader = new InputStreamReader(url.openStream());
@@ -407,24 +414,34 @@ public class UrlManager implements IExtension {
 		catch (final AccessControlException ex) {
 			UITools.errorMessage("Could not open URL " + url.toString() + ". Access Denied.");
 			System.err.println(ex);
-			return null;
+			return;
 		}
 		catch (final Exception ex) {
 			UITools.errorMessage("Could not open URL " + url.toString() + ".");
 			System.err.println(ex);
-			return null;
+			return;
 		}
 		try {
-			root = modeController.getMapController().getMapReader().createNodeTreeFromXml(map, urlStreamReader,
+			NodeModel root = modeController.getMapController().getMapReader().createNodeTreeFromXml(map, urlStreamReader,
 			    Mode.FILE);
 			urlStreamReader.close();
-			return root;
+			if (root != null) {
+				map.setRoot(root);
+			}
+			else {
+				throw new IOException();
+			}
+
 		}
 		catch (final Exception ex) {
 			LogTool.severe(ex);
-			return null;
+			return;
 		}
 	}
+
+	protected void setURL(MapModel map, URL url) {
+		map.setURL(url);
+    }
 
 	public void setLastCurrentDir(final File lastCurrentDir) {
 		UrlManager.lastCurrentDir = lastCurrentDir;
@@ -433,4 +450,88 @@ public class UrlManager implements IExtension {
 	public void startup() {
 	}
 
+	public void loadURL(final String relative) {
+		try {
+			URL absolute = null;
+			boolean isURI = false;
+			if (UrlManager.isAbsolutePath(relative)) {
+				absolute = Compat.fileToUrl(new File(relative));
+			}
+			else if (relative.startsWith("#")) {
+				final String target = relative.substring(1);
+				try {
+					final MapController mapController = modeController.getMapController();
+					mapController.select(mapController.getNodeFromID(target));
+					return;
+				}
+				catch (final Exception e) {
+		           	LogTool.warn( "link " + target + " not found", e);
+		           	UITools.errorMessage(FpStringUtils.formatText("link_not_found", target));
+				}
+			}
+			else try {
+				/*
+				 * Remark: getMap().getURL() returns URLs like file:/C:/... It
+				 * seems, that it does not cause any problems.
+				 */
+				final MapModel map = getController().getMap();
+				absolute = new URL(map.getURL(), relative);
+			} catch(MalformedURLException ex) {
+				/*
+				 * It's not a file, it's not a URL, it still might be a URI
+				 * (e.g. link to Lotus Notes via notes://... etc. 
+				 */
+				isURI = true;
+			} 
+
+			if (isURI) {
+				try {
+					URI uri = new URI(relative);
+					getController().getViewController().openDocument(uri); 
+				} catch (URISyntaxException eu) {
+					LogTool.warn(eu);
+					UITools.errorMessage(ResourceBundles.getText("uri_error")+"\n"+eu);
+				}
+			} else {
+
+				final URL originalURL = absolute;
+				final String ref = absolute.getRef();
+				if (ref != null) {
+					absolute = UrlManager.getURLWithoutReference(absolute);
+				}
+				final String extension = UrlManager.getExtension(absolute.toString());
+				if ((extension != null)
+						&& extension.equals(org.freeplane.core.url.UrlManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
+					modeController.getMapController().newMap(absolute);
+					if (ref != null) {
+						try {
+							final ModeController newModeController = getController().getModeController();
+							final MapController newMapController = newModeController.getMapController();
+							newMapController.select(newMapController.getNodeFromID(ref));
+						}
+						catch (final Exception e) {
+							LogTool.warn( "link " + ref + " not found", e);
+							UITools.errorMessage(FpStringUtils.formatText("link_not_found", ref));
+							return;
+						}
+					}
+				}
+				else {
+					getController().getViewController().openDocument(originalURL);
+				}
+			}
+		}
+		catch (final MalformedURLException e) {
+			LogTool.warn( "url_error", e);
+           	UITools.errorMessage(ResourceBundles.getText("url_error"));
+		}
+		catch (final FileNotFoundException e) {
+           	LogTool.warn( e);
+           	UITools.errorMessage(FpStringUtils.formatText("file_not_found", relative));
+		}
+		catch (final Exception e) {
+           	LogTool.warn( e);
+           	UITools.errorMessage(FpStringUtils.formatText("link_not_found", relative));
+		}
+	}
 }

@@ -32,6 +32,8 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.undo.UndoHandler;
 import org.freeplane.features.mindmapmode.file.DoAutomaticSave;
+import org.freeplane.features.mindmapmode.file.DummyLockManager;
+import org.freeplane.features.mindmapmode.file.LockManager;
 
 public class MMapModel extends MapModel {
 	private static int unnamedMapsNumber = 1;
@@ -73,7 +75,7 @@ public class MMapModel extends MapModel {
 		super.destroy();
 	}
 
-	LockManager getLockManager() {
+	public LockManager getLockManager() {
 		return lockManager;
 	}
 

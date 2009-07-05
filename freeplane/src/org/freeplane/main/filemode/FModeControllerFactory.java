@@ -71,7 +71,7 @@ public class FModeControllerFactory {
 		modeController.addAction(new CenterAction(controller));
 		modeController.addAction(new OpenPathAction(controller));
 		userInputListenerFactory.setNodePopupMenu(new JPopupMenu());
-		userInputListenerFactory.setMainToolBar(new FreeplaneToolBar());
+		userInputListenerFactory.addMainToolBar("/main_toolbar", new FreeplaneToolBar());
 		userInputListenerFactory.setMenuStructure("/xml/filemodemenu.xml");
 		userInputListenerFactory.updateMenus(modeController);
 		modeController.updateMenus();

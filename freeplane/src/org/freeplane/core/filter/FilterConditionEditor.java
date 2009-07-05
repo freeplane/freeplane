@@ -158,7 +158,10 @@ public class FilterConditionEditor extends Box{
 	}
 	public ICondition getCondition() {
 	    ICondition newCond;
-	    final Object value = values.getSelectedItem();
+	    Object value = values.getSelectedItem();
+	    if(value == null){
+	    	value = "";
+	    }
 	    final NamedObject simpleCond = (NamedObject) elementaryConditions.getSelectedItem();
 	    final boolean ignoreCase = caseInsensitive.isSelected();
 	    final Object selectedItem = filteredPropertiesComponent.getSelectedItem();

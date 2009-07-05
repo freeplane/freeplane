@@ -39,7 +39,9 @@ public interface IUserInputListenerFactory {
 
 	Component getLeftToolBar();
 
-	JToolBar getMainToolBar();
+	Iterable<JToolBar> getToolBars();
+	
+	JToolBar getToolBar(String name);
 
 	IMouseListener getMapMouseListener();
 

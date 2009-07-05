@@ -51,9 +51,12 @@ import org.freeplane.core.filter.condition.SelectedViewSnapshotCondition;
 import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.MindIcon;
+import org.freeplane.core.resources.FpStringUtils;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.JAutoToggleButton;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
@@ -370,7 +373,8 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		catch (final FileNotFoundException e) {
 		}
 		catch (final Exception e) {
-			LogTool.severe(e);
+			LogTool.warn(e);
+           	UITools.errorMessage(ResourceBundles.getText("filters_not_loaded"));
 		}
 	}
 
