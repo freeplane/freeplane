@@ -1,4 +1,17 @@
 ===============================
+1.0.14 alpha
+===============================
+New features:
+F-Toolbar
+
+Bug fixes: 
+Bug fixes for saving maps,
+Bug fixes for exporting applet,
+Bug fixes for links to map files,
+Other important bug fixes 
+Bug fixes for automatically reported bugs
+
+===============================
 1.0.13 alpha
 ===============================
 New features:
