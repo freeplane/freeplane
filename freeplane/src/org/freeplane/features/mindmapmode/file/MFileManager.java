@@ -243,8 +243,7 @@ private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_ve
 		}
 	}
 
-	private void backup(MapModel map) {
-	    final File file = map.getFile();
+	private void backup(final File file) {
 	    if(file == null){
 	    	return;
 	    }
@@ -315,7 +314,7 @@ private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_ve
 		try {
 			if(null == map.getExtension(BackupFlag.class)){
 				map.addExtension(new BackupFlag());
-				backup(map);
+				backup(file);
 			}
 			final String lockingUser = tryToLock(map, file);
 			if (lockingUser != null) {
@@ -376,43 +375,43 @@ private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_ve
 		}
 	}
 	/**
-	 * Save as; return false is the action was cancelled
-	 */
-	public boolean saveAs(final MapModel map) {
-		final JFileChooser chooser = getFileChooser();
-		if (getMapsParentFile() == null) {
-			chooser.setSelectedFile(new File(getFileNameProposal(map)
-			        + org.freeplane.core.url.UrlManager.FREEPLANE_FILE_EXTENSION));
-		}
-		chooser.setDialogTitle(ResourceBundles.getText("SaveAsAction.text"));
-		final int returnVal = chooser.showSaveDialog(getController().getViewController().getMapView());
-		if (returnVal != JFileChooser.APPROVE_OPTION) {
-			return false;
-		}
-		File f = chooser.getSelectedFile();
-		setLastCurrentDir(f.getParentFile());
-		final String ext = UrlManager.getExtension(f.getName());
-		if (!ext.equals(org.freeplane.core.url.UrlManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
-			f = new File(f.getParent(), f.getName() + org.freeplane.core.url.UrlManager.FREEPLANE_FILE_EXTENSION);
-		}
-		if (f.exists()) {
-			final int overwriteMap = JOptionPane.showConfirmDialog(getController().getViewController().getMapView(),
-			    ResourceBundles.getText("map_already_exists"), "Freeplane", JOptionPane.YES_NO_OPTION);
-			if (overwriteMap != JOptionPane.YES_OPTION) {
-				return false;
-			}
-		}
-		// do not backup in this case.
-		final File oldFile = map.getFile();
-		if((oldFile == null || ! f.getAbsoluteFile().equals(oldFile.getAbsoluteFile())) && null == map.getExtension(BackupFlag.class)){
-			map.addExtension(new BackupFlag());
-		}
-		if(save(map, f)){
-			getController().getMapViewManager().updateMapViewName();
-			return true;
-		}
-		return false;
-	}
+     * Save as; return false is the action was cancelled
+     */
+    public boolean saveAs(final MapModel map) {
+    	final JFileChooser chooser = getFileChooser();
+    	if (getMapsParentFile() == null) {
+    		chooser.setSelectedFile(new File(getFileNameProposal(map)
+    		        + org.freeplane.core.url.UrlManager.FREEPLANE_FILE_EXTENSION));
+    	}
+    	chooser.setDialogTitle(ResourceBundles.getText("SaveAsAction.text"));
+    	final int returnVal = chooser.showSaveDialog(getController().getViewController().getMapView());
+    	if (returnVal != JFileChooser.APPROVE_OPTION) {
+    		return false;
+    	}
+    	File f = chooser.getSelectedFile();
+    	setLastCurrentDir(f.getParentFile());
+    	final String ext = UrlManager.getExtension(f.getName());
+    	if (!ext.equals(org.freeplane.core.url.UrlManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
+    		f = new File(f.getParent(), f.getName() + org.freeplane.core.url.UrlManager.FREEPLANE_FILE_EXTENSION);
+    	}
+    	if (f.exists()) {
+    		final int overwriteMap = JOptionPane.showConfirmDialog(getController().getViewController().getMapView(),
+    		    ResourceBundles.getText("map_already_exists"), "Freeplane", JOptionPane.YES_NO_OPTION);
+    		if (overwriteMap != JOptionPane.YES_OPTION) {
+    			return false;
+    		}
+    	}
+    	// extra backup in this case.
+    	final File oldFile = map.getFile();
+    	if(!f.getAbsoluteFile().equals(oldFile.getAbsoluteFile()) && null != map.getExtension(BackupFlag.class)){
+    		map.removeExtension(BackupFlag.class);
+    	}
+    	if(save(map, f)){
+    		getController().getMapViewManager().updateMapViewName();
+    		return true;
+    	}
+    	return false;
+    }
 
 	/**
 	 * This method is intended to provide both normal save routines and saving
