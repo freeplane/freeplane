@@ -126,11 +126,11 @@ public class LockManager extends TimerTask {
 		semaphoreOutputStream.write(System.getProperty("user.name").getBytes());
 		semaphoreOutputStream.write('\n');
 		semaphoreOutputStream.write(String.valueOf(System.currentTimeMillis()).getBytes());
-		semaphoreOutputStream.close();
-		semaphoreOutputStream = null;
 		UrlManager.setHidden(inSemaphoreFile, true, /* synchro= */false);
 		if (lock != null) {
 			lock.release();
 		}
+		semaphoreOutputStream.close();
+		semaphoreOutputStream = null;
 	}
 }
