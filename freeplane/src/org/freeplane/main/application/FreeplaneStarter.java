@@ -127,6 +127,7 @@ public class FreeplaneStarter {
 			LinkController.install(controller);
 			IconController.install(controller);
 			HelpController.install(controller);
+			controller.addAction(new UpdateCheckAction(controller));
 			NodeHistory.install(controller);
 			MModeControllerFactory.createModeController(controller);
 			controller.getModeController(MModeController.MODENAME).getMapController().addMapChangeListener(

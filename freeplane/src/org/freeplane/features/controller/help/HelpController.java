@@ -24,7 +24,6 @@ import java.awt.event.ActionEvent;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.web.UpdateCheckAction;
 
 /**
  * @author Dimitry Polivaev
@@ -43,7 +42,6 @@ public class HelpController implements IExtension {
 	public HelpController(final Controller controller) {
 		super();
 		controller.addAction(new AboutAction(controller));
-		controller.addAction(new UpdateCheckAction(controller));
 		controller.addAction(new OpenURLAction("OpenFreeplaneSiteAction", controller, ResourceController
 		    .getResourceController().getProperty("webFreeplaneLocation")));
 		controller.addAction(new OpenSourceForgeURLAction("ReportBugAction", controller, ResourceController

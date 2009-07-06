@@ -77,7 +77,7 @@
 			</menu_category>
 			<menu_separator />
 			<menu_category name="links">
-				<menu_action action="FollowLinkAction" accelerator="control ENTER" /> <!-- goto -->
+				<menu_action action="FollowLinkAction" /> <!-- goto -->
 			</menu_category>
 			<menu_separator />
 		</menu_submenu>

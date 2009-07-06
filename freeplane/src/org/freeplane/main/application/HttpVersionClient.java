@@ -1,4 +1,4 @@
-package org.freeplane.web;
+package org.freeplane.main.application;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,7 +13,7 @@ import org.freeplane.core.util.LogTool;
  * Handles communication with update webservice.
  * @author robert ladstaetter
  */
-public class HttpVersionClient{
+class HttpVersionClient{
 	private FreeplaneVersion remoteVersion;
 	private String history;
 	private boolean successful;

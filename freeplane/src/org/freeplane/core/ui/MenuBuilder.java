@@ -269,7 +269,10 @@ public class MenuBuilder extends UIBuilder {
 				}
 				try {
 					final AFreeplaneAction theAction = modeController.getAction(action);
-					assert theAction != null;
+					if (theAction == null){
+						System.err.println ("action " + action + " not found");
+						return null;
+					}
 					if (tag.equals("menu_radio_action")) {
 						final JRadioButtonMenuItem item = (JRadioButtonMenuItem) addRadioItem(menuPath.parentPath,
 						    theAction, "true".equals(attributes.getAttribute("selected", "false")));

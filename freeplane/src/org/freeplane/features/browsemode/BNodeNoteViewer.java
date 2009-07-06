@@ -20,13 +20,16 @@
 package org.freeplane.features.browsemode;
 
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 
 import javax.swing.ImageIcon;
+import javax.swing.JApplet;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.INodeSelectionListener;
@@ -54,8 +57,16 @@ public class BNodeNoteViewer implements INodeSelectionListener {
 			noteViewer.setBackground(Color.WHITE);
 			noteViewer.setVerticalAlignment(SwingConstants.TOP);
 			noteViewer.setOpaque(true);
-			noteScrollPane = new JScrollPane(noteViewer);
-			noteScrollPane.setPreferredSize(new Dimension(1, 200));
+			noteScrollPane = new JScrollPane(noteViewer){
+
+				@Override
+                public Dimension getPreferredSize() {
+					final JApplet applet = (JApplet) SwingUtilities.getAncestorOfClass(JApplet.class, noteScrollPane);
+					final Dimension appletSize = applet.getContentPane().getSize();
+					return new Dimension(appletSize.width, Math.min(appletSize.height/3, 200));
+                }
+				
+			};
 		}
 		return noteScrollPane;
 	}

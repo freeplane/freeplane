@@ -1,4 +1,4 @@
-package org.freeplane.web;
+package org.freeplane.main.application;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -38,7 +38,7 @@ import org.freeplane.core.util.LogTool;
  * 
  * @author robert ladstaetter
  */
-public class UpdateCheckAction extends AFreeplaneAction {
+class UpdateCheckAction extends AFreeplaneAction {
 	private static final int CHECK_TIME = 30 * 1000;
 	private static final String LAST_UPDATE_CHECK_TIME = "last_update_check_time";
 	private static final String CHECK_UPDATES_AUTOMATICALLY = "check_updates_automatically";

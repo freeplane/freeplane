@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.InvalidPropertiesFormatException;
@@ -141,11 +142,31 @@ class ApplicationResourceController extends ResourceController {
 		else {
 			relName = name;
 		}
-		final URL resource = urlResourceLoader.getResource(relName);
+		URL resource = urlResourceLoader.getResource(relName);
 		if (resource != null) {
 			return resource;
 		}
-		return super.getResource(name);
+		resource = super.getResource(name);
+		if (resource != null) {
+			return resource;
+		}
+		if("/lib/freeplaneviewer.jar".equals(name)){
+			final String rootDir = new File(getResourceBaseDir()).getAbsoluteFile().getParent();
+			try {
+	            final File try1 = new File(rootDir + "/plugins/org.freeplane.core/lib/freeplaneviewer.jar");
+	            if(try1.exists()){
+	            	return try1.toURL();
+	            }
+	            final File try2 = new File(rootDir + "/lib/freeplaneviewer.jar");
+	            if(try2.exists()){
+	            	return try2.toURL();
+	            }
+            }
+            catch (MalformedURLException e) {
+	            e.printStackTrace();
+            }
+		}
+		return null;
 	}
 
 	@Override
