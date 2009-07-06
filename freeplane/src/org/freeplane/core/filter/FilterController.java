@@ -26,6 +26,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.security.AccessControlException;
 import java.util.Vector;
 
 import javax.swing.ButtonModel;
@@ -371,6 +372,8 @@ public class FilterController implements IMapSelectionListener, IExtension {
 			}
 		}
 		catch (final FileNotFoundException e) {
+		}
+		catch (final AccessControlException e) {
 		}
 		catch (final Exception e) {
 			LogTool.warn(e);
