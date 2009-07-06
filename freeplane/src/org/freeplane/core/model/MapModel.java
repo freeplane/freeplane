@@ -83,6 +83,14 @@ public class MapModel {
 		extensionContainer.addExtension(extension);
 	}
 
+	public IExtension removeExtension(Class<? extends IExtension> clazz) {
+	    return extensionContainer.removeExtension(clazz);
+    }
+
+	public boolean removeExtension(IExtension extension) {
+	    return extensionContainer.removeExtension(extension);
+    }
+
 	public void addMapChangeListener(final IMapChangeListener listener) {
 		listeners.add(listener);
 	}
