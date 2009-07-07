@@ -32,11 +32,11 @@ import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.LogTool;
 
 public class LockManager extends TimerTask {
-	File lockedSemaphoreFile = null;
-	String lockingUserOfOldLock = null;
-	final long lockSafetyPeriod = 5 * 60 * 1000;
-	Timer lockTimer = null;
-	final long lockUpdatePeriod = 4 * 60 * 1000;
+	private File lockedSemaphoreFile = null;
+	private String lockingUserOfOldLock = null;
+	private final long lockSafetyPeriod = 5 * 60 * 1000;
+	private Timer lockTimer = null;
+	private final long lockUpdatePeriod = 4 * 60 * 1000;
 
 	private File getSemaphoreFile(final File mapFile) {
 		return new File(mapFile.getParent() + System.getProperty("file.separator") + "$~" + mapFile.getName() + "~");
@@ -79,7 +79,7 @@ public class LockManager extends TimerTask {
 
 	public synchronized String tryToLock(final File file) throws Exception {
 		final File semaphoreFile = getSemaphoreFile(file);
-		if (semaphoreFile == lockedSemaphoreFile) {
+		if (semaphoreFile.equals(lockedSemaphoreFile)) {
 			return null;
 		}
 		try {

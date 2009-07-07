@@ -402,8 +402,11 @@ private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_ve
     		}
     	}
     	// extra backup in this case.
-    	final File oldFile = map.getFile();
-    	if(!f.getAbsoluteFile().equals(oldFile.getAbsoluteFile()) && null != map.getExtension(BackupFlag.class)){
+    	File oldFile = map.getFile();
+    	if(oldFile != null){
+    		oldFile = oldFile.getAbsoluteFile();
+    	}
+    	if(!f.getAbsoluteFile().equals(oldFile) && null != map.getExtension(BackupFlag.class)){
     		map.removeExtension(BackupFlag.class);
     	}
     	if(save(map, f)){

@@ -100,7 +100,7 @@ class AccelerateableAction implements Action {
 							final int replace = JOptionPane.showConfirmDialog(grabKeyDialog, menuItem.getText(),
 							    ResourceBundles.getText("remove_shortcut_question"), JOptionPane.YES_NO_OPTION);
 							if (replace == JOptionPane.YES_OPTION) {
-								menuBuilder.setAccelerator(menuItem, null);
+								menuBuilder.setAccelerator(menuItemNode, null);
 								final String shortcutKey = menuBuilder.getShortcutKey(menuItemNode.getKey().toString());
 								ResourceController.getResourceController().setProperty(shortcutKey, "");
 								return true;
@@ -144,7 +144,7 @@ class AccelerateableAction implements Action {
 		if (grabKeyDialog.isOK()) {
 			final String shortcut = grabKeyDialog.getShortcut();
 			final KeyStroke accelerator = UITools.getKeyStroke(shortcut);
-			menuBuilder.setAccelerator(editedItem, accelerator);
+			menuBuilder.setAccelerator((Node) menuBuilder.get(key), accelerator);
 			ResourceController.getResourceController().setProperty(shortcutKey, shortcut);
 		}
 	}

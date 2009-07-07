@@ -93,7 +93,8 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 			htmlElement.setName(NodeTextBuilder.XML_NODE_XHTML_CONTENT_TAG);
 			htmlElement.setAttribute(NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG, NodeTextBuilder.XML_NODE_XHTML_TYPE_NODE);
 			final NodeModel node = (NodeModel) element;
-			final String content = node.getXmlText().replace('\0', ' ');
+			final String xmlText = node.getXmlText();
+			final String content = xmlText.replace('\0', ' ');
 			writer.addElement(content, htmlElement);
 		}
 	}

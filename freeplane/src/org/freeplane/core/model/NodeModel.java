@@ -81,7 +81,7 @@ public class NodeModel implements MutableTreeNode {
 	private String xmlText = "no text";
 
 	public NodeModel(final MapModel map) {
-		this(null, map);
+		this("", map);
 	}
 
 	public NodeModel(final Object userObject, final MapModel map) {
@@ -385,7 +385,7 @@ public class NodeModel implements MutableTreeNode {
 	}
 
 	public boolean isLeft() {
-		if (position == NodeModel.UNKNOWN_POSITION && !isRoot()) {
+		if (position == NodeModel.UNKNOWN_POSITION && getParentNode() != null) {
 			setLeft(getParentNode().isLeft());
 		}
 		return position == NodeModel.LEFT_POSITION;
@@ -516,11 +516,6 @@ public class NodeModel implements MutableTreeNode {
 	}
 
 	public final void setText(final String text) {
-		if (text == null) {
-			this.text = null;
-			xmlText = null;
-			return;
-		}
 		this.text = XmlTool.makeValidXml(text);
 		xmlText = HtmlTools.getInstance().toXhtml(text);
 	}

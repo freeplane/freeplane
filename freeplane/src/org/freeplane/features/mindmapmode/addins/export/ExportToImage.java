@@ -73,10 +73,15 @@ public class ExportToImage extends ExportAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final RenderedImage image = createBufferedImage();
-		if (image != null) {
-			exportToImage(image);
-		}
+		try {
+	        final RenderedImage image = createBufferedImage();
+	        if (image != null) {
+	        	exportToImage(image);
+	        }
+        }
+        catch (OutOfMemoryError ex) {
+        	UITools.errorMessage(ResourceBundles.getText("out_of_memory"));
+        }
 	}
 
 	/**

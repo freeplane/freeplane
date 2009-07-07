@@ -537,22 +537,24 @@ public class MenuBuilder extends UIBuilder {
 	public void addMenuItem(final String relativeKey, final JMenuItem item, final String key, final int position) {
 		final String shortcutKey = getShortcutKey(key);
 		final String keyStrokeString = ResourceController.getResourceController().getAdjustableProperty(shortcutKey);
-		final DefaultMutableTreeNode element = addElement(relativeKey, item, key, position);
+		final Node element = (Node) addElement(relativeKey, item, key, position);
 		if (null == getMenubar(element)) {
 			return;
 		}
 		if (keyStrokeString != null && !keyStrokeString.equals("")) {
 			final KeyStroke keyStroke = UITools.getKeyStroke(keyStrokeString);
-			setAccelerator(item, keyStroke);
+			setAccelerator(element, keyStroke);
 		}
 	}
 
-	void setAccelerator(JMenuItem item, KeyStroke keyStroke) {
-		final JMenuItem oldAction = accelerators.put(keyStroke, item);
+	void setAccelerator(Node node, KeyStroke keyStroke) {
+		final Node oldAction = accelerators.put(keyStroke, node);
+		JMenuItem item = (JMenuItem) node.getUserObject();
 		if(keyStroke != null && oldAction != null){
-			throw new AssertionError("keystroke " + keyStroke + " requested for action " + item.getActionCommand() + " is already in use for action " + oldAction.getActionCommand());
+			throw new AssertionError("keystroke " + keyStroke + " requested for action " + item.getActionCommand() + " is already in use for action " 
+				+ ((JMenuItem) oldAction.getUserObject()).getActionCommand());
 		}
-		final KeyStroke removedAccelerator = removeAccelerator(item);
+		final KeyStroke removedAccelerator = removeAccelerator(node);
 		item.setAccelerator(keyStroke);
 		if(acceleratorChangeListener != null){
 			acceleratorChangeListener.acceleratorChanged(item, removedAccelerator, keyStroke);
@@ -560,11 +562,11 @@ public class MenuBuilder extends UIBuilder {
 		
     }
 
-	private KeyStroke removeAccelerator(JMenuItem item) throws AssertionError {
-	    final KeyStroke oldAccelerator = item.getAccelerator();
+	private KeyStroke removeAccelerator(Node node) throws AssertionError {
+	    final KeyStroke oldAccelerator = ((JMenuItem) node.getUserObject()).getAccelerator();
 		if(oldAccelerator != null){
-			final JMenuItem action = accelerators.remove(oldAccelerator);
-			if ( !item.equals(action )){
+			final Node oldNode = accelerators.remove(oldAccelerator);
+			if ( !node.equals(oldNode )){
 				throw new AssertionError("unexpected action " + "for accelerator " + oldAccelerator);
 			}
 		}
@@ -733,7 +735,7 @@ public class MenuBuilder extends UIBuilder {
 	    super.removeChildComponents(parentComponent, node);
     }
 
-	private Map<KeyStroke, JMenuItem> accelerators = new HashMap<KeyStroke, JMenuItem>();
+	private Map<KeyStroke, Node> accelerators = new HashMap<KeyStroke, Node>();
 	private IAcceleratorChangeListener acceleratorChangeListener;
 	public IAcceleratorChangeListener getAcceleratorChangeListener() {
     	return acceleratorChangeListener;
@@ -745,8 +747,7 @@ public class MenuBuilder extends UIBuilder {
 
 	private void removeAccelerators(DefaultMutableTreeNode node) {
 		if (node.getUserObject() instanceof JMenuItem){
-			JMenuItem item = (JMenuItem) node.getUserObject();
-			setAccelerator(item, null);
+			setAccelerator((Node) node, null);
 		}
 		for(Enumeration<Object> children = node.children();children.hasMoreElements();){
 			removeAccelerators((DefaultMutableTreeNode) children.nextElement());
@@ -777,7 +778,12 @@ public class MenuBuilder extends UIBuilder {
 	        		continue;	        		
 	        	}
 	        	final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
-	        	final Object obj = menuBuilder.get(itemKey).getUserObject();
+	        	final Node node = (Node) menuBuilder.get(itemKey);
+	        	if(node == null){
+	        		LogTool.warn("wrong key in " + shortcutKey);
+	        		continue;	        		
+	        	}
+				final Object obj = node.getUserObject();
 	        	if(! (obj instanceof JMenuItem)){
 	        		LogTool.warn("wrong key in " + shortcutKey);
 	        		continue;	        		
@@ -785,15 +791,18 @@ public class MenuBuilder extends UIBuilder {
 	        	final KeyStroke keyStroke;
 	    		if (!keystrokeString.equals("")) {
 	    			keyStroke = UITools.getKeyStroke(keystrokeString);
-		    		final JMenuItem oldItem = menuBuilder.getMenuItemForKeystroke(keyStroke);
-		    		if(oldItem!=null){
-			        	menuBuilder.setAccelerator(oldItem, null);
+		    		final Node oldNode = menuBuilder.getMenuItemForKeystroke(keyStroke);
+		    		if(oldNode!=null){
+			        	menuBuilder.setAccelerator(oldNode, null);
+			        	final Object key = oldNode.getKey();
+			        	final String oldShortcutKey = menuBuilder.getShortcutKey(key.toString());
+			        	ResourceController.getResourceController().setProperty(oldShortcutKey, "");
 		    		}
 	    		}
 	    		else{
 	    			keyStroke = null;
 	    		}
-	        	menuBuilder.setAccelerator((JMenuItem) obj, keyStroke);
+	        	menuBuilder.setAccelerator(node, keyStroke);
 	        	ResourceController.getResourceController().setProperty(shortcutKey, keystrokeString);
 	        }
         }
@@ -802,7 +811,7 @@ public class MenuBuilder extends UIBuilder {
         }
 	}
 
-	private JMenuItem getMenuItemForKeystroke(KeyStroke keyStroke) {
+	private Node getMenuItemForKeystroke(KeyStroke keyStroke) {
 		return accelerators.get(keyStroke);
 	}
 }
