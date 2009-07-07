@@ -1,4 +1,12 @@
 ===============================
+1.0.15 alpha
+===============================
+Bug fixes: 
+Bug fixes for saving maps,
+Bug fix for loading preset hot keys,
+Bug fix for file locking
+
+===============================
 1.0.14 alpha
 ===============================
 New features:
