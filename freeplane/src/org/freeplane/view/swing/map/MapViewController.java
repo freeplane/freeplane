@@ -191,6 +191,9 @@ public class MapViewController implements IMapViewManager {
 	 */
 	public boolean close(final boolean force) {
 		final MapView mapView = getMapView();
+		if(mapView == null){
+			return false;
+		}
 		final MapController mapController = mapView.getModeController().getMapController();
 		final boolean closingNotCancelled = mapController.close(force);
 		if (!closingNotCancelled) {
