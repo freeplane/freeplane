@@ -39,7 +39,6 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 	public static final String XML_NODE_XHTML_TYPE_NODE = "NODE";
 	public static final String XML_NODE_XHTML_TYPE_NOTE = "NOTE";
 	public static final String XML_NODE_XHTML_TYPE_TAG = "TYPE";
-	private boolean isTextNode;
 
 	public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
 		if (attributes == null) {
@@ -80,19 +79,18 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 
 	public void writeAttributes(final ITreeWriter writer, final Object userObject, final String tag) {
 		final NodeModel node = (NodeModel) userObject;
-		final String text = node.toString().replace('\0', ' ');
-		isTextNode = !HtmlTools.isHtmlNode(text);
-		if (isTextNode) {
-			writer.addAttribute(NodeTextBuilder.XML_NODE_TEXT, text);
+		final String text = node.toString();
+		if (!HtmlTools.isHtmlNode(text)) {
+			writer.addAttribute(NodeTextBuilder.XML_NODE_TEXT, text.replace('\0', ' '));
 		}
 	}
 
 	public void writeContent(final ITreeWriter writer, final Object element, final String tag) throws IOException {
-		if (!isTextNode) {
+		final NodeModel node = (NodeModel) element;
+		if (HtmlTools.isHtmlNode(node.toString())) {
 			final XMLElement htmlElement = new XMLElement();
 			htmlElement.setName(NodeTextBuilder.XML_NODE_XHTML_CONTENT_TAG);
 			htmlElement.setAttribute(NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG, NodeTextBuilder.XML_NODE_XHTML_TYPE_NODE);
-			final NodeModel node = (NodeModel) element;
 			final String xmlText = node.getXmlText();
 			final String content = xmlText.replace('\0', ' ');
 			writer.addElement(content, htmlElement);
