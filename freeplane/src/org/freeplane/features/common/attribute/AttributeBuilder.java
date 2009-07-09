@@ -25,6 +25,7 @@ import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.IElementDOMHandler;
+import org.freeplane.core.io.IElementHandler;
 import org.freeplane.core.io.IExtensionElementWriter;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.MapReader;
@@ -135,6 +136,10 @@ class AttributeBuilder implements IElementDOMHandler {
 				    r.registry(attribute);
 			    }
 		    });
+		reader.addElementHandler(XML_NODE_ATTRIBUTE_LAYOUT, new IElementHandler(){
+			public Object createElement(Object parent, String tag, XMLElement attributes) {
+	            return parent;
+            }});
 		reader.addAttributeHandler(AttributeBuilder.XML_NODE_ATTRIBUTE_LAYOUT, "NAME_WIDTH", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
