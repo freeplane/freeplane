@@ -655,7 +655,7 @@ public class MenuBuilder extends UIBuilder {
 		addElement(this, toolbar, key, UIBuilder.AS_CHILD);
 	}
 
-	Action decorateAction(final String category, final Action action) {
+	ISelectableAction decorateAction(final String category, final AFreeplaneAction action) {
 		if (null == getMenubar(get(category)) || modeController.getController().getViewController().isApplet()) {
 			return action;
 		}

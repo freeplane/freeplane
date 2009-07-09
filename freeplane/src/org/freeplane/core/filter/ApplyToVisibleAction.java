@@ -21,6 +21,9 @@ package org.freeplane.core.filter;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 
@@ -28,7 +31,7 @@ import org.freeplane.core.ui.SelectableAction;
  * @author Dimitry Polivaev
  * Mar 31, 2009
  */
-@SelectableAction(checkOnPopup = true)
+@SelectableAction
 class ApplyToVisibleAction extends AFreeplaneAction {
 	final static String NAME = "ApplyToVisibleAction";
 	/**
@@ -43,6 +46,12 @@ class ApplyToVisibleAction extends AFreeplaneAction {
 	ApplyToVisibleAction(final FilterController filterController) {
 		super("ApplyToVisibleAction", filterController.getController());
 		this.filterController = filterController;
+		filterController.getApplyToVisibleNodeOnly().addChangeListener(new ChangeListener(){
+
+			public void stateChanged(ChangeEvent e) {
+				setSelected(isModelSelected());
+            }});
+		setSelected(isModelSelected());
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -51,10 +60,5 @@ class ApplyToVisibleAction extends AFreeplaneAction {
 
 	private boolean isModelSelected() {
 		return filterController.getApplyToVisibleNodeOnly().isSelected();
-	}
-
-	@Override
-	public void setSelected() {
-		setSelected(isModelSelected());
 	}
 }

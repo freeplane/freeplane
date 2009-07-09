@@ -45,14 +45,14 @@ import org.freeplane.core.ui.components.UITools;
  * @author Dimitry Polivaev
  * 20.04.2009
  */
-class AccelerateableAction implements Action {
+class AccelerateableAction implements ISelectableAction {
 	/**
 	 * 
 	 */
 	private final MenuBuilder menuBuilder;
-	final private Action originalAction;
+	final private AFreeplaneAction originalAction;
 
-	public AccelerateableAction(final MenuBuilder menuBuilder, final Action originalAction) {
+	public AccelerateableAction(final MenuBuilder menuBuilder, final AFreeplaneAction originalAction) {
 		super();
 		this.menuBuilder = menuBuilder;
 		this.originalAction = originalAction;
@@ -160,4 +160,8 @@ class AccelerateableAction implements Action {
 	public void setEnabled(final boolean b) {
 		originalAction.setEnabled(b);
 	}
+
+	public boolean isSelected() {
+	    return originalAction.isSelected();
+    }
 }

@@ -21,6 +21,9 @@ package org.freeplane.core.filter;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 
@@ -28,7 +31,7 @@ import org.freeplane.core.ui.SelectableAction;
  * @author Dimitry Polivaev
  * Mar 31, 2009
  */
-@SelectableAction(checkOnPopup = true)
+@SelectableAction
 class ShowDescendantsAction extends AFreeplaneAction {
 	/**
 	 * 
@@ -42,19 +45,22 @@ class ShowDescendantsAction extends AFreeplaneAction {
 	ShowDescendantsAction(final FilterController filterController) {
 		super("ShowDescendantsAction", filterController.getController());
 		this.filterController = filterController;
+		filterController.getShowDescendants().addChangeListener(new ChangeListener(){
+
+			public void stateChanged(ChangeEvent e) {
+				setSelected(isModelSelected());
+            }});
+		setSelected(isModelSelected());
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		filterController.getShowDescendants().setSelected(!isModelSelected());
+		final boolean isSelected = !isModelSelected();
+		filterController.getShowDescendants().setSelected(isSelected);
+		setSelected(isSelected);
 		filterController.showFilterToolbar(true);
 	}
 
 	private boolean isModelSelected() {
 		return filterController.getShowDescendants().isSelected();
-	}
-
-	@Override
-	public void setSelected() {
-		setSelected(isModelSelected());
 	}
 }

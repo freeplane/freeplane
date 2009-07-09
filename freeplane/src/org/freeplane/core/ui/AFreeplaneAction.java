@@ -34,7 +34,7 @@ import org.freeplane.core.util.LogTool;
 /**
  * @author Dimitry Polivaev
  */
-public abstract class AFreeplaneAction extends AbstractAction {
+public abstract class AFreeplaneAction extends AbstractAction implements ISelectableAction {
 	/**
 	 * 
 	 */

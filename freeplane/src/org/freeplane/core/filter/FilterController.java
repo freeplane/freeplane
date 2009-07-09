@@ -130,6 +130,15 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	public FilterController(final Controller controller) {
 		this.controller = controller;
 		history = new FilterHistory(controller);
+		filterChangeListener = new FilterChangeListener();
+		showAncestors = new JToggleButton.ToggleButtonModel();
+		showAncestors.setSelected(true);
+		showAncestors.addChangeListener(filterChangeListener);
+		showDescendants = new JToggleButton.ToggleButtonModel();
+		showDescendants.setSelected(false);
+		showDescendants.addChangeListener(filterChangeListener);
+		applyToVisibleNodeOnly = new JToggleButton.ToggleButtonModel();
+		applyToVisibleNodeOnly.setSelected(false);
 		controller.getMapViewManager().addMapSelectionListener(this);
 		final ShowFilterToolbarAction showFilterToolbar = new ShowFilterToolbarAction(this);
 		controller.addAction(showFilterToolbar);
@@ -153,15 +162,6 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		controller.addAction(showDescendantsAction);
 		final ApplyToVisibleAction applyToVisibleAction = new ApplyToVisibleAction(this);
 		controller.addAction(applyToVisibleAction);
-		filterChangeListener = new FilterChangeListener();
-		showAncestors = new JToggleButton.ToggleButtonModel();
-		showAncestors.setSelected(true);
-		showAncestors.addChangeListener(filterChangeListener);
-		showDescendants = new JToggleButton.ToggleButtonModel();
-		showDescendants.setSelected(false);
-		showDescendants.addChangeListener(filterChangeListener);
-		applyToVisibleNodeOnly = new JToggleButton.ToggleButtonModel();
-		applyToVisibleNodeOnly.setSelected(false);
 		pathToFilterFile = ResourceController.getResourceController().getFreeplaneUserDirectory() + File.separator
 		        + "auto." + FilterController.FREEPLANE_FILTER_EXTENSION_WITHOUT_DOT;
 	}
