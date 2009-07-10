@@ -554,6 +554,8 @@ public class MenuBuilder extends UIBuilder {
 			UITools.errorMessage("keystroke " + keyStroke + " requested for action " + item.getActionCommand() + " is already in use for action " 
 				+ ((JMenuItem) oldAction.getUserObject()).getActionCommand());
 			accelerators.put(keyStroke, oldAction);
+			final String shortcutKey = getShortcutKey(node.getKey().toString());
+			ResourceController.getResourceController().setProperty(shortcutKey, "");
 			return;
 		}
 		final KeyStroke removedAccelerator = removeAccelerator(node);
