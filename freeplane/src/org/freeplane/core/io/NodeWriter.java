@@ -86,7 +86,8 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 		if (mapController.isFolded(node) && (writeFolded || writer.getHint(Hint.MODE).equals(Mode.CLIPBOARD))) {
 			writer.addAttribute("FOLDED", "true");
 		}
-		if (!node.isRoot() && node.getParentNode().isRoot()) {
+		final NodeModel parentNode = node.getParentNode();
+		if (parentNode != null && parentNode.isRoot()) {
 			writer.addAttribute("POSITION", node.isLeft() ? "left" : "right");
 		}
 		final boolean saveID = !MapController.saveOnlyIntrinsicallyNeededIds();
