@@ -24,18 +24,18 @@ import java.awt.Dialog;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.Window;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.ImageIcon;
-import javax.swing.JApplet;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
@@ -46,7 +46,18 @@ import org.freeplane.core.ui.IAcceleratorChangeListener;
  * 03.07.2009
  */
 public class FButtonBar extends FreeplaneToolBar implements IAcceleratorChangeListener, KeyEventDispatcher {
-	private int modifiers;
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+	private int nextModifiers = 0;
+	private int lastModifiers = -1;
+	final private Timer timer = new Timer(500, new ActionListener(){
+
+		public void actionPerformed(ActionEvent e) {
+			onModifierChangeImpl();
+		}
+	});
 	public boolean dispatchKeyEvent(KeyEvent e) {
 	    final Window windowAncestor = SwingUtilities.getWindowAncestor(e.getComponent());
 		if(windowAncestor instanceof Dialog){
@@ -57,11 +68,12 @@ public class FButtonBar extends FreeplaneToolBar implements IAcceleratorChangeLi
 	    }
 	    return false;
     }
-	private void processDispatchedKeyEvent(KeyEvent e) {
+	private void processDispatchedKeyEvent(final KeyEvent e) {
 		
+		final int keyCode = e.getKeyCode();
 		switch(e.getID()){
 			case KeyEvent.KEY_PRESSED:
-				switch(e.getKeyCode()){
+				switch(keyCode){
 					case KeyEvent.VK_CONTROL:
 						setModifiers(KeyEvent.CTRL_MASK);
 						break;
@@ -75,12 +87,16 @@ public class FButtonBar extends FreeplaneToolBar implements IAcceleratorChangeLi
 						setModifiers(KeyEvent.ALT_GRAPH_MASK);
 						break;
 					default:
-						return;
+						if(keyCode >= KeyEvent.VK_F1 && keyCode <= KeyEvent.VK_F12 && timer.isRunning()){
+							timer.stop();
+							onModifierChangeImpl();
+						}
+					return;
 				}
 			default:
 				return;
 			case KeyEvent.KEY_RELEASED:
-				switch(e.getKeyCode()){
+				switch(keyCode){
 					case KeyEvent.VK_CONTROL:
 						cleanModifiers(KeyEvent.CTRL_MASK);
 						break;
@@ -108,15 +124,32 @@ public class FButtonBar extends FreeplaneToolBar implements IAcceleratorChangeLi
 		onModifierChange();
 	}
 	private void onModifierChange() {
-		removeAll();
+		if(lastModifiers == nextModifiers){
+			return;
+		}
+		if(timer.isRunning()){
+			timer.stop();
+		}
+		if(nextModifiers == 0){
+			onModifierChangeImpl();
+		}
+		else{
+			timer.start();
+		}
+    }
+	private void onModifierChangeImpl() {
+		if(lastModifiers == nextModifiers){
+			return;
+		}
+		lastModifiers = nextModifiers;
+	    removeAll();
 		addSeparator();
-		JButton[] buttonRow = createButtons(modifiers);
+		JButton[] buttonRow = createButtons(nextModifiers);
 		for(JButton button:buttonRow){
 			add(button);
 		}
 		revalidate();
 		repaint();
-	    
     }
 	private JButton[] createButtons() {
 	    JButton[] buttons = new JButton[BUTTON_NUMBER];
@@ -165,18 +198,24 @@ public class FButtonBar extends FreeplaneToolBar implements IAcceleratorChangeLi
 	    return buttonRow;
     }
 	private void setModifiers(int modifiers) {
-	    this.modifiers |= modifiers;
+		if((this.nextModifiers ^ modifiers) == 0){
+			return;
+		}
+	    this.nextModifiers |= modifiers;
 	    onModifierChange();
     }
 	private void resetModifiers() {
-		if(this.modifiers == 0){
+		if(this.nextModifiers == 0){
 			return;
 		}
-	    this.modifiers = 0;
+	    this.nextModifiers = 0;
 	    onModifierChange();
     }
 	private void cleanModifiers(int modifiers) {
-	    this.modifiers &= ~modifiers;
+		if((this.nextModifiers & modifiers) == 0){
+			return;
+		}
+	    this.nextModifiers &= ~modifiers;
 	    onModifierChange();
     }
 	@Override

@@ -551,8 +551,10 @@ public class MenuBuilder extends UIBuilder {
 		final Node oldAction = accelerators.put(keyStroke, node);
 		JMenuItem item = (JMenuItem) node.getUserObject();
 		if(keyStroke != null && oldAction != null){
-			throw new AssertionError("keystroke " + keyStroke + " requested for action " + item.getActionCommand() + " is already in use for action " 
+			UITools.errorMessage("keystroke " + keyStroke + " requested for action " + item.getActionCommand() + " is already in use for action " 
 				+ ((JMenuItem) oldAction.getUserObject()).getActionCommand());
+			accelerators.put(keyStroke, oldAction);
+			return;
 		}
 		final KeyStroke removedAccelerator = removeAccelerator(node);
 		item.setAccelerator(keyStroke);
