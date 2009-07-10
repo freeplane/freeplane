@@ -1,4 +1,14 @@
 ===============================
+1.0.16 alpha
+===============================
+Bug fixes: 
+[Bugs 0000130]: Ambiguous filter options state in menu after switching to another tab
+[Bugs 0000133]: SEVERE BUG: specially formatted nodes within encrypted nodes corrupt the original file
+Bug fix for copying single nodes
+Bug fix for loading maps with automatic layout
+
+
+===============================
 1.0.15 alpha
 ===============================
 Bug fixes: 
