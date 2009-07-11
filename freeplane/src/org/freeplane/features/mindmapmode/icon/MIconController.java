@@ -318,7 +318,7 @@ public class MIconController extends IconController {
     }
 	
 	public void updateMenus(final MenuBuilder builder) {
-		addIconsToMenu(builder, FreeplaneMenuBar.INSERT_MENU);
+		addIconsToMenu(builder, FreeplaneMenuBar.MENU_BAR_PREFIX);
 		addIconsToMenu(builder, UserInputListenerFactory.NODE_POPUP);
 	}
 }

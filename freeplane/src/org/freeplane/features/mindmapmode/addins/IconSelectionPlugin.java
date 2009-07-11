@@ -37,7 +37,7 @@ import org.freeplane.features.mindmapmode.icon.MIconController;
 /**
  * @author adapted to the plugin mechanism by ganzer
  */
-@ActionLocationDescriptor(locations = { "/menu_bar/insert/icons/actions" }, //
+@ActionLocationDescriptor(locations = { "/menu_bar/icons/actions" }, //
 accelerator = "control F2")
 public class IconSelectionPlugin extends AFreeplaneAction {
 	/**
