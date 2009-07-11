@@ -122,7 +122,8 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 					}
 					StringBuilder tooltip = new StringBuilder();
 					tooltip.append("<html><body><table  border=\"1\">");
-					for(int i = 0; i < rowCount; i++){
+					final int currentRowCount = getRowCount();
+					for(int i = 0; i < currentRowCount; i++){
 						tooltip.append("<tr><td>");
 						tooltip.append(getValueAt(i, 0));
 						tooltip.append("</td><td>");
