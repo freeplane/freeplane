@@ -57,6 +57,7 @@ class MapViewTabs implements IMapViewChangeListener {
 		map.remove(keyStrokeCtrlUp);
 		mTabbedPane = new JTabbedPane();
 		mTabbedPane.setFocusable(false);
+		mTabbedPane.setTabPlacement(JTabbedPane.BOTTOM);
 		mTabbedPaneMapViews = new Vector();
 		mTabbedPane.addChangeListener(new ChangeListener() {
 			public synchronized void stateChanged(final ChangeEvent pE) {
