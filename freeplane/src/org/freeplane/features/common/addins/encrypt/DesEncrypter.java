@@ -92,6 +92,8 @@ public class DesEncrypter implements IEncrypter {
 		}
 		catch (final UnsupportedEncodingException e) {
 		}
+		catch (final IllegalArgumentException e) {
+		}
 		return null;
 	}
 
