@@ -445,16 +445,20 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		while (lastComponent >= 0 && !toolbarPanel.getComponent(lastComponent).isVisible()) {
 			lastComponent--;
 		}
+		final Dimension oldPreferredSize = toolbarPanel.getPreferredSize();
+		final Dimension preferredSize;
 		if (lastComponent >= 0) {
 			final Component component = toolbarPanel.getComponent(lastComponent);
-			final Dimension oldPreferredSize = toolbarPanel.getPreferredSize();
-			final Dimension preferredSize = new Dimension(toolbarPanel.getWidth(), component.getY()
+			preferredSize = new Dimension(toolbarPanel.getWidth(), component.getY()
 			        + component.getHeight());
-			if (oldPreferredSize.height != preferredSize.height) {
-				toolbarPanel.setPreferredSize(preferredSize);
-				toolbarPanel.getParent().invalidate();
-				((JComponent) getContentPane()).revalidate();
-			}
+		}
+		else{
+			preferredSize = new Dimension(0, 0);
+		}
+		if (oldPreferredSize.height != preferredSize.height) {
+			toolbarPanel.setPreferredSize(preferredSize);
+			toolbarPanel.getParent().invalidate();
+			((JComponent) getContentPane()).revalidate();
 		}
 	}
 
