@@ -164,6 +164,9 @@ public class ReminderHook extends PersistentNodeHook {
 	void blink(final ReminderExtension model, final boolean stateAdded) {
 		model.setRemindUserAt(System.currentTimeMillis() + 3000);
 		scheduleTimer(model, new TimerBlinkTask(this, model, stateAdded));
+		if(model.getNode().getMap() != getController().getMap()){
+			return;
+		}
 		displayState(model, (stateAdded) ? CLOCK_VISIBLE : CLOCK_INVISIBLE, model.getNode(), true);
 	}
 
@@ -254,14 +257,9 @@ public class ReminderHook extends PersistentNodeHook {
 		element.addChild(parameters);
 	}
 
-	public void scheduleTimer(final ReminderExtension model) {
+	private void scheduleTimer(final ReminderExtension model) {
 		scheduleTimer(model, new TimerBlinkTask(this, model, false));
-	}
-
-	void scheduleTimer(final ReminderExtension model, final TimerTask task) {
-		model.setTimer(new Timer());
 		final Date date = new Date(model.getRemindUserAt());
-		model.getTimer().schedule(task, date);
 		final Object[] messageArguments = { date };
 		final MessageFormat formatter = new MessageFormat(ResourceBundles
 		    .getText("plugins/TimeManagement.xml_reminderNode_tooltip"));
@@ -270,7 +268,13 @@ public class ReminderHook extends PersistentNodeHook {
 		displayState(model, CLOCK_VISIBLE, model.getNode(), false);
 	}
 
-	protected void setToolTip(final NodeModel node, final String value) {
+	private void scheduleTimer(final ReminderExtension model, final TimerTask task) {
+		model.setTimer(new Timer());
+		final Date date = new Date(model.getRemindUserAt());
+		model.getTimer().schedule(task, date);
+	}
+
+	private void setToolTip(final NodeModel node, final String value) {
 		(getModeController().getMapController()).setToolTip(node, getClass().getName(), new ITooltipProvider(){
 			public String getTooltip() {
 	            return value;
