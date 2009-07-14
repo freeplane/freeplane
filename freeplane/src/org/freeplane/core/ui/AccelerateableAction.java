@@ -45,7 +45,7 @@ import org.freeplane.core.ui.components.UITools;
  * @author Dimitry Polivaev
  * 20.04.2009
  */
-class AccelerateableAction implements ISelectableAction {
+class AccelerateableAction implements IFreeplaneAction {
 	/**
 	 * 
 	 */
@@ -163,5 +163,9 @@ class AccelerateableAction implements ISelectableAction {
 
 	public boolean isSelected() {
 	    return originalAction.isSelected();
+    }
+
+	public void afterMapChange(Object newMap) {
+		originalAction.afterMapChange(newMap);
     }
 }

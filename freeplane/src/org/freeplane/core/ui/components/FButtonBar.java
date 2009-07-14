@@ -30,6 +30,7 @@ import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JMenuItem;
@@ -156,8 +157,19 @@ public class FButtonBar extends FreeplaneToolBar implements IAcceleratorChangeLi
 		for(int i = 0; i < BUTTON_NUMBER; i++){
 			final String name = "/images/f" + (i+1) + ".png";
 			final JButton button = buttons[i] = new JButton(ResourceBundles.getText("f_button_unassigned"), 
-				new ImageIcon(ResourceController.getResourceController().getResource(name)));
+				new ImageIcon(ResourceController.getResourceController().getResource(name))){
+
+					/**
+                     * 
+                     */
+                    private static final long serialVersionUID = 1L;
+
+					@Override
+                    protected void configurePropertiesFromAction(Action a) {
+                    }
+			};
 			button.setFocusable(false);
+			button.setEnabled(false);
 			button.setMargin(FreeplaneToolBar.nullInsets);
 			if (System.getProperty("os.name").startsWith("Mac OS")) {
 				button.setBorderPainted(false);
@@ -174,11 +186,7 @@ public class FButtonBar extends FreeplaneToolBar implements IAcceleratorChangeLi
 			final int modifiers = oldStroke.getModifiers() & (KeyEvent.CTRL_MASK | KeyEvent.SHIFT_MASK | KeyEvent.ALT_MASK | KeyEvent.ALT_GRAPH_MASK);
 			final JButton[] buttonRow = buttons.get(modifiers);
 			final JButton button = buttonRow[oldButtonNumber];
-			final ActionListener[] actionListeners = button.getActionListeners();
-			assert(actionListeners.length <= 1);
-			if(actionListeners.length == 1){
-				button.removeActionListener(actionListeners[0]);
-			}
+			button.setAction(null);
 			button.setText(ResourceBundles.getText("f_button_unassigned"));
 		}
 		if(newButtonNumber >= 0 && newButtonNumber < BUTTON_NUMBER){
@@ -186,7 +194,8 @@ public class FButtonBar extends FreeplaneToolBar implements IAcceleratorChangeLi
 			JButton[] buttonRow = createButtons(modifiers);
 			final JButton button = buttonRow[newButtonNumber];
 			button.setText(action.getActionCommand());
-			button.addActionListener(action.getAction());
+			button.setAction(action.getAction());
+			button.setEnabled(action.isEnabled());
 		}
     }
 	private JButton[] createButtons(final int modifiers) {

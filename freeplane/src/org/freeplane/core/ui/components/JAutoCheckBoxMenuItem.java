@@ -25,7 +25,7 @@ import java.beans.PropertyChangeListener;
 import javax.swing.Action;
 import javax.swing.JCheckBoxMenuItem;
 
-import org.freeplane.core.ui.ISelectableAction;
+import org.freeplane.core.ui.IFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 
 public class JAutoCheckBoxMenuItem extends JCheckBoxMenuItem implements PropertyChangeListener {
@@ -35,7 +35,7 @@ public class JAutoCheckBoxMenuItem extends JCheckBoxMenuItem implements Property
 	private static final long serialVersionUID = 1L;
 	private PropertyChangeListener defaultPropertyChanegListener;
 
-	public JAutoCheckBoxMenuItem(final ISelectableAction a) {
+	public JAutoCheckBoxMenuItem(final IFreeplaneAction a) {
 		super(a);
 		setSelected(a.isSelected());
 	}

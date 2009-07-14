@@ -65,4 +65,7 @@ class DocumentationAction extends AFreeplaneAction {
 			});
 		}
 	}
+	
+	@Override
+	public void afterMapChange(Object newMap){}
 }

@@ -32,6 +32,7 @@ import java.lang.ref.WeakReference;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Map.Entry;
@@ -58,6 +59,7 @@ import org.freeplane.core.io.IElementHandler;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.MapModel;
 import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
@@ -659,7 +661,7 @@ public class MenuBuilder extends UIBuilder {
 		addElement(this, toolbar, key, UIBuilder.AS_CHILD);
 	}
 
-	ISelectableAction decorateAction(final String category, final AFreeplaneAction action) {
+	IFreeplaneAction decorateAction(final String category, final AFreeplaneAction action) {
 		if (null == getMenubar(get(category)) || modeController.getController().getViewController().isApplet()) {
 			return action;
 		}
@@ -818,4 +820,18 @@ public class MenuBuilder extends UIBuilder {
 	private Node getMenuItemForKeystroke(KeyStroke keyStroke) {
 		return accelerators.get(keyStroke);
 	}
+
+	public void afterMapChange(MapModel newMap) {
+		final Iterator<Object> iterator = newObjectIterator();
+		while(iterator.hasNext()){
+			final Object next = iterator.next();
+			if(next instanceof AbstractButton){
+				AbstractButton btn = (AbstractButton) next;
+				final Action action = btn.getAction();
+				if(action instanceof IFreeplaneAction){
+					((IFreeplaneAction) action).afterMapChange(newMap);
+				}
+			}
+		}
+    }
 }

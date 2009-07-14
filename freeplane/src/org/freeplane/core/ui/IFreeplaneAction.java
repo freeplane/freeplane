@@ -21,10 +21,13 @@ package org.freeplane.core.ui;
 
 import javax.swing.Action;
 
+import org.freeplane.core.model.MapModel;
+
 /**
  * @author Dimitry Polivaev
  * 09.07.2009
  */
-public interface ISelectableAction extends Action{
+public interface IFreeplaneAction extends Action{
 	public boolean isSelected();
+	public void afterMapChange(Object newMap);
 }

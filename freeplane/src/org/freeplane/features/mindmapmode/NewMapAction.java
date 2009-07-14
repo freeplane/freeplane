@@ -41,4 +41,8 @@ class NewMapAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		getModeController().getMapController().newMap(((NodeModel) null));
 	}
+	
+	@Override
+	public void afterMapChange(Object newMap){}
+
 }

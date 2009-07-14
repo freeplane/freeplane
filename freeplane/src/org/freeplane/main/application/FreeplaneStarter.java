@@ -36,6 +36,8 @@ import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.FreeplaneVersion;
 import org.freeplane.core.filter.FilterController;
+import org.freeplane.core.frame.IMapSelectionListener;
+import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;

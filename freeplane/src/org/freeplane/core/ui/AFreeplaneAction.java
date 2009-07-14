@@ -34,7 +34,7 @@ import org.freeplane.core.util.LogTool;
 /**
  * @author Dimitry Polivaev
  */
-public abstract class AFreeplaneAction extends AbstractAction implements ISelectableAction {
+public abstract class AFreeplaneAction extends AbstractAction implements IFreeplaneAction {
 	/**
 	 * 
 	 */
@@ -76,6 +76,7 @@ public abstract class AFreeplaneAction extends AbstractAction implements ISelect
 	final private Controller controller;
 	final private String key;
 	private boolean selected = false;
+	private boolean enableOnMapChange;
 
 	//
 	//	/**
@@ -162,6 +163,7 @@ public abstract class AFreeplaneAction extends AbstractAction implements ISelect
 	}
 
 	public void setEnabled() {
+		setEnabled(true);
 	}
 
 	public void setSelected() {
@@ -177,4 +179,18 @@ public abstract class AFreeplaneAction extends AbstractAction implements ISelect
 
 	public void setVisible() {
 	}
+
+	public void afterMapChange(Object newMap) {
+	    if(newMap == null){
+	    	enableOnMapChange = enableOnMapChange || isEnabled();
+	    	setEnabled(false);
+	    }
+	    else{
+	    	if(enableOnMapChange){
+	    		setEnabled(true);
+	    	}
+	    	enableOnMapChange = false;
+	    }
+	    
+    }
 }

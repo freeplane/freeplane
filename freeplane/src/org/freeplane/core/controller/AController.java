@@ -3,6 +3,7 @@ package org.freeplane.core.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.freeplane.core.model.MapModel;
 import org.freeplane.core.ui.AFreeplaneAction;
 
 /**

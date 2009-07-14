@@ -38,4 +38,6 @@ class ModesMenuActionListener extends AFreeplaneAction {
 			}
 		});
 	}
+	@Override
+	public void afterMapChange(Object newMap){}
 }

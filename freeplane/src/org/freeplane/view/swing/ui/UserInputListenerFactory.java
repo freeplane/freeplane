@@ -42,9 +42,11 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JToolBar;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
@@ -83,6 +85,17 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		controller = modeController.getController();
 		mapsMenuActionListener = new MapsMenuActionListener(controller);
 		menuBuilder = new MenuBuilder(modeController);
+		controller.getMapViewManager().addMapSelectionListener(new IMapSelectionListener(){
+
+			public void afterMapChange(MapModel oldMap, MapModel newMap) {
+				menuBuilder.afterMapChange(newMap);
+            }
+
+			public void afterMapClose(MapModel oldMap) {
+            }
+
+			public void beforeMapChange(MapModel oldMap, MapModel newMap) {
+            }});
 		toolBars = new LinkedHashMap<String, JToolBar>();
 	}
 

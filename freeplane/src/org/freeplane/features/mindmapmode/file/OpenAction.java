@@ -39,4 +39,7 @@ class OpenAction extends AFreeplaneAction {
 		((MFileManager) UrlManager.getController(getModeController())).open();
 		getController().getViewController().setTitle();
 	}
+	
+	@Override
+	public void afterMapChange(Object newMap){}
 }
