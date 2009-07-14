@@ -27,10 +27,4 @@ public interface IMapSelectionListener {
 	void afterMapClose(MapModel oldMap);
 
 	void beforeMapChange(MapModel oldMap, MapModel newMap);
-
-	/**
-	 * The params may be null to indicate the there was no previous map, or that
-	 * the last map is closed now.
-	 */
-	boolean isMapChangeAllowed(MapModel oldMap, MapModel newMap);
 }

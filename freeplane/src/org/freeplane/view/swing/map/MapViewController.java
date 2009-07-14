@@ -108,9 +108,6 @@ public class MapViewController implements IMapViewManager {
 		if(newMapView == oldMapView){
 			return true;
 		}
-		if (!mapViewChangeListeners.isMapChangeAllowed(getModel(oldMapView), getModel(newMapView))) {
-			return false;
-		}
 		mapViewChangeListeners.beforeMapViewChange(oldMapView, newMapView);
 		mapView = newMapView;
 		if (mapView != null) {

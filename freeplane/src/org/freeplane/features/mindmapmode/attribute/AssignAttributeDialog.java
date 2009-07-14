@@ -439,14 +439,22 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 	}
 
 	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
-		if (newMap == null) {
-			return;
-		}
 		if (oldMap != null) {
-			AttributeRegistry.getRegistry(oldMap).removeAttributesListener(this);
+			final AttributeRegistry attributes = AttributeRegistry.getRegistry(oldMap);
+			if(attributes != null){
+				attributes.removeAttributesListener(this);
+			}
+		}
+		if (newMap == null) {
+			setVisible(false);
+			return;
 		}
 		mapSelection = controller.getSelection();
 		final AttributeRegistry attributes = AttributeRegistry.getRegistry(newMap);
+		if (attributes == null) {
+			setVisible(false);
+			return;
+		}
 		attributes.addAttributesListener(this);
 		attributesChanged();
 	}
@@ -482,10 +490,6 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 	}
 
 	public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
-	}
-
-	public boolean isMapChangeAllowed(final MapModel oldMap, final MapModel newMap) {
-		return !isVisible();
 	}
 
 	private void selectedAttributeChanged(final Object selectedAttributeName, final JComboBox values) {

@@ -48,25 +48,19 @@ public class MapReader implements IElementDOMHandler, IHintProvider {
 			hints = new HashMap<Object, Object>();
 		}
 
-		public NodeModel create(final Reader pReader) {
+		public NodeModel create(final Reader pReader) throws XMLException {
 			final TreeXmlReader reader = new TreeXmlReader(readManager);
 			try {
 	            reader.load(pReader);
+				final NodeModel node = nodeBuilder.getMapChild();
+				return node;
             }
-            catch (XMLException e) {
-            	LogTool.warn( "corrupt_map", e);
-            	EventQueue.invokeLater(new Runnable(){
-					public void run() {
-	        			JOptionPane.showMessageDialog(null, ResourceBundles.getText("corrupt_map"), "Freeplane", JOptionPane.ERROR_MESSAGE);
-                    }});
-            }
-			final NodeModel node = nodeBuilder.getMapChild();
-			nodeBuilder.reset();
-			return node;
+			finally{
+				nodeBuilder.reset();
+			}
 		}
 
-		public NodeModel createNodeTreeFromXml(final MapModel map, final Reader pReader) throws XMLParseException,
-		        IOException {
+		public NodeModel createNodeTreeFromXml(final MapModel map, final Reader pReader) throws IOException, XMLException {
 			start(map);
 			final NodeModel node = create(pReader);
 			finish(node);
@@ -102,7 +96,7 @@ public class MapReader implements IElementDOMHandler, IHintProvider {
 	}
 
 	public NodeModel createNodeTreeFromXml(final MapModel map, final Reader pReader, final Mode mode)
-	        throws XMLParseException, IOException {
+	        throws IOException, XMLException {
 		try {
 			mapLoadingInProcess = true;
 			final NodeTreeCreator nodeTreeCreator = new NodeTreeCreator();

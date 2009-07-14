@@ -354,10 +354,6 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		filterConditions.addListDataListener(filterChangeListener);
 	}
 
-	public boolean isMapChangeAllowed(final MapModel oldMap, final MapModel newMap) {
-		return true;
-	}
-
 	void loadConditions(final DefaultComboBoxModel filterConditionModel, final String pathToFilterFile)
 	        throws IOException {
 		filterConditionModel.removeAllElements();

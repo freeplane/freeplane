@@ -225,10 +225,6 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 		return timePanel;
 	}
 
-	public boolean isMapChangeAllowed(final MapModel oldMap, final MapModel newMap) {
-		return true;
-	}
-
 	public void propertyChange(final PropertyChangeEvent event) {
 		if (event.getPropertyName().equals(JDayChooser.DAY_PROPERTY)) {
 		}

@@ -73,7 +73,6 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 	 * Contains Restore string => map name (map.toString()).
 	 */
 	final private Map<String, String> mRestorableToMapName = new HashMap<String, String>();
-	private int displayedMapIndex;
 
 	LastOpenedList(final Controller controller) {
 		this.controller = controller;
@@ -89,7 +88,6 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 
 	public void afterViewChange(final Component oldView, final Component newView) {
 		if (newView == null) {
-			displayedMapIndex = -1;
 			updateMenus();
 			return;
 		}
@@ -108,7 +106,6 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 			lastOpenedList.add(0, restoreString);
 			mRestorableToMapName.put(restoreString, map.getTitle());
 		}
-		displayedMapIndex = 0;
 		updateMenus();
     }
 
@@ -185,11 +182,12 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
     }
 
 	private void updateMenus() {
-		final MenuBuilder menuBuilder = controller.getModeController().getUserInputListenerFactory().getMenuBuilder();
+		final ModeController modeController = controller.getModeController();
+		final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
 		menuBuilder.removeChildElements(FreeplaneMenuBar.FILE_MENU + "/last");
 		int i = -1;
 		for (final String key : lastOpenedList) {
-			if (++i == displayedMapIndex) {
+			if (++i == 0 && modeController.getModeName().equals(MModeController.MODENAME) && controller.getMap() != null && controller.getMap().getURL() != null) {
 				continue;
 			}
 			final int maxEntries = getMaxMenuEntries();

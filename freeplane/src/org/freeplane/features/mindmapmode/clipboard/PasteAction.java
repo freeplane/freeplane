@@ -50,8 +50,10 @@ import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FixedHTMLWriter;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.core.util.LogTool;
@@ -63,6 +65,7 @@ import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.features.mindmapmode.link.MLinkController;
 import org.freeplane.features.mindmapmode.text.MTextController;
+import org.freeplane.n3.nanoxml.XMLException;
 
 class PasteAction extends AFreeplaneAction {
 	private class DirectHtmlFlavorHandler implements IDataFlavorHandler {
@@ -141,11 +144,16 @@ class PasteAction extends AFreeplaneAction {
 			final NodeTreeCreator nodeTreeCreator = mapReader.nodeTreeCreator(target.getMap());
 			mapReader.setHint(Hint.MODE, Mode.CLIPBOARD);
 			for (int i = 0; i < textLines.length; ++i) {
-				final NodeModel newModel = nodeTreeCreator.create(new StringReader(textLines[i]));
-				final boolean wasLeft = newModel.isLeft();
-				mapController.insertNode(newModel, target, asSibling, isLeft, wasLeft != isLeft);
+				try {
+					final NodeModel newModel = nodeTreeCreator.create(new StringReader(textLines[i]));
+					final boolean wasLeft = newModel.isLeft();
+					mapController.insertNode(newModel, target, asSibling, isLeft, wasLeft != isLeft);
+				}
+				catch (XMLException e) {
+    				LogTool.severe( "error on paste", e);
+				}
 			}
-			nodeTreeCreator.finish(target);
+	            nodeTreeCreator.finish(target);
 		}
 	}
 

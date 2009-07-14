@@ -67,10 +67,6 @@ class UndoAction extends AFreeplaneAction implements IMapSelectionListener {
 	public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
 	}
 
-	public boolean isMapChangeAllowed(final MapModel oldMap, final MapModel newMap) {
-		return true;
-	}
-
 	public void setRedo(final Action redo) {
 		this.redo = redo;
 	}

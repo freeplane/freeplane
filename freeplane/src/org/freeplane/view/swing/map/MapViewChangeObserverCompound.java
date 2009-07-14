@@ -83,18 +83,6 @@ class MapViewChangeObserverCompound {
 		return view == null ? null : view.getModel();
 	}
 
-	boolean isMapChangeAllowed(final MapModel oldMap, final MapModel newMap) {
-		boolean returnValue = true;
-		for (final Iterator iter = new Vector(mapListeners).iterator(); iter.hasNext();) {
-			final IMapSelectionListener observer = (IMapSelectionListener) iter.next();
-			returnValue = observer.isMapChangeAllowed(oldMap, newMap);
-			if (!returnValue) {
-				break;
-			}
-		}
-		return returnValue;
-	}
-
 	void mapViewCreated(final MapView mapView) {
 		for (final Iterator<IMapViewChangeListener> iter = viewListeners.iterator(); iter.hasNext();) {
 			final IMapViewChangeListener observer = iter.next();
