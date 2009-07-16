@@ -59,18 +59,16 @@ class ExportBranchAction extends AFreeplaneAction {
 			controller.getViewController().err("Could not export branch.");
 			return;
 		}
-		final File file = controller.getMap().getFile();
-		if (file == null) {
+		if (controller.getMap().getFile() == null) {
 			controller.getViewController().out("You must save the current map first!");
 			((MModeController) getModeController()).save();
 		}
 		JFileChooser chooser;
-		if (file != null) {
-			chooser = new JFileChooser(file.getParentFile());
+		final File file = controller.getMap().getFile();
+		if (file == null) {
+			return;
 		}
-		else {
-			chooser = new JFileChooser();
-		}
+		chooser = new JFileChooser(file.getParentFile());
 		if (((MFileManager) UrlManager.getController(getModeController())).getFileFilter() != null) {
 			chooser.addChoosableFileFilter(((MFileManager) UrlManager.getController(getModeController()))
 			    .getFileFilter());
