@@ -27,6 +27,8 @@ import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,13 +48,14 @@ import org.freeplane.core.ui.IAcceleratorChangeListener;
  * @author Dimitry Polivaev
  * 03.07.2009
  */
-public class FButtonBar extends FreeplaneToolBar implements IAcceleratorChangeListener, KeyEventDispatcher {
+public class FButtonBar extends FreeplaneToolBar implements IAcceleratorChangeListener, KeyEventDispatcher, WindowFocusListener {
 	/**
      * 
      */
     private static final long serialVersionUID = 1L;
 	private int nextModifiers = 0;
 	private int lastModifiers = -1;
+	private boolean isWindowListenerInstalled;
 	final private Timer timer = new Timer(500, new ActionListener(){
 
 		public void actionPerformed(ActionEvent e) {
@@ -60,11 +63,14 @@ public class FButtonBar extends FreeplaneToolBar implements IAcceleratorChangeLi
 		}
 	});
 	public boolean dispatchKeyEvent(KeyEvent e) {
-	    final Window windowAncestor = SwingUtilities.getWindowAncestor(e.getComponent());
-		if(windowAncestor instanceof Dialog){
-			resetModifiers();
+		if(ownWindowAncestor == null){
+			ownWindowAncestor = SwingUtilities.getWindowAncestor(this);
+			if(ownWindowAncestor != null){
+				ownWindowAncestor.addWindowFocusListener(this);
+			}
 		}
-		else{
+	    final Window windowAncestor = SwingUtilities.getWindowAncestor(e.getComponent());
+		if(windowAncestor == ownWindowAncestor){
 	    	processDispatchedKeyEvent(e);
 	    }
 	    return false;
@@ -118,6 +124,7 @@ public class FButtonBar extends FreeplaneToolBar implements IAcceleratorChangeLi
 	
 	private static final int BUTTON_NUMBER = 12;
 	final private Map<Integer, JButton[]> buttons;
+	private Window ownWindowAncestor;
 	public FButtonBar(){
 		setRollover(false);
 		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(this);
@@ -230,4 +237,10 @@ public class FButtonBar extends FreeplaneToolBar implements IAcceleratorChangeLi
 	@Override
     protected void configureComponent(Component comp) {
     }
+	
+	public void windowGainedFocus(WindowEvent e) {
+    }
+	public void windowLostFocus(WindowEvent e) {
+		resetModifiers();
+	}
 }
