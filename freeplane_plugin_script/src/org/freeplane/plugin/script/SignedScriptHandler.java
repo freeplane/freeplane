@@ -22,6 +22,7 @@ package org.freeplane.plugin.script;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.security.KeyStore;
@@ -112,6 +113,9 @@ class SignedScriptHandler {
 			SignedScriptHandler.mKeyStore = KeyStore.getInstance(KeyStore.getDefaultType());
 			fis = new java.io.FileInputStream(System.getProperty("user.home") + File.separator + ".keystore");
 			SignedScriptHandler.mKeyStore.load(fis, pPassword);
+		}
+		catch (final FileNotFoundException e) {
+			LogTool.warn(e);
 		}
 		catch (final Exception e) {
 			LogTool.severe(e);
