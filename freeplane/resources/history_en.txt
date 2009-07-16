@@ -1,4 +1,24 @@
 ===============================
+1.0.17 alpha
+===============================
+New features:
+Delayed F-bar switch if modifier key is pressed
+Disable the most actions if no map is shown  
+icon actions moved in separate menu
+icon toolbar hidden by default
+move map tabs to the bottom
+"Save hot key set action" in Tools->Hot Key Presets
+
+Bug fixes: 
+Handling of hot keys assigned twice
+Bug fix in DesEncrypter
+Bug fix in SimplyHTML
+[Bugs 0000139]: Tooltip shows only first attribute when multiple attributes for the node
+completely hide tool bar panel if all tool bars are disabled
+Bug fix in ReminderExtension 
+[Bugs 0000140]:Sometimes most recent files menu is not updated with the last file opened.
+
+===============================
 1.0.16 alpha
 ===============================
 Bug fixes: 
