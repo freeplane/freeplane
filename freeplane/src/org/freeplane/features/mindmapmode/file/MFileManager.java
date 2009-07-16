@@ -383,6 +383,9 @@ private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_ve
     		chooser.setSelectedFile(new File(getFileNameProposal(map)
     		        + org.freeplane.core.url.UrlManager.FREEPLANE_FILE_EXTENSION));
     	}
+    	else{
+    		chooser.setSelectedFile(map.getFile());
+    	}
     	chooser.setDialogTitle(ResourceBundles.getText("SaveAsAction.text"));
     	final int returnVal = chooser.showSaveDialog(getController().getViewController().getMapView());
     	if (returnVal != JFileChooser.APPROVE_OPTION) {
