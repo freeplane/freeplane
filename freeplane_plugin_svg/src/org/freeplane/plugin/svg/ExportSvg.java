@@ -27,8 +27,6 @@ import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 
 import javax.swing.Action;
-import javax.swing.JOptionPane;
-
 import org.apache.batik.svggen.SVGGraphics2D;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.ActionLocationDescriptor;

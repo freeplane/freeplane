@@ -24,8 +24,6 @@ import java.io.StringWriter;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
 
-import org.freeplane.core.controller.FreeplaneVersion;
-
 /**
  * @author Dimitry Polivaev
  * 13.06.2009

@@ -22,8 +22,6 @@ package org.freeplane.plugin.help;
 
 import java.awt.event.ActionEvent;
 import java.net.URL;
-import java.util.logging.Logger;
-
 import javax.help.HelpBroker;
 import javax.help.HelpSet;
 
