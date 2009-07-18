@@ -113,6 +113,7 @@ class ExportBranchAction extends AFreeplaneAction {
 			existingNode.setFolded(false);
 			final MapModel map = getModeController().getMapController().newMap(existingNode);
 			((MFileManager) UrlManager.getController(getModeController())).save(map, chosenFile);
+			getController().getMapViewManager().updateMapViewName();
 			final NodeModel newNode = ((MMapController) getModeController().getMapController()).addNewNode(parent,
 			    nodePosition, existingNode.isLeft());
 			((MTextController) TextController.getController(getModeController())).setNodeText(newNode, existingNode.getText());
