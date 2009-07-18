@@ -29,8 +29,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import javax.swing.JOptionPane;
-
 import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.IElementContentHandler;
 import org.freeplane.core.io.IElementDOMHandler;

@@ -21,8 +21,6 @@ package org.freeplane.view.swing.map;
 
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Vector;
-
 import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.frame.IMapViewChangeListener;
 import org.freeplane.core.model.MapModel;

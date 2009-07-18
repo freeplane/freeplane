@@ -19,23 +19,17 @@
  */
 package org.freeplane.core.io;
 
-import java.awt.EventQueue;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.HashMap;
-
-import javax.swing.JOptionPane;
 
 import org.freeplane.core.io.MapWriter.Hint;
 import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.resources.ResourceBundles;
-import org.freeplane.core.util.LogTool;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.n3.nanoxml.XMLException;
-import org.freeplane.n3.nanoxml.XMLParseException;
 
 /**
  * @author Dimitry Polivaev

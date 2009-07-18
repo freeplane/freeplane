@@ -28,8 +28,6 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 
-import sun.security.action.GetBooleanAction;
-
 @SelectableAction(checkOnPopup = true)
 public class ToggleToolbarAction extends AFreeplaneAction {
 	private final String toolbarName;

@@ -52,7 +52,7 @@ class ExportToHTMLAction extends AFreeplaneAction {
 				return;
 			}
 			ClipboardController.getController(getModeController()).saveHTML(map.getRootNode(), file);
-			((UrlManager)getModeController().getMapController().getModeController().getExtension(UrlManager.class)).loadURL(file.toString());
+			((UrlManager)getModeController().getMapController().getModeController().getExtension(UrlManager.class)).loadURL(file.toURI());
 		}
 		catch (final IOException ex) {
 			LogTool.warn(ex);

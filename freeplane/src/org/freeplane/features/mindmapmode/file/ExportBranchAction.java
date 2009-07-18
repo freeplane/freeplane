@@ -22,6 +22,8 @@ package org.freeplane.features.mindmapmode.file;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -53,9 +55,9 @@ class ExportBranchAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final NodeModel node = getModeController().getMapController().getSelectedNode();
+		final NodeModel existingNode = getModeController().getMapController().getSelectedNode();
 		final Controller controller = getController();
-		if (controller.getMap() == null || node == null || node.isRoot()) {
+		if (controller.getMap() == null || existingNode == null || existingNode.isRoot()) {
 			controller.getViewController().err("Could not export branch.");
 			return;
 		}
@@ -101,34 +103,23 @@ class ExportBranchAction extends AFreeplaneAction {
 			 * the copy of the node to the parent, and set a link from the copy
 			 * to the new Map.
 			 */
-			final NodeModel parent = node.getParentNode();
-			try {
-				final String linkToNewMapString = UrlManager.toRelativeURL(Compat.fileToUrl(chosenFile), controller
-				    .getMap().getURL());
-				((MLinkController) LinkController.getController(controller.getModeController())).setLink(node,
-				    linkToNewMapString);
-			}
-			catch (final MalformedURLException ex) {
-				LogTool.severe(ex);
-			}
-			final int nodePosition = parent.getChildPosition(node);
-			((MMapController) getModeController().getMapController()).deleteNode(node);
-			node.setParent(null);
-			node.setFolded(false);
-			final MapModel map = getModeController().getMapController().newMap(node);
+			final NodeModel parent = existingNode.getParentNode();
+			final URL oldUrl = existingNode.getMap().getURL();
+			final URI newUri = UrlManager.toRelativeURI(oldUrl, chosenFile);
+			
+			final int nodePosition = parent.getChildPosition(existingNode);
+			((MMapController) getModeController().getMapController()).deleteNode(existingNode);
+			existingNode.setParent(null);
+			existingNode.setFolded(false);
+			final MapModel map = getModeController().getMapController().newMap(existingNode);
 			((MFileManager) UrlManager.getController(getModeController())).save(map, chosenFile);
 			final NodeModel newNode = ((MMapController) getModeController().getMapController()).addNewNode(parent,
-			    nodePosition, node.isLeft());
-			((MTextController) TextController.getController(getModeController())).setNodeText(newNode, node.getText());
-			try {
-				final String linkString = UrlManager.toRelativeURL(controller.getMap().getURL(), Compat
-				    .fileToUrl(chosenFile));
-				((MLinkController) LinkController.getController(controller.getModeController())).setLink(newNode,
-				    linkString);
-			}
-			catch (final MalformedURLException ex) {
-				LogTool.severe(ex);
-			}
+			    nodePosition, existingNode.isLeft());
+			((MTextController) TextController.getController(getModeController())).setNodeText(newNode, existingNode.getText());
+			URL newUrl = map.getURL();
+			final URI oldUri = UrlManager.toRelativeURI(newUrl, file);
+			((MLinkController) LinkController.getController(controller.getModeController())).setLink(newNode,newUri);
+			((MLinkController) LinkController.getController(controller.getModeController())).setLink(existingNode,oldUri);
 		}
 	}
 }

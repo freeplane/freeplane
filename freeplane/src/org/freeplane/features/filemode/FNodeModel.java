@@ -20,13 +20,10 @@
 package org.freeplane.features.filemode;
 
 import java.io.File;
-import java.net.MalformedURLException;
 import java.util.List;
 
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.util.Compat;
-import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.link.NodeLinks;
 
 /**
@@ -55,13 +52,7 @@ class FNodeModel extends NodeModel {
 					final File childFile = new File(path, files[i]);
 					if (!childFile.isHidden()) {
 						final FNodeModel fileNodeModel = new FNodeModel(childFile, getMap());
-						try {
-							final String url = Compat.fileToUrl(file).toString();
-							NodeLinks.createLinkExtension(fileNodeModel).setHyperLink(url);
-						}
-						catch (final MalformedURLException e) {
-							LogTool.severe(e);
-						}
+						NodeLinks.createLinkExtension(fileNodeModel).setHyperLink(file.toURI());
 						fileNodeModel.setLeft(isNewChildLeft());
 						children.add(getChildCount(), fileNodeModel);
 						fileNodeModel.setParent(this);

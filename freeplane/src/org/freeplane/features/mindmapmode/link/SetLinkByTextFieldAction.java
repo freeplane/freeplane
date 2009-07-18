@@ -20,6 +20,8 @@
 package org.freeplane.features.mindmapmode.link;
 
 import java.awt.event.ActionEvent;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
@@ -28,6 +30,7 @@ import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.link.NodeLinks;
 
 class SetLinkByTextFieldAction extends AFreeplaneAction {
@@ -42,20 +45,27 @@ class SetLinkByTextFieldAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final ModeController modeController = getModeController();
+		final NodeModel selectedNode = modeController.getMapController().getSelectedNode();
 		String inputValue = UITools.showInputDialog(getController(), getController().getSelection().getSelected(),
-		    ResourceBundles.getText("edit_link_manually"), NodeLinks.getLink(modeController.getMapController()
-		        .getSelectedNode()));
+		    ResourceBundles.getText("edit_link_manually"), NodeLinks.getLink(selectedNode).toString());
 		if (inputValue != null) {
 			if (inputValue.equals("")) {
-				inputValue = null;
+				setLink(selectedNode, null);
+				return;
 			}
-			setLink(modeController.getMapController().getSelectedNode(), inputValue);
+			try {
+	            setLink(selectedNode, new URI(inputValue));
+            }
+            catch (URISyntaxException e1) {
+            	LogTool.warn(e1);
+            	UITools.errorMessage("wrong URI " + inputValue);
+            }
 		}
 	}
 
-	public void setLink(final NodeModel node, final String link) {
+	void setLink(final NodeModel node, final URI link) {
 		final IActor actor = new IActor() {
-			private String oldlink;
+			private URI oldlink;
 			private String oldTargetID;
 
 			public void act() {
@@ -67,8 +77,8 @@ class SetLinkByTextFieldAction extends AFreeplaneAction {
 				else {
 					links = NodeLinks.createLinkExtension(node);
 				}
-				if (link != null && link.startsWith("#")) {
-					links.setLocalHyperlink(node, link.substring(1));
+				if (link != null && link.toString().startsWith("#")) {
+					links.setLocalHyperlink(node, link.toString().substring(1));
 				}
 				links.setHyperLink(link);
 				getModeController().getMapController().nodeChanged(node);

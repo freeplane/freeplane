@@ -19,13 +19,9 @@
  */
 package org.freeplane.core.modecontroller;
 
-import java.awt.EventQueue;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Writer;
-import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -39,8 +35,6 @@ import java.util.List;
 import java.util.ListIterator;
 
 import javax.swing.Action;
-import javax.swing.JOptionPane;
-
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.io.IAttributeHandler;
@@ -57,12 +51,7 @@ import org.freeplane.core.model.ITooltipProvider;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.model.NodeModel.NodeChangeType;
-import org.freeplane.core.resources.FpStringUtils;
-import org.freeplane.core.resources.ResourceBundles;
-import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.url.UrlManager;
-import org.freeplane.core.util.Compat;
-import org.freeplane.core.util.LogTool;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
 /**

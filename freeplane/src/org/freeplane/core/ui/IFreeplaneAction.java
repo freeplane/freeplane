@@ -21,8 +21,6 @@ package org.freeplane.core.ui;
 
 import javax.swing.Action;
 
-import org.freeplane.core.model.MapModel;
-
 /**
  * @author Dimitry Polivaev
  * 09.07.2009

@@ -26,16 +26,13 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.ListIterator;
 
-import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.modecontroller.MapController;
-import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.HtmlTools;
-import org.freeplane.features.common.addins.mapstyle.MapStyle;
 import org.freeplane.features.common.addins.mapstyle.MapStyleModel;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
@@ -263,7 +260,7 @@ class MindMapHTMLWriter {
 			localParentID = parentID + "_" + lastChildNumber;
 			writeFoldingButtons(localParentID);
 		}
-		String link = NodeLinks.getLink(model);
+		String link = NodeLinks.getLink(model).toString();
 		if (link != null) {
 			if (link.endsWith(UrlManager.FREEPLANE_FILE_EXTENSION)) {
 				link += ".html";

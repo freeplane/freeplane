@@ -20,7 +20,6 @@
 package org.freeplane.core.model;
 
 import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -38,8 +37,6 @@ import org.freeplane.core.modecontroller.IMapChangeListener;
 import org.freeplane.core.modecontroller.MapChangeEvent;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.resources.ResourceBundles;
-import org.freeplane.core.util.Compat;
-import org.freeplane.core.util.LogTool;
 
 public class MapModel {
 	private static Random ran = new Random();

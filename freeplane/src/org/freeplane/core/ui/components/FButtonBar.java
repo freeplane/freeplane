@@ -20,7 +20,6 @@
 package org.freeplane.core.ui.components;
 
 import java.awt.Component;
-import java.awt.Dialog;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.Window;

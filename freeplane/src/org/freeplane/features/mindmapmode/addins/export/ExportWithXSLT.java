@@ -33,8 +33,6 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
-import java.util.logging.Logger;
-
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import javax.xml.transform.Result;

@@ -20,6 +20,7 @@
 package org.freeplane.features.mindmapmode.link;
 
 import java.awt.event.ActionEvent;
+import java.net.URI;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -42,7 +43,7 @@ class SetLinkByFileChooserAction extends AFreeplaneAction {
 	}
 
 	public void setLinkByFileChooser() {
-		final String relative = ((MFileManager) UrlManager.getController(getModeController()))
+		final URI relative = ((MFileManager) UrlManager.getController(getModeController()))
 		    .getLinkByFileChooser(getController().getMap());
 		if (relative != null) {
 			((MLinkController) LinkController.getController(getModeController())).setLink(getModeController()

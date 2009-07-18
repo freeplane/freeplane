@@ -62,7 +62,7 @@ class EditNodeExternalApplication extends EditNodeBase {
 					    .format(new String[] { temporaryFile.toString() });
 					final Process htmlEditorProcess = Runtime.getRuntime().exec(expandedHtmlEditingCommand);
 					htmlEditorProcess.waitFor();
-					final String content = UrlManager.getFile(temporaryFile);
+					final String content = UrlManager.readFile(temporaryFile);
 					if (content == null) {
 						getEditControl().cancel();
 					}

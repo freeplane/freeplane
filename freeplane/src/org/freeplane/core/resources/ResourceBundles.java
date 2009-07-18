@@ -29,8 +29,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.ResourceBundle;
-import java.util.logging.Logger;
-
 import org.freeplane.core.util.LogTool;
 import org.freeplane.core.util.MultipleValueMap;
 

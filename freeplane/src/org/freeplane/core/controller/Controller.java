@@ -24,7 +24,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import javax.swing.JComponent;
 import javax.swing.UIManager;
 
 import org.freeplane.core.extension.ExtensionContainer;
@@ -34,9 +33,7 @@ import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
-import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.LogTool;
 
 /**

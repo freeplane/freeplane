@@ -38,7 +38,6 @@ import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.EnabledAction;
-import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**

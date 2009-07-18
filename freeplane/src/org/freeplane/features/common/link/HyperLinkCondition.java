@@ -19,6 +19,8 @@
  */
 package org.freeplane.features.common.link;
 
+import java.net.URI;
+
 import javax.swing.JComponent;
 
 import org.freeplane.core.filter.condition.ConditionFactory;
@@ -41,14 +43,14 @@ public abstract class HyperLinkCondition implements ICondition {
 		this.hyperlink = hyperlink;
 	}
 
-	abstract protected boolean checkLink(final String nodeLink);
+	abstract protected boolean checkLink(final URI nodeLink);
 
 	public boolean checkNode(final NodeModel node) {
 		final NodeLinks model = NodeLinks.getModel(node);
 		if (model == null) {
 			return false;
 		}
-		final String nodeLink = model.getHyperLink();
+		final URI nodeLink = model.getHyperLink();
 		if (nodeLink == null) {
 			return false;
 		}

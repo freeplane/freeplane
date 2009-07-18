@@ -25,7 +25,6 @@ import javax.swing.JOptionPane;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
-import org.freeplane.features.mindmapmode.clipboard.MClipboardController;
 
 /**
  * @author Dimitry Polivaev

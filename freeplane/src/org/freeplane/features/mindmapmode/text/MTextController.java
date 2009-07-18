@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -153,51 +154,50 @@ public class MTextController extends TextController {
 	}
 
 	public void setImageByFileChooser() {
-		final ExampleFileFilter filter = new ExampleFileFilter();
-		filter.addExtension("jpg");
-		filter.addExtension("jpeg");
-		filter.addExtension("png");
-		filter.addExtension("gif");
-		filter.setDescription("JPG, PNG and GIF Images");
 		boolean picturesAmongSelecteds = false;
 		for (final ListIterator e = getModeController().getMapController().getSelectedNodes().listIterator(); e
 		    .hasNext();) {
-			final String link = NodeLinks.getLink(((NodeModel) e.next()));
+			final URI link = NodeLinks.getLink(((NodeModel) e.next()));
 			if (link != null) {
-				if (filter.accept(new File(link))) {
+				final String string = link.toString();
+				if (string.endsWith(".png")
+						||string.endsWith(".jpg")
+						||string.endsWith(".jpeg")
+						||string.endsWith(".gif")
+						) {
 					picturesAmongSelecteds = true;
 					break;
 				}
 			}
 		}
-		try {
-			if (picturesAmongSelecteds) {
-				for (final ListIterator e = getModeController().getMapController().getSelectedNodes().listIterator(); e
-				    .hasNext();) {
-					final NodeModel node = (NodeModel) e.next();
-					if (NodeLinks.getLink(node) != null) {
-						final String possiblyRelative = NodeLinks.getLink(node);
-						final String relative = UrlManager.isAbsolutePath(possiblyRelative) ? Compat.fileToUrl(
-						    new File(possiblyRelative)).toString() : possiblyRelative;
-						if (relative != null) {
-							final String strText = "<html><img src=\"" + relative + "\">";
-							((MLinkController) LinkController.getController(getModeController())).setLink(node, null);
-							setNodeText(node, strText);
-						}
+
+		if (picturesAmongSelecteds) {
+			for (final NodeModel node : getModeController().getMapController().getSelectedNodes()) {
+				if (NodeLinks.getLink(node) != null) {
+					URI uri = NodeLinks.getLink(node);
+					final String relative = uri.toString();
+					if (relative != null) {
+						final String strText = "<html><img src=\"" + relative + "\">";
+						((MLinkController) LinkController.getController(getModeController())).setLink(node, (URI)null);
+						setNodeText(node, strText);
 					}
 				}
 			}
-			else {
-				final String relative = ((MFileManager) UrlManager.getController(getModeController()))
-				    .getLinkByFileChooser(getModeController().getController().getMap(), filter);
-				if (relative != null) {
-					final String strText = "<html><img src=\"" + relative + "\">";
-					setNodeText(getModeController().getMapController().getSelectedNode(), strText);
-				}
-			}
 		}
-		catch (final MalformedURLException e) {
-			LogTool.severe(e);
+		else {
+			final ExampleFileFilter filter = new ExampleFileFilter();
+			filter.addExtension("jpg");
+			filter.addExtension("jpeg");
+			filter.addExtension("png");
+			filter.addExtension("gif");
+			filter.setDescription("JPG, PNG and GIF Images");
+			final URI uri = ((MFileManager) UrlManager.getController(getModeController()))
+			.getLinkByFileChooser(getModeController().getController().getMap(), filter);
+
+			if (uri != null) {
+				final String strText = "<html><img src=\"" + uri.toString() + "\">";
+				setNodeText(getModeController().getMapController().getSelectedNode(), strText);
+			}
 		}
 	}
 

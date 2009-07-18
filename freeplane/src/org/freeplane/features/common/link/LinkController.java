@@ -20,6 +20,9 @@
 package org.freeplane.features.common.link;
 
 import java.awt.Color;
+import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -46,6 +49,7 @@ import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.ColorUtils;
+import org.freeplane.core.util.Compat;
 
 /**
  * @author Dimitry Polivaev
@@ -80,9 +84,9 @@ public class LinkController extends SelectionController implements IExtension {
 			}
 
 			public void onSelect(final NodeModel node) {
-				String link = NodeLinks.getLink(node);
-				link = (link != null ? link : " ");
-				modeController.getController().getViewController().out(link);
+				URI link = NodeLinks.getLink(node);
+				String linkString = (link != null ? link.toString() : " ");
+				modeController.getController().getViewController().out(linkString);
 			}
 		};
 		modeController.getMapController().addNodeSelectionListener(listener);
@@ -180,10 +184,12 @@ public class LinkController extends SelectionController implements IExtension {
 	}
 
 	public String getLinkShortText(final NodeModel node) {
-		final String adaptedText = NodeLinks.getLink(node);
-		if (adaptedText == null) {
+		final URI uri = NodeLinks.getLink(node);
+		
+		if (uri == null) {
 			return null;
 		}
+		String adaptedText = uri.toString();
 		if (adaptedText.startsWith("#")) {
 			try {
 				final NodeModel dest = modeController.getMapController().getNodeFromID(adaptedText.substring(1));
@@ -233,7 +239,7 @@ public class LinkController extends SelectionController implements IExtension {
 		return STANDARD_WIDTH;
 	}
 
-	public void loadLink(final NodeModel node, final String link) {
+	void loadLink(final NodeModel node, final String link) {
 		NodeLinks links = NodeLinks.getLinkExtension(node);
 		if (links == null) {
 			links = NodeLinks.createLinkExtension(node);
@@ -241,12 +247,20 @@ public class LinkController extends SelectionController implements IExtension {
 		if (link != null && link.startsWith("#")) {
 			links.setLocalHyperlink(node, link.substring(1));
 		}
-		links.setHyperLink(link);
+		URI hyperlink;
+		try {
+	        hyperlink = new URI(link);
+        }
+        catch (URISyntaxException e) {
+	        hyperlink = new File(link).toURI();
+        }
+        hyperlink = Compat.cleanURI(hyperlink);
+		links.setHyperLink(hyperlink);
 	}
 
 	public void loadURL() {
 		final NodeModel selectedNode = modeController.getMapController().getSelectedNode();
-		final String link = NodeLinks.getLink(selectedNode);
+		final URI link = NodeLinks.getLink(selectedNode);
 		if (link != null) {
 			onDeselect(selectedNode);
 			((UrlManager)modeController.getMapController().getModeController().getExtension(UrlManager.class)).loadURL(link);

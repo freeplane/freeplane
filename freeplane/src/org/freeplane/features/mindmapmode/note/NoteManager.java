@@ -26,7 +26,6 @@ import javax.swing.text.html.HTMLDocument;
 
 import org.freeplane.core.modecontroller.INodeSelectionListener;
 import org.freeplane.core.model.NodeModel;
-import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.features.common.note.NoteModel;
 import org.freeplane.features.mindmapmode.note.MNoteController.NoteDocumentListener;

@@ -19,6 +19,8 @@
  */
 package org.freeplane.features.common.link;
 
+import java.net.URI;
+
 import org.freeplane.core.filter.condition.ConditionFactory;
 import org.freeplane.core.resources.ResourceBundles;
 
@@ -34,7 +36,7 @@ public class HyperLinkEqualsCondition extends HyperLinkCondition {
 	}
 
 	@Override
-	protected boolean checkLink(final String nodeLink) {
+	protected boolean checkLink(final URI nodeLink) {
 		return getHyperlink().equals(nodeLink);
 	}
 

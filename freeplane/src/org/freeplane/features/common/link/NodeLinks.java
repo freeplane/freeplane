@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.common.link;
 
+import java.net.URI;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -46,7 +47,7 @@ public class NodeLinks implements IExtension {
 		return linkExtension;
 	}
 
-	public static String getLink(final NodeModel node) {
+	public static URI getLink(final NodeModel node) {
 		final NodeLinks links = NodeLinks.getModel(node);
 		return links != null ? links.getHyperLink() : null;
 	}
@@ -69,7 +70,7 @@ public class NodeLinks implements IExtension {
 		return links;
 	}
 
-	private String hyperlink;
+	private URI hyperlink;
 	final private LinkedList<LinkModel> links;
 
 	public NodeLinks() {
@@ -102,7 +103,7 @@ public class NodeLinks implements IExtension {
 	/**
 	 * @return
 	 */
-	public String getHyperLink() {
+	public URI getHyperLink() {
 		return hyperlink;
 	}
 
@@ -141,7 +142,7 @@ public class NodeLinks implements IExtension {
 		return null;
 	}
 
-	public void setHyperLink(final String hyperlink) {
+	public void setHyperLink(final URI hyperlink) {
 		this.hyperlink = hyperlink;
 	}
 

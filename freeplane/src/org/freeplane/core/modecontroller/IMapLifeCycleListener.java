@@ -19,8 +19,6 @@
  */
 package org.freeplane.core.modecontroller;
 
-import java.net.URL;
-
 import org.freeplane.core.model.MapModel;
 
 /**

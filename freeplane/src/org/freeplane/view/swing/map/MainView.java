@@ -30,6 +30,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
+import java.net.URI;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -395,14 +396,14 @@ public abstract class MainView extends JLabel implements IMainView {
 			iconPresent = true;
 			iconImages.addImage(myIcon.getIcon());
 		}
-		final String link = NodeLinks.getLink(model);
+		final URI link = NodeLinks.getLink(model);
 		if (link != null) {
 			iconPresent = true;
 			String iconPath = "/images/Link.png";
-			if (link.startsWith("#")) {
+			if (link.toString().startsWith("#")) {
 				iconPath = "/images/LinkLocal.png";
 			}
-			else if (link.startsWith("mailto:")) {
+			else if (link.toString().startsWith("mailto:")) {
 				iconPath = "/images/Mail.png";
 			}
 			else if (executableExtensions.contains(link)) {

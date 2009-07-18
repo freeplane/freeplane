@@ -26,7 +26,6 @@ import java.awt.event.InputEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Enumeration;
 
-import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;

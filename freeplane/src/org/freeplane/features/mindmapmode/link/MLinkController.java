@@ -21,6 +21,8 @@ package org.freeplane.features.mindmapmode.link;
 
 import java.awt.Color;
 import java.awt.Point;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -251,8 +253,22 @@ public class MLinkController extends LinkController {
 	}
 
 	public void setLink(final NodeModel node, final String link) {
-		setLinkByTextField.setLink(node, link);
+		if(link != null){
+			try {
+	            final URI uri = new URI(link);
+				setLink(node, uri);
+            }
+            catch (URISyntaxException e) {
+	            e.printStackTrace();
+            }
+			return;
+		}
+		setLinkByTextField.setLink(node, null);
 	}
+
+	public void setLink(final NodeModel node, final URI uri) {
+	    setLinkByTextField.setLink(node, uri);
+    }
 
 	public void setLinkByFileChooser() {
 		setLinkByFileChooser.setLinkByFileChooser();

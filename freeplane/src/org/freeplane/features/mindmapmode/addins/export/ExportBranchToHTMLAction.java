@@ -22,11 +22,8 @@ package org.freeplane.features.mindmapmode.addins.export;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
-import java.util.ResourceBundle;
-
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceBundles;
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.components.UITools;
@@ -53,7 +50,7 @@ class ExportBranchToHTMLAction extends AFreeplaneAction {
 			}
 			ClipboardController.getController(getModeController()).saveHTML(
 			    getModeController().getMapController().getSelectedNode(), file);
-			((UrlManager)getModeController().getMapController().getModeController().getExtension(UrlManager.class)).loadURL(file.toString());
+			((UrlManager)getModeController().getMapController().getModeController().getExtension(UrlManager.class)).loadURL(file.toURI());
 		}
 		catch (final IOException ex) {
 			LogTool.warn(ex);

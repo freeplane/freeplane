@@ -22,6 +22,7 @@ package org.freeplane.features.mindmapmode.file;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 
 import javax.swing.JOptionPane;
@@ -37,8 +38,10 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.mindmapmode.MMapController;
+import org.freeplane.features.mindmapmode.link.MLinkController;
 
 class ImportLinkedBranchAction extends AFreeplaneAction {
 	/**
@@ -60,21 +63,18 @@ class ImportLinkedBranchAction extends AFreeplaneAction {
 			    .getText("import_linked_branch_no_link"));
 			return;
 		}
-		URL absolute = null;
 		try {
-			final String relative = NodeLinks.getLink(selected);
-			absolute = UrlManager.isAbsolutePath(relative) ? Compat.fileToUrl(new File(relative)) : new URL(Compat
-			    .fileToUrl(map.getFile()), relative);
+			final URI uri = NodeLinks.getLink(selected);
+			File file = uri.isAbsolute()  && ! uri.isOpaque() ? new File(uri) : new File(new URL(map.getURL(), uri.getPath()).getFile());
+			final NodeModel node = ((MMapController) modeController.getMapController()).loadTree(map, file);
+			((MMapController) modeController.getMapController()).insertNode(node, selected);
+			((MLinkController)LinkController.getController(modeController)).setLink(selected, (URI)null);
+			((MLinkController)LinkController.getController(modeController)).setLink(node, (URI)null);
 		}
 		catch (final MalformedURLException ex) {
 			UITools.errorMessage("Couldn't create valid URL for:" + map.getFile());
 			LogTool.warn(ex);
 			return;
-		}
-		try {
-			final NodeModel node = ((MMapController) modeController.getMapController()).loadTree(map, new File(absolute
-			    .getFile()));
-			((MMapController) modeController.getMapController()).insertNode(node, selected);
 		}
 		catch (final Exception ex) {
 			UrlManager.getController(modeController).handleLoadingException(ex);

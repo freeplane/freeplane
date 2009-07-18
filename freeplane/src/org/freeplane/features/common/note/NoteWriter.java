@@ -23,7 +23,6 @@ import java.io.IOException;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeWriter;
-import org.freeplane.core.io.IElementWriter;
 import org.freeplane.core.io.IExtensionElementWriter;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.model.MapModel;

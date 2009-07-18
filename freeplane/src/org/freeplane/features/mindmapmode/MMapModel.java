@@ -20,10 +20,8 @@
 package org.freeplane.features.mindmapmode;
 
 import java.awt.EventQueue;
-import java.io.File;
 import java.util.Timer;
 
-import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;

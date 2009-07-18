@@ -19,7 +19,6 @@ package org.freeplane.features.mindmapmode.addins.encrypt;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.core.modecontroller.INodeSelectionListener;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.EncryptionModel;
 import org.freeplane.core.model.NodeModel;

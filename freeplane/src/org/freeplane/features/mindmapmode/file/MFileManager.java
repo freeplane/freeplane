@@ -33,13 +33,11 @@ import java.io.Reader;
 import java.io.SequenceInputStream;
 import java.io.StringBufferInputStream;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
@@ -152,13 +150,11 @@ private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_ve
 	/**
 	 * @return
 	 */
-	public String getLinkByFileChooser(final MapModel map) {
+	public URI getLinkByFileChooser(final MapModel map) {
 		return getLinkByFileChooser(map, getFileFilter());
 	}
 
-	public String getLinkByFileChooser(final MapModel map, final FileFilter fileFilter) {
-		URL link;
-		String relative = null;
+	public URI getLinkByFileChooser(final MapModel map, final FileFilter fileFilter) {
 		File input;
 		JFileChooser chooser = null;
 		if (map.getFile() == null) {
@@ -179,28 +175,22 @@ private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_ve
 			chooser.setFileFilter(chooser.getAcceptAllFileFilter());
 		}
 		final int returnVal = chooser.showOpenDialog(getController().getViewController().getContentPane());
-		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			input = chooser.getSelectedFile();
-			setLastCurrentDir(input.getParentFile());
+		if (returnVal != JFileChooser.APPROVE_OPTION) {
+			return null;
+		}
+		input = chooser.getSelectedFile();
+		setLastCurrentDir(input.getParentFile());
+		if (ResourceController.getResourceController().getProperty("links").equals("relative")) {
 			try {
-				link = Compat.fileToUrl(input);
-				relative = link.toString();
+				return UrlManager.toRelativeURI(Compat.fileToUrl(map.getFile()), input);
 			}
 			catch (final MalformedURLException ex) {
 				UITools.errorMessage(ResourceBundles.getText("url_error"));
 				return null;
 			}
-			if (ResourceController.getResourceController().getProperty("links").equals("relative")) {
-				try {
-					relative = UrlManager.toRelativeURL(Compat.fileToUrl(map.getFile()), link);
-				}
-				catch (final MalformedURLException ex) {
-					UITools.errorMessage(ResourceBundles.getText("url_error"));
-					return null;
-				}
-			}
 		}
-		return relative;
+		
+		return input.toURI();
 	}
 
 	public void open() {
@@ -575,21 +565,15 @@ private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_ve
 	}
 	
 	@Override
-	public void loadURL(final String relative) {
+	public void loadURL(final URI relative) {
 			final MapModel map = getController().getMap();
 			if (map.getFile() == null) {
-				URL url;
-				try {
-					url = new URL(relative);
-					if (url.getProtocol().equalsIgnoreCase("file")) {
-						getController().getViewController().out("You must save the current map first!");
-						final boolean result = ((MFileManager) UrlManager.getController(getModeController())).save(map);
-						if (!result) {
-							return;
-						}
+				if (! relative.isAbsolute() || relative.isOpaque()) {
+					getController().getViewController().out("You must save the current map first!");
+					final boolean result = ((MFileManager) UrlManager.getController(getModeController())).save(map);
+					if (!result) {
+						return;
 					}
-				}
-				catch (MalformedURLException e) {
 				}
 			}
 			super.loadURL(relative);

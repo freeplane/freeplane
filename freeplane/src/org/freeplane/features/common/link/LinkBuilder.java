@@ -22,6 +22,7 @@ package org.freeplane.features.common.link;
 import java.awt.Color;
 import java.awt.Point;
 import java.io.IOException;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -240,9 +241,9 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 
 	public void writeAttributes(final ITreeWriter writer, final Object userObject, final IExtension extension) {
 		final NodeLinks links = (NodeLinks) extension;
-		final String link = links.getHyperLink();
+		final URI link = links.getHyperLink();
 		if (link != null) {
-			writer.addAttribute("LINK", link);
+			writer.addAttribute("LINK", link.toString());
 		}
 	}
 

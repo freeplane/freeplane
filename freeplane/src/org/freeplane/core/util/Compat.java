@@ -47,8 +47,49 @@ public class Compat {
 		return underMac;
 	}
 
+	public static URI cleanURI(URI hyperlink) {
+		final String rawPath = hyperlink.getRawPath();
+		final int indexOfColon = rawPath.indexOf(':', 3);
+		if(indexOfColon == -1){
+			return hyperlink;
+		}
+		if(! hyperlink.getScheme().equals("file")){
+			return hyperlink;
+		}
+		final String osNameStart = System.getProperty("os.name").substring(0, 3);
+		if (! osNameStart.equals("Win")) {
+			return hyperlink;
+		}
+		URI uri;
+        try {
+	        uri = new URI("file:/" + rawPath.substring(indexOfColon - 1));
+			return uri;
+        }
+        catch (URISyntaxException e) {
+	        // TODO Auto-generated catch block
+	        e.printStackTrace();
+        }
+        return hyperlink;
+    }
+	/**
+	 * This is a correction of a method getFile of a class URL. Namely, on
+	 * Windows it returned file paths like /C: etc., which are not valid on
+	 * Windows. This correction is heuristic to a great extend. One of the
+	 * reasons is that file: something every browser and every system uses
+	 * slightly differently.
+	 */
+	public static String urlGetFile(final URL url) {
+		final String osNameStart = System.getProperty("os.name").substring(0, 3);
+		if (osNameStart.equals("Win") && url.getProtocol().equals("file")) {
+			final String fileName = url.toString().replaceFirst("^file:", "").replace('/', '\\');
+			return (fileName.indexOf(':') >= 0) ? fileName.replaceFirst("^\\\\*", "") : fileName;
+		}
+		else {
+			return url.getFile();
+		}
+	}
 	public static File urlToFile(final URL pUrl) throws URISyntaxException {
-		return new File(UrlManager.urlGetFile(pUrl));
+		return new File(urlGetFile(pUrl));
 	}
 
 	public static void useScreenMenuBar() {
@@ -56,4 +97,5 @@ public class Compat {
 		//		if (isMacOsX()) 
 		System.setProperty("apple.laf.useScreenMenuBar", "true");
 	}
+
 }

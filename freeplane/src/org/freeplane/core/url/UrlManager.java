@@ -50,7 +50,6 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
@@ -60,7 +59,6 @@ import org.freeplane.core.resources.FpStringUtils;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
@@ -78,7 +76,7 @@ public class UrlManager implements IExtension {
 	 *
 	 * @throws FileNotFoundException
 	 */
-	public static Reader getActualReader(final InputStream file) throws FileNotFoundException {
+	protected static Reader getActualReader(final InputStream file) throws FileNotFoundException {
 		return new BufferedReader(new InputStreamReader(file));
 	}
 
@@ -109,7 +107,7 @@ public class UrlManager implements IExtension {
 	 * @return the complete content of the file. or null if an exception has
 	 *         occured.
 	 */
-	public static String getFile(final File pInputFile) {
+	public static String readFile(final File pInputFile) {
 		final StringBuilder lines = new StringBuilder();
 		BufferedReader bufferedReader = null;
 		try {
@@ -201,11 +199,6 @@ public class UrlManager implements IExtension {
 			}
 		}
 	}
-
-	private static Reader getActualReader(File file) throws FileNotFoundException {
-		return getActualReader(new FileInputStream(file));
-    }
-
 	/**
 	 * Returns the same URL as input with the addition, that the reference part
 	 * "#..." is filtered out.
@@ -259,78 +252,6 @@ public class UrlManager implements IExtension {
 		}
 	}
 
-	/**
-	 * This method converts an absolute url to an url relative to a given
-	 * base-url. The algorithm is somewhat chaotic, but it works (Maybe rewrite
-	 * it). Be careful, the method is ".mm"-specific. Something like this should
-	 * be included in the librarys, but I couldn't find it. You can create a new
-	 * absolute url with "new URL(URL context, URL relative)".
-	 */
-	public static String toRelativeURL(final URL base, final URL target) {
-		if ((base.getProtocol().equals(target.getProtocol())) && (base.getHost().equals(target.getHost()))) {
-			String baseString = base.getFile();
-			String targetString = target.getFile();
-			String result = "";
-			baseString = baseString.substring(0, baseString.lastIndexOf("/") + 1);
-			targetString = targetString.substring(0, targetString.lastIndexOf("/") + 1);
-			final StringTokenizer baseTokens = new StringTokenizer(baseString, "/");
-			final StringTokenizer targetTokens = new StringTokenizer(targetString, "/");
-			String nextBaseToken = "", nextTargetToken = "";
-			while (baseTokens.hasMoreTokens() && targetTokens.hasMoreTokens()) {
-				nextBaseToken = baseTokens.nextToken();
-				nextTargetToken = targetTokens.nextToken();
-				if (!(nextBaseToken.equals(nextTargetToken))) {
-					while (true) {
-						result = result.concat("../");
-						if (!baseTokens.hasMoreTokens()) {
-							break;
-						}
-						nextBaseToken = baseTokens.nextToken();
-					}
-					while (true) {
-						result = result.concat(nextTargetToken + "/");
-						if (!targetTokens.hasMoreTokens()) {
-							break;
-						}
-						nextTargetToken = targetTokens.nextToken();
-					}
-					final String temp = target.getFile();
-					result = result.concat(temp.substring(temp.lastIndexOf("/") + 1, temp.length()));
-					return result;
-				}
-			}
-			while (baseTokens.hasMoreTokens()) {
-				result = result.concat("../");
-				baseTokens.nextToken();
-			}
-			while (targetTokens.hasMoreTokens()) {
-				nextTargetToken = targetTokens.nextToken();
-				result = result.concat(nextTargetToken + "/");
-			}
-			final String temp = target.getFile();
-			result = result.concat(temp.substring(temp.lastIndexOf("/") + 1, temp.length()));
-			return result;
-		}
-		return target.toString();
-	}
-
-	/**
-	 * This is a correction of a method getFile of a class URL. Namely, on
-	 * Windows it returned file paths like /C: etc., which are not valid on
-	 * Windows. This correction is heuristic to a great extend. One of the
-	 * reasons is that file: something every browser and every system uses
-	 * slightly differently.
-	 */
-	public static String urlGetFile(final URL url) {
-		final String osNameStart = System.getProperty("os.name").substring(0, 3);
-		if (osNameStart.equals("Win") && url.getProtocol().equals("file")) {
-			final String fileName = url.toString().replaceFirst("^file:", "").replace('/', '\\');
-			return (fileName.indexOf(':') >= 0) ? fileName.replaceFirst("^\\\\*", "") : fileName;
-		}
-		else {
-			return url.getFile();
-		}
-	}
 
 	final private Controller controller;
 	final private ModeController modeController;
@@ -450,88 +371,106 @@ public class UrlManager implements IExtension {
 	public void startup() {
 	}
 
-	public void loadURL(final String relative) {
+	public void loadURL(final URI uri) {
+		final String uriString = uri.toString();
+		if (uriString.startsWith("#")) {
+			final String target = uri.getFragment();
+			try {
+				final MapController mapController = modeController.getMapController();
+				mapController.select(mapController.getNodeFromID(target));
+			}
+			catch (final Exception e) {
+				LogTool.warn( "link " + target + " not found", e);
+				UITools.errorMessage(FpStringUtils.formatText("link_not_found", target));
+			}
+			return;
+		}
 		try {
-			URL absolute = null;
-			boolean isURI = false;
-			if (UrlManager.isAbsolutePath(relative)) {
-				absolute = Compat.fileToUrl(new File(relative));
-			}
-			else if (relative.startsWith("#")) {
-				final String target = relative.substring(1);
-				try {
-					final MapController mapController = modeController.getMapController();
-					mapController.select(mapController.getNodeFromID(target));
-					return;
-				}
-				catch (final Exception e) {
-		           	LogTool.warn( "link " + target + " not found", e);
-		           	UITools.errorMessage(FpStringUtils.formatText("link_not_found", target));
-				}
-			}
-			else try {
-				/*
-				 * Remark: getMap().getURL() returns URLs like file:/C:/... It
-				 * seems, that it does not cause any problems.
-				 */
+			URL url;
+			if(! uri.isAbsolute() || uri.isOpaque()){
 				final MapModel map = getController().getMap();
-				absolute = new URL(map.getURL(), relative);
-			} catch(MalformedURLException ex) {
-				/*
-				 * It's not a file, it's not a URL, it still might be a URI
-				 * (e.g. link to Lotus Notes via notes://... etc. 
-				 */
-				isURI = true;
-			} 
-
-			if (isURI) {
-				try {
-					URI uri = new URI(relative);
-					getController().getViewController().openDocument(uri); 
-				} catch (URISyntaxException eu) {
-					LogTool.warn(eu);
-					UITools.errorMessage(ResourceBundles.getText("uri_error")+"\n"+eu);
-				}
-			} else {
-
-				final URL originalURL = absolute;
-				final String ref = absolute.getRef();
-				if (ref != null) {
-					absolute = UrlManager.getURLWithoutReference(absolute);
-				}
-				final String extension = UrlManager.getExtension(absolute.toString());
+				url = new URL(map.getURL(), uriString);
+			}
+			else {
+				url = new URL(uriString);
+			}
+			final String ref = url.getRef();
+			if (ref != null) {
+				url = UrlManager.getURLWithoutReference(url);
+			}
+			final String extension = UrlManager.getExtension(url.toString());
+			try {
 				if ((extension != null)
 						&& extension.equals(org.freeplane.core.url.UrlManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
-					modeController.getMapController().newMap(absolute);
+					modeController.getMapController().newMap(url);
 					if (ref != null) {
-						try {
-							final ModeController newModeController = getController().getModeController();
-							final MapController newMapController = newModeController.getMapController();
-							newMapController.select(newMapController.getNodeFromID(ref));
-						}
-						catch (final Exception e) {
-							LogTool.warn( "link " + ref + " not found", e);
-							UITools.errorMessage(FpStringUtils.formatText("link_not_found", ref));
-							return;
-						}
+						final ModeController newModeController = getController().getModeController();
+						final MapController newMapController = newModeController.getMapController();
+						newMapController.select(newMapController.getNodeFromID(ref));
 					}
 				}
 				else {
-					getController().getViewController().openDocument(originalURL);
+					getController().getViewController().openDocument(url);
 				}
 			}
-		}
-		catch (final MalformedURLException e) {
-			LogTool.warn( "url_error", e);
-           	UITools.errorMessage(ResourceBundles.getText("url_error"));
-		}
-		catch (final FileNotFoundException e) {
-           	LogTool.warn( e);
-           	UITools.errorMessage(FpStringUtils.formatText("file_not_found", relative));
-		}
-		catch (final Exception e) {
-           	LogTool.warn( e);
-           	UITools.errorMessage(FpStringUtils.formatText("link_not_found", relative));
-		}
+			catch (final Exception e) {
+				LogTool.warn( "link " + ref + " not found", e);
+				UITools.errorMessage(FpStringUtils.formatText("link_not_found", ref));
+			}
+		} catch(MalformedURLException ex) {
+			/*
+			 * It's not a file, it's not a URL, it still might be a URI
+			 * (e.g. link to Lotus Notes via notes://... etc. 
+			 */
+			try {
+	            getController().getViewController().openDocument(uri);
+            }
+            catch (Exception e) {
+				LogTool.warn( "URL " + uriString + " not found", e);
+				UITools.errorMessage(FpStringUtils.formatText("link_not_found", uriString));
+            } 
+		} 
+
 	}
+
+	public static URI toRelativeURI(URL mapUrl, File input) {
+		try {
+	        final URI mapUri = mapUrl.toURI();	        
+	        final URI fileUri = input.toURI();
+	        if(! mapUri.getScheme().equals(fileUri.getScheme())){
+	        	return fileUri;
+	        }
+	        final String filePathAsString =fileUri.getRawPath();
+			final String mapPathAsString = mapUri.getRawPath();
+			int differencePos;
+			final int lastIndexOfSeparatorInMapPath = mapPathAsString.lastIndexOf("/");
+			final int lastIndexOfSeparatorInFilePath = filePathAsString.lastIndexOf("/");
+			int lastCommonSeparatorPos = 0;
+			for (differencePos = 1; differencePos <= lastIndexOfSeparatorInMapPath
+			        && differencePos <= lastIndexOfSeparatorInFilePath
+			        && filePathAsString.charAt(differencePos) == mapPathAsString.charAt(differencePos); differencePos++)
+			{
+				if(filePathAsString.charAt(differencePos) == '/'){
+					lastCommonSeparatorPos = differencePos;
+				}
+			}
+	        
+	        if(lastCommonSeparatorPos == 0){
+	        	return fileUri;
+	        }
+	        StringBuilder relativePath  = new StringBuilder();
+	        for(int i = lastCommonSeparatorPos + 1; i <= lastIndexOfSeparatorInMapPath; i++){
+				if(mapPathAsString.charAt(i) == '/'){
+		        	relativePath.append("../");
+				}
+	        }
+	        relativePath.append(filePathAsString.substring(lastCommonSeparatorPos+1));
+	        return new URI(relativePath.toString());
+		}
+		catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+    }
 }

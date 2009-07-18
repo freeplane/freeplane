@@ -20,7 +20,6 @@
 package org.freeplane.features.browsemode;
 
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
 
 import javax.swing.ImageIcon;

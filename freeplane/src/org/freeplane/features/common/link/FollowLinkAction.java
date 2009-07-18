@@ -20,6 +20,7 @@
 package org.freeplane.features.common.link;
 
 import java.awt.event.ActionEvent;
+import java.net.URI;
 import java.util.Iterator;
 
 import javax.swing.JMenuItem;
@@ -49,7 +50,7 @@ class FollowLinkAction extends AFreeplaneAction implements PopupMenuListener {
 		LinkController linkController = null;
 		for (final Iterator iterator = mapController.getSelectedNodes().iterator(); iterator.hasNext();) {
 			final NodeModel selNode = (NodeModel) iterator.next();
-			final String link = NodeLinks.getLink(selNode);
+			final URI link = NodeLinks.getLink(selNode);
 			if (link != null) {
 				if (linkController == null) {
 					linkController = LinkController.getController(modeController);

@@ -33,7 +33,6 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.components.EnterPasswordDialog;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.core.undo.IUndoHandler;
 
 @ActionLocationDescriptor(locations = { "/menu_bar/extras/first/nodes/crypto" })
 public class EnterPassword extends AFreeplaneAction  implements INodeSelectionListener{

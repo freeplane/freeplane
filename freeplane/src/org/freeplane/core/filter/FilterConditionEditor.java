@@ -19,7 +19,6 @@
  */
 package org.freeplane.core.filter;
 
-import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;

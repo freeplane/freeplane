@@ -26,7 +26,6 @@ import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.IIconInformation;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;

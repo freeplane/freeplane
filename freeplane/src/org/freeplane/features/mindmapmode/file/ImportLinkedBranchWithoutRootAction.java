@@ -22,6 +22,7 @@ package org.freeplane.features.mindmapmode.file;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.ListIterator;
 
@@ -35,8 +36,10 @@ import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Compat;
+import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.mindmapmode.MMapController;
+import org.freeplane.features.mindmapmode.link.MLinkController;
 
 /**
  * This is exactly the opposite of exportBranch.
@@ -60,24 +63,15 @@ class ImportLinkedBranchWithoutRootAction extends AFreeplaneAction {
 			    .getText("import_linked_branch_no_link"));
 			return;
 		}
-		URL absolute = null;
 		try {
-			final String relative = NodeLinks.getLink(selected);
-			absolute = UrlManager.isAbsolutePath(relative) ? Compat.fileToUrl(new File(relative)) : new URL(Compat
-			    .fileToUrl(map.getFile()), relative);
-		}
-		catch (final MalformedURLException ex) {
-			JOptionPane.showMessageDialog(getController().getViewController().getMapView(),
-			    "Couldn't create valid URL.");
-			return;
-		}
-		try {
-			final NodeModel node = ((MMapController) modeController.getMapController()).loadTree(map, new File(absolute
-			    .getFile()));
+			final URI uri = NodeLinks.getLink(selected);
+			File file = uri.isAbsolute()  && ! uri.isOpaque() ? new File(uri) : new File(new URL(map.getURL(), uri.getPath()).getFile());
+			final NodeModel node = ((MMapController) modeController.getMapController()).loadTree(map, file);
 			for (final ListIterator i = modeController.getMapController().childrenUnfolded(node); i.hasNext();) {
 				final NodeModel importNode = (NodeModel) i.next();
 				((MMapController) modeController.getMapController()).insertNode(importNode, selected);
 			}
+			((MLinkController)LinkController.getController(modeController)).setLink(selected, (URI)null);
 		}
 		catch (final Exception ex) {
 			UrlManager.getController(modeController).handleLoadingException(ex);

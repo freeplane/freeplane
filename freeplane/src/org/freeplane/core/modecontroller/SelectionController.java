@@ -22,9 +22,6 @@ package org.freeplane.core.modecontroller;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.util.LogTool;
 

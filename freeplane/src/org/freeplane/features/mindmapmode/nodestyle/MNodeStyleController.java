@@ -20,7 +20,6 @@
 package org.freeplane.features.mindmapmode.nodestyle;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.util.ListIterator;
 
