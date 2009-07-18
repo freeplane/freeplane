@@ -102,12 +102,18 @@ public class ExportWithXSLT extends ExportAction {
 	public static void createXSLTExportActions(final ModeController modeController, final String xmlDescriptorFile) {
 		try {
 			final MenuBuilder menuBuilder = modeController.getUserInputListenerFactory().getMenuBuilder();
-			final ExportToHTMLAction e1 = new ExportToHTMLAction(modeController.getController());
-			modeController.addAction(e1);
-			menuBuilder.addAnnotatedAction(e1);
-			final ExportBranchToHTMLAction e2 = new ExportBranchToHTMLAction(modeController.getController());
-			modeController.addAction(e2);
-			menuBuilder.addAnnotatedAction(e2);
+			final Controller controller = modeController.getController();
+			{
+				final ExportToHTMLAction e1 = new ExportToHTMLAction(controller);
+				modeController.addAction(e1);
+				menuBuilder.addAnnotatedAction(e1);
+				final ExportBranchToHTMLAction e2 = new ExportBranchToHTMLAction(controller);
+				modeController.addAction(e2);
+				menuBuilder.addAnnotatedAction(e2);
+				final ExportWithXSLTDialogAction action = new ExportWithXSLTDialogAction(controller);
+				modeController.addAction(action);
+				menuBuilder.addAction("/menu_bar/file/export/dialog", action, MenuBuilder.AS_CHILD);
+			}
 			final IXMLParser parser = XMLParserFactory.createDefaultXMLParser();
 			final URL resource = ResourceController.getResourceController().getResource(xmlDescriptorFile);
 			final IXMLReader reader = new StdXMLReader(resource.openStream());
@@ -120,7 +126,7 @@ public class ExportWithXSLT extends ExportAction {
 				final String location = descriptor.getAttribute("location", null);
 				final XMLElement xmlProperties = descriptor.getFirstChildNamed("properties");
 				final Properties properties = xmlProperties.getAttributes();
-				final ExportWithXSLT action = new ExportWithXSLT(name, modeController.getController(), properties);
+				final ExportWithXSLT action = new ExportWithXSLT(name, controller, properties);
 				modeController.addAction(action);
 				menuBuilder.addAction(location, action,
 				    MenuBuilder.AS_CHILD);
@@ -143,32 +149,11 @@ public class ExportWithXSLT extends ExportAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final ModeController mc = getModeController();
-		final MapModel model = getController().getMap();
-		if (StringUtils.equals(getProperty("file_type"), "user")) {
-			if (model == null) {
-				return;
-			}
-			if ((model.getFile() == null) || model.isReadOnly()) {
-				if (((MModeController) mc).save()) {
-					export(model.getFile());
-					return;
-				}
-				else {
-					return;
-				}
-			}
-			else {
-				export(model.getFile());
-			}
+		final File saveFile = chooseFile();
+		if (saveFile == null) {
+			return;
 		}
-		else {
-			final File saveFile = chooseFile();
-			if (saveFile == null) {
-				return;
-			}
-			transform(saveFile);
-		}
+		transform(saveFile);
 	}
 
 	protected File chooseFile() {
@@ -225,10 +210,6 @@ public class ExportWithXSLT extends ExportAction {
 		}
 	}
 
-	private void export(final File file) {
-		final ExportDialog exp = new ExportDialog(file);
-		exp.export();
-	}
 
 	/**
 	 * @param create_image

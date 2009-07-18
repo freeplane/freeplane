@@ -41,7 +41,7 @@ import org.w3c.dom.Element;
 /**
  * @author foltin
  */
-@ActionLocationDescriptor(locations = { "/menu_bar/file/export/export" })
+@ActionLocationDescriptor(locations = { "/menu_bar/file/export" })
 class ExportPdf extends ExportVectorGraphic {
 	/**
 	 * 

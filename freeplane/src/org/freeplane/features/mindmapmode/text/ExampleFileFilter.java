@@ -69,6 +69,7 @@ public class ExampleFileFilter extends FileFilter {
 	private Hashtable filters = null;
 	private String fullDescription = null;
 	private boolean useExtensionsInDescription = true;
+	private String mainExtension = null;
 
 	/**
 	 * Creates a file filter. If no filters are added, then all files are
@@ -156,6 +157,9 @@ public class ExampleFileFilter extends FileFilter {
 		if (filters == null) {
 			filters = new Hashtable(5);
 		}
+		if(mainExtension == null){
+			mainExtension =extension ;
+		}
 		filters.put(extension.toLowerCase(), this);
 		fullDescription = null;
 	}
@@ -197,6 +201,10 @@ public class ExampleFileFilter extends FileFilter {
 			};
 		}
 		return null;
+	}
+
+	public String getExtensionProposal() {
+		return mainExtension;
 	}
 
 	/**

@@ -1,26 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<!--
-        : This code released under the GPL.
-        : (http://www.gnu.org/copyleft/gpl.html)
-    Document   : mindmap2html.xsl
-    Created on : 01 February 2004, 17:17
-    Author     : joerg feuerhake joerg.feuerhake@free-penguin.org
-    Description: transforms freeplane mm format to html, handles crossrefs font declarations
-                    and colors. feel free to customize it while leaving the ancient authors
-                    mentioned. thank you
-    ChangeLog:
-    
-    See: http://freeplane.sourceforge.net/
--->
+	<!--
+		MINDMAPEXPORTFILTER html;htm html 
+		
+		: This code released under the GPL.
+		: (http://www.gnu.org/copyleft/gpl.html) Document : mindmap2html.xsl
+		Created on : 01 February 2004, 17:17 Author : joerg feuerhake
+		joerg.feuerhake@free-penguin.org Description: transforms freeplane mm
+		format to html, handles crossrefs font declarations and colors. feel
+		free to customize it while leaving the ancient authors mentioned.
+		thank you ChangeLog: See: http://freeplane.sourceforge.net/
+	-->
 
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-<xsl:output method="html"  indent="no" encoding="ISO-8859-1" />
+<xsl:stylesheet version="1.0"
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+	<xsl:output method="html" indent="no" encoding="ISO-8859-1" />
 
-    <xsl:template match="/">
-    <xsl:variable name="mapversion" select="map/@version"/>
+	<xsl:template match="/">
+		<xsl:variable name="mapversion" select="map/@version" />
 
-        <html>&#xA;
+		<html>&#xA;
             <head>&#xA;
                 <title><xsl:value-of select="map/node/@TEXT"/>//mm2html.xsl FreeplaneVersion:<xsl:value-of select="$mapversion"/></title>&#xA;
                 <style>

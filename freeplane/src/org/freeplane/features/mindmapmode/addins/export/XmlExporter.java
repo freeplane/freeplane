@@ -18,6 +18,8 @@
 package org.freeplane.features.mindmapmode.addins.export;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import javax.swing.JFileChooser;
 import javax.xml.transform.Result;
@@ -48,15 +50,26 @@ class XmlExporter {
 	public void transForm(final File xmlFile, final File xsltFile, final File resultFile) {
 		final Source xmlSource = new StreamSource(xmlFile);
 		final Source xsltSource = new StreamSource(xsltFile);
-		final Result result = new StreamResult(resultFile);
+		FileOutputStream outputStream = null;
+		
 		try {
+			outputStream = new FileOutputStream(resultFile);
+			final Result result = new StreamResult(outputStream);
 			final TransformerFactory transFact = TransformerFactory.newInstance();
 			final Transformer trans = transFact.newTransformer(xsltSource);
 			trans.transform(xmlSource, result);
 		}
 		catch (final Exception e) {
 			LogTool.severe(e);
-		};
+		}
+		finally{
+			try {
+	            if(outputStream != null)outputStream.close();
+            }
+            catch (IOException e) {
+	            e.printStackTrace();
+            }
+		}
 		return;
 	}
 }

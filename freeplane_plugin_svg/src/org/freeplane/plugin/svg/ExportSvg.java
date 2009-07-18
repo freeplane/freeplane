@@ -33,7 +33,7 @@ import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.view.swing.map.MapView;
 
-@ActionLocationDescriptor(locations = { "/menu_bar/file/export/export" })
+@ActionLocationDescriptor(locations = { "/menu_bar/file/export" })
 class ExportSvg extends ExportVectorGraphic {
 	/**
 	 * 

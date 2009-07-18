@@ -31,7 +31,7 @@ import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.clipboard.ClipboardController;
 
-@ActionLocationDescriptor(accelerator = "control H", locations={"/menu_bar/file/export/export/html"})
+@ActionLocationDescriptor(accelerator = "control H", locations={"/menu_bar/file/export/html"})
 class ExportBranchToHTMLAction extends AFreeplaneAction {
 	/**
 	 * 

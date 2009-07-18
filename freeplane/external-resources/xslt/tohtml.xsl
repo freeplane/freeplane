@@ -1,40 +1,32 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<!--
- todo: kopioi html-käsittely xhtml-stylesheetiin, lisää body-käsittely
-
-
- The contents of this file are subject to the Mozilla Public License Version
- 1.1 (the "License"); you may not use this file except in compliance with
- the License. You may obtain a copy of the License at
- http://www.mozilla.org/MPL/
- 
- Software distributed under the License is distributed on an "AS IS" basis,
- WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
- for the specific language governing rights and limitations under the
- License.
- 
- Miika Nurminen (minurmin@cc.jyu.fi) 13.7.2004.
-
-Transforms Freeplane (0.6.7) mm file to HTML 4.0 transitional. 
-Output is valid (possibly apart HTML entered by user in Freeplane).
-
--->
-<xsl:stylesheet version="1.0"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
->
-<!-- mozilla doesn't parse method xhtml (in xslt 2.0) -->
-<xsl:output method="html"
-            version="1.0"
-            encoding="iso-8859-1"
-            doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN"  
-            doctype-system="http://www.w3.org/TR/html4/loose.dtd"
-/>
-
-<xsl:strip-space elements="*"/><xsl:template match="/">
-<html>
-<head>
-<title>mmTree</title>
-<xsl:text disable-output-escaping="yes">
+<?xml version="1.0" encoding="iso-8859-1"?>
+	<!--
+		todo: kopioi html-käsittely xhtml-stylesheetiin, lisää body-käsittely
+
+
+		The contents of this file are subject to the Mozilla Public License
+		Version 1.1 (the "License"); you may not use this file except in
+		compliance with the License. You may obtain a copy of the License at
+		http://www.mozilla.org/MPL/ Software distributed under the License is
+		distributed on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either
+		express or implied. See the License for the specific language
+		governing rights and limitations under the License. Miika Nurminen
+		(minurmin@cc.jyu.fi) 13.7.2004. Transforms Freeplane (0.6.7) mm file
+		to HTML 4.0 transitional. Output is valid (possibly apart HTML entered
+		by user in Freeplane).
+	-->
+<xsl:stylesheet version="1.0"
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+	<!-- mozilla doesn't parse method xhtml (in xslt 2.0) -->
+	<xsl:output method="html" version="1.0" encoding="iso-8859-1"
+		doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN"
+		doctype-system="http://www.w3.org/TR/html4/loose.dtd" />
+
+	<xsl:strip-space elements="*" />
+	<xsl:template match="/">
+		<html>
+			<head>
+				<title>mmTree</title>
+				<xsl:text disable-output-escaping="yes">
 &lt;link rel="stylesheet" href="treestyles.css" type="text/css"&gt;
 </xsl:text>
 </head>

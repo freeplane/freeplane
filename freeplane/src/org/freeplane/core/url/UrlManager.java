@@ -229,7 +229,7 @@ public class UrlManager implements IExtension {
 
 	public static String removeExtension(final String s) {
 		final int i = s.lastIndexOf('.');
-		return (i > 0 && i < s.length() - 1) ? s.substring(0, i) : "";
+		return (i > 0 && i < s.length() - 1) ? s.substring(0, i) : s;
 	}
 
 	public static void setHidden(final File file, final boolean hidden, final boolean synchronously) {

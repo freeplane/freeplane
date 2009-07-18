@@ -1,15 +1,8 @@
 <?xml version="1.0"?>
 <export_with_xslt>
     <action
-        name="accessories/plugins/ExportWithXSLT"
-        location="/menu_bar/file/export/export"
-    >
-        <properties
-            file_type="user" />
-    </action>
-    <action
         name="accessories/plugins/ExportWithXSLT_HTML"
-        location="/menu_bar/file/export/export/html"
+        location="/menu_bar/file/export/html"
     >
         <properties
             file_type="html"
@@ -24,7 +17,7 @@
     </action>
     <action
         name="accessories/plugins/ExportWithXSLT_HTML3"
-        location="/menu_bar/file/export/export/html"
+        location="/menu_bar/file/export/html"
     >
         <properties
             file_type="html"
@@ -39,7 +32,7 @@
     </action>
     <action
         name="accessories/plugins/ExportWithXSLT_Applet"
-        location="/menu_bar/file/export/export/html"
+        location="/menu_bar/file/export/html"
     >
         <properties
             file_type="html"
@@ -53,7 +46,7 @@
     </action>
     <action
         name="accessories/plugins/ExportWithXSLT_Flash"
-        location="/menu_bar/file/export/export/html"
+        location="/menu_bar/file/export/html"
     >
         <properties
             file_type="html"
@@ -67,7 +60,7 @@
     </action>
     <action
         name="accessories/plugins/ExportWithXSLT_TASKSTJI"
-        location="/menu_bar/file/export/export/html"
+        location="/menu_bar/file/export/html"
     >
         <properties
             file_type="tji"
@@ -81,7 +74,7 @@
     </action>
     <action
         name="accessories/plugins/ExportWithXSLT_RESOURCESTJI"
-        location="/menu_bar/file/export/export/html"
+        location="/menu_bar/file/export/html"
     >
         <properties
             file_type="tji"
@@ -95,7 +88,7 @@
     </action>
     <action
         name="accessories/plugins/ExportWithTWiki"
-        location="/menu_bar/file/export/export/html"
+        location="/menu_bar/file/export/html"
     >
         <properties
             file_type="twi"

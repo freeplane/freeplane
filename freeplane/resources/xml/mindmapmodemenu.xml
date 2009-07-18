@@ -14,13 +14,13 @@
 			</menu_category>
 			<menu_separator />
 			<menu_submenu name="last" name_ref="most_recent_files"></menu_submenu>
-			<menu_category name="export">
 				<menu_submenu name="export" name_ref="menu_file_export">
 					<menu_action action="ExportBranchAction" accelerator="alt shift A" />
 					<menu_separator />
 					<menu_category name="html"/>
+					<menu_separator />
+					<menu_category name="dialog"/>
 				</menu_submenu>
-			</menu_category>
 			<menu_separator />
 			<menu_category name="import">
 				<menu_submenu name="import" name_ref="menu_file_import">
