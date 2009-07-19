@@ -109,29 +109,18 @@ class ApplyPatternAction extends MultipleNodeAction {
 			((MNodeStyleController) NodeStyleController.getController(controller.getModeController())).setShape(node,
 			    pattern.getPatternNodeStyle().getValue());
 		}
+		
 		if (pattern.getPatternIcon() != null) {
 			final String iconName = pattern.getPatternIcon().getValue();
-			if (iconName == null) {
-				while (((MIconController) IconController.getController(getModeController())).removeIcon(node,
-				    MindIcon.LAST) > 0) {
-				}
+			while (((MIconController) IconController.getController(getModeController()))
+			    .removeIcon(node, MindIcon.LAST) > 0) {
 			}
-			else {
-				final List icons = node.getIcons();
-				boolean found = false;
-				for (final Iterator iterator = icons.iterator(); iterator.hasNext();) {
-					final MindIcon icon = (MindIcon) iterator.next();
-					if (icon.getName() != null && icon.getName().equals(iconName)) {
-						found = true;
-						break;
-					}
-				}
-				if (!found) {
-					((MIconController) IconController.getController(controller.getModeController())).addIcon(node,
-					    MindIcon.factory(iconName), MindIcon.LAST);
-				}
+			if(iconName != null){
+				((MIconController) IconController.getController(controller.getModeController())).addIcon(node, MindIcon
+					.factory(iconName), MindIcon.LAST);
 			}
 		}
+		
 		if (pattern.getPatternNodeFontName() != null) {
 			String nodeFontFamily = pattern.getPatternNodeFontName().getValue();
 			if (nodeFontFamily == null) {
