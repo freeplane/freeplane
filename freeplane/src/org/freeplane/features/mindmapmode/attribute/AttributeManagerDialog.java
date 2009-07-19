@@ -75,6 +75,7 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 		 */
 		public void actionPerformed(final ActionEvent e) {
 			applyChanges();
+			controller.getModeController().startTransaction();
 		}
 	}
 
@@ -270,14 +271,23 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 		final int iSize = Integer.parseInt(size.toString());
 		model.getAttributeController().performSetFontSize(model, iSize);
 		model.applyChanges();
+		controller.getModeController().commit();
 	}
 
 	public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
 	}
 
+	
+	@Override
+    public void show() {
+		controller.getModeController().startTransaction();
+	    super.show();
+    }
+
 	private void resetChanges() {
 		final int iSize = model.getFontSize();
 		size.setSelectedItem(Integer.toString(iSize));
 		model.resetChanges();
+		controller.getModeController().rollback();
 	}
 }

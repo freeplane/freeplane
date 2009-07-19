@@ -434,7 +434,7 @@ public class AttributeRegistry implements IExtension {
 		}
 		for (int i = 0; i < size(); i++) {
 			final AttributeRegistryElement element = getElement(i);
-			if (element.isRestricted() || element.isVisible()) {
+			if (element.isRestricted() || element.isVisible() || element.isManual()) {
 				final XMLElement attributeData = element.save();
 				attributeRegistry.addChild(attributeData);
 				toBeSaved = true;

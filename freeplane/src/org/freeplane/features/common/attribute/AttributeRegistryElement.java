@@ -70,6 +70,7 @@ public class AttributeRegistryElement {
 
 	private boolean isRestricted;
 	private boolean isVisible;
+	private boolean isManual;
 	private String key;
 	final private AttributeRegistry registry;
 	private Boolean restrictionModel;
@@ -84,8 +85,17 @@ public class AttributeRegistryElement {
 		isVisible = false;
 		visibilityModel = new Boolean(isVisible);
 		isRestricted = false;
+		isManual = false;
 		restrictionModel = new Boolean(isRestricted);
 	}
+
+	public boolean isManual() {
+    	return isManual;
+    }
+
+	public void setManual(boolean isManual) {
+    	this.isManual = isManual;
+    }
 
 	public void addValue(final String s) {
 		values._add(s);
@@ -137,6 +147,9 @@ public class AttributeRegistryElement {
 		final XMLElement element = new XMLElement();
 		if (isVisible()) {
 			element.setAttribute("VISIBLE", "true");
+		}
+		if (isManual()) {
+			element.setAttribute("MANUAL", "true");
 		}
 		if (isRestricted()) {
 			element.setAttribute("RESTRICTED", "true");

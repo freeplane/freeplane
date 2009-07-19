@@ -113,6 +113,29 @@ public class MModeController extends ModeController {
 	}
 
 	@Override
+	public void commit() {
+		final MMapModel map = (MMapModel) getController().getMap();
+		final IUndoHandler undoHandler = map.getUndoHandler();
+		undoHandler.commit();
+    }
+
+	@Override
+	public void rollback() {
+		final MMapModel map = (MMapModel) getController().getMap();
+		final IUndoHandler undoHandler = map.getUndoHandler();
+		undoHandler.rollback();
+		undo.setEnabled(undoHandler.canUndo());
+		redo.setEnabled(false);
+    }
+
+	@Override
+	public void startTransaction() {
+		final MMapModel map = (MMapModel) getController().getMap();
+		final IUndoHandler undoHandler = map.getUndoHandler();
+		undoHandler.startTransaction();
+    }
+	
+	@Override
 	public String getModeName() {
 		return MModeController.MODENAME;
 	}

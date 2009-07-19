@@ -45,6 +45,7 @@ class AttributeBuilder implements IElementDOMHandler {
 		String attributeName;
 		boolean restricted = false;
 		boolean visible = false;
+		boolean manual = false;
 	}
 
 	public static final String XML_NODE_ATTRIBUTE = "attribute";
@@ -84,6 +85,9 @@ class AttributeBuilder implements IElementDOMHandler {
 			}
 			if (rap.restricted) {
 				AttributeRegistry.getRegistry(getMap()).getElement(rap.attributeName).setRestriction(true);
+			}
+			if (rap.manual) {
+				AttributeRegistry.getRegistry(getMap()).getElement(rap.attributeName).setManual(true);
 			}
 			return;
 		}
@@ -125,6 +129,13 @@ class AttributeBuilder implements IElementDOMHandler {
 			    public void setAttribute(final Object userObject, final String value) {
 				    final RegisteredAttributeProperties rap = (RegisteredAttributeProperties) userObject;
 				    rap.restricted = true;
+			    }
+		    });
+		reader.addAttributeHandler(AttributeBuilder.XML_NODE_REGISTERED_ATTRIBUTE_NAME, "MANUAL",
+		    new IAttributeHandler() {
+			    public void setAttribute(final Object userObject, final String value) {
+				    final RegisteredAttributeProperties rap = (RegisteredAttributeProperties) userObject;
+				    rap.manual = true;
 			    }
 		    });
 		reader.addAttributeHandler(AttributeBuilder.XML_NODE_REGISTERED_ATTRIBUTE_VALUE, "VALUE",

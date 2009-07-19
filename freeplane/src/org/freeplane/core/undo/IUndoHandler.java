@@ -41,4 +41,10 @@ public interface IUndoHandler {
 	public void resetRedo();
 
 	void undo();
+
+	void commit();
+
+	void rollback();
+
+	void startTransaction();
 }

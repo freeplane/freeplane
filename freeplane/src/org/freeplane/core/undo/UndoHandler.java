@@ -24,6 +24,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
 import java.util.ListIterator;
+import java.util.NoSuchElementException;
 
 public class UndoHandler implements IUndoHandler {
 	private class RedoAction implements ActionListener {
@@ -46,6 +47,7 @@ public class UndoHandler implements IUndoHandler {
 	private boolean actionFrameStarted;
 	private ListIterator actorIterator;
 	final private LinkedList<IActor> actorList;
+	final private LinkedList<Integer> transactionList;
 	private boolean isUndoActionRunning = false;
 	final private ActionListener redoAction;
 	private long timeOfLastAdd;
@@ -54,6 +56,7 @@ public class UndoHandler implements IUndoHandler {
 	public UndoHandler() {
 		actionFrameStarted = false;
 		actorList = new LinkedList();
+		transactionList = new LinkedList<Integer>();
 		actorIterator = actorList.listIterator();
 		redoAction = new RedoAction();
 		timeOfLastAdd = 0;
@@ -173,9 +176,36 @@ public class UndoHandler implements IUndoHandler {
 	public void undo() {
 		if (canUndo()) {
 			final IActor actor = (IActor) actorIterator.previous();
-			isUndoActionRunning = true;
-			actor.undo();
-			isUndoActionRunning = false;
+			try{
+				isUndoActionRunning = true;
+				actor.undo();
+			}
+			finally{
+				isUndoActionRunning = false;
+			}
 		}
 	}
+
+	public void commit() {
+		transactionList.removeLast();
+	    
+    }
+
+	public void rollback() {
+		final int last = transactionList.removeLast();
+		try{
+			isUndoActionRunning = true;
+			while(last < actorIterator.previousIndex()){
+				final IActor actor = (IActor) actorIterator.previous();
+				actor.undo();
+			}
+		}
+		finally{
+			isUndoActionRunning = false;
+		}
+    }
+
+	public void startTransaction() {
+	    transactionList.addLast(actorIterator.previousIndex());
+    }
 }
