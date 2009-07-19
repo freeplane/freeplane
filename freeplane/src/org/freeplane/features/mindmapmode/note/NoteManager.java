@@ -69,6 +69,9 @@ final class NoteManager implements INodeSelectionListener {
 	}
 
 	void saveNote() {
+		if(node == null){
+			return;
+		}
 	    final SHTMLPanel noteViewerComponent = noteController.getNoteViewerComponent();
 		if(noteViewerComponent == null){
 			return;

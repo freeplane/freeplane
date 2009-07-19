@@ -72,7 +72,17 @@ public class FButtonBar extends FreeplaneToolBar implements IAcceleratorChangeLi
 		if(windowAncestor == ownWindowAncestor){
 	    	processDispatchedKeyEvent(e);
 	    }
-	    return false;
+	    return processF10(e);
+    }
+	private boolean processF10(KeyEvent e) {
+	    final int keyCode = e.getKeyCode();
+		if(keyCode < KeyEvent.VK_F1 || keyCode > KeyEvent.VK_F12){
+	    	return false;
+	    }
+	    if(e.getID() == KeyEvent.KEY_PRESSED){
+	    	createButtons(nextModifiers)[keyCode-KeyEvent.VK_F1].doClick();
+	    }
+	    return true;
     }
 	private void processDispatchedKeyEvent(final KeyEvent e) {
 		

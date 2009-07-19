@@ -49,6 +49,9 @@ public class Compat {
 
 	public static URI cleanURI(URI hyperlink) {
 		final String rawPath = hyperlink.getRawPath();
+		if(rawPath == null){
+			return hyperlink;
+		}
 		final int indexOfColon = rawPath.indexOf(':', 3);
 		if(indexOfColon == -1){
 			return hyperlink;
