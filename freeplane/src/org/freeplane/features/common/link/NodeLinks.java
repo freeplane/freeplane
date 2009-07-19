@@ -154,4 +154,9 @@ public class NodeLinks implements IExtension {
 			addLinkToMap(node.getMap(), link);
 		}
 	}
+
+	public static String getLinkAsString(NodeModel selectedNode) {
+	    final URI link = getLink(selectedNode);
+	    return link != null ? link.toString() : null;
+    }
 }

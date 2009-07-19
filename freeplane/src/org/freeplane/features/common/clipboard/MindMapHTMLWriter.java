@@ -260,7 +260,7 @@ class MindMapHTMLWriter {
 			localParentID = parentID + "_" + lastChildNumber;
 			writeFoldingButtons(localParentID);
 		}
-		String link = NodeLinks.getLink(model).toString();
+		String link = NodeLinks.getLinkAsString(model);
 		if (link != null) {
 			if (link.endsWith(UrlManager.FREEPLANE_FILE_EXTENSION)) {
 				link += ".html";
