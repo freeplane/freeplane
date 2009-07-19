@@ -31,6 +31,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.DefaultFocusManager;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -276,8 +277,17 @@ public class UITools {
     		myMessage = ResourceBundles.getText("undefined_error");
     	}
     	EventQueue.invokeLater(new Runnable(){
-    	public void run() {
-    		JOptionPane.showMessageDialog(null, myMessage, "Freeplane", JOptionPane.ERROR_MESSAGE);
-        }});
+    		
+    		public void run() {
+    			JOptionPane.showMessageDialog(getFrame(),
+    				myMessage, "Freeplane", JOptionPane.ERROR_MESSAGE);
+    		}
+
+			});
+	}
+	
+	static public Frame getFrame() {
+		final Frame[] frames = Frame.getFrames();
+		return frames.length >= 1 ? frames[frames.length-1]:null;
     }
 }

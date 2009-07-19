@@ -142,7 +142,7 @@ class SaveAcceleratorPresetsAction extends AFreeplaneAction {
 		final File acceleratorsUserDirectory = LoadAcceleratorPresetsAction.getAcceleratorsUserDirectory();
 		File keysetFile = new File (acceleratorsUserDirectory, keyset + ".properties");
 		if(keysetFile.exists()){
-			final int confirm = JOptionPane.showConfirmDialog(null, ResourceBundles.getText("overwrite_keyset_question"), "Freeplane", JOptionPane.YES_NO_OPTION);
+			final int confirm = JOptionPane.showConfirmDialog(UITools.getFrame(), ResourceBundles.getText("overwrite_keyset_question"), "Freeplane", JOptionPane.YES_NO_OPTION);
 			if(confirm != JOptionPane.YES_OPTION){
 				return;
 			}

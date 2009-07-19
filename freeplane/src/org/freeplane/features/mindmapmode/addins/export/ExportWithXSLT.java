@@ -51,6 +51,7 @@ import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogTool;
@@ -266,7 +267,7 @@ public class ExportWithXSLT extends ExportAction {
 			final String xsltFileName = getProperty("xslt_file");
 			boolean success = transformMapWithXslt(xsltFileName, saveFile, areaCode);
 			if (!success) {
-				JOptionPane.showMessageDialog(null, getProperty("error_applying_template"), "Freeplane",
+				JOptionPane.showMessageDialog(UITools.getFrame(), getProperty("error_applying_template"), "Freeplane",
 				    JOptionPane.ERROR_MESSAGE);
 				return;
 			}
@@ -289,7 +290,7 @@ public class ExportWithXSLT extends ExportAction {
 				}
 			}
 			if (!success) {
-				JOptionPane.showMessageDialog(null, getProperty("error_creating_directory"), "Freeplane",
+				JOptionPane.showMessageDialog(UITools.getFrame(), getProperty("error_creating_directory"), "Freeplane",
 				    JOptionPane.ERROR_MESSAGE);
 				return;
 			}

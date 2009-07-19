@@ -26,6 +26,7 @@ import javax.swing.JTextArea;
 import org.freeplane.core.controller.FreeplaneVersion;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogTool;
 
 public class XmlRpcHandler extends StreamHandler{
@@ -166,7 +167,7 @@ public class XmlRpcHandler extends StreamHandler{
 	    		ResourceBundles.getText("org.freeplane.plugin.bugreport.agree"),
 	    		ResourceBundles.getText("org.freeplane.plugin.bugreport.deny"),
 	    		ResourceBundles.getText("org.freeplane.plugin.bugreport.always_deny")};
-	    final int choice = JOptionPane.showOptionDialog(null, 
+	    final int choice = JOptionPane.showOptionDialog(UITools.getFrame(), 
 	    	messagePane, ResourceBundles.getText("org.freeplane.plugin.bugreport.dialog.title"), JOptionPane.DEFAULT_OPTION, 
 	    	JOptionPane.INFORMATION_MESSAGE, null, options, options[1]);
 	    final String decision;

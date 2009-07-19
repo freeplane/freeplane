@@ -8,6 +8,7 @@ import java.net.URL;
 
 import javax.swing.JOptionPane;
 
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.url.UrlManager;
 
 /**
@@ -25,7 +26,7 @@ public class Compat {
 			final String message = "Warning: Freeplane requires version Java 1.5.0 or higher (your version: "
 			        + JAVA_VERSION + ", installed in " + System.getProperty("java.home") + ").";
 			LogTool.severe(message);
-			JOptionPane.showMessageDialog(null, message, "Freeplane", JOptionPane.WARNING_MESSAGE);
+			UITools.errorMessage(message);
 			System.exit(1);
 		}
 	}

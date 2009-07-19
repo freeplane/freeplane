@@ -38,6 +38,7 @@ import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MenuBuilder;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.LogTool;
 
@@ -118,11 +119,11 @@ public class MPatternController implements IExtension {
 					LogTool.severe(e);
 				}
 				if (success) {
-					JOptionPane.showMessageDialog(null, "Successfully repaired the pattern file.", repairTitle,
+					JOptionPane.showMessageDialog(UITools.getFrame(), "Successfully repaired the pattern file.", repairTitle,
 					    JOptionPane.PLAIN_MESSAGE);
 				}
 				else {
-					JOptionPane.showMessageDialog(null, "An error occured repairing the pattern file.", repairTitle,
+					JOptionPane.showMessageDialog(UITools.getFrame(), "An error occured repairing the pattern file.", repairTitle,
 					    JOptionPane.WARNING_MESSAGE);
 				}
 			}

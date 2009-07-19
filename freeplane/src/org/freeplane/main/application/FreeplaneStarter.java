@@ -266,7 +266,7 @@ public class FreeplaneStarter {
 		}
 		catch (final Exception e) {
 			LogTool.severe(e);
-			JOptionPane.showMessageDialog(null, "freeplane.main.Freeplane can't be started", "Startup problem",
+			JOptionPane.showMessageDialog(UITools.getFrame(), "freeplane.main.Freeplane can't be started", "Startup problem",
 			    JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
 		}
