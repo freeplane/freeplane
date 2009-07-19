@@ -203,8 +203,13 @@ class ApplicationResourceController extends ResourceController {
 
 	private Properties readDefaultPreferences() {
 		final String propsLoc = ResourceController.FREEPLANE_PROPERTIES;
-		final URL defaultPropsURL = getResource(propsLoc);
 		final Properties props = new Properties();
+		readDefaultPreferences(props, propsLoc);
+		return props;
+	}
+
+	private void readDefaultPreferences(final Properties props, final String propsLoc) {
+	    final URL defaultPropsURL = getResource(propsLoc);
 		try {
 			InputStream in = null;
 			in = defaultPropsURL.openStream();
@@ -215,8 +220,16 @@ class ApplicationResourceController extends ResourceController {
 			ex.printStackTrace();
 			System.err.println("Panic! Error while loading default properties.");
 		}
-		return props;
-	}
+		final String propsLocs = props.getProperty("load_next_properties", "");
+		props.setProperty("load_next_properties", "");
+		if(propsLocs.equals("")){
+			return;
+		}
+		final String[] locArray = propsLocs.split(";");
+		for(String loc:locArray){
+			readDefaultPreferences(props, loc);
+		}
+    }
 
 	private Properties readUsersPreferences(final Properties defaultPreferences) {
 		Properties auto = null;

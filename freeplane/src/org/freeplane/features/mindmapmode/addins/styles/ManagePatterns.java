@@ -31,8 +31,7 @@ import org.freeplane.features.mindmapnode.pattern.StylePatternFactory;
 import org.freeplane.view.swing.ui.UserInputListenerFactory;
 
 @ActionLocationDescriptor(locations = { "/menu_bar/format/patterns/manage", //
-        "/node_popup/patterns/manage" }, //
-accelerator = "F11")
+        "/node_popup/patterns/manage" })
 public class ManagePatterns extends AFreeplaneAction {
 	/**
 	 * 
