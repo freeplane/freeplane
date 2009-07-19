@@ -204,6 +204,7 @@ public class MNoteController extends NoteController {
 	}
 
 	void hideNotesPanel() {
+		noteManager.saveNote();
 		noteViewerComponent.setVisible(false);
 		getModeController().getController().getViewController().removeSplitPane();
 		mSplitPane = null;
@@ -219,7 +220,7 @@ public class MNoteController extends NoteController {
 
 	@Override
 	protected void onWrite(final MapModel map) {
-		noteManager.onWrite(getModeController().getController().getSelection().getSelected());
+		noteManager.saveNote(getModeController().getController().getSelection().getSelected());
 	}
 
 	void setLastContentEmpty(final boolean mLastContentEmpty) {

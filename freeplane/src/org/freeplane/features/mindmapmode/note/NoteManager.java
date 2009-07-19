@@ -52,7 +52,7 @@ final class NoteManager implements INodeSelectionListener {
 			return;
 		}
 		noteViewerComponent.getDocument().removeDocumentListener(mNoteDocumentListener);
-		onWrite(node);
+		saveNote(node);
 		this.node = null;
 	}
 
@@ -61,11 +61,15 @@ final class NoteManager implements INodeSelectionListener {
 		updateEditor();
 	}
 
-	void onWrite(final NodeModel node) {
+	void saveNote(final NodeModel node) {
 		if (this.node != node) {
 			return;
 		}
-		final SHTMLPanel noteViewerComponent = noteController.getNoteViewerComponent();
+		saveNote();
+	}
+
+	void saveNote() {
+	    final SHTMLPanel noteViewerComponent = noteController.getNoteViewerComponent();
 		if(noteViewerComponent == null){
 			return;
 		}
@@ -78,10 +82,10 @@ final class NoteManager implements INodeSelectionListener {
 			try{
 				ignoreEditorUpdate = true;
 				if (editorContentEmpty) {
-					noteController.setNoteText(node, null);
+					noteController.setNoteText(this.node, null);
 				}
 				else {
-					noteController.setNoteText(node, documentText);
+					noteController.setNoteText(this.node, documentText);
 				}
 			}
 			finally{
@@ -90,7 +94,7 @@ final class NoteManager implements INodeSelectionListener {
 			noteController.setLastContentEmpty(editorContentEmpty);
 		}
 		noteController.getModeController().getMapController().addNodeSelectionListener(this);
-	}
+    }
 
 	void updateEditor() {
 		if(ignoreEditorUpdate){
