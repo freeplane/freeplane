@@ -31,8 +31,11 @@ import java.util.List;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.util.ColorUtils;
+import org.freeplane.features.common.cloud.CloudController;
+import org.freeplane.features.common.cloud.CloudModel;
 import org.freeplane.features.common.edge.EdgeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
+import org.freeplane.features.mindmapmode.cloud.MCloudController;
 
 /**
  * This class constructs patterns from files or from nodes and saves them back.
@@ -129,6 +132,20 @@ public class StylePatternFactory {
 				final PatternProperty edgeWidthPattern = new PatternProperty();
 				edgeWidthPattern.setValue("" + edgeWidth);
 				pattern.setPatternEdgeWidth(edgeWidthPattern);
+			}
+		}
+		final CloudModel cloud = CloudModel.getModel(node);
+		if(cloud != null){
+			final Color cloudColor = cloud.getColor();
+			if (cloudColor != null){
+				final PatternProperty cloudColorPattern = new PatternProperty();
+				cloudColorPattern.setValue(ColorUtils.colorToString(cloudColor));
+				pattern.setPatternCloudColor(cloudColorPattern);
+			}
+			else{
+				final PatternProperty cloudPattern = new PatternProperty();
+				cloudPattern.setValue(TRUE_VALUE);
+				pattern.setPatternCloud(cloudPattern);
 			}
 		}
 		return pattern;
