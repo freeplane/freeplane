@@ -37,7 +37,8 @@ public class Compat {
 		if (indexOfColon == -1) {
 			return hyperlink;
 		}
-		if (!hyperlink.getScheme().equals("file")) {
+		final String scheme = hyperlink.getScheme();
+		if (scheme != null && !scheme.equals("file")) {
 			return hyperlink;
 		}
 		final String osNameStart = System.getProperty("os.name").substring(0, 3);
