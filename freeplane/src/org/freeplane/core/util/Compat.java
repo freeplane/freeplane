@@ -28,6 +28,7 @@ public class Compat {
 		}
 	}
 
+	static private final String osNameStart = System.getProperty("os.name").substring(0, 3);
 	public static URI cleanURI(final URI hyperlink) {
 		final String rawPath = hyperlink.getRawPath();
 		if (rawPath == null) {
@@ -41,7 +42,6 @@ public class Compat {
 		if (scheme != null && !scheme.equals("file")) {
 			return hyperlink;
 		}
-		final String osNameStart = System.getProperty("os.name").substring(0, 3);
 		if (!osNameStart.equals("Win")) {
 			return hyperlink;
 		}
