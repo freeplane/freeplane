@@ -1,4 +1,27 @@
 ===============================
+1.0.18 alpha
+===============================
+New features:
+
+Hot key CONTROL+ALT+SHIFT+ 'B' for awakening frozen application up and sending a bug report  
+use uri for links
+include styles made by Ryan
+use UITools.getFrame() for displayed modal dialogs
+keep attributes manually set in attribute manager
+use only no more than one icon if pattern with icon is applied
+replace alt accelerators by alt+shift accelerators to keep alt not used because of possible mnemonic use
+improvements in export with xslt dialog
+
+Bug fixes
+
+bug fix: update map view name after exporting branch
+transactions for undo (startTransaction/commit/rollback) for dialog operations used in AttributeManager
+bug fix: use cloud properties copying/pasting format
+bug fix in f-bar
+save note when note window is closed
+
+
+===============================
 1.0.17 alpha
 ===============================
 New features:

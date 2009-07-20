@@ -20,8 +20,10 @@
 package org.freeplane.features.mindmapmode.link;
 
 import java.awt.event.ActionEvent;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
@@ -54,13 +56,21 @@ class SetLinkByTextFieldAction extends AFreeplaneAction {
 				setLink(selectedNode, null);
 				return;
 			}
+			URI link;
 			try {
-				setLink(selectedNode, new URI(inputValue));
+				link = new URI(inputValue);
 			}
 			catch (final URISyntaxException e1) {
-				LogTool.warn(e1);
-				UITools.errorMessage("wrong URI " + inputValue);
+				try {
+					link = new URI(null, null, inputValue, null);
+				}
+				catch (URISyntaxException e2) {
+					LogTool.warn(e1);
+					UITools.errorMessage("wrong URI " + inputValue);
+					return;
+				} 
 			}
+			setLink(selectedNode, link);
 		}
 	}
 
