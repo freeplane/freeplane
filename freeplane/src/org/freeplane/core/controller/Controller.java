@@ -68,7 +68,7 @@ public class Controller extends AController {
 			}
 		}
 		catch (final Exception ex) {
-			LogTool.severe("Error while setting Look&Feel" + lookAndFeel, ex);
+			LogTool.warn("Error while setting Look&Feel" + lookAndFeel, ex);
 		}
 	}
 
