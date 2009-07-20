@@ -50,8 +50,7 @@ public class Compat {
 			return uri;
 		}
 		catch (final URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LogTool.severe(e);
 		}
 		return hyperlink;
 	}

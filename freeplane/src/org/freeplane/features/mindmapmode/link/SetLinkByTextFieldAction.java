@@ -33,6 +33,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.NodeLinks;
 
 class SetLinkByTextFieldAction extends AFreeplaneAction {
@@ -57,19 +58,14 @@ class SetLinkByTextFieldAction extends AFreeplaneAction {
 				return;
 			}
 			URI link;
-			try {
-				link = new URI(inputValue);
-			}
-			catch (final URISyntaxException e1) {
-				try {
-					link = new URI(null, null, inputValue, null);
-				}
-				catch (URISyntaxException e2) {
-					LogTool.warn(e1);
-					UITools.errorMessage("wrong URI " + inputValue);
-					return;
-				} 
-			}
+            try {
+	            link = LinkController.createURI(inputValue);
+            }
+			catch (URISyntaxException e1) {
+				LogTool.warn(e1);
+				UITools.errorMessage("wrong URI " + inputValue);
+				return;
+			} 
 			setLink(selectedNode, link);
 		}
 	}

@@ -47,9 +47,11 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.Compat;
+import org.freeplane.core.util.LogTool;
 
 /**
  * @author Dimitry Polivaev
@@ -246,15 +248,14 @@ public class LinkController extends SelectionController implements IExtension {
 		if (link != null && link.startsWith("#")) {
 			links.setLocalHyperlink(node, link.substring(1));
 		}
-		URI hyperlink;
-		try {
-			hyperlink = new URI(link);
-		}
-		catch (final URISyntaxException e) {
-			hyperlink = new File(link).toURI();
-		}
-		hyperlink = Compat.cleanURI(hyperlink);
-		links.setHyperLink(hyperlink);
+        try {
+            URI hyperlink = LinkController.createURI(link);
+    		links.setHyperLink(hyperlink);
+        }
+		catch (URISyntaxException e1) {
+			LogTool.severe(e1);
+			return;
+		} 
 	}
 
 	public void loadURL() {
@@ -287,4 +288,16 @@ public class LinkController extends SelectionController implements IExtension {
 			}
 		}
 	}
+
+	public static URI createURI(String inputValue) throws URISyntaxException {
+		URI link;
+		try {
+			link = new URI(inputValue);
+		}
+		catch (final URISyntaxException e1) {
+			link = new URI(null, null, inputValue, null);
+		}
+		link = Compat.cleanURI(link);
+		return link;
+    }
 }
