@@ -59,6 +59,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.features.mindmapmode.MMapModel;
 import org.freeplane.n3.nanoxml.XMLParseException;
@@ -250,13 +251,7 @@ public class MFileManager extends UrlManager {
 		input = chooser.getSelectedFile();
 		setLastCurrentDir(input.getParentFile());
 		if (ResourceController.getResourceController().getProperty("links").equals("relative")) {
-			try {
-				return UrlManager.toRelativeURI(Compat.fileToUrl(map.getFile()), input);
-			}
-			catch (final MalformedURLException ex) {
-				UITools.errorMessage(ResourceBundles.getText("url_error"));
-				return null;
-			}
+			return LinkController.toRelativeURI(map.getFile(), input);
 		}
 		return input.toURI();
 	}
