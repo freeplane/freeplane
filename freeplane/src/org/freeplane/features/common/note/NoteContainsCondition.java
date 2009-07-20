@@ -44,15 +44,11 @@ class NoteContainsCondition extends NodeCondition {
 
 	public boolean checkNode(final NodeModel node) {
 		final String text = getText(node);
-		if(text == null){
+		if (text == null) {
 			return false;
 		}
 		return checkText(text) || HtmlTools.isHtmlNode(text) && checkText(HtmlTools.htmlToPlain(text));
 	}
-
-	protected String getText(final NodeModel node) {
-	    return NoteModel.getNoteText(node);
-    }
 
 	private boolean checkText(final String plainTextContent) {
 		return plainTextContent.indexOf(value) > -1;
@@ -64,20 +60,24 @@ class NoteContainsCondition extends NodeCondition {
 	}
 
 	protected String createDesctiption(final boolean ignoreCase) {
-	    final String nodeCondition = ResourceBundles.getText(NoteConditionController.FILTER_NOTE);
+		final String nodeCondition = ResourceBundles.getText(NoteConditionController.FILTER_NOTE);
 		final String simpleCondition = ResourceBundles.getText(ConditionFactory.FILTER_CONTAINS);
 		return ConditionFactory.createDescription(nodeCondition, simpleCondition, value, ignoreCase);
-    }
+	}
+
+	protected String getText(final NodeModel node) {
+		return NoteModel.getNoteText(node);
+	}
 
 	public void toXml(final XMLElement element) {
 		toXml(element, NAME);
 	}
 
 	protected void toXml(final XMLElement element, final String name) {
-	    final XMLElement child = new XMLElement();
+		final XMLElement child = new XMLElement();
 		child.setName(name);
 		super.attributesToXml(child);
 		child.setAttribute(NoteContainsCondition.VALUE, value);
 		element.addChild(child);
-    }
+	}
 }

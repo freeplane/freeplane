@@ -43,7 +43,6 @@ public class EncryptedMap extends AFreeplaneAction {
 		newEncryptedMap();
 	}
 
-
 	/**
 	 * @param e 
 	 */
@@ -77,5 +76,4 @@ public class EncryptedMap extends AFreeplaneAction {
 		newModeController.getMapController().newMap(node);
 		encryptedMindMapNode.updateIcon();
 	}
-
 }

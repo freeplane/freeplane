@@ -96,7 +96,7 @@ public class ChangeNodeLevelController {
 	private boolean checkSelection(final ModeController modeController) {
 		final NodeModel selectedNode = modeController.getMapController().getSelectedNode();
 		final List<NodeModel> selectedNodes = modeController.getMapController().getSelectedNodes();
-		final Controller controller = modeController.getController();
+		modeController.getController();
 		if (selectedNode.isRoot()) {
 			UITools.errorMessage(ResourceBundles.getText("cannot_add_parent_to_root"));
 			return false;

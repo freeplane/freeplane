@@ -46,20 +46,21 @@ class SetLinkByTextFieldAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		final ModeController modeController = getModeController();
 		final NodeModel selectedNode = modeController.getMapController().getSelectedNode();
-		String inputValue = UITools.showInputDialog(getController(), getController().getSelection().getSelected(),
-		    ResourceBundles.getText("edit_link_manually"), NodeLinks.getLinkAsString(selectedNode));
+		final String inputValue = UITools.showInputDialog(getController(),
+		    getController().getSelection().getSelected(), ResourceBundles.getText("edit_link_manually"), NodeLinks
+		        .getLinkAsString(selectedNode));
 		if (inputValue != null) {
 			if (inputValue.equals("")) {
 				setLink(selectedNode, null);
 				return;
 			}
 			try {
-	            setLink(selectedNode, new URI(inputValue));
-            }
-            catch (URISyntaxException e1) {
-            	LogTool.warn(e1);
-            	UITools.errorMessage("wrong URI " + inputValue);
-            }
+				setLink(selectedNode, new URI(inputValue));
+			}
+			catch (final URISyntaxException e1) {
+				LogTool.warn(e1);
+				UITools.errorMessage("wrong URI " + inputValue);
+			}
 		}
 	}
 

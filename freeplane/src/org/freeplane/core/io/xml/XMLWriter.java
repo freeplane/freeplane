@@ -224,7 +224,7 @@ class XMLWriter {
 	 *            the string to write.
 	 * @param atributeValue TODO
 	 */
-	private void writeEncoded(final String str, boolean atributeValue) {
+	private void writeEncoded(final String str, final boolean atributeValue) {
 		for (int i = 0; i < str.length(); i++) {
 			final char c = str.charAt(i);
 			switch (c) {
@@ -244,10 +244,10 @@ class XMLWriter {
 					writer.print("&quot;");
 					break;
 				case 0x0A:
-					if(atributeValue){
+					if (atributeValue) {
 						writer.print("&#xa;");
 					}
-					else{
+					else {
 						writer.print(c);
 					}
 					break;

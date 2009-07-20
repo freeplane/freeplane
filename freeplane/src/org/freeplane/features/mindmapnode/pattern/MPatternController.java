@@ -119,12 +119,12 @@ public class MPatternController implements IExtension {
 					LogTool.severe(e);
 				}
 				if (success) {
-					JOptionPane.showMessageDialog(UITools.getFrame(), "Successfully repaired the pattern file.", repairTitle,
-					    JOptionPane.PLAIN_MESSAGE);
+					JOptionPane.showMessageDialog(UITools.getFrame(), "Successfully repaired the pattern file.",
+					    repairTitle, JOptionPane.PLAIN_MESSAGE);
 				}
 				else {
-					JOptionPane.showMessageDialog(UITools.getFrame(), "An error occured repairing the pattern file.", repairTitle,
-					    JOptionPane.WARNING_MESSAGE);
+					JOptionPane.showMessageDialog(UITools.getFrame(), "An error occured repairing the pattern file.",
+					    repairTitle, JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		}

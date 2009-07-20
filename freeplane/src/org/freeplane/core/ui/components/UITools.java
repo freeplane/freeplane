@@ -31,7 +31,6 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.DefaultFocusManager;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -99,6 +98,26 @@ public class UITools {
 			p.y += y;
 			c = c.getParent();
 		};
+	}
+
+	static public void errorMessage(final Object message) {
+		final String myMessage;
+		if (message != null) {
+			myMessage = message.toString();
+		}
+		else {
+			myMessage = ResourceBundles.getText("undefined_error");
+		}
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				JOptionPane.showMessageDialog(UITools.getFrame(), myMessage, "Freeplane", JOptionPane.ERROR_MESSAGE);
+			}
+		});
+	}
+
+	static public Frame getFrame() {
+		final Frame[] frames = Frame.getFrames();
+		return frames.length >= 1 ? frames[frames.length - 1] : null;
 	}
 
 	public static KeyStroke getKeyStroke(final String keyStrokeDescription) {
@@ -235,7 +254,15 @@ public class UITools {
 		final int y = c.getHeight();
 		final Point location = new Point(x, y);
 		SwingUtilities.convertPointToScreen(location, c);
-		setBounds(dialog, location.x, location.y, dialog.getWidth(), dialog.getHeight());
+		UITools.setBounds(dialog, location.x, location.y, dialog.getWidth(), dialog.getHeight());
+	}
+
+	public static int showConfirmDialog(final Controller controller, final NodeModel node, final Object message,
+	                                    final String title, final int optionType) {
+		final ViewController viewController = controller.getViewController();
+		viewController.scrollNodeToVisible(node);
+		final Component parentComponent = viewController.getComponent(node);
+		return JOptionPane.showConfirmDialog(parentComponent, message, title, optionType);
 	}
 
 	public static String showInputDialog(final Controller controller, final NodeModel node, final String text,
@@ -249,14 +276,6 @@ public class UITools {
 		return JOptionPane.showInputDialog(parentComponent, text, string);
 	}
 
-	public static int showConfirmDialog(final Controller controller, final NodeModel node, Object message,
-	                                    String title, int optionType) {
-		final ViewController viewController = controller.getViewController();
-		viewController.scrollNodeToVisible(node);
-		final Component parentComponent = viewController.getComponent(node);
-		return JOptionPane.showConfirmDialog(parentComponent, message, title, optionType);
-	}
-	
 	public static String showInputDialog(final Controller controller, final NodeModel node, final String text,
 	                                     final String title, final int type) {
 		if (node == null) {
@@ -267,27 +286,4 @@ public class UITools {
 		final Component parentComponent = viewController.getComponent(node);
 		return JOptionPane.showInputDialog(parentComponent, text, title, type);
 	}
-
-	static public void errorMessage(final Object message) {
-    	final String myMessage;
-    	if (message != null) {
-    		myMessage = message.toString();
-    	}
-    	else {
-    		myMessage = ResourceBundles.getText("undefined_error");
-    	}
-    	EventQueue.invokeLater(new Runnable(){
-    		
-    		public void run() {
-    			JOptionPane.showMessageDialog(getFrame(),
-    				myMessage, "Freeplane", JOptionPane.ERROR_MESSAGE);
-    		}
-
-			});
-	}
-	
-	static public Frame getFrame() {
-		final Frame[] frames = Frame.getFrames();
-		return frames.length >= 1 ? frames[frames.length-1]:null;
-    }
 }

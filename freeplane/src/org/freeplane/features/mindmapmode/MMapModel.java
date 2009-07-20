@@ -104,12 +104,14 @@ public class MMapModel extends MapModel {
 		}
 		final boolean filesShouldBeDeletedAfterShutdown = ResourceController.getResourceController()
 		    .getBooleanProperty("delete_automatic_saves_at_exit");
-		int delay = Integer.parseInt(ResourceController.getResourceController().getProperty("time_for_automatic_save"));
+		final int delay = Integer.parseInt(ResourceController.getResourceController().getProperty(
+		    "time_for_automatic_save"));
 		if (delay == 0) {
 			return;
 		}
 		final Timer timer = new Timer();
-		timer.schedule(new DoAutomaticSave(modeController, this, numberOfTempFiles, filesShouldBeDeletedAfterShutdown), delay, delay);
+		timer.schedule(new DoAutomaticSave(modeController, this, numberOfTempFiles, filesShouldBeDeletedAfterShutdown),
+		    delay, delay);
 		this.setTimerForAutomaticSaving(timer);
 	}
 

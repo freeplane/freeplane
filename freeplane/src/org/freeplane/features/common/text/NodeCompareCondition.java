@@ -29,8 +29,8 @@ import org.freeplane.core.util.HtmlTools;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 class NodeCompareCondition extends CompareConditionAdapter {
-	static final String NAME = "node_compare_condition";
 	static final String COMPARATION_RESULT = "COMPARATION_RESULT";
+	static final String NAME = "node_compare_condition";
 	static final String SUCCEED = "SUCCEED";
 	static final String VALUE = "VALUE";
 

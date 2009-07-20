@@ -339,19 +339,19 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	 * calculated, the second time the scrollPane is actually scrolled.
 	 */
 	public void centerNode(final NodeView node) {
-		if(SwingUtilities.getRoot(this) == null){
-			addAncestorListener(new AncestorListener(){
+		if (SwingUtilities.getRoot(this) == null) {
+			addAncestorListener(new AncestorListener() {
+				public void ancestorAdded(final AncestorEvent event) {
+					removeAncestorListener(this);
+					centerNode(node);
+				}
 
-				public void ancestorAdded(AncestorEvent event) {
-	                removeAncestorListener(this);
-	                centerNode(node);
-                }
+				public void ancestorMoved(final AncestorEvent event) {
+				}
 
-				public void ancestorMoved(AncestorEvent event) {
-                }
-
-				public void ancestorRemoved(AncestorEvent event) {
-                }});
+				public void ancestorRemoved(final AncestorEvent event) {
+				}
+			});
 			return;
 		}
 		nodeToBeVisible = null;

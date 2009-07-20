@@ -125,7 +125,7 @@ class AttributeRegistryTable extends JTable {
 
 		public void actionPerformed(final ActionEvent e) {
 			final int rowCount = getRowCount();
-			if(rowCount <= 1){
+			if (rowCount <= 1) {
 				return;
 			}
 			Boolean checked = (Boolean) getValueAt(1, 1);

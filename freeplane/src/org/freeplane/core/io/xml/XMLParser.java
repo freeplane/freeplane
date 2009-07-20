@@ -76,7 +76,7 @@ class XMLParser extends StdXMLParser implements IXMLParser {
 							throw new XMLParseException(reader.getSystemID(), reader.getLineNr(), "Invalid input: />");
 						}
 					}
-					else if(ch == '<'){
+					else if (ch == '<') {
 						waitingBuf.append('/');
 						reader.unread(ch);
 						continue;

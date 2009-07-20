@@ -26,5 +26,6 @@ import org.freeplane.core.model.MapModel;
  */
 public interface IMapLifeCycleListener {
 	public void onCreate(MapModel map);
+
 	public void onRemove(MapModel map);
 }

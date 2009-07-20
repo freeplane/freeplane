@@ -28,6 +28,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+
 import javax.swing.Box;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
@@ -45,6 +46,7 @@ import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileFilter;
+
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.condition.ConditionNotSatisfiedDecorator;
 import org.freeplane.core.filter.condition.ConjunctConditions;
@@ -250,7 +252,6 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 		}
 	}
 
-
 	private class LoadAction implements ActionListener {
 		public void actionPerformed(final ActionEvent e) {
 			final JFileChooser chooser = getFileChooser();
@@ -333,15 +334,11 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 	private JButton btnSave;
 	final private ConditionListSelectionListener conditionListListener;
 	final private Controller controller;
-	
-
+	final private FilterConditionEditor editor;
 	final private JList elementaryConditionList;
 	private ComboBoxModel externalConditionsModel;
 	final private FilterController filterController;
 	private DefaultComboBoxModel internalConditionsModel;
-	final private FilterConditionEditor editor;
-	
-	
 
 	public FilterComposerDialog(final Controller controller) {
 		super(controller.getViewController().getFrame(), ResourceBundles.getText("filter_dialog"));
@@ -434,12 +431,21 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 		pack();
 	}
 
+	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
+		editor.mapChanged(newMap);
+	}
+
+	public void afterMapClose(final MapModel oldMap) {
+	}
 
 	private void applyChanges() {
 		internalConditionsModel.setSelectedItem(elementaryConditionList.getSelectedValue());
 		internalConditionsModel.removeListDataListener(conditionListListener);
 		filterController.setFilterConditions(internalConditionsModel);
 		internalConditionsModel = null;
+	}
+
+	public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
 	}
 
 	protected JFileChooser getFileChooser() {
@@ -475,8 +481,6 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 		}
 	}
 
-
-
 	private boolean selectCondition() {
 		final int min = elementaryConditionList.getMinSelectionIndex();
 		if (min >= 0) {
@@ -499,14 +503,5 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 	public void show() {
 		initInternalConditionModel();
 		super.show();
-	}
-
-	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
-		editor.mapChanged(newMap);
-	}
-
-	public void afterMapClose(final MapModel oldMap) {
-	}
-	public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
 	}
 }

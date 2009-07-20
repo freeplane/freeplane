@@ -49,7 +49,7 @@ class AddLocalLinkAction extends AFreeplaneAction {
 		final ModeController modeController = getModeController();
 		final List selecteds = modeController.getMapController().getSelectedNodes();
 		if (selecteds.size() < 2) {
-			final Controller controller = getController();
+			getController();
 			UITools.errorMessage(ResourceBundles.getText("less_than_two_selected_nodes"));
 			return;
 		}

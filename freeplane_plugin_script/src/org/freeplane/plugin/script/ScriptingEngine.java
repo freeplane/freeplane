@@ -154,26 +154,27 @@ class ScriptingEngine extends AFreeplaneAction {
 		final FreeplaneSecurityManager securityManager = (FreeplaneSecurityManager) System.getSecurityManager();
 		try {
 			System.setOut(pOutStream);
-			final GroovyShell shell = new GroovyShell(binding){
+			final GroovyShell shell = new GroovyShell(binding) {
 				/**
 				 * Evaluates some script against the current Binding and returns the result
 				 *
 				 * @param in       the stream reading the script
 				 * @param fileName is the logical file name of the script (which is used to create the class name of the script)
 				 */
-				public Object evaluate(InputStream in, String fileName) throws CompilationFailedException {
+				@Override
+				public Object evaluate(final InputStream in, final String fileName) throws CompilationFailedException {
 					Script script = null;
 					try {
 						script = parse(in, fileName);
 						securityManager.setFinalSecurityManager(scriptingSecurityManager);
 						return script.run();
-					} finally {
+					}
+					finally {
 						if (script != null) {
 							InvokerHelper.removeClass(script.getClass());
 						}
 					}
 				}
-
 			};
 			value = shell.evaluate(script);
 		}
@@ -226,9 +227,8 @@ class ScriptingEngine extends AFreeplaneAction {
 			pOutStream.print(e2.getMessage());
 			final String cause = ((e2.getCause() != null) ? e2.getCause().getMessage() : "");
 			final String message = ((e2.getMessage() != null) ? e2.getMessage() : "");
-			UITools.errorMessage(
-			    e2.getClass().getName() + ": " + cause + ((cause.length() != 0 && message.length() != 0) ? ", " : "")
-			            + message);
+			UITools.errorMessage(e2.getClass().getName() + ": " + cause
+			        + ((cause.length() != 0 && message.length() != 0) ? ", " : "") + message);
 			return false;
 		}
 		pOutStream.print(ResourceBundles.getText("plugins/ScriptEditor/window.Result") + value);

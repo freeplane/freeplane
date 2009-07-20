@@ -33,6 +33,7 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
+
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import javax.xml.transform.Result;
@@ -56,7 +57,6 @@ import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.core.util.ResUtil;
-import org.freeplane.features.mindmapmode.MModeController;
 import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;
@@ -129,8 +129,7 @@ public class ExportWithXSLT extends ExportAction {
 				final Properties properties = xmlProperties.getAttributes();
 				final ExportWithXSLT action = new ExportWithXSLT(name, controller, properties);
 				modeController.addAction(action);
-				menuBuilder.addAction(location, action,
-				    MenuBuilder.AS_CHILD);
+				menuBuilder.addAction(location, action, MenuBuilder.AS_CHILD);
 			}
 		}
 		catch (final Exception e) {
@@ -210,7 +209,6 @@ public class ExportWithXSLT extends ExportAction {
 			LogTool.severe(e1);
 		}
 	}
-
 
 	/**
 	 * @param create_image

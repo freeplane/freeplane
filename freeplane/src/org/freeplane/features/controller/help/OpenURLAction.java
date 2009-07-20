@@ -47,11 +47,11 @@ class OpenURLAction extends AFreeplaneAction {
 		}
 		catch (final MalformedURLException ex) {
 			UITools.errorMessage(ResourceBundles.getText("url_error") + "\n" + ex);
-			LogTool.warn( ex);		
+			LogTool.warn(ex);
 		}
 		catch (final Exception ex) {
 			UITools.errorMessage(ex);
-			LogTool.warn( ex);		
+			LogTool.warn(ex);
 		}
 	}
 }

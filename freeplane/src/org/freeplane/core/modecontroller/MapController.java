@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 import javax.swing.Action;
+
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.IMapViewManager;
 import org.freeplane.core.io.IAttributeHandler;
@@ -246,7 +247,7 @@ public class MapController extends SelectionController {
 	}
 
 	private void fireNodeChanged(final NodeModel node, final NodeChangeEvent nodeChangeEvent) {
-		for (INodeChangeListener next:nodeChangeListeners) {
+		for (final INodeChangeListener next : nodeChangeListeners) {
 			next.nodeChanged(nodeChangeEvent);
 		}
 		node.fireNodeChanged(nodeChangeEvent);
@@ -438,6 +439,31 @@ public class MapController extends SelectionController {
 		return newModel;
 	}
 
+	public void newMap(final URL url) throws FileNotFoundException, XMLParseException, IOException, URISyntaxException {
+		final IMapViewManager mapViewManager = getController().getMapViewManager();
+		/*
+		 * this can lead to confusion if the user handles multiple maps
+		 * with the same name. Obviously, this is wrong. Get a better
+		 * check whether or not the file is already opened.
+		 */
+		final String mapExtensionKey = mapViewManager.checkIfFileIsAlreadyOpened(url);
+		if (mapExtensionKey != null) {
+			mapViewManager.tryToChangeToMapView(mapExtensionKey);
+			return;
+		}
+		try {
+			getController().getViewController().setWaitingCursor(true);
+			final MapModel newModel = newModel(null);
+			((UrlManager) getModeController().getExtension(UrlManager.class)).load(url, newModel);
+			fireMapCreated(newModel);
+			newMapView(newModel);
+			setSaved(newModel, true);
+		}
+		finally {
+			getController().getViewController().setWaitingCursor(false);
+		}
+	}
+
 	protected void newMapView(final MapModel mapModel) {
 		getController().getMapViewManager().newMapView(mapModel, getModeController());
 		setSaved(mapModel, false);
@@ -603,32 +629,6 @@ public class MapController extends SelectionController {
 		for (final Iterator i = resetIterator(listIterator); i.hasNext();) {
 			final NodeModel node = (NodeModel) i.next();
 			setFolded(node, fold);
-		}
-	}
-	
-	public void newMap(final URL url) throws FileNotFoundException, XMLParseException, IOException,
-	URISyntaxException {
-		final IMapViewManager mapViewManager = getController().getMapViewManager();
-		/*
-		 * this can lead to confusion if the user handles multiple maps
-		 * with the same name. Obviously, this is wrong. Get a better
-		 * check whether or not the file is already opened.
-		 */
-		final String mapExtensionKey = mapViewManager.checkIfFileIsAlreadyOpened(url);
-		if (mapExtensionKey != null) {
-			mapViewManager.tryToChangeToMapView(mapExtensionKey);
-			return;
-		}
-		try{
-			getController().getViewController().setWaitingCursor(true);
-			final MapModel newModel = newModel(null);
-			((UrlManager) getModeController().getExtension(UrlManager.class)).load(url, newModel);
-			fireMapCreated(newModel);
-			newMapView(newModel);
-			setSaved(newModel, true);
-		}
-		finally {
-			getController().getViewController().setWaitingCursor(false);
 		}
 	}
 }

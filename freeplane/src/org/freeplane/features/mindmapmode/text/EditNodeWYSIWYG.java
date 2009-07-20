@@ -226,10 +226,10 @@ class EditNodeWYSIWYG extends EditNodeBase {
 			styleSheet.removeStyle("body");
 			styleSheet.addRule(rule);
 			final URL url = node.getMap().getURL();
-			if(url != null){
+			if (url != null) {
 				document.setBase(url);
 			}
-			else{
+			else {
 				document.setBase(new URL("file: "));
 			}
 			int preferredHeight = (int) (viewController.getComponent(node).getHeight() * 1.2);
@@ -244,10 +244,10 @@ class EditNodeWYSIWYG extends EditNodeBase {
 			    .getProperty("el__max_default_window_width")));
 			htmlEditorPanel.setContentPanePreferredSize(new Dimension(preferredWidth, preferredHeight));
 			EditNodeWYSIWYG.htmlEditorWindow.pack();
-			if(ResourceController.getResourceController().getBooleanProperty("el__position_window_below_node")){
+			if (ResourceController.getResourceController().getBooleanProperty("el__position_window_below_node")) {
 				UITools.setDialogLocationUnder(EditNodeWYSIWYG.htmlEditorWindow, getController(), node);
 			}
-			else{
+			else {
 				UITools.setDialogLocationRelativeTo(EditNodeWYSIWYG.htmlEditorWindow, getController(), node);
 			}
 			String content = node.toString();

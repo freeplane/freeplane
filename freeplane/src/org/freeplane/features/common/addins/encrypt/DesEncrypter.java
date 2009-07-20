@@ -59,9 +59,9 @@ public class DesEncrypter implements IEncrypter {
 	Cipher ecipher;
 	int iterationCount = 19;
 	final private String mAlgorithm;
-	final private char[] passPhrase;
 	byte[] mSalt = { (byte) 0xA9, (byte) 0x9B, (byte) 0xC8, (byte) 0x32, (byte) 0x56, (byte) 0x35, (byte) 0xE3,
 	        (byte) 0x03 };
+	final private char[] passPhrase;
 
 	public DesEncrypter(final StringBuilder pPassPhrase, final String pAlgorithm) {
 		passPhrase = new char[pPassPhrase.length()];
@@ -120,7 +120,7 @@ public class DesEncrypter implements IEncrypter {
 	/**
 	 */
 	private void init(final byte[] salt) {
-		if(ecipher != null && mSalt != null && ! Arrays.equals(mSalt, salt)){
+		if (ecipher != null && mSalt != null && !Arrays.equals(mSalt, salt)) {
 			ecipher = null;
 			dcipher = null;
 		}

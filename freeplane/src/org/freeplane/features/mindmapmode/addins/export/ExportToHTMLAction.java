@@ -33,7 +33,7 @@ import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.clipboard.ClipboardController;
 
-@ActionLocationDescriptor(accelerator = "control E", locations={"/menu_bar/file/export/html"})
+@ActionLocationDescriptor(accelerator = "control E", locations = { "/menu_bar/file/export/html" })
 class ExportToHTMLAction extends AFreeplaneAction {
 	/**
 	 * 
@@ -48,11 +48,12 @@ class ExportToHTMLAction extends AFreeplaneAction {
 		final MapModel map = getController().getMap();
 		try {
 			final File file = ExportAction.chooseFile(getController(), "html", "html", null);
-			if(file == null){
+			if (file == null) {
 				return;
 			}
 			ClipboardController.getController(getModeController()).saveHTML(map.getRootNode(), file);
-			((UrlManager)getModeController().getMapController().getModeController().getExtension(UrlManager.class)).loadURL(file.toURI());
+			((UrlManager) getModeController().getMapController().getModeController().getExtension(UrlManager.class))
+			    .loadURL(file.toURI());
 		}
 		catch (final IOException ex) {
 			LogTool.warn(ex);

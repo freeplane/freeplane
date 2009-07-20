@@ -57,8 +57,7 @@ public class ManagePatterns extends AFreeplaneAction {
 				StylePatternFactory.savePatterns(new FileWriter(patternFile), formatDialog.getPatternList());
 				patternController.loadPatterns(patternController.getPatternReader());
 				patternController.createPatternSubMenu(
-				    mindMapController.getUserInputListenerFactory().getMenuBuilder(),
-				    "/menu_bar/format");
+				    mindMapController.getUserInputListenerFactory().getMenuBuilder(), "/menu_bar/format");
 				patternController.createPatternSubMenu(
 				    mindMapController.getUserInputListenerFactory().getMenuBuilder(),
 				    UserInputListenerFactory.NODE_POPUP);

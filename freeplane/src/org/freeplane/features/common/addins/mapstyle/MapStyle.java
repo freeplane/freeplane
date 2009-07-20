@@ -111,8 +111,8 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			public void act() {
 				model.setBackgroundColor(actionColor);
 				getModeController().getMapController().fireMapChanged(
-				    new MapChangeEvent(MapStyle.this, getController().getMap(), MapStyle.RESOURCES_BACKGROUND_COLOR, oldColor,
-				        actionColor));
+				    new MapChangeEvent(MapStyle.this, getController().getMap(), MapStyle.RESOURCES_BACKGROUND_COLOR,
+				        oldColor, actionColor));
 			}
 
 			public String getDescription() {
@@ -122,8 +122,8 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			public void undo() {
 				model.setBackgroundColor(oldColor);
 				getModeController().getMapController().fireMapChanged(
-				    new MapChangeEvent(MapStyle.this, getController().getMap(), MapStyle.RESOURCES_BACKGROUND_COLOR, actionColor,
-				        oldColor));
+				    new MapChangeEvent(MapStyle.this, getController().getMap(), MapStyle.RESOURCES_BACKGROUND_COLOR,
+				        actionColor, oldColor));
 			}
 		};
 		getModeController().execute(actor);

@@ -38,6 +38,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
+
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
@@ -66,10 +67,9 @@ import org.freeplane.n3.nanoxml.XMLParseException;
  * @author Dimitry Polivaev
  */
 public class MFileManager extends UrlManager {
-	private static final String BACKUP_FILE_NUMBER = "backup_file_number";
-	private static final String EXPECTED_START_STRINGS[] = { "<map version=\"" + FreeplaneVersion.XML_VERSION + "\"",
-    "<map version=\"0.7.1\"" };
-private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_version_updater.xslt";
+	static private class BackupFlag implements IExtension {
+	}
+
 	private class MindMapFilter extends FileFilter {
 		@Override
 		public boolean accept(final File f) {
@@ -94,6 +94,67 @@ private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_ve
 		}
 	}
 
+	private static final String BACKUP_FILE_NUMBER = "backup_file_number";
+	private static final String EXPECTED_START_STRINGS[] = { "<map version=\"" + FreeplaneVersion.XML_VERSION + "\"",
+	        "<map version=\"0.7.1\"" };
+	private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_version_updater.xslt";
+
+	private static void backupFile(final File file, final int backupFileNumber, final String dir, final String extension) {
+		if (backupFileNumber == 0) {
+			return;
+		}
+		final String name = file.getName();
+		final File backupDir = new File(file.getParentFile(), dir);
+		backupDir.mkdir();
+		if (backupDir.exists()) {
+			final File backupFile = MFileManager.renameBackupFiles(backupDir, name, backupFileNumber, extension);
+			if (!backupFile.exists()) {
+				file.renameTo(backupFile);
+			}
+		}
+	}
+
+	static File createBackupFile(final File backupDir, final String name, final int number, final String extension) {
+		return new File(backupDir, name + '.' + number + '.' + extension);
+	}
+
+	static File renameBackupFiles(final File backupDir, final String name, final int backupFileNumber,
+	                              final String extension) {
+		if (backupFileNumber == 0) {
+			return null;
+		}
+		for (int i = backupFileNumber + 1;; i++) {
+			final File newFile = MFileManager.createBackupFile(backupDir, name, i, extension);
+			if (!newFile.exists()) {
+				break;
+			}
+			newFile.delete();
+		}
+		int i = backupFileNumber;
+		for (;;) {
+			final File newFile = MFileManager.createBackupFile(backupDir, name, i, extension);
+			if (newFile.exists()) {
+				break;
+			}
+			i--;
+			if (i == 0) {
+				break;
+			}
+		}
+		if (i < backupFileNumber) {
+			return MFileManager.createBackupFile(backupDir, name, i + 1, extension);
+		}
+		for (i = 1; i < backupFileNumber; i++) {
+			final File newFile = MFileManager.createBackupFile(backupDir, name, i, extension);
+			final File oldFile = MFileManager.createBackupFile(backupDir, name, i + 1, extension);
+			newFile.delete();
+			if (!oldFile.renameTo(newFile)) {
+				return null;
+			}
+		}
+		return MFileManager.createBackupFile(backupDir, name, backupFileNumber, extension);
+	}
+
 	FileFilter filefilter = new MindMapFilter();
 
 	/**
@@ -102,6 +163,14 @@ private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_ve
 	public MFileManager(final ModeController modeController) {
 		super(modeController);
 		createActions(modeController);
+	}
+
+	private void backup(final File file) {
+		if (file == null) {
+			return;
+		}
+		final int backupFileNumber = ResourceController.getResourceController().getIntProperty(BACKUP_FILE_NUMBER, 0);
+		MFileManager.backupFile(file, backupFileNumber, ".backup", "bak");
 	}
 
 	/**
@@ -127,7 +196,7 @@ private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_ve
 
 	public FileFilter getFileFilter() {
 		return filefilter;
-	}
+	};
 
 	/**
 	 * Creates a proposal for a file name to save the map. Removes all illegal
@@ -189,145 +258,7 @@ private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_ve
 				return null;
 			}
 		}
-		
 		return input.toURI();
-	}
-
-	public void open() {
-		final JFileChooser chooser = getFileChooser();
-		final int returnVal = chooser.showOpenDialog(getController().getViewController().getMapView());
-		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			File[] selectedFiles;
-			if (chooser.isMultiSelectionEnabled()) {
-				selectedFiles = chooser.getSelectedFiles();
-			}
-			else {
-				selectedFiles = new File[] { chooser.getSelectedFile() };
-			}
-			for (int i = 0; i < selectedFiles.length; i++) {
-				final File theFile = selectedFiles[i];
-				try {
-					setLastCurrentDir(theFile.getParentFile());
-					getModeController().getMapController().newMap(Compat.fileToUrl(theFile));
-				}
-				catch (final Exception ex) {
-					handleLoadingException(ex);
-					break;
-				}
-			}
-		}
-		getController().getViewController().setTitle();
-	}
-
-	static private class BackupFlag implements IExtension{
-	};
-	public boolean save(final MapModel map) {
-		if (map.isSaved()) {
-			return true;
-		}
-		if (map.getURL() == null || map.isReadOnly()) {
-			return saveAs(map);
-		}
-		else {
-			return save(map, map.getFile());
-		}
-	}
-
-	private void backup(final File file) {
-	    if(file == null){
-	    	return;
-	    }
-		final int backupFileNumber =ResourceController.getResourceController().getIntProperty(BACKUP_FILE_NUMBER, 0);
-	    backupFile(file, backupFileNumber, ".backup", "bak");
-    }
-
-	private static void backupFile(final File file, final int backupFileNumber, final String dir, String extension) {
-	    if(backupFileNumber == 0){
-			return;
-		}
-	    final String name = file.getName();
-		final File backupDir = new File(file.getParentFile(), dir);
-		backupDir.mkdir();
-		if(backupDir.exists()){			
-			File backupFile = renameBackupFiles(backupDir, name, backupFileNumber, extension);
-			if(! backupFile.exists()){
-				file.renameTo(backupFile);
-			}
-		}
-    }
-
-	static File renameBackupFiles(File backupDir, String name, int backupFileNumber, String extension) {
-	    if(backupFileNumber == 0){
-			return null;
-		}
-	    for(int i =backupFileNumber+1;;i++){
-	    	File newFile = createBackupFile(backupDir, name, i, extension);
-	    	if(! newFile.exists()){
-	    		break;
-	    	}
-	    	newFile.delete();
-	    }
-
-	    int i =backupFileNumber;
-		for(;;){
-			File newFile = createBackupFile(backupDir, name, i, extension);			
-			if(newFile.exists()){
-				break;
-			}
-			i--;
-			if(i == 0){
-				break;
-			}
-		}
-		if(i < backupFileNumber){
-			return createBackupFile(backupDir, name, i+1, extension);
-		}
-		for(i =1; i <backupFileNumber ; i++){
-			File newFile = createBackupFile(backupDir, name, i, extension);
-			File oldFile = createBackupFile(backupDir, name, i+1, extension);
-			newFile.delete();
-			if(! oldFile.renameTo(newFile)){
-				return null;
-			}
-		}
-		return createBackupFile(backupDir, name, backupFileNumber, extension);
-    }
-
-	static File createBackupFile(File backupDir, String name, int number, String extension) {
-	    return new File(backupDir, name + '.' +  number + '.' + extension);
-    }
-
-	/**
-	 * Return the success of saving
-	 */
-	public boolean save(final MapModel map, final File file) {
-		try {
-			if(null == map.getExtension(BackupFlag.class)){
-				map.addExtension(new BackupFlag());
-				backup(file);
-			}
-			final String lockingUser = tryToLock(map, file);
-			if (lockingUser != null) {
-				UITools.informationMessage(getController().getViewController().getFrame(), FpStringUtils.formatText(
-				    "map_locked_by_save_as", file.getName(), lockingUser));
-				return false;
-			}
-		}
-		catch (final Exception e) {
-			UITools.informationMessage(getController().getViewController().getFrame(), FpStringUtils.formatText(
-			    "locking_failed_by_save_as", file.getName()));
-			return false;
-		}
-		final URL urlBefore = map.getURL();
-		final boolean saved = saveInternal((MMapModel) map, file, false);
-		if(! saved){
-			return false;
-		}			
-		final URL urlAfter = map.getURL();
-		final MMapController mapController = (MMapController) getModeController().getMapController();
-		mapController.fireMapChanged(new MapChangeEvent(this, map, UrlManager.MAP_URL, urlBefore, urlAfter));
-		mapController.setSaved(map, true);
-		return true;
 	}
 
 	@Override
@@ -364,153 +295,25 @@ private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_ve
 			((MMapModel) map).setRoot(root);
 		}
 	}
-	/**
-     * Save as; return false is the action was cancelled
-     */
-    public boolean saveAs(final MapModel map) {
-    	final JFileChooser chooser = getFileChooser();
-    	if (getMapsParentFile() == null) {
-    		chooser.setSelectedFile(new File(getFileNameProposal(map)
-    		        + org.freeplane.core.url.UrlManager.FREEPLANE_FILE_EXTENSION));
-    	}
-    	else{
-    		chooser.setSelectedFile(map.getFile());
-    	}
-    	chooser.setDialogTitle(ResourceBundles.getText("SaveAsAction.text"));
-    	final int returnVal = chooser.showSaveDialog(getController().getViewController().getMapView());
-    	if (returnVal != JFileChooser.APPROVE_OPTION) {
-    		return false;
-    	}
-    	File f = chooser.getSelectedFile();
-    	setLastCurrentDir(f.getParentFile());
-    	final String ext = UrlManager.getExtension(f.getName());
-    	if (!ext.equals(org.freeplane.core.url.UrlManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
-    		f = new File(f.getParent(), f.getName() + org.freeplane.core.url.UrlManager.FREEPLANE_FILE_EXTENSION);
-    	}
-    	if (f.exists()) {
-    		final int overwriteMap = JOptionPane.showConfirmDialog(getController().getViewController().getMapView(),
-    		    ResourceBundles.getText("map_already_exists"), "Freeplane", JOptionPane.YES_NO_OPTION);
-    		if (overwriteMap != JOptionPane.YES_OPTION) {
-    			return false;
-    		}
-    	}
-    	// extra backup in this case.
-    	File oldFile = map.getFile();
-    	if(oldFile != null){
-    		oldFile = oldFile.getAbsoluteFile();
-    	}
-    	if(!f.getAbsoluteFile().equals(oldFile) && null != map.getExtension(BackupFlag.class)){
-    		map.removeExtension(BackupFlag.class);
-    	}
-    	if(save(map, f)){
-    		getController().getMapViewManager().updateMapViewName();
-    		return true;
-    	}
-    	return false;
-    }
 
-	/**
-	 * This method is intended to provide both normal save routines and saving
-	 * of temporary (internal) files.
-	 */
-	boolean saveInternal(final MMapModel map, final File file, final boolean isInternal) {
-		if (!isInternal && map.isReadOnly()) {
-			System.err.println("Attempt to save read-only map.");
-			return false;
-		}
-		try {
-			if (map.getTimerForAutomaticSaving() != null) {
-				map.getTimerForAutomaticSaving().cancel();
-			}
-			final FileOutputStream out = new FileOutputStream(file);
-			final FileLock lock = out.getChannel().tryLock();
-			if(lock == null){
-				throw new IOException("can not obtain file lock for " + file);
-			}
-			final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(out));
-			getModeController().getMapController().getMapWriter().writeMapAsXml(map, fileout, Mode.FILE, true);
-			if (!isInternal) {
-				setFile(map, file);
-				map.setSaved(true);
-			}
-			map.scheduleTimerForAutomaticSaving(getModeController());
-			return true;
-		}
-		catch (final IOException e) {
-			final String message = FpStringUtils.formatText("save_failed", file.getName());
-			if (!isInternal) {
-				UITools.errorMessage(message);
-			}
-			else {
-				getController().getViewController().out(message);
-			}
-		}
-		catch (final Exception e) {
-			LogTool.severe("Error in MapModel.save(): ", e);
-		}
-		map.scheduleTimerForAutomaticSaving(getModeController());
-		return false;
-	}
-
-	@Override
-	public void startup() {
-		final ModeController modeController = getModeController();
-		final Component mapView = getController().getViewController().getMapView();
-		if (mapView != null) {
-			final FileOpener fileOpener = new FileOpener(modeController);
-			new DropTarget(mapView, fileOpener);
-		}
-	}
-	/**
-	 * Attempts to lock the map using a semaphore file
-	 *
-	 * @return If the map is locked, return the name of the locking user,
-	 *         otherwise return null.
-	 * @throws Exception
-	 *             , when the locking failed for other reasons than that the
-	 *             file is being edited.
-	 */
-	public String tryToLock(final MapModel map, final File file) throws Exception {
-		final String lockingUser = ((MMapModel) map).getLockManager().tryToLock(file);
-		final String lockingUserOfOldLock = ((MMapModel) map).getLockManager().popLockingUserOfOldLock();
-		if (lockingUserOfOldLock != null) {
-			UITools.informationMessage(getController().getViewController().getFrame(), FpStringUtils.formatText(
-			    "locking_old_lock_removed", file.getName(), lockingUserOfOldLock));
-		}
-		if (lockingUser == null) {
-			((MMapModel) map).setReadOnly(false);
-		}
-		return lockingUser;
-	}
 	public NodeModel loadTree(final MapModel map, final File file) throws XMLParseException, IOException {
 		final FileInputStream input = new FileInputStream(file);
 		final FileChannel channel = input.getChannel();
 		final FileLock lock = channel.tryLock(0, Long.MAX_VALUE, true);
-		if(lock == null){
+		if (lock == null) {
 			throw new IOException("can not obtain file lock for " + file);
 		}
 		final NodeModel rootNode = loadTreeImpl(map, input);
 		setFile(map, file);
 		return rootNode;
 	}
-	
-	public void setFile(MapModel map, final File file) {
-		try {
-			URL url = Compat.fileToUrl(file);
-			setURL(map, url);
-		}
-		catch (final MalformedURLException e) {
-			LogTool.severe(e);
-		}
-	}
-
 
 	private NodeModel loadTreeImpl(final MapModel map, final FileInputStream input) throws FileNotFoundException,
-            IOException {
-	    int versionInfoLength = EXPECTED_START_STRINGS[0].length();
+	        IOException {
+		int versionInfoLength = EXPECTED_START_STRINGS[0].length();
 		final String buffer = readFileStart(input, versionInfoLength).toString();
-		StringBufferInputStream startInput = new StringBufferInputStream(buffer);
-		InputStream sequencedInput = new SequenceInputStream(startInput, input);
+		final StringBufferInputStream startInput = new StringBufferInputStream(buffer);
+		final InputStream sequencedInput = new SequenceInputStream(startInput, input);
 		Reader reader = null;
 		for (int i = 0; i < EXPECTED_START_STRINGS.length; i++) {
 			versionInfoLength = EXPECTED_START_STRINGS[i].length();
@@ -550,7 +353,49 @@ private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_ve
 				reader.close();
 			}
 		}
-    }
+	}
+
+	@Override
+	public void loadURL(final URI relative) {
+		final MapModel map = getController().getMap();
+		if (map.getFile() == null) {
+			if (!relative.isAbsolute() || relative.isOpaque()) {
+				getController().getViewController().out("You must save the current map first!");
+				final boolean result = ((MFileManager) UrlManager.getController(getModeController())).save(map);
+				if (!result) {
+					return;
+				}
+			}
+		}
+		super.loadURL(relative);
+	}
+
+	public void open() {
+		final JFileChooser chooser = getFileChooser();
+		final int returnVal = chooser.showOpenDialog(getController().getViewController().getMapView());
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			File[] selectedFiles;
+			if (chooser.isMultiSelectionEnabled()) {
+				selectedFiles = chooser.getSelectedFiles();
+			}
+			else {
+				selectedFiles = new File[] { chooser.getSelectedFile() };
+			}
+			for (int i = 0; i < selectedFiles.length; i++) {
+				final File theFile = selectedFiles[i];
+				try {
+					setLastCurrentDir(theFile.getParentFile());
+					getModeController().getMapController().newMap(Compat.fileToUrl(theFile));
+				}
+				catch (final Exception ex) {
+					handleLoadingException(ex);
+					break;
+				}
+			}
+		}
+		getController().getViewController().setTitle();
+	}
+
 	/**
 	 * Returns pMinimumLength bytes of the files content.
 	 * @throws IOException 
@@ -559,23 +404,183 @@ private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_ve
 	 * @throws IOException
 	 */
 	private String readFileStart(final FileInputStream input, final int pMinimumLength) throws IOException {
-		byte[] buffer = new byte[pMinimumLength];
+		final byte[] buffer = new byte[pMinimumLength];
 		input.read(buffer);
 		return new String(buffer);
 	}
-	
-	@Override
-	public void loadURL(final URI relative) {
-			final MapModel map = getController().getMap();
-			if (map.getFile() == null) {
-				if (! relative.isAbsolute() || relative.isOpaque()) {
-					getController().getViewController().out("You must save the current map first!");
-					final boolean result = ((MFileManager) UrlManager.getController(getModeController())).save(map);
-					if (!result) {
-						return;
-					}
-				}
+
+	public boolean save(final MapModel map) {
+		if (map.isSaved()) {
+			return true;
+		}
+		if (map.getURL() == null || map.isReadOnly()) {
+			return saveAs(map);
+		}
+		else {
+			return save(map, map.getFile());
+		}
+	}
+
+	/**
+	 * Return the success of saving
+	 */
+	public boolean save(final MapModel map, final File file) {
+		try {
+			if (null == map.getExtension(BackupFlag.class)) {
+				map.addExtension(new BackupFlag());
+				backup(file);
 			}
-			super.loadURL(relative);
+			final String lockingUser = tryToLock(map, file);
+			if (lockingUser != null) {
+				UITools.informationMessage(getController().getViewController().getFrame(), FpStringUtils.formatText(
+				    "map_locked_by_save_as", file.getName(), lockingUser));
+				return false;
+			}
+		}
+		catch (final Exception e) {
+			UITools.informationMessage(getController().getViewController().getFrame(), FpStringUtils.formatText(
+			    "locking_failed_by_save_as", file.getName()));
+			return false;
+		}
+		final URL urlBefore = map.getURL();
+		final boolean saved = saveInternal((MMapModel) map, file, false);
+		if (!saved) {
+			return false;
+		}
+		final URL urlAfter = map.getURL();
+		final MMapController mapController = (MMapController) getModeController().getMapController();
+		mapController.fireMapChanged(new MapChangeEvent(this, map, UrlManager.MAP_URL, urlBefore, urlAfter));
+		mapController.setSaved(map, true);
+		return true;
+	}
+
+	/**
+	 * Save as; return false is the action was cancelled
+	 */
+	public boolean saveAs(final MapModel map) {
+		final JFileChooser chooser = getFileChooser();
+		if (getMapsParentFile() == null) {
+			chooser.setSelectedFile(new File(getFileNameProposal(map)
+			        + org.freeplane.core.url.UrlManager.FREEPLANE_FILE_EXTENSION));
+		}
+		else {
+			chooser.setSelectedFile(map.getFile());
+		}
+		chooser.setDialogTitle(ResourceBundles.getText("SaveAsAction.text"));
+		final int returnVal = chooser.showSaveDialog(getController().getViewController().getMapView());
+		if (returnVal != JFileChooser.APPROVE_OPTION) {
+			return false;
+		}
+		File f = chooser.getSelectedFile();
+		setLastCurrentDir(f.getParentFile());
+		final String ext = UrlManager.getExtension(f.getName());
+		if (!ext.equals(org.freeplane.core.url.UrlManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
+			f = new File(f.getParent(), f.getName() + org.freeplane.core.url.UrlManager.FREEPLANE_FILE_EXTENSION);
+		}
+		if (f.exists()) {
+			final int overwriteMap = JOptionPane.showConfirmDialog(getController().getViewController().getMapView(),
+			    ResourceBundles.getText("map_already_exists"), "Freeplane", JOptionPane.YES_NO_OPTION);
+			if (overwriteMap != JOptionPane.YES_OPTION) {
+				return false;
+			}
+		}
+		// extra backup in this case.
+		File oldFile = map.getFile();
+		if (oldFile != null) {
+			oldFile = oldFile.getAbsoluteFile();
+		}
+		if (!f.getAbsoluteFile().equals(oldFile) && null != map.getExtension(BackupFlag.class)) {
+			map.removeExtension(BackupFlag.class);
+		}
+		if (save(map, f)) {
+			getController().getMapViewManager().updateMapViewName();
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * This method is intended to provide both normal save routines and saving
+	 * of temporary (internal) files.
+	 */
+	boolean saveInternal(final MMapModel map, final File file, final boolean isInternal) {
+		if (!isInternal && map.isReadOnly()) {
+			System.err.println("Attempt to save read-only map.");
+			return false;
+		}
+		try {
+			if (map.getTimerForAutomaticSaving() != null) {
+				map.getTimerForAutomaticSaving().cancel();
+			}
+			final FileOutputStream out = new FileOutputStream(file);
+			final FileLock lock = out.getChannel().tryLock();
+			if (lock == null) {
+				throw new IOException("can not obtain file lock for " + file);
+			}
+			final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(out));
+			getModeController().getMapController().getMapWriter().writeMapAsXml(map, fileout, Mode.FILE, true);
+			if (!isInternal) {
+				setFile(map, file);
+				map.setSaved(true);
+			}
+			map.scheduleTimerForAutomaticSaving(getModeController());
+			return true;
+		}
+		catch (final IOException e) {
+			final String message = FpStringUtils.formatText("save_failed", file.getName());
+			if (!isInternal) {
+				UITools.errorMessage(message);
+			}
+			else {
+				getController().getViewController().out(message);
+			}
+		}
+		catch (final Exception e) {
+			LogTool.severe("Error in MapModel.save(): ", e);
+		}
+		map.scheduleTimerForAutomaticSaving(getModeController());
+		return false;
+	}
+
+	public void setFile(final MapModel map, final File file) {
+		try {
+			final URL url = Compat.fileToUrl(file);
+			setURL(map, url);
+		}
+		catch (final MalformedURLException e) {
+			LogTool.severe(e);
+		}
+	}
+
+	@Override
+	public void startup() {
+		final ModeController modeController = getModeController();
+		final Component mapView = getController().getViewController().getMapView();
+		if (mapView != null) {
+			final FileOpener fileOpener = new FileOpener(modeController);
+			new DropTarget(mapView, fileOpener);
+		}
+	}
+
+	/**
+	 * Attempts to lock the map using a semaphore file
+	 *
+	 * @return If the map is locked, return the name of the locking user,
+	 *         otherwise return null.
+	 * @throws Exception
+	 *             , when the locking failed for other reasons than that the
+	 *             file is being edited.
+	 */
+	public String tryToLock(final MapModel map, final File file) throws Exception {
+		final String lockingUser = ((MMapModel) map).getLockManager().tryToLock(file);
+		final String lockingUserOfOldLock = ((MMapModel) map).getLockManager().popLockingUserOfOldLock();
+		if (lockingUserOfOldLock != null) {
+			UITools.informationMessage(getController().getViewController().getFrame(), FpStringUtils.formatText(
+			    "locking_old_lock_removed", file.getName(), lockingUserOfOldLock));
+		}
+		if (lockingUser == null) {
+			((MMapModel) map).setReadOnly(false);
+		}
+		return lockingUser;
 	}
 }

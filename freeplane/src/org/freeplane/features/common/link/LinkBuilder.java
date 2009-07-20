@@ -186,9 +186,9 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 		writer.addAttributeWriter(NodeBuilder.XML_NODE, this);
 	}
 
-	public void save(ITreeWriter writer, final ArrowLinkModel model) throws IOException {
+	public void save(final ITreeWriter writer, final ArrowLinkModel model) throws IOException {
 		final NodeModel target = model.getTarget();
-		if(target == null){
+		if (target == null) {
 			return;
 		}
 		final XMLElement arrowLink = new XMLElement();

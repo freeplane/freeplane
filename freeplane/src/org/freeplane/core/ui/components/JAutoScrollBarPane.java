@@ -65,10 +65,11 @@ public class JAutoScrollBarPane extends JScrollPane {
 		}
 		if (layoutAgain) {
 			super.doLayout();
-			EventQueue.invokeLater(new Runnable(){
+			EventQueue.invokeLater(new Runnable() {
 				public void run() {
-	                ((JComponent) getParent()).revalidate();
-                }});
+					((JComponent) getParent()).revalidate();
+				}
+			});
 		}
 	}
 

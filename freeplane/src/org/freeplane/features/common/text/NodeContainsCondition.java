@@ -47,10 +47,6 @@ class NodeContainsCondition extends NodeCondition {
 		return checkText(text) || HtmlTools.isHtmlNode(text) && checkText(HtmlTools.htmlToPlain(text));
 	}
 
-	private String getText(final NodeModel node) {
-	    return node.getText();
-    }
-
 	private boolean checkText(final String plainTextContent) {
 		return plainTextContent.indexOf(value) > -1;
 	}
@@ -60,6 +56,10 @@ class NodeContainsCondition extends NodeCondition {
 		final String nodeCondition = ResourceBundles.getText(NodeConditionController.FILTER_NODE);
 		final String simpleCondition = ResourceBundles.getText(ConditionFactory.FILTER_CONTAINS);
 		return ConditionFactory.createDescription(nodeCondition, simpleCondition, value, false);
+	}
+
+	private String getText(final NodeModel node) {
+		return node.getText();
 	}
 
 	public void toXml(final XMLElement element) {

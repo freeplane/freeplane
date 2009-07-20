@@ -68,24 +68,24 @@ class MapViewTabs implements IMapViewChangeListener {
 	}
 
 	public void afterViewChange(final Component pOldMap, final Component pNewMap) {
-    	final int selectedIndex = mTabbedPane.getSelectedIndex();
-    	if (pNewMap == null) {
-    		return;
-    	}
-    	for (int i = 0; i < mTabbedPaneMapViews.size(); ++i) {
-    		if (mTabbedPaneMapViews.get(i) == pNewMap) {
-    			if (selectedIndex != i) {
-    				mTabbedPane.setSelectedIndex(i);
-    			}
-    			return;
-    		}
-    	}
-    	mTabbedPaneMapViews.add(pNewMap);
-    	final String title1 = pNewMap.getName();
-    	final String title = title1;
-    	mTabbedPane.addTab(title, new JPanel());
-    	mTabbedPane.setSelectedIndex(mTabbedPane.getTabCount() - 1);
-    }
+		final int selectedIndex = mTabbedPane.getSelectedIndex();
+		if (pNewMap == null) {
+			return;
+		}
+		for (int i = 0; i < mTabbedPaneMapViews.size(); ++i) {
+			if (mTabbedPaneMapViews.get(i) == pNewMap) {
+				if (selectedIndex != i) {
+					mTabbedPane.setSelectedIndex(i);
+				}
+				return;
+			}
+		}
+		mTabbedPaneMapViews.add(pNewMap);
+		final String title1 = pNewMap.getName();
+		final String title = title1;
+		mTabbedPane.addTab(title, new JPanel());
+		mTabbedPane.setSelectedIndex(mTabbedPane.getTabCount() - 1);
+	}
 
 	public void afterViewClose(final Component pOldMapView) {
 		for (int i = 0; i < mTabbedPaneMapViews.size(); ++i) {

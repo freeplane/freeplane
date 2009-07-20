@@ -55,9 +55,8 @@ public class MindIcon implements Comparable, IIconInformation {
 	private static List<String> mAllIconNames;
 	private static Map<String, List<String>> mIconGroups;
 	static int nextNumber = MindIcon.UNKNOWN - 1;
-	public static final String PROPERTY_ICONS_GROUPS_LIST = "icons.groups";
-	
 	public static final String PROPERTY_ICONS_GROUP = "icons.group.";
+	public static final String PROPERTY_ICONS_GROUPS_LIST = "icons.groups";
 	private static final int UNKNOWN = -1;
 
 	public static MindIcon factory(final String iconName) {
@@ -85,10 +84,9 @@ public class MindIcon implements Comparable, IIconInformation {
 		if (MindIcon.mAllIconNames != null) {
 			return MindIcon.mAllIconNames;
 		}
-		
-		Set<String> set = new LinkedHashSet<String>();
-		final Collection<List<String>> iconGroups = getIconGroups().values();
-		for(List<String>iconGroup:iconGroups){
+		final Set<String> set = new LinkedHashSet<String>();
+		final Collection<List<String>> iconGroups = MindIcon.getIconGroups().values();
+		for (final List<String> iconGroup : iconGroups) {
 			set.addAll(iconGroup);
 		}
 		mAllIconNames = new ArrayList<String>(set);
@@ -100,10 +98,12 @@ public class MindIcon implements Comparable, IIconInformation {
 			return MindIcon.mIconGroups;
 		}
 		mIconGroups = new LinkedHashMap<String, List<String>>();
-		final String[] groups = ResourceController.getResourceController().getProperty(MindIcon.PROPERTY_ICONS_GROUPS_LIST).split(";");
-		for(String group:groups){
-			final String groupProperty = ResourceController.getResourceController().getProperty(MindIcon.PROPERTY_ICONS_GROUP + group);
-			if(groupProperty.equals("")){
+		final String[] groups = ResourceController.getResourceController().getProperty(
+		    MindIcon.PROPERTY_ICONS_GROUPS_LIST).split(";");
+		for (final String group : groups) {
+			final String groupProperty = ResourceController.getResourceController().getProperty(
+			    MindIcon.PROPERTY_ICONS_GROUP + group);
+			if (groupProperty.equals("")) {
 				continue;
 			}
 			final String[] icons = groupProperty.split(";");

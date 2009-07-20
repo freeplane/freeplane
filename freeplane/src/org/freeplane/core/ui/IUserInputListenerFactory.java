@@ -39,10 +39,6 @@ public interface IUserInputListenerFactory {
 
 	Component getLeftToolBar();
 
-	Iterable<JToolBar> getToolBars();
-	
-	JToolBar getToolBar(String name);
-
 	IMouseListener getMapMouseListener();
 
 	MouseWheelListener getMapMouseWheelListener();
@@ -66,6 +62,10 @@ public interface IUserInputListenerFactory {
 	INodeMouseMotionListener getNodeMouseMotionListener();
 
 	JPopupMenu getNodePopupMenu();
+
+	JToolBar getToolBar(String name);
+
+	Iterable<JToolBar> getToolBars();
 
 	public void removeMouseWheelEventHandler(final IMouseWheelEventHandler handler);
 

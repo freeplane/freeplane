@@ -30,8 +30,6 @@ import org.freeplane.core.ui.SelectableAction;
 
 @SelectableAction(checkOnPopup = true)
 public class ToggleToolbarAction extends AFreeplaneAction {
-	private final String toolbarName;
-	private final String propertyName;
 	/**
 	 * 
 	 */
@@ -40,27 +38,29 @@ public class ToggleToolbarAction extends AFreeplaneAction {
 	 *
 	 */
 	final private ViewController controller;
+	private final String propertyName;
+	private final String toolbarName;
 
-	public ToggleToolbarAction(final Controller controller, final ViewController viewController, String actionName, String toolbarName, String propertyName) {
+	public ToggleToolbarAction(final Controller controller, final ViewController viewController,
+	                           final String actionName, final String toolbarName, final String propertyName) {
 		super(actionName, controller);
 		this.controller = viewController;
 		this.toolbarName = toolbarName;
-		this.propertyName=propertyName;
+		this.propertyName = propertyName;
 	}
 
 	public void actionPerformed(final ActionEvent event) {
 		final ResourceController resourceController = ResourceController.getResourceController();
-		boolean visible = !resourceController.getBooleanProperty(propertyName);
-		resourceController.setProperty(propertyName, visible);		
+		final boolean visible = !resourceController.getBooleanProperty(propertyName);
+		resourceController.setProperty(propertyName, visible);
 		final JToolBar toolBar = getModeController().getUserInputListenerFactory().getToolBar(toolbarName);
 		toolBar.setVisible(visible);
 		controller.resizeToolbarPane();
-
 	}
 
 	@Override
 	public void setSelected() {
-		boolean isVisible = ResourceController.getResourceController().getBooleanProperty(propertyName);
+		final boolean isVisible = ResourceController.getResourceController().getBooleanProperty(propertyName);
 		setSelected(isVisible);
 	}
 }

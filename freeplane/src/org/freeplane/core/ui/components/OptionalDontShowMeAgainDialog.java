@@ -50,6 +50,13 @@ import org.freeplane.core.ui.MenuBuilder;
 public class OptionalDontShowMeAgainDialog {
 	public final static int BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED = 1;
 	public final static int ONLY_OK_SELECTION_IS_STORED = 0;
+
+	static public int show(final Controller controller, final String pMessageId, final String pTitleId,
+	                       final String pPropertyName, final int pMessageType) {
+		return new OptionalDontShowMeAgainDialog(controller, pMessageId, pTitleId, pPropertyName, pMessageType).show()
+		    .getResult();
+	}
+
 	private final Controller controller;
 	private JDialog mDialog;
 	private JCheckBox mDontShowAgainBox;
@@ -61,13 +68,8 @@ public class OptionalDontShowMeAgainDialog {
 	private int mResult = JOptionPane.CANCEL_OPTION;
 	final private String mTitleId;
 
-	static public int show(	final Controller controller, final String pMessageId, final String pTitleId,
-	                	                                     final String pPropertyName, final int pMessageType) {
-		return new OptionalDontShowMeAgainDialog(controller, pMessageId, pTitleId, pPropertyName, pMessageType).show().getResult();
-	}
-	
 	private OptionalDontShowMeAgainDialog(final Controller controller, final String pMessageId, final String pTitleId,
-	                                     final String pPropertyName, final int pMessageType) {
+	                                      final String pPropertyName, final int pMessageType) {
 		this.controller = controller;
 		mParent = controller.getViewController().getFrame();
 		final IMapSelection selection = controller.getSelection();
@@ -198,10 +200,10 @@ public class OptionalDontShowMeAgainDialog {
 		        5, 5, 0, 0), 0, 0));
 		mDialog.getRootPane().setDefaultButton(okButton);
 		mDialog.pack();
-		if(mNode != null){
+		if (mNode != null) {
 			UITools.setDialogLocationRelativeTo(mDialog, controller, mNode);
 		}
-		else{
+		else {
 			mDialog.setLocationRelativeTo(null);
 		}
 		mDialog.setVisible(true);

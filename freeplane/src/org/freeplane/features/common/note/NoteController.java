@@ -39,11 +39,20 @@ import org.freeplane.core.resources.ResourceController;
  */
 public class NoteController implements IExtension {
 	private static boolean firstRun = true;
+	/**
+	 *
+	 */
+	public static final String NODE_NOTE_ICON = "accessories.plugins.NodeNoteIcon";
 	private static ImageIcon noteIcon = null;
 	public static final String RESOURCES_DON_T_SHOW_NOTE_ICONS = "don_t_show_note_icons";
 
 	public static NoteController getController(final ModeController modeController) {
 		return (NoteController) modeController.getExtension(NoteController.class);
+	}
+
+	public static void install(final Controller controller) {
+		FilterController.getController(controller).getConditionFactory().addConditionController(6,
+		    new NoteConditionController());
 	}
 
 	public static void install(final ModeController modeController, final NoteController noteController) {
@@ -56,10 +65,6 @@ public class NoteController implements IExtension {
 	}
 
 	final private ModeController modeController;
-	/**
-     *
-     */
-    public static final String NODE_NOTE_ICON = "accessories.plugins.NodeNoteIcon";
 
 	public NoteController(final ModeController modeController) {
 		super();
@@ -98,28 +103,22 @@ public class NoteController implements IExtension {
 			showIcon = false;
 		}
 		node.setStateIcon(NoteController.NODE_NOTE_ICON, (showIcon) ? noteIcon : null);
-		if(enabled){
+		if (enabled) {
 			final Font defaultFont = ResourceController.getResourceController().getDefaultFont();
-            StringBuilder rule = new StringBuilder();
-            rule.append("font-family: " + defaultFont.getFamily() + ";");
-            rule.append("font-size: " + defaultFont.getSize() + "pt;");
-            rule.append("margin-top:0;");
-			final String noteText = NoteModel.getNoteText(node)
-			.replaceFirst("<body>", "<body><div style=\"" + rule + "\">")
-			.replaceFirst("</body>", "</div></body>");
-			(getModeController().getMapController()).setToolTip(node, "nodeNoteText", new ITooltipProvider(){
-
+			final StringBuilder rule = new StringBuilder();
+			rule.append("font-family: " + defaultFont.getFamily() + ";");
+			rule.append("font-size: " + defaultFont.getSize() + "pt;");
+			rule.append("margin-top:0;");
+			final String noteText = NoteModel.getNoteText(node).replaceFirst("<body>",
+			    "<body><div style=\"" + rule + "\">").replaceFirst("</body>", "</div></body>");
+			(getModeController().getMapController()).setToolTip(node, "nodeNoteText", new ITooltipProvider() {
 				public String getTooltip() {
-	                return noteText;
-                }} );
+					return noteText;
+				}
+			});
 		}
-		else{
-			(getModeController().getMapController()).setToolTip(node, "nodeNoteText",  null);
+		else {
+			(getModeController().getMapController()).setToolTip(node, "nodeNoteText", null);
 		}
 	}
-
-	public static void install(Controller controller) {
-		FilterController.getController(controller).getConditionFactory().addConditionController(6,
-		    new NoteConditionController());
-    }
 }

@@ -13,10 +13,23 @@ import org.freeplane.core.util.LogTool;
  * Handles communication with update webservice.
  * @author robert ladstaetter
  */
-class HttpVersionClient{
-	private FreeplaneVersion remoteVersion;
+class HttpVersionClient {
+	private static URL getUrl(final String versionUrl) {
+		try {
+			return new URL(versionUrl);
+		}
+		catch (final MalformedURLException e) {
+			return null;
+		}
+	}
+
 	private String history;
+	private FreeplaneVersion remoteVersion;
 	private boolean successful;
+
+	public HttpVersionClient(final String versionUrl, final FreeplaneVersion currentVersion) {
+		this(HttpVersionClient.getUrl(versionUrl), currentVersion);
+	}
 
 	public HttpVersionClient(final URL url, final FreeplaneVersion currentVersion) {
 		remoteVersion = null;
@@ -26,29 +39,29 @@ class HttpVersionClient{
 		try {
 			in = new BufferedReader(new InputStreamReader(url.openConnection().getInputStream()));
 			String line;
-			for(line = in.readLine(); 
-			line != null && line.startsWith("====="); 
-			line=in.readLine());
-            if(line == null){
-            	return;
-            }
+			for (line = in.readLine(); line != null && line.startsWith("====="); line = in.readLine()) {
+				;
+			}
+			if (line == null) {
+				return;
+			}
 			remoteVersion = FreeplaneVersion.getVersion(line);
 			successful = true;
-            if(remoteVersion.compareTo(currentVersion) <= 0){
-            	return;
-            }
-			StringBuilder historyBuffer = new StringBuilder();
+			if (remoteVersion.compareTo(currentVersion) <= 0) {
+				return;
+			}
+			final StringBuilder historyBuffer = new StringBuilder();
 			historyBuffer.append(line);
 			historyBuffer.append('\n');
-			for(line = in.readLine(); line != null; line=in.readLine()){
+			for (line = in.readLine(); line != null; line = in.readLine()) {
 				try {
-	                final FreeplaneVersion version = FreeplaneVersion.getVersion(line);
-	                if(version.compareTo(currentVersion) <= 0){
-	                	break;
-	                }
-                }
-                catch (IllegalArgumentException e) {
-                }
+					final FreeplaneVersion version = FreeplaneVersion.getVersion(line);
+					if (version.compareTo(currentVersion) <= 0) {
+						break;
+					}
+				}
+				catch (final IllegalArgumentException e) {
+				}
 				historyBuffer.append(line);
 				historyBuffer.append('\n');
 			}
@@ -61,7 +74,7 @@ class HttpVersionClient{
 			LogTool.warn("Could not read update url - check your internet connection.");
 			return;
 		}
-		catch (final IllegalArgumentException e){
+		catch (final IllegalArgumentException e) {
 			LogTool.warn("Could not read version.");
 			return;
 		}
@@ -77,26 +90,16 @@ class HttpVersionClient{
 			}
 		}
 	}
-		public boolean isSuccessful() {
-    	return successful;
-    }
-		public HttpVersionClient(final String versionUrl, final FreeplaneVersion currentVersion) {
-		this(getUrl(versionUrl), currentVersion);
-	}
 
-	private static URL getUrl(final String versionUrl){
-	    try {
-	        return new URL(versionUrl);
-        }
-        catch (MalformedURLException e) {
-        	return null;
-        }
-    }
+	public String getHistory() {
+		return history;
+	}
 
 	public FreeplaneVersion getRemoteVersion() {
 		return remoteVersion;
 	}
-	public String getHistory() {
-    	return history;
-    }
+
+	public boolean isSuccessful() {
+		return successful;
+	}
 }

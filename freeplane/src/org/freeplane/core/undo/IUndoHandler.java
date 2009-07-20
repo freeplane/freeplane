@@ -28,6 +28,8 @@ public interface IUndoHandler {
 
 	boolean canUndo();
 
+	void commit();
+
 	String getLastDescription();
 
 	ActionListener getRedoAction();
@@ -40,11 +42,9 @@ public interface IUndoHandler {
 
 	public void resetRedo();
 
-	void undo();
-
-	void commit();
-
 	void rollback();
 
 	void startTransaction();
+
+	void undo();
 }

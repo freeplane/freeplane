@@ -41,22 +41,23 @@ class IconAction extends MultipleNodeAction implements IIconInformation {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	final private MindIcon icon;
-
-	public IconAction(final Controller controller, final MindIcon _icon) {
-		super("IconAction." + _icon.getName(), controller, getLocalName(_icon), _icon.getIcon());
-		putValue(Action.SHORT_DESCRIPTION, _icon.getDescription());
-		icon = _icon;
-	}
 
 	private static String getLocalName(final MindIcon _icon) {
-	    final String name = _icon.getName();
-		final String localName = ResourceBundles.getText("icon_"+ name, null);
-		if(localName != null){
+		final String name = _icon.getName();
+		final String localName = ResourceBundles.getText("icon_" + name, null);
+		if (localName != null) {
 			return localName;
 		}
 		return FpStringUtils.formatText("user_icon", name);
-    }
+	}
+
+	final private MindIcon icon;
+
+	public IconAction(final Controller controller, final MindIcon _icon) {
+		super("IconAction." + _icon.getName(), controller, IconAction.getLocalName(_icon), _icon.getIcon());
+		putValue(Action.SHORT_DESCRIPTION, _icon.getDescription());
+		icon = _icon;
+	}
 
 	@Override
 	public void actionPerformed(final ActionEvent e, final NodeModel node) {

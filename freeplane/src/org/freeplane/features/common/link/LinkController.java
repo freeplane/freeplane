@@ -84,8 +84,8 @@ public class LinkController extends SelectionController implements IExtension {
 			}
 
 			public void onSelect(final NodeModel node) {
-				URI link = NodeLinks.getLink(node);
-				String linkString = (link != null ? link.toString() : " ");
+				final URI link = NodeLinks.getLink(node);
+				final String linkString = (link != null ? link.toString() : " ");
 				modeController.getController().getViewController().out(linkString);
 			}
 		};
@@ -185,11 +185,10 @@ public class LinkController extends SelectionController implements IExtension {
 
 	public String getLinkShortText(final NodeModel node) {
 		final URI uri = NodeLinks.getLink(node);
-		
 		if (uri == null) {
 			return null;
 		}
-		String adaptedText = uri.toString();
+		final String adaptedText = uri.toString();
 		if (adaptedText.startsWith("#")) {
 			try {
 				final NodeModel dest = modeController.getMapController().getNodeFromID(adaptedText.substring(1));
@@ -249,12 +248,12 @@ public class LinkController extends SelectionController implements IExtension {
 		}
 		URI hyperlink;
 		try {
-	        hyperlink = new URI(link);
-        }
-        catch (URISyntaxException e) {
-	        hyperlink = new File(link).toURI();
-        }
-        hyperlink = Compat.cleanURI(hyperlink);
+			hyperlink = new URI(link);
+		}
+		catch (final URISyntaxException e) {
+			hyperlink = new File(link).toURI();
+		}
+		hyperlink = Compat.cleanURI(hyperlink);
 		links.setHyperLink(hyperlink);
 	}
 
@@ -263,7 +262,8 @@ public class LinkController extends SelectionController implements IExtension {
 		final URI link = NodeLinks.getLink(selectedNode);
 		if (link != null) {
 			onDeselect(selectedNode);
-			((UrlManager)modeController.getMapController().getModeController().getExtension(UrlManager.class)).loadURL(link);
+			((UrlManager) modeController.getMapController().getModeController().getExtension(UrlManager.class))
+			    .loadURL(link);
 			onSelect(modeController.getController().getSelection().getSelected());
 		}
 	}

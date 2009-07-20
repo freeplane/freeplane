@@ -372,7 +372,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		}
 		catch (final Exception e) {
 			LogTool.warn(e);
-           	UITools.errorMessage(ResourceBundles.getText("filters_not_loaded"));
+			UITools.errorMessage(ResourceBundles.getText("filters_not_loaded"));
 		}
 	}
 

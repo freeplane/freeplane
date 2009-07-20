@@ -35,7 +35,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.security.AccessControlException;
-import java.util.StringTokenizer;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -68,8 +67,8 @@ import org.freeplane.n3.nanoxml.XMLParseException;
 public class UrlManager implements IExtension {
 	public static final String FREEPLANE_FILE_EXTENSION_WITHOUT_DOT = "mm";
 	public static final String FREEPLANE_FILE_EXTENSION = "." + FREEPLANE_FILE_EXTENSION_WITHOUT_DOT;
-	public static final String MAP_URL = "map_url";
 	private static File lastCurrentDir = null;
+	public static final String MAP_URL = "map_url";
 
 	/**
 	 * Creates a default reader that just reads the given file.
@@ -97,6 +96,102 @@ public class UrlManager implements IExtension {
 	public static String getExtension(final String s) {
 		final int i = s.lastIndexOf('.');
 		return (i > 0 && i < s.length() - 1) ? s.substring(i + 1).toLowerCase().trim() : "";
+	}
+
+	public static Reader getUpdateReader(final File file, final String xsltScript) throws FileNotFoundException,
+	        IOException {
+		return UrlManager.getUpdateReader(new FileInputStream(file), xsltScript);
+	}
+
+	/**
+	 * Creates a reader that pipes the input file through a XSLT-Script that
+	 * updates the version to the current.
+	 *
+	 * @throws IOException
+	 */
+	public static Reader getUpdateReader(final InputStream file, final String xsltScript) throws IOException {
+		StringWriter writer = null;
+		InputStream inputStream = null;
+		try {
+			URL updaterUrl = null;
+			updaterUrl = ResourceController.getResourceController().getResource(xsltScript);
+			if (updaterUrl == null) {
+				throw new IllegalArgumentException(xsltScript + " not found.");
+			}
+			inputStream = updaterUrl.openStream();
+			final Source xsltSource = new StreamSource(inputStream);
+			writer = new StringWriter();
+			final Result result = new StreamResult(writer);
+			class TransformerRunnable implements Runnable {
+				private Throwable thrownException = null;
+
+				public void run() {
+					final TransformerFactory transFact = TransformerFactory.newInstance();
+					Transformer trans;
+					try {
+						trans = transFact.newTransformer(xsltSource);
+						trans.transform(new StreamSource(file), result);
+					}
+					catch (final Exception ex) {
+						LogTool.severe(ex);
+						thrownException = ex;
+					}
+				}
+
+				public Throwable thrownException() {
+					return thrownException;
+				}
+			}
+			final TransformerRunnable transformer = new TransformerRunnable();
+			final Thread transformerThread = new Thread(transformer, "XSLT");
+			transformerThread.start();
+			transformerThread.join();
+			final Throwable thrownException = transformer.thrownException();
+			if (thrownException != null) {
+				throw new TransformerException(thrownException);
+			}
+			return new StringReader(writer.getBuffer().toString());
+		}
+		catch (final Exception ex) {
+			LogTool.severe(ex);
+			return UrlManager.getActualReader(file);
+		}
+		finally {
+			if (inputStream != null) {
+				inputStream.close();
+			}
+			if (writer != null) {
+				writer.close();
+			}
+		}
+	}
+
+	/**
+	 * Returns the same URL as input with the addition, that the reference part
+	 * "#..." is filtered out.
+	 *
+	 * @throws MalformedURLException
+	 */
+	public static URL getURLWithoutReference(final URL input) throws MalformedURLException {
+		return new URL(input.toString().replaceFirst("#.*", ""));
+	}
+
+	public static void install(final ModeController modeController, final UrlManager urlManager) {
+		modeController.addExtension(UrlManager.class, urlManager);
+	}
+
+	public static boolean isAbsolutePath(final String path) {
+		final String osNameStart = System.getProperty("os.name").substring(0, 3);
+		final String fileSeparator = System.getProperty("file.separator");
+		if (osNameStart.equals("Win")) {
+			return ((path.length() > 1) && path.substring(1, 2).equals(":")) || path.startsWith(fileSeparator);
+		}
+		else if (osNameStart.equals("Mac")) {
+			return path.startsWith(fileSeparator);
+		}
+		else {
+			return path.startsWith(fileSeparator);
+		}
 	}
 
 	/**
@@ -134,99 +229,6 @@ public class UrlManager implements IExtension {
 		return lines.toString();
 	}
 
-	public static Reader getUpdateReader(File file, String xsltScript) throws FileNotFoundException, IOException {
-		return getUpdateReader(new FileInputStream(file), xsltScript);
-    }
-	/**
-	 * Creates a reader that pipes the input file through a XSLT-Script that
-	 * updates the version to the current.
-	 *
-	 * @throws IOException
-	 */
-	public static Reader getUpdateReader(final InputStream file, final String xsltScript) throws IOException {
-		StringWriter writer = null;
-		InputStream inputStream = null;
-		try {
-			URL updaterUrl = null;
-			updaterUrl = ResourceController.getResourceController().getResource(xsltScript);
-			if (updaterUrl == null) {
-				throw new IllegalArgumentException(xsltScript + " not found.");
-			}
-			inputStream = updaterUrl.openStream();
-			final Source xsltSource = new StreamSource(inputStream);
-			writer = new StringWriter();
-			final Result result = new StreamResult(writer);
-			class TransformerRunnable implements Runnable {
-				private Throwable thrownException = null;
-
-				public Throwable thrownException() {
-					return thrownException;
-				}
-
-				public void run() {
-					final TransformerFactory transFact = TransformerFactory.newInstance();
-					Transformer trans;
-					try {
-						trans = transFact.newTransformer(xsltSource);
-						trans.transform(new StreamSource(file), result);
-					}
-					catch (final Exception ex) {
-						LogTool.severe(ex);
-						thrownException = ex;
-					}
-				}
-			}
-			final TransformerRunnable transformer = new TransformerRunnable();
-			final Thread transformerThread = new Thread(transformer, "XSLT");
-			transformerThread.start();
-			transformerThread.join();
-			final Throwable thrownException = transformer.thrownException();
-			if(thrownException != null){
-				throw new TransformerException(thrownException);
-			}
-			return new StringReader(writer.getBuffer().toString());
-		}
-		catch (final Exception ex) {
-			LogTool.severe(ex);
-			return  UrlManager.getActualReader(file);
-		}
-		finally {
-			if (inputStream != null) {
-				inputStream.close();
-			}
-			if (writer != null) {
-				writer.close();
-			}
-		}
-	}
-	/**
-	 * Returns the same URL as input with the addition, that the reference part
-	 * "#..." is filtered out.
-	 *
-	 * @throws MalformedURLException
-	 */
-	public static URL getURLWithoutReference(final URL input) throws MalformedURLException {
-		return new URL(input.toString().replaceFirst("#.*", ""));
-	}
-
-	public static void install(final ModeController modeController, final UrlManager urlManager) {
-		modeController.addExtension(UrlManager.class, urlManager);
-	}
-
-	public static boolean isAbsolutePath(final String path) {
-		final String osNameStart = System.getProperty("os.name").substring(0, 3);
-		final String fileSeparator = System.getProperty("file.separator");
-		if (osNameStart.equals("Win")) {
-			return ((path.length() > 1) && path.substring(1, 2).equals(":")) || path.startsWith(fileSeparator);
-		}
-		else if (osNameStart.equals("Mac")) {
-			return path.startsWith(fileSeparator);
-		}
-		else {
-			return path.startsWith(fileSeparator);
-		}
-	}
-
 	public static String removeExtension(final String s) {
 		final int i = s.lastIndexOf('.');
 		return (i > 0 && i < s.length() - 1) ? s.substring(0, i) : s;
@@ -252,6 +254,44 @@ public class UrlManager implements IExtension {
 		}
 	}
 
+	public static URI toRelativeURI(final URL mapUrl, final File input) {
+		try {
+			final URI mapUri = mapUrl.toURI();
+			final URI fileUri = input.toURI();
+			if (!mapUri.getScheme().equals(fileUri.getScheme())) {
+				return fileUri;
+			}
+			final String filePathAsString = fileUri.getRawPath();
+			final String mapPathAsString = mapUri.getRawPath();
+			int differencePos;
+			final int lastIndexOfSeparatorInMapPath = mapPathAsString.lastIndexOf("/");
+			final int lastIndexOfSeparatorInFilePath = filePathAsString.lastIndexOf("/");
+			int lastCommonSeparatorPos = 0;
+			for (differencePos = 1; differencePos <= lastIndexOfSeparatorInMapPath
+			        && differencePos <= lastIndexOfSeparatorInFilePath
+			        && filePathAsString.charAt(differencePos) == mapPathAsString.charAt(differencePos); differencePos++) {
+				if (filePathAsString.charAt(differencePos) == '/') {
+					lastCommonSeparatorPos = differencePos;
+				}
+			}
+			if (lastCommonSeparatorPos == 0) {
+				return fileUri;
+			}
+			final StringBuilder relativePath = new StringBuilder();
+			for (int i = lastCommonSeparatorPos + 1; i <= lastIndexOfSeparatorInMapPath; i++) {
+				if (mapPathAsString.charAt(i) == '/') {
+					relativePath.append("../");
+				}
+			}
+			relativePath.append(filePathAsString.substring(lastCommonSeparatorPos + 1));
+			return new URI(relativePath.toString());
+		}
+		catch (final URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	final private Controller controller;
 	final private ModeController modeController;
@@ -326,7 +366,8 @@ public class UrlManager implements IExtension {
 		}
 	}
 
-	public void load(final URL url, final MapModel map) throws FileNotFoundException, IOException, XMLParseException, URISyntaxException {
+	public void load(final URL url, final MapModel map) throws FileNotFoundException, IOException, XMLParseException,
+	        URISyntaxException {
 		setURL(map, url);
 		InputStreamReader urlStreamReader = null;
 		try {
@@ -343,8 +384,8 @@ public class UrlManager implements IExtension {
 			return;
 		}
 		try {
-			NodeModel root = modeController.getMapController().getMapReader().createNodeTreeFromXml(map, urlStreamReader,
-			    Mode.FILE);
+			final NodeModel root = modeController.getMapController().getMapReader().createNodeTreeFromXml(map,
+			    urlStreamReader, Mode.FILE);
 			urlStreamReader.close();
 			if (root != null) {
 				map.setRoot(root);
@@ -352,23 +393,11 @@ public class UrlManager implements IExtension {
 			else {
 				throw new IOException();
 			}
-
 		}
 		catch (final Exception ex) {
 			LogTool.severe(ex);
 			return;
 		}
-	}
-
-	protected void setURL(MapModel map, URL url) {
-		map.setURL(url);
-    }
-
-	public void setLastCurrentDir(final File lastCurrentDir) {
-		UrlManager.lastCurrentDir = lastCurrentDir;
-	}
-
-	public void startup() {
 	}
 
 	public void loadURL(final URI uri) {
@@ -380,14 +409,14 @@ public class UrlManager implements IExtension {
 				mapController.select(mapController.getNodeFromID(target));
 			}
 			catch (final Exception e) {
-				LogTool.warn( "link " + target + " not found", e);
+				LogTool.warn("link " + target + " not found", e);
 				UITools.errorMessage(FpStringUtils.formatText("link_not_found", target));
 			}
 			return;
 		}
 		try {
 			URL url;
-			if(! uri.isAbsolute() || uri.isOpaque()){
+			if (!uri.isAbsolute() || uri.isOpaque()) {
 				final MapModel map = getController().getMap();
 				url = new URL(map.getURL(), uriString);
 			}
@@ -401,7 +430,7 @@ public class UrlManager implements IExtension {
 			final String extension = UrlManager.getExtension(url.toString());
 			try {
 				if ((extension != null)
-						&& extension.equals(org.freeplane.core.url.UrlManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
+				        && extension.equals(org.freeplane.core.url.UrlManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
 					modeController.getMapController().newMap(url);
 					if (ref != null) {
 						final ModeController newModeController = getController().getModeController();
@@ -414,63 +443,33 @@ public class UrlManager implements IExtension {
 				}
 			}
 			catch (final Exception e) {
-				LogTool.warn( "link " + ref + " not found", e);
+				LogTool.warn("link " + ref + " not found", e);
 				UITools.errorMessage(FpStringUtils.formatText("link_not_found", ref));
 			}
-		} catch(MalformedURLException ex) {
+		}
+		catch (final MalformedURLException ex) {
 			/*
 			 * It's not a file, it's not a URL, it still might be a URI
 			 * (e.g. link to Lotus Notes via notes://... etc. 
 			 */
 			try {
-	            getController().getViewController().openDocument(uri);
-            }
-            catch (Exception e) {
-				LogTool.warn( "URL " + uriString + " not found", e);
+				getController().getViewController().openDocument(uri);
+			}
+			catch (final Exception e) {
+				LogTool.warn("URL " + uriString + " not found", e);
 				UITools.errorMessage(FpStringUtils.formatText("link_not_found", uriString));
-            } 
-		} 
-
+			}
+		}
 	}
 
-	public static URI toRelativeURI(URL mapUrl, File input) {
-		try {
-	        final URI mapUri = mapUrl.toURI();	        
-	        final URI fileUri = input.toURI();
-	        if(! mapUri.getScheme().equals(fileUri.getScheme())){
-	        	return fileUri;
-	        }
-	        final String filePathAsString =fileUri.getRawPath();
-			final String mapPathAsString = mapUri.getRawPath();
-			int differencePos;
-			final int lastIndexOfSeparatorInMapPath = mapPathAsString.lastIndexOf("/");
-			final int lastIndexOfSeparatorInFilePath = filePathAsString.lastIndexOf("/");
-			int lastCommonSeparatorPos = 0;
-			for (differencePos = 1; differencePos <= lastIndexOfSeparatorInMapPath
-			        && differencePos <= lastIndexOfSeparatorInFilePath
-			        && filePathAsString.charAt(differencePos) == mapPathAsString.charAt(differencePos); differencePos++)
-			{
-				if(filePathAsString.charAt(differencePos) == '/'){
-					lastCommonSeparatorPos = differencePos;
-				}
-			}
-	        
-	        if(lastCommonSeparatorPos == 0){
-	        	return fileUri;
-	        }
-	        StringBuilder relativePath  = new StringBuilder();
-	        for(int i = lastCommonSeparatorPos + 1; i <= lastIndexOfSeparatorInMapPath; i++){
-				if(mapPathAsString.charAt(i) == '/'){
-		        	relativePath.append("../");
-				}
-	        }
-	        relativePath.append(filePathAsString.substring(lastCommonSeparatorPos+1));
-	        return new URI(relativePath.toString());
-		}
-		catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-    }
+	public void setLastCurrentDir(final File lastCurrentDir) {
+		UrlManager.lastCurrentDir = lastCurrentDir;
+	}
+
+	protected void setURL(final MapModel map, final URL url) {
+		map.setURL(url);
+	}
+
+	public void startup() {
+	}
 }

@@ -40,8 +40,8 @@ class OpenLastOpenedAction extends AFreeplaneAction {
 		final String restoreable = e.getActionCommand();
 		list.safeOpen(restoreable);
 	}
-	
-	@Override
-	public void afterMapChange(Object newMap){}
 
+	@Override
+	public void afterMapChange(final Object newMap) {
+	}
 }

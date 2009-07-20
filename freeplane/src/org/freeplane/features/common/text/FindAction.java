@@ -48,12 +48,12 @@ class FindAction extends AFreeplaneAction {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private ICondition condition;
+	private FilterConditionEditor editor;
 	private NodeModel findFromNode;
 	private LinkedList findNodeQueue;
 	private ArrayList findNodesUnfoldedByLastFind;
-	private ICondition condition;
 	private String searchTerm;
-	private FilterConditionEditor editor;
 
 	public FindAction(final Controller controller) {
 		super("FindAction", controller);
@@ -61,47 +61,45 @@ class FindAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final IMapSelection selection = getController().getSelection();
-		if(selection == null){
+		if (selection == null) {
 			return;
 		}
 		final NodeModel selected = selection.getSelected();
-		if(editor == null){
+		if (editor == null) {
 			editor = new FilterConditionEditor(FilterController.getController(getController()));
 		}
-		else{
+		else {
 			editor.mapChanged(selected.getMap());
 		}
-		editor.addAncestorListener(new AncestorListener(){
-
-			public void ancestorAdded(AncestorEvent event) {
+		editor.addAncestorListener(new AncestorListener() {
+			public void ancestorAdded(final AncestorEvent event) {
 				final Component component = event.getComponent();
-				((FilterConditionEditor)component).focusInputField();
+				((FilterConditionEditor) component).focusInputField();
 				((JComponent) component).removeAncestorListener(this);
-            }
+			}
 
-			public void ancestorMoved(AncestorEvent event) {
-            }
+			public void ancestorMoved(final AncestorEvent event) {
+			}
 
-			public void ancestorRemoved(AncestorEvent event) {
-            }});
-		final int run = UITools.showConfirmDialog(getController(), selected, editor, 
-		    ResourceBundles.getText("FindAction.text"), JOptionPane.OK_CANCEL_OPTION);
-		Container parent = editor.getParent();
-		if(parent != null){
+			public void ancestorRemoved(final AncestorEvent event) {
+			}
+		});
+		final int run = UITools.showConfirmDialog(getController(), selected, editor, ResourceBundles
+		    .getText("FindAction.text"), JOptionPane.OK_CANCEL_OPTION);
+		final Container parent = editor.getParent();
+		if (parent != null) {
 			parent.remove(editor);
 		}
-		if(run != JOptionPane.OK_OPTION){
+		if (run != JOptionPane.OK_OPTION) {
 			return;
 		}
-		
 		condition = editor.getCondition();
-		if(condition == null){
+		if (condition == null) {
 			return;
 		}
 		final boolean found = find(getModeController().getMapController().getSelectedNode());
 		searchTerm = editor.getSearchTerm();
-		searchTerm = searchTerm.startsWith("<html>") ? HtmlTools.toXMLEscapedText(searchTerm)
-		        : searchTerm;
+		searchTerm = searchTerm.startsWith("<html>") ? HtmlTools.toXMLEscapedText(searchTerm) : searchTerm;
 		if (!found) {
 			final String messageText = ResourceBundles.getText("no_found_from");
 			UITools.informationMessage(getController().getViewController().getFrame(), messageText.replaceAll("\\$1",
@@ -109,10 +107,6 @@ class FindAction extends AFreeplaneAction {
 			searchTerm = null;
 		}
 	}
-
-	public String getSearchTerm() {
-    	return searchTerm;
-    }
 
 	/**
 	 * Display a node in the display (used by find and the goto action by arrow
@@ -153,7 +147,7 @@ class FindAction extends AFreeplaneAction {
 				continue;
 			}
 			findNodeQueue = nodes;
-			boolean found = condition.checkNode(node);
+			final boolean found = condition.checkNode(node);
 			if (found) {
 				displayNode(node, findNodesUnfoldedByLastFind);
 				getModeController().getMapController().select(node);
@@ -187,4 +181,7 @@ class FindAction extends AFreeplaneAction {
 		return plainNodeText.length() <= 30 ? plainNodeText : plainNodeText.substring(0, 30) + "...";
 	}
 
+	public String getSearchTerm() {
+		return searchTerm;
+	}
 }

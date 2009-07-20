@@ -35,7 +35,7 @@ import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.PersistentEditableComboBox;
 import org.freeplane.core.util.LogTool;
 
-public class BToolbarContributor implements IMenuContributor, IMapViewChangeListener{
+public class BToolbarContributor implements IMenuContributor, IMapViewChangeListener {
 	private static final String BROWSE_URL_STORAGE_KEY = "browse_url_storage";
 	final private ModeController modeController;
 	private PersistentEditableComboBox urlfield = null;
@@ -59,6 +59,28 @@ public class BToolbarContributor implements IMenuContributor, IMapViewChangeList
 		});
 	}
 
+	public void afterViewChange(final Component oldView, final Component newView) {
+		if (newView == null) {
+			return;
+		}
+		final IMapViewManager mapViewManager = modeController.getController().getMapViewManager();
+		mapViewManager.getModeController(newView);
+		final MapModel map = mapViewManager.getModel(newView);
+		final URL url = map.getURL();
+		if (url == null) {
+			return;
+		}
+		setURLField(url.toString());
+	}
+
+	public void afterViewClose(final Component oldView) {
+	}
+
+	public void afterViewCreated(final Component mapView) {
+	}
+
+	public void beforeViewChange(final Component oldView, final Component newView) {
+	}
 
 	private void setURLField(final String text) {
 		urlfield.setText(text);
@@ -68,30 +90,4 @@ public class BToolbarContributor implements IMenuContributor, IMapViewChangeList
 		builder.addElement("/main_toolbar", new JLabel("URL:"), MenuBuilder.AS_CHILD);
 		builder.addElement("/main_toolbar", urlfield, MenuBuilder.AS_CHILD);
 	}
-
-	public void afterViewChange(Component oldView, Component newView) {
-		if (newView == null) {
-			return;
-		}
-		final IMapViewManager mapViewManager = modeController.getController().getMapViewManager();
-        final ModeController modeController = mapViewManager.getModeController(newView);
-        final MapModel map = mapViewManager.getModel(newView);
-		final URL url = map.getURL();
-		if (url == null) {
-			return;
-		}
-		setURLField(url.toString());
-    }
-
-
-	public void afterViewClose(Component oldView) {
-    }
-
-
-	public void afterViewCreated(Component mapView) {
-    }
-
-
-	public void beforeViewChange(Component oldView, Component newView) {
-    }
 }

@@ -285,7 +285,7 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 
 	private int depth(final NodeModel node) {
 		final NodeModel parentNode = node.getParentNode();
-		if (parentNode==null) {
+		if (parentNode == null) {
 			return 0;
 		}
 		return depth(parentNode) + 1;

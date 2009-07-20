@@ -29,6 +29,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+
 import javax.swing.ImageIcon;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
@@ -294,13 +295,13 @@ public class NodeModel implements MutableTreeNode {
 	/**
 	 */
 	public String getToolTip() {
-		if(toolTip == null){
+		if (toolTip == null) {
 			return null;
 		}
 		final StringBuilder text = new StringBuilder("<html><table>");
 		for (final String key : toolTip.keySet()) {
-			String value =  toolTip.get(key).getTooltip();
-			if(value == null){
+			String value = toolTip.get(key).getTooltip();
+			if (value == null) {
 				continue;
 			}
 			value = value.replaceFirst("<html>", "<div>");
@@ -482,7 +483,7 @@ public class NodeModel implements MutableTreeNode {
 		if (!isRoot()) {
 			for (int i = 0; i < getChildCount(); i++) {
 				final NodeModel child = (NodeModel) getChildAt(i);
-				if (child.position != position){
+				if (child.position != position) {
 					child.setLeft(isLeft);
 				}
 			}

@@ -70,12 +70,20 @@ class AccelerateableAction implements IFreeplaneAction {
 		originalAction.addPropertyChangeListener(listener);
 	}
 
+	public void afterMapChange(final Object newMap) {
+		originalAction.afterMapChange(newMap);
+	}
+
 	public Object getValue(final String key) {
 		return originalAction.getValue(key);
 	}
 
 	public boolean isEnabled() {
 		return originalAction.isEnabled();
+	}
+
+	public boolean isSelected() {
+		return originalAction.isSelected();
 	}
 
 	private void newAccelerator(final JMenuItem editedItem) {
@@ -159,12 +167,4 @@ class AccelerateableAction implements IFreeplaneAction {
 	public void setEnabled(final boolean b) {
 		originalAction.setEnabled(b);
 	}
-
-	public boolean isSelected() {
-	    return originalAction.isSelected();
-    }
-
-	public void afterMapChange(Object newMap) {
-		originalAction.afterMapChange(newMap);
-    }
 }

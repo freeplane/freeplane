@@ -36,7 +36,6 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.Compat;
-import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.MMapController;
@@ -106,7 +105,6 @@ class ExportBranchAction extends AFreeplaneAction {
 			final NodeModel parent = existingNode.getParentNode();
 			final URL oldUrl = existingNode.getMap().getURL();
 			final URI newUri = UrlManager.toRelativeURI(oldUrl, chosenFile);
-			
 			final int nodePosition = parent.getChildPosition(existingNode);
 			((MMapController) getModeController().getMapController()).deleteNode(existingNode);
 			existingNode.setParent(null);
@@ -116,11 +114,13 @@ class ExportBranchAction extends AFreeplaneAction {
 			getController().getMapViewManager().updateMapViewName();
 			final NodeModel newNode = ((MMapController) getModeController().getMapController()).addNewNode(parent,
 			    nodePosition, existingNode.isLeft());
-			((MTextController) TextController.getController(getModeController())).setNodeText(newNode, existingNode.getText());
-			URL newUrl = map.getURL();
+			((MTextController) TextController.getController(getModeController())).setNodeText(newNode, existingNode
+			    .getText());
+			final URL newUrl = map.getURL();
 			final URI oldUri = UrlManager.toRelativeURI(newUrl, file);
-			((MLinkController) LinkController.getController(controller.getModeController())).setLink(newNode,newUri);
-			((MLinkController) LinkController.getController(controller.getModeController())).setLink(existingNode,oldUri);
+			((MLinkController) LinkController.getController(controller.getModeController())).setLink(newNode, newUri);
+			((MLinkController) LinkController.getController(controller.getModeController())).setLink(existingNode,
+			    oldUri);
 		}
 	}
 }

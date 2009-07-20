@@ -217,10 +217,10 @@ class MindMapHTMLWriter {
 		fileout.write(MindMapHTMLWriter.el + "</head>" + MindMapHTMLWriter.el + "<body");
 		final MapStyleModel style = MapStyleModel.getExtension(rootNodeOfBranch.getMap());
 		final Color background = style != null ? style.getBackgroundColor() : null;
-		if(background != null){
-			fileout.write( " bgcolor=" + ColorUtils.colorToString(background));
+		if (background != null) {
+			fileout.write(" bgcolor=" + ColorUtils.colorToString(background));
 		}
-		fileout.write( ">" + MindMapHTMLWriter.el);
+		fileout.write(">" + MindMapHTMLWriter.el);
 		if (writeFoldingCode) {
 			writeBodyWithFolding(rootNodeOfBranch);
 		}

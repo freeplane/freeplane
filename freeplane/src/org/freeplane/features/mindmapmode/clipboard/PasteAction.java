@@ -147,11 +147,11 @@ class PasteAction extends AFreeplaneAction {
 					final boolean wasLeft = newModel.isLeft();
 					mapController.insertNode(newModel, target, asSibling, isLeft, wasLeft != isLeft);
 				}
-				catch (XMLException e) {
-    				LogTool.severe( "error on paste", e);
+				catch (final XMLException e) {
+					LogTool.severe("error on paste", e);
 				}
 			}
-	            nodeTreeCreator.finish(target);
+			nodeTreeCreator.finish(target);
 		}
 	}
 

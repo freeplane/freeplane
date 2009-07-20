@@ -176,16 +176,16 @@ public class Pattern implements Cloneable {
 		this.patternChild = patternChild;
 	}
 
-	public void setPatternEdgeColor(final PatternProperty patternEdgeColor) {
-		this.patternEdgeColor = patternEdgeColor;
-	}
-
 	public void setPatternCloud(final PatternProperty patternCloud) {
 		this.patternCloud = patternCloud;
 	}
 
 	public void setPatternCloudColor(final PatternProperty patternEdgeColor) {
-		this.patternCloudColor = patternEdgeColor;
+		patternCloudColor = patternEdgeColor;
+	}
+
+	public void setPatternEdgeColor(final PatternProperty patternEdgeColor) {
+		this.patternEdgeColor = patternEdgeColor;
 	}
 
 	public void setPatternEdgeStyle(final PatternProperty patternEdgeStyle) {

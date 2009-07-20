@@ -45,11 +45,11 @@ class ShowDescendantsAction extends AFreeplaneAction {
 	ShowDescendantsAction(final FilterController filterController) {
 		super("ShowDescendantsAction", filterController.getController());
 		this.filterController = filterController;
-		filterController.getShowDescendants().addChangeListener(new ChangeListener(){
-
-			public void stateChanged(ChangeEvent e) {
+		filterController.getShowDescendants().addChangeListener(new ChangeListener() {
+			public void stateChanged(final ChangeEvent e) {
 				setSelected(isModelSelected());
-            }});
+			}
+		});
 		setSelected(isModelSelected());
 	}
 

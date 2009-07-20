@@ -19,7 +19,6 @@
  */
 package org.freeplane.core.model;
 
-
 /**
  * @author Dimitry Polivaev
  * 06.06.2009

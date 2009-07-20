@@ -267,10 +267,10 @@ class EditNodeDialog extends EditNodeBase {
 		final EditDialog dialog = new LongNodeDialog(frame);
 		dialog.pack();
 		getModeController().getController().getViewController().scrollNodeToVisible(node);
-		if(ResourceController.getResourceController().getBooleanProperty("el__position_window_below_node")){
+		if (ResourceController.getResourceController().getBooleanProperty("el__position_window_below_node")) {
 			UITools.setDialogLocationUnder(dialog, getController(), getNode());
 		}
-		else{
+		else {
 			UITools.setDialogLocationRelativeTo(dialog, getController(), getNode());
 		}
 		dialog.show();

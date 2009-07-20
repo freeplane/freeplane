@@ -80,14 +80,6 @@ public class MapModel {
 		extensionContainer.addExtension(extension);
 	}
 
-	public IExtension removeExtension(Class<? extends IExtension> clazz) {
-	    return extensionContainer.removeExtension(clazz);
-    }
-
-	public boolean removeExtension(IExtension extension) {
-	    return extensionContainer.removeExtension(extension);
-    }
-
 	public void addMapChangeListener(final IMapChangeListener listener) {
 		listeners.add(listener);
 	}
@@ -150,7 +142,7 @@ public class MapModel {
 	 */
 	public NodeModel getNodeForID(final String nodeID) {
 		final NodeModel node = nodes.get(nodeID);
-		if(node.getParent() == null && node != root){
+		if (node.getParent() == null && node != root) {
 			return null;
 		}
 		return node;
@@ -221,6 +213,14 @@ public class MapModel {
 			final NodeModel next = iterator.next();
 			registryNodeRecursive(next);
 		}
+	}
+
+	public IExtension removeExtension(final Class<? extends IExtension> clazz) {
+		return extensionContainer.removeExtension(clazz);
+	}
+
+	public boolean removeExtension(final IExtension extension) {
+		return extensionContainer.removeExtension(extension);
 	};
 
 	public void removeMapChangeListener(final IMapChangeListener listener) {

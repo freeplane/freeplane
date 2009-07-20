@@ -75,7 +75,7 @@ public class MIconController extends IconController {
 	static final private Map<String, AFreeplaneAction> iconActions = new LinkedHashMap<String, AFreeplaneAction>();
 	final private JToolBar iconToolBar;
 	final private JAutoScrollBarPane iconToolBarScrollPane;
-	final List<String>  userIconNames;
+	final List<String> userIconNames;
 
 	/**
 	 * @param modeController
@@ -109,39 +109,39 @@ public class MIconController extends IconController {
 		getModeController().execute(actor);
 	}
 
+	private void addIconGroupToMenu(final MenuBuilder builder, final String category, final String group,
+	                                final List<String> iconList, final String groupIconName) {
+		final ImageIcon icon = MindIcon.factory(groupIconName).getIcon();
+		final JMenuItem item = new JMenu();
+		item.setIcon(icon);
+		item.setText(ResourceBundles.getText("IconGroupPopupAction." + group + ".text"));
+		final String itemKey = category + "/" + group;
+		builder.addMenuItem(category, item, itemKey, MenuBuilder.AS_CHILD);
+		for (final String iconName : iconList) {
+			builder.addAction(itemKey, iconActions.get(iconName), MenuBuilder.AS_CHILD);
+		}
+	}
+
 	public void addIconsToMenu(final MenuBuilder builder, final String iconMenuString) {
 		final String category = iconMenuString + "/icons/icons";
 		builder.addAction(category, getModeController().getAction("RemoveIconAction"), MenuBuilder.AS_CHILD);
 		builder.addAction(category, getModeController().getAction("RemoveAllIconsAction"), MenuBuilder.AS_CHILD);
 		builder.addSeparator(category, MenuBuilder.AS_CHILD);
 		final Set<Entry<String, List<String>>> iconGroups = MindIcon.getIconGroups().entrySet();
-		for(Entry<String, List<String>> entry:iconGroups){
+		for (final Entry<String, List<String>> entry : iconGroups) {
 			final String group = entry.getKey();
 			final List<String> iconList = entry.getValue();
-			if(iconList.isEmpty()){
+			if (iconList.isEmpty()) {
 				continue;
 			}
 			addIconGroupToMenu(builder, category, group, iconList, getGroupIconName(group));
 		}
 		final String group = "user";
 		final List<String> iconList = userIconNames;
-		if(! iconList.isEmpty()){
+		if (!iconList.isEmpty()) {
 			addIconGroupToMenu(builder, category, group, iconList, userIconNames.get(0));
 		}
 	}
-
-	private void addIconGroupToMenu(final MenuBuilder builder, final String category, final String group,
-                                    final List<String> iconList, String groupIconName) {
-	    final ImageIcon icon = MindIcon.factory(groupIconName).getIcon();
-	    final JMenuItem item = new JMenu();
-	    item.setIcon(icon);
-	    item.setText(ResourceBundles.getText("IconGroupPopupAction." +group + ".text"));
-	    final String itemKey = category + "/" + group;
-	    builder.addMenuItem(category, item, itemKey, MenuBuilder.AS_CHILD);
-	    for(String iconName:iconList){
-	    	builder.addAction(itemKey, iconActions.get(iconName), MenuBuilder.AS_CHILD);
-	    }
-    }
 
 	private void createIconActions() {
 		final ModeController modeController = getModeController();
@@ -169,7 +169,7 @@ public class MIconController extends IconController {
 				}
 			}
 		}
-		for (String iconName:iconNames) {
+		for (final String iconName : iconNames) {
 			final MindIcon myIcon = MindIcon.factory(iconName);
 			final IconAction myAction = new IconAction(controller, myIcon);
 			iconActions.put(iconName, myAction);
@@ -198,6 +198,12 @@ public class MIconController extends IconController {
 		}
 	}
 
+	private String getGroupIconName(final String group) {
+		final String iconName = ResourceController.getResourceController().getProperty(
+		    "IconGroupPopupAction." + group + ".icon");
+		return iconName;
+	}
+
 	public Collection<AFreeplaneAction> getIconActions() {
 		return Collections.unmodifiableCollection(iconActions.values());
 	}
@@ -220,6 +226,58 @@ public class MIconController extends IconController {
 		return iconInformationVector;
 	}
 
+	private JMenu getSubmenu(final Controller controller, final String group, final List<String> iconList,
+	                         final MindIcon menuIcon) {
+		final JMenu menu = new JMenu("\u25ba") {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected Point getPopupMenuOrigin() {
+				return new Point(getWidth(), 0);
+			}
+		};
+		menu.setFont(menu.getFont().deriveFont(8F));
+		menu.setMargin(new Insets(0, 0, 0, 0));
+		menu.setIcon(menuIcon.getIcon());
+		for (final String icon : iconList) {
+			final AFreeplaneAction myAction = iconActions.get(icon);
+			menu.add(myAction);
+		}
+		menu.setToolTipText(ResourceBundles.getText("IconGroupPopupAction." + group + ".text"));
+		return menu;
+	}
+
+	private void insertSubmenus(final JToolBar iconToolBar) {
+		final JMenuBar iconMenuBar = new JMenuBar() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public Dimension getMaximumSize() {
+				final Dimension preferredSize = getPreferredSize();
+				return new Dimension(Short.MAX_VALUE, preferredSize.height);
+			}
+		};
+		iconMenuBar.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+		iconMenuBar.setLayout(new GridLayout(0, 1));
+		final Controller controller = getModeController().getController();
+		for (final Entry<String, List<String>> entry : MindIcon.getIconGroups().entrySet()) {
+			final List<String> groupIconList = entry.getValue();
+			if (groupIconList.isEmpty()) {
+				continue;
+			}
+			final String group = entry.getKey();
+			final String iconName = getGroupIconName(group);
+			iconMenuBar.add(getSubmenu(controller, group, groupIconList, MindIcon.factory(iconName)));
+		}
+		if (!userIconNames.isEmpty()) {
+			iconMenuBar.add(getSubmenu(controller, "user", userIconNames, MindIcon.factory(userIconNames.get(0))));
+		}
+		iconToolBar.add(iconMenuBar);
+	}
+
 	public void removeAllIcons(final NodeModel node) {
 		((RemoveAllIconsAction) getModeController().getAction("RemoveAllIconsAction")).removeAllIcons(node);
 	}
@@ -231,87 +289,27 @@ public class MIconController extends IconController {
 	public void updateIconToolbar() {
 		iconToolBar.removeAll();
 		iconToolBar.add(getModeController().getAction("RemoveIconAction")).setAlignmentX(JComponent.CENTER_ALIGNMENT);
-		iconToolBar.add(getModeController().getAction("RemoveAllIconsAction")).setAlignmentX(JComponent.CENTER_ALIGNMENT);
+		iconToolBar.add(getModeController().getAction("RemoveAllIconsAction")).setAlignmentX(
+		    JComponent.CENTER_ALIGNMENT);
 		iconToolBar.addSeparator();
-
-		if(ResourceController.getResourceController().getBooleanProperty("structured_icon_toolbar")){
+		if (ResourceController.getResourceController().getBooleanProperty("structured_icon_toolbar")) {
 			insertSubmenus(iconToolBar);
 			return;
 		}
-		for (String name:MindIcon.getAllIconNames()) {
+		for (final String name : MindIcon.getAllIconNames()) {
 			final AFreeplaneAction iconAction = iconActions.get(name);
-			if(iconAction != null){
+			if (iconAction != null) {
 				iconToolBar.add(iconAction).setAlignmentX(JComponent.CENTER_ALIGNMENT);
 			}
 		}
-		for (String name:userIconNames) {
+		for (final String name : userIconNames) {
 			final AFreeplaneAction iconAction = iconActions.get(name);
-			if(iconAction != null){
+			if (iconAction != null) {
 				iconToolBar.add(iconAction).setAlignmentX(JComponent.CENTER_ALIGNMENT);
 			}
 		}
 	}
 
-
-	private void insertSubmenus(final JToolBar iconToolBar) {
-	    JMenuBar iconMenuBar = new JMenuBar(){
-            private static final long serialVersionUID = 1L;
-
-			@Override
-            public Dimension getMaximumSize() {
-	            final Dimension preferredSize = getPreferredSize();
-				return new Dimension(Short.MAX_VALUE, preferredSize.height);
-            }
-			
-		};
-		iconMenuBar.setAlignmentX(JComponent.CENTER_ALIGNMENT);
-		iconMenuBar.setLayout(new GridLayout(0, 1));
-		final Controller controller = getModeController().getController();
-		for (Entry<String, List<String>> entry:MindIcon.getIconGroups().entrySet()) {
-			final List<String> groupIconList = entry.getValue();
-			if(groupIconList.isEmpty()){
-				continue;
-			}
-			final String group = entry.getKey();
-			final String iconName = getGroupIconName(group);
-			iconMenuBar.add(getSubmenu(controller, group, groupIconList, MindIcon.factory(iconName)));
-		}
-		if(! userIconNames.isEmpty()){
-			iconMenuBar.add(getSubmenu(controller, "user", userIconNames, MindIcon.factory(userIconNames.get(0))));
-		}
-		iconToolBar.add(iconMenuBar);
-    }
-
-	private String getGroupIconName(final String group) {
-	    final String iconName = ResourceController.getResourceController().getProperty("IconGroupPopupAction." + group + ".icon");
-	    return iconName;
-    }
-
-	private  JMenu getSubmenu(Controller controller, String group, final List<String> iconList, MindIcon menuIcon) {
-		JMenu menu = new JMenu("\u25ba"){
-
-			/**
-             * 
-             */
-            private static final long serialVersionUID = 1L;
-
-			@Override
-            protected Point getPopupMenuOrigin() {
-				return new Point(getWidth(), 0);
-            }
-			
-		};
-		menu.setFont(menu.getFont().deriveFont(8F));
-		menu.setMargin(new Insets(0, 0, 0, 0));
-		menu.setIcon(menuIcon.getIcon());
-		for(String icon:iconList){
-			final AFreeplaneAction myAction = iconActions.get(icon);
-			menu.add(myAction);
-		}
-		menu.setToolTipText(ResourceBundles.getText("IconGroupPopupAction." + group + ".text"));
-		return menu;
-    }
-	
 	public void updateMenus(final MenuBuilder builder) {
 		addIconsToMenu(builder, FreeplaneMenuBar.MENU_BAR_PREFIX);
 		addIconsToMenu(builder, UserInputListenerFactory.NODE_POPUP);

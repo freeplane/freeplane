@@ -22,7 +22,9 @@ import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
+
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.resources.ResourceBundles;
@@ -64,14 +66,14 @@ public class ExportToImage extends ExportAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		try {
-	        final RenderedImage image = createBufferedImage();
-	        if (image != null) {
-	        	exportToImage(image);
-	        }
-        }
-        catch (OutOfMemoryError ex) {
-        	UITools.errorMessage(ResourceBundles.getText("out_of_memory"));
-        }
+			final RenderedImage image = createBufferedImage();
+			if (image != null) {
+				exportToImage(image);
+			}
+		}
+		catch (final OutOfMemoryError ex) {
+			UITools.errorMessage(ResourceBundles.getText("out_of_memory"));
+		}
 	}
 
 	/**
@@ -95,5 +97,4 @@ public class ExportToImage extends ExportAction {
 		getController().getViewController().setWaitingCursor(false);
 		return true;
 	}
-
 }

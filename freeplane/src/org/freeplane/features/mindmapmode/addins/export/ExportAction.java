@@ -43,19 +43,8 @@ abstract public class ExportAction extends AFreeplaneAction {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public ExportAction(final String key, final Controller controller) {
-		super(key, controller);
-	}
-
-	/**
-	 * @param nameExtension
-	 */
-	protected File chooseFile(final String type, final String description, final String nameExtension) {
-		final Controller controller = getController();
-		return chooseFile(controller, type, description, nameExtension);
-	}
-	
-	static File chooseFile(final Controller controller, final String type, final String description, final String nameExtension) {
+	static File chooseFile(final Controller controller, final String type, final String description,
+	                       final String nameExtension) {
 		final ModeController mindMapController = controller.getModeController();
 		final Container component = controller.getViewController().getContentPane();
 		JFileChooser chooser = null;
@@ -91,6 +80,18 @@ abstract public class ExportAction extends AFreeplaneAction {
 			}
 		}
 		return chosenFile;
+	}
+
+	public ExportAction(final String key, final Controller controller) {
+		super(key, controller);
+	}
+
+	/**
+	 * @param nameExtension
+	 */
+	protected File chooseFile(final String type, final String description, final String nameExtension) {
+		final Controller controller = getController();
+		return ExportAction.chooseFile(controller, type, description, nameExtension);
 	}
 
 	public RenderedImage createBufferedImage() {

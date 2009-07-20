@@ -22,6 +22,7 @@ package org.freeplane.features.mindmapmode.addins.export;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
+
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -31,7 +32,7 @@ import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.clipboard.ClipboardController;
 
-@ActionLocationDescriptor(accelerator = "control H", locations={"/menu_bar/file/export/html"})
+@ActionLocationDescriptor(accelerator = "control H", locations = { "/menu_bar/file/export/html" })
 class ExportBranchToHTMLAction extends AFreeplaneAction {
 	/**
 	 * 
@@ -45,12 +46,13 @@ class ExportBranchToHTMLAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		try {
 			final File file = ExportAction.chooseFile(getController(), "html", "html", null);
-			if(file == null){
+			if (file == null) {
 				return;
 			}
 			ClipboardController.getController(getModeController()).saveHTML(
 			    getModeController().getMapController().getSelectedNode(), file);
-			((UrlManager)getModeController().getMapController().getModeController().getExtension(UrlManager.class)).loadURL(file.toURI());
+			((UrlManager) getModeController().getMapController().getModeController().getExtension(UrlManager.class))
+			    .loadURL(file.toURI());
 		}
 		catch (final IOException ex) {
 			LogTool.warn(ex);

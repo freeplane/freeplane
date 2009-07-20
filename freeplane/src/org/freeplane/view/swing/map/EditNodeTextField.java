@@ -175,7 +175,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		if (component != null) {
 			component.removeComponentListener((ComponentListener) textFieldListener);
 		}
-		if(parent != null){
+		if (parent != null) {
 			parent.remove(0);
 			parent.revalidate();
 			parent.repaint(bounds);

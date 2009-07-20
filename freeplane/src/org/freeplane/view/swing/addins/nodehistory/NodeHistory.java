@@ -53,12 +53,12 @@ public class NodeHistory implements IExtension {
 		modeController.addAction(history.forwardAction);
 	}
 
+	private BackAction backAction;
 	final private Controller controller;
 	private NodeHolder currentNodeHolder;
+	private ForwardAction forwardAction;
 	private ListIterator<NodeHolder> nodeIterator;
 	private final LinkedList<NodeHolder> nodes;
-	private BackAction backAction;
-	private ForwardAction forwardAction;
 
 	private NodeHistory(final Controller controller) {
 		this.controller = controller;

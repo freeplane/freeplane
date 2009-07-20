@@ -43,9 +43,9 @@ class AttributeBuilder implements IElementDOMHandler {
 
 	static class RegisteredAttributeProperties {
 		String attributeName;
+		boolean manual = false;
 		boolean restricted = false;
 		boolean visible = false;
-		boolean manual = false;
 	}
 
 	public static final String XML_NODE_ATTRIBUTE = "attribute";
@@ -70,7 +70,8 @@ class AttributeBuilder implements IElementDOMHandler {
 		if (tag.equals(AttributeBuilder.XML_NODE_REGISTERED_ATTRIBUTE_NAME)) {
 			return new RegisteredAttributeProperties();
 		}
-		if (tag.equals(AttributeBuilder.XML_NODE_REGISTERED_ATTRIBUTE_VALUE) || tag.equals(AttributeBuilder.XML_NODE_ATTRIBUTE_REGISTRY)) {
+		if (tag.equals(AttributeBuilder.XML_NODE_REGISTERED_ATTRIBUTE_VALUE)
+		        || tag.equals(AttributeBuilder.XML_NODE_ATTRIBUTE_REGISTRY)) {
 			return parent;
 		}
 		return null;
@@ -147,10 +148,11 @@ class AttributeBuilder implements IElementDOMHandler {
 				    r.registry(attribute);
 			    }
 		    });
-		reader.addElementHandler(XML_NODE_ATTRIBUTE_LAYOUT, new IElementHandler(){
-			public Object createElement(Object parent, String tag, XMLElement attributes) {
-	            return parent;
-            }});
+		reader.addElementHandler(XML_NODE_ATTRIBUTE_LAYOUT, new IElementHandler() {
+			public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
+				return parent;
+			}
+		});
 		reader.addAttributeHandler(AttributeBuilder.XML_NODE_ATTRIBUTE_LAYOUT, "NAME_WIDTH", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;

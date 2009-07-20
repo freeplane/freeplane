@@ -85,9 +85,8 @@ class NoteConditionController implements IElementaryConditionController {
 	}
 
 	public ComboBoxModel getConditionsForProperty(final Object selectedItem) {
-		return new DefaultComboBoxModel(new NamedObject[] {
-		        ResourceBundles.createTranslatedString(ConditionFactory.FILTER_CONTAINS)
-		        });
+		return new DefaultComboBoxModel(new NamedObject[] { ResourceBundles
+		    .createTranslatedString(ConditionFactory.FILTER_CONTAINS) });
 	}
 
 	public IListModel getFilteredProperties() {

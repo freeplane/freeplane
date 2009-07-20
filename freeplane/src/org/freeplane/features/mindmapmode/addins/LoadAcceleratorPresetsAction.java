@@ -45,7 +45,11 @@ import org.freeplane.core.ui.components.UITools;
  * 04.07.2009
  */
 public class LoadAcceleratorPresetsAction extends AFreeplaneAction {
-	final private URL resource;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * A simple help function to get the directory where to search for XSLT 
 	 * export files distributed with Freeplane.
@@ -64,112 +68,119 @@ public class LoadAcceleratorPresetsAction extends AFreeplaneAction {
 		return new File(ResourceController.getResourceController().getFreeplaneUserDirectory(), "accelerators");
 	}
 
-	final static public void install(ModeController modecontroller){		
-		File[] dirs = {getAcceleratorsUserDirectory(), getAcceleratorsSysDirectory()};
+	final static public void install(final ModeController modecontroller) {
+		final File[] dirs = { LoadAcceleratorPresetsAction.getAcceleratorsUserDirectory(),
+		        LoadAcceleratorPresetsAction.getAcceleratorsSysDirectory() };
 		final Controller controller = modecontroller.getController();
 		final SaveAcceleratorPresetsAction saveAction = new SaveAcceleratorPresetsAction(controller);
 		controller.addAction(saveAction);
 		final MenuBuilder menuBuilder = modecontroller.getUserInputListenerFactory().getMenuBuilder();
-        menuBuilder.addAction("/menu_bar/extras/first/options/acceleratorPresets/save", "SaveAcceleratorPresetsAction", saveAction, MenuBuilder.AS_CHILD);
-		
-		for(File dir:dirs){
+		menuBuilder.addAction("/menu_bar/extras/first/options/acceleratorPresets/save", "SaveAcceleratorPresetsAction",
+		    saveAction, MenuBuilder.AS_CHILD);
+		for (final File dir : dirs) {
 			final File[] fileList = dir.listFiles();
-			if(fileList == null){
+			if (fileList == null) {
 				continue;
 			}
-			for(File prop:fileList){
+			for (final File prop : fileList) {
 				final String fileName = prop.getName();
-				if(prop.isDirectory()){
+				if (prop.isDirectory()) {
 					continue;
 				}
-				if(! fileName.endsWith(".properties")){
+				if (!fileName.endsWith(".properties")) {
 					continue;
 				}
 				try {
-	                int propNameLength = fileName.lastIndexOf('.');
-	                String propName = fileName.substring(0, propNameLength);
-	                final String key = "LoadAcceleratorPresetsAction." + propName;
-	                if(controller.getAction(key) != null){
-	                	continue;
-	                }
-	                String title = ResourceBundles.getText(key + ".text", propName);
-	                final LoadAcceleratorPresetsAction loadAcceleratorPresetsAction = new LoadAcceleratorPresetsAction(prop.toURL(), key, title, controller);
-	                controller.addAction(loadAcceleratorPresetsAction);
-	                menuBuilder.addAction("/menu_bar/extras/first/options/acceleratorPresets/new", key, loadAcceleratorPresetsAction, MenuBuilder.AS_CHILD);
-                }
-                catch (Exception e) {
-                	UITools.errorMessage("can not load accelerators from" + prop.getPath());
-                }
+					final int propNameLength = fileName.lastIndexOf('.');
+					final String propName = fileName.substring(0, propNameLength);
+					final String key = "LoadAcceleratorPresetsAction." + propName;
+					if (controller.getAction(key) != null) {
+						continue;
+					}
+					final String title = ResourceBundles.getText(key + ".text", propName);
+					final LoadAcceleratorPresetsAction loadAcceleratorPresetsAction = new LoadAcceleratorPresetsAction(
+					    prop.toURL(), key, title, controller);
+					controller.addAction(loadAcceleratorPresetsAction);
+					menuBuilder.addAction("/menu_bar/extras/first/options/acceleratorPresets/new", key,
+					    loadAcceleratorPresetsAction, MenuBuilder.AS_CHILD);
+				}
+				catch (final Exception e) {
+					UITools.errorMessage("can not load accelerators from" + prop.getPath());
+				}
 			}
 		}
 	}
-	LoadAcceleratorPresetsAction(URL resource, String propFileName, String title, Controller controller) {
-	    super("LoadAcceleratorPresetsAction." + propFileName, controller, title, null);
-	    this.resource = resource;
-    }
 
-	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	final private URL resource;
 
-	public void actionPerformed(ActionEvent e) {
+	LoadAcceleratorPresetsAction(final URL resource, final String propFileName, final String title,
+	                             final Controller controller) {
+		super("LoadAcceleratorPresetsAction." + propFileName, controller, title, null);
+		this.resource = resource;
+	}
+
+	public void actionPerformed(final ActionEvent e) {
 		try {
-	        MenuBuilder.loadAcceleratorPresets(resource.openStream(), getController());
-        }
-        catch (IOException e1) {
-	        // TODO Auto-generated catch block
-	        e1.printStackTrace();
-        }
+			MenuBuilder.loadAcceleratorPresets(resource.openStream(), getController());
+		}
+		catch (final IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}
 }
 
 class SaveAcceleratorPresetsAction extends AFreeplaneAction {
-	public SaveAcceleratorPresetsAction(Controller controller) {
-	    super("SaveAcceleratorPresetsAction", controller);
-    }
-
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-	public void actionPerformed(ActionEvent e) {
+	public SaveAcceleratorPresetsAction(final Controller controller) {
+		super("SaveAcceleratorPresetsAction", controller);
+	}
+
+	public void actionPerformed(final ActionEvent e) {
 		final String keyset = JOptionPane.showInputDialog(ResourceBundles.getText("enter_keyset_name"));
-		if(keyset == null || keyset.equals("")){
+		if (keyset == null || keyset.equals("")) {
 			return;
 		}
 		final File acceleratorsUserDirectory = LoadAcceleratorPresetsAction.getAcceleratorsUserDirectory();
-		File keysetFile = new File (acceleratorsUserDirectory, keyset + ".properties");
-		if(keysetFile.exists()){
-			final int confirm = JOptionPane.showConfirmDialog(UITools.getFrame(), ResourceBundles.getText("overwrite_keyset_question"), "Freeplane", JOptionPane.YES_NO_OPTION);
-			if(confirm != JOptionPane.YES_OPTION){
+		final File keysetFile = new File(acceleratorsUserDirectory, keyset + ".properties");
+		if (keysetFile.exists()) {
+			final int confirm = JOptionPane.showConfirmDialog(UITools.getFrame(), ResourceBundles
+			    .getText("overwrite_keyset_question"), "Freeplane", JOptionPane.YES_NO_OPTION);
+			if (confirm != JOptionPane.YES_OPTION) {
 				return;
 			}
 		}
-		Properties keysetProperties = new Properties();
-		final Set<Entry<Object, Object>> allProperties = ResourceController.getResourceController().getProperties().entrySet();
-		for(Entry<Object, Object> p : allProperties){
-			if(! p.getKey().toString().startsWith("acceleratorFor")){
+		final Properties keysetProperties = new Properties();
+		final Set<Entry<Object, Object>> allProperties = ResourceController.getResourceController().getProperties()
+		    .entrySet();
+		for (final Entry<Object, Object> p : allProperties) {
+			if (!p.getKey().toString().startsWith("acceleratorFor")) {
 				continue;
 			}
 			keysetProperties.put(p.getKey(), p.getValue());
 		}
 		try {
 			acceleratorsUserDirectory.mkdirs();
-	        OutputStream output = new BufferedOutputStream(new FileOutputStream(keysetFile));
-	        keysetProperties.store(output, "");
-            final String key = "LoadAcceleratorPresetsAction." + keyset;
-            if(getController().getAction(key) != null){
-            	return;
-            }
-            String title = ResourceBundles.getText(key + ".text", keyset);
-            final LoadAcceleratorPresetsAction loadAcceleratorPresetsAction = new LoadAcceleratorPresetsAction(keysetFile.toURL(), key, title, getController());
-            getController().addAction(loadAcceleratorPresetsAction);
-            getModeController().getUserInputListenerFactory().getMenuBuilder().addAction("/menu_bar/extras/first/options/acceleratorPresets/new", key, loadAcceleratorPresetsAction, MenuBuilder.AS_CHILD);
-        }
-        catch (IOException e1) {
-        	UITools.errorMessage(ResourceBundles.getText("can_not_save_key_set"));
-        }
+			final OutputStream output = new BufferedOutputStream(new FileOutputStream(keysetFile));
+			keysetProperties.store(output, "");
+			final String key = "LoadAcceleratorPresetsAction." + keyset;
+			if (getController().getAction(key) != null) {
+				return;
+			}
+			final String title = ResourceBundles.getText(key + ".text", keyset);
+			final LoadAcceleratorPresetsAction loadAcceleratorPresetsAction = new LoadAcceleratorPresetsAction(
+			    keysetFile.toURL(), key, title, getController());
+			getController().addAction(loadAcceleratorPresetsAction);
+			getModeController().getUserInputListenerFactory().getMenuBuilder().addAction(
+			    "/menu_bar/extras/first/options/acceleratorPresets/new", key, loadAcceleratorPresetsAction,
+			    MenuBuilder.AS_CHILD);
+		}
+		catch (final IOException e1) {
+			UITools.errorMessage(ResourceBundles.getText("can_not_save_key_set"));
+		}
 	}
 }

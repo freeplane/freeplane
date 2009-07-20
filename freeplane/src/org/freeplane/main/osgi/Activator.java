@@ -50,7 +50,7 @@ public class Activator implements BundleActivator {
 			if (param.equals("")) {
 				continue;
 			}
-	            parameters.add(param);
+			parameters.add(param);
 		}
 		final String[] array = parameters.toArray(new String[parameters.size()]);
 		return array;

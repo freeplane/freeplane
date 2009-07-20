@@ -44,11 +44,11 @@ class ShowSelectedAttributesAction extends AFreeplaneAction {
 	}
 
 	void setAttributeViewType(final MapModel map) {
-		if(map == null){
+		if (map == null) {
 			return;
 		}
 		final AttributeRegistry attributes = AttributeRegistry.getRegistry(map);
-		if(attributes == null){
+		if (attributes == null) {
 			return;
 		}
 		if (attributes.getAttributeViewType() != AttributeTableLayoutModel.SHOW_SELECTED) {

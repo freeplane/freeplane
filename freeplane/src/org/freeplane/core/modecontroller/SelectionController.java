@@ -22,6 +22,7 @@ package org.freeplane.core.modecontroller;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
+
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.util.LogTool;
 
@@ -54,7 +55,7 @@ public class SelectionController {
 			}
 		}
 		catch (final RuntimeException e) {
-			LogTool.severe( "Error in node selection listeners", e);
+			LogTool.severe("Error in node selection listeners", e);
 		}
 	}
 

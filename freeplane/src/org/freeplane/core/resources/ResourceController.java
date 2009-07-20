@@ -149,6 +149,15 @@ public abstract class ResourceController {
 		return null;
 	}
 
+	public double getDoubleProperty(final String key, final double defaultValue) {
+		try {
+			return Double.parseDouble(ResourceController.getResourceController().getProperty("user_zoom"));
+		}
+		catch (final Exception e) {
+			return defaultValue;
+		}
+	}
+
 	/**
 	 * @return
 	 */
@@ -163,15 +172,6 @@ public abstract class ResourceController {
 		}
 	}
 
-	public double getDoubleProperty(final String key, final double defaultValue) {
-		try {
-			return Double.parseDouble(ResourceController.getResourceController().getProperty("user_zoom"));
-		}
-		catch (final Exception e) {
-			return defaultValue;
-		}
-	}
-	
 	public long getLongProperty(final String key, final int defaultValue) {
 		try {
 			return Long.parseLong(getProperty(key));
@@ -236,11 +236,11 @@ public abstract class ResourceController {
 
 	abstract public void setDefaultProperty(final String key, final String value);
 
-	abstract public void setProperty(final String property, final String value);
-
-	public void setProperty(final String property, final boolean value){
+	public void setProperty(final String property, final boolean value) {
 		setProperty(property, Boolean.toString(value));
 	}
+
+	abstract public void setProperty(final String property, final String value);
 
 	public void toggleSelectionAsRectangle() {
 		setProperty(ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION, new Boolean(!isSelectionAsRectangle())

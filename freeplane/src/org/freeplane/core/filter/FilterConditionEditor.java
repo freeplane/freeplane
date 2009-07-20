@@ -46,7 +46,7 @@ import org.freeplane.core.resources.ResourceBundles;
  * @author Dimitry Polivaev
  * 23.05.2009
  */
-public class FilterConditionEditor extends Box{
+public class FilterConditionEditor extends Box {
 	private class ElementaryConditionChangeListener implements ItemListener {
 		public void itemStateChanged(final ItemEvent e) {
 			if (e.getStateChange() == ItemEvent.SELECTED) {
@@ -92,21 +92,22 @@ public class FilterConditionEditor extends Box{
 			}
 		}
 	}
-	final private JCheckBox caseInsensitive;
-	final private JComboBox elementaryConditions;
-	final private JComboBox values;
-	final private JComboBox filteredPropertiesComponent;
-	final private ExtendedComboBoxModel filteredPropertiesModel;
-	final private FilterController filterController;
 
 	/**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	final private JCheckBox caseInsensitive;
+	final private JComboBox elementaryConditions;
+	final private FilterController filterController;
+	final private JComboBox filteredPropertiesComponent;
+	final private ExtendedComboBoxModel filteredPropertiesModel;
+	private WeakReference<MapModel> lastMap;
+	final private JComboBox values;
 
-	public FilterConditionEditor(FilterController filterController) {
-	    super(BoxLayout.X_AXIS);
-	    this.filterController = filterController;
+	public FilterConditionEditor(final FilterController filterController) {
+		super(BoxLayout.X_AXIS);
+		this.filterController = filterController;
 		setBorder(new EmptyBorder(5, 0, 5, 0));
 		filteredPropertiesComponent = new JComboBox();
 		filteredPropertiesModel = new ExtendedComboBoxModel();
@@ -130,13 +131,52 @@ public class FilterConditionEditor extends Box{
 		add(caseInsensitive);
 		caseInsensitive.setText(ResourceBundles.getText("filter_ignore_case"));
 		mapChanged(filterController.getController().getMap());
-   }
-	private WeakReference<MapModel> lastMap;
+	}
+
+	public void focusInputField() {
+		if (values.isEnabled()) {
+			values.requestFocus();
+			final Component editorComponent = values.getEditor().getEditorComponent();
+			if (editorComponent instanceof JTextComponent) {
+				((JTextComponent) editorComponent).selectAll();
+			}
+			return;
+		}
+	}
+
+	public ICondition getCondition() {
+		ICondition newCond;
+		Object value = values.getSelectedItem();
+		if (value == null) {
+			value = "";
+		}
+		final NamedObject simpleCond = (NamedObject) elementaryConditions.getSelectedItem();
+		final boolean ignoreCase = caseInsensitive.isSelected();
+		final Object selectedItem = filteredPropertiesComponent.getSelectedItem();
+		newCond = filterController.getConditionFactory().createCondition(selectedItem, simpleCond, value, ignoreCase);
+		if (values.isEditable()) {
+			final Object item = values.getSelectedItem();
+			if (item != null && !item.equals("")) {
+				values.removeItem(item);
+				values.insertItemAt(item, 0);
+				values.setSelectedIndex(0);
+				if (values.getItemCount() >= 10) {
+					values.removeItemAt(9);
+				}
+			}
+		}
+		return newCond;
+	}
+
+	public String getSearchTerm() {
+		return filteredPropertiesComponent.getSelectedItem().toString();
+	}
+
 	/**
 	 */
 	public void mapChanged(final MapModel newMap) {
 		if (newMap != null) {
-			if(lastMap != null && lastMap.get() == newMap){
+			if (lastMap != null && lastMap.get() == newMap) {
 				return;
 			}
 			filteredPropertiesModel.removeAllElements();
@@ -155,41 +195,4 @@ public class FilterConditionEditor extends Box{
 		}
 		lastMap = new WeakReference<MapModel>(newMap);
 	}
-	public ICondition getCondition() {
-	    ICondition newCond;
-	    Object value = values.getSelectedItem();
-	    if(value == null){
-	    	value = "";
-	    }
-	    final NamedObject simpleCond = (NamedObject) elementaryConditions.getSelectedItem();
-	    final boolean ignoreCase = caseInsensitive.isSelected();
-	    final Object selectedItem = filteredPropertiesComponent.getSelectedItem();
-	    newCond = filterController.getConditionFactory().createCondition(selectedItem, simpleCond, value,
-	        ignoreCase);
-		if (values.isEditable()) {
-			final Object item = values.getSelectedItem();
-			if (item != null && !item.equals("")) {
-				values.removeItem(item);
-				values.insertItemAt(item, 0);
-				values.setSelectedIndex(0);
-				if (values.getItemCount() >= 10) {
-					values.removeItemAt(9);
-				}
-			}
-		}
-	    return newCond;
-    }
-	public String getSearchTerm() {
-	    return filteredPropertiesComponent.getSelectedItem().toString();
-    }
-	public void focusInputField() {
-		if(values.isEnabled()){
-			values.requestFocus();
-			Component editorComponent = values.getEditor().getEditorComponent();
-			if(editorComponent instanceof JTextComponent){
-				((JTextComponent)editorComponent).selectAll();
-			}
-			return;
-		}
-    }
 }

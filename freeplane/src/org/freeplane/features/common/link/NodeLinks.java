@@ -52,6 +52,11 @@ public class NodeLinks implements IExtension {
 		return links != null ? links.getHyperLink() : null;
 	}
 
+	public static String getLinkAsString(final NodeModel selectedNode) {
+		final URI link = NodeLinks.getLink(selectedNode);
+		return link != null ? link.toString() : null;
+	}
+
 	/**
 	 * @param node
 	 * @return
@@ -154,9 +159,4 @@ public class NodeLinks implements IExtension {
 			addLinkToMap(node.getMap(), link);
 		}
 	}
-
-	public static String getLinkAsString(NodeModel selectedNode) {
-	    final URI link = getLink(selectedNode);
-	    return link != null ? link.toString() : null;
-    }
 }

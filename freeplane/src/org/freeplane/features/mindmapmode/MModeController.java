@@ -65,6 +65,13 @@ public class MModeController extends ModeController {
 		redo.setEnabled(false);
 	}
 
+	@Override
+	public void commit() {
+		final MMapModel map = (MMapModel) getController().getMap();
+		final IUndoHandler undoHandler = map.getUndoHandler();
+		undoHandler.commit();
+	}
+
 	private void createActions() {
 		final Controller controller = getController();
 		undo = new UndoAction(controller);
@@ -113,29 +120,6 @@ public class MModeController extends ModeController {
 	}
 
 	@Override
-	public void commit() {
-		final MMapModel map = (MMapModel) getController().getMap();
-		final IUndoHandler undoHandler = map.getUndoHandler();
-		undoHandler.commit();
-    }
-
-	@Override
-	public void rollback() {
-		final MMapModel map = (MMapModel) getController().getMap();
-		final IUndoHandler undoHandler = map.getUndoHandler();
-		undoHandler.rollback();
-		undo.setEnabled(undoHandler.canUndo());
-		redo.setEnabled(false);
-    }
-
-	@Override
-	public void startTransaction() {
-		final MMapModel map = (MMapModel) getController().getMap();
-		final IUndoHandler undoHandler = map.getUndoHandler();
-		undoHandler.startTransaction();
-    }
-	
-	@Override
 	public String getModeName() {
 		return MModeController.MODENAME;
 	}
@@ -152,6 +136,15 @@ public class MModeController extends ModeController {
 		return ((MMapModel) model).getUndoHandler().isUndoActionRunning();
 	}
 
+	@Override
+	public void rollback() {
+		final MMapModel map = (MMapModel) getController().getMap();
+		final IUndoHandler undoHandler = map.getUndoHandler();
+		undoHandler.rollback();
+		undo.setEnabled(undoHandler.canUndo());
+		redo.setEnabled(false);
+	}
+
 	/**
 	 *
 	 */
@@ -163,6 +156,13 @@ public class MModeController extends ModeController {
 	public void shutdown() {
 		super.shutdown();
 		((MNoteController) NoteController.getController(this)).shutdownController();
+	}
+
+	@Override
+	public void startTransaction() {
+		final MMapModel map = (MMapModel) getController().getMap();
+		final IUndoHandler undoHandler = map.getUndoHandler();
+		undoHandler.startTransaction();
 	}
 
 	/**

@@ -46,31 +46,6 @@ import org.freeplane.core.url.UrlManager;
  * MindMapController as a sample.
  */
 public class ModeController extends AController {
-	private static class ActionDisplayerOnChange implements INodeChangeListener, INodeSelectionListener,
-	        IActionOnChange {
-		final AFreeplaneAction action;
-
-		public ActionDisplayerOnChange(final AFreeplaneAction action) {
-			super();
-			this.action = action;
-		}
-
-		public AFreeplaneAction getAction() {
-			return action;
-		}
-
-		public void nodeChanged(final NodeChangeEvent event) {
-			action.setVisible();
-		}
-
-		public void onDeselect(final NodeModel node) {
-		}
-
-		public void onSelect(final NodeModel node) {
-			action.setVisible();
-		}
-	}
-
 	private static class ActionEnablerOnChange implements INodeChangeListener, INodeSelectionListener, IActionOnChange {
 		final AFreeplaneAction action;
 
@@ -176,6 +151,9 @@ public class ModeController extends AController {
 		menuContributors.add(contributor);
 	}
 
+	public void commit() {
+	}
+
 	public void execute(final IActor actor) {
 		actor.act();
 	}
@@ -261,6 +239,9 @@ public class ModeController extends AController {
 		nodeViewListeners.remove(listener);
 	}
 
+	public void rollback() {
+	}
+
 	public void setBlocked(final boolean isBlocked) {
 		this.isBlocked = isBlocked;
 	}
@@ -292,6 +273,9 @@ public class ModeController extends AController {
 	public void shutdown() {
 	}
 
+	public void startTransaction() {
+	}
+
 	/**
 	 * This method is called after and before a change of the map mapView. Use
 	 * it to perform the actions that cannot be performed at creation time.
@@ -308,13 +292,4 @@ public class ModeController extends AController {
 			iterator.next().updateMenus(menuBuilder);
 		}
 	}
-
-	public void commit() {
-    }
-
-	public void rollback() {
-    }
-
-	public void startTransaction() {
-    }
 }

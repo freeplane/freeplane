@@ -21,7 +21,6 @@ package org.freeplane.features.mindmapmode.file;
 
 import java.io.File;
 
-
 public class DummyLockManager extends LockManager {
 	@Override
 	public synchronized String popLockingUserOfOldLock() {

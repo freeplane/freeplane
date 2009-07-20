@@ -102,16 +102,12 @@ public class LogTool {
 		LOGGER.log(Level.SEVERE, message);
 	}
 
-	public static void severe(final Throwable e) {
-		LogTool.severe("", e);
-	}
-
-	public static void warn(final Throwable e) {
-		LogTool.warn("", e);
-	}
-
 	public static void severe(final String comment, final Throwable e) {
 		LOGGER.log(Level.SEVERE, comment, e);
+	}
+
+	public static void severe(final Throwable e) {
+		LogTool.severe("", e);
 	}
 
 	public static void warn(final String msg) {
@@ -120,5 +116,9 @@ public class LogTool {
 
 	public static void warn(final String comment, final Throwable e) {
 		LOGGER.log(Level.WARNING, comment, e);
+	}
+
+	public static void warn(final Throwable e) {
+		LogTool.warn("", e);
 	}
 }

@@ -105,7 +105,7 @@ public class MapViewController implements IMapViewManager {
 	public boolean changeToMapView(final Component newMapViewComponent) {
 		final MapView newMapView = (MapView) newMapViewComponent;
 		final MapView oldMapView = mapView;
-		if(newMapView == oldMapView){
+		if (newMapView == oldMapView) {
 			return true;
 		}
 		mapViewChangeListeners.beforeMapViewChange(oldMapView, newMapView);
@@ -159,7 +159,7 @@ public class MapViewController implements IMapViewManager {
 		final boolean changed = changeToMapView(mapViewCandidate);
 		if (changed) {
 			lastModeName = modeName;
-			if(oldMapView == mapView){
+			if (oldMapView == mapView) {
 				// if the same map remains selected post event for menu updates.
 				mapViewChangeListeners.afterMapViewChange(oldMapView, mapView);
 			}
@@ -188,7 +188,7 @@ public class MapViewController implements IMapViewManager {
 	 */
 	public boolean close(final boolean force) {
 		final MapView mapView = getMapView();
-		if(mapView == null){
+		if (mapView == null) {
 			return false;
 		}
 		final MapController mapController = mapView.getModeController().getMapController();

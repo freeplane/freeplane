@@ -21,7 +21,6 @@ package org.freeplane.features.mindmapmode.file;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.util.ListIterator;
@@ -35,7 +34,6 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.url.UrlManager;
-import org.freeplane.core.util.Compat;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.mindmapmode.MMapController;
@@ -65,13 +63,14 @@ class ImportLinkedBranchWithoutRootAction extends AFreeplaneAction {
 		}
 		try {
 			final URI uri = NodeLinks.getLink(selected);
-			File file = uri.isAbsolute()  && ! uri.isOpaque() ? new File(uri) : new File(new URL(map.getURL(), uri.getPath()).getFile());
+			final File file = uri.isAbsolute() && !uri.isOpaque() ? new File(uri) : new File(new URL(map.getURL(), uri
+			    .getPath()).getFile());
 			final NodeModel node = ((MMapController) modeController.getMapController()).loadTree(map, file);
 			for (final ListIterator i = modeController.getMapController().childrenUnfolded(node); i.hasNext();) {
 				final NodeModel importNode = (NodeModel) i.next();
 				((MMapController) modeController.getMapController()).insertNode(importNode, selected);
 			}
-			((MLinkController)LinkController.getController(modeController)).setLink(selected, (URI)null);
+			((MLinkController) LinkController.getController(modeController)).setLink(selected, (URI) null);
 		}
 		catch (final Exception ex) {
 			UrlManager.getController(modeController).handleLoadingException(ex);

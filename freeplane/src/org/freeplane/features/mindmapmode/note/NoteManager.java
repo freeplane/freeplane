@@ -34,13 +34,13 @@ import com.lightdev.app.shtm.SHTMLPanel;
 
 final class NoteManager implements INodeSelectionListener {
 	public final static Pattern HEAD = Pattern.compile("<head>.*</head>\n", Pattern.DOTALL);
+	private boolean ignoreEditorUpdate;
 	NoteDocumentListener mNoteDocumentListener;
 	private NodeModel node;
 	/**
 	 *
 	 */
 	final private MNoteController noteController;
-	private boolean ignoreEditorUpdate;
 
 	public NoteManager(final MNoteController noteController) {
 		this.noteController = noteController;
@@ -48,7 +48,7 @@ final class NoteManager implements INodeSelectionListener {
 
 	public void onDeselect(final NodeModel node) {
 		final SHTMLPanel noteViewerComponent = noteController.getNoteViewerComponent();
-		if(noteViewerComponent == null){
+		if (noteViewerComponent == null) {
 			return;
 		}
 		noteViewerComponent.getDocument().removeDocumentListener(mNoteDocumentListener);
@@ -61,19 +61,12 @@ final class NoteManager implements INodeSelectionListener {
 		updateEditor();
 	}
 
-	void saveNote(final NodeModel node) {
-		if (this.node != node) {
-			return;
-		}
-		saveNote();
-	}
-
 	void saveNote() {
-		if(node == null){
+		if (node == null) {
 			return;
 		}
-	    final SHTMLPanel noteViewerComponent = noteController.getNoteViewerComponent();
-		if(noteViewerComponent == null){
+		final SHTMLPanel noteViewerComponent = noteController.getNoteViewerComponent();
+		if (noteViewerComponent == null) {
 			return;
 		}
 		boolean editorContentEmpty = true;
@@ -82,39 +75,46 @@ final class NoteManager implements INodeSelectionListener {
 		editorContentEmpty = HtmlTools.htmlToPlain(documentText).equals("");
 		noteController.getModeController().getMapController().removeNodeSelectionListener(this);
 		if (noteViewerComponent.needsSaving()) {
-			try{
+			try {
 				ignoreEditorUpdate = true;
 				if (editorContentEmpty) {
-					noteController.setNoteText(this.node, null);
+					noteController.setNoteText(node, null);
 				}
 				else {
-					noteController.setNoteText(this.node, documentText);
+					noteController.setNoteText(node, documentText);
 				}
 			}
-			finally{
+			finally {
 				ignoreEditorUpdate = false;
 			}
 			noteController.setLastContentEmpty(editorContentEmpty);
 		}
 		noteController.getModeController().getMapController().addNodeSelectionListener(this);
-    }
+	}
+
+	void saveNote(final NodeModel node) {
+		if (this.node != node) {
+			return;
+		}
+		saveNote();
+	}
 
 	void updateEditor() {
-		if(ignoreEditorUpdate){
+		if (ignoreEditorUpdate) {
 			return;
 		}
 		final SHTMLPanel noteViewerComponent = noteController.getNoteViewerComponent();
-		if(noteViewerComponent == null){
+		if (noteViewerComponent == null) {
 			return;
 		}
 		final HTMLDocument document = noteViewerComponent.getDocument();
 		document.removeDocumentListener(mNoteDocumentListener);
 		try {
 			final URL url = node.getMap().getURL();
-			if(url != null){
+			if (url != null) {
 				document.setBase(url);
 			}
-			else{
+			else {
 				document.setBase(new URL("file: "));
 			}
 		}

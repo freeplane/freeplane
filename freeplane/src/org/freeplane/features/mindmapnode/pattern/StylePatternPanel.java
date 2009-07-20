@@ -99,7 +99,8 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 	private static final String EDGE_COLOR = "edgecolor";
 	private static final String EDGE_STYLE = "edgestyle";
 	private static final String[] EDGE_STYLES = new String[] { EdgeStyle.EDGESTYLE_LINEAR, EdgeStyle.EDGESTYLE_BEZIER,
-	        EdgeStyle.EDGESTYLE_SHARP_LINEAR, EdgeStyle.EDGESTYLE_SHARP_BEZIER, EdgeStyle.EDGESTYLE_HORIZONTAL, EdgeStyle.EDGESTYLE_HIDDEN };
+	        EdgeStyle.EDGESTYLE_SHARP_LINEAR, EdgeStyle.EDGESTYLE_SHARP_BEZIER, EdgeStyle.EDGESTYLE_HORIZONTAL,
+	        EdgeStyle.EDGESTYLE_HIDDEN };
 	private static final String EDGE_WIDTH = "edgewidth";
 	private static final String[] EDGE_WIDTHS = new String[] { "EdgeWidth_parent", "EdgeWidth_thin", "EdgeWidth_1",
 	        "EdgeWidth_2", "EdgeWidth_4", "EdgeWidth_8" };
@@ -137,9 +138,9 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 	private static final String SET_SCRIPT = "setscript";
 	private ComboProperty mChildPattern;
 	private ThreeCheckBoxProperty mClearSetters;
-	private Vector mControls;
 	private BooleanProperty mCloud;
 	private ColorProperty mCloudColor;
+	private Vector mControls;
 	private ColorProperty mEdgeColor;
 	private ComboProperty mEdgeStyle;
 	private ComboProperty mEdgeWidth;
@@ -163,9 +164,9 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 	final private HashMap mPropertyChangePropagation = new HashMap();
 	private ScriptEditorProperty mScriptPattern;
 	private ThreeCheckBoxProperty mSetChildPattern;
-	private ThreeCheckBoxProperty mSetEdgeColor;
 	private ThreeCheckBoxProperty mSetCloud;
 	private ThreeCheckBoxProperty mSetCloudColor;
+	private ThreeCheckBoxProperty mSetEdgeColor;
 	private ThreeCheckBoxProperty mSetEdgeStyle;
 	private ThreeCheckBoxProperty mSetEdgeWidth;
 	private ThreeCheckBoxProperty mSetIcon;

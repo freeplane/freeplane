@@ -81,7 +81,7 @@ public class EncryptionModel implements IExtension {
 	 */
 	public boolean checkPassword(final IEncrypter encrypter) {
 		final String decryptedNode = decryptXml(encryptedContent, encrypter);
-		if (decryptedNode == null || ! decryptedNode.equals("") && !decryptedNode.startsWith("<node ")) {
+		if (decryptedNode == null || !decryptedNode.equals("") && !decryptedNode.startsWith("<node ")) {
 			EncryptionModel.logger.warning("Wrong password supplied (stored!=given).");
 			return false;
 		}

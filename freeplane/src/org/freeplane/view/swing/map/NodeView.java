@@ -35,6 +35,7 @@ import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetListener;
 import java.util.LinkedList;
 import java.util.ListIterator;
+
 import javax.swing.JComponent;
 import javax.swing.tree.TreeNode;
 
@@ -467,7 +468,8 @@ public class NodeView extends JComponent implements INodeView {
 	public int getMaxToolTipWidth() {
 		if (maxToolTipWidth == 0) {
 			try {
-				maxToolTipWidth = ResourceController.getResourceController().getIntProperty("toolTipManager.max_tooltip_width", 600);
+				maxToolTipWidth = ResourceController.getResourceController().getIntProperty(
+				    "toolTipManager.max_tooltip_width", 600);
 			}
 			catch (final NumberFormatException e) {
 				maxToolTipWidth = 600;
@@ -1013,7 +1015,7 @@ public class NodeView extends JComponent implements INodeView {
 
 	void repaintSelected() {
 		// do not repaint removed nodes
-		if(model.getParentNode() == null && !model.isRoot()){
+		if (model.getParentNode() == null && !model.isRoot()) {
 			return;
 		}
 		mainView.updateTextColor(this);

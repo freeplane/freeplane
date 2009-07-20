@@ -54,6 +54,16 @@ public class NodeStyleModel implements IExtension, Cloneable {
 		return styleModel == null ? null : styleModel.getColor();
 	}
 
+	public static String getFontFamilyName(final NodeModel node) {
+		final NodeStyleModel styleModel = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
+		return styleModel == null ? null : styleModel.getFontFamilyName();
+	}
+
+	public static Integer getFontSize(final NodeModel node) {
+		final NodeStyleModel styleModel = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
+		return styleModel == null ? null : styleModel.getFontSize();
+	}
+
 	public static NodeStyleModel getModel(final NodeModel node) {
 		final NodeStyleModel styleModel = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
 		return styleModel;
@@ -62,6 +72,16 @@ public class NodeStyleModel implements IExtension, Cloneable {
 	public static String getShape(final NodeModel node) {
 		final NodeStyleModel styleModel = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
 		return styleModel == null ? null : styleModel.getShape();
+	}
+
+	public static Boolean isBold(final NodeModel node) {
+		final NodeStyleModel styleModel = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
+		return styleModel == null ? null : styleModel.isBold();
+	}
+
+	public static Boolean isItalic(final NodeModel node) {
+		final NodeStyleModel styleModel = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
+		return styleModel == null ? null : styleModel.isItalic();
 	}
 
 	public static void setBackgroundColor(final NodeModel node, final Color color) {
@@ -110,42 +130,22 @@ public class NodeStyleModel implements IExtension, Cloneable {
 
 	public String getFontFamilyName() {
 		return fontFamilyName;
-	}
-
-	public static String getFontFamilyName(final NodeModel node) {
-		final NodeStyleModel styleModel = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
-		return styleModel == null ? null : styleModel.getFontFamilyName();
-	}
+	};
 
 	public Integer getFontSize() {
 		return fontSize;
 	}
 
-	public static Integer getFontSize(final NodeModel node) {
-		final NodeStyleModel styleModel = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
-		return styleModel == null ? null : styleModel.getFontSize();
-	}
-
 	public String getShape() {
 		return shape;
-	};
+	}
 
 	public Boolean isBold() {
 		return isBold;
 	}
 
-	public static Boolean isBold(final NodeModel node) {
-		final NodeStyleModel styleModel = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
-		return styleModel == null ? null : styleModel.isBold();
-	}
-
 	public Boolean isItalic() {
 		return isItalic;
-	}
-
-	public static Boolean isItalic(final NodeModel node) {
-		final NodeStyleModel styleModel = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
-		return styleModel == null ? null : styleModel.isItalic();
 	}
 
 	public void setBackgroundColor(final Color color) {

@@ -78,7 +78,8 @@ public class PropertyAction extends AFreeplaneAction {
 					ResourceController.getResourceController().setProperty(key, newProperty);
 				}
 				if (propertiesChanged) {
-					JOptionPane.showMessageDialog(UITools.getFrame(), ResourceBundles.getText("option_changes_may_require_restart"));
+					JOptionPane.showMessageDialog(UITools.getFrame(), ResourceBundles
+					    .getText("option_changes_may_require_restart"));
 					ResourceController.getResourceController().saveProperties(getController());
 				}
 			}

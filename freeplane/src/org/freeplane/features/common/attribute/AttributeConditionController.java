@@ -126,7 +126,7 @@ class AttributeConditionController implements IElementaryConditionController {
 
 	public IListModel getFilteredProperties() {
 		final AttributeRegistry registry = AttributeRegistry.getRegistry(controller.getMap());
-		if(registry != null){
+		if (registry != null) {
 			return registry.getListBoxModel();
 		}
 		return new SortedMapListModel();

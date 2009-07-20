@@ -41,8 +41,8 @@ import org.freeplane.n3.nanoxml.XMLElement;
 @NodeHookDescriptor(hookName = "accessories/plugins/CreationModificationPlugin.properties")
 @ActionLocationDescriptor(locations = { "/menu_bar/extras/first/nodes/change" })
 public class CreationModificationPlugin extends PersistentNodeHook implements INodeChangeListener, IExtension {
-	private String tooltipFormat = "<html>Created:  {0,date} {0,time}<br>Modified: {1,date} {1,time}</html>";
 	private boolean nodeChangeListenerDisabled;
+	private String tooltipFormat = "<html>Created:  {0,date} {0,time}<br>Modified: {1,date} {1,time}</html>";
 
 	/**
 	 *
@@ -60,10 +60,10 @@ public class CreationModificationPlugin extends PersistentNodeHook implements IN
 	public void add(final NodeModel node, final IExtension extension) {
 		getModeController().getMapController().removeNodeChangeListener(this);
 		super.add(node, extension);
-		try{
+		try {
 			setStyleRecursive(node);
 		}
-		finally{
+		finally {
 			getModeController().getMapController().addNodeChangeListener(this);
 		}
 	}
@@ -82,10 +82,10 @@ public class CreationModificationPlugin extends PersistentNodeHook implements IN
 			return;
 		}
 		nodeChangeListenerDisabled = true;
-		try{
+		try {
 			setStyle(node);
 		}
-		finally{
+		finally {
 			nodeChangeListenerDisabled = false;
 		}
 	}
@@ -109,7 +109,7 @@ public class CreationModificationPlugin extends PersistentNodeHook implements IN
 
 	private void setStyle(final NodeModel node) {
 		final Object[] messageArguments = { node.getHistoryInformation().getCreatedAt(),
-				node.getHistoryInformation().getLastModifiedAt() };
+		        node.getHistoryInformation().getLastModifiedAt() };
 		if (tooltipFormat == null) {
 			tooltipFormat = ResourceBundles.getText("CreationModificationPlugin.tooltip_format");
 		}
@@ -129,9 +129,10 @@ public class CreationModificationPlugin extends PersistentNodeHook implements IN
 	}
 
 	protected void setToolTip(final NodeModel node, final String key, final String value) {
-		(getModeController().getMapController()).setToolTip(node, key, new ITooltipProvider(){
+		(getModeController().getMapController()).setToolTip(node, key, new ITooltipProvider() {
 			public String getTooltip() {
-	            return value;
-            }});
+				return value;
+			}
+		});
 	}
 }

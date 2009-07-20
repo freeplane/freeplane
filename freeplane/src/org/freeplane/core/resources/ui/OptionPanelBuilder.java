@@ -428,8 +428,8 @@ public class OptionPanelBuilder {
 		catch (final IOException e) {
 			throw new RuntimeException(e);
 		}
-        catch (XMLException e) {
+		catch (final XMLException e) {
 			throw new RuntimeException(e);
-        }
+		}
 	}
 }

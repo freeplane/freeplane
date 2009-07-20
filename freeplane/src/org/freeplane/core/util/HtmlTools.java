@@ -82,12 +82,12 @@ public class HtmlTools {
 
 	private static final Pattern FIND_TAGS_PATTERN = Pattern.compile("([^<]*)(<[^>]+>)");
 	private static final Pattern HTML_PATTERN = Pattern.compile("(?s)^\\s*<\\s*html.*?>.*");
+	private static Pattern[] PATTERNS;
 	private static HtmlTools sInstance = new HtmlTools();
 	private static final Pattern SLASHED_TAGS_PATTERN = Pattern.compile("<((" + "br|area|base|basefont|"
 	        + "bgsound|button|col|colgroup|embed|hr" + "|img|input|isindex|keygen|link|meta"
 	        + "|object|plaintext|spacer|wbr" + ")(\\s[^>]*)?)/>");
 	private static final Pattern TAGS_PATTERN = Pattern.compile("(?s)<[^><]*>");
-	
 
 	public static HtmlTools getInstance() {
 		return HtmlTools.sInstance;
@@ -97,34 +97,20 @@ public class HtmlTools {
 		return HtmlTools.htmlToPlain(text, /* strictHTMLOnly= */true);
 	}
 
-	private static Pattern[] PATTERNS;
-	
 	public static String htmlToPlain(final String text, final boolean strictHTMLOnly) {
 		if (strictHTMLOnly && !HtmlTools.isHtmlNode(text)) {
 			return text;
 		}
-		if(PATTERNS == null){
-			PATTERNS = new Pattern[] { 
-					Pattern.compile("(?ims)[\n\t]"), 
-					Pattern.compile("(?ims) +"),
-					Pattern.compile("(?ims)<br.*?>"), 
-					Pattern.compile("(?ims)<p.*?>"), 
-					Pattern.compile("(?ims)<div.*?>"),
-					Pattern.compile("(?ims)<tr.*?>"), 
-					Pattern.compile("(?ims)<dt.*?>"), 
-					Pattern.compile("(?ims)<dd.*?>"),
-					Pattern.compile("(?ims)<td.*?>"), 
-					Pattern.compile("(?ims)<[uo]l.*?>"), 
-					Pattern.compile("(?ims)<li.*?>"),
-					Pattern.compile("(?ims) *</[^>]*>"), 
-					Pattern.compile("(?ims)<[^/][^>]*> *"), 
-					Pattern.compile("^\n+"),
-					Pattern.compile("(?ims)&lt;"), 
-					Pattern.compile("(?ims)&gt;"), 
-					Pattern.compile("(?ims)&quot;"),
-					Pattern.compile("(?ims)&nbsp;"), 
-					Pattern.compile("(?ims)&amp;") 
-				}; 
+		if (PATTERNS == null) {
+			PATTERNS = new Pattern[] { Pattern.compile("(?ims)[\n\t]"), Pattern.compile("(?ims) +"),
+			        Pattern.compile("(?ims)<br.*?>"), Pattern.compile("(?ims)<p.*?>"),
+			        Pattern.compile("(?ims)<div.*?>"), Pattern.compile("(?ims)<tr.*?>"),
+			        Pattern.compile("(?ims)<dt.*?>"), Pattern.compile("(?ims)<dd.*?>"),
+			        Pattern.compile("(?ims)<td.*?>"), Pattern.compile("(?ims)<[uo]l.*?>"),
+			        Pattern.compile("(?ims)<li.*?>"), Pattern.compile("(?ims) *</[^>]*>"),
+			        Pattern.compile("(?ims)<[^/][^>]*> *"), Pattern.compile("^\n+"), Pattern.compile("(?ims)&lt;"),
+			        Pattern.compile("(?ims)&gt;"), Pattern.compile("(?ims)&quot;"), Pattern.compile("(?ims)&nbsp;"),
+			        Pattern.compile("(?ims)&amp;") };
 		}
 		String intermediate = text;
 		intermediate = PATTERNS[0].matcher(intermediate).replaceAll("");
@@ -483,10 +469,10 @@ public class HtmlTools {
 			return true;
 		}
 		catch (final SAXParseException e) {
-			LogTool.severe( "XmlParseError on line " + e.getLineNumber() + " of " + xml, e);
+			LogTool.severe("XmlParseError on line " + e.getLineNumber() + " of " + xml, e);
 		}
 		catch (final Exception e) {
-			LogTool.severe( "XmlParseError", e);
+			LogTool.severe("XmlParseError", e);
 		}
 		return false;
 	}

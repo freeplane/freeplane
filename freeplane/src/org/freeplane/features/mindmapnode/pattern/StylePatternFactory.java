@@ -31,11 +31,9 @@ import java.util.List;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.util.ColorUtils;
-import org.freeplane.features.common.cloud.CloudController;
 import org.freeplane.features.common.cloud.CloudModel;
 import org.freeplane.features.common.edge.EdgeModel;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
-import org.freeplane.features.mindmapmode.cloud.MCloudController;
 
 /**
  * This class constructs patterns from files or from nodes and saves them back.
@@ -135,14 +133,14 @@ public class StylePatternFactory {
 			}
 		}
 		final CloudModel cloud = CloudModel.getModel(node);
-		if(cloud != null){
+		if (cloud != null) {
 			final Color cloudColor = cloud.getColor();
-			if (cloudColor != null){
+			if (cloudColor != null) {
 				final PatternProperty cloudColorPattern = new PatternProperty();
 				cloudColorPattern.setValue(ColorUtils.colorToString(cloudColor));
 				pattern.setPatternCloudColor(cloudColorPattern);
 			}
-			else{
+			else {
 				final PatternProperty cloudPattern = new PatternProperty();
 				cloudPattern.setValue(TRUE_VALUE);
 				pattern.setPatternCloud(cloudPattern);
@@ -188,8 +186,8 @@ public class StylePatternFactory {
 		final Pattern result = new Pattern();
 		result.setPatternEdgeColor(StylePatternFactory.processPatternProperties(p1.getPatternEdgeColor(), p2
 		    .getPatternEdgeColor(), new PatternProperty()));
-		result.setPatternCloud(StylePatternFactory.processPatternProperties(p1.getPatternCloud(), p2
-		    .getPatternCloud(), new PatternProperty()));
+		result.setPatternCloud(StylePatternFactory.processPatternProperties(p1.getPatternCloud(), p2.getPatternCloud(),
+		    new PatternProperty()));
 		result.setPatternCloudColor(StylePatternFactory.processPatternProperties(p1.getPatternCloudColor(), p2
 		    .getPatternCloudColor(), new PatternProperty()));
 		result.setPatternEdgeStyle(StylePatternFactory.processPatternProperties(p1.getPatternEdgeStyle(), p2
@@ -278,11 +276,11 @@ public class StylePatternFactory {
 		result = StylePatternFactory.addSubPatternToString(result, pPattern.getPatternEdgeStyle(),
 		    "PatternToString.EdgeStyle");
 		result = StylePatternFactory.addSubPatternToString(result, pPattern.getPatternEdgeColor(),
-	    "PatternToString.Cloud");
+		    "PatternToString.Cloud");
 		result = StylePatternFactory.addSubPatternToString(result, pPattern.getPatternCloud(),
-	    "PatternToString.CloudColor");
+		    "PatternToString.CloudColor");
 		result = StylePatternFactory.addSubPatternToString(result, pPattern.getPatternCloudColor(),
-	    "PatternToString.EdgeColor");
+		    "PatternToString.EdgeColor");
 		result = StylePatternFactory.addSubPatternToString(result, pPattern.getPatternEdgeWidth(),
 		    "PatternToString.EdgeWidth");
 		result = StylePatternFactory.addSubPatternToString(result, pPattern.getPatternIcon(), "PatternToString.Icon");

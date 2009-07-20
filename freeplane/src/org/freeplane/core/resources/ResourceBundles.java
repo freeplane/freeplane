@@ -29,6 +29,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.ResourceBundle;
+
 import org.freeplane.core.util.LogTool;
 import org.freeplane.core.util.MultipleValueMap;
 
@@ -68,10 +69,6 @@ public class ResourceBundles extends ResourceBundle {
 	private Map<String, String> defaultResources;
 	private final MultipleValueMap<String, URL> externalResources;
 	private String lang;
-	public String getLanguageCode() {
-    	return lang;
-    }
-
 	private Map<String, String> languageResources;
 
 	ResourceBundles(final ResourceController controller) {
@@ -114,6 +111,10 @@ public class ResourceBundles extends ResourceBundle {
 				return iterator.next();
 			}
 		};
+	}
+
+	public String getLanguageCode() {
+		return lang;
 	}
 
 	/**

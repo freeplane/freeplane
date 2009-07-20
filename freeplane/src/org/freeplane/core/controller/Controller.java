@@ -41,7 +41,6 @@ import org.freeplane.core.util.LogTool;
  * MapModel(editing) or MapView(navigation).
  */
 public class Controller extends AController {
-
 	public static void setLookAndFeel(final String lookAndFeel) {
 		try {
 			if (lookAndFeel.equals("windows")) {
@@ -168,7 +167,7 @@ public class Controller extends AController {
 			oldModeController.shutdown();
 		}
 		modeController = newModeController;
-		if(! getMapViewManager().changeToMode(newModeController.getModeName())){
+		if (!getMapViewManager().changeToMode(newModeController.getModeName())) {
 			modeController = oldModeController;
 			return false;
 		}
@@ -183,7 +182,6 @@ public class Controller extends AController {
 			return true;
 		}
 		return selectMode(newModeController);
-		
 	}
 
 	public void setViewController(final ViewController viewController) {

@@ -21,6 +21,7 @@ package org.freeplane.view.swing.map;
 
 import java.util.HashSet;
 import java.util.Iterator;
+
 import org.freeplane.core.frame.IMapSelectionListener;
 import org.freeplane.core.frame.IMapViewChangeListener;
 import org.freeplane.core.model.MapModel;
@@ -50,7 +51,7 @@ class MapViewChangeObserverCompound {
 				observer.afterMapChange(oldModel, newModel);
 			}
 		}
-		for (final IMapViewChangeListener observer: viewListeners) {
+		for (final IMapViewChangeListener observer : viewListeners) {
 			observer.afterViewChange(oldMap, newMap);
 		}
 	}

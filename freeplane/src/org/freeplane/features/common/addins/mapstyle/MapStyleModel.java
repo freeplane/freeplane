@@ -39,12 +39,12 @@ public class MapStyleModel implements IExtension {
 		return extension;
 	}
 
-	public static MapStyleModel getExtension(final NodeModel node) {
-		return (MapStyleModel) node.getExtension(MapStyleModel.class);
+	public static MapStyleModel getExtension(final MapModel map) {
+		return MapStyleModel.getExtension(map.getRootNode());
 	}
 
-	public static MapStyleModel getExtension(final MapModel map) {
-		return getExtension(map.getRootNode());
+	public static MapStyleModel getExtension(final NodeModel node) {
+		return (MapStyleModel) node.getExtension(MapStyleModel.class);
 	}
 
 	private Color backgroundColor;

@@ -60,9 +60,9 @@ import org.freeplane.view.swing.map.MMapViewController;
 
 public class FreeplaneStarter {
 	private static final String TOOL_TIP_MANAGER = "toolTipManager.";
-	private static final String TOOL_TIP_MANAGER_RESHOW_DELAY = "toolTipManager.reshowDelay";
 	private static final String TOOL_TIP_MANAGER_DISMISS_DELAY = "toolTipManager.dismissDelay";
 	private static final String TOOL_TIP_MANAGER_INITIAL_DELAY = "toolTipManager.initialDelay";
+	private static final String TOOL_TIP_MANAGER_RESHOW_DELAY = "toolTipManager.reshowDelay";
 
 	static public void main(final String[] args) {
 		final FreeplaneStarter starter = new FreeplaneStarter();
@@ -197,26 +197,14 @@ public class FreeplaneStarter {
 		frame.setExtendedState(win_state);
 		setTooltipDelays();
 		LimitedWidthTooltipUI.initialize();
-		ResourceController.getResourceController().addPropertyChangeListener(new IFreeplanePropertyListener(){
-
-			public void propertyChanged(String propertyName, String newValue, String oldValue) {
-	            if(propertyName.startsWith(TOOL_TIP_MANAGER)){
-	            	setTooltipDelays();
-	            }
-            }});
+		ResourceController.getResourceController().addPropertyChangeListener(new IFreeplanePropertyListener() {
+			public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
+				if (propertyName.startsWith(TOOL_TIP_MANAGER)) {
+					setTooltipDelays();
+				}
+			}
+		});
 	}
-
-	private void setTooltipDelays() {
-	    final ToolTipManager toolTipManager = ToolTipManager.sharedInstance();
-		final int initialDelay = ResourceController.getResourceController().getIntProperty(TOOL_TIP_MANAGER_INITIAL_DELAY, 0);
-		toolTipManager.setInitialDelay(initialDelay);
-		final int dismissDelay = ResourceController.getResourceController().getIntProperty(TOOL_TIP_MANAGER_DISMISS_DELAY, 0);
-		toolTipManager.setDismissDelay(dismissDelay);
-		final int reshowDelay = ResourceController.getResourceController().getIntProperty(TOOL_TIP_MANAGER_RESHOW_DELAY, 0);
-		toolTipManager.setReshowDelay(reshowDelay);
-		final int maxWidth = ResourceController.getResourceController().getIntProperty("toolTipManager.max_tooltip_width", Integer.MAX_VALUE);
-		LimitedWidthTooltipUI.setMaximumWidth(maxWidth);
-    }
 
 	private void loadMaps(final String[] args) {
 		boolean fileLoaded = false;
@@ -242,14 +230,13 @@ public class FreeplaneStarter {
 		if (fileLoaded) {
 			return;
 		}
-		
 		applicationResourceController.getLastOpenedList().openMapsOnStart();
 		/*
 		 * nothing loaded so far. Perhaps, we should display a new map...
 		 * According to Summary: On first start Freeplane should show new map
 		 * to newbies https: &aid=1752516&group_id=7118
 		 */
-		if (null != controller.getMap()){
+		if (null != controller.getMap()) {
 			return;
 		}
 		controller.selectMode(MModeController.MODENAME);
@@ -266,10 +253,26 @@ public class FreeplaneStarter {
 		}
 		catch (final Exception e) {
 			LogTool.severe(e);
-			JOptionPane.showMessageDialog(UITools.getFrame(), "freeplane.main.Freeplane can't be started", "Startup problem",
-			    JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(UITools.getFrame(), "freeplane.main.Freeplane can't be started",
+			    "Startup problem", JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
 		}
+	}
+
+	private void setTooltipDelays() {
+		final ToolTipManager toolTipManager = ToolTipManager.sharedInstance();
+		final int initialDelay = ResourceController.getResourceController().getIntProperty(
+		    TOOL_TIP_MANAGER_INITIAL_DELAY, 0);
+		toolTipManager.setInitialDelay(initialDelay);
+		final int dismissDelay = ResourceController.getResourceController().getIntProperty(
+		    TOOL_TIP_MANAGER_DISMISS_DELAY, 0);
+		toolTipManager.setDismissDelay(dismissDelay);
+		final int reshowDelay = ResourceController.getResourceController().getIntProperty(
+		    TOOL_TIP_MANAGER_RESHOW_DELAY, 0);
+		toolTipManager.setReshowDelay(reshowDelay);
+		final int maxWidth = ResourceController.getResourceController().getIntProperty(
+		    "toolTipManager.max_tooltip_width", Integer.MAX_VALUE);
+		LimitedWidthTooltipUI.setMaximumWidth(maxWidth);
 	}
 
 	public void stop() {

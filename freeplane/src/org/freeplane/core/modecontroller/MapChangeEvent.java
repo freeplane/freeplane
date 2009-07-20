@@ -31,13 +31,13 @@ public class MapChangeEvent extends AWTEvent {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	final private MapModel map;
 	final private Object newValue;
 	final private Object oldValue;
 	final private Object property;
-	final private MapModel map;
-	
 
-	public MapChangeEvent(final Object source, final MapModel map, final Object property, final Object oldValue, final Object newValue) {
+	public MapChangeEvent(final Object source, final MapModel map, final Object property, final Object oldValue,
+	                      final Object newValue) {
 		super(source, 0);
 		this.map = map;
 		this.oldValue = oldValue;

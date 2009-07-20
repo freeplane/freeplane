@@ -66,7 +66,7 @@ public class SaveAll extends AFreeplaneAction {
 				return;
 			}
 		}
-		if(initialMapView != null){
+		if (initialMapView != null) {
 			controller.getMapViewManager().changeToMapView(initialMapView);
 		}
 	}

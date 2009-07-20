@@ -68,9 +68,9 @@ public class AttributeRegistryElement {
 		}
 	}
 
+	private boolean isManual;
 	private boolean isRestricted;
 	private boolean isVisible;
-	private boolean isManual;
 	private String key;
 	final private AttributeRegistry registry;
 	private Boolean restrictionModel;
@@ -88,14 +88,6 @@ public class AttributeRegistryElement {
 		isManual = false;
 		restrictionModel = new Boolean(isRestricted);
 	}
-
-	public boolean isManual() {
-    	return isManual;
-    }
-
-	public void setManual(boolean isManual) {
-    	this.isManual = isManual;
-    }
 
 	public void addValue(final String s) {
 		values._add(s);
@@ -116,6 +108,10 @@ public class AttributeRegistryElement {
 
 	Boolean getVisibilityModel() {
 		return visibilityModel;
+	}
+
+	public boolean isManual() {
+		return isManual;
 	}
 
 	public boolean isRestricted() {
@@ -167,6 +163,10 @@ public class AttributeRegistryElement {
 
 	public void setKey(final String key) {
 		this.key = key;
+	}
+
+	public void setManual(final boolean isManual) {
+		this.isManual = isManual;
 	}
 
 	public void setRestriction(final boolean isRestricted) {

@@ -24,6 +24,7 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.TimerTask;
+
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.resources.FpStringUtils;
@@ -67,26 +68,27 @@ public class DoAutomaticSave extends TimerTask {
 		try {
 			cancel();
 			EventQueue.invokeAndWait(new Runnable() {
-
 				public void run() {
 					/* Now, it is dirty, we save it. */
 					try {
 						final String name;
 						final File pathToStore;
 						final URL url = model.getURL();
-						if(url == null){
-							name = model.getTitle()+UrlManager.FREEPLANE_FILE_EXTENSION;
-							final String freeplaneUserDirectory = ResourceController.getResourceController().getFreeplaneUserDirectory();
-							pathToStore = new File(freeplaneUserDirectory, ".backup"); 
+						if (url == null) {
+							name = model.getTitle() + UrlManager.FREEPLANE_FILE_EXTENSION;
+							final String freeplaneUserDirectory = ResourceController.getResourceController()
+							    .getFreeplaneUserDirectory();
+							pathToStore = new File(freeplaneUserDirectory, ".backup");
 						}
-						else{
+						else {
 							final File file = new File(url.getFile());
 							name = file.getName();
 							pathToStore = new File(file.getParent(), ".backup");
 						}
 						pathToStore.mkdirs();
-						final File tempFile = MFileManager.renameBackupFiles(pathToStore, name, numberOfFiles, "autosave");
-						if(tempFile == null){
+						final File tempFile = MFileManager.renameBackupFiles(pathToStore, name, numberOfFiles,
+						    "autosave");
+						if (tempFile == null) {
 							return;
 						}
 						if (filesShouldBeDeletedAfterShutdown) {

@@ -220,6 +220,33 @@ class ApplicationViewController extends ViewController {
 		return false;
 	}
 
+	@Override
+	public void openDocument(final URI uri) throws IOException {
+		String propertyString;
+		final String osName = System.getProperty("os.name");
+		if (osName.substring(0, 3).equals("Win")) {
+			propertyString = new String("default_browser_command_windows");
+			if (osName.indexOf("9") != -1 || osName.indexOf("Me") != -1) {
+				propertyString += "_9x";
+			}
+			else {
+				propertyString += "_nt";
+			}
+		}
+		else if (osName.startsWith("Mac OS")) {
+			propertyString = new String("default_browser_command_mac");
+		}
+		else {
+			propertyString = new String("default_browser_command_other_os");
+		}
+		String browser_command = new String();
+		final Object[] messageArguments = { uri.toString() };
+		final MessageFormat formatter = new MessageFormat(ResourceController.getResourceController().getProperty(
+		    propertyString));
+		browser_command = formatter.format(messageArguments);
+		Runtime.getRuntime().exec(browser_command);
+	}
+
 	/**
 	 * Open url in WWW browser. This method hides some differences between
 	 * operating systems.
@@ -307,29 +334,14 @@ class ApplicationViewController extends ViewController {
 	}
 
 	@Override
-	public void openDocument(URI uri) throws IOException{
-		String propertyString;
-		String osName = System.getProperty("os.name");
-		if (osName.substring(0, 3).equals("Win")) {
-			propertyString = new String("default_browser_command_windows");
-			if (osName.indexOf("9") != -1 || osName.indexOf("Me") != -1) {
-				propertyString += "_9x";
-			} else {
-				propertyString += "_nt";
-			}
+	public boolean quit() {
+		if (!super.quit()) {
+			return false;
 		}
-        else if (osName.startsWith("Mac OS")) {
-			propertyString = new String("default_browser_command_mac");
-        }
-        else
-        	propertyString = new String("default_browser_command_other_os");
-		String browser_command = new String();
-		Object[] messageArguments = { uri.toString() };
-		MessageFormat formatter = new MessageFormat(ResourceController.getResourceController().getProperty(propertyString));
-		browser_command = formatter.format(messageArguments);
-		Runtime.getRuntime().exec(browser_command);
+		frame.dispose();
+		return true;
 	}
-	
+
 	private void removeContentComponent() {
 		if (mapViewManager != null) {
 			mapViewManager.removeContentComponent();
@@ -352,32 +364,45 @@ class ApplicationViewController extends ViewController {
 		mSplitPane = null;
 	}
 
+	@Override
+	public void saveProperties() {
+		saveSplitPanePosition();
+		final int winState = frame.getExtendedState() & ~Frame.ICONIFIED;
+		if (JFrame.MAXIMIZED_BOTH != (winState & JFrame.MAXIMIZED_BOTH)) {
+			resourceController.setProperty("appwindow_x", String.valueOf(frame.getX()));
+			resourceController.setProperty("appwindow_y", String.valueOf(frame.getY()));
+			resourceController.setProperty("appwindow_width", String.valueOf(frame.getWidth()));
+			resourceController.setProperty("appwindow_height", String.valueOf(frame.getHeight()));
+		}
+		resourceController.setProperty("appwindow_state", String.valueOf(winState));
+		resourceController.setProperty("map_view_zoom", Float.toString(getZoom()));
+	}
+
 	private void saveSplitPanePosition() {
 		if (mSplitPane == null) {
 			return;
 		}
-	    if ("right".equals(mLocationPreferenceValue)) {
-	    	resourceController.setProperty(SPLIT_PANE_RIGHT_POSITION, "" + mSplitPane.getDividerLocation());
-	    	resourceController
-	    	    .setProperty(SPLIT_PANE_LAST_RIGHT_POSITION, "" + mSplitPane.getLastDividerLocation());
-	    }
-	    else if ("left".equals(mLocationPreferenceValue)) {
-	    	resourceController.setProperty(SPLIT_PANE_LEFT_POSITION, "" + mSplitPane.getDividerLocation());
-	    	resourceController.setProperty(SPLIT_PANE_LAST_LEFT_POSITION, "" + mSplitPane.getLastDividerLocation());
-	    }
-	    else if ("top".equals(mLocationPreferenceValue)) {
-	    	resourceController.setProperty(SPLIT_PANE_TOP_POSITION, "" + mSplitPane.getDividerLocation());
-	    	resourceController.setProperty(SPLIT_PANE_LAST_TOP_POSITION, "" + mSplitPane.getLastDividerLocation());
-	    }
-	    else if ("bottom".equals(mLocationPreferenceValue)) {
-	    	resourceController.setProperty(SPLIT_PANE_POSITION, "" + mSplitPane.getDividerLocation());
-	    	resourceController.setProperty(SPLIT_PANE_LAST_POSITION, "" + mSplitPane.getLastDividerLocation());
-	    }
-	    else {
-	    	resourceController.setProperty(SPLIT_PANE_POSITION, "" + mSplitPane.getDividerLocation());
-	    	resourceController.setProperty(SPLIT_PANE_LAST_POSITION, "" + mSplitPane.getLastDividerLocation());
-	    }
-    }
+		if ("right".equals(mLocationPreferenceValue)) {
+			resourceController.setProperty(SPLIT_PANE_RIGHT_POSITION, "" + mSplitPane.getDividerLocation());
+			resourceController.setProperty(SPLIT_PANE_LAST_RIGHT_POSITION, "" + mSplitPane.getLastDividerLocation());
+		}
+		else if ("left".equals(mLocationPreferenceValue)) {
+			resourceController.setProperty(SPLIT_PANE_LEFT_POSITION, "" + mSplitPane.getDividerLocation());
+			resourceController.setProperty(SPLIT_PANE_LAST_LEFT_POSITION, "" + mSplitPane.getLastDividerLocation());
+		}
+		else if ("top".equals(mLocationPreferenceValue)) {
+			resourceController.setProperty(SPLIT_PANE_TOP_POSITION, "" + mSplitPane.getDividerLocation());
+			resourceController.setProperty(SPLIT_PANE_LAST_TOP_POSITION, "" + mSplitPane.getLastDividerLocation());
+		}
+		else if ("bottom".equals(mLocationPreferenceValue)) {
+			resourceController.setProperty(SPLIT_PANE_POSITION, "" + mSplitPane.getDividerLocation());
+			resourceController.setProperty(SPLIT_PANE_LAST_POSITION, "" + mSplitPane.getLastDividerLocation());
+		}
+		else {
+			resourceController.setProperty(SPLIT_PANE_POSITION, "" + mSplitPane.getDividerLocation());
+			resourceController.setProperty(SPLIT_PANE_LAST_POSITION, "" + mSplitPane.getLastDividerLocation());
+		}
+	}
 
 	private void setContentComponent() {
 		if (mapViewManager != null) {
@@ -416,32 +441,8 @@ class ApplicationViewController extends ViewController {
 	}
 
 	@Override
-    public boolean quit() {
-	    if (! super.quit()){
-	    	return false;
-	    }
-		frame.dispose();
-		return true;
-    }
-	
-	@Override
-	public void saveProperties() {
-		saveSplitPanePosition();
-	    final int winState = frame.getExtendedState() & ~Frame.ICONIFIED;
-		if (JFrame.MAXIMIZED_BOTH != (winState & JFrame.MAXIMIZED_BOTH)) {
-			resourceController.setProperty("appwindow_x", String.valueOf(frame.getX()));
-			resourceController.setProperty("appwindow_y", String.valueOf(frame.getY()));
-			resourceController.setProperty("appwindow_width", String.valueOf(frame.getWidth()));
-			resourceController.setProperty("appwindow_height", String.valueOf(frame.getHeight()));
-		}
-		resourceController.setProperty("appwindow_state", String.valueOf(winState));
-		resourceController.setProperty("map_view_zoom", Float.toString(getZoom()));
-    }
-
-	@Override
 	protected void viewNumberChanged(final int number) {
 		navigationPreviousMap.setEnabled(number > 0);
 		navigationNextMap.setEnabled(number > 0);
 	}
-
 }

@@ -36,7 +36,6 @@ import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.url.UrlManager;
-import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.NodeLinks;
@@ -65,11 +64,12 @@ class ImportLinkedBranchAction extends AFreeplaneAction {
 		}
 		try {
 			final URI uri = NodeLinks.getLink(selected);
-			File file = uri.isAbsolute()  && ! uri.isOpaque() ? new File(uri) : new File(new URL(map.getURL(), uri.getPath()).getFile());
+			final File file = uri.isAbsolute() && !uri.isOpaque() ? new File(uri) : new File(new URL(map.getURL(), uri
+			    .getPath()).getFile());
 			final NodeModel node = ((MMapController) modeController.getMapController()).loadTree(map, file);
 			((MMapController) modeController.getMapController()).insertNode(node, selected);
-			((MLinkController)LinkController.getController(modeController)).setLink(selected, (URI)null);
-			((MLinkController)LinkController.getController(modeController)).setLink(node, (URI)null);
+			((MLinkController) LinkController.getController(modeController)).setLink(selected, (URI) null);
+			((MLinkController) LinkController.getController(modeController)).setLink(node, (URI) null);
 		}
 		catch (final MalformedURLException ex) {
 			UITools.errorMessage("Couldn't create valid URL for:" + map.getFile());

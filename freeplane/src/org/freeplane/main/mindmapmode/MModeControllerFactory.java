@@ -241,8 +241,8 @@ public class MModeControllerFactory {
 		final FButtonBar fButtonToolBar = new FButtonBar();
 		fButtonToolBar.setVisible(ResourceController.getResourceController().getBooleanProperty("fbarVisible"));
 		userInputListenerFactory.addMainToolBar("/fbuttons", fButtonToolBar);
-		controller.addAction(new ToggleToolbarAction(controller, controller.getViewController(), "ToggleFBarAction", "/fbuttons", "fbarVisible"));
-
+		controller.addAction(new ToggleToolbarAction(controller, controller.getViewController(), "ToggleFBarAction",
+		    "/fbuttons", "fbarVisible"));
 		userInputListenerFactory.getMenuBuilder().setAcceleratorChangeListener(fButtonToolBar);
 		userInputListenerFactory.setLeftToolBar(((MIconController) IconController.getController(modeController))
 		    .getIconToolBarScrollPane());

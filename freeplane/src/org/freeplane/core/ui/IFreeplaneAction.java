@@ -25,7 +25,8 @@ import javax.swing.Action;
  * @author Dimitry Polivaev
  * 09.07.2009
  */
-public interface IFreeplaneAction extends Action{
-	public boolean isSelected();
+public interface IFreeplaneAction extends Action {
 	public void afterMapChange(Object newMap);
+
+	public boolean isSelected();
 }

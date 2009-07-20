@@ -46,11 +46,11 @@ class ApplyToVisibleAction extends AFreeplaneAction {
 	ApplyToVisibleAction(final FilterController filterController) {
 		super("ApplyToVisibleAction", filterController.getController());
 		this.filterController = filterController;
-		filterController.getApplyToVisibleNodeOnly().addChangeListener(new ChangeListener(){
-
-			public void stateChanged(ChangeEvent e) {
+		filterController.getApplyToVisibleNodeOnly().addChangeListener(new ChangeListener() {
+			public void stateChanged(final ChangeEvent e) {
 				setSelected(isModelSelected());
-            }});
+			}
+		});
 		setSelected(isModelSelected());
 	}
 

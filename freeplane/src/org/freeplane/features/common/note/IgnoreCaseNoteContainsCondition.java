@@ -40,15 +40,14 @@ class IgnoreCaseNoteContainsCondition extends NoteContainsCondition {
 		return createDesctiption(true);
 	}
 
-	public void toXml(final XMLElement element) {
-		toXml(element, NAME);
+	@Override
+	protected String getText(final NodeModel node) {
+		final String text = super.getText(node);
+		return text == null ? null : text.toLowerCase();
 	}
 
 	@Override
-    protected String getText(NodeModel node) {
-	    final String text = super.getText(node);
-		return text == null ? null : text.toLowerCase();
-    }
-	
-	
+	public void toXml(final XMLElement element) {
+		toXml(element, NAME);
+	}
 }

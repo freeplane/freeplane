@@ -130,7 +130,7 @@ public class ExportToOoWriter extends ExportAction {
 
 	public void exportToOoWriter(final File file) throws IOException {
 		final ZipOutputStream zipout = new ZipOutputStream(new FileOutputStream(file));
-		try{
+		try {
 			final StringWriter writer = new StringWriter();
 			final ModeController controller = getModeController();
 			final MapModel map = controller.getController().getMap();
@@ -149,7 +149,7 @@ public class ExportToOoWriter extends ExportAction {
 			copyFromResource("/xml/mm2oowriterStyles.xml", zipout);
 			zipout.closeEntry();
 		}
-		finally{
+		finally {
 			zipout.close();
 		}
 	}

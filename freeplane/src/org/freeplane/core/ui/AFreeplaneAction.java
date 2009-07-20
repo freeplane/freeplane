@@ -74,9 +74,9 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 
 	// TODO ARCH rladstaetter 18.02.2009 actions should not have a dependency on the controller
 	final private Controller controller;
+	private boolean enableOnMapChange;
 	final private String key;
 	private boolean selected = false;
-	private boolean enableOnMapChange;
 
 	//
 	//	/**
@@ -101,10 +101,10 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 		final String iconResource = ResourceController.getResourceController().getProperty(getIconKey(), null);
 		if (iconResource != null) {
 			final URL url = ResourceController.getResourceController().getResource(iconResource);
-			if(url == null){
+			if (url == null) {
 				LogTool.severe("can not load icon '" + iconResource + "'");
 			}
-			else{
+			else {
 				final ImageIcon icon = new ImageIcon(url);
 				putValue(SMALL_ICON, icon);
 			}
@@ -132,6 +132,19 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 			MenuBuilder.setLabelAndMnemonic(this, title);
 		}
 		this.key = key;
+	}
+
+	public void afterMapChange(final Object newMap) {
+		if (newMap == null) {
+			enableOnMapChange = enableOnMapChange || isEnabled();
+			setEnabled(false);
+		}
+		else {
+			if (enableOnMapChange) {
+				setEnabled(true);
+			}
+			enableOnMapChange = false;
+		}
 	}
 
 	public Controller getController() {
@@ -173,24 +186,11 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 		final boolean oldValue = selected;
 		if (oldValue != newValue) {
 			selected = newValue;
-			firePropertyChange(SelectableAction.SELECTION_PROPERTY, Boolean.valueOf(oldValue), Boolean.valueOf(newValue));
+			firePropertyChange(SelectableAction.SELECTION_PROPERTY, Boolean.valueOf(oldValue), Boolean
+			    .valueOf(newValue));
 		}
 	}
 
 	public void setVisible() {
 	}
-
-	public void afterMapChange(Object newMap) {
-	    if(newMap == null){
-	    	enableOnMapChange = enableOnMapChange || isEnabled();
-	    	setEnabled(false);
-	    }
-	    else{
-	    	if(enableOnMapChange){
-	    		setEnabled(true);
-	    	}
-	    	enableOnMapChange = false;
-	    }
-	    
-    }
 }

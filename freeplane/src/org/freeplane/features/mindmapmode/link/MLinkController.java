@@ -253,22 +253,22 @@ public class MLinkController extends LinkController {
 	}
 
 	public void setLink(final NodeModel node, final String link) {
-		if(link != null){
+		if (link != null) {
 			try {
-	            final URI uri = new URI(link);
+				final URI uri = new URI(link);
 				setLink(node, uri);
-            }
-            catch (URISyntaxException e) {
-	            e.printStackTrace();
-            }
+			}
+			catch (final URISyntaxException e) {
+				e.printStackTrace();
+			}
 			return;
 		}
 		setLinkByTextField.setLink(node, null);
 	}
 
 	public void setLink(final NodeModel node, final URI uri) {
-	    setLinkByTextField.setLink(node, uri);
-    }
+		setLinkByTextField.setLink(node, uri);
+	}
 
 	public void setLinkByFileChooser() {
 		setLinkByFileChooser.setLinkByFileChooser();

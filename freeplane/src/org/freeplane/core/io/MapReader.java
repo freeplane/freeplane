@@ -45,16 +45,17 @@ public class MapReader implements IElementDOMHandler, IHintProvider {
 		public NodeModel create(final Reader pReader) throws XMLException {
 			final TreeXmlReader reader = new TreeXmlReader(readManager);
 			try {
-	            reader.load(pReader);
+				reader.load(pReader);
 				final NodeModel node = nodeBuilder.getMapChild();
 				return node;
-            }
-			finally{
+			}
+			finally {
 				nodeBuilder.reset();
 			}
 		}
 
-		public NodeModel createNodeTreeFromXml(final MapModel map, final Reader pReader) throws IOException, XMLException {
+		public NodeModel createNodeTreeFromXml(final MapModel map, final Reader pReader) throws IOException,
+		        XMLException {
 			start(map);
 			final NodeModel node = create(pReader);
 			finish(node);

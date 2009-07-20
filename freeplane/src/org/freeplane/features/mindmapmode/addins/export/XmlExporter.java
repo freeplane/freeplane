@@ -51,7 +51,6 @@ class XmlExporter {
 		final Source xmlSource = new StreamSource(xmlFile);
 		final Source xsltSource = new StreamSource(xsltFile);
 		FileOutputStream outputStream = null;
-		
 		try {
 			outputStream = new FileOutputStream(resultFile);
 			final Result result = new StreamResult(outputStream);
@@ -62,13 +61,15 @@ class XmlExporter {
 		catch (final Exception e) {
 			LogTool.severe(e);
 		}
-		finally{
+		finally {
 			try {
-	            if(outputStream != null)outputStream.close();
-            }
-            catch (IOException e) {
-	            e.printStackTrace();
-            }
+				if (outputStream != null) {
+					outputStream.close();
+				}
+			}
+			catch (final IOException e) {
+				e.printStackTrace();
+			}
 		}
 		return;
 	}

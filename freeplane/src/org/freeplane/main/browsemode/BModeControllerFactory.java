@@ -20,6 +20,7 @@
 package org.freeplane.main.browsemode;
 
 import java.security.AccessControlException;
+
 import javax.swing.JPopupMenu;
 
 import org.freeplane.core.controller.Controller;

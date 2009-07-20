@@ -30,20 +30,21 @@ import java.util.logging.LogRecord;
  */
 public class BugFormatter extends Formatter {
 	@Override
-	public String format(LogRecord record) {
+	public String format(final LogRecord record) {
 		final String message = record.getMessage();
-		StringBuilder sb = new StringBuilder();
+		final StringBuilder sb = new StringBuilder();
 		sb.append(message);
 		sb.append('\n');
 		if (record.getThrown() != null) {
-		    try {
-		        StringWriter sw = new StringWriter();
-		        PrintWriter pw = new PrintWriter(sw);
-		        record.getThrown().printStackTrace(pw);
-		        pw.close();
-			sb.append(sw.toString());
-		    } catch (Exception ex) {
-		    }
+			try {
+				final StringWriter sw = new StringWriter();
+				final PrintWriter pw = new PrintWriter(sw);
+				record.getThrown().printStackTrace(pw);
+				pw.close();
+				sb.append(sw.toString());
+			}
+			catch (final Exception ex) {
+			}
 		}
 		return sb.toString();
 	}

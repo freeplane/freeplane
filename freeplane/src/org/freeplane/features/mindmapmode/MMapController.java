@@ -193,12 +193,9 @@ public class MMapController extends MapController {
 		return true;
 	}
 
-
 	public NodeModel loadTree(final MapModel map, final File file) throws XMLParseException, IOException {
-	    return ((MFileManager) UrlManager.getController(getModeController())).loadTree(map, file);
-    }
-
-
+		return ((MFileManager) UrlManager.getController(getModeController())).loadTree(map, file);
+	}
 
 	public void moveNode(final NodeModel node, final NodeModel targetNode, final boolean asSibling,
 	                     final boolean isLeft, final boolean changeSide) {
@@ -286,7 +283,6 @@ public class MMapController extends MapController {
 		return mindMapMapModel;
 	}
 
-
 	/**
 	 */
 	@Override
@@ -338,5 +334,4 @@ public class MMapController extends MapController {
 		};
 		getModeController().execute(actor);
 	}
-
 }

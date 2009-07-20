@@ -254,10 +254,10 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
 		if (newMap != null) {
 			model = AttributeRegistry.getRegistry(newMap);
-			if(model != null){
+			if (model != null) {
 				view.setModel(model.getTableModel());
 			}
-			else{
+			else {
 				setVisible(false);
 			}
 		}
@@ -277,17 +277,16 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 	public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
 	}
 
-	
-	@Override
-    public void show() {
-		controller.getModeController().startTransaction();
-	    super.show();
-    }
-
 	private void resetChanges() {
 		final int iSize = model.getFontSize();
 		size.setSelectedItem(Integer.toString(iSize));
 		model.resetChanges();
 		controller.getModeController().rollback();
+	}
+
+	@Override
+	public void show() {
+		controller.getModeController().startTransaction();
+		super.show();
 	}
 }

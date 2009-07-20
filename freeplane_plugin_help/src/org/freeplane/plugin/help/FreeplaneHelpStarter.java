@@ -22,6 +22,7 @@ package org.freeplane.plugin.help;
 
 import java.awt.event.ActionEvent;
 import java.net.URL;
+
 import javax.help.HelpBroker;
 import javax.help.HelpSet;
 
@@ -33,7 +34,7 @@ import org.freeplane.core.util.LogTool;
 /**
  * @author foltin
  */
-@ActionLocationDescriptor(locations = { "/menu_bar/help/doc" }, accelerator="shift F1")
+@ActionLocationDescriptor(locations = { "/menu_bar/help/doc" }, accelerator = "shift F1")
 class FreeplaneHelpStarter extends AFreeplaneAction {
 	/**
 	 * 

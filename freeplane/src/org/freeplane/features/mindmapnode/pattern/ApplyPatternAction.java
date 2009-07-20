@@ -20,8 +20,6 @@
 package org.freeplane.features.mindmapnode.pattern;
 
 import java.awt.event.ActionEvent;
-import java.util.Iterator;
-import java.util.List;
 import java.util.ListIterator;
 
 import org.freeplane.core.controller.Controller;
@@ -109,18 +107,16 @@ class ApplyPatternAction extends MultipleNodeAction {
 			((MNodeStyleController) NodeStyleController.getController(controller.getModeController())).setShape(node,
 			    pattern.getPatternNodeStyle().getValue());
 		}
-		
 		if (pattern.getPatternIcon() != null) {
 			final String iconName = pattern.getPatternIcon().getValue();
 			while (((MIconController) IconController.getController(getModeController()))
 			    .removeIcon(node, MindIcon.LAST) > 0) {
 			}
-			if(iconName != null){
+			if (iconName != null) {
 				((MIconController) IconController.getController(controller.getModeController())).addIcon(node, MindIcon
-					.factory(iconName), MindIcon.LAST);
+				    .factory(iconName), MindIcon.LAST);
 			}
 		}
-		
 		if (pattern.getPatternNodeFontName() != null) {
 			String nodeFontFamily = pattern.getPatternNodeFontName().getValue();
 			if (nodeFontFamily == null) {
@@ -146,8 +142,8 @@ class ApplyPatternAction extends MultipleNodeAction {
 			    "true".equals(pattern.getPatternNodeFontBold().getValue()));
 		}
 		if (pattern.getPatternCloud() != null) {
-			((MCloudController) CloudController.getController(getModeController())).setCloud(node, "true".equals
-				(pattern.getPatternCloud().getValue()));
+			((MCloudController) CloudController.getController(getModeController())).setCloud(node, "true"
+			    .equals(pattern.getPatternCloud().getValue()));
 		}
 		if (pattern.getPatternCloudColor() != null) {
 			((MCloudController) CloudController.getController(getModeController())).setColor(node, ColorUtils

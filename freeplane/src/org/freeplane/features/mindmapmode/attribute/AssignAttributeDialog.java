@@ -441,7 +441,7 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
 		if (oldMap != null) {
 			final AttributeRegistry attributes = AttributeRegistry.getRegistry(oldMap);
-			if(attributes != null){
+			if (attributes != null) {
 				attributes.removeAttributesListener(this);
 			}
 		}

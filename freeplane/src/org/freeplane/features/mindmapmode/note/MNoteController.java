@@ -162,20 +162,18 @@ public class MNoteController extends NoteController {
 		if (htmlEditorPanel != null) {
 			return htmlEditorPanel;
 		}
-		
 		htmlEditorPanel = MTextController.createSHTMLPanel();
 		htmlEditorPanel.setMinimumSize(new Dimension(100, 100));
 		final SHTMLEditorPane editorPane = (SHTMLEditorPane) htmlEditorPanel.getEditorPane();
-		final SpellCheckerController spellCheckerController = SpellCheckerController
-		.getController(getModeController());
+		final SpellCheckerController spellCheckerController = SpellCheckerController.getController(getModeController());
 		spellCheckerController.enableAutoSpell(editorPane);
 		spellCheckerController.addSpellCheckerMenu(editorPane.getPopup());
 		spellCheckerController.enableShortKey(editorPane);
 		final Action jumpToMapAction = new JumpToMapAction();
 		final String keystroke = ResourceController.getResourceController().getAdjustableProperty(
-			"acceleratorForMindMap//menu_bar/navigate/notes/SelectNoteAction");
+		    "acceleratorForMindMap//menu_bar/navigate/notes/SelectNoteAction");
 		htmlEditorPanel.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
-			KeyStroke.getKeyStroke(keystroke), "jumpToMapAction");
+		    KeyStroke.getKeyStroke(keystroke), "jumpToMapAction");
 		htmlEditorPanel.getActionMap().put("jumpToMapAction", jumpToMapAction);
 		return htmlEditorPanel;
 	}
@@ -275,7 +273,7 @@ public class MNoteController extends NoteController {
 	}
 
 	public void showNotesPanel() {
-		if(noteViewerComponent == null){
+		if (noteViewerComponent == null) {
 			noteViewerComponent = getHtmlEditorPanel();
 			noteManager.updateEditor();
 		}
@@ -323,11 +321,11 @@ public class MNoteController extends NoteController {
 
 	public void shutdownController() {
 		getModeController().getMapController().removeNodeSelectionListener(noteManager);
-		if (noteViewerComponent == null){
+		if (noteViewerComponent == null) {
 			return;
 		}
 		noteViewerComponent.getActionMap().remove("jumpToMapAction");
-		if( shouldUseSplitPane()) {
+		if (shouldUseSplitPane()) {
 			hideNotesPanel();
 			noteViewerComponent = null;
 		}

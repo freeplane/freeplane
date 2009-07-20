@@ -163,7 +163,7 @@ public class ReminderHook extends PersistentNodeHook {
 	void blink(final ReminderExtension model, final boolean stateAdded) {
 		model.setRemindUserAt(System.currentTimeMillis() + 3000);
 		scheduleTimer(model, new TimerBlinkTask(this, model, stateAdded));
-		if(model.getNode().getMap() != getController().getMap()){
+		if (model.getNode().getMap() != getController().getMap()) {
 			return;
 		}
 		displayState(model, (stateAdded) ? CLOCK_VISIBLE : CLOCK_INVISIBLE, model.getNode(), true);
@@ -274,9 +274,10 @@ public class ReminderHook extends PersistentNodeHook {
 	}
 
 	private void setToolTip(final NodeModel node, final String value) {
-		(getModeController().getMapController()).setToolTip(node, getClass().getName(), new ITooltipProvider(){
+		(getModeController().getMapController()).setToolTip(node, getClass().getName(), new ITooltipProvider() {
 			public String getTooltip() {
-	            return value;
-            }});
+				return value;
+			}
+		});
 	}
 }

@@ -20,11 +20,9 @@
 package org.freeplane.features.mindmapmode.text;
 
 import java.awt.event.KeyEvent;
-import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.List;
 import java.util.ListIterator;
@@ -41,7 +39,6 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.url.UrlManager;
-import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FixedHTMLWriter;
 import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.link.LinkController;
@@ -63,6 +60,20 @@ import com.lightdev.app.shtm.TextResources;
 public class MTextController extends TextController {
 	static private EditAction edit;
 	public static final String RESOURCES_REMIND_USE_RICH_TEXT_IN_NEW_LONG_NODES = "remind_use_rich_text_in_new_long_nodes";
+
+	static public SHTMLPanel createSHTMLPanel() {
+		SHTMLPanel.setResources(new TextResources() {
+			public String getString(String pKey) {
+				pKey = "simplyhtml." + pKey;
+				String resourceString = ResourceController.getResourceController().getText(pKey, null);
+				if (resourceString == null) {
+					resourceString = ResourceController.getResourceController().getProperty(pKey);
+				}
+				return resourceString;
+			}
+		});
+		return SHTMLPanel.createSHTMLPanel();
+	}
 
 	public MTextController(final MModeController modeController) {
 		super(modeController);
@@ -160,25 +171,21 @@ public class MTextController extends TextController {
 			final URI link = NodeLinks.getLink(((NodeModel) e.next()));
 			if (link != null) {
 				final String string = link.toString();
-				if (string.endsWith(".png")
-						||string.endsWith(".jpg")
-						||string.endsWith(".jpeg")
-						||string.endsWith(".gif")
-						) {
+				if (string.endsWith(".png") || string.endsWith(".jpg") || string.endsWith(".jpeg")
+				        || string.endsWith(".gif")) {
 					picturesAmongSelecteds = true;
 					break;
 				}
 			}
 		}
-
 		if (picturesAmongSelecteds) {
 			for (final NodeModel node : getModeController().getMapController().getSelectedNodes()) {
 				if (NodeLinks.getLink(node) != null) {
-					URI uri = NodeLinks.getLink(node);
+					final URI uri = NodeLinks.getLink(node);
 					final String relative = uri.toString();
 					if (relative != null) {
 						final String strText = "<html><img src=\"" + relative + "\">";
-						((MLinkController) LinkController.getController(getModeController())).setLink(node, (URI)null);
+						((MLinkController) LinkController.getController(getModeController())).setLink(node, (URI) null);
 						setNodeText(node, strText);
 					}
 				}
@@ -191,9 +198,8 @@ public class MTextController extends TextController {
 			filter.addExtension("png");
 			filter.addExtension("gif");
 			filter.setDescription("JPG, PNG and GIF Images");
-			final URI uri = ((MFileManager) UrlManager.getController(getModeController()))
-			.getLinkByFileChooser(getModeController().getController().getMap(), filter);
-
+			final URI uri = ((MFileManager) UrlManager.getController(getModeController())).getLinkByFileChooser(
+			    getModeController().getController().getMap(), filter);
 			if (uri != null) {
 				final String strText = "<html><img src=\"" + uri.toString() + "\">";
 				setNodeText(getModeController().getMapController().getSelectedNode(), strText);
@@ -264,18 +270,4 @@ public class MTextController extends TextController {
 		final String useRichTextInNewLongNodes = (showResult == JOptionPane.OK_OPTION) ? "true" : "false";
 		return useRichTextInNewLongNodes.equals("true");
 	}
-
-	static public SHTMLPanel createSHTMLPanel() {
-        SHTMLPanel.setResources(new TextResources() {
-    		public String getString(String pKey) {
-    			pKey = "simplyhtml." + pKey;
-    			String resourceString = ResourceController.getResourceController().getText(pKey, null);
-    			if (resourceString == null) {
-    				resourceString = ResourceController.getResourceController().getProperty(pKey);
-    			}
-    			return resourceString;
-    		}
-    	});
-        return SHTMLPanel.createSHTMLPanel();
-    }
 }

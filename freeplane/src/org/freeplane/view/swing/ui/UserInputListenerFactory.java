@@ -65,7 +65,6 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	public static final String NODE_POPUP = "/node_popup";
 	final private Controller controller;
 	private Component leftToolBar;
-	private Map<String, JToolBar> toolBars;
 	private IMouseListener mapMouseListener;
 	private MouseWheelListener mapMouseWheelListener;
 	final private ActionListener mapsMenuActionListener;
@@ -80,23 +79,28 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	private IMouseListener nodeMotionListener;
 	private INodeMouseMotionListener nodeMouseMotionListener;
 	private JPopupMenu nodePopupMenu;
+	private final Map<String, JToolBar> toolBars;
 
 	public UserInputListenerFactory(final ModeController modeController) {
 		controller = modeController.getController();
 		mapsMenuActionListener = new MapsMenuActionListener(controller);
 		menuBuilder = new MenuBuilder(modeController);
-		controller.getMapViewManager().addMapSelectionListener(new IMapSelectionListener(){
-
-			public void afterMapChange(MapModel oldMap, MapModel newMap) {
+		controller.getMapViewManager().addMapSelectionListener(new IMapSelectionListener() {
+			public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
 				menuBuilder.afterMapChange(newMap);
-            }
+			}
 
-			public void afterMapClose(MapModel oldMap) {
-            }
+			public void afterMapClose(final MapModel oldMap) {
+			}
 
-			public void beforeMapChange(MapModel oldMap, MapModel newMap) {
-            }});
+			public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
+			}
+		});
 		toolBars = new LinkedHashMap<String, JToolBar>();
+	}
+
+	public void addMainToolBar(final String name, final JToolBar mainToolBar) {
+		toolBars.put(name, mainToolBar);
 	}
 
 	public void addMouseWheelEventHandler(final IMouseWheelEventHandler handler) {
@@ -137,10 +141,6 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 
 	public Component getLeftToolBar() {
 		return leftToolBar;
-	}
-
-	public Iterable<JToolBar> getToolBars() {
-		return toolBars.values();
 	}
 
 	public IMouseListener getMapMouseListener() {
@@ -219,6 +219,14 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		return nodePopupMenu;
 	}
 
+	public JToolBar getToolBar(final String name) {
+		return toolBars.get(name);
+	}
+
+	public Iterable<JToolBar> getToolBars() {
+		return toolBars.values();
+	}
+
 	public void removeMouseWheelEventHandler(final IMouseWheelEventHandler handler) {
 		mRegisteredMouseWheelEventHandler.remove(handler);
 	}
@@ -228,10 +236,6 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			throw new RuntimeException("already set");
 		}
 		this.leftToolBar = leftToolBar;
-	}
-
-	public void addMainToolBar(final String name, final JToolBar mainToolBar) {
-		this.toolBars.put(name, mainToolBar);
 	}
 
 	public void setMapMouseListener(final IMouseListener mapMouseMotionListener) {
@@ -367,8 +371,4 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			ResourceController.getResourceController().getAdjustableProperty("keystroke_mode_" + key);
 		}
 	}
-
-	public JToolBar getToolBar(String name) {
-		return toolBars.get(name);
-    }
 }
