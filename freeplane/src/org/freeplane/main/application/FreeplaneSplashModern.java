@@ -32,6 +32,7 @@ import java.awt.Toolkit;
 import java.util.Arrays;
 
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 import javax.swing.JWindow;
@@ -102,8 +103,8 @@ public class FreeplaneSplashModern extends JWindow {
 	final private FeedBackImpl feedBack;
 	final private JProgressBar mProgressBar;
 
-	public FreeplaneSplashModern() {
-		super();
+	public FreeplaneSplashModern(JFrame frame) {
+		super(frame);
 		final ImageIcon splashImage = new ImageIcon(ResourceController.getResourceController().getResource(
 		    "/images/Freeplane_splash.png"));
 		final JLabel splashImageLabel = new JLabel(splashImage) {

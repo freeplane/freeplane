@@ -104,9 +104,10 @@ public class FreeplaneStarter {
 			applicationResourceController.init(controller);
 			LogTool.createLogger();
 			Controller.setLookAndFeel(ResourceController.getResourceController().getProperty("lookandfeel"));
-			splash = new FreeplaneSplashModern();
-			splash.setVisible(true);
 			final JFrame frame = new JFrame("Freeplane");
+			frame.setName(UITools.MAIN_FREEPLANE_FRAME);
+			splash = new FreeplaneSplashModern(frame);
+			splash.setVisible(true);
 			Compat.useScreenMenuBar();
 			feedBack = splash.getFeedBack();
 			feedBack.setMaximumValue(2);

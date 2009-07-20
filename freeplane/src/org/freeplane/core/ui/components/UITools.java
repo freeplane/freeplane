@@ -33,6 +33,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
@@ -47,6 +48,8 @@ import org.freeplane.core.resources.ResourceBundles;
  * 29.12.2008
  */
 public class UITools {
+	public static final String MAIN_FREEPLANE_FRAME = "mainFreeplaneFrame";
+
 	public static void addEscapeActionToDialog(final JDialog dialog) {
 		class EscapeAction extends AbstractAction {
 			/**
@@ -117,7 +120,12 @@ public class UITools {
 
 	static public Frame getFrame() {
 		final Frame[] frames = Frame.getFrames();
-		return frames.length >= 1 ? frames[frames.length - 1] : null;
+		for(Frame frame : frames){
+			if(MAIN_FREEPLANE_FRAME.equals(frame.getName())){
+				return frame;
+			}
+		}
+		return frames.length >= 1 ? frames[0] : null;
 	}
 
 	public static KeyStroke getKeyStroke(final String keyStrokeDescription) {
