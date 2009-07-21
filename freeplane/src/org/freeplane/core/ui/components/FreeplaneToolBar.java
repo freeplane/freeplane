@@ -133,6 +133,5 @@ public class FreeplaneToolBar extends JToolBar {
 		if (System.getProperty("os.name").startsWith("Mac OS")) {
 			abstractButton.setBorderPainted(false);
 		}
-		abstractButton.setContentAreaFilled(false);
 	}
 }
