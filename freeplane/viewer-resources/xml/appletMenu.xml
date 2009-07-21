@@ -103,6 +103,7 @@
 		<menu_category name="toolbars">
 			<menu_action action="ToggleMenubarAction" />
 			<menu_action action="ToggleToolbarAction" />
+			<menu_action action="ShowFilterToolbarAction" />
 		</menu_category>
 	</menu_category>
 	<menu_category name="node_popup">
@@ -122,7 +123,6 @@
 		<menu_separator />
 		<menu_category name="main">
 			<menu_action action="PrintDirectAction" />
-			<menu_action action="ShowFilterToolbarAction" />
 		</menu_category>
 		<menu_category name="zoom">
 		</menu_category>
