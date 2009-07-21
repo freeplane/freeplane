@@ -102,7 +102,7 @@ public class EncryptionModel implements IExtension {
 			try {
 				final String childXml = decryptXml(encryptedContent, encrypter);
 				final String[] childs = childXml.split(ClipboardController.NODESEPARATOR);
-				for (int i = childs.length - 1; i >= 0; i--) {
+				for (int i = 0; i < childs.length ; i++) {
 					final String string = childs[i];
 					if (string.length() == 0) {
 						continue;
