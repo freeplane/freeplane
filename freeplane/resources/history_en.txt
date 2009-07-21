@@ -1,4 +1,18 @@
 ===============================
+1.0.19 alpha
+===============================
+New features:
+
+Filter tool bar can be hidden like all other tool bars,
+active filter status is displayed in status line  
+
+Bug fixes
+
+properly display button selection in tool bars
+links to mind map files
+child nodes of encrypted node loaded in wrong order
+
+===============================
 1.0.18 alpha
 ===============================
 New features:
