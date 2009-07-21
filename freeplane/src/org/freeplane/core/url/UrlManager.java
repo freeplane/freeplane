@@ -379,10 +379,10 @@ public class UrlManager implements IExtension {
 			URL url;
 			if (!uri.isAbsolute() || uri.isOpaque()) {
 				final MapModel map = getController().getMap();
-				url = new URL(map.getURL(), uriString);
+				url = new URL(map.getURL(), uri.getPath());
 			}
 			else {
-				url = new URL(uriString);
+				url = new URL(uri.getScheme(), uri.getHost(), uri.getPort(), uri.getPath());
 			}
 			final String ref = url.getRef();
 			if (ref != null) {
