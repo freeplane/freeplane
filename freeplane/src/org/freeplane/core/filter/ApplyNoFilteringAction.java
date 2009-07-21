@@ -47,6 +47,5 @@ final class ApplyNoFilteringAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		filterController.applyNoFiltering();
-		filterController.showFilterToolbar(true);
 	}
 }

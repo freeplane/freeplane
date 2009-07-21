@@ -22,11 +22,15 @@ package org.freeplane.core.filter;
 import java.util.List;
 import java.util.ListIterator;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.filter.condition.ICondition;
 import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceController;
 
 /**
  * @author Dimitry Polivaev
@@ -69,6 +73,18 @@ public class Filter {
 		return appliesToVisibleNodesOnly;
 	}
 
+	static private Icon filterIcon;
+	void displayFilterStatus() {
+	    if(filterIcon == null){
+			filterIcon = new ImageIcon(ResourceController.getResourceController().getResource("/images/filter.png"));
+		}
+		if(getCondition() != null){
+			controller.getViewController().addStatusImage("filter", filterIcon);
+		}
+		else{
+			controller.getViewController().removeStatus("filter");
+		}
+    }
 	/*
 	 * (non-Javadoc)
 	 * @see
@@ -79,6 +95,7 @@ public class Filter {
 			return;
 		}
 		try {
+			displayFilterStatus();
 			controller.getViewController().setWaitingCursor(true);
 			final Filter oldFilter = map.getFilter();
 			map.setFilter(this);

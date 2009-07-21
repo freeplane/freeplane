@@ -47,6 +47,5 @@ final class ApplySelectedViewConditionAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		filterController.applySelectedViewCondition();
-		filterController.showFilterToolbar(true);
 	}
 }

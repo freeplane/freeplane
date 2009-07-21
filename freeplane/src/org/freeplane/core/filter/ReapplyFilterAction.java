@@ -47,6 +47,5 @@ final class ReapplyFilterAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		filterController.applyFilter(true);
-		filterController.showFilterToolbar(true);
 	}
 }

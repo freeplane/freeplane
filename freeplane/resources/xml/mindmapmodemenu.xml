@@ -303,6 +303,7 @@
 		<menu_category name="toolbars">
 			<menu_action action="ToggleMenubarAction" />
 			<menu_action action="ToggleToolbarAction" />
+			<menu_action action="ShowFilterToolbarAction"  />
 			<menu_action action="ToggleFBarAction" />
 			<menu_action action="ToggleLeftToolbarAction" />
 			<menu_action action="ShowHideNoteAction" />
@@ -440,8 +441,7 @@
 		<menu_category name="main">
 			<menu_action action="NavigationPreviousMapAction" />
 			<menu_action action="NavigationNextMapAction" />
-			<menu_action action="PrintAction" />
-			<menu_action action="ShowFilterToolbarAction"  />
+			<menu_action action="PrintAction" />			
 		</menu_category>
 		<menu_category name="zoom">
 		</menu_category>

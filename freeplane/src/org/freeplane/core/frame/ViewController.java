@@ -29,6 +29,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -41,8 +42,12 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.text.MessageFormat;
+import java.util.HashMap;
+import java.util.Map;
 
+import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.Icon;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -82,6 +87,8 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	private final IMapViewManager mapViewManager;
 	final private JScrollPane scrollPane;
 	final private JLabel status;
+	final private Map<String, JLabel> statusInfos;
+	final private JPanel statusPanel;
 	final private JPanel toolbarPanel;
 	final private String userDefinedZoom;
 	final private ZoomInAction zoomIn;
@@ -90,7 +97,10 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 
 	public ViewController(final Controller controller, final IMapViewManager mapViewManager) {
 		super();
+		statusInfos = new HashMap<String, JLabel>();
+		statusPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 0));
 		status = new JLabel("!");
+		statusPanel.add(status);
 		this.controller = controller;
 		controller.setViewController(this);
 		this.mapViewManager = mapViewManager;
@@ -286,8 +296,8 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		return mapViewManager.getMapSelection();
 	}
 
-	public JLabel getStatusLabel() {
-		return status;
+	public Component getStatusBar() {
+		return statusPanel;
 	}
 
 	public Color getTextColor(final NodeModel node) {
@@ -314,29 +324,11 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	}
 
 	public void init() {
-		final JToolBar filterToolbar = FilterController.getController(controller).getFilterToolbar();
 		getContentPane().add(toolbarPanel, BorderLayout.NORTH);
 		getContentPane().add(leftToolbarPanel, BorderLayout.WEST);
 		if (!ResourceController.getResourceController().getBooleanProperty("leftToolbarVisible")) {
 			controller.getViewController().setLeftToolbarVisible(false);
 		}
-		toolbarPanel.add(filterToolbar);
-		filterToolbar.addComponentListener(new ComponentListener() {
-			public void componentHidden(final ComponentEvent e) {
-				resizeToolbarPane();
-			}
-
-			public void componentMoved(final ComponentEvent e) {
-				resizeToolbarPane();
-			}
-
-			public void componentResized(final ComponentEvent e) {
-			}
-
-			public void componentShown(final ComponentEvent e) {
-				resizeToolbarPane();
-			}
-		});
 		toolbarPanel.addComponentListener(new ComponentListener() {
 			public void componentHidden(final ComponentEvent e) {
 			}
@@ -399,6 +391,47 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 
 	public void out(final String msg) {
 		status.setText(msg);
+	}
+	
+	public void addStatusImage(String key, Icon image){
+		final JLabel oldLabel = statusInfos.get(key);
+		if(oldLabel == null){
+			JLabel imageLabel = new JLabel(image);
+			imageLabel.setBorder(BorderFactory.createEtchedBorder());
+			statusInfos.put(key, imageLabel);
+			statusPanel.add(imageLabel, 0);
+		}
+		else{
+			oldLabel.setText(null);
+			oldLabel.setIcon(image);
+			oldLabel.revalidate();
+			oldLabel.repaint();
+		}
+	}
+
+	public void addStatusInfo(String key, String info){
+		final JLabel oldLabel = statusInfos.get(key);
+		if(oldLabel == null){
+			JLabel infoLabel = new JLabel(info);
+			infoLabel.setBorder(BorderFactory.createEtchedBorder());
+			statusInfos.put(key, infoLabel);
+			statusPanel.add(infoLabel);
+		}
+		else{
+			oldLabel.setText(info);
+			oldLabel.setIcon(null);
+			oldLabel.revalidate();
+			oldLabel.repaint();
+		}
+	}
+	
+	public void removeStatus(String key){
+		final JLabel oldLabel = statusInfos.remove(key);
+		if(oldLabel == null){
+			return;
+		}
+		statusPanel.remove(oldLabel);
+		
 	}
 
 	public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {

@@ -31,6 +31,7 @@ import java.util.Vector;
 
 import javax.swing.ButtonModel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -50,10 +51,12 @@ import org.freeplane.core.filter.condition.NoFilteringCondition;
 import org.freeplane.core.filter.condition.SelectedViewCondition;
 import org.freeplane.core.filter.condition.SelectedViewSnapshotCondition;
 import org.freeplane.core.frame.IMapSelectionListener;
+import org.freeplane.core.frame.ToggleToolbarAction;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.MindIcon;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.JAutoToggleButton;
 import org.freeplane.core.ui.components.UITools;
@@ -102,6 +105,8 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	}
 
 	static final String FREEPLANE_FILTER_EXTENSION_WITHOUT_DOT = "mmfilter";
+	
+	
 	private static final ICondition NO_FILTERING = NoFilteringCondition.createCondition();
 
 	public static FilterController getController(final Controller controller) {
@@ -139,7 +144,8 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		applyToVisibleNodeOnly = new JToggleButton.ToggleButtonModel();
 		applyToVisibleNodeOnly.setSelected(false);
 		controller.getMapViewManager().addMapSelectionListener(this);
-		final ShowFilterToolbarAction showFilterToolbar = new ShowFilterToolbarAction(this);
+		final AFreeplaneAction showFilterToolbar = new ToggleToolbarAction(controller, controller.getViewController(),
+			"ShowFilterToolbarAction", "/filter_toolbar", "filter_toolbar_visible");
 		controller.addAction(showFilterToolbar);
 		final UnfoldFilteredAncestorsAction unfoldFilteredAncestors = new UnfoldFilteredAncestorsAction(this);
 		controller.addAction(unfoldFilteredAncestors);
@@ -196,7 +202,8 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	void applyFilter(final boolean force) {
 		final Filter filter = createFilter();
 		filter.applyFilter(getController().getMap(), force);
-		applyToVisibleNodeOnly.setSelected(filter.getCondition() != null);
+		final boolean isActive = filter.getCondition() != null;
+		applyToVisibleNodeOnly.setSelected(isActive);
 		history.add(filter);
 	}
 
@@ -235,7 +242,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 
 	private JToolBar createFilterToolbar() {
 		final JToolBar filterToolbar = new FreeplaneToolBar();
-		filterToolbar.setVisible(false);
+		filterToolbar.setVisible(ResourceController.getResourceController().getBooleanProperty("filter_toolbar_visible"));
 		filterToolbar.setFocusable(false);
 		final JButton undoBtn = new JButton(controller.getAction("UndoFilterAction"));
 		final JButton redoBtn = new JButton(controller.getAction("RedoFilterAction"));
@@ -409,23 +416,6 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		addStandardConditions();
 		filterConditions.addListDataListener(filterChangeListener);
 		applyFilter(false);
-	}
-
-	/**
-	 */
-	public void showFilterToolbar(final boolean show) {
-		if (show == getFilterToolbar().isVisible()) {
-			return;
-		}
-		getFilterToolbar().setVisible(show);
-		final MapModel map = getController().getMap();
-		final Filter filter = map.getFilter();
-		if (show) {
-			filter.applyFilter(map, false);
-		}
-		else {
-			createTransparentFilter().applyFilter(map, false);
-		}
 	}
 
 	private void updateSettingsFromFilter(final Filter filter) {

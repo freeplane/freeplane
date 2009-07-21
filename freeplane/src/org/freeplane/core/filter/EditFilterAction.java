@@ -45,7 +45,6 @@ class EditFilterAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent arg0) {
 		final Object selectedItem = filterController.getFilterConditions().getSelectedItem();
-		filterController.showFilterToolbar(true);
 		if (selectedItem != null) {
 			getFilterDialog().setSelectedItem(selectedItem);
 		}
