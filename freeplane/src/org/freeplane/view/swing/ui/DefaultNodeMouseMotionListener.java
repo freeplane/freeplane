@@ -79,7 +79,7 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 		stopTimerForDelayedSelection();
 		/* Region to check for in the sequel. */
 		controlRegionForDelayedSelection = getControlRegion(e.getPoint());
-		timerForDelayedSelection = new Timer();
+		timerForDelayedSelection = new Timer(getClass().getSimpleName());
 		timerForDelayedSelection
 		    .schedule(
 		        new TimeDelayedSelection(mc, e),

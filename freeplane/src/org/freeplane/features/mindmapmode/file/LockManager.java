@@ -100,7 +100,7 @@ public class LockManager extends TimerTask {
 		}
 		writeSemaphoreFile(semaphoreFile);
 		if (lockTimer == null) {
-			lockTimer = new Timer();
+			lockTimer = new Timer(getClass().getSimpleName());
 			lockTimer.schedule(this, lockUpdatePeriod, lockUpdatePeriod);
 		}
 		releaseLock();

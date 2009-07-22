@@ -49,7 +49,7 @@ public class BlinkingNodeHook extends PersistentNodeHook {
 
 		TimerColorChanger(final NodeModel node) {
 			this.node = node;
-			timer = new Timer();
+			timer = new Timer(getClass().getSimpleName());
 			timer.schedule(this, 500, 500);
 			BlinkingNodeHook.colors.clear();
 			BlinkingNodeHook.colors.add(Color.BLUE);

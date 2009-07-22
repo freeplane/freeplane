@@ -109,7 +109,7 @@ public class MMapModel extends MapModel {
 		if (delay == 0) {
 			return;
 		}
-		final Timer timer = new Timer();
+		final Timer timer = new Timer(getClass().getSimpleName());
 		timer.schedule(new DoAutomaticSave(modeController, this, numberOfTempFiles, filesShouldBeDeletedAfterShutdown),
 		    delay, delay);
 		this.setTimerForAutomaticSaving(timer);

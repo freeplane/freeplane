@@ -145,7 +145,7 @@ class TimeList {
 				mTypeDelayTimer.cancel();
 				mTypeDelayTimer = null;
 			}
-			mTypeDelayTimer = new Timer();
+			mTypeDelayTimer = new Timer(getClass().getSimpleName());
 			mTypeDelayTimer.schedule(new DelayedTextEntry(event), TimeList.TYPE_DELAY_TIME);
 		}
 
