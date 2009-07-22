@@ -44,7 +44,7 @@ public class Activator implements BundleActivator {
 				final BufferedReader in
 		          = new BufferedReader(new InputStreamReader(System.in));
 				try {
-	                for(String line = in.readLine();!line.equals("exit"); line = in.readLine()){
+	                for(String line = in.readLine();!line.equals("stop"); line = in.readLine()){
 	                	System.out.println(line);
 	                	if(line.equals("stack")){
 	                		StringBuilder writer = new StringBuilder();
