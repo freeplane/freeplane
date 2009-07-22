@@ -16,7 +16,7 @@ public class I18nReporterTest {
 	
 	@Test
 	public void testGetNoEntryMap() {
-		I18nReporter reporter = new I18nReporter();
-		
+		I18nReporter r = new I18nReporter();
+		r.getSummary();
 	}
 }
