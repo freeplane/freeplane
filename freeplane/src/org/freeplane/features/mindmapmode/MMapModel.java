@@ -29,6 +29,7 @@ import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.undo.UndoHandler;
+import org.freeplane.core.util.SysUtil;
 import org.freeplane.features.mindmapmode.file.DoAutomaticSave;
 import org.freeplane.features.mindmapmode.file.DummyLockManager;
 import org.freeplane.features.mindmapmode.file.LockManager;
@@ -109,7 +110,7 @@ public class MMapModel extends MapModel {
 		if (delay == 0) {
 			return;
 		}
-		final Timer timer = new Timer("TimerForAutomaticSaving");
+		final Timer timer = SysUtil.createTimer("TimerForAutomaticSaving");
 		timer.schedule(new DoAutomaticSave(modeController, this, numberOfTempFiles, filesShouldBeDeletedAfterShutdown),
 		    delay, delay);
 		this.setTimerForAutomaticSaving(timer);

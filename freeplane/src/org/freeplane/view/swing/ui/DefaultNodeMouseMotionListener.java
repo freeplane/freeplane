@@ -17,6 +17,7 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ControllerPopupMenuListener;
 import org.freeplane.core.ui.INodeMouseMotionListener;
+import org.freeplane.core.util.SysUtil;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.view.swing.map.MainView;
@@ -79,7 +80,7 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 		stopTimerForDelayedSelection();
 		/* Region to check for in the sequel. */
 		controlRegionForDelayedSelection = getControlRegion(e.getPoint());
-		timerForDelayedSelection = new Timer(getClass().getSimpleName());
+		timerForDelayedSelection = SysUtil.createTimer(getClass().getSimpleName());
 		timerForDelayedSelection
 		    .schedule(
 		        new TimeDelayedSelection(mc, e),

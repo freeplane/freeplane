@@ -36,6 +36,7 @@ import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.INodeView;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.ActionLocationDescriptor;
+import org.freeplane.core.util.SysUtil;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -49,7 +50,7 @@ public class BlinkingNodeHook extends PersistentNodeHook {
 
 		TimerColorChanger(final NodeModel node) {
 			this.node = node;
-			timer = new Timer(getClass().getSimpleName());
+			timer = SysUtil.createTimer(getClass().getSimpleName());
 			timer.schedule(this, 500, 500);
 			BlinkingNodeHook.colors.clear();
 			BlinkingNodeHook.colors.add(Color.BLUE);

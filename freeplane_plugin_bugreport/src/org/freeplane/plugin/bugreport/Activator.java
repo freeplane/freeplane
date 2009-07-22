@@ -1,16 +1,24 @@
 package org.freeplane.plugin.bugreport;
 
+import java.awt.EventQueue;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Date;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import org.freeplane.core.resources.ResourceBundles;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogTool;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -43,10 +51,14 @@ public class Activator implements BundleActivator {
 			public void run() {
 				final BufferedReader in
 		          = new BufferedReader(new InputStreamReader(System.in));
+				PrintStream out = null;
 				try {
 	                for(String line = in.readLine();!line.equals("stop"); line = in.readLine()){
-	                	System.out.println(line);
 	                	if(line.equals("stack")){
+		                	if(out == null){
+		                		out = new PrintStream(ResourceController.getResourceController().getFreeplaneUserDirectory() + File.separatorChar + "stack.txt");
+		                	}
+		                	out.println(new Date().toString());
 	                		StringBuilder writer = new StringBuilder();
 	                		final Map<Thread, StackTraceElement[]> allStackTraces = Thread.getAllStackTraces();
 	                		for(Entry<Thread, StackTraceElement[]> stackTraceEntry : allStackTraces.entrySet()){
@@ -59,14 +71,40 @@ public class Activator implements BundleActivator {
 		                			writer.append('\n');
 	                			}
 	                		}
-		                	System.out.println(writer.toString());
+		                	out.println(writer.toString());
+		                	out.flush();
 	                	}
 	                }
 	                System.exit(-1);                }
                 catch (IOException e) {
                 }
+                finally{
+                	if(out != null ) out.close();
+                }
             }}, "ConsoleReader").start();
+		startAWTTerminationListener();
 	}
+
+	private void startAWTTerminationListener(){
+	    EventQueue.invokeLater(new Runnable(){
+
+			public void run() {
+				final Thread mainThread = Thread.currentThread();
+				new Thread(new Runnable(){
+					public void run() {
+						try {
+	                        mainThread.join();
+	                        String fileName = ResourceController.getResourceController().getFreeplaneUserDirectory() + File.separatorChar + "terminated.txt";
+	                        final PrintStream out = new PrintStream(new FileOutputStream(fileName, true));
+	                        out.println("Event Queue terminated on " + new Date().toString());
+	                        out.close();
+	                        startAWTTerminationListener();
+                        }
+                        catch (Exception e) {
+                        }
+		            }}, "AWTTerminationListener").start();
+            }});
+    }
 
 	/*
 	 * (non-Javadoc)

@@ -30,6 +30,7 @@ import java.util.TimerTask;
 
 import org.freeplane.core.url.UrlManager;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.SysUtil;
 
 public class LockManager extends TimerTask {
 	private File lockedSemaphoreFile = null;
@@ -100,7 +101,7 @@ public class LockManager extends TimerTask {
 		}
 		writeSemaphoreFile(semaphoreFile);
 		if (lockTimer == null) {
-			lockTimer = new Timer(getClass().getSimpleName());
+			lockTimer = SysUtil.createTimer(getClass().getSimpleName());
 			lockTimer.schedule(this, lockUpdatePeriod, lockUpdatePeriod);
 		}
 		releaseLock();

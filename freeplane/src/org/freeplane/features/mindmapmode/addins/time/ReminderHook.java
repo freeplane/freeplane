@@ -38,6 +38,7 @@ import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionLocationDescriptor;
 import org.freeplane.core.ui.EnabledAction;
+import org.freeplane.core.util.SysUtil;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -268,7 +269,7 @@ public class ReminderHook extends PersistentNodeHook {
 	}
 
 	private void scheduleTimer(final ReminderExtension model, final TimerTask task) {
-		model.setTimer(new Timer(getClass().getSimpleName()));
+		model.setTimer(SysUtil.createTimer(getClass().getSimpleName()));
 		final Date date = new Date(model.getRemindUserAt());
 		model.getTimer().schedule(task, date);
 	}

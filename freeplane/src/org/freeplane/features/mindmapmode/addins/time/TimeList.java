@@ -81,6 +81,7 @@ import org.freeplane.core.ui.components.MultipleImage;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlTools;
 import org.freeplane.core.util.LogTool;
+import org.freeplane.core.util.SysUtil;
 import org.freeplane.features.common.clipboard.ClipboardController;
 import org.freeplane.features.common.note.NoteModel;
 import org.freeplane.features.common.text.TextController;
@@ -145,7 +146,7 @@ class TimeList {
 				mTypeDelayTimer.cancel();
 				mTypeDelayTimer = null;
 			}
-			mTypeDelayTimer = new Timer(getClass().getSimpleName());
+			mTypeDelayTimer = SysUtil.createTimer(getClass().getSimpleName());
 			mTypeDelayTimer.schedule(new DelayedTextEntry(event), TimeList.TYPE_DELAY_TIME);
 		}
 
