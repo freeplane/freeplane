@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -108,8 +109,14 @@ class PasteAction extends AFreeplaneAction {
 			for (final File file : fileList) {
 				final MMapController mapController = (MMapController) getModeController().getMapController();
 				final NodeModel node = mapController.newNode(file.getName(), target.getMap());
-				((MLinkController) LinkController.getController(getModeController())).setLink(node, file
-				    .getAbsolutePath());
+				final URI uri;
+				if (ResourceController.getResourceController().getProperty("links").equals("relative")) {
+					uri = LinkController.toRelativeURI(node.getMap().getFile(), file);
+				}
+				else{
+					uri = file.getAbsoluteFile().toURI();
+				}
+				((MLinkController) LinkController.getController(getModeController())).setLink(node, uri);
 				mapController.insertNode(node, target, asSibling, isLeft, isLeft);
 			}
 		}

@@ -292,8 +292,11 @@ public class LinkController extends SelectionController implements IExtension {
 
 	public static URI toRelativeURI(final File map, final File input) {
     	try {
-    		final URI mapUri = map.getAbsoluteFile().toURI();
     		final URI fileUri = input.getAbsoluteFile().toURI();
+    		if(map == null){
+    			return fileUri;
+    		}
+    		final URI mapUri = map.getAbsoluteFile().toURI();
     		final String filePathAsString = fileUri.getRawPath();
     		final String mapPathAsString = mapUri.getRawPath();
     		int differencePos;
