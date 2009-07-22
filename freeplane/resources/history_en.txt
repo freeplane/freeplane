@@ -33,6 +33,7 @@ transactions for undo (startTransaction/commit/rollback) for dialog operations u
 bug fix: use cloud properties copying/pasting format
 bug fix in f-bar
 save note when note window is closed
+bug fix in pasting file list from clipboard
 
 
 ===============================
