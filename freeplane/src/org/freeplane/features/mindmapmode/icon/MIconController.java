@@ -106,7 +106,7 @@ public class MIconController extends IconController {
 				getModeController().getMapController().nodeChanged(node, "icon", icon, null);
 			}
 		};
-		getModeController().execute(actor);
+		getModeController().execute(actor, node.getMap());
 	}
 
 	private void addIconGroupToMenu(final MenuBuilder builder, final String category, final String group,

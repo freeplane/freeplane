@@ -76,6 +76,6 @@ class ColorArrowLinkAction extends AFreeplaneAction {
 				getModeController().getMapController().nodeChanged(node);
 			}
 		};
-		getModeController().execute(actor);
+		getModeController().execute(actor, arrowLink.getSource().getMap());
 	}
 }

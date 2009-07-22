@@ -102,6 +102,6 @@ class SetLinkByTextFieldAction extends AFreeplaneAction {
 				getModeController().getMapController().nodeChanged(node);
 			}
 		};
-		getModeController().execute(actor);
+		getModeController().execute(actor, node.getMap());
 	}
 }

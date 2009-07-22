@@ -84,6 +84,6 @@ public class MLocationController extends LocationController {
 
 	public void moveNodePosition(final NodeModel node, final int parentVGap, final int hGap, final int shiftY) {
 		final IActor actor = new ChangeNodePositionActor(node, hGap, shiftY, parentVGap);
-		getModeController().execute(actor);
+		getModeController().execute(actor, node.getMap());
 	}
 }

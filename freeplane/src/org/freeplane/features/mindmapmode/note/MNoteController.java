@@ -260,7 +260,7 @@ public class MNoteController extends NoteController {
 				setText(oldText);
 			}
 		};
-		(getModeController()).execute(actor);
+		(getModeController()).execute(actor, node.getMap());
 	}
 
 	void setPositionToRecover(final Integer sPositionToRecover) {

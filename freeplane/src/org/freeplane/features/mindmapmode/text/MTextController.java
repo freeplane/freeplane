@@ -231,7 +231,7 @@ public class MTextController extends TextController {
 				}
 			}
 		};
-		getModeController().execute(actor);
+		getModeController().execute(actor, node.getMap());
 	}
 
 	public void splitNode(final NodeModel node, final int caretPosition, final String newText) {

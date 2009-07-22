@@ -87,7 +87,7 @@ class DeleteAction extends AFreeplaneAction {
 		final NodeModel parentNode = node.getParentNode();
 		final int index = parentNode.getIndex(node);
 		final IActor actor = createActor(index, parentNode, node);
-		getModeController().execute(actor);
+		getModeController().execute(actor, node.getMap());
 	}
 
 	void deleteWithoutUndo(final NodeModel node) {

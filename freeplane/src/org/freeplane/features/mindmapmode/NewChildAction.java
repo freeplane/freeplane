@@ -26,6 +26,7 @@ import java.awt.event.KeyEvent;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -110,7 +111,8 @@ class NewChildAction extends AFreeplaneAction {
 	}
 
 	public NodeModel addNewNode(final NodeModel parent, final int index, final boolean newNodeIsLeft) {
-		final NodeModel newNode = getModeController().getMapController().newNode("", parent.getMap());
+		final MapModel map = parent.getMap();
+		final NodeModel newNode = getModeController().getMapController().newNode("", map);
 		newNode.setLeft(newNodeIsLeft);
 		final IActor actor = new IActor() {
 			public void act() {
@@ -125,7 +127,7 @@ class NewChildAction extends AFreeplaneAction {
 				((MMapController) getModeController().getMapController()).deleteWithoutUndo(newNode);
 			}
 		};
-		getModeController().execute(actor);
+		getModeController().execute(actor, map);
 		return newNode;
 	}
 }

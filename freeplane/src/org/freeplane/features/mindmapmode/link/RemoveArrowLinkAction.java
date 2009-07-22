@@ -77,7 +77,7 @@ class RemoveArrowLinkAction extends AFreeplaneAction {
 				getModeController().getMapController().nodeChanged(source);
 			}
 		};
-		getModeController().execute(actor);
+		getModeController().execute(actor, arrowLink.getSource().getMap());
 	}
 
 	/**

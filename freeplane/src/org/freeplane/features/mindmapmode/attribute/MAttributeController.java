@@ -58,7 +58,7 @@ public class MAttributeController extends AttributeController {
 					final int row = i;
 					final String newValue = this.newValue.toString();
 					final IActor actor = new SetAttributeValueActor(model, row, newValue);
-					getModeController().execute(actor);
+					getModeController().execute(actor, model.getNode().getMap());
 				}
 			}
 		}
@@ -83,7 +83,7 @@ public class MAttributeController extends AttributeController {
 				if (model.getName(i).equals(name)) {
 					final int row = i;
 					final IActor actor = new RemoveAttributeActor(model, row);
-					getModeController().execute(actor);
+					getModeController().execute(actor, model.getNode().getMap());
 				}
 			}
 		}
@@ -112,7 +112,7 @@ public class MAttributeController extends AttributeController {
 					final String name = newName.toString();
 					final String oldName = this.oldName.toString();
 					final IActor actor = new SetAttributeNameActor(model, name, oldName, row);
-					getModeController().execute(actor);
+					getModeController().execute(actor, model.getNode().getMap());
 				}
 			}
 		}
@@ -138,7 +138,7 @@ public class MAttributeController extends AttributeController {
 			for (int i = 0; i < model.getRowCount(); i++) {
 				if (model.getName(i).equals(name) && model.getValue(i).equals(value)) {
 					final IActor actor = new RemoveAttributeActor(model, i);
-					getModeController().execute(actor);
+					getModeController().execute(actor, model.getNode().getMap());
 				}
 			}
 		}
@@ -558,21 +558,21 @@ public class MAttributeController extends AttributeController {
 				}
 				else {
 					final IActor actor = new RegistryAttributeValueActor(element, value);
-					getModeController().execute(actor);
+					getModeController().execute(actor, map);
 				}
 			}
 		}
 		catch (final NoSuchElementException ex) {
 			final AttributeRegistry registry = AttributeRegistry.getRegistry(map);
 			final IActor nameActor = new RegistryAttributeActor(name, false, registry, map);
-			getModeController().execute(nameActor);
+			getModeController().execute(nameActor, map);
 			final AttributeRegistryElement element = registry.getElement(name);
 			final IActor valueActor = new RegistryAttributeValueActor(element, value);
-			getModeController().execute(valueActor);
+			getModeController().execute(valueActor, map);
 		}
 		final String newValue = value;
 		final IActor actor = new InsertAttributeActor(model, row, name, newValue);
-		getModeController().execute(actor);
+		getModeController().execute(actor, map);
 	}
 
 	@Override
@@ -587,7 +587,7 @@ public class MAttributeController extends AttributeController {
 		}
 		catch (final NoSuchElementException ex) {
 			final IActor actor = new RegistryAttributeActor(name, true, attributeRegistry, map);
-			getModeController().execute(actor);
+			getModeController().execute(actor, map);
 			return;
 		}
 	}
@@ -605,15 +605,15 @@ public class MAttributeController extends AttributeController {
 				return;
 			}
 			final IActor actor = new RegistryAttributeValueActor(element, value);
-			getModeController().execute(actor);
+			getModeController().execute(actor, map);
 			return;
 		}
 		catch (final NoSuchElementException ex) {
 			final IActor nameActor = new RegistryAttributeActor(name, true, attributeRegistry, map);
-			getModeController().execute(nameActor);
+			getModeController().execute(nameActor, map);
 			final AttributeRegistryElement element = attributeRegistry.getElement(name);
 			final IActor valueActor = new RegistryAttributeValueActor(element, value);
-			getModeController().execute(valueActor);
+			getModeController().execute(valueActor, map);
 		}
 	}
 
@@ -635,7 +635,7 @@ public class MAttributeController extends AttributeController {
 		final MapModel map = getModeController().getController().getMap();
 		final AttributeRegistry attributeRegistry = AttributeRegistry.getRegistry(map);
 		final IActor actor = new UnregistryAttributeActor(name, attributeRegistry, map);
-		getModeController().execute(actor);
+		getModeController().execute(actor, map);
 		final IVisitor remover = new AttributeRemover(name);
 		final Iterator iterator = new Iterator(remover);
 		final NodeModel root = modeController.getMapController().getRootNode();
@@ -647,7 +647,7 @@ public class MAttributeController extends AttributeController {
 		final MapModel map = getModeController().getController().getMap();
 		final AttributeRegistry attributeRegistry = AttributeRegistry.getRegistry(map);
 		final IActor unregistryActor = new UnregistryAttributeValueActor(attributeRegistry.getElement(name), value);
-		getModeController().execute(unregistryActor);
+		getModeController().execute(unregistryActor, map);
 		final IVisitor remover = new AttributeValueRemover(name, value);
 		final Iterator iterator = new Iterator(remover);
 		final NodeModel root = modeController.getMapController().getRootNode();
@@ -658,7 +658,7 @@ public class MAttributeController extends AttributeController {
 	public Attribute performRemoveRow(final NodeAttributeTableModel model, final int row) {
 		final Object o = model.getAttributes().elementAt(row);
 		final IActor actor = new RemoveAttributeActor(model, row);
-		getModeController().execute(actor);
+		getModeController().execute(actor, model.getNode().getMap());
 		return (Attribute) o;
 	}
 
@@ -673,19 +673,19 @@ public class MAttributeController extends AttributeController {
 		final AttributeRegistryElement oldElement = registry.getElement(iOld);
 		final SortedComboBoxModel values = oldElement.getValues();
 		final IActor registryActor = new RegistryAttributeActor(newName, oldElement.isManual(), registry, map);
-		getModeController().execute(registryActor);
+		getModeController().execute(registryActor, map);
 		final AttributeRegistryElement newElement = registry.getElement(newName);
 		for (int i = 0; i < values.getSize(); i++) {
 			final IActor registryValueActor = new RegistryAttributeValueActor(newElement, values.getElementAt(i)
 			    .toString());
-			getModeController().execute(registryValueActor);
+			getModeController().execute(registryValueActor, map);
 		}
 		final IVisitor replacer = new AttributeRenamer(oldName, newName);
 		final Iterator iterator = new Iterator(replacer);
 		final NodeModel root = modeController.getMapController().getRootNode();
 		iterator.iterate(root);
 		final IActor unregistryActor = new UnregistryAttributeActor(oldName, registry, map);
-		getModeController().execute(unregistryActor);
+		getModeController().execute(unregistryActor, map);
 	}
 
 	@Override
@@ -693,7 +693,7 @@ public class MAttributeController extends AttributeController {
 		final MapModel map = getModeController().getController().getMap();
 		final AttributeRegistry registry = AttributeRegistry.getRegistry(map);
 		final IActor actor = new ReplaceAttributeValueActor(registry, name, oldValue, newValue);
-		getModeController().execute(actor);
+		getModeController().execute(actor, map);
 		final IVisitor replacer = new AttributeChanger(name, oldValue, newValue);
 		final Iterator iterator = new Iterator(replacer);
 		final NodeModel root = modeController.getMapController().getRootNode();
@@ -707,7 +707,7 @@ public class MAttributeController extends AttributeController {
 			return;
 		}
 		final IActor actor = new SetAttributeColumnWidthActor(col, oldWidth, width, model);
-		getModeController().execute(actor);
+		getModeController().execute(actor, model.getNode().getMap());
 	}
 
 	@Override
@@ -733,7 +733,7 @@ public class MAttributeController extends AttributeController {
 				attributeRegistry.setFontSize(oldSize);
 			}
 		};
-		getModeController().execute(actor);
+		getModeController().execute(actor, getModeController().getController().getMap());
 	}
 
 	@Override
@@ -751,13 +751,13 @@ public class MAttributeController extends AttributeController {
 			return;
 		}
 		final IActor actor = new SetAttributeRestrictedActor(registry, index, isRestricted);
-		getModeController().execute(actor);
+		getModeController().execute(actor, map);
 	}
 
 	@Override
 	public void performSetValueAt(final NodeAttributeTableModel model, final Object o, final int row, final int col) {
 		final Attribute attribute = model.getAttribute(row);
-		final MapModel map = getModeController().getController().getMap();
+		final MapModel map = model.getNode().getMap();
 		final AttributeRegistry registry = AttributeRegistry.getRegistry(map);
 		switch (col) {
 			case 0: {
@@ -767,7 +767,7 @@ public class MAttributeController extends AttributeController {
 					return;
 				}
 				final IActor nameActor = new SetAttributeNameActor(model, name, oldName, row);
-				getModeController().execute(nameActor);
+				getModeController().execute(nameActor, map);
 				try {
 					final AttributeRegistryElement element = registry.getElement(name);
 					final String value = model.getValueAt(row, 1).toString();
@@ -775,12 +775,12 @@ public class MAttributeController extends AttributeController {
 					if (index == -1) {
 						final IActor valueActor = new SetAttributeValueActor(model, row, element.getValues()
 						    .firstElement().toString());
-						getModeController().execute(valueActor);
+						getModeController().execute(valueActor, map);
 					}
 				}
 				catch (final NoSuchElementException ex) {
 					final IActor registryActor = new RegistryAttributeActor(name, false, registry, map);
-					getModeController().execute(registryActor);
+					getModeController().execute(registryActor, map);
 				}
 				break;
 			}
@@ -790,13 +790,13 @@ public class MAttributeController extends AttributeController {
 					return;
 				}
 				final IActor actor = new SetAttributeValueActor(model, row, value);
-				getModeController().execute(actor);
+				getModeController().execute(actor, map);
 				final String name = model.getValueAt(row, 0).toString();
 				final AttributeRegistryElement element = registry.getElement(name);
 				final int index = element.getValues().getIndexOf(value);
 				if (index == -1) {
 					final IActor registryActor = new RegistryAttributeValueActor(element, value);
-					getModeController().execute(registryActor);
+					getModeController().execute(registryActor, map);
 				}
 				break;
 			}
@@ -811,7 +811,7 @@ public class MAttributeController extends AttributeController {
 			return;
 		}
 		final IActor actor = new SetAttributeVisibleActor(attributeRegistry, index, isVisible);
-		getModeController().execute(actor);
+		getModeController().execute(actor, map);
 	}
 
 	public void removeAttribute(final NodeModel pNode, final int pPosition) {

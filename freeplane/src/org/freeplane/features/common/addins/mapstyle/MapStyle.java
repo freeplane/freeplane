@@ -126,6 +126,6 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 				        actionColor, oldColor));
 			}
 		};
-		getModeController().execute(actor);
+		getModeController().execute(actor, getController().getMap());
 	}
 }

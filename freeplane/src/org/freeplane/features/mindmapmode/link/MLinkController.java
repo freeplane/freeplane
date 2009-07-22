@@ -99,7 +99,7 @@ public class MLinkController extends LinkController {
 					links.set(id, linkModels);
 				}
 			};
-			getModeController().execute(actor);
+			getModeController().execute(actor, map);
 		}
 	}
 
@@ -249,7 +249,7 @@ public class MLinkController extends LinkController {
 				getModeController().getMapController().nodeChanged(link.getSource());
 			}
 		};
-		getModeController().execute(actor);
+		getModeController().execute(actor, link.getSource().getMap());
 	}
 
 	public void setLink(final NodeModel node, final String link) {
@@ -294,7 +294,7 @@ public class MLinkController extends LinkController {
 				getModeController().getMapController().nodeChanged(model.getSource());
 			}
 		};
-		getModeController().execute(actor);
+		getModeController().execute(actor, model.getSource().getMap());
 	}
 
 	public void setSourceLabel(final ArrowLinkModel model, final String label) {
@@ -317,7 +317,7 @@ public class MLinkController extends LinkController {
 				getModeController().getMapController().nodeChanged(model.getSource());
 			}
 		};
-		getModeController().execute(actor);
+		getModeController().execute(actor, model.getSource().getMap());
 	}
 
 	public void setTargetLabel(final ArrowLinkModel model, final String label) {
@@ -340,6 +340,6 @@ public class MLinkController extends LinkController {
 				getModeController().getMapController().nodeChanged(model.getSource());
 			}
 		};
-		getModeController().execute(actor);
+		getModeController().execute(actor, model.getSource().getMap());
 	}
 }

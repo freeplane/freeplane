@@ -30,6 +30,7 @@ import org.freeplane.core.controller.AController;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.model.NodeModel.NodeChangeType;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -154,7 +155,7 @@ public class ModeController extends AController {
 	public void commit() {
 	}
 
-	public void execute(final IActor actor) {
+	public void execute(final IActor actor, MapModel map) {
 		actor.act();
 	}
 

@@ -57,8 +57,7 @@ public class MModeController extends ModeController {
 		createOptionPanelControls();
 	}
 
-	private void addUndoableActor(final IActor actor) {
-		final MMapModel map = (MMapModel) getController().getMap();
+	private void addUndoableActor(final IActor actor, final MMapModel map) {
 		final IUndoHandler undoHandler = map.getUndoHandler();
 		undoHandler.addActor(actor);
 		undo.setEnabled(true);
@@ -114,9 +113,9 @@ public class MModeController extends ModeController {
 	}
 
 	@Override
-	public void execute(final IActor actor) {
+	public void execute(final IActor actor, MapModel map) {
 		actor.act();
-		addUndoableActor(actor);
+		addUndoableActor(actor, (MMapModel) map);
 	}
 
 	@Override

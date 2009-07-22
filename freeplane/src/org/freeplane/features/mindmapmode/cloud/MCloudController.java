@@ -84,7 +84,7 @@ public class MCloudController extends CloudController {
 				}
 			}
 		};
-		modeController.execute(actor);
+		modeController.execute(actor, node.getMap());
 	}
 
 	public void setColor(final NodeModel node, final Color color) {
@@ -109,6 +109,6 @@ public class MCloudController extends CloudController {
 				modeController.getMapController().nodeChanged(node);
 			}
 		};
-		modeController.execute(actor);
+		modeController.execute(actor, node.getMap());
 	}
 }

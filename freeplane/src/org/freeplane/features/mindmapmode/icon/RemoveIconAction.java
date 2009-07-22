@@ -99,7 +99,7 @@ class RemoveIconAction extends MultipleNodeAction implements IIconInformation {
 				getModeController().getMapController().nodeChanged(node, "icon", null, icon);
 			}
 		};
-		getModeController().execute(actor);
+		getModeController().execute(actor, node.getMap());
 		return node.getIcons().size();
 	}
 }

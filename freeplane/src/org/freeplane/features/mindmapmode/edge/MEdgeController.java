@@ -74,7 +74,7 @@ public class MEdgeController extends EdgeController {
 				modeController.getMapController().nodeChanged(node);
 			}
 		};
-		modeController.execute(actor);
+		modeController.execute(actor, node.getMap());
 	}
 
 	public void setStyle(final NodeModel node, final String style) {
@@ -121,7 +121,7 @@ public class MEdgeController extends EdgeController {
 				edgeStyleRefresh(node);
 			}
 		};
-		modeController.execute(actor);
+		modeController.execute(actor, node.getMap());
 	}
 
 	public void setWidth(final NodeModel node, final int width) {
@@ -159,6 +159,6 @@ public class MEdgeController extends EdgeController {
 				edgeWidthRefresh(node);
 			}
 		};
-		modeController.execute(actor);
+		modeController.execute(actor, node.getMap());
 	}
 }

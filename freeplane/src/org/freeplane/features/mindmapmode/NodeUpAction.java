@@ -135,7 +135,7 @@ class NodeUpAction extends AFreeplaneAction {
 				_moveNodes(selected, selecteds, -direction);
 			}
 		};
-		getModeController().execute(actor);
+		getModeController().execute(actor, selected.getMap());
 	}
 
 	private int moveNodeTo(final NodeModel child, final int direction) {

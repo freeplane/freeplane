@@ -156,6 +156,6 @@ class LatexNodeHook extends PersistentNodeHook implements INodeViewLifeCycleList
 				model.setEquation(oldEquation);
 			}
 		};
-		getModeController().execute(actor);
+		getModeController().execute(actor, getModeController().getController().getMap());
 	}
 }

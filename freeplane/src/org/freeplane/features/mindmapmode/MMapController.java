@@ -176,7 +176,7 @@ public class MMapController extends MapController {
 				((MMapController) getModeController().getMapController()).deleteWithoutUndo(node);
 			}
 		};
-		getModeController().execute(actor);
+		getModeController().execute(actor, node.getMap());
 	}
 
 	@Override
@@ -232,7 +232,7 @@ public class MMapController extends MapController {
 				moveNodeToWithoutUndo(child, oldParent, oldIndex, wasLeft, changeSide);
 			}
 		};
-		getModeController().execute(actor);
+		getModeController().execute(actor, newParent.getMap());
 	}
 
 	public void moveNodeAsChild(final NodeModel node, final NodeModel selectedParent, final boolean isLeft,
@@ -332,6 +332,6 @@ public class MMapController extends MapController {
 				act();
 			}
 		};
-		getModeController().execute(actor);
+		getModeController().execute(actor, node.getMap());
 	}
 }

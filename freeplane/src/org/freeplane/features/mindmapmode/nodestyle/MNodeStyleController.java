@@ -116,7 +116,7 @@ public class MNodeStyleController extends NodeStyleController {
 				node.removeExtension(NodeStyleModel.class);
 			}
 		};
-		modeController.execute(actor);
+		modeController.execute(actor, node.getMap());
 		return NodeStyleModel.getModel(node);
 	}
 
@@ -151,7 +151,7 @@ public class MNodeStyleController extends NodeStyleController {
 				getModeController().getMapController().nodeChanged(node);
 			}
 		};
-		modeController.execute(actor);
+		modeController.execute(actor, node.getMap());
 	}
 
 	/**
@@ -181,7 +181,7 @@ public class MNodeStyleController extends NodeStyleController {
 				getModeController().getMapController().nodeChanged(node);
 			}
 		};
-		modeController.execute(actor);
+		modeController.execute(actor, node.getMap());
 	}
 
 	public void setColor(final NodeModel node, final Color color) {
@@ -205,7 +205,7 @@ public class MNodeStyleController extends NodeStyleController {
 				getModeController().getMapController().nodeChanged(node);
 			}
 		};
-		modeController.execute(actor);
+		modeController.execute(actor, node.getMap());
 	}
 
 	/**
@@ -235,7 +235,7 @@ public class MNodeStyleController extends NodeStyleController {
 				getModeController().getMapController().nodeChanged(node);
 			}
 		};
-		modeController.execute(actor);
+		modeController.execute(actor, node.getMap());
 	}
 
 	public void setFontFamily(final String fontFamily) {
@@ -281,7 +281,7 @@ public class MNodeStyleController extends NodeStyleController {
 				getModeController().getMapController().nodeChanged(node);
 			}
 		};
-		modeController.execute(actor);
+		modeController.execute(actor, node.getMap());
 	}
 
 	/**
@@ -311,7 +311,7 @@ public class MNodeStyleController extends NodeStyleController {
 				getModeController().getMapController().nodeChanged(node);
 			}
 		};
-		modeController.execute(actor);
+		modeController.execute(actor, node.getMap());
 	}
 
 	public void setShape(final NodeModel node, final String shape) {
@@ -345,6 +345,6 @@ public class MNodeStyleController extends NodeStyleController {
 				nodeShapeRefresh(node);
 			}
 		};
-		modeController.execute(actor);
+		modeController.execute(actor, node.getMap());
 	}
 }

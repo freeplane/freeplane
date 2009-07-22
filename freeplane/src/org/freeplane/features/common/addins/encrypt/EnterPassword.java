@@ -125,7 +125,7 @@ public class EnterPassword extends AFreeplaneAction implements INodeSelectionLis
 				getModeController().getMapController().nodeRefresh(node);
 			}
 		};
-		getModeController().execute(actor);
+		getModeController().execute(actor, node.getMap());
 	}
 
 	/**
@@ -195,7 +195,7 @@ public class EnterPassword extends AFreeplaneAction implements INodeSelectionLis
 					mindMapController.getMapController().nodeRefresh(node);
 				}
 			};
-			getModeController().execute(actor);
+			getModeController().execute(actor, node.getMap());
 		}
 		else {
 			encrypt(node);

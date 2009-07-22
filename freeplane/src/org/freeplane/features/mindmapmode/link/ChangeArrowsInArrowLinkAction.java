@@ -69,6 +69,6 @@ class ChangeArrowsInArrowLinkAction extends AFreeplaneAction {
 				getModeController().getMapController().nodeChanged(link.getSource());
 			}
 		};
-		getModeController().execute(actor);
+		getModeController().execute(actor, link.getSource().getMap());
 	}
 }
