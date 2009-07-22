@@ -127,7 +127,56 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		controller.addAction(new ToggleToolbarAction(controller, this, "ToggleToolbarAction", "/main_toolbar",
 		    "toolbarVisible"));
 		controller.addAction(new ToggleLeftToolbarAction(controller, this));
-		toolbarPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+		toolbarPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0))
+		{
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void validateTree() {
+				if(! isValid()){
+					resizeToolbarPane();
+					super.validateTree();
+				}
+			}
+			
+			private void resizeToolbarPane() {
+				if (!isValid()) {
+					if (getWidth() == 0) {
+						return;
+					}
+					EventQueue.invokeLater(new Runnable() {
+						public void run() {
+							resizeToolbarPane();
+						}
+					});
+					return;
+				}
+				int lastComponent = getComponentCount() - 1;
+				while (lastComponent >= 0 && !getComponent(lastComponent).isVisible()) {
+					lastComponent--;
+				}
+				final Dimension oldPreferredSize = getPreferredSize();
+				final Dimension preferredSize;
+				if (lastComponent >= 0) {
+					final Component component = getComponent(lastComponent);
+					preferredSize = new Dimension(getWidth(), component.getY() + component.getHeight());
+				}
+				else {
+					preferredSize = new Dimension(0, 0);
+				}
+				if (oldPreferredSize.height != preferredSize.height) {
+					setPreferredSize(preferredSize);
+					getParent().invalidate();
+					((JComponent) getContentPane()).revalidate();
+				}
+			}
+
+			
+		};
 		leftToolbarPanel = new JPanel(new BorderLayout());
 		scrollPane = new MapViewScrollPane();
 		resourceController.addPropertyChangeListener(this);
@@ -329,29 +378,6 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		if (!ResourceController.getResourceController().getBooleanProperty("leftToolbarVisible")) {
 			controller.getViewController().setLeftToolbarVisible(false);
 		}
-		toolbarPanel.addComponentListener(new ComponentListener() {
-			public void componentHidden(final ComponentEvent e) {
-			}
-
-			public void componentMoved(final ComponentEvent e) {
-			}
-
-			public void componentResized(final ComponentEvent e) {
-				resizeToolbarPane();
-			}
-
-			public void componentShown(final ComponentEvent e) {
-			}
-		});
-		toolbarPanel.addContainerListener(new ContainerListener() {
-			public void componentAdded(final ContainerEvent e) {
-				resizeToolbarPane();
-			}
-
-			public void componentRemoved(final ContainerEvent e) {
-				resizeToolbarPane();
-			}
-		});
 		status.setPreferredSize(status.getPreferredSize());
 		status.setText("");
 	}
@@ -461,38 +487,6 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 	 * 
 	 */
 	abstract public void removeSplitPane();
-
-	public void resizeToolbarPane() {
-		if (!toolbarPanel.isValid()) {
-			if (toolbarPanel.getWidth() == 0) {
-				return;
-			}
-			EventQueue.invokeLater(new Runnable() {
-				public void run() {
-					resizeToolbarPane();
-				}
-			});
-			return;
-		}
-		int lastComponent = toolbarPanel.getComponentCount() - 1;
-		while (lastComponent >= 0 && !toolbarPanel.getComponent(lastComponent).isVisible()) {
-			lastComponent--;
-		}
-		final Dimension oldPreferredSize = toolbarPanel.getPreferredSize();
-		final Dimension preferredSize;
-		if (lastComponent >= 0) {
-			final Component component = toolbarPanel.getComponent(lastComponent);
-			preferredSize = new Dimension(toolbarPanel.getWidth(), component.getY() + component.getHeight());
-		}
-		else {
-			preferredSize = new Dimension(0, 0);
-		}
-		if (oldPreferredSize.height != preferredSize.height) {
-			toolbarPanel.setPreferredSize(preferredSize);
-			toolbarPanel.getParent().invalidate();
-			((JComponent) getContentPane()).revalidate();
-		}
-	}
 
 	public void saveProperties() {
 	}
@@ -615,7 +609,6 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 			return;
 		}
 		toolBar.setVisible(visible);
-		resizeToolbarPane();
 	}
 
 	private void setViewportView(final Component view) {

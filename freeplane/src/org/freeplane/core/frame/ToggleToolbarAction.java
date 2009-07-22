@@ -21,6 +21,7 @@ package org.freeplane.core.frame;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.JComponent;
 import javax.swing.JToolBar;
 
 import org.freeplane.core.controller.Controller;
@@ -55,7 +56,7 @@ public class ToggleToolbarAction extends AFreeplaneAction {
 		resourceController.setProperty(propertyName, visible);
 		final JToolBar toolBar = getModeController().getUserInputListenerFactory().getToolBar(toolbarName);
 		toolBar.setVisible(visible);
-		controller.resizeToolbarPane();
+		((JComponent) toolBar.getParent()).revalidate();
 	}
 
 	@Override
