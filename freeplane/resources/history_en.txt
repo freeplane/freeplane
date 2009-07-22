@@ -5,12 +5,15 @@ New features:
 
 Filter tool bar can be hidden like all other tool bars,
 active filter status is displayed in status line  
+test feature: stack traces can be obtained by command "stack" from the console 
 
 Bug fixes
 
 properly display button selection in tool bars
 links to mind map files
 child nodes of encrypted node loaded in wrong order
+bug fix in pasting file list from clipboard
+bug fix for loading maps with auto layout
 
 ===============================
 1.0.18 alpha
@@ -33,8 +36,6 @@ transactions for undo (startTransaction/commit/rollback) for dialog operations u
 bug fix: use cloud properties copying/pasting format
 bug fix in f-bar
 save note when note window is closed
-bug fix in pasting file list from clipboard
-
 
 ===============================
 1.0.17 alpha
