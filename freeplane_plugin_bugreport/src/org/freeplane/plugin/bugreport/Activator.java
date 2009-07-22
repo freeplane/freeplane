@@ -3,6 +3,11 @@ package org.freeplane.plugin.bugreport;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import org.freeplane.core.resources.ResourceBundles;
@@ -33,6 +38,34 @@ public class Activator implements BundleActivator {
 				return false;
 			}
 		});
+		new Thread(new Runnable(){
+
+			public void run() {
+				final BufferedReader in
+		          = new BufferedReader(new InputStreamReader(System.in));
+				try {
+	                for(String line = in.readLine();!line.equals("exit"); line = in.readLine()){
+	                	System.out.println(line);
+	                	if(line.equals("stack")){
+	                		StringBuilder writer = new StringBuilder();
+	                		final Map<Thread, StackTraceElement[]> allStackTraces = Thread.getAllStackTraces();
+	                		for(Entry<Thread, StackTraceElement[]> stackTraceEntry : allStackTraces.entrySet()){
+	                			writer.append(stackTraceEntry.getKey().getName());
+	                			writer.append('\n');
+	                			final StackTraceElement[] stackTraceElements = stackTraceEntry.getValue();
+	                			for(StackTraceElement stackTraceElement:stackTraceElements){
+		                			writer.append("\tat ");
+		                			writer.append(stackTraceElement.toString());
+		                			writer.append('\n');
+	                			}
+	                		}
+		                	System.out.println(writer.toString());
+	                	}
+	                }
+	                System.exit(-1);                }
+                catch (IOException e) {
+                }
+            }}, "ConsoleReader").start();
 	}
 
 	/*
