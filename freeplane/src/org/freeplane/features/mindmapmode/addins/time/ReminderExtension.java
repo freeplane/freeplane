@@ -19,10 +19,13 @@
  */
 package org.freeplane.features.mindmapmode.addins.time;
 
+import java.util.Date;
 import java.util.Timer;
+import java.util.TimerTask;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.util.SysUtil;
 
 /**
  * @author Dimitry Polivaev 30.11.2008
@@ -50,15 +53,24 @@ class ReminderExtension implements IExtension {
 		return remindUserAt;
 	}
 
-	public Timer getTimer() {
-		return timer;
-	}
 
 	void setRemindUserAt(final long remindUserAt) {
 		this.remindUserAt = remindUserAt;
 	}
 
-	public void setTimer(final Timer timer) {
-		this.timer = timer;
-	}
+	public void scheduleTimer(TimerTask task, Date date) {
+		if(timer == null){
+			timer = SysUtil.createTimer(getClass().getSimpleName());
+		}
+		timer.schedule(task, date);
+	    
+    }
+
+	public void deactivateTimer() {
+		if(timer == null){
+			return;
+		}
+		timer.cancel();
+		timer = null;
+    }
 }

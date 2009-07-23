@@ -185,9 +185,7 @@ public class ReminderHook extends PersistentNodeHook {
 
 	void deactivate(final ReminderExtension model) {
 		setToolTip(model.getNode(), null);
-		if (model.getTimer() != null) {
-			model.getTimer().cancel();
-		}
+		model.deactivateTimer();
 		displayState(model, REMOVE_CLOCK, model.getNode(), true);
 	}
 
@@ -269,9 +267,8 @@ public class ReminderHook extends PersistentNodeHook {
 	}
 
 	private void scheduleTimer(final ReminderExtension model, final TimerTask task) {
-		model.setTimer(SysUtil.createTimer(getClass().getSimpleName()));
 		final Date date = new Date(model.getRemindUserAt());
-		model.getTimer().schedule(task, date);
+		model.scheduleTimer(task, date);
 	}
 
 	private void setToolTip(final NodeModel node, final String value) {
