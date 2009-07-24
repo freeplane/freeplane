@@ -11,7 +11,7 @@ public class I18nReporterTest {
 	public void testGetHeader() {
 		I18nReporter reporter = new I18nReporter();
 		assertEquals("<tr><th>Translation</th><td>ar</td></tr>", reporter.getHeader("Translation", Arrays
-		    .asList(Language.ar)));
+		    .asList(CountryCode.ar)));
 	}
 	
 	@Test

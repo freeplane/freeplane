@@ -26,7 +26,7 @@ public class I18nReporter {
 	class ActionItem {
 		Issue issue;
 		String key;
-		Language lang;
+		CountryCode lang;
 		User owner;
 		String standardTranslation;
 
@@ -38,7 +38,7 @@ public class I18nReporter {
 			return key;
 		}
 
-		public Language getLang() {
+		public CountryCode getLang() {
 			return lang;
 		}
 
@@ -54,7 +54,7 @@ public class I18nReporter {
 			this.key = key;
 		}
 
-		public void setLang(Language lang) {
+		public void setLang(CountryCode lang) {
 			this.lang = lang;
 		}
 
@@ -63,13 +63,12 @@ public class I18nReporter {
 		}
 
 		public String getStandardTranslation() {
-        	return standardTranslation;
-        }
+			return standardTranslation;
+		}
 
 		public void setStandardTranslation(String standardTranslation) {
-        	this.standardTranslation = standardTranslation;
-        }
-
+			this.standardTranslation = standardTranslation;
+		}
 	}
 
 	class PoorMansTemplate {
@@ -94,15 +93,36 @@ public class I18nReporter {
 	}
 
 	class Summary {
-		StringBuilder content = new StringBuilder();
-		Map<Language, Integer> noEntryMap = getNoEntryMap(mainProperties, translations, supportedLanguages);
+		Map<CountryCode, Integer> noEntryMap;
+		Map<CountryCode, Integer> zeroLengthMap;
 
 		public Summary() {
 		}
 
+		public Summary(Map<CountryCode, Integer> noEntryMap, Map<CountryCode, Integer> zeroLengthMap) {
+			setNoEntryMap(noEntryMap);
+			setZeroLengthMap(zeroLengthMap);
+		}
+
+		public Map<CountryCode, Integer> getNoEntryMap() {
+			return noEntryMap;
+		}
+
+		public void setNoEntryMap(Map<CountryCode, Integer> noEntryMap) {
+			this.noEntryMap = noEntryMap;
+		}
+
+		public Map<CountryCode, Integer> getZeroLengthMap() {
+			return zeroLengthMap;
+		}
+
+		public void setZeroLengthMap(Map<CountryCode, Integer> zeroLengthMap) {
+			this.zeroLengthMap = zeroLengthMap;
+		}
+
 		String asString() {
-			return table(getHeader("Issues", Arrays.asList("NO ENTRY")) + //
-			        tr(getSummaryRow(noEntryMap)));
+			return table(getHeader("Issues", Arrays.asList(Issue.MISSING, Issue.ZERO_LENGTH)) + //
+			        tr(getSummaryRow(noEntryMap, zeroLengthMap)));
 		}
 	}
 
@@ -127,16 +147,16 @@ public class I18nReporter {
 		I18nReporter reporter = new I18nReporter();
 		reporter.setBaseDir("C:/Users/Robert/Documents/workspace-freeplane/freeplane/");
 		reporter.setLeadPropertyFile(STANDARD);
-		reporter.setSupportedLanguages(Arrays.asList(Language.values()));
+		reporter.setSupportedLanguages(CountryCode.getSupportedLanguages());
 		reporter.init();
 		// summary
 		writeOutputFile(reporter, reporter.getSummary().asString(), reporter.a(reporter.getOverviewName(),
-		    "Freeplane I18N Summary"), reporter.getSummaryName());
+		    "Freeplane I18N Overview"), reporter.getSummaryName());
 		// overview
 		writeOutputFile(reporter, reporter.getOverview(), "Freeplane I18N Overview ", reporter.getOverviewName());
 		// action items
-		Map<Language, List<ActionItem>> actionItems = reporter.getActionItems();
-		for (Language lang : actionItems.keySet()) {
+		Map<CountryCode, List<ActionItem>> actionItems = reporter.getActionItems();
+		for (CountryCode lang : actionItems.keySet()) {
 			writeOutputFile(reporter, reporter.getActionItemsAsString(lang, actionItems.get(lang)), reporter.a(reporter
 			    .getSummaryName(), "Freeplane Action")
 			        + " Item for "
@@ -180,8 +200,8 @@ public class I18nReporter {
 	private String leadPropertyFile;
 	private Properties mainProperties;
 	private Summary summary;
-	private List<Language> supportedLanguages;
-	private Map<Language, Properties> translations;
+	private List<CountryCode> supportedLanguages;
+	private Map<CountryCode, Properties> translations;
 
 	public I18nReporter() {
 	}
@@ -202,30 +222,34 @@ public class I18nReporter {
 		return getClass().getSimpleName() + "ActionItems_";
 	}
 
-	private Map<Language, List<ActionItem>> getActionItems() {
+	private Map<CountryCode, List<ActionItem>> getActionItems() {
 		List<String> keySet = new ArrayList(Arrays.asList(mainProperties.keySet().toArray(new String[] {})));
-		Map<Language, List<ActionItem>> ais = new HashMap<Language, List<ActionItem>>();
+		Map<CountryCode, List<ActionItem>> ais = new HashMap<CountryCode, List<ActionItem>>();
 		Collections.sort(keySet);
 		for (Object o : keySet) {
-			for (Language lang : supportedLanguages) {
+			for (CountryCode lang : supportedLanguages) {
 				if ((!translations.get(lang).keySet().contains(o))) {
 					ActionItem ai = new ActionItem();
 					ai.setIssue(Issue.MISSING);
 					ai.setKey(o.toString());
 					ai.setLang(lang);
 					ai.setOwner(new User());
-					ai.setStandardTranslation(mainProperties.getProperty((String)o));
-					if (!ais.keySet().contains(lang)) {
-						ais.put(lang, new ArrayList<ActionItem>());
-					}
-					ais.get(lang).add(ai);
+					ai.setStandardTranslation(mainProperties.getProperty((String) o));
+					lazyAdd(ais, lang, ai);
 				}
 			}
 		}
 		return ais;
 	}
 
-	private String getActionItemsAsString(Language l, List<ActionItem> list) {
+	private void lazyAdd(Map<CountryCode, List<ActionItem>> ais, CountryCode lang, ActionItem ai) {
+		if (!ais.keySet().contains(lang)) {
+			ais.put(lang, new ArrayList<ActionItem>());
+		}
+		ais.get(lang).add(ai);
+	}
+
+	private String getActionItemsAsString(CountryCode l, List<ActionItem> list) {
 		StringBuilder strBldr = new StringBuilder();
 		strBldr.append(getHeader(l.toString(), Arrays.asList("Issue")));
 		strBldr.append("<pre>");
@@ -263,10 +287,10 @@ public class I18nReporter {
 	 * @param langs
 	 * @return
 	 */
-	public Map<Language, Integer> getNoEntryMap(Properties mainProperties, Map<Language, Properties> translations,
-	                                            List<Language> langs) {
-		Map<Language, Integer> map = new HashMap<Language, Integer>();
-		for (Language lang : langs) {
+	public Map<CountryCode, Integer> getNoEntryMap(Properties mainProperties,
+	                                               Map<CountryCode, Properties> translations, List<CountryCode> langs) {
+		Map<CountryCode, Integer> map = new HashMap<CountryCode, Integer>();
+		for (CountryCode lang : langs) {
 			Properties properties = translations.get(lang);
 			// get all keys from mainProperties
 			for (Object o : mainProperties.keySet()) {
@@ -281,6 +305,26 @@ public class I18nReporter {
 		return map;
 	}
 
+	public Map<CountryCode, Integer> getZeroLengthMap(Properties mainProperties,
+	                                                  Map<CountryCode, Properties> translations, List<CountryCode> langs) {
+		Map<CountryCode, Integer> map = new HashMap<CountryCode, Integer>();
+		for (CountryCode lang : langs) {
+			Properties properties = translations.get(lang);
+			for (Object o : mainProperties.keySet()) {
+				String property = properties.getProperty((String) o);
+				if (property != null) {
+					if (((String) property).length() == 0) {
+						if (!map.keySet().contains(lang)) {
+							map.put(lang, 0);
+						}
+						map.put(lang, map.get(lang) + 1);
+					}
+				}
+			}
+		}
+		return map;
+	}
+
 	private String getOverview() {
 		StringBuilder content = new StringBuilder();
 		content.append(getHeader("Translation", supportedLanguages));
@@ -289,13 +333,14 @@ public class I18nReporter {
 		return table(content.toString());
 	}
 
-	private String getOverviewContent(Map<Language, Properties> translations, List<Language> langs, List<String> keySet) {
+	private String getOverviewContent(Map<CountryCode, Properties> translations, List<CountryCode> langs,
+	                                  List<String> keySet) {
 		StringBuilder content = new StringBuilder();
 		Collections.sort(keySet);
 		for (Object o : keySet) {
 			StringBuilder line = new StringBuilder();
 			line.append(th(o.toString()));
-			for (Language lang : langs) {
+			for (CountryCode lang : langs) {
 				if ((!translations.get(lang).keySet().contains(o))) {
 					line.append(td(a(getActionItemName() + lang.toString() + ".html", "NE")));
 				}
@@ -320,7 +365,7 @@ public class I18nReporter {
 		return getClass().getSimpleName() + "Summary.html";
 	}
 
-	private String getSummaryRow(Map<Language, Integer> map) {
+	private String getSummaryRow(Map<CountryCode, Integer> map, Map<CountryCode, Integer> zeroLengthMap) {
 		final int maxSize = 20;
 		final int minSize = 6;
 		int c = map.size();
@@ -330,21 +375,27 @@ public class I18nReporter {
 		}
 		float middle = tc / c;
 		StringBuilder line = new StringBuilder();
-		for (Language l : map.keySet()) {
-			line.append(tr(td(a(getActionItemName() + l.toString() + ".html", l.toString()))
-			        + td(Integer.toString(map.get(l)))));
+		for (CountryCode l : map.keySet()) {
+			Integer i = zeroLengthMap.get(l);
+			String s = td("0");
+			if (i != null) {
+				s = td(Integer.toString(i));
+			}
+			line.append(tr(td(l.toString())
+			        + td(a(getActionItemName() + l.toString() + ".html", Integer.toString(map.get(l)))) + s));
 		}
 		return line.toString();
 	}
 
-	public List<Language> getSupportedLanguages() {
+	public List<CountryCode> getSupportedLanguages() {
 		return supportedLanguages;
 	}
 
 	private void init() {
 		translations = loadTranslations(supportedLanguages);
 		mainProperties = loadPropertyFile(new File(baseDir + leadPropertyFile));
-		summary = new Summary();
+		summary = new Summary(getNoEntryMap(mainProperties, translations, supportedLanguages), getZeroLengthMap(
+		    mainProperties, translations, supportedLanguages));
 	}
 
 	private Properties loadPropertyFile(File file) {
@@ -363,9 +414,9 @@ public class I18nReporter {
 		return p;
 	}
 
-	private Map<Language, Properties> loadTranslations(List<Language> langs) {
-		Map<Language, Properties> translations = new HashMap<Language, Properties>();
-		for (Language l : langs) {
+	private Map<CountryCode, Properties> loadTranslations(List<CountryCode> langs) {
+		Map<CountryCode, Properties> translations = new HashMap<CountryCode, Properties>();
+		for (CountryCode l : langs) {
 			translations.put(l, loadPropertyFile(new File(baseDir + RESOURCES_TRANSLATIONS + "Resources_" + l
 			        + ".properties")));
 		}
@@ -380,7 +431,7 @@ public class I18nReporter {
 		this.leadPropertyFile = leadPropertyFile;
 	}
 
-	public void setSupportedLanguages(List<Language> supportedLanguages) {
+	public void setSupportedLanguages(List<CountryCode> supportedLanguages) {
 		this.supportedLanguages = supportedLanguages;
 	}
 
