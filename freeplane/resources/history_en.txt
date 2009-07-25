@@ -7,7 +7,7 @@ Bug fixes
 	- reminder could lead to out-of-memory and freeze the program
 Resize tool bar and properly display F-Bar on key events
 [Bugs 0000156]: Filter moved selected node out of window
-[Bugs 0000157]: 1.0.19 alpha hangs at start when last opened map file names contained ';' character 
+[Bugs 0000157]: Freeplane hangs at start when last opened map file names contained ';' character 
 
 ===============================
 1.0.19 alpha
