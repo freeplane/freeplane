@@ -60,8 +60,8 @@ import org.freeplane.n3.nanoxml.XMLParseException;
  */
 class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 	private static final String LAST_OPENED_LIST_LENGTH = "last_opened_list_length";
-	private static final String OPENED_NOW = "openedNow";
-	private static final String LAST_OPENED = "lastOpened";
+	private static final String OPENED_NOW = "openedNow_1.0.20";
+	private static final String LAST_OPENED = "lastOpened_1.0.20";
 	public static final String LOAD_LAST_MAP = "load_last_map";
 	public static final String LOAD_LAST_MAPS = "load_last_maps";
 	private static final String SEPARATOR = File.pathSeparator + File.pathSeparator;
@@ -190,7 +190,7 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 	        IOException, URISyntaxException {
 		final boolean changedToMapView = tryToChangeToMapView(restoreable);
 		if ((restoreable != null) && !(changedToMapView)) {
-			final StringTokenizer token = new StringTokenizer(restoreable, SEPARATOR);
+			final StringTokenizer token = new StringTokenizer(restoreable, ":");
 			if (token.hasMoreTokens()) {
 				final String mode = token.nextToken();
 				if (controller.selectMode(mode)) {
