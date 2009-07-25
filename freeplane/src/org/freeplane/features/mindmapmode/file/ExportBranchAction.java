@@ -23,11 +23,11 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URL;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
@@ -48,7 +48,7 @@ class ExportBranchAction extends AFreeplaneAction {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	
 	public ExportBranchAction(final Controller controller) {
 		super("ExportBranchAction", controller);
 	}
@@ -70,6 +70,7 @@ class ExportBranchAction extends AFreeplaneAction {
 			return;
 		}
 		chooser = new JFileChooser(file.getParentFile());
+		chooser.setSelectedFile(new File(createFileName(existingNode.getShortText())));
 		if (((MFileManager) UrlManager.getController(getModeController())).getFileFilter() != null) {
 			chooser.addChoosableFileFilter(((MFileManager) UrlManager.getController(getModeController()))
 			    .getFileFilter());
@@ -122,5 +123,17 @@ class ExportBranchAction extends AFreeplaneAction {
 			((MLinkController) LinkController.getController(controller.getModeController())).setLink(existingNode,
 			    oldUri);
 		}
+	}
+	
+	private String createFileName(String shortText) {
+	    StringBuilder builder = new StringBuilder(50);
+	    String[] words = shortText.split("\\s");
+	    for(String word : words) {
+	        if("...".equals(word)) {
+	            continue;
+	        }
+	        builder.append(StringUtils.capitalize(word));
+	    }
+	    return builder.toString();
 	}
 }
