@@ -59,9 +59,12 @@ import org.freeplane.n3.nanoxml.XMLParseException;
  * format:"mode\:key",ie."Mindmap\:/home/joerg/freeplane.mm"
  */
 class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
+	private static final String LAST_OPENED_LIST_LENGTH = "last_opened_list_length";
+	private static final String OPENED_NOW = "openedNow";
+	private static final String LAST_OPENED = "lastOpened";
 	public static final String LOAD_LAST_MAP = "load_last_map";
 	public static final String LOAD_LAST_MAPS = "load_last_maps";
-	private static final String SEPARATOR = ";";
+	private static final String SEPARATOR = File.pathSeparator + File.pathSeparator;
 	private final Controller controller;
 	final private List<String> currenlyOpenedList = new LinkedList<String>();
 	/**
@@ -75,7 +78,7 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 
 	LastOpenedList(final Controller controller) {
 		this.controller = controller;
-		restoreList("lastOpened", lastOpenedList);
+		restoreList(LAST_OPENED, lastOpenedList);
 	}
 
 	public void afterViewChange(final Component oldView, final Component newView) {
@@ -110,7 +113,7 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 	}
 
 	private int getMaxMenuEntries() {
-		return ResourceController.getResourceController().getIntProperty("last_opened_list_length", 25);
+		return ResourceController.getResourceController().getIntProperty(LAST_OPENED_LIST_LENGTH, 25);
 	}
 
 	private String getRestorable(final File file) {
@@ -187,7 +190,7 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 	        IOException, URISyntaxException {
 		final boolean changedToMapView = tryToChangeToMapView(restoreable);
 		if ((restoreable != null) && !(changedToMapView)) {
-			final StringTokenizer token = new StringTokenizer(restoreable, ":");
+			final StringTokenizer token = new StringTokenizer(restoreable, SEPARATOR);
 			if (token.hasMoreTokens()) {
 				final String mode = token.nextToken();
 				if (controller.selectMode(mode)) {
@@ -210,7 +213,7 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 		final boolean loadLastMaps = ResourceController.getResourceController().getBooleanProperty(LOAD_LAST_MAPS);
 		if (loadLastMaps) {
 			final List<String> startList = new LinkedList<String>();
-			restoreList("openedNow", startList);
+			restoreList(OPENED_NOW, startList);
 			safeOpen(startList);
 			if (!lastOpenedList.isEmpty()) {
 				tryToChangeToMapView(lastMap);
@@ -252,8 +255,8 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 	}
 
 	public void saveProperties() {
-		ResourceController.getResourceController().setProperty("lastOpened", getStringRep(lastOpenedList));
-		ResourceController.getResourceController().setProperty("openedNow", getStringRep(currenlyOpenedList));
+		ResourceController.getResourceController().setProperty(LAST_OPENED, getStringRep(lastOpenedList));
+		ResourceController.getResourceController().setProperty(OPENED_NOW, getStringRep(currenlyOpenedList));
 	}
 
 	private boolean tryToChangeToMapView(final String restoreable) {

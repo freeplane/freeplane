@@ -178,6 +178,9 @@ public class Controller extends AController {
 
 	public boolean selectMode(final String modeName) {
 		final ModeController newModeController = modeControllers.get(modeName);
+		if (newModeController == null) {
+			return false;
+		}
 		if (modeController == newModeController) {
 			return true;
 		}
