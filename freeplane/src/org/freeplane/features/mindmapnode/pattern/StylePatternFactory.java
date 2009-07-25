@@ -67,84 +67,90 @@ public class StylePatternFactory {
 
 	public static Pattern createPatternFromNode(final NodeModel node) {
 		final Pattern pattern = new Pattern();
-		if (NodeStyleModel.getColor(node) != null) {
+		{
 			final PatternProperty subPattern = new PatternProperty();
 			subPattern.setValue(ColorUtils.colorToString(NodeStyleModel.getColor(node)));
 			pattern.setPatternNodeColor(subPattern);
 		}
-		if (NodeStyleModel.getBackgroundColor(node) != null) {
+		{
 			final PatternProperty subPattern = new PatternProperty();
 			subPattern.setValue(ColorUtils.colorToString(NodeStyleModel.getBackgroundColor(node)));
 			pattern.setPatternNodeBackgroundColor(subPattern);
 		}
-		if (NodeStyleModel.getShape(node) != null) {
+		{
 			final PatternProperty subPattern = new PatternProperty();
 			subPattern.setValue(NodeStyleModel.getShape(node));
 			pattern.setPatternNodeStyle(subPattern);
 		}
 		final NodeStyleModel font = NodeStyleModel.getModel(node);
+		final PatternProperty nodeFontBold = new PatternProperty();
+		final PatternProperty nodeFontItalic = new PatternProperty();
+		final PatternProperty nodeFontSize = new PatternProperty();
+		final PatternProperty nodeFontName = new PatternProperty();
 		if (font != null) {
 			if (font.isBold() != null) {
-				final PatternProperty nodeFontBold = new PatternProperty();
 				nodeFontBold.setValue(font.isBold() ? StylePatternFactory.TRUE_VALUE : StylePatternFactory.FALSE_VALUE);
-				pattern.setPatternNodeFontBold(nodeFontBold);
 			}
 			if (font.isItalic() != null) {
-				final PatternProperty nodeFontItalic = new PatternProperty();
 				nodeFontItalic.setValue(font.isItalic() ? StylePatternFactory.TRUE_VALUE
 				        : StylePatternFactory.FALSE_VALUE);
-				pattern.setPatternNodeFontItalic(nodeFontItalic);
 			}
 			if (font.getFontSize() != null) {
-				final PatternProperty nodeFontSize = new PatternProperty();
 				nodeFontSize.setValue("" + font.getFontSize());
-				pattern.setPatternNodeFontSize(nodeFontSize);
 			}
 			if (font.getFontFamilyName() != null) {
-				final PatternProperty subPattern = new PatternProperty();
-				subPattern.setValue(font.getFontFamilyName());
-				pattern.setPatternNodeFontName(subPattern);
+				nodeFontName.setValue(font.getFontFamilyName());
 			}
 		}
+		pattern.setPatternNodeFontBold(nodeFontBold);
+		pattern.setPatternNodeFontItalic(nodeFontItalic);
+		pattern.setPatternNodeFontSize(nodeFontSize);
+		pattern.setPatternNodeFontName(nodeFontName);
+		
+		final PatternProperty iconPattern = new PatternProperty();
 		if (node.getIcons().size() == 1) {
-			final PatternProperty iconPattern = new PatternProperty();
 			iconPattern.setValue((node.getIcons().get(0)).getName());
 			pattern.setPatternIcon(iconPattern);
 		}
+		else if (node.getIcons().size() == 0) {
+			pattern.setPatternIcon(iconPattern);
+		}
 		final EdgeModel edge = EdgeModel.getModel(node);
+		final PatternProperty edgeColorPattern = new PatternProperty();
+		final PatternProperty edgeStylePattern = new PatternProperty();
+		final PatternProperty edgeWidthPattern = new PatternProperty();
 		if (edge != null) {
 			final Color edgeColor = edge.getColor();
 			if (edgeColor != null) {
-				final PatternProperty colorPattern = new PatternProperty();
-				colorPattern.setValue(ColorUtils.colorToString(edgeColor));
-				pattern.setPatternEdgeColor(colorPattern);
+				edgeColorPattern.setValue(ColorUtils.colorToString(edgeColor));
 			}
 			final String edgeStyle = edge.getStyle();
 			if (edgeStyle != null) {
-				final PatternProperty stylePattern = new PatternProperty();
-				stylePattern.setValue(edgeStyle);
-				pattern.setPatternEdgeStyle(stylePattern);
+				edgeStylePattern.setValue(edgeStyle);
 			}
 			final int edgeWidth = edge.getWidth();
 			if (edgeWidth != EdgeModel.WIDTH_PARENT) {
-				final PatternProperty edgeWidthPattern = new PatternProperty();
 				edgeWidthPattern.setValue("" + edgeWidth);
-				pattern.setPatternEdgeWidth(edgeWidthPattern);
 			}
 		}
+		pattern.setPatternEdgeColor(edgeColorPattern);
+		pattern.setPatternEdgeStyle(edgeStylePattern);
+		pattern.setPatternEdgeWidth(edgeWidthPattern);
+		
 		final CloudModel cloud = CloudModel.getModel(node);
+		final PatternProperty cloudColorPattern = new PatternProperty();
+		final PatternProperty cloudPattern = new PatternProperty();
 		if (cloud != null) {
 			final Color cloudColor = cloud.getColor();
 			if (cloudColor != null) {
-				final PatternProperty cloudColorPattern = new PatternProperty();
 				cloudColorPattern.setValue(ColorUtils.colorToString(cloudColor));
-				pattern.setPatternCloudColor(cloudColorPattern);
 			}
 			else {
-				final PatternProperty cloudPattern = new PatternProperty();
 				cloudPattern.setValue(TRUE_VALUE);
-				pattern.setPatternCloud(cloudPattern);
 			}
+		}
+		else{
+			pattern.setPatternCloud(cloudPattern);
 		}
 		return pattern;
 	}
