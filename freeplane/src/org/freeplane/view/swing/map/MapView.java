@@ -1321,6 +1321,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		final Point oldAnchorContentLocation = anchorContentLocation;
 		final Point newAnchorContentLocation = getAnchorCenterPoint();
 		if (anchor != getRoot()) {
+			if(nodeToBeVisible == null){
+				nodeToBeVisible = anchor;
+			}
 			anchor = getRoot();
 			anchorContentLocation = getAnchorCenterPoint();
 		}
@@ -1343,6 +1346,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			scrollNodeToVisible(nodeToBeVisible, extraWidth);
 			vp.setScrollMode(scrollMode);
 			nodeToBeVisible = null;
+			extraWidth = 0;
 		}
 	}
 
