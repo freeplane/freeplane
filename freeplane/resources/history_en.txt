@@ -1,4 +1,14 @@
 ===============================
+1.0.20 alpha
+===============================
+Bug fixes
+
+[Bugs 0000146]: Freeplane hangs after being idle for longer time : 
+	- reminder could lead to out-of-memory and freeze the program
+Resize tool bar and properly display F-Bar on key events
+[Bugs 0000156]: Filter moved selected node out of window
+
+===============================
 1.0.19 alpha
 ===============================
 New features:
