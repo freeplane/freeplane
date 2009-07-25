@@ -94,7 +94,7 @@ public class MapModel {
 	}
 
 	public String generateNodeID(final String proposedID) {
-		String myProposedID = new String((proposedID != null) ? proposedID : "");
+		String myProposedID = proposedID != null ? proposedID : "";
 		String returnValue;
 		do {
 			if (!myProposedID.equals("")) {

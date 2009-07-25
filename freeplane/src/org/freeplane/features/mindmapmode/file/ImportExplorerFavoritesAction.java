@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 
 import javax.swing.JFileChooser;
 
@@ -91,11 +92,12 @@ class ImportExplorerFavoritesAction extends AFreeplaneAction {
 			for (int i = 0; i < list.length; i++) {
 				if (!list[i].isDirectory() && UrlManager.getExtension(list[i]).equals("url")) {
 					favoritesFound = true;
+					BufferedReader in = null;
 					try {
 						final NodeModel node = addNode(target, UrlManager.removeExtension(list[i].getName()));
-						final BufferedReader in = new BufferedReader(new FileReader(list[i]));
-						while (in.ready()) {
-							final String line = in.readLine();
+						in = new BufferedReader(new FileReader(list[i]));
+						String line = null;
+						while ( (line = in.readLine()) != null) {
 							if (line.startsWith("URL=")) {
 								((MLinkController) LinkController.getController(getModeController())).setLink(node,
 								    line.substring(4));
@@ -105,6 +107,15 @@ class ImportExplorerFavoritesAction extends AFreeplaneAction {
 					}
 					catch (final Exception e) {
 						LogTool.severe(e);
+					}
+					finally {
+					    try {
+					        if(in != null) {
+					            in.close();
+					        }
+                        } catch (IOException e) {
+                            LogTool.warn(e);
+                        }
 					}
 				}
 			}

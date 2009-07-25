@@ -52,7 +52,7 @@ public class DesEncrypter implements IEncrypter {
 	/**
 	 */
 	public static String toBase64(final byte[] byteBuffer) {
-		return new String(Base64Coding.encode64(byteBuffer));
+		return Base64Coding.encode64(byteBuffer);
 	}
 
 	Cipher dcipher;

@@ -50,13 +50,13 @@ public class TreeXmlWriter implements ITreeWriter {
 		return Long.toString(date.getTime());
 	}
 
-	public static String listToString(final List list) {
-		final ListIterator it = list.listIterator(0);
-		String str = new String();
+	public static String listToString(final List<?> list) {
+		final ListIterator<?> it = list.listIterator(0);
+		StringBuilder sb = new StringBuilder();
 		while (it.hasNext()) {
-			str += it.next().toString() + ";";
+			sb.append(it.next().toString()).append(";");
 		}
-		return str;
+		return sb.toString();
 	}
 
 	public static String PointToXml(final Point col) {

@@ -53,7 +53,7 @@ public class SharpBezierEdgeView extends EdgeView {
 			final double x0 = start.x - w;
 			final double w2 = w * w;
 			final double x02 = x0 * x0;
-			if (w2 == x02) {
+			if (Double.compare(w2, x02) == 0) {
 				final int delta = getMap().getZoomed(getWidth() / 2 + 1);
 				deltaX = 0;
 				deltaY = delta;

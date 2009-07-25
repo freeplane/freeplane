@@ -280,7 +280,7 @@ public class NodeModel implements MutableTreeNode {
 		return adaptedText;
 	}
 
-	public Map getStateIcons() {
+	public Map<String, ImageIcon> getStateIcons() {
 		return icons.getStateIcons();
 	}
 

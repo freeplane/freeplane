@@ -225,7 +225,7 @@ class ApplicationViewController extends ViewController {
 		String propertyString;
 		final String osName = System.getProperty("os.name");
 		if (osName.substring(0, 3).equals("Win")) {
-			propertyString = new String("default_browser_command_windows");
+			propertyString = "default_browser_command_windows";
 			if (osName.indexOf("9") != -1 || osName.indexOf("Me") != -1) {
 				propertyString += "_9x";
 			}
@@ -234,17 +234,16 @@ class ApplicationViewController extends ViewController {
 			}
 		}
 		else if (osName.startsWith("Mac OS")) {
-			propertyString = new String("default_browser_command_mac");
+			propertyString = "default_browser_command_mac";
 		}
 		else {
-			propertyString = new String("default_browser_command_other_os");
+			propertyString = "default_browser_command_other_os";
 		}
-		String browser_command = new String();
 		final Object[] messageArguments = { uri.toString() };
 		final MessageFormat formatter = new MessageFormat(ResourceController.getResourceController().getProperty(
 		    propertyString));
-		browser_command = formatter.format(messageArguments);
-		Runtime.getRuntime().exec(browser_command);
+		String browserCommand = formatter.format(messageArguments);
+		Runtime.getRuntime().exec(browserCommand);
 	}
 
 	/**
@@ -253,26 +252,25 @@ class ApplicationViewController extends ViewController {
 	 */
 	@Override
 	public void openDocument(final URL url) throws Exception {
-		String correctedUrl = new String(url.toExternalForm());
+		String correctedUrl = url.toExternalForm();
 		if (url.getProtocol().equals("file")) {
 			correctedUrl = correctedUrl.replace('\\', '/').replaceAll(" ", "%20");
 		}
 		final String osName = System.getProperty("os.name");
 		if (osName.substring(0, 3).equals("Win")) {
-			String propertyString = new String("default_browser_command_windows");
+			String propertyString = "default_browser_command_windows";
 			if (osName.indexOf("9") != -1 || osName.indexOf("Me") != -1) {
 				propertyString += "_9x";
 			}
 			else {
 				propertyString += "_nt";
 			}
-			String browser_command = new String();
-			String command = new String();
+			String command = null;
 			try {
 				final Object[] messageArguments = { url.toString() };
 				final MessageFormat formatter = new MessageFormat(ResourceController.getResourceController()
 				    .getProperty(propertyString));
-				browser_command = formatter.format(messageArguments);
+				String browserCommand = formatter.format(messageArguments);
 				if (url.getProtocol().equals("file")) {
 					command = "rundll32 url.dll,FileProtocolHandler " + url.toString();
 					if (System.getProperty("os.name").startsWith("Windows 2000")) {
@@ -283,7 +281,7 @@ class ApplicationViewController extends ViewController {
 					command = "rundll32 url.dll,FileProtocolHandler " + url.toString();
 				}
 				else {
-					command = browser_command;
+					command = browserCommand;
 				}
 				Runtime.getRuntime().exec(command);
 			}
@@ -298,35 +296,35 @@ class ApplicationViewController extends ViewController {
 			}
 		}
 		else if (osName.startsWith("Mac OS")) {
-			String browser_command = new String();
+			String browserCommand = null;
 			try {
 				final Object[] messageArguments = { correctedUrl, url.toString() };
 				final MessageFormat formatter = new MessageFormat(ResourceController.getResourceController()
 				    .getProperty("default_browser_command_mac"));
-				browser_command = formatter.format(messageArguments);
-				Runtime.getRuntime().exec(browser_command);
+				browserCommand = formatter.format(messageArguments);
+				Runtime.getRuntime().exec(browserCommand);
 			}
 			catch (final IOException ex2) {
 				UITools
 				    .errorMessage("Could not invoke browser.\n\nFreeplane excecuted the following statement on a command line:\n\""
-				            + browser_command
+				            + browserCommand
 				            + "\".\n\nYou may look at the user or default property called 'default_browser_command_mac'.");
 				System.err.println("Caught: " + ex2);
 			}
 		}
 		else {
-			String browser_command = new String();
+			String browserCommand = null;
 			try {
 				final Object[] messageArguments = { correctedUrl, url.toString() };
 				final MessageFormat formatter = new MessageFormat(ResourceController.getResourceController()
 				    .getProperty("default_browser_command_other_os"));
-				browser_command = formatter.format(messageArguments);
-				Runtime.getRuntime().exec(browser_command);
+				browserCommand = formatter.format(messageArguments);
+				Runtime.getRuntime().exec(browserCommand);
 			}
 			catch (final IOException ex2) {
 				UITools
 				    .errorMessage("Could not invoke browser.\n\nFreeplane excecuted the following statement on a command line:\n\""
-				            + browser_command
+				            + browserCommand
 				            + "\".\n\nYou may look at the user or default property called 'default_browser_command_other_os'.");
 				System.err.println("Caught: " + ex2);
 			}
@@ -394,11 +392,7 @@ class ApplicationViewController extends ViewController {
 			resourceController.setProperty(SPLIT_PANE_TOP_POSITION, "" + mSplitPane.getDividerLocation());
 			resourceController.setProperty(SPLIT_PANE_LAST_TOP_POSITION, "" + mSplitPane.getLastDividerLocation());
 		}
-		else if ("bottom".equals(mLocationPreferenceValue)) {
-			resourceController.setProperty(SPLIT_PANE_POSITION, "" + mSplitPane.getDividerLocation());
-			resourceController.setProperty(SPLIT_PANE_LAST_POSITION, "" + mSplitPane.getLastDividerLocation());
-		}
-		else {
+		else { // "bottom".equals(mLocationPreferenceValue) also covered
 			resourceController.setProperty(SPLIT_PANE_POSITION, "" + mSplitPane.getDividerLocation());
 			resourceController.setProperty(SPLIT_PANE_LAST_POSITION, "" + mSplitPane.getLastDividerLocation());
 		}

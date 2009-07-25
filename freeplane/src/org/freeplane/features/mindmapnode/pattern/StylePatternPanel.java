@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
+import java.util.Map.Entry;
 
 import javax.swing.JPanel;
 
@@ -335,14 +336,14 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 		return controls;
 	}
 
-	private HashMap getEdgeWidthTransformation() {
-		final HashMap transformator = new HashMap();
-		transformator.put(StylePatternPanel.EDGE_WIDTHS[0], new Integer(EdgeModel.WIDTH_PARENT));
-		transformator.put(StylePatternPanel.EDGE_WIDTHS[1], new Integer(EdgeModel.WIDTH_THIN));
-		transformator.put(StylePatternPanel.EDGE_WIDTHS[2], new Integer(1));
-		transformator.put(StylePatternPanel.EDGE_WIDTHS[3], new Integer(2));
-		transformator.put(StylePatternPanel.EDGE_WIDTHS[4], new Integer(4));
-		transformator.put(StylePatternPanel.EDGE_WIDTHS[5], new Integer(8));
+	private HashMap<String, Integer> getEdgeWidthTransformation() {
+		final HashMap<String, Integer> transformator = new HashMap<String, Integer>(StylePatternPanel.EDGE_WIDTHS.length);
+		transformator.put(StylePatternPanel.EDGE_WIDTHS[0], EdgeModel.WIDTH_PARENT);
+		transformator.put(StylePatternPanel.EDGE_WIDTHS[1], EdgeModel.WIDTH_THIN);
+		transformator.put(StylePatternPanel.EDGE_WIDTHS[2], 1);
+		transformator.put(StylePatternPanel.EDGE_WIDTHS[3], 2);
+		transformator.put(StylePatternPanel.EDGE_WIDTHS[4], 4);
+		transformator.put(StylePatternPanel.EDGE_WIDTHS[5], 8);
 		return transformator;
 	}
 
@@ -519,12 +520,11 @@ public class StylePatternPanel extends JPanel implements PropertyChangeListener 
 			return null;
 		}
 		final int edgeWidth = ApplyPatternAction.edgeWidthStringToInt(pEdgeWidth);
-		final HashMap transformator = getEdgeWidthTransformation();
-		for (final Iterator iter = transformator.keySet().iterator(); iter.hasNext();) {
-			final String widthString = (String) iter.next();
-			final Integer width = (Integer) transformator.get(widthString);
+		final HashMap<String, Integer> transformator = getEdgeWidthTransformation();
+		for(Entry<String, Integer> transformatorEntry : transformator.entrySet()) {
+			final Integer width = transformatorEntry.getValue();
 			if (edgeWidth == width.intValue()) {
-				return widthString;
+				return transformatorEntry.getKey();
 			}
 		}
 		return null;

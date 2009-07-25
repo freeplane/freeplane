@@ -165,8 +165,11 @@ class SaveAcceleratorPresetsAction extends AFreeplaneAction {
 		}
 		try {
 			acceleratorsUserDirectory.mkdirs();
+			
 			final OutputStream output = new BufferedOutputStream(new FileOutputStream(keysetFile));
 			keysetProperties.store(output, "");
+			output.close();
+			
 			final String key = "LoadAcceleratorPresetsAction." + keyset;
 			if (getController().getAction(key) != null) {
 				return;

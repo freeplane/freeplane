@@ -48,7 +48,6 @@ public class ArrowLinkView {
 	private static final int LABEL_SHIFT = 4;
 	private CubicCurve2D arrowLinkCurve;
 	private final ArrowLinkModel arrowLinkModel;
-	private int iterativeLevel;
 	/** MAXIMAL_RECTANGLE_SIZE_FOR_COLLISION_DETECTION describes itself. */
 	final private int MAXIMAL_RECTANGLE_SIZE_FOR_COLLISION_DETECTION = 16;
 	private final NodeView source, target;

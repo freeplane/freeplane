@@ -83,10 +83,10 @@ public class AttributeRegistryElement {
 		this.registry = registry;
 		values = new RegisteredAttributeValues();
 		isVisible = false;
-		visibilityModel = new Boolean(isVisible);
+		visibilityModel = isVisible;
 		isRestricted = false;
 		isManual = false;
-		restrictionModel = new Boolean(isRestricted);
+		restrictionModel = isRestricted;
 	}
 
 	public void addValue(final String s) {
@@ -171,7 +171,7 @@ public class AttributeRegistryElement {
 
 	public void setRestriction(final boolean isRestricted) {
 		this.isRestricted = isRestricted;
-		restrictionModel = Boolean.valueOf(isRestricted);
+		restrictionModel = isRestricted;
 		registry.fireAttributesChanged();
 	}
 

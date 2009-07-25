@@ -70,10 +70,6 @@ public class HorizontalEdgeView extends EdgeView {
 			}
 		}
 		else {
-			int dx = w / 3 + 1;
-			if (getTarget().isLeft()) {
-				dx = -dx;
-			}
 			g.drawPolyline(xs, ys, 4);
 			if (isTargetEclipsed()) {
 				g.setColor(g.getBackground());

@@ -33,7 +33,6 @@ import org.freeplane.core.resources.FpStringUtils;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 public class FontProperty extends PropertyBean implements IPropertyControl {
-	Font font = null;
 	final private String[] mAvailableFontFamilyNames;
 	JComboBox mFontComboBox = new JComboBox();
 

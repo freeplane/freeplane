@@ -180,7 +180,7 @@ public class ReminderHook extends PersistentNodeHook {
 
 	@Override
 	protected HookAction createHookAction() {
-		return getModeController() instanceof ModeController ? new ReminderHookAction() : null;
+		return new ReminderHookAction();
 	}
 
 	void deactivate(final ReminderExtension model) {

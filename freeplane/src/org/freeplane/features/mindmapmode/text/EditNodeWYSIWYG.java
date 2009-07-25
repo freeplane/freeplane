@@ -201,21 +201,22 @@ class EditNodeWYSIWYG extends EditNodeBase {
 			final ViewController viewController = getModeController().getController().getViewController();
 			final Font font = viewController.getFont(node);
 			final Color nodeTextBackground = viewController.getBackgroundColor(node);
-			String rule = "body {";
-			rule += "font-family: " + font.getFamily() + ";";
-			rule += "font-size: " + font.getSize() + "pt;";
+			StringBuilder ruleBuilder = new StringBuilder(100); 
+			ruleBuilder.append("body {");
+			ruleBuilder.append("font-family: ").append(font.getFamily()).append(";");
+			ruleBuilder.append("font-size: ").append(font.getSize()).append("pt;");
 			if (font.isItalic()) {
-				rule += "font-style: italic; ";
+				ruleBuilder.append("font-style: italic; ");
 			}
 			if (font.isBold()) {
-				rule += "font-weight: bold; ";
+				ruleBuilder.append("font-weight: bold; ");
 			}
 			final Color nodeTextColor = viewController.getTextColor(node);
-			rule += "color: " + ColorUtils.colorToString(nodeTextColor) + ";";
-			rule += "}\n";
-			rule += "p {";
-			rule += "margin-top:0;";
-			rule += "}\n";
+			ruleBuilder.append("color: ").append(ColorUtils.colorToString(nodeTextColor)).append(";");
+			ruleBuilder.append("}\n");
+			ruleBuilder.append("p {");
+			ruleBuilder.append("margin-top:0;");
+			ruleBuilder.append("}\n");
 			final HTMLDocument document = htmlEditorPanel.getDocument();
 			final JEditorPane editorPane = htmlEditorPanel.getEditorPane();
 			editorPane.setForeground(nodeTextColor);
@@ -224,7 +225,7 @@ class EditNodeWYSIWYG extends EditNodeBase {
 			final StyleSheet styleSheet = document.getStyleSheet();
 			styleSheet.removeStyle("p");
 			styleSheet.removeStyle("body");
-			styleSheet.addRule(rule);
+			styleSheet.addRule(ruleBuilder.toString());
 			final URL url = node.getMap().getURL();
 			if (url != null) {
 				document.setBase(url);

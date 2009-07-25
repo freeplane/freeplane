@@ -190,7 +190,7 @@ class EditNodeDialog extends EditNodeBase {
 			}
 			panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 			setContentPane(panel);
-			if (firstEvent instanceof KeyEvent) {
+			if (firstEvent != null ) {
 				redispatchKeyEvents(textArea, firstEvent);
 			}
 			else {

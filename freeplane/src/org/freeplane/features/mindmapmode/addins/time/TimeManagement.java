@@ -51,6 +51,7 @@ import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.common.time.swing.JDayChooser;
 import org.freeplane.features.mindmapmode.text.MTextController;
@@ -167,6 +168,7 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 			cal.set(Calendar.SECOND, 0);
 		}
 		catch (final Exception e) {
+		    LogTool.warn(e);
 		}
 		return cal.getTime();
 	}

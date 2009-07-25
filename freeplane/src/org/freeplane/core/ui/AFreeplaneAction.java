@@ -42,7 +42,7 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 
 	static public boolean checkEnabledOnChange(final AFreeplaneAction action) {
 		final EnabledAction annotation = action.getClass().getAnnotation(EnabledAction.class);
-		if (!(action instanceof AFreeplaneAction) || annotation == null) {
+		if (annotation == null) {
 			return false;
 		}
 		return annotation.checkOnNodeChange();
@@ -58,7 +58,7 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 
 	static public boolean checkSelectionOnChange(final AFreeplaneAction action) {
 		final SelectableAction annotation = action.getClass().getAnnotation(SelectableAction.class);
-		if (!(action instanceof AFreeplaneAction) || annotation == null) {
+		if (annotation == null) {
 			return false;
 		}
 		return annotation.checkOnNodeChange();

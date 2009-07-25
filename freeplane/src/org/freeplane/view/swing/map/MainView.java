@@ -37,6 +37,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -383,16 +384,12 @@ public abstract class MainView extends JLabel implements IMainView {
 		boolean iconPresent = false;
 		/* fc, 06.10.2003: images? */
 		final NodeModel model = node.getModel();
-		final Map stateIcons = model.getStateIcons();
-		for (final Iterator i = stateIcons.keySet().iterator(); i.hasNext();) {
-			final String key = (String) i.next();
+		for(Entry<String, ImageIcon> iconEntry : model.getStateIcons().entrySet()) {
 			iconPresent = true;
-			final ImageIcon myIcon = (ImageIcon) stateIcons.get(key);
+			final ImageIcon myIcon = iconEntry.getValue();
 			iconImages.addImage(myIcon);
 		}
-		final List icons = model.getIcons();
-		for (final Iterator i = icons.iterator(); i.hasNext();) {
-			final MindIcon myIcon = (MindIcon) i.next();
+		for(MindIcon myIcon : model.getIcons()) {
 			iconPresent = true;
 			iconImages.addImage(myIcon.getIcon());
 		}

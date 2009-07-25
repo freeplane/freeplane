@@ -30,7 +30,6 @@ public class AttributeTableLayoutModel {
 	public static final String HIDE_ALL = "hide";
 	public static final String SHOW_ALL = "extended";
 	public static final String SHOW_SELECTED = "selected";
-	ChangeEvent changeEvent = null;
 	ColumnWidthChangeEvent[] layoutChangeEvent = { null, null };
 	private EventListenerList listenerList = null;
 	final private int[] width = { AttributeTableLayoutModel.DEFAULT_COLUMN_WIDTH,

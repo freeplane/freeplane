@@ -83,13 +83,13 @@ public class LockManager extends TimerTask {
 		if (semaphoreFile.equals(lockedSemaphoreFile)) {
 			return null;
 		}
+		BufferedReader semaphoreReader = null;
 		try {
-			final BufferedReader semaphoreReader = new BufferedReader(new FileReader(semaphoreFile));
+			semaphoreReader = new BufferedReader(new FileReader(semaphoreFile));
 			final String lockingUser = semaphoreReader.readLine();
 			final long lockTime = new Long(semaphoreReader.readLine()).longValue();
 			final long timeDifference = System.currentTimeMillis() - lockTime;
 			if (timeDifference > lockSafetyPeriod) {
-				semaphoreReader.close();
 				lockingUserOfOldLock = lockingUser;
 				semaphoreFile.delete();
 			}
@@ -98,6 +98,11 @@ public class LockManager extends TimerTask {
 			}
 		}
 		catch (final FileNotFoundException e) {
+		}
+		finally {
+		    if(semaphoreReader != null) {
+		        semaphoreReader.close();
+		    }
 		}
 		writeSemaphoreFile(semaphoreFile);
 		if (lockTimer == null) {

@@ -250,17 +250,26 @@ class ApplicationResourceController extends ResourceController {
 	@Override
 	public void saveProperties(final Controller controller) {
 		lastOpened.saveProperties();
+		OutputStream out = null ;
 		try {
-			final OutputStream out = new FileOutputStream(autoPropertiesFile);
+			out = new FileOutputStream(autoPropertiesFile);
 			final OutputStreamWriter outputStreamWriter = new OutputStreamWriter(out, "8859_1");
 			outputStreamWriter.write("#Freeplane ");
 			outputStreamWriter.write(FreeplaneVersion.getVersion().toString());
 			outputStreamWriter.write('\n');
 			outputStreamWriter.flush();
 			props.store(out, null);
-			out.close();
 		}
 		catch (final Exception ex) {
+		}
+		finally{
+			if(out != null){
+				try {
+	                out.close();
+                }
+                catch (IOException e) {
+                }
+			}
 		}
 		FilterController.getController(controller).saveConditions();
 	}

@@ -485,7 +485,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		if (font != null) {
 			final float oldFontSize = font.getSize2D();
 			final float newFontSize = getFontSize() * zoom;
-			if (oldFontSize != newFontSize) {
+			if (Float.compare(oldFontSize, newFontSize) != 0) {
 				font = font.deriveFont(newFontSize);
 				c.setFont(font);
 			}

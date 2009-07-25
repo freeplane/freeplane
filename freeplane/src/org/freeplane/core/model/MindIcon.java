@@ -151,7 +151,7 @@ public class MindIcon implements Comparable, IIconInformation {
 	}
 
 	public String getDescription() {
-		final String resource = new String("icon_" + getName());
+		final String resource = "icon_" + getName();
 		return ResourceController.getResourceController().getText(resource, resource);
 	}
 
