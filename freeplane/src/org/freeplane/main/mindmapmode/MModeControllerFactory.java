@@ -240,7 +240,7 @@ public class MModeControllerFactory {
 		final FreeplaneToolBar toolbar = new FreeplaneToolBar();
 		userInputListenerFactory.addMainToolBar("/main_toolbar", toolbar);
 		userInputListenerFactory.addMainToolBar("/filter_toolbar", FilterController.getController(controller).getFilterToolbar());
-		final FButtonBar fButtonToolBar = new FButtonBar();
+		final FButtonBar fButtonToolBar = new FButtonBar(modeController);
 		fButtonToolBar.setVisible(ResourceController.getResourceController().getBooleanProperty("fbarVisible"));
 		userInputListenerFactory.addMainToolBar("/fbuttons", fButtonToolBar);
 		controller.addAction(new ToggleToolbarAction(controller, controller.getViewController(), "ToggleFBarAction",

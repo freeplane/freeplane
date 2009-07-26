@@ -23,5 +23,4 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 public interface INodeMouseMotionListener extends MouseMotionListener, MouseListener {
-	void updateSelectionMethod();
 }

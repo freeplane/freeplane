@@ -39,6 +39,7 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IAcceleratorChangeListener;
@@ -64,12 +65,14 @@ public class FButtonBar extends FreeplaneToolBar implements IAcceleratorChangeLi
 			onModifierChangeImpl();
 		}
 	});
+	private final ModeController modeController;
 
-	public FButtonBar() {
+	public FButtonBar(ModeController modeController) {
 		setRollover(false);
 		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(this);
 		buttons = new HashMap<Integer, JButton[]>();
 		onModifierChange();
+		this.modeController = modeController;
 	}
 
 	public void acceleratorChanged(final JMenuItem action, final KeyStroke oldStroke, final KeyStroke newStroke) {
@@ -234,6 +237,9 @@ public class FButtonBar extends FreeplaneToolBar implements IAcceleratorChangeLi
 	}
 
 	private boolean processF10(final KeyEvent e) {
+		if(modeController.getController().getModeController() != modeController){
+			return false;
+		}
 		final int keyCode = e.getKeyCode();
 		if (keyCode < KeyEvent.VK_F1 || keyCode > KeyEvent.VK_F12) {
 			return false;

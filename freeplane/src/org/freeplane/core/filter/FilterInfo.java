@@ -77,4 +77,8 @@ public class FilterInfo {
 	public void setMatched() {
 		add(FilterInfo.FILTER_SHOW_MATCHED);
 	}
+
+	public boolean isUnset() {
+	    return info == FilterInfo.FILTER_INITIAL_VALUE;
+    }
 }

@@ -28,6 +28,11 @@ import org.freeplane.view.swing.map.NodeView;
  * The MouseMotionListener which belongs to every NodeView
  */
 public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener {
+	private static final String SELECTION_METHOD_DIRECT = "selection_method_direct";
+	private static final String SELECTION_METHOD_BY_CLICK = "selection_method_by_click";
+	private static final String TIME_FOR_DELAYED_SELECTION = "time_for_delayed_selection";
+	private static final String SELECTION_METHOD = "selection_method";
+
 	protected class TimeDelayedSelection extends TimerTask {
 		final private ModeController c;
 		final private MouseEvent e;
@@ -55,10 +60,6 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 		}
 	}
 
-	/** overwritten by property delayed_selection_enabled */
-	private static Boolean delayedSelectionEnabled;
-	/** time in ms, overwritten by property time_for_delayed_selection */
-	private static Integer timeForDelayedSelection;
 	/**
 	 * The mouse has to stay in this region to enable the selection after a
 	 * given time.
@@ -71,25 +72,23 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 	public DefaultNodeMouseMotionListener(final ModeController modeController) {
 		mc = modeController;
 		popupListener = new ControllerPopupMenuListener(modeController);
-		if (DefaultNodeMouseMotionListener.delayedSelectionEnabled == null) {
-			updateSelectionMethod();
-		}
 	}
 
-	public void createTimer(final MouseEvent e) {
+	private void createTimer(final MouseEvent e) {
 		stopTimerForDelayedSelection();
 		/* Region to check for in the sequel. */
 		controlRegionForDelayedSelection = getControlRegion(e.getPoint());
+		final String selectionMethod = ResourceController.getResourceController().getProperty(SELECTION_METHOD);
+		if (selectionMethod.equals(SELECTION_METHOD_BY_CLICK)) {
+			return;
+		}
+		if(selectionMethod.equals(SELECTION_METHOD_DIRECT)) {
+			new TimeDelayedSelection(mc, e).run();
+			return;
+		}
+		final int timeForDelayedSelection  = ResourceController.getResourceController().getIntProperty(TIME_FOR_DELAYED_SELECTION, 0);
 		timerForDelayedSelection = SysUtil.createTimer(getClass().getSimpleName());
-		timerForDelayedSelection
-		    .schedule(
-		        new TimeDelayedSelection(mc, e),
-		        /*
-		         * if the new selection method is not enabled we put 0 to
-		         * get direct selection.
-		         */
-		        (DefaultNodeMouseMotionListener.delayedSelectionEnabled) ? DefaultNodeMouseMotionListener.timeForDelayedSelection
-		                : 0);
+		timerForDelayedSelection.schedule(new TimeDelayedSelection(mc, e), timeForDelayedSelection);
 	}
 
 	protected Rectangle getControlRegion(final Point2D p) {
@@ -130,7 +129,7 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 			mc.getController().getViewController().out(
 			    LinkController.getController(mc).getLinkShortText(node.getNodeView().getModel()));
 		}
-		if (controlRegionForDelayedSelection != null && DefaultNodeMouseMotionListener.delayedSelectionEnabled) {
+		if (controlRegionForDelayedSelection != null) {
 			if (!controlRegionForDelayedSelection.contains(e.getPoint())) {
 				createTimer(e);
 			}
@@ -195,24 +194,4 @@ public class DefaultNodeMouseMotionListener implements INodeMouseMotionListener 
 		controlRegionForDelayedSelection = null;
 	}
 
-	/**
-	 * And a static method to reread this holder. This is used when the
-	 * selection method is changed via the option menu.
-	 */
-	public void updateSelectionMethod() {
-		DefaultNodeMouseMotionListener.delayedSelectionEnabled = (ResourceController.getResourceController()
-		    .getProperty("selection_method").equals("selection_method_direct") ? false : true);
-		/*
-		 * set time for delay to infinity, if selection_method equals
-		 * selection_method_by_click.
-		 */
-		if (ResourceController.getResourceController().getProperty("selection_method").equals(
-		    "selection_method_by_click")) {
-			DefaultNodeMouseMotionListener.timeForDelayedSelection = Integer.MAX_VALUE;
-		}
-		else {
-			DefaultNodeMouseMotionListener.timeForDelayedSelection = Integer.parseInt(ResourceController
-			    .getResourceController().getProperty("time_for_delayed_selection"));
-		}
-	}
 }

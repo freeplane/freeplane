@@ -22,6 +22,7 @@ package org.freeplane.view.swing.map;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -533,7 +534,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		final Point anchorCenterPoint = anchor.getContent().getLocation();
 		anchorCenterPoint.x += anchor.getMainView().getWidth() / 2;
 		anchorCenterPoint.y += anchor.getMainView().getHeight() / 2;
-		UITools.convertPointToAncestor(anchor, anchorCenterPoint, getParent());
+		final JViewport parent = (JViewport) getParent();
+		UITools.convertPointToAncestor(anchor, anchorCenterPoint, parent);
+		final Point viewPosition = parent.getViewPosition();
+		anchorCenterPoint.x += viewPosition.x;
+		anchorCenterPoint.y += viewPosition.y;
 		return anchorCenterPoint;
 	}
 
@@ -1321,9 +1326,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		final Point oldAnchorContentLocation = anchorContentLocation;
 		final Point newAnchorContentLocation = getAnchorCenterPoint();
 		if (anchor != getRoot()) {
-			if(nodeToBeVisible == null){
-				nodeToBeVisible = anchor;
-			}
 			anchor = getRoot();
 			anchorContentLocation = getAnchorCenterPoint();
 		}
@@ -1346,7 +1348,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			scrollNodeToVisible(nodeToBeVisible, extraWidth);
 			vp.setScrollMode(scrollMode);
 			nodeToBeVisible = null;
-			extraWidth = 0;
 		}
 	}
 

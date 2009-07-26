@@ -40,6 +40,7 @@ class UnfoldFilteredAncestorsAction extends AFreeplaneAction {
 	 * 
 	 */
 	private final FilterController filterController;
+	private boolean unfoldAll;
 
 	/**
 	 * @param filterController TODO
@@ -51,9 +52,8 @@ class UnfoldFilteredAncestorsAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		if (filterController.getSelectedCondition() != null) {
-			unfoldAncestors(filterController.getController().getMap().getRootNode());
-		}
+		unfoldAll = filterController.getSelectedCondition() == null || filterController.getShowDescendants().isSelected();
+		unfoldAncestors(filterController.getController().getMap().getRootNode());
 	}
 
 	private void setFolded(final NodeModel node, final boolean state) {
@@ -68,7 +68,8 @@ class UnfoldFilteredAncestorsAction extends AFreeplaneAction {
 		for (final Iterator i = filterController.getController().getModeController().getMapController()
 		    .childrenUnfolded(parent); i.hasNext();) {
 			final NodeModel node = (NodeModel) i.next();
-			if (filterController.getShowDescendants().isSelected() || node.getFilterInfo().isAncestor()) {
+			
+			if (unfoldAll || node.getFilterInfo().isAncestor() || node.getFilterInfo().isUnset()) {
 				setFolded(node, false);
 				unfoldAncestors(node);
 			}
