@@ -31,8 +31,8 @@ class OpenLastOpenedAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 	final private LastOpenedList list;
 
-	public OpenLastOpenedAction(final int i, final String name, final Controller controller, final LastOpenedList list) {
-		super("OpenLastOpenedAction_" + i, controller, name, null);
+	public OpenLastOpenedAction(final int i, final Controller controller, final LastOpenedList list) {
+		super("OpenLastOpenedAction_" + i, controller, null, null);
 		this.list = list;
 	}
 

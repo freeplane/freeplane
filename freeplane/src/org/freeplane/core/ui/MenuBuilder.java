@@ -701,12 +701,16 @@ public class MenuBuilder extends UIBuilder {
 		}
 	}
 
-	IFreeplaneAction decorateAction(final String category, final AFreeplaneAction action) {
+	 IFreeplaneAction decorateAction(final String category, final AFreeplaneAction action) {
 		if (null == getMenubar(get(category)) || modeController.getController().getViewController().isApplet()) {
 			return action;
 		}
-		return new AccelerateableAction(this, action);
+		return decorateAction(action);
 	}
+
+	 public IFreeplaneAction decorateAction(final AFreeplaneAction action) {
+	    return new AccelerateableAction(this, action);
+    }
 
 	public IAcceleratorChangeListener getAcceleratorChangeListener() {
 		return acceleratorChangeListener;
