@@ -29,6 +29,7 @@ import javax.swing.JOptionPane;
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.frame.ViewController;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -218,7 +219,8 @@ class EditAction extends AFreeplaneAction {
 	}
 
 	public void setNodeText(final NodeModel node, final String newText) {
-		final MTextController textController = (MTextController) TextController.getController(getModeController());
+		final ModeController modeController = getController().getModeController(MModeController.MODENAME);
+		final MTextController textController = (MTextController) TextController.getController(modeController);
 		textController.setNodeText(node, newText);
 	}
 

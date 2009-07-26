@@ -176,7 +176,11 @@ public abstract class MainView extends JLabel implements IMainView {
 	 */
 	@Override
 	public Dimension getPreferredSize() {
-		final String text = getText();
+		return getPreferredSizeImpl();
+	}
+
+	private Dimension getPreferredSizeImpl() {
+	    final String text = getText();
 		final boolean isEmpty = text.length() == 0 || HtmlTools.isHtmlNode(text) && text.indexOf("<img") < 0
 		        && HtmlTools.htmlToPlain(text).length() == 0;
 		if (isEmpty) {
@@ -195,24 +199,11 @@ public abstract class MainView extends JLabel implements IMainView {
 		prefSize.width += getNodeView().getMap().getZoomed(12);
 		prefSize.height += getNodeView().getMap().getZoomed(4);
 		return prefSize;
-	}
+    }
 
 	abstract Point getRightPoint();
 
 	abstract String getStyle();
-
-	public int getTextWidth() {
-		return getWidth() - getIconWidth();
-	}
-
-	public int getTextX() {
-		int gap = (getWidth() - getPreferredSize().width) / 2;
-		final boolean isLeft = getNodeView().isLeft();
-		if (isLeft) {
-			gap = -gap;
-		}
-		return gap + (isLeft && !getNodeView().isRoot() ? 0 : getIconWidth());
-	}
 
 	/*
 	 * (non-Javadoc)

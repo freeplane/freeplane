@@ -99,20 +99,6 @@ class RootMainView extends MainView {
 	}
 
 	@Override
-	public int getTextWidth() {
-		return super.getTextWidth() - getWidth() / 10;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.view.mindmapview.NodeView#getTextX()
-	 */
-	@Override
-	public int getTextX() {
-		return getIconWidth() + getWidth() / 20;
-	}
-
-	@Override
 	public void paint(final Graphics graphics) {
 		final Graphics2D g = (Graphics2D) graphics;
 		if (getNodeView().getModel() == null) {

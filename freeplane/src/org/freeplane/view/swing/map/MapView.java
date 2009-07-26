@@ -53,10 +53,12 @@ import java.util.Vector;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JViewport;
 import javax.swing.SwingUtilities;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
+import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.io.xml.TreeXmlReader;
@@ -535,6 +537,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		anchorCenterPoint.x += anchor.getMainView().getWidth() / 2;
 		anchorCenterPoint.y += anchor.getMainView().getHeight() / 2;
 		final JViewport parent = (JViewport) getParent();
+		if(parent == null){
+			return new Point();
+		}
 		UITools.convertPointToAncestor(anchor, anchorCenterPoint, parent);
 		final Point viewPosition = parent.getViewPosition();
 		anchorCenterPoint.x += viewPosition.x;
@@ -993,7 +998,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	private void paintSelecteds(final Graphics2D g) {
-		if (!MapView.standardDrawRectangleForSelection || isCurrentlyPrinting()) {
+		if (!MapView.standardDrawRectangleForSelection 
+				|| isCurrentlyPrinting() 
+				|| getComponent(0) instanceof JScrollPane) {
 			return;
 		}
 		final Color c = g.getColor();

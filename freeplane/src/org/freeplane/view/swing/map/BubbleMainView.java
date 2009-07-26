@@ -108,23 +108,6 @@ class BubbleMainView extends MainView {
 		return NodeStyleModel.STYLE_BUBBLE;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.view.mindmapview.NodeView#getTextWidth()
-	 */
-	@Override
-	public int getTextWidth() {
-		return super.getTextWidth() + getNodeView().getMap().getZoomed(5);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.view.mindmapview.NodeView#getTextX()
-	 */
-	@Override
-	public int getTextX() {
-		return super.getTextX() + getNodeView().getMap().getZoomed(2);
-	}
 
 	@Override
 	public void paint(final Graphics graphics) {

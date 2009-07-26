@@ -21,7 +21,11 @@ package org.freeplane.view.swing.map;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ComponentEvent;
@@ -35,14 +39,21 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JViewport;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.frame.ViewController;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.mindmapmode.ortho.SpellCheckerController;
 import org.freeplane.features.mindmapmode.text.AbstractEditNodeTextField;
@@ -51,6 +62,51 @@ import org.freeplane.features.mindmapmode.text.AbstractEditNodeTextField;
  * @author foltin
  */
 class EditNodeTextField extends AbstractEditNodeTextField {
+	private final class MyDocumentListener implements DocumentListener {
+	    public void changedUpdate(DocumentEvent e) {
+	        onUpdate(e);
+	        
+	    }
+
+	    private void onUpdate(DocumentEvent e) {
+			textfield.setRows(0);
+			textfield.setLineWrap(false);
+			final Dimension preferredSize = textfield.getPreferredSize();
+			preferredSize.width += ((MapView)scrollPane.getParent()).getZoomed(2);
+			final int height;
+			final int width ;
+			if(preferredSize.width <= maxWidth){
+				final int currentWidth = textfield.getWidth();
+				if(preferredSize.width < currentWidth){
+					preferredSize.width = currentWidth;
+				}
+				scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+				height = preferredSize.height;
+				width = preferredSize.width;
+			}
+			else{
+				scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+				textfield.setRows(10);
+				textfield.setLineWrap(true);
+				width = maxWidth + scrollPane.getVerticalScrollBar().getWidth();
+				height =textfield.getPreferredScrollableViewportSize().height; 
+			}
+			final Insets insets = scrollPane.getInsets();
+			scrollPane.setSize(width + insets.left + insets.right, height + insets.top + insets.bottom);
+			scrollPane.scrollRectToVisible(new Rectangle(0, 0, width, height ));
+	    }
+
+	    public void insertUpdate(DocumentEvent e) {
+	        onUpdate(e);
+	        
+	    }
+
+	    public void removeUpdate(DocumentEvent e) {
+	        onUpdate(e);
+	        
+	    }
+    }
+
 	class TextFieldListener implements KeyListener, FocusListener, MouseListener, ComponentListener {
 		final int CANCEL = 2;
 		final int EDIT = 1;
@@ -157,20 +213,25 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 	}
 
 	final private KeyEvent firstEvent;
-	private JTextField textfield;
+	private JTextArea textfield;
+	private final DocumentListener documentListener;
+	private JScrollPane scrollPane;
+	private int maxWidth;
 
 	public EditNodeTextField(final NodeModel node, final String text, final KeyEvent firstEvent,
 	                         final ModeController controller, final IEditControl editControl) {
 		super(node, text, controller, editControl);
 		this.firstEvent = firstEvent;
+		documentListener = new MyDocumentListener();
 	}
 
 	private void hideMe() {
-		final JComponent parent = (JComponent) textfield.getParent();
-		final Rectangle bounds = textfield.getBounds();
+		final JComponent parent = (JComponent) scrollPane.getParent();
+		final Rectangle bounds = scrollPane.getBounds();
 		textfield.removeFocusListener(textFieldListener);
 		textfield.removeKeyListener((KeyListener) textFieldListener);
 		textfield.removeMouseListener((MouseListener) textFieldListener);
+		textfield.getDocument().removeDocumentListener(documentListener);
 		final Component component = getModeController().getController().getViewController().getComponent(getNode());
 		if (component != null) {
 			component.removeComponentListener((ComponentListener) textFieldListener);
@@ -188,40 +249,12 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 	 */
 	@Override
 	public void show() {
-		textfield = (getText().length() < 8) ? new JTextField(getText(), 8) : new JTextField(getText());
-		final int cursorWidth = 1;
-		int xOffset = 0;
-		final int yOffset = -1;
-		final int widthAddition = 2 * 0 + cursorWidth + 2;
-		final int heightAddition = 2;
-		final int MINIMAL_LEAF_WIDTH = 150;
-		final int MINIMAL_WIDTH = 50;
+		textfield = new JTextArea(getText());
+		textfield.setLineWrap(false);
 		final ViewController viewController = getModeController().getController().getViewController();
 		final Component component = viewController.getComponent(getNode());
 		final NodeView nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, component);
-		final NodeModel model = nodeView.getModel();
 		final MapView mapView = (MapView) viewController.getMapView();
-		int xSize = nodeView.getMainView().getTextWidth() + widthAddition;
-		xOffset += nodeView.getMainView().getTextX();
-		int xExtraWidth = 0;
-		final MapController mapController = mapView.getModeController().getMapController();
-		if (MINIMAL_LEAF_WIDTH > xSize && (mapController.isFolded(model) || !mapController.hasChildren(model))) {
-			xExtraWidth = MINIMAL_LEAF_WIDTH - xSize;
-			xSize = MINIMAL_LEAF_WIDTH;
-			if (nodeView.isLeft()) {
-				xExtraWidth = -xExtraWidth;
-				textfield.setHorizontalAlignment(SwingConstants.RIGHT);
-			}
-		}
-		else if (MINIMAL_WIDTH > xSize) {
-			xExtraWidth = MINIMAL_WIDTH - xSize;
-			xSize = MINIMAL_WIDTH;
-			if (nodeView.isLeft()) {
-				xExtraWidth = -xExtraWidth;
-				textfield.setHorizontalAlignment(SwingConstants.RIGHT);
-			}
-		}
-		textfield.setSize(xSize, nodeView.getMainView().getHeight() + heightAddition);
 		Font font = nodeView.getTextFont();
 		final float zoom = viewController.getZoom();
 		if (zoom != 1F) {
@@ -239,19 +272,49 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		textfield.addKeyListener(textFieldListener);
 		textfield.addMouseListener(textFieldListener);
 		SpellCheckerController.getController(getModeController()).enableAutoSpell(textfield);
-		mapView.scrollNodeToVisible(nodeView, xExtraWidth);
+		mapView.scrollNodeToVisible(nodeView);
+		
 		final Point textFieldLocation = new Point();
-		UITools.convertPointToAncestor(nodeView.getMainView(), textFieldLocation, mapView);
-		if (xExtraWidth < 0) {
-			textFieldLocation.x += xExtraWidth;
+		final MainView mainView = nodeView.getMainView();
+		UITools.convertPointToAncestor(mainView, textFieldLocation, mapView);
+		int iconWidth = mainView.getIconWidth();
+		if(iconWidth != 0){
+			iconWidth += mapView.getZoomed(9);
 		}
+		final int labelWidth = mainView.getWidth();
+		final int textWidth = labelWidth - iconWidth;
+		final Dimension textFieldSize = textfield.getPreferredSize();
+		final int zoomed = mapView.getZoomed(2);
+		textFieldSize.width += zoomed;
+		textFieldSize.width = Math.max(textFieldSize.width, zoomed * 4);
+		int xOffset = (textWidth - textFieldSize.width) / 2 ;
+		if(! nodeView.isLeft() || nodeView.isRoot()){
+			xOffset += iconWidth;
+		}
+		final int labelHeight = mainView.getHeight();
+		int yOffset = (labelHeight - textFieldSize.height) / 2 ;
 		textFieldLocation.x += xOffset;
 		textFieldLocation.y += yOffset;
-		textfield.setLocation(textFieldLocation);
-		mapView.add(textfield, 0);
-		textfield.repaint();
+		scrollPane = new JScrollPane(textfield);
+		scrollPane.setSize(textFieldSize);
+		scrollPane.setLocation(textFieldLocation);
+		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+		maxWidth = ResourceController.getResourceController().getIntProperty("max_node_width", 0);
+		maxWidth = mapView.getZoomed(maxWidth);
+		final JViewport viewPort = (JViewport)mapView.getParent();
+		final int viewPortWidth = viewPort.getExtentSize().width;
+		if(viewPortWidth < maxWidth){
+			maxWidth = viewPortWidth;
+		}
+		mapView.add(scrollPane, 0);		
 		redispatchKeyEvents(textfield, firstEvent);
+		textfield.revalidate();
+		scrollPane.revalidate();
+		scrollPane.repaint();
+		textfield.repaint();
 		component.addComponentListener(textFieldListener);
+		textfield.getDocument().addDocumentListener(documentListener);
 		textfield.requestFocus();
 	}
 }
