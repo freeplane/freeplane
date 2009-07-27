@@ -72,7 +72,8 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 			textfield.setRows(0);
 			textfield.setLineWrap(false);
 			final Dimension preferredSize = textfield.getPreferredSize();
-			preferredSize.width += ((MapView)scrollPane.getParent()).getZoomed(2);
+			final MapView mapView = (MapView)textfield.getParent();
+			preferredSize.width += mapView.getZoomed(2);
 			final int height;
 			final int width ;
 			if(preferredSize.width <= maxWidth){
@@ -80,20 +81,21 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 				if(preferredSize.width < currentWidth){
 					preferredSize.width = currentWidth;
 				}
-				scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 				height = preferredSize.height;
 				width = preferredSize.width;
 			}
 			else{
-				scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-				textfield.setRows(10);
 				textfield.setLineWrap(true);
-				width = maxWidth + scrollPane.getVerticalScrollBar().getWidth();
+				width = maxWidth;
+				textfield.setSize(width, 1);
 				height =textfield.getPreferredScrollableViewportSize().height; 
 			}
-			final Insets insets = scrollPane.getInsets();
-			scrollPane.setSize(width + insets.left + insets.right, height + insets.top + insets.bottom);
-			scrollPane.scrollRectToVisible(new Rectangle(0, 0, width, height ));
+			textfield.setSize(width, height);
+			final MainView nodeView = mapView.getNodeView(getNode()).getMainView();
+			Point nodeViewLocation = new Point(); 
+			UITools.convertPointToAncestor(nodeView, nodeViewLocation, mapView);
+			nodeView.updateText(textfield.getText(), mapView);
+			textfield.scrollRectToVisible(new Rectangle(0, 0, width, height ));
 	    }
 
 	    public void insertUpdate(DocumentEvent e) {
@@ -124,11 +126,11 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		}
 
 		public void componentMoved(final ComponentEvent e) {
-			focusLost(null);
+//			focusLost(null);
 		}
 
 		public void componentResized(final ComponentEvent e) {
-			focusLost(null);
+//			focusLost(null);
 		}
 
 		public void componentShown(final ComponentEvent e) {
@@ -215,7 +217,6 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 	final private KeyEvent firstEvent;
 	private JTextArea textfield;
 	private final DocumentListener documentListener;
-	private JScrollPane scrollPane;
 	private int maxWidth;
 
 	public EditNodeTextField(final NodeModel node, final String text, final KeyEvent firstEvent,
@@ -226,8 +227,8 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 	}
 
 	private void hideMe() {
-		final JComponent parent = (JComponent) scrollPane.getParent();
-		final Rectangle bounds = scrollPane.getBounds();
+		final MapView mapView = (MapView) textfield.getParent();
+		final Rectangle bounds = textfield.getBounds();
 		textfield.removeFocusListener(textFieldListener);
 		textfield.removeKeyListener((KeyListener) textFieldListener);
 		textfield.removeMouseListener((MouseListener) textFieldListener);
@@ -236,10 +237,13 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		if (component != null) {
 			component.removeComponentListener((ComponentListener) textFieldListener);
 		}
-		if (parent != null) {
-			parent.remove(0);
-			parent.revalidate();
-			parent.repaint(bounds);
+		if (mapView != null) {
+			final MainView mainView = mapView.getNodeView(getNode()).getMainView();
+			mainView.updateText(getNode().getText(), mapView);
+			mainView.getParent().invalidate();
+			mapView.remove(0);
+			mapView.revalidate();
+			mapView.repaint(bounds);
 		}
 		textFieldListener = null;
 	}
@@ -295,11 +299,8 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		int yOffset = (labelHeight - textFieldSize.height) / 2 ;
 		textFieldLocation.x += xOffset;
 		textFieldLocation.y += yOffset;
-		scrollPane = new JScrollPane(textfield);
-		scrollPane.setSize(textFieldSize);
-		scrollPane.setLocation(textFieldLocation);
-		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+		textfield.setSize(textFieldSize);
+		textfield.setLocation(textFieldLocation);
 		maxWidth = ResourceController.getResourceController().getIntProperty("max_node_width", 0);
 		maxWidth = mapView.getZoomed(maxWidth);
 		final JViewport viewPort = (JViewport)mapView.getParent();
@@ -307,11 +308,9 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		if(viewPortWidth < maxWidth){
 			maxWidth = viewPortWidth;
 		}
-		mapView.add(scrollPane, 0);		
+		mapView.add(textfield, 0);		
 		redispatchKeyEvents(textfield, firstEvent);
 		textfield.revalidate();
-		scrollPane.revalidate();
-		scrollPane.repaint();
 		textfield.repaint();
 		component.addComponentListener(textFieldListener);
 		textfield.getDocument().addDocumentListener(documentListener);

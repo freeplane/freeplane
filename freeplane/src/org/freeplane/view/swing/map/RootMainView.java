@@ -77,6 +77,9 @@ class RootMainView extends MainView {
 	@Override
 	public Dimension getPreferredSize() {
 		final Dimension prefSize = super.getPreferredSize();
+        if (isPreferredSizeSet()) {
+            return prefSize;
+        }
 		prefSize.width *= 1.1;
 		prefSize.height *= 2;
 		return prefSize;

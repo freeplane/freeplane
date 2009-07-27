@@ -176,7 +176,10 @@ public abstract class MainView extends JLabel implements IMainView {
 	 */
 	@Override
 	public Dimension getPreferredSize() {
-		return getPreferredSizeImpl();
+		if (isPreferredSizeSet()) {
+			return super.getPreferredSize();
+		}
+ 		return getPreferredSizeImpl();
 	}
 
 	private Dimension getPreferredSizeImpl() {

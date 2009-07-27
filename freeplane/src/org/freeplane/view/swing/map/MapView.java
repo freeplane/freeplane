@@ -999,8 +999,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	private void paintSelecteds(final Graphics2D g) {
 		if (!MapView.standardDrawRectangleForSelection 
-				|| isCurrentlyPrinting() 
-				|| getComponent(0) instanceof JScrollPane) {
+				|| isCurrentlyPrinting()) {
 			return;
 		}
 		final Color c = g.getColor();

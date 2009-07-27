@@ -88,6 +88,9 @@ class BubbleMainView extends MainView {
 	@Override
 	public Dimension getPreferredSize() {
 		final Dimension prefSize = super.getPreferredSize();
+        if (isPreferredSizeSet()) {
+            return prefSize;
+        }
 		prefSize.width += getNodeView().getMap().getZoomed(5);
 		return prefSize;
 	}
