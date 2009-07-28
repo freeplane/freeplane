@@ -75,6 +75,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 			textfield.setRows(0);
 			textfield.setLineWrap(false);
 			final Dimension preferredSize = textfield.getPreferredSize();
+			preferredSize.width += 1;
 			final MapView mapView = (MapView)textfield.getParent();
 			final int height;
 			final int width ;
@@ -275,7 +276,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		final NodeView nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, component);
 		final MapView mapView = (MapView) viewController.getMapView();
 		maxWidth = ResourceController.getResourceController().getIntProperty("max_node_width", 0);
-		maxWidth = mapView.getZoomed(maxWidth);
+		maxWidth = mapView.getZoomed(maxWidth) + 1;
 		Font font = nodeView.getTextFont();
 		final float zoom = viewController.getZoom();
 		if (zoom != 1F) {
@@ -299,6 +300,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		final MainView mainView = nodeView.getMainView();
 		UITools.convertPointToAncestor(mainView, textFieldLocation, mapView);
 		final Dimension textFieldSize = textfield.getPreferredSize();
+		textFieldSize.width += 1;
 		if(textFieldSize.width > maxWidth){
 			textfield.setLineWrap(true);
 			textFieldSize.width = maxWidth;
