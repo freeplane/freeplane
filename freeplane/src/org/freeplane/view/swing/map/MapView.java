@@ -112,8 +112,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			return nodeView != null && MapView.this.isSelected(nodeView);
 		}
 
-		public void keepNodePosition(final NodeModel node) {
-			anchorToSelected(node);
+		public void keepNodePosition(final NodeModel node, float horizontalPoint, float verticalPoint) {
+			anchorToSelected(node, horizontalPoint, verticalPoint);
 		}
 
 		public void makeTheSelected(final NodeModel node) {
@@ -275,6 +275,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private NodeView shiftSelectionOrigin = null;
 	private int siblingMaxLevel;
 	private float zoom = 1F;
+	private float anchorHorizontalPoint;
+	private float anchorVerticalPoint;
 
 	public MapView(final MapModel model, final ModeController modeController) {
 		super();
@@ -312,14 +314,16 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		disableMoveCursor = ResourceController.getResourceController().getBooleanProperty("disable_cursor_move_paper");
 	}
 
-	private void anchorToSelected(final NodeModel node) {
+	private void anchorToSelected(final NodeModel node, float horizontalPoint, float verticalPoint) {
 		final NodeView view = getNodeView(node);
-		anchorToSelected(view);
+		anchorToSelected(view, horizontalPoint, verticalPoint);
 	}
 
-	private void anchorToSelected(final NodeView view) {
+	void anchorToSelected(final NodeView view, float horizontalPoint, float verticalPoint) {
 		if (view != null) {
 			anchor = view;
+			anchorHorizontalPoint = horizontalPoint;
+			anchorVerticalPoint = verticalPoint;
 			anchorContentLocation = getAnchorCenterPoint();
 		}
 	}
@@ -534,8 +538,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	private Point getAnchorCenterPoint() {
 		final Point anchorCenterPoint = anchor.getContent().getLocation();
-		anchorCenterPoint.x += anchor.getMainView().getWidth() / 2;
-		anchorCenterPoint.y += anchor.getMainView().getHeight() / 2;
+		anchorCenterPoint.x += anchor.getMainView().getWidth() *anchorHorizontalPoint;
+		anchorCenterPoint.y += anchor.getMainView().getHeight()*anchorVerticalPoint;
 		final JViewport parent = (JViewport) getParent();
 		if(parent == null){
 			return new Point();
@@ -1359,7 +1363,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	public void setZoom(final float zoom) {
 		this.zoom = zoom;
-		anchorToSelected(getSelected());
+		anchorToSelected(getSelected(), CENTER_ALIGNMENT, CENTER_ALIGNMENT);
 		getRoot().updateAll();
 		revalidate();
 	}

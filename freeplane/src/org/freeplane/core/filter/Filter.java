@@ -107,7 +107,7 @@ public class Filter {
 				}
 			}
 			final IMapSelection selection = controller.getSelection();
-			selection.keepNodePosition(selection.getSelected());
+			selection.keepNodePosition(selection.getSelected(), 0.5f, 0.5f);
 			refreshMap();
 			selectVisibleNode();
 		}

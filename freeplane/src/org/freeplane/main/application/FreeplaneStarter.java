@@ -162,6 +162,7 @@ public class FreeplaneStarter {
 					frame.setExtendedState(extendedState);
 				}
 				splash.dispose();
+				frame.toFront();
 			}
 		});
 	}

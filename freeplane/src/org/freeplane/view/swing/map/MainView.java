@@ -58,12 +58,11 @@ import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
-import org.freeplane.features.common.text.IMainView;
 
 /**
  * Base class for all node views.
  */
-public abstract class MainView extends JLabel implements IMainView {
+public abstract class MainView extends JLabel {
 	public static final Set executableExtensions = new HashSet(Arrays.asList(new String[] { "exe", "com", "vbs", "bat",
 	        "lnk" }));
 	static Dimension maximumSize = new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
@@ -75,7 +74,6 @@ public abstract class MainView extends JLabel implements IMainView {
 	private static final long serialVersionUID = 1L;
 	public static final float ZOOM_CORRECTION_FACTOR = 0.97F;
 	protected int isDraggedOver = NodeView.DRAGGED_OVER_NO;
-	private boolean isLong = false;
 	private boolean isPainting;
 
 	MainView() {
@@ -253,10 +251,6 @@ public abstract class MainView extends JLabel implements IMainView {
 		return getNodeView().isLeft() ? xCoord > getSize().width * (1.0 - p) : xCoord < getSize().width * p;
 	}
 
-	public boolean isLong() {
-		return isLong;
-	}
-
 	@Override
 	public void paint(final Graphics g) {
 		final Graphics2D g2 = (Graphics2D) g;
@@ -409,6 +403,7 @@ public abstract class MainView extends JLabel implements IMainView {
 	void updateText(String nodeText, final MapView map) {
 		final boolean isHtml = nodeText.startsWith("<html>");
 		boolean widthMustBeRestricted = false;
+		boolean isLong = false;
 		if (!isHtml) {
 			final String[] lines = nodeText.split("\n");
 			for (int line = 0; line < lines.length; line++) {

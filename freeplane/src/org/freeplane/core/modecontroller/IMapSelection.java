@@ -38,7 +38,7 @@ public interface IMapSelection {
 
 	public boolean isSelected(final NodeModel node);
 
-	public void keepNodePosition(final NodeModel node);
+	public void keepNodePosition(final NodeModel node, float horizontalPoint, float verticalPoint);
 
 	public void makeTheSelected(final NodeModel node);
 

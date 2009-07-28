@@ -37,6 +37,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
@@ -69,15 +70,16 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 	    }
 
 	    private void onUpdate(DocumentEvent e) {
+	    	final int lastWidth = textfield.getWidth();
+	    	final int lastHeight = textfield.getHeight();
 			textfield.setRows(0);
 			textfield.setLineWrap(false);
 			final Dimension preferredSize = textfield.getPreferredSize();
 			final MapView mapView = (MapView)textfield.getParent();
-			preferredSize.width += mapView.getZoomed(2);
 			final int height;
 			final int width ;
 			if(preferredSize.width <= maxWidth){
-				final int currentWidth = textfield.getWidth();
+				final int currentWidth = lastWidth;
 				if(preferredSize.width < currentWidth){
 					preferredSize.width = currentWidth;
 				}
@@ -87,15 +89,27 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 			else{
 				textfield.setLineWrap(true);
 				width = maxWidth;
-				textfield.setSize(width, 1);
-				height =textfield.getPreferredScrollableViewportSize().height; 
+				height =textfield.getPreferredSize().height; 
+			}
+			if(width == lastWidth && height == lastHeight){
+				return;
 			}
 			textfield.setSize(width, height);
-			final MainView nodeView = mapView.getNodeView(getNode()).getMainView();
-			Point nodeViewLocation = new Point(); 
-			UITools.convertPointToAncestor(nodeView, nodeViewLocation, mapView);
-			nodeView.updateText(textfield.getText(), mapView);
-			textfield.scrollRectToVisible(new Rectangle(0, 0, width, height ));
+			final NodeView nodeView = mapView.getNodeView(getNode());
+			final float horizontalPoint;
+			if (nodeView.isRoot()) {
+				horizontalPoint = 0.5f;
+			}
+			else if (nodeView.isLeft()) {
+				horizontalPoint = 1f;
+			}
+			else {
+				horizontalPoint = 0f;
+			}
+			mapView.anchorToSelected(nodeView, horizontalPoint, 0f);
+			final MainView mainView = nodeView.getMainView();
+			mainView.setPreferredSize(textfield.getSize());
+			nodeView.revalidate();
 	    }
 
 	    public void insertUpdate(DocumentEvent e) {
@@ -239,6 +253,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		}
 		if (mapView != null) {
 			final MainView mainView = mapView.getNodeView(getNode()).getMainView();
+			mainView.setPreferredSize(null);
 			mainView.updateText(getNode().getText(), mapView);
 			mainView.getParent().invalidate();
 			mapView.remove(0);
@@ -259,6 +274,8 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		final Component component = viewController.getComponent(getNode());
 		final NodeView nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, component);
 		final MapView mapView = (MapView) viewController.getMapView();
+		maxWidth = ResourceController.getResourceController().getIntProperty("max_node_width", 0);
+		maxWidth = mapView.getZoomed(maxWidth);
 		Font font = nodeView.getTextFont();
 		final float zoom = viewController.getZoom();
 		if (zoom != 1F) {
@@ -281,28 +298,36 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		final Point textFieldLocation = new Point();
 		final MainView mainView = nodeView.getMainView();
 		UITools.convertPointToAncestor(mainView, textFieldLocation, mapView);
+		final Dimension textFieldSize = textfield.getPreferredSize();
+		if(textFieldSize.width > maxWidth){
+			textfield.setLineWrap(true);
+			textFieldSize.width = maxWidth;
+			textfield.setSize(maxWidth, 1);
+			textFieldSize.height =textfield.getPreferredSize().height; 
+		}
+
+		int nodeWidth = mainView.getWidth();
+		final int nodeHeight = mainView.getHeight();
 		int iconWidth = mainView.getIconWidth();
 		if(iconWidth != 0){
-			iconWidth += mapView.getZoomed(9);
+			iconWidth += mapView.getZoomed(mainView.getIconTextGap());
+			nodeWidth -= iconWidth;
 		}
-		final int labelWidth = mainView.getWidth();
-		final int textWidth = labelWidth - iconWidth;
-		final Dimension textFieldSize = textfield.getPreferredSize();
-		final int zoomed = mapView.getZoomed(2);
-		textFieldSize.width += zoomed;
-		textFieldSize.width = Math.max(textFieldSize.width, zoomed * 4);
-		int xOffset = (textWidth - textFieldSize.width) / 2 ;
-		if(! nodeView.isLeft() || nodeView.isRoot()){
-			xOffset += iconWidth;
+		textfield.setSize(nodeWidth + iconWidth, nodeHeight);
+		final int topBorder = (nodeHeight - textFieldSize.height)/2;
+		final int leftBorder = (nodeWidth - textFieldSize.width)/2;
+		final Color selectedColor = nodeView.getSelectedColor();
+		if(nodeView.isLeft() && ! nodeView.isRoot()){
+			textfield.setBorder(BorderFactory.createMatteBorder(
+				topBorder, leftBorder,topBorder,leftBorder + iconWidth, 
+				selectedColor));
 		}
-		final int labelHeight = mainView.getHeight();
-		int yOffset = (labelHeight - textFieldSize.height) / 2 ;
-		textFieldLocation.x += xOffset;
-		textFieldLocation.y += yOffset;
-		textfield.setSize(textFieldSize);
+		else{
+			textfield.setBorder(BorderFactory.createMatteBorder(
+				topBorder, leftBorder + iconWidth, topBorder, leftBorder, 
+				selectedColor));
+		}
 		textfield.setLocation(textFieldLocation);
-		maxWidth = ResourceController.getResourceController().getIntProperty("max_node_width", 0);
-		maxWidth = mapView.getZoomed(maxWidth);
 		final JViewport viewPort = (JViewport)mapView.getParent();
 		final int viewPortWidth = viewPort.getExtentSize().width;
 		if(viewPortWidth < maxWidth){

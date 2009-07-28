@@ -34,7 +34,6 @@ import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.HtmlTools;
-import org.freeplane.features.common.text.IMainView;
 import org.freeplane.features.common.text.TextController;
 import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.features.mindmapmode.MModeController;
@@ -95,7 +94,7 @@ class EditAction extends AFreeplaneAction {
 		getModeController().setBlocked(true);
 		String text = nodeModel.toString();
 		final String htmlEditingOption = ResourceController.getResourceController().getProperty("html_editing_option");
-		final boolean editDefinitivelyLong = ((IMainView) node).isLong() || editLong;
+		final boolean editDefinitivelyLong = editLong;
 		final boolean isHtmlNode = HtmlTools.isHtmlNode(text);
 		boolean useRichTextInNewLongNodes = true;
 		if (!isHtmlNode && editDefinitivelyLong) {
