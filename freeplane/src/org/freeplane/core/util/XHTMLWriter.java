@@ -25,7 +25,7 @@ import javax.swing.text.html.Option;
  * really be XHTML 1.0 transitional conformous. The basic purpose of this class
  * is to give an XSL processor access to plain HTML files.
  * 
- * @author Richard "Shred" K�rber
+ * @author Richard "Shred" Koerber
  */
 class XHTMLWriter extends FixedHTMLWriter {
 	/**
