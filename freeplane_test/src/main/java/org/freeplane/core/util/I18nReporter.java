@@ -242,7 +242,7 @@ public class I18nReporter {
 					ai.setIssue(Issue.MISSING);
 					ai.setKey(o.toString());
 					ai.setLang(lang);
-					ai.setOwner(new User());
+					ai.setOwner(User.getUserFor(lang));
 					ai.setStandardTranslation(mainProperties.getProperty((String) o));
 					lazyAdd(ais, lang, ai);
 				}
