@@ -404,12 +404,16 @@ public abstract class MainView extends JLabel {
 		final boolean isHtml = nodeText.startsWith("<html>");
 		boolean widthMustBeRestricted = false;
 		boolean isLong = false;
+		int iconWidth = getIconWidth();
+		if(iconWidth != 0){
+			iconWidth += map.getZoomed(getIconTextGap());
+		}
 		if (!isHtml) {
 			final String[] lines = nodeText.split("\n");
 			for (int line = 0; line < lines.length; line++) {
 				setText(lines[line]);
 				widthMustBeRestricted = getPreferredSize().width > map.getZoomed(map.getMaxNodeWidth())
-				        + getIconWidth();
+				        + iconWidth;
 				if (widthMustBeRestricted) {
 					break;
 				}
@@ -433,7 +437,7 @@ public abstract class MainView extends JLabel {
 			if (nodeText.length() < 30000) {
 				setText(nodeText);
 				widthMustBeRestricted = getPreferredSize().width > map.getZoomed(map.getMaxNodeWidth())
-				        + getIconWidth();
+				        + iconWidth;
 			}
 			else {
 				widthMustBeRestricted = true;

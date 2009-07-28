@@ -90,7 +90,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 			else{
 				textfield.setLineWrap(true);
 				width = maxWidth;
-				height =textfield.getPreferredSize().height; 
+				height =textfield.getPreferredScrollableViewportSize().height; 
 			}
 			if(width == lastWidth && height == lastHeight){
 				return;
@@ -310,12 +310,13 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 
 		int nodeWidth = mainView.getWidth();
 		final int nodeHeight = mainView.getHeight();
+		maxWidth += nodeWidth - textFieldSize.width;
+		textfield.setSize(nodeWidth, nodeHeight);
 		int iconWidth = mainView.getIconWidth();
 		if(iconWidth != 0){
 			iconWidth += mapView.getZoomed(mainView.getIconTextGap());
 			nodeWidth -= iconWidth;
 		}
-		textfield.setSize(nodeWidth + iconWidth, nodeHeight);
 		final int topBorder = (nodeHeight - textFieldSize.height)/2;
 		final int leftBorder = (nodeWidth - textFieldSize.width)/2;
 		final Color selectedColor = nodeView.getSelectedColor();
@@ -331,10 +332,6 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		}
 		textfield.setLocation(textFieldLocation);
 		final JViewport viewPort = (JViewport)mapView.getParent();
-		final int viewPortWidth = viewPort.getExtentSize().width;
-		if(viewPortWidth < maxWidth){
-			maxWidth = viewPortWidth;
-		}
 		mapView.add(textfield, 0);		
 		redispatchKeyEvents(textfield, firstEvent);
 		textfield.revalidate();
