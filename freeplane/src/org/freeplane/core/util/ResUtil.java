@@ -71,13 +71,13 @@ public class ResUtil {
 	}
 
 	public static Properties loadProperties(final String classpathRessource) {
-		final Properties versionProperties = new Properties();
+		final Properties props = new Properties();
 		try {
-			versionProperties.load(ResUtil.class.getResource(classpathRessource).openStream());
+			props.load(ResUtil.class.getResource(classpathRessource).openStream());
 		}
 		catch (final IOException e) {
 			throw new RuntimeException(e);
 		}
-		return versionProperties;
+		return props;
 	}
 }
