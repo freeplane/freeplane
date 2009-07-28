@@ -144,24 +144,33 @@ public class I18nReporter {
 	}
 
 	public static void main(String[] args) {
-		I18nReporter reporter = new I18nReporter();
-		reporter.setBaseDir("C:/Users/Robert/Documents/workspace-freeplane/freeplane/");
-		reporter.setLeadPropertyFile(STANDARD);
-		reporter.setSupportedLanguages(CountryCode.getSupportedLanguages());
-		reporter.init();
-		// summary
-		writeOutputFile(reporter, reporter.getSummary().asString(), reporter.a(reporter.getOverviewName(),
-		    "Freeplane I18N Overview"), reporter.getSummaryName());
-		// overview
-		writeOutputFile(reporter, reporter.getOverview(), "Freeplane I18N Overview ", reporter.getOverviewName());
-		// action items
-		Map<CountryCode, List<ActionItem>> actionItems = reporter.getActionItems();
-		for (CountryCode lang : actionItems.keySet()) {
-			writeOutputFile(reporter, reporter.getActionItemsAsString(lang, actionItems.get(lang)), reporter.a(reporter
-			    .getSummaryName(), "Freeplane Action")
-			        + " Item for "
-			        + reporter.a(SVN_URL + RESOURCES_TRANSLATIONS + "Resources_" + lang + ".properties", lang
-			            .toString()), reporter.getActionItemName() + lang + ".html");
+		if (args.length != 1) {
+			System.out.println("This program creates a report for i18n for a given set of property files.");
+			System.out
+			    .println("You have to provide the base dir of the source code of freeplane program, that is to say the contents of ");
+			System.out
+			    .println("svn co https://freeplane.svn.sourceforge.net/svnroot/freeplane/freeplane_program/trunk/freeplane/");
+		}
+		else {
+			I18nReporter reporter = new I18nReporter();
+			reporter.setBaseDir(args[0]);
+			reporter.setLeadPropertyFile(STANDARD);
+			reporter.setSupportedLanguages(CountryCode.getSupportedLanguages());
+			reporter.init();
+			// summary
+			writeOutputFile(reporter, reporter.getSummary().asString(), reporter.a(reporter.getOverviewName(),
+			    "Freeplane I18N Overview"), reporter.getSummaryName());
+			// overview
+			writeOutputFile(reporter, reporter.getOverview(), "Freeplane I18N Overview ", reporter.getOverviewName());
+			// action items
+			Map<CountryCode, List<ActionItem>> actionItems = reporter.getActionItems();
+			for (CountryCode lang : actionItems.keySet()) {
+				writeOutputFile(reporter, reporter.getActionItemsAsString(lang, actionItems.get(lang)), reporter.a(
+				    reporter.getSummaryName(), "Freeplane Action")
+				        + " Item for "
+				        + reporter.a(SVN_URL + RESOURCES_TRANSLATIONS + "Resources_" + lang + ".properties", lang
+				            .toString()), reporter.getActionItemName() + lang + ".html");
+			}
 		}
 		System.out.println("Finished.");
 	}
