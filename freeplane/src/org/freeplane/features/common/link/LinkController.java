@@ -241,7 +241,7 @@ public class LinkController extends SelectionController implements IExtension {
 		return STANDARD_WIDTH;
 	}
 
-	void loadLink(final NodeModel node, final String link) {
+	void loadLink(final NodeModel node, String link) {
 		NodeLinks links = NodeLinks.getLinkExtension(node);
 		if (links == null) {
 			links = NodeLinks.createLinkExtension(node);
@@ -250,6 +250,9 @@ public class LinkController extends SelectionController implements IExtension {
 			links.setLocalHyperlink(node, link.substring(1));
 		}
         try {
+        	if(link.startsWith("\"") && link.endsWith("\"")){
+        		link = link.substring(1, link.length()-1);
+        	}
             URI hyperlink = LinkController.createURI(link);
     		links.setHyperLink(hyperlink);
         }

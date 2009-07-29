@@ -242,6 +242,7 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 	private static final String AUTOMATIC_FORMAT_LEVEL = "automaticFormat_level";
 	private static Patterns patterns = null;
 	private static final String TAB = "OptionPanel.accessories/plugins/AutomaticLayout.properties_PatternTabName";
+	private boolean setStyleActive = false;
 
 	/**
 	 *
@@ -292,10 +293,12 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 	}
 
 	public void mapChanged(final MapChangeEvent event) {
-		// TODO Auto-generated method stub
 	}
 
 	public void nodeChanged(final NodeChangeEvent event) {
+		if(setStyleActive){
+			return;
+		}
 		final NodeModel node = event.getNode();
 		if (!isActive(node)) {
 			return;
@@ -307,7 +310,7 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 	}
 
 	public void onNodeInserted(final NodeModel parent, final NodeModel child, final int newIndex) {
-		if (!isActive(parent)) {
+		if (setStyleActive || !isActive(parent)) {
 			return;
 		}
 		setStyleRecursive(child);
@@ -315,7 +318,7 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 
 	public void onNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
 	                        final NodeModel child, final int newIndex) {
-		if (!isActive(newParent)) {
+		if (setStyleActive || !isActive(newParent)) {
 			return;
 		}
 		setStyleRecursive(child);
@@ -359,9 +362,9 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 		if (((MModeController) getModeController()).isUndoAction()) {
 			return;
 		}
-		getModeController().getMapController().removeMapChangeListener(this);
+		setStyleActive = true;
 		setStyleImpl(node);
-		getModeController().getMapController().addMapChangeListener(this);
+		setStyleActive = false;
 	}
 
 	private void setStyleImpl(final NodeModel node) {
@@ -378,9 +381,9 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 	/**
 	 */
 	private void setStyleRecursive(final NodeModel node) {
-		getModeController().getMapController().removeMapChangeListener(this);
+		setStyleActive = true;
 		setStyleRecursiveImpl(node);
-		getModeController().getMapController().addMapChangeListener(this);
+		setStyleActive = false;
 	}
 
 	private void setStyleRecursiveImpl(final NodeModel node) {

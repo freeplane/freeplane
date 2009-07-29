@@ -142,7 +142,7 @@ public class MapModel {
 	 */
 	public NodeModel getNodeForID(final String nodeID) {
 		final NodeModel node = nodes.get(nodeID);
-		if (node.getParent() == null && node != root) {
+		if (node == null || node.getParent() == null && node != root) {
 			return null;
 		}
 		return node;
