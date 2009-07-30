@@ -80,7 +80,7 @@ class EditAction extends AFreeplaneAction {
 
 	void edit(final NodeModel nodeModel, final NodeModel prevSelectedModel, final KeyEvent firstEvent,
 	          final boolean isNewNode, final boolean parentFolded, final boolean editLong) {
-		if (nodeModel == null) {
+		if (nodeModel == null || mCurrentEditDialog != null) {
 			return;
 		}
 		final Controller controller = getController();
