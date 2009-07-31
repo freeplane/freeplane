@@ -73,40 +73,50 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 	    }
 
 	    private void onUpdate(DocumentEvent e) {
-	    	final int lastWidth = textfield.getWidth();
+	    	EventQueue.invokeLater(new Runnable(){
+
+				public void run() {
+			    	layout();
+                }});
+	    }
+
+		private void layout() {
+	        final int lastWidth = textfield.getWidth();
 	    	final int lastHeight = textfield.getHeight();
 			final MapView mapView = (MapView)textfield.getParent();
 			final int height;
 			final int width ;
-			final boolean lineWrap = textfield.getLineWrap();
+			final boolean lineWrap = lastWidth == maxWidth;
 			if(! lineWrap){
 				Rectangle caretBounds = null;
 		    	final Dimension preferredSize;
-		    	final int textLength = textfield.getDocument().getLength();
-				if(textfield.getCaretPosition() == textLength){
+		    	final int lastPos = textfield.getDocument().getLength();
+				if(textfield.getCaretPosition() == lastPos){
 					caretBounds = (DefaultCaret) textfield.getCaret();
 		    	}
 		    	else{
 		    		try {
-	                    caretBounds = textfield.modelToView(textLength);
+		    			textfield.setSize(maxWidth, lastHeight);
+	                    caretBounds = textfield.modelToView(lastPos-1);
+	                    textfield.setSize(lastWidth, lastHeight);
                     }
                     catch (BadLocationException e1) {
                     }
 		    	}
-				preferredSize = new Dimension(caretBounds.x + caretBounds.width, caretBounds.y + caretBounds.height);
+				final Insets insets = textfield.getInsets();
+				preferredSize = new Dimension(caretBounds.x + caretBounds.width + insets.right, caretBounds.y + caretBounds.height + insets.bottom);
 				preferredSize.width += 1;
-				if(preferredSize.width <= maxWidth){
+				if(preferredSize.width <= maxWidth && preferredSize.height <= lastHeight){
 					final int currentWidth = lastWidth;
 					if(preferredSize.width < currentWidth){
 						width = currentWidth;
 					}
 					else{
-						width = preferredSize.width + Math.min(mapView.getZoomed(40), maxWidth);
+						width = Math.min(preferredSize.width + mapView.getZoomed(40), maxWidth);
 					}
 					height = preferredSize.height;
 				}
 				else{
-					textfield.setLineWrap(true);
 					width = maxWidth;
 					height =textfield.getPreferredScrollableViewportSize().height; 
 				}
@@ -134,7 +144,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 			final MainView mainView = nodeView.getMainView();
 			mainView.setPreferredSize(new Dimension(width, height));
 			nodeView.revalidate();
-	    }
+        }
 
 	    public void insertUpdate(DocumentEvent e) {
 	        onUpdate(e);
@@ -304,7 +314,6 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 	@Override
 	public void show() {
 		textfield = new JTextArea(getText());
-		textfield.setLineWrap(false);
 		final ViewController viewController = getModeController().getController().getViewController();
 		final Component component = viewController.getComponent(getNode());
 		final NodeView nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, component);
@@ -335,8 +344,8 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		UITools.convertPointToAncestor(mainView, textFieldLocation, mapView);
 		final Dimension textFieldSize = textfield.getPreferredSize();
 		textFieldSize.width += 1;
+		textfield.setLineWrap(true);
 		if(textFieldSize.width > maxWidth){
-			textfield.setLineWrap(true);
 			textFieldSize.width = maxWidth;
 			textfield.setSize(maxWidth, 1);
 			textFieldSize.height =textfield.getPreferredSize().height; 
