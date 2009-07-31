@@ -86,7 +86,7 @@ public class MMouseMotionListener implements IMapMouseReceiver {
 	}
 
 	public void mousePressed(final MouseEvent e) {
-		if (!mController.isBlocked() && e.getButton() == MouseEvent.BUTTON1) {
+		if (e.getButton() == MouseEvent.BUTTON1) {
 			final MapView mapView = (MapView) e.getComponent();
 			mapView.setMoveCursor(true);
 			originX = e.getX();

@@ -130,17 +130,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 				return;
 			}
 			final NodeView nodeView = mapView.getNodeView(getNode());
-			final float horizontalPoint;
-			if (nodeView.isRoot()) {
-				horizontalPoint = 0.5f;
-			}
-			else if (nodeView.isLeft()) {
-				horizontalPoint = 1f;
-			}
-			else {
-				horizontalPoint = 0f;
-			}
-			mapView.anchorToSelected(nodeView, horizontalPoint, 0f);
+			mapView.anchorToSelected(nodeView, 0f, 0f);
 			final MainView mainView = nodeView.getMainView();
 			mainView.setPreferredSize(new Dimension(width, height));
 			nodeView.revalidate();
@@ -345,6 +335,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		final Dimension textFieldSize = textfield.getPreferredSize();
 		textFieldSize.width += 1;
 		textfield.setLineWrap(true);
+		textfield.setWrapStyleWord(true);
 		if(textFieldSize.width > maxWidth){
 			textFieldSize.width = maxWidth;
 			textfield.setSize(maxWidth, 1);
