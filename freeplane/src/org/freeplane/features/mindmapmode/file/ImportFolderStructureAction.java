@@ -86,13 +86,13 @@ class ImportFolderStructureAction extends AFreeplaneAction {
 			final File[] list = folder.listFiles();
 			for (int i = 0; i < list.length; i++) {
 				if (list[i].isDirectory()) {
-					final NodeModel node = addNode(target, list[i].getName(), Compat.fileToUrl(list[i]).toString());
+					final NodeModel node = addNode(target, list[i].getName(), list[i].toURI().toString());
 					importFolderStructure(list[i], node, false);
 				}
 			}
 			for (int i = 0; i < list.length; i++) {
 				if (!list[i].isDirectory()) {
-					addNode(target, list[i].getName(), Compat.fileToUrl(list[i]).toString());
+					addNode(target, list[i].getName(), list[i].toURI().toString());
 				}
 			}
 		}
