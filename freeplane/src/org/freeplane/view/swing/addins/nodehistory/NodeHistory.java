@@ -126,6 +126,11 @@ public class NodeHistory implements IExtension {
 			return;
 		}
 		final NodeModel toBeSelected = currentNodeHolder.getNode();
+		if(toBeSelected == null){
+			currentNodeHolder = lastNodeHolder;
+			go(back);
+			return;
+		}
 		boolean changeModule = false;
 		MapView newModule = null;
 		if (lastNodeHolder.getHoldMapView() != currentNodeHolder.getHoldMapView()) {

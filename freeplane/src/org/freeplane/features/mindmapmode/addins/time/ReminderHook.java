@@ -26,6 +26,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.swing.ImageIcon;
+import javax.swing.tree.TreeNode;
 
 import org.freeplane.core.addins.NodeHookDescriptor;
 import org.freeplane.core.addins.PersistentNodeHook;
@@ -204,9 +205,14 @@ public class ReminderHook extends PersistentNodeHook {
 		}
 		pNode.setStateIcon(getStateKey(), icon);
 		getModeController().getMapController().nodeRefresh(pNode);
-		if (recurse && !pNode.isRoot()) {
-			displayState(model, stateAdded, pNode.getParentNode(), recurse);
+		if (recurse) {
+			return;
 		}
+		final NodeModel parentNode = pNode.getParentNode();
+		if (parentNode == null) {
+			return;
+		}
+		displayState(model, stateAdded, parentNode, recurse);
 	}
 
 	private ImageIcon getBellIcon() {
