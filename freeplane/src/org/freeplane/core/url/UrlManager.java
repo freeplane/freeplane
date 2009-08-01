@@ -377,21 +377,33 @@ public class UrlManager implements IExtension {
 		}
 		try {
 			URL url;
+			final String path = uri.getPath();
 			if (!uri.isAbsolute() || uri.isOpaque()) {
 				final MapModel map = getController().getMap();
-				url = new URL(map.getURL(), uri.getPath());
+				url = new URL(map.getURL(), path);
 			}
 			else {
-				url = new URL(uri.getScheme(), uri.getHost(), uri.getPort(), uri.getPath());
-			}
-			final String ref = url.getRef();
-			if (ref != null) {
-				url = UrlManager.getURLWithoutReference(url);
+				StringBuilder sb = new StringBuilder(path);
+				final String query = uri.getQuery();
+				if(query != null){
+					sb.append('?');
+					sb.append(query);
+				}
+				final String fragment = uri.getFragment();
+				if(fragment != null){
+					sb.append('#');
+					sb.append(fragment);
+				}
+				url = new URL(uri.getScheme(), uri.getHost(), uri.getPort(), sb.toString());
 			}
 			final String extension = UrlManager.getExtension(url.toString());
 			try {
 				if ((extension != null)
 				        && extension.equals(org.freeplane.core.url.UrlManager.FREEPLANE_FILE_EXTENSION_WITHOUT_DOT)) {
+					final String ref = url.getRef();
+					if (ref != null) {
+						url = UrlManager.getURLWithoutReference(url);
+					}
 					modeController.getMapController().newMap(url);
 					if (ref != null) {
 						final ModeController newModeController = getController().getModeController();
@@ -404,8 +416,8 @@ public class UrlManager implements IExtension {
 				}
 			}
 			catch (final Exception e) {
-				LogTool.warn("link " + ref + " not found", e);
-				UITools.errorMessage(FpStringUtils.formatText("link_not_found", ref));
+				LogTool.warn("link " + uri + " not found", e);
+				UITools.errorMessage(FpStringUtils.formatText("link_not_found", uri.toString()));
 			}
 		}
 		catch (final MalformedURLException ex) {
