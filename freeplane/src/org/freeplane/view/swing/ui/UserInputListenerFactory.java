@@ -79,7 +79,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	private IMouseListener nodeMotionListener;
 	private INodeMouseMotionListener nodeMouseMotionListener;
 	private JPopupMenu nodePopupMenu;
-	private final Map<String, JToolBar> toolBars;
+	private final Map<String, Component> toolBars;
 
 	public UserInputListenerFactory(final ModeController modeController) {
 		controller = modeController.getController();
@@ -96,11 +96,11 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
 			}
 		});
-		toolBars = new LinkedHashMap<String, JToolBar>();
+		toolBars = new LinkedHashMap<String, Component>();
 	}
 
-	public void addMainToolBar(final String name, final JToolBar mainToolBar) {
-		toolBars.put(name, mainToolBar);
+	public void addMainToolBar(final String name, final Component toolBar) {
+		toolBars.put(name, toolBar);
 	}
 
 	public void addMouseWheelEventHandler(final IMouseWheelEventHandler handler) {
@@ -219,11 +219,11 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		return nodePopupMenu;
 	}
 
-	public JToolBar getToolBar(final String name) {
+	public Component getToolBar(final String name) {
 		return toolBars.get(name);
 	}
 
-	public Iterable<JToolBar> getToolBars() {
+	public Iterable<Component> getToolBars() {
 		return toolBars.values();
 	}
 
@@ -344,7 +344,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		mapsPopupMenu = new JPopupMenu();
 		menuBuilder.addPopupMenu(mapsPopupMenu, FreeplaneMenuBar.MAP_POPUP_MENU);
 		menuBuilder.addPopupMenu(getNodePopupMenu(), UserInputListenerFactory.NODE_POPUP);
-		menuBuilder.addToolbar(getToolBars().iterator().next(), "/main_toolbar");
+		menuBuilder.addToolbar((JToolBar) getToolBars().iterator().next(), "/main_toolbar");
 		mapsPopupMenu.setName(ResourceBundles.getText("mindmaps"));
 		if (menuStructure != null) {
 			menuBuilder.processMenuCategory(menuStructure);

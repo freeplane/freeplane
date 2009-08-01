@@ -501,9 +501,9 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		}
 		if (oldModeController != null) {
 			final IUserInputListenerFactory userInputListenerFactory = oldModeController.getUserInputListenerFactory();
-			final Iterable<JToolBar> modeToolBars = userInputListenerFactory.getToolBars();
+			final Iterable<Component> modeToolBars = userInputListenerFactory.getToolBars();
 			if (modeToolBars != null) {
-				for (final JToolBar toolBar : modeToolBars) {
+				for (final Component toolBar : modeToolBars) {
 					toolbarPanel.remove(toolBar);
 				}
 				toolbarPanel.revalidate();
@@ -515,10 +515,10 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 		}
 		final IUserInputListenerFactory newUserInputListenerFactory = newModeController.getUserInputListenerFactory();
 		newUserInputListenerFactory.getToolBar("/main_toolbar").setVisible(isToolbarVisible());
-		final Iterable<JToolBar> newToolBars = newUserInputListenerFactory.getToolBars();
+		final Iterable<Component> newToolBars = newUserInputListenerFactory.getToolBars();
 		if (newToolBars != null) {
 			int i = 0;
-			for (final JToolBar toolBar : newToolBars) {
+			for (final Component toolBar : newToolBars) {
 				toolbarPanel.add(toolBar, i++);
 			}
 			toolbarPanel.revalidate();
@@ -603,7 +603,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 
 	public void setToolbarVisible(final boolean visible) {
 		ResourceController.getResourceController().setProperty("toolbarVisible", visible);
-		final JToolBar toolBar = controller.getModeController().getUserInputListenerFactory().getToolBar(
+		final Component toolBar = controller.getModeController().getUserInputListenerFactory().getToolBar(
 		    "/main_toolbar");
 		if (toolBar.isVisible() == visible) {
 			return;

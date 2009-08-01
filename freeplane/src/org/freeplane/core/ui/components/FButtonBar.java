@@ -20,6 +20,7 @@
 package org.freeplane.core.ui.components;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.Window;
@@ -35,6 +36,7 @@ import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
@@ -186,6 +188,9 @@ public class FButtonBar extends FreeplaneToolBar implements IAcceleratorChangeLi
 		for (final JButton button : buttonRow) {
 			add(button);
 		}
+		final JPanel panel = new JPanel();
+		panel.setPreferredSize(new Dimension(Integer.MAX_VALUE / 2, 1));
+		add(panel);
 		revalidate();
 		repaint();
 	}

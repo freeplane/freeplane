@@ -63,9 +63,9 @@ public interface IUserInputListenerFactory {
 
 	JPopupMenu getNodePopupMenu();
 
-	JToolBar getToolBar(String name);
+	Component getToolBar(String name);
 
-	Iterable<JToolBar> getToolBars();
+	Iterable<Component> getToolBars();
 
 	public void removeMouseWheelEventHandler(final IMouseWheelEventHandler handler);
 
