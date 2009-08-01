@@ -337,7 +337,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		textfield.setWrapStyleWord(true);
 		if(textFieldSize.width > maxWidth){
 			textFieldSize.width = maxWidth;
-			textfield.setSize(maxWidth, 1);
+			textfield.setSize(maxWidth, Integer.MAX_VALUE);
 			textFieldSize.height =textfield.getPreferredSize().height; 
 		}
 
@@ -372,7 +372,6 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		nodeView.addComponentListener(textFieldListener);
 		textfield.getDocument().addDocumentListener(documentListener);
 		modeController.getMapController().addNodeChangeListener(textFieldListener);
-		mapView.validate();
 		textfield.requestFocus();
 	}
 }
