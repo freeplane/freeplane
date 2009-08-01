@@ -85,7 +85,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 	    }
 
 		private void layout() {
-	        final int lastWidth = textfield.getWidth() + 0;
+	        final int lastWidth = textfield.getWidth();
 	    	final int lastHeight = textfield.getHeight();
 			final MapView mapView = (MapView)textfield.getParent();
 			final int height;
@@ -367,7 +367,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		final JViewport viewPort = (JViewport)mapView.getParent();
 		mapView.add(textfield, 0);		
 		redispatchKeyEvents(textfield, firstEvent);
-		textfield.revalidate();
+		textfield.validate();
 		textfield.repaint();
 		component.addComponentListener(textFieldListener);
 		nodeView.addComponentListener(textFieldListener);
