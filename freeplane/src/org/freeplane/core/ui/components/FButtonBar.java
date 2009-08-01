@@ -23,6 +23,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
+import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -189,7 +190,7 @@ public class FButtonBar extends FreeplaneToolBar implements IAcceleratorChangeLi
 			add(button);
 		}
 		final JPanel panel = new JPanel();
-		panel.setPreferredSize(new Dimension(Integer.MAX_VALUE / 2, 1));
+		panel.setPreferredSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width, 1));
 		add(panel);
 		revalidate();
 		repaint();
