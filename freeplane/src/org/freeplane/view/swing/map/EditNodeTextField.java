@@ -24,6 +24,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.Point;
@@ -39,6 +40,7 @@ import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -81,40 +83,25 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 	    }
 
 		private void layout() {
-	        final int lastWidth = textfield.getWidth();
+	        final int lastWidth = textfield.getWidth() + 0;
 	    	final int lastHeight = textfield.getHeight();
 			final MapView mapView = (MapView)textfield.getParent();
 			final int height;
 			final int width ;
 			final boolean lineWrap = lastWidth == maxWidth;
 			if(! lineWrap){
-				Rectangle caretBounds = null;
-		    	final Dimension preferredSize;
-		    	final int lastPos = textfield.getDocument().getLength();
-				if(textfield.getCaretPosition() == lastPos){
-					caretBounds = (DefaultCaret) textfield.getCaret();
-		    	}
-		    	else{
-		    		try {
-		    			textfield.setSize(maxWidth, lastHeight);
-	                    caretBounds = textfield.modelToView(lastPos-1);
-	                    textfield.setSize(lastWidth, lastHeight);
-                    }
-                    catch (BadLocationException e1) {
-                    }
-		    	}
 				final Insets insets = textfield.getInsets();
-				preferredSize = new Dimension(caretBounds.x + caretBounds.width + insets.right, caretBounds.y + caretBounds.height + insets.bottom);
-				preferredSize.width += 1;
-				if(preferredSize.width <= maxWidth && preferredSize.height <= lastHeight){
-					final int currentWidth = lastWidth;
-					if(preferredSize.width < currentWidth){
-						width = currentWidth;
+				final Font font = textfield.getFont();
+				final FontMetrics fontMetrics = textfield.getFontMetrics(font);
+				final int preferredWidth = fontMetrics.stringWidth(textfield.getText() + insets.left + insets.right);
+				if(preferredWidth <= maxWidth){
+					if(preferredWidth < lastWidth){
+						width = lastWidth;
 					}
 					else{
-						width = Math.min(preferredSize.width + mapView.getZoomed(40), maxWidth);
+						width = Math.min(preferredWidth + mapView.getZoomed(80), maxWidth);
 					}
-					height = preferredSize.height;
+					height = lastHeight;
 				}
 				else{
 					width = maxWidth;
