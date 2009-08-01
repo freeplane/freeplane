@@ -1,4 +1,22 @@
 ===============================
+1.0.21 alpha
+===============================
+New features:
+New text input component
+Allow dragging of map if node is edited
+cleanup for french translation contributed by Pierre-Yves Baumann, thanx!
+always display f-bar in a new line 
+
+Bug fixes
+
+[Bugs 0000143]: "copy format" considers default values too now
+bug fix: keep selected node position after filtering
+bug fix: use actual values for selection delay
+bug fix: disable F-bar short cuts in file/browse modes
+bug fix in last opened list for '&' in file names
+bug fix if in "import folder structure"
+
+===============================
 1.0.20 alpha
 ===============================
 Bug fixes
