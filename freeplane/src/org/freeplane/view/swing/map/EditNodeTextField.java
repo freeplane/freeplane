@@ -56,8 +56,10 @@ import javax.swing.text.DefaultCaret;
 import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.frame.ViewController;
+import org.freeplane.core.modecontroller.INodeChangeListener;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
+import org.freeplane.core.modecontroller.NodeChangeEvent;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
@@ -134,7 +136,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 	    }
     }
 
-	class TextFieldListener implements KeyListener, FocusListener, MouseListener, ComponentListener {
+	class TextFieldListener implements KeyListener, FocusListener, MouseListener, ComponentListener, INodeChangeListener {
 		final int CANCEL = 2;
 		final int EDIT = 1;
 		// TODO rladstaetter 18.02.2009 eventSource should be an enum
@@ -247,8 +249,15 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		public void mouseReleased(final MouseEvent e) {
 			conditionallyShowPopup(e);
 		}
+
+		public void nodeChanged(NodeChangeEvent event) {
+			EventQueue.invokeLater(new Runnable(){
+				public void run() {
+					focusLost(null);
+				}});
+		}
 	}
-	
+
 	final private KeyEvent firstEvent;
 	private JTextArea textfield;
 	private final DocumentListener documentListener;
@@ -268,7 +277,9 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		textfield.removeKeyListener((KeyListener) textFieldListener);
 		textfield.removeMouseListener((MouseListener) textFieldListener);
 		textfield.getDocument().removeDocumentListener(documentListener);
-		final Component component = getModeController().getController().getViewController().getComponent(getNode());
+		final ModeController modeController = getModeController();
+		modeController.getMapController().removeNodeChangeListener((INodeChangeListener)textFieldListener);
+		final Component component = modeController.getController().getViewController().getComponent(getNode());
 		if (component != null) {
 			component.removeComponentListener((ComponentListener) textFieldListener);
 			SwingUtilities.getAncestorOfClass(NodeView.class, component).removeComponentListener((ComponentListener) textFieldListener);
@@ -291,7 +302,8 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 	@Override
 	public void show() {
 		textfield = new JTextArea(getText());
-		final ViewController viewController = getModeController().getController().getViewController();
+		final ModeController modeController = getModeController();
+		final ViewController viewController = modeController.getController().getViewController();
 		final Component component = viewController.getComponent(getNode());
 		final NodeView nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, component);
 		final MapView mapView = (MapView) viewController.getMapView();
@@ -313,7 +325,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		textfield.addFocusListener(textFieldListener);
 		textfield.addKeyListener(textFieldListener);
 		textfield.addMouseListener(textFieldListener);
-		SpellCheckerController.getController(getModeController()).enableAutoSpell(textfield);
+		SpellCheckerController.getController(modeController).enableAutoSpell(textfield);
 		mapView.scrollNodeToVisible(nodeView);
 		
 		final Point textFieldLocation = new Point();
@@ -360,6 +372,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		component.addComponentListener(textFieldListener);
 		nodeView.addComponentListener(textFieldListener);
 		textfield.getDocument().addDocumentListener(documentListener);
+		modeController.getMapController().addNodeChangeListener(textFieldListener);
 		textfield.requestFocus();
 	}
 }
