@@ -29,12 +29,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.RenderingHints;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.event.ContainerEvent;
-import java.awt.event.ContainerListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
@@ -56,11 +51,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.core.controller.Controller;
-import org.freeplane.core.filter.FilterController;
 import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
@@ -124,7 +117,7 @@ abstract public class ViewController implements IMapViewChangeListener, IFreepla
 			LogTool.severe(e);
 		}
 		controller.addAction(new ToggleMenubarAction(controller, this));
-		controller.addAction(new ToggleToolbarAction(controller, this, "ToggleToolbarAction", "/main_toolbar",
+		controller.addAction(new ToggleToolbarAction(controller, "ToggleToolbarAction", "/main_toolbar",
 		    "toolbarVisible"));
 		controller.addAction(new ToggleLeftToolbarAction(controller, this));
 		toolbarPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0))

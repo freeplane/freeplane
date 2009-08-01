@@ -193,8 +193,8 @@ public class ModeController extends AController {
 
 	public boolean hasOneVisibleChild(final NodeModel parent) {
 		int count = 0;
-		for (final ListIterator i = getMapController().childrenUnfolded(parent); i.hasNext();) {
-			if (((NodeModel) i.next()).isVisible()) {
+		for (final ListIterator<NodeModel> i = getMapController().childrenUnfolded(parent); i.hasNext();) {
+			if ((i.next()).isVisible()) {
 				count++;
 			}
 			if (count == 2) {
@@ -209,15 +209,13 @@ public class ModeController extends AController {
 	}
 
 	public void onViewCreated(final Container node) {
-		for (final Iterator i = nodeViewListeners.iterator(); i.hasNext();) {
-			final INodeViewLifeCycleListener hook = (INodeViewLifeCycleListener) i.next();
+		for(INodeViewLifeCycleListener hook : nodeViewListeners) {
 			hook.onViewCreated(node);
 		}
 	}
 
 	public void onViewRemoved(final Container node) {
-		for (final Iterator i = nodeViewListeners.iterator(); i.hasNext();) {
-			final INodeViewLifeCycleListener hook = (INodeViewLifeCycleListener) i.next();
+		for(INodeViewLifeCycleListener hook : nodeViewListeners) {
 			hook.onViewRemoved(node);
 		}
 	}

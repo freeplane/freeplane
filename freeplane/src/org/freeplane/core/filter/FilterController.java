@@ -31,7 +31,6 @@ import java.util.Vector;
 
 import javax.swing.ButtonModel;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -144,7 +143,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		applyToVisibleNodeOnly = new JToggleButton.ToggleButtonModel();
 		applyToVisibleNodeOnly.setSelected(false);
 		controller.getMapViewManager().addMapSelectionListener(this);
-		final AFreeplaneAction showFilterToolbar = new ToggleToolbarAction(controller, controller.getViewController(),
+		final AFreeplaneAction showFilterToolbar = new ToggleToolbarAction(controller,
 			"ShowFilterToolbarAction", "/filter_toolbar", "filter_toolbar_visible");
 		controller.addAction(showFilterToolbar);
 		final UnfoldFilteredAncestorsAction unfoldFilteredAncestors = new UnfoldFilteredAncestorsAction(this);
@@ -360,6 +359,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		filterConditions.addListDataListener(filterChangeListener);
 	}
 
+	@SuppressWarnings("unchecked")
 	void loadConditions(final DefaultComboBoxModel filterConditionModel, final String pathToFilterFile)
 	        throws IOException {
 		filterConditionModel.removeAllElements();
@@ -368,9 +368,9 @@ public class FilterController implements IMapSelectionListener, IExtension {
 			final IXMLReader reader = new StdXMLReader(new FileInputStream(pathToFilterFile));
 			parser.setReader(reader);
 			final XMLElement loader = (XMLElement) parser.parse();
-			final Vector conditions = loader.getChildren();
+			final Vector<XMLElement> conditions = loader.getChildren();
 			for (int i = 0; i < conditions.size(); i++) {
-				filterConditionModel.addElement(getConditionFactory().loadCondition((XMLElement) conditions.get(i)));
+				filterConditionModel.addElement(getConditionFactory().loadCondition(conditions.get(i)));
 			}
 		}
 		catch (final FileNotFoundException e) {

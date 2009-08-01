@@ -49,8 +49,8 @@ public class ColorTracker implements ActionListener, Serializable {
 
 		@Override
 		public void windowClosing(final WindowEvent e) {
-			final Window w = e.getWindow();
-			w.hide();
+			e.getWindow().setVisible(false);
+			e.getWindow().dispose();
 		}
 	}
 
@@ -95,7 +95,7 @@ public class ColorTracker implements ActionListener, Serializable {
 		container.add(defaultBtn);
 		dialog.addWindowListener(new Closer());
 		dialog.addComponentListener(new DisposeOnClose());
-		dialog.show();
+		dialog.setVisible(true);
 		return ok.getColor();
 	}
 

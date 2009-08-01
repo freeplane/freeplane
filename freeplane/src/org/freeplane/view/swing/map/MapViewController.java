@@ -31,7 +31,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -88,7 +87,7 @@ public class MapViewController implements IMapViewManager {
 	private void addToOrChangeInMapViews(final String key, final MapView newOrChangedMapView) {
 		String extension = "";
 		int count = 1;
-		final List mapKeys = getMapKeys();
+		final List<String> mapKeys = getMapKeys();
 		while (mapKeys.contains(key + extension)) {
 			extension = "<" + (++count) + ">";
 		}
@@ -127,10 +126,9 @@ public class MapViewController implements IMapViewManager {
 	 */
 	public boolean changeToMapView(final String mapViewDisplayName) {
 		MapView mapViewCandidate = null;
-		for (final Iterator iterator = mapViewVector.iterator(); iterator.hasNext();) {
-			final MapView mapMod = (MapView) iterator.next();
-			if (StringUtils.equals(mapViewDisplayName, mapMod.getName())) {
-				mapViewCandidate = mapMod;
+		for (MapView mapView : mapViewVector) {
+			if (StringUtils.equals(mapViewDisplayName, mapView.getName())) {
+				mapViewCandidate = mapView;
 				break;
 			}
 		}
@@ -148,10 +146,9 @@ public class MapViewController implements IMapViewManager {
 			return true;
 		}
 		MapView mapViewCandidate = null;
-		for (final Iterator iterator = mapViewVector.iterator(); iterator.hasNext();) {
-			final MapView mapMod = (MapView) iterator.next();
-			if (modeName.equals(mapMod.getModeController().getModeName())) {
-				mapViewCandidate = mapMod;
+		for (MapView mapView : mapViewVector) {
+			if (modeName.equals(mapView.getModeController().getModeName())) {
+				mapViewCandidate = mapView;
 				break;
 			}
 		}
@@ -171,8 +168,7 @@ public class MapViewController implements IMapViewManager {
 	 * @see org.freeplane.core.frame.IMapViewController#checkIfFileIsAlreadyOpened(java.net.URL)
 	 */
 	public String checkIfFileIsAlreadyOpened(final URL urlToCheck) throws MalformedURLException {
-		for (final Iterator iter = mapViewVector.iterator(); iter.hasNext();) {
-			final MapView mapView = (MapView) iter.next();
+		for (MapView mapView : mapViewVector) {
 			if (getModel(mapView) != null) {
 				final URL mapViewUrl = getModel(mapView).getURL();
 				if (sameFile(urlToCheck, mapViewUrl)) {
@@ -276,10 +272,9 @@ public class MapViewController implements IMapViewManager {
 	/* (non-Javadoc)
 	 * @see org.freeplane.core.frame.IMapViewController#getMapKeys()
 	 */
-	public List getMapKeys() {
-		final LinkedList returnValue = new LinkedList();
-		for (final Iterator iterator = mapViewVector.iterator(); iterator.hasNext();) {
-			final MapView mapView = (MapView) iterator.next();
+	public List<String> getMapKeys() {
+		final LinkedList<String> returnValue = new LinkedList<String>();
+		for (MapView mapView : mapViewVector) {
 			returnValue.add(mapView.getName());
 		}
 		return Collections.unmodifiableList(returnValue);
@@ -290,9 +285,8 @@ public class MapViewController implements IMapViewManager {
 	 */
 	@Deprecated
 	public Map<String, MapModel> getMaps() {
-		final HashMap<String, MapModel> returnValue = new HashMap();
-		for (final Iterator iterator = mapViewVector.iterator(); iterator.hasNext();) {
-			final MapView mapView = (MapView) iterator.next();
+		final HashMap<String, MapModel> returnValue = new HashMap<String, MapModel>(mapViewVector.size());
+		for (MapView mapView : mapViewVector) {
 			returnValue.put(mapView.getName(), getModel(mapView));
 		}
 		return Collections.unmodifiableMap(returnValue);

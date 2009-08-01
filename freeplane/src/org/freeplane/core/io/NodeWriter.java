@@ -50,8 +50,8 @@ class NodeWriter implements IElementWriter, IAttributeWriter {
 	}
 
 	private void saveChildren(final ITreeWriter writer, final NodeModel node) throws IOException {
-		for (final ListIterator e = mapController.childrenUnfolded(node); e.hasNext();) {
-			final NodeModel child = (NodeModel) e.next();
+		for (final ListIterator<NodeModel> e = mapController.childrenUnfolded(node); e.hasNext();) {
+			final NodeModel child = e.next();
 			if (writeInvisible || child.isVisible()) {
 				writer.addElement(child, NodeBuilder.XML_NODE);
 			}

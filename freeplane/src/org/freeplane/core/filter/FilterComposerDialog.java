@@ -166,7 +166,7 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 		}
 
 		public void actionPerformed(final ActionEvent e) {
-			final Object[] selectedValues = elementaryConditionList.getSelectedValues();
+			final ICondition[] selectedValues = toConditionsArray(elementaryConditionList.getSelectedValues());
 			if (selectedValues.length < 2) {
 				return;
 			}
@@ -188,7 +188,7 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 		}
 
 		public void actionPerformed(final ActionEvent e) {
-			final Object[] selectedValues = elementaryConditionList.getSelectedValues();
+			final ICondition[] selectedValues = toConditionsArray(elementaryConditionList.getSelectedValues());
 			if (selectedValues.length < 2) {
 				return;
 			}
@@ -197,6 +197,14 @@ class FilterComposerDialog extends JDialog implements IMapSelectionListener {
 			model.addElement(newCond);
 			validate();
 		}
+	}
+	
+	private ICondition[] toConditionsArray(final Object[] objects) {
+		final ICondition[] conditions = new ICondition[objects.length];
+		for (int i = 0; i < objects.length; i++) {
+			conditions[i] = (ICondition)objects[i];
+		}
+		return conditions;
 	}
 
 	private class CreateNotSatisfiedConditionAction extends AFreeplaneAction {

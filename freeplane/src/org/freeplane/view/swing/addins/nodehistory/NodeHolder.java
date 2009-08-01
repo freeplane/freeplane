@@ -20,8 +20,6 @@
 package org.freeplane.view.swing.addins.nodehistory;
 
 import java.lang.ref.WeakReference;
-import java.util.Iterator;
-import java.util.List;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.modecontroller.ModeController;
@@ -63,9 +61,7 @@ class NodeHolder {
 		final MapView mapView = mMapView.get();
 		final Controller controller = mapView.getModeController().getController();
 		final MapViewController mapViewManager = (MapViewController) controller.getMapViewManager();
-		final List<MapView> mapViews = mapViewManager.getMapViewVector();
-		for (final Iterator iter = mapViews.iterator(); iter.hasNext();) {
-			final MapView m = (MapView) iter.next();
+		for(MapView m : mapViewManager.getMapViewVector()) {
 			if (m == mapView) {
 				return mapView;
 			}

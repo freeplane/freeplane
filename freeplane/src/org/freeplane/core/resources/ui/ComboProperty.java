@@ -33,8 +33,8 @@ import org.freeplane.core.resources.ResourceBundles;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 public class ComboProperty extends PropertyBean implements IPropertyControl {
-	static public Vector translate(final String[] possibles) {
-		final Vector possibleTranslations = new Vector(possibles.length);
+	static public Vector<String> translate(final String[] possibles) {
+		final Vector<String> possibleTranslations = new Vector<String>(possibles.length);
 		for (int i = 0; i < possibles.length; i++) {
 			possibleTranslations.add(ResourceBundles.getText("OptionPanel." + possibles[i]));
 		}
@@ -42,12 +42,12 @@ public class ComboProperty extends PropertyBean implements IPropertyControl {
 	}
 
 	JComboBox mComboBox = new JComboBox();
-	private Vector possibleValues;
+	private Vector<String> possibleValues;
 
-	public ComboProperty(final String name, final List possibles, final List possibleTranslations) {
+	public ComboProperty(final String name, final List<String> possibles, final List<String> possibleTranslations) {
 		super(name);
 		fillPossibleValues(possibles);
-		mComboBox.setModel(new DefaultComboBoxModel(new Vector(possibleTranslations)));
+		mComboBox.setModel(new DefaultComboBoxModel(new Vector<String>(possibleTranslations)));
 	}
 
 	public ComboProperty(final String name, final String[] strings) {
@@ -56,8 +56,8 @@ public class ComboProperty extends PropertyBean implements IPropertyControl {
 
 	/**
 	 */
-	private void fillPossibleValues(final List possibles) {
-		possibleValues = new Vector();
+	private void fillPossibleValues(final List<String> possibles) {
+		possibleValues = new Vector<String>();
 		possibleValues.addAll(possibles);
 	}
 
@@ -94,8 +94,8 @@ public class ComboProperty extends PropertyBean implements IPropertyControl {
 	 * should call this method only shortly before setting the value with
 	 * setValue.
 	 */
-	public void updateComboBoxEntries(final List possibles, final List possibleTranslations) {
-		mComboBox.setModel(new DefaultComboBoxModel(new Vector(possibleTranslations)));
+	public void updateComboBoxEntries(final List<String> possibles, final List<String> possibleTranslations) {
+		mComboBox.setModel(new DefaultComboBoxModel(new Vector<String>(possibleTranslations)));
 		fillPossibleValues(possibles);
 		if (possibles.size() > 0) {
 			mComboBox.setSelectedIndex(0);

@@ -35,9 +35,10 @@ import org.freeplane.n3.nanoxml.XMLElement;
 public class ConditionNotSatisfiedDecorator implements ICondition {
 	static final String NAME = "negate_condition";
 
+	@SuppressWarnings("unchecked")
 	static ICondition load(final ConditionFactory conditionFactory, final XMLElement element) {
-		final Vector children = element.getChildren();
-		final ICondition cond = conditionFactory.loadCondition((XMLElement) children.get(0));
+		final Vector<XMLElement> children = element.getChildren();
+		final ICondition cond = conditionFactory.loadCondition(children.get(0));
 		return new ConditionNotSatisfiedDecorator(cond);
 	}
 

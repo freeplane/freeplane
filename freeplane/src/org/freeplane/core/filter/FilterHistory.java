@@ -62,7 +62,7 @@ public class FilterHistory {
 	}
 
 	private void init() {
-		final List list = new LinkedList<Filter>();
+		final List<Filter> list = new LinkedList<Filter>();
 		filters = list.listIterator();
 		filters.add(Filter.createTransparentFilter(controller));
 	}

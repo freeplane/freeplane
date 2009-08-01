@@ -128,7 +128,7 @@ public class MapController extends SelectionController {
 		writeManager.addExtensionElementWriter(UnknownElements.class, unknownElementWriter);
 		createActions(modeController);
 		mapChangeListeners = new LinkedList<IMapChangeListener>();
-		nodeChangeListeners = new LinkedList();
+		nodeChangeListeners = new LinkedList<INodeChangeListener>();
 	}
 
 	/**
@@ -164,7 +164,8 @@ public class MapController extends SelectionController {
 
 	public ListIterator<NodeModel> childrenFolded(final NodeModel node) {
 		if (node.isFolded()) {
-			return Collections.EMPTY_LIST.listIterator();
+			List<NodeModel> empty = Collections.emptyList();
+			return empty.listIterator();
 		}
 		return childrenUnfolded(node);
 	}
@@ -172,7 +173,8 @@ public class MapController extends SelectionController {
 	public ListIterator<NodeModel> childrenUnfolded(final NodeModel node) {
 		final EncryptionModel encryptionModel = EncryptionModel.getModel(node);
 		if (encryptionModel != null && !encryptionModel.isAccessible()) {
-			return Collections.EMPTY_LIST.listIterator();
+			List<NodeModel> empty = Collections.emptyList();
+			return empty.listIterator();
 		}
 		return node.getChildren().listIterator();
 	}
@@ -204,7 +206,7 @@ public class MapController extends SelectionController {
 	 * Display a node in the display (used by find and the goto action by arrow
 	 * link actions).
 	 */
-	private void displayNode(final NodeModel node, final ArrayList nodesUnfoldedByDisplay) {
+	private void displayNode(final NodeModel node, final ArrayList<NodeModel> nodesUnfoldedByDisplay) {
 		if (!node.isVisible()) {
 			node.getFilterInfo().reset();
 			nodeRefresh(node);
@@ -299,15 +301,15 @@ public class MapController extends SelectionController {
 	 *            an iterator of MindMapNodes.
 	 * @return true, if the nodes should be folded.
 	 */
-	public boolean getFoldingState(final ListIterator iterator) {
+	public boolean getFoldingState(final ListIterator<NodeModel> iterator) {
 		/*
 		 * Retrieve the information whether or not all nodes have the same
 		 * folding state.
 		 */
 		Boolean state = null;
 		boolean allNodeHaveSameFoldedStatus = true;
-		for (final ListIterator it = iterator; it.hasNext();) {
-			final NodeModel node = (NodeModel) it.next();
+		while(iterator.hasNext()) {
+			final NodeModel node = iterator.next();
 			if (node.getChildCount() == 0) {
 				continue;
 			}
@@ -404,8 +406,8 @@ public class MapController extends SelectionController {
 	 * sufficient to return true.
 	 */
 	public boolean hasFoldedStrictDescendant(final NodeModel node) {
-		for (final ListIterator e = childrenUnfolded(node); e.hasNext();) {
-			final NodeModel child = (NodeModel) e.next();
+		for (final ListIterator<NodeModel> e = childrenUnfolded(node); e.hasNext();) {
+			final NodeModel child = e.next();
 			if (isFolded(child) || hasFoldedStrictDescendant(child)) {
 				return true;
 			}
@@ -519,9 +521,9 @@ public class MapController extends SelectionController {
 	}
 
 	private void refreshMap(final NodeModel node, final NodeChangeEvent event) {
-		final Iterator iterator = node.getChildren().iterator();
+		final Iterator<NodeModel> iterator = node.getChildren().iterator();
 		while (iterator.hasNext()) {
-			final NodeModel child = (NodeModel) iterator.next();
+			final NodeModel child = iterator.next();
 			refreshMap(child, event);
 		}
 		fireNodeChanged(node, event);
@@ -566,7 +568,7 @@ public class MapController extends SelectionController {
 		}
 	}
 
-	private ListIterator resetIterator(final ListIterator iterator) {
+	private ListIterator<NodeModel> resetIterator(final ListIterator<NodeModel> iterator) {
 		while (iterator.hasPrevious()) {
 			iterator.previous();
 		}
@@ -583,14 +585,12 @@ public class MapController extends SelectionController {
 		getController().getSelection().selectBranch(selected, extend);
 	}
 
-	public void selectMultipleNodes(final NodeModel focussed, final Collection selecteds) {
-		for (final Iterator i = selecteds.iterator(); i.hasNext();) {
-			final NodeModel node = (NodeModel) (i.next());
+	public void selectMultipleNodes(final NodeModel focussed, final Collection<NodeModel> selecteds) {
+		for(NodeModel node : selecteds) {
 			displayNode(node);
 		}
 		select(focussed);
-		for (final Iterator i = selecteds.iterator(); i.hasNext();) {
-			final NodeModel node = (NodeModel) i.next();
+		for(NodeModel node : selecteds) {
 			getController().getSelection().makeTheSelected(node);
 		}
 		getController().getViewController().obtainFocusForSelected();
@@ -624,10 +624,10 @@ public class MapController extends SelectionController {
 		toggleFolded(getSelectedNodes().listIterator());
 	}
 
-	public void toggleFolded(final ListIterator listIterator) {
+	public void toggleFolded(final ListIterator<NodeModel> listIterator) {
 		final boolean fold = getFoldingState(resetIterator(listIterator));
-		for (final Iterator i = resetIterator(listIterator); i.hasNext();) {
-			final NodeModel node = (NodeModel) i.next();
+		for (final Iterator<NodeModel> i = resetIterator(listIterator); i.hasNext();) {
+			final NodeModel node = i.next();
 			setFolded(node, fold);
 		}
 	}

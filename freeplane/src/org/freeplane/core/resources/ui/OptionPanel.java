@@ -25,7 +25,6 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -62,9 +61,7 @@ public class OptionPanel {
 
 		public void actionPerformed(final ActionEvent arg0) {
 			cardLayout.show(centralPanel, tabName);
-			final Collection c = getAllButtons();
-			for (final Iterator i = c.iterator(); i.hasNext();) {
-				final JButton button = (JButton) i.next();
+			for(JButton button : tabButtonMap.values()) {	
 				button.setForeground(null);
 			}
 			getTabButton(tabName).setForeground(OptionPanel.MARKED_BUTTON_COLOR);
@@ -76,14 +73,13 @@ public class OptionPanel {
 		void writeProperties(Properties props);
 	}
 
-	public static Vector changeListeners = new Vector();
 	private static final Color MARKED_BUTTON_COLOR = Color.BLUE;
 	private static final String PREFERENCE_STORAGE_PROPERTY = "OptionPanel_Window_Properties";
 	private Vector<IPropertyControl> controls;
 	final private IOptionPanelFeedback feedback;
-	private String selectedPanel = null;
-	final private HashMap tabActionMap = new HashMap();
-	final private HashMap tabButtonMap = new HashMap();
+	private String selectedPanel;
+	final private HashMap<String, ChangeTabAction> tabActionMap = new HashMap<String, ChangeTabAction>();
+	final private HashMap<String, JButton> tabButtonMap = new HashMap<String, JButton>();
 	final private JDialog topDialog;
 
 	/**
@@ -112,7 +108,7 @@ public class OptionPanel {
 		FormLayout rightLayout = null;
 		DefaultFormBuilder rightBuilder = null;
 		String lastTabName = null;
-		controls = new Vector();
+		controls = new Vector<IPropertyControl>();
 		for (final Enumeration<DefaultMutableTreeNode> i = controlsTree.preorderEnumeration(); i.hasMoreElements();) {
 			final IPropertyControlCreator creator = (IPropertyControlCreator) i.nextElement().getUserObject();
 			if (creator == null) {
@@ -177,14 +173,9 @@ public class OptionPanel {
 		topDialog.dispose();
 	}
 
-	private Collection getAllButtons() {
-		return tabButtonMap.values();
-	}
-
 	private Properties getOptionProperties() {
 		final Properties p = new Properties();
-		for (final Iterator i = controls.iterator(); i.hasNext();) {
-			final IPropertyControl control = (IPropertyControl) i.next();
+		for(IPropertyControl control : controls) {
 			if (control instanceof PropertyBean) {
 				final PropertyBean bean = (PropertyBean) control;
 				final String value = bean.getValue();
@@ -197,7 +188,7 @@ public class OptionPanel {
 	}
 
 	private JButton getTabButton(final String name) {
-		return (JButton) tabButtonMap.get(name);
+		return tabButtonMap.get(name);
 	}
 
 	private void registerTabButton(final JButton tabButton, final String name, final ChangeTabAction changeTabAction) {
@@ -209,8 +200,7 @@ public class OptionPanel {
 	}
 
 	public void setProperties() {
-		for (final Iterator i = controls.iterator(); i.hasNext();) {
-			final IPropertyControl control = (IPropertyControl) i.next();
+		for(IPropertyControl control : controls) {
 			if (control instanceof PropertyBean) {
 				final PropertyBean bean = (PropertyBean) control;
 				final String name = bean.getName();

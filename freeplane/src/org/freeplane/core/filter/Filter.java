@@ -171,10 +171,10 @@ public class Filter {
 	 */
 	private boolean filterChildren(final NodeModel parent, final boolean isAncestorSelected,
 	                               final boolean isAncestorEclipsed) {
-		final ListIterator iterator = controller.getModeController().getMapController().childrenUnfolded(parent);
+		final ListIterator<NodeModel> iterator = controller.getModeController().getMapController().childrenUnfolded(parent);
 		boolean isDescendantSelected = false;
 		while (iterator.hasNext()) {
-			final NodeModel node = (NodeModel) iterator.next();
+			final NodeModel node = iterator.next();
 			isDescendantSelected = applyFilter(node, isAncestorSelected, isAncestorEclipsed, isDescendantSelected);
 		}
 		return isDescendantSelected;

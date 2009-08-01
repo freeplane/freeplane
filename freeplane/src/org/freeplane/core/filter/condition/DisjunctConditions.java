@@ -35,22 +35,22 @@ import org.freeplane.n3.nanoxml.XMLElement;
 public class DisjunctConditions implements ICondition {
 	static final String NAME = "disjunct_condition";
 
+	@SuppressWarnings("unchecked")
 	static ICondition load(final ConditionFactory conditionFactory, final XMLElement element) {
-		final Vector children = element.getChildren();
-		final Object[] conditions = new Object[children.size()];
+		final Vector<XMLElement> children = element.getChildren();
+		final ICondition[] conditions = new ICondition[children.size()];
 		for (int i = 0; i < conditions.length; i++) {
-			final ICondition cond = conditionFactory.loadCondition((XMLElement) children.get(i));
-			conditions[i] = cond;
+			conditions[i] = conditionFactory.loadCondition(children.get(i));
 		}
 		return new DisjunctConditions(conditions);
 	}
 
-	final private Object[] conditions;
+	final private ICondition[] conditions;
 
 	/**
 	 *
 	 */
-	public DisjunctConditions(final Object[] conditions) {
+	public DisjunctConditions(final ICondition[] conditions) {
 		this.conditions = conditions;
 	}
 
@@ -61,9 +61,8 @@ public class DisjunctConditions implements ICondition {
 	 * .MindMapNode)
 	 */
 	public boolean checkNode(final NodeModel node) {
-		for (int i = 0; i < conditions.length; i++) {
-			final ICondition cond = (ICondition) conditions[i];
-			if (cond.checkNode(node)) {
+		for(ICondition condition : conditions) {
+			if (condition.checkNode(node)) {
 				return true;
 			}
 		}
@@ -79,16 +78,15 @@ public class DisjunctConditions implements ICondition {
 	public JComponent getListCellRendererComponent() {
 		final JCondition component = new JCondition();
 		component.add(new JLabel("("));
-		ICondition cond = (ICondition) conditions[0];
+		ICondition cond = conditions[0];
 		JComponent rendererComponent = cond.getListCellRendererComponent();
 		rendererComponent.setOpaque(false);
 		component.add(rendererComponent);
-		int i;
-		for (i = 1; i < conditions.length; i++) {
+		for (int i = 1; i < conditions.length; i++) {
 			final String or = FpStringUtils.removeMnemonic(ResourceBundles.getText("filter_or"));
 			final String text = ' ' + or + ' ';
 			component.add(new JLabel(text));
-			cond = (ICondition) conditions[i];
+			cond = conditions[i];
 			rendererComponent = cond.getListCellRendererComponent();
 			rendererComponent.setOpaque(false);
 			component.add(rendererComponent);
@@ -100,9 +98,8 @@ public class DisjunctConditions implements ICondition {
 	public void toXml(final XMLElement element) {
 		final XMLElement child = new XMLElement();
 		child.setName(DisjunctConditions.NAME);
-		for (int i = 0; i < conditions.length; i++) {
-			final ICondition cond = (ICondition) conditions[i];
-			cond.toXml(child);
+		for(ICondition condition : conditions) {
+			condition.toXml(child);
 		}
 		element.addChild(child);
 	}

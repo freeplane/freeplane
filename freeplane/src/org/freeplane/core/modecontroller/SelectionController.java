@@ -20,7 +20,6 @@
 package org.freeplane.core.modecontroller;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 import org.freeplane.core.model.NodeModel;
@@ -35,7 +34,7 @@ public class SelectionController {
 
 	public SelectionController() {
 		super();
-		nodeSelectionListeners = new LinkedList();
+		nodeSelectionListeners = new LinkedList<INodeSelectionListener>();
 	}
 
 	public void addNodeSelectionListener(final INodeSelectionListener listener) {
@@ -48,9 +47,8 @@ public class SelectionController {
 
 	public void onDeselect(final NodeModel node) {
 		try {
-			final HashSet copy = new HashSet(nodeSelectionListeners);
-			for (final Iterator iter = copy.iterator(); iter.hasNext();) {
-				final INodeSelectionListener listener = (INodeSelectionListener) iter.next();
+			final HashSet<INodeSelectionListener> copy = new HashSet<INodeSelectionListener>(nodeSelectionListeners);
+			for(INodeSelectionListener listener : copy) {
 				listener.onDeselect(node);
 			}
 		}
@@ -60,8 +58,7 @@ public class SelectionController {
 	}
 
 	public void onSelect(final NodeModel node) {
-		for (final Iterator iter = nodeSelectionListeners.iterator(); iter.hasNext();) {
-			final INodeSelectionListener listener = (INodeSelectionListener) iter.next();
+		for (INodeSelectionListener listener : nodeSelectionListeners) {
 			listener.onSelect(node);
 		}
 	}

@@ -32,6 +32,7 @@ import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
 import org.freeplane.core.model.NodeModel;
+import org.freeplane.view.swing.map.MapView;
 
 /**
  * @author Dimitry Polivaev
@@ -81,7 +82,7 @@ public interface IMapViewManager {
 	public Font getFont(NodeModel node);
 
 	/** @return an unmodifiable set of all display names of current opened maps. */
-	public List getMapKeys();
+	public List<String> getMapKeys();
 
 	/**
 	 * @return a map of String to MapView elements.
@@ -95,7 +96,7 @@ public interface IMapViewManager {
 
 	public Component getMapViewComponent();
 
-	public List getMapViewVector();
+	public List<MapView> getMapViewVector();
 
 	public ModeController getModeController(Component newMap);
 

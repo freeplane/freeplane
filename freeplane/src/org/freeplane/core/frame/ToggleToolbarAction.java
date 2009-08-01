@@ -23,7 +23,6 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JComponent;
-import javax.swing.JToolBar;
 
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.resources.ResourceController;
@@ -39,14 +38,12 @@ public class ToggleToolbarAction extends AFreeplaneAction {
 	/**
 	 *
 	 */
-	final private ViewController controller;
 	private final String propertyName;
 	private final String toolbarName;
 
-	public ToggleToolbarAction(final Controller controller, final ViewController viewController,
+	public ToggleToolbarAction(final Controller controller,
 	                           final String actionName, final String toolbarName, final String propertyName) {
 		super(actionName, controller);
-		this.controller = viewController;
 		this.toolbarName = toolbarName;
 		this.propertyName = propertyName;
 	}

@@ -41,9 +41,9 @@ public class IconProperty extends PropertyBean implements IPropertyControl, Acti
 	/**
 	 * Of IconInformation s.
 	 */
-	final private Vector mIcons;
+	final private Vector<MindIcon> mIcons;
 
-	public IconProperty(final String name, final Vector icons) {
+	public IconProperty(final String name, final Vector<MindIcon> icons) {
 		super(name);
 		mIcons = icons;
 		mButton = new JButton();
@@ -51,10 +51,10 @@ public class IconProperty extends PropertyBean implements IPropertyControl, Acti
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final Vector icons = new Vector();
-		final Vector descriptions = new Vector();
-		for (final Iterator iter = mIcons.iterator(); iter.hasNext();) {
-			final MindIcon icon = (MindIcon) iter.next();
+		final Vector<MindIcon> icons = new Vector<MindIcon>();
+		final Vector<String> descriptions = new Vector<String>();
+		for (final Iterator<MindIcon> iter = mIcons.iterator(); iter.hasNext();) {
+			final MindIcon icon = iter.next();
 			icons.add(icon);
 			descriptions.add(icon.getDescription());
 		}
@@ -92,8 +92,8 @@ public class IconProperty extends PropertyBean implements IPropertyControl, Acti
 
 	@Override
 	public void setValue(final String value) {
-		for (final Iterator iter = mIcons.iterator(); iter.hasNext();) {
-			final MindIcon icon = (MindIcon) iter.next();
+		for (final Iterator<MindIcon> iter = mIcons.iterator(); iter.hasNext();) {
+			final MindIcon icon = iter.next();
 			if (icon.getName().equals(value)) {
 				mActualIcon = icon;
 				setIcon(mActualIcon);
