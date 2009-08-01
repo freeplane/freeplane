@@ -367,12 +367,12 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		final JViewport viewPort = (JViewport)mapView.getParent();
 		mapView.add(textfield, 0);		
 		redispatchKeyEvents(textfield, firstEvent);
-		textfield.validate();
 		textfield.repaint();
 		component.addComponentListener(textFieldListener);
 		nodeView.addComponentListener(textFieldListener);
 		textfield.getDocument().addDocumentListener(documentListener);
 		modeController.getMapController().addNodeChangeListener(textFieldListener);
+		mapView.validate();
 		textfield.requestFocus();
 	}
 }
