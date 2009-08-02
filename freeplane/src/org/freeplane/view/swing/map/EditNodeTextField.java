@@ -70,8 +70,10 @@ import org.freeplane.features.mindmapmode.text.AbstractEditNodeTextField;
  * @author foltin
  */
 class EditNodeTextField extends AbstractEditNodeTextField {
+    private int extraWidth;
 	private final class MyDocumentListener implements DocumentListener {
-	    public void changedUpdate(DocumentEvent e) {
+
+		public void changedUpdate(DocumentEvent e) {
 	        onUpdate(e);
 	        
 	    }
@@ -101,7 +103,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 						width = lastWidth;
 					}
 					else{
-						width = Math.min(preferredWidth + mapView.getZoomed(80), maxWidth);
+						width = Math.min(preferredWidth + extraWidth, maxWidth);
 					}
 					height = lastHeight;
 				}
@@ -309,6 +311,8 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		final MapView mapView = (MapView) viewController.getMapView();
 		maxWidth = ResourceController.getResourceController().getIntProperty("max_node_width", 0);
 		maxWidth = mapView.getZoomed(maxWidth) + 1;
+		extraWidth = ResourceController.getResourceController().getIntProperty("editor_extra_width", 80);
+		extraWidth = mapView.getZoomed(extraWidth) + 3;
 		Font font = nodeView.getTextFont();
 		final float zoom = viewController.getZoom();
 		if (zoom != 1F) {
@@ -353,16 +357,22 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		}
 		final int topBorder = (nodeHeight - textFieldSize.height)/2;
 		final int leftBorder = (nodeWidth - textFieldSize.width)/2;
-		final Color selectedColor = nodeView.getSelectedColor();
+		final Color borderColor;
+		if(MapView.standardDrawRectangleForSelection){
+			borderColor= nodeTextBackground;
+		}
+		else{
+			borderColor= nodeView.getSelectedColor();
+		}
 		if(nodeView.isLeft() && ! nodeView.isRoot()){
 			textfield.setBorder(BorderFactory.createMatteBorder(
 				topBorder, leftBorder,topBorder,leftBorder + iconWidth, 
-				selectedColor));
+				borderColor));
 		}
 		else{
 			textfield.setBorder(BorderFactory.createMatteBorder(
 				topBorder, leftBorder + iconWidth, topBorder, leftBorder, 
-				selectedColor));
+				borderColor));
 		}
 		final JViewport viewPort = (JViewport)mapView.getParent();
 		mapView.add(textfield, 0);		

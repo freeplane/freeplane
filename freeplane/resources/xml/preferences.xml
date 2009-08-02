@@ -223,6 +223,9 @@
             <number name="toolTipManager.dismissDelay" min = "0"/>
             <number name="toolTipManager.reshowDelay" min = "0"/>
         </separator>
+        <separator name="editing">
+        	<number name="editor_extra_width" min="0" max="1000" step = "40" />
+        </separator>
         <separator name="undo">
             <number name="undo_levels"/>
         </separator>
