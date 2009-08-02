@@ -123,9 +123,6 @@ class TimeManagement implements PropertyChangeListener, ActionListener, IMapSele
 				reminderHook.undoableToggleHook(node);
 			}
 			final ReminderExtension reminderExtension = new ReminderExtension(node);
-			if (reminderExtension == null) {
-				throw new IllegalArgumentException("hook not found although it is present!!");
-			}
 			reminderExtension.setRemindUserAt(date.getTime());
 			reminderHook.undoableActivateHook(node, reminderExtension);
 		}

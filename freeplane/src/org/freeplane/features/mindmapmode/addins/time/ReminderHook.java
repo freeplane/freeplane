@@ -203,7 +203,7 @@ public class ReminderHook extends PersistentNodeHook {
 				icon = getFlagIcon();
 			}
 		}
-		pNode.setStateIcon(getStateKey(), icon);
+		pNode.setStateIcon(STATE_TOOLTIP, icon);
 		getModeController().getMapController().nodeRefresh(pNode);
 		if (recurse) {
 			return;
@@ -239,10 +239,6 @@ public class ReminderHook extends PersistentNodeHook {
 			flagIcon = MindIcon.factory("flag").getIcon();
 		}
 		return flagIcon;
-	}
-
-	String getStateKey() {
-		return STATE_TOOLTIP;
 	}
 
 	@Override
