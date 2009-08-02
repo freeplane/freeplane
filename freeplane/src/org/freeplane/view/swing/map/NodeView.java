@@ -1215,4 +1215,9 @@ public class NodeView extends JComponent implements INodeView {
 	boolean useSelectionColors() {
 		return isSelected() && !MapView.standardDrawRectangleForSelection && !map.isCurrentlyPrinting();
 	}
+
+	public void onPreNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
+	    // TODO Auto-generated method stub
+	    
+    }
 }

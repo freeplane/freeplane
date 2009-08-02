@@ -303,4 +303,9 @@ class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
 			menuBuilder.addMenuItem(MENU_CATEGORY, item, MENU_CATEGORY + '/' + lastOpenedActionListener.getKey(), UIBuilder.AS_CHILD);
 		}
 	}
+
+	public void onPreNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
+	    // TODO Auto-generated method stub
+	    
+    }
 }

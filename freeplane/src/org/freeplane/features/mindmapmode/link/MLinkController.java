@@ -101,6 +101,11 @@ public class MLinkController extends LinkController {
 			};
 			getModeController().execute(actor, map);
 		}
+
+		public void onPreNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
+	        // TODO Auto-generated method stub
+	        
+        }
 	}
 
 	static private ColorArrowLinkAction colorArrowLinkAction;

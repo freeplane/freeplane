@@ -24,13 +24,15 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.modecontroller.IMapChangeListener;
+import org.freeplane.core.modecontroller.MapChangeEvent;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.util.SysUtil;
 
 /**
  * @author Dimitry Polivaev 30.11.2008
  */
-class ReminderExtension implements IExtension {
+class ReminderExtension implements IExtension, IMapChangeListener {
 	/**
 	 */
 	public static ReminderExtension getExtension(final NodeModel node) {
@@ -40,9 +42,11 @@ class ReminderExtension implements IExtension {
 	private final NodeModel node;
 	private long remindUserAt = 0;
 	private Timer timer;
+	private ReminderHook reminderHook;
 
-	public ReminderExtension(final NodeModel node) {
+	public ReminderExtension(ReminderHook reminderHook, final NodeModel node) {
 		this.node = node;
+		this.reminderHook = reminderHook;
 	}
 
 	public NodeModel getNode() {
@@ -73,4 +77,43 @@ class ReminderExtension implements IExtension {
 		timer.cancel();
 		timer = null;
     }
+
+	private void displayStateIcon(NodeModel parent, int state) {
+	    if(!isAncestorNode(parent)){
+			return;
+		}
+		reminderHook.displayState(this, state, parent, true);
+    }
+
+	private boolean isAncestorNode(NodeModel parent) {
+		for(NodeModel n = node; n != null; n = n.getParentNode()){
+			if(n.equals(parent)){
+				return true;
+			}
+		}
+		return false;
+    }
+
+	public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
+		displayStateIcon(parent, ReminderHook.CLOCK_VISIBLE);
+    }
+
+	public void onNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
+		displayStateIcon(newParent, ReminderHook.CLOCK_VISIBLE);
+    }
+
+	public void onPreNodeDelete(NodeModel oldParent, NodeModel selectedNode, int index) {
+		displayStateIcon(oldParent, ReminderHook.REMOVE_CLOCK);
+    }
+
+	public void onPreNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
+		displayStateIcon(oldParent, ReminderHook.REMOVE_CLOCK);
+	}
+
+	public void mapChanged(MapChangeEvent event) {
+	}
+
+	public void onNodeDeleted(NodeModel parent, NodeModel child, int index) {
+	}
+
 }

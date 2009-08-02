@@ -277,6 +277,14 @@ public class MapController extends SelectionController {
 		}
 	}
 
+	protected void firePreNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent,
+	                             final NodeModel child, final int newIndex) {
+		final Iterator<IMapChangeListener> iterator = mapChangeListeners.iterator();
+		while (iterator.hasNext()) {
+			iterator.next().onPreNodeMoved(oldParent, oldIndex, newParent, child, newIndex);
+		}
+	}
+
 	protected void firePreNodeDelete(final NodeModel parent, final NodeModel selectedNode, final int index) {
 		final Iterator<IMapChangeListener> iterator = mapChangeListeners.iterator();
 		while (iterator.hasNext()) {

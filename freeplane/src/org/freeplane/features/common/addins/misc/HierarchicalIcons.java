@@ -238,4 +238,9 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 			setStyleRecursive(node.getParentNode());
 		}
 	}
+
+	public void onPreNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
+	    // TODO Auto-generated method stub
+	    
+    }
 }

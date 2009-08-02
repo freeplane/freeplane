@@ -33,5 +33,7 @@ public interface IMapChangeListener {
 
 	void onNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex);
 
+	void onPreNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex);
+
 	void onPreNodeDelete(NodeModel oldParent, NodeModel selectedNode, int index);
 }

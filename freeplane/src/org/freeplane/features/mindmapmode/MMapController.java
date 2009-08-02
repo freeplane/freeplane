@@ -266,6 +266,7 @@ public class MMapController extends MapController {
 	                          final boolean isLeft, final boolean changeSide) {
 		final NodeModel oldParent = child.getParentNode();
 		final int oldIndex = oldParent.getIndex(child);
+		firePreNodeMoved(oldParent, oldIndex, newParent, child, newIndex);
 		oldParent.remove(child);
 		if (changeSide) {
 			child.setParent(newParent);

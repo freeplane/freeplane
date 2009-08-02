@@ -396,4 +396,9 @@ public class AutomaticLayout extends PersistentNodeHook implements IMapChangeLis
 			setStyleRecursiveImpl(child);
 		}
 	}
+
+	public void onPreNodeMoved(NodeModel oldParent, int oldIndex, NodeModel newParent, NodeModel child, int newIndex) {
+	    // TODO Auto-generated method stub
+	    
+    }
 }
