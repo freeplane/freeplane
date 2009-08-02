@@ -211,7 +211,9 @@ public class MModeControllerFactory {
 		modeController.setUserInputListenerFactory(userInputListenerFactory);
 		controller.addModeController(modeController);
 		modeController.setMapController(new MMapController(modeController));
-		UrlManager.install(modeController, new MFileManager(modeController));
+		final MFileManager fileManager = new MFileManager(modeController);
+		UrlManager.install(modeController, fileManager);
+		controller.getMapViewManager().addMapViewChangeListener(fileManager);
 		IconController.install(modeController, new MIconController(modeController));
 		NodeStyleController.install(modeController, new MNodeStyleController(modeController));
 		EdgeController.install(modeController, new MEdgeController(modeController));

@@ -46,6 +46,7 @@ import javax.swing.filechooser.FileFilter;
 import org.freeplane.core.controller.Controller;
 import org.freeplane.core.controller.FreeplaneVersion;
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.frame.IMapViewChangeListener;
 import org.freeplane.core.io.MapWriter.Mode;
 import org.freeplane.core.modecontroller.MapChangeEvent;
 import org.freeplane.core.modecontroller.ModeController;
@@ -68,7 +69,7 @@ import org.freeplane.n3.nanoxml.XMLParseException;
 /**
  * @author Dimitry Polivaev
  */
-public class MFileManager extends UrlManager {
+public class MFileManager extends UrlManager implements IMapViewChangeListener{
 	static private class BackupFlag implements IExtension {
 	}
 
@@ -553,16 +554,6 @@ public class MFileManager extends UrlManager {
 		}
 	}
 
-	@Override
-	public void startup() {
-		final ModeController modeController = getModeController();
-		final Component mapView = getController().getViewController().getMapView();
-		if (mapView != null) {
-			final FileOpener fileOpener = new FileOpener(modeController);
-			new DropTarget(mapView, fileOpener);
-		}
-	}
-
 	/**
 	 * Attempts to lock the map using a semaphore file
 	 *
@@ -584,4 +575,21 @@ public class MFileManager extends UrlManager {
 		}
 		return lockingUser;
 	}
+
+	public void afterViewChange(Component oldView, Component newView) {
+    }
+
+	public void afterViewClose(Component oldView) {
+    }
+
+	public void afterViewCreated(Component mapView) {
+		final ModeController modeController = getModeController();
+		if (mapView != null) {
+			final FileOpener fileOpener = new FileOpener(modeController);
+			new DropTarget(mapView, fileOpener);
+		}
+    }
+
+	public void beforeViewChange(Component oldView, Component newView) {
+    }
 }
