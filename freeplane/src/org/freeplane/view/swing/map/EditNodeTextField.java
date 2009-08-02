@@ -97,17 +97,21 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 				final Insets insets = textfield.getInsets();
 				final Font font = textfield.getFont();
 				final FontMetrics fontMetrics = textfield.getFontMetrics(font);
-				final int preferredWidth = fontMetrics.stringWidth(textfield.getText() + insets.left + insets.right);
+				final int preferredWidth = fontMetrics.stringWidth(textfield.getText() + insets.left + insets.right) + 5;
 				if(preferredWidth <= maxWidth){
 					if(preferredWidth < lastWidth){
 						width = lastWidth;
 					}
 					else{
 						width = Math.min(preferredWidth + extraWidth, maxWidth);
+						if(width == maxWidth){
+							textfield.setLineWrap(true);
+						}
 					}
 					height = lastHeight;
 				}
 				else{
+					textfield.setLineWrap(true);
 					width = maxWidth;
 					height =textfield.getPreferredScrollableViewportSize().height; 
 				}
@@ -312,7 +316,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		maxWidth = ResourceController.getResourceController().getIntProperty("max_node_width", 0);
 		maxWidth = mapView.getZoomed(maxWidth) + 1;
 		extraWidth = ResourceController.getResourceController().getIntProperty("editor_extra_width", 80);
-		extraWidth = mapView.getZoomed(extraWidth) + 3;
+		extraWidth = mapView.getZoomed(extraWidth);
 		Font font = nodeView.getTextFont();
 		final float zoom = viewController.getZoom();
 		if (zoom != 1F) {
@@ -337,12 +341,12 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		UITools.convertPointToAncestor(mainView, textFieldLocation, mapView);
 		final Dimension textFieldSize = textfield.getPreferredSize();
 		textFieldSize.width += 1;
-		textfield.setLineWrap(true);
 		textfield.setWrapStyleWord(true);
 		if(textFieldSize.width > maxWidth){
 			textFieldSize.width = maxWidth;
 			textfield.setSize(maxWidth, Integer.MAX_VALUE);
 			textFieldSize.height =textfield.getPreferredSize().height; 
+			textfield.setLineWrap(true);
 		}
 
 		int nodeWidth = mainView.getWidth();
@@ -376,7 +380,12 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		}
 		final JViewport viewPort = (JViewport)mapView.getParent();
 		mapView.add(textfield, 0);		
-		redispatchKeyEvents(textfield, firstEvent);
+		if (firstEvent != null ) {
+			redispatchKeyEvents(textfield, firstEvent);
+		}
+		else {
+			textfield.setCaretPosition(getText().length());
+		}
 		textfield.repaint();
 		component.addComponentListener(textFieldListener);
 		nodeView.addComponentListener(textFieldListener);
