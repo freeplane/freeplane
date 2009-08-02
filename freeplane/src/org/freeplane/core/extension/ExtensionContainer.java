@@ -20,7 +20,7 @@ public class ExtensionContainer {
 		final IExtension oldExtension = getExtensions().put(clazz, extension);
 		if (oldExtension != null && !oldExtension.equals(extension)) {
 			getExtensions().put(clazz, oldExtension);
-			throw new AssertionError("extension of class " + clazz.getName() + " already registered");
+			throw new RuntimeException("extension of class " + clazz.getName() + " already registered");
 		}
 	}
 

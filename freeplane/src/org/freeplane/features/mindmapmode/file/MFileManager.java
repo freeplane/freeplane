@@ -62,6 +62,7 @@ import org.freeplane.core.util.LogTool;
 import org.freeplane.features.common.link.LinkController;
 import org.freeplane.features.mindmapmode.MMapController;
 import org.freeplane.features.mindmapmode.MMapModel;
+import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.n3.nanoxml.XMLParseException;
 
 /**
@@ -298,13 +299,25 @@ public class MFileManager extends UrlManager {
 		if (lock == null) {
 			throw new IOException("can not obtain file lock for " + file);
 		}
-		final NodeModel rootNode = loadTreeImpl(map, input);
-		setFile(map, file);
-		return rootNode;
+		try{
+			final NodeModel rootNode = loadTreeImpl(map, input);
+			return rootNode;
+		}
+		catch (final Exception ex) {
+			final String errorMessage = "Error while parsing file:" + file;
+			LogTool.warn(errorMessage, ex);
+			UITools.errorMessage(errorMessage);
+			final NodeModel result = new NodeModel(map);
+			result.setText(errorMessage);
+			return result;
+		}
+		finally{
+			setFile(map, file);
+		}
 	}
 
 	private NodeModel loadTreeImpl(final MapModel map, final FileInputStream input) throws FileNotFoundException,
-	        IOException {
+	        IOException, XMLException {
 		int versionInfoLength = EXPECTED_START_STRINGS[0].length();
 		final String buffer = readFileStart(input, versionInfoLength).toString();
 		final StringBufferInputStream startInput = new StringBufferInputStream(buffer);
@@ -335,13 +348,6 @@ public class MFileManager extends UrlManager {
 		}
 		try {
 			return getModeController().getMapController().getMapReader().createNodeTreeFromXml(map, reader, Mode.FILE);
-		}
-		catch (final Exception ex) {
-			final String errorMessage = "Error while parsing file:" + ex;
-			LogTool.severe(errorMessage, ex);
-			final NodeModel result = new NodeModel(map);
-			result.setText(errorMessage);
-			return result;
 		}
 		finally {
 			if (reader != null) {
