@@ -124,7 +124,7 @@ public class StylePatternFactory {
 			if (edgeColor != null) {
 				edgeColorPattern.setValue(ColorUtils.colorToString(edgeColor));
 			}
-			final String edgeStyle = edge.getStyle();
+			final String edgeStyle = String.valueOf(edge.getStyle());
 			if (edgeStyle != null) {
 				edgeStylePattern.setValue(edgeStyle);
 			}

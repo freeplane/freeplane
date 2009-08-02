@@ -47,7 +47,7 @@ public class EdgeModel implements IExtension {
 	}
 
 	private Color color;
-	private String style;
+	private EdgeStyle style;
 	private int width = EdgeModel.DEFAULT_WIDTH;
 
 	public EdgeModel() {
@@ -57,7 +57,7 @@ public class EdgeModel implements IExtension {
 		return color;
 	}
 
-	public String getStyle() {
+	public EdgeStyle getStyle() {
 		return style;
 	}
 
@@ -69,7 +69,7 @@ public class EdgeModel implements IExtension {
 		this.color = color;
 	}
 
-	public void setStyle(final String style) {
+	public void setStyle(final EdgeStyle style) {
 		this.style = style;
 	}
 

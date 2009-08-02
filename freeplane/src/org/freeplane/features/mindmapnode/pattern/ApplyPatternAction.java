@@ -32,6 +32,7 @@ import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.common.cloud.CloudController;
 import org.freeplane.features.common.edge.EdgeController;
 import org.freeplane.features.common.edge.EdgeModel;
+import org.freeplane.features.common.edge.EdgeStyle;
 import org.freeplane.features.common.icon.IconController;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.features.common.text.TextController;
@@ -154,8 +155,9 @@ class ApplyPatternAction extends MultipleNodeAction {
 			    .stringToColor(pattern.getPatternEdgeColor().getValue()));
 		}
 		if (pattern.getPatternEdgeStyle() != null) {
-			((MEdgeController) EdgeController.getController(getModeController())).setStyle(node, pattern
-			    .getPatternEdgeStyle().getValue());
+			final String value = pattern
+			    .getPatternEdgeStyle().getValue();
+			((MEdgeController) EdgeController.getController(getModeController())).setStyle(node, EdgeStyle.getStyle(value));
 		}
 		final PatternProperty patternEdgeWidth = pattern.getPatternEdgeWidth();
 		if (patternEdgeWidth != null) {

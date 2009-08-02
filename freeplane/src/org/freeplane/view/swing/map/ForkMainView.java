@@ -30,6 +30,7 @@ import java.awt.Stroke;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.features.common.edge.EdgeController;
+import org.freeplane.features.common.edge.EdgeStyle;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
 
 class ForkMainView extends MainView {
@@ -66,10 +67,10 @@ class ForkMainView extends MainView {
 	Point getLeftPoint() {
 		final NodeView nodeView = getNodeView();
 		final NodeModel model = nodeView.getModel();
-		int edgeWidth = EdgeController.getController(nodeView.getMap().getModeController()).getWidth(model);
-		if (edgeWidth == 0) {
-			edgeWidth = 1;
-		}
+		final EdgeController edgeController = EdgeController.getController(nodeView.getMap().getModeController());
+		int edgeWidth = edgeController.getWidth(model);
+		final EdgeStyle style = edgeController.getStyle(model);
+		edgeWidth = style.getNodeLineWidth(edgeWidth);
 		final Point in = new Point(0, getHeight() - edgeWidth / 2 - 1);
 		return in;
 	}
@@ -100,10 +101,10 @@ class ForkMainView extends MainView {
 	Point getRightPoint() {
 		final NodeView nodeView = getNodeView();
 		final NodeModel model = nodeView.getModel();
-		int edgeWidth = EdgeController.getController(nodeView.getMap().getModeController()).getWidth(model);
-		if (edgeWidth == 0) {
-			edgeWidth = 1;
-		}
+		final EdgeController edgeController = EdgeController.getController(nodeView.getMap().getModeController());
+		int edgeWidth = edgeController.getWidth(model);
+		final EdgeStyle style = edgeController.getStyle(model);
+		edgeWidth = style.getNodeLineWidth(edgeWidth);
 		final Point in = new Point(getWidth() - 1, getHeight() - edgeWidth / 2 - 1);
 		return in;
 	}
@@ -131,9 +132,8 @@ class ForkMainView extends MainView {
 		paintDragOver(g);
 		final EdgeController edgeController = EdgeController.getController(modeController);
 		int edgeWidth = edgeController.getWidth(model);
-		if (edgeWidth == 0) {
-			edgeWidth = 1;
-		}
+		final EdgeStyle style = edgeController.getStyle(model);
+		edgeWidth = style.getNodeLineWidth(edgeWidth);
 		final Stroke oldStroke = g.getStroke();
 		g.setStroke(new BasicStroke(edgeWidth));
 		final Color oldColor = g.getColor();

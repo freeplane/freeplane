@@ -130,7 +130,7 @@ class NodeViewFactory {
 
 	EdgeView getEdge(final NodeView newView) {
 		final NodeModel model = newView.getModel();
-		final String edgeStyle = EdgeController.getController(newView.getMap().getModeController()).getStyle(model);
+		final EdgeStyle edgeStyle = EdgeController.getController(newView.getMap().getModeController()).getStyle(model);
 		if (edgeStyle.equals(EdgeStyle.EDGESTYLE_LINEAR)) {
 			return getLinearEdgeView();
 		}

@@ -77,9 +77,9 @@ public class MEdgeController extends EdgeController {
 		modeController.execute(actor, node.getMap());
 	}
 
-	public void setStyle(final NodeModel node, final String style) {
+	public void setStyle(final NodeModel node, final EdgeStyle style) {
 		final ModeController modeController = getModeController();
-		final String oldStyle;
+		final EdgeStyle oldStyle;
 		if (style != null) {
 			oldStyle = EdgeModel.createEdgeModel(node).getStyle();
 			if (style.equals(oldStyle)) {

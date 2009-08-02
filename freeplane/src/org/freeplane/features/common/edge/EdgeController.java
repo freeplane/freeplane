@@ -43,7 +43,7 @@ public class EdgeController implements IExtension {
 				standardColor = ColorUtils.stringToColor(newValue);
 			}
 			if (propertyName.equals(EdgeController.RESOURCES_EDGE_STYLE)) {
-				standardStyle = newValue;
+				standardStyle = EdgeStyle.getStyle(newValue);
 			}
 		}
 	}
@@ -52,7 +52,7 @@ public class EdgeController implements IExtension {
 	public static final String RESOURCES_EDGE_COLOR = "standardedgecolor";
 	public static final String RESOURCES_EDGE_STYLE = "standardedgestyle";
 	private static Color standardColor = null;
-	private static String standardStyle = null;
+	private static EdgeStyle standardStyle = null;
 
 	public static EdgeController getController(final ModeController modeController) {
 		return (EdgeController) modeController.getExtension(EdgeController.class);
@@ -64,13 +64,13 @@ public class EdgeController implements IExtension {
 
 	final private ExclusivePropertyChain<Color, NodeModel> colorHandlers;
 	private final ModeController modeController;
-	final private ExclusivePropertyChain<String, NodeModel> styleHandlers;
+	final private ExclusivePropertyChain<EdgeStyle, NodeModel> styleHandlers;
 	final private ExclusivePropertyChain<Integer, NodeModel> widthHandlers;
 
 	public EdgeController(final ModeController modeController) {
 		this.modeController = modeController;
 		colorHandlers = new ExclusivePropertyChain<Color, NodeModel>();
-		styleHandlers = new ExclusivePropertyChain<String, NodeModel>();
+		styleHandlers = new ExclusivePropertyChain<EdgeStyle, NodeModel>();
 		widthHandlers = new ExclusivePropertyChain<Integer, NodeModel>();
 		updateStandards(modeController);
 		if (listener == null) {
@@ -91,14 +91,14 @@ public class EdgeController implements IExtension {
 				return getColor(node.getParentNode());
 			}
 		});
-		addStyleGetter(IPropertyHandler.NODE, new IPropertyHandler<String, NodeModel>() {
-			public String getProperty(final NodeModel node, final String currentValue) {
+		addStyleGetter(IPropertyHandler.NODE, new IPropertyHandler<EdgeStyle, NodeModel>() {
+			public EdgeStyle getProperty(final NodeModel node, final EdgeStyle currentValue) {
 				final EdgeModel edge = EdgeModel.getModel(node);
 				return edge == null ? null : edge.getStyle();
 			}
 		});
-		addStyleGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<String, NodeModel>() {
-			public String getProperty(final NodeModel node, final String currentValue) {
+		addStyleGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<EdgeStyle, NodeModel>() {
+			public EdgeStyle getProperty(final NodeModel node, final EdgeStyle currentValue) {
 				if (node.isRoot()) {
 					return standardStyle;
 				}
@@ -136,8 +136,8 @@ public class EdgeController implements IExtension {
 		return colorHandlers.addGetter(key, getter);
 	}
 
-	public IPropertyHandler<String, NodeModel> addStyleGetter(final Integer key,
-	                                                          final IPropertyHandler<String, NodeModel> getter) {
+	public IPropertyHandler<EdgeStyle, NodeModel> addStyleGetter(final Integer key,
+	                                                          final IPropertyHandler<EdgeStyle, NodeModel> getter) {
 		return styleHandlers.addGetter(key, getter);
 	}
 
@@ -154,7 +154,7 @@ public class EdgeController implements IExtension {
 		return modeController;
 	}
 
-	public String getStyle(final NodeModel node) {
+	public EdgeStyle getStyle(final NodeModel node) {
 		return styleHandlers.getProperty(node);
 	}
 
@@ -166,7 +166,7 @@ public class EdgeController implements IExtension {
 		return colorHandlers.removeGetter(key);
 	}
 
-	public IPropertyHandler<String, NodeModel> removeStyleGetter(final Integer key) {
+	public IPropertyHandler<EdgeStyle, NodeModel> removeStyleGetter(final Integer key) {
 		return styleHandlers.removeGetter(key);
 	}
 
@@ -189,7 +189,7 @@ public class EdgeController implements IExtension {
 			final String stdStyle = ResourceController.getResourceController().getProperty(
 			    EdgeController.RESOURCES_EDGE_STYLE);
 			if (stdStyle != null) {
-				standardStyle = stdStyle;
+				standardStyle = EdgeStyle.getStyle(stdStyle);
 			}
 		}
 	}

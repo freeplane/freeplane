@@ -64,7 +64,7 @@ class EdgeBuilder implements IElementDOMHandler, IExtensionElementWriter {
 		reader.addAttributeHandler("edge", "STYLE", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final EdgeModel edge = (EdgeModel) userObject;
-				edge.setStyle(value.toString());
+				edge.setStyle(EdgeStyle.getStyle(value));
 			}
 		});
 		reader.addAttributeHandler("edge", "HIDE", new IAttributeHandler() {
@@ -106,7 +106,7 @@ class EdgeBuilder implements IElementDOMHandler, IExtensionElementWriter {
 	public void writeContent(final ITreeWriter writer, final Object node, final IExtension extension)
 	        throws IOException {
 		final EdgeModel model = (EdgeModel) extension;
-		final String style = model.getStyle();
+		final String style = String.valueOf(model.getStyle());
 		final Color color = model.getColor();
 		final int width = model.getWidth();
 		if (style != null || color != null || width != EdgeModel.DEFAULT_WIDTH) {
@@ -127,7 +127,7 @@ class EdgeBuilder implements IElementDOMHandler, IExtensionElementWriter {
 			}
 			if (width != EdgeModel.WIDTH_PARENT) {
 				if (width == EdgeModel.WIDTH_THIN) {
-					edge.setAttribute("WIDTH", EdgeStyle.EDGESTYLE_THIN);
+					edge.setAttribute("WIDTH", EdgeStyle.EDGESTYLE_THIN.toString());
 				}
 				else {
 					edge.setAttribute("WIDTH", Integer.toString(width));
