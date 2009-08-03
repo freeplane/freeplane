@@ -7,8 +7,7 @@ public enum EdgeStyle {
 	EDGESTYLE_HORIZONTAL ( "horizontal", 1f),
 	EDGESTYLE_LINEAR ( "linear", 1f),
 	EDGESTYLE_SHARP_BEZIER ( "sharp_bezier", 0f),
-	EDGESTYLE_SHARP_LINEAR ( "sharp_linear", 0f),
-	EDGESTYLE_THIN ( "thin", 0f);
+	EDGESTYLE_SHARP_LINEAR ( "sharp_linear", 0f);
 	
 	static final int MAX_NODE_LINE_WIDTH = 4;
 	
