@@ -82,7 +82,7 @@ class EdgeBuilder implements IElementDOMHandler, IExtensionElementWriter {
 		reader.addAttributeHandler("edge", "WIDTH", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final EdgeModel edge = (EdgeModel) userObject;
-				if (value.toString().equals(EdgeModel.EDGEWIDTH_THIN)) {
+				if (value.equals(EdgeModel.EDGEWIDTH_THIN)) {
 					edge.setWidth(EdgeModel.WIDTH_THIN);
 				}
 				else {
@@ -127,7 +127,7 @@ class EdgeBuilder implements IElementDOMHandler, IExtensionElementWriter {
 			}
 			if (width != EdgeModel.WIDTH_PARENT) {
 				if (width == EdgeModel.WIDTH_THIN) {
-					edge.setAttribute("WIDTH", EdgeModel.EDGEWIDTH_THIN.toString());
+					edge.setAttribute("WIDTH", EdgeModel.EDGEWIDTH_THIN);
 				}
 				else {
 					edge.setAttribute("WIDTH", Integer.toString(width));
