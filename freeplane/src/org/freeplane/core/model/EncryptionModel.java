@@ -147,8 +147,8 @@ public class EncryptionModel implements IExtension {
 	 */
 	private void generateEncryptedContent(final MapController mapController) throws IOException {
 		final StringWriter sWriter = new StringWriter();
-		for (final Iterator i = node.getChildren().listIterator(); i.hasNext();) {
-			final NodeModel child = (NodeModel) i.next();
+		for (final Iterator<NodeModel> i = node.getChildren().listIterator(); i.hasNext();) {
+			final NodeModel child = i.next();
 			mapController.getMapWriter().writeNodeAsXml(sWriter, child, MapWriter.Mode.FILE, true, true);
 			if (i.hasNext()) {
 				sWriter.write(ClipboardController.NODESEPARATOR);

@@ -91,8 +91,7 @@ public abstract class ResourceController {
 	protected void firePropertyChanged(final String property, final String value, final String oldValue) {
 		if (oldValue == null || !oldValue.equals(value)) {
 			setProperty(property, value);
-			for (final Iterator i = getPropertyChangeListeners().iterator(); i.hasNext();) {
-				final IFreeplanePropertyListener listener = (IFreeplanePropertyListener) i.next();
+			for (IFreeplanePropertyListener listener : getPropertyChangeListeners()) {
 				listener.propertyChanged(property, value, oldValue);
 			}
 		}

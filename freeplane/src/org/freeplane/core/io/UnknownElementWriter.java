@@ -34,9 +34,9 @@ public class UnknownElementWriter implements IExtensionAttributeWriter, IExtensi
 		final UnknownElements elements = (UnknownElements) extension;
 		final XMLElement unknownElements = elements.getUnknownElements();
 		if (unknownElements != null) {
-			final Enumeration unknownAttributes = unknownElements.enumerateAttributeNames();
+			final Enumeration<String> unknownAttributes = unknownElements.enumerateAttributeNames();
 			while (unknownAttributes.hasMoreElements()) {
-				final String name = (String) unknownAttributes.nextElement();
+				final String name = unknownAttributes.nextElement();
 				final String value = unknownElements.getAttribute(name, null);
 				writer.addAttribute(name, value);
 			}
@@ -48,9 +48,9 @@ public class UnknownElementWriter implements IExtensionAttributeWriter, IExtensi
 		final UnknownElements elements = (UnknownElements) extension;
 		final XMLElement unknownElements = elements.getUnknownElements();
 		if (unknownElements != null) {
-			final Enumeration unknownChildren = unknownElements.enumerateChildren();
+			final Enumeration<XMLElement> unknownChildren = unknownElements.enumerateChildren();
 			while (unknownChildren.hasMoreElements()) {
-				writer.addElement(null, (XMLElement) unknownChildren.nextElement());
+				writer.addElement(null, unknownChildren.nextElement());
 			}
 		}
 	}

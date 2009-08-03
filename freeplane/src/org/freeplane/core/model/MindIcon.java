@@ -44,7 +44,7 @@ import org.freeplane.core.util.LogTool;
  * This class represents a MindIcon than can be applied to a node or a whole
  * branch.
  */
-public class MindIcon implements Comparable, IIconInformation {
+public class MindIcon implements Comparable<MindIcon>, IIconInformation {
 	/**
 	 * Set of all created icons. Name -> MindIcon
 	 */
@@ -140,14 +140,10 @@ public class MindIcon implements Comparable, IIconInformation {
 	 * (non-Javadoc)
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
-	public int compareTo(final Object o) {
-		if (o instanceof MindIcon) {
-			final MindIcon icon = (MindIcon) o;
-			final int i1 = getNumber();
-			final int i2 = icon.getNumber();
-			return i1 < i2 ? -1 : i1 == i2 ? 0 : +1;
-		}
-		throw new ClassCastException();
+	public int compareTo(final MindIcon icon) {
+		final int i1 = getNumber();
+		final int i2 = icon.getNumber();
+		return i1 < i2 ? -1 : i1 == i2 ? 0 : +1;
 	}
 
 	public String getDescription() {

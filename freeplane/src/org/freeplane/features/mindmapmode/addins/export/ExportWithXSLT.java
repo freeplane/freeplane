@@ -77,9 +77,8 @@ public class ExportWithXSLT extends ExportAction {
 	/**
 	 */
 	private static void copyIconsToDirectory(final String directoryName2) {
-		final List iconNames = MindIcon.getAllIconNames();
-		for (int i = 0; i < iconNames.size(); ++i) {
-			final String iconName = ((String) iconNames.get(i));
+		final List<String> iconNames = MindIcon.getAllIconNames();
+		for (String iconName : iconNames) {
 			final MindIcon myIcon = MindIcon.factory(iconName);
 			ResUtil.copyFromResource(MindIcon.getIconsPath(), myIcon.getIconBaseFileName(), directoryName2);
 		}
@@ -120,9 +119,9 @@ public class ExportWithXSLT extends ExportAction {
 			final IXMLReader reader = new StdXMLReader(resource.openStream());
 			parser.setReader(reader);
 			final XMLElement xml = (XMLElement) parser.parse();
-			final Enumeration actionDescriptors = xml.enumerateChildren();
+			final Enumeration<XMLElement> actionDescriptors = xml.enumerateChildren();
 			while (actionDescriptors.hasMoreElements()) {
-				final XMLElement descriptor = (XMLElement) actionDescriptors.nextElement();
+				final XMLElement descriptor = actionDescriptors.nextElement();
 				final String name = descriptor.getAttribute("name", null);
 				final String location = descriptor.getAttribute("location", null);
 				final XMLElement xmlProperties = descriptor.getFirstChildNamed("properties");

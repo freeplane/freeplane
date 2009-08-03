@@ -34,7 +34,7 @@ public class ReadManager {
 
 	public ReadManager() {
 		super();
-		elementHandlers = new ListHashTable();
+		elementHandlers = new ListHashTable<String, IElementHandler>();
 		attributeHandlers = new Hashtable<String, Hashtable<String, IAttributeHandler>>();
 		readCompletionListeners = new LinkedList<IReadCompletionListener>();
 	}

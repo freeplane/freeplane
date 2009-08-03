@@ -19,8 +19,6 @@
  */
 package org.freeplane.core.model;
 
-import java.util.Iterator;
-import java.util.List;
 import java.util.ListIterator;
 
 import org.freeplane.core.extension.IExtension;
@@ -49,10 +47,7 @@ public class IconRegistry implements IExtension {
 	}
 
 	private void registryNodeIcons(final MapController mapController, final NodeModel node) {
-		final List icons = node.getIcons();
-		final Iterator i = icons.iterator();
-		while (i.hasNext()) {
-			final MindIcon icon = (MindIcon) i.next();
+		for(MindIcon icon : node.getIcons()) {
 			addIcon(icon);
 		}
 		final ListIterator<NodeModel> iterator = mapController.childrenUnfolded(node);

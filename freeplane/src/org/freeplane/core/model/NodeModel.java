@@ -112,14 +112,14 @@ public class NodeModel implements MutableTreeNode {
 		return views == null || views.isEmpty();
 	}
 
-	public Enumeration children() {
-		final Iterator i = children.iterator();
-		return new Enumeration() {
+	public Enumeration<NodeModel> children() {
+		final Iterator<NodeModel> i = children.iterator();
+		return new Enumeration<NodeModel>() {
 			public boolean hasMoreElements() {
 				return i.hasNext();
 			}
 
-			public Object nextElement() {
+			public NodeModel nextElement() {
 				return i.next();
 			}
 		};
@@ -190,7 +190,7 @@ public class NodeModel implements MutableTreeNode {
 
 	public int getChildPosition(final NodeModel childNode) {
 		int position = 0;
-		for (final ListIterator i = children.listIterator(); i.hasNext(); ++position) {
+		for (final ListIterator<NodeModel> i = children.listIterator(); i.hasNext(); ++position) {
 			if (((NodeModel) i.next()) == childNode) {
 				return position;
 			}
@@ -199,7 +199,14 @@ public class NodeModel implements MutableTreeNode {
 	}
 
 	public List<NodeModel> getChildren() {
-		return Collections.unmodifiableList((children != null) ? children : Collections.EMPTY_LIST);
+		List<NodeModel> childrenList;
+		if(children != null) {
+			childrenList = children;
+		}
+		else {
+			childrenList = Collections.emptyList();
+		}
+		return Collections.unmodifiableList(childrenList);
 	}
 
 	public IExtension getExtension(final Class<? extends IExtension> clazz) {
@@ -318,7 +325,7 @@ public class NodeModel implements MutableTreeNode {
 
 	public Collection<INodeView> getViewers() {
 		if (views == null) {
-			views = new LinkedList();
+			views = new LinkedList<INodeView>();
 		}
 		return views;
 	}
