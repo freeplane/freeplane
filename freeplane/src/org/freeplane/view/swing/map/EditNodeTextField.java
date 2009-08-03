@@ -56,7 +56,9 @@ import javax.swing.text.DefaultCaret;
 import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.frame.ViewController;
+import org.freeplane.core.modecontroller.IMapChangeListener;
 import org.freeplane.core.modecontroller.INodeChangeListener;
+import org.freeplane.core.modecontroller.MapChangeEvent;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.modecontroller.NodeChangeEvent;
@@ -147,11 +149,9 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		final int EDIT = 1;
 		// TODO rladstaetter 18.02.2009 eventSource should be an enum
 		Integer eventSource = EDIT;
-		private final NodeView nodeView;
 		private boolean popupShown;
 
-		public TextFieldListener(final NodeView nodeView) {
-			this.nodeView = nodeView;
+		public TextFieldListener() {
 		}
 
 		public void componentHidden(final ComponentEvent e) {
@@ -277,30 +277,24 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 	}
 
 	private void hideMe() {
-		final MapView mapView = (MapView) textfield.getParent();
-		final Rectangle bounds = textfield.getBounds();
-		textfield.removeFocusListener(textFieldListener);
-		textfield.removeKeyListener((KeyListener) textFieldListener);
-		textfield.removeMouseListener((MouseListener) textFieldListener);
-		textfield.getDocument().removeDocumentListener(documentListener);
 		final ModeController modeController = getModeController();
 		modeController.getMapController().removeNodeChangeListener((INodeChangeListener)textFieldListener);
-		final Component component = modeController.getController().getViewController().getComponent(getNode());
-		if (component != null) {
-			component.removeComponentListener((ComponentListener) textFieldListener);
-			SwingUtilities.getAncestorOfClass(NodeView.class, component).removeComponentListener((ComponentListener) textFieldListener);
+		final MapView mapView = (MapView) textfield.getParent();
+		final Rectangle bounds = textfield.getBounds();
+		final MainView mainView = nodeView.getMainView();
+		mainView.removeComponentListener((ComponentListener) textFieldListener);
+		nodeView.removeComponentListener((ComponentListener) textFieldListener);
+		if (mapView == null) {
+			return;
 		}
-		if (mapView != null) {
-			final MainView mainView = mapView.getNodeView(getNode()).getMainView();
-			mainView.setPreferredSize(null);
-			mainView.updateText(getNode().getText(), mapView);
-			mainView.getParent().invalidate();
-			mapView.remove(0);
-			mapView.revalidate();
-			mapView.repaint(bounds);
-		}
-		textFieldListener = null;
+		mainView.setPreferredSize(null);
+		mainView.updateText(getNode().getText(), mapView);
+		mainView.getParent().invalidate();
+		mapView.remove(0);
+		mapView.revalidate();
+		mapView.repaint(bounds);
 	}
+	private NodeView nodeView;
 
 	/* (non-Javadoc)
 	 * @see org.freeplane.view.swing.map.INodeTextField#show()
@@ -311,7 +305,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		final ModeController modeController = getModeController();
 		final ViewController viewController = modeController.getController().getViewController();
 		final Component component = viewController.getComponent(getNode());
-		final NodeView nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, component);
+		nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, component);
 		final MapView mapView = (MapView) viewController.getMapView();
 		maxWidth = ResourceController.getResourceController().getIntProperty("max_node_width", 0);
 		maxWidth = mapView.getZoomed(maxWidth) + 1;
@@ -328,7 +322,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		final Color nodeTextBackground = nodeView.getTextBackground();
 		textfield.setBackground(nodeTextBackground);
 		textfield.setCaretColor(nodeTextColor);
-		final TextFieldListener textFieldListener = new TextFieldListener(nodeView);
+		final TextFieldListener textFieldListener = new TextFieldListener();
 		this.textFieldListener = textFieldListener;
 		textfield.addFocusListener(textFieldListener);
 		textfield.addKeyListener(textFieldListener);
@@ -390,7 +384,8 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		component.addComponentListener(textFieldListener);
 		nodeView.addComponentListener(textFieldListener);
 		textfield.getDocument().addDocumentListener(documentListener);
-		modeController.getMapController().addNodeChangeListener(textFieldListener);
+		final MapController mapController = modeController.getMapController();
+		mapController.addNodeChangeListener(textFieldListener);
 		textfield.requestFocus();
 	}
 }
