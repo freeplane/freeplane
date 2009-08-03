@@ -79,11 +79,31 @@ public class FreeplaneVersion implements Comparable<FreeplaneVersion> {
 		return version;
 	}
 
-	final int mMaj;
-	final int mMid;
-	final int mMin;
-	final int mNum;
-	String mType;
+	private final int mMaj;
+	private final int mMid;
+	private final int mMin;
+	private final int mNum;
+	private String mType;
+
+	public int getMaj() {
+    	return mMaj;
+    }
+
+	public int getMid() {
+    	return mMid;
+    }
+
+	public int getMin() {
+    	return mMin;
+    }
+
+	public int getNum() {
+    	return mNum;
+    }
+
+	public String getType() {
+    	return mType;
+    }
 
 	public FreeplaneVersion(final int pMaj, final int pMid, final int pMin, final String pType, final int pNum) {
 		super();

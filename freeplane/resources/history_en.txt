@@ -1,4 +1,22 @@
 ===============================
+1.0.22 alpha
+===============================
+New features:
+inline editor width step  as a setting
+inline editor border color depends on selection display type
+enable link pop-up menu even if neither target nor source node is selected.
+Links where target or source are selected are found first.
+
+Bug fixes
+
+[Bugs 0000167]: Hyperlinks containing ? not directed correctly
+[Bugs 0000164]: Bezier end line too fat
+[Bugs 0000166]: Map loading error at launch -> freeplane can't start
+[Bugs 0000148]: Scroll map, Load files dropped into open map view
+bug fix for  cut / paste alert [freeplane - Open Discussion]
+bug fix: close edit field if node is deleted
+
+===============================
 1.0.21 alpha
 ===============================
 New features:

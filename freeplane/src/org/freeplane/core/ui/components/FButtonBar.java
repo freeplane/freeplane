@@ -190,7 +190,7 @@ public class FButtonBar extends FreeplaneToolBar implements IAcceleratorChangeLi
 			add(button);
 		}
 		final JPanel panel = new JPanel();
-		panel.setPreferredSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width, 1));
+		panel.setPreferredSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width, 0));
 		add(panel);
 		revalidate();
 		repaint();

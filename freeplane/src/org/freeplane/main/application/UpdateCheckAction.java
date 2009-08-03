@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
@@ -133,8 +134,14 @@ class UpdateCheckAction extends AFreeplaneAction {
 		final String language = defaultLocale.getLanguage();
 		final String DEFAULT_LANGUAGE = "en";
 		final String webUpdateUrl = ResourceController.getResourceController().getProperty(WEB_UPDATE_LOCATION_KEY);
-		final String translatedWebUpdate = webUpdateUrl + "history_" + language + ".txt";
 		final FreeplaneVersion localVersion = FreeplaneVersion.getVersion();
+		StringBuilder sb = new StringBuilder(webUpdateUrl);
+		sb.append(localVersion.getType());
+		sb.append('/');
+		sb.append("history_"); 
+		sb.append(language );
+		sb.append(".txt");
+		final String translatedWebUpdate  = sb.toString();
 		final HttpVersionClient translatedVersionClient = new HttpVersionClient(translatedWebUpdate, localVersion);
 		FreeplaneVersion lastTranslatedVersion = translatedVersionClient.getRemoteVersion();
 		if (lastTranslatedVersion == null) {
