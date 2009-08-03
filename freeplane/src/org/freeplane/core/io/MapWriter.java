@@ -40,18 +40,7 @@ public class MapWriter implements IElementWriter, IAttributeWriter {
 		MODE
 	};
 
-	public enum Mode {
-		CLIPBOARD, FILE;
-		public static Mode parse(final String string) {
-			if (string.equals("FILE")) {
-				return FILE;
-			}
-			if (string.equals("CLIPBOARD")) {
-				return CLIPBOARD;
-			}
-			throw new NoSuchFieldError("value " + string + " not exist");
-		}
-	};
+	public enum Mode { CLIPBOARD, FILE };
 
 	private NodeWriter currentNodeWriter;
 	final private MapController mapController;
