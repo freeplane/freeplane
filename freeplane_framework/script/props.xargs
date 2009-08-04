@@ -27,7 +27,8 @@
 
 # Add all standard packages for the currently running JRE version to
 # the set of packages exported by the system classloader.
--Dorg.knopflerfish.framework.system.export.all=true
+#-Dorg.knopflerfish.framework.system.export.all=true
+-Dorg.knopflerfish.framework.system.export.all_15=true
 
 # Comma-separated list of packages to be added to the set of packages
 # exported by system classloader.
