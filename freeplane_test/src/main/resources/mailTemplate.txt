@@ -1,0 +1,46 @@
+hi $name,
+
+thank you very much for contacting us!
+
+At the moment we want to push i18n for freeplane, so you are very welcome. apart from that, testing is always a big issue, or helping out in other tasks.
+
+Regarding translation:
+
+You chose $lang as destination translation. Currently , we have $issueCnt missing translations for $lang.
+
+You can find the missing keys below. Are you familiar with translating property files, that is to say you know about the utf8 issue in property files? bottom line is that you should use a property editor like popeye
+
+http://sourceforge.net/projects/popeye/
+
+The 'master' property file can be found here:
+
+https://freeplane.svn.sourceforge.net/svnroot/freeplane/freeplane_program/trunk/freeplane/viewer-resources/translations/Resources_en.properties
+
+the file you would have to change is available here:
+
+$url
+
+just download both files to your local harddrive and off you go.
+
+if you decide to use the editor above (recommended) you have a nice gui and an editor
+capable of saving the files correctly; thus you can concentrate on translation. Of course it would be great if you revise existing keys .... ;)
+
+when you think you have finished, send it to me via email, i'll add it to svn asap.
+
+by the way ... if you want to become a regular commiter then ... 
+
+there is tons of work, we are recruiting so maybe you want to contribute fresh ideas to the project. The best way to do is is to join mailinglist and read the forums, as you obviously do at the moment.
+
+concerning testing:
+
+are you familiar with java /  ant / svn ?
+
+it shouldn't be a problem to build your own installation of freeplane.
+
+many thanks,
+
+robert
+
+ps: so here are the missing keys (those will be marked red in the popeye program):
+
+$missingKeys

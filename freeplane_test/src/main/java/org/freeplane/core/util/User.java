@@ -1,8 +1,11 @@
 package org.freeplane.core.util;
 
 public enum User {
+	rafalM("Rafal", "rafalmachalica@interia.pl", CountryCode.pl), // 
+	anatolyY("Anatoly Y", "2tolik@gmail.com", CountryCode.ru), //
 	pyb("Pierre-Yves Baumann", "pyb@sunrise.ch", CountryCode.fr), //
-	rladstaetter("Robert Ladstaetter", "rladstaetter@gmail.com", CountryCode.de);
+	rladstaetter("Robert Ladstaetter", "rladstaetter@gmail.com", CountryCode.de), 
+	teppl("Tamás Eppl","peletomi@gmail.com", CountryCode.hu);
 	private final CountryCode countryCode;
 	private final String email;
 	private final String name;

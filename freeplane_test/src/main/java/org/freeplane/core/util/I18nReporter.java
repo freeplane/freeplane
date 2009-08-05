@@ -71,27 +71,6 @@ public class I18nReporter {
 		}
 	}
 
-	class PoorMansTemplate {
-		private String template;
-
-		public PoorMansTemplate(String classpathTemplate) {
-			try {
-				template = loadTemplateFromClasspath(classpathTemplate);
-			}
-			catch (IOException e) {
-				throw new IllegalStateException(e);
-			}
-		}
-
-		private String eval(Map<String, String> context) {
-			String template = this.template;
-			for (String k : context.keySet()) {
-				template = template.replace(k, context.get(k));
-			}
-			return template;
-		}
-	}
-
 	class Summary {
 		Map<CountryCode, Integer> noEntryMap;
 		Map<CountryCode, Integer> zeroLengthMap;
@@ -127,18 +106,18 @@ public class I18nReporter {
 	}
 
 	private static final String CONTENT = "<!-- CONTENT -->";
-	private static final String RESOURCES_TRANSLATIONS = "resources/translations/";
+	static final String RESOURCES_TRANSLATIONS = "resources/translations/";
 	private static final String STANDARD = "viewer-resources/translations/Resources_en.properties";
-	private static final String SVN_URL = "https://freeplane.svn.sourceforge.net/svnroot/freeplane/freeplane_program/trunk/freeplane/";
+	static final String SVN_URL = "https://freeplane.svn.sourceforge.net/svnroot/freeplane/freeplane_program/trunk/freeplane/";
 	private static final String TITLE = "<!-- TITLE -->";
 
-	private static String loadTemplateFromClasspath(String template) throws IOException {
+	static String loadTemplateFromClasspath(String template) throws IOException {
 		InputStream resourceAsStream = I18nReporter.class.getResourceAsStream(template);
 		BufferedReader reader = new BufferedReader(new InputStreamReader(resourceAsStream));
 		StringBuilder strBldr = new StringBuilder();
 		String line = null;
 		while ((line = reader.readLine()) != null) {
-			strBldr.append(line);
+			strBldr.append(line + "\n");
 		}
 		return strBldr.toString();
 	}
@@ -201,7 +180,7 @@ public class I18nReporter {
 		Map<String, String> context = new HashMap<String, String>();
 		context.put(CONTENT, content);
 		context.put(TITLE, title);
-		String processedContent = reporter.new PoorMansTemplate("/I18nReporterTemplate.html").eval(context);
+		String processedContent = new PoorMansTemplate("/I18nReporterTemplate.html").eval(context);
 		reporter.writeFile(fileName, processedContent);
 	}
 
@@ -263,7 +242,7 @@ public class I18nReporter {
 		strBldr.append(getHeader(l.toString(), Arrays.asList("Issue")));
 		strBldr.append("<pre>");
 		for (ActionItem i : list) {
-			strBldr.append("# " + i.getIssue() + " : standard: " + i.getStandardTranslation() + "\n");
+			strBldr.append("# "  + i.getStandardTranslation() + "\n");
 			strBldr.append(i.getKey() + "=\n");
 		}
 		strBldr.append("</pre>");
