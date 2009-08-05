@@ -20,7 +20,16 @@ the file you would have to change is available here:
 
 $url
 
-just download both files to your local harddrive and off you go.
+just download both files to your local harddrive.
+
+See the cookbook available at 
+
+http://freeplane.svn.sourceforge.net/viewvc/freeplane/freeplane_program/trunk/freeplane_test/src/main/resources/howtos/howto_use_popeye/rendered/howto_use_popeye.swf?revision=630&pathrev=630
+
+to see how to use the popeye program for translation.
+
+Of course, you need to know the context when and where a key is used to properly apply a translation, but the majority can be translated without that
+information. Just stick to the pareto principle ;)
 
 if you decide to use the editor above (recommended) you have a nice gui and an editor
 capable of saving the files correctly; thus you can concentrate on translation. Of course it would be great if you revise existing keys .... ;)
