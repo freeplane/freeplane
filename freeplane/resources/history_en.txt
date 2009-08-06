@@ -4,6 +4,16 @@ $Rev$
 *******************************
 
 ===============================
+1.0.23 alpha
+===============================
+Bug fixes
+export only packages from java 5 (important for compatibility with java 7)
+[Bugs 0000180]: Parsing error -- bug fixes for edge style null
+[Bugs 0000179]: editing long nodes : problem ! -- use old style long node editor for nodes containing line break
+bug fix: do not process document events after text area is hidden
+ignore wrong zip file by importMindManagerFiles
+
+===============================
 1.0.22 alpha
 ===============================
 New features:
