@@ -106,7 +106,7 @@ class EdgeBuilder implements IElementDOMHandler, IExtensionElementWriter {
 	public void writeContent(final ITreeWriter writer, final Object node, final IExtension extension)
 	        throws IOException {
 		final EdgeModel model = (EdgeModel) extension;
-		final String style = String.valueOf(model.getStyle());
+		final String style = EdgeStyle.toString(model.getStyle());
 		final Color color = model.getColor();
 		final int width = model.getWidth();
 		if (style != null || color != null || width != EdgeModel.DEFAULT_WIDTH) {

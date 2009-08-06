@@ -1,5 +1,7 @@
 package org.freeplane.features.common.edge;
 
+import org.freeplane.core.util.LogTool;
+
 public enum EdgeStyle {
 
 	EDGESTYLE_BEZIER ( "bezier", 1f),
@@ -39,6 +41,11 @@ public enum EdgeStyle {
 				return style;
 			}
 		}
-		throw new IllegalArgumentException("unknown edge style name " + name);
+		LogTool.warn("unknown edge style name " + name);
+		return null;
+	}
+	
+	static public String toString(EdgeStyle style){
+		return style == null ? null : style.toString();
 	}
 }

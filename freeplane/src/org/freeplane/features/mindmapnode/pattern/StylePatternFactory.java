@@ -33,6 +33,7 @@ import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.common.cloud.CloudModel;
 import org.freeplane.features.common.edge.EdgeModel;
+import org.freeplane.features.common.edge.EdgeStyle;
 import org.freeplane.features.common.nodestyle.NodeStyleModel;
 
 /**
@@ -124,7 +125,7 @@ public class StylePatternFactory {
 			if (edgeColor != null) {
 				edgeColorPattern.setValue(ColorUtils.colorToString(edgeColor));
 			}
-			final String edgeStyle = String.valueOf(edge.getStyle());
+			final String edgeStyle = EdgeStyle.toString(edge.getStyle());
 			if (edgeStyle != null) {
 				edgeStylePattern.setValue(edgeStyle);
 			}

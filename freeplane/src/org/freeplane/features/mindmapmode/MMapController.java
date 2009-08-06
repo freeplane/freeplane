@@ -169,7 +169,7 @@ public class MMapController extends MapController {
 			}
 
 			public String getDescription() {
-				return "paste";
+				return "insertNode";
 			}
 
 			public void undo() {

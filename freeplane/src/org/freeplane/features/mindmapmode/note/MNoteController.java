@@ -43,6 +43,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.html.StyleSheet;
 
 import org.freeplane.core.controller.Controller;
+import org.freeplane.core.modecontroller.IMapSelection;
 import org.freeplane.core.modecontroller.MapController;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.MapModel;
@@ -218,7 +219,11 @@ public class MNoteController extends NoteController {
 
 	@Override
 	protected void onWrite(final MapModel map) {
-		noteManager.saveNote(getModeController().getController().getSelection().getSelected());
+		final ModeController modeController = getModeController();
+		final Controller controller = modeController.getController();
+		final IMapSelection selection = controller.getSelection();
+		final NodeModel selected = selection.getSelected();
+		noteManager.saveNote(selected);
 	}
 
 	void setLastContentEmpty(final boolean mLastContentEmpty) {
