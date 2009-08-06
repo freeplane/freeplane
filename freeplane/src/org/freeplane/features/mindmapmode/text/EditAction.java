@@ -94,8 +94,8 @@ class EditAction extends AFreeplaneAction {
 		getModeController().setBlocked(true);
 		String text = nodeModel.toString();
 		final String htmlEditingOption = ResourceController.getResourceController().getProperty("html_editing_option");
-		final boolean editDefinitivelyLong = editLong;
 		final boolean isHtmlNode = HtmlTools.isHtmlNode(text);
+		final boolean editDefinitivelyLong = editLong || ! isHtmlNode && text.indexOf('\n') != -1;
 		boolean useRichTextInNewLongNodes = true;
 		if (!isHtmlNode && editDefinitivelyLong) {
 			final MTextController textController = (MTextController) TextController.getController(getModeController());
