@@ -89,6 +89,9 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 	    }
 
 		private void layout() {
+			if (textfield == null) {
+				return;
+			}
 	        final int lastWidth = textfield.getWidth();
 	    	final int lastHeight = textfield.getHeight();
 			final MapView mapView = (MapView)textfield.getParent();
@@ -194,7 +197,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		}
 
 		public void focusLost(final FocusEvent e) {
-			if (!textfield.isVisible() || eventSource == CANCEL || popupShown) {
+			if (textfield == null || !textfield.isVisible() || eventSource == CANCEL || popupShown) {
 				return;
 			}
 			if (e == null) {
@@ -277,6 +280,9 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 	}
 
 	private void hideMe() {
+		if (textfield == null) {
+			return;
+		}
 		final ModeController modeController = getModeController();
 		modeController.getMapController().removeNodeChangeListener((INodeChangeListener)textFieldListener);
 		final MapView mapView = (MapView) textfield.getParent();
@@ -284,6 +290,8 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		final MainView mainView = nodeView.getMainView();
 		mainView.removeComponentListener((ComponentListener) textFieldListener);
 		nodeView.removeComponentListener((ComponentListener) textFieldListener);
+		textfield.getDocument().removeDocumentListener((DocumentListener) textFieldListener);
+		textfield = null;
 		if (mapView == null) {
 			return;
 		}
