@@ -220,11 +220,18 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 				case KeyEvent.VK_ESCAPE:
 					commit = false;
 				case KeyEvent.VK_ENTER:
+					final String output;
+					if (commit) {
+						output = textfield.getText();
+					}
+					else{
+						output = null;
+					}
 					e.consume();
 					eventSource = CANCEL;
 					hideMe();
 					if (commit) {
-						getEditControl().ok(textfield.getText());
+						getEditControl().ok(output);
 					}
 					else {
 						getEditControl().cancel();
@@ -290,7 +297,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		final MainView mainView = nodeView.getMainView();
 		mainView.removeComponentListener((ComponentListener) textFieldListener);
 		nodeView.removeComponentListener((ComponentListener) textFieldListener);
-		textfield.getDocument().removeDocumentListener((DocumentListener) textFieldListener);
+		textfield.getDocument().removeDocumentListener(documentListener);
 		textfield = null;
 		if (mapView == null) {
 			return;
