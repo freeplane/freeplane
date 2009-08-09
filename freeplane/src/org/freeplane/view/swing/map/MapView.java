@@ -954,12 +954,16 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				final ArrowLinkModel ref = (ArrowLinkModel) next;
 				if (alreadyPaintedLinks.add(ref)) {
 					final NodeModel target = ref.getTarget();
-					if (target == null) {
+					if (target == null || ! target.isVisible()) {
 						continue;
 					}
-					final ILinkView arrowLink;
-					final NodeView sourceView = getNodeView(ref.getSource());
+					final NodeModel source = ref.getSource();
+					if (! source.isVisible()) {
+						continue;
+					}
+					final NodeView sourceView = getNodeView(source);
 					final NodeView targetView = getNodeView(target);
+					final ILinkView arrowLink;
 					if(ref.isEdgeLike() && sourceView != null && targetView != null){
 						arrowLink = new EdgeLinkView(ref, sourceView, targetView);
 					}
