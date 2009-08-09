@@ -9,6 +9,10 @@ $Rev$
 New features:
 edge like links (available from link menu)
 
+Bug fixes:
+bug fix in date filter
+bug fix in map positioning if root is selected after the filter was applied
+bug fixes in calculating text area editor size
 
 ===============================
 1.0.24 alpha
