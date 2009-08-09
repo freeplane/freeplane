@@ -39,25 +39,6 @@ import org.freeplane.features.common.time.swing.JCalendar;
  * Mar 5, 2009
  */
 public class TimeComboBoxEditor implements ComboBoxEditor {
-	private static class DayDate extends Date {
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-
-		public DayDate(final Date date) {
-			super(date.getTime());
-			setHours(0);
-			setMinutes(0);
-			setSeconds(0);
-		}
-
-		@Override
-		public String toString() {
-			return TimeCondition.format(this);
-		}
-	}
-
 	private class ShowCalendarAction implements ActionListener {
 		public void actionPerformed(final ActionEvent e) {
 			calendarPopupMenu.show(showEditorBtn, 0, showEditorBtn.getHeight());
@@ -112,9 +93,7 @@ public class TimeComboBoxEditor implements ComboBoxEditor {
 	}
 
 	public void setItem(final Object date) {
-		if (date == null) {
-			this.date = new Date();
-		}
-		showEditorBtn.setText(TimeCondition.format(this.date));
+		this.date = (Date) date;
+		showEditorBtn.setText(date == null ? "" : TimeCondition.format(this.date));
 	}
 }

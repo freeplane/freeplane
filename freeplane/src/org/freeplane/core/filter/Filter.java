@@ -107,7 +107,9 @@ public class Filter {
 				}
 			}
 			final IMapSelection selection = controller.getSelection();
-			selection.keepNodePosition(selection.getSelected(), 0.5f, 0.5f);
+			final NodeModel selected = selection.getSelected();
+			final NodeModel selectedVisible = getNearestVisibleParent(selected);
+			selection.keepNodePosition(selectedVisible, 0.5f, 0.5f);
 			refreshMap();
 			selectVisibleNode();
 		}

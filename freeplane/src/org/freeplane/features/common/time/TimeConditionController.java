@@ -93,6 +93,7 @@ class TimeConditionController implements IElementaryConditionController {
 	}
 
 	public ComboBoxModel getValuesForProperty(final Object selectedItem) {
+		values.setSelectedItem(new DayDate());
 		return values;
 	}
 

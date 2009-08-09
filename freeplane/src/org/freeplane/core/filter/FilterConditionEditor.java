@@ -73,18 +73,16 @@ public class FilterConditionEditor extends Box {
 				elementaryConditions.setModel(simpleConditionComboBoxModel);
 				elementaryConditions.setEnabled(simpleConditionComboBoxModel.getSize() > 0);
 				final NamedObject selectedCondition = (NamedObject) simpleConditionComboBoxModel.getSelectedItem();
-				values.setEditable(conditionController.canEditValues(selectedProperty, selectedCondition));
 				final boolean canSelectValues = conditionController
 				    .canSelectValues(selectedProperty, selectedCondition);
 				values.setEnabled(canSelectValues);
+				values.setEditable(false);
 				values.setModel(conditionController.getValuesForProperty(selectedProperty));
 				final ComboBoxEditor valueEditor = conditionController.getValueEditor();
 				values.setEditor(valueEditor != null ? valueEditor : new BasicComboBoxEditor());
+				values.setEditable(conditionController.canEditValues(selectedProperty, selectedCondition));
 				if (values.getModel().getSize() > 0) {
 					values.setSelectedIndex(0);
-				}
-				else {
-					values.setSelectedIndex(-1);
 				}
 				caseInsensitive.setEnabled(canSelectValues
 				        && conditionController.isCaseDependent(selectedProperty, selectedCondition));

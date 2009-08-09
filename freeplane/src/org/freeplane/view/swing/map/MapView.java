@@ -542,14 +542,15 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	private Point getAnchorCenterPoint() {
-		final Point anchorCenterPoint = anchor.getContent().getLocation();
-		anchorCenterPoint.x += anchor.getMainView().getWidth() *anchorHorizontalPoint;
-		anchorCenterPoint.y += anchor.getMainView().getHeight()*anchorVerticalPoint;
+		final MainView mainView = anchor.getMainView();
+		final Point anchorCenterPoint = new Point(
+			(int) (mainView.getWidth() * anchorHorizontalPoint),
+		    (int) (mainView.getHeight() * anchorVerticalPoint));
 		final JViewport parent = (JViewport) getParent();
-		if(parent == null){
+		if (parent == null) {
 			return new Point();
 		}
-		UITools.convertPointToAncestor(anchor, anchorCenterPoint, parent);
+		UITools.convertPointToAncestor(mainView, anchorCenterPoint, parent);
 		final Point viewPosition = parent.getViewPosition();
 		anchorCenterPoint.x += viewPosition.x;
 		anchorCenterPoint.y += viewPosition.y;
@@ -1344,6 +1345,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if (anchor != getRoot()) {
 			anchor = getRoot();
 			anchorContentLocation = getAnchorCenterPoint();
+		}
+		else{
+			anchorContentLocation = newAnchorContentLocation;
 		}
 		final int deltaX = newAnchorContentLocation.x - oldAnchorContentLocation.x;
 		final int deltaY = newAnchorContentLocation.y - oldAnchorContentLocation.y;
