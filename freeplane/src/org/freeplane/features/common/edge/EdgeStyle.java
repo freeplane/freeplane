@@ -2,7 +2,7 @@ package org.freeplane.features.common.edge;
 
 import org.freeplane.core.util.LogTool;
 
-public enum EdgeStyle {
+public enum EdgeStyle{
 
 	EDGESTYLE_BEZIER ( "bezier", 1f),
 	EDGESTYLE_HIDDEN ( "hide_edge", 1f),

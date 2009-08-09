@@ -21,6 +21,7 @@ package org.freeplane.view.swing.map.edge;
 
 import java.awt.BasicStroke;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Stroke;
 
 import org.freeplane.view.swing.map.NodeView;
@@ -31,6 +32,14 @@ import org.freeplane.view.swing.map.NodeView;
  */
 public class HiddenEdgeView extends BezierEdgeView {
 	private static Stroke STROKE;
+
+	public HiddenEdgeView(NodeView source, NodeView target) {
+	    super(source, target);
+    }
+
+	public HiddenEdgeView(NodeView target) {
+	    super(target);
+    }
 
 	protected static Stroke getHiddenStroke() {
 		if (HiddenEdgeView.STROKE == null) {
@@ -47,10 +56,20 @@ public class HiddenEdgeView extends BezierEdgeView {
 	}
 
 	@Override
-	public void paint(final NodeView target, final Graphics2D g) {
-		if (!target.isSelected()) {
+	public void paint(final Graphics2D g) {
+		if (!getTarget().isSelected()) {
 			return;
 		}
-		super.paint(target, g);
+		super.paint(g);
 	}
+
+	@Override
+    public boolean detectCollision(Point p) {
+		if (!getTarget().isSelected()) {
+			return false;
+		}
+	    return super.detectCollision(p);
+    }
+	
+	
 }

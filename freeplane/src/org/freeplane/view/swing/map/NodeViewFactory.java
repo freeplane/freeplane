@@ -107,87 +107,11 @@ class NodeViewFactory {
 		return NodeViewFactory.factory;
 	}
 
-	private EdgeView bezierEdgeView;
-	private EdgeView hiddenEdgeView;
-	private EdgeView horizontalEdgeView;
-	private EdgeView linearEdgeView;
-	private EdgeView sharpBezierEdgeView;
-	private EdgeView sharpLinearEdgeView;
-
 	private NodeViewFactory() {
 	}
 
 	private void fireNodeViewCreated(final NodeView newView) {
 		newView.getMap().getModeController().onViewCreated(newView);
-	}
-
-	private EdgeView getBezierEdgeView() {
-		if (bezierEdgeView == null) {
-			bezierEdgeView = new BezierEdgeView();
-		}
-		return bezierEdgeView;
-	}
-
-	EdgeView getEdge(final NodeView newView) {
-		final NodeModel model = newView.getModel();
-		final EdgeStyle edgeStyle = EdgeController.getController(newView.getMap().getModeController()).getStyle(model);
-		if (edgeStyle.equals(EdgeStyle.EDGESTYLE_LINEAR)) {
-			return getLinearEdgeView();
-		}
-		else if (edgeStyle.equals(EdgeStyle.EDGESTYLE_BEZIER)) {
-			return getBezierEdgeView();
-		}
-		else if (edgeStyle.equals(EdgeStyle.EDGESTYLE_SHARP_LINEAR)) {
-			return getSharpEdgeView();
-		}
-		else if (edgeStyle.equals(EdgeStyle.EDGESTYLE_SHARP_BEZIER)) {
-			return getSharpBezierEdgeView();
-		}
-		else if (edgeStyle.equals(EdgeStyle.EDGESTYLE_HORIZONTAL)) {
-			return getHorizontalEdgeView();
-		}
-		else if (edgeStyle.equals(EdgeStyle.EDGESTYLE_HIDDEN)) {
-			return getHiddenEdgeView();
-		}
-		else {
-			System.err.println("Unknown Edge Type.");
-			return getLinearEdgeView();
-		}
-	}
-
-	private EdgeView getHiddenEdgeView() {
-		if (hiddenEdgeView == null) {
-			hiddenEdgeView = new HiddenEdgeView();
-		}
-		return hiddenEdgeView;
-	}
-
-	private EdgeView getHorizontalEdgeView() {
-		if (horizontalEdgeView == null) {
-			horizontalEdgeView = new HorizontalEdgeView();
-		}
-		return horizontalEdgeView;
-	}
-
-	private EdgeView getLinearEdgeView() {
-		if (linearEdgeView == null) {
-			linearEdgeView = new LinearEdgeView();
-		}
-		return linearEdgeView;
-	}
-
-	private EdgeView getSharpBezierEdgeView() {
-		if (sharpBezierEdgeView == null) {
-			sharpBezierEdgeView = new SharpBezierEdgeView();
-		}
-		return sharpBezierEdgeView;
-	}
-
-	private EdgeView getSharpEdgeView() {
-		if (sharpLinearEdgeView == null) {
-			sharpLinearEdgeView = new SharpLinearEdgeView();
-		}
-		return sharpLinearEdgeView;
 	}
 
 	JComponent newContentPane(final NodeView view) {

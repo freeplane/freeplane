@@ -37,19 +37,18 @@ import java.awt.geom.Rectangle2D;
 import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.features.common.link.ArrowLinkModel;
 import org.freeplane.features.common.link.LinkController;
+import org.freeplane.features.common.link.NodeLinkModel;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
 /**
  * This class represents a ArrowLink around a node.
  */
-public class ArrowLinkView {
+public class ArrowLinkView implements ILinkView {
 	static final Stroke DEF_STROKE = new BasicStroke(1);
 	private static final int LABEL_SHIFT = 4;
 	private CubicCurve2D arrowLinkCurve;
 	private final ArrowLinkModel arrowLinkModel;
-	/** MAXIMAL_RECTANGLE_SIZE_FOR_COLLISION_DETECTION describes itself. */
-	final private int MAXIMAL_RECTANGLE_SIZE_FOR_COLLISION_DETECTION = 16;
 	private final NodeView source, target;
 
 	/* Note, that source and target are nodeviews and not nodemodels!. */
@@ -70,50 +69,19 @@ public class ArrowLinkView {
 		return new Point((int) dellength, 0);
 	}
 
-	/**
-	 */
-	public void changeInclination(final int originX, final int originY, final int newX, final int newY) {
-	}
-
-	/**
-	 * Determines, whether or not a given point p is in an epsilon-neighbourhood
-	 * for the cubic curve.
-	 */
-	public boolean detectCollision(final Point p) {
+	/* (non-Javadoc)
+     * @see org.freeplane.view.swing.map.link.ILinkView#detectCollision(java.awt.Point, boolean)
+     */
+	public boolean detectCollision(final Point p, boolean selectedOnly) {
+		if(selectedOnly && (source == null ||  !source.isSelected()) && (target == null || !target.isSelected())){
+			return false;
+		}
 		if (arrowLinkCurve == null) {
 			return false;
 		}
-		final Rectangle2D rec = getControlPoint(p);
-		final FlatteningPathIterator pi = new FlatteningPathIterator(arrowLinkCurve.getPathIterator(null),
-		    MAXIMAL_RECTANGLE_SIZE_FOR_COLLISION_DETECTION / 4, 10/*=maximal 2 ^10 = 1024 points .*/);
-		double oldCoordinateX = 0, oldCoordinateY = 0;
-		while (pi.isDone() == false) {
-			final double[] coordinates = new double[6];
-			final int type = pi.currentSegment(coordinates);
-			switch (type) {
-				case PathIterator.SEG_LINETO:
-					if (rec.intersectsLine(oldCoordinateX, oldCoordinateY, coordinates[0], coordinates[1])) {
-						return true;
-					}
-					/*
-					 * this case needs the same action as the next case, thus no
-					 * "break"
-					 */
-				case PathIterator.SEG_MOVETO:
-					oldCoordinateX = coordinates[0];
-					oldCoordinateY = coordinates[1];
-					break;
-				case PathIterator.SEG_QUADTO:
-				case PathIterator.SEG_CUBICTO:
-				case PathIterator.SEG_CLOSE:
-				default:
-					break;
-			}
-			pi.next();
-		}
-		return false;
+		return new CollisionDetector().detectCollision(p, arrowLinkCurve);
 	}
-
+	
 	private void drawEndPointText(final Graphics2D g, final String text, final Point endPoint, final Point controlPoint) {
 		if (text == null || text.equals("")) {
 			return;
@@ -148,22 +116,22 @@ public class ArrowLinkView {
 		g.drawString(middleLabel, centerPoint.x - textWidth / 2, centerPoint.y - LABEL_SHIFT);
 	}
 
-	public CubicCurve2D getArrowLinkCurve() {
+	CubicCurve2D getArrowLinkCurve() {
 		return arrowLinkCurve;
 	}
 
-	public ArrowLinkModel getArrowLinkModel() {
+	NodeLinkModel getArrowLinkModel() {
 		return arrowLinkModel;
 	}
 
-	public Rectangle getBounds() {
+	Rectangle getBounds() {
 		if (arrowLinkCurve == null) {
 			return new Rectangle();
 		}
 		return arrowLinkCurve.getBounds();
 	}
 
-	public Point getCenterPoint() {
+	Point getCenterPoint() {
 		if (arrowLinkCurve == null) {
 			return null;
 		}
@@ -197,14 +165,9 @@ public class ArrowLinkView {
 		throw new RuntimeException("center point not found");
 	}
 
-	public Color getColor() {
+	Color getColor() {
 		final ArrowLinkModel model = getModel();
 		return LinkController.getController(getModeController()).getColor(model);
-	}
-
-	protected Rectangle2D getControlPoint(final Point2D p) {
-		final int side = MAXIMAL_RECTANGLE_SIZE_FOR_COLLISION_DETECTION;
-		return new Rectangle2D.Double(p.getX() - side / 2, p.getY() - side / 2, side, side);
 	}
 
 	protected MapView getMap() {
@@ -220,10 +183,9 @@ public class ArrowLinkView {
 		return mapView.getModeController();
 	}
 
-	/**
-	 * fc: This getter is public, because the view gets the model by click on
-	 * the curve.
-	 */
+	/* (non-Javadoc)
+     * @see org.freeplane.view.swing.map.link.ILinkView#getModel()
+     */
 	public ArrowLinkModel getModel() {
 		return arrowLinkModel;
 	}
@@ -231,16 +193,16 @@ public class ArrowLinkView {
 	/**
 	 * Get the width in pixels rather than in width constant (like -1)
 	 */
-	public int getRealWidth() {
+	int getRealWidth() {
 		final int width = getWidth();
 		return (width < 1) ? 1 : width;
 	}
 
-	public NodeView getSource() {
+	NodeView getSource() {
 		return source;
 	}
 
-	public Stroke getStroke() {
+	Stroke getStroke() {
 		final int width = getWidth();
 		if (width < 1) {
 			return ArrowLinkView.DEF_STROKE;
@@ -248,12 +210,12 @@ public class ArrowLinkView {
 		return new BasicStroke(width, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER);
 	}
 
-	public NodeView getTarget() {
+	NodeView getTarget() {
 		return target;
 	}
 
-	public int getWidth() {
-		final ArrowLinkModel model = getModel();
+	int getWidth() {
+		final NodeLinkModel model = getModel();
 		return LinkController.getController(getModeController()).getWidth(model);
 	}
 
@@ -277,7 +239,7 @@ public class ArrowLinkView {
 	 * @param y4 Point 2 of Line 2
 	 * @return Point where the segments intersect, or null if they don't
 	 */
-	public Point intersection(final double x1, final double y1, final double x2, final double y2, final double x3,
+	Point intersection(final double x1, final double y1, final double x2, final double y2, final double x3,
 	                          final double y3, final double x4, final double y4) {
 		final double d = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
 		if (d == 0) {
@@ -311,7 +273,7 @@ public class ArrowLinkView {
 	 * @param y2 Ending point of the segment
 	 * @return
 	 */
-	public Point2D.Double normal(final double x1, final double y1, final double x2, final double y2) {
+	Point2D.Double normal(final double x1, final double y1, final double x2, final double y2) {
 		double nx, ny;
 		if (x1 == x2) {
 			nx = Math.signum(y2 - y1);
@@ -325,10 +287,9 @@ public class ArrowLinkView {
 		return new Point2D.Double(nx, ny);
 	}
 
-	/**
-	 * \param iterativeLevel describes the n-th nested arrowLink that is to be
-	 * painted.
-	 */
+	/* (non-Javadoc)
+     * @see org.freeplane.view.swing.map.link.ILinkView#paint(java.awt.Graphics)
+     */
 	public void paint(final Graphics graphics) {
 		if (!isSourceVisible() && !isTargetVisible()) {
 			return;
@@ -444,4 +405,19 @@ public class ArrowLinkView {
 		p.addPoint((p1.x), (p1.y));
 		g.fillPolygon(p);
 	}
+	/* (non-Javadoc)
+     * @see org.freeplane.view.swing.map.link.ILinkView#increaseBounds(java.awt.Rectangle)
+     */
+	public void increaseBounds(final Rectangle innerBounds) {
+	    final CubicCurve2D arrowLinkCurve = getArrowLinkCurve();
+			if (arrowLinkCurve == null) {
+				return;
+			}
+	    final Rectangle arrowViewBigBounds = arrowLinkCurve.getBounds();
+	    if (!innerBounds.contains(arrowViewBigBounds)) {
+	    	final Rectangle arrowViewBounds = PathBBox.getBBox(arrowLinkCurve).getBounds();
+	    	innerBounds.add(arrowViewBounds);
+	    }
+    }
+
 }

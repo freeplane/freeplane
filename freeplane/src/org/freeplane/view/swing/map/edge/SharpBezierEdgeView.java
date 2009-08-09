@@ -20,6 +20,7 @@
 package org.freeplane.view.swing.map.edge;
 
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Stroke;
 import java.awt.geom.CubicCurve2D;
 import java.awt.geom.GeneralPath;
@@ -27,6 +28,8 @@ import java.awt.geom.Point2D;
 
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.view.swing.map.MainView;
+import org.freeplane.view.swing.map.NodeView;
+import org.freeplane.view.swing.map.link.CollisionDetector;
 
 /**
  * This class represents a sharp Edge of a MindMap.
@@ -35,14 +38,15 @@ public class SharpBezierEdgeView extends EdgeView {
 	private static final float XCTRL = 12;
 	private int deltaX;
 	private int deltaY;
-	GeneralPath graph = new GeneralPath();
-	CubicCurve2D.Float line1 = new CubicCurve2D.Float();
-	CubicCurve2D.Float line2 = new CubicCurve2D.Float();
 	Point2D.Float one, two;
 
-	public SharpBezierEdgeView() {
-		super();
-	}
+	public SharpBezierEdgeView(NodeView source, NodeView target) {
+	    super(source, target);
+    }
+
+	public SharpBezierEdgeView(NodeView target) {
+	    super(target);
+    }
 
 	@Override
 	protected void createStart() {
@@ -86,8 +90,8 @@ public class SharpBezierEdgeView extends EdgeView {
 	}
 
 	@Override
-	protected void paint(final Graphics2D g) {
-		update();
+	protected void draw(final Graphics2D g) {
+		GeneralPath graph =  update();
 		g.setColor(getColor());
 		g.setPaint(getColor());
 		g.setStroke(getStroke());
@@ -95,7 +99,7 @@ public class SharpBezierEdgeView extends EdgeView {
 		g.draw(graph);
 	}
 
-	private void update() {
+	private GeneralPath update() {
 		final float zoom = getMap().getZoom();
 		final float xctrlRelative = SharpBezierEdgeView.XCTRL * zoom;
 		if (getTarget().isLeft()) {
@@ -108,13 +112,23 @@ public class SharpBezierEdgeView extends EdgeView {
 		}
 		final float w = (getWidth() / 2f + 1) * zoom;
 		final float w2 = w / 2;
+		CubicCurve2D.Float line1 = new CubicCurve2D.Float();
+		CubicCurve2D.Float line2 = new CubicCurve2D.Float();
 		line1.setCurve(start.x - deltaX, start.y - deltaY, one.x - deltaX, one.y - deltaY, two.x, two.y - w2, end.x,
 		    end.y);
 		line2.setCurve(end.x, end.y, two.x, two.y + w2, one.x + deltaX, one.y + deltaY, start.x + deltaX, start.y
 		        + deltaY);
-		graph.reset();
+		GeneralPath graph = new GeneralPath();
 		graph.append(line1, true);
 		graph.append(line2, true);
 		graph.closePath();
+		return graph;
 	}
+
+	@Override
+    public boolean detectCollision(Point p) {
+		CubicCurve2D.Float line1 = new CubicCurve2D.Float();
+		line1.setCurve(start.x, start.y , one.x , one.y , two.x, two.y, end.x, end.y);
+	    return new CollisionDetector().detectCollision(p, line1);
+    }
 }

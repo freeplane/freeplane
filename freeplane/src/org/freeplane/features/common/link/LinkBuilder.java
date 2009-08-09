@@ -47,15 +47,15 @@ import org.freeplane.n3.nanoxml.XMLElement;
 
 class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExtensionElementWriter,
         IExtensionAttributeWriter, IAttributeWriter {
-	final private HashSet<ArrowLinkModel> arrowLinks;
+	final private HashSet<NodeLinkModel> arrowLinks;
 	private final LinkController linkController;
 
 	public LinkBuilder(final LinkController linkController) {
 		this.linkController = linkController;
-		arrowLinks = new HashSet<ArrowLinkModel>();
+		arrowLinks = new HashSet<NodeLinkModel>();
 	}
 
-	protected ArrowLinkModel createArrowLink(final NodeModel source, final String targetID) {
+	protected NodeLinkModel createArrowLink(final NodeModel source, final String targetID) {
 		return new ArrowLinkModel(source, targetID);
 	}
 
@@ -69,8 +69,8 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 	public void endElement(final Object parent, final String tag, final Object userObject, final XMLElement dom) {
 		if (parent instanceof NodeModel) {
 			final NodeModel node = (NodeModel) parent;
-			if (userObject instanceof ArrowLinkModel) {
-				final ArrowLinkModel arrowLink = (ArrowLinkModel) userObject;
+			if (userObject instanceof NodeLinkModel) {
+				final NodeLinkModel arrowLink = (NodeLinkModel) userObject;
 				arrowLink.setSource(node);
 			}
 			return;
@@ -82,9 +82,9 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 	 * registry.
 	 */
 	public void readingCompleted(final NodeModel topNode, final HashMap<String, String> newIds) {
-		final Iterator<ArrowLinkModel> iterator = arrowLinks.iterator();
+		final Iterator<NodeLinkModel> iterator = arrowLinks.iterator();
 		while (iterator.hasNext()) {
-			final ArrowLinkModel arrowLink = iterator.next();
+			final NodeLinkModel arrowLink = iterator.next();
 			final String id = arrowLink.getTargetID();
 			final String newId = newIds.get(id);
 			final String targetID = newId != null ? newId : id;
@@ -106,10 +106,10 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 				linkController.loadLink(node, value);
 			}
 		});
-		reader.addAttributeHandler("arrowlink", "STYLE", new IAttributeHandler() {
+		reader.addAttributeHandler("arrowlink", "EDGE_LIKE", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final ArrowLinkModel arrowLink = (ArrowLinkModel) userObject;
-				arrowLink.setStyle(value.toString());
+				arrowLink.setEdgeLike(Boolean.TRUE.toString().equals(value));
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "COLOR", new IAttributeHandler() {
@@ -193,9 +193,9 @@ class LinkBuilder implements IElementDOMHandler, IReadCompletionListener, IExten
 		}
 		final XMLElement arrowLink = new XMLElement();
 		arrowLink.setName("arrowlink");
-		final String style = model.getStyle();
-		if (style != null) {
-			arrowLink.setAttribute("STYLE", style);
+		final boolean isEdgeLike = model.isEdgeLike();
+		if (isEdgeLike ) {
+			arrowLink.setAttribute("EDGE_LIKE", Boolean.TRUE.toString());
 		}
 		final Color color = model.getColor();
 		if (color != null) {

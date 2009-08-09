@@ -51,11 +51,7 @@ public abstract class EdgeView {
 	protected NodeView source;
 	protected Point start, end;
 	private NodeView target;
-
-	protected void createEnd() {
-		end = getTarget().getMainViewInPoint();
-		UITools.convertPointToAncestor(target.getMainView(), end, source);
-	}
+	private Color color;
 
 	protected void createStart() {
 		start = source.getMainViewOutPoint(getTarget(), end);
@@ -63,10 +59,16 @@ public abstract class EdgeView {
 	}
 
 	public Color getColor() {
-		final NodeModel model = target.getModel();
-		final Color edgeColor = EdgeController.getController(target.getMap().getModeController()).getColor(model);
-		return edgeColor;
+		if(color == null){
+			final NodeModel model = target.getModel();
+			color = EdgeController.getController(target.getMap().getModeController()).getColor(model);
+		}
+		return color;
 	}
+
+	public void setColor(Color color) {
+    	this.color = color;
+    }
 
 	protected MapView getMap() {
 		return getTarget().getMap();
@@ -75,11 +77,11 @@ public abstract class EdgeView {
 	/**
 	 * @return Returns the source.
 	 */
-	protected NodeView getSource() {
+	public NodeView getSource() {
 		return source;
 	}
 
-	public Stroke getStroke() {
+	protected Stroke getStroke() {
 		final int width = getWidth();
 		if (width == EdgeModel.WIDTH_THIN) {
 			return EdgeView.DEF_STROKE;
@@ -90,11 +92,11 @@ public abstract class EdgeView {
 	/**
 	 * @return Returns the target.
 	 */
-	protected NodeView getTarget() {
+	public NodeView getTarget() {
 		return target;
 	}
 
-	public int getWidth() {
+	protected int getWidth() {
 		final NodeModel model = target.getModel();
 		final int width = EdgeController.getController(target.getMap().getModeController()).getWidth(model);
 		return width;
@@ -104,27 +106,31 @@ public abstract class EdgeView {
 		return getTarget().isParentHidden();
 	}
 
-	abstract protected void paint(Graphics2D g);
+	abstract protected void draw(Graphics2D g);
 
-	/**
-	 * This should be a task of MindMapLayout start,end must be initialized...
-	 *
-	 * @param target
-	 */
-	public void paint(final NodeView target, final Graphics2D g) {
-		final Stroke stroke = g.getStroke();
+	public EdgeView(final NodeView target) {
 		source = target.getVisibleParentView();
 		this.target = target;
-		createEnd();
+		end = getTarget().getMainViewInPoint();
+        UITools.convertPointToAncestor(target.getMainView(), end, source);
 		createStart();
-		paint(g);
-		source = null;
-		this.target = null;
-		g.setStroke(stroke);
 	}
 
-	protected void reset() {
-		source = null;
-		target = null;
+	public void paint(final Graphics2D g) {
+	    final Stroke stroke = g.getStroke();
+		draw(g);
+		g.setStroke(stroke);
+    }
+	
+	public EdgeView(final NodeView source, final NodeView target) {
+		this.source = source;
+		this.target = target;
+		end = getTarget().getMainViewInPoint();
+		final MapView map = getMap();
+        UITools.convertPointToAncestor(target.getMainView(), end, map);
+		createStart();
+        UITools.convertPointToAncestor(source, start, map);
 	}
+
+	abstract public boolean detectCollision(Point p);
 }

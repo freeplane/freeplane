@@ -28,6 +28,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
@@ -109,6 +110,7 @@ public class MLinkController extends LinkController {
 	}
 
 	static private ColorArrowLinkAction colorArrowLinkAction;
+	static private EdgeLikeLinkAction edgeLikeLinkAction;
 	static private Pattern mailPattern;
 	static final Pattern nonLinkCharacter = Pattern.compile("[ \n()'\",;]");
 	static private SetLinkByFileChooserAction setLinkByFileChooser;
@@ -142,6 +144,8 @@ public class MLinkController extends LinkController {
 		modeController.addAction(new RemoveArrowLinkAction(this, null));
 		colorArrowLinkAction = new ColorArrowLinkAction(this, null);
 		modeController.addAction(colorArrowLinkAction);
+		edgeLikeLinkAction = new EdgeLikeLinkAction(this, null);
+		modeController.addAction(edgeLikeLinkAction);
 		modeController.addAction(new ChangeArrowsInArrowLinkAction(this, "none", null, true, true));
 		setLinkByTextField = new SetLinkByTextFieldAction(controller);
 		modeController.addAction(setLinkByTextField);
@@ -155,6 +159,10 @@ public class MLinkController extends LinkController {
 		((RemoveArrowLinkAction) getModeController().getAction("RemoveArrowLinkAction")).setArrowLink(link);
 		arrowLinkPopup.add(new RemoveArrowLinkAction(this, link));
 		arrowLinkPopup.add(new ColorArrowLinkAction(this, link));
+		final EdgeLikeLinkAction action = new EdgeLikeLinkAction(this, link);
+		final JCheckBoxMenuItem menuItem = new JCheckBoxMenuItem(action);
+		menuItem.setSelected(link.isEdgeLike());
+		arrowLinkPopup.add(menuItem);
 		arrowLinkPopup.addSeparator();
 		arrowLinkPopup.add(new JLabel(ResourceBundles.getText("edit_source_label")));
 		final JTextField sourceLabelEditor = new JTextField(link.getSourceLabel());

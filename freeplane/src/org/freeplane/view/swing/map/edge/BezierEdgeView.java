@@ -21,10 +21,13 @@ package org.freeplane.view.swing.map.edge;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Stroke;
 import java.awt.geom.CubicCurve2D;
 
+import org.freeplane.view.swing.map.NodeView;
 import org.freeplane.view.swing.map.VerticalRootNodeViewLayout;
+import org.freeplane.view.swing.map.link.CollisionDetector;
 
 /**
  * This class represents a single Edge of a MindMap.
@@ -32,15 +35,19 @@ import org.freeplane.view.swing.map.VerticalRootNodeViewLayout;
 public class BezierEdgeView extends EdgeView {
 	private static final int CHILD_XCTRL = 20;
 	private static final int XCTRL = 12;
-	CubicCurve2D.Float graph = new CubicCurve2D.Float();
 
-	public BezierEdgeView() {
-		super();
-	}
+
+	public BezierEdgeView(NodeView source, NodeView target) {
+	    super(source, target);
+    }
+
+	public BezierEdgeView(NodeView target) {
+	    super(target);
+    }
 
 	@Override
-	protected void paint(final Graphics2D g) {
-		update();
+	protected void draw(final Graphics2D g) {
+		CubicCurve2D.Float graph = update();
 		final Color color = getColor();
 		g.setColor(color);
 		final Stroke stroke = getStroke();
@@ -55,7 +62,7 @@ public class BezierEdgeView extends EdgeView {
 		}
 	}
 
-	private void update() {
+	private CubicCurve2D.Float update() {
 		final int sign = (getTarget().isLeft()) ? -1 : 1;
 		int sourceSign = 1;
 		if (getSource().isRoot() && !VerticalRootNodeViewLayout.USE_COMMON_OUT_POINT_FOR_ROOT_NODE) {
@@ -63,6 +70,14 @@ public class BezierEdgeView extends EdgeView {
 		}
 		final int xctrl = getMap().getZoomed(sourceSign * sign * BezierEdgeView.XCTRL);
 		final int childXctrl = getMap().getZoomed(-1 * sign * BezierEdgeView.CHILD_XCTRL);
+		CubicCurve2D.Float graph = new CubicCurve2D.Float();
 		graph.setCurve(start.x, start.y, start.x + xctrl, start.y, end.x + childXctrl, end.y, end.x, end.y);
+		return graph;
 	}
+
+	@Override
+    public boolean detectCollision(Point p) {
+		CubicCurve2D.Float graph = update();
+	    return new CollisionDetector().detectCollision(p, graph);
+    }
 }

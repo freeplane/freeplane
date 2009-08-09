@@ -19,71 +19,58 @@
  */
 package org.freeplane.features.mindmapmode.link;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 
+import javax.swing.Action;
+
+import org.freeplane.core.controller.Controller;
+import org.freeplane.core.frame.ColorTracker;
+import org.freeplane.core.modecontroller.ModeController;
 import org.freeplane.core.model.NodeModel;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.features.common.link.NodeLinkModel;
-import org.freeplane.features.common.link.NodeLinks;
+import org.freeplane.features.common.link.ArrowLinkModel;
+import org.freeplane.features.common.link.LinkController;
 
-class RemoveArrowLinkAction extends AFreeplaneAction {
+class EdgeLikeLinkAction extends AFreeplaneAction {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private NodeLinkModel mArrowLink;
+	ArrowLinkModel arrowLink;
 
-	/**
-	 * can be null can be null.
-	 */
-	public RemoveArrowLinkAction(final MLinkController linkController, final NodeLinkModel arrowLink) {
-		super("RemoveArrowLinkAction", linkController.getModeController().getController());
-		setArrowLink(arrowLink);
+	public EdgeLikeLinkAction(final MLinkController linkController, final ArrowLinkModel arrowLink) {
+		super("EdgeLikeLinkAction", linkController.getModeController().getController());
+		this.arrowLink = arrowLink;
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		removeArrowLink(mArrowLink);
+		setEdgeLike(! arrowLink.isEdgeLike());
 	}
 
-	/**
-	 * @return Returns the arrowLink.
-	 */
-	public NodeLinkModel getArrowLink() {
-		return mArrowLink;
-	}
-
-	public void removeArrowLink(final NodeLinkModel arrowLink) {
+	public void setEdgeLike(final boolean edgeLike) {
+		final boolean alreadyEdgeLike = arrowLink.isEdgeLike();
+		if (alreadyEdgeLike == edgeLike) {
+			return;
+		}
 		final IActor actor = new IActor() {
 			public void act() {
-				final NodeModel source = arrowLink.getSource();
-				final NodeLinks nodeLinks = (NodeLinks) source.getExtension(NodeLinks.class);
-				nodeLinks.removeArrowlink(arrowLink);
-				getModeController().getMapController().nodeChanged(source);
+				arrowLink.setEdgeLike(edgeLike);
+				final NodeModel node = arrowLink.getSource();
+				getModeController().getMapController().nodeChanged(node);
 			}
 
 			public String getDescription() {
-				return "removeArrowLink";
+				return "setEdgeLike";
 			}
 
 			public void undo() {
-				final NodeModel source = arrowLink.getSource();
-				NodeLinks nodeLinks = (NodeLinks) source.getExtension(NodeLinks.class);
-				if (nodeLinks == null) {
-					nodeLinks = new NodeLinks();
-					source.addExtension(nodeLinks);
-				}
-				nodeLinks.addArrowlink(arrowLink);
-				getModeController().getMapController().nodeChanged(source);
+				arrowLink.setEdgeLike(alreadyEdgeLike);
+				final NodeModel node = arrowLink.getSource();
+				getModeController().getMapController().nodeChanged(node);
 			}
 		};
 		getModeController().execute(actor, arrowLink.getSource().getMap());
-	}
-
-	/**
-	 * The arrowLink to set.
-	 */
-	public void setArrowLink(final NodeLinkModel arrowLink) {
-		mArrowLink = arrowLink;
 	}
 }

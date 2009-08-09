@@ -237,7 +237,7 @@ public class LinkController extends SelectionController implements IExtension {
 		return null;
 	}
 
-	public int getWidth(final ArrowLinkModel model) {
+	public int getWidth(final NodeLinkModel model) {
 		return STANDARD_WIDTH;
 	}
 

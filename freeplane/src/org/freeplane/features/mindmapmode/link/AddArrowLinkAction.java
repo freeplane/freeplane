@@ -29,6 +29,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.common.link.ArrowLinkModel;
+import org.freeplane.features.common.link.NodeLinkModel;
 import org.freeplane.features.common.link.NodeLinks;
 
 /**
@@ -61,7 +62,7 @@ class AddArrowLinkAction extends AFreeplaneAction {
 	public void addLink(final NodeModel source, final NodeModel target) {
 		final String targetID = target.createID();
 		final IActor actor = new IActor() {
-			private ArrowLinkModel arrowLink;
+			private NodeLinkModel arrowLink;
 
 			public void act() {
 				NodeLinks nodeLinks = (NodeLinks) source.getExtension(NodeLinks.class);

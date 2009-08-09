@@ -21,20 +21,26 @@ package org.freeplane.view.swing.map.edge;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Stroke;
 
 import org.freeplane.features.common.nodelocation.LocationModel;
+import org.freeplane.view.swing.map.NodeView;
 
 /**
  * This class represents a single Edge of a MindMap.
  */
 public class HorizontalEdgeView extends EdgeView {
-	public HorizontalEdgeView() {
-		super();
-	}
+	public HorizontalEdgeView(NodeView source, NodeView target) {
+	    super(source, target);
+    }
+
+	public HorizontalEdgeView(NodeView target) {
+	    super(target);
+    }
 
 	@Override
-	protected void paint(final Graphics2D g) {
+	protected void draw(final Graphics2D g) {
 		final Color color = getColor();
 		g.setColor(color);
 		final Stroke stroke = getStroke();
@@ -80,4 +86,10 @@ public class HorizontalEdgeView extends EdgeView {
 			}
 		}
 	}
+
+	@Override
+    public boolean detectCollision(Point p) {
+	    // TODO Auto-generated method stub
+	    return false;
+    }
 }

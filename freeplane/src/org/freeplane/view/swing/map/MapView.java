@@ -80,6 +80,8 @@ import org.freeplane.features.common.link.LinkModel;
 import org.freeplane.features.common.link.NodeLinks;
 import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.view.swing.map.link.ArrowLinkView;
+import org.freeplane.view.swing.map.link.EdgeLinkView;
+import org.freeplane.view.swing.map.link.ILinkView;
 
 /**
  * This class represents the view of a whole MindMap (in analogy to class
@@ -255,7 +257,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private NodeView anchor;
 	private Point anchorContentLocation;
 	/** Used to identify a right click onto a link curve. */
-	private Vector/* of ArrowLinkViews */arrowLinkViews;
+	private Vector<ILinkView> arrowLinkViews;
 	private Color background = null;
 	private Rectangle boundingRectangle = null;
 	private int centerNodeCounter;
@@ -440,22 +442,19 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 	}
 
-	public ArrowLinkModel detectCollision(final Point p) {
+	public Object detectCollision(final Point p) {
 		if (arrowLinkViews == null) {
 			return null;
 		}
 		for (int i = 0; i < arrowLinkViews.size(); ++i) {
-			final ArrowLinkView arrowView = (ArrowLinkView) arrowLinkViews.get(i);
-			final NodeView source = arrowView.getSource();
-			final NodeView target = arrowView.getTarget();
-			if ((source != null && source.isSelected() || target != null && target.isSelected())
-			        && arrowView.detectCollision(p)) {
+			final ILinkView arrowView = arrowLinkViews.get(i);
+			if (arrowView.detectCollision(p, true)) {
 				return arrowView.getModel();
 			}
 		}
 		for (int i = 0; i < arrowLinkViews.size(); ++i) {
-			final ArrowLinkView arrowView = (ArrowLinkView) arrowLinkViews.get(i);
-			if (arrowView.detectCollision(p)) {
+			final ILinkView arrowView = arrowLinkViews.get(i);
+			if (arrowView.detectCollision(p, false)) {
 				return arrowView.getModel();
 			}
 		}
@@ -580,16 +579,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		innerBounds.y += getRoot().getY();
 		final Rectangle maxBounds = new Rectangle(0, 0, getWidth(), getHeight());
 		for (int i = 0; i < arrowLinkViews.size(); ++i) {
-			final ArrowLinkView arrowView = (ArrowLinkView) arrowLinkViews.get(i);
-			final CubicCurve2D arrowLinkCurve = arrowView.getArrowLinkCurve();
-			if (arrowLinkCurve == null) {
-				continue;
-			}
-			final Rectangle arrowViewBigBounds = arrowLinkCurve.getBounds();
-			if (!innerBounds.contains(arrowViewBigBounds)) {
-				final Rectangle arrowViewBounds = PathBBox.getBBox(arrowLinkCurve).getBounds();
-				innerBounds.add(arrowViewBounds);
-			}
+			final ILinkView arrowView = arrowLinkViews.get(i);
+			arrowView.increaseBounds(innerBounds);
 		}
 		return innerBounds.intersection(maxBounds);
 	}
@@ -966,8 +957,15 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 					if (target == null) {
 						continue;
 					}
-					final ArrowLinkView arrowLink = new ArrowLinkView(ref, getNodeView(ref.getSource()),
-					    getNodeView(target));
+					final ILinkView arrowLink;
+					final NodeView sourceView = getNodeView(ref.getSource());
+					final NodeView targetView = getNodeView(target);
+					if(ref.isEdgeLike() && sourceView != null && targetView != null){
+						arrowLink = new EdgeLinkView(ref, sourceView, targetView);
+					}
+					else{
+						arrowLink = new ArrowLinkView(ref, sourceView, targetView);
+					}
 					arrowLink.paint(graphics);
 					arrowLinkViews.add(arrowLink);
 				}
@@ -979,7 +977,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	private void paintLinks(final Graphics2D graphics) {
-		arrowLinkViews = new Vector();
+		arrowLinkViews = new Vector<ILinkView>();
 		final Object renderingHint = getModeController().getController().getViewController().setEdgesRenderingHint(
 		    graphics);
 		paintLinks(rootView, graphics, new HashSet());

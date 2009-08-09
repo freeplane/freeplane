@@ -91,8 +91,9 @@ public class MMouseMotionListener implements IMapMouseReceiver {
 			mapView.setMoveCursor(true);
 			originX = e.getX();
 			originY = e.getY();
-			draggedLink = mapView.detectCollision(new Point(originX, originY));
-			if (draggedLink != null) {
+			final Object object = mapView.detectCollision(new Point(originX, originY));
+			if (object instanceof ArrowLinkModel) {
+				draggedLink = (ArrowLinkModel) object;
 				draggedLinkOldStartPoint = draggedLink.getStartInclination();
 				draggedLinkOldEndPoint = draggedLink.getEndInclination();
 				draggedLink.setShowControlPoints(true);

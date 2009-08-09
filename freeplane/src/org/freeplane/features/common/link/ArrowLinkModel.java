@@ -24,23 +24,29 @@ import java.awt.Point;
 
 import org.freeplane.core.model.NodeModel;
 
-public class ArrowLinkModel extends LinkModel {
+public class ArrowLinkModel extends NodeLinkModel {
 	private Color color;
 	private String endArrow;
 	private Point endInclination;
 	private String middleLabel;
 	private boolean showControlPointsFlag;
-	private NodeModel source;
 	private String sourceLabel;
 	private String startArrow;
 	private Point startInclination;
-	private String style;
 	private String targetLabel;
 	private int width;
+	private boolean edgeLike;
+
+	public boolean isEdgeLike() {
+    	return edgeLike;
+    }
+
+	public void setEdgeLike(boolean edgeLike) {
+    	this.edgeLike = edgeLike;
+    }
 
 	public ArrowLinkModel(final NodeModel source, final String targetID) {
-		super(targetID);
-		this.source = source;
+		super(source, targetID);
 		startArrow = "None";
 		endArrow = "Default";
 	}
@@ -93,10 +99,6 @@ public class ArrowLinkModel extends LinkModel {
 		return showControlPointsFlag;
 	}
 
-	public NodeModel getSource() {
-		return source;
-	}
-
 	public String getSourceLabel() {
 		return sourceLabel;
 	}
@@ -110,14 +112,6 @@ public class ArrowLinkModel extends LinkModel {
 			return null;
 		}
 		return new Point(startInclination);
-	}
-
-	public String getStyle() {
-		return style;
-	}
-
-	public NodeModel getTarget() {
-		return source.getMap().getNodeForID(getTargetID());
 	}
 
 	public String getTargetLabel() {
@@ -156,10 +150,6 @@ public class ArrowLinkModel extends LinkModel {
 		showControlPointsFlag = bShowControlPointsFlag;
 	}
 
-	public void setSource(final NodeModel source) {
-		this.source = source;
-	}
-
 	public void setSourceLabel(final String label) {
 		sourceLabel = empty2null(label);
 	}
@@ -178,10 +168,6 @@ public class ArrowLinkModel extends LinkModel {
 
 	public void setStartInclination(final Point startInclination) {
 		this.startInclination = startInclination;
-	}
-
-	public void setStyle(final String style) {
-		this.style = style;
 	}
 
 	public void setTargetLabel(final String targetLabel) {

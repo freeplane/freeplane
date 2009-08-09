@@ -20,15 +20,24 @@
 package org.freeplane.view.swing.map.edge;
 
 import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Polygon;
 import java.awt.Stroke;
+
+import org.freeplane.view.swing.map.NodeView;
+import org.freeplane.view.swing.map.link.CollisionDetector;
 
 /**
  * This class represents a sharp Edge of a MindMap.
  */
 public class SharpLinearEdgeView extends EdgeView {
-	public SharpLinearEdgeView() {
-		super();
-	}
+	public SharpLinearEdgeView(NodeView source, NodeView target) {
+	    super(source, target);
+    }
+
+	public SharpLinearEdgeView(NodeView target) {
+	    super(target);
+    }
 
 	@Override
 	public Stroke getStroke() {
@@ -36,7 +45,7 @@ public class SharpLinearEdgeView extends EdgeView {
 	}
 
 	@Override
-	protected void paint(final Graphics2D g) {
+	protected void draw(final Graphics2D g) {
 		g.setColor(getColor());
 		g.setPaint(getColor());
 		g.setStroke(getStroke());
@@ -45,4 +54,13 @@ public class SharpLinearEdgeView extends EdgeView {
 		final int ys[] = { start.y + w, end.y, start.y - w };
 		g.fillPolygon(xs, ys, 3);
 	}
+
+	@Override
+    public boolean detectCollision(Point p) {
+		final int w = getMap().getZoomed(getWidth() / 2 + 1);
+		final int xs[] = { start.x, end.x, start.x };
+		final int ys[] = { start.y + w, end.y, start.y - w };
+	    Polygon polygon = new Polygon(xs, ys, 3);
+	    return new CollisionDetector().detectCollision(p, polygon);
+    }
 }

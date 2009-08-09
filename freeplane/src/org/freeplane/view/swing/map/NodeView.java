@@ -59,6 +59,7 @@ import org.freeplane.features.common.nodestyle.NodeStyleController;
 import org.freeplane.view.swing.map.attribute.AttributeView;
 import org.freeplane.view.swing.map.cloud.CloudView;
 import org.freeplane.view.swing.map.edge.EdgeView;
+import org.freeplane.view.swing.map.edge.EdgeViewFactory;
 
 /**
  * This class represents a single Node of a MindMap (in analogy to
@@ -960,8 +961,8 @@ public class NodeView extends JComponent implements INodeView {
 				g.translate(p.x, p.y);
 				nodeView.paintCloud(g);
 				g.translate(-p.x, -p.y);
-				final EdgeView edge = NodeViewFactory.getInstance().getEdge(nodeView);
-				edge.paint(nodeView, g);
+				final EdgeView edge = EdgeViewFactory.getInstance().getEdge(nodeView);
+				edge.paint(g);
 			}
 			else {
 				nodeView.paintCloudsAndEdges(g);

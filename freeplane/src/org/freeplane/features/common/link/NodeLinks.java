@@ -82,12 +82,12 @@ public class NodeLinks implements IExtension {
 		links = new LinkedList<LinkModel>();
 	}
 
-	public void addArrowlink(final ArrowLinkModel newLink) {
+	public void addArrowlink(final NodeLinkModel newLink) {
 		final String targetID = newLink.getTargetID();
 		final Iterator<LinkModel> iterator = links.iterator();
 		while (iterator.hasNext()) {
 			final LinkModel link = iterator.next();
-			if (link instanceof ArrowLinkModel && link.getTargetID().equals(targetID)) {
+			if (link.getClass().equals(newLink.getClass()) && link.getTargetID().equals(targetID)) {
 				return;
 			}
 		}
@@ -116,7 +116,7 @@ public class NodeLinks implements IExtension {
 		return Collections.unmodifiableCollection(links);
 	}
 
-	public void removeArrowlink(final ArrowLinkModel link) {
+	public void removeArrowlink(final NodeLinkModel link) {
 		final NodeModel node = link.getSource();
 		final Iterator<LinkModel> iterator = NodeLinks.getLinkExtension(node).links.iterator();
 		while (iterator.hasNext()) {
