@@ -99,10 +99,7 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 			final int width ;
 			final boolean lineWrap = lastWidth == maxWidth;
 			if(! lineWrap){
-				final Insets insets = textfield.getInsets();
-				final Font font = textfield.getFont();
-				final FontMetrics fontMetrics = textfield.getFontMetrics(font);
-				final int preferredWidth = fontMetrics.stringWidth(textfield.getText() + insets.left + insets.right) + 5;
+				final int preferredWidth = getTextPreferredWidth();
 				if(preferredWidth <= maxWidth){
 					if(preferredWidth < lastWidth){
 						width = lastWidth;
@@ -118,12 +115,12 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 				else{
 					textfield.setLineWrap(true);
 					width = maxWidth;
-					height =textfield.getPreferredScrollableViewportSize().height; 
+					height =Math.max(lastHeight, textfield.getPreferredScrollableViewportSize().height); 
 				}
 			}
 			else{
 				width = maxWidth;
-				height =textfield.getPreferredScrollableViewportSize().height; 
+				height =Math.max(lastHeight, textfield.getPreferredScrollableViewportSize().height); 
 			}
 			if(width == lastWidth && height == lastHeight){
 				textfield.repaint();
@@ -354,8 +351,8 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		if(textFieldSize.width > maxWidth){
 			textFieldSize.width = maxWidth;
 			textfield.setSize(maxWidth, Integer.MAX_VALUE);
-			textFieldSize.height =textfield.getPreferredSize().height; 
 			textfield.setLineWrap(true);
+			textFieldSize.height =textfield.getPreferredSize().height; 
 		}
 
 		int nodeWidth = mainView.getWidth();
@@ -368,8 +365,8 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 			iconWidth += mapView.getZoomed(mainView.getIconTextGap());
 			nodeWidth -= iconWidth;
 		}
-		final int topBorder = (nodeHeight - textFieldSize.height)/2;
-		final int leftBorder = (nodeWidth - textFieldSize.width)/2;
+		final int topBorder = (nodeHeight + 1 - textFieldSize.height)/2;
+		final int leftBorder = (nodeWidth + 1 - textFieldSize.width)/2;
 		final Color borderColor;
 		if(MapView.standardDrawRectangleForSelection){
 			borderColor= nodeTextBackground;
@@ -379,15 +376,14 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		}
 		if(nodeView.isLeft() && ! nodeView.isRoot()){
 			textfield.setBorder(BorderFactory.createMatteBorder(
-				topBorder, leftBorder,topBorder,leftBorder + iconWidth, 
+				topBorder+ 1, leftBorder + 1,topBorder-1,leftBorder-1 + iconWidth, 
 				borderColor));
 		}
 		else{
 			textfield.setBorder(BorderFactory.createMatteBorder(
-				topBorder, leftBorder + iconWidth, topBorder, leftBorder, 
+				topBorder + 1, leftBorder + 1 + iconWidth, topBorder-1, leftBorder-1, 
 				borderColor));
 		}
-		final JViewport viewPort = (JViewport)mapView.getParent();
 		mapView.add(textfield, 0);		
 		if (firstEvent != null ) {
 			redispatchKeyEvents(textfield, firstEvent);
@@ -395,12 +391,20 @@ class EditNodeTextField extends AbstractEditNodeTextField {
 		else {
 			textfield.setCaretPosition(getText().length());
 		}
-		textfield.repaint();
 		component.addComponentListener(textFieldListener);
 		nodeView.addComponentListener(textFieldListener);
 		textfield.getDocument().addDocumentListener(documentListener);
 		final MapController mapController = modeController.getMapController();
 		mapController.addNodeChangeListener(textFieldListener);
+		textfield.repaint();
 		textfield.requestFocus();
 	}
+
+	private int getTextPreferredWidth() {
+	    final Insets insets = textfield.getInsets();
+	    final Font font = textfield.getFont();
+	    final FontMetrics fontMetrics = textfield.getFontMetrics(font);
+	    final int preferredWidth = fontMetrics.stringWidth(textfield.getText()) + insets.left + insets.right + 1;
+	    return preferredWidth;
+    }
 }
