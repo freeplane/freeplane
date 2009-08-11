@@ -19,6 +19,7 @@
  */
 package org.freeplane.main.osgi;
 
+import java.awt.EventQueue;
 import java.util.LinkedList;
 import java.util.Set;
 
@@ -98,6 +99,18 @@ public class Activator implements BundleActivator {
 		}
 		catch (final InvalidSyntaxException e) {
 			e.printStackTrace();
+		}
+		if("true".equals(System.getProperty("org.freeplane.exit_on_start", null))){
+			EventQueue.invokeLater(new Runnable(){
+				public void run() {
+					try {
+	                    Thread.sleep(1000);
+                    }
+                    catch (InterruptedException e) {
+                    }
+					System.exit(0);
+                }});
+			return;
 		}
 		starter.createFrame(getCallParameters());
 	}
