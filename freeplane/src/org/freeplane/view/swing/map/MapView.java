@@ -1360,7 +1360,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			vp.setScrollMode(scrollMode);
 		}
 		else {
-			vp.repaint();
+			vp.repaint(vp.getViewRect());
 		}
 		if (nodeToBeVisible != null) {
 			final int scrollMode = vp.getScrollMode();
